@@ -4,27 +4,33 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom'
-import Navigation from './components/navigation'
+import Layout from './components/layout'
 import Exchange from './views/exchange'
 import { ROUTES } from './constants'
 
+/**
+ * App Entry point - Handles views routing
+ *
+ * @returns {JSX.Element}
+ */
 const App = () => (
   <Router>
-    <Navigation />
-    <Switch>
-      <Route path={ROUTES.EXCHANGE}>
-        <Exchange />
-      </Route>
-      <Route path={ROUTES.STAKE}>
-        <Exchange />
-      </Route>
-      <Route path={ROUTES.GOVERNANCE}>
-        <Exchange />
-      </Route>
-      <Route exact path="/">
-        <Redirect to={ROUTES.EXCHANGE} />
-      </Route>
-    </Switch>
+    <Layout>
+      <Switch>
+        <Route path={ROUTES.EXCHANGE}>
+          <Exchange />
+        </Route>
+        <Route path={ROUTES.STAKE}>
+          <Exchange />
+        </Route>
+        <Route path={ROUTES.GOVERNANCE}>
+          <Exchange />
+        </Route>
+        <Route exact path="/">
+          <Redirect to={ROUTES.EXCHANGE} />
+        </Route>
+      </Switch>
+    </Layout>
   </Router>
 )
 

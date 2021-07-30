@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import { useEtherBalance, useEthers } from '@usedapp/core'
 import { formatEther } from '@ethersproject/units'
-import Account from '../../components/account'
 
 const Container = styled.div`
   
@@ -13,7 +12,6 @@ const Exchange = () => {
 
   return (
     <Container>
-      <Account />
       { account && (
         <>
           <p>

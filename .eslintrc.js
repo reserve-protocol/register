@@ -5,7 +5,7 @@ module.exports = {
   },
   extends: [
     'plugin:react/recommended',
-    'plugin:cypress/recommended',
+    // 'plugin:tests/recommended',
     'airbnb',
   ],
   parserOptions: {
@@ -28,5 +28,6 @@ module.exports = {
     'import/prefer-default-export': 'off',
     // Allow js extension for react components
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
+    'import/no-extraneous-dependencies': 'off',
   },
 }
