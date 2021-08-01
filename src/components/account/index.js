@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import styled from 'styled-components'
 import { useEthers } from '@usedapp/core'
+import WalletModal from '../wallet-modal'
 
 const Container = styled.div`
   display: flex;
@@ -22,16 +24,23 @@ const Container = styled.div`
  * @constructor
  */
 const Account = () => {
-  const { activateBrowserWallet, account, deactivate } = useEthers()
+  const { account, deactivate } = useEthers()
+  const [isWalletModalVisible, showWalletModal] = useState(false)
 
   const handleConnect = () => {
-    activateBrowserWallet(() => {
-      // TODO: Error handling
-    })
+    // activateBrowserWallet(() => {
+    //   // TODO: Error handling
+    // })
+    showWalletModal(true)
   }
 
   if (!account) {
-    return <button type="button" onClick={handleConnect}>Connect your account</button>
+    return (
+      <>
+        <button type="button" onClick={handleConnect}>Connect your account</button>
+        { isWalletModalVisible && <WalletModal /> }
+      </>
+    )
   }
 
   return (

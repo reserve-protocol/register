@@ -5,7 +5,7 @@ module.exports = {
   },
   extends: [
     'plugin:react/recommended',
-    // 'plugin:tests/recommended',
+    'plugin:cypress/recommended',
     'airbnb',
   ],
   parserOptions: {
@@ -29,5 +29,6 @@ module.exports = {
     // Allow js extension for react components
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'import/no-extraneous-dependencies': 'off',
+    'react/jsx-props-no-spreading': 'off',
   },
 }

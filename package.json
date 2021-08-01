@@ -4,10 +4,13 @@
   "private": true,
   "dependencies": {
     "@ethersproject/units": "^5.4.0",
+    "@ethersproject/wallet": "^5.4.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "@usedapp/core": "^0.4.2",
+    "@web3-react/core": "^6.1.9",
+    "@web3-react/walletconnect-connector": "^6.2.4",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -21,13 +24,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "lint": "eslint . --fix",
-    "e2e": "CYPRESS_REMOTE_DEBUGGING_PORT=9222 cypress open"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "e2e": "cypress open"
   },
   "browserslist": {
     "production": [
@@ -42,6 +39,9 @@
     ]
   },
   "devDependencies": {
+    "cypress": "^8.1.0",
+    "@ethersproject/experimental": "^5.4.0",
+    "@ethersproject/providers": "^5.4.3",
     "eslint": "^7.31.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-cypress": "^2.11.3",

@@ -7,7 +7,8 @@ const Container = styled.div`
   padding: 2em;
   height: 100vh;
   box-sizing: border-box;
-  background-color: #f5f5f5;
+  background-color: black;
+  color: white
 `
 
 const Header = styled.div`
