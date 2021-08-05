@@ -1,6 +1,6 @@
 import { useEthers } from '@usedapp/core'
 import Modal from '../modal'
-import { injected, walletconnect } from './connectors'
+import { injected, walletconnect, fortmatic } from './connectors'
 
 // const SupportedChainId = {
 //   MAINNET: 1,
@@ -29,6 +29,9 @@ const WalletModal = () => {
       </button>
       <button type="button" onClick={() => activate(walletconnect)}>
         Connect using wallet connector
+      </button>
+      <button type="button" onClick={() => activate(fortmatic)}>
+        Connect using fortmatic
       </button>
     </Modal>
   )

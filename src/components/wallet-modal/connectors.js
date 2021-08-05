@@ -7,7 +7,7 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 // import { LatticeConnector } from '@web3-react/lattice-connector'
 // import { FrameConnector } from '@web3-react/frame-connector'
 // import { AuthereumConnector } from '@web3-react/authereum-connector'
-// import { FortmaticConnector } from '@web3-react/fortmatic-connector'
+import { FortmaticConnector } from '@web3-react/fortmatic-connector'
 // import { MagicConnector } from '@web3-react/magic-connector'
 // import { PortisConnector } from '@web3-react/portis-connector'
 // import { TorusConnector } from '@web3-react/torus-connector'
@@ -26,7 +26,7 @@ const RPC_URLS = {
   4: keys.RPC_URL_4,
 }
 
-export const injected = new InjectedConnector({ supportedChainIds: [1, 3, 4, 5, 42] })
+export const injected = new InjectedConnector({ supportedChainIds: [1, 3, 4, 5, 42, 1337] })
 
 export const network = new NetworkConnector({
   urls: { 1: RPC_URLS[1], 4: RPC_URLS[4] },
@@ -44,7 +44,7 @@ export const walletconnect = new WalletConnectConnector({
 //   appName: 'web3-react example',
 //   supportedChainIds: [1, 3, 4, 5, 42, 10, 137, 69, 420, 80001]
 // })
-//
+
 // export const ledger = new LedgerConnector(
 // { chainId: 1, url: RPC_URLS[1], pollingInterval: POLLING_INTERVAL })
 //
@@ -66,7 +66,7 @@ export const walletconnect = new WalletConnectConnector({
 //
 // export const authereum = new AuthereumConnector({ chainId: 42 })
 //
-// export const fortmatic = new FortmaticConnector({ apiKey: keys.FORTMATIC_API_KEY, chainId: 4 })
+export const fortmatic = new FortmaticConnector({ apiKey: 'pk_test_29814A316CEDFCF7', chainId: 4 })
 //
 // export const magic = new MagicConnector({
 //   apiKey: keys.MAGIC_API_KEY,
