@@ -1,21 +1,36 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { ChainId, DAppProvider } from '@usedapp/core'
+import { Link } from 'react-router-dom'
+import { ChainId, DAppProvider, MULTICALL_ADDRESSES } from '@usedapp/core'
 import App from './App'
-import './index.css'
 import reportWebVitals from './reportWebVitals'
+import enTranslations from '@shopify/polaris/locales/en.json';
+import { AppProvider as PolarisProvider } from '@shopify/polaris';
+
+import '@shopify/polaris/dist/styles.css';
+import './index.css'
 
 const config = {
   readOnlyChainId: ChainId.Localhost,
-  // readOnlyUrls: {
-  //   [ChainId.Localhost]: 'https://mainnet.infura.io/v3/62687d1a985d4508b2b7a24827551934',
-  // },
+  readOnlyUrls: {
+    [ChainId.Localhost]: 'http://localhost:8545',
+  },
+  multicallAddresses: {
+    [ChainId.Localhost]: '0x959922be3caee4b8cd9a407cc3ac1c251c2007b1',
+    ...MULTICALL_ADDRESSES
+  }
 }
 
+// TODO: remove Polaris in favor for a lightweigh solution
 ReactDOM.render(
   <React.StrictMode>
     <DAppProvider config={config}>
-      <App />
+      <PolarisProvider 
+        i18n={enTranslations}
+        linkComponent={Link}
+      >
+        <App />
+      </PolarisProvider>
     </DAppProvider>
   </React.StrictMode>,
   document.getElementById('root'),
