@@ -11,12 +11,14 @@ import '@shopify/polaris/dist/styles.css';
 import './index.css'
 
 const config = {
-  readOnlyChainId: ChainId.Localhost,
+  readOnlyChainId: ChainId.Hardhat,
   readOnlyUrls: {
     [ChainId.Localhost]: 'http://localhost:8545',
+    [ChainId.Hardhat]: 'http://localhost:8545'
   },
   multicallAddresses: {
     [ChainId.Localhost]: '0x959922be3caee4b8cd9a407cc3ac1c251c2007b1',
+  [ChainId.Hardhat]: '0x959922be3caee4b8cd9a407cc3ac1c251c2007b1',
     ...MULTICALL_ADDRESSES
   }
 }

@@ -2913,10 +2913,10 @@
     "@typescript-eslint/types" "4.15.2"
     eslint-visitor-keys "^2.0.0"
 
-"@usedapp/core@^0.4.2":
-  version "0.4.2"
-  resolved "https://registry.npmjs.org/@usedapp/core/-/core-0.4.2.tgz"
-  integrity sha512-Fwzv3GFX5LP5E79v0okkjSXHFnLVbN1bEdRBm6roSsbyTcX2oAmLJXsvZ8TDDZwgBmcD3n+Mc7UYzWTb8O2Z0g==
+"@usedapp/core@^0.4.4":
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/@usedapp/core/-/core-0.4.4.tgz#2142443a04fbd770c8e4dc7345aa7cb130dc1451"
+  integrity sha512-6kNJ0bPR4gM1NpcKU9gswD2sfWgH5WSWtrT4KjefHAZBz2In35nHEfifgWw7bpCULKkJsnVJtzT938XWaUpngg==
   dependencies:
     "@types/react" "17.0.1"
     "@web3-react/core" "6.1.1"
