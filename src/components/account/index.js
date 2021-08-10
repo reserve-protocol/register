@@ -2,8 +2,8 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { Button } from '@shopify/polaris'
 import { useEthers } from '@usedapp/core'
-import WalletModal from '../wallet-modal'
 import { Flex, Text } from 'rebass'
+import WalletModal from '../wallet-modal'
 
 const Container = styled.div`
   display: flex;

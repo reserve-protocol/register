@@ -3,9 +3,9 @@ import { Box } from 'rebass'
 
 /**
  * Wraps the page content
- * 
- * @param {ReactNode} children 
- * @returns 
+ *
+ * @param {ReactNode} children
+ * @returns
  */
 const Container = ({ children, ...props }) => (
   <Box
@@ -13,7 +13,9 @@ const Container = ({ children, ...props }) => (
       maxWidth: 1024,
       mx: 'auto',
       px: 3,
-    }} {...props}> 
+    }}
+    {...props}
+  >
     {children}
   </Box>
 )
