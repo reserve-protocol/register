@@ -1,23 +1,22 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
 import { ethers } from 'ethers'
 import {
-  useGasPrice, useBlockNumber, useEthers, connectContractToSigner, useContractCall, useTokenBalance, useTransactions, useContractFunction,
+  useGasPrice, useBlockNumber, useEthers, useContractCall, useTokenBalance, useContractFunction,
 } from '@usedapp/core'
-import { formatEther, parseEther, parseUnits } from '@ethersproject/units'
+import { formatEther, parseUnits } from '@ethersproject/units'
 import {
-  Card, TextField, Button, Modal,
+  Card, TextField, Button,
 } from '@shopify/polaris'
 import { Text, Flex, Box } from 'rebass'
-import RToken from '../../abis/RToken.json'
 import RSR from '../../abis/RSR.json'
-import Insurance from '../../abis/Insurance.json'
 import PrevRSR from '../../abis/PrevRSR.json'
 import {
-  RTOKEN_ADDRESS, RSR_ADDRESS, INSURANCE_ADDRESS, PREV_RSR_ADDRESS,
+  RSR_ADDRESS, INSURANCE_ADDRESS, PREV_RSR_ADDRESS,
 } from '../../constants/addresses'
 import Container from '../../components/container'
 import Transactions from '../../components/transactions'
+import Stake from '../../components/stake'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -28,30 +27,20 @@ const InputContainer = styled(Box)`
   }
 `
 
-const simpleContractInterface = new ethers.utils.Interface(RSR)
-const insuranceInterface = new ethers.utils.Interface(Insurance)
+const RsrInterface = new ethers.utils.Interface(RSR)
 const prevRSRInterface = new ethers.utils.Interface(PrevRSR)
-const InsuranceContract = new ethers.Contract(INSURANCE_ADDRESS, Insurance)
 const RSRContract = new ethers.Contract(RSR_ADDRESS, RSR)
-const PrevRSRContract = new ethers.Contract(PREV_RSR_ADDRESS, PrevRSR)
 
 const parseAmount = (n) => parseUnits(n, 18)
 
 const Exchange = () => {
-  const { account, library } = useEthers()
-  const { transactions } = useTransactions()
+  const { account } = useEthers()
   const etherBalance = useTokenBalance(RSR_ADDRESS, account)
   const stakedAmount = useTokenBalance(INSURANCE_ADDRESS, account)
   const gasPrice = useGasPrice()
   const blockNumber = useBlockNumber()
-  // Stake component
-  const [stakeAmount, setStakeAmount] = useState(0)
-  const [unstakeAmount, setUnstakeAmount] = useState(0)
   const [transferAmount, setTransferAmount] = useState(0)
   const [transferAccount, setTransferAccount] = useState('')
-  const [isOpen, openModal] = useState(false)
-
-  console.log('prev', PREV_RSR_ADDRESS)
 
   const [isPrevPaused] = useContractCall({
     abi: prevRSRInterface,
@@ -60,46 +49,18 @@ const Exchange = () => {
   }) ?? []
 
   const [totalSupply] = useContractCall({
-    abi: simpleContractInterface,
+    abi: RsrInterface,
     address: RSR_ADDRESS,
     method: 'totalSupply',
   }) ?? []
 
-  const [earned] = useContractCall({
-    abi: insuranceInterface,
-    address: INSURANCE_ADDRESS,
-    method: 'earned',
-    args: [account],
-  }) ?? []
-
-  const { state: stakeState, send: stake } = useContractFunction(InsuranceContract, 'stake', { transactionName: 'Add RSR to Insurance pool' })
-  const { state: unstakeState, send: unstake } = useContractFunction(InsuranceContract, 'unstake', { transactionName: 'Remove RSR from Insurance Pool' })
-  const { state: approve, send: approveAmount } = useContractFunction(RSRContract, 'approve', { transactionName: 'Approve RSR for Insurance' })
   const { state: transferState, send: transfer } = useContractFunction(RSRContract, 'transfer', { transactionName: 'Transfer RSR' })
-
-  const handleStake = () => {
-    approveAmount(INSURANCE_ADDRESS, parseAmount(stakeAmount))
-  }
-
-  const handleUnstake = () => {
-    unstake(parseEther(unstakeAmount))
-    setUnstakeAmount(0)
-  }
-
-  // useEffect(() => {
-  //   if (approve.status === 'Success') {
-  //     stake(parseAmount(stakeAmount))
-  //     setStakeAmount(0)
-  //   }
-  // }, [approve.status])
 
   const handleTransfer = () => {
     transfer(transferAccount, parseAmount(transferAmount))
   }
 
   const currentBalance = etherBalance ? parseFloat(formatEther(etherBalance)).toFixed(3) : 0
-
-  console.log('transactions', transactions)
 
   return (
     <Container mt={4}>
@@ -162,36 +123,7 @@ const Exchange = () => {
           </InputContainer>
         </Flex>
       </Card>
-      <Card title="Stake" sectioned>
-        <Flex mx={-2}>
-          <InputContainer mx={2} width={1 / 2}>
-            <TextField
-              placeholder="amount..."
-              label="Stake amount"
-              value={stakeAmount}
-              onChange={setStakeAmount}
-            />
-            <Button onClick={handleStake}>Stake</Button>
-          </InputContainer>
-          <InputContainer mx={2} width={1 / 2}>
-            <TextField
-              placeholder="amount..."
-              label="Unstake amount"
-              value={unstakeAmount}
-              onChange={setUnstakeAmount}
-            />
-            <Button onClick={handleUnstake}>Unstake</Button>
-          </InputContainer>
-        </Flex>
-        <Flex alignItems="center" mt={4}>
-          <Text mr={2}>
-            <b>Total earnings:</b>
-            {' '}
-            {earned ? formatEther(earned) : 0}
-          </Text>
-          <Button primary disabled={!earned || parseInt(formatEther(earned)) === 0}>Withdraw</Button>
-        </Flex>
-      </Card>
+      <Stake />
       <Transactions />
     </Container>
   )

@@ -1,1 +1,14 @@
 export { default as ROUTES } from './routes'
+
+export const TRANSACTION_STATUS = {
+  PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  ERROR: 'ERROR'
+}
+
+export const DEPOSIT_STATUS = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  CONFIRMED: 'CONFIRMED',
+  COMPLETED: 'COMPLETED'
+}

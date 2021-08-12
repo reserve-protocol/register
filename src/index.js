@@ -5,6 +5,8 @@ import { ChainId, DAppProvider, MULTICALL_ADDRESSES } from '@usedapp/core'
 import enTranslations from '@shopify/polaris/locales/en.json'
 import { AppProvider as PolarisProvider } from '@shopify/polaris'
 import { Provider as StoreProvider } from 'react-redux'
+import { ApolloProvider } from '@apollo/client'
+import apolloClient from './apollo/client'
 import store from './state'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
@@ -18,7 +20,7 @@ const config = {
     [ChainId.Hardhat]: 'http://localhost:8545',
   },
   multicallAddresses: {
-    [ChainId.Localhost]: '0x959922be3caee4b8cd9a407cc3ac1c251c2007b1',
+    [ChainId.Localhost]: '0xa51c1fc2f0d1a1b8494ed1fe312d7c3a78ed91c0',
     [ChainId.Hardhat]: '0xa51c1fc2f0d1a1b8494ed1fe312d7c3a78ed91c0',
     ...MULTICALL_ADDRESSES,
   },
@@ -27,16 +29,18 @@ const config = {
 // TODO: remove Polaris in favor for a lightweigh solution
 ReactDOM.render(
   <React.StrictMode>
-    <StoreProvider store={store}>
-      <DAppProvider config={config}>
-        <PolarisProvider
-          i18n={enTranslations}
-          linkComponent={Link}
-        >
-          <App />
-        </PolarisProvider>
-      </DAppProvider>
-    </StoreProvider>
+    <ApolloProvider client={apolloClient}>
+      <StoreProvider store={store}>
+        <DAppProvider config={config}>
+          <PolarisProvider
+            i18n={enTranslations}
+            linkComponent={Link}
+          >
+            <App />
+          </PolarisProvider>
+        </DAppProvider>
+      </StoreProvider>
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 )

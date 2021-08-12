@@ -6,11 +6,23 @@ import { ethers } from 'ethers'
 import { RSR_ADDRESS, INSURANCE_ADDRESS } from '../../constants/addresses'
 import RSR from '../../abis/RSR.json'
 import Insurance from '../../abis/Insurance.json'
+import { gql, useQuery } from '@apollo/client'
 
 const INTERFACES = {
   [RSR_ADDRESS]: new ethers.utils.Interface(RSR),
   [INSURANCE_ADDRESS]: new ethers.utils.Interface(Insurance),
 }
+
+const GRAVATARS_QUERY = gql`
+  query gravatars($where: Gravatar_filter!, $orderBy: Gravatar_orderBy!) {
+    gravatars(first: 100, where: $where, orderBy: $orderBy, orderDirection: asc) {
+      id
+      owner
+      displayName
+      imageUrl
+    }
+  }
+`
 
 const Item = ({
   data: {
@@ -20,7 +32,7 @@ const Item = ({
   const abi = INTERFACES[transaction.to]
   const parsed = abi.parseTransaction(transaction)
   const argumentsString = parsed.functionFragment.inputs.map((input) => (
-    <Text>
+    <Text key={input.name}>
       <b>
         {input.name}
         :
@@ -89,9 +101,14 @@ const Item = ({
 const Transactions = () => {
   const { transactions } = useTransactions()
 
+  // TODO: GraphQL
+  // const { loading, error, data } = useQuery(GRAVATARS_QUERY, { variables: { orderBy: 'displayName', where: {} } })
+
   return (
     <Card title="Recent transactions" sectioned>
-      {transactions.map((data) => (<Item data={data} />))}
+      <div style={{ maxHeight: 500, overflow: 'scroll' }}>
+        {transactions.map((data) => (<Item key={data.transaction.hash} data={data} />))}
+      </div>
       {!transactions.length && <Text>No recent transactions...</Text>}
     </Card>
   )
