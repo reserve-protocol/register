@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { formatEther, parseEther } from '@ethersproject/units'
 import { ethers } from 'ethers'
-import { 
-  Card, TextField, Button, Modal, buttonFrom 
-} from '@shopify/polaris'
+import { Card, TextField, Button, Modal, buttonFrom } from '@shopify/polaris'
 import {
-  useGasPrice, useEthers, useContractCall, useContractFunction 
+  useGasPrice,
+  useEthers,
+  useContractCall,
+  useContractFunction,
 } from '@usedapp/core'
 import { Flex, Text, Box } from 'rebass'
 import { INSURANCE_ADDRESS, RSR_ADDRESS } from '../../constants/addresses'
@@ -34,11 +35,17 @@ const DepositStatus = ({ amount, approveTx, status, onStake }) => {
 
   return (
     <Card title="Deposit status" sectioned>
-      <Text><b>Status:</b> {status}</Text>
-      <Text><b>Amount:</b> {amount}</Text>
-      { status === DEPOSIT_STATUS.APPROVED && isApproved && (
-        <Button onClick={() => onStake()} primary>Confirm stake</Button>
-      ) }
+      <Text>
+        <b>Status:</b> {status}
+      </Text>
+      <Text>
+        <b>Amount:</b> {amount}
+      </Text>
+      {status === DEPOSIT_STATUS.APPROVED && isApproved && (
+        <Button onClick={() => onStake()} primary>
+          Confirm stake
+        </Button>
+      )}
     </Card>
   )
 }
@@ -51,19 +58,21 @@ const DepositStatus = ({ amount, approveTx, status, onStake }) => {
 const Stake = () => {
   const { account } = useEthers()
 
-  const [allowance] = useContractCall({
-    abi: RsrInterface,
-    address: RSR_ADDRESS,
-    method: 'allowance',
-    args: [account, INSURANCE_ADDRESS],
-  }) ?? []
+  const [allowance] =
+    useContractCall({
+      abi: RsrInterface,
+      address: RSR_ADDRESS,
+      method: 'allowance',
+      args: [account, INSURANCE_ADDRESS],
+    }) ?? []
 
-  const [earned] = useContractCall({
-    abi: insuranceInterface,
-    address: INSURANCE_ADDRESS,
-    method: 'earned',
-    args: [account],
-  }) ?? []
+  const [earned] =
+    useContractCall({
+      abi: insuranceInterface,
+      address: INSURANCE_ADDRESS,
+      method: 'earned',
+      args: [account],
+    }) ?? []
 
   // Stake component
   const [stakeAmount, setStakeAmount] = useState(0)
@@ -71,19 +80,37 @@ const Stake = () => {
   const [stakeStatus, setStakeStatus] = useState(null)
   const [isOpen, openModal] = useState(false)
 
-  const { state: stakeState, send: stake } = useContractFunction(InsuranceContract, 'stake', { transactionName: 'Add RSR to Insurance pool' })
-  const { state: unstakeState, send: unstake } = useContractFunction(InsuranceContract, 'unstake', { transactionName: 'Remove RSR from Insurance Pool' })
-  const { state: approve, send: approveAmount } = useContractFunction(RSRContract, 'approve', { transactionName: 'Approve RSR for Insurance' })
+  const { state: stakeState, send: stake } = useContractFunction(
+    InsuranceContract,
+    'stake',
+    { transactionName: 'Add RSR to Insurance pool' }
+  )
+  const { state: unstakeState, send: unstake } = useContractFunction(
+    InsuranceContract,
+    'unstake',
+    { transactionName: 'Remove RSR from Insurance Pool' }
+  )
+  const { state: approve, send: approveAmount } = useContractFunction(
+    RSRContract,
+    'approve',
+    { transactionName: 'Approve RSR for Insurance' }
+  )
 
   const handleStake = (amount = allowance) => {
     stake(amount)
-    setStakeStatus({ amount: formatEther(amount), status: DEPOSIT_STATUS.CONFIRMED })
+    setStakeStatus({
+      amount: formatEther(amount),
+      status: DEPOSIT_STATUS.CONFIRMED,
+    })
   }
 
   const handleStakeApprove = () => {
     const amount = parseEther(stakeAmount)
 
-    if (allowance && Number((formatEther(allowance))) >= Number(formatEther(amount))) {
+    if (
+      allowance &&
+      Number(formatEther(allowance)) >= Number(formatEther(amount))
+    ) {
       handleStake(amount)
     } else {
       approveAmount(INSURANCE_ADDRESS, amount)
@@ -101,7 +128,13 @@ const Stake = () => {
   useEffect(() => {
     console.log('approve status', approve)
     if (approve.status === 'Success' && approve.receipt) {
-      setStakeStatus({ ...stakeStatus, status: DEPOSIT_STATUS.APPROVED, approveTx: approve.transaction.hash })
+      setStakeStatus({
+        ...stakeStatus,
+        status: DEPOSIT_STATUS.APPROVED,
+        approveTx: approve.transaction.hash,
+      })
+    } else if (approve.status === 'Rejection') {
+      setStakeStatus({ ...stakeStatus, status: DEPOSIT_STATUS.REJECTED })
     }
   }, [approve.status])
 
@@ -135,17 +168,22 @@ const Stake = () => {
           <Button onClick={handleUnstake}>Unstake</Button>
         </InputContainer>
       </Flex>
-      { stakeStatus && <DepositStatus {...stakeStatus} onStake={handleStake} /> }
+      {stakeStatus && <DepositStatus {...stakeStatus} onStake={handleStake} />}
       <Flex mt={4}>
-        <Text><b>Allowance:</b> {allowance ? formatEther(allowance) : 0}</Text>
+        <Text>
+          <b>Allowance:</b> {allowance ? formatEther(allowance) : 0}
+        </Text>
       </Flex>
       <Flex alignItems="center" mt={2}>
         <Text mr={2}>
-          <b>Total earnings:</b>
-          {' '}
-          {earned ? formatEther(earned) : 0}
+          <b>Total earnings:</b> {earned ? formatEther(earned) : 0}
         </Text>
-        <Button primary disabled={!earned || parseInt(formatEther(earned)) === 0}>Withdraw</Button>
+        <Button
+          primary
+          disabled={!earned || parseInt(formatEther(earned)) === 0}
+        >
+          Withdraw
+        </Button>
       </Flex>
     </Card>
   )

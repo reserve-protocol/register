@@ -1,8 +1,5 @@
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { Frame } from '@shopify/polaris'
-import Navigation from '../navigation'
-import Account from '../account'
 import Header from './header'
 
 const Container = styled.div`

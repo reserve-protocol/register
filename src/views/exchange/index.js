@@ -2,17 +2,22 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { ethers } from 'ethers'
 import {
-  useGasPrice, useBlockNumber, useEthers, useContractCall, useTokenBalance, useContractFunction,
+  useGasPrice,
+  useBlockNumber,
+  useEthers,
+  useContractCall,
+  useTokenBalance,
+  useContractFunction,
 } from '@usedapp/core'
 import { formatEther, parseUnits } from '@ethersproject/units'
-import {
-  Card, TextField, Button,
-} from '@shopify/polaris'
+import { Card, TextField, Button } from '@shopify/polaris'
 import { Text, Flex, Box } from 'rebass'
 import RSR from '../../abis/RSR.json'
 import PrevRSR from '../../abis/PrevRSR.json'
 import {
-  RSR_ADDRESS, INSURANCE_ADDRESS, PREV_RSR_ADDRESS,
+  RSR_ADDRESS,
+  INSURANCE_ADDRESS,
+  PREV_RSR_ADDRESS,
 } from '../../constants/addresses'
 import Container from '../../components/container'
 import Transactions from '../../components/transactions'
@@ -42,66 +47,64 @@ const Exchange = () => {
   const [transferAmount, setTransferAmount] = useState(0)
   const [transferAccount, setTransferAccount] = useState('')
 
-  const [isPrevPaused] = useContractCall({
-    abi: prevRSRInterface,
-    address: PREV_RSR_ADDRESS,
-    method: 'paused',
-  }) ?? []
+  const [isPrevPaused] =
+    useContractCall({
+      abi: prevRSRInterface,
+      address: PREV_RSR_ADDRESS,
+      method: 'paused',
+    }) ?? []
 
-  const [totalSupply] = useContractCall({
-    abi: RsrInterface,
-    address: RSR_ADDRESS,
-    method: 'totalSupply',
-  }) ?? []
+  const [totalSupply] =
+    useContractCall({
+      abi: RsrInterface,
+      address: RSR_ADDRESS,
+      method: 'totalSupply',
+    }) ?? []
 
-  const { state: transferState, send: transfer } = useContractFunction(RSRContract, 'transfer', { transactionName: 'Transfer RSR' })
+  const { state: transferState, send: transfer } = useContractFunction(
+    RSRContract,
+    'transfer',
+    { transactionName: 'Transfer RSR' }
+  )
 
   const handleTransfer = () => {
     transfer(transferAccount, parseAmount(transferAmount))
   }
 
-  const currentBalance = etherBalance ? parseFloat(formatEther(etherBalance)).toFixed(3) : 0
+  const currentBalance = etherBalance
+    ? parseFloat(formatEther(etherBalance)).toFixed(3)
+    : 0
 
   return (
     <Container mt={4}>
-      { account && (
+      {account && (
         <Card title="State" sectioned>
           <Text>
-            <b>RSR Balance:</b>
-            {' '}
-            {currentBalance}
-            {' '}
+            <b>RSR Balance:</b> {currentBalance}{' '}
           </Text>
           <Text mt={2}>
-            <b>Staked Amount:</b>
-            {' '}
-            {stakedAmount ? formatEther(stakedAmount) : 0}
+            <b>Staked Amount:</b> {stakedAmount ? formatEther(stakedAmount) : 0}
           </Text>
           <Flex mt={2}>
             <Text>
-              <b>RSR Total supply:</b>
-              {' '}
+              <b>RSR Total supply:</b>{' '}
               {totalSupply && parseFloat(formatEther(totalSupply))}
             </Text>
           </Flex>
           {!!gasPrice && (
+            <Text mt={2}>
+              <b>Gas Price: </b>
+              {formatEther(gasPrice)}
+            </Text>
+          )}
           <Text mt={2}>
-            <b>Gas Price: </b>
-            {formatEther(gasPrice)}
-          </Text>
-          ) }
-          <Text mt={2}>
-            <b>Latest block:</b>
-            {' '}
-            {blockNumber || 0}
+            <b>Latest block:</b> {blockNumber || 0}
           </Text>
         </Card>
-      ) }
+      )}
       <Card title="Is PrevRSR Paused" sectioned>
         <Flex>
-          <Text>
-            {isPrevPaused ? 'Yes' : 'No'}
-          </Text>
+          <Text>{isPrevPaused ? 'Yes' : 'No'}</Text>
         </Flex>
       </Card>
       <Card title="Send" sectioned>
@@ -119,7 +122,9 @@ const Exchange = () => {
               value={transferAccount}
               onChange={setTransferAccount}
             />
-            <Button primary onClick={handleTransfer}>Transfer</Button>
+            <Button primary onClick={handleTransfer}>
+              Transfer
+            </Button>
           </InputContainer>
         </Flex>
       </Card>

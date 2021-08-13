@@ -7,6 +7,7 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:cypress/recommended',
     'airbnb',
+    'prettier',
   ],
   parserOptions: {
     ecmaFeatures: {
@@ -15,10 +16,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
   },
-  plugins: [
-    'react',
-    'cypress',
-  ],
+  plugins: ['react', 'cypress'],
   rules: {
     semi: ['error', 'never'],
     // In react 17, you don't need these rules
