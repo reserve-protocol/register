@@ -22,6 +22,7 @@ import {
 import Container from '../../components/container'
 import Transactions from '../../components/transactions'
 import Stake from '../../components/stake'
+import Deposits from '../../components/deposits'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -130,6 +131,7 @@ const Exchange = () => {
       </Card>
       <Stake />
       <Transactions />
+      <Deposits />
     </Container>
   )
 }

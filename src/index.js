@@ -32,17 +32,14 @@ ReactDOM.render(
     <ApolloProvider client={apolloClient}>
       <StoreProvider store={store}>
         <DAppProvider config={config}>
-          <PolarisProvider
-            i18n={enTranslations}
-            linkComponent={Link}
-          >
+          <PolarisProvider i18n={enTranslations} linkComponent={Link}>
             <App />
           </PolarisProvider>
         </DAppProvider>
       </StoreProvider>
     </ApolloProvider>
   </React.StrictMode>,
-  document.getElementById('root'),
+  document.getElementById('root')
 )
 
 // If you want to start measuring performance in your app, pass a function

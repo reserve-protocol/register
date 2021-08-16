@@ -140,9 +140,17 @@ const Stake = () => {
 
   // Insurance stake
   useEffect(() => {
-    console.log('lets see stake', stakeState)
     if (stakeState.status === 'Success' && stakeState.receipt) {
       setStakeStatus({ ...stakeStatus, status: DEPOSIT_STATUS.COMPLETED })
+    }
+
+    console.log('state', stakeState)
+
+    if (
+      stakeState.status === 'Rejection' ||
+      stakeState.status === 'Exception'
+    ) {
+      setStakeStatus({ ...stakeStatus, status: DEPOSIT_STATUS.FAILED })
     }
   }, [stakeState.status])
 
