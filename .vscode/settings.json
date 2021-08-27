@@ -1,6 +1,17 @@
 {
-  "cSpell.words": [
-    "usedapp",
-    "walletconnect"
+  "cSpell.words": ["usedapp", "walletconnect"],
+  "cSpell.enableFiletypes": [
+    "!c",
+    "!cpp",
+    "!csharp",
+    "!go",
+    "!haskell",
+    "!jade",
+    "!java",
+    "!php",
+    "!pug",
+    "!scala",
+    "jsx-tags",
+    "solidity"
   ]
 }

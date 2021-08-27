@@ -9,7 +9,7 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
-    "@usedapp/core": "^0.4.4",
+    "@usedapp/core": "^0.4.6",
     "@web3-react/fortmatic-connector": "^6.1.6",
     "@web3-react/walletconnect-connector": "^6.2.4",
     "ethers": "^5.4.3",

@@ -42,7 +42,9 @@ const Deposits = () => {
       {loading && <span>Loading deposits...</span>}
       <div style={{ maxHeight: 500, overflow: 'scroll' }}>
         {!!data &&
-          data.deposits.map((deposit) => <DepositItem data={deposit} />)}
+          data.deposits.map((deposit) => (
+            <DepositItem key={deposit.id} data={deposit} />
+          ))}
       </div>
     </Card>
   )

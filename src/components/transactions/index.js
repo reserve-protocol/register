@@ -16,15 +16,19 @@ const Item = ({
   data: { transaction, transactionName, receipt, submittedAt },
 }) => {
   const abi = INTERFACES[transaction.to]
-  const parsed = abi.parseTransaction(transaction)
-  const argumentsString = parsed.functionFragment.inputs.map((input) => (
-    <Text key={input.name}>
-      <b>{input.name}:</b> $
-      {input.type === 'uint256'
-        ? formatEther(parsed.args[input.name])
-        : parsed.args[input.name]}
-    </Text>
-  ))
+  let argumentsString = null
+
+  if (abi) {
+    const parsed = abi.parseTransaction(transaction)
+    argumentsString = parsed.functionFragment.inputs.map((input) => (
+      <Text key={input.name}>
+        <b>{input.name}:</b>
+        {input.type === 'uint256'
+          ? formatEther(parsed.args[input.name])
+          : parsed.args[input.name]}
+      </Text>
+    ))
+  }
 
   return (
     <Card title={transactionName} key={transaction.hash} sectioned>
@@ -46,10 +50,14 @@ const Item = ({
       <Text>
         <b>Gas Limit:</b> {formatEther(transaction.gasLimit)}
       </Text>
-      <Text fontSize={2} py={2}>
-        <b>Arguments</b>
-      </Text>
-      {argumentsString}
+      {argumentsString && (
+        <>
+          <Text fontSize={2} py={2}>
+            <b>Arguments</b>
+          </Text>
+          {argumentsString}
+        </>
+      )}
       {!!receipt && (
         <>
           <Text fontSize={2} py={2}>

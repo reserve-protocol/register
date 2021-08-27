@@ -9,7 +9,6 @@ import {
   useTokenBalance,
   useContractFunction,
 } from '@usedapp/core'
-import { formatEther, parseUnits } from '@ethersproject/units'
 import { Card, TextField, Button } from '@shopify/polaris'
 import { Text, Flex, Box } from 'rebass'
 import RSR from '../../abis/RSR.json'
@@ -23,6 +22,7 @@ import Container from '../../components/container'
 import Transactions from '../../components/transactions'
 import Stake from '../../components/stake'
 import Deposits from '../../components/deposits'
+import RToken from '../../components/rtoken'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -37,7 +37,7 @@ const RsrInterface = new ethers.utils.Interface(RSR)
 const prevRSRInterface = new ethers.utils.Interface(PrevRSR)
 const RSRContract = new ethers.Contract(RSR_ADDRESS, RSR)
 
-const parseAmount = (n) => parseUnits(n, 18)
+const parseAmount = (n) => ethers.utils.parseUnits(n, 18)
 
 const Exchange = () => {
   const { account } = useEthers()
@@ -73,7 +73,7 @@ const Exchange = () => {
   }
 
   const currentBalance = etherBalance
-    ? parseFloat(formatEther(etherBalance)).toFixed(3)
+    ? parseFloat(ethers.utils.formatEther(etherBalance)).toFixed(3)
     : 0
 
   return (
@@ -84,18 +84,19 @@ const Exchange = () => {
             <b>RSR Balance:</b> {currentBalance}{' '}
           </Text>
           <Text mt={2}>
-            <b>Staked Amount:</b> {stakedAmount ? formatEther(stakedAmount) : 0}
+            <b>Staked Amount:</b>{' '}
+            {stakedAmount ? ethers.utils.formatEther(stakedAmount) : 0}
           </Text>
           <Flex mt={2}>
             <Text>
               <b>RSR Total supply:</b>{' '}
-              {totalSupply && parseFloat(formatEther(totalSupply))}
+              {totalSupply && parseFloat(ethers.utils.formatEther(totalSupply))}
             </Text>
           </Flex>
           {!!gasPrice && (
             <Text mt={2}>
               <b>Gas Price: </b>
-              {formatEther(gasPrice)}
+              {ethers.utils.formatEther(gasPrice)}
             </Text>
           )}
           <Text mt={2}>
@@ -108,6 +109,7 @@ const Exchange = () => {
           <Text>{isPrevPaused ? 'Yes' : 'No'}</Text>
         </Flex>
       </Card>
+      <RToken />
       <Card title="Send" sectioned>
         <Flex mx={-2}>
           <InputContainer mx={2} width={1}>
