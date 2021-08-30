@@ -37,15 +37,13 @@ const RsrInterface = new ethers.utils.Interface(RSR)
 const prevRSRInterface = new ethers.utils.Interface(PrevRSR)
 const RSRContract = new ethers.Contract(RSR_ADDRESS, RSR)
 
-const parseAmount = (n) => ethers.utils.parseUnits(n, 18)
-
 const Exchange = () => {
   const { account } = useEthers()
   const etherBalance = useTokenBalance(RSR_ADDRESS, account)
   const stakedAmount = useTokenBalance(INSURANCE_ADDRESS, account)
   const gasPrice = useGasPrice()
   const blockNumber = useBlockNumber()
-  const [transferAmount, setTransferAmount] = useState(0)
+  const [transferAmount, setTransferAmount] = useState('0')
   const [transferAccount, setTransferAccount] = useState('')
 
   const [isPrevPaused] =
@@ -53,6 +51,7 @@ const Exchange = () => {
       abi: prevRSRInterface,
       address: PREV_RSR_ADDRESS,
       method: 'paused',
+      args: [],
     }) ?? []
 
   const [totalSupply] =
@@ -60,6 +59,7 @@ const Exchange = () => {
       abi: RsrInterface,
       address: RSR_ADDRESS,
       method: 'totalSupply',
+      args: [],
     }) ?? []
 
   const { state: transferState, send: transfer } = useContractFunction(
@@ -69,7 +69,7 @@ const Exchange = () => {
   )
 
   const handleTransfer = () => {
-    transfer(transferAccount, parseAmount(transferAmount))
+    transfer(transferAccount, ethers.utils.parseEther(transferAmount))
   }
 
   const currentBalance = etherBalance
@@ -117,7 +117,7 @@ const Exchange = () => {
               placeholder="amount..."
               label="Send amount"
               value={transferAmount}
-              onChange={setTransferAmount}
+              onChange={(value) => setTransferAmount(value)}
             />
             <TextField
               placeholder="to"

@@ -2,20 +2,33 @@ import { Card } from '@shopify/polaris'
 import { useTransactions } from '@usedapp/core'
 import { Text } from 'rebass'
 import { formatEther } from '@ethersproject/units'
-import { ethers } from 'ethers'
+import { BigNumber, ethers, Transaction } from 'ethers'
 import { RSR_ADDRESS, INSURANCE_ADDRESS } from '../../constants/addresses'
 import RSR from '../../abis/RSR.json'
 import Insurance from '../../abis/Insurance.json'
+import {
+  TransactionReceipt,
+  TransactionResponse,
+} from '@ethersproject/providers'
 
-const INTERFACES = {
+const INTERFACES: { [x: string]: ethers.utils.Interface } = {
   [RSR_ADDRESS]: new ethers.utils.Interface(RSR),
   [INSURANCE_ADDRESS]: new ethers.utils.Interface(Insurance),
 }
 
+type IItem = {
+  data: {
+    transaction: TransactionResponse
+    transactionName?: string
+    receipt?: TransactionReceipt
+    submittedAt: number
+  }
+}
+
 const Item = ({
   data: { transaction, transactionName, receipt, submittedAt },
-}) => {
-  const abi = INTERFACES[transaction.to]
+}: IItem) => {
+  const abi = INTERFACES[transaction.to as string]
   let argumentsString = null
 
   if (abi) {
@@ -45,7 +58,7 @@ const Item = ({
         <b>Transaction Hash:</b> {transaction.hash}
       </Text>
       <Text>
-        <b>Gas Price:</b> {formatEther(transaction.gasPrice)}
+        <b>Gas Price:</b> {formatEther(transaction.gasPrice as BigNumber)}
       </Text>
       <Text>
         <b>Gas Limit:</b> {formatEther(transaction.gasLimit)}

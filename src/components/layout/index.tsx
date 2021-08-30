@@ -13,7 +13,7 @@ const Container = styled.div`
  * @param children - required
  * @returns {JSX.Element}
  */
-const Layout = ({ children }) => (
+const Layout = ({ children }: { children: React.ReactNode }) => (
   <Container>
     <Header />
     {children}

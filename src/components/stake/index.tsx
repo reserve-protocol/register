@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { formatEther, parseEther } from '@ethersproject/units'
-import { ethers } from 'ethers'
+import { ethers, Transaction } from 'ethers'
 import { Card, TextField, Button, Modal, buttonFrom } from '@shopify/polaris'
 import {
   useGasPrice,
@@ -30,7 +30,25 @@ const InputContainer = styled(Box)`
   }
 `
 
-const DepositStatus = ({ amount, approveTx, status, onStake }) => {
+type DepositStatusProps = {
+  amount: string
+  approveTx?: string
+  status: string
+  onStake(): void
+}
+
+type IStakeStatus = {
+  status: string
+  amount: string
+  approveTx?: string
+}
+
+const DepositStatus = ({
+  amount,
+  approveTx,
+  status,
+  onStake,
+}: DepositStatusProps) => {
   const isApproved = useIsTransactionConfirmed(approveTx)
 
   return (
@@ -75,9 +93,11 @@ const Stake = () => {
     }) ?? []
 
   // Stake component
-  const [stakeAmount, setStakeAmount] = useState(0)
-  const [unstakeAmount, setUnstakeAmount] = useState(0)
-  const [stakeStatus, setStakeStatus] = useState(null)
+  const [stakeAmount, setStakeAmount] = useState('0')
+  const [unstakeAmount, setUnstakeAmount] = useState('0')
+  const [stakeStatus, setStakeStatus] = useState<IStakeStatus | undefined>(
+    undefined
+  )
   const [isOpen, openModal] = useState(false)
 
   const { state: stakeState, send: stake } = useContractFunction(
@@ -114,43 +134,49 @@ const Stake = () => {
       handleStake(amount)
     } else {
       approveAmount(INSURANCE_ADDRESS, amount)
-      setStakeStatus({ status: DEPOSIT_STATUS.PENDING, amount: stakeAmount })
-      setStakeAmount(0)
+      setStakeStatus({
+        status: DEPOSIT_STATUS.PENDING_APPROVAL,
+        amount: stakeAmount,
+      })
+      setStakeAmount('0')
     }
   }
 
   const handleUnstake = () => {
     unstake(parseEther(unstakeAmount))
-    setUnstakeAmount(0)
+    setUnstakeAmount('0')
   }
 
   // RSR Approve
   useEffect(() => {
-    console.log('approve status', approve)
     if (approve.status === 'Success' && approve.receipt) {
       setStakeStatus({
-        ...stakeStatus,
+        ...(stakeStatus as IStakeStatus),
         status: DEPOSIT_STATUS.APPROVED,
-        approveTx: approve.transaction.hash,
+        approveTx: approve?.transaction?.hash,
       })
-    } else if (approve.status === 'Rejection') {
-      setStakeStatus({ ...stakeStatus, status: DEPOSIT_STATUS.REJECTED })
+    } else if (approve?.status === 'Fail') {
+      setStakeStatus({
+        ...(stakeStatus as IStakeStatus),
+        status: DEPOSIT_STATUS.REJECTED,
+      })
     }
   }, [approve.status])
 
   // Insurance stake
   useEffect(() => {
     if (stakeState.status === 'Success' && stakeState.receipt) {
-      setStakeStatus({ ...stakeStatus, status: DEPOSIT_STATUS.COMPLETED })
+      setStakeStatus({
+        ...(stakeStatus as IStakeStatus),
+        status: DEPOSIT_STATUS.COMPLETED,
+      })
     }
 
-    console.log('state', stakeState)
-
-    if (
-      stakeState.status === 'Rejection' ||
-      stakeState.status === 'Exception'
-    ) {
-      setStakeStatus({ ...stakeStatus, status: DEPOSIT_STATUS.FAILED })
+    if (stakeState.status === 'Fail' || stakeState.status === 'Exception') {
+      setStakeStatus({
+        ...(stakeStatus as IStakeStatus),
+        status: DEPOSIT_STATUS.FAILED,
+      })
     }
   }, [stakeState.status])
 
@@ -176,7 +202,12 @@ const Stake = () => {
           <Button onClick={handleUnstake}>Unstake</Button>
         </InputContainer>
       </Flex>
-      {stakeStatus && <DepositStatus {...stakeStatus} onStake={handleStake} />}
+      {stakeStatus && (
+        <DepositStatus
+          {...(stakeStatus as IStakeStatus)}
+          onStake={handleStake}
+        />
+      )}
       <Flex mt={4}>
         <Text>
           <b>Allowance:</b> {allowance ? formatEther(allowance) : 0}

@@ -7,7 +7,7 @@ import { Box } from 'rebass'
  * @param {ReactNode} children
  * @returns
  */
-const Container = ({ children, ...props }) => (
+const Container = ({ children, ...props }: { children: React.ReactNode }) => (
   <Box
     sx={{
       maxWidth: 1024,

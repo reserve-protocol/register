@@ -1,6 +1,6 @@
 import { useTransactions } from '@usedapp/core'
 
-export function useTransaction(txHash) {
+export function useTransaction(txHash: string | undefined) {
   const { transactions } = useTransactions()
 
   if (!txHash) {
@@ -10,7 +10,7 @@ export function useTransaction(txHash) {
   return transactions.find((tx) => tx.transaction?.hash === txHash)
 }
 
-export function useIsTransactionPending(txHash) {
+export function useIsTransactionPending(txHash: string | undefined) {
   const tx = useTransaction(txHash)
 
   if (!tx) {
@@ -20,7 +20,7 @@ export function useIsTransactionPending(txHash) {
   return !tx.receipt
 }
 
-export function useIsTransactionConfirmed(txHash) {
+export function useIsTransactionConfirmed(txHash: string | undefined) {
   const tx = useTransaction(txHash)
 
   if (!tx) {

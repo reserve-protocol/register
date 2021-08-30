@@ -1,6 +1,5 @@
-import React from 'react'
+import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
-import { Link } from 'react-router-dom'
 import { ChainId, DAppProvider, MULTICALL_ADDRESSES } from '@usedapp/core'
 import enTranslations from '@shopify/polaris/locales/en.json'
 import { AppProvider as PolarisProvider } from '@shopify/polaris'
@@ -9,8 +8,9 @@ import { ApolloProvider } from '@apollo/client'
 import apolloClient from './apollo/client'
 import store from './state'
 import App from './App'
-import reportWebVitals from './reportWebVitals'
 
+// Polaris styles
+// TODO: Remove when polaris is removed from the app
 import '@shopify/polaris/dist/styles.css'
 
 const config = {
@@ -28,21 +28,16 @@ const config = {
 
 // TODO: remove Polaris in favor for a lightweigh solution
 ReactDOM.render(
-  <React.StrictMode>
+  <StrictMode>
     <ApolloProvider client={apolloClient}>
       <StoreProvider store={store}>
         <DAppProvider config={config}>
-          <PolarisProvider i18n={enTranslations} linkComponent={Link}>
+          <PolarisProvider i18n={enTranslations}>
             <App />
           </PolarisProvider>
         </DAppProvider>
       </StoreProvider>
     </ApolloProvider>
-  </React.StrictMode>,
+  </StrictMode>,
   document.getElementById('root')
 )
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals()

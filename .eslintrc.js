@@ -8,7 +8,9 @@ module.exports = {
     'plugin:cypress/recommended',
     'airbnb',
     'prettier',
+    'prettier/@typescript-eslint',
   ],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -16,16 +18,17 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
   },
-  plugins: ['react', 'cypress'],
+  plugins: ['react', 'cypress', '@typescript-eslint', 'prettier'],
   rules: {
     semi: ['error', 'never'],
+    'prettier/prettier': 'error',
     // In react 17, you don't need these rules
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
     // Allow export default from
     'import/prefer-default-export': 'off',
     // Allow js extension for react components
-    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
+    // 'react/jsx-filename-extension': [1, { extensions: ['.js', '.ts', 'tsx'] }],
     'import/no-extraneous-dependencies': 'off',
     'react/jsx-props-no-spreading': 'off',
     'no-restricted-syntax': 0,

@@ -15,6 +15,7 @@ const RToken = () => {
       abi: RTokenContract.interface,
       address: RTOKEN_ADDRESS,
       method: 'symbol',
+      args: [],
     }) ?? []
   const balance = useTokenBalance(RTOKEN_ADDRESS, account)
   const [basket] = useRTokenBasket(RTokenContract)

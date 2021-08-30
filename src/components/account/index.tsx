@@ -10,15 +10,6 @@ const Container = styled.div`
   border: 1px solid #ccc;
   border-left: none;
   height: 38px;
-  
-  ${Text} {
-    padding: 0px 10px;
-    align-self: center;
-
-    div {
-      align-self: center;
-    }
-  }
 `
 
 /**
@@ -44,14 +35,14 @@ const Account = () => {
     return (
       <>
         <Button onClick={handleConnect}>Connect</Button>
-        { isWalletModalVisible && <WalletModal /> }
+        {isWalletModalVisible && <WalletModal />}
       </>
     )
   }
 
   return (
     <Flex alignItems="center">
-      <Button style={{ borderRadius: 8 }} type="button" onClick={deactivate}>Disconnect</Button>
+      <Button onClick={deactivate}>Disconnect</Button>
       <Container>
         <Text>{account}</Text>
       </Container>

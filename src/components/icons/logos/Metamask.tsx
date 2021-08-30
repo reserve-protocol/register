@@ -1,4 +1,4 @@
-function MetamaskIcon(props) {
+function MetamaskIcon(props: any) {
   return (
     <svg
       id="metamask-icon"

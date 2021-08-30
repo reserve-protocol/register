@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { gql, useQuery } from '@apollo/client'
 import { Card } from '@shopify/polaris'
+import { BigNumber } from 'ethers'
 
 const QUERY = gql`
   query GetDeposits {
@@ -26,7 +27,18 @@ const Item = styled.div`
   border-bottom: 1px solid #ccc;
 `
 
-const DepositItem = ({ data }) => (
+type Deposit = {
+  id: string
+  user: string
+  value: BigNumber
+  createdAt: number
+  createdTx: object
+  completedAt: number
+  completedTx: object
+  completed: boolean
+}
+
+const DepositItem = ({ data }: { data: Deposit }) => (
   <Item>
     <code>{JSON.stringify(data, null, 4)}</code>
   </Item>
@@ -42,7 +54,7 @@ const Deposits = () => {
       {loading && <span>Loading deposits...</span>}
       <div style={{ maxHeight: 500, overflow: 'scroll' }}>
         {!!data &&
-          data.deposits.map((deposit) => (
+          data.deposits.map((deposit: Deposit) => (
             <DepositItem key={deposit.id} data={deposit} />
           ))}
       </div>

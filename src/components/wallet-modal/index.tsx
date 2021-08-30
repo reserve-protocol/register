@@ -1,5 +1,5 @@
 import { useEthers } from '@usedapp/core'
-import Modal from '../modal'
+import { Modal } from '@shopify/polaris'
 import { injected, walletconnect, fortmatic } from './connectors'
 
 // const SupportedChainId = {
@@ -23,7 +23,7 @@ const WalletModal = () => {
   }
 
   return (
-    <Modal>
+    <Modal open onClose={() => {}} title="Wallet connection">
       <button type="button" onClick={handleWalletSelection}>
         Connect to metamask
       </button>
