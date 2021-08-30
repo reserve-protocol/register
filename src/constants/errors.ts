@@ -3,7 +3,7 @@
  *
  * TODO: support translations
  */
-const ERRORS = {
+const ERRORS: { [x: string]: string } = {
   'ERC20: transfer amount exceeds balance': 'Transfer amount exceeds balance', // This could be a translate script to support localization
 }
 

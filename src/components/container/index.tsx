@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types'
 import { Box } from 'rebass'
+import styled from 'styled-components'
 
 /**
  * Wraps the page content
@@ -7,17 +7,9 @@ import { Box } from 'rebass'
  * @param {ReactNode} children
  * @returns
  */
-const Container = ({ children, ...props }: { children: React.ReactNode }) => (
-  <Box
-    sx={{
-      maxWidth: 1024,
-      mx: 'auto',
-      px: 3,
-    }}
-    {...props}
-  >
-    {children}
-  </Box>
-)
-
-export default Container
+export default styled(Box)`
+  max-width: 1024px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding: 0 30px;
+`
