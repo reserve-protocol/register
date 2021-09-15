@@ -6,6 +6,7 @@ import ERC20 from '../abis/ERC20.json'
 
 type IBasketToken = {
   address: string
+  poolIndex: number
   genesisQuantity: string
   maxTrade: string
   priceInRToken: string
@@ -23,7 +24,7 @@ const getBasketToken = async (
 
   return {
     address: token.address,
-    // symbol: await token.symbol(),
+    poolIndex: tokenIndex,
     genesisQuantity: ethers.utils.formatEther(tokenInfo.genesisQuantity),
     maxTrade: ethers.utils.formatEther(tokenInfo.maxTrade),
     priceInRToken: ethers.utils.formatEther(tokenInfo.priceInRToken),

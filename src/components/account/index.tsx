@@ -1,16 +1,41 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { Button } from '@shopify/polaris'
-import { useEthers } from '@usedapp/core'
+import { shortenAddress, useEthers } from '@usedapp/core'
 import { Flex, Text } from 'rebass'
+import Jazzicon from '@metamask/jazzicon'
 import WalletModal from '../wallet-modal'
 
 const Container = styled.div`
   display: flex;
-  border: 1px solid #ccc;
-  border-left: none;
+  border: 1px solid #f5f5f5;
+  justify-content: center;
+  align-items: center;
   height: 38px;
+  padding: 1rem;
+  border-radius: 8px;
 `
+
+const StyledIdenticon = styled.div`
+  padding-right: 10px;
+  padding-top: 4px;
+  border-radius: 1.125rem;
+  background-color: black;
+`
+
+function Identicon() {
+  const ref = useRef<HTMLDivElement>()
+  const { account } = useEthers()
+
+  useEffect(() => {
+    if (account && ref.current) {
+      ref.current.innerHTML = ''
+      ref.current.appendChild(Jazzicon(16, parseInt(account.slice(2, 10), 16)))
+    }
+  }, [account])
+
+  return <StyledIdenticon ref={ref as any} />
+}
 
 /**
  * Account
@@ -41,12 +66,10 @@ const Account = () => {
   }
 
   return (
-    <Flex alignItems="center">
-      <Button onClick={deactivate}>Disconnect</Button>
-      <Container>
-        <Text>{account}</Text>
-      </Container>
-    </Flex>
+    <Container>
+      <Identicon />
+      <Text>{shortenAddress(account)}</Text>
+    </Container>
   )
 }
 

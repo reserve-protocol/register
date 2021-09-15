@@ -7,9 +7,11 @@ import styled from 'styled-components'
  * @param {ReactNode} children
  * @returns
  */
-export default styled(Box)`
+const Container = styled(Box)`
   max-width: 1024px;
   margin-left: auto !important;
   margin-right: auto !important;
   padding: 0 30px;
 `
+
+export default Container

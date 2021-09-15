@@ -20,8 +20,8 @@ const config = {
     [ChainId.Hardhat]: 'http://localhost:8545',
   },
   multicallAddresses: {
-    [ChainId.Localhost]: '0xa51c1fc2f0d1a1b8494ed1fe312d7c3a78ed91c0',
-    [ChainId.Hardhat]: '0xa51c1fc2f0d1a1b8494ed1fe312d7c3a78ed91c0',
+    [ChainId.Localhost]: '0xc96304e3c037f81da488ed9dea1d8f2a48278a75',
+    [ChainId.Hardhat]: '0xc96304e3c037f81da488ed9dea1d8f2a48278a75',
     ...MULTICALL_ADDRESSES,
   },
 }

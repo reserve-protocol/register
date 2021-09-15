@@ -1,18 +1,27 @@
 import { Flex, Text, Box } from 'rebass'
+import { useBlockNumber } from '@usedapp/core'
 import Account from '../../account'
+import { Badge } from '@shopify/polaris'
 
-const Header = () => (
-  <Flex
-    p={2}
-    height={60}
-    color="white"
-    bg="black"
-    alignItems="center"
-  >
-    <Text p={2} fontSize={2} fontWeight="bold">Reserve Explorer</Text>
-    <Box mx="auto" />
-    <Account />
-  </Flex>
-)
+const Header = () => {
+  const latestBlock = useBlockNumber()
+
+  return (
+    <Flex
+      p={2}
+      height={60}
+      color="white"
+      bg="black"
+      style={{ borderBottom: '1px solid #f5f5f5' }}
+      alignItems="center"
+    >
+      <div className="Polaris-Badge">
+        Latest synced block: <b>{latestBlock ?? '-'}</b>
+      </div>
+      <Box mx="auto" />
+      <Account />
+    </Flex>
+  )
+}
 
 export default Header

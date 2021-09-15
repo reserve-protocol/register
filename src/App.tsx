@@ -7,6 +7,8 @@ import {
 import Layout from './components/layout'
 import Exchange from './views/exchange'
 import { ROUTES } from './constants'
+import Market from './views/market'
+import Issuance from './views/issuance'
 
 /**
  * App Entry point - Handles views routing
@@ -25,6 +27,12 @@ const App = () => (
         </Route>
         <Route path={ROUTES.GOVERNANCE}>
           <Exchange />
+        </Route>
+        <Route path={ROUTES.ISSUANCE}>
+          <Issuance />
+        </Route>
+        <Route exact path="/market">
+          <Market />
         </Route>
         <Route exact path="/">
           <Redirect to={ROUTES.EXCHANGE} />

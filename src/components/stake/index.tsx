@@ -78,7 +78,7 @@ const Stake = () => {
 
   const [allowance] =
     useContractCall({
-      abi: RsrInterface,
+      abi: RsrInterface ,
       address: RSR_ADDRESS,
       method: 'allowance',
       args: [account, INSURANCE_ADDRESS],
