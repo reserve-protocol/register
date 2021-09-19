@@ -1,10 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import {
-  useBlockNumber,
-  useContractCall,
-  useEthers,
-  useTokenBalance,
-} from '@usedapp/core'
+import { useEthers } from '@usedapp/core'
 import { Web3Provider } from '@ethersproject/providers'
 import { BigNumberish, Contract, ethers } from 'ethers'
 import RTokenAbi from '../abis/RToken.json'

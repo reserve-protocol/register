@@ -14,10 +14,12 @@ import App from './App'
 import '@shopify/polaris/dist/styles.css'
 
 const config = {
-  readOnlyChainId: ChainId.Hardhat,
+  readOnlyChainId: ChainId.Ropsten,
   readOnlyUrls: {
     [ChainId.Localhost]: 'http://localhost:8545',
     [ChainId.Hardhat]: 'http://localhost:8545',
+    [ChainId.Ropsten]:
+      'https://ropsten.infura.io/v3/19deb2b36da947f493d2db11ce04be63',
   },
   multicallAddresses: {
     [ChainId.Localhost]: '0xc96304e3c037f81da488ed9dea1d8f2a48278a75',

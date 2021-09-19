@@ -3,10 +3,10 @@ import { BigNumberish, ethers } from 'ethers'
 import { Card, Modal, Button, TextField, Spinner } from '@shopify/polaris'
 import { utils } from 'ethers'
 import Container from '../../components/container'
-import { RTOKEN_ADDRESS } from '../../constants/addresses'
+import { getAddress } from '../../constants/addresses'
 import RTokenAbi from '../../abis/RToken.json'
 import ERC20Abi from '../../abis/RToken.json'
-import { RToken } from '../../abis/types'
+import { RToken as IRToken } from '../../abis/types'
 import useMultiContractFunction, {
   IContractCall,
 } from '../../hooks/usePromiseTransactions'
@@ -24,10 +24,13 @@ import styled from 'styled-components'
 import { Box, Flex } from 'rebass'
 import useTokensApproval from '../../hooks/useTokenApproval'
 import useTokensHasAllowance from '../../hooks/useTokensHasAllowance'
-import { useRTokenContract } from '../../hooks/useContract'
+import { useContract, useRTokenContract } from '../../hooks/useContract'
 
-const RTokenContract = new ethers.Contract(RTOKEN_ADDRESS, RTokenAbi)
-const ERC20Contract = new ethers.Contract(RTOKEN_ADDRESS, ERC20Abi)
+// const RTokenContract = new ethers.Contract(RTOKEN_ADDRESS, RTokenAbi)
+const ERC20Contract = new ethers.Contract(
+  '0x0000000000000000000000000000000000000000',
+  ERC20Abi
+)
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -98,7 +101,7 @@ const IssuanceTransactionModal = ({
 }) => {
   const contract = useRTokenContract(rToken.address, false)
   const { state: issueState, send: issue } = useContractFunction(
-    contract as RToken,
+    contract as IRToken,
     'issue',
     { transactionName: 'Issue RToken' }
   )
@@ -232,27 +235,30 @@ const Issue = ({ rToken }: { rToken: IRTokenInfo }) => {
 }
 
 const Issuance = () => {
+  const { chainId } = useEthers()
+  const RTOKEN_ADDRESS = getAddress(chainId, 'RTOKEN')
   const [state, loading] = useRToken(RTOKEN_ADDRESS)
+  const contract: IRToken | null = useContract(RTOKEN_ADDRESS, RTokenAbi, true)
 
   if (loading) {
     return <div>Loading...</div>
   }
 
-  // const issue = async () => {
-  //   const tStatus = await send(
-  //     (state?.basket ?? []).map((bskToken) => [RTOKEN_ADDRESS, parseEther('1')])
-  //   )
-  //   console.log('finish running transactions', tStatus)
-  // }
+  const handleAct = () => {
+    if (contract) {
+      contract.act()
+    }
+  }
 
   return (
-    <Container pt={4}>
+    <Container pt={4} pb={4}>
       <RTokenInfo data={state} />
       <Card sectioned title="Issue and Redemption">
         <Flex mx={-2}>
           <Issue rToken={state} />
           <Redeem address={state.address} balance={state.balance || 0} />
         </Flex>
+        <Button onClick={handleAct}>Act</Button>
       </Card>
 
       <Transactions />

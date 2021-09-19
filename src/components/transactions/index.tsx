@@ -3,7 +3,7 @@ import { useTransactions } from '@usedapp/core'
 import { Text } from 'rebass'
 import { formatEther } from '@ethersproject/units'
 import { BigNumber, ethers, Transaction } from 'ethers'
-import { RSR_ADDRESS, INSURANCE_ADDRESS } from '../../constants/addresses'
+// import { RSR_ADDRESS, INSURANCE_ADDRESS } from '../../constants/addresses'
 import RSR from '../../abis/RSR.json'
 import Insurance from '../../abis/Insurance.json'
 import {
@@ -11,10 +11,10 @@ import {
   TransactionResponse,
 } from '@ethersproject/providers'
 
-const INTERFACES: { [x: string]: ethers.utils.Interface } = {
-  [RSR_ADDRESS]: new ethers.utils.Interface(RSR),
-  [INSURANCE_ADDRESS]: new ethers.utils.Interface(Insurance),
-}
+// const INTERFACES: { [x: string]: ethers.utils.Interface } = {
+//   [RSR_ADDRESS]: new ethers.utils.Interface(RSR),
+//   [INSURANCE_ADDRESS]: new ethers.utils.Interface(Insurance),
+// }
 
 type IItem = {
   data: {
@@ -28,12 +28,13 @@ type IItem = {
 const Item = ({
   data: { transaction, transactionName, receipt, submittedAt },
 }: IItem) => {
-  const abi = INTERFACES[transaction.to as string]
+  // const abi = INTERFACES[transaction.to as string]
+  const abi: any = null
   let argumentsString = null
 
   if (abi) {
     const parsed = abi.parseTransaction(transaction)
-    argumentsString = parsed.functionFragment.inputs.map((input) => (
+    argumentsString = parsed.functionFragment.inputs.map((input: any) => (
       <Text key={input.name}>
         <b>{input.name}:</b>
         {input.type === 'uint256'

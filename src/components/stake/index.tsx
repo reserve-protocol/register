@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { formatEther, parseEther } from '@ethersproject/units'
 import { ethers, Transaction } from 'ethers'
@@ -10,16 +10,17 @@ import {
   useContractFunction,
 } from '@usedapp/core'
 import { Flex, Text, Box } from 'rebass'
-import { INSURANCE_ADDRESS, RSR_ADDRESS } from '../../constants/addresses'
+import ADDRESES, { getAddress } from '../../constants/addresses'
 import RSR from '../../abis/RSR.json'
 import Insurance from '../../abis/Insurance.json'
 import { DEPOSIT_STATUS } from '../../constants'
 import { useIsTransactionConfirmed } from '../../hooks/useTransaction'
+import { useContract } from '../../hooks/useContract'
 
-const InsuranceContract = new ethers.Contract(INSURANCE_ADDRESS, Insurance)
+// const InsuranceContract = new ethers.Contract(INSURANCE_ADDRESS, Insurance)
 const insuranceInterface = new ethers.utils.Interface(Insurance)
 const RsrInterface = new ethers.utils.Interface(RSR)
-const RSRContract = new ethers.Contract(RSR_ADDRESS, RSR)
+// const RSRContract = new ethers.Contract(RSR_ADDRESS, RSR)
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -74,20 +75,28 @@ const DepositStatus = ({
  * @returns React
  */
 const Stake = () => {
-  const { account } = useEthers()
+  const { account, chainId } = useEthers()
+  const InsuranceContract = useMemo(
+    () => new ethers.Contract(getAddress(chainId, 'INSURANCE'), Insurance),
+    [chainId]
+  )
+  const RSRContract = useMemo(
+    () => new ethers.Contract(getAddress(chainId, 'RSR'), RSR),
+    [chainId]
+  )
 
   const [allowance] =
     useContractCall({
-      abi: RsrInterface ,
-      address: RSR_ADDRESS,
+      abi: RsrInterface,
+      address: RSRContract.address,
       method: 'allowance',
-      args: [account, INSURANCE_ADDRESS],
+      args: [account, InsuranceContract?.address],
     }) ?? []
 
   const [earned] =
     useContractCall({
       abi: insuranceInterface,
-      address: INSURANCE_ADDRESS,
+      address: InsuranceContract?.address,
       method: 'earned',
       args: [account],
     }) ?? []
@@ -133,7 +142,7 @@ const Stake = () => {
     ) {
       handleStake(amount)
     } else {
-      approveAmount(INSURANCE_ADDRESS, amount)
+      approveAmount(InsuranceContract.address, amount)
       setStakeStatus({
         status: DEPOSIT_STATUS.PENDING_APPROVAL,
         amount: stakeAmount,

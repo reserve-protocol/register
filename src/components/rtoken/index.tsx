@@ -1,30 +1,30 @@
 import { Card } from '@shopify/polaris'
 import { useContractCall, useTokenBalance, useEthers } from '@usedapp/core'
 import { ethers } from 'ethers'
-import { RTOKEN_ADDRESS } from '../../constants/addresses'
+// import { RTOKEN_ADDRESS } from '../../constants/addresses'
 import { Text } from 'rebass'
 import useRTokenBasket from '../../hooks/useRTokenBasket'
 import RTokenAbi from '../../abis/RToken.json'
 
-const RTokenContract = new ethers.Contract(RTOKEN_ADDRESS, RTokenAbi)
+// const RTokenContract = new ethers.Contract(RTOKEN_ADDRESS, RTokenAbi)
 
 const RToken = () => {
-  const { account } = useEthers()
-  const [symbol] =
-    useContractCall({
-      abi: RTokenContract.interface,
-      address: RTOKEN_ADDRESS,
-      method: 'symbol',
-      args: [],
-    }) ?? []
-  const balance = useTokenBalance(RTOKEN_ADDRESS, account)
-  const [basket] = useRTokenBasket(RTokenContract)
+  // const { account } = useEthers()
+  // const [symbol] =
+  //   useContractCall({
+  //     abi: RTokenContract.interface,
+  //     address: RTOKEN_ADDRESS,
+  //     method: 'symbol',
+  //     args: [],
+  //   }) ?? []
+  // const balance = useTokenBalance(RTOKEN_ADDRESS, account)
+  // const [basket] = useRTokenBasket(RTokenContract)
 
-  console.log('basket', basket)
+  // console.log('basket', basket)
 
   return (
     <Card title="Rtoken" sectioned>
-      <Text>
+      {/* <Text>
         <b>Symbol: </b> {symbol}
       </Text>
       <Text>
@@ -32,7 +32,7 @@ const RToken = () => {
       </Text>
       <Text my={1}>
         <b>Basket Tokens</b>
-      </Text>
+      </Text> */}
     </Card>
   )
 }

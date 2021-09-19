@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { ethers } from 'ethers'
 import {
@@ -13,16 +13,11 @@ import { Card, TextField, Button } from '@shopify/polaris'
 import { Text, Flex, Box } from 'rebass'
 import RSR from '../../abis/RSR.json'
 import PrevRSR from '../../abis/PrevRSR.json'
-import {
-  RSR_ADDRESS,
-  INSURANCE_ADDRESS,
-  PREV_RSR_ADDRESS,
-} from '../../constants/addresses'
+import ADDRESSES, { getAddress } from '../../constants/addresses'
 import Container from '../../components/container'
 import Transactions from '../../components/transactions'
 import Stake from '../../components/stake'
 import Deposits from '../../components/deposits'
-import RToken from '../../components/rtoken'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -35,12 +30,18 @@ const InputContainer = styled(Box)`
 
 const RsrInterface = new ethers.utils.Interface(RSR)
 const prevRSRInterface = new ethers.utils.Interface(PrevRSR)
-const RSRContract = new ethers.Contract(RSR_ADDRESS, RSR)
 
 const Exchange = () => {
-  const { account } = useEthers()
-  const etherBalance = useTokenBalance(RSR_ADDRESS, account)
-  const stakedAmount = useTokenBalance(INSURANCE_ADDRESS, account)
+  const { account, chainId } = useEthers()
+  const etherBalance = useTokenBalance(getAddress(chainId, 'RSR'), account)
+  const stakedAmount = useTokenBalance(
+    getAddress(chainId, 'INSURANCE'),
+    account
+  )
+  const RSRContract = useMemo(
+    () => new ethers.Contract(getAddress(chainId, 'RSR'), RSR),
+    [chainId]
+  )
   const gasPrice = useGasPrice()
   const blockNumber = useBlockNumber()
   const [transferAmount, setTransferAmount] = useState('0')
@@ -49,7 +50,7 @@ const Exchange = () => {
   const [isPrevPaused] =
     useContractCall({
       abi: prevRSRInterface,
-      address: PREV_RSR_ADDRESS,
+      address: getAddress(chainId, 'PREV_RSR'),
       method: 'paused',
       args: [],
     }) ?? []
@@ -57,7 +58,7 @@ const Exchange = () => {
   const [totalSupply] =
     useContractCall({
       abi: RsrInterface,
-      address: RSR_ADDRESS,
+      address: getAddress(chainId, 'RSR'),
       method: 'totalSupply',
       args: [],
     }) ?? []
@@ -77,7 +78,7 @@ const Exchange = () => {
     : 0
 
   return (
-    <Container mt={4}>
+    <Container pt={4} pb={4}>
       {account && (
         <Card title="State" sectioned>
           <Text>
@@ -109,7 +110,6 @@ const Exchange = () => {
           <Text>{isPrevPaused ? 'Yes' : 'No'}</Text>
         </Flex>
       </Card>
-      <RToken />
       <Card title="Send" sectioned>
         <Flex mx={-2}>
           <InputContainer mx={2} width={1}>

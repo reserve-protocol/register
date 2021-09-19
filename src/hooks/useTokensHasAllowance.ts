@@ -1,10 +1,15 @@
 import { useMemo } from 'react'
-import { useBlockNumber, useContractCalls, useEthers } from '@usedapp/core'
+import { useContractCalls, useEthers, ERC20Interface } from '@usedapp/core'
 import { BigNumber, BigNumberish, utils } from 'ethers'
-import ERC20 from '../abis/ERC20.json'
 
-const ERC20Interface = new utils.Interface(ERC20)
-
+/**
+ * Returns a boolean if the given tokens has a certain amount of allowance to spend
+ *
+ * @param tokens
+ * @param spender
+ * @param amount
+ * @returns
+ */
 const useTokensHasAllowance = (
   tokens: string[],
   spender: string,
@@ -19,7 +24,7 @@ const useTokensHasAllowance = (
       method: 'allowance',
       args: [account, spender],
     }))
-  }, [...tokens, account])
+  }, [tokens.toString(), account])
 
   const allowances = <any[]>useContractCalls(calls) ?? []
 

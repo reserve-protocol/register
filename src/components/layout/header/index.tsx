@@ -8,7 +8,8 @@ const Header = () => {
 
   return (
     <Flex
-      p={2}
+      py={2}
+      px={3}
       height={60}
       color="white"
       bg="black"
@@ -16,7 +17,7 @@ const Header = () => {
       alignItems="center"
     >
       <div className="Polaris-Badge">
-        Latest synced block: <b>{latestBlock ?? '-'}</b>
+        Latest synced block: <b>&nbsp;{latestBlock ?? '-'}</b>
       </div>
       <Box mx="auto" />
       <Account />
