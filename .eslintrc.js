@@ -8,7 +8,6 @@ module.exports = {
     'plugin:cypress/recommended',
     'airbnb',
     'prettier',
-    'prettier/@typescript-eslint',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
