@@ -1,6 +1,4 @@
 import { JsonRpcProvider } from '@ethersproject/providers'
-import Web3 from 'web3'
-import PrivateKeyProvider from 'truffle-privatekey-provider'
 import { Wallet } from '@ethersproject/wallet'
 import { Eip1193Bridge } from '@ethersproject/experimental/lib/eip1193-bridge'
 
