@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BigNumberish, ethers } from 'ethers'
 import { Card, Modal, Button, TextField, Spinner } from '@shopify/polaris'
 import { utils } from 'ethers'
@@ -20,8 +20,8 @@ import {
   useTokenBalance,
 } from '@usedapp/core'
 import Transactions from '../../components/transactions'
-import styled from 'styled-components'
-import { Box, Flex } from 'rebass'
+import styled from '@emotion/styled'
+import { Box, Flex } from 'theme-ui'
 import useTokensApproval from '../../hooks/useTokenApproval'
 import useTokensHasAllowance from '../../hooks/useTokensHasAllowance'
 import { useContract, useRTokenContract } from '../../hooks/useContract'
@@ -195,7 +195,7 @@ const Redeem = ({
 
   return (
     <>
-      <InputContainer mx={2} width={1 / 2}>
+      <InputContainer mx={2}>
         <TextField
           placeholder="Redeem amount"
           label="Redeem amount"
@@ -214,7 +214,7 @@ const Issue = ({ rToken }: { rToken: IRTokenInfo }) => {
 
   return (
     <>
-      <InputContainer mx={2} width={1 / 2}>
+      <InputContainer mx={2}>
         <TextField
           placeholder="Issue amount"
           label="Issue ammount"

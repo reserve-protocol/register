@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import { formatEther, parseEther } from '@ethersproject/units'
 import { ethers, Transaction } from 'ethers'
 import { Card, TextField, Button, Modal, buttonFrom } from '@shopify/polaris'
@@ -9,7 +9,7 @@ import {
   useContractCall,
   useContractFunction,
 } from '@usedapp/core'
-import { Flex, Text, Box } from 'rebass'
+import { Flex, Text, Box } from 'theme-ui'
 import ADDRESES, { getAddress } from '../../constants/addresses'
 import RSR from '../../abis/RSR.json'
 import Insurance from '../../abis/Insurance.json'
@@ -192,7 +192,7 @@ const Stake = () => {
   return (
     <Card title="Stake" sectioned>
       <Flex mx={-2}>
-        <InputContainer mx={2} width={1 / 2}>
+        <InputContainer mx={2}>
           <TextField
             placeholder="amount..."
             label="Stake amount"
@@ -201,7 +201,7 @@ const Stake = () => {
           />
           <Button onClick={handleStakeApprove}>Stake</Button>
         </InputContainer>
-        <InputContainer mx={2} width={1 / 2}>
+        <InputContainer mx={2}>
           <TextField
             placeholder="amount..."
             label="Unstake amount"
@@ -222,7 +222,7 @@ const Stake = () => {
           <b>Allowance:</b> {allowance ? formatEther(allowance) : 0}
         </Text>
       </Flex>
-      <Flex alignItems="center" mt={2}>
+      <Flex mt={2}>
         <Text mr={2}>
           <b>Total earnings:</b> {earned ? formatEther(earned) : 0}
         </Text>

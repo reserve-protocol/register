@@ -1,20 +1,20 @@
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import { Link } from 'react-router-dom'
 
 const Container = styled.nav`
   border: 1px solid #ccc;
   border-radius: 10px;
-  
+
   ul {
     padding: 0;
     margin: 0;
     display: flex;
     list-style: none;
-    
+
     li {
       border-right: 1px solid #ccc;
       padding: 10px;
-      
+
       &:last-child {
         border: none;
       }

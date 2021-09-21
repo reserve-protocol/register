@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import { Button } from '@shopify/polaris'
 import { shortenAddress, useEthers } from '@usedapp/core'
-import { Flex, Text } from 'rebass'
+import { Flex, Text } from 'theme-ui'
 import Jazzicon from '@metamask/jazzicon'
 import WalletModal from '../wallet-modal'
 
@@ -50,7 +50,7 @@ const Account = () => {
   const [isWalletModalVisible, showWalletModal] = useState(false)
 
   const handleConnect = () => {
-    activateBrowserWallet(() => {
+    activateBrowserWallet((error) => {
       // TODO: Error handling
     })
     // showWalletModal(true)

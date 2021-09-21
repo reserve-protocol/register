@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import { gql, useQuery } from '@apollo/client'
 import { Card } from '@shopify/polaris'
 import { BigNumber } from 'ethers'

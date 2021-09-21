@@ -1,6 +1,6 @@
 import { Link, NavLink } from 'react-router-dom'
-import { Box, Flex, Text } from 'rebass'
-import styled from 'styled-components'
+import { Box, Flex, Text } from 'theme-ui'
+import styled from '@emotion/styled'
 import { ROUTES } from '../../constants'
 import RTokenIcon from '../icons/logos/RTokenIcon'
 import Header from './header'
@@ -41,8 +41,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => (
     }}
   >
     <SideBar>
-      <div
-        style={{
+      <Box
+        sx={{
           backgroundColor: '#1fea00',
           color: 'black',
           height: 60,
@@ -53,10 +53,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => (
           justifyContent: 'center',
         }}
       >
-        <Text p={2} fontSize={2} fontWeight="bold">
+        <Text p={2} sx={{ fontWeight: 'bold' }}>
           Reserve Explorer
         </Text>
-      </div>
+      </Box>
       <div style={{ borderBottom: '1px solid #f5f5f5', padding: '1rem' }}>
         <RTokenIcon style={{ fontSize: 32 }} />
       </div>

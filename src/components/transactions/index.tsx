@@ -1,6 +1,6 @@
 import { Card } from '@shopify/polaris'
 import { useTransactions } from '@usedapp/core'
-import { Text } from 'rebass'
+import { Text } from 'theme-ui'
 import { formatEther } from '@ethersproject/units'
 import { BigNumber, ethers, Transaction } from 'ethers'
 // import { RSR_ADDRESS, INSURANCE_ADDRESS } from '../../constants/addresses'
@@ -66,7 +66,7 @@ const Item = ({
       </Text>
       {argumentsString && (
         <>
-          <Text fontSize={2} py={2}>
+          <Text py={2}>
             <b>Arguments</b>
           </Text>
           {argumentsString}
@@ -74,7 +74,7 @@ const Item = ({
       )}
       {!!receipt && (
         <>
-          <Text fontSize={2} py={2}>
+          <Text py={2}>
             <b>Block</b>
           </Text>
           <Text>

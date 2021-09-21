@@ -14,7 +14,7 @@ import App from './App'
 import '@shopify/polaris/dist/styles.css'
 
 const config = {
-  readOnlyChainId: ChainId.Ropsten,
+  readOnlyChainId: ChainId.Hardhat,
   readOnlyUrls: {
     [ChainId.Localhost]: 'http://localhost:8545',
     [ChainId.Hardhat]: 'http://localhost:8545',

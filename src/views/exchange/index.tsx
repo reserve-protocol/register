@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 import { ethers } from 'ethers'
 import {
   useGasPrice,
@@ -10,7 +10,7 @@ import {
   useContractFunction,
 } from '@usedapp/core'
 import { Card, TextField, Button } from '@shopify/polaris'
-import { Text, Flex, Box } from 'rebass'
+import { Text, Flex, Box } from 'theme-ui'
 import RSR from '../../abis/RSR.json'
 import PrevRSR from '../../abis/PrevRSR.json'
 import ADDRESSES, { getAddress } from '../../constants/addresses'
@@ -112,7 +112,7 @@ const Exchange = () => {
       </Card>
       <Card title="Send" sectioned>
         <Flex mx={-2}>
-          <InputContainer mx={2} width={1}>
+          <InputContainer mx={2}>
             <TextField
               placeholder="amount..."
               label="Send amount"

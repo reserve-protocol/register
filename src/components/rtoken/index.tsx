@@ -2,7 +2,7 @@ import { Card } from '@shopify/polaris'
 import { useContractCall, useTokenBalance, useEthers } from '@usedapp/core'
 import { ethers } from 'ethers'
 // import { RTOKEN_ADDRESS } from '../../constants/addresses'
-import { Text } from 'rebass'
+import { Text } from 'theme-ui'
 import useRTokenBasket from '../../hooks/useRTokenBasket'
 import RTokenAbi from '../../abis/RToken.json'
 

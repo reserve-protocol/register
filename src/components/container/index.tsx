@@ -1,5 +1,5 @@
-import { Box } from 'rebass'
-import styled from 'styled-components'
+import { Box } from 'theme-ui'
+import styled from '@emotion/styled'
 
 /**
  * Wraps the page content

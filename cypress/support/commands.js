@@ -1,90 +1,88 @@
 import { JsonRpcProvider } from '@ethersproject/providers'
+import Web3 from 'web3'
+import PrivateKeyProvider from 'truffle-privatekey-provider'
 import { Wallet } from '@ethersproject/wallet'
 import { Eip1193Bridge } from '@ethersproject/experimental/lib/eip1193-bridge'
 
-const NETWORK_ADDRESS = 'https://ropsten.infura.io/v3/19deb2b36da947f493d2db11ce04be63'
-const TEST_PRIVATE_KEY = '0xe580410d7c37d26c6ad1a837bbae46bc27f9066a466fb3a66e770523b4666d19'
+const NETWORK_ADDRESS = 'http://127.0.0.1:8545/'
+const TEST_PRIVATE_KEY =
+  '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
 // address of the above key
 export const TEST_ADDRESS_NEVER_USE = new Wallet(TEST_PRIVATE_KEY).address
 
-// export const TEST_ADDRESS_NEVER_USE_SHORTENED = `${TEST_ADDRESS_NEVER_USE.substr(
-//   0,
-//   6,
-// )}...${TEST_ADDRESS_NEVER_USE.substr(-4, 4)}`
+export const TEST_ADDRESS_NEVER_USE_SHORTENED = `${TEST_ADDRESS_NEVER_USE.substr(
+  0,
+  6
+)}...${TEST_ADDRESS_NEVER_USE.substr(-4, 4)}`
 
 class CustomizedBridge extends Eip1193Bridge {
-  constructor() {
-    super()
-    this.chainId = 4
-  }
-
   async sendAsync(...args) {
     console.debug('sendAsync called', ...args)
     return this.send(...args)
   }
 
-  // eslint-disable-next-line consistent-return
   async send(...args) {
     console.debug('send called', ...args)
-    const isCallbackForm = typeof args[0] === 'object' && typeof args[1] === 'function'
+    const isCallbackForm =
+      typeof args[0] === 'object' && typeof args[1] === 'function'
     let callback
     let method
     let params
     if (isCallbackForm) {
-      // eslint-disable-next-line prefer-destructuring
       callback = args[1]
+      // eslint-disable-next-line prefer-destructuring
       method = args[0].method
+      // eslint-disable-next-line prefer-destructuring
       params = args[0].params
     } else {
-      // eslint-disable-next-line prefer-destructuring
       method = args[0]
-      // eslint-disable-next-line prefer-destructuring
       params = args[1]
     }
     if (method === 'eth_requestAccounts' || method === 'eth_accounts') {
+      console.log('result asdasdsadasdsadasdas', [TEST_ADDRESS_NEVER_USE])
       if (isCallbackForm) {
-        callback({ result: [TEST_ADDRESS_NEVER_USE] })
-      } else {
-        return Promise.resolve([TEST_ADDRESS_NEVER_USE])
+        return callback({ result: [TEST_ADDRESS_NEVER_USE] })
       }
+      return Promise.resolve([TEST_ADDRESS_NEVER_USE])
     }
     if (method === 'eth_chainId') {
       if (isCallbackForm) {
-        callback(null, { result: '0x4' })
-      } else {
-        return Promise.resolve('0x4')
+        return callback(null, { result: '0x7A69' })
       }
+      return Promise.resolve('0x7A69')
     }
     try {
       const result = await super.send(method, params)
       console.debug('result received', method, params, result)
       if (isCallbackForm) {
-        callback(null, { result })
-      } else {
-        return result
+        return callback(null, { result })
       }
+      return result
     } catch (error) {
       if (isCallbackForm) {
-        callback(error, null)
-      } else {
-        throw error
+        return callback(error, null)
       }
+      throw error
     }
   }
 }
 
 // sets up the injected provider to be a mock ethereum provider with the given mnemonic/index
-// eslint-disable-next-line no-undef
-Cypress.Commands.overwrite('visit', (original, url, options) => (
-  original(url.startsWith('/') && url.length > 2 && !url.startsWith('/#') ? `/#${url}` : url, {
+Cypress.Commands.overwrite('visit', (original, url, options) => {
+  return original(url, {
     ...options,
     onBeforeLoad(win) {
-    // eslint-disable-next-line no-unused-expressions
-      options && options.onBeforeLoad && options.onBeforeLoad(win)
-      win.localStorage.clear()
-      const provider = new JsonRpcProvider(NETWORK_ADDRESS, 4)
+      if (options && options.onBeforeLoad) {
+        options.onBeforeLoad(win)
+      }
+      // const provider = new PrivateKeyProvider(TEST_PRIVATE_KEY, NETWORK_ADDRESS)
+      // win.web3 = new Web3(provider)
+      // win.localStorage.clear()
+      const provider = new JsonRpcProvider(NETWORK_ADDRESS, 31337)
       const signer = new Wallet(TEST_PRIVATE_KEY, provider)
       // eslint-disable-next-line no-param-reassign
       win.ethereum = new CustomizedBridge(signer, provider)
+      console.log('ethereum', win.ethereum)
     },
-  })))
+  })
+})
