@@ -1,5 +1,5 @@
-import { Provider, Web3Provider } from '@ethersproject/providers'
-import { useMemo, useState, useEffect, useCallback } from 'react'
+import { Web3Provider } from '@ethersproject/providers'
+import { useState, useEffect } from 'react'
 import { useEthers } from '@usedapp/core'
 import { Contract, ethers } from 'ethers'
 import ERC20 from '../abis/ERC20.json'
@@ -48,7 +48,7 @@ const useRTokenBasket = (RTokenContract: Contract) => {
       const basketSize = await contract.basketSize()
       const basketTokens: Promise<IBasketToken>[] = []
 
-      for (let i = 0; i < basketSize; i++) {
+      for (let i = 0; i < basketSize; i += 1) {
         basketTokens.push(getBasketToken(contract, library, i))
       }
 

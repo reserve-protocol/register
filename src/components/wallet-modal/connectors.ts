@@ -26,7 +26,9 @@ const RPC_URLS = {
   4: keys.RPC_URL_4,
 }
 
-export const injected = new InjectedConnector({ supportedChainIds: [1, 3, 4, 5, 42, 1337] })
+export const injected = new InjectedConnector({
+  supportedChainIds: [1, 3, 4, 5, 42, 1337],
+})
 
 export const network = new NetworkConnector({
   urls: { 1: RPC_URLS[1], 4: RPC_URLS[4] },
@@ -66,7 +68,10 @@ export const walletconnect = new WalletConnectConnector({
 //
 // export const authereum = new AuthereumConnector({ chainId: 42 })
 //
-export const fortmatic = new FortmaticConnector({ apiKey: 'pk_test_29814A316CEDFCF7', chainId: 4 })
+export const fortmatic = new FortmaticConnector({
+  apiKey: 'pk_test_29814A316CEDFCF7',
+  chainId: 4,
+})
 //
 // export const magic = new MagicConnector({
 //   apiKey: keys.MAGIC_API_KEY,

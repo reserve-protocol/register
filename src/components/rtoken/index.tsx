@@ -1,14 +1,8 @@
 import { Card } from '@shopify/polaris'
-import { useContractCall, useTokenBalance, useEthers } from '@usedapp/core'
-import { ethers } from 'ethers'
-// import { RTOKEN_ADDRESS } from '../../constants/addresses'
-import { Text } from 'theme-ui'
-import useRTokenBasket from '../../hooks/useRTokenBasket'
-import RTokenAbi from '../../abis/RToken.json'
 
 // const RTokenContract = new ethers.Contract(RTOKEN_ADDRESS, RTokenAbi)
 
-const RToken = () => {
+const RToken = () => (
   // const { account } = useEthers()
   // const [symbol] =
   //   useContractCall({
@@ -22,9 +16,8 @@ const RToken = () => {
 
   // console.log('basket', basket)
 
-  return (
-    <Card title="Rtoken" sectioned>
-      {/* <Text>
+  <Card title="Rtoken" sectioned>
+    {/* <Text>
         <b>Symbol: </b> {symbol}
       </Text>
       <Text>
@@ -33,8 +26,7 @@ const RToken = () => {
       <Text my={1}>
         <b>Basket Tokens</b>
       </Text> */}
-    </Card>
-  )
-}
+  </Card>
+)
 
 export default RToken

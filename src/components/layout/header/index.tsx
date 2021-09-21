@@ -1,7 +1,6 @@
-import { Flex, Text, Box } from 'theme-ui'
+import { Flex, Box } from 'theme-ui'
 import { useBlockNumber } from '@usedapp/core'
 import Account from '../../account'
-import { Badge } from '@shopify/polaris'
 
 const Header = () => {
   const latestBlock = useBlockNumber()

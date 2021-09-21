@@ -20,10 +20,9 @@ const ADDRESSES: {
 export const getAddress = (
   chainId: number | null | undefined,
   key: string
-): string => {
-  return chainId
+): string =>
+  chainId
     ? ADDRESSES[chainId][key]
     : '0x0000000000000000000000000000000000000000'
-}
 
 export default ADDRESSES

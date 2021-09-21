@@ -13,7 +13,7 @@ import { Card, TextField, Button } from '@shopify/polaris'
 import { Text, Flex, Box } from 'theme-ui'
 import RSR from '../../abis/RSR.json'
 import PrevRSR from '../../abis/PrevRSR.json'
-import ADDRESSES, { getAddress } from '../../constants/addresses'
+import { getAddress } from '../../constants/addresses'
 import Container from '../../components/container'
 import Transactions from '../../components/transactions'
 import Stake from '../../components/stake'
@@ -63,11 +63,9 @@ const Exchange = () => {
       args: [],
     }) ?? []
 
-  const { state: transferState, send: transfer } = useContractFunction(
-    RSRContract,
-    'transfer',
-    { transactionName: 'Transfer RSR' }
-  )
+  const { send: transfer } = useContractFunction(RSRContract, 'transfer', {
+    transactionName: 'Transfer RSR',
+  })
 
   const handleTransfer = () => {
     transfer(transferAccount, ethers.utils.parseEther(transferAmount))

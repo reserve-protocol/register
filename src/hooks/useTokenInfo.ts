@@ -1,6 +1,6 @@
 import { useContractCall, useTokenBalance } from '@usedapp/core'
 import { Falsy } from '@usedapp/core/dist/esm/src/model/types'
-import { BigNumber, BigNumberish, utils } from 'ethers'
+import { BigNumber, utils } from 'ethers'
 import ERC20Abi from '../abis/ERC20.json'
 
 const ERC20Interface = new utils.Interface(ERC20Abi)

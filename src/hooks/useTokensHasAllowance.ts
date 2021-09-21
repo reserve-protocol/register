@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useContractCalls, useEthers, ERC20Interface } from '@usedapp/core'
-import { BigNumber, BigNumberish, utils } from 'ethers'
+import { BigNumber, BigNumberish } from 'ethers'
 
 /**
  * Returns a boolean if the given tokens has a certain amount of allowance to spend
@@ -17,20 +17,22 @@ const useTokensHasAllowance = (
 ) => {
   const { account } = useEthers()
 
-  const calls = useMemo(() => {
-    return tokens.map((address) => ({
-      abi: ERC20Interface,
-      address,
-      method: 'allowance',
-      args: [account, spender],
-    }))
-  }, [tokens.toString(), account])
+  const calls = useMemo(
+    () =>
+      tokens.map((address) => ({
+        abi: ERC20Interface,
+        address,
+        method: 'allowance',
+        args: [account, spender],
+      })),
+    [tokens.toString(), account]
+  )
 
   const allowances = <any[]>useContractCalls(calls) ?? []
 
-  return allowances.every((value) => {
-    return value && value.length && <BigNumber>value[0].gte(amount)
-  })
+  return allowances.every(
+    (value) => value && value.length && <BigNumber>value[0].gte(amount)
+  )
 }
 
 export default useTokensHasAllowance

@@ -1,9 +1,9 @@
 import { useEthers } from '@usedapp/core'
 import { Contract } from '@ethersproject/contracts'
+import { useMemo } from 'react'
 import ERC20_ABI from '../abis/ERC20.json'
 import RTOKEN_ABI from '../abis/RToken.json'
 
-import { useMemo } from 'react'
 import { getContract } from '../utils'
 import { ERC20, RToken } from '../abis/types'
 

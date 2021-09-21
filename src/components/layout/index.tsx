@@ -1,4 +1,5 @@
-import { Link, NavLink } from 'react-router-dom'
+import React from 'react'
+import { NavLink } from 'react-router-dom'
 import { Box, Flex, Text } from 'theme-ui'
 import styled from '@emotion/styled'
 import { ROUTES } from '../../constants'

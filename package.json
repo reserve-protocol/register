@@ -34,7 +34,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "lint": "eslint . --fix",
+    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}' --fix",
     "e2e": "cypress open"
   },
   "browserslist": {
@@ -57,7 +57,7 @@
     "@types/node": "^16.7.4",
     "@types/react": "^17.0.19",
     "@types/react-router-dom": "^5.1.8",
-    "@typescript-eslint/parser": "^4.29.3",
+    "@typescript-eslint/parser": "^4.31.2",
     "cypress": "^8.1.0",
     "eslint": "^7.31.0",
     "eslint-config-airbnb": "^18.2.1",

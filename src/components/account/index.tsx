@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import { Button } from '@shopify/polaris'
 import { shortenAddress, useEthers } from '@usedapp/core'
-import { Flex, Text } from 'theme-ui'
+import { Text } from 'theme-ui'
 import Jazzicon from '@metamask/jazzicon'
 import WalletModal from '../wallet-modal'
 
@@ -46,11 +46,11 @@ function Identicon() {
  * @constructor
  */
 const Account = () => {
-  const { account, deactivate, activateBrowserWallet } = useEthers()
-  const [isWalletModalVisible, showWalletModal] = useState(false)
+  const { account, activateBrowserWallet } = useEthers()
+  const [isWalletModalVisible] = useState(false)
 
   const handleConnect = () => {
-    activateBrowserWallet((error) => {
+    activateBrowserWallet(() => {
       // TODO: Error handling
     })
     // showWalletModal(true)

@@ -69,13 +69,12 @@ export const useRTokenBasket = (
   useEffect(() => {
     const fetchTokens = async () => {
       setState({ loading: true, tokens: [] })
-      console.log('fetch tokens')
       const contract = RTokenContract.connect(library as Web3Provider)
 
       const basketSize = await contract.basketSize()
       const basketTokens: Promise<IBasketToken>[] = []
 
-      for (let i = 0; i < basketSize; i++) {
+      for (let i = 0; i < basketSize; i += 1) {
         basketTokens.push(getBasketToken(account, contract, library, i))
       }
 
@@ -90,12 +89,13 @@ export const useRTokenBasket = (
   return [state.tokens, state.loading]
 }
 
-export const useRToken = (address: string): [IRTokenInfo, boolean] => {
+const useRToken = (address: string): [IRTokenInfo, boolean] => {
   const { account } = useEthers()
 
-  const contract = useMemo((): IRToken => {
-    return <IRToken>new Contract(address, RTokenAbi)
-  }, [address])
+  const contract = useMemo(
+    (): IRToken => <IRToken>new Contract(address, RTokenAbi),
+    [address]
+  )
 
   const [tokenInfo, loadingInfo] = useTokenInfo(address, account)
   const [basket, loadingBasket] = useRTokenBasket(contract, account)

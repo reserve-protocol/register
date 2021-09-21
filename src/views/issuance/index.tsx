@@ -1,36 +1,26 @@
 import { useEffect, useState } from 'react'
-import { BigNumberish, ethers } from 'ethers'
+import { BigNumberish, utils } from 'ethers'
 import { Card, Modal, Button, TextField, Spinner } from '@shopify/polaris'
-import { utils } from 'ethers'
+import { parseEther } from 'ethers/lib/utils'
+import { useContractFunction, useEthers } from '@usedapp/core'
+import styled from '@emotion/styled'
+import { Box, Flex } from 'theme-ui'
 import Container from '../../components/container'
 import { getAddress } from '../../constants/addresses'
 import RTokenAbi from '../../abis/RToken.json'
-import ERC20Abi from '../../abis/RToken.json'
+// import ERC20Abi from '../../abis/ERC20.json'
 import { RToken as IRToken } from '../../abis/types'
-import useMultiContractFunction, {
-  IContractCall,
-} from '../../hooks/usePromiseTransactions'
 import useRToken, { IRTokenInfo, IBasketToken } from '../../hooks/useRToken'
-import { parseEther } from 'ethers/lib/utils'
-import {
-  useContractCall,
-  useContractCalls,
-  useContractFunction,
-  useEthers,
-  useTokenBalance,
-} from '@usedapp/core'
 import Transactions from '../../components/transactions'
-import styled from '@emotion/styled'
-import { Box, Flex } from 'theme-ui'
 import useTokensApproval from '../../hooks/useTokenApproval'
 import useTokensHasAllowance from '../../hooks/useTokensHasAllowance'
 import { useContract, useRTokenContract } from '../../hooks/useContract'
 
 // const RTokenContract = new ethers.Contract(RTOKEN_ADDRESS, RTokenAbi)
-const ERC20Contract = new ethers.Contract(
-  '0x0000000000000000000000000000000000000000',
-  ERC20Abi
-)
+// const ERC20Contract = new ethers.Contract(
+//   '0x0000000000000000000000000000000000000000',
+//   ERC20Abi
+// )
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -41,14 +31,12 @@ const InputContainer = styled(Box)`
   }
 `
 
-const BasketToken = ({ data }: { data: IBasketToken }) => {
-  return (
-    <div>
-      <b>Name: </b> {data.name} | <b>Symbol: </b> {data.symbol} |{' '}
-      <b>Balance: </b> {data.balance ? utils.formatEther(data.balance) : ''}
-    </div>
-  )
-}
+const BasketToken = ({ data }: { data: IBasketToken }) => (
+  <div>
+    <b>Name: </b> {data.name} | <b>Symbol: </b> {data.symbol} | <b>Balance: </b>{' '}
+    {data.balance ? utils.formatEther(data.balance) : ''}
+  </div>
+)
 
 const RTokenInfo = ({ data }: { data: IRTokenInfo }) => (
   <Card sectioned title="RToken info">
@@ -61,25 +49,25 @@ const RTokenInfo = ({ data }: { data: IRTokenInfo }) => (
       <b>Basket Tokens</b>
     </h3>
     <br />
-    {(data?.basket || []).map((token, index) => (
+    {(data?.basket || []).map((token) => (
       <BasketToken key={token.address} data={token} />
     ))}
   </Card>
 )
 
-const getApprovalContractFn = (
-  tokens: IBasketToken[] | undefined
-): IContractCall[] => {
-  if (!tokens) return []
+// const getApprovalContractFn = (
+//   tokens: IBasketToken[] | undefined
+// ): IContractCall[] => {
+//   if (!tokens) return []
 
-  return tokens.map((basketToken) => ({
-    contract: ERC20Contract.attach(basketToken.address),
-    functionName: 'approve',
-    options: {
-      transactionName: `Approve ${basketToken.name} for RToken issuance`,
-    },
-  }))
-}
+//   return tokens.map((basketToken) => ({
+//     contract: ERC20Contract.attach(basketToken.address),
+//     functionName: 'approve',
+//     options: {
+//       transactionName: `Approve ${basketToken.name} for RToken issuance`,
+//     },
+//   }))
+// }
 
 const STATUS = {
   PRECHECK: 'PRECHECK',
@@ -192,6 +180,7 @@ const Redeem = ({
   balance: BigNumberish
 }) => {
   const [amount, setAmount] = useState('')
+  console.log({ address, balance })
 
   return (
     <>

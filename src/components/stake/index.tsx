@@ -1,21 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import { formatEther, parseEther } from '@ethersproject/units'
-import { ethers, Transaction } from 'ethers'
-import { Card, TextField, Button, Modal, buttonFrom } from '@shopify/polaris'
-import {
-  useGasPrice,
-  useEthers,
-  useContractCall,
-  useContractFunction,
-} from '@usedapp/core'
+import { ethers } from 'ethers'
+import { Card, TextField, Button } from '@shopify/polaris'
+import { useEthers, useContractCall, useContractFunction } from '@usedapp/core'
 import { Flex, Text, Box } from 'theme-ui'
-import ADDRESES, { getAddress } from '../../constants/addresses'
+import { getAddress } from '../../constants/addresses'
 import RSR from '../../abis/RSR.json'
 import Insurance from '../../abis/Insurance.json'
 import { DEPOSIT_STATUS } from '../../constants'
 import { useIsTransactionConfirmed } from '../../hooks/useTransaction'
-import { useContract } from '../../hooks/useContract'
 
 // const InsuranceContract = new ethers.Contract(INSURANCE_ADDRESS, Insurance)
 const insuranceInterface = new ethers.utils.Interface(Insurance)
@@ -69,6 +63,10 @@ const DepositStatus = ({
   )
 }
 
+DepositStatus.defaultProps = {
+  approveTx: '',
+}
+
 /**
  * Stake component
  *
@@ -107,18 +105,16 @@ const Stake = () => {
   const [stakeStatus, setStakeStatus] = useState<IStakeStatus | undefined>(
     undefined
   )
-  const [isOpen, openModal] = useState(false)
+  // const [isOpen, openModal] = useState(false)
 
   const { state: stakeState, send: stake } = useContractFunction(
     InsuranceContract,
     'stake',
     { transactionName: 'Add RSR to Insurance pool' }
   )
-  const { state: unstakeState, send: unstake } = useContractFunction(
-    InsuranceContract,
-    'unstake',
-    { transactionName: 'Remove RSR from Insurance Pool' }
-  )
+  const { send: unstake } = useContractFunction(InsuranceContract, 'unstake', {
+    transactionName: 'Remove RSR from Insurance Pool',
+  })
   const { state: approve, send: approveAmount } = useContractFunction(
     RSRContract,
     'approve',
@@ -226,10 +222,7 @@ const Stake = () => {
         <Text mr={2}>
           <b>Total earnings:</b> {earned ? formatEther(earned) : 0}
         </Text>
-        <Button
-          primary
-          disabled={!earned || parseInt(formatEther(earned)) === 0}
-        >
+        <Button primary disabled={!earned || Number(formatEther(earned)) === 0}>
           Withdraw
         </Button>
       </Flex>

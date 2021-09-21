@@ -2,10 +2,8 @@ import { Card } from '@shopify/polaris'
 import { useTransactions } from '@usedapp/core'
 import { Text } from 'theme-ui'
 import { formatEther } from '@ethersproject/units'
-import { BigNumber, ethers, Transaction } from 'ethers'
+import { BigNumber } from 'ethers'
 // import { RSR_ADDRESS, INSURANCE_ADDRESS } from '../../constants/addresses'
-import RSR from '../../abis/RSR.json'
-import Insurance from '../../abis/Insurance.json'
 import {
   TransactionReceipt,
   TransactionResponse,
@@ -25,9 +23,7 @@ type IItem = {
   }
 }
 
-const Item = ({
-  data: { transaction, transactionName, receipt, submittedAt },
-}: IItem) => {
+const Item = ({ data: { transaction, transactionName, receipt } }: IItem) => {
   // const abi = INTERFACES[transaction.to as string]
   const abi: any = null
   let argumentsString = null

@@ -15,17 +15,9 @@ export interface IContractCall {
   options?: TransactionOptions
 }
 
-const getState = (
-  prevState: TransactionStatus[],
-  value: TransactionStatus,
-  index: number
-): TransactionStatus[] => {
-  return [...prevState.slice(0, index), value, ...prevState.slice(index + 1)]
-}
-
 const useMultiContractFunction = (
   calls: IContractCall[]
-): { send(args: any): Promise<void>; state: TransactionStatus[] } => {
+): { send(): Promise<void>; state: TransactionStatus[] } => {
   const { library, chainId } = useEthers()
   const [state, setState] = useState<TransactionStatus[]>(
     new Array(calls.length).fill({ status: 'None' })
@@ -39,13 +31,13 @@ const useMultiContractFunction = (
   }, [calls?.length ?? 0])
 
   const send = useCallback(
-    async (args: any[]) => {
+    async (args: any[] = []) => {
       if (!chainId) return
 
       const callStatus = [...state]
 
-      for (let i = 0; i < calls.length; i++) {
-        let transaction: TransactionResponse | undefined = undefined
+      for (let i = 0; i < calls.length; i += 1) {
+        let transaction: TransactionResponse | undefined
 
         try {
           const { contract, options, functionName } = calls[i]
@@ -70,13 +62,13 @@ const useMultiContractFunction = (
             transactionName: options?.transactionName,
           })
           const receipt = await transaction.wait()
-          ;(callStatus[i] = {
+          callStatus[i] = {
             receipt,
             transaction,
             status: 'Success',
             chainId,
-          }),
-            setState(callStatus)
+          }
+          setState(callStatus)
         } catch (e: any) {
           const errorMessage =
             e.error?.message ?? e.reason ?? e.data?.message ?? e.message

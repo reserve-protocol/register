@@ -45,7 +45,7 @@ const DepositItem = ({ data }: { data: Deposit }) => (
 )
 
 const Deposits = () => {
-  const { data, error, loading } = useQuery(QUERY, {
+  const { data, loading } = useQuery(QUERY, {
     variables: { orderBy: 'id', where: {} },
   })
 
