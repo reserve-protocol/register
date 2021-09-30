@@ -46,6 +46,7 @@ module.exports = {
     'no-use-before-define': 'off',
     'no-await-in-loop': 'off',
     'no-param-reassign': 0,
+    'react/require-default-props': 0,
     '@typescript-eslint/no-use-before-define': ['error'],
     // Allow export default from
     'import/prefer-default-export': 'off',
@@ -54,5 +55,7 @@ module.exports = {
     'import/no-extraneous-dependencies': 'off',
     'react/jsx-props-no-spreading': 'off',
     'no-restricted-syntax': 0,
+    'no-unused-vars': 0,
+    'consistent-return': 0,
   },
 }

@@ -2,14 +2,14 @@ import { useEffect, useMemo, useState } from 'react'
 import styled from '@emotion/styled'
 import { formatEther, parseEther } from '@ethersproject/units'
 import { ethers } from 'ethers'
-import { Card, TextField, Button } from '@shopify/polaris'
 import { useEthers, useContractCall, useContractFunction } from '@usedapp/core'
-import { Flex, Text, Box } from 'theme-ui'
+import { Flex, Text, Box, Button } from 'theme-ui'
 import { getAddress } from '../../constants/addresses'
 import RSR from '../../abis/RSR.json'
 import Insurance from '../../abis/Insurance.json'
 import { DEPOSIT_STATUS } from '../../constants'
 import { useIsTransactionConfirmed } from '../../hooks/useTransaction'
+import Card from '../card'
 
 // const InsuranceContract = new ethers.Contract(INSURANCE_ADDRESS, Insurance)
 const insuranceInterface = new ethers.utils.Interface(Insurance)
@@ -47,7 +47,7 @@ const DepositStatus = ({
   const isApproved = useIsTransactionConfirmed(approveTx)
 
   return (
-    <Card title="Deposit status" sectioned>
+    <Card title="Deposit status">
       <Text>
         <b>Status:</b> {status}
       </Text>
@@ -55,9 +55,7 @@ const DepositStatus = ({
         <b>Amount:</b> {amount}
       </Text>
       {status === DEPOSIT_STATUS.APPROVED && isApproved && (
-        <Button onClick={() => onStake()} primary>
-          Confirm stake
-        </Button>
+        <Button onClick={() => onStake()}>Confirm stake</Button>
       )}
     </Card>
   )
@@ -186,24 +184,24 @@ const Stake = () => {
   }, [stakeState.status])
 
   return (
-    <Card title="Stake" sectioned>
+    <Card title="Stake">
       <Flex mx={-2}>
         <InputContainer mx={2}>
-          <TextField
+          {/* <TextField
             placeholder="amount..."
             label="Stake amount"
             value={stakeAmount}
             onChange={setStakeAmount}
-          />
+          /> */}
           <Button onClick={handleStakeApprove}>Stake</Button>
         </InputContainer>
         <InputContainer mx={2}>
-          <TextField
+          {/* <TextField
             placeholder="amount..."
             label="Unstake amount"
             value={unstakeAmount}
             onChange={setUnstakeAmount}
-          />
+          /> */}
           <Button onClick={handleUnstake}>Unstake</Button>
         </InputContainer>
       </Flex>
@@ -222,7 +220,7 @@ const Stake = () => {
         <Text mr={2}>
           <b>Total earnings:</b> {earned ? formatEther(earned) : 0}
         </Text>
-        <Button primary disabled={!earned || Number(formatEther(earned)) === 0}>
+        <Button disabled={!earned || Number(formatEther(earned)) === 0}>
           Withdraw
         </Button>
       </Flex>

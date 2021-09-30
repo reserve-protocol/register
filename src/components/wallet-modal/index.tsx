@@ -1,5 +1,5 @@
 import { useEthers } from '@usedapp/core'
-import { Modal } from '@shopify/polaris'
+import Modal from '../modal'
 import { injected, walletconnect, fortmatic } from './connectors'
 
 // const SupportedChainId = {

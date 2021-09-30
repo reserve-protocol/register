@@ -1,4 +1,3 @@
-import { Card } from '@shopify/polaris'
 import { useTransactions } from '@usedapp/core'
 import { Text } from 'theme-ui'
 import { formatEther } from '@ethersproject/units'
@@ -8,6 +7,7 @@ import {
   TransactionReceipt,
   TransactionResponse,
 } from '@ethersproject/providers'
+import Card from '../card'
 
 // const INTERFACES: { [x: string]: ethers.utils.Interface } = {
 //   [RSR_ADDRESS]: new ethers.utils.Interface(RSR),
@@ -45,23 +45,29 @@ const Item = ({ data: { transaction, transactionName, receipt } }: IItem) => {
       <Text>
         <b>Status:</b> {receipt ? 'Confirmed' : 'Pending'}
       </Text>
+      <br />
       <Text>
         <b>To:</b> {transaction.to}
       </Text>
+      <br />
       <Text>
         <b>Nonce:</b> {transaction.nonce}
       </Text>
+      <br />
       <Text>
         <b>Transaction Hash:</b> {transaction.hash}
       </Text>
+      <br />
       <Text>
         <b>Gas Price:</b> {formatEther(transaction.gasPrice as BigNumber)}
       </Text>
+      <br />
       <Text>
         <b>Gas Limit:</b> {formatEther(transaction.gasLimit)}
       </Text>
       {argumentsString && (
         <>
+          <br />
           <Text py={2}>
             <b>Arguments</b>
           </Text>
@@ -70,17 +76,22 @@ const Item = ({ data: { transaction, transactionName, receipt } }: IItem) => {
       )}
       {!!receipt && (
         <>
+          <br />
+          <br />
           <Text py={2}>
             <b>Block</b>
           </Text>
+          <br />
           <Text>
             <b>Block Number: </b>
             {receipt.blockNumber}
           </Text>
+          <br />
           <Text>
             <b>Block Hash: </b>
             {receipt.blockHash}
           </Text>
+          <br />
           <Text>
             <b>Gas Used: </b>
             {formatEther(receipt.gasUsed)}
@@ -96,7 +107,7 @@ const Transactions = () => {
 
   return (
     <Card title="Recent transactions" sectioned>
-      <div style={{ maxHeight: 500, overflow: 'scroll' }}>
+      <div style={{ maxHeight: 500, overflow: 'auto' }}>
         {transactions.map((data) => (
           <Item key={data.transaction.hash} data={data} />
         ))}

@@ -1,4 +1,4 @@
-import { Card } from '@shopify/polaris'
+import { Card } from 'theme-ui'
 
 // const RTokenContract = new ethers.Contract(RTOKEN_ADDRESS, RTokenAbi)
 
@@ -16,7 +16,7 @@ const RToken = () => (
 
   // console.log('basket', basket)
 
-  <Card title="Rtoken" sectioned>
+  <Card title="Rtoken">
     {/* <Text>
         <b>Symbol: </b> {symbol}
       </Text>

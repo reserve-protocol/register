@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { gql, useQuery } from '@apollo/client'
-import { Card } from '@shopify/polaris'
+import { Card } from 'theme-ui'
 import { BigNumber } from 'ethers'
 
 const QUERY = gql`
@@ -50,7 +50,7 @@ const Deposits = () => {
   })
 
   return (
-    <Card title="Deposits" sectioned>
+    <Card title="Deposits">
       {loading && <span>Loading deposits...</span>}
       <div style={{ maxHeight: 500, overflow: 'scroll' }}>
         {!!data &&

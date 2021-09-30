@@ -9,8 +9,7 @@ import {
   useTokenBalance,
   useContractFunction,
 } from '@usedapp/core'
-import { Card, TextField, Button } from '@shopify/polaris'
-import { Text, Flex, Box } from 'theme-ui'
+import { Text, Flex, Box, Button } from 'theme-ui'
 import RSR from '../../abis/RSR.json'
 import PrevRSR from '../../abis/PrevRSR.json'
 import { getAddress } from '../../constants/addresses'
@@ -18,6 +17,7 @@ import Container from '../../components/container'
 import Transactions from '../../components/transactions'
 import Stake from '../../components/stake'
 import Deposits from '../../components/deposits'
+import Card from '../../components/card'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -78,7 +78,7 @@ const Exchange = () => {
   return (
     <Container pt={4} pb={4}>
       {account && (
-        <Card title="State" sectioned>
+        <Card title="State" mb={3}>
           <Text>
             <b>RSR Balance:</b> {currentBalance}{' '}
           </Text>
@@ -103,14 +103,14 @@ const Exchange = () => {
           </Text>
         </Card>
       )}
-      <Card title="Is PrevRSR Paused" sectioned>
+      <Card title="Is PrevRSR Paused" mb={3}>
         <Flex>
           <Text>{isPrevPaused ? 'Yes' : 'No'}</Text>
         </Flex>
       </Card>
-      <Card title="Send" sectioned>
+      <Card title="Send" mb={3}>
         <Flex mx={-2}>
-          <InputContainer mx={2}>
+          {/* <InputContainer mx={2}>
             <TextField
               placeholder="amount..."
               label="Send amount"
@@ -123,10 +123,8 @@ const Exchange = () => {
               value={transferAccount}
               onChange={setTransferAccount}
             />
-            <Button primary onClick={handleTransfer}>
-              Transfer
-            </Button>
-          </InputContainer>
+            <Button onClick={handleTransfer}>Transfer</Button>
+          </InputContainer> */}
         </Flex>
       </Card>
       <Stake />

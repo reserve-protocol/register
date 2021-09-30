@@ -23,7 +23,7 @@ const SideBar = styled.div`
 // TODO: Move sidebar to different component
 // TODO: Improve component structure
 const PAGES = [
-  { path: ROUTES.EXCHANGE, title: 'RSR Dashboard' },
+  // { path: ROUTES.EXCHANGE, title: 'RSR Dashboard' },
   { path: ROUTES.ISSUANCE, title: 'Issue / Redeem' },
 ]
 
@@ -64,6 +64,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => (
       <div>
         {PAGES.map((item) => (
           <NavLink
+            key={item.path}
             style={{
               fontSize: 18,
               textDecoration: 'none',

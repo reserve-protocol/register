@@ -38,7 +38,7 @@ const App = () => (
             <Market />
           </Route>
           <Route exact path="/">
-            <Redirect to={ROUTES.EXCHANGE} />
+            <Redirect to={ROUTES.ISSUANCE} />
           </Route>
         </Switch>
       </Layout>

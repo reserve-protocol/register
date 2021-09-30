@@ -1,11 +1,9 @@
-import { Card } from '@shopify/polaris'
+import Card from '../../components/card'
 import Container from '../../components/container'
 
 const Market = () => (
   <Container py={4}>
-    <Card sectioned title="Token Market">
-      hola
-    </Card>
+    <Card title="Token Market">hola</Card>
   </Container>
 )
 

@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
-import { Button } from '@shopify/polaris'
 import { shortenAddress, useEthers } from '@usedapp/core'
-import { Text } from 'theme-ui'
+import { Text, Button } from 'theme-ui'
 import Jazzicon from '@metamask/jazzicon'
 import WalletModal from '../wallet-modal'
 
