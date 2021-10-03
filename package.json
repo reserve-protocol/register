@@ -18,6 +18,7 @@
     "@usedapp/core": "^0.4.6",
     "@web3-react/fortmatic-connector": "^6.1.6",
     "@web3-react/walletconnect-connector": "^6.2.4",
+    "ethereum-multicall": "^2.9.0",
     "ethers": "5.4.1",
     "graphql": "^15.5.1",
     "i18next": "^21.0.2",

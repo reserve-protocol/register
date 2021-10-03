@@ -1,16 +1,17 @@
 import {
   BrowserRouter as Router,
-  Switch,
-  Route,
   Redirect,
+  Route,
+  Switch,
 } from 'react-router-dom'
+import Updater from 'state/reserve-tokens/updater'
 import { ThemeProvider } from 'theme-ui'
 import Layout from './components/layout'
-import Exchange from './views/exchange'
 import { ROUTES } from './constants'
-import Market from './views/market'
-import Issuance from './views/issuance'
 import { theme } from './theme'
+import Exchange from './views/exchange'
+import Issuance from './views/issuance'
+import Market from './views/market'
 
 /**
  * App Entry point - Handles views routing
@@ -19,6 +20,7 @@ import { theme } from './theme'
  */
 const App = () => (
   <ThemeProvider theme={theme}>
+    <Updater />
     <Router>
       <Layout>
         <Switch>

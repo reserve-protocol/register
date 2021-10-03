@@ -1,8 +1,8 @@
-import { useState } from 'react'
-import Popup from 'components/popup'
-import LangIcon from 'components/icons/Lang'
-import { Box } from '@theme-ui/components'
 import styled from '@emotion/styled'
+import { Box } from '@theme-ui/components'
+import LangIcon from 'components/icons/Lang'
+import Popup from 'components/popup'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 const LangItem = styled(Box)`
@@ -51,8 +51,6 @@ const LanguageList = ({ onChange }: { onChange(key: string): void }) => (
 const LanguageSelector = () => {
   const [isVisible, setVisible] = useState(false)
   const { i18n } = useTranslation()
-
-  console.log('current', i18n.language)
 
   const handleSelection = (lang: string) => {
     setVisible(false)

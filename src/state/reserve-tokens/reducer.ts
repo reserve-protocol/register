@@ -1,11 +1,14 @@
-import { BigNumberish, BigNumber } from 'ethers'
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { BigNumber, BigNumberish } from 'ethers'
 
 // TODO: Token as base interface
 export interface IReserveToken {
   address: string
   symbol: string
   name: string
+  decimals: number
+  basketSize: number
+  insurancePool: string
 }
 
 export interface IBasketToken {
@@ -13,6 +16,7 @@ export interface IBasketToken {
   address: string
   symbol: string
   name: string
+  decimals: number
   genesisQuantity: BigNumberish
   maxTrade: BigNumberish
   priceInRToken: BigNumberish
@@ -34,7 +38,7 @@ const initialState: ReserveTokenState = {
   balances: {},
 }
 
-export const counterSlice = createSlice({
+export const reserveTokenSlice = createSlice({
   name: 'reserveTokens',
   initialState,
   reducers: {
@@ -62,7 +66,12 @@ export const counterSlice = createSlice({
   },
 })
 
-export const { loadTokens, loadBasket, updateBalance, setCurrent } =
-  counterSlice.actions
+export const selectCurrentRToken = createSelector(
+  (state: any) => [state.reserveTokens.current, state.reserveTokens.list],
+  ([current, list]): IReserveToken | null => (current ? list[current] : null)
+)
 
-export default counterSlice.reducer
+export const { loadTokens, loadBasket, updateBalance, setCurrent } =
+  reserveTokenSlice.actions
+
+export default reserveTokenSlice.reducer

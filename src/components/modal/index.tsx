@@ -1,7 +1,8 @@
-import { Dialog, DialogOverlay, DialogContent } from '@reach/dialog'
-// import styled from '@emotion/styled'
-import { Button } from 'theme-ui'
+import { Dialog } from '@reach/dialog'
 import '@reach/dialog/styles.css'
+import { Button } from 'theme-ui'
+
+// import styled from '@emotion/styled'
 
 export interface IModal {
   open?: boolean
@@ -10,17 +11,14 @@ export interface IModal {
   children: any
 }
 
-const Modal = ({ open = true, onClose, title, children }: IModal) => {
-  console.log('modal')
-  return (
-    <Dialog isOpen={open} onDismiss={onClose}>
-      <Button onClick={onClose}>
-        <span aria-hidden>×</span>
-      </Button>
-      {title && { title }}
-      {children}
-    </Dialog>
-  )
-}
+const Modal = ({ open = true, onClose, title, children }: IModal) => (
+  <Dialog aria-label="Modal" isOpen={open} onDismiss={onClose}>
+    <Button onClick={onClose} sx={{ marginLeft: 'auto' }}>
+      <span aria-hidden>×</span>
+    </Button>
+    {/* {title && { title }} */}
+    {children}
+  </Dialog>
+)
 
 export default Modal

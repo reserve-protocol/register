@@ -1,22 +1,20 @@
 import React, { useEffect } from 'react'
 
-const useOnClickOutside = (ref: React.RefObject<any>, handler?: () => void) => {
+const useOnClickOutside = (
+  ref: React.RefObject<any>,
+  handler: (event: TouchEvent | MouseEvent) => void
+) => {
   useEffect(() => {
-    console.log('listener', handler)
     const listener = (event: TouchEvent | MouseEvent) => {
       // Do nothing if clicking ref's element or descendent elements
-      console.log('listener')
-      if (!ref.current || ref.current.contains(event.target) || !handler) {
-        console.log('didint found anything')
+      if (!ref.current || ref.current.contains(event.target)) {
         return
       }
-      console.log('call handler')
-      handler()
+      handler(event)
     }
-    if (handler) {
-      document.addEventListener('mousedown', listener)
-      document.addEventListener('touchstart', listener)
-    }
+
+    document.addEventListener('mousedown', listener)
+    document.addEventListener('touchstart', listener)
 
     return () => {
       document.removeEventListener('mousedown', listener)

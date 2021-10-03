@@ -46,6 +46,7 @@ module.exports = {
     'no-use-before-define': 'off',
     'no-await-in-loop': 'off',
     'no-param-reassign': 0,
+    'no-plusplus': 0,
     'react/require-default-props': 0,
     '@typescript-eslint/no-use-before-define': ['error'],
     // Allow export default from

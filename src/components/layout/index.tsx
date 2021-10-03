@@ -1,7 +1,8 @@
+import styled from '@emotion/styled'
+import RTokenSelector from 'components/rtoken-selector'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { Box, Flex, Text } from 'theme-ui'
-import styled from '@emotion/styled'
 import { ROUTES } from '../../constants'
 import RTokenIcon from '../icons/logos/RTokenIcon'
 import Header from './header'
@@ -59,7 +60,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => (
         </Text>
       </Box>
       <div style={{ borderBottom: '1px solid #f5f5f5', padding: '1rem' }}>
-        <RTokenIcon style={{ fontSize: 32 }} />
+        <RTokenSelector />
       </div>
       <div>
         {PAGES.map((item) => (

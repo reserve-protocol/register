@@ -110,7 +110,7 @@ export const theme: Theme = {
   },
   forms: {
     input: {
-      transition: 'border .2s ease,color .2s ease',
+      // transition: 'border .2s ease,color .2s ease',
       // outline: 'none',
     },
   },

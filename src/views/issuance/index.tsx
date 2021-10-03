@@ -1,19 +1,15 @@
-import { Card, Container } from 'components'
 import { useEthers } from '@usedapp/core'
-import { Button, Flex } from 'theme-ui'
-import { getAddress } from '../../constants/addresses'
+import { Button, Card, Container } from 'components'
+import useRToken from 'hooks/useRToken'
+import { Flex } from 'theme-ui'
 import RTokenAbi from '../../abis/RToken.json'
 import { RToken as IRToken } from '../../abis/types'
-import useRToken from '../../hooks/useRToken'
 import Transactions from '../../components/transactions'
+import { getAddress } from '../../constants/addresses'
 import { useContract } from '../../hooks/useContract'
-import Overview from './components/overview'
 import Issue from './components/issue'
+import Overview from './components/overview'
 import Redeem from './components/redeem'
-
-const Content = () => (
-  <div style={{ backgroundColor: 'white' }}>I'm the content</div>
-)
 
 const Issuance = () => {
   const { chainId } = useEthers()

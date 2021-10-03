@@ -1,12 +1,10 @@
+import styled from '@emotion/styled'
 import { Options, Placement } from '@popperjs/core'
 import Portal from '@reach/portal'
-import React, { useCallback, useMemo, useState, createRef } from 'react'
-import { usePopper } from 'react-popper'
-import styled from '@emotion/styled'
-
-import useInterval from '../../hooks/useInterval'
 import useOnClickOutside from 'hooks/useOnClickOutside'
-import { useRef } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
+import { usePopper } from 'react-popper'
+import useInterval from '../../hooks/useInterval'
 
 const PopoverContainer = styled.div<{ show: boolean }>`
   z-index: 9999;
@@ -101,11 +99,16 @@ export default function Popover({
     [arrowElement, placement]
   )
 
+  const handleDismiss = (event: TouchEvent | MouseEvent) => {
+    if (referenceElement?.contains(event.target as Node)) {
+      return
+    }
+
+    return onDismiss && onDismiss()
+  }
+
   // Only applicable if onDismiss is send
-  useOnClickOutside(
-    popperElement,
-    useCallback(() => onDismiss && onDismiss(), [])
-  )
+  useOnClickOutside(popperElement, handleDismiss)
 
   const { styles, update, attributes } = usePopper(
     referenceElement,
