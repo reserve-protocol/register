@@ -95,17 +95,53 @@ export const theme: Theme = {
       fontSize: 'inherit',
     },
     table: {
+      margin: 0,
+      borderCollapse: 'collapse',
+      fontSize: '14px',
+      lineHeight: '20px',
+      textAlign: 'left',
       width: '100%',
-      borderCollapse: 'separate',
       borderSpacing: 0,
+      p: {
+        m: 0,
+      },
+      pre: {
+        mt: 2,
+        mb: 0,
+      },
     },
     th: {
-      textAlign: 'left',
-      borderBottomStyle: 'solid',
+      border: 'none',
+      px: 2,
+      pl: 3,
+    },
+    tbody: {
+      'tr:last-of-type': {
+        borderBottom: 0,
+      },
+    },
+    thead: {
+      borderBottom: (t: Theme) => ` 1px solid  ${t.colors?.shadow}`,
+      backgroundColor: 'header',
+      color: 'text',
     },
     td: {
-      textAlign: 'left',
-      borderBottomStyle: 'solid',
+      py: 3,
+      px: 3,
+      borderBottom: 0,
+    },
+    tdgroup: {
+      lineHeight: '24px',
+      background: '#fafbfc',
+      whiteSpace: 'nowrap',
+      py: 3,
+      fontWeight: 'bold',
+      // fontFamily: 'monospace',
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    tr: {
+      borderBottom: (t: Theme) => ` 1px solid  ${t.colors?.shadow}`,
     },
   },
   forms: {

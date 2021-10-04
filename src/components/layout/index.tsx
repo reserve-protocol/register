@@ -24,8 +24,8 @@ const SideBar = styled.div`
 // TODO: Move sidebar to different component
 // TODO: Improve component structure
 const PAGES = [
-  // { path: ROUTES.EXCHANGE, title: 'RSR Dashboard' },
   { path: ROUTES.ISSUANCE, title: 'Issue / Redeem' },
+  { path: ROUTES.MARKET, title: 'Market' },
 ]
 
 /**
