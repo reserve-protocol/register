@@ -10,7 +10,7 @@ import './i18n'
 import store from './state'
 
 const config = {
-  readOnlyChainId: ChainId.Hardhat,
+  readOnlyChainId: ChainId.Ropsten,
   readOnlyUrls: {
     [ChainId.Hardhat]: 'http://localhost:8545',
     [ChainId.Ropsten]:

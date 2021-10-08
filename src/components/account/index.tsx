@@ -46,20 +46,22 @@ function Identicon() {
  */
 const Account = () => {
   const { account, activateBrowserWallet } = useEthers()
-  const [isWalletModalVisible] = useState(false)
+  const [isWalletModalVisible, showWalletModal] = useState(false)
 
   const handleConnect = () => {
-    activateBrowserWallet(() => {
-      // TODO: Error handling
-    })
-    // showWalletModal(true)
+    // activateBrowserWallet(() => {
+    //   // TODO: Error handling
+    // })
+    showWalletModal(true)
   }
 
   if (!account) {
     return (
       <>
         <Button onClick={handleConnect}>Connect</Button>
-        {isWalletModalVisible && <WalletModal />}
+        {isWalletModalVisible && (
+          <WalletModal onClose={() => showWalletModal(false)} />
+        )}
       </>
     )
   }

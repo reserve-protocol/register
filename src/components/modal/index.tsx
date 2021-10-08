@@ -1,6 +1,7 @@
 import { Dialog } from '@reach/dialog'
 import '@reach/dialog/styles.css'
-import { Button } from 'theme-ui'
+import { Flex, Box } from 'theme-ui'
+import { X } from 'react-feather'
 
 // import styled from '@emotion/styled'
 
@@ -13,10 +14,16 @@ export interface IModal {
 
 const Modal = ({ open = true, onClose, title, children }: IModal) => (
   <Dialog aria-label="Modal" isOpen={open} onDismiss={onClose}>
-    <Button onClick={onClose} sx={{ marginLeft: 'auto' }}>
-      <span aria-hidden>×</span>
-    </Button>
-    {/* {title && { title }} */}
+    <Flex mb={4}>
+      <Box sx={{ fontSize: 3 }}>{title && title}</Box>
+      <Box
+        role="button"
+        sx={{ marginLeft: 'auto', '&:hover': { cursor: 'pointer' } }}
+        onClick={onClose}
+      >
+        <X />
+      </Box>
+    </Flex>
     {children}
   </Dialog>
 )
