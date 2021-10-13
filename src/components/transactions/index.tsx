@@ -1,5 +1,5 @@
 import { useTransactions } from '@usedapp/core'
-import { Text } from 'theme-ui'
+import { Box, Text } from 'theme-ui'
 import { formatEther } from '@ethersproject/units'
 import { BigNumber } from 'ethers'
 // import { RSR_ADDRESS, INSURANCE_ADDRESS } from '../../constants/addresses'
@@ -105,15 +105,16 @@ const Item = ({ data: { transaction, transactionName, receipt } }: IItem) => {
 const Transactions = () => {
   const { transactions } = useTransactions()
 
+  if (!transactions.length) {
+    return <Text>No recent transactions...</Text>
+  }
+
   return (
-    <Card title="Recent transactions" sectioned>
-      <div style={{ maxHeight: 500, overflow: 'auto' }}>
-        {transactions.map((data) => (
-          <Item key={data.transaction.hash} data={data} />
-        ))}
-      </div>
-      {!transactions.length && <Text>No recent transactions...</Text>}
-    </Card>
+    <Box sx={{ maxHeight: 500, overflow: 'auto' }}>
+      {transactions.map((data) => (
+        <Item key={data.transaction.hash} data={data} />
+      ))}
+    </Box>
   )
 }
 

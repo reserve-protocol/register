@@ -14,8 +14,8 @@ export interface IModal {
 
 const Modal = ({ open = true, onClose, title, children }: IModal) => (
   <Dialog aria-label="Modal" isOpen={open} onDismiss={onClose}>
-    <Flex mb={4}>
-      <Box sx={{ fontSize: 3 }}>{title && title}</Box>
+    <Flex mb={3} sx={{ alignItems: 'center' }}>
+      <Box sx={{ fontSize: 2 }}>{title && title}</Box>
       <Box
         role="button"
         sx={{ marginLeft: 'auto', '&:hover': { cursor: 'pointer' } }}

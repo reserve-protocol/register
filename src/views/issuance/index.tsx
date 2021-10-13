@@ -37,7 +37,6 @@ const Issuance = () => {
         </Flex>
         <Button onClick={handleAct}>Act</Button>
       </Card>
-      <Transactions />
     </Container>
   )
 }

@@ -13,6 +13,7 @@ const Container = styled.div`
   height: 38px;
   padding: 1rem;
   border-radius: 8px;
+  cursor: pointer;
 `
 
 const StyledIdenticon = styled.div`
@@ -48,29 +49,24 @@ const Account = () => {
   const { account, activateBrowserWallet } = useEthers()
   const [isWalletModalVisible, showWalletModal] = useState(false)
 
-  const handleConnect = () => {
-    // activateBrowserWallet(() => {
-    //   // TODO: Error handling
-    // })
+  const handleOpenModal = () => {
     showWalletModal(true)
   }
 
-  if (!account) {
-    return (
-      <>
-        <Button onClick={handleConnect}>Connect</Button>
-        {isWalletModalVisible && (
-          <WalletModal onClose={() => showWalletModal(false)} />
-        )}
-      </>
-    )
-  }
-
   return (
-    <Container>
-      <Identicon />
-      <Text>{shortenAddress(account)}</Text>
-    </Container>
+    <>
+      {!account ? (
+        <Button onClick={handleOpenModal}>Connect</Button>
+      ) : (
+        <Container onClick={handleOpenModal}>
+          <Identicon />
+          <Text>{shortenAddress(account)}</Text>
+        </Container>
+      )}
+      {isWalletModalVisible && (
+        <WalletModal onClose={() => showWalletModal(false)} />
+      )}
+    </>
   )
 }
 
