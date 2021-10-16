@@ -7,6 +7,7 @@ import useMulticall, {
   mapContractResults,
   tokenInfoCalls,
 } from 'hooks/useMulticall'
+import useTokensBalance from 'hooks/useTokensBalance'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Falsy, StringMap } from 'types'
@@ -18,6 +19,7 @@ import {
   loadTokens,
   loadBasket,
   setCurrent,
+  updateBalance,
 } from './reducer'
 
 interface T {
@@ -119,6 +121,12 @@ const getRTokenBasket = async (
   )
 }
 
+/**
+ * Get RToken information
+ *
+ * @param address - RToken address
+ * @returns
+ */
 const useRToken = (address: string | Falsy): T | null => {
   const [data, setData] = useState<T | null>(null)
   const multicall = useMulticall()
@@ -156,8 +164,18 @@ const Updater = () => {
   const { chainId, account } = useEthers()
   const tokenContract = useTokenContract(currentRToken ?? '', false)
   // Debounce block number for performance
-  const blockNumber = useDebounce(useBlockNumber(), 1000)
   const rToken = useRToken(currentRToken ?? getAddress(chainId, 'RTOKEN'))
+  const tokenBalances = useTokensBalance(
+    rToken?.token.address
+      ? [
+          [rToken.token.address, rToken.token.decimals],
+          ...rToken.basket.map((basketToken): [string, number] => [
+            basketToken.address,
+            basketToken.decimals,
+          ]),
+        ]
+      : []
+  )
 
   useEffect(() => {
     if (rToken) {
@@ -167,19 +185,12 @@ const Updater = () => {
     }
   }, [rToken])
 
-  // TODO: Get token list and the other logic
-  // TODO: For now only fetch the current RToken
-  // useEffect(() => {
-  //   if (chainId) {
-  //     console.log('test', { list, tokenContract, rTokenContract })
-  //   }
-  // }, [chainId ?? 0])
-
-  // useEffect(() => {
-  //   if (account && !isLoading) {
-  //     setLoading(true)
-  //   }
-  // }, [blockNumber ?? 0, account ?? '', chainId ?? 0, isLoading])
+  // Update RToken and baskets balance
+  useEffect(() => {
+    if (Object.keys(tokenBalances)) {
+      dispatch(updateBalance(tokenBalances))
+    }
+  }, [JSON.stringify(tokenBalances)])
 
   return null
 }
