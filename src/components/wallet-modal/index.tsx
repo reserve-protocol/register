@@ -130,11 +130,6 @@ const UserWallet = ({
   </>
 )
 
-const VIEWS = {
-  SELECTION: WalletSelection,
-  VIEW: UserWallet,
-}
-
 const WalletModal = ({ onClose }: { onClose(): void }) => {
   const { account, deactivate } = useEthers()
   const prevAccount = useRef(account)

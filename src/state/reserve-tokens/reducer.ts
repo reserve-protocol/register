@@ -71,6 +71,11 @@ export const selectCurrentRToken = createSelector(
   ([current, list]): IReserveToken | null => (current ? list[current] : null)
 )
 
+export const selectBasket = createSelector(
+  (state: any) => [state.reserveTokens.current, state.reserveTokens.baskets],
+  ([current, baskets]): IBasketToken[] => (current ? baskets[current] : [])
+)
+
 export const { loadTokens, loadBasket, updateBalance, setCurrent } =
   reserveTokenSlice.actions
 

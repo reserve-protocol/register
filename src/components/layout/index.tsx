@@ -4,7 +4,6 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { Box, Flex, Text } from 'theme-ui'
 import { ROUTES } from '../../constants'
-import RTokenIcon from '../icons/logos/RTokenIcon'
 import Header from './header'
 
 // TODO: theming

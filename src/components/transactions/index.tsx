@@ -1,4 +1,8 @@
-import { useTransactions } from '@usedapp/core'
+import {
+  getExplorerTransactionLink,
+  useEthers,
+  useTransactions,
+} from '@usedapp/core'
 import { Box, Text } from 'theme-ui'
 import { formatEther } from '@ethersproject/units'
 import { BigNumber } from 'ethers'
@@ -7,12 +11,8 @@ import {
   TransactionReceipt,
   TransactionResponse,
 } from '@ethersproject/providers'
+import { Falsy } from 'types'
 import Card from '../card'
-
-// const INTERFACES: { [x: string]: ethers.utils.Interface } = {
-//   [RSR_ADDRESS]: new ethers.utils.Interface(RSR),
-//   [INSURANCE_ADDRESS]: new ethers.utils.Interface(Insurance),
-// }
 
 type IItem = {
   data: {
@@ -21,9 +21,13 @@ type IItem = {
     receipt?: TransactionReceipt
     submittedAt: number
   }
+  chainId: number
 }
 
-const Item = ({ data: { transaction, transactionName, receipt } }: IItem) => {
+const Item = ({
+  data: { transaction, transactionName, receipt },
+  chainId,
+}: IItem) => {
   // const abi = INTERFACES[transaction.to as string]
   const abi: any = null
   let argumentsString = null
@@ -41,7 +45,10 @@ const Item = ({ data: { transaction, transactionName, receipt } }: IItem) => {
   }
 
   return (
-    <Card title={transactionName} key={transaction.hash} sectioned>
+    <Box key={transaction.hash}>
+      <Text sx={{ display: 'block', fontWeight: 500 }} mb={2}>
+        {transactionName}
+      </Text>
       <Text>
         <b>Status:</b> {receipt ? 'Confirmed' : 'Pending'}
       </Text>
@@ -49,13 +56,16 @@ const Item = ({ data: { transaction, transactionName, receipt } }: IItem) => {
       <Text>
         <b>To:</b> {transaction.to}
       </Text>
-      <br />
+      {/* <br />
       <Text>
         <b>Nonce:</b> {transaction.nonce}
-      </Text>
+      </Text> */}
       <br />
       <Text>
-        <b>Transaction Hash:</b> {transaction.hash}
+        <b>Transaction Hash:</b>{' '}
+        <a href={getExplorerTransactionLink(transaction.hash, chainId)}>
+          View on etherscan
+        </a>
       </Text>
       <br />
       <Text>
@@ -77,42 +87,39 @@ const Item = ({ data: { transaction, transactionName, receipt } }: IItem) => {
       {!!receipt && (
         <>
           <br />
-          <br />
-          <Text py={2}>
-            <b>Block</b>
-          </Text>
-          <br />
-          <Text>
-            <b>Block Number: </b>
-            {receipt.blockNumber}
-          </Text>
-          <br />
-          <Text>
-            <b>Block Hash: </b>
-            {receipt.blockHash}
-          </Text>
-          <br />
           <Text>
             <b>Gas Used: </b>
             {formatEther(receipt.gasUsed)}
           </Text>
+          <br />
+
+          <Text>
+            <b>Block Number: </b>
+            {receipt.blockNumber}
+          </Text>
+          {/* <br />
+          <Text>
+            <b>Block Hash: </b>
+            {receipt.blockHash}
+          </Text> */}
         </>
       )}
-    </Card>
+    </Box>
   )
 }
 
 const Transactions = () => {
+  const { chainId } = useEthers()
   const { transactions } = useTransactions()
 
-  if (!transactions.length) {
+  if (!transactions.length || !chainId) {
     return <Text>No recent transactions...</Text>
   }
 
   return (
     <Box sx={{ maxHeight: 500, overflow: 'auto' }}>
       {transactions.map((data) => (
-        <Item key={data.transaction.hash} data={data} />
+        <Item key={data.transaction.hash} chainId={chainId} data={data} />
       ))}
     </Box>
   )
