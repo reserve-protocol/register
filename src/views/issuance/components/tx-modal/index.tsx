@@ -7,6 +7,8 @@ import { IRTokenInfo } from 'hooks/useRToken'
 import useTokensApproval from 'hooks/useTokenApproval'
 import useTokensHasAllowance from 'hooks/useTokensHasAllowance'
 import { RToken as IRToken } from 'abis/types'
+import { selectBasket, selectCurrentRToken } from 'state/reserve-tokens/reducer'
+import { useAppSelector } from 'state/hooks'
 
 const STATUS = {
   PRECHECK: 'PRECHECK',
@@ -18,21 +20,27 @@ const STATUS = {
 }
 
 const IssuanceTransactionModal = ({
-  rToken,
   amount,
   onClose,
 }: {
   onClose(): void
   amount: string
-  rToken: IRTokenInfo
 }) => {
+  const rToken = useAppSelector(selectCurrentRToken)
+  const basket = useAppSelector(selectBasket)
+
+  // TODO: Handle this, most likely not a valid case
+  if (!rToken) {
+    return null
+  }
+
   const contract = useRTokenContract(rToken.address, false)
   const { state: issueState, send: issue } = useContractFunction(
     contract as IRToken,
     'issue',
     { transactionName: 'Issue RToken' }
   )
-  const tokens = (rToken?.basket ?? []).map((bsk) => bsk.address)
+  const tokens = basket.map((bsk) => bsk.address)
   const { send: requestApproval, state } = useTokensApproval(tokens)
   const tokensHasAllowance = useTokensHasAllowance(
     tokens,
@@ -71,25 +79,24 @@ const IssuanceTransactionModal = ({
       <div style={{ textAlign: 'center', padding: 20 }}>
         <b>Status: {issueStatus}</b>
       </div>
-      {!!rToken.basket &&
-        rToken.basket.map((token) => (
-          <div
-            key={token.symbol}
-            style={{
-              borderTop: '1px solid #ccc',
-              padding: 20,
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <b>Approve {token.symbol}</b>
-            <div style={{ marginLeft: 'auto', position: 'relative', top: 3 }}>
-              {state[token.address] === 'PENDING' && 'LOADING'}
-              {state[token.address] === 'SUBMITTED' && 'APPROVED'}
-              {state[token.address] === 'REJECTED' && 'REJECTED'}
-            </div>
+      {basket.map((token) => (
+        <div
+          key={token.symbol}
+          style={{
+            borderTop: '1px solid #ccc',
+            padding: 20,
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <b>Approve {token.symbol}</b>
+          <div style={{ marginLeft: 'auto', position: 'relative', top: 3 }}>
+            {state[token.address] === 'PENDING' && 'LOADING'}
+            {state[token.address] === 'SUBMITTED' && 'APPROVED'}
+            {state[token.address] === 'REJECTED' && 'REJECTED'}
           </div>
-        ))}
+        </div>
+      ))}
       <div
         style={{
           borderTop: '1px solid #ccc',

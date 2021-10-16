@@ -23,9 +23,22 @@ const InputContainer = styled(Box)`
   }
 `
 
-const Issue = ({ rToken }: { rToken: IRTokenInfo }) => {
-  const [amount, setAmount] = useState('1')
+const Issue = () => {
+  const [amount, setAmount] = useState('')
   const [modal, setModal] = useState(false)
+
+  const handleIssue = () => {
+    setModal(true)
+  }
+
+  const handleClose = () => {
+    setModal(false)
+    setAmount('')
+  }
+
+  const handleChange = (value: string) => {
+    setAmount(value)
+  }
 
   return (
     <>
@@ -34,16 +47,12 @@ const Issue = ({ rToken }: { rToken: IRTokenInfo }) => {
           placeholder="Issue amount"
           label="Issue ammount"
           value={amount}
-          onChange={setAmount}
+          onChange={handleChange}
         />
-        <Button onClick={() => setModal(true)}>Issue</Button>
+        <Button onClick={handleIssue}>Issue</Button>
       </InputContainer>
       {modal && (
-        <IssuanceTransactionModal
-          rToken={rToken}
-          amount={amount}
-          onClose={() => setModal(false)}
-        />
+        <IssuanceTransactionModal amount={amount} onClose={handleClose} />
       )}
     </>
   )

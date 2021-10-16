@@ -1,4 +1,4 @@
-import { useBlockNumber, useDebounce, useEthers } from '@usedapp/core'
+import { useEthers } from '@usedapp/core'
 import RTokenAbi from 'abis/RToken.json'
 import { getAddress } from 'constants/addresses'
 import { Multicall } from 'ethereum-multicall'
@@ -11,13 +11,12 @@ import useTokensBalance from 'hooks/useTokensBalance'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Falsy, StringMap } from 'types'
-import { useTokenContract } from '../../hooks/useContract'
 import { useAppSelector } from '../hooks'
 import {
-  IReserveToken,
   IBasketToken,
-  loadTokens,
+  IReserveToken,
   loadBasket,
+  loadTokens,
   setCurrent,
   updateBalance,
 } from './reducer'
@@ -162,8 +161,6 @@ const Updater = () => {
     reserveTokens.current,
   ])
   const { chainId, account } = useEthers()
-  const tokenContract = useTokenContract(currentRToken ?? '', false)
-  // Debounce block number for performance
   const rToken = useRToken(currentRToken ?? getAddress(chainId, 'RTOKEN'))
   const tokenBalances = useTokensBalance(
     rToken?.token.address
@@ -183,7 +180,7 @@ const Updater = () => {
       dispatch(loadBasket({ [rToken.token.address]: rToken.basket }))
       dispatch(setCurrent(rToken.token.address))
     }
-  }, [rToken])
+  }, [JSON.stringify(rToken)])
 
   // Update RToken and baskets balance
   useEffect(() => {

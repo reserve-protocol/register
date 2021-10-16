@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { useEthers, useTokenBalance } from '@usedapp/core'
 import { Button, Input } from 'components'
 import { BigNumberish } from 'ethers'
 import { useState } from 'react'
@@ -22,14 +23,12 @@ const InputContainer = styled(Box)`
   }
 `
 
-const Redeem = ({
-  address,
-  balance,
-}: {
-  address: string
-  balance: BigNumberish
-}) => {
+const Redeem = ({ address }: { address: string }) => {
   const [amount, setAmount] = useState('')
+  const { account } = useEthers()
+  const balance = useTokenBalance(address, account)
+
+  console.log('token balance', balance)
 
   return (
     <>

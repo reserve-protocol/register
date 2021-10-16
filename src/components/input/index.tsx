@@ -6,7 +6,7 @@ interface InputProps {
 }
 
 // TODO: Props and styling
-const Input = ({ onChange, value, ...props }: any) => {
+const Input = ({ onChange, ...props }: any) => {
   const handleChange = useCallback(
     (event) => {
       onChange(event.target.value)

@@ -16,6 +16,11 @@ import Redeem from './components/redeem'
 const Issuance = () => {
   const { account } = useEthers()
   const RToken = useSelector(selectCurrentRToken)
+  const contract: IRToken | null = useContract(
+    RToken?.address ?? '',
+    RTokenAbi,
+    true
+  )
 
   if (!account) {
     return (
@@ -29,15 +34,21 @@ const Issuance = () => {
     return <span>Loading....... </span>
   }
 
+  const handleAct = () => {
+    if (contract) {
+      contract.act()
+    }
+  }
+
   return (
     <Container pt={4} pb={4}>
       <Overview data={RToken} />
       <Card title="Issue and Redemption" mb={3}>
-        {/* <Flex mx={-2} mb={3}>
-          <Issue rToken={state} />
-          <Redeem address={state.address} balance={state.balance || 0} />
-        </Flex> */}
-        {/* <Button onClick={handleAct}>Act</Button> */}
+        <Flex mx={-2} mb={3}>
+          <Issue />
+          <Redeem address={RToken.address} />
+        </Flex>
+        <Button onClick={handleAct}>Act</Button>
       </Card>
     </Container>
   )
