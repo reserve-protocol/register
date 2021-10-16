@@ -2,8 +2,7 @@ import { Dialog } from '@reach/dialog'
 import '@reach/dialog/styles.css'
 import { Flex, Box } from 'theme-ui'
 import { X } from 'react-feather'
-
-// import styled from '@emotion/styled'
+import styled from '@emotion/styled'
 
 export interface IModal {
   open?: boolean
@@ -12,8 +11,15 @@ export interface IModal {
   children: any
 }
 
+const StyledDialog = styled((props: any) => <Dialog {...props} />)`
+  &[data-reach-dialog-content] {
+    background-color: ${({ theme }) => theme.colors.bgCard};
+    padding: ${({ theme }) => theme.space[3]}px;
+  }
+`
+
 const Modal = ({ open = true, onClose, title, children }: IModal) => (
-  <Dialog aria-label="Modal" isOpen={open} onDismiss={onClose}>
+  <StyledDialog aria-label="Modal" isOpen={open} onDismiss={onClose}>
     <Flex mb={3} sx={{ alignItems: 'center' }}>
       <Box sx={{ fontSize: 2 }}>{title && title}</Box>
       <Box
@@ -25,7 +31,7 @@ const Modal = ({ open = true, onClose, title, children }: IModal) => (
       </Box>
     </Flex>
     {children}
-  </Dialog>
+  </StyledDialog>
 )
 
 export default Modal

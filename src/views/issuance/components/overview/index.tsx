@@ -48,7 +48,7 @@ const Overview = ({ data }: { data: IReserveToken }) => {
       <Card title="Collaterals" mb={3}>
         <Grid gap={4} columns={data.basketSize}>
           {baskets.map((token) => (
-            <BasketToken data={token} />
+            <BasketToken data={token} key={token.address} />
           ))}
         </Grid>
       </Card>

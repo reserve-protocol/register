@@ -150,14 +150,13 @@ const useRToken = (address: string | Falsy): T | null => {
 
 const Updater = () => {
   const dispatch = useDispatch()
-  const [currentRToken, list] = useAppSelector(({ reserveTokens }) => [
+  const [currentRToken] = useAppSelector(({ reserveTokens }) => [
     reserveTokens.current,
-    reserveTokens.list,
   ])
   const { chainId, account } = useEthers()
   const tokenContract = useTokenContract(currentRToken ?? '', false)
   // Debounce block number for performance
-  // const blockNumber = useDebounce(useBlockNumber(), 1000)
+  const blockNumber = useDebounce(useBlockNumber(), 1000)
   const rToken = useRToken(currentRToken ?? getAddress(chainId, 'RTOKEN'))
 
   useEffect(() => {
