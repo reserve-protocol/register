@@ -18,7 +18,7 @@ const BasketToken = ({ data }: { data: IBasketToken }) => {
     <Flex sx={{ flexDirection: 'column' }}>
       <Text sx={{ fontSize: 3, fontWeight: 'bold' }}>{data.symbol}</Text>
       <Text sx={{ fontSize: 2 }}>
-        $ {balance ? utils.formatEther(balance) : ''}
+        $ {balance ? parseFloat(utils.formatEther(balance)).toFixed(3) : ''}
       </Text>
     </Flex>
   )

@@ -1,9 +1,9 @@
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { NetworkConnector } from '@web3-react/network-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
-// import { WalletLinkConnector } from '@web3-react/walletlink-connector'
-import { LedgerConnector } from '@web3-react/ledger-connector'
-// import { TrezorConnector } from '@web3-react/trezor-connector'
+import { WalletLinkConnector } from '@web3-react/walletlink-connector'
+// import { LedgerConnector } from '@web3-react/ledger-connector'
+import { TrezorConnector } from '@web3-react/trezor-connector'
 // import { LatticeConnector } from '@web3-react/lattice-connector'
 // import { FrameConnector } from '@web3-react/frame-connector'
 // import { AuthereumConnector } from '@web3-react/authereum-connector'
@@ -12,6 +12,7 @@ import { FortmaticConnector } from '@web3-react/fortmatic-connector'
 // import { PortisConnector } from '@web3-react/portis-connector'
 // import { TorusConnector } from '@web3-react/torus-connector'
 
+// TODO: Update node URLs
 const keys = {
   RPC_URL_1: 'https://mainnet.infura.io/v3/84842078b09946638c03157f83405213',
   RPC_URL_3: 'https://rinkeby.infura.io/v3/84842078b09946638c03157f83405213',
@@ -41,48 +42,40 @@ export const walletconnect = new WalletConnectConnector({
   pollingInterval: POLLING_INTERVAL,
 })
 
-export const ledger = new LedgerConnector({
-  chainId: 1,
-  url: RPC_URLS[3],
-  pollingInterval: POLLING_INTERVAL,
-})
-
 export const fortmatic = new FortmaticConnector({
   apiKey: 'pk_test_29814A316CEDFCF7',
   chainId: 1,
 })
 
-// export const walletlink = new WalletLinkConnector({
-//   url: RPC_URLS[1],
-//   appName: 'web3-react example',
-//   supportedChainIds: [1, 3, 4, 5, 42, 10, 137, 69, 420, 80001]
-// })
-//
-// export const trezor = new TrezorConnector({
-//   chainId: 1,
-//   url: RPC_URLS[1],
-//   pollingInterval: POLLING_INTERVAL,
-//   manifestEmail: 'dummy@abc.xyz',
-//   manifestAppUrl: 'http://localhost:1234'
-// })
-//
+export const walletlink = new WalletLinkConnector({
+  url: RPC_URLS[1],
+  appName: 'reserve explorer',
+  supportedChainIds: [1, 3, 31337],
+})
+
+export const trezor = new TrezorConnector({
+  chainId: 1,
+  url: RPC_URLS[1],
+  pollingInterval: POLLING_INTERVAL,
+  // TODO: Update with real information
+  manifestEmail: 'dummy@abc.xyz',
+  manifestAppUrl: 'http://localhost:1234',
+})
+
+///
+// Connector examples
+///
 // export const lattice = new LatticeConnector({
 //   chainId: 4,
 //   appName: 'web3-react',
 //   url: RPC_URLS[4]
 // })
-//
 // export const frame = new FrameConnector({ supportedChainIds: [1] })
-//
 // export const authereum = new AuthereumConnector({ chainId: 42 })
-//
-//
 // export const magic = new MagicConnector({
 //   apiKey: keys.MAGIC_API_KEY,
 //   chainId: 4,
 //   email: 'hello@example.org'
 // })
-//
 // export const portis = new PortisConnector({ dAppId: keys.PORTIS_DAPP_ID, networks: [1, 100] })
-//
 // export const torus = new TorusConnector({ chainId: 1 })

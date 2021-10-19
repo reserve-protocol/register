@@ -1,7 +1,5 @@
 import styled from '@emotion/styled'
-import { useEthers, useTokenBalance } from '@usedapp/core'
 import { Button, Input } from 'components'
-import { BigNumberish } from 'ethers'
 import { useState } from 'react'
 import { Box } from 'theme-ui'
 
@@ -25,10 +23,9 @@ const InputContainer = styled(Box)`
 
 const Redeem = ({ address }: { address: string }) => {
   const [amount, setAmount] = useState('')
-  const { account } = useEthers()
-  const balance = useTokenBalance(address, account)
-
-  console.log('token balance', balance)
+  // const balance = useAppSelector(
+  //   ({ reserveTokens }) => reserveTokens.balances[address]
+  // )
 
   return (
     <>

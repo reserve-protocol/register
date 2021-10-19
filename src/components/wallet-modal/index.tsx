@@ -1,16 +1,25 @@
 import { useEthers } from '@usedapp/core'
 import { Box, Flex, Text } from 'theme-ui'
 import styled from '@emotion/styled'
-import MetamaskIcon from 'components/icons/logos/Metamask'
-import WalletConnectIcon from 'components/icons/logos/WalletConnect'
-import FortmaticIcon from 'components/icons/logos/Fortmatic'
-import LedgerIcon from 'components/icons/logos/Ledger'
+import {
+  MetamaskIcon,
+  WalletConnectIcon,
+  FortmaticIcon,
+  TrezorIcon,
+  CoinbaseIcon,
+} from 'components/icons/logos'
 import { Button } from 'components'
 import { useState, useEffect, useRef } from 'react'
 import Transactions from 'components/transactions'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { AbstractConnector } from '@web3-react/abstract-connector'
-import { injected, walletconnect, fortmatic, ledger } from './connectors'
+import {
+  injected,
+  walletconnect,
+  fortmatic,
+  trezor,
+  walletlink,
+} from './connectors'
 import Modal from '../modal'
 
 const WalletButton = styled(Box)`
@@ -24,6 +33,8 @@ const WalletButton = styled(Box)`
   width: 130px;
   height: 130px;
   padding: 20px;
+  margin-right: 20px;
+  margin-top: 20px;
 
   svg {
     font-size: 64px;
@@ -40,6 +51,18 @@ const WALLET_VIEW = {
   ERROR: 'ERROR',
   SELECTION: 'SELECTION',
 }
+
+const WALLETS = [
+  { icon: MetamaskIcon, label: 'Metamask', connector: injected },
+  {
+    icon: WalletConnectIcon,
+    label: 'WalletConnect',
+    connector: walletconnect,
+  },
+  { icon: FortmaticIcon, label: 'Fortmatic', connector: fortmatic },
+  { icon: TrezorIcon, label: 'Trezor', connector: trezor },
+  { icon: CoinbaseIcon, label: 'Coinbase', connector: walletlink },
+]
 
 const WalletSelection = () => {
   const [view, setView] = useState(WALLET_VIEW.SELECTION)
@@ -79,19 +102,15 @@ const WalletSelection = () => {
           display: 'flex',
           flexWrap: 'wrap',
           justifyContent: 'space-evenly',
+          marginTop: -20,
+          marginRight: -20,
         }}
       >
-        <WalletButton onClick={() => handleWalletSelection(injected)}>
-          <MetamaskIcon /> Metamask
-        </WalletButton>
-        <WalletButton onClick={() => handleWalletSelection(walletconnect)}>
-          <WalletConnectIcon />
-          WalletConnect
-        </WalletButton>
-        <WalletButton onClick={() => handleWalletSelection(fortmatic)}>
-          <FortmaticIcon />
-          Fortmatic
-        </WalletButton>
+        {WALLETS.map(({ icon: Icon, label, connector }) => (
+          <WalletButton onClick={() => handleWalletSelection(connector)}>
+            <Icon /> {label}
+          </WalletButton>
+        ))}
       </Box>
     </>
   )
