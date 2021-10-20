@@ -47,7 +47,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}' --fix",
-    "e2e": "cypress open"
+    "e2e": "cypress open",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "browserslist": {
     "production": [
@@ -64,6 +66,12 @@
   "devDependencies": {
     "@ethersproject/experimental": "^5.4.0",
     "@ethersproject/providers": "^5.4.3",
+    "@storybook/addon-actions": "^6.3.12",
+    "@storybook/addon-essentials": "^6.3.12",
+    "@storybook/addon-links": "^6.3.12",
+    "@storybook/node-logger": "^6.3.12",
+    "@storybook/preset-create-react-app": "^3.2.0",
+    "@storybook/react": "^6.3.12",
     "@typechain/ethers-v5": "^7.0.1",
     "@types/jest": "^27.0.1",
     "@types/node": "^16.7.4",
@@ -88,5 +96,17 @@
   "resolutions": {
     "@ethersproject/abi": "5.4.1",
     "@ethersproject/contracts": "5.4.1"
+  },
+  "eslintConfig": {
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
+    ]
   }
 }
