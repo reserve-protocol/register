@@ -7,7 +7,7 @@ import {
   useDebounce,
   useBlockNumber,
 } from '@usedapp/core'
-import { BigNumber, BigNumberish, ethers } from 'ethers'
+import { ethers } from 'ethers'
 
 /**
  * Returns a boolean if the given tokens has a certain amount of allowance to spend

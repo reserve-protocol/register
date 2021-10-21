@@ -1,5 +1,5 @@
 import { namehash } from '@ethersproject/hash'
-import { useContractCall, useDebounce, useEthers } from '@usedapp/core'
+import { ChainId, useContractCall, useDebounce, useEthers } from '@usedapp/core'
 import { getAddress } from 'constants/addresses'
 import { utils } from 'ethers'
 import { useMemo } from 'react'
@@ -33,12 +33,16 @@ const useENSName = (
     }
   }, [debouncedAddress])
 
-  const [resolverAddress] = useContractCall({
-    abi: ENSRegistrarInterface,
-    address: getAddress(chainId, 'ENS'),
-    method: 'resolver',
-    args: ensNodeArgument,
-  }) ?? [undefined]
+  // TODO: ENS currently only works in mainnet
+  // TODO: Maybe a good idea to create a different hook that looks in mainnet independently of the current chainId
+  const [resolverAddress] = useContractCall(
+    chainId === ChainId.Mainnet && {
+      abi: ENSRegistrarInterface,
+      address: getAddress(chainId, 'ENS'),
+      method: 'resolver',
+      args: ensNodeArgument,
+    }
+  ) ?? [undefined]
 
   const [name] = useContractCall(
     !!resolverAddress &&

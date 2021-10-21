@@ -1,14 +1,13 @@
-import { useEffect, useState } from 'react'
 import { useContractFunction } from '@usedapp/core'
+import { RToken as IRToken } from 'abis/types'
 import { Modal } from 'components'
 import { parseEther } from 'ethers/lib/utils'
 import { useRTokenContract } from 'hooks/useContract'
-import { IRTokenInfo } from 'hooks/useRToken'
 import useTokensApproval from 'hooks/useTokenApproval'
 import useTokensHasAllowance from 'hooks/useTokensHasAllowance'
-import { RToken as IRToken } from 'abis/types'
-import { selectBasket, selectCurrentRToken } from 'state/reserve-tokens/reducer'
+import { useEffect, useState } from 'react'
 import { useAppSelector } from 'state/hooks'
+import { selectBasket, selectCurrentRToken } from 'state/reserve-tokens/reducer'
 
 const STATUS = {
   PRECHECK: 'PRECHECK',

@@ -84,7 +84,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => (
       sx={{
         flexGrow: 99999,
         flexBasis: 0,
-        minWidth: 320,
+        minWidth: 768,
         overflow: 'hidden',
       }}
     >

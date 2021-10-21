@@ -18,7 +18,7 @@ import {
 import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
-import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
+import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface RTokenInterface extends ethers.utils.Interface {
   functions: {
@@ -44,7 +44,7 @@ interface RTokenInterface extends ethers.utils.Interface {
     "getPastVotes(address,uint256)": FunctionFragment;
     "getVotes(address)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
-    "initialize(string,string,tuple,tuple[],tuple)": FunctionFragment;
+    "initialize(string,string,(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,address,address,address,address),tuple[],(address,uint256,uint256,uint256,uint256,uint256))": FunctionFragment;
     "insurancePool()": FunctionFragment;
     "issue(uint256)": FunctionFragment;
     "issueAmounts(uint256)": FunctionFragment;
@@ -70,7 +70,7 @@ interface RTokenInterface extends ethers.utils.Interface {
     "transferOwnership(address)": FunctionFragment;
     "unfreezeRebalancing()": FunctionFragment;
     "updateBasket(tuple[])": FunctionFragment;
-    "updateConfig(tuple)": FunctionFragment;
+    "updateConfig((uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address,address,address,address,address))": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
   };
@@ -485,6 +485,72 @@ interface RTokenInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
+
+export type AdminChangedEvent = TypedEvent<
+  [string, string] & { previousAdmin: string; newAdmin: string }
+>;
+
+export type ApprovalEvent = TypedEvent<
+  [string, string, BigNumber] & {
+    owner: string;
+    spender: string;
+    value: BigNumber;
+  }
+>;
+
+export type BasketUpdatedEvent = TypedEvent<
+  [number, number] & { oldSize: number; newSize: number }
+>;
+
+export type BeaconUpgradedEvent = TypedEvent<[string] & { beacon: string }>;
+
+export type ConfigUpdatedEvent = TypedEvent<[] & {}>;
+
+export type DelegateChangedEvent = TypedEvent<
+  [string, string, string] & {
+    delegator: string;
+    fromDelegate: string;
+    toDelegate: string;
+  }
+>;
+
+export type DelegateVotesChangedEvent = TypedEvent<
+  [string, BigNumber, BigNumber] & {
+    delegate: string;
+    previousBalance: BigNumber;
+    newBalance: BigNumber;
+  }
+>;
+
+export type MaxSupplyExceededEvent = TypedEvent<[] & {}>;
+
+export type OwnershipTransferredEvent = TypedEvent<
+  [string, string] & { previousOwner: string; newOwner: string }
+>;
+
+export type RebalancingFrozenEvent = TypedEvent<[string] & { account: string }>;
+
+export type RebalancingUnfrozenEvent = TypedEvent<
+  [string] & { account: string }
+>;
+
+export type RedemptionEvent = TypedEvent<
+  [string, BigNumber] & { redeemer: string; amount: BigNumber }
+>;
+
+export type SlowMintingCompleteEvent = TypedEvent<
+  [string, BigNumber] & { account: string; amount: BigNumber }
+>;
+
+export type SlowMintingInitiatedEvent = TypedEvent<
+  [string, BigNumber] & { account: string; amount: BigNumber }
+>;
+
+export type TransferEvent = TypedEvent<
+  [string, string, BigNumber] & { from: string; to: string; value: BigNumber }
+>;
+
+export type UpgradedEvent = TypedEvent<[string] & { implementation: string }>;
 
 export class RToken extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -1400,12 +1466,29 @@ export class RToken extends BaseContract {
   };
 
   filters: {
+    "AdminChanged(address,address)"(
+      previousAdmin?: null,
+      newAdmin?: null
+    ): TypedEventFilter<
+      [string, string],
+      { previousAdmin: string; newAdmin: string }
+    >;
+
     AdminChanged(
       previousAdmin?: null,
       newAdmin?: null
     ): TypedEventFilter<
       [string, string],
       { previousAdmin: string; newAdmin: string }
+    >;
+
+    "Approval(address,address,uint256)"(
+      owner?: string | null,
+      spender?: string | null,
+      value?: null
+    ): TypedEventFilter<
+      [string, string, BigNumber],
+      { owner: string; spender: string; value: BigNumber }
     >;
 
     Approval(
@@ -1417,16 +1500,36 @@ export class RToken extends BaseContract {
       { owner: string; spender: string; value: BigNumber }
     >;
 
+    "BasketUpdated(uint16,uint16)"(
+      oldSize?: null,
+      newSize?: null
+    ): TypedEventFilter<[number, number], { oldSize: number; newSize: number }>;
+
     BasketUpdated(
       oldSize?: null,
       newSize?: null
     ): TypedEventFilter<[number, number], { oldSize: number; newSize: number }>;
 
+    "BeaconUpgraded(address)"(
+      beacon?: string | null
+    ): TypedEventFilter<[string], { beacon: string }>;
+
     BeaconUpgraded(
       beacon?: string | null
     ): TypedEventFilter<[string], { beacon: string }>;
 
+    "ConfigUpdated()"(): TypedEventFilter<[], {}>;
+
     ConfigUpdated(): TypedEventFilter<[], {}>;
+
+    "DelegateChanged(address,address,address)"(
+      delegator?: string | null,
+      fromDelegate?: string | null,
+      toDelegate?: string | null
+    ): TypedEventFilter<
+      [string, string, string],
+      { delegator: string; fromDelegate: string; toDelegate: string }
+    >;
 
     DelegateChanged(
       delegator?: string | null,
@@ -1435,6 +1538,15 @@ export class RToken extends BaseContract {
     ): TypedEventFilter<
       [string, string, string],
       { delegator: string; fromDelegate: string; toDelegate: string }
+    >;
+
+    "DelegateVotesChanged(address,uint256,uint256)"(
+      delegate?: string | null,
+      previousBalance?: null,
+      newBalance?: null
+    ): TypedEventFilter<
+      [string, BigNumber, BigNumber],
+      { delegate: string; previousBalance: BigNumber; newBalance: BigNumber }
     >;
 
     DelegateVotesChanged(
@@ -1446,7 +1558,17 @@ export class RToken extends BaseContract {
       { delegate: string; previousBalance: BigNumber; newBalance: BigNumber }
     >;
 
+    "MaxSupplyExceeded()"(): TypedEventFilter<[], {}>;
+
     MaxSupplyExceeded(): TypedEventFilter<[], {}>;
+
+    "OwnershipTransferred(address,address)"(
+      previousOwner?: string | null,
+      newOwner?: string | null
+    ): TypedEventFilter<
+      [string, string],
+      { previousOwner: string; newOwner: string }
+    >;
 
     OwnershipTransferred(
       previousOwner?: string | null,
@@ -1456,13 +1578,29 @@ export class RToken extends BaseContract {
       { previousOwner: string; newOwner: string }
     >;
 
+    "RebalancingFrozen(address)"(
+      account?: string | null
+    ): TypedEventFilter<[string], { account: string }>;
+
     RebalancingFrozen(
+      account?: string | null
+    ): TypedEventFilter<[string], { account: string }>;
+
+    "RebalancingUnfrozen(address)"(
       account?: string | null
     ): TypedEventFilter<[string], { account: string }>;
 
     RebalancingUnfrozen(
       account?: string | null
     ): TypedEventFilter<[string], { account: string }>;
+
+    "Redemption(address,uint256)"(
+      redeemer?: string | null,
+      amount?: BigNumberish | null
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { redeemer: string; amount: BigNumber }
+    >;
 
     Redemption(
       redeemer?: string | null,
@@ -1472,7 +1610,23 @@ export class RToken extends BaseContract {
       { redeemer: string; amount: BigNumber }
     >;
 
+    "SlowMintingComplete(address,uint256)"(
+      account?: null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { account: string; amount: BigNumber }
+    >;
+
     SlowMintingComplete(
+      account?: null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { account: string; amount: BigNumber }
+    >;
+
+    "SlowMintingInitiated(address,uint256)"(
       account?: null,
       amount?: null
     ): TypedEventFilter<
@@ -1488,6 +1642,15 @@ export class RToken extends BaseContract {
       { account: string; amount: BigNumber }
     >;
 
+    "Transfer(address,address,uint256)"(
+      from?: string | null,
+      to?: string | null,
+      value?: null
+    ): TypedEventFilter<
+      [string, string, BigNumber],
+      { from: string; to: string; value: BigNumber }
+    >;
+
     Transfer(
       from?: string | null,
       to?: string | null,
@@ -1496,6 +1659,10 @@ export class RToken extends BaseContract {
       [string, string, BigNumber],
       { from: string; to: string; value: BigNumber }
     >;
+
+    "Upgraded(address)"(
+      implementation?: string | null
+    ): TypedEventFilter<[string], { implementation: string }>;
 
     Upgraded(
       implementation?: string | null

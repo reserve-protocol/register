@@ -1,7 +1,6 @@
 import styled from '@emotion/styled'
 import { Box } from '@theme-ui/components'
-import { Input, Button } from 'components'
-import { IRTokenInfo } from 'hooks/useRToken'
+import { Button, Input } from 'components'
 import { useState } from 'react'
 import IssuanceTransactionModal from '../tx-modal'
 

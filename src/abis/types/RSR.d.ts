@@ -17,7 +17,7 @@ import {
 import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
-import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
+import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface RSRInterface extends ethers.utils.Interface {
   functions: {
@@ -220,6 +220,34 @@ interface RSRInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "DelegateVotesChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
 }
+
+export type ApprovalEvent = TypedEvent<
+  [string, string, BigNumber] & {
+    owner: string;
+    spender: string;
+    value: BigNumber;
+  }
+>;
+
+export type DelegateChangedEvent = TypedEvent<
+  [string, string, string] & {
+    delegator: string;
+    fromDelegate: string;
+    toDelegate: string;
+  }
+>;
+
+export type DelegateVotesChangedEvent = TypedEvent<
+  [string, BigNumber, BigNumber] & {
+    delegate: string;
+    previousBalance: BigNumber;
+    newBalance: BigNumber;
+  }
+>;
+
+export type TransferEvent = TypedEvent<
+  [string, string, BigNumber] & { from: string; to: string; value: BigNumber }
+>;
 
 export class RSR extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -599,6 +627,15 @@ export class RSR extends BaseContract {
   };
 
   filters: {
+    "Approval(address,address,uint256)"(
+      owner?: string | null,
+      spender?: string | null,
+      value?: null
+    ): TypedEventFilter<
+      [string, string, BigNumber],
+      { owner: string; spender: string; value: BigNumber }
+    >;
+
     Approval(
       owner?: string | null,
       spender?: string | null,
@@ -606,6 +643,15 @@ export class RSR extends BaseContract {
     ): TypedEventFilter<
       [string, string, BigNumber],
       { owner: string; spender: string; value: BigNumber }
+    >;
+
+    "DelegateChanged(address,address,address)"(
+      delegator?: string | null,
+      fromDelegate?: string | null,
+      toDelegate?: string | null
+    ): TypedEventFilter<
+      [string, string, string],
+      { delegator: string; fromDelegate: string; toDelegate: string }
     >;
 
     DelegateChanged(
@@ -617,6 +663,15 @@ export class RSR extends BaseContract {
       { delegator: string; fromDelegate: string; toDelegate: string }
     >;
 
+    "DelegateVotesChanged(address,uint256,uint256)"(
+      delegate?: string | null,
+      previousBalance?: null,
+      newBalance?: null
+    ): TypedEventFilter<
+      [string, BigNumber, BigNumber],
+      { delegate: string; previousBalance: BigNumber; newBalance: BigNumber }
+    >;
+
     DelegateVotesChanged(
       delegate?: string | null,
       previousBalance?: null,
@@ -624,6 +679,15 @@ export class RSR extends BaseContract {
     ): TypedEventFilter<
       [string, BigNumber, BigNumber],
       { delegate: string; previousBalance: BigNumber; newBalance: BigNumber }
+    >;
+
+    "Transfer(address,address,uint256)"(
+      from?: string | null,
+      to?: string | null,
+      value?: null
+    ): TypedEventFilter<
+      [string, string, BigNumber],
+      { from: string; to: string; value: BigNumber }
     >;
 
     Transfer(

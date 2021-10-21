@@ -18,7 +18,7 @@ import {
 import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
-import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
+import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface InsuranceInterface extends ethers.utils.Interface {
   functions: {
@@ -206,6 +206,48 @@ interface InsuranceInterface extends ethers.utils.Interface {
     nameOrSignatureOrTopic: "WithdrawalsDepositsPendingProcessing"
   ): EventFragment;
 }
+
+export type AccountPendingUpdateEvent = TypedEvent<
+  [string] & { account: string }
+>;
+
+export type AdminChangedEvent = TypedEvent<
+  [string, string] & { previousAdmin: string; newAdmin: string }
+>;
+
+export type BeaconUpgradedEvent = TypedEvent<[string] & { beacon: string }>;
+
+export type DepositCompletedEvent = TypedEvent<
+  [string, BigNumber] & { user: string; amount: BigNumber }
+>;
+
+export type DepositInitiatedEvent = TypedEvent<
+  [string, BigNumber] & { user: string; amount: BigNumber }
+>;
+
+export type OwnershipTransferredEvent = TypedEvent<
+  [string, string] & { previousOwner: string; newOwner: string }
+>;
+
+export type RevenueClaimedEvent = TypedEvent<
+  [string, BigNumber] & { user: string; reward: BigNumber }
+>;
+
+export type RevenueEventSavedEvent = TypedEvent<
+  [BigNumber, BigNumber] & { index: BigNumber; amount: BigNumber }
+>;
+
+export type UpgradedEvent = TypedEvent<[string] & { implementation: string }>;
+
+export type WithdrawalCompletedEvent = TypedEvent<
+  [string, BigNumber] & { user: string; amount: BigNumber }
+>;
+
+export type WithdrawalInitiatedEvent = TypedEvent<
+  [string, BigNumber] & { user: string; amount: BigNumber }
+>;
+
+export type WithdrawalsDepositsPendingProcessingEvent = TypedEvent<[] & {}>;
 
 export class Insurance extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -561,9 +603,21 @@ export class Insurance extends BaseContract {
   };
 
   filters: {
+    "AccountPendingUpdate(address)"(
+      account?: string | null
+    ): TypedEventFilter<[string], { account: string }>;
+
     AccountPendingUpdate(
       account?: string | null
     ): TypedEventFilter<[string], { account: string }>;
+
+    "AdminChanged(address,address)"(
+      previousAdmin?: null,
+      newAdmin?: null
+    ): TypedEventFilter<
+      [string, string],
+      { previousAdmin: string; newAdmin: string }
+    >;
 
     AdminChanged(
       previousAdmin?: null,
@@ -573,11 +627,31 @@ export class Insurance extends BaseContract {
       { previousAdmin: string; newAdmin: string }
     >;
 
+    "BeaconUpgraded(address)"(
+      beacon?: string | null
+    ): TypedEventFilter<[string], { beacon: string }>;
+
     BeaconUpgraded(
       beacon?: string | null
     ): TypedEventFilter<[string], { beacon: string }>;
 
+    "DepositCompleted(address,uint256)"(
+      user?: string | null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { user: string; amount: BigNumber }
+    >;
+
     DepositCompleted(
+      user?: string | null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { user: string; amount: BigNumber }
+    >;
+
+    "DepositInitiated(address,uint256)"(
       user?: string | null,
       amount?: null
     ): TypedEventFilter<
@@ -593,12 +667,28 @@ export class Insurance extends BaseContract {
       { user: string; amount: BigNumber }
     >;
 
+    "OwnershipTransferred(address,address)"(
+      previousOwner?: string | null,
+      newOwner?: string | null
+    ): TypedEventFilter<
+      [string, string],
+      { previousOwner: string; newOwner: string }
+    >;
+
     OwnershipTransferred(
       previousOwner?: string | null,
       newOwner?: string | null
     ): TypedEventFilter<
       [string, string],
       { previousOwner: string; newOwner: string }
+    >;
+
+    "RevenueClaimed(address,uint256)"(
+      user?: string | null,
+      reward?: null
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { user: string; reward: BigNumber }
     >;
 
     RevenueClaimed(
@@ -609,6 +699,14 @@ export class Insurance extends BaseContract {
       { user: string; reward: BigNumber }
     >;
 
+    "RevenueEventSaved(uint256,uint256)"(
+      index?: null,
+      amount?: null
+    ): TypedEventFilter<
+      [BigNumber, BigNumber],
+      { index: BigNumber; amount: BigNumber }
+    >;
+
     RevenueEventSaved(
       index?: null,
       amount?: null
@@ -617,11 +715,31 @@ export class Insurance extends BaseContract {
       { index: BigNumber; amount: BigNumber }
     >;
 
+    "Upgraded(address)"(
+      implementation?: string | null
+    ): TypedEventFilter<[string], { implementation: string }>;
+
     Upgraded(
       implementation?: string | null
     ): TypedEventFilter<[string], { implementation: string }>;
 
+    "WithdrawalCompleted(address,uint256)"(
+      user?: string | null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { user: string; amount: BigNumber }
+    >;
+
     WithdrawalCompleted(
+      user?: string | null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { user: string; amount: BigNumber }
+    >;
+
+    "WithdrawalInitiated(address,uint256)"(
       user?: string | null,
       amount?: null
     ): TypedEventFilter<
@@ -636,6 +754,8 @@ export class Insurance extends BaseContract {
       [string, BigNumber],
       { user: string; amount: BigNumber }
     >;
+
+    "WithdrawalsDepositsPendingProcessing()"(): TypedEventFilter<[], {}>;
 
     WithdrawalsDepositsPendingProcessing(): TypedEventFilter<[], {}>;
   };
