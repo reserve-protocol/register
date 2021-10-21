@@ -48,8 +48,8 @@ const useENSAddress = (
 
   const changed = debouncedName !== ensName
   return {
-    address: changed ? null : addr.result?.[0] ?? null,
-    loading: changed || resolverAddress.loading || addr.loading,
+    address: changed ? null : addr ?? null,
+    loading: changed,
   }
 }
 

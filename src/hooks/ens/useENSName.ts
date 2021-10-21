@@ -15,7 +15,7 @@ const ENSResolverInterface = new utils.Interface(ENSResolverAbi)
  * Note this is not the same as looking up an ENS name to find an address.
  */
 const useENSName = (
-  address?: string
+  address?: string | undefined | null
 ): {
   ENSName: string | null
   loading: boolean
@@ -52,8 +52,8 @@ const useENSName = (
 
   const changed = debouncedAddress !== address
   return {
-    ENSName: changed ? null : name.result?.[0] ?? null,
-    loading: changed || resolverAddress.loading || name.loading,
+    ENSName: changed ? null : name ?? null,
+    loading: changed,
   }
 }
 

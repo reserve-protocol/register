@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
-import { shortenAddress, useEthers } from '@usedapp/core'
-import { Text, Button } from 'theme-ui'
 import Jazzicon from '@metamask/jazzicon'
+import { shortenAddress, useEthers } from '@usedapp/core'
+import useENSName from 'hooks/ens/useENSName'
+import { useEffect, useRef, useState } from 'react'
+import { Button, Text } from 'theme-ui'
 import WalletModal from '../wallet-modal'
 
 const Container = styled.div`
@@ -46,7 +47,8 @@ function Identicon() {
  * @constructor
  */
 const Account = () => {
-  const { account, activateBrowserWallet } = useEthers()
+  const { account } = useEthers()
+  const { ENSName } = useENSName(account)
   const [isWalletModalVisible, showWalletModal] = useState(false)
 
   const handleOpenModal = () => {
@@ -60,7 +62,7 @@ const Account = () => {
       ) : (
         <Container onClick={handleOpenModal}>
           <Identicon />
-          <Text>{shortenAddress(account)}</Text>
+          <Text>{ENSName || shortenAddress(account)}</Text>
         </Container>
       )}
       {isWalletModalVisible && (
