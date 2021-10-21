@@ -60,3 +60,11 @@ export function escapeRegExp(string: string): string {
 export function formattedFeeAmount(feeAmount: number): number {
   return feeAmount / 10000
 }
+
+/**
+ * Returns true if the string value is zero in hex
+ * @param hexNumberString
+ */
+export function isZero(hexNumberString: string) {
+  return /^0x0*$/.test(hexNumberString)
+}

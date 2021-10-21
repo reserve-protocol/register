@@ -34,7 +34,7 @@ const getBasketToken = async (
 ): Promise<IBasketToken> => {
   const tokenInfo = await RTokenContract.basketToken(tokenIndex)
   const token = <IERC20>(
-    new ethers.Contract(tokenInfo.tokenAddress, ERC20, provider)
+    new ethers.Contract(tokenInfo.tokenAddress, ERC20, provider || undefined)
   )
   let tokenBalance: BigNumberish = ''
 

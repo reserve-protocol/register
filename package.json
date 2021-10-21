@@ -15,10 +15,10 @@
     "@testing-library/user-event": "^12.1.10",
     "@types/react-dom": "^17.0.9",
     "@types/react-table": "^7.7.6",
-    "@usedapp/core": "^0.4.6",
+    "@usedapp/core": "^0.5.4",
     "@web3-react/fortmatic-connector": "^6.1.6",
     "@web3-react/trezor-connector": "^6.1.9",
-    "@web3-react/walletconnect-connector": "^6.2.4",
+    "@web3-react/walletconnect-connector": "6.2.4",
     "@web3-react/walletlink-connector": "6.2.5",
     "ethereum-multicall": "^2.9.0",
     "ethers": "5.4.1",
@@ -65,7 +65,7 @@
   },
   "devDependencies": {
     "@ethersproject/experimental": "^5.4.0",
-    "@ethersproject/providers": "^5.4.3",
+    "@ethersproject/providers": "5.4.1",
     "@storybook/addon-actions": "^6.3.12",
     "@storybook/addon-essentials": "^6.3.12",
     "@storybook/addon-links": "^6.3.12",
@@ -92,6 +92,9 @@
     "truffle-privatekey-provider": "^1.5.0",
     "typechain": "^5.1.2",
     "web3": "^1.5.2"
+  },
+  "peerDependencies": {
+    "babel-loader": "8.1.0"
   },
   "resolutions": {
     "@ethersproject/abi": "5.4.1",
