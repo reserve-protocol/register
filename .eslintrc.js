@@ -2,6 +2,7 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
+    'jest/globals': true,
   },
   settings: {
     'import/resolver': {
@@ -26,7 +27,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
   },
-  plugins: ['react', 'cypress', '@typescript-eslint', 'prettier'],
+  plugins: ['react', 'cypress', '@typescript-eslint', 'prettier', 'jest'],
   rules: {
     semi: ['error', 'never'],
     'import/extensions': [

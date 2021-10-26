@@ -5,10 +5,6 @@ import { useTable } from 'react-table'
 import Container from '../../components/container'
 
 const columns: any[] = [
-  {
-    Header: '#',
-    Cell: ({ row }: { row: any }) => <div>{Number(row.id) + 1}</div>,
-  },
   { Header: 'Token', accessor: 'name' },
   { Header: 'Price', accessor: 'current_price' },
   { Header: 'Change (%)', accessor: 'price_change_percentage_24h' },
@@ -34,7 +30,7 @@ const Market = () => {
   return (
     <Container py={4}>
       <Card title="Market">
-        <Table columns={columns} data={tokens} />
+        <Table columns={columns} data={tokens} pagination />
       </Card>
     </Container>
   )

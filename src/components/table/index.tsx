@@ -302,7 +302,6 @@ export function Table<D extends { [key: string]: any }>({
             ) => {
               prepareRow(row)
               const { key, ...rowProps } = row.getRowProps()
-              console.log('row', row)
               return (
                 <React.Fragment key={key}>
                   <Box variant="styles.tr" as="tr" {...rowProps}>
