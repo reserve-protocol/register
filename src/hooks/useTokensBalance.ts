@@ -10,7 +10,7 @@ import {
 import { ethers } from 'ethers'
 
 /**
- * Returns a boolean if the given tokens has a certain amount of allowance to spend
+ * Returns a hash of balances for the given tokens
  *
  * @param tokens
  * @param spender
@@ -33,6 +33,8 @@ const useTokensBalance = (tokens: [string, number][]): StringMap => {
   )
 
   const balances = <any[]>useContractCalls(calls) ?? []
+
+  console.log('balances', balances)
 
   return balances.reduce((acc, current, index) => {
     if (current && current[0]) {

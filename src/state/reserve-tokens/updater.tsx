@@ -160,7 +160,7 @@ const Updater = () => {
   const [currentRToken] = useAppSelector(({ reserveTokens }) => [
     reserveTokens.current,
   ])
-  const { chainId, account } = useEthers()
+  const { chainId } = useEthers()
   const rToken = useRToken(currentRToken ?? getAddress(chainId, 'RTOKEN'))
   const tokenBalances = useTokensBalance(
     rToken?.token.address
