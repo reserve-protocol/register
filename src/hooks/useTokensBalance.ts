@@ -34,8 +34,6 @@ const useTokensBalance = (tokens: [string, number][]): StringMap => {
 
   const balances = <any[]>useContractCalls(calls) ?? []
 
-  console.log('balances', balances)
-
   return balances.reduce((acc, current, index) => {
     if (current && current[0]) {
       const [address, decimals] = tokens[index]

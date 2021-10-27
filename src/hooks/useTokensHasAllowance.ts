@@ -1,5 +1,11 @@
 import { useMemo } from 'react'
-import { useContractCalls, useEthers, ERC20Interface } from '@usedapp/core'
+import {
+  useContractCalls,
+  useEthers,
+  ERC20Interface,
+  useDebounce,
+  useBlockNumber,
+} from '@usedapp/core'
 import { BigNumber, BigNumberish } from 'ethers'
 
 /**
@@ -15,7 +21,8 @@ const useTokensHasAllowance = (
   spender: string,
   amount: BigNumberish
 ) => {
-  const { account } = useEthers()
+  const { account, chainId } = useEthers()
+  const blockNumber = useDebounce(useBlockNumber(), 1000)
 
   const calls = useMemo(
     () =>
@@ -25,13 +32,16 @@ const useTokensHasAllowance = (
         method: 'allowance',
         args: [account, spender],
       })),
-    [tokens.toString(), account]
+    [tokens.toString(), account, chainId, blockNumber]
   )
 
   const allowances = <any[]>useContractCalls(calls) ?? []
 
-  return allowances.every(
-    (value) => value && value.length && <BigNumber>value[0].gte(amount)
+  return (
+    allowances.length &&
+    allowances.every(
+      (value) => value && value.length && <BigNumber>value[0].gte(amount)
+    )
   )
 }
 
