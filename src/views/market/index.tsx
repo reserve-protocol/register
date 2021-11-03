@@ -1,7 +1,6 @@
 import { Card } from 'components'
 import { Table } from 'components/table'
 import { useState, useEffect } from 'react'
-import { useTable } from 'react-table'
 import Container from '../../components/container'
 
 const columns: any[] = [

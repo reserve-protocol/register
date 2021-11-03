@@ -1,8 +1,10 @@
 import { useEthers } from '@usedapp/core'
 import { Button, Card, Container } from 'components'
+import TransactionsTable from 'components/transactions/table'
 import { useSelector } from 'react-redux'
 import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
 import { Flex } from 'theme-ui'
+import Factory from 'views/factory'
 import RTokenAbi from '../../abis/RToken.json'
 import { RToken as IRToken } from '../../abis/types'
 import { useContract } from '../../hooks/useContract'
@@ -46,6 +48,10 @@ const Issuance = () => {
           <Redeem address={RToken.address} />
         </Flex>
         <Button onClick={handleAct}>Act</Button>
+      </Card>
+      <Factory />
+      <Card title="Protocol TXs" mb={3}>
+        <TransactionsTable />
       </Card>
     </Container>
   )
