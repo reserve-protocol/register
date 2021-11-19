@@ -1,8 +1,8 @@
 import { namehash } from '@ethersproject/hash'
 import { ChainId, useContractCall, useDebounce, useEthers } from '@usedapp/core'
-import { getAddress } from 'constants/addresses'
 import { utils } from 'ethers'
 import { useMemo } from 'react'
+import { ENS_ADDRESS } from '../../constants/addresses'
 import ENSResolverAbi from '../../abis/ens-public-resolver.json'
 import ENSRegistrarAbi from '../../abis/ens-registrar.json'
 import { isAddress, isZero } from '../../utils'
@@ -38,7 +38,7 @@ const useENSName = (
   const [resolverAddress] = useContractCall(
     chainId === ChainId.Mainnet && {
       abi: ENSRegistrarInterface,
-      address: getAddress(chainId, 'ENS'),
+      address: ENS_ADDRESS[chainId],
       method: 'resolver',
       args: ensNodeArgument,
     }

@@ -1,27 +1,7 @@
 import { Table } from 'components/table'
 import { shortenAddress } from '@usedapp/core'
-import { gql, useQuery, useSubscription } from '@apollo/client'
+import { gql, useSubscription } from '@apollo/client'
 import { formatEther } from '@ethersproject/units'
-
-const TRANSACTION_TYPES = {
-  TRANSFER: 'TRANSFER',
-  ISSUE: 'ISSUE',
-  REDEEM: 'REDEEM',
-  STAKE: 'STAKE',
-  WITHDRAW: 'WITHDRAW',
-}
-
-const mock: any = [
-  {
-    description: 'transfer',
-    from: '0x',
-    to: '0x',
-    value: 0,
-    txFee: 0,
-    block: 0,
-    createdAt: 'test',
-  },
-]
 
 const GET_TRANSACTIONS = gql`
   subscription GetTransactions {

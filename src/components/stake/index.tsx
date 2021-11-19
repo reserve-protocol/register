@@ -4,7 +4,6 @@ import { formatEther, parseEther } from '@ethersproject/units'
 import { ethers } from 'ethers'
 import { useEthers, useContractCall, useContractFunction } from '@usedapp/core'
 import { Flex, Text, Box, Button } from 'theme-ui'
-import { getAddress } from '../../constants/addresses'
 import RSR from '../../abis/RSR.json'
 import Insurance from '../../abis/Insurance.json'
 import { DEPOSIT_STATUS } from '../../constants'
@@ -72,30 +71,30 @@ DepositStatus.defaultProps = {
  */
 const Stake = () => {
   const { account, chainId } = useEthers()
-  const InsuranceContract = useMemo(
-    () => new ethers.Contract(getAddress(chainId, 'INSURANCE'), Insurance),
-    [chainId]
-  )
-  const RSRContract = useMemo(
-    () => new ethers.Contract(getAddress(chainId, 'RSR'), RSR),
-    [chainId]
-  )
+  // const InsuranceContract = useMemo(
+  //   () => new ethers.Contract(getAddress(chainId, 'INSURANCE'), Insurance),
+  //   [chainId]
+  // )
+  // const RSRContract = useMemo(
+  //   () => new ethers.Contract(getAddress(chainId, 'RSR'), RSR),
+  //   [chainId]
+  // )
 
-  const [allowance] =
-    useContractCall({
-      abi: RsrInterface,
-      address: RSRContract.address,
-      method: 'allowance',
-      args: [account, InsuranceContract?.address],
-    }) ?? []
+  // const [allowance] =
+  //   useContractCall({
+  //     abi: RsrInterface,
+  //     address: RSRContract.address,
+  //     method: 'allowance',
+  //     args: [account, InsuranceContract?.address],
+  //   }) ?? []
 
-  const [earned] =
-    useContractCall({
-      abi: insuranceInterface,
-      address: InsuranceContract?.address,
-      method: 'earned',
-      args: [account],
-    }) ?? []
+  // const [earned] =
+  //   useContractCall({
+  //     abi: insuranceInterface,
+  //     address: InsuranceContract?.address,
+  //     method: 'earned',
+  //     args: [account],
+  //   }) ?? []
 
   // Stake component
   const [stakeAmount, setStakeAmount] = useState('0')
@@ -105,125 +104,87 @@ const Stake = () => {
   )
   // const [isOpen, openModal] = useState(false)
 
-  const { state: stakeState, send: stake } = useContractFunction(
-    InsuranceContract,
-    'stake',
-    { transactionName: 'Add RSR to Insurance pool' }
-  )
-  const { send: unstake } = useContractFunction(InsuranceContract, 'unstake', {
-    transactionName: 'Remove RSR from Insurance Pool',
-  })
-  const { state: approve, send: approveAmount } = useContractFunction(
-    RSRContract,
-    'approve',
-    { transactionName: 'Approve RSR for Insurance' }
-  )
+  // const { state: stakeState, send: stake } = useContractFunction(
+  //   InsuranceContract,
+  //   'stake',
+  //   { transactionName: 'Add RSR to Insurance pool' }
+  // )
+  // const { send: unstake } = useContractFunction(InsuranceContract, 'unstake', {
+  //   transactionName: 'Remove RSR from Insurance Pool',
+  // })
+  // const { state: approve, send: approveAmount } = useContractFunction(
+  //   RSRContract,
+  //   'approve',
+  //   { transactionName: 'Approve RSR for Insurance' }
+  // )
 
-  const handleStake = (amount = allowance) => {
-    stake(amount)
-    setStakeStatus({
-      amount: formatEther(amount),
-      status: DEPOSIT_STATUS.CONFIRMED,
-    })
-  }
+  // const handleStake = (amount = allowance) => {
+  //   stake(amount)
+  //   setStakeStatus({
+  //     amount: formatEther(amount),
+  //     status: DEPOSIT_STATUS.CONFIRMED,
+  //   })
+  // }
 
-  const handleStakeApprove = () => {
-    const amount = parseEther(stakeAmount)
+  // const handleStakeApprove = () => {
+  //   const amount = parseEther(stakeAmount)
 
-    if (
-      allowance &&
-      Number(formatEther(allowance)) >= Number(formatEther(amount))
-    ) {
-      handleStake(amount)
-    } else {
-      approveAmount(InsuranceContract.address, amount)
-      setStakeStatus({
-        status: DEPOSIT_STATUS.PENDING_APPROVAL,
-        amount: stakeAmount,
-      })
-      setStakeAmount('0')
-    }
-  }
+  //   if (
+  //     allowance &&
+  //     Number(formatEther(allowance)) >= Number(formatEther(amount))
+  //   ) {
+  //     handleStake(amount)
+  //   } else {
+  //     approveAmount(InsuranceContract.address, amount)
+  //     setStakeStatus({
+  //       status: DEPOSIT_STATUS.PENDING_APPROVAL,
+  //       amount: stakeAmount,
+  //     })
+  //     setStakeAmount('0')
+  //   }
+  // }
 
-  const handleUnstake = () => {
-    unstake(parseEther(unstakeAmount))
-    setUnstakeAmount('0')
-  }
+  // const handleUnstake = () => {
+  //   unstake(parseEther(unstakeAmount))
+  //   setUnstakeAmount('0')
+  // }
 
-  // RSR Approve
-  useEffect(() => {
-    if (approve.status === 'Success' && approve.receipt) {
-      setStakeStatus({
-        ...(stakeStatus as IStakeStatus),
-        status: DEPOSIT_STATUS.APPROVED,
-        approveTx: approve?.transaction?.hash,
-      })
-    } else if (approve?.status === 'Fail') {
-      setStakeStatus({
-        ...(stakeStatus as IStakeStatus),
-        status: DEPOSIT_STATUS.REJECTED,
-      })
-    }
-  }, [approve.status])
+  // // RSR Approve
+  // useEffect(() => {
+  //   if (approve.status === 'Success' && approve.receipt) {
+  //     setStakeStatus({
+  //       ...(stakeStatus as IStakeStatus),
+  //       status: DEPOSIT_STATUS.APPROVED,
+  //       approveTx: approve?.transaction?.hash,
+  //     })
+  //   } else if (approve?.status === 'Fail') {
+  //     setStakeStatus({
+  //       ...(stakeStatus as IStakeStatus),
+  //       status: DEPOSIT_STATUS.REJECTED,
+  //     })
+  //   }
+  // }, [approve.status])
 
-  // Insurance stake
-  useEffect(() => {
-    if (stakeState.status === 'Success' && stakeState.receipt) {
-      setStakeStatus({
-        ...(stakeStatus as IStakeStatus),
-        status: DEPOSIT_STATUS.COMPLETED,
-      })
-    }
+  // // Insurance stake
+  // useEffect(() => {
+  //   if (stakeState.status === 'Success' && stakeState.receipt) {
+  //     setStakeStatus({
+  //       ...(stakeStatus as IStakeStatus),
+  //       status: DEPOSIT_STATUS.COMPLETED,
+  //     })
+  //   }
 
-    if (stakeState.status === 'Fail' || stakeState.status === 'Exception') {
-      setStakeStatus({
-        ...(stakeStatus as IStakeStatus),
-        status: DEPOSIT_STATUS.FAILED,
-      })
-    }
-  }, [stakeState.status])
+  //   if (stakeState.status === 'Fail' || stakeState.status === 'Exception') {
+  //     setStakeStatus({
+  //       ...(stakeStatus as IStakeStatus),
+  //       status: DEPOSIT_STATUS.FAILED,
+  //     })
+  //   }
+  // }, [stakeState.status])
 
   return (
     <Card title="Stake">
-      <Flex mx={-2}>
-        <InputContainer mx={2}>
-          {/* <TextField
-            placeholder="amount..."
-            label="Stake amount"
-            value={stakeAmount}
-            onChange={setStakeAmount}
-          /> */}
-          <Button onClick={handleStakeApprove}>Stake</Button>
-        </InputContainer>
-        <InputContainer mx={2}>
-          {/* <TextField
-            placeholder="amount..."
-            label="Unstake amount"
-            value={unstakeAmount}
-            onChange={setUnstakeAmount}
-          /> */}
-          <Button onClick={handleUnstake}>Unstake</Button>
-        </InputContainer>
-      </Flex>
-      {stakeStatus && (
-        <DepositStatus
-          {...(stakeStatus as IStakeStatus)}
-          onStake={handleStake}
-        />
-      )}
-      <Flex mt={4}>
-        <Text>
-          <b>Allowance:</b> {allowance ? formatEther(allowance) : 0}
-        </Text>
-      </Flex>
-      <Flex mt={2}>
-        <Text mr={2}>
-          <b>Total earnings:</b> {earned ? formatEther(earned) : 0}
-        </Text>
-        <Button disabled={!earned || Number(formatEther(earned)) === 0}>
-          Withdraw
-        </Button>
-      </Flex>
+      <span>hola</span>
     </Card>
   )
 }

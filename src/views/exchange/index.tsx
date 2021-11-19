@@ -10,9 +10,9 @@ import {
   useContractFunction,
 } from '@usedapp/core'
 import { Text, Flex, Box, Button } from 'theme-ui'
+import { RSR_ADDRESS } from 'constants/addresses'
 import RSR from '../../abis/RSR.json'
 import PrevRSR from '../../abis/PrevRSR.json'
-import { getAddress } from '../../constants/addresses'
 import Container from '../../components/container'
 import Transactions from '../../components/transactions'
 import Stake from '../../components/stake'
@@ -29,17 +29,13 @@ const InputContainer = styled(Box)`
 `
 
 const RsrInterface = new ethers.utils.Interface(RSR)
-const prevRSRInterface = new ethers.utils.Interface(PrevRSR)
 
 const Exchange = () => {
   const { account, chainId } = useEthers()
-  const etherBalance = useTokenBalance(getAddress(chainId, 'RSR'), account)
-  const stakedAmount = useTokenBalance(
-    getAddress(chainId, 'INSURANCE'),
-    account
-  )
+  const etherBalance = useTokenBalance(RSR_ADDRESS[chainId as number], account)
+  const stakedAmount = 0
   const RSRContract = useMemo(
-    () => new ethers.Contract(getAddress(chainId, 'RSR'), RSR),
+    () => new ethers.Contract(RSR_ADDRESS[chainId as number], RSR),
     [chainId]
   )
   const gasPrice = useGasPrice()
@@ -47,18 +43,10 @@ const Exchange = () => {
   const [transferAmount, setTransferAmount] = useState('0')
   const [transferAccount, setTransferAccount] = useState('')
 
-  const [isPrevPaused] =
-    useContractCall({
-      abi: prevRSRInterface,
-      address: getAddress(chainId, 'PREV_RSR'),
-      method: 'paused',
-      args: [],
-    }) ?? []
-
   const [totalSupply] =
     useContractCall({
       abi: RsrInterface,
-      address: getAddress(chainId, 'RSR'),
+      address: RSR_ADDRESS[chainId as number],
       method: 'totalSupply',
       args: [],
     }) ?? []
@@ -103,11 +91,6 @@ const Exchange = () => {
           </Text>
         </Card>
       )}
-      <Card title="Is PrevRSR Paused" mb={3}>
-        <Flex>
-          <Text>{isPrevPaused ? 'Yes' : 'No'}</Text>
-        </Flex>
-      </Card>
       <Card title="Send" mb={3}>
         <Flex mx={-2}>
           {/* <InputContainer mx={2}>

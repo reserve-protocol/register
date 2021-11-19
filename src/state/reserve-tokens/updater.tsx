@@ -1,6 +1,6 @@
 import { useEthers } from '@usedapp/core'
 import RTokenAbi from 'abis/RToken.json'
-import { getAddress } from 'constants/addresses'
+import { RTOKEN_ADDRESS } from 'constants/addresses'
 import { Multicall } from 'ethereum-multicall'
 import useMulticall, {
   getTokensInfo,
@@ -138,11 +138,11 @@ const useRToken = (address: string | Falsy): T | null => {
 
       try {
         const rToken = await getRToken(multicall, address)
-        const basket = await getRTokenBasket(multicall, rToken)
+        // const basket = await getRTokenBasket(multicall, rToken)
 
         setData({
           token: rToken,
-          basket,
+          basket: [],
         })
       } catch (e) {
         console.error('Error getting rtoken info', e)
@@ -161,7 +161,7 @@ const Updater = () => {
     reserveTokens.current,
   ])
   const { chainId } = useEthers()
-  const rToken = useRToken(currentRToken ?? getAddress(chainId, 'RTOKEN'))
+  const rToken = useRToken(currentRToken ?? RTOKEN_ADDRESS[chainId as number])
   const tokenBalances = useTokensBalance(
     rToken?.token.address
       ? [
