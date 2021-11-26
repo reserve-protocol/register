@@ -36,6 +36,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "react-table": "^7.7.0",
+    "recharts": "^2.1.6",
     "redux-localstorage-simple": "^2.4.1",
     "subscriptions-transport-ws": "^0.11.0",
     "theme-ui": "^0.11.2",

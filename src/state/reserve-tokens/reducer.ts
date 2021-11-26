@@ -1,14 +1,34 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { BigNumber, BigNumberish } from 'ethers'
 
-// TODO: Token as base interface
-export interface IReserveToken {
+export interface IToken {
   address: string
   symbol: string
   name: string
   decimals: number
-  basketSize: number
-  insurancePool: string
+  supply?: { total: number }
+}
+
+export interface ICollateral {
+  id: string
+  ratio: BigNumber
+  token: IToken
+}
+
+export interface IVault {
+  id: string
+  collaterals: ICollateral[]
+}
+
+// TODO: Token as base interface
+export interface IReserveToken {
+  id: string
+  mood: string
+  staked: BigNumber
+  rToken: IToken
+  rsr: IToken
+  stToken: IToken
+  vault: IVault
 }
 
 export interface IBasketToken {
@@ -42,17 +62,13 @@ export const reserveTokenSlice = createSlice({
   name: 'reserveTokens',
   initialState,
   reducers: {
-    loadTokens: (
-      state,
-      action: PayloadAction<{ [x: string]: IReserveToken }>
-    ) => {
-      state.list = { ...state.list, ...action.payload }
-    },
-    loadBasket: (
-      state,
-      action: PayloadAction<{ [x: string]: IBasketToken[] }>
-    ) => {
-      state.baskets = { ...state.baskets, ...action.payload }
+    // TODO: Typings
+    loadTokens: (state, action: PayloadAction<any[]>) => {
+      state.list = action.payload.reduce((acc, data) => {
+        acc[data.id.toLowerCase()] = data as IReserveToken
+
+        return acc
+      }, {})
     },
     updateBalance: (
       state,
@@ -68,7 +84,8 @@ export const reserveTokenSlice = createSlice({
 
 export const selectCurrentRToken = createSelector(
   (state: any) => [state.reserveTokens.current, state.reserveTokens.list],
-  ([current, list]): IReserveToken | null => (current ? list[current] : null)
+  ([current, list]): IReserveToken | null =>
+    current ? list[current.toLowerCase()] : null
 )
 
 export const selectBasket = createSelector(
@@ -76,7 +93,7 @@ export const selectBasket = createSelector(
   ([current, baskets]): IBasketToken[] => (current ? baskets[current] : [])
 )
 
-export const { loadTokens, loadBasket, updateBalance, setCurrent } =
+export const { loadTokens, updateBalance, setCurrent } =
   reserveTokenSlice.actions
 
 export default reserveTokenSlice.reducer

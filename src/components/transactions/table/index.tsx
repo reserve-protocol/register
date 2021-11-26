@@ -32,27 +32,17 @@ const columns = [
     accessor: 'transactionType',
   },
   {
-    Header: 'Token',
-    accessor: 'token.symbol',
-  },
-  {
-    Header: 'From',
-    accessor: 'fromAddr.address',
-    Cell: ({ cell }: { cell: any }) => shortenAddress(cell.value),
-  },
-  {
-    Header: 'To',
-    accessor: 'toAddr.address',
-    Cell: ({ cell }: { cell: any }) => shortenAddress(cell.value),
-  },
-  {
-    Header: 'Block #',
-    accessor: 'block',
-  },
-  {
     Header: 'Amount',
     accessor: 'amount',
-    Cell: ({ cell }: { cell: any }) => `$${formatEther(cell.value)}`,
+  },
+  {
+    Header: 'USD $',
+    accessor: 'id',
+    Cell: ({ cell }: { cell: any }) => `$ ${cell.value}`,
+  },
+  {
+    Header: 'Chain',
+    Cell: ({ cell }: { cell: any }) => 'TODO',
   },
 ]
 

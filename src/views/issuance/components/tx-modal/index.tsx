@@ -25,7 +25,7 @@ const IssuanceTransactionModal = ({
   onClose(): void
   amount: string
 }) => {
-  const rToken = useAppSelector(selectCurrentRToken)
+  const { rToken } = useAppSelector(selectCurrentRToken) ?? {}
   const basket = useAppSelector(selectBasket)
 
   // TODO: Handle this, most likely not a valid case

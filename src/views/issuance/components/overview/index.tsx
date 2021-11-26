@@ -1,58 +1,95 @@
-import { utils } from 'ethers'
-import { Card } from 'components'
-import { Flex, Grid, Text } from 'theme-ui'
-import {
-  IReserveToken,
-  IBasketToken,
-  selectBasket,
-} from 'state/reserve-tokens/reducer'
 import { useEthers, useTokenBalance } from '@usedapp/core'
-import RTokenIcon from 'components/icons/logos/RTokenIcon'
-import { useSelector } from 'react-redux'
+import { Card } from 'components'
+import MarketCapChart from 'components/charts/marketcap-chart'
+import PriceChart from 'components/charts/price-chart'
+import InfoBox from 'components/info-box'
+import TransactionsTable from 'components/transactions/table'
+import { utils } from 'ethers'
+import { IReserveToken } from 'state/reserve-tokens/reducer'
+import { Box, Flex, Grid, Text } from 'theme-ui'
 
-const BasketToken = ({ data }: { data: IBasketToken }) => {
-  const { account } = useEthers()
-  const balance = useTokenBalance(data.address, account)
-
-  return (
-    <Flex sx={{ flexDirection: 'column' }}>
-      <Text sx={{ fontSize: 3, fontWeight: 'bold' }}>{data.symbol}</Text>
-      <Text sx={{ fontSize: 2 }}>
-        $ {balance ? parseFloat(utils.formatEther(balance)).toFixed(3) : ''}
-      </Text>
-    </Flex>
-  )
-}
-
+/**
+ * RToken Overview
+ * Displays an overview of the RToken Market and transactions stadistics
+ *
+ * @returns React.Component
+ */
 const Overview = ({ data }: { data: IReserveToken }) => {
   const { account } = useEthers()
-  const balance = useTokenBalance(data.address, account)
-  const baskets = useSelector(selectBasket)
+  const { rToken } = data
+  const balance = useTokenBalance(rToken.address, account)
 
   return (
-    <>
-      <Grid columns={2} mb={3}>
-        <Card>
-          <Flex sx={{ alignItems: 'center' }}>
-            <RTokenIcon style={{ fontSize: 32, marginRight: '1rem' }} />
-            <Text sx={{ fontSize: 4, fontWeight: 'bold' }}>{data.symbol}</Text>
-            <Text sx={{ marginLeft: 'auto', fontSize: 3 }}>
-              $ {balance ? utils.formatEther(balance) : ''}
-            </Text>
-          </Flex>
-        </Card>
-        <Card sx={{ display: 'flex', alignItems: 'center' }}>
-          <Text>Use this space for something...</Text>
-        </Card>
-      </Grid>
-      <Card title="Collaterals" mb={3}>
-        <Grid gap={4} columns={data.basketSize}>
-          {baskets.map((token) => (
-            <BasketToken data={token} key={token.address} />
-          ))}
+    <Flex
+      sx={{
+        flexWrap: 'wrap',
+        overflow: 'hidden',
+      }}
+    >
+      <Box sx={{ flexGrow: 9999, flexBasis: 0, minWidth: 620 }}>
+        <Text sx={{ fontSize: 4, display: 'block' }} mb={2}>
+          Usage
+        </Text>
+        <Grid columns={3} mb={3}>
+          <Card>
+            <InfoBox title="2,102,123" subtitle="Total Transactions" />
+          </Card>
+          <Card>
+            <InfoBox
+              title="3,241,231"
+              description="$3,241,231"
+              subtitle="24h Volume"
+            />
+          </Card>
+          <Card>
+            <InfoBox title="243,123" subtitle="Holders" />
+          </Card>
         </Grid>
-      </Card>
-    </>
+        <Text sx={{ fontSize: 4, display: 'block' }} mb={2}>
+          Assets
+        </Text>
+        <Card p={4}>
+          <InfoBox
+            title={`${balance ? utils.formatEther(balance) : '0.0'} ${
+              rToken.symbol
+            }`}
+            subtitle="In circulation"
+          />
+        </Card>
+        <Grid columns={3} gap={0} mb={3}>
+          <Card>
+            <InfoBox title="0.00" subtitle="USDT" />
+          </Card>
+          <Card>
+            <InfoBox title="0.00" subtitle="USDC" />
+          </Card>
+          <Card>
+            <InfoBox title="0.00" subtitle="TUSD" />
+          </Card>
+        </Grid>
+        <PriceChart mb={3} />
+        <MarketCapChart mb={3} />
+      </Box>
+      <Box
+        sx={{
+          flexGrow: 1,
+          minWidth: 600,
+          marginBottom: 3,
+          marginLeft: 4,
+          '@media screen and (max-width: 1616px)': {
+            marginLeft: 0,
+            marginBottom: 0,
+          },
+        }}
+      >
+        <Text sx={{ fontSize: 4, display: 'block' }} mb={2}>
+          Transactions
+        </Text>
+        <Card>
+          <TransactionsTable />
+        </Card>
+      </Box>
+    </Flex>
   )
 }
 
