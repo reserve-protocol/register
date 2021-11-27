@@ -1,0 +1,935 @@
+[
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "contract IComptroller",
+            "name": "compound",
+            "type": "address"
+          },
+          {
+            "internalType": "contract IAaveLendingPool",
+            "name": "aave",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct Oracle.Info",
+        "name": "oracle_",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "rewardStart",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "rewardPeriod",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "auctionPeriod",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "stRSRWithdrawalDelay",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "defaultDelay",
+            "type": "uint256"
+          },
+          {
+            "internalType": "Fix",
+            "name": "maxTradeSlippage",
+            "type": "int192"
+          },
+          {
+            "internalType": "Fix",
+            "name": "maxAuctionSize",
+            "type": "int192"
+          },
+          {
+            "internalType": "Fix",
+            "name": "minRecapitalizationAuctionSize",
+            "type": "int192"
+          },
+          {
+            "internalType": "Fix",
+            "name": "minRevenueAuctionSize",
+            "type": "int192"
+          },
+          {
+            "internalType": "Fix",
+            "name": "migrationChunk",
+            "type": "int192"
+          },
+          {
+            "internalType": "Fix",
+            "name": "issuanceRate",
+            "type": "int192"
+          },
+          {
+            "internalType": "Fix",
+            "name": "defaultThreshold",
+            "type": "int192"
+          },
+          {
+            "internalType": "Fix",
+            "name": "f",
+            "type": "int192"
+          }
+        ],
+        "internalType": "struct Config",
+        "name": "config_",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "int256",
+        "name": "value",
+        "type": "int256"
+      }
+    ],
+    "name": "IntOutOfBounds",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "name": "PriceIsZero",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "UIntOutOfBounds",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "UnsupportedProtocol",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "issuanceId",
+        "type": "uint256"
+      }
+    ],
+    "name": "IssuanceCanceled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "issuanceId",
+        "type": "uint256"
+      }
+    ],
+    "name": "IssuanceCompleted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "issuanceId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "issuer",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "blockAvailableAt",
+        "type": "uint256"
+      }
+    ],
+    "name": "IssuanceStarted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "redeemer",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Redemption",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "enum SystemState",
+        "name": "oldState",
+        "type": "uint8"
+      },
+      {
+        "indexed": true,
+        "internalType": "enum SystemState",
+        "name": "newState",
+        "type": "uint8"
+      }
+    ],
+    "name": "SystemStateChanged",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "aaveAsset",
+    "outputs": [
+      {
+        "internalType": "contract IAsset",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "aaveLendingPool",
+    "outputs": [
+      {
+        "internalType": "contract IAaveLendingPool",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "backingTokens",
+    "outputs": [
+      {
+        "internalType": "address[]",
+        "name": "erc20s",
+        "type": "address[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "compAsset",
+    "outputs": [
+      {
+        "internalType": "contract IAsset",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "comptroller",
+    "outputs": [
+      {
+        "internalType": "contract IComptroller",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "config",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "rewardStart",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "rewardPeriod",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "auctionPeriod",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "stRSRWithdrawalDelay",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "defaultDelay",
+            "type": "uint256"
+          },
+          {
+            "internalType": "Fix",
+            "name": "maxTradeSlippage",
+            "type": "int192"
+          },
+          {
+            "internalType": "Fix",
+            "name": "maxAuctionSize",
+            "type": "int192"
+          },
+          {
+            "internalType": "Fix",
+            "name": "minRecapitalizationAuctionSize",
+            "type": "int192"
+          },
+          {
+            "internalType": "Fix",
+            "name": "minRevenueAuctionSize",
+            "type": "int192"
+          },
+          {
+            "internalType": "Fix",
+            "name": "migrationChunk",
+            "type": "int192"
+          },
+          {
+            "internalType": "Fix",
+            "name": "issuanceRate",
+            "type": "int192"
+          },
+          {
+            "internalType": "Fix",
+            "name": "defaultThreshold",
+            "type": "int192"
+          },
+          {
+            "internalType": "Fix",
+            "name": "f",
+            "type": "int192"
+          }
+        ],
+        "internalType": "struct Config",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "enum Oracle.Source",
+        "name": "source",
+        "type": "uint8"
+      },
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      }
+    ],
+    "name": "consultOracle",
+    "outputs": [
+      {
+        "internalType": "Fix",
+        "name": "",
+        "type": "int192"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "furnace",
+    "outputs": [
+      {
+        "internalType": "contract IFurnace",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "issuances",
+    "outputs": [
+      {
+        "internalType": "contract IVault",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "BUs",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "issuer",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "blockAvailableAt",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "processed",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "issue",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "manager",
+    "outputs": [
+      {
+        "internalType": "contract IAssetManager",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "monitor",
+    "outputs": [
+      {
+        "internalType": "contract IDefaultMonitor",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "nextRewards",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "noticeDefault",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "pause",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "paused",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "pauser",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "poke",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "quote",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "rToken",
+    "outputs": [
+      {
+        "internalType": "contract IRToken",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "rTokenAsset",
+    "outputs": [
+      {
+        "internalType": "contract IAsset",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "redeem",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "rsr",
+    "outputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "rsrAsset",
+    "outputs": [
+      {
+        "internalType": "contract IAsset",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IAsset",
+        "name": "rToken_",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IAsset",
+        "name": "rsr_",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IAsset",
+        "name": "comp_",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IAsset",
+        "name": "aave_",
+        "type": "address"
+      }
+    ],
+    "name": "setAssets",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "rewardStart",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "rewardPeriod",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "auctionPeriod",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "stRSRWithdrawalDelay",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "defaultDelay",
+            "type": "uint256"
+          },
+          {
+            "internalType": "Fix",
+            "name": "maxTradeSlippage",
+            "type": "int192"
+          },
+          {
+            "internalType": "Fix",
+            "name": "maxAuctionSize",
+            "type": "int192"
+          },
+          {
+            "internalType": "Fix",
+            "name": "minRecapitalizationAuctionSize",
+            "type": "int192"
+          },
+          {
+            "internalType": "Fix",
+            "name": "minRevenueAuctionSize",
+            "type": "int192"
+          },
+          {
+            "internalType": "Fix",
+            "name": "migrationChunk",
+            "type": "int192"
+          },
+          {
+            "internalType": "Fix",
+            "name": "issuanceRate",
+            "type": "int192"
+          },
+          {
+            "internalType": "Fix",
+            "name": "defaultThreshold",
+            "type": "int192"
+          },
+          {
+            "internalType": "Fix",
+            "name": "f",
+            "type": "int192"
+          }
+        ],
+        "internalType": "struct Config",
+        "name": "config_",
+        "type": "tuple"
+      }
+    ],
+    "name": "setConfig",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IFurnace",
+        "name": "furnace_",
+        "type": "address"
+      }
+    ],
+    "name": "setFurnace",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IAssetManager",
+        "name": "manager_",
+        "type": "address"
+      }
+    ],
+    "name": "setManager",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IDefaultMonitor",
+        "name": "monitor_",
+        "type": "address"
+      }
+    ],
+    "name": "setMonitor",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "contract IComptroller",
+            "name": "compound",
+            "type": "address"
+          },
+          {
+            "internalType": "contract IAaveLendingPool",
+            "name": "aave",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct Oracle.Info",
+        "name": "oracle",
+        "type": "tuple"
+      }
+    ],
+    "name": "setOracle",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "pauser_",
+        "type": "address"
+      }
+    ],
+    "name": "setPauser",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IStRSR",
+        "name": "stRSR_",
+        "type": "address"
+      }
+    ],
+    "name": "setStRSR",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "stRSR",
+    "outputs": [
+      {
+        "internalType": "contract IStRSR",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "state",
+    "outputs": [
+      {
+        "internalType": "enum SystemState",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "stateRaisedAt",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "unpause",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

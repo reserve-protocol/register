@@ -17,6 +17,7 @@ import {
   IBasketToken,
   IReserveToken,
   loadTokens,
+  selectCurrentRToken,
   setCurrent,
   updateBalance,
 } from './reducer'
@@ -205,20 +206,10 @@ const Updater = () => {
   const [currentRToken] = useAppSelector(({ reserveTokens }) => [
     reserveTokens.current,
   ])
+  // const rToken = useAppSelector(selectCurrentRToken)
   const { chainId } = useEthers()
   // TODO: Handle basket balances
   // const rToken = useRToken(currentRToken ?? RTOKEN_ADDRESS[chainId as number])
-  // const tokenBalances = useTokensBalance(
-  //   rToken?.token.address
-  //     ? [
-  //         [rToken.token.address, rToken.token.decimals],
-  //         ...rToken.basket.map((basketToken): [string, number] => [
-  //           basketToken.address,
-  //           basketToken.decimals,
-  //         ]),
-  //       ]
-  //     : []
-  // )
 
   useEffect(() => {
     // TODO: Handle error scenario
@@ -231,11 +222,6 @@ const Updater = () => {
         setCurrent((RTOKEN_ADDRESS[chainId as number] || '').toLowerCase())
       )
     }
-    // if (rToken) {
-    //   dispatch(loadTokens({ [rToken.token.address]: rToken.token }))
-    //   dispatch(loadBasket({ [rToken.token.address]: rToken.basket }))
-    //   dispatch(setCurrent(rToken.token.address))
-    // }
   }, [loadingTokens])
 
   // Update RToken and baskets balance

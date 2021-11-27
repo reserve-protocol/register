@@ -1,13 +1,14 @@
 import { useContractFunction } from '@usedapp/core'
-import { RToken as IRToken } from 'abis/types'
+import { MainInterface } from 'abis'
+import { Main as IMain } from 'abis/types'
 import { Modal } from 'components'
 import { parseEther } from 'ethers/lib/utils'
-import { useRTokenContract } from 'hooks/useContract'
+import { useContract } from 'hooks/useContract'
 import useTokensApproval from 'hooks/useTokenApproval'
 import useTokensHasAllowance from 'hooks/useTokensHasAllowance'
 import { useEffect, useState } from 'react'
 import { useAppSelector } from 'state/hooks'
-import { selectBasket, selectCurrentRToken } from 'state/reserve-tokens/reducer'
+import { ICollateral, selectCurrentRToken } from 'state/reserve-tokens/reducer'
 
 const STATUS = {
   PRECHECK: 'PRECHECK',
@@ -25,32 +26,28 @@ const IssuanceTransactionModal = ({
   onClose(): void
   amount: string
 }) => {
-  const { rToken } = useAppSelector(selectCurrentRToken) ?? {}
-  const basket = useAppSelector(selectBasket)
-
-  // TODO: Handle this, most likely not a valid case
-  if (!rToken) {
-    return null
-  }
-
-  const contract = useRTokenContract(rToken.address, false)
+  const rToken = useAppSelector(selectCurrentRToken)
+  const contract = useContract(rToken?.id, MainInterface)
   const { state: issueState, send: issue } = useContractFunction(
-    contract as IRToken,
+    contract as IMain,
     'issue',
     { transactionName: 'Issue RToken' }
   )
-  const tokens = basket.map((bsk) => bsk.address)
+
+  const tokens = (rToken?.vault.collaterals ?? ([] as ICollateral[])).map(
+    (collateral) => collateral.token.address
+  )
   const { send: requestApproval, state } = useTokensApproval(tokens)
   const tokensHasAllowance = useTokensHasAllowance(
     tokens,
-    rToken.address,
+    rToken?.id ?? '',
     parseEther(amount)
   )
   const [issueStatus, setIssueStatus] = useState(STATUS.APPROVING)
 
   useEffect(() => {
     const action = async () => {
-      const result = await requestApproval(rToken.address, parseEther(amount))
+      const result = await requestApproval(rToken?.id ?? '', parseEther(amount))
       setIssueStatus(result ? STATUS.VALIDATING : STATUS.REJECTED)
     }
     action()
@@ -73,12 +70,16 @@ const IssuanceTransactionModal = ({
     }
   }, [issueState.status])
 
+  if (!rToken) {
+    return null
+  }
+
   return (
     <Modal open onClose={onClose} title="Transaction status">
       <div style={{ textAlign: 'center', padding: 20 }}>
         <b>Status: {issueStatus}</b>
       </div>
-      {basket.map((token) => (
+      {rToken.vault.collaterals.map(({ token }) => (
         <div
           key={token.symbol}
           style={{
@@ -105,7 +106,7 @@ const IssuanceTransactionModal = ({
         }}
       >
         <b>
-          Issue ${amount} {rToken.symbol}
+          Issue ${amount} {rToken.rToken.symbol}
         </b>
         <div style={{ marginLeft: 'auto', position: 'relative', top: 3 }}>
           {issueStatus === STATUS.ISSUING && 'LOADING'}

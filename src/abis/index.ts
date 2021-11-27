@@ -6,6 +6,7 @@ import ENSResolver from './ens-public-resolver.json'
 import ENSRegistrar from './ens-registrar.json'
 import Factory from './factory.json'
 import ERC20Mock from './ERC20Mock.json'
+import Main from './main.json'
 
 const ERC20Interface = new Interface(ERC20)
 export { ERC20, ERC20Interface }
@@ -15,6 +16,9 @@ export { ERC20Mock, ERC20MockInterface }
 
 const FactoryInterface = new Interface(Factory)
 export { Factory, FactoryInterface }
+
+const MainInterface = new Interface(Main as any)
+export { Main, MainInterface }
 
 const RTokenInterface = new Interface(RToken)
 export { RToken, RTokenInterface }

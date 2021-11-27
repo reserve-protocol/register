@@ -1,14 +1,28 @@
+import { Flex, Text } from '@theme-ui/components'
 import { useEthers } from '@usedapp/core'
-import { Button, Card, Container } from 'components'
-import { Text } from '@theme-ui/components'
+import { Card, Container } from 'components'
 import TransactionsTable from 'components/transactions/table'
+import useTokensBalance from 'hooks/useTokensBalance'
 import { useSelector } from 'react-redux'
 import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
+import Issue from './components/issue'
 
 const Issuance = () => {
   const { account } = useEthers()
   const RToken = useSelector(selectCurrentRToken)
+  const tokenBalances = useTokensBalance(
+    RToken && account
+      ? [
+          [RToken.rToken.address, RToken.rToken.decimals],
+          ...RToken.vault.collaterals.map((collateral): [string, number] => [
+            collateral.token.address,
+            collateral.token.decimals,
+          ]),
+        ]
+      : []
+  )
 
+  // TODO: Connect your wallet placeholder
   if (!account) {
     return (
       <Container pt={4} pb={4}>
@@ -17,6 +31,7 @@ const Issuance = () => {
     )
   }
 
+  // TODO: Loading placeholder
   if (!RToken) {
     return <span>Loading....... </span>
   }
@@ -26,18 +41,15 @@ const Issuance = () => {
       <Text sx={{ fontSize: 4, display: 'block' }} mb={2}>
         Your Balances
       </Text>
-      {/* 
       <Card title="Issue and Redemption" mb={3}>
         <Flex mx={-2} mb={3}>
           <Issue />
-          <Redeem address={RToken.address} />
+          {/* <Redeem address={RToken.address} /> */}
         </Flex>
-        <Button onClick={handleAct}>Act</Button>
       </Card>
-      <Factory />
       <Card title="Protocol TXs" mb={3}>
         <TransactionsTable />
-      </Card> */}
+      </Card>
     </Container>
   )
 }

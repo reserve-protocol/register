@@ -4,24 +4,19 @@
 
 import { Contract, Signer, utils } from "ethers";
 import { Provider } from "@ethersproject/providers";
-import type { RToken, RTokenInterface } from "../RToken";
+import type { ERC20Mock, ERC20MockInterface } from "../ERC20Mock";
 
 const _abi = [
   {
     inputs: [
       {
-        internalType: "contract IMain",
-        name: "main_",
-        type: "address",
-      },
-      {
         internalType: "string",
-        name: "name_",
+        name: "name",
         type: "string",
       },
       {
         internalType: "string",
-        name: "symbol_",
+        name: "symbol",
         type: "string",
       },
     ],
@@ -149,7 +144,7 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
-        name: "from",
+        name: "sender",
         type: "address",
       },
       {
@@ -159,13 +154,7 @@ const _abi = [
       },
     ],
     name: "burn",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
+    outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -231,19 +220,6 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "main",
-    outputs: [
-      {
-        internalType: "contract IMain",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [
       {
         internalType: "address",
@@ -257,13 +233,7 @@ const _abi = [
       },
     ],
     name: "mint",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
+    outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -361,12 +331,15 @@ const _abi = [
   },
 ];
 
-export class RToken__factory {
+export class ERC20Mock__factory {
   static readonly abi = _abi;
-  static createInterface(): RTokenInterface {
-    return new utils.Interface(_abi) as RTokenInterface;
+  static createInterface(): ERC20MockInterface {
+    return new utils.Interface(_abi) as ERC20MockInterface;
   }
-  static connect(address: string, signerOrProvider: Signer | Provider): RToken {
-    return new Contract(address, _abi, signerOrProvider) as RToken;
+  static connect(
+    address: string,
+    signerOrProvider: Signer | Provider
+  ): ERC20Mock {
+    return new Contract(address, _abi, signerOrProvider) as ERC20Mock;
   }
 }
