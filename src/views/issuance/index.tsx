@@ -1,16 +1,9 @@
 import { useEthers } from '@usedapp/core'
 import { Button, Card, Container } from 'components'
+import { Text } from '@theme-ui/components'
 import TransactionsTable from 'components/transactions/table'
 import { useSelector } from 'react-redux'
 import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
-import { Flex } from 'theme-ui'
-import Factory from 'views/factory'
-import RTokenAbi from '../../abis/RToken.json'
-import { RToken as IRToken } from '../../abis/types'
-import { useContract } from '../../hooks/useContract'
-import Issue from './components/issue'
-import Overview from './components/overview'
-import Redeem from './components/redeem'
 
 const Issuance = () => {
   const { account } = useEthers()
@@ -30,7 +23,9 @@ const Issuance = () => {
 
   return (
     <Container pt={4} pb={4}>
-      <Overview data={RToken} />
+      <Text sx={{ fontSize: 4, display: 'block' }} mb={2}>
+        Your Balances
+      </Text>
       {/* 
       <Card title="Issue and Redemption" mb={3}>
         <Flex mx={-2} mb={3}>

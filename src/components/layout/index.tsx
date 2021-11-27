@@ -23,8 +23,8 @@ const SideBar = styled.div`
 // TODO: Move sidebar to different component
 // TODO: Improve component structure
 const PAGES = [
+  { path: ROUTES.OVERVIEW, title: 'RToken Overview' },
   { path: ROUTES.ISSUANCE, title: 'Issue / Redeem' },
-  { path: ROUTES.MARKET, title: 'Market' },
 ]
 
 /**

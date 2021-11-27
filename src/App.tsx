@@ -6,11 +6,11 @@ import {
 } from 'react-router-dom'
 import Updater from 'state/reserve-tokens/updater'
 import { ThemeProvider } from 'theme-ui'
+import Overview from 'views/overview'
 import Layout from './components/layout'
 import { ROUTES } from './constants'
 import { theme } from './theme'
 import Issuance from './views/issuance'
-import Market from './views/market'
 
 /**
  * App Entry point - Handles views routing
@@ -23,14 +23,14 @@ const App = () => (
     <Router>
       <Layout>
         <Switch>
+          <Route path={ROUTES.OVERVIEW}>
+            <Overview />
+          </Route>
           <Route path={ROUTES.ISSUANCE}>
             <Issuance />
           </Route>
-          <Route exact path="/market">
-            <Market />
-          </Route>
           <Route exact path="/">
-            <Redirect to={ROUTES.ISSUANCE} />
+            <Redirect to={ROUTES.OVERVIEW} />
           </Route>
         </Switch>
       </Layout>

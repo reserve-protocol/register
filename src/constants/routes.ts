@@ -1,8 +1,7 @@
 const ROUTES = Object.freeze({
-  EXCHANGE: '/exchange',
-  GOVERNANCE: '/governance',
+  OVERVIEW: '/overview',
   STAKE: '/stake',
-  MARKET: '/market',
+  LIST: '/list',
   ISSUANCE: '/issuance',
 })
 
