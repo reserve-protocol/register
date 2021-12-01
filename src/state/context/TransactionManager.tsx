@@ -12,14 +12,14 @@ export interface TransactionState {
   description: string
   status: string
   call: ContractCall
-  canExecute?: () => boolean
+  canExecute: boolean
 }
 
 interface IState {
   list: TransactionState[]
 }
 
-function reducer(state: IState, action: { type: string, payload: any }) {
+function reducer(state: IState, action: { type: string; payload: any }) {
   switch (action.type) {
     case ACTIONS.ADD: {
       return { ...state, list: [...state.list, action.payload] }
@@ -28,6 +28,11 @@ function reducer(state: IState, action: { type: string, payload: any }) {
       throw new Error(`Unhandled action type: ${action.type}`)
     }
   }
+}
+
+interface ContextValue {
+  state: TransactionState
+  dispatch: React.Dispatch<{ type: string; payload: any }>
 }
 
 const TransactionManager = ({ children }: { children: React.ReactNode }) => {
@@ -41,8 +46,20 @@ const TransactionManager = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-export const useTransactionsState = () => {
-  const [state] = useContext(TransactionsContext)
+export const useTransactionsState = (): [
+  TransactionState,
+  ContextValue['dispatch']
+] => {
+  const { state, dispatch } = useContext(TransactionsContext) as ContextValue
+
+  return [state, dispatch]
+}
+
+export const loadTransactions = (
+  dispatch: ContextValue['dispatch'],
+  transactions: TransactionState[]
+) => {
+  dispatch({ type: ACTIONS.ADD, payload: transactions })
 }
 
 export default TransactionManager

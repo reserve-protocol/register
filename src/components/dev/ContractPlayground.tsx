@@ -16,10 +16,10 @@ const contracts: StringMap = {
 }
 
 const getAddreses = (ReserveToken: IReserveToken) => ([
-  
+
 ])
 
-const ContractPlayground = () => {
+const ContractPlayground = (props: any) => {
   const ReserveToken = useAppSelector(selectCurrentRToken)
   const [currentContract, setCurrentContract] = useState('')
   const [abi, setAbi] = useState('ERC20')
@@ -55,7 +55,7 @@ const ContractPlayground = () => {
   }
 
   return (
-    <Box p={2}>
+    <Box {...props}>
       <Text sx={{ fontSize: 4, display: 'block' }} mb={2}>
         Contract Playground
       </Text>

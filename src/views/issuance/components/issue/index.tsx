@@ -2,7 +2,8 @@ import styled from '@emotion/styled'
 import { Box } from '@theme-ui/components'
 import { Button, Input } from 'components'
 import { useState } from 'react'
-import IssuanceTransactionModal from '../tx-modal'
+import { useTransactionsState } from 'state/context/TransactionManager'
+import { IReserveToken } from 'state/reserve-tokens/reducer'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -10,17 +11,28 @@ const InputContainer = styled(Box)`
   flex-grow: 1;
 `
 
-const Issue = () => {
+/**
+ * Issuance
+ * Handles issuance, creates the set of transactions that will be later handled by the container
+ * @required TransactionManager context
+ *
+ * @returns React.Component
+ */
+// TODO: Max issuance possible algorithm
+// TODO: Validations
+const Issue = ({
+  data,
+  onIssue,
+  ...props
+}: {
+  data: IReserveToken
+  onIssue: (amount: number) => void
+}) => {
   const [amount, setAmount] = useState('')
-  const [modal, setModal] = useState(false)
+  const [, dispatch] = useTransactionsState()
 
   const handleIssue = () => {
-    setModal(true)
-  }
-
-  const handleClose = () => {
-    setModal(false)
-    setAmount('')
+    onIssue(Number(amount))
   }
 
   const handleChange = (value: string) => {
@@ -28,20 +40,17 @@ const Issue = () => {
   }
 
   return (
-    <>
-      <InputContainer mx={2}>
-        <Input
-          placeholder="Issue amount"
-          label="Issue ammount"
-          value={amount}
-          onChange={handleChange}
-        />
-        <Button mt={2} onClick={handleIssue}>Issue</Button>
-      </InputContainer>
-      {modal && (
-        <IssuanceTransactionModal amount={amount} onClose={handleClose} />
-      )}
-    </>
+    <InputContainer mx={2} {...props}>
+      <Input
+        placeholder="Mint amount"
+        label="Mint ammount"
+        value={amount}
+        onChange={handleChange}
+      />
+      <Button mt={2} onClick={handleIssue}>
+        Mint
+      </Button>
+    </InputContainer>
   )
 }
 
