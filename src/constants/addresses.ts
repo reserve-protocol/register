@@ -6,13 +6,13 @@ export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 export const DEPLOYER_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: ZERO_ADDRESS,
-  [ChainId.Hardhat]: '0xa82fF9aFd8f496c3d6ac40E2a0F282E47488CFc9',
+  [ChainId.Hardhat]: '0x1613beB3B2C4f22Ee086B2b38C1476A3cE7f78E8',
 }
 
 // Default RToken
 export const RTOKEN_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: ZERO_ADDRESS,
-  [ChainId.Hardhat]: '0x6a358fd7b7700887b0cd974202cdf93208f793e2',
+  [ChainId.Hardhat]: '0x9467a509da43cb50eb332187602534991be1fea4',
 }
 
 // Default RSR Token
@@ -28,5 +28,5 @@ export const ENS_ADDRESS: AddressMap = {
 
 export const MULTICALL_ADDRESS: AddressMap = {
   ...MULTICALL_ADDRESSES,
-  [ChainId.Hardhat]: '0x70e0ba845a1a0f2da3359c97e0285013525ffc49',
+  [ChainId.Hardhat]: '0xf5059a5d33d5853360d16c683c16e67980206f36',
 }

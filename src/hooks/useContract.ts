@@ -1,6 +1,7 @@
 import { useEthers } from '@usedapp/core'
 import { Contract } from '@ethersproject/contracts'
 import { useMemo } from 'react'
+import { isAddress } from '@ethersproject/address'
 import ERC20_ABI from '../abis/ERC20.json'
 import RTOKEN_ABI from '../abis/RToken.json'
 
@@ -20,7 +21,7 @@ export function useContract<T extends Contract = Contract>(
     let address: string | undefined
     if (typeof addressOrAddressMap === 'string') address = addressOrAddressMap
     else address = addressOrAddressMap[chainId]
-    if (!address) return null
+    if (!address || !isAddress(address)) return null
     try {
       return getContract(
         address,

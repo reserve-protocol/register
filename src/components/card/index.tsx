@@ -1,4 +1,4 @@
-import { Card as ThemeCard, Text } from '@theme-ui/components'
+import { Box, Card as ThemeCard, Text } from '@theme-ui/components'
 
 const Card = ({
   title = '',
@@ -17,6 +17,22 @@ const Card = ({
     )}
     {children}
   </ThemeCard>
+)
+
+export const SectionCard = ({
+  children,
+  title,
+  ...props
+}: {
+  children: any
+  title: string
+}) => (
+  <Box {...props}>
+    <Text variant="sectionTitle" mb={2}>
+      {title}
+    </Text>
+    <Card>{children}</Card>
+  </Box>
 )
 
 export default Card

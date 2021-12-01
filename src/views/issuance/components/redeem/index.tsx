@@ -5,27 +5,12 @@ import { Box } from 'theme-ui'
 
 const InputContainer = styled(Box)`
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
   flex-grow: 1;
-
-  div {
-    flex-grow: 1;
-  }
-
-  button {
-    width: 120px;
-  }
-
-  input {
-    margin-right: 10px;
-  }
 `
 
-const Redeem = ({ address }: { address: string }) => {
+const Redeem = ({ balance }: { balance: number }) => {
   const [amount, setAmount] = useState('')
-  // const balance = useAppSelector(
-  //   ({ reserveTokens }) => reserveTokens.balances[address]
-  // )
 
   return (
     <>
@@ -36,7 +21,9 @@ const Redeem = ({ address }: { address: string }) => {
           value={amount}
           onChange={setAmount}
         />
-        <Button onClick={() => {}}>Redeem</Button>
+        <Button mt={2} onClick={() => {}}>
+          Redeem
+        </Button>
       </InputContainer>
     </>
   )

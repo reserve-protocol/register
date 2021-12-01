@@ -1,17 +1,18 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { BigNumber, BigNumberish } from 'ethers'
 
 export interface IToken {
   address: string
   symbol: string
   name: string
   decimals: number
+  transfersCount?: number
+  holdersCount?: number
   supply?: { total: number }
 }
 
 export interface ICollateral {
   id: string
-  ratio: BigNumber
+  index: number
   token: IToken
 }
 
@@ -24,37 +25,22 @@ export interface IVault {
 export interface IReserveToken {
   id: string
   mood: string
-  staked: BigNumber
+  staked: number
   rToken: IToken
   rsr: IToken
   stToken: IToken
   vault: IVault
 }
 
-export interface IBasketToken {
-  basketIndex: number
-  address: string
-  symbol: string
-  name: string
-  decimals: number
-  genesisQuantity: BigNumberish
-  maxTrade: BigNumberish
-  priceInRToken: BigNumberish
-  rateLimit: BigNumberish
-  slippageTolerance: BigNumberish
-}
-
 export interface ReserveTokenState {
   list: { [x: string]: IReserveToken }
   current: string | null
-  baskets: { [x: string]: IBasketToken[] }
-  balances: { [x: string]: BigNumber }
+  balances: { [x: string]: number }
 }
 
 const initialState: ReserveTokenState = {
   list: {},
   current: null,
-  baskets: {},
   balances: {},
 }
 
@@ -70,10 +56,7 @@ export const reserveTokenSlice = createSlice({
         return acc
       }, {})
     },
-    updateBalance: (
-      state,
-      action: PayloadAction<{ [x: string]: BigNumber }>
-    ) => {
+    updateBalance: (state, action: PayloadAction<{ [x: string]: number }>) => {
       state.balances = { ...state.balances, ...action.payload }
     },
     setCurrent: (state, action: PayloadAction<string>) => {
@@ -86,11 +69,6 @@ export const selectCurrentRToken = createSelector(
   (state: any) => [state.reserveTokens.current, state.reserveTokens.list],
   ([current, list]): IReserveToken | null =>
     current ? list[current.toLowerCase()] : null
-)
-
-export const selectBasket = createSelector(
-  (state: any) => [state.reserveTokens.current, state.reserveTokens.baskets],
-  ([current, baskets]): IBasketToken[] => (current ? baskets[current] : [])
 )
 
 export const { loadTokens, updateBalance, setCurrent } =

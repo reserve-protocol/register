@@ -10,6 +10,7 @@ export const colors = {
   primary: '#00b600',
   primaryDark: '#008100',
   primaryAccent: '#1fea00',
+  grey: '#ccc',
   modes: {
     dark: {
       text: '#fff',
@@ -47,6 +48,10 @@ export const theme: Theme = {
       fontFamily: 'heading',
       lineHeight: 'heading',
       fontWeight: 'heading',
+    },
+    sectionTitle: {
+      fontSize: 4,
+      display: 'block',
     },
     primary: {
       color: 'text',
@@ -165,6 +170,10 @@ export const theme: Theme = {
 
       '&:hover': {
         backgroundColor: 'primaryDark',
+      },
+      '&:disabled': {
+        backgroundColor: 'grey',
+        cursor: 'default',
       },
     },
   },

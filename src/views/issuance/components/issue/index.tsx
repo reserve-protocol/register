@@ -6,20 +6,8 @@ import IssuanceTransactionModal from '../tx-modal'
 
 const InputContainer = styled(Box)`
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
   flex-grow: 1;
-
-  div {
-    flex-grow: 1;
-  }
-
-  button {
-    width: 120px;
-  }
-
-  input {
-    margin-right: 10px;
-  }
 `
 
 const Issue = () => {
@@ -48,7 +36,7 @@ const Issue = () => {
           value={amount}
           onChange={handleChange}
         />
-        <Button onClick={handleIssue}>Issue</Button>
+        <Button mt={2} onClick={handleIssue}>Issue</Button>
       </InputContainer>
       {modal && (
         <IssuanceTransactionModal amount={amount} onClose={handleClose} />

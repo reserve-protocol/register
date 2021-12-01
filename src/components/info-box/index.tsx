@@ -15,7 +15,7 @@ const InfoBox = ({ title, subtitle, description, ...props }: IInfoBox) => (
     </Text>
     {!!description && (
       <Text sx={{ display: 'block', fontSize: 1, marginTop: '-5px' }}>
-        Description
+        {description}
       </Text>
     )}
     <Text sx={{ fontSize: 3 }}>{subtitle}</Text>

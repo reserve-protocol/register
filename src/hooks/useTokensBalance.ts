@@ -13,8 +13,6 @@ import { ethers } from 'ethers'
  * Returns a hash of balances for the given tokens
  *
  * @param tokens
- * @param spender
- * @param amount
  * @returns
  */
 const useTokensBalance = (tokens: [string, number][]): StringMap => {
