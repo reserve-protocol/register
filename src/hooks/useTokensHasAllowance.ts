@@ -17,16 +17,16 @@ import { BigNumber, BigNumberish } from 'ethers'
  * @returns
  */
 const useTokensHasAllowance = (
-  tokens: string[],
+  tokens: [string, BigNumber][],
   spender: string,
   amount: BigNumberish
-) => {
+): boolean => {
   const { account, chainId } = useEthers()
   const blockNumber = useDebounce(useBlockNumber(), 1000)
 
   const calls = useMemo(
     () =>
-      tokens.map((address) => ({
+      tokens.map(([address]) => ({
         abi: ERC20Interface,
         address,
         method: 'allowance',
@@ -38,9 +38,9 @@ const useTokensHasAllowance = (
   const allowances = <any[]>useContractCalls(calls) ?? []
 
   return (
-    allowances.length &&
+    !!allowances.length &&
     allowances.every(
-      (value) => value && value.length && <BigNumber>value[0].gte(amount)
+      (value, index) => value && value.length && tokens[index][1].gte(amount)
     )
   )
 }

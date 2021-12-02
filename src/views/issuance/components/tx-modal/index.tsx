@@ -5,7 +5,6 @@ import { Modal } from 'components'
 import { parseEther } from 'ethers/lib/utils'
 import { useContract } from 'hooks/useContract'
 import useTokensApproval from 'hooks/useTokenApproval'
-import useTokensHasAllowance from 'hooks/useTokensHasAllowance'
 import { useEffect, useState } from 'react'
 import { useAppSelector } from 'state/hooks'
 import { ICollateral, selectCurrentRToken } from 'state/reserve-tokens/reducer'
@@ -19,6 +18,7 @@ const STATUS = {
   REJECTED: 'REJECTED',
 }
 
+// TODO: @deprecated - remove
 const IssuanceTransactionModal = ({
   amount,
   onClose,
@@ -38,11 +38,7 @@ const IssuanceTransactionModal = ({
     (collateral) => collateral.token.address
   )
   const { send: requestApproval, state } = useTokensApproval(tokens)
-  const tokensHasAllowance = useTokensHasAllowance(
-    tokens,
-    rToken?.id ?? '',
-    parseEther(amount)
-  )
+  const tokensHasAllowance = false
   const [issueStatus, setIssueStatus] = useState(STATUS.APPROVING)
 
   useEffect(() => {

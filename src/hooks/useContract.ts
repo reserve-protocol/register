@@ -2,11 +2,11 @@ import { useEthers } from '@usedapp/core'
 import { Contract } from '@ethersproject/contracts'
 import { useMemo } from 'react'
 import { isAddress } from '@ethersproject/address'
-import ERC20_ABI from '../abis/ERC20.json'
 import RTOKEN_ABI from '../abis/RToken.json'
 
 import { getContract } from '../utils'
-import { ERC20, RToken } from '../abis/types'
+import { ERC20, RToken, Main } from '../abis/types'
+import { Main as MainAbi, ERC20 as ERC20Abi } from 'abis'
 
 // returns null on errors
 export function useContract<T extends Contract = Contract>(
@@ -43,6 +43,13 @@ export function useContract<T extends Contract = Contract>(
   ]) as T
 }
 
+export function useMainContract(
+  address?: string,
+  withSignerIfPossible?: boolean
+) {
+  return useContract<Main>(address, MainAbi, withSignerIfPossible)
+}
+
 export function useRTokenContract(
   tokenAddress?: string,
   withSignerIfPossible?: boolean
@@ -54,5 +61,5 @@ export function useTokenContract(
   tokenAddress?: string,
   withSignerIfPossible?: boolean
 ) {
-  return useContract<ERC20>(tokenAddress, ERC20_ABI, withSignerIfPossible)
+  return useContract<ERC20>(tokenAddress, ERC20Abi, withSignerIfPossible)
 }
