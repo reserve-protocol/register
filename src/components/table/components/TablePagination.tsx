@@ -93,13 +93,19 @@ export const TablePagination: FC<
     totalData: data.length,
   })
   return (
-    <Box variant="table.pagination.container">
+    <Box
+      sx={{ display: 'flex', alignItems: 'center' }}
+      variant="table.pagination.container"
+    >
       <Box variant="table.pagination.total">
         {totalCountVisible && totalCountResolvedTemplate}
       </Box>
-      <Box variant="table.pagination.navigationContainer">
+      <Box
+        sx={{ marginLeft: 'auto' }}
+        variant="table.pagination.navigationContainer"
+      >
         {(canPreviousPage || canNextPage) && (
-          <Box variant="table.pagination.navigation">
+          <Box variant="table.pagination.navigation" sx={{ display: 'flex' }}>
             <Box variant="table.pagination.navigation.button">
               <Button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
                 {'<<'}

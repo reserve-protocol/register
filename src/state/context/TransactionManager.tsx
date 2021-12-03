@@ -1,4 +1,3 @@
-import { Contract } from '@ethersproject/contracts'
 import { ContractCall } from '@usedapp/core'
 import React, { useContext, useReducer } from 'react'
 
@@ -6,6 +5,7 @@ const ACTIONS = {
   ADD: 'ADD',
   SET: 'SET',
   UPDATE_STATUS: 'UPDATE_STATUS',
+  SET_HASH: 'SET_HASH',
 }
 
 export const TX_STATUS = {
@@ -45,16 +45,9 @@ function reducer(state: IState, action: { type: string; payload: any }) {
       return { ...state, current: action.payload }
     }
     case ACTIONS.UPDATE_STATUS: {
-      const index = action.payload.index || state.current
-      let tx = state.list[index]
-
-      if (!tx) {
-        console.error('Transaction not found')
-      }
-
-      tx = { ...tx, status: action.payload.data }
-
       let { current } = state
+      const index = action.payload.index || current
+      const tx = { ...state.list[index], status: action.payload.data }
 
       if (
         current > -1 &&
@@ -71,6 +64,18 @@ function reducer(state: IState, action: { type: string; payload: any }) {
           ...state.list.slice(index + 1),
         ],
         current,
+      }
+    }
+    case ACTIONS.SET_HASH: {
+      const index = action.payload.index || state.current
+
+      return {
+        ...state,
+        list: [
+          ...state.list.slice(0, index),
+          { ...state.list[index], hash: action.payload.data },
+          ...state.list.slice(index + 1),
+        ],
       }
     }
     default: {
@@ -124,6 +129,14 @@ export const updateTransactionStatus = (
   index?: number
 ) => {
   dispatch({ type: ACTIONS.UPDATE_STATUS, payload: { data: status, index } })
+}
+
+export const setTransactionHash = (
+  dispatch: ContextValue['dispatch'],
+  hash: string,
+  index?: number
+) => {
+  dispatch({ type: ACTIONS.SET_HASH, payload: { data: hash, index } })
 }
 
 export default TransactionManager

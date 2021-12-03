@@ -12,6 +12,7 @@ import useTokensHasAllowance from 'hooks/useTokensHasAllowance'
 import React, { useEffect, useState } from 'react'
 import {
   loadTransactions,
+  setTransactionHash,
   TransactionState,
   TX_STATUS,
   updateTransactionStatus,
@@ -77,6 +78,10 @@ const IssuanceTransaction = React.memo(
     }, [contract, hasAllowance])
 
     useEffect(() => {
+      if (!current.hash && state.transaction?.hash) {
+        setTransactionHash(dispatch, state.transaction.hash)
+      }
+
       if (state.status === 'Success') {
         updateTransactionStatus(dispatch, TX_STATUS.SUBMITTED)
       }
@@ -157,6 +162,7 @@ const Issue = ({
       }
 
       // Load token approvals + issuance
+      setAmount('')
       loadTransactions(dispatch, [...tokenApprovals, tokenIssuance])
     } catch (e) {
       // TODO: Handle error case

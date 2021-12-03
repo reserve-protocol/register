@@ -3,6 +3,7 @@ import { Card } from 'components'
 import { RTokenIcon } from 'components/icons/logos'
 import { useAppSelector } from 'state/hooks'
 import { IReserveToken } from 'state/reserve-tokens/reducer'
+import { formatCurrency } from 'utils'
 
 interface Props extends BoxProps {
   rToken: IReserveToken
@@ -28,14 +29,14 @@ const Balances = ({ rToken, ...props }: Props) => {
           mr={2}
         >
           <RTokenIcon style={{ marginRight: 10 }} />
-          {tokenBalances[rToken.rToken.address]} {rToken.rToken.symbol}
+          {formatCurrency(tokenBalances[rToken.rToken.address])} {rToken.rToken.symbol}
         </Card>
         <Card sx={{ flexGrow: 1 }} ml={2}>
           {rToken.vault.collaterals.map((collateral) => (
             <Flex key={collateral.id} sx={{ alignItems: 'center' }} p={1}>
               <RTokenIcon style={{ marginRight: 10, fontSize: 24 }} />
               <Text sx={{ fontSize: 3 }}>
-                {tokenBalances[collateral.token.address]}{' '}
+                {formatCurrency(tokenBalances[collateral.token.address])}{' '}
                 {collateral.token.symbol}
               </Text>
             </Flex>

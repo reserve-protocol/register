@@ -2,6 +2,7 @@ import { Table } from 'components/table'
 import { shortenAddress } from '@usedapp/core'
 import { gql, useSubscription } from '@apollo/client'
 import { formatEther } from '@ethersproject/units'
+import { formatCurrency } from 'utils'
 
 const GET_TRANSACTIONS = gql`
   subscription GetTransactions {
@@ -34,13 +35,15 @@ const columns = [
   {
     Header: 'Amount',
     accessor: 'amount',
-    Cell: ({ cell }: { cell: any }) => formatEther(cell.value),
+    Cell: ({ cell }: { cell: any }) =>
+      formatCurrency(parseFloat(formatEther(cell.value))),
   },
   {
     Header: 'USD $',
     accessor: 'amount',
     id: 'usd',
-    Cell: ({ cell }: { cell: any }) => `$ ${formatEther(cell.value)}`,
+    Cell: ({ cell }: { cell: any }) =>
+      `$${formatCurrency(parseFloat(formatEther(cell.value)))}`,
   },
   {
     Header: 'Chain',

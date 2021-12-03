@@ -1,8 +1,9 @@
 import { Box, Grid, Text } from '@theme-ui/components'
 import { Card } from 'components'
 import InfoBox from 'components/info-box'
-import { formatEther, parseEther } from 'ethers/lib/utils'
+import { formatEther } from 'ethers/lib/utils'
 import { IReserveToken } from 'state/reserve-tokens/reducer'
+import { formatCurrency } from 'utils'
 
 /**
  * RToken Assets overview
@@ -24,7 +25,9 @@ const AssetsOverview = ({
     <Card p={4}>
       <InfoBox
         title={`${
-          rToken?.supply?.total ? formatEther(rToken.supply.total) : '0.00'
+          rToken?.supply?.total
+            ? formatCurrency(parseFloat(formatEther(rToken.supply.total)))
+            : '0'
         } ${rToken.symbol}`}
         subtitle="In circulation"
       />

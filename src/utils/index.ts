@@ -12,6 +12,10 @@ export function isAddress(value: any): string | false {
   }
 }
 
+export function formatCurrency(value: number): string {
+  return Intl.NumberFormat('en-US').format(value)
+}
+
 // shorten the checksummed version of the input address to have 0x + 4 characters at start and end
 export function shortenAddress(address: string, chars = 4): string {
   const parsed = isAddress(address)
