@@ -18,8 +18,7 @@ import { BigNumber, BigNumberish } from 'ethers'
  */
 const useTokensHasAllowance = (
   tokens: [string, BigNumber][],
-  spender: string,
-  amount: BigNumberish
+  spender: string
 ): boolean => {
   const { account, chainId } = useEthers()
   const blockNumber = useDebounce(useBlockNumber(), 1000)
@@ -40,7 +39,7 @@ const useTokensHasAllowance = (
   return (
     !!allowances.length &&
     allowances.every(
-      (value, index) => value && value.length && tokens[index][1].gte(amount)
+      (value, index) => value && value.length && value[0].gte(tokens[index][1])
     )
   )
 }

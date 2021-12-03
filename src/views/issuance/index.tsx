@@ -44,7 +44,7 @@ const Issuance = () => {
           </Flex>
         </Card>
         <TransactionHistory />
-        {/* <ContractPlayground /> */}
+        <ContractPlayground />
       </Container>
     </TransactionManager>
   )

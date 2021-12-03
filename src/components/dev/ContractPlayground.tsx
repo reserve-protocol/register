@@ -55,7 +55,7 @@ const ContractPlayground = (props: any) => {
   }
 
   return (
-    <Box {...props}>
+    <Box mt={3} {...props}>
       <Text sx={{ fontSize: 4, display: 'block' }} mb={2}>
         Contract Playground
       </Text>

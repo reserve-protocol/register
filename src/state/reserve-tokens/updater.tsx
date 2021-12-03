@@ -46,13 +46,13 @@ const getTokensQuery = gql`
         id
         collaterals {
           id
+          index
           token {
             address
             name
             symbol
             decimals
           }
-          ratio
         }
       }
     }

@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react'
 import styled from '@emotion/styled'
+import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
 import { Box } from '@theme-ui/components'
 import { useContractFunction, useEthers } from '@usedapp/core'
-import { ERC20Interface, ERC20, MainInterface } from 'abis'
+import { ERC20Interface, MainInterface } from 'abis'
 import { ERC20 as IERC20 } from 'abis/types'
 import { Button, Input } from 'components'
 import { formatEther, parseEther } from 'ethers/lib/utils'
 import { useContract, useMainContract } from 'hooks/useContract'
 import useTokensHasAllowance from 'hooks/useTokensHasAllowance'
+import React, { useEffect, useState } from 'react'
 import {
   loadTransactions,
   TransactionState,
@@ -30,6 +31,9 @@ const InputContainer = styled(Box)`
 `
 
 // TODO: assign hash
+/**
+ * Handle issuance related transactions
+ */
 const IssuanceTransaction = React.memo(
   ({ current }: { current: TransactionState }) => {
     const { account } = useEthers()
@@ -42,7 +46,10 @@ const IssuanceTransaction = React.memo(
     const { state, send } = useContractFunction(contract, current.call.method, {
       transactionName: current.description,
     })
-    const hasAllowance = false
+    const hasAllowance = useTokensHasAllowance(
+      current.call.method === TRANSACTION_TYPES.ISSUE ? current.extra : [],
+      current.call.address || ''
+    )
 
     useEffect(() => {
       const processTransaction = async () => {
@@ -90,8 +97,8 @@ const IssuanceTransaction = React.memo(
  *
  * @returns React.Component
  */
-// TODO: Max issuance possible algorithm
 // TODO: Validations
+// TODO: Get max issuable quantity from view function (protocol)
 const Issue = ({
   data,
   onIssue,
@@ -103,8 +110,6 @@ const Issue = ({
   const { library } = useEthers()
   const [amount, setAmount] = useState('')
   const [issuing, setIssuing] = useState(false)
-  const tokens = data.vault.collaterals.map(({ token }) => token.address)
-  // TODO: Get max issuable quantity
   const mainContract = useMainContract(data.id)
   const [txState, dispatch] = useTransactionsState()
   const currentTransaction = txState.list[txState.current]
@@ -114,29 +119,35 @@ const Issue = ({
     try {
       const issueAmount = parseEther(amount)
       const quantities = await mainContract?.quote(issueAmount)
+      const tokenQuantities: [string, BigNumber][] = []
 
       if (!quantities || !library) throw new Error()
 
-      // TODO: Error with token index??????
-      const tokenApprovals = data.vault.collaterals.map(({ token }, i) => {
+      // Create token approvals calls array
+      const tokenApprovals = data.vault.collaterals.map(({ token, index }) => {
         const description = `Approve ${token.symbol} for issuance`
+        const tokenAmount = quantities[index]
+        // Fill token quantities on the same map
+        tokenQuantities.push([token.address, tokenAmount])
 
         return {
           description,
           status: TX_STATUS.PENDING,
-          value: formatEther(quantities[i]),
+          value: formatEther(quantities[index]),
           call: {
             abi: ERC20Interface,
             address: token.address,
             method: TRANSACTION_TYPES.APPROVE,
-            args: [data.id, quantities[i]],
+            args: [data.id, tokenAmount],
           },
         }
       })
+      // Create token issuance contract call
       const tokenIssuance = {
         description: `Issue ${amount} ${data.rToken.symbol}`,
         status: TX_STATUS.PENDING,
         value: amount,
+        extra: tokenQuantities, // Send quantities as an extra prop for allowance check before issuance
         call: {
           abi: MainInterface,
           address: data.id,
@@ -145,6 +156,7 @@ const Issue = ({
         },
       }
 
+      // Load token approvals + issuance
       loadTransactions(dispatch, [...tokenApprovals, tokenIssuance])
     } catch (e) {
       // TODO: Handle error case
@@ -157,8 +169,6 @@ const Issue = ({
   const handleChange = (value: string) => {
     setAmount(value)
   }
-
-  console.log('currentTx', { currentTransaction, txState })
 
   return (
     <>

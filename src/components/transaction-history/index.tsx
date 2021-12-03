@@ -25,11 +25,11 @@ const columns = [
 const TransactionHistory = () => {
   const [state] = useTransactionsState()
 
-  console.log('state', state.list)
+  const dataset = state.list.slice().reverse()
 
   return (
     <SectionCard title="Your transactions">
-      <Table columns={columns as any} data={state.list} />
+      <Table columns={columns as any} data={dataset} />
     </SectionCard>
   )
 }

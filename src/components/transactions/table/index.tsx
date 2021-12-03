@@ -34,11 +34,13 @@ const columns = [
   {
     Header: 'Amount',
     accessor: 'amount',
+    Cell: ({ cell }: { cell: any }) => formatEther(cell.value),
   },
   {
     Header: 'USD $',
-    accessor: 'id',
-    Cell: ({ cell }: { cell: any }) => `$ ${cell.value}`,
+    accessor: 'amount',
+    id: 'usd',
+    Cell: ({ cell }: { cell: any }) => `$ ${formatEther(cell.value)}`,
   },
   {
     Header: 'Chain',
