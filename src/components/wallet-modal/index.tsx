@@ -107,7 +107,10 @@ const WalletSelection = () => {
         }}
       >
         {WALLETS.map(({ icon: Icon, label, connector }) => (
-          <WalletButton onClick={() => handleWalletSelection(connector)}>
+          <WalletButton
+            key={label}
+            onClick={() => handleWalletSelection(connector)}
+          >
             <Icon /> {label}
           </WalletButton>
         ))}

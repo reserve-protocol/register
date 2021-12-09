@@ -25,6 +25,7 @@ export interface TransactionState {
   value: string
   call: ContractCall
   extra?: any
+  autoCall: boolean
 }
 
 interface IState {

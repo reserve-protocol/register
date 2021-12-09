@@ -9,6 +9,9 @@ interface Props extends BoxProps {
   rToken: IReserveToken
 }
 
+/**
+ * Display collateral tokens balances
+ */
 const Balances = ({ rToken, ...props }: Props) => {
   const tokenBalances = useAppSelector((state) => state.reserveTokens.balances)
 
@@ -29,7 +32,8 @@ const Balances = ({ rToken, ...props }: Props) => {
           mr={2}
         >
           <RTokenIcon style={{ marginRight: 10 }} />
-          {formatCurrency(tokenBalances[rToken.token.address])} {rToken.token.symbol}
+          {formatCurrency(tokenBalances[rToken.token.address])}{' '}
+          {rToken.token.symbol}
         </Card>
         <Card sx={{ flexGrow: 1 }} ml={2}>
           {rToken.vault.collaterals.map((collateral) => (

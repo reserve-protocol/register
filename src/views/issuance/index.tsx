@@ -1,10 +1,9 @@
 import { Flex, Text } from '@theme-ui/components'
-import { useEthers } from '@usedapp/core'
 import { Card, Container } from 'components'
-import ContractPlayground from 'components/dev/ContractPlayground'
 import TransactionHistory from 'components/transaction-history'
 import useTokensBalance from 'hooks/useTokensBalance'
 import TransactionManager from 'state/context/TransactionManager'
+import TransactionWorker from 'state/context/TransactionWorker'
 import { useAppSelector } from 'state/hooks'
 import {
   IReserveToken,
@@ -12,6 +11,7 @@ import {
 } from 'state/reserve-tokens/reducer'
 import Balances from './components/balances'
 import Issue from './components/issue'
+import PendingIssuances from './components/pending'
 import Redeem from './components/redeem'
 
 const getTokenAddresses = (reserveToken: IReserveToken): [string, number][] => [
@@ -23,15 +23,13 @@ const getTokenAddresses = (reserveToken: IReserveToken): [string, number][] => [
 ]
 
 const Issuance = () => {
-  const { account } = useEthers()
   // This component is protected by a guard, RToken always exists
   const RToken = useAppSelector(selectCurrentRToken) as IReserveToken
   const tokenBalances = useTokensBalance(getTokenAddresses(RToken))
 
-  const handleIssuance = (amount: number) => {}
-
   return (
     <TransactionManager>
+      <TransactionWorker />
       <Container pt={4} pb={4}>
         <Balances rToken={RToken} mb={3} />
         <Text mb={2} variant="sectionTitle">
@@ -39,12 +37,16 @@ const Issuance = () => {
         </Text>
         <Card mb={3}>
           <Flex mx={-2}>
-            <Issue data={RToken} onIssue={handleIssuance} />
-            <Redeem balance={tokenBalances[RToken.token.address]} />
+            <Issue data={RToken} />
+            <Redeem
+              data={RToken}
+              balance={tokenBalances[RToken.token.address]}
+            />
           </Flex>
         </Card>
         <TransactionHistory />
-        <ContractPlayground />
+        <PendingIssuances mt={3} />
+        {/* <ContractPlayground /> */}
       </Container>
     </TransactionManager>
   )
