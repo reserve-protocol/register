@@ -149,7 +149,7 @@ const Issue = ({
       })
       // Create token issuance contract call
       const tokenIssuance = {
-        description: `Issue ${amount} ${data.rToken.symbol}`,
+        description: `Issue ${amount} ${data.token.symbol}`,
         status: TX_STATUS.PENDING,
         value: amount,
         extra: tokenQuantities, // Send quantities as an extra prop for allowance check before issuance

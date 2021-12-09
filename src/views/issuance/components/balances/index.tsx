@@ -29,7 +29,7 @@ const Balances = ({ rToken, ...props }: Props) => {
           mr={2}
         >
           <RTokenIcon style={{ marginRight: 10 }} />
-          {formatCurrency(tokenBalances[rToken.rToken.address])} {rToken.rToken.symbol}
+          {formatCurrency(tokenBalances[rToken.token.address])} {rToken.token.symbol}
         </Card>
         <Card sx={{ flexGrow: 1 }} ml={2}>
           {rToken.vault.collaterals.map((collateral) => (

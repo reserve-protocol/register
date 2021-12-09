@@ -26,7 +26,7 @@ export interface IReserveToken {
   id: string
   mood: string
   staked: number
-  rToken: IToken
+  token: IToken
   rsr: IToken
   stToken: IToken
   vault: IVault

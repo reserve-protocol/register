@@ -31,7 +31,7 @@ const getTokensQuery = gql`
         symbol
         decimals
       }
-      rToken {
+      token {
         address
         name
         symbol
@@ -91,7 +91,7 @@ const ReserveTokensUpdater = () => {
 
 // Gets ReserveToken related token addresses and decimals
 const getTokens = (reserveToken: IReserveToken): [string, number][] => [
-  [reserveToken.rToken.address, reserveToken.rToken.decimals],
+  [reserveToken.token.address, reserveToken.token.decimals],
   [reserveToken.rsr.address, reserveToken.rsr.decimals],
   [reserveToken.stToken.address, reserveToken.stToken.decimals],
   ...reserveToken.vault.collaterals.map(({ token }): [string, number] => [

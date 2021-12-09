@@ -10,22 +10,20 @@ const UsageOverview = ({ data, ...props }: { data: IReserveToken }) => (
     <Grid columns={3} mb={3}>
       <Card>
         <InfoBox
-          title={(data.rToken?.transfersCount ?? 0).toLocaleString()}
+          title={(data.token?.transfersCount ?? 0).toLocaleString()}
           subtitle="Total Transactions"
         />
       </Card>
       <Card>
         <InfoBox
-          title={(data.rToken?.transfersCount ?? 0).toLocaleString()}
-          description={`$${(
-            data.rToken?.transfersCount ?? 0
-          ).toLocaleString()}`}
+          title={(data.token?.transfersCount ?? 0).toLocaleString()}
+          description={`$${(data.token?.transfersCount ?? 0).toLocaleString()}`}
           subtitle="24h Volume"
         />
       </Card>
       <Card>
         <InfoBox
-          title={(data.rToken?.holdersCount ?? 0).toLocaleString()}
+          title={(data.token?.holdersCount ?? 0).toLocaleString()}
           subtitle="Holders"
         />
       </Card>

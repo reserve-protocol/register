@@ -13,7 +13,7 @@ import { formatCurrency } from 'utils'
  * @returns React.Component
  */
 const AssetsOverview = ({
-  data: { rToken, vault },
+  data: { token, vault },
   ...props
 }: {
   data: IReserveToken
@@ -25,10 +25,10 @@ const AssetsOverview = ({
     <Card p={4}>
       <InfoBox
         title={`${
-          rToken?.supply?.total
-            ? formatCurrency(parseFloat(formatEther(rToken.supply.total)))
+          token?.supply?.total
+            ? formatCurrency(parseFloat(formatEther(token.supply.total)))
             : '0'
-        } ${rToken.symbol}`}
+        } ${token.symbol}`}
         subtitle="In circulation"
       />
     </Card>

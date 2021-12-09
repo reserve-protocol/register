@@ -102,7 +102,7 @@ const IssuanceTransactionModal = ({
         }}
       >
         <b>
-          Issue ${amount} {rToken.rToken.symbol}
+          Issue ${amount} {rToken.token.symbol}
         </b>
         <div style={{ marginLeft: 'auto', position: 'relative', top: 3 }}>
           {issueStatus === STATUS.ISSUING && 'LOADING'}

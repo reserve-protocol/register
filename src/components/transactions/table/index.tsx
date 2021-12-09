@@ -6,21 +6,13 @@ import { formatCurrency } from 'utils'
 
 const GET_TRANSACTIONS = gql`
   subscription GetTransactions {
-    transactions {
+    entries {
       id
-      transactionType
-      fromAddr {
-        address
-      }
-      toAddr {
-        address
-      }
-      token {
-        symbol
-      }
-      block
-      timestamp
+      type
       amount
+      transaction {
+        id
+      }
     }
   }
 `
@@ -30,7 +22,7 @@ const GET_TRANSACTIONS = gql`
 const columns = [
   {
     Header: 'Type',
-    accessor: 'transactionType',
+    accessor: 'type',
   },
   {
     Header: 'Amount',
@@ -53,15 +45,11 @@ const columns = [
 
 const TransactionsTable = () => {
   const { data, loading } = useSubscription(GET_TRANSACTIONS, {
-    variables: { orderBy: 'symbol', where: {} },
+    variables: { orderBy: 'id', where: {} },
   })
 
   return (
-    <Table
-      columns={columns}
-      data={!loading ? data.transactions : []}
-      pagination
-    />
+    <Table columns={columns} data={!loading ? data.entries : []} pagination />
   )
 }
 

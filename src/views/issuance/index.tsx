@@ -15,7 +15,7 @@ import Issue from './components/issue'
 import Redeem from './components/redeem'
 
 const getTokenAddresses = (reserveToken: IReserveToken): [string, number][] => [
-  [reserveToken.rToken.address, reserveToken.rToken.decimals],
+  [reserveToken.token.address, reserveToken.token.decimals],
   ...reserveToken.vault.collaterals.map((collateral): [string, number] => [
     collateral.token.address,
     collateral.token.decimals,
@@ -40,7 +40,7 @@ const Issuance = () => {
         <Card mb={3}>
           <Flex mx={-2}>
             <Issue data={RToken} onIssue={handleIssuance} />
-            <Redeem balance={tokenBalances[RToken.rToken.address]} />
+            <Redeem balance={tokenBalances[RToken.token.address]} />
           </Flex>
         </Card>
         <TransactionHistory />
