@@ -10,6 +10,7 @@ import {
 import TransactionHistory from 'components/transaction-history'
 import Stake from './components/stake'
 import Unstake from './components/unstake'
+import PendingUnstake from './components/pending-unstake'
 
 const Staking = () => {
   // This component is protected by a guard, RToken always exists
@@ -29,6 +30,7 @@ const Staking = () => {
           </Flex>
         </Card>
         <TransactionHistory />
+        <PendingUnstake mt={3} />
       </Container>
     </TransactionManager>
   )

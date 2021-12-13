@@ -90,8 +90,7 @@ const Issue = ({ data, ...props }: { data: IReserveToken }) => {
   const [amount, setAmount] = useState('')
   const [issuing, setIssuing] = useState(false)
   const mainContract = useMainContract(data.id)
-  const [txState, dispatch] = useTransactionsState()
-  const currentTransaction = txState.list[txState.current]
+  const [, dispatch] = useTransactionsState()
 
   const handleIssue = async () => {
     setIssuing(true)
