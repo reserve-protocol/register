@@ -24,8 +24,9 @@ const SideBar = styled.div`
 // TODO: Improve component structure
 const PAGES = [
   { path: ROUTES.OVERVIEW, title: 'Overview' },
-  { path: ROUTES.ISSUANCE, title: 'Issue and Redeem' },
-  { path: ROUTES.STAKE, title: 'RSR Staking' },
+  { path: ROUTES.ISSUANCE, title: 'Mint + Redeem' },
+  { path: ROUTES.STAKE, title: 'Stake + Unstake' },
+  { path: '/test', title: 'Buy + Sell' },
 ]
 
 /**

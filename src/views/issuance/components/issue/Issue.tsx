@@ -14,7 +14,7 @@ import {
   useTransactionsState,
 } from 'state/context/TransactionManager'
 import { IReserveToken } from 'state/reserve-tokens/reducer'
-import TransactionWorker, { TRANSACTION_TYPES } from './IssuanceWorker'
+import IssuanceWorker, { TRANSACTION_TYPES } from './IssuanceWorker'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -114,7 +114,7 @@ const Issue = ({ data, ...props }: { data: IReserveToken }) => {
 
   return (
     <>
-      {currentTransaction && <TransactionWorker current={currentTransaction} />}
+      {currentTransaction && <IssuanceWorker current={currentTransaction} />}
       <InputContainer mx={2} {...props}>
         <Input
           placeholder="Mint amount"

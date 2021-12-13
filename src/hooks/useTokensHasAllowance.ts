@@ -6,7 +6,7 @@ import {
   useDebounce,
   useBlockNumber,
 } from '@usedapp/core'
-import { BigNumber, BigNumberish } from 'ethers'
+import { BigNumber } from 'ethers'
 
 /**
  * Returns a boolean if the given tokens has a certain amount of allowance to spend
@@ -38,9 +38,7 @@ const useTokensHasAllowance = (
 
   return (
     !!allowances.length &&
-    allowances.every(
-      (value, index) => value && value.length && value[0].gte(tokens[index][1])
-    )
+    allowances.every((value, index) => value?.[0]?.gte(tokens[index][1]))
   )
 }
 

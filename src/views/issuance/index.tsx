@@ -46,7 +46,6 @@ const Issuance = () => {
         </Card>
         <TransactionHistory />
         <PendingIssuances mt={3} />
-        {/* <ContractPlayground /> */}
       </Container>
     </TransactionManager>
   )

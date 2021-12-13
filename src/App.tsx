@@ -17,6 +17,7 @@ import Layout from './components/layout'
 import { ROUTES } from './constants'
 import { theme } from './theme'
 import Issuance from './views/issuance'
+import Staking from 'views/staking'
 
 // Requires rToken to be selected and a wallet connected
 // TODO: Better placeholders
@@ -62,6 +63,11 @@ const App = () => (
           <Route path={ROUTES.ISSUANCE}>
             <Guard>
               <Issuance />
+            </Guard>
+          </Route>
+          <Route path={ROUTES.STAKE}>
+            <Guard>
+              <Staking />
             </Guard>
           </Route>
           <Route exact path="/">
