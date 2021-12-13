@@ -3,7 +3,7 @@ import { Card, Container } from 'components'
 import TransactionHistory from 'components/transaction-history'
 import useTokensBalance from 'hooks/useTokensBalance'
 import TransactionManager from 'state/context/TransactionManager'
-import TransactionWorker from 'state/context/TransactionWorker'
+import { RequiredApprovedTransactionWorker } from 'state/context/TransactionWorker'
 import { useAppSelector } from 'state/hooks'
 import {
   IReserveToken,
@@ -29,7 +29,7 @@ const Issuance = () => {
 
   return (
     <TransactionManager>
-      <TransactionWorker />
+      <RequiredApprovedTransactionWorker method="issue" autoCalls />
       <Container pt={4} pb={4}>
         <Balances rToken={RToken} mb={3} />
         <Text mb={2} variant="sectionTitle">

@@ -14,7 +14,6 @@ import {
   useTransactionsState,
 } from 'state/context/TransactionManager'
 import { IReserveToken } from 'state/reserve-tokens/reducer'
-import IssuanceWorker, { TRANSACTION_TYPES } from './IssuanceWorker'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -53,7 +52,7 @@ const buildTransactions = (
         call: {
           abi: ERC20Interface,
           address: token.address,
-          method: TRANSACTION_TYPES.APPROVE,
+          method: 'approve',
           args: [data.id, tokenAmount],
         },
       }
@@ -69,7 +68,7 @@ const buildTransactions = (
     call: {
       abi: MainInterface,
       address: data.id,
-      method: TRANSACTION_TYPES.ISSUE,
+      method: 'issue',
       args: [parseEther(amount)],
     },
   })
@@ -113,20 +112,17 @@ const Issue = ({ data, ...props }: { data: IReserveToken }) => {
   }
 
   return (
-    <>
-      {currentTransaction && <IssuanceWorker current={currentTransaction} />}
-      <InputContainer mx={2} {...props}>
-        <Input
-          placeholder="Mint amount"
-          label="Mint ammount"
-          value={amount}
-          onChange={setAmount}
-        />
-        <Button mt={2} disabled={issuing} onClick={handleIssue}>
-          Mint
-        </Button>
-      </InputContainer>
-    </>
+    <InputContainer mx={2} {...props}>
+      <Input
+        placeholder="Mint amount"
+        label="Mint ammount"
+        value={amount}
+        onChange={setAmount}
+      />
+      <Button mt={2} disabled={issuing} onClick={handleIssue}>
+        Mint
+      </Button>
+    </InputContainer>
   )
 }
 
