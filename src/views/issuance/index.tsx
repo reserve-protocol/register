@@ -1,4 +1,6 @@
+import { gql, useQuery } from '@apollo/client'
 import { Flex, Text } from '@theme-ui/components'
+import { useEthers } from '@usedapp/core'
 import { Card, Container } from 'components'
 import TransactionHistory from 'components/transaction-history'
 import useTokensBalance from 'hooks/useTokensBalance'
@@ -22,8 +24,34 @@ const getTokenAddresses = (reserveToken: IReserveToken): [string, number][] => [
   ]),
 ]
 
+const GET_TX_HISTORY = gql`
+  query GetIssuancesHistory($userId: String!) {
+    entries(
+      user: $userId
+      where: { type_in: ["Issuance", "Redemption"] }
+      orderBy: createdAt
+      orderDirection: desc
+    ) {
+      id
+      type
+      amount
+      createdAt
+      transaction {
+        id
+      }
+    }
+  }
+`
+
 const Issuance = () => {
   // This component is protected by a guard, RToken always exists
+  const { account } = useEthers()
+  const { data, loading } = useQuery(GET_TX_HISTORY, {
+    variables: {
+      where: {},
+      userId: account,
+    },
+  })
   const RToken = useAppSelector(selectCurrentRToken) as IReserveToken
   const tokenBalances = useTokensBalance(getTokenAddresses(RToken))
 
@@ -44,7 +72,9 @@ const Issuance = () => {
             />
           </Flex>
         </Card>
-        <TransactionHistory />
+        <TransactionHistory
+          history={data && data.entries ? data.entries : []}
+        />
         <PendingIssuances mt={3} />
       </Container>
     </TransactionManager>

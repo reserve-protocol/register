@@ -28,7 +28,7 @@ const COLUMNS = [
 
 const GET_PENDING_ISSUANCES = gql`
   subscription GetPendingIssuances($userId: String!) {
-    entries(user: $userId, where: { type: Issuance, status: Pending }) {
+    entries(user: $userId, where: { type: "Issuance", status: Pending }) {
       id
       type
       amount

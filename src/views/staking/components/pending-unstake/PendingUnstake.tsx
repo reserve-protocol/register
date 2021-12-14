@@ -28,7 +28,7 @@ const COLUMNS = [
 
 const GET_PENDING_UNSTAKE = gql`
   subscription GetPendingUnstake($userId: String!) {
-    entries(user: $userId, where: { type: Unstake, status: Pending }) {
+    entries(user: $userId, where: { type: "Unstake", status: Pending }) {
       id
       type
       amount
@@ -52,6 +52,8 @@ const PendingUnstake = (props: any) => {
       userId: account,
     },
   })
+
+  console.log('data', data)
 
   return (
     <SectionCard title="Pending Withdrawals" {...props}>

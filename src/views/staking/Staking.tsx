@@ -8,13 +8,41 @@ import {
   IReserveToken,
 } from 'state/reserve-tokens/reducer'
 import TransactionHistory from 'components/transaction-history'
+import { gql, useQuery } from '@apollo/client'
+import { useEthers } from '@usedapp/core'
 import Stake from './components/stake'
 import Unstake from './components/unstake'
 import PendingUnstake from './components/pending-unstake'
 
+const GET_TX_HISTORY = gql`
+  query GetStakingHistory($userId: String!) {
+    entries(
+      user: $userId
+      where: { type_in: ["Stake", "Unstake"] }
+      orderBy: createdAt
+      orderDirection: desc
+    ) {
+      id
+      type
+      amount
+      createdAt
+      transaction {
+        id
+      }
+    }
+  }
+`
+
 const Staking = () => {
   // This component is protected by a guard, RToken always exists
   const RToken = useAppSelector(selectCurrentRToken) as IReserveToken
+  const { account } = useEthers()
+  const { data, loading } = useQuery(GET_TX_HISTORY, {
+    variables: {
+      where: {},
+      userId: account,
+    },
+  })
 
   return (
     <TransactionManager>
@@ -29,7 +57,9 @@ const Staking = () => {
             <Unstake data={RToken} />
           </Flex>
         </Card>
-        <TransactionHistory />
+        <TransactionHistory
+          history={data && data.entries ? data.entries : []}
+        />
         <PendingUnstake mt={3} />
       </Container>
     </TransactionManager>

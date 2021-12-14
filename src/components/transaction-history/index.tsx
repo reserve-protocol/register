@@ -1,9 +1,14 @@
 import { SectionCard } from 'components'
 import { Text, Box } from '@theme-ui/components'
 import { Table } from 'components/table'
-import { useTransactionsState } from 'state/context/TransactionManager'
+import {
+  TX_STATUS,
+  useTransactionsState,
+} from 'state/context/TransactionManager'
 import { shortenTransactionHash } from '@usedapp/core'
 import { formatCurrency } from 'utils'
+import { useMemo } from 'react'
+import { formatEther } from '@ethersproject/units'
 
 const columns = [
   {
@@ -17,21 +22,44 @@ const columns = [
   {
     Header: 'Value',
     accessor: 'value',
-    Cell: ({ cell }: { cell: any }) => formatCurrency(cell.value),
   },
   {
     Header: 'TX Hash',
     accessor: 'hash',
-    // TODO: Get etherscan link here
-    Cell: ({ cell }: { cell: any }) =>
-      cell.value ? shortenTransactionHash(cell.value) : '-',
   },
 ]
 
-const TransactionHistory = () => {
-  const [state] = useTransactionsState()
+interface IPreviousTransaction {
+  transaction: { id: string }
+  amount: string
+  type: string
+}
 
-  const dataset = state.list.slice().reverse()
+const TransactionHistory = ({
+  history = [],
+}: {
+  history: IPreviousTransaction[]
+}) => {
+  const [state] = useTransactionsState()
+  const dataset = useMemo(
+    () => [
+      ...state.list
+        .map(({ status, description, value, hash }) => ({
+          status,
+          description,
+          value: formatCurrency(+value),
+          hash: hash ? shortenTransactionHash(hash) : '-',
+        }))
+        .reverse(),
+      ...history.map(({ transaction, amount, type }) => ({
+        status: TX_STATUS.SUBMITTED,
+        description: type,
+        value: formatCurrency(+formatEther(amount)),
+        hash: shortenTransactionHash(transaction.id),
+      })),
+    ],
+    [state.list, history.length]
+  )
 
   return (
     <SectionCard title="Your transactions">
