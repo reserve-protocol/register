@@ -5,12 +5,12 @@ export const boxShadow =
 
 export const colors = {
   text: '#000',
-  background: '#f5f5f5',
+  background: '#fff',
   bgCard: '#fff',
-  primary: '#00b600',
-  primaryDark: '#008100',
+  primary: '#00FFBF',
   primaryAccent: '#1fea00',
   grey: '#ccc',
+  secondary: '#77838F',
   modes: {
     dark: {
       text: '#fff',
@@ -167,9 +167,10 @@ export const theme: Theme = {
     primary: {
       cursor: 'pointer',
       transition: 'all .2s ease',
+      color: 'black',
 
       '&:hover': {
-        backgroundColor: 'primaryDark',
+        filter: 'brightness(0.85)',
       },
       '&:disabled': {
         backgroundColor: 'grey',

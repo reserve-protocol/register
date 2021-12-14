@@ -13,11 +13,11 @@ import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
 import Updater from 'state/reserve-tokens/updater'
 import { ThemeProvider } from 'theme-ui'
 import Overview from 'views/overview'
+import Staking from 'views/staking'
 import Layout from './components/layout'
 import { ROUTES } from './constants'
 import { theme } from './theme'
 import Issuance from './views/issuance'
-import Staking from 'views/staking'
 
 // Requires rToken to be selected and a wallet connected
 // TODO: Better placeholders

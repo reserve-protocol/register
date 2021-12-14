@@ -1,33 +1,7 @@
-import styled from '@emotion/styled'
-import RTokenSelector from 'components/rtoken-selector'
-import React from 'react'
-import { NavLink } from 'react-router-dom'
-import { Box, Flex, Text } from 'theme-ui'
-import { ROUTES } from '../../constants'
+import { ReactNode } from 'react'
+import { Box, Flex } from '@theme-ui/components'
 import Header from './header'
-
-// TODO: theming
-const SideBar = styled.div`
-  padding-top: 0;
-  flex-grow: 1;
-  flex-basis: 256px;
-  box-sizing: border-box;
-  background-color: black;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  /* justify-content: center; */
-  border-right: 1px solid #f5f5f5;
-`
-
-// TODO: Move sidebar to different component
-// TODO: Improve component structure
-const PAGES = [
-  { path: ROUTES.OVERVIEW, title: 'Overview' },
-  { path: ROUTES.ISSUANCE, title: 'Mint + Redeem' },
-  { path: ROUTES.STAKE, title: 'Stake + Unstake' },
-  { path: '/test', title: 'Buy + Sell' },
-]
+import Sidebar from './sidebar'
 
 /**
  * Application Layout
@@ -35,7 +9,7 @@ const PAGES = [
  * @param children - required
  * @returns {JSX.Element}
  */
-const Layout = ({ children }: { children: React.ReactNode }) => (
+const Layout = ({ children }: { children: ReactNode }) => (
   <Flex
     sx={{
       flexWrap: 'wrap',
@@ -43,45 +17,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => (
       overflow: 'hidden',
     }}
   >
-    <SideBar>
-      <Box
-        sx={{
-          backgroundColor: '#1fea00',
-          color: 'black',
-          height: 60,
-          borderBottom: '1px solid #f5f5f5',
-          width: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Text p={2} sx={{ fontWeight: 'bold' }}>
-          Reserve Explorer
-        </Text>
-      </Box>
-      <div style={{ borderBottom: '1px solid #f5f5f5', padding: '1rem' }}>
-        <RTokenSelector />
-      </div>
-      <div>
-        {PAGES.map((item) => (
-          <NavLink
-            key={item.path}
-            style={{
-              fontSize: 18,
-              textDecoration: 'none',
-              color: 'inherit',
-              display: 'block',
-              margin: 16,
-            }}
-            to={item.path}
-            activeStyle={{ color: '#1fea00' }}
-          >
-            <Text>{item.title}</Text>
-          </NavLink>
-        ))}
-      </div>
-    </SideBar>
+    <Sidebar />
     <Box
       sx={{
         flexGrow: 99999,
