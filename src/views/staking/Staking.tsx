@@ -13,6 +13,7 @@ import { useEthers } from '@usedapp/core'
 import Stake from './components/stake'
 import Unstake from './components/unstake'
 import PendingUnstake from './components/pending-unstake'
+import Balances from './components/balances'
 
 const GET_TX_HISTORY = gql`
   query GetStakingHistory($userId: String!) {
@@ -48,7 +49,8 @@ const Staking = () => {
     <TransactionManager>
       <RequiredApprovedTransactionWorker method="stake" autoCalls />
       <Container pt={4} pb={4}>
-        <Text mb={2} variant="sectionTitle">
+        <Balances rToken={RToken} />
+        <Text mb={2} mt={3} variant="sectionTitle">
           Stake and Withdrawn
         </Text>
         <Card mb={3}>

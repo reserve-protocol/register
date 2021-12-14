@@ -45,15 +45,13 @@ const GET_PENDING_UNSTAKE = gql`
 
 const PendingUnstake = (props: any) => {
   const { account } = useEthers()
-  const { data, loading } = useSubscription(GET_PENDING_UNSTAKE, {
+  const { data } = useSubscription(GET_PENDING_UNSTAKE, {
     variables: {
       orderBy: 'availableAt',
       where: {},
       userId: account,
     },
   })
-
-  console.log('data', data)
 
   return (
     <SectionCard title="Pending Withdrawals" {...props}>

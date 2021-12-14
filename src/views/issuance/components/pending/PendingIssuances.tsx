@@ -45,7 +45,7 @@ const GET_PENDING_ISSUANCES = gql`
 
 const PendingIssuances = (props: any) => {
   const { account } = useEthers()
-  const { data, loading } = useSubscription(GET_PENDING_ISSUANCES, {
+  const { data } = useSubscription(GET_PENDING_ISSUANCES, {
     variables: {
       orderBy: 'availableAt',
       where: {},
