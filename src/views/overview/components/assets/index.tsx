@@ -32,7 +32,7 @@ const AssetsOverview = ({
         subtitle="In circulation"
       />
     </Card>
-    <Grid columns={3} gap={0} mb={3}>
+    <Grid columns={3} gap={0} mb={5}>
       {vault.collaterals.map((collateral) => (
         <Card key={collateral.id}>
           <InfoBox title="0.00" subtitle={collateral.token.name} />

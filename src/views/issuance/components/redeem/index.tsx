@@ -46,19 +46,17 @@ const Redeem = ({
   }
 
   return (
-    <>
-      <InputContainer mx={2}>
-        <Input
-          placeholder="Redeem amount"
-          label="Redeem amount"
-          value={amount}
-          onChange={setAmount}
-        />
-        <Button mt={2} onClick={handleRedeem}>
-          Redeem
-        </Button>
-      </InputContainer>
-    </>
+    <InputContainer mx={2}>
+      <Input
+        placeholder="Redeem amount"
+        label="Redeem amount"
+        value={amount}
+        onChange={setAmount}
+      />
+      <Button mt={2} onClick={handleRedeem}>
+        Redeem
+      </Button>
+    </InputContainer>
   )
 }
 

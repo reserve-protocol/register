@@ -1,12 +1,12 @@
 import { Table } from 'components/table'
-import { shortenAddress } from '@usedapp/core'
+import { Box } from '@theme-ui/components'
 import { gql, useSubscription } from '@apollo/client'
 import { formatEther } from '@ethersproject/units'
 import { formatCurrency } from 'utils'
 
 const GET_TRANSACTIONS = gql`
   subscription GetTransactions {
-    entries {
+    entries(first: 50, orderBy: createdAt, orderDirection: desc) {
       id
       type
       amount
@@ -45,11 +45,13 @@ const columns = [
 
 const TransactionsTable = () => {
   const { data, loading } = useSubscription(GET_TRANSACTIONS, {
-    variables: { orderBy: 'id', where: {} },
+    variables: { orderBy: 'id', first: 5, where: {} },
   })
 
   return (
-    <Table columns={columns} data={!loading ? data.entries : []} pagination />
+    <Box sx={{ height: '500px', overflow: 'auto' }}>
+      <Table columns={columns} data={!loading ? data.entries : []} />
+    </Box>
   )
 }
 

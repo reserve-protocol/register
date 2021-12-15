@@ -7,7 +7,7 @@ import {
   IReserveToken,
   selectCurrentRToken,
 } from 'state/reserve-tokens/reducer'
-import { Box, Flex, Text } from 'theme-ui'
+import { Box, Flex, Text, Grid } from '@theme-ui/components'
 import AssetsOverview from './components/assets'
 import UsageOverview from './components/usage'
 
@@ -27,30 +27,10 @@ const Overview = () => {
 
   return (
     <Container pt={4} pb={4}>
-      <Flex
-        sx={{
-          flexWrap: 'wrap',
-          overflow: 'hidden',
-        }}
-      >
-        <Box sx={{ flexGrow: 9999, flexBasis: 0, minWidth: 620 }}>
+      <Grid columns={2} gap={5} width={600}>
+        <Box>
           <UsageOverview data={RToken} />
           <AssetsOverview data={RToken} />
-          <PriceChart mb={3} />
-          <MarketCapChart mb={3} />
-        </Box>
-        <Box
-          sx={{
-            flexGrow: 1,
-            minWidth: 600,
-            marginBottom: 3,
-            marginLeft: 4,
-            '@media screen and (max-width: 1616px)': {
-              marginLeft: 0,
-              marginBottom: 0,
-            },
-          }}
-        >
           <Text sx={{ fontSize: 4, display: 'block' }} mb={2}>
             Transactions
           </Text>
@@ -58,7 +38,11 @@ const Overview = () => {
             <TransactionsTable />
           </Card>
         </Box>
-      </Flex>
+        <Box>
+          <PriceChart mb={5} />
+          <MarketCapChart mb={5} />
+        </Box>
+      </Grid>
     </Container>
   )
 }

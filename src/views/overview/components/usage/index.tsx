@@ -7,7 +7,7 @@ const UsageOverview = ({ data, ...props }: { data: IReserveToken }) => (
     <Text variant="sectionTitle" mb={2}>
       Usage
     </Text>
-    <Grid columns={3} mb={3}>
+    <Grid columns={3} mb={5}>
       <Card>
         <InfoBox
           title={(data.token?.transfersCount ?? 0).toLocaleString()}
