@@ -1,9 +1,8 @@
 import styled from '@emotion/styled'
-import { Box, Text, useColorMode } from 'theme-ui'
+import { Box, Text } from '@theme-ui/components'
 import { NavLink } from 'react-router-dom'
 import Logo from 'components/icons/Logo'
 import ROUTES from 'constants/routes'
-import DarkModeToggle from 'components/dark-mode-toggle'
 import SyncedBlock from 'components/synced-block'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
 
@@ -22,12 +21,12 @@ const Container = styled.div`
   background-color: #f6f6f7;
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   border-right: 1px solid #77838f;
 `
 
-const Sidebar = () => (
-  <Container>
+// Sidebar header
+const Header = () => (
+  <>
     <Box
       sx={{
         width: '100%',
@@ -50,34 +49,54 @@ const Sidebar = () => (
     >
       Made by LC Labs
     </Text>
-    <Box mt={3}>
-      {PAGES.map((item) => (
-        <NavLink
-          key={item.path}
-          style={{
-            fontSize: 18,
-            textDecoration: 'none',
-            color: 'inherit',
-            display: 'block',
-            padding: '0 32px',
-            margin: '16px 0',
-            lineHeight: '32px',
-          }}
-          to={item.path}
-          activeStyle={{
-            borderLeft: '5px solid #00FFBF',
-            paddingLeft: '26px',
-          }}
-        >
-          <Text>{item.title}</Text>
-        </NavLink>
-      ))}
-    </Box>
+  </>
+)
+
+// Sidebar Navigation
+const Navigation = () => (
+  <Box mt={3}>
+    {PAGES.map((item) => (
+      <NavLink
+        key={item.path}
+        style={{
+          fontSize: 18,
+          textDecoration: 'none',
+          color: 'inherit',
+          display: 'block',
+          padding: '0 32px',
+          margin: '16px 0',
+          lineHeight: '32px',
+          paddingLeft: '32px',
+        }}
+        to={item.path}
+        activeStyle={{
+          borderLeft: '5px solid #00FFBF',
+          paddingLeft: '27px',
+        }}
+      >
+        <Text>{item.title}</Text>
+      </NavLink>
+    ))}
+  </Box>
+)
+
+// Sidebar footer
+const Footer = () => (
+  <Box m={4}>
+    <ThemeColorMode mb={4} />
+    <SyncedBlock />
+  </Box>
+)
+
+/**
+ * Application sidebar
+ */
+const Sidebar = () => (
+  <Container>
+    <Header />
+    <Navigation />
     <Box my="auto" />
-    <Box m={4}>
-      <ThemeColorMode mb={4} />
-      <SyncedBlock />
-    </Box>
+    <Footer />
   </Container>
 )
 

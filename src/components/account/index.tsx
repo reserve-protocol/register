@@ -8,20 +8,19 @@ import WalletModal from '../wallet-modal'
 
 const Container = styled.div`
   display: flex;
-  border: 1px solid #f5f5f5;
+  border: 1px solid #77838f;
   justify-content: center;
   align-items: center;
   height: 38px;
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: 4px;
   cursor: pointer;
 `
 
 const StyledIdenticon = styled.div`
-  padding-right: 10px;
-  padding-top: 4px;
+  margin-right: 10px;
+  margin-top: 4px;
   border-radius: 1.125rem;
-  background-color: black;
 `
 
 function Identicon() {
