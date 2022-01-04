@@ -39,6 +39,7 @@ export interface ReserveTokenState {
 }
 
 const initialState: ReserveTokenState = {
+  // TODO: fetched prop if progress indicator if needed
   list: {},
   current: null,
   balances: {},
@@ -69,6 +70,32 @@ export const selectCurrentRToken = createSelector(
   (state: any) => [state.reserveTokens.current, state.reserveTokens.list],
   ([current, list]): IReserveToken | null =>
     current ? list[current.toLowerCase()] : null
+)
+
+// Get top 5 tokens including the selected token on top
+export const selectTopTokens = createSelector(
+  (state: any) => [state.reserveTokens.current, state.reserveTokens.list],
+  (params) => {
+    const [current, list] = <[string, ReserveTokenState['list']]>params
+    const result: IReserveToken[] = []
+
+    if (!list || !Object.keys(list).length || !current) {
+      return result
+    }
+
+    return [
+      <IReserveToken>list[current],
+      ...Object.values(list)
+        .reduce<IReserveToken[]>((prev, curr): IReserveToken[] => {
+          if (curr.id === current) {
+            return prev
+          }
+
+          return [...prev, curr]
+        }, [])
+        .slice(0, 5),
+    ]
+  }
 )
 
 export const { loadTokens, updateBalance, setCurrent } =

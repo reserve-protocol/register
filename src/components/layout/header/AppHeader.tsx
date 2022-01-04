@@ -1,5 +1,6 @@
 import { Flex, Box } from 'theme-ui'
 import LanguageSelector from 'components/language-selector'
+import RTokenSelector from 'components/rtoken-selector'
 import Account from '../../account'
 
 /**
@@ -14,6 +15,7 @@ const AppHeader = () => (
       alignItems: 'center',
     }}
   >
+    <RTokenSelector />
     <Box mx="auto" />
     <Account />
     <Box ml={4} mr={2} sx={{ alignItems: 'center', display: 'flex' }}>

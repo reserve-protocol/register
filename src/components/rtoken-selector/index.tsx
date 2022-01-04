@@ -1,20 +1,41 @@
-import { Flex, Text } from '@theme-ui/components'
-import RTokenIcon from 'components/icons/logos/RTokenIcon'
-import { useSelector } from 'react-redux'
+import { BoxProps, Box, Flex, Text } from '@theme-ui/components'
+// import RTokenIcon from 'components/icons/logos/RTokenIcon'
+// import TOKENS from 'constants/tokens'
+import { useDispatch, useSelector } from 'react-redux'
 import { useAppSelector } from 'state/hooks'
-import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
+import { selectTopTokens, setCurrent } from 'state/reserve-tokens/reducer'
 
-const RTokenSelector = () => {
-  const { token } = useSelector(selectCurrentRToken) ?? {}
+const RTokenSelector = (props: BoxProps) => {
+  const tokens = useSelector(selectTopTokens)
+  const dispatch = useDispatch()
 
-  if (!token) {
+  if (!tokens.length) {
     return <span>Loading...</span>
   }
 
+  const handleSelect = (token: string) => {
+    dispatch(setCurrent(token))
+  }
+
   return (
-    <Flex sx={{ alignItems: 'center' }}>
-      <RTokenIcon style={{ fontSize: 32, marginRight: '1rem' }} />
-      <Text sx={{ fontWeight: 'bold' }}>{token.name}</Text>
+    <Flex {...props} sx={{ alignItems: 'center' }}>
+      {tokens.map((token) => (
+        <Box
+          onClick={() => handleSelect(token.id)}
+          sx={{ cursor: 'pointer' }}
+          mr={3}
+        >
+          <img
+            src={require('../../assets/tokens/rsv.png').default}
+            height={38}
+            width={38}
+            alt={token.token.name}
+          />
+        </Box>
+      ))}
+      <Text sx={{ textDecoration: 'underline', cursor: 'pointer' }}>
+        See all tokens...
+      </Text>
     </Flex>
   )
 }
