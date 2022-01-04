@@ -167,6 +167,21 @@ export const theme: Theme = {
     primary: {
       cursor: 'pointer',
       transition: 'all .2s ease',
+      color: '#fff',
+      backgroundColor: 'black',
+
+      '&:hover': {
+        filter: 'brightness(0.85)',
+      },
+      '&:disabled': {
+        backgroundColor: 'grey',
+        cursor: 'default',
+      },
+    },
+    accent: {
+      cursor: 'pointer',
+      transition: 'all .2s ease',
+      backgroundColor: 'primary',
       color: 'black',
 
       '&:hover': {

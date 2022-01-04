@@ -57,7 +57,9 @@ const Account = () => {
   return (
     <>
       {!account ? (
-        <Button onClick={handleOpenModal}>Connect</Button>
+        <Button variant="accent" onClick={handleOpenModal}>
+          Connect
+        </Button>
       ) : (
         <Container onClick={handleOpenModal}>
           <Identicon />
