@@ -1,6 +1,7 @@
 import { Flex, Box, Text, BoxProps } from '@theme-ui/components'
 import { Card } from 'components'
 import { RTokenIcon } from 'components/icons/logos'
+import { RSR } from 'constants/tokens'
 import { useAppSelector } from 'state/hooks'
 import { ReserveToken } from 'types'
 import { formatCurrency } from 'utils'
@@ -32,8 +33,10 @@ const Balances = ({ rToken, ...props }: Props) => {
           mr={2}
         >
           <RTokenIcon style={{ marginRight: 10 }} />
-          {formatCurrency(tokenBalances[rToken.stToken.address])}{' '}
-          {rToken.stToken.symbol}
+          {formatCurrency(
+            tokenBalances[rToken.insurance?.token?.address ?? '']
+          )}{' '}
+          {rToken.insurance?.token?.symbol}
         </Card>
         <Card
           sx={{
@@ -46,8 +49,7 @@ const Balances = ({ rToken, ...props }: Props) => {
           ml={2}
         >
           <RTokenIcon style={{ marginRight: 10 }} />
-          {formatCurrency(tokenBalances[rToken.rsr.address])}{' '}
-          {rToken.rsr.symbol}
+          {formatCurrency(tokenBalances[RSR.address])} {RSR.symbol}
         </Card>
       </Flex>
     </Box>

@@ -2,12 +2,7 @@ import React from 'react'
 import { useEthers } from '@usedapp/core'
 import { Card } from 'components'
 import Container from 'components/container'
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch,
-} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { useAppSelector } from 'state/hooks'
 import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
 import Updater from 'state/reserve-tokens/updater'
@@ -56,24 +51,26 @@ const App = () => (
     <Updater />
     <Router>
       <Layout>
-        <Switch>
-          <Route path={ROUTES.OVERVIEW}>
-            <Overview />
-          </Route>
-          <Route path={ROUTES.ISSUANCE}>
-            <Guard>
-              <Issuance />
-            </Guard>
-          </Route>
-          <Route path={ROUTES.STAKE}>
-            <Guard>
-              <Staking />
-            </Guard>
-          </Route>
-          <Route exact path="/">
-            <Redirect to={ROUTES.OVERVIEW} />
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path={ROUTES.OVERVIEW} element={<Overview />} />
+          <Route
+            path={ROUTES.ISSUANCE}
+            element={
+              <Guard>
+                <Issuance />
+              </Guard>
+            }
+          />
+          <Route
+            path={ROUTES.STAKE}
+            element={
+              <Guard>
+                <Staking />
+              </Guard>
+            }
+          />
+          <Route path="/" element={<Overview />} />
+        </Routes>
       </Layout>
     </Router>
   </ThemeProvider>

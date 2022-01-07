@@ -58,7 +58,7 @@ const Navigation = () => (
     {PAGES.map((item) => (
       <NavLink
         key={item.path}
-        style={{
+        style={({ isActive }) => ({
           fontSize: 18,
           textDecoration: 'none',
           color: 'inherit',
@@ -66,13 +66,10 @@ const Navigation = () => (
           padding: '0 32px',
           margin: '16px 0',
           lineHeight: '32px',
-          paddingLeft: '32px',
-        }}
+          paddingLeft: isActive ? '27px' : '32px',
+          borderLeft: isActive ? '5px solid #00FFBF' : '',
+        })}
         to={item.path}
-        activeStyle={{
-          borderLeft: '5px solid #00FFBF',
-          paddingLeft: '27px',
-        }}
       >
         <Text>{item.title}</Text>
       </NavLink>

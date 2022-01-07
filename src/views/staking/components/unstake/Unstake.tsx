@@ -31,7 +31,7 @@ const Unstake = ({ data }: { data: ReserveToken }) => {
         value: amount,
         call: {
           abi: StRSRInterface,
-          address: data.stToken.address,
+          address: data.insurance?.token?.address as string,
           method: 'unstake',
           args: [parseEther(amount)],
         },

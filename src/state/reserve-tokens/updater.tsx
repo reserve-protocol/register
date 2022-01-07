@@ -84,9 +84,10 @@ const ReserveTokensUpdater = () => {
 }
 
 // Gets ReserveToken related token addresses and decimals
+// TODO: ST TOKEN AND RSR
 const getTokens = (reserveToken: ReserveToken): [string, number][] => [
   [reserveToken.token.address, reserveToken.token.decimals],
-  [reserveToken.stToken.address, reserveToken.stToken.decimals],
+  // [reserveToken.stToken.address, reserveToken.stToken.decimals],
   ...reserveToken.vault.collaterals.map(({ token }): [string, number] => [
     token.address,
     token.decimals,
