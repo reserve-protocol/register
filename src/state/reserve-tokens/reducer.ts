@@ -1,4 +1,4 @@
-import { RSV } from 'constants/tokens'
+import RSV from 'constants/rsv'
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ReserveToken } from 'types'
 

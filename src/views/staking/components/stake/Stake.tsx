@@ -3,13 +3,14 @@ import { parseEther } from '@ethersproject/units'
 import { Box } from '@theme-ui/components'
 import { ERC20Interface, StRSRInterface } from 'abis'
 import { Button, Input } from 'components'
+import { RSR } from 'constants/tokens'
 import { useState } from 'react'
 import {
   loadTransactions,
   TX_STATUS,
   useTransactionsState,
 } from 'state/context/TransactionManager'
-import { IReserveToken } from 'state/reserve-tokens/reducer'
+import { ReserveToken } from 'types'
 
 const TRANSACTION_TYPES = {
   APPROVE: 'approve',
@@ -22,10 +23,11 @@ const InputContainer = styled(Box)`
   flex-grow: 1;
 `
 
-const Stake = ({ data }: { data: IReserveToken }) => {
+const Stake = ({ data }: { data: ReserveToken }) => {
   // const rsrBalance =
   const [amount, setAmount] = useState('')
   const [, dispatch] = useTransactionsState()
+  const stTokenAddress = data.insurance?.token?.address ?? ''
 
   const handleStake = () => {
     setAmount('')
@@ -37,9 +39,9 @@ const Stake = ({ data }: { data: IReserveToken }) => {
         value: amount,
         call: {
           abi: ERC20Interface,
-          address: data.rsr.address,
+          address: RSR.address,
           method: TRANSACTION_TYPES.APPROVE,
-          args: [data.stToken.address, parseEther(amount)],
+          args: [stTokenAddress, parseEther(amount)],
         },
       },
       {
@@ -47,10 +49,10 @@ const Stake = ({ data }: { data: IReserveToken }) => {
         description: `Stake ${amount} RSR`,
         status: TX_STATUS.PENDING,
         value: amount,
-        extra: [[data.rsr.address, parseEther(amount)]],
+        extra: [RSR.address, parseEther(amount)],
         call: {
           abi: StRSRInterface,
-          address: data.stToken.address,
+          address: stTokenAddress,
           method: TRANSACTION_TYPES.STAKE,
           args: [parseEther(amount)],
         },

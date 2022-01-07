@@ -2,11 +2,11 @@ import { Flex, Box, Text, BoxProps } from '@theme-ui/components'
 import { Card } from 'components'
 import { RTokenIcon } from 'components/icons/logos'
 import { useAppSelector } from 'state/hooks'
-import { IReserveToken } from 'state/reserve-tokens/reducer'
+import { ReserveToken } from 'types'
 import { formatCurrency } from 'utils'
 
 interface Props extends BoxProps {
-  rToken: IReserveToken
+  rToken: ReserveToken
 }
 
 /**

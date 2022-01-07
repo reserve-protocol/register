@@ -24,23 +24,27 @@ export const RSR: Token = {
   // TODO: RSR LOGO
   logo: 'rsv.png',
 }
-//
 
 /**
  * Reserve Protocol Tokens
  * Mostly used for obtaining token information like the logo if it exists
  * This array contains only protocol related tokens like RSR/RSV/RToken
  */
-const TOKENS: { [x: string]: Token } = {
-  '0x9467a509da43cb50eb332187602534991be1fea4': {
+const tokenList = [
+  RSV,
+  RSR,
+  {
     address: '0x9467a509da43cb50eb332187602534991be1fea4',
     name: 'RSD',
     symbol: 'RSD',
     decimals: 18,
     logo: 'rsv.png',
   },
-  [RSV.address]: RSV,
-  [RSR.address]: RSR,
-}
+]
 
+// Exported token dictionary
+const TOKENS: { [x: string]: Token } = tokenList.reduce(
+  (prev, current) => ({ ...prev, [current.address]: current }),
+  {}
+)
 export default TOKENS

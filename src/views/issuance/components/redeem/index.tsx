@@ -8,8 +8,8 @@ import {
   TX_STATUS,
   useTransactionsState,
 } from 'state/context/TransactionManager'
-import { IReserveToken } from 'state/reserve-tokens/reducer'
 import { Box } from 'theme-ui'
+import { ReserveToken } from 'types'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -22,7 +22,7 @@ const Redeem = ({
   data,
 }: {
   balance: number
-  data: IReserveToken
+  data: ReserveToken
 }) => {
   const [amount, setAmount] = useState('')
   const [, dispatch] = useTransactionsState()

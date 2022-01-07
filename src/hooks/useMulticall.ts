@@ -1,3 +1,4 @@
+import { Provider } from '@ethersproject/providers'
 import { useEthers, useMulticallAddress } from '@usedapp/core'
 import { Multicall, CallReturnContext } from 'ethereum-multicall'
 import { useMemo } from 'react'
@@ -75,7 +76,7 @@ const useMulticall = (): Multicall | undefined => {
     () =>
       library && address
         ? new Multicall({
-            ethersProvider: library,
+            ethersProvider: <Provider>library,
             multicallCustomContractAddress: address,
           })
         : undefined,
