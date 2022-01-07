@@ -9,7 +9,7 @@ import {
   TX_STATUS,
   useTransactionsState,
 } from 'state/context/TransactionManager'
-import { IReserveToken } from 'state/reserve-tokens/reducer'
+import { ReserveToken } from 'types'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -17,8 +17,7 @@ const InputContainer = styled(Box)`
   flex-grow: 1;
 `
 
-const Unstake = ({ data }: { data: IReserveToken }) => {
-  // const rsrBalance =
+const Unstake = ({ data }: { data: ReserveToken }) => {
   const [amount, setAmount] = useState('')
   const [, dispatch] = useTransactionsState()
 

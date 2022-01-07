@@ -3,13 +3,11 @@ import { Text, Flex } from '@theme-ui/components'
 import TransactionManager from 'state/context/TransactionManager'
 import { RequiredApprovedTransactionWorker } from 'state/context/TransactionWorker'
 import { useAppSelector } from 'state/hooks'
-import {
-  selectCurrentRToken,
-  IReserveToken,
-} from 'state/reserve-tokens/reducer'
+import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
 import TransactionHistory from 'components/transaction-history'
 import { gql, useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
+import { ReserveToken } from 'types'
 import Stake from './components/stake'
 import Unstake from './components/unstake'
 import PendingUnstake from './components/pending-unstake'
@@ -36,7 +34,7 @@ const GET_TX_HISTORY = gql`
 
 const Staking = () => {
   // This component is protected by a guard, RToken always exists
-  const RToken = useAppSelector(selectCurrentRToken) as IReserveToken
+  const RToken = useAppSelector(selectCurrentRToken) as ReserveToken
   const { account } = useEthers()
   const { data, loading } = useQuery(GET_TX_HISTORY, {
     variables: {

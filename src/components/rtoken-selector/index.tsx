@@ -1,8 +1,6 @@
 import { BoxProps, Box, Flex, Text } from '@theme-ui/components'
-// import RTokenIcon from 'components/icons/logos/RTokenIcon'
-// import TOKENS from 'constants/tokens'
+import TOKENS from 'constants/tokens'
 import { useDispatch, useSelector } from 'react-redux'
-import { useAppSelector } from 'state/hooks'
 import { selectTopTokens, setCurrent } from 'state/reserve-tokens/reducer'
 
 const RTokenSelector = (props: BoxProps) => {
@@ -26,15 +24,22 @@ const RTokenSelector = (props: BoxProps) => {
           mr={3}
         >
           <img
-            src={require('../../assets/tokens/rsv.png').default}
+            src={`/imgs/${TOKENS[token.token.address]?.logo ?? 'default.png'}`}
             height={38}
             width={38}
             alt={token.token.name}
           />
         </Box>
       ))}
-      <Text sx={{ textDecoration: 'underline', cursor: 'pointer' }}>
-        See all tokens...
+      <Text
+        sx={{
+          textDecoration: 'underline',
+          cursor: 'pointer',
+          position: 'relative',
+          top: '-3px',
+        }}
+      >
+        See all RTokens...
       </Text>
     </Flex>
   )

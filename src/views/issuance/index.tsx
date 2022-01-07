@@ -7,16 +7,14 @@ import useTokensBalance from 'hooks/useTokensBalance'
 import TransactionManager from 'state/context/TransactionManager'
 import { RequiredApprovedTransactionWorker } from 'state/context/TransactionWorker'
 import { useAppSelector } from 'state/hooks'
-import {
-  IReserveToken,
-  selectCurrentRToken,
-} from 'state/reserve-tokens/reducer'
+import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
+import { ReserveToken } from 'types'
 import Balances from './components/balances'
 import Issue from './components/issue'
 import PendingIssuances from './components/pending'
 import Redeem from './components/redeem'
 
-const getTokenAddresses = (reserveToken: IReserveToken): [string, number][] => [
+const getTokenAddresses = (reserveToken: ReserveToken): [string, number][] => [
   [reserveToken.token.address, reserveToken.token.decimals],
   ...reserveToken.vault.collaterals.map((collateral): [string, number] => [
     collateral.token.address,
@@ -52,7 +50,7 @@ const Issuance = () => {
       userId: account,
     },
   })
-  const RToken = useAppSelector(selectCurrentRToken) as IReserveToken
+  const RToken = useAppSelector(selectCurrentRToken) as ReserveToken
   const tokenBalances = useTokensBalance(getTokenAddresses(RToken))
 
   return (

@@ -2,21 +2,21 @@ import { Box, Grid, Text } from '@theme-ui/components'
 import { Card } from 'components'
 import InfoBox from 'components/info-box'
 import { formatEther } from 'ethers/lib/utils'
-import { IReserveToken } from 'state/reserve-tokens/reducer'
+import { ReserveToken } from 'types'
 import { formatCurrency } from 'utils'
 
 /**
  * RToken Assets overview
  * Display the market cap of the current RToken and the ratio between the RToken and their vault collaterals
  *
- * @prop data: IReserveToken
+ * @prop data: ReserveToken
  * @returns React.Component
  */
 const AssetsOverview = ({
   data: { token, vault },
   ...props
 }: {
-  data: IReserveToken
+  data: ReserveToken
 }) => (
   <Box {...props}>
     <Text sx={{ fontSize: 4, display: 'block' }} mb={2}>
@@ -25,8 +25,8 @@ const AssetsOverview = ({
     <Card p={4}>
       <InfoBox
         title={`${
-          token?.supply?.total
-            ? formatCurrency(parseFloat(formatEther(token.supply.total)))
+          token?.supply
+            ? formatCurrency(parseFloat(formatEther(token.supply)))
             : '0'
         } ${token.symbol}`}
         subtitle="In circulation"

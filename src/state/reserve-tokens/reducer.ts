@@ -1,46 +1,18 @@
+import { RSV } from 'constants/tokens'
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
-
-export interface IToken {
-  address: string
-  symbol: string
-  name: string
-  decimals: number
-  transfersCount?: number
-  holdersCount?: number
-  supply?: { total: number }
-}
-
-export interface ICollateral {
-  id: string
-  index: number
-  token: IToken
-}
-
-export interface IVault {
-  id: string
-  collaterals: ICollateral[]
-}
-
-// TODO: Token as base interface
-export interface IReserveToken {
-  id: string
-  mood: string
-  staked: number
-  token: IToken
-  rsr: IToken
-  stToken: IToken
-  vault: IVault
-}
+import { ReserveToken } from 'types'
 
 export interface ReserveTokenState {
-  list: { [x: string]: IReserveToken }
+  list: { [x: string]: ReserveToken }
   current: string | null
   balances: { [x: string]: number }
 }
 
 const initialState: ReserveTokenState = {
   // TODO: fetched prop if progress indicator if needed
-  list: {},
+  list: {
+    [RSV.id]: RSV,
+  },
   current: null,
   balances: {},
 }
@@ -52,7 +24,7 @@ export const reserveTokenSlice = createSlice({
     // TODO: Typings
     loadTokens: (state, action: PayloadAction<any[]>) => {
       state.list = action.payload.reduce((acc, data) => {
-        acc[data.id.toLowerCase()] = data as IReserveToken
+        acc[data.id.toLowerCase()] = data as ReserveToken
 
         return acc
       }, {})
@@ -68,7 +40,7 @@ export const reserveTokenSlice = createSlice({
 
 export const selectCurrentRToken = createSelector(
   (state: any) => [state.reserveTokens.current, state.reserveTokens.list],
-  ([current, list]): IReserveToken | null =>
+  ([current, list]): ReserveToken | null =>
     current ? list[current.toLowerCase()] : null
 )
 
@@ -77,16 +49,16 @@ export const selectTopTokens = createSelector(
   (state: any) => [state.reserveTokens.current, state.reserveTokens.list],
   (params) => {
     const [current, list] = <[string, ReserveTokenState['list']]>params
-    const result: IReserveToken[] = []
+    const result: ReserveToken[] = []
 
     if (!list || !Object.keys(list).length || !current) {
       return result
     }
 
     return [
-      <IReserveToken>list[current],
+      <ReserveToken>list[current],
       ...Object.values(list)
-        .reduce<IReserveToken[]>((prev, curr): IReserveToken[] => {
+        .reduce<ReserveToken[]>((prev, curr): ReserveToken[] => {
           if (curr.id === current) {
             return prev
           }

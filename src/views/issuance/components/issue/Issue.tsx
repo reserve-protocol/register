@@ -13,7 +13,7 @@ import {
   TX_STATUS,
   useTransactionsState,
 } from 'state/context/TransactionManager'
-import { IReserveToken } from 'state/reserve-tokens/reducer'
+import { ReserveToken } from 'types'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -24,13 +24,13 @@ const InputContainer = styled(Box)`
 /**
  * Build issuance required transactions
  *
- * @param data <IReserveToken>
+ * @param data <ReserveToken>
  * @param amount <string>
  * @param quantities <BigNumber[]>
  * @returns TransactionState[]
  */
 const buildTransactions = (
-  data: IReserveToken,
+  data: ReserveToken,
   amount: string,
   quantities: BigNumber[]
 ): TransactionState[] => {
@@ -85,7 +85,7 @@ const buildTransactions = (
  */
 // TODO: Validations
 // TODO: Get max issuable quantity from view function (protocol)
-const Issue = ({ data, ...props }: { data: IReserveToken }) => {
+const Issue = ({ data, ...props }: { data: ReserveToken }) => {
   const { library } = useEthers()
   const [amount, setAmount] = useState('')
   const [issuing, setIssuing] = useState(false)

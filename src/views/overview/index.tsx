@@ -3,10 +3,7 @@ import MarketCapChart from 'components/charts/marketcap-chart'
 import PriceChart from 'components/charts/price-chart'
 import TransactionsTable from 'components/transactions/table'
 import { useSelector } from 'react-redux'
-import {
-  IReserveToken,
-  selectCurrentRToken,
-} from 'state/reserve-tokens/reducer'
+import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
 import { Box, Flex, Text, Grid } from '@theme-ui/components'
 import AssetsOverview from './components/assets'
 import UsageOverview from './components/usage'

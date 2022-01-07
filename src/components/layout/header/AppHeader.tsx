@@ -9,9 +9,8 @@ import Account from '../../account'
 const AppHeader = () => (
   <Flex
     py={4}
-    px={3}
+    px={4}
     sx={{
-      height: 60,
       alignItems: 'center',
     }}
   >

@@ -4,11 +4,6 @@ import { Button, Card, Input } from 'components'
 import { ERC20, Main } from 'abis'
 import { StringMap } from 'types'
 import { useContract } from 'hooks/useContract'
-import { useAppSelector } from 'state/hooks'
-import {
-  IReserveToken,
-  selectCurrentRToken,
-} from 'state/reserve-tokens/reducer'
 
 const contracts: StringMap = {
   Main,
@@ -16,7 +11,6 @@ const contracts: StringMap = {
 }
 
 const ContractPlayground = (props: any) => {
-  const ReserveToken = useAppSelector(selectCurrentRToken)
   const [currentContract, setCurrentContract] = useState('')
   const [abi, setAbi] = useState('ERC20')
   const [params, setParams] = useState([] as string[])

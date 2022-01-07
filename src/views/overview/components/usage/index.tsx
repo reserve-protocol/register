@@ -1,8 +1,8 @@
 import { Box, Text, Card, Grid } from '@theme-ui/components'
 import { InfoBox } from 'components'
-import { IReserveToken } from 'state/reserve-tokens/reducer'
+import { ReserveToken } from 'types'
 
-const UsageOverview = ({ data, ...props }: { data: IReserveToken }) => (
+const UsageOverview = ({ data, ...props }: { data: ReserveToken }) => (
   <Box {...props}>
     <Text variant="sectionTitle" mb={2}>
       Usage
