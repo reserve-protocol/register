@@ -4,6 +4,7 @@ export interface StringMap {
 
 export type Falsy = undefined | false | '' | null
 
+// Generic token definition ERC20 + extra data
 export interface Token {
   address: string
   symbol: string
@@ -16,13 +17,17 @@ export interface Token {
 }
 
 export interface Collateral {
+  // collateral contract id
   id: string
+  // static asset index when consulting the basket weights
   index: number
+  // ERC20 token used as collateral
   token: Token
 }
 
+// Token collateral vault
 export interface Vault {
-  id: string
+  id: string // Vault contract address
   collaterals: Collateral[]
 }
 
@@ -32,8 +37,8 @@ export interface Vault {
  * This interface represents a complete RToken ecosystem
  */
 export interface ReserveToken {
-  id: string
-  token: Token
+  id: string // RToken `Main` contract address
+  token: Token // ERC20 stable coin
   vault: Vault
   // If insurance is null, Staking is not enabled
   insurance?: {
