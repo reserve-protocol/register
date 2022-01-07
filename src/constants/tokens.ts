@@ -1,77 +1,46 @@
-export interface ITokenMeta {
-  name: string
-  symbol: string
-  logo: string
-  decimals: number
-}
+import { Token } from 'types'
 
-const rsvAddress = '0x196f4727526eA7FB1e17b2071B3d8eAA38486988'
-const rsvInfo = {
+/**
+ * These are Reserve constant tokens
+ *
+ * RSV - Pre-mainnet deployment Reserve stable ERC20 token
+ * RSR - Insurance token for RTokens
+ */
+export const RSV: Token = {
+  address: '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',
   name: 'Reserve',
   symbol: 'RSV',
   decimals: 18,
+  // TODO: Specific logo for RSV
+  logo: 'rsv.png',
 }
 
-const TOKENS: { [x: string]: ITokenMeta } = {
+// RSR is linked to all `RTokens` with the exception of RSV
+export const RSR: Token = {
+  address: '0x320623b8e4ff03373931769a31fc52a4e78b5d70',
+  name: 'Reserve Rights',
+  symbol: 'RSR',
+  decimals: 18,
+  // TODO: RSR LOGO
+  logo: 'rsv.png',
+}
+//
+
+/**
+ * Reserve Protocol Tokens
+ * Mostly used for obtaining token information like the logo if it exists
+ * This array contains only protocol related tokens like RSR/RSV/RToken
+ */
+const TOKENS: { [x: string]: Token } = {
   '0x9467a509da43cb50eb332187602534991be1fea4': {
+    address: '0x9467a509da43cb50eb332187602534991be1fea4',
     name: 'RSD',
     symbol: 'RSD',
     decimals: 18,
     logo: 'rsv.png',
   },
-  [rsvAddress]: {
-    ...rsvInfo,
-    logo: 'rsv.png',
-  },
-}
-
-export const RSV = {
-  id: rsvAddress,
-  staked: 0,
-  token: {
-    ...rsvInfo,
-    address: rsvAddress,
-  },
-  // TODO: revisit is this needed?
-  stToken: {
-    ...rsvInfo,
-    address: rsvAddress,
-  }, // TODO: Change structure?
-  vault: {
-    id: '_',
-    collaterals: [
-      {
-        id: '0',
-        index: 0,
-        token: {
-          address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-          symbol: 'USDC',
-          name: 'USD Coin',
-          decimals: 6,
-        },
-      },
-      {
-        id: '1',
-        index: 1,
-        token: {
-          address: '0x0000000000085d4780B73119b644AE5ecd22b376',
-          symbol: 'TUSD',
-          name: 'TrueUSD',
-          decimals: 18,
-        },
-      },
-      {
-        id: '2',
-        index: 2,
-        token: {
-          address: '0x8e870d67f660d95d5be530380d0ec0bd388289e1',
-          symbol: 'USDP',
-          name: 'Pax Dollar',
-          decimals: 18,
-        },
-      },
-    ],
-  },
+  [RSV.address]: RSV,
+  [RSR.address]: RSR,
 }
 
 export default TOKENS

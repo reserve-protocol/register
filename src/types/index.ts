@@ -26,13 +26,20 @@ export interface Vault {
   collaterals: Collateral[]
 }
 
+/**
+ * ReserveToken
+ *
+ * This interface represents a complete RToken ecosystem
+ */
 export interface ReserveToken {
   id: string
   token: Token
-  stToken: Token
   vault: Vault
   // If insurance is null, Staking is not enabled
   insurance?: {
+    // amount of staked RSR
     staked: number
+    // stToken or also called stRSR, ERC20 token specific for this RToken
+    token: Token
   }
 }
