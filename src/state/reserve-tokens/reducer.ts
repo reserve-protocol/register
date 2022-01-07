@@ -24,7 +24,18 @@ export const reserveTokenSlice = createSlice({
     // TODO: Typings
     loadTokens: (state, action: PayloadAction<any[]>) => {
       state.list = action.payload.reduce((acc, data) => {
-        acc[data.id.toLowerCase()] = data as ReserveToken
+        acc[data.id.toLowerCase()] = {
+          id: data.id.toLowerCase(),
+          token: {
+            ...data.token,
+            supply: data.token.supply?.total || 0,
+          },
+          vault: data.vault,
+          insurance: {
+            staked: data.staked,
+            token: data.stToken,
+          },
+        } as ReserveToken
 
         return acc
       }, {})
@@ -51,8 +62,12 @@ export const selectTopTokens = createSelector(
     const [current, list] = <[string, ReserveTokenState['list']]>params
     const result: ReserveToken[] = []
 
-    if (!list || !Object.keys(list).length || !current) {
+    if (!list || !Object.keys(list).length) {
       return result
+    }
+
+    if (!list[current]) {
+      return Object.values(list).slice(0, 5)
     }
 
     return [
@@ -65,7 +80,7 @@ export const selectTopTokens = createSelector(
 
           return [...prev, curr]
         }, [])
-        .slice(0, 5),
+        .slice(0, 4),
     ]
   }
 )

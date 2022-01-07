@@ -22,6 +22,7 @@ const RTokenSelector = (props: BoxProps) => {
           onClick={() => handleSelect(token.id)}
           sx={{ cursor: 'pointer' }}
           mr={3}
+          key={token.id}
         >
           <img
             src={`/imgs/${TOKENS[token.token.address]?.logo ?? 'default.png'}`}
