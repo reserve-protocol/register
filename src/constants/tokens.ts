@@ -27,8 +27,9 @@ export const RSR: Token = {
 
 /**
  * Reserve Protocol Tokens
+ *
  * Mostly used for obtaining token information like the logo if it exists
- * This array contains only protocol related tokens like RSR/RSV/RToken
+ * This array contains only protocol related tokens like RSR/RSV/RToken with Mainnet data
  */
 const tokenList = [
   RSV,

@@ -1,4 +1,3 @@
-import RSV from 'constants/rsv'
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ReserveToken } from 'types'
 
@@ -10,9 +9,7 @@ export interface ReserveTokenState {
 
 const initialState: ReserveTokenState = {
   // TODO: fetched prop if progress indicator if needed
-  list: {
-    [RSV.id]: RSV,
-  },
+  list: {},
   current: null,
   balances: {},
 }
@@ -22,23 +19,11 @@ export const reserveTokenSlice = createSlice({
   initialState,
   reducers: {
     // TODO: Typings
-    loadTokens: (state, action: PayloadAction<any[]>) => {
-      state.list = action.payload.reduce((acc, data) => {
-        acc[data.id.toLowerCase()] = {
-          id: data.id.toLowerCase(),
-          token: {
-            ...data.token,
-            supply: data.token.supply?.total || 0,
-          },
-          vault: data.vault,
-          insurance: {
-            staked: data.staked,
-            token: data.stToken,
-          },
-        } as ReserveToken
-
-        return acc
-      }, {})
+    loadTokens: (
+      state,
+      action: PayloadAction<{ [x: string]: ReserveToken }>
+    ) => {
+      state.list = action.payload
     },
     updateBalance: (state, action: PayloadAction<{ [x: string]: number }>) => {
       state.balances = { ...state.balances, ...action.payload }
@@ -56,6 +41,7 @@ export const selectCurrentRToken = createSelector(
 )
 
 // Get top 5 tokens including the selected token on top
+// TODO: Proposal - Only display tokens made by Reserve on this list
 export const selectTopTokens = createSelector(
   (state: any) => [state.reserveTokens.current, state.reserveTokens.list],
   (params) => {

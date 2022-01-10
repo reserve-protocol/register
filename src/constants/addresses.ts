@@ -11,7 +11,7 @@ export const DEPLOYER_ADDRESS: AddressMap = {
 }
 
 // Default RToken
-// TODO: protocol deployment
+// TODO: protocol deployment this may not be required????
 export const RTOKEN_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: ZERO_ADDRESS,
   [ChainId.Hardhat]: '0x9467a509da43cb50eb332187602534991be1fea4',

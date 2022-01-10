@@ -1,3 +1,4 @@
+import { ChainId } from '@usedapp/core'
 import { Token, ReserveToken } from 'types'
 import { RSV as RSV_TOKEN } from './tokens'
 
@@ -22,13 +23,7 @@ const USDT: Token = {
   decimals: 18,
 }
 
-/**
- * RSV - Reserve stable token before Mainnet release
- *
- * This `ReserveToken` doesnt have insurance but follows a similar issuance/redeem mechanism
- * This is also considered to be an `RToken` and it's the only hardcoded `RToken` of the explorer
- */
-const RSV: ReserveToken = {
+const rsvData = {
   // RSV Manager contract address
   id: '0x5BA9d812f5533F7Cf2854963f7A9d212f8f28673',
   token: RSV_TOKEN,
@@ -54,6 +49,19 @@ const RSV: ReserveToken = {
       },
     ],
   },
+}
+
+/**
+ * RSV - Reserve stable token before Mainnet release
+ *
+ * This `ReserveToken` doesnt have insurance but follows a similar issuance/redeem mechanism
+ * This is also considered to be an `RToken` and it's the only hardcoded `RToken` of the explorer
+ */
+// TODO: For release only mainnet will be supported
+// TODO: This chain map structure if for L2 support and other chains in the future without too many changes
+const RSV: { [chainId: number]: ReserveToken } = {
+  [ChainId.Mainnet]: rsvData,
+  // Hardhat => dont display RSV to the list
 }
 
 export default RSV

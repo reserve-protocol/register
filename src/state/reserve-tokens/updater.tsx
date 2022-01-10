@@ -1,6 +1,7 @@
 import { gql, useQuery } from '@apollo/client'
 import { useEthers } from '@usedapp/core'
 import { RTOKEN_ADDRESS } from 'constants/addresses'
+import RSV from 'constants/rsv'
 import useTokensBalance from 'hooks/useTokensBalance'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
@@ -17,7 +18,6 @@ const getTokensQuery = gql`
   query GetTokens {
     mains {
       id
-      mood
       staked
       stToken {
         address
@@ -53,6 +53,25 @@ const getTokensQuery = gql`
   }
 `
 
+// TODO: Proper typing
+const formatTokens = (mains: any): ReserveToken[] =>
+  mains.payload.reduce((acc: any, data: any) => {
+    acc[data.id.toLowerCase()] = {
+      id: data.id.toLowerCase(),
+      token: {
+        ...data.token,
+        supply: data.token.supply?.total || 0,
+      },
+      vault: data.vault,
+      insurance: {
+        staked: data.staked,
+        token: data.stToken,
+      },
+    } as ReserveToken
+
+    return acc
+  })
+
 /**
  * ReserveTokensUpdater
  *
@@ -70,13 +89,14 @@ const ReserveTokensUpdater = () => {
   useEffect(() => {
     // TODO: Handle error scenario
     if (!loadingTokens && data) {
-      dispatch(loadTokens(data.mains))
-    }
+      const tokens = formatTokens(data.mains)
 
-    if (!currentRToken) {
-      dispatch(
-        setCurrent((RTOKEN_ADDRESS[chainId as number] || '').toLowerCase())
-      )
+      // Verify if RSV exists on this chain
+      if (chainId && RSV[chainId]) {
+        tokens.unshift(RSV[chainId])
+      }
+
+      dispatch(loadTokens(tokens))
     }
   }, [loadingTokens])
 
