@@ -16,6 +16,7 @@ export const RSV: Token = {
 }
 
 // RSR is linked to all `RTokens` with the exception of RSV
+// Default Mainnet deployment
 export const RSR: Token = {
   address: '0x320623b8e4ff03373931769a31fc52a4e78b5d70',
   name: 'Reserve Rights',
@@ -25,27 +26,9 @@ export const RSR: Token = {
   logo: 'rsv.png',
 }
 
-/**
- * Reserve Protocol Tokens
- *
- * Mostly used for obtaining token information like the logo if it exists
- * This array contains only protocol related tokens like RSR/RSV/RToken with Mainnet data
- */
-const tokenList = [
-  RSV,
-  RSR,
-  {
-    address: '0x9467a509da43cb50eb332187602534991be1fea4',
-    name: 'RSD',
-    symbol: 'RSD',
-    decimals: 18,
-    logo: 'rsv.png',
-  },
-]
-
-// Exported token dictionary
-const TOKENS: { [x: string]: Token } = tokenList.reduce(
-  (prev, current) => ({ ...prev, [current.address]: current }),
-  {}
-)
-export default TOKENS
+// Best way to handle multiple chains is use the symbol instead of the address
+export const tokenLogos: { [x: string]: string } = {
+  RSD: 'rsv.png',
+  RSV: 'rsv.png',
+  RSR: 'rsr.png',
+}

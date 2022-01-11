@@ -4,7 +4,7 @@ import PriceChart from 'components/charts/price-chart'
 import TransactionsTable from 'components/transactions/table'
 import { useSelector } from 'react-redux'
 import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
-import { Box, Flex, Text, Grid } from '@theme-ui/components'
+import { Box, Text, Grid } from '@theme-ui/components'
 import AssetsOverview from './components/assets'
 import UsageOverview from './components/usage'
 
@@ -19,7 +19,11 @@ const Overview = () => {
 
   // TODO: Skeleton
   if (!RToken) {
-    return <Box>Loading...</Box>
+    return (
+      <Container pt={4} pb={4}>
+        <Card>Loading ReserveToken...</Card>
+      </Container>
+    )
   }
 
   return (

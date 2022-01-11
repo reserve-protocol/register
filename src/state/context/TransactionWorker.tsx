@@ -17,6 +17,25 @@ import {
 } from 'state/context/TransactionManager'
 import useTokensHasAllowance from 'hooks/useTokensHasAllowance'
 
+export interface IWorker {
+  current: TransactionState
+  dispatch: React.Dispatch<{ type: string; payload: any }>
+}
+
+export interface IWithApprovalTransactionWorker extends IWorker {
+  method: string
+}
+
+export interface IRequiredApproveTransactionParams {
+  method: string // method that requires allowance
+  hasAllowance: boolean // if the user has the required allowance to execute "method"
+  call: ContractCall // current call
+  contract: Contract // current contract call
+  account: string // current account
+  send: (...args: any[]) => Promise<void> // Current contract execute function (uses multicall)
+  dispatch: React.Dispatch<{ type: string; payload: any }> // Dispatch for updating context store
+}
+
 export const handleTransactionStatus = (
   current: TransactionState,
   state: TransactionStatus,
@@ -35,16 +54,11 @@ export const handleTransactionStatus = (
   }
 }
 
-export interface IRequiredApproveTransactionParams {
-  method: string // method that requires allowance
-  hasAllowance: boolean // if the user has the required allowance to execute "method"
-  call: ContractCall // current call
-  contract: Contract // current contract call
-  account: string // current account
-  send: (...args: any[]) => Promise<void> // Current contract execute function (uses multicall)
-  dispatch: React.Dispatch<{ type: string; payload: any }> // Dispatch for updating context store
-}
-
+/**
+ * Process `approve` transactions
+ *
+ * Checks allowance before executing the approval in order to potentially skip the TX
+ */
 export const processRequiredApproveTransaction = async ({
   method,
   call,
@@ -70,15 +84,6 @@ export const processRequiredApproveTransaction = async ({
     send(...call.args)
     updateTransactionStatus(dispatch, TX_STATUS.PROCESSING)
   }
-}
-
-export interface IWorker {
-  current: TransactionState
-  dispatch: React.Dispatch<{ type: string; payload: any }>
-}
-
-export interface IWithApprovalTransactionWorker extends IWorker {
-  method: string
 }
 
 const WithApprovalTransactionWorker = ({
@@ -122,6 +127,10 @@ const WithApprovalTransactionWorker = ({
   return null
 }
 
+/**
+ * Worker
+ * Executes current transaction, it uses multiCall internally
+ */
 const Worker = ({ current }: IWorker) => {
   const contract = useContract(
     current.call.address,

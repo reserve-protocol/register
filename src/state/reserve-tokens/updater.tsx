@@ -54,7 +54,7 @@ const getTokensQuery = gql`
 `
 
 // TODO: Proper typing
-const formatTokens = (mains: any): ReserveToken[] =>
+const formatTokens = (mains: any): { [x: string]: ReserveToken } =>
   mains.payload.reduce((acc: any, data: any) => {
     acc[data.id.toLowerCase()] = {
       id: data.id.toLowerCase(),
@@ -93,7 +93,7 @@ const ReserveTokensUpdater = () => {
 
       // Verify if RSV exists on this chain
       if (chainId && RSV[chainId]) {
-        tokens.unshift(RSV[chainId])
+        tokens[RSV[chainId].id] = RSV[chainId]
       }
 
       dispatch(loadTokens(tokens))

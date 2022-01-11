@@ -7,7 +7,7 @@ import SyncedBlock from 'components/synced-block'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
 
 export const PAGES = [
-  { path: ROUTES.OVERVIEW, title: 'Overview' },
+  { path: '/', title: 'Overview' },
   { path: ROUTES.ISSUANCE, title: 'Mint + Redeem' },
   { path: ROUTES.STAKE, title: 'Stake + Unstake' },
   { path: '/test', title: 'Buy + Sell' },

@@ -1,5 +1,5 @@
 import { BoxProps, Box, Flex, Text } from '@theme-ui/components'
-import TOKENS from 'constants/tokens'
+import { tokenLogos } from 'constants/tokens'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectTopTokens, setCurrent } from 'state/reserve-tokens/reducer'
 
@@ -25,7 +25,7 @@ const RTokenSelector = (props: BoxProps) => {
           key={token.id}
         >
           <img
-            src={`/imgs/${TOKENS[token.token.address]?.logo ?? 'default.png'}`}
+            src={`/imgs/${tokenLogos[token.token.symbol] || 'default.png'}`}
             height={38}
             width={38}
             alt={token.token.name}

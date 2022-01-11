@@ -17,13 +17,7 @@ const InputContainer = styled(Box)`
   flex-grow: 1;
 `
 
-const Redeem = ({
-  balance,
-  data,
-}: {
-  balance: number
-  data: ReserveToken
-}) => {
+const Redeem = ({ balance, data }: { balance: number; data: ReserveToken }) => {
   const [amount, setAmount] = useState('')
   const [, dispatch] = useTransactionsState()
 

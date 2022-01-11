@@ -1,6 +1,30 @@
 import { ContractCall } from '@usedapp/core'
 import React, { useContext, useReducer } from 'react'
 
+export interface TransactionState {
+  hash?: string
+  description: string
+  // TX_STATUS
+  status: string
+  value: string
+  call: ContractCall
+  // Extra props required to handle the transaction
+  extra?: any
+  // Defines if the transaction will be handled by the default worker
+  // Used for TX with simple logic, like an `Approval` or `Transfer`
+  autoCall: boolean
+}
+
+interface IState {
+  list: TransactionState[]
+  current: number
+}
+
+interface ContextValue {
+  state: IState
+  dispatch: React.Dispatch<{ type: string; payload: any }>
+}
+
 const ACTIONS = {
   ADD: 'ADD',
   SET: 'SET',
@@ -17,21 +41,6 @@ export const TX_STATUS = {
 }
 
 const TransactionsContext = React.createContext({})
-
-export interface TransactionState {
-  hash?: string
-  description: string
-  status: string
-  value: string
-  call: ContractCall
-  extra?: any
-  autoCall: boolean
-}
-
-interface IState {
-  list: TransactionState[]
-  current: number
-}
 
 function reducer(state: IState, action: { type: string; payload: any }) {
   switch (action.type) {
@@ -85,22 +94,6 @@ function reducer(state: IState, action: { type: string; payload: any }) {
   }
 }
 
-interface ContextValue {
-  state: IState
-  dispatch: React.Dispatch<{ type: string; payload: any }>
-}
-
-const TransactionManager = ({ children }: { children: React.ReactNode }) => {
-  const [state, dispatch] = useReducer(reducer, { list: [], current: 0 })
-  const value = { state, dispatch }
-
-  return (
-    <TransactionsContext.Provider value={value}>
-      {children}
-    </TransactionsContext.Provider>
-  )
-}
-
 export const useTransactionsState = (): [IState, ContextValue['dispatch']] => {
   const { state, dispatch } = useContext(TransactionsContext) as ContextValue
 
@@ -138,6 +131,20 @@ export const setTransactionHash = (
   index?: number
 ) => {
   dispatch({ type: ACTIONS.SET_HASH, payload: { data: hash, index } })
+}
+
+/**
+ * React.Context wrapper to handle transactions
+ */
+const TransactionManager = ({ children }: { children: React.ReactNode }) => {
+  const [state, dispatch] = useReducer(reducer, { list: [], current: 0 })
+  const value = { state, dispatch }
+
+  return (
+    <TransactionsContext.Provider value={value}>
+      {children}
+    </TransactionsContext.Provider>
+  )
 }
 
 export default TransactionManager
