@@ -49,7 +49,7 @@ const TransactionsTable = () => {
   })
 
   return (
-    <Box sx={{ height: '500px', overflow: 'auto' }}>
+    <Box sx={{ maxHeight: '500px', overflow: 'auto' }}>
       <Table columns={columns} data={!loading ? data.entries : []} />
     </Box>
   )

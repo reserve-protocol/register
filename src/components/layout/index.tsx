@@ -14,7 +14,6 @@ const Layout = ({ children }: { children: ReactNode }) => (
     sx={{
       flexWrap: 'wrap',
       height: '100vh',
-      overflow: 'hidden',
     }}
   >
     <Sidebar />
@@ -23,7 +22,8 @@ const Layout = ({ children }: { children: ReactNode }) => (
         flexGrow: 99999,
         flexBasis: 0,
         minWidth: 768,
-        overflow: 'hidden',
+        height: '100%',
+        overflow: 'auto',
       }}
     >
       <Header />

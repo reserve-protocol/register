@@ -7,6 +7,9 @@ import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
 import { Box, Text, Grid } from '@theme-ui/components'
 import AssetsOverview from './components/assets'
 import UsageOverview from './components/usage'
+import { useEthers } from '@usedapp/core'
+import RSV from 'constants/rsv'
+import ContentHeader from 'components/layout/content-header'
 
 /**
  * RToken Overview
@@ -16,6 +19,7 @@ import UsageOverview from './components/usage'
  */
 const Overview = () => {
   const RToken = useSelector(selectCurrentRToken)
+  const { chainId } = useEthers()
 
   // TODO: Skeleton
   if (!RToken) {
@@ -26,12 +30,15 @@ const Overview = () => {
     )
   }
 
+  const isRSV = RToken.id === RSV[chainId ?? 1].id
+
   return (
-    <Container pt={4} pb={4}>
+    <Container pb={4}>
+      <ContentHeader />
       <Grid columns={2} gap={5} width={600}>
         <Box>
           <UsageOverview data={RToken} />
-          <AssetsOverview data={RToken} />
+          <AssetsOverview data={RToken} isRSV={isRSV} />
           <Text sx={{ fontSize: 4, display: 'block' }} mb={2}>
             Transactions
           </Text>

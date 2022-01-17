@@ -8,8 +8,6 @@ import styled from '@emotion/styled'
  * @returns
  */
 const Container = styled(Box)`
-  height: calc(100vh - 108px);
-  overflow: auto;
   box-sizing: border-box;
   padding-left: 30px;
   padding-right: 30px;
