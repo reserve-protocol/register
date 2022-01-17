@@ -86,6 +86,10 @@ export const processRequiredApproveTransaction = async ({
   }
 }
 
+/**
+ * Executes a set of approval transactions and one final transaction
+ * The final TX will only be executed if all the previous tokens/contracts have allowance
+ */
 const WithApprovalTransactionWorker = ({
   current,
   method,

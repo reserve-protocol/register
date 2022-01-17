@@ -87,6 +87,10 @@ const ReserveTokensUpdater = () => {
   const { chainId } = useEthers()
 
   useEffect(() => {
+    // TODO: Remove hardcoded RSV
+    if (chainId) {
+      dispatch(loadTokens({ [RSV[chainId].id.toLowerCase()]: RSV[chainId] }))
+    }
     // TODO: Handle error scenario
     if (!loadingTokens && data) {
       const tokens = formatTokens(data.mains)
@@ -98,7 +102,7 @@ const ReserveTokensUpdater = () => {
 
       dispatch(loadTokens(tokens))
     }
-  }, [loadingTokens])
+  }, [loadingTokens, chainId])
 
   return null
 }

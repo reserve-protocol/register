@@ -5,13 +5,13 @@ import { Falsy } from 'types'
 
 const useTokenSupply = (address: string | Falsy): BigNumber => {
   const [totalSupply] = <[BigNumber | Falsy]>useContractCall(
-    address && {
-      abi: ERC20Interface,
-      address,
-      method: 'totalSupply',
-      args: [],
-    }
-  )
+      address && {
+        abi: ERC20Interface,
+        address,
+        method: 'totalSupply',
+        args: [],
+      }
+    ) ?? []
 
   return totalSupply || BigNumber.from('0')
 }

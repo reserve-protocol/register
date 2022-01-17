@@ -12,6 +12,7 @@ const RTokenSelector = (props: BoxProps) => {
   }
 
   const handleSelect = (token: string) => {
+    console.log('select')
     dispatch(setCurrent(token))
   }
 

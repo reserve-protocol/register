@@ -61,7 +61,7 @@ const rsvData = {
 // TODO: This chain map structure if for L2 support and other chains in the future without too many changes
 const RSV: { [chainId: number]: ReserveToken } = {
   [ChainId.Mainnet]: rsvData,
-  // Hardhat => dont display RSV to the list
+  [ChainId.Hardhat]: rsvData,
 }
 
 export default RSV

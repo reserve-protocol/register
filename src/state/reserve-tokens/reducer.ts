@@ -9,8 +9,9 @@ export interface ReserveTokenState {
 
 const initialState: ReserveTokenState = {
   // TODO: fetched prop if progress indicator if needed
+  // TODO: Hardcoded RSV
   list: {},
-  current: null,
+  current: '0x5ba9d812f5533f7cf2854963f7a9d212f8f28673',
   balances: {},
 }
 

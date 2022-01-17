@@ -13,6 +13,7 @@ import store from './state'
 const config = {
   readOnlyChainId: ChainId.Hardhat,
   readOnlyUrls: {
+    [ChainId.Mainnet]: 'http://localhost:8545',
     [ChainId.Hardhat]: 'http://localhost:8545',
     [ChainId.Ropsten]:
       'https://ropsten.infura.io/v3/19deb2b36da947f493d2db11ce04be63',
