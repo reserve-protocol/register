@@ -1,6 +1,7 @@
 import { Box, Grid, Text } from '@theme-ui/components'
 import { Card } from 'components'
 import InfoBox from 'components/info-box'
+import Separator from 'components/separator'
 import { formatEther } from 'ethers/lib/utils'
 import useTokenSupply from 'hooks/useTokenSupply'
 import { useEffect, useState } from 'react'
@@ -15,12 +16,10 @@ import { formatCurrency } from 'utils'
  * @returns React.Component
  */
 const AssetsOverview = ({
-  data: { token, vault },
-  isRSV,
+  data: { isRSV, token, vault },
   ...props
 }: {
   data: ReserveToken
-  isRSV?: boolean
 }) => {
   // TODO: For RTokens consult this from the explorer view contract
   // TODO: More than the expected basket tokens could be returned
@@ -54,7 +53,7 @@ const AssetsOverview = ({
 
   return (
     <Box {...props}>
-      <Text sx={{ fontSize: 4, display: 'block' }} mb={2}>
+      <Text sx={{ fontSize: 3, display: 'block' }} mb={2}>
         Assets
       </Text>
       <Card p={4}>
@@ -66,6 +65,7 @@ const AssetsOverview = ({
           } ${token.symbol}`}
           subtitle="In circulation"
         />
+        <Separator />
       </Card>
       <Grid columns={3} gap={0} mb={5}>
         {collaterals.map((collateral) => (

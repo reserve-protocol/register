@@ -1,3 +1,4 @@
+import { ChainId } from '@usedapp/core'
 export { default as ROUTES } from './routes'
 
 export const TRANSACTION_STATUS = {
@@ -17,3 +18,6 @@ export const DEPOSIT_STATUS = {
   CONFIRMED: 'CONFIRMED',
   COMPLETED: 'COMPLETED',
 }
+
+export const DEFAULT_CHAIN =
+  Number(process.env.REACT_APP_DEFAULT_CHAIN) || ChainId.Mainnet

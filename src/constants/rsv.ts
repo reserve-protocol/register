@@ -26,6 +26,7 @@ const USDT: Token = {
 const rsvData = {
   // RSV Manager contract address
   id: '0x5BA9d812f5533F7Cf2854963f7A9d212f8f28673',
+  isRSV: true,
   token: RSV_TOKEN,
   vault: {
     // RSV Vault contract address

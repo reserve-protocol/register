@@ -47,4 +47,5 @@ export interface ReserveToken {
     // stToken or also called stRSR, ERC20 token specific for this RToken
     token: Token
   }
+  isRSV?: boolean
 }

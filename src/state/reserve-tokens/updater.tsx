@@ -67,6 +67,7 @@ const formatTokens = (mains: any): { [x: string]: ReserveToken } =>
         staked: data.staked,
         token: data.stToken,
       },
+      isRSV: false,
     } as ReserveToken
 
     return acc
