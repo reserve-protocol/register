@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Box, Flex, Text, BoxProps } from '@theme-ui/components'
+import { Box, Flex, Grid, Text, BoxProps } from '@theme-ui/components'
 import { Card } from 'components'
 import { formatEther } from 'ethers/lib/utils'
 import useTokenSupply from 'hooks/useTokenSupply'
@@ -19,7 +19,7 @@ const ColorBox = styled('div')`
 `
 
 const AssetsChart = ({ collaterals }: { collaterals: any }) => (
-  <Flex p={2} sx={{ alignItems: 'center' }}>
+  <Flex p={[2, 1, 2]} sx={{ alignItems: 'center', flexWrap: 'wrap' }}>
     <PieChart width={100} height={100}>
       <Pie
         data={collaterals}
@@ -34,7 +34,7 @@ const AssetsChart = ({ collaterals }: { collaterals: any }) => (
         ))}
       </Pie>
     </PieChart>
-    <Box ml={4}>
+    <Box ml={[3, 4, 3, 5]}>
       {collaterals.map((collateral: any) => (
         <Flex sx={{ alignItems: 'center' }} mt={1}>
           <ColorBox color={collateral.fill} />
@@ -99,7 +99,7 @@ const AssetsOverview = ({ data: { isRSV, token, vault }, ...props }: Props) => {
       <Text variant="sectionTitle" mb={2}>
         Assets
       </Text>
-      <Card px={4} py={3}>
+      <Card px={[4, 4, 3]} py={3}>
         <Flex>
           <Box
             sx={{
@@ -107,8 +107,8 @@ const AssetsOverview = ({ data: { isRSV, token, vault }, ...props }: Props) => {
               display: 'flex',
               flexDirection: 'column',
             }}
-            pr={5}
-            mr={5}
+            pr={[5, 5, 3]}
+            mr={[5, 5, 3]}
           >
             <Text variant="contentTitle">Total circulation</Text>
             <Text sx={{ fontSize: 3, display: 'block', margin: 'auto' }}>

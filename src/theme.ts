@@ -25,7 +25,7 @@ export const colors = {
 // rgb(195, 197, 203)
 
 export const theme: Theme = {
-  breakpoints: ['40em', '52em', '64em'],
+  breakpoints: ['52em', '64em', '100em'],
   space: [0, 4, 8, 16, 32, 64, 128, 256, 512],
   fonts: {
     body: 'sans-serif',

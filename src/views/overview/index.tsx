@@ -30,7 +30,7 @@ const Overview = () => {
   return (
     <Container>
       <ContentHeader />
-      <Grid columns={2} gap={5} width={600}>
+      <Grid columns={2} gap={[3, 3, 4, 5]} width={[400, 500, 400]}>
         <Box>
           <UsageOverview data={RToken} mb={3} />
           <AssetsOverview data={RToken} mb={3} />
