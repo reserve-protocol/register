@@ -9,8 +9,8 @@ import styled from '@emotion/styled'
  */
 const Container = styled(Box)`
   box-sizing: border-box;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 32px;
+  padding-right: 32px;
 `
 
 export default Container

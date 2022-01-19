@@ -21,7 +21,7 @@ const Overview = () => {
   // TODO: Skeleton
   if (!RToken) {
     return (
-      <Container pt={4} pb={4}>
+      <Container>
         <Card>Loading ReserveToken...</Card>
       </Container>
     )
@@ -42,8 +42,8 @@ const Overview = () => {
           </Card>
         </Box>
         <Box>
-          <PriceChart mb={4} />
-          <MarketCapChart mb={4} />
+          <PriceChart mb={3} />
+          <MarketCapChart mb={2} />
         </Box>
       </Grid>
     </Container>

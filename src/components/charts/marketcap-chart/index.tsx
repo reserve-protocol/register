@@ -21,7 +21,7 @@ const MarketCapChart = (props: any) => (
   <Box {...props}>
     <Text variant="sectionTitle">Market Cap</Text>
     <Card p={3} pl={1}>
-      <ResponsiveContainer height={360}>
+      <ResponsiveContainer height={240}>
         <LineChart data={mockData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="hour" />

@@ -51,6 +51,7 @@ export const theme: Theme = {
     },
     sectionTitle: {
       fontSize: 3,
+      fontWeight: 300,
       display: 'block',
     },
     contentTitle: {
@@ -163,7 +164,7 @@ export const theme: Theme = {
   cards: {
     primary: {
       padding: 3,
-      borderRadius: 4,
+      borderRadius: 5,
       boxShadow,
       backgroundColor: 'bgCard',
     },

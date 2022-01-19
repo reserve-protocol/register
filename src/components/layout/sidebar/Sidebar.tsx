@@ -54,7 +54,7 @@ const Header = () => (
 
 // Sidebar Navigation
 const Navigation = () => (
-  <Box mt={3}>
+  <Box mt={2}>
     {PAGES.map((item) => (
       <NavLink
         key={item.path}

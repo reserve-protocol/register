@@ -10,6 +10,7 @@ const AppHeader = () => (
   <Flex
     py={4}
     pb={3}
+    pt={3}
     px={4}
     sx={{
       alignItems: 'center',
