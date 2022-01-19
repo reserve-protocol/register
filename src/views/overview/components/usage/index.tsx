@@ -1,33 +1,41 @@
-import { Box, Text, Card, Grid } from '@theme-ui/components'
+import styled from '@emotion/styled'
+import { Box, Text, Card, Grid, BoxProps } from '@theme-ui/components'
 import { InfoBox } from 'components'
 import { ReserveToken } from 'types'
 
-const UsageOverview = ({ data, ...props }: { data: ReserveToken }) => (
+interface Props extends BoxProps {
+  data: ReserveToken
+}
+
+const Info = styled(InfoBox)`
+  border-right: 1px solid #e4e5e7;
+
+  &:last-child {
+    border-right: none;
+  }
+`
+
+const UsageOverview = ({ data, ...props }: Props) => (
   <Box {...props}>
     <Text variant="sectionTitle" mb={2}>
       Usage
     </Text>
-    <Grid columns={3} mb={5}>
-      <Card>
-        <InfoBox
-          title={(data.token?.transfersCount ?? 0).toLocaleString()}
-          subtitle="Total Transactions"
+    <Card>
+      <Grid columns={3}>
+        <Info
+          subtitle={(data.token?.transfersCount ?? 0).toLocaleString()}
+          title="Total Transactions"
         />
-      </Card>
-      <Card>
-        <InfoBox
-          title={(data.token?.transfersCount ?? 0).toLocaleString()}
-          description={`$${(data.token?.transfersCount ?? 0).toLocaleString()}`}
-          subtitle="24h Volume"
+        <Info
+          subtitle={(data.token?.transfersCount ?? 0).toLocaleString()}
+          title="24h Volume"
         />
-      </Card>
-      <Card>
-        <InfoBox
-          title={(data.token?.holdersCount ?? 0).toLocaleString()}
-          subtitle="Holders"
+        <Info
+          subtitle={(data.token?.holdersCount ?? 0).toLocaleString()}
+          title="Holders"
         />
-      </Card>
-    </Grid>
+      </Grid>
+    </Card>
   </Box>
 )
 

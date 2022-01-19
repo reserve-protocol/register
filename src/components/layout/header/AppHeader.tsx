@@ -9,6 +9,7 @@ import Account from '../../account'
 const AppHeader = () => (
   <Flex
     py={4}
+    pb={3}
     px={4}
     sx={{
       alignItems: 'center',

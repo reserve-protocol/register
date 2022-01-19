@@ -50,8 +50,13 @@ export const theme: Theme = {
       fontWeight: 'heading',
     },
     sectionTitle: {
-      fontSize: 4,
+      fontSize: 3,
       display: 'block',
+    },
+    contentTitle: {
+      color: '#77838F',
+      display: 'block',
+      fontSize: 1,
     },
     primary: {
       color: 'text',

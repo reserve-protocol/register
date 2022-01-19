@@ -19,11 +19,8 @@ for (let i = 0; i < 24; i++) {
 
 const MarketCapChart = (props: any) => (
   <Box {...props}>
-    <Flex mb={2}>
-      <Text sx={{ fontSize: 4 }}>Market </Text>
-      <Text sx={{ fontSize: 4, marginLeft: 'auto' }}>0</Text>
-    </Flex>
-    <Card p={4}>
+    <Text variant="sectionTitle">Market Cap</Text>
+    <Card p={3} pl={1}>
       <ResponsiveContainer height={360}>
         <LineChart data={mockData}>
           <CartesianGrid strokeDasharray="3 3" />

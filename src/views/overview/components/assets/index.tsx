@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Box, Flex, Text } from '@theme-ui/components'
+import { Box, Flex, Text, BoxProps } from '@theme-ui/components'
 import { Card } from 'components'
 import { formatEther } from 'ethers/lib/utils'
 import useTokenSupply from 'hooks/useTokenSupply'
@@ -7,6 +7,10 @@ import { useEffect, useState } from 'react'
 import { Cell, Pie, PieChart } from 'recharts'
 import { ReserveToken } from 'types'
 import { formatCurrency, stringToColor } from 'utils'
+
+interface Props extends BoxProps {
+  data: ReserveToken
+}
 
 const ColorBox = styled('div')`
   background-color: ${(props: any) => props.color};
@@ -26,7 +30,7 @@ const AssetsChart = ({ collaterals }: { collaterals: any }) => (
         fill="#82ca9d"
       >
         {collaterals.map((entry: any) => (
-          <Cell key={`cell-${entry.address}`} fill={entry.fill} />
+          <Cell key={`cell-${entry?.address}`} fill={entry?.fill} />
         ))}
       </Pie>
     </PieChart>
@@ -59,12 +63,7 @@ const AssetsChart = ({ collaterals }: { collaterals: any }) => (
  * @prop data: ReserveToken
  * @returns React.Component
  */
-const AssetsOverview = ({
-  data: { isRSV, token, vault },
-  ...props
-}: {
-  data: ReserveToken
-}) => {
+const AssetsOverview = ({ data: { isRSV, token, vault }, ...props }: Props) => {
   // TODO: For RTokens consult this from the explorer view contract
   // TODO: More than the expected basket tokens could be returned
   const [collaterals, setCollaterals] = useState(
@@ -97,7 +96,7 @@ const AssetsOverview = ({
 
   return (
     <Box mb={3} {...props}>
-      <Text sx={{ fontSize: 3, display: 'block' }} mb={2}>
+      <Text variant="sectionTitle" mb={2}>
         Assets
       </Text>
       <Card px={4} py={3}>
@@ -111,10 +110,8 @@ const AssetsOverview = ({
             pr={5}
             mr={5}
           >
-            <Text sx={{ color: '#77838F', display: 'block', fontSize: 1 }}>
-              Total circulation
-            </Text>
-            <Text sx={{ fontSize: 3, display: 'block' }}>
+            <Text variant="contentTitle">Total circulation</Text>
+            <Text sx={{ fontSize: 3, display: 'block', margin: 'auto' }}>
               {marketCap
                 ? formatCurrency(parseFloat(formatEther(marketCap)))
                 : '0.00'}{' '}
@@ -122,9 +119,7 @@ const AssetsOverview = ({
             </Text>
           </Box>
           <Box>
-            <Text sx={{ color: '#77838F', display: 'block', fontSize: 1 }}>
-              Total collateral assets
-            </Text>
+            <Text variant="contentTitle">Total collateral assets</Text>
             <AssetsChart collaterals={collaterals} />
           </Box>
         </Flex>

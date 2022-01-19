@@ -28,13 +28,13 @@ const Overview = () => {
   }
 
   return (
-    <Container pb={4}>
+    <Container>
       <ContentHeader />
       <Grid columns={2} gap={5} width={600}>
         <Box>
-          <UsageOverview data={RToken} />
-          <AssetsOverview data={RToken} />
-          <Text sx={{ fontSize: 4, display: 'block' }} mb={2}>
+          <UsageOverview data={RToken} mb={3} />
+          <AssetsOverview data={RToken} mb={3} />
+          <Text variant="sectionTitle" mb={2}>
             Transactions
           </Text>
           <Card>
@@ -42,8 +42,8 @@ const Overview = () => {
           </Card>
         </Box>
         <Box>
-          <PriceChart mb={5} />
-          <MarketCapChart mb={5} />
+          <PriceChart mb={4} />
+          <MarketCapChart mb={4} />
         </Box>
       </Grid>
     </Container>
