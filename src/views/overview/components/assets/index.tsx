@@ -1,61 +1,56 @@
-import { Box, Flex, Grid, Text } from '@theme-ui/components'
+import styled from '@emotion/styled'
+import { Box, Flex, Text } from '@theme-ui/components'
 import { Card } from 'components'
-import InfoBox from 'components/info-box'
-import Separator from 'components/separator'
 import { formatEther } from 'ethers/lib/utils'
 import useTokenSupply from 'hooks/useTokenSupply'
 import { useEffect, useState } from 'react'
-import { Pie, PieChart } from 'recharts'
+import { Cell, Pie, PieChart } from 'recharts'
 import { ReserveToken } from 'types'
-import { formatCurrency } from 'utils'
+import { formatCurrency, stringToColor } from 'utils'
 
-const data02 = [
-  {
-    name: 'Group A',
-    value: 2400,
-  },
-  {
-    name: 'Group B',
-    value: 4567,
-  },
-  {
-    name: 'Group C',
-    value: 1398,
-  },
-  {
-    name: 'Group D',
-    value: 9800,
-  },
-  {
-    name: 'Group E',
-    value: 3908,
-  },
-  {
-    name: 'Group F',
-    value: 4800,
-  },
-]
-const mock = [{ name: 'test', value: 'holi' }]
+const ColorBox = styled('div')`
+  background-color: ${(props: any) => props.color};
+  width: 10px;
+  height: 10px;
+`
 
-const AssetsChart = () => {
-  console.log('works?')
-  return (
-    <Box p={2}>
-      <PieChart width={100} height={100}>
-        <Pie
-          data={data02}
-          dataKey="value"
-          nameKey="name"
-          cx="50%"
-          cy="50%"
-          innerRadius={38}
-          outerRadius={50}
-          fill="#82ca9d"
-        />
-      </PieChart>
+const AssetsChart = ({ collaterals }: { collaterals: any }) => (
+  <Flex p={2} sx={{ alignItems: 'center' }}>
+    <PieChart width={100} height={100}>
+      <Pie
+        data={collaterals}
+        dataKey="value"
+        nameKey="symbol"
+        innerRadius={38}
+        outerRadius={50}
+        fill="#82ca9d"
+      >
+        {collaterals.map((entry: any) => (
+          <Cell key={`cell-${entry.address}`} fill={entry.fill} />
+        ))}
+      </Pie>
+    </PieChart>
+    <Box ml={4}>
+      {collaterals.map((collateral: any) => (
+        <Flex sx={{ alignItems: 'center' }} mt={1}>
+          <ColorBox color={collateral.fill} />
+          <Box ml={3}>
+            <Text
+              sx={{
+                fontSize: 1,
+                color: '#77838F',
+                display: 'block',
+              }}
+            >
+              {collateral.symbol}
+            </Text>
+            <Text>{formatCurrency(collateral.value)}</Text>
+          </Box>
+        </Flex>
+      ))}
     </Box>
-  )
-}
+  </Flex>
+)
 
 /**
  * RToken Assets overview
@@ -79,7 +74,8 @@ const AssetsOverview = ({
       symbol: collateral.token.symbol,
       index: collateral.index,
       address: collateral.token.address,
-      value: '0.00',
+      value: 0,
+      fill: stringToColor(collateral.token.name + collateral.token.symbol),
     }))
   )
   const marketCap = useTokenSupply(token.address)
@@ -87,9 +83,8 @@ const AssetsOverview = ({
   useEffect(() => {
     if (marketCap) {
       if (isRSV) {
-        const distribution = formatCurrency(
-          parseFloat(formatEther(marketCap.div(3)))
-        )
+        const distribution = parseFloat(formatEther(marketCap.div(3)))
+
         setCollaterals(
           collaterals.map((collateral) => ({
             ...collateral,
@@ -107,11 +102,19 @@ const AssetsOverview = ({
       </Text>
       <Card px={4} py={3}>
         <Flex>
-          <Box sx={{ borderRight: '1px solid #e4e5e7' }} pr={4} mr={4}>
+          <Box
+            sx={{
+              borderRight: '1px solid #e4e5e7',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+            pr={5}
+            mr={5}
+          >
             <Text sx={{ color: '#77838F', display: 'block', fontSize: 1 }}>
               Total circulation
             </Text>
-            <Text sx={{ fontSize: 3 }}>
+            <Text sx={{ fontSize: 3, display: 'block' }}>
               {marketCap
                 ? formatCurrency(parseFloat(formatEther(marketCap)))
                 : '0.00'}{' '}
@@ -122,17 +125,10 @@ const AssetsOverview = ({
             <Text sx={{ color: '#77838F', display: 'block', fontSize: 1 }}>
               Total collateral assets
             </Text>
-            <AssetsChart />
+            <AssetsChart collaterals={collaterals} />
           </Box>
         </Flex>
       </Card>
-      {/* <Grid columns={3} gap={0} mb={5}>
-        {collaterals.map((collateral) => (
-          <Card key={collateral.address}>
-            <InfoBox title={collateral.value} subtitle={collateral.name} />
-          </Card>
-        ))}
-      </Grid> */}
     </Box>
   )
 }
