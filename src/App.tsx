@@ -8,7 +8,7 @@ import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
 import Updater from 'state/reserve-tokens/updater'
 import { ThemeProvider } from 'theme-ui'
 import Overview from 'views/overview'
-import Staking from 'views/staking'
+import Insurance from 'views/staking'
 import Layout from './components/layout'
 import { ROUTES } from './constants'
 import { theme } from './theme'
@@ -65,7 +65,7 @@ const App = () => (
             path={ROUTES.STAKE}
             element={
               <Guard>
-                <Staking />
+                <Insurance />
               </Guard>
             }
           />

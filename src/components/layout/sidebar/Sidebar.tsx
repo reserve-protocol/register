@@ -5,6 +5,9 @@ import Logo from 'components/icons/Logo'
 import ROUTES from 'constants/routes'
 import SyncedBlock from 'components/synced-block'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
+import { useAppSelector } from 'state/hooks'
+import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
+import { useMemo } from 'react'
 
 export const PAGES = [
   { path: '/', title: 'Overview' },
@@ -53,29 +56,39 @@ const Header = () => (
 )
 
 // Sidebar Navigation
-const Navigation = () => (
-  <Box mt={2}>
-    {PAGES.map((item) => (
-      <NavLink
-        key={item.path}
-        style={({ isActive }) => ({
-          fontSize: 18,
-          textDecoration: 'none',
-          color: 'inherit',
-          display: 'block',
-          padding: '0 32px',
-          margin: '16px 0',
-          lineHeight: '32px',
-          paddingLeft: isActive ? '27px' : '32px',
-          borderLeft: isActive ? '5px solid #00FFBF' : '',
-        })}
-        to={item.path}
-      >
-        <Text>{item.title}</Text>
-      </NavLink>
-    ))}
-  </Box>
-)
+const Navigation = ({ isRSV }: { isRSV: boolean }) => {
+  const pages = useMemo(() => {
+    if (isRSV) {
+      return [...PAGES.slice(0, 2), PAGES[3]]
+    }
+
+    return PAGES
+  }, [isRSV])
+
+  return (
+    <Box mt={2}>
+      {pages.map((item) => (
+        <NavLink
+          key={item.path}
+          style={({ isActive }) => ({
+            fontSize: 18,
+            textDecoration: 'none',
+            color: 'inherit',
+            display: 'block',
+            padding: '0 32px',
+            margin: '16px 0',
+            lineHeight: '32px',
+            paddingLeft: isActive ? '27px' : '32px',
+            borderLeft: isActive ? '5px solid #00FFBF' : '',
+          })}
+          to={item.path}
+        >
+          <Text>{item.title}</Text>
+        </NavLink>
+      ))}
+    </Box>
+  )
+}
 
 // Sidebar footer
 const Footer = () => (
@@ -88,13 +101,17 @@ const Footer = () => (
 /**
  * Application sidebar
  */
-const Sidebar = () => (
-  <Container>
-    <Header />
-    <Navigation />
-    <Box my="auto" />
-    <Footer />
-  </Container>
-)
+const Sidebar = () => {
+  const RToken = useAppSelector(selectCurrentRToken)
+
+  return (
+    <Container>
+      <Header />
+      <Navigation isRSV={RToken?.isRSV ?? false} />
+      <Box my="auto" />
+      <Footer />
+    </Container>
+  )
+}
 
 export default Sidebar
