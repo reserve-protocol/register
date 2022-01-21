@@ -1,8 +1,9 @@
 const ROUTES = Object.freeze({
-  OVERVIEW: '/overview',
-  STAKE: '/stake',
-  LIST: '/list',
+  OVERVIEW: '/',
+  INSURANCE: '/insurance',
   ISSUANCE: '/issuance',
+  EXCHANGE: '/exchange',
+  LIST: '/list',
 })
 
 export default ROUTES

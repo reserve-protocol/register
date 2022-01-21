@@ -62,14 +62,14 @@ const App = () => (
             }
           />
           <Route
-            path={ROUTES.STAKE}
+            path={ROUTES.INSURANCE}
             element={
               <Guard>
                 <Insurance />
               </Guard>
             }
           />
-          <Route path="/" element={<Overview />} />
+          <Route path={ROUTES.EXCHANGE} element={() => null} />
         </Routes>
       </Layout>
     </Router>

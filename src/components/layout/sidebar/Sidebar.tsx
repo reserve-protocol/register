@@ -10,10 +10,10 @@ import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
 import { useMemo } from 'react'
 
 export const PAGES = [
-  { path: '/', title: 'Overview' },
+  { path: ROUTES.OVERVIEW, title: 'Overview' },
   { path: ROUTES.ISSUANCE, title: 'Mint + Redeem' },
-  { path: ROUTES.STAKE, title: 'Stake + Unstake' },
-  { path: '/test', title: 'Buy + Sell' },
+  { path: ROUTES.INSURANCE, title: 'Stake + Unstake' },
+  { path: ROUTES.EXCHANGE, title: 'Buy + Sell' },
 ]
 
 const Container = styled.div`
