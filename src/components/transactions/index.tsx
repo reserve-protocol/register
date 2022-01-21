@@ -1,18 +1,12 @@
 import {
-  getExplorerTransactionLink,
-  useEthers,
-  useTransactions,
-} from '@usedapp/core'
-import { Box, Text } from 'theme-ui'
-import { formatEther } from '@ethersproject/units'
-import { BigNumber } from 'ethers'
-// import { RSR_ADDRESS, INSURANCE_ADDRESS } from '../../constants/addresses'
-import {
   TransactionReceipt,
   TransactionResponse,
 } from '@ethersproject/providers'
-import { Falsy } from 'types'
-import Card from '../card'
+import { formatEther } from '@ethersproject/units'
+import { getExplorerTransactionLink, useTransactions } from '@usedapp/core'
+import { BigNumber } from 'ethers'
+import { Box, Text } from 'theme-ui'
+import { CHAIN_ID } from '../../constants'
 
 type IItem = {
   data: {
@@ -109,17 +103,16 @@ const Item = ({
 }
 
 const Transactions = () => {
-  const { chainId } = useEthers()
   const { transactions } = useTransactions()
 
-  if (!transactions.length || !chainId) {
+  if (!transactions.length) {
     return <Text>No recent transactions...</Text>
   }
 
   return (
     <Box sx={{ maxHeight: 500, overflow: 'auto' }}>
       {transactions.map((data) => (
-        <Item key={data.transaction.hash} chainId={chainId} data={data} />
+        <Item key={data.transaction.hash} chainId={CHAIN_ID} data={data} />
       ))}
     </Box>
   )

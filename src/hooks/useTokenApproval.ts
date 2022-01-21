@@ -1,6 +1,7 @@
-import { useCallback, useState } from 'react'
-import { BigNumberish } from 'ethers'
 import { useEthers, useTransactionsContext } from '@usedapp/core'
+import { BigNumberish } from 'ethers'
+import { useCallback, useState } from 'react'
+import { CHAIN_ID } from '../constants'
 import { useTokenContract } from './useContract'
 
 export const APPROVAL_STATUS = {
@@ -11,14 +12,14 @@ export const APPROVAL_STATUS = {
 }
 
 const useTokensApproval = (tokens: string[]) => {
-  const { chainId, account } = useEthers()
+  const { account } = useEthers()
   const contractFactory = useTokenContract(tokens[0])
   const [state, setState] = useState({} as { [x: string]: string })
   const { addTransaction } = useTransactionsContext()
 
   const send = useCallback(
     async (spender: string, amount: BigNumberish) => {
-      if (!tokens.length || !contractFactory || !chainId || !account) {
+      if (!tokens.length || !contractFactory || !account) {
         return null
       }
       let result = true
@@ -40,7 +41,7 @@ const useTokensApproval = (tokens: string[]) => {
             addTransaction({
               transaction: {
                 ...tx,
-                chainId,
+                chainId: CHAIN_ID,
               },
               submittedAt: Date.now(),
               transactionName: 'Approve token for issuance',

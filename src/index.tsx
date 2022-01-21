@@ -1,5 +1,6 @@
 import { ApolloProvider } from '@apollo/client'
 import { ChainId, DAppProvider } from '@usedapp/core'
+import { CHAIN_ID } from './constants'
 import { MULTICALL_ADDRESS } from 'constants/addresses'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
@@ -11,7 +12,7 @@ import store from './state'
 
 // DAppProvider configuration
 const config = {
-  readOnlyChainId: ChainId.Hardhat,
+  readOnlyChainId: CHAIN_ID,
   readOnlyUrls: {
     [ChainId.Mainnet]: 'http://localhost:8545',
     [ChainId.Hardhat]: 'http://localhost:8545',

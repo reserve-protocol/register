@@ -36,7 +36,7 @@ const AssetsChart = ({ collaterals }: { collaterals: any }) => (
     </PieChart>
     <Box ml={[3, 4, 3, 5]}>
       {collaterals.map((collateral: any) => (
-        <Flex sx={{ alignItems: 'center' }} mt={1}>
+        <Flex key={collateral.address} sx={{ alignItems: 'center' }} mt={1}>
           <ColorBox color={collateral.fill} />
           <Box ml={3}>
             <Text
@@ -92,7 +92,7 @@ const AssetsOverview = ({ data: { isRSV, token, vault }, ...props }: Props) => {
         )
       }
     }
-  }, [marketCap])
+  }, [marketCap.toHexString()])
 
   return (
     <Box mb={3} {...props}>

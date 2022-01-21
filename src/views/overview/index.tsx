@@ -42,8 +42,8 @@ const Overview = () => {
           </Card>
         </Box>
         <Box>
-          <PriceChart mb={3} />
-          <MarketCapChart mb={2} />
+          <PriceChart token={RToken.token} mb={3} />
+          <MarketCapChart token={RToken.token} mb={2} />
         </Box>
       </Grid>
     </Container>

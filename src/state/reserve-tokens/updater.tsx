@@ -1,18 +1,10 @@
 import { gql, useQuery } from '@apollo/client'
-import { useEthers } from '@usedapp/core'
-import { RTOKEN_ADDRESS } from 'constants/addresses'
-import RSV from 'constants/rsv'
 import useTokensBalance from 'hooks/useTokensBalance'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { ReserveToken } from 'types'
 import { useAppSelector } from '../hooks'
-import {
-  loadTokens,
-  selectCurrentRToken,
-  setCurrent,
-  updateBalance,
-} from './reducer'
+import { loadTokens, selectCurrentRToken, updateBalance } from './reducer'
 
 const getTokensQuery = gql`
   query GetTokens {
@@ -54,8 +46,8 @@ const getTokensQuery = gql`
 `
 
 // TODO: Proper typing
-const formatTokens = (mains: any): { [x: string]: ReserveToken } =>
-  mains.payload.reduce((acc: any, data: any) => {
+const formatTokens = (mains: any[]): { [x: string]: ReserveToken } =>
+  mains.reduce((acc: any, data: any) => {
     acc[data.id.toLowerCase()] = {
       id: data.id.toLowerCase(),
       token: {
@@ -82,28 +74,14 @@ const formatTokens = (mains: any): { [x: string]: ReserveToken } =>
 const ReserveTokensUpdater = () => {
   const dispatch = useDispatch()
   const { data, loading: loadingTokens } = useQuery(getTokensQuery)
-  const [currentRToken] = useAppSelector(({ reserveTokens }) => [
-    reserveTokens.current,
-  ])
-  const { chainId } = useEthers()
 
   useEffect(() => {
-    // TODO: Remove hardcoded RSV
-    if (chainId) {
-      dispatch(loadTokens({ [RSV[chainId].id.toLowerCase()]: RSV[chainId] }))
-    }
     // TODO: Handle error scenario
-    if (!loadingTokens && data) {
-      const tokens = formatTokens(data.mains)
-
-      // Verify if RSV exists on this chain
-      if (chainId && RSV[chainId]) {
-        tokens[RSV[chainId].id] = RSV[chainId]
-      }
-
+    if (!loadingTokens && data?.mains?.payload) {
+      const tokens = formatTokens(data.mains.payload)
       dispatch(loadTokens(tokens))
     }
-  }, [loadingTokens, chainId])
+  }, [loadingTokens])
 
   return null
 }

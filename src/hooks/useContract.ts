@@ -1,12 +1,12 @@
-import { useEthers } from '@usedapp/core'
-import { Contract } from '@ethersproject/contracts'
-import { useMemo } from 'react'
 import { isAddress } from '@ethersproject/address'
-import { Main as MainAbi, ERC20 as ERC20Abi, StRSR as StRSRAbi } from 'abis'
+import { Contract } from '@ethersproject/contracts'
+import { useEthers } from '@usedapp/core'
+import { ERC20 as ERC20Abi, Main as MainAbi, StRSR as StRSRAbi } from 'abis'
+import { useMemo } from 'react'
 import RTOKEN_ABI from '../abis/RToken.json'
-
+import { ERC20, Main, RToken, StRsr } from '../abis/types'
+import { CHAIN_ID } from '../constants'
 import { getContract } from '../utils'
-import { ERC20, RToken, Main, StRsr } from '../abis/types'
 
 // returns null on errors
 export function useContract<T extends Contract = Contract>(
@@ -14,13 +14,13 @@ export function useContract<T extends Contract = Contract>(
   ABI: any,
   withSignerIfPossible = true
 ): T | null {
-  const { library, account, chainId } = useEthers()
+  const { library, account } = useEthers()
 
   return useMemo(() => {
-    if (!addressOrAddressMap || !ABI || !library || !chainId) return null
+    if (!addressOrAddressMap || !ABI || !library) return null
     let address: string | undefined
     if (typeof addressOrAddressMap === 'string') address = addressOrAddressMap
-    else address = addressOrAddressMap[chainId]
+    else address = addressOrAddressMap[CHAIN_ID]
     if (!address || !isAddress(address)) return null
     try {
       return getContract(
@@ -33,14 +33,7 @@ export function useContract<T extends Contract = Contract>(
       console.error('Failed to get contract', error)
       return null
     }
-  }, [
-    addressOrAddressMap,
-    ABI,
-    library,
-    chainId,
-    withSignerIfPossible,
-    account,
-  ]) as T
+  }, [addressOrAddressMap, ABI, library, withSignerIfPossible, account]) as T
 }
 
 export function useMainContract(

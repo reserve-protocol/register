@@ -16,7 +16,7 @@ import { ethers } from 'ethers'
  * @returns
  */
 const useTokensBalance = (tokens: [string, number][]): StringMap => {
-  const { account, chainId } = useEthers()
+  const { account } = useEthers()
   const blockNumber = useDebounce(useBlockNumber(), 1000)
 
   const calls = useMemo(
@@ -27,7 +27,7 @@ const useTokensBalance = (tokens: [string, number][]): StringMap => {
         method: 'balanceOf',
         args: [account],
       })),
-    [tokens.toString(), account, chainId, blockNumber]
+    [tokens.toString(), account, blockNumber]
   )
 
   const balances = <any[]>useContractCalls(calls) ?? []

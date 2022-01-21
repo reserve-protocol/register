@@ -6,6 +6,7 @@ import { ENS_ADDRESS } from '../../constants/addresses'
 import { isZero } from '../../utils'
 import ENSRegistrarAbi from '../../abis/ens-registrar.json'
 import ENSResolverAbi from '../../abis/ens-public-resolver.json'
+import { CHAIN_ID } from '../../constants'
 
 const ENSRegistrarInterface = new utils.Interface(ENSRegistrarAbi)
 const ENSResolverInterface = new utils.Interface(ENSResolverAbi)
@@ -20,7 +21,6 @@ const useENSAddress = (
   address: string | null
 } => {
   const debouncedName = useDebounce(ensName, 200)
-  const { chainId } = useEthers()
   const ensNodeArgument = useMemo(() => {
     if (!debouncedName) return [undefined]
     try {
@@ -31,7 +31,7 @@ const useENSAddress = (
   }, [debouncedName])
   const [resolverAddress] = useContractCall({
     abi: ENSRegistrarInterface,
-    address: ENS_ADDRESS[chainId as number],
+    address: ENS_ADDRESS[CHAIN_ID],
     method: 'resolver',
     args: ensNodeArgument,
   }) ?? [undefined]

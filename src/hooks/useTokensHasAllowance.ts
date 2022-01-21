@@ -20,7 +20,7 @@ const useTokensHasAllowance = (
   tokens: [string, BigNumber][],
   spender: string
 ): boolean => {
-  const { account, chainId } = useEthers()
+  const { account } = useEthers()
   const blockNumber = useDebounce(useBlockNumber(), 1000)
 
   const calls = useMemo(
@@ -31,7 +31,7 @@ const useTokensHasAllowance = (
         method: 'allowance',
         args: [account, spender],
       })),
-    [tokens.toString(), account, chainId, blockNumber]
+    [tokens.toString(), account, blockNumber]
   )
 
   const allowances = <any[]>useContractCalls(calls) ?? []

@@ -1,13 +1,14 @@
 import { TransactionResponse } from '@ethersproject/providers'
-import { Contract } from 'ethers'
-import { useState, useCallback, useEffect } from 'react'
 import {
+  connectContractToSigner,
   TransactionOptions,
   TransactionStatus,
-  useTransactionsContext,
-  connectContractToSigner,
   useEthers,
+  useTransactionsContext,
 } from '@usedapp/core'
+import { Contract } from 'ethers'
+import { useCallback, useEffect, useState } from 'react'
+import { CHAIN_ID } from '../constants'
 
 export interface IContractCall {
   contract: Contract
@@ -18,7 +19,7 @@ export interface IContractCall {
 const useMultiContractFunction = (
   calls: IContractCall[]
 ): { send(): Promise<void>; state: TransactionStatus[] } => {
-  const { library, chainId } = useEthers()
+  const { library } = useEthers()
   const [state, setState] = useState<TransactionStatus[]>(
     new Array(calls.length).fill({ status: 'None' })
   )
@@ -32,8 +33,6 @@ const useMultiContractFunction = (
 
   const send = useCallback(
     async (args: any[] = []) => {
-      if (!chainId) return
-
       const callStatus = [...state]
 
       for (let i = 0; i < calls.length; i += 1) {
@@ -51,12 +50,12 @@ const useMultiContractFunction = (
             await contractWithSigner[functionName](...args[i])
           )
 
-          callStatus[i] = { transaction, status: 'Mining', chainId }
+          callStatus[i] = { transaction, status: 'Mining', chainId: CHAIN_ID }
           setState(callStatus)
           addTransaction({
             transaction: {
               ...transaction,
-              chainId,
+              chainId: CHAIN_ID,
             },
             submittedAt: Date.now(),
             transactionName: options?.transactionName,
@@ -66,7 +65,7 @@ const useMultiContractFunction = (
             receipt,
             transaction,
             status: 'Success',
-            chainId,
+            chainId: CHAIN_ID,
           }
           setState(callStatus)
         } catch (e: any) {
@@ -75,7 +74,7 @@ const useMultiContractFunction = (
           callStatus[i] = {
             status: 'Exception',
             errorMessage,
-            chainId,
+            chainId: CHAIN_ID,
           }
           if (transaction) {
             callStatus[i] = {
@@ -83,7 +82,7 @@ const useMultiContractFunction = (
               transaction,
               receipt: e.receipt,
               errorMessage,
-              chainId,
+              chainId: CHAIN_ID,
             }
           }
           setState(callStatus)
@@ -91,7 +90,7 @@ const useMultiContractFunction = (
         }
       }
     },
-    [state.length, addTransaction, library, chainId]
+    [state.length, addTransaction, library]
   )
 
   return { send, state }
