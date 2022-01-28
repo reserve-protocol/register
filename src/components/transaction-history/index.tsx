@@ -14,6 +14,8 @@ const columns = [
   {
     Header: 'Status',
     accessor: 'status',
+    Cell: ({ cell }: { cell: any }) =>
+      cell.value[0].toUpperCase() + cell.value.substr(1).toLowerCase(),
   },
   {
     Header: 'Description',

@@ -23,11 +23,11 @@ export interface IWorker {
 }
 
 export interface IWithApprovalTransactionWorker extends IWorker {
-  method: string
+  methods: string[]
 }
 
 export interface IRequiredApproveTransactionParams {
-  method: string // method that requires allowance
+  methods: string[] // method that requires allowance
   hasAllowance: boolean // if the user has the required allowance to execute "method"
   call: ContractCall // current call
   contract: Contract // current contract call
@@ -60,7 +60,7 @@ export const handleTransactionStatus = (
  * Checks allowance before executing the approval in order to potentially skip the TX
  */
 export const processRequiredApproveTransaction = async ({
-  method,
+  methods,
   call,
   contract,
   account,
@@ -80,7 +80,7 @@ export const processRequiredApproveTransaction = async ({
       send(...call.args)
       updateTransactionStatus(dispatch, TX_STATUS.PROCESSING)
     }
-  } else if (call.method === method && hasAllowance) {
+  } else if (methods.includes(call.method) && hasAllowance) {
     send(...call.args)
     updateTransactionStatus(dispatch, TX_STATUS.PROCESSING)
   }
@@ -92,7 +92,7 @@ export const processRequiredApproveTransaction = async ({
  */
 const WithApprovalTransactionWorker = ({
   current,
-  method,
+  methods,
   dispatch,
 }: IWithApprovalTransactionWorker) => {
   const { account } = useEthers()
@@ -105,14 +105,14 @@ const WithApprovalTransactionWorker = ({
     transactionName: current.description,
   })
   const hasAllowance = useTokensHasAllowance(
-    current.call.method === method ? current.extra : [],
+    methods.includes(current.call.method) ? current.extra : [],
     current.call.address || ''
   )
 
   useEffect(() => {
     if (current.status === TX_STATUS.PENDING && !current.autoCall) {
       processRequiredApproveTransaction({
-        method,
+        methods,
         account: account as string,
         contract,
         send,
@@ -125,8 +125,10 @@ const WithApprovalTransactionWorker = ({
 
   // React to transaction state changes
   useEffect(() => {
-    handleTransactionStatus(current, state, dispatch)
-  }, [state.status])
+    if (state.status) {
+      handleTransactionStatus(current, state, dispatch)
+    }
+  }, [state])
 
   return null
 }
@@ -181,10 +183,10 @@ const TransactionWorker = () => {
  * Handle transactions that requires token approvals to be done prior to that
  */
 export const RequiredApprovedTransactionWorker = ({
-  method,
+  methods,
   autoCalls,
 }: {
-  method: string
+  methods: string[]
   autoCalls: boolean
 }) => {
   const [txState, dispatch] = useTransactionsState()
@@ -201,7 +203,7 @@ export const RequiredApprovedTransactionWorker = ({
 
   return (
     <WithApprovalTransactionWorker
-      method={method}
+      methods={methods}
       current={current}
       dispatch={dispatch}
     />

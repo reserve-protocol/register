@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Box, Flex, Grid, Text, BoxProps } from '@theme-ui/components'
+import { Box, Flex, Text, BoxProps } from '@theme-ui/components'
 import { Card } from 'components'
 import { formatEther } from 'ethers/lib/utils'
 import useTokenSupply from 'hooks/useTokenSupply'
@@ -34,7 +34,7 @@ const AssetsChart = ({ collaterals }: { collaterals: any }) => (
         ))}
       </Pie>
     </PieChart>
-    <Box ml={[3, 4, 3, 5]}>
+    <Box ml={4}>
       {collaterals.map((collateral: any) => (
         <Flex key={collateral.address} sx={{ alignItems: 'center' }} mt={1}>
           <ColorBox color={collateral.fill} />
@@ -106,9 +106,10 @@ const AssetsOverview = ({ data: { isRSV, token, vault }, ...props }: Props) => {
               borderRight: '1px solid #e4e5e7',
               display: 'flex',
               flexDirection: 'column',
+              flexGrow: 1,
             }}
-            pr={[5, 5, 3]}
-            mr={[5, 5, 3]}
+            pr={4}
+            mr={4}
           >
             <Text variant="contentTitle">Total circulation</Text>
             <Text sx={{ fontSize: 3, display: 'block', margin: 'auto' }}>
@@ -118,7 +119,7 @@ const AssetsOverview = ({ data: { isRSV, token, vault }, ...props }: Props) => {
               {token.symbol}
             </Text>
           </Box>
-          <Box>
+          <Box sx={{ flexGrow: 1 }}>
             <Text variant="contentTitle">Total collateral assets</Text>
             <AssetsChart collaterals={collaterals} />
           </Box>

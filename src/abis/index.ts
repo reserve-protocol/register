@@ -8,6 +8,7 @@ import Factory from './factory.json'
 import ERC20Mock from './ERC20Mock.json'
 import Main from './main.json'
 import StRSR from './st-rsr.json'
+import RSVManager from './rsv-manager.json'
 
 const ERC20Interface = new Interface(ERC20)
 export { ERC20, ERC20Interface }
@@ -35,3 +36,6 @@ export { ENSRegistrar, ENSRegistrarInterface }
 
 const StRSRInterface = new Interface(StRSR)
 export { StRSR, StRSRInterface }
+
+const RSVManagerInterface = new Interface(RSVManager)
+export { RSVManager, RSVManagerInterface }

@@ -2,6 +2,7 @@ import { gql, useQuery } from '@apollo/client'
 import { Flex, Text } from '@theme-ui/components'
 import { useEthers } from '@usedapp/core'
 import { Card, Container } from 'components'
+import ContentHeader from 'components/layout/content-header'
 import TransactionHistory from 'components/transaction-history'
 import useTokensBalance from 'hooks/useTokensBalance'
 import TransactionManager from 'state/context/TransactionManager'
@@ -55,8 +56,12 @@ const Issuance = () => {
 
   return (
     <TransactionManager>
-      <RequiredApprovedTransactionWorker method="issue" autoCalls />
-      <Container pt={4} pb={4}>
+      <RequiredApprovedTransactionWorker
+        methods={['issue', 'redeem']}
+        autoCalls
+      />
+      <Container pb={4}>
+        <ContentHeader />
         <Balances rToken={RToken} mb={3} />
         <Text mb={2} variant="sectionTitle">
           Mint and Redeem

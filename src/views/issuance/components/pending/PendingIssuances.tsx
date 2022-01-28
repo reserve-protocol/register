@@ -60,7 +60,7 @@ const PendingIssuances = (props: any) => {
         data={data && data.entries ? data.entries : []}
       />
 
-      {data && data.entries.length === 0 && (
+      {(!data || !data.entries.length) && (
         <Box sx={{ textAlign: 'center' }} mt={3}>
           <Text>No pending issuances...</Text>
         </Box>

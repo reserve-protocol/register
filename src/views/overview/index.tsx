@@ -7,7 +7,7 @@ import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
 import { Box, Text, Grid } from '@theme-ui/components'
 import ContentHeader from 'components/layout/content-header'
 import UsageOverview from './components/usage'
-import AssetsOverview from './components/assets'
+import AssetsOverview from './components/token-assets'
 
 /**
  * RToken Overview

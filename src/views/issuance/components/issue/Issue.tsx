@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Box } from '@theme-ui/components'
 import { useEthers } from '@usedapp/core'
-import { ERC20Interface, MainInterface } from 'abis'
+import { ERC20Interface, MainInterface, RSVManagerInterface } from 'abis'
 import { Button, Input } from 'components'
 import { formatEther, parseEther } from 'ethers/lib/utils'
 import { useMainContract } from 'hooks/useContract'
@@ -14,6 +14,7 @@ import {
   useTransactionsState,
 } from 'state/context/TransactionManager'
 import { ReserveToken } from 'types'
+import { quote } from 'utils/rsv'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -58,6 +59,7 @@ const buildTransactions = (
       }
     }
   )
+
   // Create token issuance contract call
   transactions.push({
     autoCall: false,
@@ -66,7 +68,7 @@ const buildTransactions = (
     value: amount,
     extra: tokenQuantities, // Send quantities as an extra prop for allowance check before issuance
     call: {
-      abi: MainInterface,
+      abi: data.isRSV ? RSVManagerInterface : MainInterface,
       address: data.id,
       method: 'issue',
       args: [parseEther(amount)],
@@ -75,6 +77,23 @@ const buildTransactions = (
 
   return transactions
 }
+
+// const canIssue = async () => {
+//   // Check for MaxSupply hit
+//   const maxSupply = drizzle.web3.utils.toBN(
+//     drizzleState.contracts.Reserve.maxSupply[this.state.rsv.maxSupply].value
+//   )
+//   const totalSupply = drizzle.web3.utils.toBN(
+//     drizzleState.contracts.Reserve.totalSupply[this.state.rsv.totalSupply].value
+//   )
+//   const cur = drizzle.web3.utils
+//     .toBN(this.state.generate.cur)
+//     .mul(util.EIGHTEEN)
+//   if (totalSupply.add(cur).gt(maxSupply)) {
+//     alert('Sorry, RSV is at max supply')
+//     return
+//   }
+// }
 
 /**
  * Issuance
@@ -96,7 +115,14 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
     setIssuing(true)
     try {
       const issueAmount = parseEther(amount)
-      const quantities = await mainContract?.quote(issueAmount)
+      let quantities
+
+      // RSV have hardcoded quantities
+      if (data.isRSV) {
+        quantities = quote(issueAmount)
+      } else {
+        quantities = await mainContract?.quote(issueAmount)
+      }
 
       if (!quantities || !library) throw new Error()
 

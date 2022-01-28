@@ -62,7 +62,8 @@ function reducer(state: IState, action: { type: string; payload: any }) {
       if (
         current > -1 &&
         (action.payload.data === TX_STATUS.SKIPPED ||
-          action.payload.data === TX_STATUS.SUBMITTED)
+          action.payload.data === TX_STATUS.SUBMITTED ||
+          action.payload.data === TX_STATUS.FAILED)
       ) {
         current += 1
       }

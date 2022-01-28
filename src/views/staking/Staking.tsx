@@ -45,7 +45,7 @@ const Staking = () => {
 
   return (
     <TransactionManager>
-      <RequiredApprovedTransactionWorker method="stake" autoCalls />
+      <RequiredApprovedTransactionWorker methods={['stake']} autoCalls />
       <Container pt={4} pb={4}>
         <Balances rToken={RToken} />
         <Text mb={2} mt={3} variant="sectionTitle">
