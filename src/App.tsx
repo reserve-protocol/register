@@ -1,7 +1,8 @@
-import React from 'react'
 import { useEthers } from '@usedapp/core'
 import { Card } from 'components'
 import Container from 'components/container'
+import React from 'react'
+import { Toaster } from 'react-hot-toast'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { useAppSelector } from 'state/hooks'
 import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
@@ -49,6 +50,7 @@ const Guard = ({ children }: { children: React.ReactNode }) => {
 const App = () => (
   <ThemeProvider theme={theme}>
     <Updater />
+    <Toaster />
     <Router>
       <Layout>
         <Routes>

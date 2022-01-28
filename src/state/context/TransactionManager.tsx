@@ -13,6 +13,8 @@ export interface TransactionState {
   // Defines if the transaction will be handled by the default worker
   // Used for TX with simple logic, like an `Approval` or `Transfer`
   autoCall: boolean
+  // batchId for batch transactions
+  batchId?: number
 }
 
 interface IState {
@@ -57,7 +59,11 @@ function reducer(state: IState, action: { type: string; payload: any }) {
     case ACTIONS.UPDATE_STATUS: {
       let { current } = state
       const index = action.payload.index || current
-      const tx = { ...state.list[index], status: action.payload.data }
+      const list = [
+        ...state.list.slice(0, index),
+        { ...state.list[index], status: action.payload.data },
+      ]
+      let pending = state.list.slice(index + 1)
 
       if (
         current > -1 &&
@@ -66,14 +72,26 @@ function reducer(state: IState, action: { type: string; payload: any }) {
           action.payload.data === TX_STATUS.FAILED)
       ) {
         current += 1
+
+        if (
+          action.payload.data === TX_STATUS.FAILED &&
+          state.list[index].batchId
+        ) {
+          pending = pending.map((tx) => {
+            if (tx.batchId === state.list[index].batchId) {
+              tx.status = TX_STATUS.FAILED
+              current += 1
+            }
+
+            return tx
+          })
+        }
       }
 
+      list.push(...pending)
+
       return {
-        list: [
-          ...state.list.slice(0, index),
-          tx,
-          ...state.list.slice(index + 1),
-        ],
+        list,
         current,
       }
     }
@@ -115,7 +133,11 @@ export const loadTransactions = (
   dispatch: ContextValue['dispatch'],
   transactions: TransactionState[]
 ) => {
-  dispatch({ type: ACTIONS.ADD, payload: transactions })
+  const batchId = Date.now()
+  dispatch({
+    type: ACTIONS.ADD,
+    payload: transactions.map((tx) => ({ ...tx, batchId })),
+  })
 }
 
 export const updateTransactionStatus = (
