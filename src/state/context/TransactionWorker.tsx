@@ -125,7 +125,11 @@ const WithApprovalTransactionWorker = ({
 
   // React to transaction state changes
   useEffect(() => {
-    if (state.status && state.status !== 'None') {
+    if (
+      state.status &&
+      state.status !== 'None' &&
+      current.status === TX_STATUS.PROCESSING
+    ) {
       handleTransactionStatus(current, state, dispatch)
     }
   }, [state])
@@ -159,7 +163,11 @@ const Worker = ({ current }: IWorker) => {
 
   // React to transaction state changes
   useEffect(() => {
-    if (state.status && state.status !== 'None') {
+    if (
+      state.status &&
+      state.status !== 'None' &&
+      current.status === TX_STATUS.PROCESSING
+    ) {
       handleTransactionStatus(current, state, dispatch)
     }
   }, [state])

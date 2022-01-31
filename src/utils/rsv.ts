@@ -31,6 +31,6 @@ export const getIssuable = (pax: number, usdc: number, tusd: number) => {
 
 export const quote = (amount: BigNumber): BigNumber[] => [
   amount.mul(PAX_QTY).mul(EXPO).div(DIV),
-  amount.mul(USDC_QTY),
+  amount.mul(USDC_QTY).div(DIV),
   amount.mul(PAX_QTY).mul(EXPO).div(DIV),
 ]

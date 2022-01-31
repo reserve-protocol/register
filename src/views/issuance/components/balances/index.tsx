@@ -1,6 +1,6 @@
-import { Flex, Box, Text, BoxProps } from '@theme-ui/components'
+import { Flex, Box, Text, Grid, BoxProps } from '@theme-ui/components'
 import { Card } from 'components'
-import { RTokenIcon } from 'components/icons/logos'
+import TokenLogo from 'components/icons/TokenLogo'
 import { useAppSelector } from 'state/hooks'
 import { ReserveToken } from 'types'
 import { formatCurrency } from 'utils'
@@ -20,25 +20,27 @@ const Balances = ({ rToken, ...props }: Props) => {
       <Text variant="sectionTitle" mb={2}>
         Your balances
       </Text>
-      <Flex>
+      <Grid columns={2}>
         <Card
           sx={{
-            flexGrow: 1,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: 5,
           }}
-          mr={2}
         >
-          <RTokenIcon style={{ marginRight: 10 }} />
+          <TokenLogo symbol={rToken.token.symbol} mr={10} />
           {formatCurrency(tokenBalances[rToken.token.address])}{' '}
           {rToken.token.symbol}
         </Card>
-        <Card sx={{ flexGrow: 1 }} ml={2}>
+        <Card>
           {rToken.vault.collaterals.map((collateral) => (
             <Flex key={collateral.id} sx={{ alignItems: 'center' }} p={1}>
-              <RTokenIcon style={{ marginRight: 10, fontSize: 24 }} />
+              <TokenLogo
+                symbol={collateral.token.symbol}
+                mr={10}
+                size="1.5em"
+              />
               <Text sx={{ fontSize: 3 }}>
                 {formatCurrency(tokenBalances[collateral.token.address])}{' '}
                 {collateral.token.symbol}
@@ -46,7 +48,7 @@ const Balances = ({ rToken, ...props }: Props) => {
             </Flex>
           ))}
         </Card>
-      </Flex>
+      </Grid>
     </Box>
   )
 }

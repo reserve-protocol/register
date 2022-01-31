@@ -26,10 +26,15 @@ const RTokenSelector = (props: BoxProps) => {
           key={token.id}
         >
           <img
-            src={`/imgs/${tokenLogos[token.token.symbol] || 'default.png'}`}
-            height={38}
-            width={38}
-            alt={token.token.name}
+            src={`/imgs/${token.token.symbol.toLowerCase()}.png`}
+            style={{
+              width: 'auto',
+              height: 'auto',
+              maxHeight: 38,
+              maxWidth: 38,
+              objectFit: 'scale-down',
+            }}
+            alt={token.token.symbol}
           />
         </Box>
       ))}

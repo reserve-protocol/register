@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import { Box, Flex, Text, BoxProps } from '@theme-ui/components'
 import { Card } from 'components'
+import TokenLogo from 'components/icons/TokenLogo'
 import { formatEther } from 'ethers/lib/utils'
 import useTokenSupply from 'hooks/useTokenSupply'
 import { useEffect, useState } from 'react'
@@ -46,7 +47,13 @@ const AssetsChart = ({ collaterals }: { collaterals: any }) => (
                 display: 'block',
               }}
             >
-              {collateral.symbol}
+              <Flex sx={{ alignItems: 'center' }}>
+                <TokenLogo
+                  sx={{ marginRight: '5px', position: 'relative', top: '-1px' }}
+                  symbol={collateral.symbol}
+                />{' '}
+                {collateral.symbol}
+              </Flex>
             </Text>
             <Text>{formatCurrency(collateral.value)}</Text>
           </Box>

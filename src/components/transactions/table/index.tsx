@@ -3,6 +3,7 @@ import { Box } from '@theme-ui/components'
 import { gql, useSubscription } from '@apollo/client'
 import { formatEther } from '@ethersproject/units'
 import { formatCurrency } from 'utils'
+import { shortenTransactionHash } from '@usedapp/core'
 
 const GET_TRANSACTIONS = gql`
   subscription GetTransactions {
@@ -31,15 +32,10 @@ const columns = [
       formatCurrency(parseFloat(formatEther(cell.value))),
   },
   {
-    Header: 'USD $',
-    accessor: 'amount',
-    id: 'usd',
+    Header: 'Tx Hash',
+    accessor: 'transaction.id',
     Cell: ({ cell }: { cell: any }) =>
-      `$${formatCurrency(parseFloat(formatEther(cell.value)))}`,
-  },
-  {
-    Header: 'Chain',
-    Cell: ({ cell }: { cell: any }) => 'TODO',
+      cell.value ? shortenTransactionHash(cell.value) : 'RPay TX',
   },
 ]
 
