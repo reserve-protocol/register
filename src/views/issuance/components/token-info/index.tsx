@@ -6,10 +6,11 @@ interface Props extends BoxProps {
   symbol: string
 }
 
-const Title = styled.h1`
+const Title = styled.h2`
   font-size: 20px;
   font-weight: 400;
   margin-bottom: 4px;
+  margin-top: 10px;
 `
 
 const Content = styled(Text)`
@@ -20,14 +21,12 @@ const Content = styled(Text)`
 
 const TokenInfo = ({ symbol, ...props }: Props) => (
   <Box {...props}>
-    <p>
-      <Title>About {symbol}</Title>
-      <Content>{meta[symbol]?.about}</Content>
-      <Title>Usage</Title>
-      <Content>{meta[symbol]?.usage}</Content>
-      <Title>About this app</Title>
-      <Content>{meta[symbol]?.about}</Content>
-    </p>
+    <Title>About {symbol}</Title>
+    <Content>{meta[symbol]?.about}</Content>
+    <Title>Usage</Title>
+    <Content>{meta[symbol]?.usage}</Content>
+    <Title>About this app</Title>
+    <Content>{meta[symbol]?.about}</Content>
   </Box>
 )
 

@@ -1,4 +1,5 @@
 import { ChainId } from '@usedapp/core'
+import { parseEther } from '@ethersproject/units'
 
 export { default as ROUTES } from './routes'
 
@@ -12,13 +13,4 @@ export const TRANSACTION_STATUS = {
   REJECTED: 'REJECTED',
 }
 
-export const DEPOSIT_STATUS = {
-  PENDING_APPROVAL: 'PENDING_APPROVAL',
-  APPROVAL_SUBMITTED: 'APPROVAL_SUBMITTED',
-  APPROVED: 'APPROVED',
-  REJECTED: 'REJECTED',
-  FAILED: 'FAILED',
-  SUBMITTED: 'SUBMITTED',
-  CONFIRMED: 'CONFIRMED',
-  COMPLETED: 'COMPLETED',
-}
+export const ONE_ETH = parseEther('1')

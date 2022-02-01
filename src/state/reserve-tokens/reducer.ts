@@ -41,6 +41,28 @@ export const selectCurrentRToken = createSelector(
     current ? list[current.toLowerCase()] : null
 )
 
+// Returns an aggregate of the current rToken balance + collaterals balance
+// Useful for reacting to non-specific balance changes
+export const selectBalanceAggregate = createSelector(
+  selectCurrentRToken,
+  (state: any) => state.reserveTokens.balances,
+  (rToken, balances): number => {
+    if (!rToken) {
+      return 0
+    }
+
+    const addresses: string[] = [
+      rToken.token.address,
+      ...rToken.vault.collaterals.map((c) => c.token.address),
+    ]
+
+    return addresses.reduce(
+      (prev: any, current: any) => prev + (balances[current] || 0),
+      0
+    )
+  }
+)
+
 // Get top 5 tokens including the selected token on top
 // TODO: Proposal - Only display tokens made by Reserve on this list
 export const selectTopTokens = createSelector(

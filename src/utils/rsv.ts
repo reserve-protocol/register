@@ -1,3 +1,6 @@
+import { ONE_ETH } from './../constants/index'
+import { parseEther, formatEther, formatUnits } from '@ethersproject/units'
+import { ReserveToken, StringMap } from 'types'
 import { BigNumber } from 'ethers'
 // TODO: Remove BN dependency
 import BN from 'bn.js'
@@ -17,16 +20,25 @@ const DIV = BigNumber.from(10).pow(BigNumber.from(18))
 
 // Collateral order
 // [PAX, USDC, USDT]
-export const getIssuable = (pax: number, usdc: number, tusd: number) => {
-  if (!usdc || !tusd || !pax) {
-    return 0
+export const getIssuable = (rsv: ReserveToken, tokenBalances: StringMap) => {
+  let lowestCollateralBalance = Infinity
+
+  for (const collateral of rsv.vault.collaterals) {
+    if (!tokenBalances[collateral.token.address]) {
+      return 0
+    }
+
+    lowestCollateralBalance = Math.min(
+      lowestCollateralBalance,
+      tokenBalances[collateral.token.address]
+    )
   }
 
-  const usdcBN = new BN(usdc).mul(EIGHTEEN).div(USDC_RSV)
-  const tusdBN = new BN(tusd).mul(SIX).div(TUSD_RSV)
-  const paxBN = new BN(pax).mul(SIX).div(PAX_RSV)
-  const min = BN.min(BN.min(usdcBN, tusdBN), paxBN)
-  return min.div(EIGHTEEN).toNumber()
+  return (
+    parseEther(lowestCollateralBalance.toString())
+      .div(ONE_ETH.div(3))
+      .toNumber() || 0
+  )
 }
 
 export const quote = (amount: BigNumber): BigNumber[] => [

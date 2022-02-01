@@ -1,20 +1,22 @@
 import styled from '@emotion/styled'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Box, Card, Text } from '@theme-ui/components'
-import { useEthers } from '@usedapp/core'
 import { ERC20Interface, MainInterface, RSVManagerInterface } from 'abis'
 import { Button, Input } from 'components'
 import { formatEther, parseEther } from 'ethers/lib/utils'
 import { useMainContract } from 'hooks/useContract'
-import { useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import {
   loadTransactions,
   TransactionState,
   TX_STATUS,
   useTransactionsState,
 } from 'state/context/TransactionManager'
+import { useAppSelector } from 'state/hooks'
+import { selectBalanceAggregate } from 'state/reserve-tokens/reducer'
 import { ReserveToken } from 'types'
-import { quote } from 'utils/rsv'
+import { getIssuable, quote } from 'utils/rsv'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -95,6 +97,25 @@ const buildTransactions = (
 //   }
 // }
 
+const useTokenIssuableAmount = (data: ReserveToken) => {
+  const [amount, setAmount] = useState(0)
+  const balance = useSelector(selectBalanceAggregate)
+  const tokenBalances = useAppSelector((state) => state.reserveTokens.balances)
+
+  console.log('holi', balance)
+  console.log('token balances', tokenBalances)
+
+  useEffect(() => {
+    if (data.isRSV) {
+      setAmount(getIssuable(data, tokenBalances))
+    } else {
+      // TODO: quote
+    }
+  }, [balance, data.id])
+
+  return amount
+}
+
 /**
  * Issuance
  * Handles issuance, creates the set of transactions that will be later handled by the container
@@ -105,11 +126,11 @@ const buildTransactions = (
 // TODO: Validations
 // TODO: Get max issuable quantity from view function (protocol)
 const Issue = ({ data, ...props }: { data: ReserveToken }) => {
-  const { library } = useEthers()
   const [amount, setAmount] = useState('')
   const [issuing, setIssuing] = useState(false)
   const mainContract = useMainContract(data.id)
   const [, dispatch] = useTransactionsState()
+  const issuableAmount = useTokenIssuableAmount(data)
 
   const handleIssue = async () => {
     setIssuing(true)
@@ -124,7 +145,7 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
         quantities = await mainContract?.quote(issueAmount)
       }
 
-      if (!quantities || !library) throw new Error()
+      if (!quantities) throw new Error()
 
       setAmount('')
       loadTransactions(dispatch, buildTransactions(data, amount, quantities))
@@ -149,7 +170,7 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
           onChange={setAmount}
         />
         <Text variant="a" sx={{ marginLeft: 'auto', marginTop: 1 }}>
-          Max: TODO
+          Max: {issuableAmount}
         </Text>
         <Button mt={2} disabled={issuing} onClick={handleIssue}>
           + Mint {data.token.symbol}
