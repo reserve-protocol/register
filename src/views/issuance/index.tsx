@@ -1,10 +1,6 @@
-import { gql, useQuery } from '@apollo/client'
-import { Flex, Text } from '@theme-ui/components'
-import { useEthers } from '@usedapp/core'
-import { Card, Container } from 'components'
+import { Box, Divider, Text, Grid } from '@theme-ui/components'
+import { Container } from 'components'
 import ContentHeader from 'components/layout/content-header'
-import TransactionHistory from 'components/transaction-history'
-import useTokensBalance from 'hooks/useTokensBalance'
 import TransactionManager from 'state/context/TransactionManager'
 import { RequiredApprovedTransactionWorker } from 'state/context/TransactionWorker'
 import { useAppSelector } from 'state/hooks'
@@ -12,47 +8,12 @@ import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
 import { ReserveToken } from 'types'
 import Balances from './components/balances'
 import Issue from './components/issue'
-import PendingIssuances from './components/pending'
+import IssuanceRecords from './components/records'
 import Redeem from './components/redeem'
-
-const getTokenAddresses = (reserveToken: ReserveToken): [string, number][] => [
-  [reserveToken.token.address, reserveToken.token.decimals],
-  ...reserveToken.vault.collaterals.map((collateral): [string, number] => [
-    collateral.token.address,
-    collateral.token.decimals,
-  ]),
-]
-
-const GET_TX_HISTORY = gql`
-  query GetIssuancesHistory($userId: String!) {
-    entries(
-      user: $userId
-      where: { type_in: ["Issuance", "Redemption"] }
-      orderBy: createdAt
-      orderDirection: desc
-    ) {
-      id
-      type
-      amount
-      createdAt
-      transaction {
-        id
-      }
-    }
-  }
-`
+import TokenInfo from './components/token-info'
 
 const Issuance = () => {
-  // This component is protected by a guard, RToken always exists
-  const { account } = useEthers()
-  const { data, loading } = useQuery(GET_TX_HISTORY, {
-    variables: {
-      where: {},
-      userId: account,
-    },
-  })
   const RToken = useAppSelector(selectCurrentRToken) as ReserveToken
-  const tokenBalances = useTokensBalance(getTokenAddresses(RToken))
 
   return (
     <TransactionManager>
@@ -62,23 +23,23 @@ const Issuance = () => {
       />
       <Container pb={4}>
         <ContentHeader />
-        <Balances rToken={RToken} mb={3} />
-        <Text mb={2} variant="sectionTitle">
-          Mint and Redeem
-        </Text>
-        <Card mb={3}>
-          <Flex mx={-2}>
-            <Issue data={RToken} />
-            <Redeem
-              data={RToken}
-              balance={tokenBalances[RToken.token.address]}
-            />
-          </Flex>
-        </Card>
-        <TransactionHistory
-          history={data && data.entries ? data.entries : []}
-        />
-        <PendingIssuances mt={3} />
+        <Grid columns={[2, '2fr 1fr']} gap={5}>
+          <TokenInfo symbol={RToken.token.symbol} />
+          <Balances rToken={RToken} sx={{ width: 'fit-content' }} />
+        </Grid>
+        <Divider mt={4} mb={4} sx={{ borderColor: '#DFDFDF' }} />
+        <Grid columns={2} gap={4} width={[600, 600]}>
+          <Box>
+            <Text mb={3} mt={3} variant="sectionTitle" sx={{ fontWeight: 500 }}>
+              Mint & Redeem {RToken.token.symbol}
+            </Text>
+            <Grid columns={2}>
+              <Issue data={RToken} />
+              <Redeem data={RToken} balance={0} />
+            </Grid>
+          </Box>
+          <IssuanceRecords />
+        </Grid>
       </Container>
     </TransactionManager>
   )

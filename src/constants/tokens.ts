@@ -1,4 +1,4 @@
-import { Token } from 'types'
+import { StringMap, Token } from 'types'
 
 /**
  * These are Reserve constant tokens
@@ -31,4 +31,13 @@ export const tokenLogos: { [x: string]: string } = {
   RSD: 'rsv.png',
   RSV: 'rsv.png',
   RSR: 'rsr.png',
+}
+
+export const meta: StringMap = {
+  RSV: {
+    about:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam maximus facilisis velit, at venenatis nunc iaculis vitae. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Praesent vitae quam elit. Praesent nunc massa, porttitor ac lectus ut, hendrerit faucibus quam.',
+    usage:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam maximus facilisis velit, at venenatis nunc iaculis vitae. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Praesent vitae quam elit. Praesent nunc massa, porttitor ac lectus ut, hendrerit faucibus quam. ',
+  },
 }

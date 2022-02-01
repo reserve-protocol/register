@@ -54,7 +54,7 @@ const TransactionHistory = ({
         }))
         .reverse(),
       ...history.map(({ transaction, amount, type }) => ({
-        status: TX_STATUS.SUBMITTED,
+        status: TX_STATUS.CONFIRMED,
         description: type,
         value: formatCurrency(+formatEther(amount)),
         hash: shortenTransactionHash(transaction.id),
@@ -64,7 +64,7 @@ const TransactionHistory = ({
   )
 
   return (
-    <SectionCard title="Your transactions">
+    <>
       <Table columns={columns as any} data={dataset} />
 
       {dataset.length === 0 && (
@@ -72,7 +72,7 @@ const TransactionHistory = ({
           <Text>No recent transactions...</Text>
         </Box>
       )}
-    </SectionCard>
+    </>
   )
 }
 

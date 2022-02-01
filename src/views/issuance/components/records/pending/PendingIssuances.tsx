@@ -2,7 +2,6 @@ import { gql, useSubscription } from '@apollo/client'
 import { formatEther } from '@ethersproject/units'
 import { Box, Text } from '@theme-ui/components'
 import { shortenTransactionHash, useEthers } from '@usedapp/core'
-import { SectionCard } from 'components'
 import { Table } from 'components/table'
 import { formatCurrency } from 'utils'
 
@@ -54,7 +53,7 @@ const PendingIssuances = (props: any) => {
   })
 
   return (
-    <SectionCard title="Pending issuances" {...props}>
+    <>
       <Table
         columns={COLUMNS as any}
         data={data && data.entries ? data.entries : []}
@@ -65,7 +64,7 @@ const PendingIssuances = (props: any) => {
           <Text>No pending issuances...</Text>
         </Box>
       )}
-    </SectionCard>
+    </>
   )
 }
 

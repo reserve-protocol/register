@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { BigNumber } from '@ethersproject/bignumber'
-import { Box } from '@theme-ui/components'
+import { Box, Card, Text } from '@theme-ui/components'
 import { useEthers } from '@usedapp/core'
 import { ERC20Interface, MainInterface, RSVManagerInterface } from 'abis'
 import { Button, Input } from 'components'
@@ -137,17 +137,25 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
   }
 
   return (
-    <InputContainer mx={2} {...props}>
-      <Input
-        placeholder="Mint amount"
-        label="Mint ammount"
-        value={amount}
-        onChange={setAmount}
-      />
-      <Button mt={2} disabled={issuing} onClick={handleIssue}>
-        Mint
-      </Button>
-    </InputContainer>
+    <Card {...props}>
+      <InputContainer m={3}>
+        <Text variant="contentTitle" mb={2}>
+          Mint
+        </Text>
+        <Input
+          placeholder="Mint amount"
+          label="Mint ammount"
+          value={amount}
+          onChange={setAmount}
+        />
+        <Text variant="a" sx={{ marginLeft: 'auto', marginTop: 1 }}>
+          Max: TODO
+        </Text>
+        <Button mt={2} disabled={issuing} onClick={handleIssue}>
+          + Mint {data.token.symbol}
+        </Button>
+      </InputContainer>
+    </Card>
   )
 }
 

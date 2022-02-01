@@ -35,7 +35,7 @@ export const theme: Theme = {
   fontSizes: [12, 14, 16, 20, 24, 32, 48, 64, 96],
   fontWeights: {
     body: 400,
-    heading: 700,
+    heading: 400,
     bold: 700,
   },
   lineHeights: {
@@ -61,6 +61,15 @@ export const theme: Theme = {
     },
     primary: {
       color: 'text',
+    },
+    a: {
+      transition: 'all .2s ease',
+      color: '#77838F',
+      textDecoration: 'underline',
+      cursor: 'pointer',
+      '&:hover': {
+        color: 'text',
+      },
     },
   },
   styles: {

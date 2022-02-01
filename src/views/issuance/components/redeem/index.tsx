@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { parseEther } from '@ethersproject/units'
 import { ERC20Interface, MainInterface, RSVManagerInterface } from 'abis'
-import { Button, Input } from 'components'
+import { Button, Input, Card } from 'components'
 import { useState } from 'react'
 import {
   loadTransactions,
@@ -9,7 +9,7 @@ import {
   TransactionState,
   useTransactionsState,
 } from 'state/context/TransactionManager'
-import { Box } from 'theme-ui'
+import { Box, Text } from '@theme-ui/components'
 import { ReserveToken } from 'types'
 
 const InputContainer = styled(Box)`
@@ -72,7 +72,14 @@ const buildTransactions = (
   ]
 }
 
-const Redeem = ({ balance, data }: { balance: number; data: ReserveToken }) => {
+const Redeem = ({
+  balance,
+  data,
+  ...props
+}: {
+  balance: number
+  data: ReserveToken
+}) => {
   const [amount, setAmount] = useState('')
   const [, dispatch] = useTransactionsState()
 
@@ -81,18 +88,34 @@ const Redeem = ({ balance, data }: { balance: number; data: ReserveToken }) => {
     loadTransactions(dispatch, buildTransactions(data, amount))
   }
 
+  const handleMax = () => {
+    setAmount(balance.toString())
+  }
+
   return (
-    <InputContainer mx={2}>
-      <Input
-        placeholder="Redeem amount"
-        label="Redeem amount"
-        value={amount}
-        onChange={setAmount}
-      />
-      <Button mt={2} onClick={handleRedeem}>
-        Redeem
-      </Button>
-    </InputContainer>
+    <Card {...props}>
+      <InputContainer m={3}>
+        <Text variant="contentTitle" mb={2}>
+          Redeem
+        </Text>
+        <Input
+          placeholder="Redeem amount"
+          label="Redeem amount"
+          value={amount}
+          onChange={setAmount}
+        />
+        <Text
+          onClick={handleMax}
+          variant="a"
+          sx={{ marginLeft: 'auto', marginTop: 1 }}
+        >
+          Max: {balance}
+        </Text>
+        <Button mt={2} onClick={handleRedeem}>
+          - Redeem {data.token.symbol}
+        </Button>
+      </InputContainer>
+    </Card>
   )
 }
 

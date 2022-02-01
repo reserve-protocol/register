@@ -9,6 +9,8 @@ interface Props extends BoxProps {
 const Container = styled(Box)`
   display: flex;
   align-items: center;
+  position: relative;
+  top: -1px;
 `
 
 const TokenLogo = ({ symbol, size = '1em', ...props }: Props) => (

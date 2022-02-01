@@ -46,7 +46,7 @@ export const handleTransactionStatus = (
   }
 
   if (state.status === 'Success') {
-    updateTransactionStatus(dispatch, TX_STATUS.SUBMITTED)
+    updateTransactionStatus(dispatch, TX_STATUS.CONFIRMED)
   }
 
   if (state.status === 'Exception' || state.status === 'Fail') {

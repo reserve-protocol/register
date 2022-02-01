@@ -1,5 +1,5 @@
 import { BoxProps, Box, Flex, Text } from '@theme-ui/components'
-import { tokenLogos } from 'constants/tokens'
+import TokenLogo from 'components/icons/TokenLogo'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectTopTokens, setCurrent } from 'state/reserve-tokens/reducer'
 
@@ -12,31 +12,20 @@ const RTokenSelector = (props: BoxProps) => {
   }
 
   const handleSelect = (token: string) => {
-    console.log('select')
     dispatch(setCurrent(token))
   }
 
   return (
     <Flex {...props} sx={{ alignItems: 'center' }}>
       {tokens.map((token) => (
-        <Box
+        <TokenLogo
+          size={32}
+          symbol={token.token.symbol}
+          key={token.id}
           onClick={() => handleSelect(token.id)}
           sx={{ cursor: 'pointer' }}
           mr={3}
-          key={token.id}
-        >
-          <img
-            src={`/imgs/${token.token.symbol.toLowerCase()}.png`}
-            style={{
-              width: 'auto',
-              height: 'auto',
-              maxHeight: 38,
-              maxWidth: 38,
-              objectFit: 'scale-down',
-            }}
-            alt={token.token.symbol}
-          />
-        </Box>
+        />
       ))}
       <Text
         sx={{

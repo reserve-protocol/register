@@ -37,7 +37,7 @@ const ACTIONS = {
 export const TX_STATUS = {
   PENDING: 'PENDING',
   SKIPPED: 'SKIPPED',
-  SUBMITTED: 'SUBMITTED',
+  CONFIRMED: 'CONFIRMED',
   FAILED: 'FAILED',
   PROCESSING: 'PROCESSING',
 }
@@ -68,7 +68,7 @@ function reducer(state: IState, action: { type: string; payload: any }) {
       if (
         current > -1 &&
         (action.payload.data === TX_STATUS.SKIPPED ||
-          action.payload.data === TX_STATUS.SUBMITTED ||
+          action.payload.data === TX_STATUS.CONFIRMED ||
           action.payload.data === TX_STATUS.FAILED)
       ) {
         current += 1
