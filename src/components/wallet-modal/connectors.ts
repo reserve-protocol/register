@@ -1,54 +1,51 @@
+import { ChainId } from '@usedapp/core'
+import { FortmaticConnector } from '@web3-react/fortmatic-connector'
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { NetworkConnector } from '@web3-react/network-connector'
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { TrezorConnector } from '@web3-react/trezor-connector'
-import { FortmaticConnector } from '@web3-react/fortmatic-connector'
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { WalletLinkConnector } from '@web3-react/walletlink-connector'
+import { CHAIN_ID } from '../../constants'
 
 // TODO: Update node URLs
 const keys = {
-  RPC_URL_1: 'https://mainnet.infura.io/v3/84842078b09946638c03157f83405213',
-  RPC_URL_3: 'https://rinkeby.infura.io/v3/84842078b09946638c03157f83405213',
+  RPC_URL: 'http://localhost:8545',
   FORTMATIC_API_KEY: 'pk_test_A6260FCBAA2EBDFB',
   MAGIC_API_KEY: 'pk_test_398B82F5F0E88874',
   PORTIS_DAPP_ID: 'e9be171c-2b7f-4ff0-8db9-327707511ee2',
 }
 
 const POLLING_INTERVAL = 12000
-const RPC_URLS = {
-  1: keys.RPC_URL_1,
-  3: keys.RPC_URL_3,
-}
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [1, 3, 31337],
+  supportedChainIds: [CHAIN_ID],
 })
 
 export const network = new NetworkConnector({
-  urls: { 1: RPC_URLS[1], 3: RPC_URLS[3] },
+  urls: { [ChainId.Mainnet]: keys.RPC_URL },
   defaultChainId: 1,
 })
 
 export const walletconnect = new WalletConnectConnector({
-  rpc: { 1: RPC_URLS[1], 3: RPC_URLS[3] },
+  rpc: { [ChainId.Mainnet]: keys.RPC_URL },
   qrcode: true,
   pollingInterval: POLLING_INTERVAL,
 })
 
 export const fortmatic = new FortmaticConnector({
   apiKey: 'pk_test_29814A316CEDFCF7',
-  chainId: 1,
+  chainId: ChainId.Mainnet,
 })
 
 export const walletlink = new WalletLinkConnector({
-  url: RPC_URLS[1],
+  url: keys.RPC_URL,
   appName: 'reserve explorer',
-  supportedChainIds: [1, 3, 31337],
+  supportedChainIds: [ChainId.Mainnet],
 })
 
 export const trezor = new TrezorConnector({
-  chainId: 1,
-  url: RPC_URLS[1],
+  chainId: ChainId.Mainnet,
+  url: keys.RPC_URL,
   pollingInterval: POLLING_INTERVAL,
   // TODO: Update with real information
   manifestEmail: 'dummy@abc.xyz',

@@ -5,7 +5,7 @@ import { ERC20Interface, MainInterface, RSVManagerInterface } from 'abis'
 import { Button, Input } from 'components'
 import { formatEther, parseEther } from 'ethers/lib/utils'
 import { useMainContract } from 'hooks/useContract'
-import { useMemo, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import {
   loadTransactions,
@@ -102,9 +102,6 @@ const useTokenIssuableAmount = (data: ReserveToken) => {
   const balance = useSelector(selectBalanceAggregate)
   const tokenBalances = useAppSelector((state) => state.reserveTokens.balances)
 
-  console.log('holi', balance)
-  console.log('token balances', tokenBalances)
-
   useEffect(() => {
     if (data.isRSV) {
       setAmount(getIssuable(data, tokenBalances))
@@ -157,22 +154,33 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
     setIssuing(false)
   }
 
+  const isValid = () => {
+    const value = Number(amount)
+    return value > 0 && value <= issuableAmount
+  }
+
   return (
     <Card {...props}>
       <InputContainer m={3}>
-        <Text variant="contentTitle" mb={2}>
+        <Text as="label" variant="contentTitle" mb={2}>
           Mint
         </Text>
         <Input
+          id="mint"
           placeholder="Mint amount"
           label="Mint ammount"
           value={amount}
           onChange={setAmount}
         />
-        <Text variant="a" sx={{ marginLeft: 'auto', marginTop: 1 }}>
+        <Text
+          onClick={() => setAmount(issuableAmount.toString())}
+          as="a"
+          variant="a"
+          sx={{ marginLeft: 'auto', marginTop: 1 }}
+        >
           Max: {issuableAmount}
         </Text>
-        <Button mt={2} disabled={issuing} onClick={handleIssue}>
+        <Button disabled={!isValid() || issuing} mt={2} onClick={handleIssue}>
           + Mint {data.token.symbol}
         </Button>
       </InputContainer>

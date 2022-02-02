@@ -16,8 +16,6 @@ const config = {
   readOnlyUrls: {
     [ChainId.Mainnet]: 'http://localhost:8545',
     [ChainId.Hardhat]: 'http://localhost:8545',
-    [ChainId.Ropsten]:
-      'https://ropsten.infura.io/v3/19deb2b36da947f493d2db11ce04be63',
   },
   multicallAddresses: MULTICALL_ADDRESS,
 }

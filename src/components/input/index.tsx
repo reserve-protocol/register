@@ -1,7 +1,10 @@
 import { useCallback } from 'react'
-import { Input as ThemeInput } from '@theme-ui/components'
+import {
+  Input as ThemeInput,
+  InputProps as ThemeInputProps,
+} from '@theme-ui/components'
 
-interface InputProps {
+interface InputProps extends Omit<ThemeInputProps, 'onChange'> {
   onChange(value: string): void
 }
 

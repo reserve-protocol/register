@@ -14,6 +14,10 @@ import TokenInfo from './components/token-info'
 
 const Issuance = () => {
   const RToken = useAppSelector(selectCurrentRToken) as ReserveToken
+  const balance =
+    useAppSelector(
+      ({ reserveTokens }) => reserveTokens.balances[RToken.token.address]
+    ) || 0
 
   return (
     <TransactionManager>
@@ -35,7 +39,7 @@ const Issuance = () => {
             </Text>
             <Grid columns={2}>
               <Issue data={RToken} />
-              <Redeem data={RToken} balance={0} />
+              <Redeem data={RToken} max={balance} />
             </Grid>
           </Box>
           <IssuanceRecords />

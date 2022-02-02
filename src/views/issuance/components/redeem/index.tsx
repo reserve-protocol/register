@@ -73,11 +73,11 @@ const buildTransactions = (
 }
 
 const Redeem = ({
-  balance,
+  max,
   data,
   ...props
 }: {
-  balance: number
+  max: number
   data: ReserveToken
 }) => {
   const [amount, setAmount] = useState('')
@@ -89,7 +89,12 @@ const Redeem = ({
   }
 
   const handleMax = () => {
-    setAmount(balance.toString())
+    setAmount(max.toString())
+  }
+
+  const isValid = () => {
+    const value = Number(amount)
+    return value > 0 && value <= max
   }
 
   return (
@@ -109,9 +114,9 @@ const Redeem = ({
           variant="a"
           sx={{ marginLeft: 'auto', marginTop: 1 }}
         >
-          Max: {balance}
+          Max: {max}
         </Text>
-        <Button mt={2} onClick={handleRedeem}>
+        <Button disabled={!isValid()} mt={2} onClick={handleRedeem}>
           - Redeem {data.token.symbol}
         </Button>
       </InputContainer>
