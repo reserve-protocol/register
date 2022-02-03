@@ -2,7 +2,7 @@ import { Input } from 'components'
 
 const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
 
-const NumericalInput = (props) => (
+const NumericalInput = (props: any) => (
   <Input
     {...props}
     inputMode="decimal"

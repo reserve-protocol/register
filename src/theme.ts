@@ -11,6 +11,7 @@ export const colors = {
   primaryAccent: '#1fea00',
   grey: '#ccc',
   secondary: '#77838F',
+  sidebar: '#f6f6f7',
   modes: {
     dark: {
       text: '#fff',
@@ -18,6 +19,7 @@ export const colors = {
       secondaryBackground: '#202128',
       primary: '#00b600',
       bgCard: '#191C20',
+      sidebar: '#191C20',
     },
   },
 }
