@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Box, Card, Text } from '@theme-ui/components'
 import { ERC20Interface, MainInterface, RSVManagerInterface } from 'abis'
-import { Button, Input } from 'components'
+import { Button, NumericalInput } from 'components'
 import { formatEther, parseEther } from 'ethers/lib/utils'
 import { useMainContract } from 'hooks/useContract'
 import { useState, useEffect } from 'react'
@@ -165,10 +165,9 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
         <Text as="label" variant="contentTitle" mb={2}>
           Mint
         </Text>
-        <Input
+        <NumericalInput
           id="mint"
           placeholder="Mint amount"
-          label="Mint ammount"
           value={amount}
           onChange={setAmount}
         />

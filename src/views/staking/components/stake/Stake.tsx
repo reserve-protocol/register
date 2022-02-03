@@ -62,12 +62,7 @@ const Stake = ({ data }: { data: ReserveToken }) => {
 
   return (
     <InputContainer mx={2}>
-      <Input
-        placeholder="stake amount"
-        label="Stake amount"
-        value={amount}
-        onChange={setAmount}
-      />
+      <Input placeholder="stake amount" value={amount} onChange={setAmount} />
       <Button mt={2} onClick={handleStake}>
         Stake
       </Button>

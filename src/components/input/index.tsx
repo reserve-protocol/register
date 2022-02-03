@@ -9,7 +9,7 @@ interface InputProps extends Omit<ThemeInputProps, 'onChange'> {
 }
 
 // TODO: Props and styling
-const Input = ({ onChange, ...props }: any) => {
+const Input = ({ onChange, ...props }: InputProps) => {
   const handleChange = useCallback(
     (event) => {
       onChange(event.target.value)

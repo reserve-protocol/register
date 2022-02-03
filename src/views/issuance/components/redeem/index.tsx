@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { parseEther } from '@ethersproject/units'
 import { ERC20Interface, MainInterface, RSVManagerInterface } from 'abis'
-import { Button, Input, Card } from 'components'
+import { Button, NumericalInput, Card } from 'components'
 import { useState } from 'react'
 import {
   loadTransactions,
@@ -103,9 +103,8 @@ const Redeem = ({
         <Text variant="contentTitle" mb={2}>
           Redeem
         </Text>
-        <Input
+        <NumericalInput
           placeholder="Redeem amount"
-          label="Redeem amount"
           value={amount}
           onChange={setAmount}
         />

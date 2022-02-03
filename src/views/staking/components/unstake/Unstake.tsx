@@ -43,7 +43,6 @@ const Unstake = ({ data }: { data: ReserveToken }) => {
     <InputContainer mx={2}>
       <Input
         placeholder="Withdrawn amount"
-        label="Withdrawn amount"
         value={amount}
         onChange={setAmount}
       />
