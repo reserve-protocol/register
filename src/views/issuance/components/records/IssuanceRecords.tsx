@@ -31,7 +31,7 @@ const TabTitle = styled(Text)`
   padding: 10px 15px;
   border-radius: 3px;
   border: ${({ defaultChecked }) =>
-    defaultChecked ? '1px solid black' : 'none'};
+    defaultChecked ? '1px solid var(--theme-ui-colors-text)' : 'none'};
   color: ${({ defaultChecked }) => (defaultChecked ? 'inherit' : '#CBCBCB')};
   cursor: ${({ defaultChecked }) => (defaultChecked ? 'inherit' : 'pointer')};
 `

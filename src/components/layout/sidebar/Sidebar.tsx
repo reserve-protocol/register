@@ -21,7 +21,7 @@ const Container = styled.div`
   flex-grow: 1;
   flex-basis: 256px;
   box-sizing: border-box;
-  background-color: #f6f6f7;
+  background-color: var(--theme-ui-colors-sidebar);
   display: flex;
   flex-direction: column;
   border-right: 1px solid #77838f;
