@@ -10,11 +10,11 @@ const store = configureStore({
     [coinsApi.reducerPath]: coinsApi.reducer,
     reserveTokens,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ thunk: true }).concat(
-      save({ states: PERSISTED, debounce: 1000 })
-    ),
-  preloadedState: load({ states: PERSISTED }),
+  // middleware: (getDefaultMiddleware) =>
+  //   getDefaultMiddleware({ thunk: true }).concat(
+  //     save({ states: PERSISTED, debounce: 1000 })
+  //   ),
+  // // preloadedState: load({ states: PERSISTED }),
 })
 
 export default store

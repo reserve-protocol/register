@@ -37,7 +37,7 @@ const buildTransactions = (
           abi: ERC20Interface,
           address: data.token.address,
           method: 'approve',
-          args: ['0x4B481872f31bab47C6780D5488c84D309b1B8Bb6', parsedAmount],
+          args: [data.id, parsedAmount],
         },
       },
       {
@@ -48,7 +48,7 @@ const buildTransactions = (
         extra: tokenAllowance,
         call: {
           abi: RSVManagerInterface,
-          address: '0x4B481872f31bab47C6780D5488c84D309b1B8Bb6',
+          address: data.id,
           method: 'redeem',
           args: [parsedAmount],
         },

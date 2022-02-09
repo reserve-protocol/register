@@ -4,6 +4,7 @@ const ROUTES = Object.freeze({
   ISSUANCE: '/issuance',
   EXCHANGE: '/exchange',
   LIST: '/list',
+  HOME: '/home',
 })
 
 export default ROUTES

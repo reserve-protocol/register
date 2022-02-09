@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux'
 import { ReserveToken } from 'types'
 import { useAppSelector } from '../hooks'
 import { loadTokens, selectCurrentRToken, updateBalance } from './reducer'
+import { CHAIN_ID } from '../../constants'
+import { RSR } from '../../constants/tokens'
 
 const getTokensQuery = gql`
   query GetTokens {
@@ -63,7 +65,7 @@ const formatTokens = (mains: any[]): { [x: string]: ReserveToken } =>
     } as ReserveToken
 
     return acc
-  })
+  }, {})
 
 /**
  * ReserveTokensUpdater
@@ -77,8 +79,8 @@ const ReserveTokensUpdater = () => {
 
   useEffect(() => {
     // TODO: Handle error scenario
-    if (!loadingTokens && data?.mains?.payload) {
-      const tokens = formatTokens(data.mains.payload)
+    if (!loadingTokens && data?.mains) {
+      const tokens = formatTokens(data.mains)
       dispatch(loadTokens(tokens))
     }
   }, [loadingTokens])
@@ -88,15 +90,25 @@ const ReserveTokensUpdater = () => {
 
 // Gets ReserveToken related token addresses and decimals
 // TODO: ST TOKEN AND RSR
-const getTokens = (reserveToken: ReserveToken): [string, number][] => [
-  [reserveToken.token.address, reserveToken.token.decimals],
-  // [reserveToken.stToken.address, reserveToken.stToken.decimals],
-  ...reserveToken.vault.collaterals.map(({ token }): [string, number] => [
-    token.address,
-    token.decimals,
-  ]),
-]
+const getTokens = (reserveToken: ReserveToken): [string, number][] => {
+  const addresses: [string, number][] = [
+    [reserveToken.token.address, reserveToken.token.decimals],
+    [RSR[CHAIN_ID].address, RSR[CHAIN_ID].decimals],
+    ...reserveToken.vault.collaterals.map(({ token }): [string, number] => [
+      token.address,
+      token.decimals,
+    ]),
+  ]
 
+  if (reserveToken.insurance) {
+    addresses.push([
+      reserveToken.insurance.token.address,
+      reserveToken.insurance.token.decimals,
+    ])
+  }
+
+  return addresses
+}
 /**
  * Updates the balances of the current ReserveToken related tokens
  */

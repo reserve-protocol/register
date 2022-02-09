@@ -11,7 +11,7 @@ const initialState: ReserveTokenState = {
   // TODO: fetched prop if progress indicator if needed
   // TODO: Hardcoded RSV
   list: {},
-  current: '0x5ba9d812f5533f7cf2854963f7a9d212f8f28673',
+  current: '0x4b481872f31bab47c6780d5488c84d309b1b8bb6',
   balances: {},
 }
 

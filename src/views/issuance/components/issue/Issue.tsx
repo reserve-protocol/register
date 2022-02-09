@@ -71,7 +71,7 @@ const buildTransactions = (
     extra: tokenQuantities, // Send quantities as an extra prop for allowance check before issuance
     call: {
       abi: data.isRSV ? RSVManagerInterface : MainInterface,
-      address: '0x4B481872f31bab47C6780D5488c84D309b1B8Bb6',
+      address: data.id,
       method: 'issue',
       args: [parseEther(amount)],
     },

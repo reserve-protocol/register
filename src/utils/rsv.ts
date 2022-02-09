@@ -1,17 +1,7 @@
-import { ONE_ETH } from './../constants/index'
-import { parseEther, formatEther, formatUnits } from '@ethersproject/units'
-import { ReserveToken, StringMap } from 'types'
+import { parseEther } from '@ethersproject/units'
 import { BigNumber } from 'ethers'
-// TODO: Remove BN dependency
-import BN from 'bn.js'
-
-const TEN = new BN(10)
-const SIX = TEN.pow(new BN(6))
-const TWELVE = TEN.pow(new BN(12))
-const EIGHTEEN = TEN.pow(new BN(18))
-const USDC_RSV = new BN(333334)
-const TUSD_RSV = new BN(333333)
-const PAX_RSV = new BN(333333)
+import { ReserveToken, StringMap } from 'types'
+import { ONE_ETH } from '../constants'
 
 const PAX_QTY = BigNumber.from(333333)
 const USDC_QTY = BigNumber.from(333334)

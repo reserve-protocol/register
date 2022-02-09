@@ -1,29 +1,22 @@
 import { StringMap, Token } from 'types'
+import { ChainId } from '@usedapp/core'
 
-/**
- * These are Reserve constant tokens
- *
- * RSV - Pre-mainnet deployment Reserve stable ERC20 token
- * RSR - Insurance token for RTokens
- */
-export const RSV: Token = {
-  address: '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',
-  name: 'Reserve',
-  symbol: 'RSV',
-  decimals: 18,
-  // TODO: Specific logo for RSV
-  logo: 'rsv.png',
-}
+type TokenMap = { [chainId: number]: Token }
 
-// RSR is linked to all `RTokens` with the exception of RSV
-// Default Mainnet deployment
-export const RSR: Token = {
+const RSR_META: Token = {
   address: '0x320623b8e4ff03373931769a31fc52a4e78b5d70',
   name: 'Reserve Rights',
   symbol: 'RSR',
   decimals: 18,
   // TODO: RSR LOGO
   logo: 'rsv.png',
+}
+
+// RSR is linked to all `RTokens` with the exception of RSV
+// Default Mainnet deployment
+export const RSR: TokenMap = {
+  [ChainId.Mainnet]: RSR_META,
+  [ChainId.Hardhat]: RSR_META,
 }
 
 // Best way to handle multiple chains is use the symbol instead of the address

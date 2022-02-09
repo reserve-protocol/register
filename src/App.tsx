@@ -8,6 +8,7 @@ import { useAppSelector } from 'state/hooks'
 import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
 import Updater from 'state/reserve-tokens/updater'
 import { ThemeProvider } from 'theme-ui'
+import Home from 'views/home'
 import Overview from 'views/overview'
 import Insurance from 'views/staking'
 import Layout from './components/layout'
@@ -54,6 +55,7 @@ const App = () => (
     <Router>
       <Layout>
         <Routes>
+          <Route path={ROUTES.HOME} element={<Home />} />
           <Route path={ROUTES.OVERVIEW} element={<Overview />} />
           <Route
             path={ROUTES.ISSUANCE}

@@ -42,7 +42,7 @@ const Account = () => {
       ) : (
         <Container onClick={handleOpenModal}>
           <Box mr={2} mt={1}>
-            <Blockies scale={3} seed={account?.slice(2, 10) ?? ''} />
+            <Blockies scale={3} seed={account || ''} />
           </Box>
           <Text>{ENSName || shortenAddress(account)}</Text>
         </Container>
