@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux'
 import { ReserveToken } from 'types'
 import { useAppSelector } from '../hooks'
 import { loadTokens, selectCurrentRToken, updateBalance } from './reducer'
-import { CHAIN_ID } from '../../constants'
 import { RSR } from '../../constants/tokens'
 
 const getTokensQuery = gql`
@@ -93,14 +92,14 @@ const ReserveTokensUpdater = () => {
 const getTokens = (reserveToken: ReserveToken): [string, number][] => {
   const addresses: [string, number][] = [
     [reserveToken.token.address, reserveToken.token.decimals],
-    [RSR[CHAIN_ID].address, RSR[CHAIN_ID].decimals],
+    [RSR.address, RSR.decimals],
     ...reserveToken.vault.collaterals.map(({ token }): [string, number] => [
       token.address,
       token.decimals,
     ]),
   ]
 
-  if (reserveToken.insurance) {
+  if (reserveToken.insurance?.token) {
     addresses.push([
       reserveToken.insurance.token.address,
       reserveToken.insurance.token.decimals,

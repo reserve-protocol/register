@@ -1,5 +1,6 @@
 import { StringMap, Token } from 'types'
 import { ChainId } from '@usedapp/core'
+import { CHAIN_ID } from './index'
 
 type TokenMap = { [chainId: number]: Token }
 
@@ -14,10 +15,12 @@ const RSR_META: Token = {
 
 // RSR is linked to all `RTokens` with the exception of RSV
 // Default Mainnet deployment
-export const RSR: TokenMap = {
+export const RSR_MAP: TokenMap = {
   [ChainId.Mainnet]: RSR_META,
   [ChainId.Hardhat]: RSR_META,
 }
+
+export const RSR: Token = RSR_MAP[CHAIN_ID]
 
 // Best way to handle multiple chains is use the symbol instead of the address
 export const tokenLogos: { [x: string]: string } = {
