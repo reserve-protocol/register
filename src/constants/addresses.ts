@@ -21,6 +21,11 @@ export const RSV_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',
 }
 
+export const RSV_MANAGER_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x4B481872f31bab47C6780D5488c84D309b1B8Bb6',
+  [ChainId.Hardhat]: '0x4B481872f31bab47C6780D5488c84D309b1B8Bb6',
+}
+
 export const RSR_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x320623b8e4ff03373931769a31fc52a4e78b5d70',
   [ChainId.Hardhat]: '0x5FbDB2315678afecb367f032d93F642f64180aa3',

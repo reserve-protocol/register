@@ -6,6 +6,8 @@ import { ReserveToken } from 'types'
 import { useAppSelector } from '../hooks'
 import { loadTokens, selectCurrentRToken, updateBalance } from './reducer'
 import { RSR } from '../../constants/tokens'
+import { RSV_MANAGER_ADDRESS } from '../../constants/addresses'
+import { CHAIN_ID } from '../../constants'
 
 const getTokensQuery = gql`
   query GetTokens {
@@ -60,7 +62,8 @@ const formatTokens = (mains: any[]): { [x: string]: ReserveToken } =>
         staked: data.staked,
         token: data.stToken,
       },
-      isRSV: false,
+      isRSV:
+        data.id.toLowerCase() === RSV_MANAGER_ADDRESS[CHAIN_ID].toLowerCase(),
     } as ReserveToken
 
     return acc
