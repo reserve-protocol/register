@@ -18,12 +18,12 @@ const keys = {
 const POLLING_INTERVAL = 12000
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [CHAIN_ID],
+  supportedChainIds: [ChainId.Mainnet, CHAIN_ID],
 })
 
 export const network = new NetworkConnector({
   urls: { [ChainId.Mainnet]: keys.RPC_URL },
-  defaultChainId: 1,
+  defaultChainId: ChainId.Mainnet,
 })
 
 export const walletconnect = new WalletConnectConnector({

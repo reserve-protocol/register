@@ -19,6 +19,7 @@ export const RTOKEN_ADDRESS: AddressMap = {
 
 export const RSV_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',
+  [ChainId.Hardhat]: '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',
 }
 
 export const RSV_MANAGER_ADDRESS: AddressMap = {

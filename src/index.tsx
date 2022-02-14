@@ -14,7 +14,7 @@ import store from './state'
 const config = {
   readOnlyChainId: CHAIN_ID,
   readOnlyUrls: {
-    [ChainId.Mainnet]: 'http://localhost:8545',
+    // [ChainId.Mainnet]: 'http://localhost:8545',
     [ChainId.Hardhat]: 'http://localhost:8545',
   },
   multicallAddresses: MULTICALL_ADDRESS,
