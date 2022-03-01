@@ -15,7 +15,7 @@ const config = {
   readOnlyChainId: CHAIN_ID,
   readOnlyUrls: {
     // [ChainId.Mainnet]: 'http://localhost:8545',
-    [ChainId.Hardhat]: 'http://localhost:8545',
+    [ChainId.Hardhat]: 'http://192.168.3.51:8545',
   },
   multicallAddresses: MULTICALL_ADDRESS,
 }

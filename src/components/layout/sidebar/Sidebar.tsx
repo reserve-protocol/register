@@ -10,6 +10,7 @@ import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
 import { useMemo } from 'react'
 
 export const PAGES = [
+  { path: ROUTES.HOME, title: 'Home' },
   { path: ROUTES.OVERVIEW, title: 'Overview' },
   { path: ROUTES.ISSUANCE, title: 'Mint + Redeem' },
   { path: ROUTES.INSURANCE, title: 'Stake + Unstake' },
@@ -59,7 +60,7 @@ const Header = () => (
 const Navigation = ({ isRSV }: { isRSV: boolean }) => {
   const pages = useMemo(() => {
     if (isRSV) {
-      return [...PAGES.slice(0, 2), PAGES[3]]
+      return [...PAGES.slice(0, 3), PAGES[4]]
     }
 
     return PAGES
