@@ -4,6 +4,7 @@ import { useAppSelector } from 'state/hooks'
 import { Box, Text, Grid, Button } from '@theme-ui/components'
 import { useDispatch } from 'react-redux'
 import { addWallet, removeWallet } from 'state/wallets/reducer'
+import WalletConnection from 'components/wallets/WalletConnection'
 
 const Home = () => {
   const dispatch = useDispatch()
@@ -26,6 +27,10 @@ const Home = () => {
 
   return (
     <Container>
+      <Box p={2} sx={{ border: '1px solid #ccc' }}>
+        <Text>Wallet connect</Text>
+        <WalletConnection />
+      </Box>
       <Box>
         <Text>Accounts</Text>
         {walletList.map((wallet, index) => (

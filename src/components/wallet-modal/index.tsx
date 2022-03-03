@@ -64,7 +64,7 @@ const WALLETS = [
   { icon: CoinbaseIcon, label: 'Coinbase', connector: walletlink },
 ]
 
-const WalletSelection = () => {
+export const WalletSelection = () => {
   const [view, setView] = useState(WALLET_VIEW.SELECTION)
   const { activate } = useEthers()
 

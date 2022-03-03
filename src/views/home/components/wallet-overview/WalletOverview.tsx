@@ -9,7 +9,7 @@ const WalletOverview = ({ wallet, ...props }: Props) => {
     ...wallet,
   }
 
-  return <Box {...props}>Wallet {mockData.alias}</Box>
+  return <Box {...props}>Wallet {mockData.alias} adasdsads</Box>
 }
 
 export default WalletOverview
