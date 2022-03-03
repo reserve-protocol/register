@@ -10,7 +10,7 @@ import {
   TrezorIcon,
   WalletConnectIcon,
 } from 'components/icons/logos'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   fortmatic,
   injected,
@@ -56,7 +56,7 @@ const WalletButton = styled(Box)`
 `
 
 interface Props extends BoxProps {
-  onConnect?: () => {}
+  onConnect?: (account: string) => {}
 }
 
 const ErrorBox = ({ error }: { error: string }) => (
@@ -70,7 +70,7 @@ const ErrorBox = ({ error }: { error: string }) => (
 const WalletConnection = ({ onConnect, ...props }: Props) => {
   const [connecting, setConnecting] = useState(false)
   const [error, setError] = useState('')
-  const { activate, deactivate } = useEthers()
+  const { activate, deactivate, account } = useEthers()
 
   // TODO: Handle connection errors
   // Examples:
@@ -78,8 +78,19 @@ const WalletConnection = ({ onConnect, ...props }: Props) => {
   // - User canceled error
   // - Unexpected error
   const handleError = (e: any) => {
+    console.log('error', e)
+    setConnecting(false)
     setError('Unexpected error connecting to the wallet')
   }
+
+  useEffect(() => {
+    if (connecting && account) {
+      setConnecting(false)
+      if (onConnect) {
+        onConnect(account)
+      }
+    }
+  }, [connecting, account])
 
   // Tries to connect to the specified wallet
   const handleWalletSelection = async (connector: AbstractConnector) => {
@@ -94,15 +105,7 @@ const WalletConnection = ({ onConnect, ...props }: Props) => {
       connector.walletConnectProvider = undefined
     }
 
-    activate(connector, handleError)
-      .then((result) => {
-        // TODO: Send wallet address
-        console.log('result', result)
-        if (onConnect) {
-          onConnect()
-        }
-      })
-      .catch(handleError)
+    setTimeout(() => activate(connector, handleError), 1)
   }
 
   if (connecting) {
