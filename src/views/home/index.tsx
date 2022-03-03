@@ -27,12 +27,12 @@ const Home = () => {
 
   return (
     <Container>
-      <Box p={2} sx={{ border: '1px solid #ccc' }}>
-        <Text>Wallet connect</Text>
+      <Text>Wallet connect</Text>
+      <Box mt={2} mb={3} p={2} sx={{ border: '1px solid #ccc' }}>
         <WalletConnection />
       </Box>
-      <Box>
-        <Text>Accounts</Text>
+      <Text>Accounts</Text>
+      <Box mt={2}>
         {walletList.map((wallet, index) => (
           <Box p={2} key={wallet.address}>
             <Text>{wallet.alias}</Text>

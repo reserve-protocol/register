@@ -3,6 +3,7 @@ import { Box, BoxProps, Text } from '@theme-ui/components'
 import { useEthers } from '@usedapp/core'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
+import { Modal } from 'components'
 import {
   CoinbaseIcon,
   FortmaticIcon,
@@ -39,8 +40,8 @@ const WalletButton = styled(Box)`
   align-items: center;
   width: 100%;
   border: 1px solid white;
-  width: 130px;
-  height: 130px;
+  width: 120px;
+  height: 120px;
   padding: 20px;
   margin-right: 20px;
   margin-top: 20px;
@@ -109,7 +110,11 @@ const WalletConnection = ({ onConnect, ...props }: Props) => {
   }
 
   if (connecting) {
-    return <Box {...props}>Connecting...</Box>
+    return (
+      <Modal {...props} title="Connecting to Wallet">
+        Connecting, please follow up your wallet instructions...
+      </Modal>
+    )
   }
 
   return (
@@ -129,7 +134,8 @@ const WalletConnection = ({ onConnect, ...props }: Props) => {
             key={label}
             onClick={() => handleWalletSelection(connector)}
           >
-            <Icon /> {label}
+            <Icon />
+            <Text sx={{ display: 'block', marginTop: 2 }}>{label}</Text>
           </WalletButton>
         ))}
       </Box>

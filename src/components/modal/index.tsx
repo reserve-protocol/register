@@ -7,7 +7,7 @@ import styled from '@emotion/styled'
 export interface IModal {
   open?: boolean
   title?: string
-  onClose(): void
+  onClose?(): void
   children: any
 }
 
@@ -22,13 +22,15 @@ const Modal = ({ open = true, onClose, title, children }: IModal) => (
   <StyledDialog aria-label="Modal" isOpen={open} onDismiss={onClose}>
     <Flex mb={3} sx={{ alignItems: 'center' }}>
       <Box sx={{ fontSize: 2 }}>{title && title}</Box>
-      <Box
-        role="button"
-        sx={{ marginLeft: 'auto', '&:hover': { cursor: 'pointer' } }}
-        onClick={onClose}
-      >
-        <X />
-      </Box>
+      {!!onClose && (
+        <Box
+          role="button"
+          sx={{ marginLeft: 'auto', '&:hover': { cursor: 'pointer' } }}
+          onClick={onClose}
+        >
+          <X />
+        </Box>
+      )}
     </Flex>
     {children}
   </StyledDialog>
