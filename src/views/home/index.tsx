@@ -5,24 +5,13 @@ import { Box, Text, Grid, Button } from '@theme-ui/components'
 import { useDispatch } from 'react-redux'
 import { addWallet, removeWallet } from 'state/wallets/reducer'
 import WalletConnection from 'components/wallets/WalletConnection'
+import AddWallet from './components/AddWallet'
 
 const Home = () => {
   const dispatch = useDispatch()
-  const [walletList, selectedWallet] = useAppSelector(({ wallets }) => [
-    wallets.list,
-    wallets.current && wallets.list[wallets.current],
-  ])
-  const [address, setAddress] = useState('')
-  const [alias, setAlias] = useState('')
 
-  const handleAdd = () => {
+  const handleAdd = (address: string, alias: string) => {
     dispatch(addWallet({ address, alias }))
-    setAddress('')
-    setAlias('')
-  }
-
-  const handleRemove = (index: number) => {
-    dispatch(removeWallet(index))
   }
 
   return (
@@ -31,33 +20,8 @@ const Home = () => {
       <Box mt={2} mb={3} p={2} sx={{ border: '1px solid #ccc' }}>
         <WalletConnection />
       </Box>
-      <Text>Accounts</Text>
-      <Box mt={2}>
-        {walletList.map((wallet, index) => (
-          <Box p={2} key={wallet.address}>
-            <Text>{wallet.alias}</Text>
-            <Text>{wallet.address}</Text>
-            <Button ml={3} onClick={() => handleRemove(index)}>
-              - Remove
-            </Button>
-          </Box>
-        ))}
-      </Box>
-      <Box sx={{ border: '1px solid #ccc' }} p={4}>
-        <Text>Add wallet</Text>
-        <Grid columns={2}>
-          <Input
-            mt={2}
-            value={address}
-            onChange={setAddress}
-            placeholder="Address"
-          />
-          <Input mt={2} value={alias} onChange={setAlias} placeholder="Alias" />
-        </Grid>
-        <Button mt={3} onClick={handleAdd} disabled={!alias || !address}>
-          + Add
-        </Button>
-      </Box>
+      <Text>Track any wallet</Text>
+      <AddWallet sx={{ border: '1px solid #ccc' }} p={4} onAdd={handleAdd} />
     </Container>
   )
 }
