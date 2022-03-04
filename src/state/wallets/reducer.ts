@@ -7,13 +7,13 @@ export interface Wallet {
 }
 
 export interface WalletsState {
-  list: Wallet[]
+  list: { [x: string]: Wallet }
   current: null | string
   connected: null | string
 }
 
 const initialState: WalletsState = {
-  list: [],
+  list: {},
   current: null,
   connected: null,
 }
@@ -23,65 +23,30 @@ export const walletsSlice = createSlice({
   initialState,
   reducers: {
     add: (state, action: PayloadAction<Wallet>) => {
-      state.list = [...state.list, action.payload]
+      state.list[action.payload.address] = action.payload
+      state.current = action.payload.address
     },
     addConnected: (state, action: PayloadAction<string>) => {
-      const exists = state.list.find(
-        (wallet: Wallet) => wallet.address === action.payload
-      )
-
-      if (!exists) {
-        state.list = [
-          ...state.list,
-          {
-            address: action.payload,
-            alias: shortenAddress(action.payload),
-          },
-        ]
+      if (!state.list[action.payload]) {
+        state.list[action.payload] = {
+          address: action.payload,
+          alias: shortenAddress(action.payload),
+        }
       }
-      state.connected = action.payload
       state.current = action.payload
-    },
-    connect: (state, action: PayloadAction<string>) => {
-      state.connected = action.payload
     },
     select: (state, action: PayloadAction<string>) => {
       state.current = action.payload
     },
     remove: (state, action: PayloadAction<string>) => {
-      const index = state.list.findIndex(
-        (wallets: Wallet) => wallets.address === action.payload
-      )
-      state.list.splice(index, 1)
+      delete state.list[action.payload]
+
       if (state.current === action.payload) {
         state.current = null
-      }
-      if (state.connected === action.payload) {
-        state.connected = null
       }
     },
   },
 })
-
-export const selectCurrentWallet = createSelector(
-  (state: any) => [
-    state.wallets.list,
-    state.wallets.current,
-    state.wallets.connected,
-  ],
-  ([list, current, connected]): [Wallet | null, Wallet | null] => {
-    const currentWallet = list.find(
-      (wallet: Wallet) => wallet.address === current
-    )
-
-    const connectedWallet =
-      current === connected
-        ? currentWallet
-        : list.find((wallet: Wallet) => wallet.address === connected)
-
-    return [currentWallet, connectedWallet]
-  }
-)
 
 export const {
   add: addWallet,

@@ -1,21 +1,20 @@
 import { useAppSelector } from 'state/hooks'
 import { Box, Flex, Text, BoxProps } from '@theme-ui/components'
-import { selectCurrentWallet, Wallet } from 'state/wallets/reducer'
+import { Wallet } from 'state/wallets/reducer'
 import Blockies from 'react-blockies'
+import { useEthers } from '@usedapp/core'
 
 const WalletItem = ({
   wallet,
   current,
-  connected,
   onSelect = () => {},
 }: {
   wallet: Wallet
   current: string | null
-  connected: string | null
   onSelect?(wallet: Wallet): void
 }) => (
   <Flex onClick={() => onSelect(wallet)}>
-    <Blockies scale={3} seed={wallet.address} />
+    <Blockies seed={wallet.address} />
     <Box>
       <Text>{wallet.alias}</Text>
       <Text>$ 1234</Text>
@@ -24,32 +23,27 @@ const WalletItem = ({
 )
 
 const WalletList = (props: BoxProps) => {
-  const [walletList, current, connected] = useAppSelector(({ wallets }) => [
+  const { account } = useEthers()
+  const [walletList, current] = useAppSelector(({ wallets }) => [
     wallets.list,
     wallets.current,
-    wallets.connected,
   ])
-  const [currentWallet, connectedWallet] = useAppSelector(selectCurrentWallet)
 
-  if (!walletList.length) {
+  if (!Object.keys(walletList).length) {
     return <Box>No wallets added</Box>
   }
 
   return (
     <Box {...props}>
-      {!!connectedWallet && (
+      {!!account && !!walletList[account] && (
         <Box>
           <Text>Your wallet</Text>
-          <WalletItem
-            wallet={connectedWallet}
-            current={current}
-            connected={connected}
-          />
+          <WalletItem wallet={walletList[account]} current={current} />
         </Box>
       )}
-      {walletList.map((wallet) =>
-        wallet.address !== connected ? (
-          <WalletItem wallet={wallet} current={current} connected={connected} />
+      {Object.values(walletList).map((wallet) =>
+        wallet.address !== account ? (
+          <WalletItem wallet={wallet} current={current} />
         ) : null
       )}
     </Box>
