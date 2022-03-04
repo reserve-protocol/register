@@ -97,6 +97,7 @@ const WalletConnection = ({ onConnect, ...props }: Props) => {
   const handleWalletSelection = async (connector: AbstractConnector) => {
     localStorage.removeItem('walletconnect')
     deactivate()
+    setError('')
     setConnecting(true)
     // if the connector is walletconnect and the user has already tried to connect, manually reset the connector
     if (

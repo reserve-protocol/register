@@ -19,7 +19,7 @@ const Home = () => {
       <Box mt={2} mb={3} p={2} sx={{ border: '1px solid #ccc' }}>
         <WalletConnection />
       </Box>
-      <Text>Track any wallet</Text>
+      <Text>Track any account</Text>
       <AddWallet
         mt={2}
         mb={3}

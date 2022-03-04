@@ -8,11 +8,13 @@ export interface Wallet {
 export interface WalletsState {
   list: Wallet[]
   current: null | string
+  connected: null | string
 }
 
 const initialState: WalletsState = {
   list: [],
   current: null,
+  connected: null,
 }
 
 export const walletsSlice = createSlice({
@@ -22,11 +24,28 @@ export const walletsSlice = createSlice({
     add: (state, action: PayloadAction<Wallet>) => {
       state.list = [...state.list, action.payload]
     },
+    addConnected: (state, action: PayloadAction<Wallet>) => {
+      state.list = [...state.list, action.payload]
+      state.connected = action.payload.address
+      state.current = action.payload.address
+    },
+    connect: (state, action: PayloadAction<string>) => {
+      state.connected = action.payload
+    },
     select: (state, action: PayloadAction<string>) => {
       state.current = action.payload
     },
-    remove: (state, action: PayloadAction<number>) => {
-      state.list.splice(action.payload, 1)
+    remove: (state, action: PayloadAction<string>) => {
+      const index = state.list.findIndex(
+        (wallets: Wallet) => wallets.address === action.payload
+      )
+      state.list.splice(index, 1)
+      if (state.current === action.payload) {
+        state.current = null
+      }
+      if (state.connected === action.payload) {
+        state.connected = null
+      }
     },
   },
 })
@@ -37,7 +56,7 @@ export const selectCurrentWallet = createSelector(
     state.wallets.current,
     state.wallets.connected,
   ],
-  ([list, current, connected]) => {
+  ([list, current, connected]): [Wallet | null, Wallet | null] => {
     const currentWallet = list.find(
       (wallet: Wallet) => wallet.address === current
     )
@@ -47,10 +66,7 @@ export const selectCurrentWallet = createSelector(
         ? currentWallet
         : list.find((wallet: Wallet) => wallet.address === connected)
 
-    return {
-      current: currentWallet,
-      connected: connectedWallet,
-    }
+    return [currentWallet, connectedWallet]
   }
 )
 
