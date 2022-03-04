@@ -57,7 +57,7 @@ const WalletButton = styled(Box)`
 `
 
 interface Props extends BoxProps {
-  onConnect?: (account: string) => {}
+  onConnect?(account: string): void
 }
 
 const ErrorBox = ({ error }: { error: string }) => (

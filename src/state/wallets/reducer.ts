@@ -1,3 +1,4 @@
+import { shortenAddress } from '@usedapp/core'
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface Wallet {
@@ -24,10 +25,22 @@ export const walletsSlice = createSlice({
     add: (state, action: PayloadAction<Wallet>) => {
       state.list = [...state.list, action.payload]
     },
-    addConnected: (state, action: PayloadAction<Wallet>) => {
-      state.list = [...state.list, action.payload]
-      state.connected = action.payload.address
-      state.current = action.payload.address
+    addConnected: (state, action: PayloadAction<string>) => {
+      const exists = state.list.find(
+        (wallet: Wallet) => wallet.address === action.payload
+      )
+
+      if (!exists) {
+        state.list = [
+          ...state.list,
+          {
+            address: action.payload,
+            alias: shortenAddress(action.payload),
+          },
+        ]
+      }
+      state.connected = action.payload
+      state.current = action.payload
     },
     connect: (state, action: PayloadAction<string>) => {
       state.connected = action.payload
@@ -72,6 +85,7 @@ export const selectCurrentWallet = createSelector(
 
 export const {
   add: addWallet,
+  addConnected: addConnectedWallet,
   select: selectWallet,
   remove: removeWallet,
 } = walletsSlice.actions
