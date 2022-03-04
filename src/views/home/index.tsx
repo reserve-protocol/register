@@ -1,10 +1,9 @@
-import { useState } from 'react'
-import { Container, Input } from 'components'
-import { useAppSelector } from 'state/hooks'
-import { Box, Text, Grid, Button } from '@theme-ui/components'
-import { useDispatch } from 'react-redux'
-import { addWallet, removeWallet } from 'state/wallets/reducer'
+import { Box, Text } from '@theme-ui/components'
+import { Container } from 'components'
 import WalletConnection from 'components/wallets/WalletConnection'
+import WalletList from 'components/wallets/WalletList'
+import { useDispatch } from 'react-redux'
+import { addWallet } from 'state/wallets/reducer'
 import AddWallet from './components/AddWallet'
 
 const Home = () => {
@@ -21,7 +20,17 @@ const Home = () => {
         <WalletConnection />
       </Box>
       <Text>Track any wallet</Text>
-      <AddWallet sx={{ border: '1px solid #ccc' }} p={4} onAdd={handleAdd} />
+      <AddWallet
+        mt={2}
+        mb={3}
+        sx={{ border: '1px solid #ccc' }}
+        p={4}
+        onAdd={handleAdd}
+      />
+      <Text>Wallet list</Text>
+      <Box mt={2} p={2}>
+        <WalletList />
+      </Box>
     </Container>
   )
 }

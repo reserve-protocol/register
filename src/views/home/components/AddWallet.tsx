@@ -1,7 +1,6 @@
 import { BoxProps, Text, Box, Grid } from '@theme-ui/components'
 import { Input, Button } from 'components'
 import { useState } from 'react'
-import { AddressZero } from '@ethersproject/constants'
 import { isAddress, shortenAddress } from 'utils'
 import { ZERO_ADDRESS } from 'constants/addresses'
 
@@ -16,7 +15,7 @@ const AddWallet = ({ onAdd, ...props }: Props) => {
   const isValid = () => isAddress(address) && alias
 
   const handleAddressChange = (value: string) => {
-    const formattedAddress = isAddress(value.toLowerCase())
+    const formattedAddress = isAddress(value.toLowerCase().trim())
 
     if (formattedAddress && formattedAddress !== ZERO_ADDRESS) {
       setAddress(formattedAddress)
