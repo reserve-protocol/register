@@ -16,8 +16,8 @@ const AppHeader = () => (
       alignItems: 'center',
     }}
   >
-    <RTokenSelector />
     <Box mx="auto" />
+    <RTokenSelector mr={4} />
     <Account />
     <Box ml={4} mr={2} sx={{ alignItems: 'center', display: 'flex' }}>
       <LanguageSelector />

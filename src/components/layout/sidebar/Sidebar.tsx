@@ -8,13 +8,14 @@ import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
 import { useAppSelector } from 'state/hooks'
 import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
 import { useMemo } from 'react'
+import { ReserveToken } from 'types'
 
 export const PAGES = [
   { path: ROUTES.HOME, title: 'Home' },
   { path: ROUTES.OVERVIEW, title: 'Overview' },
   { path: ROUTES.ISSUANCE, title: 'Mint + Redeem' },
   { path: ROUTES.INSURANCE, title: 'Stake + Unstake' },
-  { path: ROUTES.EXCHANGE, title: 'Buy + Sell' },
+  // { path: ROUTES.EXCHANGE, title: 'Buy + Sell' },
 ]
 
 const Container = styled.div`
@@ -57,14 +58,22 @@ const Header = () => (
 )
 
 // Sidebar Navigation
-const Navigation = ({ isRSV }: { isRSV: boolean }) => {
+const Navigation = ({
+  currentToken,
+}: {
+  currentToken?: ReserveToken | null
+}) => {
   const pages = useMemo(() => {
-    if (isRSV) {
+    if (!currentToken) {
+      return []
+    }
+
+    if (currentToken.isRSV) {
       return [...PAGES.slice(0, 3), PAGES[4]]
     }
 
     return PAGES
-  }, [isRSV])
+  }, [currentToken])
 
   return (
     <Box mt={2}>
@@ -108,7 +117,7 @@ const Sidebar = () => {
   return (
     <Container>
       <Header />
-      <Navigation isRSV={RToken?.isRSV ?? false} />
+      <Navigation currentToken={RToken} />
       <Box my="auto" />
       <Footer />
     </Container>

@@ -1,10 +1,10 @@
 const ROUTES = Object.freeze({
-  OVERVIEW: '/',
+  OVERVIEW: '/overview',
   INSURANCE: '/insurance',
   ISSUANCE: '/issuance',
   EXCHANGE: '/exchange',
   LIST: '/list',
-  HOME: '/home',
+  HOME: '/',
 })
 
 export default ROUTES
