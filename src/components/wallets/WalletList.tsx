@@ -1,5 +1,5 @@
 import { useAppSelector } from 'state/hooks'
-import { Box, Flex, Text, BoxProps } from '@theme-ui/components'
+import { Box, FlexProps, BoxProps, Flex, Text } from '@theme-ui/components'
 import { Wallet } from 'state/wallets/reducer'
 import Blockies from 'react-blockies'
 import { useEthers } from '@usedapp/core'
@@ -13,18 +13,28 @@ const GreenCircle = styled('span')`
   width: 0.8em;
 `
 
+const WalletContainer = styled(Flex)`
+  align-items: center;
+  cursor: pointer;
+`
+
+interface WalletItemProps extends FlexProps {
+  wallet: Wallet
+  current?: boolean
+  connected?: boolean
+}
+
+interface WalletListProps extends Omit<BoxProps, 'onChange'> {
+  onChange?(walletAddress: string): void
+}
+
 const WalletItem = ({
   wallet,
   current = false,
   connected = false,
-  onSelect = () => {},
-}: {
-  wallet: Wallet
-  current?: boolean
-  connected?: boolean
-  onSelect?(wallet: Wallet): void
-}) => (
-  <Flex onClick={() => onSelect(wallet)} sx={{ alignItems: 'center' }}>
+  ...props
+}: WalletItemProps) => (
+  <WalletContainer {...props}>
     <Blockies seed={wallet.address} />
     <Box ml={3}>
       <Text>{wallet.alias}</Text>
@@ -32,10 +42,10 @@ const WalletItem = ({
       <Text sx={{ display: 'block' }}>$ Balance</Text>
     </Box>
     {current && <Text sx={{ marginLeft: 3, color: '#ccc' }}>Selected</Text>}
-  </Flex>
+  </WalletContainer>
 )
 
-const WalletList = (props: BoxProps) => {
+const WalletList = ({ onChange = () => {}, ...props }: WalletListProps) => {
   const { account } = useEthers()
   const [walletList, current] = useAppSelector(({ wallets }) => [
     wallets.list,
@@ -52,21 +62,26 @@ const WalletList = (props: BoxProps) => {
         <Box>
           <Text>Your wallet</Text>
           <WalletItem
+            onClick={() => onChange(account)}
             wallet={walletList[account]}
             current={current === account}
             connected
           />
         </Box>
       )}
-      {Object.values(walletList).map((wallet) =>
-        wallet.address !== account ? (
-          <WalletItem
-            key={wallet.address}
-            wallet={wallet}
-            current={wallet.address === current}
-          />
-        ) : null
-      )}
+      <Box mt={3}>
+        <Text>Tracked accounts</Text>
+        {Object.values(walletList).map((wallet) =>
+          wallet.address !== account ? (
+            <WalletItem
+              onClick={() => onChange(wallet.address)}
+              key={wallet.address}
+              wallet={wallet}
+              current={wallet.address === current}
+            />
+          ) : null
+        )}
+      </Box>
     </Box>
   )
 }

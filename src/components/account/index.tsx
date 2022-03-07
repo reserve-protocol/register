@@ -1,10 +1,17 @@
 import styled from '@emotion/styled'
+import { Box, Button, Text } from '@theme-ui/components'
 import { shortenAddress, useEthers } from '@usedapp/core'
+import Popup from 'components/popup'
+import Separator from 'components/separator'
+import WalletList from 'components/wallets/WalletList'
 import useENSName from 'hooks/ens/useENSName'
-import Blockies from 'react-blockies'
 import { useState } from 'react'
-import { Button, Text, Box } from '@theme-ui/components'
-import WalletModal from '../wallet-modal'
+import Blockies from 'react-blockies'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { useAppSelector } from 'state/hooks'
+import { selectWallet } from 'state/wallets/reducer'
+import { ROUTES } from '../../constants'
 
 const Container = styled.div`
   display: flex;
@@ -16,6 +23,7 @@ const Container = styled.div`
   border-radius: 4px;
   cursor: pointer;
 `
+
 /**
  * Account
  *
@@ -25,30 +33,52 @@ const Container = styled.div`
  * @constructor
  */
 const Account = () => {
-  const { account } = useEthers()
-  const { ENSName } = useENSName(account)
-  const [isWalletModalVisible, showWalletModal] = useState(false)
+  const [isVisible, setVisible] = useState(false)
+  const currentWallet = useAppSelector(({ wallets }) => wallets.current)
 
-  const handleOpenModal = () => {
-    showWalletModal(true)
+  const { ENSName } = useENSName(currentWallet)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const handleAddWallet = () => {
+    navigate(ROUTES.HOME)
+    setVisible(false)
+  }
+
+  const handleWalletChange = (selectedWallet: string) => {
+    dispatch(selectWallet(selectedWallet))
   }
 
   return (
     <>
-      {!account ? (
-        <Button variant="accent" onClick={handleOpenModal}>
+      {!currentWallet ? (
+        <Button variant="accent" onClick={handleAddWallet}>
           Connect
         </Button>
       ) : (
-        <Container onClick={handleOpenModal}>
-          <Box mr={2} mt={1}>
-            <Blockies scale={3} seed={account || ''} />
-          </Box>
-          <Text>{ENSName || shortenAddress(account)}</Text>
-        </Container>
-      )}
-      {isWalletModalVisible && (
-        <WalletModal onClose={() => showWalletModal(false)} />
+        <Popup
+          show={isVisible}
+          onDismiss={() => setVisible(false)}
+          content={
+            <Box p={2}>
+              <WalletList onChange={handleWalletChange} />
+              <hr />
+              <Text
+                sx={{ display: 'block', cursor: 'pointer' }}
+                onClick={handleAddWallet}
+              >
+                Track new wallet
+              </Text>
+            </Box>
+          }
+        >
+          <Container onClick={() => setVisible(!isVisible)}>
+            <Box mr={2} mt={1}>
+              <Blockies scale={3} seed={currentWallet || ''} />
+            </Box>
+            <Text>{ENSName || shortenAddress(currentWallet)}</Text>
+          </Container>
+        </Popup>
       )}
     </>
   )
