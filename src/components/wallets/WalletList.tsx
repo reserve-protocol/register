@@ -43,7 +43,7 @@ const WalletList = (props: BoxProps) => {
       )}
       {Object.values(walletList).map((wallet) =>
         wallet.address !== account ? (
-          <WalletItem wallet={wallet} current={current} />
+          <WalletItem key={wallet.address} wallet={wallet} current={current} />
         ) : null
       )}
     </Box>
