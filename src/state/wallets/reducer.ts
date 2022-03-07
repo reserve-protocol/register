@@ -9,13 +9,18 @@ export interface Wallet {
 export interface WalletsState {
   list: { [x: string]: Wallet }
   current: null | string
-  connected: null | string
+  balances: { [x: string]: { [x: string]: number } }
+  // TODO: Track stake/rewards
 }
 
 const initialState: WalletsState = {
   list: {},
+  // Current wallet is the one take into account to show information on the dashboard
+  // For Issuance/Redemption and Stake/Unstake the connected wallet is the one to use otherwise those pages are blocked
   current: null,
-  connected: null,
+  // Represent the balances for the tracked accounts
+  // This balances are fetched from theGraph
+  balances: {},
 }
 
 export const walletsSlice = createSlice({

@@ -3,22 +3,35 @@ import { Box, Flex, Text, BoxProps } from '@theme-ui/components'
 import { Wallet } from 'state/wallets/reducer'
 import Blockies from 'react-blockies'
 import { useEthers } from '@usedapp/core'
+import styled from '@emotion/styled'
+
+const GreenCircle = styled('span')`
+  display: inline-block;
+  border-radius: 50%;
+  background-color: #00b902;
+  height: 0.8em;
+  width: 0.8em;
+`
 
 const WalletItem = ({
   wallet,
-  current,
+  current = false,
+  connected = false,
   onSelect = () => {},
 }: {
   wallet: Wallet
-  current: string | null
+  current?: boolean
+  connected?: boolean
   onSelect?(wallet: Wallet): void
 }) => (
-  <Flex onClick={() => onSelect(wallet)}>
+  <Flex onClick={() => onSelect(wallet)} sx={{ alignItems: 'center' }}>
     <Blockies seed={wallet.address} />
-    <Box>
+    <Box ml={3}>
       <Text>{wallet.alias}</Text>
-      <Text>$ 1234</Text>
+      {connected && <GreenCircle style={{ marginLeft: 5 }} />}
+      <Text sx={{ display: 'block' }}>$ Balance</Text>
     </Box>
+    {current && <Text sx={{ marginLeft: 3, color: '#ccc' }}>Selected</Text>}
   </Flex>
 )
 
@@ -38,12 +51,20 @@ const WalletList = (props: BoxProps) => {
       {!!account && !!walletList[account] && (
         <Box>
           <Text>Your wallet</Text>
-          <WalletItem wallet={walletList[account]} current={current} />
+          <WalletItem
+            wallet={walletList[account]}
+            current={current === account}
+            connected
+          />
         </Box>
       )}
       {Object.values(walletList).map((wallet) =>
         wallet.address !== account ? (
-          <WalletItem key={wallet.address} wallet={wallet} current={current} />
+          <WalletItem
+            key={wallet.address}
+            wallet={wallet}
+            current={wallet.address === current}
+          />
         ) : null
       )}
     </Box>
