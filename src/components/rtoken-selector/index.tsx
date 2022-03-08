@@ -1,10 +1,22 @@
 import { BoxProps, Box, Flex, Text } from '@theme-ui/components'
 import TokenLogo from 'components/icons/TokenLogo'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectTopTokens, setCurrent } from 'state/reserve-tokens/reducer'
+import Popup from 'components/popup'
+import { useState } from 'react'
+import { ChevronDown, ChevronUp } from 'react-feather'
+import { useDispatch } from 'react-redux'
+import { useAppSelector } from 'state/hooks'
+import {
+  selectCurrentRToken,
+  selectTopTokens,
+  setCurrent,
+} from 'state/reserve-tokens/reducer'
+import { ReserveToken } from 'types'
+import { shortenAddress } from 'utils'
 
 const RTokenSelector = (props: BoxProps) => {
-  const tokens = useSelector(selectTopTokens)
+  const [isVisible, setVisible] = useState(false)
+  const tokens = useAppSelector(selectTopTokens)
+  const selected: ReserveToken | null = useAppSelector(selectCurrentRToken)
   const dispatch = useDispatch()
 
   if (!tokens.length) {
@@ -13,31 +25,45 @@ const RTokenSelector = (props: BoxProps) => {
 
   const handleSelect = (token: string) => {
     dispatch(setCurrent(token))
+    setVisible(false)
   }
 
   return (
-    <Flex {...props} sx={{ alignItems: 'center' }}>
-      {tokens.map((token) => (
-        <TokenLogo
-          size={32}
-          symbol={token.token.symbol}
-          key={token.id}
-          onClick={() => handleSelect(token.id)}
-          sx={{ cursor: 'pointer' }}
-          mr={3}
-        />
-      ))}
-      <Text
-        sx={{
-          textDecoration: 'underline',
-          cursor: 'pointer',
-          position: 'relative',
-          top: '-3px',
-        }}
+    <Popup
+      show={isVisible}
+      onDismiss={() => setVisible(false)}
+      content={
+        <Box p={2} sx={{ minWidth: 150, cursor: 'pointer' }} my={2}>
+          {(!tokens || !tokens.length) && <Text>Loading...</Text>}
+          {tokens.map((token) => (
+            <Flex
+              onClick={() => handleSelect(token.id)}
+              sx={{ alignItems: 'center' }}
+            >
+              <TokenLogo size="1.5em" mr={2} symbol={token.token.symbol} />
+              {token.token.name}
+            </Flex>
+          ))}
+        </Box>
+      }
+    >
+      <Flex
+        {...props}
+        sx={{ alignItems: 'center', cursor: 'pointer' }}
+        onClick={() => setVisible(!isVisible)}
       >
-        See all RTokens...
-      </Text>
-    </Flex>
+        {selected ? (
+          <Flex sx={{ alignItems: 'center' }}>
+            <TokenLogo size="1.5em" mr={2} symbol={selected.token.symbol} />
+            {selected.token.name}
+          </Flex>
+        ) : (
+          <Text>Select RToken...</Text>
+        )}
+        <Box mr={2} />
+        {isVisible ? <ChevronUp /> : <ChevronDown />}
+      </Flex>
+    </Popup>
   )
 }
 

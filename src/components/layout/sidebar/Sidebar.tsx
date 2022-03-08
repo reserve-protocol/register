@@ -15,7 +15,7 @@ export const PAGES = [
   { path: ROUTES.OVERVIEW, title: 'Overview' },
   { path: ROUTES.ISSUANCE, title: 'Mint + Redeem' },
   { path: ROUTES.INSURANCE, title: 'Stake + Unstake' },
-  // { path: ROUTES.EXCHANGE, title: 'Buy + Sell' },
+  { path: ROUTES.EXCHANGE, title: 'Buy + Sell' },
 ]
 
 const Container = styled.div`

@@ -1,4 +1,4 @@
-import { Flex, Box } from 'theme-ui'
+import { Flex, Box } from '@theme-ui/components'
 import LanguageSelector from 'components/language-selector'
 import RTokenSelector from 'components/rtoken-selector'
 import Account from '../../account'
@@ -17,7 +17,8 @@ const AppHeader = () => (
     }}
   >
     <Box mx="auto" />
-    <RTokenSelector mr={4} />
+    <RTokenSelector />
+    <Box mr={4} />
     <Account />
     <Box ml={4} mr={2} sx={{ alignItems: 'center', display: 'flex' }}>
       <LanguageSelector />

@@ -1,12 +1,12 @@
 import styled from '@emotion/styled'
 import { Box, Button, Text } from '@theme-ui/components'
-import { shortenAddress, useEthers } from '@usedapp/core'
+import { shortenAddress } from '@usedapp/core'
 import Popup from 'components/popup'
-import Separator from 'components/separator'
 import WalletList from 'components/wallets/WalletList'
 import useENSName from 'hooks/ens/useENSName'
 import { useState } from 'react'
 import Blockies from 'react-blockies'
+import { ChevronDown, ChevronUp } from 'react-feather'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { useAppSelector } from 'state/hooks'
@@ -15,7 +15,6 @@ import { ROUTES } from '../../constants'
 
 const Container = styled.div`
   display: flex;
-  border: 1px solid #77838f;
   justify-content: center;
   align-items: center;
   height: 38px;
@@ -76,7 +75,8 @@ const Account = () => {
             <Box mr={2} mt={1}>
               <Blockies scale={3} seed={currentWallet || ''} />
             </Box>
-            <Text>{ENSName || shortenAddress(currentWallet)}</Text>
+            <Text pr={2}>{ENSName || shortenAddress(currentWallet)}</Text>
+            {isVisible ? <ChevronUp /> : <ChevronDown />}
           </Container>
         </Popup>
       )}
