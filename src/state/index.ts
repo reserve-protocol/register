@@ -3,7 +3,7 @@ import { save, load } from 'redux-localstorage-simple'
 import reserveTokens from './reserve-tokens/reducer'
 import wallets from './wallets/reducer'
 
-const PERSISTED: string[] = ['wallets']
+const PERSISTED: string[] = []
 
 const store = configureStore({
   reducer: {
