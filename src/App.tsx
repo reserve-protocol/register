@@ -11,6 +11,7 @@ import { ThemeProvider } from 'theme-ui'
 import Home from 'views/home'
 import Overview from 'views/overview'
 import Insurance from 'views/staking'
+import WalletManagement from 'views/wallet'
 import Layout from './components/layout'
 import { ROUTES } from './constants'
 import { theme } from './theme'
@@ -73,7 +74,7 @@ const App = () => (
               </Guard>
             }
           />
-          <Route path={ROUTES.EXCHANGE} element={() => null} />
+          <Route path={ROUTES.WALLET} element={<WalletManagement />} />
         </Routes>
       </Layout>
     </Router>

@@ -41,7 +41,7 @@ const Account = () => {
   const navigate = useNavigate()
 
   const handleAddWallet = () => {
-    navigate(ROUTES.HOME)
+    navigate(ROUTES.WALLET)
     setVisible(false)
   }
 

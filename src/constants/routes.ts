@@ -5,6 +5,7 @@ const ROUTES = Object.freeze({
   EXCHANGE: '/exchange',
   LIST: '/list',
   HOME: '/',
+  WALLET: '/wallet',
 })
 
 export default ROUTES
