@@ -11,7 +11,6 @@ import {
   setCurrent,
 } from 'state/reserve-tokens/reducer'
 import { ReserveToken } from 'types'
-import { shortenAddress } from 'utils'
 
 const RTokenSelector = (props: BoxProps) => {
   const [isVisible, setVisible] = useState(false)
@@ -41,7 +40,7 @@ const RTokenSelector = (props: BoxProps) => {
               sx={{ alignItems: 'center' }}
             >
               <TokenLogo size="1.5em" mr={2} symbol={token.token.symbol} />
-              {token.token.name}
+              {token.token.symbol}
             </Flex>
           ))}
         </Box>
@@ -55,7 +54,7 @@ const RTokenSelector = (props: BoxProps) => {
         {selected ? (
           <Flex sx={{ alignItems: 'center' }}>
             <TokenLogo size="1.5em" mr={2} symbol={selected.token.symbol} />
-            {selected.token.name}
+            {selected.token.symbol}
           </Flex>
         ) : (
           <Text>Select RToken...</Text>
