@@ -1,10 +1,17 @@
 import { isAddress } from '@ethersproject/address'
 import { Contract } from '@ethersproject/contracts'
 import { useEthers } from '@usedapp/core'
-import { ERC20 as ERC20Abi, Main as MainAbi, StRSR as StRSRAbi } from 'abis'
+import {
+  ERC20 as ERC20Abi,
+  Main as MainAbi,
+  StRSR as StRSRAbi,
+  Facade as FacadeAbi,
+  BasketHandler as BasketHandlerAbi,
+} from 'abis'
+import { BasketHandler } from 'abis/types/BasketHandler'
 import { useMemo } from 'react'
 import RTOKEN_ABI from '../abis/RToken.json'
-import { ERC20, Main, RToken, StRsr } from '../abis/types'
+import { ERC20, Facade, Main, RToken, StRsr } from '../abis/types'
 import { CHAIN_ID } from '../constants'
 import { getContract } from '../utils'
 
@@ -43,6 +50,13 @@ export function useMainContract(
   return useContract<Main>(address, MainAbi, withSignerIfPossible)
 }
 
+export function useFacadeContract(
+  address?: string,
+  withSignerIfPossible?: boolean
+): Facade | null {
+  return useContract<Facade>(address, FacadeAbi, withSignerIfPossible)
+}
+
 export function useStakingContract(
   address?: string,
   withSignerIfPossible?: boolean
@@ -55,6 +69,17 @@ export function useRTokenContract(
   withSignerIfPossible?: boolean
 ): RToken | null {
   return useContract<RToken>(tokenAddress, RTOKEN_ABI, withSignerIfPossible)
+}
+
+export function useBasketHandlerContract(
+  address?: string,
+  withSignerIfPossible?: boolean
+): BasketHandler | null {
+  return useContract<BasketHandler>(
+    address,
+    BasketHandlerAbi,
+    withSignerIfPossible
+  )
 }
 
 export function useTokenContract(

@@ -9,6 +9,8 @@ import ERC20Mock from './ERC20Mock.json'
 import Main from './main.json'
 import StRSR from './st-rsr.json'
 import RSVManager from './rsv-manager.json'
+import Facade from './facade.json'
+import BasketHandler from './basketHandler.json'
 
 const ERC20Interface = new Interface(ERC20)
 export { ERC20, ERC20Interface }
@@ -19,8 +21,14 @@ export { ERC20Mock, ERC20MockInterface }
 const FactoryInterface = new Interface(Factory)
 export { Factory, FactoryInterface }
 
-const MainInterface = new Interface(Main as any)
+const MainInterface = new Interface(Main)
 export { Main, MainInterface }
+
+const FacadeInterface = new Interface(Facade)
+export { Facade, FacadeInterface }
+
+const BasketHandlerInterface = new Interface(BasketHandler)
+export { BasketHandler, BasketHandlerInterface }
 
 const RTokenInterface = new Interface(RToken)
 export { RToken, RTokenInterface }

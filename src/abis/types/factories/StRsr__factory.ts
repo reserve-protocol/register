@@ -10,11 +10,6 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "contract IMain",
-        name: "main_",
-        type: "address",
-      },
-      {
         internalType: "string",
         name: "name_",
         type: "string",
@@ -55,6 +50,19 @@ const _abi = [
     inputs: [
       {
         indexed: true,
+        internalType: "uint256",
+        name: "newEra",
+        type: "uint256",
+      },
+    ],
+    name: "AllBalancesReset",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
         internalType: "address",
         name: "owner",
         type: "address",
@@ -80,18 +88,37 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "address",
-        name: "from",
+        internalType: "contract IMain",
+        name: "oldMain",
         type: "address",
       },
+      {
+        indexed: true,
+        internalType: "contract IMain",
+        name: "newMain",
+        type: "address",
+      },
+    ],
+    name: "MainSet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
       {
         indexed: true,
         internalType: "uint256",
         name: "amount",
         type: "uint256",
       },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "numPeriods",
+        type: "uint256",
+      },
     ],
-    name: "RSRAdded",
+    name: "RSRRewarded",
     type: "event",
   },
   {
@@ -118,6 +145,44 @@ const _abi = [
     inputs: [
       {
         indexed: true,
+        internalType: "uint256",
+        name: "oldVal",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "newVal",
+        type: "uint256",
+      },
+    ],
+    name: "RewardPeriodSet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "Fix",
+        name: "oldVal",
+        type: "int192",
+      },
+      {
+        indexed: true,
+        internalType: "Fix",
+        name: "newVal",
+        type: "int192",
+      },
+    ],
+    name: "RewardRatioSet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
         internalType: "address",
         name: "staker",
         type: "address",
@@ -125,7 +190,13 @@ const _abi = [
       {
         indexed: true,
         internalType: "uint256",
-        name: "amount",
+        name: "rsrAmount",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "stRSRAmount",
         type: "uint256",
       },
     ],
@@ -163,7 +234,19 @@ const _abi = [
       {
         indexed: true,
         internalType: "uint256",
-        name: "withdrawalId",
+        name: "firstId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "endId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "draftEra",
         type: "uint256",
       },
       {
@@ -173,9 +256,9 @@ const _abi = [
         type: "address",
       },
       {
-        indexed: true,
+        indexed: false,
         internalType: "uint256",
-        name: "amount",
+        name: "rsrAmount",
         type: "uint256",
       },
     ],
@@ -188,7 +271,32 @@ const _abi = [
       {
         indexed: true,
         internalType: "uint256",
-        name: "withdrawalId",
+        name: "oldVal",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "newVal",
+        type: "uint256",
+      },
+    ],
+    name: "UnstakingDelaySet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "draftId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "draftEra",
         type: "uint256",
       },
       {
@@ -198,9 +306,15 @@ const _abi = [
         type: "address",
       },
       {
-        indexed: true,
+        indexed: false,
         internalType: "uint256",
-        name: "amount",
+        name: "rsrAmount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "stRSRAmount",
         type: "uint256",
       },
       {
@@ -214,16 +328,16 @@ const _abi = [
     type: "event",
   },
   {
-    inputs: [
+    inputs: [],
+    name: "DOMAIN_SEPARATOR",
+    outputs: [
       {
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
       },
     ],
-    name: "addRSR",
-    outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -307,6 +421,204 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "endIdForWithdraw",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "exchangeRate",
+    outputs: [
+      {
+        internalType: "Fix",
+        name: "",
+        type: "int192",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "contract IMain",
+        name: "main_",
+        type: "address",
+      },
+      {
+        components: [
+          {
+            components: [
+              {
+                internalType: "Fix",
+                name: "maxAuctionSize",
+                type: "int192",
+              },
+              {
+                components: [
+                  {
+                    internalType: "uint16",
+                    name: "rTokenDist",
+                    type: "uint16",
+                  },
+                  {
+                    internalType: "uint16",
+                    name: "rsrDist",
+                    type: "uint16",
+                  },
+                ],
+                internalType: "struct RevenueShare",
+                name: "dist",
+                type: "tuple",
+              },
+              {
+                internalType: "uint256",
+                name: "rewardPeriod",
+                type: "uint256",
+              },
+              {
+                internalType: "Fix",
+                name: "rewardRatio",
+                type: "int192",
+              },
+              {
+                internalType: "uint256",
+                name: "unstakingDelay",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "auctionDelay",
+                type: "uint256",
+              },
+              {
+                internalType: "uint256",
+                name: "auctionLength",
+                type: "uint256",
+              },
+              {
+                internalType: "Fix",
+                name: "backingBuffer",
+                type: "int192",
+              },
+              {
+                internalType: "Fix",
+                name: "maxTradeSlippage",
+                type: "int192",
+              },
+              {
+                internalType: "Fix",
+                name: "dustAmount",
+                type: "int192",
+              },
+              {
+                internalType: "Fix",
+                name: "issuanceRate",
+                type: "int192",
+              },
+            ],
+            internalType: "struct DeploymentParams",
+            name: "params",
+            type: "tuple",
+          },
+          {
+            components: [
+              {
+                internalType: "contract IRToken",
+                name: "rToken",
+                type: "address",
+              },
+              {
+                internalType: "contract IStRSR",
+                name: "stRSR",
+                type: "address",
+              },
+              {
+                internalType: "contract IAssetRegistry",
+                name: "assetRegistry",
+                type: "address",
+              },
+              {
+                internalType: "contract IBasketHandler",
+                name: "basketHandler",
+                type: "address",
+              },
+              {
+                internalType: "contract IBackingManager",
+                name: "backingManager",
+                type: "address",
+              },
+              {
+                internalType: "contract IDistributor",
+                name: "distributor",
+                type: "address",
+              },
+              {
+                internalType: "contract IFurnace",
+                name: "furnace",
+                type: "address",
+              },
+              {
+                internalType: "contract IBroker",
+                name: "broker",
+                type: "address",
+              },
+              {
+                internalType: "contract IRevenueTrader",
+                name: "rsrTrader",
+                type: "address",
+              },
+              {
+                internalType: "contract IRevenueTrader",
+                name: "rTokenTrader",
+                type: "address",
+              },
+            ],
+            internalType: "struct Components",
+            name: "components",
+            type: "tuple",
+          },
+          {
+            internalType: "contract IERC20",
+            name: "rsr",
+            type: "address",
+          },
+          {
+            internalType: "contract IGnosis",
+            name: "gnosis",
+            type: "address",
+          },
+          {
+            internalType: "contract IAsset[]",
+            name: "assets",
+            type: "address[]",
+          },
+        ],
+        internalType: "struct ConstructorArgs",
+        name: "args",
+        type: "tuple",
+      },
+    ],
+    name: "initComponent",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "main",
     outputs: [
@@ -333,8 +645,27 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "owner_",
+        type: "address",
+      },
+    ],
+    name: "nonces",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
-    name: "processWithdrawals",
+    name: "payoutRewards",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -342,12 +673,113 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "owner_",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "spender",
+        type: "address",
+      },
+      {
         internalType: "uint256",
-        name: "amount",
+        name: "value",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "deadline",
+        type: "uint256",
+      },
+      {
+        internalType: "uint8",
+        name: "v",
+        type: "uint8",
+      },
+      {
+        internalType: "bytes32",
+        name: "r",
+        type: "bytes32",
+      },
+      {
+        internalType: "bytes32",
+        name: "s",
+        type: "bytes32",
+      },
+    ],
+    name: "permit",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "rewardPeriod",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "rewardRatio",
+    outputs: [
+      {
+        internalType: "Fix",
+        name: "",
+        type: "int192",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "rsrAmount",
         type: "uint256",
       },
     ],
     name: "seizeRSR",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "seizedRSR",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "val",
+        type: "uint256",
+      },
+    ],
+    name: "setRewardPeriod",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "Fix",
+        name: "val",
+        type: "int192",
+      },
+    ],
+    name: "setRewardRatio",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -356,7 +788,20 @@ const _abi = [
     inputs: [
       {
         internalType: "uint256",
-        name: "amount",
+        name: "val",
+        type: "uint256",
+      },
+    ],
+    name: "setUnstakingDelay",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "rsrAmount",
         type: "uint256",
       },
     ],
@@ -448,7 +893,7 @@ const _abi = [
     inputs: [
       {
         internalType: "uint256",
-        name: "amount",
+        name: "stakeAmount",
         type: "uint256",
       },
     ],
@@ -459,7 +904,7 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "withdrawalIndex",
+    name: "unstakingDelay",
     outputs: [
       {
         internalType: "uint256",
@@ -472,6 +917,29 @@ const _abi = [
   },
   {
     inputs: [
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "endId",
+        type: "uint256",
+      },
+    ],
+    name: "withdraw",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
       {
         internalType: "uint256",
         name: "",
@@ -487,7 +955,7 @@ const _abi = [
       },
       {
         internalType: "uint256",
-        name: "amount",
+        name: "rsrAmount",
         type: "uint256",
       },
       {

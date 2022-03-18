@@ -14,6 +14,8 @@ const getTokensQuery = gql`
     mains {
       id
       staked
+      facade
+      basketHandler
       stToken {
         address
         name
@@ -62,6 +64,8 @@ const formatTokens = (mains: any[]): { [x: string]: ReserveToken } =>
         staked: data.staked,
         token: data.stToken,
       },
+      facade: data.facade,
+      basketHandler: data.basketHandler,
       isRSV:
         data.id.toLowerCase() === RSV_MANAGER_ADDRESS[CHAIN_ID].toLowerCase(),
     } as ReserveToken

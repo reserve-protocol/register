@@ -40,6 +40,8 @@ export interface ReserveToken {
   id: string // RToken `Main` contract address
   token: Token // ERC20 stable coin
   basket: Basket
+  facade?: string
+  basketHandler?: string
   // If insurance is null, Staking is not enabled
   insurance?: {
     // amount of staked RSR

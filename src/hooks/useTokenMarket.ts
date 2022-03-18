@@ -9,10 +9,9 @@ type Response = {
 
 const formatData = (data: [number, number][]) =>
   data.map(([timestamp, value]) => ({
-    date:
-      new Date(timestamp).toLocaleDateString('en-US') +
-      ' ' +
-      new Date(timestamp).toLocaleTimeString('en-US'),
+    date: `${new Date(timestamp).toLocaleDateString('en-US')}' '${new Date(
+      timestamp
+    ).toLocaleTimeString('en-US')}`,
     value,
   }))
 

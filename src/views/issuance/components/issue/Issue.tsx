@@ -1,10 +1,16 @@
 import styled from '@emotion/styled'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Box, Card, Text } from '@theme-ui/components'
+import { useEthers } from '@usedapp/core'
 import { ERC20Interface, MainInterface, RSVManagerInterface } from 'abis'
 import { Button, NumericalInput } from 'components'
 import { formatEther, parseEther } from 'ethers/lib/utils'
-import { useMainContract } from 'hooks/useContract'
+import {
+  useBasketHandlerContract,
+  useFacadeContract,
+  useMainContract,
+  useRTokenContract,
+} from 'hooks/useContract'
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import {
@@ -101,12 +107,22 @@ const useTokenIssuableAmount = (data: ReserveToken) => {
   const [amount, setAmount] = useState(0)
   const balance = useSelector(selectBalanceAggregate)
   const tokenBalances = useAppSelector((state) => state.reserveTokens.balances)
+  const { account } = useEthers()
+  // TODO: replace for facade contract
+  const facadeContract = useRTokenContract(data.token.address ?? '')
+
+  const setMaxIssuable = async (address: string) => {
+    const maxIssuable = await facadeContract!.maxIssuable(address)
+    setAmount(maxIssuable ? Number(formatEther(maxIssuable)) : 0)
+  }
 
   useEffect(() => {
     if (data.isRSV) {
       setAmount(getIssuable(data, tokenBalances))
+    } else if (account && facadeContract) {
+      setMaxIssuable(account)
     } else {
-      // TODO: quote
+      setAmount(0)
     }
   }, [balance, data.id])
 
@@ -125,7 +141,7 @@ const useTokenIssuableAmount = (data: ReserveToken) => {
 const Issue = ({ data, ...props }: { data: ReserveToken }) => {
   const [amount, setAmount] = useState('')
   const [issuing, setIssuing] = useState(false)
-  const mainContract = useMainContract(data.id)
+  const basketHandler = useBasketHandlerContract(data.basketHandler)
   const [, dispatch] = useTransactionsState()
   const issuableAmount = useTokenIssuableAmount(data)
 
@@ -138,8 +154,9 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
       // RSV have hardcoded quantities
       if (data.isRSV) {
         quantities = quote(issueAmount)
-      } else {
-        quantities = await mainContract?.quote(issueAmount)
+      } else if (basketHandler) {
+        const quoteResult = await basketHandler.quote(issueAmount, 'FLOOR')
+        quantities = quoteResult.quantities
       }
 
       if (!quantities) throw new Error()
