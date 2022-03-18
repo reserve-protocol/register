@@ -51,6 +51,7 @@ const AssetsChart = ({ collaterals }: { collaterals: any }) => (
                 <TokenLogo
                   sx={{ marginRight: '5px' }}
                   symbol={collateral.symbol}
+                  size="16px"
                 />{' '}
                 {collateral.symbol}
               </Flex>
