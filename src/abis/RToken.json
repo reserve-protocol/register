@@ -2,11 +2,6 @@
   {
     "inputs": [
       {
-        "internalType": "contract IMain",
-        "name": "main_",
-        "type": "address"
-      },
-      {
         "internalType": "string",
         "name": "name_",
         "type": "string"
@@ -19,6 +14,28 @@
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "int256",
+        "name": "value",
+        "type": "int256"
+      }
+    ],
+    "name": "IntOutOfBounds",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "UIntOutOfBounds",
+    "type": "error"
   },
   {
     "anonymous": false,
@@ -49,6 +66,219 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "Fix",
+        "name": "oldBasketsNeeded",
+        "type": "int192"
+      },
+      {
+        "indexed": false,
+        "internalType": "Fix",
+        "name": "newBasketsNeeded",
+        "type": "int192"
+      }
+    ],
+    "name": "BasketsNeededChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "Fix",
+        "name": "oldVal",
+        "type": "int192"
+      },
+      {
+        "indexed": true,
+        "internalType": "Fix",
+        "name": "newVal",
+        "type": "int192"
+      }
+    ],
+    "name": "IssuanceRateSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "issuer",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "Fix",
+        "name": "baskets",
+        "type": "int192"
+      },
+      {
+        "indexed": false,
+        "internalType": "address[]",
+        "name": "erc20s",
+        "type": "address[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "quantities",
+        "type": "uint256[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "Fix",
+        "name": "blockAvailableAt",
+        "type": "int192"
+      }
+    ],
+    "name": "IssuanceStarted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "issuer",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "firstId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "endId",
+        "type": "uint256"
+      }
+    ],
+    "name": "IssuancesCanceled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "issuer",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "firstId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "endId",
+        "type": "uint256"
+      }
+    ],
+    "name": "IssuancesCompleted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "contract IMain",
+        "name": "oldMain",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "contract IMain",
+        "name": "newMain",
+        "type": "address"
+      }
+    ],
+    "name": "MainSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Melted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "redeemer",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "Fix",
+        "name": "baskets",
+        "type": "int192"
+      }
+    ],
+    "name": "Redemption",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "erc20",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "RewardsClaimed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "internalType": "address",
         "name": "from",
@@ -69,6 +299,32 @@
     ],
     "name": "Transfer",
     "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "DOMAIN_SEPARATOR",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MIN_ISSUANCE_RATE",
+    "outputs": [
+      {
+        "internalType": "Fix",
+        "name": "",
+        "type": "int192"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   },
   {
     "inputs": [
@@ -138,26 +394,46 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "from",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "burn",
+    "inputs": [],
+    "name": "basketsNeeded",
     "outputs": [
       {
-        "internalType": "bool",
+        "internalType": "Fix",
         "name": "",
+        "type": "int192"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "endId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "earliest",
         "type": "bool"
       }
     ],
+    "name": "cancel",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "deposits",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "claimAndSweepRewards",
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -202,6 +478,25 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "endIdForVest",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "spender",
         "type": "address"
       },
@@ -223,16 +518,284 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "main",
-    "outputs": [
+    "inputs": [
       {
         "internalType": "contract IMain",
-        "name": "",
+        "name": "main_",
         "type": "address"
+      },
+      {
+        "components": [
+          {
+            "components": [
+              {
+                "internalType": "Fix",
+                "name": "maxAuctionSize",
+                "type": "int192"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "uint16",
+                    "name": "rTokenDist",
+                    "type": "uint16"
+                  },
+                  {
+                    "internalType": "uint16",
+                    "name": "rsrDist",
+                    "type": "uint16"
+                  }
+                ],
+                "internalType": "struct RevenueShare",
+                "name": "dist",
+                "type": "tuple"
+              },
+              {
+                "internalType": "uint256",
+                "name": "rewardPeriod",
+                "type": "uint256"
+              },
+              {
+                "internalType": "Fix",
+                "name": "rewardRatio",
+                "type": "int192"
+              },
+              {
+                "internalType": "uint256",
+                "name": "unstakingDelay",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "auctionDelay",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "auctionLength",
+                "type": "uint256"
+              },
+              {
+                "internalType": "Fix",
+                "name": "backingBuffer",
+                "type": "int192"
+              },
+              {
+                "internalType": "Fix",
+                "name": "maxTradeSlippage",
+                "type": "int192"
+              },
+              {
+                "internalType": "Fix",
+                "name": "dustAmount",
+                "type": "int192"
+              },
+              {
+                "internalType": "Fix",
+                "name": "issuanceRate",
+                "type": "int192"
+              }
+            ],
+            "internalType": "struct DeploymentParams",
+            "name": "params",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "contract IRToken",
+                "name": "rToken",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IStRSR",
+                "name": "stRSR",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IAssetRegistry",
+                "name": "assetRegistry",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IBasketHandler",
+                "name": "basketHandler",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IBackingManager",
+                "name": "backingManager",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IDistributor",
+                "name": "distributor",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IRevenueTrader",
+                "name": "rsrTrader",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IRevenueTrader",
+                "name": "rTokenTrader",
+                "type": "address"
+              }
+            ],
+            "internalType": "struct Core",
+            "name": "core",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "contract IMarket",
+                "name": "market",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IFurnace",
+                "name": "furnace",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IAsset[]",
+                "name": "assets",
+                "type": "address[]"
+              }
+            ],
+            "internalType": "struct Periphery",
+            "name": "periphery",
+            "type": "tuple"
+          },
+          {
+            "internalType": "contract IERC20",
+            "name": "rsr",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct ConstructorArgs",
+        "name": "args",
+        "type": "tuple"
+      }
+    ],
+    "name": "initComponent",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "issuanceRate",
+    "outputs": [
+      {
+        "internalType": "Fix",
+        "name": "",
+        "type": "int192"
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "issuances",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "issuer",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "Fix",
+        "name": "baskets",
+        "type": "int192"
+      },
+      {
+        "internalType": "uint256",
+        "name": "basketNonce",
+        "type": "uint256"
+      },
+      {
+        "internalType": "Fix",
+        "name": "blockAvailableAt",
+        "type": "int192"
+      },
+      {
+        "internalType": "bool",
+        "name": "processed",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "issue",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "deposits",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "maxIssuable",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "melt",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -249,13 +812,7 @@
       }
     ],
     "name": "mint",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -270,6 +827,126 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
+    ],
+    "name": "nonces",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "spender",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "deadline",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "v",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "r",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "s",
+        "type": "bytes32"
+      }
+    ],
+    "name": "permit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "price",
+    "outputs": [
+      {
+        "internalType": "Fix",
+        "name": "p",
+        "type": "int192"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "redeem",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "withdrawals",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "Fix",
+        "name": "basketsNeeded_",
+        "type": "int192"
+      }
+    ],
+    "name": "setBasketsNeeded",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "Fix",
+        "name": "val",
+        "type": "int192"
+      }
+    ],
+    "name": "setIssuanceRate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -346,6 +1023,30 @@
         "internalType": "bool",
         "name": "",
         "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "endId",
+        "type": "uint256"
+      }
+    ],
+    "name": "vest",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "vested",
+        "type": "uint256"
       }
     ],
     "stateMutability": "nonpayable",

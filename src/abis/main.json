@@ -1,192 +1,122 @@
 [
   {
-    "inputs": [
-      {
-        "components": [
-          {
-            "internalType": "contract IComptroller",
-            "name": "compound",
-            "type": "address"
-          },
-          {
-            "internalType": "contract IAaveLendingPool",
-            "name": "aave",
-            "type": "address"
-          }
-        ],
-        "internalType": "struct Oracle.Info",
-        "name": "oracle_",
-        "type": "tuple"
-      },
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "rewardStart",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "rewardPeriod",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "auctionPeriod",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "stRSRWithdrawalDelay",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "defaultDelay",
-            "type": "uint256"
-          },
-          {
-            "internalType": "Fix",
-            "name": "maxTradeSlippage",
-            "type": "int192"
-          },
-          {
-            "internalType": "Fix",
-            "name": "maxAuctionSize",
-            "type": "int192"
-          },
-          {
-            "internalType": "Fix",
-            "name": "minRecapitalizationAuctionSize",
-            "type": "int192"
-          },
-          {
-            "internalType": "Fix",
-            "name": "minRevenueAuctionSize",
-            "type": "int192"
-          },
-          {
-            "internalType": "Fix",
-            "name": "migrationChunk",
-            "type": "int192"
-          },
-          {
-            "internalType": "Fix",
-            "name": "issuanceRate",
-            "type": "int192"
-          },
-          {
-            "internalType": "Fix",
-            "name": "defaultThreshold",
-            "type": "int192"
-          },
-          {
-            "internalType": "Fix",
-            "name": "f",
-            "type": "int192"
-          }
-        ],
-        "internalType": "struct Config",
-        "name": "config_",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "int256",
-        "name": "value",
-        "type": "int256"
-      }
-    ],
-    "name": "IntOutOfBounds",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "name": "PriceIsZero",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "value",
-        "type": "uint256"
-      }
-    ],
-    "name": "UIntOutOfBounds",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "UnsupportedProtocol",
-    "type": "error"
-  },
-  {
     "anonymous": false,
     "inputs": [
       {
         "indexed": true,
-        "internalType": "uint256",
-        "name": "issuanceId",
-        "type": "uint256"
-      }
-    ],
-    "name": "IssuanceCanceled",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "issuanceId",
-        "type": "uint256"
-      }
-    ],
-    "name": "IssuanceCompleted",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "issuanceId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "issuer",
+        "internalType": "contract IAssetRegistry",
+        "name": "oldVal",
         "type": "address"
       },
       {
         "indexed": true,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "blockAvailableAt",
-        "type": "uint256"
+        "internalType": "contract IAssetRegistry",
+        "name": "newVal",
+        "type": "address"
       }
     ],
-    "name": "IssuanceStarted",
+    "name": "AssetRegistrySet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "contract IBackingManager",
+        "name": "oldVal",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "contract IBackingManager",
+        "name": "newVal",
+        "type": "address"
+      }
+    ],
+    "name": "BackingManagerSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "contract IBasketHandler",
+        "name": "oldVal",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "contract IBasketHandler",
+        "name": "newVal",
+        "type": "address"
+      }
+    ],
+    "name": "BasketHandlerSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "contract IBroker",
+        "name": "oldVal",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "contract IBroker",
+        "name": "newVal",
+        "type": "address"
+      }
+    ],
+    "name": "BrokerSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "contract IDistributor",
+        "name": "oldVal",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "contract IDistributor",
+        "name": "newVal",
+        "type": "address"
+      }
+    ],
+    "name": "DistributorSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "contract IFurnace",
+        "name": "oldVal",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "contract IFurnace",
+        "name": "newVal",
+        "type": "address"
+      }
+    ],
+    "name": "FurnaceSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [],
+    "name": "Initialized",
     "type": "event"
   },
   {
@@ -212,19 +142,38 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": true,
+        "indexed": false,
+        "internalType": "bool",
+        "name": "oldPaused",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "newPaused",
+        "type": "bool"
+      }
+    ],
+    "name": "PausedSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "address",
-        "name": "redeemer",
+        "name": "oldPauser",
         "type": "address"
       },
       {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
+        "indexed": false,
+        "internalType": "address",
+        "name": "newPauser",
+        "type": "address"
       }
     ],
-    "name": "Redemption",
+    "name": "PauserSet",
     "type": "event"
   },
   {
@@ -232,26 +181,102 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "enum SystemState",
-        "name": "oldState",
-        "type": "uint8"
+        "internalType": "contract IERC20",
+        "name": "oldVal",
+        "type": "address"
       },
       {
         "indexed": true,
-        "internalType": "enum SystemState",
-        "name": "newState",
-        "type": "uint8"
+        "internalType": "contract IERC20",
+        "name": "newVal",
+        "type": "address"
       }
     ],
-    "name": "SystemStateChanged",
+    "name": "RSRSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "contract IRevenueTrader",
+        "name": "oldVal",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "contract IRevenueTrader",
+        "name": "newVal",
+        "type": "address"
+      }
+    ],
+    "name": "RSRTraderSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "contract IRToken",
+        "name": "oldVal",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "contract IRToken",
+        "name": "newVal",
+        "type": "address"
+      }
+    ],
+    "name": "RTokenSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "contract IRevenueTrader",
+        "name": "oldVal",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "contract IRevenueTrader",
+        "name": "newVal",
+        "type": "address"
+      }
+    ],
+    "name": "RTokenTraderSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "contract IStRSR",
+        "name": "oldVal",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "contract IStRSR",
+        "name": "newVal",
+        "type": "address"
+      }
+    ],
+    "name": "StRSRSet",
     "type": "event"
   },
   {
     "inputs": [],
-    "name": "aaveAsset",
+    "name": "assetRegistry",
     "outputs": [
       {
-        "internalType": "contract IAsset",
+        "internalType": "contract IAssetRegistry",
         "name": "",
         "type": "address"
       }
@@ -261,10 +286,10 @@
   },
   {
     "inputs": [],
-    "name": "aaveLendingPool",
+    "name": "backingManager",
     "outputs": [
       {
-        "internalType": "contract IAaveLendingPool",
+        "internalType": "contract IBackingManager",
         "name": "",
         "type": "address"
       }
@@ -274,23 +299,10 @@
   },
   {
     "inputs": [],
-    "name": "backingTokens",
+    "name": "basketHandler",
     "outputs": [
       {
-        "internalType": "address[]",
-        "name": "erc20s",
-        "type": "address[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "compAsset",
-    "outputs": [
-      {
-        "internalType": "contract IAsset",
+        "internalType": "contract IBasketHandler",
         "name": "",
         "type": "address"
       }
@@ -300,10 +312,10 @@
   },
   {
     "inputs": [],
-    "name": "comptroller",
+    "name": "broker",
     "outputs": [
       {
-        "internalType": "contract IComptroller",
+        "internalType": "contract IBroker",
         "name": "",
         "type": "address"
       }
@@ -313,103 +325,12 @@
   },
   {
     "inputs": [],
-    "name": "config",
+    "name": "distributor",
     "outputs": [
       {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "rewardStart",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "rewardPeriod",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "auctionPeriod",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "stRSRWithdrawalDelay",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "defaultDelay",
-            "type": "uint256"
-          },
-          {
-            "internalType": "Fix",
-            "name": "maxTradeSlippage",
-            "type": "int192"
-          },
-          {
-            "internalType": "Fix",
-            "name": "maxAuctionSize",
-            "type": "int192"
-          },
-          {
-            "internalType": "Fix",
-            "name": "minRecapitalizationAuctionSize",
-            "type": "int192"
-          },
-          {
-            "internalType": "Fix",
-            "name": "minRevenueAuctionSize",
-            "type": "int192"
-          },
-          {
-            "internalType": "Fix",
-            "name": "migrationChunk",
-            "type": "int192"
-          },
-          {
-            "internalType": "Fix",
-            "name": "issuanceRate",
-            "type": "int192"
-          },
-          {
-            "internalType": "Fix",
-            "name": "defaultThreshold",
-            "type": "int192"
-          },
-          {
-            "internalType": "Fix",
-            "name": "f",
-            "type": "int192"
-          }
-        ],
-        "internalType": "struct Config",
+        "internalType": "contract IDistributor",
         "name": "",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "enum Oracle.Source",
-        "name": "source",
-        "type": "uint8"
-      },
-      {
-        "internalType": "address",
-        "name": "token",
         "type": "address"
-      }
-    ],
-    "name": "consultOracle",
-    "outputs": [
-      {
-        "internalType": "Fix",
-        "name": "",
-        "type": "int192"
       }
     ],
     "stateMutability": "view",
@@ -431,102 +352,160 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
+        "components": [
+          {
+            "components": [
+              {
+                "internalType": "int192",
+                "name": "maxAuctionSize",
+                "type": "int192"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "uint16",
+                    "name": "rTokenDist",
+                    "type": "uint16"
+                  },
+                  {
+                    "internalType": "uint16",
+                    "name": "rsrDist",
+                    "type": "uint16"
+                  }
+                ],
+                "internalType": "struct RevenueShare",
+                "name": "dist",
+                "type": "tuple"
+              },
+              {
+                "internalType": "uint256",
+                "name": "rewardPeriod",
+                "type": "uint256"
+              },
+              {
+                "internalType": "int192",
+                "name": "rewardRatio",
+                "type": "int192"
+              },
+              {
+                "internalType": "uint256",
+                "name": "unstakingDelay",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "tradingDelay",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "auctionLength",
+                "type": "uint256"
+              },
+              {
+                "internalType": "int192",
+                "name": "backingBuffer",
+                "type": "int192"
+              },
+              {
+                "internalType": "int192",
+                "name": "maxTradeSlippage",
+                "type": "int192"
+              },
+              {
+                "internalType": "int192",
+                "name": "dustAmount",
+                "type": "int192"
+              },
+              {
+                "internalType": "int192",
+                "name": "issuanceRate",
+                "type": "int192"
+              }
+            ],
+            "internalType": "struct DeploymentParams",
+            "name": "params",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "contract IRToken",
+                "name": "rToken",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IStRSR",
+                "name": "stRSR",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IAssetRegistry",
+                "name": "assetRegistry",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IBasketHandler",
+                "name": "basketHandler",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IBackingManager",
+                "name": "backingManager",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IDistributor",
+                "name": "distributor",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IFurnace",
+                "name": "furnace",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IBroker",
+                "name": "broker",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IRevenueTrader",
+                "name": "rsrTrader",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IRevenueTrader",
+                "name": "rTokenTrader",
+                "type": "address"
+              }
+            ],
+            "internalType": "struct Components",
+            "name": "components",
+            "type": "tuple"
+          },
+          {
+            "internalType": "contract IERC20",
+            "name": "rsr",
+            "type": "address"
+          },
+          {
+            "internalType": "contract IGnosis",
+            "name": "gnosis",
+            "type": "address"
+          },
+          {
+            "internalType": "contract IAsset[]",
+            "name": "assets",
+            "type": "address[]"
+          }
+        ],
+        "internalType": "struct ConstructorArgs",
+        "name": "args",
+        "type": "tuple"
       }
     ],
-    "name": "issuances",
-    "outputs": [
-      {
-        "internalType": "contract IVault",
-        "name": "vault",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "BUs",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "issuer",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "blockAvailableAt",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bool",
-        "name": "processed",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "issue",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "manager",
-    "outputs": [
-      {
-        "internalType": "contract IAssetManager",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "monitor",
-    "outputs": [
-      {
-        "internalType": "contract IDefaultMonitor",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "nextRewards",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "noticeDefault",
+    "name": "init",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -585,25 +564,6 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "quote",
-    "outputs": [
-      {
-        "internalType": "uint256[]",
-        "name": "",
-        "type": "uint256[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "rToken",
     "outputs": [
@@ -618,28 +578,15 @@
   },
   {
     "inputs": [],
-    "name": "rTokenAsset",
+    "name": "rTokenTrader",
     "outputs": [
       {
-        "internalType": "contract IAsset",
+        "internalType": "contract IRevenueTrader",
         "name": "",
         "type": "address"
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "redeem",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -664,10 +611,10 @@
   },
   {
     "inputs": [],
-    "name": "rsrAsset",
+    "name": "rsrTrader",
     "outputs": [
       {
-        "internalType": "contract IAsset",
+        "internalType": "contract IRevenueTrader",
         "name": "",
         "type": "address"
       }
@@ -678,27 +625,12 @@
   {
     "inputs": [
       {
-        "internalType": "contract IAsset",
-        "name": "rToken_",
-        "type": "address"
-      },
-      {
-        "internalType": "contract IAsset",
-        "name": "rsr_",
-        "type": "address"
-      },
-      {
-        "internalType": "contract IAsset",
-        "name": "comp_",
-        "type": "address"
-      },
-      {
-        "internalType": "contract IAsset",
-        "name": "aave_",
+        "internalType": "contract IAssetRegistry",
+        "name": "val",
         "type": "address"
       }
     ],
-    "name": "setAssets",
+    "name": "setAssetRegistry",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -706,79 +638,51 @@
   {
     "inputs": [
       {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "rewardStart",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "rewardPeriod",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "auctionPeriod",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "stRSRWithdrawalDelay",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "defaultDelay",
-            "type": "uint256"
-          },
-          {
-            "internalType": "Fix",
-            "name": "maxTradeSlippage",
-            "type": "int192"
-          },
-          {
-            "internalType": "Fix",
-            "name": "maxAuctionSize",
-            "type": "int192"
-          },
-          {
-            "internalType": "Fix",
-            "name": "minRecapitalizationAuctionSize",
-            "type": "int192"
-          },
-          {
-            "internalType": "Fix",
-            "name": "minRevenueAuctionSize",
-            "type": "int192"
-          },
-          {
-            "internalType": "Fix",
-            "name": "migrationChunk",
-            "type": "int192"
-          },
-          {
-            "internalType": "Fix",
-            "name": "issuanceRate",
-            "type": "int192"
-          },
-          {
-            "internalType": "Fix",
-            "name": "defaultThreshold",
-            "type": "int192"
-          },
-          {
-            "internalType": "Fix",
-            "name": "f",
-            "type": "int192"
-          }
-        ],
-        "internalType": "struct Config",
-        "name": "config_",
-        "type": "tuple"
+        "internalType": "contract IBackingManager",
+        "name": "val",
+        "type": "address"
       }
     ],
-    "name": "setConfig",
+    "name": "setBackingManager",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IBasketHandler",
+        "name": "val",
+        "type": "address"
+      }
+    ],
+    "name": "setBasketHandler",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IBroker",
+        "name": "val",
+        "type": "address"
+      }
+    ],
+    "name": "setBroker",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IDistributor",
+        "name": "val",
+        "type": "address"
+      }
+    ],
+    "name": "setDistributor",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -787,62 +691,11 @@
     "inputs": [
       {
         "internalType": "contract IFurnace",
-        "name": "furnace_",
+        "name": "val",
         "type": "address"
       }
     ],
     "name": "setFurnace",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "contract IAssetManager",
-        "name": "manager_",
-        "type": "address"
-      }
-    ],
-    "name": "setManager",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "contract IDefaultMonitor",
-        "name": "monitor_",
-        "type": "address"
-      }
-    ],
-    "name": "setMonitor",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "components": [
-          {
-            "internalType": "contract IComptroller",
-            "name": "compound",
-            "type": "address"
-          },
-          {
-            "internalType": "contract IAaveLendingPool",
-            "name": "aave",
-            "type": "address"
-          }
-        ],
-        "internalType": "struct Oracle.Info",
-        "name": "oracle",
-        "type": "tuple"
-      }
-    ],
-    "name": "setOracle",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -863,8 +716,60 @@
   {
     "inputs": [
       {
+        "internalType": "contract IERC20",
+        "name": "val",
+        "type": "address"
+      }
+    ],
+    "name": "setRSR",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IRevenueTrader",
+        "name": "val",
+        "type": "address"
+      }
+    ],
+    "name": "setRSRTrader",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IRToken",
+        "name": "val",
+        "type": "address"
+      }
+    ],
+    "name": "setRToken",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IRevenueTrader",
+        "name": "val",
+        "type": "address"
+      }
+    ],
+    "name": "setRTokenTrader",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "contract IStRSR",
-        "name": "stRSR_",
+        "name": "val",
         "type": "address"
       }
     ],
@@ -881,32 +786,6 @@
         "internalType": "contract IStRSR",
         "name": "",
         "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "state",
-    "outputs": [
-      {
-        "internalType": "enum SystemState",
-        "name": "",
-        "type": "uint8"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "stateRaisedAt",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
       }
     ],
     "stateMutability": "view",
