@@ -38,7 +38,7 @@ const Overview = () => {
             Transactions
           </Text>
           <Card>
-            <TransactionsTable />
+            <TransactionsTable tokenId={RToken.token.address} />
           </Card>
         </Box>
         <Box>

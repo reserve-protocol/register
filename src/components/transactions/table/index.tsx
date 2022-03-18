@@ -1,16 +1,24 @@
 import { Table } from 'components/table'
-import { Box } from '@theme-ui/components'
+import { Box, Text } from '@theme-ui/components'
 import { gql, useSubscription } from '@apollo/client'
 import { formatEther } from '@ethersproject/units'
 import { formatCurrency } from 'utils'
 import { shortenTransactionHash } from '@usedapp/core'
 
 const GET_TRANSACTIONS = gql`
-  subscription GetTransactions {
-    entries(first: 50, orderBy: createdAt, orderDirection: desc) {
+  subscription GetTransactions($tokenId: String!) {
+    entries(
+      first: 50
+      where: { token: $tokenId }
+      orderBy: createdAt
+      orderDirection: desc
+    ) {
       id
       type
       amount
+      token {
+        id
+      }
       transaction {
         id
       }
@@ -39,14 +47,27 @@ const columns = [
   },
 ]
 
-const TransactionsTable = () => {
+const TransactionsTable = ({ tokenId }: { tokenId: string }) => {
   const { data, loading } = useSubscription(GET_TRANSACTIONS, {
-    variables: { orderBy: 'id', first: 5, where: {} },
+    variables: {
+      orderBy: 'id',
+      first: 50,
+      tokenId,
+      where: {},
+    },
   })
+
+  if (!loading && !(data?.entries ?? []).length) {
+    return (
+      <Box>
+        <Text p={3}>No transactions...</Text>
+      </Box>
+    )
+  }
 
   return (
     <Box sx={{ maxHeight: '500px', overflow: 'auto' }}>
-      <Table columns={columns} data={!loading ? data.entries : []} />
+      <Table columns={columns} data={!loading ? data?.entries ?? [] : []} />
     </Box>
   )
 }

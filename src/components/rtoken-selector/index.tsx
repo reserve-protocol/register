@@ -36,6 +36,7 @@ const RTokenSelector = (props: BoxProps) => {
           {(!tokens || !tokens.length) && <Text>Loading...</Text>}
           {tokens.map((token) => (
             <Flex
+              key={token.token.address}
               onClick={() => handleSelect(token.id)}
               sx={{ alignItems: 'center' }}
             >

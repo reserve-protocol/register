@@ -28,24 +28,26 @@ interface Props extends BoxProps {
 
 // TODO: Responsive
 const PriceChart = ({ token, ...props }: Props) => {
-  const { data } = useTokenMarket(token?.address)
-
-  console.log('data', data)
+  const { data, isError } = useTokenMarket(token?.address)
 
   return (
     <Box {...props}>
       <Text variant="sectionTitle">Price</Text>
       <Card p={3} pl={1}>
-        <ResponsiveContainer height={240}>
-          <LineChart data={data?.prices ?? []}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="value" stroke="#8884d8" />
-          </LineChart>
-        </ResponsiveContainer>
+        {isError ? (
+          <Text p={4}>No market information available</Text>
+        ) : (
+          <ResponsiveContainer height={240}>
+            <LineChart data={data?.prices ?? []}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="value" stroke="#8884d8" />
+            </LineChart>
+          </ResponsiveContainer>
+        )}
       </Card>
     </Box>
   )
