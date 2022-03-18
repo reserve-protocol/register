@@ -33,7 +33,7 @@ const Balances = ({ rToken, ...props }: Props) => {
           <Text variant="contentTitle" sx={{ fontSize: 2 }} mb={3}>
             Your collateral balance
           </Text>
-          {rToken.vault.collaterals.map((collateral) => (
+          {rToken.basket.collaterals.map((collateral) => (
             <Flex
               key={collateral.id}
               sx={{ alignItems: 'flex-start', marginBottom: 2 }}

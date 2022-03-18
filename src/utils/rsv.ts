@@ -13,7 +13,7 @@ const DIV = BigNumber.from(10).pow(BigNumber.from(18))
 export const getIssuable = (rsv: ReserveToken, tokenBalances: StringMap) => {
   let lowestCollateralBalance = Infinity
 
-  for (const collateral of rsv.vault.collaterals) {
+  for (const collateral of rsv.basket.collaterals) {
     if (!tokenBalances[collateral.token.address]) {
       return 0
     }

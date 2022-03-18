@@ -25,9 +25,9 @@ export interface Collateral {
   token: Token
 }
 
-// Token collateral vault
-export interface Vault {
-  id: string // Vault contract address
+// Token collateral basket
+export interface Basket {
+  id: string // Basket contract address
   collaterals: Collateral[]
 }
 
@@ -39,7 +39,7 @@ export interface Vault {
 export interface ReserveToken {
   id: string // RToken `Main` contract address
   token: Token // ERC20 stable coin
-  vault: Vault
+  basket: Basket
   // If insurance is null, Staking is not enabled
   insurance?: {
     // amount of staked RSR

@@ -53,7 +53,7 @@ export const selectBalanceAggregate = createSelector(
 
     const addresses: string[] = [
       rToken.token.address,
-      ...rToken.vault.collaterals.map((c) => c.token.address),
+      ...rToken.basket.collaterals.map((c) => c.token.address),
     ]
 
     return addresses.reduce(

@@ -38,5 +38,5 @@ export const ENS_ADDRESS: AddressMap = {
 }
 
 export const MULTICALL_ADDRESS: AddressMap = {
-  [ChainId.Hardhat]: '0x5bf5b11053e734690269c6b9d438f8c9d48f528a',
+  [ChainId.Hardhat]: '0xefab0beb0a557e452b398035ea964948c750b2fd',
 }

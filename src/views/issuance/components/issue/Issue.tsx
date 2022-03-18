@@ -40,7 +40,7 @@ const buildTransactions = (
   const tokenQuantities: [string, BigNumber][] = []
 
   // Create token approvals calls array
-  const transactions: TransactionState[] = data.vault.collaterals.map(
+  const transactions: TransactionState[] = data.basket.collaterals.map(
     ({ token, index }) => {
       const description = `Approve ${token.symbol} for issuance`
       const tokenAmount = quantities[index]

@@ -65,16 +65,19 @@ const AssetsChart = ({ collaterals }: { collaterals: any }) => (
 
 /**
  * RToken Assets overview
- * Display the market cap of the current RToken and the ratio between the RToken and their vault collaterals
+ * Display the market cap of the current RToken and the ratio between the RToken and their basket collaterals
  *
  * @prop data: ReserveToken
  * @returns React.Component
  */
-const AssetsOverview = ({ data: { isRSV, token, vault }, ...props }: Props) => {
+const AssetsOverview = ({
+  data: { isRSV, token, basket },
+  ...props
+}: Props) => {
   // TODO: For RTokens consult this from the explorer view contract
   // TODO: More than the expected basket tokens could be returned
   const [collaterals, setCollaterals] = useState(
-    vault.collaterals.map((collateral) => ({
+    basket.collaterals.map((collateral) => ({
       name: collateral.token.name,
       decimals: collateral.token.decimals,
       symbol: collateral.token.symbol,

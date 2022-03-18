@@ -24,7 +24,7 @@ export const RSR: Token = RSR_MAP[CHAIN_ID]
 
 // Best way to handle multiple chains is use the symbol instead of the address
 export const tokenLogos: { [x: string]: string } = {
-  RSD: 'rsv.png',
+  RSDP: 'rsv.png',
   RSV: 'rsv.png',
   RSR: 'rsr.png',
 }

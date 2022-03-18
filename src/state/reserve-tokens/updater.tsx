@@ -31,7 +31,7 @@ const getTokensQuery = gql`
           total
         }
       }
-      vault {
+      basket {
         id
         collaterals {
           id
@@ -57,7 +57,7 @@ const formatTokens = (mains: any[]): { [x: string]: ReserveToken } =>
         ...data.token,
         supply: data.token.supply?.total || 0,
       },
-      vault: data.vault,
+      basket: data.basket,
       insurance: {
         staked: data.staked,
         token: data.stToken,
@@ -96,7 +96,7 @@ const getTokens = (reserveToken: ReserveToken): [string, number][] => {
   const addresses: [string, number][] = [
     [reserveToken.token.address, reserveToken.token.decimals],
     [RSR.address, RSR.decimals],
-    ...reserveToken.vault.collaterals.map(({ token }): [string, number] => [
+    ...reserveToken.basket.collaterals.map(({ token }): [string, number] => [
       token.address,
       token.decimals,
     ]),
