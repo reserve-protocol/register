@@ -32,10 +32,11 @@ const RTokenSelector = (props: BoxProps) => {
       show={isVisible}
       onDismiss={() => setVisible(false)}
       content={
-        <Box p={2} sx={{ minWidth: 150, cursor: 'pointer' }} my={2}>
+        <Box p={2} pt={0} sx={{ minWidth: 150, cursor: 'pointer' }} my={2}>
           {(!tokens || !tokens.length) && <Text>Loading...</Text>}
           {tokens.map((token) => (
             <Flex
+              mt={3}
               key={token.token.address}
               onClick={() => handleSelect(token.id)}
               sx={{ alignItems: 'center' }}

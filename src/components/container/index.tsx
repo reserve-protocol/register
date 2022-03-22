@@ -11,6 +11,7 @@ const Container = styled(Box)`
   box-sizing: border-box;
   padding-left: 32px;
   padding-right: 32px;
+  padding-top: 20px;
 `
 
 export default Container

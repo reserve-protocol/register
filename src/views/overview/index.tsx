@@ -5,7 +5,6 @@ import TransactionsTable from 'components/transactions/table'
 import { useSelector } from 'react-redux'
 import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
 import { Box, Text, Grid } from '@theme-ui/components'
-import ContentHeader from 'components/layout/content-header'
 import UsageOverview from './components/usage'
 import AssetsOverview from './components/token-assets'
 
@@ -29,7 +28,6 @@ const Overview = () => {
 
   return (
     <Container>
-      <ContentHeader />
       <Grid columns={2} gap={[3, 3, 4, 5]} width={[400, 500, 400]}>
         <Box>
           <UsageOverview data={RToken} mb={3} />

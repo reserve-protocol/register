@@ -26,7 +26,7 @@ const Container = styled.div`
   background-color: var(--theme-ui-colors-sidebar);
   display: flex;
   flex-direction: column;
-  border-right: 1px solid #77838f;
+  border-right: 1px solid #e8e8e8;
 `
 
 // Sidebar header
@@ -43,17 +43,6 @@ const Header = () => (
     >
       <Logo />
     </Box>
-    <Text
-      sx={{
-        color: '#77838F',
-        fontSize: 1,
-        position: 'relative',
-        top: -16,
-        paddingLeft: 3,
-      }}
-    >
-      Made by LC Labs
-    </Text>
   </>
 )
 
@@ -89,7 +78,7 @@ const Navigation = ({
             margin: '16px 0',
             lineHeight: '32px',
             paddingLeft: isActive ? '27px' : '32px',
-            borderLeft: isActive ? '5px solid #00FFBF' : '',
+            borderLeft: isActive ? '5px solid black' : '',
           })}
           to={item.path}
         >
@@ -104,7 +93,16 @@ const Navigation = ({
 const Footer = () => (
   <Box m={4}>
     <ThemeColorMode mb={4} />
-    <SyncedBlock />
+    <SyncedBlock mb={2} />
+    <Text
+      sx={{
+        color: '#77838F',
+        fontSize: 1,
+        position: 'relative',
+      }}
+    >
+      Made by LC Labs
+    </Text>
   </Box>
 )
 

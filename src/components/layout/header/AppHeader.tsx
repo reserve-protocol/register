@@ -14,6 +14,7 @@ const AppHeader = () => (
     px={4}
     sx={{
       alignItems: 'center',
+      borderBottom: '1px solid #E8E8E8',
     }}
   >
     <Box mx="auto" />
