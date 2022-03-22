@@ -2,9 +2,14 @@ import styled from '@emotion/styled'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Box, Card, Text } from '@theme-ui/components'
 import { useEthers } from '@usedapp/core'
-import { ERC20Interface, MainInterface, RSVManagerInterface } from 'abis'
+import {
+  ERC20Interface,
+  MainInterface,
+  RSVManagerInterface,
+  RTokenInterface,
+} from 'abis'
 import { Button, NumericalInput } from 'components'
-import { formatEther, parseEther } from 'ethers/lib/utils'
+import { formatEther, formatUnits, parseEther } from 'ethers/lib/utils'
 import {
   useBasketHandlerContract,
   useFacadeContract,
@@ -41,7 +46,7 @@ const InputContainer = styled(Box)`
 const buildTransactions = (
   data: ReserveToken,
   amount: string,
-  quantities: BigNumber[]
+  quantities: { [x: string]: BigNumber }
 ): TransactionState[] => {
   const tokenQuantities: [string, BigNumber][] = []
 
@@ -49,7 +54,7 @@ const buildTransactions = (
   const transactions: TransactionState[] = data.basket.collaterals.map(
     ({ token, index }) => {
       const description = `Approve ${token.symbol} for issuance`
-      const tokenAmount = quantities[index]
+      const tokenAmount = quantities[token.address]
       // Fill token quantities on the same map
       tokenQuantities.push([token.address, tokenAmount])
 
@@ -57,12 +62,12 @@ const buildTransactions = (
         autoCall: false,
         description,
         status: TX_STATUS.PENDING,
-        value: formatEther(quantities[index]),
+        value: formatUnits(quantities[token.address], token.decimals),
         call: {
           abi: ERC20Interface,
           address: token.address,
           method: 'approve',
-          args: [data.id, tokenAmount],
+          args: [data.isRSV ? data.id : data.token.address, tokenAmount],
         },
       }
     }
@@ -76,8 +81,8 @@ const buildTransactions = (
     value: amount,
     extra: tokenQuantities, // Send quantities as an extra prop for allowance check before issuance
     call: {
-      abi: data.isRSV ? RSVManagerInterface : MainInterface,
-      address: data.id,
+      abi: data.isRSV ? RSVManagerInterface : RTokenInterface,
+      address: data.isRSV ? data.id : data.token.address,
       method: 'issue',
       args: [parseEther(amount)],
     },
@@ -108,12 +113,16 @@ const useTokenIssuableAmount = (data: ReserveToken) => {
   const balance = useSelector(selectBalanceAggregate)
   const tokenBalances = useAppSelector((state) => state.reserveTokens.balances)
   const { account } = useEthers()
-  // TODO: replace for facade contract
-  const facadeContract = useRTokenContract(data.token.address ?? '')
+  // TODO: replace for facade
+  const facadeContract = useFacadeContract(data.facade ?? '')
 
   const setMaxIssuable = async (address: string) => {
-    const maxIssuable = await facadeContract!.maxIssuable(address)
-    setAmount(maxIssuable ? Number(formatEther(maxIssuable)) : 0)
+    try {
+      const maxIssuable = await facadeContract!.callStatic.maxIssuable(address)
+      setAmount(maxIssuable ? Number(formatEther(maxIssuable)) : 0)
+    } catch (e) {
+      console.log('error with max issuable', e)
+    }
   }
 
   useEffect(() => {
@@ -155,8 +164,15 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
       if (data.isRSV) {
         quantities = quote(issueAmount)
       } else if (basketHandler) {
-        const quoteResult = await basketHandler.quote(issueAmount, 'FLOOR')
-        quantities = quoteResult.quantities
+        const quoteResult = await basketHandler.quote(issueAmount, 2)
+        quantities = quoteResult.erc20s.reduce(
+          (prev, current, currentIndex) => {
+            // TODO: Handle checksum address
+            prev[current.toLowerCase()] = quoteResult.quantities[currentIndex]
+            return prev
+          },
+          {} as any
+        )
       }
 
       if (!quantities) throw new Error()

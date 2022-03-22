@@ -3,6 +3,7 @@ import { Box, Flex, Text, BoxProps } from '@theme-ui/components'
 import { Card } from 'components'
 import TokenLogo from 'components/icons/TokenLogo'
 import { formatEther } from 'ethers/lib/utils'
+import { useFacadeContract } from 'hooks/useContract'
 import useTokenSupply from 'hooks/useTokenSupply'
 import { useEffect, useState } from 'react'
 import { Cell, Pie, PieChart } from 'recharts'
@@ -64,6 +65,8 @@ const AssetsChart = ({ collaterals }: { collaterals: any }) => (
   </Flex>
 )
 
+const getAssetInfo = (address: string) => {}
+
 /**
  * RToken Assets overview
  * Display the market cap of the current RToken and the ratio between the RToken and their basket collaterals
@@ -72,9 +75,10 @@ const AssetsChart = ({ collaterals }: { collaterals: any }) => (
  * @returns React.Component
  */
 const AssetsOverview = ({
-  data: { isRSV, token, basket },
+  data: { isRSV, token, basket, facade },
   ...props
 }: Props) => {
+  const facadeContract = useFacadeContract(facade)
   // TODO: For RTokens consult this from the explorer view contract
   // TODO: More than the expected basket tokens could be returned
   const [collaterals, setCollaterals] = useState(
@@ -89,6 +93,22 @@ const AssetsOverview = ({
     }))
   )
   const marketCap = useTokenSupply(token.address)
+
+  const fetchCollaterals = async () => {
+    if (facadeContract) {
+      const assets = await facadeContract.callStatic.currentAssets()
+
+      const collateralValues = await Promise.all(
+        assets.tokens.map(async (assetAddress, index) => {
+          const asset = await getAssetInfo(assetAddress)
+        })
+      )
+    }
+  }
+
+  useEffect(() => {
+    fetchCollaterals()
+  }, [facade])
 
   useEffect(() => {
     if (marketCap) {

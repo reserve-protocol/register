@@ -31,8 +31,14 @@ export const getIssuable = (rsv: ReserveToken, tokenBalances: StringMap) => {
   )
 }
 
-export const quote = (amount: BigNumber): BigNumber[] => [
-  amount.mul(PAX_QTY).mul(EXPO).div(DIV),
-  amount.mul(USDC_QTY).div(DIV),
-  amount.mul(PAX_QTY).mul(EXPO).div(DIV),
-]
+export const quote = (amount: BigNumber): { [x: string]: BigNumber } => ({
+  '0x8e870d67f660d95d5be530380d0ec0bd388289e1': amount
+    .mul(PAX_QTY)
+    .mul(EXPO)
+    .div(DIV), // PAX
+  '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': amount.mul(USDC_QTY).div(DIV), // USDC
+  '0x0000000000085d4780B73119b644AE5ecd22b376': amount
+    .mul(PAX_QTY)
+    .mul(EXPO)
+    .div(DIV), // USDT
+})
