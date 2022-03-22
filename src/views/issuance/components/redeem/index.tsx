@@ -1,6 +1,11 @@
 import styled from '@emotion/styled'
 import { parseEther } from '@ethersproject/units'
-import { ERC20Interface, MainInterface, RSVManagerInterface } from 'abis'
+import {
+  ERC20Interface,
+  MainInterface,
+  RSVManagerInterface,
+  RTokenInterface,
+} from 'abis'
 import { Button, NumericalInput, Card } from 'components'
 import { useState } from 'react'
 import {
@@ -37,7 +42,7 @@ const buildTransactions = (
           abi: ERC20Interface,
           address: data.token.address,
           method: 'approve',
-          args: [data.id, parsedAmount],
+          args: [data.token.address, parsedAmount],
         },
       },
       {
@@ -63,8 +68,8 @@ const buildTransactions = (
       status: TX_STATUS.PENDING,
       value: amount,
       call: {
-        abi: MainInterface,
-        address: data.id,
+        abi: RTokenInterface,
+        address: data.token.address,
         method: 'redeem',
         args: [parsedAmount],
       },

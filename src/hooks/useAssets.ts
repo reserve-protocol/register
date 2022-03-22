@@ -76,6 +76,7 @@ const useAssets = (data: ReserveToken): StringMap[] => {
 
   let resultIndex = 0
 
+  // TODO: Complete
   console.log('current assets', currentAssets)
 
   return Object.keys(currentAssets).map((address, index) => {
