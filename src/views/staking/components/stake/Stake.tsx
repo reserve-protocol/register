@@ -49,7 +49,7 @@ const Stake = ({ data }: { data: ReserveToken }) => {
         description: `Stake ${amount} RSR`,
         status: TX_STATUS.PENDING,
         value: amount,
-        extra: [RSR.address, parseEther(amount)],
+        extra: [[RSR.address, parseEther(amount)]],
         call: {
           abi: StRSRInterface,
           address: stTokenAddress,

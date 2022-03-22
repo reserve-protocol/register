@@ -34,10 +34,12 @@ const Balances = ({ rToken, ...props }: Props) => {
           mr={2}
         >
           <TokenLogo symbol="default" style={{ marginRight: 10 }} />
-          {formatCurrency(
-            tokenBalances[rToken.insurance?.token?.address ?? '']
-          )}
-          <Text>{rToken.insurance?.token?.symbol}</Text>
+          <Text>
+            {formatCurrency(
+              tokenBalances[rToken.insurance?.token?.address ?? '']
+            )}{' '}
+            {rToken.insurance?.token?.symbol}
+          </Text>
         </Card>
         <Card
           sx={{
