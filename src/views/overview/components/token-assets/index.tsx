@@ -2,7 +2,8 @@ import styled from '@emotion/styled'
 import { Box, Flex, Text, BoxProps } from '@theme-ui/components'
 import { Card } from 'components'
 import TokenLogo from 'components/icons/TokenLogo'
-import { formatEther } from 'ethers/lib/utils'
+import { formatEther, formatUnits } from 'ethers/lib/utils'
+import useAssets from 'hooks/useAssets'
 import { useFacadeContract } from 'hooks/useContract'
 import useTokenSupply from 'hooks/useTokenSupply'
 import { useEffect, useState } from 'react'
@@ -65,7 +66,19 @@ const AssetsChart = ({ collaterals }: { collaterals: any }) => (
   </Flex>
 )
 
-const getAssetInfo = (address: string) => {}
+// const getAssetInfo = async (address: string) => {
+//   const
+
+//   return {
+//     name: collateral.token.name,
+//     decimals: collateral.token.decimals,
+//     symbol: collateral.token.symbol,
+//     index: collateral.index,
+//     address: collateral.token.address,
+//     value: 0,
+//     fill: stringToColor(collateral.token.name + collateral.token.symbol),
+//   }
+// }
 
 /**
  * RToken Assets overview
@@ -74,11 +87,9 @@ const getAssetInfo = (address: string) => {}
  * @prop data: ReserveToken
  * @returns React.Component
  */
-const AssetsOverview = ({
-  data: { isRSV, token, basket, facade },
-  ...props
-}: Props) => {
-  const facadeContract = useFacadeContract(facade)
+const AssetsOverview = ({ data, ...props }: Props) => {
+  const { isRSV, token, basket, facade } = data
+  const assets = useAssets(data)
   // TODO: For RTokens consult this from the explorer view contract
   // TODO: More than the expected basket tokens could be returned
   const [collaterals, setCollaterals] = useState(
@@ -94,21 +105,28 @@ const AssetsOverview = ({
   )
   const marketCap = useTokenSupply(token.address)
 
-  const fetchCollaterals = async () => {
-    if (facadeContract) {
-      const assets = await facadeContract.callStatic.currentAssets()
+  console.log('assets', assets)
 
-      const collateralValues = await Promise.all(
-        assets.tokens.map(async (assetAddress, index) => {
-          const asset = await getAssetInfo(assetAddress)
-        })
-      )
-    }
-  }
+  // const fetchCollaterals = async () => {
+  //   if (facadeContract) {
+  //     const assets = await facadeContract.callStatic.currentAssets()
 
-  useEffect(() => {
-    fetchCollaterals()
-  }, [facade])
+  //     const collateralValues = await Promise.all(
+  //       assets.tokens.map(async (assetAddress, index) => {
+  //         const asset = await getAssetInfo(assetAddress)
+
+  //         return {
+  //           ...asset,
+  //           value: formatUnits(assets.amounts[index], asset.decimals
+  //         }
+  //       })
+  //     )
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   fetchCollaterals()
+  // }, [facade])
 
   useEffect(() => {
     if (marketCap) {
