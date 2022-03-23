@@ -6,6 +6,7 @@ import { formatEther, formatUnits } from 'ethers/lib/utils'
 import useAssets from 'hooks/useAssets'
 import { useFacadeContract } from 'hooks/useContract'
 import useTokenSupply from 'hooks/useTokenSupply'
+import { StringMap } from 'i18next'
 import { useEffect, useState } from 'react'
 import { Cell, Pie, PieChart } from 'recharts'
 import { ReserveToken } from 'types'
@@ -89,59 +90,10 @@ const AssetsChart = ({ collaterals }: { collaterals: any }) => (
  */
 const AssetsOverview = ({ data, ...props }: Props) => {
   const { isRSV, token, basket, facade } = data
-  const assets = useAssets(data)
-  // TODO: For RTokens consult this from the explorer view contract
-  // TODO: More than the expected basket tokens could be returned
-  const [collaterals, setCollaterals] = useState(
-    basket.collaterals.map((collateral) => ({
-      name: collateral.token.name,
-      decimals: collateral.token.decimals,
-      symbol: collateral.token.symbol,
-      index: collateral.index,
-      address: collateral.token.address,
-      value: 0,
-      fill: stringToColor(collateral.token.name + collateral.token.symbol),
-    }))
-  )
   const marketCap = useTokenSupply(token.address)
 
-  console.log('assets', assets)
-
-  // const fetchCollaterals = async () => {
-  //   if (facadeContract) {
-  //     const assets = await facadeContract.callStatic.currentAssets()
-
-  //     const collateralValues = await Promise.all(
-  //       assets.tokens.map(async (assetAddress, index) => {
-  //         const asset = await getAssetInfo(assetAddress)
-
-  //         return {
-  //           ...asset,
-  //           value: formatUnits(assets.amounts[index], asset.decimals
-  //         }
-  //       })
-  //     )
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   fetchCollaterals()
-  // }, [facade])
-
-  useEffect(() => {
-    if (marketCap) {
-      if (isRSV) {
-        const distribution = parseFloat(formatEther(marketCap.div(3)))
-
-        setCollaterals(
-          collaterals.map((collateral) => ({
-            ...collateral,
-            value: distribution,
-          }))
-        )
-      }
-    }
-  }, [marketCap.toHexString()])
+  const collaterals = useAssets(data, marketCap)
+  const distribution = parseFloat(formatEther(marketCap.div(3)))
 
   return (
     <Box mb={3} {...props}>

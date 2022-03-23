@@ -62,7 +62,7 @@ const buildTransactions = (
         autoCall: false,
         description,
         status: TX_STATUS.PENDING,
-        value: formatUnits(quantities[token.address], token.decimals),
+        value: formatUnits(tokenAmount, token.decimals),
         call: {
           abi: ERC20Interface,
           address: token.address,
