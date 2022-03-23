@@ -17,7 +17,7 @@ const useAssets = (data: ReserveToken, marketCap: BigNumber): StringMap[] => {
   const [currentAssets, setAssets] = useState(<{ [x: string]: BigNumber }>{})
   const facadeContract = useFacadeContract(data.facade)
 
-  const getAssets = async () => {
+  const getAssets = async (abort: { value: boolean }) => {
     if (facadeContract) {
       const result = await facadeContract.callStatic.currentAssets()
       const contractCalls = []
@@ -51,13 +51,20 @@ const useAssets = (data: ReserveToken, marketCap: BigNumber): StringMap[] => {
         }
       }
 
-      setAssets(assetAmounts)
-      setCalls(contractCalls)
+      if (!abort.value) {
+        setAssets(assetAmounts)
+        setCalls(contractCalls)
+      }
     }
   }
 
   useEffect(() => {
-    getAssets()
+    const abort = { value: false }
+    getAssets(abort)
+
+    return () => {
+      abort.value = true
+    }
   }, [data.id])
 
   const result = <any[]>useContractCalls(data.isRSV ? [] : calls) ?? []

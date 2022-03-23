@@ -148,7 +148,7 @@ const useTokenIssuableAmount = (data: ReserveToken) => {
 // TODO: Validations
 // TODO: Get max issuable quantity from view function (protocol)
 const Issue = ({ data, ...props }: { data: ReserveToken }) => {
-  const token = useTokenContract('0xde2Bd2ffEA002b8E84ADeA96e5976aF664115E2c')
+  // const token = useTokenContract('0xde2Bd2ffEA002b8E84ADeA96e5976aF664115E2c')
   const [amount, setAmount] = useState('')
   const [issuing, setIssuing] = useState(false)
   const basketHandler = useBasketHandlerContract(data.basketHandler)
@@ -168,8 +168,7 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
         const quoteResult = await basketHandler.quote(issueAmount, 2)
         quantities = quoteResult.erc20s.reduce(
           (prev, current, currentIndex) => {
-            // TODO: Handle checksum address
-            prev[current.toLowerCase()] = quoteResult.quantities[currentIndex]
+            prev[getAddress(current)] = quoteResult.quantities[currentIndex]
             return prev
           },
           {} as any

@@ -1,6 +1,11 @@
 [
   {
     "inputs": [],
+    "name": "EmptyBasket",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "IntOutOfBounds",
     "type": "error"
   },
@@ -43,6 +48,12 @@
         "internalType": "int192[]",
         "name": "refAmts",
         "type": "int192[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "defaulted",
+        "type": "bool"
       }
     ],
     "name": "BasketSet",
@@ -62,6 +73,12 @@
         "internalType": "int192[]",
         "name": "targetAmts",
         "type": "int192[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32[]",
+        "name": "targetNames",
+        "type": "bytes32[]"
       }
     ],
     "name": "PrimeBasketSet",
@@ -119,7 +136,7 @@
             "components": [
               {
                 "internalType": "int192",
-                "name": "maxAuctionSize",
+                "name": "maxTradeVolume",
                 "type": "int192"
               },
               {

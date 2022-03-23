@@ -91,9 +91,7 @@ const AssetsChart = ({ collaterals }: { collaterals: any }) => (
 const AssetsOverview = ({ data, ...props }: Props) => {
   const { isRSV, token, basket, facade } = data
   const marketCap = useTokenSupply(token.address)
-
   const collaterals = useAssets(data, marketCap)
-  const distribution = parseFloat(formatEther(marketCap.div(3)))
 
   return (
     <Box mb={3} {...props}>
