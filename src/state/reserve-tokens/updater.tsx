@@ -59,7 +59,7 @@ const formatTokens = (mains: any[]): { [x: string]: ReserveToken } =>
         ...data.token,
         supply: data.token.supply?.total || 0,
       },
-      basket: data.basket,
+      basket: data.basket || { collaterals: [] },
       insurance: {
         staked: data.staked,
         token: data.stToken,

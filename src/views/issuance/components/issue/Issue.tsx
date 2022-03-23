@@ -2,22 +2,20 @@ import styled from '@emotion/styled'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Box, Card, Text } from '@theme-ui/components'
 import { useEthers } from '@usedapp/core'
-import {
-  ERC20Interface,
-  MainInterface,
-  RSVManagerInterface,
-  RTokenInterface,
-} from 'abis'
+import { ERC20Interface, RSVManagerInterface, RTokenInterface } from 'abis'
 import { Button, NumericalInput } from 'components'
-import { formatEther, formatUnits, parseEther } from 'ethers/lib/utils'
+import {
+  formatEther,
+  formatUnits,
+  getAddress,
+  parseEther,
+} from 'ethers/lib/utils'
 import {
   useBasketHandlerContract,
   useFacadeContract,
-  useMainContract,
-  useRTokenContract,
   useTokenContract,
 } from 'hooks/useContract'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import {
   loadTransactions,
@@ -51,13 +49,12 @@ const buildTransactions = (
 ): TransactionState[] => {
   const tokenQuantities: [string, BigNumber][] = []
 
-  console.log('quantities', quantities)
-
   // Create token approvals calls array
   const transactions: TransactionState[] = data.basket.collaterals.map(
     ({ token, index }) => {
       const description = `Approve ${token.symbol} for issuance`
-      const tokenAmount = quantities[token.address]
+      const tokenAmount = quantities[getAddress(token.address)]
+
       // Fill token quantities on the same map
       tokenQuantities.push([token.address, tokenAmount])
 
