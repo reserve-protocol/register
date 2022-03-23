@@ -15,6 +15,7 @@ import {
   useFacadeContract,
   useMainContract,
   useRTokenContract,
+  useTokenContract,
 } from 'hooks/useContract'
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
@@ -49,6 +50,8 @@ const buildTransactions = (
   quantities: { [x: string]: BigNumber }
 ): TransactionState[] => {
   const tokenQuantities: [string, BigNumber][] = []
+
+  console.log('quantities', quantities)
 
   // Create token approvals calls array
   const transactions: TransactionState[] = data.basket.collaterals.map(
@@ -148,6 +151,7 @@ const useTokenIssuableAmount = (data: ReserveToken) => {
 // TODO: Validations
 // TODO: Get max issuable quantity from view function (protocol)
 const Issue = ({ data, ...props }: { data: ReserveToken }) => {
+  const token = useTokenContract('0xde2Bd2ffEA002b8E84ADeA96e5976aF664115E2c')
   const [amount, setAmount] = useState('')
   const [issuing, setIssuing] = useState(false)
   const basketHandler = useBasketHandlerContract(data.basketHandler)
@@ -158,7 +162,7 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
     setIssuing(true)
     try {
       const issueAmount = parseEther(amount)
-      let quantities
+      let quantities: { [x: string]: BigNumber } = {}
 
       // RSV have hardcoded quantities
       if (data.isRSV) {
@@ -175,7 +179,9 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
         )
       }
 
-      if (!quantities) throw new Error()
+      if (!Object.keys(quantities).length) {
+        throw new Error('Unable to fetch quantities')
+      }
 
       setAmount('')
       loadTransactions(dispatch, buildTransactions(data, amount, quantities))

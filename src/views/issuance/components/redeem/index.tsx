@@ -30,8 +30,6 @@ const buildTransactions = (
   const parsedAmount = parseEther(amount)
 
   if (data.isRSV) {
-    const tokenAllowance = [[data.token.address, parsedAmount]]
-
     return [
       {
         autoCall: false,
@@ -42,7 +40,7 @@ const buildTransactions = (
           abi: ERC20Interface,
           address: data.token.address,
           method: 'approve',
-          args: [data.token.address, parsedAmount],
+          args: [data.id, parsedAmount],
         },
       },
       {
@@ -50,7 +48,7 @@ const buildTransactions = (
         description: `Redeem ${amount} ${data.token.symbol}`,
         status: TX_STATUS.PENDING,
         value: amount,
-        extra: tokenAllowance,
+        extra: [[data.token.address, parsedAmount]],
         call: {
           abi: RSVManagerInterface,
           address: data.id,
