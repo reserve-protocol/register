@@ -26,7 +26,7 @@ const Issuance = () => {
       <Container pb={4}>
         <Grid columns={[2, '2fr 1fr']} gap={4}>
           <Box>
-            <Text mb={3} mt={3} variant="sectionTitle" sx={{ fontWeight: 500 }}>
+            <Text mb={3} variant="sectionTitle" sx={{ fontWeight: 500 }}>
               Mint & Redeem {RToken.token.symbol}
             </Text>
             <Grid columns={2}>

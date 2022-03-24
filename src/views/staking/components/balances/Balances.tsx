@@ -22,17 +22,8 @@ const Balances = ({ rToken, ...props }: Props) => {
       <Text variant="sectionTitle" mb={2}>
         Your balances
       </Text>
-      <Flex>
-        <Card
-          sx={{
-            flexGrow: 1,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: 5,
-          }}
-          mr={2}
-        >
+      <Card sx={{ fontSize: 20 }} p={4}>
+        <Flex mb={3}>
           <TokenLogo symbol="default" style={{ marginRight: 10 }} />
           <Text>
             {formatCurrency(
@@ -40,23 +31,14 @@ const Balances = ({ rToken, ...props }: Props) => {
             )}{' '}
             {rToken.insurance?.token?.symbol}
           </Text>
-        </Card>
-        <Card
-          sx={{
-            flexGrow: 1,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: 5,
-          }}
-          ml={2}
-        >
-          <RTokenIcon style={{ marginRight: 10 }} />
+        </Flex>
+        <Flex>
+          <TokenLogo symbol="rsr" style={{ marginRight: 10 }} />
           <Text>
             {formatCurrency(tokenBalances[RSR.address])} {RSR.symbol}
           </Text>
-        </Card>
-      </Flex>
+        </Flex>
+      </Card>
     </Box>
   )
 }
