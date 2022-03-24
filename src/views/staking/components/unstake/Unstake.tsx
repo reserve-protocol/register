@@ -22,7 +22,6 @@ const Unstake = ({ data }: { data: ReserveToken }) => {
   const [, dispatch] = useTransactionsState()
 
   const handleUnstake = () => {
-    setAmount('')
     loadTransactions(dispatch, [
       {
         autoCall: true,
@@ -37,6 +36,8 @@ const Unstake = ({ data }: { data: ReserveToken }) => {
         },
       },
     ])
+
+    setAmount('')
   }
 
   return (
@@ -47,7 +48,7 @@ const Unstake = ({ data }: { data: ReserveToken }) => {
         onChange={setAmount}
       />
       <Button mt={2} onClick={handleUnstake}>
-        Withdraw
+        Unstake
       </Button>
     </InputContainer>
   )
