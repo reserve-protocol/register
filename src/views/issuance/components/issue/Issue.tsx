@@ -10,11 +10,7 @@ import {
   getAddress,
   parseEther,
 } from 'ethers/lib/utils'
-import {
-  useBasketHandlerContract,
-  useFacadeContract,
-  useTokenContract,
-} from 'hooks/useContract'
+import { useBasketHandlerContract, useFacadeContract } from 'hooks/useContract'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import {
@@ -26,6 +22,7 @@ import {
 import { useAppSelector } from 'state/hooks'
 import { selectBalanceAggregate } from 'state/reserve-tokens/reducer'
 import { ReserveToken } from 'types'
+import { formatCurrency } from 'utils'
 import { getIssuable, quote } from 'utils/rsv'
 
 const InputContainer = styled(Box)`
@@ -148,7 +145,6 @@ const useTokenIssuableAmount = (data: ReserveToken) => {
 // TODO: Validations
 // TODO: Get max issuable quantity from view function (protocol)
 const Issue = ({ data, ...props }: { data: ReserveToken }) => {
-  // const token = useTokenContract('0xde2Bd2ffEA002b8E84ADeA96e5976aF664115E2c')
   const [amount, setAmount] = useState('')
   const [issuing, setIssuing] = useState(false)
   const basketHandler = useBasketHandlerContract(data.basketHandler)
@@ -212,7 +208,7 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
           variant="a"
           sx={{ marginLeft: 'auto', marginTop: 1 }}
         >
-          Max: {issuableAmount}
+          Max: {formatCurrency(issuableAmount)}
         </Text>
         <Button disabled={!isValid() || issuing} mt={2} onClick={handleIssue}>
           + Mint {data.token.symbol}

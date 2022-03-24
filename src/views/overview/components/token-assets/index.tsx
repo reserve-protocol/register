@@ -1,16 +1,13 @@
 import styled from '@emotion/styled'
-import { Box, Flex, Text, BoxProps } from '@theme-ui/components'
+import { Box, BoxProps, Flex, Text } from '@theme-ui/components'
 import { Card } from 'components'
 import TokenLogo from 'components/icons/TokenLogo'
-import { formatEther, formatUnits } from 'ethers/lib/utils'
+import { formatEther } from 'ethers/lib/utils'
 import useAssets from 'hooks/useAssets'
-import { useFacadeContract } from 'hooks/useContract'
 import useTokenSupply from 'hooks/useTokenSupply'
-import { StringMap } from 'i18next'
-import { useEffect, useState } from 'react'
 import { Cell, Pie, PieChart } from 'recharts'
 import { ReserveToken } from 'types'
-import { formatCurrency, stringToColor } from 'utils'
+import { formatCurrency } from 'utils'
 
 interface Props extends BoxProps {
   data: ReserveToken
@@ -67,20 +64,6 @@ const AssetsChart = ({ collaterals }: { collaterals: any }) => (
   </Flex>
 )
 
-// const getAssetInfo = async (address: string) => {
-//   const
-
-//   return {
-//     name: collateral.token.name,
-//     decimals: collateral.token.decimals,
-//     symbol: collateral.token.symbol,
-//     index: collateral.index,
-//     address: collateral.token.address,
-//     value: 0,
-//     fill: stringToColor(collateral.token.name + collateral.token.symbol),
-//   }
-// }
-
 /**
  * RToken Assets overview
  * Display the market cap of the current RToken and the ratio between the RToken and their basket collaterals
@@ -89,7 +72,7 @@ const AssetsChart = ({ collaterals }: { collaterals: any }) => (
  * @returns React.Component
  */
 const AssetsOverview = ({ data, ...props }: Props) => {
-  const { isRSV, token, basket, facade } = data
+  const { token } = data
   const marketCap = useTokenSupply(token.address)
   const collaterals = useAssets(data, marketCap)
 

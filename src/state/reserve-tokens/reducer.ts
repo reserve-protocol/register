@@ -46,9 +46,9 @@ export const selectCurrentRToken = createSelector(
 export const selectBalanceAggregate = createSelector(
   selectCurrentRToken,
   (state: any) => state.reserveTokens.balances,
-  (rToken, balances): number => {
+  (rToken, balances): { value: number } => {
     if (!rToken) {
-      return 0
+      return { value: 0 }
     }
 
     const addresses: string[] = [
@@ -57,8 +57,11 @@ export const selectBalanceAggregate = createSelector(
     ]
 
     return addresses.reduce(
-      (prev: any, current: any) => prev + (balances[current] || 0),
-      0
+      (prev: any, current: any) => {
+        prev.value += balances[current] || 0
+        return prev
+      },
+      { value: 0 }
     )
   }
 )
