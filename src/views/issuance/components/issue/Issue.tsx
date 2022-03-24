@@ -113,22 +113,33 @@ const useTokenIssuableAmount = (data: ReserveToken) => {
   // TODO: replace for facade
   const facadeContract = useFacadeContract(data.facade ?? '')
 
-  const setMaxIssuable = async (address: string) => {
+  const setMaxIssuable = async (
+    address: string,
+    mounted: { value: boolean }
+  ) => {
     try {
       const maxIssuable = await facadeContract!.callStatic.maxIssuable(address)
-      setAmount(maxIssuable ? Number(formatEther(maxIssuable)) : 0)
+      if (mounted.value) {
+        setAmount(maxIssuable ? Number(formatEther(maxIssuable)) : 0)
+      }
     } catch (e) {
       console.log('error with max issuable', e)
     }
   }
 
   useEffect(() => {
+    const mounted = { value: true }
+
     if (data.isRSV) {
       setAmount(getIssuable(data, tokenBalances))
     } else if (account && facadeContract) {
-      setMaxIssuable(account)
+      setMaxIssuable(account, mounted)
     } else {
       setAmount(0)
+    }
+
+    return () => {
+      mounted.value = false
     }
   }, [balance, data.id])
 

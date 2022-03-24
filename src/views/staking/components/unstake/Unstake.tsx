@@ -1,15 +1,17 @@
 import styled from '@emotion/styled'
 import { parseEther } from '@ethersproject/units'
-import { Box } from '@theme-ui/components'
+import { Box, Text, Card } from '@theme-ui/components'
 import { StRSRInterface } from 'abis'
-import { Button, Input } from 'components'
+import { Button, NumericalInput } from 'components'
 import { useState } from 'react'
 import {
   loadTransactions,
   TX_STATUS,
   useTransactionsState,
 } from 'state/context/TransactionManager'
+import { useAppSelector } from 'state/hooks'
 import { ReserveToken } from 'types'
+import { formatCurrency } from 'utils'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -19,6 +21,11 @@ const InputContainer = styled(Box)`
 
 const Unstake = ({ data }: { data: ReserveToken }) => {
   const [amount, setAmount] = useState('')
+  const balance =
+    useAppSelector(
+      ({ reserveTokens }) =>
+        reserveTokens.balances[data.insurance?.token.address ?? '']
+    ) || 0
   const [, dispatch] = useTransactionsState()
 
   const handleUnstake = () => {
@@ -40,17 +47,36 @@ const Unstake = ({ data }: { data: ReserveToken }) => {
     setAmount('')
   }
 
+  const isValid = () => {
+    const value = Number(amount)
+    return value > 0 && value <= balance
+  }
+
   return (
-    <InputContainer mx={2}>
-      <Input
-        placeholder="Withdrawn amount"
-        value={amount}
-        onChange={setAmount}
-      />
-      <Button mt={2} onClick={handleUnstake}>
-        Unstake
-      </Button>
-    </InputContainer>
+    <Card>
+      <InputContainer mx={2}>
+        <Text as="label" variant="contentTitle" mb={2}>
+          UnStake
+        </Text>
+        <NumericalInput
+          id="unstake"
+          placeholder="UnStake amount"
+          value={amount}
+          onChange={setAmount}
+        />
+        <Text
+          onClick={() => setAmount(balance.toString())}
+          as="a"
+          variant="a"
+          sx={{ marginLeft: 'auto', marginTop: 1 }}
+        >
+          Max: {formatCurrency(balance)}
+        </Text>
+        <Button mt={2} disabled={!isValid()} onClick={handleUnstake}>
+          Unstake
+        </Button>
+      </InputContainer>
+    </Card>
   )
 }
 
