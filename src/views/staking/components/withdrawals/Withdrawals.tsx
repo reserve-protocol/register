@@ -8,12 +8,19 @@ import { Button, Modal } from 'components'
 import { formatEther } from 'ethers/lib/utils'
 import { formatCurrency } from 'utils'
 import { Table } from 'components/table'
+import {
+  loadTransactions,
+  TX_STATUS,
+  useTransactionsState,
+} from 'state/context/TransactionManager'
+import { StRSRInterface } from 'abis'
 
 const pendingWithdrawalsQuery = gql`
   subscription GetPendingWithdrawals($userId: String!) {
     entries(where: { type: "Unstake", status: Pending, user: $userId }) {
       id
       amount
+      draftId
       stAmount
       availableAt
     }
@@ -33,10 +40,11 @@ const columns = [
 const Withdrawals = (props: BoxProps) => {
   const [visible, setVisible] = useState(false)
   const { account } = useEthers()
+  const [, dispatch] = useTransactionsState()
   const blockNumber = useBlockNumber() ?? ''
   const { data, loading } = useSubscription(pendingWithdrawalsQuery, {
     variables: {
-      orderBy: 'availableAt',
+      orderBy: 'draftId',
       where: {},
       userId: account?.toLowerCase(),
     },
@@ -47,6 +55,7 @@ const Withdrawals = (props: BoxProps) => {
   // TODO: Move this to a hook
   let pending = BigNumber.from(0)
   let available = BigNumber.from(0)
+  let lastId = BigNumber.from(0)
 
   for (const entry of entries) {
     const amount = BigNumber.from(entry.amount)
@@ -54,8 +63,26 @@ const Withdrawals = (props: BoxProps) => {
     if (Number(entry.availableAt) > blockNumber) {
       pending = pending.add(amount)
     } else {
+      lastId = BigNumber.from(entry.draftId)
       available = available.add(amount)
     }
+  }
+
+  const handleWithdraw = () => {
+    loadTransactions(dispatch, [
+      {
+        autoCall: true,
+        description: `Withdraw ${formatEther(pending)}`,
+        status: TX_STATUS.PENDING,
+        value: formatEther(pending),
+        call: {
+          abi: StRSRInterface,
+          address: data.insurance?.token?.address as string,
+          method: 'withdraw',
+          args: [account, lastId.add(BigNumber.from(1))],
+        },
+      },
+    ])
   }
 
   return (
@@ -82,8 +109,9 @@ const Withdrawals = (props: BoxProps) => {
                 paddingRight: '8px',
                 fontSize: 1,
               }}
+              onClick={handleWithdraw}
             >
-              Withdrawn
+              Withdraw
             </Button>
           )}
         </Flex>
@@ -120,7 +148,7 @@ const Withdrawals = (props: BoxProps) => {
             }}
           >
             <Text variant="contentTitle" sx={{ fontSize: '12px' }}>
-              All funds will be available to be withdrawn at block{' '}
+              All funds will be available to be withdraw at block{' '}
               {entries[entries.length - 1].availableAt}
             </Text>
           </Box>
