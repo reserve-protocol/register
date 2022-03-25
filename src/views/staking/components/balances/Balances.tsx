@@ -22,7 +22,7 @@ const Balances = ({ rToken, ...props }: Props) => {
       <Text variant="sectionTitle" mb={2}>
         Your balances
       </Text>
-      <Card sx={{ fontSize: 20 }} p={4}>
+      <Card sx={{ fontSize: 20 }} p={3}>
         <Flex mb={3}>
           <TokenLogo symbol="default" style={{ marginRight: 10 }} />
           <Text>

@@ -9,8 +9,7 @@ import PendingIssuances from './pending'
 const GET_TX_HISTORY = gql`
   query GetIssuancesHistory($userId: String!) {
     entries(
-      user: $userId
-      where: { type_in: ["Issuance", "Redemption"] }
+      where: { type_in: ["Issuance", "Redemption"], user: $userId }
       orderBy: createdAt
       orderDirection: desc
     ) {
@@ -42,7 +41,7 @@ const IssuanceRecords = () => {
   const { data, loading } = useQuery(GET_TX_HISTORY, {
     variables: {
       where: {},
-      userId: account,
+      userId: account?.toLocaleLowerCase(),
     },
   })
   const [current, setCurrent] = useState(0)

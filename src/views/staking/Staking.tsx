@@ -1,12 +1,8 @@
-import { gql, useQuery, useSubscription } from '@apollo/client'
-import { Box, Grid, Text, Divider, Card } from '@theme-ui/components'
-import { useContractCall, useEthers } from '@usedapp/core'
-import { StRSR, StRSRInterface } from 'abis'
+import { gql, useQuery } from '@apollo/client'
+import { Box, Divider, Grid, Text } from '@theme-ui/components'
+import { useEthers } from '@usedapp/core'
 import { Container } from 'components'
 import TransactionHistory from 'components/transaction-history'
-import { BigNumber } from 'ethers'
-import { formatEther } from 'ethers/lib/utils'
-import { useContract } from 'hooks/useContract'
 import TransactionManager from 'state/context/TransactionManager'
 import { RequiredApprovedTransactionWorker } from 'state/context/TransactionWorker'
 import { useAppSelector } from 'state/hooks'
@@ -15,44 +11,32 @@ import { ReserveToken } from 'types'
 import Balances from './components/balances'
 import Stake from './components/stake'
 import Unstake from './components/unstake'
+import Withdrawals from './components/withdrawals'
 
-const GET_PENDING_WITHDRAWALS = gql`
-  subscription GetPendingWithdrawals($userId: String!) {
-    entries(where: { type: "Unstake", status: Pending, user: $userId }) {
+const getHistory = gql`
+  query GetPendingWithdrawals($userId: String!) {
+    entries(where: { type_in: ["Stake", "Unstake"], user: $userId }) {
       id
       type
       amount
-      stAmount
-      availableAt
+      createdAt
       transaction {
-        id
-      }
-      user {
         id
       }
     }
   }
 `
+
 const Staking = () => {
   // This component is protected by a guard, RToken always exists
   const RToken = useAppSelector(selectCurrentRToken) as ReserveToken
   const { account } = useEthers()
-  const { data, loading } = useSubscription(GET_PENDING_WITHDRAWALS, {
+  const { data, loading } = useQuery(getHistory, {
     variables: {
-      orderBy: 'availableAt',
       where: {},
       userId: account?.toLowerCase(),
     },
   })
-
-  const entries = data?.entries ?? []
-
-  // TODO: Move this to a hook
-  let pending = BigNumber.from(0)
-
-  for (const entry of entries) {
-    pending = pending.add(BigNumber.from(entry.amount))
-  }
 
   return (
     <TransactionManager>
@@ -73,16 +57,14 @@ const Staking = () => {
             <Text mt={3} mb={2} variant="sectionTitle">
               Withdrawals
             </Text>
-            <Card>
-              <Text>Pending: {formatEther(pending.toString())} RSR</Text>
-            </Card>
+            <Withdrawals />
           </Box>
         </Grid>
         <Divider mt={4} mb={4} sx={{ borderColor: '#DFDFDF' }} />
         <Text mb={3} variant="sectionTitle">
           Transactions
         </Text>
-        <TransactionHistory history={entries} />
+        <TransactionHistory history={data?.entries ?? []} />
       </Container>
     </TransactionManager>
   )

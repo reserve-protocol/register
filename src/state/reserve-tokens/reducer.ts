@@ -9,7 +9,8 @@ export interface ReserveTokenState {
 
 const initialState: ReserveTokenState = {
   list: {},
-  current: null,
+  // TODO: dev only
+  current: '0x4e0c596be5fe217cb80aeb4c47c72701dff0f6bc',
   // Represent balances for the CONNECTED account only
   // This balances are fetched from the chain
   balances: {},
