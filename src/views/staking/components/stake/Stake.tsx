@@ -72,7 +72,7 @@ const Stake = ({ data, ...props }: { data: ReserveToken }) => {
 
   return (
     <Card {...props}>
-      <InputContainer mx={2}>
+      <InputContainer m={3}>
         <Text as="label" variant="contentTitle" mb={2}>
           Stake
         </Text>

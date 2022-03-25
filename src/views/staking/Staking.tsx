@@ -14,8 +14,10 @@ import Unstake from './components/unstake'
 import Withdrawals from './components/withdrawals'
 
 const getHistory = gql`
-  query GetPendingWithdrawals($userId: String!) {
-    entries(where: { type_in: ["Stake", "Unstake"], user: $userId }) {
+  query GetPendingWithdrawals($userId: String!, $token: String!) {
+    entries(
+      where: { type_in: ["Stake", "Unstake"], user: $userId, token: $token }
+    ) {
       id
       type
       amount
@@ -35,6 +37,7 @@ const Staking = () => {
     variables: {
       where: {},
       userId: account?.toLowerCase(),
+      token: RToken.insurance!.token.address,
     },
   })
 

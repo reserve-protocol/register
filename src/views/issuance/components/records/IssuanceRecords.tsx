@@ -7,9 +7,13 @@ import { useState } from 'react'
 import PendingIssuances from './pending'
 
 const GET_TX_HISTORY = gql`
-  query GetIssuancesHistory($userId: String!) {
+  query GetIssuancesHistory($userId: String!, $token: String) {
     entries(
-      where: { type_in: ["Issuance", "Redemption"], user: $userId }
+      where: {
+        type_in: ["Issuance", "Redemption"]
+        user: $userId
+        token: $token
+      }
       orderBy: createdAt
       orderDirection: desc
     ) {
@@ -35,13 +39,14 @@ const TabTitle = styled(Text)`
   cursor: ${({ defaultChecked }) => (defaultChecked ? 'inherit' : 'pointer')};
 `
 
-const IssuanceRecords = () => {
+const IssuanceRecords = ({ token }: { token: string }) => {
   // This component is protected by a guard, RToken always exists
   const { account } = useEthers()
   const { data, loading } = useQuery(GET_TX_HISTORY, {
     variables: {
       where: {},
       userId: account?.toLocaleLowerCase(),
+      token,
     },
   })
   const [current, setCurrent] = useState(0)

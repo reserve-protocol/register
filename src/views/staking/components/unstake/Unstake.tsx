@@ -54,7 +54,7 @@ const Unstake = ({ data }: { data: ReserveToken }) => {
 
   return (
     <Card>
-      <InputContainer mx={2}>
+      <InputContainer m={3}>
         <Text as="label" variant="contentTitle" mb={2}>
           UnStake
         </Text>

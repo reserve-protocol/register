@@ -37,7 +37,7 @@ const Issuance = () => {
           <Balances rToken={RToken} />
         </Grid>
         <Divider mt={4} mb={4} sx={{ borderColor: '#DFDFDF' }} />
-        <IssuanceRecords />
+        <IssuanceRecords token={RToken.token.address} />
       </Container>
     </TransactionManager>
   )

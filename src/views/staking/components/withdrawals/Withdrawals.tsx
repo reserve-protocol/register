@@ -87,7 +87,7 @@ const Withdrawals = (props: BoxProps) => {
             </Button>
           )}
         </Flex>
-        <Divider />
+        <Divider sx={{ borderColor: '#DFDFDF' }} />
         <Box>
           <Text variant="contentTitle" sx={{ fontSize: 2 }}>
             Pending
