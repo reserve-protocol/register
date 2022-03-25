@@ -48,7 +48,7 @@ const PendingIssuances = (props: any) => {
     variables: {
       orderBy: 'availableAt',
       where: {},
-      userId: account,
+      userId: account?.toLowerCase(),
     },
   })
 
