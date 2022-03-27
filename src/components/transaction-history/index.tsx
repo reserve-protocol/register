@@ -65,7 +65,11 @@ const TransactionHistory = ({
 
   return (
     <>
-      <Table columns={columns as any} data={dataset} />
+      <Table
+        columns={columns as any}
+        pagination={{ pageSize: 10 }}
+        data={dataset}
+      />
 
       {dataset.length === 0 && (
         <Box sx={{ textAlign: 'center' }} mt={3}>
