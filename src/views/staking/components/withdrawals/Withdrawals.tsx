@@ -148,8 +148,10 @@ const Withdrawals = (props: BoxProps) => {
             }}
           >
             <Text variant="contentTitle" sx={{ fontSize: '12px' }}>
-              All funds will be available to be withdraw at block{' '}
-              {entries[entries.length - 1].availableAt}
+              All funds will be available to be withdraw on{' '}
+              {new Date(
+                Number(entries[entries.length - 1].availableAt) * 1000
+              ).toDateString()}
             </Text>
           </Box>
         )}
