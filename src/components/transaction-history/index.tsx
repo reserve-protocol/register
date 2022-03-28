@@ -63,20 +63,20 @@ const TransactionHistory = ({
     [state.list, history.length]
   )
 
-  return (
-    <>
-      <Table
-        columns={columns as any}
-        pagination={{ pageSize: 10 }}
-        data={dataset}
-      />
+  if (!dataset.length) {
+    return (
+      <Box sx={{ textAlign: 'center' }} mt={3}>
+        <Text>No recent transactions...</Text>
+      </Box>
+    )
+  }
 
-      {dataset.length === 0 && (
-        <Box sx={{ textAlign: 'center' }} mt={3}>
-          <Text>No recent transactions...</Text>
-        </Box>
-      )}
-    </>
+  return (
+    <Table
+      columns={columns as any}
+      pagination={{ pageSize: 10 }}
+      data={dataset}
+    />
   )
 }
 

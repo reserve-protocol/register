@@ -17,7 +17,7 @@ const Balances = ({ rToken, ...props }: Props) => {
 
   return (
     <Box {...props}>
-      <Text variant="sectionTitle" sx={{ fontWeight: 500 }} mb={2}>
+      <Text variant="sectionTitle" mb={2}>
         Your balance
       </Text>
       <Card p={3}>

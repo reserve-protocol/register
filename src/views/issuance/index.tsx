@@ -1,5 +1,8 @@
+import { gql, useQuery } from '@apollo/client'
 import { Box, Divider, Grid, Text } from '@theme-ui/components'
+import { useEthers } from '@usedapp/core'
 import { Container } from 'components'
+import TransactionHistory from 'components/transaction-history'
 import TransactionManager from 'state/context/TransactionManager'
 import { RequiredApprovedTransactionWorker } from 'state/context/TransactionWorker'
 import { useAppSelector } from 'state/hooks'
@@ -7,11 +10,39 @@ import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
 import { ReserveToken } from 'types'
 import Balances from './components/balances'
 import Issue from './components/issue'
-import IssuanceRecords from './components/records'
 import Redeem from './components/redeem'
+
+// TODO: make this query generic
+const getHistory = gql`
+  query GetIssuancesHistory($userId: String!, $token: String!) {
+    entries(
+      where: {
+        type_in: ["Issuance", "Redemption"]
+        user: $userId
+        token: $token
+      }
+    ) {
+      id
+      type
+      amount
+      createdAt
+      transaction {
+        id
+      }
+    }
+  }
+`
 
 const Issuance = () => {
   const RToken = useAppSelector(selectCurrentRToken) as ReserveToken
+  const { account } = useEthers()
+  const { data, loading } = useQuery(getHistory, {
+    variables: {
+      where: {},
+      userId: account?.toLocaleLowerCase(),
+      token: RToken.token.address,
+    },
+  })
   const balance =
     useAppSelector(
       ({ reserveTokens }) => reserveTokens.balances[RToken.token.address]
@@ -26,7 +57,7 @@ const Issuance = () => {
       <Container pb={4}>
         <Grid columns={[2, '2fr 1fr']} gap={4}>
           <Box>
-            <Text mb={3} variant="sectionTitle" sx={{ fontWeight: 500 }}>
+            <Text mb={3} variant="sectionTitle">
               Mint & Redeem {RToken.token.symbol}
             </Text>
             <Grid columns={2}>
@@ -37,7 +68,10 @@ const Issuance = () => {
           <Balances rToken={RToken} />
         </Grid>
         <Divider mt={4} mb={4} sx={{ borderColor: '#DFDFDF' }} />
-        <IssuanceRecords token={RToken.token.address} />
+        <Text mb={3} variant="sectionTitle">
+          Transactions
+        </Text>
+        <TransactionHistory history={data?.entries ?? []} />
       </Container>
     </TransactionManager>
   )

@@ -12,7 +12,7 @@ export interface TablePaginationProps {
    */
   data?: any[]
   /**
-   * whether to make totlal countfield visible
+   * whether to make total countfield visible
    */
   totalCountVisible?: boolean
 
