@@ -17,7 +17,7 @@ const getHistory = gql`
   query GetPendingWithdrawals($userId: String!, $token: String!) {
     entries(
       where: {
-        type_in: ["Stake", "Unstake", "Withdrawn"]
+        type_in: ["Stake", "Unstake", "Withdraw"]
         user: $userId
         token: $token
       }
@@ -54,7 +54,7 @@ const Staking = () => {
         <Grid columns={[2, '2fr 1fr']} gap={4}>
           <Box>
             <Text mb={2} variant="sectionTitle">
-              Stake and Withdrawn
+              Insurance
             </Text>
             <Grid columns={2} mb={3}>
               <Stake data={RToken} />

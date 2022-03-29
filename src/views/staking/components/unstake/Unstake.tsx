@@ -32,7 +32,7 @@ const Unstake = ({ data }: { data: ReserveToken }) => {
     loadTransactions(dispatch, [
       {
         autoCall: true,
-        description: `Withdrawn ${amount}`,
+        description: `Unstake ${amount}`,
         status: TX_STATUS.PENDING,
         value: amount,
         call: {

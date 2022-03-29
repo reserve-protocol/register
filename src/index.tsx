@@ -2,7 +2,7 @@ import { ApolloProvider } from '@apollo/client'
 import { ChainId, DAppProvider } from '@usedapp/core'
 import { MULTICALL_ADDRESS } from 'constants/addresses'
 import { StrictMode } from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { Provider as StoreProvider } from 'react-redux'
 import apolloClient from './apollo/client'
 import App from './App'
@@ -20,7 +20,9 @@ const config = {
   multicallAddresses: MULTICALL_ADDRESS,
 }
 
-ReactDOM.render(
+const root = createRoot(document.getElementById('root')!)
+
+root.render(
   <StrictMode>
     <ApolloProvider client={apolloClient}>
       <StoreProvider store={store}>
@@ -29,6 +31,5 @@ ReactDOM.render(
         </DAppProvider>
       </StoreProvider>
     </ApolloProvider>
-  </StrictMode>,
-  document.getElementById('root')
+  </StrictMode>
 )
