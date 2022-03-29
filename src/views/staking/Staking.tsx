@@ -1,6 +1,6 @@
 import { gql, useQuery } from '@apollo/client'
 import { Box, Divider, Grid, Text } from '@theme-ui/components'
-import { useEthers } from '@usedapp/core'
+import { useBlockMeta, useEthers } from '@usedapp/core'
 import { Container } from 'components'
 import TransactionHistory from 'components/transaction-history'
 import TransactionManager from 'state/context/TransactionManager'
@@ -16,7 +16,13 @@ import Withdrawals from './components/withdrawals'
 const getHistory = gql`
   query GetPendingWithdrawals($userId: String!, $token: String!) {
     entries(
-      where: { type_in: ["Stake", "Unstake"], user: $userId, token: $token }
+      where: {
+        type_in: ["Stake", "Unstake", "Withdrawn"]
+        user: $userId
+        token: $token
+      }
+      orderBy: createdAt
+      orderDirection: desc
     ) {
       id
       type
@@ -60,7 +66,7 @@ const Staking = () => {
             <Text mt={3} mb={2} variant="sectionTitle">
               Withdrawals
             </Text>
-            <Withdrawals />
+            <Withdrawals tokenAddress={RToken.insurance?.token.address ?? ''} />
           </Box>
         </Grid>
         <Divider mt={4} mb={4} sx={{ borderColor: '#DFDFDF' }} />

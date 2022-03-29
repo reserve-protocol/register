@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { gql, useSubscription } from '@apollo/client'
 import { BigNumber } from '@ethersproject/bignumber'
-import { parseEther } from '@ethersproject/units'
 import { Box, Card, BoxProps, Text, Divider, Flex } from '@theme-ui/components'
-import { useBlockNumber, useEthers } from '@usedapp/core'
+import { useEthers } from '@usedapp/core'
 import { Button, Modal } from 'components'
 import { formatEther } from 'ethers/lib/utils'
 import { formatCurrency } from 'utils'
@@ -37,11 +36,10 @@ const columns = [
   { Header: 'Block available at', accessor: 'availableAt' },
 ]
 
-const Withdrawals = (props: BoxProps) => {
+const Withdrawals = ({ tokenAddress }: { tokenAddress: string }) => {
   const [visible, setVisible] = useState(false)
   const { account } = useEthers()
   const [, dispatch] = useTransactionsState()
-  const blockNumber = useBlockNumber() ?? ''
   const { data, loading } = useSubscription(pendingWithdrawalsQuery, {
     variables: {
       orderBy: 'draftId',
@@ -60,7 +58,7 @@ const Withdrawals = (props: BoxProps) => {
   for (const entry of entries) {
     const amount = BigNumber.from(entry.amount)
 
-    if (Number(entry.availableAt) > blockNumber) {
+    if (Number(entry.availableAt) > Date.now()) {
       pending = pending.add(amount)
     } else {
       lastId = BigNumber.from(entry.draftId)
@@ -72,12 +70,12 @@ const Withdrawals = (props: BoxProps) => {
     loadTransactions(dispatch, [
       {
         autoCall: true,
-        description: `Withdraw ${formatEther(pending)}`,
+        description: 'Withdraw',
         status: TX_STATUS.PENDING,
-        value: formatEther(pending),
+        value: formatEther(available),
         call: {
           abi: StRSRInterface,
-          address: data.insurance?.token?.address as string,
+          address: tokenAddress,
           method: 'withdraw',
           args: [account, lastId.add(BigNumber.from(1))],
         },
@@ -87,7 +85,7 @@ const Withdrawals = (props: BoxProps) => {
 
   return (
     <>
-      <Card p={3} {...props}>
+      <Card p={3}>
         <Flex mb={2} sx={{ alignItems: 'center' }}>
           <Box>
             <Text variant="contentTitle" sx={{ fontSize: 2 }}>
@@ -164,7 +162,7 @@ const Withdrawals = (props: BoxProps) => {
         <Table
           columns={columns}
           data={entries.filter(
-            (entry: any) => Number(entry.availableAt) > blockNumber
+            (entry: any) => Number(entry.availableAt) > Date.now()
           )}
         />
       </Modal>

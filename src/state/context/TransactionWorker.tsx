@@ -147,6 +147,7 @@ const Worker = ({ current }: IWorker) => {
     current.call.abi,
     false
   ) as Contract
+
   const { state, send } = useContractFunction(contract, current.call.method, {
     transactionName: current.description,
   })

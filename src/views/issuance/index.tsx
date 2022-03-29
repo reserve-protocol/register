@@ -21,6 +21,8 @@ const getHistory = gql`
         user: $userId
         token: $token
       }
+      orderBy: createdAt
+      orderDirection: desc
     ) {
       id
       type
@@ -40,7 +42,7 @@ const Issuance = () => {
     variables: {
       where: {},
       userId: account?.toLocaleLowerCase(),
-      token: RToken.token.address,
+      token: RToken.token.address.toLowerCase(),
     },
   })
   const balance =
