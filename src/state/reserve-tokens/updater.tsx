@@ -1,13 +1,14 @@
 import { gql, useQuery } from '@apollo/client'
+import { getAddress } from 'ethers/lib/utils'
 import useTokensBalance from 'hooks/useTokensBalance'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { ReserveToken } from 'types'
+import { CHAIN_ID } from '../../constants'
+import { RSV_MANAGER_ADDRESS } from '../../constants/addresses'
+import { RSR } from '../../constants/tokens'
 import { useAppSelector } from '../hooks'
 import { loadTokens, selectCurrentRToken, updateBalance } from './reducer'
-import { RSR } from '../../constants/tokens'
-import { RSV_MANAGER_ADDRESS } from '../../constants/addresses'
-import { CHAIN_ID } from '../../constants'
 
 const getTokensQuery = gql`
   query GetTokens {
@@ -53,22 +54,53 @@ const getTokensQuery = gql`
 // TODO: Proper typing
 const formatTokens = (mains: any[]): { [x: string]: ReserveToken } =>
   mains.reduce((acc: any, data: any) => {
-    acc[data.id.toLowerCase()] = {
-      id: data.id.toLowerCase(),
-      token: {
-        ...data.token,
-        supply: data.token.supply?.total || 0,
-      },
-      basket: data.basket || { collaterals: [] },
-      insurance: {
-        staked: data.staked,
-        token: data.stToken,
-      },
-      facade: data.facade,
-      basketHandler: data.basketHandler,
-      isRSV:
-        data.id.toLowerCase() === RSV_MANAGER_ADDRESS[CHAIN_ID].toLowerCase(),
-    } as ReserveToken
+    try {
+      const address = getAddress(data.id.toLowerCase())
+      const isRSV = address === RSV_MANAGER_ADDRESS[CHAIN_ID]
+      let basket = { id: '', collaterals: [] }
+      let insurance = null
+
+      if (!isRSV) {
+        insurance = {
+          staked: data.staked,
+          token: {
+            ...data.stToken,
+            address: getAddress(data.stToken.address.toLowerCase()),
+          },
+        }
+      }
+
+      if (data.basket) {
+        basket = {
+          ...data.basket,
+          collaterals: data.basket.collaterals.map((collateral: any) => ({
+            ...collateral,
+            token: {
+              ...collateral.token,
+              address: getAddress(collateral.token.address.toLowerCase()),
+            },
+          })),
+        }
+      }
+
+      acc[address] = {
+        id: address,
+        token: {
+          ...data.token,
+          address: getAddress(data.token.address.toLowerCase()),
+          supply: data.token.supply?.total || 0,
+        },
+        basket,
+        insurance,
+        facade: isRSV ? null : getAddress(data.facade.toLowerCase()),
+        basketHandler: isRSV
+          ? null
+          : getAddress(data.basketHandler.toLowerCase()),
+        isRSV,
+      } as ReserveToken
+    } catch (e) {
+      console.error('Fail to format token', e)
+    }
 
     return acc
   }, {})

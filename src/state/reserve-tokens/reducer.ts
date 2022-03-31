@@ -10,7 +10,7 @@ export interface ReserveTokenState {
 const initialState: ReserveTokenState = {
   list: {},
   // TODO: dev only
-  current: '0x4e0c596be5fe217cb80aeb4c47c72701dff0f6bc',
+  current: '0x4E0C596bE5FE217cB80AeB4C47C72701DFF0F6BC',
   // Represent balances for the CONNECTED account only
   // This balances are fetched from the chain
   balances: {},
@@ -38,8 +38,7 @@ export const reserveTokenSlice = createSlice({
 
 export const selectCurrentRToken = createSelector(
   (state: any) => [state.reserveTokens.current, state.reserveTokens.list],
-  ([current, list]): ReserveToken | null =>
-    current ? list[current.toLowerCase()] : null
+  ([current, list]): ReserveToken | null => (current ? list[current] : null)
 )
 
 // Returns an aggregate of the current rToken balance + collaterals balance

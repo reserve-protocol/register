@@ -18,8 +18,6 @@ const RTokenSelector = (props: BoxProps) => {
   const selected: ReserveToken | null = useAppSelector(selectCurrentRToken)
   const dispatch = useDispatch()
 
-  console.log('tokens', tokens)
-
   if (!tokens.length) {
     return <span>Loading...</span>
   }
