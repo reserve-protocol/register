@@ -1,17 +1,19 @@
-import { gql, useQuery } from '@apollo/client'
 import { getAddress } from 'ethers/lib/utils'
-import useTokensBalance from 'hooks/useTokensBalance'
+import { request } from 'graphql-request'
+import { useUpdateAtom } from 'jotai/utils'
 import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { reserveTokensAtom } from 'state/atoms'
+import useSWR from 'swr'
 import { ReserveToken } from 'types'
 import { CHAIN_ID } from '../../constants'
 import { RSV_MANAGER_ADDRESS } from '../../constants/addresses'
 import { RSR } from '../../constants/tokens'
-import { useAppSelector } from '../hooks'
-import { loadTokens, selectCurrentRToken, updateBalance } from './reducer'
 
-const getTokensQuery = gql`
-  query GetTokens {
+const fetcher = (query: any) =>
+  request('http://localhost:8000/subgraphs/name/lcamargof/reserve', query)
+
+const getTokensQuery = `
+  {
     mains {
       id
       staked
@@ -112,16 +114,16 @@ const formatTokens = (mains: any[]): { [x: string]: ReserveToken } =>
  * Sets the default token
  */
 const ReserveTokensUpdater = () => {
-  const dispatch = useDispatch()
-  const { data, loading: loadingTokens } = useQuery(getTokensQuery)
+  const setTokens = useUpdateAtom(reserveTokensAtom)
+  const { data, error } = useSWR(getTokensQuery, fetcher)
 
   useEffect(() => {
     // TODO: Handle error scenario
-    if (!loadingTokens && data?.mains) {
+    if (data?.mains) {
       const tokens = formatTokens(data.mains)
-      dispatch(loadTokens(tokens))
+      setTokens(tokens)
     }
-  }, [loadingTokens])
+  }, [data])
 
   return null
 }
@@ -150,17 +152,17 @@ const getTokens = (reserveToken: ReserveToken): [string, number][] => {
 /**
  * Updates the balances of the current ReserveToken related tokens
  */
-const TokensBalanceUpdater = () => {
-  const dispatch = useDispatch()
-  const reserveToken = useAppSelector(selectCurrentRToken)
-  const balances = useTokensBalance(reserveToken ? getTokens(reserveToken) : [])
+// const TokensBalanceUpdater = () => {
+//   const dispatch = useDispatch()
+//   const reserveToken = useAppSelector(selectCurrentRToken)
+//   const balances = useTokensBalance(reserveToken ? getTokens(reserveToken) : [])
 
-  useEffect(() => {
-    dispatch(updateBalance(balances))
-  }, [JSON.stringify(balances)])
+//   useEffect(() => {
+//     dispatch(updateBalance(balances))
+//   }, [JSON.stringify(balances)])
 
-  return null
-}
+//   return null
+// }
 
 /**
  * Updater
@@ -168,7 +170,7 @@ const TokensBalanceUpdater = () => {
 const Updater = () => (
   <>
     <ReserveTokensUpdater />
-    <TokensBalanceUpdater />
+    {/* <TokensBalanceUpdater /> */}
   </>
 )
 

@@ -55,8 +55,8 @@ const Guard = ({ children }: { children: React.ReactNode }) => {
 const App = () => (
   <Web3ReactProvider connectors={connectors} network={CHAIN_ID}>
     <BlockUpdater />
+    <Updater />
     <ThemeProvider theme={theme}>
-      {/* <Updater /> */}
       {/* <Toaster /> */}
       <Router>
         <Layout>

@@ -30,6 +30,7 @@
     "ethers": "5.5.1",
     "fast-memoize": "^2.5.2",
     "graphql": "^15.5.1",
+    "graphql-request": "^4.2.0",
     "i18next": "^21.0.2",
     "i18next-browser-languagedetector": "^6.1.2",
     "jotai": "^1.6.1",

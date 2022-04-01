@@ -52,11 +52,6 @@ const yourStakingTokensColumns: any = [
 ]
 
 const Home = () => {
-  // TODO: theGraph queries
-  const test = useBlockNumber()
-
-  console.log('test', test)
-
   return (
     <Container>
       <Text sx={{ fontSize: 6, fontWeight: 100 }}>$ 123,123.00</Text>

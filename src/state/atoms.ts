@@ -6,7 +6,7 @@ export interface Wallet {
   address: string
   alias: string
 }
-export const reserveTokensAtom = atom<ReserveToken[]>([])
+export const reserveTokensAtom = atom<{ [x: string]: ReserveToken }>({})
 export const rTokenAtom = atom<ReserveToken | null>(null)
 
 export const walletsAtom = atomWithImmer<Wallet[]>([])
