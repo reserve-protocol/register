@@ -30,6 +30,7 @@ export const [coinbaseWallet, coinbaseWalletHooks] =
     (actions) =>
       new CoinbaseWallet(actions, {
         url: URLS[1][0],
+        appName: 'Register',
       })
   )
 
