@@ -51,13 +51,13 @@ const Guard = ({ children }: { children: React.ReactNode }) => {
  */
 const App = () => (
   <ThemeProvider theme={theme}>
-    <Updater />
-    <Toaster />
+    {/* <Updater /> */}
+    {/* <Toaster /> */}
     <Router>
       <Layout>
         <Routes>
           <Route path={ROUTES.HOME} element={<Home />} />
-          <Route path={ROUTES.OVERVIEW} element={<Overview />} />
+          {/* <Route path={ROUTES.OVERVIEW} element={<Overview />} /> */}
           <Route
             path={ROUTES.ISSUANCE}
             element={

@@ -110,12 +110,12 @@ const Footer = () => (
  * Application sidebar
  */
 const Sidebar = () => {
-  const RToken = useAppSelector(selectCurrentRToken)
+  // const RToken = useAppSelector(selectCurrentRToken)
 
   return (
     <Container>
       <Header />
-      <Navigation currentToken={RToken} />
+      <Navigation />
       <Box my="auto" />
       <Footer />
     </Container>
