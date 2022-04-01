@@ -1,29 +1,26 @@
-import { BoxProps, Box, Flex, Text } from '@theme-ui/components'
+import { Box, BoxProps, Flex, Text } from '@theme-ui/components'
 import TokenLogo from 'components/icons/TokenLogo'
 import Popup from 'components/popup'
+import { atom, useAtomValue } from 'jotai'
+import { useUpdateAtom } from 'jotai/utils'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
-import { useDispatch } from 'react-redux'
-import { useAppSelector } from 'state/hooks'
-import {
-  selectCurrentRToken,
-  selectTopTokens,
-  setCurrent,
-} from 'state/reserve-tokens/reducer'
-import { ReserveToken } from 'types'
+import { reserveTokensAtom, rTokenAtom, selectedRTokenAtom } from 'state/atoms'
+
+const tokensAtom = atom((get) => Object.values(get(reserveTokensAtom)))
 
 const RTokenSelector = (props: BoxProps) => {
   const [isVisible, setVisible] = useState(false)
-  const tokens = useAppSelector(selectTopTokens)
-  const selected: ReserveToken | null = useAppSelector(selectCurrentRToken)
-  const dispatch = useDispatch()
+  const tokens = useAtomValue(tokensAtom)
+  const selected = useAtomValue(rTokenAtom)
+  const setSelected = useUpdateAtom(selectedRTokenAtom)
 
   if (!tokens.length) {
     return <span>Loading...</span>
   }
 
   const handleSelect = (token: string) => {
-    dispatch(setCurrent(token))
+    setSelected(token)
     setVisible(false)
   }
 

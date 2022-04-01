@@ -4,13 +4,12 @@ import { shortenAddress } from '@usedapp/core'
 import Popup from 'components/popup'
 import WalletList from 'components/wallets/WalletList'
 import useENSName from 'hooks/ens/useENSName'
+import { useAtom } from 'jotai'
 import { useState } from 'react'
 import Blockies from 'react-blockies'
 import { ChevronDown, ChevronUp } from 'react-feather'
-import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { useAppSelector } from 'state/hooks'
-import { selectWallet } from 'state/wallets/reducer'
+import { selectedAccountAtom } from 'state/atoms'
 import { ROUTES } from '../../constants'
 
 const Container = styled.div`
@@ -33,10 +32,9 @@ const Container = styled.div`
  */
 const Account = () => {
   const [isVisible, setVisible] = useState(false)
-  const currentWallet = useAppSelector(({ wallets }) => wallets.current)
-
+  const [currentWallet, setCurrentAccount] = useAtom(selectedAccountAtom)
+  // TODO: Maybe unnecessary
   const { ENSName } = useENSName(currentWallet)
-  const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const handleAddWallet = () => {
@@ -45,7 +43,7 @@ const Account = () => {
   }
 
   const handleWalletChange = (selectedWallet: string) => {
-    dispatch(selectWallet(selectedWallet))
+    setCurrentAccount(selectedWallet)
   }
 
   return (

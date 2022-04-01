@@ -18,9 +18,9 @@ const AppHeader = () => (
     }}
   >
     <Box mx="auto" />
-    {/* <RTokenSelector /> */}
+    <RTokenSelector />
     <Box mr={4} />
-    {/* <Account /> */}
+    <Account />
     <Box ml={4} mr={2} sx={{ alignItems: 'center', display: 'flex' }}>
       <LanguageSelector />
     </Box>
