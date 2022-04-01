@@ -1,6 +1,6 @@
 import styled from '@emotion/styled-base'
 import { Box, BoxProps, Text } from '@theme-ui/components'
-import { useBlockNumber } from '@usedapp/core'
+import useBlockNumber from 'hooks/useBlockNumber'
 
 const Container = styled(Box)`
   border: 1px solid #ccc;

@@ -3,6 +3,7 @@ import { Web3ReactProvider } from '@web3-react/core'
 import { Card } from 'components'
 import Container from 'components/container'
 import connectors from 'components/wallets/connectors'
+import { BlockUpdater } from 'hooks/useBlockNumber'
 import React from 'react'
 import { Toaster } from 'react-hot-toast'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
@@ -15,7 +16,7 @@ import Overview from 'views/overview'
 import Insurance from 'views/staking'
 import WalletManagement from 'views/wallet'
 import Layout from './components/layout'
-import { ROUTES } from './constants'
+import { CHAIN_ID, ROUTES } from './constants'
 import { theme } from './theme'
 import Issuance from './views/issuance'
 
@@ -52,7 +53,8 @@ const Guard = ({ children }: { children: React.ReactNode }) => {
  * @returns {JSX.Element}
  */
 const App = () => (
-  <Web3ReactProvider connectors={connectors}>
+  <Web3ReactProvider connectors={connectors} network={CHAIN_ID}>
+    <BlockUpdater />
     <ThemeProvider theme={theme}>
       {/* <Updater /> */}
       {/* <Toaster /> */}

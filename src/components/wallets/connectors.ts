@@ -8,11 +8,11 @@ import { WalletConnect } from '@web3-react/walletconnect'
 const chains: number[] = Object.keys(CHAINS).map((chainId) => Number(chainId))
 
 export const [metaMask, metaMaskHooks] = initializeConnector<MetaMask>(
-  (actions) => new MetaMask(actions)
+  (actions) => new MetaMask(actions, true)
 )
 
 export const [network, networkHooks] = initializeConnector<Network>(
-  (actions) => new Network(actions, URLS),
+  (actions) => new Network(actions, URLS, true),
   chains
 )
 

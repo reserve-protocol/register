@@ -1,6 +1,8 @@
 import { Grid, Text, Box } from '@theme-ui/components'
+import { useWeb3React } from '@web3-react/core'
 import { Container } from 'components'
 import { Table } from 'components/table'
+import useBlockNumber from 'hooks/useBlockNumber'
 
 const mockTokens: any = [
   { name: 'USD1', price: '$1.00', balance: '0.00', value: '0.00', apy: '0.00' },
@@ -51,6 +53,9 @@ const yourStakingTokensColumns: any = [
 
 const Home = () => {
   // TODO: theGraph queries
+  const test = useBlockNumber()
+
+  console.log('test', test)
 
   return (
     <Container>
