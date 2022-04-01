@@ -34,10 +34,12 @@ export const [coinbaseWallet, coinbaseWalletHooks] =
       })
   )
 
-const connectors: [
+export type Connector = [
   MetaMask | WalletConnect | CoinbaseWallet | Network,
   Web3ReactHooks
-][] = [
+]
+
+const connectors: Connector[] = [
   [metaMask, metaMaskHooks],
   [walletConnect, walletConnectHooks],
   [coinbaseWallet, coinbaseWalletHooks],

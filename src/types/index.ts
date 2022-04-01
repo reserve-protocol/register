@@ -2,6 +2,11 @@ export interface StringMap {
   [key: string]: any
 }
 
+export interface Wallet {
+  address: string
+  alias: string
+}
+
 export type Falsy = undefined | false | '' | null
 
 // Generic token definition ERC20 + extra data

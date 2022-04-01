@@ -2,19 +2,28 @@ import { Box, Text } from '@theme-ui/components'
 import { Container } from 'components'
 import WalletConnection from 'components/wallets/WalletConnection'
 import WalletList from 'components/wallets/WalletList'
-import { useDispatch } from 'react-redux'
-import { addConnectedWallet, addWallet } from 'state/wallets/reducer'
+import { useAtom } from 'jotai'
+import { useUpdateAtom } from 'jotai/utils'
+import { selectedAccountAtom, walletsAtom } from 'state/atoms'
+import { shortenAddress } from 'utils'
 import AddWallet from './components/AddWallet'
 
 const WalletView = () => {
-  const dispatch = useDispatch()
+  const [wallets, setWallets] = useAtom(walletsAtom)
+  const setCurrentAccount = useUpdateAtom(selectedAccountAtom)
 
   const handleAdd = (address: string, alias: string) => {
-    dispatch(addWallet({ address, alias }))
+    setWallets({
+      ...wallets,
+      [address]: { address, alias },
+    })
   }
 
   const handleConnect = (address: string) => {
-    dispatch(addConnectedWallet(address))
+    if (!wallets[address]) {
+      handleAdd(address, shortenAddress(address))
+    }
+    setCurrentAccount(address)
   }
 
   return (

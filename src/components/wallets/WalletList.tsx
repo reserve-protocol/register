@@ -1,9 +1,11 @@
-import { useAppSelector } from 'state/hooks'
 import { Box, FlexProps, BoxProps, Flex, Text } from '@theme-ui/components'
 import { Wallet } from 'state/wallets/reducer'
 import Blockies from 'react-blockies'
 import { useEthers } from '@usedapp/core'
 import styled from '@emotion/styled'
+import { useAtomValue } from 'jotai'
+import { selectedAccountAtom, walletsAtom } from 'state/atoms'
+import { useWeb3React } from '@web3-react/core'
 
 const GreenCircle = styled('span')`
   display: inline-block;
@@ -46,11 +48,9 @@ const WalletItem = ({
 )
 
 const WalletList = ({ onChange = () => {}, ...props }: WalletListProps) => {
-  const { account } = useEthers()
-  const [walletList, current] = useAppSelector(({ wallets }) => [
-    wallets.list,
-    wallets.current,
-  ])
+  const { account } = useWeb3React()
+  const walletList = useAtomValue(walletsAtom)
+  const current = useAtomValue(selectedAccountAtom)
 
   if (!Object.keys(walletList).length) {
     return <Box>No wallets added</Box>

@@ -1,35 +1,31 @@
 import styled from '@emotion/styled'
 import { Box, BoxProps, Text } from '@theme-ui/components'
-import { useEthers } from '@usedapp/core'
-import { AbstractConnector } from '@web3-react/abstract-connector'
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
+import { useWeb3React } from '@web3-react/core'
 import { Modal } from 'components'
 import {
   CoinbaseIcon,
-  FortmaticIcon,
   MetamaskIcon,
-  TrezorIcon,
   WalletConnectIcon,
 } from 'components/icons/logos'
 import { useEffect, useState } from 'react'
+import { CHAIN_ID } from '../../constants'
 import {
-  fortmatic,
-  injected,
-  trezor,
-  walletconnect,
-  walletlink,
-} from '../wallet-modal/connectors'
+  coinbaseWallet,
+  Connector,
+  metaMask,
+  walletConnect,
+} from './connectors'
 
-const WALLETS = [
-  { icon: MetamaskIcon, label: 'Metamask', connector: injected },
+const WALLETS: { icon: any; label: string; connector: Connector[0] }[] = [
+  { icon: MetamaskIcon, label: 'Metamask', connector: metaMask },
   {
     icon: WalletConnectIcon,
     label: 'WalletConnect',
-    connector: walletconnect,
+    connector: walletConnect,
   },
-  { icon: FortmaticIcon, label: 'Fortmatic', connector: fortmatic },
-  { icon: TrezorIcon, label: 'Trezor', connector: trezor },
-  { icon: CoinbaseIcon, label: 'Coinbase', connector: walletlink },
+  // { icon: FortmaticIcon, label: 'Fortmatic', connector: fortmatic },
+  // { icon: TrezorIcon, label: 'Trezor', connector: trezor },
+  { icon: CoinbaseIcon, label: 'Coinbase', connector: coinbaseWallet },
 ]
 
 const WalletButton = styled(Box)`
@@ -71,7 +67,7 @@ const ErrorBox = ({ error }: { error: string }) => (
 const WalletConnection = ({ onConnect, ...props }: Props) => {
   const [connecting, setConnecting] = useState(false)
   const [error, setError] = useState('')
-  const { activate, deactivate, account } = useEthers()
+  const { account, isActive, connector } = useWeb3React()
 
   // TODO: Handle connection errors
   // Examples:
@@ -94,21 +90,28 @@ const WalletConnection = ({ onConnect, ...props }: Props) => {
   }, [connecting, account])
 
   // Tries to connect to the specified wallet
-  const handleWalletSelection = async (connector: AbstractConnector) => {
+  const handleWalletSelection = async (selectedConnector: Connector[0]) => {
     localStorage.removeItem('walletconnect')
     // TODO: Should we deactivate before trying to connect? should not be the case
     // deactivate()
     setError('')
     setConnecting(true)
     // if the connector is walletconnect and the user has already tried to connect, manually reset the connector
-    if (
-      connector instanceof WalletConnectConnector &&
-      connector.walletConnectProvider?.wc?.uri
-    ) {
-      connector.walletConnectProvider = undefined
-    }
+    // if (
+    //   connector instanceof WalletConnectConnector &&
+    //   connector.walletConnectProvider?.wc?.uri
+    // ) {
+    //   connector.walletConnectProvider = undefined
+    // }
 
-    setTimeout(() => activate(connector, handleError), 1)
+    setTimeout(
+      () =>
+        selectedConnector
+          .activate(CHAIN_ID)
+          .then(() => console.log('connected'))
+          .catch(handleError),
+      1
+    )
   }
 
   if (connecting) {
@@ -131,10 +134,10 @@ const WalletConnection = ({ onConnect, ...props }: Props) => {
           marginRight: -20,
         }}
       >
-        {WALLETS.map(({ icon: Icon, label, connector }) => (
+        {WALLETS.map(({ icon: Icon, label, connector: selectedConnector }) => (
           <WalletButton
             key={label}
-            onClick={() => handleWalletSelection(connector)}
+            onClick={() => handleWalletSelection(selectedConnector)}
           >
             <Icon />
             <Text sx={{ display: 'block', marginTop: 2 }}>{label}</Text>
