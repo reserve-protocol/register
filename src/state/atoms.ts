@@ -2,8 +2,11 @@ import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import { ReserveToken, Wallet } from 'types'
 
-export const reserveTokensAtom = atom<{ [x: string]: ReserveToken }>({})
-export const selectedRTokenAtom = atom('')
+export const reserveTokensAtom = atomWithStorage<{ [x: string]: ReserveToken }>(
+  'reserveTokens',
+  {}
+)
+export const selectedRTokenAtom = atomWithStorage('selectedRToken', '')
 export const rTokenAtom = atom<ReserveToken | null>(
   (get) => get(reserveTokensAtom)[get(selectedRTokenAtom)]
 )

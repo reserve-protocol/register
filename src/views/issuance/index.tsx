@@ -1,20 +1,19 @@
-import { gql, useQuery } from '@apollo/client'
 import { Box, Divider, Grid, Text } from '@theme-ui/components'
-import { useEthers } from '@usedapp/core'
+import { useWeb3React } from '@web3-react/core'
 import { Container } from 'components'
 import TransactionHistory from 'components/transaction-history'
+import useQuery from 'hooks/useQuery'
+import { useAtomValue } from 'jotai'
+import { rTokenAtom } from 'state/atoms'
 import TransactionManager from 'state/context/TransactionManager'
 import { RequiredApprovedTransactionWorker } from 'state/context/TransactionWorker'
-import { useAppSelector } from 'state/hooks'
-import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
 import { ReserveToken } from 'types'
 import Balances from './components/balances'
 import Issue from './components/issue'
 import Redeem from './components/redeem'
 
 // TODO: make this query generic
-const getHistory = gql`
-  query GetIssuancesHistory($userId: String!, $token: String!) {
+const getHistory = `
     entries(
       where: {
         type_in: ["Issuance", "Redemption"]
@@ -36,19 +35,18 @@ const getHistory = gql`
 `
 
 const Issuance = () => {
-  const RToken = useAppSelector(selectCurrentRToken) as ReserveToken
-  const { account } = useEthers()
-  const { data, loading } = useQuery(getHistory, {
-    variables: {
+  const RToken = useAtomValue(rTokenAtom) as ReserveToken
+  const { account } = useWeb3React()
+  const { data, loading } = useQuery([
+    getHistory,
+    {
       where: {},
       userId: account?.toLocaleLowerCase(),
       token: RToken.token.address.toLowerCase(),
     },
-  })
-  const balance =
-    useAppSelector(
-      ({ reserveTokens }) => reserveTokens.balances[RToken.token.address]
-    ) || 0
+  ])
+  // TODO: Get balance from state
+  const balance = 0
 
   return (
     <TransactionManager>

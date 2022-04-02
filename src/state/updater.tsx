@@ -5,9 +5,9 @@ import { useEffect } from 'react'
 import { reserveTokensAtom } from 'state/atoms'
 import useSWR from 'swr'
 import { ReserveToken } from 'types'
-import { CHAIN_ID } from '../../constants'
-import { RSV_MANAGER_ADDRESS } from '../../constants/addresses'
-import { RSR } from '../../constants/tokens'
+import { CHAIN_ID } from '../constants'
+import { RSV_MANAGER_ADDRESS } from '../constants/addresses'
+import { RSR } from '../constants/tokens'
 
 const fetcher = (query: any) =>
   request('http://localhost:8000/subgraphs/name/lcamargof/reserve', query)

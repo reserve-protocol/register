@@ -19,8 +19,6 @@ import {
   TX_STATUS,
   useTransactionsState,
 } from 'state/context/TransactionManager'
-import { useAppSelector } from 'state/hooks'
-import { selectBalanceAggregate } from 'state/reserve-tokens/reducer'
 import { ReserveToken } from 'types'
 import { formatCurrency } from 'utils'
 import { getIssuable, quote } from 'utils/rsv'
@@ -107,6 +105,7 @@ const buildTransactions = (
 
 const useTokenIssuableAmount = (data: ReserveToken) => {
   const [amount, setAmount] = useState(0)
+  // TODO: Fix balances
   const balance = useSelector(selectBalanceAggregate)
   const tokenBalances = useAppSelector((state) => state.reserveTokens.balances)
   const { account } = useEthers()

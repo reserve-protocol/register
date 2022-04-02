@@ -1,7 +1,6 @@
 import { Flex, Box, Text, BoxProps, Divider } from '@theme-ui/components'
 import { Card } from 'components'
 import TokenLogo from 'components/icons/TokenLogo'
-import { useAppSelector } from 'state/hooks'
 import { ReserveToken } from 'types'
 import { formatCurrency } from 'utils'
 
@@ -13,7 +12,8 @@ interface Props extends BoxProps {
  * Display collateral tokens balances
  */
 const Balances = ({ rToken, ...props }: Props) => {
-  const tokenBalances = useAppSelector((state) => state.reserveTokens.balances)
+  // TODO: Fix balances
+  const tokenBalances = {}
 
   return (
     <Box {...props}>

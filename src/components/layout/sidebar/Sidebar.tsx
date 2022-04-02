@@ -5,10 +5,10 @@ import Logo from 'components/icons/Logo'
 import ROUTES from 'constants/routes'
 import SyncedBlock from 'components/synced-block'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
-import { useAppSelector } from 'state/hooks'
-import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
 import { useMemo } from 'react'
 import { ReserveToken } from 'types'
+import { rTokenAtom } from 'state/atoms'
+import { useAtomValue } from 'jotai/utils'
 
 export const PAGES = [
   { path: ROUTES.HOME, title: 'Home' },
@@ -110,12 +110,12 @@ const Footer = () => (
  * Application sidebar
  */
 const Sidebar = () => {
-  // const RToken = useAppSelector(selectCurrentRToken)
+  const RToken = useAtomValue(rTokenAtom)
 
   return (
     <Container>
       <Header />
-      <Navigation />
+      <Navigation currentToken={RToken} />
       <Box my="auto" />
       <Footer />
     </Container>

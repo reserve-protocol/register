@@ -4,12 +4,13 @@ import { Card } from 'components'
 import Container from 'components/container'
 import connectors from 'components/wallets/connectors'
 import { BlockUpdater } from 'hooks/useBlockNumber'
+import { useAtomValue } from 'jotai'
 import React from 'react'
 import { Toaster } from 'react-hot-toast'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { rTokenAtom } from 'state/atoms'
 import { useAppSelector } from 'state/hooks'
-import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
-import Updater from 'state/reserve-tokens/updater'
+import Updater from 'state/updater'
 import { ThemeProvider } from 'theme-ui'
 import Home from 'views/home'
 import Overview from 'views/overview'
@@ -24,7 +25,7 @@ import Issuance from './views/issuance'
 // TODO: Better placeholders
 const Guard = ({ children }: { children: React.ReactNode }) => {
   const { account } = useEthers()
-  const RToken = useAppSelector(selectCurrentRToken)
+  const RToken = useAtomValue(rTokenAtom)
 
   // TODO: Connect your wallet placeholder
   if (!account) {

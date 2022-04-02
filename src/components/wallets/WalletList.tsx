@@ -1,11 +1,10 @@
-import { Box, FlexProps, BoxProps, Flex, Text } from '@theme-ui/components'
-import { Wallet } from 'state/wallets/reducer'
-import Blockies from 'react-blockies'
-import { useEthers } from '@usedapp/core'
 import styled from '@emotion/styled'
-import { useAtomValue } from 'jotai'
-import { selectedAccountAtom, walletsAtom } from 'state/atoms'
+import { Box, BoxProps, Flex, FlexProps, Text } from '@theme-ui/components'
 import { useWeb3React } from '@web3-react/core'
+import { useAtomValue } from 'jotai'
+import Blockies from 'react-blockies'
+import { selectedAccountAtom, walletsAtom } from 'state/atoms'
+import { Wallet } from 'types'
 
 const GreenCircle = styled('span')`
   display: inline-block;

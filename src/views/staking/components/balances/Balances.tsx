@@ -3,7 +3,6 @@ import { Card } from 'components'
 import { RTokenIcon } from 'components/icons/logos'
 import TokenLogo from 'components/icons/TokenLogo'
 import { RSR } from 'constants/tokens'
-import { useAppSelector } from 'state/hooks'
 import { ReserveToken } from 'types'
 import { formatCurrency } from 'utils'
 
@@ -15,7 +14,9 @@ interface Props extends BoxProps {
  * Display collateral tokens balances
  */
 const Balances = ({ rToken, ...props }: Props) => {
-  const tokenBalances = useAppSelector((state) => state.reserveTokens.balances)
+  // TODO: Balances
+  const tokenBalances = {}
+  // const tokenBalances = useAppSelector((state) => state.reserveTokens.balances)
 
   return (
     <Box {...props}>
