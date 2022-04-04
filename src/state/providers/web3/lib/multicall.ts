@@ -19,20 +19,26 @@ async function multicall(
     return {}
   }
   const contract = new Contract(multicallAddress, ABI, provider)
-  const results: [boolean, string][] = await contract.tryAggregate(
-    false,
-    requests.map(({ address, data }) => [address, data]),
-    { blockTag: blockNumber }
-  )
-  const state: MulticallState = {}
-  for (let i = 0; i < requests.length; i++) {
-    const { address, data } = requests[i]
-    const [success, value] = results[i]
-    const stateForAddress = state[address] ?? {}
-    stateForAddress[data] = { success, value }
-    state[address] = stateForAddress
+  try {
+    const results: [boolean, string][] = await contract.tryAggregate(
+      false,
+      requests.map(({ address, data }) => [address, data]),
+      { blockTag: blockNumber }
+    )
+    const state: MulticallState = {}
+    for (let i = 0; i < requests.length; i++) {
+      const { address, data } = requests[i]
+      const [success, value] = results[i]
+      const stateForAddress = state[address] ?? {}
+      stateForAddress[data] = { success, value }
+      state[address] = stateForAddress
+    }
+    return state
+  } catch (e) {
+    console.log('error fetching results', e)
   }
-  return state
+
+  return {}
 }
 
 export default multicall

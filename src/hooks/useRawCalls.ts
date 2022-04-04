@@ -54,7 +54,7 @@ export function useRawCalls(calls: (RawCall | Falsy)[]): RawCallResult[] {
       calls.map((call) =>
         call ? extractCallResult(multicallState, call) : undefined
       ),
-    [callsString]
+    [callsString, multicallState]
   )
 }
 

@@ -65,9 +65,14 @@ export const useGenericCalls = (calls: GenericCall[]) => {
       : undefined
   )
   const results = useRawCalls(rawCalls)
+
   return useMemo(
     () =>
       results.map((result, idx) => {
+        if (!result) {
+          return { value: undefined, error: undefined }
+        }
+
         const call = calls[idx]
         try {
           if (result!.success) {
