@@ -1,8 +1,6 @@
 import { useState } from 'react'
-import { gql, useSubscription } from '@apollo/client'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Box, Card, BoxProps, Text, Divider, Flex } from '@theme-ui/components'
-import { useEthers } from '@usedapp/core'
 import { Button, Modal } from 'components'
 import { formatEther } from 'ethers/lib/utils'
 import { formatCurrency } from 'utils'
@@ -13,16 +11,16 @@ import {
   useTransactionsState,
 } from 'state/context/TransactionManager'
 import { StRSRInterface } from 'abis'
+import { useWeb3React } from '@web3-react/core'
+import useQuery from 'hooks/useQuery'
 
-const pendingWithdrawalsQuery = gql`
-  subscription GetPendingWithdrawals($userId: String!) {
-    entries(where: { type: "Unstake", status: Pending, user: $userId }) {
-      id
-      amount
-      draftId
-      stAmount
-      availableAt
-    }
+const pendingWithdrawalsQuery = `
+  entries(where: { type: "Unstake", status: Pending, user: $userId }) {
+    id
+    amount
+    draftId
+    stAmount
+    availableAt
   }
 `
 
@@ -38,15 +36,17 @@ const columns = [
 
 const Withdrawals = ({ tokenAddress }: { tokenAddress: string }) => {
   const [visible, setVisible] = useState(false)
-  const { account } = useEthers()
+  const { account } = useWeb3React()
   const [, dispatch] = useTransactionsState()
-  const { data, loading } = useSubscription(pendingWithdrawalsQuery, {
-    variables: {
+  // TODO: Polling
+  const { data } = useQuery([
+    pendingWithdrawalsQuery,
+    {
       orderBy: 'draftId',
       where: {},
       userId: account?.toLowerCase(),
     },
-  })
+  ])
 
   const entries = data?.entries ?? []
 

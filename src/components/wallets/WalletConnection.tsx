@@ -8,7 +8,7 @@ import {
   WalletConnectIcon,
 } from 'components/icons/logos'
 import { useEffect, useState } from 'react'
-import { CHAIN_ID } from '../../constants'
+import { CHAIN_ID } from 'utils/chains'
 import {
   coinbaseWallet,
   Connector,

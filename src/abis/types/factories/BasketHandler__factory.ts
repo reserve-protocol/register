@@ -9,6 +9,11 @@ import type { BasketHandler, BasketHandlerInterface } from "../BasketHandler";
 const _abi = [
   {
     inputs: [],
+    name: "EmptyBasket",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "IntOutOfBounds",
     type: "error",
   },
@@ -52,6 +57,12 @@ const _abi = [
         name: "refAmts",
         type: "int192[]",
       },
+      {
+        indexed: false,
+        internalType: "bool",
+        name: "defaulted",
+        type: "bool",
+      },
     ],
     name: "BasketSet",
     type: "event",
@@ -70,6 +81,12 @@ const _abi = [
         internalType: "int192[]",
         name: "targetAmts",
         type: "int192[]",
+      },
+      {
+        indexed: false,
+        internalType: "bytes32[]",
+        name: "targetNames",
+        type: "bytes32[]",
       },
     ],
     name: "PrimeBasketSet",
@@ -127,7 +144,7 @@ const _abi = [
             components: [
               {
                 internalType: "int192",
-                name: "maxAuctionSize",
+                name: "maxTradeVolume",
                 type: "int192",
               },
               {

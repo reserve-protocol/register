@@ -15,7 +15,12 @@ import {
 } from "ethers";
 import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi";
 import { Listener, Provider } from "@ethersproject/providers";
-import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
+import type {
+  TypedEventFilter,
+  TypedEvent,
+  TypedListener,
+  OnEvent,
+} from "./common";
 
 export type RevenueShareStruct = {
   rTokenDist: BigNumberish;
@@ -28,7 +33,7 @@ export type RevenueShareStructOutput = [number, number] & {
 };
 
 export type DeploymentParamsStruct = {
-  maxAuctionSize: BigNumberish;
+  maxTradeVolume: BigNumberish;
   dist: RevenueShareStruct;
   rewardPeriod: BigNumberish;
   rewardRatio: BigNumberish;
@@ -54,7 +59,7 @@ export type DeploymentParamsStructOutput = [
   BigNumber,
   BigNumber
 ] & {
-  maxAuctionSize: BigNumber;
+  maxTradeVolume: BigNumber;
   dist: RevenueShareStructOutput;
   rewardPeriod: BigNumber;
   rewardRatio: BigNumber;
@@ -218,8 +223,8 @@ export interface BasketHandlerInterface extends utils.Interface {
 
   events: {
     "BackupConfigSet(bytes32,uint256,address[])": EventFragment;
-    "BasketSet(address[],int192[])": EventFragment;
-    "PrimeBasketSet(address[],int192[])": EventFragment;
+    "BasketSet(address[],int192[],bool)": EventFragment;
+    "PrimeBasketSet(address[],int192[],bytes32[])": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "BackupConfigSet"): EventFragment;
@@ -235,15 +240,15 @@ export type BackupConfigSetEvent = TypedEvent<
 export type BackupConfigSetEventFilter = TypedEventFilter<BackupConfigSetEvent>;
 
 export type BasketSetEvent = TypedEvent<
-  [string[], BigNumber[]],
-  { erc20s: string[]; refAmts: BigNumber[] }
+  [string[], BigNumber[], boolean],
+  { erc20s: string[]; refAmts: BigNumber[]; defaulted: boolean }
 >;
 
 export type BasketSetEventFilter = TypedEventFilter<BasketSetEvent>;
 
 export type PrimeBasketSetEvent = TypedEvent<
-  [string[], BigNumber[]],
-  { erc20s: string[]; targetAmts: BigNumber[] }
+  [string[], BigNumber[], string[]],
+  { erc20s: string[]; targetAmts: BigNumber[]; targetNames: string[] }
 >;
 
 export type PrimeBasketSetEventFilter = TypedEventFilter<PrimeBasketSetEvent>;
@@ -451,17 +456,27 @@ export interface BasketHandler extends BaseContract {
       erc20s?: null
     ): BackupConfigSetEventFilter;
 
-    "BasketSet(address[],int192[])"(
+    "BasketSet(address[],int192[],bool)"(
       erc20s?: null,
-      refAmts?: null
+      refAmts?: null,
+      defaulted?: null
     ): BasketSetEventFilter;
-    BasketSet(erc20s?: null, refAmts?: null): BasketSetEventFilter;
-
-    "PrimeBasketSet(address[],int192[])"(
+    BasketSet(
       erc20s?: null,
-      targetAmts?: null
+      refAmts?: null,
+      defaulted?: null
+    ): BasketSetEventFilter;
+
+    "PrimeBasketSet(address[],int192[],bytes32[])"(
+      erc20s?: null,
+      targetAmts?: null,
+      targetNames?: null
     ): PrimeBasketSetEventFilter;
-    PrimeBasketSet(erc20s?: null, targetAmts?: null): PrimeBasketSetEventFilter;
+    PrimeBasketSet(
+      erc20s?: null,
+      targetAmts?: null,
+      targetNames?: null
+    ): PrimeBasketSetEventFilter;
   };
 
   estimateGas: {

@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 import { balancesAtom, reserveTokensAtom, rTokenAtom } from 'state/atoms'
 import useSWR from 'swr'
 import { ReserveToken } from 'types'
-import { CHAIN_ID } from '../constants'
+import { CHAIN_ID } from 'utils/chains'
 import { RSV_MANAGER_ADDRESS } from '../constants/addresses'
 import { RSR } from '../constants/tokens'
 

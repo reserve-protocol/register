@@ -24,7 +24,7 @@ export interface Call<
 }
 
 export interface GenericCall {
-  interface: Interface
+  abi: Interface
   address: string
   method: string
   args: any[]
@@ -60,7 +60,7 @@ export const useGenericCalls = (calls: GenericCall[]) => {
     provider !== undefined
       ? {
           address: call.address,
-          data: call.interface.encodeFunctionData(call.method, call.args),
+          data: call.abi.encodeFunctionData(call.method, call.args),
         }
       : undefined
   )
@@ -72,10 +72,7 @@ export const useGenericCalls = (calls: GenericCall[]) => {
         try {
           if (result!.success) {
             return {
-              value: call.interface.decodeFunctionResult(
-                call.method,
-                result!.value
-              ),
+              value: call.abi.decodeFunctionResult(call.method, result!.value),
               error: undefined,
             }
           }

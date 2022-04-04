@@ -1,10 +1,11 @@
 import { namehash } from '@ethersproject/hash'
-import { ChainId, useContractCall, useDebounce, useEthers } from '@usedapp/core'
+import { useWeb3React } from '@web3-react/core'
 import { utils } from 'ethers'
+import useDebounce from 'hooks/useDebounce'
 import { useMemo } from 'react'
-import { ENS_ADDRESS } from '../../constants/addresses'
 import ENSResolverAbi from '../../abis/ens-public-resolver.json'
 import ENSRegistrarAbi from '../../abis/ens-registrar.json'
+import { ENS_ADDRESS } from '../../constants/addresses'
 import { isAddress, isZero } from '../../utils'
 
 const ENSRegistrarInterface = new utils.Interface(ENSRegistrarAbi)
@@ -20,7 +21,7 @@ const useENSName = (
   ENSName: string | null
   loading: boolean
 } => {
-  const { chainId } = useEthers()
+  const { chainId } = useWeb3React()
   const debouncedAddress = useDebounce(address, 200)
   const ensNodeArgument = useMemo(() => {
     if (!debouncedAddress || !isAddress(debouncedAddress)) return [undefined]
@@ -35,24 +36,26 @@ const useENSName = (
 
   // TODO: ENS currently only works in mainnet
   // TODO: Maybe a good idea to create a different hook that looks in mainnet independently of the current chainId
-  const [resolverAddress] = useContractCall(
-    chainId === ChainId.Mainnet && {
-      abi: ENSRegistrarInterface,
-      address: ENS_ADDRESS[chainId],
-      method: 'resolver',
-      args: ensNodeArgument,
-    }
-  ) ?? [undefined]
+  // const [resolverAddress] = useCall(
+  //   chainId === ChainId.Mainnet && {
+  //     abi: ENSRegistrarInterface,
+  //     address: ENS_ADDRESS[chainId],
+  //     method: 'resolver',
+  //     args: ensNodeArgument,
+  //   }
+  // ) ?? [undefined]
 
-  const [name] = useContractCall(
-    !!resolverAddress &&
-      !isZero(resolverAddress) && {
-        abi: ENSResolverInterface,
-        address: resolverAddress,
-        method: 'name',
-        args: ensNodeArgument,
-      }
-  ) ?? [undefined]
+  // const [name] = useContractCall(
+  //   !!resolverAddress &&
+  //     !isZero(resolverAddress) && {
+  //       abi: ENSResolverInterface,
+  //       address: resolverAddress,
+  //       method: 'name',
+  //       args: ensNodeArgument,
+  //     }
+  // ) ?? [undefined]
+  const name = ''
+  const resolverAddress = ''
 
   const changed = debouncedAddress !== address
   return {

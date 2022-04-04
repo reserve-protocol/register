@@ -1,12 +1,9 @@
+import { useWeb3React } from '@web3-react/core'
 import { useMemo } from 'react'
-import {
-  useContractCalls,
-  useEthers,
-  ERC20Interface,
-  useDebounce,
-  useBlockNumber,
-} from '@usedapp/core'
 import { BigNumber } from 'ethers'
+import { ERC20Interface } from 'abis'
+import { useGenericCalls } from './useCall'
+import useBlockNumber from './useBlockNumber'
 
 /**
  * Returns a boolean if the given tokens has a certain amount of allowance to spend
@@ -20,8 +17,8 @@ const useTokensHasAllowance = (
   tokens: [string, BigNumber][],
   spender: string
 ): boolean => {
-  const { account } = useEthers()
-  const blockNumber = useDebounce(useBlockNumber(), 1000)
+  const { account } = useWeb3React()
+  const blockNumber = useBlockNumber()
 
   const calls = useMemo(
     () =>
@@ -34,7 +31,7 @@ const useTokensHasAllowance = (
     [tokens.toString(), account, blockNumber]
   )
 
-  const allowances = <any[]>useContractCalls(calls) ?? []
+  const allowances = <any[]>useGenericCalls(calls) ?? []
 
   return (
     !!allowances.length &&

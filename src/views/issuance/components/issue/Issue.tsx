@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Box, Card, Text } from '@theme-ui/components'
-import { useEthers } from '@usedapp/core'
+import { useWeb3React } from '@web3-react/core'
 import { ERC20Interface, RSVManagerInterface, RTokenInterface } from 'abis'
 import { Button, NumericalInput } from 'components'
 import {
@@ -109,7 +109,7 @@ const useTokenIssuableAmount = (data: ReserveToken) => {
   // TODO: Fix balances
   const balance = 0
   const tokenBalances = useAtomValue(balancesAtom)
-  const { account } = useEthers()
+  const { account } = useWeb3React()
   // TODO: replace for facade
   const facadeContract = useFacadeContract(data.facade ?? '')
 

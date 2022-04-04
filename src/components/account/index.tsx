@@ -1,6 +1,5 @@
 import styled from '@emotion/styled'
 import { Box, Button, Text } from '@theme-ui/components'
-import { shortenAddress } from '@usedapp/core'
 import Popup from 'components/popup'
 import WalletList from 'components/wallets/WalletList'
 import useENSName from 'hooks/ens/useENSName'
@@ -10,6 +9,7 @@ import Blockies from 'react-blockies'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import { selectedAccountAtom } from 'state/atoms'
+import { shortenAddress } from 'utils'
 import { ROUTES } from '../../constants'
 
 const Container = styled.div`

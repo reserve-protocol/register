@@ -1,10 +1,4 @@
 import { Contract } from '@ethersproject/contracts'
-import {
-  ContractCall,
-  TransactionStatus,
-  useContractFunction,
-  useEthers,
-} from '@usedapp/core'
 import { useContract } from 'hooks/useContract'
 import { ERC20 as IERC20 } from 'abis/types'
 import React, { useEffect, useMemo } from 'react'
@@ -16,6 +10,8 @@ import {
   useTransactionsState,
 } from 'state/context/TransactionManager'
 import useTokensHasAllowance from 'hooks/useTokensHasAllowance'
+import { GenericCall } from 'hooks/useCall'
+import { useWeb3React } from '@web3-react/core'
 
 export interface IWorker {
   current: TransactionState
@@ -29,7 +25,7 @@ export interface IWithApprovalTransactionWorker extends IWorker {
 export interface IRequiredApproveTransactionParams {
   methods: string[] // method that requires allowance
   hasAllowance: boolean // if the user has the required allowance to execute "method"
-  call: ContractCall // current call
+  call: GenericCall // current call
   contract: Contract // current contract call
   account: string // current account
   send: (...args: any[]) => Promise<void> // Current contract execute function (uses multicall)
@@ -38,7 +34,7 @@ export interface IRequiredApproveTransactionParams {
 
 export const handleTransactionStatus = (
   current: TransactionState,
-  state: TransactionStatus,
+  state: any,
   dispatch: React.Dispatch<{ type: string; payload: any }>
 ) => {
   if (!current.hash && state.transaction?.hash) {
@@ -95,44 +91,44 @@ const WithApprovalTransactionWorker = ({
   methods,
   dispatch,
 }: IWithApprovalTransactionWorker) => {
-  const { account } = useEthers()
-  const contract = useContract(
-    current.call.address,
-    current.call.abi,
-    false
-  ) as Contract
-  const { state, send } = useContractFunction(contract, current.call.method, {
-    transactionName: current.description,
-  })
-  const hasAllowance = useTokensHasAllowance(
-    methods.includes(current.call.method) ? current.extra : [],
-    current.call.address || ''
-  )
+  // const { account } = useWeb3React()
+  // const contract = useContract(
+  //   current.call.address,
+  //   current.call.abi,
+  //   false
+  // ) as Contract
+  // const { state, send } = useContractFunction(contract, current.call.method, {
+  //   transactionName: current.description,
+  // })
+  // const hasAllowance = useTokensHasAllowance(
+  //   methods.includes(current.call.method) ? current.extra : [],
+  //   current.call.address || ''
+  // )
 
-  useEffect(() => {
-    if (current.status === TX_STATUS.PENDING && !current.autoCall) {
-      processRequiredApproveTransaction({
-        methods,
-        account: account as string,
-        contract,
-        send,
-        call: current.call,
-        hasAllowance,
-        dispatch,
-      })
-    }
-  }, [contract, hasAllowance])
+  // useEffect(() => {
+  //   if (current.status === TX_STATUS.PENDING && !current.autoCall) {
+  //     processRequiredApproveTransaction({
+  //       methods,
+  //       account: account as string,
+  //       contract,
+  //       send,
+  //       call: current.call,
+  //       hasAllowance,
+  //       dispatch,
+  //     })
+  //   }
+  // }, [contract, hasAllowance])
 
-  // React to transaction state changes
-  useEffect(() => {
-    if (
-      state.status &&
-      state.status !== 'None' &&
-      current.status === TX_STATUS.PROCESSING
-    ) {
-      handleTransactionStatus(current, state, dispatch)
-    }
-  }, [state])
+  // // React to transaction state changes
+  // useEffect(() => {
+  //   if (
+  //     state.status &&
+  //     state.status !== 'None' &&
+  //     current.status === TX_STATUS.PROCESSING
+  //   ) {
+  //     handleTransactionStatus(current, state, dispatch)
+  //   }
+  // }, [state])
 
   return null
 }
@@ -142,36 +138,31 @@ const WithApprovalTransactionWorker = ({
  * Executes current transaction, it uses multiCall internally
  */
 const Worker = ({ current }: IWorker) => {
-  const contract = useContract(
-    current.call.address,
-    current.call.abi,
-    false
-  ) as Contract
+  // const contract = useContract(
+  //   current.call.address,
+  //   current.call.abi,
+  //   false
+  // ) as Contract
 
-  const { state, send } = useContractFunction(contract, current.call.method, {
-    transactionName: current.description,
-  })
-  const [, dispatch] = useTransactionsState()
+  // const [, dispatch] = useTransactionsState()
+  // const handleTx = async () => {
+  //   try {
+  //     const result = await contract[current.call.method](...current.call.args)
+  //     handleTransactionStatus(current, state, dispatch)
+  //   } catch (e) {
+  //     handleTransactionStatus(current, state, dispatch)
+  //   }
+  // }
 
-  // Execute transaction
-  useEffect(() => {
-    // Only process pending transactions that can be automatically called
-    if (current.status === TX_STATUS.PENDING && current.autoCall) {
-      send(...current.call.args)
-      updateTransactionStatus(dispatch, TX_STATUS.PROCESSING)
-    }
-  }, [current])
+  // // Execute transaction
+  // useEffect(() => {
+  //   // Only process pending transactions that can be automatically called
+  //   if (current.status === TX_STATUS.PENDING && current.autoCall) {
+  //     updateTransactionStatus(dispatch, TX_STATUS.PROCESSING)
 
-  // React to transaction state changes
-  useEffect(() => {
-    if (
-      state.status &&
-      state.status !== 'None' &&
-      current.status === TX_STATUS.PROCESSING
-    ) {
-      handleTransactionStatus(current, state, dispatch)
-    }
-  }, [state])
+  //     handleTx()
+  //   }
+  // }, [current])
 
   return null
 }

@@ -1,18 +1,19 @@
 import { isAddress } from '@ethersproject/address'
 import { Contract } from '@ethersproject/contracts'
-import { useEthers } from '@usedapp/core'
+import { Web3Provider } from '@ethersproject/providers'
+import { useWeb3React } from '@web3-react/core'
 import {
+  BasketHandler as BasketHandlerAbi,
   ERC20 as ERC20Abi,
+  Facade as FacadeAbi,
   Main as MainAbi,
   StRSR as StRSRAbi,
-  Facade as FacadeAbi,
-  BasketHandler as BasketHandlerAbi,
+  RToken as RTokenAbi,
 } from 'abis'
 import { BasketHandler } from 'abis/types/BasketHandler'
 import { useMemo } from 'react'
-import RTOKEN_ABI from '../abis/RToken.json'
+import { CHAIN_ID } from 'utils/chains'
 import { ERC20, Facade, Main, RToken, StRsr } from '../abis/types'
-import { CHAIN_ID } from '../constants'
 import { getContract } from '../utils'
 
 // returns null on errors
@@ -21,10 +22,10 @@ export function useContract<T extends Contract = Contract>(
   ABI: any,
   withSignerIfPossible = true
 ): T | null {
-  const { library, account } = useEthers()
+  const { provider, account } = useWeb3React()
 
   return useMemo(() => {
-    if (!addressOrAddressMap || !ABI || !library) return null
+    if (!addressOrAddressMap || !ABI || !provider) return null
     let address: string | undefined
     if (typeof addressOrAddressMap === 'string') address = addressOrAddressMap
     else address = addressOrAddressMap[CHAIN_ID]
@@ -33,14 +34,14 @@ export function useContract<T extends Contract = Contract>(
       return getContract(
         address,
         ABI,
-        library,
+        provider as Web3Provider,
         withSignerIfPossible && account ? account : undefined
       )
     } catch (error) {
       console.error('Failed to get contract', error)
       return null
     }
-  }, [addressOrAddressMap, ABI, library, withSignerIfPossible, account]) as T
+  }, [addressOrAddressMap, ABI, provider, withSignerIfPossible, account]) as T
 }
 
 export function useMainContract(
@@ -68,7 +69,7 @@ export function useRTokenContract(
   tokenAddress?: string,
   withSignerIfPossible?: boolean
 ): RToken | null {
-  return useContract<RToken>(tokenAddress, RTOKEN_ABI, withSignerIfPossible)
+  return useContract<RToken>(tokenAddress, RTokenAbi, withSignerIfPossible)
 }
 
 export function useBasketHandlerContract(

@@ -51,27 +51,25 @@ const yourStakingTokensColumns: any = [
   { Header: 'APY', accessor: 'apy' },
 ]
 
-const Home = () => {
-  return (
-    <Container>
-      <Text sx={{ fontSize: 6, fontWeight: 100 }}>$ 123,123.00</Text>
-      <Grid columns={2} mt={4} width={620}>
-        <Box>
-          <Text mb={3} variant="sectionTitle">
-            Your RTokens
-          </Text>
-          <Table columns={yourTokensColumns} data={mockTokens} />
-        </Box>
-        <Box>
-          <Text mb={3} variant="sectionTitle">
-            Your IP Tokens
-          </Text>
-          <Table columns={yourStakingTokensColumns} data={stakingTokens} />
-        </Box>
-      </Grid>
-      <Box>{/* <Table /> */}</Box>
-    </Container>
-  )
-}
+const Home = () => (
+  <Container>
+    <Text sx={{ fontSize: 6, fontWeight: 100 }}>$ 123,123.00</Text>
+    <Grid columns={2} mt={4} width={620}>
+      <Box>
+        <Text mb={3} variant="sectionTitle">
+          Your RTokens
+        </Text>
+        <Table columns={yourTokensColumns} data={mockTokens} />
+      </Box>
+      <Box>
+        <Text mb={3} variant="sectionTitle">
+          Your IP Tokens
+        </Text>
+        <Table columns={yourStakingTokensColumns} data={stakingTokens} />
+      </Box>
+    </Grid>
+    <Box>{/* <Table /> */}</Box>
+  </Container>
+)
 
 export default Home

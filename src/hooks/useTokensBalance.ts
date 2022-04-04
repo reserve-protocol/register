@@ -19,7 +19,7 @@ const useTokensBalance = (tokens: [string, number][]): StringMap => {
   const calls = useMemo(
     () =>
       tokens.map(([address]) => ({
-        interface: ERC20Interface,
+        abi: ERC20Interface,
         address,
         method: 'balanceOf',
         args: [account],

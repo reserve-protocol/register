@@ -1,9 +1,7 @@
-import { ChainId } from '@usedapp/core'
-import { CHAIN_ID } from '../constants'
+import { ChainId, CHAIN_ID } from './chains'
 
 const ETHERSCAN_PREFIXES: { [chainId: number]: string } = {
   [ChainId.Mainnet]: '',
-  [ChainId.Ropsten]: 'ropsten.',
 }
 
 export enum ExplorerDataType {

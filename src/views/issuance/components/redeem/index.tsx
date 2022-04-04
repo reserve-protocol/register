@@ -1,11 +1,6 @@
 import styled from '@emotion/styled'
 import { parseEther } from '@ethersproject/units'
-import {
-  ERC20Interface,
-  MainInterface,
-  RSVManagerInterface,
-  RTokenInterface,
-} from 'abis'
+import { ERC20Interface, RSVManagerInterface, RTokenInterface } from 'abis'
 import { Button, NumericalInput, Card } from 'components'
 import { useState } from 'react'
 import {

@@ -1,4 +1,4 @@
-import { useEthers } from '@usedapp/core'
+import { useWeb3React } from '@web3-react/core'
 import { Card } from 'components'
 import Container from 'components/container'
 import { useAtomValue } from 'jotai'
@@ -19,7 +19,7 @@ import Issuance from './views/issuance'
 // Requires rToken to be selected and a wallet connected
 // TODO: Better placeholders
 const Guard = ({ children }: { children: React.ReactNode }) => {
-  const { account } = useEthers()
+  const { account } = useWeb3React()
   const RToken = useAtomValue(rTokenAtom)
 
   // TODO: Connect your wallet placeholder

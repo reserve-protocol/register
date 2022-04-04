@@ -1,27 +1,24 @@
 import { Table } from 'components/table'
 import { Box, Text } from '@theme-ui/components'
-import { gql, useSubscription } from '@apollo/client'
 import { formatEther } from '@ethersproject/units'
-import { formatCurrency } from 'utils'
-import { shortenTransactionHash } from '@usedapp/core'
+import { formatCurrency, shortenString } from 'utils'
+import useQuery from 'hooks/useQuery'
 
-const GET_TRANSACTIONS = gql`
-  subscription GetTransactions($tokenId: String!) {
-    entries(
-      first: 50
-      where: { token: $tokenId }
-      orderBy: createdAt
-      orderDirection: desc
-    ) {
+const GET_TRANSACTIONS = `
+  entries(
+    first: 50
+    where: { token: $tokenId }
+    orderBy: createdAt
+    orderDirection: desc
+  ) {
+    id
+    type
+    amount
+    token {
       id
-      type
-      amount
-      token {
-        id
-      }
-      transaction {
-        id
-      }
+    }
+    transaction {
+      id
     }
   }
 `
@@ -43,21 +40,22 @@ const columns = [
     Header: 'Tx Hash',
     accessor: 'transaction.id',
     Cell: ({ cell }: { cell: any }) =>
-      cell.value ? shortenTransactionHash(cell.value) : 'RPay TX',
+      cell.value ? shortenString(cell.value) : 'RPay TX',
   },
 ]
 
 const TransactionsTable = ({ tokenId }: { tokenId: string }) => {
-  const { data, loading } = useSubscription(GET_TRANSACTIONS, {
-    variables: {
+  const { data, error } = useQuery([
+    GET_TRANSACTIONS,
+    {
       orderBy: 'id',
       first: 50,
       tokenId,
       where: {},
     },
-  })
+  ])
 
-  if (!loading && !(data?.entries ?? []).length) {
+  if (!error && !(data?.entries ?? []).length) {
     return (
       <Box>
         <Text p={3}>No transactions...</Text>
@@ -67,7 +65,7 @@ const TransactionsTable = ({ tokenId }: { tokenId: string }) => {
 
   return (
     <Box sx={{ maxHeight: '500px', overflow: 'auto' }}>
-      <Table columns={columns} data={!loading ? data?.entries ?? [] : []} />
+      <Table columns={columns} data={!error ? data?.entries ?? [] : []} />
     </Box>
   )
 }

@@ -222,42 +222,6 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
-        name: "account",
-        type: "address",
-      },
-      {
-        internalType: "uint32",
-        name: "pos",
-        type: "uint32",
-      },
-    ],
-    name: "checkpoints",
-    outputs: [
-      {
-        components: [
-          {
-            internalType: "uint32",
-            name: "fromBlock",
-            type: "uint32",
-          },
-          {
-            internalType: "uint224",
-            name: "votes",
-            type: "uint224",
-          },
-        ],
-        internalType: "struct ERC20Votes.Checkpoint",
-        name: "",
-        type: "tuple",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
         name: "",
         type: "address",
       },

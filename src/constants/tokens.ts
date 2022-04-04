@@ -1,6 +1,5 @@
 import { StringMap, Token } from 'types'
-import { ChainId } from '@usedapp/core'
-import { CHAIN_ID } from './index'
+import { ChainId, CHAIN_ID } from 'utils/chains'
 
 type TokenMap = { [chainId: number]: Token }
 

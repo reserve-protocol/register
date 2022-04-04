@@ -5,8 +5,7 @@ import {
   TX_STATUS,
   useTransactionsState,
 } from 'state/context/TransactionManager'
-import { shortenTransactionHash } from '@usedapp/core'
-import { formatCurrency } from 'utils'
+import { formatCurrency, shortenString } from 'utils'
 import { useMemo } from 'react'
 import { formatEther } from '@ethersproject/units'
 
@@ -50,14 +49,14 @@ const TransactionHistory = ({
           status,
           description,
           value: formatCurrency(+value),
-          hash: hash ? shortenTransactionHash(hash) : '-',
+          hash: hash ? shortenString(hash) : '-',
         }))
         .reverse(),
       ...history.map(({ transaction, amount, type }) => ({
         status: TX_STATUS.CONFIRMED,
         description: type,
         value: formatCurrency(+formatEther(amount)),
-        hash: shortenTransactionHash(transaction.id),
+        hash: shortenString(transaction.id),
       })),
     ],
     [state.list, history.length]

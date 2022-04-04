@@ -1,19 +1,26 @@
-import { useContractCall } from '@usedapp/core'
 import { ERC20Interface } from 'abis'
 import { BigNumber } from 'ethers'
 import { Falsy } from 'types'
+import { useCall } from './useCall'
+import { useTokenContract } from './useContract'
 
 const useTokenSupply = (address: string | Falsy): BigNumber => {
-  const [totalSupply] = <[BigNumber | Falsy]>useContractCall(
-      address && {
-        abi: ERC20Interface,
-        address,
-        method: 'totalSupply',
-        args: [],
-      }
-    ) ?? []
+  const contract = useTokenContract(address || '')
+  const { value, error } =
+    useCall(
+      address &&
+        contract && {
+          contract,
+          method: 'totalSupply',
+          args: [],
+        }
+    ) ?? {}
 
-  return totalSupply || BigNumber.from('0')
+  if (value && value[0]) {
+    return value[0]
+  }
+
+  return BigNumber.from('0')
 }
 
 export default useTokenSupply

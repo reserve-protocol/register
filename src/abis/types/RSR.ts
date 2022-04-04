@@ -15,14 +15,12 @@ import {
 } from "ethers";
 import { FunctionFragment, Result, EventFragment } from "@ethersproject/abi";
 import { Listener, Provider } from "@ethersproject/providers";
-import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
-
-export type CheckpointStruct = { fromBlock: BigNumberish; votes: BigNumberish };
-
-export type CheckpointStructOutput = [number, BigNumber] & {
-  fromBlock: number;
-  votes: BigNumber;
-};
+import type {
+  TypedEventFilter,
+  TypedEvent,
+  TypedListener,
+  OnEvent,
+} from "./common";
 
 export interface RSRInterface extends utils.Interface {
   functions: {
@@ -30,7 +28,6 @@ export interface RSRInterface extends utils.Interface {
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
-    "checkpoints(address,uint32)": FunctionFragment;
     "crossed(address)": FunctionFragment;
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
@@ -68,10 +65,6 @@ export interface RSRInterface extends utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "checkpoints",
-    values: [string, BigNumberish]
-  ): string;
   encodeFunctionData(functionFragment: "crossed", values: [string]): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(
@@ -156,10 +149,6 @@ export interface RSRInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "checkpoints",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "crossed", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(
@@ -298,12 +287,6 @@ export interface RSR extends BaseContract {
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    checkpoints(
-      account: string,
-      pos: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[CheckpointStructOutput]>;
-
     crossed(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
 
     decimals(overrides?: CallOverrides): Promise<[number]>;
@@ -412,12 +395,6 @@ export interface RSR extends BaseContract {
 
   balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-  checkpoints(
-    account: string,
-    pos: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<CheckpointStructOutput>;
-
   crossed(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
   decimals(overrides?: CallOverrides): Promise<number>;
@@ -522,12 +499,6 @@ export interface RSR extends BaseContract {
     ): Promise<boolean>;
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    checkpoints(
-      account: string,
-      pos: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<CheckpointStructOutput>;
 
     crossed(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
@@ -678,12 +649,6 @@ export interface RSR extends BaseContract {
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    checkpoints(
-      account: string,
-      pos: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     crossed(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
@@ -793,12 +758,6 @@ export interface RSR extends BaseContract {
 
     balanceOf(
       account: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    checkpoints(
-      account: string,
-      pos: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

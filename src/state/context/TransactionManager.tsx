@@ -1,4 +1,4 @@
-import { ContractCall } from '@usedapp/core'
+// import { ContractCall } from '@usedapp/core'
 import React, { useContext, useReducer } from 'react'
 
 export interface TransactionState {
@@ -7,7 +7,7 @@ export interface TransactionState {
   // TX_STATUS
   status: string
   value: string
-  call: ContractCall
+  call: any // TODO
   // Extra props required to handle the transaction
   extra?: any
   // Defines if the transaction will be handled by the default worker
