@@ -1,4 +1,3 @@
-import { BigNumberish } from 'ethers'
 import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import { ReserveToken, Wallet } from 'types'

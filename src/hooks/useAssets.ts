@@ -1,10 +1,11 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { ERC20Interface, useContractCalls } from '@usedapp/core'
+import { ERC20Interface } from 'abis'
 import { formatEther, formatUnits } from 'ethers/lib/utils'
 import { useFacadeContract } from 'hooks/useContract'
 import { useEffect, useMemo, useState } from 'react'
 import { ReserveToken, StringMap } from 'types'
 import { stringToColor } from 'utils'
+import { useGenericCalls } from './useCall'
 
 /**
  * Returns a hash of balances for the given tokens
@@ -67,7 +68,7 @@ const useAssets = (data: ReserveToken, marketCap: BigNumber): StringMap[] => {
     }
   }, [data.id])
 
-  const result = <any[]>useContractCalls(data.isRSV ? [] : calls) ?? []
+  const result = <any[]>useGenericCalls(data.isRSV ? [] : calls) ?? []
 
   return useMemo(() => {
     if (data.isRSV) {
