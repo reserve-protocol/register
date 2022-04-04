@@ -1,12 +1,7 @@
+import { useBlockNumber } from '@usedapp/core'
+import { useWeb3React } from '@web3-react/core'
 import { StringMap } from 'types'
 import { useMemo } from 'react'
-import {
-  useContractCalls,
-  useEthers,
-  ERC20Interface,
-  useDebounce,
-  useBlockNumber,
-} from '@usedapp/core'
 import { ethers } from 'ethers'
 
 /**
@@ -16,8 +11,8 @@ import { ethers } from 'ethers'
  * @returns
  */
 const useTokensBalance = (tokens: [string, number][]): StringMap => {
-  const { account } = useEthers()
-  const blockNumber = useDebounce(useBlockNumber(), 1000)
+  const { account } = useWeb3React()
+  const blockNumber = useBlockNumber()
 
   const calls = useMemo(
     () =>

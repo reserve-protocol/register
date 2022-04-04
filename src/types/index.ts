@@ -1,3 +1,5 @@
+import { Interface } from '@ethersproject/abi'
+
 export interface StringMap {
   [key: string]: any
 }
@@ -5,6 +7,13 @@ export interface StringMap {
 export interface Wallet {
   address: string
   alias: string
+}
+
+export interface ContractCall {
+  abi: Interface
+  address: string
+  method: string
+  args: any[]
 }
 
 export type Falsy = undefined | false | '' | null

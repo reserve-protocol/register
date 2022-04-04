@@ -1,23 +1,18 @@
 import { useEthers } from '@usedapp/core'
-import { Web3ReactProvider } from '@web3-react/core'
 import { Card } from 'components'
 import Container from 'components/container'
-import connectors from 'components/wallets/connectors'
-import { BlockUpdater } from 'hooks/useBlockNumber'
 import { useAtomValue } from 'jotai'
 import React from 'react'
-import { Toaster } from 'react-hot-toast'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { rTokenAtom } from 'state/atoms'
-import { useAppSelector } from 'state/hooks'
+import Web3Provider from 'state/providers/web3Provider'
 import Updater from 'state/updater'
 import { ThemeProvider } from 'theme-ui'
 import Home from 'views/home'
-import Overview from 'views/overview'
 import Insurance from 'views/staking'
 import WalletManagement from 'views/wallet'
 import Layout from './components/layout'
-import { CHAIN_ID, ROUTES } from './constants'
+import { ROUTES } from './constants'
 import { theme } from './theme'
 import Issuance from './views/issuance'
 
@@ -54,8 +49,7 @@ const Guard = ({ children }: { children: React.ReactNode }) => {
  * @returns {JSX.Element}
  */
 const App = () => (
-  <Web3ReactProvider connectors={connectors} network={CHAIN_ID}>
-    <BlockUpdater />
+  <Web3Provider>
     <Updater />
     <ThemeProvider theme={theme}>
       {/* <Toaster /> */}
@@ -85,7 +79,7 @@ const App = () => (
         </Layout>
       </Router>
     </ThemeProvider>
-  </Web3ReactProvider>
+  </Web3Provider>
 )
 
 export default App

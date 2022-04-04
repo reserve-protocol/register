@@ -1,4 +1,4 @@
-import { Contract } from 'ethers'
+import { BigNumber, Contract } from 'ethers'
 import { getAddress } from '@ethersproject/address'
 // import { AddressZero } from '@ethersproject/constants'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'

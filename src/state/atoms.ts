@@ -1,3 +1,4 @@
+import { BigNumberish } from 'ethers'
 import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import { ReserveToken, Wallet } from 'types'
@@ -19,3 +20,5 @@ export const selectedAccountAtom = atomWithStorage('trackedAccount', '')
 export const walletAtom = atom<Wallet | null>(
   (get) => get(walletsAtom)[get(selectedAccountAtom)]
 )
+
+export const balancesAtom = atom<{ [x: string]: BigNumberish }>({})

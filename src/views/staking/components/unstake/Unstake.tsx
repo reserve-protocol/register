@@ -9,7 +9,6 @@ import {
   TX_STATUS,
   useTransactionsState,
 } from 'state/context/TransactionManager'
-import { useAppSelector } from 'state/hooks'
 import { ReserveToken } from 'types'
 import { formatCurrency } from 'utils'
 
@@ -21,11 +20,12 @@ const InputContainer = styled(Box)`
 
 const Unstake = ({ data }: { data: ReserveToken }) => {
   const [amount, setAmount] = useState('')
-  const balance =
-    useAppSelector(
-      ({ reserveTokens }) =>
-        reserveTokens.balances[data.insurance?.token.address ?? '']
-    ) || 0
+  // TODO: Balances
+  const balance = 0
+  // useAppSelector(
+  //   ({ reserveTokens }) =>
+  //     reserveTokens.balances[data.insurance?.token.address ?? '']
+  // ) || 0
   const [, dispatch] = useTransactionsState()
 
   const handleUnstake = () => {
