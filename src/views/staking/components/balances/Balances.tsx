@@ -3,6 +3,8 @@ import { Card } from 'components'
 import { RTokenIcon } from 'components/icons/logos'
 import TokenLogo from 'components/icons/TokenLogo'
 import { RSR } from 'constants/tokens'
+import { useAtomValue } from 'jotai'
+import { balancesAtom } from 'state/atoms'
 import { ReserveToken } from 'types'
 import { formatCurrency } from 'utils'
 
@@ -15,8 +17,7 @@ interface Props extends BoxProps {
  */
 const Balances = ({ rToken, ...props }: Props) => {
   // TODO: Balances
-  const tokenBalances = {}
-  // const tokenBalances = useAppSelector((state) => state.reserveTokens.balances)
+  const tokenBalances = useAtomValue(balancesAtom)
 
   return (
     <Box {...props}>

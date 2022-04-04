@@ -1,12 +1,12 @@
+import { Box, Grid, Text } from '@theme-ui/components'
 import { Card, Container } from 'components'
 import MarketCapChart from 'components/charts/marketcap-chart'
 import PriceChart from 'components/charts/price-chart'
 import TransactionsTable from 'components/transactions/table'
-import { useSelector } from 'react-redux'
-import { selectCurrentRToken } from 'state/reserve-tokens/reducer'
-import { Box, Text, Grid } from '@theme-ui/components'
-import UsageOverview from './components/usage'
+import { useAtomValue } from 'jotai/utils'
+import { rTokenAtom } from 'state/atoms'
 import AssetsOverview from './components/token-assets'
+import UsageOverview from './components/usage'
 
 /**
  * RToken Overview
@@ -15,7 +15,7 @@ import AssetsOverview from './components/token-assets'
  * @returns React.Component
  */
 const Overview = () => {
-  const RToken = useSelector(selectCurrentRToken)
+  const RToken = useAtomValue(rTokenAtom)
 
   // TODO: Skeleton
   if (!RToken) {

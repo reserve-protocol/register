@@ -11,8 +11,9 @@ import {
   parseEther,
 } from 'ethers/lib/utils'
 import { useBasketHandlerContract, useFacadeContract } from 'hooks/useContract'
+import { useAtomValue } from 'jotai'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { balancesAtom } from 'state/atoms'
 import {
   loadTransactions,
   TransactionState,
@@ -106,8 +107,8 @@ const buildTransactions = (
 const useTokenIssuableAmount = (data: ReserveToken) => {
   const [amount, setAmount] = useState(0)
   // TODO: Fix balances
-  const balance = useSelector(selectBalanceAggregate)
-  const tokenBalances = useAppSelector((state) => state.reserveTokens.balances)
+  const balance = 0
+  const tokenBalances = useAtomValue(balancesAtom)
   const { account } = useEthers()
   // TODO: replace for facade
   const facadeContract = useFacadeContract(data.facade ?? '')

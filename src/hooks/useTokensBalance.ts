@@ -1,8 +1,10 @@
-import { useBlockNumber } from '@usedapp/core'
 import { useWeb3React } from '@web3-react/core'
 import { StringMap } from 'types'
 import { useMemo } from 'react'
 import { ethers } from 'ethers'
+import { ERC20Interface } from 'abis'
+import { useGenericCalls } from './useCall'
+import useBlockNumber from './useBlockNumber'
 
 /**
  * Returns a hash of balances for the given tokens
@@ -17,7 +19,7 @@ const useTokensBalance = (tokens: [string, number][]): StringMap => {
   const calls = useMemo(
     () =>
       tokens.map(([address]) => ({
-        abi: ERC20Interface,
+        interface: ERC20Interface,
         address,
         method: 'balanceOf',
         args: [account],
@@ -25,7 +27,7 @@ const useTokensBalance = (tokens: [string, number][]): StringMap => {
     [tokens.toString(), account, blockNumber]
   )
 
-  const balances = <any[]>useContractCalls(calls) ?? []
+  const balances = <any[]>useGenericCalls(calls) ?? []
 
   return balances.reduce((acc, current, index) => {
     if (current && current[0]) {

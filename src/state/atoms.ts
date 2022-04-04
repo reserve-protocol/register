@@ -21,4 +21,4 @@ export const walletAtom = atom<Wallet | null>(
   (get) => get(walletsAtom)[get(selectedAccountAtom)]
 )
 
-export const balancesAtom = atom<{ [x: string]: BigNumberish }>({})
+export const balancesAtom = atom<{ [x: string]: number }>({})

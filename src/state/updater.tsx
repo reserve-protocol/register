@@ -1,8 +1,10 @@
 import { getAddress } from 'ethers/lib/utils'
 import { request } from 'graphql-request'
-import { useUpdateAtom } from 'jotai/utils'
+import useTokensBalance from 'hooks/useTokensBalance'
+import { useSetAtom } from 'jotai'
+import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import { useEffect } from 'react'
-import { reserveTokensAtom } from 'state/atoms'
+import { balancesAtom, reserveTokensAtom, rTokenAtom } from 'state/atoms'
 import useSWR from 'swr'
 import { ReserveToken } from 'types'
 import { CHAIN_ID } from '../constants'
@@ -152,17 +154,17 @@ const getTokens = (reserveToken: ReserveToken): [string, number][] => {
 /**
  * Updates the balances of the current ReserveToken related tokens
  */
-// const TokensBalanceUpdater = () => {
-//   const dispatch = useDispatch()
-//   const reserveToken = useAppSelector(selectCurrentRToken)
-//   const balances = useTokensBalance(reserveToken ? getTokens(reserveToken) : [])
+const TokensBalanceUpdater = () => {
+  const reserveToken = useAtomValue(rTokenAtom)
+  const updateBalances = useSetAtom(balancesAtom)
+  const balances = useTokensBalance(reserveToken ? getTokens(reserveToken) : [])
 
-//   useEffect(() => {
-//     dispatch(updateBalance(balances))
-//   }, [JSON.stringify(balances)])
+  useEffect(() => {
+    updateBalances(balances)
+  }, [JSON.stringify(balances)])
 
-//   return null
-// }
+  return null
+}
 
 /**
  * Updater
@@ -170,7 +172,7 @@ const getTokens = (reserveToken: ReserveToken): [string, number][] => {
 const Updater = () => (
   <>
     <ReserveTokensUpdater />
-    {/* <TokensBalanceUpdater /> */}
+    <TokensBalanceUpdater />
   </>
 )
 

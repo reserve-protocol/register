@@ -1,13 +1,15 @@
 import { useWeb3React } from '@web3-react/core'
 import { Contract } from 'ethers'
 import { useMemo } from 'react'
+import { Interface } from '@ethersproject/abi'
+
 import {
   encodeCallData,
   decodeCallResult,
   CallResult,
 } from 'state/providers/web3/lib/helpers'
 import { ContractMethodNames, Falsy, Params, TypedContract } from 'types'
-import { useRawCalls } from './useChainCalls'
+import { useRawCalls } from './useRawCalls'
 
 /**
  * @public
@@ -19,6 +21,13 @@ export interface Call<
   contract: T
   method: MN
   args: Params<T, MN>
+}
+
+export interface GenericCall {
+  interface: Interface
+  address: string
+  method: string
+  args: any[]
 }
 
 /**
@@ -40,6 +49,50 @@ export function useCalls(
   const results = useRawCalls(rawCalls)
   return useMemo(
     () => results.map((result, idx) => decodeCallResult(calls[idx], result)),
+    [results]
+  )
+}
+
+export const useGenericCalls = (calls: GenericCall[]) => {
+  const { provider } = useWeb3React()
+
+  const rawCalls = calls.map((call) =>
+    provider !== undefined
+      ? {
+          address: call.address,
+          data: call.interface.encodeFunctionData(call.method, call.args),
+        }
+      : undefined
+  )
+  const results = useRawCalls(rawCalls)
+  return useMemo(
+    () =>
+      results.map((result, idx) => {
+        const call = calls[idx]
+        try {
+          if (result!.success) {
+            return {
+              value: call.interface.decodeFunctionResult(
+                call.method,
+                result!.value
+              ),
+              error: undefined,
+            }
+          }
+          const errorMessage: string = new Interface([
+            'function Error(string)',
+          ]).decodeFunctionData('Error', result!.value)[0]
+          return {
+            value: undefined,
+            error: new Error(errorMessage),
+          }
+        } catch (error) {
+          return {
+            value: undefined,
+            error: error as Error,
+          }
+        }
+      }),
     [results]
   )
 }

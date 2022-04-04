@@ -1,6 +1,8 @@
 import { Flex, Box, Text, BoxProps, Divider } from '@theme-ui/components'
 import { Card } from 'components'
 import TokenLogo from 'components/icons/TokenLogo'
+import { useAtomValue } from 'jotai/utils'
+import { balancesAtom } from 'state/atoms'
 import { ReserveToken } from 'types'
 import { formatCurrency } from 'utils'
 
@@ -13,7 +15,7 @@ interface Props extends BoxProps {
  */
 const Balances = ({ rToken, ...props }: Props) => {
   // TODO: Fix balances
-  const tokenBalances = {}
+  const tokenBalances = useAtomValue(balancesAtom)
 
   return (
     <Box {...props}>
