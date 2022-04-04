@@ -41,7 +41,7 @@
     "subscriptions-transport-ws": "^0.11.0",
     "swr": "^1.2.1",
     "theme-ui": "^0.13.1",
-    "typescript": "^4.4.2",
+    "typescript": "^4.6.2",
     "web-vitals": "^1.0.1"
   },
   "scripts": {

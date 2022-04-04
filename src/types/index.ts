@@ -1,4 +1,5 @@
 import { Interface } from '@ethersproject/abi'
+import { Contract, ContractTransaction } from 'ethers'
 
 export interface StringMap {
   [key: string]: any
@@ -21,6 +22,13 @@ export interface RawCall {
   data: string
 }
 
+export type Awaited<T> = T extends PromiseLike<infer U> ? U : T
+
+export type Params<
+  T extends TypedContract,
+  FN extends ContractFunctionNames<T> | ContractMethodNames<T>
+> = Parameters<T['functions'][FN]>
+
 export type RawCallResult =
   | {
       value: string
@@ -37,6 +45,28 @@ export type MulticallState = {
 }
 
 export type Falsy = undefined | false | '' | null
+
+export type TypedContract = Contract & {
+  functions: Record<string, (...args: any[]) => any>
+}
+
+export type ContractFunctionNames<T extends TypedContract> = keyof {
+  [P in keyof T['functions'] as ReturnType<
+    T['functions'][P]
+  > extends Promise<ContractTransaction>
+    ? P
+    : never]: void
+} &
+  string
+
+export type ContractMethodNames<T extends TypedContract> = keyof {
+  [P in keyof T['functions'] as ReturnType<T['functions'][P]> extends Promise<
+    any[]
+  >
+    ? P
+    : never]: void
+} &
+  string
 
 // Generic token definition ERC20 + extra data
 export interface Token {
