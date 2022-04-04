@@ -16,6 +16,26 @@ export interface ContractCall {
   args: any[]
 }
 
+export interface RawCall {
+  address: string
+  data: string
+}
+
+export type RawCallResult =
+  | {
+      value: string
+      success: boolean
+    }
+  | undefined
+
+export type MulticallState = {
+  [address: string]:
+    | {
+        [data: string]: RawCallResult
+      }
+    | undefined
+}
+
 export type Falsy = undefined | false | '' | null
 
 // Generic token definition ERC20 + extra data

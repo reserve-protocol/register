@@ -1,4 +1,4 @@
-import { ChainId } from '@usedapp/core'
+import { ChainId } from 'utils/chains'
 
 type AddressMap = { [chainId: number]: string }
 
@@ -38,5 +38,6 @@ export const ENS_ADDRESS: AddressMap = {
 }
 
 export const MULTICALL_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x5ba1e12693dc8f9c48aad8770482f4739beed696',
   [ChainId.Hardhat]: '0xeefba1e63905ef1d7acba5a8513c70307c1ce441',
 }

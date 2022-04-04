@@ -12,6 +12,17 @@ export function isAddress(value: any): string | false {
   }
 }
 
+export function addressEqual(
+  firstAddress: string,
+  secondAddress: string
+): boolean {
+  try {
+    return getAddress(firstAddress) === getAddress(secondAddress)
+  } catch {
+    throw new TypeError("Invalid input, address can't be parsed")
+  }
+}
+
 export function formatCurrency(value: number): string {
   return Intl.NumberFormat('en-US').format(value)
 }

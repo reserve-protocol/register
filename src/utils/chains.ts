@@ -15,6 +15,9 @@ export const ChainId = {
   Hardhat: 31337,
 }
 
+export const CHAIN_ID =
+  Number(process.env.REACT_APP_DEFAULT_CHAIN) || ChainId.Mainnet
+
 export const CHAINS: {
   [chainId: number]: BasicChainInformation | ExtendedChainInformation
 } = {
