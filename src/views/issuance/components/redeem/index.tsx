@@ -1,18 +1,13 @@
 import styled from '@emotion/styled'
 import { parseEther } from '@ethersproject/units'
-import { ERC20Interface, RSVManagerInterface, RTokenInterface } from 'abis'
-import { Button, NumericalInput, Card } from 'components'
-import { useState } from 'react'
-import {
-  loadTransactions,
-  TX_STATUS,
-  TransactionState,
-  useTransactionsState,
-} from 'state/context/TransactionManager'
 import { Box, Text } from '@theme-ui/components'
-import { ReserveToken } from 'types'
+import { ERC20Interface, RSVManagerInterface, RTokenInterface } from 'abis'
+import { Button, Card, NumericalInput } from 'components'
 import { useSetAtom } from 'jotai'
+import { useState } from 'react'
 import { addTransactionAtom } from 'state/atoms'
+import { TransactionState, TX_STATUS } from 'state/context/TransactionManager'
+import { ReserveToken } from 'types'
 
 const InputContainer = styled(Box)`
   display: flex;

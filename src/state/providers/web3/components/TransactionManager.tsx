@@ -4,13 +4,13 @@ import { ContractCall } from 'hooks/useCall'
 import { useContract } from 'hooks/useContract'
 import useTokensHasAllowance from 'hooks/useTokensHasAllowance'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   currentTransactionAtom,
   transactionAtom,
   transactionsAtom,
 } from 'state/atoms'
-import { TX_STATUS } from 'state/context/TransactionManager'
+import { TransactionState, TX_STATUS } from 'state/context/TransactionManager'
 
 export interface IRequiredApproveTransactionParams {
   methods: string[] // method that requires allowance
@@ -22,11 +22,13 @@ export interface IRequiredApproveTransactionParams {
   dispatch: React.Dispatch<{ type: string; payload: any }> // Dispatch for updating context store
 }
 
-const requiredApprovalTx = ['stake', 'issue', 'redeem']
+const requiredApprovalTx = ['stake', 'issue']
 
 const updateTransactionAtom = atom(null, (get, set, status: string) => {
   const txs = get(transactionsAtom)
   let currentTx = get(currentTransactionAtom)
+
+  console.log('txs', { txs, currentTx })
 
   if (!txs[currentTx]) {
     throw new Error('Tx not found')
@@ -59,8 +61,8 @@ const updateTransactionAtom = atom(null, (get, set, status: string) => {
   }
 
   result.push(...pending)
-  set(currentTransactionAtom, currentTx)
   set(transactionsAtom, result)
+  set(currentTransactionAtom, currentTx)
 })
 
 const updateTransactionHashAtom = atom(null, (get, set, hash: string) => {
@@ -74,29 +76,34 @@ const updateTransactionHashAtom = atom(null, (get, set, hash: string) => {
   ])
 })
 
-const TransactionWorker = () => {
-  const current = useAtomValue(transactionAtom)!
+const TransactionWorker = ({ current }: { current: TransactionState }) => {
   const { account } = useWeb3React()
+  const [processing, setProcessing] = useState(false)
   const updateTx = useSetAtom(updateTransactionAtom)
   const updateTxHash = useSetAtom(updateTransactionHashAtom)
   const contract = useContract(
     current.call.address,
     current.call.abi,
-    false
+    true
   ) as Contract
 
   const hasAllowance = useTokensHasAllowance(
-    requiredApprovalTx.includes(current.call.method) ? current.extra : [],
+    requiredApprovalTx.includes(current.call.method) && current.extra
+      ? current.extra
+      : [],
     current.call.address || ''
   )
 
   const exec = async () => {
     try {
-      const transaction = await current.call.contract(...current.call.args)
+      const transaction = await contract[current.call.method](
+        ...current.call.args
+      )
       updateTxHash(transaction.hash)
       await transaction.wait()
       updateTx(TX_STATUS.CONFIRMED)
     } catch (e) {
+      console.log('error processing tx', e)
       updateTx(TX_STATUS.FAILED)
     }
   }
@@ -121,7 +128,9 @@ const TransactionWorker = () => {
   }
 
   useEffect(() => {
-    if (current.status === TX_STATUS.PENDING && !current.autoCall) {
+    console.log('is processing', processing)
+    if (contract && current.status === TX_STATUS.PENDING && !processing) {
+      setProcessing(true)
       processTx()
     }
   }, [contract, hasAllowance])
@@ -131,13 +140,14 @@ const TransactionWorker = () => {
 
 // TODO: Can be improved with jotai in mind
 const TransactionManager = () => {
-  const current = useAtomValue(transactionAtom)
+  const currentTx = useAtomValue(currentTransactionAtom)
+  const current = useAtomValue(transactionsAtom)[currentTx]
 
   if (!current) {
     return null
   }
 
-  return <TransactionWorker />
+  return <TransactionWorker current={current} />
 }
 
 export default TransactionManager

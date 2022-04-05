@@ -5,8 +5,4 @@ import './i18n'
 
 const root = createRoot(document.getElementById('root')!)
 
-root.render(
-  <StrictMode>
-    <App />
-  </StrictMode>
-)
+root.render(<App />)
