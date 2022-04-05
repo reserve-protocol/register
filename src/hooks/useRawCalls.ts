@@ -1,10 +1,7 @@
-import { useAtom } from 'jotai'
+import { atom, useAtom } from 'jotai'
 import { useAtomValue } from 'jotai/utils'
 import { useEffect, useMemo } from 'react'
-import {
-  callsAtom,
-  multicallStateAtom,
-} from 'state/providers/web3/components/MulticallUpdater'
+import { callsAtom, multicallStateAtom } from 'state/atoms'
 import { Falsy, MulticallState, RawCall, RawCallResult } from 'types'
 import { addressEqual } from 'utils'
 
@@ -14,6 +11,13 @@ function extractCallResult(
 ): RawCallResult {
   return state?.[call.address]?.[call.data]
 }
+
+const setCallsAtom = atom(
+  (get) => get(callsAtom),
+  (_get, set, value: any) => {
+    set(callsAtom, value)
+  }
+)
 
 // Ported from https://github.com/TrueFiEng/useDApp/blob/master/packages/core/src/hooks/useRawCalls.ts
 /**
@@ -26,13 +30,12 @@ function extractCallResult(
  * @returns
  */
 export function useRawCalls(calls: (RawCall | Falsy)[]): RawCallResult[] {
-  const [allCalls, setCalls] = useAtom(callsAtom)
+  const [allCalls, setCalls] = useAtom(setCallsAtom)
   const multicallState = useAtomValue(multicallStateAtom)
   const callsString = JSON.stringify(calls)
 
   useEffect(() => {
     const filteredCalls = calls.filter(Boolean) as RawCall[]
-    console.log('USE EFFECT', allCalls)
 
     setCalls([...allCalls, ...filteredCalls])
     return () => {
@@ -45,7 +48,6 @@ export function useRawCalls(calls: (RawCall | Falsy)[]): RawCallResult[] {
           finalState = finalState.filter((_, i) => i !== index)
         }
       }
-      console.log('UNMOUNT', finalState)
       setCalls(finalState)
     }
   }, [callsString])

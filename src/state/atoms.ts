@@ -1,6 +1,6 @@
 import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
-import { ReserveToken, Wallet } from 'types'
+import { MulticallState, RawCall, ReserveToken, Wallet } from 'types'
 
 export const reserveTokensAtom = atomWithStorage<{ [x: string]: ReserveToken }>(
   'reserveTokens',
@@ -21,3 +21,7 @@ export const walletAtom = atom<Wallet | null>(
 )
 
 export const balancesAtom = atom<{ [x: string]: number }>({})
+
+// Calls state
+export const callsAtom = atom<RawCall[]>([])
+export const multicallStateAtom = atom<MulticallState>({})

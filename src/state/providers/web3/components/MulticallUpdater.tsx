@@ -4,13 +4,12 @@ import useBlockNumber from 'hooks/useBlockNumber'
 import useDebounce from 'hooks/useDebounce'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
+import { callsAtom, multicallStateAtom } from 'state/atoms'
 import { MulticallState, RawCall } from 'types'
 import { addressEqual } from 'utils'
 import { CHAIN_ID } from 'utils/chains'
 import multicall from '../lib/multicall'
 
-export const callsAtom = atom<RawCall[]>([])
-export const multicallStateAtom = atom<MulticallState>({})
 const latestFetchedBlockAtom = atom(0)
 
 export const updateMulticallStateAtom = atom(
