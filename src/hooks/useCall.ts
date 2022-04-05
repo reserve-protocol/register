@@ -23,7 +23,7 @@ export interface Call<
   args: Params<T, MN>
 }
 
-export interface GenericCall {
+export interface ContractCall {
   abi: Interface
   address: string
   method: string
@@ -53,11 +53,11 @@ export function useCalls(
   )
 }
 
-export const useGenericCalls = (calls: GenericCall[]) => {
+export const useContractCalls = (calls: (ContractCall | Falsy)[]): any[] => {
   const { provider } = useWeb3React()
 
   const rawCalls = calls.map((call) =>
-    provider !== undefined
+    provider && call
       ? {
           address: call.address,
           data: call.abi.encodeFunctionData(call.method, call.args),
@@ -69,21 +69,22 @@ export const useGenericCalls = (calls: GenericCall[]) => {
   return useMemo(
     () =>
       results.map((result, idx) => {
-        if (!result) {
-          return { value: undefined, error: undefined }
+        const call = calls[idx]
+
+        if (!result || !call) {
+          return undefined
         }
 
-        const call = calls[idx]
         try {
-          if (result!.success) {
+          if (result.success) {
             return {
-              value: call.abi.decodeFunctionResult(call.method, result!.value),
+              value: call.abi.decodeFunctionResult(call.method, result.value),
               error: undefined,
             }
           }
           const errorMessage: string = new Interface([
             'function Error(string)',
-          ]).decodeFunctionData('Error', result!.value)[0]
+          ]).decodeFunctionData('Error', result.value)[0]
           return {
             value: undefined,
             error: new Error(errorMessage),
@@ -97,6 +98,10 @@ export const useGenericCalls = (calls: GenericCall[]) => {
       }),
     [results]
   )
+}
+
+export function useContractCall(call: ContractCall | Falsy): any[] | undefined {
+  return useContractCalls([call])[0]
 }
 
 // Ported from https://github.com/TrueFiEng/useDApp/blob/master/packages/core/src/hooks/useCall.ts

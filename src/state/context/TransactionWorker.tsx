@@ -10,7 +10,7 @@ import {
   useTransactionsState,
 } from 'state/context/TransactionManager'
 import useTokensHasAllowance from 'hooks/useTokensHasAllowance'
-import { GenericCall } from 'hooks/useCall'
+import { ContractCall } from 'hooks/useCall'
 import { useWeb3React } from '@web3-react/core'
 
 export interface IWorker {
@@ -25,7 +25,7 @@ export interface IWithApprovalTransactionWorker extends IWorker {
 export interface IRequiredApproveTransactionParams {
   methods: string[] // method that requires allowance
   hasAllowance: boolean // if the user has the required allowance to execute "method"
-  call: GenericCall // current call
+  call: ContractCall // current call
   contract: Contract // current contract call
   account: string // current account
   send: (...args: any[]) => Promise<void> // Current contract execute function (uses multicall)

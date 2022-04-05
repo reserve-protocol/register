@@ -3,7 +3,7 @@ import { StringMap } from 'types'
 import { useMemo } from 'react'
 import { ethers } from 'ethers'
 import { ERC20Interface } from 'abis'
-import { useGenericCalls } from './useCall'
+import { useContractCalls } from './useCall'
 import useBlockNumber from './useBlockNumber'
 
 /**
@@ -27,7 +27,7 @@ const useTokensBalance = (tokens: [string, number][]): StringMap => {
     [tokens.toString(), account, blockNumber]
   )
 
-  const balances = <any[]>useGenericCalls(calls) ?? []
+  const balances = <any[]>useContractCalls(calls) ?? []
 
   return balances.reduce((acc, current, index) => {
     const [address, decimals] = tokens[index]

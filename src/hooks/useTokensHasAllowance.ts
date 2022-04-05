@@ -2,7 +2,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useMemo } from 'react'
 import { BigNumber } from 'ethers'
 import { ERC20Interface } from 'abis'
-import { useGenericCalls } from './useCall'
+import { useContractCalls } from './useCall'
 import useBlockNumber from './useBlockNumber'
 
 /**
@@ -31,7 +31,7 @@ const useTokensHasAllowance = (
     [tokens.toString(), account, blockNumber]
   )
 
-  const allowances = <any[]>useGenericCalls(calls) ?? []
+  const allowances = <any[]>useContractCalls(calls) ?? []
 
   return (
     !!allowances.length &&
