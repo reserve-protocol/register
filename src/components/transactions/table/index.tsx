@@ -45,15 +45,12 @@ const columns = [
 ]
 
 const TransactionsTable = ({ tokenId }: { tokenId: string }) => {
-  const { data, error } = useQuery([
-    GET_TRANSACTIONS,
-    {
-      orderBy: 'id',
-      first: 50,
-      tokenId,
-      where: {},
-    },
-  ])
+  const { data, error } = useQuery(GET_TRANSACTIONS, {
+    orderBy: 'id',
+    first: 50,
+    tokenId,
+    where: {},
+  })
 
   if (!error && !(data?.entries ?? []).length) {
     return (

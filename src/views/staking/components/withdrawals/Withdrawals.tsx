@@ -39,14 +39,11 @@ const Withdrawals = ({ tokenAddress }: { tokenAddress: string }) => {
   const { account } = useWeb3React()
   const [, dispatch] = useTransactionsState()
   // TODO: Polling
-  const { data } = useQuery([
-    pendingWithdrawalsQuery,
-    {
-      orderBy: 'draftId',
-      where: {},
-      userId: account?.toLowerCase(),
-    },
-  ])
+  const { data } = useQuery(pendingWithdrawalsQuery, {
+    orderBy: 'draftId',
+    where: {},
+    userId: account?.toLowerCase(),
+  })
 
   const entries = data?.entries ?? []
 

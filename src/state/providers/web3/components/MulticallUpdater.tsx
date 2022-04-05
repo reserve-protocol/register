@@ -18,7 +18,6 @@ export const updateMulticallStateAtom = atom(
   async (get, set, props) => {
     // TODO: Types
     const [calls, provider, blockNumber] = props as any
-    console.log('props', props)
     const result = await multicall(
       provider,
       MULTICALL_ADDRESS[CHAIN_ID],

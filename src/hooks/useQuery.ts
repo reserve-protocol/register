@@ -1,9 +1,12 @@
 import useSWR from 'swr'
-import { request, RequestDocument } from 'graphql-request'
+import { request, GraphQLClient, RequestDocument } from 'graphql-request'
 
-const fetcher = (query: [RequestDocument, any?]) =>
-  request('http://localhost:8000/subgraphs/name/lcamargof/reserve', ...query)
+const client = new GraphQLClient(process.env.REACT_APP_SUBGRAPH_URL ?? '')
 
-const useQuery = (query: [RequestDocument, any?]) => useSWR(query, fetcher)
+const fetcher = (query: RequestDocument, variables: any) =>
+  client.request(query, variables)
+
+const useQuery = (query: RequestDocument, variables: any) =>
+  useSWR([query, variables], fetcher)
 
 export default useQuery

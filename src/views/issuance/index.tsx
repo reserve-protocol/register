@@ -2,6 +2,7 @@ import { Box, Divider, Grid, Text } from '@theme-ui/components'
 import { useWeb3React } from '@web3-react/core'
 import { Container } from 'components'
 import TransactionHistory from 'components/transaction-history'
+import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import { useAtomValue } from 'jotai'
 import { rTokenAtom } from 'state/atoms'
@@ -13,7 +14,7 @@ import Issue from './components/issue'
 import Redeem from './components/redeem'
 
 // TODO: make this query generic
-const getHistory = `
+const getHistory = gql`
     entries(
       where: {
         type_in: ["Issuance", "Redemption"]
@@ -37,14 +38,10 @@ const getHistory = `
 const Issuance = () => {
   const RToken = useAtomValue(rTokenAtom) as ReserveToken
   const { account } = useWeb3React()
-  const { data } = useQuery([
-    getHistory,
-    {
-      where: {},
-      userId: account?.toLocaleLowerCase(),
-      token: RToken.token.address.toLowerCase(),
-    },
-  ])
+  const { data } = useQuery(getHistory, {
+    userId: account?.toLocaleLowerCase(),
+    token: RToken.token.address.toLowerCase(),
+  })
   // TODO: Get balance from state
   const balance = 0
 

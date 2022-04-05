@@ -38,14 +38,11 @@ const Staking = () => {
   // This component is protected by a guard, RToken always exists
   const RToken = useAtomValue(rTokenAtom) as ReserveToken
   const { account } = useWeb3React()
-  const { data } = useQuery([
-    getHistory,
-    {
-      where: {},
-      userId: account?.toLowerCase(),
-      token: RToken.insurance!.token.address,
-    },
-  ])
+  const { data } = useQuery(getHistory, {
+    where: {},
+    userId: account?.toLowerCase(),
+    token: RToken.insurance!.token.address,
+  })
 
   return (
     <TransactionManager>

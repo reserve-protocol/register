@@ -32,6 +32,7 @@ export function useRawCalls(calls: (RawCall | Falsy)[]): RawCallResult[] {
 
   useEffect(() => {
     const filteredCalls = calls.filter(Boolean) as RawCall[]
+    console.log('USE EFFECT', allCalls)
 
     setCalls([...allCalls, ...filteredCalls])
     return () => {
@@ -44,6 +45,7 @@ export function useRawCalls(calls: (RawCall | Falsy)[]): RawCallResult[] {
           finalState = finalState.filter((_, i) => i !== index)
         }
       }
+      console.log('UNMOUNT', finalState)
       setCalls(finalState)
     }
   }, [callsString])
