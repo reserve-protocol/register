@@ -6,6 +6,7 @@
     "@coinbase/wallet-sdk": "^3.0.5",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.3.0",
+    "@mdx-js/react": "^2.1.1",
     "@popperjs/core": "^2.10.1",
     "@reach/dialog": "^0.16.0",
     "@react-spring/web": "^9.2.4",
@@ -17,10 +18,9 @@
     "@web3-react/types": "^8.0.11-beta.0",
     "@web3-react/url": "^8.0.16-beta.0",
     "@web3-react/walletconnect": "^8.0.25-beta.0",
-    "ethereum-multicall": "^2.9.0",
     "ethers": "^5.6.2",
     "fast-memoize": "^2.5.2",
-    "graphql": "^15.5.1",
+    "graphql": "^16.3.0",
     "graphql-request": "^4.2.0",
     "i18next": "^21.0.2",
     "i18next-browser-languagedetector": "^6.1.2",
@@ -36,9 +36,8 @@
     "react-scripts": "4.0.3",
     "react-table": "^7.7.0",
     "recharts": "^2.1.6",
-    "subscriptions-transport-ws": "^0.11.0",
     "swr": "^1.2.1",
-    "theme-ui": "^0.13.1",
+    "theme-ui": "^0.14.2",
     "typescript": "^4.6.2",
     "web-vitals": "^1.0.1"
   },
@@ -48,9 +47,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}' --fix",
-    "e2e": "cypress open",
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "e2e": "cypress open"
   },
   "browserslist": {
     "production": [
@@ -66,12 +63,6 @@
   },
   "devDependencies": {
     "@ethersproject/experimental": "^5.4.0",
-    "@storybook/addon-actions": "^6.3.12",
-    "@storybook/addon-essentials": "^6.3.12",
-    "@storybook/addon-links": "^6.3.12",
-    "@storybook/node-logger": "^6.3.12",
-    "@storybook/preset-create-react-app": "^3.2.0",
-    "@storybook/react": "^6.3.12",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/react-hooks": "^7.0.2",
@@ -101,23 +92,5 @@
     "truffle-privatekey-provider": "^1.5.0",
     "typechain": "^8.0.0",
     "web3": "^1.5.2"
-  },
-  "peerDependencies": {
-    "babel-loader": "8.1.0"
-  },
-  "eslintConfig": {
-    "overrides": [
-      {
-        "files": [
-          "**/*.stories.*"
-        ],
-        "rules": {
-          "import/no-anonymous-default-export": "off"
-        }
-      }
-    ]
-  },
-  "resolutions": {
-    "react-error-overlay": "6.0.9"
   }
 }

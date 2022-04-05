@@ -129,6 +129,7 @@ const WithApprovalTransactionWorker = ({
   //     handleTransactionStatus(current, state, dispatch)
   //   }
   // }, [state])
+  console.log('TODO')
 
   return null
 }
@@ -163,6 +164,7 @@ const Worker = ({ current }: IWorker) => {
   //     handleTx()
   //   }
   // }, [current])
+  console.log('TODO')
 
   return null
 }

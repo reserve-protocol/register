@@ -12,11 +12,11 @@ interface ExtendedChainInformation extends BasicChainInformation {
 
 export const ChainId = {
   Mainnet: 1,
-  Hardhat: 31337,
+  Hardhat: 1337,
 }
 
 export const CHAIN_ID =
-  Number(process.env.REACT_APP_DEFAULT_CHAIN) || ChainId.Mainnet
+  Number(process.env.REACT_APP_CHAIN_ID) || ChainId.Mainnet
 
 export const CHAINS: {
   [chainId: number]: BasicChainInformation | ExtendedChainInformation

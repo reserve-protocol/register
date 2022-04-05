@@ -1,4 +1,4 @@
-import styled from '@emotion/styled-base'
+import styled from '@emotion/styled'
 import { Box, BoxProps, Text } from '@theme-ui/components'
 import useBlockNumber from 'hooks/useBlockNumber'
 

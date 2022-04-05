@@ -46,6 +46,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'no-use-before-define': 'off',
     'no-await-in-loop': 'off',
+    'no-console': 'off',
     'no-param-reassign': 0,
     'no-plusplus': 0,
     'react/require-default-props': 0,
