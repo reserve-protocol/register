@@ -1,5 +1,5 @@
 import { atom, useAtom } from 'jotai'
-import { useAtomValue } from 'jotai/utils'
+import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import { useEffect, useMemo } from 'react'
 import { callsAtom, multicallStateAtom } from 'state/atoms'
 import { Falsy, MulticallState, RawCall, RawCallResult } from 'types'
@@ -12,12 +12,22 @@ function extractCallResult(
   return state?.[call.address]?.[call.data]
 }
 
-const setCallsAtom = atom(
-  (get) => get(callsAtom),
-  (_get, set, value: any) => {
-    set(callsAtom, value)
+const setCallsAtom = atom(null, (get, set, calls: any) => {
+  set(callsAtom, [...get(callsAtom), ...calls])
+})
+
+const removeCallsAtom = atom(null, (get, set, calls: any) => {
+  let finalState = get(callsAtom)
+  for (const call of calls) {
+    const index = finalState.findIndex(
+      (x) => addressEqual(x.address, call.address) && x.data === call.data
+    )
+    if (index !== -1) {
+      finalState = finalState.filter((_, i) => i !== index)
+    }
   }
-)
+  set(callsAtom, finalState)
+})
 
 // Ported from https://github.com/TrueFiEng/useDApp/blob/master/packages/core/src/hooks/useRawCalls.ts
 /**
@@ -25,27 +35,18 @@ const setCallsAtom = atom(
  * The hook will cause the component to refresh when values change.
  */
 export function useRawCalls(calls: (RawCall | Falsy)[]): RawCallResult[] {
-  const [allCalls, setCalls] = useAtom(setCallsAtom)
+  const setCalls = useUpdateAtom(setCallsAtom)
+  const removeCalls = useUpdateAtom(removeCallsAtom)
   const multicallState = useAtomValue(multicallStateAtom)
   const callsString = JSON.stringify(calls)
 
   useEffect(() => {
     const filteredCalls = calls.filter(Boolean) as RawCall[]
-
-    setCalls([...allCalls, ...filteredCalls])
+    setCalls(filteredCalls)
     return () => {
-      let finalState = allCalls
-      for (const call of filteredCalls) {
-        const index = finalState.findIndex(
-          (x) => addressEqual(x.address, call.address) && x.data === call.data
-        )
-        if (index !== -1) {
-          finalState = finalState.filter((_, i) => i !== index)
-        }
-      }
-      setCalls(finalState)
+      removeCalls(filteredCalls)
     }
-  }, [callsString])
+  }, [callsString, setCalls])
 
   // TODO: Multichain support
   return useMemo(

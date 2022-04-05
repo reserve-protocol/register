@@ -25,7 +25,7 @@ export const updateMulticallStateAtom = atom(
     )
 
     // avoid race conditions
-    if (blockNumber > get(latestFetchedBlockAtom)) {
+    if (blockNumber >= get(latestFetchedBlockAtom)) {
       set(multicallStateAtom, result)
       set(latestFetchedBlockAtom, blockNumber)
     }

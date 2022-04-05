@@ -60,6 +60,7 @@ module.exports = {
     'no-restricted-syntax': 0,
     'no-unused-vars': 0,
     'consistent-return': 0,
+    'arrow-body-style': 0,
     'no-bitwise': 0,
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': ['error'],

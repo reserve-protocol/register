@@ -66,7 +66,7 @@ const useAssets = (data: ReserveToken, marketCap: BigNumber): StringMap[] => {
     return () => {
       abort.value = true
     }
-  }, [data.id])
+  }, [data.id, facadeContract])
 
   const result = <any[]>useContractCalls(data.isRSV ? [] : calls) ?? []
 
@@ -88,9 +88,9 @@ const useAssets = (data: ReserveToken, marketCap: BigNumber): StringMap[] => {
     let resultIndex = 0
 
     return Object.keys(currentAssets).map((address, index) => {
-      const [name] = result[resultIndex] || ['']
-      const [decimals] = result[resultIndex + 1] || ['']
-      const [symbol] = result[resultIndex + 2] || ['']
+      const [name] = result[resultIndex]?.value || ['']
+      const [decimals] = result[resultIndex + 1]?.value || ['']
+      const [symbol] = result[resultIndex + 2]?.value || ['']
 
       resultIndex += 3
 

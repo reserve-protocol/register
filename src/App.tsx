@@ -9,6 +9,7 @@ import Web3Provider from 'state/providers/web3'
 import Updater from 'state/updater'
 import { ThemeProvider } from 'theme-ui'
 import Home from 'views/home'
+import Overview from 'views/overview'
 import Insurance from 'views/staking'
 import WalletManagement from 'views/wallet'
 import Layout from './components/layout'
@@ -57,7 +58,7 @@ const App = () => (
         <Layout>
           <Routes>
             <Route path={ROUTES.HOME} element={<Home />} />
-            {/* <Route path={ROUTES.OVERVIEW} element={<Overview />} /> */}
+            <Route path={ROUTES.OVERVIEW} element={<Overview />} />
             <Route
               path={ROUTES.ISSUANCE}
               element={
