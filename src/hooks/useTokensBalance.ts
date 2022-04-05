@@ -30,11 +30,13 @@ const useTokensBalance = (tokens: [string, number][]): StringMap => {
   const balances = <any[]>useGenericCalls(calls) ?? []
 
   return balances.reduce((acc, current, index) => {
+    const [address, decimals] = tokens[index]
     if (current?.value) {
-      const [address, decimals] = tokens[index]
       acc[address] = parseFloat(
         ethers.utils.formatUnits(current.value[0], decimals)
       )
+    } else {
+      acc[address] = 0
     }
 
     return acc
