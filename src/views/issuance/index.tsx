@@ -5,7 +5,7 @@ import TransactionHistory from 'components/transaction-history'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import { useAtomValue } from 'jotai'
-import { rTokenAtom } from 'state/atoms'
+import { balancesAtom, rTokenAtom } from 'state/atoms'
 import TransactionManager from 'state/context/TransactionManager'
 import { RequiredApprovedTransactionWorker } from 'state/context/TransactionWorker'
 import { ReserveToken } from 'types'
@@ -42,35 +42,29 @@ const Issuance = () => {
     userId: account?.toLocaleLowerCase(),
     token: RToken.token.address.toLowerCase(),
   })
-  // TODO: Get balance from state
-  const balance = 0
+
+  const balance = useAtomValue(balancesAtom)[RToken.token.address]
 
   return (
-    <TransactionManager>
-      <RequiredApprovedTransactionWorker
-        methods={['issue', 'redeem']}
-        autoCalls
-      />
-      <Container pb={4}>
-        <Grid columns={[2, '2fr 1fr']} gap={4}>
-          <Box>
-            <Text mb={3} variant="sectionTitle">
-              Mint & Redeem {RToken.token.symbol}
-            </Text>
-            <Grid columns={2}>
-              <Issue data={RToken} />
-              <Redeem data={RToken} max={balance} />
-            </Grid>
-          </Box>
-          <Balances rToken={RToken} />
-        </Grid>
-        <Divider mt={4} mb={4} sx={{ borderColor: '#DFDFDF' }} />
-        <Text mb={3} variant="sectionTitle">
-          Transactions
-        </Text>
-        <TransactionHistory history={data?.entries ?? []} />
-      </Container>
-    </TransactionManager>
+    <Container pb={4}>
+      <Grid columns={[2, '2fr 1fr']} gap={4}>
+        <Box>
+          <Text mb={3} variant="sectionTitle">
+            Mint & Redeem {RToken.token.symbol}
+          </Text>
+          <Grid columns={2}>
+            <Issue data={RToken} />
+            <Redeem data={RToken} max={balance} />
+          </Grid>
+        </Box>
+        <Balances rToken={RToken} />
+      </Grid>
+      <Divider mt={4} mb={4} sx={{ borderColor: '#DFDFDF' }} />
+      <Text mb={3} variant="sectionTitle">
+        Transactions
+      </Text>
+      <TransactionHistory history={data?.entries ?? []} />
+    </Container>
   )
 }
 

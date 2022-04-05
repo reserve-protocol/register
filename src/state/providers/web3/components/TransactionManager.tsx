@@ -1,7 +1,5 @@
-import { useWeb3React, Web3ReactProvider } from '@web3-react/core'
-import connectors from 'components/wallets/connectors'
+import { useWeb3React } from '@web3-react/core'
 import { Contract } from 'ethers'
-import { BlockUpdater } from 'hooks/useBlockNumber'
 import { ContractCall } from 'hooks/useCall'
 import { useContract } from 'hooks/useContract'
 import useTokensHasAllowance from 'hooks/useTokensHasAllowance'
@@ -13,7 +11,6 @@ import {
   transactionsAtom,
 } from 'state/atoms'
 import { TX_STATUS } from 'state/context/TransactionManager'
-import MulticallUpdater from './components/MulticallUpdater'
 
 export interface IRequiredApproveTransactionParams {
   methods: string[] // method that requires allowance
@@ -143,17 +140,4 @@ const TransactionManager = () => {
   return <TransactionWorker />
 }
 
-/**
- * Wrapper around web3ReactProvider
- * Handles basic logic as well as adds related chain providers
- */
-const Web3Provider = ({ children }: { children: React.ReactNode }) => (
-  <Web3ReactProvider connectors={connectors}>
-    <MulticallUpdater />
-    <BlockUpdater />
-    <TransactionManager />
-    {children}
-  </Web3ReactProvider>
-)
-
-export default Web3Provider
+export default TransactionManager

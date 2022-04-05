@@ -11,6 +11,8 @@ import {
 } from 'state/context/TransactionManager'
 import { Box, Text } from '@theme-ui/components'
 import { ReserveToken } from 'types'
+import { useSetAtom } from 'jotai'
+import { addTransactionAtom } from 'state/atoms'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -79,11 +81,11 @@ const Redeem = ({
   data: ReserveToken
 }) => {
   const [amount, setAmount] = useState('')
-  const [, dispatch] = useTransactionsState()
+  const addTransaction = useSetAtom(addTransactionAtom)
 
   const handleRedeem = () => {
     setAmount('')
-    loadTransactions(dispatch, buildTransactions(data, amount))
+    addTransaction(buildTransactions(data, amount))
   }
 
   const handleMax = () => {

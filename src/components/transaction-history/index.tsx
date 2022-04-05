@@ -1,13 +1,12 @@
 import { SectionCard } from 'components'
 import { Text, Box } from '@theme-ui/components'
 import { Table } from 'components/table'
-import {
-  TX_STATUS,
-  useTransactionsState,
-} from 'state/context/TransactionManager'
+import { TX_STATUS } from 'state/context/TransactionManager'
 import { formatCurrency, shortenString } from 'utils'
 import { useMemo } from 'react'
 import { formatEther } from '@ethersproject/units'
+import { useAtomValue } from 'jotai'
+import { transactionsAtom } from 'state/atoms'
 
 const columns = [
   {
@@ -41,10 +40,10 @@ const TransactionHistory = ({
 }: {
   history: IPreviousTransaction[]
 }) => {
-  const [state] = useTransactionsState()
+  const txs = useAtomValue(transactionsAtom)
   const dataset = useMemo(
     () => [
-      ...state.list
+      ...txs
         .map(({ status, description, value, hash }) => ({
           status,
           description,
@@ -59,7 +58,7 @@ const TransactionHistory = ({
         hash: shortenString(transaction.id),
       })),
     ],
-    [state.list, history.length]
+    [txs, history.length]
   )
 
   if (!dataset.length) {

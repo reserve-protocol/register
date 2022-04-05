@@ -66,7 +66,7 @@ const useAssets = (data: ReserveToken, marketCap: BigNumber): StringMap[] => {
     return () => {
       abort.value = true
     }
-  }, [data.id, facadeContract])
+  }, [facadeContract])
 
   const result = <any[]>useContractCalls(data.isRSV ? [] : calls) ?? []
 
