@@ -1,3 +1,4 @@
+import { useWeb3React } from '@web3-react/core'
 import { BigNumber } from '@ethersproject/bignumber'
 import { ERC20Interface } from 'abis'
 import { formatEther, formatUnits } from 'ethers/lib/utils'
@@ -14,47 +15,53 @@ import { useContractCalls } from './useCall'
  * @returns
  */
 const useAssets = (data: ReserveToken, marketCap: BigNumber): StringMap[] => {
+  const { provider } = useWeb3React()
   const [calls, setCalls] = <any>useState([])
   const [currentAssets, setAssets] = useState(<{ [x: string]: BigNumber }>{})
   const facadeContract = useFacadeContract(data.facade)
 
   const getAssets = async (abort: { value: boolean }) => {
+    console.log('facade', { provider, facadeContract })
     if (facadeContract) {
-      const result = await facadeContract.callStatic.currentAssets()
-      const contractCalls = []
-      const assetAmounts: { [x: string]: BigNumber } = {}
+      try {
+        const result = await facadeContract.callStatic.currentAssets()
+        const contractCalls = []
+        const assetAmounts: { [x: string]: BigNumber } = {}
 
-      for (let i = 0; i < result.tokens.length; i++) {
-        const address = result.tokens[i]
-        const amount = result.amounts[i]
-        const params = {
-          abi: ERC20Interface,
-          address,
-          args: [],
+        for (let i = 0; i < result.tokens.length; i++) {
+          const address = result.tokens[i]
+          const amount = result.amounts[i]
+          const params = {
+            abi: ERC20Interface,
+            address,
+            args: [],
+          }
+
+          if (!amount.isZero()) {
+            // Add contract calls to get token info
+            contractCalls.push({
+              ...params,
+              method: 'name',
+            })
+            contractCalls.push({
+              ...params,
+              method: 'decimals',
+            })
+            contractCalls.push({
+              ...params,
+              method: 'symbol',
+            })
+            // Fill asset amounts
+            assetAmounts[address] = amount
+          }
         }
 
-        if (!amount.isZero()) {
-          // Add contract calls to get token info
-          contractCalls.push({
-            ...params,
-            method: 'name',
-          })
-          contractCalls.push({
-            ...params,
-            method: 'decimals',
-          })
-          contractCalls.push({
-            ...params,
-            method: 'symbol',
-          })
-          // Fill asset amounts
-          assetAmounts[address] = amount
+        if (!abort.value) {
+          setAssets(assetAmounts)
+          setCalls(contractCalls)
         }
-      }
-
-      if (!abort.value) {
-        setAssets(assetAmounts)
-        setCalls(contractCalls)
+      } catch (e) {
+        console.error('failed to fetch assets', e)
       }
     }
   }

@@ -1,10 +1,16 @@
+import { useWeb3React } from '@web3-react/core'
 import { getAddress } from 'ethers/lib/utils'
 import { request } from 'graphql-request'
 import useTokensBalance from 'hooks/useTokensBalance'
 import { useSetAtom } from 'jotai'
 import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import { useEffect } from 'react'
-import { balancesAtom, reserveTokensAtom, rTokenAtom } from 'state/atoms'
+import {
+  balancesAtom,
+  reserveTokensAtom,
+  rTokenAtom,
+  walletAtom,
+} from 'state/atoms'
 import useSWR from 'swr'
 import { ReserveToken } from 'types'
 import { CHAIN_ID } from 'utils/chains'
@@ -155,9 +161,13 @@ const getTokens = (reserveToken: ReserveToken): [string, number][] => {
  * Updates the balances of the current ReserveToken related tokens
  */
 const TokensBalanceUpdater = () => {
+  const account = useAtomValue(walletAtom)
   const reserveToken = useAtomValue(rTokenAtom)
   const updateBalances = useSetAtom(balancesAtom)
-  const balances = useTokensBalance(reserveToken ? getTokens(reserveToken) : [])
+  const balances = useTokensBalance(
+    reserveToken && account ? getTokens(reserveToken) : [],
+    account?.address ?? ''
+  )
 
   useEffect(() => {
     updateBalances(balances)

@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import { Box, BoxProps, Flex, Text } from '@theme-ui/components'
+import { useWeb3React } from '@web3-react/core'
 import { Card } from 'components'
 import TokenLogo from 'components/icons/TokenLogo'
 import { formatEther } from 'ethers/lib/utils'
@@ -75,6 +76,7 @@ const AssetsOverview = ({ data, ...props }: Props) => {
   const { token } = data
   const marketCap = useTokenSupply(token.address)
   const collaterals = useAssets(data, marketCap)
+  const { provider, connector } = useWeb3React()
 
   return (
     <Box mb={3} {...props}>

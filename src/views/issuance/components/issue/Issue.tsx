@@ -109,7 +109,8 @@ const useTokenIssuableAmount = (data: ReserveToken) => {
   // TODO: Fix balances
   const balance = 0
   const tokenBalances = useAtomValue(balancesAtom)
-  const { account } = useWeb3React()
+  const { account, connector, provider } = useWeb3React()
+  console.log('connector', { connector, provider })
   // TODO: replace for facade
   const facadeContract = useFacadeContract(data.facade ?? '')
 

@@ -12,8 +12,10 @@ import useBlockNumber from './useBlockNumber'
  * @param tokens
  * @returns
  */
-const useTokensBalance = (tokens: [string, number][]): StringMap => {
-  const { account } = useWeb3React()
+const useTokensBalance = (
+  tokens: [string, number][],
+  account: string
+): StringMap => {
   const blockNumber = useBlockNumber()
 
   const calls = useMemo(
