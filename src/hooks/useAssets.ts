@@ -15,13 +15,11 @@ import { useContractCalls } from './useCall'
  * @returns
  */
 const useAssets = (data: ReserveToken, marketCap: BigNumber): StringMap[] => {
-  const { provider } = useWeb3React()
   const [calls, setCalls] = <any>useState([])
   const [currentAssets, setAssets] = useState(<{ [x: string]: BigNumber }>{})
   const facadeContract = useFacadeContract(data.facade)
 
   const getAssets = async (abort: { value: boolean }) => {
-    console.log('facade', { provider, facadeContract })
     if (facadeContract) {
       try {
         const result = await facadeContract.callStatic.currentAssets()

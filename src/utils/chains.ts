@@ -12,7 +12,7 @@ interface ExtendedChainInformation extends BasicChainInformation {
 
 export const ChainId = {
   Mainnet: 1,
-  Hardhat: 1337,
+  Hardhat: 31337,
 }
 
 export const CHAIN_ID =

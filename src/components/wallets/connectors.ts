@@ -1,4 +1,4 @@
-import { CHAINS, URLS } from 'utils/chains'
+import { CHAINS, URLS, CHAIN_ID } from 'utils/chains'
 import { CoinbaseWallet } from '@web3-react/coinbase-wallet'
 import { initializeConnector, Web3ReactHooks } from '@web3-react/core'
 import { Network } from '@web3-react/network'
@@ -12,7 +12,7 @@ export const [metaMask, metaMaskHooks] = initializeConnector<MetaMask>(
 )
 
 export const [network, networkHooks] = initializeConnector<Network>(
-  (actions) => new Network(actions, URLS, true),
+  (actions) => new Network(actions, URLS, true, CHAIN_ID),
   chains
 )
 
