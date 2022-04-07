@@ -1,5 +1,5 @@
+import { BigNumber } from '@ethersproject/bignumber'
 import { parseEther } from '@ethersproject/units'
-import { BigNumber } from 'ethers'
 import { ReserveToken, StringMap } from 'types'
 import { ONE_ETH } from '../constants'
 

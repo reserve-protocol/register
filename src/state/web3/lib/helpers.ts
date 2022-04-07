@@ -1,4 +1,4 @@
-import { utils } from 'ethers'
+import { Interface } from '@ethersproject/abi'
 import { Call } from 'hooks/useCall'
 import {
   ContractMethodNames,
@@ -65,7 +65,7 @@ export function decodeCallResult<
         error: undefined,
       }
     }
-    const errorMessage: string = new utils.Interface([
+    const errorMessage: string = new Interface([
       'function Error(string)',
     ]).decodeFunctionData('Error', value)[0]
     return {

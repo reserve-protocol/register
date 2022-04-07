@@ -1,5 +1,5 @@
 import { Interface } from '@ethersproject/abi'
-import { Contract, ContractTransaction } from 'ethers'
+import { Contract, ContractTransaction } from '@ethersproject/contracts'
 
 export interface StringMap {
   [key: string]: any

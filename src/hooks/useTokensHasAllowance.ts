@@ -1,9 +1,9 @@
 import { useWeb3React } from '@web3-react/core'
 import { useMemo } from 'react'
-import { BigNumber } from 'ethers'
 import { ERC20Interface } from 'abis'
 import { useContractCalls } from './useCall'
 import useBlockNumber from './useBlockNumber'
+import { BigNumber } from '@ethersproject/bignumber'
 
 /**
  * Returns a boolean if the given tokens has a certain amount of allowance to spend

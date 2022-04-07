@@ -1,4 +1,4 @@
-import { getAddress } from 'ethers/lib/utils'
+import { getAddress } from '@ethersproject/address'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import useTokensBalance from 'hooks/useTokensBalance'

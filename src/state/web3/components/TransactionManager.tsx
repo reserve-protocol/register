@@ -1,5 +1,5 @@
+import { Contract } from '@ethersproject/contracts'
 import { useWeb3React } from '@web3-react/core'
-import { Contract } from 'ethers'
 import { ContractCall } from 'hooks/useCall'
 import { useContract } from 'hooks/useContract'
 import useTokensHasAllowance from 'hooks/useTokensHasAllowance'

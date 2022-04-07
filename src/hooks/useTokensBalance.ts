@@ -1,10 +1,9 @@
-import { useWeb3React } from '@web3-react/core'
 import { StringMap } from 'types'
 import { useMemo } from 'react'
-import { ethers } from 'ethers'
 import { ERC20Interface } from 'abis'
 import { useContractCalls } from './useCall'
 import useBlockNumber from './useBlockNumber'
+import { formatUnits } from '@ethersproject/units'
 
 /**
  * Returns a hash of balances for the given tokens
@@ -34,9 +33,7 @@ const useTokensBalance = (
   return balances.reduce((acc, current, index) => {
     const [address, decimals] = tokens[index]
     if (current?.value) {
-      acc[address] = parseFloat(
-        ethers.utils.formatUnits(current.value[0], decimals)
-      )
+      acc[address] = parseFloat(formatUnits(current.value[0], decimals))
     } else {
       acc[address] = 0
     }

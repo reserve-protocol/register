@@ -4,12 +4,7 @@ import { Box, Card, Text } from 'theme-ui'
 import { useWeb3React } from '@web3-react/core'
 import { ERC20Interface, RSVManagerInterface, RTokenInterface } from 'abis'
 import { Button, NumericalInput } from 'components'
-import {
-  formatEther,
-  formatUnits,
-  getAddress,
-  parseEther,
-} from 'ethers/lib/utils'
+import { formatEther, formatUnits, parseEther } from '@ethersproject/units'
 import { useBasketHandlerContract, useFacadeContract } from 'hooks/useContract'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
@@ -18,6 +13,7 @@ import { TX_STATUS } from 'state/web3/components/TransactionManager'
 import { ReserveToken, TransactionState } from 'types'
 import { formatCurrency } from 'utils'
 import { getIssuable, quote } from 'utils/rsv'
+import { getAddress } from '@ethersproject/address'
 
 const InputContainer = styled(Box)`
   display: flex;

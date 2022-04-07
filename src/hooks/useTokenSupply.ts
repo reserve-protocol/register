@@ -1,5 +1,4 @@
-import { ERC20Interface } from 'abis'
-import { BigNumber } from 'ethers'
+import { BigNumber } from '@ethersproject/bignumber'
 import { Falsy } from 'types'
 import { useCall } from './useCall'
 import { useTokenContract } from './useContract'

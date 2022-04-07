@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core'
-import { Contract } from 'ethers'
+import { Contract } from '@ethersproject/contracts'
 import { useMemo } from 'react'
 import { Interface } from '@ethersproject/abi'
 

@@ -1,6 +1,6 @@
+import { Interface } from '@ethersproject/abi'
 import { namehash } from '@ethersproject/hash'
 import { useWeb3React } from '@web3-react/core'
-import { utils } from 'ethers'
 import useDebounce from 'hooks/useDebounce'
 import { useMemo } from 'react'
 import ENSResolverAbi from '../../abis/ens-public-resolver.json'
@@ -8,8 +8,8 @@ import ENSRegistrarAbi from '../../abis/ens-registrar.json'
 import { ENS_ADDRESS } from '../../constants/addresses'
 import { isAddress, isZero } from '../../utils'
 
-const ENSRegistrarInterface = new utils.Interface(ENSRegistrarAbi)
-const ENSResolverInterface = new utils.Interface(ENSResolverAbi)
+const ENSRegistrarInterface = new Interface(ENSRegistrarAbi)
+const ENSResolverInterface = new Interface(ENSResolverAbi)
 
 /**
  * Does a reverse lookup for an address to find its ENS name.

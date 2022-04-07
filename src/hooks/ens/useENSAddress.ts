@@ -1,13 +1,13 @@
 import { namehash } from '@ethersproject/hash'
 import { useMemo } from 'react'
-import { utils } from 'ethers'
 import { ENS_ADDRESS } from '../../constants/addresses'
 import { isZero } from '../../utils'
 import ENSRegistrarAbi from '../../abis/ens-registrar.json'
 import ENSResolverAbi from '../../abis/ens-public-resolver.json'
+import { Interface } from '@ethersproject/abi'
 
-const ENSRegistrarInterface = new utils.Interface(ENSRegistrarAbi)
-const ENSResolverInterface = new utils.Interface(ENSResolverAbi)
+const ENSRegistrarInterface = new Interface(ENSRegistrarAbi)
+const ENSResolverInterface = new Interface(ENSResolverAbi)
 
 /**
  * Does a lookup for an ENS name to find its address.

@@ -1,7 +1,7 @@
 import { useWeb3React } from '@web3-react/core'
 import { BigNumber } from '@ethersproject/bignumber'
 import { ERC20Interface } from 'abis'
-import { formatEther, formatUnits } from 'ethers/lib/utils'
+import { formatEther, formatUnits } from '@ethersproject/units'
 import { useFacadeContract } from 'hooks/useContract'
 import { useEffect, useMemo, useState } from 'react'
 import { ReserveToken, StringMap } from 'types'
