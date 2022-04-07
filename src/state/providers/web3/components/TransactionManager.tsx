@@ -28,14 +28,11 @@ const updateTransactionAtom = atom(null, (get, set, status: string) => {
   const txs = get(transactionsAtom)
   let currentTx = get(currentTransactionAtom)
 
-  console.log('txs', { txs, currentTx })
-
   if (!txs[currentTx]) {
     throw new Error('Tx not found')
   }
 
   const result = [...txs.slice(0, currentTx), { ...txs[currentTx], status }]
-
   let pending = txs.slice(currentTx + 1)
 
   if (
@@ -103,7 +100,7 @@ const TransactionWorker = ({ current }: { current: TransactionState }) => {
       await transaction.wait()
       updateTx(TX_STATUS.CONFIRMED)
     } catch (e) {
-      console.log('error processing tx', e)
+      console.error('error processing tx', e)
       updateTx(TX_STATUS.FAILED)
     }
   }
@@ -128,7 +125,6 @@ const TransactionWorker = ({ current }: { current: TransactionState }) => {
   }
 
   useEffect(() => {
-    console.log('is processing', processing)
     if (contract && current.status === TX_STATUS.PENDING && !processing) {
       setProcessing(true)
       processTx()

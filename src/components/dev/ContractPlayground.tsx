@@ -37,7 +37,6 @@ const ContractPlayground = (props: any) => {
 
     try {
       const result = await contract[method](...params)
-      console.log('[Contract execution result]', result)
       setResult(result)
     } catch (e: any) {
       setError(e?.message ?? 'Unknown error')

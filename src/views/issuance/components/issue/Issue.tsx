@@ -110,8 +110,6 @@ const useTokenIssuableAmount = (data: ReserveToken) => {
   const balance = 0
   const tokenBalances = useAtomValue(balancesAtom)
   const { account, connector, provider } = useWeb3React()
-  console.log('connector', { connector, provider })
-  // TODO: replace for facade
   const facadeContract = useFacadeContract(data.facade ?? '')
 
   const setMaxIssuable = async (
@@ -124,7 +122,7 @@ const useTokenIssuableAmount = (data: ReserveToken) => {
         setAmount(maxIssuable ? Number(formatEther(maxIssuable)) : 0)
       }
     } catch (e) {
-      console.log('error with max issuable', e)
+      console.error('error with max issuable', e)
     }
   }
 
@@ -191,7 +189,7 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
       loadTransactions(dispatch, buildTransactions(data, amount, quantities))
     } catch (e) {
       // TODO: Handle error case
-      console.log('failed doing issuance', e)
+      console.error('failed doing issuance', e)
     }
 
     setIssuing(false)

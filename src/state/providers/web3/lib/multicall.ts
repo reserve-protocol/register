@@ -35,7 +35,7 @@ async function multicall(
     }
     return state
   } catch (e) {
-    console.log('error fetching results', e)
+    console.error('error fetching results', e)
   }
 
   return {}

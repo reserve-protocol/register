@@ -67,7 +67,7 @@ const ErrorBox = ({ error }: { error: string }) => (
 const WalletConnection = ({ onConnect, ...props }: Props) => {
   const [connecting, setConnecting] = useState(false)
   const [error, setError] = useState('')
-  const { account, isActive, connector } = useWeb3React()
+  const { account, connector } = useWeb3React()
 
   // TODO: Handle connection errors
   // Examples:
@@ -81,6 +81,7 @@ const WalletConnection = ({ onConnect, ...props }: Props) => {
   }
 
   useEffect(() => {
+    console.log('account', account)
     if (connecting && account) {
       setConnecting(false)
       if (onConnect) {

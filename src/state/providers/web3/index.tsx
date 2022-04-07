@@ -10,7 +10,7 @@ import TransactionManager from './components/TransactionManager'
  * Handles basic logic as well as adds related chain providers
  */
 const Web3Provider = ({ children }: { children: React.ReactNode }) => (
-  <Web3ReactProvider connectors={[connectors[3]]}>
+  <Web3ReactProvider connectors={connectors}>
     <MulticallUpdater />
     <BlockUpdater />
     <TransactionManager />
