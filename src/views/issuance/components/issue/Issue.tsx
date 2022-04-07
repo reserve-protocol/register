@@ -12,7 +12,7 @@ import {
 } from 'ethers/lib/utils'
 import { useBasketHandlerContract, useFacadeContract } from 'hooks/useContract'
 import { useAtomValue } from 'jotai'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { balancesAtom } from 'state/atoms'
 import {
   loadTransactions,
@@ -104,12 +104,23 @@ const buildTransactions = (
 //   }
 // }
 
+const getCollateralBalance = (
+  rToken: ReserveToken,
+  balances: { [x: string]: number }
+) => {
+  return rToken.basket.collaterals.reduce((sum, collateral) => {
+    return sum + (balances[collateral.token.address] || 0)
+  }, 0)
+}
+
 const useTokenIssuableAmount = (data: ReserveToken) => {
   const [amount, setAmount] = useState(0)
-  // TODO: Fix balances
-  const balance = 0
   const tokenBalances = useAtomValue(balancesAtom)
-  const { account, connector, provider } = useWeb3React()
+  const balance = useMemo(
+    () => getCollateralBalance(data, tokenBalances),
+    [tokenBalances, data]
+  )
+  const { account } = useWeb3React()
   const facadeContract = useFacadeContract(data.facade ?? '')
 
   const setMaxIssuable = async (
