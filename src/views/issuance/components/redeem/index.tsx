@@ -6,8 +6,8 @@ import { Button, Card, NumericalInput } from 'components'
 import { useSetAtom } from 'jotai'
 import { useState } from 'react'
 import { addTransactionAtom } from 'state/atoms'
-import { TransactionState, TX_STATUS } from 'state/context/TransactionManager'
-import { ReserveToken } from 'types'
+import { TX_STATUS } from 'state/web3/components/TransactionManager'
+import { ReserveToken, TransactionState } from 'types'
 
 const InputContainer = styled(Box)`
   display: flex;

@@ -2,11 +2,11 @@ import { useWeb3React } from '@web3-react/core'
 import { Card } from 'components'
 import Container from 'components/container'
 import { useAtomValue } from 'jotai'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { rTokenAtom } from 'state/atoms'
-import Web3Provider from 'state/providers/web3'
 import Updater from 'state/updater'
+import Web3Provider from 'state/web3'
 import { ThemeProvider } from 'theme-ui'
 import Home from 'views/home'
 import Overview from 'views/overview'
@@ -49,40 +49,38 @@ const Guard = ({ children }: { children: React.ReactNode }) => {
  *
  * @returns {JSX.Element}
  */
-const App = () => {
-  return (
-    <Web3Provider>
-      <Updater />
-      <ThemeProvider theme={theme}>
-        {/* <Toaster /> */}
-        <Router>
-          <Layout>
-            <Routes>
-              <Route path={ROUTES.HOME} element={<Home />} />
-              <Route path={ROUTES.OVERVIEW} element={<Overview />} />
-              <Route
-                path={ROUTES.ISSUANCE}
-                element={
-                  <Guard>
-                    <Issuance />
-                  </Guard>
-                }
-              />
-              <Route
-                path={ROUTES.INSURANCE}
-                element={
-                  <Guard>
-                    <Insurance />
-                  </Guard>
-                }
-              />
-              <Route path={ROUTES.WALLET} element={<WalletManagement />} />
-            </Routes>
-          </Layout>
-        </Router>
-      </ThemeProvider>
-    </Web3Provider>
-  )
-}
+const App = () => (
+  <Web3Provider>
+    <Updater />
+    <ThemeProvider theme={theme}>
+      {/* <Toaster /> */}
+      <Router>
+        <Layout>
+          <Routes>
+            <Route path={ROUTES.HOME} element={<Home />} />
+            <Route path={ROUTES.OVERVIEW} element={<Overview />} />
+            <Route
+              path={ROUTES.ISSUANCE}
+              element={
+                <Guard>
+                  <Issuance />
+                </Guard>
+              }
+            />
+            <Route
+              path={ROUTES.INSURANCE}
+              element={
+                <Guard>
+                  <Insurance />
+                </Guard>
+              }
+            />
+            <Route path={ROUTES.WALLET} element={<WalletManagement />} />
+          </Routes>
+        </Layout>
+      </Router>
+    </ThemeProvider>
+  </Web3Provider>
+)
 
 export default App

@@ -7,7 +7,7 @@ import {
   encodeCallData,
   decodeCallResult,
   CallResult,
-} from 'state/providers/web3/lib/helpers'
+} from 'state/web3/lib/helpers'
 import { ContractMethodNames, Falsy, Params, TypedContract } from 'types'
 import { useRawCalls } from './useRawCalls'
 

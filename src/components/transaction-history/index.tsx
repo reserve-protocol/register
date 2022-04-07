@@ -1,7 +1,7 @@
 import { SectionCard } from 'components'
 import { Text, Box } from '@theme-ui/components'
 import { Table } from 'components/table'
-import { TX_STATUS } from 'state/context/TransactionManager'
+import { TX_STATUS } from 'state/web3/components/TransactionManager'
 import { formatCurrency, shortenString } from 'utils'
 import { useMemo } from 'react'
 import { formatEther } from '@ethersproject/units'

@@ -1,20 +1,19 @@
-import { useState } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
-import { Box, Card, BoxProps, Text, Divider, Flex } from '@theme-ui/components'
-import { Button, Modal } from 'components'
-import { formatEther } from 'ethers/lib/utils'
-import { formatCurrency } from 'utils'
-import { Table } from 'components/table'
-import {
-  loadTransactions,
-  TX_STATUS,
-  useTransactionsState,
-} from 'state/context/TransactionManager'
-import { StRSRInterface } from 'abis'
+import { Box, Card, Divider, Flex, Text } from '@theme-ui/components'
 import { useWeb3React } from '@web3-react/core'
+import { StRSRInterface } from 'abis'
+import { Button, Modal } from 'components'
+import { Table } from 'components/table'
+import { formatEther } from 'ethers/lib/utils'
+import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
+import { useSetAtom } from 'jotai'
+import { useState } from 'react'
+import { addTransactionAtom } from 'state/atoms'
+import { TX_STATUS } from 'state/web3/components/TransactionManager'
+import { formatCurrency } from 'utils'
 
-const pendingWithdrawalsQuery = `
+const pendingWithdrawalsQuery = gql`
   entries(where: { type: "Unstake", status: Pending, user: $userId }) {
     id
     amount
@@ -37,7 +36,7 @@ const columns = [
 const Withdrawals = ({ tokenAddress }: { tokenAddress: string }) => {
   const [visible, setVisible] = useState(false)
   const { account } = useWeb3React()
-  const [, dispatch] = useTransactionsState()
+  const addTransaction = useSetAtom(addTransactionAtom)
   // TODO: Polling
   const { data } = useQuery(pendingWithdrawalsQuery, {
     orderBy: 'draftId',
@@ -64,7 +63,7 @@ const Withdrawals = ({ tokenAddress }: { tokenAddress: string }) => {
   }
 
   const handleWithdraw = () => {
-    loadTransactions(dispatch, [
+    addTransaction([
       {
         autoCall: true,
         description: 'Withdraw',

@@ -11,16 +11,11 @@ import {
   parseEther,
 } from 'ethers/lib/utils'
 import { useBasketHandlerContract, useFacadeContract } from 'hooks/useContract'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
-import { balancesAtom } from 'state/atoms'
-import {
-  loadTransactions,
-  TransactionState,
-  TX_STATUS,
-  useTransactionsState,
-} from 'state/context/TransactionManager'
-import { ReserveToken } from 'types'
+import { addTransactionAtom, balancesAtom } from 'state/atoms'
+import { TX_STATUS } from 'state/web3/components/TransactionManager'
+import { ReserveToken, TransactionState } from 'types'
 import { formatCurrency } from 'utils'
 import { getIssuable, quote } from 'utils/rsv'
 
@@ -169,7 +164,7 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
   const [amount, setAmount] = useState('')
   const [issuing, setIssuing] = useState(false)
   const basketHandler = useBasketHandlerContract(data.basketHandler)
-  const [, dispatch] = useTransactionsState()
+  const addTransaction = useSetAtom(addTransactionAtom)
   const issuableAmount = useTokenIssuableAmount(data)
 
   const handleIssue = async () => {
@@ -197,7 +192,7 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
       }
 
       setAmount('')
-      loadTransactions(dispatch, buildTransactions(data, amount, quantities))
+      addTransaction(buildTransactions(data, amount, quantities))
     } catch (e) {
       // TODO: Handle error case
       console.error('failed doing issuance', e)

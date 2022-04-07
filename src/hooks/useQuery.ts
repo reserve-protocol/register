@@ -1,5 +1,5 @@
 import useSWR from 'swr'
-import { request, GraphQLClient, RequestDocument } from 'graphql-request'
+import { GraphQLClient, RequestDocument } from 'graphql-request'
 
 const client = new GraphQLClient(process.env.REACT_APP_SUBGRAPH_URL ?? '')
 

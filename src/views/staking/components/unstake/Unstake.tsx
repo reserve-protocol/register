@@ -3,12 +3,10 @@ import { parseEther } from '@ethersproject/units'
 import { Box, Card, Text } from '@theme-ui/components'
 import { StRSRInterface } from 'abis'
 import { Button, NumericalInput } from 'components'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useState } from 'react'
-import {
-  loadTransactions,
-  TX_STATUS,
-  useTransactionsState,
-} from 'state/context/TransactionManager'
+import { addTransactionAtom, balancesAtom } from 'state/atoms'
+import { TX_STATUS } from 'state/web3/components/TransactionManager'
 import { ReserveToken } from 'types'
 import { formatCurrency } from 'utils'
 
@@ -21,15 +19,12 @@ const InputContainer = styled(Box)`
 const Unstake = ({ data }: { data: ReserveToken }) => {
   const [amount, setAmount] = useState('')
   // TODO: Balances
-  const balance = 0
-  // useAppSelector(
-  //   ({ reserveTokens }) =>
-  //     reserveTokens.balances[data.insurance?.token.address ?? '']
-  // ) || 0
-  const [, dispatch] = useTransactionsState()
+  const balance =
+    useAtomValue(balancesAtom)[data.insurance?.token.address ?? ''] || 0
+  const addTransaction = useSetAtom(addTransactionAtom)
 
   const handleUnstake = () => {
-    loadTransactions(dispatch, [
+    addTransaction([
       {
         autoCall: true,
         description: `Unstake ${amount}`,

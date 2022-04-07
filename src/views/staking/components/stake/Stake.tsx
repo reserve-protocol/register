@@ -4,14 +4,11 @@ import { Box, Card, Text } from '@theme-ui/components'
 import { ERC20Interface, StRSRInterface } from 'abis'
 import { Button, NumericalInput } from 'components'
 import { RSR } from 'constants/tokens'
+import { useSetAtom } from 'jotai'
 import { useAtomValue } from 'jotai/utils'
 import { useState } from 'react'
-import { balancesAtom } from 'state/atoms'
-import {
-  loadTransactions,
-  TX_STATUS,
-  useTransactionsState,
-} from 'state/context/TransactionManager'
+import { addTransactionAtom, balancesAtom } from 'state/atoms'
+import { TX_STATUS } from 'state/web3/components/TransactionManager'
 import { ReserveToken } from 'types'
 import { formatCurrency } from 'utils'
 
@@ -24,13 +21,12 @@ const InputContainer = styled(Box)`
 const Stake = ({ data, ...props }: { data: ReserveToken }) => {
   const [amount, setAmount] = useState('')
   const balance = useAtomValue(balancesAtom)[RSR.address] || 0
-
-  const [, dispatch] = useTransactionsState()
+  const addTransaction = useSetAtom(addTransactionAtom)
   const stTokenAddress = data.insurance?.token?.address ?? ''
 
   const handleStake = () => {
     try {
-      loadTransactions(dispatch, [
+      addTransaction([
         {
           autoCall: false,
           description: `Approve ${amount} RSR`,
