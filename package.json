@@ -4,8 +4,8 @@
   "private": true,
   "dependencies": {
     "@coinbase/wallet-sdk": "^3.0.5",
-    "@emotion/react": "^11.7.1",
-    "@emotion/styled": "^11.3.0",
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
     "@ethersproject/abi": "^5.6.0",
     "@ethersproject/address": "^5.6.0",
     "@ethersproject/bignumber": "^5.6.0",
