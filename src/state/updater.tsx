@@ -1,6 +1,6 @@
-import { useWeb3React } from '@web3-react/core'
 import { getAddress } from 'ethers/lib/utils'
-import { request } from 'graphql-request'
+import { gql } from 'graphql-request'
+import useQuery from 'hooks/useQuery'
 import useTokensBalance from 'hooks/useTokensBalance'
 import { useSetAtom } from 'jotai'
 import { useAtomValue, useUpdateAtom } from 'jotai/utils'
@@ -11,16 +11,12 @@ import {
   rTokenAtom,
   walletAtom,
 } from 'state/atoms'
-import useSWR from 'swr'
 import { ReserveToken } from 'types'
 import { CHAIN_ID } from 'utils/chains'
 import { RSV_MANAGER_ADDRESS } from '../constants/addresses'
 import { RSR } from '../constants/tokens'
 
-const fetcher = (query: any) =>
-  request('http://localhost:8000/subgraphs/name/lcamargof/reserve', query)
-
-const getTokensQuery = `
+const getTokensQuery = gql`
   {
     mains {
       id
@@ -123,7 +119,7 @@ const formatTokens = (mains: any[]): { [x: string]: ReserveToken } =>
  */
 const ReserveTokensUpdater = () => {
   const setTokens = useUpdateAtom(reserveTokensAtom)
-  const { data, error } = useSWR(getTokensQuery, fetcher)
+  const { data, error } = useQuery(getTokensQuery)
 
   useEffect(() => {
     // TODO: Handle error scenario

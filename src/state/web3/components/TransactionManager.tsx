@@ -5,12 +5,16 @@ import { useContract } from 'hooks/useContract'
 import useTokensHasAllowance from 'hooks/useTokensHasAllowance'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import React, { useEffect, useState } from 'react'
-import {
-  currentTransactionAtom,
-  transactionAtom,
-  transactionsAtom,
-} from 'state/atoms'
-import { TransactionState, TX_STATUS } from 'state/context/TransactionManager'
+import { currentTransactionAtom, transactionsAtom } from 'state/atoms'
+import { TransactionState } from 'types'
+
+export const TX_STATUS = {
+  PENDING: 'PENDING',
+  SKIPPED: 'SKIPPED',
+  CONFIRMED: 'CONFIRMED',
+  FAILED: 'FAILED',
+  PROCESSING: 'PROCESSING',
+}
 
 export interface IRequiredApproveTransactionParams {
   methods: string[] // method that requires allowance

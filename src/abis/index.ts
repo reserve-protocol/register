@@ -5,7 +5,6 @@ import RSR from './RSR.json'
 import ENSResolver from './ens-public-resolver.json'
 import ENSRegistrar from './ens-registrar.json'
 import Factory from './factory.json'
-import ERC20Mock from './ERC20Mock.json'
 import Main from './main.json'
 import StRSR from './st-rsr.json'
 import RSVManager from './rsv-manager.json'
@@ -14,9 +13,6 @@ import BasketHandler from './basketHandler.json'
 
 const ERC20Interface = new Interface(ERC20)
 export { ERC20, ERC20Interface }
-
-const ERC20MockInterface = new Interface(ERC20)
-export { ERC20Mock, ERC20MockInterface }
 
 const FactoryInterface = new Interface(Factory)
 export { Factory, FactoryInterface }

@@ -5,6 +5,22 @@ export interface StringMap {
   [key: string]: any
 }
 
+export interface TransactionState {
+  hash?: string
+  description: string
+  // TX_STATUS
+  status: string
+  value: string
+  call: any // TODO
+  // Extra props required to handle the transaction
+  extra?: any
+  // Defines if the transaction will be handled by the default worker
+  // Used for TX with simple logic, like an `Approval` or `Transfer`
+  autoCall: boolean
+  // batchId for batch transactions
+  batchId?: number
+}
+
 export interface Wallet {
   address: string
   alias: string

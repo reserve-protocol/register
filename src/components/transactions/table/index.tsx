@@ -3,8 +3,9 @@ import { Box, Text } from '@theme-ui/components'
 import { formatEther } from '@ethersproject/units'
 import { formatCurrency, shortenString } from 'utils'
 import useQuery from 'hooks/useQuery'
+import { gql } from 'graphql-request'
 
-const GET_TRANSACTIONS = `
+const GET_TRANSACTIONS = gql`
   entries(
     first: 50
     where: { token: $tokenId }
@@ -49,7 +50,6 @@ const TransactionsTable = ({ tokenId }: { tokenId: string }) => {
     orderBy: 'id',
     first: 50,
     tokenId,
-    where: {},
   })
 
   if (!error && !(data?.entries ?? []).length) {
