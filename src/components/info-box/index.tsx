@@ -1,4 +1,4 @@
-import { Flex, Text, BoxProps } from '@theme-ui/components'
+import { Flex, Text, BoxProps } from 'theme-ui'
 
 interface Props extends BoxProps {
   title: string

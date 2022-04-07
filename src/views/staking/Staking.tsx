@@ -1,4 +1,4 @@
-import { Box, Divider, Grid, Text } from '@theme-ui/components'
+import { Box, Divider, Grid, Text } from 'theme-ui'
 import { useWeb3React } from '@web3-react/core'
 import { Container } from 'components'
 import TransactionHistory from 'components/transaction-history'

@@ -1,4 +1,4 @@
-import { BoxProps, Text, Box, Grid } from '@theme-ui/components'
+import { BoxProps, Text, Box, Grid } from 'theme-ui'
 import { Input, Button } from 'components'
 import { useState } from 'react'
 import { isAddress, shortenAddress } from 'utils'

@@ -1,4 +1,4 @@
-import { Flex, Box, Text, BoxProps, Divider } from '@theme-ui/components'
+import { Flex, Box, Text, BoxProps, Divider } from 'theme-ui'
 import { Card } from 'components'
 import TokenLogo from 'components/icons/TokenLogo'
 import { useAtomValue } from 'jotai/utils'

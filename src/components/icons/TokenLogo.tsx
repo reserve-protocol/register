@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Box, BoxProps } from '@theme-ui/components'
+import { Box, BoxProps } from 'theme-ui'
 
 interface Props extends BoxProps {
   symbol: string

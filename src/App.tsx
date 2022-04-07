@@ -1,6 +1,5 @@
 import { useWeb3React } from '@web3-react/core'
-import { Card } from 'components'
-import Container from 'components/container'
+import { Card, Container } from 'components'
 import { useAtomValue } from 'jotai'
 import React from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'

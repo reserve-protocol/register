@@ -1,5 +1,5 @@
 import { SectionCard } from 'components'
-import { Text, Box } from '@theme-ui/components'
+import { Text, Box } from 'theme-ui'
 import { Table } from 'components/table'
 import { TX_STATUS } from 'state/web3/components/TransactionManager'
 import { formatCurrency, shortenString } from 'utils'

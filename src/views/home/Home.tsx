@@ -1,4 +1,4 @@
-import { Grid, Text, Box } from '@theme-ui/components'
+import { Grid, Text, Box } from 'theme-ui'
 import { useWeb3React } from '@web3-react/core'
 import { Container } from 'components'
 import { Table } from 'components/table'

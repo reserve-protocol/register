@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Box, Button, Text } from '@theme-ui/components'
+import { Box, Button, Text } from 'theme-ui'
 import Popup from 'components/popup'
 import WalletList from 'components/wallets/WalletList'
 import useENSName from 'hooks/ens/useENSName'

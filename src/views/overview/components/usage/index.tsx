@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Box, Text, Card, Grid, BoxProps } from '@theme-ui/components'
+import { Box, Text, Card, Grid, BoxProps } from 'theme-ui'
 import { InfoBox } from 'components'
 import { ReserveToken } from 'types'
 

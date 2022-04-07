@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { parseEther } from '@ethersproject/units'
-import { Box, Card, Text } from '@theme-ui/components'
+import { Box, Card, Text } from 'theme-ui'
 import { StRSRInterface } from 'abis'
 import { Button, NumericalInput } from 'components'
 import { useAtomValue, useSetAtom } from 'jotai'

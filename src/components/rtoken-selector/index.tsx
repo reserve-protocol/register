@@ -1,4 +1,4 @@
-import { Box, BoxProps, Flex, Text } from '@theme-ui/components'
+import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import TokenLogo from 'components/icons/TokenLogo'
 import Popup from 'components/popup'
 import { atom, useAtomValue } from 'jotai'

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Box, BoxProps, Text } from '@theme-ui/components'
+import { Box, BoxProps, Text } from 'theme-ui'
 import { useWeb3React } from '@web3-react/core'
 import { Modal } from 'components'
 import {

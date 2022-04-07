@@ -1,4 +1,4 @@
-import { Box, Card as ThemeCard, Text } from '@theme-ui/components'
+import { Box, Card as ThemeCard, Text } from 'theme-ui'
 
 const Card = ({
   title = '',

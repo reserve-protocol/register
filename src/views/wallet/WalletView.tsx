@@ -1,4 +1,4 @@
-import { Box, Text } from '@theme-ui/components'
+import { Box, Text } from 'theme-ui'
 import { Container } from 'components'
 import WalletConnection from 'components/wallets/WalletConnection'
 import WalletList from 'components/wallets/WalletList'

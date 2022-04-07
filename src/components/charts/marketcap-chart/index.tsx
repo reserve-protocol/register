@@ -1,4 +1,4 @@
-import { Box, BoxProps, Text } from '@theme-ui/components'
+import { Box, BoxProps, Text } from 'theme-ui'
 import Card from 'components/card'
 import {
   LineChart,

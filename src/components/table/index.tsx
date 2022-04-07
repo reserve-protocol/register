@@ -55,7 +55,8 @@ interface TableOwnProps<D extends { [key: string]: any }> {
   /**
    * the columns object as an array.
    */
-  columns: Column<D>[]
+  // columns: Column<D>[]
+  columns: any[]
   /**
    * array of data rows.
    */
@@ -274,7 +275,6 @@ export function Table<D extends { [key: string]: any }>({
                 <Box
                   as="th"
                   variant="styles.th"
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                   // @ts-ignore
                   colSpan={visibleColumns.length}
                   sx={{
@@ -305,19 +305,17 @@ export function Table<D extends { [key: string]: any }>({
               return (
                 <React.Fragment key={key}>
                   <Box variant="styles.tr" as="tr" {...rowProps}>
-                    {row.isGrouped
-                      ? row.cells[0].render('Aggregated')
-                      : row.cells.map(
-                          (cell: Cell & Partial<UseGroupByCellProps<D>>) => (
-                            <Box
-                              as="td"
-                              variant="styles.td"
-                              {...cell.getCellProps()}
-                            >
-                              {cell.render('Cell')}
-                            </Box>
-                          )
-                        )}
+                    {row.cells.map(
+                      (cell: Cell & Partial<UseGroupByCellProps<D>>) => (
+                        <Box
+                          as="td"
+                          variant="styles.td"
+                          {...cell.getCellProps()}
+                        >
+                          {cell.render('Cell') as any}
+                        </Box>
+                      )
+                    )}
                   </Box>
                   {row.isExpanded && row.original && (
                     <tr>

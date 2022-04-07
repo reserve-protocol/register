@@ -1,4 +1,4 @@
-import { Flex, Box, Text, BoxProps } from '@theme-ui/components'
+import { Flex, Box, Text, BoxProps } from 'theme-ui'
 import { Card } from 'components'
 import { RTokenIcon } from 'components/icons/logos'
 import TokenLogo from 'components/icons/TokenLogo'

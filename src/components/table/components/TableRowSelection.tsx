@@ -26,7 +26,7 @@ const IndeterminateCheckbox: FC<TableToggleAllRowsSelectedProps> = forwardRef(
 export const useRowSelectionColumn = <D extends Record<string, unknown>>(
   hooks: UseTableHooks<D>
 ): void => {
-  hooks.visibleColumns.push((columns) => [
+  hooks.visibleColumns.push((columns: any) => [
     {
       id: 'selection',
       width: 30,

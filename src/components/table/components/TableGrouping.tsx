@@ -32,7 +32,7 @@ export const useExpanderColumn =
   <D extends Record<string, unknown>>(itemsLabel: string | null) =>
   (hooks: UseTableHooks<D>): void => {
     hooks.useControlledState.push(useControlledState)
-    hooks.visibleColumns.push((columns, { instance }) => {
+    hooks.visibleColumns.push((columns: any, { instance }) => {
       if (
         !(instance.state as UseGroupByState<Record<string, unknown>>).groupBy
           .length

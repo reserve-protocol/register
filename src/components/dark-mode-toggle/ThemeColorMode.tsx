@@ -1,4 +1,4 @@
-import { BoxProps, Box } from '@theme-ui/components'
+import { BoxProps, Box } from 'theme-ui'
 import { useColorMode } from 'theme-ui'
 import DarkModeToggle from '.'
 

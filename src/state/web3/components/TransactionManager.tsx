@@ -101,6 +101,7 @@ const TransactionWorker = ({ current }: { current: TransactionState }) => {
         ...current.call.args
       )
       updateTxHash(transaction.hash)
+      // TODO: Timeout to tell the user that the tx is taking too long
       await transaction.wait()
       updateTx(TX_STATUS.CONFIRMED)
     } catch (e) {

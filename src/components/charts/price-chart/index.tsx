@@ -1,4 +1,4 @@
-import { Box, Text, BoxProps } from '@theme-ui/components'
+import { Box, Text, BoxProps } from 'theme-ui'
 import Card from 'components/card'
 import useSWR from 'swr'
 import {

@@ -1,4 +1,4 @@
-import { Flex, Box } from '@theme-ui/components'
+import { Flex, Box } from 'theme-ui'
 import LanguageSelector from 'components/language-selector'
 import RTokenSelector from 'components/rtoken-selector'
 import Account from '../../account'

@@ -1,4 +1,4 @@
-import { Box, Grid, Text } from '@theme-ui/components'
+import { Box, Grid, Text } from 'theme-ui'
 import { Card, Container } from 'components'
 import MarketCapChart from 'components/charts/marketcap-chart'
 import PriceChart from 'components/charts/price-chart'

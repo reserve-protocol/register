@@ -1,5 +1,5 @@
 import { Table } from 'components/table'
-import { Box, Text } from '@theme-ui/components'
+import { Box, Text } from 'theme-ui'
 import { formatEther } from '@ethersproject/units'
 import { formatCurrency, shortenString } from 'utils'
 import useQuery from 'hooks/useQuery'

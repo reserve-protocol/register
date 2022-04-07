@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Box, Text } from '@theme-ui/components'
+import { Box, Text } from 'theme-ui'
 import { NavLink } from 'react-router-dom'
 import Logo from 'components/icons/Logo'
 import ROUTES from 'constants/routes'

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Box, BoxProps, Text } from '@theme-ui/components'
+import { Box, BoxProps, Text } from 'theme-ui'
 import { meta } from '../../../../constants/tokens'
 
 interface Props extends BoxProps {

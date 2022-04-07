@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { BigNumber } from '@ethersproject/bignumber'
-import { Box, Card, Text } from '@theme-ui/components'
+import { Box, Card, Text } from 'theme-ui'
 import { useWeb3React } from '@web3-react/core'
 import { ERC20Interface, RSVManagerInterface, RTokenInterface } from 'abis'
 import { Button, NumericalInput } from 'components'

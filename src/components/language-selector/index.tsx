@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Box } from '@theme-ui/components'
+import { Box } from 'theme-ui'
 import LangIcon from 'components/icons/Lang'
 import Popup from 'components/popup'
 import { useState } from 'react'

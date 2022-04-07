@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Box, BoxProps, Flex, Text } from '@theme-ui/components'
+import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { Card } from 'components'
 import TokenLogo from 'components/icons/TokenLogo'
 import { formatEther } from 'ethers/lib/utils'

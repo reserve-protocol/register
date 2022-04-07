@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { Box, Card, Divider, Flex, Text } from '@theme-ui/components'
+import { Box, Card, Divider, Flex, Text } from 'theme-ui'
 import { useWeb3React } from '@web3-react/core'
 import { StRSRInterface } from 'abis'
 import { Button, Modal } from 'components'

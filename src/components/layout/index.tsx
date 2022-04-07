@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { Box, Flex } from '@theme-ui/components'
+import { Box, Flex } from 'theme-ui'
 import Header from './header'
 import Sidebar from './sidebar'
 
