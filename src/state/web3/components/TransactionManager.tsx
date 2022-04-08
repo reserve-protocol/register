@@ -79,7 +79,6 @@ const updateTransactionHashAtom = atom(null, (get, set, hash: string) => {
 
 const TransactionWorker = ({ current }: { current: TransactionState }) => {
   const { account } = useWeb3React()
-  const [processing, setProcessing] = useState(false)
   const updateTx = useSetAtom(updateTransactionAtom)
   const updateTxHash = useSetAtom(updateTransactionHashAtom)
   const contract = useContract(
@@ -112,8 +111,8 @@ const TransactionWorker = ({ current }: { current: TransactionState }) => {
 
   // TODO: useCallback
   const processTx = async () => {
-    updateTx(TX_STATUS.PROCESSING)
     if (current.call.method === 'approve') {
+      updateTx(TX_STATUS.PROCESSING)
       const allowance = await contract.allowance(account, current.call.args[0])
 
       if (allowance.gte(current.call.args[1])) {
@@ -125,13 +124,13 @@ const TransactionWorker = ({ current }: { current: TransactionState }) => {
       !requiredApprovalTx.includes(current.call.method) ||
       hasAllowance
     ) {
+      updateTx(TX_STATUS.PROCESSING)
       exec()
     }
   }
 
   useEffect(() => {
-    if (contract && current.status === TX_STATUS.PENDING && !processing) {
-      setProcessing(true)
+    if (contract && current.status === TX_STATUS.PENDING) {
       processTx()
     }
   }, [contract, hasAllowance])

@@ -35,7 +35,9 @@ const useTokensHasAllowance = (
 
   return (
     !!allowances.length &&
-    allowances.every((value, index) => value?.[0]?.gte(tokens[index][1]))
+    allowances.every((result, index) =>
+      result?.value?.[0]?.gte(tokens[index][1])
+    )
   )
 }
 
