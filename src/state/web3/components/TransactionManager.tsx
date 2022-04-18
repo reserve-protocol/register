@@ -4,7 +4,7 @@ import { ContractCall } from 'hooks/useCall'
 import { useContract } from 'hooks/useContract'
 import useTokensHasAllowance from 'hooks/useTokensHasAllowance'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { currentTransactionAtom, transactionsAtom } from 'state/atoms'
 import { TransactionState } from 'types'
 
@@ -138,7 +138,6 @@ const TransactionWorker = ({ current }: { current: TransactionState }) => {
   return null
 }
 
-// TODO: Can be improved with jotai in mind
 const TransactionManager = () => {
   const currentTx = useAtomValue(currentTransactionAtom)
   const current = useAtomValue(transactionsAtom)[currentTx]
