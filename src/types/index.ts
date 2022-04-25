@@ -1,29 +1,9 @@
+import { BigNumber } from '@ethersproject/bignumber'
 import { Interface } from '@ethersproject/abi'
 import { Contract, ContractTransaction } from '@ethersproject/contracts'
 
 export interface StringMap {
   [key: string]: any
-}
-
-export interface TransactionState {
-  hash?: string
-  description: string
-  // TX_STATUS
-  status: string
-  value: string
-  call: any // TODO
-  // Extra props required to handle the transaction
-  extra?: any
-  // Defines if the transaction will be handled by the default worker
-  // Used for TX with simple logic, like an `Approval` or `Transfer`
-  autoCall: boolean
-  // batchId for batch transactions
-  batchId?: number
-}
-
-export interface Wallet {
-  address: string
-  alias: string
 }
 
 export interface ContractCall {
@@ -33,6 +13,26 @@ export interface ContractCall {
   args: any[]
 }
 
+export interface TransactionState {
+  description: string
+  status: string
+  value: string
+  call: ContractCall
+  // tx hash, added when the tx is signed
+  hash?: string
+  // required token allowance amounts for tx to be executed
+  requiredAllowance?: [string, BigNumber][]
+  // timestamps
+  createdAt: string // timestamp UTC
+  updatedAt: string // timestamp UTC
+  error?: string // error reason string
+  etherscan?: string // etherscan tx url
+}
+
+export interface Wallet {
+  address: string
+  alias: string
+}
 export interface RawCall {
   address: string
   data: string

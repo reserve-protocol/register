@@ -3,6 +3,10 @@ import { useWeb3React } from '@web3-react/core'
 import { Container } from 'components'
 import { Table } from 'components/table'
 import useBlockNumber from 'hooks/useBlockNumber'
+import useQuery from 'hooks/useQuery'
+import { gql } from 'graphql-request'
+import { useAtomValue } from 'jotai'
+import { rTokenAtom } from 'state/atoms'
 
 const mockTokens: any = [
   { name: 'USD1', price: '$1.00', balance: '0.00', value: '0.00', apy: '0.00' },
@@ -51,25 +55,47 @@ const yourStakingTokensColumns: any = [
   { Header: 'APY', accessor: 'apy' },
 ]
 
-const Home = () => (
-  <Container>
-    <Text sx={{ fontSize: 6, fontWeight: 100 }}>$ 123,123.00</Text>
-    <Grid columns={2} mt={4} width={620}>
-      <Box>
-        <Text mb={3} variant="sectionTitle">
-          Your RTokens
-        </Text>
-        <Table columns={yourTokensColumns} data={mockTokens} />
-      </Box>
-      <Box>
-        <Text mb={3} variant="sectionTitle">
-          Your IP Tokens
-        </Text>
-        <Table columns={yourStakingTokensColumns} data={stakingTokens} />
-      </Box>
-    </Grid>
-    <Box>{/* <Table /> */}</Box>
-  </Container>
-)
+const getRTokenExchange = gql`
+  {
+    tokenDayDatas {
+      token {
+        name
+      }
+      close
+    }
+  }
+`
+
+const Home = () => {
+  const data = useQuery(getRTokenExchange)
+  const reserveToken = useAtomValue(rTokenAtom)
+
+  console.log('data', data.data)
+
+  return (
+    <Container>
+      <Text variant="h1">Playground</Text>
+    </Container>
+  )
+}
 
 export default Home
+
+/**
+<Text sx={{ fontSize: 6, fontWeight: 100 }}>$ 123,123.00</Text>
+<Grid columns={2} mt={4} width={620}>
+  <Box>
+    <Text mb={3} variant="sectionTitle">
+      Your RTokens
+    </Text>
+    <Table columns={yourTokensColumns} data={mockTokens} />
+  </Box>
+  <Box>
+    <Text mb={3} variant="sectionTitle">
+      Your IP Tokens
+    </Text>
+    <Table columns={yourStakingTokensColumns} data={stakingTokens} />
+  </Box>
+</Grid>
+<Box></Box>
+*/

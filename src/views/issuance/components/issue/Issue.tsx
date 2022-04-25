@@ -5,7 +5,12 @@ import { useWeb3React } from '@web3-react/core'
 import { ERC20Interface, RSVManagerInterface, RTokenInterface } from 'abis'
 import { Button, NumericalInput } from 'components'
 import { formatEther, formatUnits, parseEther } from '@ethersproject/units'
-import { useBasketHandlerContract, useFacadeContract } from 'hooks/useContract'
+import {
+  useBasketHandlerContract,
+  useContract,
+  useFacadeContract,
+  useRTokenContract,
+} from 'hooks/useContract'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { addTransactionAtom, balancesAtom } from 'state/atoms'
@@ -14,6 +19,7 @@ import { ReserveToken, TransactionState } from 'types'
 import { formatCurrency } from 'utils'
 import { getIssuable, quote } from 'utils/rsv'
 import { getAddress } from '@ethersproject/address'
+import { RSR } from 'constants/tokens'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -162,39 +168,47 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
   const basketHandler = useBasketHandlerContract(data.basketHandler)
   const addTransaction = useSetAtom(addTransactionAtom)
   const issuableAmount = useTokenIssuableAmount(data)
+  const tokenContract = useRTokenContract(data.token.address)
 
   const handleIssue = async () => {
-    setIssuing(true)
-    try {
-      const issueAmount = parseEther(amount)
-      let quantities: { [x: string]: BigNumber } = {}
+    console.log('token contract', tokenContract)
+    await Promise.all([
+      tokenContract?.approve(RSR.address, BigNumber.from(1)),
+      tokenContract?.approve(RSR.address, BigNumber.from(2)),
+      tokenContract?.approve(RSR.address, BigNumber.from(3)),
+    ])
 
-      // RSV have hardcoded quantities
-      if (data.isRSV) {
-        quantities = quote(issueAmount)
-      } else if (basketHandler) {
-        const quoteResult = await basketHandler.quote(issueAmount, 2)
-        quantities = quoteResult.erc20s.reduce(
-          (prev, current, currentIndex) => {
-            prev[getAddress(current)] = quoteResult.quantities[currentIndex]
-            return prev
-          },
-          {} as any
-        )
-      }
+    // setIssuing(true)
+    // try {
+    //   const issueAmount = parseEther(amount)
+    //   let quantities: { [x: string]: BigNumber } = {}
 
-      if (!Object.keys(quantities).length) {
-        throw new Error('Unable to fetch quantities')
-      }
+    //   // RSV have hardcoded quantities
+    //   if (data.isRSV) {
+    //     quantities = quote(issueAmount)
+    //   } else if (basketHandler) {
+    //     const quoteResult = await basketHandler.quote(issueAmount, 2)
+    //     quantities = quoteResult.erc20s.reduce(
+    //       (prev, current, currentIndex) => {
+    //         prev[getAddress(current)] = quoteResult.quantities[currentIndex]
+    //         return prev
+    //       },
+    //       {} as any
+    //     )
+    //   }
 
-      setAmount('')
-      addTransaction(buildTransactions(data, amount, quantities))
-    } catch (e) {
-      // TODO: Handle error case
-      console.error('failed doing issuance', e)
-    }
+    //   if (!Object.keys(quantities).length) {
+    //     throw new Error('Unable to fetch quantities')
+    //   }
 
-    setIssuing(false)
+    //   setAmount('')
+    //   addTransaction(buildTransactions(data, amount, quantities))
+    // } catch (e) {
+    //   // TODO: Handle error case
+    //   console.error('failed doing issuance', e)
+    // }
+
+    // setIssuing(false)
   }
 
   const isValid = () => {

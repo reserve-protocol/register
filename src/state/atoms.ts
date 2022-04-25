@@ -1,3 +1,4 @@
+import { TRANSACTION_STATUS } from 'utils/constants'
 import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import {
@@ -43,4 +44,19 @@ export const addTransactionAtom = atom(
 export const currentTransactionAtom = atom(0)
 export const transactionAtom = atom<TransactionState | null>(
   (get) => get(transactionsAtom)[get(currentTransactionAtom)]
+)
+
+export const txAtom = atom<{ [x: string]: TransactionState[] }>({})
+
+export const pendingTx = atom<TransactionState[]>((get) =>
+  get(txAtom)[get(selectedAccountAtom)].filter(
+    (tx) => tx.status === TRANSACTION_STATUS.PENDING
+  )
+)
+
+// Explore tx processing after signing
+export const miningTx = atom<TransactionState[]>((get) =>
+  get(txAtom)[get(selectedAccountAtom)].filter(
+    (tx) => tx.status === TRANSACTION_STATUS.MINING
+  )
 )
