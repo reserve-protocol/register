@@ -5830,6 +5830,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["graphql-request", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:4.2.0"],\
             ["i18next", "npm:21.6.14"],\
             ["i18next-browser-languagedetector", "npm:6.1.4"],\
+            ["immer", "npm:9.0.12"],\
             ["jotai", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.6.2"],\
             ["prettier", "npm:2.6.2"],\
             ["react", "npm:18.0.0"],\
@@ -19809,7 +19810,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/wonka", null],\
             ["@types/xstate", null],\
             ["@urql/core", null],\
-            ["immer", null],\
+            ["immer", "npm:9.0.12"],\
             ["optics-ts", null],\
             ["react", "npm:18.0.0"],\
             ["react-query", null],\
@@ -23503,6 +23504,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["graphql-request", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:4.2.0"],\
             ["i18next", "npm:21.6.14"],\
             ["i18next-browser-languagedetector", "npm:6.1.4"],\
+            ["immer", "npm:9.0.12"],\
             ["jotai", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.6.2"],\
             ["prettier", "npm:2.6.2"],\
             ["react", "npm:18.0.0"],\

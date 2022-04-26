@@ -4,7 +4,7 @@ import { ContractCall } from 'hooks/useCall'
 import { useContract } from 'hooks/useContract'
 import useTokensHasAllowance from 'hooks/useTokensHasAllowance'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { currentTransactionAtom, transactionsAtom } from 'state/atoms'
 import { TransactionState } from 'types'
 
@@ -79,6 +79,7 @@ const updateTransactionHashAtom = atom(null, (get, set, hash: string) => {
 
 const TransactionWorker = ({ current }: { current: TransactionState }) => {
   const { account } = useWeb3React()
+  const [processing, setProcessing] = useState(false)
   const updateTx = useSetAtom(updateTransactionAtom)
   const updateTxHash = useSetAtom(updateTransactionHashAtom)
   const contract = useContract(
@@ -103,8 +104,10 @@ const TransactionWorker = ({ current }: { current: TransactionState }) => {
       // TODO: Timeout to tell the user that the tx is taking too long
       await transaction.wait()
       updateTx(TX_STATUS.CONFIRMED)
+      setProcessing(false)
     } catch (e) {
       console.error('error processing tx', e)
+      setProcessing(false)
       updateTx(TX_STATUS.FAILED)
     }
   }
@@ -112,11 +115,11 @@ const TransactionWorker = ({ current }: { current: TransactionState }) => {
   // TODO: useCallback
   const processTx = async () => {
     if (current.call.method === 'approve') {
-      updateTx(TX_STATUS.PROCESSING)
       const allowance = await contract.allowance(account, current.call.args[0])
 
       if (allowance.gte(current.call.args[1])) {
         updateTx(TX_STATUS.SKIPPED)
+        setProcessing(false)
       } else {
         exec()
       }
@@ -124,13 +127,15 @@ const TransactionWorker = ({ current }: { current: TransactionState }) => {
       !requiredApprovalTx.includes(current.call.method) ||
       hasAllowance
     ) {
-      updateTx(TX_STATUS.PROCESSING)
       exec()
     }
   }
 
   useEffect(() => {
-    if (contract && current.status === TX_STATUS.PENDING) {
+    if (contract && current.status === TX_STATUS.PENDING && !processing) {
+      setProcessing(true)
+      processTx()
+    } else if (current.status === TX_STATUS.PROCESSING && hasAllowance) {
       processTx()
     }
   }, [contract, hasAllowance])
@@ -138,6 +143,7 @@ const TransactionWorker = ({ current }: { current: TransactionState }) => {
   return null
 }
 
+// TODO: Can be improved with jotai in mind
 const TransactionManager = () => {
   const currentTx = useAtomValue(currentTransactionAtom)
   const current = useAtomValue(transactionsAtom)[currentTx]

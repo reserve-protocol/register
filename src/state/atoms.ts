@@ -1,6 +1,6 @@
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { atom } from 'jotai'
-import { atomWithStorage } from 'jotai/utils'
+import { atomWithStorage, splitAtom } from 'jotai/utils'
 import {
   MulticallState,
   RawCall,
@@ -23,11 +23,18 @@ export const walletsAtom = atomWithStorage<{ [x: string]: Wallet }>(
   {}
 )
 export const selectedAccountAtom = atomWithStorage('trackedAccount', '')
+export const connectedAccountAtom = atom('')
+
 export const walletAtom = atom<Wallet | null>(
   (get) => get(walletsAtom)[get(selectedAccountAtom)]
 )
 
+export const currentWalletAtom = atom<Wallet | null>(
+  (get) => get(walletsAtom)[get(connectedAccountAtom)]
+)
+
 export const balancesAtom = atom<{ [x: string]: number }>({})
+export const allowanceAtom = atom<{ [x: string]: number }>({})
 
 // Calls state
 export const callsAtom = atom<RawCall[]>([])
@@ -46,17 +53,20 @@ export const transactionAtom = atom<TransactionState | null>(
   (get) => get(transactionsAtom)[get(currentTransactionAtom)]
 )
 
+export const txQueueAtom = atom<TransactionState[]>([])
 export const txAtom = atom<{ [x: string]: TransactionState[] }>({})
 
-export const pendingTx = atom<TransactionState[]>((get) =>
+export const pendingTxAtom = atom<TransactionState[]>((get) =>
   get(txAtom)[get(selectedAccountAtom)].filter(
     (tx) => tx.status === TRANSACTION_STATUS.PENDING
   )
 )
+export const pendingTxAtomsAtom = splitAtom(pendingTxAtom)
 
 // Explore tx processing after signing
-export const miningTx = atom<TransactionState[]>((get) =>
-  get(txAtom)[get(selectedAccountAtom)].filter(
-    (tx) => tx.status === TRANSACTION_STATUS.MINING
+export const miningTxAtom = atom<string[]>([])
+export const pendingAllowanceTxAtom = atom<TransactionState[]>((get) =>
+  get(txAtom)[get(connectedAccountAtom)].filter(
+    (tx) => tx.status === TRANSACTION_STATUS.PENDING_ALLOWANCE
   )
 )

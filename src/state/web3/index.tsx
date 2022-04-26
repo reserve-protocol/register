@@ -4,6 +4,7 @@ import { BlockUpdater } from 'hooks/useBlockNumber'
 import React from 'react'
 import MulticallUpdater from './components/MulticallUpdater'
 import TransactionManager from './components/TransactionManager'
+import WalletUpdater from './components/WalletUpdater'
 
 /**
  * Wrapper around web3ReactProvider
@@ -13,6 +14,7 @@ const Web3Provider = ({ children }: { children: React.ReactNode }) => (
   <Web3ReactProvider connectors={connectors}>
     <MulticallUpdater />
     <BlockUpdater />
+    <WalletUpdater />
     <TransactionManager />
     {children}
   </Web3ReactProvider>

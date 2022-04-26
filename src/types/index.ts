@@ -23,10 +23,11 @@ export interface TransactionState {
   // required token allowance amounts for tx to be executed
   requiredAllowance?: [string, BigNumber][]
   // timestamps
-  createdAt: string // timestamp UTC
-  updatedAt: string // timestamp UTC
-  error?: string // error reason string
-  etherscan?: string // etherscan tx url
+  createdAt?: string // timestamp UTC
+  updatedAt?: string // timestamp UTC
+  batchId?: number
+  extra?: any
+  autoCall?: boolean
 }
 
 export interface Wallet {

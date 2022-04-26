@@ -2,10 +2,12 @@ import { getAddress } from '@ethersproject/address'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import useTokensBalance from 'hooks/useTokensBalance'
+import useTokensAllowance from 'hooks/useTokensAllowance'
 import { useSetAtom } from 'jotai'
 import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import { useEffect } from 'react'
 import {
+  allowanceAtom,
   balancesAtom,
   reserveTokensAtom,
   rTokenAtom,
@@ -111,6 +113,51 @@ const formatTokens = (mains: any[]): { [x: string]: ReserveToken } =>
     return acc
   }, {})
 
+// Gets ReserveToken related token addresses and decimals
+const getTokens = (reserveToken: ReserveToken): [string, number][] => {
+  const addresses: [string, number][] = [
+    [reserveToken.token.address, reserveToken.token.decimals],
+    [RSR.address, RSR.decimals],
+    ...reserveToken.basket.collaterals.map(({ token }): [string, number] => [
+      token.address,
+      token.decimals,
+    ]),
+  ]
+
+  if (reserveToken.insurance?.token) {
+    addresses.push([
+      reserveToken.insurance.token.address,
+      reserveToken.insurance.token.decimals,
+    ])
+  }
+
+  return addresses
+}
+
+const getTokenAllowances = (
+  reserveToken: ReserveToken
+): [string, string, number][] => {
+  const tokens: [string, string, number][] = [
+    ...reserveToken.basket.collaterals.map(
+      ({ token }): [string, string, number] => [
+        token.address,
+        reserveToken.isRSV ? reserveToken.id : reserveToken.token.address,
+        token.decimals,
+      ]
+    ),
+  ]
+
+  if (!reserveToken.isRSV) {
+    tokens.push([
+      RSR.address,
+      reserveToken.insurance?.token.address ?? '',
+      RSR.decimals,
+    ])
+  }
+
+  return tokens
+}
+
 /**
  * ReserveTokensUpdater
  *
@@ -132,27 +179,6 @@ const ReserveTokensUpdater = () => {
   return null
 }
 
-// Gets ReserveToken related token addresses and decimals
-// TODO: ST TOKEN AND RSR
-const getTokens = (reserveToken: ReserveToken): [string, number][] => {
-  const addresses: [string, number][] = [
-    [reserveToken.token.address, reserveToken.token.decimals],
-    [RSR.address, RSR.decimals],
-    ...reserveToken.basket.collaterals.map(({ token }): [string, number] => [
-      token.address,
-      token.decimals,
-    ]),
-  ]
-
-  if (reserveToken.insurance?.token) {
-    addresses.push([
-      reserveToken.insurance.token.address,
-      reserveToken.insurance.token.decimals,
-    ])
-  }
-
-  return addresses
-}
 /**
  * Updates the balances of the current ReserveToken related tokens
  */
@@ -173,12 +199,36 @@ const TokensBalanceUpdater = () => {
 }
 
 /**
+ * Update allowances for:
+ * Collaterals (n) -> RToken
+ * RSR -> stRSR
+ * If RSV: RSV -> RSVManager (redeem)
+ */
+const TokensAllowanceUpdater = () => {
+  const account = useAtomValue(walletAtom)
+  const reserveToken = useAtomValue(rTokenAtom)
+  const updateAllowances = useSetAtom(allowanceAtom)
+  const allowances = useTokensAllowance(
+    reserveToken && account ? getTokenAllowances(reserveToken) : [],
+    account?.address ?? ''
+  )
+
+  useEffect(() => {
+    console.log('allowances', allowances)
+    updateAllowances(allowances)
+  }, [JSON.stringify(allowances)])
+
+  return null
+}
+
+/**
  * Updater
  */
 const Updater = () => (
   <>
     <ReserveTokensUpdater />
     <TokensBalanceUpdater />
+    <TokensAllowanceUpdater />
   </>
 )
 
