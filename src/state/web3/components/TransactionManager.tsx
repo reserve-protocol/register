@@ -5,8 +5,9 @@ import { useContract } from 'hooks/useContract'
 import useTokensHasAllowance from 'hooks/useTokensHasAllowance'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import React, { useEffect, useState } from 'react'
-import { currentTransactionAtom, transactionsAtom } from 'state/atoms'
+import { currentTransactionAtom, transactionsAtom, txAtom } from 'state/atoms'
 import { TransactionState } from 'types'
+import Transactions from './Transactions'
 
 export const TX_STATUS = {
   PENDING: 'PENDING',
@@ -145,14 +146,16 @@ const TransactionWorker = ({ current }: { current: TransactionState }) => {
 
 // TODO: Can be improved with jotai in mind
 const TransactionManager = () => {
-  const currentTx = useAtomValue(currentTransactionAtom)
-  const current = useAtomValue(transactionsAtom)[currentTx]
+  const txs = useAtomValue(txAtom)
+  console.log('txs', txs)
+  // const currentTx = useAtomValue(currentTransactionAtom)
+  // const current = useAtomValue(transactionsAtom)[currentTx]
 
-  if (!current) {
-    return null
-  }
+  // if (!current) {
+  //   return null
+  // }
 
-  return <TransactionWorker current={current} />
+  return <Transactions />
 }
 
 export default TransactionManager

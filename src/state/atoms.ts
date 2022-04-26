@@ -42,31 +42,67 @@ export const multicallStateAtom = atom<MulticallState>({})
 
 // Transactions state
 export const transactionsAtom = atom<TransactionState[]>([])
-export const addTransactionAtom = atom(
-  null,
-  (get, set, tx: TransactionState[]) => {
-    set(transactionsAtom, [...get(transactionsAtom), ...tx])
-  }
-)
+
 export const currentTransactionAtom = atom(0)
 export const transactionAtom = atom<TransactionState | null>(
   (get) => get(transactionsAtom)[get(currentTransactionAtom)]
 )
 
-export const txQueueAtom = atom<TransactionState[]>([])
 export const txAtom = atom<{ [x: string]: TransactionState[] }>({})
-
-export const pendingTxAtom = atom<TransactionState[]>((get) =>
-  get(txAtom)[get(selectedAccountAtom)].filter(
-    (tx) => tx.status === TRANSACTION_STATUS.PENDING
-  )
+export const currentTxAtom = atom(
+  (get) => get(txAtom)[get(selectedAccountAtom)] || []
 )
-export const pendingTxAtomsAtom = splitAtom(pendingTxAtom)
 
-// Explore tx processing after signing
-export const miningTxAtom = atom<string[]>([])
-export const pendingAllowanceTxAtom = atom<TransactionState[]>((get) =>
-  get(txAtom)[get(connectedAccountAtom)].filter(
-    (tx) => tx.status === TRANSACTION_STATUS.PENDING_ALLOWANCE
-  )
+export const pendingTxAtom = atom((get) => {
+  const result = {
+    pending: <[number, TransactionState][]>[],
+    mining: <[number, TransactionState][]>[],
+    validating: <[number, TransactionState][]>[],
+  }
+
+  return get(currentTxAtom).reduce((acc, current, index) => {
+    if (current.status === TRANSACTION_STATUS.PENDING) {
+      acc.pending = [...acc.pending, [index, current]]
+    }
+
+    if (current.status === TRANSACTION_STATUS.PENDING_ALLOWANCE) {
+      acc.validating = [...acc.validating, [index, current]]
+    }
+
+    if (current.status === TRANSACTION_STATUS.MINING) {
+      if (current.status === TRANSACTION_STATUS.PENDING) {
+        acc.mining = [...acc.mining, [index, current]]
+      }
+    }
+
+    return acc
+  }, result)
+})
+
+export const addTransactionAtom = atom(
+  null,
+  (get, set, tx: TransactionState[]) => {
+    const txs = get(txAtom)
+    const account = get(selectedAccountAtom)
+    set(txAtom, { ...txs, [account]: [...(txs[account] ?? []), ...tx] })
+  }
+)
+
+export const updateTransactionAtom = atom(
+  null,
+  (get, set, data: [number, Partial<TransactionState>]) => {
+    const txs = get(txAtom)
+    const account = get(selectedAccountAtom)
+    const currentTx = txs[account]
+    const [index, newData] = data
+
+    set(txAtom, {
+      ...txs,
+      [account]: [
+        ...currentTx.slice(0, index),
+        { ...currentTx[index], ...newData },
+        ...currentTx.slice(index + 1),
+      ],
+    })
+  }
 )
