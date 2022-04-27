@@ -1,3 +1,4 @@
+import { BigNumber } from '@ethersproject/bignumber'
 import { StringMap } from 'types'
 import { useMemo } from 'react'
 import { ERC20Interface } from 'abis'
@@ -14,9 +15,9 @@ import { formatUnits } from '@ethersproject/units'
  * @returns
  */
 const useTokensAllowance = (
-  tokens: [string, string, number][],
+  tokens: [string, string][],
   account: string
-): StringMap => {
+): { [x: string]: BigNumber } => {
   const blockNumber = useBlockNumber()
 
   const calls = useMemo(
@@ -33,9 +34,9 @@ const useTokensAllowance = (
   const allowances = <any[]>useContractCalls(calls) ?? []
 
   return allowances.reduce((acc, current, index) => {
-    const [address, spender, decimals] = tokens[index]
+    const [address] = tokens[index]
     if (current?.value) {
-      acc[address] = parseFloat(formatUnits(current.value[0], decimals))
+      acc[address] = current.value[0]
     } else {
       acc[address] = 0
     }

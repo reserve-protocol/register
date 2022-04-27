@@ -134,25 +134,16 @@ const getTokens = (reserveToken: ReserveToken): [string, number][] => {
   return addresses
 }
 
-const getTokenAllowances = (
-  reserveToken: ReserveToken
-): [string, string, number][] => {
-  const tokens: [string, string, number][] = [
-    ...reserveToken.basket.collaterals.map(
-      ({ token }): [string, string, number] => [
-        token.address,
-        reserveToken.isRSV ? reserveToken.id : reserveToken.token.address,
-        token.decimals,
-      ]
-    ),
+const getTokenAllowances = (reserveToken: ReserveToken): [string, string][] => {
+  const tokens: [string, string][] = [
+    ...reserveToken.basket.collaterals.map(({ token }): [string, string] => [
+      token.address,
+      reserveToken.isRSV ? reserveToken.id : reserveToken.token.address,
+    ]),
   ]
 
   if (!reserveToken.isRSV) {
-    tokens.push([
-      RSR.address,
-      reserveToken.insurance?.token.address ?? '',
-      RSR.decimals,
-    ])
+    tokens.push([RSR.address, reserveToken.insurance?.token.address ?? ''])
   }
 
   return tokens

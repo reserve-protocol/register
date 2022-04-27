@@ -7,10 +7,10 @@ import { RSR } from 'constants/tokens'
 import { useSetAtom } from 'jotai'
 import { useAtomValue } from 'jotai/utils'
 import { useState } from 'react'
-import { addTransactionAtom, balancesAtom } from 'state/atoms'
-import { TX_STATUS } from 'state/web3/components/TransactionManager'
+import { addTransactionAtom, allowanceAtom, balancesAtom } from 'state/atoms'
 import { ReserveToken } from 'types'
 import { formatCurrency } from 'utils'
+import { TRANSACTION_STATUS } from 'utils/constants'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -20,36 +20,42 @@ const InputContainer = styled(Box)`
 
 const Stake = ({ data, ...props }: { data: ReserveToken }) => {
   const [amount, setAmount] = useState('')
+  const allowances = useAtomValue(allowanceAtom)
   const balance = useAtomValue(balancesAtom)[RSR.address] || 0
   const addTransaction = useSetAtom(addTransactionAtom)
   const stTokenAddress = data.insurance?.token?.address ?? ''
 
   const handleStake = () => {
     try {
+      const stakeAmount = parseEther(amount)
+      const hasAllowance = allowances[RSR.address]?.gte(stakeAmount)
+
       addTransaction([
         {
           autoCall: false,
           description: `Approve ${amount} RSR`,
-          status: TX_STATUS.PENDING,
+          status: hasAllowance ? 'SKIPPED' : TRANSACTION_STATUS.PENDING,
           value: amount,
           call: {
             abi: ERC20Interface,
             address: RSR.address,
             method: 'approve',
-            args: [stTokenAddress, parseEther(amount)],
+            args: [stTokenAddress, stakeAmount],
           },
         },
         {
           autoCall: false,
           description: `Stake ${amount} RSR`,
-          status: TX_STATUS.PENDING,
+          status: hasAllowance
+            ? TRANSACTION_STATUS.PENDING
+            : TRANSACTION_STATUS.PENDING_ALLOWANCE,
           value: amount,
-          extra: [[RSR.address, parseEther(amount)]],
+          extra: [[RSR.address, stakeAmount]],
           call: {
             abi: StRSRInterface,
             address: stTokenAddress,
             method: 'stake',
-            args: [parseEther(amount)],
+            args: [stakeAmount],
           },
         },
       ])

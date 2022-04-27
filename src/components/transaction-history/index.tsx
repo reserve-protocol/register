@@ -6,7 +6,11 @@ import { formatCurrency, shortenString } from 'utils'
 import { useMemo } from 'react'
 import { formatEther } from '@ethersproject/units'
 import { useAtomValue } from 'jotai'
-import { transactionsAtom } from 'state/atoms'
+import {
+  currentTransactionAtom,
+  currentTxAtom,
+  transactionsAtom,
+} from 'state/atoms'
 
 const columns = [
   {
@@ -40,7 +44,7 @@ const TransactionHistory = ({
 }: {
   history: IPreviousTransaction[]
 }) => {
-  const txs = useAtomValue(transactionsAtom)
+  const txs = useAtomValue(currentTxAtom)
   const dataset = useMemo(
     () => [
       ...txs

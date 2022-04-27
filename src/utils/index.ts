@@ -1,4 +1,5 @@
 import { getAddress } from '@ethersproject/address'
+import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 
@@ -13,6 +14,15 @@ export function isAddress(value: any): string | false {
 
 export function shortenString(str: string) {
   return `${str.substring(0, 6)}...${str.substring(str.length - 4)}`
+}
+
+export function hasAllowance(
+  allowances: { [x: string]: BigNumber },
+  requiredAllowances: [string, BigNumber][]
+) {
+  return requiredAllowances.every(([address, amount]) =>
+    allowances[address]?.gte(amount)
+  )
 }
 
 export function addressEqual(

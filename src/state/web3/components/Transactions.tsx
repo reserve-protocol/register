@@ -2,27 +2,50 @@ import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import useBlockNumber from 'hooks/useBlockNumber'
 import useDebounce from 'hooks/useDebounce'
-import { atom, useAtomValue } from 'jotai'
+import { useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import {
+  allowanceAtom,
   pendingTxAtom,
-  selectedAccountAtom,
-  txAtom,
   updateTransactionAtom,
 } from 'state/atoms'
-import { getContract } from 'utils'
+import { getContract, hasAllowance } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
 
 const Transactions = () => {
   const setTxs = useUpdateAtom(updateTransactionAtom)
-  // TODO: should I debounce the value
+  // TODO: should I debounce the value?
   const { pending, mining, validating } = useDebounce(
     useAtomValue(pendingTxAtom),
     100
   )
+  const allowances = useAtomValue(allowanceAtom)
   const { account, provider } = useWeb3React()
   const blockNumber = useBlockNumber()
+
+  const checkMiningTx = useCallback(
+    async (txs: any) => {
+      for (const [index, tx] of txs) {
+        try {
+          const receipt = await provider?.getTransactionReceipt(tx.hash)
+          if (receipt) {
+            setTxs([index, { ...tx, status: TRANSACTION_STATUS.CONFIRMED }])
+          }
+        } catch (e) {
+          console.error('error getting receipt', e)
+        }
+      }
+    },
+    [provider]
+  )
+
+  // check mining
+  useEffect(() => {
+    if (provider && mining.length) {
+      checkMiningTx(mining)
+    }
+  }, [blockNumber, mining])
 
   // process pending
   useEffect(() => {
@@ -37,20 +60,29 @@ const Transactions = () => {
           account
         )
 
-        contract[tx.call.method](...tx.call.args).then(
-          ({ hash }: { hash: string }) => {
+        contract[tx.call.method](...tx.call.args)
+          .then(({ hash }: { hash: string }) => {
             // TODO: Handle case account change and after approve tx
             setTxs([index, { ...tx, status: TRANSACTION_STATUS.MINING, hash }])
-          }
-        )
+          })
+          .catch(() =>
+            setTxs([index, { ...tx, status: TRANSACTION_STATUS.REJECTED }])
+          )
       }
     }
   }, [pending])
 
-  // check mining
+  // Move tx waiting for allowance to the pending queue
   useEffect(() => {
-    console.log('check mining txs', mining)
-  }, [blockNumber, mining])
+    if (provider && account && validating.length) {
+      for (const [index, tx] of validating) {
+        if (hasAllowance(allowances, tx.extra)) {
+          // Mark transactions with required allowances as pending so they can be processed normally
+          setTxs([index, { ...tx, status: TRANSACTION_STATUS.PENDING }])
+        }
+      }
+    }
+  }, [JSON.stringify(allowances)])
 
   return null
 }
