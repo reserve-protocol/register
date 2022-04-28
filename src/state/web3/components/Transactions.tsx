@@ -65,9 +65,30 @@ const Transactions = () => {
             // TODO: Handle case account change and after approve tx
             setTxs([index, { ...tx, status: TRANSACTION_STATUS.MINING, hash }])
           })
-          .catch(() =>
+          .catch(() => {
             setTxs([index, { ...tx, status: TRANSACTION_STATUS.REJECTED }])
-          )
+
+            console.log('failed tx', tx)
+            // Cancel pending allowance tx
+            if (tx.call.method === 'approve') {
+              console.log('find validate tx', tx.call.args[0])
+              console.log('validating', validating)
+              const validatingTx = validating.find(([, vTx]) => {
+                console.log('current tx checking', tx)
+                console.log('address to be check', tx.call.args[0])
+                return vTx.call.address === tx.call.args[0]
+              })
+
+              console.log('validating tx', validatingTx)
+
+              if (validatingTx) {
+                setTxs([
+                  validatingTx[0],
+                  { ...validatingTx[1], status: TRANSACTION_STATUS.REJECTED },
+                ])
+              }
+            }
+          })
       }
     }
   }, [pending])

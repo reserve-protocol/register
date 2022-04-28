@@ -205,7 +205,6 @@ const TokensAllowanceUpdater = () => {
   )
 
   useEffect(() => {
-    console.log('allowances', allowances)
     updateAllowances(allowances)
   }, [JSON.stringify(allowances)])
 

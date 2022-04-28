@@ -81,7 +81,6 @@ const WalletConnection = ({ onConnect, ...props }: Props) => {
   }
 
   useEffect(() => {
-    console.log('account', account)
     if (connecting && account) {
       setConnecting(false)
       if (onConnect) {

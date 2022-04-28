@@ -70,11 +70,9 @@ const Home = () => {
   const data = useQuery(getRTokenExchange)
   const reserveToken = useAtomValue(rTokenAtom)
 
-  console.log('data', data.data)
-
   return (
     <Container>
-      <Text variant="h1">Playground</Text>
+      <Text variant="h1">todo</Text>
     </Container>
   )
 }
