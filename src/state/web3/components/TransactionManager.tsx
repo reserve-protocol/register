@@ -1,161 +1,102 @@
-import { Contract } from '@ethersproject/contracts'
+import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
-import { ContractCall } from 'hooks/useCall'
-import { useContract } from 'hooks/useContract'
-import useTokensHasAllowance from 'hooks/useTokensHasAllowance'
-import { atom, useAtomValue, useSetAtom } from 'jotai'
-import React, { useEffect, useState } from 'react'
-import { currentTransactionAtom, transactionsAtom, txAtom } from 'state/atoms'
-import { TransactionState } from 'types'
-import Transactions from './Transactions'
+import useBlockNumber from 'hooks/useBlockNumber'
+import useDebounce from 'hooks/useDebounce'
+import { useAtomValue } from 'jotai'
+import { useUpdateAtom } from 'jotai/utils'
+import { useCallback, useEffect } from 'react'
+import {
+  allowanceAtom,
+  pendingTxAtom,
+  updateTransactionAtom,
+} from 'state/atoms'
+import { getContract, hasAllowance } from 'utils'
+import { TRANSACTION_STATUS } from 'utils/constants'
 
-export const TX_STATUS = {
-  PENDING: 'PENDING',
-  SKIPPED: 'SKIPPED',
-  CONFIRMED: 'CONFIRMED',
-  FAILED: 'FAILED',
-  PROCESSING: 'PROCESSING',
-}
+const TransactionManager = () => {
+  const setTxs = useUpdateAtom(updateTransactionAtom)
+  const { pending, mining, validating } = useDebounce(
+    useAtomValue(pendingTxAtom),
+    100
+  )
+  const allowances = useAtomValue(allowanceAtom)
+  const { account, provider } = useWeb3React()
+  const blockNumber = useBlockNumber()
 
-export interface IRequiredApproveTransactionParams {
-  methods: string[] // method that requires allowance
-  hasAllowance: boolean // if the user has the required allowance to execute "method"
-  call: ContractCall // current call
-  contract: Contract // current contract call
-  account: string // current account
-  send: (...args: any[]) => Promise<void> // Current contract execute function (uses multicall)
-  dispatch: React.Dispatch<{ type: string; payload: any }> // Dispatch for updating context store
-}
-
-const requiredApprovalTx = ['stake', 'issue']
-
-const updateTransactionAtom = atom(null, (get, set, status: string) => {
-  const txs = get(transactionsAtom)
-  let currentTx = get(currentTransactionAtom)
-
-  if (!txs[currentTx]) {
-    throw new Error('Tx not found')
-  }
-
-  const result = [...txs.slice(0, currentTx), { ...txs[currentTx], status }]
-  let pending = txs.slice(currentTx + 1)
-
-  if (
-    status === TX_STATUS.SKIPPED ||
-    status === TX_STATUS.CONFIRMED ||
-    status === TX_STATUS.FAILED
-  ) {
-    currentTx += 1
-
-    if (status === TX_STATUS.FAILED && txs[currentTx - 1].batchId) {
-      pending = pending.map((tx) => {
-        if (tx.batchId === txs[currentTx].batchId) {
-          currentTx += 1
-          return {
-            ...tx,
-            status: TX_STATUS.FAILED,
+  const checkMiningTx = useCallback(
+    async (txs: any) => {
+      for (const [index, tx] of txs) {
+        try {
+          const receipt = await provider?.getTransactionReceipt(tx.hash)
+          if (receipt) {
+            setTxs([index, { ...tx, status: TRANSACTION_STATUS.CONFIRMED }])
           }
+        } catch (e) {
+          console.error('error getting receipt', e)
         }
-
-        return tx
-      })
-    }
-  }
-
-  result.push(...pending)
-  set(transactionsAtom, result)
-  set(currentTransactionAtom, currentTx)
-})
-
-const updateTransactionHashAtom = atom(null, (get, set, hash: string) => {
-  const txs = get(transactionsAtom)
-  const currentTx = get(currentTransactionAtom)
-
-  set(transactionsAtom, [
-    ...txs.slice(0, currentTx),
-    { ...txs[currentTx], hash },
-    ...txs.slice(currentTx + 1),
-  ])
-})
-
-const TransactionWorker = ({ current }: { current: TransactionState }) => {
-  const { account } = useWeb3React()
-  const [processing, setProcessing] = useState(false)
-  const updateTx = useSetAtom(updateTransactionAtom)
-  const updateTxHash = useSetAtom(updateTransactionHashAtom)
-  const contract = useContract(
-    current.call.address,
-    current.call.abi,
-    true
-  ) as Contract
-
-  const hasAllowance = useTokensHasAllowance(
-    requiredApprovalTx.includes(current.call.method) && current.extra
-      ? current.extra
-      : [],
-    current.call.address || ''
+      }
+    },
+    [provider]
   )
 
-  const exec = async () => {
-    try {
-      const transaction = await contract[current.call.method](
-        ...current.call.args
-      )
-      updateTxHash(transaction.hash)
-      // TODO: Timeout to tell the user that the tx is taking too long
-      await transaction.wait()
-      updateTx(TX_STATUS.CONFIRMED)
-      setProcessing(false)
-    } catch (e) {
-      console.error('error processing tx', e)
-      setProcessing(false)
-      updateTx(TX_STATUS.FAILED)
-    }
-  }
-
-  // TODO: useCallback
-  const processTx = async () => {
-    if (current.call.method === 'approve') {
-      const allowance = await contract.allowance(account, current.call.args[0])
-
-      if (allowance.gte(current.call.args[1])) {
-        updateTx(TX_STATUS.SKIPPED)
-        setProcessing(false)
-      } else {
-        exec()
-      }
-    } else if (
-      !requiredApprovalTx.includes(current.call.method) ||
-      hasAllowance
-    ) {
-      exec()
-    }
-  }
-
+  // check mining
   useEffect(() => {
-    if (contract && current.status === TX_STATUS.PENDING && !processing) {
-      setProcessing(true)
-      processTx()
-    } else if (current.status === TX_STATUS.PROCESSING && hasAllowance) {
-      processTx()
+    if (provider && mining.length) {
+      checkMiningTx(mining)
     }
-  }, [contract, hasAllowance])
+  }, [blockNumber, mining])
+
+  // process pending
+  useEffect(() => {
+    if (provider && account) {
+      for (const [index, tx] of pending) {
+        setTxs([index, { ...tx, status: TRANSACTION_STATUS.SIGNING }])
+
+        const contract = getContract(
+          tx.call.address,
+          tx.call.abi,
+          provider as Web3Provider,
+          account
+        )
+
+        contract[tx.call.method](...tx.call.args)
+          .then(({ hash }: { hash: string }) => {
+            // TODO: Handle case account change and after approve tx
+            setTxs([index, { ...tx, status: TRANSACTION_STATUS.MINING, hash }])
+          })
+          .catch(() => {
+            setTxs([index, { ...tx, status: TRANSACTION_STATUS.REJECTED }])
+            // Cancel pending allowance tx
+            if (tx.call.method === 'approve') {
+              const validatingTx = validating.find(([, vTx]) => {
+                return vTx.call.address === tx.call.args[0]
+              })
+
+              if (validatingTx) {
+                setTxs([
+                  validatingTx[0],
+                  { ...validatingTx[1], status: TRANSACTION_STATUS.REJECTED },
+                ])
+              }
+            }
+          })
+      }
+    }
+  }, [pending])
+
+  // Move tx waiting for allowance to the pending queue
+  useEffect(() => {
+    if (provider && account && validating.length) {
+      for (const [index, tx] of validating) {
+        if (hasAllowance(allowances, tx.extra)) {
+          // Mark transactions with required allowances as pending so they can be processed normally
+          setTxs([index, { ...tx, status: TRANSACTION_STATUS.PENDING }])
+        }
+      }
+    }
+  }, [JSON.stringify(allowances)])
 
   return null
-}
-
-// TODO: Can be improved with jotai in mind
-const TransactionManager = () => {
-  const txs = useAtomValue(txAtom)
-  console.log('txs', txs)
-  // const currentTx = useAtomValue(currentTransactionAtom)
-  // const current = useAtomValue(transactionsAtom)[currentTx]
-
-  // if (!current) {
-  //   return null
-  // }
-
-  return <Transactions />
 }
 
 export default TransactionManager

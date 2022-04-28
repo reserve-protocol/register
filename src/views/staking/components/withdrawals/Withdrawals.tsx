@@ -10,8 +10,8 @@ import useQuery from 'hooks/useQuery'
 import { useSetAtom } from 'jotai'
 import { useState } from 'react'
 import { addTransactionAtom } from 'state/atoms'
-import { TX_STATUS } from 'state/web3/components/TransactionManager'
 import { formatCurrency } from 'utils'
+import { TRANSACTION_STATUS } from 'utils/constants'
 
 const pendingWithdrawalsQuery = gql`
   entries(where: { type: "Unstake", status: Pending, user: $userId }) {
@@ -65,9 +65,8 @@ const Withdrawals = ({ tokenAddress }: { tokenAddress: string }) => {
   const handleWithdraw = () => {
     addTransaction([
       {
-        autoCall: true,
         description: 'Withdraw',
-        status: TX_STATUS.PENDING,
+        status: TRANSACTION_STATUS.PENDING,
         value: formatEther(available),
         call: {
           abi: StRSRInterface,

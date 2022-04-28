@@ -6,8 +6,8 @@ import { Button, Card, NumericalInput } from 'components'
 import { useSetAtom } from 'jotai'
 import { useState } from 'react'
 import { addTransactionAtom } from 'state/atoms'
-import { TX_STATUS } from 'state/web3/components/TransactionManager'
 import { ReserveToken, TransactionState } from 'types'
+import { TRANSACTION_STATUS } from 'utils/constants'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -24,9 +24,8 @@ const buildTransactions = (
   if (data.isRSV) {
     return [
       {
-        autoCall: false,
         description: 'Approve RSV for redemption',
-        status: TX_STATUS.PENDING,
+        status: TRANSACTION_STATUS.PENDING,
         value: amount,
         call: {
           abi: ERC20Interface,
@@ -36,11 +35,10 @@ const buildTransactions = (
         },
       },
       {
-        autoCall: false,
         description: `Redeem ${amount} ${data.token.symbol}`,
-        status: TX_STATUS.PENDING,
+        status: TRANSACTION_STATUS.PENDING,
         value: amount,
-        extra: [[data.token.address, parsedAmount]],
+        requiredAllowance: [[data.token.address, parsedAmount]],
         call: {
           abi: RSVManagerInterface,
           address: data.id,
@@ -53,9 +51,8 @@ const buildTransactions = (
 
   return [
     {
-      autoCall: true,
       description: `Redeem ${amount} ${data.token.symbol}`,
-      status: TX_STATUS.PENDING,
+      status: TRANSACTION_STATUS.PENDING,
       value: amount,
       call: {
         abi: RTokenInterface,

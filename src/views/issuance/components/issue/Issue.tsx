@@ -1,25 +1,19 @@
 import styled from '@emotion/styled'
+import { getAddress } from '@ethersproject/address'
 import { BigNumber } from '@ethersproject/bignumber'
-import { Box, Card, Text } from 'theme-ui'
+import { formatEther, formatUnits, parseEther } from '@ethersproject/units'
 import { useWeb3React } from '@web3-react/core'
 import { ERC20Interface, RSVManagerInterface, RTokenInterface } from 'abis'
 import { Button, NumericalInput } from 'components'
-import { formatEther, formatUnits, parseEther } from '@ethersproject/units'
-import {
-  useBasketHandlerContract,
-  useContract,
-  useFacadeContract,
-  useRTokenContract,
-} from 'hooks/useContract'
+import { useBasketHandlerContract, useFacadeContract } from 'hooks/useContract'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { addTransactionAtom, balancesAtom } from 'state/atoms'
-import { TX_STATUS } from 'state/web3/components/TransactionManager'
+import { Box, Card, Text } from 'theme-ui'
 import { ReserveToken, TransactionState } from 'types'
 import { formatCurrency } from 'utils'
+import { TRANSACTION_STATUS } from 'utils/constants'
 import { getIssuable, quote } from 'utils/rsv'
-import { getAddress } from '@ethersproject/address'
-import { RSR } from 'constants/tokens'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -54,7 +48,7 @@ const buildTransactions = (
       return {
         autoCall: false,
         description,
-        status: TX_STATUS.PENDING,
+        status: TRANSACTION_STATUS.PENDING,
         value: formatUnits(tokenAmount, token.decimals),
         call: {
           abi: ERC20Interface,
@@ -68,11 +62,10 @@ const buildTransactions = (
 
   // Create token issuance contract call
   transactions.push({
-    autoCall: false,
     description: `Issue ${amount} ${data.token.symbol}`,
-    status: TX_STATUS.PENDING,
+    status: TRANSACTION_STATUS.PENDING,
     value: amount,
-    extra: tokenQuantities, // Send quantities as an extra prop for allowance check before issuance
+    requiredAllowance: tokenQuantities, // Send quantities as an extra prop for allowance check before issuance
     call: {
       abi: data.isRSV ? RSVManagerInterface : RTokenInterface,
       address: data.isRSV ? data.id : data.token.address,
@@ -168,47 +161,39 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
   const basketHandler = useBasketHandlerContract(data.basketHandler)
   const addTransaction = useSetAtom(addTransactionAtom)
   const issuableAmount = useTokenIssuableAmount(data)
-  const tokenContract = useRTokenContract(data.token.address)
 
   const handleIssue = async () => {
-    console.log('token contract', tokenContract)
-    await Promise.all([
-      tokenContract?.approve(RSR.address, BigNumber.from(1)),
-      tokenContract?.approve(RSR.address, BigNumber.from(2)),
-      tokenContract?.approve(RSR.address, BigNumber.from(3)),
-    ])
+    setIssuing(true)
+    try {
+      const issueAmount = parseEther(amount)
+      let quantities: { [x: string]: BigNumber } = {}
 
-    // setIssuing(true)
-    // try {
-    //   const issueAmount = parseEther(amount)
-    //   let quantities: { [x: string]: BigNumber } = {}
+      // RSV have hardcoded quantities
+      if (data.isRSV) {
+        quantities = quote(issueAmount)
+      } else if (basketHandler) {
+        const quoteResult = await basketHandler.quote(issueAmount, 2)
+        quantities = quoteResult.erc20s.reduce(
+          (prev, current, currentIndex) => {
+            prev[getAddress(current)] = quoteResult.quantities[currentIndex]
+            return prev
+          },
+          {} as any
+        )
+      }
 
-    //   // RSV have hardcoded quantities
-    //   if (data.isRSV) {
-    //     quantities = quote(issueAmount)
-    //   } else if (basketHandler) {
-    //     const quoteResult = await basketHandler.quote(issueAmount, 2)
-    //     quantities = quoteResult.erc20s.reduce(
-    //       (prev, current, currentIndex) => {
-    //         prev[getAddress(current)] = quoteResult.quantities[currentIndex]
-    //         return prev
-    //       },
-    //       {} as any
-    //     )
-    //   }
+      if (!Object.keys(quantities).length) {
+        throw new Error('Unable to fetch quantities')
+      }
 
-    //   if (!Object.keys(quantities).length) {
-    //     throw new Error('Unable to fetch quantities')
-    //   }
+      setAmount('')
+      addTransaction(buildTransactions(data, amount, quantities))
+    } catch (e) {
+      // TODO: Handle error case
+      console.error('failed doing issuance', e)
+    }
 
-    //   setAmount('')
-    //   addTransaction(buildTransactions(data, amount, quantities))
-    // } catch (e) {
-    //   // TODO: Handle error case
-    //   console.error('failed doing issuance', e)
-    // }
-
-    // setIssuing(false)
+    setIssuing(false)
   }
 
   const isValid = () => {

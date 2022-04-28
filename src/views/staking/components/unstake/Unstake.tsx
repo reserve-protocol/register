@@ -6,9 +6,9 @@ import { Button, NumericalInput } from 'components'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useState } from 'react'
 import { addTransactionAtom, balancesAtom } from 'state/atoms'
-import { TX_STATUS } from 'state/web3/components/TransactionManager'
 import { ReserveToken } from 'types'
 import { formatCurrency } from 'utils'
+import { TRANSACTION_STATUS } from 'utils/constants'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -26,9 +26,8 @@ const Unstake = ({ data }: { data: ReserveToken }) => {
   const handleUnstake = () => {
     addTransaction([
       {
-        autoCall: true,
         description: `Unstake ${amount}`,
-        status: TX_STATUS.PENDING,
+        status: TRANSACTION_STATUS.PENDING,
         value: amount,
         call: {
           abi: StRSRInterface,

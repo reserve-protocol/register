@@ -1,16 +1,12 @@
 import { SectionCard } from 'components'
 import { Text, Box } from 'theme-ui'
 import { Table } from 'components/table'
-import { TX_STATUS } from 'state/web3/components/TransactionManager'
 import { formatCurrency, shortenString } from 'utils'
 import { useMemo } from 'react'
 import { formatEther } from '@ethersproject/units'
 import { useAtomValue } from 'jotai'
-import {
-  currentTransactionAtom,
-  currentTxAtom,
-  transactionsAtom,
-} from 'state/atoms'
+import { currentTxAtom } from 'state/atoms'
+import { TRANSACTION_STATUS } from 'utils/constants'
 
 const columns = [
   {
@@ -56,7 +52,7 @@ const TransactionHistory = ({
         }))
         .reverse(),
       ...history.map(({ transaction, amount, type }) => ({
-        status: TX_STATUS.CONFIRMED,
+        status: TRANSACTION_STATUS.CONFIRMED,
         description: type,
         value: formatCurrency(+formatEther(amount)),
         hash: shortenString(transaction.id),

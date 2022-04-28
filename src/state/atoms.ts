@@ -41,14 +41,6 @@ export const allowanceAtom = atom<{ [x: string]: BigNumber }>({})
 export const callsAtom = atom<RawCall[]>([])
 export const multicallStateAtom = atom<MulticallState>({})
 
-// Transactions state
-export const transactionsAtom = atom<TransactionState[]>([])
-
-export const currentTransactionAtom = atom(0)
-export const transactionAtom = atom<TransactionState | null>(
-  (get) => get(transactionsAtom)[get(currentTransactionAtom)]
-)
-
 export const txAtom = atom<{ [x: string]: TransactionState[] }>({})
 export const currentTxAtom = atom(
   (get) => get(txAtom)[get(selectedAccountAtom)] || []
