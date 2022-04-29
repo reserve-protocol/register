@@ -5,4 +5,5 @@ export const TRANSACTION_STATUS = {
   MINING: 'MINING', // tx signed and currently mining (can take some time)
   CONFIRMED: 'CONFIRMED', // confirmed (mined) tx
   REJECTED: 'REJECTED', // rejected tx, user canceled or reverted
+  SKIPPED: 'SKIPPED',
 }

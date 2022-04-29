@@ -4,7 +4,7 @@ import { Flex, Box } from 'theme-ui'
 import { X } from 'react-feather'
 import styled from '@emotion/styled'
 
-export interface IModal {
+export interface ModalProps {
   open?: boolean
   title?: string
   onClose?(): void
@@ -18,20 +18,22 @@ const StyledDialog = styled((props: any) => <Dialog {...props} />)`
   }
 `
 
-const Modal = ({ open = true, onClose, title, children }: IModal) => (
+const Modal = ({ open = true, onClose, title, children }: ModalProps) => (
   <StyledDialog aria-label="Modal" isOpen={open} onDismiss={onClose}>
-    <Flex mb={3} sx={{ alignItems: 'center' }}>
-      <Box sx={{ fontSize: 2 }}>{title && title}</Box>
-      {!!onClose && (
-        <Box
-          role="button"
-          sx={{ marginLeft: 'auto', '&:hover': { cursor: 'pointer' } }}
-          onClick={onClose}
-        >
-          <X />
-        </Box>
-      )}
-    </Flex>
+    {(onClose || title) && (
+      <Flex mb={3} sx={{ alignItems: 'center' }}>
+        <Box sx={{ fontSize: 2 }}>{title && title}</Box>
+        {!!onClose && (
+          <Box
+            role="button"
+            sx={{ marginLeft: 'auto', '&:hover': { cursor: 'pointer' } }}
+            onClick={onClose}
+          >
+            <X />
+          </Box>
+        )}
+      </Flex>
+    )}
     {children}
   </StyledDialog>
 )
