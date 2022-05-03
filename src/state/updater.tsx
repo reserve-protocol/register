@@ -1,20 +1,28 @@
 import { getAddress } from '@ethersproject/address'
+import { useWeb3React } from '@web3-react/core'
 import { gql } from 'graphql-request'
+import useBlockNumber from 'hooks/useBlockNumber'
 import useQuery from 'hooks/useQuery'
-import useTokensBalance from 'hooks/useTokensBalance'
 import useTokensAllowance from 'hooks/useTokensAllowance'
+import useTokensBalance from 'hooks/useTokensBalance'
 import { useSetAtom } from 'jotai'
 import { useAtomValue, useUpdateAtom } from 'jotai/utils'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import {
   allowanceAtom,
   balancesAtom,
+  ethPriceAtom,
+  gasPriceAtom,
   reserveTokensAtom,
+  rsrPriceAtom,
   rTokenAtom,
+  rTokenPriceAtom,
   walletAtom,
 } from 'state/atoms'
-import { ReserveToken } from 'types'
+import useSWR from 'swr'
+import { ReserveToken, StringMap } from 'types'
 import { CHAIN_ID } from 'utils/chains'
+import { COINGECKO_API } from 'utils/constants'
 import { RSV_MANAGER_ADDRESS } from '../constants/addresses'
 import { RSR } from '../constants/tokens'
 
@@ -211,6 +219,65 @@ const TokensAllowanceUpdater = () => {
   return null
 }
 
+const fetcher = async (url: string): Promise<StringMap> => {
+  const data: Response = await fetch(url).then((res) => res.json())
+
+  return data
+}
+
+/**
+ * Fetch prices for:
+ * ETH    -> USD
+ * RSR    -> USD
+ * RToken -> USD
+ * GasPrice
+ */
+const PricesUpdater = () => {
+  const reserveToken = useAtomValue(rTokenAtom)
+  const { provider } = useWeb3React()
+  const { data } = useSWR(
+    `${COINGECKO_API}/simple/price?vs_currencies=usd&ids=ethereum,reserve-rights-token`,
+    fetcher
+  )
+  // this may fetch all top rTokens
+  const { data: rTokenPrice } = useSWR(
+    reserveToken &&
+      `${COINGECKO_API}/simple/token_price/ethereum?contract_addresses=${reserveToken.token.address}&vs_currencies=usd`,
+    fetcher
+  )
+  const setRSRPrice = useUpdateAtom(rsrPriceAtom)
+  const setEthPrice = useUpdateAtom(ethPriceAtom)
+  const setGasPrice = useUpdateAtom(gasPriceAtom)
+  const setRTokenPrice = useUpdateAtom(rTokenPriceAtom)
+  const blockNumber = useBlockNumber()
+
+  const fetchGasPrice = useCallback(async () => {
+    const feeData = await provider!.getFeeData()
+    setGasPrice(Number(feeData.gasPrice?.toString()) || 0)
+  }, [provider])
+
+  useEffect(() => {
+    if (provider && blockNumber) {
+      fetchGasPrice()
+    }
+  }, [blockNumber, provider])
+
+  useEffect(() => {
+    if (data) {
+      setRSRPrice(data['reserve-rights-token'] || 1)
+      setEthPrice(data.ethereum || 1)
+    }
+  }, [data])
+
+  useEffect(() => {
+    if (rTokenPrice && reserveToken) {
+      setRTokenPrice(rTokenPrice[reserveToken.token.address])
+    }
+  }, [rTokenPrice])
+
+  return null
+}
+
 /**
  * Updater
  */
@@ -219,6 +286,7 @@ const Updater = () => (
     <ReserveTokensUpdater />
     <TokensBalanceUpdater />
     <TokensAllowanceUpdater />
+    <PricesUpdater />
   </>
 )
 

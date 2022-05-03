@@ -88,7 +88,7 @@ const TransactionManager = () => {
   useEffect(() => {
     if (provider && account && validating.length) {
       for (const [index, tx] of validating) {
-        if (hasAllowance(allowances, tx.extra)) {
+        if (hasAllowance(allowances, tx.requiredAllowance!)) {
           // Mark transactions with required allowances as pending so they can be processed normally
           setTxs([index, { ...tx, status: TRANSACTION_STATUS.PENDING }])
         }

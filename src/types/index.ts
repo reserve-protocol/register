@@ -18,16 +18,11 @@ export interface TransactionState {
   status: string
   value: string
   call: ContractCall
-  // tx hash, added when the tx is signed
   hash?: string
-  // required token allowance amounts for tx to be executed
   requiredAllowance?: [string, BigNumber][]
   // timestamps
   createdAt?: string // timestamp UTC
   updatedAt?: string // timestamp UTC
-  batchId?: number
-  extra?: any
-  autoCall?: boolean
 }
 
 export interface Wallet {

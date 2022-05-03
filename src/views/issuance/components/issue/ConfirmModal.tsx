@@ -1,9 +1,16 @@
 import { getAddress } from '@ethersproject/address'
 import { BigNumber } from '@ethersproject/bignumber'
+import { Contract } from '@ethersproject/contracts'
 import { formatUnits, parseEther } from '@ethersproject/units'
 import { ERC20Interface, RSVManagerInterface, RTokenInterface } from 'abis'
-import Modal, { ModalProps } from 'components/modal'
-import { useBasketHandlerContract } from 'hooks/useContract'
+import Modal from 'components/modal'
+import useBlockNumber from 'hooks/useBlockNumber'
+import {
+  useBasketHandlerContract,
+  useContract,
+  useRTokenContract,
+  useTokenContract,
+} from 'hooks/useContract'
 import useMountedState from 'hooks/useMountedState'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect, useState } from 'react'
@@ -16,6 +23,7 @@ import { quote } from 'utils/rsv'
 interface Props {
   data: ReserveToken
   amount: string
+  issuableAmount: number
   onClose: () => void
 }
 
@@ -83,12 +91,18 @@ const buildTransactions = (
   return transactions
 }
 
-const ConfirmModal = ({ data, amount, onClose }: Props) => {
+const ConfirmModal = ({ data, amount, issuableAmount, onClose }: Props) => {
   const addTransaction = useSetAtom(addTransactionAtom)
   const allowances = useAtomValue(allowanceAtom)
   const basketHandler = useBasketHandlerContract(data.basketHandler)
   const [txs, setTxs] = useState([] as TransactionState[])
+  const [gasEstimates, setGasEstimates] = useState([] as BigNumber[])
   const isMounted = useMountedState()
+  const blockNumber = useBlockNumber()
+  const tokenContract = useTokenContract(data.token.address, true)!
+  const rTokenContract = data.isRSV
+    ? useContract(data.id, RSVManagerInterface, true)
+    : useRTokenContract(data.token.address)
 
   const fetchQuantities = useCallback(async () => {
     try {
@@ -122,12 +136,46 @@ const ConfirmModal = ({ data, amount, onClose }: Props) => {
     }
   }, [])
 
+  // TODO: Move to a hook
+  const fetchGasEstimate = useCallback(async () => {
+    try {
+      const estimates = await Promise.all(
+        txs.map(async (tx) => {
+          const contract: Contract =
+            tx.call.method === 'approve'
+              ? tokenContract.attach(tx.call.address)
+              : rTokenContract!
+
+          // TODO: Use hardcoded issue gas cost
+          if (tx.call.method !== 'approve') {
+            return BigNumber.from(1)
+          }
+
+          return contract.estimateGas[tx.call.method](...tx.call.args)
+        })
+      )
+
+      setGasEstimates(estimates)
+    } catch (e) {
+      console.error('error fetching gas estimate', e)
+    }
+  }, [txs])
+
   useEffect(() => {
     fetchQuantities()
   }, [])
 
   // approvals gas
-  useEffect(() => {}, [])
+  useEffect(() => {
+    if (txs.length && blockNumber) {
+      fetchGasEstimate()
+    }
+  }, [blockNumber, txs])
+
+  const isValid = () => {
+    const value = Number(amount)
+    return value > 0 && value <= issuableAmount
+  }
 
   const handleIssue = () => {
     addTransaction(txs)

@@ -10,6 +10,14 @@ import {
   Wallet,
 } from 'types'
 
+// TODO: Maybe its time to split up this atoms file
+
+// Prices
+export const ethPriceAtom = atom(1)
+export const rsrPriceAtom = atom(1)
+export const gasPriceAtom = atom(1)
+export const rTokenPriceAtom = atom(1)
+
 export const reserveTokensAtom = atomWithStorage<{ [x: string]: ReserveToken }>(
   'reserveTokens',
   {}

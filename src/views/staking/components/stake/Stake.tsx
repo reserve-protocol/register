@@ -32,7 +32,6 @@ const Stake = ({ data, ...props }: { data: ReserveToken }) => {
 
       addTransaction([
         {
-          autoCall: false,
           description: `Approve ${amount} RSR`,
           status: hasAllowance ? 'SKIPPED' : TRANSACTION_STATUS.PENDING,
           value: amount,
@@ -44,13 +43,12 @@ const Stake = ({ data, ...props }: { data: ReserveToken }) => {
           },
         },
         {
-          autoCall: false,
           description: `Stake ${amount} RSR`,
           status: hasAllowance
             ? TRANSACTION_STATUS.PENDING
             : TRANSACTION_STATUS.PENDING_ALLOWANCE,
           value: amount,
-          extra: [[RSR.address, stakeAmount]],
+          requiredAllowance: [[RSR.address, stakeAmount]],
           call: {
             abi: StRSRInterface,
             address: stTokenAddress,
