@@ -1,8 +1,9 @@
 import { getAddress } from '@ethersproject/address'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
-import { formatUnits, parseEther } from '@ethersproject/units'
+import { formatEther, formatUnits, parseEther } from '@ethersproject/units'
 import { ERC20Interface, RSVManagerInterface, RTokenInterface } from 'abis'
+import { Button, NumericalInput } from 'components'
 import Modal from 'components/modal'
 import useBlockNumber from 'hooks/useBlockNumber'
 import {
@@ -11,10 +12,12 @@ import {
   useRTokenContract,
   useTokenContract,
 } from 'hooks/useContract'
+import useDebounce from 'hooks/useDebounce'
 import useMountedState from 'hooks/useMountedState'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect, useState } from 'react'
 import { addTransactionAtom, allowanceAtom } from 'state/atoms'
+import { Box, Text } from 'theme-ui'
 import { ReserveToken, TransactionState } from 'types'
 import { hasAllowance } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
@@ -50,8 +53,11 @@ const buildTransactions = (
   // Create token approvals calls array
   const transactions: TransactionState[] = data.basket.collaterals.map(
     ({ token }) => {
-      const description = `Approve ${token.symbol} for issuance`
       const tokenAmount = quantities[getAddress(token.address)]
+      const description = `Approve ${formatUnits(
+        tokenAmount,
+        token.decimals
+      )} ${token.symbol}`
 
       // Fill token quantities on the same map
       tokenQuantities.push([token.address, tokenAmount])
@@ -92,6 +98,8 @@ const buildTransactions = (
 }
 
 const ConfirmModal = ({ data, amount, issuableAmount, onClose }: Props) => {
+  const [value, setValue] = useState(amount)
+  const debouncedValue = useDebounce(value, 10)
   const addTransaction = useSetAtom(addTransactionAtom)
   const allowances = useAtomValue(allowanceAtom)
   const basketHandler = useBasketHandlerContract(data.basketHandler)
@@ -106,7 +114,7 @@ const ConfirmModal = ({ data, amount, issuableAmount, onClose }: Props) => {
 
   const fetchQuantities = useCallback(async () => {
     try {
-      const issueAmount = parseEther(amount)
+      const issueAmount = parseEther(value)
       let quantities: IQuantities = {}
 
       // RSV have hardcoded quantities
@@ -134,7 +142,7 @@ const ConfirmModal = ({ data, amount, issuableAmount, onClose }: Props) => {
       // TODO: Handle error case
       console.error('failed fetching quantities', e)
     }
-  }, [])
+  }, [value])
 
   // TODO: Move to a hook
   const fetchGasEstimate = useCallback(async () => {
@@ -161,9 +169,16 @@ const ConfirmModal = ({ data, amount, issuableAmount, onClose }: Props) => {
     }
   }, [txs])
 
+  const isValid = () => {
+    const _value = Number(value)
+    return _value > 0 && _value <= issuableAmount
+  }
+
   useEffect(() => {
-    fetchQuantities()
-  }, [])
+    if (isValid()) {
+      fetchQuantities()
+    }
+  }, [debouncedValue])
 
   // approvals gas
   useEffect(() => {
@@ -172,18 +187,38 @@ const ConfirmModal = ({ data, amount, issuableAmount, onClose }: Props) => {
     }
   }, [blockNumber, txs])
 
-  const isValid = () => {
-    const value = Number(amount)
-    return value > 0 && value <= issuableAmount
-  }
-
   const handleIssue = () => {
     addTransaction(txs)
+    onClose()
   }
 
   return (
     <Modal title="Confirm Issuance" onClose={onClose}>
-      modal
+      <NumericalInput
+        id="mint"
+        placeholder="Mint amount"
+        value={value}
+        onChange={setValue}
+      />
+      <Box mt={3}>
+        <Text>Tx to be run</Text>
+        <Box mt={3}>
+          {txs.map((tx, index) => (
+            <Box key={index}>
+              <Text>{tx.description}</Text>...
+              <Text>Gas cost: $</Text>
+            </Box>
+          ))}
+        </Box>
+      </Box>
+      <Button
+        sx={{ width: '100%' }}
+        disabled={!isValid()}
+        mt={2}
+        onClick={handleIssue}
+      >
+        + Mint {data.token.symbol}
+      </Button>
     </Modal>
   )
 }
