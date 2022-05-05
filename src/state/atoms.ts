@@ -61,16 +61,11 @@ export const pendingTxAtom = atom((get) => {
   const result = {
     pending: <[number, TransactionState][]>[],
     mining: <[number, TransactionState][]>[],
-    validating: <[number, TransactionState][]>[],
   }
 
   return get(currentTxAtom).reduce((acc, current, index) => {
     if (current.status === TRANSACTION_STATUS.PENDING) {
       acc.pending = [...acc.pending, [index, current]]
-    }
-
-    if (current.status === TRANSACTION_STATUS.PENDING_ALLOWANCE) {
-      acc.validating = [...acc.validating, [index, current]]
     }
 
     if (current.status === TRANSACTION_STATUS.MINING) {
@@ -89,6 +84,8 @@ export const addTransactionAtom = atom(
     set(txAtom, { ...txs, [account]: [...(txs[account] ?? []), ...tx] })
   }
 )
+
+export const getLastTransactionsAtom = atom((get) => {})
 
 export const updateTransactionAtom = atom(
   null,

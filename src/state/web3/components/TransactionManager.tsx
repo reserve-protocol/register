@@ -5,21 +5,13 @@ import useDebounce from 'hooks/useDebounce'
 import { useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { useCallback, useEffect } from 'react'
-import {
-  allowanceAtom,
-  pendingTxAtom,
-  updateTransactionAtom,
-} from 'state/atoms'
-import { getContract, hasAllowance } from 'utils'
+import { pendingTxAtom, updateTransactionAtom } from 'state/atoms'
+import { getContract } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
 
 const TransactionManager = () => {
   const setTxs = useUpdateAtom(updateTransactionAtom)
-  const { pending, mining, validating } = useDebounce(
-    useAtomValue(pendingTxAtom),
-    100
-  )
-  const allowances = useAtomValue(allowanceAtom)
+  const { pending, mining } = useDebounce(useAtomValue(pendingTxAtom), 100)
   const { account, provider } = useWeb3React()
   const blockNumber = useBlockNumber()
 
@@ -66,35 +58,10 @@ const TransactionManager = () => {
           })
           .catch(() => {
             setTxs([index, { ...tx, status: TRANSACTION_STATUS.REJECTED }])
-            // Cancel pending allowance tx
-            if (tx.call.method === 'approve') {
-              const validatingTx = validating.find(([, vTx]) => {
-                return vTx.call.address === tx.call.args[0]
-              })
-
-              if (validatingTx) {
-                setTxs([
-                  validatingTx[0],
-                  { ...validatingTx[1], status: TRANSACTION_STATUS.REJECTED },
-                ])
-              }
-            }
           })
       }
     }
   }, [pending])
-
-  // Move tx waiting for allowance to the pending queue
-  useEffect(() => {
-    if (provider && account && validating.length) {
-      for (const [index, tx] of validating) {
-        if (hasAllowance(allowances, tx.requiredAllowance!)) {
-          // Mark transactions with required allowances as pending so they can be processed normally
-          setTxs([index, { ...tx, status: TRANSACTION_STATUS.PENDING }])
-        }
-      }
-    }
-  }, [JSON.stringify(allowances)])
 
   return null
 }
