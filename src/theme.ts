@@ -167,6 +167,7 @@ export const theme: Theme = {
     input: {
       // transition: 'border .2s ease,color .2s ease',
       // outline: 'none',
+      borderRadius: 0,
     },
   },
   cards: {

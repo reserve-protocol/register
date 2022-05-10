@@ -5,6 +5,8 @@ import { useAtomValue } from 'jotai/utils'
 import { balancesAtom } from 'state/atoms'
 import { ReserveToken } from 'types'
 import { formatCurrency } from 'utils'
+import { quantitiesAtom } from '../issue/useQuantities'
+import { formatUnits } from '@ethersproject/units'
 
 interface Props extends BoxProps {
   rToken: ReserveToken
@@ -14,8 +16,8 @@ interface Props extends BoxProps {
  * Display collateral tokens balances
  */
 const Balances = ({ rToken, ...props }: Props) => {
-  // TODO: Fix balances
   const tokenBalances = useAtomValue(balancesAtom)
+  const quantities = useAtomValue(quantitiesAtom)
 
   return (
     <Box {...props}>
@@ -49,10 +51,32 @@ const Balances = ({ rToken, ...props }: Props) => {
                 <Text>
                   {formatCurrency(tokenBalances[collateral.token.address])}{' '}
                 </Text>
-                <br />
-                <Text sx={{ fontSize: '12px' }}>
-                  Required: 100,100,100,100.00
-                </Text>
+                {!!quantities[collateral.token.address] && (
+                  <>
+                    <br />
+                    <Text
+                      sx={{
+                        fontSize: '12px',
+                        color:
+                          tokenBalances[collateral.token.address] <
+                          Number(
+                            formatUnits(
+                              quantities[collateral.token.address],
+                              collateral.token.decimals
+                            )
+                          )
+                            ? 'red'
+                            : 'inherit',
+                      }}
+                    >
+                      Required:{' '}
+                      {formatUnits(
+                        quantities[collateral.token.address],
+                        collateral.token.decimals
+                      )}
+                    </Text>
+                  </>
+                )}
               </div>
             </Flex>
           ))}

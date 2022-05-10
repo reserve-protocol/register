@@ -1,10 +1,12 @@
 import styled from '@emotion/styled'
 import { Button, NumericalInput } from 'components'
+import useDebounce from 'hooks/useDebounce'
 import { useState } from 'react'
 import { Box, Card, Text } from 'theme-ui'
 import { ReserveToken } from 'types'
 import { formatCurrency } from 'utils'
 import ConfirmModal from './ConfirmModal'
+import useQuantities from './useQuantities'
 import useTokenIssuableAmount from './useTokenIssuableAmount'
 
 const InputContainer = styled(Box)`
@@ -24,8 +26,11 @@ const InputContainer = styled(Box)`
 // TODO: Get max issuable quantity from view function (protocol)
 const Issue = ({ data, ...props }: { data: ReserveToken }) => {
   const [amount, setAmount] = useState('')
+  const debouncedValue = useDebounce(amount, 10)
   const [issuing, setIssuing] = useState(false)
   const issuableAmount = useTokenIssuableAmount(data)
+  // Update quantities after input change
+  useQuantities(data, debouncedValue)
 
   const isValid = () => {
     const value = Number(amount)
