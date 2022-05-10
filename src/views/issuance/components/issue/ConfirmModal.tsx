@@ -14,13 +14,14 @@ import {
 } from 'hooks/useContract'
 import useDebounce from 'hooks/useDebounce'
 import useMountedState from 'hooks/useMountedState'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect, useState } from 'react'
 import { addTransactionAtom, allowanceAtom } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
 import { ReserveToken, TransactionState } from 'types'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { quote } from 'utils/rsv'
+import { issueAmountAtom } from 'views/issuance/atoms'
 
 interface Props {
   data: ReserveToken
@@ -32,7 +33,6 @@ interface Props {
 interface IQuantities {
   [x: string]: BigNumber
 }
-
 /**
  * Build issuance required transactions
  *
@@ -94,52 +94,17 @@ const buildTransactions = (
   return transactions
 }
 
-const ConfirmModal = ({ data, amount, issuableAmount, onClose }: Props) => {
-  const [value, setValue] = useState(amount)
-  const debouncedValue = useDebounce(value, 10)
+const ConfirmModal = ({ data, issuableAmount, onClose }: Props) => {
+  const [amount, setAmount] = useAtom(issueAmountAtom)
   const addTransaction = useSetAtom(addTransactionAtom)
   const allowances = useAtomValue(allowanceAtom)
-  const basketHandler = useBasketHandlerContract(data.basketHandler)
   const [txs, setTxs] = useState([] as TransactionState[])
   const [gasEstimates, setGasEstimates] = useState([] as BigNumber[])
-  const isMounted = useMountedState()
   const blockNumber = useBlockNumber()
   const tokenContract = useTokenContract(data.token.address, true)!
   const rTokenContract = data.isRSV
     ? useContract(data.id, RSVManagerInterface, true)
     : useRTokenContract(data.token.address)
-
-  const fetchQuantities = useCallback(async () => {
-    try {
-      const issueAmount = parseEther(value)
-      let quantities: IQuantities = {}
-
-      // RSV have hardcoded quantities
-      if (data.isRSV) {
-        quantities = quote(issueAmount)
-      } else if (basketHandler) {
-        const quoteResult = await basketHandler.quote(issueAmount, 2)
-        quantities = quoteResult.erc20s.reduce(
-          (prev, current, currentIndex) => {
-            prev[getAddress(current)] = quoteResult.quantities[currentIndex]
-            return prev
-          },
-          {} as any
-        )
-      }
-
-      if (!Object.keys(quantities).length) {
-        throw new Error('Unable to fetch quantities')
-      }
-
-      if (isMounted()) {
-        setTxs(buildTransactions(data, amount, quantities, allowances))
-      }
-    } catch (e) {
-      // TODO: Handle error case
-      console.error('failed fetching quantities', e)
-    }
-  }, [value])
 
   // TODO: Move to a hook
   const fetchGasEstimate = useCallback(async () => {
@@ -167,15 +132,9 @@ const ConfirmModal = ({ data, amount, issuableAmount, onClose }: Props) => {
   }, [txs])
 
   const isValid = () => {
-    const _value = Number(value)
+    const _value = Number(amount)
     return _value > 0 && _value <= issuableAmount
   }
-
-  useEffect(() => {
-    if (isValid()) {
-      fetchQuantities()
-    }
-  }, [debouncedValue])
 
   // approvals gas
   useEffect(() => {
@@ -194,8 +153,8 @@ const ConfirmModal = ({ data, amount, issuableAmount, onClose }: Props) => {
       <NumericalInput
         id="mint"
         placeholder="Mint amount"
-        value={value}
-        onChange={setValue}
+        value={amount}
+        onChange={setAmount}
       />
       <Box mt={3}>
         <Text>Tx to be run</Text>
