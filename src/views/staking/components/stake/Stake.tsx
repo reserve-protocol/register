@@ -28,12 +28,12 @@ const Stake = ({ data, ...props }: { data: ReserveToken }) => {
   const handleStake = () => {
     try {
       const stakeAmount = parseEther(amount)
-      const hasAllowance = allowances[RSR.address]?.gte(stakeAmount)
+      // const hasAllowance = allowances[RSR.address]?.gte(stakeAmount)
 
       addTransaction([
         {
           description: `Approve ${amount} RSR`,
-          status: hasAllowance ? 'SKIPPED' : TRANSACTION_STATUS.PENDING,
+          status: TRANSACTION_STATUS.PENDING,
           value: amount,
           call: {
             abi: ERC20Interface,
@@ -44,9 +44,7 @@ const Stake = ({ data, ...props }: { data: ReserveToken }) => {
         },
         {
           description: `Stake ${amount} RSR`,
-          status: hasAllowance
-            ? TRANSACTION_STATUS.PENDING
-            : TRANSACTION_STATUS.PENDING_ALLOWANCE,
+          status: TRANSACTION_STATUS.PENDING,
           value: amount,
           requiredAllowance: [[RSR.address, stakeAmount]],
           call: {

@@ -19,7 +19,6 @@ import { useCallback, useEffect, useState } from 'react'
 import { addTransactionAtom, allowanceAtom } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
 import { ReserveToken, TransactionState } from 'types'
-import { hasAllowance } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { quote } from 'utils/rsv'
 
@@ -78,21 +77,19 @@ const buildTransactions = (
     }
   )
 
-  // Create token issuance contract call
-  transactions.push({
-    description: `Issue ${amount} ${data.token.symbol}`,
-    status: hasAllowance(allowances, tokenQuantities)
-      ? TRANSACTION_STATUS.PENDING
-      : TRANSACTION_STATUS.PENDING_ALLOWANCE,
-    value: amount,
-    requiredAllowance: tokenQuantities, // Send quantities as an extra prop for allowance check before issuance
-    call: {
-      abi: data.isRSV ? RSVManagerInterface : RTokenInterface,
-      address: data.isRSV ? data.id : data.token.address,
-      method: 'issue',
-      args: [parseEther(amount)],
-    },
-  })
+  // // Create token issuance contract call
+  // transactions.push({
+  //   description: `Issue ${amount} ${data.token.symbol}`,
+  //   status: TRANSACTION_STATUS.PENDING,
+  //   value: amount,
+  //   requiredAllowance: tokenQuantities, // Send quantities as an extra prop for allowance check before issuance
+  //   call: {
+  //     abi: data.isRSV ? RSVManagerInterface : RTokenInterface,
+  //     address: data.isRSV ? data.id : data.token.address,
+  //     method: 'issue',
+  //     args: [parseEther(amount)],
+  //   },
+  // })
 
   return transactions
 }

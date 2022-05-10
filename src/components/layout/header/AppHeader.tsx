@@ -8,20 +8,17 @@ import Account from '../../account'
  */
 const AppHeader = () => (
   <Flex
-    py={4}
-    pb={3}
-    pt={3}
+    py={2}
     px={4}
     sx={{
       alignItems: 'center',
       borderBottom: '1px solid #E8E8E8',
     }}
   >
-    <Box mx="auto" />
     <RTokenSelector />
-    <Box mr={4} />
+    <Box mx="auto" />
     <Account />
-    <Box ml={4} mr={2} sx={{ alignItems: 'center', display: 'flex' }}>
+    <Box ml={4} sx={{ alignItems: 'center', display: 'flex' }}>
       <LanguageSelector />
     </Box>
   </Flex>

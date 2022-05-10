@@ -26,7 +26,7 @@ const Container = styled.div`
   background-color: var(--theme-ui-colors-sidebar);
   display: flex;
   flex-direction: column;
-  border-right: 1px solid #e8e8e8;
+  border-right: 1px solid #dfdfdf;
 `
 
 // Sidebar header

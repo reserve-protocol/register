@@ -49,6 +49,10 @@ const Balances = ({ rToken, ...props }: Props) => {
                 <Text>
                   {formatCurrency(tokenBalances[collateral.token.address])}{' '}
                 </Text>
+                <br />
+                <Text sx={{ fontSize: '12px' }}>
+                  Required: 100,100,100,100.00
+                </Text>
               </div>
             </Flex>
           ))}

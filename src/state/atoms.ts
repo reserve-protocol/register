@@ -70,7 +70,7 @@ export const pendingTxAtom = atom((get) => {
 
     if (current.status === TRANSACTION_STATUS.MINING) {
       acc.mining = [...acc.mining, [index, current]]
-    }
+  }
 
     return acc
   }, result)

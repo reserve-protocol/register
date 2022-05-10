@@ -1,25 +1,24 @@
 import type { Theme } from 'theme-ui'
 
-export const boxShadow =
-  '0 0 0 1px rgba(63, 63, 68, 0.05), 0 1px 3px 0 rgba(63, 63, 68, 0.15)'
+export const boxShadow = '0px 4px 34px rgba(0, 0, 0, 0.03)'
 
 export const colors = {
   text: '#000',
-  background: '#fff',
+  background: '#F3F7F8',
   bgCard: '#fff',
   primary: '#00FFBF',
   primaryAccent: '#1fea00',
   grey: '#ccc',
   secondary: '#77838F',
-  sidebar: '#f6f6f7',
+  sidebar: '#F3F7F8',
   modes: {
     dark: {
       text: '#fff',
       background: '#000',
       secondaryBackground: '#202128',
       primary: '#00b600',
-      bgCard: '#191C20',
-      sidebar: '#191C20',
+      bgCard: '#FBFDFE',
+      sidebar: '#F3F7F8',
     },
   },
 }
@@ -173,7 +172,6 @@ export const theme: Theme = {
   cards: {
     primary: {
       padding: 3,
-      borderRadius: 5,
       boxShadow,
       backgroundColor: 'bgCard',
     },
@@ -183,7 +181,7 @@ export const theme: Theme = {
       cursor: 'pointer',
       transition: 'all .2s ease',
       color: '#fff',
-      backgroundColor: 'black',
+      backgroundColor: '#0C0C0C',
 
       '&:hover': {
         filter: 'brightness(0.85)',
