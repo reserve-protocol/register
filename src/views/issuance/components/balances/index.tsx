@@ -5,8 +5,8 @@ import { useAtomValue } from 'jotai/utils'
 import { balancesAtom } from 'state/atoms'
 import { ReserveToken } from 'types'
 import { formatCurrency } from 'utils'
-import { quantitiesAtom } from '../issue/useQuantities'
 import { formatUnits } from '@ethersproject/units'
+import { quantitiesAtom } from 'views/issuance/atoms'
 
 interface Props extends BoxProps {
   rToken: ReserveToken

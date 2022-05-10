@@ -1,10 +1,12 @@
 import styled from '@emotion/styled'
 import { Button, NumericalInput } from 'components'
 import useDebounce from 'hooks/useDebounce'
+import { useAtom } from 'jotai'
 import { useState } from 'react'
 import { Box, Card, Text } from 'theme-ui'
 import { ReserveToken } from 'types'
 import { formatCurrency } from 'utils'
+import { issueAmountAtom } from 'views/issuance/atoms'
 import ConfirmModal from './ConfirmModal'
 import useQuantities from './useQuantities'
 import useTokenIssuableAmount from './useTokenIssuableAmount'
@@ -25,7 +27,7 @@ const InputContainer = styled(Box)`
 // TODO: Validations
 // TODO: Get max issuable quantity from view function (protocol)
 const Issue = ({ data, ...props }: { data: ReserveToken }) => {
-  const [amount, setAmount] = useState('')
+  const [amount, setAmount] = useAtom(issueAmountAtom)
   const debouncedValue = useDebounce(amount, 10)
   const [issuing, setIssuing] = useState(false)
   const issuableAmount = useTokenIssuableAmount(data)
@@ -42,7 +44,6 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
       {issuing && (
         <ConfirmModal
           data={data}
-          amount={amount}
           issuableAmount={issuableAmount}
           onClose={() => setIssuing(false)}
         />

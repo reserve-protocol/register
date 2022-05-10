@@ -6,12 +6,11 @@ import { atom, useAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import { ReserveToken } from 'types'
 import { quote } from 'utils/rsv'
+import { quantitiesAtom } from 'views/issuance/atoms'
 
 export interface IQuantities {
   [x: string]: BigNumber
 }
-
-export const quantitiesAtom = atom<IQuantities>({})
 
 const useQuantities = (data: ReserveToken, amount: string): IQuantities => {
   const [quantities, setQuantities] = useAtom(quantitiesAtom)
@@ -49,6 +48,8 @@ const useQuantities = (data: ReserveToken, amount: string): IQuantities => {
       setQuantities({})
     }
   }, [amount, data.id])
+
+  console.log('quantities', quantities)
 
   return quantities
 }
