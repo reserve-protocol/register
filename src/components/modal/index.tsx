@@ -34,7 +34,13 @@ const Modal = ({
     style={style}
   >
     {(onClose || title) && (
-      <Flex mb={3} sx={{ alignItems: 'center', justifyContent: 'center' }}>
+      <Flex
+        mb={3}
+        sx={{
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
         <Text sx={{ fontSize: 20, fontWeight: 'bold' }}>{title && title}</Text>
         {!!onClose && (
           <Box

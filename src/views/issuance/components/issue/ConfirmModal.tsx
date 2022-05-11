@@ -41,7 +41,10 @@ const buildApprovalTransactions = (
   // Create token approvals calls array
   const transactions: TransactionState[] = data.basket.collaterals.map(
     ({ token }) => {
+      // Specific token approvals
       const tokenAmount = quantities[getAddress(token.address)]
+      // Unlimited approval
+      // const tokenAmount = BigNumber.from(Number.MAX_SAFE_INTEGER)
       const description = `Approve ${formatUnits(
         tokenAmount,
         token.decimals
@@ -84,7 +87,7 @@ const ConfirmModal = ({ data, issuableAmount, onClose }: Props) => {
   )
   const canIssue = useMemo(
     () => hasAllowance(allowances, quantities),
-    [allowances]
+    [allowances, quantities]
   )
 
   const isValid = () => {
@@ -142,7 +145,7 @@ const ConfirmModal = ({ data, issuableAmount, onClose }: Props) => {
         onChange={setAmount}
       />
       <CollateralDistribution mt={3} data={data} quantities={quantities} />
-      {approvalsNeeded && (
+      {approvalsNeeded && !canIssue && (
         <IssuanceApprovals symbol={data.token.symbol} txs={approvalsTx} />
       )}
       <Divider mx={-3} sx={{ borderColor: '#ccc' }} />

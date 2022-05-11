@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { atom } from 'jotai'
-import { atomWithStorage, selectAtom } from 'jotai/utils'
+import { atomWithStorage } from 'jotai/utils'
 import {
   MulticallState,
   RawCall,
