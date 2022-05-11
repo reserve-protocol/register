@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { atom } from 'jotai'
-import { atomWithStorage } from 'jotai/utils'
+import { atomWithStorage, selectAtom } from 'jotai/utils'
 import {
   MulticallState,
   RawCall,
@@ -70,7 +70,7 @@ export const pendingTxAtom = atom((get) => {
 
     if (current.status === TRANSACTION_STATUS.MINING) {
       acc.mining = [...acc.mining, [index, current]]
-  }
+    }
 
     return acc
   }, result)
@@ -84,8 +84,6 @@ export const addTransactionAtom = atom(
     set(txAtom, { ...txs, [account]: [...(txs[account] ?? []), ...tx] })
   }
 )
-
-export const getLastTransactionsAtom = atom((get) => {})
 
 export const updateTransactionAtom = atom(
   null,
