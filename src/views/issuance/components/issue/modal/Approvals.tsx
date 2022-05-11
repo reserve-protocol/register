@@ -5,15 +5,16 @@ import { useTokenContract } from 'hooks/useContract'
 import { useSetAtom } from 'jotai'
 import { useCallback, useEffect, useState } from 'react'
 import { addTransactionAtom } from 'state/atoms'
-import { Box, Text } from 'theme-ui'
+import { Box, Divider, Spinner, Text } from 'theme-ui'
 import { TransactionState } from 'types'
 import { TRANSACTION_STATUS } from 'utils/constants'
 
 interface Props {
   txs: TransactionState[]
+  symbol: string
 }
 
-const IssuanceApprovals = ({ txs }: Props) => {
+const IssuanceApprovals = ({ txs, symbol }: Props) => {
   const blockNumber = useBlockNumber()
   const addTransaction = useSetAtom(addTransactionAtom)
   const [gasEstimates, setGasEstimates] = useState([] as BigNumber[])
@@ -44,25 +45,20 @@ const IssuanceApprovals = ({ txs }: Props) => {
     }
   }, [blockNumber, JSON.stringify(txs)])
 
-  // Don't show approval modal section
-  if (!txs.filter((tx) => tx.status === TRANSACTION_STATUS.PENDING).length) {
-    return null
-  }
-
   return (
-    <Box>
-      <Box mt={3}>
-        <Text>Tx to be run</Text>
-        <Box mt={3}>
-          {txs.map((tx, index) => (
-            <Box key={index}>
-              <Text>{tx.description}</Text>...
-              <Text>Gas cost: $</Text>
-            </Box>
-          ))}
-        </Box>
+    <Box mt={3}>
+      <Divider mx={-3} mb={3} sx={{ borderColor: '#ccc' }} />
+      <Button sx={{ width: '100%' }} variant="accent" onClick={handleApprove}>
+        Allow {symbol} to use collateral
+      </Button>
+      <Box mt={2} sx={{ fontSize: 1, textAlign: 'center' }}>
+        <Text mr={1}>Estimated gas cost:</Text>
+        {gasEstimates.length > 0 ? (
+          <Text>TODO</Text>
+        ) : (
+          <Spinner color="black" size={12} />
+        )}
       </Box>
-      <Button onClick={handleApprove}>Approve</Button>
     </Box>
   )
 }

@@ -167,7 +167,7 @@ export const theme: Theme = {
     input: {
       // transition: 'border .2s ease,color .2s ease',
       // outline: 'none',
-      borderRadius: 0,
+      borderRadius: 10,
     },
   },
   cards: {
@@ -179,6 +179,7 @@ export const theme: Theme = {
   },
   buttons: {
     primary: {
+      borderRadius: 10,
       cursor: 'pointer',
       transition: 'all .2s ease',
       color: '#fff',
@@ -193,6 +194,7 @@ export const theme: Theme = {
       },
     },
     accent: {
+      borderRadius: 10,
       cursor: 'pointer',
       transition: 'all .2s ease',
       backgroundColor: 'primary',

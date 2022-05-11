@@ -107,6 +107,10 @@ export interface Basket {
   collaterals: Collateral[]
 }
 
+export interface BigNumberMap {
+  [x: string]: BigNumber
+}
+
 /**
  * ReserveToken
  *

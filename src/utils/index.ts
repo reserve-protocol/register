@@ -1,3 +1,4 @@
+import { BigNumberMap } from './../types/index'
 import { getAddress } from '@ethersproject/address'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
@@ -17,11 +18,11 @@ export function shortenString(str: string) {
 }
 
 export function hasAllowance(
-  allowances: { [x: string]: BigNumber },
-  requiredAllowances: [string, BigNumber][]
+  allowances: BigNumberMap,
+  requiredAllowances: BigNumberMap
 ) {
-  return requiredAllowances.every(([address, amount]) =>
-    allowances[address]?.gte(amount)
+  return Object.keys(requiredAllowances).every((address) =>
+    allowances[address]?.gte(requiredAllowances[address])
   )
 }
 

@@ -1,18 +1,13 @@
 import { getAddress } from '@ethersproject/address'
-import { BigNumber } from '@ethersproject/bignumber'
 import { parseEther } from '@ethersproject/units'
 import { useBasketHandlerContract } from 'hooks/useContract'
-import { atom, useAtom } from 'jotai'
+import { useAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
-import { ReserveToken } from 'types'
+import { BigNumberMap, ReserveToken } from 'types'
 import { quote } from 'utils/rsv'
 import { quantitiesAtom } from 'views/issuance/atoms'
 
-export interface IQuantities {
-  [x: string]: BigNumber
-}
-
-const useQuantities = (data: ReserveToken, amount: string): IQuantities => {
+const useQuantities = (data: ReserveToken, amount: string): BigNumberMap => {
   const [quantities, setQuantities] = useAtom(quantitiesAtom)
   const basketHandler = useBasketHandlerContract(data.basketHandler)
 
@@ -28,7 +23,7 @@ const useQuantities = (data: ReserveToken, amount: string): IQuantities => {
           quoteResult.erc20s.reduce((prev, current, currentIndex) => {
             prev[getAddress(current)] = quoteResult.quantities[currentIndex]
             return prev
-          }, {} as IQuantities)
+          }, {} as BigNumberMap)
         )
       }
     } catch (e) {

@@ -9,6 +9,7 @@ export interface ModalProps {
   title?: string
   onClose?(): void
   children: any
+  style?: any
 }
 
 const StyledDialog = styled((props: any) => <Dialog {...props} />)`
@@ -19,8 +20,19 @@ const StyledDialog = styled((props: any) => <Dialog {...props} />)`
   }
 `
 
-const Modal = ({ open = true, onClose, title, children }: ModalProps) => (
-  <StyledDialog aria-label="Modal" isOpen={open} onDismiss={onClose}>
+const Modal = ({
+  open = true,
+  onClose,
+  title,
+  children,
+  style = {},
+}: ModalProps) => (
+  <StyledDialog
+    aria-label="Modal"
+    isOpen={open}
+    onDismiss={onClose}
+    style={style}
+  >
     {(onClose || title) && (
       <Flex mb={3} sx={{ alignItems: 'center', justifyContent: 'center' }}>
         <Text sx={{ fontSize: 20, fontWeight: 'bold' }}>{title && title}</Text>

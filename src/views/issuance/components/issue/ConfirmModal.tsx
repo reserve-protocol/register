@@ -1,17 +1,21 @@
 import { getAddress } from '@ethersproject/address'
 import { BigNumber } from '@ethersproject/bignumber'
-import { formatUnits } from '@ethersproject/units'
-import { ERC20Interface } from 'abis'
+import { formatUnits, parseEther } from '@ethersproject/units'
+import { ERC20Interface, RSVManagerInterface, RTokenInterface } from 'abis'
 import { Button, NumericalInput } from 'components'
 import Modal from 'components/modal'
 import useBlockNumber from 'hooks/useBlockNumber'
+import { useRTokenContract } from 'hooks/useContract'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { addTransactionAtom, allowanceAtom } from 'state/atoms'
-import { ReserveToken, TransactionState } from 'types'
+import { Divider } from 'theme-ui'
+import { BigNumberMap, ReserveToken, TransactionState } from 'types'
+import { formatCurrency, hasAllowance } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { issueAmountAtom, quantitiesAtom } from 'views/issuance/atoms'
 import IssuanceApprovals from './modal/Approvals'
+import CollateralDistribution from './modal/CollateralDistribution'
 
 interface Props {
   data: ReserveToken
@@ -19,9 +23,6 @@ interface Props {
   onClose: () => void
 }
 
-interface IQuantities {
-  [x: string]: BigNumber
-}
 /**
  * Build issuance required transactions
  *
@@ -32,8 +33,8 @@ interface IQuantities {
  */
 const buildApprovalTransactions = (
   data: ReserveToken,
-  quantities: IQuantities,
-  allowances: IQuantities
+  quantities: BigNumberMap,
+  allowances: BigNumberMap
 ): TransactionState[] => {
   const tokenQuantities: [string, BigNumber][] = []
 
@@ -41,7 +42,6 @@ const buildApprovalTransactions = (
   const transactions: TransactionState[] = data.basket.collaterals.map(
     ({ token }) => {
       const tokenAmount = quantities[getAddress(token.address)]
-      console.log('token amount', quantities)
       const description = `Approve ${formatUnits(
         tokenAmount,
         token.decimals
@@ -69,37 +69,56 @@ const buildApprovalTransactions = (
   return transactions
 }
 
-// // Create token issuance contract call
-// transactions.push({
-//   description: `Issue ${amount} ${data.token.symbol}`,
-//   status: TRANSACTION_STATUS.PENDING,
-//   value: amount,
-//   requiredAllowance: tokenQuantities, // Send quantities as an extra prop for allowance check before issuance
-//   call: {
-//     abi: data.isRSV ? RSVManagerInterface : RTokenInterface,
-//     address: data.isRSV ? data.id : data.token.address,
-//     method: 'issue',
-//     args: [parseEther(amount)],
-//   },
-// })
-
 const ConfirmModal = ({ data, issuableAmount, onClose }: Props) => {
   const [amount, setAmount] = useAtom(issueAmountAtom)
   const quantities = useAtomValue(quantitiesAtom)
   const addTransaction = useSetAtom(addTransactionAtom)
   const allowances = useAtomValue(allowanceAtom)
+  const contract = useRTokenContract(data.token.address, true)!
+  const [signing, setSigning] = useState(false)
   const [approvalsTx, setApprovalsTx] = useState([] as TransactionState[])
   const [gasEstimates, setGasEstimates] = useState([] as BigNumber[])
-  const blockNumber = useBlockNumber()
+  const approvalsNeeded = useMemo(
+    () => approvalsTx.some((tx) => tx.status === TRANSACTION_STATUS.PENDING),
+    [approvalsTx]
+  )
+  const canIssue = useMemo(
+    () => hasAllowance(allowances, quantities),
+    [allowances]
+  )
 
   const isValid = () => {
     const _value = Number(amount)
-    return _value > 0 && _value <= issuableAmount
+    return _value > 0 && _value <= issuableAmount && canIssue
   }
 
-  const handleIssue = () => {
-    // addTransaction(txs)
-    onClose()
+  const handleIssue = async () => {
+    setSigning(true)
+    try {
+      const issueAmount = parseEther(amount)
+
+      if (!data.isRSV) {
+        await contract.callStatic.issue(issueAmount)
+      }
+
+      addTransaction([
+        {
+          description: `Issue ${amount} ${data.token.symbol}`,
+          status: TRANSACTION_STATUS.PENDING,
+          value: amount,
+          call: {
+            abi: data.isRSV ? RSVManagerInterface : RTokenInterface,
+            address: data.isRSV ? data.id : data.token.address,
+            method: 'issue',
+            args: [issueAmount],
+          },
+        },
+      ])
+    } catch (e) {
+      // TODO: Handle error case
+      console.log('error issuing')
+    }
+    setSigning(false)
   }
 
   useEffect(() => {
@@ -108,24 +127,32 @@ const ConfirmModal = ({ data, issuableAmount, onClose }: Props) => {
     } else {
       setApprovalsTx([])
     }
-  }, [JSON.stringify(allowances), JSON.stringify(quantities)])
+  }, [allowances, quantities])
 
   return (
-    <Modal title="Confirm Issuance" onClose={onClose}>
+    <Modal
+      title="Confirm Issuance"
+      onClose={onClose}
+      style={{ width: '400px' }}
+    >
       <NumericalInput
         id="mint"
         placeholder="Mint amount"
         value={amount}
         onChange={setAmount}
       />
-      <IssuanceApprovals txs={approvalsTx} />
+      <CollateralDistribution mt={3} data={data} quantities={quantities} />
+      {approvalsNeeded && (
+        <IssuanceApprovals symbol={data.token.symbol} txs={approvalsTx} />
+      )}
+      <Divider mx={-3} sx={{ borderColor: '#ccc' }} />
       <Button
         sx={{ width: '100%' }}
         disabled={!isValid()}
         mt={2}
         onClick={handleIssue}
       >
-        + Mint {data.token.symbol}
+        Begin minting {formatCurrency(Number(amount))} {data.token.symbol}
       </Button>
     </Modal>
   )
