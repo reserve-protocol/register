@@ -11,37 +11,10 @@ import { ReserveToken } from 'types'
 import Balances from './components/balances'
 import Issue from './components/issue'
 import Redeem from './components/redeem'
-
-// TODO: make this query generic
-const getHistory = gql`
-    entries(
-      where: {
-        type_in: ["Issuance", "Redemption"]
-        user: $userId
-        token: $token
-      }
-      orderBy: createdAt
-      orderDirection: desc
-    ) {
-      id
-      type
-      amount
-      createdAt
-      transaction {
-        id
-      }
-    }
-  }
-`
+import About from './components/about'
 
 const Issuance = () => {
   const RToken = useAtomValue(rTokenAtom) as ReserveToken
-  const { account } = useWeb3React()
-  const { data } = useQuery(getHistory, {
-    userId: account?.toLocaleLowerCase(),
-    token: RToken.token.address.toLowerCase(),
-  })
-
   const balance = useAtomValue(balancesAtom)[RToken.token.address]
 
   return (
@@ -51,18 +24,14 @@ const Issuance = () => {
           <Text mb={3} variant="sectionTitle">
             Mint & Redeem {RToken.token.symbol}
           </Text>
-          <Grid columns={2}>
+          <Grid columns={2} gap={4} mb={3}>
             <Issue data={RToken} />
             <Redeem data={RToken} max={balance} />
           </Grid>
+          <Balances rToken={RToken} />
         </Box>
-        <Balances rToken={RToken} />
+        <About />
       </Grid>
-      <Divider mt={4} mb={4} sx={{ borderColor: '#DFDFDF' }} />
-      <Text mb={3} variant="sectionTitle">
-        Transactions
-      </Text>
-      <TransactionHistory history={data?.entries ?? []} />
     </Container>
   )
 }

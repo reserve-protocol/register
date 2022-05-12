@@ -173,6 +173,7 @@ export const theme: Theme = {
   },
   cards: {
     primary: {
+      borderRadius: 16,
       padding: 3,
       boxShadow,
       backgroundColor: 'bgCard',
