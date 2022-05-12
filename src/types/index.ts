@@ -1,6 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { Interface } from '@ethersproject/abi'
 import { Contract, ContractTransaction } from '@ethersproject/contracts'
+import { TransactionReceipt } from '@ethersproject/providers'
 
 export interface StringMap {
   [key: string]: any
@@ -19,6 +20,7 @@ export interface TransactionState {
   value: string
   call: ContractCall
   hash?: string
+  receipt?: TransactionReceipt
   requiredAllowance?: [string, BigNumber][]
   // timestamps
   createdAt?: string // timestamp UTC

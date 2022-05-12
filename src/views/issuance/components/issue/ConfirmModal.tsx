@@ -9,7 +9,7 @@ import { useRTokenContract } from 'hooks/useContract'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { addTransactionAtom, allowanceAtom } from 'state/atoms'
-import { Divider } from 'theme-ui'
+import { Divider, Text } from 'theme-ui'
 import { BigNumberMap, ReserveToken, TransactionState } from 'types'
 import { formatCurrency, hasAllowance } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
@@ -96,6 +96,8 @@ const ConfirmModal = ({ data, issuableAmount, onClose }: Props) => {
   }
 
   const handleIssue = async () => {
+    if (signing) return
+
     setSigning(true)
     try {
       const issueAmount = parseEther(amount)
@@ -148,14 +150,20 @@ const ConfirmModal = ({ data, issuableAmount, onClose }: Props) => {
       {approvalsNeeded && !canIssue && (
         <IssuanceApprovals symbol={data.token.symbol} txs={approvalsTx} />
       )}
-      <Divider mx={-3} sx={{ borderColor: '#ccc' }} />
+      <Divider mx={-3} mt={3} sx={{ borderColor: '#ccc' }} />
       <Button
         sx={{ width: '100%' }}
         disabled={!isValid()}
         mt={2}
         onClick={handleIssue}
       >
-        Begin minting {formatCurrency(Number(amount))} {data.token.symbol}
+        {signing ? (
+          <Text></Text>
+        ) : (
+          <Text>
+            Begin minting {formatCurrency(Number(amount))} {data.token.symbol}
+          </Text>
+        )}
       </Button>
     </Modal>
   )

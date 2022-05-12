@@ -21,7 +21,10 @@ const TransactionManager = () => {
         try {
           const receipt = await provider?.getTransactionReceipt(tx.hash)
           if (receipt) {
-            setTxs([index, { ...tx, status: TRANSACTION_STATUS.CONFIRMED }])
+            setTxs([
+              index,
+              { ...tx, status: TRANSACTION_STATUS.CONFIRMED, receipt },
+            ])
           }
         } catch (e) {
           console.error('error getting receipt', e)

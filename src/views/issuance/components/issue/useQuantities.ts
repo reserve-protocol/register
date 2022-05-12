@@ -17,8 +17,8 @@ const useQuantities = (data: ReserveToken, amount: string): BigNumberMap => {
 
       if (data.isRSV) {
         setQuantities(quote(issueAmount))
-      } else {
-        const quoteResult = await basketHandler!.quote(issueAmount, 2)
+      } else if (basketHandler) {
+        const quoteResult = await basketHandler.quote(issueAmount, 2)
         setQuantities(
           quoteResult.erc20s.reduce((prev, current, currentIndex) => {
             prev[getAddress(current)] = quoteResult.quantities[currentIndex]
@@ -30,7 +30,7 @@ const useQuantities = (data: ReserveToken, amount: string): BigNumberMap => {
       // TODO: Handle error case
       console.error('failed fetching quantities', e)
     }
-  }, [amount, data.id])
+  }, [amount, data.id, basketHandler])
 
   useEffect(() => {
     if (Number(amount) > 0) {

@@ -29,6 +29,7 @@ const IssuanceApprovals = ({ txs, symbol }: Props) => {
   const runningTx = useLastTx(signing ? txs.length : 0)
 
   const handleApprove = () => {
+    if (signing) return
     addTransaction(txs.filter((tx) => tx.status === TRANSACTION_STATUS.PENDING))
     setSigning(true)
   }
@@ -49,7 +50,6 @@ const IssuanceApprovals = ({ txs, symbol }: Props) => {
       )
 
       setGasEstimates(estimates)
-      console.log('eth', ethPrice)
       setFee(totalFee * gasPrice * ethPrice)
     } catch (e) {
       console.error('error fetching gas estimate', e)
@@ -66,7 +66,20 @@ const IssuanceApprovals = ({ txs, symbol }: Props) => {
     <Box mt={3}>
       <Divider mx={-3} mb={3} sx={{ borderColor: '#ccc' }} />
       <Button sx={{ width: '100%' }} variant="accent" onClick={handleApprove}>
-        Allow {symbol} to use collateral
+        {signing ? (
+          <Text
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Spinner color="black" marginRight={10} size={20} />
+            Pending, sign in wallet
+          </Text>
+        ) : (
+          <Text>Allow {symbol} to use collateral</Text>
+        )}
       </Button>
       <Box mt={2} sx={{ fontSize: 1, textAlign: 'center' }}>
         <Text mr={1}>Estimated gas cost:</Text>
