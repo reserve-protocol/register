@@ -1,6 +1,7 @@
 import type { Theme } from 'theme-ui'
 
 export const boxShadow = '0px 4px 34px rgba(0, 0, 0, 0.03)'
+export const transition = 'all .2s ease'
 
 export const colors = {
   text: '#000',
@@ -181,7 +182,7 @@ export const theme: Theme = {
     primary: {
       borderRadius: 10,
       cursor: 'pointer',
-      transition: 'all .2s ease',
+      transition,
       color: '#fff',
       backgroundColor: '#0C0C0C',
 
@@ -205,6 +206,21 @@ export const theme: Theme = {
       },
       '&:disabled': {
         backgroundColor: 'grey',
+        cursor: 'default',
+      },
+    },
+    transparent: {
+      borderRadius: 6,
+      cursor: 'pointer',
+      transition: 'all .2s ease',
+      backgroundColor: 'primary',
+      color: '#E5E6E9',
+
+      '&:hover': {
+        backgroundColor: '#78838F',
+      },
+      '&:disabled': {
+        backgroundColor: '#78838F',
         cursor: 'default',
       },
     },

@@ -6,6 +6,7 @@ import { Button, NumericalInput } from 'components'
 import Modal from 'components/modal'
 import useBlockNumber from 'hooks/useBlockNumber'
 import { useRTokenContract } from 'hooks/useContract'
+import useLastTx from 'hooks/useLastTx'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { addTransactionAtom, allowanceAtom } from 'state/atoms'
@@ -16,6 +17,7 @@ import { TRANSACTION_STATUS } from 'utils/constants'
 import { issueAmountAtom, quantitiesAtom } from 'views/issuance/atoms'
 import IssuanceApprovals from './modal/Approvals'
 import CollateralDistribution from './modal/CollateralDistribution'
+import IssuanceConfirmation from './modal/IssuanceConfirmation'
 
 interface Props {
   data: ReserveToken
@@ -79,8 +81,10 @@ const ConfirmModal = ({ data, issuableAmount, onClose }: Props) => {
   const allowances = useAtomValue(allowanceAtom)
   const contract = useRTokenContract(data.token.address, true)!
   const [signing, setSigning] = useState(false)
+  const [mining, setMining] = useState(false)
   const [approvalsTx, setApprovalsTx] = useState([] as TransactionState[])
   const [gasEstimates, setGasEstimates] = useState([] as BigNumber[])
+  const [issueTx] = useLastTx(signing ? 1 : 0)
   const approvalsNeeded = useMemo(
     () => approvalsTx.some((tx) => tx.status === TRANSACTION_STATUS.PENDING),
     [approvalsTx]
@@ -120,10 +124,10 @@ const ConfirmModal = ({ data, issuableAmount, onClose }: Props) => {
         },
       ])
     } catch (e) {
+      setSigning(false)
       // TODO: Handle error case
       console.log('error issuing')
     }
-    setSigning(false)
   }
 
   useEffect(() => {
@@ -140,31 +144,41 @@ const ConfirmModal = ({ data, issuableAmount, onClose }: Props) => {
       onClose={onClose}
       style={{ width: '400px' }}
     >
-      <NumericalInput
-        id="mint"
-        placeholder="Mint amount"
-        value={amount}
-        onChange={setAmount}
-      />
-      <CollateralDistribution mt={3} data={data} quantities={quantities} />
-      {approvalsNeeded && !canIssue && (
-        <IssuanceApprovals symbol={data.token.symbol} txs={approvalsTx} />
+      {signing &&
+      issueTx?.call.method === 'issue' &&
+      issueTx.status !== TRANSACTION_STATUS.PENDING &&
+      issueTx.status !== TRANSACTION_STATUS.SIGNING ? (
+        <IssuanceConfirmation onClose={onClose} />
+      ) : (
+        <>
+          <NumericalInput
+            id="mint"
+            placeholder="Mint amount"
+            value={amount}
+            onChange={setAmount}
+          />
+          <CollateralDistribution mt={3} data={data} quantities={quantities} />
+          {approvalsNeeded && !canIssue && (
+            <IssuanceApprovals symbol={data.token.symbol} txs={approvalsTx} />
+          )}
+          <Divider mx={-3} mt={3} sx={{ borderColor: '#ccc' }} />
+          <Button
+            sx={{ width: '100%' }}
+            disabled={!isValid()}
+            mt={2}
+            onClick={handleIssue}
+          >
+            {signing ? (
+              <Text>Pending sign in wallet</Text>
+            ) : (
+              <Text>
+                Begin minting {formatCurrency(Number(amount))}{' '}
+                {data.token.symbol}
+              </Text>
+            )}
+          </Button>
+        </>
       )}
-      <Divider mx={-3} mt={3} sx={{ borderColor: '#ccc' }} />
-      <Button
-        sx={{ width: '100%' }}
-        disabled={!isValid()}
-        mt={2}
-        onClick={handleIssue}
-      >
-        {signing ? (
-          <Text></Text>
-        ) : (
-          <Text>
-            Begin minting {formatCurrency(Number(amount))} {data.token.symbol}
-          </Text>
-        )}
-      </Button>
     </Modal>
   )
 }
