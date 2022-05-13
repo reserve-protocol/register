@@ -9,7 +9,7 @@ import { quantitiesAtom } from 'views/issuance/atoms'
 
 const useQuantities = (data: ReserveToken, amount: string): BigNumberMap => {
   const [quantities, setQuantities] = useAtom(quantitiesAtom)
-  const basketHandler = useBasketHandlerContract(data.basketHandler)
+  const basketHandler = useBasketHandlerContract(data.basketHandler ?? '')
 
   const fetchQuantities = useCallback(async () => {
     try {
@@ -43,8 +43,6 @@ const useQuantities = (data: ReserveToken, amount: string): BigNumberMap => {
       setQuantities({})
     }
   }, [amount, data.id])
-
-  console.log('quantities', quantities)
 
   return quantities
 }

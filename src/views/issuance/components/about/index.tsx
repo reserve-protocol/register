@@ -1,7 +1,7 @@
 import { Box, Text } from 'theme-ui'
 
 const About = () => (
-  <Box>
+  <Box sx={{ border: '1px solid #ccc', borderRadius: '16px' }} p={4}>
     <Text>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
       tempor incididunt ut labore et dolore magna aliqua. Senectus et netus et
