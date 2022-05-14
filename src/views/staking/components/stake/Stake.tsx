@@ -1,6 +1,5 @@
 import styled from '@emotion/styled'
 import { parseEther } from '@ethersproject/units'
-import { Box, Card, Text } from 'theme-ui'
 import { ERC20Interface, StRSRInterface } from 'abis'
 import { Button, NumericalInput } from 'components'
 import { RSR } from 'constants/tokens'
@@ -8,9 +7,11 @@ import { useSetAtom } from 'jotai'
 import { useAtomValue } from 'jotai/utils'
 import { useState } from 'react'
 import { addTransactionAtom, allowanceAtom, balancesAtom } from 'state/atoms'
+import { Box, Card, Text } from 'theme-ui'
 import { ReserveToken } from 'types'
 import { formatCurrency } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
+import { v4 as uuid } from 'uuid'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -32,6 +33,7 @@ const Stake = ({ data, ...props }: { data: ReserveToken }) => {
 
       addTransaction([
         {
+          id: uuid(),
           description: `Approve ${amount} RSR`,
           status: TRANSACTION_STATUS.PENDING,
           value: amount,
@@ -43,6 +45,7 @@ const Stake = ({ data, ...props }: { data: ReserveToken }) => {
           },
         },
         {
+          id: uuid(),
           description: `Stake ${amount} RSR`,
           status: TRANSACTION_STATUS.PENDING,
           value: amount,

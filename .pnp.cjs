@@ -1340,6 +1340,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "npm:2.0.2"\
       ],\
       [\
+        "@types/uuid",\
+        "npm:8.3.4"\
+      ],\
+      [\
         "@types/ws",\
         "npm:8.5.3"\
       ],\
@@ -5815,6 +5819,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react-blockies", "npm:1.4.1"],\
             ["@types/react-dom", "npm:18.0.0"],\
             ["@types/react-table", "npm:7.7.10"],\
+            ["@types/uuid", "npm:8.3.4"],\
             ["@walletconnect/ethereum-provider", "npm:1.7.7"],\
             ["@web3-react/coinbase-wallet", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:8.0.26-beta.0"],\
             ["@web3-react/core", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:8.0.23-beta.0"],\
@@ -11719,6 +11724,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-trusted-types-npm-2.0.2-035cb17c5e-3371eef5f1.zip/node_modules/@types/trusted-types/",\
           "packageDependencies": [\
             ["@types/trusted-types", "npm:2.0.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/uuid", [\
+        ["npm:8.3.4", {\
+          "packageLocation": "./.yarn/cache/@types-uuid-npm-8.3.4-7547f4402c-6f11f3ff70.zip/node_modules/@types/uuid/",\
+          "packageDependencies": [\
+            ["@types/uuid", "npm:8.3.4"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -23490,6 +23504,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react-blockies", "npm:1.4.1"],\
             ["@types/react-dom", "npm:18.0.0"],\
             ["@types/react-table", "npm:7.7.10"],\
+            ["@types/uuid", "npm:8.3.4"],\
             ["@walletconnect/ethereum-provider", "npm:1.7.7"],\
             ["@web3-react/coinbase-wallet", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:8.0.26-beta.0"],\
             ["@web3-react/core", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:8.0.23-beta.0"],\

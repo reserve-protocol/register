@@ -18,6 +18,7 @@ import { issueAmountAtom, quantitiesAtom } from 'views/issuance/atoms'
 import IssuanceApprovals from './modal/Approvals'
 import CollateralDistribution from './modal/CollateralDistribution'
 import IssuanceConfirmation from './modal/IssuanceConfirmation'
+import { v4 as uuid } from 'uuid'
 
 interface Props {
   data: ReserveToken
@@ -56,6 +57,7 @@ const buildApprovalTransactions = (
       tokenQuantities.push([token.address, tokenAmount])
 
       return {
+        id: uuid(),
         description,
         status: allowances[getAddress(token.address)].gte(tokenAmount)
           ? TRANSACTION_STATUS.SKIPPED
@@ -112,6 +114,7 @@ const ConfirmModal = ({ data, issuableAmount, onClose }: Props) => {
 
       addTransaction([
         {
+          id: uuid(),
           description: `Issue ${amount} ${data.token.symbol}`,
           status: TRANSACTION_STATUS.PENDING,
           value: amount,

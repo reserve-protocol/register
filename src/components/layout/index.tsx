@@ -14,6 +14,7 @@ const Layout = ({ children }: { children: ReactNode }) => (
     sx={{
       flexWrap: 'wrap',
       height: '100vh',
+
     }}
   >
     <Sidebar />

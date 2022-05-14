@@ -12,7 +12,7 @@ import { selectedAccountAtom } from 'state/atoms'
 import { shortenAddress } from 'utils'
 import { ROUTES } from '../../constants'
 
-const Container = styled.div`
+const Container = styled(Box)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -69,7 +69,10 @@ const Account = () => {
             </Box>
           }
         >
-          <Container onClick={() => setVisible(!isVisible)}>
+          <Container
+            onClick={() => setVisible(!isVisible)}
+            sx={{ border: '1px solid ' }}
+          >
             <Box mr={2} mt={1}>
               <Blockies scale={3} seed={currentWallet || ''} />
             </Box>

@@ -12,6 +12,7 @@ import { useState } from 'react'
 import { addTransactionAtom } from 'state/atoms'
 import { formatCurrency } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
+import { v4 as uuid } from 'uuid'
 
 const pendingWithdrawalsQuery = gql`
   entries(where: { type: "Unstake", status: Pending, user: $userId }) {
@@ -65,6 +66,7 @@ const Withdrawals = ({ tokenAddress }: { tokenAddress: string }) => {
   const handleWithdraw = () => {
     addTransaction([
       {
+        id: uuid(),
         description: 'Withdraw',
         status: TRANSACTION_STATUS.PENDING,
         value: formatEther(available),

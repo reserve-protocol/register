@@ -9,6 +9,7 @@ import { addTransactionAtom, balancesAtom } from 'state/atoms'
 import { ReserveToken } from 'types'
 import { formatCurrency } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
+import { v4 as uuid } from 'uuid'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -26,6 +27,7 @@ const Unstake = ({ data }: { data: ReserveToken }) => {
   const handleUnstake = () => {
     addTransaction([
       {
+        id: uuid(),
         description: `Unstake ${amount}`,
         status: TRANSACTION_STATUS.PENDING,
         value: amount,

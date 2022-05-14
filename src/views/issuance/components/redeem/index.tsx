@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { addTransactionAtom } from 'state/atoms'
 import { ReserveToken, TransactionState } from 'types'
 import { TRANSACTION_STATUS } from 'utils/constants'
+import { v4 as uuid } from 'uuid'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -24,6 +25,7 @@ const buildTransactions = (
   if (data.isRSV) {
     return [
       {
+        id: uuid(),
         description: 'Approve RSV for redemption',
         status: TRANSACTION_STATUS.PENDING,
         value: amount,
@@ -35,6 +37,7 @@ const buildTransactions = (
         },
       },
       {
+        id: uuid(),
         description: `Redeem ${amount} ${data.token.symbol}`,
         status: TRANSACTION_STATUS.PENDING,
         value: amount,
@@ -51,6 +54,7 @@ const buildTransactions = (
 
   return [
     {
+      id: uuid(),
       description: `Redeem ${amount} ${data.token.symbol}`,
       status: TRANSACTION_STATUS.PENDING,
       value: amount,
