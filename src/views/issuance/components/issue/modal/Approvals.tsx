@@ -78,7 +78,9 @@ const IssuanceApprovals = ({ txs, symbol }: Props) => {
             Pending, sign in wallet
           </Text>
         ) : (
-          <Text>Allow {symbol} to use collateral</Text>
+          <Text>
+            Allow {symbol} to use {txs.length} collaterals
+          </Text>
         )}
       </Button>
       <Box mt={2} sx={{ fontSize: 1, textAlign: 'center' }}>

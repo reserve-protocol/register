@@ -5850,6 +5850,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["typechain", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:8.0.0"],\
             ["typescript", "patch:typescript@npm%3A4.6.3#~builtin<compat/typescript>::version=4.6.3&hash=bda367"],\
             ["util", "npm:0.12.4"],\
+            ["uuid", "npm:8.3.2"],\
             ["web-vitals", "npm:1.1.2"]\
           ],\
           "linkType": "SOFT"\
@@ -23524,6 +23525,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["typechain", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:8.0.0"],\
             ["typescript", "patch:typescript@npm%3A4.6.3#~builtin<compat/typescript>::version=4.6.3&hash=bda367"],\
             ["util", "npm:0.12.4"],\
+            ["uuid", "npm:8.3.2"],\
             ["web-vitals", "npm:1.1.2"]\
           ],\
           "linkType": "SOFT"\

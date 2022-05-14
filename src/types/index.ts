@@ -15,6 +15,7 @@ export interface ContractCall {
 }
 
 export interface TransactionState {
+  id: string // uuid generated
   description: string
   status: string
   value: string
