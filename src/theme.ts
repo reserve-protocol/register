@@ -6,12 +6,13 @@ export const transition = 'all .2s ease'
 export const colors = {
   text: '#000',
   background: '#F3F7F8',
-  bgCard: '#fff',
-  primary: '#00FFBF',
-  primaryAccent: '#1fea00',
-  grey: '#ccc',
-  secondary: '#77838F',
-  sidebar: '#F3F7F8',
+  contentBackground: '#fff',
+  primary: '#000000',
+  accent: '#00FFBF',
+  secondary: '#E8E8E8',
+  disabled: '#ccc',
+  danger: '#FF0000',
+  warning: '#FF7A00',
   modes: {
     dark: {
       text: '#fff',
@@ -176,7 +177,7 @@ export const theme: Theme = {
       borderRadius: 16,
       padding: 3,
       boxShadow,
-      backgroundColor: 'bgCard',
+      backgroundColor: 'contentBackground',
     },
   },
   buttons: {

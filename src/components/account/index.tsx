@@ -69,10 +69,7 @@ const Account = () => {
             </Box>
           }
         >
-          <Container
-            onClick={() => setVisible(!isVisible)}
-            sx={{ border: '1px solid ' }}
-          >
+          <Container onClick={() => setVisible(!isVisible)}>
             <Box mr={2} mt={1}>
               <Blockies scale={3} seed={currentWallet || ''} />
             </Box>

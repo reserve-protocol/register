@@ -2,10 +2,13 @@ import { useMemo } from 'react'
 import { currentTxAtom } from 'state/atoms'
 import { useAtomValue } from 'jotai/utils'
 
-export const useTransactions = (ids: string[]) => {
+export const useTransactions = (ids: string[], sample = 20) => {
   // Usually used to fetch last N txs, slice it to last 20 for fast lookup
-  const txs = useAtomValue(currentTxAtom).slice(-20)
-  return useMemo(() => txs.filter((tx) => ids.includes(tx.id)), [txs, ids])
+  const txs = useAtomValue(currentTxAtom).slice(-sample)
+  return useMemo(
+    () => txs.filter((tx) => ids.includes(tx.id)),
+    [JSON.stringify(txs), ids]
+  )
 }
 
 export const useTransaction = (id: string) => {

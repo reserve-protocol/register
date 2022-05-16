@@ -11,6 +11,8 @@ import {
 } from 'types'
 
 // TODO: Maybe its time to split up this atoms file
+// Workaround weird bug when no trackedAccount is set
+localStorage.setItem('trackedAccount', localStorage.trackedAccount || '')
 
 // Prices
 export const ethPriceAtom = atom(1)
@@ -23,8 +25,10 @@ export const reserveTokensAtom = atomWithStorage<{ [x: string]: ReserveToken }>(
   {}
 )
 export const selectedRTokenAtom = atomWithStorage('selectedRToken', '')
-export const rTokenAtom = atom<ReserveToken | null>(
-  (get) => get(reserveTokensAtom)[get(selectedRTokenAtom)]
+export const rTokenAtom = atom<ReserveToken | null>((get) =>
+  get(reserveTokensAtom) && get(reserveTokensAtom)[get(selectedRTokenAtom)]
+    ? get(reserveTokensAtom)[get(selectedRTokenAtom)]
+    : null
 )
 
 export const walletsAtom = atomWithStorage<{ [x: string]: Wallet }>(
@@ -34,12 +38,14 @@ export const walletsAtom = atomWithStorage<{ [x: string]: Wallet }>(
 export const selectedAccountAtom = atomWithStorage('trackedAccount', '')
 export const connectedAccountAtom = atom('')
 
-export const walletAtom = atom<Wallet | null>(
-  (get) => get(walletsAtom)[get(selectedAccountAtom)]
+export const walletAtom = atom<Wallet | null>((get) =>
+  get(walletsAtom) && get(walletsAtom)[get(selectedAccountAtom)]
+    ? get(walletsAtom)[get(selectedAccountAtom)]
+    : null
 )
 
 export const currentWalletAtom = atom<Wallet | null>(
-  (get) => get(walletsAtom)[get(connectedAccountAtom)]
+  (get) => get(walletsAtom)[get(connectedAccountAtom)] || null
 )
 
 export const balancesAtom = atom<{ [x: string]: number }>({})
@@ -53,8 +59,10 @@ export const txAtom = atomWithStorage<{ [x: string]: TransactionState[] }>(
   'transactions',
   {}
 )
-export const currentTxAtom = atom(
-  (get) => get(txAtom)[get(selectedAccountAtom)] || []
+export const currentTxAtom = atom((get) =>
+  get(txAtom) && get(txAtom)[get(selectedAccountAtom)]
+    ? get(txAtom)[get(selectedAccountAtom)]
+    : []
 )
 
 export const pendingTxAtom = atom((get) => {

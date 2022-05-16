@@ -7,11 +7,12 @@ import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { reserveTokensAtom, rTokenAtom, selectedRTokenAtom } from 'state/atoms'
 
-const tokensAtom = atom((get) => Object.values(get(reserveTokensAtom)))
+const tokensAtom = atom((get) => Object.values(get(reserveTokensAtom) || []))
 
 const RTokenSelector = (props: BoxProps) => {
   const [isVisible, setVisible] = useState(false)
   const tokens = useAtomValue(tokensAtom)
+  const asdf = useAtomValue(selectedRTokenAtom)
   const selected = useAtomValue(rTokenAtom)
   const setSelected = useUpdateAtom(selectedRTokenAtom)
 
