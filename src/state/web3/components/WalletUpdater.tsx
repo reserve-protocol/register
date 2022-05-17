@@ -11,8 +11,6 @@ const WalletUpdater = () => {
   useEffect(() => {
     if (connectedAccount !== account) {
       setConnected(account ?? '')
-
-      // TODO: clean up pendingAllowanceTx
     }
   }, [account])
 

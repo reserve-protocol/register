@@ -4,7 +4,8 @@ import styled from '@emotion/styled'
 import Popover, { PopoverProps } from 'components/popover'
 
 const Container = styled(Box)`
-  background-color: ${({ theme }: { theme: any }) => theme.colors.bgCard};
+  background-color: ${({ theme }: { theme: any }) =>
+    theme.colors.contentBackground};
   border: 1px solid black;
   border-radius: 4px;
 `

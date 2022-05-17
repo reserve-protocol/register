@@ -49,6 +49,7 @@ const IssuanceApprovals = ({ txs, symbol }: Props) => {
         })
       )
 
+      
       setGasEstimates(estimates)
       setFee(totalFee * gasPrice * ethPrice)
     } catch (e) {

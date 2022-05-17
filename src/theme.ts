@@ -2,6 +2,10 @@ import type { Theme } from 'theme-ui'
 
 export const boxShadow = '0px 4px 34px rgba(0, 0, 0, 0.03)'
 export const transition = 'all .2s ease'
+export const borderRadius = {
+  inputs: 10,
+  boxes: 14,
+}
 
 export const colors = {
   text: '#000',
@@ -64,7 +68,7 @@ export const theme: Theme = {
       color: 'text',
     },
     a: {
-      transition: 'all .2s ease',
+      transition,
       color: '#77838F',
       textDecoration: 'underline',
       cursor: 'pointer',
@@ -169,12 +173,12 @@ export const theme: Theme = {
     input: {
       // transition: 'border .2s ease,color .2s ease',
       // outline: 'none',
-      borderRadius: 10,
+      borderRadius: borderRadius.inputs,
     },
   },
   cards: {
     primary: {
-      borderRadius: 16,
+      borderRadius: borderRadius.boxes,
       padding: 3,
       boxShadow,
       backgroundColor: 'contentBackground',
@@ -182,11 +186,11 @@ export const theme: Theme = {
   },
   buttons: {
     primary: {
-      borderRadius: 10,
+      borderRadius: borderRadius.inputs,
       cursor: 'pointer',
       transition,
       color: '#fff',
-      backgroundColor: '#0C0C0C',
+      backgroundColor: 'primary',
 
       '&:hover': {
         filter: 'brightness(0.85)',
@@ -197,17 +201,17 @@ export const theme: Theme = {
       },
     },
     accent: {
-      borderRadius: 10,
+      borderRadius: borderRadius.inputs,
       cursor: 'pointer',
-      transition: 'all .2s ease',
-      backgroundColor: 'primary',
+      transition,
+      backgroundColor: 'accent',
       color: 'black',
 
       '&:hover': {
         filter: 'brightness(0.85)',
       },
       '&:disabled': {
-        backgroundColor: 'grey',
+        backgroundColor: 'disabled',
         cursor: 'default',
       },
     },
