@@ -3,47 +3,38 @@
 /* eslint-disable */
 
 import { Contract, Signer, utils } from "ethers";
-import { Provider } from "@ethersproject/providers";
+import type { Provider } from "@ethersproject/providers";
 import type { RToken, RTokenInterface } from "../RToken";
 
 const _abi = [
   {
-    inputs: [
-      {
-        internalType: "string",
-        name: "name_",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "symbol_",
-        type: "string",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "constructor",
-  },
-  {
-    inputs: [
-      {
-        internalType: "int256",
-        name: "value",
-        type: "int256",
-      },
-    ],
+    inputs: [],
     name: "IntOutOfBounds",
     type: "error",
   },
   {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "value",
-        type: "uint256",
-      },
-    ],
+    inputs: [],
     name: "UIntOutOfBounds",
     type: "error",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "previousAdmin",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "newAdmin",
+        type: "address",
+      },
+    ],
+    name: "AdminChanged",
+    type: "event",
   },
   {
     anonymous: false,
@@ -75,13 +66,13 @@ const _abi = [
     inputs: [
       {
         indexed: false,
-        internalType: "Fix",
+        internalType: "int192",
         name: "oldBasketsNeeded",
         type: "int192",
       },
       {
         indexed: false,
-        internalType: "Fix",
+        internalType: "int192",
         name: "newBasketsNeeded",
         type: "int192",
       },
@@ -94,13 +85,39 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "Fix",
+        internalType: "address",
+        name: "beacon",
+        type: "address",
+      },
+    ],
+    name: "BeaconUpgraded",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint8",
+        name: "version",
+        type: "uint8",
+      },
+    ],
+    name: "Initialized",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "int192",
         name: "oldVal",
         type: "int192",
       },
       {
         indexed: true,
-        internalType: "Fix",
+        internalType: "int192",
         name: "newVal",
         type: "int192",
       },
@@ -131,7 +148,7 @@ const _abi = [
       },
       {
         indexed: false,
-        internalType: "Fix",
+        internalType: "int192",
         name: "baskets",
         type: "int192",
       },
@@ -149,7 +166,7 @@ const _abi = [
       },
       {
         indexed: false,
-        internalType: "Fix",
+        internalType: "int192",
         name: "blockAvailableAt",
         type: "int192",
       },
@@ -211,25 +228,6 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
-        indexed: true,
-        internalType: "contract IMain",
-        name: "oldMain",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "contract IMain",
-        name: "newMain",
-        type: "address",
-      },
-    ],
-    name: "MainSet",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
         indexed: false,
         internalType: "uint256",
         name: "amount",
@@ -256,7 +254,7 @@ const _abi = [
       },
       {
         indexed: true,
-        internalType: "Fix",
+        internalType: "int192",
         name: "baskets",
         type: "int192",
       },
@@ -309,6 +307,19 @@ const _abi = [
     type: "event",
   },
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "implementation",
+        type: "address",
+      },
+    ],
+    name: "Upgraded",
+    type: "event",
+  },
+  {
     inputs: [],
     name: "DOMAIN_SEPARATOR",
     outputs: [
@@ -323,10 +334,23 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "MIN_ISSUANCE_RATE",
+    name: "MIN_ISS_RATE",
     outputs: [
       {
-        internalType: "Fix",
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "allVestAt",
+    outputs: [
+      {
+        internalType: "int192",
         name: "",
         type: "int192",
       },
@@ -406,7 +430,7 @@ const _abi = [
     name: "basketsNeeded",
     outputs: [
       {
-        internalType: "Fix",
+        internalType: "int192",
         name: "",
         type: "int192",
       },
@@ -428,13 +452,7 @@ const _abi = [
       },
     ],
     name: "cancel",
-    outputs: [
-      {
-        internalType: "uint256[]",
-        name: "deposits",
-        type: "uint256[]",
-      },
-    ],
+    outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -443,6 +461,19 @@ const _abi = [
     name: "claimAndSweepRewards",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "constitutionURI",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -533,162 +564,27 @@ const _abi = [
         type: "address",
       },
       {
-        components: [
-          {
-            components: [
-              {
-                internalType: "Fix",
-                name: "maxAuctionSize",
-                type: "int192",
-              },
-              {
-                components: [
-                  {
-                    internalType: "uint16",
-                    name: "rTokenDist",
-                    type: "uint16",
-                  },
-                  {
-                    internalType: "uint16",
-                    name: "rsrDist",
-                    type: "uint16",
-                  },
-                ],
-                internalType: "struct RevenueShare",
-                name: "dist",
-                type: "tuple",
-              },
-              {
-                internalType: "uint256",
-                name: "rewardPeriod",
-                type: "uint256",
-              },
-              {
-                internalType: "Fix",
-                name: "rewardRatio",
-                type: "int192",
-              },
-              {
-                internalType: "uint256",
-                name: "unstakingDelay",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "auctionDelay",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "auctionLength",
-                type: "uint256",
-              },
-              {
-                internalType: "Fix",
-                name: "backingBuffer",
-                type: "int192",
-              },
-              {
-                internalType: "Fix",
-                name: "maxTradeSlippage",
-                type: "int192",
-              },
-              {
-                internalType: "Fix",
-                name: "dustAmount",
-                type: "int192",
-              },
-              {
-                internalType: "Fix",
-                name: "issuanceRate",
-                type: "int192",
-              },
-            ],
-            internalType: "struct DeploymentParams",
-            name: "params",
-            type: "tuple",
-          },
-          {
-            components: [
-              {
-                internalType: "contract IRToken",
-                name: "rToken",
-                type: "address",
-              },
-              {
-                internalType: "contract IStRSR",
-                name: "stRSR",
-                type: "address",
-              },
-              {
-                internalType: "contract IAssetRegistry",
-                name: "assetRegistry",
-                type: "address",
-              },
-              {
-                internalType: "contract IBasketHandler",
-                name: "basketHandler",
-                type: "address",
-              },
-              {
-                internalType: "contract IBackingManager",
-                name: "backingManager",
-                type: "address",
-              },
-              {
-                internalType: "contract IDistributor",
-                name: "distributor",
-                type: "address",
-              },
-              {
-                internalType: "contract IRevenueTrader",
-                name: "rsrTrader",
-                type: "address",
-              },
-              {
-                internalType: "contract IRevenueTrader",
-                name: "rTokenTrader",
-                type: "address",
-              },
-            ],
-            internalType: "struct Core",
-            name: "core",
-            type: "tuple",
-          },
-          {
-            components: [
-              {
-                internalType: "contract IMarket",
-                name: "market",
-                type: "address",
-              },
-              {
-                internalType: "contract IFurnace",
-                name: "furnace",
-                type: "address",
-              },
-              {
-                internalType: "contract IAsset[]",
-                name: "assets",
-                type: "address[]",
-              },
-            ],
-            internalType: "struct Periphery",
-            name: "periphery",
-            type: "tuple",
-          },
-          {
-            internalType: "contract IERC20",
-            name: "rsr",
-            type: "address",
-          },
-        ],
-        internalType: "struct ConstructorArgs",
-        name: "args",
-        type: "tuple",
+        internalType: "string",
+        name: "name_",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "symbol_",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "constitutionURI_",
+        type: "string",
+      },
+      {
+        internalType: "int192",
+        name: "issuanceRate_",
+        type: "int192",
       },
     ],
-    name: "initComponent",
+    name: "init",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -698,7 +594,7 @@ const _abi = [
     name: "issuanceRate",
     outputs: [
       {
-        internalType: "Fix",
+        internalType: "int192",
         name: "",
         type: "int192",
       },
@@ -709,68 +605,13 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-      {
         internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    name: "issuances",
-    outputs: [
-      {
-        internalType: "address",
-        name: "issuer",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-      {
-        internalType: "Fix",
-        name: "baskets",
-        type: "int192",
-      },
-      {
-        internalType: "uint256",
-        name: "basketNonce",
-        type: "uint256",
-      },
-      {
-        internalType: "Fix",
-        name: "blockAvailableAt",
-        type: "int192",
-      },
-      {
-        internalType: "bool",
-        name: "processed",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "amount",
+        name: "amtRToken",
         type: "uint256",
       },
     ],
     name: "issue",
-    outputs: [
-      {
-        internalType: "uint256[]",
-        name: "deposits",
-        type: "uint256[]",
-      },
-    ],
+    outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -781,8 +622,77 @@ const _abi = [
         name: "account",
         type: "address",
       },
+      {
+        internalType: "uint256",
+        name: "index",
+        type: "uint256",
+      },
     ],
-    name: "maxIssuable",
+    name: "issueItem",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "int192",
+            name: "when",
+            type: "int192",
+          },
+          {
+            internalType: "uint256",
+            name: "amtRToken",
+            type: "uint256",
+          },
+          {
+            internalType: "int192",
+            name: "amtBaskets",
+            type: "int192",
+          },
+          {
+            internalType: "uint256[]",
+            name: "deposits",
+            type: "uint256[]",
+          },
+        ],
+        internalType: "struct RTokenP1.IssueItem",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "issueQueues",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "basketNonce",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "left",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "right",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "lastIssRate",
     outputs: [
       {
         internalType: "uint256",
@@ -794,10 +704,36 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "lastIssRateBlock",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "main",
+    outputs: [
+      {
+        internalType: "contract IMain",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint256",
-        name: "amount",
+        name: "amtRToken",
         type: "uint256",
       },
     ],
@@ -815,7 +751,7 @@ const _abi = [
       },
       {
         internalType: "uint256",
-        name: "amount",
+        name: "amtRToken",
         type: "uint256",
       },
     ],
@@ -904,9 +840,22 @@ const _abi = [
     name: "price",
     outputs: [
       {
-        internalType: "Fix",
-        name: "p",
+        internalType: "int192",
+        name: "",
         type: "int192",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "proxiableUUID",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
       },
     ],
     stateMutability: "view",
@@ -921,20 +870,14 @@ const _abi = [
       },
     ],
     name: "redeem",
-    outputs: [
-      {
-        internalType: "uint256[]",
-        name: "withdrawals",
-        type: "uint256[]",
-      },
-    ],
+    outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
   {
     inputs: [
       {
-        internalType: "Fix",
+        internalType: "int192",
         name: "basketsNeeded_",
         type: "int192",
       },
@@ -947,7 +890,7 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "Fix",
+        internalType: "int192",
         name: "val",
         type: "int192",
       },
@@ -987,7 +930,7 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
-        name: "recipient",
+        name: "to",
         type: "address",
       },
       {
@@ -1011,12 +954,12 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
-        name: "sender",
+        name: "from",
         type: "address",
       },
       {
         internalType: "address",
-        name: "recipient",
+        name: "to",
         type: "address",
       },
       {
@@ -1040,6 +983,37 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
+        name: "newImplementation",
+        type: "address",
+      },
+    ],
+    name: "upgradeTo",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newImplementation",
+        type: "address",
+      },
+      {
+        internalType: "bytes",
+        name: "data",
+        type: "bytes",
+      },
+    ],
+    name: "upgradeToAndCall",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
         name: "account",
         type: "address",
       },
@@ -1050,13 +1024,7 @@ const _abi = [
       },
     ],
     name: "vest",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "vested",
-        type: "uint256",
-      },
-    ],
+    outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },

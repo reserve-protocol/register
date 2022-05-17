@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 import { Contract, Signer, utils } from "ethers";
-import { Provider } from "@ethersproject/providers";
+import type { Provider } from "@ethersproject/providers";
 import type { BasketHandler, BasketHandlerInterface } from "../BasketHandler";
 
 const _abi = [
@@ -16,6 +16,30 @@ const _abi = [
     inputs: [],
     name: "IntOutOfBounds",
     type: "error",
+  },
+  {
+    inputs: [],
+    name: "UIntOutOfBounds",
+    type: "error",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "previousAdmin",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "newAdmin",
+        type: "address",
+      },
+    ],
+    name: "AdminChanged",
+    type: "event",
   },
   {
     anonymous: false,
@@ -71,6 +95,32 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
+        indexed: true,
+        internalType: "address",
+        name: "beacon",
+        type: "address",
+      },
+    ],
+    name: "BeaconUpgraded",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint8",
+        name: "version",
+        type: "uint8",
+      },
+    ],
+    name: "Initialized",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: false,
         internalType: "contract IERC20[]",
         name: "erc20s",
@@ -90,6 +140,19 @@ const _abi = [
       },
     ],
     name: "PrimeBasketSet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "implementation",
+        type: "address",
+      },
+    ],
+    name: "Upgraded",
     type: "event",
   },
   {
@@ -113,7 +176,7 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "ensureBasket",
+    name: "checkBasket",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -138,161 +201,8 @@ const _abi = [
         name: "main_",
         type: "address",
       },
-      {
-        components: [
-          {
-            components: [
-              {
-                internalType: "int192",
-                name: "maxTradeVolume",
-                type: "int192",
-              },
-              {
-                components: [
-                  {
-                    internalType: "uint16",
-                    name: "rTokenDist",
-                    type: "uint16",
-                  },
-                  {
-                    internalType: "uint16",
-                    name: "rsrDist",
-                    type: "uint16",
-                  },
-                ],
-                internalType: "struct RevenueShare",
-                name: "dist",
-                type: "tuple",
-              },
-              {
-                internalType: "uint256",
-                name: "rewardPeriod",
-                type: "uint256",
-              },
-              {
-                internalType: "int192",
-                name: "rewardRatio",
-                type: "int192",
-              },
-              {
-                internalType: "uint256",
-                name: "unstakingDelay",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "tradingDelay",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "auctionLength",
-                type: "uint256",
-              },
-              {
-                internalType: "int192",
-                name: "backingBuffer",
-                type: "int192",
-              },
-              {
-                internalType: "int192",
-                name: "maxTradeSlippage",
-                type: "int192",
-              },
-              {
-                internalType: "int192",
-                name: "dustAmount",
-                type: "int192",
-              },
-              {
-                internalType: "int192",
-                name: "issuanceRate",
-                type: "int192",
-              },
-            ],
-            internalType: "struct DeploymentParams",
-            name: "params",
-            type: "tuple",
-          },
-          {
-            components: [
-              {
-                internalType: "contract IRToken",
-                name: "rToken",
-                type: "address",
-              },
-              {
-                internalType: "contract IStRSR",
-                name: "stRSR",
-                type: "address",
-              },
-              {
-                internalType: "contract IAssetRegistry",
-                name: "assetRegistry",
-                type: "address",
-              },
-              {
-                internalType: "contract IBasketHandler",
-                name: "basketHandler",
-                type: "address",
-              },
-              {
-                internalType: "contract IBackingManager",
-                name: "backingManager",
-                type: "address",
-              },
-              {
-                internalType: "contract IDistributor",
-                name: "distributor",
-                type: "address",
-              },
-              {
-                internalType: "contract IFurnace",
-                name: "furnace",
-                type: "address",
-              },
-              {
-                internalType: "contract IBroker",
-                name: "broker",
-                type: "address",
-              },
-              {
-                internalType: "contract IRevenueTrader",
-                name: "rsrTrader",
-                type: "address",
-              },
-              {
-                internalType: "contract IRevenueTrader",
-                name: "rTokenTrader",
-                type: "address",
-              },
-            ],
-            internalType: "struct Components",
-            name: "components",
-            type: "tuple",
-          },
-          {
-            internalType: "contract IERC20",
-            name: "rsr",
-            type: "address",
-          },
-          {
-            internalType: "contract IGnosis",
-            name: "gnosis",
-            type: "address",
-          },
-          {
-            internalType: "contract IAsset[]",
-            name: "assets",
-            type: "address[]",
-          },
-        ],
-        internalType: "struct ConstructorArgs",
-        name: "args",
-        type: "tuple",
-      },
     ],
-    name: "initComponent",
+    name: "init",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -342,6 +252,19 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "proxiableUUID",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "contract IERC20",
@@ -368,7 +291,7 @@ const _abi = [
         type: "int192",
       },
       {
-        internalType: "enum RoundingApproach",
+        internalType: "enum RoundingMode",
         name: "rounding",
         type: "uint8",
       },
@@ -446,14 +369,39 @@ const _abi = [
   {
     inputs: [],
     name: "switchBasket",
-    outputs: [
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
       {
-        internalType: "bool",
-        name: "",
-        type: "bool",
+        internalType: "address",
+        name: "newImplementation",
+        type: "address",
       },
     ],
+    name: "upgradeTo",
+    outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newImplementation",
+        type: "address",
+      },
+      {
+        internalType: "bytes",
+        name: "data",
+        type: "bytes",
+      },
+    ],
+    name: "upgradeToAndCall",
+    outputs: [],
+    stateMutability: "payable",
     type: "function",
   },
 ];

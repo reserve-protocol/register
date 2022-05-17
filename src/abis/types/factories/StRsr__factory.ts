@@ -3,47 +3,38 @@
 /* eslint-disable */
 
 import { Contract, Signer, utils } from "ethers";
-import { Provider } from "@ethersproject/providers";
+import type { Provider } from "@ethersproject/providers";
 import type { StRsr, StRsrInterface } from "../StRsr";
 
 const _abi = [
   {
-    inputs: [
-      {
-        internalType: "string",
-        name: "name_",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "symbol_",
-        type: "string",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "constructor",
-  },
-  {
-    inputs: [
-      {
-        internalType: "int256",
-        name: "value",
-        type: "int256",
-      },
-    ],
+    inputs: [],
     name: "IntOutOfBounds",
     type: "error",
   },
   {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "value",
-        type: "uint256",
-      },
-    ],
+    inputs: [],
     name: "UIntOutOfBounds",
     type: "error",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "previousAdmin",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "newAdmin",
+        type: "address",
+      },
+    ],
+    name: "AdminChanged",
+    type: "event",
   },
   {
     anonymous: false,
@@ -88,56 +79,12 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "contract IMain",
-        name: "oldMain",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "contract IMain",
-        name: "newMain",
-        type: "address",
-      },
-    ],
-    name: "MainSet",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "numPeriods",
-        type: "uint256",
-      },
-    ],
-    name: "RSRRewarded",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
         internalType: "address",
-        name: "from",
+        name: "beacon",
         type: "address",
       },
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
     ],
-    name: "RSRSeized",
+    name: "BeaconUpgraded",
     type: "event",
   },
   {
@@ -145,15 +92,47 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "uint256",
+        internalType: "int192",
         name: "oldVal",
-        type: "uint256",
+        type: "int192",
       },
       {
         indexed: true,
-        internalType: "uint256",
+        internalType: "int192",
         name: "newVal",
-        type: "uint256",
+        type: "int192",
+      },
+    ],
+    name: "ExchangeRateSet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint8",
+        name: "version",
+        type: "uint8",
+      },
+    ],
+    name: "Initialized",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint32",
+        name: "oldVal",
+        type: "uint32",
+      },
+      {
+        indexed: true,
+        internalType: "uint32",
+        name: "newVal",
+        type: "uint32",
       },
     ],
     name: "RewardPeriodSet",
@@ -164,13 +143,13 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "Fix",
+        internalType: "int192",
         name: "oldVal",
         type: "int192",
       },
       {
         indexed: true,
-        internalType: "Fix",
+        internalType: "int192",
         name: "newVal",
         type: "int192",
       },
@@ -183,12 +162,18 @@ const _abi = [
     inputs: [
       {
         indexed: true,
+        internalType: "uint256",
+        name: "era",
+        type: "uint256",
+      },
+      {
+        indexed: true,
         internalType: "address",
         name: "staker",
         type: "address",
       },
       {
-        indexed: true,
+        indexed: false,
         internalType: "uint256",
         name: "rsrAmount",
         type: "uint256",
@@ -270,15 +255,15 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "uint256",
+        internalType: "uint32",
         name: "oldVal",
-        type: "uint256",
+        type: "uint32",
       },
       {
         indexed: true,
-        internalType: "uint256",
+        internalType: "uint32",
         name: "newVal",
-        type: "uint256",
+        type: "uint32",
       },
     ],
     name: "UnstakingDelaySet",
@@ -328,6 +313,19 @@ const _abi = [
     type: "event",
   },
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "implementation",
+        type: "address",
+      },
+    ],
+    name: "Upgraded",
+    type: "event",
+  },
+  {
     inputs: [],
     name: "DOMAIN_SEPARATOR",
     outputs: [
@@ -344,7 +342,7 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
-        name: "owner_",
+        name: "owner",
         type: "address",
       },
       {
@@ -417,7 +415,78 @@ const _abi = [
         type: "uint8",
       },
     ],
-    stateMutability: "pure",
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "spender",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "subtractedValue",
+        type: "uint256",
+      },
+    ],
+    name: "decreaseAllowance",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "draftQueues",
+    outputs: [
+      {
+        internalType: "uint192",
+        name: "drafts",
+        type: "uint192",
+      },
+      {
+        internalType: "uint64",
+        name: "availableAt",
+        type: "uint64",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "draftRate",
+    outputs: [
+      {
+        internalType: "int192",
+        name: "",
+        type: "int192",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -444,7 +513,7 @@ const _abi = [
     name: "exchangeRate",
     outputs: [
       {
-        internalType: "Fix",
+        internalType: "int192",
         name: "",
         type: "int192",
       },
@@ -455,165 +524,85 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "firstRemainingDraft",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "spender",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "addedValue",
+        type: "uint256",
+      },
+    ],
+    name: "increaseAllowance",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "contract IMain",
         name: "main_",
         type: "address",
       },
       {
-        components: [
-          {
-            components: [
-              {
-                internalType: "Fix",
-                name: "maxAuctionSize",
-                type: "int192",
-              },
-              {
-                components: [
-                  {
-                    internalType: "uint16",
-                    name: "rTokenDist",
-                    type: "uint16",
-                  },
-                  {
-                    internalType: "uint16",
-                    name: "rsrDist",
-                    type: "uint16",
-                  },
-                ],
-                internalType: "struct RevenueShare",
-                name: "dist",
-                type: "tuple",
-              },
-              {
-                internalType: "uint256",
-                name: "rewardPeriod",
-                type: "uint256",
-              },
-              {
-                internalType: "Fix",
-                name: "rewardRatio",
-                type: "int192",
-              },
-              {
-                internalType: "uint256",
-                name: "unstakingDelay",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "auctionDelay",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "auctionLength",
-                type: "uint256",
-              },
-              {
-                internalType: "Fix",
-                name: "backingBuffer",
-                type: "int192",
-              },
-              {
-                internalType: "Fix",
-                name: "maxTradeSlippage",
-                type: "int192",
-              },
-              {
-                internalType: "Fix",
-                name: "dustAmount",
-                type: "int192",
-              },
-              {
-                internalType: "Fix",
-                name: "issuanceRate",
-                type: "int192",
-              },
-            ],
-            internalType: "struct DeploymentParams",
-            name: "params",
-            type: "tuple",
-          },
-          {
-            components: [
-              {
-                internalType: "contract IRToken",
-                name: "rToken",
-                type: "address",
-              },
-              {
-                internalType: "contract IStRSR",
-                name: "stRSR",
-                type: "address",
-              },
-              {
-                internalType: "contract IAssetRegistry",
-                name: "assetRegistry",
-                type: "address",
-              },
-              {
-                internalType: "contract IBasketHandler",
-                name: "basketHandler",
-                type: "address",
-              },
-              {
-                internalType: "contract IBackingManager",
-                name: "backingManager",
-                type: "address",
-              },
-              {
-                internalType: "contract IDistributor",
-                name: "distributor",
-                type: "address",
-              },
-              {
-                internalType: "contract IFurnace",
-                name: "furnace",
-                type: "address",
-              },
-              {
-                internalType: "contract IBroker",
-                name: "broker",
-                type: "address",
-              },
-              {
-                internalType: "contract IRevenueTrader",
-                name: "rsrTrader",
-                type: "address",
-              },
-              {
-                internalType: "contract IRevenueTrader",
-                name: "rTokenTrader",
-                type: "address",
-              },
-            ],
-            internalType: "struct Components",
-            name: "components",
-            type: "tuple",
-          },
-          {
-            internalType: "contract IERC20",
-            name: "rsr",
-            type: "address",
-          },
-          {
-            internalType: "contract IGnosis",
-            name: "gnosis",
-            type: "address",
-          },
-          {
-            internalType: "contract IAsset[]",
-            name: "assets",
-            type: "address[]",
-          },
-        ],
-        internalType: "struct ConstructorArgs",
-        name: "args",
-        type: "tuple",
+        internalType: "string",
+        name: "name_",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "symbol_",
+        type: "string",
+      },
+      {
+        internalType: "uint32",
+        name: "unstakingDelay_",
+        type: "uint32",
+      },
+      {
+        internalType: "uint32",
+        name: "rewardPeriod_",
+        type: "uint32",
+      },
+      {
+        internalType: "int192",
+        name: "rewardRatio_",
+        type: "int192",
       },
     ],
-    name: "initComponent",
+    name: "init",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -648,7 +637,7 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
-        name: "owner_",
+        name: "owner",
         type: "address",
       },
     ],
@@ -674,7 +663,7 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
-        name: "owner_",
+        name: "owner",
         type: "address",
       },
       {
@@ -715,12 +704,25 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "proxiableUUID",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "rewardPeriod",
     outputs: [
       {
-        internalType: "uint256",
+        internalType: "uint32",
         name: "",
-        type: "uint256",
+        type: "uint32",
       },
     ],
     stateMutability: "view",
@@ -731,7 +733,7 @@ const _abi = [
     name: "rewardRatio",
     outputs: [
       {
-        internalType: "Fix",
+        internalType: "int192",
         name: "",
         type: "int192",
       },
@@ -748,22 +750,29 @@ const _abi = [
       },
     ],
     name: "seizeRSR",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "seizedRSR",
-        type: "uint256",
-      },
-    ],
+    outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
   {
     inputs: [
       {
-        internalType: "uint256",
+        internalType: "string",
+        name: "name_",
+        type: "string",
+      },
+    ],
+    name: "setName",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
         name: "val",
-        type: "uint256",
+        type: "uint32",
       },
     ],
     name: "setRewardPeriod",
@@ -774,7 +783,7 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "Fix",
+        internalType: "int192",
         name: "val",
         type: "int192",
       },
@@ -787,9 +796,22 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint256",
+        internalType: "string",
+        name: "symbol_",
+        type: "string",
+      },
+    ],
+    name: "setSymbol",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
         name: "val",
-        type: "uint256",
+        type: "uint32",
       },
     ],
     name: "setUnstakingDelay",
@@ -808,6 +830,19 @@ const _abi = [
     name: "stake",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "stakeRate",
+    outputs: [
+      {
+        internalType: "int192",
+        name: "",
+        type: "int192",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -840,7 +875,7 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
-        name: "recipient",
+        name: "to",
         type: "address",
       },
       {
@@ -864,12 +899,12 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
-        name: "sender",
+        name: "from",
         type: "address",
       },
       {
         internalType: "address",
-        name: "recipient",
+        name: "to",
         type: "address",
       },
       {
@@ -907,12 +942,43 @@ const _abi = [
     name: "unstakingDelay",
     outputs: [
       {
-        internalType: "uint256",
+        internalType: "uint32",
         name: "",
-        type: "uint256",
+        type: "uint32",
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newImplementation",
+        type: "address",
+      },
+    ],
+    name: "upgradeTo",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newImplementation",
+        type: "address",
+      },
+      {
+        internalType: "bytes",
+        name: "data",
+        type: "bytes",
+      },
+    ],
+    name: "upgradeToAndCall",
+    outputs: [],
+    stateMutability: "payable",
     type: "function",
   },
   {
@@ -931,40 +997,6 @@ const _abi = [
     name: "withdraw",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    name: "withdrawals",
-    outputs: [
-      {
-        internalType: "address",
-        name: "account",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "rsrAmount",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "availableAt",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
 ];

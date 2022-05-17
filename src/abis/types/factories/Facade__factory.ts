@@ -3,14 +3,14 @@
 /* eslint-disable */
 
 import { Contract, Signer, utils } from "ethers";
-import { Provider } from "@ethersproject/providers";
+import type { Provider } from "@ethersproject/providers";
 import type { Facade, FacadeInterface } from "../Facade";
 
 const _abi = [
   {
     inputs: [
       {
-        internalType: "address",
+        internalType: "contract IMain",
         name: "main_",
         type: "address",
       },
@@ -19,15 +19,27 @@ const _abi = [
     type: "constructor",
   },
   {
-    inputs: [
-      {
-        internalType: "int256",
-        name: "value",
-        type: "int256",
-      },
-    ],
+    inputs: [],
     name: "IntOutOfBounds",
     type: "error",
+  },
+  {
+    inputs: [],
+    name: "UIntOutOfBounds",
+    type: "error",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint8",
+        name: "version",
+        type: "uint8",
+      },
+    ],
+    name: "Initialized",
+    type: "event",
   },
   {
     inputs: [],
@@ -68,11 +80,43 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "contract IMain",
+        name: "main_",
+        type: "address",
+      },
+    ],
+    name: "init",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "issue",
+    outputs: [
+      {
+        internalType: "uint256[]",
+        name: "deposits",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "main",
     outputs: [
       {
-        internalType: "contract MainP0",
+        internalType: "contract IMain",
         name: "",
         type: "address",
       },
@@ -108,23 +152,10 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "stRSRExchangeRate",
-    outputs: [
-      {
-        internalType: "Fix",
-        name: "",
-        type: "int192",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "totalAssetValue",
     outputs: [
       {
-        internalType: "Fix",
+        internalType: "int192",
         name: "total",
         type: "int192",
       },

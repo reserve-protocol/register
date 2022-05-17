@@ -3,10 +3,34 @@
 /* eslint-disable */
 
 import { Contract, Signer, utils } from "ethers";
-import { Provider } from "@ethersproject/providers";
+import type { Provider } from "@ethersproject/providers";
 import type { Main, MainInterface } from "../Main";
 
 const _abi = [
+  {
+    inputs: [],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "previousAdmin",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "newAdmin",
+        type: "address",
+      },
+    ],
+    name: "AdminChanged",
+    type: "event",
+  },
   {
     anonymous: false,
     inputs: [
@@ -69,6 +93,19 @@ const _abi = [
     inputs: [
       {
         indexed: true,
+        internalType: "address",
+        name: "beacon",
+        type: "address",
+      },
+    ],
+    name: "BeaconUpgraded",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
         internalType: "contract IBroker",
         name: "oldVal",
         type: "address",
@@ -123,8 +160,59 @@ const _abi = [
   },
   {
     anonymous: false,
-    inputs: [],
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint8",
+        name: "version",
+        type: "uint8",
+      },
+    ],
     name: "Initialized",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [],
+    name: "MainInitialized",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint32",
+        name: "oldDuration",
+        type: "uint32",
+      },
+      {
+        indexed: false,
+        internalType: "uint32",
+        name: "newDuration",
+        type: "uint32",
+      },
+    ],
+    name: "OneshotPauseDurationSet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "oldPauser",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "newPauser",
+        type: "address",
+      },
+    ],
+    name: "OneshotPauserSet",
     type: "event",
   },
   {
@@ -144,63 +232,6 @@ const _abi = [
       },
     ],
     name: "OwnershipTransferred",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "bool",
-        name: "oldPaused",
-        type: "bool",
-      },
-      {
-        indexed: false,
-        internalType: "bool",
-        name: "newPaused",
-        type: "bool",
-      },
-    ],
-    name: "PausedSet",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "address",
-        name: "oldPauser",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "address",
-        name: "newPauser",
-        type: "address",
-      },
-    ],
-    name: "PauserSet",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "contract IERC20",
-        name: "oldVal",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "contract IERC20",
-        name: "newVal",
-        type: "address",
-      },
-    ],
-    name: "RSRSet",
     type: "event",
   },
   {
@@ -277,6 +308,38 @@ const _abi = [
       },
     ],
     name: "StRSRSet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint32",
+        name: "oldUnpauseAt",
+        type: "uint32",
+      },
+      {
+        indexed: false,
+        internalType: "uint32",
+        name: "newUnpauseAt",
+        type: "uint32",
+      },
+    ],
+    name: "UnpauseAtSet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "implementation",
+        type: "address",
+      },
+    ],
+    name: "Upgraded",
     type: "event",
   },
   {
@@ -362,160 +425,119 @@ const _abi = [
       {
         components: [
           {
-            components: [
-              {
-                internalType: "int192",
-                name: "maxAuctionSize",
-                type: "int192",
-              },
-              {
-                components: [
-                  {
-                    internalType: "uint16",
-                    name: "rTokenDist",
-                    type: "uint16",
-                  },
-                  {
-                    internalType: "uint16",
-                    name: "rsrDist",
-                    type: "uint16",
-                  },
-                ],
-                internalType: "struct RevenueShare",
-                name: "dist",
-                type: "tuple",
-              },
-              {
-                internalType: "uint256",
-                name: "rewardPeriod",
-                type: "uint256",
-              },
-              {
-                internalType: "int192",
-                name: "rewardRatio",
-                type: "int192",
-              },
-              {
-                internalType: "uint256",
-                name: "unstakingDelay",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "tradingDelay",
-                type: "uint256",
-              },
-              {
-                internalType: "uint256",
-                name: "auctionLength",
-                type: "uint256",
-              },
-              {
-                internalType: "int192",
-                name: "backingBuffer",
-                type: "int192",
-              },
-              {
-                internalType: "int192",
-                name: "maxTradeSlippage",
-                type: "int192",
-              },
-              {
-                internalType: "int192",
-                name: "dustAmount",
-                type: "int192",
-              },
-              {
-                internalType: "int192",
-                name: "issuanceRate",
-                type: "int192",
-              },
-            ],
-            internalType: "struct DeploymentParams",
-            name: "params",
-            type: "tuple",
-          },
-          {
-            components: [
-              {
-                internalType: "contract IRToken",
-                name: "rToken",
-                type: "address",
-              },
-              {
-                internalType: "contract IStRSR",
-                name: "stRSR",
-                type: "address",
-              },
-              {
-                internalType: "contract IAssetRegistry",
-                name: "assetRegistry",
-                type: "address",
-              },
-              {
-                internalType: "contract IBasketHandler",
-                name: "basketHandler",
-                type: "address",
-              },
-              {
-                internalType: "contract IBackingManager",
-                name: "backingManager",
-                type: "address",
-              },
-              {
-                internalType: "contract IDistributor",
-                name: "distributor",
-                type: "address",
-              },
-              {
-                internalType: "contract IFurnace",
-                name: "furnace",
-                type: "address",
-              },
-              {
-                internalType: "contract IBroker",
-                name: "broker",
-                type: "address",
-              },
-              {
-                internalType: "contract IRevenueTrader",
-                name: "rsrTrader",
-                type: "address",
-              },
-              {
-                internalType: "contract IRevenueTrader",
-                name: "rTokenTrader",
-                type: "address",
-              },
-            ],
-            internalType: "struct Components",
-            name: "components",
-            type: "tuple",
-          },
-          {
-            internalType: "contract IERC20",
-            name: "rsr",
+            internalType: "contract IRToken",
+            name: "rToken",
             type: "address",
           },
           {
-            internalType: "contract IGnosis",
-            name: "gnosis",
+            internalType: "contract IStRSR",
+            name: "stRSR",
             type: "address",
           },
           {
-            internalType: "contract IAsset[]",
-            name: "assets",
-            type: "address[]",
+            internalType: "contract IAssetRegistry",
+            name: "assetRegistry",
+            type: "address",
+          },
+          {
+            internalType: "contract IBasketHandler",
+            name: "basketHandler",
+            type: "address",
+          },
+          {
+            internalType: "contract IBackingManager",
+            name: "backingManager",
+            type: "address",
+          },
+          {
+            internalType: "contract IDistributor",
+            name: "distributor",
+            type: "address",
+          },
+          {
+            internalType: "contract IFurnace",
+            name: "furnace",
+            type: "address",
+          },
+          {
+            internalType: "contract IBroker",
+            name: "broker",
+            type: "address",
+          },
+          {
+            internalType: "contract IRevenueTrader",
+            name: "rsrTrader",
+            type: "address",
+          },
+          {
+            internalType: "contract IRevenueTrader",
+            name: "rTokenTrader",
+            type: "address",
           },
         ],
-        internalType: "struct ConstructorArgs",
-        name: "args",
+        internalType: "struct Components",
+        name: "components",
         type: "tuple",
+      },
+      {
+        internalType: "contract IERC20",
+        name: "rsr_",
+        type: "address",
+      },
+      {
+        internalType: "uint32",
+        name: "oneshotPauseDuration_",
+        type: "uint32",
       },
     ],
     name: "init",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "componentAddr",
+        type: "address",
+      },
+    ],
+    name: "isComponent",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "oneshotPauseDuration",
+    outputs: [
+      {
+        internalType: "uint32",
+        name: "",
+        type: "uint32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "oneshotPauser",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -553,22 +575,22 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "pauser",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
+    name: "poke",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
     inputs: [],
-    name: "poke",
-    outputs: [],
-    stateMutability: "nonpayable",
+    name: "proxiableUUID",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -600,6 +622,13 @@ const _abi = [
   {
     inputs: [],
     name: "renounceOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "renouncePausership",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -711,12 +740,12 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "address",
-        name: "pauser_",
-        type: "address",
+        internalType: "uint32",
+        name: "oneshotPauseDuration_",
+        type: "uint32",
       },
     ],
-    name: "setPauser",
+    name: "setOneshotPauseDuration",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -724,12 +753,12 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "contract IERC20",
-        name: "val",
+        internalType: "address",
+        name: "oneshotPauser_",
         type: "address",
       },
     ],
-    name: "setRSR",
+    name: "setOneshotPauser",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -817,6 +846,50 @@ const _abi = [
     name: "unpause",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "unpauseAt",
+    outputs: [
+      {
+        internalType: "uint32",
+        name: "",
+        type: "uint32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newImplementation",
+        type: "address",
+      },
+    ],
+    name: "upgradeTo",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newImplementation",
+        type: "address",
+      },
+      {
+        internalType: "bytes",
+        name: "data",
+        type: "bytes",
+      },
+    ],
+    name: "upgradeToAndCall",
+    outputs: [],
+    stateMutability: "payable",
     type: "function",
   },
 ];
