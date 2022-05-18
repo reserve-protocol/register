@@ -84,6 +84,9 @@ export const theme: Theme = {
       fontWeight: 'body',
       color: 'text',
     },
+    hr: {
+      borderColor: '#ccc',
+    },
     h1: {
       variant: 'text.heading',
       fontSize: 5,
