@@ -10,7 +10,7 @@ import { ChevronDown, ChevronUp } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import { selectedAccountAtom } from 'state/atoms'
 import { shortenAddress } from 'utils'
-import { ROUTES } from '../../constants'
+import { ROUTES } from 'utils/constants'
 
 const Container = styled(Box)`
   display: flex;
@@ -33,7 +33,6 @@ const Container = styled(Box)`
 const Account = () => {
   const [isVisible, setVisible] = useState(false)
   const [currentWallet, setCurrentAccount] = useAtom(selectedAccountAtom)
-  console.log('currentWallet', currentWallet)
   // TODO: Maybe unnecessary
   const { ENSName } = useENSName(currentWallet)
   const navigate = useNavigate()

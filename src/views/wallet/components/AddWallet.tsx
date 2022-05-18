@@ -2,7 +2,7 @@ import { BoxProps, Text, Box, Grid } from 'theme-ui'
 import { Input, Button } from 'components'
 import { useState } from 'react'
 import { isAddress, shortenAddress } from 'utils'
-import { ZERO_ADDRESS } from 'constants/addresses'
+import { ZERO_ADDRESS } from 'utils/addresses'
 
 interface Props extends BoxProps {
   onAdd(address: string, alias: string): void

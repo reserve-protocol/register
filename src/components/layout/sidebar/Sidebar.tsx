@@ -2,13 +2,13 @@ import styled from '@emotion/styled'
 import { Box, Text } from 'theme-ui'
 import { NavLink } from 'react-router-dom'
 import Logo from 'components/icons/Logo'
-import ROUTES from 'constants/routes'
 import SyncedBlock from 'components/synced-block'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
 import { useMemo } from 'react'
 import { ReserveToken } from 'types'
 import { rTokenAtom } from 'state/atoms'
 import { useAtomValue } from 'jotai/utils'
+import { ROUTES } from 'utils/constants'
 
 export const PAGES = [
   { path: ROUTES.HOME, title: 'Home' },

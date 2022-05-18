@@ -10,13 +10,6 @@ export const DEPLOYER_ADDRESS: AddressMap = {
   [ChainId.Hardhat]: '0x1613beB3B2C4f22Ee086B2b38C1476A3cE7f78E8',
 }
 
-// Default RToken
-// TODO: protocol deployment this may not be required????
-export const RTOKEN_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: ZERO_ADDRESS,
-  [ChainId.Hardhat]: '0x9467a509da43cb50eb332187602534991be1fea4',
-}
-
 export const RSV_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',
   [ChainId.Hardhat]: '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',

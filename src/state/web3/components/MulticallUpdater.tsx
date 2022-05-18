@@ -1,5 +1,4 @@
 import { useWeb3React } from '@web3-react/core'
-import { MULTICALL_ADDRESS } from 'constants/addresses'
 import useBlockNumber from 'hooks/useBlockNumber'
 import useDebounce from 'hooks/useDebounce'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
@@ -7,6 +6,7 @@ import { useEffect, useMemo } from 'react'
 import { callsAtom, multicallStateAtom } from 'state/atoms'
 import { RawCall } from 'types'
 import { addressEqual } from 'utils'
+import { MULTICALL_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 import multicall from '../lib/multicall'
 

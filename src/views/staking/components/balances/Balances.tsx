@@ -2,11 +2,11 @@ import { Flex, Box, Text, BoxProps } from 'theme-ui'
 import { Card } from 'components'
 import { RTokenIcon } from 'components/icons/logos'
 import TokenLogo from 'components/icons/TokenLogo'
-import { RSR } from 'constants/tokens'
 import { useAtomValue } from 'jotai'
 import { balancesAtom } from 'state/atoms'
 import { ReserveToken } from 'types'
 import { formatCurrency } from 'utils'
+import { RSR } from 'utils/constants'
 
 interface Props extends BoxProps {
   rToken: ReserveToken

@@ -21,10 +21,9 @@ import {
 } from 'state/atoms'
 import useSWR from 'swr'
 import { ReserveToken, StringMap } from 'types'
+import { RSV_MANAGER_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
-import { COINGECKO_API } from 'utils/constants'
-import { RSV_MANAGER_ADDRESS } from '../constants/addresses'
-import { RSR } from '../constants/tokens'
+import { COINGECKO_API, RSR } from 'utils/constants'
 
 const getTokensQuery = gql`
   {

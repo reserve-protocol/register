@@ -1,6 +1,5 @@
 import { namehash } from '@ethersproject/hash'
 import { useMemo } from 'react'
-import { ENS_ADDRESS } from '../../constants/addresses'
 import { isZero } from '../../utils'
 import ENSRegistrarAbi from '../../abis/ens-registrar.json'
 import ENSResolverAbi from '../../abis/ens-public-resolver.json'

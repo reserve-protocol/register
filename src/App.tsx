@@ -11,10 +11,10 @@ import Overview from 'views/overview'
 import Insurance from 'views/staking'
 import WalletManagement from 'views/wallet'
 import Layout from './components/layout'
-import { ROUTES } from './constants'
 import { theme } from './theme'
 import { Toaster } from 'react-hot-toast'
 import Issuance from './views/issuance'
+import { ROUTES } from 'utils/constants'
 
 // Requires rToken to be selected and a wallet connected
 // TODO: Better placeholders

@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { parseEther } from '@ethersproject/units'
 import { ReserveToken, StringMap } from 'types'
-import { ONE_ETH } from '../constants'
+import { ONE_ETH } from './numbers'
 
 const PAX_QTY = BigNumber.from(333333)
 const USDC_QTY = BigNumber.from(333334)

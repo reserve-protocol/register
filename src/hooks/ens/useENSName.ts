@@ -5,7 +5,6 @@ import useDebounce from 'hooks/useDebounce'
 import { useMemo } from 'react'
 import ENSResolverAbi from '../../abis/ens-public-resolver.json'
 import ENSRegistrarAbi from '../../abis/ens-registrar.json'
-import { ENS_ADDRESS } from '../../constants/addresses'
 import { isAddress, isZero } from '../../utils'
 
 const ENSRegistrarInterface = new Interface(ENSRegistrarAbi)

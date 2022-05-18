@@ -26,7 +26,7 @@ const MaxIssuableUpdater = () => {
       setMaxIssuable(0)
       console.error('error with max issuable', e)
     }
-  }, [account, rToken?.id ?? '', facadeContract])
+  }, [account, facadeContract])
 
   // RSV Max issuable
   useEffect(() => {
