@@ -1,26 +1,17 @@
-import styled from '@emotion/styled'
-import { Button, NumericalInput } from 'components'
+import { Button } from 'components'
 import useDebounce from 'hooks/useDebounce'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtomValue } from 'jotai'
 import { useState } from 'react'
-import { Box, Card, Text } from 'theme-ui'
+import { Card } from 'theme-ui'
 import { ReserveToken } from 'types'
-import { formatCurrency } from 'utils'
 import {
   issueAmountAtom,
   isValidIssuableAmountAtom,
-  maxIssuableAtom,
 } from 'views/issuance/atoms'
 import ConfirmModal from './ConfirmModal'
 import IssueInput from './IssueInput'
 import MaxIssuableUpdater from './MaxIssuableUpdater'
 import useQuantities from './useQuantities'
-
-const InputContainer = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-`
 
 /**
  * Issuance
@@ -39,7 +30,7 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
       {issuing && (
         <ConfirmModal data={data} onClose={() => setIssuing(false)} />
       )}
-      <Card {...props}>
+      <Card p={4} {...props}>
         <IssueInput />
         <Button
           sx={{ width: '100%' }}

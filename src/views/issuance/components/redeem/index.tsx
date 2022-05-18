@@ -22,6 +22,7 @@ const buildTransactions = (
 ): TransactionState[] => {
   const parsedAmount = parseEther(amount)
 
+  // TODO: Confirm modal for redemption
   if (data.isRSV) {
     return [
       {

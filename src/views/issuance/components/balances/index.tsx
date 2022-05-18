@@ -20,7 +20,7 @@ const Balances = ({ rToken, ...props }: Props) => {
     <Box {...props}>
       <Card p={0}>
         <Grid columns={2}>
-          <Box p={3}>
+          <Box p={4}>
             <Text variant="contentTitle" sx={{ fontSize: 2 }} mb={3}>
               Available collateral
             </Text>
@@ -32,7 +32,7 @@ const Balances = ({ rToken, ...props }: Props) => {
               />
             ))}
           </Box>
-          <Box sx={{ borderLeft: '1px solid #ccc' }} p={3}>
+          <Box sx={{ borderLeft: '1px solid #ccc' }} p={4}>
             <Text variant="contentTitle" sx={{ fontSize: 2 }} mb={3}>
               In Wallet
             </Text>
