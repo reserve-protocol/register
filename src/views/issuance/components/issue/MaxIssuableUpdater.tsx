@@ -1,10 +1,9 @@
 import { formatEther } from '@ethersproject/units'
-import { useWeb3React } from '@web3-react/core'
 import { useFacadeContract } from 'hooks/useContract'
 import { useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { useCallback, useEffect } from 'react'
-import { balancesAtom, rTokenAtom } from 'state/atoms'
+import { balancesAtom, rTokenAtom, selectedAccountAtom } from 'state/atoms'
 import { getIssuable } from 'utils/rsv'
 import { maxIssuableAtom } from 'views/issuance/atoms'
 
@@ -12,7 +11,7 @@ const MaxIssuableUpdater = () => {
   const rToken = useAtomValue(rTokenAtom)
   const tokenBalances = useAtomValue(balancesAtom)
   const setMaxIssuable = useUpdateAtom(maxIssuableAtom)
-  const { account } = useWeb3React()
+  const account = useAtomValue(selectedAccountAtom)
   const facadeContract = useFacadeContract(rToken?.facade ?? '')
 
   const updateMaxIssuable = useCallback(async () => {
@@ -27,17 +26,22 @@ const MaxIssuableUpdater = () => {
       setMaxIssuable(0)
       console.error('error with max issuable', e)
     }
-  }, [account, rToken, facadeContract])
+  }, [account, rToken?.id ?? '', facadeContract])
+
+  // RSV Max issuable
+  useEffect(() => {
+    if (rToken && rToken.isRSV) {
+      setMaxIssuable(getIssuable(rToken, tokenBalances))
+    }
+  }, [JSON.stringify(tokenBalances)])
 
   useEffect(() => {
-    if (rToken) {
-      if (rToken.isRSV) {
-        setMaxIssuable(getIssuable(rToken, tokenBalances))
-      } else {
-        updateMaxIssuable()
-      }
+    if (rToken && !rToken.isRSV) {
+      updateMaxIssuable()
     }
-  }, [JSON.stringify(tokenBalances), account, facadeContract])
+
+    return () => setMaxIssuable(0)
+  }, [account, facadeContract])
 
   return null
 }
