@@ -1,27 +1,73 @@
+import { RTokenInterface } from 'abis'
 import TokenBalance from 'components/token-balance'
-import { Box, Button, Divider, Text } from 'theme-ui'
+import { useSetAtom } from 'jotai'
+import { useEffect, useState } from 'react'
+import { addTransactionAtom } from 'state/atoms'
+import { useTransaction } from 'state/web3/hooks/useTransactions'
+import { Box, Button, Divider, Spinner, Text } from 'theme-ui'
 import { Token } from 'types'
-
-{
-  /* <TokenBalance
-token={rToken.token}
-balance={tokenBalances[rToken.token.address]}
-/> */
-}
+import { TRANSACTION_STATUS } from 'utils/constants'
+import { v4 as uuid } from 'uuid'
 
 const PendingIssuances = ({ token }: { token: Token }) => {
+  const addTransaction = useSetAtom(addTransactionAtom)
+  const [claiming, setClaiming] = useState('')
+  const claimTx = useTransaction(claiming)
+
+  const handleClaim = () => {
+    const txId = uuid()
+    setClaiming(txId)
+    addTransaction([
+      {
+        id: txId,
+        description: `Claim 1234 ${token.symbol}`,
+        status: TRANSACTION_STATUS.PENDING,
+        value: '0',
+        call: {
+          abi: RTokenInterface,
+          address: token.address,
+          method: 'vestUpTo',
+          args: [''],
+        },
+      },
+    ])
+  }
+
+  useEffect(() => {
+    if (claiming && claimTx && claimTx.status !== TRANSACTION_STATUS.SIGNING) {
+      setClaiming('')
+    }
+  }, [claimTx, claiming])
+
   return (
     <>
       <Box px={4} py={2}>
-        <Button sx={{ width: '100%' }} mb={3}>
-          Claim vested {token.symbol}
+        <Button
+          onClick={handleClaim}
+          variant={claiming ? 'accent' : 'primary'}
+          sx={{ width: '100%' }}
+          mb={3}
+        >
+          {claiming ? (
+            <Text
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Spinner size={14} mr={2} /> Claiming, Sign in wallet
+            </Text>
+          ) : (
+            <Text>Claim vested {token.symbol}</Text>
+          )}
         </Button>
         <Text variant="contentTitle" sx={{ fontSize: 2 }} mb={2}>
           Available
         </Text>
         <TokenBalance token={token} balance={0} />
       </Box>
-      <Divider sx={{ borderColor: '#ccc' }} />
+      <Divider />
       <Box px={4} py={2} mb={2}>
         <Text variant="contentTitle" sx={{ fontSize: 2 }} mb={2}>
           Pending

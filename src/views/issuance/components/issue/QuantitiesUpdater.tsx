@@ -1,21 +1,24 @@
 import { getAddress } from '@ethersproject/address'
 import { parseEther } from '@ethersproject/units'
 import { useBasketHandlerContract } from 'hooks/useContract'
-import { useAtom } from 'jotai'
+import { useAtomValue } from 'jotai'
+import { useUpdateAtom } from 'jotai/utils'
 import { useCallback, useEffect } from 'react'
-import { BigNumberMap, ReserveToken } from 'types'
+import { rTokenAtom } from 'state/atoms'
+import { BigNumberMap } from 'types'
 import { quote } from 'utils/rsv'
 import { quantitiesAtom } from 'views/issuance/atoms'
 
-const useQuantities = (data: ReserveToken, amount: string): BigNumberMap => {
-  const [quantities, setQuantities] = useAtom(quantitiesAtom)
-  const basketHandler = useBasketHandlerContract(data.basketHandler ?? '')
+const QuantitiesUpdater = ({ amount }: { amount: string }) => {
+  const rToken = useAtomValue(rTokenAtom)
+  const setQuantities = useUpdateAtom(quantitiesAtom)
+  const basketHandler = useBasketHandlerContract(rToken?.basketHandler ?? '')
 
   const fetchQuantities = useCallback(async () => {
     try {
       const issueAmount = parseEther(amount)
 
-      if (data.isRSV) {
+      if (rToken!.isRSV) {
         setQuantities(quote(issueAmount))
       } else if (basketHandler) {
         const quoteResult = await basketHandler.quote(issueAmount, 2)
@@ -30,7 +33,7 @@ const useQuantities = (data: ReserveToken, amount: string): BigNumberMap => {
       // TODO: Handle error case
       console.error('failed fetching quantities', e)
     }
-  }, [amount, data.id, basketHandler])
+  }, [amount, rToken?.id, basketHandler])
 
   useEffect(() => {
     if (Number(amount) > 0) {
@@ -38,14 +41,15 @@ const useQuantities = (data: ReserveToken, amount: string): BigNumberMap => {
     } else {
       setQuantities({})
     }
+  }, [amount, rToken?.id])
 
+  useEffect(() => {
     return () => {
-      console.log('cleanup')
       setQuantities({})
     }
-  }, [amount, data.id])
+  }, [])
 
-  return quantities
+  return null
 }
 
-export default useQuantities
+export default QuantitiesUpdater

@@ -11,6 +11,7 @@ import {
 import ConfirmModal from './ConfirmModal'
 import IssueInput from './IssueInput'
 import MaxIssuableUpdater from './MaxIssuableUpdater'
+import QuantitiesUpdater from './QuantitiesUpdater'
 import useQuantities from './useQuantities'
 
 /**
@@ -22,11 +23,11 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
   const debouncedValue = useDebounce(amount, 400)
   const [issuing, setIssuing] = useState(false)
   // Update quantities after input change
-  useQuantities(data, debouncedValue)
 
   return (
     <>
       <MaxIssuableUpdater />
+      <QuantitiesUpdater amount={debouncedValue} />
       {issuing && (
         <ConfirmModal
           data={data}
