@@ -12,7 +12,9 @@ import {
 
 // TODO: Maybe its time to split up this atoms file
 // Workaround weird bug when no trackedAccount is set
-localStorage.setItem('trackedAccount', localStorage.trackedAccount || '')
+localStorage.setItem('trackedAccount', localStorage.trackedAccount || ' ')
+localStorage.setItem('selectedAccount', localStorage.selectedAccount || ' ')
+localStorage.setItem('selectedToken', localStorage.selectedToken || ' ')
 
 // Prices
 export const ethPriceAtom = atom(1)

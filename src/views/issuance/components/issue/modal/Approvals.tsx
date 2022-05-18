@@ -5,8 +5,9 @@ import useBlockNumber from 'hooks/useBlockNumber'
 import { useTokenContract } from 'hooks/useContract'
 import useLastTx from 'hooks/useLastTx'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { addTransactionAtom, ethPriceAtom, gasPriceAtom } from 'state/atoms'
+import { useTransactions } from 'state/web3/hooks/useTransactions'
 import { Box, Divider, Spinner, Text } from 'theme-ui'
 import { TransactionState } from 'types'
 import { formatCurrency } from 'utils'
@@ -26,7 +27,19 @@ const IssuanceApprovals = ({ txs, symbol }: Props) => {
   const tokenContract = useTokenContract(txs[0]?.call.address, true)!
   const gasPrice = useAtomValue(gasPriceAtom)
   const ethPrice = useAtomValue(ethPriceAtom)
-  const runningTx = useLastTx(signing ? txs.length : 0)
+  const approvals = useTransactions(signing ? txs.map((tx) => tx.id) : [])
+  const signed = useMemo(
+    () =>
+      approvals.reduce((count, tx) => {
+        count +=
+          tx.status === TRANSACTION_STATUS.MINING ||
+          tx.status === TRANSACTION_STATUS.CONFIRMED
+            ? 1
+            : 0
+        return count
+      }, 0),
+    [JSON.stringify(approvals)]
+  )
 
   const handleApprove = () => {
     if (signing) return
@@ -49,7 +62,6 @@ const IssuanceApprovals = ({ txs, symbol }: Props) => {
         })
       )
 
-      
       setGasEstimates(estimates)
       setFee(totalFee * gasPrice * ethPrice)
     } catch (e) {

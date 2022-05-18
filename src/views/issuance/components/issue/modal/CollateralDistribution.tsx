@@ -20,7 +20,11 @@ const CollateralDistribution = ({
   const [isVisible, setVisible] = useState(false)
 
   return (
-    <Box sx={{ border: '1px solid #ccc', borderRadius: 10 }} p={2} {...props}>
+    <Box
+      sx={{ border: '1px solid', borderColor: 'secondary', borderRadius: 10 }}
+      p={2}
+      {...props}
+    >
       <Flex
         sx={{
           alignItems: 'center',

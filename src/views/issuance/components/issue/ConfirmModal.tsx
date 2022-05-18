@@ -4,7 +4,6 @@ import { formatUnits, parseEther } from '@ethersproject/units'
 import { ERC20Interface, RSVManagerInterface, RTokenInterface } from 'abis'
 import { Button, NumericalInput } from 'components'
 import Modal from 'components/modal'
-import useBlockNumber from 'hooks/useBlockNumber'
 import { useRTokenContract } from 'hooks/useContract'
 import useLastTx from 'hooks/useLastTx'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
@@ -14,7 +13,11 @@ import { Divider, Text } from 'theme-ui'
 import { BigNumberMap, ReserveToken, TransactionState } from 'types'
 import { formatCurrency, hasAllowance } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
-import { issueAmountAtom, quantitiesAtom } from 'views/issuance/atoms'
+import {
+  issueAmountAtom,
+  maxIssuableAtom,
+  quantitiesAtom,
+} from 'views/issuance/atoms'
 import IssuanceApprovals from './modal/Approvals'
 import CollateralDistribution from './modal/CollateralDistribution'
 import IssuanceConfirmation from './modal/IssuanceConfirmation'
@@ -22,7 +25,6 @@ import { v4 as uuid } from 'uuid'
 
 interface Props {
   data: ReserveToken
-  issuableAmount: number
   onClose: () => void
 }
 
@@ -76,8 +78,9 @@ const buildApprovalTransactions = (
   return transactions
 }
 
-const ConfirmModal = ({ data, issuableAmount, onClose }: Props) => {
+const ConfirmModal = ({ data, onClose }: Props) => {
   const [amount, setAmount] = useAtom(issueAmountAtom)
+  const issuableAmount = useAtomValue(maxIssuableAtom)
   const quantities = useAtomValue(quantitiesAtom)
   const addTransaction = useSetAtom(addTransactionAtom)
   const allowances = useAtomValue(allowanceAtom)

@@ -12,36 +12,9 @@ import Stake from './components/stake'
 import Unstake from './components/unstake'
 import Withdrawals from './components/withdrawals'
 
-const getHistory = gql`
-    entries(
-      where: {
-        type_in: ["Stake", "Unstake", "Withdraw"]
-        user: $userId
-        token: $token
-      }
-      orderBy: createdAt
-      orderDirection: desc
-    ) {
-      id
-      type
-      amount
-      createdAt
-      transaction {
-        id
-      }
-    }
-  }
-`
-
 const Staking = () => {
   // This component is protected by a guard, RToken always exists
   const RToken = useAtomValue(rTokenAtom) as ReserveToken
-  const { account } = useWeb3React()
-  const { data } = useQuery(getHistory, {
-    where: {},
-    userId: account?.toLowerCase(),
-    token: RToken.insurance!.token.address,
-  })
 
   return (
     <Container pt={4} pb={4}>
@@ -63,11 +36,6 @@ const Staking = () => {
           <Withdrawals tokenAddress={RToken.insurance?.token.address ?? ''} />
         </Box>
       </Grid>
-      <Divider mt={4} mb={4} sx={{ borderColor: '#DFDFDF' }} />
-      <Text mb={3} variant="sectionTitle">
-        Transactions
-      </Text>
-      <TransactionHistory history={data?.entries ?? []} />
     </Container>
   )
 }

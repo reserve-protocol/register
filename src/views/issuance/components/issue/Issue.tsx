@@ -6,11 +6,15 @@ import { useState } from 'react'
 import { Box, Card, Text } from 'theme-ui'
 import { ReserveToken } from 'types'
 import { formatCurrency } from 'utils'
-import { issueAmountAtom, maxIssuableAtom } from 'views/issuance/atoms'
+import {
+  issueAmountAtom,
+  isValidIssuableAmountAtom,
+  maxIssuableAtom,
+} from 'views/issuance/atoms'
 import ConfirmModal from './ConfirmModal'
+import IssueInput from './IssueInput'
 import MaxIssuableUpdater from './MaxIssuableUpdater'
 import useQuantities from './useQuantities'
-import useTokenIssuableAmount from './useTokenIssuableAmount'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -20,63 +24,31 @@ const InputContainer = styled(Box)`
 
 /**
  * Issuance
- * Handles issuance, creates the set of transactions that will be later handled by the container
- * @required TransactionManager context
- *
- * @returns React.Component
  */
-// TODO: Validations
-// TODO: Get max issuable quantity from view function (protocol)
 const Issue = ({ data, ...props }: { data: ReserveToken }) => {
-  const [amount, setAmount] = useAtom(issueAmountAtom)
-  const issuableAmount = useAtomValue(maxIssuableAtom)
-  const debouncedValue = useDebounce(amount, 10)
+  const amount = useAtomValue(issueAmountAtom)
+  const isValid = useAtomValue(isValidIssuableAmountAtom)
+  const debouncedValue = useDebounce(amount, 400)
   const [issuing, setIssuing] = useState(false)
   // Update quantities after input change
   useQuantities(data, debouncedValue)
-
-  const isValid = () => {
-    const value = Number(amount)
-    return value > 0 && value <= issuableAmount
-  }
 
   return (
     <>
       <MaxIssuableUpdater />
       {issuing && (
-        <ConfirmModal
-          data={data}
-          issuableAmount={issuableAmount}
-          onClose={() => setIssuing(false)}
-        />
+        <ConfirmModal data={data} onClose={() => setIssuing(false)} />
       )}
       <Card {...props}>
-        <InputContainer m={3}>
-          <Text as="label" variant="contentTitle" mb={2}>
-            Mint
-          </Text>
-          <NumericalInput
-            id="mint"
-            placeholder="Mint amount"
-            value={amount}
-            onChange={setAmount}
-          />
-          <Text
-            onClick={() => setAmount(issuableAmount.toString())}
-            as="a"
-            variant="a"
-            sx={{ marginLeft: 'auto', marginTop: 1 }}
-          >
-            Max: {formatCurrency(issuableAmount)}
-          </Text>
-          <Button
-            disabled={!isValid() || issuing}
-            mt={2}
-            onClick={() => setIssuing(true)}
-          >
-            + Mint {data.token.symbol}
-          </Button>
-        </InputContainer>
+        <IssueInput />
+        <Button
+          sx={{ width: '100%' }}
+          disabled={!isValid || issuing}
+          mt={3}
+          onClick={() => setIssuing(true)}
+        >
+          + Mint {data.token.symbol}
+        </Button>
       </Card>
     </>
   )

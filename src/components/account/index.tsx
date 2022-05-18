@@ -33,6 +33,7 @@ const Container = styled(Box)`
 const Account = () => {
   const [isVisible, setVisible] = useState(false)
   const [currentWallet, setCurrentAccount] = useAtom(selectedAccountAtom)
+  console.log('currentWallet', currentWallet)
   // TODO: Maybe unnecessary
   const { ENSName } = useENSName(currentWallet)
   const navigate = useNavigate()

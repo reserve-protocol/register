@@ -1,21 +1,32 @@
 import { NumericalInput } from 'components'
-import { useAtom } from 'jotai'
-import { Box, BoxProps, Text } from 'theme-ui'
-import { issueAmountAtom } from '../../atoms'
+import { useAtom, useAtomValue } from 'jotai'
+import { Box, BoxProps, Flex, Text } from 'theme-ui'
+import { formatCurrency } from 'utils'
+import { issueAmountAtom, maxIssuableAtom } from '../../atoms'
 
 interface Props extends BoxProps {
-  title: string
+  title?: string
 }
 
-// TODO (idea): maybe its worth to move the maxIssuable logic to this component as well
 const IssueInput = ({ title = 'Mint', ...props }: Props) => {
   const [amount, setAmount] = useAtom(issueAmountAtom)
+  const issuableAmount = useAtomValue(maxIssuableAtom)
 
   return (
     <Box {...props}>
-      <Text as="label" variant="contentTitle" mb={2}>
-        {title}
-      </Text>
+      <Flex sx={{ alignItems: 'center' }} mb={2}>
+        <Text as="label" variant="contentTitle" ml={2}>
+          {title}
+        </Text>
+        <Text
+          onClick={() => setAmount(issuableAmount.toString())}
+          as="a"
+          variant="a"
+          sx={{ marginLeft: 'auto', fontSize: 1 }}
+        >
+          Max: {formatCurrency(issuableAmount)}
+        </Text>
+      </Flex>
       <NumericalInput
         placeholder="Mint amount"
         value={amount}
