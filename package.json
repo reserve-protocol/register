@@ -74,6 +74,7 @@
   },
   "devDependencies": {
     "@ethersproject/experimental": "^5.4.0",
+    "@react-spring/types": "^9.4.5",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^14.0.4",
