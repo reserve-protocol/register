@@ -15,7 +15,7 @@ import {
   quantitiesAtom,
 } from 'views/issuance/atoms'
 import IssueInput from './IssueInput'
-import CollateralDistribution from './modal/CollateralDistribution'
+import CollateralDistribution from './CollateralDistribution'
 
 interface Props {
   data: ReserveToken
