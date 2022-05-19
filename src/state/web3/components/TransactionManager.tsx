@@ -6,9 +6,10 @@ import { useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { useCallback, useEffect } from 'react'
 import { pendingTxAtom, updateTransactionAtom } from 'state/atoms'
+import { TransactionState } from 'types'
 import { getContract } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
-import toast from 'react-hot-toast'
+import { error, signed, success } from '../lib/notifications'
 
 const TransactionManager = () => {
   const setTxs = useUpdateAtom(updateTransactionAtom)
@@ -17,13 +18,13 @@ const TransactionManager = () => {
   const blockNumber = useBlockNumber()
 
   const checkMiningTx = useCallback(
-    async (txs: any) => {
+    async (txs: [number, TransactionState][]) => {
       for (const [index, tx] of txs) {
         try {
-          const receipt = await provider?.getTransactionReceipt(tx.hash)
+          const receipt = await provider?.getTransactionReceipt(tx.hash ?? '')
           if (receipt) {
             if (tx?.call.method !== 'approve') {
-              toast('Transaction mined!')
+              success('Transaction confirmed', tx.description)
             }
             setTxs([
               index,
@@ -63,12 +64,12 @@ const TransactionManager = () => {
             // TODO: Handle case account change after approve tx
             setTxs([index, { ...tx, status: TRANSACTION_STATUS.MINING, hash }])
             if (tx?.call.method !== 'approve') {
-              toast('Transaction signed!')
+              signed()
             }
           })
           .catch(() => {
             if (tx?.call.method !== 'approve') {
-              toast('Transaction FAILED')
+              error('Transaction reverted', tx.description)
             }
             setTxs([index, { ...tx, status: TRANSACTION_STATUS.REJECTED }])
           })

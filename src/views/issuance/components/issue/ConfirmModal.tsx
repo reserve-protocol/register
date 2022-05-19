@@ -144,16 +144,19 @@ const ConfirmModal = ({ data, onClose }: Props) => {
     }
   }, [allowances, quantities])
 
+  const signed =
+    signing &&
+    issueTx?.call.method === 'issue' &&
+    issueTx.status !== TRANSACTION_STATUS.PENDING &&
+    issueTx.status !== TRANSACTION_STATUS.SIGNING
+
   return (
     <Modal
-      title="Confirm Issuance"
+      title={signed ? 'Confirm Issuance' : ''}
       onClose={onClose}
       style={{ width: '400px' }}
     >
-      {signing &&
-      issueTx?.call.method === 'issue' &&
-      issueTx.status !== TRANSACTION_STATUS.PENDING &&
-      issueTx.status !== TRANSACTION_STATUS.SIGNING ? (
+      {signed ? (
         <IssuanceConfirmation onClose={onClose} />
       ) : (
         <>

@@ -13,6 +13,12 @@ export const success = (title: string, subtitle: string) => {
   ))
 }
 
+export const signed = () => {
+  toast((t) => (
+    <Notification title="Transaction signed!" toastId={t.id} icon={<Check />} />
+  ))
+}
+
 export const error = (title: string, subtitle: string) => {
   toast((t) => (
     <Notification

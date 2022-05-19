@@ -38,23 +38,19 @@ const RTokenBalance = ({ token }: { token: Token }) => {
 /**
  * Display collateral tokens balances
  */
-const Balances = ({ rToken, ...props }: Props) => {
-  const tokenBalances = useAtomValue(balancesAtom)
-
-  return (
-    <Box {...props}>
-      <Card p={0}>
-        <Grid columns={2}>
-          <CollateralBalances collaterals={rToken.basket.collaterals} />
-          <Box sx={{ borderLeft: '1px solid #ccc' }} ml={-2}>
-            <RTokenBalance token={rToken.token} />
-            <Divider />
-            <PendingIssuances token={rToken.token} />
-          </Box>
-        </Grid>
-      </Card>
-    </Box>
-  )
-}
+const Balances = ({ rToken, ...props }: Props) => (
+  <Box {...props}>
+    <Card p={0}>
+      <Grid columns={2}>
+        <CollateralBalances collaterals={rToken.basket.collaterals} />
+        <Box sx={{ borderLeft: '1px solid #ccc' }} ml={-2}>
+          <RTokenBalance token={rToken.token} />
+          <Divider />
+          <PendingIssuances token={rToken.token} />
+        </Box>
+      </Grid>
+    </Card>
+  </Box>
+)
 
 export default Balances
