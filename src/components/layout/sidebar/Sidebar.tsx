@@ -58,7 +58,7 @@ const Navigation = ({
     }
 
     if (currentToken.isRSV) {
-      return [...PAGES.slice(0, 3), PAGES[4]]
+      return [...PAGES.slice(0, 3)]
     }
 
     return PAGES

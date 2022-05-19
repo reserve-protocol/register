@@ -2,26 +2,20 @@ import { getAddress } from '@ethersproject/address'
 import { BigNumber } from '@ethersproject/bignumber'
 import { formatUnits, parseEther } from '@ethersproject/units'
 import { ERC20Interface, RSVManagerInterface, RTokenInterface } from 'abis'
-import { Button, NumericalInput } from 'components'
-import Modal from 'components/modal'
-import { useRTokenContract } from 'hooks/useContract'
-import useLastTx from 'hooks/useLastTx'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect, useMemo, useState } from 'react'
-import { addTransactionAtom, allowanceAtom } from 'state/atoms'
-import { Divider, Spinner, Text } from 'theme-ui'
+import TransactionModal from 'components/transaction-modal'
+import { useAtomValue } from 'jotai'
+import { useCallback, useMemo } from 'react'
 import { BigNumberMap, ReserveToken, TransactionState } from 'types'
-import { formatCurrency, hasAllowance } from 'utils'
+import { formatCurrency } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
+import { v4 as uuid } from 'uuid'
 import {
   issueAmountAtom,
-  maxIssuableAtom,
+  isValidIssuableAmountAtom,
   quantitiesAtom,
 } from 'views/issuance/atoms'
-import IssuanceApprovals from './modal/Approvals'
+import IssueInput from './IssueInput'
 import CollateralDistribution from './modal/CollateralDistribution'
-import IssuanceConfirmation from './modal/IssuanceConfirmation'
-import { v4 as uuid } from 'uuid'
 
 interface Props {
   data: ReserveToken
@@ -79,122 +73,49 @@ const buildApprovalTransactions = (
 }
 
 const ConfirmModal = ({ data, onClose }: Props) => {
-  const [amount, setAmount] = useAtom(issueAmountAtom)
-  const issuableAmount = useAtomValue(maxIssuableAtom)
+  const amount = useAtomValue(issueAmountAtom)
   const quantities = useAtomValue(quantitiesAtom)
-  const addTransaction = useSetAtom(addTransactionAtom)
-  const allowances = useAtomValue(allowanceAtom)
-  const contract = useRTokenContract(data.token.address, true)!
-  const [signing, setSigning] = useState(false)
-  const [mining, setMining] = useState(false)
-  const [approvalsTx, setApprovalsTx] = useState([] as TransactionState[])
-  const [gasEstimates, setGasEstimates] = useState([] as BigNumber[])
-  const [issueTx] = useLastTx(signing ? 1 : 0)
-  const approvalsNeeded = useMemo(
-    () => approvalsTx.some((tx) => tx.status === TRANSACTION_STATUS.PENDING),
-    [approvalsTx]
+  const isValid = useAtomValue(isValidIssuableAmountAtom)
+  const transaction = useMemo(
+    () => ({
+      id: uuid(),
+      description: `Issue ${amount} ${data.token.symbol}`,
+      status: TRANSACTION_STATUS.PENDING,
+      value: amount,
+      call: {
+        abi: data.isRSV ? RSVManagerInterface : RTokenInterface,
+        address: data.isRSV ? data.id : data.token.address,
+        method: 'issue',
+        args: [parseEther(amount ?? '0')],
+      },
+    }),
+    [amount]
   )
-  const canIssue = useMemo(
-    () => hasAllowance(allowances, quantities),
-    [allowances, quantities]
+
+  const confirmLabel = `Begin minting ${formatCurrency(Number(amount))} ${
+    data.token.symbol
+  }`
+
+  const buildApprovals = useCallback(
+    (required: BigNumberMap, allowances: BigNumberMap) =>
+      buildApprovalTransactions(data, required, allowances),
+    [data?.id]
   )
-
-  const isValid = () => {
-    const _value = Number(amount)
-    return _value > 0 && _value <= issuableAmount && canIssue
-  }
-
-  const handleIssue = async () => {
-    if (signing) return
-
-    setSigning(true)
-    try {
-      const issueAmount = parseEther(amount)
-
-      addTransaction([
-        {
-          id: uuid(),
-          description: `Issue ${amount} ${data.token.symbol}`,
-          status: TRANSACTION_STATUS.PENDING,
-          value: amount,
-          call: {
-            abi: data.isRSV ? RSVManagerInterface : RTokenInterface,
-            address: data.isRSV ? data.id : data.token.address,
-            method: 'issue',
-            args: [issueAmount],
-          },
-        },
-      ])
-    } catch (e) {
-      setSigning(false)
-      // TODO: Handle error case
-      console.log('error issuing')
-    }
-  }
-
-  useEffect(() => {
-    if (Object.keys(allowances).length && Object.keys(quantities).length) {
-      setApprovalsTx(buildApprovalTransactions(data, quantities, allowances))
-    } else {
-      setApprovalsTx([])
-    }
-  }, [allowances, quantities])
-
-  const signed =
-    signing &&
-    issueTx?.call.method === 'issue' &&
-    issueTx.status !== TRANSACTION_STATUS.PENDING &&
-    issueTx.status !== TRANSACTION_STATUS.SIGNING
 
   return (
-    <Modal
-      title={!signed ? `Mint ${data.token.symbol}` : ''}
+    <TransactionModal
+      title={'Mint ' + data.token.symbol}
+      tx={transaction}
+      isValid={isValid}
+      requiredAllowance={quantities}
+      confirmLabel={confirmLabel}
+      approvalsLabel="Allow use of collateral tokens"
+      buildApprovals={buildApprovals}
       onClose={onClose}
-      style={{ width: '400px' }}
     >
-      {signed ? (
-        <IssuanceConfirmation onClose={onClose} />
-      ) : (
-        <>
-          <NumericalInput
-            id="mint"
-            placeholder="Mint amount"
-            value={amount}
-            onChange={setAmount}
-          />
-          <CollateralDistribution mt={3} data={data} quantities={quantities} />
-          {approvalsNeeded && !canIssue && (
-            <IssuanceApprovals symbol={data.token.symbol} txs={approvalsTx} />
-          )}
-          <Divider mx={-3} mt={3} sx={{ borderColor: '#ccc' }} />
-          <Button
-            sx={{ width: '100%' }}
-            disabled={!isValid()}
-            variant={signing ? 'accent' : 'primary'}
-            mt={2}
-            onClick={handleIssue}
-          >
-            {signing ? (
-              <Text
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Spinner color="black" marginRight={10} size={20} />
-                Pending, sign in wallet
-              </Text>
-            ) : (
-              <Text>
-                Begin minting {formatCurrency(Number(amount))}{' '}
-                {data.token.symbol}
-              </Text>
-            )}
-          </Button>
-        </>
-      )}
-    </Modal>
+      <IssueInput compact />
+      <CollateralDistribution mt={3} data={data} quantities={quantities} />
+    </TransactionModal>
   )
 }
 

@@ -21,7 +21,7 @@ import { TRANSACTION_STATUS } from 'utils/constants'
 
 export interface ITransactionModal {
   title: string
-  children: React.ReactNode
+  children: any
   tx: TransactionState
   requiredAllowance: BigNumberMap
   confirmLabel: string
@@ -86,7 +86,6 @@ const ApprovalTransactions = ({
 
   return (
     <Box mt={3}>
-      <Divider mx={-3} mb={3} sx={{ borderColor: '#ccc' }} />
       <Button sx={{ width: '100%' }} variant="accent" onClick={handleApprove}>
         {signing ? (
           <Text
@@ -190,17 +189,19 @@ const TransactionModal = ({
       style={{ width: '400px' }}
     >
       {children}
-      <Divider mx={-3} mt={3} />
       {approvalsNeeded && !canSubmit && (
-        <ApprovalTransactions
-          title={approvalsLabel ?? 'Approve'}
-          txs={approvalsTx}
-        />
+        <>
+          <Divider mx={-3} mt={3} />
+          <ApprovalTransactions
+            title={approvalsLabel ?? 'Approve'}
+            txs={approvalsTx}
+          />
+        </>
       )}
       <Divider mx={-3} mt={3} />
       <Button
         sx={{ width: '100%' }}
-        disabled={!isValid}
+        disabled={!canSubmit}
         variant={signing ? 'accent' : 'primary'}
         mt={2}
         onClick={handleConfirm}

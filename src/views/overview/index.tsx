@@ -28,7 +28,7 @@ const Overview = () => {
 
   return (
     <Container>
-      <Grid columns={2} gap={[3, 3, 4, 5]} width={[400, 500, 400]}>
+      <Grid columns={[1, 1, 1, 2]} gap={[3, 3, 4, 5]}>
         <Box>
           <UsageOverview data={RToken} mb={3} />
           <AssetsOverview data={RToken} mb={3} />
