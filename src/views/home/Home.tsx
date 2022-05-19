@@ -1,4 +1,4 @@
-import { Grid, Text, Box } from 'theme-ui'
+import { Grid, Text, Box, Card, Button, Flex } from 'theme-ui'
 import { useWeb3React } from '@web3-react/core'
 import { Container } from 'components'
 import { Table } from 'components/table'
@@ -7,6 +7,9 @@ import useQuery from 'hooks/useQuery'
 import { gql } from 'graphql-request'
 import { useAtomValue } from 'jotai'
 import { rTokenAtom } from 'state/atoms'
+import toast from 'react-hot-toast'
+import { Check, X } from 'react-feather'
+import Notification from 'components/notification'
 
 const mockTokens: any = [
   { name: 'USD1', price: '$1.00', balance: '0.00', value: '0.00', apy: '0.00' },
@@ -67,12 +70,23 @@ const getRTokenExchange = gql`
 `
 
 const Home = () => {
-  const data = useQuery(getRTokenExchange)
-  const reserveToken = useAtomValue(rTokenAtom)
+  // const data = useQuery(getRTokenExchange)
+  // const reserveToken = useAtomValue(rTokenAtom)
+
+  const handleClick = () => {
+    toast((t) => (
+      <Notification
+        title="Transaction complete"
+        subtitle="USD+ now in your wallet"
+        toastId={t.id}
+        icon={<Check />}
+      />
+    ))
+  }
 
   return (
     <Container>
-      <Text variant="h1">todo</Text>
+      <Button onClick={handleClick}>Test</Button>
     </Container>
   )
 }

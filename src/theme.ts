@@ -67,6 +67,9 @@ export const theme: Theme = {
     primary: {
       color: 'text',
     },
+    legend: {
+      color: '#666666',
+    },
     a: {
       transition,
       color: '#77838F',

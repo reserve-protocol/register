@@ -52,7 +52,16 @@ const App = () => (
   <Web3Provider>
     <Updater />
     <ThemeProvider theme={theme}>
-      <Toaster />
+      <Toaster
+        gutter={20}
+        toastOptions={{ position: 'bottom-right', style: { width: 300 } }}
+        containerStyle={{
+          top: 40,
+          left: 40,
+          bottom: 40,
+          right: 40,
+        }}
+      />
       <Router>
         <Layout>
           <Routes>
