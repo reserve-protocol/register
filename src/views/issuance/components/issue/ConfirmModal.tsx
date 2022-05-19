@@ -111,10 +111,6 @@ const ConfirmModal = ({ data, onClose }: Props) => {
     try {
       const issueAmount = parseEther(amount)
 
-      if (!data.isRSV) {
-        await contract.callStatic.issue(issueAmount)
-      }
-
       addTransaction([
         {
           id: uuid(),
