@@ -236,6 +236,7 @@ const PendingIssuancesUpdater = () => {
   const rToken = useAtomValue(rTokenAtom)
   const setPending = useUpdateAtom(pendingIssuancesAtom)
   const facadeContract = useFacadeContract(rToken?.facade)
+  const blockNumber = useBlockNumber()
 
   const fetchPending = useCallback(async () => {
     try {
@@ -247,14 +248,12 @@ const PendingIssuancesUpdater = () => {
           amount: parseFloat(formatEther(issuance.amount)),
         }))
         setPending(pending)
-        console.log('date', Date.now())
-        console.log('oending', pending)
       }
     } catch (e) {
       // TODO: handle error case
       console.log('error fetching pending', e)
     }
-  }, [account, facadeContract])
+  }, [account, facadeContract, blockNumber])
 
   useEffect(() => {
     if (account && facadeContract) {

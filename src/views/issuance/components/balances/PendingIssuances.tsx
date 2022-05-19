@@ -1,6 +1,7 @@
+import { BigNumber } from '@ethersproject/bignumber'
+import { useWeb3React } from '@web3-react/core'
 import { RTokenInterface } from 'abis'
 import TokenBalance from 'components/token-balance'
-import { useFacadeContract } from 'hooks/useContract'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
 import { addTransactionAtom, pendingIssuancesSummary } from 'state/atoms'
@@ -13,6 +14,7 @@ import { v4 as uuid } from 'uuid'
 const PendingIssuances = ({ token }: { token: Token }) => {
   const addTransaction = useSetAtom(addTransactionAtom)
   const [claiming, setClaiming] = useState('')
+  const { account } = useWeb3React()
   const claimTx = useTransaction(claiming)
   const { index, pendingAmount, availableAmount } = useAtomValue(
     pendingIssuancesSummary
@@ -26,12 +28,12 @@ const PendingIssuances = ({ token }: { token: Token }) => {
         id: txId,
         description: `Claim ${availableAmount} ${token.symbol}`,
         status: TRANSACTION_STATUS.PENDING,
-        value: '0',
+        value: availableAmount,
         call: {
           abi: RTokenInterface,
           address: token.address,
-          method: 'vestUpTo',
-          args: [''],
+          method: 'vest',
+          args: [account, index.add(BigNumber.from(1))],
         },
       },
     ])

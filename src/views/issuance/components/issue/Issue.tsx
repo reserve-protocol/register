@@ -12,7 +12,6 @@ import ConfirmModal from './ConfirmModal'
 import IssueInput from './IssueInput'
 import MaxIssuableUpdater from './MaxIssuableUpdater'
 import QuantitiesUpdater from './QuantitiesUpdater'
-import useQuantities from './useQuantities'
 
 /**
  * Issuance
@@ -22,7 +21,6 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
   const isValid = useAtomValue(isValidIssuableAmountAtom)
   const debouncedValue = useDebounce(amount, 400)
   const [issuing, setIssuing] = useState(false)
-  // Update quantities after input change
 
   return (
     <>
@@ -42,7 +40,7 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
         <Button
           sx={{ width: '100%' }}
           disabled={!isValid || issuing}
-          mt={3}
+          mt={2}
           onClick={() => setIssuing(true)}
         >
           + Mint {data.token.symbol}
