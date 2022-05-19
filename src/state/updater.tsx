@@ -243,7 +243,7 @@ const PendingIssuancesUpdater = () => {
       if (facadeContract && account) {
         const pendingIssuances = await facadeContract.pendingIssuances(account)
         const pending = pendingIssuances.map((issuance) => ({
-          availableAt: Number(formatEther(issuance.availableAt)),
+          availableAt: parseInt(formatEther(issuance.availableAt)),
           index: issuance.index,
           amount: parseFloat(formatEther(issuance.amount)),
         }))
@@ -253,13 +253,13 @@ const PendingIssuancesUpdater = () => {
       // TODO: handle error case
       console.log('error fetching pending', e)
     }
-  }, [account, facadeContract, blockNumber])
+  }, [account, facadeContract])
 
   useEffect(() => {
     if (account && facadeContract) {
       fetchPending()
     }
-  }, [account, facadeContract])
+  }, [account, facadeContract, blockNumber])
 
   return null
 }

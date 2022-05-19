@@ -17,6 +17,7 @@ const StyledDialog = styled((props: any) => <Dialog {...props} />)`
     background-color: ${({ theme }) => theme.colors.bgCard};
     padding: ${({ theme }) => theme.space[3]}px;
     position: relative;
+    border-radius: 14px;
   }
 `
 

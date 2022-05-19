@@ -60,6 +60,8 @@ export const pendingIssuancesSummary = atom((get) => {
     (acc, issuance) => {
       acc.index = issuance.index
 
+      console.log('available at', issuance.availableAt)
+
       if (issuance.availableAt > Date.now()) {
         acc.pendingAmount += issuance.amount
       } else {

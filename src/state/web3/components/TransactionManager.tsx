@@ -8,6 +8,7 @@ import { useCallback, useEffect } from 'react'
 import { pendingTxAtom, updateTransactionAtom } from 'state/atoms'
 import { getContract } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
+import toast from 'react-hot-toast'
 
 const TransactionManager = () => {
   const setTxs = useUpdateAtom(updateTransactionAtom)
@@ -21,6 +22,9 @@ const TransactionManager = () => {
         try {
           const receipt = await provider?.getTransactionReceipt(tx.hash)
           if (receipt) {
+            if (tx?.call.method !== 'approve') {
+              toast('Transaction mined!')
+            }
             setTxs([
               index,
               { ...tx, status: TRANSACTION_STATUS.CONFIRMED, receipt },
@@ -56,10 +60,16 @@ const TransactionManager = () => {
 
         contract[tx.call.method](...tx.call.args)
           .then(({ hash }: { hash: string }) => {
-            // TODO: Handle case account change and after approve tx
+            // TODO: Handle case account change after approve tx
             setTxs([index, { ...tx, status: TRANSACTION_STATUS.MINING, hash }])
+            if (tx?.call.method !== 'approve') {
+              toast('Transaction signed!')
+            }
           })
           .catch(() => {
+            if (tx?.call.method !== 'approve') {
+              toast('Transaction FAILED')
+            }
             setTxs([index, { ...tx, status: TRANSACTION_STATUS.REJECTED }])
           })
       }
