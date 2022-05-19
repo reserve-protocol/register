@@ -9,7 +9,7 @@ import useLastTx from 'hooks/useLastTx'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { addTransactionAtom, allowanceAtom } from 'state/atoms'
-import { Divider, Text } from 'theme-ui'
+import { Divider, Spinner, Text } from 'theme-ui'
 import { BigNumberMap, ReserveToken, TransactionState } from 'types'
 import { formatCurrency, hasAllowance } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
@@ -152,7 +152,7 @@ const ConfirmModal = ({ data, onClose }: Props) => {
 
   return (
     <Modal
-      title={signed ? 'Confirm Issuance' : ''}
+      title={!signed ? `Mint ${data.token.symbol}` : ''}
       onClose={onClose}
       style={{ width: '400px' }}
     >
@@ -174,11 +174,21 @@ const ConfirmModal = ({ data, onClose }: Props) => {
           <Button
             sx={{ width: '100%' }}
             disabled={!isValid()}
+            variant={signing ? 'accent' : 'primary'}
             mt={2}
             onClick={handleIssue}
           >
             {signing ? (
-              <Text>Pending sign in wallet</Text>
+              <Text
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Spinner color="black" marginRight={10} size={20} />
+                Pending, sign in wallet
+              </Text>
             ) : (
               <Text>
                 Begin minting {formatCurrency(Number(amount))}{' '}

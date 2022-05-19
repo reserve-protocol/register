@@ -14,9 +14,16 @@ export const success = (title: string, subtitle: string) => {
 }
 
 export const signed = () => {
-  toast((t) => (
-    <Notification title="Transaction signed!" toastId={t.id} icon={<Check />} />
-  ))
+  toast(
+    (t) => (
+      <Notification
+        title="Transaction signed!"
+        toastId={t.id}
+        icon={<Check />}
+      />
+    ),
+    { duration: 1000 }
+  )
 }
 
 export const error = (title: string, subtitle: string) => {

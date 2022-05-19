@@ -40,7 +40,13 @@ const PendingIssuances = ({ token }: { token: Token }) => {
   }
 
   useEffect(() => {
-    if (claiming && claimTx && claimTx.status !== TRANSACTION_STATUS.SIGNING) {
+    if (
+      claiming &&
+      claimTx &&
+      ![TRANSACTION_STATUS.SIGNING, TRANSACTION_STATUS.PENDING].includes(
+        claimTx.status
+      )
+    ) {
       setClaiming('')
     }
   }, [claimTx, claiming])
