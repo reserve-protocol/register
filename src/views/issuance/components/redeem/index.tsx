@@ -9,6 +9,7 @@ import { addTransactionAtom } from 'state/atoms'
 import { ReserveToken, TransactionState } from 'types'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
+import RedeemInput from './RedeemInput'
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -95,27 +96,16 @@ const Redeem = ({
   }
 
   return (
-    <Card {...props}>
-      <InputContainer m={3}>
-        <Text variant="contentTitle" mb={2}>
-          Redeem
-        </Text>
-        <NumericalInput
-          placeholder="Redeem amount"
-          value={amount}
-          onChange={setAmount}
-        />
-        <Text
-          onClick={handleMax}
-          variant="a"
-          sx={{ marginLeft: 'auto', marginTop: 1 }}
-        >
-          Max: {max}
-        </Text>
-        <Button disabled={!isValid()} mt={2} onClick={handleRedeem}>
-          - Redeem {data.token.symbol}
-        </Button>
-      </InputContainer>
+    <Card p={4} {...props}>
+      <RedeemInput />
+      <Button
+        disabled={!isValid()}
+        sx={{ width: '100%' }}
+        mt={2}
+        onClick={handleRedeem}
+      >
+        - Redeem {data.token.symbol}
+      </Button>
     </Card>
   )
 }
