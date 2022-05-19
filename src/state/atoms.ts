@@ -51,6 +51,30 @@ export const currentWalletAtom = atom<Wallet | null>(
 
 export const balancesAtom = atom<{ [x: string]: number }>({})
 export const allowanceAtom = atom<{ [x: string]: BigNumber }>({})
+export const pendingIssuancesAtom = atom<any[]>([])
+export const pendingIssuancesSummary = atom((get) => {
+  const pending = get(pendingIssuancesAtom)
+
+  // TODO: Correct timestamp formatting
+  return pending.reduce(
+    (acc, issuance) => {
+      acc.index = issuance.index
+
+      if (issuance.availableAt > Date.now()) {
+        acc.pendingAmount += issuance.amount
+      } else {
+        acc.availableAmount += issuance.amount
+      }
+
+      return acc
+    },
+    {
+      index: BigNumber.from(0),
+      pendingAmount: 0,
+      availableAmount: 0,
+    }
+  )
+})
 
 // Calls state
 export const callsAtom = atom<RawCall[]>([])

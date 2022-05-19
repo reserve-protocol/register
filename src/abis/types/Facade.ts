@@ -26,6 +26,20 @@ import type {
   OnEvent,
 } from "./common";
 
+export declare namespace IFacadeP1 {
+  export type PendingStruct = {
+    index: BigNumberish;
+    availableAt: BigNumberish;
+    amount: BigNumberish;
+  };
+
+  export type PendingStructOutput = [BigNumber, BigNumber, BigNumber] & {
+    index: BigNumber;
+    availableAt: BigNumber;
+    amount: BigNumber;
+  };
+}
+
 export interface FacadeInterface extends utils.Interface {
   functions: {
     "basketTokens()": FunctionFragment;
@@ -35,6 +49,8 @@ export interface FacadeInterface extends utils.Interface {
     "issue(uint256)": FunctionFragment;
     "main()": FunctionFragment;
     "maxIssuable(address)": FunctionFragment;
+    "pendingIssuances(address)": FunctionFragment;
+    "pendingUnstakings(address)": FunctionFragment;
     "runAuctionsForAllTraders()": FunctionFragment;
     "totalAssetValue()": FunctionFragment;
   };
@@ -48,6 +64,8 @@ export interface FacadeInterface extends utils.Interface {
       | "issue"
       | "main"
       | "maxIssuable"
+      | "pendingIssuances"
+      | "pendingUnstakings"
       | "runAuctionsForAllTraders"
       | "totalAssetValue"
   ): FunctionFragment;
@@ -68,6 +86,14 @@ export interface FacadeInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "issue", values: [BigNumberish]): string;
   encodeFunctionData(functionFragment: "main", values?: undefined): string;
   encodeFunctionData(functionFragment: "maxIssuable", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "pendingIssuances",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "pendingUnstakings",
+    values: [string]
+  ): string;
   encodeFunctionData(
     functionFragment: "runAuctionsForAllTraders",
     values?: undefined
@@ -94,6 +120,14 @@ export interface FacadeInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "main", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "maxIssuable",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "pendingIssuances",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "pendingUnstakings",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -175,6 +209,24 @@ export interface Facade extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    pendingIssuances(
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<
+      [IFacadeP1.PendingStructOutput[]] & {
+        issuances: IFacadeP1.PendingStructOutput[];
+      }
+    >;
+
+    pendingUnstakings(
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<
+      [IFacadeP1.PendingStructOutput[]] & {
+        unstakings: IFacadeP1.PendingStructOutput[];
+      }
+    >;
+
     runAuctionsForAllTraders(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -211,6 +263,16 @@ export interface Facade extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  pendingIssuances(
+    account: string,
+    overrides?: CallOverrides
+  ): Promise<IFacadeP1.PendingStructOutput[]>;
+
+  pendingUnstakings(
+    account: string,
+    overrides?: CallOverrides
+  ): Promise<IFacadeP1.PendingStructOutput[]>;
+
   runAuctionsForAllTraders(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -240,6 +302,16 @@ export interface Facade extends BaseContract {
     main(overrides?: CallOverrides): Promise<string>;
 
     maxIssuable(account: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    pendingIssuances(
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<IFacadeP1.PendingStructOutput[]>;
+
+    pendingUnstakings(
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<IFacadeP1.PendingStructOutput[]>;
 
     runAuctionsForAllTraders(overrides?: CallOverrides): Promise<void>;
 
@@ -279,6 +351,16 @@ export interface Facade extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    pendingIssuances(
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    pendingUnstakings(
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     runAuctionsForAllTraders(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -314,6 +396,16 @@ export interface Facade extends BaseContract {
     maxIssuable(
       account: string,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    pendingIssuances(
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    pendingUnstakings(
+      account: string,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     runAuctionsForAllTraders(

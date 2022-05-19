@@ -1,8 +1,9 @@
 import { RTokenInterface } from 'abis'
 import TokenBalance from 'components/token-balance'
-import { useSetAtom } from 'jotai'
+import { useFacadeContract } from 'hooks/useContract'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
-import { addTransactionAtom } from 'state/atoms'
+import { addTransactionAtom, pendingIssuancesSummary } from 'state/atoms'
 import { useTransaction } from 'state/web3/hooks/useTransactions'
 import { Box, Button, Divider, Spinner, Text } from 'theme-ui'
 import { Token } from 'types'
@@ -13,6 +14,9 @@ const PendingIssuances = ({ token }: { token: Token }) => {
   const addTransaction = useSetAtom(addTransactionAtom)
   const [claiming, setClaiming] = useState('')
   const claimTx = useTransaction(claiming)
+  const { index, pendingAmount, availableAmount } = useAtomValue(
+    pendingIssuancesSummary
+  )
 
   const handleClaim = () => {
     const txId = uuid()
@@ -20,7 +24,7 @@ const PendingIssuances = ({ token }: { token: Token }) => {
     addTransaction([
       {
         id: txId,
-        description: `Claim 1234 ${token.symbol}`,
+        description: `Claim ${availableAmount} ${token.symbol}`,
         status: TRANSACTION_STATUS.PENDING,
         value: '0',
         call: {
@@ -46,6 +50,7 @@ const PendingIssuances = ({ token }: { token: Token }) => {
           onClick={handleClaim}
           variant={claiming ? 'accent' : 'primary'}
           sx={{ width: '100%' }}
+          disabled={!availableAmount}
           mb={3}
         >
           {claiming ? (
@@ -65,14 +70,14 @@ const PendingIssuances = ({ token }: { token: Token }) => {
         <Text variant="contentTitle" sx={{ fontSize: 2 }} mb={2}>
           Available
         </Text>
-        <TokenBalance token={token} balance={0} />
+        <TokenBalance token={token} balance={availableAmount} />
       </Box>
       <Divider />
       <Box px={4} py={2} mb={2}>
         <Text variant="contentTitle" sx={{ fontSize: 2 }} mb={2}>
           Pending
         </Text>
-        <TokenBalance token={token} balance={0} />
+        <TokenBalance token={token} balance={pendingAmount} />
       </Box>
     </>
   )

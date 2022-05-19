@@ -1,7 +1,9 @@
 import { getAddress } from '@ethersproject/address'
+import { formatEther } from '@ethersproject/units'
 import { useWeb3React } from '@web3-react/core'
 import { gql } from 'graphql-request'
 import useBlockNumber from 'hooks/useBlockNumber'
+import { useFacadeContract } from 'hooks/useContract'
 import useQuery from 'hooks/useQuery'
 import useTokensAllowance from 'hooks/useTokensAllowance'
 import useTokensBalance from 'hooks/useTokensBalance'
@@ -13,10 +15,12 @@ import {
   balancesAtom,
   ethPriceAtom,
   gasPriceAtom,
+  pendingIssuancesAtom,
   reserveTokensAtom,
   rsrPriceAtom,
   rTokenAtom,
   rTokenPriceAtom,
+  selectedAccountAtom,
   walletAtom,
 } from 'state/atoms'
 import useSWR from 'swr'
@@ -225,6 +229,43 @@ const fetcher = async (url: string): Promise<StringMap> => {
 }
 
 /**
+ * Fetch pending issuances
+ */
+const PendingIssuancesUpdater = () => {
+  const account = useAtomValue(selectedAccountAtom)
+  const rToken = useAtomValue(rTokenAtom)
+  const setPending = useUpdateAtom(pendingIssuancesAtom)
+  const facadeContract = useFacadeContract(rToken?.facade)
+
+  const fetchPending = useCallback(async () => {
+    try {
+      if (facadeContract && account) {
+        const pendingIssuances = await facadeContract.pendingIssuances(account)
+        const pending = pendingIssuances.map((issuance) => ({
+          availableAt: Number(formatEther(issuance.availableAt)),
+          index: issuance.index,
+          amount: parseFloat(formatEther(issuance.amount)),
+        }))
+        setPending(pending)
+        console.log('date', Date.now())
+        console.log('oending', pending)
+      }
+    } catch (e) {
+      // TODO: handle error case
+      console.log('error fetching pending', e)
+    }
+  }, [account, facadeContract])
+
+  useEffect(() => {
+    if (account && facadeContract) {
+      fetchPending()
+    }
+  }, [account, facadeContract])
+
+  return null
+}
+
+/**
  * Fetch prices for:
  * ETH    -> USD
  * RSR    -> USD
@@ -283,6 +324,7 @@ const PricesUpdater = () => {
 const Updater = () => (
   <>
     <ReserveTokensUpdater />
+    <PendingIssuancesUpdater />
     <TokensBalanceUpdater />
     <TokensAllowanceUpdater />
     <PricesUpdater />
