@@ -19,7 +19,7 @@ const Staking = () => {
             Stake + UnStake
           </Text>
           <Grid columns={2} gap={4} mb={4}>
-            <Stake data={RToken} />
+            <Stake />
             <Unstake data={RToken} />
           </Grid>
           <Balances rToken={RToken} />
