@@ -100,6 +100,33 @@ export const pendingIssuancesSummary = atom((get) => {
   )
 })
 
+export const pendingRSRAtom = atom<any[]>([])
+export const pendingRSRSummaryAtom = atom((get) => {
+  const pending = get(pendingRSRAtom)
+
+  // TODO: Correct timestamp formatting
+  return pending.reduce(
+    (acc, unstake) => {
+      acc.index = unstake.index
+
+      console.log('available at', unstake.availableAt)
+
+      if (unstake.availableAt > Date.now()) {
+        acc.pendingAmount += unstake.amount
+      } else {
+        acc.availableAmount += unstake.amount
+      }
+
+      return acc
+    },
+    {
+      index: BigNumber.from(0),
+      pendingAmount: 0,
+      availableAmount: 0,
+    }
+  )
+})
+
 // Calls state
 export const callsAtom = atom<RawCall[]>([])
 export const multicallStateAtom = atom<MulticallState>({})

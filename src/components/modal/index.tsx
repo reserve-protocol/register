@@ -48,6 +48,7 @@ const Modal = ({
             role="button"
             sx={{
               position: 'absolute',
+              top: 20,
               right: 20,
               '&:hover': { cursor: 'pointer' },
             }}

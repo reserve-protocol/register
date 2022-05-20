@@ -110,7 +110,7 @@ export const theme: Theme = {
       color: 'text',
     },
     hr: {
-      borderColor: '#ccc',
+      borderColor: 'secondary',
     },
     h1: {
       variant: 'text.heading',

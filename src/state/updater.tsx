@@ -16,6 +16,7 @@ import {
   ethPriceAtom,
   gasPriceAtom,
   pendingIssuancesAtom,
+  pendingRSRAtom,
   reserveTokensAtom,
   rsrPriceAtom,
   rTokenAtom,
@@ -233,13 +234,15 @@ const fetcher = async (url: string): Promise<StringMap> => {
 /**
  * Fetch pending issuances
  */
-const PendingIssuancesUpdater = () => {
+const PendingBalancesUpdater = () => {
   const account = useAtomValue(selectedAccountAtom)
   const rToken = useAtomValue(rTokenAtom)
-  const setPending = useUpdateAtom(pendingIssuancesAtom)
+  const setPendingIssuances = useUpdateAtom(pendingIssuancesAtom)
+  const setPendingRSR = useUpdateAtom(pendingRSRAtom)
   const facadeContract = useFacadeContract(rToken?.facade)
   const blockNumber = useBlockNumber()
 
+  // TODO: Use multicall for this
   const fetchPending = useCallback(async () => {
     try {
       if (facadeContract && account) {
@@ -249,7 +252,15 @@ const PendingIssuancesUpdater = () => {
           index: issuance.index,
           amount: parseFloat(formatEther(issuance.amount)),
         }))
-        setPending(pending)
+        setPendingIssuances(pending)
+
+        const pendingRSR = await facadeContract.pendingIssuances(account)
+        const pendingRSRSummary = pendingRSR.map((item) => ({
+          availableAt: parseInt(formatEther(item.availableAt)),
+          index: item.index,
+          amount: parseFloat(formatEther(item.amount)),
+        }))
+        setPendingRSR(pendingRSRSummary)
       }
     } catch (e) {
       // TODO: handle error case
@@ -325,7 +336,7 @@ const PricesUpdater = () => {
 const Updater = () => (
   <>
     <ReserveTokensUpdater />
-    <PendingIssuancesUpdater />
+    <PendingBalancesUpdater />
     <TokensBalanceUpdater />
     <TokensAllowanceUpdater />
     <PricesUpdater />
