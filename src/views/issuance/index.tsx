@@ -16,7 +16,7 @@ const Issuance = () => {
       <Grid columns={[1, 1, 1, '2fr 1fr']} gap={4}>
         <Box>
           <Text ml={4} mb={3} variant="sectionTitle">
-            Mint + Redeem {RToken.token.symbol}
+            Mint + Redeem
           </Text>
           <Grid columns={2} gap={4} mb={4}>
             <Issue data={RToken} />

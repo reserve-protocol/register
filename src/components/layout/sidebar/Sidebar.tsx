@@ -24,7 +24,7 @@ export const PAGES = [
 const Container = styled.div`
   padding-top: 0;
   flex-grow: 1;
-  flex-basis: 256px;
+  flex-basis: 264px;
   box-sizing: border-box;
   background-color: var(--theme-ui-colors-sidebar);
   display: flex;

@@ -55,8 +55,8 @@ export const theme: Theme = {
       fontWeight: 'heading',
     },
     sectionTitle: {
-      fontSize: 3,
-      fontWeight: 300,
+      fontSize: 4,
+      fontWeight: 400,
       display: 'block',
     },
     contentTitle: {
