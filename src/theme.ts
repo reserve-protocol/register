@@ -6,6 +6,23 @@ export const borderRadius = {
   inputs: 10,
   boxes: 16,
 }
+const baseButton = {
+  borderRadius: 50,
+  fontWeight: 500,
+  cursor: 'pointer',
+  transition,
+  color: '#fff',
+  backgroundColor: 'primary',
+  padding: 12,
+
+  '&:hover': {
+    filter: 'brightness(0.85)',
+  },
+  '&:disabled': {
+    backgroundColor: 'grey',
+    cursor: 'default',
+  },
+}
 
 export const colors = {
   text: '#000',
@@ -191,50 +208,16 @@ export const theme: Theme = {
     },
   },
   buttons: {
-    primary: {
-      borderRadius: 50,
-      cursor: 'pointer',
-      transition,
-      color: '#fff',
-      backgroundColor: 'primary',
-
-      '&:hover': {
-        filter: 'brightness(0.85)',
-      },
-      '&:disabled': {
-        backgroundColor: 'grey',
-        cursor: 'default',
-      },
-    },
+    primary: baseButton,
     accent: {
-      borderRadius: borderRadius.inputs,
-      cursor: 'pointer',
-      transition,
+      ...baseButton,
       backgroundColor: 'accent',
       color: 'black',
-
-      '&:hover': {
-        filter: 'brightness(0.85)',
-      },
-      '&:disabled': {
-        backgroundColor: 'disabled',
-        cursor: 'default',
-      },
     },
     transparent: {
-      borderRadius: 6,
-      cursor: 'pointer',
-      transition: 'all .2s ease',
+      ...baseButton,
       backgroundColor: 'primary',
       color: '#E5E6E9',
-
-      '&:hover': {
-        backgroundColor: '#78838F',
-      },
-      '&:disabled': {
-        backgroundColor: '#78838F',
-        cursor: 'default',
-      },
     },
   },
 }

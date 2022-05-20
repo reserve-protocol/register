@@ -8,6 +8,6 @@ export const unStakeAmountAtom = atom('')
 export const isValidStakeAmountAtom = atom((get) => {
   return isValid(Number(get(stakeAmountAtom) || 0), get(rsrBalanceAtom))
 })
-export const isValidUnStakeAmountAtom = atom((get) => {
+export const isValidUnstakeAmountAtom = atom((get) => {
   return isValid(Number(get(unStakeAmountAtom) || 0), get(stRsrBalanceAtom))
 })

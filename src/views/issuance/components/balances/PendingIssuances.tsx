@@ -57,7 +57,7 @@ const PendingIssuances = ({ token }: { token: Token }) => {
         <Button
           onClick={handleClaim}
           variant={claiming ? 'accent' : 'primary'}
-          sx={{ width: '100%' }}
+          sx={{ width: '100%', fontSize: 1, padding: 2, borderRadius: 35 }}
           disabled={!availableAmount}
           mb={3}
         >
