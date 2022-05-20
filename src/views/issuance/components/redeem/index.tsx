@@ -1,21 +1,13 @@
-import styled from '@emotion/styled'
 import { parseEther } from '@ethersproject/units'
-import { Box, Text } from 'theme-ui'
 import { ERC20Interface, RSVManagerInterface, RTokenInterface } from 'abis'
-import { Button, Card, NumericalInput } from 'components'
-import { useSetAtom } from 'jotai'
+import { Button, Card } from 'components'
+import { useAtomValue } from 'jotai'
 import { useState } from 'react'
-import { addTransactionAtom } from 'state/atoms'
 import { ReserveToken, TransactionState } from 'types'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
+import { isValidRedeemAmountAtom } from 'views/issuance/atoms'
 import RedeemInput from './RedeemInput'
-
-const InputContainer = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-`
 
 const buildTransactions = (
   data: ReserveToken,
@@ -78,31 +70,17 @@ const Redeem = ({
   max: number
   data: ReserveToken
 }) => {
-  const [amount, setAmount] = useState('')
-  const addTransaction = useSetAtom(addTransactionAtom)
-
-  const handleRedeem = () => {
-    setAmount('')
-    addTransaction(buildTransactions(data, amount))
-  }
-
-  const handleMax = () => {
-    setAmount(max.toString())
-  }
-
-  const isValid = () => {
-    const value = Number(amount)
-    return value > 0 && value <= max
-  }
+  const [confirming, setConfirming] = useState(false)
+  const isValid = useAtomValue(isValidRedeemAmountAtom)
 
   return (
     <Card p={4} {...props}>
       <RedeemInput />
       <Button
-        disabled={!isValid()}
+        disabled={!isValid}
         sx={{ width: '100%' }}
         mt={2}
-        onClick={handleRedeem}
+        onClick={() => setConfirming(true)}
       >
         - Redeem {data.token.symbol}
       </Button>

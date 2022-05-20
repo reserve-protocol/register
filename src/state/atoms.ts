@@ -50,6 +50,15 @@ export const currentWalletAtom = atom<Wallet | null>(
 )
 
 export const balancesAtom = atom<{ [x: string]: number }>({})
+export const rTokenBalanceAtom = atom((get) => {
+  const rToken = get(rTokenAtom)
+
+  if (rToken && get(balancesAtom)[rToken.token.address]) {
+    return get(balancesAtom)[rToken.token.address]
+  }
+
+  return 0
+})
 export const allowanceAtom = atom<{ [x: string]: BigNumber }>({})
 export const pendingIssuancesAtom = atom<any[]>([])
 export const pendingIssuancesSummary = atom((get) => {
