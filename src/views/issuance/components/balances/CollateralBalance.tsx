@@ -17,7 +17,7 @@ const CollateralBalance = ({ token, ...props }: Props) => {
   if (!quantities[token.address]) {
     return (
       <TokenBalance
-        token={token}
+        symbol={token.symbol}
         balance={balances[token.address]}
         {...props}
       />
@@ -26,7 +26,11 @@ const CollateralBalance = ({ token, ...props }: Props) => {
 
   return (
     <Box {...props}>
-      <TokenBalance mb={2} token={token} balance={balances[token.address]} />
+      <TokenBalance
+        mb={2}
+        symbol={token.symbol}
+        balance={balances[token.address]}
+      />
       <Text
         sx={{
           fontSize: '12px',

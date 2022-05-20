@@ -71,13 +71,18 @@ export const theme: Theme = {
       lineHeight: 'heading',
       fontWeight: 'heading',
     },
+    subtitle: {
+      fontSize: 2,
+      display: 'block',
+      color: '#666666',
+    },
     sectionTitle: {
       fontSize: 4,
       fontWeight: 400,
       display: 'block',
     },
     contentTitle: {
-      color: '#77838F',
+      color: '#808080',
       display: 'block',
       fontSize: 1,
     },
@@ -85,11 +90,11 @@ export const theme: Theme = {
       color: 'text',
     },
     legend: {
-      color: '#666666',
+      color: '#808080',
     },
     a: {
       transition,
-      color: '#77838F',
+      color: '#808080',
       textDecoration: 'underline',
       cursor: 'pointer',
       '&:hover': {

@@ -75,17 +75,17 @@ const PendingIssuances = ({ token }: { token: Token }) => {
             <Text>Claim vested {token.symbol}</Text>
           )}
         </Button>
-        <Text variant="contentTitle" sx={{ fontSize: 2 }} mb={2}>
+        <Text variant="subtitle" mb={2}>
           Available
         </Text>
-        <TokenBalance token={token} balance={availableAmount} />
+        <TokenBalance symbol={token.symbol} balance={availableAmount} />
       </Box>
       <Divider />
       <Box px={4} py={2} mb={2}>
-        <Text variant="contentTitle" sx={{ fontSize: 2 }} mb={2}>
+        <Text variant="subtitle" mb={2}>
           Pending
         </Text>
-        <TokenBalance token={token} balance={pendingAmount} />
+        <TokenBalance symbol={token.symbol} balance={pendingAmount} />
       </Box>
     </>
   )
