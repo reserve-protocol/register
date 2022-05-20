@@ -4,12 +4,12 @@ export const boxShadow = '0px 4px 34px rgba(0, 0, 0, 0.03)'
 export const transition = 'all .2s ease'
 export const borderRadius = {
   inputs: 10,
-  boxes: 14,
+  boxes: 16,
 }
 
 export const colors = {
   text: '#000',
-  background: '#F3F7F8',
+  background: '#F9F8F4',
   contentBackground: '#fff',
   primary: '#000000',
   accent: '#00FFBF',
@@ -192,7 +192,7 @@ export const theme: Theme = {
   },
   buttons: {
     primary: {
-      borderRadius: borderRadius.inputs,
+      borderRadius: 50,
       cursor: 'pointer',
       transition,
       color: '#fff',

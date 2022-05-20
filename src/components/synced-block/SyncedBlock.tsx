@@ -1,22 +1,26 @@
 import styled from '@emotion/styled'
-import { Box, BoxProps, Text } from 'theme-ui'
+import { Box, Flex, BoxProps, Text } from 'theme-ui'
 import useBlockNumber from 'hooks/useBlockNumber'
-
-const Container = styled(Box)`
-  border: 1px solid #ccc;
-  padding: 5px;
-  font-size: 12px;
-  color: #77838f;
-  border-radius: 4px;
-`
+import { Circle } from 'react-feather'
 
 const SyncedBlock = (props: BoxProps) => {
   const latestBlock = useBlockNumber()
 
   return (
-    <Container {...props}>
-      <Text>Latest synced block: {latestBlock || '-'}</Text>
-    </Container>
+    <Flex sx={{ alignItems: 'center' }} {...props}>
+      <Box
+        mr={2}
+        sx={{
+          backgroundColor: '#00FFBF',
+          borderRadius: '100%',
+          width: 8,
+          height: 8,
+        }}
+      />
+      <Text variant="legend" sx={{ fontSize: 0 }}>
+        {latestBlock || '-'}
+      </Text>
+    </Flex>
   )
 }
 

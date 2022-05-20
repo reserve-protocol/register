@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Box, Text } from 'theme-ui'
+import { Box, Flex, Text } from 'theme-ui'
 import { NavLink } from 'react-router-dom'
 import Logo from 'components/icons/Logo'
 import SyncedBlock from 'components/synced-block'
@@ -37,9 +37,9 @@ const Header = () => (
         width: '100%',
         display: 'flex',
         alignItems: 'center',
-        padding: 3,
-        justifyContent: 'center',
       }}
+      mt={3}
+      ml={4}
     >
       <Logo />
     </Box>
@@ -92,17 +92,19 @@ const Navigation = ({
 // Sidebar footer
 const Footer = () => (
   <Box m={4}>
-    <ThemeColorMode mb={4} />
-    <SyncedBlock mb={2} />
-    <Text
-      sx={{
-        color: '#77838F',
-        fontSize: 1,
-        position: 'relative',
-      }}
-    >
-      Made by LC Labs
-    </Text>
+    <ThemeColorMode mb={3} />
+    <Flex sx={{ alignItems: 'center' }}>
+      <Text
+        sx={{
+          fontSize: 0,
+        }}
+        variant="legend"
+      >
+        Made by LC Labs
+      </Text>
+      <Box mx="auto" />
+      <SyncedBlock />
+    </Flex>
   </Box>
 )
 
