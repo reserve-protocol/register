@@ -182,6 +182,9 @@ const TransactionModal = ({
     return <TransactionConfirmed onClose={onClose} />
   }
 
+  console.log('allowances', allowances)
+  console.log('required', requiredAllowance)
+
   return (
     <Modal
       title={!signed ? title : ' '}

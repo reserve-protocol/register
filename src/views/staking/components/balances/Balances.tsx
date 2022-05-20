@@ -1,18 +1,8 @@
 import { Card } from 'components'
 import TokenBalance from 'components/token-balance'
 import { useAtomValue } from 'jotai'
-import {
-  balancesAtom,
-  rsrBalanceAtom,
-  rTokenAtom,
-  stRsrBalanceAtom,
-} from 'state/atoms'
+import { rsrBalanceAtom, rTokenAtom, stRsrBalanceAtom } from 'state/atoms'
 import { Box, BoxProps, Grid, Text } from 'theme-ui'
-import { ReserveToken } from 'types'
-
-interface Props extends BoxProps {
-  rToken: ReserveToken
-}
 
 const StakeBalance = () => {
   const rToken = useAtomValue(rTokenAtom)

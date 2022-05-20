@@ -22,7 +22,7 @@ export const ROUTES = Object.freeze({
 })
 
 export const RSR: Token = {
-  address: '0x320623b8e4ff03373931769a31fc52a4e78b5d70',
+  address: '0x320623b8E4fF03373931769A31Fc52A4E78B5d70',
   name: 'Reserve Rights',
   symbol: 'RSR',
   decimals: 18,

@@ -1,3 +1,4 @@
+import { getAddress } from '@ethersproject/address'
 import { parseEther } from '@ethersproject/units'
 import { ERC20Interface, StRSRInterface } from 'abis'
 import TransactionModal from 'components/transaction-modal'
@@ -5,7 +6,7 @@ import { useAtomValue } from 'jotai'
 import { useCallback, useMemo } from 'react'
 import { rTokenAtom } from 'state/atoms'
 import { formatCurrency } from 'utils'
-import { TRANSACTION_STATUS } from 'utils/constants'
+import { RSR, TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
 import { isValidStakeAmountAtom, stakeAmountAtom } from 'views/staking/atoms'
 import StakeInput from './StakeInput'
@@ -31,7 +32,7 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
     [rToken?.id, amount]
   )
   const requiredAllowance = {
-    [rToken?.insurance?.token.address ?? ' ']: parsedAmount,
+    [RSR.address]: parsedAmount,
   }
 
   // TODO: Unlimited approval
@@ -45,7 +46,7 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
           value: amount,
           call: {
             abi: ERC20Interface,
-            address: rToken.token.address,
+            address: RSR.address,
             method: 'approve',
             args: [rToken.insurance.token.address, parsedAmount],
           },
