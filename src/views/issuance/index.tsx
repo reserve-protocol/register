@@ -21,7 +21,7 @@ const Issuance = () => {
           </Text>
           <Grid columns={2} gap={4} mb={4}>
             <Issue data={RToken} />
-            <Redeem data={RToken} max={balance} />
+            <Redeem data={RToken} />
           </Grid>
           <Balances rToken={RToken} />
         </Box>

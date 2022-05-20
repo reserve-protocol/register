@@ -17,23 +17,23 @@ const Staking = () => {
   const RToken = useAtomValue(rTokenAtom) as ReserveToken
 
   return (
-    <Container pt={4} pb={4}>
-      <Grid columns={[2, '2fr 1fr']} gap={4}>
+    <Container pb={4}>
+      <Grid columns={[1, 1, 1, '2fr 1fr']} gap={4}>
         <Box>
-          <Text mb={2} variant="sectionTitle">
+          <Text mb={3} variant="sectionTitle">
             Insurance
           </Text>
-          <Grid columns={2} mb={3}>
+          <Grid columns={2} gap={4} mb={4}>
             <Stake data={RToken} />
             <Unstake data={RToken} />
           </Grid>
-        </Box>
-        <Box>
-          <Balances rToken={RToken} />
-          <Text mt={3} mb={2} variant="sectionTitle">
-            Withdrawals
-          </Text>
-          <Withdrawals tokenAddress={RToken.insurance?.token.address ?? ''} />
+          <Box>
+            <Balances rToken={RToken} />
+            <Text mt={3} mb={2} variant="sectionTitle">
+              Withdrawals
+            </Text>
+            <Withdrawals tokenAddress={RToken.insurance?.token.address ?? ''} />
+          </Box>
         </Box>
       </Grid>
     </Container>

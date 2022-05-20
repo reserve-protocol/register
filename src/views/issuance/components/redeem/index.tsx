@@ -6,14 +6,7 @@ import { isValidRedeemAmountAtom } from 'views/issuance/atoms'
 import ConfirmRedemption from './ConfirmRedemption'
 import RedeemInput from './RedeemInput'
 
-const Redeem = ({
-  max,
-  data,
-  ...props
-}: {
-  max: number
-  data: ReserveToken
-}) => {
+const Redeem = ({ data, ...props }: { data: ReserveToken }) => {
   const [confirming, setConfirming] = useState(false)
   const isValid = useAtomValue(isValidRedeemAmountAtom)
 

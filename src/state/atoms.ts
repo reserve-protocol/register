@@ -1,3 +1,4 @@
+import { RSR } from 'utils/constants'
 import { BigNumber } from '@ethersproject/bignumber'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { atom } from 'jotai'
@@ -55,6 +56,18 @@ export const rTokenBalanceAtom = atom((get) => {
 
   if (rToken && get(balancesAtom)[rToken.token.address]) {
     return get(balancesAtom)[rToken.token.address]
+  }
+
+  return 0
+})
+export const rsrBalanceAtom = atom((get) => {
+  return get(balancesAtom)[RSR.address] || 0
+})
+export const stRsrBalanceAtom = atom((get) => {
+  const stRSR = get(rTokenAtom)?.insurance?.token.address
+
+  if (stRSR) {
+    return get(balancesAtom)[stRSR] || 0
   }
 
   return 0

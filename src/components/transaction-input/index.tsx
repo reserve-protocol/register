@@ -4,18 +4,20 @@ import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 
 export interface TransactionInputProps extends BoxProps {
-  title: string
-  placeholder: string
+  title?: string
+  placeholder?: string
   compact?: boolean
   amountAtom: any
   maxAmount: number
+  disabled?: boolean
 }
 
 const TransactionInput = ({
-  title,
-  placeholder,
+  title = '',
+  placeholder = '',
   amountAtom,
   maxAmount,
+  disabled = false,
   compact = false,
   ...props
 }: TransactionInputProps) => {
@@ -41,6 +43,7 @@ const TransactionInput = ({
         {compact && maxLabel}
       </Flex>
       <NumericalInput
+        disabled={disabled}
         placeholder={placeholder}
         value={amount as string}
         onChange={setAmount}
