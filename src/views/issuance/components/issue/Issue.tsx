@@ -36,7 +36,7 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
         />
       )}
       <Card p={4} {...props}>
-        <IssueInput />
+        <IssueInput title="Mint" />
         <Button
           sx={{ width: '100%' }}
           disabled={!isValid || issuing}

@@ -1,17 +1,14 @@
 import { parseEther } from '@ethersproject/units'
+import { ERC20Interface, RSVManagerInterface, RTokenInterface } from 'abis'
 import TransactionModal from 'components/transaction-modal'
 import { useAtomValue } from 'jotai'
-import { rTokenAtom } from 'state/atoms'
-import RedeemInput from './RedeemInput'
-import { v4 as uuid } from 'uuid'
-import { TRANSACTION_STATUS } from 'utils/constants'
-import { ERC20Interface, RSVManagerInterface, RTokenInterface } from 'abis'
-import { BigNumberMap, ReserveToken, TransactionState } from 'types'
 import { useCallback, useMemo } from 'react'
-import { isValidRedeemAmountAtom, redeemAmountAtom } from 'views/issuance/atoms'
+import { rTokenAtom } from 'state/atoms'
 import { formatCurrency } from 'utils'
-import { useRTokenContract } from 'hooks/useContract'
-import { Button } from 'theme-ui'
+import { TRANSACTION_STATUS } from 'utils/constants'
+import { v4 as uuid } from 'uuid'
+import { isValidRedeemAmountAtom, redeemAmountAtom } from 'views/issuance/atoms'
+import RedeemInput from './RedeemInput'
 
 // TODO: Display redeemable collateral
 const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
@@ -19,7 +16,6 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
   const amount = useAtomValue(redeemAmountAtom)
   const isValid = useAtomValue(isValidRedeemAmountAtom)
   const parsedAmount = parseEther(amount ?? '0')
-  const contract = useRTokenContract(rToken?.token.address ?? '')
   const transaction = useMemo(
     () => ({
       id: uuid(),
@@ -38,7 +34,7 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
 
   const requiredAllowance = rToken?.isRSV
     ? {
-        [rToken.id]: parsedAmount,
+        [rToken.token.address]: parsedAmount,
       }
     : {}
 
@@ -77,17 +73,6 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
       onClose={onClose}
     >
       <RedeemInput compact />
-      <Button
-        onClick={async () => {
-          try {
-            await contract?.redeem(parsedAmount)
-          } catch (e) {
-            console.error('error redeem', e)
-          }
-        }}
-      >
-        try
-      </Button>
     </TransactionModal>
   )
 }

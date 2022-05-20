@@ -155,6 +155,8 @@ const getTokenAllowances = (reserveToken: ReserveToken): [string, string][] => {
 
   if (!reserveToken.isRSV) {
     tokens.push([RSR.address, reserveToken.insurance?.token.address ?? ''])
+  } else {
+    tokens.push([reserveToken.token.address, reserveToken.id])
   }
 
   return tokens

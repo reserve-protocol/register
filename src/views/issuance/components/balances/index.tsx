@@ -45,8 +45,12 @@ const Balances = ({ rToken, ...props }: Props) => (
         <CollateralBalances collaterals={rToken.basket.collaterals} />
         <Box sx={{ borderLeft: '1px solid #ccc' }} ml={-2}>
           <RTokenBalance token={rToken.token} />
-          <Divider />
-          <PendingIssuances token={rToken.token} />
+          {!rToken.isRSV && (
+            <>
+              <Divider />
+              <PendingIssuances token={rToken.token} />
+            </>
+          )}
         </Box>
       </Grid>
     </Card>

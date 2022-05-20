@@ -157,7 +157,7 @@ const TransactionModal = ({
   const txState = useTransaction(signing ? tx.id : '')
   const signed =
     signing &&
-    txState?.call.method === 'issue' &&
+    txState &&
     txState.status !== TRANSACTION_STATUS.PENDING &&
     txState.status !== TRANSACTION_STATUS.SIGNING
 
