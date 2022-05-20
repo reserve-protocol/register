@@ -3,7 +3,7 @@ import { useAtom } from 'jotai'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 
-interface Props extends BoxProps {
+export interface TransactionInputProps extends BoxProps {
   title: string
   placeholder: string
   compact?: boolean
@@ -18,7 +18,7 @@ const TransactionInput = ({
   maxAmount,
   compact = false,
   ...props
-}: Props) => {
+}: TransactionInputProps) => {
   const [amount, setAmount] = useAtom(amountAtom)
 
   const maxLabel = (

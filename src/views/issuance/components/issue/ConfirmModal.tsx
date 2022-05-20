@@ -89,7 +89,7 @@ const ConfirmModal = ({ data, onClose }: Props) => {
         args: [parseEther(amount ?? '0')],
       },
     }),
-    [amount]
+    [data.id, amount]
   )
 
   const confirmLabel = `Begin minting ${formatCurrency(Number(amount))} ${
