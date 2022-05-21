@@ -213,7 +213,7 @@ const TransactionModal = ({
         variant={signing ? 'accent' : 'primary'}
         mt={2}
         onClick={handleConfirm}
-      >
+    >
         {signing ? (
           <Text
             sx={{
