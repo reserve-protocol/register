@@ -1,7 +1,7 @@
 import { parseEther } from '@ethersproject/units'
 import { ERC20Interface, RSVManagerInterface, RTokenInterface } from 'abis'
 import TransactionModal from 'components/transaction-modal'
-import { useAtomValue } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { useCallback, useMemo } from 'react'
 import { rTokenAtom } from 'state/atoms'
 import { formatCurrency } from 'utils'
@@ -13,7 +13,7 @@ import RedeemInput from './RedeemInput'
 // TODO: Display redeemable collateral
 const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
   const rToken = useAtomValue(rTokenAtom)
-  const amount = useAtomValue(redeemAmountAtom)
+  const [amount, setAmount] = useAtom(redeemAmountAtom)
   const isValid = useAtomValue(isValidRedeemAmountAtom)
   const parsedAmount = parseEther(amount ?? '0')
   const transaction = useMemo(
@@ -60,6 +60,11 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
     return []
   }, [rToken?.id, amount])
 
+  const handleClose = () => {
+    onClose()
+    setAmount('')
+  }
+
   return (
     <TransactionModal
       title={`Redeem ${rToken?.token.symbol}`}
@@ -70,7 +75,7 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
         rToken?.token.symbol ?? ''
       }`}
       buildApprovals={buildApproval}
-      onClose={onClose}
+      onClose={handleClose}
     >
       <RedeemInput compact />
     </TransactionModal>

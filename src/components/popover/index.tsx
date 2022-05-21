@@ -121,7 +121,7 @@ export default function Popover({
       update()
     }
   }, [update])
-  useInterval(updateCallback, show ? 100 : null)
+  useInterval(updateCallback, show ? 200 : null)
 
   useEffect(() => {
     if (show) {

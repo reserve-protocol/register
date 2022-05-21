@@ -1,8 +1,7 @@
-import { getAddress } from '@ethersproject/address'
 import { parseEther } from '@ethersproject/units'
 import { ERC20Interface, StRSRInterface } from 'abis'
 import TransactionModal from 'components/transaction-modal'
-import { useAtomValue } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { useCallback, useMemo } from 'react'
 import { rTokenAtom } from 'state/atoms'
 import { formatCurrency } from 'utils'
@@ -13,7 +12,7 @@ import StakeInput from './StakeInput'
 
 const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
   const rToken = useAtomValue(rTokenAtom)
-  const amount = useAtomValue(stakeAmountAtom)
+  const [amount, setAmount] = useAtom(stakeAmountAtom)
   const parsedAmount = parseEther(amount ?? '0')
   const isValid = useAtomValue(isValidStakeAmountAtom)
   const transaction = useMemo(
@@ -57,6 +56,11 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
     return []
   }, [rToken?.id, amount])
 
+  const handleClose = () => {
+    onClose()
+    setAmount('')
+  }
+
   return (
     <TransactionModal
       title="Stake RSR"
@@ -66,7 +70,7 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
       approvalsLabel="Allow use of RSR"
       confirmLabel={`Begin stake of ${formatCurrency(Number(amount))} RSR`}
       buildApprovals={buildApproval}
-      onClose={onClose}
+      onClose={handleClose}
     >
       <StakeInput compact />
     </TransactionModal>

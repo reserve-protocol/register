@@ -21,6 +21,7 @@ export const ethPriceAtom = atom(1)
 export const rsrPriceAtom = atom(1)
 export const gasPriceAtom = atom(1)
 export const rTokenPriceAtom = atom(1)
+export const rsrExchangeRate = atom(1)
 
 export const reserveTokensAtom = atomWithStorage<{ [x: string]: ReserveToken }>(
   'reserveTokens',
