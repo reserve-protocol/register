@@ -109,8 +109,6 @@ export const pendingRSRSummaryAtom = atom((get) => {
     (acc, unstake) => {
       acc.index = unstake.index
 
-      console.log('available at', unstake.availableAt)
-
       if (unstake.availableAt > Date.now()) {
         acc.pendingAmount += unstake.amount
       } else {

@@ -107,12 +107,17 @@ export const TablePagination: FC<
         {(canPreviousPage || canNextPage) && (
           <Box variant="table.pagination.navigation" sx={{ display: 'flex' }}>
             <Box variant="table.pagination.navigation.button">
-              <Button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+              <Button
+                variant="circle"
+                onClick={() => gotoPage(0)}
+                disabled={!canPreviousPage}
+              >
                 {'<<'}
               </Button>
             </Box>
             <Box variant="table.pagination.navigation.button">
               <Button
+                variant="circle"
                 onClick={() => previousPage()}
                 disabled={!canPreviousPage}
               >
@@ -120,12 +125,17 @@ export const TablePagination: FC<
               </Button>
             </Box>
             <Box variant="table.pagination.navigation.button">
-              <Button onClick={() => nextPage()} disabled={!canNextPage}>
+              <Button
+                variant="circle"
+                onClick={() => nextPage()}
+                disabled={!canNextPage}
+              >
                 {'>'}
               </Button>
             </Box>
             <Box variant="table.pagination.navigation.button">
               <Button
+                variant="circle"
                 onClick={() => gotoPage(pageCount - 1)}
                 disabled={!canNextPage}
               >

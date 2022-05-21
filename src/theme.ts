@@ -19,7 +19,7 @@ const baseButton = {
     filter: 'brightness(0.85)',
   },
   '&:disabled': {
-    backgroundColor: 'grey',
+    backgroundColor: 'disabled',
     cursor: 'default',
   },
 }
@@ -240,6 +240,7 @@ export const theme: Theme = {
       display: 'flex',
       alignContent: 'center',
       alignItems: 'center',
+      textAlign: 'center',
       borderRadius: '100%',
       height: 24,
       width: 24,

@@ -6,14 +6,17 @@ import { useMemo } from 'react'
 import { rTokenAtom } from 'state/atoms'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
-import { isValidStakeAmountAtom, unStakeAmountAtom } from 'views/staking/atoms'
+import {
+  isValidUnstakeAmountAtom,
+  unStakeAmountAtom,
+} from 'views/staking/atoms'
 import UnstakeInput from './UnstakeInput'
 
 const ConfirmUnstake = ({ onClose }: { onClose: () => void }) => {
   const rToken = useAtomValue(rTokenAtom)
   const amount = useAtomValue(unStakeAmountAtom)
   const parsedAmount = parseEther(amount ?? '0')
-  const isValid = useAtomValue(isValidStakeAmountAtom)
+  const isValid = useAtomValue(isValidUnstakeAmountAtom)
   const transaction = useMemo(
     () => ({
       id: uuid(),
