@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import { Options, Placement } from '@popperjs/core'
 import Portal from '@reach/portal'
 import useOnClickOutside from 'hooks/useOnClickOutside'
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { usePopper } from 'react-popper'
 import useInterval from '../../hooks/useInterval'
 
@@ -121,7 +121,13 @@ export default function Popover({
       update()
     }
   }, [update])
-  useInterval(updateCallback, show ? 50 : null)
+  useInterval(updateCallback, show ? 100 : null)
+
+  useEffect(() => {
+    if (show) {
+      updateCallback()
+    }
+  }, [show])
 
   return (
     <>

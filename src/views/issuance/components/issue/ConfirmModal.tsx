@@ -4,7 +4,7 @@ import { formatUnits, parseEther } from '@ethersproject/units'
 import { ERC20Interface, RSVManagerInterface, RTokenInterface } from 'abis'
 import TransactionModal from 'components/transaction-modal'
 import { useAtomValue } from 'jotai'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { BigNumberMap, ReserveToken, TransactionState } from 'types'
 import { formatCurrency } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
@@ -76,6 +76,7 @@ const ConfirmModal = ({ data, onClose }: Props) => {
   const amount = useAtomValue(issueAmountAtom)
   const quantities = useAtomValue(quantitiesAtom)
   const isValid = useAtomValue(isValidIssuableAmountAtom)
+  const [signing, setSigning] = useState(false)
   const transaction = useMemo(
     () => ({
       id: uuid(),
@@ -112,8 +113,9 @@ const ConfirmModal = ({ data, onClose }: Props) => {
       approvalsLabel="Allow use of collateral tokens"
       buildApprovals={buildApprovals}
       onClose={onClose}
+      onConfirm={() => setSigning(true)}
     >
-      <IssueInput compact />
+      <IssueInput disabled={signing} compact />
       <CollateralDistribution mt={3} data={data} quantities={quantities} />
     </TransactionModal>
   )

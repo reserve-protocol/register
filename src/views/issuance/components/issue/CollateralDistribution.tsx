@@ -40,7 +40,7 @@ const CollateralDistribution = ({
       </Flex>
       {isVisible && (
         <Box>
-          <Divider sx={{ borderColor: '#ccc' }} mx={-2} />
+          <Divider mx={-2} />
           {data.basket.collaterals.map((collateral) => (
             <Flex key={collateral.id}>
               <Text>{collateral.token.symbol}</Text>

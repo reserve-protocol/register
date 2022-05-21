@@ -21,6 +21,8 @@ const PendingIssuances = ({ token }: { token: Token }) => {
   )
 
   const handleClaim = () => {
+    if (claiming) return
+
     const txId = uuid()
     setClaiming(txId)
     addTransaction([

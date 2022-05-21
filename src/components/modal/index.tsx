@@ -1,6 +1,6 @@
 import { Dialog } from '@reach/dialog'
 import '@reach/dialog/styles.css'
-import { Flex, Box, Text } from 'theme-ui'
+import { Flex, Box, Text, ButtonProps, Button, Divider } from 'theme-ui'
 import { X } from 'react-feather'
 import styled from '@emotion/styled'
 
@@ -15,11 +15,17 @@ export interface ModalProps {
 const StyledDialog = styled((props: any) => <Dialog {...props} />)`
   &[data-reach-dialog-content] {
     background-color: ${({ theme }) => theme.colors.bgCard};
-    padding: ${({ theme }) => theme.space[3]}px;
+    padding: ${({ theme }) => theme.space[4]}px;
     position: relative;
     border-radius: 14px;
   }
 `
+
+const CloseButton = (props: ButtonProps) => (
+  <Button {...props}>
+    <X />
+  </Button>
+)
 
 const Modal = ({
   open = true,
@@ -35,29 +41,27 @@ const Modal = ({
     style={style}
   >
     {(onClose || title) && (
-      <Flex
-        mb={3}
-        sx={{
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Text sx={{ fontSize: 20, fontWeight: 'bold' }}>{title && title}</Text>
-        {!!onClose && (
-          <Box
-            role="button"
-            sx={{
-              position: 'absolute',
-              top: 20,
-              right: 20,
-              '&:hover': { cursor: 'pointer' },
-            }}
-            onClick={onClose}
-          >
-            <X />
-          </Box>
-        )}
-      </Flex>
+      <>
+        <Flex
+          mb={3}
+          sx={{
+            height: '20px',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'relative',
+          }}
+        >
+          <Text variant="sectionTitle">{title && title}</Text>
+          {!!onClose && (
+            <CloseButton
+              sx={{ position: 'absolute', right: 0 }}
+              variant="circle"
+              onClick={onClose}
+            />
+          )}
+        </Flex>
+        {!!title && <Divider mx={-4} />}
+      </>
     )}
     {children}
   </StyledDialog>

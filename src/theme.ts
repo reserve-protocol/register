@@ -26,7 +26,9 @@ const baseButton = {
 
 export const colors = {
   text: '#000',
+  secondaryText: '#666666',
   background: '#F9F8F4',
+  lightBackground: '#F2F2F2',
   contentBackground: '#fff',
   primary: '#000000',
   accent: '#00FFBF',
@@ -201,7 +203,14 @@ export const theme: Theme = {
     input: {
       // transition: 'border .2s ease,color .2s ease',
       // outline: 'none',
+      borderColor: '#DCDCDC',
       borderRadius: borderRadius.inputs,
+
+      '&:disabled': {
+        backgroundColor: 'secondary',
+        borderColor: 'secondary',
+        cursor: 'default',
+      },
     },
   },
   cards: {
@@ -223,6 +232,18 @@ export const theme: Theme = {
       ...baseButton,
       backgroundColor: 'primary',
       color: '#E5E6E9',
+    },
+    circle: {
+      ...baseButton,
+      backgroundColor: 'lightBackground',
+      color: 'secondaryText',
+      display: 'flex',
+      alignContent: 'center',
+      alignItems: 'center',
+      borderRadius: '100%',
+      height: 24,
+      width: 24,
+      padding: 1,
     },
   },
 }

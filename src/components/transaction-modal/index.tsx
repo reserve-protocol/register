@@ -31,15 +31,18 @@ export interface ITransactionModal {
     allowances: BigNumberMap
   ) => TransactionState[]
   onClose: () => void
+  onConfirm?: () => void
   isValid: boolean
 }
 
 const ApprovalTransactions = ({
   txs,
   title,
+  onConfirm,
 }: {
   txs: TransactionState[]
   title: string
+  onConfirm: () => void
 }) => {
   const addTransaction = useSetAtom(addTransactionAtom)
   const [signing, setSigning] = useState(false)
@@ -54,6 +57,7 @@ const ApprovalTransactions = ({
     if (signing) return
     addTransaction(txs.filter((tx) => tx.status === TRANSACTION_STATUS.PENDING))
     setSigning(true)
+    onConfirm()
   }
 
   const fetchGasEstimate = useCallback(async () => {
@@ -141,6 +145,7 @@ const TransactionModal = ({
   approvalsLabel,
   buildApprovals,
   onClose,
+  onConfirm = () => {},
 }: ITransactionModal) => {
   const addTransaction = useSetAtom(addTransactionAtom)
   const allowances = useAtomValue(allowanceAtom)
@@ -162,7 +167,9 @@ const TransactionModal = ({
     txState.status !== TRANSACTION_STATUS.SIGNING
 
   const handleConfirm = () => {
+    if (signing) return
     setSigning(true)
+    onConfirm()
     addTransaction([tx])
   }
 
@@ -184,7 +191,7 @@ const TransactionModal = ({
 
   return (
     <Modal
-      title={!signed ? title : ' '}
+      title={!signed ? title : undefined}
       onClose={onClose}
       style={{ width: '400px' }}
     >
@@ -193,6 +200,7 @@ const TransactionModal = ({
         <>
           <Divider mx={-3} mt={3} />
           <ApprovalTransactions
+            onConfirm={onConfirm}
             title={approvalsLabel ?? 'Approve'}
             txs={approvalsTx}
           />

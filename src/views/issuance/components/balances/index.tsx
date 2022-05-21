@@ -42,7 +42,7 @@ const Balances = ({ rToken, ...props }: Props) => (
   <Card p={0} {...props}>
     <Grid columns={2}>
       <CollateralBalances collaterals={rToken.basket.collaterals} />
-      <Box sx={{ borderLeft: '1px solid #ccc' }} ml={-2}>
+      <Box sx={{ borderLeft: '1px solid', borderColor: 'secondary' }} ml={-2}>
         <RTokenBalance token={rToken.token} />
         {!rToken.isRSV && (
           <>
