@@ -1,5 +1,4 @@
 import { parseEther } from '@ethersproject/units'
-import { ERC20Interface, RSVManagerInterface, RTokenInterface } from 'abis'
 import TransactionModal from 'components/transaction-modal'
 import { useAtom, useAtomValue } from 'jotai'
 import { useCallback, useMemo } from 'react'
@@ -23,7 +22,7 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
       status: TRANSACTION_STATUS.PENDING,
       value: amount,
       call: {
-        abi: rToken?.isRSV ? RSVManagerInterface : RTokenInterface,
+        abi: rToken?.isRSV ? 'rsv' : 'rToken',
         address: rToken?.isRSV ? rToken?.id : rToken?.token.address ?? '',
         method: 'redeem',
         args: [parsedAmount],
@@ -48,7 +47,7 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
           status: TRANSACTION_STATUS.PENDING,
           value: amount,
           call: {
-            abi: ERC20Interface,
+            abi: 'erc20',
             address: rToken.token.address,
             method: 'approve',
             args: [rToken.id, parsedAmount],

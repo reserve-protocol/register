@@ -19,13 +19,18 @@ export interface TransactionState {
   description: string
   status: string
   value: string
-  call: ContractCall
+  call: {
+    abi: string
+    address: string
+    method: string
+    args: any[]
+  }
   hash?: string
-  receipt?: TransactionReceipt
-  requiredAllowance?: [string, BigNumber][]
+  error?: string
+  confirmedAt?: number
   // timestamps
-  createdAt?: string // timestamp UTC
-  updatedAt?: string // timestamp UTC
+  createdAt?: number // timestamp UTC
+  updatedAt?: number // timestamp UTC
 }
 
 export interface Wallet {

@@ -1,10 +1,10 @@
+import { StringMap } from 'types'
 import { Interface } from '@ethersproject/abi'
 import ERC20 from './ERC20.json'
 import RToken from './RToken.json'
 import RSR from './RSR.json'
 import ENSResolver from './ens-public-resolver.json'
 import ENSRegistrar from './ens-registrar.json'
-import Factory from './factory.json'
 import Main from './main.json'
 import StRSR from './st-rsr.json'
 import RSVManager from './rsv-manager.json'
@@ -13,9 +13,6 @@ import BasketHandler from './basketHandler.json'
 
 const ERC20Interface = new Interface(ERC20)
 export { ERC20, ERC20Interface }
-
-const FactoryInterface = new Interface(Factory)
-export { Factory, FactoryInterface }
 
 const MainInterface = new Interface(Main)
 export { Main, MainInterface }
@@ -43,3 +40,10 @@ export { StRSR, StRSRInterface }
 
 const RSVManagerInterface = new Interface(RSVManager)
 export { RSVManager, RSVManagerInterface }
+
+export default <StringMap>{
+  erc20: ERC20Interface,
+  stRSR: StRSRInterface,
+  rToken: RTokenInterface,
+  rsv: RSVManagerInterface,
+}

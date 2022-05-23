@@ -83,8 +83,6 @@ export const pendingIssuancesSummary = atom((get) => {
     (acc, issuance) => {
       acc.index = issuance.index
 
-      console.log('available at', issuance.availableAt)
-
       if (issuance.availableAt > Date.now()) {
         acc.pendingAmount += issuance.amount
       } else {
@@ -103,10 +101,7 @@ export const pendingIssuancesSummary = atom((get) => {
 
 export const pendingRSRAtom = atom<any[]>([])
 export const pendingRSRSummaryAtom = atom((get) => {
-  const pending = get(pendingRSRAtom)
-
-  // TODO: Correct timestamp formatting
-  return pending.reduce(
+  return get(pendingRSRAtom).reduce(
     (acc, unstake) => {
       acc.index = unstake.index
 

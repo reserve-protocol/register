@@ -1,5 +1,4 @@
 import { parseEther } from '@ethersproject/units'
-import { StRSRInterface } from 'abis'
 import TransactionModal from 'components/transaction-modal'
 import { useAtom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
@@ -24,7 +23,7 @@ const ConfirmUnstake = ({ onClose }: { onClose: () => void }) => {
       status: TRANSACTION_STATUS.PENDING,
       value: amount,
       call: {
-        abi: StRSRInterface,
+        abi: 'stRSR',
         address: rToken?.insurance?.token.address ?? ' ',
         method: 'unstake',
         args: [parsedAmount],

@@ -282,7 +282,7 @@ const TransactionModal = ({
       {children}
       {requiredApprovals.length > 0 && !canSubmit && (
         <>
-          <Divider mx={-3} mt={3} />
+          <Divider mx={-4} mt={3} />
           <ApprovalTransactions
             onConfirm={onConfirm}
             onError={fetchApprovals}
@@ -291,7 +291,7 @@ const TransactionModal = ({
           />
         </>
       )}
-      <Divider mx={-3} mt={3} />
+      <Divider mx={-4} mt={3} />
       <Button
         sx={{ width: '100%' }}
         disabled={!canSubmit}

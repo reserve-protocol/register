@@ -9,11 +9,12 @@ import { pendingTxAtom, updateTransactionAtom } from 'state/atoms'
 import { TransactionState } from 'types'
 import { getContract } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
+import abis from 'abis'
 import { error, signed, success } from '../lib/notifications'
 
 const TransactionManager = () => {
   const setTxs = useUpdateAtom(updateTransactionAtom)
-  const { pending, mining } = useDebounce(useAtomValue(pendingTxAtom), 100)
+  const { pending, mining } = useDebounce(useAtomValue(pendingTxAtom), 200)
   const { account, provider } = useWeb3React()
   const blockNumber = useBlockNumber()
 
@@ -28,7 +29,12 @@ const TransactionManager = () => {
             }
             setTxs([
               index,
-              { ...tx, status: TRANSACTION_STATUS.CONFIRMED, receipt },
+              {
+                ...tx,
+                status: TRANSACTION_STATUS.CONFIRMED,
+                confirmedAt: receipt.blockNumber,
+                updatedAt: +Date.now(),
+              },
             ])
           }
         } catch (e) {
@@ -39,43 +45,68 @@ const TransactionManager = () => {
     [provider]
   )
 
-  // check mining
-  useEffect(() => {
-    if (provider && mining.length) {
-      checkMiningTx(mining)
-    }
-  }, [blockNumber, mining])
-
-  // process pending
-  useEffect(() => {
-    if (provider && account) {
-      for (const [index, tx] of pending) {
-        setTxs([index, { ...tx, status: TRANSACTION_STATUS.SIGNING }])
+  const processTxs = useCallback(
+    (txs: [number, TransactionState][]) => {
+      for (const [index, tx] of txs) {
+        setTxs([
+          index,
+          { ...tx, status: TRANSACTION_STATUS.SIGNING, createdAt: +Date.now() },
+        ])
 
         const contract = getContract(
           tx.call.address,
-          tx.call.abi,
+          abis[tx.call.abi],
           provider as Web3Provider,
           account
         )
 
         contract[tx.call.method](...tx.call.args)
           .then(({ hash }: { hash: string }) => {
-            // TODO: Handle case account change after approve tx
-            setTxs([index, { ...tx, status: TRANSACTION_STATUS.MINING, hash }])
+            setTxs([
+              index,
+              {
+                ...tx,
+                status: TRANSACTION_STATUS.MINING,
+                updatedAt: +Date.now(),
+                hash,
+              },
+            ])
             if (tx?.call.method !== 'approve') {
               signed()
             }
           })
-          .catch(() => {
+          .catch((e: any) => {
             if (tx?.call.method !== 'approve') {
               error('Transaction reverted', tx.description)
             }
-            setTxs([index, { ...tx, status: TRANSACTION_STATUS.REJECTED }])
+            setTxs([
+              index,
+              {
+                ...tx,
+                status: TRANSACTION_STATUS.REJECTED,
+                updatedAt: +Date.now(),
+                error: e?.data?.message ?? e.message,
+              },
+            ])
           })
       }
+    },
+    [provider]
+  )
+
+  // check mining
+  useEffect(() => {
+    if (provider && mining.length) {
+      checkMiningTx(mining)
     }
-  }, [pending])
+  }, [blockNumber, JSON.stringify(mining)])
+
+  // process pending
+  useEffect(() => {
+    if (provider && account && pending.length) {
+      processTxs(pending)
+    }
+  }, [JSON.stringify(pending)])
 
   return null
 }

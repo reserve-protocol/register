@@ -60,7 +60,7 @@ const buildApprovalTransactions = (
           : TRANSACTION_STATUS.PENDING,
         value: formatUnits(tokenAmount, token.decimals),
         call: {
-          abi: ERC20Interface,
+          abi: 'erc20',
           address: token.address,
           method: 'approve',
           args: [data.isRSV ? data.id : data.token.address, tokenAmount],
@@ -84,7 +84,7 @@ const ConfirmModal = ({ data, onClose }: Props) => {
       status: TRANSACTION_STATUS.PENDING,
       value: amount,
       call: {
-        abi: data.isRSV ? RSVManagerInterface : RTokenInterface,
+        abi: data.isRSV ? 'rsv' : 'rToken',
         address: data.isRSV ? data.id : data.token.address,
         method: 'issue',
         args: [parseEther(amount ?? '0')],

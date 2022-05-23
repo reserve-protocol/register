@@ -58,7 +58,7 @@ const AvailableBalance = () => {
         status: TRANSACTION_STATUS.PENDING,
         value: availableAmount,
         call: {
-          abi: StRSRInterface,
+          abi: 'stRSR',
           address: rToken?.insurance?.token.address ?? ' ',
           method: 'withdraw',
           args: [account, index.add(BigNumber.from(1))],

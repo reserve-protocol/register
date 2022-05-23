@@ -1,5 +1,4 @@
 import { parseEther } from '@ethersproject/units'
-import { ERC20Interface, StRSRInterface } from 'abis'
 import TransactionModal from 'components/transaction-modal'
 import { useAtom, useAtomValue } from 'jotai'
 import { useCallback, useMemo } from 'react'
@@ -22,7 +21,7 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
       status: TRANSACTION_STATUS.PENDING,
       value: amount,
       call: {
-        abi: StRSRInterface,
+        abi: 'stRSR',
         address: rToken?.insurance?.token.address ?? ' ',
         method: 'stake',
         args: [parsedAmount],
@@ -44,7 +43,7 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
           status: TRANSACTION_STATUS.PENDING,
           value: amount,
           call: {
-            abi: ERC20Interface,
+            abi: 'erc20',
             address: RSR.address,
             method: 'approve',
             args: [rToken.insurance.token.address, parsedAmount],

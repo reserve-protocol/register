@@ -1,6 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { useWeb3React } from '@web3-react/core'
-import { RTokenInterface } from 'abis'
 import TokenBalance from 'components/token-balance'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
@@ -32,7 +31,7 @@ const PendingIssuances = ({ token }: { token: Token }) => {
         status: TRANSACTION_STATUS.PENDING,
         value: availableAmount,
         call: {
-          abi: RTokenInterface,
+          abi: 'rToken',
           address: token.address,
           method: 'vest',
           args: [account, index.add(BigNumber.from(1))],
