@@ -13,7 +13,10 @@ import {
   ethPriceAtom,
   gasPriceAtom,
 } from 'state/atoms'
-import { useTransaction } from 'state/web3/hooks/useTransactions'
+import {
+  useTransaction,
+  useTransactions,
+} from 'state/web3/hooks/useTransactions'
 import { Box, Divider, Flex, Spinner, Text } from 'theme-ui'
 import { BigNumberMap, TransactionState } from 'types'
 import { formatCurrency, hasAllowance } from 'utils'
@@ -35,14 +38,64 @@ export interface ITransactionModal {
   isValid: boolean
 }
 
+const TransactionError = ({
+  onClose,
+  title,
+  subtitle,
+}: {
+  onClose(): void
+  title?: string
+  subtitle?: string
+}) => {
+  return (
+    <>
+      <Box
+        sx={{
+          opacity: '95%',
+          backgroundColor: 'background',
+          position: 'absolute',
+          height: '100%',
+          width: '100%',
+          top: 0,
+          left: 0,
+        }}
+      />
+      <Flex
+        sx={{
+          position: 'absolute',
+          height: '100%',
+          width: '100%',
+          top: 0,
+          left: 0,
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+        }}
+      >
+        <Text mb={2} variant="sectionTitle">
+          {title}
+        </Text>
+        <Text mb={4} variant="legend">
+          {subtitle}
+        </Text>
+        <Button px={4} onClick={onClose}>
+          Dismiss
+        </Button>
+      </Flex>
+    </>
+  )
+}
+
 const ApprovalTransactions = ({
   txs,
   title,
   onConfirm,
+  onError,
 }: {
   txs: TransactionState[]
   title: string
-  onConfirm: () => void
+  onConfirm(): void
+  onError(): void
 }) => {
   const addTransaction = useSetAtom(addTransactionAtom)
   const [signing, setSigning] = useState(false)
@@ -52,10 +105,18 @@ const ApprovalTransactions = ({
   const gasPrice = useAtomValue(gasPriceAtom)
   const ethPrice = useAtomValue(ethPriceAtom)
   const blockNumber = useBlockNumber()
+  const txState = useTransactions(signing ? txs.map((tx) => tx.id) : [])
+  const failedTx = useMemo(() => {
+    if (signing) {
+      return txState.find((tx) => tx.status === TRANSACTION_STATUS.REJECTED)
+    }
+
+    return undefined
+  }, [JSON.stringify(txState)])
 
   const handleApprove = () => {
     if (signing) return
-    addTransaction(txs.filter((tx) => tx.status === TRANSACTION_STATUS.PENDING))
+    addTransaction(txs)
     setSigning(true)
     onConfirm()
   }
@@ -88,38 +149,52 @@ const ApprovalTransactions = ({
     }
   }, [blockNumber, JSON.stringify(txs)])
 
+  const handleRetry = () => {
+    setSigning(false)
+    onError()
+  }
+
   return (
-    <Box mt={3}>
-      <Button sx={{ width: '100%' }} variant="accent" onClick={handleApprove}>
-        {signing ? (
-          <Text
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Spinner color="black" marginRight={10} size={20} />
-            Pending, sign in wallet
-          </Text>
-        ) : (
-          <Text>{title}</Text>
-        )}
-      </Button>
-      <Box mt={2} sx={{ fontSize: 1, textAlign: 'center' }}>
-        <Text mr={1}>Estimated gas cost:</Text>
-        {gasEstimates.length > 0 ? (
-          <Text sx={{ fontWeight: 500 }}>${formatCurrency(fee)}</Text>
-        ) : (
-          <Spinner color="black" size={12} />
-        )}
+    <>
+      {!!failedTx && (
+        <TransactionError
+          title="Transaction failed"
+          subtitle={failedTx.description}
+          onClose={handleRetry}
+        />
+      )}
+      <Box mt={3}>
+        <Button sx={{ width: '100%' }} variant="accent" onClick={handleApprove}>
+          {signing ? (
+            <Text
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Spinner color="black" marginRight={10} size={20} />
+              Pending, sign in wallet
+            </Text>
+          ) : (
+            <Text>{title}</Text>
+          )}
+        </Button>
+        <Box mt={2} sx={{ fontSize: 1, textAlign: 'center' }}>
+          <Text mr={1}>Estimated gas cost:</Text>
+          {gasEstimates.length > 0 ? (
+            <Text sx={{ fontWeight: 500 }}>${formatCurrency(fee)}</Text>
+          ) : (
+            <Spinner color="black" size={12} />
+          )}
+        </Box>
       </Box>
-    </Box>
+    </>
   )
 }
 
-const TransactionConfirmed = ({ onClose }: { onClose: () => void }) => (
-  <Modal onClose={onClose} title=" " style={{ width: '400px' }}>
+const TransactionConfirmed = ({ onClose }: { onClose(): void }) => (
+  <Modal onClose={onClose} style={{ width: '400px' }}>
     <Flex
       p={4}
       sx={{
@@ -151,8 +226,8 @@ const TransactionModal = ({
   const allowances = useAtomValue(allowanceAtom)
   const [signing, setSigning] = useState(false)
   const [approvalsTx, setApprovalsTx] = useState([] as TransactionState[])
-  const approvalsNeeded = useMemo(
-    () => approvalsTx.some((tx) => tx.status === TRANSACTION_STATUS.PENDING),
+  const requiredApprovals = useMemo(
+    () => approvalsTx.filter((tx) => tx.status === TRANSACTION_STATUS.PENDING),
     [approvalsTx]
   )
   const canSubmit = useMemo(
@@ -173,7 +248,14 @@ const TransactionModal = ({
     addTransaction([tx])
   }
 
-  useEffect(() => {
+  // TODO: Handle retry
+  // TODO: Reset state, and make sure the new tx array have new uuids
+  // TODO: Signing and error state can be shared? so restarting is easier
+  const handleRetry = () => {
+    console.log('retry')
+  }
+
+  const fetchApprovals = () => {
     if (
       buildApprovals &&
       Object.keys(allowances).length &&
@@ -183,7 +265,9 @@ const TransactionModal = ({
     } else {
       setApprovalsTx([])
     }
-  }, [allowances, requiredAllowance])
+  }
+
+  useEffect(fetchApprovals, [allowances, requiredAllowance])
 
   if (signed) {
     return <TransactionConfirmed onClose={onClose} />
@@ -196,13 +280,14 @@ const TransactionModal = ({
       style={{ width: '400px' }}
     >
       {children}
-      {approvalsNeeded && !canSubmit && (
+      {requiredApprovals.length > 0 && !canSubmit && (
         <>
           <Divider mx={-3} mt={3} />
           <ApprovalTransactions
             onConfirm={onConfirm}
+            onError={fetchApprovals}
             title={approvalsLabel ?? 'Approve'}
-            txs={approvalsTx}
+            txs={requiredApprovals}
           />
         </>
       )}
@@ -213,7 +298,7 @@ const TransactionModal = ({
         variant={signing ? 'accent' : 'primary'}
         mt={2}
         onClick={handleConfirm}
-    >
+      >
         {signing ? (
           <Text
             sx={{
