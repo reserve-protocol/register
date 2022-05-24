@@ -20,6 +20,7 @@ import {
 import { Box, Divider, Flex, Spinner, Text } from 'theme-ui'
 import { BigNumberMap, TransactionState } from 'types'
 import { formatCurrency, hasAllowance } from 'utils'
+import { v4 as uuid } from 'uuid'
 import { TRANSACTION_STATUS } from 'utils/constants'
 
 export interface ITransactionModal {
@@ -34,7 +35,7 @@ export interface ITransactionModal {
     allowances: BigNumberMap
   ) => TransactionState[]
   onClose: () => void
-  onConfirm?: () => void
+  onChange?(signing: boolean): void
   isValid: boolean
 }
 
@@ -58,6 +59,7 @@ const TransactionError = ({
           width: '100%',
           top: 0,
           left: 0,
+          borderRadius: 16,
         }}
       />
       <Flex
@@ -70,6 +72,7 @@ const TransactionError = ({
           justifyContent: 'center',
           alignItems: 'center',
           flexDirection: 'column',
+          borderRadius: 16,
         }}
       >
         <Text mb={2} variant="sectionTitle">
@@ -115,9 +118,8 @@ const ApprovalTransactions = ({
   }, [JSON.stringify(txState)])
 
   const handleApprove = () => {
-    if (signing) return
-    addTransaction(txs)
     setSigning(true)
+    addTransaction(txs)
     onConfirm()
   }
 
@@ -150,8 +152,8 @@ const ApprovalTransactions = ({
   }, [blockNumber, JSON.stringify(txs)])
 
   const handleRetry = () => {
-    setSigning(false)
     onError()
+    setSigning(false)
   }
 
   return (
@@ -210,11 +212,11 @@ const TransactionModal = ({
   approvalsLabel,
   buildApprovals,
   onClose,
-  onConfirm = () => {},
+  onChange = () => {},
 }: ITransactionModal) => {
   const addTransaction = useSetAtom(addTransactionAtom)
   const allowances = useAtomValue(allowanceAtom)
-  const [signing, setSigning] = useState(false)
+  const [signing, setSigning] = useState('')
   const [approvalsTx, setApprovalsTx] = useState([] as TransactionState[])
   const requiredApprovals = useMemo(
     () => approvalsTx.filter((tx) => tx.status === TRANSACTION_STATUS.PENDING),
@@ -224,25 +226,24 @@ const TransactionModal = ({
     () => isValid && hasAllowance(allowances, requiredAllowance),
     [allowances, requiredAllowance]
   )
-  const txState = useTransaction(signing ? tx.id : '')
+  const txState = useTransaction(signing)
   const signed =
-    signing &&
-    txState &&
-    txState.status !== TRANSACTION_STATUS.PENDING &&
-    txState.status !== TRANSACTION_STATUS.SIGNING
+    txState?.status === TRANSACTION_STATUS.MINING ||
+    txState?.status === TRANSACTION_STATUS.CONFIRMED
 
   const handleConfirm = () => {
-    if (signing) return
-    setSigning(true)
-    onConfirm()
-    addTransaction([tx])
+    const id = uuid()
+    setSigning(id)
+    onChange(true)
+    addTransaction([{ ...tx, id }])
   }
 
   // TODO: Handle retry
   // TODO: Reset state, and make sure the new tx array have new uuids
   // TODO: Signing and error state can be shared? so restarting is easier
   const handleRetry = () => {
-    console.log('retry')
+    setSigning('')
+    onChange(false)
   }
 
   const fetchApprovals = () => {
@@ -269,13 +270,23 @@ const TransactionModal = ({
       onClose={onClose}
       style={{ width: '400px' }}
     >
+      {txState?.status === TRANSACTION_STATUS.REJECTED && (
+        <TransactionError
+          title="Transaction failed"
+          subtitle={txState.description}
+          onClose={handleRetry}
+        />
+      )}
       {children}
       {requiredApprovals.length > 0 && !canSubmit && (
         <>
           <Divider mx={-4} mt={3} />
           <ApprovalTransactions
-            onConfirm={onConfirm}
-            onError={fetchApprovals}
+            onConfirm={() => onChange(true)}
+            onError={() => {
+              onChange(false)
+              fetchApprovals()
+            }}
             title={approvalsLabel ?? 'Approve'}
             txs={requiredApprovals}
           />
@@ -283,9 +294,9 @@ const TransactionModal = ({
       )}
       <Divider mx={-4} mt={3} />
       <LoadingButton
-        loading={signing}
+        loading={!!signing}
         disabled={!canSubmit}
-        variant={signing ? 'accent' : 'primary'}
+        variant={!!signing ? 'accent' : 'primary'}
         text={confirmLabel}
         onClick={handleConfirm}
         sx={{ width: '100%' }}

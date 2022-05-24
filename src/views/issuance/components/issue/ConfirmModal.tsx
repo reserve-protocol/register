@@ -79,7 +79,7 @@ const ConfirmModal = ({ data, onClose }: Props) => {
   const [signing, setSigning] = useState(false)
   const transaction = useMemo(
     () => ({
-      id: uuid(),
+      id: '',
       description: `Issue ${amount} ${data.token.symbol}`,
       status: TRANSACTION_STATUS.PENDING,
       value: amount,
@@ -113,7 +113,7 @@ const ConfirmModal = ({ data, onClose }: Props) => {
       approvalsLabel="Allow use of collateral tokens"
       buildApprovals={buildApprovals}
       onClose={onClose}
-      onConfirm={() => setSigning(true)}
+      onChange={(signing) => setSigning(signing)}
     >
       <IssueInput disabled={signing} compact />
       <CollateralDistribution mt={3} data={data} quantities={quantities} />

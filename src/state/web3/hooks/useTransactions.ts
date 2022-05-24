@@ -8,7 +8,7 @@ export const useTransactions = (ids: string[], sample = 20) => {
   const txs = useAtomValue(currentTxAtom).slice(-sample)
   return useMemo(
     () => txs.filter((tx) => ids.includes(tx.id)),
-    [JSON.stringify(txs), ids]
+    [JSON.stringify(txs), ids.join('')]
   )
 }
 
