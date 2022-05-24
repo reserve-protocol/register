@@ -1,6 +1,7 @@
 import { useWeb3React } from '@web3-react/core'
 import { StRSRInterface } from 'abis'
 import { Button, Card } from 'components'
+import { LoadingButton } from 'components/button'
 import TokenBalance from 'components/token-balance'
 import { BigNumber } from 'ethers/lib/ethers'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
@@ -13,6 +14,7 @@ import {
   stRsrBalanceAtom,
 } from 'state/atoms'
 import { useTransaction } from 'state/web3/hooks/useTransactions'
+import { smallButton } from 'theme'
 import { Box, BoxProps, Divider, Grid, Spinner, Text } from 'theme-ui'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
@@ -47,8 +49,6 @@ const AvailableBalance = () => {
   const claimTx = useTransaction(claiming)
 
   const handleClaim = () => {
-    if (claiming) return
-
     const txId = uuid()
     setClaiming(txId)
     addTransaction([
@@ -81,29 +81,16 @@ const AvailableBalance = () => {
 
   return (
     <Box p={4} py={2}>
-      <Button
-        onClick={handleClaim}
-        variant={claiming ? 'accent' : 'primary'}
-        sx={{ width: '100%', fontSize: 1, padding: 2, borderRadius: 35 }}
+      <LoadingButton
+        loading={!!claiming}
         disabled={!availableAmount}
+        text="Withdraw"
+        onClick={handleClaim}
+        sx={{ ...smallButton, width: '100%' }}
         mb={3}
-      >
-        {claiming ? (
-          <Text
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Spinner size={14} mr={2} /> Withdrawing, Sign in wallet
-          </Text>
-        ) : (
-          <Text>Withdrawn available RSR</Text>
-        )}
-      </Button>
+      />
       <Text variant="subtitle" mb={2}>
-        Out of cooldown
+        Available
       </Text>
       <TokenBalance symbol="RSR" balance={availableAmount} />
     </Box>

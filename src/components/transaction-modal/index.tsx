@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { formatEther } from '@ethersproject/units'
-import Button from 'components/button'
+import Button, { LoadingButton } from 'components/button'
 import Modal from 'components/modal'
 import useBlockNumber from 'hooks/useBlockNumber'
 import { useTokenContract } from 'hooks/useContract'
@@ -164,22 +164,12 @@ const ApprovalTransactions = ({
         />
       )}
       <Box mt={3}>
-        <Button sx={{ width: '100%' }} variant="accent" onClick={handleApprove}>
-          {signing ? (
-            <Text
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Spinner color="black" marginRight={10} size={20} />
-              Pending, sign in wallet
-            </Text>
-          ) : (
-            <Text>{title}</Text>
-          )}
-        </Button>
+        <LoadingButton
+          loading={signing}
+          text={title}
+          onClick={handleApprove}
+          sx={{ width: '100%' }}
+        />
         <Box mt={2} sx={{ fontSize: 1, textAlign: 'center' }}>
           <Text mr={1}>Estimated gas cost:</Text>
           {gasEstimates.length > 0 ? (
@@ -292,28 +282,15 @@ const TransactionModal = ({
         </>
       )}
       <Divider mx={-4} mt={3} />
-      <Button
-        sx={{ width: '100%' }}
+      <LoadingButton
+        loading={signing}
         disabled={!canSubmit}
         variant={signing ? 'accent' : 'primary'}
-        mt={2}
+        text={confirmLabel}
         onClick={handleConfirm}
-      >
-        {signing ? (
-          <Text
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Spinner color="black" marginRight={10} size={20} />
-            Pending, sign in wallet
-          </Text>
-        ) : (
-          <Text>{confirmLabel}</Text>
-        )}
-      </Button>
+        sx={{ width: '100%' }}
+        mt={2}
+      />
     </Modal>
   )
 }

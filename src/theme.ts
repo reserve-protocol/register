@@ -6,7 +6,7 @@ export const borderRadius = {
   inputs: 10,
   boxes: 16,
 }
-const baseButton = {
+export const baseButton = {
   borderRadius: 50,
   fontWeight: 500,
   cursor: 'pointer',
@@ -21,7 +21,14 @@ const baseButton = {
   '&:disabled': {
     backgroundColor: 'disabled',
     cursor: 'default',
+    color: '#fff',
   },
+}
+
+export const smallButton = {
+  fontSize: 1,
+  padding: 2,
+  borderRadius: 35,
 }
 
 export const colors = {

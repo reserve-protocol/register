@@ -2,7 +2,7 @@ import { RSR } from 'utils/constants'
 import { BigNumber } from '@ethersproject/bignumber'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { atom } from 'jotai'
-import { atomWithStorage } from 'jotai/utils'
+import { atomWithStorage, createJSONStorage } from 'jotai/utils'
 import {
   MulticallState,
   RawCall,
@@ -125,10 +125,46 @@ export const pendingRSRSummaryAtom = atom((get) => {
 export const callsAtom = atom<RawCall[]>([])
 export const multicallStateAtom = atom<MulticallState>({})
 
-export const txAtom = atomWithStorage<{ [x: string]: TransactionState[] }>(
+interface TransactionMap {
+  [x: string]: TransactionState[]
+}
+
+const txStorage = createJSONStorage<TransactionMap>(() => localStorage)
+
+txStorage.getItem = (key: string): TransactionMap => {
+  const data = localStorage?.getItem(key)
+
+  if (!data) return {}
+
+  try {
+    const parsed = JSON.parse(data) as TransactionMap
+
+    return Object.keys(parsed).reduce((txs, current) => {
+      txs[current] = parsed[current].map((tx) => {
+        if (
+          tx.status === TRANSACTION_STATUS.SIGNING ||
+          tx.status === TRANSACTION_STATUS.PENDING
+        ) {
+          return { ...tx, status: TRANSACTION_STATUS.UNKNOWN }
+        }
+
+        return tx
+      })
+
+      return txs
+    }, {} as TransactionMap)
+  } catch (e) {
+    localStorage.setItem(key, JSON.stringify({}))
+    return {}
+  }
+}
+
+export const txAtom = atomWithStorage<TransactionMap>(
   'transactions',
-  {}
+  {},
+  txStorage
 )
+
 export const currentTxAtom = atom((get) =>
   get(txAtom) && get(txAtom)[get(selectedAccountAtom)]
     ? get(txAtom)[get(selectedAccountAtom)]
@@ -159,7 +195,10 @@ export const addTransactionAtom = atom(
   (get, set, tx: TransactionState[]) => {
     const txs = get(txAtom)
     const account = get(selectedAccountAtom)
-    set(txAtom, { ...txs, [account]: [...(txs[account] ?? []), ...tx] })
+    set(txAtom, {
+      ...txs,
+      [account]: [...(txs[account] ?? []), ...tx].slice(-50),
+    })
   }
 )
 

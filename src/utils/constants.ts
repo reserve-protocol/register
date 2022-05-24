@@ -7,6 +7,7 @@ export const TRANSACTION_STATUS = {
   CONFIRMED: 'CONFIRMED', // confirmed (mined) tx
   REJECTED: 'REJECTED', // rejected tx, user canceled or reverted
   SKIPPED: 'SKIPPED',
+  UNKNOWN: 'UNKNOWN',
 }
 
 export const COINGECKO_API = 'https://api.coingecko.com/api/v3'

@@ -1,11 +1,13 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { useWeb3React } from '@web3-react/core'
+import { LoadingButton } from 'components/button'
 import TokenBalance from 'components/token-balance'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
 import { addTransactionAtom, pendingIssuancesSummary } from 'state/atoms'
 import { useTransaction } from 'state/web3/hooks/useTransactions'
-import { Box, Button, Divider, Spinner, Text } from 'theme-ui'
+import { smallButton } from 'theme'
+import { Box, Divider, Text } from 'theme-ui'
 import { Token } from 'types'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
@@ -55,27 +57,14 @@ const PendingIssuances = ({ token }: { token: Token }) => {
   return (
     <>
       <Box px={4} py={2}>
-        <Button
-          onClick={handleClaim}
-          variant={claiming ? 'accent' : 'primary'}
-          sx={{ width: '100%', fontSize: 1, padding: 2, borderRadius: 35 }}
+        <LoadingButton
+          loading={!!claiming}
           disabled={!availableAmount}
+          text={`Claim vested ${token.symbol}`}
+          onClick={handleClaim}
+          sx={{ ...smallButton, width: '100%' }}
           mb={3}
-        >
-          {claiming ? (
-            <Text
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Spinner size={14} mr={2} /> Claiming, Sign in wallet
-            </Text>
-          ) : (
-            <Text>Claim vested {token.symbol}</Text>
-          )}
-        </Button>
+        />
         <Text variant="subtitle" mb={2}>
           Available
         </Text>
