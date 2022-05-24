@@ -1,7 +1,7 @@
 import { getAddress } from '@ethersproject/address'
 import { BigNumber } from '@ethersproject/bignumber'
 import { formatUnits, parseEther } from '@ethersproject/units'
-import { ERC20Interface, RSVManagerInterface, RTokenInterface } from 'abis'
+import TextPlaceholder from 'components/placeholder/TextPlaceholder'
 import TransactionModal from 'components/transaction-modal'
 import { useAtomValue } from 'jotai'
 import { useCallback, useMemo, useState } from 'react'
@@ -14,8 +14,8 @@ import {
   isValidIssuableAmountAtom,
   quantitiesAtom,
 } from 'views/issuance/atoms'
-import IssueInput from './IssueInput'
 import CollateralDistribution from './CollateralDistribution'
+import IssueInput from './IssueInput'
 
 interface Props {
   data: ReserveToken
@@ -75,6 +75,7 @@ const buildApprovalTransactions = (
 const ConfirmModal = ({ data, onClose }: Props) => {
   const amount = useAtomValue(issueAmountAtom)
   const quantities = useAtomValue(quantitiesAtom)
+  const loadingQuantities = !Object.keys(quantities).length
   const isValid = useAtomValue(isValidIssuableAmountAtom)
   const [signing, setSigning] = useState(false)
   const transaction = useMemo(
@@ -107,7 +108,7 @@ const ConfirmModal = ({ data, onClose }: Props) => {
     <TransactionModal
       title={'Mint ' + data.token.symbol}
       tx={transaction}
-      isValid={isValid}
+      isValid={!loadingQuantities && isValid}
       requiredAllowance={quantities}
       confirmLabel={confirmLabel}
       approvalsLabel="Allow use of collateral tokens"
@@ -117,6 +118,9 @@ const ConfirmModal = ({ data, onClose }: Props) => {
     >
       <IssueInput disabled={signing} compact />
       <CollateralDistribution mt={3} data={data} quantities={quantities} />
+      {loadingQuantities && (
+        <TextPlaceholder text="Fetching required collateral amounts" />
+      )}
     </TransactionModal>
   )
 }
