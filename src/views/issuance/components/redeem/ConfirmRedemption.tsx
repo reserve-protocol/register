@@ -1,7 +1,8 @@
+import { BigNumber } from '@ethersproject/bignumber'
 import { parseEther } from '@ethersproject/units'
 import TransactionModal from 'components/transaction-modal'
 import { useAtom, useAtomValue } from 'jotai'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { rTokenAtom } from 'state/atoms'
 import { formatCurrency } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
@@ -11,13 +12,14 @@ import RedeemInput from './RedeemInput'
 
 // TODO: Display redeemable collateral
 const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
+  const [signing, setSigning] = useState(false)
   const rToken = useAtomValue(rTokenAtom)
   const [amount, setAmount] = useAtom(redeemAmountAtom)
   const isValid = useAtomValue(isValidRedeemAmountAtom)
-  const parsedAmount = parseEther(amount ?? '0')
+  const parsedAmount = isValid ? parseEther(amount) : BigNumber.from(0)
   const transaction = useMemo(
     () => ({
-      id: uuid(),
+      id: '',
       description: `Redeem ${amount} ${rToken?.token.symbol}`,
       status: TRANSACTION_STATUS.PENDING,
       value: amount,
@@ -75,8 +77,9 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
       }`}
       buildApprovals={buildApproval}
       onClose={handleClose}
+      onChange={(signing) => setSigning(signing)}
     >
-      <RedeemInput compact />
+      <RedeemInput compact disabled={signing} />
     </TransactionModal>
   )
 }

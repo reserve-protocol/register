@@ -1,10 +1,10 @@
 import { getAddress } from '@ethersproject/address'
-import { BigNumber } from '@ethersproject/bignumber'
 import { formatUnits, parseEther } from '@ethersproject/units'
 import TextPlaceholder from 'components/placeholder/TextPlaceholder'
 import TransactionModal from 'components/transaction-modal'
 import { useAtomValue } from 'jotai'
 import { useCallback, useMemo, useState } from 'react'
+import { rTokenAtom } from 'state/atoms'
 import { BigNumberMap, ReserveToken, TransactionState } from 'types'
 import { formatCurrency } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
@@ -17,27 +17,14 @@ import {
 import CollateralDistribution from './CollateralDistribution'
 import IssueInput from './IssueInput'
 
-interface Props {
-  data: ReserveToken
-  onClose: () => void
-}
-
 /**
- * Build issuance required transactions
- *
- * @param data <ReserveToken>
- * @param amount <string>
- * @param quantities <BigNumber[]>
- * @returns TransactionState[]
+ * Build issuance required approval transactions
  */
 const buildApprovalTransactions = (
   data: ReserveToken,
   quantities: BigNumberMap,
   allowances: BigNumberMap
 ): TransactionState[] => {
-  const tokenQuantities: [string, BigNumber][] = []
-
-  // Create token approvals calls array
   const transactions: TransactionState[] = data.basket.collaterals.map(
     ({ token }) => {
       // Specific token approvals
@@ -49,9 +36,7 @@ const buildApprovalTransactions = (
         token.decimals
       )} ${token.symbol}`
 
-      // Fill token quantities on the same map
-      tokenQuantities.push([token.address, tokenAmount])
-
+      // TODO: Should I continue using "Skipped" txs?
       return {
         id: uuid(),
         description,
@@ -72,57 +57,60 @@ const buildApprovalTransactions = (
   return transactions
 }
 
-const ConfirmModal = ({ data, onClose }: Props) => {
+const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
+  const [signing, setSigning] = useState(false)
+  const rToken = useAtomValue(rTokenAtom)
   const amount = useAtomValue(issueAmountAtom)
   const quantities = useAtomValue(quantitiesAtom)
   const loadingQuantities = !Object.keys(quantities).length
   const isValid = useAtomValue(isValidIssuableAmountAtom)
-  const [signing, setSigning] = useState(false)
   const transaction = useMemo(
     () => ({
       id: '',
-      description: `Issue ${amount} ${data.token.symbol}`,
+      description: `Issue ${amount} ${rToken?.token.symbol}`,
       status: TRANSACTION_STATUS.PENDING,
       value: amount,
       call: {
-        abi: data.isRSV ? 'rsv' : 'rToken',
-        address: data.isRSV ? data.id : data.token.address,
+        abi: rToken?.isRSV ? 'rsv' : 'rToken',
+        address: rToken?.isRSV ? rToken?.id : rToken?.token.address ?? '',
         method: 'issue',
-        args: [parseEther(amount ?? '0')],
+        args: [isValid ? parseEther(amount) : 0],
       },
     }),
-    [data.id, amount]
+    [rToken?.id, amount]
   )
-
-  const confirmLabel = `Begin minting ${formatCurrency(Number(amount))} ${
-    data.token.symbol
-  }`
 
   const buildApprovals = useCallback(
     (required: BigNumberMap, allowances: BigNumberMap) =>
-      buildApprovalTransactions(data, required, allowances),
-    [data?.id]
+      rToken ? buildApprovalTransactions(rToken, required, allowances) : [],
+    [rToken?.id]
   )
 
   return (
     <TransactionModal
-      title={'Mint ' + data.token.symbol}
+      title={'Mint ' + rToken?.token.symbol}
       tx={transaction}
       isValid={!loadingQuantities && isValid}
       requiredAllowance={quantities}
-      confirmLabel={confirmLabel}
+      confirmLabel={`Begin minting ${formatCurrency(Number(amount))} ${
+        rToken?.token.symbol
+      }`}
       approvalsLabel="Allow use of collateral tokens"
       buildApprovals={buildApprovals}
       onClose={onClose}
       onChange={(signing) => setSigning(signing)}
     >
       <IssueInput disabled={signing} compact />
-      <CollateralDistribution mt={3} data={data} quantities={quantities} />
-      {loadingQuantities && (
+      <CollateralDistribution
+        mt={3}
+        collaterals={rToken?.basket.collaterals ?? []}
+        quantities={quantities}
+      />
+      {isValid && loadingQuantities && (
         <TextPlaceholder text="Fetching required collateral amounts" />
       )}
     </TransactionModal>
   )
 }
 
-export default ConfirmModal
+export default ConfirmIssuance

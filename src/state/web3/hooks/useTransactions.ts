@@ -6,6 +6,7 @@ import { TransactionState } from 'types'
 export const useTransactions = (ids: string[], sample = 20) => {
   // Usually used to fetch last N txs, slice it to last 20 for fast lookup
   const txs = useAtomValue(currentTxAtom).slice(-sample)
+
   return useMemo(
     () => txs.filter((tx) => ids.includes(tx.id)),
     [JSON.stringify(txs), ids.join('')]
@@ -19,7 +20,7 @@ export const useTransaction = (id: string): TransactionState | null => {
     if (!id) {
       return null
     }
-    // This hook is usually used to get the last txs,
+    // This hook is usually used to get the last tx,
     // reverse lookup for performance makes sense
     for (let i = txs.length - 1; i >= 0; --i) {
       if (txs[i].id === id) return txs[i]

@@ -1,7 +1,7 @@
 import { parseEther } from '@ethersproject/units'
 import TransactionModal from 'components/transaction-modal'
 import { useAtom, useAtomValue } from 'jotai'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { rTokenAtom } from 'state/atoms'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
@@ -12,6 +12,7 @@ import {
 import UnstakeInput from './UnstakeInput'
 
 const ConfirmUnstake = ({ onClose }: { onClose: () => void }) => {
+  const [signing, setSigning] = useState(false)
   const rToken = useAtomValue(rTokenAtom)
   const [amount, setAmount] = useAtom(unStakeAmountAtom)
   const parsedAmount = parseEther(amount ?? '0')
@@ -45,6 +46,7 @@ const ConfirmUnstake = ({ onClose }: { onClose: () => void }) => {
       requiredAllowance={{}}
       confirmLabel={`Begin unStake cooldown`}
       onClose={handleClose}
+      onChange={(signing) => setSigning(signing)}
     >
       <UnstakeInput compact />
     </TransactionModal>

@@ -1,14 +1,16 @@
 import { Button } from 'components'
 import useDebounce from 'hooks/useDebounce'
 import { useAtom, useAtomValue } from 'jotai'
+import { useUpdateAtom } from 'jotai/utils'
 import { useState } from 'react'
 import { Card } from 'theme-ui'
 import { ReserveToken } from 'types'
 import {
   issueAmountAtom,
   isValidIssuableAmountAtom,
+  quantitiesAtom,
 } from 'views/issuance/atoms'
-import ConfirmModal from './ConfirmModal'
+import ConfirmIssuance from './ConfirmIssuance'
 import IssueInput from './IssueInput'
 import MaxIssuableUpdater from './MaxIssuableUpdater'
 import QuantitiesUpdater from './QuantitiesUpdater'
@@ -18,17 +20,16 @@ import QuantitiesUpdater from './QuantitiesUpdater'
  */
 const Issue = ({ data, ...props }: { data: ReserveToken }) => {
   const [amount, setAmount] = useAtom(issueAmountAtom)
+  const setQuantities = useUpdateAtom(quantitiesAtom)
   const isValid = useAtomValue(isValidIssuableAmountAtom)
-  const debouncedValue = useDebounce(amount, 400)
   const [issuing, setIssuing] = useState(false)
 
   return (
     <>
       <MaxIssuableUpdater />
-      <QuantitiesUpdater amount={debouncedValue} />
+      <QuantitiesUpdater amount={amount} onChange={setQuantities} />
       {issuing && (
-        <ConfirmModal
-          data={data}
+        <ConfirmIssuance
           onClose={() => {
             setIssuing(false)
             setAmount('')

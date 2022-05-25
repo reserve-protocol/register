@@ -1,7 +1,7 @@
 import { parseEther } from '@ethersproject/units'
 import TransactionModal from 'components/transaction-modal'
 import { useAtom, useAtomValue } from 'jotai'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { rTokenAtom } from 'state/atoms'
 import { formatCurrency } from 'utils'
 import { RSR, TRANSACTION_STATUS } from 'utils/constants'
@@ -10,6 +10,7 @@ import { isValidStakeAmountAtom, stakeAmountAtom } from 'views/staking/atoms'
 import StakeInput from './StakeInput'
 
 const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
+  const [signing, setSigning] = useState(false)
   const rToken = useAtomValue(rTokenAtom)
   const [amount, setAmount] = useAtom(stakeAmountAtom)
   const parsedAmount = parseEther(amount ?? '0')
@@ -70,8 +71,9 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
       confirmLabel={`Begin stake of ${formatCurrency(Number(amount))} RSR`}
       buildApprovals={buildApproval}
       onClose={handleClose}
+      onChange={(signing) => setSigning(signing)}
     >
-      <StakeInput compact />
+      <StakeInput compact disabled={signing} />
     </TransactionModal>
   )
 }

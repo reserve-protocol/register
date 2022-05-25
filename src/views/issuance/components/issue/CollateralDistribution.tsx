@@ -3,16 +3,16 @@ import { getAddress } from '@ethersproject/address'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp, PieChart } from 'react-feather'
 import { Box, BoxProps, Flex, Text, Divider, Spinner } from 'theme-ui'
-import { BigNumberMap, ReserveToken } from 'types'
+import { BigNumberMap, Basket, Collateral } from 'types'
 import { formatCurrency } from 'utils'
 
 interface Props extends BoxProps {
-  data: ReserveToken
+  collaterals: Collateral[]
   quantities: BigNumberMap
 }
 
 const CollateralDistribution = ({
-  data,
+  collaterals,
   quantities,
   sx = {},
   ...props
@@ -41,7 +41,7 @@ const CollateralDistribution = ({
       {isVisible && (
         <Box>
           <Divider mx={-2} />
-          {data.basket.collaterals.map((collateral) => (
+          {collaterals.map((collateral) => (
             <Flex key={collateral.id}>
               <Text>{collateral.token.symbol}</Text>
               <Box mx="auto" />

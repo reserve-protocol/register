@@ -30,7 +30,7 @@ export interface ITransactionModal {
 }
 
 const TransactionConfirmed = ({ onClose }: { onClose(): void }) => (
-  <Modal onClose={onClose} style={{ width: '400px' }}>
+  <Modal onClose={onClose} style={{ width: '420px' }}>
     <Flex
       p={4}
       sx={{
@@ -106,7 +106,7 @@ const TransactionModal = ({
   }
 
   return (
-    <Modal title={title} onClose={onClose} style={{ width: '400px' }}>
+    <Modal title={title} onClose={onClose} style={{ width: '420px' }}>
       {txState?.status === TRANSACTION_STATUS.REJECTED && (
         <TransactionError
           title="Transaction failed"
@@ -115,7 +115,7 @@ const TransactionModal = ({
         />
       )}
       {children}
-      {requiredApprovals.length > 0 && !canSubmit && (
+      {requiredApprovals.length > 0 && !canSubmit && isValid && (
         <>
           <Divider mx={-4} mt={3} />
           <ApprovalTransactions
