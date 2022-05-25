@@ -1,6 +1,5 @@
 import { useWeb3React } from '@web3-react/core'
-import { StRSRInterface } from 'abis'
-import { Button, Card } from 'components'
+import { Card } from 'components'
 import { LoadingButton } from 'components/button'
 import TokenBalance from 'components/token-balance'
 import { BigNumber } from 'ethers/lib/ethers'
@@ -15,7 +14,7 @@ import {
 } from 'state/atoms'
 import { useTransaction } from 'state/web3/hooks/useTransactions'
 import { smallButton } from 'theme'
-import { Box, BoxProps, Divider, Grid, Spinner, Text } from 'theme-ui'
+import { Box, BoxProps, Divider, Grid, Text } from 'theme-ui'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
 

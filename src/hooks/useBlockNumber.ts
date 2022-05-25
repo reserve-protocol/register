@@ -1,3 +1,4 @@
+import { blockTimestampAtom } from './../state/atoms'
 import { useWeb3React } from '@web3-react/core'
 import { atom } from 'jotai'
 import { useAtomValue, useUpdateAtom } from 'jotai/utils'
@@ -58,9 +59,18 @@ const blockAtom = atom<number | undefined>(undefined)
 
 export function BlockUpdater() {
   const setBlock = useUpdateAtom(blockAtom)
+  const setBlockTimestamp = useUpdateAtom(blockTimestampAtom)
   const block = useBlock()
+  const { provider } = useWeb3React()
+
   useEffect(() => {
     setBlock(block)
+
+    if (block && provider) {
+      provider.getBlock(block).then((blockData) => {
+        setBlockTimestamp(blockData.timestamp * 1000)
+      })
+    }
   }, [block, setBlock])
   return null
 }

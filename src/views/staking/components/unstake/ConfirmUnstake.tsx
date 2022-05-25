@@ -48,7 +48,7 @@ const ConfirmUnstake = ({ onClose }: { onClose: () => void }) => {
       onClose={handleClose}
       onChange={(signing) => setSigning(signing)}
     >
-      <UnstakeInput compact />
+      <UnstakeInput compact disabled={signing} />
     </TransactionModal>
   )
 }

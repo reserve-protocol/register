@@ -24,12 +24,9 @@ const TokenLogo = ({ symbol, size = '1em', ...props }: Props) => (
       style={{
         borderRadius: '50%',
         boxShadow: '0 0 3px 0px white inset, 0 0 3px 0px white',
-        width: 'auto',
-        height: 'auto',
-        maxHeight: size,
-        maxWidth: size,
+        height: size,
+        width: size,
       }}
-      alt={symbol}
     />
   </Container>
 )

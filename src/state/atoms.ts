@@ -1,6 +1,4 @@
-import { RSR } from 'utils/constants'
 import { BigNumber } from '@ethersproject/bignumber'
-import { TRANSACTION_STATUS } from 'utils/constants'
 import { atom } from 'jotai'
 import { atomWithStorage, createJSONStorage } from 'jotai/utils'
 import {
@@ -10,6 +8,7 @@ import {
   TransactionState,
   Wallet,
 } from 'types'
+import { RSR, TRANSACTION_STATUS } from 'utils/constants'
 
 // TODO: Maybe its time to split up this atoms file
 localStorage.setItem('trackedAccount', localStorage.trackedAccount || ' ')
@@ -22,6 +21,7 @@ export const rsrPriceAtom = atom(1)
 export const gasPriceAtom = atom(1)
 export const rTokenPriceAtom = atom(1)
 export const rsrExchangeRate = atom(1)
+export const blockTimestampAtom = atom<number>(0)
 
 export const reserveTokensAtom = atomWithStorage<{ [x: string]: ReserveToken }>(
   'reserveTokens',
@@ -101,14 +101,16 @@ export const pendingIssuancesSummary = atom((get) => {
 
 export const pendingRSRAtom = atom<any[]>([])
 export const pendingRSRSummaryAtom = atom((get) => {
+  const currentTime = get(blockTimestampAtom)
   return get(pendingRSRAtom).reduce(
     (acc, unstake) => {
       acc.index = unstake.index
+      acc.availableAT = unstake.availableAt
 
-      if (unstake.availableAt > Date.now()) {
-        acc.pendingAmount += unstake.amount
-      } else {
+      if (currentTime >= unstake.availableAt) {
         acc.availableAmount += unstake.amount
+      } else {
+        acc.pendingAmount += unstake.amount
       }
 
       return acc
@@ -116,6 +118,7 @@ export const pendingRSRSummaryAtom = atom((get) => {
     {
       index: BigNumber.from(0),
       pendingAmount: 0,
+      availableAt: 0,
       availableAmount: 0,
     }
   )
