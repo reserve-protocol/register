@@ -5,26 +5,24 @@ import Account from '../../account'
 import TransactionCenter from 'components/transactions/table/manager/TransactionCenter'
 import styled from '@emotion/styled'
 
-const border = '1px solid #E8E8E8'
 const Separator = styled(Divider)`
   border: none;
-  border-right: 1px solid #e8e8e8;
+  border-right: 1px solid var(--theme-ui-colors-border);
   height: 100%;
+`
+
+const Container = styled(Flex)`
+  align-items: center;
+  position: relative;
+  border-bottom: 1px solid var(--theme-ui-colors-border);
+  height: 3.5em;
 `
 
 /**
  * Application header
  */
 const AppHeader = () => (
-  <Flex
-    px={4}
-    sx={{
-      alignItems: 'center',
-      position: 'relative',
-      borderBottom: border,
-      height: '3.5em',
-    }}
-  >
+  <Container px={4}>
     <RTokenSelector />
     <Box mx="auto" />
     <Separator mr={2} />
@@ -35,7 +33,7 @@ const AppHeader = () => (
     </Box>
     <Separator />
     <TransactionCenter />
-  </Flex>
+  </Container>
 )
 
 export default AppHeader

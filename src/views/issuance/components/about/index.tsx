@@ -1,7 +1,13 @@
 import { Box, Text } from 'theme-ui'
 
 const About = () => (
-  <Box sx={{ border: '1px solid #ccc', borderRadius: '16px' }} p={4}>
+  <Box
+    sx={{
+      border: '1px solid var(--theme-ui-colors-border)',
+      borderRadius: '16px',
+    }}
+    p={4}
+  >
     <Text sx={{ fontWeight: 500 }}>About this app</Text>
     <br /> <br />
     <Text>

@@ -40,14 +40,16 @@ export const colors = {
   primary: '#000000',
   accent: '#00FFBF',
   secondary: '#E8E8E8',
+  border: '#DFDFDF',
   disabled: '#ccc',
   danger: '#FF0000',
   warning: '#FF7A00',
   modes: {
     dark: {
       text: '#fff',
-      background: '#040404',
+      background: '#121212',
       secondary: '#333333',
+      border: '#333333',
       contentBackground: '#1A1A1A',
       secondaryBackground: '#202128',
       primary: '#00b600',
@@ -130,7 +132,7 @@ export const theme: Theme = {
       color: 'text',
     },
     hr: {
-      borderColor: 'secondary',
+      borderColor: 'border',
     },
     h1: {
       variant: 'text.heading',
@@ -221,8 +223,12 @@ export const theme: Theme = {
     input: {
       // transition: 'border .2s ease,color .2s ease',
       // outline: 'none',
-      borderColor: '#DCDCDC',
+      borderColor: 'var(--theme-ui-colors-border)',
       borderRadius: borderRadius.inputs,
+
+      '&:focus': {
+        borderColor: 'none',
+      },
 
       '&:disabled': {
         backgroundColor: 'secondary',
