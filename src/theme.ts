@@ -46,11 +46,12 @@ export const colors = {
   modes: {
     dark: {
       text: '#fff',
-      background: '#000',
+      background: '#040404',
+      secondary: '#333333',
+      contentBackground: '#1A1A1A',
       secondaryBackground: '#202128',
       primary: '#00b600',
       bgCard: '#FBFDFE',
-      sidebar: '#F3F7F8',
     },
   },
 }
@@ -104,7 +105,7 @@ export const theme: Theme = {
     a: {
       transition,
       color: '#808080',
-      borderBottom: '1px solid',
+      textDecoration: 'underline',
       cursor: 'pointer',
       '&:hover': {
         color: 'text',

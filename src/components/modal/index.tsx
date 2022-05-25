@@ -14,7 +14,7 @@ export interface ModalProps {
 
 const StyledDialog = styled((props: any) => <Dialog {...props} />)`
   &[data-reach-dialog-content] {
-    background-color: ${({ theme }) => theme.colors.bgCard};
+    background-color: ${({ theme }) => theme.colors.contentBackground};
     padding: ${({ theme }) => theme.space[4]}px;
     position: relative;
     border-radius: 14px;
