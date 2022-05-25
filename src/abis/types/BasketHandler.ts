@@ -30,7 +30,7 @@ import type {
 export interface BasketHandlerInterface extends utils.Interface {
   functions: {
     "basketsHeldBy(address)": FunctionFragment;
-    "checkBasket()": FunctionFragment;
+    "disableBasket()": FunctionFragment;
     "fullyCapitalized()": FunctionFragment;
     "init(address)": FunctionFragment;
     "lastSet()": FunctionFragment;
@@ -38,9 +38,10 @@ export interface BasketHandlerInterface extends utils.Interface {
     "price()": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "quantity(address)": FunctionFragment;
-    "quote(int192,uint8)": FunctionFragment;
+    "quote(uint192,uint8)": FunctionFragment;
+    "refreshBasket()": FunctionFragment;
     "setBackupConfig(bytes32,uint256,address[])": FunctionFragment;
-    "setPrimeBasket(address[],int192[])": FunctionFragment;
+    "setPrimeBasket(address[],uint192[])": FunctionFragment;
     "status()": FunctionFragment;
     "switchBasket()": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
@@ -50,7 +51,7 @@ export interface BasketHandlerInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "basketsHeldBy"
-      | "checkBasket"
+      | "disableBasket"
       | "fullyCapitalized"
       | "init"
       | "lastSet"
@@ -59,6 +60,7 @@ export interface BasketHandlerInterface extends utils.Interface {
       | "proxiableUUID"
       | "quantity"
       | "quote"
+      | "refreshBasket"
       | "setBackupConfig"
       | "setPrimeBasket"
       | "status"
@@ -72,7 +74,7 @@ export interface BasketHandlerInterface extends utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(
-    functionFragment: "checkBasket",
+    functionFragment: "disableBasket",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -91,6 +93,10 @@ export interface BasketHandlerInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "quote",
     values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "refreshBasket",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "setBackupConfig",
@@ -116,7 +122,7 @@ export interface BasketHandlerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "checkBasket",
+    functionFragment: "disableBasket",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -133,6 +139,10 @@ export interface BasketHandlerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "quantity", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "quote", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "refreshBasket",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "setBackupConfig",
     data: BytesLike
@@ -155,10 +165,10 @@ export interface BasketHandlerInterface extends utils.Interface {
   events: {
     "AdminChanged(address,address)": EventFragment;
     "BackupConfigSet(bytes32,uint256,address[])": EventFragment;
-    "BasketSet(address[],int192[],bool)": EventFragment;
+    "BasketSet(address[],uint192[],bool)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
     "Initialized(uint8)": EventFragment;
-    "PrimeBasketSet(address[],int192[],bytes32[])": EventFragment;
+    "PrimeBasketSet(address[],uint192[],bytes32[])": EventFragment;
     "Upgraded(address)": EventFragment;
   };
 
@@ -197,7 +207,7 @@ export type BackupConfigSetEventFilter = TypedEventFilter<BackupConfigSetEvent>;
 export interface BasketSetEventObject {
   erc20s: string[];
   refAmts: BigNumber[];
-  defaulted: boolean;
+  disabled: boolean;
 }
 export type BasketSetEvent = TypedEvent<
   [string[], BigNumber[], boolean],
@@ -274,7 +284,7 @@ export interface BasketHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { baskets: BigNumber }>;
 
-    checkBasket(
+    disableBasket(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -306,6 +316,10 @@ export interface BasketHandler extends BaseContract {
     ): Promise<
       [string[], BigNumber[]] & { erc20s: string[]; quantities: BigNumber[] }
     >;
+
+    refreshBasket(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     setBackupConfig(
       targetName: BytesLike,
@@ -340,7 +354,7 @@ export interface BasketHandler extends BaseContract {
 
   basketsHeldBy(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-  checkBasket(
+  disableBasket(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -372,6 +386,10 @@ export interface BasketHandler extends BaseContract {
   ): Promise<
     [string[], BigNumber[]] & { erc20s: string[]; quantities: BigNumber[] }
   >;
+
+  refreshBasket(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   setBackupConfig(
     targetName: BytesLike,
@@ -409,7 +427,7 @@ export interface BasketHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    checkBasket(overrides?: CallOverrides): Promise<void>;
+    disableBasket(overrides?: CallOverrides): Promise<void>;
 
     fullyCapitalized(overrides?: CallOverrides): Promise<boolean>;
 
@@ -436,6 +454,8 @@ export interface BasketHandler extends BaseContract {
     ): Promise<
       [string[], BigNumber[]] & { erc20s: string[]; quantities: BigNumber[] }
     >;
+
+    refreshBasket(overrides?: CallOverrides): Promise<void>;
 
     setBackupConfig(
       targetName: BytesLike,
@@ -487,15 +507,15 @@ export interface BasketHandler extends BaseContract {
       erc20s?: null
     ): BackupConfigSetEventFilter;
 
-    "BasketSet(address[],int192[],bool)"(
+    "BasketSet(address[],uint192[],bool)"(
       erc20s?: null,
       refAmts?: null,
-      defaulted?: null
+      disabled?: null
     ): BasketSetEventFilter;
     BasketSet(
       erc20s?: null,
       refAmts?: null,
-      defaulted?: null
+      disabled?: null
     ): BasketSetEventFilter;
 
     "BeaconUpgraded(address)"(
@@ -506,7 +526,7 @@ export interface BasketHandler extends BaseContract {
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
 
-    "PrimeBasketSet(address[],int192[],bytes32[])"(
+    "PrimeBasketSet(address[],uint192[],bytes32[])"(
       erc20s?: null,
       targetAmts?: null,
       targetNames?: null
@@ -527,7 +547,7 @@ export interface BasketHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    checkBasket(
+    disableBasket(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -552,6 +572,10 @@ export interface BasketHandler extends BaseContract {
       amount: BigNumberish,
       rounding: BigNumberish,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    refreshBasket(
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     setBackupConfig(
@@ -591,7 +615,7 @@ export interface BasketHandler extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    checkBasket(
+    disableBasket(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -619,6 +643,10 @@ export interface BasketHandler extends BaseContract {
       amount: BigNumberish,
       rounding: BigNumberish,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    refreshBasket(
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     setBackupConfig(

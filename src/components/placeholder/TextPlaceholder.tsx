@@ -10,6 +10,7 @@ const TextPlaceholder = ({ text, ...props }: Props) => (
       alignItems: 'center',
       justifyContent: 'center',
       flexDirection: 'column',
+      fontSize: 1,
     }}
     mt={3}
   >

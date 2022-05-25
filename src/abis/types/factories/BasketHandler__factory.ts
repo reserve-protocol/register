@@ -9,16 +9,6 @@ import type { BasketHandler, BasketHandlerInterface } from "../BasketHandler";
 const _abi = [
   {
     inputs: [],
-    name: "EmptyBasket",
-    type: "error",
-  },
-  {
-    inputs: [],
-    name: "IntOutOfBounds",
-    type: "error",
-  },
-  {
-    inputs: [],
     name: "UIntOutOfBounds",
     type: "error",
   },
@@ -77,14 +67,14 @@ const _abi = [
       },
       {
         indexed: false,
-        internalType: "int192[]",
+        internalType: "uint192[]",
         name: "refAmts",
-        type: "int192[]",
+        type: "uint192[]",
       },
       {
         indexed: false,
         internalType: "bool",
-        name: "defaulted",
+        name: "disabled",
         type: "bool",
       },
     ],
@@ -128,9 +118,9 @@ const _abi = [
       },
       {
         indexed: false,
-        internalType: "int192[]",
+        internalType: "uint192[]",
         name: "targetAmts",
-        type: "int192[]",
+        type: "uint192[]",
       },
       {
         indexed: false,
@@ -166,9 +156,9 @@ const _abi = [
     name: "basketsHeldBy",
     outputs: [
       {
-        internalType: "int192",
+        internalType: "uint192",
         name: "baskets",
-        type: "int192",
+        type: "uint192",
       },
     ],
     stateMutability: "view",
@@ -176,7 +166,7 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "checkBasket",
+    name: "disableBasket",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -243,9 +233,9 @@ const _abi = [
     name: "price",
     outputs: [
       {
-        internalType: "int192",
+        internalType: "uint192",
         name: "p",
-        type: "int192",
+        type: "uint192",
       },
     ],
     stateMutability: "view",
@@ -275,9 +265,9 @@ const _abi = [
     name: "quantity",
     outputs: [
       {
-        internalType: "int192",
+        internalType: "uint192",
         name: "",
-        type: "int192",
+        type: "uint192",
       },
     ],
     stateMutability: "view",
@@ -286,9 +276,9 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "int192",
+        internalType: "uint192",
         name: "amount",
-        type: "int192",
+        type: "uint192",
       },
       {
         internalType: "enum RoundingMode",
@@ -310,6 +300,13 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "refreshBasket",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -343,9 +340,9 @@ const _abi = [
         type: "address[]",
       },
       {
-        internalType: "int192[]",
+        internalType: "uint192[]",
         name: "targetAmts",
-        type: "int192[]",
+        type: "uint192[]",
       },
     ],
     name: "setPrimeBasket",

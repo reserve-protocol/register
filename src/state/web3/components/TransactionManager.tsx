@@ -76,6 +76,7 @@ const TransactionManager = () => {
             }
           })
           .catch((e: any) => {
+            console.log('tx reverted', e)
             if (tx?.call.method !== 'approve') {
               error('Transaction reverted', tx.description)
             }
