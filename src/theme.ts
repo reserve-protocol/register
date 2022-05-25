@@ -104,7 +104,7 @@ export const theme: Theme = {
     a: {
       transition,
       color: '#808080',
-      textDecoration: 'underline',
+      borderBottom: '1px solid',
       cursor: 'pointer',
       '&:hover': {
         color: 'text',
@@ -112,6 +112,16 @@ export const theme: Theme = {
     },
   },
   styles: {
+    a: {
+      transition,
+      color: '#808080',
+      textDecoration: 'none',
+      borderBottom: '1px solid',
+      cursor: 'pointer',
+      '&:hover': {
+        color: 'text',
+      },
+    },
     root: {
       fontFamily: 'body',
       lineHeight: 'body',

@@ -15,6 +15,7 @@ localStorage.setItem('trackedAccount', localStorage.trackedAccount || ' ')
 localStorage.setItem('selectedAccount', localStorage.selectedAccount || ' ')
 localStorage.setItem('selectedToken', localStorage.selectedToken || ' ')
 
+export const blockAtom = atom<number | undefined>(undefined)
 // Prices
 export const ethPriceAtom = atom(1)
 export const rsrPriceAtom = atom(1)
@@ -77,16 +78,18 @@ export const allowanceAtom = atom<{ [x: string]: BigNumber }>({})
 export const pendingIssuancesAtom = atom<any[]>([])
 export const pendingIssuancesSummary = atom((get) => {
   const pending = get(pendingIssuancesAtom)
+  const currentBlock = get(blockAtom) ?? 0
 
   // TODO: Correct timestamp formatting
   return pending.reduce(
     (acc, issuance) => {
       acc.index = issuance.index
+      acc.availableAt = issuance.availableAt
 
-      if (issuance.availableAt > Date.now()) {
-        acc.pendingAmount += issuance.amount
-      } else {
+      if (currentBlock >= issuance.availableAt) {
         acc.availableAmount += issuance.amount
+      } else {
+        acc.pendingAmount += issuance.amount
       }
 
       return acc
@@ -95,6 +98,7 @@ export const pendingIssuancesSummary = atom((get) => {
       index: BigNumber.from(0),
       pendingAmount: 0,
       availableAmount: 0,
+      availableAt: 0,
     }
   )
 })
@@ -105,7 +109,7 @@ export const pendingRSRSummaryAtom = atom((get) => {
   return get(pendingRSRAtom).reduce(
     (acc, unstake) => {
       acc.index = unstake.index
-      acc.availableAT = unstake.availableAt
+      acc.availableAt = unstake.availableAt
 
       if (currentTime >= unstake.availableAt) {
         acc.availableAmount += unstake.amount

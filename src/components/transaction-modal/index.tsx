@@ -2,13 +2,14 @@ import { LoadingButton } from 'components/button'
 import Modal from 'components/modal'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
-import { CheckCircle } from 'react-feather'
+import { CheckCircle, ExternalLink } from 'react-feather'
 import { addTransactionAtom, allowanceAtom } from 'state/atoms'
 import { useTransaction } from 'state/web3/hooks/useTransactions'
-import { Divider, Flex, Text } from 'theme-ui'
+import { Divider, Flex, Text, Link } from 'theme-ui'
 import { BigNumberMap, TransactionState } from 'types'
 import { hasAllowance } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { v4 as uuid } from 'uuid'
 import ApprovalTransactions from './ApprovalTransactions'
 import TransactionError from './TransactionError'
@@ -29,8 +30,16 @@ export interface ITransactionModal {
   isValid: boolean
 }
 
-const TransactionConfirmed = ({ onClose }: { onClose(): void }) => (
-  <Modal onClose={onClose} style={{ width: '420px' }}>
+const modalStyle = { width: '420px' }
+
+const TransactionConfirmed = ({
+  hash,
+  onClose,
+}: {
+  hash: string
+  onClose(): void
+}) => (
+  <Modal onClose={onClose} style={modalStyle}>
     <Flex
       p={4}
       sx={{
@@ -42,6 +51,14 @@ const TransactionConfirmed = ({ onClose }: { onClose(): void }) => (
       <CheckCircle size={36} />
       <br />
       <Text>Transaction signed!</Text>
+      <br />
+      <Link
+        href={getExplorerLink(hash, ExplorerDataType.TRANSACTION)}
+        target="_blank"
+        sx={{ fontSize: 1 }}
+      >
+        <ExternalLink size={12} /> View on etherscan
+      </Link>
     </Flex>
   </Modal>
 )
@@ -102,11 +119,11 @@ const TransactionModal = ({
   useEffect(fetchApprovals, [allowances, requiredAllowance])
 
   if (signed) {
-    return <TransactionConfirmed onClose={onClose} />
+    return <TransactionConfirmed hash={txState.hash ?? ''} onClose={onClose} />
   }
 
   return (
-    <Modal title={title} onClose={onClose} style={{ width: '420px' }}>
+    <Modal title={title} onClose={onClose} style={modalStyle}>
       {txState?.status === TRANSACTION_STATUS.REJECTED && (
         <TransactionError
           title="Transaction failed"

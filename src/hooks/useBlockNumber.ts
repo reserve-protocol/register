@@ -1,8 +1,7 @@
-import { blockTimestampAtom } from './../state/atoms'
 import { useWeb3React } from '@web3-react/core'
-import { atom } from 'jotai'
 import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import { useCallback, useEffect, useState } from 'react'
+import { blockAtom, blockTimestampAtom } from './../state/atoms'
 import useDebounce from './useDebounce'
 import useIsWindowVisible from './useIsWindowVisible'
 
@@ -28,7 +27,6 @@ function useBlock() {
 
   useEffect(() => {
     if (provider && chainId && windowVisible) {
-      // If chainId hasn't changed, don't clear the block. This prevents re-fetching still valid data.
       setState((prevState) =>
         prevState.chainId === chainId ? prevState : { chainId }
       )
@@ -54,8 +52,6 @@ function useBlock() {
   const debouncedBlock = useDebounce(state.block, 100)
   return state.block ? debouncedBlock : undefined
 }
-
-const blockAtom = atom<number | undefined>(undefined)
 
 export function BlockUpdater() {
   const setBlock = useUpdateAtom(blockAtom)

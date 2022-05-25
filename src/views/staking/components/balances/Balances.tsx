@@ -18,9 +18,6 @@ import { Box, BoxProps, Divider, Grid, Text } from 'theme-ui'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
 
-const availableRSRBalanceAtom = atom(
-  (get) => get(pendingRSRSummaryAtom).availableAmount
-)
 const pendingRSRBalanceAtom = atom(
   (get) => get(pendingRSRSummaryAtom).pendingAmount
 )
