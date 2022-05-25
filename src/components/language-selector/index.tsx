@@ -4,10 +4,13 @@ import LangIcon from 'components/icons/Lang'
 import Popup from 'components/popup'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { transition } from 'theme'
 
 const LangItem = styled(Box)`
-  padding: 10px;
-  border-bottom: 1px solid black;
+  transition: ${transition};
+  padding: 16px;
+  border-bottom: 1px solid var(--theme-ui-colors-border);
+  cursor: pointer;
 
   &:first-of-type {
     border-top-left-radius: 4px;
@@ -21,8 +24,7 @@ const LangItem = styled(Box)`
   }
 
   &:hover {
-    background-color: #ccc;
-    cursor: pointer;
+    background-color: var(--theme-ui-colors-secondary);
   }
 `
 
@@ -34,7 +36,7 @@ const LanguageList = ({ onChange }: { onChange(key: string): void }) => (
       aria-hidden="true"
       onClick={() => onChange('en')}
     >
-      English
+      🇺🇸 &nbsp;English
     </LangItem>
     <LangItem
       role="button"
@@ -43,7 +45,7 @@ const LanguageList = ({ onChange }: { onChange(key: string): void }) => (
       aria-hidden="true"
       onClick={() => onChange('es')}
     >
-      Español
+      🇲🇽 &nbsp;Español
     </LangItem>
   </Box>
 )

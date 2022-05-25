@@ -6,8 +6,33 @@ import { useUpdateAtom } from 'jotai/utils'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { reserveTokensAtom, rTokenAtom, selectedRTokenAtom } from 'state/atoms'
+import styled from '@emotion/styled'
+import { transition } from 'theme'
 
 const tokensAtom = atom((get) => Object.values(get(reserveTokensAtom) || []))
+
+// TODO: Separate component
+const ActionItem = styled(Flex)`
+  transition: ${transition};
+  padding: 16px;
+  border-bottom: 1px solid var(--theme-ui-colors-border);
+  cursor: pointer;
+
+  &:first-of-type {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+  }
+
+  &:last-of-type {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom: none;
+  }
+
+  &:hover {
+    background-color: var(--theme-ui-colors-secondary);
+  }
+`
 
 const RTokenSelector = (props: BoxProps) => {
   const [isVisible, setVisible] = useState(false)
@@ -29,25 +54,23 @@ const RTokenSelector = (props: BoxProps) => {
       show={isVisible}
       onDismiss={() => setVisible(false)}
       content={
-        <Box p={2} pt={0} sx={{ minWidth: 150, cursor: 'pointer' }} my={2}>
+        <Box>
           {(!tokens || !tokens.length) && <Text>Loading...</Text>}
           {tokens.map((token) => (
-            <Flex
-              mt={3}
+            <ActionItem
               key={token.token.address}
               onClick={() => handleSelect(token.id)}
-              sx={{ alignItems: 'center' }}
             >
               <TokenLogo size="1.5em" mr={2} symbol={token.token.symbol} />
               {token.token.symbol}
-            </Flex>
+            </ActionItem>
           ))}
         </Box>
       }
     >
       <Flex
         {...props}
-        sx={{ alignItems: 'center', cursor: 'pointer' }}
+        sx={{ alignItems: 'center', cursor: 'pointer', minWidth: 100 }}
         onClick={() => setVisible(!isVisible)}
       >
         {selected ? (
@@ -58,7 +81,7 @@ const RTokenSelector = (props: BoxProps) => {
         ) : (
           <Text>Select RToken...</Text>
         )}
-        <Box mr={2} />
+        <Box mx="auto" />
         {isVisible ? <ChevronUp /> : <ChevronDown />}
       </Flex>
     </Popup>
