@@ -97,7 +97,7 @@ const TransactionManager = () => {
 
   // check mining
   useEffect(() => {
-    if (provider && mining.length) {
+    if (provider && blockNumber && mining.length) {
       checkMiningTx(mining)
     }
   }, [blockNumber, JSON.stringify(mining)])

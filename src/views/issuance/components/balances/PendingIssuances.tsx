@@ -25,7 +25,6 @@ const PendingIssuances = ({ token }: { token: Token }) => {
   const claimTx = useTransaction(claiming)
   const cancelTx = useTransaction(canceling)
   const issuances = useAtomValue(pendingIssuancesAtom)
-  console.log('issuances', issuances)
   const { index, pendingAmount, availableAmount } = useAtomValue(
     pendingIssuancesSummary
   )

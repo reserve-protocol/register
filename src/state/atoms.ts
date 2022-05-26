@@ -178,9 +178,11 @@ export const currentTxAtom = atom((get) =>
     : []
 )
 
+// TODO: Improve or split this atom
 export const pendingTxAtom = atom((get) => {
   const result = {
     pending: <[number, TransactionState][]>[],
+    signing: <[number, TransactionState][]>[],
     mining: <[number, TransactionState][]>[],
   }
 
@@ -191,6 +193,10 @@ export const pendingTxAtom = atom((get) => {
 
     if (current.status === TRANSACTION_STATUS.MINING) {
       acc.mining = [...acc.mining, [index, current]]
+    }
+
+    if (current.status === TRANSACTION_STATUS.SIGNING) {
+      acc.signing = [...acc.signing, [index, current]]
     }
 
     return acc
