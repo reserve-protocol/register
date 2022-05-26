@@ -4,11 +4,7 @@ import { LoadingButton } from 'components/button'
 import TokenBalance from 'components/token-balance'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
-import {
-  addTransactionAtom,
-  pendingIssuancesAtom,
-  pendingIssuancesSummary,
-} from 'state/atoms'
+import { addTransactionAtom, pendingIssuancesSummary } from 'state/atoms'
 import { useTransaction } from 'state/web3/hooks/useTransactions'
 import { smallButton } from 'theme'
 import { Box, Divider, Text } from 'theme-ui'
@@ -24,7 +20,6 @@ const PendingIssuances = ({ token }: { token: Token }) => {
   const { account } = useWeb3React()
   const claimTx = useTransaction(claiming)
   const cancelTx = useTransaction(canceling)
-  const issuances = useAtomValue(pendingIssuancesAtom)
   const { index, pendingAmount, availableAmount } = useAtomValue(
     pendingIssuancesSummary
   )

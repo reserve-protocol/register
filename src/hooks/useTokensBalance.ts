@@ -15,8 +15,6 @@ const useTokensBalance = (
   tokens: [string, number][],
   account: string
 ): StringMap => {
-  const blockNumber = useBlockNumber()
-
   const calls = useMemo(
     () =>
       tokens.map(([address]) => ({
@@ -25,7 +23,7 @@ const useTokensBalance = (
         method: 'balanceOf',
         args: [account],
       })),
-    [tokens.toString(), account, blockNumber]
+    [tokens.toString(), account]
   )
 
   const balances = <any[]>useContractCalls(calls) ?? []

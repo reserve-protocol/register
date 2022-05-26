@@ -20,14 +20,21 @@ import QuantitiesUpdater from './QuantitiesUpdater'
  */
 const Issue = ({ data, ...props }: { data: ReserveToken }) => {
   const [amount, setAmount] = useAtom(issueAmountAtom)
-  const setQuantities = useUpdateAtom(quantitiesAtom)
+  const [quantities, setQuantities] = useAtom(quantitiesAtom)
   const isValid = useAtomValue(isValidIssuableAmountAtom)
   const [issuing, setIssuing] = useState(false)
 
   return (
     <>
       <MaxIssuableUpdater />
-      <QuantitiesUpdater amount={amount} onChange={setQuantities} />
+      <QuantitiesUpdater
+        amount={amount}
+        onChange={(value) => {
+          if (JSON.stringify(value) !== JSON.stringify(quantities)) {
+            setQuantities(value)
+          }
+        }}
+      />
       {issuing && (
         <ConfirmIssuance
           onClose={() => {

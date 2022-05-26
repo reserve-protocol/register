@@ -4,15 +4,16 @@ interface Props extends BoxProps {
   text: string
 }
 
-const TextPlaceholder = ({ text, ...props }: Props) => (
+const TextPlaceholder = ({ text, sx, ...props }: Props) => (
   <Flex
     sx={{
       alignItems: 'center',
       justifyContent: 'center',
       flexDirection: 'column',
       fontSize: 1,
+      ...sx,
     }}
-    mt={3}
+    {...props}
   >
     <Spinner size={36} />
     <Text variant="legend" mt={3}>

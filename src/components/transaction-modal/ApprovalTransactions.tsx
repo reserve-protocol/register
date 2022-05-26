@@ -88,7 +88,10 @@ const ApprovalTransactions = ({
 
   if (signed) {
     return (
-      <TextPlaceholder text="Transactions signed! Waiting for allowance..." />
+      <TextPlaceholder
+        mt={3}
+        text="Transactions signed! Waiting for allowance..."
+      />
     )
   }
 

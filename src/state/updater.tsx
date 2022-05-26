@@ -1,9 +1,11 @@
 import { getAddress } from '@ethersproject/address'
-import { formatEther } from '@ethersproject/units'
+import { formatEther, formatUnits, parseEther } from '@ethersproject/units'
 import { useWeb3React } from '@web3-react/core'
+import { StRSR } from 'abis'
 import { gql } from 'graphql-request'
 import useBlockNumber from 'hooks/useBlockNumber'
-import { useFacadeContract } from 'hooks/useContract'
+import { useCall } from 'hooks/useCall'
+import { useContract, useFacadeContract } from 'hooks/useContract'
 import useQuery from 'hooks/useQuery'
 import useTokensAllowance from 'hooks/useTokensAllowance'
 import useTokensBalance from 'hooks/useTokensBalance'
@@ -18,6 +20,7 @@ import {
   pendingIssuancesAtom,
   pendingRSRAtom,
   reserveTokensAtom,
+  rsrExchangeRateAtom,
   rsrPriceAtom,
   rTokenAtom,
   rTokenPriceAtom,
@@ -330,6 +333,29 @@ const PricesUpdater = () => {
   return null
 }
 
+// TODO: Change place
+const ExchangeRateUpdater = () => {
+  const rToken = useAtomValue(rTokenAtom)
+  const contract = useContract(rToken?.insurance?.token.address, StRSR, false)
+  const setRate = useUpdateAtom(rsrExchangeRateAtom)
+  const { value } =
+    useCall(
+      contract && {
+        contract,
+        method: 'exchangeRate',
+        args: [],
+      }
+    ) ?? {}
+
+  useEffect(() => {
+    if (value && value[0]) {
+      setRate(Number(formatEther(value[0])))
+    }
+  }, [value])
+
+  return null
+}
+
 /**
  * Updater
  */
@@ -340,6 +366,7 @@ const Updater = () => (
     <TokensBalanceUpdater />
     <TokensAllowanceUpdater />
     <PricesUpdater />
+    <ExchangeRateUpdater />
   </>
 )
 

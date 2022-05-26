@@ -1,6 +1,6 @@
 import { Dialog } from '@reach/dialog'
 import '@reach/dialog/styles.css'
-import { Flex, Box, Text, ButtonProps, Button, Divider } from 'theme-ui'
+import { Flex, Text, ButtonProps, Button, Divider } from 'theme-ui'
 import { X } from 'react-feather'
 import styled from '@emotion/styled'
 

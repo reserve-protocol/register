@@ -107,7 +107,11 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
         quantities={quantities}
       />
       {isValid && loadingQuantities && (
-        <TextPlaceholder text="Fetching required collateral amounts" />
+        <TextPlaceholder
+          sx={{ height: '94px' }}
+          mt={3}
+          text="Fetching required collateral amounts"
+        />
       )}
     </TransactionModal>
   )
