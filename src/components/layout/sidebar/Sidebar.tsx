@@ -78,7 +78,7 @@ const Navigation = ({
   }, [currentToken])
 
   return (
-    <Box mt={2}>
+    <Box mt={3}>
       {pages.map((item) => (
         <NavLink
           key={item.path}
@@ -88,7 +88,7 @@ const Navigation = ({
             textDecoration: 'none',
             color: 'inherit',
             lineHeight: '32px',
-            margin: '16px 0',
+            // margin: '16px 0',
             display: 'flex',
           })}
           to={item.path}
@@ -101,7 +101,7 @@ const Navigation = ({
               paddingLeft: [0, 0, 27],
               justifyContent: ['center', 'center', 'inherit'],
             }}
-            my={[10, 10, 0]}
+            my={[10, 10, 10]}
           >
             <item.icon />
             <Text sx={{ display: ['none', 'none', 'inherit'] }} ml={2}>

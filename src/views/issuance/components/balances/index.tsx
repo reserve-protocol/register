@@ -1,7 +1,7 @@
 import { Card } from 'components'
 import TokenBalance from 'components/token-balance'
 import { useAtomValue } from 'jotai/utils'
-import { balancesAtom, rTokenBalanceAtom } from 'state/atoms'
+import { rTokenBalanceAtom } from 'state/atoms'
 import { Box, BoxProps, Divider, Grid, Text } from 'theme-ui'
 import { Collateral, ReserveToken, Token } from 'types'
 import CollateralBalance from './CollateralBalance'

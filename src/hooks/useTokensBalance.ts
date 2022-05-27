@@ -1,9 +1,8 @@
-import { StringMap } from 'types'
-import { useMemo } from 'react'
-import { ERC20Interface } from 'abis'
-import { useContractCalls } from './useCall'
-import useBlockNumber from './useBlockNumber'
 import { formatUnits } from '@ethersproject/units'
+import { ERC20Interface } from 'abis'
+import { useMemo } from 'react'
+import { StringMap } from 'types'
+import { useContractCalls } from './useCall'
 
 /**
  * Returns a hash of balances for the given tokens
@@ -28,16 +27,18 @@ const useTokensBalance = (
 
   const balances = <any[]>useContractCalls(calls) ?? []
 
-  return balances.reduce((acc, current, index) => {
-    const [address, decimals] = tokens[index]
-    if (current?.value) {
-      acc[address] = parseFloat(formatUnits(current.value[0], decimals))
-    } else {
-      acc[address] = 0
-    }
+  return useMemo(() => {
+    return balances.reduce((acc, current, index) => {
+      const [address, decimals] = tokens[index]
+      if (current?.value) {
+        acc[address] = parseFloat(formatUnits(current.value[0], decimals))
+      } else {
+        acc[address] = 0
+      }
 
-    return acc
-  }, <StringMap>{})
+      return acc
+    }, <StringMap>{})
+  }, [JSON.stringify(balances)])
 }
 
 export default useTokensBalance
