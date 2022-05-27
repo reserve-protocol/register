@@ -128,9 +128,14 @@ const RSRBalance = () => {
  */
 const Balances = (props: BoxProps) => (
   <Card p={0} {...props}>
-    <Grid columns={2}>
+    <Grid columns={[1, 2]} gap={0}>
       <StakeBalance />
-      <Box ml={-2} sx={{ borderLeft: '1px solid', borderColor: 'secondary' }}>
+      <Box
+        sx={(theme: any) => ({
+          borderLeft: ['none', `1px solid ${theme.colors.border}`],
+          borderTop: [`1px solid ${theme.colors.border}`, 'none'],
+        })}
+      >
         <RSRBalance />
         <Divider />
         <AvailableBalance />

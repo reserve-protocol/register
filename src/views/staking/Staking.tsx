@@ -12,7 +12,7 @@ const Staking = () => (
     </Text>
     <Grid columns={[1, 1, 1, 2]} gap={4}>
       <Box>
-        <Grid columns={2} gap={4} mb={4}>
+        <Grid columns={[1, 2]} gap={4} mb={4}>
           <Stake />
           <Unstake />
         </Grid>
