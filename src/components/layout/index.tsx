@@ -14,22 +14,23 @@ const Layout = ({ children }: { children: ReactNode }) => (
     sx={{
       flexWrap: 'wrap',
       height: '100vh',
-
     }}
   >
     <Sidebar />
-    <Box
+    <Flex
       sx={{
         flexGrow: 99999,
         flexBasis: 0,
         minWidth: 768,
         height: '100%',
-        overflow: 'auto',
+        overflow: 'hidden',
+        position: 'relative',
+        flexDirection: 'column',
       }}
     >
       <Header />
-      {children}
-    </Box>
+      <Box sx={{ overflow: 'auto', flexGrow: 99999 }}>{children}</Box>
+    </Flex>
   </Flex>
 )
 

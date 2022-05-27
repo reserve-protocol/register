@@ -13,6 +13,7 @@ const Separator = styled(Divider)`
 
 const Container = styled(Flex)`
   align-items: center;
+  flex-shrink: 0;
   position: relative;
   border-bottom: 1px solid var(--theme-ui-colors-border);
   height: 3.5em;
