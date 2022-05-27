@@ -1,13 +1,14 @@
 import { LoadingButton } from 'components/button'
 import Modal from 'components/modal'
+import useTransactionCost from 'hooks/useTransactionCost'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { CheckCircle, ExternalLink } from 'react-feather'
 import { addTransactionAtom, allowanceAtom } from 'state/atoms'
 import { useTransaction } from 'state/web3/hooks/useTransactions'
-import { Divider, Flex, Text, Link, Box } from 'theme-ui'
+import { Divider, Flex, Text, Link, Box, Spinner } from 'theme-ui'
 import { BigNumberMap, TransactionState } from 'types'
-import { hasAllowance } from 'utils'
+import { formatCurrency, hasAllowance } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { v4 as uuid } from 'uuid'
@@ -91,6 +92,7 @@ const TransactionModal = ({
   const signed =
     txState?.status === TRANSACTION_STATUS.MINING ||
     txState?.status === TRANSACTION_STATUS.CONFIRMED
+  const fee = useTransactionCost(canSubmit ? [tx] : [])
 
   const handleConfirm = () => {
     const id = uuid()
@@ -156,6 +158,16 @@ const TransactionModal = ({
         sx={{ width: '100%' }}
         mt={2}
       />
+      {!!canSubmit && (
+        <Box mt={2} sx={{ fontSize: 1, textAlign: 'center' }}>
+          <Text mr={1}>Estimated gas cost:</Text>
+          {fee ? (
+            <Text sx={{ fontWeight: 500 }}>${formatCurrency(fee)}</Text>
+          ) : (
+            <Spinner color="black" size={12} />
+          )}
+        </Box>
+      )}
     </Modal>
   )
 }
