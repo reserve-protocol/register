@@ -9,6 +9,8 @@ import {
   addTransactionAtom,
   pendingRSRSummaryAtom,
   rsrBalanceAtom,
+  rsrExchangeRateAtom,
+  rsrPriceAtom,
   rTokenAtom,
   stRsrBalanceAtom,
 } from 'state/atoms'
@@ -96,6 +98,8 @@ const AvailableBalance = () => {
 const StakeBalance = () => {
   const rToken = useAtomValue(rTokenAtom)
   const balance = useAtomValue(stRsrBalanceAtom)
+  const rate = useAtomValue(rsrExchangeRateAtom)
+  const rsrPrice = useAtomValue(rsrPriceAtom)
 
   return (
     <Box p={4}>
@@ -106,12 +110,20 @@ const StakeBalance = () => {
         symbol={rToken?.insurance?.token.symbol ?? ''}
         balance={balance}
       />
+      <TokenBalance mt={2} symbol="RSR Value" balance={balance * rate} />
+      <TokenBalance
+        symbol="USD"
+        usd
+        balance={balance * rate * rsrPrice}
+        mt={2}
+      />
     </Box>
   )
 }
 
 const RSRBalance = () => {
   const balance = useAtomValue(rsrBalanceAtom)
+  const rsrPrice = useAtomValue(rsrPriceAtom)
 
   return (
     <Box p={4} pb={2}>
@@ -119,6 +131,7 @@ const RSRBalance = () => {
         In Wallet
       </Text>
       <TokenBalance symbol="RSR" balance={balance} />
+      <TokenBalance symbol="USD" usd balance={balance * rsrPrice} mt={2} />
     </Box>
   )
 }
