@@ -2,16 +2,35 @@ import TokenLogo from 'components/icons/TokenLogo'
 import { BoxProps, Box, Flex, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 
-interface Props extends BoxProps {
-  symbol?: string
-  title?: string
-  balance: number
-  usd?: boolean
-  icon?: any
+interface IconInfoProps extends BoxProps {
+  icon: any
+  text: string
+  title: string
 }
 
+interface Props extends Partial<IconInfoProps> {
+  symbol?: string
+  balance: number
+  usd?: boolean
+}
+
+export const IconInfo = ({
+  icon,
+  sx,
+  title,
+  text,
+  ...props
+}: IconInfoProps) => (
+  <Flex sx={{ alignItems: 'center', ...sx }} {...props}>
+    {icon}
+    <Box ml={2}>
+      <Text variant="contentTitle">{title}</Text>
+      <Text>{text}</Text>
+    </Box>
+  </Flex>
+)
+
 const TokenBalance = ({
-  sx = {},
   symbol = '',
   title,
   balance,
@@ -19,16 +38,12 @@ const TokenBalance = ({
   icon,
   ...props
 }: Props) => (
-  <Flex sx={{ alignItems: 'center', ...sx }} {...props}>
-    {icon ? icon : <TokenLogo mr={2} symbol={symbol} />}
-    <Box>
-      <Text variant="contentTitle">{title || symbol}</Text>
-      <Text>
-        {!!usd && '$'}
-        {formatCurrency(balance)}
-      </Text>
-    </Box>
-  </Flex>
+  <IconInfo
+    title={title || symbol}
+    text={`${usd ? '$' : ''}${formatCurrency(balance)}`}
+    icon={icon || <TokenLogo symbol={symbol} />}
+    {...props}
+  />
 )
 
 export default TokenBalance

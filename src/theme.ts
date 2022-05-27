@@ -86,7 +86,7 @@ export const theme: Theme = {
     subtitle: {
       fontSize: 2,
       display: 'block',
-      color: '#666666',
+      color: 'secondaryText',
     },
     sectionTitle: {
       fontSize: 4,
