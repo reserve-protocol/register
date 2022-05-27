@@ -3,6 +3,7 @@ import { Box, Flex } from 'theme-ui'
 import Header from './header'
 import Sidebar from './sidebar'
 
+// TODO: Mobile layout
 /**
  * Application Layout
  *
@@ -13,7 +14,7 @@ const Layout = ({ children }: { children: ReactNode }) => (
   <Flex
     sx={{
       flexWrap: 'wrap',
-      height: '100vh',
+      height: '100%',
     }}
   >
     <Sidebar />
@@ -21,15 +22,16 @@ const Layout = ({ children }: { children: ReactNode }) => (
       sx={{
         flexGrow: 99999,
         flexBasis: 0,
-        minWidth: 768,
-        height: '100%',
+        height: '100vh',
         overflow: 'hidden',
         position: 'relative',
         flexDirection: 'column',
       }}
     >
       <Header />
-      <Box sx={{ overflow: 'auto', flexGrow: 99999 }}>{children}</Box>
+      <Box sx={{ overflow: ['visible', 'visible', 'auto'], flexGrow: 99999 }}>
+        {children}
+      </Box>
     </Flex>
   </Flex>
 )

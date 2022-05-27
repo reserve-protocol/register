@@ -73,7 +73,9 @@ const Account = () => {
             <Box mr={2} mt={1}>
               <Blockies scale={3} seed={currentWallet || ''} />
             </Box>
-            <Text pr={2}>{ENSName || shortenAddress(currentWallet)}</Text>
+            <Text sx={{ display: ['none', 'none', 'inherit'] }} pr={2}>
+              {ENSName || shortenAddress(currentWallet)}
+            </Text>
             {isVisible ? <ChevronUp /> : <ChevronDown />}
           </Container>
         </Popup>

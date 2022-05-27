@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { Box, Flex, Text } from 'theme-ui'
 import { NavLink } from 'react-router-dom'
-import Logo from 'components/icons/Logo'
+import Logo, { SmallLogo } from 'components/icons/Logo'
 import SyncedBlock from 'components/synced-block'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
 import { useMemo } from 'react'
@@ -21,10 +21,9 @@ export const PAGES = [
   // { path: ROUTES.EXCHANGE, title: 'Buy + Sell' },
 ]
 
-const Container = styled.div`
+const Container = styled(Box)`
   padding-top: 0;
   flex-grow: 1;
-  flex-basis: 264px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -37,13 +36,23 @@ const Header = () => (
     <Box
       sx={{
         width: '100%',
-        display: 'flex',
+        display: ['none', 'none', 'flex'],
         alignItems: 'center',
       }}
       mt={3}
       ml={4}
     >
       <Logo />
+    </Box>
+    <Box
+      sx={{
+        display: ['inherit', 'inherit', 'none'],
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+      mt={3}
+    >
+      <SmallLogo />
     </Box>
   </>
 )
@@ -74,20 +83,31 @@ const Navigation = ({
         <NavLink
           key={item.path}
           style={({ isActive }) => ({
-            display: 'flex',
-            alignItems: 'center',
+            paddingLeft: isActive ? '0' : '5px',
+            borderLeft: isActive ? '5px solid black' : '',
             textDecoration: 'none',
             color: 'inherit',
-            padding: '0 32px',
-            margin: '16px 0',
             lineHeight: '32px',
-            paddingLeft: isActive ? '20px' : '25px',
-            borderLeft: isActive ? '5px solid black' : '',
+            margin: '16px 0',
+            display: 'flex',
           })}
           to={item.path}
         >
-          <item.icon />
-          <Text ml={2}>{item.title}</Text>
+          <Box
+            sx={{
+              display: 'flex',
+              flexGrow: 1,
+              alignItems: 'center',
+              paddingLeft: [0, 0, 27],
+              justifyContent: ['center', 'center', 'inherit'],
+            }}
+            my={[10, 10, 0]}
+          >
+            <item.icon />
+            <Text sx={{ display: ['none', 'none', 'inherit'] }} ml={2}>
+              {item.title}
+            </Text>
+          </Box>
         </NavLink>
       ))}
     </Box>
@@ -98,7 +118,7 @@ const Navigation = ({
 const Footer = () => (
   <Box m={4}>
     <ThemeColorMode mb={3} />
-    <Flex sx={{ alignItems: 'center' }}>
+    <Flex sx={{ alignItems: 'center', display: ['none', 'none', 'inherit'] }}>
       <Text
         sx={{
           fontSize: 0,
@@ -120,7 +140,7 @@ const Sidebar = () => {
   const RToken = useAtomValue(rTokenAtom)
 
   return (
-    <Container>
+    <Container sx={{ flexBasis: [72, 72, 264] }}>
       <Header />
       <Navigation currentToken={RToken} />
       <Box my="auto" />

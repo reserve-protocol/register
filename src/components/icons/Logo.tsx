@@ -23,4 +23,23 @@ const Logo = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 )
 
+export const SmallLogo = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    width="30"
+    height="30"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path
+      d="M4.853 15.222h.5v-4.907H.5v4.907h4.353ZM4.853 9.018h.5V4.11H.5V9.018h4.353Z"
+      fill="currentColor"
+    />
+    <path
+      d="m19.246 23.779-4.992-9.381h-2.948v9.38H7.252V.025h9.113c2.234 0 4.032.693 5.394 2.078 1.363 1.362 2.044 3.07 2.044 5.126 0 1.697-.48 3.15-1.44 4.355-.961 1.207-2.268 2.01-3.92 2.413l5.36 9.783h-4.557Zm-7.94-12.933h4.322c1.228 0 2.211-.324 2.948-.971.76-.67 1.14-1.553 1.14-2.647 0-1.117-.38-2-1.14-2.647-.737-.67-1.72-1.005-2.948-1.005h-4.322v7.27Z"
+      fill="currentColor"
+    />
+  </svg>
+)
+
 export default Logo
