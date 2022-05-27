@@ -28,7 +28,6 @@ const QuantitiesUpdater = ({
       try {
         if (basketHandler && Number(value) > 0) {
           const issueAmount = parseEther(value)
-
           const quoteResult = await basketHandler.quote(issueAmount, 2)
           onChange(
             quoteResult.erc20s.reduce((prev, current, currentIndex) => {
@@ -48,8 +47,8 @@ const QuantitiesUpdater = ({
 
   // Fetch quantities from smart contract (rTokens)
   useEffect(() => {
-    fetchQuantities(debouncedValue)
-  }, [debouncedValue, basketHandler])
+    fetchQuantities(amount)
+  }, [debouncedValue, fetchQuantities])
 
   // Reset quantities on amount change or set if its valid number and RSV
   useEffect(() => {

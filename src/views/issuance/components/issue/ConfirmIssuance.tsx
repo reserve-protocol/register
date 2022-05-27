@@ -106,13 +106,14 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
         collaterals={rToken?.basket.collaterals ?? []}
         quantities={quantities}
       />
-      {isValid && loadingQuantities && (
-        <TextPlaceholder
-          sx={{ height: '94px' }}
-          mt={3}
-          text="Fetching required collateral amounts"
-        />
-      )}
+      <TextPlaceholder
+        sx={{
+          height: '94px',
+          display: isValid && loadingQuantities ? 'flex' : 'none',
+        }}
+        mt={3}
+        text="Fetching required collateral amounts"
+      />
     </TransactionModal>
   )
 }

@@ -1,10 +1,8 @@
 import { Button } from 'components'
-import useDebounce from 'hooks/useDebounce'
 import { useAtom, useAtomValue } from 'jotai'
-import { useUpdateAtom } from 'jotai/utils'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Card } from 'theme-ui'
-import { ReserveToken } from 'types'
+import { BigNumberMap, ReserveToken } from 'types'
 import {
   issueAmountAtom,
   isValidIssuableAmountAtom,
@@ -24,17 +22,19 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
   const isValid = useAtomValue(isValidIssuableAmountAtom)
   const [issuing, setIssuing] = useState(false)
 
+  const handleQuantities = useCallback(
+    (value: BigNumberMap) => {
+      if (JSON.stringify(value) !== JSON.stringify(quantities)) {
+        setQuantities(value)
+      }
+    },
+    [setQuantities, quantities]
+  )
+
   return (
     <>
       <MaxIssuableUpdater />
-      <QuantitiesUpdater
-        amount={amount}
-        onChange={(value) => {
-          if (JSON.stringify(value) !== JSON.stringify(quantities)) {
-            setQuantities(value)
-          }
-        }}
-      />
+      <QuantitiesUpdater amount={amount} onChange={handleQuantities} />
       {issuing && (
         <ConfirmIssuance
           onClose={() => {
