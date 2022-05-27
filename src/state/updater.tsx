@@ -1,5 +1,5 @@
 import { getAddress } from '@ethersproject/address'
-import { formatEther, formatUnits, parseEther } from '@ethersproject/units'
+import { formatEther } from '@ethersproject/units'
 import { useWeb3React } from '@web3-react/core'
 import { StRSR } from 'abis'
 import { gql } from 'graphql-request'

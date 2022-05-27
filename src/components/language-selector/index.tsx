@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { transition } from 'theme'
 
-const LangItem = styled(Box)`
+const ActionItem = styled(Box)`
   transition: ${transition};
   padding: 16px;
   border-bottom: 1px solid var(--theme-ui-colors-border);
@@ -30,15 +30,15 @@ const LangItem = styled(Box)`
 
 const LanguageList = ({ onChange }: { onChange(key: string): void }) => (
   <Box>
-    <LangItem
+    <ActionItem
       role="button"
       tabIndex={-1}
       aria-hidden="true"
       onClick={() => onChange('en')}
     >
       🇺🇸 &nbsp;English
-    </LangItem>
-    <LangItem
+    </ActionItem>
+    <ActionItem
       role="button"
       tabIndex={0}
       sx={{ '&:hover': { backgroundColor: '#f5f5f5' } }}
@@ -46,7 +46,7 @@ const LanguageList = ({ onChange }: { onChange(key: string): void }) => (
       onClick={() => onChange('es')}
     >
       🇲🇽 &nbsp;Español
-    </LangItem>
+    </ActionItem>
   </Box>
 )
 

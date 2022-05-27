@@ -25,34 +25,35 @@ const buildApprovalTransactions = (
   quantities: BigNumberMap,
   allowances: BigNumberMap
 ): TransactionState[] => {
-  const transactions: TransactionState[] = data.basket.collaterals.map(
-    ({ token }) => {
-      // Specific token approvals
-      const tokenAmount = quantities[getAddress(token.address)]
-      // Unlimited approval
-      // const tokenAmount = BigNumber.from(Number.MAX_SAFE_INTEGER)
-      const description = `Approve ${formatUnits(
-        tokenAmount,
-        token.decimals
-      )} ${token.symbol}`
+  const transactions = data.basket.collaterals.reduce((txs, { token }) => {
+    // Specific token approvals
+    const tokenAmount = quantities[getAddress(token.address)]
+    // Unlimited approval
+    // const tokenAmount = BigNumber.from(Number.MAX_SAFE_INTEGER)
+    const description = `Approve ${formatUnits(tokenAmount, token.decimals)} ${
+      token.symbol
+    }`
 
-      // TODO: Should I continue using "Skipped" txs?
-      return {
-        id: uuid(),
-        description,
-        status: allowances[getAddress(token.address)].gte(tokenAmount)
-          ? TRANSACTION_STATUS.SKIPPED
-          : TRANSACTION_STATUS.PENDING,
-        value: formatUnits(tokenAmount, token.decimals),
-        call: {
-          abi: 'erc20',
-          address: token.address,
-          method: 'approve',
-          args: [data.isRSV ? data.id : data.token.address, tokenAmount],
+    if (!allowances[getAddress(token.address)].gte(tokenAmount)) {
+      return [
+        ...txs,
+        {
+          id: uuid(),
+          description,
+          status: TRANSACTION_STATUS.PENDING,
+          value: formatUnits(tokenAmount, token.decimals),
+          call: {
+            abi: 'erc20',
+            address: token.address,
+            method: 'approve',
+            args: [data.isRSV ? data.id : data.token.address, tokenAmount],
+          },
         },
-      }
+      ]
     }
-  )
+
+    return txs
+  }, [] as TransactionState[])
 
   return transactions
 }

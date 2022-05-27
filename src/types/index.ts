@@ -1,7 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { Interface } from '@ethersproject/abi'
 import { Contract, ContractTransaction } from '@ethersproject/contracts'
-import { TransactionReceipt } from '@ethersproject/providers'
 
 export interface StringMap {
   [key: string]: any

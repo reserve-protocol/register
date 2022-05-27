@@ -6,8 +6,7 @@ export const TRANSACTION_STATUS = {
   MINING: 'MINING', // tx signed and currently mining (can take some time)
   CONFIRMED: 'CONFIRMED', // confirmed (mined) tx
   REJECTED: 'REJECTED', // rejected tx, user canceled or reverted
-  SKIPPED: 'SKIPPED',
-  UNKNOWN: 'UNKNOWN',
+  UNKNOWN: 'UNKNOWN', // PENDING&SIGNING transactions that were loaded from localStorage
 }
 
 export const COINGECKO_API = 'https://api.coingecko.com/api/v3'

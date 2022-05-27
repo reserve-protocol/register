@@ -79,11 +79,7 @@ const TransactionModal = ({
   const addTransaction = useSetAtom(addTransactionAtom)
   const allowances = useAtomValue(allowanceAtom)
   const [signing, setSigning] = useState('')
-  const [approvalsTx, setApprovalsTx] = useState([] as TransactionState[])
-  const requiredApprovals = useMemo(
-    () => approvalsTx.filter((tx) => tx.status === TRANSACTION_STATUS.PENDING),
-    [approvalsTx]
-  )
+  const [requiredApprovals, setApprovalsTx] = useState([] as TransactionState[])
   const canSubmit = useMemo(
     () => isValid && hasAllowance(allowances, requiredAllowance),
     [allowances, isValid, requiredAllowance]

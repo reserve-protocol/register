@@ -57,7 +57,6 @@
     "build": "react-scripts build",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "test": "react-scripts test",
-    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}' --fix",
     "e2e": "cypress open"
   },
   "browserslist": {
