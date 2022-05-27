@@ -117,8 +117,8 @@ const Navigation = ({
 // Sidebar footer
 const Footer = () => (
   <Box m={4}>
-    <ThemeColorMode mb={3} />
-    <Flex sx={{ alignItems: 'center', display: ['none', 'none', 'inherit'] }}>
+    <ThemeColorMode mb={3} ml={[-1, 0]} />
+    <Flex sx={{ alignItems: 'center', display: ['none', 'none', 'flex'] }}>
       <Text
         sx={{
           fontSize: 0,
@@ -140,7 +140,7 @@ const Sidebar = () => {
   const RToken = useAtomValue(rTokenAtom)
 
   return (
-    <Container sx={{ flexBasis: [72, 72, 264] }}>
+    <Container sx={{ flexBasis: [64, 72, 264] }}>
       <Header />
       <Navigation currentToken={RToken} />
       <Box my="auto" />

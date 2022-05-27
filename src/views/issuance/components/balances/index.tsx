@@ -12,7 +12,7 @@ interface Props extends BoxProps {
 }
 
 const CollateralBalances = ({ collaterals }: { collaterals: Collateral[] }) => (
-  <Box p={4}>
+  <Box p={4} mb={-2} sx={{ overflowX: 'auto' }}>
     <Text variant="subtitle" mb={2}>
       Available collateral
     </Text>
@@ -40,9 +40,15 @@ const RTokenBalance = ({ token }: { token: Token }) => {
  */
 const Balances = ({ rToken, ...props }: Props) => (
   <Card p={0} {...props}>
-    <Grid columns={2}>
+    <Grid columns={[1, 2]} gap={0}>
       <CollateralBalances collaterals={rToken.basket.collaterals} />
-      <Box sx={{ borderLeft: '1px solid', borderColor: 'secondary' }} ml={-2}>
+      <Box
+        sx={(theme: any) => ({
+          borderLeft: ['none', `1px solid ${theme.colors.border}`],
+          borderTop: [`1px solid ${theme.colors.border}`, 'none'],
+        })}
+        ml={[0, -2]}
+      >
         <RTokenBalance token={rToken.token} />
         {!rToken.isRSV && (
           <>

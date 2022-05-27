@@ -18,7 +18,9 @@ const TransactionCenter = () => {
   return (
     <Box ml={4} sx={{ alignItems: 'center', display: 'flex' }}>
       {isProcessing && <Spinner size={20} marginRight={10} />}
-      <Text mr={3}>Transactions</Text>
+      <Text sx={{ display: ['none', 'inherit', 'inherit'] }} mr={3}>
+        Transactions
+      </Text>
       <Menu
         style={{ cursor: 'pointer' }}
         onClick={() => setVisible(!isVisible)}
