@@ -58,7 +58,6 @@ i18n.activate('en')
 const App = () => (
   <I18nProvider i18n={i18n}>
     <Web3Provider>
-      <Trans>Test</Trans>
       <Updater />
       <ThemeProvider theme={theme}>
         <Toaster
