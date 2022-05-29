@@ -13,6 +13,8 @@
     "@ethersproject/hash": "^5.6.0",
     "@ethersproject/providers": "^5.6.2",
     "@ethersproject/units": "^5.6.0",
+    "@lingui/core": "^3.13.3",
+    "@lingui/react": "^3.13.3",
     "@mdx-js/react": "^2.1.1",
     "@popperjs/core": "^2.11.5",
     "@reach/dialog": "^0.17.0",
@@ -57,7 +59,8 @@
     "build": "react-scripts build",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "test": "react-scripts test",
-    "e2e": "cypress open"
+    "e2e": "cypress open",
+    "translations": "lingui extract && lingui compile"
   },
   "browserslist": {
     "production": [
@@ -73,6 +76,8 @@
   },
   "devDependencies": {
     "@ethersproject/experimental": "^5.4.0",
+    "@lingui/cli": "^3.13.3",
+    "@lingui/macro": "^3.13.3",
     "@react-spring/types": "^9.4.5",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.0.0",
@@ -85,6 +90,8 @@
     "@types/react-dom": "18.0.0",
     "@types/react-table": "^7.7.10",
     "@types/uuid": "^8.3.4",
+    "babel-plugin-macros": "^3.1.0",
+    "babel-preset-react-app": "^10.0.1",
     "cypress": "^8.1.0",
     "ethers": "^5.6.2",
     "prettier": "^2.3.2",

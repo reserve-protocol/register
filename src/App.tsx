@@ -15,6 +15,10 @@ import { theme } from './theme'
 import { Toaster } from 'react-hot-toast'
 import Issuance from './views/issuance'
 import { ROUTES } from 'utils/constants'
+import { i18n } from '@lingui/core'
+import { Trans } from '@lingui/macro'
+import { I18nProvider } from '@lingui/react'
+import { messages } from './locales/en/messages'
 
 // Requires rToken to be selected and a wallet connected
 // TODO: Better placeholders
@@ -43,52 +47,58 @@ const Guard = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>
 }
 
+i18n.load('en', messages)
+i18n.activate('en')
+
 /**
  * App Entry point - Handles views routing
  *
  * @returns {JSX.Element}
  */
 const App = () => (
-  <Web3Provider>
-    <Updater />
-    <ThemeProvider theme={theme}>
-      <Toaster
-        gutter={20}
-        toastOptions={{ position: 'bottom-right', style: { width: 300 } }}
-        containerStyle={{
-          top: 40,
-          left: 40,
-          bottom: 40,
-          right: 40,
-        }}
-      />
-      <Router>
-        <Layout>
-          <Routes>
-            <Route path={ROUTES.HOME} element={<Home />} />
-            <Route path={ROUTES.OVERVIEW} element={<Overview />} />
-            <Route
-              path={ROUTES.ISSUANCE}
-              element={
-                <Guard>
-                  <Issuance />
-                </Guard>
-              }
-            />
-            <Route
-              path={ROUTES.INSURANCE}
-              element={
-                <Guard>
-                  <Insurance />
-                </Guard>
-              }
-            />
-            <Route path={ROUTES.WALLET} element={<WalletManagement />} />
-          </Routes>
-        </Layout>
-      </Router>
-    </ThemeProvider>
-  </Web3Provider>
+  <I18nProvider i18n={i18n}>
+    <Web3Provider>
+      <Trans>Test</Trans>
+      <Updater />
+      <ThemeProvider theme={theme}>
+        <Toaster
+          gutter={20}
+          toastOptions={{ position: 'bottom-right', style: { width: 300 } }}
+          containerStyle={{
+            top: 40,
+            left: 40,
+            bottom: 40,
+            right: 40,
+          }}
+        />
+        <Router>
+          <Layout>
+            <Routes>
+              <Route path={ROUTES.HOME} element={<Home />} />
+              <Route path={ROUTES.OVERVIEW} element={<Overview />} />
+              <Route
+                path={ROUTES.ISSUANCE}
+                element={
+                  <Guard>
+                    <Issuance />
+                  </Guard>
+                }
+              />
+              <Route
+                path={ROUTES.INSURANCE}
+                element={
+                  <Guard>
+                    <Insurance />
+                  </Guard>
+                }
+              />
+              <Route path={ROUTES.WALLET} element={<WalletManagement />} />
+            </Routes>
+          </Layout>
+        </Router>
+      </ThemeProvider>
+    </Web3Provider>
+  </I18nProvider>
 )
 
 export default App

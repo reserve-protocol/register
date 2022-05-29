@@ -14,6 +14,7 @@ import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { v4 as uuid } from 'uuid'
 import ApprovalTransactions from './ApprovalTransactions'
 import TransactionError from './TransactionError'
+import { Trans } from '@lingui/macro'
 
 export interface ITransactionModal {
   title: string
@@ -51,14 +52,16 @@ const TransactionConfirmed = ({
     >
       <CheckCircle size={36} />
       <br />
-      <Text>Transaction signed!</Text>
+      <Text>
+        <Trans>Transaction signed!</Trans>
+      </Text>
       <br />
       <Link
         href={getExplorerLink(hash, ExplorerDataType.TRANSACTION)}
         target="_blank"
         sx={{ fontSize: 1 }}
       >
-        <ExternalLink size={12} /> View on etherscan
+        <ExternalLink size={12} /> <Trans>View on etherscan</Trans>
       </Link>
     </Flex>
   </Modal>
