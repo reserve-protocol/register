@@ -15,8 +15,8 @@ const ConfirmUnstake = ({ onClose }: { onClose: () => void }) => {
   const [signing, setSigning] = useState(false)
   const rToken = useAtomValue(rTokenAtom)
   const [amount, setAmount] = useAtom(unStakeAmountAtom)
-  const parsedAmount = parseEther(amount ?? '0')
   const isValid = useAtomValue(isValidUnstakeAmountAtom)
+  const parsedAmount = isValid ? parseEther(amount) : 0
   const transaction = useMemo(
     () => ({
       id: uuid(),

@@ -16,7 +16,6 @@ import { Toaster } from 'react-hot-toast'
 import Issuance from './views/issuance'
 import { ROUTES } from 'utils/constants'
 import { i18n } from '@lingui/core'
-import { Trans } from '@lingui/macro'
 import { I18nProvider } from '@lingui/react'
 import { messages } from './locales/en/messages'
 

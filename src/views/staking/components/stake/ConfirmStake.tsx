@@ -1,5 +1,6 @@
 import { parseEther } from '@ethersproject/units'
 import TransactionModal from 'components/transaction-modal'
+import { BigNumber } from 'ethers'
 import { useAtom, useAtomValue } from 'jotai'
 import { useCallback, useMemo, useState } from 'react'
 import { rTokenAtom } from 'state/atoms'
@@ -13,8 +14,8 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
   const [signing, setSigning] = useState(false)
   const rToken = useAtomValue(rTokenAtom)
   const [amount, setAmount] = useAtom(stakeAmountAtom)
-  const parsedAmount = parseEther(amount ?? '0')
   const isValid = useAtomValue(isValidStakeAmountAtom)
+  const parsedAmount = isValid ? parseEther(amount) : BigNumber.from(0)
   const transaction = useMemo(
     () => ({
       id: uuid(),
