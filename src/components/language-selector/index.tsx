@@ -3,7 +3,6 @@ import { Box } from 'theme-ui'
 import LangIcon from 'components/icons/Lang'
 import Popup from 'components/popup'
 import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { transition } from 'theme'
 
 const ActionItem = styled(Box)`
@@ -52,11 +51,11 @@ const LanguageList = ({ onChange }: { onChange(key: string): void }) => (
 
 const LanguageSelector = () => {
   const [isVisible, setVisible] = useState(false)
-  const { i18n } = useTranslation()
+  // const { i18n } = useTranslation()
 
   const handleSelection = (lang: string) => {
     setVisible(false)
-    i18n.changeLanguage(lang)
+    // i18n.changeLanguage(lang)
   }
 
   return (

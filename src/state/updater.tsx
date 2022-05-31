@@ -28,51 +28,11 @@ import {
   walletAtom,
 } from 'state/atoms'
 import useSWR from 'swr'
-import { ReserveToken, StringMap } from 'types'
+import { ReserveToken, StringMap, Token } from 'types'
 import { RSV_MANAGER_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
-import { COINGECKO_API, RSR } from 'utils/constants'
-
-const getTokensQuery = gql`
-  {
-    mains {
-      id
-      staked
-      facade
-      basketHandler
-      stToken {
-        address
-        name
-        symbol
-        decimals
-      }
-      token {
-        address
-        name
-        symbol
-        decimals
-        transfersCount
-        holdersCount
-        supply {
-          total
-        }
-      }
-      basket {
-        id
-        collaterals {
-          id
-          index
-          token {
-            address
-            name
-            symbol
-            decimals
-          }
-        }
-      }
-    }
-  }
-`
+import { COINGECKO_API, DEFAULT_TOKENS, RSR } from 'utils/constants'
+import rtokens from 'rtokens'
 
 // TODO: Proper typing
 const formatTokens = (mains: any[]): { [x: string]: ReserveToken } =>
@@ -166,6 +126,8 @@ const getTokenAllowances = (reserveToken: ReserveToken): [string, string][] => {
   return tokens
 }
 
+// const
+
 /**
  * ReserveTokensUpdater
  *
@@ -173,16 +135,21 @@ const getTokenAllowances = (reserveToken: ReserveToken): [string, string][] => {
  * Sets the default token
  */
 const ReserveTokensUpdater = () => {
+  const { provider } = useWeb3React()
   const setTokens = useUpdateAtom(reserveTokensAtom)
-  const { data, error } = useQuery(getTokensQuery)
+  const tokens = rtokens
+
+  const getTokensMeta = useCallback(async () => {
+    const defaultTokens: Token[] = DEFAULT_TOKENS.map(
+      (address) => tokens[address]
+    )
+
+    const requests = defaultTokens.map(() => {})
+  }, [provider])
 
   useEffect(() => {
-    // TODO: Handle error scenario
-    if (data?.mains) {
-      const tokens = formatTokens(data.mains)
-      setTokens(tokens)
-    }
-  }, [data])
+    getTokensMeta()
+  }, [getTokensMeta])
 
   return null
 }

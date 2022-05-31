@@ -3,6 +3,16 @@ import { parseEther } from '@ethersproject/units'
 import { ReserveToken, StringMap } from 'types'
 import { ONE_ETH } from './numbers'
 
+/**
+ * RSV Token utility
+ *
+ * * RSV is not part of the current Reserve Protocol, it was the first version of an rToken
+ * * It follows different rules as other tokens, so it needs to be treated different
+ * * Only the Overview page and Mint/Redeem are available for this token
+ */
+const PAX_ADDRESS = '0x8E870D67F660D95d5be530380D0eC0bd388289E1'
+const USDC_ADDRESS = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
+const TUSD_ADDRESS = '0x0000000000085d4780B73119b644AE5ecd22b376'
 const PAX_QTY = BigNumber.from(333333)
 const USDC_QTY = BigNumber.from(333334)
 const EXPO = BigNumber.from(10).pow(BigNumber.from(12))
@@ -32,13 +42,39 @@ export const getIssuable = (rsv: ReserveToken, tokenBalances: StringMap) => {
 }
 
 export const quote = (amount: BigNumber): { [x: string]: BigNumber } => ({
-  '0x8E870D67F660D95d5be530380D0eC0bd388289E1': amount
-    .mul(PAX_QTY)
-    .mul(EXPO)
-    .div(DIV), // PAX
-  '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48': amount.mul(USDC_QTY).div(DIV), // USDC
-  '0x0000000000085d4780B73119b644AE5ecd22b376': amount
-    .mul(PAX_QTY)
-    .mul(EXPO)
-    .div(DIV), // USDT
+  [PAX_ADDRESS]: amount.mul(PAX_QTY).mul(EXPO).div(DIV), // PAX
+  [USDC_ADDRESS]: amount.mul(USDC_QTY).div(DIV), // USDC
+  [TUSD_ADDRESS]: amount.mul(PAX_QTY).mul(EXPO).div(DIV), // USDT
 })
+
+const RSV = {
+  address: '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',
+  name: 'Reserve',
+  symbol: 'RSV',
+  decimals: 18,
+  collaterals: [
+    {
+      address: TUSD_ADDRESS,
+      name: 'TrueUSD',
+      symbol: 'TUSD',
+      decimals: 18,
+    },
+    {
+      address: PAX_ADDRESS,
+      name: 'Pax Dollar',
+      symbol: 'USDP',
+      decimals: 18,
+    },
+    {
+      address: USDC_ADDRESS,
+      name: 'USD Coin',
+      symbol: 'USDC',
+      decimals: 6,
+    },
+  ],
+  // Not available for RSV
+  facade: '',
+  stToken: undefined,
+}
+
+export default RSV

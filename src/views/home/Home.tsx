@@ -1,5 +1,6 @@
 import { Container } from 'components'
 import { gql } from 'graphql-request'
+import rtokens from 'rtokens'
 
 const mockTokens: any = [
   { name: 'USD1', price: '$1.00', balance: '0.00', value: '0.00', apy: '0.00' },
@@ -61,8 +62,9 @@ const getRTokenExchange = gql`
 
 const Home = () => {
   // const data = useQuery(getRTokenExchange)
+  console.log('tokens', rtokens)
 
-  return <Container>TODO</Container>
+  return <Container></Container>
 }
 
 export default Home

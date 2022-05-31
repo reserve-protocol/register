@@ -26,6 +26,12 @@ export const RSR: Token = {
   name: 'Reserve Rights',
   symbol: 'RSR',
   decimals: 18,
-  // TODO: RSR LOGO
-  logo: 'rsv.png',
+  logo: 'rsr.png',
 }
+
+// tokens used in the rtoken selector screen and dashboard
+// TODO: should be fetched, top 5 using market cap
+export const DEFAULT_TOKENS = [
+  '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',
+  '0xff4DA0E6C71189814d290564F455C21aeCC66430',
+]
