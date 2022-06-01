@@ -1,3 +1,4 @@
+import { _ReserveToken } from './../types/index'
 import { BigNumber } from '@ethersproject/bignumber'
 import { parseEther } from '@ethersproject/units'
 import { ReserveToken, StringMap } from 'types'
@@ -47,7 +48,7 @@ export const quote = (amount: BigNumber): { [x: string]: BigNumber } => ({
   [TUSD_ADDRESS]: amount.mul(PAX_QTY).mul(EXPO).div(DIV), // USDT
 })
 
-const RSV = {
+const RSV: _ReserveToken = {
   address: '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',
   name: 'Reserve',
   symbol: 'RSV',
@@ -72,9 +73,7 @@ const RSV = {
       decimals: 6,
     },
   ],
-  // Not available for RSV
-  facade: '',
-  stToken: undefined,
+  isRSV: true,
 }
 
 export default RSV

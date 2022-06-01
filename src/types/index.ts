@@ -141,7 +141,6 @@ export interface ReserveToken {
 
 export interface _ReserveToken extends Token {
   collaterals: Token[] // current basket collateral list
-  facade: string // facade contract address
   stToken?: Token // staking RSR token
   isRSV?: boolean // only for RSV
 }
