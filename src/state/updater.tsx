@@ -1,12 +1,9 @@
-import { getAddress } from '@ethersproject/address'
 import { formatEther } from '@ethersproject/units'
 import { useWeb3React } from '@web3-react/core'
 import { StRSR } from 'abis'
-import { gql } from 'graphql-request'
 import useBlockNumber from 'hooks/useBlockNumber'
 import { useCall } from 'hooks/useCall'
 import { useContract, useFacadeContract } from 'hooks/useContract'
-import useQuery from 'hooks/useQuery'
 import useTokensAllowance from 'hooks/useTokensAllowance'
 import useTokensBalance from 'hooks/useTokensBalance'
 import { useSetAtom } from 'jotai'
@@ -19,7 +16,6 @@ import {
   gasPriceAtom,
   pendingIssuancesAtom,
   pendingRSRAtom,
-  reserveTokensAtom,
   rsrExchangeRateAtom,
   rsrPriceAtom,
   rTokenAtom,
@@ -28,11 +24,9 @@ import {
   walletAtom,
 } from 'state/atoms'
 import useSWR from 'swr'
-import { ReserveToken, StringMap, Token } from 'types'
-import { RSV_MANAGER_ADDRESS } from 'utils/addresses'
-import { CHAIN_ID } from 'utils/chains'
-import { COINGECKO_API, DEFAULT_TOKENS, RSR } from 'utils/constants'
-import rtokens from 'rtokens'
+import { ReserveToken, StringMap } from 'types'
+import { COINGECKO_API, RSR } from 'utils/constants'
+import TokenUpdater from './TokenUpdater'
 
 // Gets ReserveToken related token addresses and decimals
 const getTokens = (reserveToken: ReserveToken): [string, number][] => {
@@ -70,34 +64,6 @@ const getTokenAllowances = (reserveToken: ReserveToken): [string, string][] => {
   }
 
   return tokens
-}
-
-// const
-
-/**
- * ReserveTokensUpdater
- *
- * Fetchs the list of RTokens from theGraph
- * Sets the default token
- */
-const ReserveTokensUpdater = () => {
-  const { provider } = useWeb3React()
-  const setTokens = useUpdateAtom(reserveTokensAtom)
-  const tokens = rtokens
-
-  const getTokensMeta = useCallback(async () => {
-    const defaultTokens: Token[] = DEFAULT_TOKENS.map(
-      (address) => tokens[address]
-    )
-
-    const requests = defaultTokens.map(() => {})
-  }, [provider])
-
-  useEffect(() => {
-    getTokensMeta()
-  }, [getTokensMeta])
-
-  return null
 }
 
 /**
@@ -274,7 +240,7 @@ const ExchangeRateUpdater = () => {
  */
 const Updater = () => (
   <>
-    <ReserveTokensUpdater />
+    <TokenUpdater />
     <PendingBalancesUpdater />
     <TokensBalanceUpdater />
     <TokensAllowanceUpdater />

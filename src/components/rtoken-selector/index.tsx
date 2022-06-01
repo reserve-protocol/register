@@ -59,6 +59,8 @@ const SelectedToken = () => {
   const selectedAddress = useAtomValue(selectedRTokenAtom)
   const selected = useAtomValue(_rTokenAtom) ?? rtokens[selectedAddress]
 
+  console.log('selected', selected)
+
   if (!selectedAddress) {
     return <Text>Select RToken...</Text>
   }

@@ -2,8 +2,6 @@ import { atom, useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { useCallback, useEffect } from 'react'
 import { Token, _ReserveToken } from 'types'
-import { RSV_ADDRESS } from 'utils/addresses'
-import { CHAIN_ID } from 'utils/chains'
 import RSV from 'utils/rsv'
 import { selectedRTokenAtom, _reserveTokensAtom } from './atoms'
 
@@ -68,7 +66,7 @@ const TokenUpdater = () => {
 
   const getTokenMeta = useCallback(
     async (address: string) => {
-      const isRSV = address === RSV_ADDRESS[CHAIN_ID]
+      const isRSV = address === RSV.address
 
       if (isRSV) {
         return updateToken(RSV)

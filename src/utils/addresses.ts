@@ -6,18 +6,13 @@ export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 // TODO: protocol deployment
 export const DEPLOYER_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: ZERO_ADDRESS,
-  [ChainId.Hardhat]: '0x1613beB3B2C4f22Ee086B2b38C1476A3cE7f78E8',
+  [ChainId.Mainnet]: '0x70bDA08DBe07363968e9EE53d899dFE48560605B',
+  [ChainId.Hardhat]: '0x70bDA08DBe07363968e9EE53d899dFE48560605B',
 }
 
-export const RSV_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',
-  [ChainId.Hardhat]: '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',
-}
-
-export const RSV_MANAGER_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0x4B481872f31bab47C6780D5488c84D309b1B8Bb6',
-  [ChainId.Hardhat]: '0x4B481872f31bab47C6780D5488c84D309b1B8Bb6',
+export const FACADE_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0xaca81583840B1bf2dDF6CDe824ada250C1936B4D',
+  [ChainId.Hardhat]: '0xaca81583840B1bf2dDF6CDe824ada250C1936B4D',
 }
 
 export const RSR_ADDRESS: AddressMap = {
