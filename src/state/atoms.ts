@@ -1,4 +1,3 @@
-import { _ReserveToken } from './../types/index'
 import { BigNumber } from '@ethersproject/bignumber'
 import { atom } from 'jotai'
 import { atomWithStorage, createJSONStorage } from 'jotai/utils'
@@ -23,35 +22,26 @@ export const rTokenPriceAtom = atom(1)
 export const rsrExchangeRateAtom = atom(1)
 export const blockTimestampAtom = atom<number>(0)
 
+/**
+ * RToken management
+ */
+
 // Cache layer for loaded tokens
-export const reserveTokensAtom = atomWithStorage<{ [x: string]: ReserveToken }>(
-  'reserveTokenss',
-  {}
-)
-export const _reserveTokensAtom = atomWithStorage<{
+export const reserveTokensAtom = atomWithStorage<{
   [x: string]: _ReserveToken
 }>('reserveTokens', {})
-
+// Current selected rToken address
 export const selectedRTokenAtom = atomWithStorage('selectedRToken', '')
-
-export const _rTokenAtom = atom<_ReserveToken | null>((get) =>
-  get(_reserveTokensAtom) && get(_reserveTokensAtom)[get(selectedRTokenAtom)]
-    ? get(_reserveTokensAtom)[get(selectedRTokenAtom)]
-    : null
-)
-
-// export const _rTokenAtom = atom<_ReserveToken | null>((get) => {
-//   get(_reserveTokensAtom) && get(_reserveTokensAtom)[get(selectedRTokenAtom)]
-//     ? get(_reserveTokensAtom)[get(selectedRTokenAtom)]
-//     : null
-// })
-
-export const rTokenAtom = atom<ReserveToken | null>((get) =>
+// Grapb rToken data from the atom list
+export const rTokenAtom = atom<_ReserveToken | null>((get) =>
   get(reserveTokensAtom) && get(reserveTokensAtom)[get(selectedRTokenAtom)]
     ? get(reserveTokensAtom)[get(selectedRTokenAtom)]
     : null
 )
 
+/**
+ * Wallet Management
+ */
 export const walletsAtom = atomWithStorage<{ [x: string]: Wallet }>(
   'wallets',
   {}

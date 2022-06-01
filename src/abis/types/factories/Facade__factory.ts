@@ -224,6 +224,25 @@ const _abi = [
         type: "address",
       },
     ],
+    name: "stToken",
+    outputs: [
+      {
+        internalType: "contract IStRSR",
+        name: "stTokenAddress",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "contract IRToken",
+        name: "rToken",
+        type: "address",
+      },
+    ],
     name: "totalAssetValue",
     outputs: [
       {

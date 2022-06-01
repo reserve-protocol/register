@@ -6,7 +6,7 @@ import { useUpdateAtom } from 'jotai/utils'
 import { useCallback, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import rtokens from 'rtokens'
-import { selectedRTokenAtom, _rTokenAtom } from 'state/atoms'
+import { selectedRTokenAtom, rTokenAtom } from 'state/atoms'
 import { transition } from 'theme'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
@@ -57,7 +57,7 @@ const TokenList = ({ onSelect }: { onSelect(address: string): void }) => (
 
 const SelectedToken = () => {
   const selectedAddress = useAtomValue(selectedRTokenAtom)
-  const selected = useAtomValue(_rTokenAtom) ?? rtokens[selectedAddress]
+  const selected = useAtomValue(rTokenAtom) ?? rtokens[selectedAddress]
 
   console.log('selected', selected)
 

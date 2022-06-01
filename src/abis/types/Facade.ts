@@ -46,6 +46,7 @@ export interface FacadeInterface extends utils.Interface {
     "pendingIssuances(address,address)": FunctionFragment;
     "pendingUnstakings(address,address)": FunctionFragment;
     "runAuctionsForAllTraders(address)": FunctionFragment;
+    "stToken(address)": FunctionFragment;
     "totalAssetValue(address)": FunctionFragment;
   };
 
@@ -59,6 +60,7 @@ export interface FacadeInterface extends utils.Interface {
       | "pendingIssuances"
       | "pendingUnstakings"
       | "runAuctionsForAllTraders"
+      | "stToken"
       | "totalAssetValue"
   ): FunctionFragment;
 
@@ -94,6 +96,7 @@ export interface FacadeInterface extends utils.Interface {
     functionFragment: "runAuctionsForAllTraders",
     values: [string]
   ): string;
+  encodeFunctionData(functionFragment: "stToken", values: [string]): string;
   encodeFunctionData(
     functionFragment: "totalAssetValue",
     values: [string]
@@ -128,6 +131,7 @@ export interface FacadeInterface extends utils.Interface {
     functionFragment: "runAuctionsForAllTraders",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "stToken", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "totalAssetValue",
     data: BytesLike
@@ -215,6 +219,11 @@ export interface Facade extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    stToken(
+      rToken: string,
+      overrides?: CallOverrides
+    ): Promise<[string] & { stTokenAddress: string }>;
+
     totalAssetValue(
       rToken: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -262,6 +271,8 @@ export interface Facade extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  stToken(rToken: string, overrides?: CallOverrides): Promise<string>;
+
   totalAssetValue(
     rToken: string,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -307,6 +318,8 @@ export interface Facade extends BaseContract {
       rToken: string,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    stToken(rToken: string, overrides?: CallOverrides): Promise<string>;
 
     totalAssetValue(
       rToken: string,
@@ -358,6 +371,8 @@ export interface Facade extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    stToken(rToken: string, overrides?: CallOverrides): Promise<BigNumber>;
+
     totalAssetValue(
       rToken: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -407,6 +422,11 @@ export interface Facade extends BaseContract {
     runAuctionsForAllTraders(
       rToken: string,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    stToken(
+      rToken: string,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     totalAssetValue(

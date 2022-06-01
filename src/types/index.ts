@@ -99,21 +99,6 @@ export interface Token {
   logo?: string
 }
 
-export interface Collateral {
-  // collateral contract id
-  id: string
-  // static asset index when consulting the basket weights
-  index: number
-  // ERC20 token used as collateral
-  token: Token
-}
-
-// Token collateral basket
-export interface Basket {
-  id: string // Basket contract address
-  collaterals: Collateral[]
-}
-
 export interface BigNumberMap {
   [x: string]: BigNumber
 }
@@ -123,23 +108,7 @@ export interface BigNumberMap {
  *
  * This interface represents a complete RToken ecosystem
  */
-export interface ReserveToken {
-  id: string // RToken `Main` contract address
-  token: Token // ERC20 stable coin
-  basket: Basket
-  facade?: string
-  basketHandler?: string
-  // If insurance is null, Staking is not enabled
-  insurance?: {
-    // amount of staked RSR
-    staked: number
-    // stToken or also called stRSR, ERC20 token specific for this RToken
-    token: Token
-  }
-  isRSV?: boolean
-}
-
-export interface _ReserveToken extends Token {
+export interface ReserveToken extends Token {
   collaterals: Token[] // current basket collateral list
   stToken?: Token // staking RSR token
   isRSV?: boolean // only for RSV
