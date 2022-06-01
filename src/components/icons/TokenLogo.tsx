@@ -2,8 +2,9 @@ import styled from '@emotion/styled'
 import { Box, BoxProps } from 'theme-ui'
 
 interface Props extends BoxProps {
-  symbol: string
+  symbol?: string
   size?: number | string
+  src?: string
 }
 
 const Container = styled(Box)`
@@ -13,10 +14,10 @@ const Container = styled(Box)`
   top: -1px;
 `
 
-const TokenLogo = ({ symbol, size = '1em', ...props }: Props) => (
+const TokenLogo = ({ symbol, src, size = '1em', ...props }: Props) => (
   <Container {...props}>
     <img
-      src={`/imgs/${symbol.toLowerCase()}.png`}
+      src={src ? src : `/imgs/${symbol?.toLowerCase() ?? 'default'}.png`}
       onError={({ currentTarget }) => {
         currentTarget.onerror = null // prevents looping
         currentTarget.src = '/imgs/default.png'

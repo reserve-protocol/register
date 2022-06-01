@@ -8,8 +8,8 @@ import { ChevronDown, ChevronUp } from 'react-feather'
 import { reserveTokensAtom, rTokenAtom, selectedRTokenAtom } from 'state/atoms'
 import styled from '@emotion/styled'
 import { transition } from 'theme'
-
-const tokensAtom = atom((get) => Object.values(get(reserveTokensAtom) || []))
+import rtokens from 'rtokens'
+import { DEFAULT_TOKENS } from 'utils/constants'
 
 // TODO: Separate component
 const ActionItem = styled(Flex)`
@@ -36,13 +36,8 @@ const ActionItem = styled(Flex)`
 
 const RTokenSelector = (props: BoxProps) => {
   const [isVisible, setVisible] = useState(false)
-  const tokens = useAtomValue(tokensAtom)
   const selected = useAtomValue(rTokenAtom)
   const setSelected = useUpdateAtom(selectedRTokenAtom)
-
-  if (!tokens.length) {
-    return <span>Loading...</span>
-  }
 
   const handleSelect = (token: string) => {
     setSelected(token)
@@ -55,14 +50,10 @@ const RTokenSelector = (props: BoxProps) => {
       onDismiss={() => setVisible(false)}
       content={
         <Box>
-          {(!tokens || !tokens.length) && <Text>Loading...</Text>}
-          {tokens.map((token) => (
-            <ActionItem
-              key={token.token.address}
-              onClick={() => handleSelect(token.id)}
-            >
-              <TokenLogo size="1.5em" mr={2} symbol={token.token.symbol} />
-              {token.token.symbol}
+          {DEFAULT_TOKENS.map((address) => (
+            <ActionItem key={address} onClick={() => handleSelect(address)}>
+              <TokenLogo size="1.5em" mr={2} src={rtokens[address].logo} />
+              {rtokens[address].symbol}
             </ActionItem>
           ))}
         </Box>

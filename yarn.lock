@@ -14645,8 +14645,8 @@ __metadata:
 
 "rtokens@file:../rtokens::locator=protocol-interface%40workspace%3A.":
   version: 1.0.0
-  resolution: "rtokens@file:../rtokens#../rtokens::hash=82f38e&locator=protocol-interface%40workspace%3A."
-  checksum: 948e9ab7da7b9026a97946d53b30104df7510e84294cc82ae3b6f8a7706fe70c7ee6ee0f01c5e371ab36572f674a8b740df2edd571e1f823567fbf650de48a90
+  resolution: "rtokens@file:../rtokens#../rtokens::hash=045b4d&locator=protocol-interface%40workspace%3A."
+  checksum: 896a86037eb43915a619118edd217fca545d81c692401d3b9e6920b9f3b2c9e9326a28a5a893f7256e63cd27edba5687c245d4a1b4bbd901f380a77253504656
   languageName: node
   linkType: hard
 

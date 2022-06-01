@@ -5081,7 +5081,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ],\
       [\
         "rtokens",\
-        "file:../rtokens#../rtokens::hash=82f38e&locator=protocol-interface%40workspace%3A."\
+        "file:../rtokens#../rtokens::hash=045b4d&locator=protocol-interface%40workspace%3A."\
       ],\
       [\
         "run-async",\
@@ -6015,7 +6015,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-scripts", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:5.0.0"],\
             ["react-table", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:7.7.0"],\
             ["recharts", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:2.1.9"],\
-            ["rtokens", "file:../rtokens#../rtokens::hash=82f38e&locator=protocol-interface%40workspace%3A."],\
+            ["rtokens", "file:../rtokens#../rtokens::hash=045b4d&locator=protocol-interface%40workspace%3A."],\
             ["source-map-explorer", "npm:2.5.2"],\
             ["swr", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.2.2"],\
             ["theme-ui", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:0.14.5"],\
@@ -24369,7 +24369,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-scripts", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:5.0.0"],\
             ["react-table", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:7.7.0"],\
             ["recharts", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:2.1.9"],\
-            ["rtokens", "file:../rtokens#../rtokens::hash=82f38e&locator=protocol-interface%40workspace%3A."],\
+            ["rtokens", "file:../rtokens#../rtokens::hash=045b4d&locator=protocol-interface%40workspace%3A."],\
             ["source-map-explorer", "npm:2.5.2"],\
             ["swr", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.2.2"],\
             ["theme-ui", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:0.14.5"],\
@@ -25702,10 +25702,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["rtokens", [\
-        ["file:../rtokens#../rtokens::hash=82f38e&locator=protocol-interface%40workspace%3A.", {\
-          "packageLocation": "./.yarn/cache/rtokens-file-c95b9041a4-948e9ab7da.zip/node_modules/rtokens/",\
+        ["file:../rtokens#../rtokens::hash=045b4d&locator=protocol-interface%40workspace%3A.", {\
+          "packageLocation": "./.yarn/cache/rtokens-file-6129d4193c-896a86037e.zip/node_modules/rtokens/",\
           "packageDependencies": [\
-            ["rtokens", "file:../rtokens#../rtokens::hash=82f38e&locator=protocol-interface%40workspace%3A."]\
+            ["rtokens", "file:../rtokens#../rtokens::hash=045b4d&locator=protocol-interface%40workspace%3A."]\
           ],\
           "linkType": "HARD"\
         }]\

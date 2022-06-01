@@ -34,60 +34,6 @@ import { CHAIN_ID } from 'utils/chains'
 import { COINGECKO_API, DEFAULT_TOKENS, RSR } from 'utils/constants'
 import rtokens from 'rtokens'
 
-// TODO: Proper typing
-const formatTokens = (mains: any[]): { [x: string]: ReserveToken } =>
-  mains.reduce((acc: any, data: any) => {
-    try {
-      const address = getAddress(data.id.toLowerCase())
-      const isRSV = address === RSV_MANAGER_ADDRESS[CHAIN_ID]
-      let basket = { id: '', collaterals: [] }
-      let insurance = null
-
-      if (!isRSV) {
-        insurance = {
-          staked: data.staked,
-          token: {
-            ...data.stToken,
-            address: getAddress(data.stToken.address.toLowerCase()),
-          },
-        }
-      }
-
-      if (data.basket) {
-        basket = {
-          ...data.basket,
-          collaterals: data.basket.collaterals.map((collateral: any) => ({
-            ...collateral,
-            token: {
-              ...collateral.token,
-              address: getAddress(collateral.token.address.toLowerCase()),
-            },
-          })),
-        }
-      }
-
-      acc[address] = {
-        id: address,
-        token: {
-          ...data.token,
-          address: getAddress(data.token.address.toLowerCase()),
-          supply: data.token.supply?.total || 0,
-        },
-        basket,
-        insurance,
-        facade: isRSV ? null : getAddress(data.facade.toLowerCase()),
-        basketHandler: isRSV
-          ? null
-          : getAddress(data.basketHandler.toLowerCase()),
-        isRSV,
-      } as ReserveToken
-    } catch (e) {
-      console.error('Fail to format token', e)
-    }
-
-    return acc
-  }, {})
-
 // Gets ReserveToken related token addresses and decimals
 const getTokens = (reserveToken: ReserveToken): [string, number][] => {
   const addresses: [string, number][] = [

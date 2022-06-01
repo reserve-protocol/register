@@ -16,6 +16,7 @@ export const ROUTES = Object.freeze({
   INSURANCE: '/insurance',
   ISSUANCE: '/issuance',
   EXCHANGE: '/exchange',
+  DEPLOY: '/deploy',
   LIST: '/list',
   HOME: '/',
   WALLET: '/wallet',

@@ -18,6 +18,7 @@ import { ROUTES } from 'utils/constants'
 import { i18n } from '@lingui/core'
 import { I18nProvider } from '@lingui/react'
 import { messages } from './locales/en/messages'
+import Deploy from 'views/deploy'
 
 // Requires rToken to be selected and a wallet connected
 // TODO: Better placeholders
@@ -91,6 +92,7 @@ const App = () => (
                 }
               />
               <Route path={ROUTES.WALLET} element={<WalletManagement />} />
+              <Route path={ROUTES.DEPLOY} element={<Deploy />} />
             </Routes>
           </Layout>
         </Router>
