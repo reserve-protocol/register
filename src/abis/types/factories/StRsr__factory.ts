@@ -9,11 +9,6 @@ import type { StRsr, StRsrInterface } from "../StRsr";
 const _abi = [
   {
     inputs: [],
-    name: "IntOutOfBounds",
-    type: "error",
-  },
-  {
-    inputs: [],
     name: "UIntOutOfBounds",
     type: "error",
   },
@@ -92,15 +87,15 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "int192",
+        internalType: "uint192",
         name: "oldVal",
-        type: "int192",
+        type: "uint192",
       },
       {
         indexed: true,
-        internalType: "int192",
+        internalType: "uint192",
         name: "newVal",
-        type: "int192",
+        type: "uint192",
       },
     ],
     name: "ExchangeRateSet",
@@ -143,15 +138,15 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "int192",
+        internalType: "uint192",
         name: "oldVal",
-        type: "int192",
+        type: "uint192",
       },
       {
         indexed: true,
-        internalType: "int192",
+        internalType: "uint192",
         name: "newVal",
-        type: "int192",
+        type: "uint192",
       },
     ],
     name: "RewardRatioSet",
@@ -446,6 +441,30 @@ const _abi = [
     inputs: [
       {
         internalType: "uint256",
+        name: "era_",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "draftQueueLen",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
         name: "",
         type: "uint256",
       },
@@ -463,9 +482,9 @@ const _abi = [
     name: "draftQueues",
     outputs: [
       {
-        internalType: "uint192",
+        internalType: "uint176",
         name: "drafts",
-        type: "uint192",
+        type: "uint176",
       },
       {
         internalType: "uint64",
@@ -481,9 +500,9 @@ const _abi = [
     name: "draftRate",
     outputs: [
       {
-        internalType: "int192",
+        internalType: "uint192",
         name: "",
-        type: "int192",
+        type: "uint192",
       },
     ],
     stateMutability: "view",
@@ -513,9 +532,9 @@ const _abi = [
     name: "exchangeRate",
     outputs: [
       {
-        internalType: "int192",
+        internalType: "uint192",
         name: "",
-        type: "int192",
+        type: "uint192",
       },
     ],
     stateMutability: "view",
@@ -597,9 +616,9 @@ const _abi = [
         type: "uint32",
       },
       {
-        internalType: "int192",
+        internalType: "uint192",
         name: "rewardRatio_",
-        type: "int192",
+        type: "uint192",
       },
     ],
     name: "init",
@@ -733,9 +752,9 @@ const _abi = [
     name: "rewardRatio",
     outputs: [
       {
-        internalType: "int192",
+        internalType: "uint192",
         name: "",
-        type: "int192",
+        type: "uint192",
       },
     ],
     stateMutability: "view",
@@ -783,9 +802,9 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "int192",
+        internalType: "uint192",
         name: "val",
-        type: "int192",
+        type: "uint192",
       },
     ],
     name: "setRewardRatio",
@@ -837,9 +856,9 @@ const _abi = [
     name: "stakeRate",
     outputs: [
       {
-        internalType: "int192",
+        internalType: "uint192",
         name: "",
-        type: "int192",
+        type: "uint192",
       },
     ],
     stateMutability: "view",

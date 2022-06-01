@@ -59,12 +59,11 @@ export interface RTokenInterface extends utils.Interface {
     "basketsNeeded()": FunctionFragment;
     "cancel(uint256,bool)": FunctionFragment;
     "claimAndSweepRewards()": FunctionFragment;
-    "constitutionURI()": FunctionFragment;
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
     "endIdForVest(address)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
-    "init(address,string,string,string,int192)": FunctionFragment;
+    "init(address,string,string,string,uint192)": FunctionFragment;
     "issuanceRate()": FunctionFragment;
     "issue(uint256)": FunctionFragment;
     "issueItem(address,uint256)": FunctionFragment;
@@ -72,6 +71,7 @@ export interface RTokenInterface extends utils.Interface {
     "lastIssRate()": FunctionFragment;
     "lastIssRateBlock()": FunctionFragment;
     "main()": FunctionFragment;
+    "manifestoURI()": FunctionFragment;
     "melt(uint256)": FunctionFragment;
     "mint(address,uint256)": FunctionFragment;
     "name()": FunctionFragment;
@@ -80,8 +80,8 @@ export interface RTokenInterface extends utils.Interface {
     "price()": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "redeem(uint256)": FunctionFragment;
-    "setBasketsNeeded(int192)": FunctionFragment;
-    "setIssuanceRate(int192)": FunctionFragment;
+    "setBasketsNeeded(uint192)": FunctionFragment;
+    "setIssuanceRate(uint192)": FunctionFragment;
     "symbol()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
@@ -102,7 +102,6 @@ export interface RTokenInterface extends utils.Interface {
       | "basketsNeeded"
       | "cancel"
       | "claimAndSweepRewards"
-      | "constitutionURI"
       | "decimals"
       | "decreaseAllowance"
       | "endIdForVest"
@@ -115,6 +114,7 @@ export interface RTokenInterface extends utils.Interface {
       | "lastIssRate"
       | "lastIssRateBlock"
       | "main"
+      | "manifestoURI"
       | "melt"
       | "mint"
       | "name"
@@ -164,10 +164,6 @@ export interface RTokenInterface extends utils.Interface {
     functionFragment: "claimAndSweepRewards",
     values?: undefined
   ): string;
-  encodeFunctionData(
-    functionFragment: "constitutionURI",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "decreaseAllowance",
@@ -204,6 +200,10 @@ export interface RTokenInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "main", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "manifestoURI",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "melt", values: [BigNumberish]): string;
   encodeFunctionData(
     functionFragment: "mint",
@@ -284,10 +284,6 @@ export interface RTokenInterface extends utils.Interface {
     functionFragment: "claimAndSweepRewards",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "constitutionURI",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "decreaseAllowance",
@@ -321,6 +317,10 @@ export interface RTokenInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "main", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "manifestoURI",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "melt", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
@@ -360,15 +360,16 @@ export interface RTokenInterface extends utils.Interface {
   events: {
     "AdminChanged(address,address)": EventFragment;
     "Approval(address,address,uint256)": EventFragment;
-    "BasketsNeededChanged(int192,int192)": EventFragment;
+    "BasketsNeededChanged(uint192,uint192)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
     "Initialized(uint8)": EventFragment;
-    "IssuanceRateSet(int192,int192)": EventFragment;
-    "IssuanceStarted(address,uint256,uint256,int192,address[],uint256[],int192)": EventFragment;
+    "Issuance(address,uint256,uint192)": EventFragment;
+    "IssuanceRateSet(uint192,uint192)": EventFragment;
+    "IssuanceStarted(address,uint256,uint256,uint192,address[],uint256[],uint192)": EventFragment;
     "IssuancesCanceled(address,uint256,uint256)": EventFragment;
     "IssuancesCompleted(address,uint256,uint256)": EventFragment;
     "Melted(uint256)": EventFragment;
-    "Redemption(address,uint256,int192)": EventFragment;
+    "Redemption(address,uint256,uint192)": EventFragment;
     "RewardsClaimed(address,uint256)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
     "Upgraded(address)": EventFragment;
@@ -379,6 +380,7 @@ export interface RTokenInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "BasketsNeededChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Issuance"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "IssuanceRateSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "IssuanceStarted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "IssuancesCanceled"): EventFragment;
@@ -441,6 +443,18 @@ export interface InitializedEventObject {
 export type InitializedEvent = TypedEvent<[number], InitializedEventObject>;
 
 export type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
+
+export interface IssuanceEventObject {
+  issuer: string;
+  amount: BigNumber;
+  baskets: BigNumber;
+}
+export type IssuanceEvent = TypedEvent<
+  [string, BigNumber, BigNumber],
+  IssuanceEventObject
+>;
+
+export type IssuanceEventFilter = TypedEventFilter<IssuanceEvent>;
 
 export interface IssuanceRateSetEventObject {
   oldVal: BigNumber;
@@ -603,8 +617,6 @@ export interface RToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    constitutionURI(overrides?: CallOverrides): Promise<[string]>;
-
     decimals(overrides?: CallOverrides): Promise<[number]>;
 
     decreaseAllowance(
@@ -628,7 +640,7 @@ export interface RToken extends BaseContract {
       main_: string,
       name_: string,
       symbol_: string,
-      constitutionURI_: string,
+      manifestoURI_: string,
       issuanceRate_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -662,6 +674,8 @@ export interface RToken extends BaseContract {
     lastIssRateBlock(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     main(overrides?: CallOverrides): Promise<[string]>;
+
+    manifestoURI(overrides?: CallOverrides): Promise<[string]>;
 
     melt(
       amtRToken: BigNumberish,
@@ -775,8 +789,6 @@ export interface RToken extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  constitutionURI(overrides?: CallOverrides): Promise<string>;
-
   decimals(overrides?: CallOverrides): Promise<number>;
 
   decreaseAllowance(
@@ -797,7 +809,7 @@ export interface RToken extends BaseContract {
     main_: string,
     name_: string,
     symbol_: string,
-    constitutionURI_: string,
+    manifestoURI_: string,
     issuanceRate_: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -831,6 +843,8 @@ export interface RToken extends BaseContract {
   lastIssRateBlock(overrides?: CallOverrides): Promise<BigNumber>;
 
   main(overrides?: CallOverrides): Promise<string>;
+
+  manifestoURI(overrides?: CallOverrides): Promise<string>;
 
   melt(
     amtRToken: BigNumberish,
@@ -942,8 +956,6 @@ export interface RToken extends BaseContract {
 
     claimAndSweepRewards(overrides?: CallOverrides): Promise<void>;
 
-    constitutionURI(overrides?: CallOverrides): Promise<string>;
-
     decimals(overrides?: CallOverrides): Promise<number>;
 
     decreaseAllowance(
@@ -967,7 +979,7 @@ export interface RToken extends BaseContract {
       main_: string,
       name_: string,
       symbol_: string,
-      constitutionURI_: string,
+      manifestoURI_: string,
       issuanceRate_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -998,6 +1010,8 @@ export interface RToken extends BaseContract {
     lastIssRateBlock(overrides?: CallOverrides): Promise<BigNumber>;
 
     main(overrides?: CallOverrides): Promise<string>;
+
+    manifestoURI(overrides?: CallOverrides): Promise<string>;
 
     melt(amtRToken: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
@@ -1094,7 +1108,7 @@ export interface RToken extends BaseContract {
       value?: null
     ): ApprovalEventFilter;
 
-    "BasketsNeededChanged(int192,int192)"(
+    "BasketsNeededChanged(uint192,uint192)"(
       oldBasketsNeeded?: null,
       newBasketsNeeded?: null
     ): BasketsNeededChangedEventFilter;
@@ -1111,7 +1125,18 @@ export interface RToken extends BaseContract {
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
 
-    "IssuanceRateSet(int192,int192)"(
+    "Issuance(address,uint256,uint192)"(
+      issuer?: string | null,
+      amount?: BigNumberish | null,
+      baskets?: BigNumberish | null
+    ): IssuanceEventFilter;
+    Issuance(
+      issuer?: string | null,
+      amount?: BigNumberish | null,
+      baskets?: BigNumberish | null
+    ): IssuanceEventFilter;
+
+    "IssuanceRateSet(uint192,uint192)"(
       oldVal?: BigNumberish | null,
       newVal?: BigNumberish | null
     ): IssuanceRateSetEventFilter;
@@ -1120,7 +1145,7 @@ export interface RToken extends BaseContract {
       newVal?: BigNumberish | null
     ): IssuanceRateSetEventFilter;
 
-    "IssuanceStarted(address,uint256,uint256,int192,address[],uint256[],int192)"(
+    "IssuanceStarted(address,uint256,uint256,uint192,address[],uint256[],uint192)"(
       issuer?: string | null,
       index?: BigNumberish | null,
       amount?: BigNumberish | null,
@@ -1164,7 +1189,7 @@ export interface RToken extends BaseContract {
     "Melted(uint256)"(amount?: null): MeltedEventFilter;
     Melted(amount?: null): MeltedEventFilter;
 
-    "Redemption(address,uint256,int192)"(
+    "Redemption(address,uint256,uint192)"(
       redeemer?: string | null,
       amount?: BigNumberish | null,
       baskets?: BigNumberish | null
@@ -1232,8 +1257,6 @@ export interface RToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    constitutionURI(overrides?: CallOverrides): Promise<BigNumber>;
-
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
 
     decreaseAllowance(
@@ -1257,7 +1280,7 @@ export interface RToken extends BaseContract {
       main_: string,
       name_: string,
       symbol_: string,
-      constitutionURI_: string,
+      manifestoURI_: string,
       issuanceRate_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -1282,6 +1305,8 @@ export interface RToken extends BaseContract {
     lastIssRateBlock(overrides?: CallOverrides): Promise<BigNumber>;
 
     main(overrides?: CallOverrides): Promise<BigNumber>;
+
+    manifestoURI(overrides?: CallOverrides): Promise<BigNumber>;
 
     melt(
       amtRToken: BigNumberish,
@@ -1399,8 +1424,6 @@ export interface RToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    constitutionURI(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     decreaseAllowance(
@@ -1424,7 +1447,7 @@ export interface RToken extends BaseContract {
       main_: string,
       name_: string,
       symbol_: string,
-      constitutionURI_: string,
+      manifestoURI_: string,
       issuanceRate_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
@@ -1452,6 +1475,8 @@ export interface RToken extends BaseContract {
     lastIssRateBlock(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     main(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    manifestoURI(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     melt(
       amtRToken: BigNumberish,

@@ -9,11 +9,6 @@ import type { RToken, RTokenInterface } from "../RToken";
 const _abi = [
   {
     inputs: [],
-    name: "IntOutOfBounds",
-    type: "error",
-  },
-  {
-    inputs: [],
     name: "UIntOutOfBounds",
     type: "error",
   },
@@ -66,15 +61,15 @@ const _abi = [
     inputs: [
       {
         indexed: false,
-        internalType: "int192",
+        internalType: "uint192",
         name: "oldBasketsNeeded",
-        type: "int192",
+        type: "uint192",
       },
       {
         indexed: false,
-        internalType: "int192",
+        internalType: "uint192",
         name: "newBasketsNeeded",
-        type: "int192",
+        type: "uint192",
       },
     ],
     name: "BasketsNeededChanged",
@@ -111,15 +106,40 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "int192",
-        name: "oldVal",
-        type: "int192",
+        internalType: "address",
+        name: "issuer",
+        type: "address",
       },
       {
         indexed: true,
-        internalType: "int192",
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint192",
+        name: "baskets",
+        type: "uint192",
+      },
+    ],
+    name: "Issuance",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint192",
+        name: "oldVal",
+        type: "uint192",
+      },
+      {
+        indexed: true,
+        internalType: "uint192",
         name: "newVal",
-        type: "int192",
+        type: "uint192",
       },
     ],
     name: "IssuanceRateSet",
@@ -148,9 +168,9 @@ const _abi = [
       },
       {
         indexed: false,
-        internalType: "int192",
+        internalType: "uint192",
         name: "baskets",
-        type: "int192",
+        type: "uint192",
       },
       {
         indexed: false,
@@ -166,9 +186,9 @@ const _abi = [
       },
       {
         indexed: false,
-        internalType: "int192",
+        internalType: "uint192",
         name: "blockAvailableAt",
-        type: "int192",
+        type: "uint192",
       },
     ],
     name: "IssuanceStarted",
@@ -254,9 +274,9 @@ const _abi = [
       },
       {
         indexed: true,
-        internalType: "int192",
+        internalType: "uint192",
         name: "baskets",
-        type: "int192",
+        type: "uint192",
       },
     ],
     name: "Redemption",
@@ -337,9 +357,9 @@ const _abi = [
     name: "MIN_ISS_RATE",
     outputs: [
       {
-        internalType: "uint256",
+        internalType: "uint192",
         name: "",
-        type: "uint256",
+        type: "uint192",
       },
     ],
     stateMutability: "view",
@@ -350,9 +370,9 @@ const _abi = [
     name: "allVestAt",
     outputs: [
       {
-        internalType: "int192",
+        internalType: "uint192",
         name: "",
-        type: "int192",
+        type: "uint192",
       },
     ],
     stateMutability: "view",
@@ -430,9 +450,9 @@ const _abi = [
     name: "basketsNeeded",
     outputs: [
       {
-        internalType: "int192",
+        internalType: "uint192",
         name: "",
-        type: "int192",
+        type: "uint192",
       },
     ],
     stateMutability: "view",
@@ -461,19 +481,6 @@ const _abi = [
     name: "claimAndSweepRewards",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "constitutionURI",
-    outputs: [
-      {
-        internalType: "string",
-        name: "",
-        type: "string",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
   {
@@ -575,13 +582,13 @@ const _abi = [
       },
       {
         internalType: "string",
-        name: "constitutionURI_",
+        name: "manifestoURI_",
         type: "string",
       },
       {
-        internalType: "int192",
+        internalType: "uint192",
         name: "issuanceRate_",
-        type: "int192",
+        type: "uint192",
       },
     ],
     name: "init",
@@ -594,9 +601,9 @@ const _abi = [
     name: "issuanceRate",
     outputs: [
       {
-        internalType: "int192",
+        internalType: "uint192",
         name: "",
-        type: "int192",
+        type: "uint192",
       },
     ],
     stateMutability: "view",
@@ -633,9 +640,9 @@ const _abi = [
       {
         components: [
           {
-            internalType: "int192",
+            internalType: "uint192",
             name: "when",
-            type: "int192",
+            type: "uint192",
           },
           {
             internalType: "uint256",
@@ -643,9 +650,9 @@ const _abi = [
             type: "uint256",
           },
           {
-            internalType: "int192",
+            internalType: "uint192",
             name: "amtBaskets",
-            type: "int192",
+            type: "uint192",
           },
           {
             internalType: "uint256[]",
@@ -695,9 +702,9 @@ const _abi = [
     name: "lastIssRate",
     outputs: [
       {
-        internalType: "uint256",
+        internalType: "uint192",
         name: "",
-        type: "uint256",
+        type: "uint192",
       },
     ],
     stateMutability: "view",
@@ -724,6 +731,19 @@ const _abi = [
         internalType: "contract IMain",
         name: "",
         type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "manifestoURI",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
       },
     ],
     stateMutability: "view",
@@ -840,9 +860,9 @@ const _abi = [
     name: "price",
     outputs: [
       {
-        internalType: "int192",
+        internalType: "uint192",
         name: "",
-        type: "int192",
+        type: "uint192",
       },
     ],
     stateMutability: "view",
@@ -877,9 +897,9 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "int192",
+        internalType: "uint192",
         name: "basketsNeeded_",
-        type: "int192",
+        type: "uint192",
       },
     ],
     name: "setBasketsNeeded",
@@ -890,9 +910,9 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "int192",
+        internalType: "uint192",
         name: "val",
-        type: "int192",
+        type: "uint192",
       },
     ],
     name: "setIssuanceRate",

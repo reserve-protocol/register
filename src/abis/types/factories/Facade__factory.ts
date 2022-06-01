@@ -8,20 +8,9 @@ import type { Facade, FacadeInterface } from "../Facade";
 
 const _abi = [
   {
-    inputs: [
-      {
-        internalType: "contract IMain",
-        name: "main_",
-        type: "address",
-      },
-    ],
+    inputs: [],
     stateMutability: "nonpayable",
     type: "constructor",
-  },
-  {
-    inputs: [],
-    name: "IntOutOfBounds",
-    type: "error",
   },
   {
     inputs: [],
@@ -29,20 +18,13 @@ const _abi = [
     type: "error",
   },
   {
-    anonymous: false,
     inputs: [
       {
-        indexed: false,
-        internalType: "uint8",
-        name: "version",
-        type: "uint8",
+        internalType: "contract IRToken",
+        name: "rToken",
+        type: "address",
       },
     ],
-    name: "Initialized",
-    type: "event",
-  },
-  {
-    inputs: [],
     name: "basketTokens",
     outputs: [
       {
@@ -55,14 +37,26 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: "contract IRToken",
+        name: "rToken",
+        type: "address",
+      },
+    ],
     name: "claimRewards",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: "contract IRToken",
+        name: "rToken",
+        type: "address",
+      },
+    ],
     name: "currentAssets",
     outputs: [
       {
@@ -82,18 +76,10 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "contract IMain",
-        name: "main_",
+        internalType: "contract IRToken",
+        name: "rToken",
         type: "address",
       },
-    ],
-    name: "init",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
       {
         internalType: "uint256",
         name: "amount",
@@ -112,20 +98,12 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "main",
-    outputs: [
+    inputs: [
       {
-        internalType: "contract IMain",
-        name: "",
+        internalType: "contract IRToken",
+        name: "rToken",
         type: "address",
       },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
       {
         internalType: "address",
         name: "account",
@@ -145,6 +123,11 @@ const _abi = [
   },
   {
     inputs: [
+      {
+        internalType: "contract IRToken",
+        name: "rToken",
+        type: "address",
+      },
       {
         internalType: "address",
         name: "account",
@@ -182,6 +165,11 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "contract IRToken",
+        name: "rToken",
+        type: "address",
+      },
+      {
         internalType: "address",
         name: "account",
         type: "address",
@@ -216,20 +204,32 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: "contract IRToken",
+        name: "rToken",
+        type: "address",
+      },
+    ],
     name: "runAuctionsForAllTraders",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: "contract IRToken",
+        name: "rToken",
+        type: "address",
+      },
+    ],
     name: "totalAssetValue",
     outputs: [
       {
-        internalType: "int192",
+        internalType: "uint192",
         name: "total",
-        type: "int192",
+        type: "uint192",
       },
     ],
     stateMutability: "nonpayable",

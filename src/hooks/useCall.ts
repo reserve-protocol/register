@@ -15,7 +15,7 @@ import { useRawCalls } from './useRawCalls'
  * @public
  */
 export interface Call<
-  T extends TypedContract = Contract,
+T extends TypedContract = Contract,
   MN extends ContractMethodNames<T> = ContractMethodNames<T>
 > {
   contract: T

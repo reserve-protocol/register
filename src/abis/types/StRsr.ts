@@ -35,13 +35,14 @@ export interface StRsrInterface extends utils.Interface {
     "balanceOf(address)": FunctionFragment;
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
+    "draftQueueLen(uint256,address)": FunctionFragment;
     "draftQueues(uint256,address,uint256)": FunctionFragment;
     "draftRate()": FunctionFragment;
     "endIdForWithdraw(address)": FunctionFragment;
     "exchangeRate()": FunctionFragment;
     "firstRemainingDraft(uint256,address)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
-    "init(address,string,string,uint32,uint32,int192)": FunctionFragment;
+    "init(address,string,string,uint32,uint32,uint192)": FunctionFragment;
     "main()": FunctionFragment;
     "name()": FunctionFragment;
     "nonces(address)": FunctionFragment;
@@ -53,7 +54,7 @@ export interface StRsrInterface extends utils.Interface {
     "seizeRSR(uint256)": FunctionFragment;
     "setName(string)": FunctionFragment;
     "setRewardPeriod(uint32)": FunctionFragment;
-    "setRewardRatio(int192)": FunctionFragment;
+    "setRewardRatio(uint192)": FunctionFragment;
     "setSymbol(string)": FunctionFragment;
     "setUnstakingDelay(uint32)": FunctionFragment;
     "stake(uint256)": FunctionFragment;
@@ -77,6 +78,7 @@ export interface StRsrInterface extends utils.Interface {
       | "balanceOf"
       | "decimals"
       | "decreaseAllowance"
+      | "draftQueueLen"
       | "draftQueues"
       | "draftRate"
       | "endIdForWithdraw"
@@ -128,6 +130,10 @@ export interface StRsrInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "decreaseAllowance",
     values: [string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "draftQueueLen",
+    values: [BigNumberish, string]
   ): string;
   encodeFunctionData(
     functionFragment: "draftQueues",
@@ -249,6 +255,10 @@ export interface StRsrInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "draftQueueLen",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "draftQueues",
     data: BytesLike
   ): Result;
@@ -334,10 +344,10 @@ export interface StRsrInterface extends utils.Interface {
     "AllBalancesReset(uint256)": EventFragment;
     "Approval(address,address,uint256)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
-    "ExchangeRateSet(int192,int192)": EventFragment;
+    "ExchangeRateSet(uint192,uint192)": EventFragment;
     "Initialized(uint8)": EventFragment;
     "RewardPeriodSet(uint32,uint32)": EventFragment;
-    "RewardRatioSet(int192,int192)": EventFragment;
+    "RewardRatioSet(uint192,uint192)": EventFragment;
     "Staked(uint256,address,uint256,uint256)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
     "UnstakingCompleted(uint256,uint256,uint256,address,uint256)": EventFragment;
@@ -572,6 +582,12 @@ export interface StRsr extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    draftQueueLen(
+      era_: BigNumberish,
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     draftQueues(
       arg0: BigNumberish,
       arg1: string,
@@ -741,6 +757,12 @@ export interface StRsr extends BaseContract {
     subtractedValue: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
+
+  draftQueueLen(
+    era_: BigNumberish,
+    account: string,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   draftQueues(
     arg0: BigNumberish,
@@ -912,6 +934,12 @@ export interface StRsr extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
+    draftQueueLen(
+      era_: BigNumberish,
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     draftQueues(
       arg0: BigNumberish,
       arg1: string,
@@ -1072,7 +1100,7 @@ export interface StRsr extends BaseContract {
     ): BeaconUpgradedEventFilter;
     BeaconUpgraded(beacon?: string | null): BeaconUpgradedEventFilter;
 
-    "ExchangeRateSet(int192,int192)"(
+    "ExchangeRateSet(uint192,uint192)"(
       oldVal?: BigNumberish | null,
       newVal?: BigNumberish | null
     ): ExchangeRateSetEventFilter;
@@ -1093,7 +1121,7 @@ export interface StRsr extends BaseContract {
       newVal?: BigNumberish | null
     ): RewardPeriodSetEventFilter;
 
-    "RewardRatioSet(int192,int192)"(
+    "RewardRatioSet(uint192,uint192)"(
       oldVal?: BigNumberish | null,
       newVal?: BigNumberish | null
     ): RewardRatioSetEventFilter;
@@ -1194,6 +1222,12 @@ export interface StRsr extends BaseContract {
       spender: string,
       subtractedValue: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    draftQueueLen(
+      era_: BigNumberish,
+      account: string,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     draftQueues(
@@ -1366,6 +1400,12 @@ export interface StRsr extends BaseContract {
       spender: string,
       subtractedValue: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    draftQueueLen(
+      era_: BigNumberish,
+      account: string,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     draftQueues(
