@@ -1,3 +1,4 @@
+import { _ReserveToken } from './../types/index'
 import { BigNumber } from '@ethersproject/bignumber'
 import { atom } from 'jotai'
 import { atomWithStorage, createJSONStorage } from 'jotai/utils'
@@ -10,8 +11,6 @@ import {
 } from 'types'
 import { RSR, TRANSACTION_STATUS } from 'utils/constants'
 
-// TODO: Maybe its time to split up this atoms file
-localStorage.setItem('trackedAccount', localStorage.trackedAccount || ' ')
 localStorage.setItem('selectedAccount', localStorage.selectedAccount || ' ')
 localStorage.setItem('selectedToken', localStorage.selectedToken || ' ')
 
@@ -24,11 +23,28 @@ export const rTokenPriceAtom = atom(1)
 export const rsrExchangeRateAtom = atom(1)
 export const blockTimestampAtom = atom<number>(0)
 
+// Cache layer for loaded tokens
 export const reserveTokensAtom = atomWithStorage<{ [x: string]: ReserveToken }>(
   'reserveTokens',
   {}
 )
+export const _reserveTokensAtom = atomWithStorage<{
+  [x: string]: _ReserveToken
+}>('reserveTokens', {})
 export const selectedRTokenAtom = atomWithStorage('selectedRToken', '')
+
+export const _rTokenAtom = atom<_ReserveToken | null>((get) =>
+  get(_reserveTokensAtom) && get(_reserveTokensAtom)[get(selectedRTokenAtom)]
+    ? get(_reserveTokensAtom)[get(selectedRTokenAtom)]
+    : null
+)
+
+// export const _rTokenAtom = atom<_ReserveToken | null>((get) => {
+//   get(_reserveTokensAtom) && get(_reserveTokensAtom)[get(selectedRTokenAtom)]
+//     ? get(_reserveTokensAtom)[get(selectedRTokenAtom)]
+//     : null
+// })
+
 export const rTokenAtom = atom<ReserveToken | null>((get) =>
   get(reserveTokensAtom) && get(reserveTokensAtom)[get(selectedRTokenAtom)]
     ? get(reserveTokensAtom)[get(selectedRTokenAtom)]

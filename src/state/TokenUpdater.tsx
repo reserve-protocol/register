@@ -9,19 +9,23 @@ import { getContract } from 'utils'
 import { selectedRTokenAtom } from './atoms'
 import tokenMap from 'rtokens'
 
+const facadeMock = {}
+
 // Try to grab the token meta from theGraph
 // If it fails, get it from the blockchain (only whitelisted tokens)
 const TokenUpdater = () => {
-  const tokenAddress = useAtomValue(selectedRTokenAtom)
+  const selectedAddress = useAtomValue(selectedRTokenAtom)
+  // TODO: Replace for real facade contract
+  const facadeContract = facadeMock
 
-  const getTokenMeta = useCallback(async () => {
+  const getTokenMeta = useCallback(async (address: string) => {
     if (!tokenMap[tokenAddress]) {
     }
-  }, [tokenAddress])
+  }, [])
 
   useEffect(() => {
-    getTokenMeta()
-  }, [getTokenMeta])
+    getTokenMeta(selectedAddress)
+  }, [selectedAddress, getTokenMeta])
 
   return null
 }

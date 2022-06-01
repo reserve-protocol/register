@@ -1,14 +1,15 @@
-import { Box, BoxProps, Flex, Text } from 'theme-ui'
+import styled from '@emotion/styled'
 import TokenLogo from 'components/icons/TokenLogo'
 import Popup from 'components/popup'
-import { atom, useAtomValue } from 'jotai'
+import { useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
-import { reserveTokensAtom, rTokenAtom, selectedRTokenAtom } from 'state/atoms'
-import styled from '@emotion/styled'
-import { transition } from 'theme'
 import rtokens from 'rtokens'
+import { selectedRTokenAtom, _rTokenAtom } from 'state/atoms'
+import { transition } from 'theme'
+import { Box, BoxProps, Flex, Text } from 'theme-ui'
+import { shortenAddress } from 'utils'
 import { DEFAULT_TOKENS } from 'utils/constants'
 
 // TODO: Separate component
@@ -34,44 +35,64 @@ const ActionItem = styled(Flex)`
   }
 `
 
+const TokenItem = ({ symbol, logo }: { symbol: string; logo: string }) => (
+  <>
+    <TokenLogo size="1.5em" mr={2} src={require(`rtokens/images/${logo}`)} />
+    {symbol}
+  </>
+)
+
+const TokenList = ({ onSelect }: { onSelect(address: string): void }) => (
+  <Box>
+    {DEFAULT_TOKENS.map((address) => (
+      <ActionItem key={address} onClick={() => onSelect(address)}>
+        <TokenItem
+          symbol={rtokens[address].symbol}
+          logo={rtokens[address].logo}
+        />
+      </ActionItem>
+    ))}
+  </Box>
+)
+
+const SelectedToken = () => {
+  const selectedAddress = useAtomValue(selectedRTokenAtom)
+  const selected = useAtomValue(_rTokenAtom) ?? rtokens[selectedAddress]
+
+  if (!selectedAddress) {
+    return <Text>Select RToken...</Text>
+  }
+
+  const { symbol = shortenAddress(selectedAddress), logo = 'rsv.png' } =
+    selected ?? {}
+
+  return <TokenItem logo={logo} symbol={symbol} />
+}
+
 const RTokenSelector = (props: BoxProps) => {
   const [isVisible, setVisible] = useState(false)
-  const selected = useAtomValue(rTokenAtom)
   const setSelected = useUpdateAtom(selectedRTokenAtom)
 
-  const handleSelect = (token: string) => {
-    setSelected(token)
-    setVisible(false)
-  }
+  const handleSelect = useCallback(
+    (token: string) => {
+      setSelected(token)
+      setVisible(false)
+    },
+    [setSelected]
+  )
 
   return (
     <Popup
       show={isVisible}
       onDismiss={() => setVisible(false)}
-      content={
-        <Box>
-          {DEFAULT_TOKENS.map((address) => (
-            <ActionItem key={address} onClick={() => handleSelect(address)}>
-              <TokenLogo size="1.5em" mr={2} src={rtokens[address].logo} />
-              {rtokens[address].symbol}
-            </ActionItem>
-          ))}
-        </Box>
-      }
+      content={<TokenList onSelect={handleSelect} />}
     >
       <Flex
         {...props}
         sx={{ alignItems: 'center', cursor: 'pointer', minWidth: 100 }}
         onClick={() => setVisible(!isVisible)}
       >
-        {selected ? (
-          <Flex sx={{ alignItems: 'center' }}>
-            <TokenLogo size="1.5em" mr={2} symbol={selected.token.symbol} />
-            {selected.token.symbol}
-          </Flex>
-        ) : (
-          <Text>Select RToken...</Text>
-        )}
+        <SelectedToken />
         <Box mx="auto" />
         {isVisible ? <ChevronUp /> : <ChevronDown />}
       </Flex>
