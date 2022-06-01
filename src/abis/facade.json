@@ -1,19 +1,8 @@
 [
   {
-    "inputs": [
-      {
-        "internalType": "contract IMain",
-        "name": "main_",
-        "type": "address"
-      }
-    ],
+    "inputs": [],
     "stateMutability": "nonpayable",
     "type": "constructor"
-  },
-  {
-    "inputs": [],
-    "name": "IntOutOfBounds",
-    "type": "error"
   },
   {
     "inputs": [],
@@ -21,20 +10,13 @@
     "type": "error"
   },
   {
-    "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "internalType": "uint8",
-        "name": "version",
-        "type": "uint8"
+        "internalType": "contract IRToken",
+        "name": "rToken",
+        "type": "address"
       }
     ],
-    "name": "Initialized",
-    "type": "event"
-  },
-  {
-    "inputs": [],
     "name": "basketTokens",
     "outputs": [
       {
@@ -47,14 +29,26 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "contract IRToken",
+        "name": "rToken",
+        "type": "address"
+      }
+    ],
     "name": "claimRewards",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "contract IRToken",
+        "name": "rToken",
+        "type": "address"
+      }
+    ],
     "name": "currentAssets",
     "outputs": [
       {
@@ -74,18 +68,10 @@
   {
     "inputs": [
       {
-        "internalType": "contract IMain",
-        "name": "main_",
+        "internalType": "contract IRToken",
+        "name": "rToken",
         "type": "address"
-      }
-    ],
-    "name": "init",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
+      },
       {
         "internalType": "uint256",
         "name": "amount",
@@ -104,20 +90,12 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "main",
-    "outputs": [
-      {
-        "internalType": "contract IMain",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
+      {
+        "internalType": "contract IRToken",
+        "name": "rToken",
+        "type": "address"
+      },
       {
         "internalType": "address",
         "name": "account",
@@ -137,6 +115,11 @@
   },
   {
     "inputs": [
+      {
+        "internalType": "contract IRToken",
+        "name": "rToken",
+        "type": "address"
+      },
       {
         "internalType": "address",
         "name": "account",
@@ -174,6 +157,11 @@
   {
     "inputs": [
       {
+        "internalType": "contract IRToken",
+        "name": "rToken",
+        "type": "address"
+      },
+      {
         "internalType": "address",
         "name": "account",
         "type": "address"
@@ -208,20 +196,32 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "contract IRToken",
+        "name": "rToken",
+        "type": "address"
+      }
+    ],
     "name": "runAuctionsForAllTraders",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "contract IRToken",
+        "name": "rToken",
+        "type": "address"
+      }
+    ],
     "name": "totalAssetValue",
     "outputs": [
       {
-        "internalType": "int192",
+        "internalType": "uint192",
         "name": "total",
-        "type": "int192"
+        "type": "uint192"
       }
     ],
     "stateMutability": "nonpayable",

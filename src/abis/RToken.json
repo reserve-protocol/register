@@ -1,11 +1,6 @@
 [
   {
     "inputs": [],
-    "name": "IntOutOfBounds",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "UIntOutOfBounds",
     "type": "error"
   },
@@ -58,15 +53,15 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "int192",
+        "internalType": "uint192",
         "name": "oldBasketsNeeded",
-        "type": "int192"
+        "type": "uint192"
       },
       {
         "indexed": false,
-        "internalType": "int192",
+        "internalType": "uint192",
         "name": "newBasketsNeeded",
-        "type": "int192"
+        "type": "uint192"
       }
     ],
     "name": "BasketsNeededChanged",
@@ -103,15 +98,40 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "int192",
-        "name": "oldVal",
-        "type": "int192"
+        "internalType": "address",
+        "name": "issuer",
+        "type": "address"
       },
       {
         "indexed": true,
-        "internalType": "int192",
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint192",
+        "name": "baskets",
+        "type": "uint192"
+      }
+    ],
+    "name": "Issuance",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint192",
+        "name": "oldVal",
+        "type": "uint192"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint192",
         "name": "newVal",
-        "type": "int192"
+        "type": "uint192"
       }
     ],
     "name": "IssuanceRateSet",
@@ -140,9 +160,9 @@
       },
       {
         "indexed": false,
-        "internalType": "int192",
+        "internalType": "uint192",
         "name": "baskets",
-        "type": "int192"
+        "type": "uint192"
       },
       {
         "indexed": false,
@@ -158,9 +178,9 @@
       },
       {
         "indexed": false,
-        "internalType": "int192",
+        "internalType": "uint192",
         "name": "blockAvailableAt",
-        "type": "int192"
+        "type": "uint192"
       }
     ],
     "name": "IssuanceStarted",
@@ -246,9 +266,9 @@
       },
       {
         "indexed": true,
-        "internalType": "int192",
+        "internalType": "uint192",
         "name": "baskets",
-        "type": "int192"
+        "type": "uint192"
       }
     ],
     "name": "Redemption",
@@ -329,9 +349,9 @@
     "name": "MIN_ISS_RATE",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint192",
         "name": "",
-        "type": "uint256"
+        "type": "uint192"
       }
     ],
     "stateMutability": "view",
@@ -342,9 +362,9 @@
     "name": "allVestAt",
     "outputs": [
       {
-        "internalType": "int192",
+        "internalType": "uint192",
         "name": "",
-        "type": "int192"
+        "type": "uint192"
       }
     ],
     "stateMutability": "view",
@@ -422,9 +442,9 @@
     "name": "basketsNeeded",
     "outputs": [
       {
-        "internalType": "int192",
+        "internalType": "uint192",
         "name": "",
-        "type": "int192"
+        "type": "uint192"
       }
     ],
     "stateMutability": "view",
@@ -453,19 +473,6 @@
     "name": "claimAndSweepRewards",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "constitutionURI",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -567,13 +574,13 @@
       },
       {
         "internalType": "string",
-        "name": "constitutionURI_",
+        "name": "manifestoURI_",
         "type": "string"
       },
       {
-        "internalType": "int192",
+        "internalType": "uint192",
         "name": "issuanceRate_",
-        "type": "int192"
+        "type": "uint192"
       }
     ],
     "name": "init",
@@ -586,9 +593,9 @@
     "name": "issuanceRate",
     "outputs": [
       {
-        "internalType": "int192",
+        "internalType": "uint192",
         "name": "",
-        "type": "int192"
+        "type": "uint192"
       }
     ],
     "stateMutability": "view",
@@ -625,9 +632,9 @@
       {
         "components": [
           {
-            "internalType": "int192",
+            "internalType": "uint192",
             "name": "when",
-            "type": "int192"
+            "type": "uint192"
           },
           {
             "internalType": "uint256",
@@ -635,9 +642,9 @@
             "type": "uint256"
           },
           {
-            "internalType": "int192",
+            "internalType": "uint192",
             "name": "amtBaskets",
-            "type": "int192"
+            "type": "uint192"
           },
           {
             "internalType": "uint256[]",
@@ -687,9 +694,9 @@
     "name": "lastIssRate",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint192",
         "name": "",
-        "type": "uint256"
+        "type": "uint192"
       }
     ],
     "stateMutability": "view",
@@ -716,6 +723,19 @@
         "internalType": "contract IMain",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "manifestoURI",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -832,9 +852,9 @@
     "name": "price",
     "outputs": [
       {
-        "internalType": "int192",
+        "internalType": "uint192",
         "name": "",
-        "type": "int192"
+        "type": "uint192"
       }
     ],
     "stateMutability": "view",
@@ -869,9 +889,9 @@
   {
     "inputs": [
       {
-        "internalType": "int192",
+        "internalType": "uint192",
         "name": "basketsNeeded_",
-        "type": "int192"
+        "type": "uint192"
       }
     ],
     "name": "setBasketsNeeded",
@@ -882,9 +902,9 @@
   {
     "inputs": [
       {
-        "internalType": "int192",
+        "internalType": "uint192",
         "name": "val",
-        "type": "int192"
+        "type": "uint192"
       }
     ],
     "name": "setIssuanceRate",

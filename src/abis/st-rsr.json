@@ -1,11 +1,6 @@
 [
   {
     "inputs": [],
-    "name": "IntOutOfBounds",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "UIntOutOfBounds",
     "type": "error"
   },
@@ -84,15 +79,15 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "int192",
+        "internalType": "uint192",
         "name": "oldVal",
-        "type": "int192"
+        "type": "uint192"
       },
       {
         "indexed": true,
-        "internalType": "int192",
+        "internalType": "uint192",
         "name": "newVal",
-        "type": "int192"
+        "type": "uint192"
       }
     ],
     "name": "ExchangeRateSet",
@@ -135,15 +130,15 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "int192",
+        "internalType": "uint192",
         "name": "oldVal",
-        "type": "int192"
+        "type": "uint192"
       },
       {
         "indexed": true,
-        "internalType": "int192",
+        "internalType": "uint192",
         "name": "newVal",
-        "type": "int192"
+        "type": "uint192"
       }
     ],
     "name": "RewardRatioSet",
@@ -438,6 +433,30 @@
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "era_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "draftQueueLen",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "",
         "type": "uint256"
       },
@@ -455,9 +474,9 @@
     "name": "draftQueues",
     "outputs": [
       {
-        "internalType": "uint192",
+        "internalType": "uint176",
         "name": "drafts",
-        "type": "uint192"
+        "type": "uint176"
       },
       {
         "internalType": "uint64",
@@ -473,9 +492,9 @@
     "name": "draftRate",
     "outputs": [
       {
-        "internalType": "int192",
+        "internalType": "uint192",
         "name": "",
-        "type": "int192"
+        "type": "uint192"
       }
     ],
     "stateMutability": "view",
@@ -505,9 +524,9 @@
     "name": "exchangeRate",
     "outputs": [
       {
-        "internalType": "int192",
+        "internalType": "uint192",
         "name": "",
-        "type": "int192"
+        "type": "uint192"
       }
     ],
     "stateMutability": "view",
@@ -589,9 +608,9 @@
         "type": "uint32"
       },
       {
-        "internalType": "int192",
+        "internalType": "uint192",
         "name": "rewardRatio_",
-        "type": "int192"
+        "type": "uint192"
       }
     ],
     "name": "init",
@@ -725,9 +744,9 @@
     "name": "rewardRatio",
     "outputs": [
       {
-        "internalType": "int192",
+        "internalType": "uint192",
         "name": "",
-        "type": "int192"
+        "type": "uint192"
       }
     ],
     "stateMutability": "view",
@@ -775,9 +794,9 @@
   {
     "inputs": [
       {
-        "internalType": "int192",
+        "internalType": "uint192",
         "name": "val",
-        "type": "int192"
+        "type": "uint192"
       }
     ],
     "name": "setRewardRatio",
@@ -829,9 +848,9 @@
     "name": "stakeRate",
     "outputs": [
       {
-        "internalType": "int192",
+        "internalType": "uint192",
         "name": "",
-        "type": "int192"
+        "type": "uint192"
       }
     ],
     "stateMutability": "view",

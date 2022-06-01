@@ -3,18 +3,16 @@ import { Contract } from '@ethersproject/contracts'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import {
-  BasketHandler as BasketHandlerAbi,
   ERC20 as ERC20Abi,
   Facade as FacadeAbi,
-  Main as MainAbi,
-  StRSR as StRSRAbi,
   RToken as RTokenAbi,
+  StRSR as StRSRAbi,
 } from 'abis'
-import { BasketHandler } from 'abis/types/BasketHandler'
 import { useMemo } from 'react'
 import { CHAIN_ID } from 'utils/chains'
-import { ERC20, Facade, Main, RToken, StRsr } from '../abis/types'
+import { ERC20, Facade, RToken, StRsr } from '../abis/types'
 import { getContract } from '../utils'
+import { FACADE_ADDRESS } from './../utils/addresses'
 
 // returns null on errors
 export function useContract<T extends Contract = Contract>(
@@ -44,18 +42,8 @@ export function useContract<T extends Contract = Contract>(
   }, [addressOrAddressMap, ABI, provider, withSignerIfPossible, account]) as T
 }
 
-export function useMainContract(
-  address?: string,
-  withSignerIfPossible?: boolean
-): Main | null {
-  return useContract<Main>(address, MainAbi, withSignerIfPossible)
-}
-
-export function useFacadeContract(
-  address?: string,
-  withSignerIfPossible?: boolean
-): Facade | null {
-  return useContract<Facade>(address, FacadeAbi, withSignerIfPossible)
+export function useFacadeContract(): Facade | null {
+  return useContract<Facade>(FACADE_ADDRESS[CHAIN_ID], FacadeAbi, true)
 }
 
 export function useStakingContract(
@@ -70,17 +58,6 @@ export function useRTokenContract(
   withSignerIfPossible?: boolean
 ): RToken | null {
   return useContract<RToken>(tokenAddress, RTokenAbi, withSignerIfPossible)
-}
-
-export function useBasketHandlerContract(
-  address?: string,
-  withSignerIfPossible?: boolean
-): BasketHandler | null {
-  return useContract<BasketHandler>(
-    address,
-    BasketHandlerAbi,
-    withSignerIfPossible
-  )
 }
 
 export function useTokenContract(
