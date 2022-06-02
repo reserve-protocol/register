@@ -26,23 +26,24 @@ import {
 import useSWR from 'swr'
 import { ReserveToken, StringMap } from 'types'
 import { COINGECKO_API, RSR } from 'utils/constants'
+import { RSV_MANAGER } from 'utils/rsv'
 import TokenUpdater from './TokenUpdater'
 
 // Gets ReserveToken related token addresses and decimals
 const getTokens = (reserveToken: ReserveToken): [string, number][] => {
   const addresses: [string, number][] = [
-    [reserveToken.token.address, reserveToken.token.decimals],
+    [reserveToken.address, reserveToken.decimals],
     [RSR.address, RSR.decimals],
-    ...reserveToken.basket.collaterals.map(({ token }): [string, number] => [
+    ...reserveToken.collaterals.map((token): [string, number] => [
       token.address,
       token.decimals,
     ]),
   ]
 
-  if (reserveToken.insurance?.token) {
+  if (reserveToken.stToken) {
     addresses.push([
-      reserveToken.insurance.token.address,
-      reserveToken.insurance.token.decimals,
+      reserveToken.stToken.address,
+      reserveToken.stToken.decimals,
     ])
   }
 
@@ -51,16 +52,20 @@ const getTokens = (reserveToken: ReserveToken): [string, number][] => {
 
 const getTokenAllowances = (reserveToken: ReserveToken): [string, string][] => {
   const tokens: [string, string][] = [
-    ...reserveToken.basket.collaterals.map(({ token }): [string, string] => [
+    ...reserveToken.collaterals.map((token): [string, string] => [
       token.address,
-      reserveToken.isRSV ? reserveToken.id : reserveToken.token.address,
+      reserveToken.isRSV ? RSV_MANAGER : reserveToken.address,
     ]),
   ]
 
-  if (!reserveToken.isRSV) {
-    tokens.push([RSR.address, reserveToken.insurance?.token.address ?? ''])
-  } else {
-    tokens.push([reserveToken.token.address, reserveToken.id])
+  // RSR -> stRSR allowance
+  if (reserveToken.stToken) {
+    tokens.push([RSR.address, reserveToken.stToken.address])
+  }
+
+  // RSV -> RSV_MANAGER
+  if (reserveToken.isRSV) {
+    tokens.push([reserveToken.address, RSV_MANAGER])
   }
 
   return tokens
@@ -121,14 +126,17 @@ const PendingBalancesUpdater = () => {
   const rToken = useAtomValue(rTokenAtom)
   const setPendingIssuances = useUpdateAtom(pendingIssuancesAtom)
   const setPendingRSR = useUpdateAtom(pendingRSRAtom)
-  const facadeContract = useFacadeContract(rToken?.facade)
+  const facadeContract = useFacadeContract()
   const blockNumber = useBlockNumber()
 
   // TODO: Use multicall for this
   const fetchPending = useCallback(async () => {
     try {
-      if (facadeContract && account) {
-        const pendingIssuances = await facadeContract.pendingIssuances(account)
+      if (facadeContract && account && rToken) {
+        const pendingIssuances = await facadeContract.pendingIssuances(
+          rToken.address,
+          account
+        )
         const pending = pendingIssuances.map((issuance) => ({
           availableAt: parseInt(formatEther(issuance.availableAt)),
           index: issuance.index,
@@ -136,7 +144,10 @@ const PendingBalancesUpdater = () => {
         }))
         setPendingIssuances(pending)
 
-        const pendingRSR = await facadeContract.pendingUnstakings(account)
+        const pendingRSR = await facadeContract.pendingUnstakings(
+          rToken.address,
+          account
+        )
         const pendingRSRSummary = pendingRSR.map((item) => ({
           availableAt: item.availableAt.toNumber() * 1000,
           index: item.index,
@@ -148,13 +159,11 @@ const PendingBalancesUpdater = () => {
       // TODO: handle error case
       console.log('error fetching pending', e)
     }
-  }, [account, facadeContract])
+  }, [account, facadeContract, rToken?.address])
 
   useEffect(() => {
-    if (account && facadeContract) {
-      fetchPending()
-    }
-  }, [account, facadeContract, blockNumber])
+    fetchPending()
+  }, [fetchPending, blockNumber])
 
   return null
 }

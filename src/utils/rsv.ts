@@ -1,4 +1,3 @@
-import { _ReserveToken } from './../types/index'
 import { BigNumber } from '@ethersproject/bignumber'
 import { parseEther } from '@ethersproject/units'
 import { ReserveToken, StringMap } from 'types'
@@ -24,14 +23,14 @@ const DIV = BigNumber.from(10).pow(BigNumber.from(18))
 export const getIssuable = (rsv: ReserveToken, tokenBalances: StringMap) => {
   let lowestCollateralBalance = Infinity
 
-  for (const collateral of rsv.basket.collaterals) {
-    if (!tokenBalances[collateral.token.address]) {
+  for (const collateral of rsv.collaterals) {
+    if (!tokenBalances[collateral.address]) {
       return 0
     }
 
     lowestCollateralBalance = Math.min(
       lowestCollateralBalance,
-      tokenBalances[collateral.token.address]
+      tokenBalances[collateral.address]
     )
   }
 
@@ -48,7 +47,7 @@ export const quote = (amount: BigNumber): { [x: string]: BigNumber } => ({
   [TUSD_ADDRESS]: amount.mul(PAX_QTY).mul(EXPO).div(DIV), // USDT
 })
 
-const RSV: _ReserveToken = {
+const RSV: ReserveToken = {
   address: '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',
   name: 'Reserve',
   symbol: 'RSV',
@@ -75,5 +74,7 @@ const RSV: _ReserveToken = {
   ],
   isRSV: true,
 }
+
+export const RSV_MANAGER = '0x4B481872f31bab47C6780D5488c84D309b1B8Bb6'
 
 export default RSV

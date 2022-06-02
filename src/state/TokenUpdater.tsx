@@ -1,12 +1,39 @@
+import { ERC20Interface } from 'abis'
 import { useFacadeContract } from 'hooks/useContract'
 import { atom, useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { useCallback, useEffect } from 'react'
-import { Token } from 'types'
+import { ContractCall, Token } from 'types'
 import RSV from 'utils/rsv'
 import { reserveTokensAtom, selectedRTokenAtom } from './atoms'
 
 const getTokensMeta = async (addresses: string[]): Promise<Token[]> => {
+  const calls = addresses.reduce((acc, address) => {
+    return [
+      ...acc,
+      {
+        abi: ERC20Interface,
+        address,
+        method: 'name',
+        args: [],
+      },
+      {
+        abi: ERC20Interface,
+        address,
+        method: 'symbol',
+        args: [],
+      },
+      {
+        abi: ERC20Interface,
+        address,
+        method: 'decimals',
+        args: [],
+      },
+    ]
+  }, [] as ContractCall[])
+
+  console.log('calls', calls)
+
   return [
     {
       address: '0xff4DA0E6C71189814d290564F455C21aeCC66430',
