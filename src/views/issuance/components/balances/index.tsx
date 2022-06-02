@@ -47,7 +47,6 @@ const Balances = ({ rToken, ...props }: Props) => (
           borderLeft: ['none', `1px solid ${theme.colors.border}`],
           borderTop: [`1px solid ${theme.colors.border}`, 'none'],
         })}
-        ml={[0, -2]}
       >
         <RTokenBalance token={rToken} />
         {!rToken.isRSV && (

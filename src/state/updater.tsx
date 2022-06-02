@@ -162,7 +162,9 @@ const PendingBalancesUpdater = () => {
   }, [account, facadeContract, rToken?.address])
 
   useEffect(() => {
-    fetchPending()
+    if (rToken && !rToken.isRSV) {
+      fetchPending()
+    }
   }, [fetchPending, blockNumber])
 
   return null

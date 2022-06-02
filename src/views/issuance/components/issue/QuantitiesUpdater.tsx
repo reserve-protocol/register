@@ -26,6 +26,7 @@ const QuantitiesUpdater = ({
   const fetchQuantities = useCallback(
     async (value: string) => {
       try {
+        onChange({})
         if (facadeContract && rToken && Number(value) > 0) {
           const issueAmount = parseEther(value)
           const quoteResult = await facadeContract.callStatic.issue(
@@ -59,7 +60,7 @@ const QuantitiesUpdater = ({
     if (rToken?.isRSV && Number(amount) > 0) {
       onChange(quote(parseEther(amount)))
     } else {
-      onChange({})
+      // TODO: Loading state
     }
   }, [amount])
 
