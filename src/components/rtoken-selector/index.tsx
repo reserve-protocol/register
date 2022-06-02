@@ -5,6 +5,7 @@ import { useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { useCallback, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
+import { useSearchParams } from 'react-router-dom'
 import rtokens from 'rtokens'
 import { selectedRTokenAtom, rTokenAtom } from 'state/atoms'
 import { transition } from 'theme'
@@ -70,12 +71,14 @@ const SelectedToken = () => {
 }
 
 const RTokenSelector = (props: BoxProps) => {
+  const [, setSearchParams] = useSearchParams()
   const [isVisible, setVisible] = useState(false)
   const setSelected = useUpdateAtom(selectedRTokenAtom)
 
   const handleSelect = useCallback(
     (token: string) => {
       setSelected(token)
+      setSearchParams({ token })
       setVisible(false)
     },
     [setSelected]
