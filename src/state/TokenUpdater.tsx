@@ -11,25 +11,21 @@ import { reserveTokensAtom, selectedRTokenAtom } from './atoms'
 
 const getTokensMeta = async (addresses: string[]): Promise<Token[]> => {
   const calls = addresses.reduce((acc, address) => {
+    const params = { abi: ERC20Interface, address, args: [] }
+
     return [
       ...acc,
       {
-        abi: ERC20Interface,
-        address,
+        ...params,
         method: 'name',
-        args: [],
       },
       {
-        abi: ERC20Interface,
-        address,
+        ...params,
         method: 'symbol',
-        args: [],
       },
       {
-        abi: ERC20Interface,
-        address,
+        ...params,
         method: 'decimals',
-        args: [],
       },
     ]
   }, [] as ContractCall[])

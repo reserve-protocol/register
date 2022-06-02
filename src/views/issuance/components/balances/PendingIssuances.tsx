@@ -50,10 +50,10 @@ const PendingIssuances = ({ token }: { token: Token }) => {
       {
         id: txId,
         description: `Cancel ${formatCurrency(
-          availableAmount + availableAmount
+          availableAmount + pendingAmount
         ).toString()} ${token.symbol}`,
         status: TRANSACTION_STATUS.PENDING,
-        value: availableAmount + availableAmount,
+        value: availableAmount + pendingAmount,
         call: {
           abi: 'rToken',
           address: token.address,
