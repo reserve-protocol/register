@@ -1,6 +1,9 @@
 import { Contract } from '@ethersproject/contracts'
-import { Provider } from '@ethersproject/providers'
-import { MulticallState, RawCall } from 'types'
+import { Provider, Web3Provider } from '@ethersproject/providers'
+import { extractCallResult } from 'hooks/useRawCalls'
+import { ContractCall, MulticallState, RawCall } from 'types'
+import { MULTICALL_ADDRESS } from 'utils/addresses'
+import { CHAIN_ID } from 'utils/chains'
 
 const ABI = [
   'function tryAggregate(bool requireSuccess, tuple(address target, bytes callData)[] calls) public view returns (tuple(bool success, bytes returnData)[])',
@@ -39,6 +42,35 @@ async function multicall(
   }
 
   return {}
+}
+
+// Don't expecting failure calls
+export const promiseMulticall = async (
+  calls: ContractCall[],
+  provider: Web3Provider,
+  blockNumber: number
+): Promise<any[]> => {
+  const rawCalls = calls.map((call) => ({
+    address: call.address,
+    data: call.abi.encodeFunctionData(call.method, call.args),
+  }))
+
+  const state = await multicall(
+    provider,
+    MULTICALL_ADDRESS[CHAIN_ID],
+    blockNumber,
+    rawCalls
+  )
+
+  return rawCalls.map((call, i) => {
+    const result = extractCallResult(state, call)
+
+    if (!result || !result.success) {
+      throw new Error('Error running multicall')
+    }
+
+    return calls[i].abi.decodeFunctionResult(calls[i].method, result.value)[0]
+  })
 }
 
 export default multicall

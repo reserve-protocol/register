@@ -62,8 +62,6 @@ const getRTokenExchange = gql`
 
 const Home = () => {
   // const data = useQuery(getRTokenExchange)
-  console.log('tokens', rtokens)
-
   return <Container></Container>
 }
 

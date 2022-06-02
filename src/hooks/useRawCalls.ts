@@ -5,7 +5,7 @@ import { callsAtom, multicallStateAtom } from 'state/atoms'
 import { Falsy, MulticallState, RawCall, RawCallResult } from 'types'
 import { addressEqual } from 'utils'
 
-function extractCallResult(
+export function extractCallResult(
   state: MulticallState,
   call: RawCall
 ): RawCallResult {

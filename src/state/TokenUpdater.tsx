@@ -1,4 +1,7 @@
+import { Web3Provider } from '@ethersproject/providers'
+import { useWeb3React } from '@web3-react/core'
 import { ERC20Interface } from 'abis'
+import useBlockNumber from 'hooks/useBlockNumber'
 import { useFacadeContract } from 'hooks/useContract'
 import { atom, useAtom } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
@@ -8,8 +11,14 @@ import { ContractCall, ReserveToken, Token } from 'types'
 import { isAddress } from 'utils'
 import RSV from 'utils/rsv'
 import { reserveTokensAtom, selectedRTokenAtom } from './atoms'
+import { promiseMulticall } from './web3/lib/multicall'
+import { error } from './web3/lib/notifications'
 
-const getTokensMeta = async (addresses: string[]): Promise<Token[]> => {
+const getTokensMeta = async (
+  addresses: string[],
+  provider: Web3Provider,
+  blockNumber: number
+): Promise<Token[]> => {
   const calls = addresses.reduce((acc, address) => {
     const params = { abi: ERC20Interface, address, args: [] }
 
@@ -30,38 +39,22 @@ const getTokensMeta = async (addresses: string[]): Promise<Token[]> => {
     ]
   }, [] as ContractCall[])
 
-  return [
-    {
-      address: '0xff4DA0E6C71189814d290564F455C21aeCC66430',
-      name: 'Reserve Dollar Plus',
-      symbol: 'RSDP',
-      decimals: 18,
-    },
-    {
-      address: '0x78cE0149fa5cC2f715d7b1a07063d727caA40271',
-      name: 'stRSDPRSR Token',
-      symbol: 'stRSDPRSR',
-      decimals: 18,
-    },
-    {
-      address: '0x5D42EBdBBa61412295D7b0302d6F50aC449Ddb4F',
-      name: 'cUSDT Token',
-      symbol: 'cUSDT',
-      decimals: 8,
-    },
-    {
-      address: '0xA56F946D6398Dd7d9D4D9B337Cf9E0F68982ca5B',
-      name: 'aDAI Token',
-      symbol: 'aDAI',
-      decimals: 18,
-    },
-    {
-      address: '0xddE78e6202518FF4936b5302cC2891ec180E8bFf',
-      name: 'cUSDC Token',
-      symbol: 'cUSDC',
-      decimals: 8,
-    },
-  ]
+  const results = await promiseMulticall(calls, provider, blockNumber)
+
+  const result = addresses.reduce((tokens, address) => {
+    const [name, symbol, decimals] = results.splice(0, 3)
+
+    tokens.push({
+      address,
+      name,
+      symbol,
+      decimals,
+    })
+
+    return tokens
+  }, [] as Token[])
+
+  return result
 }
 
 const updateTokenAtom = atom(null, (get, set, data: ReserveToken) => {
@@ -76,6 +69,8 @@ const ReserveTokenUpdater = () => {
   const updateToken = useUpdateAtom(updateTokenAtom)
   const facadeContract = useFacadeContract()
   const [searchParams] = useSearchParams()
+  const { provider } = useWeb3React()
+  const blockNumber = useBlockNumber()
 
   const getTokenMeta = useCallback(
     async (address: string) => {
@@ -86,17 +81,17 @@ const ReserveTokenUpdater = () => {
       }
 
       try {
-        if (facadeContract) {
+        if (facadeContract && blockNumber) {
           const [basket, stTokenAddress] = await Promise.all([
             facadeContract.basketTokens(selectedAddress),
             facadeContract.stToken(selectedAddress),
           ])
 
-          const [rToken, stToken, ...collaterals] = await getTokensMeta([
-            selectedAddress,
-            stTokenAddress,
-            ...basket,
-          ])
+          const [rToken, stToken, ...collaterals] = await getTokensMeta(
+            [selectedAddress, stTokenAddress, ...basket],
+            provider as Web3Provider,
+            blockNumber
+          )
 
           return updateToken({
             ...rToken,
@@ -105,10 +100,11 @@ const ReserveTokenUpdater = () => {
           })
         }
       } catch (e) {
+        error('Network Error', 'Error fetching token information')
         console.log('Error fetching token meta', e)
       }
     },
-    [facadeContract]
+    [selectedAddress, provider]
   )
 
   useEffect(() => {
