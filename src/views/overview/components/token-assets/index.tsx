@@ -1,11 +1,11 @@
 import styled from '@emotion/styled'
-import { Box, BoxProps, Flex, Text } from 'theme-ui'
+import { formatEther } from '@ethersproject/units'
 import { Card } from 'components'
 import TokenLogo from 'components/icons/TokenLogo'
-import { formatEther } from '@ethersproject/units'
 import useAssets from 'hooks/useAssets'
 import useTokenSupply from 'hooks/useTokenSupply'
 import { Cell, Pie, PieChart } from 'recharts'
+import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { ReserveToken } from 'types'
 import { formatCurrency } from 'utils'
 
@@ -72,8 +72,7 @@ const AssetsChart = ({ collaterals }: { collaterals: any }) => (
  * @returns React.Component
  */
 const AssetsOverview = ({ data, ...props }: Props) => {
-  const { token } = data
-  const marketCap = useTokenSupply(token.address)
+  const marketCap = useTokenSupply(data.address)
   const collaterals = useAssets(data, marketCap)
 
   return (
@@ -98,7 +97,7 @@ const AssetsOverview = ({ data, ...props }: Props) => {
               {marketCap
                 ? formatCurrency(parseFloat(formatEther(marketCap)))
                 : '0.00'}{' '}
-              {token.symbol}
+              {data.symbol}
             </Text>
           </Box>
           <Box sx={{ flexGrow: 1 }}>

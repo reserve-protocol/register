@@ -3,11 +3,11 @@ import { getAddress } from '@ethersproject/address'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp, PieChart } from 'react-feather'
 import { Box, BoxProps, Flex, Text, Divider, Spinner } from 'theme-ui'
-import { BigNumberMap, Basket, Collateral } from 'types'
+import { BigNumberMap, Token } from 'types'
 import { formatCurrency } from 'utils'
 
 interface Props extends BoxProps {
-  collaterals: Collateral[]
+  collaterals: Token[]
   quantities: BigNumberMap
 }
 
@@ -42,16 +42,16 @@ const CollateralDistribution = ({
         <Box>
           <Divider mx={-2} />
           {collaterals.map((collateral) => (
-            <Flex key={collateral.id}>
-              <Text>{collateral.token.symbol}</Text>
+            <Flex key={collateral.address}>
+              <Text>{collateral.symbol}</Text>
               <Box mx="auto" />
               <Text sx={{ fontWeight: '500' }}>
-                {quantities[getAddress(collateral.token.address)] ? (
+                {quantities[getAddress(collateral.address)] ? (
                   formatCurrency(
                     Number(
                       formatUnits(
-                        quantities[getAddress(collateral.token.address)],
-                        collateral.token.decimals
+                        quantities[getAddress(collateral.address)],
+                        collateral.decimals
                       )
                     )
                   )

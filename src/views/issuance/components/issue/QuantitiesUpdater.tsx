@@ -1,6 +1,6 @@
 import { getAddress } from '@ethersproject/address'
 import { parseEther } from '@ethersproject/units'
-import { useBasketHandlerContract } from 'hooks/useContract'
+import { useFacadeContract } from 'hooks/useContract'
 import useDebounce from 'hooks/useDebounce'
 import { useAtomValue } from 'jotai'
 import { useCallback, useEffect } from 'react'
@@ -10,7 +10,7 @@ import { BigNumberMap } from 'types'
 import { quote } from 'utils/rsv'
 
 /**
- *
+ * Listen for amountAtom value change and update needed collateral quantities for issuance
  */
 const QuantitiesUpdater = ({
   amount,
@@ -21,28 +21,32 @@ const QuantitiesUpdater = ({
 }) => {
   const rToken = useAtomValue(rTokenAtom)
   const debouncedValue = useDebounce(amount, 400)
-  const basketHandler = useBasketHandlerContract(rToken?.basketHandler ?? '')
+  const facadeContract = useFacadeContract()
 
   const fetchQuantities = useCallback(
     async (value: string) => {
       try {
-        if (basketHandler && Number(value) > 0) {
+        if (facadeContract && rToken && Number(value) > 0) {
           const issueAmount = parseEther(value)
-          const quoteResult = await basketHandler.quote(issueAmount, 2)
+          const quoteResult = await facadeContract.callStatic.issue(
+            rToken.address,
+            issueAmount
+          )
           onChange(
-            quoteResult.erc20s.reduce((prev, current, currentIndex) => {
-              prev[getAddress(current)] = quoteResult.quantities[currentIndex]
+            quoteResult.tokens.reduce((prev, current, currentIndex) => {
+              prev[getAddress(current)] = quoteResult.deposits[currentIndex]
               return prev
             }, {} as BigNumberMap)
           )
         }
       } catch (e) {
         // TODO: Handle error case
+        // TODO: this could also fail during default
         error('Network Error', 'Error fetching required collateral')
         console.error('failed fetching quantities', e)
       }
     },
-    [basketHandler]
+    [facadeContract, rToken?.address]
   )
 
   // Fetch quantities from smart contract (rTokens)

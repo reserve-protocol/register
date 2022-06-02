@@ -28,12 +28,12 @@ export const blockTimestampAtom = atom<number>(0)
 
 // Cache layer for loaded tokens
 export const reserveTokensAtom = atomWithStorage<{
-  [x: string]: _ReserveToken
+  [x: string]: ReserveToken
 }>('reserveTokens', {})
 // Current selected rToken address
 export const selectedRTokenAtom = atomWithStorage('selectedRToken', '')
 // Grapb rToken data from the atom list
-export const rTokenAtom = atom<_ReserveToken | null>((get) =>
+export const rTokenAtom = atom<ReserveToken | null>((get) =>
   get(reserveTokensAtom) && get(reserveTokensAtom)[get(selectedRTokenAtom)]
     ? get(reserveTokensAtom)[get(selectedRTokenAtom)]
     : null
@@ -63,8 +63,8 @@ export const balancesAtom = atom<{ [x: string]: number }>({})
 export const rTokenBalanceAtom = atom((get) => {
   const rToken = get(rTokenAtom)
 
-  if (rToken && get(balancesAtom)[rToken.token.address]) {
-    return get(balancesAtom)[rToken.token.address]
+  if (rToken && get(balancesAtom)[rToken.address]) {
+    return get(balancesAtom)[rToken.address]
   }
 
   return 0
@@ -73,7 +73,7 @@ export const rsrBalanceAtom = atom((get) => {
   return get(balancesAtom)[RSR.address] || 0
 })
 export const stRsrBalanceAtom = atom((get) => {
-  const stRSR = get(rTokenAtom)?.insurance?.token.address
+  const stRSR = get(rTokenAtom)?.stToken?.address
 
   if (stRSR) {
     return get(balancesAtom)[stRSR] || 0

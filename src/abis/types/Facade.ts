@@ -294,7 +294,9 @@ export interface Facade extends BaseContract {
       rToken: string,
       amount: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<BigNumber[]>;
+    ): Promise<
+      [string[], BigNumber[]] & { tokens: string[]; deposits: BigNumber[] }
+    >;
 
     maxIssuable(
       rToken: string,

@@ -3,7 +3,7 @@ import { useFacadeContract } from 'hooks/useContract'
 import { atom, useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { useCallback, useEffect } from 'react'
-import { ContractCall, Token } from 'types'
+import { ContractCall, ReserveToken, Token } from 'types'
 import RSV from 'utils/rsv'
 import { reserveTokensAtom, selectedRTokenAtom } from './atoms'
 
@@ -31,8 +31,6 @@ const getTokensMeta = async (addresses: string[]): Promise<Token[]> => {
       },
     ]
   }, [] as ContractCall[])
-
-  console.log('calls', calls)
 
   return [
     {
@@ -68,7 +66,7 @@ const getTokensMeta = async (addresses: string[]): Promise<Token[]> => {
   ]
 }
 
-const updateTokenAtom = atom(null, (get, set, data: _ReserveToken) => {
+const updateTokenAtom = atom(null, (get, set, data: ReserveToken) => {
   const tokens = get(reserveTokensAtom)
   set(reserveTokensAtom, { ...tokens, [data.address]: data })
 })

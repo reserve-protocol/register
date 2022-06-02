@@ -185,7 +185,7 @@ const PricesUpdater = () => {
   // this may fetch all top rTokens
   const { data: rTokenPrice } = useSWR(
     reserveToken &&
-      `${COINGECKO_API}/simple/token_price/ethereum?contract_addresses=${reserveToken.token.address}&vs_currencies=usd`,
+      `${COINGECKO_API}/simple/token_price/ethereum?contract_addresses=${reserveToken.address}&vs_currencies=usd`,
     fetcher
   )
   const setRSRPrice = useUpdateAtom(rsrPriceAtom)
@@ -214,7 +214,7 @@ const PricesUpdater = () => {
 
   useEffect(() => {
     if (rTokenPrice && reserveToken) {
-      setRTokenPrice(rTokenPrice[reserveToken.token.address])
+      setRTokenPrice(rTokenPrice[reserveToken.address])
     }
   }, [rTokenPrice])
 
@@ -224,7 +224,7 @@ const PricesUpdater = () => {
 // TODO: Change place
 const ExchangeRateUpdater = () => {
   const rToken = useAtomValue(rTokenAtom)
-  const contract = useContract(rToken?.insurance?.token.address, StRSR, false)
+  const contract = useContract(rToken?.stToken?.address, StRSR, false)
   const setRate = useUpdateAtom(rsrExchangeRateAtom)
   const { value } =
     useCall(

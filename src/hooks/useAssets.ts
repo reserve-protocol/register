@@ -1,9 +1,8 @@
-import { useWeb3React } from '@web3-react/core'
 import { BigNumber } from '@ethersproject/bignumber'
-import { ERC20Interface } from 'abis'
 import { formatEther, formatUnits } from '@ethersproject/units'
+import { ERC20Interface } from 'abis'
 import { useFacadeContract } from 'hooks/useContract'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ReserveToken, StringMap } from 'types'
 import { stringToColor } from 'utils'
 import { useContractCalls } from './useCall'
@@ -17,52 +16,57 @@ import { useContractCalls } from './useCall'
 const useAssets = (data: ReserveToken, marketCap: BigNumber): StringMap[] => {
   const [calls, setCalls] = <any>useState([])
   const [currentAssets, setAssets] = useState(<{ [x: string]: BigNumber }>{})
-  const facadeContract = useFacadeContract(data.facade)
+  const facadeContract = useFacadeContract()
 
-  const getAssets = async (abort: { value: boolean }) => {
-    if (facadeContract) {
-      try {
-        const result = await facadeContract.callStatic.currentAssets()
-        const contractCalls = []
-        const assetAmounts: { [x: string]: BigNumber } = {}
+  const getAssets = useCallback(
+    async (abort: { value: boolean }) => {
+      if (facadeContract) {
+        try {
+          const result = await facadeContract.callStatic.currentAssets(
+            data.address
+          )
+          const contractCalls = []
+          const assetAmounts: { [x: string]: BigNumber } = {}
 
-        for (let i = 0; i < result.tokens.length; i++) {
-          const address = result.tokens[i]
-          const amount = result.amounts[i]
-          const params = {
-            abi: ERC20Interface,
-            address,
-            args: [],
+          for (let i = 0; i < result.tokens.length; i++) {
+            const address = result.tokens[i]
+            const amount = result.amounts[i]
+            const params = {
+              abi: ERC20Interface,
+              address,
+              args: [],
+            }
+
+            if (!amount.isZero()) {
+              // Add contract calls to get token info
+              contractCalls.push({
+                ...params,
+                method: 'name',
+              })
+              contractCalls.push({
+                ...params,
+                method: 'decimals',
+              })
+              contractCalls.push({
+                ...params,
+                method: 'symbol',
+              })
+              // Fill asset amounts
+              assetAmounts[address] = amount
+            }
           }
 
-          if (!amount.isZero()) {
-            // Add contract calls to get token info
-            contractCalls.push({
-              ...params,
-              method: 'name',
-            })
-            contractCalls.push({
-              ...params,
-              method: 'decimals',
-            })
-            contractCalls.push({
-              ...params,
-              method: 'symbol',
-            })
-            // Fill asset amounts
-            assetAmounts[address] = amount
+          if (!abort.value) {
+            setAssets(assetAmounts)
+            setCalls(contractCalls)
           }
+        } catch (e) {
+          console.error('failed to fetch assets', e)
         }
-
-        if (!abort.value) {
-          setAssets(assetAmounts)
-          setCalls(contractCalls)
-        }
-      } catch (e) {
-        console.error('failed to fetch assets', e)
       }
-    }
-  }
+    },
+    [facadeContract]
+  )
 
   useEffect(() => {
     const abort = { value: false }
@@ -79,14 +83,13 @@ const useAssets = (data: ReserveToken, marketCap: BigNumber): StringMap[] => {
     if (data.isRSV) {
       const distribution = parseFloat(formatEther(marketCap.div(3)))
 
-      return data.basket.collaterals.map((collateral) => ({
-        name: collateral.token.name,
-        decimals: collateral.token.decimals,
-        symbol: collateral.token.symbol,
-        index: collateral.index,
-        address: collateral.token.address,
+      return data.collaterals.map((collateral) => ({
+        name: collateral.name,
+        decimals: collateral.decimals,
+        symbol: collateral.symbol,
+        address: collateral.address,
         value: distribution,
-        fill: stringToColor(collateral.token.name + collateral.token.symbol),
+        fill: stringToColor(collateral.name + collateral.symbol),
       }))
     }
 
@@ -111,7 +114,7 @@ const useAssets = (data: ReserveToken, marketCap: BigNumber): StringMap[] => {
         fill: stringToColor(`${name}${symbol}`),
       }
     })
-  }, [data.id, result[0], marketCap.toHexString()])
+  }, [data.address, result[0], marketCap.toHexString()])
 }
 
 export default useAssets

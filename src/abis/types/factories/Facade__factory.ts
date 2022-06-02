@@ -89,6 +89,11 @@ const _abi = [
     name: "issue",
     outputs: [
       {
+        internalType: "address[]",
+        name: "tokens",
+        type: "address[]",
+      },
+      {
         internalType: "uint256[]",
         name: "deposits",
         type: "uint256[]",

@@ -57,7 +57,7 @@ const AvailableBalance = () => {
         value: availableAmount,
         call: {
           abi: 'stRSR',
-          address: rToken?.insurance?.token.address ?? ' ',
+          address: rToken?.stToken?.address ?? ' ',
           method: 'withdraw',
           args: [account, index.add(BigNumber.from(1))],
         },
@@ -106,10 +106,7 @@ const StakeBalance = () => {
       <Text variant="subtitle" mb={2}>
         Your stake
       </Text>
-      <TokenBalance
-        symbol={rToken?.insurance?.token.symbol ?? ''}
-        balance={balance}
-      />
+      <TokenBalance symbol={rToken?.stToken?.symbol ?? ''} balance={balance} />
       <TokenBalance mt={2} symbol="RSR Value" balance={balance * rate} />
       <TokenBalance
         symbol="USD"

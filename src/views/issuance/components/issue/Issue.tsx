@@ -51,7 +51,7 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
           mt={2}
           onClick={() => setIssuing(true)}
         >
-          + Mint {data.token.symbol}
+          + Mint {data.symbol}
         </Button>
       </Card>
     </>
