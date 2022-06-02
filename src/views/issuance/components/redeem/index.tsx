@@ -21,7 +21,7 @@ const Redeem = ({ data, ...props }: { data: ReserveToken }) => {
           mt={2}
           onClick={() => setConfirming(true)}
         >
-          - Redeem {data.token.symbol}
+          - Redeem {data.symbol}
         </Button>
       </Card>
     </>

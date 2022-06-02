@@ -12,12 +12,15 @@ const MaxIssuableUpdater = () => {
   const tokenBalances = useAtomValue(balancesAtom)
   const setMaxIssuable = useUpdateAtom(maxIssuableAtom)
   const account = useAtomValue(selectedAccountAtom)
-  const facadeContract = useFacadeContract(rToken?.facade ?? '')
+  const facadeContract = useFacadeContract()
 
   const updateMaxIssuable = useCallback(async () => {
     try {
-      if (account && facadeContract) {
-        const maxIssuable = await facadeContract.callStatic.maxIssuable(account)
+      if (account && rToken && facadeContract) {
+        const maxIssuable = await facadeContract.callStatic.maxIssuable(
+          rToken.address,
+          account
+        )
         setMaxIssuable(maxIssuable ? Number(formatEther(maxIssuable)) : 0)
       } else {
         setMaxIssuable(0)
@@ -26,7 +29,7 @@ const MaxIssuableUpdater = () => {
       setMaxIssuable(0)
       console.error('error with max issuable', e)
     }
-  }, [account, facadeContract])
+  }, [account, rToken?.address, facadeContract])
 
   // RSV Max issuable
   useEffect(() => {
@@ -39,9 +42,11 @@ const MaxIssuableUpdater = () => {
     if (rToken && !rToken.isRSV) {
       updateMaxIssuable()
     }
+  }, [updateMaxIssuable])
 
+  useEffect(() => {
     return () => setMaxIssuable(0)
-  }, [account, facadeContract])
+  })
 
   return null
 }

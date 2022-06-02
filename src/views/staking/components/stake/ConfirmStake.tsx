@@ -24,12 +24,12 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
       value: amount,
       call: {
         abi: 'stRSR',
-        address: rToken?.insurance?.token.address ?? ' ',
+        address: rToken?.stToken?.address ?? ' ',
         method: 'stake',
         args: [parsedAmount],
       },
     }),
-    [rToken?.id, amount]
+    [rToken?.address, amount]
   )
   const requiredAllowance = {
     [RSR.address]: parsedAmount,
@@ -37,7 +37,7 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
 
   // TODO: Unlimited approval
   const buildApproval = useCallback(() => {
-    if (rToken?.insurance) {
+    if (rToken?.stToken) {
       return [
         {
           id: uuid(),
@@ -48,14 +48,14 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
             abi: 'erc20',
             address: RSR.address,
             method: 'approve',
-            args: [rToken.insurance.token.address, parsedAmount],
+            args: [rToken.stToken.address, parsedAmount],
           },
         },
       ]
     }
 
     return []
-  }, [rToken?.id, amount])
+  }, [rToken?.address, amount])
 
   const handleClose = () => {
     onClose()

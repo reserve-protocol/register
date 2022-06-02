@@ -12,7 +12,7 @@ const ExchangeRate = (props: BoxProps) => {
     <Card {...props}>
       <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
         <Text>
-          {rate} {rToken?.insurance?.token.symbol ?? 'stRSR'} = 1 RSR
+          {rate} {rToken?.stToken?.symbol ?? 'stRSR'} = 1 RSR
         </Text>
       </Flex>
     </Card>

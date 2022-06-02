@@ -36,12 +36,12 @@ const Overview = () => {
             Transactions
           </Text>
           <Card>
-            <TransactionsTable tokenId={RToken.token.address} />
+            <TransactionsTable tokenId={RToken.address} />
           </Card>
         </Box>
         <Box>
-          <PriceChart token={RToken.token} mb={3} />
-          <MarketCapChart token={RToken.token} mb={2} />
+          <PriceChart token={RToken} mb={3} />
+          <MarketCapChart token={RToken} mb={2} />
         </Box>
       </Grid>
     </Container>

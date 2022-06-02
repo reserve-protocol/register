@@ -22,18 +22,9 @@ const UsageOverview = ({ data, ...props }: Props) => (
     </Text>
     <Card>
       <Grid columns={3}>
-        <Info
-          subtitle={(data.token?.transfersCount ?? 0).toLocaleString()}
-          title="Total Transactions"
-        />
-        <Info
-          subtitle={(data.token?.transfersCount ?? 0).toLocaleString()}
-          title="24h Volume"
-        />
-        <Info
-          subtitle={(data.token?.holdersCount ?? 0).toLocaleString()}
-          title="Holders"
-        />
+        <Info subtitle={(0).toLocaleString()} title="Total Transactions" />
+        <Info subtitle={(0).toLocaleString()} title="24h Volume" />
+        <Info subtitle={(0).toLocaleString()} title="Holders" />
       </Grid>
     </Card>
   </Box>

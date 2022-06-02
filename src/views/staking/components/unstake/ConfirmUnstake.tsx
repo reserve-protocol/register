@@ -20,17 +20,17 @@ const ConfirmUnstake = ({ onClose }: { onClose: () => void }) => {
   const transaction = useMemo(
     () => ({
       id: uuid(),
-      description: `Unstake ${amount} ${rToken?.insurance?.token.symbol}`,
+      description: `Unstake ${amount} ${rToken?.stToken?.symbol}`,
       status: TRANSACTION_STATUS.PENDING,
       value: amount,
       call: {
         abi: 'stRSR',
-        address: rToken?.insurance?.token.address ?? ' ',
+        address: rToken?.stToken?.address ?? ' ',
         method: 'unstake',
         args: [parsedAmount],
       },
     }),
-    [rToken?.id, amount]
+    [rToken?.address, amount]
   )
 
   const handleClose = () => {
@@ -40,7 +40,7 @@ const ConfirmUnstake = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <TransactionModal
-      title={`Unstake ${rToken?.insurance?.token.symbol}`}
+      title={`Unstake ${rToken?.stToken?.symbol}`}
       tx={transaction}
       isValid={isValid}
       requiredAllowance={{}}

@@ -6,6 +6,7 @@ import { useCallback, useMemo, useState } from 'react'
 import { rTokenAtom } from 'state/atoms'
 import { formatCurrency } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
+import { RSV_MANAGER } from 'utils/rsv'
 import { v4 as uuid } from 'uuid'
 import { isValidRedeemAmountAtom, redeemAmountAtom } from 'views/issuance/atoms'
 import RedeemInput from './RedeemInput'
@@ -20,22 +21,22 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
   const transaction = useMemo(
     () => ({
       id: '',
-      description: `Redeem ${amount} ${rToken?.token.symbol}`,
+      description: `Redeem ${amount} ${rToken?.symbol}`,
       status: TRANSACTION_STATUS.PENDING,
       value: amount,
       call: {
         abi: rToken?.isRSV ? 'rsv' : 'rToken',
-        address: rToken?.isRSV ? rToken?.id : rToken?.token.address ?? '',
+        address: rToken?.isRSV ? RSV_MANAGER : rToken?.address ?? '',
         method: 'redeem',
         args: [parsedAmount],
       },
     }),
-    [rToken?.id, amount]
+    [rToken?.address, amount]
   )
 
   const requiredAllowance = rToken?.isRSV
     ? {
-        [rToken.token.address]: parsedAmount,
+        [rToken.address]: parsedAmount,
       }
     : {}
 
@@ -50,16 +51,16 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
           value: amount,
           call: {
             abi: 'erc20',
-            address: rToken.token.address,
+            address: rToken.address,
             method: 'approve',
-            args: [rToken.id, parsedAmount],
+            args: [RSV_MANAGER, parsedAmount],
           },
         },
       ]
     }
 
     return []
-  }, [rToken?.id, amount])
+  }, [rToken?.address, amount])
 
   const handleClose = () => {
     onClose()
@@ -68,12 +69,12 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <TransactionModal
-      title={`Redeem ${rToken?.token.symbol}`}
+      title={`Redeem ${rToken?.symbol}`}
       tx={transaction}
       isValid={isValid}
       requiredAllowance={requiredAllowance}
       confirmLabel={`Begin redemption of ${formatCurrency(Number(amount))} ${
-        rToken?.token.symbol ?? ''
+        rToken?.symbol ?? ''
       }`}
       buildApprovals={buildApproval}
       onClose={handleClose}
