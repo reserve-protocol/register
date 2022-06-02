@@ -42,11 +42,8 @@ const MaxIssuableUpdater = () => {
     if (rToken && !rToken.isRSV) {
       updateMaxIssuable()
     }
-  }, [updateMaxIssuable])
-
-  useEffect(() => {
     return () => setMaxIssuable(0)
-  })
+  }, [updateMaxIssuable])
 
   return null
 }

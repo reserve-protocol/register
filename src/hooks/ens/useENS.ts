@@ -11,7 +11,7 @@ export default function useENS(nameOrAddress?: string | null): {
   address: string | null
   name: string | null
 } {
-  const validated = isAddress(nameOrAddress)
+  const validated = isAddress(nameOrAddress ?? '')
   const reverseLookup = useENSName(validated || undefined)
   const lookup = useENSAddress(nameOrAddress)
   let name = null

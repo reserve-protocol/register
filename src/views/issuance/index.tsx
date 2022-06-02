@@ -16,7 +16,7 @@ const Issuance = () => {
       <Text ml={4} mb={3} variant="sectionTitle">
         Mint + Redeem
       </Text>
-      <Grid columns={[1, 1, 1, 2]} gap={5}>
+      <Grid columns={[1, 1, 1, 2]} gap={4}>
         <Box>
           <Grid columns={[1, 2]} gap={4} mb={4}>
             <Issue data={RToken} />

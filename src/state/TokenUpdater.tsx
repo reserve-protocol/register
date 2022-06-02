@@ -1,9 +1,11 @@
 import { ERC20Interface } from 'abis'
 import { useFacadeContract } from 'hooks/useContract'
-import { atom, useAtomValue } from 'jotai'
+import { atom, useAtom } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { useCallback, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { ContractCall, ReserveToken, Token } from 'types'
+import { isAddress } from 'utils'
 import RSV from 'utils/rsv'
 import { reserveTokensAtom, selectedRTokenAtom } from './atoms'
 
@@ -74,9 +76,10 @@ const updateTokenAtom = atom(null, (get, set, data: ReserveToken) => {
 // Try to grab the token meta from theGraph
 // If it fails, get it from the blockchain (only whitelisted tokens)
 const ReserveTokenUpdater = () => {
-  const selectedAddress = useAtomValue(selectedRTokenAtom)
+  const [selectedAddress, setSelectedToken] = useAtom(selectedRTokenAtom)
   const updateToken = useUpdateAtom(updateTokenAtom)
   const facadeContract = useFacadeContract()
+  const [searchParams] = useSearchParams()
 
   const getTokenMeta = useCallback(
     async (address: string) => {
@@ -111,6 +114,14 @@ const ReserveTokenUpdater = () => {
     },
     [facadeContract]
   )
+
+  useEffect(() => {
+    const token = isAddress(searchParams.get('token') ?? '')
+
+    if (token) {
+      setSelectedToken(token)
+    }
+  }, [])
 
   useEffect(() => {
     if (selectedAddress) {

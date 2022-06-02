@@ -56,21 +56,21 @@ i18n.activate('en')
  * @returns {JSX.Element}
  */
 const App = () => (
-  <I18nProvider i18n={i18n}>
-    <Web3Provider>
-      <Updater />
-      <ThemeProvider theme={theme}>
-        <Toaster
-          gutter={20}
-          toastOptions={{ position: 'bottom-right', style: { width: 300 } }}
-          containerStyle={{
-            top: 40,
-            left: 40,
-            bottom: 40,
-            right: 40,
-          }}
-        />
-        <Router>
+  <Router>
+    <I18nProvider i18n={i18n}>
+      <Web3Provider>
+        <Updater />
+        <ThemeProvider theme={theme}>
+          <Toaster
+            gutter={20}
+            toastOptions={{ position: 'bottom-right', style: { width: 300 } }}
+            containerStyle={{
+              top: 40,
+              left: 40,
+              bottom: 40,
+              right: 40,
+            }}
+          />
           <Layout>
             <Routes>
               <Route path={ROUTES.HOME} element={<Home />} />
@@ -95,10 +95,10 @@ const App = () => (
               <Route path={ROUTES.DEPLOY} element={<Deploy />} />
             </Routes>
           </Layout>
-        </Router>
-      </ThemeProvider>
-    </Web3Provider>
-  </I18nProvider>
+        </ThemeProvider>
+      </Web3Provider>
+    </I18nProvider>
+  </Router>
 )
 
 export default App
