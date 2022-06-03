@@ -6,7 +6,7 @@ import Field from './Field'
 const BackingForm = (props: BoxProps) => {
   return (
     <Card p={4} {...props}>
-      <Box p={1} pb={2}>
+      <Box p={1} pt={0} pb={2}>
         <Text sx={{ fontSize: 3 }}>
           <Trans>Backing Manager</Trans>
         </Text>

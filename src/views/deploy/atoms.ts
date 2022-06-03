@@ -1,3 +1,4 @@
+import { StringMap } from 'types'
 import { atom } from 'jotai'
 
 // export const config: IConfig = {
@@ -19,45 +20,41 @@ import { atom } from 'jotai'
 //   minBidSize: fp('1'), // 1 UoA (USD)
 // }
 
-export const rTokenDataAtom = atom({
+export const paramsDefaultState = {
+  // token params
   name: '',
-  nameError: '',
   symbol: '',
-  symbolError: '',
-  ownerAddress: '', // prefill on mount
-  ownerAddressError: '',
-})
-
-export const backingDataAtom = atom({
+  ownerAddress: '',
+  // backing params
   tradingDelay: '',
-  tradingDelayError: '',
   auctionLength: '',
-  auctionLengthError: '',
   backingBuffer: '',
-  backingBufferError: '',
   maxTradeSlippage: '',
-  maxTradeSlippageError: '',
   dustAmount: '',
-  dustAmountError: '',
   issuanceRate: '',
-  issuanceRateError: '',
+  // other
+  maxTradeVolume: '1000000',
+  rTokenDist: '40', // %
+  rsrDist: '60', // %
+  rewardPeriod: '604800', // seconds
+  rewardRatio: '0.02284', // ? ask
+  unstakingDelay: '1209600', // seconds 1 week
+  oneshotPauseDuration: '864000', // seconds 10 days
+  minBidSize: '',
+}
+
+// store error strings per field
+export const formErrorsAtom = atom({
+  ...paramsDefaultState,
+})
+export const deployerFormAtom = atom(paramsDefaultState)
+
+export const updateFormAtom = atom(null, (get, set, data: StringMap) => {
+  set(deployerFormAtom, { ...get(deployerFormAtom), ...data })
 })
 
-export const otherDataAtom = atom({
-  maxTradeVolume: '1000000',
-  maxTradeVolumeError: '',
-  rTokenDist: '40', // %
-  rTokenDistError: '',
-  rsrDist: '60', // %
-  rsrDistError: '',
-  rewardPeriod: '604800', // seconds
-  rewardPeriodError: '',
-  rewardRatio: '0.02284', // ? ask
-  rewardRatioError: '',
-  unstakingDelay: '1209600', // seconds 1 week
-  unstakingDelayError: '',
-  oneshotPauseDuration: '864000', // seconds 10 days
-  oneshotPauseDurationError: '',
-  minBidSize: '',
-  minBidSizeError: '',
+// derived form atoms
+export const isFormValidAtom = atom((get) => {
+  const fields = get(deployerFormAtom)
+  const errors = get(formErrorsAtom)
 })

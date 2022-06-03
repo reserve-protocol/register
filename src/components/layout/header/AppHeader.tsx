@@ -4,9 +4,10 @@ import RTokenSelector from 'components/rtoken-selector'
 import Account from '../../account'
 import TransactionCenter from 'components/transactions/table/manager/TransactionCenter'
 import styled from '@emotion/styled'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { ROUTES } from 'utils/constants'
 import Logo from 'components/icons/Logo'
+import { useNavigate } from 'react-router-dom'
 import { Trans } from '@lingui/macro'
 
 const Separator = styled(Divider)`
@@ -29,12 +30,13 @@ const Container = styled(Flex)`
  */
 const AppHeader = () => {
   const { pathname } = useLocation()
+  const navigate = useNavigate()
 
   return (
     <Container px={4}>
       {pathname === ROUTES.DEPLOY ? (
         <Flex ml={4} sx={{ alignItems: 'center' }}>
-          <Logo />
+          <Logo style={{ cursor: 'pointer' }} onClick={() => navigate('/')} />
           <Text ml={3} variant="subtitle">
             <Trans>RToken Deployer</Trans>
           </Text>

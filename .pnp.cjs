@@ -5998,6 +5998,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["babel-preset-react-app", "npm:10.0.1"],\
             ["cypress", "npm:8.7.0"],\
             ["ethers", "npm:5.6.2"],\
+            ["fast-deep-equal", "npm:3.1.3"],\
             ["fast-memoize", "npm:2.5.2"],\
             ["graphql", "npm:16.5.0"],\
             ["graphql-request", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:4.2.0"],\
@@ -24352,6 +24353,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["babel-preset-react-app", "npm:10.0.1"],\
             ["cypress", "npm:8.7.0"],\
             ["ethers", "npm:5.6.2"],\
+            ["fast-deep-equal", "npm:3.1.3"],\
             ["fast-memoize", "npm:2.5.2"],\
             ["graphql", "npm:16.5.0"],\
             ["graphql-request", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:4.2.0"],\
