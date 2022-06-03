@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
 import { Card } from 'components'
 import { useEffect } from 'react'
@@ -11,35 +11,35 @@ const TokenForm = (props: BoxProps) => {
   useEffect(() => {}, [account])
 
   return (
-    <Card>
-      <Box p={2}>
+    <Card p={4} {...props}>
+      <Box p={1} pb={2}>
         <Text sx={{ fontSize: 3 }}>
           <Trans>RToken Details</Trans>
         </Text>
       </Box>
-      <Divider mx={-3} mb={3} />
+      <Divider mx={-4} mb={3} />
       <Field
-        label={<Trans>Token name</Trans>}
-        placeholder="Input token name"
+        label={t`Token name`}
+        placeholder={t`Input token name`}
         onChange={() => {}}
         value=""
-        help={<Trans>Test</Trans>}
+        help={t`Test`}
         mb={3}
       />
       <Field
-        label={<Trans>Ticker</Trans>}
-        placeholder="Input token name"
+        label={t`Ticker`}
+        placeholder={t`Input ticker`}
         onChange={() => {}}
         value=""
-        help={<Trans>Test</Trans>}
+        help={t`Test`}
         mb={3}
       />
       <Field
-        label={<Trans>Ownership Address</Trans>}
-        placeholder="Input token name"
+        label={t`Ownership address`}
+        placeholder={t`Input ownership address`}
         onChange={() => {}}
         value=""
-        help={<Trans>Test</Trans>}
+        help={t`Test`}
       />
     </Card>
   )

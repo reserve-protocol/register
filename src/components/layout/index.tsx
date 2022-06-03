@@ -1,37 +1,41 @@
 import { ReactNode } from 'react'
+import { useLocation } from 'react-router-dom'
 import { Box, Flex } from 'theme-ui'
+import { ROUTES } from 'utils/constants'
 import Header from './header'
 import Sidebar from './sidebar'
 
-// TODO: Mobile layout
 /**
  * Application Layout
  *
  * @param children - required
  * @returns {JSX.Element}
  */
-const Layout = ({ children }: { children: ReactNode }) => (
-  <Flex
-    sx={{
-      flexWrap: 'wrap',
-      height: '100%',
-    }}
-  >
-    <Sidebar />
+const Layout = ({ children }: { children: ReactNode }) => {
+  const { pathname } = useLocation()
+
+  return (
     <Flex
       sx={{
-        flexGrow: 99999,
-        flexBasis: 0,
-        height: '100vh',
-        overflow: 'hidden',
-        position: 'relative',
-        flexDirection: 'column',
+        flexWrap: 'wrap',
+        height: '100%',
       }}
     >
-      <Header />
-      <Box sx={{ overflow: 'auto', flexGrow: 99999 }}>{children}</Box>
+      {pathname !== ROUTES.DEPLOY && <Sidebar />}
+      <Flex
+        sx={{
+          flexGrow: 99999,
+          flexBasis: 0,
+          height: '100vh',
+          overflow: 'hidden',
+          position: 'relative',
+          flexDirection: 'column',
+        }}
+      >
+        <Header />
+        <Box sx={{ overflow: 'auto', flexGrow: 99999 }}>{children}</Box>
+      </Flex>
     </Flex>
-  </Flex>
-)
-
+  )
+}
 export default Layout

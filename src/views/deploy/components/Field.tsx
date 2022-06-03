@@ -3,9 +3,9 @@ import { HelpCircle } from 'react-feather'
 import { Box, Flex, Text, BoxProps } from 'theme-ui'
 
 interface Props extends Omit<BoxProps, 'onChange'> {
-  label: any
-  help: any
-  placeholder: any
+  label: string
+  help: string
+  placeholder: string
   onChange(value: string): void
   error?: any
   numeric?: boolean
@@ -31,7 +31,7 @@ const Field = ({
           {label}
         </Text>
         <Box mx="auto" />
-        <HelpCircle />
+        <HelpCircle size={16} />
       </Flex>
       {numeric ? <NumericalInput {...inputProps} /> : <Input {...inputProps} />}
     </Box>

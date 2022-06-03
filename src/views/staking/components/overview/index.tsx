@@ -1,4 +1,4 @@
-import { IconInfo } from 'components/token-balance'
+import IconInfo from 'components/info-icon'
 import { useAtomValue } from 'jotai'
 import { Hash, TrendingUp } from 'react-feather'
 import { rsrExchangeRateAtom, rTokenAtom } from 'state/atoms'
