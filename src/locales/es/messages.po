@@ -13,9 +13,13 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/App.tsx:61
-msgid "Test"
+#: src/views/deploy/components/TokenForm.tsx:10
+msgid "RToken Details"
 msgstr ""
+
+#: src/App.tsx:61
+#~ msgid "Test"
+#~ msgstr ""
 
 #: src/components/transaction-modal/index.tsx:56
 msgid "Transaction signed!"
@@ -24,3 +28,7 @@ msgstr ""
 #: src/components/transaction-modal/index.tsx:64
 msgid "View on etherscan"
 msgstr ""
+
+#: src/components/text/index.tsx:6
+#~ msgid "{children}"
+#~ msgstr ""

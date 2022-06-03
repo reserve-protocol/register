@@ -110,6 +110,7 @@ const ReserveTokenUpdater = () => {
   useEffect(() => {
     const token = isAddress(searchParams.get('token') ?? '')
 
+    // TODO: Review if its an rTokens maybe trying to get "main"
     if (token) {
       setSelectedToken(token)
     }

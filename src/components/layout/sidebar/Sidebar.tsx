@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { Box, Flex, Text } from 'theme-ui'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import Logo, { SmallLogo } from 'components/icons/Logo'
 import SyncedBlock from 'components/synced-block'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
@@ -63,6 +63,7 @@ const Navigation = ({
 }: {
   currentToken?: ReserveToken | null
 }) => {
+  const { search } = useLocation()
   const pages = useMemo(() => {
     if (!currentToken) {
       return []
@@ -91,7 +92,7 @@ const Navigation = ({
             // margin: '16px 0',
             display: 'flex',
           })}
-          to={item.path}
+          to={item.path + search}
         >
           <Box
             sx={{

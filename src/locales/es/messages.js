@@ -1,1 +1,1 @@
-/*eslint-disable*/module.exports={messages:{"Test":"Test","Transaction signed!":"Transaction signed!","View on etherscan":"View on etherscan"}};
+/*eslint-disable*/module.exports={messages:{"RToken Details":"RToken Details","Test":"Test","Transaction signed!":"Transaction signed!","View on etherscan":"View on etherscan","{children}":[["children"]]}};
