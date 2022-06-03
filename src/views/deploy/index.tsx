@@ -1,6 +1,7 @@
 import { Button, Container } from 'components'
 import { atom, useAtom } from 'jotai'
 import { Box, Grid } from 'theme-ui'
+import BackingForm from './components/BackingForm'
 import StakingToken from './components/StakingToken'
 import TokenForm from './components/TokenForm'
 
@@ -10,7 +11,7 @@ const Deploy = () => {
       <Grid gap={5} columns={[1, 2]}>
         <Box>
           <TokenForm mb={4} />
-          <TokenForm />
+          <BackingForm />
         </Box>
         <Box>
           <StakingToken />

@@ -16,7 +16,7 @@ const TransactionCenter = () => {
   const isProcessing = useAtomValue(isProcessingAtom)
 
   return (
-    <Box ml={4} sx={{ alignItems: 'center', display: 'flex' }}>
+    <Box ml={4} mr={[0, 0, 4]} sx={{ alignItems: 'center', display: 'flex' }}>
       {isProcessing && <Spinner size={20} marginRight={10} />}
       <Text sx={{ display: ['none', 'inherit', 'inherit'] }} mr={3}>
         Transactions

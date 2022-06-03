@@ -33,7 +33,7 @@ const AppHeader = () => {
   return (
     <Container px={4}>
       {pathname === ROUTES.DEPLOY ? (
-        <Flex ml={5} sx={{ alignItems: 'center' }}>
+        <Flex ml={4} sx={{ alignItems: 'center' }}>
           <Logo />
           <Text ml={3} variant="subtitle">
             <Trans>RToken Deployer</Trans>

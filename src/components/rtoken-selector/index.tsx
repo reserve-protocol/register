@@ -1,9 +1,9 @@
 import styled from '@emotion/styled'
 import TokenLogo from 'components/icons/TokenLogo'
 import Popup from 'components/popup'
-import { useAtomValue } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { useSearchParams } from 'react-router-dom'
 import rtokens from 'rtokens'
@@ -73,7 +73,7 @@ const SelectedToken = () => {
 const RTokenSelector = (props: BoxProps) => {
   const [, setSearchParams] = useSearchParams()
   const [isVisible, setVisible] = useState(false)
-  const setSelected = useUpdateAtom(selectedRTokenAtom)
+  const [selected, setSelected] = useAtom(selectedRTokenAtom)
 
   const handleSelect = useCallback(
     (token: string) => {
@@ -83,6 +83,12 @@ const RTokenSelector = (props: BoxProps) => {
     },
     [setSelected]
   )
+
+  useEffect(() => {
+    if (selected) {
+      setSearchParams({ token: selected })
+    }
+  }, [])
 
   return (
     <Popup

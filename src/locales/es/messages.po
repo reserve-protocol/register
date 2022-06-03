@@ -13,13 +13,59 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/views/deploy/components/TokenForm.tsx:10
+#: src/views/deploy/components/BackingForm.tsx:33
+#: src/views/deploy/components/TokenForm.tsx:39
+msgid "Input ownership address"
+msgstr ""
+
+#: src/views/deploy/components/BackingForm.tsx:25
+#: src/views/deploy/components/TokenForm.tsx:31
+msgid "Input ticker"
+msgstr ""
+
+#: src/views/deploy/components/BackingForm.tsx:17
+#: src/views/deploy/components/TokenForm.tsx:23
+msgid "Input token name"
+msgstr ""
+
+#: src/views/deploy/components/BackingForm.tsx:32
+#: src/views/deploy/components/TokenForm.tsx:38
+msgid "Ownership address"
+msgstr ""
+
+#: src/components/layout/header/AppHeader.tsx:39
+msgid "RToken Deployer"
+msgstr ""
+
+#: src/views/deploy/components/BackingForm.tsx:11
+#: src/views/deploy/components/TokenForm.tsx:17
 msgid "RToken Details"
 msgstr ""
 
-#: src/App.tsx:61
-#~ msgid "Test"
-#~ msgstr ""
+#: src/views/deploy/components/StakingToken.tsx:22
+#: src/views/deploy/components/StakingToken.tsx:28
+#: src/views/deploy/components/StakingToken.tsx:33
+msgid "Staking token"
+msgstr ""
+
+#: src/views/deploy/components/BackingForm.tsx:20
+#: src/views/deploy/components/BackingForm.tsx:28
+#: src/views/deploy/components/BackingForm.tsx:36
+#: src/views/deploy/components/TokenForm.tsx:26
+#: src/views/deploy/components/TokenForm.tsx:34
+#: src/views/deploy/components/TokenForm.tsx:42
+msgid "Test"
+msgstr ""
+
+#: src/views/deploy/components/BackingForm.tsx:24
+#: src/views/deploy/components/TokenForm.tsx:30
+msgid "Ticker"
+msgstr ""
+
+#: src/views/deploy/components/BackingForm.tsx:16
+#: src/views/deploy/components/TokenForm.tsx:22
+msgid "Token name"
+msgstr ""
 
 #: src/components/transaction-modal/index.tsx:56
 msgid "Transaction signed!"
@@ -27,6 +73,14 @@ msgstr ""
 
 #: src/components/transaction-modal/index.tsx:64
 msgid "View on etherscan"
+msgstr ""
+
+#: src/views/deploy/components/StakingToken.tsx:34
+msgid "st{0}RSR"
+msgstr ""
+
+#: src/views/deploy/components/StakingToken.tsx:29
+msgid "st{0}RSR Token"
 msgstr ""
 
 #: src/components/text/index.tsx:6
