@@ -12,13 +12,14 @@ const BackingForm = (props: BoxProps) => {
         </Text>
       </Box>
       <Divider mx={-4} mb={3} />
-      <Field
+      {/* <Field
         label={t`Token name`}
         placeholder={t`Input token name`}
         onChange={() => {}}
         value=""
         help={t`Test`}
         mb={3}
+        name=""
       />
       <Field
         label={t`Ticker`}
@@ -34,7 +35,7 @@ const BackingForm = (props: BoxProps) => {
         onChange={() => {}}
         value=""
         help={t`Test`}
-      />
+      /> */}
     </Card>
   )
 }

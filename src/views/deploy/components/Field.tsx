@@ -1,28 +1,27 @@
-import { Input, NumericalInput } from 'components'
 import { HelpCircle } from 'react-feather'
-import { Box, Flex, Text, BoxProps } from 'theme-ui'
+import { RegisterOptions, useFormContext } from 'react-hook-form'
+import { Box, Flex, Input, Text, InputProps } from 'theme-ui'
 
-interface Props extends Omit<BoxProps, 'onChange'> {
+interface Props extends InputProps {
   label: string
-  help: string
+  help?: string
   placeholder: string
-  onChange(value: string): void
-  error?: any
-  numeric?: boolean
-  value: string
+  name: string
+  options?: RegisterOptions
 }
 
 const Field = ({
   label,
-  onChange,
   help,
-  value,
   placeholder,
-  error,
-  numeric,
+  name,
+  options,
   ...props
 }: Props) => {
-  const inputProps = { placeholder, onChange, value }
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext()
 
   return (
     <Box {...props}>
@@ -30,10 +29,28 @@ const Field = ({
         <Text variant="subtitle" ml={2} sx={{ fontSize: 1 }}>
           {label}
         </Text>
-        <Box mx="auto" />
-        <HelpCircle size={16} />
+        {!!help && (
+          <>
+            <Box mx="auto" />
+            <HelpCircle size={16} />
+          </>
+        )}
       </Flex>
-      {numeric ? <NumericalInput {...inputProps} /> : <Input {...inputProps} />}
+      <Input
+        placeholder={placeholder}
+        sx={{ borderColor: errors[name] ? 'danger' : 'inherit' }}
+        {...register(name, options)}
+      />
+      {!!errors[name]?.message && (
+        <Text
+          mt={1}
+          ml={2}
+          sx={{ display: 'block', fontSize: 1 }}
+          variant="error"
+        >
+          {errors[name].message}
+        </Text>
+      )}
     </Box>
   )
 }

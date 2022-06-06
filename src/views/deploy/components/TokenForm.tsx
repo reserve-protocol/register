@@ -8,6 +8,7 @@ import { Box, Text, BoxProps, Divider } from 'theme-ui'
 import { deployerFormAtom, updateFormAtom } from '../atoms'
 import Field from './Field'
 import deepEqual from 'fast-deep-equal'
+import { useFormContext } from 'react-hook-form'
 
 const dataAtom = selectAtom(
   deployerFormAtom,
@@ -21,7 +22,6 @@ const dataAtom = selectAtom(
 
 const TokenForm = (props: BoxProps) => {
   const { account } = useWeb3React()
-  const { name, symbol, ownerAddress } = useAtomValue(dataAtom)
   const update = useUpdateAtom(updateFormAtom)
 
   useEffect(() => {
@@ -45,25 +45,32 @@ const TokenForm = (props: BoxProps) => {
       <Field
         label={t`Token name`}
         placeholder={t`Input token name`}
-        onChange={handleChange('name')}
-        value={name}
         help={t`Test`}
         mb={3}
+        name="name"
+        options={{
+          required: t`Token name required`,
+        }}
       />
+
       <Field
         label={t`Ticker`}
         placeholder={t`Input ticker`}
-        onChange={handleChange('symbol')}
-        value={symbol}
         help={t`Test`}
         mb={3}
+        name="ticker"
+        options={{
+          required: t`Token ticker is required`,
+        }}
       />
       <Field
         label={t`Ownership address`}
         placeholder={t`Input ownership address`}
-        onChange={handleChange('ownerAddress')}
-        value={ownerAddress}
         help={t`Test`}
+        name="ownerAddress"
+        options={{
+          required: t`RToken owner address is required`,
+        }}
       />
     </Card>
   )

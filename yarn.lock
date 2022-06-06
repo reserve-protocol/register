@@ -13604,6 +13604,7 @@ __metadata:
     react-blockies: ^1.4.1
     react-dom: 18.1.0
     react-feather: ^2.0.9
+    react-hook-form: ^7.31.3
     react-hot-toast: ^2.2.0
     react-popper: ^2.2.5
     react-router-dom: ^6.3.0
@@ -13911,6 +13912,15 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
   checksum: 501c757b5dc742778389206c224d4f3a342008f3e4e2c346da40c0d2432642ccf555bdb2afc4ff6c0ac9f01b792ce9d1d3150fa43eceae4289174547b2412f51
+  languageName: node
+  linkType: hard
+
+"react-hook-form@npm:^7.31.3":
+  version: 7.31.3
+  resolution: "react-hook-form@npm:7.31.3"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18
+  checksum: 01601c904c39dea8f617d0fc35ff62ab6e8c4968b2007990ce88952f1c24063c025eb169703edcf596dc38439669268175b9f5fb7a5d553e46fdc8bb7523ed63
   languageName: node
   linkType: hard
 

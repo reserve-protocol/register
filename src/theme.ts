@@ -101,6 +101,9 @@ export const theme: Theme = {
     primary: {
       color: 'text',
     },
+    error: {
+      color: 'danger',
+    },
     legend: {
       color: '#808080',
     },
