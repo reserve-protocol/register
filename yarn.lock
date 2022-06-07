@@ -11517,6 +11517,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"make-plural@npm:^7.1.0":
+  version: 7.1.0
+  resolution: "make-plural@npm:7.1.0"
+  checksum: d0ef253e508c8cdbddcc37288d25e0944eb2bf800008bf178a1c37b101c3202d89609ddb577a10515bd2499c7665159594704682cc9c159cc20491da6b7ac09e
+  languageName: node
+  linkType: hard
+
 "makeerror@npm:1.0.12":
   version: 1.0.12
   resolution: "makeerror@npm:1.0.12"
@@ -13599,6 +13606,7 @@ __metadata:
     i18next-browser-languagedetector: ^6.1.2
     immer: ^9.0.12
     jotai: ^1.6.7
+    make-plural: ^7.1.0
     prettier: ^2.3.2
     react: ^18.1.0
     react-blockies: ^1.4.1

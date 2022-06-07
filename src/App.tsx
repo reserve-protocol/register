@@ -16,8 +16,10 @@ import { Toaster } from 'react-hot-toast'
 import Issuance from './views/issuance'
 import { ROUTES } from 'utils/constants'
 import { i18n } from '@lingui/core'
+import { en, es } from 'make-plural/plurals'
 import { I18nProvider } from '@lingui/react'
-import { messages } from './locales/en/messages'
+import { messages as esMessages } from './locales/es/messages'
+import { messages as enMessages } from './locales/en/messages'
 import Deploy from 'views/deploy'
 
 // Requires rToken to be selected and a wallet connected
@@ -47,7 +49,13 @@ const Guard = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>
 }
 
-i18n.load('en', messages)
+i18n.load('en', enMessages)
+i18n.load('es', esMessages)
+
+i18n.loadLocaleData({
+  en: { plurals: en },
+  es: { plurals: es },
+})
 i18n.activate('en')
 
 /**

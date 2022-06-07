@@ -9,6 +9,8 @@ import { deployerFormAtom, updateFormAtom } from '../atoms'
 import Field from './Field'
 import deepEqual from 'fast-deep-equal'
 import { useFormContext } from 'react-hook-form'
+import { getAddress } from '@ethersproject/address'
+import { isAddress } from 'utils'
 
 const dataAtom = selectAtom(
   deployerFormAtom,
@@ -70,6 +72,7 @@ const TokenForm = (props: BoxProps) => {
         name="ownerAddress"
         options={{
           required: t`RToken owner address is required`,
+          validate: (value) => !!isAddress(value) || t`Invalid address`,
         }}
       />
     </Card>

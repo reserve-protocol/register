@@ -4001,7 +4001,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ],\
       [\
         "make-plural",\
-        "npm:6.2.2"\
+        "npm:7.1.0"\
       ],\
       [\
         "makeerror",\
@@ -6009,6 +6009,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["i18next-browser-languagedetector", "npm:6.1.4"],\
             ["immer", "npm:9.0.12"],\
             ["jotai", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.6.7"],\
+            ["make-plural", "npm:7.1.0"],\
             ["prettier", "npm:2.6.2"],\
             ["react", "npm:18.1.0"],\
             ["react-blockies", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.4.1"],\
@@ -21284,6 +21285,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["make-plural", "npm:6.2.2"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:7.1.0", {\
+          "packageLocation": "./.yarn/cache/make-plural-npm-7.1.0-6608b347f1-d0ef253e50.zip/node_modules/make-plural/",\
+          "packageDependencies": [\
+            ["make-plural", "npm:7.1.0"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["makeerror", [\
@@ -24365,6 +24373,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["i18next-browser-languagedetector", "npm:6.1.4"],\
             ["immer", "npm:9.0.12"],\
             ["jotai", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.6.7"],\
+            ["make-plural", "npm:7.1.0"],\
             ["prettier", "npm:2.6.2"],\
             ["react", "npm:18.1.0"],\
             ["react-blockies", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.4.1"],\
