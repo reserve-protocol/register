@@ -14,21 +14,21 @@ const defaultValues = {
   symbol: '',
   ownerAddress: '',
   // backing params
-  tradingDelay: '',
-  auctionLength: '',
-  backingBuffer: '',
-  maxTradeSlippage: '',
-  dustAmount: '',
-  issuanceRate: '',
+  tradingDelay: '0', // delay after default confirmed
+  auctionLength: '900', // 15 minutes
+  backingBuffer: '0.0001', // 0.01%
+  maxTradeSlippage: '0.01', // 1%
+  dustAmount: '0.01',
+  issuanceRate: '0.00025',
   // other
   maxTradeVolume: '1000000',
-  rTokenDist: 40, // %
-  rsrDist: 60, // %
-  rewardPeriod: '604800', // seconds
+  rTokenDist: 40, // reward dist %
+  rsrDist: 60, // reward dist %
+  rewardPeriod: '604800', // 1 week
   rewardRatio: '0.02284', // ? ask
   unstakingDelay: '1209600', // seconds 2 week
   oneshotPauseDuration: '864000', // seconds 10 days
-  minBidSize: '',
+  minBidSize: '1',
 }
 
 const Deploy = () => {
