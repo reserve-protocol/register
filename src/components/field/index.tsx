@@ -1,8 +1,9 @@
-import { Trans } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 import { useMemo } from 'react'
 import { HelpCircle } from 'react-feather'
 import { RegisterOptions, useFormContext } from 'react-hook-form'
 import { Box, Flex, Input, Text, InputProps } from 'theme-ui'
+import { StringMap } from 'types'
 
 interface FieldProps extends InputProps {
   label: string
@@ -32,6 +33,24 @@ const Field = ({ label, help, children, ...props }: FieldProps) => (
   </Box>
 )
 
+const getErrorMessage = (error: StringMap): string => {
+  console.log('error?', error)
+  if (error.required) {
+    return t`This field is required`
+  }
+  if (error.pattern) {
+    return t`Invalid number`
+  }
+  if (error.maxLength) {
+    return t`Invalid range (max: ${error.maxLength.value})`
+  }
+  if (error.minLength) {
+    return t`Invalid range (min: ${error.minLength.value})`
+  }
+
+  return t`Invalid value`
+}
+
 export const FormField = ({
   placeholder,
   name,
@@ -48,17 +67,18 @@ export const FormField = ({
       <Field {...props}>
         <Input
           placeholder={placeholder}
-          sx={{ borderColor: errors[name] ? 'danger' : 'inherit' }}
+          sx={{ borderColor: errors[name] ? 'danger' : 'inputBorder' }}
           {...register(name, options)}
         />
-        {!!errors[name]?.message && (
+
+        {!!errors[name] && (
           <Text
             mt={1}
             ml={2}
             sx={{ display: 'block', fontSize: 1 }}
             variant="error"
           >
-            {errors[name].message}
+            {errors[name].message || getErrorMessage(errors[name])}
           </Text>
         )}
       </Field>
@@ -76,7 +96,6 @@ export const StaticField = ({ value, ...props }: FieldProps) => (
         '&:disabled': {
           backgroundColor: 'inherit',
           color: 'lightText',
-          borderColor: 'inherit',
         },
       }}
     />

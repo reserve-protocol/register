@@ -227,7 +227,7 @@ export const theme: Theme = {
   forms: {
     input: {
       // outline: 'none',
-      borderColor: (t: Theme) => `${t.colors?.inputBorder} !important`,
+      borderColor: 'inputBorder',
       outlineColor: '#000',
       borderRadius: borderRadius.inputs,
 

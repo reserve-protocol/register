@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Box, Grid } from 'theme-ui'
 import BackingForm from './components/BackingForm'
+import OtherForm from './components/OtherForm'
 import StakingToken from './components/StakingToken'
 import TokenForm from './components/TokenForm'
 
@@ -49,7 +50,8 @@ const Deploy = () => {
         <Grid gap={5} columns={[1, 2]}>
           <Box>
             <TokenForm mb={4} />
-            <BackingForm />
+            <BackingForm mb={4} />
+            <OtherForm />
           </Box>
           <Box>
             <StakingToken />
