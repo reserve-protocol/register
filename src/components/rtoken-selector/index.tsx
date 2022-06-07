@@ -2,12 +2,11 @@ import styled from '@emotion/styled'
 import TokenLogo from 'components/icons/TokenLogo'
 import Popup from 'components/popup'
 import { useAtom, useAtomValue } from 'jotai'
-import { useUpdateAtom } from 'jotai/utils'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
-import { useSearchParams } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import rtokens from 'rtokens'
-import { selectedRTokenAtom, rTokenAtom } from 'state/atoms'
+import { rTokenAtom, selectedRTokenAtom } from 'state/atoms'
 import { transition } from 'theme'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
@@ -71,24 +70,21 @@ const SelectedToken = () => {
 }
 
 const RTokenSelector = (props: BoxProps) => {
-  const [, setSearchParams] = useSearchParams()
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
   const [isVisible, setVisible] = useState(false)
   const [selected, setSelected] = useAtom(selectedRTokenAtom)
 
   const handleSelect = useCallback(
     (token: string) => {
-      setSelected(token)
-      setSearchParams({ token })
-      setVisible(false)
+      if (token !== selected) {
+        setSelected(token)
+        navigate(`${pathname}?token=${token}`)
+        setVisible(false)
+      }
     },
-    [setSelected]
+    [setSelected, selected]
   )
-
-  useEffect(() => {
-    if (selected) {
-      setSearchParams({ token: selected })
-    }
-  }, [])
 
   return (
     <Popup

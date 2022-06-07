@@ -35,12 +35,10 @@ const AppHeader = () => {
   return (
     <Container px={4}>
       {pathname === ROUTES.DEPLOY ? (
-        <Flex ml={4} sx={{ alignItems: 'center' }}>
-          <Logo style={{ cursor: 'pointer' }} onClick={() => navigate('/')} />
-          <Text ml={3} variant="subtitle">
-            <Trans>RToken Deployer</Trans>
-          </Text>
-        </Flex>
+        <Logo
+          style={{ cursor: 'pointer', marginLeft: 16 }}
+          onClick={() => navigate('/')}
+        />
       ) : (
         <RTokenSelector />
       )}

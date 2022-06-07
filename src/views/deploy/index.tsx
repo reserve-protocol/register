@@ -47,7 +47,7 @@ const Deploy = () => {
   return (
     <FormProvider {...form}>
       <Container sx={{ maxWidth: 1024, margin: 'auto' }}>
-        <Grid gap={5} columns={[1, 2]} mb={3}>
+        <Grid gap={5} columns={[1, 2]} mb={4}>
           <Box>
             <TokenForm mb={4} />
             <BackingForm mb={4} />
