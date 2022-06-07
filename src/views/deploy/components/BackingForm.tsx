@@ -1,7 +1,6 @@
 import { t, Trans } from '@lingui/macro'
 import { Card } from 'components'
 import { Box, BoxProps, Divider, Text } from 'theme-ui'
-import Field from './Field'
 
 const BackingForm = (props: BoxProps) => {
   return (

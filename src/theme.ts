@@ -34,6 +34,7 @@ export const smallButton = {
 export const colors = {
   text: '#000',
   secondaryText: '#666666',
+  lightText: '#808080',
   background: '#F9F8F4',
   lightBackground: '#F2F2F2',
   contentBackground: '#fff',
@@ -41,6 +42,7 @@ export const colors = {
   accent: '#00FFBF',
   secondary: '#E8E8E8',
   border: '#DFDFDF',
+  inputBorder: '#E5E5E5',
   disabled: '#ccc',
   danger: '#FF0000',
   warning: '#FF7A00',
@@ -224,14 +226,10 @@ export const theme: Theme = {
   },
   forms: {
     input: {
-      // transition: 'border .2s ease,color .2s ease',
       // outline: 'none',
-      borderColor: 'var(--theme-ui-colors-border)',
+      borderColor: (t: Theme) => `${t.colors?.inputBorder} !important`,
+      outlineColor: '#000',
       borderRadius: borderRadius.inputs,
-
-      '&:focus': {
-        borderColor: 'none',
-      },
 
       '&:disabled': {
         backgroundColor: 'secondary',

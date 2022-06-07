@@ -1,4 +1,6 @@
+import { useWeb3React } from '@web3-react/core'
 import { Container } from 'components'
+import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Box, Grid } from 'theme-ui'
 import BackingForm from './components/BackingForm'
@@ -29,10 +31,17 @@ const defaultValues = {
 }
 
 const Deploy = () => {
+  const { account } = useWeb3React()
   const form = useForm({
     mode: 'onBlur',
     defaultValues,
   })
+
+  useEffect(() => {
+    if (account) {
+      form.setValue('ownerAddress', account)
+    }
+  }, [account])
 
   return (
     <FormProvider {...form}>

@@ -1,40 +1,14 @@
 import { t, Trans } from '@lingui/macro'
-import { useWeb3React } from '@web3-react/core'
 import { Card } from 'components'
-import { useAtomValue } from 'jotai'
-import { selectAtom, useUpdateAtom } from 'jotai/utils'
-import { useEffect } from 'react'
-import { Box, Text, BoxProps, Divider } from 'theme-ui'
-import { deployerFormAtom, updateFormAtom } from '../atoms'
-import Field from './Field'
-import deepEqual from 'fast-deep-equal'
+import { FormField, StaticField } from 'components/field'
 import { useFormContext } from 'react-hook-form'
-import { getAddress } from '@ethersproject/address'
+import { Box, BoxProps, Divider, Text } from 'theme-ui'
 import { isAddress } from 'utils'
 
-const dataAtom = selectAtom(
-  deployerFormAtom,
-  (data) => ({
-    name: data.name,
-    symbol: data.symbol,
-    ownerAddress: data.ownerAddress,
-  }),
-  deepEqual
-)
-
 const TokenForm = (props: BoxProps) => {
-  const { account } = useWeb3React()
-  const update = useUpdateAtom(updateFormAtom)
-
-  useEffect(() => {
-    update({ ownerAddress: account })
-  }, [account])
-
-  const handleChange = (field: string) => {
-    return (value: string) => {
-      update({ [field]: value })
-    }
-  }
+  const { watch } = useFormContext()
+  const ticker = watch('ticker')
+  const stRSR = ticker ? `st${ticker.toString().toUpperCase()}RSR` : 'stRSR'
 
   return (
     <Card p={4} {...props}>
@@ -44,31 +18,28 @@ const TokenForm = (props: BoxProps) => {
         </Text>
       </Box>
       <Divider mx={-4} mb={3} />
-      <Field
+      <FormField
         label={t`Token name`}
         placeholder={t`Input token name`}
-        help={t`Test`}
         mb={3}
         name="name"
         options={{
           required: t`Token name required`,
         }}
       />
-
-      <Field
+      <FormField
         label={t`Ticker`}
         placeholder={t`Input ticker`}
-        help={t`Test`}
         mb={3}
         name="ticker"
         options={{
           required: t`Token ticker is required`,
         }}
       />
-      <Field
+      <StaticField label={t`Staking token`} value={stRSR} mb={3} />
+      <FormField
         label={t`Ownership address`}
         placeholder={t`Input ownership address`}
-        help={t`Test`}
         name="ownerAddress"
         options={{
           required: t`RToken owner address is required`,
