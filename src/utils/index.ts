@@ -1,8 +1,10 @@
 import { BigNumberMap } from './../types/index'
 import { getAddress } from '@ethersproject/address'
-import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
+
+export const decimalPattern = /^[0-9]*[.]?[0-9]*$/i
+export const numberPattern = /^\d+$/
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: string): string | false {

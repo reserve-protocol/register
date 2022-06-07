@@ -22,11 +22,11 @@ const defaultValues = {
   issuanceRate: '',
   // other
   maxTradeVolume: '1000000',
-  rTokenDist: '40', // %
-  rsrDist: '60', // %
+  rTokenDist: 40, // %
+  rsrDist: 60, // %
   rewardPeriod: '604800', // seconds
   rewardRatio: '0.02284', // ? ask
-  unstakingDelay: '1209600', // seconds 1 week
+  unstakingDelay: '1209600', // seconds 2 week
   oneshotPauseDuration: '864000', // seconds 10 days
   minBidSize: '',
 }
@@ -47,7 +47,7 @@ const Deploy = () => {
   return (
     <FormProvider {...form}>
       <Container sx={{ maxWidth: 1024, margin: 'auto' }}>
-        <Grid gap={5} columns={[1, 2]}>
+        <Grid gap={5} columns={[1, 2]} mb={3}>
           <Box>
             <TokenForm mb={4} />
             <BackingForm mb={4} />

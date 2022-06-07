@@ -1,9 +1,23 @@
 import { t, Trans } from '@lingui/macro'
 import { Card } from 'components'
-import { FormField } from 'components/field'
-import { Box, BoxProps, Divider, Text } from 'theme-ui'
+import Field, { FormField } from 'components/field'
+import { useState } from 'react'
+import { useFormContext } from 'react-hook-form'
+import { Box, BoxProps, Divider, Slider, Text } from 'theme-ui'
+import { decimalPattern, numberPattern } from 'utils'
 
 const OtherForm = (props: BoxProps) => {
+  const { getValues, setValue } = useFormContext()
+  const { rTokenDist, rsrDist } = getValues()
+  const [, setDist] = useState(rTokenDist)
+
+  const handleChange = (e: any) => {
+    const value = Number(e.target.value)
+    setValue('rTokenDist', value)
+    setValue('rsrDist', 100 - value)
+    setDist(value)
+  }
+
   return (
     <Card p={4} {...props}>
       <Box p={1} pt={0} pb={2}>
@@ -19,45 +33,67 @@ const OtherForm = (props: BoxProps) => {
         name="oneshotPauseDuration"
         options={{
           required: true,
-          pattern: /^[0-9]*[.]?[0-9]*$/i,
+          pattern: numberPattern,
+          min: 3600,
+          max: 31536000,
         }}
       />
       <FormField
-        label={t`Trading Delay`}
-        placeholder={t`Seconds`}
+        label={t`Unstaking Delay (s)`}
+        placeholder={t`Delay in Seconds`}
         mb={3}
-        name="tradingDelay"
+        name="unstakingDelay"
         options={{
           required: true,
+          pattern: numberPattern,
+          max: 31536000,
+          min: 1,
         }}
       />
       <FormField
-        label={t`Trading Delay`}
+        label={t`Reward period (s)`}
         placeholder={t`Seconds`}
         mb={3}
-        name="tradingDelay"
+        name="rewardPeriod"
         options={{
           required: true,
+          pattern: numberPattern,
+          min: 10,
+          max: 31536000,
         }}
       />
       <FormField
-        label={t`Trading Delay`}
-        placeholder={t`Seconds`}
+        label={t`Reward ratio (decimals)`}
+        placeholder={t`stRSR payout fraction 0.0`}
         mb={3}
-        name="tradingDelay"
+        name="rewardRatio"
         options={{
           required: true,
+          pattern: decimalPattern,
+          min: 0.000000001,
+          max: 1,
         }}
       />
       <FormField
-        label={t`Trading Delay`}
-        placeholder={t`Seconds`}
+        label={t`Max trade volume`}
+        placeholder={t`Amount`}
         mb={3}
-        name="tradingDelay"
+        name="maxTradeVolume"
         options={{
           required: true,
+          pattern: decimalPattern,
+          min: 1000,
+          max: 1000000000,
         }}
       />
+      <Field
+        label={t`Reward distribution [${rTokenDist}% rToken - ${rsrDist}% RSR]`}
+        mb={3}
+      >
+        <Box mx={2} mt={4}>
+          <Slider onChange={handleChange} defaultValue={rTokenDist} />
+        </Box>
+      </Field>
     </Card>
   )
 }
