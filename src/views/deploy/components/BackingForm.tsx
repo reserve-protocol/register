@@ -38,6 +38,18 @@ const BackingForm = (props: BoxProps) => {
         }}
       />
       <FormField
+        label={t`Minimum bid size`}
+        placeholder={t`Amount`}
+        mb={3}
+        name="minBidSize"
+        options={{
+          required: true,
+          pattern: numberPattern,
+          max: 1000000,
+          min: 1,
+        }}
+      />
+      <FormField
         label={t`Backing buffer (decimals %)`}
         placeholder={t`Extra collateral to keep`}
         mb={3}

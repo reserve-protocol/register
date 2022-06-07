@@ -34,21 +34,18 @@ const Field = ({ label, help, children, ...props }: FieldProps) => (
 )
 
 const getErrorMessage = (error: StringMap): string => {
-  console.log('error?', error)
-  if (error.required) {
-    return t`This field is required`
+  switch (error.type) {
+    case 'required':
+      return t`This field is required`
+    case 'pattern':
+      return t`Invalid number`
+    case 'max':
+      return t`Invalid maximum range`
+    case 'min':
+      return t`Invalid minimum range `
+    default:
+      return t`Invalid value`
   }
-  if (error.pattern) {
-    return t`Invalid number`
-  }
-  if (error.maxLength) {
-    return t`Invalid range (max: ${error.maxLength.value})`
-  }
-  if (error.minLength) {
-    return t`Invalid range (min: ${error.minLength.value})`
-  }
-
-  return t`Invalid value`
 }
 
 export const FormField = ({

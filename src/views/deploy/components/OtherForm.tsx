@@ -22,10 +22,18 @@ const OtherForm = (props: BoxProps) => {
     <Card p={4} {...props}>
       <Box p={1} pt={0} pb={2}>
         <Text sx={{ fontSize: 3 }}>
-          <Trans>Backing Manager</Trans>
+          <Trans>Other</Trans>
         </Text>
       </Box>
       <Divider mx={-4} mb={3} />
+      <Field
+        label={t`Reward distribution [${rTokenDist}% rToken - ${rsrDist}% RSR]`}
+        mb={4}
+      >
+        <Box mx={2} mt={4}>
+          <Slider onChange={handleChange} defaultValue={rTokenDist} />
+        </Box>
+      </Field>
       <FormField
         label={t`One shot pause duration (s)`}
         placeholder={t`Duration in seconds`}
@@ -77,7 +85,6 @@ const OtherForm = (props: BoxProps) => {
       <FormField
         label={t`Max trade volume`}
         placeholder={t`Amount`}
-        mb={3}
         name="maxTradeVolume"
         options={{
           required: true,
@@ -86,14 +93,6 @@ const OtherForm = (props: BoxProps) => {
           max: 1000000000,
         }}
       />
-      <Field
-        label={t`Reward distribution [${rTokenDist}% rToken - ${rsrDist}% RSR]`}
-        mb={3}
-      >
-        <Box mx={2} mt={4}>
-          <Slider onChange={handleChange} defaultValue={rTokenDist} />
-        </Box>
-      </Field>
     </Card>
   )
 }
