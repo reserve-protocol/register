@@ -4,8 +4,8 @@ import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Box, Grid } from 'theme-ui'
 import BackingForm from './components/BackingForm'
+import BasketOverview from './components/BasketOverview'
 import OtherForm from './components/OtherForm'
-import StakingToken from './components/StakingToken'
 import TokenForm from './components/TokenForm'
 
 const defaultValues = {
@@ -54,7 +54,7 @@ const Deploy = () => {
             <OtherForm />
           </Box>
           <Box>
-            <StakingToken />
+            <BasketOverview />
           </Box>
         </Grid>
       </Container>
