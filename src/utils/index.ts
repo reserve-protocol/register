@@ -1,3 +1,4 @@
+import { BigNumber } from '@ethersproject/bignumber'
 import { BigNumberMap } from './../types/index'
 import { getAddress } from '@ethersproject/address'
 import { Contract } from '@ethersproject/contracts'
@@ -23,8 +24,10 @@ export function hasAllowance(
   allowances: BigNumberMap,
   requiredAllowances: BigNumberMap
 ) {
-  return Object.keys(requiredAllowances).every((address) =>
-    allowances[address]?.gte(requiredAllowances[address])
+  return Object.keys(requiredAllowances).every(
+    (address) =>
+      BigNumber.isBigNumber(allowances[address]) &&
+      allowances[address].gte(requiredAllowances[address])
   )
 }
 

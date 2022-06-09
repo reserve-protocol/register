@@ -73,7 +73,7 @@ const AssetsChart = ({ collaterals }: { collaterals: any }) => (
  */
 const AssetsOverview = ({ data, ...props }: Props) => {
   const marketCap = useTokenSupply(data.address)
-  const collaterals = useAssets(data, marketCap)
+  // const collaterals = useAssets(data, marketCap)
 
   return (
     <Box mb={3} {...props}>
@@ -102,7 +102,7 @@ const AssetsOverview = ({ data, ...props }: Props) => {
           </Box>
           <Box sx={{ flexGrow: 1 }}>
             <Text variant="contentTitle">Total collateral assets</Text>
-            <AssetsChart collaterals={collaterals} />
+            {/* <AssetsChart collaterals={collaterals} /> */}
           </Box>
         </Flex>
       </Card>

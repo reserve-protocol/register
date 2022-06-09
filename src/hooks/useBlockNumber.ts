@@ -61,10 +61,13 @@ export function BlockUpdater() {
 
   useEffect(() => {
     setBlock(block)
+    console.log('block', block)
 
     if (block && provider) {
       provider.getBlock(block).then((blockData) => {
-        setBlockTimestamp(blockData.timestamp * 1000)
+        if (blockData?.timestamp) {
+          setBlockTimestamp(blockData.timestamp * 1000)
+        }
       })
     }
   }, [block, setBlock])

@@ -1,12 +1,9 @@
 import { useWeb3React } from '@web3-react/core'
 import { Container } from 'components'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { Box, Grid } from 'theme-ui'
-import BackingForm from './components/BackingForm'
-import BasketOverview from './components/BasketOverview'
-import OtherForm from './components/OtherForm'
-import TokenForm from './components/TokenForm'
+import BasketSetup from './components/BasketSetup'
+import TokenConfiguration from './components/TokenConfiguration'
 
 const defaultValues = {
   // token params
@@ -31,12 +28,18 @@ const defaultValues = {
   minBidSize: '1',
 }
 
+const VIEWS = [TokenConfiguration, BasketSetup]
+
 const Deploy = () => {
   const { account } = useWeb3React()
+  const [view, setView] = useState(0)
   const form = useForm({
     mode: 'onBlur',
     defaultValues,
   })
+
+  // current tab view [config - basket]
+  const View = VIEWS[view]
 
   useEffect(() => {
     if (account) {
@@ -47,16 +50,7 @@ const Deploy = () => {
   return (
     <FormProvider {...form}>
       <Container sx={{ maxWidth: 1024, margin: 'auto' }}>
-        <Grid gap={5} columns={[1, 2]} mb={4}>
-          <Box>
-            <TokenForm mb={4} />
-            <BackingForm mb={4} />
-            <OtherForm />
-          </Box>
-          <Box>
-            <BasketOverview />
-          </Box>
-        </Grid>
+        {View && <View onViewChange={setView} />}
       </Container>
     </FormProvider>
   )
