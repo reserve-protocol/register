@@ -2,7 +2,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Container } from 'components'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { Flex } from 'theme-ui'
+import { Box, Flex } from 'theme-ui'
 import BasketSetup from './components/BasketSetup'
 import DeployHeader from './components/DeployHeader'
 import TokenConfiguration from './components/TokenConfiguration'
@@ -52,7 +52,13 @@ const Deploy = () => {
   return (
     <FormProvider {...form}>
       <Container sx={{ maxWidth: 1024, margin: 'auto' }}>
-        <DeployHeader mt={2} mb={5} currentView={view} onViewChange={setView} />
+        <DeployHeader
+          mt={2}
+          mb={5}
+          isValid={false}
+          currentView={view}
+          onViewChange={setView}
+        />
         {View && <View onViewChange={setView} />}
       </Container>
     </FormProvider>

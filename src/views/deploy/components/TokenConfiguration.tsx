@@ -9,7 +9,7 @@ interface Props extends BoxProps {
 }
 
 const TokenConfiguration = ({ onViewChange }: Props) => (
-  <Grid gap={5} columns={[1, 2]} mb={4}>
+  <Grid gap={5} columns={[1, 2]}>
     <Box>
       <TokenForm mb={4} />
       <BackingForm mb={4} />
