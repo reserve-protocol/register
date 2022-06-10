@@ -37,7 +37,7 @@ const AppHeader = () => {
       {pathname === ROUTES.DEPLOY ? (
         <Flex ml={4} sx={{ alignItems: 'center' }}>
           <Logo style={{ cursor: 'pointer' }} onClick={() => navigate('/')} />
-          <Text ml={3} variant="subtitle">
+          <Text ml={3} sx={{ fontSize: 3 }} variant="subtitle">
             <Trans>RToken Deployer</Trans>
           </Text>
         </Flex>

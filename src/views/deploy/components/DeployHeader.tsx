@@ -13,10 +13,11 @@ const DeployHeader = ({
   currentView,
   onViewChange,
   isValid,
+  sx = {},
   ...props
 }: Props) => {
   return (
-    <Flex {...props}>
+    <Flex sx={{ alignItems: 'center', ...sx }} {...props}>
       <OptionSwitch
         value={currentView}
         onChange={onViewChange}
