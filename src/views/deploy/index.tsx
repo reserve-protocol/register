@@ -5,6 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { Box, Flex } from 'theme-ui'
 import BasketSetup from './components/BasketSetup'
 import DeployHeader from './components/DeployHeader'
+import DeployIntro from './components/DeployIntro'
 import TokenConfiguration from './components/TokenConfiguration'
 
 const defaultValues = {
@@ -34,6 +35,7 @@ const VIEWS = [TokenConfiguration, BasketSetup]
 
 const Deploy = () => {
   const { account } = useWeb3React()
+  const [intro, setIntro] = useState(true)
   const [view, setView] = useState(0)
   const form = useForm({
     mode: 'onBlur',
@@ -49,9 +51,13 @@ const Deploy = () => {
     }
   }, [account])
 
+  if (intro) {
+    return <DeployIntro />
+  }
+
   return (
     <FormProvider {...form}>
-      <Container sx={{ maxWidth: 1024, margin: 'auto' }}>
+      <Container sx={{ maxWidth: 1024, margin: 'auto' }} mb={2}>
         <DeployHeader
           mt={2}
           mb={5}

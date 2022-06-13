@@ -61,7 +61,6 @@ export function BlockUpdater() {
 
   useEffect(() => {
     setBlock(block)
-    console.log('block', block)
 
     if (block && provider) {
       provider.getBlock(block).then((blockData) => {

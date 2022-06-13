@@ -45,6 +45,7 @@ export const colors = {
   inputBorder: '#E5E5E5',
   disabled: '#ccc',
   danger: '#FF0000',
+  muted: '#D9D9D9',
   warning: '#FF7A00',
   modes: {
     dark: {
@@ -108,6 +109,9 @@ export const theme: Theme = {
     },
     legend: {
       color: '#808080',
+    },
+    muted: {
+      color: 'muted',
     },
     a: {
       transition,
@@ -257,6 +261,11 @@ export const theme: Theme = {
       ...baseButton,
       backgroundColor: 'primary',
       color: '#E5E6E9',
+    },
+    muted: {
+      ...baseButton,
+      backgroundColor: 'inputBorder',
+      color: 'black',
     },
     circle: {
       ...baseButton,

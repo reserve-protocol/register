@@ -33,7 +33,9 @@ const Layout = ({ children }: { children: ReactNode }) => {
         }}
       >
         <Header />
-        <Box sx={{ overflow: 'auto', flexGrow: 99999 }}>{children}</Box>
+        <Box sx={{ overflow: 'auto', flexGrow: 99999, position: 'relative' }}>
+          {children}
+        </Box>
       </Flex>
     </Flex>
   )
