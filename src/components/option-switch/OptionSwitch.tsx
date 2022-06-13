@@ -20,6 +20,7 @@ const OptionSwitch = ({
   >
     {options.map((option, index) => (
       <Box
+        key={index}
         sx={{
           backgroundColor: value === index ? 'contentBackground' : 'none',
           borderRadius: 30,

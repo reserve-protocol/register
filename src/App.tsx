@@ -21,6 +21,7 @@ import { I18nProvider } from '@lingui/react'
 import { messages as esMessages } from './locales/es/messages'
 import { messages as enMessages } from './locales/en/messages'
 import Deploy from 'views/deploy'
+import DeployIntro from 'views/deploy/components/DeployIntro'
 
 // Requires rToken to be selected and a wallet connected
 // TODO: Better placeholders
@@ -100,7 +101,8 @@ const App = () => (
                 }
               />
               <Route path={ROUTES.WALLET} element={<WalletManagement />} />
-              <Route path={ROUTES.DEPLOY} element={<Deploy />} />
+              <Route path={ROUTES.DEPLOY} element={<DeployIntro />} />
+              <Route path={ROUTES.DEPLOY_SETUP} element={<Deploy />} />
             </Routes>
           </Layout>
         </ThemeProvider>

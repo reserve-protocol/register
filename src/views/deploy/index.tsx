@@ -2,6 +2,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Container } from 'components'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+import { Route, Routes } from 'react-router-dom'
 import { Box, Flex } from 'theme-ui'
 import BasketSetup from './components/BasketSetup'
 import DeployHeader from './components/DeployHeader'
@@ -35,7 +36,6 @@ const VIEWS = [TokenConfiguration, BasketSetup]
 
 const Deploy = () => {
   const { account } = useWeb3React()
-  const [intro, setIntro] = useState(true)
   const [view, setView] = useState(0)
   const form = useForm({
     mode: 'onBlur',
@@ -50,10 +50,6 @@ const Deploy = () => {
       form.setValue('ownerAddress', account)
     }
   }, [account])
-
-  if (intro) {
-    return <DeployIntro />
-  }
 
   return (
     <FormProvider {...form}>
