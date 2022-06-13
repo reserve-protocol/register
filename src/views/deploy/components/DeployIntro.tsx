@@ -53,12 +53,14 @@ const DeployIntro = () => {
       }}
     >
       <Flex
+        mx="auto"
         sx={{
           padding: 3,
           justifyContent: 'center',
           flexDirection: 'column',
           alignItems: 'center',
           overflow: 'auto',
+          maxWidth: '1300px',
           backgroundColor: 'contentBackground',
           minHeight: '100%',
           borderRadius: 24,

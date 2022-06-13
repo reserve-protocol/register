@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Box, Flex } from 'theme-ui'
-import { ROUTES } from 'utils/constants'
+import { isContentOnlyView } from 'utils/constants'
 import Header from './header'
 import Sidebar from './sidebar'
 
@@ -21,7 +21,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
         height: '100%',
       }}
     >
-      {pathname !== ROUTES.DEPLOY && <Sidebar />}
+      {!isContentOnlyView(pathname) && <Sidebar />}
       <Flex
         sx={{
           flexGrow: 99999,

@@ -5,7 +5,7 @@ import Account from '../../account'
 import TransactionCenter from 'components/transactions/table/manager/TransactionCenter'
 import styled from '@emotion/styled'
 import { Link, useLocation } from 'react-router-dom'
-import { ROUTES } from 'utils/constants'
+import { isContentOnlyView, ROUTES } from 'utils/constants'
 import Logo from 'components/icons/Logo'
 import { useNavigate } from 'react-router-dom'
 import { Trans } from '@lingui/macro'
@@ -26,7 +26,6 @@ const Container = styled(Flex)`
 
 /**
  * Application header      {pathname !== '/deploy' && <Sidebar />}
-
  */
 const AppHeader = () => {
   const { pathname } = useLocation()
@@ -34,7 +33,7 @@ const AppHeader = () => {
 
   return (
     <Container px={4}>
-      {pathname === ROUTES.DEPLOY ? (
+      {isContentOnlyView(pathname) ? (
         <Flex ml={4} sx={{ alignItems: 'center' }}>
           <Logo style={{ cursor: 'pointer' }} onClick={() => navigate('/')} />
           <Text ml={3} sx={{ fontSize: 3 }} variant="subtitle">

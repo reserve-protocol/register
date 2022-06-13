@@ -23,6 +23,11 @@ export const ROUTES = Object.freeze({
   WALLET: '/wallet',
 })
 
+export const isContentOnlyView = (pathname: string) =>
+  pathname.indexOf(ROUTES.DEPLOY) !== -1
+
+export const DEPLOY_ROUTES = [ROUTES.DEPLOY, ROUTES.DEPLOY_SETUP]
+
 export const RSR: Token = {
   address: '0x320623b8E4fF03373931769A31Fc52A4E78B5d70',
   name: 'Reserve Rights',
