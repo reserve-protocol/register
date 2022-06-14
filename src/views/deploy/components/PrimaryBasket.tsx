@@ -34,7 +34,7 @@ const PrimaryBasket = ({ onAdd }: Props) => {
       }
     >
       <Flex variant="layout.verticalAlign">
-        <Text>
+        <Text py={1}>
           <Trans>Basket</Trans>
         </Text>
         <Box mx="auto" />

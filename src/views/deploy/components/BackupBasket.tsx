@@ -42,7 +42,14 @@ const Placeholder = ({ onAdd }: Props) => (
           <Trans>Diversity factor</Trans>
         </Text>
         <Box mx="auto" />
-        <Input sx={{ width: 48 }} disabled defaultValue="n=0" mr={2} />
+        <Box
+          sx={{ backgroundColor: 'lightBackground', borderRadius: 16 }}
+          mr={2}
+          px={3}
+          py={1}
+        >
+          <Text>n=0</Text>
+        </Box>
         <Help content="TODO" />
       </Flex>
       <Divider my={3} mx={-4} />
