@@ -1,18 +1,23 @@
-import { Trans } from '@lingui/macro'
-import { Box, Text, Card, CardProps, Divider } from 'theme-ui'
+import { t, Trans } from '@lingui/macro'
+import { Button, TitleCard } from 'components'
+import { SmallButton } from 'components/button'
+import { smallButton } from 'theme'
+import { Box, Text, Card, CardProps, Divider, Flex } from 'theme-ui'
 
 interface Props extends CardProps {}
 
 const PrimaryBasket = () => {
   return (
-    <Card p={4}>
-      <Box p={1} pt={0} pb={2}>
-        <Text sx={{ fontSize: 3 }}>
-          <Trans>RToken Details</Trans>
-        </Text>
-      </Box>
-      <Divider mx={-4} mb={3} />
-    </Card>
+    <TitleCard
+      title={t`Primary basket`}
+      right={
+        <Flex>
+          <SmallButton>
+            <Trans>Add</Trans>
+          </SmallButton>
+        </Flex>
+      }
+    ></TitleCard>
   )
 }
 

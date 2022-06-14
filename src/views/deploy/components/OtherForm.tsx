@@ -1,9 +1,9 @@
-import { t, Trans } from '@lingui/macro'
+import { t } from '@lingui/macro'
 import { TitleCard } from 'components'
 import Field, { FormField } from 'components/field'
 import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { Box, BoxProps, Divider, Slider, Text } from 'theme-ui'
+import { Box, BoxProps, Slider } from 'theme-ui'
 import { decimalPattern, numberPattern } from 'utils'
 
 const OtherForm = (props: BoxProps) => {

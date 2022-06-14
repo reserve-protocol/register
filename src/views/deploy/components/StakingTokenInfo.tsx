@@ -2,7 +2,6 @@ import { t, Trans } from '@lingui/macro'
 import TokenLogo from 'components/icons/TokenLogo'
 import IconInfo from 'components/info-icon'
 import { useFormContext } from 'react-hook-form'
-import { borderRadius } from 'theme'
 import { Box, BoxProps, Text } from 'theme-ui'
 
 const StakingTokenInfo = (props: BoxProps) => {
@@ -11,15 +10,7 @@ const StakingTokenInfo = (props: BoxProps) => {
   const stRSR = ticker ? `st${ticker.toString().toUpperCase()}RSR` : 'stRSR'
 
   return (
-    <Box
-      {...props}
-      p={4}
-      mb={4}
-      sx={(theme: any) => ({
-        border: `1px solid ${theme.colors.border}`,
-        borderRadius: borderRadius.boxes,
-      })}
-    >
+    <Box variant="layout.borderBox" {...props} mb={4}>
       <Text sx={{ fontSize: 3 }}>
         <Trans>Staking Token</Trans>
       </Text>

@@ -1,3 +1,4 @@
+import { smallButton } from 'theme'
 import { Button as ThemeButton, ButtonProps, Spinner, Text } from 'theme-ui'
 
 const Button = (props: ButtonProps) => <ThemeButton {...props} />
@@ -36,6 +37,10 @@ export const LoadingButton = ({
       <Text>{text}</Text>
     )}
   </Button>
+)
+
+export const SmallButton = ({ sx = {}, ...props }: ButtonProps) => (
+  <Button {...props} sx={{ ...smallButton, ...sx }} />
 )
 
 export default Button

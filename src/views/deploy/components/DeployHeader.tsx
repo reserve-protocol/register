@@ -1,4 +1,5 @@
 import { t, Trans } from '@lingui/macro'
+import Help from 'components/help'
 import OptionSwitch from 'components/option-switch'
 import { HelpCircle } from 'react-feather'
 import { Box, BoxProps, Button, Flex, Text } from 'theme-ui'
@@ -28,7 +29,7 @@ const DeployHeader = ({
         <Text mr={2}>
           <Trans>Need help?</Trans>
         </Text>
-        <HelpCircle size={18} />
+        <Help content={<Text>test</Text>} />
       </Flex>
       <Button disabled={!isValid} px={[0, 5]}>
         <Trans>Complete Setup</Trans>

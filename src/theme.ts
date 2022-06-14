@@ -2,6 +2,12 @@ import type { Theme } from 'theme-ui'
 
 export const boxShadow = '0px 4px 34px rgba(0, 0, 0, 0.03)'
 export const transition = 'all .2s ease'
+export const centeredContent = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'column',
+}
 export const borderRadius = {
   inputs: 10,
   boxes: 16,
@@ -279,6 +285,22 @@ export const theme: Theme = {
       height: 24,
       width: 24,
       padding: 1,
+    },
+  },
+  layout: {
+    borderBox: {
+      border: '1px solid',
+      borderColor: 'border',
+      borderRadius: borderRadius.boxes,
+      padding: 4,
+    },
+    centered: {
+      ...centeredContent,
+      flexDirection: 'column',
+    },
+    verticalAlign: {
+      display: 'flex',
+      alignItems: 'center',
     },
   },
 }
