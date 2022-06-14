@@ -4,16 +4,23 @@ import { SmallButton } from 'components/button'
 import Help from 'components/help'
 import { Box, CardProps, Divider, Flex, Text } from 'theme-ui'
 
-interface Props extends CardProps {}
+interface Props extends CardProps {
+  onAdd(
+    data: {
+      basket: 'primary' | 'backup'
+      targetUnit?: string
+    } | null
+  ): void
+}
 
-const PrimaryBasket = () => {
+const PrimaryBasket = ({ onAdd }: Props) => {
   return (
     <TitleCard
       sx={{ height: 'fit-content' }}
       title={t`Primary basket`}
       right={
         <Flex variant="layout.verticalAlign">
-          <SmallButton mr={2}>
+          <SmallButton onClick={() => onAdd({ basket: 'primary' })} mr={2}>
             <Trans>Add</Trans>
           </SmallButton>
           <Help
@@ -36,8 +43,10 @@ const PrimaryBasket = () => {
       </Flex>
       <Divider mx={-4} my={3} />
       <Text variant="legend" sx={{ fontSize: 1 }}>
-        This is the basket & weights you want your RToken to use as it’s primary
-        backing.
+        <Trans>
+          This is the basket & weights you want your RToken to use as it’s
+          primary backing.
+        </Trans>
       </Text>
     </TitleCard>
   )

@@ -3,19 +3,34 @@ import { Card, TitleCard } from 'components'
 import { SmallButton } from 'components/button'
 import Help from 'components/help'
 import { useAtomValue } from 'jotai'
-import { Box, Text, CardProps, Flex, Input, Divider } from 'theme-ui'
+import { useCallback } from 'react'
+import { Box, CardProps, Divider, Flex, Input, Text } from 'theme-ui'
 import { backupCollateralAtom } from '../atoms'
 import EmergencyCollateral from './EmergencyCollateral'
 
-interface Props extends CardProps {}
+interface Props extends CardProps {
+  onAdd(
+    data: {
+      basket: 'primary' | 'backup'
+      targetUnit?: string
+    } | null
+  ): void
+}
 
-const Placeholder = ({ onAdd }: { onAdd(targetUnit?: string): void }) => (
+const Placeholder = ({ onAdd }: Props) => (
   <Box>
     <TitleCard
       title={t`Emergency collateral`}
       right={
         <Flex variant="layout.verticalAlign">
-          <SmallButton onClick={() => onAdd()} mr={2}>
+          <SmallButton
+            onClick={() =>
+              onAdd({
+                basket: 'backup',
+              })
+            }
+            mr={2}
+          >
             <Trans>Add</Trans>
           </SmallButton>
           <Help content="TODO" />
@@ -30,7 +45,7 @@ const Placeholder = ({ onAdd }: { onAdd(targetUnit?: string): void }) => (
         <Input sx={{ width: 48 }} disabled defaultValue="n=0" mr={2} />
         <Help content="TODO" />
       </Flex>
-      <Divider my={3} />
+      <Divider my={3} mx={-4} />
       <Text variant="legend" sx={{ fontSize: 1 }}>
         <Trans>
           Emergancy collateral with listed in the order of “priority” and the
@@ -51,15 +66,15 @@ const Placeholder = ({ onAdd }: { onAdd(targetUnit?: string): void }) => (
   </Box>
 )
 
-const BackupBasket = () => {
+const BackupBasket = ({ onAdd }: Props) => {
   const backupBasket = useAtomValue(backupCollateralAtom)
-  const handleAdd = (targetUnit: string) => {
-    console.log('handle add')
-  }
 
-  if (!Object.keys(backupBasket).length) {
-    return <Placeholder onAdd={handleAdd} />
-  }
+  const handleAdd = useCallback(
+    (targetUnit: string) => {
+      onAdd({ basket: 'backup', targetUnit })
+    },
+    [onAdd]
+  )
 
   return (
     <Box>
@@ -69,6 +84,7 @@ const BackupBasket = () => {
           {...backupBasket[targetUnit]}
         />
       ))}
+      {!Object.keys(backupBasket).length && <Placeholder onAdd={onAdd} />}
     </Box>
   )
 }
