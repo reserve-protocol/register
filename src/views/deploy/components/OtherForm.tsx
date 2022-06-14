@@ -1,5 +1,5 @@
 import { t, Trans } from '@lingui/macro'
-import { Card } from 'components'
+import { TitleCard } from 'components'
 import Field, { FormField } from 'components/field'
 import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
@@ -19,13 +19,7 @@ const OtherForm = (props: BoxProps) => {
   }
 
   return (
-    <Card p={4} {...props}>
-      <Box p={1} pt={0} pb={2}>
-        <Text sx={{ fontSize: 3 }}>
-          <Trans>Other</Trans>
-        </Text>
-      </Box>
-      <Divider mx={-4} mb={3} />
+    <TitleCard title={t`Other`} {...props}>
       <Field
         label={t`Reward distribution [${rTokenDist}% rToken - ${rsrDist}% RSR]`}
         mb={4}
@@ -93,7 +87,7 @@ const OtherForm = (props: BoxProps) => {
           max: 1000000000,
         }}
       />
-    </Card>
+    </TitleCard>
   )
 }
 

@@ -1,18 +1,11 @@
 import { t, Trans } from '@lingui/macro'
-import { Card } from 'components'
-import { FormField, StaticField } from 'components/field'
-import { useFormContext } from 'react-hook-form'
+import { TitleCard } from 'components/card'
+import { FormField } from 'components/field'
 import { Box, BoxProps, Divider, Text } from 'theme-ui'
 import { isAddress } from 'utils'
 
 const TokenForm = (props: BoxProps) => (
-  <Card p={4} {...props}>
-    <Box p={1} pt={0} pb={2}>
-      <Text sx={{ fontSize: 3 }}>
-        <Trans>RToken Details</Trans>
-      </Text>
-    </Box>
-    <Divider mx={-4} mb={3} />
+  <TitleCard title={t`RToken Detail`} {...props}>
     <FormField
       label={t`Token name`}
       placeholder={t`Input token name`}
@@ -40,7 +33,7 @@ const TokenForm = (props: BoxProps) => (
         validate: (value) => !!isAddress(value) || t`Invalid address`,
       }}
     />
-  </Card>
+  </TitleCard>
 )
 
 export default TokenForm

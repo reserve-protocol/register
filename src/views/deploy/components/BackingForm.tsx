@@ -1,18 +1,12 @@
-import { t, Trans } from '@lingui/macro'
-import { Card } from 'components'
+import { t } from '@lingui/macro'
+import { TitleCard } from 'components'
 import { FormField } from 'components/field'
-import { Box, BoxProps, Divider, Text } from 'theme-ui'
-import { numberPattern, decimalPattern } from 'utils'
+import { BoxProps } from 'theme-ui'
+import { decimalPattern, numberPattern } from 'utils'
 
 const BackingForm = (props: BoxProps) => {
   return (
-    <Card p={4} {...props}>
-      <Box p={1} pt={0} pb={2}>
-        <Text sx={{ fontSize: 3 }}>
-          <Trans>Backing Manager</Trans>
-        </Text>
-      </Box>
-      <Divider mx={-4} mb={3} />
+    <TitleCard title={t`Backing Manager`} {...props}>
       <FormField
         label={t`Trading delay (s)`}
         placeholder={t`Delay in seconds`}
@@ -97,7 +91,7 @@ const BackingForm = (props: BoxProps) => {
           max: 1000000000,
         }}
       />
-    </Card>
+    </TitleCard>
   )
 }
 

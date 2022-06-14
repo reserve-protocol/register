@@ -1,4 +1,3 @@
-import { SectionCard } from 'components'
 import { Text, Box } from 'theme-ui'
 import { Table } from 'components/table'
 import { formatCurrency, shortenString } from 'utils'

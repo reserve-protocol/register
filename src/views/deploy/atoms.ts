@@ -23,3 +23,6 @@ interface Basket {
 
 export const basketAtom = atom<Basket>({})
 export const backupCollateralAtom = atom<BackupCollateral>({})
+export const isBasketValidAtom = atom((get) => {
+  return !!Object.keys(get(basketAtom)).length
+})
