@@ -1,16 +1,15 @@
-import { Button } from 'components'
-import { Grid, Box, BoxProps } from 'theme-ui'
+import { BoxProps, Grid } from 'theme-ui'
+import BackupBasket from './BackupBasket'
+import PrimaryBasket from './PrimaryBasket'
 
 interface Props extends BoxProps {
   onViewChange(index: number): void
 }
-const BasketSetup = ({ onViewChange, ...props }: Props) => {
+const BasketSetup = ({ ...props }: Props) => {
   return (
     <Grid gap={5} columns={[1, 2]} mb={4}>
-      <Box>
-        <Button onClick={() => onViewChange(0)}>overview</Button>
-      </Box>
-      <Box>asdsd</Box>
+      <PrimaryBasket />
+      <BackupBasket />
     </Grid>
   )
 }

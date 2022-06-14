@@ -27,14 +27,17 @@ export const baseButton = {
   '&:disabled': {
     backgroundColor: 'disabled',
     cursor: 'default',
-    color: '#fff',
+    color: '#999999',
   },
 }
 
 export const smallButton = {
   fontSize: 1,
-  padding: 2,
-  borderRadius: 35,
+  paddingTop: 1,
+  paddingBottom: 1,
+  paddingLeft: 3,
+  paddingRight: 3,
+  borderRadius: 26,
 }
 
 export const colors = {
