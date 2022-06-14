@@ -45,7 +45,6 @@ const Modal = ({
         <Flex
           mb={3}
           sx={{
-            height: '20px',
             alignItems: 'center',
             justifyContent: 'center',
             position: 'relative',

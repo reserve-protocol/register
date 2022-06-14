@@ -33,7 +33,7 @@ export const baseButton = {
 
 export const smallButton = {
   fontSize: 1,
-  paddingTop: 1,
+  paddingTop: '8px',
   paddingBottom: 1,
   paddingLeft: 3,
   paddingRight: 3,

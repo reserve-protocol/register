@@ -15,20 +15,25 @@ const CollateralModal = ({
   ...props
 }: Props) => {
   return (
-    <Modal title={t`Collateral Plugins`} {...props}>
-      <Box>
-        <Flex variant="verticalAlign">
-          What is this list?
-          <Box mx="auto" />
+    <Modal title={t`Collateral Plugins`} style={{ width: 480 }} {...props}>
+      <Flex variant="verticalAlign" mt={3}>
+        <Box mr={4}>
+          <Text>
+            <Trans>What is this list?</Trans>
+          </Text>
+          <Text variant="legend" mt={1} sx={{ fontSize: 1, display: 'block' }}>
+            <Trans>
+              These collateral plugins either exist in othe rRTokens or have
+              been defined already by the Reserve team.
+            </Trans>
+          </Text>
+        </Box>
+        <Box mt={1}>
           <Help content="TODO" />
-        </Flex>
-        <Text variant="legend" sx={{ fontSize: 1 }}>
-          These collateral plugins either exist in othe rRTokens or have been
-          defined already by the Reserve team.
-        </Text>
-      </Box>
+        </Box>
+      </Flex>
       <Divider mx={-4} my={3} />
-      <Button>
+      <Button sx={{ width: '100%' }}>
         <Text>
           {basket === 'primary' ? (
             <Trans>Add to primary basket</Trans>
