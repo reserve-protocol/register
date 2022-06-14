@@ -2,6 +2,7 @@ import { Box, BoxProps, Grid } from 'theme-ui'
 import BackingForm from './BackingForm'
 import BasketOverview from './BasketOverview'
 import OtherForm from './OtherForm'
+import StakingTokenInfo from './StakingTokenInfo'
 import TokenForm from './TokenForm'
 
 interface Props extends BoxProps {
@@ -16,6 +17,7 @@ const TokenConfiguration = ({ onViewChange }: Props) => (
       <OtherForm />
     </Box>
     <Box>
+      <StakingTokenInfo />
       <BasketOverview onSetup={() => onViewChange(1)} />
     </Box>
   </Grid>
