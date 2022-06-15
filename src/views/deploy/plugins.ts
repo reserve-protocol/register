@@ -7,8 +7,10 @@ export interface CollateralPlugin {
   targetUnit: string // USD / EUR / etc
   referenceUnit: string // Underlay ERC20 (USDC)
   collateralToken: string // Wrapper token (usually yield token)
+  collateralAddress: string
   description: string // Small description
   oracle: string
+  oracleAddress: string
   custom?: boolean
 }
 
@@ -26,7 +28,9 @@ const collateralPlugins: CollateralPlugin[] = [
     referenceUnit: 'USDC',
     collateralToken: 'USDC',
     description: 'Used in RSV',
+    collateralAddress: ZERO_ADDRESS,
     oracle: 'chainlink',
+    oracleAddress: ZERO_ADDRESS,
   },
   {
     symbol: 'cUSDT',
@@ -36,7 +40,9 @@ const collateralPlugins: CollateralPlugin[] = [
     referenceUnit: 'USDT',
     collateralToken: 'USDT',
     description: 'Used in RSV',
+    collateralAddress: ZERO_ADDRESS,
     oracle: 'chainlink',
+    oracleAddress: ZERO_ADDRESS,
   },
   {
     symbol: 'aUSDT',
@@ -46,7 +52,9 @@ const collateralPlugins: CollateralPlugin[] = [
     referenceUnit: 'USDT',
     collateralToken: 'USDT',
     description: 'Used in RSV',
+    collateralAddress: ZERO_ADDRESS,
     oracle: 'chainlink',
+    oracleAddress: ZERO_ADDRESS,
   },
   {
     symbol: 'cUSDTs',
@@ -56,7 +64,9 @@ const collateralPlugins: CollateralPlugin[] = [
     referenceUnit: 'USDT',
     collateralToken: 'USDT',
     description: 'Used in RSV',
+    collateralAddress: ZERO_ADDRESS,
     oracle: 'chainlink',
+    oracleAddress: ZERO_ADDRESS,
   },
   {
     symbol: 'eUSDT',
@@ -66,7 +76,9 @@ const collateralPlugins: CollateralPlugin[] = [
     referenceUnit: 'USDT',
     collateralToken: 'USDT',
     description: 'Used in RSV',
+    collateralAddress: ZERO_ADDRESS,
     oracle: 'chainlink',
+    oracleAddress: ZERO_ADDRESS,
   },
   {
     symbol: 'aUSDC',
@@ -76,7 +88,9 @@ const collateralPlugins: CollateralPlugin[] = [
     referenceUnit: 'USDC',
     collateralToken: 'USDC',
     description: 'Used in RSV',
+    collateralAddress: ZERO_ADDRESS,
     oracle: 'chainlink',
+    oracleAddress: ZERO_ADDRESS,
   },
   {
     symbol: 'eUSDC',
@@ -86,7 +100,9 @@ const collateralPlugins: CollateralPlugin[] = [
     referenceUnit: 'USDC',
     collateralToken: 'USDC',
     description: 'Used in RSV',
+    collateralAddress: ZERO_ADDRESS,
     oracle: 'chainlink',
+    oracleAddress: ZERO_ADDRESS,
   },
   {
     symbol: 'EUR',
@@ -96,7 +112,9 @@ const collateralPlugins: CollateralPlugin[] = [
     referenceUnit: 'EUR',
     collateralToken: 'EUR',
     description: 'Used in RSV',
+    collateralAddress: ZERO_ADDRESS,
     oracle: 'chainlink',
+    oracleAddress: ZERO_ADDRESS,
   },
 ]
 

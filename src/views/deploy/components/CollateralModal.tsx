@@ -13,9 +13,11 @@ import {
   Divider,
   Flex,
   IconButton,
+  Link,
   Text,
 } from 'theme-ui'
 import { shortenAddress } from 'utils'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import collateralPlugins, { CollateralPlugin } from '../plugins'
 
 interface Props extends Omit<ModalProps, 'children'> {
@@ -25,10 +27,13 @@ interface Props extends Omit<ModalProps, 'children'> {
 
 interface PluginItemProps extends BoxProps {
   data: CollateralPlugin
+  selected?: boolean
 }
 
-const PluginItem = ({ data, ...props }: PluginItemProps) => {
+const PluginItem = ({ data, selected = false, ...props }: PluginItemProps) => {
   const [isVisible, setVisible] = useState(false)
+
+  const handleChange = () => {}
 
   return (
     <Box {...props}>
@@ -44,7 +49,7 @@ const PluginItem = ({ data, ...props }: PluginItemProps) => {
         <Text variant="legend" sx={{ fontSize: 1, display: 'block' }} mr={3}>
           {shortenAddress(data.address)}
         </Text>
-        <Checkbox />
+        <Checkbox checked={selected} onChange={handleChange} />
         <IconButton
           sx={{ cursor: 'pointer' }}
           ml={-1}
@@ -60,30 +65,51 @@ const PluginItem = ({ data, ...props }: PluginItemProps) => {
       {isVisible && (
         <>
           <Divider mt={2} />
-          <Flex variant="layout.verticalAlign" mt={3} sx={{ fontSize: 1 }}>
+          <Flex
+            variant="layout.verticalAlign"
+            ml={4}
+            mt={3}
+            sx={{ fontSize: 1 }}
+          >
             <Box mr={4}>
               <Text variant="legend">
                 <Trans>Reference unit</Trans>
               </Text>
-              <Text sx={{ textDecoration: 'underline', display: 'block' }}>
-                {data.referenceUnit}
-              </Text>
+              <Text sx={{ display: 'block' }}>{data.referenceUnit}</Text>
             </Box>
             <Box mr={4}>
               <Text variant="legend">
                 <Trans>Collateral token</Trans>
               </Text>
-              <Text sx={{ textDecoration: 'underline', display: 'block' }}>
+              <Link
+                as="a"
+                href={getExplorerLink(
+                  data.collateralAddress,
+                  ExplorerDataType.TOKEN
+                )}
+                target="_blank"
+                variant="legend"
+                sx={{ color: 'text', display: 'block' }}
+              >
                 {data.collateralToken}
-              </Text>
+              </Link>
             </Box>
             <Box>
               <Text variant="legend">
                 <Trans>Oracle</Trans>
               </Text>
-              <Text sx={{ textDecoration: 'underline', display: 'block' }}>
+              <Link
+                as="a"
+                href={getExplorerLink(
+                  data.oracleAddress,
+                  ExplorerDataType.ADDRESS
+                )}
+                target="_blank"
+                variant="legend"
+                sx={{ color: 'text', display: 'block' }}
+              >
                 {data.oracle}
-              </Text>
+              </Link>
             </Box>
           </Flex>
         </>
@@ -106,6 +132,8 @@ const CollateralModal = ({
     [targetUnit]
   )
 
+  const handleCustomCollateral = () => {}
+
   return (
     <Modal title={t`Collateral Plugins`} style={{ width: 480 }} {...props}>
       <Flex variant="verticalAlign" mt={3}>
@@ -127,7 +155,8 @@ const CollateralModal = ({
       <Divider mx={-4} my={3} />
       <Box
         sx={{
-          maxHeight: 'calc(100vh - 500px)',
+          height: 'calc(100vh - 500px)',
+          maxHeight: 370,
           overflow: 'auto',
         }}
         mx={-4}
@@ -152,7 +181,7 @@ const CollateralModal = ({
             </Text>
           </Box>
           <Box mx="auto" />
-          <SmallButton mr={3}>
+          <SmallButton mr={3} onClick={handleCustomCollateral}>
             <Trans>Add</Trans>
           </SmallButton>
           <Help content="TODO" />
