@@ -95,11 +95,15 @@ const PluginItem = ({
         <Text variant="legend" sx={{ fontSize: 1, display: 'block' }} mr={3}>
           {shortenAddress(data.address!)}
         </Text>
-        <Checkbox
-          checked={selected}
-          sx={{ cursor: 'pointer' }}
-          onChange={() => onCheck(data.address)}
-        />
+        <label>
+          <Checkbox
+            defaultChecked={selected}
+            sx={{ cursor: 'pointer' }}
+            onChange={() => {
+              onCheck(data.address)
+            }}
+          />
+        </label>
         {!data.custom && (
           <IconButton
             sx={{ cursor: 'pointer' }}

@@ -52,6 +52,7 @@ const CollateralModal = ({
 
   const handleToggle = (collateralAddress: string) => {
     const index = selected.indexOf(collateralAddress)
+    console.log('test')
 
     if (index !== -1) {
       setSelected([...selected.slice(0, index), ...selected.slice(index + 1)])
@@ -111,6 +112,7 @@ const CollateralModal = ({
           overflow: 'auto',
         }}
         mt={-2}
+        mb={-2}
         pt={3}
         mx={-4}
       >
@@ -142,7 +144,7 @@ const CollateralModal = ({
           <Help content="TODO" />
         </Flex>
       </Box>
-      <Divider mx={-4} mb={3} mt={-1} />
+      <Divider mx={-4} mb={3} />
       <Button
         mt={1}
         onClick={handleSubmit}
