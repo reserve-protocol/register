@@ -22,7 +22,7 @@ export const TARGET_UNITS = {
 const collateralPlugins: CollateralPlugin[] = [
   {
     symbol: 'cUSDC',
-    address: ZERO_ADDRESS,
+    address: '0x0000000000000000000000000000000000000001',
     decimals: 6,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDC',
@@ -34,7 +34,7 @@ const collateralPlugins: CollateralPlugin[] = [
   },
   {
     symbol: 'cUSDT',
-    address: ZERO_ADDRESS,
+    address: '0x0000000000000000000000000000000000000002',
     decimals: 6,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDT',
@@ -46,7 +46,7 @@ const collateralPlugins: CollateralPlugin[] = [
   },
   {
     symbol: 'aUSDT',
-    address: ZERO_ADDRESS,
+    address: '0x0000000000000000000000000000000000000004',
     decimals: 6,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDT',
@@ -58,7 +58,7 @@ const collateralPlugins: CollateralPlugin[] = [
   },
   {
     symbol: 'cUSDTs',
-    address: ZERO_ADDRESS,
+    address: '0x0000000000000000000000000000000000000005',
     decimals: 6,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDT',
@@ -70,7 +70,7 @@ const collateralPlugins: CollateralPlugin[] = [
   },
   {
     symbol: 'eUSDT',
-    address: ZERO_ADDRESS,
+    address: '0x0000000000000000000000000000000000000005',
     decimals: 6,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDT',
@@ -82,7 +82,7 @@ const collateralPlugins: CollateralPlugin[] = [
   },
   {
     symbol: 'aUSDC',
-    address: ZERO_ADDRESS,
+    address: '0x0000000000000000000000000000000000000006',
     decimals: 6,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDC',
@@ -94,7 +94,7 @@ const collateralPlugins: CollateralPlugin[] = [
   },
   {
     symbol: 'eUSDC',
-    address: ZERO_ADDRESS,
+    address: '0x0000000000000000000000000000000000000007',
     decimals: 6,
     targetUnit: TARGET_UNITS.EUR,
     referenceUnit: 'USDC',
@@ -106,7 +106,7 @@ const collateralPlugins: CollateralPlugin[] = [
   },
   {
     symbol: 'EUR',
-    address: ZERO_ADDRESS,
+    address: '0x0000000000000000000000000000000000000008',
     decimals: 18,
     targetUnit: TARGET_UNITS.EUR,
     referenceUnit: 'EUR',

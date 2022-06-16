@@ -5,14 +5,11 @@ import Help from 'components/help'
 import { ModalProps } from 'components/modal'
 import { useUpdateAtom } from 'jotai/utils'
 import { useState } from 'react'
-import {
-  Box, Divider,
-  Flex, Text
-} from 'theme-ui'
+import { Box, Divider, Flex, Text } from 'theme-ui'
 import {
   addBackupCollateralAtom,
   addBasketCollateralAtom,
-  Collateral
+  Collateral,
 } from '../atoms'
 import collateralPlugins, { CollateralPlugin } from '../plugins'
 import PluginItem from './PluginItem'
@@ -27,7 +24,7 @@ interface CollateralMap {
   [x: string]: Collateral | CollateralPlugin
 }
 
-const getPlugins = (targetUnit?: string): PluginMap =>
+const getPlugins = (targetUnit?: string) =>
   collateralPlugins.reduce((acc, plugin) => {
     if (!targetUnit || targetUnit === plugin.targetUnit) {
       acc[plugin.address] = plugin
@@ -43,7 +40,7 @@ interface Props extends Omit<ModalProps, 'children'> {
 const CollateralModal = ({
   targetUnit,
   basket = 'primary',
-  onClose = () => {}
+  onClose = () => {},
   ...props
 }: Props) => {
   const addCollateral = useUpdateAtom(
@@ -52,33 +49,6 @@ const CollateralModal = ({
   const [selected, setSelected] = useState<string[]>([])
   const [collaterals, setCollaterals] = useState(getPlugins(targetUnit))
   const [custom, setCustom] = useState(false)
-
-  // Add custom collateral to the collaterals list and selected
-  const handleAddCustom = (collateral: Collateral) => {
-    setCustom(false)
-    setSelected([...selected, collateral.address])
-    setCollaterals({
-      ...collaterals,
-      [collateral.address]: collateral
-    })
-  }
-
-  // Toggle custom collateral view
-  const handleCustomCollateral = () => {}
-
-  const handleSubmit = () => {
-    addCollateral(selected.map((address) => collaterals[address]))
-    onClose()
-  }
-
-  const addSelected = (collateralAddress: string) => {
-
-  }
-
-  const removeSelected = (collateralAddress: string) => {
-    const index = selected.indexOf(collateralAddress)
-    setSelected([...selected.slice(0, index), ...selected.slice(index + 1)])
-  }
 
   const handleToggle = (collateralAddress: string) => {
     const index = selected.indexOf(collateralAddress)
@@ -90,8 +60,33 @@ const CollateralModal = ({
     }
   }
 
+  // Add custom collateral to the collaterals list and selected
+  const handleAddCustom = (collateral: Collateral) => {
+    setCustom(false)
+    setSelected([...selected, collateral.address])
+    setCollaterals({
+      ...collaterals,
+      [collateral.address]: collateral,
+    })
+  }
+
+  // Toggle custom collateral view
+  const handleCustomCollateral = () => {}
+
+  const handleSubmit = () => {
+    addCollateral(
+      selected.map((address) => collaterals[address]) as Collateral[]
+    )
+    onClose()
+  }
+
   return (
-    <Modal title={t`Collateral Plugins`} style={{ width: 480 }} onClose={onClose} {...props}>
+    <Modal
+      title={t`Collateral Plugins`}
+      style={{ width: 480 }}
+      onClose={onClose}
+      {...props}
+    >
       <Flex variant="verticalAlign" mt={3}>
         <Box mr={4}>
           <Text>
@@ -108,23 +103,26 @@ const CollateralModal = ({
           <Help content="TODO" />
         </Box>
       </Flex>
-      <Divider mx={-4} my={3} />
-      {}
+      <Divider mx={-4} mt={3} />
       <Box
         sx={{
           height: 'calc(100vh - 500px)',
           maxHeight: 370,
           overflow: 'auto',
         }}
+        mt={-2}
+        pt={3}
         mx={-4}
       >
-        {Object.values<Collateral | CollateralPlugin>(collaterals).map((plugin) => (
-          <>
-            <PluginItem px={4} data={plugin} onCheck={handleToggle} key={plugin.symbol} mb={3} />
-            <Divider my={3} />
-          </>
-        ))}
-        <Flex variant="layout.verticalAlign" mx={4}>
+        {Object.values<Collateral | CollateralPlugin>(collaterals).map(
+          (plugin) => (
+            <Box key={plugin.address}>
+              <PluginItem px={4} data={plugin} onCheck={handleToggle} mb={3} />
+              <Divider my={3} />
+            </Box>
+          )
+        )}
+        <Flex variant="layout.verticalAlign" mx={4} pb={3}>
           <Box>
             <Text>
               <Trans>Made your own collateral?</Trans>
@@ -144,7 +142,7 @@ const CollateralModal = ({
           <Help content="TODO" />
         </Flex>
       </Box>
-      <Divider mx={-4} my={3} />
+      <Divider mx={-4} mb={3} mt={-1} />
       <Button
         mt={1}
         onClick={handleSubmit}
