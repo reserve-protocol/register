@@ -14,12 +14,15 @@ export interface BackupCollateral {
   }
 }
 
+export interface PrimaryUnitBasket {
+  dirty: false // tracks if the user manually changed weights
+  scale: number
+  collaterals: Collateral[]
+  distribution: number[]
+}
+
 export interface Basket {
-  [x: string]: {
-    dirty: false // tracks if the user manually changed weights
-    collaterals: Collateral[]
-    distribution: number[]
-  }
+  [x: string]: PrimaryUnitBasket
 }
 
 export const basketAtom = atom<Basket>({})
@@ -38,6 +41,17 @@ const getCollateralFromBasket = (basket: Basket | BackupCollateral) => {
   )
 }
 
+const getCollateralByTarget = (collaterals: Collateral[]) => {
+  return collaterals.reduce((acc, collateral) => {
+    acc[collateral.targetUnit] = [
+      ...(acc[collateral.targetUnit] ?? []),
+      collateral,
+    ]
+
+    return acc
+  }, {} as { [x: string]: Collateral[] })
+}
+
 export const primaryBasketCollateralAtom = atom((get) => {
   return getCollateralFromBasket(get(basketAtom))
 })
@@ -48,10 +62,53 @@ export const backupBasketCollateralAtom = atom((get) => {
 
 export const addBackupCollateralAtom = atom(
   null,
-  (get, set, collaterals: Collateral[]) => {}
+  (get, set, collaterals: Collateral[]) => {
+    const basket = { ...get(backupCollateralAtom) }
+    const collateralByTarget = getCollateralByTarget(collaterals)
+
+    for (const unit of Object.keys(collateralByTarget)) {
+      const unitCollaterals = [
+        ...collateralByTarget[unit],
+        ...(basket[unit]?.collaterals ?? []),
+      ]
+
+      basket[unit] = {
+        collaterals: unitCollaterals,
+        diversityFactor:
+          basket[unit]?.diversityFactor ?? Math.min(3, unitCollaterals.length),
+      }
+    }
+
+    set(backupCollateralAtom, basket)
+  }
 )
 
 export const addBasketCollateralAtom = atom(
   null,
-  (get, set, collaterals: Collateral[]) => {}
+  (get, set, collaterals: Collateral[]) => {
+    const basket = { ...get(basketAtom) }
+    const collateralByTarget = getCollateralByTarget(collaterals)
+
+    console.log('collaterals', collateralByTarget)
+
+    for (const unit of Object.keys(collateralByTarget)) {
+      const unitCollaterals = [
+        ...collateralByTarget[unit],
+        ...(basket[unit]?.collaterals ?? []),
+      ]
+
+      const distribution = new Array(unitCollaterals.length).fill(
+        100 / unitCollaterals.length
+      )
+
+      basket[unit] = {
+        collaterals: unitCollaterals,
+        distribution,
+        scale: basket[unit]?.scale ?? 1,
+        dirty: false,
+      }
+    }
+
+    set(basketAtom, basket)
+  }
 )

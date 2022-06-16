@@ -20,12 +20,13 @@ const BasketSetup = ({ ...props }: Props) => {
         <PrimaryBasket onAdd={setCollateralModal} />
         <BackupBasket onAdd={setCollateralModal} />
       </Grid>
-      <CollateralModal
-        targetUnit={collateralModal?.targetUnit}
-        basket={collateralModal?.basket}
-        open={!!collateralModal}
-        onClose={() => setCollateralModal(null)}
-      />
+      {!!collateralModal && (
+        <CollateralModal
+          targetUnit={collateralModal?.targetUnit}
+          basket={collateralModal?.basket}
+          onClose={() => setCollateralModal(null)}
+        />
+      )}
     </>
   )
 }

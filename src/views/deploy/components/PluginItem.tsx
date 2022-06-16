@@ -68,12 +68,7 @@ const PluginInfo = ({ data }: { data: CollateralPlugin }) => (
   </>
 )
 
-const PluginItem = ({
-  data,
-  selected = false,
-  onCheck,
-  ...props
-}: PluginItemProps) => {
+const PluginItem = ({ data, onCheck, ...props }: PluginItemProps) => {
   const [isVisible, setVisible] = useState(false)
 
   return (
@@ -97,7 +92,6 @@ const PluginItem = ({
         </Text>
         <label>
           <Checkbox
-            defaultChecked={selected}
             sx={{ cursor: 'pointer' }}
             onChange={() => {
               onCheck(data.address)
