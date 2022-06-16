@@ -1,9 +1,10 @@
 import { atom } from 'jotai'
 
 export interface Collateral {
-  name: string
+  symbol: string
   address: string
   targetUnit: string
+  custom: boolean
 }
 
 export interface BackupCollateral {
@@ -26,3 +27,13 @@ export const backupCollateralAtom = atom<BackupCollateral>({})
 export const isBasketValidAtom = atom((get) => {
   return !!Object.keys(get(basketAtom)).length
 })
+
+export const addBackupCollateralAtom = atom(
+  null,
+  (get, set, collaterals: Collateral[]) => {}
+)
+
+export const addBasketCollateralAtom = atom(
+  null,
+  (get, set, collaterals: Collateral[]) => {}
+)

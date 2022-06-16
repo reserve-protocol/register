@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { BoxProps, Grid } from 'theme-ui'
+import { Collateral } from '../atoms'
 import BackupBasket from './BackupBasket'
 import CollateralModal from './CollateralModal'
 import PrimaryBasket from './PrimaryBasket'

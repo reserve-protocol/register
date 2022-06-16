@@ -2,140 +2,96 @@ import { t, Trans } from '@lingui/macro'
 import { Button, Modal } from 'components'
 import { SmallButton } from 'components/button'
 import Help from 'components/help'
-import TokenLogo from 'components/icons/TokenLogo'
 import { ModalProps } from 'components/modal'
-import { useMemo, useState } from 'react'
-import { ChevronDown, ChevronUp } from 'react-feather'
+import { useUpdateAtom } from 'jotai/utils'
+import { useState } from 'react'
 import {
-  Box,
-  BoxProps,
-  Checkbox,
-  Divider,
-  Flex,
-  IconButton,
-  Link,
-  Text,
+  Box, Divider,
+  Flex, Text
 } from 'theme-ui'
-import { shortenAddress } from 'utils'
-import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import {
+  addBackupCollateralAtom,
+  addBasketCollateralAtom,
+  Collateral
+} from '../atoms'
 import collateralPlugins, { CollateralPlugin } from '../plugins'
+import PluginItem from './PluginItem'
+
+const CustomCollateral = () => {
+  const [address, setAddress] = useState('')
+
+  return <Box></Box>
+}
+
+interface CollateralMap {
+  [x: string]: Collateral | CollateralPlugin
+}
+
+const getPlugins = (targetUnit?: string): PluginMap =>
+  collateralPlugins.reduce((acc, plugin) => {
+    if (!targetUnit || targetUnit === plugin.targetUnit) {
+      acc[plugin.address] = plugin
+    }
+    return acc
+  }, {} as CollateralMap)
 
 interface Props extends Omit<ModalProps, 'children'> {
   targetUnit?: string // filter by target unit
   basket?: string // target basket
 }
 
-interface PluginItemProps extends BoxProps {
-  data: CollateralPlugin
-  selected?: boolean
-}
-
-const PluginItem = ({ data, selected = false, ...props }: PluginItemProps) => {
-  const [isVisible, setVisible] = useState(false)
-
-  const handleChange = () => {}
-
-  return (
-    <Box {...props}>
-      <Flex variant="layout.verticalAlign">
-        <TokenLogo />
-        <Box ml={2}>
-          <Text>{data.symbol} plug-in</Text>
-          <Text sx={{ fontSize: 1, display: 'block' }} variant="legend">
-            <Trans>Target</Trans> {data.targetUnit} | {data.description}
-          </Text>
-        </Box>
-        <Box mx="auto" />
-        <Text variant="legend" sx={{ fontSize: 1, display: 'block' }} mr={3}>
-          {shortenAddress(data.address)}
-        </Text>
-        <Checkbox checked={selected} onChange={handleChange} />
-        <IconButton
-          sx={{ cursor: 'pointer' }}
-          ml={-1}
-          onClick={() => setVisible(!isVisible)}
-        >
-          {isVisible ? (
-            <ChevronUp color="#999999" />
-          ) : (
-            <ChevronDown color="#999999" />
-          )}
-        </IconButton>
-      </Flex>
-      {isVisible && (
-        <>
-          <Divider mt={2} />
-          <Flex
-            variant="layout.verticalAlign"
-            ml={4}
-            mt={3}
-            sx={{ fontSize: 1 }}
-          >
-            <Box mr={4}>
-              <Text variant="legend">
-                <Trans>Reference unit</Trans>
-              </Text>
-              <Text sx={{ display: 'block' }}>{data.referenceUnit}</Text>
-            </Box>
-            <Box mr={4}>
-              <Text variant="legend">
-                <Trans>Collateral token</Trans>
-              </Text>
-              <Link
-                as="a"
-                href={getExplorerLink(
-                  data.collateralAddress,
-                  ExplorerDataType.TOKEN
-                )}
-                target="_blank"
-                variant="legend"
-                sx={{ color: 'text', display: 'block' }}
-              >
-                {data.collateralToken}
-              </Link>
-            </Box>
-            <Box>
-              <Text variant="legend">
-                <Trans>Oracle</Trans>
-              </Text>
-              <Link
-                as="a"
-                href={getExplorerLink(
-                  data.oracleAddress,
-                  ExplorerDataType.ADDRESS
-                )}
-                target="_blank"
-                variant="legend"
-                sx={{ color: 'text', display: 'block' }}
-              >
-                {data.oracle}
-              </Link>
-            </Box>
-          </Flex>
-        </>
-      )}
-    </Box>
-  )
-}
-
 const CollateralModal = ({
   targetUnit,
   basket = 'primary',
+  onClose = () => {}
   ...props
 }: Props) => {
-  const [selected, setSelected] = useState<string[]>([])
-  const plugins = useMemo(
-    () =>
-      targetUnit
-        ? collateralPlugins.filter((plugin) => plugin.targetUnit === targetUnit)
-        : collateralPlugins,
-    [targetUnit]
+  const addCollateral = useUpdateAtom(
+    basket === 'primary' ? addBasketCollateralAtom : addBackupCollateralAtom
   )
+  const [selected, setSelected] = useState<string[]>([])
+  const [collaterals, setCollaterals] = useState(getPlugins(targetUnit))
+  const [custom, setCustom] = useState(false)
 
+  // Add custom collateral to the collaterals list and selected
+  const handleAddCustom = (collateral: Collateral) => {
+    setCustom(false)
+    setSelected([...selected, collateral.address])
+    setCollaterals({
+      ...collaterals,
+      [collateral.address]: collateral
+    })
+  }
+
+  // Toggle custom collateral view
   const handleCustomCollateral = () => {}
 
+  const handleSubmit = () => {
+    addCollateral(selected.map((address) => collaterals[address]))
+    onClose()
+  }
+
+  const addSelected = (collateralAddress: string) => {
+
+  }
+
+  const removeSelected = (collateralAddress: string) => {
+    const index = selected.indexOf(collateralAddress)
+    setSelected([...selected.slice(0, index), ...selected.slice(index + 1)])
+  }
+
+  const handleToggle = (collateralAddress: string) => {
+    const index = selected.indexOf(collateralAddress)
+
+    if (index !== -1) {
+      setSelected([...selected.slice(0, index), ...selected.slice(index + 1)])
+    } else {
+      setSelected([...selected, collateralAddress])
+    }
+  }
+
   return (
-    <Modal title={t`Collateral Plugins`} style={{ width: 480 }} {...props}>
+    <Modal title={t`Collateral Plugins`} style={{ width: 480 }} onClose={onClose} {...props}>
       <Flex variant="verticalAlign" mt={3}>
         <Box mr={4}>
           <Text>
@@ -153,6 +109,7 @@ const CollateralModal = ({
         </Box>
       </Flex>
       <Divider mx={-4} my={3} />
+      {}
       <Box
         sx={{
           height: 'calc(100vh - 500px)',
@@ -161,9 +118,9 @@ const CollateralModal = ({
         }}
         mx={-4}
       >
-        {plugins.map((plugin) => (
+        {Object.values<Collateral | CollateralPlugin>(collaterals).map((plugin) => (
           <>
-            <PluginItem px={4} data={plugin} key={plugin.symbol} mb={3} />
+            <PluginItem px={4} data={plugin} onCheck={handleToggle} key={plugin.symbol} mb={3} />
             <Divider my={3} />
           </>
         ))}
@@ -188,7 +145,12 @@ const CollateralModal = ({
         </Flex>
       </Box>
       <Divider mx={-4} my={3} />
-      <Button mt={1} disabled={!selected.length} sx={{ width: '100%' }}>
+      <Button
+        mt={1}
+        onClick={handleSubmit}
+        disabled={!Object.keys(selected).length}
+        sx={{ width: '100%' }}
+      >
         <Text>
           {basket === 'primary' ? (
             <Trans>Add to primary basket</Trans>
