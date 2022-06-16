@@ -4,7 +4,7 @@ export interface Collateral {
   symbol: string
   address: string
   targetUnit: string
-  custom: boolean
+  custom?: boolean
 }
 
 export interface BackupCollateral {
@@ -26,6 +26,24 @@ export const basketAtom = atom<Basket>({})
 export const backupCollateralAtom = atom<BackupCollateral>({})
 export const isBasketValidAtom = atom((get) => {
   return !!Object.keys(get(basketAtom)).length
+})
+
+const getCollateralFromBasket = (basket: Basket | BackupCollateral) => {
+  return Object.values(basket).reduce(
+    (acc, { collaterals }) => [
+      ...acc,
+      ...collaterals.map((c: any) => c.address),
+    ],
+    [] as string[]
+  )
+}
+
+export const primaryBasketCollateralAtom = atom((get) => {
+  return getCollateralFromBasket(get(basketAtom))
+})
+
+export const backupBasketCollateralAtom = atom((get) => {
+  return getCollateralFromBasket(get(backupCollateralAtom))
 })
 
 export const addBackupCollateralAtom = atom(

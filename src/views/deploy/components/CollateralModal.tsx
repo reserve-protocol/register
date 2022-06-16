@@ -3,13 +3,15 @@ import { Button, Modal } from 'components'
 import { SmallButton } from 'components/button'
 import Help from 'components/help'
 import { ModalProps } from 'components/modal'
-import { useUpdateAtom } from 'jotai/utils'
+import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import { useState } from 'react'
 import { Box, Divider, Flex, Text } from 'theme-ui'
 import {
   addBackupCollateralAtom,
   addBasketCollateralAtom,
+  backupBasketCollateralAtom,
   Collateral,
+  primaryBasketCollateralAtom,
 } from '../atoms'
 import collateralPlugins, { CollateralPlugin } from '../plugins'
 import PluginItem from './PluginItem'
@@ -24,13 +26,19 @@ interface CollateralMap {
   [x: string]: Collateral | CollateralPlugin
 }
 
-const getPlugins = (targetUnit?: string) =>
-  collateralPlugins.reduce((acc, plugin) => {
-    if (!targetUnit || targetUnit === plugin.targetUnit) {
+const getPlugins = (addedCollaterals: string[], targetUnit?: string) => {
+  const collateralSet = new Set(addedCollaterals)
+
+  return collateralPlugins.reduce((acc, plugin) => {
+    if (
+      !collateralSet.has(plugin.address) &&
+      (!targetUnit || targetUnit === plugin.targetUnit)
+    ) {
       acc[plugin.address] = plugin
     }
     return acc
   }, {} as CollateralMap)
+}
 
 interface Props extends Omit<ModalProps, 'children'> {
   targetUnit?: string // filter by target unit
@@ -43,11 +51,18 @@ const CollateralModal = ({
   onClose = () => {},
   ...props
 }: Props) => {
+  const addedCollaterals = useAtomValue(
+    basket === 'primary'
+      ? primaryBasketCollateralAtom
+      : backupBasketCollateralAtom
+  )
   const addCollateral = useUpdateAtom(
     basket === 'primary' ? addBasketCollateralAtom : addBackupCollateralAtom
   )
   const [selected, setSelected] = useState<string[]>([])
-  const [collaterals, setCollaterals] = useState(getPlugins(targetUnit))
+  const [collaterals, setCollaterals] = useState(
+    getPlugins(addedCollaterals, targetUnit)
+  )
   const [custom, setCustom] = useState(false)
 
   const handleToggle = (collateralAddress: string) => {
