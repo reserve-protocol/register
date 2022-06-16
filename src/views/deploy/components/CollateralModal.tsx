@@ -67,7 +67,6 @@ const CollateralModal = ({
 
   const handleToggle = (collateralAddress: string) => {
     const index = selected.indexOf(collateralAddress)
-    console.log('test')
 
     if (index !== -1) {
       setSelected([...selected.slice(0, index), ...selected.slice(index + 1)])

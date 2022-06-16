@@ -89,8 +89,6 @@ export const addBasketCollateralAtom = atom(
     const basket = { ...get(basketAtom) }
     const collateralByTarget = getCollateralByTarget(collaterals)
 
-    console.log('collaterals', collateralByTarget)
-
     for (const unit of Object.keys(collateralByTarget)) {
       const unitCollaterals = [
         ...collateralByTarget[unit],
