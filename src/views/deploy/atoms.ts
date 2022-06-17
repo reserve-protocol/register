@@ -15,7 +15,6 @@ export interface BackupCollateral {
 }
 
 export interface PrimaryUnitBasket {
-  dirty: false // tracks if the user manually changed weights
   scale: number
   collaterals: Collateral[]
   distribution: number[]
@@ -105,6 +104,21 @@ export const addBasketCollateralAtom = atom(
         scale: basket[unit]?.scale ?? 1,
         dirty: false,
       }
+    }
+
+    set(basketAtom, basket)
+  }
+)
+
+export const updateBasketUnitAtom = atom(
+  null,
+  (get, set, [unit, data]: [string, PrimaryUnitBasket]) => {
+    const basket = { ...get(basketAtom) }
+
+    if (!data.collaterals.length) {
+      delete basket[unit]
+    } else {
+      basket[unit] = { ...basket[unit], ...data }
     }
 
     set(basketAtom, basket)

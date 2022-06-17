@@ -4,7 +4,7 @@ import { SmallButton } from 'components/button'
 import Help from 'components/help'
 import { useAtomValue } from 'jotai'
 import { Box, CardProps, Divider, Flex, Text } from 'theme-ui'
-import { basketAtom } from '../atoms'
+import { Basket, basketAtom } from '../atoms'
 import UnitBasket from './UnitBasket'
 
 interface Props extends CardProps {
@@ -36,6 +36,14 @@ const Placeholder = () => (
   </Box>
 )
 
+const getBasketComposition = (basket: Basket) => {
+  return Object.keys(basket)
+    .reduce((acc, unit) => {
+      return `${acc} + ${basket[unit].scale} ${unit}`
+    }, '')
+    .substring(2)
+}
+
 const PrimaryBasket = ({ onAdd }: Props) => {
   const basket = useAtomValue(basketAtom)
   const units = Object.keys(basket)
@@ -45,7 +53,7 @@ const PrimaryBasket = ({ onAdd }: Props) => {
       sx={(theme: any) => ({
         height: 'fit-content',
         border: units.length ? `1px solid ${theme.colors.border}` : 'none',
-        backgroundColor: units.length ? 'transparent' : 'bgCard',
+        opacity: units.length ? 70 : 100,
       })}
       title={t`Primary basket`}
       right={
@@ -64,6 +72,12 @@ const PrimaryBasket = ({ onAdd }: Props) => {
       }
     >
       {!units.length && <Placeholder />}
+      {units.length && (
+        <Flex>
+          <Text>1 RToken =</Text>
+          <Text ml="auto">{getBasketComposition(basket)}</Text>
+        </Flex>
+      )}
       {units.map((targetUnit) => (
         <UnitBasket
           mt={3}

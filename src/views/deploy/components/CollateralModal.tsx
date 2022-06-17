@@ -121,7 +121,7 @@ const CollateralModal = ({
       <Divider mx={-4} mt={3} />
       <Box
         sx={{
-          height: 'calc(100vh - 500px)',
+          // height: 'calc(100vh - 500px)',
           maxHeight: 370,
           overflow: 'auto',
         }}

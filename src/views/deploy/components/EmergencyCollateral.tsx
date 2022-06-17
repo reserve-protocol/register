@@ -2,6 +2,9 @@ import { Trans } from '@lingui/macro'
 import { NumericalInput, TitleCard } from 'components'
 import { SmallButton } from 'components/button'
 import Help from 'components/help'
+import TokenLogo from 'components/icons/TokenLogo'
+import IconInfo from 'components/info-icon'
+import { Move } from 'react-feather'
 import { Box, CardProps, Flex, Text } from 'theme-ui'
 import { Collateral } from '../atoms'
 
@@ -9,6 +12,7 @@ interface Props extends CardProps {
   targetUnit: string
   diversityFactor?: string
   collaterals?: Collateral[]
+  onAdd(targetUnit: string): void
 }
 
 // TODO: Open collateral modal filtered by target unit
@@ -16,6 +20,7 @@ const EmergencyCollateral = ({
   targetUnit,
   diversityFactor = '0',
   collaterals = [],
+  onAdd,
   ...props
 }: Props) => {
   const handleDiversityFactor = (n: string) => {}
@@ -32,7 +37,7 @@ const EmergencyCollateral = ({
       }
       right={
         <Flex variant="layout.verticalAlign">
-          <SmallButton mr={2}>
+          <SmallButton onClick={() => onAdd(targetUnit)} mr={2}>
             <Trans>Add</Trans>
           </SmallButton>
           <Help content="TODO" />
@@ -55,6 +60,22 @@ const EmergencyCollateral = ({
         </Box>{' '}
         <Help content="TODO" />
       </Flex>
+      {collaterals.map((collateral, index) => (
+        <Flex mt={3} key={collateral.address} variant="layout.verticalAlign">
+          <IconInfo
+            icon={<TokenLogo />}
+            title={targetUnit}
+            text={collateral.symbol}
+          />
+          <Box mx="auto" />
+          <Text mr={3}>{index}</Text>
+          <Move
+            size={20}
+            style={{ cursor: 'pointer' }}
+            color="var(--theme-ui-colors-secondaryText)"
+          />
+        </Flex>
+      ))}
     </TitleCard>
   )
 }

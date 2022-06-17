@@ -82,6 +82,7 @@ const BackupBasket = ({ onAdd }: Props) => {
       {targetUnits.map((targetUnit) => (
         <EmergencyCollateral
           mb={3}
+          onAdd={handleAdd}
           key={targetUnit}
           targetUnit={targetUnit}
           {...backupBasket[targetUnit]}

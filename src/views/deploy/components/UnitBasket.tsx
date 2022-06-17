@@ -1,12 +1,13 @@
 import { Trans } from '@lingui/macro'
-import { Input } from 'components'
+import { NumericalInput } from 'components'
 import Help from 'components/help'
 import TokenLogo from 'components/icons/TokenLogo'
 import IconInfo from 'components/info-icon'
+import { useUpdateAtom } from 'jotai/utils'
 import { useMemo } from 'react'
 import { X } from 'react-feather'
 import { Box, Card, CardProps, Divider, Flex, IconButton, Text } from 'theme-ui'
-import { PrimaryUnitBasket } from '../atoms'
+import { PrimaryUnitBasket, updateBasketUnitAtom } from '../atoms'
 
 interface UnitBasketProps extends CardProps {
   data: PrimaryUnitBasket
@@ -14,6 +15,8 @@ interface UnitBasketProps extends CardProps {
 }
 
 const UnitBasket = ({ data, unit, ...props }: UnitBasketProps) => {
+  const updateBasket = useUpdateAtom(updateBasketUnitAtom)
+
   const totalDistribution = useMemo(
     () => data.distribution.reduce((count, n) => count + n, 0),
     [data.distribution]
@@ -21,11 +24,40 @@ const UnitBasket = ({ data, unit, ...props }: UnitBasketProps) => {
   const getCollateralDist = (index: number) => {
     return ((data.scale * data.distribution[index]) / 100).toFixed(2)
   }
-  const handleRemove = (index: number) => {}
+  const handleRemove = (index: number) => {
+    const n = data.collaterals.length - 1
+    const distribution = new Array(n).fill(100 / n)
 
-  const handleDistribution = (index: number, value: string) => {}
+    updateBasket([
+      unit,
+      {
+        ...data,
+        distribution,
+        collaterals: [
+          ...data.collaterals.slice(0, index),
+          ...data.collaterals.slice(index + 1),
+        ],
+      },
+    ])
+  }
 
-  const handleScale = (value: string) => {}
+  const handleDistribution = (index: number, value: string) => {
+    updateBasket([
+      unit,
+      {
+        ...data,
+        distribution: [
+          ...data.distribution.slice(0, index),
+          +value,
+          ...data.distribution.slice(index + 1),
+        ],
+      },
+    ])
+  }
+
+  const handleScale = (scale: string) => {
+    updateBasket([unit, { ...data, scale: +scale }])
+  }
 
   return (
     <Card {...props}>
@@ -35,7 +67,7 @@ const UnitBasket = ({ data, unit, ...props }: UnitBasketProps) => {
         </Text>
         <Box mx="auto" />
         <Box sx={{ width: 42 }} mr={2}>
-          <Input
+          <NumericalInput
             value={data.scale}
             sx={{ textAlign: 'center' }}
             onChange={handleScale}
@@ -50,7 +82,12 @@ const UnitBasket = ({ data, unit, ...props }: UnitBasketProps) => {
           <Trans>Basket</Trans>
         </Text>
         <Box mx="auto" />
-        <Text mr={2}>{totalDistribution}%</Text>
+        <Text
+          mr={2}
+          sx={{ color: totalDistribution !== 100 ? 'danger' : 'text' }}
+        >
+          {totalDistribution}%
+        </Text>
         <Help content="TODO" />
       </Flex>
       {data.collaterals.map((collateral, index) => (
@@ -62,7 +99,7 @@ const UnitBasket = ({ data, unit, ...props }: UnitBasketProps) => {
           />
           <Box mx="auto" />
           <Box sx={{ width: 60 }}>
-            <Input
+            <NumericalInput
               sx={{ textAlign: 'center' }}
               value={
                 +data.distribution[index] > 0
