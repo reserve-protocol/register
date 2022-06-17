@@ -1,7 +1,6 @@
 import { t, Trans } from '@lingui/macro'
 import Help from 'components/help'
 import OptionSwitch from 'components/option-switch'
-import { HelpCircle } from 'react-feather'
 import { Box, BoxProps, Button, Flex, Text } from 'theme-ui'
 
 interface Props extends BoxProps {

@@ -1,9 +1,9 @@
 import { Trans } from '@lingui/macro'
-import { Input, NumericalInput, TitleCard } from 'components'
+import { NumericalInput, TitleCard } from 'components'
 import { SmallButton } from 'components/button'
 import Help from 'components/help'
-import { Box, Card, Text, CardProps, Flex } from 'theme-ui'
-import { BackupCollateral, Collateral } from '../atoms'
+import { Box, CardProps, Flex, Text } from 'theme-ui'
+import { Collateral } from '../atoms'
 
 interface Props extends CardProps {
   targetUnit: string

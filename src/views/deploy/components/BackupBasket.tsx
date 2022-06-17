@@ -4,7 +4,7 @@ import { SmallButton } from 'components/button'
 import Help from 'components/help'
 import { useAtomValue } from 'jotai'
 import { useCallback } from 'react'
-import { Box, CardProps, Divider, Flex, Input, Text } from 'theme-ui'
+import { Box, CardProps, Divider, Flex, Text } from 'theme-ui'
 import { backupCollateralAtom, basketAtom } from '../atoms'
 import EmergencyCollateral from './EmergencyCollateral'
 

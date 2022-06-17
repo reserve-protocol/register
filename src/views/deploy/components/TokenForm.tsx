@@ -1,7 +1,7 @@
-import { t, Trans } from '@lingui/macro'
+import { t } from '@lingui/macro'
 import { TitleCard } from 'components/card'
 import { FormField } from 'components/field'
-import { Box, BoxProps, Divider, Text } from 'theme-ui'
+import { BoxProps } from 'theme-ui'
 import { isAddress } from 'utils'
 
 const TokenForm = (props: BoxProps) => (
