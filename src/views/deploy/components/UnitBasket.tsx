@@ -7,6 +7,7 @@ import { useUpdateAtom } from 'jotai/utils'
 import { useMemo } from 'react'
 import { X } from 'react-feather'
 import { Box, Card, CardProps, Divider, Flex, IconButton, Text } from 'theme-ui'
+import { formatCurrency } from 'utils'
 import { PrimaryUnitBasket, updateBasketUnitAtom } from '../atoms'
 
 interface UnitBasketProps extends CardProps {
@@ -18,11 +19,11 @@ const UnitBasket = ({ data, unit, ...props }: UnitBasketProps) => {
   const updateBasket = useUpdateAtom(updateBasketUnitAtom)
 
   const totalDistribution = useMemo(
-    () => data.distribution.reduce((count, n) => count + n, 0),
+    () => data.distribution.reduce((count, n) => count + Number(n), 0),
     [data.distribution]
   )
   const getCollateralDist = (index: number) => {
-    return ((data.scale * data.distribution[index]) / 100).toFixed(2)
+    return formatCurrency((+data.scale * +data.distribution[index]) / 100)
   }
   const handleRemove = (index: number) => {
     const n = data.collaterals.length - 1
@@ -48,7 +49,7 @@ const UnitBasket = ({ data, unit, ...props }: UnitBasketProps) => {
         ...data,
         distribution: [
           ...data.distribution.slice(0, index),
-          +value,
+          value,
           ...data.distribution.slice(index + 1),
         ],
       },
@@ -56,7 +57,7 @@ const UnitBasket = ({ data, unit, ...props }: UnitBasketProps) => {
   }
 
   const handleScale = (scale: string) => {
-    updateBasket([unit, { ...data, scale: +scale }])
+    updateBasket([unit, { ...data, scale: scale }])
   }
 
   return (
@@ -68,6 +69,7 @@ const UnitBasket = ({ data, unit, ...props }: UnitBasketProps) => {
         <Box mx="auto" />
         <Box sx={{ width: 42 }} mr={2}>
           <NumericalInput
+            variant={+data.scale > 0 ? 'input' : 'inputError'}
             value={data.scale}
             sx={{ textAlign: 'center' }}
             onChange={handleScale}
@@ -101,9 +103,15 @@ const UnitBasket = ({ data, unit, ...props }: UnitBasketProps) => {
           <Box sx={{ width: 60 }}>
             <NumericalInput
               sx={{ textAlign: 'center' }}
+              variant={
+                +data.distribution[index] > 0 &&
+                +data.distribution[index] <= 100
+                  ? 'input'
+                  : 'inputError'
+              }
               value={
                 +data.distribution[index] > 0
-                  ? Math.round(data.distribution[index] * 100) / 100
+                  ? Math.round(+data.distribution[index] * 100) / 100
                   : data.distribution[index]
               }
               onChange={(value) => handleDistribution(index, value)}

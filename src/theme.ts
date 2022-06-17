@@ -31,6 +31,18 @@ export const baseButton = {
   },
 }
 
+export const baseInput = {
+  borderColor: 'inputBorder',
+  outlineColor: '#000',
+  borderRadius: borderRadius.inputs,
+
+  '&:disabled': {
+    backgroundColor: 'secondary',
+    borderColor: 'secondary',
+    cursor: 'default',
+  },
+}
+
 export const smallButton = {
   fontSize: 1,
   paddingTop: 1,
@@ -239,16 +251,13 @@ export const theme: Theme = {
   },
   forms: {
     input: {
-      // outline: 'none',
-      borderColor: 'inputBorder',
-      outlineColor: '#000',
-      borderRadius: borderRadius.inputs,
-
-      '&:disabled': {
-        backgroundColor: 'secondary',
-        borderColor: 'secondary',
-        cursor: 'default',
-      },
+      ...baseInput,
+    },
+    inputError: {
+      ...baseInput,
+      outlineColor: 'danger',
+      borderColor: 'danger',
+      color: 'danger',
     },
   },
   cards: {

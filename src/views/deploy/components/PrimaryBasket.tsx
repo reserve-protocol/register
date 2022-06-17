@@ -72,7 +72,7 @@ const PrimaryBasket = ({ onAdd }: Props) => {
       }
     >
       {!units.length && <Placeholder />}
-      {units.length && (
+      {!!units.length && (
         <Flex>
           <Text>1 RToken =</Text>
           <Text ml="auto">{getBasketComposition(basket)}</Text>

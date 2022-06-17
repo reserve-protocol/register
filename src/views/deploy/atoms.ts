@@ -15,9 +15,9 @@ export interface BackupCollateral {
 }
 
 export interface PrimaryUnitBasket {
-  scale: number
+  scale: string
   collaterals: Collateral[]
-  distribution: number[]
+  distribution: string[]
 }
 
 export interface Basket {
@@ -102,7 +102,6 @@ export const addBasketCollateralAtom = atom(
         collaterals: unitCollaterals,
         distribution,
         scale: basket[unit]?.scale ?? 1,
-        dirty: false,
       }
     }
 
