@@ -3,6 +3,7 @@ import { TitleCard } from 'components'
 import { SmallButton } from 'components/button'
 import Help from 'components/help'
 import { useAtomValue } from 'jotai'
+import { useFormContext } from 'react-hook-form'
 import { Box, CardProps, Divider, Flex, Text } from 'theme-ui'
 import { Basket, basketAtom } from '../atoms'
 import UnitBasket from './UnitBasket'
@@ -45,6 +46,8 @@ const getBasketComposition = (basket: Basket) => {
 }
 
 const PrimaryBasket = ({ onAdd }: Props) => {
+  const { watch } = useFormContext()
+  const ticker = watch('ticker') || 'RToken'
   const basket = useAtomValue(basketAtom)
   const units = Object.keys(basket)
 
@@ -74,7 +77,7 @@ const PrimaryBasket = ({ onAdd }: Props) => {
       {!units.length && <Placeholder />}
       {!!units.length && (
         <Flex>
-          <Text>1 RToken =</Text>
+          <Text>1 {ticker} =</Text>
           <Text ml="auto">{getBasketComposition(basket)}</Text>
         </Flex>
       )}

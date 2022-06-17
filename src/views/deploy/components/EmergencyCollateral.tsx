@@ -4,8 +4,8 @@ import { SmallButton } from 'components/button'
 import Help from 'components/help'
 import TokenLogo from 'components/icons/TokenLogo'
 import IconInfo from 'components/info-icon'
-import { Move } from 'react-feather'
-import { Box, CardProps, Flex, Text } from 'theme-ui'
+import { Move, X } from 'react-feather'
+import { Box, CardProps, Flex, IconButton, Text } from 'theme-ui'
 import { Collateral } from '../atoms'
 
 interface Props extends CardProps {
@@ -24,6 +24,8 @@ const EmergencyCollateral = ({
   ...props
 }: Props) => {
   const handleDiversityFactor = (n: string) => {}
+
+  const handleRemove = (index: number) => {}
 
   return (
     <TitleCard
@@ -49,31 +51,38 @@ const EmergencyCollateral = ({
         <Text>
           <Trans>Diversity factor</Trans>
         </Text>
-        <Box mx="auto" />
-        <Box sx={{ width: 42 }} mr={2}>
+        <Box ml="auto" sx={{ width: 42 }} mr={2}>
           <NumericalInput
             sx={{ textAlign: 'center' }}
             placeholder="0"
             value={diversityFactor}
             onChange={handleDiversityFactor}
           />
-        </Box>{' '}
+        </Box>
         <Help content="TODO" />
       </Flex>
       {collaterals.map((collateral, index) => (
         <Flex mt={3} key={collateral.address} variant="layout.verticalAlign">
+          <Move
+            size={16}
+            style={{ cursor: 'pointer' }}
+            color="var(--theme-ui-colors-secondaryText)"
+          />
+          <Text variant="legend" ml={2} mr={3}>
+            {index}
+          </Text>
           <IconInfo
             icon={<TokenLogo />}
             title={targetUnit}
             text={collateral.symbol}
           />
-          <Box mx="auto" />
-          <Text mr={3}>{index}</Text>
-          <Move
-            size={20}
-            style={{ cursor: 'pointer' }}
-            color="var(--theme-ui-colors-secondaryText)"
-          />
+          <IconButton
+            ml="auto"
+            sx={{ cursor: 'pointer' }}
+            onClick={() => handleRemove(index)}
+          >
+            <X size={20} color="var(--theme-ui-colors-secondaryText)" />
+          </IconButton>
         </Flex>
       ))}
     </TitleCard>

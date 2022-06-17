@@ -116,6 +116,9 @@ export const updateBasketUnitAtom = atom(
 
     if (!data.collaterals.length) {
       delete basket[unit]
+      const backup = { ...get(backupCollateralAtom) }
+      delete backup[unit]
+      set(backupCollateralAtom, backup)
     } else {
       basket[unit] = { ...basket[unit], ...data }
     }

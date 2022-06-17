@@ -66,8 +66,7 @@ const UnitBasket = ({ data, unit, ...props }: UnitBasketProps) => {
         <Text>
           <Trans>Target unit: {unit}</Trans>
         </Text>
-        <Box mx="auto" />
-        <Box sx={{ width: 42 }} mr={2}>
+        <Box ml="auto" sx={{ width: 42 }} mr={2}>
           <NumericalInput
             variant={+data.scale > 0 ? 'input' : 'inputError'}
             value={data.scale}
@@ -83,8 +82,8 @@ const UnitBasket = ({ data, unit, ...props }: UnitBasketProps) => {
         <Text variant="legend" sx={{ fontSize: 1 }}>
           <Trans>Basket</Trans>
         </Text>
-        <Box mx="auto" />
         <Text
+          ml="auto"
           mr={2}
           sx={{ color: totalDistribution !== 100 ? 'danger' : 'text' }}
         >
@@ -99,8 +98,7 @@ const UnitBasket = ({ data, unit, ...props }: UnitBasketProps) => {
             title={unit}
             text={`${getCollateralDist(index)} in ${collateral.symbol}`}
           />
-          <Box mx="auto" />
-          <Box sx={{ width: 60 }}>
+          <Box ml="auto" sx={{ width: 60 }}>
             <NumericalInput
               sx={{ textAlign: 'center' }}
               variant={
@@ -117,7 +115,6 @@ const UnitBasket = ({ data, unit, ...props }: UnitBasketProps) => {
               onChange={(value) => handleDistribution(index, value)}
             />
           </Box>
-
           <Text>%</Text>
           <IconButton
             sx={{ cursor: 'pointer' }}
