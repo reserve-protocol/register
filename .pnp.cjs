@@ -560,6 +560,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "npm:1.2.4"\
       ],\
       [\
+        "@dnd-kit/accessibility",\
+        "virtual:94344a55e45ded263aa92a628bf2745001e790888aaf20f5124ebfa99ab15440a2af2fd7d8a89fde4ffcb0a84cfe27b5884ea733775b720f007c9263784772ac#npm:3.0.1"\
+      ],\
+      [\
+        "@dnd-kit/core",\
+        "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:6.0.5"\
+      ],\
+      [\
+        "@dnd-kit/utilities",\
+        "virtual:94344a55e45ded263aa92a628bf2745001e790888aaf20f5124ebfa99ab15440a2af2fd7d8a89fde4ffcb0a84cfe27b5884ea733775b720f007c9263784772ac#npm:3.2.0"\
+      ],\
+      [\
         "@emotion/babel-plugin",\
         "virtual:d89ddcc6a925ed6743b6cc1d1ed2326c55f8e193c2592711f636b7443409cdd8cc0f84a74ca67322fc4d200a56dfc667d024e10b08a5e756b3f3a63a9e9cc8e5#npm:11.7.2"\
       ],\
@@ -5958,6 +5970,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["@coinbase/wallet-sdk", "npm:3.0.5"],\
+            ["@dnd-kit/core", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:6.0.5"],\
             ["@emotion/react", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:11.9.0"],\
             ["@emotion/styled", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:11.8.1"],\
             ["@ethersproject/abi", "npm:5.6.0"],\
@@ -9159,6 +9172,81 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@cypress/xvfb", "npm:1.2.4"],\
             ["debug", "virtual:396a3691f7b25accf085fe2fff1f56eb7540eff3f2e928a7572ca1de9b831ff8f22136404f236aaed35d90369918dfc34392844d0f822a310563f34746dfb015#npm:3.2.7"],\
             ["lodash.once", "npm:4.1.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@dnd-kit/accessibility", [\
+        ["npm:3.0.1", {\
+          "packageLocation": "./.yarn/cache/@dnd-kit-accessibility-npm-3.0.1-78bf91a820-0afc2c0fce.zip/node_modules/@dnd-kit/accessibility/",\
+          "packageDependencies": [\
+            ["@dnd-kit/accessibility", "npm:3.0.1"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:94344a55e45ded263aa92a628bf2745001e790888aaf20f5124ebfa99ab15440a2af2fd7d8a89fde4ffcb0a84cfe27b5884ea733775b720f007c9263784772ac#npm:3.0.1", {\
+          "packageLocation": "./.yarn/__virtual__/@dnd-kit-accessibility-virtual-545e15230e/0/cache/@dnd-kit-accessibility-npm-3.0.1-78bf91a820-0afc2c0fce.zip/node_modules/@dnd-kit/accessibility/",\
+          "packageDependencies": [\
+            ["@dnd-kit/accessibility", "virtual:94344a55e45ded263aa92a628bf2745001e790888aaf20f5124ebfa99ab15440a2af2fd7d8a89fde4ffcb0a84cfe27b5884ea733775b720f007c9263784772ac#npm:3.0.1"],\
+            ["@types/react", "npm:18.0.0"],\
+            ["react", "npm:18.1.0"],\
+            ["tslib", "npm:2.3.1"]\
+          ],\
+          "packagePeers": [\
+            "@types/react",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@dnd-kit/core", [\
+        ["npm:6.0.5", {\
+          "packageLocation": "./.yarn/cache/@dnd-kit-core-npm-6.0.5-ba5ad57a21-09061e741b.zip/node_modules/@dnd-kit/core/",\
+          "packageDependencies": [\
+            ["@dnd-kit/core", "npm:6.0.5"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:6.0.5", {\
+          "packageLocation": "./.yarn/__virtual__/@dnd-kit-core-virtual-94344a55e4/0/cache/@dnd-kit-core-npm-6.0.5-ba5ad57a21-09061e741b.zip/node_modules/@dnd-kit/core/",\
+          "packageDependencies": [\
+            ["@dnd-kit/core", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:6.0.5"],\
+            ["@dnd-kit/accessibility", "virtual:94344a55e45ded263aa92a628bf2745001e790888aaf20f5124ebfa99ab15440a2af2fd7d8a89fde4ffcb0a84cfe27b5884ea733775b720f007c9263784772ac#npm:3.0.1"],\
+            ["@dnd-kit/utilities", "virtual:94344a55e45ded263aa92a628bf2745001e790888aaf20f5124ebfa99ab15440a2af2fd7d8a89fde4ffcb0a84cfe27b5884ea733775b720f007c9263784772ac#npm:3.2.0"],\
+            ["@types/react", "npm:18.0.0"],\
+            ["@types/react-dom", "npm:18.0.0"],\
+            ["react", "npm:18.1.0"],\
+            ["react-dom", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:18.1.0"],\
+            ["tslib", "npm:2.3.1"]\
+          ],\
+          "packagePeers": [\
+            "@types/react-dom",\
+            "@types/react",\
+            "react-dom",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@dnd-kit/utilities", [\
+        ["npm:3.2.0", {\
+          "packageLocation": "./.yarn/cache/@dnd-kit-utilities-npm-3.2.0-6cb85f1dd6-575e554992.zip/node_modules/@dnd-kit/utilities/",\
+          "packageDependencies": [\
+            ["@dnd-kit/utilities", "npm:3.2.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:94344a55e45ded263aa92a628bf2745001e790888aaf20f5124ebfa99ab15440a2af2fd7d8a89fde4ffcb0a84cfe27b5884ea733775b720f007c9263784772ac#npm:3.2.0", {\
+          "packageLocation": "./.yarn/__virtual__/@dnd-kit-utilities-virtual-d3648ce33f/0/cache/@dnd-kit-utilities-npm-3.2.0-6cb85f1dd6-575e554992.zip/node_modules/@dnd-kit/utilities/",\
+          "packageDependencies": [\
+            ["@dnd-kit/utilities", "virtual:94344a55e45ded263aa92a628bf2745001e790888aaf20f5124ebfa99ab15440a2af2fd7d8a89fde4ffcb0a84cfe27b5884ea733775b720f007c9263784772ac#npm:3.2.0"],\
+            ["@types/react", "npm:18.0.0"],\
+            ["react", "npm:18.1.0"],\
+            ["tslib", "npm:2.3.1"]\
+          ],\
+          "packagePeers": [\
+            "@types/react",\
+            "react"\
           ],\
           "linkType": "HARD"\
         }]\
@@ -24322,6 +24410,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["protocol-interface", "workspace:."],\
             ["@coinbase/wallet-sdk", "npm:3.0.5"],\
+            ["@dnd-kit/core", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:6.0.5"],\
             ["@emotion/react", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:11.9.0"],\
             ["@emotion/styled", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:11.8.1"],\
             ["@ethersproject/abi", "npm:5.6.0"],\

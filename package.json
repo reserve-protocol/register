@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@coinbase/wallet-sdk": "^3.0.5",
+    "@dnd-kit/core": "^6.0.5",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@ethersproject/abi": "^5.6.0",

@@ -1689,6 +1689,42 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@dnd-kit/accessibility@npm:^3.0.0":
+  version: 3.0.1
+  resolution: "@dnd-kit/accessibility@npm:3.0.1"
+  dependencies:
+    tslib: ^2.0.0
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 0afc2c0fce9a1c107453620ca0da1778f182d340e74ffbc6e369ef0ac8943cafb929d3a6c0891d9b915aa23b2b92137ff4fad958f43118466586d8129a3359d5
+  languageName: node
+  linkType: hard
+
+"@dnd-kit/core@npm:^6.0.5":
+  version: 6.0.5
+  resolution: "@dnd-kit/core@npm:6.0.5"
+  dependencies:
+    "@dnd-kit/accessibility": ^3.0.0
+    "@dnd-kit/utilities": ^3.2.0
+    tslib: ^2.0.0
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: 09061e741bea9d2ba3987d01bb760c354fe29ca27996e74da3774e68c4783cf09ad21087703b5ffb036d3c2f86d16bea3c9f24466c2f266c8698f1e76c29d386
+  languageName: node
+  linkType: hard
+
+"@dnd-kit/utilities@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "@dnd-kit/utilities@npm:3.2.0"
+  dependencies:
+    tslib: ^2.0.0
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 575e554992c5ff26622854b889b6288580f308e1125620a4aae55d0a113d47f05fdb7c6e2023ce51c58d5a206091fc1deac868222dd5f9c35c80c3e2f99db9af
+  languageName: node
+  linkType: hard
+
 "@emotion/babel-plugin@npm:^11.7.1":
   version: 11.7.2
   resolution: "@emotion/babel-plugin@npm:11.7.2"
@@ -13555,6 +13591,7 @@ __metadata:
   resolution: "protocol-interface@workspace:."
   dependencies:
     "@coinbase/wallet-sdk": ^3.0.5
+    "@dnd-kit/core": ^6.0.5
     "@emotion/react": ^11.9.0
     "@emotion/styled": ^11.8.1
     "@ethersproject/abi": ^5.6.0

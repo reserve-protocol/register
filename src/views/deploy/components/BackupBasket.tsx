@@ -5,7 +5,7 @@ import Help from 'components/help'
 import { useAtomValue } from 'jotai'
 import { useCallback } from 'react'
 import { Box, CardProps, Divider, Flex, Input, Text } from 'theme-ui'
-import { backupCollateralAtom } from '../atoms'
+import { backupCollateralAtom, basketAtom } from '../atoms'
 import EmergencyCollateral from './EmergencyCollateral'
 
 interface Props extends CardProps {
@@ -17,20 +17,13 @@ interface Props extends CardProps {
   ): void
 }
 
-const Placeholder = ({ onAdd }: Props) => (
+const Placeholder = () => (
   <Box>
     <TitleCard
       title={t`Emergency collateral`}
       right={
         <Flex variant="layout.verticalAlign">
-          <SmallButton
-            onClick={() =>
-              onAdd({
-                basket: 'backup',
-              })
-            }
-            mr={2}
-          >
+          <SmallButton disabled mr={2}>
             <Trans>Add</Trans>
           </SmallButton>
           <Help content="TODO" />
@@ -74,6 +67,7 @@ const Placeholder = ({ onAdd }: Props) => (
 )
 
 const BackupBasket = ({ onAdd }: Props) => {
+  const targetUnits = Object.keys(useAtomValue(basketAtom))
   const backupBasket = useAtomValue(backupCollateralAtom)
 
   const handleAdd = useCallback(
@@ -85,13 +79,15 @@ const BackupBasket = ({ onAdd }: Props) => {
 
   return (
     <Box>
-      {Object.keys(backupBasket).map((targetUnit) => (
+      {targetUnits.map((targetUnit) => (
         <EmergencyCollateral
+          mb={3}
+          key={targetUnit}
           targetUnit={targetUnit}
           {...backupBasket[targetUnit]}
         />
       ))}
-      {!Object.keys(backupBasket).length && <Placeholder onAdd={onAdd} />}
+      {!targetUnits.length && <Placeholder />}
     </Box>
   )
 }

@@ -45,8 +45,12 @@ const UnitBasket = ({ data, unit, ...props }: UnitBasketProps) => {
           <Trans>Target unit: {unit}</Trans>
         </Text>
         <Box mx="auto" />
-        <Box sx={{ width: 40 }} mr={2}>
-          <Input value={data.scale} onChange={handleScale} />
+        <Box sx={{ width: 42 }} mr={2}>
+          <Input
+            value={data.scale}
+            sx={{ textAlign: 'center' }}
+            onChange={handleScale}
+          />
         </Box>
         <Text mr={2}>{unit}</Text>
         <Help content="TODO" />
@@ -70,6 +74,7 @@ const UnitBasket = ({ data, unit, ...props }: UnitBasketProps) => {
           <Box mx="auto" />
           <Box sx={{ width: 60 }}>
             <Input
+              sx={{ textAlign: 'center' }}
               value={
                 +data.distribution[index] > 0
                   ? Math.round(data.distribution[index] * 100) / 100
