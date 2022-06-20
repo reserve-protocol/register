@@ -4,9 +4,10 @@ import { SmallButton } from 'components/button'
 import Help from 'components/help'
 import TokenLogo from 'components/icons/TokenLogo'
 import IconInfo from 'components/info-icon'
+import { useUpdateAtom } from 'jotai/utils'
 import { Move, X } from 'react-feather'
 import { Box, CardProps, Flex, IconButton, Text } from 'theme-ui'
-import { Collateral } from '../atoms'
+import { Collateral, updateBackupBasketUnitAtom } from '../atoms'
 
 interface Props extends CardProps {
   targetUnit: string
@@ -23,9 +24,24 @@ const EmergencyCollateral = ({
   onAdd,
   ...props
 }: Props) => {
-  const handleDiversityFactor = (n: string) => {}
+  const updateBasket = useUpdateAtom(updateBackupBasketUnitAtom)
 
-  const handleRemove = (index: number) => {}
+  const handleDiversityFactor = (n: string) => {
+    updateBasket([targetUnit, { diversityFactor: n, collaterals }])
+  }
+
+  const handleRemove = (index: number) => {
+    updateBasket([
+      targetUnit,
+      {
+        diversityFactor,
+        collaterals: [
+          ...collaterals.slice(0, index),
+          ...collaterals.slice(index + 1),
+        ],
+      },
+    ])
+  }
 
   return (
     <TitleCard
@@ -53,6 +69,12 @@ const EmergencyCollateral = ({
         </Text>
         <Box ml="auto" sx={{ width: 42 }} mr={2}>
           <NumericalInput
+            variant={
+              !collaterals.length ||
+              (+diversityFactor > 0 && +diversityFactor <= collaterals.length)
+                ? 'input'
+                : 'inputError'
+            }
             sx={{ textAlign: 'center' }}
             placeholder="0"
             value={diversityFactor}

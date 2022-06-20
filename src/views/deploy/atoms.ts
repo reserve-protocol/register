@@ -7,11 +7,13 @@ export interface Collateral {
   custom?: boolean
 }
 
-export interface BackupCollateral {
-  [x: string]: {
-    diversityFactor: string
-    collaterals: Collateral[]
-  }
+export interface BackupUnitBasket {
+  diversityFactor: string
+  collaterals: Collateral[]
+}
+
+export interface BackupBasket {
+  [x: string]: BackupUnitBasket
 }
 
 export interface PrimaryUnitBasket {
@@ -25,12 +27,12 @@ export interface Basket {
 }
 
 export const basketAtom = atom<Basket>({})
-export const backupCollateralAtom = atom<BackupCollateral>({})
+export const backupCollateralAtom = atom<BackupBasket>({})
 export const isBasketValidAtom = atom((get) => {
   return !!Object.keys(get(basketAtom)).length
 })
 
-const getCollateralFromBasket = (basket: Basket | BackupCollateral) => {
+const getCollateralFromBasket = (basket: Basket | BackupBasket) => {
   return Object.values(basket).reduce(
     (acc, { collaterals }) => [
       ...acc,
@@ -106,6 +108,21 @@ export const addBasketCollateralAtom = atom(
     }
 
     set(basketAtom, basket)
+  }
+)
+
+export const updateBackupBasketUnitAtom = atom(
+  null,
+  (get, set, [unit, data]: [string, BackupUnitBasket]) => {
+    const basket = { ...get(backupCollateralAtom) }
+
+    if (!data.collaterals.length) {
+      delete basket[unit]
+    } else {
+      basket[unit] = { ...basket[unit], ...data }
+    }
+
+    set(backupCollateralAtom, basket)
   }
 )
 
