@@ -30,6 +30,7 @@ interface Props extends CardProps {
   targetUnit: string
   diversityFactor?: number
   collaterals?: Collateral[]
+  readOnly?: boolean
   onAdd(targetUnit: string): void
 }
 
@@ -38,6 +39,7 @@ const EmergencyCollateral = ({
   targetUnit,
   diversityFactor = 0,
   collaterals = [],
+  readOnly = false,
   onAdd,
   ...props
 }: Props) => {
@@ -114,59 +116,76 @@ const EmergencyCollateral = ({
         <Text>
           <Trans>Diversity factor</Trans>
         </Text>
-        <Box ml="auto" sx={{ width: 42 }} mr={2}>
-          <NumericalInput
-            variant={
-              !collaterals.length ||
-              (diversityFactor > 0 && diversityFactor <= collaterals.length)
-                ? 'input'
-                : 'inputError'
-            }
-            sx={{ textAlign: 'center' }}
-            placeholder="0"
-            value={diversityFactor}
-            onChange={handleDiversityFactor}
-          />
-        </Box>
-        <Help content="TODO" />
+        {readOnly ? (
+          <Text>N={diversityFactor}</Text>
+        ) : (
+          <>
+            <Box ml="auto" sx={{ width: 42 }} mr={2}>
+              <NumericalInput
+                variant={
+                  !collaterals.length ||
+                  (diversityFactor > 0 && diversityFactor <= collaterals.length)
+                    ? 'input'
+                    : 'inputError'
+                }
+                sx={{ textAlign: 'center' }}
+                placeholder="0"
+                value={diversityFactor}
+                onChange={handleDiversityFactor}
+              />
+            </Box>
+            <Help content="TODO" />
+          </>
+        )}
       </Flex>
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
-      >
-        <SortableContext
-          items={addresses}
-          strategy={verticalListSortingStrategy}
-        >
+      {readOnly ? (
+        <Box>
           {collaterals.map((collateral, index) => (
-            <SortableItem id={collateral.address} key={collateral.address}>
-              <Flex mt={3} variant="layout.verticalAlign">
-                <Move
-                  size={16}
-                  style={{ cursor: 'pointer' }}
-                  color="var(--theme-ui-colors-secondaryText)"
-                />
-                <Text variant="legend" ml={2} mr={3}>
-                  {index + 1}
-                </Text>
-                <IconInfo
-                  icon={<TokenLogo />}
-                  title={targetUnit}
-                  text={collateral.symbol}
-                />
-                <IconButton
-                  ml="auto"
-                  sx={{ cursor: 'pointer' }}
-                  onClick={() => handleRemove(index)}
-                >
-                  <X size={20} color="var(--theme-ui-colors-secondaryText)" />
-                </IconButton>
-              </Flex>
-            </SortableItem>
+            <Flex mt={3} variant="layout.verticalAlign">
+              <Text>{collateral.symbol}</Text>
+              <Text ml="auto">{index + 1}</Text>
+            </Flex>
           ))}
-        </SortableContext>
-      </DndContext>
+        </Box>
+      ) : (
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={addresses}
+            strategy={verticalListSortingStrategy}
+          >
+            {collaterals.map((collateral, index) => (
+              <SortableItem id={collateral.address} key={collateral.address}>
+                <Flex mt={3} variant="layout.verticalAlign">
+                  <Move
+                    size={16}
+                    style={{ cursor: 'pointer' }}
+                    color="var(--theme-ui-colors-secondaryText)"
+                  />
+                  <Text variant="legend" ml={2} mr={3}>
+                    {index + 1}
+                  </Text>
+                  <IconInfo
+                    icon={<TokenLogo />}
+                    title={targetUnit}
+                    text={collateral.symbol}
+                  />
+                  <IconButton
+                    ml="auto"
+                    sx={{ cursor: 'pointer' }}
+                    onClick={() => handleRemove(index)}
+                  >
+                    <X size={20} color="var(--theme-ui-colors-secondaryText)" />
+                  </IconButton>
+                </Flex>
+              </SortableItem>
+            ))}
+          </SortableContext>
+        </DndContext>
+      )}
     </TitleCard>
   )
 }

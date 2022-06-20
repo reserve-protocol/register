@@ -1,9 +1,12 @@
 import { useWeb3React } from '@web3-react/core'
 import { Container } from 'components'
+import { useAtomValue } from 'jotai'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+import { isValidBasketAtom } from './atoms'
 import BasketSetup from './components/BasketSetup'
 import DeployHeader from './components/DeployHeader'
+import DeployPreview from './components/DeployPreview'
 import TokenConfiguration from './components/TokenConfiguration'
 
 const defaultValues = {
@@ -29,7 +32,7 @@ const defaultValues = {
   minBidSize: '1',
 }
 
-const VIEWS = [TokenConfiguration, BasketSetup]
+const VIEWS = [TokenConfiguration, BasketSetup, DeployPreview]
 
 const Deploy = () => {
   const { account } = useWeb3React()
@@ -38,6 +41,7 @@ const Deploy = () => {
     mode: 'onBlur',
     defaultValues,
   })
+  const [isValidBasket] = useAtomValue(isValidBasketAtom)
 
   // current tab view [config - basket]
   const View = VIEWS[view]
@@ -48,15 +52,19 @@ const Deploy = () => {
     }
   }, [account])
 
+  // TODO
+  const handleDeploy = () => {}
+
   return (
     <FormProvider {...form}>
       <Container sx={{ maxWidth: 1024, margin: 'auto' }} mb={2}>
         <DeployHeader
           mt={2}
           mb={5}
-          isValid={false}
+          isValid={form.formState.isValid && isValidBasket}
           currentView={view}
           onViewChange={setView}
+          onDeploy={handleDeploy}
         />
         {View && <View onViewChange={setView} />}
       </Container>

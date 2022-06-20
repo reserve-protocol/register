@@ -54,7 +54,7 @@ const getCollateralByTarget = (collaterals: Collateral[]) => {
   }, {} as { [x: string]: Collateral[] })
 }
 
-export const isValidBasket = atom((get) => {
+export const isValidBasketAtom = atom((get): [boolean, string[]] => {
   const basket = get(basketAtom)
   const backup = get(backupCollateralAtom)
   const errors: string[] = []
@@ -91,7 +91,7 @@ export const isValidBasket = atom((get) => {
     }
   }
 
-  return [!!errors.length, errors]
+  return [!errors.length, errors]
 })
 
 export const primaryBasketCollateralAtom = atom((get) => {

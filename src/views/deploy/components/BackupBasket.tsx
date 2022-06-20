@@ -9,12 +9,13 @@ import { backupCollateralAtom, basketAtom } from '../atoms'
 import EmergencyCollateral from './EmergencyCollateral'
 
 interface Props extends CardProps {
-  onAdd(
+  onAdd?(
     data: {
       basket: 'primary' | 'backup'
       targetUnit?: string
     } | null
   ): void
+  readOnly?: boolean
 }
 
 const Placeholder = () => (
@@ -66,7 +67,7 @@ const Placeholder = () => (
   </Box>
 )
 
-const BackupBasket = ({ onAdd }: Props) => {
+const BackupBasket = ({ onAdd = () => {}, readOnly = false }: Props) => {
   const targetUnits = Object.keys(useAtomValue(basketAtom))
   const backupBasket = useAtomValue(backupCollateralAtom)
 
@@ -77,11 +78,16 @@ const BackupBasket = ({ onAdd }: Props) => {
     [onAdd]
   )
 
+  if (readOnly && !targetUnits.length) {
+    return null
+  }
+
   return (
     <Box>
       {targetUnits.map((targetUnit) => (
         <EmergencyCollateral
           mb={3}
+          readOnly={readOnly}
           onAdd={handleAdd}
           key={targetUnit}
           targetUnit={targetUnit}

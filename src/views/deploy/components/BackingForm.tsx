@@ -27,8 +27,8 @@ const BackingForm = (props: BoxProps) => {
         options={{
           required: true,
           pattern: numberPattern,
-          max: 60,
-          min: 3600,
+          max: 3600,
+          min: 60,
         }}
       />
       <FormField
