@@ -13,9 +13,10 @@ import { PrimaryUnitBasket, updateBasketUnitAtom } from '../atoms'
 interface UnitBasketProps extends CardProps {
   data: PrimaryUnitBasket
   unit: string
+  readOnly?: boolean
 }
 
-const UnitBasket = ({ data, unit, ...props }: UnitBasketProps) => {
+const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
   const updateBasket = useUpdateAtom(updateBasketUnitAtom)
 
   const totalDistribution = useMemo(
@@ -66,16 +67,20 @@ const UnitBasket = ({ data, unit, ...props }: UnitBasketProps) => {
         <Text>
           <Trans>Target unit: {unit}</Trans>
         </Text>
-        <Box ml="auto" sx={{ width: 42 }} mr={2}>
-          <NumericalInput
-            variant={+data.scale > 0 ? 'input' : 'inputError'}
-            value={data.scale}
-            sx={{ textAlign: 'center' }}
-            onChange={handleScale}
-          />
-        </Box>
-        <Text mr={2}>{unit}</Text>
-        <Help content="TODO" />
+        {!readOnly && (
+          <>
+            <Box ml="auto" sx={{ width: 42 }} mr={2}>
+              <NumericalInput
+                variant={+data.scale > 0 ? 'input' : 'inputError'}
+                value={data.scale}
+                sx={{ textAlign: 'center' }}
+                onChange={handleScale}
+              />
+            </Box>
+            <Text mr={2}>{unit}</Text>
+            <Help content="TODO" />
+          </>
+        )}
       </Flex>
       <Divider my={3} mx={-3} />
       <Flex variant="layout.verticalAlign">
@@ -98,30 +103,39 @@ const UnitBasket = ({ data, unit, ...props }: UnitBasketProps) => {
             title={unit}
             text={`${getCollateralDist(index)} in ${collateral.symbol}`}
           />
-          <Box ml="auto" sx={{ width: 60 }}>
-            <NumericalInput
-              sx={{ textAlign: 'center' }}
-              variant={
-                +data.distribution[index] > 0 &&
-                +data.distribution[index] <= 100
-                  ? 'input'
-                  : 'inputError'
-              }
-              value={
-                +data.distribution[index] > 0
-                  ? Math.round(+data.distribution[index] * 100) / 100
-                  : data.distribution[index]
-              }
-              onChange={(value) => handleDistribution(index, value)}
-            />
-          </Box>
+          {!readOnly ? (
+            <Box ml="auto" sx={{ width: 60 }}>
+              <NumericalInput
+                sx={{ textAlign: 'center' }}
+                variant={
+                  +data.distribution[index] > 0 &&
+                  +data.distribution[index] <= 100
+                    ? 'input'
+                    : 'inputError'
+                }
+                value={
+                  +data.distribution[index] > 0
+                    ? Math.round(+data.distribution[index] * 100) / 100
+                    : data.distribution[index]
+                }
+                onChange={(value) => handleDistribution(index, value)}
+              />
+            </Box>
+          ) : (
+            <Text ml="auto">
+              {Math.round(+data.distribution[index] * 100) / 100}
+            </Text>
+          )}
+
           <Text>%</Text>
-          <IconButton
-            sx={{ cursor: 'pointer' }}
-            onClick={() => handleRemove(index)}
-          >
-            <X size={20} color="var(--theme-ui-colors-secondaryText)" />
-          </IconButton>
+          {!readOnly && (
+            <IconButton
+              sx={{ cursor: 'pointer' }}
+              onClick={() => handleRemove(index)}
+            >
+              <X size={20} color="var(--theme-ui-colors-secondaryText)" />
+            </IconButton>
+          )}
         </Flex>
       ))}
     </Card>

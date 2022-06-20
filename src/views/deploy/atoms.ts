@@ -1,3 +1,4 @@
+import { t } from '@lingui/macro'
 import { atom } from 'jotai'
 
 export interface Collateral {
@@ -52,6 +53,46 @@ const getCollateralByTarget = (collaterals: Collateral[]) => {
     return acc
   }, {} as { [x: string]: Collateral[] })
 }
+
+export const isValidBasket = atom((get) => {
+  const basket = get(basketAtom)
+  const backup = get(backupCollateralAtom)
+  const errors: string[] = []
+
+  const units = Object.keys(basket)
+
+  if (!units.length) {
+    errors.push(t`Primary basket not defined`)
+  }
+
+  for (const targetUnit of units) {
+    const distribution = basket[targetUnit].distribution.reduce(
+      (acc, n) => acc + Number(n),
+      0
+    )
+    if (distribution !== 100) {
+      errors.push(t`Invalid (${targetUnit}) basket distribution`)
+    }
+
+    if (Number(basket[targetUnit].scale) <= 0) {
+      errors.push(t`Invalid (${targetUnit}) basket scale`)
+    }
+
+    if (backup[targetUnit]) {
+      const { diversityFactor } = backup[targetUnit]
+      const collaterals = backup[targetUnit].collaterals.length
+
+      if (
+        collaterals &&
+        (diversityFactor > collaterals || diversityFactor <= 0)
+      ) {
+        errors.push(t`Invalid (${targetUnit}) backup diversity factor`)
+      }
+    }
+  }
+
+  return [!!errors.length, errors]
+})
 
 export const primaryBasketCollateralAtom = atom((get) => {
   return getCollateralFromBasket(get(basketAtom))

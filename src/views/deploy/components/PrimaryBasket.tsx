@@ -9,12 +9,13 @@ import { Basket, basketAtom } from '../atoms'
 import UnitBasket from './UnitBasket'
 
 interface Props extends CardProps {
-  onAdd(
+  onAdd?(
     data: {
       basket: 'primary' | 'backup'
       targetUnit?: string
     } | null
   ): void
+  readOnly?: boolean
 }
 
 const Placeholder = () => (
@@ -45,7 +46,7 @@ const getBasketComposition = (basket: Basket) => {
     .substring(2)
 }
 
-const PrimaryBasket = ({ onAdd }: Props) => {
+const PrimaryBasket = ({ onAdd = () => {}, readOnly = false }: Props) => {
   const { watch } = useFormContext()
   const ticker = watch('ticker') || 'RToken'
   const basket = useAtomValue(basketAtom)
@@ -60,18 +61,20 @@ const PrimaryBasket = ({ onAdd }: Props) => {
       })}
       title={t`Primary basket`}
       right={
-        <Flex variant="layout.verticalAlign">
-          <SmallButton onClick={() => onAdd({ basket: 'primary' })} mr={2}>
-            <Trans>Add</Trans>
-          </SmallButton>
-          <Help
-            content={
-              <Text>
-                <Trans>TODO: Help copy</Trans>
-              </Text>
-            }
-          />
-        </Flex>
+        !readOnly && (
+          <Flex variant="layout.verticalAlign">
+            <SmallButton onClick={() => onAdd({ basket: 'primary' })} mr={2}>
+              <Trans>Add</Trans>
+            </SmallButton>
+            <Help
+              content={
+                <Text>
+                  <Trans>TODO: Help copy</Trans>
+                </Text>
+              }
+            />
+          </Flex>
+        )
       }
     >
       {!units.length && <Placeholder />}
@@ -84,6 +87,7 @@ const PrimaryBasket = ({ onAdd }: Props) => {
       {units.map((targetUnit) => (
         <UnitBasket
           mt={3}
+          readOnly={readOnly}
           key={targetUnit}
           data={basket[targetUnit]}
           unit={targetUnit}

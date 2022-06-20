@@ -2,11 +2,8 @@ import { useWeb3React } from '@web3-react/core'
 import { Container } from 'components'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { Route, Routes } from 'react-router-dom'
-import { Box, Flex } from 'theme-ui'
 import BasketSetup from './components/BasketSetup'
 import DeployHeader from './components/DeployHeader'
-import DeployIntro from './components/DeployIntro'
 import TokenConfiguration from './components/TokenConfiguration'
 
 const defaultValues = {

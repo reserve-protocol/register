@@ -1,14 +1,10 @@
 import { useState } from 'react'
-import { BoxProps, Grid } from 'theme-ui'
+import { Grid } from 'theme-ui'
 import BackupBasket from './BackupBasket'
 import CollateralModal from './CollateralModal'
 import PrimaryBasket from './PrimaryBasket'
 
-interface Props extends BoxProps {
-  onViewChange(index: number): void
-}
-
-const BasketSetup = ({ ...props }: Props) => {
+const BasketSetup = () => {
   const [collateralModal, setCollateralModal] = useState<{
     basket: 'primary' | 'backup'
     targetUnit?: string

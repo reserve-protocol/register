@@ -87,9 +87,6 @@ const PluginItem = ({ data, onCheck, ...props }: PluginItemProps) => {
           </Text>
         </Box>
         <Box mx="auto" />
-        <Text variant="legend" sx={{ fontSize: 1, display: 'block' }} mr={3}>
-          {shortenAddress(data.address!)}
-        </Text>
         <label>
           <Checkbox
             sx={{ cursor: 'pointer' }}
