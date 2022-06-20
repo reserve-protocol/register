@@ -8,7 +8,7 @@ export interface Collateral {
 }
 
 export interface BackupUnitBasket {
-  diversityFactor: string
+  diversityFactor: number
   collaterals: Collateral[]
 }
 

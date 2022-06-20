@@ -1714,6 +1714,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@dnd-kit/sortable@npm:^7.0.1":
+  version: 7.0.1
+  resolution: "@dnd-kit/sortable@npm:7.0.1"
+  dependencies:
+    "@dnd-kit/utilities": ^3.2.0
+    tslib: ^2.0.0
+  peerDependencies:
+    "@dnd-kit/core": ^6.0.4
+    react: ">=16.8.0"
+  checksum: b8b5ae504d57d6afb847c3ac8a865a3623c5915f4f0dd767017a17e6d1d36e144b74f6f90a17c07d5f8ddc83395a2db8bb90c420f017aee15bd88538b6f3f226
+  languageName: node
+  linkType: hard
+
 "@dnd-kit/utilities@npm:^3.2.0":
   version: 3.2.0
   resolution: "@dnd-kit/utilities@npm:3.2.0"
@@ -13592,6 +13605,8 @@ __metadata:
   dependencies:
     "@coinbase/wallet-sdk": ^3.0.5
     "@dnd-kit/core": ^6.0.5
+    "@dnd-kit/sortable": ^7.0.1
+    "@dnd-kit/utilities": ^3.2.0
     "@emotion/react": ^11.9.0
     "@emotion/styled": ^11.8.1
     "@ethersproject/abi": ^5.6.0

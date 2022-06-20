@@ -568,8 +568,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:6.0.5"\
       ],\
       [\
+        "@dnd-kit/sortable",\
+        "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:7.0.1"\
+      ],\
+      [\
         "@dnd-kit/utilities",\
-        "virtual:94344a55e45ded263aa92a628bf2745001e790888aaf20f5124ebfa99ab15440a2af2fd7d8a89fde4ffcb0a84cfe27b5884ea733775b720f007c9263784772ac#npm:3.2.0"\
+        "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:3.2.0"\
       ],\
       [\
         "@emotion/babel-plugin",\
@@ -5971,6 +5975,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@coinbase/wallet-sdk", "npm:3.0.5"],\
             ["@dnd-kit/core", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:6.0.5"],\
+            ["@dnd-kit/sortable", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:7.0.1"],\
+            ["@dnd-kit/utilities", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:3.2.0"],\
             ["@emotion/react", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:11.9.0"],\
             ["@emotion/styled", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:11.8.1"],\
             ["@ethersproject/abi", "npm:5.6.0"],\
@@ -9212,7 +9218,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@dnd-kit/core", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:6.0.5"],\
             ["@dnd-kit/accessibility", "virtual:94344a55e45ded263aa92a628bf2745001e790888aaf20f5124ebfa99ab15440a2af2fd7d8a89fde4ffcb0a84cfe27b5884ea733775b720f007c9263784772ac#npm:3.0.1"],\
-            ["@dnd-kit/utilities", "virtual:94344a55e45ded263aa92a628bf2745001e790888aaf20f5124ebfa99ab15440a2af2fd7d8a89fde4ffcb0a84cfe27b5884ea733775b720f007c9263784772ac#npm:3.2.0"],\
+            ["@dnd-kit/utilities", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:3.2.0"],\
             ["@types/react", "npm:18.0.0"],\
             ["@types/react-dom", "npm:18.0.0"],\
             ["react", "npm:18.1.0"],\
@@ -9228,6 +9234,34 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@dnd-kit/sortable", [\
+        ["npm:7.0.1", {\
+          "packageLocation": "./.yarn/cache/@dnd-kit-sortable-npm-7.0.1-5eb9ec2732-b8b5ae504d.zip/node_modules/@dnd-kit/sortable/",\
+          "packageDependencies": [\
+            ["@dnd-kit/sortable", "npm:7.0.1"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:7.0.1", {\
+          "packageLocation": "./.yarn/__virtual__/@dnd-kit-sortable-virtual-a767c44fbd/0/cache/@dnd-kit-sortable-npm-7.0.1-5eb9ec2732-b8b5ae504d.zip/node_modules/@dnd-kit/sortable/",\
+          "packageDependencies": [\
+            ["@dnd-kit/sortable", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:7.0.1"],\
+            ["@dnd-kit/core", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:6.0.5"],\
+            ["@dnd-kit/utilities", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:3.2.0"],\
+            ["@types/dnd-kit__core", null],\
+            ["@types/react", "npm:18.0.0"],\
+            ["react", "npm:18.1.0"],\
+            ["tslib", "npm:2.3.1"]\
+          ],\
+          "packagePeers": [\
+            "@dnd-kit/core",\
+            "@types/dnd-kit__core",\
+            "@types/react",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@dnd-kit/utilities", [\
         ["npm:3.2.0", {\
           "packageLocation": "./.yarn/cache/@dnd-kit-utilities-npm-3.2.0-6cb85f1dd6-575e554992.zip/node_modules/@dnd-kit/utilities/",\
@@ -9236,10 +9270,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:94344a55e45ded263aa92a628bf2745001e790888aaf20f5124ebfa99ab15440a2af2fd7d8a89fde4ffcb0a84cfe27b5884ea733775b720f007c9263784772ac#npm:3.2.0", {\
-          "packageLocation": "./.yarn/__virtual__/@dnd-kit-utilities-virtual-d3648ce33f/0/cache/@dnd-kit-utilities-npm-3.2.0-6cb85f1dd6-575e554992.zip/node_modules/@dnd-kit/utilities/",\
+        ["virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:3.2.0", {\
+          "packageLocation": "./.yarn/__virtual__/@dnd-kit-utilities-virtual-d2f25cd5f8/0/cache/@dnd-kit-utilities-npm-3.2.0-6cb85f1dd6-575e554992.zip/node_modules/@dnd-kit/utilities/",\
           "packageDependencies": [\
-            ["@dnd-kit/utilities", "virtual:94344a55e45ded263aa92a628bf2745001e790888aaf20f5124ebfa99ab15440a2af2fd7d8a89fde4ffcb0a84cfe27b5884ea733775b720f007c9263784772ac#npm:3.2.0"],\
+            ["@dnd-kit/utilities", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:3.2.0"],\
             ["@types/react", "npm:18.0.0"],\
             ["react", "npm:18.1.0"],\
             ["tslib", "npm:2.3.1"]\
@@ -24411,6 +24445,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["protocol-interface", "workspace:."],\
             ["@coinbase/wallet-sdk", "npm:3.0.5"],\
             ["@dnd-kit/core", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:6.0.5"],\
+            ["@dnd-kit/sortable", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:7.0.1"],\
+            ["@dnd-kit/utilities", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:3.2.0"],\
             ["@emotion/react", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:11.9.0"],\
             ["@emotion/styled", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:11.8.1"],\
             ["@ethersproject/abi", "npm:5.6.0"],\
