@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { isValidBasketAtom } from './atoms'
 import BasketSetup from './components/BasketSetup'
+import ConfirmDeployModal from './components/ConfirmDeployModal'
 import DeployHeader from './components/DeployHeader'
 import DeployPreview from './components/DeployPreview'
 import TokenConfiguration from './components/TokenConfiguration'
@@ -17,9 +18,9 @@ const defaultValues = {
   // backing params
   tradingDelay: '0', // delay after default confirmed
   auctionLength: '900', // 15 minutes
-  backingBuffer: '0.0001', // 0.01%
+  backingBuffer: '0.01', // 0.01%
   maxTradeSlippage: '0.01', // 1%
-  dustAmount: '0.01',
+  dustAmount: '1',
   issuanceRate: '0.00025',
   // other
   maxTradeVolume: '1000000',
@@ -37,8 +38,9 @@ const VIEWS = [TokenConfiguration, BasketSetup, DeployPreview]
 const Deploy = () => {
   const { account } = useWeb3React()
   const [view, setView] = useState(0)
+  const [confirmModal, setConfirmModal] = useState(false)
   const form = useForm({
-    mode: 'onBlur',
+    mode: 'onChange',
     defaultValues,
   })
   const [isValidBasket] = useAtomValue(isValidBasketAtom)
@@ -52,7 +54,8 @@ const Deploy = () => {
     }
   }, [account])
 
-  // TODO
+  // TODO:
+  // Handle deployment send transaction
   const handleDeploy = () => {}
 
   return (
@@ -64,10 +67,13 @@ const Deploy = () => {
           isValid={form.formState.isValid && isValidBasket}
           currentView={view}
           onViewChange={setView}
-          onDeploy={handleDeploy}
+          onDeploy={() => setConfirmModal(true)}
         />
         {View && <View onViewChange={setView} />}
       </Container>
+      {confirmModal && (
+        <ConfirmDeployModal onClose={() => setConfirmModal(false)} />
+      )}
     </FormProvider>
   )
 }

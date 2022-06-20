@@ -16,7 +16,6 @@ export const baseButton = {
   borderRadius: 50,
   fontWeight: 500,
   cursor: 'pointer',
-  transition,
   color: '#fff',
   backgroundColor: 'primary',
   padding: 12,

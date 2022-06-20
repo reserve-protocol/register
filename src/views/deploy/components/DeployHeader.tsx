@@ -31,7 +31,20 @@ const DeployHeader = ({
   if (currentView === 2) {
     return (
       <Flex variant="layout.verticalAlign" {...props}>
+        <Box>
+          <Text variant="sectionTitle">
+            <Trans>RToken Summary</Trans>
+          </Text>
+          <Text variant="legend">
+            <Trans>
+              Confirm parameters & baskets before finalizing deployment.{' '}
+            </Trans>
+          </Text>
+        </Box>
         <NeedHelp />
+        <Button mr={3} variant="muted" px={4} onClick={() => onViewChange(1)}>
+          <Trans>Edit</Trans>
+        </Button>
         <Button onClick={onDeploy} disabled={!isValid} px={[0, 5]}>
           <Trans>Deploy RToken</Trans>
         </Button>

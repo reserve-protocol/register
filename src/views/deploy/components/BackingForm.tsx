@@ -44,27 +44,27 @@ const BackingForm = (props: BoxProps) => {
         }}
       />
       <FormField
-        label={t`Backing buffer (decimals %)`}
+        label={t`Backing buffer (%)`}
         placeholder={t`Extra collateral to keep`}
         mb={3}
         name="backingBuffer"
         options={{
           required: true,
           pattern: decimalPattern,
-          min: 10,
-          max: 31536000,
+          min: 0.01,
+          max: 100,
         }}
       />
       <FormField
-        label={t`Max trade slippage (decimals %)`}
+        label={t`Max trade slippage (%)`}
         placeholder={t`% Acceptable`}
         mb={3}
         name="maxTradeSlippage"
         options={{
           required: true,
           pattern: decimalPattern,
-          min: 0.000000001,
-          max: 1,
+          min: 0.01,
+          max: 100,
         }}
       />
       <FormField

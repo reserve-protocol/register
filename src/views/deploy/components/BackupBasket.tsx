@@ -4,11 +4,11 @@ import { SmallButton } from 'components/button'
 import Help from 'components/help'
 import { useAtomValue } from 'jotai'
 import { useCallback } from 'react'
-import { Box, CardProps, Divider, Flex, Text } from 'theme-ui'
+import { Box, BoxProps, Divider, Flex, Text } from 'theme-ui'
 import { backupCollateralAtom, basketAtom } from '../atoms'
 import EmergencyCollateral from './EmergencyCollateral'
 
-interface Props extends CardProps {
+interface Props extends BoxProps {
   onAdd?(
     data: {
       basket: 'primary' | 'backup'
@@ -67,7 +67,11 @@ const Placeholder = () => (
   </Box>
 )
 
-const BackupBasket = ({ onAdd = () => {}, readOnly = false }: Props) => {
+const BackupBasket = ({
+  onAdd = () => {},
+  readOnly = false,
+  ...props
+}: Props) => {
   const targetUnits = Object.keys(useAtomValue(basketAtom))
   const backupBasket = useAtomValue(backupCollateralAtom)
 
@@ -83,17 +87,19 @@ const BackupBasket = ({ onAdd = () => {}, readOnly = false }: Props) => {
   }
 
   return (
-    <Box>
-      {targetUnits.map((targetUnit) => (
-        <EmergencyCollateral
-          mb={3}
-          readOnly={readOnly}
-          onAdd={handleAdd}
-          key={targetUnit}
-          targetUnit={targetUnit}
-          {...backupBasket[targetUnit]}
-        />
-      ))}
+    <Box {...props}>
+      {targetUnits.map((targetUnit) =>
+        readOnly && !backupBasket[targetUnit]?.collaterals.length ? null : (
+          <EmergencyCollateral
+            mb={3}
+            readOnly={readOnly}
+            onAdd={handleAdd}
+            key={targetUnit}
+            targetUnit={targetUnit}
+            {...backupBasket[targetUnit]}
+          />
+        )
+      )}
       {!targetUnits.length && <Placeholder />}
     </Box>
   )

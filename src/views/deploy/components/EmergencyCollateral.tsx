@@ -103,12 +103,14 @@ const EmergencyCollateral = ({
         </Flex>
       }
       right={
-        <Flex variant="layout.verticalAlign">
-          <SmallButton onClick={() => onAdd(targetUnit)} mr={2}>
-            <Trans>Add</Trans>
-          </SmallButton>
-          <Help content="TODO" />
-        </Flex>
+        !readOnly && (
+          <Flex variant="layout.verticalAlign">
+            <SmallButton onClick={() => onAdd(targetUnit)} mr={2}>
+              <Trans>Add</Trans>
+            </SmallButton>
+            <Help content="TODO" />
+          </Flex>
+        )
       }
       {...props}
     >
@@ -117,7 +119,7 @@ const EmergencyCollateral = ({
           <Trans>Diversity factor</Trans>
         </Text>
         {readOnly ? (
-          <Text>N={diversityFactor}</Text>
+          <Text ml="auto">N={diversityFactor}</Text>
         ) : (
           <>
             <Box ml="auto" sx={{ width: 42 }} mr={2}>

@@ -8,7 +8,7 @@ const DeployPreview = () => {
       <Box></Box>
       <Box>
         <PrimaryBasket readOnly />
-        <BackupBasket readOnly />
+        <BackupBasket mt={3} readOnly />
       </Box>
     </Grid>
   )

@@ -1,7 +1,10 @@
 import { Modal } from 'components'
+import { ModalProps } from 'components/modal'
 
-const ConfirmDeployModal = () => {
-  return <Modal>Deploy</Modal>
+interface Props extends Omit<ModalProps, 'children'> {}
+
+const ConfirmDeployModal = (props: Props) => {
+  return <Modal {...props}>Deploy</Modal>
 }
 
 export default ConfirmDeployModal
