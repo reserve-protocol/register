@@ -12,7 +12,6 @@ import {
   Link,
   Text,
 } from 'theme-ui'
-import { shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { Collateral } from '../atoms'
 import { CollateralPlugin } from '../plugins'
