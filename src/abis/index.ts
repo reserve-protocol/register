@@ -38,4 +38,5 @@ export default <StringMap>{
   stRSR: StRSRInterface,
   rToken: RTokenInterface,
   rsv: RSVManagerInterface,
+  facade: FacadeInterface,
 }

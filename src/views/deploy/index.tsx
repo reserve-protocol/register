@@ -1,13 +1,17 @@
 import { useWeb3React } from '@web3-react/core'
 import { Container } from 'components'
+import { useFacadeContract } from 'hooks/useContract'
 import { useAtomValue } from 'jotai'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { isValidBasketAtom } from './atoms'
+import { Box } from 'theme-ui'
+import { StringMap } from 'types'
+import { BackupBasket, Basket, isValidBasketAtom } from './atoms'
 import BasketSetup from './components/BasketSetup'
 import ConfirmDeployModal from './components/ConfirmDeployModal'
 import DeployHeader from './components/DeployHeader'
 import DeployPreview from './components/DeployPreview'
+import DeploySummary from './components/DeploySummary'
 import TokenConfiguration from './components/TokenConfiguration'
 
 const defaultValues = {
@@ -33,7 +37,11 @@ const defaultValues = {
   minBidSize: '1',
 }
 
-const VIEWS = [TokenConfiguration, BasketSetup, DeployPreview]
+const Deploying = () => {
+  return <Box></Box>
+}
+
+const VIEWS = [TokenConfiguration, BasketSetup, DeployPreview, DeploySummary]
 
 const Deploy = () => {
   const { account } = useWeb3React()
@@ -43,7 +51,16 @@ const Deploy = () => {
     mode: 'onChange',
     defaultValues,
   })
-  const [isValidBasket] = useAtomValue(isValidBasketAtom)
+
+  const facadeContract = useFacadeContract()
+
+  const deployRToken = useCallback(
+    (tokenConfig: StringMap, basket: Basket, backup: BackupBasket) => {
+      if (facadeContract) {
+      }
+    },
+    [facadeContract]
+  )
 
   // current tab view [config - basket]
   const View = VIEWS[view]
@@ -64,7 +81,7 @@ const Deploy = () => {
         <DeployHeader
           mt={2}
           mb={5}
-          isValid={form.formState.isValid && isValidBasket}
+          isValid={form.formState.isValid}
           currentView={view}
           onViewChange={setView}
           onDeploy={() => setConfirmModal(true)}
@@ -72,7 +89,10 @@ const Deploy = () => {
         {View && <View onViewChange={setView} />}
       </Container>
       {confirmModal && (
-        <ConfirmDeployModal onClose={() => setConfirmModal(false)} />
+        <ConfirmDeployModal
+          onConfirm={handleDeploy}
+          onClose={() => setConfirmModal(false)}
+        />
       )}
     </FormProvider>
   )

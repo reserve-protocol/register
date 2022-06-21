@@ -1,7 +1,9 @@
 import { t, Trans } from '@lingui/macro'
 import Help from 'components/help'
 import OptionSwitch from 'components/option-switch'
+import { useAtomValue } from 'jotai'
 import { Box, BoxProps, Button, Flex, Text } from 'theme-ui'
+import { isValidBasketAtom } from '../atoms'
 
 interface Props extends BoxProps {
   onViewChange(index: number): void
@@ -30,6 +32,8 @@ const DeployHeader = ({
   sx = {},
   ...props
 }: Props) => {
+  const [isValidBasket] = useAtomValue(isValidBasketAtom)
+
   // Preview
   if (currentView === 2) {
     return (
@@ -48,7 +52,11 @@ const DeployHeader = ({
         <Button mr={3} variant="muted" px={4} onClick={() => onViewChange(1)}>
           <Trans>Edit</Trans>
         </Button>
-        <Button onClick={onDeploy} disabled={!isValid} px={[0, 5]}>
+        <Button
+          onClick={onDeploy}
+          disabled={!isValid || !isValidBasket}
+          px={[0, 5]}
+        >
           <Trans>Deploy RToken</Trans>
         </Button>
       </Flex>
@@ -61,9 +69,14 @@ const DeployHeader = ({
         value={currentView}
         onChange={onViewChange}
         options={[t`Set parameters`, t`Set collateral basket`]}
+        error={[!isValid && currentView !== 0]}
       />
       <NeedHelp />
-      <Button onClick={() => onViewChange(2)} disabled={!isValid} px={[0, 5]}>
+      <Button
+        onClick={() => onViewChange(2)}
+        disabled={!isValid || !isValidBasket}
+        px={[0, 5]}
+      >
         <Trans>Complete Setup</Trans>
       </Button>
     </Flex>
