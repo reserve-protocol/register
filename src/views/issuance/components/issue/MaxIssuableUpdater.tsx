@@ -42,7 +42,6 @@ const MaxIssuableUpdater = () => {
     if (rToken && !rToken.isRSV) {
       updateMaxIssuable()
     }
-    return () => setMaxIssuable(0)
   }, [updateMaxIssuable])
 
   return null
