@@ -4,6 +4,9 @@ import { FormField } from 'components/field'
 import { BoxProps } from 'theme-ui'
 import { isAddress } from 'utils'
 
+/**
+ * View: Deploy -> Token setup
+ */
 const TokenForm = (props: BoxProps) => (
   <TitleCard title={t`RToken Detail`} {...props}>
     <FormField

@@ -16,6 +16,10 @@ interface UnitBasketProps extends CardProps {
   readOnly?: boolean
 }
 
+/**
+ * View: Deploy -> Basket setup -> PrimaryBasket
+ * Display collateral composition for target unit
+ */
 const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
   const updateBasket = useUpdateAtom(updateBasketUnitAtom)
 

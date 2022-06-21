@@ -34,7 +34,12 @@ interface Props extends CardProps {
   onAdd(targetUnit: string): void
 }
 
-// TODO: Open collateral modal filtered by target unit
+/**
+ * View: Deploy -> BasketSetup
+ * Display emergency collateral card per target unit
+ *
+ * TODO: Help copy
+ */
 const EmergencyCollateral = ({
   targetUnit,
   diversityFactor = 0,
@@ -56,7 +61,6 @@ const EmergencyCollateral = ({
   )
 
   const handleDiversityFactor = (e: any) => {
-    console.log('e', e)
     updateBasket([
       targetUnit,
       { diversityFactor: +e.target.value, collaterals },

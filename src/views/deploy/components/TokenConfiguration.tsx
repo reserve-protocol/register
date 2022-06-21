@@ -9,11 +9,8 @@ import StakingTokenInfo from './StakingTokenInfo'
 import TokenForm from './TokenForm'
 
 /**
- * View: Deploy
- * Token Configuration
- *
- * @param onViewChange(index: number)
- * @returns
+ * View: Deploy -> Token setup
+ * Display token forms
  */
 const TokenConfiguration = ({
   onViewChange,

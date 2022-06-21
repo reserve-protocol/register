@@ -38,7 +38,12 @@ const iconProps = {
   style: { marginLeft: 20, marginRight: 20 },
 }
 
-// TODO: Info links
+/**
+ * View: Deploy
+ *
+ * TODO: Info links
+ * TODO: Text copy
+ */
 const DeployIntro = () => {
   const navigate = useNavigate()
 

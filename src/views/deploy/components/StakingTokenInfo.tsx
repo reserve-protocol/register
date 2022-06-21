@@ -4,6 +4,9 @@ import IconInfo from 'components/info-icon'
 import { useFormContext } from 'react-hook-form'
 import { Box, BoxProps, Text } from 'theme-ui'
 
+/**
+ * View: Deploy -> Token setup
+ */
 const StakingTokenInfo = (props: BoxProps) => {
   const { watch } = useFormContext()
   const ticker = watch('ticker')

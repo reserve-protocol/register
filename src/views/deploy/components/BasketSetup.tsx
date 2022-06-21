@@ -4,6 +4,10 @@ import BackupBasket from './BackupBasket'
 import CollateralModal from './CollateralModal'
 import PrimaryBasket from './PrimaryBasket'
 
+/**
+ * View: Deploy
+ * BasketSetup view
+ */
 const BasketSetup = () => {
   const [collateralModal, setCollateralModal] = useState<{
     basket: 'primary' | 'backup'

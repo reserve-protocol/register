@@ -19,6 +19,9 @@ const NeedHelp = () => (
   </Flex>
 )
 
+/**
+ * View: Deploy -> Setup
+ */
 const DeployHeader = ({
   currentView,
   onViewChange,

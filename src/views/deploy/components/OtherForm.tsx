@@ -6,6 +6,9 @@ import { useFormContext } from 'react-hook-form'
 import { Box, BoxProps, Slider } from 'theme-ui'
 import { decimalPattern, numberPattern } from 'utils'
 
+/**
+ * View: Deploy -> Token setup
+ */
 const OtherForm = (props: BoxProps) => {
   const { getValues, setValue } = useFormContext()
   const { rTokenDist, rsrDist } = getValues()

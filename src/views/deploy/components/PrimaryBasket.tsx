@@ -4,11 +4,11 @@ import { SmallButton } from 'components/button'
 import Help from 'components/help'
 import { useAtomValue } from 'jotai'
 import { useFormContext } from 'react-hook-form'
-import { Box, CardProps, Divider, Flex, Text } from 'theme-ui'
+import { Box, Divider, Flex, Text } from 'theme-ui'
 import { Basket, basketAtom } from '../atoms'
 import UnitBasket from './UnitBasket'
 
-interface Props extends CardProps {
+interface Props {
   onAdd?(
     data: {
       basket: 'primary' | 'backup'
@@ -16,6 +16,14 @@ interface Props extends CardProps {
     } | null
   ): void
   readOnly?: boolean
+}
+
+const getBasketComposition = (basket: Basket) => {
+  return Object.keys(basket)
+    .reduce((acc, unit) => {
+      return `${acc} + ${basket[unit].scale} ${unit}`
+    }, '')
+    .substring(2)
 }
 
 const Placeholder = () => (
@@ -38,14 +46,10 @@ const Placeholder = () => (
   </Box>
 )
 
-const getBasketComposition = (basket: Basket) => {
-  return Object.keys(basket)
-    .reduce((acc, unit) => {
-      return `${acc} + ${basket[unit].scale} ${unit}`
-    }, '')
-    .substring(2)
-}
-
+/**
+ * View: Deploy -> Basket setup
+ * Display primary basket (per target unit) and token composition
+ */
 const PrimaryBasket = ({ onAdd = () => {}, readOnly = false }: Props) => {
   const { watch } = useFormContext()
   const ticker = watch('ticker') || 'RToken'

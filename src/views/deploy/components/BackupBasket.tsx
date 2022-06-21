@@ -35,9 +35,9 @@ const Placeholder = () => (
         <Text>
           <Trans>Diversity factor</Trans>
         </Text>
-        <Box mx="auto" />
         <Box
           sx={{ backgroundColor: 'lightBackground', borderRadius: 16 }}
+          ml="auto"
           mr={2}
           px={3}
           py={1}
@@ -60,13 +60,16 @@ const Placeholder = () => (
         <Text variant="legend" sx={{ fontSize: 1 }}>
           <Trans>Each RToken Target unit will have an emergency basket.</Trans>
         </Text>
-        <Box mx="auto" />
-        <Help content="TODO" />
+        <Help ml="auto" content="TODO" />
       </Flex>
     </Card>
   </Box>
 )
 
+/**
+ * View: Deploy -> BasketSetup
+ * Show emergency collateral per target unit
+ */
 const BackupBasket = ({
   onAdd = () => {},
   readOnly = false,

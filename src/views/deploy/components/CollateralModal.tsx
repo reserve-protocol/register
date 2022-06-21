@@ -16,16 +16,16 @@ import {
 import collateralPlugins, { CollateralPlugin } from '../plugins'
 import PluginItem from './PluginItem'
 
-const CustomCollateral = () => {
-  const [address, setAddress] = useState('')
-
-  return <Box></Box>
+interface Props extends Omit<ModalProps, 'children'> {
+  targetUnit?: string // filter by target unit
+  basket?: string // target basket
 }
 
 interface CollateralMap {
   [x: string]: Collateral | CollateralPlugin
 }
 
+// Get list of collateral plugins filtered by target unit and exclude already added collateral
 const getPlugins = (addedCollaterals: string[], targetUnit?: string) => {
   const collateralSet = new Set(addedCollaterals)
 
@@ -40,17 +40,17 @@ const getPlugins = (addedCollaterals: string[], targetUnit?: string) => {
   }, {} as CollateralMap)
 }
 
-interface Props extends Omit<ModalProps, 'children'> {
-  targetUnit?: string // filter by target unit
-  basket?: string // target basket
-}
-
+/**
+ * View: Deploy -> Basket Setup
+ * Display collateral plugin list on a modal
+ */
 const CollateralModal = ({
   targetUnit,
   basket = 'primary',
   onClose = () => {},
   ...props
 }: Props) => {
+  // Get already added collaterals for basket
   const addedCollaterals = useAtomValue(
     basket === 'primary'
       ? primaryBasketCollateralAtom
@@ -59,6 +59,7 @@ const CollateralModal = ({
   const addCollateral = useUpdateAtom(
     basket === 'primary' ? addBasketCollateralAtom : addBackupCollateralAtom
   )
+
   const [selected, setSelected] = useState<string[]>([])
   const [collaterals, setCollaterals] = useState(
     getPlugins(addedCollaterals, targetUnit)
@@ -76,6 +77,7 @@ const CollateralModal = ({
   }
 
   // Add custom collateral to the collaterals list and selected
+  // TODO
   const handleAddCustom = (collateral: Collateral) => {
     setCustom(false)
     setSelected([...selected, collateral.address])
@@ -86,6 +88,7 @@ const CollateralModal = ({
   }
 
   // Toggle custom collateral view
+  // TODO
   const handleCustomCollateral = () => {}
 
   const handleSubmit = () => {
