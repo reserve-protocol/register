@@ -92,10 +92,10 @@ const Navigation = ({
       return []
     }
 
-    PAGES[1].title = `${currentToken.symbol} Overview`
+    PAGES[0].title = `${currentToken.symbol} Overview`
 
     if (currentToken.isRSV) {
-      return [...PAGES.slice(0, 3)]
+      return [...PAGES.slice(0, 2)]
     }
 
     return PAGES
