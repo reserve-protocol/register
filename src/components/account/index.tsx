@@ -1,14 +1,14 @@
 import styled from '@emotion/styled'
-import { Box, Button, Text } from 'theme-ui'
+import WalletIcon from 'components/icons/WalletIcon'
 import Popup from 'components/popup'
 import WalletList from 'components/wallets/WalletList'
 import useENSName from 'hooks/ens/useENSName'
 import { useAtom } from 'jotai'
 import { useState } from 'react'
-import Blockies from 'react-blockies'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import { selectedAccountAtom } from 'state/atoms'
+import { Box, Button, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { ROUTES } from 'utils/constants'
 
@@ -70,10 +70,12 @@ const Account = () => {
           }
         >
           <Container onClick={() => setVisible(!isVisible)}>
-            <Box mr={2} mt={1}>
-              <Blockies scale={3} seed={currentWallet || ''} />
-            </Box>
-            <Text sx={{ display: ['none', 'inherit', 'inherit'] }} pr={2}>
+            <WalletIcon />
+            <Text
+              sx={{ display: ['none', 'inherit', 'inherit'] }}
+              ml={2}
+              pr={2}
+            >
               {ENSName || shortenAddress(currentWallet)}
             </Text>
             {isVisible ? <ChevronUp /> : <ChevronDown />}

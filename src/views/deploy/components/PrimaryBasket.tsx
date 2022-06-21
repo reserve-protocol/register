@@ -56,7 +56,6 @@ const PrimaryBasket = ({ onAdd = () => {}, readOnly = false }: Props) => {
     <TitleCard
       sx={(theme: any) => ({
         height: 'fit-content',
-        border: units.length ? `1px solid ${theme.colors.border}` : 'none',
         opacity: units.length ? 70 : 100,
       })}
       title={t`Primary basket`}

@@ -2,7 +2,6 @@ import styled from '@emotion/styled'
 import { Box, BoxProps, Flex, FlexProps, Text } from 'theme-ui'
 import { useWeb3React } from '@web3-react/core'
 import { useAtomValue } from 'jotai'
-import Blockies from 'react-blockies'
 import { selectedAccountAtom, walletsAtom } from 'state/atoms'
 import { Wallet } from 'types'
 
@@ -36,7 +35,6 @@ const WalletItem = ({
   ...props
 }: WalletItemProps) => (
   <WalletContainer {...props}>
-    <Blockies seed={wallet.address} />
     <Box ml={3}>
       <Text>{wallet.alias}</Text>
       {connected && <GreenCircle style={{ marginLeft: 5 }} />}
