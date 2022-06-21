@@ -33,7 +33,7 @@ export const isBasketValidAtom = atom((get) => {
   return !!Object.keys(get(basketAtom)).length
 })
 
-const getCollateralFromBasket = (basket: Basket | BackupBasket) => {
+export const getCollateralFromBasket = (basket: Basket | BackupBasket) => {
   return Object.values(basket).reduce(
     (acc, { collaterals }) => [
       ...acc,
