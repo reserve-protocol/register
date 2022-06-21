@@ -12,14 +12,11 @@ import { ROUTES } from 'utils/constants'
 import StakeIcon from 'components/icons/StakeIcon'
 import IssuanceIcon from 'components/icons/IssuanceIcon'
 import OverviewIcon from 'components/icons/OverviewIcon'
-
-export const PAGES = [
-  { path: ROUTES.HOME, title: 'Home', icon: OverviewIcon },
-  { path: ROUTES.OVERVIEW, title: 'Overview', icon: OverviewIcon },
-  { path: ROUTES.ISSUANCE, title: 'Mint + Redeem', icon: IssuanceIcon },
-  { path: ROUTES.INSURANCE, title: 'Stake + Unstake', icon: StakeIcon },
-  // { path: ROUTES.EXCHANGE, title: 'Buy + Sell' },
-]
+import { t } from '@lingui/macro'
+import CalculatorIcon from 'components/icons/CalculatorIcon'
+import AuctionsIcon from 'components/icons/AuctionsIcon'
+import GovernanceIcon from 'components/icons/GovernanceIcon'
+import DiscussionsIcon from 'components/icons/DiscussionsIcon'
 
 const Container = styled(Box)`
   padding-top: 0;
@@ -35,7 +32,6 @@ const Header = () => (
   <>
     <Box
       sx={{
-        width: '100%',
         display: ['none', 'none', 'flex'],
         alignItems: 'center',
       }}
@@ -46,7 +42,7 @@ const Header = () => (
     </Box>
     <Box
       sx={{
-        display: ['inherit', 'inherit', 'none'],
+        display: ['flex', 'flex', 'none'],
         alignItems: 'center',
         justifyContent: 'center',
       }}
@@ -64,6 +60,33 @@ const Navigation = ({
   currentToken?: ReserveToken | null
 }) => {
   const { search } = useLocation()
+  // TODO: Use memo with lang
+  const PAGES = useMemo(
+    () => [
+      { path: ROUTES.OVERVIEW, title: t`Overview`, icon: OverviewIcon },
+      { path: ROUTES.ISSUANCE, title: t`Mint + Redeem`, icon: IssuanceIcon },
+      { path: ROUTES.INSURANCE, title: t`Stake + Unstake`, icon: StakeIcon },
+      {
+        path: ROUTES.STAKING_CALCULATOR,
+        title: t`Staking calculator`,
+        icon: CalculatorIcon,
+      },
+      { path: ROUTES.AUCTIONS, title: t`Auctions`, icon: AuctionsIcon },
+      {
+        // TODO: get from token
+        path: '/todo/1',
+        title: t`Governance Discussions`,
+        icon: DiscussionsIcon,
+      },
+      {
+        // TODO: get from token
+        path: '/todo/2',
+        title: t`Governance Voting`,
+        icon: GovernanceIcon,
+      },
+    ],
+    []
+  )
   const pages = useMemo(() => {
     if (!currentToken) {
       return []
@@ -79,17 +102,18 @@ const Navigation = ({
   }, [currentToken])
 
   return (
-    <Box mt={3}>
+    <Box mt={5}>
       {pages.map((item) => (
         <NavLink
           key={item.path}
           style={({ isActive }) => ({
-            paddingLeft: isActive ? '0' : '5px',
-            borderLeft: isActive ? '5px solid black' : '',
+            paddingLeft: '5px',
             textDecoration: 'none',
             color: 'inherit',
             lineHeight: '32px',
-            // margin: '16px 0',
+            boxShadow: isActive
+              ? 'inset 0 8px 0px var(--theme-ui-colors-background), inset 0 -8px 0px var(--theme-ui-colors-background), inset 4px 0px 0px #111111'
+              : 'none',
             display: 'flex',
           })}
           to={item.path + search}
@@ -99,7 +123,7 @@ const Navigation = ({
               display: 'flex',
               flexGrow: 1,
               alignItems: 'center',
-              paddingLeft: [0, 0, 27],
+              paddingLeft: [0, 0, 4],
               justifyContent: ['center', 'center', 'inherit'],
             }}
             my={[10, 10, 10]}

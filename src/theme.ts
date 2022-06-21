@@ -52,7 +52,7 @@ export const smallButton = {
 }
 
 export const colors = {
-  text: '#000',
+  text: '#333',
   secondaryText: '#666666',
   lightText: '#808080',
   background: '#F9F8F4',
