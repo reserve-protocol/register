@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { Box, Flex, Text } from 'theme-ui'
-import { NavLink, useLocation } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import Logo, { SmallLogo } from 'components/icons/Logo'
 import SyncedBlock from 'components/synced-block'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
@@ -29,7 +29,7 @@ const Container = styled(Box)`
 
 // Sidebar header
 const Header = () => (
-  <>
+  <Link to="/" style={{ color: 'inherit' }}>
     <Box
       sx={{
         display: ['none', 'none', 'flex'],
@@ -50,7 +50,7 @@ const Header = () => (
     >
       <SmallLogo />
     </Box>
-  </>
+  </Link>
 )
 
 // Sidebar Navigation
@@ -112,7 +112,7 @@ const Navigation = ({
             color: 'inherit',
             lineHeight: '32px',
             boxShadow: isActive
-              ? 'inset 0 8px 0px var(--theme-ui-colors-background), inset 0 -8px 0px var(--theme-ui-colors-background), inset 4px 0px 0px #111111'
+              ? 'inset 0 12px 0px var(--theme-ui-colors-background), inset 0 -12px 0px var(--theme-ui-colors-background), inset 4px 0px 0px currentColor'
               : 'none',
             display: 'flex',
           })}

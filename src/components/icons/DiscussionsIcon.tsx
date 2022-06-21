@@ -9,7 +9,7 @@ const DiscussionsIcon = (props: SVGProps<SVGSVGElement>) => (
     {...props}
   >
     <path
-      stroke="#111"
+      stroke="currentColor"
       strokeWidth={0.477}
       d="M11.527 4.309v15.729M14.802 14.123 7.543 9.076M19.153 11.875H3.424"
     />
@@ -17,40 +17,35 @@ const DiscussionsIcon = (props: SVGProps<SVGSVGElement>) => (
       cx={11.545}
       cy={4.509}
       r={1.67}
-      fill="#F9F8F4"
-      stroke="#111"
+      stroke="currentColor"
       strokeWidth={0.477}
     />
     <circle
       cx={11.545}
       cy={20.491}
       r={1.67}
-      fill="#F9F8F4"
-      stroke="#111"
+      stroke="currentColor"
       strokeWidth={0.477}
     />
     <circle
       cx={11.545}
       cy={12.145}
       r={1.67}
-      fill="#F9F8F4"
-      stroke="#111"
+      stroke="currentColor"
       strokeWidth={0.477}
     />
     <circle
       cx={3.909}
       cy={12.145}
       r={1.67}
-      fill="#F9F8F4"
-      stroke="#111"
+      stroke="currentColor"
       strokeWidth={0.477}
     />
     <circle
       cx={20.091}
       cy={12.145}
       r={1.67}
-      fill="#F9F8F4"
-      stroke="#111"
+      stroke="currentColor"
       strokeWidth={0.477}
     />
     <circle
@@ -58,8 +53,7 @@ const DiscussionsIcon = (props: SVGProps<SVGSVGElement>) => (
       cy={15.482}
       r={1.67}
       transform="rotate(16.943 15.836 15.482)"
-      fill="#F9F8F4"
-      stroke="#111"
+      stroke="currentColor"
       strokeWidth={0.477}
     />
     <circle
@@ -67,8 +61,7 @@ const DiscussionsIcon = (props: SVGProps<SVGSVGElement>) => (
       cy={8.8}
       r={1.67}
       transform="rotate(16.943 7.246 8.8)"
-      fill="#F9F8F4"
-      stroke="#111"
+      stroke="currentColor"
       strokeWidth={0.477}
     />
   </svg>
