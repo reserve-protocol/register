@@ -1,7 +1,6 @@
 import styled from '@emotion/styled'
+import { useWeb3React } from '@web3-react/core'
 import WalletIcon from 'components/icons/WalletIcon'
-import Popup from 'components/popup'
-import WalletList from 'components/wallets/WalletList'
 import useENSName from 'hooks/ens/useENSName'
 import { useAtom } from 'jotai'
 import { useState } from 'react'
@@ -32,9 +31,9 @@ const Container = styled(Box)`
  */
 const Account = () => {
   const [isVisible, setVisible] = useState(false)
-  const [currentWallet, setCurrentAccount] = useAtom(selectedAccountAtom)
+  const { account } = useWeb3React()
   // TODO: Maybe unnecessary
-  const { ENSName } = useENSName(currentWallet)
+  const { ENSName } = useENSName(account)
   const navigate = useNavigate()
 
   const handleAddWallet = () => {
@@ -42,45 +41,20 @@ const Account = () => {
     setVisible(false)
   }
 
-  const handleWalletChange = (selectedWallet: string) => {
-    setCurrentAccount(selectedWallet)
-  }
-
   return (
     <>
-      {!currentWallet ? (
+      {!account ? (
         <Button variant="accent" onClick={handleAddWallet}>
           Connect
         </Button>
       ) : (
-        <Popup
-          show={isVisible}
-          onDismiss={() => setVisible(false)}
-          content={
-            <Box p={2}>
-              <WalletList onChange={handleWalletChange} />
-              <hr />
-              <Text
-                sx={{ display: 'block', cursor: 'pointer' }}
-                onClick={handleAddWallet}
-              >
-                Track new wallet
-              </Text>
-            </Box>
-          }
-        >
-          <Container onClick={() => setVisible(!isVisible)}>
-            <WalletIcon />
-            <Text
-              sx={{ display: ['none', 'inherit', 'inherit'] }}
-              ml={2}
-              pr={2}
-            >
-              {ENSName || shortenAddress(currentWallet)}
-            </Text>
-            {isVisible ? <ChevronUp /> : <ChevronDown />}
-          </Container>
-        </Popup>
+        <Container onClick={() => setVisible(!isVisible)}>
+          <WalletIcon />
+          <Text sx={{ display: ['none', 'inherit', 'inherit'] }} ml={2} pr={2}>
+            {ENSName || shortenAddress(account)}
+          </Text>
+          {isVisible ? <ChevronUp /> : <ChevronDown />}
+        </Container>
       )}
     </>
   )

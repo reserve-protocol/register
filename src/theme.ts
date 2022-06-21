@@ -252,6 +252,9 @@ export const theme: Theme = {
     input: {
       ...baseInput,
     },
+    select: {
+      ...baseInput,
+    },
     inputError: {
       ...baseInput,
       outlineColor: 'danger',
