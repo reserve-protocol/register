@@ -1,15 +1,12 @@
 import styled from '@emotion/styled'
+import { Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
 import WalletIcon from 'components/icons/WalletIcon'
-import useENSName from 'hooks/ens/useENSName'
-import { useAtomValue } from 'jotai'
+import WalletModal from 'components/wallets/WalletModal'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
-import { useNavigate } from 'react-router-dom'
-import { walletAtom } from 'state/atoms'
 import { Box, Button, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
-import { ROUTES } from 'utils/constants'
 
 const Container = styled(Box)`
   display: flex;
@@ -31,24 +28,16 @@ const Container = styled(Box)`
  */
 const Account = () => {
   const [isVisible, setVisible] = useState(false)
-  const account = useAtomValue(walletAtom)
-  // TODO: Maybe unnecessary
-  const { ENSName } = useENSName(account)
-  const navigate = useNavigate()
-
-  const handleAddWallet = () => {
-    navigate(ROUTES.WALLET)
-    setVisible(false)
-  }
+  const { ENSName, account } = useWeb3React()
 
   return (
     <>
       {!account ? (
-        <Button variant="accent" onClick={handleAddWallet}>
-          Connect
+        <Button variant="accent" onClick={() => setVisible(true)}>
+          <Trans>Connect</Trans>
         </Button>
       ) : (
-        <Container onClick={() => setVisible(!isVisible)}>
+        <Container onClick={() => setVisible(true)}>
           <WalletIcon />
           <Text sx={{ display: ['none', 'inherit', 'inherit'] }} ml={2} pr={2}>
             {ENSName || shortenAddress(account)}
@@ -56,6 +45,7 @@ const Account = () => {
           {isVisible ? <ChevronUp /> : <ChevronDown />}
         </Container>
       )}
+      {isVisible && <WalletModal onClose={() => setVisible(false)} />}
     </>
   )
 }
