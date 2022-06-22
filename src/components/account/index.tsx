@@ -22,9 +22,7 @@ const Container = styled(Box)`
  * Account
  *
  * Handles metamask* account interaction
- *
- * @returns {JSX.Element}
- * @constructor
+ * TODO: Invalid chain error
  */
 const Account = () => {
   const [isVisible, setVisible] = useState(false)

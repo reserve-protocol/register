@@ -2025,7 +2025,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ],\
       [\
         "buffer",\
-        "npm:5.7.1"\
+        "npm:6.0.3"\
       ],\
       [\
         "buffer-alloc",\
@@ -6015,6 +6015,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@web3-react/walletconnect", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:8.0.34-beta.0"],\
             ["babel-plugin-macros", "npm:3.1.0"],\
             ["babel-preset-react-app", "npm:10.0.1"],\
+            ["buffer", "npm:6.0.3"],\
             ["cypress", "npm:8.7.0"],\
             ["ethers", "npm:5.6.2"],\
             ["fast-deep-equal", "npm:3.1.3"],\
@@ -14601,6 +14602,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/buffer-npm-5.7.1-513ef8259e-e2cf8429e1.zip/node_modules/buffer/",\
           "packageDependencies": [\
             ["buffer", "npm:5.7.1"],\
+            ["base64-js", "npm:1.5.1"],\
+            ["ieee754", "npm:1.2.1"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:6.0.3", {\
+          "packageLocation": "./.yarn/cache/buffer-npm-6.0.3-cd90dfedfe-5ad23293d9.zip/node_modules/buffer/",\
+          "packageDependencies": [\
+            ["buffer", "npm:6.0.3"],\
             ["base64-js", "npm:1.5.1"],\
             ["ieee754", "npm:1.2.1"]\
           ],\
@@ -24484,6 +24494,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@web3-react/walletconnect", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:8.0.34-beta.0"],\
             ["babel-plugin-macros", "npm:3.1.0"],\
             ["babel-preset-react-app", "npm:10.0.1"],\
+            ["buffer", "npm:6.0.3"],\
             ["cypress", "npm:8.7.0"],\
             ["ethers", "npm:5.6.2"],\
             ["fast-deep-equal", "npm:3.1.3"],\

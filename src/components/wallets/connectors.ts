@@ -2,8 +2,27 @@ import { CoinbaseWallet } from '@web3-react/coinbase-wallet'
 import { initializeConnector, Web3ReactHooks } from '@web3-react/core'
 import { MetaMask } from '@web3-react/metamask'
 import { Network } from '@web3-react/network'
+import { Connector } from '@web3-react/types'
 import { WalletConnect } from '@web3-react/walletconnect'
 import { URLS } from 'utils/chains'
+
+export const CONNECTOR_TYPES = {
+  metamask: 'metamask',
+  walletConnect: 'walletConnect',
+  coinbase: 'coinbase',
+  network: 'network',
+}
+
+export type WalletConnector = MetaMask | WalletConnect | CoinbaseWallet
+
+export function getConnectorType(connector: Connector) {
+  if (connector instanceof MetaMask) return CONNECTOR_TYPES.metamask
+  if (connector instanceof WalletConnect) return CONNECTOR_TYPES.walletConnect
+  if (connector instanceof CoinbaseWallet) return CONNECTOR_TYPES.coinbase
+  if (connector instanceof Network) return CONNECTOR_TYPES.network
+  // if (connector instanceof GnosisSafe) return 'Gnosis Safe'
+  return 'Unknown'
+}
 
 export const [metaMask, metaMaskHooks] = initializeConnector<MetaMask>(
   (actions) => new MetaMask({ actions })
@@ -36,12 +55,7 @@ export const [coinbaseWallet, coinbaseWalletHooks] =
       })
   )
 
-export type Connector = [
-  MetaMask | WalletConnect | CoinbaseWallet | Network,
-  Web3ReactHooks
-]
-
-const connectors: Connector[] = [
+const connectors: [Connector, Web3ReactHooks][] = [
   [metaMask, metaMaskHooks],
   [walletConnect, walletConnectHooks],
   [coinbaseWallet, coinbaseWalletHooks],
