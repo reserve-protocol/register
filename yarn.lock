@@ -4519,62 +4519,62 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@web3-react/coinbase-wallet@npm:^8.0.26-beta.0":
-  version: 8.0.26-beta.0
-  resolution: "@web3-react/coinbase-wallet@npm:8.0.26-beta.0"
+"@web3-react/coinbase-wallet@npm:^8.0.33-beta.0":
+  version: 8.0.33-beta.0
+  resolution: "@web3-react/coinbase-wallet@npm:8.0.33-beta.0"
   dependencies:
-    "@web3-react/types": ^8.0.12-beta.0
+    "@web3-react/types": ^8.0.19-beta.0
   peerDependencies:
     "@coinbase/wallet-sdk": ^3.0.4
-  checksum: 6d11b2ee5b6df9bc792eb0caa4b2c7e8ac142a45c26c22ae165316ea3029b55ca96f9dba46e73a664e302888db8fdf047e48b720b0374b1e71a95d1351661d99
+  checksum: 18d9752eb62461b6b3145edce8885df07d341a39d2253b592c54ceecda05a601ae78a5b1376e0e1ed4057de661f5cdd85ac1601d8954ce6200b9b1ce9814f4ca
   languageName: node
   linkType: hard
 
-"@web3-react/core@npm:^8.0.23-beta.0":
-  version: 8.0.23-beta.0
-  resolution: "@web3-react/core@npm:8.0.23-beta.0"
+"@web3-react/core@npm:^8.0.33-beta.0":
+  version: 8.0.33-beta.0
+  resolution: "@web3-react/core@npm:8.0.33-beta.0"
   dependencies:
     "@ethersproject/providers": ^5
-    "@web3-react/store": ^8.0.17-beta.0
-    "@web3-react/types": ^8.0.12-beta.0
-    zustand: ^4.0.0-beta.3
+    "@web3-react/store": ^8.0.24-beta.0
+    "@web3-react/types": ^8.0.19-beta.0
+    zustand: ^4.0.0-rc.0
   peerDependencies:
     react: ">=16.8"
   dependenciesMeta:
     "@ethersproject/providers":
       optional: true
-  checksum: b5fd393b6432498ed11d5c9c50c157822cfc654122090d3bf76d59a499d4c478476b09e08c391fece02fc0e85770875725fdc00f484760f2abd5e0cdda4ac2b2
+  checksum: 62f1af555da01d63474ecfc2434aeb429e280c99baa88f01667e9600e03d40d3a0857df008277def13bcc5f5c7dc3f510f5ea4b0c8a909688c8cf499107d3be6
   languageName: node
   linkType: hard
 
-"@web3-react/metamask@npm:^8.0.19-beta.0":
-  version: 8.0.19-beta.0
-  resolution: "@web3-react/metamask@npm:8.0.19-beta.0"
+"@web3-react/metamask@npm:^8.0.26-beta.0":
+  version: 8.0.26-beta.0
+  resolution: "@web3-react/metamask@npm:8.0.26-beta.0"
   dependencies:
     "@metamask/detect-provider": ^1.2.0
-    "@web3-react/types": ^8.0.12-beta.0
-  checksum: 15c880f20aa2cc8d6df8a1dcf573ed3a54aba83e3debba1b08712c71bcc1a9ae0d1d41cc36b466d21e0e2dcfdd97b80c55833f73edb701cd4446d00af7dfb477
+    "@web3-react/types": ^8.0.19-beta.0
+  checksum: c35f3f857c31ae9a993004a33550215505dd360f7b7456628ee63cb206c87c3cc58f8c602054a2ab2f309a0433f623eb80e87a14bb7eea64198deb93920b7028
   languageName: node
   linkType: hard
 
-"@web3-react/network@npm:^8.0.18-beta.0":
-  version: 8.0.18-beta.0
-  resolution: "@web3-react/network@npm:8.0.18-beta.0"
+"@web3-react/network@npm:^8.0.26-beta.0":
+  version: 8.0.26-beta.0
+  resolution: "@web3-react/network@npm:8.0.26-beta.0"
   dependencies:
     "@ethersproject/providers": ^5
-    "@web3-react/types": ^8.0.12-beta.0
-  checksum: 877e5b07d0b81708436a79b3f7aced8fc9628cc1b151483fe7e1768daaed3fb41eb839a8ba492f6ef5e78771a67dfb95e53cd894802b6e71c1fa26c4c4ddbb6e
+    "@web3-react/types": ^8.0.19-beta.0
+  checksum: ae8f0abf31fedfcbb96ecc4bd70d43e607eb3b0549878567ffa1f0468760e85ee5c6fd107ded07603353f420ccfbdf11b6c7634c9499371fa5bc3211070a8553
   languageName: node
   linkType: hard
 
-"@web3-react/store@npm:^8.0.17-beta.0":
-  version: 8.0.17-beta.0
-  resolution: "@web3-react/store@npm:8.0.17-beta.0"
+"@web3-react/store@npm:^8.0.24-beta.0":
+  version: 8.0.24-beta.0
+  resolution: "@web3-react/store@npm:8.0.24-beta.0"
   dependencies:
     "@ethersproject/address": ^5
-    "@web3-react/types": ^8.0.12-beta.0
-    zustand: ^4.0.0-beta.3
-  checksum: 3b5f45ab47080fd41cf2d867d5288721ba95611a960cd05e133510a1d02880235ef96c68fed200c8265b4ec6077602adcd8a2668639f31f096168db8a1e16e56
+    "@web3-react/types": ^8.0.19-beta.0
+    zustand: ^4.0.0-rc.0
+  checksum: ab057e81556ecd846178080791022628a89df77f9d0228b0a7faa7844188a8f65897c598a35bbe32802b08ac282b7940405b81397e63edfb8f00371aada7fbe2
   languageName: node
   linkType: hard
 
@@ -4587,12 +4587,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@web3-react/types@npm:^8.0.12-beta.0":
-  version: 8.0.12-beta.0
-  resolution: "@web3-react/types@npm:8.0.12-beta.0"
+"@web3-react/types@npm:^8.0.19-beta.0":
+  version: 8.0.19-beta.0
+  resolution: "@web3-react/types@npm:8.0.19-beta.0"
   dependencies:
-    zustand: ^4.0.0-beta.3
-  checksum: da8521835c020b8cc5da500ebf2e41351280dfe0fd7e5a2f57409a34c56f4eb01cb7c87d49fcc8d39ddf278fbcd1130c8afdfc4524bc9934c172641d4116d247
+    zustand: ^4.0.0-rc.0
+  checksum: 59ed0466a36d006f5b0d555158e271b9c8947436f7224d569bdd838ad3ab1bdcfb5732bec3d36394d3b2770b1204c2a08c1821ae32f6aac1db4f5777e2f9915f
   languageName: node
   linkType: hard
 
@@ -4606,15 +4606,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@web3-react/walletconnect@npm:^8.0.26-beta.0":
-  version: 8.0.26-beta.0
-  resolution: "@web3-react/walletconnect@npm:8.0.26-beta.0"
+"@web3-react/walletconnect@npm:^8.0.34-beta.0":
+  version: 8.0.34-beta.0
+  resolution: "@web3-react/walletconnect@npm:8.0.34-beta.0"
   dependencies:
-    "@web3-react/types": ^8.0.12-beta.0
+    "@web3-react/types": ^8.0.19-beta.0
     eventemitter3: ^4.0.7
   peerDependencies:
     "@walletconnect/ethereum-provider": ^1.7.5
-  checksum: ef1de031cd830fb9edc3fcd8acf530f45e8144b283e9d24d7f7238026f78ce11f9a3b02a2fd1950f1d2930518165f810b9cf1b2b876a718a7c1e92b1c3605aff
+  checksum: a9085fe0e39790e954e358c9f9689adc7da77f5641e68217dbeec118f9e805b964dd01466fde3738739bd3e7368e8ef6b39a16523878fe1be270ee44a7f41b41
   languageName: node
   linkType: hard
 
@@ -13640,13 +13640,13 @@ __metadata:
     "@types/react-table": ^7.7.10
     "@types/uuid": ^8.3.4
     "@walletconnect/ethereum-provider": ^1.7.7
-    "@web3-react/coinbase-wallet": ^8.0.26-beta.0
-    "@web3-react/core": ^8.0.23-beta.0
-    "@web3-react/metamask": ^8.0.19-beta.0
-    "@web3-react/network": ^8.0.18-beta.0
-    "@web3-react/types": ^8.0.11-beta.0
+    "@web3-react/coinbase-wallet": ^8.0.33-beta.0
+    "@web3-react/core": ^8.0.33-beta.0
+    "@web3-react/metamask": ^8.0.26-beta.0
+    "@web3-react/network": ^8.0.26-beta.0
+    "@web3-react/types": ^8.0.19-beta.0
     "@web3-react/url": ^8.0.16-beta.0
-    "@web3-react/walletconnect": ^8.0.26-beta.0
+    "@web3-react/walletconnect": ^8.0.34-beta.0
     babel-plugin-macros: ^3.1.0
     babel-preset-react-app: ^10.0.1
     cypress: ^8.1.0
@@ -16475,6 +16475,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"use-sync-external-store@npm:1.1.0":
+  version: 1.1.0
+  resolution: "use-sync-external-store@npm:1.1.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 8993a0b642f91d7fcdbb02b7b3ac984bd3af4769686f38291fe7fcfe73dfb73d6c64d20dfb7e5e7fbf5a6da8f5392d6f8e5b00c243a04975595946e82c02b883
+  languageName: node
+  linkType: hard
+
 "util-deprecate@npm:^1.0.1, util-deprecate@npm:^1.0.2, util-deprecate@npm:~1.0.1":
   version: 1.0.2
   resolution: "util-deprecate@npm:1.0.2"
@@ -17410,11 +17419,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zustand@npm:^4.0.0-beta.3":
-  version: 4.0.0-rc.0
-  resolution: "zustand@npm:4.0.0-rc.0"
+"zustand@npm:^4.0.0-rc.0":
+  version: 4.0.0-rc.1
+  resolution: "zustand@npm:4.0.0-rc.1"
   dependencies:
-    use-sync-external-store: 1.0.0
+    use-sync-external-store: 1.1.0
   peerDependencies:
     immer: ">=9.0"
     react: ">=16.8"
@@ -17423,6 +17432,6 @@ __metadata:
       optional: true
     react:
       optional: true
-  checksum: fe927bd6b64102ce26d38096a9369fbd1fc733b2a81dde0fc73f96ff57eb356073ae62fff595ac354febe0b304d6b37d9056b5887a28e41c40f3695816d9ab83
+  checksum: c88ae96286229b3c463cf7989c860fcde8ec9cf885eb50a0e0eaf9642388d407a854e5e07b9f80676454732bf15e1c7645201cff21fd9feacd5df8bbd62fcd46
   languageName: node
   linkType: hard
