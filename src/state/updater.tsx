@@ -20,7 +20,6 @@ import {
   rsrPriceAtom,
   rTokenAtom,
   rTokenPriceAtom,
-  selectedAccountAtom,
   walletAtom,
 } from 'state/atoms'
 import useSWR from 'swr'
@@ -80,7 +79,7 @@ const TokensBalanceUpdater = () => {
   const updateBalances = useSetAtom(balancesAtom)
   const balances = useTokensBalance(
     reserveToken && account ? getTokens(reserveToken) : [],
-    account?.address ?? ''
+    account
   )
 
   useEffect(() => {
@@ -102,7 +101,7 @@ const TokensAllowanceUpdater = () => {
   const updateAllowances = useSetAtom(allowanceAtom)
   const allowances = useTokensAllowance(
     reserveToken && account ? getTokenAllowances(reserveToken) : [],
-    account?.address ?? ''
+    account
   )
 
   useEffect(() => {
@@ -122,7 +121,7 @@ const fetcher = async (url: string): Promise<StringMap> => {
  * Fetch pending issuances
  */
 const PendingBalancesUpdater = () => {
-  const account = useAtomValue(selectedAccountAtom)
+  const account = useAtomValue(walletAtom)
   const rToken = useAtomValue(rTokenAtom)
   const setPendingIssuances = useUpdateAtom(pendingIssuancesAtom)
   const setPendingRSR = useUpdateAtom(pendingRSRAtom)

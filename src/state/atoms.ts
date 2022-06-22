@@ -5,12 +5,11 @@ import {
   MulticallState,
   RawCall,
   ReserveToken,
+  TransactionMap,
   TransactionState,
-  Wallet,
 } from 'types'
 import { RSR, TRANSACTION_STATUS } from 'utils/constants'
 
-localStorage.setItem('selectedAccount', localStorage.selectedAccount || ' ')
 localStorage.setItem('selectedToken', localStorage.selectedToken || ' ')
 
 export const blockAtom = atom<number | undefined>(undefined)
@@ -32,7 +31,7 @@ export const reserveTokensAtom = atomWithStorage<{
 }>('reserveTokens', {})
 // Current selected rToken address
 export const selectedRTokenAtom = atomWithStorage('selectedRToken', '')
-// Grapb rToken data from the atom list
+// Grab rToken data from the atom list
 export const rTokenAtom = atom<ReserveToken | null>((get) =>
   get(reserveTokensAtom) && get(reserveTokensAtom)[get(selectedRTokenAtom)]
     ? get(reserveTokensAtom)[get(selectedRTokenAtom)]
@@ -42,23 +41,9 @@ export const rTokenAtom = atom<ReserveToken | null>((get) =>
 /**
  * Wallet Management
  */
-export const walletsAtom = atomWithStorage<{ [x: string]: Wallet }>(
-  'wallets',
-  {}
-)
-export const selectedAccountAtom = atomWithStorage('trackedAccount', '')
-export const connectedAccountAtom = atom('')
-
-export const walletAtom = atom<Wallet | null>((get) =>
-  get(walletsAtom) && get(walletsAtom)[get(selectedAccountAtom)]
-    ? get(walletsAtom)[get(selectedAccountAtom)]
-    : null
-)
-
-export const currentWalletAtom = atom<Wallet | null>(
-  (get) => get(walletsAtom)[get(connectedAccountAtom)] || null
-)
-
+// tracks current connected address
+export const walletAtom = atom('')
+// tracks rToken/collaterals/stRSR/RSR balances for a connected account
 export const balancesAtom = atom<{ [x: string]: number }>({})
 export const rTokenBalanceAtom = atom((get) => {
   const rToken = get(rTokenAtom)
@@ -81,7 +66,12 @@ export const stRsrBalanceAtom = atom((get) => {
 
   return 0
 })
+// trackks allowance for stRSR/RSR and Collaterals/rToken
 export const allowanceAtom = atom<{ [x: string]: BigNumber }>({})
+
+/**
+ * Pending balances
+ */
 export const pendingIssuancesAtom = atom<any[]>([])
 export const pendingIssuancesSummary = atom((get) => {
   const pending = get(pendingIssuancesAtom)
@@ -139,10 +129,6 @@ export const pendingRSRSummaryAtom = atom((get) => {
 export const callsAtom = atom<RawCall[]>([])
 export const multicallStateAtom = atom<MulticallState>({})
 
-interface TransactionMap {
-  [x: string]: TransactionState[]
-}
-
 const txStorage = createJSONStorage<TransactionMap>(() => localStorage)
 
 txStorage.getItem = (key: string): TransactionMap => {
@@ -180,8 +166,8 @@ export const txAtom = atomWithStorage<TransactionMap>(
 )
 
 export const currentTxAtom = atom((get) =>
-  get(txAtom) && get(txAtom)[get(selectedAccountAtom)]
-    ? get(txAtom)[get(selectedAccountAtom)]
+  get(txAtom) && get(txAtom)[get(walletAtom)]
+    ? get(txAtom)[get(walletAtom)]
     : []
 )
 
@@ -214,7 +200,7 @@ export const addTransactionAtom = atom(
   null,
   (get, set, tx: TransactionState[]) => {
     const txs = get(txAtom)
-    const account = get(selectedAccountAtom)
+    const account = get(walletAtom)
     set(txAtom, {
       ...txs,
       [account]: [...(txs[account] ?? []), ...tx].slice(-50),
@@ -226,7 +212,7 @@ export const updateTransactionAtom = atom(
   null,
   (get, set, data: [number, Partial<TransactionState>]) => {
     const txs = get(txAtom)
-    const account = get(selectedAccountAtom)
+    const account = get(walletAtom)
     const currentTx = txs[account]
     const [index, newData] = data
 

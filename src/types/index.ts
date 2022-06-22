@@ -6,6 +6,10 @@ export interface StringMap {
   [key: string]: any
 }
 
+export interface TransactionMap {
+  [x: string]: TransactionState[]
+}
+
 export interface ContractCall {
   abi: Interface
   address: string

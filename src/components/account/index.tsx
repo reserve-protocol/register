@@ -2,11 +2,11 @@ import styled from '@emotion/styled'
 import { useWeb3React } from '@web3-react/core'
 import WalletIcon from 'components/icons/WalletIcon'
 import useENSName from 'hooks/ens/useENSName'
-import { useAtom } from 'jotai'
+import { useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
-import { selectedAccountAtom } from 'state/atoms'
+import { walletAtom } from 'state/atoms'
 import { Box, Button, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { ROUTES } from 'utils/constants'
@@ -31,7 +31,7 @@ const Container = styled(Box)`
  */
 const Account = () => {
   const [isVisible, setVisible] = useState(false)
-  const { account } = useWeb3React()
+  const account = useAtomValue(walletAtom)
   // TODO: Maybe unnecessary
   const { ENSName } = useENSName(account)
   const navigate = useNavigate()

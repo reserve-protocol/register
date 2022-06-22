@@ -112,7 +112,7 @@ export const theme: Theme = {
       color: 'secondaryText',
     },
     sectionTitle: {
-      fontSize: 4,
+      fontSize: 3,
       fontWeight: 400,
       display: 'block',
     },

@@ -3,7 +3,7 @@ import { useFacadeContract } from 'hooks/useContract'
 import { useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { useCallback, useEffect } from 'react'
-import { balancesAtom, rTokenAtom, selectedAccountAtom } from 'state/atoms'
+import { balancesAtom, rTokenAtom, walletAtom } from 'state/atoms'
 import { getIssuable } from 'utils/rsv'
 import { maxIssuableAtom } from 'views/issuance/atoms'
 
@@ -11,7 +11,7 @@ const MaxIssuableUpdater = () => {
   const rToken = useAtomValue(rTokenAtom)
   const tokenBalances = useAtomValue(balancesAtom)
   const setMaxIssuable = useUpdateAtom(maxIssuableAtom)
-  const account = useAtomValue(selectedAccountAtom)
+  const account = useAtomValue(walletAtom)
   const facadeContract = useFacadeContract()
 
   const updateMaxIssuable = useCallback(async () => {

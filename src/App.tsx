@@ -2,14 +2,13 @@ import { Card, Container } from 'components'
 import { useAtomValue } from 'jotai'
 import React from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import { rTokenAtom, selectedAccountAtom } from 'state/atoms'
+import { rTokenAtom, walletAtom } from 'state/atoms'
 import Updater from 'state/updater'
 import Web3Provider from 'state/web3'
 import { ThemeProvider } from 'theme-ui'
 import Home from 'views/home'
 import Overview from 'views/overview'
 import Insurance from 'views/staking'
-import WalletManagement from 'views/wallet'
 import Layout from './components/layout'
 import { theme } from './theme'
 import { Toaster } from 'react-hot-toast'
@@ -26,7 +25,7 @@ import DeployIntro from 'views/deploy/components/DeployIntro'
 // Requires rToken to be selected and a wallet connected
 // TODO: Better placeholders
 const Guard = ({ children }: { children: React.ReactNode }) => {
-  const account = useAtomValue(selectedAccountAtom)
+  const account = useAtomValue(walletAtom)
   const RToken = useAtomValue(rTokenAtom)
 
   // TODO: Connect your wallet placeholder
@@ -100,7 +99,6 @@ const App = () => (
                   </Guard>
                 }
               />
-              <Route path={ROUTES.WALLET} element={<WalletManagement />} />
               <Route path={ROUTES.DEPLOY} element={<DeployIntro />} />
               <Route path={ROUTES.DEPLOY_SETUP} element={<Deploy />} />
             </Routes>
