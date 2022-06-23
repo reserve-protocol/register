@@ -5,13 +5,8 @@ import WalletIcon from 'components/icons/WalletIcon'
 import { MouseoverTooltipContent } from 'components/tooltip'
 import WalletModal from 'components/wallets/WalletModal'
 import { ReactNode, useState } from 'react'
-import {
-  AlertCircle,
-  AlertOctagon,
-  ChevronDown,
-  ChevronUp,
-} from 'react-feather'
-import { Box, BoxProps, Button, Card, Flex, Text } from 'theme-ui'
+import { AlertCircle, ChevronDown, ChevronUp } from 'react-feather'
+import { Box, Button, Card, Flex, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { CHAINS } from 'utils/chains'
 
@@ -24,63 +19,48 @@ const Container = styled(Box)`
   border-radius: 4px;
   cursor: pointer;
 `
-
-interface Props extends BoxProps {
-  chainId: number
-  account: string
-}
-
-const WalletInfo = ({ chainId, account, ...props }: Props) => {
-  return (
-    <Container {...props}>
-      {CHAINS[chainId ?? 0] ? <WalletIcon /> : <AlertOctagon color="#FF0000" />}
-      <WalletIcon />
-      <Text sx={{ display: ['none', 'inherit', 'inherit'] }} ml={2} pr={2}>
-        {account}
-      </Text>
-      <ChevronDown />
-    </Container>
-  )
-}
-
 const ErrorWrapper = ({
   chainId,
   children,
+  isValid,
 }: {
+  isValid: boolean
   chainId?: number
   children: ReactNode
-}) => (
-  <MouseoverTooltipContent
-    content={
-      <Card sx={{ width: 320 }}>
-        <Text sx={{ fontWeight: 400 }} variant="legend">
-          <Trans>Network</Trans>
-        </Text>
-        <Flex my={2} variant="layout.verticalAlign">
-          <AlertCircle size={18} color="#FF0000" />
-          <Text ml={2}>Chain: {chainId}</Text>
-          <Text ml="auto" sx={{ fontWeight: 500 }}>
-            <Trans>Unsupported</Trans>
+}) =>
+  isValid ? (
+    <>{children}</>
+  ) : (
+    <MouseoverTooltipContent
+      content={
+        <Card sx={{ width: 320 }}>
+          <Text sx={{ fontWeight: 400 }} variant="legend">
+            <Trans>Network</Trans>
           </Text>
-        </Flex>
-        <Text variant="legend" sx={{ fontSize: 1 }}>
-          <Trans>
-            We only support Ethereum Mainnet. Change your network in the
-            connected wallet.
-          </Trans>
-        </Text>
-      </Card>
-    }
-  >
-    {children}
-  </MouseoverTooltipContent>
-)
+          <Flex my={2} variant="layout.verticalAlign">
+            <AlertCircle size={18} color="#FF0000" />
+            <Text ml={2}>Chain: {chainId}</Text>
+            <Text ml="auto" sx={{ fontWeight: 500 }}>
+              <Trans>Unsupported</Trans>
+            </Text>
+          </Flex>
+          <Text variant="legend" sx={{ fontSize: 1 }}>
+            <Trans>
+              We only support Ethereum Mainnet. Change your network in the
+              connected wallet.
+            </Trans>
+          </Text>
+        </Card>
+      }
+    >
+      {children}
+    </MouseoverTooltipContent>
+  )
 
 /**
  * Account
  *
- * Handles metamask* account interaction
- * TODO: Invalid chain error
+ * Handles wallet interaction
  */
 const Account = () => {
   const [isVisible, setVisible] = useState(false)
@@ -96,7 +76,7 @@ const Account = () => {
           <Trans>Connect</Trans>
         </Button>
       ) : (
-        <Wrapper chainId={chainId}>
+        <ErrorWrapper isValid={!isInvalid} chainId={chainId}>
           <Container onClick={() => setVisible(true)}>
             {!isInvalid ? (
               <WalletIcon />
@@ -112,7 +92,7 @@ const Account = () => {
             </Text>
             {isVisible ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
           </Container>
-        </Wrapper>
+        </ErrorWrapper>
       )}
       {isVisible && <WalletModal onClose={() => setVisible(false)} />}
     </>
