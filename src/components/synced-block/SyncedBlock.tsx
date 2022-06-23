@@ -1,9 +1,10 @@
-import styled from '@emotion/styled'
-import { Box, Flex, BoxProps, Text } from 'theme-ui'
+import { useWeb3React } from '@web3-react/core'
 import useBlockNumber from 'hooks/useBlockNumber'
-import { Circle } from 'react-feather'
+import { Box, BoxProps, Flex, Text } from 'theme-ui'
+import { CHAINS } from 'utils/chains'
 
 const SyncedBlock = (props: BoxProps) => {
+  const { chainId } = useWeb3React()
   const latestBlock = useBlockNumber()
 
   return (
@@ -11,7 +12,7 @@ const SyncedBlock = (props: BoxProps) => {
       <Box
         mr={2}
         sx={{
-          backgroundColor: '#00FFBF',
+          backgroundColor: !CHAINS[chainId ?? 0] ? '#FF0000' : '#00FFBF',
           borderRadius: '100%',
           width: 8,
           height: 8,
