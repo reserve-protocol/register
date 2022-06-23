@@ -47,8 +47,7 @@ async function multicall(
 // Don't expecting failure calls
 export const promiseMulticall = async (
   calls: ContractCall[],
-  provider: Web3Provider,
-  blockNumber: number
+  provider: Web3Provider
 ): Promise<any[]> => {
   const rawCalls = calls.map((call) => ({
     address: call.address,

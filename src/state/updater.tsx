@@ -1,3 +1,4 @@
+import { Web3Provider } from '@ethersproject/providers'
 import { formatEther } from '@ethersproject/units'
 import { useWeb3React } from '@web3-react/core'
 import { StRSR } from 'abis'
@@ -20,6 +21,7 @@ import {
   rsrPriceAtom,
   rTokenAtom,
   rTokenPriceAtom,
+  selectedRTokenAtom,
   walletAtom,
 } from 'state/atoms'
 import useSWR from 'swr'
@@ -177,8 +179,8 @@ const PendingBalancesUpdater = () => {
  * GasPrice
  */
 const PricesUpdater = () => {
-  const reserveToken = useAtomValue(rTokenAtom)
-  const { provider } = useWeb3React()
+  const reserveToken = useAtomValue(selectedRTokenAtom)
+  const { provider, chainId } = useWeb3React()
   const { data } = useSWR(
     `${COINGECKO_API}/simple/price?vs_currencies=usd&ids=ethereum,reserve-rights-token`,
     fetcher
@@ -186,7 +188,7 @@ const PricesUpdater = () => {
   // this may fetch all top rTokens
   const { data: rTokenPrice } = useSWR(
     reserveToken &&
-      `${COINGECKO_API}/simple/token_price/ethereum?contract_addresses=${reserveToken.address}&vs_currencies=usd`,
+      `${COINGECKO_API}/simple/token_price/ethereum?contract_addresses=${reserveToken}&vs_currencies=usd`,
     fetcher
   )
   const setRSRPrice = useUpdateAtom(rsrPriceAtom)
@@ -195,16 +197,20 @@ const PricesUpdater = () => {
   const setRTokenPrice = useUpdateAtom(rTokenPriceAtom)
   const blockNumber = useBlockNumber()
 
-  const fetchGasPrice = useCallback(async () => {
-    const feeData = await provider!.getFeeData()
-    setGasPrice(Number(feeData.gasPrice?.toString()) || 0)
-  }, [provider])
+  const fetchGasPrice = useCallback(async (provider: Web3Provider) => {
+    try {
+      const feeData = await provider.getFeeData()
+      setGasPrice(Number(feeData.gasPrice?.toString()) || 0)
+    } catch (e) {
+      console.error('Error fetching gas price', e)
+    }
+  }, [])
 
   useEffect(() => {
-    if (provider && blockNumber) {
-      fetchGasPrice()
+    if (chainId && blockNumber && provider) {
+      fetchGasPrice(provider)
     }
-  }, [blockNumber, provider])
+  }, [chainId, blockNumber])
 
   useEffect(() => {
     if (data) {
@@ -215,7 +221,7 @@ const PricesUpdater = () => {
 
   useEffect(() => {
     if (rTokenPrice && reserveToken) {
-      setRTokenPrice(rTokenPrice[reserveToken.address])
+      setRTokenPrice(rTokenPrice[reserveToken])
     }
   }, [rTokenPrice])
 

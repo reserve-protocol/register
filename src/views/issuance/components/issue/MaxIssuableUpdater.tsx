@@ -37,8 +37,6 @@ const MaxIssuableUpdater = () => {
 
   // RSV Max issuable
   useEffect(() => {
-    console.log('called')
-
     if (rToken && rToken.isRSV) {
       setMaxIssuable(getIssuable(rToken, tokenBalances))
     }

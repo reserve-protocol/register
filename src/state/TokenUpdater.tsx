@@ -3,14 +3,13 @@ import { useWeb3React } from '@web3-react/core'
 import { ERC20Interface } from 'abis'
 import useBlockNumber from 'hooks/useBlockNumber'
 import { useFacadeContract } from 'hooks/useContract'
-import useDebounce from 'hooks/useDebounce'
 import { atom, useAtom } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { useCallback, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { ContractCall, ReserveToken, Token } from 'types'
 import { isAddress } from 'utils'
-import { CHAIN_ID } from 'utils/chains'
+import { CHAINS } from 'utils/chains'
 import RSV from 'utils/rsv'
 import { reserveTokensAtom, selectedRTokenAtom } from './atoms'
 import { promiseMulticall } from './web3/lib/multicall'
@@ -18,8 +17,7 @@ import { error } from './web3/lib/notifications'
 
 const getTokensMeta = async (
   addresses: string[],
-  provider: Web3Provider,
-  blockNumber: number
+  provider: Web3Provider
 ): Promise<Token[]> => {
   const calls = addresses.reduce((acc, address) => {
     const params = { abi: ERC20Interface, address, args: [] }
@@ -41,7 +39,7 @@ const getTokensMeta = async (
     ]
   }, [] as ContractCall[])
 
-  const results = await promiseMulticall(calls, provider, blockNumber)
+  const results = await promiseMulticall(calls, provider)
 
   const result = addresses.reduce((tokens, address) => {
     const [name, symbol, decimals] = results.splice(0, 3)
@@ -83,7 +81,7 @@ const ReserveTokenUpdater = () => {
       }
 
       try {
-        if (facadeContract && blockNumber) {
+        if (facadeContract && blockNumber && provider) {
           const [basket, stTokenAddress] = await Promise.all([
             facadeContract.basketTokens(selectedAddress),
             facadeContract.stToken(selectedAddress),
@@ -91,8 +89,7 @@ const ReserveTokenUpdater = () => {
 
           const [rToken, stToken, ...collaterals] = await getTokensMeta(
             [selectedAddress, stTokenAddress, ...basket],
-            provider as Web3Provider,
-            blockNumber
+            provider
           )
 
           return updateToken({
@@ -103,7 +100,6 @@ const ReserveTokenUpdater = () => {
         }
       } catch (e) {
         error('Network Error', 'Error fetching token information')
-        console.log('Error fetching token meta', e)
       }
     },
     [selectedAddress, blockNumber]
@@ -112,14 +108,13 @@ const ReserveTokenUpdater = () => {
   useEffect(() => {
     const token = isAddress(searchParams.get('token') ?? '')
 
-    // TODO: Review if its an rTokens maybe trying to get "main"
     if (token) {
       setSelectedToken(token)
     }
   }, [])
 
   useEffect(() => {
-    if (selectedAddress && CHAIN_ID === chainId) {
+    if (selectedAddress && CHAINS[chainId ?? 0]) {
       getTokenMeta(selectedAddress)
     }
   }, [getTokenMeta])
