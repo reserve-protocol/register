@@ -1,14 +1,13 @@
-import { Flex, Box, Text, Divider } from 'theme-ui'
+import styled from '@emotion/styled'
+import { Trans } from '@lingui/macro'
+import Logo from 'components/icons/Logo'
 import LanguageSelector from 'components/language-selector'
 import RTokenSelector from 'components/rtoken-selector'
-import Account from '../../account'
 import TransactionCenter from 'components/transactions/table/manager/TransactionCenter'
-import styled from '@emotion/styled'
-import { Link, useLocation } from 'react-router-dom'
-import { isContentOnlyView, ROUTES } from 'utils/constants'
-import Logo from 'components/icons/Logo'
-import { useNavigate } from 'react-router-dom'
-import { Trans } from '@lingui/macro'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { Box, Divider, Flex, Text } from 'theme-ui'
+import { isContentOnlyView } from 'utils/constants'
+import Account from '../../account'
 
 const Separator = styled(Divider)`
   border: none;

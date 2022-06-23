@@ -69,7 +69,7 @@ const DeployHeader = ({
         value={currentView}
         onChange={onViewChange}
         options={[t`Set parameters`, t`Set collateral basket`]}
-        error={[!isValid && currentView !== 0]}
+        error={[!isValid]}
       />
       <NeedHelp />
       <Button

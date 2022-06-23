@@ -18,9 +18,8 @@ const connect = async (connector: Connector) => {
 }
 
 const WalletUpdater = () => {
-  const { account, provider } = useWeb3React()
+  const { account } = useWeb3React()
   const [connectedAccount, setConnected] = useAtom(walletAtom)
-  console.log('provider', provider)
 
   // TODO: Perfect place to program wallet popups
   useEffect(() => {

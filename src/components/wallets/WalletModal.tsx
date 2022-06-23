@@ -13,6 +13,7 @@ import {
   metaMask,
   walletConnect,
   WalletConnector,
+  gnosisSafe,
 } from './connectors'
 import coinbaseLogo from './imgs/coinbase.png'
 import metamaskLogo from './imgs/metamask.png'
@@ -35,13 +36,17 @@ const wallets = [
     connector: walletConnect,
     type: CONNECTOR_TYPES.walletConnect,
   },
-  // { icon: FortmaticIcon, label: 'Fortmatic', connector: fortmatic },
-  // { icon: TrezorIcon, label: 'Trezor', connector: trezor },
   {
     icon: coinbaseLogo,
     type: CONNECTOR_TYPES.coinbase,
     label: 'Coinbase Wallet',
     connector: coinbaseWallet,
+  },
+  {
+    icon: coinbaseLogo,
+    type: CONNECTOR_TYPES.coinbase,
+    label: 'Gnosis Safe',
+    connector: gnosisSafe,
   },
 ]
 
@@ -70,7 +75,7 @@ const WalletModal = ({ onClose }: Props) => {
   return (
     <Modal
       title={!connecting ? t`Connect your wallet` : ''}
-      style={{ width: 356 }}
+      style={{ width: 400 }}
       onClose={onClose}
     >
       <Box>
@@ -83,8 +88,8 @@ const WalletModal = ({ onClose }: Props) => {
               height: 120,
             }}
           >
-            <Spinner />
-            <Text>
+            <Spinner size={24} />
+            <Text mt={3}>
               <Trans>Connecting...</Trans>
             </Text>
           </Flex>
