@@ -70,7 +70,6 @@ const ReserveTokenUpdater = () => {
   const facadeContract = useFacadeContract()
   const [searchParams] = useSearchParams()
   const { provider, chainId } = useWeb3React()
-  const blockNumber = useBlockNumber()
 
   const getTokenMeta = useCallback(
     async (address: string) => {
@@ -81,7 +80,7 @@ const ReserveTokenUpdater = () => {
       }
 
       try {
-        if (facadeContract && blockNumber && provider) {
+        if (facadeContract && provider) {
           const [basket, stTokenAddress] = await Promise.all([
             facadeContract.basketTokens(selectedAddress),
             facadeContract.stToken(selectedAddress),
@@ -102,7 +101,7 @@ const ReserveTokenUpdater = () => {
         error('Network Error', 'Error fetching token information')
       }
     },
-    [selectedAddress, blockNumber]
+    [selectedAddress]
   )
 
   useEffect(() => {
@@ -115,6 +114,7 @@ const ReserveTokenUpdater = () => {
 
   useEffect(() => {
     if (selectedAddress && CHAINS[chainId ?? 0]) {
+      console.log('fetch?')
       getTokenMeta(selectedAddress)
     }
   }, [getTokenMeta])

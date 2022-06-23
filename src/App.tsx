@@ -1,52 +1,30 @@
-import { Card, Container } from 'components'
+import { i18n } from '@lingui/core'
+import { I18nProvider } from '@lingui/react'
 import { useAtomValue } from 'jotai'
+import { en, es } from 'make-plural/plurals'
 import React from 'react'
+import { Toaster } from 'react-hot-toast'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import { rTokenAtom, walletAtom } from 'state/atoms'
+import { rTokenAtom } from 'state/atoms'
 import Updater from 'state/updater'
 import Web3Provider from 'state/web3'
 import { ThemeProvider } from 'theme-ui'
+import { ROUTES } from 'utils/constants'
+import Deploy from 'views/deploy'
+import DeployIntro from 'views/deploy/components/DeployIntro'
 import Home from 'views/home'
 import Overview from 'views/overview'
 import Insurance from 'views/staking'
 import Layout from './components/layout'
-import { theme } from './theme'
-import { Toaster } from 'react-hot-toast'
-import Issuance from './views/issuance'
-import { ROUTES } from 'utils/constants'
-import { i18n } from '@lingui/core'
-import { en, es } from 'make-plural/plurals'
-import { I18nProvider } from '@lingui/react'
-import { messages as esMessages } from './locales/es/messages'
 import { messages as enMessages } from './locales/en/messages'
-import Deploy from 'views/deploy'
-import DeployIntro from 'views/deploy/components/DeployIntro'
+import { messages as esMessages } from './locales/es/messages'
+import { theme } from './theme'
+import Issuance from './views/issuance'
 
-// Requires rToken to be selected and a wallet connected
-// TODO: Better placeholders
+// Requires rToken to exist for route to render
 const Guard = ({ children }: { children: React.ReactNode }) => {
-  const account = useAtomValue(walletAtom)
-  const RToken = useAtomValue(rTokenAtom)
-
-  // TODO: Connect your wallet placeholder
-  if (!account) {
-    return (
-      <Container pt={4} pb={4}>
-        <Card>Please connect your wallet...</Card>
-      </Container>
-    )
-  }
-
-  // TODO: Loading placeholder
-  if (!RToken) {
-    return (
-      <Container pt={4} pb={4}>
-        <Card>Loading ReserveToken...</Card>
-      </Container>
-    )
-  }
-
-  return <>{children}</>
+  const rToken = useAtomValue(rTokenAtom)
+  return !rToken ? <div>Select an rToken</div> : <>{children}</>
 }
 
 i18n.load('en', enMessages)

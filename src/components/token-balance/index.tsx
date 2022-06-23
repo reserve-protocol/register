@@ -18,7 +18,7 @@ const TokenBalance = ({
 }: Props) => (
   <IconInfo
     title={title || symbol}
-    text={`${usd ? '$' : ''}${formatCurrency(balance)}`}
+    text={`${usd ? '$' : ''}${formatCurrency(balance || 0)}`}
     icon={icon || <TokenLogo symbol={symbol} />}
     {...props}
   />
