@@ -47,7 +47,7 @@ function useBlock() {
       }
     }
     return undefined
-  }, [chainId, provider, onBlock, windowVisible])
+  }, [provider, onBlock, windowVisible])
 
   const debouncedBlock = useDebounce(state.block, 100)
   return state.block ? debouncedBlock : undefined
@@ -57,7 +57,11 @@ export function BlockUpdater() {
   const setBlock = useUpdateAtom(blockAtom)
   const setBlockTimestamp = useUpdateAtom(blockTimestampAtom)
   const block = useBlock()
-  const { provider } = useWeb3React()
+  const { provider, chainId } = useWeb3React()
+
+  useEffect(() => {
+    setBlock(0)
+  }, [chainId])
 
   useEffect(() => {
     setBlock(block)
@@ -77,7 +81,7 @@ export function BlockUpdater() {
 export default function useBlockNumber(): number | undefined {
   const { chainId } = useWeb3React()
   const block = useAtomValue(blockAtom)
-  return chainId ? block : undefined
+  return chainId && block ? block : undefined
 }
 
 export function useFastForwardBlockNumber(): (block: number) => void {

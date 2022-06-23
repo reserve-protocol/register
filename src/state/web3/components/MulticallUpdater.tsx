@@ -1,3 +1,4 @@
+import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import useBlockNumber from 'hooks/useBlockNumber'
 import useDebounce from 'hooks/useDebounce'
@@ -7,27 +8,23 @@ import { callsAtom, multicallStateAtom } from 'state/atoms'
 import { RawCall } from 'types'
 import { addressEqual } from 'utils'
 import { MULTICALL_ADDRESS } from 'utils/addresses'
-import { CHAIN_ID } from 'utils/chains'
+import { CHAINS } from 'utils/chains'
 import multicall from '../lib/multicall'
 
-const latestFetchedBlockAtom = atom(0)
+const latestFetchedBlockAtom = atom<{ [x: string]: number }>({})
 
 export const updateMulticallStateAtom = atom(
   (get) => get(multicallStateAtom),
-  async (get, set, props) => {
-    // TODO: Types
-    const [calls, provider, blockNumber] = props as any
-    const result = await multicall(
-      provider,
-      MULTICALL_ADDRESS[CHAIN_ID],
-      blockNumber,
-      calls
-    )
+  async (get, set, props: [RawCall[], Web3Provider, number, number]) => {
+    const [calls, provider, blockNumber, chainId] = props
+    const result = await multicall(provider, MULTICALL_ADDRESS[chainId], calls)
+
+    const latestBlock = get(latestFetchedBlockAtom)[chainId] || -1
 
     // avoid race conditions
-    if (blockNumber >= get(latestFetchedBlockAtom)) {
+    if (blockNumber >= latestBlock) {
       set(multicallStateAtom, result)
-      set(latestFetchedBlockAtom, blockNumber)
+      set(latestFetchedBlockAtom, { [chainId]: blockNumber })
     }
   }
 )
@@ -48,17 +45,17 @@ function getUniqueCalls(requests: RawCall[]) {
 }
 
 const MulticallUpdater = () => {
-  const { provider } = useWeb3React()
+  const { provider, chainId } = useWeb3React()
   const calls = useDebounce(useAtomValue(callsAtom), 50)
   const blockNumber = useBlockNumber()
   const filteredCalls = useMemo(() => getUniqueCalls(calls), [calls])
   const performMulticall = useSetAtom(updateMulticallStateAtom)
 
   useEffect(() => {
-    if (provider && blockNumber && calls.length) {
-      performMulticall([filteredCalls, provider, blockNumber])
+    if (provider && blockNumber && calls.length && chainId && CHAINS[chainId]) {
+      performMulticall([filteredCalls, provider, blockNumber, chainId])
     }
-  }, [JSON.stringify(filteredCalls), provider, blockNumber])
+  }, [filteredCalls, blockNumber])
 
   return null
 }

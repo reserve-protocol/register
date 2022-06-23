@@ -15,13 +15,13 @@ const ABI = [
 async function multicall(
   provider: Provider,
   multicallAddress: string,
-  blockNumber: number,
   requests: RawCall[]
 ): Promise<MulticallState> {
   if (requests.length === 0) {
     return {}
   }
   const contract = new Contract(multicallAddress, ABI, provider)
+  const blockNumber = await provider.getBlockNumber()
   try {
     const results: [boolean, string][] = await contract.tryAggregate(
       false,
@@ -55,12 +55,7 @@ export const promiseMulticall = async (
     data: call.abi.encodeFunctionData(call.method, call.args),
   }))
 
-  const state = await multicall(
-    provider,
-    MULTICALL_ADDRESS[CHAIN_ID],
-    blockNumber,
-    rawCalls
-  )
+  const state = await multicall(provider, MULTICALL_ADDRESS[CHAIN_ID], rawCalls)
 
   return rawCalls.map((call, i) => {
     const result = extractCallResult(state, call)

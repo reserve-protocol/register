@@ -3,12 +3,14 @@ import { useWeb3React } from '@web3-react/core'
 import { ERC20Interface } from 'abis'
 import useBlockNumber from 'hooks/useBlockNumber'
 import { useFacadeContract } from 'hooks/useContract'
+import useDebounce from 'hooks/useDebounce'
 import { atom, useAtom } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { useCallback, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { ContractCall, ReserveToken, Token } from 'types'
 import { isAddress } from 'utils'
+import { CHAIN_ID } from 'utils/chains'
 import RSV from 'utils/rsv'
 import { reserveTokensAtom, selectedRTokenAtom } from './atoms'
 import { promiseMulticall } from './web3/lib/multicall'
@@ -69,7 +71,7 @@ const ReserveTokenUpdater = () => {
   const updateToken = useUpdateAtom(updateTokenAtom)
   const facadeContract = useFacadeContract()
   const [searchParams] = useSearchParams()
-  const { provider } = useWeb3React()
+  const { provider, chainId } = useWeb3React()
   const blockNumber = useBlockNumber()
 
   const getTokenMeta = useCallback(
@@ -104,7 +106,7 @@ const ReserveTokenUpdater = () => {
         console.log('Error fetching token meta', e)
       }
     },
-    [selectedAddress, provider]
+    [selectedAddress, blockNumber]
   )
 
   useEffect(() => {
@@ -117,10 +119,10 @@ const ReserveTokenUpdater = () => {
   }, [])
 
   useEffect(() => {
-    if (selectedAddress) {
+    if (selectedAddress && CHAIN_ID === chainId) {
       getTokenMeta(selectedAddress)
     }
-  }, [selectedAddress, getTokenMeta])
+  }, [getTokenMeta])
 
   return null
 }
