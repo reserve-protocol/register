@@ -72,7 +72,7 @@ const Account = () => {
   return (
     <>
       {!account ? (
-        <Button variant="accent" onClick={() => setVisible(true)}>
+        <Button px={3} py={2} variant="accent" onClick={() => setVisible(true)}>
           <Trans>Connect</Trans>
         </Button>
       ) : (

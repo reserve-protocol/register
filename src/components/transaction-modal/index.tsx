@@ -29,7 +29,6 @@ export interface ITransactionModal {
   ) => TransactionState[]
   onClose: () => void
   onChange?(signing: boolean): void
-  onConfirm?(id: string, hash: string): void
   isValid: boolean
 }
 
@@ -53,9 +52,7 @@ const TransactionConfirmed = ({
     >
       <CheckCircle size={36} />
       <br />
-      <Text>
-        <Trans>Transaction signed!</Trans>
-      </Text>
+      <Text>Transaction signed!</Text>
       <br />
       <Link
         href={getExplorerLink(hash, ExplorerDataType.TRANSACTION)}
@@ -79,7 +76,6 @@ const TransactionModal = ({
   buildApprovals,
   onClose,
   onChange = () => {},
-  onConfirm,
 }: ITransactionModal) => {
   const addTransaction = useSetAtom(addTransactionAtom)
   const allowances = useAtomValue(allowanceAtom)
@@ -118,12 +114,6 @@ const TransactionModal = ({
       setApprovalsTx([])
     }
   }
-
-  useEffect(() => {
-    if (txState?.hash && onConfirm) {
-      onConfirm(signing, txState.hash)
-    }
-  }, [txState?.hash])
 
   useEffect(fetchApprovals, [allowances, requiredAllowance])
 

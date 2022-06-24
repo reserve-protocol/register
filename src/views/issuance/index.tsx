@@ -1,7 +1,7 @@
 import { Container } from 'components'
 import { useAtomValue } from 'jotai'
 import { rTokenAtom } from 'state/atoms'
-import { Box, Grid, Text } from 'theme-ui'
+import { Box, Card, Grid, Text } from 'theme-ui'
 import { ReserveToken } from 'types'
 import About from './components/about'
 import Balances from './components/balances'
@@ -13,6 +13,7 @@ const Issuance = () => {
 
   return (
     <Container pb={4}>
+      <Card>Please connect your wallet</Card>
       <Text ml={4} mb={3} variant="sectionTitle">
         Mint + Redeem
       </Text>

@@ -26,7 +26,7 @@ const defaultValues = {
   // token params
   name: '',
   symbol: '',
-  ownerAddress: '',
+  ownerAddress: '', // TODO: additional param
   // backing params
   tradingDelay: '0', // delay after default confirmed
   auctionLength: '900', // 15 minutes
@@ -96,17 +96,17 @@ const Deploy = () => {
           (Number(maxTradeSlippage) / 100).toString()
         ),
         ...Object.keys(params).reduce(
-          (acc, key) => ({ ...acc, [key]: parseEther(params[key]) }),
+          (acc, key) => ({ ...acc, [key]: params[key] }),
           {} as StringMap
         ),
       }
 
       const basketCollaterals: [string[], string[]] = [[], []]
+      const backupCollateral: [string[], string[]][] = []
       // TODO: Ask taylor how to get quantities? should I include scale?
       const quantities: [BigNumber[], BigNumber[]] = [[], []]
-      const backupUnits: string[] = []
-      const diversityFactor: number[] = []
-      const backupCollateral: [string[], string[]][] = []
+      const backupUnits: string[] = [] // USD / EUR
+      const diversityFactor: number[] = [] // 3 / 2
 
       for (const targetUnit of Object.keys(basket)) {
         const { collaterals, distribution } = basket[targetUnit]
@@ -130,14 +130,17 @@ const Deploy = () => {
       }
 
       // TODO: execute token contract
-      console.log('DATA', [
-        config,
-        basketCollaterals,
-        quantities,
-        backupUnits,
-        diversityFactor,
-        backupCollateral,
-      ])
+      console.log(
+        'DATA',
+        JSON.stringify([
+          config,
+          basketCollaterals,
+          quantities,
+          backupUnits,
+          diversityFactor,
+          backupCollateral,
+        ])
+      )
     },
     [facadeContract]
   )
