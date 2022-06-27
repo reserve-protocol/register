@@ -6,8 +6,12 @@ export interface StringMap {
   [key: string]: any
 }
 
-export interface TransactionMap {
+export interface WalletTransaction {
   [x: string]: TransactionState[]
+}
+
+export interface TransactionMap {
+  [x: string]: WalletTransaction
 }
 
 export interface ContractCall {

@@ -4,10 +4,14 @@ import TransactionHistory from 'components/transaction-history'
 import { atom } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { X } from 'react-feather'
+import { currentTxAtom } from 'state/atoms'
 import { Box, Text, Flex } from 'theme-ui'
 import { txSidebarToggleAtom } from './atoms'
 
-const txByDate = atom((get) => {})
+const txByDate = atom((get) => {
+  const txs = get(currentTxAtom)
+  console.log('txs')
+})
 
 const TransactionList = () => {
   return <Box>tx list</Box>

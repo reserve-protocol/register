@@ -1,3 +1,4 @@
+import { WalletTransaction } from './../types/index'
 import { BigNumber } from '@ethersproject/bignumber'
 import { atom } from 'jotai'
 import { atomWithStorage, createJSONStorage } from 'jotai/utils'
@@ -12,6 +13,7 @@ import { RSR, TRANSACTION_STATUS } from 'utils/constants'
 
 localStorage.setItem('selectedToken', localStorage.selectedToken || ' ')
 
+export const chainIdAtom = atom<number | undefined>(undefined)
 export const blockAtom = atom<number | undefined>(undefined)
 // Prices
 export const ethPriceAtom = atom(1)
@@ -135,6 +137,10 @@ export const multicallStateAtom = atom<MulticallState>({})
 
 const txStorage = createJSONStorage<TransactionMap>(() => localStorage)
 
+/**
+ * Parse transactions from localStorage
+ * Mark signing and pending transactions status to unknown
+ */
 txStorage.getItem = (key: string): TransactionMap => {
   const data = localStorage?.getItem(key)
 
@@ -143,19 +149,23 @@ txStorage.getItem = (key: string): TransactionMap => {
   try {
     const parsed = JSON.parse(data) as TransactionMap
 
-    return Object.keys(parsed).reduce((txs, current) => {
-      txs[current] = parsed[current].map((tx) => {
-        if (
-          tx.status === TRANSACTION_STATUS.SIGNING ||
-          tx.status === TRANSACTION_STATUS.PENDING
-        ) {
-          return { ...tx, status: TRANSACTION_STATUS.UNKNOWN }
-        }
+    return Object.keys(parsed).reduce((txMap, chainId) => {
+      txMap[chainId] = Object.keys(txMap[chainId]).reduce((txs, wallet) => {
+        txs[wallet] = txs[wallet].map((tx) => {
+          if (
+            tx.status === TRANSACTION_STATUS.SIGNING ||
+            tx.status === TRANSACTION_STATUS.PENDING
+          ) {
+            return { ...tx, status: TRANSACTION_STATUS.UNKNOWN }
+          }
 
-        return tx
-      })
+          return tx
+        })
 
-      return txs
+        return txs
+      }, {} as WalletTransaction)
+
+      return txMap
     }, {} as TransactionMap)
   } catch (e) {
     localStorage.setItem(key, JSON.stringify({}))
@@ -169,11 +179,13 @@ export const txAtom = atomWithStorage<TransactionMap>(
   txStorage
 )
 
-export const currentTxAtom = atom((get) =>
-  get(txAtom) && get(txAtom)[get(walletAtom)]
-    ? get(txAtom)[get(walletAtom)]
-    : []
-)
+export const currentTxAtom = atom((get) => {
+  const chain = get(chainIdAtom) ?? 0
+  const account = get(walletAtom) ?? ''
+  const txs = get(txAtom)
+
+  return txs[chain] && txs[chain][account] ? txs[chain][account] : []
+})
 
 // TODO: Improve or split this atom
 export const pendingTxAtom = atom((get) => {
@@ -204,10 +216,22 @@ export const addTransactionAtom = atom(
   null,
   (get, set, tx: TransactionState[]) => {
     const txs = get(txAtom)
+    const chainId = get(chainIdAtom)
     const account = get(walletAtom)
+
+    if (!chainId || !account) {
+      return
+    }
+
+    const currentTx =
+      txs[chainId] && txs[chainId][account] ? txs[chainId][account] : []
+
     set(txAtom, {
       ...txs,
-      [account]: [...(txs[account] ?? []), ...tx].slice(-50),
+      [chainId]: {
+        ...(txs[chainId] ?? {}),
+        [account]: [...currentTx, ...tx].slice(-50),
+      },
     })
   }
 )
@@ -216,17 +240,26 @@ export const updateTransactionAtom = atom(
   null,
   (get, set, data: [number, Partial<TransactionState>]) => {
     const txs = get(txAtom)
+    const chainId = get(chainIdAtom)
     const account = get(walletAtom)
-    const currentTx = txs[account]
     const [index, newData] = data
+
+    if (!chainId || !account) {
+      return
+    }
+
+    const currentTx =
+      txs[chainId] && txs[chainId][account] ? txs[chainId][account] : []
 
     set(txAtom, {
       ...txs,
-      [account]: [
-        ...currentTx.slice(0, index),
-        { ...currentTx[index], ...newData },
-        ...currentTx.slice(index + 1),
-      ],
+      [chainId]: {
+        [account]: [
+          ...currentTx.slice(0, index),
+          { ...currentTx[index], ...newData },
+          ...currentTx.slice(index + 1),
+        ],
+      },
     })
   }
 )

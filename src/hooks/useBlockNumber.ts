@@ -1,7 +1,7 @@
 import { useWeb3React } from '@web3-react/core'
 import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import { useCallback, useEffect, useState } from 'react'
-import { blockAtom, blockTimestampAtom } from './../state/atoms'
+import { blockAtom, blockTimestampAtom, chainIdAtom } from './../state/atoms'
 import useDebounce from './useDebounce'
 import useIsWindowVisible from './useIsWindowVisible'
 
@@ -53,14 +53,18 @@ function useBlock() {
   return state.block ? debouncedBlock : undefined
 }
 
+// TODO: Move to state/web3
 export function BlockUpdater() {
   const setBlock = useUpdateAtom(blockAtom)
+  const setChain = useUpdateAtom(chainIdAtom)
   const setBlockTimestamp = useUpdateAtom(blockTimestampAtom)
   const block = useBlock()
   const { provider, chainId } = useWeb3React()
 
+  // On chain change, store new chain and reset block number
   useEffect(() => {
     setBlock(0)
+    setChain(chainId)
   }, [chainId])
 
   useEffect(() => {

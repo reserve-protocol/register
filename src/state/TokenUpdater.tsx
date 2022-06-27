@@ -1,7 +1,6 @@
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import { ERC20Interface } from 'abis'
-import useBlockNumber from 'hooks/useBlockNumber'
 import { useFacadeContract } from 'hooks/useContract'
 import { atom, useAtom } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
