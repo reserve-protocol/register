@@ -114,7 +114,6 @@ const ReserveTokenUpdater = () => {
 
   useEffect(() => {
     if (selectedAddress && CHAINS[chainId ?? 0]) {
-      console.log('fetch?')
       getTokenMeta(selectedAddress)
     }
   }, [getTokenMeta])

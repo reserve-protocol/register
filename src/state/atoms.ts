@@ -85,6 +85,7 @@ export const pendingIssuancesSummary = atom((get) => {
 
       if (currentBlock >= issuance.availableAt) {
         acc.availableAmount += issuance.amount
+        acc.availableIndex = issuance.index
       } else {
         acc.pendingAmount += issuance.amount
       }
@@ -93,6 +94,7 @@ export const pendingIssuancesSummary = atom((get) => {
     },
     {
       index: BigNumber.from(0),
+      availableIndex: BigNumber.from(0),
       pendingAmount: 0,
       availableAmount: 0,
       availableAt: 0,
@@ -110,6 +112,7 @@ export const pendingRSRSummaryAtom = atom((get) => {
 
       if (currentTime >= unstake.availableAt) {
         acc.availableAmount += unstake.amount
+        acc.availableIndex = acc.availableAt
       } else {
         acc.pendingAmount += unstake.amount
       }
@@ -118,6 +121,7 @@ export const pendingRSRSummaryAtom = atom((get) => {
     },
     {
       index: BigNumber.from(0),
+      availableIndex: BigNumber.from(0),
       pendingAmount: 0,
       availableAt: 0,
       availableAmount: 0,

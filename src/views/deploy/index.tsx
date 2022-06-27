@@ -45,9 +45,37 @@ const defaultValues = {
   minBidSize: '1',
 }
 
-const Deploying = () => {
-  return <Box></Box>
+interface Configuration {
+  name: string
+  symbol: string
+  tradingDelay: BigNumber
+  auctionLength: BigNumber
+  backingBuffer: BigNumber
+  maxTradeSlippage: BigNumber
+  dustAmount: BigNumber
+  issuanceRate: BigNumber
+  maxTradeVolume: BigNumber
+  rTokenDist: BigNumber
+  rsrDist: BigNumber
+  rewardPeriod: BigNumber
+  rewardRatio: BigNumber
+  unstakingDelay: BigNumber
+  oneshotPauseDuration: BigNumber
+  minBidSize: BigNumber
 }
+
+type AddressMap = [string[], string[]]
+type WeightMap = [BigNumber[], BigNumber[]]
+
+function deploy(
+  owner: string,
+  config: Configuration,
+  primaryBasket: AddressMap,
+  weights: WeightMap,
+  backupCollateral: AddressMap[],
+  backupUnits: string[],
+  diversityFactor: BigNumber[]
+) {}
 
 const VIEWS = [TokenConfiguration, BasketSetup, DeployPreview, DeploySummary]
 

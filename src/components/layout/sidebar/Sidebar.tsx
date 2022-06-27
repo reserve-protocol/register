@@ -116,7 +116,7 @@ const Navigation = ({
               : 'none',
             display: 'flex',
           })}
-          to={item.path + search}
+          to={item.path + '?token=' + currentToken?.address}
         >
           <Box
             sx={{

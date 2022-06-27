@@ -20,9 +20,8 @@ const PendingIssuances = ({ token }: { token: Token }) => {
   const { account } = useWeb3React()
   const claimTx = useTransaction(claiming)
   const cancelTx = useTransaction(canceling)
-  const { index, pendingAmount, availableAmount } = useAtomValue(
-    pendingIssuancesSummary
-  )
+  const { index, availableIndex, pendingAmount, availableAmount } =
+    useAtomValue(pendingIssuancesSummary)
 
   const handleClaim = () => {
     const txId = uuid()
@@ -37,7 +36,7 @@ const PendingIssuances = ({ token }: { token: Token }) => {
           abi: 'rToken',
           address: token.address,
           method: 'vest',
-          args: [account, index.add(BigNumber.from(1))],
+          args: [account, availableIndex.add(BigNumber.from(1))],
         },
       },
     ])

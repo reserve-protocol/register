@@ -145,7 +145,11 @@ const EmergencyCollateral = ({
       {readOnly ? (
         <Box>
           {collaterals.map((collateral, index) => (
-            <Flex mt={3} variant="layout.verticalAlign">
+            <Flex
+              mt={3}
+              key={collateral.address}
+              variant="layout.verticalAlign"
+            >
               <Text>{collateral.symbol}</Text>
               <Text ml="auto">{index + 1}</Text>
             </Flex>

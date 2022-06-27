@@ -1,10 +1,17 @@
 import Portal from '@reach/portal'
 import Button from 'components/button'
 import TransactionHistory from 'components/transaction-history'
+import { atom } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { X } from 'react-feather'
 import { Box, Text, Flex } from 'theme-ui'
 import { txSidebarToggleAtom } from './atoms'
+
+const txByDate = atom((get) => {})
+
+const TransactionList = () => {
+  return <Box>tx list</Box>
+}
 
 const TransactionSidebar = () => {
   const setSidebar = useUpdateAtom(txSidebarToggleAtom)
@@ -44,7 +51,7 @@ const TransactionSidebar = () => {
             <X />
           </Button>
         </Flex>
-        <TransactionHistory history={[]} />
+        <TransactionList />
       </Box>
     </Portal>
   )
