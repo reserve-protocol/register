@@ -2517,7 +2517,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ],\
       [\
         "dayjs",\
-        "npm:1.11.0"\
+        "npm:1.11.3"\
       ],\
       [\
         "debug",\
@@ -6034,6 +6034,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["babel-preset-react-app", "npm:10.0.1"],\
             ["buffer", "npm:6.0.3"],\
             ["cypress", "npm:8.7.0"],\
+            ["dayjs", "npm:1.11.3"],\
             ["ethers", "npm:5.6.2"],\
             ["fast-deep-equal", "npm:3.1.3"],\
             ["fast-memoize", "npm:2.5.2"],\
@@ -16630,6 +16631,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["dayjs", "npm:1.11.0"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:1.11.3", {\
+          "packageLocation": "./.yarn/cache/dayjs-npm-1.11.3-88985d494e-c87e06b562.zip/node_modules/dayjs/",\
+          "packageDependencies": [\
+            ["dayjs", "npm:1.11.3"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["debug", [\
@@ -24951,6 +24959,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["babel-preset-react-app", "npm:10.0.1"],\
             ["buffer", "npm:6.0.3"],\
             ["cypress", "npm:8.7.0"],\
+            ["dayjs", "npm:1.11.3"],\
             ["ethers", "npm:5.6.2"],\
             ["fast-deep-equal", "npm:3.1.3"],\
             ["fast-memoize", "npm:2.5.2"],\

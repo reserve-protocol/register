@@ -1,4 +1,3 @@
-import { WalletTransaction } from './../types/index'
 import { BigNumber } from '@ethersproject/bignumber'
 import { atom } from 'jotai'
 import { atomWithStorage, createJSONStorage } from 'jotai/utils'
@@ -10,6 +9,7 @@ import {
   TransactionState,
 } from 'types'
 import { RSR, TRANSACTION_STATUS } from 'utils/constants'
+import { WalletTransaction } from './../types/index'
 
 localStorage.setItem('selectedToken', localStorage.selectedToken || ' ')
 
@@ -150,8 +150,8 @@ txStorage.getItem = (key: string): TransactionMap => {
     const parsed = JSON.parse(data) as TransactionMap
 
     return Object.keys(parsed).reduce((txMap, chainId) => {
-      txMap[chainId] = Object.keys(txMap[chainId]).reduce((txs, wallet) => {
-        txs[wallet] = txs[wallet].map((tx) => {
+      txMap[chainId] = Object.keys(parsed[chainId]).reduce((txs, wallet) => {
+        txs[wallet] = parsed[chainId][wallet].map((tx) => {
           if (
             tx.status === TRANSACTION_STATUS.SIGNING ||
             tx.status === TRANSACTION_STATUS.PENDING
@@ -168,6 +168,7 @@ txStorage.getItem = (key: string): TransactionMap => {
       return txMap
     }, {} as TransactionMap)
   } catch (e) {
+    console.error('erorr parsing', e)
     localStorage.setItem(key, JSON.stringify({}))
     return {}
   }

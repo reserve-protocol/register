@@ -101,9 +101,6 @@ export interface Token {
   symbol: string
   name: string
   decimals: number
-  transfersCount?: number
-  holdersCount?: number
-  supply?: number
   logo?: string
 }
 

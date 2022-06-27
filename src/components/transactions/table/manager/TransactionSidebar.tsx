@@ -1,20 +1,73 @@
+import { Trans } from '@lingui/macro'
 import Portal from '@reach/portal'
 import Button from 'components/button'
-import TransactionHistory from 'components/transaction-history'
-import { atom } from 'jotai'
+import dayjs from 'dayjs'
+import { atom, useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
-import { X } from 'react-feather'
+import { ExternalLink, X } from 'react-feather'
 import { currentTxAtom } from 'state/atoms'
-import { Box, Text, Flex } from 'theme-ui'
+import { Box, Flex, Grid, Link, Text } from 'theme-ui'
+import { WalletTransaction } from 'types'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { txSidebarToggleAtom } from './atoms'
 
 const txByDate = atom((get) => {
-  const txs = get(currentTxAtom)
-  console.log('txs')
+  const txs = get(currentTxAtom).slice(0).reverse()
+
+  return txs.reduce((txMap, tx) => {
+    const date = dayjs(tx.createdAt).format('MMM D')
+
+    if (txMap[date]) {
+      txMap[date].push(tx)
+    } else {
+      txMap[date] = [tx]
+    }
+
+    return txMap
+  }, {} as WalletTransaction)
 })
 
 const TransactionList = () => {
-  return <Box>tx list</Box>
+  const txs = useAtomValue(txByDate)
+
+  console.log('txs', txs)
+
+  return (
+    <Box>
+      {Object.keys(txs).map((day) => (
+        <Box key={day} mb={3}>
+          <Text>{day}</Text>
+          {txs[day].map((tx) => (
+            <Grid
+              columns={'1fr 0.8fr 1.5fr 1fr'}
+              gap={3}
+              mt={2}
+              p={3}
+              key={tx.id}
+              sx={{ backgroundColor: 'contentBackground' }}
+            >
+              <Box>
+                <Text>{tx.description}</Text>
+              </Box>
+              <Box>{tx.value}</Box>
+              <Box>{tx.status}</Box>
+              {tx.hash ? (
+                <Link
+                  href={getExplorerLink(tx.hash, ExplorerDataType.TRANSACTION)}
+                  target="_blank"
+                  sx={{ fontSize: 1 }}
+                >
+                  <ExternalLink size={12} /> <Trans>View on etherscan</Trans>
+                </Link>
+              ) : (
+                ''
+              )}
+            </Grid>
+          ))}
+        </Box>
+      ))}
+    </Box>
+  )
 }
 
 const TransactionSidebar = () => {

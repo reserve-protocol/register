@@ -8,11 +8,11 @@ import { useCallback, useEffect } from 'react'
 import { pendingTxAtom, updateTransactionAtom } from 'state/atoms'
 import { TransactionState } from 'types'
 import { getContract } from 'utils'
+import { getAddress } from '@ethersproject/address'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import abis from 'abis'
 import { error, signed, success } from '../lib/notifications'
 
-// TODO: Store transactions per chain
 const TransactionManager = () => {
   const setTxs = useUpdateAtom(updateTransactionAtom)
   const { pending, mining } = useDebounce(useAtomValue(pendingTxAtom), 200)
@@ -77,7 +77,6 @@ const TransactionManager = () => {
             }
           })
           .catch((e: any) => {
-            console.log('tx reverted', e)
             if (tx?.call.method !== 'approve') {
               error('Transaction reverted', tx.description)
             }
