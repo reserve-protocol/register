@@ -1,5 +1,6 @@
 import { getAddress } from '@ethersproject/address'
 import { formatUnits, parseEther } from '@ethersproject/units'
+import { t } from '@lingui/macro'
 import TextPlaceholder from 'components/placeholder/TextPlaceholder'
 import TransactionModal from 'components/transaction-modal'
 import { useAtomValue } from 'jotai'
@@ -31,16 +32,13 @@ const buildApprovalTransactions = (
     const tokenAmount = quantities[getAddress(token.address)]
     // Unlimited approval
     // const tokenAmount = BigNumber.from(Number.MAX_SAFE_INTEGER)
-    const description = `Approve ${formatUnits(tokenAmount, token.decimals)} ${
-      token.symbol
-    }`
 
     if (!allowances[getAddress(token.address)].gte(tokenAmount)) {
       return [
         ...txs,
         {
           id: uuid(),
-          description,
+          description: t`Approve ${token.symbol}`,
           status: TRANSACTION_STATUS.PENDING,
           value: formatUnits(tokenAmount, token.decimals),
           call: {
@@ -69,7 +67,7 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
   const transaction = useMemo(
     () => ({
       id: '',
-      description: `Issue ${amount} ${rToken?.symbol}`,
+      description: t`Issue ${rToken?.symbol}`,
       status: TRANSACTION_STATUS.PENDING,
       value: amount,
       call: {

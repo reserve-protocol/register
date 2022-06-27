@@ -1,17 +1,23 @@
 import { Trans } from '@lingui/macro'
 import Portal from '@reach/portal'
+import { useWeb3React } from '@web3-react/core'
 import Button from 'components/button'
+import TokenLogo from 'components/icons/TokenLogo'
+import WalletIcon from 'components/icons/WalletIcon'
 import dayjs from 'dayjs'
 import { atom, useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
-import { ExternalLink, X } from 'react-feather'
+import { Check, ExternalLink, X } from 'react-feather'
 import { currentTxAtom } from 'state/atoms'
-import { Box, Flex, Grid, Link, Text } from 'theme-ui'
-import { WalletTransaction } from 'types'
+import { borderRadius } from 'theme'
+import { Box, Flex, Grid, Link, Spinner, Text } from 'theme-ui'
+import { TransactionState, WalletTransaction } from 'types'
+import { formatCurrency, shortenAddress } from 'utils'
+import { TRANSACTION_STATUS } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { txSidebarToggleAtom } from './atoms'
 
-const txByDate = atom((get) => {
+const txByDateAtom = atom((get) => {
   const txs = get(currentTxAtom).slice(0).reverse()
 
   return txs.reduce((txMap, tx) => {
@@ -27,37 +33,99 @@ const txByDate = atom((get) => {
   }, {} as WalletTransaction)
 })
 
-const TransactionList = () => {
-  const txs = useAtomValue(txByDate)
+// TODO: Common component or map
+const TransactionStatus = ({ tx }: { tx: TransactionState }) => {
+  switch (tx.status) {
+    case TRANSACTION_STATUS.PENDING:
+      return (
+        <Flex variant="layout.verticalAlign">
+          <Text>
+            <Trans>Pending</Trans>
+          </Text>
+        </Flex>
+      )
+    case TRANSACTION_STATUS.SIGNING:
+      return (
+        <Flex variant="layout.verticalAlign">
+          <Spinner size={18} />
+          <Text ml={2}>
+            <Trans>Signing...</Trans>
+          </Text>
+        </Flex>
+      )
+    case TRANSACTION_STATUS.MINING:
+      return (
+        <Flex variant="layout.verticalAlign">
+          <Spinner size={18} />
+          <Text ml={2}>
+            <Trans>Mining</Trans>
+          </Text>
+        </Flex>
+      )
+    case TRANSACTION_STATUS.CONFIRMED:
+      return (
+        <Flex variant="layout.verticalAlign">
+          <Check size={18} />
+          <Text ml={2}>
+            <Trans>Confirmed, Block {tx.confirmedAt}</Trans>
+          </Text>
+        </Flex>
+      )
+    case TRANSACTION_STATUS.REJECTED:
+      return (
+        <Flex variant="layout.verticalAlign">
+          <X size={18} />
+          <Text ml={2}>
+            <Trans>Failed</Trans>
+          </Text>
+        </Flex>
+      )
 
-  console.log('txs', txs)
+    default:
+      return (
+        <Box>
+          <Trans>Unknown</Trans>
+        </Box>
+      )
+  }
+}
+
+const TransactionList = () => {
+  const txs = useAtomValue(txByDateAtom)
 
   return (
-    <Box>
+    <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
       {Object.keys(txs).map((day) => (
-        <Box key={day} mb={3}>
+        <Box key={day} mb={4}>
           <Text>{day}</Text>
           {txs[day].map((tx) => (
             <Grid
-              columns={'1fr 0.8fr 1.5fr 1fr'}
+              columns={'140px 160px auto 64px'}
               gap={3}
-              mt={2}
+              mt={3}
               p={3}
               key={tx.id}
-              sx={{ backgroundColor: 'contentBackground' }}
+              sx={{
+                fontSize: 1,
+                backgroundColor: 'contentBackground',
+                borderRadius: borderRadius.boxes,
+              }}
             >
-              <Box>
+              <Box sx={{ overflow: 'hidden' }}>
                 <Text>{tx.description}</Text>
               </Box>
-              <Box>{tx.value}</Box>
-              <Box>{tx.status}</Box>
+              <Flex sx={{ overflow: 'hidden' }} variant="layout.verticalAlign">
+                <TokenLogo symbol="rsv" mr={3} />
+                <Text>{formatCurrency(Number(tx.value))}</Text>
+              </Flex>
+              <TransactionStatus tx={tx} />
               {tx.hash ? (
                 <Link
                   href={getExplorerLink(tx.hash, ExplorerDataType.TRANSACTION)}
                   target="_blank"
                   sx={{ fontSize: 1 }}
                 >
-                  <ExternalLink size={12} /> <Trans>View on etherscan</Trans>
+                  <ExternalLink size={12} /> <Trans>View</Trans>
                 </Link>
               ) : (
                 ''
@@ -72,6 +140,7 @@ const TransactionList = () => {
 
 const TransactionSidebar = () => {
   const setSidebar = useUpdateAtom(txSidebarToggleAtom)
+  const { ENSName, account } = useWeb3React()
 
   return (
     <Portal>
@@ -87,10 +156,10 @@ const TransactionSidebar = () => {
           backgroundColor: 'black',
         }}
       />
-      <Box
+      <Flex
         px={4}
-        py={3}
         sx={{
+          flexDirection: 'column',
           zIndex: 100001,
           position: 'absolute',
           maxWidth: ['100vw', '768px'],
@@ -101,15 +170,29 @@ const TransactionSidebar = () => {
           height: '100vh',
         }}
       >
-        <Flex sx={{ alignItems: 'center' }} mb={4}>
-          <Text variant="sectionTitle">Recent Transactions</Text>
-          <Box mx="auto" />
-          <Button variant="circle" onClick={() => setSidebar(false)}>
-            <X />
-          </Button>
-        </Flex>
-        <TransactionList />
-      </Box>
+        {account ? (
+          <>
+            <Flex sx={{ alignItems: 'center' }} mt={3} mb={4}>
+              <WalletIcon />
+              <Text ml={2}>{ENSName || shortenAddress(account)}</Text>
+              <Button
+                ml="auto"
+                variant="circle"
+                onClick={() => setSidebar(false)}
+              >
+                <X />
+              </Button>
+            </Flex>
+            <TransactionList />
+          </>
+        ) : (
+          <Box>
+            <Text>
+              <Trans>Please connect your wallet</Trans>
+            </Text>
+          </Box>
+        )}
+      </Flex>
     </Portal>
   )
 }

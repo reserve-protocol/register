@@ -148,7 +148,6 @@ export const theme: Theme = {
       transition,
       color: '#808080',
       textDecoration: 'none',
-      borderBottom: '1px solid',
       cursor: 'pointer',
       '&:hover': {
         color: 'text',
