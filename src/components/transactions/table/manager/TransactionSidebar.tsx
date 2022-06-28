@@ -94,10 +94,12 @@ const TransactionList = () => {
   const txs = useAtomValue(txByDateAtom)
 
   return (
-    <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
+    <Box sx={{ flexGrow: 1, fontSize: 1, overflow: 'auto' }}>
       {Object.keys(txs).map((day) => (
         <Box key={day} mb={4}>
-          <Text>{day}</Text>
+          <Text variant="legend" ml={3}>
+            {day}
+          </Text>
           {txs[day].map((tx) => (
             <Grid
               columns={'140px 160px auto 64px'}
@@ -106,7 +108,6 @@ const TransactionList = () => {
               p={3}
               key={tx.id}
               sx={{
-                fontSize: 1,
                 backgroundColor: 'contentBackground',
                 borderRadius: borderRadius.boxes,
               }}
@@ -123,7 +124,6 @@ const TransactionList = () => {
                 <Link
                   href={getExplorerLink(tx.hash, ExplorerDataType.TRANSACTION)}
                   target="_blank"
-                  sx={{ fontSize: 1 }}
                 >
                   <ExternalLink size={12} /> <Trans>View</Trans>
                 </Link>

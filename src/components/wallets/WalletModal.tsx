@@ -42,12 +42,12 @@ const wallets = [
     label: 'Coinbase Wallet',
     connector: coinbaseWallet,
   },
-  {
-    icon: coinbaseLogo,
-    type: CONNECTOR_TYPES.coinbase,
-    label: 'Gnosis Safe',
-    connector: gnosisSafe,
-  },
+  // {
+  //   icon: coinbaseLogo,
+  //   type: CONNECTOR_TYPES.coinbase,
+  //   label: 'Gnosis Safe',
+  //   connector: gnosisSafe,
+  // },
 ]
 
 const WalletModal = ({ onClose }: Props) => {
