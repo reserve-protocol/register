@@ -40,6 +40,14 @@ export interface TransactionState {
   updatedAt?: number // timestamp UTC
 }
 
+// TODO: Improve
+export interface TransactionRecord {
+  type: string
+  amount: number
+  timestamp: string
+  hash: string
+}
+
 export interface Wallet {
   address: string
   alias: string

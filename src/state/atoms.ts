@@ -264,3 +264,16 @@ export const updateTransactionAtom = atom(
     })
   }
 )
+
+/**
+ * Records - cache layer for record history pulled from theGraph
+ */
+export const recordsAtom = atom([
+  { type: 'Transfer', amount: 12341234, timestamp: Date.now(), hash: 'asdf' },
+  { type: 'Transfer', amount: 12341234, timestamp: Date.now(), hash: 'asdf' },
+  { type: 'Transfer', amount: 12341234, timestamp: Date.now(), hash: 'asdf' },
+  { type: 'Transfer', amount: 12341234, timestamp: Date.now(), hash: 'asdf' },
+  { type: 'Transfer', amount: 12341234, timestamp: Date.now(), hash: 'asdf' },
+  { type: 'Transfer', amount: 12341234, timestamp: Date.now(), hash: 'asdf' },
+  { type: 'Transfer', amount: 12341234, timestamp: Date.now(), hash: 'asdf' },
+])
