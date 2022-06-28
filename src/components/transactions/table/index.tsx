@@ -78,7 +78,11 @@ const TransactionsTable = ({
             {title}
           </Text>
         )}
-        {!!help && <Help ml="auto" content={help} />}
+        {!!help && (
+          <Box ml="auto">
+            <Help content={help} />
+          </Box>
+        )}
       </Flex>
 
       <Table

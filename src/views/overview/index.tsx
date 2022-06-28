@@ -32,6 +32,7 @@ const Overview = () => {
           bordered
           compact
           maxHeight={420}
+          help="TODO"
           title={t`Transactions`}
           data={txs}
         />
@@ -45,13 +46,30 @@ const Overview = () => {
       <Divider {...dividerProps} />
       <ContentHead
         title={t`Live & Historical data`}
+        mb={4}
         subtitle={
           !!rToken?.isRSV
             ? t`Including off-chain in-app transactions of RSV in the Reserve App.`
             : undefined
         }
       />
-      <Grid {...gridProps}></Grid>
+      <Grid {...gridProps}>
+        <Box>Charts TODO</Box>
+        <TransactionsTable
+          bordered
+          compact
+          maxHeight={420}
+          title={t`Protocol Transactions`}
+          help="TODO"
+          data={txs}
+        />
+      </Grid>
+      <Divider {...dividerProps} />
+      <ContentHead
+        title={t`Contract addresses`}
+        mb={4}
+        subtitle={t`Explorer links to all the official relevant smart contracts.`}
+      />
     </Container>
   )
 }
