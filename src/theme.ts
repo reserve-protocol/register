@@ -199,12 +199,13 @@ export const theme: Theme = {
     },
     table: {
       margin: 0,
-      borderCollapse: 'collapse',
-      fontSize: '14px',
-      lineHeight: '20px',
+      borderCollapse: 'separate',
+      fontSize: 1,
+      lineHeight: '16px',
       textAlign: 'left',
       width: '100%',
-      borderSpacing: 0,
+      borderSpacing: '0 14px',
+
       p: {
         m: 0,
       },
@@ -217,6 +218,7 @@ export const theme: Theme = {
       border: 'none',
       px: 2,
       pl: 3,
+      fontWeight: 'normal',
     },
     tbody: {
       'tr:last-of-type': {
@@ -224,14 +226,21 @@ export const theme: Theme = {
       },
     },
     thead: {
-      borderBottom: (t: Theme) => ` 1px solid  ${t.colors?.shadow}`,
-      backgroundColor: 'header',
-      color: 'text',
+      color: 'lightText',
     },
     td: {
       py: 3,
       px: 3,
       borderBottom: 0,
+
+      '&:first-child': {
+        borderTopLeftRadius: borderRadius.boxes,
+        borderBottomLeftRadius: borderRadius.boxes,
+      },
+      '&:last-child': {
+        borderTopRightRadius: borderRadius.boxes,
+        borderBottomRightRadius: borderRadius.boxes,
+      },
     },
     tdgroup: {
       lineHeight: '24px',
@@ -244,7 +253,8 @@ export const theme: Theme = {
       alignItems: 'center',
     },
     tr: {
-      borderBottom: (t: Theme) => ` 1px solid  ${t.colors?.shadow}`,
+      backgroundColor: 'contentBackground',
+      // borderBottom: (t: Theme) => ` 1px solid  ${t.colors?.shadow}`,
     },
   },
   forms: {

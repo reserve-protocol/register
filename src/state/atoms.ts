@@ -6,6 +6,7 @@ import {
   RawCall,
   ReserveToken,
   TransactionMap,
+  TransactionRecord,
   TransactionState,
 } from 'types'
 import { RSR, TRANSACTION_STATUS } from 'utils/constants'
@@ -268,7 +269,7 @@ export const updateTransactionAtom = atom(
 /**
  * Records - cache layer for record history pulled from theGraph
  */
-export const recordsAtom = atom([
+export const recordsAtom = atom<TransactionRecord[]>([
   { type: 'Transfer', amount: 12341234, timestamp: Date.now(), hash: 'asdf' },
   { type: 'Transfer', amount: 12341234, timestamp: Date.now(), hash: 'asdf' },
   { type: 'Transfer', amount: 12341234, timestamp: Date.now(), hash: 'asdf' },

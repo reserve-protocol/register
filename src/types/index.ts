@@ -44,7 +44,7 @@ export interface TransactionState {
 export interface TransactionRecord {
   type: string
   amount: number
-  timestamp: string
+  timestamp: number
   hash: string
 }
 

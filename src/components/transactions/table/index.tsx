@@ -2,7 +2,8 @@ import styled from '@emotion/styled'
 import { t } from '@lingui/macro'
 import { Table } from 'components/table'
 import { useMemo } from 'react'
-import { Box, BoxProps } from 'theme-ui'
+import { borderRadius } from 'theme'
+import { Box, BoxProps, Text } from 'theme-ui'
 import { TransactionRecord } from 'types'
 import { formatCurrency, shortenString } from 'utils'
 
@@ -13,9 +14,21 @@ const Container = styled(Box)`
 
 interface Props extends BoxProps {
   data: TransactionRecord[]
+  title?: string
+  help?: string
+  card?: boolean
+  bordered?: boolean
 }
 
-const TransactionsTable = ({ data, ...props }: Props) => {
+const TransactionsTable = ({
+  data,
+  title,
+  help,
+  card,
+  bordered,
+  sx = {},
+  ...props
+}: Props) => {
   const columns = useMemo(
     () => [
       {
@@ -29,7 +42,8 @@ const TransactionsTable = ({ data, ...props }: Props) => {
       },
       {
         Header: t`USD value`,
-        accesor: 'amount',
+        id: 'test',
+        accessor: 'amount',
         Cell: ({ cell }: { cell: any }) => formatCurrency(+cell.value),
       },
       {
@@ -43,7 +57,23 @@ const TransactionsTable = ({ data, ...props }: Props) => {
   )
 
   return (
-    <Container {...props}>
+    <Container
+      {...props}
+      px={3}
+      pt={3}
+      sx={(theme: any) => ({
+        backgroundColor: card ? theme.colors.contentBackground : 'none',
+        border: bordered ? `1px solid ${theme.colors.border}` : 'none',
+        borderRadius: borderRadius.boxes,
+        ...sx,
+      })}
+    >
+      {!!title && (
+        <Text mb={3} sx={{ fontSize: 3, display: 'block' }}>
+          {title}
+        </Text>
+      )}
+
       <Table columns={columns} data={data} />
     </Container>
   )
