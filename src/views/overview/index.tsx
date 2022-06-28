@@ -27,7 +27,13 @@ const Overview = () => {
       <Divider {...dividerProps} />
       <Grid {...gridProps}>
         <TokenUsage />
-        <TransactionsTable bordered mt={4} title={t`Transactions`} data={txs} />
+        <TransactionsTable
+          bordered
+          compact
+          maxHeight={200}
+          title={t`Transactions`}
+          data={txs}
+        />
       </Grid>
       <Divider {...dividerProps} />
       <Grid {...gridProps}>

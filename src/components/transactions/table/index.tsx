@@ -8,7 +8,6 @@ import { TransactionRecord } from 'types'
 import { formatCurrency, shortenString } from 'utils'
 
 const Container = styled(Box)`
-  max-height: 500px;
   overflow: auto;
 `
 
@@ -17,7 +16,9 @@ interface Props extends BoxProps {
   title?: string
   help?: string
   card?: boolean
+  compact?: boolean
   bordered?: boolean
+  maxHeight?: number | string
 }
 
 const TransactionsTable = ({
@@ -25,7 +26,9 @@ const TransactionsTable = ({
   title,
   help,
   card,
+  maxHeight,
   bordered,
+  compact,
   sx = {},
   ...props
 }: Props) => {
@@ -74,7 +77,13 @@ const TransactionsTable = ({
         </Text>
       )}
 
-      <Table columns={columns} data={data} />
+      <Table
+        maxHeight={maxHeight}
+        compact={compact}
+        pb={compact ? 3 : 0}
+        columns={columns}
+        data={data}
+      />
     </Container>
   )
 }

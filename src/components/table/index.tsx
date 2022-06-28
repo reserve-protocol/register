@@ -21,6 +21,7 @@ import {
   UseSortByState,
   useTable,
 } from 'react-table'
+import { borderRadius } from 'theme'
 import { Box, BoxProps, Flex, jsx } from 'theme-ui'
 import {
   TablePagination,
@@ -40,6 +41,8 @@ interface TableOwnProps<D extends { [key: string]: any }> {
   data?: D[]
   header?: boolean
   sorting?: boolean
+  compact?: boolean
+  maxHeight?: string | number
   hiddenColumns?: string[]
   skipPageReset?: boolean
   renderRowSubComponent?: (props: { row: Row }) => ReactNode
@@ -55,7 +58,9 @@ export function Table<D extends { [key: string]: any }>({
   data = [],
   header = true,
   sorting = false,
-
+  compact = false,
+  maxHeight = 'auto',
+  sx = {},
   hiddenColumns,
   skipPageReset,
   renderRowSubComponent,
@@ -115,7 +120,13 @@ export function Table<D extends { [key: string]: any }>({
 
   return (
     <React.Fragment>
-      <Box as="table" variant="styles.table" {...getTableProps()} {...rest}>
+      <Box
+        as="table"
+        variant="styles.table"
+        {...getTableProps()}
+        {...rest}
+        sx={{ ...sx, maxHeight, borderSpacing: compact ? 0 : undefined }}
+      >
         {header && (
           <Box as="thead" variant="styles.thead">
             {headerGroups.map((headerGroup: any) => (
@@ -128,7 +139,7 @@ export function Table<D extends { [key: string]: any }>({
                       sorting ? column.getSortByToggleProps() : undefined
                     )}
                   >
-                    <Flex variant="layout.verticalAlign">
+                    <Flex pb={2} variant="layout.verticalAlign">
                       <Box sx={{ mr: 1, flex: 1 }}>
                         {column.render('Header')}
                       </Box>
@@ -148,17 +159,46 @@ export function Table<D extends { [key: string]: any }>({
               row: Row &
                 UseGroupByRowProps<D> & {
                   isExpanded?: boolean
-                }
+                },
+              index: number
             ) => {
               prepareRow(row)
               const { key, ...rowProps } = row.getRowProps()
+              const last = index === (page || rows).length - 1
+
               return (
                 <React.Fragment key={key}>
                   <Box variant="styles.tr" as="tr" {...rowProps}>
                     {row.cells.map(
-                      (cell: Cell & Partial<UseGroupByCellProps<D>>) => (
+                      (
+                        cell: Cell & Partial<UseGroupByCellProps<D>>,
+                        cellIndex: number
+                      ) => (
                         <Box
                           as="td"
+                          sx={{
+                            borderRadius: compact ? '0 !important' : undefined,
+                            borderTopLeftRadius:
+                              compact && !index && !cellIndex
+                                ? `${borderRadius.boxes}px !important`
+                                : undefined,
+                            borderTopRightRadius:
+                              compact &&
+                              !index &&
+                              cellIndex === row.cells.length - 1
+                                ? `${borderRadius.boxes}px !important`
+                                : undefined,
+                            borderBottomLeftRadius:
+                              compact && last && !cellIndex
+                                ? `${borderRadius.boxes}px !important`
+                                : undefined,
+                            borderBottomRightRadius:
+                              compact &&
+                              last &&
+                              cellIndex === row.cells.length - 1
+                                ? `${borderRadius.boxes}px !important`
+                                : undefined,
+                          }}
                           variant="styles.td"
                           {...cell.getCellProps()}
                         >

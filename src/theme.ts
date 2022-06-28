@@ -204,7 +204,13 @@ export const theme: Theme = {
       lineHeight: '16px',
       textAlign: 'left',
       width: '100%',
+      overflow: 'auto',
       borderSpacing: '0 14px',
+      display: 'block',
+      '&::-webkit-scrollbar': {
+        display: 'none',
+      },
+      scrollbarWidth: 'none',
 
       p: {
         m: 0,
@@ -233,11 +239,11 @@ export const theme: Theme = {
       px: 3,
       borderBottom: 0,
 
-      '&:first-child': {
+      '&:first-of-type': {
         borderTopLeftRadius: borderRadius.boxes,
         borderBottomLeftRadius: borderRadius.boxes,
       },
-      '&:last-child': {
+      '&:last-of-type': {
         borderTopRightRadius: borderRadius.boxes,
         borderBottomRightRadius: borderRadius.boxes,
       },
