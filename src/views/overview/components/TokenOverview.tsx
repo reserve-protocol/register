@@ -17,11 +17,21 @@ const TokenOverview = (props: BoxProps) => {
             : undefined
         }
       />
-      <Flex mt={4}>
-        <InfoHeading mr={5} title={t`Market cap`} subtitle="$2,123,456,789" />
-        <InfoHeading mr={5} title={t`Insurance Pool`} subtitle="$25,123,456" />
-        <InfoHeading mr={5} title={t`RToken Yield`} subtitle="+4%" />
-        <InfoHeading title={t`stRSR Yield`} subtitle="+4%" />
+      <Flex sx={{ flexWrap: 'wrap' }}>
+        <InfoHeading
+          mt={4}
+          mr={5}
+          title={t`Market cap`}
+          subtitle="$2,123,456,789"
+        />
+        <InfoHeading
+          mt={4}
+          mr={5}
+          title={t`Insurance Pool`}
+          subtitle="$25,123,456"
+        />
+        <InfoHeading mt={4} mr={5} title={t`RToken Yield`} subtitle="+4%" />
+        <InfoHeading mt={4} title={t`stRSR Yield`} subtitle="+4%" />
       </Flex>
     </Box>
   )

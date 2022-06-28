@@ -1,15 +1,16 @@
-import { Box, Divider, Grid, Text } from 'theme-ui'
-import { Card, Container } from 'components'
+import { t } from '@lingui/macro'
+import { Container } from 'components'
+import { ContentHead } from 'components/info-box'
+import TransactionsTable from 'components/transactions/table'
 import { useAtomValue } from 'jotai/utils'
 import { recordsAtom, rTokenAtom } from 'state/atoms'
+import { Box, Divider, Grid } from 'theme-ui'
+import About from './components/About'
 import TokenOverview from './components/TokenOverview'
 import TokenUsage from './components/TokenUsage'
-import About from './components/About'
-import TransactionsTable from 'components/transactions/table'
-import { t, Trans } from '@lingui/macro'
 
 const dividerProps = { my: 5, mx: -5 }
-const gridProps = { columns: 2, gap: 5 }
+const gridProps = { columns: [1, 1, 2], gap: 5 }
 
 /**
  * RToken Overview
@@ -30,7 +31,7 @@ const Overview = () => {
         <TransactionsTable
           bordered
           compact
-          maxHeight={200}
+          maxHeight={420}
           title={t`Transactions`}
           data={txs}
         />
@@ -42,6 +43,14 @@ const Overview = () => {
       <Divider {...dividerProps} />
       <Box>Buttons</Box>
       <Divider {...dividerProps} />
+      <ContentHead
+        title={t`Live & Historical data`}
+        subtitle={
+          !!rToken?.isRSV
+            ? t`Including off-chain in-app transactions of RSV in the Reserve App.`
+            : undefined
+        }
+      />
       <Grid {...gridProps}></Grid>
     </Container>
   )

@@ -1,9 +1,10 @@
 import styled from '@emotion/styled'
 import { t } from '@lingui/macro'
+import Help from 'components/help'
 import { Table } from 'components/table'
 import { useMemo } from 'react'
 import { borderRadius } from 'theme'
-import { Box, BoxProps, Text } from 'theme-ui'
+import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { TransactionRecord } from 'types'
 import { formatCurrency, shortenString } from 'utils'
 
@@ -71,11 +72,14 @@ const TransactionsTable = ({
         ...sx,
       })}
     >
-      {!!title && (
-        <Text mb={3} sx={{ fontSize: 3, display: 'block' }}>
-          {title}
-        </Text>
-      )}
+      <Flex variant="layout.verticalAlign">
+        {!!title && (
+          <Text mb={3} sx={{ fontSize: 3, display: 'block' }}>
+            {title}
+          </Text>
+        )}
+        {!!help && <Help ml="auto" content={help} />}
+      </Flex>
 
       <Table
         maxHeight={maxHeight}

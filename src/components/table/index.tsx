@@ -22,7 +22,7 @@ import {
   useTable,
 } from 'react-table'
 import { borderRadius } from 'theme'
-import { Box, BoxProps, Flex, jsx } from 'theme-ui'
+import { Box, BoxProps, Flex } from 'theme-ui'
 import {
   TablePagination,
   TablePaginationProps,

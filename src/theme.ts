@@ -204,9 +204,11 @@ export const theme: Theme = {
       lineHeight: '16px',
       textAlign: 'left',
       width: '100%',
+      position: 'relative',
       overflow: 'auto',
       borderSpacing: '0 14px',
-      display: 'block',
+      display: 'flex',
+      flexDirection: 'column',
       '&::-webkit-scrollbar': {
         display: 'none',
       },
@@ -230,6 +232,8 @@ export const theme: Theme = {
       'tr:last-of-type': {
         borderBottom: 0,
       },
+      display: 'table',
+      width: '100%',
     },
     thead: {
       color: 'lightText',
