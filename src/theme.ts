@@ -286,7 +286,6 @@ export const theme: Theme = {
     primary: {
       borderRadius: borderRadius.boxes,
       padding: 3,
-      boxShadow,
       backgroundColor: 'contentBackground',
     },
   },

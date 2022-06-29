@@ -11,7 +11,7 @@ import TokenOverview from './components/TokenOverview'
 import TokenUsage from './components/TokenUsage'
 
 const dividerProps = { my: 5, mx: -5 }
-const gridProps = { columns: [1, 1, 2], gap: 5 }
+const gridProps = { columns: [1, 1, 1, 2], gap: 6 }
 
 /**
  * RToken Overview
