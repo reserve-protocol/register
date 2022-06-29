@@ -48,7 +48,7 @@ const TransactionsTable = ({
         Header: t`USD value`,
         id: 'test',
         accessor: 'amount',
-        Cell: ({ cell }: { cell: any }) => formatCurrency(+cell.value),
+        Cell: ({ cell }: { cell: any }) => `$${formatCurrency(+cell.value)}`,
       },
       {
         Header: 'Explore',

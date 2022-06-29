@@ -6,6 +6,7 @@ import { useAtomValue } from 'jotai/utils'
 import { recordsAtom, rTokenAtom } from 'state/atoms'
 import { Box, Divider, Grid } from 'theme-ui'
 import About from './components/About'
+import AssetOverview from './components/AssetOverview'
 import TokenOverview from './components/TokenOverview'
 import TokenUsage from './components/TokenUsage'
 
@@ -40,6 +41,7 @@ const Overview = () => {
       <Divider {...dividerProps} />
       <Grid {...gridProps}>
         <About />
+        <AssetOverview />
       </Grid>
       <Divider {...dividerProps} />
       <Box>Buttons</Box>

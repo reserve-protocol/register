@@ -236,6 +236,7 @@ export const theme: Theme = {
       width: '100%',
     },
     thead: {
+      display: 'table',
       color: 'lightText',
     },
     td: {
