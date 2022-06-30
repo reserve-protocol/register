@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro'
 import TokenLogo from 'components/icons/TokenLogo'
+import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
 import { rTokenAtom, rTokenPriceAtom } from 'state/atoms'
@@ -80,7 +81,7 @@ const getAngles = (value: number) => {
 }
 
 const AssetOverview = () => {
-  const rToken = useAtomValue(rTokenAtom)
+  const rToken = useRToken()
   const price = useAtomValue(rTokenPriceAtom)
 
   return (
@@ -111,7 +112,15 @@ const AssetOverview = () => {
             </Box>
           </Text>{' '}
         </Flex>
-        <Box>legend</Box>
+        <Box>
+          {(rToken?.collaterals ?? []).map((c) => (
+            <Flex mb={2}>
+              <TokenLogo mr={3} />
+              <Text>{c.symbol}</Text>
+              <Text ml="auto">30%</Text>
+            </Flex>
+          ))}
+        </Box>
       </Grid>
     </Card>
   )

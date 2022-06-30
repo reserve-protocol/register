@@ -1,5 +1,6 @@
-import { t } from '@lingui/macro'
-import { Container } from 'components'
+import { t, Trans } from '@lingui/macro'
+import { Button, Container } from 'components'
+import { SmallButton } from 'components/button'
 import { ContentHead } from 'components/info-box'
 import TransactionsTable from 'components/transactions/table'
 import { useAtomValue } from 'jotai/utils'
@@ -45,7 +46,11 @@ const Overview = () => {
         <AssetOverview />
       </Grid>
       <Divider {...dividerProps} />
-      <Box>Buttons</Box>
+      <Box>
+        <Button px={3}>
+          <Trans>Constitution</Trans>
+        </Button>
+      </Box>
       <Divider {...dividerProps} />
       <ContentHead
         title={t`Live & Historical data`}
