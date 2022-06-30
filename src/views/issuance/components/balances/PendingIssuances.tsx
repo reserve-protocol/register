@@ -1,4 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
+import { t, Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
 import { LoadingButton } from 'components/button'
 import TokenBalance from 'components/token-balance'
@@ -9,7 +10,6 @@ import { useTransaction } from 'state/web3/hooks/useTransactions'
 import { smallButton } from 'theme'
 import { Box, Divider, Text } from 'theme-ui'
 import { Token } from 'types'
-import { formatCurrency } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
 
@@ -29,7 +29,7 @@ const PendingIssuances = ({ token }: { token: Token }) => {
     addTransaction([
       {
         id: txId,
-        description: `Claim ${availableAmount} ${token.symbol}`,
+        description: t`Claim ${token.symbol}`,
         status: TRANSACTION_STATUS.PENDING,
         value: availableAmount,
         call: {
@@ -48,9 +48,7 @@ const PendingIssuances = ({ token }: { token: Token }) => {
     addTransaction([
       {
         id: txId,
-        description: `Cancel ${formatCurrency(
-          availableAmount + pendingAmount
-        ).toString()} ${token.symbol}`,
+        description: t`Cancel ${token.symbol}`,
         status: TRANSACTION_STATUS.PENDING,
         value: availableAmount + pendingAmount,
         call: {
@@ -93,26 +91,26 @@ const PendingIssuances = ({ token }: { token: Token }) => {
         <LoadingButton
           loading={!!claiming}
           disabled={!availableAmount}
-          text={`Claim vested ${token.symbol}`}
+          text={t`Claim vested ${token.symbol}`}
           onClick={handleClaim}
           sx={{ ...smallButton, width: '100%' }}
           mb={3}
         />
         <Text variant="subtitle" mb={2}>
-          Available
+          <Trans>Available</Trans>
         </Text>
         <TokenBalance symbol={token.symbol} balance={availableAmount} />
       </Box>
       <Divider />
       <Box px={4} py={2} mb={2}>
         <Text variant="subtitle" mb={2}>
-          Pending
+          <Trans>Pending</Trans>
         </Text>
         <TokenBalance symbol={token.symbol} balance={pendingAmount} />
         <LoadingButton
           loading={!!canceling}
           disabled={!availableAmount && !pendingAmount}
-          text="Cancel and Refund collateral"
+          text={t`Cancel and Refund collateral`}
           onClick={handleCancel}
           sx={{ ...smallButton, width: '100%' }}
           mt={3}

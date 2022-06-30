@@ -1,5 +1,6 @@
 import { getAddress } from '@ethersproject/address'
 import { parseEther } from '@ethersproject/units'
+import { t } from '@lingui/macro'
 import { useFacadeContract } from 'hooks/useContract'
 import useDebounce from 'hooks/useDebounce'
 import { useAtomValue } from 'jotai'
@@ -43,7 +44,7 @@ const QuantitiesUpdater = ({
       } catch (e) {
         // TODO: Handle error case
         // TODO: this could also fail during default
-        error('Network Error', 'Error fetching required collateral')
+        error(t`Network Error`, t`Error fetching required collateral`)
         console.error('failed fetching quantities', e)
       }
     },

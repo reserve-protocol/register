@@ -1,5 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { parseEther } from '@ethersproject/units'
+import { t } from '@lingui/macro'
 import TransactionModal from 'components/transaction-modal'
 import { useAtom, useAtomValue } from 'jotai'
 import { useCallback, useMemo, useState } from 'react'
@@ -21,7 +22,7 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
   const transaction = useMemo(
     () => ({
       id: '',
-      description: `Redeem ${amount} ${rToken?.symbol}`,
+      description: t`Redeem ${rToken?.symbol}`,
       status: TRANSACTION_STATUS.PENDING,
       value: amount,
       call: {
@@ -46,7 +47,7 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
       return [
         {
           id: uuid(),
-          description: 'Approve RSV for redemption',
+          description: t`Approve RSV`,
           status: TRANSACTION_STATUS.PENDING,
           value: amount,
           call: {
@@ -69,11 +70,11 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <TransactionModal
-      title={`Redeem ${rToken?.symbol}`}
+      title={t`Redeem ${rToken?.symbol}`}
       tx={transaction}
       isValid={isValid}
       requiredAllowance={requiredAllowance}
-      confirmLabel={`Begin redemption of ${formatCurrency(Number(amount))} ${
+      confirmLabel={t`Begin redemption of ${formatCurrency(Number(amount))} ${
         rToken?.symbol ?? ''
       }`}
       buildApprovals={buildApproval}

@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/macro'
 import IconInfo from 'components/info-icon'
 import { useAtomValue } from 'jotai'
 import { Hash, TrendingUp } from 'react-feather'
@@ -31,7 +32,7 @@ const Stats = (props: BoxProps) => {
           })}
         >
           <Text variant="subtitle" mb={2}>
-            Your stake
+            <Trans>Your stake</Trans>
           </Text>
           <IconInfo
             icon={
@@ -51,7 +52,7 @@ const Stats = (props: BoxProps) => {
           })}
         >
           <Text variant="subtitle" mb={2}>
-            Collateral backing
+            <Trans>Collateral backing</Trans>
           </Text>
           <IconInfo
             icon={
@@ -71,7 +72,7 @@ const Stats = (props: BoxProps) => {
           })}
         >
           <Text variant="subtitle" mb={2}>
-            Backing + Insurance
+            <Trans>Backing + Insurance</Trans>
           </Text>
           <IconInfo
             icon={
@@ -99,7 +100,9 @@ const About = (props: BoxProps) => {
       p={4}
       {...props}
     >
-      <Text sx={{ fontWeight: 500 }}>About this app</Text>
+      <Text sx={{ fontWeight: 500 }}>
+        <Trans>About this app</Trans>
+      </Text>
       <br /> <br />
       <Text>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -109,7 +112,9 @@ const About = (props: BoxProps) => {
         Ante metus dictum at tempor commodo ullamcorper.
         <br />
         <br />
-        <Text sx={{ fontWeight: 500 }}>Stake/Unstake</Text>
+        <Text sx={{ fontWeight: 500 }}>
+          <Trans>Stake/Unstake</Trans>
+        </Text>
         <br /> <br />
         Ac turpis egestas maecenas pharetra. Habitant morbi tristique senectus
         et. Dapibus ultrices in iaculis nunc sed augue lacus viverra vitae.

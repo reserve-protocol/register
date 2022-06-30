@@ -88,14 +88,14 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <TransactionModal
-      title={'Mint ' + rToken?.symbol}
+      title={t`Mint ${rToken?.symbol}`}
       tx={transaction}
       isValid={!loadingQuantities && isValid}
       requiredAllowance={quantities}
-      confirmLabel={`Begin minting ${formatCurrency(Number(amount))} ${
+      confirmLabel={t`Begin minting ${formatCurrency(Number(amount))} ${
         rToken?.symbol
       }`}
-      approvalsLabel="Allow use of collateral tokens"
+      approvalsLabel={t`Allow use of collateral tokens`}
       buildApprovals={buildApprovals}
       onClose={onClose}
       onChange={(signing) => setSigning(signing)}
@@ -112,7 +112,7 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
           display: isValid && loadingQuantities ? 'flex' : 'none',
         }}
         mt={3}
-        text="Fetching required collateral amounts"
+        text={t`Fetching required collateral amounts`}
       />
     </TransactionModal>
   )

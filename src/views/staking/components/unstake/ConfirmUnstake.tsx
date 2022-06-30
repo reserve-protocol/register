@@ -1,4 +1,5 @@
 import { parseEther } from '@ethersproject/units'
+import { t } from '@lingui/macro'
 import TransactionModal from 'components/transaction-modal'
 import { useAtom, useAtomValue } from 'jotai'
 import { useMemo, useState } from 'react'
@@ -20,7 +21,7 @@ const ConfirmUnstake = ({ onClose }: { onClose: () => void }) => {
   const transaction = useMemo(
     () => ({
       id: uuid(),
-      description: `Unstake ${amount} ${rToken?.stToken?.symbol}`,
+      description: t`Unstake ${rToken?.stToken?.symbol}`,
       status: TRANSACTION_STATUS.PENDING,
       value: amount,
       call: {
@@ -40,11 +41,11 @@ const ConfirmUnstake = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <TransactionModal
-      title={`Unstake ${rToken?.stToken?.symbol}`}
+      title={t`Unstake ${rToken?.stToken?.symbol}`}
       tx={transaction}
       isValid={isValid}
       requiredAllowance={{}}
-      confirmLabel={`Begin unStake cooldown`}
+      confirmLabel={t`Begin unStake cooldown`}
       onClose={handleClose}
       onChange={(signing) => setSigning(signing)}
     >

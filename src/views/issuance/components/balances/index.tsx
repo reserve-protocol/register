@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/macro'
 import { Card } from 'components'
 import TokenBalance from 'components/token-balance'
 import { useAtomValue } from 'jotai/utils'
@@ -14,7 +15,7 @@ interface Props extends BoxProps {
 const CollateralBalances = ({ collaterals }: { collaterals: Token[] }) => (
   <Box p={4} mb={-2} sx={{ overflowX: 'auto' }}>
     <Text variant="subtitle" mb={2}>
-      Available collateral
+      <Trans>Available collateral</Trans>
     </Text>
     {collaterals.map((collateral) => (
       <CollateralBalance mb={2} token={collateral} key={collateral.address} />
@@ -28,7 +29,7 @@ const RTokenBalance = ({ token }: { token: Token }) => {
   return (
     <Box p={4} pb={2}>
       <Text variant="subtitle" mb={2}>
-        RToken In Wallet
+        <Trans>RToken In Wallet</Trans>
       </Text>
       <TokenBalance symbol={token.symbol} balance={balance} />
     </Box>

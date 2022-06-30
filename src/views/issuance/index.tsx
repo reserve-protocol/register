@@ -1,6 +1,6 @@
+import { Trans } from '@lingui/macro'
 import { Container } from 'components'
-import { useAtomValue } from 'jotai'
-import { rTokenAtom } from 'state/atoms'
+import useRToken from 'hooks/useRToken'
 import { Box, Grid, Text } from 'theme-ui'
 import About from './components/about'
 import Balances from './components/balances'
@@ -8,14 +8,14 @@ import Issue from './components/issue'
 import Redeem from './components/redeem'
 
 const Issuance = () => {
-  const rToken = useAtomValue(rTokenAtom)
+  const rToken = useRToken()
 
   if (!rToken) return null
 
   return (
     <Container pb={4}>
       <Text ml={4} mb={3} variant="sectionTitle">
-        Mint + Redeem
+        <Trans>Mint + Redeem</Trans>
       </Text>
       <Grid columns={[1, 1, 1, 2]} gap={4}>
         <Box>

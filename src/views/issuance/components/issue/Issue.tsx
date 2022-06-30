@@ -1,3 +1,4 @@
+import { t, Trans } from '@lingui/macro'
 import { Button } from 'components'
 import { useAtom, useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
@@ -36,14 +37,14 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
         />
       )}
       <Card p={4} {...props}>
-        <IssueInput title="Mint" />
+        <IssueInput title={t`Mint`} />
         <Button
           sx={{ width: '100%' }}
           disabled={!isValid || issuing}
           mt={2}
           onClick={() => setIssuing(true)}
         >
-          + Mint {data.symbol}
+          <Trans>+ Mint {data.symbol}</Trans>
         </Button>
       </Card>
     </>

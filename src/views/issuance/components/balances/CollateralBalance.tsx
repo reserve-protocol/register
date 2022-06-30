@@ -33,7 +33,7 @@ const CollateralBalance = ({ token, ...props }: Props) => {
       />
       <Text
         sx={{
-          fontSize: '12px',
+          fontSize: 0,
           color:
             balances[token.address] <
             Number(formatUnits(quantities[token.address], token.decimals))

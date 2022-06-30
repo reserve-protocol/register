@@ -1,4 +1,5 @@
 import { parseEther } from '@ethersproject/units'
+import { t } from '@lingui/macro'
 import TransactionModal from 'components/transaction-modal'
 import { BigNumber } from 'ethers'
 import { useAtom, useAtomValue } from 'jotai'
@@ -19,7 +20,7 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
   const transaction = useMemo(
     () => ({
       id: uuid(),
-      description: `Stake ${amount} RSR`,
+      description: t`Stake RSR`,
       status: TRANSACTION_STATUS.PENDING,
       value: amount,
       call: {
@@ -41,7 +42,7 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
       return [
         {
           id: uuid(),
-          description: 'Approve RSR for insurance',
+          description: t`Approve RSR`,
           status: TRANSACTION_STATUS.PENDING,
           value: amount,
           call: {
@@ -64,12 +65,12 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <TransactionModal
-      title="Stake RSR"
+      title={t`Stake RSR`}
       tx={transaction}
       isValid={isValid}
       requiredAllowance={requiredAllowance}
-      approvalsLabel="Allow use of RSR"
-      confirmLabel={`Begin stake of ${formatCurrency(Number(amount))} RSR`}
+      approvalsLabel={t`Allow use of RSR`}
+      confirmLabel={t`Begin stake of ${formatCurrency(Number(amount))} RSR`}
       buildApprovals={buildApproval}
       onClose={handleClose}
       onChange={(signing) => setSigning(signing)}

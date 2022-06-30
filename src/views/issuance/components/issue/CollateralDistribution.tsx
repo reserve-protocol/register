@@ -5,6 +5,7 @@ import { ChevronDown, ChevronUp, PieChart } from 'react-feather'
 import { Box, BoxProps, Flex, Text, Divider, Spinner } from 'theme-ui'
 import { BigNumberMap, Token } from 'types'
 import { formatCurrency } from 'utils'
+import { Trans } from '@lingui/macro'
 
 interface Props extends BoxProps {
   collaterals: Token[]
@@ -34,7 +35,9 @@ const CollateralDistribution = ({
         onClick={() => setVisible(!isVisible)}
       >
         <PieChart size={20} />
-        <Text ml={3}>Collateral distribution</Text>
+        <Text ml={3}>
+          <Trans>Collateral distribution</Trans>
+        </Text>
         <Box mx="auto" />
         {isVisible ? <ChevronUp /> : <ChevronDown />}
       </Flex>

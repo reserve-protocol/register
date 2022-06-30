@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/macro'
 import { Box, Text } from 'theme-ui'
 
 const About = () => (
@@ -8,7 +9,9 @@ const About = () => (
     }}
     p={4}
   >
-    <Text sx={{ fontWeight: 500 }}>About this app</Text>
+    <Text sx={{ fontWeight: 500 }}>
+      <Trans>About this app</Trans>
+    </Text>
     <br /> <br />
     <Text>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod

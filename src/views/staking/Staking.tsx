@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/macro'
 import { Container } from 'components'
 import { Box, Grid, Text } from 'theme-ui'
 import Balances from './components/balances'
@@ -8,7 +9,7 @@ import Unstake from './components/unstake'
 const Staking = () => (
   <Container pb={4}>
     <Text ml={4} mb={3} variant="sectionTitle">
-      Stake + UnStake
+      <Trans>Stake + UnStake</Trans>
     </Text>
     <Grid columns={[1, 1, 1, 2]} gap={4}>
       <Box>

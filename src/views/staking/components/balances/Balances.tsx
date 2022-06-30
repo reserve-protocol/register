@@ -1,8 +1,10 @@
+import { t, Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
 import { Card } from 'components'
 import { LoadingButton } from 'components/button'
 import TokenBalance from 'components/token-balance'
 import { BigNumber } from 'ethers/lib/ethers'
+import useRToken from 'hooks/useRToken'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
 import {
@@ -30,7 +32,7 @@ const PendingBalance = () => {
   return (
     <Box p={4} py={2} mb={2}>
       <Text variant="subtitle" mb={2}>
-        In Cooldown
+        <Trans>In Cooldown</Trans>
       </Text>
       <TokenBalance symbol="RSR" balance={balance} />
     </Box>
@@ -39,7 +41,7 @@ const PendingBalance = () => {
 
 // TODO: Create "Claim" component
 const AvailableBalance = () => {
-  const rToken = useAtomValue(rTokenAtom)
+  const rToken = useRToken()
   const addTransaction = useSetAtom(addTransactionAtom)
   const { index, availableAmount } = useAtomValue(pendingRSRSummaryAtom)
   const [claiming, setClaiming] = useState('')
@@ -52,7 +54,7 @@ const AvailableBalance = () => {
     addTransaction([
       {
         id: txId,
-        description: `Withdraw ${availableAmount} RSR`,
+        description: t`Withdraw RSR`,
         status: TRANSACTION_STATUS.PENDING,
         value: availableAmount,
         call: {
@@ -82,13 +84,13 @@ const AvailableBalance = () => {
       <LoadingButton
         loading={!!claiming}
         disabled={!availableAmount}
-        text="Withdraw"
+        text={t`Withdraw`}
         onClick={handleClaim}
         sx={{ ...smallButton, width: '100%' }}
         mb={3}
       />
       <Text variant="subtitle" mb={2}>
-        Available
+        <Trans>Available</Trans>
       </Text>
       <TokenBalance symbol="RSR" balance={availableAmount} />
     </Box>
@@ -104,7 +106,7 @@ const StakeBalance = () => {
   return (
     <Box p={4}>
       <Text variant="subtitle" mb={2}>
-        Your stake
+        <Trans>Your stake</Trans>
       </Text>
       <TokenBalance symbol={rToken?.stToken?.symbol ?? ''} balance={balance} />
       <TokenBalance mt={2} symbol="RSR Value" balance={balance * rate} />
@@ -125,7 +127,7 @@ const RSRBalance = () => {
   return (
     <Box p={4} pb={2}>
       <Text variant="subtitle" mb={2}>
-        In Wallet
+        <Trans>In Wallet</Trans>
       </Text>
       <TokenBalance symbol="RSR" balance={balance} />
       <TokenBalance symbol="USD" usd balance={balance * rsrPrice} mt={2} />

@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/macro'
 import { Button } from 'components'
 import { useAtomValue } from 'jotai/utils'
 import { useState } from 'react'
@@ -21,7 +22,7 @@ const Stake = (props: BoxProps) => {
           mt={2}
           onClick={() => setConfirming(true)}
         >
-          + Stake RSR
+          + <Trans>Stake RSR</Trans>
         </Button>
       </Card>
     </>

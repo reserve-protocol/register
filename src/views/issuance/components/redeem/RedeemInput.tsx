@@ -1,3 +1,4 @@
+import { t } from '@lingui/macro'
 import TransactionInput, {
   TransactionInputProps,
 } from 'components/transaction-input'
@@ -10,8 +11,8 @@ const RedeemInput = (props: Partial<TransactionInputProps>) => {
 
   return (
     <TransactionInput
-      title="Redeem"
-      placeholder="Redeem amount"
+      title={t`Redeem`}
+      placeholder={t`Redeem amount`}
       amountAtom={redeemAmountAtom}
       maxAmount={max}
       {...props}

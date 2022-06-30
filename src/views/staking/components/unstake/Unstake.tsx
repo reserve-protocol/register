@@ -1,11 +1,9 @@
+import { Trans } from '@lingui/macro'
 import { Button } from 'components'
 import { useAtomValue } from 'jotai/utils'
 import { useState } from 'react'
 import { BoxProps, Card } from 'theme-ui'
-import {
-  isValidStakeAmountAtom,
-  isValidUnstakeAmountAtom,
-} from 'views/staking/atoms'
+import { isValidUnstakeAmountAtom } from 'views/staking/atoms'
 import ConfirmUnstake from './ConfirmUnstake'
 import UnstakeInput from './UnstakeInput'
 
@@ -24,7 +22,7 @@ const Unstake = (props: BoxProps) => {
           mt={2}
           onClick={() => setConfirming(true)}
         >
-          - Unstake stRSR
+          - <Trans>Unstake stRSR</Trans>
         </Button>
       </Card>
     </>

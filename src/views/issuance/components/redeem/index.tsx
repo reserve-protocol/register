@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/macro'
 import { Button, Card } from 'components'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
@@ -21,7 +22,7 @@ const Redeem = ({ data, ...props }: { data: ReserveToken }) => {
           mt={2}
           onClick={() => setConfirming(true)}
         >
-          - Redeem {data.symbol}
+          <Trans>- Redeem {data.symbol}</Trans>
         </Button>
       </Card>
     </>
