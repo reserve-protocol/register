@@ -7,6 +7,7 @@ import { recordsAtom, rTokenAtom } from 'state/atoms'
 import { Box, Divider, Grid } from 'theme-ui'
 import About from './components/About'
 import AssetOverview from './components/AssetOverview'
+import HistoricalData from './components/HistoricalData'
 import TokenOverview from './components/TokenOverview'
 import TokenUsage from './components/TokenUsage'
 
@@ -48,6 +49,7 @@ const Overview = () => {
       <Divider {...dividerProps} />
       <ContentHead
         title={t`Live & Historical data`}
+        pl={3}
         mb={4}
         subtitle={
           !!rToken?.isRSV
@@ -55,8 +57,8 @@ const Overview = () => {
             : undefined
         }
       />
-      <Grid {...gridProps}>
-        <Box>Charts TODO</Box>
+      <Grid {...gridProps} mb={3}>
+        <HistoricalData />
         <TransactionsTable
           bordered
           compact
@@ -66,12 +68,6 @@ const Overview = () => {
           data={txs}
         />
       </Grid>
-      <Divider {...dividerProps} />
-      <ContentHead
-        title={t`Contract addresses`}
-        mb={4}
-        subtitle={t`Explorer links to all the official relevant smart contracts.`}
-      />
     </Container>
   )
 }

@@ -69,6 +69,7 @@ const TransactionsTable = ({
         backgroundColor: card ? theme.colors.contentBackground : 'none',
         border: bordered ? `1px solid ${theme.colors.border}` : 'none',
         borderRadius: borderRadius.boxes,
+        height: 'fit-content',
         ...sx,
       })}
     >

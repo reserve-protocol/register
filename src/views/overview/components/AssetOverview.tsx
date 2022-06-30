@@ -1,16 +1,9 @@
 import { Trans } from '@lingui/macro'
 import TokenLogo from 'components/icons/TokenLogo'
 import { useAtomValue } from 'jotai'
-import {
-  AreaChart,
-  Area,
-  Cell,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-} from 'recharts'
+import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
 import { rTokenAtom, rTokenPriceAtom } from 'state/atoms'
-import { Box, Card, Flex, Text, Grid, BoxProps } from 'theme-ui'
+import { Box, BoxProps, Card, Flex, Grid, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 
 const data = [
