@@ -240,6 +240,7 @@ export const theme: Theme = {
     thead: {
       display: 'table',
       color: 'lightText',
+      marginBottom: -20,
     },
     td: {
       py: 3,

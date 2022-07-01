@@ -17,7 +17,7 @@ const GeneralOverview = (props: BoxProps) => {
       >
         <Trans>General RToken Overview</Trans>
       </Text>
-      <Grid columns={[1, 1, 2]} gap={5}>
+      <Grid columns={[1, 1, 1, 2]} gap={5}>
         <TokenStats />
         <Box>
           <TransactionsTable

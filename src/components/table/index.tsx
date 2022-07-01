@@ -128,7 +128,11 @@ export function Table<D extends { [key: string]: any }>({
         sx={{ ...sx, maxHeight, borderSpacing: compact ? 0 : undefined }}
       >
         {header && (
-          <Box as="thead" variant="styles.thead">
+          <Box
+            as="thead"
+            variant="styles.thead"
+            sx={{ marginBottom: compact ? 0 : undefined }}
+          >
             {headerGroups.map((headerGroup: any) => (
               <Box as="tr" {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column: any) => (

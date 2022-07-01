@@ -34,7 +34,10 @@ const AppHeader = () => {
     <Container px={4}>
       {isContentOnlyView(pathname) ? (
         <Flex ml={4} sx={{ alignItems: 'center' }}>
-          <Logo style={{ cursor: 'pointer' }} onClick={() => navigate('/')} />
+          <Logo
+            style={{ cursor: 'pointer', color: 'boldText' }}
+            onClick={() => navigate('/')}
+          />
           <Text ml={3} sx={{ fontSize: 3 }} variant="subtitle">
             <Trans>RToken Deployer</Trans>
           </Text>
