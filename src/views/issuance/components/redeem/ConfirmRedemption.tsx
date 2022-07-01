@@ -12,7 +12,7 @@ import { v4 as uuid } from 'uuid'
 import { isValidRedeemAmountAtom, redeemAmountAtom } from 'views/issuance/atoms'
 import RedeemInput from './RedeemInput'
 
-// TODO: Display redeemable collateral
+// TODO: Display redeemable collateral?
 const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
   const [signing, setSigning] = useState(false)
   const rToken = useAtomValue(rTokenAtom)

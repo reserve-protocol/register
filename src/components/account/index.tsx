@@ -67,8 +67,6 @@ const Account = () => {
   const { ENSName, account, chainId } = useWeb3React()
   const isInvalid = !CHAINS[chainId ?? 0]
 
-  const Wrapper = isInvalid ? ErrorWrapper : Box
-
   return (
     <>
       {!account ? (

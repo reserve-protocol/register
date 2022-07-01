@@ -11,6 +11,7 @@ interface Props extends BoxProps {
 }
 
 // TODO: Dark mode colors
+// TODO: Use dataset to calculate +- value between range
 const AreaChart = ({ data, ...props }: Props) => {
   return (
     <Box {...props}>
