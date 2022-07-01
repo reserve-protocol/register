@@ -13,6 +13,7 @@ import { useCallback, useEffect } from 'react'
 import {
   allowanceAtom,
   balancesAtom,
+  chainIdAtom,
   ethPriceAtom,
   gasPriceAtom,
   pendingIssuancesAtom,
@@ -124,6 +125,7 @@ const fetcher = async (url: string): Promise<StringMap> => {
  */
 const PendingBalancesUpdater = () => {
   const account = useAtomValue(walletAtom)
+  const chainId = useAtomValue(chainIdAtom)
   const rToken = useAtomValue(rTokenAtom)
   const setPendingIssuances = useUpdateAtom(pendingIssuancesAtom)
   const setPendingRSR = useUpdateAtom(pendingRSRAtom)
@@ -155,6 +157,9 @@ const PendingBalancesUpdater = () => {
           amount: parseFloat(formatEther(item.amount)),
         }))
         setPendingRSR(pendingRSRSummary)
+      } else {
+        setPendingIssuances([])
+        setPendingRSR([])
       }
     } catch (e) {
       // TODO: handle error case
@@ -166,7 +171,7 @@ const PendingBalancesUpdater = () => {
     if (rToken && !rToken.isRSV) {
       fetchPending()
     }
-  }, [fetchPending, blockNumber])
+  }, [fetchPending, blockNumber, chainId])
 
   return null
 }

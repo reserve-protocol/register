@@ -52,6 +52,7 @@ export const smallButton = {
 }
 
 export const colors = {
+  boldText: '#111',
   text: '#333',
   secondaryText: '#666666',
   lightText: '#808080',
@@ -70,6 +71,7 @@ export const colors = {
   modes: {
     dark: {
       text: '#fff',
+      boldText: '#fff',
       background: '#121212',
       secondary: '#333333',
       border: '#333333',
