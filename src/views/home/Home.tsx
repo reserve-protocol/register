@@ -7,6 +7,7 @@ import { useAtomValue } from 'jotai'
 import rtokens from 'rtokens'
 import { recordsAtom } from 'state/atoms'
 import { Box, Divider, Grid, Text } from 'theme-ui'
+import TokenStats from './components/TokenStats'
 
 const mockTokens: any = [
   { name: 'USD1', price: '$1.00', balance: '0.00', value: '0.00', apy: '0.00' },
@@ -55,17 +56,6 @@ const yourStakingTokensColumns: any = [
   { Header: 'APY', accessor: 'apy' },
 ]
 
-const getRTokenExchange = gql`
-  {
-    tokenDayDatas {
-      token {
-        name
-      }
-      close
-    }
-  }
-`
-
 const Home = () => {
   const txs = useAtomValue(recordsAtom)
 
@@ -106,12 +96,7 @@ const Home = () => {
           <Trans>General RToken Overview</Trans>
         </Text>
         <Grid columns={[1, 1, 2]} gap={5}>
-          <Box>
-            <ContentHead
-              title={t`RToken stats`}
-              subtitle={t`These stats are aggregated across all RTokens on the Reserve Protocol that are supported by this dApp. This also includes anonymized data from the Reserve App API if RTokens are supported by RPay to give insights into total currency usage.`}
-            />
-          </Box>
+          <TokenStats />
           <Box>
             <TransactionsTable
               compact

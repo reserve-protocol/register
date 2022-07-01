@@ -11,11 +11,11 @@ const data = [
   { name: 'A1', value: 100 },
   { name: 'A2', value: 300 },
   { name: 'B1', value: 100 },
-  // { name: 'A2', value: 300 },
-  // { name: 'B1', value: 100 },
-  // { name: 'A2', value: 300 },
-  // { name: 'B1', value: 100 },
-  // { name: 'A1', value: 100 },
+  { name: 'A2', value: 300 },
+  { name: 'B1', value: 100 },
+  { name: 'A2', value: 300 },
+  { name: 'B1', value: 100 },
+  { name: 'A1', value: 100 },
 ]
 
 const colors = [

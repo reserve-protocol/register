@@ -1,6 +1,5 @@
 import { t, Trans } from '@lingui/macro'
 import { Button, Container } from 'components'
-import { SmallButton } from 'components/button'
 import { ContentHead } from 'components/info-box'
 import TransactionsTable from 'components/transactions/table'
 import { useAtomValue } from 'jotai/utils'
