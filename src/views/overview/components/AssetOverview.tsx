@@ -3,7 +3,7 @@ import TokenLogo from 'components/icons/TokenLogo'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
-import { rTokenAtom, rTokenPriceAtom } from 'state/atoms'
+import { rTokenPriceAtom } from 'state/atoms'
 import { Box, BoxProps, Card, Flex, Grid, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 
@@ -114,7 +114,7 @@ const AssetOverview = () => {
         </Flex>
         <Box>
           {(rToken?.collaterals ?? []).map((c) => (
-            <Flex mb={2}>
+            <Flex mb={2} key={c.address}>
               <TokenLogo mr={3} />
               <Text>{c.symbol}</Text>
               <Text ml="auto">30%</Text>
