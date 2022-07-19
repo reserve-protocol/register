@@ -126,3 +126,22 @@ export interface ReserveToken extends Token {
   stToken?: Token // staking RSR token
   isRSV?: boolean // only for RSV
 }
+
+export interface AccountToken {
+  name: string
+  symbol: string
+  usdPrice: number
+  balance: number
+  usdAmount: number
+  apy: number
+}
+
+export interface AccountPosition {
+  name: string
+  symbol: string
+  balance: number
+  apy: number
+  exchangeRate: number
+  rsrAmount: number
+  usdAmount: number
+}

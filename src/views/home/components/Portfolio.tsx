@@ -1,56 +1,52 @@
-import { Trans } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 import { Table } from 'components/table'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
+import { accountPositionsAtom, accountTokensAtom } from 'state/atoms'
 import { Box, BoxProps, Divider, Grid, Text } from 'theme-ui'
-
-const mockTokens: any = [
-  { name: 'USD1', price: '$1.00', balance: '0.00', value: '0.00', apy: '0.00' },
-  {
-    name: 'USD1',
-    price: '$1.00',
-    balance: '0.00',
-    value: '$1,308.38',
-    apy: '3.05',
-  },
-]
-
-const stakingTokens: any = [
-  {
-    name: 'USD1RSR',
-    rate: '1.024700',
-    balance: '10,234,400',
-    rsrValue: '10,487,190',
-    usdValue: '200,743.79',
-    apy: '5.45%',
-  },
-  {
-    name: 'USD1RSR',
-    rate: '1.013800',
-    balance: '0.00',
-    rsrValue: '0',
-    usdValue: '$0',
-    apy: '5.04%',
-  },
-]
+import {
+  formatCurrency,
+  formatCurrencyCell,
+  formatUsdCurrencyCell,
+} from 'utils'
 
 const Portfolio = (props: BoxProps) => {
+  const rTokens = useAtomValue(accountTokensAtom)
+  const stTokens = useAtomValue(accountPositionsAtom)
+  // TODO: Update changing lang
   const rTokenColumns = useMemo(
     () => [
-      { Header: 'RToken', accessor: 'name' },
-      { Header: 'Price', accessor: 'price' },
-      { Header: 'Balance', accessor: 'balance' },
-      { Header: 'Value', accessor: 'value' },
-      { Header: 'APY', accessor: 'apy' },
+      { Header: 'RToken', accessor: 'symbol' },
+      { Header: t`Price`, accessor: 'usdPrice', Cell: formatUsdCurrencyCell },
+      { Header: t`Balance`, accessor: 'balance', Cell: formatCurrencyCell },
+      { Header: t`Value`, accessor: 'usdAmount', Cell: formatUsdCurrencyCell },
+      { Header: `APY`, accessor: 'apy' },
     ],
     []
   )
   const stTokenColumns = useMemo(
     () => [
-      { Header: 'IP Token', accessor: 'name' },
-      { Header: 'RSR Rate', accessor: 'rate' },
-      { Header: 'Balance', accessor: 'balance' },
-      { Header: 'RSR Value', accessor: 'rsrValue' },
-      { Header: 'USD Value', accessor: 'usdValue' },
+      { Header: 'IP Token', accessor: 'symbol' },
+      {
+        Header: t`RSR Rate`,
+        accessor: 'exchangeRate',
+        Cell: formatCurrencyCell,
+      },
+      {
+        Header: t`Balance`,
+        accessor: 'balance',
+        Cell: formatCurrencyCell,
+      },
+      {
+        Header: t`RSR Value`,
+        accessor: 'rsrAmount',
+        Cell: formatCurrencyCell,
+      },
+      {
+        Header: t`USD Value`,
+        accessor: 'usdAmount',
+        Cell: formatUsdCurrencyCell,
+      },
       { Header: 'APY', accessor: 'apy' },
     ],
     []
@@ -74,13 +70,13 @@ const Portfolio = (props: BoxProps) => {
           <Text variant="sectionTitle">
             <Trans>Your RTokens</Trans>
           </Text>
-          <Table mt={3} columns={rTokenColumns} data={mockTokens} />
+          <Table mt={3} columns={rTokenColumns} data={rTokens} />
         </Box>
         <Box>
           <Text variant="sectionTitle">
             <Trans>Your staked RSR positions</Trans>
           </Text>
-          <Table mt={3} columns={stTokenColumns} data={stakingTokens} />
+          <Table mt={3} columns={stTokenColumns} data={stTokens} />
         </Box>
       </Grid>
       <Divider my={5} mx={-5} />

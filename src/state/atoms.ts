@@ -2,6 +2,8 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { atom } from 'jotai'
 import { atomWithStorage, createJSONStorage } from 'jotai/utils'
 import {
+  AccountPosition,
+  AccountToken,
   MulticallState,
   RawCall,
   ReserveToken,
@@ -276,3 +278,12 @@ export const recordsAtom = atom<TransactionRecord[]>([
   { type: 'Transfer', amount: 12341234, timestamp: Date.now(), hash: 'asdf' },
   { type: 'Transfer', amount: 12341234, timestamp: Date.now(), hash: 'asdf' },
 ])
+
+// TODO: Refactor this whole file clean it up
+
+/**
+ * Account rToken holdings and stake positions
+ */
+export const accountTokensAtom = atom<AccountToken[]>([])
+
+export const accountPositionsAtom = atom<AccountPosition[]>([])

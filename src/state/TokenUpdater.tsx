@@ -14,6 +14,9 @@ import { reserveTokensAtom, selectedRTokenAtom } from './atoms'
 import { promiseMulticall } from './web3/lib/multicall'
 import { error } from './web3/lib/notifications'
 
+/**
+ * Fetch a list of tokens metadata from the blockchain
+ */
 const getTokensMeta = async (
   addresses: string[],
   provider: Web3Provider
@@ -38,10 +41,10 @@ const getTokensMeta = async (
     ]
   }, [] as ContractCall[])
 
-  const results = await promiseMulticall(calls, provider)
+  const multicallResult = await promiseMulticall(calls, provider)
 
   const result = addresses.reduce((tokens, address) => {
-    const [name, symbol, decimals] = results.splice(0, 3)
+    const [name, symbol, decimals] = multicallResult.splice(0, 3)
 
     tokens.push({
       address,
