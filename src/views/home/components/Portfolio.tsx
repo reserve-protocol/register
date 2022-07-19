@@ -2,7 +2,11 @@ import { t, Trans } from '@lingui/macro'
 import { Table } from 'components/table'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { accountPositionsAtom, accountTokensAtom } from 'state/atoms'
+import {
+  accountHoldingsAtom,
+  accountPositionsAtom,
+  accountTokensAtom,
+} from 'state/atoms'
 import { Box, BoxProps, Divider, Grid, Text } from 'theme-ui'
 import {
   formatCurrency,
@@ -13,6 +17,8 @@ import {
 const Portfolio = (props: BoxProps) => {
   const rTokens = useAtomValue(accountTokensAtom)
   const stTokens = useAtomValue(accountPositionsAtom)
+  const holdings = useAtomValue(accountHoldingsAtom)
+
   // TODO: Update changing lang
   const rTokenColumns = useMemo(
     () => [
@@ -63,7 +69,7 @@ const Portfolio = (props: BoxProps) => {
         sx={{ fontSize: 6, fontWeight: 400, color: 'boldText' }}
         as="h1"
       >
-        $211,052.17
+        ${formatCurrency(holdings)}
       </Text>
       <Grid columns={[1, 1, 1, 2]} mt={5} gap={5}>
         <Box>

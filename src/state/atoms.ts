@@ -285,5 +285,5 @@ export const recordsAtom = atom<TransactionRecord[]>([
  * Account rToken holdings and stake positions
  */
 export const accountTokensAtom = atom<AccountToken[]>([])
-
 export const accountPositionsAtom = atom<AccountPosition[]>([])
+export const accountHoldingsAtom = atom(0)
