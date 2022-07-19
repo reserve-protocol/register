@@ -6,7 +6,7 @@ const client = new GraphQLClient(process.env.REACT_APP_SUBGRAPH_URL ?? '')
 const fetcher = (query: RequestDocument, variables: any) =>
   client.request(query, variables)
 
-const useQuery = (query: RequestDocument, variables: any = {}) =>
-  useSWR([query, variables], fetcher)
+const useQuery = (query: RequestDocument | null = null, variables: any = {}) =>
+  useSWR(query ? [query, variables] : null, fetcher)
 
 export default useQuery

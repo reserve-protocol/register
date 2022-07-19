@@ -12,8 +12,6 @@ import {
 import { RSR, TRANSACTION_STATUS } from 'utils/constants'
 import { WalletTransaction } from './../types/index'
 
-localStorage.setItem('selectedToken', localStorage.selectedToken || ' ')
-
 export const chainIdAtom = atom<number | undefined>(undefined)
 export const blockAtom = atom<number | undefined>(undefined)
 // Prices

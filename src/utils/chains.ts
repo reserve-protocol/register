@@ -32,7 +32,7 @@ export const CHAINS: {
   },
   // Hardhat
   [ChainId.Hardhat]: {
-    urls: ['http://192.168.3.51:8545'],
+    urls: ['http://192.168.3.58:8545'],
     name: 'Hardhat',
   },
 }

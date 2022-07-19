@@ -41,8 +41,7 @@ export interface ProtocolMetrics {
   rTokenCount: number
 }
 
-// current selected token
-export const rTokenMetricsAtom = atom<RTokenMetrics>({
+export const defaultRTokenMetrics: RTokenMetrics = {
   cumulativeUniqueUsers: 0,
   rewardTokenSupply: 0,
   rsrPriceUSD: 0,
@@ -52,9 +51,9 @@ export const rTokenMetricsAtom = atom<RTokenMetrics>({
   rsrStaked: 0,
   rsrUnstaked: 0,
   basketUnits: 0,
-})
+}
 
-export const tokenMetricsAtom = atom<TokenMetrics>({
+export const defaultTokenMetrics: TokenMetrics = {
   holderCount: 0,
   userCount: 0,
   transferCount: 0,
@@ -64,9 +63,9 @@ export const tokenMetricsAtom = atom<TokenMetrics>({
   totalBurned: 0,
   totalMinted: 0,
   lastPriceUSD: 0,
-})
+}
 
-export const protocolMetricsAtom = atom<ProtocolMetrics>({
+export const defaultProtocolMetrics: ProtocolMetrics = {
   insurance: 0,
   insuranceUSD: 0,
   totalValueLockedUSD: 0,
@@ -81,4 +80,8 @@ export const protocolMetricsAtom = atom<ProtocolMetrics>({
   rsrUnstakedUSD: 0,
   totalRTokenUSD: 0,
   rTokenCount: 0,
-})
+}
+
+export const rTokenMetricsAtom = atom<RTokenMetrics>(defaultRTokenMetrics)
+export const tokenMetricsAtom = atom<TokenMetrics>(defaultTokenMetrics)
+export const protocolMetricsAtom = atom<ProtocolMetrics>(defaultProtocolMetrics)
