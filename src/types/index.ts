@@ -40,10 +40,10 @@ export interface TransactionState {
   updatedAt?: number // timestamp UTC
 }
 
-// TODO: Improve
 export interface TransactionRecord {
   type: string
   amount: number
+  amountUSD: number
   timestamp: number
   hash: string
 }

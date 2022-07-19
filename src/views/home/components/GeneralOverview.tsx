@@ -1,12 +1,38 @@
+import { formatEther } from '@ethersproject/units'
 import { t, Trans } from '@lingui/macro'
 import TransactionsTable from 'components/transactions/table'
-import { useAtomValue } from 'jotai'
-import { recordsAtom } from 'state/atoms'
-import { BoxProps, Box, Text, Grid } from 'theme-ui'
+import { gql } from 'graphql-request'
+import useQuery from 'hooks/useQuery'
+import { useMemo } from 'react'
+import { Box, BoxProps, Grid, Text } from 'theme-ui'
 import TokenStats from './TokenStats'
 
+const protocolRecentTxsQuery = gql`
+  query GetProtocolRecentTransactions {
+    entries(orderBy: timestamp, orderDirection: desc, first: 10) {
+      type
+      amount
+      amountUSD
+      hash
+      timestamp
+    }
+  }
+`
+
 const GeneralOverview = (props: BoxProps) => {
-  const txs = useAtomValue(recordsAtom)
+  // TODO: poll on blocknumber change
+  const { data } = useQuery(protocolRecentTxsQuery)
+  const txs = useMemo(() => {
+    if (!data?.entries) {
+      return []
+    }
+
+    // TODO: Parse type depending on lang
+    return data.entries.map((tx: any) => ({
+      ...tx,
+      amount: Number(formatEther(tx.amount)),
+    }))
+  }, [data])
 
   return (
     <Box>

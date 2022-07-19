@@ -3,7 +3,7 @@ import { Button, Container } from 'components'
 import { ContentHead } from 'components/info-box'
 import TransactionsTable from 'components/transactions/table'
 import { useAtomValue } from 'jotai/utils'
-import { recordsAtom, rTokenAtom } from 'state/atoms'
+import { rTokenAtom } from 'state/atoms'
 import { Box, Divider, Grid } from 'theme-ui'
 import About from './components/About'
 import AssetOverview from './components/AssetOverview'
@@ -22,7 +22,7 @@ const gridProps = { columns: [1, 1, 1, 2], gap: 6 }
  */
 const Overview = () => {
   const rToken = useAtomValue(rTokenAtom)
-  const txs = useAtomValue(recordsAtom)
+  const txs: any[] = []
 
   return (
     <Container>

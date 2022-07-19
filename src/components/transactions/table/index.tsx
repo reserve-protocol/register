@@ -6,7 +6,7 @@ import { useMemo } from 'react'
 import { borderRadius } from 'theme'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { TransactionRecord } from 'types'
-import { formatCurrency, shortenString } from 'utils'
+import { formatCurrencyCell, formatUsdCurrencyCell, shortenString } from 'utils'
 
 const Container = styled(Box)`
   overflow: auto;
@@ -33,6 +33,7 @@ const TransactionsTable = ({
   sx = {},
   ...props
 }: Props) => {
+  // TODO: update changing lang
   const columns = useMemo(
     () => [
       {
@@ -42,13 +43,13 @@ const TransactionsTable = ({
       {
         Header: t`Amount`,
         accessor: 'amount',
-        Cell: ({ cell }: { cell: any }) => formatCurrency(+cell.value),
+        Cell: formatCurrencyCell,
       },
       {
         Header: t`USD value`,
         id: 'test',
-        accessor: 'amount',
-        Cell: ({ cell }: { cell: any }) => `$${formatCurrency(+cell.value)}`,
+        accessor: 'amountUSD',
+        Cell: formatUsdCurrencyCell,
       },
       {
         Header: 'Explore',
