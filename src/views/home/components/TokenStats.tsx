@@ -40,7 +40,6 @@ const protocolMetricsQuery = gql`
 
 const TokenStats = () => {
   const { data } = useQuery(protocolMetricsQuery)
-  console.log('data', data)
   const metrics = useMemo(() => {
     if (data) {
       return {

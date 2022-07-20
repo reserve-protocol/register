@@ -3,8 +3,14 @@ import { ContentHead, InfoHeading } from 'components/info-box'
 import { useAtomValue } from 'jotai'
 import { rTokenAtom } from 'state/atoms'
 import { Box, BoxProps, Grid } from 'theme-ui'
+import { TokenStats } from 'types'
+import { formatCurrency } from 'utils'
 
-const TokenUsage = (props: BoxProps) => {
+interface Props extends BoxProps {
+  metrics: TokenStats
+}
+
+const TokenUsage = ({ metrics, ...props }: Props) => {
   const rToken = useAtomValue(rTokenAtom)
 
   return (
@@ -18,13 +24,16 @@ const TokenUsage = (props: BoxProps) => {
         }
       />
       <Grid columns={2} mt={4} gap={4}>
-        <InfoHeading title={t`Avg 24h Tx Vol`} subtitle="$20,456,789" />
-        <InfoHeading title={t`Average 24h Txs`} subtitle="10,000" />
+        <InfoHeading title={t`24h Tx Vol`} subtitle="$20,456,789" />
+        <InfoHeading title={t`24h Txs`} subtitle="10,000" />
         <InfoHeading
           title={t`Cumulative Tx Volume`}
-          subtitle="$20,123,456,789"
+          subtitle={metrics.cumulativeVolumeUsd}
         />
-        <InfoHeading title={t`Cumulative Txs`} subtitle="25,000,000" />
+        <InfoHeading
+          title={t`Cumulative Txs`}
+          subtitle={formatCurrency(metrics.transferCount)}
+        />
       </Grid>
     </Box>
   )

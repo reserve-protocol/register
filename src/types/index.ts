@@ -145,3 +145,13 @@ export interface AccountPosition {
   rsrAmount: number
   usdAmount: number
 }
+
+export interface TokenStats {
+  insurance: number
+  insuranceUsd: string
+  supply: number
+  supplyUsd: string
+  cumulativeVolume: number
+  cumulativeVolumeUsd: string
+  transferCount: number
+}

@@ -5,6 +5,7 @@ import { StRSR } from 'abis'
 import useBlockNumber from 'hooks/useBlockNumber'
 import { useCall } from 'hooks/useCall'
 import { useContract, useFacadeContract } from 'hooks/useContract'
+import useRTokenPrice from 'hooks/useRTokenPrice'
 import useTokensAllowance from 'hooks/useTokensAllowance'
 import useTokensBalance from 'hooks/useTokensBalance'
 import { useSetAtom } from 'jotai'
@@ -192,12 +193,7 @@ const PricesUpdater = () => {
     `${COINGECKO_API}/simple/price?vs_currencies=usd&ids=ethereum,reserve-rights-token`,
     fetcher
   )
-  // this may fetch all top rTokens
-  const { data: rTokenPrice } = useSWR(
-    reserveToken &&
-      `${COINGECKO_API}/simple/token_price/ethereum?contract_addresses=${reserveToken}&vs_currencies=usd`,
-    fetcher
-  )
+  const rTokenPrice = useRTokenPrice(reserveToken)
   const setRSRPrice = useUpdateAtom(rsrPriceAtom)
   const setEthPrice = useUpdateAtom(ethPriceAtom)
   const setGasPrice = useUpdateAtom(gasPriceAtom)
@@ -228,7 +224,7 @@ const PricesUpdater = () => {
 
   useEffect(() => {
     if (rTokenPrice && reserveToken) {
-      setRTokenPrice(rTokenPrice[reserveToken])
+      setRTokenPrice(rTokenPrice)
     }
   }, [rTokenPrice])
 
