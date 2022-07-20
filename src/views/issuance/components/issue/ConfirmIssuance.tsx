@@ -3,12 +3,14 @@ import { formatUnits, parseEther } from '@ethersproject/units'
 import { t } from '@lingui/macro'
 import TextPlaceholder from 'components/placeholder/TextPlaceholder'
 import TransactionModal from 'components/transaction-modal'
+import { BigNumber } from 'ethers'
 import { useAtomValue } from 'jotai'
 import { useCallback, useMemo, useState } from 'react'
 import { rTokenAtom } from 'state/atoms'
 import { BigNumberMap, ReserveToken, TransactionState } from 'types'
 import { formatCurrency } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
+import { ONE_ETH } from 'utils/numbers'
 import { RSV_MANAGER } from 'utils/rsv'
 import { v4 as uuid } from 'uuid'
 import {
@@ -29,7 +31,7 @@ const buildApprovalTransactions = (
 ): TransactionState[] => {
   const transactions = data.collaterals.reduce((txs, token) => {
     // Specific token approvals
-    const tokenAmount = quantities[getAddress(token.address)]
+    const tokenAmount = quantities[getAddress(token.address)].add(ONE_ETH)
     // Unlimited approval
     // const tokenAmount = BigNumber.from(Number.MAX_SAFE_INTEGER)
 

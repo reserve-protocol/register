@@ -1,6 +1,11 @@
+import { formatEther } from '@ethersproject/units'
 import { t } from '@lingui/macro'
 import { ContentHead, InfoHeading } from 'components/info-box'
+import { gql } from 'graphql-request'
+import useQuery from 'hooks/useQuery'
+import { useMemo } from 'react'
 import { Box, Text, Flex, Grid } from 'theme-ui'
+import { formatCurrency } from 'utils'
 
 const Stat = ({ title, value }: { title: string; value: string }) => (
   <Box mt={3} mr={3}>
@@ -11,7 +16,54 @@ const Stat = ({ title, value }: { title: string; value: string }) => (
   </Box>
 )
 
+export const defaultProtocolMetrics = {
+  totalValueLockedUSD: '$0',
+  totalRTokenUSD: '$0',
+  cumulativeVolumeUSD: '$0',
+  cumulativeRTokenRevenueUSD: '$0',
+  cumulativeInsuranceRevenueUSD: '$0',
+  transactionCount: '0',
+}
+
+const protocolMetricsQuery = gql`
+  query GetProtocolMetrics {
+    protocol(id: "0x70bDA08DBe07363968e9EE53d899dFE48560605B") {
+      totalValueLockedUSD
+      totalRTokenUSD
+      cumulativeVolumeUSD
+      cumulativeRTokenRevenueUSD
+      cumulativeInsuranceRevenueUSD
+      transactionCount
+    }
+  }
+`
+
 const TokenStats = () => {
+  const { data } = useQuery(protocolMetricsQuery)
+  console.log('data', data)
+  const metrics = useMemo(() => {
+    if (data) {
+      return {
+        totalValueLockedUSD: `$${formatCurrency(
+          +data.protocol?.totalValueLockedUSD
+        )}`,
+        totalRTokenUSD: `$${formatCurrency(+data.protocol?.totalRTokenUSD)}`,
+        cumulativeVolumeUSD: `$${formatCurrency(
+          +data.protocol?.cumulativeVolumeUSD
+        )}`,
+        cumulativeRTokenRevenueUSD: `$${formatCurrency(
+          +data.protocol?.cumulativeRTokenRevenueUSD
+        )}`,
+        cumulativeInsuranceRevenueUSD: `$${formatCurrency(
+          +data.protocol?.cumulativeInsuranceRevenueUSD
+        )}`,
+        transactionCount: data.protocol?.transactionCount,
+      }
+    }
+
+    return defaultProtocolMetrics
+  }, [data])
+
   return (
     <Box>
       <ContentHead
@@ -29,23 +81,29 @@ const TokenStats = () => {
         <Grid columns={2} gap={4}>
           <InfoHeading
             title={t`Total RToken Market Cap`}
-            subtitle="$20,456,789"
+            subtitle={metrics.totalRTokenUSD}
           />
           <InfoHeading
             title={t`Cumalitive - RToken holder income`}
-            subtitle="$10,000"
+            subtitle={metrics.cumulativeRTokenRevenueUSD}
           />
-          <InfoHeading title={t`TVL in Reserve`} subtitle="$20,123,456,789" />
           <InfoHeading
-            title={t`Cumalitive - Staked RSR ***`}
-            subtitle="$25,000,000"
+            title={t`TVL in Reserve`}
+            subtitle={metrics.totalValueLockedUSD}
+          />
+          <InfoHeading
+            title={t`Cumalitive - Staked RSR Income`}
+            subtitle={metrics.cumulativeInsuranceRevenueUSD}
           />
         </Grid>
         <Flex mt={2} sx={{ flexWrap: 'wrap' }}>
-          <Stat title={t`Avg 24h Tx Vol`} value="$20,456,789" />
-          <Stat title={t`Cumulative Tx Volume`} value="$20,123,456,789" />
-          <Stat title={t`Average 24h Txs`} value="10,000" />
-          <Stat title={t`Cumulative Txs`} value="25,000,000" />
+          <Stat title={t`24h Tx Vol`} value="$20,456,789" />
+          <Stat
+            title={t`Cumulative Tx Volume`}
+            value={metrics.cumulativeVolumeUSD}
+          />
+          <Stat title={t`24h Txs`} value="10,000" />
+          <Stat title={t`Cumulative Txs`} value={metrics.transactionCount} />
         </Flex>
       </Box>
     </Box>

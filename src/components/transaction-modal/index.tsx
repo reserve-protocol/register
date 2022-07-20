@@ -86,6 +86,7 @@ const TransactionModal = ({
     () => isValid && hasAllowance(allowances, requiredAllowance),
     [allowances, isValid, requiredAllowance]
   )
+
   const txState = useTransaction(signing)
   const signed =
     txState?.status === TRANSACTION_STATUS.MINING ||

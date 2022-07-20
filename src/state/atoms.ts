@@ -266,15 +266,6 @@ export const updateTransactionAtom = atom(
   }
 )
 
-/**
- * Records - cache layer for record history pulled from theGraph
- */
-export const recentProtocolRecordsAtom = atom<TransactionRecord[]>([])
-
-export const recentTokenTransfersAtom = atom<TransactionRecord[]>([])
-
-export const recentRTokenRecordsAtom = atom<TransactionRecord[]>([])
-
 // TODO: Refactor this whole file clean it up
 
 /**
