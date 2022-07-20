@@ -85,11 +85,10 @@ const useTokenStats = (rTokenId: string): TokenStats => {
 const Overview = () => {
   const rToken = useAtomValue(rTokenAtom)
   const rTokenMetrics = useTokenStats(rToken?.address.toLowerCase() ?? '')
-  const txs: any[] = []
 
   return (
     <Container>
-      <TokenOverview />
+      <TokenOverview metrics={rTokenMetrics} />
       <Divider {...dividerProps} />
       <Grid {...gridProps}>
         <TokenUsage metrics={rTokenMetrics} />
