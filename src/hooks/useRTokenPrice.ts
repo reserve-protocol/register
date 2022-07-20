@@ -1,6 +1,6 @@
 import { formatEther } from '@ethersproject/units'
 import { atom, useAtom } from 'jotai'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
 import { COINGECKO_API } from 'utils/constants'
 import { useRTokenContract } from './useContract'
 
@@ -20,15 +20,14 @@ const useRTokenPrice = (tokenAddress: string, isRToken = false): number => {
   const getTokenPrice = useCallback(async () => {
     try {
       let newPrice = 0
-      if (isRToken) {
+      if (isRToken && contract) {
         const result = await contract?.price()
-        setPrice(+formatEther(result ?? '0'))
+        newPrice = +formatEther(result)
       } else {
         const result = await fetch(
           `${COINGECKO_API}/simple/token_price/ethereum?contract_addresses=${tokenAddress}&vs_currencies=usd`
         ).then((res) => res.json())
-
-        console.log('token price', result)
+        newPrice = result[tokenAddress.toLowerCase()]?.usd ?? 0
       }
 
       setPrice(newPrice)
@@ -40,7 +39,7 @@ const useRTokenPrice = (tokenAddress: string, isRToken = false): number => {
   // TODO: should price be fetched block by block?
   useEffect(() => {
     getTokenPrice()
-  }, [])
+  }, [contract])
 
   return price
 }

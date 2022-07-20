@@ -2,7 +2,6 @@ import { formatEther } from '@ethersproject/units'
 import { t, Trans } from '@lingui/macro'
 import { Button, Container } from 'components'
 import { ContentHead } from 'components/info-box'
-import TransactionsTable from 'components/transactions/table'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import { useAtomValue } from 'jotai/utils'
@@ -14,6 +13,8 @@ import { formatCurrency } from 'utils'
 import About from './components/About'
 import AssetOverview from './components/AssetOverview'
 import HistoricalData from './components/HistoricalData'
+import RecentProtocolTransactions from './components/RecentProtocolTransactions'
+import RecentTokenTransactions from './components/RecentTokenTransactions'
 import TokenOverview from './components/TokenOverview'
 import TokenUsage from './components/TokenUsage'
 
@@ -39,7 +40,7 @@ const defaultStats = {
   supply: 0,
   supplyUsd: '$0',
   cumulativeVolume: 0,
-  cumulativeVolumeUsd: '$',
+  cumulativeVolumeUsd: '$0',
   transferCount: 0,
 }
 
@@ -51,7 +52,7 @@ const useTokenStats = (rTokenId: string): TokenStats => {
   const rTokenPrice = useAtomValue(rTokenPriceAtom)
 
   return useMemo(() => {
-    if (data) {
+    if (data && data.rtoken) {
       const insurance = +formatEther(data?.rtoken.insurance)
       const supply = +formatEther(data?.rtoken.token.totalSupply)
       const cumulativeVolume = +formatEther(data?.rtoken.token.cumulativeVolume)
@@ -92,14 +93,7 @@ const Overview = () => {
       <Divider {...dividerProps} />
       <Grid {...gridProps}>
         <TokenUsage metrics={rTokenMetrics} />
-        <TransactionsTable
-          bordered
-          compact
-          maxHeight={420}
-          help="TODO"
-          title={t`Transactions`}
-          data={txs}
-        />
+        <RecentTokenTransactions />
       </Grid>
       <Divider {...dividerProps} />
       <Grid {...gridProps}>
@@ -125,14 +119,7 @@ const Overview = () => {
       />
       <Grid {...gridProps} mb={3}>
         <HistoricalData />
-        <TransactionsTable
-          bordered
-          compact
-          maxHeight={420}
-          title={t`Protocol Transactions`}
-          help="TODO"
-          data={txs}
-        />
+        <RecentProtocolTransactions />
       </Grid>
     </Container>
   )

@@ -5,7 +5,7 @@ import { Table } from 'components/table'
 import { useMemo } from 'react'
 import { borderRadius } from 'theme'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
-import { TransactionRecord } from 'types'
+import { StringMap, TransactionRecord } from 'types'
 import { formatCurrencyCell, formatUsdCurrencyCell, shortenString } from 'utils'
 
 const Container = styled(Box)`
@@ -34,11 +34,30 @@ const TransactionsTable = ({
   ...props
 }: Props) => {
   // TODO: update changing lang
+  const transactionTypes: StringMap = useMemo(
+    () => ({
+      MINT: t`Mint`,
+      REDEEM: t`Redeem`,
+      TRANSFER: t`Transfer`,
+      BURN: t`Burn`,
+      ISSUE: t`Issue`,
+      ISSUE_START: t`Start Issue`,
+      CLAIM: t`Claim`,
+      CANCEL_ISSUANCE: t`Cancel Issue`,
+      STAKE: t`Stake`,
+      UNSTAKE: t`UnStake`,
+      WITHDRAW: t`Withdraw`,
+    }),
+    []
+  )
+
   const columns = useMemo(
     () => [
       {
         Header: t`Type`,
         accessor: 'type',
+        Cell: ({ cell }: { cell: any }) =>
+          transactionTypes[cell.value] || cell.value,
       },
       {
         Header: t`Amount`,

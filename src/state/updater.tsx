@@ -5,6 +5,7 @@ import { StRSR } from 'abis'
 import useBlockNumber from 'hooks/useBlockNumber'
 import { useCall } from 'hooks/useCall'
 import { useContract, useFacadeContract } from 'hooks/useContract'
+import useRToken from 'hooks/useRToken'
 import useRTokenPrice from 'hooks/useRTokenPrice'
 import useTokensAllowance from 'hooks/useTokensAllowance'
 import useTokensBalance from 'hooks/useTokensBalance'
@@ -187,13 +188,13 @@ const PendingBalancesUpdater = () => {
  * GasPrice
  */
 const PricesUpdater = () => {
-  const reserveToken = useAtomValue(selectedRTokenAtom)
+  const rToken = useRToken()
   const { provider, chainId } = useWeb3React()
   const { data } = useSWR(
     `${COINGECKO_API}/simple/price?vs_currencies=usd&ids=ethereum,reserve-rights-token`,
     fetcher
   )
-  const rTokenPrice = useRTokenPrice(reserveToken)
+  const rTokenPrice = useRTokenPrice(rToken?.address ?? '', !rToken?.isRSV)
   const setRSRPrice = useUpdateAtom(rsrPriceAtom)
   const setEthPrice = useUpdateAtom(ethPriceAtom)
   const setGasPrice = useUpdateAtom(gasPriceAtom)
@@ -223,9 +224,7 @@ const PricesUpdater = () => {
   }, [data])
 
   useEffect(() => {
-    if (rTokenPrice && reserveToken) {
-      setRTokenPrice(rTokenPrice)
-    }
+    setRTokenPrice(rTokenPrice)
   }, [rTokenPrice])
 
   return null
