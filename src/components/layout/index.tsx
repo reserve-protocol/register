@@ -12,8 +12,6 @@ import Sidebar from './sidebar'
  * @returns {JSX.Element}
  */
 const Layout = ({ children }: { children: ReactNode }) => {
-  const { pathname } = useLocation()
-
   return (
     <Flex
       sx={{
@@ -21,7 +19,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
         height: '100%',
       }}
     >
-      {!isContentOnlyView(pathname) && <Sidebar />}
+      <Sidebar />
       <Flex
         sx={{
           flexGrow: 99999,

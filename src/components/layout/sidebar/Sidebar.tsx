@@ -6,9 +6,9 @@ import SyncedBlock from 'components/synced-block'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
 import { useMemo } from 'react'
 import { ReserveToken } from 'types'
-import { rTokenAtom } from 'state/atoms'
+import { rTokenAtom, selectedRTokenAtom } from 'state/atoms'
 import { useAtomValue } from 'jotai/utils'
-import { ROUTES } from 'utils/constants'
+import { isContentOnlyView, ROUTES } from 'utils/constants'
 import StakeIcon from 'components/icons/StakeIcon'
 import IssuanceIcon from 'components/icons/IssuanceIcon'
 import OverviewIcon from 'components/icons/OverviewIcon'
@@ -162,12 +162,18 @@ const Footer = () => (
  * Application sidebar
  */
 const Sidebar = () => {
-  const RToken = useAtomValue(rTokenAtom)
+  const rToken = useAtomValue(rTokenAtom)
+  const selectedToken = useAtomValue(selectedRTokenAtom)
+  const { pathname } = useLocation()
+
+  if (isContentOnlyView(pathname) || !selectedToken) {
+    return null
+  }
 
   return (
     <Container sx={{ flexBasis: [64, 72, 264] }}>
       <Header />
-      <Navigation currentToken={RToken} />
+      <Navigation currentToken={rToken} />
       <Box my="auto" />
       <Footer />
     </Container>
