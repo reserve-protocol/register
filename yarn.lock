@@ -13542,7 +13542,7 @@ __metadata:
     react-scripts: 5.0.0
     react-table: ^7.7.0
     recharts: ^2.1.6
-    rtokens: "file:../rtokens"
+    rtokens: "github:lc-labs/rtokens.git"
     source-map-explorer: ^2.5.2
     swr: ^1.2.2
     theme-ui: ^0.14.6
@@ -14520,10 +14520,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rtokens@file:../rtokens::locator=protocol-interface%40workspace%3A.":
+"rtokens@github:lc-labs/rtokens.git":
   version: 1.0.0
-  resolution: "rtokens@file:../rtokens#../rtokens::hash=045b4d&locator=protocol-interface%40workspace%3A."
-  checksum: 896a86037eb43915a619118edd217fca545d81c692401d3b9e6920b9f3b2c9e9326a28a5a893f7256e63cd27edba5687c245d4a1b4bbd901f380a77253504656
+  resolution: "rtokens@https://github.com/lc-labs/rtokens.git#commit=5dc8ffdb80f4a27b1ea5c1d454b6a811e4bb980a"
+  checksum: 9485da437ed18639f34200f3320c0436a7846ce788830a68e2c0027377fe4ac9e54d0c917945bae41b437932045016fdb16eb4ace5d47fd6058bd410e0d74125
   languageName: node
   linkType: hard
 
