@@ -75,7 +75,9 @@ const ErrorWrapper = ({
  */
 const Account = () => {
   const [isVisible, setVisible] = useAtom(txSidebarToggleAtom)
-  const isWalletModalVisible = useAtomValue(isWalletModalVisibleAtom)
+  const [isWalletModalVisible, setWalletVisible] = useAtom(
+    isWalletModalVisibleAtom
+  )
   const isProcessing = useAtomValue(isProcessingAtom)
   const { ENSName, account, chainId } = useWeb3React()
   const isInvalid = !CHAINS[chainId ?? 0]
@@ -83,7 +85,12 @@ const Account = () => {
   return (
     <>
       {!account ? (
-        <Button px={3} py={2} variant="accent" onClick={() => setVisible(true)}>
+        <Button
+          px={3}
+          py={2}
+          variant="accent"
+          onClick={() => setWalletVisible(true)}
+        >
           <Trans>Connect</Trans>
         </Button>
       ) : (
