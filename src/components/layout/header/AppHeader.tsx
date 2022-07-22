@@ -1,8 +1,8 @@
 import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
+import Account from 'components/account'
 import LanguageSelector from 'components/language-selector'
 import RTokenSelector from 'components/rtoken-selector'
-import TransactionCenter from 'components/transactions/manager/TransactionCenter'
 import { useAtomValue } from 'jotai/utils'
 import { useLocation } from 'react-router-dom'
 import { selectedRTokenAtom } from 'state/atoms'
@@ -50,8 +50,8 @@ const AppHeader = () => {
       <Box ml={3} sx={{ alignItems: 'center', display: 'flex' }}>
         <LanguageSelector />
       </Box>
-      <Separator />
-      <TransactionCenter />
+      <Separator mr={2} />
+      <Account />
     </Container>
   )
 }

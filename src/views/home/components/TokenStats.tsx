@@ -96,12 +96,12 @@ const TokenStats = () => {
           />
         </Grid>
         <Flex mt={2} sx={{ flexWrap: 'wrap' }}>
-          <Stat title={t`24h Tx Vol`} value="$20,456,789" />
+          <Stat title={t`24h Tx Vol`} value="$0" />
           <Stat
             title={t`Cumulative Tx Volume`}
             value={metrics.cumulativeVolumeUSD}
           />
-          <Stat title={t`24h Txs`} value="10,000" />
+          <Stat title={t`24h Txs`} value="0" />
           <Stat title={t`Cumulative Txs`} value={metrics.transactionCount} />
         </Flex>
       </Box>

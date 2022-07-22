@@ -24,8 +24,8 @@ const TokenUsage = ({ metrics, ...props }: Props) => {
         }
       />
       <Grid columns={2} mt={4} gap={4}>
-        <InfoHeading title={t`24h Tx Vol`} subtitle="$20,456,789" />
-        <InfoHeading title={t`24h Txs`} subtitle="10,000" />
+        <InfoHeading title={t`24h Tx Vol`} subtitle="$0" />
+        <InfoHeading title={t`24h Txs`} subtitle="0" />
         <InfoHeading
           title={t`Cumulative Tx Volume`}
           subtitle={metrics.cumulativeVolumeUsd}

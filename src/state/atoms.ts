@@ -8,11 +8,12 @@ import {
   RawCall,
   ReserveToken,
   TransactionMap,
-  TransactionRecord,
   TransactionState,
 } from 'types'
 import { RSR, TRANSACTION_STATUS } from 'utils/constants'
 import { WalletTransaction } from './../types/index'
+
+export const isWalletModalVisibleAtom = atom(false)
 
 export const chainIdAtom = atom<number | undefined>(undefined)
 export const blockAtom = atom<number | undefined>(undefined)

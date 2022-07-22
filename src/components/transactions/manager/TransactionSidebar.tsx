@@ -7,8 +7,8 @@ import WalletIcon from 'components/icons/WalletIcon'
 import dayjs from 'dayjs'
 import { atom, useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
-import { Check, ExternalLink, X } from 'react-feather'
-import { currentTxAtom } from 'state/atoms'
+import { Check, Edit, ExternalLink, X } from 'react-feather'
+import { currentTxAtom, isWalletModalVisibleAtom } from 'state/atoms'
 import { borderRadius } from 'theme'
 import { Box, Flex, Grid, Link, Spinner, Text } from 'theme-ui'
 import { TransactionState, WalletTransaction } from 'types'
@@ -140,7 +140,13 @@ const TransactionList = () => {
 
 const TransactionSidebar = () => {
   const setSidebar = useUpdateAtom(txSidebarToggleAtom)
+  const setWalletModal = useUpdateAtom(isWalletModalVisibleAtom)
   const { ENSName, account } = useWeb3React()
+
+  const handleChangeWallet = () => {
+    setSidebar(false)
+    setWalletModal(true)
+  }
 
   return (
     <Portal>
@@ -170,28 +176,17 @@ const TransactionSidebar = () => {
           height: '100vh',
         }}
       >
-        {account ? (
-          <>
-            <Flex sx={{ alignItems: 'center' }} mt={3} mb={4}>
-              <WalletIcon />
-              <Text ml={2}>{ENSName || shortenAddress(account)}</Text>
-              <Button
-                ml="auto"
-                variant="circle"
-                onClick={() => setSidebar(false)}
-              >
-                <X />
-              </Button>
-            </Flex>
-            <TransactionList />
-          </>
-        ) : (
-          <Box>
-            <Text>
-              <Trans>Please connect your wallet</Trans>
-            </Text>
-          </Box>
-        )}
+        <Flex sx={{ alignItems: 'center' }} mt={3} mb={4}>
+          <WalletIcon />
+          <Text ml={2}>{ENSName || shortenAddress(account ?? '')}</Text>
+          <Button ml={3} variant="circle" onClick={handleChangeWallet}>
+            <Edit size={14} />
+          </Button>
+          <Button ml="auto" variant="circle" onClick={() => setSidebar(false)}>
+            <X />
+          </Button>
+        </Flex>
+        <TransactionList />
       </Flex>
     </Portal>
   )

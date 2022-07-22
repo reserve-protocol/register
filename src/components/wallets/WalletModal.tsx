@@ -2,8 +2,11 @@ import { t, Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
 import SelectedIcon from 'components/icons/SelectedIcon'
 import Modal from 'components/modal'
+import { useAtom } from 'jotai'
+import { useUpdateAtom } from 'jotai/utils'
 import { useState } from 'react'
 import { ChevronRight } from 'react-feather'
+import { isWalletModalVisibleAtom } from 'state/atoms'
 import { Box, Flex, Image, Spinner, Text } from 'theme-ui'
 import { CHAIN_ID } from 'utils/chains'
 import {
@@ -13,15 +16,10 @@ import {
   metaMask,
   walletConnect,
   WalletConnector,
-  gnosisSafe,
 } from './connectors'
 import coinbaseLogo from './imgs/coinbase.png'
 import metamaskLogo from './imgs/metamask.png'
 import walletconnectLogo from './imgs/walletconnect.png'
-
-interface Props {
-  onClose(): void
-}
 
 const wallets = [
   {
@@ -50,10 +48,13 @@ const wallets = [
   // },
 ]
 
-const WalletModal = ({ onClose }: Props) => {
+const WalletModal = () => {
   const { connector: currentConnector, account } = useWeb3React()
   const [connecting, setConnecting] = useState(false)
+  const setWalletModalVisible = useUpdateAtom(isWalletModalVisibleAtom)
   const [error, setError] = useState('')
+
+  const onClose = () => setWalletModalVisible(false)
 
   // TODO: Handle connection errors
   // Examples:

@@ -3,10 +3,14 @@ import { Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
 import WalletIcon from 'components/icons/WalletIcon'
 import { MouseoverTooltipContent } from 'components/tooltip'
+import { txSidebarToggleAtom } from 'components/transactions/manager/atoms'
+import TransactionSidebar from 'components/transactions/manager/TransactionSidebar'
 import WalletModal from 'components/wallets/WalletModal'
-import { ReactNode, useState } from 'react'
-import { AlertCircle, ChevronDown, ChevronUp } from 'react-feather'
-import { Box, Button, Card, Flex, Text } from 'theme-ui'
+import { atom, useAtom, useAtomValue } from 'jotai'
+import { ReactNode } from 'react'
+import { AlertCircle, Menu } from 'react-feather'
+import { isWalletModalVisibleAtom, pendingTxAtom } from 'state/atoms'
+import { Box, Button, Card, Flex, Spinner, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { CHAINS } from 'utils/chains'
 
@@ -19,6 +23,13 @@ const Container = styled(Box)`
   border-radius: 4px;
   cursor: pointer;
 `
+
+const isProcessingAtom = atom((get) => {
+  const { pending, signing, mining } = get(pendingTxAtom)
+
+  return !!pending.length || !!signing.length || !!mining.length
+})
+
 const ErrorWrapper = ({
   chainId,
   children,
@@ -63,7 +74,9 @@ const ErrorWrapper = ({
  * Handles wallet interaction
  */
 const Account = () => {
-  const [isVisible, setVisible] = useState(false)
+  const [isVisible, setVisible] = useAtom(txSidebarToggleAtom)
+  const isWalletModalVisible = useAtomValue(isWalletModalVisibleAtom)
+  const isProcessing = useAtomValue(isProcessingAtom)
   const { ENSName, account, chainId } = useWeb3React()
   const isInvalid = !CHAINS[chainId ?? 0]
 
@@ -88,11 +101,17 @@ const Account = () => {
             >
               {ENSName || shortenAddress(account)}
             </Text>
-            {isVisible ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+            {isProcessing && <Spinner size={20} marginRight={10} />}
+            <Menu
+              size={16}
+              style={{ cursor: 'pointer' }}
+              onClick={() => setVisible(!isVisible)}
+            />
           </Container>
         </ErrorWrapper>
       )}
-      {isVisible && <WalletModal onClose={() => setVisible(false)} />}
+      {isVisible && <TransactionSidebar />}
+      {isWalletModalVisible && <WalletModal />}
     </>
   )
 }
