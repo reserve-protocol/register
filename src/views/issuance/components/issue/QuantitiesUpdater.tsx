@@ -61,9 +61,11 @@ const QuantitiesUpdater = ({
   // Reset quantities on amount change or set if its valid number and RSV
   useEffect(() => {
     if (rToken?.isRSV && Number(amount) > 0) {
-      onChange(quote(parseEther(amount)))
-    } else {
-      // TODO: Loading state
+      if (Number(amount) > 0) {
+        onChange(quote(parseEther(amount)))
+      } else {
+        onChange({})
+      }
     }
   }, [amount])
 
