@@ -27,12 +27,12 @@ export const CHAINS: {
   [chainId: number]: BasicChainInformation | ExtendedChainInformation
 } = {
   [ChainId.Mainnet]: {
-    urls: ['https://cloudflare-eth.com'],
+    urls: ['http://34.171.0.196:8545'],
     name: 'Mainnet',
   },
   // Hardhat
   [ChainId.Hardhat]: {
-    urls: ['http://192.168.3.58:8545'],
+    urls: ['http://34.171.0.196:8545'],
     name: 'Hardhat',
   },
 }
