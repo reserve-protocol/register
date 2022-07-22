@@ -11,7 +11,7 @@ const Home = () => {
   const selectedToken = useAtomValue(selectedRTokenAtom)
 
   return (
-    <Container mx={selectedToken ? 0 : 3}>
+    <Container mx={selectedToken ? 0 : [0, 3]}>
       {!!account && <Portfolio />}
       <GeneralOverview />
       <Divider my={5} mx={-5} />

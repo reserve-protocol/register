@@ -1,6 +1,5 @@
 import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
-import Logo from 'components/icons/Logo'
 import LanguageSelector from 'components/language-selector'
 import RTokenSelector from 'components/rtoken-selector'
 import TransactionCenter from 'components/transactions/manager/TransactionCenter'
@@ -10,6 +9,7 @@ import { selectedRTokenAtom } from 'state/atoms'
 import { Box, Divider, Flex, Text } from 'theme-ui'
 import { isContentOnlyView } from 'utils/constants'
 import Account from '../../account'
+import Brand from '../Brand'
 
 const Separator = styled(Divider)`
   border: none;
@@ -35,14 +35,11 @@ const AppHeader = () => {
   const isDeployer = isContentOnlyView(pathname)
 
   return (
-    <Container px={4}>
+    <Container px={[3, 4]}>
       {isDeployer ||
         (!selectedToken && (
-          <Flex ml={4} mr={[0, 0, 4]} sx={{ alignItems: 'center' }}>
-            <Logo
-              style={{ cursor: 'pointer', color: 'boldText' }}
-              onClick={() => navigate('/')}
-            />
+          <Flex mr={[2, 2, 4]} px={[2, 4]} sx={{ alignItems: 'center' }}>
+            <Brand />
             {isDeployer && (
               <Text ml={3} sx={{ fontSize: 3 }} variant="subtitle">
                 <Trans>RToken Deployer</Trans>

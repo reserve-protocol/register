@@ -41,5 +41,5 @@ export const RSR: Token = {
 // TODO: should be fetched, top 5 using market cap
 export const DEFAULT_TOKENS = [
   '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',
-  '0xff4DA0E6C71189814d290564F455C21aeCC66430',
+  '0x0bdB19551E641D25ea56AD1C66927313B331a955',
 ]

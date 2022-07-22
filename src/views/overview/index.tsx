@@ -64,7 +64,6 @@ const useTokenStats = (rTokenId: string): TokenStats => {
 
   return useMemo(() => {
     if (data && data.rtoken) {
-      console.log('daata', data.rtoken)
       const insurance = +formatEther(data?.rtoken.insurance)
       const supply = +formatEther(data?.rtoken.token.totalSupply)
       const cumulativeVolume = +formatEther(data?.rtoken.token.cumulativeVolume)

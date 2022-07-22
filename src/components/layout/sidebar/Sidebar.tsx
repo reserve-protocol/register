@@ -17,6 +17,7 @@ import CalculatorIcon from 'components/icons/CalculatorIcon'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
 import GovernanceIcon from 'components/icons/GovernanceIcon'
 import DiscussionsIcon from 'components/icons/DiscussionsIcon'
+import Brand from '../Brand'
 
 const Container = styled(Box)`
   padding-top: 0;
@@ -26,32 +27,6 @@ const Container = styled(Box)`
   flex-direction: column;
   border-right: 1px solid var(--theme-ui-colors-border);
 `
-
-// Sidebar header
-const Header = () => (
-  <Link to="/" style={{ color: 'inherit' }}>
-    <Box
-      sx={{
-        display: ['none', 'none', 'flex'],
-        alignItems: 'center',
-      }}
-      mt={3}
-      ml={4}
-    >
-      <Logo />
-    </Box>
-    <Box
-      sx={{
-        display: ['flex', 'flex', 'none'],
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-      mt={3}
-    >
-      <SmallLogo />
-    </Box>
-  </Link>
-)
 
 // Sidebar Navigation
 const Navigation = ({
@@ -172,7 +147,7 @@ const Sidebar = () => {
 
   return (
     <Container sx={{ flexBasis: [64, 72, 264] }}>
-      <Header />
+      <Brand ml={[0, 0, 4]} mt={3} />
       <Navigation currentToken={rToken} />
       <Box my="auto" />
       <Footer />

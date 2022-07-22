@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { Trans } from '@lingui/macro'
 import TokenLogo from 'components/icons/TokenLogo'
 import Popup from 'components/popup'
 import { useAtom, useAtomValue } from 'jotai'
@@ -60,7 +61,11 @@ const SelectedToken = () => {
   const selected = useAtomValue(rTokenAtom) ?? rtokens[selectedAddress]
 
   if (!selectedAddress) {
-    return <Text>Select RToken...</Text>
+    return (
+      <Text>
+        <Trans>Select RToken</Trans>
+      </Text>
+    )
   }
 
   const { symbol = shortenAddress(selectedAddress), logo = 'rsv.png' } =
