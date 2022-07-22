@@ -6,7 +6,12 @@ import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import { useAtomValue } from 'jotai/utils'
 import { useMemo } from 'react'
-import { rsrPriceAtom, rTokenAtom, rTokenPriceAtom } from 'state/atoms'
+import {
+  blockTimestampAtom,
+  rsrPriceAtom,
+  rTokenAtom,
+  rTokenPriceAtom,
+} from 'state/atoms'
 import { Box, Divider, Grid } from 'theme-ui'
 import { TokenStats } from 'types'
 import { formatCurrency } from 'utils'
@@ -22,13 +27,16 @@ const dividerProps = { my: 5, mx: -5 }
 const gridProps = { columns: [1, 1, 1, 2], gap: 6 }
 
 const rTokenMetricsQuery = gql`
-  query GetProtocolMetrics($id: String!) {
+  query GetProtocolMetrics($id: String!, $from: String!, $to: String!) {
     rtoken(id: $id) {
       insurance
       token {
         totalSupply
         transferCount
         cumulativeVolume
+      }
+      hourlySnapshots(where: { timestamp_gte: $from, timestamp_lte: $to }) {
+        id
       }
     }
   }
@@ -45,14 +53,18 @@ const defaultStats = {
 }
 
 const useTokenStats = (rTokenId: string): TokenStats => {
-  const { data } = useQuery(rTokenMetricsQuery, {
+  const currentTime = useAtomValue(blockTimestampAtom)
+  const { data, error } = useQuery(rTokenMetricsQuery, {
     id: rTokenId,
+    from: (currentTime - 24 * 60 * 60).toString(),
+    to: currentTime.toString(),
   })
   const rsrPrice = useAtomValue(rsrPriceAtom)
   const rTokenPrice = useAtomValue(rTokenPriceAtom)
 
   return useMemo(() => {
     if (data && data.rtoken) {
+      console.log('daata', data.rtoken)
       const insurance = +formatEther(data?.rtoken.insurance)
       const supply = +formatEther(data?.rtoken.token.totalSupply)
       const cumulativeVolume = +formatEther(data?.rtoken.token.cumulativeVolume)
@@ -85,6 +97,8 @@ const useTokenStats = (rTokenId: string): TokenStats => {
 const Overview = () => {
   const rToken = useAtomValue(rTokenAtom)
   const rTokenMetrics = useTokenStats(rToken?.address.toLowerCase() ?? '')
+
+  console.log('metrics', rTokenMetrics)
 
   return (
     <Container>
