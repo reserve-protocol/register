@@ -4,11 +4,10 @@ import LanguageSelector from 'components/language-selector'
 import RTokenSelector from 'components/rtoken-selector'
 import TransactionCenter from 'components/transactions/manager/TransactionCenter'
 import { useAtomValue } from 'jotai/utils'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { selectedRTokenAtom } from 'state/atoms'
 import { Box, Divider, Flex, Text } from 'theme-ui'
 import { isContentOnlyView } from 'utils/constants'
-import Account from '../../account'
 import Brand from '../Brand'
 
 const Separator = styled(Divider)`
@@ -30,7 +29,6 @@ const Container = styled(Flex)`
  */
 const AppHeader = () => {
   const { pathname } = useLocation()
-  const navigate = useNavigate()
   const selectedToken = useAtomValue(selectedRTokenAtom)
   const isDeployer = isContentOnlyView(pathname)
 
@@ -48,10 +46,7 @@ const AppHeader = () => {
           </Flex>
         ))}
       {!isDeployer && <RTokenSelector />}
-      <Box mx="auto" />
-      <Separator mr={2} />
-      <Account />
-      <Separator mx={2} />
+      <Separator ml="auto" mr={2} />
       <Box ml={3} sx={{ alignItems: 'center', display: 'flex' }}>
         <LanguageSelector />
       </Box>
