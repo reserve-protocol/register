@@ -8,7 +8,6 @@ import { useCallback, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { ContractCall, ReserveToken, Token } from 'types'
 import { isAddress } from 'utils'
-import { CHAINS } from 'utils/chains'
 import RSV from 'utils/rsv'
 import { reserveTokensAtom, selectedRTokenAtom } from './atoms'
 import { promiseMulticall } from './web3/lib/multicall'
@@ -66,12 +65,13 @@ const updateTokenAtom = atom(null, (get, set, data: ReserveToken) => {
 
 // Try to grab the token meta from theGraph
 // If it fails, get it from the blockchain (only whitelisted tokens)
+// TODO: Loading state?
 const ReserveTokenUpdater = () => {
   const [selectedAddress, setSelectedToken] = useAtom(selectedRTokenAtom)
   const updateToken = useUpdateAtom(updateTokenAtom)
   const facadeContract = useFacadeContract()
   const [searchParams] = useSearchParams()
-  const { provider, chainId } = useWeb3React()
+  const { provider } = useWeb3React()
 
   const getTokenMeta = useCallback(
     async (address: string) => {
@@ -103,7 +103,7 @@ const ReserveTokenUpdater = () => {
         error('Network Error', 'Error fetching token information')
       }
     },
-    [selectedAddress]
+    [facadeContract]
   )
 
   useEffect(() => {
@@ -115,10 +115,10 @@ const ReserveTokenUpdater = () => {
   }, [])
 
   useEffect(() => {
-    if (selectedAddress && CHAINS[chainId ?? 0]) {
+    if (selectedAddress && facadeContract) {
       getTokenMeta(selectedAddress)
     }
-  }, [getTokenMeta])
+  }, [getTokenMeta, selectedAddress])
 
   return null
 }

@@ -1,3 +1,4 @@
+import { CHAIN_ID } from './../../utils/chains'
 import { CoinbaseWallet } from '@web3-react/coinbase-wallet'
 import { initializeConnector, Web3ReactHooks } from '@web3-react/core'
 import { MetaMask } from '@web3-react/metamask'
@@ -36,7 +37,7 @@ export const [metaMask, metaMaskHooks] = initializeConnector<MetaMask>(
 )
 
 export const [network, networkHooks] = initializeConnector<Network>(
-  (actions) => new Network({ actions, urlMap: URLS })
+  (actions) => new Network({ actions, urlMap: URLS, defaultChainId: CHAIN_ID })
 )
 
 export const [gnosisSafe, gnosisSafeHooks] = initializeConnector<GnosisSafe>(
@@ -67,10 +68,10 @@ export const [coinbaseWallet, coinbaseWalletHooks] =
   )
 
 const connectors: [Connector, Web3ReactHooks][] = [
-  [metaMask, metaMaskHooks],
-  [walletConnect, walletConnectHooks],
-  [coinbaseWallet, coinbaseWalletHooks],
-  [gnosisSafe, gnosisSafeHooks],
+  // [metaMask, metaMaskHooks],
+  // [walletConnect, walletConnectHooks],
+  // [coinbaseWallet, coinbaseWalletHooks],
+  // [gnosisSafe, gnosisSafeHooks],
   [network, networkHooks],
 ]
 

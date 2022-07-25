@@ -28,6 +28,7 @@ const WalletUpdater = () => {
     }
   }, [account])
 
+  // TODO: Smart wallet connection using cache
   useEffect(() => {
     connect(network)
     connect(metaMask)
