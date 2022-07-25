@@ -68,10 +68,10 @@ export const [coinbaseWallet, coinbaseWalletHooks] =
   )
 
 const connectors: [Connector, Web3ReactHooks][] = [
-  // [metaMask, metaMaskHooks],
-  // [walletConnect, walletConnectHooks],
-  // [coinbaseWallet, coinbaseWalletHooks],
-  // [gnosisSafe, gnosisSafeHooks],
+  [metaMask, metaMaskHooks],
+  [walletConnect, walletConnectHooks],
+  [coinbaseWallet, coinbaseWalletHooks],
+  [gnosisSafe, gnosisSafeHooks],
   [network, networkHooks],
 ]
 

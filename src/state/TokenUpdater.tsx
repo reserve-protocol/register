@@ -100,7 +100,9 @@ const ReserveTokenUpdater = () => {
           })
         }
       } catch (e) {
+        console.error('Error fetching token info', e)
         error('Network Error', 'Error fetching token information')
+        // setSelectedToken('')
       }
     },
     [facadeContract]
