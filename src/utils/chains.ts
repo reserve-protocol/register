@@ -32,7 +32,7 @@ export const CHAINS: {
   },
   // Hardhat
   [ChainId.Hardhat]: {
-    urls: ['http://34.171.0.196:8545'],
+    urls: ['//demochain.reserve.org/'],
     name: 'Hardhat',
   },
 }
