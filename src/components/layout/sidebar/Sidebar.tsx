@@ -34,8 +34,6 @@ const Navigation = ({
 }: {
   currentToken?: ReserveToken | null
 }) => {
-  const { search } = useLocation()
-  // TODO: Use memo with lang
   const PAGES = useMemo(
     () => [
       { path: ROUTES.OVERVIEW, title: t`Overview`, icon: OverviewIcon },
@@ -63,13 +61,9 @@ const Navigation = ({
     []
   )
   const pages = useMemo(() => {
-    if (!currentToken) {
-      return []
-    }
+    PAGES[0].title = `${currentToken?.symbol} Overview`
 
-    PAGES[0].title = `${currentToken.symbol} Overview`
-
-    if (currentToken.isRSV) {
+    if (currentToken?.isRSV) {
       return [...PAGES.slice(0, 2)]
     }
 
