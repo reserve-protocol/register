@@ -1,9 +1,12 @@
 import { Trans } from '@lingui/macro'
+import { RToken } from 'abis/types'
 import TokenLogo from 'components/icons/TokenLogo'
+import { useRTokenContract } from 'hooks/useContract'
 import useRToken from 'hooks/useRToken'
-import { useAtomValue } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
+import { useCallback, useEffect } from 'react'
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
-import { rTokenPriceAtom } from 'state/atoms'
+import { rTokenDistributionAtom, rTokenPriceAtom } from 'state/atoms'
 import { Box, BoxProps, Card, Flex, Grid, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 
@@ -82,7 +85,19 @@ const getAngles = (value: number) => {
 
 const AssetOverview = () => {
   const rToken = useRToken()
+  const [distribution, setDistribution] = useAtom(rTokenDistributionAtom)
+  const contract = useRTokenContract(rToken?.address)
   const price = useAtomValue(rTokenPriceAtom)
+
+  const getDistribution = useCallback(async (rTokenContract: RToken) => {
+    // const quote =
+  }, [])
+
+  useEffect(() => {
+    if (contract) {
+      getDistribution(contract)
+    }
+  }, [contract])
 
   return (
     <Card py={5}>
@@ -115,7 +130,7 @@ const AssetOverview = () => {
         <Box>
           {(rToken?.collaterals ?? []).map((c) => (
             <Flex mb={2} key={c.address}>
-              <TokenLogo mr={3} />
+              <TokenLogo symbol={c.symbol} mr={3} />
               <Text>{c.symbol}</Text>
               <Text ml="auto">30%</Text>
             </Flex>

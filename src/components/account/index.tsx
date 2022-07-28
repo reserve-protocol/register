@@ -101,17 +101,13 @@ const Account = () => {
             ) : (
               <AlertCircle fill="#FF0000" color="#fff" />
             )}
-            <Text
-              sx={{ display: ['none', 'inherit', 'inherit'] }}
-              ml={2}
-              pr={2}
-            >
+            <Text sx={{ display: ['none', 'inherit', 'inherit'] }} ml={2}>
               {ENSName || shortenAddress(account)}
             </Text>
-            {isProcessing && <Spinner size={20} marginRight={10} />}
+            {isProcessing && <Spinner size={20} marginLeft={10} />}
             <Menu
               size={16}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: 'pointer', marginLeft: 10 }}
               onClick={() => setVisible(!isVisible)}
             />
           </Container>

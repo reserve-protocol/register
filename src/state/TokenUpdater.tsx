@@ -84,12 +84,12 @@ const ReserveTokenUpdater = () => {
       try {
         if (facadeContract && provider) {
           const [basket, stTokenAddress] = await Promise.all([
-            facadeContract.basketTokens(selectedAddress),
-            facadeContract.stToken(selectedAddress),
+            facadeContract.basketTokens(address),
+            facadeContract.stToken(address),
           ])
 
           const [rToken, stToken, ...collaterals] = await getTokensMeta(
-            [selectedAddress, stTokenAddress, ...basket],
+            [address, stTokenAddress, ...basket],
             provider
           )
 
@@ -105,7 +105,7 @@ const ReserveTokenUpdater = () => {
         // setSelectedToken('')
       }
     },
-    [facadeContract]
+    [facadeContract, provider]
   )
 
   useEffect(() => {
