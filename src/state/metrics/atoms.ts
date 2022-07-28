@@ -1,4 +1,5 @@
 import { atom } from 'jotai'
+import { atomWithReset } from 'jotai/utils'
 import { TokenStats } from 'types'
 
 export interface RTokenMetrics {
@@ -87,7 +88,7 @@ export const rTokenMetricsAtom = atom<RTokenMetrics>(defaultRTokenMetrics)
 // export const tokenMetricsAtom = atom<TokenMetrics>(defaultTokenMetrics)
 export const protocolMetricsAtom = atom<ProtocolMetrics>(defaultProtocolMetrics)
 
-export const tokenMetricsAtom = atom<TokenStats>({
+export const tokenMetricsAtom = atomWithReset<TokenStats>({
   insurance: 0,
   insuranceUsd: '$0',
   supply: 0,

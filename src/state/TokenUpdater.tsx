@@ -3,13 +3,14 @@ import { useWeb3React } from '@web3-react/core'
 import { ERC20Interface } from 'abis'
 import { useFacadeContract } from 'hooks/useContract'
 import { atom, useAtom } from 'jotai'
-import { useUpdateAtom } from 'jotai/utils'
+import { useResetAtom, useUpdateAtom } from 'jotai/utils'
 import { useCallback, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { ContractCall, ReserveToken, Token } from 'types'
 import { isAddress } from 'utils'
 import RSV from 'utils/rsv'
 import { reserveTokensAtom, selectedRTokenAtom } from './atoms'
+import { tokenMetricsAtom } from './metrics/atoms'
 import { promiseMulticall } from './web3/lib/multicall'
 import { error } from './web3/lib/notifications'
 
@@ -69,6 +70,7 @@ const updateTokenAtom = atom(null, (get, set, data: ReserveToken) => {
 const ReserveTokenUpdater = () => {
   const [selectedAddress, setSelectedToken] = useAtom(selectedRTokenAtom)
   const updateToken = useUpdateAtom(updateTokenAtom)
+  const resetMetrics = useResetAtom(tokenMetricsAtom)
   const facadeContract = useFacadeContract()
   const [searchParams] = useSearchParams()
   const { provider } = useWeb3React()
@@ -121,6 +123,12 @@ const ReserveTokenUpdater = () => {
       getTokenMeta(selectedAddress)
     }
   }, [getTokenMeta, selectedAddress])
+
+  useEffect(() => {
+    if (selectedAddress) {
+      resetMetrics()
+    }
+  }, [selectedAddress])
 
   return null
 }
