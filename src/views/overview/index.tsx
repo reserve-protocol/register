@@ -4,14 +4,16 @@ import { Button, Container } from 'components'
 import { ContentHead } from 'components/info-box'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
+import { useAtom } from 'jotai'
 import { useAtomValue } from 'jotai/utils'
-import { useMemo } from 'react'
+import { useEffect } from 'react'
 import {
   blockTimestampAtom,
   rsrPriceAtom,
   rTokenAtom,
   rTokenPriceAtom,
 } from 'state/atoms'
+import { tokenMetricsAtom } from 'state/metrics/atoms'
 import { Box, Divider, Grid } from 'theme-ui'
 import { TokenStats } from 'types'
 import { formatCurrency } from 'utils'
@@ -42,18 +44,9 @@ const rTokenMetricsQuery = gql`
   }
 `
 
-const defaultStats = {
-  insurance: 0,
-  insuranceUsd: '$0',
-  supply: 0,
-  supplyUsd: '$0',
-  cumulativeVolume: 0,
-  cumulativeVolumeUsd: '$0',
-  transferCount: 0,
-}
-
 const useTokenStats = (rTokenId: string): TokenStats => {
   const currentTime = useAtomValue(blockTimestampAtom)
+  const [stats, setStats] = useAtom(tokenMetricsAtom)
   const { data, error } = useQuery(rTokenMetricsQuery, {
     id: rTokenId,
     from: (currentTime - 24 * 60 * 60).toString(),
@@ -62,13 +55,13 @@ const useTokenStats = (rTokenId: string): TokenStats => {
   const rsrPrice = useAtomValue(rsrPriceAtom)
   const rTokenPrice = useAtomValue(rTokenPriceAtom)
 
-  return useMemo(() => {
+  useEffect(() => {
     if (data && data.rtoken) {
       const insurance = +formatEther(data?.rtoken.insurance)
       const supply = +formatEther(data?.rtoken.token.totalSupply)
       const cumulativeVolume = +formatEther(data?.rtoken.token.cumulativeVolume)
 
-      const metrics = {
+      setStats({
         insurance,
         supply,
         cumulativeVolume,
@@ -78,13 +71,11 @@ const useTokenStats = (rTokenId: string): TokenStats => {
         cumulativeVolumeUsd: `$${formatCurrency(
           cumulativeVolume * rTokenPrice
         )}`,
-      }
-
-      return metrics
+      })
     }
+  }, [JSON.stringify(data)])
 
-    return defaultStats
-  }, [data, rsrPrice, rTokenPrice])
+  return stats
 }
 
 /**
@@ -96,8 +87,6 @@ const useTokenStats = (rTokenId: string): TokenStats => {
 const Overview = () => {
   const rToken = useAtomValue(rTokenAtom)
   const rTokenMetrics = useTokenStats(rToken?.address.toLowerCase() ?? '')
-
-  console.log('metrics', rTokenMetrics)
 
   return (
     <Container>

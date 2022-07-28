@@ -7,6 +7,7 @@ import {
   MulticallState,
   RawCall,
   ReserveToken,
+  TokenStats,
   TransactionMap,
   TransactionState,
 } from 'types'

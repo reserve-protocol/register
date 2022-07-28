@@ -1,4 +1,5 @@
 import { atom } from 'jotai'
+import { TokenStats } from 'types'
 
 export interface RTokenMetrics {
   cumulativeUniqueUsers: number
@@ -83,5 +84,15 @@ export const defaultProtocolMetrics: ProtocolMetrics = {
 }
 
 export const rTokenMetricsAtom = atom<RTokenMetrics>(defaultRTokenMetrics)
-export const tokenMetricsAtom = atom<TokenMetrics>(defaultTokenMetrics)
+// export const tokenMetricsAtom = atom<TokenMetrics>(defaultTokenMetrics)
 export const protocolMetricsAtom = atom<ProtocolMetrics>(defaultProtocolMetrics)
+
+export const tokenMetricsAtom = atom<TokenStats>({
+  insurance: 0,
+  insuranceUsd: '$0',
+  supply: 0,
+  supplyUsd: '$0',
+  cumulativeVolume: 0,
+  cumulativeVolumeUsd: '$0',
+  transferCount: 0,
+})
