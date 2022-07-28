@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
-import { Box, BoxProps } from 'theme-ui'
+import React from 'react'
+import { Box, BoxProps, Image } from 'theme-ui'
 
 interface Props extends BoxProps {
   symbol?: string
@@ -14,22 +15,34 @@ const Container = styled(Box)`
   top: -1px;
 `
 
-const TokenLogo = ({ symbol, src, size = '1em', ...props }: Props) => (
-  <Container {...props}>
-    <img
-      src={src ? src : `/imgs/${symbol?.toLowerCase() ?? 'default'}.png`}
-      onError={({ currentTarget }) => {
-        currentTarget.onerror = null // prevents looping
-        currentTarget.src = '/imgs/default.png'
-      }}
-      style={{
-        borderRadius: '50%',
-        boxShadow: '0 0 3px 0px white inset, 0 0 3px 0px white',
-        height: size,
-        width: size,
-      }}
-    />
-  </Container>
-)
+const IMGS = new Set(['dai', 'rsdp', 'rsr', 'rsv', 'tusd', 'usdc', 'usdp'])
 
-export default TokenLogo
+const TokenLogo = ({ symbol, src, size = '1em', ...props }: Props) => {
+  let imgSrc = src
+
+  if (!imgSrc) {
+    imgSrc = IMGS.has(symbol?.toLowerCase() ?? '')
+      ? `/imgs/${symbol?.toLowerCase()}.png`
+      : '/imgs/default.png'
+  }
+
+  return (
+    <Container {...props}>
+      <Image
+        src={imgSrc}
+        onError={({ currentTarget }) => {
+          currentTarget.onerror = null // prevents looping
+          currentTarget.src = '/imgs/default.png'
+        }}
+        style={{
+          borderRadius: '50%',
+          boxShadow: '0 0 3px 0px white inset, 0 0 3px 0px white',
+          height: size,
+          width: size,
+        }}
+      />
+    </Container>
+  )
+}
+
+export default React.memo(TokenLogo)

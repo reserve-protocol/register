@@ -20,6 +20,7 @@ const ModalAlert = ({
           width: '100%',
           top: 0,
           left: 0,
+          zIndex: 9999,
           borderRadius: 16,
         }}
       />
@@ -30,6 +31,7 @@ const ModalAlert = ({
           width: '100%',
           top: 0,
           left: 0,
+          zIndex: 99999,
           justifyContent: 'center',
           alignItems: 'center',
           flexDirection: 'column',
