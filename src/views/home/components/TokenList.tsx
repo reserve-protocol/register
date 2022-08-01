@@ -3,6 +3,7 @@ import { ContentHead } from 'components/info-box'
 import { Table } from 'components/table'
 import { useMemo } from 'react'
 import { Box, BoxProps } from 'theme-ui'
+import tokenList from 'rtokens'
 
 const mockTokens: any = [
   { name: 'USD1', price: '$1.00', balance: '0.00', value: '0.00', apy: '0.00' },

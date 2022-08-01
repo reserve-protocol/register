@@ -2,6 +2,7 @@ import { Web3Provider } from '@ethersproject/providers'
 import { formatEther } from '@ethersproject/units'
 import { useWeb3React } from '@web3-react/core'
 import { StRSR } from 'abis'
+import { Facade } from 'abis/types'
 import useBlockNumber from 'hooks/useBlockNumber'
 import { useCall } from 'hooks/useCall'
 import { useContract, useFacadeContract } from 'hooks/useContract'
@@ -137,13 +138,10 @@ const PendingBalancesUpdater = () => {
   const blockNumber = useBlockNumber()
 
   // TODO: Use multicall for this
-  const fetchPending = useCallback(async () => {
-    try {
-      if (facadeContract && account && rToken) {
-        const pendingIssuances = await facadeContract.pendingIssuances(
-          rToken.address,
-          account
-        )
+  const fetchPending = useCallback(
+    async (account: string, rToken: string, facade: Facade) => {
+      try {
+        const pendingIssuances = await facade.pendingIssuances(rToken, account)
         const pending = pendingIssuances.map((issuance) => ({
           availableAt: parseInt(formatEther(issuance.availableAt)),
           index: issuance.index,
@@ -151,31 +149,29 @@ const PendingBalancesUpdater = () => {
         }))
         setPendingIssuances(pending)
 
-        const pendingRSR = await facadeContract.pendingUnstakings(
-          rToken.address,
-          account
-        )
+        const pendingRSR = await facade.pendingUnstakings(rToken, account)
         const pendingRSRSummary = pendingRSR.map((item) => ({
           availableAt: item.availableAt.toNumber() * 1000,
           index: item.index,
           amount: parseFloat(formatEther(item.amount)),
         }))
         setPendingRSR(pendingRSRSummary)
-      } else {
-        setPendingIssuances([])
-        setPendingRSR([])
+      } catch (e) {
+        // TODO: handle error case
+        console.log('error fetching pending', e)
       }
-    } catch (e) {
-      // TODO: handle error case
-      console.log('error fetching pending', e)
-    }
-  }, [account, facadeContract, rToken?.address])
+    },
+    []
+  )
 
   useEffect(() => {
-    if (rToken && !rToken.isRSV) {
-      fetchPending()
+    if (rToken && !rToken.isRSV && facadeContract && blockNumber && account) {
+      fetchPending(account, rToken.address, facadeContract)
+    } else {
+      setPendingIssuances([])
+      setPendingRSR([])
     }
-  }, [fetchPending, blockNumber, chainId])
+  }, [rToken?.address, facadeContract, account, blockNumber, chainId])
 
   return null
 }
