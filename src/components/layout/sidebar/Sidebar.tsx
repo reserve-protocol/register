@@ -60,7 +60,7 @@ const Navigation = ({
     []
   )
   const pages = useMemo(() => {
-    PAGES[0].title = `${currentToken?.symbol} Overview`
+    PAGES[0].title = `${currentToken?.symbol ?? ''} Overview`
 
     if (currentToken?.isRSV) {
       return [...PAGES.slice(0, 2)]

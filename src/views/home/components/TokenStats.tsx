@@ -44,17 +44,19 @@ const TokenStats = () => {
     if (data) {
       return {
         totalValueLockedUSD: `$${formatCurrency(
-          +data.protocol?.totalValueLockedUSD
+          +data.protocol?.totalValueLockedUSD || 0
         )}`,
-        totalRTokenUSD: `$${formatCurrency(+data.protocol?.totalRTokenUSD)}`,
+        totalRTokenUSD: `$${formatCurrency(
+          +data.protocol?.totalRTokenUSD || 0
+        )}`,
         cumulativeVolumeUSD: `$${formatCurrency(
-          +data.protocol?.cumulativeVolumeUSD
+          +data.protocol?.cumulativeVolumeUSD || 0
         )}`,
         cumulativeRTokenRevenueUSD: `$${formatCurrency(
-          +data.protocol?.cumulativeRTokenRevenueUSD
+          +data.protocol?.cumulativeRTokenRevenueUSD || 0
         )}`,
         cumulativeInsuranceRevenueUSD: `$${formatCurrency(
-          +data.protocol?.cumulativeInsuranceRevenueUSD
+          +data.protocol?.cumulativeInsuranceRevenueUSD || 0
         )}`,
         transactionCount: data.protocol?.transactionCount,
       }
