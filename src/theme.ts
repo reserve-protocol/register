@@ -84,7 +84,7 @@ export const colors = {
 }
 
 export const theme: Theme = {
-  breakpoints: ['52em', '64em', '100em'],
+  breakpoints: ['52em', '64em', '72em', '100em'],
   space: [0, 4, 8, 16, 24, 32, 64, 128, 256, 512],
   fonts: {
     body: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
@@ -226,8 +226,9 @@ export const theme: Theme = {
     },
     th: {
       border: 'none',
-      px: 2,
-      pl: 3,
+      px: 3,
+      color: 'lightText',
+      // pl: 3,
       fontWeight: 'normal',
     },
     tbody: {
@@ -239,6 +240,7 @@ export const theme: Theme = {
     },
     thead: {
       display: 'table',
+      width: '100%',
       color: 'lightText',
       marginBottom: -20,
     },

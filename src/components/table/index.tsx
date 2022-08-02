@@ -127,37 +127,27 @@ export function Table<D extends { [key: string]: any }>({
         {...rest}
         sx={{ ...sx, maxHeight, borderSpacing: compact ? 0 : undefined }}
       >
-        {header && (
-          <Box
-            as="thead"
-            variant="styles.thead"
-            sx={{ marginBottom: compact ? 0 : undefined }}
-          >
-            {headerGroups.map((headerGroup: any) => (
-              <Box as="tr" {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column: any) => (
-                  <Box
-                    as="th"
-                    variant="styles.th"
-                    {...column.getHeaderProps(
-                      sorting ? column.getSortByToggleProps() : undefined
-                    )}
-                  >
-                    <Flex pb={2} variant="layout.verticalAlign">
-                      <Box sx={{ mr: 1, flex: 1 }}>
-                        {column.render('Header')}
-                      </Box>
-                      {sorting &&
-                        column.isSorted &&
-                        (column.isSortedDesc ? '.' : 'up')}
-                    </Flex>
-                  </Box>
-                ))}
-              </Box>
-            ))}
-          </Box>
-        )}
         <Box as="tbody" variant="styles.tbody" {...getTableBodyProps()}>
+          {headerGroups.map((headerGroup: any) => (
+            <Box as="tr" {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column: any) => (
+                <Box
+                  as="th"
+                  variant="styles.th"
+                  {...column.getHeaderProps(
+                    sorting ? column.getSortByToggleProps() : undefined
+                  )}
+                >
+                  <Flex pb={compact ? 2 : 0} variant="layout.verticalAlign">
+                    <Box sx={{ mr: 1, flex: 1 }}>{column.render('Header')}</Box>
+                    {sorting &&
+                      column.isSorted &&
+                      (column.isSortedDesc ? '.' : 'up')}
+                  </Flex>
+                </Box>
+              ))}
+            </Box>
+          ))}
           {(page || rows).map(
             (
               row: Row &

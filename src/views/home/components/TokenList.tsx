@@ -5,6 +5,7 @@ import { useMemo } from 'react'
 import { Box, BoxProps } from 'theme-ui'
 import tokenList from 'rtokens'
 
+// TODO: no reason for filtering the token list, until 50> tokens
 const mockTokens: any = [
   { name: 'USD1', price: '$1.00', balance: '0.00', value: '0.00', apy: '0.00' },
   {
