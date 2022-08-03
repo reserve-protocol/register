@@ -1,7 +1,8 @@
+import { formatEther } from '@ethersproject/units'
 import { Trans } from '@lingui/macro'
-import { RToken } from 'abis/types'
+import { Facade } from 'abis/types'
 import TokenLogo from 'components/icons/TokenLogo'
-import { useRTokenContract } from 'hooks/useContract'
+import { useFacadeContract } from 'hooks/useContract'
 import useRToken from 'hooks/useRToken'
 import { useAtom, useAtomValue } from 'jotai'
 import { useCallback, useEffect } from 'react'
@@ -86,18 +87,28 @@ const getAngles = (value: number) => {
 const AssetOverview = () => {
   const rToken = useRToken()
   const [distribution, setDistribution] = useAtom(rTokenDistributionAtom)
-  const contract = useRTokenContract(rToken?.address)
+  const facade = useFacadeContract()
   const price = useAtomValue(rTokenPriceAtom)
 
-  const getDistribution = useCallback(async (rTokenContract: RToken) => {
-    // const quote =
-  }, [])
+  const getDistribution = useCallback(
+    async (facadeContract: Facade, tokenAddress: string) => {
+      const [backing, insurance] = await facadeContract.backingOverview(
+        tokenAddress
+      )
+
+      setDistribution({
+        backing: Math.round(Number(formatEther(backing)) * 100),
+        insurance: Math.round(Number(formatEther(insurance)) * 100),
+      })
+    },
+    []
+  )
 
   useEffect(() => {
-    if (contract) {
-      getDistribution(contract)
+    if (facade && rToken?.address) {
+      getDistribution(facade, rToken.address)
     }
-  }, [contract])
+  }, [facade, rToken?.address])
 
   return (
     <Card py={5}>
@@ -117,13 +128,13 @@ const AssetOverview = () => {
           <Text variant="legend">
             <Trans>Backing</Trans>
             <Box as="span" ml={2} sx={{ fontWeight: 'bold', color: 'text' }}>
-              100%
+              {distribution.backing}%
             </Box>
           </Text>
           <Text variant="legend">
             <Trans>Insurance coverage</Trans>
             <Box as="span" ml={2} sx={{ fontWeight: 'bold', color: 'text' }}>
-              30%
+              {distribution.insurance}%
             </Box>
           </Text>{' '}
         </Flex>

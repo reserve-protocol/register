@@ -17,6 +17,30 @@
         "type": "address"
       }
     ],
+    "name": "backingOverview",
+    "outputs": [
+      {
+        "internalType": "uint192",
+        "name": "backing",
+        "type": "uint192"
+      },
+      {
+        "internalType": "uint192",
+        "name": "insurance",
+        "type": "uint192"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IRToken",
+        "name": "rToken",
+        "type": "address"
+      }
+    ],
     "name": "basketTokens",
     "outputs": [
       {

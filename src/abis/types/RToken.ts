@@ -51,7 +51,8 @@ export declare namespace RTokenP1 {
 export interface RTokenInterface extends utils.Interface {
   functions: {
     "DOMAIN_SEPARATOR()": FunctionFragment;
-    "MIN_ISS_RATE()": FunctionFragment;
+    "MAX_ISSUANCE_RATE()": FunctionFragment;
+    "MIN_BLOCK_ISSUANCE_LIMIT()": FunctionFragment;
     "allVestAt()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
@@ -94,7 +95,8 @@ export interface RTokenInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "DOMAIN_SEPARATOR"
-      | "MIN_ISS_RATE"
+      | "MAX_ISSUANCE_RATE"
+      | "MIN_BLOCK_ISSUANCE_LIMIT"
       | "allVestAt"
       | "allowance"
       | "approve"
@@ -139,7 +141,11 @@ export interface RTokenInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "MIN_ISS_RATE",
+    functionFragment: "MAX_ISSUANCE_RATE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "MIN_BLOCK_ISSUANCE_LIMIT",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "allVestAt", values?: undefined): string;
@@ -268,7 +274,11 @@ export interface RTokenInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "MIN_ISS_RATE",
+    functionFragment: "MAX_ISSUANCE_RATE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "MIN_BLOCK_ISSUANCE_LIMIT",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "allVestAt", data: BytesLike): Result;
@@ -366,8 +376,8 @@ export interface RTokenInterface extends utils.Interface {
     "Issuance(address,uint256,uint192)": EventFragment;
     "IssuanceRateSet(uint192,uint192)": EventFragment;
     "IssuanceStarted(address,uint256,uint256,uint192,address[],uint256[],uint192)": EventFragment;
-    "IssuancesCanceled(address,uint256,uint256)": EventFragment;
-    "IssuancesCompleted(address,uint256,uint256)": EventFragment;
+    "IssuancesCanceled(address,uint256,uint256,uint256)": EventFragment;
+    "IssuancesCompleted(address,uint256,uint256,uint256)": EventFragment;
     "Melted(uint256)": EventFragment;
     "Redemption(address,uint256,uint192)": EventFragment;
     "RewardsClaimed(address,uint256)": EventFragment;
@@ -487,9 +497,10 @@ export interface IssuancesCanceledEventObject {
   issuer: string;
   firstId: BigNumber;
   endId: BigNumber;
+  amount: BigNumber;
 }
 export type IssuancesCanceledEvent = TypedEvent<
-  [string, BigNumber, BigNumber],
+  [string, BigNumber, BigNumber, BigNumber],
   IssuancesCanceledEventObject
 >;
 
@@ -500,9 +511,10 @@ export interface IssuancesCompletedEventObject {
   issuer: string;
   firstId: BigNumber;
   endId: BigNumber;
+  amount: BigNumber;
 }
 export type IssuancesCompletedEvent = TypedEvent<
-  [string, BigNumber, BigNumber],
+  [string, BigNumber, BigNumber, BigNumber],
   IssuancesCompletedEventObject
 >;
 
@@ -587,7 +599,9 @@ export interface RToken extends BaseContract {
   functions: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<[string]>;
 
-    MIN_ISS_RATE(overrides?: CallOverrides): Promise<[BigNumber]>;
+    MAX_ISSUANCE_RATE(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    MIN_BLOCK_ISSUANCE_LIMIT(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     allVestAt(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -703,7 +717,7 @@ export interface RToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    price(overrides?: CallOverrides): Promise<[BigNumber]>;
+    price(overrides?: CallOverrides): Promise<[BigNumber] & { p: BigNumber }>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
 
@@ -759,7 +773,9 @@ export interface RToken extends BaseContract {
 
   DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
 
-  MIN_ISS_RATE(overrides?: CallOverrides): Promise<BigNumber>;
+  MAX_ISSUANCE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
+
+  MIN_BLOCK_ISSUANCE_LIMIT(overrides?: CallOverrides): Promise<BigNumber>;
 
   allVestAt(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -928,7 +944,9 @@ export interface RToken extends BaseContract {
   callStatic: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
 
-    MIN_ISS_RATE(overrides?: CallOverrides): Promise<BigNumber>;
+    MAX_ISSUANCE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    MIN_BLOCK_ISSUANCE_LIMIT(overrides?: CallOverrides): Promise<BigNumber>;
 
     allVestAt(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1164,26 +1182,30 @@ export interface RToken extends BaseContract {
       blockAvailableAt?: null
     ): IssuanceStartedEventFilter;
 
-    "IssuancesCanceled(address,uint256,uint256)"(
+    "IssuancesCanceled(address,uint256,uint256,uint256)"(
       issuer?: string | null,
       firstId?: BigNumberish | null,
-      endId?: BigNumberish | null
+      endId?: BigNumberish | null,
+      amount?: null
     ): IssuancesCanceledEventFilter;
     IssuancesCanceled(
       issuer?: string | null,
       firstId?: BigNumberish | null,
-      endId?: BigNumberish | null
+      endId?: BigNumberish | null,
+      amount?: null
     ): IssuancesCanceledEventFilter;
 
-    "IssuancesCompleted(address,uint256,uint256)"(
+    "IssuancesCompleted(address,uint256,uint256,uint256)"(
       issuer?: string | null,
       firstId?: BigNumberish | null,
-      endId?: BigNumberish | null
+      endId?: BigNumberish | null,
+      amount?: null
     ): IssuancesCompletedEventFilter;
     IssuancesCompleted(
       issuer?: string | null,
       firstId?: BigNumberish | null,
-      endId?: BigNumberish | null
+      endId?: BigNumberish | null,
+      amount?: null
     ): IssuancesCompletedEventFilter;
 
     "Melted(uint256)"(amount?: null): MeltedEventFilter;
@@ -1192,12 +1214,12 @@ export interface RToken extends BaseContract {
     "Redemption(address,uint256,uint192)"(
       redeemer?: string | null,
       amount?: BigNumberish | null,
-      baskets?: BigNumberish | null
+      baskets?: null
     ): RedemptionEventFilter;
     Redemption(
       redeemer?: string | null,
       amount?: BigNumberish | null,
-      baskets?: BigNumberish | null
+      baskets?: null
     ): RedemptionEventFilter;
 
     "RewardsClaimed(address,uint256)"(
@@ -1227,7 +1249,9 @@ export interface RToken extends BaseContract {
   estimateGas: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<BigNumber>;
 
-    MIN_ISS_RATE(overrides?: CallOverrides): Promise<BigNumber>;
+    MAX_ISSUANCE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    MIN_BLOCK_ISSUANCE_LIMIT(overrides?: CallOverrides): Promise<BigNumber>;
 
     allVestAt(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1391,7 +1415,11 @@ export interface RToken extends BaseContract {
   populateTransaction: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    MIN_ISS_RATE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    MAX_ISSUANCE_RATE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    MIN_BLOCK_ISSUANCE_LIMIT(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     allVestAt(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

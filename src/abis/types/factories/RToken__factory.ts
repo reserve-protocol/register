@@ -215,6 +215,12 @@ const _abi = [
         name: "endId",
         type: "uint256",
       },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
     ],
     name: "IssuancesCanceled",
     type: "event",
@@ -238,6 +244,12 @@ const _abi = [
         indexed: true,
         internalType: "uint256",
         name: "endId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
         type: "uint256",
       },
     ],
@@ -273,7 +285,7 @@ const _abi = [
         type: "uint256",
       },
       {
-        indexed: true,
+        indexed: false,
         internalType: "uint192",
         name: "baskets",
         type: "uint192",
@@ -354,7 +366,20 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "MIN_ISS_RATE",
+    name: "MAX_ISSUANCE_RATE",
+    outputs: [
+      {
+        internalType: "uint192",
+        name: "",
+        type: "uint192",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "MIN_BLOCK_ISSUANCE_LIMIT",
     outputs: [
       {
         internalType: "uint192",
@@ -861,7 +886,7 @@ const _abi = [
     outputs: [
       {
         internalType: "uint192",
-        name: "",
+        name: "p",
         type: "uint192",
       },
     ],

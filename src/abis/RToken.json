@@ -206,6 +206,12 @@
         "internalType": "uint256",
         "name": "endId",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
       }
     ],
     "name": "IssuancesCanceled",
@@ -230,6 +236,12 @@
         "indexed": true,
         "internalType": "uint256",
         "name": "endId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
         "type": "uint256"
       }
     ],
@@ -265,7 +277,7 @@
         "type": "uint256"
       },
       {
-        "indexed": true,
+        "indexed": false,
         "internalType": "uint192",
         "name": "baskets",
         "type": "uint192"
@@ -346,7 +358,20 @@
   },
   {
     "inputs": [],
-    "name": "MIN_ISS_RATE",
+    "name": "MAX_ISSUANCE_RATE",
+    "outputs": [
+      {
+        "internalType": "uint192",
+        "name": "",
+        "type": "uint192"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MIN_BLOCK_ISSUANCE_LIMIT",
     "outputs": [
       {
         "internalType": "uint192",
@@ -853,7 +878,7 @@
     "outputs": [
       {
         "internalType": "uint192",
-        "name": "",
+        "name": "p",
         "type": "uint192"
       }
     ],

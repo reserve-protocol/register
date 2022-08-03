@@ -31,7 +31,12 @@ export const blockTimestampAtom = atom<number>(0)
  */
 
 // Cache layer for loaded tokens
-export const rTokenDistributionAtom = atom<any>({})
+// TODO: temporal
+export const rTokenDistributionAtom = atom<any>({
+  backing: 0,
+  insurance: 0,
+})
+
 export const reserveTokensAtom = atomWithStorage<{
   [x: string]: ReserveToken
 }>('reserveTokens', {})

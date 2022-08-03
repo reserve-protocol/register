@@ -38,6 +38,7 @@ export declare namespace IFacadeP1 {
 
 export interface FacadeInterface extends utils.Interface {
   functions: {
+    "backingOverview(address)": FunctionFragment;
     "basketTokens(address)": FunctionFragment;
     "claimRewards(address)": FunctionFragment;
     "currentAssets(address)": FunctionFragment;
@@ -52,6 +53,7 @@ export interface FacadeInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "backingOverview"
       | "basketTokens"
       | "claimRewards"
       | "currentAssets"
@@ -64,6 +66,10 @@ export interface FacadeInterface extends utils.Interface {
       | "totalAssetValue"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "backingOverview",
+    values: [string]
+  ): string;
   encodeFunctionData(
     functionFragment: "basketTokens",
     values: [string]
@@ -102,6 +108,10 @@ export interface FacadeInterface extends utils.Interface {
     values: [string]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "backingOverview",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "basketTokens",
     data: BytesLike
@@ -167,6 +177,13 @@ export interface Facade extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    backingOverview(
+      rToken: string,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber] & { backing: BigNumber; insurance: BigNumber }
+    >;
+
     basketTokens(
       rToken: string,
       overrides?: CallOverrides
@@ -230,6 +247,13 @@ export interface Facade extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
+  backingOverview(
+    rToken: string,
+    overrides?: CallOverrides
+  ): Promise<
+    [BigNumber, BigNumber] & { backing: BigNumber; insurance: BigNumber }
+  >;
+
   basketTokens(rToken: string, overrides?: CallOverrides): Promise<string[]>;
 
   claimRewards(
@@ -279,6 +303,13 @@ export interface Facade extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    backingOverview(
+      rToken: string,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber] & { backing: BigNumber; insurance: BigNumber }
+    >;
+
     basketTokens(rToken: string, overrides?: CallOverrides): Promise<string[]>;
 
     claimRewards(rToken: string, overrides?: CallOverrides): Promise<void>;
@@ -332,6 +363,11 @@ export interface Facade extends BaseContract {
   filters: {};
 
   estimateGas: {
+    backingOverview(
+      rToken: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     basketTokens(rToken: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     claimRewards(
@@ -382,6 +418,11 @@ export interface Facade extends BaseContract {
   };
 
   populateTransaction: {
+    backingOverview(
+      rToken: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     basketTokens(
       rToken: string,
       overrides?: CallOverrides
