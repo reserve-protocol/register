@@ -73,6 +73,7 @@ const ReserveTokenUpdater = () => {
   const resetMetrics = useResetAtom(tokenMetricsAtom)
   const facadeContract = useFacadeContract()
   const [searchParams] = useSearchParams()
+  const currentAddress = searchParams.get('token')
   const { provider } = useWeb3React()
 
   const getTokenMeta = useCallback(
@@ -111,12 +112,12 @@ const ReserveTokenUpdater = () => {
   )
 
   useEffect(() => {
-    const token = isAddress(searchParams.get('token') ?? '')
+    const token = isAddress(currentAddress ?? '')
 
-    if (token) {
+    if (token && token !== selectedAddress) {
       setSelectedToken(token)
     }
-  }, [])
+  }, [currentAddress])
 
   useEffect(() => {
     if (selectedAddress && facadeContract) {
