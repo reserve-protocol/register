@@ -32,13 +32,14 @@ const rTokenMetricsQuery = gql`
   query GetProtocolMetrics($id: String!, $from: String!, $to: String!) {
     rtoken(id: $id) {
       insurance
-      token {
-        totalSupply
-        transferCount
-        cumulativeVolume
-      }
-      hourlySnapshots(where: { timestamp_gte: $from, timestamp_lte: $to }) {
-        id
+    }
+    token(id: $id) {
+      totalSupply
+      transferCount
+      cumulativeVolume
+      dailyTokenSnapshot(orderBy: timestamp, orderDirection: desc, first: 1) {
+        dailyVolume
+        dailyEventCount
       }
     }
   }
@@ -47,7 +48,7 @@ const rTokenMetricsQuery = gql`
 const useTokenStats = (rTokenId: string): TokenStats => {
   const currentTime = useAtomValue(blockTimestampAtom)
   const [stats, setStats] = useAtom(tokenMetricsAtom)
-  const { data, error } = useQuery(rTokenMetricsQuery, {
+  const { data } = useQuery(rTokenMetricsQuery, {
     id: rTokenId,
     from: (currentTime - 24 * 60 * 60).toString(),
     to: currentTime.toString(),
@@ -56,16 +57,21 @@ const useTokenStats = (rTokenId: string): TokenStats => {
   const rTokenPrice = useAtomValue(rTokenPriceAtom)
 
   useEffect(() => {
-    if (data && data.rtoken) {
+    if (data) {
       const insurance = +formatEther(data?.rtoken.insurance)
-      const supply = +formatEther(data?.rtoken.token.totalSupply)
-      const cumulativeVolume = +formatEther(data?.rtoken.token.cumulativeVolume)
+      const supply = +formatEther(data?.token.totalSupply)
+      const cumulativeVolume = +formatEther(data?.token.cumulativeVolume)
+      const dailyVolume = +formatEther(
+        data?.token.dailyTokenSnapshot[0].dailyVolume
+      )
 
       setStats({
         insurance,
         supply,
         cumulativeVolume,
-        transferCount: +data?.rtoken.token.transferCount,
+        transferCount: +data?.token.transferCount,
+        dailyTransferCount: +data?.token.dailyTokenSnapshot[0].dailyEventCount,
+        dailyVolume: `$${formatCurrency(dailyVolume)}`,
         insuranceUsd: `$${formatCurrency(insurance * rsrPrice)}`,
         supplyUsd: `$${formatCurrency(supply * rTokenPrice)}`,
         cumulativeVolumeUsd: `$${formatCurrency(
@@ -73,7 +79,7 @@ const useTokenStats = (rTokenId: string): TokenStats => {
         )}`,
       })
     }
-  }, [JSON.stringify(data)])
+  }, [JSON.stringify(data), rTokenPrice])
 
   return stats
 }

@@ -73,7 +73,7 @@ export function BlockUpdater() {
     if (block && provider) {
       provider.getBlock(block).then((blockData) => {
         if (blockData?.timestamp) {
-          setBlockTimestamp(blockData.timestamp * 1000)
+          setBlockTimestamp(blockData.timestamp)
         }
       })
     }

@@ -154,4 +154,6 @@ export interface TokenStats {
   cumulativeVolume: number
   cumulativeVolumeUsd: string
   transferCount: number
+  dailyTransferCount: number
+  dailyVolume: string
 }

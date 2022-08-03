@@ -96,4 +96,6 @@ export const tokenMetricsAtom = atomWithReset<TokenStats>({
   cumulativeVolume: 0,
   cumulativeVolumeUsd: '$0',
   transferCount: 0,
+  dailyTransferCount: 0,
+  dailyVolume: '$0',
 })
