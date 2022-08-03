@@ -23,6 +23,8 @@ export const defaultProtocolMetrics = {
   cumulativeRTokenRevenueUSD: '$0',
   cumulativeInsuranceRevenueUSD: '$0',
   transactionCount: '0',
+  dailyTransactionCount: '0',
+  dailyVolume: '$0',
 }
 
 const protocolMetricsQuery = gql`
@@ -35,6 +37,20 @@ const protocolMetricsQuery = gql`
       cumulativeInsuranceRevenueUSD
       transactionCount
     }
+    financialsDailySnapshots(
+      orderBy: timestamp
+      orderDirection: desc
+      fist: 1
+    ) {
+      dailyVolumeUSD
+    }
+    usageMetricsDailySnapshots(
+      orderBy: timestamp
+      orderDirection: desc
+      first: 1
+    ) {
+      dailyTransactionCount
+    }
   }
 `
 
@@ -42,6 +58,7 @@ const TokenStats = () => {
   const { data } = useQuery(protocolMetricsQuery)
   const metrics = useMemo(() => {
     if (data) {
+      console.log('dat', data)
       return {
         totalValueLockedUSD: `$${formatCurrency(
           +data.protocol?.totalValueLockedUSD || 0
@@ -58,7 +75,12 @@ const TokenStats = () => {
         cumulativeInsuranceRevenueUSD: `$${formatCurrency(
           +data.protocol?.cumulativeInsuranceRevenueUSD || 0
         )}`,
-        transactionCount: data.protocol?.transactionCount,
+        transactionCount: data.protocol?.transactionCount || 0,
+        dailyTransactionCount:
+          data.usageMetricsDailySnapshots[0]?.dailyTransactionCount || 0,
+        dailyVolume: `$${formatCurrency(
+          +data.financialsDailySnapshots[0]?.dailyVolumeUSD || 0
+        )}`,
       }
     }
 
@@ -98,12 +120,12 @@ const TokenStats = () => {
           />
         </Grid>
         <Flex mt={2} sx={{ flexWrap: 'wrap' }}>
-          <Stat title={t`24h Tx Vol`} value="$0" />
+          <Stat title={t`24h Tx Vol`} value={metrics.dailyVolume} />
           <Stat
             title={t`Cumulative Tx Volume`}
             value={metrics.cumulativeVolumeUSD}
           />
-          <Stat title={t`24h Txs`} value="0" />
+          <Stat title={t`24h Txs`} value={metrics.dailyTransactionCount} />
           <Stat title={t`Cumulative Txs`} value={metrics.transactionCount} />
         </Flex>
       </Box>
