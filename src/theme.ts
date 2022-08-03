@@ -211,9 +211,9 @@ export const theme: Theme = {
       borderSpacing: '0 14px',
       display: 'flex',
       flexDirection: 'column',
-      '&::-webkit-scrollbar': {
-        display: 'none',
-      },
+      // '&::-webkit-scrollbar': {
+      //   display: 'none',
+      // },
       scrollbarWidth: 'none',
 
       p: {
