@@ -29,8 +29,9 @@ const TokenForm = (props: BoxProps) => (
     />
     <FormField
       label={t`Ownership address`}
-      placeholder={t`Input ownership address`}
+      placeholder={t`Ownership address`}
       name="ownerAddress"
+      disabled
       options={{
         required: t`RToken owner address is required`,
         validate: (value) => !!isAddress(value) || t`Invalid address`,

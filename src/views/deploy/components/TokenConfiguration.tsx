@@ -13,7 +13,7 @@ import TokenForm from './TokenForm'
  * Display token forms
  */
 const TokenConfiguration = () => (
-  <Grid gap={5} columns={[1, 2]}>
+  <Grid gap={5} columns={2}>
     <Box>
       <TokenForm mb={4} />
       <BackingForm mb={4} />
