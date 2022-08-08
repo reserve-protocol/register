@@ -24,18 +24,20 @@ const DeployHeader = (props: BoxProps) => {
 
   return (
     <Flex variant="layout.verticalAlign" {...props}>
-      <IconButton
-        mr={3}
-        onClick={back}
-        sx={{
-          cursor: 'pointer',
-          border: '1px solid',
-          borderColor: 'border',
-          borderRadius: 10,
-        }}
-      >
-        <ChevronLeft />
-      </IconButton>
+      {!!current && (
+        <IconButton
+          mr={3}
+          onClick={back}
+          sx={{
+            cursor: 'pointer',
+            border: '1px solid',
+            borderColor: 'border',
+            borderRadius: 10,
+          }}
+        >
+          <ChevronLeft size={14} />
+        </IconButton>
+      )}
       <Box>
         <Text sx={{ display: 'block', fontSize: 4, fontWeight: 500 }}>
           <Trans>Define Baskets</Trans>

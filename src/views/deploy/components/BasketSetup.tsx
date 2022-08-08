@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Grid } from 'theme-ui'
+import { Box, Divider, Grid } from 'theme-ui'
 import BackupBasket from './BackupBasket'
 import CollateralModal from './CollateralModal'
 import PrimaryBasket from './PrimaryBasket'
@@ -16,8 +16,10 @@ const BasketSetup = () => {
 
   return (
     <>
-      <Grid gap={5} columns={[1, 2]} mb={4}>
-        <PrimaryBasket onAdd={setCollateralModal} />
+      <Grid columns={2} mb={4} sx={{ backgroundColor: 'contentBackground' }}>
+        <Box sx={{ borderRight: '1px solid', borderColor: 'border' }}>
+          <PrimaryBasket onAdd={setCollateralModal} />
+        </Box>
         <BackupBasket onAdd={setCollateralModal} />
       </Grid>
       {!!collateralModal && (

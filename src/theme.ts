@@ -113,6 +113,11 @@ export const theme: Theme = {
       display: 'block',
       color: 'secondaryText',
     },
+    title: {
+      fontSize: 3,
+      fontWeight: 500,
+      display: 'block',
+    },
     sectionTitle: {
       fontSize: 3,
       fontWeight: 400,

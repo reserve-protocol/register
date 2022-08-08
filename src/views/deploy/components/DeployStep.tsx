@@ -31,8 +31,10 @@ const DeploymentStepTracker = ({ step }: { step: number }) => {
         borderColor: 'border',
       }}
     >
-      {Steps.map((step: any) => (
-        <Box mr={3}>{step}</Box>
+      {Steps.map((step: any, index) => (
+        <Box key={index} mr={3}>
+          {step}
+        </Box>
       ))}
     </Flex>
   )

@@ -14,7 +14,6 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 import { Trans } from '@lingui/macro'
-import { TitleCard } from 'components'
 import { SmallButton } from 'components/button'
 import Help from 'components/help'
 import TokenLogo from 'components/icons/TokenLogo'
@@ -101,28 +100,17 @@ const EmergencyCollateral = ({
   }
 
   return (
-    <TitleCard
-      customTitle={
-        <Flex sx={{ flexDirection: 'column' }} my={-1}>
-          <Text>
-            <Trans>Emergency collateral</Trans>
-          </Text>
-          <Text>- {targetUnit}</Text>
-        </Flex>
-      }
-      right={
-        !readOnly && (
-          <Flex variant="layout.verticalAlign">
-            <SmallButton onClick={() => onAdd(targetUnit)} mr={2}>
-              <Trans>Add</Trans>
-            </SmallButton>
-            <Help content="TODO" />
-          </Flex>
-        )
-      }
-      {...props}
-    >
+    <Box {...props} m={4} ml={2}>
       <Flex variant="layout.verticalAlign">
+        <Text variant="title" mr={2}>
+          <Trans>Emergency collateral</Trans>
+        </Text>
+        <Text variant="title">- {targetUnit}</Text>
+        <SmallButton onClick={() => onAdd(targetUnit)} ml="auto">
+          <Trans>+ Add</Trans>
+        </SmallButton>
+      </Flex>
+      <Flex variant="layout.verticalAlign" mt={4}>
         <Text>
           <Trans>Diversity factor</Trans>
         </Text>
@@ -194,7 +182,7 @@ const EmergencyCollateral = ({
           </SortableContext>
         </DndContext>
       )}
-    </TitleCard>
+    </Box>
   )
 }
 

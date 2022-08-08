@@ -1,9 +1,6 @@
-import { t, Trans } from '@lingui/macro'
-import { TitleCard } from 'components'
+import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
-import Help from 'components/help'
 import { useAtomValue } from 'jotai'
-import { useFormContext } from 'react-hook-form'
 import { Box, Divider, Flex, Text } from 'theme-ui'
 import { Basket, basketAtom } from '../atoms'
 import UnitBasket from './UnitBasket'
@@ -26,20 +23,15 @@ const getBasketComposition = (basket: Basket) => {
     .substring(2)
 }
 
+// TODO: Better placeholder
 const Placeholder = () => (
-  <Box>
-    <Flex variant="layout.verticalAlign">
-      <Text py={1}>
-        <Trans>Basket</Trans>
-      </Text>
-      <Box mx="auto" />
-      <Text>0%</Text>
-      <Help ml={2} content="TODO" />
-    </Flex>
-    <Divider mx={-4} my={3} />
+  <Box sx={{ textAlign: 'center' }} mt={6}>
+    <Text sx={{ fontWeight: 500, display: 'block' }}>
+      <Trans>Empty Basket</Trans>
+    </Text>
     <Text variant="legend" sx={{ fontSize: 1 }}>
       <Trans>
-        This is the basket & weights you want your RToken to use as it’s primary
+        The basket & weights you want your RToken to use as it’s primary
         backing.
       </Trans>
     </Text>
@@ -51,52 +43,36 @@ const Placeholder = () => (
  * Display primary basket (per target unit) and token composition
  */
 const PrimaryBasket = ({ onAdd = () => {}, readOnly = false }: Props) => {
-  const { watch } = useFormContext()
-  const ticker = watch('ticker') || 'RToken'
   const basket = useAtomValue(basketAtom)
   const units = Object.keys(basket)
 
   return (
-    <TitleCard
-      sx={(theme: any) => ({
-        height: 'fit-content',
-        opacity: units.length ? 70 : 100,
-      })}
-      title={t`Primary basket`}
-      right={
-        !readOnly && (
-          <Flex variant="layout.verticalAlign">
-            <SmallButton onClick={() => onAdd({ basket: 'primary' })} mr={2}>
-              <Trans>Add</Trans>
-            </SmallButton>
-            <Help
-              content={
-                <Text>
-                  <Trans>TODO: Help copy</Trans>
-                </Text>
-              }
-            />
-          </Flex>
-        )
-      }
-    >
+    <Box m={4}>
+      <Flex variant="layout.verticalAlign">
+        <Text variant="title">Primary Basket</Text>
+        <SmallButton onClick={() => onAdd({ basket: 'primary' })} ml="auto">
+          <Trans>+ Add</Trans>
+        </SmallButton>
+      </Flex>
+      <Flex mt={5}>
+        <Text>1 [RToken] =</Text>
+        <Text ml="auto">
+          {!!units.length ? getBasketComposition(basket) : '--'}
+        </Text>
+      </Flex>
+      <Divider mt={4} />
       {!units.length && <Placeholder />}
-      {!!units.length && (
-        <Flex>
-          <Text>1 {ticker} =</Text>
-          <Text ml="auto">{getBasketComposition(basket)}</Text>
-        </Flex>
-      )}
-      {units.map((targetUnit) => (
+
+      {units.map((targetUnit, index) => (
         <UnitBasket
-          mt={3}
+          mt={!!index ? 3 : 0}
           readOnly={readOnly}
           key={targetUnit}
           data={basket[targetUnit]}
           unit={targetUnit}
         />
       ))}
-    </TitleCard>
+    </Box>
   )
 }
 
