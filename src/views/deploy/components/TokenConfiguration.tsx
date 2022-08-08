@@ -1,13 +1,21 @@
 import { Trans } from '@lingui/macro'
 import { Button, InfoBox } from 'components'
+import { SmallButton } from 'components/button'
+import Help from 'components/help'
 import RTokenLight from 'components/icons/RTokenLight'
 import { useState } from 'react'
+import { ChevronDown, ChevronUp } from 'react-feather'
 import { borderRadius } from 'theme'
-import { Box, Divider, Grid, Text } from 'theme-ui'
+import { Box, Divider, Flex, Grid, Text } from 'theme-ui'
 import BackingForm from './BackingForm'
 import OtherForm from './OtherForm'
 import StakingTokenInfo from './StakingTokenInfo'
 import TokenForm from './TokenForm'
+
+const chevronProps = {
+  marginLeft: 10,
+  size: 14,
+}
 
 /**
  * View: Deploy -> Token setup
@@ -22,9 +30,37 @@ const TokenConfiguration = () => {
       sx={{ backgroundColor: 'contentBackground', borderRadius: 10 }}
     >
       <Box p={4} sx={{ borderRight: '1px solid', borderColor: 'border' }}>
-        <TokenForm mb={4} />
-        <BackingForm mb={4} />
-        <OtherForm />
+        <TokenForm />
+        <Divider my={4} />
+        <Flex mt={3} variant="layout.verticalAlign">
+          <Text sx={{ fontSize: 4 }}>
+            <Trans>Advanced config:</Trans>
+          </Text>
+          <Text mx={2} variant="title">
+            <Trans>13 params</Trans>
+          </Text>
+          <Help content="testtesttest" />
+          <SmallButton
+            ml="auto"
+            variant="muted"
+            onClick={() => setAdvanceConfig(!advanceConfig)}
+          >
+            <Box variant="layout.verticalAlign">
+              <Trans>Customize</Trans>
+              {advanceConfig ? (
+                <ChevronUp {...chevronProps} />
+              ) : (
+                <ChevronDown {...chevronProps} />
+              )}
+            </Box>
+          </SmallButton>
+        </Flex>
+        {advanceConfig && (
+          <>
+            <BackingForm my={4} />
+            <OtherForm />
+          </>
+        )}
       </Box>
       <Box p={4}>
         <StakingTokenInfo />

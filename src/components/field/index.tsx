@@ -52,6 +52,7 @@ export const FormField = ({
   placeholder,
   name,
   options,
+  disabled,
   ...props
 }: FormFieldProps) => {
   const {
@@ -63,6 +64,7 @@ export const FormField = ({
     () => (
       <Field {...props}>
         <Input
+          disabled={!!disabled}
           placeholder={placeholder}
           sx={{ borderColor: errors[name] ? 'danger' : 'inputBorder' }}
           {...register(name, options)}

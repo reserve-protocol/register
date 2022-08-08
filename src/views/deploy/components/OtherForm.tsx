@@ -1,9 +1,8 @@
-import { t } from '@lingui/macro'
-import { TitleCard } from 'components'
+import { t, Trans } from '@lingui/macro'
 import Field, { FormField } from 'components/field'
 import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { Box, BoxProps, Slider } from 'theme-ui'
+import { Box, BoxProps, Slider, Text } from 'theme-ui'
 import { decimalPattern, numberPattern } from 'utils'
 
 /**
@@ -22,7 +21,10 @@ const OtherForm = (props: BoxProps) => {
   }
 
   return (
-    <TitleCard title={t`Other`} {...props}>
+    <Box {...props}>
+      <Text variant="title" mb={4}>
+        <Trans>Other</Trans>
+      </Text>
       <Field
         label={t`Reward distribution [${rTokenDist}% rToken - ${rsrDist}% RSR]`}
         mb={4}
@@ -90,7 +92,7 @@ const OtherForm = (props: BoxProps) => {
           max: 1000000000,
         }}
       />
-    </TitleCard>
+    </Box>
   )
 }
 

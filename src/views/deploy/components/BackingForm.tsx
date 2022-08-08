@@ -1,14 +1,16 @@
-import { t } from '@lingui/macro'
-import { TitleCard } from 'components'
+import { t, Trans } from '@lingui/macro'
 import { FormField } from 'components/field'
-import { BoxProps } from 'theme-ui'
+import { Box, Text, BoxProps } from 'theme-ui'
 import { decimalPattern, numberPattern } from 'utils'
 
 /**
  * View: Deploy -> Token setup
  */
 const BackingForm = (props: BoxProps) => (
-  <TitleCard title={t`Backing Manager`} {...props}>
+  <Box {...props}>
+    <Text variant="title" mb={4}>
+      <Trans>Backing Manager</Trans>
+    </Text>
     <FormField
       label={t`Trading delay (s)`}
       placeholder={t`Delay in seconds`}
@@ -93,7 +95,7 @@ const BackingForm = (props: BoxProps) => (
         max: 1000000000,
       }}
     />
-  </TitleCard>
+  </Box>
 )
 
 export default BackingForm
