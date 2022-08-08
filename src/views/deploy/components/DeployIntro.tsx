@@ -1,21 +1,7 @@
-import styled from '@emotion/styled'
 import { t, Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import { Circle } from 'react-feather'
 import { Box, BoxProps, Flex, Grid, Text } from 'theme-ui'
-
-const InfoContainer = styled(Flex)`
-  border-radius: 25px;
-  border-color: var(--theme-ui-colors-border) !important;
-  border-top: 2px solid;
-  border-left: 2px solid;
-  border-right: 2px solid;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  padding: 20px;
-  padding-bottom: 0;
-  align-items: center;
-`
 
 interface InfoBoxProps extends BoxProps {
   title: string
@@ -43,12 +29,7 @@ const Title = ({ prefix, text }: { prefix: string; text: string }) => (
   </Box>
 )
 
-interface StepItemProps extends BoxProps {
-  title: string
-  subtitle: string
-}
-
-const StepItem = ({ title, subtitle, ...props }: StepItemProps) => (
+const StepItem = ({ title, subtitle, ...props }: InfoBoxProps) => (
   <Box variant="layout.verticalAlign" {...props}>
     <Box>
       <Circle size={10} fill="#999999" stroke="#999999" />

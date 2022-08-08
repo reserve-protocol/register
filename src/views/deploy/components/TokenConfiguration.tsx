@@ -12,11 +12,7 @@ import TokenForm from './TokenForm'
  * View: Deploy -> Token setup
  * Display token forms
  */
-const TokenConfiguration = ({
-  onViewChange,
-}: {
-  onViewChange(index: number): void
-}) => (
+const TokenConfiguration = () => (
   <Grid gap={5} columns={[1, 2]}>
     <Box>
       <TokenForm mb={4} />
@@ -40,7 +36,7 @@ const TokenConfiguration = ({
         <Text mt={3} mb={3} sx={{ fontSize: 3 }}>
           <Trans>Set your collateral basket</Trans>
         </Text>
-        <Button onClick={() => onViewChange(1)} px={4}>
+        <Button px={4}>
           <Trans>Set basket</Trans>
         </Button>
       </Box>

@@ -9,8 +9,8 @@ const untrackedSteps = [3, 6]
 const DeploymentStepTracker = ({ step }: { step: number }) => {
   const Steps = useMemo(
     () => [
-      <Trans>RToken params</Trans>,
       <Trans>Baskets</Trans>,
+      <Trans>RToken params</Trans>,
       <Trans>Deploy Tx</Trans>,
       <Box>Fork</Box>,
       <Trans>Governance setup</Trans>,
@@ -21,7 +21,21 @@ const DeploymentStepTracker = ({ step }: { step: number }) => {
     []
   )
 
-  return <Flex variant="layout.verticalAlign"></Flex>
+  return (
+    <Flex
+      variant="layout.verticalAlign"
+      p={3}
+      sx={{
+        justifyContent: 'center',
+        borderBottom: '1px solid',
+        borderColor: 'border',
+      }}
+    >
+      {Steps.map((step: any) => (
+        <Box mr={3}>{step}</Box>
+      ))}
+    </Flex>
+  )
 }
 
 export default DeploymentStepTracker

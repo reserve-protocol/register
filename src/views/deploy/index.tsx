@@ -16,8 +16,7 @@ import {
   Collateral,
 } from './atoms'
 import BasketSetup from './components/BasketSetup'
-import ConfirmDeployModal from './components/ConfirmDeployModal'
-import DeployHeader from './components/DeployHeader'
+import DeployHeader, { deployStepAtom } from './components/DeployHeader'
 import DeployIntro from './components/DeployIntro'
 import DeployPreview from './components/DeployPreview'
 import DeploymentStepTracker from './components/DeployStep'
@@ -93,9 +92,18 @@ const getCollateralByType = (
   )
 }
 
+const DeploymentViews = [
+  DeployIntro,
+  BasketSetup,
+  TokenConfiguration,
+  DeployPreview,
+  // DeployTransaction
+  DeploySummary,
+]
+
 const Deploy = () => {
   const { account } = useWeb3React()
-  const [view, setView] = useState(0)
+  const currentView = useAtomValue(deployStepAtom)
   const [confirmModal, setConfirmModal] = useState(false)
   const form = useForm({
     mode: 'onChange',
@@ -176,7 +184,7 @@ const Deploy = () => {
   )
 
   // current tab view [config - basket]
-  const View = VIEWS[view]
+  const View = DeploymentViews[currentView]
 
   useEffect(() => {
     if (account) {
@@ -193,18 +201,10 @@ const Deploy = () => {
   return (
     <FormProvider {...form}>
       <DeploymentStepTracker step={0} />
-      <Container sx={{ maxWidth: 1024, margin: 'auto' }} mb={2}>
-        {/* <DeployHeader
-          mt={2}
-          mb={5}
-          isValid={form.formState.isValid}
-          currentView={view}
-          onViewChange={setView}
-          onDeploy={() => setConfirmModal(true)}
-        /> */}
-        <DeployIntro />
-        {/* {View && <View onViewChange={setView} />} */}
-      </Container>
+      <Box sx={{ maxWidth: 1024, margin: 'auto' }} mb={3}>
+        <DeployHeader my={5} />
+        {View && <View />}
+      </Box>
     </FormProvider>
   )
 }
