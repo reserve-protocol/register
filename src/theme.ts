@@ -43,7 +43,7 @@ export const baseInput = {
 }
 
 export const smallButton = {
-  fontSize: 1,
+  fontSize: 0,
   paddingTop: 1,
   paddingBottom: 1,
   paddingLeft: 3,
@@ -91,7 +91,7 @@ export const theme: Theme = {
     heading: 'inherit',
     monospace: 'Menlo, monospace',
   },
-  fontSizes: [12, 14, 16, 20, 24, 32, 48, 64, 96],
+  fontSizes: [12, 14, 16, 18, 20, 32, 48, 64, 96],
   fontWeights: {
     body: 400,
     heading: 400,

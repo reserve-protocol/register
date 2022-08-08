@@ -184,3 +184,16 @@ export const updateBasketUnitAtom = atom(
     set(basketAtom, basket)
   }
 )
+
+export enum DeploymentSteps {
+  Intro,
+  Params,
+  Basket,
+  Summary,
+  TokenDeploy,
+  Overview,
+  Governance,
+  GovernanceDeploy,
+}
+
+export const currentStepAtom = atom(DeploymentSteps.Intro)

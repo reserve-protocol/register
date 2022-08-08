@@ -18,7 +18,9 @@ import {
 import BasketSetup from './components/BasketSetup'
 import ConfirmDeployModal from './components/ConfirmDeployModal'
 import DeployHeader from './components/DeployHeader'
+import DeployIntro from './components/DeployIntro'
 import DeployPreview from './components/DeployPreview'
+import DeploymentStepTracker from './components/DeployStep'
 import DeploySummary from './components/DeploySummary'
 import TokenConfiguration from './components/TokenConfiguration'
 
@@ -190,23 +192,19 @@ const Deploy = () => {
 
   return (
     <FormProvider {...form}>
+      <DeploymentStepTracker step={0} />
       <Container sx={{ maxWidth: 1024, margin: 'auto' }} mb={2}>
-        <DeployHeader
+        {/* <DeployHeader
           mt={2}
           mb={5}
           isValid={form.formState.isValid}
           currentView={view}
           onViewChange={setView}
           onDeploy={() => setConfirmModal(true)}
-        />
-        {View && <View onViewChange={setView} />}
+        /> */}
+        <DeployIntro />
+        {/* {View && <View onViewChange={setView} />} */}
       </Container>
-      {confirmModal && (
-        <ConfirmDeployModal
-          onConfirm={handleDeploy}
-          onClose={() => setConfirmModal(false)}
-        />
-      )}
     </FormProvider>
   )
 }

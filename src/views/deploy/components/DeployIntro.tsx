@@ -1,11 +1,8 @@
 import styled from '@emotion/styled'
 import { t, Trans } from '@lingui/macro'
-import { Button } from 'components'
-import RTokenLight from 'components/icons/RTokenLight'
-import { ArrowRight, Plus } from 'react-feather'
-import { useNavigate } from 'react-router-dom'
-import { Box, BoxProps, Flex, Text } from 'theme-ui'
-import { ROUTES } from 'utils/constants'
+import { SmallButton } from 'components/button'
+import { Circle } from 'react-feather'
+import { Box, BoxProps, Flex, Grid, Text } from 'theme-ui'
 
 const InfoContainer = styled(Flex)`
   border-radius: 25px;
@@ -26,17 +23,44 @@ interface InfoBoxProps extends BoxProps {
 }
 
 const InfoBox = ({ title, subtitle, ...props }: InfoBoxProps) => (
-  <Box sx={{ textAlign: 'center' }} {...props}>
-    <Text sx={{ fontSize: 3, fontWeight: 500, display: 'block' }}>{title}</Text>
-    <Text variant="legend">{subtitle}</Text>
+  <Box {...props}>
+    <Text sx={{ fontSize: 1, fontWeight: 500, display: 'block' }}>{title}</Text>
+    <Text variant="legend" as="p" sx={{ fontSize: 1 }}>
+      {subtitle}
+    </Text>
   </Box>
 )
 
-const iconProps = {
-  size: '16px',
-  color: 'var(--theme-ui-colors-lightText)',
-  style: { marginLeft: 20, marginRight: 20 },
+const Title = ({ prefix, text }: { prefix: string; text: string }) => (
+  <Box
+    sx={{ borderBottom: '1px solid', borderColor: 'border', fontSize: 4 }}
+    py={3}
+  >
+    <Text sx={{ color: 'secondaryText' }}>{prefix}</Text>
+    <Text sx={{ fontWeight: 500 }} pl={2}>
+      {text}
+    </Text>
+  </Box>
+)
+
+interface StepItemProps extends BoxProps {
+  title: string
+  subtitle: string
 }
+
+const StepItem = ({ title, subtitle, ...props }: StepItemProps) => (
+  <Box variant="layout.verticalAlign" {...props}>
+    <Box>
+      <Circle size={10} fill="#999999" stroke="#999999" />
+    </Box>
+    <Box ml={3}>
+      <Text sx={{ display: 'block', fontSize: 3, fontWeight: 500 }}>
+        {title}
+      </Text>
+      <Text variant="legend">{subtitle}</Text>
+    </Box>
+  </Box>
+)
 
 /**
  * View: Deploy
@@ -45,96 +69,103 @@ const iconProps = {
  * TODO: Text copy
  */
 const DeployIntro = () => {
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
   return (
-    <Box
-      sx={{
-        position: 'absolute',
-        top: 5,
-        bottom: 5,
-        left: 5,
-        right: 5,
-      }}
+    <Grid
+      columns={2}
+      sx={{ backgroundColor: 'contentBackground', borderRadius: 10 }}
     >
-      <Flex
-        mx="auto"
-        sx={{
-          padding: 3,
-          justifyContent: 'center',
-          flexDirection: 'column',
-          alignItems: 'center',
-          overflow: 'auto',
-          maxWidth: '1300px',
-          backgroundColor: 'contentBackground',
-          minHeight: '100%',
-          borderRadius: 24,
-        }}
+      <Box
+        px={5}
+        py={4}
+        sx={{ borderRight: '1px solid', borderColor: 'border' }}
       >
-        <RTokenLight />
-        <Text mt={2} sx={{ fontSize: 3 }}>
-          <Trans>Deploy process</Trans>
-        </Text>
-        <Box
+        <Title prefix="Tx 1." text={t`RToken Deploy`} />
+        <StepItem
+          title={t`Set Primary & Emergency collaterals`}
+          subtitle={t`Primary, emergency, target units & their initial scale`}
           mt={4}
-          sx={(theme: any) => ({
-            borderRight: `2px solid ${theme.colors.border}`,
-            height: '10px',
-            width: '1px',
-          })}
+          mb={4}
         />
-        <InfoContainer>
+        <StepItem
+          title={t`Set RToken parameters`}
+          subtitle={t`Choose between simple setup & advanced settings`}
+          mb={4}
+        />
+        <StepItem
+          title={t`Deploy RToken`}
+          subtitle={t`Primary, emergency, target units & their initial scale`}
+          mb={4}
+        />
+        <Title prefix="Tx 2." text={t`Governance Deploy`} />
+        <StepItem
+          title={t`Set Primary & Emergency collaterals`}
+          subtitle={t`Primary, emergency, target units & their initial scale`}
+          mb={4}
+          mt={4}
+        />
+        <StepItem
+          title={t`Set RToken parameters`}
+          subtitle={t`Choose between simple setup & advanced settings`}
+          mb={4}
+        />
+        <StepItem
+          title={t`Deploy RToken`}
+          subtitle={t`Primary, emergency, target units & their initial scale`}
+        />
+      </Box>
+      <Box px={5} py={4}>
+        <Box>
+          <Text
+            mt={2}
+            mb={2}
+            sx={{
+              display: 'block',
+              fontSize: 4,
+            }}
+          >
+            👋
+          </Text>
+          <Text variant="sectionTitle" sx={{ fontWeight: 500 }}>
+            <Trans>First, Who is this for?</Trans>
+          </Text>
+          <Text as="p" variant="legend" sx={{ fontSize: 1 }}>
+            <Trans>
+              The Register RToken Deployer requires a good understanding of the
+              Reserve Protocol. The interface itself doesn’t require deep
+              technical knowledge, but it’s not for beginners. Talk to the
+              Reserve team or read our docs to learn more.
+            </Trans>
+          </Text>
+          <Flex mt={3}>
+            <SmallButton variant="muted" mr={3}>
+              <Trans>Community Discord</Trans>
+            </SmallButton>
+            <SmallButton variant="muted">
+              <Trans>Protocol docs</Trans>
+            </SmallButton>
+          </Flex>
+        </Box>
+        <Box mt={6}>
           <InfoBox
-            title={t`Define parameters`}
-            subtitle={t`“Info”, backing manager, etc`}
+            title="Something something"
+            subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam maximus facilisis velit, at venenatis nunc iaculis vitae. Vestibulum ante ipsum primis in faucibus orci luctus et  posuere cubilia curae"
+            mb={3}
           />
-          <Plus {...iconProps} />
           <InfoBox
-            title={t`Define collateral`}
-            subtitle={t`Primary basket, emergency collateral, etc`}
+            title="Something something"
+            subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam maximus facilisis velit, at venenatis nunc iaculis vitae. Vestibulum ante ipsum primis in faucibus orci luctus et  posuere cubilia curae"
+            mb={3}
           />
-          <ArrowRight {...iconProps} />
           <InfoBox
-            title={t`Deploy RToken`}
-            subtitle={t`Large >$1500 transaction `}
-          />
-          <ArrowRight {...iconProps} />
-          <InfoBox
-            title={t`Governance unpause`}
-            subtitle={t`Governance unpauses the contract`}
-          />
-        </InfoContainer>
-        <Button mt={5} px={4} onClick={() => navigate(ROUTES.DEPLOY_SETUP)}>
-          <Trans>Continue to RToken deployer</Trans>
-        </Button>
-        <Text
-          mt={6}
-          mb={2}
-          sx={{
-            display: 'block',
-            color: 'transparent',
-            textShadow: '0 0 0 #D9D9D9',
-            fontSize: 5,
-          }}
-        >
-          👋
-        </Text>
-        <Box sx={{ maxWidth: 600 }}>
-          <InfoBox
-            title={t`Who is this for?`}
-            subtitle={t`The Register RToken Deployer requires a good understanding of the Reserve Protocol. The interface itself doesn’t require deep technical knowledge, but it’s not for beginners. Talk to the Reserve team or read our docs to learn more.`}
+            title="Something something"
+            subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam maximus facilisis velit, at venenatis nunc iaculis vitae. Vestibulum ante ipsum primis in faucibus orci luctus et  posuere cubilia curae"
+            mb={3}
           />
         </Box>
-        <Flex mt={4}>
-          <Button variant="muted" px={4} mr={3}>
-            <Trans>Community discord</Trans>
-          </Button>
-          <Button variant="muted" px={4}>
-            <Trans>Docs</Trans>
-          </Button>
-        </Flex>
-      </Flex>
-    </Box>
+      </Box>
+    </Grid>
   )
 }
 

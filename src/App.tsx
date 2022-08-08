@@ -77,8 +77,8 @@ const App = () => (
                   </Guard>
                 }
               />
-              <Route path={ROUTES.DEPLOY} element={<DeployIntro />} />
-              <Route path={ROUTES.DEPLOY_SETUP} element={<Deploy />} />
+              {/* <Route path={ROUTES.DEPLOY} element={<DeployIntro />} /> */}
+              <Route path={ROUTES.DEPLOY} element={<Deploy />} />
             </Routes>
           </Layout>
         </ThemeProvider>
