@@ -25,7 +25,7 @@ const getBasketComposition = (basket: Basket) => {
 
 // TODO: Better placeholder
 const Placeholder = () => (
-  <Box sx={{ textAlign: 'center' }} mt={6}>
+  <Box sx={{ textAlign: 'center' }} mt={5}>
     <Text sx={{ fontWeight: 500, display: 'block' }}>
       <Trans>Empty Basket</Trans>
     </Text>
@@ -65,7 +65,7 @@ const PrimaryBasket = ({ onAdd = () => {}, readOnly = false }: Props) => {
 
       {units.map((targetUnit, index) => (
         <UnitBasket
-          mt={!!index ? 3 : 0}
+          mt={3}
           readOnly={readOnly}
           key={targetUnit}
           data={basket[targetUnit]}

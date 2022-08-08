@@ -16,7 +16,11 @@ const BasketSetup = () => {
 
   return (
     <>
-      <Grid columns={2} mb={4} sx={{ backgroundColor: 'contentBackground' }}>
+      <Grid
+        columns={2}
+        mb={4}
+        sx={{ backgroundColor: 'contentBackground', borderRadius: 10 }}
+      >
         <Box sx={{ borderRight: '1px solid', borderColor: 'border' }}>
           <PrimaryBasket onAdd={setCollateralModal} />
         </Box>

@@ -1,5 +1,4 @@
-import { t, Trans } from '@lingui/macro'
-import { Card, TitleCard } from 'components'
+import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import Help from 'components/help'
 import { useAtomValue } from 'jotai'
@@ -19,19 +18,17 @@ interface Props extends BoxProps {
 }
 
 const Placeholder = () => (
-  <Box>
-    <TitleCard
-      title={t`Emergency collateral`}
-      right={
-        <Flex variant="layout.verticalAlign">
-          <SmallButton disabled mr={2}>
-            <Trans>Add</Trans>
-          </SmallButton>
-          <Help content="TODO" />
-        </Flex>
-      }
-    >
+  <Box m={4} ml={2}>
+    <Box>
       <Flex variant="layout.verticalAlign">
+        <Text variant="title" mr={2}>
+          <Trans>Emergency collateral</Trans>
+        </Text>
+        <SmallButton ml="auto" disabled>
+          <Trans>+ Add</Trans>
+        </SmallButton>
+      </Flex>
+      <Flex mt={5} variant="layout.verticalAlign">
         <Text>
           <Trans>Diversity factor</Trans>
         </Text>
@@ -46,23 +43,19 @@ const Placeholder = () => (
         </Box>
         <Help content="TODO" />
       </Flex>
-      <Divider my={3} mx={-4} />
-      <Text variant="legend" sx={{ fontSize: 1 }}>
-        <Trans>
-          Emergancy collateral with listed in the order of “priority” and the
-          diversity factor defining the amount of tokens to replace a default
-          with.
-        </Trans>
-      </Text>
-    </TitleCard>
-    <Card mt={3}>
-      <Flex variant="verticalAlign">
-        <Text variant="legend" sx={{ fontSize: 1 }}>
-          <Trans>Each RToken Target unit will have an emergency basket.</Trans>
+      <Divider my={3} />
+      <Box sx={{ textAlign: 'center' }} mt={5}>
+        <Text sx={{ fontWeight: 500, display: 'block' }}>
+          <Trans>Add Primary first</Trans>
         </Text>
-        <Help ml="auto" content="TODO" />
-      </Flex>
-    </Card>
+        <Text variant="legend" sx={{ fontSize: 1 }}>
+          <Trans>
+            Each target unit of your primary basket will have a list of
+            emergency collateral to replace with in case of default.
+          </Trans>
+        </Text>
+      </Box>
+    </Box>
   </Box>
 )
 

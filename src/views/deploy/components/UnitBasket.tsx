@@ -66,7 +66,7 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
   }
 
   return (
-    <Card {...props}>
+    <Card {...props} p={0}>
       <Flex variant="layout.verticalAlign">
         <Text>
           <Trans>Target unit: {unit}</Trans>
@@ -93,12 +93,10 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
         </Text>
         <Text
           ml="auto"
-          mr={2}
           sx={{ color: totalDistribution !== 100 ? 'danger' : 'text' }}
         >
           {totalDistribution}%
         </Text>
-        <Help content="TODO" />
       </Flex>
       {data.collaterals.map((collateral, index) => (
         <Flex key={collateral.address} variant="layout.verticalAlign" mt={3}>

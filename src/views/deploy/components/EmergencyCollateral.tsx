@@ -161,16 +161,16 @@ const EmergencyCollateral = ({
                     style={{ cursor: 'pointer' }}
                     color="var(--theme-ui-colors-secondaryText)"
                   />
-                  <Text variant="legend" ml={2} mr={3}>
-                    {index + 1}
-                  </Text>
                   <IconInfo
+                    ml={3}
                     icon={<TokenLogo />}
                     title={targetUnit}
                     text={collateral.symbol}
                   />
+                  <Text ml="auto" mr={2}>
+                    {index + 1}
+                  </Text>
                   <IconButton
-                    ml="auto"
                     sx={{ cursor: 'pointer' }}
                     onClick={() => handleRemove(index)}
                   >
