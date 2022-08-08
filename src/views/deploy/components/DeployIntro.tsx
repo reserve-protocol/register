@@ -1,4 +1,5 @@
 import { t, Trans } from '@lingui/macro'
+import { InfoBox } from 'components'
 import { SmallButton } from 'components/button'
 import { Circle } from 'react-feather'
 import { Box, BoxProps, Flex, Grid, Text } from 'theme-ui'
@@ -7,15 +8,6 @@ interface InfoBoxProps extends BoxProps {
   title: string
   subtitle: string
 }
-
-const InfoBox = ({ title, subtitle, ...props }: InfoBoxProps) => (
-  <Box {...props}>
-    <Text sx={{ fontSize: 1, fontWeight: 500, display: 'block' }}>{title}</Text>
-    <Text variant="legend" as="p" sx={{ fontSize: 1 }}>
-      {subtitle}
-    </Text>
-  </Box>
-)
 
 const Title = ({ prefix, text }: { prefix: string; text: string }) => (
   <Box

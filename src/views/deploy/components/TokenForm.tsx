@@ -1,14 +1,21 @@
 import { t } from '@lingui/macro'
-import { TitleCard } from 'components/card'
+import { Text } from 'theme-ui'
 import { FormField } from 'components/field'
-import { BoxProps } from 'theme-ui'
+import RIcon from 'components/icons/RIcon'
+import { Box, BoxProps } from 'theme-ui'
 import { isAddress } from 'utils'
 
 /**
  * View: Deploy -> Token setup
  */
 const TokenForm = (props: BoxProps) => (
-  <TitleCard title={t`RToken Detail`} {...props}>
+  <Box {...props}>
+    <Box variant="layout.verticalAlign" mb={4}>
+      <RIcon />
+      <Text ml={2} variant="title">
+        RToken Details
+      </Text>
+    </Box>
     <FormField
       label={t`Token name`}
       placeholder={t`Input token name`}
@@ -37,7 +44,7 @@ const TokenForm = (props: BoxProps) => (
         validate: (value) => !!isAddress(value) || t`Invalid address`,
       }}
     />
-  </TitleCard>
+  </Box>
 )
 
 export default TokenForm

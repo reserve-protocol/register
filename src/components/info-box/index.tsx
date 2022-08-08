@@ -7,10 +7,12 @@ interface Props extends BoxProps {
 }
 
 const InfoBox = ({ title, subtitle, ...props }: Props) => (
-  <Flex {...props} sx={{ flexDirection: 'column' }}>
-    <Text variant="contentTitle">{title}</Text>
-    <Text sx={{ fontSize: 3 }}>{subtitle}</Text>
-  </Flex>
+  <Box {...props}>
+    <Text sx={{ fontSize: 1, fontWeight: 500, display: 'block' }}>{title}</Text>
+    <Text variant="legend" as="p" sx={{ fontSize: 1 }}>
+      {subtitle}
+    </Text>
+  </Box>
 )
 
 export const ContentHead = ({ title, subtitle, ...props }: Props) => (

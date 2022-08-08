@@ -13,18 +13,18 @@ const StakingTokenInfo = (props: BoxProps) => {
   const stRSR = ticker ? `st${ticker.toString().toUpperCase()}RSR` : 'stRSR'
 
   return (
-    <Box variant="layout.borderBox" {...props} mb={4}>
-      <Text sx={{ fontSize: 3 }}>
+    <Box {...props}>
+      <Text variant="title">
         <Trans>Staking Token</Trans>
       </Text>
       <IconInfo
-        mt={3}
+        mt={4}
         icon={<TokenLogo />}
         title={t`Staking Token`}
         text={`${stRSR} Token`}
       />
       <IconInfo
-        mt={2}
+        mt={3}
         icon={<TokenLogo />}
         title={t`Staking token Ticker`}
         text={stRSR}

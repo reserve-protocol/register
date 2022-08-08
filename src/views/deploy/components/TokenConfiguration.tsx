@@ -1,8 +1,9 @@
 import { Trans } from '@lingui/macro'
-import { Button } from 'components'
+import { Button, InfoBox } from 'components'
 import RTokenLight from 'components/icons/RTokenLight'
+import { useState } from 'react'
 import { borderRadius } from 'theme'
-import { Box, Grid, Text } from 'theme-ui'
+import { Box, Divider, Grid, Text } from 'theme-ui'
 import BackingForm from './BackingForm'
 import OtherForm from './OtherForm'
 import StakingTokenInfo from './StakingTokenInfo'
@@ -12,36 +13,42 @@ import TokenForm from './TokenForm'
  * View: Deploy -> Token setup
  * Display token forms
  */
-const TokenConfiguration = () => (
-  <Grid gap={5} columns={2}>
-    <Box>
-      <TokenForm mb={4} />
-      <BackingForm mb={4} />
-      <OtherForm />
-    </Box>
-    <Box>
-      <StakingTokenInfo />
-      <Box
-        sx={(theme: any) => ({
-          display: 'flex',
-          border: `1px solid ${theme.colors.border}`,
-          borderRadius: borderRadius.boxes,
-          alignItems: 'center',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          minHeight: 286,
-        })}
-      >
-        <RTokenLight />
-        <Text mt={3} mb={3} sx={{ fontSize: 3 }}>
-          <Trans>Set your collateral basket</Trans>
-        </Text>
-        <Button px={4}>
-          <Trans>Set basket</Trans>
-        </Button>
+const TokenConfiguration = () => {
+  const [advanceConfig, setAdvanceConfig] = useState(false)
+
+  return (
+    <Grid
+      columns={2}
+      sx={{ backgroundColor: 'contentBackground', borderRadius: 10 }}
+    >
+      <Box p={4} sx={{ borderRight: '1px solid', borderColor: 'border' }}>
+        <TokenForm mb={4} />
+        <BackingForm mb={4} />
+        <OtherForm />
       </Box>
-    </Box>
-  </Grid>
-)
+      <Box p={4}>
+        <StakingTokenInfo />
+        <Divider my={5} />
+        <Box>
+          <InfoBox
+            title="Something something"
+            subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam maximus facilisis velit, at venenatis nunc iaculis vitae. Vestibulum ante ipsum primis in faucibus orci luctus et  posuere cubilia curae"
+            mb={3}
+          />
+          <InfoBox
+            title="Something something"
+            subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam maximus facilisis velit, at venenatis nunc iaculis vitae. Vestibulum ante ipsum primis in faucibus orci luctus et  posuere cubilia curae"
+            mb={3}
+          />
+          <InfoBox
+            title="Something something"
+            subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam maximus facilisis velit, at venenatis nunc iaculis vitae. Vestibulum ante ipsum primis in faucibus orci luctus et  posuere cubilia curae"
+            mb={3}
+          />
+        </Box>
+      </Box>
+    </Grid>
+  )
+}
 
 export default TokenConfiguration
