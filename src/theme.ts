@@ -337,6 +337,10 @@ export const theme: Theme = {
       borderRadius: borderRadius.boxes,
       padding: 4,
     },
+    card: {
+      backgroundColor: 'contentBackground',
+      borderRadius: borderRadius.boxes,
+    },
     centered: {
       ...centeredContent,
       flexDirection: 'column',
