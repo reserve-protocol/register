@@ -7,7 +7,7 @@ const DeployPreview = () => {
   return (
     <Grid columns={2} variant="layout.card">
       <TokenConfigurationOverview />
-      <Box>
+      <Box p={5} sx={{ borderLeft: '1px solid', borderColor: 'border' }}>
         <PrimaryBasket readOnly />
         <BackupBasket mt={3} readOnly />
       </Box>

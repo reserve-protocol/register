@@ -1,6 +1,5 @@
 import styled from '@emotion/styled'
 import { t } from '@lingui/macro'
-import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
 import CalculatorIcon from 'components/icons/CalculatorIcon'
 import DiscussionsIcon from 'components/icons/DiscussionsIcon'

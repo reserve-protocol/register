@@ -24,6 +24,8 @@ export const ROUTES = Object.freeze({
   WALLET: '/wallet',
 })
 
+export const DEPLOYMENT_ROUTES = Object.freeze({})
+
 export const isContentOnlyView = (pathname: string) =>
   pathname.indexOf(ROUTES.DEPLOY) !== -1
 

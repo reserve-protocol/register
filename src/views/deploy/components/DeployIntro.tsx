@@ -11,7 +11,7 @@ interface InfoBoxProps extends BoxProps {
 
 const Title = ({ prefix, text }: { prefix: string; text: string }) => (
   <Box
-    sx={{ borderBottom: '1px solid', borderColor: 'border', fontSize: 4 }}
+    sx={{ borderBottom: '1px solid', borderColor: 'border', fontSize: 3 }}
     py={3}
   >
     <Text sx={{ color: 'secondaryText' }}>{prefix}</Text>
@@ -27,10 +27,10 @@ const StepItem = ({ title, subtitle, ...props }: InfoBoxProps) => (
       <Circle size={10} fill="#999999" stroke="#999999" />
     </Box>
     <Box ml={3}>
-      <Text sx={{ display: 'block', fontSize: 3, fontWeight: 500 }}>
-        {title}
+      <Text sx={{ display: 'block', fontWeight: 500 }}>{title}</Text>
+      <Text variant="legend" sx={{ fontSize: 1 }}>
+        {subtitle}
       </Text>
-      <Text variant="legend">{subtitle}</Text>
     </Box>
   </Box>
 )

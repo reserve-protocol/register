@@ -47,20 +47,23 @@ const PrimaryBasket = ({ onAdd = () => {}, readOnly = false }: Props) => {
   const units = Object.keys(basket)
 
   return (
-    <Box m={4}>
+    <Box>
       <Flex variant="layout.verticalAlign">
         <Text variant="title">Primary Basket</Text>
-        <SmallButton onClick={() => onAdd({ basket: 'primary' })} ml="auto">
-          <Trans>+ Add</Trans>
-        </SmallButton>
+        {!readOnly && (
+          <SmallButton onClick={() => onAdd({ basket: 'primary' })} ml="auto">
+            <Trans>+ Add</Trans>
+          </SmallButton>
+        )}
       </Flex>
-      <Flex mt={5}>
+      <Divider my={3} />
+      <Flex>
         <Text>1 [RToken] =</Text>
         <Text ml="auto">
           {!!units.length ? getBasketComposition(basket) : '--'}
         </Text>
       </Flex>
-      <Divider mt={4} />
+      <Divider mt={3} />
       {!units.length && <Placeholder />}
 
       {units.map((targetUnit, index) => (

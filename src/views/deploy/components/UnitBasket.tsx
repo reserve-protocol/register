@@ -6,7 +6,7 @@ import IconInfo from 'components/info-icon'
 import { useUpdateAtom } from 'jotai/utils'
 import { useMemo } from 'react'
 import { X } from 'react-feather'
-import { Box, Card, CardProps, Divider, Flex, IconButton, Text } from 'theme-ui'
+import { Box, CardProps, Divider, Flex, IconButton, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { PrimaryUnitBasket, updateBasketUnitAtom } from '../atoms'
 
@@ -66,13 +66,14 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
   }
 
   return (
-    <Card {...props} p={0}>
-      <Flex variant="layout.verticalAlign">
-        <Text>
-          <Trans>{unit} - Basket scale</Trans>
-        </Text>
-        {!readOnly && (
-          <>
+    <Box {...props}>
+      {!readOnly && (
+        <>
+          <Flex variant="layout.verticalAlign">
+            <Text>
+              <Trans>{unit} - Basket scale</Trans>
+            </Text>
+
             <Box ml="auto" sx={{ width: 42 }} mr={2}>
               <NumericalInput
                 variant={+data.scale > 0 ? 'input' : 'inputError'}
@@ -83,21 +84,21 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
             </Box>
             <Text mr={2}>{unit}</Text>
             <Help content="TODO" />
-          </>
-        )}
-      </Flex>
-      <Divider my={3} />
-      <Flex variant="layout.verticalAlign">
-        <Text variant="legend" sx={{ fontSize: 1 }}>
-          <Trans>Basket</Trans>
-        </Text>
-        <Text
-          ml="auto"
-          sx={{ color: totalDistribution !== 100 ? 'danger' : 'text' }}
-        >
-          {totalDistribution}%
-        </Text>
-      </Flex>
+          </Flex>
+          <Divider my={3} />
+          <Flex variant="layout.verticalAlign">
+            <Text variant="legend" sx={{ fontSize: 1 }}>
+              <Trans>Basket</Trans>
+            </Text>
+            <Text
+              ml="auto"
+              sx={{ color: totalDistribution !== 100 ? 'danger' : 'text' }}
+            >
+              {totalDistribution}%
+            </Text>
+          </Flex>
+        </>
+      )}
       {data.collaterals.map((collateral, index) => (
         <Flex key={collateral.address} variant="layout.verticalAlign" mt={3}>
           <IconInfo
@@ -140,7 +141,7 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
           )}
         </Flex>
       ))}
-    </Card>
+    </Box>
   )
 }
 

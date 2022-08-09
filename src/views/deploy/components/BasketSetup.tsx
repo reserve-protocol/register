@@ -19,12 +19,13 @@ const BasketSetup = () => {
       <Grid
         columns={2}
         mb={4}
+        gap={0}
         sx={{ backgroundColor: 'contentBackground', borderRadius: 10 }}
       >
-        <Box sx={{ borderRight: '1px solid', borderColor: 'border' }}>
+        <Box p={5} sx={{ borderRight: '1px solid', borderColor: 'border' }}>
           <PrimaryBasket onAdd={setCollateralModal} />
         </Box>
-        <BackupBasket onAdd={setCollateralModal} />
+        <BackupBasket p={5} onAdd={setCollateralModal} />
       </Grid>
       {!!collateralModal && (
         <CollateralModal

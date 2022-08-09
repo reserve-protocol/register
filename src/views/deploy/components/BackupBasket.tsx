@@ -18,7 +18,7 @@ interface Props extends BoxProps {
 }
 
 const Placeholder = () => (
-  <Box m={4} ml={2}>
+  <Box ml={2}>
     <Box>
       <Flex variant="layout.verticalAlign">
         <Text variant="title" mr={2}>
@@ -28,18 +28,18 @@ const Placeholder = () => (
           <Trans>+ Add</Trans>
         </SmallButton>
       </Flex>
-      <Flex mt={5} variant="layout.verticalAlign">
+      <Divider my={3} />
+      <Flex variant="layout.verticalAlign">
         <Text>
           <Trans>Diversity factor</Trans>
         </Text>
+        <Text ml="auto">N=</Text>
         <Box
           sx={{ backgroundColor: 'lightBackground', borderRadius: 16 }}
-          ml="auto"
           mr={2}
           px={3}
-          py={1}
         >
-          <Text>n=0</Text>
+          <Text sx={{ color: '#333' }}>0</Text>
         </Box>
         <Help content="TODO" />
       </Flex>
@@ -87,7 +87,7 @@ const BackupBasket = ({
       {targetUnits.map((targetUnit) =>
         readOnly && !backupBasket[targetUnit]?.collaterals.length ? null : (
           <EmergencyCollateral
-            mb={3}
+            mb={4}
             readOnly={readOnly}
             onAdd={handleAdd}
             key={targetUnit}

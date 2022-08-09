@@ -22,7 +22,15 @@ import SortableItem from 'components/sortable/SortableItem'
 import { useUpdateAtom } from 'jotai/utils'
 import { useMemo } from 'react'
 import { Move, X } from 'react-feather'
-import { Box, CardProps, Flex, IconButton, Select, Text } from 'theme-ui'
+import {
+  Box,
+  CardProps,
+  Divider,
+  Flex,
+  IconButton,
+  Select,
+  Text,
+} from 'theme-ui'
 import { Collateral, updateBackupBasketUnitAtom } from '../atoms'
 
 interface Props extends CardProps {
@@ -49,7 +57,11 @@ const EmergencyCollateral = ({
 }: Props) => {
   const updateBasket = useUpdateAtom(updateBackupBasketUnitAtom)
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 1,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
@@ -100,7 +112,7 @@ const EmergencyCollateral = ({
   }
 
   return (
-    <Box {...props} m={4} ml={2}>
+    <Box {...props} ml={2}>
       <Flex variant="layout.verticalAlign">
         <Text variant="title" mr={2}>
           <Trans>Emergency collateral</Trans>
@@ -110,7 +122,8 @@ const EmergencyCollateral = ({
           <Trans>+ Add</Trans>
         </SmallButton>
       </Flex>
-      <Flex variant="layout.verticalAlign" mt={4}>
+      <Divider my={3} />
+      <Flex variant="layout.verticalAlign">
         <Text>
           <Trans>Diversity factor</Trans>
         </Text>
