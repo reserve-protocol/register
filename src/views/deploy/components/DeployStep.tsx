@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { t } from '@lingui/macro'
 import { useMemo } from 'react'
 import { Check } from 'react-feather'
 import { Box, Flex, Text } from 'theme-ui'
@@ -17,11 +17,6 @@ enum Steps {
   DeploymentFinished,
 }
 
-interface Props {
-  step: number
-  gasCost: number // Only required for deployment step
-}
-
 function getTextColor(step: number, currentStep: number) {
   if (step > currentStep) {
     return 'lightText'
@@ -32,8 +27,12 @@ function getTextColor(step: number, currentStep: number) {
   return 'text'
 }
 
-// TODO: Re-use part of this component for governance deploy track
+/**
+ * Tracks RToken deployment step (Top header)
+ */
 const DeploymentStepTracker = ({ step }: { step: number }) => {
+  const isSecondPhase = step > Steps.DeployToken
+
   const stepList = useMemo(() => {
     let list = [
       { id: Steps.Intro, label: t`Intro` },
@@ -46,13 +45,13 @@ const DeploymentStepTracker = ({ step }: { step: number }) => {
     ]
 
     // Second step has a different shorter header
-    if (step > Steps.DeployToken) {
+    if (isSecondPhase) {
       list = list.slice(3)
       list[0].label = t`RToken Deployed`
     }
 
     return list
-  }, [step])
+  }, [isSecondPhase])
 
   return (
     <Flex

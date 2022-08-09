@@ -1,16 +1,28 @@
 import { Trans } from '@lingui/macro'
-import { atom, useAtom, useAtomValue } from 'jotai'
+import { atom, useAtom } from 'jotai'
 import { ChevronLeft } from 'react-feather'
 import { Box, BoxProps, Button, Flex, IconButton, Text } from 'theme-ui'
-import { isValidBasketAtom } from '../atoms'
 
 export const deployStepAtom = atom(0)
+
+interface Props extends BoxProps {
+  isValid?: boolean
+  title: string
+  subtitle: string
+  confirmText?: string
+  gasCost?: number
+}
 
 /**
  * View: Deploy -> Setup
  */
-const DeployHeader = (props: BoxProps) => {
-  const [isValidBasket] = useAtomValue(isValidBasketAtom)
+const DeployHeader = ({
+  isValid = true,
+  confirmText,
+  title,
+  subtitle,
+  ...props
+}: Props) => {
   const [current, setStep] = useAtom(deployStepAtom)
   const canSubmit = true
 
@@ -23,7 +35,7 @@ const DeployHeader = (props: BoxProps) => {
   }
 
   return (
-    <Flex variant="layout.verticalAlign" {...props}>
+    <Flex variant="layout.verticalAlign" my={5} {...props}>
       {!!current && (
         <IconButton
           mr={3}
@@ -40,14 +52,12 @@ const DeployHeader = (props: BoxProps) => {
       )}
       <Box>
         <Text sx={{ display: 'block', fontSize: 4, fontWeight: 500 }}>
-          <Trans>Define Baskets</Trans>
+          {title}
         </Text>
-        <Text variant="legend">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </Text>
+        <Text variant="legend">{subtitle}</Text>
       </Box>
       <Button onClick={next} disabled={!canSubmit} px={4} ml="auto">
-        <Trans>Next</Trans>
+        {confirmText ? confirmText : <Trans>Next</Trans>}
       </Button>
     </Flex>
   )

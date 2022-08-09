@@ -1,7 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { parseEther } from '@ethersproject/units'
 import { useWeb3React } from '@web3-react/core'
-import { Container } from 'components'
 import { useFacadeContract } from 'hooks/useContract'
 import { useAtomValue } from 'jotai'
 import { useCallback, useEffect, useState } from 'react'
@@ -22,6 +21,8 @@ import DeployPreview from './components/DeployPreview'
 import DeploymentStepTracker from './components/DeployStep'
 import DeploySummary from './components/DeploySummary'
 import TokenConfiguration from './components/TokenConfiguration'
+import BasketView from './views/Basket'
+import Intro from './views/Intro'
 
 const defaultValues = {
   // token params
@@ -93,8 +94,8 @@ const getCollateralByType = (
 }
 
 const DeploymentViews = [
-  DeployIntro,
-  BasketSetup,
+  Intro,
+  BasketView,
   TokenConfiguration,
   DeployPreview,
   // DeployTransaction
@@ -202,7 +203,6 @@ const Deploy = () => {
     <FormProvider {...form}>
       <DeploymentStepTracker step={currentView} />
       <Box sx={{ width: 1024, margin: 'auto' }} mb={3}>
-        <DeployHeader my={5} />
         {View && <View />}
       </Box>
     </FormProvider>
