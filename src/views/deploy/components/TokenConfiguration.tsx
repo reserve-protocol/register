@@ -35,10 +35,10 @@ const TokenConfiguration = () => {
         <TokenForm />
         <Divider my={4} />
         <Flex mt={3} variant="layout.verticalAlign">
-          <Text sx={{ fontSize: 4 }}>
+          <Text variant="title">
             <Trans>Advanced config:</Trans>
           </Text>
-          <Text mx={2} variant="title">
+          <Text mx={2} variant="title" sx={{ color: 'secondaryText' }}>
             <Trans>13 params</Trans>
           </Text>
           <Help content="testtesttest" />
