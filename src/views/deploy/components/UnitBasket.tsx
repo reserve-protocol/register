@@ -69,7 +69,7 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
     <Card {...props} p={0}>
       <Flex variant="layout.verticalAlign">
         <Text>
-          <Trans>Target unit: {unit}</Trans>
+          <Trans>{unit} - Basket scale</Trans>
         </Text>
         {!readOnly && (
           <>
@@ -86,7 +86,7 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
           </>
         )}
       </Flex>
-      <Divider my={3} mx={-3} />
+      <Divider my={3} />
       <Flex variant="layout.verticalAlign">
         <Text variant="legend" sx={{ fontSize: 1 }}>
           <Trans>Basket</Trans>

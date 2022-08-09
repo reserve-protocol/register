@@ -1,7 +1,7 @@
 import { t } from '@lingui/macro'
 import { useFormContext } from 'react-hook-form'
-import BasketSetup from '../components/BasketSetup'
 import DeployHeader from '../components/DeployHeader'
+import TokenConfiguration from '../components/TokenConfiguration'
 
 const TokenParameters = () => {
   const {
@@ -16,7 +16,7 @@ const TokenParameters = () => {
         subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
         confirmText={t`Confirm Configuration`}
       />
-      <BasketSetup />
+      <TokenConfiguration />
     </>
   )
 }

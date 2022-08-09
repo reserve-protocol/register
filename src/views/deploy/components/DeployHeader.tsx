@@ -11,6 +11,7 @@ interface Props extends BoxProps {
   subtitle: string
   confirmText?: string
   gasCost?: number
+  onConfirm?(): void
 }
 
 /**
@@ -21,10 +22,10 @@ const DeployHeader = ({
   confirmText,
   title,
   subtitle,
+  onConfirm,
   ...props
 }: Props) => {
   const [current, setStep] = useAtom(deployStepAtom)
-  const canSubmit = true
 
   const next = () => {
     setStep(current + 1)
@@ -56,7 +57,12 @@ const DeployHeader = ({
         </Text>
         <Text variant="legend">{subtitle}</Text>
       </Box>
-      <Button onClick={next} disabled={!canSubmit} px={4} ml="auto">
+      <Button
+        onClick={onConfirm ? onConfirm : next}
+        disabled={!isValid}
+        px={4}
+        ml="auto"
+      >
         {confirmText ? confirmText : <Trans>Next</Trans>}
       </Button>
     </Flex>
