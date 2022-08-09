@@ -32,19 +32,20 @@ const AppHeader = () => {
   const selectedToken = useAtomValue(selectedRTokenAtom)
   const isDeployer = isContentOnlyView(pathname)
 
+  console.log('isDeployer', isDeployer)
+
   return (
     <Container px={[3, 4]}>
-      {isDeployer ||
-        (!selectedToken && (
-          <Flex mr={[2, 2, 4]} px={[2, 4]} sx={{ alignItems: 'center' }}>
-            <Brand />
-            {isDeployer && (
-              <Text ml={3} sx={{ fontSize: 3 }} variant="subtitle">
-                <Trans>RToken Deployer</Trans>
-              </Text>
-            )}
-          </Flex>
-        ))}
+      {(isDeployer || !selectedToken) && (
+        <Flex mr={[2, 2, 4]} px={[2, 4]} sx={{ alignItems: 'center' }}>
+          <Brand />
+          {isDeployer && (
+            <Text ml={3} sx={{ fontSize: 3 }} variant="subtitle">
+              <Trans>RToken Deployer</Trans>
+            </Text>
+          )}
+        </Flex>
+      )}
       {!isDeployer && <RTokenSelector />}
       <Separator ml="auto" mr={2} />
       <Box ml={3} sx={{ alignItems: 'center', display: 'flex' }}>
