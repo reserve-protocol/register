@@ -5,7 +5,7 @@ import TokenConfigurationOverview from './TokenConfigurationOverview'
 
 const DeployPreview = () => {
   return (
-    <Grid columns={1} variant="card">
+    <Grid columns={2} variant="layout.card">
       <TokenConfigurationOverview />
       <Box>
         <PrimaryBasket readOnly />

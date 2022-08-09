@@ -14,7 +14,7 @@ import {
   isValidBasketAtom,
 } from '../atoms'
 import DeployHeader from '../components/DeployHeader'
-import DeploySummary from '../components/DeploySummary'
+import DeployPreview from '../components/DeployPreview'
 
 type AddressMap = [string[], string[]]
 type WeightMap = [BigNumber[], BigNumber[]]
@@ -137,12 +137,12 @@ const ConfirmDeploy = () => {
     <>
       <DeployHeader
         isValid={isValid && isValidBasket}
-        title={t`Define RToken Parameters`}
+        title={t`RToken Summary`}
         subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        confirmText={t`Confirm Configuration`}
+        confirmText={t`Deploy RToken`}
         onConfirm={handleDeploy}
       />
-      <DeploySummary />
+      <DeployPreview />
     </>
   )
 }
