@@ -60,6 +60,7 @@ export const colors = {
   lightBackground: '#F2F2F2',
   contentBackground: '#fff',
   primary: '#000000',
+  success: '#11BB8D',
   accent: '#00FFBF',
   secondary: '#E8E8E8',
   border: '#DFDFDF',

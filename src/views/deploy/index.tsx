@@ -200,7 +200,7 @@ const Deploy = () => {
 
   return (
     <FormProvider {...form}>
-      <DeploymentStepTracker step={0} />
+      <DeploymentStepTracker step={currentView} />
       <Box sx={{ width: 1024, margin: 'auto' }} mb={3}>
         <DeployHeader my={5} />
         {View && <View />}

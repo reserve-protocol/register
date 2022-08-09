@@ -13,7 +13,9 @@ import StakingTokenInfo from './StakingTokenInfo'
 import TokenForm from './TokenForm'
 
 const chevronProps = {
-  marginLeft: 10,
+  style: {
+    marginLeft: 10,
+  },
   size: 14,
 }
 
