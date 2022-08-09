@@ -1,9 +1,11 @@
 import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
 import Account from 'components/account'
+import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
 import LanguageSelector from 'components/language-selector'
 import RTokenSelector from 'components/rtoken-selector'
 import { useAtomValue } from 'jotai/utils'
+import { HelpCircle } from 'react-feather'
 import { useLocation } from 'react-router-dom'
 import { selectedRTokenAtom } from 'state/atoms'
 import { Box, Divider, Flex, Text } from 'theme-ui'
@@ -32,8 +34,6 @@ const AppHeader = () => {
   const selectedToken = useAtomValue(selectedRTokenAtom)
   const isDeployer = isContentOnlyView(pathname)
 
-  console.log('isDeployer', isDeployer)
-
   return (
     <Container px={[3, 4]}>
       {(isDeployer || !selectedToken) && (
@@ -47,11 +47,12 @@ const AppHeader = () => {
         </Flex>
       )}
       {!isDeployer && <RTokenSelector />}
-      <Separator ml="auto" mr={2} />
-      <Box ml={3} sx={{ alignItems: 'center', display: 'flex' }}>
+      <Box mx="auto" />
+      <HelpCircle size={20} />
+      <ThemeColorMode ml={4} mt={1} />
+      <Box ml={4} sx={{ alignItems: 'center', display: 'flex' }}>
         <LanguageSelector />
       </Box>
-      <Separator mr={2} />
       <Account />
     </Container>
   )

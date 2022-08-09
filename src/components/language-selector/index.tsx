@@ -67,7 +67,7 @@ const LanguageSelector = () => {
       <Box
         role="button"
         sx={{
-          fontSize: 3,
+          fontSize: 2,
           display: 'flex',
           alignItems: 'center',
           marginRight: 3,

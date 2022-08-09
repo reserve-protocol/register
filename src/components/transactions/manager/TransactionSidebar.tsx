@@ -112,24 +112,29 @@ const TransactionList = () => {
                 borderRadius: borderRadius.boxes,
               }}
             >
-              <Box sx={{ overflow: 'hidden' }}>
+              <Flex sx={{ overflow: 'hidden', alignItems: 'center' }}>
                 <Text>{tx.description}</Text>
-              </Box>
+              </Flex>
               <Flex sx={{ overflow: 'hidden' }} variant="layout.verticalAlign">
                 <TokenLogo symbol="rsv" mr={3} />
                 <Text>{formatCurrency(Number(tx.value))}</Text>
               </Flex>
               <TransactionStatus tx={tx} />
-              {tx.hash ? (
-                <Link
-                  href={getExplorerLink(tx.hash, ExplorerDataType.TRANSACTION)}
-                  target="_blank"
-                >
-                  <ExternalLink size={12} /> <Trans>View</Trans>
-                </Link>
-              ) : (
-                ''
-              )}
+              <Flex sx={{ alignItems: 'center' }}>
+                {tx.hash ? (
+                  <Link
+                    href={getExplorerLink(
+                      tx.hash,
+                      ExplorerDataType.TRANSACTION
+                    )}
+                    target="_blank"
+                  >
+                    <ExternalLink size={12} /> <Trans>View</Trans>
+                  </Link>
+                ) : (
+                  ''
+                )}
+              </Flex>
             </Grid>
           ))}
         </Box>

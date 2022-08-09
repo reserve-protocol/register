@@ -110,7 +110,6 @@ const Navigation = ({
 // Sidebar footer
 const Footer = () => (
   <Box m={4}>
-    <ThemeColorMode mb={3} ml={[-1, 0]} />
     <Flex sx={{ alignItems: 'center', display: ['none', 'none', 'flex'] }}>
       <Text
         sx={{
