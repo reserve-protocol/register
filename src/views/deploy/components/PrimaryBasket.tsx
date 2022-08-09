@@ -52,7 +52,7 @@ const PrimaryBasket = ({ onAdd = () => {}, readOnly = false }: Props) => {
         <Text variant="title">Primary Basket</Text>
         {!readOnly && (
           <SmallButton onClick={() => onAdd({ basket: 'primary' })} ml="auto">
-            <Trans>+ Add</Trans>
+            <Trans>Add token plugin</Trans>
           </SmallButton>
         )}
       </Flex>

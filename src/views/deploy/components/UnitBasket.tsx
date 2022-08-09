@@ -71,9 +71,8 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
         <>
           <Flex variant="layout.verticalAlign">
             <Text>
-              <Trans>{unit} - Basket scale</Trans>
+              {unit} <Trans>- Basket scale</Trans>
             </Text>
-
             <Box ml="auto" sx={{ width: 42 }} mr={2}>
               <NumericalInput
                 variant={+data.scale > 0 ? 'input' : 'inputError'}

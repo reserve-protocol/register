@@ -118,9 +118,11 @@ const EmergencyCollateral = ({
           <Trans>Emergency collateral</Trans>
         </Text>
         <Text variant="title">- {targetUnit}</Text>
-        <SmallButton onClick={() => onAdd(targetUnit)} ml="auto">
-          <Trans>+ Add</Trans>
-        </SmallButton>
+        {!readOnly && (
+          <SmallButton onClick={() => onAdd(targetUnit)} ml="auto">
+            <Trans>Add token</Trans>
+          </SmallButton>
+        )}
       </Flex>
       <Divider my={3} />
       <Flex variant="layout.verticalAlign">
@@ -128,7 +130,13 @@ const EmergencyCollateral = ({
           <Trans>Diversity factor</Trans>
         </Text>
         {readOnly ? (
-          <Text ml="auto">N={diversityFactor}</Text>
+          <Box
+            sx={{ backgroundColor: 'lightBackground', borderRadius: 16 }}
+            ml="auto"
+            px={3}
+          >
+            <Text sx={{ color: '#333' }}>{diversityFactor}</Text>
+          </Box>
         ) : (
           <>
             <Box ml="auto" sx={{ width: 52 }} mr={2}>
@@ -174,12 +182,15 @@ const EmergencyCollateral = ({
                     style={{ cursor: 'pointer' }}
                     color="var(--theme-ui-colors-secondaryText)"
                   />
-                  <IconInfo
-                    ml={3}
-                    icon={<TokenLogo />}
-                    title={targetUnit}
-                    text={collateral.symbol}
-                  />
+                  <Box ml={3}>
+                    <Text
+                      variant="legend"
+                      sx={{ fontSize: 1, display: 'block' }}
+                    >
+                      {targetUnit}
+                    </Text>
+                    <Text sx={{ fontsize: 2 }}>{collateral.symbol}</Text>
+                  </Box>
                   <Text ml="auto" mr={2}>
                     {index + 1}
                   </Text>

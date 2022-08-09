@@ -29,12 +29,12 @@ const Info = ({ title, subtitle, time, ...props }: InfoProps) => {
         {title}
       </Text>
       <Flex variant="layout.verticalAlign">
-        <Text sx={{ fontSize: 1 }}>
+        <Text sx={{ fontSize: 2 }}>
           {subtitle}
           {!!time && 's'}
         </Text>
         {time && (
-          <Text ml="auto" variant="legend" sx={{ fontSize: 0 }}>
+          <Text ml="auto" variant="legend" sx={{ fontSize: 1 }}>
             {getTime(Number(subtitle))}
           </Text>
         )}

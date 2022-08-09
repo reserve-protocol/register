@@ -25,7 +25,7 @@ const Placeholder = () => (
           <Trans>Emergency collateral</Trans>
         </Text>
         <SmallButton ml="auto" disabled>
-          <Trans>+ Add</Trans>
+          <Trans>Add Token</Trans>
         </SmallButton>
       </Flex>
       <Divider my={3} />
