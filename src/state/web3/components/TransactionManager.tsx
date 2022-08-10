@@ -1,5 +1,6 @@
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
+import abis from 'abis'
 import useBlockNumber from 'hooks/useBlockNumber'
 import useDebounce from 'hooks/useDebounce'
 import { useAtomValue } from 'jotai'
@@ -8,9 +9,7 @@ import { useCallback, useEffect } from 'react'
 import { pendingTxAtom, updateTransactionAtom } from 'state/atoms'
 import { TransactionState } from 'types'
 import { getContract } from 'utils'
-import { getAddress } from '@ethersproject/address'
 import { TRANSACTION_STATUS } from 'utils/constants'
-import abis from 'abis'
 import { error, signed, success } from '../lib/notifications'
 
 const TransactionManager = () => {

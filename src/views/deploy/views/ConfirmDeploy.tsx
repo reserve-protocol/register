@@ -3,7 +3,7 @@ import { parseEther } from '@ethersproject/units'
 import { t } from '@lingui/macro'
 import { ethers } from 'ethers'
 import useTransactionCost from 'hooks/useTransactionCost'
-import { useSetAtom } from 'jotai'
+import { useAtom, useSetAtom } from 'jotai'
 import { useAtomValue } from 'jotai/utils'
 import { useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
@@ -19,7 +19,7 @@ import {
   Basket,
   basketAtom,
 } from '../atoms'
-import DeployHeader from '../components/DeployHeader'
+import DeployHeader, { deployStepAtom } from '../components/DeployHeader'
 import DeployPreview from '../components/DeployPreview'
 
 interface RTokenConfiguration {
@@ -162,6 +162,7 @@ const ConfirmDeploy = () => {
   const addTransaction = useSetAtom(addTransactionAtom)
   const primaryBasket = useAtomValue(basketAtom)
   const backupBasket = useAtomValue(backupCollateralAtom)
+  const [current, setStep] = useAtom(deployStepAtom)
 
   const transaction = useMemo(() => {
     const params = getDeployParameters(getValues(), primaryBasket, backupBasket)
@@ -188,6 +189,7 @@ const ConfirmDeploy = () => {
   const handleDeploy = () => {
     if (transaction) {
       addTransaction([transaction])
+      setStep(current + 1)
     }
   }
 

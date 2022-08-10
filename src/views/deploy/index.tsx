@@ -5,9 +5,9 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { Box } from 'theme-ui'
 import { deployStepAtom } from './components/DeployHeader'
 import DeploymentStepTracker from './components/DeployStep'
-import DeploySummary from './components/DeploySummary'
 import BasketView from './views/Basket'
 import ConfirmDeploy from './views/ConfirmDeploy'
+import DeployStatus from './views/DeployStatus'
 import Intro from './views/Intro'
 import TokenParameters from './views/TokenParameters'
 
@@ -36,12 +36,12 @@ const defaultValues = {
 }
 
 const DeploymentViews = [
+  DeployStatus,
   Intro,
   BasketView,
   TokenParameters,
   ConfirmDeploy,
-  // DeployTransaction
-  DeploySummary,
+  DeployStatus,
 ]
 
 const Deploy = () => {

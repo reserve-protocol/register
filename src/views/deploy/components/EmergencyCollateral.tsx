@@ -16,8 +16,6 @@ import {
 import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import Help from 'components/help'
-import TokenLogo from 'components/icons/TokenLogo'
-import IconInfo from 'components/info-icon'
 import SortableItem from 'components/sortable/SortableItem'
 import { useUpdateAtom } from 'jotai/utils'
 import { useMemo } from 'react'

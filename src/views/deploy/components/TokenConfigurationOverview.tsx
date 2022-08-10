@@ -1,6 +1,6 @@
 import { t, Trans } from '@lingui/macro'
 import { useFormContext } from 'react-hook-form'
-import { Box, Grid, Text, BoxProps, Flex, Divider } from 'theme-ui'
+import { Box, BoxProps, Divider, Flex, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 
 interface InfoProps extends BoxProps {
