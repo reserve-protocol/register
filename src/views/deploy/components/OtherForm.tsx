@@ -34,15 +34,15 @@ const OtherForm = (props: BoxProps) => {
         </Box>
       </Field>
       <FormField
-        label={t`One shot pause duration (s)`}
+        label={t`One shot freeze duration (s)`}
         placeholder={t`Duration in seconds`}
         mb={3}
-        name="oneshotPauseDuration"
+        name="oneshotFreezeDuration"
         options={{
           required: true,
           pattern: numberPattern,
           min: 3600,
-          max: 31536000,
+          max: 31536000, //1year
         }}
       />
       <FormField
@@ -53,7 +53,7 @@ const OtherForm = (props: BoxProps) => {
         options={{
           required: true,
           pattern: numberPattern,
-          max: 31536000,
+          max: 31536000, // 1year
           min: 1,
         }}
       />
@@ -66,7 +66,7 @@ const OtherForm = (props: BoxProps) => {
           required: true,
           pattern: numberPattern,
           min: 10,
-          max: 31536000,
+          max: 31536000, // 1year
         }}
       />
       <FormField
@@ -89,7 +89,7 @@ const OtherForm = (props: BoxProps) => {
           required: true,
           pattern: decimalPattern,
           min: 1000,
-          max: 1000000000,
+          max: 480000000000,
         }}
       />
     </Box>

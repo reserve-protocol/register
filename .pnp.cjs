@@ -3637,7 +3637,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ],\
       [\
         "jotai",\
-        "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.6.7"\
+        "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.7.8"\
       ],\
       [\
         "js-sha256",\
@@ -5784,7 +5784,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["graphql-request", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:4.2.0"],\
             ["i18next-browser-languagedetector", "npm:6.1.4"],\
             ["immer", "npm:9.0.12"],\
-            ["jotai", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.6.7"],\
+            ["jotai", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.7.8"],\
             ["make-plural", "npm:7.1.0"],\
             ["prettier", "npm:2.6.2"],\
             ["react", "npm:18.2.0"],\
@@ -20267,25 +20267,26 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["jotai", [\
-        ["npm:1.6.7", {\
-          "packageLocation": "./.yarn/cache/jotai-npm-1.6.7-e4273c2d57-9d579c4f82.zip/node_modules/jotai/",\
+        ["npm:1.7.8", {\
+          "packageLocation": "./.yarn/cache/jotai-npm-1.7.8-cb36477917-15eca7c051.zip/node_modules/jotai/",\
           "packageDependencies": [\
-            ["jotai", "npm:1.6.7"]\
+            ["jotai", "npm:1.7.8"]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.6.7", {\
-          "packageLocation": "./.yarn/__virtual__/jotai-virtual-daf8a804d0/0/cache/jotai-npm-1.6.7-e4273c2d57-9d579c4f82.zip/node_modules/jotai/",\
+        ["virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.7.8", {\
+          "packageLocation": "./.yarn/__virtual__/jotai-virtual-4133b06adb/0/cache/jotai-npm-1.7.8-cb36477917-15eca7c051.zip/node_modules/jotai/",\
           "packageDependencies": [\
-            ["jotai", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.6.7"],\
+            ["jotai", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.7.8"],\
             ["@babel/core", null],\
             ["@babel/template", null],\
+            ["@tanstack/query-core", null],\
             ["@types/babel__core", null],\
             ["@types/babel__template", null],\
             ["@types/immer", null],\
             ["@types/optics-ts", null],\
             ["@types/react", "npm:18.0.0"],\
-            ["@types/react-query", null],\
+            ["@types/tanstack__query-core", null],\
             ["@types/urql__core", null],\
             ["@types/valtio", null],\
             ["@types/wonka", null],\
@@ -20294,7 +20295,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["immer", "npm:9.0.12"],\
             ["optics-ts", null],\
             ["react", "npm:18.2.0"],\
-            ["react-query", null],\
             ["valtio", null],\
             ["wonka", null],\
             ["xstate", null]\
@@ -20302,12 +20302,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packagePeers": [\
             "@babel/core",\
             "@babel/template",\
+            "@tanstack/query-core",\
             "@types/babel__core",\
             "@types/babel__template",\
             "@types/immer",\
             "@types/optics-ts",\
-            "@types/react-query",\
             "@types/react",\
+            "@types/tanstack__query-core",\
             "@types/urql__core",\
             "@types/valtio",\
             "@types/wonka",\
@@ -20315,7 +20316,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             "@urql/core",\
             "immer",\
             "optics-ts",\
-            "react-query",\
             "react",\
             "valtio",\
             "wonka",\
@@ -24018,7 +24018,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["graphql-request", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:4.2.0"],\
             ["i18next-browser-languagedetector", "npm:6.1.4"],\
             ["immer", "npm:9.0.12"],\
-            ["jotai", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.6.7"],\
+            ["jotai", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.7.8"],\
             ["make-plural", "npm:7.1.0"],\
             ["prettier", "npm:2.6.2"],\
             ["react", "npm:18.2.0"],\

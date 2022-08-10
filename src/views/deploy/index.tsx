@@ -23,7 +23,7 @@ const defaultValues = {
   backingBuffer: '0.01', // 0.01%
   maxTradeSlippage: '0.01', // 1%
   dustAmount: '1',
-  issuanceRate: '0.00025',
+  issuanceRate: '0.025',
   // other
   maxTradeVolume: '1000000',
   rTokenDist: 40, // reward dist %
@@ -31,7 +31,7 @@ const defaultValues = {
   rewardPeriod: '604800', // 1 week
   rewardRatio: '0.02284', // ? ask
   unstakingDelay: '1209600', // seconds 2 week
-  oneshotPauseDuration: '864000', // seconds 10 days
+  oneshotFreezeDuration: '864000', // seconds 10 days
   minBidSize: '1',
 }
 

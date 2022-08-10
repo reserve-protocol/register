@@ -10854,17 +10854,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jotai@npm:^1.6.7":
-  version: 1.6.7
-  resolution: "jotai@npm:1.6.7"
+"jotai@npm:^1.7.8":
+  version: 1.7.8
+  resolution: "jotai@npm:1.7.8"
   peerDependencies:
     "@babel/core": "*"
     "@babel/template": "*"
+    "@tanstack/query-core": "*"
     "@urql/core": "*"
     immer: "*"
     optics-ts: "*"
     react: ">=16.8"
-    react-query: "*"
     valtio: "*"
     wonka: "*"
     xstate: "*"
@@ -10873,13 +10873,13 @@ __metadata:
       optional: true
     "@babel/template":
       optional: true
+    "@tanstack/query-core":
+      optional: true
     "@urql/core":
       optional: true
     immer:
       optional: true
     optics-ts:
-      optional: true
-    react-query:
       optional: true
     valtio:
       optional: true
@@ -10887,7 +10887,7 @@ __metadata:
       optional: true
     xstate:
       optional: true
-  checksum: 9d579c4f82665ba23d0269cb28516d2098d30cea72437a87182b5b1999450d00898b98409424b64dd25c175d0767e5300505583b805b862c00ac9c50bca0f913
+  checksum: 15eca7c0519511c9d4b6c56c334e79451ea44466c23cd2abbcdb88072f9b068f1a3612513bdacd3c1b9558a744776368796c3a5ec26f32704b8b7488d294f7fb
   languageName: node
   linkType: hard
 
@@ -13529,7 +13529,7 @@ __metadata:
     graphql-request: ^4.2.0
     i18next-browser-languagedetector: ^6.1.2
     immer: ^9.0.12
-    jotai: ^1.6.7
+    jotai: ^1.7.8
     make-plural: ^7.1.0
     prettier: ^2.3.2
     react: ^18.2.0

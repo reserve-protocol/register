@@ -31,7 +31,7 @@ const BackingForm = (props: BoxProps) => (
       options={{
         required: true,
         pattern: numberPattern,
-        max: 3600,
+        max: 604800, // 1 week
         min: 60,
       }}
     />
@@ -72,15 +72,15 @@ const BackingForm = (props: BoxProps) => (
       }}
     />
     <FormField
-      label={t`Issuance rate (decimals)`}
+      label={t`Issuance rate (%)`}
       placeholder={t`Rate`}
       mb={3}
       name="issuanceRate"
       options={{
         required: true,
         pattern: decimalPattern,
-        min: 0.000000001,
-        max: 0.01,
+        min: 0.001,
+        max: 1001,
       }}
     />
     <FormField

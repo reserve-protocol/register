@@ -16,25 +16,44 @@ import {
 import DeployHeader from '../components/DeployHeader'
 import DeployPreview from '../components/DeployPreview'
 
-type AddressMap = [string[], string[]]
-type WeightMap = [BigNumber[], BigNumber[]]
-interface Configuration {
-  name: string
-  symbol: string
+export interface IConfig {
+  tradingRange: {
+    min: BigNumber
+    max: BigNumber
+  }
+  dist: {
+    rTokenDist: BigNumber
+    rsrDist: BigNumber
+  }
+  rewardPeriod: BigNumber
+  rewardRatio: BigNumber
+  unstakingDelay: BigNumber
   tradingDelay: BigNumber
   auctionLength: BigNumber
   backingBuffer: BigNumber
   maxTradeSlippage: BigNumber
-  dustAmount: BigNumber
   issuanceRate: BigNumber
-  maxTradeVolume: BigNumber
-  rTokenDist: BigNumber
-  rsrDist: BigNumber
-  rewardPeriod: BigNumber
-  rewardRatio: BigNumber
-  unstakingDelay: BigNumber
-  oneshotPauseDuration: BigNumber
-  minBidSize: BigNumber
+  oneshotFreezeDuration: BigNumber
+}
+
+export interface IRTokenConfig {
+  name: string
+  symbol: string
+  manifestoURI: string
+  params: IConfig
+}
+
+export interface IBackupInfo {
+  backupUnit: string
+  diversityFactor: BigNumber
+  backupCollateral: string[]
+}
+
+export interface IRTokenSetup {
+  assets: string[]
+  primaryBasket: string[]
+  weights: BigNumber[]
+  backups: IBackupInfo[]
 }
 
 const getCollateralByType = (
@@ -62,69 +81,91 @@ const ConfirmDeploy = () => {
 
   const deployRToken = useCallback(
     (tokenConfig: StringMap, basket: Basket, backup: BackupBasket) => {
-      const {
-        backingBuffer,
-        maxTradeSlippage,
-        name,
-        symbol,
-        ownerAddress,
-        ...params
-      } = tokenConfig
-
-      const config = {
-        name,
-        symbol,
-        ownerAddress,
-        backingBuffer: parseEther((Number(backingBuffer) / 100).toString()),
-        maxTradeSlippage: parseEther(
-          (Number(maxTradeSlippage) / 100).toString()
-        ),
-        ...Object.keys(params).reduce(
-          (acc, key) => ({ ...acc, [key]: params[key] }),
-          {} as StringMap
-        ),
-      }
-
-      const basketCollaterals: [string[], string[]] = [[], []]
-      const backupCollateral: [string[], string[]][] = []
-      // TODO: Ask taylor how to get quantities? should I include scale?
-      const quantities: [BigNumber[], BigNumber[]] = [[], []]
-      const backupUnits: string[] = [] // USD / EUR
-      const diversityFactor: number[] = [] // 3 / 2
-
-      for (const targetUnit of Object.keys(basket)) {
-        const { collaterals, distribution } = basket[targetUnit]
-
-        collaterals.forEach((collateral, index) => {
-          const arrayIndex = collateral.custom ? 1 : 0
-          basketCollaterals[arrayIndex].push(collateral.address)
-          // TODO: quantities parsing with scale?
-          quantities[arrayIndex].push(
-            parseEther(distribution[index].toString())
-          )
-        })
-
-        if (backup[targetUnit] && backup[targetUnit].collaterals.length) {
-          backupUnits.push(targetUnit)
-          diversityFactor.push(backup[targetUnit].diversityFactor)
-          backupCollateral.push(
-            getCollateralByType(backup[targetUnit].collaterals)
-          )
+      try {
+        const params: IConfig = {
+          tradingRange: {
+            min: BigNumber.from(0),
+            max: BigNumber.from(0),
+          },
+          dist: {
+            rTokenDist: parseEther(tokenConfig.rTokenDist),
+            rsrDist: parseEther(tokenConfig.rsrDist),
+          },
+          rewardPeriod: parseEther(tokenConfig.rewardPeriod),
+          rewardRatio: parseEther(tokenConfig.rewardRatio),
+          unstakingDelay: parseEther(tokenConfig.unstakingDelay),
+          tradingDelay: parseEther(tokenConfig.tradingDelay),
+          auctionLength: parseEther(tokenConfig.auctionLength),
+          backingBuffer: parseEther(
+            (Number(tokenConfig.backingBuffer) / 100).toString()
+          ),
+          maxTradeSlippage: parseEther(
+            (Number(tokenConfig.maxTradeSlippage) / 100).toString()
+          ),
+          issuanceRate: parseEther(
+            (Number(tokenConfig.issuanceRate) / 100).toString()
+          ),
+          oneshotFreezeDuration: parseEther(tokenConfig.oneshotFreezeDuration),
         }
-      }
 
-      // TODO: execute token contract
-      console.log(
-        'DATA',
-        JSON.stringify([
-          config,
-          basketCollaterals,
-          quantities,
-          backupUnits,
-          diversityFactor,
-          backupCollateral,
-        ])
-      )
+        const config = {
+          name,
+          symbol,
+          ownerAddress,
+          backingBuffer: parseEther((Number(backingBuffer) / 100).toString()),
+          maxTradeSlippage: parseEther(
+            (Number(maxTradeSlippage) / 100).toString()
+          ),
+          ...Object.keys(params).reduce(
+            (acc, key) => ({ ...acc, [key]: params[key] }),
+            {} as StringMap
+          ),
+        }
+
+        const basketCollaterals: [string[], string[]] = [[], []]
+        const backupCollateral: [string[], string[]][] = []
+        // TODO: Ask taylor how to get quantities? should I include scale?
+        const quantities: [BigNumber[], BigNumber[]] = [[], []]
+        const backupUnits: string[] = [] // USD / EUR
+        const diversityFactor: number[] = [] // 3 / 2
+
+        for (const targetUnit of Object.keys(basket)) {
+          const { collaterals, distribution } = basket[targetUnit]
+
+          collaterals.forEach((collateral, index) => {
+            const arrayIndex = collateral.custom ? 1 : 0
+            basketCollaterals[arrayIndex].push(collateral.address)
+            // TODO: quantities parsing with scale?
+            quantities[arrayIndex].push(
+              parseEther(distribution[index].toString())
+            )
+          })
+
+          if (backup[targetUnit] && backup[targetUnit].collaterals.length) {
+            backupUnits.push(targetUnit)
+            diversityFactor.push(backup[targetUnit].diversityFactor)
+            backupCollateral.push(
+              getCollateralByType(backup[targetUnit].collaterals)
+            )
+          }
+        }
+
+        // TODO: execute token contract
+        console.log(
+          'DATA',
+          JSON.stringify([
+            config,
+            basketCollaterals,
+            quantities,
+            backupUnits,
+            diversityFactor,
+            backupCollateral,
+          ])
+        )
+      } catch (e) {
+        // TODO: Handle error case here
+        console.error('Error deploying rToken', e)
+      }
     },
     []
   )

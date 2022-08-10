@@ -52,17 +52,9 @@ const PluginInfo = ({ data }: { data: CollateralPlugin }) => (
       </Box>
       <Box>
         <Text variant="legend">
-          <Trans>Oracle</Trans>
+          <Trans>Decimals</Trans>
         </Text>
-        <Link
-          as="a"
-          href={getExplorerLink(data.oracleAddress!, ExplorerDataType.ADDRESS)}
-          target="_blank"
-          variant="legend"
-          sx={{ color: 'text', display: 'block' }}
-        >
-          {data.oracle}
-        </Link>
+        <Text sx={{ display: 'block' }}>{data.decimals}</Text>
       </Box>
     </Flex>
   </>
