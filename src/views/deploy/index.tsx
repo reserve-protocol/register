@@ -21,18 +21,19 @@ const defaultValues = {
   tradingDelay: '0', // delay after default confirmed
   auctionLength: '900', // 15 minutes
   backingBuffer: '0.01', // 0.01%
-  maxTradeSlippage: '0.01', // 1%
+  maxTradeSlippage: '1', // 1%
   dustAmount: '1',
-  issuanceRate: '0.025',
+  issuanceRate: '0.025', // 0.025% per block or ~0.1% per minute
   // other
   maxTradeVolume: '1000000',
   rTokenDist: 40, // reward dist %
   rsrDist: 60, // reward dist %
   rewardPeriod: '604800', // 1 week
-  rewardRatio: '0.02284', // ? ask
+  rewardRatio: '0.02284', // approx. half life of 30 pay periods
   unstakingDelay: '1209600', // seconds 2 week
   oneshotFreezeDuration: '864000', // seconds 10 days
-  minBidSize: '1',
+  minBidSize: '0.01',
+  maxBidSize: '1000000',
 }
 
 const DeploymentViews = [

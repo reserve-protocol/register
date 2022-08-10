@@ -30,4 +30,5 @@ export default <StringMap>{
   rToken: RTokenInterface,
   rsv: RSVManagerInterface,
   facade: FacadeInterface,
+  facadeWrite: FacadeWriteInterface,
 }

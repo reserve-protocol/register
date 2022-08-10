@@ -73,7 +73,8 @@ const TokenConfigurationOverview = () => {
         subtitle={data.auctionLength}
         time
       />
-      <Info mt={3} title={t`Minimun bid size`} subtitle={data.minBidSize} />
+      <Info mt={3} title={t`Minimum bid size`} subtitle={data.minBidSize} />
+      <Info mt={3} title={t`Maximum bid size`} subtitle={data.maxBidSize} />
       <Info
         mt={3}
         title={t`Backing buffer`}
@@ -92,8 +93,8 @@ const TokenConfigurationOverview = () => {
       <Divider my={3} />
       <Info
         mt={3}
-        title={t`One shot pause duration`}
-        subtitle={data.oneshotPauseDuration}
+        title={t`One shot freeze duration`}
+        subtitle={data.oneshotFreezeDuration}
         time
       />
       <Info

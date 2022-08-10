@@ -1,7 +1,16 @@
 import { Trans } from '@lingui/macro'
 import { atom, useAtom } from 'jotai'
 import { ChevronLeft } from 'react-feather'
-import { Box, BoxProps, Button, Flex, IconButton, Text } from 'theme-ui'
+import {
+  Box,
+  BoxProps,
+  Button,
+  Flex,
+  IconButton,
+  Spinner,
+  Text,
+} from 'theme-ui'
+import { formatCurrency } from 'utils'
 
 export const deployStepAtom = atom(0)
 
@@ -21,6 +30,7 @@ const DeployHeader = ({
   isValid = true,
   confirmText,
   title,
+  gasCost,
   subtitle,
   onConfirm,
   ...props
@@ -57,12 +67,20 @@ const DeployHeader = ({
         </Text>
         <Text variant="legend">{subtitle}</Text>
       </Box>
-      <Button
-        onClick={onConfirm ? onConfirm : next}
-        disabled={!isValid}
-        px={4}
-        ml="auto"
-      >
+      <Box mx="auto" />
+      {gasCost !== undefined && (
+        <Box mr={4} variant="layout.verticalAlign">
+          <Text variant="legend" mr={2}>
+            <Trans>Estimated gas cost:</Trans>
+          </Text>
+          {gasCost ? (
+            <Text sx={{ fontWeight: 500 }}>${formatCurrency(gasCost)}</Text>
+          ) : (
+            <Spinner color="black" size={12} />
+          )}
+        </Box>
+      )}
+      <Button onClick={onConfirm ? onConfirm : next} disabled={!isValid} px={4}>
         {confirmText ? confirmText : <Trans>Next</Trans>}
       </Button>
     </Flex>
