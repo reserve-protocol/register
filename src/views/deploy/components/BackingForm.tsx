@@ -8,10 +8,6 @@ import { decimalPattern, numberPattern } from 'utils'
  * View: Deploy -> Token setup
  */
 const BackingForm = (props: BoxProps) => {
-  const { watch } = useFormContext()
-  const minBid = watch('mindBidSize')
-  const maxBid = watch('maxBidSize')
-
   return (
     <Box {...props}>
       <Text variant="title" mb={4}>
@@ -39,30 +35,6 @@ const BackingForm = (props: BoxProps) => {
           pattern: numberPattern,
           max: 604800, // 1 week
           min: 60,
-        }}
-      />
-      <FormField
-        label={t`Minimum bid size`}
-        placeholder={t`Min bid`}
-        mb={3}
-        name="minBidSize"
-        options={{
-          required: true,
-          pattern: numberPattern,
-          max: maxBid,
-          min: 0.01,
-        }}
-      />
-      <FormField
-        label={t`Maximum bid size`}
-        placeholder={t`Max bid`}
-        mb={3}
-        name="maxBidSize"
-        options={{
-          required: true,
-          pattern: numberPattern,
-          max: 1000000,
-          min: minBid,
         }}
       />
       <FormField

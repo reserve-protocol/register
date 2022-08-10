@@ -73,8 +73,6 @@ const TokenConfigurationOverview = () => {
         subtitle={data.auctionLength}
         time
       />
-      <Info mt={3} title={t`Minimum bid size`} subtitle={data.minBidSize} />
-      <Info mt={3} title={t`Maximum bid size`} subtitle={data.maxBidSize} />
       <Info
         mt={3}
         title={t`Backing buffer`}
@@ -106,8 +104,13 @@ const TokenConfigurationOverview = () => {
       <Info mt={3} title={t`Reward Period`} subtitle={data.rewardPeriod} time />
       <Info
         mt={3}
+        title={t`Min trade volume`}
+        subtitle={formatCurrency(data.minTrade)}
+      />
+      <Info
+        mt={3}
         title={t`Max trade volume`}
-        subtitle={formatCurrency(data.maxTradeVolume)}
+        subtitle={formatCurrency(data.maxTrade)}
       />
     </Box>
   )

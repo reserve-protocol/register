@@ -18,7 +18,6 @@ import {
   backupCollateralAtom,
   Basket,
   basketAtom,
-  isValidBasketAtom,
 } from '../atoms'
 import DeployHeader from '../components/DeployHeader'
 import DeployPreview from '../components/DeployPreview'
@@ -74,8 +73,8 @@ export const getDeployParameters = (
       manifestoURI: tokenConfig.manifesto,
       params: {
         tradingRange: {
-          min: parseEther(tokenConfig.minBidSize),
-          max: parseEther(tokenConfig.maxBidSize),
+          min: parseEther(tokenConfig.minTrade.toString()),
+          max: parseEther(tokenConfig.maxTrade.toString()),
         },
         dist: {
           rTokenDist: BigNumber.from(tokenConfig.rTokenDist),
@@ -157,13 +156,9 @@ export const getDeployParameters = (
   }
 }
 
-// TODO: Token deployment
+// TODO: Error case estimating gas (transaction revert)
 const ConfirmDeploy = () => {
-  const {
-    getValues,
-    formState: { isValid },
-  } = useFormContext()
-  const [isValidBasket] = useAtomValue(isValidBasketAtom)
+  const { getValues } = useFormContext()
   const addTransaction = useSetAtom(addTransactionAtom)
   const primaryBasket = useAtomValue(basketAtom)
   const backupBasket = useAtomValue(backupCollateralAtom)
@@ -199,10 +194,10 @@ const ConfirmDeploy = () => {
   return (
     <>
       <DeployHeader
-        isValid={isValid && isValidBasket}
+        isValid={!!fee}
         title={t`RToken Summary`}
         subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        confirmText={t`Deploy RToken`}
+        confirmText={fee ? t`Deploy RToken` : 'Validating...'}
         onConfirm={handleDeploy}
         gasCost={fee}
       />

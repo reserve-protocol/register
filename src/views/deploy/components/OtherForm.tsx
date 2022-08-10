@@ -9,9 +9,11 @@ import { decimalPattern, numberPattern } from 'utils'
  * View: Deploy -> Token setup
  */
 const OtherForm = (props: BoxProps) => {
-  const { getValues, setValue } = useFormContext()
+  const { getValues, setValue, watch } = useFormContext()
   const { rTokenDist, rsrDist } = getValues()
   const [, setDist] = useState(rTokenDist)
+  const minTrade = watch('minTrade')
+  const maxTrade = watch('maxTrade')
 
   const handleChange = (e: any) => {
     const value = Number(e.target.value)
@@ -82,14 +84,27 @@ const OtherForm = (props: BoxProps) => {
         }}
       />
       <FormField
-        label={t`Max trade volume`}
-        placeholder={t`Amount`}
-        name="maxTradeVolume"
+        label={t`Minimum trade volume`}
+        placeholder={t`Minimum trade`}
+        mb={3}
+        name="minTrade"
         options={{
           required: true,
-          pattern: decimalPattern,
-          min: 1000,
+          pattern: numberPattern,
+          max: maxTrade,
+          min: 0.01,
+        }}
+      />
+      <FormField
+        label={t`Maximum trade volume`}
+        placeholder={t`Maximum trade`}
+        mb={3}
+        name="maxTrade"
+        options={{
+          required: true,
+          pattern: numberPattern,
           max: 480000000000,
+          min: minTrade,
         }}
       />
     </Box>
