@@ -55,6 +55,7 @@ const TokenConfigurationOverview = () => {
       <Divider my={3} />
       <Info mt={3} title={t`Token name`} subtitle={data.name} />
       <Info mt={3} title={t`Token ticker`} subtitle={data.ticker} />
+      <Info mt={3} title={t`Manifesto??????`} subtitle={data.manifesto} />
       <Info
         mt={3}
         mb={4}

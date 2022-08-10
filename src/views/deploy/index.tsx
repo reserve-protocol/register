@@ -15,7 +15,8 @@ const defaultValues = {
   // token params
   name: '',
   symbol: '',
-  ownerAddress: '', // TODO: additional param
+  manifesto: '',
+  ownerAddress: '',
   // backing params
   tradingDelay: '0', // delay after default confirmed
   auctionLength: '900', // 15 minutes

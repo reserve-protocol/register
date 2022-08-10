@@ -35,6 +35,15 @@ const TokenForm = (props: BoxProps) => (
       }}
     />
     <FormField
+      label={t`Manifesto???`}
+      placeholder={t`RToken description`}
+      mb={3}
+      name="manifesto"
+      options={{
+        required: t`Manifesto is required`,
+      }}
+    />
+    <FormField
       label={t`Ownership address`}
       placeholder={t`Ownership address`}
       name="ownerAddress"
