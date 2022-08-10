@@ -5,14 +5,15 @@ import { useWeb3React } from '@web3-react/core'
 import {
   ERC20 as ERC20Abi,
   Facade as FacadeAbi,
+  FacadeWrite as FacadeWriteAbi,
   RToken as RTokenAbi,
   StRSR as StRSRAbi,
 } from 'abis'
 import { useMemo } from 'react'
 import { CHAIN_ID } from 'utils/chains'
-import { ERC20, Facade, RToken, StRsr } from '../abis/types'
+import { ERC20, Facade, RToken, StRsr, FacadeWrite } from '../abis/types'
 import { getContract } from '../utils'
-import { FACADE_ADDRESS } from './../utils/addresses'
+import { FACADE_ADDRESS, FACADE_WRITE_ADDRESS } from './../utils/addresses'
 
 // returns null on errors
 export function useContract<T extends Contract = Contract>(
@@ -44,6 +45,14 @@ export function useContract<T extends Contract = Contract>(
 
 export function useFacadeContract(): Facade | null {
   return useContract<Facade>(FACADE_ADDRESS[CHAIN_ID], FacadeAbi, true)
+}
+
+export function useFacadeWriteContract(): FacadeWrite | null {
+  return useContract<FacadeWrite>(
+    FACADE_WRITE_ADDRESS[CHAIN_ID],
+    FacadeWriteAbi,
+    true
+  )
 }
 
 export function useStakingContract(
