@@ -56,9 +56,10 @@ const DeploymentStepTracker = ({ step }: { step: number }) => {
   return (
     <Flex
       variant="layout.verticalAlign"
-      p={3}
+      py={3}
+      px={4}
       sx={{
-        justifyContent: 'center',
+        justifyContent: !isSecondPhase ? 'center' : 'inherit',
         borderBottom: '1px solid',
         borderColor: 'border',
       }}

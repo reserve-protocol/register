@@ -24,8 +24,8 @@ export const ROUTES = Object.freeze({
   STAKING_CALCULATOR: '/staking-calculator',
   AUCTIONS: '/auctions',
   DEPLOY: '/deploy',
-  DEPLOY_SETUP: '/deploy/setup',
   MANAGEMENT: '/management',
+  GOVERNANCE: '/governance',
   LIST: '/list',
   HOME: '/',
   WALLET: '/wallet',
@@ -36,7 +36,7 @@ export const DEPLOYMENT_ROUTES = Object.freeze({})
 export const isContentOnlyView = (pathname: string) =>
   pathname.indexOf(ROUTES.DEPLOY) !== -1
 
-export const DEPLOY_ROUTES = [ROUTES.DEPLOY, ROUTES.DEPLOY_SETUP]
+export const DEPLOY_ROUTES = [ROUTES.DEPLOY]
 
 export const RSR: Token = {
   address: '0x320623b8E4fF03373931769A31Fc52A4E78B5d70',

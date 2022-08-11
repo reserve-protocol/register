@@ -14,7 +14,7 @@ const ManagerIcon = (props: SVGProps<SVGSVGElement>) => (
       width={16.486}
       height={16.486}
       rx={1.043}
-      stroke="#000"
+      stroke="currentColor"
     />
     <rect
       x={3.2}
@@ -23,7 +23,7 @@ const ManagerIcon = (props: SVGProps<SVGSVGElement>) => (
       height={5.143}
       rx={0.771}
       fill="#FAFAFA"
-      stroke="#000"
+      stroke="currentColor"
       strokeWidth={0.75}
     />
     <rect
@@ -33,10 +33,10 @@ const ManagerIcon = (props: SVGProps<SVGSVGElement>) => (
       height={5.143}
       rx={0.771}
       fill="#FAFAFA"
-      stroke="#000"
+      stroke="currentColor"
       strokeWidth={0.75}
     />
-    <circle cx={12.257} cy={11.993} r={3.1} stroke="#000" />
+    <circle cx={12.257} cy={11.993} r={3.1} stroke="currentColor" />
     <circle cx={12.257} cy={11.993} r={1.043} fill="#FAFAFA" stroke="#000" />
   </svg>
 )
