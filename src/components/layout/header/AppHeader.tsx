@@ -5,11 +5,11 @@ import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
 import LanguageSelector from 'components/language-selector'
 import RTokenSelector from 'components/rtoken-selector'
 import { useAtomValue } from 'jotai/utils'
-import { HelpCircle } from 'react-feather'
+import { AlertCircle, HelpCircle } from 'react-feather'
 import { useLocation } from 'react-router-dom'
-import { selectedRTokenAtom } from 'state/atoms'
-import { Box, Divider, Flex, Text } from 'theme-ui'
-import { isContentOnlyView } from 'utils/constants'
+import { rTokenStatusAtom, selectedRTokenAtom } from 'state/atoms'
+import { Box, Card, Flex, Text } from 'theme-ui'
+import { isContentOnlyView, RTOKEN_STATUS } from 'utils/constants'
 import Brand from '../Brand'
 
 const Container = styled(Flex)`
@@ -19,6 +19,32 @@ const Container = styled(Flex)`
   border-bottom: 1px solid var(--theme-ui-colors-border);
   height: 3.5em;
 `
+
+const RTokenStatus = () => {
+  const status = useAtomValue(rTokenStatusAtom)
+
+  if (status === RTOKEN_STATUS.SOUND) {
+    return null
+  }
+
+  return (
+    <Card ml={3} py={2} px={3}>
+      <Box
+        variant="layout.verticalAlign"
+        sx={{ color: status === RTOKEN_STATUS.FROZEN ? 'danger' : 'warning' }}
+      >
+        <AlertCircle size={18} />
+        <Text ml={2}>
+          {status === RTOKEN_STATUS.FROZEN ? (
+            <Trans>RToken is frozen</Trans>
+          ) : (
+            <Trans>RToken is paused</Trans>
+          )}
+        </Text>
+      </Box>
+    </Card>
+  )
+}
 
 /**
  * Application header      {pathname !== '/deploy' && <Sidebar />}
@@ -40,7 +66,12 @@ const AppHeader = () => {
           )}
         </Flex>
       )}
-      {!isDeployer && <RTokenSelector />}
+      {!isDeployer && (
+        <>
+          <RTokenSelector />
+          <RTokenStatus />
+        </>
+      )}
       <Box mx="auto" />
       <HelpCircle size={20} />
       <ThemeColorMode ml={4} mt={1} />

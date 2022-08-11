@@ -9,6 +9,12 @@ export const TRANSACTION_STATUS = {
   UNKNOWN: 'UNKNOWN', // PENDING&SIGNING transactions that were loaded from localStorage
 }
 
+export const RTOKEN_STATUS = {
+  PAUSED: 'PAUSED',
+  FROZEN: 'FROZEN',
+  SOUND: 'SOUND',
+}
+
 export const COINGECKO_API = 'https://api.coingecko.com/api/v3'
 
 export const ROUTES = Object.freeze({

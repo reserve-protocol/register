@@ -9,12 +9,12 @@ import { useCallback, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { ContractCall, ReserveToken, Token } from 'types'
 import { isAddress } from 'utils'
+import { RTOKEN_STATUS } from 'utils/constants'
 import RSV from 'utils/rsv'
 import {
   reserveTokensAtom,
   rTokenMainAtom,
   rTokenStatusAtom,
-  RTOKEN_STATUS,
   selectedRTokenAtom,
 } from './atoms'
 import { tokenMetricsAtom } from './metrics/atoms'

@@ -10,7 +10,7 @@ import {
   TransactionMap,
   TransactionState,
 } from 'types'
-import { RSR, TRANSACTION_STATUS } from 'utils/constants'
+import { RSR, RTOKEN_STATUS, TRANSACTION_STATUS } from 'utils/constants'
 import { WalletTransaction } from './../types/index'
 
 export const isWalletModalVisibleAtom = atom(false)
@@ -36,13 +36,14 @@ export const rTokenDistributionAtom = atom<any>({
   insurance: 0,
 })
 
-export const RTOKEN_STATUS = {
-  PAUSED: 'PAUSED',
-  FROZEN: 'FROZEN',
-  SOUND: 'SOUND',
-}
-
 export const rTokenStatusAtom = atom(RTOKEN_STATUS.SOUND)
+// TODO: start disabling pages
+export const isRTokenDisabledAtom = atom<boolean>((get) => {
+  const status = get(rTokenStatusAtom)
+
+  return status === RTOKEN_STATUS.FROZEN || status === RTOKEN_STATUS.PAUSED
+})
+
 export const reserveTokensAtom = atomWithStorage<{
   [x: string]: ReserveToken
 }>('reserveTokens', {})
