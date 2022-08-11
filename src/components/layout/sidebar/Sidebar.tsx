@@ -5,13 +5,14 @@ import CalculatorIcon from 'components/icons/CalculatorIcon'
 import DiscussionsIcon from 'components/icons/DiscussionsIcon'
 import GovernanceIcon from 'components/icons/GovernanceIcon'
 import IssuanceIcon from 'components/icons/IssuanceIcon'
+import ManagerIcon from 'components/icons/ManagerIcon'
 import OverviewIcon from 'components/icons/OverviewIcon'
 import StakeIcon from 'components/icons/StakeIcon'
 import SyncedBlock from 'components/synced-block'
 import { useAtomValue } from 'jotai/utils'
 import { useMemo } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
-import { rTokenAtom, selectedRTokenAtom } from 'state/atoms'
+import { isManagerAtom, rTokenAtom, selectedRTokenAtom } from 'state/atoms'
 import { Box, Flex, Text } from 'theme-ui'
 import { ReserveToken } from 'types'
 import { isContentOnlyView, ROUTES } from 'utils/constants'
@@ -75,8 +76,9 @@ const Navigation = ({
 }: {
   currentToken?: ReserveToken | null
 }) => {
-  const PAGES = useMemo(
-    () => [
+  const isManager = useAtomValue(isManagerAtom)
+  const PAGES = useMemo(() => {
+    const items = [
       { path: ROUTES.OVERVIEW, title: t`Overview`, Icon: OverviewIcon },
       { path: ROUTES.ISSUANCE, title: t`Mint + Redeem`, Icon: IssuanceIcon },
       { path: ROUTES.INSURANCE, title: t`Stake + Unstake`, Icon: StakeIcon },
@@ -86,9 +88,19 @@ const Navigation = ({
         Icon: CalculatorIcon,
       },
       { path: ROUTES.AUCTIONS, title: t`Auctions`, Icon: AuctionsIcon },
-    ],
-    []
-  )
+    ]
+
+    if (isManager) {
+      items.push({
+        path: ROUTES.MANAGEMENT,
+        title: t`Manager`,
+        Icon: ManagerIcon,
+      })
+    }
+
+    return items
+  }, [isManager])
+
   const externalPages = useMemo(
     () => [
       {

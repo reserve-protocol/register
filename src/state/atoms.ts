@@ -43,6 +43,12 @@ export const accountRoleAtom = atom({
   pauser: false,
   freezer: false,
 })
+export const isManagerAtom = atom<boolean>((get) => {
+  const role = get(accountRoleAtom)
+
+  return role.owner || role.pauser || role.freezer
+})
+
 // TODO: start disabling pages
 export const isRTokenDisabledAtom = atom<boolean>((get) => {
   const status = get(rTokenStatusAtom)
