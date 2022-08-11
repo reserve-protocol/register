@@ -6,18 +6,18 @@ export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 // The deployer version is also related to the protocol version
 export const DEPLOYER_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0x70bDA08DBe07363968e9EE53d899dFE48560605B',
-  [ChainId.Hardhat]: '0x70bDA08DBe07363968e9EE53d899dFE48560605B',
+  [ChainId.Mainnet]: '0x139e1D41943ee15dDe4DF876f9d0E7F85e26660A',
+  [ChainId.Hardhat]: '0x139e1D41943ee15dDe4DF876f9d0E7F85e26660A',
 }
 
 export const FACADE_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0xaca81583840B1bf2dDF6CDe824ada250C1936B4D',
+  [ChainId.Mainnet]: '0xD6b040736e948621c5b6E0a494473c47a6113eA8',
   [ChainId.Hardhat]: '0xD6b040736e948621c5b6E0a494473c47a6113eA8',
 }
 
 export const FACADE_WRITE_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0xAdE429ba898c34722e722415D722A70a297cE3a2',
-  [ChainId.Hardhat]: '0xAdE429ba898c34722e722415D722A70a297cE3a2',
+  [ChainId.Mainnet]: '0x7B4f352Cd40114f12e82fC675b5BA8C7582FC513',
+  [ChainId.Hardhat]: '0x7B4f352Cd40114f12e82fC675b5BA8C7582FC513',
 }
 
 export const RSR_ADDRESS: AddressMap = {

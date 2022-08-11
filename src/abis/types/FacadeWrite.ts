@@ -44,7 +44,7 @@ export type RevenueShareStructOutput = [number, number] & {
 };
 
 export type DeploymentParamsStruct = {
-  oneshotFreezeDuration: BigNumberish;
+  freezeDuration: BigNumberish;
   tradingRange: TradingRangeStruct;
   dist: RevenueShareStruct;
   rewardPeriod: BigNumberish;
@@ -70,7 +70,7 @@ export type DeploymentParamsStructOutput = [
   BigNumber,
   BigNumber
 ] & {
-  oneshotFreezeDuration: number;
+  freezeDuration: number;
   tradingRange: TradingRangeStructOutput;
   dist: RevenueShareStructOutput;
   rewardPeriod: number;
@@ -196,11 +196,9 @@ export interface FacadeWriteInterface extends utils.Interface {
 
   events: {
     "GovernanceCreated(address,address,address)": EventFragment;
-    "RTokenDeployed(address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "GovernanceCreated"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "RTokenDeployed"): EventFragment;
 }
 
 export interface GovernanceCreatedEventObject {
@@ -215,16 +213,6 @@ export type GovernanceCreatedEvent = TypedEvent<
 
 export type GovernanceCreatedEventFilter =
   TypedEventFilter<GovernanceCreatedEvent>;
-
-export interface RTokenDeployedEventObject {
-  rToken: string;
-}
-export type RTokenDeployedEvent = TypedEvent<
-  [string],
-  RTokenDeployedEventObject
->;
-
-export type RTokenDeployedEventFilter = TypedEventFilter<RTokenDeployedEvent>;
 
 export interface FacadeWrite extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -267,7 +255,7 @@ export interface FacadeWrite extends BaseContract {
       unfreeze: boolean,
       govParams: GovernanceParamsStruct,
       owner: string,
-      freezer: string,
+      guardian: string,
       pauser: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -287,7 +275,7 @@ export interface FacadeWrite extends BaseContract {
     unfreeze: boolean,
     govParams: GovernanceParamsStruct,
     owner: string,
-    freezer: string,
+    guardian: string,
     pauser: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -307,7 +295,7 @@ export interface FacadeWrite extends BaseContract {
       unfreeze: boolean,
       govParams: GovernanceParamsStruct,
       owner: string,
-      freezer: string,
+      guardian: string,
       pauser: string,
       overrides?: CallOverrides
     ): Promise<string>;
@@ -324,11 +312,6 @@ export interface FacadeWrite extends BaseContract {
       governance?: string | null,
       timelock?: string | null
     ): GovernanceCreatedEventFilter;
-
-    "RTokenDeployed(address)"(
-      rToken?: string | null
-    ): RTokenDeployedEventFilter;
-    RTokenDeployed(rToken?: string | null): RTokenDeployedEventFilter;
   };
 
   estimateGas: {
@@ -346,7 +329,7 @@ export interface FacadeWrite extends BaseContract {
       unfreeze: boolean,
       govParams: GovernanceParamsStruct,
       owner: string,
-      freezer: string,
+      guardian: string,
       pauser: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -367,7 +350,7 @@ export interface FacadeWrite extends BaseContract {
       unfreeze: boolean,
       govParams: GovernanceParamsStruct,
       owner: string,
-      freezer: string,
+      guardian: string,
       pauser: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;

@@ -44,19 +44,6 @@ const _abi = [
     type: "event",
   },
   {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "rToken",
-        type: "address",
-      },
-    ],
-    name: "RTokenDeployed",
-    type: "event",
-  },
-  {
     inputs: [
       {
         components: [
@@ -79,7 +66,7 @@ const _abi = [
             components: [
               {
                 internalType: "uint32",
-                name: "oneshotFreezeDuration",
+                name: "freezeDuration",
                 type: "uint32",
               },
               {
@@ -291,7 +278,7 @@ const _abi = [
       },
       {
         internalType: "address",
-        name: "freezer",
+        name: "guardian",
         type: "address",
       },
       {
@@ -304,7 +291,7 @@ const _abi = [
     outputs: [
       {
         internalType: "address",
-        name: "",
+        name: "newOwner",
         type: "address",
       },
     ],

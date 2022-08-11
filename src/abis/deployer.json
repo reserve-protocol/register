@@ -1,0 +1,393 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "contract IERC20Metadata",
+        "name": "rsr_",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IGnosis",
+        "name": "gnosis_",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IFacade",
+        "name": "facade_",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IAsset",
+        "name": "rsrAsset_",
+        "type": "address"
+      },
+      {
+        "components": [
+          {
+            "internalType": "contract IMain",
+            "name": "main",
+            "type": "address"
+          },
+          {
+            "components": [
+              {
+                "internalType": "contract IRToken",
+                "name": "rToken",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IStRSR",
+                "name": "stRSR",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IAssetRegistry",
+                "name": "assetRegistry",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IBasketHandler",
+                "name": "basketHandler",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IBackingManager",
+                "name": "backingManager",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IDistributor",
+                "name": "distributor",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IFurnace",
+                "name": "furnace",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IBroker",
+                "name": "broker",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IRevenueTrader",
+                "name": "rsrTrader",
+                "type": "address"
+              },
+              {
+                "internalType": "contract IRevenueTrader",
+                "name": "rTokenTrader",
+                "type": "address"
+              }
+            ],
+            "internalType": "struct Components",
+            "name": "components",
+            "type": "tuple"
+          },
+          {
+            "internalType": "contract ITrade",
+            "name": "trade",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct Implementations",
+        "name": "implementations_",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "contract IMain",
+        "name": "main",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "contract IRToken",
+        "name": "rToken",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "contract IStRSR",
+        "name": "stRSR",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
+    ],
+    "name": "RTokenCreated",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "ENS",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "symbol",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "manifestoURI",
+        "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint32",
+            "name": "freezeDuration",
+            "type": "uint32"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint192",
+                "name": "min",
+                "type": "uint192"
+              },
+              {
+                "internalType": "uint192",
+                "name": "max",
+                "type": "uint192"
+              }
+            ],
+            "internalType": "struct TradingRange",
+            "name": "tradingRange",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint16",
+                "name": "rTokenDist",
+                "type": "uint16"
+              },
+              {
+                "internalType": "uint16",
+                "name": "rsrDist",
+                "type": "uint16"
+              }
+            ],
+            "internalType": "struct RevenueShare",
+            "name": "dist",
+            "type": "tuple"
+          },
+          {
+            "internalType": "uint32",
+            "name": "rewardPeriod",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint192",
+            "name": "rewardRatio",
+            "type": "uint192"
+          },
+          {
+            "internalType": "uint32",
+            "name": "unstakingDelay",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint32",
+            "name": "tradingDelay",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint32",
+            "name": "auctionLength",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint192",
+            "name": "backingBuffer",
+            "type": "uint192"
+          },
+          {
+            "internalType": "uint192",
+            "name": "maxTradeSlippage",
+            "type": "uint192"
+          },
+          {
+            "internalType": "uint192",
+            "name": "issuanceRate",
+            "type": "uint192"
+          }
+        ],
+        "internalType": "struct DeploymentParams",
+        "name": "params",
+        "type": "tuple"
+      }
+    ],
+    "name": "deploy",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "facade",
+    "outputs": [
+      {
+        "internalType": "contract IFacade",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "gnosis",
+    "outputs": [
+      {
+        "internalType": "contract IGnosis",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "implementations",
+    "outputs": [
+      {
+        "internalType": "contract IMain",
+        "name": "main",
+        "type": "address"
+      },
+      {
+        "components": [
+          {
+            "internalType": "contract IRToken",
+            "name": "rToken",
+            "type": "address"
+          },
+          {
+            "internalType": "contract IStRSR",
+            "name": "stRSR",
+            "type": "address"
+          },
+          {
+            "internalType": "contract IAssetRegistry",
+            "name": "assetRegistry",
+            "type": "address"
+          },
+          {
+            "internalType": "contract IBasketHandler",
+            "name": "basketHandler",
+            "type": "address"
+          },
+          {
+            "internalType": "contract IBackingManager",
+            "name": "backingManager",
+            "type": "address"
+          },
+          {
+            "internalType": "contract IDistributor",
+            "name": "distributor",
+            "type": "address"
+          },
+          {
+            "internalType": "contract IFurnace",
+            "name": "furnace",
+            "type": "address"
+          },
+          {
+            "internalType": "contract IBroker",
+            "name": "broker",
+            "type": "address"
+          },
+          {
+            "internalType": "contract IRevenueTrader",
+            "name": "rsrTrader",
+            "type": "address"
+          },
+          {
+            "internalType": "contract IRevenueTrader",
+            "name": "rTokenTrader",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct Components",
+        "name": "components",
+        "type": "tuple"
+      },
+      {
+        "internalType": "contract ITrade",
+        "name": "trade",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "rsr",
+    "outputs": [
+      {
+        "internalType": "contract IERC20Metadata",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "rsrAsset",
+    "outputs": [
+      {
+        "internalType": "contract IAsset",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

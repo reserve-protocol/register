@@ -36,19 +36,6 @@
     "type": "event"
   },
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "rToken",
-        "type": "address"
-      }
-    ],
-    "name": "RTokenDeployed",
-    "type": "event"
-  },
-  {
     "inputs": [
       {
         "components": [
@@ -71,7 +58,7 @@
             "components": [
               {
                 "internalType": "uint32",
-                "name": "oneshotFreezeDuration",
+                "name": "freezeDuration",
                 "type": "uint32"
               },
               {
@@ -283,7 +270,7 @@
       },
       {
         "internalType": "address",
-        "name": "freezer",
+        "name": "guardian",
         "type": "address"
       },
       {
@@ -296,7 +283,7 @@
     "outputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "newOwner",
         "type": "address"
       }
     ],

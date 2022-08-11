@@ -6,6 +6,9 @@ import { Box, Card, Spinner, Text } from 'theme-ui'
 import { shortenString } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { deployIdAtom } from '../atoms'
+import { DeployerInterface } from 'abis'
+import { DEPLOYER_ADDRESS } from 'utils/addresses'
+import { CHAIN_ID } from 'utils/chains'
 
 const Pending = () => (
   <Box sx={{ textAlign: 'center', width: 400 }}>
@@ -45,7 +48,7 @@ const DeployStatus = () => {
   const txId = useAtomValue(deployIdAtom)
   // const tx = useTransaction(txId)
   const tx = {
-    hash: '0xd8a7f6f5e6aa9a515649f823d3cf2225548d4b7eafbcaedd9640bdc471b7b1d4',
+    hash: '0xef59f35794a80c877668d566828337933be60e2c28260d1fa48da540c8747f52',
     status: TRANSACTION_STATUS.CONFIRMED,
   }
   const { provider } = useWeb3React()
@@ -53,7 +56,20 @@ const DeployStatus = () => {
   const handleDeploy = useCallback(async (hash: string) => {
     const receipt = await provider?.getTransactionReceipt(hash)
 
-    console.log('receipt', receipt)
+    if (receipt) {
+      const log = receipt.logs.find(
+        (logs) => logs.address === DEPLOYER_ADDRESS[CHAIN_ID]
+      )
+
+      if (log) {
+        console.log('result', DeployerInterface.parseLog(log).args.rToken)
+      }
+    }
+
+    // FacadeWriteInterface.decodeEventLog(receipt.logs[0])
+    // if (receipt) {
+    //   const events = receipt.events.filter((e: Event) => e.event === eventName)
+    // }
   }, [])
 
   useEffect(() => {

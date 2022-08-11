@@ -66,90 +66,112 @@ export type ComponentsStructOutput = [
 
 export interface MainInterface extends utils.Interface {
   functions: {
+    "DEFAULT_ADMIN_ROLE()": FunctionFragment;
+    "FREEZE_EXTENDER_ROLE()": FunctionFragment;
+    "FREEZE_STARTER_ROLE()": FunctionFragment;
+    "OWNER_ROLE()": FunctionFragment;
+    "PAUSER_ROLE()": FunctionFragment;
     "assetRegistry()": FunctionFragment;
     "backingManager()": FunctionFragment;
     "basketHandler()": FunctionFragment;
     "broker()": FunctionFragment;
     "distributor()": FunctionFragment;
+    "foreverFrozen()": FunctionFragment;
+    "freeze()": FunctionFragment;
+    "freezeDuration()": FunctionFragment;
+    "freezeForever()": FunctionFragment;
+    "frozen()": FunctionFragment;
     "furnace()": FunctionFragment;
-    "init((address,address,address,address,address,address,address,address,address,address),address,uint32)": FunctionFragment;
-    "isComponent(address)": FunctionFragment;
-    "oneshotPauseDuration()": FunctionFragment;
-    "oneshotPauser()": FunctionFragment;
-    "owner()": FunctionFragment;
+    "getRoleAdmin(bytes32)": FunctionFragment;
+    "grantRole(bytes32,address)": FunctionFragment;
+    "hasRole(bytes32,address)": FunctionFragment;
+    "init((address,address,address,address,address,address,address,address,address,address),address,string,uint32)": FunctionFragment;
+    "manifestoURI()": FunctionFragment;
     "pause()": FunctionFragment;
     "paused()": FunctionFragment;
+    "pausedOrFrozen()": FunctionFragment;
     "poke()": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "rToken()": FunctionFragment;
     "rTokenTrader()": FunctionFragment;
-    "renounceOwnership()": FunctionFragment;
-    "renouncePausership()": FunctionFragment;
+    "renounceRole(bytes32,address)": FunctionFragment;
+    "revokeRole(bytes32,address)": FunctionFragment;
     "rsr()": FunctionFragment;
     "rsrTrader()": FunctionFragment;
-    "setAssetRegistry(address)": FunctionFragment;
-    "setBackingManager(address)": FunctionFragment;
-    "setBasketHandler(address)": FunctionFragment;
-    "setBroker(address)": FunctionFragment;
-    "setDistributor(address)": FunctionFragment;
-    "setFurnace(address)": FunctionFragment;
-    "setOneshotPauseDuration(uint32)": FunctionFragment;
-    "setOneshotPauser(address)": FunctionFragment;
-    "setRSRTrader(address)": FunctionFragment;
-    "setRToken(address)": FunctionFragment;
-    "setRTokenTrader(address)": FunctionFragment;
-    "setStRSR(address)": FunctionFragment;
+    "setOneshotFreezeDuration(uint32)": FunctionFragment;
     "stRSR()": FunctionFragment;
-    "transferOwnership(address)": FunctionFragment;
+    "supportsInterface(bytes4)": FunctionFragment;
+    "unfreeze()": FunctionFragment;
+    "unfreezeAt()": FunctionFragment;
     "unpause()": FunctionFragment;
-    "unpauseAt()": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "DEFAULT_ADMIN_ROLE"
+      | "FREEZE_EXTENDER_ROLE"
+      | "FREEZE_STARTER_ROLE"
+      | "OWNER_ROLE"
+      | "PAUSER_ROLE"
       | "assetRegistry"
       | "backingManager"
       | "basketHandler"
       | "broker"
       | "distributor"
+      | "foreverFrozen"
+      | "freeze"
+      | "freezeDuration"
+      | "freezeForever"
+      | "frozen"
       | "furnace"
+      | "getRoleAdmin"
+      | "grantRole"
+      | "hasRole"
       | "init"
-      | "isComponent"
-      | "oneshotPauseDuration"
-      | "oneshotPauser"
-      | "owner"
+      | "manifestoURI"
       | "pause"
       | "paused"
+      | "pausedOrFrozen"
       | "poke"
       | "proxiableUUID"
       | "rToken"
       | "rTokenTrader"
-      | "renounceOwnership"
-      | "renouncePausership"
+      | "renounceRole"
+      | "revokeRole"
       | "rsr"
       | "rsrTrader"
-      | "setAssetRegistry"
-      | "setBackingManager"
-      | "setBasketHandler"
-      | "setBroker"
-      | "setDistributor"
-      | "setFurnace"
-      | "setOneshotPauseDuration"
-      | "setOneshotPauser"
-      | "setRSRTrader"
-      | "setRToken"
-      | "setRTokenTrader"
-      | "setStRSR"
+      | "setOneshotFreezeDuration"
       | "stRSR"
-      | "transferOwnership"
+      | "supportsInterface"
+      | "unfreeze"
+      | "unfreezeAt"
       | "unpause"
-      | "unpauseAt"
       | "upgradeTo"
       | "upgradeToAndCall"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "DEFAULT_ADMIN_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "FREEZE_EXTENDER_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "FREEZE_STARTER_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "OWNER_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "PAUSER_ROLE",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "assetRegistry",
     values?: undefined
@@ -167,23 +189,47 @@ export interface MainInterface extends utils.Interface {
     functionFragment: "distributor",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "foreverFrozen",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "freeze", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "freezeDuration",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "freezeForever",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "frozen", values?: undefined): string;
   encodeFunctionData(functionFragment: "furnace", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "getRoleAdmin",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "grantRole",
+    values: [BytesLike, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "hasRole",
+    values: [BytesLike, string]
+  ): string;
+  encodeFunctionData(
     functionFragment: "init",
-    values: [ComponentsStruct, string, BigNumberish]
-  ): string;
-  encodeFunctionData(functionFragment: "isComponent", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "oneshotPauseDuration",
-    values?: undefined
+    values: [ComponentsStruct, string, string, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "oneshotPauser",
+    functionFragment: "manifestoURI",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(functionFragment: "pause", values?: undefined): string;
   encodeFunctionData(functionFragment: "paused", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "pausedOrFrozen",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "poke", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "proxiableUUID",
@@ -195,64 +241,53 @@ export interface MainInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "renounceOwnership",
-    values?: undefined
+    functionFragment: "renounceRole",
+    values: [BytesLike, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "renouncePausership",
-    values?: undefined
+    functionFragment: "revokeRole",
+    values: [BytesLike, string]
   ): string;
   encodeFunctionData(functionFragment: "rsr", values?: undefined): string;
   encodeFunctionData(functionFragment: "rsrTrader", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "setAssetRegistry",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setBackingManager",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setBasketHandler",
-    values: [string]
-  ): string;
-  encodeFunctionData(functionFragment: "setBroker", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "setDistributor",
-    values: [string]
-  ): string;
-  encodeFunctionData(functionFragment: "setFurnace", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "setOneshotPauseDuration",
+    functionFragment: "setOneshotFreezeDuration",
     values: [BigNumberish]
   ): string;
-  encodeFunctionData(
-    functionFragment: "setOneshotPauser",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setRSRTrader",
-    values: [string]
-  ): string;
-  encodeFunctionData(functionFragment: "setRToken", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "setRTokenTrader",
-    values: [string]
-  ): string;
-  encodeFunctionData(functionFragment: "setStRSR", values: [string]): string;
   encodeFunctionData(functionFragment: "stRSR", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "transferOwnership",
-    values: [string]
+    functionFragment: "supportsInterface",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(functionFragment: "unfreeze", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "unfreezeAt",
+    values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
-  encodeFunctionData(functionFragment: "unpauseAt", values?: undefined): string;
   encodeFunctionData(functionFragment: "upgradeTo", values: [string]): string;
   encodeFunctionData(
     functionFragment: "upgradeToAndCall",
     values: [string, BytesLike]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "DEFAULT_ADMIN_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "FREEZE_EXTENDER_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "FREEZE_STARTER_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "OWNER_ROLE", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "PAUSER_ROLE",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "assetRegistry",
     data: BytesLike
@@ -270,23 +305,38 @@ export interface MainInterface extends utils.Interface {
     functionFragment: "distributor",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "foreverFrozen",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "freeze", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "freezeDuration",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "freezeForever",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "frozen", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "furnace", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getRoleAdmin",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "grantRole", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "hasRole", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "init", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "isComponent",
+    functionFragment: "manifestoURI",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "oneshotPauseDuration",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "oneshotPauser",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "pausedOrFrozen",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "poke", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "proxiableUUID",
@@ -298,58 +348,24 @@ export interface MainInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "renounceOwnership",
+    functionFragment: "renounceRole",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "renouncePausership",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "revokeRole", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "rsr", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "rsrTrader", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "setAssetRegistry",
+    functionFragment: "setOneshotFreezeDuration",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "setBackingManager",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setBasketHandler",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "setBroker", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "setDistributor",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "setFurnace", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "setOneshotPauseDuration",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setOneshotPauser",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setRSRTrader",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "setRToken", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "setRTokenTrader",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "setStRSR", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stRSR", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "transferOwnership",
+    functionFragment: "supportsInterface",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "unfreeze", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "unfreezeAt", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "unpauseAt", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "upgradeTo", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "upgradeToAndCall",
@@ -364,17 +380,20 @@ export interface MainInterface extends utils.Interface {
     "BeaconUpgraded(address)": EventFragment;
     "BrokerSet(address,address)": EventFragment;
     "DistributorSet(address,address)": EventFragment;
+    "ForeverFrozenSet(bool,bool)": EventFragment;
     "FurnaceSet(address,address)": EventFragment;
     "Initialized(uint8)": EventFragment;
     "MainInitialized()": EventFragment;
-    "OneshotPauseDurationSet(uint32,uint32)": EventFragment;
-    "OneshotPauserSet(address,address)": EventFragment;
-    "OwnershipTransferred(address,address)": EventFragment;
+    "OneshotFreezeDurationSet(uint32,uint32)": EventFragment;
+    "PausedSet(bool,bool)": EventFragment;
     "RSRTraderSet(address,address)": EventFragment;
     "RTokenSet(address,address)": EventFragment;
     "RTokenTraderSet(address,address)": EventFragment;
+    "RoleAdminChanged(bytes32,bytes32,bytes32)": EventFragment;
+    "RoleGranted(bytes32,address,address)": EventFragment;
+    "RoleRevoked(bytes32,address,address)": EventFragment;
     "StRSRSet(address,address)": EventFragment;
-    "UnpauseAtSet(uint32,uint32)": EventFragment;
+    "UnfreezeAtSet(uint32,uint32)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
 
@@ -385,17 +404,20 @@ export interface MainInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BrokerSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DistributorSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ForeverFrozenSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FurnaceSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "MainInitialized"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "OneshotPauseDurationSet"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "OneshotPauserSet"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OneshotFreezeDurationSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "PausedSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RSRTraderSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RTokenSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RTokenTraderSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RoleAdminChanged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RoleGranted"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RoleRevoked"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "StRSRSet"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "UnpauseAtSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UnfreezeAtSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
 
@@ -475,6 +497,18 @@ export type DistributorSetEvent = TypedEvent<
 
 export type DistributorSetEventFilter = TypedEventFilter<DistributorSetEvent>;
 
+export interface ForeverFrozenSetEventObject {
+  oldVal: boolean;
+  newVal: boolean;
+}
+export type ForeverFrozenSetEvent = TypedEvent<
+  [boolean, boolean],
+  ForeverFrozenSetEventObject
+>;
+
+export type ForeverFrozenSetEventFilter =
+  TypedEventFilter<ForeverFrozenSetEvent>;
+
 export interface FurnaceSetEventObject {
   oldVal: string;
   newVal: string;
@@ -498,41 +532,28 @@ export type MainInitializedEvent = TypedEvent<[], MainInitializedEventObject>;
 
 export type MainInitializedEventFilter = TypedEventFilter<MainInitializedEvent>;
 
-export interface OneshotPauseDurationSetEventObject {
+export interface OneshotFreezeDurationSetEventObject {
   oldDuration: number;
   newDuration: number;
 }
-export type OneshotPauseDurationSetEvent = TypedEvent<
+export type OneshotFreezeDurationSetEvent = TypedEvent<
   [number, number],
-  OneshotPauseDurationSetEventObject
+  OneshotFreezeDurationSetEventObject
 >;
 
-export type OneshotPauseDurationSetEventFilter =
-  TypedEventFilter<OneshotPauseDurationSetEvent>;
+export type OneshotFreezeDurationSetEventFilter =
+  TypedEventFilter<OneshotFreezeDurationSetEvent>;
 
-export interface OneshotPauserSetEventObject {
-  oldPauser: string;
-  newPauser: string;
+export interface PausedSetEventObject {
+  oldVal: boolean;
+  newVal: boolean;
 }
-export type OneshotPauserSetEvent = TypedEvent<
-  [string, string],
-  OneshotPauserSetEventObject
+export type PausedSetEvent = TypedEvent<
+  [boolean, boolean],
+  PausedSetEventObject
 >;
 
-export type OneshotPauserSetEventFilter =
-  TypedEventFilter<OneshotPauserSetEvent>;
-
-export interface OwnershipTransferredEventObject {
-  previousOwner: string;
-  newOwner: string;
-}
-export type OwnershipTransferredEvent = TypedEvent<
-  [string, string],
-  OwnershipTransferredEventObject
->;
-
-export type OwnershipTransferredEventFilter =
-  TypedEventFilter<OwnershipTransferredEvent>;
+export type PausedSetEventFilter = TypedEventFilter<PausedSetEvent>;
 
 export interface RSRTraderSetEventObject {
   oldVal: string;
@@ -564,6 +585,43 @@ export type RTokenTraderSetEvent = TypedEvent<
 
 export type RTokenTraderSetEventFilter = TypedEventFilter<RTokenTraderSetEvent>;
 
+export interface RoleAdminChangedEventObject {
+  role: string;
+  previousAdminRole: string;
+  newAdminRole: string;
+}
+export type RoleAdminChangedEvent = TypedEvent<
+  [string, string, string],
+  RoleAdminChangedEventObject
+>;
+
+export type RoleAdminChangedEventFilter =
+  TypedEventFilter<RoleAdminChangedEvent>;
+
+export interface RoleGrantedEventObject {
+  role: string;
+  account: string;
+  sender: string;
+}
+export type RoleGrantedEvent = TypedEvent<
+  [string, string, string],
+  RoleGrantedEventObject
+>;
+
+export type RoleGrantedEventFilter = TypedEventFilter<RoleGrantedEvent>;
+
+export interface RoleRevokedEventObject {
+  role: string;
+  account: string;
+  sender: string;
+}
+export type RoleRevokedEvent = TypedEvent<
+  [string, string, string],
+  RoleRevokedEventObject
+>;
+
+export type RoleRevokedEventFilter = TypedEventFilter<RoleRevokedEvent>;
+
 export interface StRSRSetEventObject {
   oldVal: string;
   newVal: string;
@@ -572,16 +630,16 @@ export type StRSRSetEvent = TypedEvent<[string, string], StRSRSetEventObject>;
 
 export type StRSRSetEventFilter = TypedEventFilter<StRSRSetEvent>;
 
-export interface UnpauseAtSetEventObject {
-  oldUnpauseAt: number;
-  newUnpauseAt: number;
+export interface UnfreezeAtSetEventObject {
+  oldVal: number;
+  newVal: number;
 }
-export type UnpauseAtSetEvent = TypedEvent<
+export type UnfreezeAtSetEvent = TypedEvent<
   [number, number],
-  UnpauseAtSetEventObject
+  UnfreezeAtSetEventObject
 >;
 
-export type UnpauseAtSetEventFilter = TypedEventFilter<UnpauseAtSetEvent>;
+export type UnfreezeAtSetEventFilter = TypedEventFilter<UnfreezeAtSetEvent>;
 
 export interface UpgradedEventObject {
   implementation: string;
@@ -617,6 +675,16 @@ export interface Main extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<[string]>;
+
+    FREEZE_EXTENDER_ROLE(overrides?: CallOverrides): Promise<[string]>;
+
+    FREEZE_STARTER_ROLE(overrides?: CallOverrides): Promise<[string]>;
+
+    OWNER_ROLE(overrides?: CallOverrides): Promise<[string]>;
+
+    PAUSER_ROLE(overrides?: CallOverrides): Promise<[string]>;
+
     assetRegistry(overrides?: CallOverrides): Promise<[string]>;
 
     backingManager(overrides?: CallOverrides): Promise<[string]>;
@@ -627,31 +695,53 @@ export interface Main extends BaseContract {
 
     distributor(overrides?: CallOverrides): Promise<[string]>;
 
+    foreverFrozen(overrides?: CallOverrides): Promise<[boolean]>;
+
+    freeze(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    freezeDuration(overrides?: CallOverrides): Promise<[number]>;
+
+    freezeForever(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    frozen(overrides?: CallOverrides): Promise<[boolean]>;
+
     furnace(overrides?: CallOverrides): Promise<[string]>;
+
+    getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<[string]>;
+
+    grantRole(
+      role: BytesLike,
+      account: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    hasRole(
+      role: BytesLike,
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     init(
       components: ComponentsStruct,
       rsr_: string,
-      oneshotPauseDuration_: BigNumberish,
+      manifestoURI_: string,
+      freezeDuration_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    isComponent(
-      componentAddr: string,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    oneshotPauseDuration(overrides?: CallOverrides): Promise<[number]>;
-
-    oneshotPauser(overrides?: CallOverrides): Promise<[string]>;
-
-    owner(overrides?: CallOverrides): Promise<[string]>;
+    manifestoURI(overrides?: CallOverrides): Promise<[string]>;
 
     pause(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     paused(overrides?: CallOverrides): Promise<[boolean]>;
+
+    pausedOrFrozen(overrides?: CallOverrides): Promise<[boolean]>;
 
     poke(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -663,11 +753,15 @@ export interface Main extends BaseContract {
 
     rTokenTrader(overrides?: CallOverrides): Promise<[string]>;
 
-    renounceOwnership(
+    renounceRole(
+      role: BytesLike,
+      account: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    renouncePausership(
+    revokeRole(
+      role: BytesLike,
+      account: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -675,78 +769,27 @@ export interface Main extends BaseContract {
 
     rsrTrader(overrides?: CallOverrides): Promise<[string]>;
 
-    setAssetRegistry(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setBackingManager(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setBasketHandler(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setBroker(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setDistributor(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setFurnace(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setOneshotPauseDuration(
-      oneshotPauseDuration_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setOneshotPauser(
-      oneshotPauser_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setRSRTrader(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setRToken(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setRTokenTrader(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setStRSR(
-      val: string,
+    setOneshotFreezeDuration(
+      freezeDuration_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     stRSR(overrides?: CallOverrides): Promise<[string]>;
 
-    transferOwnership(
-      newOwner: string,
+    supportsInterface(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    unfreeze(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    unfreezeAt(overrides?: CallOverrides): Promise<[number]>;
 
     unpause(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
-
-    unpauseAt(overrides?: CallOverrides): Promise<[number]>;
 
     upgradeTo(
       newImplementation: string,
@@ -760,6 +803,16 @@ export interface Main extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
+  DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
+
+  FREEZE_EXTENDER_ROLE(overrides?: CallOverrides): Promise<string>;
+
+  FREEZE_STARTER_ROLE(overrides?: CallOverrides): Promise<string>;
+
+  OWNER_ROLE(overrides?: CallOverrides): Promise<string>;
+
+  PAUSER_ROLE(overrides?: CallOverrides): Promise<string>;
+
   assetRegistry(overrides?: CallOverrides): Promise<string>;
 
   backingManager(overrides?: CallOverrides): Promise<string>;
@@ -770,31 +823,53 @@ export interface Main extends BaseContract {
 
   distributor(overrides?: CallOverrides): Promise<string>;
 
+  foreverFrozen(overrides?: CallOverrides): Promise<boolean>;
+
+  freeze(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  freezeDuration(overrides?: CallOverrides): Promise<number>;
+
+  freezeForever(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  frozen(overrides?: CallOverrides): Promise<boolean>;
+
   furnace(overrides?: CallOverrides): Promise<string>;
+
+  getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
+
+  grantRole(
+    role: BytesLike,
+    account: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  hasRole(
+    role: BytesLike,
+    account: string,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   init(
     components: ComponentsStruct,
     rsr_: string,
-    oneshotPauseDuration_: BigNumberish,
+    manifestoURI_: string,
+    freezeDuration_: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  isComponent(
-    componentAddr: string,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  oneshotPauseDuration(overrides?: CallOverrides): Promise<number>;
-
-  oneshotPauser(overrides?: CallOverrides): Promise<string>;
-
-  owner(overrides?: CallOverrides): Promise<string>;
+  manifestoURI(overrides?: CallOverrides): Promise<string>;
 
   pause(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   paused(overrides?: CallOverrides): Promise<boolean>;
+
+  pausedOrFrozen(overrides?: CallOverrides): Promise<boolean>;
 
   poke(
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -806,11 +881,15 @@ export interface Main extends BaseContract {
 
   rTokenTrader(overrides?: CallOverrides): Promise<string>;
 
-  renounceOwnership(
+  renounceRole(
+    role: BytesLike,
+    account: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  renouncePausership(
+  revokeRole(
+    role: BytesLike,
+    account: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -818,78 +897,27 @@ export interface Main extends BaseContract {
 
   rsrTrader(overrides?: CallOverrides): Promise<string>;
 
-  setAssetRegistry(
-    val: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setBackingManager(
-    val: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setBasketHandler(
-    val: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setBroker(
-    val: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setDistributor(
-    val: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setFurnace(
-    val: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setOneshotPauseDuration(
-    oneshotPauseDuration_: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setOneshotPauser(
-    oneshotPauser_: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setRSRTrader(
-    val: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setRToken(
-    val: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setRTokenTrader(
-    val: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setStRSR(
-    val: string,
+  setOneshotFreezeDuration(
+    freezeDuration_: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   stRSR(overrides?: CallOverrides): Promise<string>;
 
-  transferOwnership(
-    newOwner: string,
+  supportsInterface(
+    interfaceId: BytesLike,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  unfreeze(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
+
+  unfreezeAt(overrides?: CallOverrides): Promise<number>;
 
   unpause(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
-
-  unpauseAt(overrides?: CallOverrides): Promise<number>;
 
   upgradeTo(
     newImplementation: string,
@@ -903,6 +931,16 @@ export interface Main extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
+
+    FREEZE_EXTENDER_ROLE(overrides?: CallOverrides): Promise<string>;
+
+    FREEZE_STARTER_ROLE(overrides?: CallOverrides): Promise<string>;
+
+    OWNER_ROLE(overrides?: CallOverrides): Promise<string>;
+
+    PAUSER_ROLE(overrides?: CallOverrides): Promise<string>;
+
     assetRegistry(overrides?: CallOverrides): Promise<string>;
 
     backingManager(overrides?: CallOverrides): Promise<string>;
@@ -913,29 +951,47 @@ export interface Main extends BaseContract {
 
     distributor(overrides?: CallOverrides): Promise<string>;
 
+    foreverFrozen(overrides?: CallOverrides): Promise<boolean>;
+
+    freeze(overrides?: CallOverrides): Promise<void>;
+
+    freezeDuration(overrides?: CallOverrides): Promise<number>;
+
+    freezeForever(overrides?: CallOverrides): Promise<void>;
+
+    frozen(overrides?: CallOverrides): Promise<boolean>;
+
     furnace(overrides?: CallOverrides): Promise<string>;
+
+    getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
+
+    grantRole(
+      role: BytesLike,
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    hasRole(
+      role: BytesLike,
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     init(
       components: ComponentsStruct,
       rsr_: string,
-      oneshotPauseDuration_: BigNumberish,
+      manifestoURI_: string,
+      freezeDuration_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    isComponent(
-      componentAddr: string,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    oneshotPauseDuration(overrides?: CallOverrides): Promise<number>;
-
-    oneshotPauser(overrides?: CallOverrides): Promise<string>;
-
-    owner(overrides?: CallOverrides): Promise<string>;
+    manifestoURI(overrides?: CallOverrides): Promise<string>;
 
     pause(overrides?: CallOverrides): Promise<void>;
 
     paused(overrides?: CallOverrides): Promise<boolean>;
+
+    pausedOrFrozen(overrides?: CallOverrides): Promise<boolean>;
 
     poke(overrides?: CallOverrides): Promise<void>;
 
@@ -945,54 +1001,39 @@ export interface Main extends BaseContract {
 
     rTokenTrader(overrides?: CallOverrides): Promise<string>;
 
-    renounceOwnership(overrides?: CallOverrides): Promise<void>;
+    renounceRole(
+      role: BytesLike,
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    renouncePausership(overrides?: CallOverrides): Promise<void>;
+    revokeRole(
+      role: BytesLike,
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     rsr(overrides?: CallOverrides): Promise<string>;
 
     rsrTrader(overrides?: CallOverrides): Promise<string>;
 
-    setAssetRegistry(val: string, overrides?: CallOverrides): Promise<void>;
-
-    setBackingManager(val: string, overrides?: CallOverrides): Promise<void>;
-
-    setBasketHandler(val: string, overrides?: CallOverrides): Promise<void>;
-
-    setBroker(val: string, overrides?: CallOverrides): Promise<void>;
-
-    setDistributor(val: string, overrides?: CallOverrides): Promise<void>;
-
-    setFurnace(val: string, overrides?: CallOverrides): Promise<void>;
-
-    setOneshotPauseDuration(
-      oneshotPauseDuration_: BigNumberish,
+    setOneshotFreezeDuration(
+      freezeDuration_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    setOneshotPauser(
-      oneshotPauser_: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    setRSRTrader(val: string, overrides?: CallOverrides): Promise<void>;
-
-    setRToken(val: string, overrides?: CallOverrides): Promise<void>;
-
-    setRTokenTrader(val: string, overrides?: CallOverrides): Promise<void>;
-
-    setStRSR(val: string, overrides?: CallOverrides): Promise<void>;
 
     stRSR(overrides?: CallOverrides): Promise<string>;
 
-    transferOwnership(
-      newOwner: string,
+    supportsInterface(
+      interfaceId: BytesLike,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<boolean>;
+
+    unfreeze(overrides?: CallOverrides): Promise<void>;
+
+    unfreezeAt(overrides?: CallOverrides): Promise<number>;
 
     unpause(overrides?: CallOverrides): Promise<void>;
-
-    unpauseAt(overrides?: CallOverrides): Promise<number>;
 
     upgradeTo(
       newImplementation: string,
@@ -1066,6 +1107,15 @@ export interface Main extends BaseContract {
       newVal?: string | null
     ): DistributorSetEventFilter;
 
+    "ForeverFrozenSet(bool,bool)"(
+      oldVal?: boolean | null,
+      newVal?: boolean | null
+    ): ForeverFrozenSetEventFilter;
+    ForeverFrozenSet(
+      oldVal?: boolean | null,
+      newVal?: boolean | null
+    ): ForeverFrozenSetEventFilter;
+
     "FurnaceSet(address,address)"(
       oldVal?: string | null,
       newVal?: string | null
@@ -1081,32 +1131,23 @@ export interface Main extends BaseContract {
     "MainInitialized()"(): MainInitializedEventFilter;
     MainInitialized(): MainInitializedEventFilter;
 
-    "OneshotPauseDurationSet(uint32,uint32)"(
-      oldDuration?: null,
-      newDuration?: null
-    ): OneshotPauseDurationSetEventFilter;
-    OneshotPauseDurationSet(
-      oldDuration?: null,
-      newDuration?: null
-    ): OneshotPauseDurationSetEventFilter;
+    "OneshotFreezeDurationSet(uint32,uint32)"(
+      oldDuration?: BigNumberish | null,
+      newDuration?: BigNumberish | null
+    ): OneshotFreezeDurationSetEventFilter;
+    OneshotFreezeDurationSet(
+      oldDuration?: BigNumberish | null,
+      newDuration?: BigNumberish | null
+    ): OneshotFreezeDurationSetEventFilter;
 
-    "OneshotPauserSet(address,address)"(
-      oldPauser?: null,
-      newPauser?: null
-    ): OneshotPauserSetEventFilter;
-    OneshotPauserSet(
-      oldPauser?: null,
-      newPauser?: null
-    ): OneshotPauserSetEventFilter;
-
-    "OwnershipTransferred(address,address)"(
-      previousOwner?: string | null,
-      newOwner?: string | null
-    ): OwnershipTransferredEventFilter;
-    OwnershipTransferred(
-      previousOwner?: string | null,
-      newOwner?: string | null
-    ): OwnershipTransferredEventFilter;
+    "PausedSet(bool,bool)"(
+      oldVal?: boolean | null,
+      newVal?: boolean | null
+    ): PausedSetEventFilter;
+    PausedSet(
+      oldVal?: boolean | null,
+      newVal?: boolean | null
+    ): PausedSetEventFilter;
 
     "RSRTraderSet(address,address)"(
       oldVal?: string | null,
@@ -1135,6 +1176,39 @@ export interface Main extends BaseContract {
       newVal?: string | null
     ): RTokenTraderSetEventFilter;
 
+    "RoleAdminChanged(bytes32,bytes32,bytes32)"(
+      role?: BytesLike | null,
+      previousAdminRole?: BytesLike | null,
+      newAdminRole?: BytesLike | null
+    ): RoleAdminChangedEventFilter;
+    RoleAdminChanged(
+      role?: BytesLike | null,
+      previousAdminRole?: BytesLike | null,
+      newAdminRole?: BytesLike | null
+    ): RoleAdminChangedEventFilter;
+
+    "RoleGranted(bytes32,address,address)"(
+      role?: BytesLike | null,
+      account?: string | null,
+      sender?: string | null
+    ): RoleGrantedEventFilter;
+    RoleGranted(
+      role?: BytesLike | null,
+      account?: string | null,
+      sender?: string | null
+    ): RoleGrantedEventFilter;
+
+    "RoleRevoked(bytes32,address,address)"(
+      role?: BytesLike | null,
+      account?: string | null,
+      sender?: string | null
+    ): RoleRevokedEventFilter;
+    RoleRevoked(
+      role?: BytesLike | null,
+      account?: string | null,
+      sender?: string | null
+    ): RoleRevokedEventFilter;
+
     "StRSRSet(address,address)"(
       oldVal?: string | null,
       newVal?: string | null
@@ -1144,20 +1218,30 @@ export interface Main extends BaseContract {
       newVal?: string | null
     ): StRSRSetEventFilter;
 
-    "UnpauseAtSet(uint32,uint32)"(
-      oldUnpauseAt?: null,
-      newUnpauseAt?: null
-    ): UnpauseAtSetEventFilter;
-    UnpauseAtSet(
-      oldUnpauseAt?: null,
-      newUnpauseAt?: null
-    ): UnpauseAtSetEventFilter;
+    "UnfreezeAtSet(uint32,uint32)"(
+      oldVal?: BigNumberish | null,
+      newVal?: BigNumberish | null
+    ): UnfreezeAtSetEventFilter;
+    UnfreezeAtSet(
+      oldVal?: BigNumberish | null,
+      newVal?: BigNumberish | null
+    ): UnfreezeAtSetEventFilter;
 
     "Upgraded(address)"(implementation?: string | null): UpgradedEventFilter;
     Upgraded(implementation?: string | null): UpgradedEventFilter;
   };
 
   estimateGas: {
+    DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    FREEZE_EXTENDER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    FREEZE_STARTER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    OWNER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    PAUSER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
+
     assetRegistry(overrides?: CallOverrides): Promise<BigNumber>;
 
     backingManager(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1168,31 +1252,56 @@ export interface Main extends BaseContract {
 
     distributor(overrides?: CallOverrides): Promise<BigNumber>;
 
+    foreverFrozen(overrides?: CallOverrides): Promise<BigNumber>;
+
+    freeze(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    freezeDuration(overrides?: CallOverrides): Promise<BigNumber>;
+
+    freezeForever(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    frozen(overrides?: CallOverrides): Promise<BigNumber>;
+
     furnace(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getRoleAdmin(
+      role: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    grantRole(
+      role: BytesLike,
+      account: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    hasRole(
+      role: BytesLike,
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     init(
       components: ComponentsStruct,
       rsr_: string,
-      oneshotPauseDuration_: BigNumberish,
+      manifestoURI_: string,
+      freezeDuration_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    isComponent(
-      componentAddr: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    oneshotPauseDuration(overrides?: CallOverrides): Promise<BigNumber>;
-
-    oneshotPauser(overrides?: CallOverrides): Promise<BigNumber>;
-
-    owner(overrides?: CallOverrides): Promise<BigNumber>;
+    manifestoURI(overrides?: CallOverrides): Promise<BigNumber>;
 
     pause(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     paused(overrides?: CallOverrides): Promise<BigNumber>;
+
+    pausedOrFrozen(overrides?: CallOverrides): Promise<BigNumber>;
 
     poke(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1204,11 +1313,15 @@ export interface Main extends BaseContract {
 
     rTokenTrader(overrides?: CallOverrides): Promise<BigNumber>;
 
-    renounceOwnership(
+    renounceRole(
+      role: BytesLike,
+      account: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    renouncePausership(
+    revokeRole(
+      role: BytesLike,
+      account: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1216,78 +1329,27 @@ export interface Main extends BaseContract {
 
     rsrTrader(overrides?: CallOverrides): Promise<BigNumber>;
 
-    setAssetRegistry(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setBackingManager(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setBasketHandler(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setBroker(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setDistributor(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setFurnace(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setOneshotPauseDuration(
-      oneshotPauseDuration_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setOneshotPauser(
-      oneshotPauser_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setRSRTrader(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setRToken(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setRTokenTrader(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setStRSR(
-      val: string,
+    setOneshotFreezeDuration(
+      freezeDuration_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     stRSR(overrides?: CallOverrides): Promise<BigNumber>;
 
-    transferOwnership(
-      newOwner: string,
+    supportsInterface(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    unfreeze(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    unfreezeAt(overrides?: CallOverrides): Promise<BigNumber>;
 
     unpause(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
-
-    unpauseAt(overrides?: CallOverrides): Promise<BigNumber>;
 
     upgradeTo(
       newImplementation: string,
@@ -1302,6 +1364,22 @@ export interface Main extends BaseContract {
   };
 
   populateTransaction: {
+    DEFAULT_ADMIN_ROLE(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    FREEZE_EXTENDER_ROLE(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    FREEZE_STARTER_ROLE(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    OWNER_ROLE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    PAUSER_ROLE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     assetRegistry(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     backingManager(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1312,33 +1390,56 @@ export interface Main extends BaseContract {
 
     distributor(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    foreverFrozen(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    freeze(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    freezeDuration(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    freezeForever(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    frozen(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     furnace(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getRoleAdmin(
+      role: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    grantRole(
+      role: BytesLike,
+      account: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    hasRole(
+      role: BytesLike,
+      account: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     init(
       components: ComponentsStruct,
       rsr_: string,
-      oneshotPauseDuration_: BigNumberish,
+      manifestoURI_: string,
+      freezeDuration_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    isComponent(
-      componentAddr: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    oneshotPauseDuration(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    oneshotPauser(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    manifestoURI(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     pause(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     paused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    pausedOrFrozen(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     poke(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1350,11 +1451,15 @@ export interface Main extends BaseContract {
 
     rTokenTrader(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    renounceOwnership(
+    renounceRole(
+      role: BytesLike,
+      account: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    renouncePausership(
+    revokeRole(
+      role: BytesLike,
+      account: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1362,78 +1467,27 @@ export interface Main extends BaseContract {
 
     rsrTrader(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    setAssetRegistry(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setBackingManager(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setBasketHandler(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setBroker(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setDistributor(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setFurnace(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setOneshotPauseDuration(
-      oneshotPauseDuration_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setOneshotPauser(
-      oneshotPauser_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setRSRTrader(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setRToken(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setRTokenTrader(
-      val: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setStRSR(
-      val: string,
+    setOneshotFreezeDuration(
+      freezeDuration_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     stRSR(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    transferOwnership(
-      newOwner: string,
+    supportsInterface(
+      interfaceId: BytesLike,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    unfreeze(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
+
+    unfreezeAt(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     unpause(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
-
-    unpauseAt(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     upgradeTo(
       newImplementation: string,

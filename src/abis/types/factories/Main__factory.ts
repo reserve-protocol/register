@@ -144,6 +144,25 @@ const _abi = [
     inputs: [
       {
         indexed: true,
+        internalType: "bool",
+        name: "oldVal",
+        type: "bool",
+      },
+      {
+        indexed: true,
+        internalType: "bool",
+        name: "newVal",
+        type: "bool",
+      },
+    ],
+    name: "ForeverFrozenSet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
         internalType: "contract IFurnace",
         name: "oldVal",
         type: "address",
@@ -181,38 +200,19 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
+        indexed: true,
         internalType: "uint32",
         name: "oldDuration",
         type: "uint32",
       },
       {
-        indexed: false,
+        indexed: true,
         internalType: "uint32",
         name: "newDuration",
         type: "uint32",
       },
     ],
-    name: "OneshotPauseDurationSet",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "address",
-        name: "oldPauser",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "address",
-        name: "newPauser",
-        type: "address",
-      },
-    ],
-    name: "OneshotPauserSet",
+    name: "OneshotFreezeDurationSet",
     type: "event",
   },
   {
@@ -220,18 +220,18 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "address",
-        name: "previousOwner",
-        type: "address",
+        internalType: "bool",
+        name: "oldVal",
+        type: "bool",
       },
       {
         indexed: true,
-        internalType: "address",
-        name: "newOwner",
-        type: "address",
+        internalType: "bool",
+        name: "newVal",
+        type: "bool",
       },
     ],
-    name: "OwnershipTransferred",
+    name: "PausedSet",
     type: "event",
   },
   {
@@ -296,6 +296,81 @@ const _abi = [
     inputs: [
       {
         indexed: true,
+        internalType: "bytes32",
+        name: "role",
+        type: "bytes32",
+      },
+      {
+        indexed: true,
+        internalType: "bytes32",
+        name: "previousAdminRole",
+        type: "bytes32",
+      },
+      {
+        indexed: true,
+        internalType: "bytes32",
+        name: "newAdminRole",
+        type: "bytes32",
+      },
+    ],
+    name: "RoleAdminChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "bytes32",
+        name: "role",
+        type: "bytes32",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "sender",
+        type: "address",
+      },
+    ],
+    name: "RoleGranted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "bytes32",
+        name: "role",
+        type: "bytes32",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "sender",
+        type: "address",
+      },
+    ],
+    name: "RoleRevoked",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
         internalType: "contract IStRSR",
         name: "oldVal",
         type: "address",
@@ -314,19 +389,19 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
+        indexed: true,
         internalType: "uint32",
-        name: "oldUnpauseAt",
+        name: "oldVal",
         type: "uint32",
       },
       {
-        indexed: false,
+        indexed: true,
         internalType: "uint32",
-        name: "newUnpauseAt",
+        name: "newVal",
         type: "uint32",
       },
     ],
-    name: "UnpauseAtSet",
+    name: "UnfreezeAtSet",
     type: "event",
   },
   {
@@ -341,6 +416,71 @@ const _abi = [
     ],
     name: "Upgraded",
     type: "event",
+  },
+  {
+    inputs: [],
+    name: "DEFAULT_ADMIN_ROLE",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "FREEZE_EXTENDER_ROLE",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "FREEZE_STARTER_ROLE",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "OWNER_ROLE",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "PAUSER_ROLE",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
   },
   {
     inputs: [],
@@ -409,12 +549,126 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "foreverFrozen",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "freeze",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "freezeDuration",
+    outputs: [
+      {
+        internalType: "uint32",
+        name: "",
+        type: "uint32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "freezeForever",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "frozen",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "furnace",
     outputs: [
       {
         internalType: "contract IFurnace",
         name: "",
         type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "role",
+        type: "bytes32",
+      },
+    ],
+    name: "getRoleAdmin",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "role",
+        type: "bytes32",
+      },
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "grantRole",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "role",
+        type: "bytes32",
+      },
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "hasRole",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
       },
     ],
     stateMutability: "view",
@@ -485,8 +739,13 @@ const _abi = [
         type: "address",
       },
       {
+        internalType: "string",
+        name: "manifestoURI_",
+        type: "string",
+      },
+      {
         internalType: "uint32",
-        name: "oneshotPauseDuration_",
+        name: "freezeDuration_",
         type: "uint32",
       },
     ],
@@ -496,58 +755,13 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "componentAddr",
-        type: "address",
-      },
-    ],
-    name: "isComponent",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [],
-    name: "oneshotPauseDuration",
+    name: "manifestoURI",
     outputs: [
       {
-        internalType: "uint32",
+        internalType: "string",
         name: "",
-        type: "uint32",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "oneshotPauser",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "owner",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
+        type: "string",
       },
     ],
     stateMutability: "view",
@@ -563,6 +777,19 @@ const _abi = [
   {
     inputs: [],
     name: "paused",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "pausedOrFrozen",
     outputs: [
       {
         internalType: "bool",
@@ -620,15 +847,37 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "renounceOwnership",
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "role",
+        type: "bytes32",
+      },
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "renounceRole",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
   {
-    inputs: [],
-    name: "renouncePausership",
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "role",
+        type: "bytes32",
+      },
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "revokeRole",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -662,155 +911,12 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "contract IAssetRegistry",
-        name: "val",
-        type: "address",
-      },
-    ],
-    name: "setAssetRegistry",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract IBackingManager",
-        name: "val",
-        type: "address",
-      },
-    ],
-    name: "setBackingManager",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract IBasketHandler",
-        name: "val",
-        type: "address",
-      },
-    ],
-    name: "setBasketHandler",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract IBroker",
-        name: "val",
-        type: "address",
-      },
-    ],
-    name: "setBroker",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract IDistributor",
-        name: "val",
-        type: "address",
-      },
-    ],
-    name: "setDistributor",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract IFurnace",
-        name: "val",
-        type: "address",
-      },
-    ],
-    name: "setFurnace",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "uint32",
-        name: "oneshotPauseDuration_",
+        name: "freezeDuration_",
         type: "uint32",
       },
     ],
-    name: "setOneshotPauseDuration",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "oneshotPauser_",
-        type: "address",
-      },
-    ],
-    name: "setOneshotPauser",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract IRevenueTrader",
-        name: "val",
-        type: "address",
-      },
-    ],
-    name: "setRSRTrader",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract IRToken",
-        name: "val",
-        type: "address",
-      },
-    ],
-    name: "setRToken",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract IRevenueTrader",
-        name: "val",
-        type: "address",
-      },
-    ],
-    name: "setRTokenTrader",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract IStRSR",
-        name: "val",
-        type: "address",
-      },
-    ],
-    name: "setStRSR",
+    name: "setOneshotFreezeDuration",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -831,26 +937,32 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "address",
-        name: "newOwner",
-        type: "address",
+        internalType: "bytes4",
+        name: "interfaceId",
+        type: "bytes4",
       },
     ],
-    name: "transferOwnership",
+    name: "supportsInterface",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "unfreeze",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
   {
     inputs: [],
-    name: "unpause",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "unpauseAt",
+    name: "unfreezeAt",
     outputs: [
       {
         internalType: "uint32",
@@ -859,6 +971,13 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "unpause",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {

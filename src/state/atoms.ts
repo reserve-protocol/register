@@ -36,6 +36,13 @@ export const rTokenDistributionAtom = atom<any>({
   insurance: 0,
 })
 
+export const RTOKEN_STATUS = {
+  PAUSED: 'PAUSED',
+  FREEZE: 'FREEZE',
+  SOUND: 'SOUND',
+}
+
+export const rTokenStatusAtom = atom(RTOKEN_STATUS.SOUND)
 export const reserveTokensAtom = atomWithStorage<{
   [x: string]: ReserveToken
 }>('reserveTokens', {})
