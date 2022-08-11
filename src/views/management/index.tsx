@@ -13,13 +13,10 @@ const Management = () => {
 
   // Guard route in case the user doesnt have role
   useEffect(() => {
-    if (
-      !rToken ||
-      !account ||
-      !accountRole.freezer ||
-      !accountRole.owner ||
-      !accountRole.pauser
-    ) {
+    const isManager =
+      accountRole.freezer || accountRole.owner || accountRole.pauser
+
+    if (!rToken || !account || !isManager) {
       navigate('/')
     }
   }, [accountRole, rToken?.address])

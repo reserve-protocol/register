@@ -142,6 +142,7 @@ const Navigation = ({
             variant="legend"
             pl={5}
             mt={3}
+            mb={2}
             sx={{ fontSize: 1, display: 'block' }}
           >
             <Trans>External Links</Trans>

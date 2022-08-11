@@ -58,7 +58,6 @@ const TokenStats = () => {
   const { data } = useQuery(protocolMetricsQuery)
   const metrics = useMemo(() => {
     if (data) {
-      console.log('dat', data)
       return {
         totalValueLockedUSD: `$${formatCurrency(
           +data.protocol?.totalValueLockedUSD || 0

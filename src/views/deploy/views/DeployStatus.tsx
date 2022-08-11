@@ -62,7 +62,7 @@ const DeployStatus = () => {
 
   // Wait until rToken is selected and fetched to redirect the user to the management screen
   useEffect(() => {
-    if (rToken?.address.toLowerCase() === tx?.extra?.rTokenAddress) {
+    if (rToken?.address === tx?.extra?.rTokenAddress) {
       // In case user role is still being fetched, set the current account as owner
       setOwner({
         owner: true,

@@ -184,7 +184,7 @@ const ConfirmDeploy = () => {
       },
     }
   }, [])
-  console.log('tx', transaction)
+
   const fee = useTransactionCost(transaction ? [transaction] : [])
 
   const handleDeploy = () => {
