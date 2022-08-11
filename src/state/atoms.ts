@@ -37,6 +37,12 @@ export const rTokenDistributionAtom = atom<any>({
 })
 
 export const rTokenStatusAtom = atom(RTOKEN_STATUS.SOUND)
+// rToken account role
+export const accountRoleAtom = atom({
+  owner: false,
+  pauser: false,
+  freezer: false,
+})
 // TODO: start disabling pages
 export const isRTokenDisabledAtom = atom<boolean>((get) => {
   const status = get(rTokenStatusAtom)

@@ -1,6 +1,7 @@
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import { ERC20Interface, MainInterface, RTokenInterface } from 'abis'
+import { ethers } from 'ethers'
 import useBlockNumber from 'hooks/useBlockNumber'
 import { useFacadeContract } from 'hooks/useContract'
 import { atom, useAtom, useAtomValue } from 'jotai'
@@ -12,10 +13,12 @@ import { isAddress } from 'utils'
 import { RTOKEN_STATUS } from 'utils/constants'
 import RSV from 'utils/rsv'
 import {
+  accountRoleAtom,
   reserveTokensAtom,
   rTokenMainAtom,
   rTokenStatusAtom,
   selectedRTokenAtom,
+  walletAtom,
 } from './atoms'
 import { tokenMetricsAtom } from './metrics/atoms'
 import { promiseMulticall } from './web3/lib/multicall'
@@ -92,9 +95,11 @@ const ReserveTokenUpdater = () => {
   const updateTokenStatus = useUpdateAtom(rTokenStatusAtom)
   const updateToken = useUpdateAtom(updateTokenAtom)
   const resetMetrics = useResetAtom(tokenMetricsAtom)
+  const updateAccountRole = useUpdateAtom(accountRoleAtom)
   const facadeContract = useFacadeContract()
   const [searchParams] = useSearchParams()
   const currentAddress = searchParams.get('token')
+  const account = useAtomValue(walletAtom)
   const { provider } = useWeb3React()
 
   const setTokenStatus = useCallback(
@@ -172,6 +177,55 @@ const ReserveTokenUpdater = () => {
     [facadeContract, provider]
   )
 
+  const getUserRole = useCallback(
+    async (
+      provider: Web3Provider,
+      mainAddress: string,
+      accountAddress: string
+    ) => {
+      try {
+        const callParams = {
+          abi: MainInterface,
+          address: mainAddress,
+          method: 'hasRole',
+        }
+
+        const [isOwner, isPauser, isFreezer] = await promiseMulticall(
+          [
+            {
+              ...callParams,
+              args: [ethers.utils.formatBytes32String('OWNER'), accountAddress],
+            },
+            {
+              ...callParams,
+              args: [
+                ethers.utils.formatBytes32String('PAUSER'),
+                accountAddress,
+              ],
+            },
+            {
+              ...callParams,
+              args: [
+                ethers.utils.formatBytes32String('FREEZER'),
+                accountAddress,
+              ],
+            },
+          ],
+          provider
+        )
+
+        updateAccountRole({
+          owner: isOwner,
+          pauser: isPauser,
+          freezer: isFreezer,
+        })
+      } catch (e) {
+        console.error('Error fetching user role', e)
+      }
+    },
+    []
+  )
+
   useEffect(() => {
     const token = isAddress(currentAddress ?? '')
 
@@ -198,6 +252,17 @@ const ReserveTokenUpdater = () => {
       setTokenStatus(mainAddress, provider)
     }
   }, [blockNumber, mainAddress])
+
+  // User role
+  useEffect(() => {
+    if (provider) {
+      if (!mainAddress) {
+        updateAccountRole({ owner: false, freezer: false, pauser: false })
+      } else {
+        getUserRole(provider, mainAddress, account)
+      }
+    }
+  }, [mainAddress, account, provider])
 
   return null
 }
