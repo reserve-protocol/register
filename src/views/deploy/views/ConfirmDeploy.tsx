@@ -18,6 +18,7 @@ import {
   backupCollateralAtom,
   Basket,
   basketAtom,
+  deployIdAtom,
 } from '../atoms'
 import DeployHeader, { deployStepAtom } from '../components/DeployHeader'
 import DeployPreview from '../components/DeployPreview'
@@ -160,6 +161,7 @@ export const getDeployParameters = (
 const ConfirmDeploy = () => {
   const { getValues } = useFormContext()
   const addTransaction = useSetAtom(addTransactionAtom)
+  const deployId = useAtomValue(deployIdAtom)
   const primaryBasket = useAtomValue(basketAtom)
   const backupBasket = useAtomValue(backupCollateralAtom)
   const [current, setStep] = useAtom(deployStepAtom)
@@ -172,7 +174,7 @@ const ConfirmDeploy = () => {
     }
 
     return {
-      id: uuid(),
+      id: deployId,
       description: t`Deploy rToken`,
       status: TRANSACTION_STATUS.PENDING,
       value: '0',

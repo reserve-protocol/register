@@ -197,4 +197,6 @@ export enum DeploymentSteps {
   GovernanceDeploy,
 }
 
+export const deployIdAtom = atom('')
+
 export const currentStepAtom = atom(DeploymentSteps.Intro)

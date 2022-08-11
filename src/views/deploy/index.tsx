@@ -10,6 +10,9 @@ import ConfirmDeploy from './views/ConfirmDeploy'
 import DeployStatus from './views/DeployStatus'
 import Intro from './views/Intro'
 import TokenParameters from './views/TokenParameters'
+import { v4 as uuid } from 'uuid'
+import { deployIdAtom } from './atoms'
+import { useUpdateAtom } from 'jotai/utils'
 
 const defaultValues = {
   // token params
@@ -36,7 +39,6 @@ const defaultValues = {
 }
 
 const DeploymentViews = [
-  DeployStatus,
   Intro,
   BasketView,
   TokenParameters,
@@ -46,6 +48,7 @@ const DeploymentViews = [
 
 const Deploy = () => {
   const { account } = useWeb3React()
+  const setId = useUpdateAtom(deployIdAtom)
   const currentView = useAtomValue(deployStepAtom)
   const form = useForm({
     mode: 'onChange',
@@ -60,6 +63,10 @@ const Deploy = () => {
       form.setValue('ownerAddress', account)
     }
   }, [account])
+
+  useEffect(() => {
+    setId(uuid())
+  }, [])
 
   return (
     <FormProvider {...form}>
