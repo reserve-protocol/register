@@ -57,12 +57,12 @@ const useTokenStats = (rTokenId: string): TokenStats => {
   const rTokenPrice = useAtomValue(rTokenPriceAtom)
 
   useEffect(() => {
-    if (data) {
+    if (data?.rtoken && data?.token) {
       const insurance = +formatEther(data?.rtoken.insurance)
       const supply = +formatEther(data?.token.totalSupply)
       const cumulativeVolume = +formatEther(data?.token.cumulativeVolume)
       const dailyVolume = +formatEther(
-        data?.token.dailyTokenSnapshot[0].dailyVolume
+        data?.token.dailyTokenSnapshot[0]?.dailyVolume ?? '0'
       )
 
       setStats({
@@ -70,7 +70,8 @@ const useTokenStats = (rTokenId: string): TokenStats => {
         supply,
         cumulativeVolume,
         transferCount: +data?.token.transferCount,
-        dailyTransferCount: +data?.token.dailyTokenSnapshot[0].dailyEventCount,
+        dailyTransferCount:
+          +data?.token.dailyTokenSnapshot[0]?.dailyEventCount || 0,
         dailyVolume: `$${formatCurrency(dailyVolume)}`,
         insuranceUsd: `$${formatCurrency(insurance * rsrPrice)}`,
         supplyUsd: `$${formatCurrency(supply * rTokenPrice)}`,

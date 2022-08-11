@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { t } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
 import CalculatorIcon from 'components/icons/CalculatorIcon'
 import DiscussionsIcon from 'components/icons/DiscussionsIcon'
@@ -26,6 +26,49 @@ const Container = styled(Box)`
   border-right: 1px solid var(--theme-ui-colors-border);
 `
 
+interface Item {
+  path: string
+  title: string
+  Icon: React.ElementType
+}
+
+interface NavItemProps extends Item {
+  rTokenAddress: string
+}
+
+const NavItem = ({ path, title, Icon, rTokenAddress }: NavItemProps) => (
+  <NavLink
+    key={path}
+    style={({ isActive }) => ({
+      paddingLeft: '5px',
+      textDecoration: 'none',
+      color: 'inherit',
+      lineHeight: '32px',
+      boxShadow: isActive
+        ? 'inset 0 12px 0px var(--theme-ui-colors-background), inset 0 -12px 0px var(--theme-ui-colors-background), inset 4px 0px 0px currentColor'
+        : 'none',
+      display: 'flex',
+    })}
+    to={`${path}?token=${rTokenAddress}`}
+  >
+    <Box
+      sx={{
+        display: 'flex',
+        flexGrow: 1,
+        alignItems: 'center',
+        paddingLeft: [0, 0, 4],
+        justifyContent: ['center', 'center', 'inherit'],
+      }}
+      my={[10, 10, 10]}
+    >
+      <Icon />
+      <Text sx={{ display: ['none', 'none', 'inherit'] }} ml={2}>
+        {title}
+      </Text>
+    </Box>
+  </NavLink>
+)
+
 // Sidebar Navigation
 const Navigation = ({
   currentToken,
@@ -34,30 +77,36 @@ const Navigation = ({
 }) => {
   const PAGES = useMemo(
     () => [
-      { path: ROUTES.OVERVIEW, title: t`Overview`, icon: OverviewIcon },
-      { path: ROUTES.ISSUANCE, title: t`Mint + Redeem`, icon: IssuanceIcon },
-      { path: ROUTES.INSURANCE, title: t`Stake + Unstake`, icon: StakeIcon },
+      { path: ROUTES.OVERVIEW, title: t`Overview`, Icon: OverviewIcon },
+      { path: ROUTES.ISSUANCE, title: t`Mint + Redeem`, Icon: IssuanceIcon },
+      { path: ROUTES.INSURANCE, title: t`Stake + Unstake`, Icon: StakeIcon },
       {
         path: ROUTES.STAKING_CALCULATOR,
         title: t`Staking calculator`,
-        icon: CalculatorIcon,
+        Icon: CalculatorIcon,
       },
-      { path: ROUTES.AUCTIONS, title: t`Auctions`, icon: AuctionsIcon },
+      { path: ROUTES.AUCTIONS, title: t`Auctions`, Icon: AuctionsIcon },
+    ],
+    []
+  )
+  const externalPages = useMemo(
+    () => [
       {
         // TODO: get from token
         path: '/todo/1',
         title: t`Governance Discussions`,
-        icon: DiscussionsIcon,
+        Icon: DiscussionsIcon,
       },
       {
         // TODO: get from token
         path: '/todo/2',
         title: t`Governance Voting`,
-        icon: GovernanceIcon,
+        Icon: GovernanceIcon,
       },
     ],
     []
   )
+
   const pages = useMemo(() => {
     PAGES[0].title = `${currentToken?.symbol ?? ''} Overview`
 
@@ -68,40 +117,28 @@ const Navigation = ({
     return PAGES
   }, [currentToken])
 
+  // TODO: Dont display external links for non whitelisted rTokens
   return (
     <Box mt={5}>
       {pages.map((item) => (
-        <NavLink
-          key={item.path}
-          style={({ isActive }) => ({
-            paddingLeft: '5px',
-            textDecoration: 'none',
-            color: 'inherit',
-            lineHeight: '32px',
-            boxShadow: isActive
-              ? 'inset 0 12px 0px var(--theme-ui-colors-background), inset 0 -12px 0px var(--theme-ui-colors-background), inset 4px 0px 0px currentColor'
-              : 'none',
-            display: 'flex',
-          })}
-          to={item.path + '?token=' + currentToken?.address}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              flexGrow: 1,
-              alignItems: 'center',
-              paddingLeft: [0, 0, 4],
-              justifyContent: ['center', 'center', 'inherit'],
-            }}
-            my={[10, 10, 10]}
-          >
-            <item.icon />
-            <Text sx={{ display: ['none', 'none', 'inherit'] }} ml={2}>
-              {item.title}
-            </Text>
-          </Box>
-        </NavLink>
+        <NavItem {...item} rTokenAddress={currentToken?.address ?? ''} />
       ))}
+
+      {currentToken && !currentToken.isRSV && (
+        <>
+          <Text
+            variant="legend"
+            pl={5}
+            mt={3}
+            sx={{ fontSize: 1, display: 'block' }}
+          >
+            <Trans>External Links</Trans>
+          </Text>
+          {externalPages.map((item) => (
+            <NavItem {...item} rTokenAddress={currentToken.address} />
+          ))}
+        </>
+      )}
     </Box>
   )
 }
