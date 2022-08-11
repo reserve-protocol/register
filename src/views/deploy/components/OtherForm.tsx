@@ -90,7 +90,7 @@ const OtherForm = (props: BoxProps) => {
         name="minTrade"
         options={{
           required: true,
-          pattern: numberPattern,
+          pattern: decimalPattern,
           max: maxTrade,
           min: 0.01,
         }}
@@ -102,7 +102,7 @@ const OtherForm = (props: BoxProps) => {
         name="maxTrade"
         options={{
           required: true,
-          pattern: numberPattern,
+          pattern: decimalPattern,
           max: 480000000000,
           min: minTrade,
         }}

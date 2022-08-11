@@ -1,6 +1,6 @@
-import { Web3Provider } from '@ethersproject/providers'
+import { TransactionReceipt, Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
-import abis from 'abis'
+import abis, { DeployerInterface } from 'abis'
 import useBlockNumber from 'hooks/useBlockNumber'
 import useDebounce from 'hooks/useDebounce'
 import { useAtomValue } from 'jotai'
@@ -9,8 +9,22 @@ import { useCallback, useEffect } from 'react'
 import { pendingTxAtom, updateTransactionAtom } from 'state/atoms'
 import { TransactionState } from 'types'
 import { getContract } from 'utils'
+import { DEPLOYER_ADDRESS } from 'utils/addresses'
+import { CHAIN_ID } from 'utils/chains'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { error, signed, success } from '../lib/notifications'
+
+const getDeployedRToken = (receipt: TransactionReceipt): string => {
+  const log = receipt.logs.find(
+    (logs) => logs.address === DEPLOYER_ADDRESS[CHAIN_ID]
+  )
+
+  if (log) {
+    return DeployerInterface.parseLog(log).args.rToken as string
+  }
+
+  return ''
+}
 
 const TransactionManager = () => {
   const setTxs = useUpdateAtom(updateTransactionAtom)
@@ -27,15 +41,23 @@ const TransactionManager = () => {
             if (tx?.call.method !== 'approve') {
               success('Transaction confirmed', tx.description)
             }
-            setTxs([
-              index,
-              {
-                ...tx,
-                status: TRANSACTION_STATUS.CONFIRMED,
-                confirmedAt: receipt.blockNumber,
-                updatedAt: +Date.now(),
-              },
-            ])
+
+            const transaction = {
+              ...tx,
+              status: TRANSACTION_STATUS.CONFIRMED,
+              confirmedAt: receipt.blockNumber,
+              updatedAt: +Date.now(),
+            }
+
+            // Fill extra data with rToken address and persist it on localStorage
+            // TODO: Show select rToken from tx sidebar
+            if (transaction.call.method === 'deployRToken') {
+              transaction.extra = {
+                rTokenAddress: getDeployedRToken(receipt),
+              }
+            }
+
+            setTxs([index, transaction])
           }
         } catch (e) {
           console.error('error getting receipt', e)

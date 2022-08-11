@@ -44,7 +44,7 @@ interface RTokenConfiguration {
     backingBuffer: BigNumber
     maxTradeSlippage: BigNumber
     issuanceRate: BigNumber
-    oneshotFreezeDuration: BigNumber
+    freezeDuration: BigNumber
   }
 }
 
@@ -95,9 +95,7 @@ export const getDeployParameters = (
         issuanceRate: parseEther(
           (Number(tokenConfig.issuanceRate) / 100).toString()
         ),
-        oneshotFreezeDuration: BigNumber.from(
-          tokenConfig.oneshotFreezeDuration
-        ),
+        freezeDuration: BigNumber.from(tokenConfig.oneshotFreezeDuration),
       },
     }
 
@@ -186,6 +184,7 @@ const ConfirmDeploy = () => {
       },
     }
   }, [])
+  console.log('tx', transaction)
   const fee = useTransactionCost(transaction ? [transaction] : [])
 
   const handleDeploy = () => {

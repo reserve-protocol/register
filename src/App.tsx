@@ -11,8 +11,8 @@ import Web3Provider from 'state/web3'
 import { ThemeProvider } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import Deploy from 'views/deploy'
-import DeployIntro from 'views/deploy/components/DeployIntro'
 import Home from 'views/home'
+import Management from 'views/management'
 import Overview from 'views/overview'
 import Insurance from 'views/staking'
 import Layout from './components/layout'
@@ -77,8 +77,8 @@ const App = () => (
                   </Guard>
                 }
               />
-              {/* <Route path={ROUTES.DEPLOY} element={<DeployIntro />} /> */}
               <Route path={ROUTES.DEPLOY} element={<Deploy />} />
+              <Route path={ROUTES.MANAGEMENT} element={<Management />} />
             </Routes>
           </Layout>
         </ThemeProvider>

@@ -35,6 +35,7 @@ export interface TransactionState {
   hash?: string
   error?: string
   confirmedAt?: number
+  extra?: { [x: string]: string }
   // timestamps
   createdAt?: number // timestamp UTC
   updatedAt?: number // timestamp UTC

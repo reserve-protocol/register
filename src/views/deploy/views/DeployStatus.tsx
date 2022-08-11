@@ -1,14 +1,14 @@
 import { Trans } from '@lingui/macro'
-import { useWeb3React } from '@web3-react/core'
 import { useAtomValue } from 'jotai'
-import { useCallback, useEffect } from 'react'
+import { useUpdateAtom } from 'jotai/utils'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { selectedRTokenAtom } from 'state/atoms'
+import { useTransaction } from 'state/web3/hooks/useTransactions'
 import { Box, Card, Spinner, Text } from 'theme-ui'
 import { shortenString } from 'utils'
-import { TRANSACTION_STATUS } from 'utils/constants'
+import { ROUTES } from 'utils/constants'
 import { deployIdAtom } from '../atoms'
-import { DeployerInterface } from 'abis'
-import { DEPLOYER_ADDRESS } from 'utils/addresses'
-import { CHAIN_ID } from 'utils/chains'
 
 const Pending = () => (
   <Box sx={{ textAlign: 'center', width: 400 }}>
@@ -46,35 +46,18 @@ const Mining = ({ hash }: { hash: string }) => (
 // TODO: Handle no id case -> redirect to step 0? that should be a bug
 const DeployStatus = () => {
   const txId = useAtomValue(deployIdAtom)
-  // const tx = useTransaction(txId)
-  const tx = {
-    hash: '0xef59f35794a80c877668d566828337933be60e2c28260d1fa48da540c8747f52',
-    status: TRANSACTION_STATUS.CONFIRMED,
-  }
-  const { provider } = useWeb3React()
+  const tx = useTransaction(txId)
+  const setRToken = useUpdateAtom(selectedRTokenAtom)
+  const navigate = useNavigate()
 
-  const handleDeploy = useCallback(async (hash: string) => {
-    const receipt = await provider?.getTransactionReceipt(hash)
-
-    if (receipt) {
-      const log = receipt.logs.find(
-        (logs) => logs.address === DEPLOYER_ADDRESS[CHAIN_ID]
-      )
-
-      if (log) {
-        console.log('result', DeployerInterface.parseLog(log).args.rToken)
-      }
-    }
-
-    // FacadeWriteInterface.decodeEventLog(receipt.logs[0])
-    // if (receipt) {
-    //   const events = receipt.events.filter((e: Event) => e.event === eventName)
-    // }
-  }, [])
-
+  // TODO: Error case? user can get stuck here
   useEffect(() => {
-    if (tx?.hash && tx?.status === TRANSACTION_STATUS.CONFIRMED) {
-      handleDeploy(tx.hash)
+    if (tx?.extra?.rTokenAddress) {
+      setRToken(tx?.extra?.rTokenAddress)
+      // TODO: Before fetching anything set user as owner
+
+      // Deployment flow is complete! redirect the user to the management page
+      navigate(ROUTES.MANAGEMENT)
     }
   }, [tx?.status])
 
