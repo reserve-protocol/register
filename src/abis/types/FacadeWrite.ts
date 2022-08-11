@@ -196,9 +196,11 @@ export interface FacadeWriteInterface extends utils.Interface {
 
   events: {
     "GovernanceCreated(address,address,address)": EventFragment;
+    "RTokenDeployed(address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "GovernanceCreated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RTokenDeployed"): EventFragment;
 }
 
 export interface GovernanceCreatedEventObject {
@@ -213,6 +215,16 @@ export type GovernanceCreatedEvent = TypedEvent<
 
 export type GovernanceCreatedEventFilter =
   TypedEventFilter<GovernanceCreatedEvent>;
+
+export interface RTokenDeployedEventObject {
+  rToken: string;
+}
+export type RTokenDeployedEvent = TypedEvent<
+  [string],
+  RTokenDeployedEventObject
+>;
+
+export type RTokenDeployedEventFilter = TypedEventFilter<RTokenDeployedEvent>;
 
 export interface FacadeWrite extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -312,6 +324,11 @@ export interface FacadeWrite extends BaseContract {
       governance?: string | null,
       timelock?: string | null
     ): GovernanceCreatedEventFilter;
+
+    "RTokenDeployed(address)"(
+      rToken?: string | null
+    ): RTokenDeployedEventFilter;
+    RTokenDeployed(rToken?: string | null): RTokenDeployedEventFilter;
   };
 
   estimateGas: {

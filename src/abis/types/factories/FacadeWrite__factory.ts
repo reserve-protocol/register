@@ -44,6 +44,19 @@ const _abi = [
     type: "event",
   },
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "rToken",
+        type: "address",
+      },
+    ],
+    name: "RTokenDeployed",
+    type: "event",
+  },
+  {
     inputs: [
       {
         components: [

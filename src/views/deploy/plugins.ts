@@ -29,7 +29,7 @@ const collateralPlugins: CollateralPlugin[] = [
   // FIAT COLLATERAL
   {
     symbol: 'DAI',
-    address: '0x26B862f640357268Bd2d9E95bc81553a2Aa81D7E',
+    address: '0x87006e75a5B6bE9D1bbF61AC8Cd84f05D9140589',
     decimals: 18,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'DAI',
@@ -40,7 +40,7 @@ const collateralPlugins: CollateralPlugin[] = [
   },
   {
     symbol: 'USDC',
-    address: '0xA56F946D6398Dd7d9D4D9B337Cf9E0F68982ca5B',
+    address: '0x51C65cd0Cdb1A8A8b79dfc2eE965B1bA0bb8fc89',
     decimals: 6,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDC',
@@ -51,7 +51,7 @@ const collateralPlugins: CollateralPlugin[] = [
   },
   {
     symbol: 'USDT',
-    address: '0x5D42EBdBBa61412295D7b0302d6F50aC449Ddb4F',
+    address: '0x8fC8CFB7f7362E44E472c690A6e025B80E406458',
     decimals: 6,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDT',
@@ -63,7 +63,7 @@ const collateralPlugins: CollateralPlugin[] = [
   // YIELD TOKEN COLLATERAL
   {
     symbol: 'aDAI',
-    address: '0xB06c856C8eaBd1d8321b687E188204C1018BC4E5',
+    address: '0x359570B3a0437805D0a71457D61AD26a28cAC9A2',
     decimals: 6,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'DAI',
@@ -74,7 +74,7 @@ const collateralPlugins: CollateralPlugin[] = [
   },
   {
     symbol: 'cDAI',
-    address: '0xaB7B4c595d3cE8C85e16DA86630f2fc223B05057',
+    address: '0xc9952Fc93Fa9bE383ccB39008c786b9f94eAc95d',
     decimals: 6,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'DAI',
@@ -85,7 +85,7 @@ const collateralPlugins: CollateralPlugin[] = [
   },
   {
     symbol: 'cWBTC',
-    address: '0xAD523115cd35a8d4E60B3C0953E0E0ac10418309',
+    address: '0xDde063eBe8E85D666AD99f731B4Dbf8C98F29708',
     decimals: 18,
     targetUnit: TARGET_UNITS.BTC,
     referenceUnit: 'WBTC',
@@ -96,7 +96,7 @@ const collateralPlugins: CollateralPlugin[] = [
   },
   {
     symbol: 'cETH',
-    address: '0x045857BDEAE7C1c7252d611eB24eB55564198b4C',
+    address: '0xD5724171C2b7f0AA717a324626050BD05767e2C6',
     decimals: 18,
     targetUnit: TARGET_UNITS.ETH,
     referenceUnit: 'ETH',
@@ -107,7 +107,7 @@ const collateralPlugins: CollateralPlugin[] = [
   },
   {
     symbol: 'wBTC',
-    address: '0x2b5A4e5493d4a54E717057B127cf0C000C876f9B',
+    address: '0x70eE76691Bdd9696552AF8d4fd634b3cF79DD529',
     decimals: 6,
     targetUnit: TARGET_UNITS.BTC,
     referenceUnit: 'wBTC',
@@ -118,7 +118,7 @@ const collateralPlugins: CollateralPlugin[] = [
   },
   {
     symbol: 'EURT',
-    address: '0x02df3a3F960393F5B349E40A599FEda91a7cc1A7',
+    address: '0x9385556B571ab92bf6dC9a0DbD75429Dd4d56F91',
     decimals: 6,
     targetUnit: TARGET_UNITS.EUR,
     referenceUnit: 'EURT',

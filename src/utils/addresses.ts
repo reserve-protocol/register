@@ -4,7 +4,7 @@ type AddressMap = { [chainId: number]: string }
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
-// TODO: protocol deployment
+// The deployer version is also related to the protocol version
 export const DEPLOYER_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x70bDA08DBe07363968e9EE53d899dFE48560605B',
   [ChainId.Hardhat]: '0x70bDA08DBe07363968e9EE53d899dFE48560605B',
@@ -16,8 +16,8 @@ export const FACADE_ADDRESS: AddressMap = {
 }
 
 export const FACADE_WRITE_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0x74Cf9087AD26D541930BaC724B7ab21bA8F00a27',
-  [ChainId.Hardhat]: '0x74Cf9087AD26D541930BaC724B7ab21bA8F00a27',
+  [ChainId.Mainnet]: '0xAdE429ba898c34722e722415D722A70a297cE3a2',
+  [ChainId.Hardhat]: '0xAdE429ba898c34722e722415D722A70a297cE3a2',
 }
 
 export const RSR_ADDRESS: AddressMap = {
