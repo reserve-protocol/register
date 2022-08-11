@@ -1,15 +1,22 @@
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
-import { ERC20Interface } from 'abis'
+import { ERC20Interface, MainInterface, RTokenInterface } from 'abis'
+import useBlockNumber from 'hooks/useBlockNumber'
 import { useFacadeContract } from 'hooks/useContract'
-import { atom, useAtom } from 'jotai'
+import { atom, useAtom, useAtomValue } from 'jotai'
 import { useResetAtom, useUpdateAtom } from 'jotai/utils'
 import { useCallback, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { ContractCall, ReserveToken, Token } from 'types'
 import { isAddress } from 'utils'
 import RSV from 'utils/rsv'
-import { reserveTokensAtom, selectedRTokenAtom } from './atoms'
+import {
+  reserveTokensAtom,
+  rTokenMainAtom,
+  rTokenStatusAtom,
+  RTOKEN_STATUS,
+  selectedRTokenAtom,
+} from './atoms'
 import { tokenMetricsAtom } from './metrics/atoms'
 import { promiseMulticall } from './web3/lib/multicall'
 import { error } from './web3/lib/notifications'
@@ -17,10 +24,10 @@ import { error } from './web3/lib/notifications'
 /**
  * Fetch a list of tokens metadata from the blockchain
  */
-const getTokensMeta = async (
+const getRTokenMeta = async (
   addresses: string[],
   provider: Web3Provider
-): Promise<Token[]> => {
+): Promise<{ tokens: Token[]; main: string }> => {
   const calls = addresses.reduce((acc, address) => {
     const params = { abi: ERC20Interface, address, args: [] }
 
@@ -41,9 +48,17 @@ const getTokensMeta = async (
     ]
   }, [] as ContractCall[])
 
-  const multicallResult = await promiseMulticall(calls, provider)
+  calls.unshift({
+    abi: RTokenInterface,
+    address: addresses[0],
+    args: [],
+    method: 'main',
+  })
 
-  const result = addresses.reduce((tokens, address) => {
+  const multicallResult = await promiseMulticall(calls, provider)
+  const main = multicallResult.shift()
+
+  const tokens = addresses.reduce((tokens, address) => {
     const [name, symbol, decimals] = multicallResult.splice(0, 3)
 
     tokens.push({
@@ -56,7 +71,10 @@ const getTokensMeta = async (
     return tokens
   }, [] as Token[])
 
-  return result
+  return {
+    tokens,
+    main,
+  }
 }
 
 const updateTokenAtom = atom(null, (get, set, data: ReserveToken) => {
@@ -69,12 +87,51 @@ const updateTokenAtom = atom(null, (get, set, data: ReserveToken) => {
 // TODO: Loading state?
 const ReserveTokenUpdater = () => {
   const [selectedAddress, setSelectedToken] = useAtom(selectedRTokenAtom)
+  const blockNumber = useBlockNumber()
+  const mainAddress = useAtomValue(rTokenMainAtom)
+  const updateTokenStatus = useUpdateAtom(rTokenStatusAtom)
   const updateToken = useUpdateAtom(updateTokenAtom)
   const resetMetrics = useResetAtom(tokenMetricsAtom)
   const facadeContract = useFacadeContract()
   const [searchParams] = useSearchParams()
   const currentAddress = searchParams.get('token')
   const { provider } = useWeb3React()
+
+  const setTokenStatus = useCallback(
+    async (mainAddress: string, provider: Web3Provider) => {
+      try {
+        let status = RTOKEN_STATUS.SOUND
+        const [isPaused, isFrozen] = await promiseMulticall(
+          [
+            {
+              abi: MainInterface,
+              address: mainAddress,
+              args: [],
+              method: 'paused',
+            },
+            {
+              abi: MainInterface,
+              address: mainAddress,
+              args: [],
+              method: 'frozen',
+            },
+          ],
+          provider
+        )
+
+        if (isPaused) {
+          status = RTOKEN_STATUS.PAUSED
+        } else if (isFrozen) {
+          status = RTOKEN_STATUS.FROZEN
+        }
+
+        updateTokenStatus(status)
+      } catch (e) {
+        console.error('Error getting token status', e)
+      }
+    },
+    []
+  )
 
   const getTokenMeta = useCallback(
     async (address: string) => {
@@ -91,7 +148,10 @@ const ReserveTokenUpdater = () => {
             facadeContract.stToken(address),
           ])
 
-          const [rToken, stToken, ...collaterals] = await getTokensMeta(
+          const {
+            main,
+            tokens: [rToken, stToken, ...collaterals],
+          } = await getRTokenMeta(
             [address, stTokenAddress, ...basket],
             provider
           )
@@ -100,6 +160,7 @@ const ReserveTokenUpdater = () => {
             ...rToken,
             stToken,
             collaterals,
+            main,
           })
         }
       } catch (e) {
@@ -130,6 +191,13 @@ const ReserveTokenUpdater = () => {
       resetMetrics()
     }
   }, [selectedAddress])
+
+  // Checks rToken status on every block
+  useEffect(() => {
+    if (provider && blockNumber && mainAddress) {
+      setTokenStatus(mainAddress, provider)
+    }
+  }, [blockNumber, mainAddress])
 
   return null
 }

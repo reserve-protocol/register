@@ -38,7 +38,7 @@ export const rTokenDistributionAtom = atom<any>({
 
 export const RTOKEN_STATUS = {
   PAUSED: 'PAUSED',
-  FREEZE: 'FREEZE',
+  FROZEN: 'FROZEN',
   SOUND: 'SOUND',
 }
 
@@ -54,6 +54,11 @@ export const rTokenAtom = atom<ReserveToken | null>((get) =>
     ? get(reserveTokensAtom)[get(selectedRTokenAtom)]
     : null
 )
+export const rTokenMainAtom = atom<string | null>((get) => {
+  const rToken = get(rTokenAtom)
+
+  return rToken?.main || null
+})
 
 /**
  * Wallet Management

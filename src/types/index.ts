@@ -124,6 +124,7 @@ export interface BigNumberMap {
 export interface ReserveToken extends Token {
   collaterals: Token[] // current basket collateral list
   stToken?: Token // staking RSR token
+  main?: string // main contract address
   isRSV?: boolean // only for RSV
 }
 

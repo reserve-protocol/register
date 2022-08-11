@@ -12,12 +12,6 @@ import { Box, Divider, Flex, Text } from 'theme-ui'
 import { isContentOnlyView } from 'utils/constants'
 import Brand from '../Brand'
 
-const Separator = styled(Divider)`
-  border: none;
-  border-right: 1px solid var(--theme-ui-colors-border);
-  height: 100%;
-`
-
 const Container = styled(Flex)`
   align-items: center;
   flex-shrink: 0;
