@@ -11,6 +11,7 @@ import Web3Provider from 'state/web3'
 import { ThemeProvider } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import Deploy from 'views/deploy'
+import Governance from 'views/governance'
 import Home from 'views/home'
 import Management from 'views/management'
 import Overview from 'views/overview'
@@ -79,6 +80,7 @@ const App = () => (
               />
               <Route path={ROUTES.DEPLOY} element={<Deploy />} />
               <Route path={ROUTES.MANAGEMENT} element={<Management />} />
+              <Route path={ROUTES.GOVERNANCE} element={<Governance />} />
             </Routes>
           </Layout>
         </ThemeProvider>

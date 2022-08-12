@@ -242,6 +242,8 @@ const ReserveTokenUpdater = () => {
 
   useEffect(() => {
     if (selectedAddress) {
+      // TODO: reset permissions here?
+      // updateAccountRole({ owner: false, freezer: false, pauser: false })
       resetMetrics()
     }
   }, [selectedAddress])
@@ -262,7 +264,7 @@ const ReserveTokenUpdater = () => {
         getUserRole(provider, mainAddress, account)
       }
     }
-  }, [mainAddress, account, provider])
+  }, [mainAddress, account, blockNumber])
 
   return null
 }

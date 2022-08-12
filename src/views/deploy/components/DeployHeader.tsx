@@ -21,8 +21,10 @@ interface Props extends BoxProps {
   confirmText?: string
   gasCost?: number
   onConfirm?(): void
+  onBack?(): void
 }
 
+// TODO: Refactor in favor of a more re-usable component
 /**
  * View: Deploy -> Setup
  */
@@ -32,6 +34,7 @@ const DeployHeader = ({
   title,
   gasCost,
   subtitle,
+  onBack,
   onConfirm,
   ...props
 }: Props) => {
@@ -47,10 +50,10 @@ const DeployHeader = ({
 
   return (
     <Flex variant="layout.verticalAlign" my={5} {...props}>
-      {!!current && (
+      {(!!current || onBack) && (
         <IconButton
           mr={3}
-          onClick={back}
+          onClick={onBack ? onBack : back}
           sx={{
             cursor: 'pointer',
             border: '1px solid',

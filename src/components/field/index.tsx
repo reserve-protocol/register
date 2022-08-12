@@ -16,7 +16,7 @@ interface FormFieldProps extends FieldProps {
   options?: RegisterOptions
 }
 
-const Field = ({ label, help, children, ...props }: FieldProps) => (
+export const Field = ({ label, help, children, ...props }: FieldProps) => (
   <Box {...props}>
     <Flex mb={1}>
       <Text variant="subtitle" ml={2} sx={{ fontSize: 1 }}>

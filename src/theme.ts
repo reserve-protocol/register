@@ -285,6 +285,7 @@ export const theme: Theme = {
     },
     select: {
       ...baseInput,
+      backgroundColor: 'contentBackground',
     },
     inputError: {
       ...baseInput,
