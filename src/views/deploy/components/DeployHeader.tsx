@@ -50,7 +50,7 @@ const DeployHeader = ({
 
   return (
     <Flex variant="layout.verticalAlign" my={5} {...props}>
-      {(!!current || onBack) && (
+      {((current !== 0 && current !== 6) || onBack) && (
         <IconButton
           mr={3}
           onClick={onBack ? onBack : back}

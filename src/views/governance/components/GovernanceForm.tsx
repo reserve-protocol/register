@@ -23,7 +23,10 @@ const GovernanceForm = () => {
           </Text>
         </Box>
         <Box ml="auto">
-          <Switch defaultChecked {...register('defaultGovernance')} />
+          <Switch
+            defaultChecked={defaultGovernance}
+            {...register('defaultGovernance')}
+          />
         </Box>
       </Flex>
 

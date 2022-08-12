@@ -12,7 +12,6 @@ import { StringMap } from 'types'
 import { FACADE_WRITE_ADDRESS, ZERO_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 import { TRANSACTION_STATUS } from 'utils/constants'
-import { v4 as uuid } from 'uuid'
 import {
   BackupBasket,
   backupCollateralAtom,

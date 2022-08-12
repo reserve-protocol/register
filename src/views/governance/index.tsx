@@ -1,18 +1,13 @@
-import { t, Trans } from '@lingui/macro'
-import { Container, InfoBox } from 'components'
-import { Field, FormField } from 'components/field'
 import { useAtom, useAtomValue } from 'jotai'
-import { useEffect, useState } from 'react'
-import { FormProvider, useForm, useFormContext } from 'react-hook-form'
+import { useEffect } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { accountRoleAtom } from 'state/atoms'
-import { Box, Card, Flex, Grid, Select, Switch, Text } from 'theme-ui'
-import { addressPattern, numberPattern } from 'utils'
-import { ROUTES } from 'utils/constants'
-import DeployHeader, { deployStepAtom } from '../deploy/components/DeployHeader'
-import DeploymentStepTracker, { Steps } from '../deploy/components/DeployStep'
-import GovernanceForm from './components/GovernanceForm'
+import { deployStepAtom } from '../deploy/components/DeployHeader'
+import { Steps } from '../deploy/components/DeployStep'
+import ConfirmGovernanceSetup from './views/ConfirmGovernanceSetup'
 import GovernanceSetup from './views/GovernanceSetup'
+import GovernanceStatus from './views/GovernanceStatus'
 
 const defaultValues = {
   defaultGovernance: true,
@@ -29,27 +24,26 @@ const defaultValues = {
 
 const Views = {
   [Steps.GovernanceSetup.toString()]: GovernanceSetup,
-  [Steps.GovernanceSummary.toString()]: GovernanceSetup,
-  [Steps.GovernanceTx.toString()]: GovernanceSetup,
+  [Steps.GovernanceSummary.toString()]: ConfirmGovernanceSetup,
+  [Steps.GovernanceTx.toString()]: GovernanceStatus,
 }
 
 // TODO: Refactor into multiple components
 const Governance = () => {
   const [currentStep, setCurrentStep] = useAtom(deployStepAtom)
-  const [currentView, setCurrentView] = useState(Steps.GovernanceSetup)
-  const [defaultGovernance, setDefaultGovernance] = useState(true)
   const form = useForm({
     mode: 'onChange',
     defaultValues,
   })
   const accountRole = useAtomValue(accountRoleAtom)
   const navigate = useNavigate()
-  const [unfreeze, setUnfreeze] = useState(0)
 
   useEffect(() => {
-    setCurrentView(Steps.GovernanceSetup)
+    setCurrentStep(Steps.GovernanceSetup)
 
-    return setCurrentView(Steps.Intro)
+    return () => {
+      setCurrentStep(Steps.Intro)
+    }
   }, [])
 
   useEffect(() => {
@@ -57,20 +51,6 @@ const Governance = () => {
       navigate('/')
     }
   }, [accountRole])
-
-  const handleBack = () => {
-    navigate(ROUTES.MANAGEMENT)
-  }
-
-  const handleConfirm = () => {}
-
-  const handleCustomGovernance = (e: any) => {
-    setDefaultGovernance(e.target.checked)
-  }
-
-  const handleFreezeStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setUnfreeze(+e.currentTarget.value)
-  }
 
   const GovernanceView = Views[currentStep.toString()] || GovernanceSetup
 
