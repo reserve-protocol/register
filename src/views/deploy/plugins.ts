@@ -21,8 +21,8 @@ export const TARGET_UNITS = {
 }
 
 export const REWARD_TOKEN = {
-  COMP: '0xc00e94Cb662C3520282E6f5717214004A7f26888',
-  AAVE: '0x4da27a545c0c5B758a6BA100e3a049001de870f5',
+  COMP: '0x87006e75a5B6bE9D1bbF61AC8Cd84f05D9140589',
+  AAVE: '0x82EdA215Fa92B45a3a76837C65Ab862b6C7564a8',
 }
 
 const collateralPlugins: CollateralPlugin[] = [
@@ -49,17 +49,17 @@ const collateralPlugins: CollateralPlugin[] = [
     collateralAddress: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
     rewardToken: ZERO_ADDRESS,
   },
-  {
-    symbol: 'USDT',
-    address: '0xC7143d5bA86553C06f5730c8dC9f8187a621A8D4',
-    decimals: 6,
-    targetUnit: TARGET_UNITS.USD,
-    referenceUnit: 'USDT',
-    collateralToken: 'USDT',
-    description: 'Used in RSV',
-    collateralAddress: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-    rewardToken: ZERO_ADDRESS,
-  },
+  // {
+  //   symbol: 'USDT',
+  //   address: '0xC7143d5bA86553C06f5730c8dC9f8187a621A8D4',
+  //   decimals: 6,
+  //   targetUnit: TARGET_UNITS.USD,
+  //   referenceUnit: 'USDT',
+  //   collateralToken: 'USDT',
+  //   description: 'Used in RSV',
+  //   collateralAddress: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+  //   rewardToken: ZERO_ADDRESS,
+  // },
   // YIELD TOKEN COLLATERAL
   {
     symbol: 'aDAI',

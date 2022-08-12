@@ -4,7 +4,7 @@ import { Check } from 'react-feather'
 import { Box, Flex, Text } from 'theme-ui'
 
 // Actual screens
-enum Steps {
+export enum Steps {
   Intro,
   Baskets,
   Parameters,

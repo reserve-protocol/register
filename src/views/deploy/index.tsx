@@ -21,7 +21,7 @@ const defaultValues = {
   manifesto: '',
   ownerAddress: '',
   // backing params
-  tradingDelay: '0', // delay after default confirmed
+  tradingDelay: '2160', // delay after default confirmed
   auctionLength: '900', // 15 minutes
   backingBuffer: '0.01', // 0.01%
   maxTradeSlippage: '1', // 1%
