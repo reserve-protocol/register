@@ -1,8 +1,11 @@
 import { useWeb3React } from '@web3-react/core'
-import { useAtomValue } from 'jotai'
+import { useAtom } from 'jotai'
+import { useUpdateAtom } from 'jotai/utils'
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Box } from 'theme-ui'
+import { v4 as uuid } from 'uuid'
+import { backupCollateralAtom, basketAtom, deployIdAtom } from './atoms'
 import { deployStepAtom } from './components/DeployHeader'
 import DeploymentStepTracker from './components/DeployStep'
 import BasketView from './views/Basket'
@@ -10,9 +13,6 @@ import ConfirmDeploy from './views/ConfirmDeploy'
 import DeployStatus from './views/DeployStatus'
 import Intro from './views/Intro'
 import TokenParameters from './views/TokenParameters'
-import { v4 as uuid } from 'uuid'
-import { deployIdAtom } from './atoms'
-import { useUpdateAtom } from 'jotai/utils'
 
 const defaultValues = {
   // token params
@@ -49,7 +49,9 @@ const DeploymentViews = [
 const Deploy = () => {
   const { account } = useWeb3React()
   const setId = useUpdateAtom(deployIdAtom)
-  const currentView = useAtomValue(deployStepAtom)
+  const setBasket = useUpdateAtom(basketAtom)
+  const setBackupBasket = useUpdateAtom(backupCollateralAtom)
+  const [currentView, setCurrentView] = useAtom(deployStepAtom)
   const form = useForm({
     mode: 'onChange',
     defaultValues,
@@ -66,6 +68,12 @@ const Deploy = () => {
 
   useEffect(() => {
     setId(uuid())
+
+    return () => {
+      setCurrentView(0)
+      setBasket({})
+      setBackupBasket({})
+    }
   }, [])
 
   return (
