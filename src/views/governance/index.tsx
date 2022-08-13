@@ -1,13 +1,16 @@
 import { useAtom, useAtomValue } from 'jotai'
+import { useUpdateAtom } from 'jotai/utils'
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { accountRoleAtom } from 'state/atoms'
 import { deployStepAtom } from '../deploy/components/DeployHeader'
 import { Steps } from '../deploy/components/DeployStep'
+import { govTxIdAtom } from './atoms'
 import ConfirmGovernanceSetup from './views/ConfirmGovernanceSetup'
 import GovernanceSetup from './views/GovernanceSetup'
 import GovernanceStatus from './views/GovernanceStatus'
+import { v4 as uuid } from 'uuid'
 
 const defaultValues = {
   defaultGovernance: true,
@@ -31,6 +34,7 @@ const Views = {
 // TODO: Refactor into multiple components
 const Governance = () => {
   const [currentStep, setCurrentStep] = useAtom(deployStepAtom)
+  const setId = useUpdateAtom(govTxIdAtom)
   const form = useForm({
     mode: 'onChange',
     defaultValues,
@@ -40,6 +44,7 @@ const Governance = () => {
 
   useEffect(() => {
     setCurrentStep(Steps.GovernanceSetup)
+    setId(uuid())
 
     return () => {
       setCurrentStep(Steps.Intro)

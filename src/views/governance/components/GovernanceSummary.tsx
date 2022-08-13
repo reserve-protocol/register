@@ -82,6 +82,10 @@ const GovernanceSummary = () => {
         )}
       </Box>
       <Box px={5} py={4}>
+        <Text variant="title">
+          <Trans>Options</Trans>
+        </Text>
+        <Divider my={3} />
         <Info
           mb={3}
           title={t`Default Governance?`}

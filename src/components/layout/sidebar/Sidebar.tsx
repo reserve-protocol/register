@@ -39,7 +39,6 @@ interface NavItemProps extends Item {
 
 const NavItem = ({ path, title, Icon, rTokenAddress }: NavItemProps) => (
   <NavLink
-    key={path}
     style={({ isActive }) => ({
       paddingLeft: '5px',
       textDecoration: 'none',
@@ -133,7 +132,11 @@ const Navigation = ({
   return (
     <Box mt={5}>
       {pages.map((item) => (
-        <NavItem {...item} rTokenAddress={currentToken?.address ?? ''} />
+        <NavItem
+          key={item.path}
+          {...item}
+          rTokenAddress={currentToken?.address ?? ''}
+        />
       ))}
 
       {currentToken && !currentToken.isRSV && (
@@ -148,7 +151,11 @@ const Navigation = ({
             <Trans>External Links</Trans>
           </Text>
           {externalPages.map((item) => (
-            <NavItem {...item} rTokenAddress={currentToken.address} />
+            <NavItem
+              {...item}
+              key={item.path}
+              rTokenAddress={currentToken.address}
+            />
           ))}
         </>
       )}
