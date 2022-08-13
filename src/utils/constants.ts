@@ -26,6 +26,7 @@ export const ROUTES = Object.freeze({
   DEPLOY: '/deploy',
   MANAGEMENT: '/management',
   GOVERNANCE: '/management/governance',
+  GOVERNANCE_INFO: '/governance-info',
   LIST: '/list',
   HOME: '/',
   WALLET: '/wallet',

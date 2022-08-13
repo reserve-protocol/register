@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { useTransaction } from 'state/web3/hooks/useTransactions'
 import { Box, Card, Spinner, Text } from 'theme-ui'
 import { shortenString } from 'utils'
-import { TRANSACTION_STATUS } from 'utils/constants'
+import { ROUTES, TRANSACTION_STATUS } from 'utils/constants'
 import { govTxIdAtom } from '../atoms'
 
 const Pending = () => (
@@ -45,7 +45,7 @@ const GovernanceSetup = () => {
 
   useEffect(() => {
     if (tx?.status === TRANSACTION_STATUS.CONFIRMED) {
-      console.log('IT WILL NAVIGATE!!!!')
+      navigate(ROUTES.GOVERNANCE_INFO)
     }
   }, [tx?.status])
 
