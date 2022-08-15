@@ -4,6 +4,7 @@
 export type { ERC20 } from "./ERC20";
 export type { RSR } from "./RSR";
 export type { RToken } from "./RToken";
+export type { Collateral } from "./Collateral";
 export type { Deployer } from "./Deployer";
 export type { Facade } from "./Facade";
 export type { FacadeWrite } from "./FacadeWrite";
@@ -11,6 +12,7 @@ export type { Main } from "./Main";
 export type { RsvManager } from "./RsvManager";
 export type { StRsr } from "./StRsr";
 export * as factories from "./factories";
+export { Collateral__factory } from "./factories/Collateral__factory";
 export { Deployer__factory } from "./factories/Deployer__factory";
 export { ERC20__factory } from "./factories/ERC20__factory";
 export { FacadeWrite__factory } from "./factories/FacadeWrite__factory";

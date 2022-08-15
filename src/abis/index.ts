@@ -9,6 +9,7 @@ import StRSR from './st-rsr.json'
 import FacadeWrite from './facade-write.json'
 import Deployer from './deployer.json'
 import Main from './main.json'
+import Collateral from './collateral.json'
 
 const ERC20Interface = new Interface(ERC20)
 const FacadeInterface = new Interface(Facade)
@@ -19,6 +20,7 @@ const StRSRInterface = new Interface(StRSR)
 const RSVManagerInterface = new Interface(RSVManager)
 const DeployerInterface = new Interface(Deployer)
 const MainInterface = new Interface(Main)
+const CollateralInterface = new Interface(Collateral)
 
 export { ERC20, ERC20Interface }
 export { Facade, FacadeInterface }
@@ -29,6 +31,7 @@ export { RSVManager, RSVManagerInterface }
 export { FacadeWrite, FacadeWriteInterface }
 export { Deployer, DeployerInterface }
 export { Main, MainInterface }
+export { Collateral, CollateralInterface }
 
 // Used for tx management
 export default <StringMap>{

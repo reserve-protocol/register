@@ -1,10 +1,9 @@
 import { t, Trans } from '@lingui/macro'
 import { Button, Modal } from 'components'
 import { SmallButton } from 'components/button'
-import Help from 'components/help'
 import { ModalProps } from 'components/modal'
 import { useAtomValue, useUpdateAtom } from 'jotai/utils'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Box, Divider, Flex, Text } from 'theme-ui'
 import {
   addBackupCollateralAtom,
@@ -38,6 +37,52 @@ const getPlugins = (addedCollaterals: string[], targetUnit?: string) => {
     }
     return acc
   }, {} as CollateralMap)
+}
+
+const CustomCollateral = ({ onAdd }: { onAdd(address: string): void }) => {
+  const [isActive, setActive] = useState(false)
+  const [isValidating, setValidating] = useState(false)
+
+  const validatePlugin = useCallback(() => {
+    
+  }, [])
+
+  const handleAdd = () => {}
+
+  if (isActive) {
+    return (
+      <Flex variant="layout.verticalAlign" pt={2}>
+        <Box>
+          <Text>
+            <Trans>Made your own collateral?</Trans>
+          </Text>
+          <Text variant="legend" mt={1} sx={{ fontSize: 1, display: 'block' }}>
+            <Trans>Use a custom plugin contract address</Trans>
+          </Text>
+        </Box>
+        <Box mx="auto" />
+        <SmallButton variant="muted">
+          <Trans>Add</Trans>
+        </SmallButton>
+      </Flex>
+    )
+  }
+
+  return (
+    <Flex variant="layout.verticalAlign" pt={2}>
+      <Box>
+        <Text>
+          <Trans>Made your own collateral?</Trans>
+        </Text>
+        <Text variant="legend" mt={1} sx={{ fontSize: 1, display: 'block' }}>
+          <Trans>Use a custom plugin contract address</Trans>
+        </Text>
+      </Box>
+      <SmallButton ml="auto" variant="muted" onClick={() => setActive(true)}>
+        <Trans>Add</Trans>
+      </SmallButton>
+    </Flex>
+  )
 }
 
 /**
@@ -78,13 +123,13 @@ const CollateralModal = ({
 
   // Add custom collateral to the collaterals list and selected
   // TODO
-  const handleAddCustom = (collateral: Collateral) => {
+  const handleAddCustom = (address: string) => {
     setCustom(false)
-    setSelected([...selected, collateral.address])
-    setCollaterals({
-      ...collaterals,
-      [collateral.address]: collateral,
-    })
+    // setSelected([...selected, collateral.address])
+    // setCollaterals({
+    //   ...collaterals,
+    //   [collateral.address]: collateral,
+    // })
   }
 
   // Toggle custom collateral view
@@ -105,22 +150,7 @@ const CollateralModal = ({
       onClose={onClose}
       {...props}
     >
-      <Flex variant="verticalAlign" mt={3}>
-        <Box mr={4}>
-          <Text>
-            <Trans>What is this list?</Trans>
-          </Text>
-          <Text variant="legend" mt={1} sx={{ fontSize: 1, display: 'block' }}>
-            <Trans>
-              These collateral plugins either exist in othe rRTokens or have
-              been defined already by the Reserve team.
-            </Trans>
-          </Text>
-        </Box>
-        <Box mt={1}>
-          <Help content="TODO" />
-        </Box>
-      </Flex>
+      <CustomCollateral onAdd={handleAddCustom} />
       <Divider mx={-4} mt={3} />
       <Box
         sx={{
@@ -136,30 +166,11 @@ const CollateralModal = ({
         {Object.values<Collateral | CollateralPlugin>(collaterals).map(
           (plugin) => (
             <Box key={plugin.address}>
-              <PluginItem px={4} data={plugin} onCheck={handleToggle} mb={3} />
+              <PluginItem px={4} data={plugin} onCheck={handleToggle} />
               <Divider my={3} />
             </Box>
           )
         )}
-        <Flex variant="layout.verticalAlign" mx={4} pb={3}>
-          <Box>
-            <Text>
-              <Trans>Made your own collateral?</Trans>
-            </Text>
-            <Text
-              variant="legend"
-              mt={1}
-              sx={{ fontSize: 1, display: 'block' }}
-            >
-              <Trans>Use a custom address</Trans>
-            </Text>
-          </Box>
-          <Box mx="auto" />
-          <SmallButton mr={3} onClick={handleCustomCollateral}>
-            <Trans>Add</Trans>
-          </SmallButton>
-          <Help content="TODO" />
-        </Flex>
       </Box>
       <Divider mx={-4} mb={3} />
       <Button

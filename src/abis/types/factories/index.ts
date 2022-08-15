@@ -4,6 +4,7 @@
 export { ERC20__factory } from "./ERC20__factory";
 export { RSR__factory } from "./RSR__factory";
 export { RToken__factory } from "./RToken__factory";
+export { Collateral__factory } from "./Collateral__factory";
 export { Deployer__factory } from "./Deployer__factory";
 export { Facade__factory } from "./Facade__factory";
 export { FacadeWrite__factory } from "./FacadeWrite__factory";
