@@ -13,31 +13,63 @@ import {
 import { RSR, RTOKEN_STATUS, TRANSACTION_STATUS } from 'utils/constants'
 import { WalletTransaction } from './../types/index'
 
-export const isWalletModalVisibleAtom = atom(false)
-
-export const chainIdAtom = atom<number | undefined>(undefined)
-export const blockAtom = atom<number | undefined>(undefined)
-// Prices
-export const ethPriceAtom = atom(1)
-export const rsrPriceAtom = atom(1)
-export const gasPriceAtom = atom(1)
-export const rTokenPriceAtom = atom(1)
-export const rsrExchangeRateAtom = atom(1)
-export const blockTimestampAtom = atom<number>(0)
-
 /**
- * RToken management
+ * This file contains application level atoms
+ * At some point this file is expected to be divided into multiple files per atom type
  */
 
-// Cache layer for loaded tokens
-// TODO: temporal
+/**
+ * ######################
+ * ? RToken related atoms
+ * ######################
+ */
+
+// Store rToken meta into localStorage for fast fetching using cache
+export const reserveTokensAtom = atomWithStorage<{
+  [x: string]: ReserveToken
+}>('reserveTokens', {})
+
+// Current selected rToken address
+export const selectedRTokenAtom = atomWithStorage('selectedRToken', '')
+
+// Grab rToken data from the atom list
+export const rTokenAtom = atom<ReserveToken | null>((get) =>
+  get(reserveTokensAtom) && get(reserveTokensAtom)[get(selectedRTokenAtom)]
+    ? get(reserveTokensAtom)[get(selectedRTokenAtom)]
+    : null
+)
+
+// Current rToken status
+export const rTokenStatusAtom = atom(RTOKEN_STATUS.SOUND)
+export const isRTokenDisabledAtom = atom<boolean>((get) => {
+  const status = get(rTokenStatusAtom)
+
+  return status === RTOKEN_STATUS.FROZEN || status === RTOKEN_STATUS.PAUSED
+})
+
+// Get rToken main contract, not available for RSV
+export const rTokenMainAtom = atom<string | null>((get) => {
+  const rToken = get(rTokenAtom)
+
+  return rToken?.main || null
+})
+
+// Get rToken collateral distribution
 export const rTokenDistributionAtom = atom<any>({
   backing: 0,
   insurance: 0,
 })
 
-export const rTokenStatusAtom = atom(RTOKEN_STATUS.SOUND)
-// rToken account role
+/**
+ * ##############################
+ * ? Wallet/Account related atoms
+ * ##############################
+ */
+
+// Tracks walletModal visible status
+export const isWalletModalVisibleAtom = atom(false)
+
+// Tracks current account role related to the selected rToken
 export const accountRoleAtom = atom({
   owner: false,
   pauser: false,
@@ -49,37 +81,39 @@ export const isManagerAtom = atom<boolean>((get) => {
   return role.owner || role.pauser || role.freezer
 })
 
-// TODO: start disabling pages
-export const isRTokenDisabledAtom = atom<boolean>((get) => {
-  const status = get(rTokenStatusAtom)
-
-  return status === RTOKEN_STATUS.FROZEN || status === RTOKEN_STATUS.PAUSED
-})
-
-export const reserveTokensAtom = atomWithStorage<{
-  [x: string]: ReserveToken
-}>('reserveTokens', {})
-// Current selected rToken address
-export const selectedRTokenAtom = atomWithStorage('selectedRToken', '')
-// Grab rToken data from the atom list
-export const rTokenAtom = atom<ReserveToken | null>((get) =>
-  get(reserveTokensAtom) && get(reserveTokensAtom)[get(selectedRTokenAtom)]
-    ? get(reserveTokensAtom)[get(selectedRTokenAtom)]
-    : null
-)
-export const rTokenMainAtom = atom<string | null>((get) => {
-  const rToken = get(rTokenAtom)
-
-  return rToken?.main || null
-})
+/**
+ * #########################
+ * Chain state related atoms
+ * #########################
+ */
+export const chainIdAtom = atom<number | undefined>(undefined)
+export const blockAtom = atom<number | undefined>(undefined)
+export const blockTimestampAtom = atom<number>(0)
 
 /**
- * Wallet Management
+ * ##################
+ * Price related atom
+ * ##################
  */
-// tracks current connected address
+export const ethPriceAtom = atom(1)
+export const rsrPriceAtom = atom(1)
+export const gasPriceAtom = atom(1)
+export const rTokenPriceAtom = atom(1)
+export const rsrExchangeRateAtom = atom(1)
+
+/**
+ * #################
+ * Wallet Management
+ * #################
+ */
+
+// Tracks current connected address
 export const walletAtom = atom('')
-// tracks rToken/collaterals/stRSR/RSR balances for a connected account
+
+// Tracks rToken/collaterals/stRSR/RSR balances for a connected account
 export const balancesAtom = atom<{ [x: string]: number }>({})
+
+// Get balance for current rToken for the selected account
 export const rTokenBalanceAtom = atom((get) => {
   const rToken = get(rTokenAtom)
 
@@ -89,9 +123,7 @@ export const rTokenBalanceAtom = atom((get) => {
 
   return 0
 })
-export const rsrBalanceAtom = atom((get) => {
-  return get(balancesAtom)[RSR.address] || 0
-})
+
 export const stRsrBalanceAtom = atom((get) => {
   const stRSR = get(rTokenAtom)?.stToken?.address
 
@@ -101,12 +133,24 @@ export const stRsrBalanceAtom = atom((get) => {
 
   return 0
 })
-// trackks allowance for stRSR/RSR and Collaterals/rToken
+
+export const rsrBalanceAtom = atom((get) => {
+  return get(balancesAtom)[RSR.address] || 0
+})
+
+// Tracks allowance for stRSR/RSR and Collaterals/rToken
 export const allowanceAtom = atom<{ [x: string]: BigNumber }>({})
 
-/**
- * Pending balances
- */
+// Store current rToken holdings for an account
+export const accountTokensAtom = atom<AccountToken[]>([])
+
+// Store current stToken holdings (stake) for an account
+export const accountPositionsAtom = atom<AccountPosition[]>([])
+
+// Store how much RSR is staked for a given account across the whole protocol
+export const accountHoldingsAtom = atom(0)
+
+// List of pending user issuances for the selected rToken
 export const pendingIssuancesAtom = atom<any[]>([])
 export const pendingIssuancesSummary = atom((get) => {
   const pending = get(pendingIssuancesAtom)
@@ -137,6 +181,7 @@ export const pendingIssuancesSummary = atom((get) => {
   )
 })
 
+// List of unstake cooldown for the selected rToken
 export const pendingRSRAtom = atom<any[]>([])
 export const pendingRSRSummaryAtom = atom((get) => {
   const currentTime = get(blockTimestampAtom)
@@ -164,16 +209,18 @@ export const pendingRSRSummaryAtom = atom((get) => {
   )
 })
 
-// Calls state
+/**
+ * ############################
+ * ? Transactions related atoms
+ * ############################
+ */
+
+// Store multicalls, fetched on every block
 export const callsAtom = atom<RawCall[]>([])
 export const multicallStateAtom = atom<MulticallState>({})
 
+// Transactions storage layer
 const txStorage = createJSONStorage<TransactionMap>(() => localStorage)
-
-/**
- * Parse transactions from localStorage
- * Mark signing and pending transactions status to unknown
- */
 txStorage.getItem = (key: string): TransactionMap => {
   const data = localStorage?.getItem(key)
 
@@ -201,18 +248,18 @@ txStorage.getItem = (key: string): TransactionMap => {
       return txMap
     }, {} as TransactionMap)
   } catch (e) {
-    console.error('erorr parsing', e)
+    console.error('Error parsing transaction', e)
     localStorage.setItem(key, JSON.stringify({}))
     return {}
   }
 }
 
+// List of recent user transactions
 export const txAtom = atomWithStorage<TransactionMap>(
   'transactions',
   {},
   txStorage
 )
-
 export const currentTxAtom = atom((get) => {
   const chain = get(chainIdAtom) ?? 0
   const account = get(walletAtom) ?? ''
@@ -221,7 +268,7 @@ export const currentTxAtom = atom((get) => {
   return txs[chain] && txs[chain][account] ? txs[chain][account] : []
 })
 
-// TODO: Improve or split this atom
+// Return list of transactions ordered by status
 export const pendingTxAtom = atom((get) => {
   const result = {
     pending: <[number, TransactionState][]>[],
@@ -246,6 +293,7 @@ export const pendingTxAtom = atom((get) => {
   }, result)
 })
 
+// Add transaction to queue
 export const addTransactionAtom = atom(
   null,
   (get, set, tx: TransactionState[]) => {
@@ -270,6 +318,7 @@ export const addTransactionAtom = atom(
   }
 )
 
+// Update tx status
 export const updateTransactionAtom = atom(
   null,
   (get, set, data: [number, Partial<TransactionState>]) => {
@@ -297,12 +346,3 @@ export const updateTransactionAtom = atom(
     })
   }
 )
-
-// TODO: Refactor this whole file clean it up
-
-/**
- * Account rToken holdings and stake positions
- */
-export const accountTokensAtom = atom<AccountToken[]>([])
-export const accountPositionsAtom = atom<AccountPosition[]>([])
-export const accountHoldingsAtom = atom(0)

@@ -13,7 +13,7 @@ export const borderRadius = {
   boxes: 16,
 }
 export const baseButton = {
-  borderRadius: 50,
+  borderRadius: 10,
   fontWeight: 500,
   cursor: 'pointer',
   color: '#fff',
@@ -48,7 +48,7 @@ export const smallButton = {
   paddingBottom: 1,
   paddingLeft: 3,
   paddingRight: 3,
-  borderRadius: 26,
+  borderRadius: 10,
 }
 
 export const colors = {
