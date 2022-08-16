@@ -35,8 +35,8 @@ const TokenForm = (props: BoxProps) => (
       }}
     />
     <FormField
-      label={t`Manifesto???`}
-      placeholder={t`RToken description`}
+      label={t`Mandate`}
+      placeholder={t`RToken mandate`}
       mb={3}
       name="manifesto"
       options={{
