@@ -77,12 +77,26 @@ const Portfolio = (props: BoxProps) => {
             <Trans>Your RTokens</Trans>
           </Text>
           <Table mt={3} columns={rTokenColumns} data={rTokens} />
+          {!rTokens?.length && (
+            <Box mt={3} mb={5} sx={{ textAlign: 'center' }}>
+              <Text variant="legend">
+                <Trans>No rToken holdings</Trans>
+              </Text>
+            </Box>
+          )}
         </Box>
         <Box>
           <Text variant="sectionTitle">
             <Trans>Your staked RSR positions</Trans>
           </Text>
           <Table mt={3} columns={stTokenColumns} data={stTokens} />
+          {!stTokens?.length && (
+            <Box mt={3} mb={5} sx={{ textAlign: 'center' }}>
+              <Text variant="legend">
+                <Trans>No stake positions</Trans>
+              </Text>
+            </Box>
+          )}
         </Box>
       </Grid>
       <Divider my={5} mx={-5} />

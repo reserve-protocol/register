@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { t } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 import Help from 'components/help'
 import { Table } from 'components/table'
 import { useMemo } from 'react'
@@ -113,6 +113,13 @@ const TransactionsTable = ({
         columns={columns}
         data={data}
       />
+      {!data?.length && (
+        <Box mb={5} sx={{ textAlign: 'center' }}>
+          <Text variant="legend">
+            <Trans>No transactions</Trans>
+          </Text>
+        </Box>
+      )}
     </Container>
   )
 }
