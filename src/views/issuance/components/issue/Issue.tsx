@@ -41,7 +41,7 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
         <Button
           sx={{ width: '100%' }}
           disabled={!isValid || issuing}
-          mt={2}
+          mt={3}
           onClick={() => setIssuing(true)}
         >
           <Trans>+ Mint {data.symbol}</Trans>

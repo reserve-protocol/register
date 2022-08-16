@@ -19,7 +19,7 @@ const Redeem = ({ data, ...props }: { data: ReserveToken }) => {
         <Button
           disabled={!isValid}
           sx={{ width: '100%' }}
-          mt={2}
+          mt={3}
           onClick={() => setConfirming(true)}
         >
           <Trans>- Redeem {data.symbol}</Trans>

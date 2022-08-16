@@ -1,3 +1,7 @@
+/**
+ * This file contains application level atoms
+ * At some point this file is expected to be divided into multiple files per atom type
+ */
 import { BigNumber } from '@ethersproject/bignumber'
 import { atom } from 'jotai'
 import { atomWithStorage, createJSONStorage } from 'jotai/utils'
@@ -12,11 +16,6 @@ import {
 } from 'types'
 import { RSR, RTOKEN_STATUS, TRANSACTION_STATUS } from 'utils/constants'
 import { WalletTransaction } from './../types/index'
-
-/**
- * This file contains application level atoms
- * At some point this file is expected to be divided into multiple files per atom type
- */
 
 /**
  * ######################

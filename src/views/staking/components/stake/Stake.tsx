@@ -19,7 +19,7 @@ const Stake = (props: BoxProps) => {
         <Button
           disabled={!isValid}
           sx={{ width: '100%' }}
-          mt={2}
+          mt={3}
           onClick={() => setConfirming(true)}
         >
           + <Trans>Stake RSR</Trans>

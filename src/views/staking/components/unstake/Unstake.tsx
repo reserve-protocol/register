@@ -19,7 +19,7 @@ const Unstake = (props: BoxProps) => {
         <Button
           disabled={!isValid}
           sx={{ width: '100%' }}
-          mt={2}
+          mt={3}
           onClick={() => setConfirming(true)}
         >
           - <Trans>Unstake stRSR</Trans>

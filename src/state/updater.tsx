@@ -25,7 +25,6 @@ import {
   rsrPriceAtom,
   rTokenAtom,
   rTokenPriceAtom,
-  selectedRTokenAtom,
   walletAtom,
 } from 'state/atoms'
 import useSWR from 'swr'
@@ -33,7 +32,6 @@ import { ReserveToken, StringMap } from 'types'
 import { COINGECKO_API, RSR } from 'utils/constants'
 import { RSV_MANAGER } from 'utils/rsv'
 import AccountUpdater from './AccountUpdater'
-import MetricsUpdater from './metrics/MetricsUpdater'
 import TokenUpdater from './TokenUpdater'
 
 // Gets ReserveToken related token addresses and decimals

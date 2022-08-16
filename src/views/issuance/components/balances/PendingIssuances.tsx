@@ -88,18 +88,18 @@ const PendingIssuances = ({ token }: { token: Token }) => {
   return (
     <>
       <Box px={4} py={2}>
-        <LoadingButton
-          loading={!!claiming}
-          disabled={!availableAmount}
-          text={t`Claim vested ${token.symbol}`}
-          onClick={handleClaim}
-          sx={{ ...smallButton, width: '100%' }}
-          mb={3}
-        />
         <Text variant="subtitle" mb={2}>
           <Trans>Available</Trans>
         </Text>
         <TokenBalance symbol={token.symbol} balance={availableAmount} />
+        <LoadingButton
+          loading={!!claiming}
+          disabled={!availableAmount}
+          text={t`Claim minted ${token.symbol}`}
+          onClick={handleClaim}
+          sx={{ ...smallButton }}
+          mt={3}
+        />
       </Box>
       <Divider />
       <Box px={4} py={2} mb={2}>
@@ -110,9 +110,9 @@ const PendingIssuances = ({ token }: { token: Token }) => {
         <LoadingButton
           loading={!!canceling}
           disabled={!availableAmount && !pendingAmount}
-          text={t`Cancel and Refund collateral`}
+          text={t`Revert & Receive collateral`}
           onClick={handleCancel}
-          sx={{ ...smallButton, width: '100%' }}
+          sx={{ ...smallButton }}
           mt={3}
         />
       </Box>

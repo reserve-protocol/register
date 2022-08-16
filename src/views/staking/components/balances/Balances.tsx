@@ -81,18 +81,18 @@ const AvailableBalance = () => {
 
   return (
     <Box p={4} py={2}>
+      <Text variant="subtitle" mb={2}>
+        <Trans>Available</Trans>
+      </Text>
+      <TokenBalance symbol="RSR" balance={availableAmount} />
       <LoadingButton
         loading={!!claiming}
         disabled={!availableAmount}
         text={t`Withdraw`}
         onClick={handleClaim}
-        sx={{ ...smallButton, width: '100%' }}
-        mb={3}
+        sx={{ ...smallButton }}
+        mt={3}
       />
-      <Text variant="subtitle" mb={2}>
-        <Trans>Available</Trans>
-      </Text>
-      <TokenBalance symbol="RSR" balance={availableAmount} />
     </Box>
   )
 }
