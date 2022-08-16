@@ -64,7 +64,7 @@ const PluginInfo = ({ data }: { data: CollateralPlugin }) => (
  * View: Deploy -> Basket setup -> CollateralModal
  * Display collateral plugin item
  */
-const PluginItem = ({ data, onCheck, ...props }: PluginItemProps) => {
+const PluginItem = ({ data, onCheck, selected, ...props }: PluginItemProps) => {
   const [isVisible, setVisible] = useState(false)
 
   return (
@@ -76,7 +76,9 @@ const PluginItem = ({ data, onCheck, ...props }: PluginItemProps) => {
           <Text sx={{ fontSize: 1, display: 'block' }} variant="legend">
             <Trans>Target</Trans> {data.targetUnit}{' '}
             {data.custom ? (
-              <Trans>Custom</Trans>
+              <>
+                | <Trans>Custom</Trans>
+              </>
             ) : (
               `| ${'description' in data ? data.description : ''}`
             )}
@@ -86,24 +88,23 @@ const PluginItem = ({ data, onCheck, ...props }: PluginItemProps) => {
         <label>
           <Checkbox
             sx={{ cursor: 'pointer' }}
+            defaultChecked={!!selected}
             onChange={() => {
               onCheck(data.address)
             }}
           />
         </label>
-        {!data.custom && (
-          <IconButton
-            sx={{ cursor: 'pointer' }}
-            ml={-1}
-            onClick={() => setVisible(!isVisible)}
-          >
-            {isVisible ? (
-              <ChevronUp color="#999999" />
-            ) : (
-              <ChevronDown color="#999999" />
-            )}
-          </IconButton>
-        )}
+        <IconButton
+          sx={{ cursor: 'pointer' }}
+          ml={-1}
+          onClick={() => setVisible(!isVisible)}
+        >
+          {isVisible ? (
+            <ChevronUp color="#999999" />
+          ) : (
+            <ChevronDown color="#999999" />
+          )}
+        </IconButton>
       </Flex>
       {isVisible && <PluginInfo data={data as CollateralPlugin} />}
     </Box>
