@@ -73,7 +73,12 @@ const AppHeader = () => {
         </>
       )}
       <Box mx="auto" />
-      <HelpCircle size={20} />
+      <Box
+        sx={{ display: ['none', 'block'], marginTop: 1 }}
+        variant="layout.verticalAlign"
+      >
+        <HelpCircle size={20} />
+      </Box>
       <ThemeColorMode ml={4} mt={1} />
       <Box ml={4} sx={{ alignItems: 'center', display: 'flex' }}>
         <LanguageSelector />

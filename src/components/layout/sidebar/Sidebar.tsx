@@ -146,7 +146,7 @@ const Navigation = ({
             pl={5}
             mt={3}
             mb={2}
-            sx={{ fontSize: 1, display: 'block' }}
+            sx={{ fontSize: 1, display: ['none', 'block'] }}
           >
             <Trans>External Links</Trans>
           </Text>
