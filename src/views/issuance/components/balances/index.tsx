@@ -41,7 +41,7 @@ const RTokenBalance = ({ token }: { token: Token }) => {
  */
 const Balances = ({ rToken, ...props }: Props) => (
   <Card p={0} {...props}>
-    <Grid columns={[1, 2]}>
+    <Grid columns={[1, 2]} gap={0}>
       <CollateralBalances collaterals={rToken.collaterals} />
       <Box
         sx={(theme: any) => ({

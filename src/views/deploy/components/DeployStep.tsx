@@ -61,7 +61,7 @@ const DeploymentStepTracker = ({ step }: { step: number }) => {
       sx={{
         justifyContent: !isSecondPhase ? 'center' : 'inherit',
         borderBottom: '1px solid',
-        borderColor: 'border',
+        borderColor: 'darkBorder',
       }}
     >
       {stepList.map((item) => (

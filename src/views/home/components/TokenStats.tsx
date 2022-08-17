@@ -95,10 +95,10 @@ const TokenStats = () => {
       <Box
         mt={5}
         pl={5}
-        sx={(theme: any) => ({
+        sx={{
           borderLeft: '1px solid',
-          borderColor: theme.colors.border,
-        })}
+          borderColor: 'darkBorder',
+        }}
       >
         <Grid columns={2} gap={4}>
           <InfoHeading

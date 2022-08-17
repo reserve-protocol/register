@@ -64,6 +64,7 @@ export const colors = {
   accent: '#00FFBF',
   secondary: '#E8E8E8',
   border: '#F2F2F2',
+  darkBorder: '#DFDFDF',
   inputBorder: '#E5E5E5',
   disabled: '#E5E5E5',
   danger: '#FF0000',
@@ -76,6 +77,7 @@ export const colors = {
       background: '#121212',
       secondary: '#333333',
       border: '#333333',
+      darkBorder: '#333333', // TODO
       contentBackground: '#1A1A1A',
       secondaryBackground: '#202128',
       primary: '#00b600',

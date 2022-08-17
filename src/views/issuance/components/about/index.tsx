@@ -4,7 +4,8 @@ import { Box, Text } from 'theme-ui'
 const About = () => (
   <Box
     sx={{
-      border: '1px solid var(--theme-ui-colors-border)',
+      border: '1px solid',
+      borderColor: 'darkBorder',
       borderRadius: '16px',
     }}
     p={4}

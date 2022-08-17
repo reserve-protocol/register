@@ -31,7 +31,7 @@ const Management = () => {
         <>
           <DeploymentStepTracker step={5} />
           <GovernanceHero mx={3} p={5} />
-          <Divider my={3} />
+          <Divider my={3} sx={{ borderColor: 'darkBorder' }} />
         </>
       )}
 

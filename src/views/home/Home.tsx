@@ -15,9 +15,9 @@ const Home = () => {
     <Container mx={selectedToken ? 0 : [0, 3]}>
       {!!account && <Portfolio />}
       <GeneralOverview />
-      <Divider my={5} mx={-5} />
+      <Divider my={5} mx={-5} sx={{ borderColor: 'darkBorder' }} />
       <TokenList />
-      <Divider my={5} mx={-5} />
+      <Divider my={5} mx={-5} sx={{ borderColor: 'darkBorder' }} />
       <Grid columns={2} gap={3}>
         <Box mb={5}>
           <Text mb={2} sx={{ fontSize: 3, display: 'block', fontWeight: 500 }}>

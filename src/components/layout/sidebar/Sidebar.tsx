@@ -24,7 +24,7 @@ const Container = styled(Box)`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid var(--theme-ui-colors-border);
+  border-right: 1px solid var(--theme-ui-colors-darkBorder);
 `
 
 interface Item {
