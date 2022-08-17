@@ -6,14 +6,14 @@ export const MODES = {
 }
 
 const properties: { [x: string]: any } = {
-  dark: {
+  light: {
     r: 9,
     transform: 'rotate(40deg)',
     cx: 12,
     cy: 4,
     opacity: 0,
   },
-  light: {
+  dark: {
     r: 5,
     transform: 'rotate(90deg)',
     cx: 30,
@@ -58,7 +58,7 @@ const DarkModeToggle = ({
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      stroke="currentColor"
+      // stroke="currentColor"
       onClick={handleToggle}
       style={{
         cursor: 'pointer',
@@ -67,14 +67,14 @@ const DarkModeToggle = ({
     >
       <mask id="myMask2">
         <rect x="0" y="0" width="100%" height="100%" fill="white" />
-        <animated.circle style={maskedCircleProps as any} r="9" fill="black" />
+        <animated.circle style={maskedCircleProps as any} r="10" fill="black" />
       </mask>
 
       <animated.circle
         cx="12"
         cy="12"
         style={centerCircleProps as any}
-        fill="white"
+        fill="currentColor"
         mask="url(#myMask2)"
       />
       <animated.g stroke="currentColor" style={linesProps}>

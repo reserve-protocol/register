@@ -1,9 +1,12 @@
 import { formatUnits } from '@ethersproject/units'
+import { Trans } from '@lingui/macro'
 import TokenBalance from 'components/token-balance'
 import { useAtomValue } from 'jotai'
+import { Circle } from 'react-feather'
 import { balancesAtom } from 'state/atoms'
-import { Box, BoxProps, Text } from 'theme-ui'
+import { Box, BoxProps, Flex, Progress, Text } from 'theme-ui'
 import { Token } from 'types'
+import { formatCurrency } from 'utils'
 import { quantitiesAtom } from 'views/issuance/atoms'
 
 interface Props extends BoxProps {
@@ -24,25 +27,35 @@ const CollateralBalance = ({ token, ...props }: Props) => {
     )
   }
 
+  const current = +balances[token.address]
+  const required = +formatUnits(quantities[token.address], token.decimals)
+  const isValid = current >= required
+
   return (
     <Box {...props}>
-      <TokenBalance
-        mb={2}
-        symbol={token.symbol}
-        balance={balances[token.address]}
-      />
-      <Text
-        sx={{
-          fontSize: 0,
-          color:
-            balances[token.address] <
-            Number(formatUnits(quantities[token.address], token.decimals))
-              ? 'red'
-              : 'inherit',
-        }}
-      >
-        Required: {formatUnits(quantities[token.address], token.decimals)}
-      </Text>
+      <Flex variant="layout.verticalAlign">
+        <TokenBalance symbol={token.symbol} balance={balances[token.address]} />
+        <Box ml="auto">
+          <Circle
+            size={8}
+            fill={isValid ? '#11BB8D' : '#FF0000'}
+            stroke={undefined}
+          />
+        </Box>
+      </Flex>
+      <Box sx={{ textAlign: 'right', fontSize: 0 }} mb={1} ml="auto">
+        <Text variant="legend">
+          <Trans>Required:</Trans>
+        </Text>{' '}
+        <Text
+          sx={{
+            fontWeight: 500,
+          }}
+        >
+          {formatCurrency(required)}
+        </Text>
+      </Box>
+      {required > current && <Progress mb={3} max={required} value={current} />}
     </Box>
   )
 }

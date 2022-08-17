@@ -23,6 +23,7 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
   const setQuantities = useUpdateAtom(quantitiesAtom)
   const isValid = useAtomValue(isValidIssuableAmountAtom)
   const [issuing, setIssuing] = useState(false)
+  const missingCollateral = amount && !isValid
 
   return (
     <>
@@ -41,10 +42,15 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
         <Button
           sx={{ width: '100%' }}
           disabled={!isValid || issuing}
+          variant={missingCollateral ? 'error' : 'primary'}
           mt={3}
           onClick={() => setIssuing(true)}
         >
-          <Trans>+ Mint {data.symbol}</Trans>
+          {missingCollateral ? (
+            <Trans>Missing collateral</Trans>
+          ) : (
+            <Trans>+ Mint {data.symbol}</Trans>
+          )}
         </Button>
       </Card>
     </>

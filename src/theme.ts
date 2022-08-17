@@ -63,7 +63,7 @@ export const colors = {
   success: '#11BB8D',
   accent: '#00FFBF',
   secondary: '#E8E8E8',
-  border: '#DFDFDF',
+  border: '#F2F2F2',
   inputBorder: '#E5E5E5',
   disabled: '#E5E5E5',
   danger: '#FF0000',
@@ -317,6 +317,14 @@ export const theme: Theme = {
       ...baseButton,
       backgroundColor: 'inputBorder',
       color: 'black',
+    },
+    error: {
+      ...baseButton,
+      '&:disabled': {
+        backgroundColor: 'disabled',
+        cursor: 'default',
+        color: 'danger',
+      },
     },
     circle: {
       ...baseButton,
