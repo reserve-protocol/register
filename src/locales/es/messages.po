@@ -17,7 +17,7 @@ msgstr ""
 msgid "% Acceptable"
 msgstr ""
 
-#: src/views/issuance/components/issue/Issue.tsx:47
+#: src/views/issuance/components/issue/Issue.tsx:52
 msgid "+ Mint {0}"
 msgstr ""
 
@@ -47,8 +47,8 @@ msgstr ""
 msgid "24h Txs"
 msgstr ""
 
-#: src/views/issuance/components/about/index.tsx:13
-#: src/views/staking/components/overview/index.tsx:104
+#: src/views/issuance/components/about/index.tsx:14
+#: src/views/staking/components/overview/index.tsx:105
 msgid "About this app"
 msgstr ""
 
@@ -124,8 +124,8 @@ msgstr ""
 msgid "Auctions"
 msgstr ""
 
-#: src/views/issuance/components/balances/PendingIssuances.tsx:100
-#: src/views/staking/components/balances/Balances.tsx:93
+#: src/views/issuance/components/balances/PendingIssuances.tsx:92
+#: src/views/staking/components/balances/Balances.tsx:85
 msgid "Available"
 msgstr ""
 
@@ -209,8 +209,8 @@ msgid "Cancel Issue"
 msgstr ""
 
 #: src/views/issuance/components/balances/PendingIssuances.tsx:113
-msgid "Cancel and Refund collateral"
-msgstr ""
+#~ msgid "Cancel and Refund collateral"
+#~ msgstr ""
 
 #: src/views/issuance/components/balances/PendingIssuances.tsx:51
 msgid "Cancel {0}"
@@ -225,9 +225,13 @@ msgstr ""
 msgid "Claim"
 msgstr ""
 
-#: src/views/issuance/components/balances/PendingIssuances.tsx:94
-msgid "Claim vested {0}"
+#: src/views/issuance/components/balances/PendingIssuances.tsx:98
+msgid "Claim minted {0}"
 msgstr ""
+
+#: src/views/issuance/components/balances/PendingIssuances.tsx:94
+#~ msgid "Claim vested {0}"
+#~ msgstr ""
 
 #: src/views/issuance/components/balances/PendingIssuances.tsx:32
 msgid "Claim {0}"
@@ -547,9 +551,9 @@ msgstr ""
 #~ msgid "Governance unpauses the contract"
 #~ msgstr ""
 
-#: src/views/overview/components/HistoricalData.tsx:27
-#: src/views/overview/components/HistoricalData.tsx:37
-#: src/views/overview/components/HistoricalData.tsx:47
+#: src/views/overview/components/HistoricalData.tsx:26
+#: src/views/overview/components/HistoricalData.tsx:36
+#: src/views/overview/components/HistoricalData.tsx:46
 msgid "Historical Yield - {0}"
 msgstr ""
 
@@ -738,6 +742,7 @@ msgstr ""
 msgid "Manager"
 msgstr ""
 
+#: src/views/deploy/components/TokenConfigurationOverview.tsx:58
 #: src/views/deploy/components/TokenForm.tsx:38
 msgid "Mandate"
 msgstr ""
@@ -747,8 +752,8 @@ msgid "Manifesto is required"
 msgstr ""
 
 #: src/views/deploy/components/TokenConfigurationOverview.tsx:58
-msgid "Manifesto??????"
-msgstr ""
+#~ msgid "Manifesto??????"
+#~ msgstr ""
 
 #: src/views/overview/components/TokenOverview.tsx:29
 msgid "Market cap"
@@ -808,7 +813,7 @@ msgstr ""
 
 #: src/components/transactions/table/index.tsx:39
 #: src/views/home/components/TokenList.tsx:112
-#: src/views/issuance/components/issue/Issue.tsx:40
+#: src/views/issuance/components/issue/Issue.tsx:41
 msgid "Mint"
 msgstr ""
 
@@ -823,6 +828,10 @@ msgstr ""
 
 #: src/views/issuance/components/issue/ConfirmIssuance.tsx:92
 msgid "Mint {0}"
+msgstr ""
+
+#: src/views/issuance/components/issue/Issue.tsx:50
+msgid "Missing collateral"
 msgstr ""
 
 #: src/views/home/components/TokenList.tsx:89
@@ -843,6 +852,18 @@ msgstr ""
 
 #: src/views/deploy/components/DeployHeader.tsx:87
 msgid "Next"
+msgstr ""
+
+#: src/views/home/components/Portfolio.tsx:83
+msgid "No rToken holdings"
+msgstr ""
+
+#: src/views/home/components/Portfolio.tsx:96
+msgid "No stake positions"
+msgstr ""
+
+#: src/components/transactions/table/index.tsx:119
+msgid "No transactions"
 msgstr ""
 
 #: src/views/deploy/components/TokenConfigurationOverview.tsx:94
@@ -1090,8 +1111,16 @@ msgstr ""
 msgid "Reference unit"
 msgstr ""
 
+#: src/views/issuance/components/balances/CollateralBalance.tsx:48
+msgid "Required:"
+msgstr ""
+
 #: src/views/home/Home.tsx:58
 msgid "Reserve"
+msgstr ""
+
+#: src/views/issuance/components/balances/PendingIssuances.tsx:113
+msgid "Revert & Receive collateral"
 msgstr ""
 
 #: src/views/deploy/components/TokenConfigurationOverview.tsx:104
@@ -1179,7 +1208,7 @@ msgstr ""
 msgid "Stake RSR"
 msgstr ""
 
-#: src/views/staking/components/overview/index.tsx:116
+#: src/views/staking/components/overview/index.tsx:117
 msgid "Stake/Unstake"
 msgstr ""
 
@@ -1453,7 +1482,7 @@ msgstr ""
 #~ msgstr ""
 
 #: src/components/transactions/table/index.tsx:49
-#: src/views/staking/components/balances/Balances.tsx:87
+#: src/views/staking/components/balances/Balances.tsx:91
 msgid "Withdraw"
 msgstr ""
 
@@ -1470,7 +1499,7 @@ msgstr ""
 msgid "Your stake"
 msgstr ""
 
-#: src/views/home/components/Portfolio.tsx:83
+#: src/views/home/components/Portfolio.tsx:90
 msgid "Your staked RSR positions"
 msgstr ""
 

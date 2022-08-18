@@ -27,9 +27,9 @@ const CollateralBalance = ({ token, ...props }: Props) => {
     )
   }
 
-  const current = +balances[token.address]
+  const current = +balances[token.address].toFixed(3)
   const required = +formatUnits(quantities[token.address], token.decimals)
-  const isValid = current >= required
+  const isValid = current >= +required.toFixed(3)
 
   return (
     <Box {...props}>
@@ -55,7 +55,7 @@ const CollateralBalance = ({ token, ...props }: Props) => {
           {formatCurrency(required)}
         </Text>
       </Box>
-      {required > current && <Progress mb={3} max={required} value={current} />}
+      {!isValid && <Progress mb={3} max={required} value={current} />}
     </Box>
   )
 }

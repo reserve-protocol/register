@@ -1,4 +1,5 @@
 import { formatEther } from '@ethersproject/units'
+import { Facade } from 'abis/types'
 import { useFacadeContract } from 'hooks/useContract'
 import { useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
@@ -19,35 +20,36 @@ const MaxIssuableUpdater = () => {
   const chainId = useAtomValue(chainIdAtom)
   const facadeContract = useFacadeContract()
 
-  const updateMaxIssuable = useCallback(async () => {
-    try {
-      if (account && rToken && facadeContract) {
-        const maxIssuable = await facadeContract.callStatic.maxIssuable(
-          rToken.address,
+  const updateMaxIssuable = useCallback(
+    async (account: string, rTokenAddress: string, facade: Facade) => {
+      try {
+        const maxIssuable = await facade.callStatic.maxIssuable(
+          rTokenAddress,
           account
         )
         setMaxIssuable(maxIssuable ? Number(formatEther(maxIssuable)) : 0)
-      } else {
+      } catch (e) {
         setMaxIssuable(0)
+        console.error('error with max issuable', e)
       }
-    } catch (e) {
-      setMaxIssuable(0)
-      console.error('error with max issuable', e)
-    }
-  }, [account, rToken?.address, facadeContract])
+    },
+    []
+  )
 
   // RSV Max issuable
   useEffect(() => {
     if (rToken && rToken.isRSV) {
       setMaxIssuable(getIssuable(rToken, tokenBalances))
     }
-  }, [tokenBalances, chainId])
+  }, [JSON.stringify(tokenBalances), rToken?.address, chainId])
 
   useEffect(() => {
-    if (rToken && !rToken.isRSV) {
-      updateMaxIssuable()
+    if (rToken && !rToken.isRSV && account && facadeContract) {
+      updateMaxIssuable(account, rToken.address, facadeContract)
+    } else {
+      setMaxIssuable(0)
     }
-  }, [updateMaxIssuable, tokenBalances])
+  }, [rToken?.address, account, facadeContract, JSON.stringify(tokenBalances)])
 
   return null
 }
