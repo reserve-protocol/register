@@ -97,6 +97,7 @@ const PendingIssuances = ({ token }: { token: Token }) => {
           disabled={!availableAmount}
           text={t`Claim minted ${token.symbol}`}
           onClick={handleClaim}
+          variant={!claiming ? 'primary' : 'accent'}
           sx={{ ...smallButton }}
           mt={3}
         />
@@ -113,6 +114,7 @@ const PendingIssuances = ({ token }: { token: Token }) => {
           text={t`Revert & Receive collateral`}
           onClick={handleCancel}
           sx={{ ...smallButton }}
+          variant={!canceling ? 'primary' : 'accent'}
           mt={3}
         />
       </Box>
