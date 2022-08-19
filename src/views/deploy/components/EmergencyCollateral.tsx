@@ -110,7 +110,7 @@ const EmergencyCollateral = ({
   }
 
   return (
-    <Box {...props} ml={2}>
+    <Box {...props}>
       <Flex variant="layout.verticalAlign">
         <Text variant="title" mr={2}>
           <Trans>Emergency collateral</Trans>

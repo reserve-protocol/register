@@ -48,23 +48,25 @@ const DeployHeader = ({
     setStep(current - 1)
   }
 
+  const showBack = (current !== 0 && current !== 6) || onBack
+
   return (
-    <Flex variant="layout.verticalAlign" my={5} {...props}>
-      {((current !== 0 && current !== 6) || onBack) && (
+    <Flex variant="layout.verticalAlign" my={5} {...props} pr={5}>
+      {showBack && (
         <IconButton
           mr={3}
           onClick={onBack ? onBack : back}
           sx={{
             cursor: 'pointer',
             border: '1px solid',
-            borderColor: 'border',
+            borderColor: 'darkBorder',
             borderRadius: 10,
           }}
         >
           <ChevronLeft size={14} />
         </IconButton>
       )}
-      <Box>
+      <Box ml={showBack ? 0 : 5}>
         <Text sx={{ display: 'block', fontSize: 4, fontWeight: 500 }}>
           {title}
         </Text>

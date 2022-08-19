@@ -18,7 +18,7 @@ interface Props extends BoxProps {
 }
 
 const Placeholder = () => (
-  <Box ml={2}>
+  <Box>
     <Box>
       <Flex variant="layout.verticalAlign">
         <Text variant="title" mr={2}>
