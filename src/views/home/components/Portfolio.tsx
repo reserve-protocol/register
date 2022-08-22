@@ -73,7 +73,7 @@ const Portfolio = (props: BoxProps) => {
       </Text>
       <Grid columns={[1, 1, 1, 2]} mt={5} gap={5}>
         <Box>
-          <Text variant="sectionTitle">
+          <Text pl={3} variant="sectionTitle">
             <Trans>Your RTokens</Trans>
           </Text>
           <Table mt={3} columns={rTokenColumns} data={rTokens} />
@@ -86,7 +86,7 @@ const Portfolio = (props: BoxProps) => {
           )}
         </Box>
         <Box>
-          <Text variant="sectionTitle">
+          <Text pl={3} variant="sectionTitle">
             <Trans>Your staked RSR positions</Trans>
           </Text>
           <Table mt={3} columns={stTokenColumns} data={stTokens} />
