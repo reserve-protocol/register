@@ -17,8 +17,16 @@ const InfoBox = ({ title, subtitle, ...props }: Props) => (
 
 export const ContentHead = ({ title, subtitle, ...props }: Props) => (
   <Box {...props}>
-    <Text sx={{ display: 'block', fontWeight: 500, fontSize: 3 }}>{title}</Text>
-    {!!subtitle && <Text variant="legend">{subtitle}</Text>}
+    <Text
+      sx={{ display: 'block', marginBottom: 2, fontWeight: 500, fontSize: 4 }}
+    >
+      {title}
+    </Text>
+    {!!subtitle && (
+      <Text as="p" variant="legend">
+        {subtitle}
+      </Text>
+    )}
   </Box>
 )
 

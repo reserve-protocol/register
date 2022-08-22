@@ -1,23 +1,23 @@
 import { Trans } from '@lingui/macro'
-import { Container } from 'components'
 import { useAtomValue } from 'jotai'
-import { selectedRTokenAtom, walletAtom } from 'state/atoms'
-import { Divider, Text, Box, Grid } from 'theme-ui'
-import GeneralOverview from './components/GeneralOverview'
+import { walletAtom } from 'state/atoms'
+import { Box, Divider, Grid, Text } from 'theme-ui'
+import TransactionsOverview from './components/GeneralOverview'
 import Portfolio from './components/Portfolio'
 import TokenList from './components/TokenList'
+import TokenStats from './components/TokenStats'
 
 const Home = () => {
   const account = useAtomValue(walletAtom)
-  const selectedToken = useAtomValue(selectedRTokenAtom)
 
   return (
-    <Container mx={selectedToken ? 0 : [0, 3]}>
+    <Box m={7}>
       {!!account && <Portfolio />}
-      <GeneralOverview />
-      <Divider my={5} mx={-5} sx={{ borderColor: 'darkBorder' }} />
-      <TokenList />
-      <Divider my={5} mx={-5} sx={{ borderColor: 'darkBorder' }} />
+      <TokenStats mb={6} />
+      <TokenList mt={6} />
+      <Divider my={6} mx={-7} sx={{ borderColor: 'darkBorder' }} />
+      <TransactionsOverview />
+      <Divider my={6} mx={-7} sx={{ borderColor: 'darkBorder' }} />
       <Grid columns={2} gap={3}>
         <Box mb={5}>
           <Text mb={2} sx={{ fontSize: 3, display: 'block', fontWeight: 500 }}>
@@ -66,7 +66,7 @@ const Home = () => {
         </Box>
         <Box>Intro video? Tutorial?</Box>
       </Grid>
-    </Container>
+    </Box>
   )
 }
 

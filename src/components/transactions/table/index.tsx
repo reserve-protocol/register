@@ -84,7 +84,7 @@ const TransactionsTable = ({
     <Container
       {...props}
       px={3}
-      pt={3}
+      pt={4}
       sx={(theme: any) => ({
         backgroundColor: card ? theme.colors.contentBackground : 'none',
         border: bordered ? `1px solid ${theme.colors.darkBorder}` : 'none',
@@ -95,17 +95,12 @@ const TransactionsTable = ({
     >
       <Flex variant="layout.verticalAlign">
         {!!title && (
-          <Text mb={3} sx={{ fontSize: 3, display: 'block' }}>
+          <Text mb={4} pl={3} sx={{ fontSize: 3, display: 'block' }}>
             {title}
           </Text>
         )}
-        {!!help && (
-          <Box ml="auto">
-            <Help content={help} />
-          </Box>
-        )}
+        {!!help && <Help ml="4" mb={4} content={help} />}
       </Flex>
-
       <Table
         maxHeight={maxHeight}
         compact={compact}

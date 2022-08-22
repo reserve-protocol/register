@@ -90,15 +90,13 @@ const TokenList = (props: BoxProps) => {
       { Header: t`Holders`, accessor: 'holders' },
       { Header: t`Transactions`, accessor: 'transactionCount' },
       {
-        Header: t`Volume`,
-        accessor: 'cumulativeVolume',
+        Header: t`24h Volume`,
+        accessor: 'cumulativeVolume', // TODO: Daily volume
         Cell: formatCurrencyCell,
       },
-      { Header: t`Target unit(s)`, accessor: 'name' },
-      { Header: t`RToken APY`, accessor: 'tokenApy' },
-      { Header: t`Backing`, accessor: 'backing' },
-      { Header: t`+Insurance`, accessor: 'backingInsurance' },
-      { Header: t`Staking APY`, accessor: 'stakingApy' },
+      { Header: t`Target(s)`, accessor: 'name' },
+      { Header: t`APY`, accessor: 'tokenApy' },
+      { Header: t`St APY`, accessor: 'stakingApy' },
       {
         Header: t`Shortcuts`,
         accessor: 'id',
@@ -126,12 +124,13 @@ const TokenList = (props: BoxProps) => {
   return (
     <Box {...props}>
       <ContentHead
+        pl={3}
         title={t`Compare RTokens`}
         subtitle={t`Including off-chain in-app transactions of RToken in the Reserve App.`}
       />
       <Table mt={3} columns={rTokenColumns} data={tokenList} />
       <Flex sx={{ justifyContent: 'center' }}>
-        <SmallButton py={2} mt={3} onClick={() => navigate(ROUTES.DEPLOY)}>
+        <SmallButton py={2} mt={6} onClick={() => navigate(ROUTES.DEPLOY)}>
           <Trans>Deploy RToken</Trans>
         </SmallButton>
       </Flex>
