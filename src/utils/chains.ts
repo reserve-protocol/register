@@ -12,10 +12,9 @@ interface ExtendedChainInformation extends BasicChainInformation {
 
 export const ChainId = {
   Mainnet: 1,
+  Goerli: 5,
   Hardhat: 31337,
 }
-
-export const DEFAULT_CHAIN = ChainId.Hardhat
 
 export const CHAIN_ID =
   Number(process.env.REACT_APP_CHAIN_ID) || ChainId.Mainnet
@@ -29,6 +28,10 @@ export const CHAINS: {
   [ChainId.Mainnet]: {
     urls: ['https://cloudflare-eth.com/v1/mainnet'],
     name: 'Mainnet',
+  },
+  [ChainId.Goerli]: {
+    urls: [process.env.REACT_APP_RPC_URL_GOERLI ?? ''],
+    name: 'Goerli',
   },
   // Hardhat
   [ChainId.Hardhat]: {

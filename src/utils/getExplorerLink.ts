@@ -2,6 +2,7 @@ import { ChainId, CHAIN_ID } from './chains'
 
 const ETHERSCAN_PREFIXES: { [chainId: number]: string } = {
   [ChainId.Mainnet]: '',
+  [ChainId.Goerli]: 'goerli.',
   [ChainId.Hardhat]: '',
 }
 
