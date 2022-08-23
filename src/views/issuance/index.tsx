@@ -14,10 +14,10 @@ const Issuance = () => {
 
   return (
     <Container pb={4}>
-      <Text ml={4} mb={3} variant="sectionTitle">
+      <Text ml={4} mb={4} variant="sectionTitle">
         <Trans>Mint + Redeem</Trans>
       </Text>
-      <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={4}>
+      <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={6}>
         <Box>
           <Grid columns={[1, 2]} gap={4} mb={4}>
             <Issue data={rToken} />

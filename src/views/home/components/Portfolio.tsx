@@ -58,6 +58,10 @@ const Portfolio = (props: BoxProps) => {
     []
   )
 
+  if (!holdings) {
+    return null
+  }
+
   return (
     <Box {...props}>
       <Text>

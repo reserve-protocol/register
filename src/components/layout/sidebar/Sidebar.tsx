@@ -4,6 +4,7 @@ import AuctionsIcon from 'components/icons/AuctionsIcon'
 import CalculatorIcon from 'components/icons/CalculatorIcon'
 import DiscussionsIcon from 'components/icons/DiscussionsIcon'
 import GovernanceIcon from 'components/icons/GovernanceIcon'
+import HomeIcon from 'components/icons/HomeIcon'
 import IssuanceIcon from 'components/icons/IssuanceIcon'
 import ManagerIcon from 'components/icons/ManagerIcon'
 import OverviewIcon from 'components/icons/OverviewIcon'
@@ -78,6 +79,7 @@ const Navigation = ({
   const isManager = useAtomValue(isManagerAtom)
   const PAGES = useMemo(() => {
     const items = [
+      { path: ROUTES.HOME, title: t`Home`, Icon: HomeIcon },
       { path: ROUTES.OVERVIEW, title: t`Overview`, Icon: OverviewIcon },
       { path: ROUTES.ISSUANCE, title: t`Mint + Redeem`, Icon: IssuanceIcon },
       { path: ROUTES.INSURANCE, title: t`Stake + Unstake`, Icon: StakeIcon },
@@ -119,10 +121,10 @@ const Navigation = ({
   )
 
   const pages = useMemo(() => {
-    PAGES[0].title = `${currentToken?.symbol ?? ''} Overview`
+    PAGES[1].title = `${currentToken?.symbol ?? ''} Overview`
 
     if (currentToken?.isRSV) {
-      return [...PAGES.slice(0, 2)]
+      return [...PAGES.slice(0, 3)]
     }
 
     return PAGES
