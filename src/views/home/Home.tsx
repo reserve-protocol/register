@@ -16,9 +16,8 @@ const Home = () => {
       <TokenStats mb={6} />
       <TokenList mt={6} />
       <Divider my={6} mx={-7} sx={{ borderColor: 'darkBorder' }} />
-      <TransactionsOverview />
-      <Divider my={6} mx={-7} sx={{ borderColor: 'darkBorder' }} />
-      <Grid columns={2} gap={3}>
+      <TransactionsOverview mb={6} />
+      <Grid columns={2} pt={6} gap={5}>
         <Box mb={5}>
           <Text mb={2} sx={{ fontSize: 3, display: 'block', fontWeight: 500 }}>
             <Trans>RTokens</Trans>
