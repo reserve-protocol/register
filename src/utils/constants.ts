@@ -1,4 +1,6 @@
+import { CHAIN_ID } from 'utils/chains'
 import { Token } from 'types'
+import { RSR_ADDRESS } from './addresses'
 
 export const TRANSACTION_STATUS = {
   PENDING: 'PENDING', // Tx to be executed
@@ -40,7 +42,7 @@ export const isContentOnlyView = (pathname: string) =>
 export const DEPLOY_ROUTES = [ROUTES.DEPLOY]
 
 export const RSR: Token = {
-  address: '0x320623b8E4fF03373931769A31Fc52A4E78B5d70',
+  address: RSR_ADDRESS[CHAIN_ID],
   name: 'Reserve Rights',
   symbol: 'RSR',
   decimals: 18,

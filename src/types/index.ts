@@ -2,6 +2,8 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { Interface } from '@ethersproject/abi'
 import { Contract, ContractTransaction } from '@ethersproject/contracts'
 
+export type AddressMap = { [chainId: number]: string }
+
 export interface StringMap {
   [key: string]: any
 }
