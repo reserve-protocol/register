@@ -36,14 +36,26 @@ const OtherForm = (props: BoxProps) => {
         </Box>
       </Field>
       <FormField
-        label={t`One shot freeze duration (s)`}
+        label={t`Short freeze duration (s)`}
         placeholder={t`Duration in seconds`}
         mb={3}
-        name="oneshotFreezeDuration"
+        name="shortFreeze"
         options={{
           required: true,
           pattern: numberPattern,
-          min: 3600,
+          min: 3600, // 1hour
+          max: 2592000, //1month
+        }}
+      />
+      <FormField
+        label={t`Long freeze duration (s)`}
+        placeholder={t`Duration in seconds`}
+        mb={3}
+        name="longFreeze"
+        options={{
+          required: true,
+          pattern: numberPattern,
+          min: 86400, // 1day
           max: 31536000, //1year
         }}
       />

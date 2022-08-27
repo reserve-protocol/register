@@ -25,11 +25,14 @@ import DeployPreview from '../components/DeployPreview'
 interface RTokenConfiguration {
   name: string
   symbol: string
-  manifestoURI: string
+  mandate: string
   params: {
-    tradingRange: {
-      min: BigNumber
-      max: BigNumber
+    rTokenTradingRange: {
+      minAmt: BigNumber
+      maxAmt: BigNumber
+      // TODO:
+      minVal: BigNumber
+      maxVal: BigNumber
     }
     dist: {
       rTokenDist: BigNumber
@@ -42,8 +45,11 @@ interface RTokenConfiguration {
     auctionLength: BigNumber
     backingBuffer: BigNumber
     maxTradeSlippage: BigNumber
+    shortFreeze: BigNumber
+    longFreeze: BigNumber
     issuanceRate: BigNumber
-    freezeDuration: BigNumber
+    maxRedemptionCharge: BigNumber
+    redemptionVirtualSupply: BigNumber
   }
 }
 
@@ -70,11 +76,14 @@ export const getDeployParameters = (
     const config: RTokenConfiguration = {
       name: tokenConfig.name,
       symbol: tokenConfig.ticker,
-      manifestoURI: tokenConfig.manifesto,
+      mandate: tokenConfig.mandate,
       params: {
-        tradingRange: {
-          min: parseEther(tokenConfig.minTrade.toString()),
-          max: parseEther(tokenConfig.maxTrade.toString()),
+        rTokenTradingRange: {
+          minAmt: parseEther(tokenConfig.minTrade.toString()),
+          maxAmt: parseEther(tokenConfig.maxTrade.toString()),
+          // TODO: Get this from target basket price
+          minVal: parseEther(tokenConfig.minTrade.toString()),
+          maxVal: parseEther(tokenConfig.maxTrade.toString()),
         },
         dist: {
           rTokenDist: BigNumber.from(tokenConfig.rTokenDist),
@@ -94,7 +103,14 @@ export const getDeployParameters = (
         issuanceRate: parseEther(
           (Number(tokenConfig.issuanceRate) / 100).toString()
         ),
-        freezeDuration: BigNumber.from(tokenConfig.oneshotFreezeDuration),
+        shortFreeze: BigNumber.from(tokenConfig.shortFreeze),
+        longFreeze: BigNumber.from(tokenConfig.longFreeze),
+        maxRedemptionCharge: parseEther(
+          (Number(tokenConfig.maxRedemptionCharge) / 100).toString()
+        ),
+        redemptionVirtualSupply: parseEther(
+          tokenConfig.redemptionVirtualSupply
+        ),
       },
     }
 

@@ -1,5 +1,5 @@
 import { t, Trans } from '@lingui/macro'
-import { FormField } from 'components/field'
+import { FormField, FormFieldRange } from 'components/field'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { decimalPattern, numberPattern } from 'utils'
 
@@ -69,6 +69,29 @@ const BackingForm = (props: BoxProps) => (
         pattern: decimalPattern,
         min: 0.001,
         max: 1001,
+      }}
+    />
+    <FormField
+      label={t`Max redemption charge (%)`}
+      placeholder={t`Max % per hour`}
+      mb={3}
+      name="maxRedemptionCharge"
+      options={{
+        required: true,
+        pattern: decimalPattern,
+        min: 0,
+        max: 100,
+      }}
+    />
+    <FormField
+      label={t`Redemption virtual supply`}
+      placeholder={t`Virtual supply`}
+      mb={3}
+      name="redemptionVirtualSupply"
+      options={{
+        required: true,
+        pattern: decimalPattern,
+        min: 0,
       }}
     />
     <FormField

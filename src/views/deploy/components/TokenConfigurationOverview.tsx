@@ -91,8 +91,14 @@ const TokenConfigurationOverview = () => {
       <Divider my={3} />
       <Info
         mt={3}
-        title={t`One shot freeze duration`}
-        subtitle={data.oneshotFreezeDuration}
+        title={t`Short freeze duration`}
+        subtitle={data.shortFreeze}
+        time
+      />
+      <Info
+        mt={3}
+        title={t`Long freeze duration`}
+        subtitle={data.longFreeze}
         time
       />
       <Info

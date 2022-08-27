@@ -27,15 +27,18 @@ const defaultValues = {
   maxTradeSlippage: '1', // 1%
   dustAmount: '1',
   issuanceRate: '0.025', // 0.025% per block or ~0.1% per minute
+  maxRedemptionCharge: '5', // 5% per block
+  redemptionVirtualSupply: '20000000', // Anticipated redemption minimum amount for throttling
   // other
   rTokenDist: 40, // reward dist %
   rsrDist: 60, // reward dist %
   rewardPeriod: '604800', // 1 week
   rewardRatio: '0.02284', // approx. half life of 30 pay periods
   unstakingDelay: '1209600', // seconds 2 week
-  oneshotFreezeDuration: '864000', // seconds 10 days
   minTrade: '0.01',
   maxTrade: '1000000',
+  shortFreeze: '259200', // 3days
+  longFreeze: '2592000', // 30days
 }
 
 const DeploymentViews = [

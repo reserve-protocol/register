@@ -20,15 +20,16 @@ const useRTokenPrice = (tokenAddress: string, isRToken = false): number => {
   const getTokenPrice = useCallback(async () => {
     try {
       let newPrice = 0
-      if (isRToken && contract) {
-        const result = await contract?.price()
-        newPrice = +formatEther(result)
-      } else {
-        const result = await fetch(
-          `${COINGECKO_API}/simple/token_price/ethereum?contract_addresses=${tokenAddress}&vs_currencies=usd`
-        ).then((res) => res.json())
-        newPrice = result[tokenAddress.toLowerCase()]?.usd ?? 0
-      }
+      // TODO:
+      // if (isRToken && contract) {
+      //   const result = await contract?.price()
+      //   newPrice = +formatEther(result)
+      // } else {
+      //   const result = await fetch(
+      //     `${COINGECKO_API}/simple/token_price/ethereum?contract_addresses=${tokenAddress}&vs_currencies=usd`
+      //   ).then((res) => res.json())
+      //   newPrice = result[tokenAddress.toLowerCase()]?.usd ?? 0
+      // }
 
       setPrice(newPrice)
     } catch (e) {

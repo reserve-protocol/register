@@ -295,6 +295,11 @@ export const theme: Theme = {
       borderColor: 'danger',
       color: 'danger',
     },
+    textarea: {
+      ...baseInput,
+      fontFamily: 'inherit',
+      fontSize: 'inherit',
+    },
   },
   cards: {
     primary: {
