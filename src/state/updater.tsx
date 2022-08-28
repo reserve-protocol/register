@@ -212,8 +212,8 @@ const PricesUpdater = () => {
 
   useEffect(() => {
     if (data) {
-      setRSRPrice(data['reserve-rights-token']?.usd ?? 1)
-      setEthPrice(data?.ethereum?.usd ?? 1)
+      setRSRPrice(data['reserve-rights-token']?.usd ?? 0)
+      setEthPrice(data?.ethereum?.usd ?? 0)
     }
   }, [data])
 

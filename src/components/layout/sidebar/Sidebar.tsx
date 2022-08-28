@@ -83,11 +83,11 @@ const Navigation = ({
       { path: ROUTES.OVERVIEW, title: t`Overview`, Icon: OverviewIcon },
       { path: ROUTES.ISSUANCE, title: t`Mint + Redeem`, Icon: IssuanceIcon },
       { path: ROUTES.INSURANCE, title: t`Stake + Unstake`, Icon: StakeIcon },
-      {
-        path: ROUTES.STAKING_CALCULATOR,
-        title: t`Staking calculator`,
-        Icon: CalculatorIcon,
-      },
+      // {
+      //   path: ROUTES.STAKING_CALCULATOR,
+      //   title: t`Staking calculator`,
+      //   Icon: CalculatorIcon,
+      // },
       { path: ROUTES.AUCTIONS, title: t`Auctions`, Icon: AuctionsIcon },
     ]
 

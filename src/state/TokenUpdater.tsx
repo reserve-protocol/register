@@ -4,6 +4,7 @@ import { ERC20Interface, MainInterface, RTokenInterface } from 'abis'
 import { ethers } from 'ethers'
 import useBlockNumber from 'hooks/useBlockNumber'
 import { useFacadeContract } from 'hooks/useContract'
+import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useResetAtom, useUpdateAtom } from 'jotai/utils'
 import { useCallback, useEffect } from 'react'
@@ -91,6 +92,7 @@ const updateTokenAtom = atom(null, (get, set, data: ReserveToken) => {
 const ReserveTokenUpdater = () => {
   const [selectedAddress, setSelectedToken] = useAtom(selectedRTokenAtom)
   const blockNumber = useBlockNumber()
+  const windowVisible = useIsWindowVisible()
   const mainAddress = useAtomValue(rTokenMainAtom)
   const updateTokenStatus = useUpdateAtom(rTokenStatusAtom)
   const updateToken = useUpdateAtom(updateTokenAtom)
@@ -170,8 +172,9 @@ const ReserveTokenUpdater = () => {
         }
       } catch (e) {
         console.error('Error fetching token info', e)
-        error('Network Error', 'Error fetching token information')
-        // setSelectedToken('')
+        if (windowVisible) {
+          error('Network Error', 'Error fetching token information')
+        }
       }
     },
     [facadeContract, provider]

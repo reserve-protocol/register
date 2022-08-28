@@ -94,10 +94,10 @@ export const blockTimestampAtom = atom<number>(0)
  * Price related atom
  * ##################
  */
-export const ethPriceAtom = atom(1)
-export const rsrPriceAtom = atom(1)
-export const gasPriceAtom = atom(1)
-export const rTokenPriceAtom = atom(1)
+export const ethPriceAtom = atom(0)
+export const rsrPriceAtom = atom(0)
+export const gasPriceAtom = atom(0)
+export const rTokenPriceAtom = atom(0)
 export const rsrExchangeRateAtom = atom(1)
 
 /**

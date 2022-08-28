@@ -26,10 +26,11 @@ const Stats = (props: BoxProps) => {
       <Grid gap={0} columns={2}>
         <Box
           p={3}
-          sx={(theme: any) => ({
-            borderRight: `1px solid ${theme.colors.border}`,
-            borderBottom: `1px solid ${theme.colors.border}`,
-          })}
+          sx={{
+            borderRight: '1px solid',
+            borderBottom: '1px solid',
+            borderColor: 'border',
+          }}
         >
           <Text variant="subtitle" mb={2}>
             <Trans>Your stake</Trans>
@@ -41,16 +42,11 @@ const Stats = (props: BoxProps) => {
                 style={{ color: 'var(--theme-ui-colors-secondaryText)' }}
               />
             }
-            title="30-day mean"
-            text="5.45%"
+            title="Est. APY"
+            text="0%" // TODO
           />
         </Box>
-        <Box
-          p={3}
-          sx={(theme: any) => ({
-            borderBottom: `1px solid ${theme.colors.border}`,
-          })}
-        >
+        <Box p={3} sx={{ borderBottom: '1px solid', borderColor: 'border' }}>
           <Text variant="subtitle" mb={2}>
             <Trans>Collateral backing</Trans>
           </Text>
@@ -65,12 +61,7 @@ const Stats = (props: BoxProps) => {
             text="100%"
           />
         </Box>
-        <Box
-          p={3}
-          sx={(theme: any) => ({
-            borderRight: `1px solid ${theme.colors.border}`,
-          })}
-        >
+        <Box p={3} sx={{ borderRight: '1px solid', borderColor: 'border' }}>
           <Text variant="subtitle" mb={2}>
             <Trans>Backing + Insurance</Trans>
           </Text>
