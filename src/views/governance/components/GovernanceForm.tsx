@@ -49,10 +49,10 @@ const GovernanceForm = () => {
         />
       )}
       <FormField
-        label={t`Freezer address`}
-        placeholder={t`Input freezer ethereum address`}
+        label={t`Guardian address`}
+        placeholder={t`Input the guardian ethereum address`}
         mb={3}
-        name="freezer"
+        name="guardian"
         options={{
           required: true,
           pattern: {
@@ -77,10 +77,10 @@ const GovernanceForm = () => {
       <Text variant="title" mb={4}>
         <Trans>RToken state after transaction</Trans>
       </Text>
-      <Field label={t`Freeze status`} mb={4}>
-        <Select {...register('unfreeze')}>
+      <Field label={t`Pause status`} mb={4}>
+        <Select {...register('unpause')}>
           <option value={0}>
-            <Trans>RToken will be left in freeze state</Trans>
+            <Trans>RToken will be left in pause state</Trans>
           </option>
           <option value={1}>
             <Trans>RToken will be fully functional</Trans>
@@ -92,7 +92,9 @@ const GovernanceForm = () => {
             mt={1}
             ml={1}
           >
-            <Trans>Only the unfreezer address will be able to unfreeze</Trans>
+            <Trans>
+              Only the guardian address or governance will be able to unpause
+            </Trans>
           </Text>
         )}
       </Field>

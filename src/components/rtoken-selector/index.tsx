@@ -11,6 +11,7 @@ import { rTokenAtom, selectedRTokenAtom } from 'state/atoms'
 import { transition } from 'theme'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
+import { CHAIN_ID } from 'utils/chains'
 import { DEFAULT_TOKENS } from 'utils/constants'
 
 // TODO: Separate component
@@ -45,11 +46,11 @@ const TokenItem = ({ symbol, logo }: { symbol: string; logo: string }) => (
 
 const TokenList = ({ onSelect }: { onSelect(address: string): void }) => (
   <Box>
-    {DEFAULT_TOKENS.map((address) => (
+    {DEFAULT_TOKENS[CHAIN_ID].map((address) => (
       <ActionItem key={address} onClick={() => onSelect(address)}>
         <TokenItem
-          symbol={rtokens[address].symbol}
-          logo={rtokens[address].logo}
+          symbol={rtokens[CHAIN_ID][address].symbol}
+          logo={rtokens[CHAIN_ID][address].logo}
         />
       </ActionItem>
     ))}
@@ -58,7 +59,8 @@ const TokenList = ({ onSelect }: { onSelect(address: string): void }) => (
 
 const SelectedToken = () => {
   const selectedAddress = useAtomValue(selectedRTokenAtom)
-  const selected = useAtomValue(rTokenAtom) ?? rtokens[selectedAddress]
+  const selected =
+    useAtomValue(rTokenAtom) ?? rtokens[CHAIN_ID][selectedAddress]
 
   if (!selectedAddress) {
     return (

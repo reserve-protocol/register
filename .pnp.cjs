@@ -3637,7 +3637,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ],\
       [\
         "jotai",\
-        "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.7.8"\
+        "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.8.1"\
       ],\
       [\
         "js-sha256",\
@@ -4893,7 +4893,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ],\
       [\
         "rtokens",\
-        "https://github.com/lc-labs/rtokens.git#commit=5a58aa8d69ea501f78d7e4a30d602662c8586c73"\
+        "https://github.com/lc-labs/rtokens.git#commit=3ecd473362c83e87e99d2ef758e947a20817e99a"\
       ],\
       [\
         "run-async",\
@@ -5784,7 +5784,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["graphql-request", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:4.2.0"],\
             ["i18next-browser-languagedetector", "npm:6.1.4"],\
             ["immer", "npm:9.0.12"],\
-            ["jotai", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.7.8"],\
+            ["jotai", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.8.1"],\
             ["make-plural", "npm:7.1.0"],\
             ["prettier", "npm:2.6.2"],\
             ["react", "npm:18.2.0"],\
@@ -5797,7 +5797,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-scripts", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:5.0.1"],\
             ["react-table", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:7.7.0"],\
             ["recharts", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:2.1.9"],\
-            ["rtokens", "https://github.com/lc-labs/rtokens.git#commit=5a58aa8d69ea501f78d7e4a30d602662c8586c73"],\
+            ["rtokens", "https://github.com/lc-labs/rtokens.git#commit=3ecd473362c83e87e99d2ef758e947a20817e99a"],\
             ["source-map-explorer", "npm:2.5.2"],\
             ["swr", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.2.2"],\
             ["theme-ui", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:0.14.6"],\
@@ -20267,17 +20267,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["jotai", [\
-        ["npm:1.7.8", {\
-          "packageLocation": "./.yarn/cache/jotai-npm-1.7.8-cb36477917-15eca7c051.zip/node_modules/jotai/",\
+        ["npm:1.8.1", {\
+          "packageLocation": "./.yarn/cache/jotai-npm-1.8.1-b9f1a69ed1-4569c159bd.zip/node_modules/jotai/",\
           "packageDependencies": [\
-            ["jotai", "npm:1.7.8"]\
+            ["jotai", "npm:1.8.1"]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.7.8", {\
-          "packageLocation": "./.yarn/__virtual__/jotai-virtual-4133b06adb/0/cache/jotai-npm-1.7.8-cb36477917-15eca7c051.zip/node_modules/jotai/",\
+        ["virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.8.1", {\
+          "packageLocation": "./.yarn/__virtual__/jotai-virtual-0872de7f82/0/cache/jotai-npm-1.8.1-b9f1a69ed1-4569c159bd.zip/node_modules/jotai/",\
           "packageDependencies": [\
-            ["jotai", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.7.8"],\
+            ["jotai", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.8.1"],\
             ["@babel/core", null],\
             ["@babel/template", null],\
             ["@tanstack/query-core", null],\
@@ -24018,7 +24018,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["graphql-request", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:4.2.0"],\
             ["i18next-browser-languagedetector", "npm:6.1.4"],\
             ["immer", "npm:9.0.12"],\
-            ["jotai", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.7.8"],\
+            ["jotai", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.8.1"],\
             ["make-plural", "npm:7.1.0"],\
             ["prettier", "npm:2.6.2"],\
             ["react", "npm:18.2.0"],\
@@ -24031,7 +24031,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-scripts", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:5.0.1"],\
             ["react-table", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:7.7.0"],\
             ["recharts", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:2.1.9"],\
-            ["rtokens", "https://github.com/lc-labs/rtokens.git#commit=5a58aa8d69ea501f78d7e4a30d602662c8586c73"],\
+            ["rtokens", "https://github.com/lc-labs/rtokens.git#commit=3ecd473362c83e87e99d2ef758e947a20817e99a"],\
             ["source-map-explorer", "npm:2.5.2"],\
             ["swr", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.2.2"],\
             ["theme-ui", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:0.14.6"],\
@@ -25301,10 +25301,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["rtokens", [\
-        ["https://github.com/lc-labs/rtokens.git#commit=5a58aa8d69ea501f78d7e4a30d602662c8586c73", {\
-          "packageLocation": "./.yarn/cache/rtokens-https-22c2a5f1b5-71bb850c2c.zip/node_modules/rtokens/",\
+        ["https://github.com/lc-labs/rtokens.git#commit=3ecd473362c83e87e99d2ef758e947a20817e99a", {\
+          "packageLocation": "./.yarn/cache/rtokens-https-995df8f4b3-60921c6672.zip/node_modules/rtokens/",\
           "packageDependencies": [\
-            ["rtokens", "https://github.com/lc-labs/rtokens.git#commit=5a58aa8d69ea501f78d7e4a30d602662c8586c73"]\
+            ["rtokens", "https://github.com/lc-labs/rtokens.git#commit=3ecd473362c83e87e99d2ef758e947a20817e99a"]\
           ],\
           "linkType": "HARD"\
         }]\

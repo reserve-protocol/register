@@ -10854,9 +10854,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jotai@npm:^1.7.8":
-  version: 1.7.8
-  resolution: "jotai@npm:1.7.8"
+"jotai@npm:^1.8.1":
+  version: 1.8.1
+  resolution: "jotai@npm:1.8.1"
   peerDependencies:
     "@babel/core": "*"
     "@babel/template": "*"
@@ -10887,7 +10887,7 @@ __metadata:
       optional: true
     xstate:
       optional: true
-  checksum: 15eca7c0519511c9d4b6c56c334e79451ea44466c23cd2abbcdb88072f9b068f1a3612513bdacd3c1b9558a744776368796c3a5ec26f32704b8b7488d294f7fb
+  checksum: 4569c159bde128d0ece922a7c69bcfba7e105c59e36c5ed531e9fb4dfca40ed2cbcf7e40baa7d6351ff1fb7c7ac10c1c02ca4d338adda3757b607ee8fe781078
   languageName: node
   linkType: hard
 
@@ -13529,7 +13529,7 @@ __metadata:
     graphql-request: ^4.2.0
     i18next-browser-languagedetector: ^6.1.2
     immer: ^9.0.12
-    jotai: ^1.7.8
+    jotai: ^1.8.1
     make-plural: ^7.1.0
     prettier: ^2.3.2
     react: ^18.2.0
@@ -14522,8 +14522,8 @@ __metadata:
 
 "rtokens@github:lc-labs/rtokens.git":
   version: 1.0.0
-  resolution: "rtokens@https://github.com/lc-labs/rtokens.git#commit=5a58aa8d69ea501f78d7e4a30d602662c8586c73"
-  checksum: 71bb850c2c00e1237505afa8bcfcb30acad042fa3368305e6bf73a3483f67b54bbc354b4769dc8ac3a7f3fc5e29948c721fe63a0fd023102c82ed6ca95c338f0
+  resolution: "rtokens@https://github.com/lc-labs/rtokens.git#commit=3ecd473362c83e87e99d2ef758e947a20817e99a"
+  checksum: 60921c6672cc18eafe78d765511fbde9fa211b35ca239c58434d049f11bdfd6709906a3ed0e76599185af163934b94428ee57e8013374c4273a575de40ba54b3
   languageName: node
   linkType: hard
 

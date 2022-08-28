@@ -14,13 +14,13 @@ import { v4 as uuid } from 'uuid'
 
 const defaultValues = {
   defaultGovernance: true,
-  unfreeze: '0',
+  unpause: '0',
   votingDelay: '5', // 5 blocks
   votingPeriod: '18000', // 100 blocks
   proposalThresholdAsMicroPercent: '1', // 1%
   quorumPercent: '4', // 4%
   minDelay: '24', // 24 hours -> 86400
-  freezer: '',
+  guardian: '',
   pauser: '',
   owner: '',
 }

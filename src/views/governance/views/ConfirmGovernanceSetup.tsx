@@ -29,13 +29,13 @@ const ConfirmGovernanceSetup = () => {
     try {
       const {
         defaultGovernance,
-        unfreeze,
+        unpause,
         votingDelay,
         votingPeriod,
         proposalThresholdAsMicroPercent,
         quorumPercent,
         minDelay,
-        freezer,
+        guardian,
         pauser,
         owner,
       } = getValues()
@@ -47,16 +47,16 @@ const ConfirmGovernanceSetup = () => {
           proposalThresholdAsMicroPercent * 1e6
         ),
         quorumPercent: BigNumber.from(quorumPercent),
-        minDelay: BigNumber.from(minDelay * 60 * 60),
+        timelockDelay: BigNumber.from(minDelay * 60 * 60),
       }
 
       const args = [
         rToken,
         !!defaultGovernance,
-        unfreeze === '1',
+        unpause === '1',
         govConfig,
         defaultGovernance ? ZERO_ADDRESS : owner,
-        freezer,
+        guardian,
         pauser,
       ]
 

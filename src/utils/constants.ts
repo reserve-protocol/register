@@ -1,5 +1,5 @@
-import { CHAIN_ID } from 'utils/chains'
-import { Token } from 'types'
+import { ChainId, CHAIN_ID } from 'utils/chains'
+import { AddressMap, Token } from 'types'
 import { RSR_ADDRESS } from './addresses'
 
 export const TRANSACTION_STATUS = {
@@ -51,7 +51,13 @@ export const RSR: Token = {
 
 // tokens used in the rtoken selector screen and dashboard
 // TODO: should be fetched, top 5 using market cap
-export const DEFAULT_TOKENS = [
-  '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',
-  '0x0bdB19551E641D25ea56AD1C66927313B331a955',
-]
+export const DEFAULT_TOKENS = {
+  [ChainId.Goerli]: [
+    '0x8431278459066BF0d2536db436709b1BB96Fdc4D',
+    '0xE794eA53578837f6193bBb77885A52c2ee394e14',
+  ],
+  [ChainId.Hardhat]: [
+    '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',
+    '0x0bdB19551E641D25ea56AD1C66927313B331a955',
+  ],
+}

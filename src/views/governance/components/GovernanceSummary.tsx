@@ -24,13 +24,13 @@ const GovernanceSummary = () => {
   const { getValues } = useFormContext()
   const {
     defaultGovernance,
-    unfreeze,
+    unpause,
     votingDelay, // 5 blocks
     votingPeriod, // 100 blocks
     proposalThresholdAsMicroPercent, // 1%
     quorumPercent, // 4%
     minDelay, // 24 hours -> 86400
-    freezer,
+    guardian,
     pauser,
     owner,
   } = getValues()
@@ -49,7 +49,7 @@ const GovernanceSummary = () => {
         {!defaultGovernance && (
           <Info mb={3} title={t`RToken Owner address`} subtitle={owner} />
         )}
-        <Info mb={3} title={t`RToken Freezer address`} subtitle={freezer} />
+        <Info mb={3} title={t`RToken Guardian address`} subtitle={guardian} />
         <Info mb={3} title={t`RToken Pauser address`} subtitle={pauser} />
         {defaultGovernance && (
           <>
@@ -93,8 +93,8 @@ const GovernanceSummary = () => {
         />
         <Info
           mb={3}
-          title={t`Leave RToken on freeze?`}
-          subtitle={unfreeze === '0' ? 'Yes' : 'No'}
+          title={t`Leave RToken on Pause?`}
+          subtitle={unpause === '0' ? 'Yes' : 'No'}
         />
       </Box>
     </Grid>
