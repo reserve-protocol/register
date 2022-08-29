@@ -1,4 +1,5 @@
 import { Web3Provider } from '@ethersproject/providers'
+import { formatEther } from '@ethersproject/units'
 import { useWeb3React } from '@web3-react/core'
 import {
   ERC20Interface,
@@ -6,8 +7,10 @@ import {
   MainInterface,
   RTokenInterface,
 } from 'abis'
+import { Facade } from 'abis/types'
 import { ethers } from 'ethers'
 import useBlockNumber from 'hooks/useBlockNumber'
+import { useFacadeContract } from 'hooks/useContract'
 import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useResetAtom, useUpdateAtom } from 'jotai/utils'
@@ -22,6 +25,7 @@ import RSV from 'utils/rsv'
 import {
   accountRoleAtom,
   reserveTokensAtom,
+  rTokenDistributionAtom,
   rTokenMainAtom,
   rTokenStatusAtom,
   selectedRTokenAtom,
@@ -104,10 +108,12 @@ const ReserveTokenUpdater = () => {
   const updateToken = useUpdateAtom(updateTokenAtom)
   const resetMetrics = useResetAtom(tokenMetricsAtom)
   const updateAccountRole = useUpdateAtom(accountRoleAtom)
+  const setDistribution = useUpdateAtom(rTokenDistributionAtom)
   const [searchParams] = useSearchParams()
   const currentAddress = searchParams.get('token')
   const account = useAtomValue(walletAtom)
   const { provider } = useWeb3React()
+  const facadeContract = useFacadeContract()
 
   const setTokenStatus = useCallback(
     async (mainAddress: string, provider: Web3Provider) => {
@@ -140,6 +146,22 @@ const ReserveTokenUpdater = () => {
         updateTokenStatus(status)
       } catch (e) {
         console.error('Error getting token status', e)
+      }
+    },
+    []
+  )
+
+  const getBackingDistribution = useCallback(
+    async (tokenAddress: string, facade: Facade) => {
+      try {
+        const [backing, insurance] = await facade.backingOverview(tokenAddress)
+
+        setDistribution({
+          backing: Math.round(Number(formatEther(backing)) * 100),
+          insurance: Math.round(Number(formatEther(insurance)) * 100),
+        })
+      } catch (e) {
+        console.error('Error getting rToken backing distribution')
       }
     },
     []
@@ -260,8 +282,6 @@ const ReserveTokenUpdater = () => {
 
   useEffect(() => {
     if (selectedAddress) {
-      // TODO: reset permissions here?
-      // updateAccountRole({ owner: false, freezer: false, pauser: false })
       resetMetrics()
     }
   }, [selectedAddress])
@@ -283,6 +303,13 @@ const ReserveTokenUpdater = () => {
       }
     }
   }, [mainAddress, account, blockNumber])
+
+  useEffect(() => {
+    // Use mainAddress to validate we have an rToken selected
+    if (mainAddress && facadeContract) {
+      getBackingDistribution(selectedAddress, facadeContract)
+    }
+  }, [blockNumber, mainAddress])
 
   return null
 }

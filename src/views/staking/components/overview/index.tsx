@@ -2,7 +2,11 @@ import { Trans } from '@lingui/macro'
 import IconInfo from 'components/info-icon'
 import { useAtomValue } from 'jotai'
 import { Hash, TrendingUp } from 'react-feather'
-import { rsrExchangeRateAtom, rTokenAtom } from 'state/atoms'
+import {
+  rsrExchangeRateAtom,
+  rTokenAtom,
+  rTokenDistributionAtom,
+} from 'state/atoms'
 import { Box, Text, Flex, Grid, BoxProps, Card } from 'theme-ui'
 
 const ExchangeRate = (props: BoxProps) => {
@@ -21,6 +25,8 @@ const ExchangeRate = (props: BoxProps) => {
 }
 
 const Stats = (props: BoxProps) => {
+  const distribution = useAtomValue(rTokenDistributionAtom)
+
   return (
     <Card {...props} p={0}>
       <Grid gap={0} columns={2}>
@@ -58,7 +64,7 @@ const Stats = (props: BoxProps) => {
               />
             }
             title="Current"
-            text="100%"
+            text={`${distribution.backing}%`}
           />
         </Box>
         <Box p={3} sx={{ borderRight: '1px solid', borderColor: 'border' }}>
@@ -73,7 +79,7 @@ const Stats = (props: BoxProps) => {
               />
             }
             title="Current"
-            text="140.50%"
+            text={`${distribution.backing + distribution.insurance}%`}
           />
         </Box>
       </Grid>

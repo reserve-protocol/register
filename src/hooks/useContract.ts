@@ -8,10 +8,11 @@ import {
   FacadeWrite as FacadeWriteAbi,
   RToken as RTokenAbi,
   StRSR as StRSRAbi,
+  Main as MainAbi,
 } from 'abis'
 import { useMemo } from 'react'
 import { CHAIN_ID } from 'utils/chains'
-import { ERC20, Facade, RToken, StRsr, FacadeWrite } from '../abis/types'
+import { ERC20, Facade, RToken, StRsr, FacadeWrite, Main } from '../abis/types'
 import { getContract } from '../utils'
 import { FACADE_ADDRESS, FACADE_WRITE_ADDRESS } from './../utils/addresses'
 
@@ -74,4 +75,11 @@ export function useTokenContract(
   withSignerIfPossible?: boolean
 ): ERC20 | null {
   return useContract<ERC20>(tokenAddress, ERC20Abi, withSignerIfPossible)
+}
+
+export function useMainContract(
+  mainAddress?: string,
+  withSignerIfPossible?: boolean
+): Main | null {
+  return useContract<Main>(mainAddress, MainAbi, withSignerIfPossible)
 }

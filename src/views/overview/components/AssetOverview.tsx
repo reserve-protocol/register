@@ -1,11 +1,7 @@
-import { formatEther } from '@ethersproject/units'
 import { Trans } from '@lingui/macro'
-import { Facade } from 'abis/types'
 import TokenLogo from 'components/icons/TokenLogo'
-import { useFacadeContract } from 'hooks/useContract'
 import useRToken from 'hooks/useRToken'
-import { useAtom, useAtomValue } from 'jotai'
-import { useCallback, useEffect } from 'react'
+import { useAtomValue } from 'jotai'
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
 import { rTokenDistributionAtom, rTokenPriceAtom } from 'state/atoms'
 import { Box, BoxProps, Card, Flex, Grid, Text } from 'theme-ui'
@@ -86,29 +82,8 @@ const getAngles = (value: number) => {
 
 const AssetOverview = () => {
   const rToken = useRToken()
-  const [distribution, setDistribution] = useAtom(rTokenDistributionAtom)
-  const facade = useFacadeContract()
+  const distribution = useAtomValue(rTokenDistributionAtom)
   const price = useAtomValue(rTokenPriceAtom)
-
-  const getDistribution = useCallback(
-    async (facadeContract: Facade, tokenAddress: string) => {
-      const [backing, insurance] = await facadeContract.backingOverview(
-        tokenAddress
-      )
-
-      setDistribution({
-        backing: Math.round(Number(formatEther(backing)) * 100),
-        insurance: Math.round(Number(formatEther(insurance)) * 100),
-      })
-    },
-    []
-  )
-
-  useEffect(() => {
-    if (facade && rToken?.address) {
-      getDistribution(facade, rToken.address)
-    }
-  }, [facade, rToken?.address])
 
   return (
     <Card py={5}>
