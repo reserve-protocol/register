@@ -1,9 +1,13 @@
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
-import { ERC20Interface, MainInterface, RTokenInterface } from 'abis'
+import {
+  ERC20Interface,
+  FacadeInterface,
+  MainInterface,
+  RTokenInterface,
+} from 'abis'
 import { ethers } from 'ethers'
 import useBlockNumber from 'hooks/useBlockNumber'
-import { useFacadeContract } from 'hooks/useContract'
 import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useResetAtom, useUpdateAtom } from 'jotai/utils'
@@ -11,6 +15,8 @@ import { useCallback, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { ContractCall, ReserveToken, Token } from 'types'
 import { isAddress } from 'utils'
+import { FACADE_ADDRESS } from 'utils/addresses'
+import { CHAIN_ID } from 'utils/chains'
 import { RTOKEN_STATUS } from 'utils/constants'
 import RSV from 'utils/rsv'
 import {
@@ -98,7 +104,6 @@ const ReserveTokenUpdater = () => {
   const updateToken = useUpdateAtom(updateTokenAtom)
   const resetMetrics = useResetAtom(tokenMetricsAtom)
   const updateAccountRole = useUpdateAtom(accountRoleAtom)
-  const facadeContract = useFacadeContract()
   const [searchParams] = useSearchParams()
   const currentAddress = searchParams.get('token')
   const account = useAtomValue(walletAtom)
@@ -141,7 +146,7 @@ const ReserveTokenUpdater = () => {
   )
 
   const getTokenMeta = useCallback(
-    async (address: string) => {
+    async (address: string, provider: Web3Provider) => {
       const isRSV = address === RSV.address
 
       if (isRSV) {
@@ -149,27 +154,37 @@ const ReserveTokenUpdater = () => {
       }
 
       try {
-        if (facadeContract && provider) {
-          const [basket, stTokenAddress] = await Promise.all([
-            facadeContract.basketTokens(address),
-            facadeContract.stToken(address),
-          ])
-
-          const {
-            main,
-            tokens: [rToken, stToken, ...collaterals],
-          } = await getRTokenMeta(
-            [address, stTokenAddress, ...basket],
-            provider
-          )
-
-          return updateToken({
-            ...rToken,
-            stToken,
-            collaterals,
-            main,
-          })
+        const callParams = {
+          abi: FacadeInterface,
+          address: FACADE_ADDRESS[CHAIN_ID],
+          args: [address],
         }
+
+        const [basket, stTokenAddress] = await promiseMulticall(
+          [
+            {
+              ...callParams,
+              method: 'basketTokens',
+            },
+            {
+              ...callParams,
+              method: 'stToken',
+            },
+          ],
+          provider
+        )
+
+        const {
+          main,
+          tokens: [rToken, stToken, ...collaterals],
+        } = await getRTokenMeta([address, stTokenAddress, ...basket], provider)
+
+        return updateToken({
+          ...rToken,
+          stToken,
+          collaterals,
+          main,
+        })
       } catch (e) {
         console.error('Error fetching token info', e)
         if (windowVisible) {
@@ -177,7 +192,7 @@ const ReserveTokenUpdater = () => {
         }
       }
     },
-    [facadeContract, provider]
+    []
   )
 
   const getUserRole = useCallback(
@@ -238,10 +253,10 @@ const ReserveTokenUpdater = () => {
   }, [currentAddress])
 
   useEffect(() => {
-    if (selectedAddress && facadeContract) {
-      getTokenMeta(selectedAddress)
+    if (selectedAddress && provider) {
+      getTokenMeta(selectedAddress, provider)
     }
-  }, [getTokenMeta, selectedAddress])
+  }, [provider, selectedAddress])
 
   useEffect(() => {
     if (selectedAddress) {

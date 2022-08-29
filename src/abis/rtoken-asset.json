@@ -1,0 +1,214 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "contract IRToken",
+        "name": "rToken_",
+        "type": "address"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint192",
+            "name": "minVal",
+            "type": "uint192"
+          },
+          {
+            "internalType": "uint192",
+            "name": "maxVal",
+            "type": "uint192"
+          },
+          {
+            "internalType": "uint192",
+            "name": "minAmt",
+            "type": "uint192"
+          },
+          {
+            "internalType": "uint192",
+            "name": "maxAmt",
+            "type": "uint192"
+          }
+        ],
+        "internalType": "struct TradingRange",
+        "name": "tradingRange_",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "UIntOutOfBounds",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "bal",
+    "outputs": [
+      {
+        "internalType": "uint192",
+        "name": "",
+        "type": "uint192"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "chainlinkFeed",
+    "outputs": [
+      {
+        "internalType": "contract AggregatorV3Interface",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "erc20",
+    "outputs": [
+      {
+        "internalType": "contract IERC20Metadata",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getClaimCalldata",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_cd",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "isCollateral",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "maxTradeSize",
+    "outputs": [
+      {
+        "internalType": "uint192",
+        "name": "max",
+        "type": "uint192"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "minTradeSize",
+    "outputs": [
+      {
+        "internalType": "uint192",
+        "name": "min",
+        "type": "uint192"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "oracleTimeout",
+    "outputs": [
+      {
+        "internalType": "uint48",
+        "name": "",
+        "type": "uint48"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "price",
+    "outputs": [
+      {
+        "internalType": "uint192",
+        "name": "p",
+        "type": "uint192"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "rewardERC20",
+    "outputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "tradingRange",
+    "outputs": [
+      {
+        "internalType": "uint192",
+        "name": "minVal",
+        "type": "uint192"
+      },
+      {
+        "internalType": "uint192",
+        "name": "maxVal",
+        "type": "uint192"
+      },
+      {
+        "internalType": "uint192",
+        "name": "minAmt",
+        "type": "uint192"
+      },
+      {
+        "internalType": "uint192",
+        "name": "maxAmt",
+        "type": "uint192"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
