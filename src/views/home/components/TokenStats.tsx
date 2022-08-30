@@ -87,7 +87,7 @@ const TokenStats = (props: BoxProps) => {
   }, [data])
 
   return (
-    <Box pl={4} {...props}>
+    <Box pl={3} {...props}>
       <ContentHead
         sx={{ maxWidth: 600 }}
         title={t`RToken stats`}

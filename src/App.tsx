@@ -10,6 +10,7 @@ import Updater from 'state/updater'
 import Web3Provider from 'state/web3'
 import { ThemeProvider } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
+import Auctions from 'views/auctions'
 import Deploy from 'views/deploy'
 import Governance from 'views/governance'
 import GovernanceConfigured from 'views/governance/views/GovernanceConfigured'
@@ -79,6 +80,7 @@ const App = () => (
                   </Guard>
                 }
               />
+              <Route path={ROUTES.AUCTIONS} element={<Auctions />} />
               <Route path={ROUTES.DEPLOY} element={<Deploy />} />
               <Route path={ROUTES.MANAGEMENT} element={<Management />} />
               <Route path={ROUTES.GOVERNANCE} element={<Governance />} />
