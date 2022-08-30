@@ -75,11 +75,23 @@ export type ImplementationsStructOutput = [
   string
 ] & { main: string; components: ComponentsStructOutput; trade: string };
 
-export type TradingRangeStruct = { min: BigNumberish; max: BigNumberish };
+export type TradingRangeStruct = {
+  minVal: BigNumberish;
+  maxVal: BigNumberish;
+  minAmt: BigNumberish;
+  maxAmt: BigNumberish;
+};
 
-export type TradingRangeStructOutput = [BigNumber, BigNumber] & {
-  min: BigNumber;
-  max: BigNumber;
+export type TradingRangeStructOutput = [
+  BigNumber,
+  BigNumber,
+  BigNumber,
+  BigNumber
+] & {
+  minVal: BigNumber;
+  maxVal: BigNumber;
+  minAmt: BigNumber;
+  maxAmt: BigNumber;
 };
 
 export type RevenueShareStruct = {
@@ -93,8 +105,7 @@ export type RevenueShareStructOutput = [number, number] & {
 };
 
 export type DeploymentParamsStruct = {
-  freezeDuration: BigNumberish;
-  tradingRange: TradingRangeStruct;
+  rTokenTradingRange: TradingRangeStruct;
   dist: RevenueShareStruct;
   rewardPeriod: BigNumberish;
   rewardRatio: BigNumberish;
@@ -103,11 +114,14 @@ export type DeploymentParamsStruct = {
   auctionLength: BigNumberish;
   backingBuffer: BigNumberish;
   maxTradeSlippage: BigNumberish;
+  shortFreeze: BigNumberish;
+  longFreeze: BigNumberish;
   issuanceRate: BigNumberish;
+  maxRedemptionCharge: BigNumberish;
+  redemptionVirtualSupply: BigNumberish;
 };
 
 export type DeploymentParamsStructOutput = [
-  number,
   TradingRangeStructOutput,
   RevenueShareStructOutput,
   number,
@@ -117,10 +131,13 @@ export type DeploymentParamsStructOutput = [
   number,
   BigNumber,
   BigNumber,
+  number,
+  number,
+  BigNumber,
+  BigNumber,
   BigNumber
 ] & {
-  freezeDuration: number;
-  tradingRange: TradingRangeStructOutput;
+  rTokenTradingRange: TradingRangeStructOutput;
   dist: RevenueShareStructOutput;
   rewardPeriod: number;
   rewardRatio: BigNumber;
@@ -129,13 +146,17 @@ export type DeploymentParamsStructOutput = [
   auctionLength: number;
   backingBuffer: BigNumber;
   maxTradeSlippage: BigNumber;
+  shortFreeze: number;
+  longFreeze: number;
   issuanceRate: BigNumber;
+  maxRedemptionCharge: BigNumber;
+  redemptionVirtualSupply: BigNumber;
 };
 
 export interface DeployerInterface extends utils.Interface {
   functions: {
     "ENS()": FunctionFragment;
-    "deploy(string,string,string,address,(uint32,(uint192,uint192),(uint16,uint16),uint32,uint192,uint32,uint32,uint32,uint192,uint192,uint192))": FunctionFragment;
+    "deploy(string,string,string,address,((uint192,uint192,uint192,uint192),(uint16,uint16),uint48,uint192,uint48,uint48,uint48,uint192,uint192,uint48,uint48,uint192,uint192,uint256))": FunctionFragment;
     "facade()": FunctionFragment;
     "gnosis()": FunctionFragment;
     "implementations()": FunctionFragment;
@@ -231,7 +252,7 @@ export interface Deployer extends BaseContract {
     deploy(
       name: string,
       symbol: string,
-      manifestoURI: string,
+      mandate: string,
       owner: string,
       params: DeploymentParamsStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -261,7 +282,7 @@ export interface Deployer extends BaseContract {
   deploy(
     name: string,
     symbol: string,
-    manifestoURI: string,
+    mandate: string,
     owner: string,
     params: DeploymentParamsStruct,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -291,7 +312,7 @@ export interface Deployer extends BaseContract {
     deploy(
       name: string,
       symbol: string,
-      manifestoURI: string,
+      mandate: string,
       owner: string,
       params: DeploymentParamsStruct,
       overrides?: CallOverrides
@@ -337,7 +358,7 @@ export interface Deployer extends BaseContract {
     deploy(
       name: string,
       symbol: string,
-      manifestoURI: string,
+      mandate: string,
       owner: string,
       params: DeploymentParamsStruct,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -360,7 +381,7 @@ export interface Deployer extends BaseContract {
     deploy(
       name: string,
       symbol: string,
-      manifestoURI: string,
+      mandate: string,
       owner: string,
       params: DeploymentParamsStruct,
       overrides?: Overrides & { from?: string | Promise<string> }

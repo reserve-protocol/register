@@ -169,7 +169,7 @@ const _abi = [
       },
       {
         internalType: "string",
-        name: "manifestoURI",
+        name: "mandate",
         type: "string",
       },
       {
@@ -180,25 +180,30 @@ const _abi = [
       {
         components: [
           {
-            internalType: "uint32",
-            name: "freezeDuration",
-            type: "uint32",
-          },
-          {
             components: [
               {
                 internalType: "uint192",
-                name: "min",
+                name: "minVal",
                 type: "uint192",
               },
               {
                 internalType: "uint192",
-                name: "max",
+                name: "maxVal",
+                type: "uint192",
+              },
+              {
+                internalType: "uint192",
+                name: "minAmt",
+                type: "uint192",
+              },
+              {
+                internalType: "uint192",
+                name: "maxAmt",
                 type: "uint192",
               },
             ],
             internalType: "struct TradingRange",
-            name: "tradingRange",
+            name: "rTokenTradingRange",
             type: "tuple",
           },
           {
@@ -219,9 +224,9 @@ const _abi = [
             type: "tuple",
           },
           {
-            internalType: "uint32",
+            internalType: "uint48",
             name: "rewardPeriod",
-            type: "uint32",
+            type: "uint48",
           },
           {
             internalType: "uint192",
@@ -229,19 +234,19 @@ const _abi = [
             type: "uint192",
           },
           {
-            internalType: "uint32",
+            internalType: "uint48",
             name: "unstakingDelay",
-            type: "uint32",
+            type: "uint48",
           },
           {
-            internalType: "uint32",
+            internalType: "uint48",
             name: "tradingDelay",
-            type: "uint32",
+            type: "uint48",
           },
           {
-            internalType: "uint32",
+            internalType: "uint48",
             name: "auctionLength",
-            type: "uint32",
+            type: "uint48",
           },
           {
             internalType: "uint192",
@@ -254,9 +259,29 @@ const _abi = [
             type: "uint192",
           },
           {
+            internalType: "uint48",
+            name: "shortFreeze",
+            type: "uint48",
+          },
+          {
+            internalType: "uint48",
+            name: "longFreeze",
+            type: "uint48",
+          },
+          {
             internalType: "uint192",
             name: "issuanceRate",
             type: "uint192",
+          },
+          {
+            internalType: "uint192",
+            name: "maxRedemptionCharge",
+            type: "uint192",
+          },
+          {
+            internalType: "uint256",
+            name: "redemptionVirtualSupply",
+            type: "uint256",
           },
         ],
         internalType: "struct DeploymentParams",

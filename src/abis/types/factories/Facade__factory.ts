@@ -240,6 +240,25 @@ const _abi = [
         type: "address",
       },
     ],
+    name: "price",
+    outputs: [
+      {
+        internalType: "uint192",
+        name: "",
+        type: "uint192",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "contract IRToken",
+        name: "rToken",
+        type: "address",
+      },
+    ],
     name: "runAuctionsForAllTraders",
     outputs: [],
     stateMutability: "nonpayable",

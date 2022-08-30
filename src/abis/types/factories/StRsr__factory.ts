@@ -49,6 +49,19 @@ const _abi = [
     inputs: [
       {
         indexed: true,
+        internalType: "uint256",
+        name: "newEra",
+        type: "uint256",
+      },
+    ],
+    name: "AllUnstakingReset",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
         internalType: "address",
         name: "owner",
         type: "address",
@@ -119,15 +132,15 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "uint32",
+        internalType: "uint48",
         name: "oldVal",
-        type: "uint32",
+        type: "uint48",
       },
       {
         indexed: true,
-        internalType: "uint32",
+        internalType: "uint48",
         name: "newVal",
-        type: "uint32",
+        type: "uint48",
       },
     ],
     name: "RewardPeriodSet",
@@ -150,6 +163,19 @@ const _abi = [
       },
     ],
     name: "RewardRatioSet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "rsrAmt",
+        type: "uint256",
+      },
+    ],
+    name: "RewardsPaid",
     type: "event",
   },
   {
@@ -250,15 +276,15 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "uint32",
+        internalType: "uint48",
         name: "oldVal",
-        type: "uint32",
+        type: "uint48",
       },
       {
         indexed: true,
-        internalType: "uint32",
+        internalType: "uint48",
         name: "newVal",
-        type: "uint32",
+        type: "uint48",
       },
     ],
     name: "UnstakingDelaySet",
@@ -328,6 +354,45 @@ const _abi = [
         internalType: "bytes32",
         name: "",
         type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "MAX_REWARD_PERIOD",
+    outputs: [
+      {
+        internalType: "uint48",
+        name: "",
+        type: "uint48",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "MAX_REWARD_RATIO",
+    outputs: [
+      {
+        internalType: "uint192",
+        name: "",
+        type: "uint192",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "MAX_UNSTAKING_DELAY",
+    outputs: [
+      {
+        internalType: "uint48",
+        name: "",
+        type: "uint48",
       },
     ],
     stateMutability: "view",
@@ -606,14 +671,14 @@ const _abi = [
         type: "string",
       },
       {
-        internalType: "uint32",
+        internalType: "uint48",
         name: "unstakingDelay_",
-        type: "uint32",
+        type: "uint48",
       },
       {
-        internalType: "uint32",
+        internalType: "uint48",
         name: "rewardPeriod_",
-        type: "uint32",
+        type: "uint48",
       },
       {
         internalType: "uint192",
@@ -739,9 +804,9 @@ const _abi = [
     name: "rewardPeriod",
     outputs: [
       {
-        internalType: "uint32",
+        internalType: "uint48",
         name: "",
-        type: "uint32",
+        type: "uint48",
       },
     ],
     stateMutability: "view",
@@ -789,9 +854,9 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint32",
+        internalType: "uint48",
         name: "val",
-        type: "uint32",
+        type: "uint48",
       },
     ],
     name: "setRewardPeriod",
@@ -828,9 +893,9 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint32",
+        internalType: "uint48",
         name: "val",
-        type: "uint32",
+        type: "uint48",
       },
     ],
     name: "setUnstakingDelay",
@@ -961,9 +1026,9 @@ const _abi = [
     name: "unstakingDelay",
     outputs: [
       {
-        internalType: "uint32",
+        internalType: "uint48",
         name: "",
-        type: "uint32",
+        type: "uint48",
       },
     ],
     stateMutability: "view",

@@ -51,9 +51,6 @@ export declare namespace RTokenP1 {
 export interface RTokenInterface extends utils.Interface {
   functions: {
     "DOMAIN_SEPARATOR()": FunctionFragment;
-    "MAX_ISSUANCE_RATE()": FunctionFragment;
-    "MIN_BLOCK_ISSUANCE_LIMIT()": FunctionFragment;
-    "allVestAt()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
@@ -64,25 +61,27 @@ export interface RTokenInterface extends utils.Interface {
     "decreaseAllowance(address,uint256)": FunctionFragment;
     "endIdForVest(address)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
-    "init(address,string,string,string,uint192)": FunctionFragment;
+    "init(address,string,string,string,uint192,uint192,uint256)": FunctionFragment;
     "issuanceRate()": FunctionFragment;
     "issue(uint256)": FunctionFragment;
     "issueItem(address,uint256)": FunctionFragment;
     "issueQueues(address)": FunctionFragment;
-    "lastIssRate()": FunctionFragment;
-    "lastIssRateBlock()": FunctionFragment;
     "main()": FunctionFragment;
-    "manifestoURI()": FunctionFragment;
+    "mandate()": FunctionFragment;
+    "maxRedemptionCharge()": FunctionFragment;
     "melt(uint256)": FunctionFragment;
     "mint(address,uint256)": FunctionFragment;
     "name()": FunctionFragment;
     "nonces(address)": FunctionFragment;
     "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
-    "price()": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "redeem(uint256)": FunctionFragment;
+    "redemptionLimit()": FunctionFragment;
+    "redemptionVirtualSupply()": FunctionFragment;
     "setBasketsNeeded(uint192)": FunctionFragment;
     "setIssuanceRate(uint192)": FunctionFragment;
+    "setMaxRedemption(uint192)": FunctionFragment;
+    "setRedemptionVirtualSupply(uint256)": FunctionFragment;
     "symbol()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
@@ -95,9 +94,6 @@ export interface RTokenInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "DOMAIN_SEPARATOR"
-      | "MAX_ISSUANCE_RATE"
-      | "MIN_BLOCK_ISSUANCE_LIMIT"
-      | "allVestAt"
       | "allowance"
       | "approve"
       | "balanceOf"
@@ -113,20 +109,22 @@ export interface RTokenInterface extends utils.Interface {
       | "issue"
       | "issueItem"
       | "issueQueues"
-      | "lastIssRate"
-      | "lastIssRateBlock"
       | "main"
-      | "manifestoURI"
+      | "mandate"
+      | "maxRedemptionCharge"
       | "melt"
       | "mint"
       | "name"
       | "nonces"
       | "permit"
-      | "price"
       | "proxiableUUID"
       | "redeem"
+      | "redemptionLimit"
+      | "redemptionVirtualSupply"
       | "setBasketsNeeded"
       | "setIssuanceRate"
+      | "setMaxRedemption"
+      | "setRedemptionVirtualSupply"
       | "symbol"
       | "totalSupply"
       | "transfer"
@@ -140,15 +138,6 @@ export interface RTokenInterface extends utils.Interface {
     functionFragment: "DOMAIN_SEPARATOR",
     values?: undefined
   ): string;
-  encodeFunctionData(
-    functionFragment: "MAX_ISSUANCE_RATE",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "MIN_BLOCK_ISSUANCE_LIMIT",
-    values?: undefined
-  ): string;
-  encodeFunctionData(functionFragment: "allVestAt", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "allowance",
     values: [string, string]
@@ -185,7 +174,15 @@ export interface RTokenInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "init",
-    values: [string, string, string, string, BigNumberish]
+    values: [
+      string,
+      string,
+      string,
+      string,
+      BigNumberish,
+      BigNumberish,
+      BigNumberish
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "issuanceRate",
@@ -197,17 +194,10 @@ export interface RTokenInterface extends utils.Interface {
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "issueQueues", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "lastIssRate",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "lastIssRateBlock",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "main", values?: undefined): string;
+  encodeFunctionData(functionFragment: "mandate", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "manifestoURI",
+    functionFragment: "maxRedemptionCharge",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "melt", values: [BigNumberish]): string;
@@ -229,7 +219,6 @@ export interface RTokenInterface extends utils.Interface {
       BytesLike
     ]
   ): string;
-  encodeFunctionData(functionFragment: "price", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "proxiableUUID",
     values?: undefined
@@ -239,11 +228,27 @@ export interface RTokenInterface extends utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "redemptionLimit",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "redemptionVirtualSupply",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "setBasketsNeeded",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "setIssuanceRate",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setMaxRedemption",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setRedemptionVirtualSupply",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
@@ -273,15 +278,6 @@ export interface RTokenInterface extends utils.Interface {
     functionFragment: "DOMAIN_SEPARATOR",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "MAX_ISSUANCE_RATE",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "MIN_BLOCK_ISSUANCE_LIMIT",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "allVestAt", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
@@ -318,17 +314,10 @@ export interface RTokenInterface extends utils.Interface {
     functionFragment: "issueQueues",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "lastIssRate",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "lastIssRateBlock",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "main", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "mandate", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "manifestoURI",
+    functionFragment: "maxRedemptionCharge",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "melt", data: BytesLike): Result;
@@ -336,18 +325,33 @@ export interface RTokenInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "nonces", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "permit", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "price", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "proxiableUUID",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "redeem", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "redemptionLimit",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "redemptionVirtualSupply",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "setBasketsNeeded",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "setIssuanceRate",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setMaxRedemption",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setRedemptionVirtualSupply",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
@@ -378,8 +382,10 @@ export interface RTokenInterface extends utils.Interface {
     "IssuanceStarted(address,uint256,uint256,uint192,address[],uint256[],uint192)": EventFragment;
     "IssuancesCanceled(address,uint256,uint256,uint256)": EventFragment;
     "IssuancesCompleted(address,uint256,uint256,uint256)": EventFragment;
+    "MaxRedemptionSet(uint192,uint192)": EventFragment;
     "Melted(uint256)": EventFragment;
     "Redemption(address,uint256,uint192)": EventFragment;
+    "RedemptionVirtualSupplySet(uint256,uint256)": EventFragment;
     "RewardsClaimed(address,uint256)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
     "Upgraded(address)": EventFragment;
@@ -395,8 +401,10 @@ export interface RTokenInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "IssuanceStarted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "IssuancesCanceled"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "IssuancesCompleted"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "MaxRedemptionSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Melted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Redemption"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RedemptionVirtualSupplySet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RewardsClaimed"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
@@ -521,6 +529,18 @@ export type IssuancesCompletedEvent = TypedEvent<
 export type IssuancesCompletedEventFilter =
   TypedEventFilter<IssuancesCompletedEvent>;
 
+export interface MaxRedemptionSetEventObject {
+  oldVal: BigNumber;
+  newVal: BigNumber;
+}
+export type MaxRedemptionSetEvent = TypedEvent<
+  [BigNumber, BigNumber],
+  MaxRedemptionSetEventObject
+>;
+
+export type MaxRedemptionSetEventFilter =
+  TypedEventFilter<MaxRedemptionSetEvent>;
+
 export interface MeltedEventObject {
   amount: BigNumber;
 }
@@ -539,6 +559,18 @@ export type RedemptionEvent = TypedEvent<
 >;
 
 export type RedemptionEventFilter = TypedEventFilter<RedemptionEvent>;
+
+export interface RedemptionVirtualSupplySetEventObject {
+  oldVal: BigNumber;
+  newVal: BigNumber;
+}
+export type RedemptionVirtualSupplySetEvent = TypedEvent<
+  [BigNumber, BigNumber],
+  RedemptionVirtualSupplySetEventObject
+>;
+
+export type RedemptionVirtualSupplySetEventFilter =
+  TypedEventFilter<RedemptionVirtualSupplySetEvent>;
 
 export interface RewardsClaimedEventObject {
   erc20: string;
@@ -599,12 +631,6 @@ export interface RToken extends BaseContract {
   functions: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<[string]>;
 
-    MAX_ISSUANCE_RATE(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    MIN_BLOCK_ISSUANCE_LIMIT(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    allVestAt(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     allowance(
       owner: string,
       spender: string,
@@ -654,8 +680,10 @@ export interface RToken extends BaseContract {
       main_: string,
       name_: string,
       symbol_: string,
-      manifestoURI_: string,
+      mandate_: string,
       issuanceRate_: BigNumberish,
+      maxRedemptionCharge_: BigNumberish,
+      redemptionVirtualSupply_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -683,13 +711,11 @@ export interface RToken extends BaseContract {
       }
     >;
 
-    lastIssRate(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    lastIssRateBlock(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     main(overrides?: CallOverrides): Promise<[string]>;
 
-    manifestoURI(overrides?: CallOverrides): Promise<[string]>;
+    mandate(overrides?: CallOverrides): Promise<[string]>;
+
+    maxRedemptionCharge(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     melt(
       amtRToken: BigNumberish,
@@ -717,8 +743,6 @@ export interface RToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    price(overrides?: CallOverrides): Promise<[BigNumber] & { p: BigNumber }>;
-
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
 
     redeem(
@@ -726,12 +750,26 @@ export interface RToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    redemptionLimit(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    redemptionVirtualSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     setBasketsNeeded(
       basketsNeeded_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     setIssuanceRate(
+      val: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    setMaxRedemption(
+      val: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    setRedemptionVirtualSupply(
       val: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -772,12 +810,6 @@ export interface RToken extends BaseContract {
   };
 
   DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
-
-  MAX_ISSUANCE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
-
-  MIN_BLOCK_ISSUANCE_LIMIT(overrides?: CallOverrides): Promise<BigNumber>;
-
-  allVestAt(overrides?: CallOverrides): Promise<BigNumber>;
 
   allowance(
     owner: string,
@@ -825,8 +857,10 @@ export interface RToken extends BaseContract {
     main_: string,
     name_: string,
     symbol_: string,
-    manifestoURI_: string,
+    mandate_: string,
     issuanceRate_: BigNumberish,
+    maxRedemptionCharge_: BigNumberish,
+    redemptionVirtualSupply_: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -854,13 +888,11 @@ export interface RToken extends BaseContract {
     }
   >;
 
-  lastIssRate(overrides?: CallOverrides): Promise<BigNumber>;
-
-  lastIssRateBlock(overrides?: CallOverrides): Promise<BigNumber>;
-
   main(overrides?: CallOverrides): Promise<string>;
 
-  manifestoURI(overrides?: CallOverrides): Promise<string>;
+  mandate(overrides?: CallOverrides): Promise<string>;
+
+  maxRedemptionCharge(overrides?: CallOverrides): Promise<BigNumber>;
 
   melt(
     amtRToken: BigNumberish,
@@ -888,8 +920,6 @@ export interface RToken extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  price(overrides?: CallOverrides): Promise<BigNumber>;
-
   proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
   redeem(
@@ -897,12 +927,26 @@ export interface RToken extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  redemptionLimit(overrides?: CallOverrides): Promise<BigNumber>;
+
+  redemptionVirtualSupply(overrides?: CallOverrides): Promise<BigNumber>;
+
   setBasketsNeeded(
     basketsNeeded_: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   setIssuanceRate(
+    val: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  setMaxRedemption(
+    val: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  setRedemptionVirtualSupply(
     val: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -943,12 +987,6 @@ export interface RToken extends BaseContract {
 
   callStatic: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
-
-    MAX_ISSUANCE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
-
-    MIN_BLOCK_ISSUANCE_LIMIT(overrides?: CallOverrides): Promise<BigNumber>;
-
-    allVestAt(overrides?: CallOverrides): Promise<BigNumber>;
 
     allowance(
       owner: string,
@@ -997,8 +1035,10 @@ export interface RToken extends BaseContract {
       main_: string,
       name_: string,
       symbol_: string,
-      manifestoURI_: string,
+      mandate_: string,
       issuanceRate_: BigNumberish,
+      maxRedemptionCharge_: BigNumberish,
+      redemptionVirtualSupply_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1023,13 +1063,11 @@ export interface RToken extends BaseContract {
       }
     >;
 
-    lastIssRate(overrides?: CallOverrides): Promise<BigNumber>;
-
-    lastIssRateBlock(overrides?: CallOverrides): Promise<BigNumber>;
-
     main(overrides?: CallOverrides): Promise<string>;
 
-    manifestoURI(overrides?: CallOverrides): Promise<string>;
+    mandate(overrides?: CallOverrides): Promise<string>;
+
+    maxRedemptionCharge(overrides?: CallOverrides): Promise<BigNumber>;
 
     melt(amtRToken: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
@@ -1054,11 +1092,13 @@ export interface RToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    price(overrides?: CallOverrides): Promise<BigNumber>;
-
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
     redeem(amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
+
+    redemptionLimit(overrides?: CallOverrides): Promise<BigNumber>;
+
+    redemptionVirtualSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     setBasketsNeeded(
       basketsNeeded_: BigNumberish,
@@ -1066,6 +1106,16 @@ export interface RToken extends BaseContract {
     ): Promise<void>;
 
     setIssuanceRate(
+      val: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setMaxRedemption(
+      val: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setRedemptionVirtualSupply(
       val: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -1208,6 +1258,15 @@ export interface RToken extends BaseContract {
       amount?: null
     ): IssuancesCompletedEventFilter;
 
+    "MaxRedemptionSet(uint192,uint192)"(
+      oldVal?: BigNumberish | null,
+      newVal?: BigNumberish | null
+    ): MaxRedemptionSetEventFilter;
+    MaxRedemptionSet(
+      oldVal?: BigNumberish | null,
+      newVal?: BigNumberish | null
+    ): MaxRedemptionSetEventFilter;
+
     "Melted(uint256)"(amount?: null): MeltedEventFilter;
     Melted(amount?: null): MeltedEventFilter;
 
@@ -1221,6 +1280,15 @@ export interface RToken extends BaseContract {
       amount?: BigNumberish | null,
       baskets?: null
     ): RedemptionEventFilter;
+
+    "RedemptionVirtualSupplySet(uint256,uint256)"(
+      oldVal?: BigNumberish | null,
+      newVal?: BigNumberish | null
+    ): RedemptionVirtualSupplySetEventFilter;
+    RedemptionVirtualSupplySet(
+      oldVal?: BigNumberish | null,
+      newVal?: BigNumberish | null
+    ): RedemptionVirtualSupplySetEventFilter;
 
     "RewardsClaimed(address,uint256)"(
       erc20?: string | null,
@@ -1248,12 +1316,6 @@ export interface RToken extends BaseContract {
 
   estimateGas: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<BigNumber>;
-
-    MAX_ISSUANCE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
-
-    MIN_BLOCK_ISSUANCE_LIMIT(overrides?: CallOverrides): Promise<BigNumber>;
-
-    allVestAt(overrides?: CallOverrides): Promise<BigNumber>;
 
     allowance(
       owner: string,
@@ -1304,8 +1366,10 @@ export interface RToken extends BaseContract {
       main_: string,
       name_: string,
       symbol_: string,
-      manifestoURI_: string,
+      mandate_: string,
       issuanceRate_: BigNumberish,
+      maxRedemptionCharge_: BigNumberish,
+      redemptionVirtualSupply_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1324,13 +1388,11 @@ export interface RToken extends BaseContract {
 
     issueQueues(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    lastIssRate(overrides?: CallOverrides): Promise<BigNumber>;
-
-    lastIssRateBlock(overrides?: CallOverrides): Promise<BigNumber>;
-
     main(overrides?: CallOverrides): Promise<BigNumber>;
 
-    manifestoURI(overrides?: CallOverrides): Promise<BigNumber>;
+    mandate(overrides?: CallOverrides): Promise<BigNumber>;
+
+    maxRedemptionCharge(overrides?: CallOverrides): Promise<BigNumber>;
 
     melt(
       amtRToken: BigNumberish,
@@ -1358,8 +1420,6 @@ export interface RToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    price(overrides?: CallOverrides): Promise<BigNumber>;
-
     proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
 
     redeem(
@@ -1367,12 +1427,26 @@ export interface RToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    redemptionLimit(overrides?: CallOverrides): Promise<BigNumber>;
+
+    redemptionVirtualSupply(overrides?: CallOverrides): Promise<BigNumber>;
+
     setBasketsNeeded(
       basketsNeeded_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     setIssuanceRate(
+      val: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    setMaxRedemption(
+      val: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    setRedemptionVirtualSupply(
       val: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -1414,14 +1488,6 @@ export interface RToken extends BaseContract {
 
   populateTransaction: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    MAX_ISSUANCE_RATE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    MIN_BLOCK_ISSUANCE_LIMIT(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    allVestAt(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     allowance(
       owner: string,
@@ -1475,8 +1541,10 @@ export interface RToken extends BaseContract {
       main_: string,
       name_: string,
       symbol_: string,
-      manifestoURI_: string,
+      mandate_: string,
       issuanceRate_: BigNumberish,
+      maxRedemptionCharge_: BigNumberish,
+      redemptionVirtualSupply_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1498,13 +1566,13 @@ export interface RToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    lastIssRate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    lastIssRateBlock(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     main(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    manifestoURI(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    mandate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    maxRedemptionCharge(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     melt(
       amtRToken: BigNumberish,
@@ -1535,13 +1603,17 @@ export interface RToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    price(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     redeem(
       amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    redemptionLimit(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    redemptionVirtualSupply(
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     setBasketsNeeded(
@@ -1550,6 +1622,16 @@ export interface RToken extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     setIssuanceRate(
+      val: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setMaxRedemption(
+      val: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setRedemptionVirtualSupply(
       val: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;

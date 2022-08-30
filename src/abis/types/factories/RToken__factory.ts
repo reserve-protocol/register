@@ -260,6 +260,25 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
+        indexed: true,
+        internalType: "uint192",
+        name: "oldVal",
+        type: "uint192",
+      },
+      {
+        indexed: true,
+        internalType: "uint192",
+        name: "newVal",
+        type: "uint192",
+      },
+    ],
+    name: "MaxRedemptionSet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: false,
         internalType: "uint256",
         name: "amount",
@@ -292,6 +311,25 @@ const _abi = [
       },
     ],
     name: "Redemption",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "oldVal",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "newVal",
+        type: "uint256",
+      },
+    ],
+    name: "RedemptionVirtualSupplySet",
     type: "event",
   },
   {
@@ -359,45 +397,6 @@ const _abi = [
         internalType: "bytes32",
         name: "",
         type: "bytes32",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "MAX_ISSUANCE_RATE",
-    outputs: [
-      {
-        internalType: "uint192",
-        name: "",
-        type: "uint192",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "MIN_BLOCK_ISSUANCE_LIMIT",
-    outputs: [
-      {
-        internalType: "uint192",
-        name: "",
-        type: "uint192",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "allVestAt",
-    outputs: [
-      {
-        internalType: "uint192",
-        name: "",
-        type: "uint192",
       },
     ],
     stateMutability: "view",
@@ -607,13 +606,23 @@ const _abi = [
       },
       {
         internalType: "string",
-        name: "manifestoURI_",
+        name: "mandate_",
         type: "string",
       },
       {
         internalType: "uint192",
         name: "issuanceRate_",
         type: "uint192",
+      },
+      {
+        internalType: "uint192",
+        name: "maxRedemptionCharge_",
+        type: "uint192",
+      },
+      {
+        internalType: "uint256",
+        name: "redemptionVirtualSupply_",
+        type: "uint256",
       },
     ],
     name: "init",
@@ -724,32 +733,6 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "lastIssRate",
-    outputs: [
-      {
-        internalType: "uint192",
-        name: "",
-        type: "uint192",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "lastIssRateBlock",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "main",
     outputs: [
       {
@@ -763,12 +746,25 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "manifestoURI",
+    name: "mandate",
     outputs: [
       {
         internalType: "string",
         name: "",
         type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "maxRedemptionCharge",
+    outputs: [
+      {
+        internalType: "uint192",
+        name: "",
+        type: "uint192",
       },
     ],
     stateMutability: "view",
@@ -882,19 +878,6 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "price",
-    outputs: [
-      {
-        internalType: "uint192",
-        name: "p",
-        type: "uint192",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "proxiableUUID",
     outputs: [
       {
@@ -920,6 +903,32 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "redemptionLimit",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "redemptionVirtualSupply",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint192",
@@ -941,6 +950,32 @@ const _abi = [
       },
     ],
     name: "setIssuanceRate",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint192",
+        name: "val",
+        type: "uint192",
+      },
+    ],
+    name: "setMaxRedemption",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "val",
+        type: "uint256",
+      },
+    ],
+    name: "setRedemptionVirtualSupply",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

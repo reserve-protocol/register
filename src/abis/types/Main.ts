@@ -67,26 +67,26 @@ export type ComponentsStructOutput = [
 export interface MainInterface extends utils.Interface {
   functions: {
     "DEFAULT_ADMIN_ROLE()": FunctionFragment;
-    "FREEZE_EXTENDER_ROLE()": FunctionFragment;
-    "FREEZE_STARTER_ROLE()": FunctionFragment;
+    "LONG_FREEZER_ROLE()": FunctionFragment;
     "OWNER_ROLE()": FunctionFragment;
     "PAUSER_ROLE()": FunctionFragment;
+    "SHORT_FREEZER_ROLE()": FunctionFragment;
     "assetRegistry()": FunctionFragment;
     "backingManager()": FunctionFragment;
     "basketHandler()": FunctionFragment;
     "broker()": FunctionFragment;
     "distributor()": FunctionFragment;
-    "foreverFrozen()": FunctionFragment;
-    "freeze()": FunctionFragment;
-    "freezeDuration()": FunctionFragment;
     "freezeForever()": FunctionFragment;
+    "freezeLong()": FunctionFragment;
+    "freezeShort()": FunctionFragment;
     "frozen()": FunctionFragment;
     "furnace()": FunctionFragment;
     "getRoleAdmin(bytes32)": FunctionFragment;
     "grantRole(bytes32,address)": FunctionFragment;
     "hasRole(bytes32,address)": FunctionFragment;
-    "init((address,address,address,address,address,address,address,address,address,address),address,string,uint32)": FunctionFragment;
-    "manifestoURI()": FunctionFragment;
+    "init((address,address,address,address,address,address,address,address,address,address),address,uint48,uint48)": FunctionFragment;
+    "longFreeze()": FunctionFragment;
+    "longFreezes(address)": FunctionFragment;
     "pause()": FunctionFragment;
     "paused()": FunctionFragment;
     "pausedOrFrozen()": FunctionFragment;
@@ -98,7 +98,9 @@ export interface MainInterface extends utils.Interface {
     "revokeRole(bytes32,address)": FunctionFragment;
     "rsr()": FunctionFragment;
     "rsrTrader()": FunctionFragment;
-    "setOneshotFreezeDuration(uint32)": FunctionFragment;
+    "setLongFreeze(uint48)": FunctionFragment;
+    "setShortFreeze(uint48)": FunctionFragment;
+    "shortFreeze()": FunctionFragment;
     "stRSR()": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "unfreeze()": FunctionFragment;
@@ -111,26 +113,26 @@ export interface MainInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "DEFAULT_ADMIN_ROLE"
-      | "FREEZE_EXTENDER_ROLE"
-      | "FREEZE_STARTER_ROLE"
+      | "LONG_FREEZER_ROLE"
       | "OWNER_ROLE"
       | "PAUSER_ROLE"
+      | "SHORT_FREEZER_ROLE"
       | "assetRegistry"
       | "backingManager"
       | "basketHandler"
       | "broker"
       | "distributor"
-      | "foreverFrozen"
-      | "freeze"
-      | "freezeDuration"
       | "freezeForever"
+      | "freezeLong"
+      | "freezeShort"
       | "frozen"
       | "furnace"
       | "getRoleAdmin"
       | "grantRole"
       | "hasRole"
       | "init"
-      | "manifestoURI"
+      | "longFreeze"
+      | "longFreezes"
       | "pause"
       | "paused"
       | "pausedOrFrozen"
@@ -142,7 +144,9 @@ export interface MainInterface extends utils.Interface {
       | "revokeRole"
       | "rsr"
       | "rsrTrader"
-      | "setOneshotFreezeDuration"
+      | "setLongFreeze"
+      | "setShortFreeze"
+      | "shortFreeze"
       | "stRSR"
       | "supportsInterface"
       | "unfreeze"
@@ -157,11 +161,7 @@ export interface MainInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "FREEZE_EXTENDER_ROLE",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "FREEZE_STARTER_ROLE",
+    functionFragment: "LONG_FREEZER_ROLE",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -170,6 +170,10 @@ export interface MainInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "PAUSER_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "SHORT_FREEZER_ROLE",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -190,16 +194,15 @@ export interface MainInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "foreverFrozen",
-    values?: undefined
-  ): string;
-  encodeFunctionData(functionFragment: "freeze", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "freezeDuration",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "freezeForever",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "freezeLong",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "freezeShort",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "frozen", values?: undefined): string;
@@ -218,12 +221,13 @@ export interface MainInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "init",
-    values: [ComponentsStruct, string, string, BigNumberish]
+    values: [ComponentsStruct, string, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "manifestoURI",
+    functionFragment: "longFreeze",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "longFreezes", values: [string]): string;
   encodeFunctionData(functionFragment: "pause", values?: undefined): string;
   encodeFunctionData(functionFragment: "paused", values?: undefined): string;
   encodeFunctionData(
@@ -251,8 +255,16 @@ export interface MainInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "rsr", values?: undefined): string;
   encodeFunctionData(functionFragment: "rsrTrader", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "setOneshotFreezeDuration",
+    functionFragment: "setLongFreeze",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setShortFreeze",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "shortFreeze",
+    values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "stRSR", values?: undefined): string;
   encodeFunctionData(
@@ -276,16 +288,16 @@ export interface MainInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "FREEZE_EXTENDER_ROLE",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "FREEZE_STARTER_ROLE",
+    functionFragment: "LONG_FREEZER_ROLE",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "OWNER_ROLE", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "PAUSER_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "SHORT_FREEZER_ROLE",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -306,16 +318,12 @@ export interface MainInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "foreverFrozen",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "freeze", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "freezeDuration",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "freezeForever",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "freezeLong", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "freezeShort",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "frozen", data: BytesLike): Result;
@@ -327,8 +335,9 @@ export interface MainInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "grantRole", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "hasRole", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "init", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "longFreeze", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "manifestoURI",
+    functionFragment: "longFreezes",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
@@ -355,7 +364,15 @@ export interface MainInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "rsr", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "rsrTrader", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "setOneshotFreezeDuration",
+    functionFragment: "setLongFreeze",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setShortFreeze",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "shortFreeze",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "stRSR", data: BytesLike): Result;
@@ -380,11 +397,10 @@ export interface MainInterface extends utils.Interface {
     "BeaconUpgraded(address)": EventFragment;
     "BrokerSet(address,address)": EventFragment;
     "DistributorSet(address,address)": EventFragment;
-    "ForeverFrozenSet(bool,bool)": EventFragment;
     "FurnaceSet(address,address)": EventFragment;
     "Initialized(uint8)": EventFragment;
+    "LongFreezeDurationSet(uint48,uint48)": EventFragment;
     "MainInitialized()": EventFragment;
-    "OneshotFreezeDurationSet(uint32,uint32)": EventFragment;
     "PausedSet(bool,bool)": EventFragment;
     "RSRTraderSet(address,address)": EventFragment;
     "RTokenSet(address,address)": EventFragment;
@@ -392,8 +408,9 @@ export interface MainInterface extends utils.Interface {
     "RoleAdminChanged(bytes32,bytes32,bytes32)": EventFragment;
     "RoleGranted(bytes32,address,address)": EventFragment;
     "RoleRevoked(bytes32,address,address)": EventFragment;
+    "ShortFreezeDurationSet(uint48,uint48)": EventFragment;
     "StRSRSet(address,address)": EventFragment;
-    "UnfreezeAtSet(uint32,uint32)": EventFragment;
+    "UnfreezeAtSet(uint48,uint48)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
 
@@ -404,11 +421,10 @@ export interface MainInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BrokerSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DistributorSet"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ForeverFrozenSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FurnaceSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "LongFreezeDurationSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "MainInitialized"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "OneshotFreezeDurationSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "PausedSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RSRTraderSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RTokenSet"): EventFragment;
@@ -416,6 +432,7 @@ export interface MainInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "RoleAdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RoleGranted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RoleRevoked"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ShortFreezeDurationSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "StRSRSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UnfreezeAtSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
@@ -497,18 +514,6 @@ export type DistributorSetEvent = TypedEvent<
 
 export type DistributorSetEventFilter = TypedEventFilter<DistributorSetEvent>;
 
-export interface ForeverFrozenSetEventObject {
-  oldVal: boolean;
-  newVal: boolean;
-}
-export type ForeverFrozenSetEvent = TypedEvent<
-  [boolean, boolean],
-  ForeverFrozenSetEventObject
->;
-
-export type ForeverFrozenSetEventFilter =
-  TypedEventFilter<ForeverFrozenSetEvent>;
-
 export interface FurnaceSetEventObject {
   oldVal: string;
   newVal: string;
@@ -527,22 +532,22 @@ export type InitializedEvent = TypedEvent<[number], InitializedEventObject>;
 
 export type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
 
+export interface LongFreezeDurationSetEventObject {
+  oldDuration: number;
+  newDuration: number;
+}
+export type LongFreezeDurationSetEvent = TypedEvent<
+  [number, number],
+  LongFreezeDurationSetEventObject
+>;
+
+export type LongFreezeDurationSetEventFilter =
+  TypedEventFilter<LongFreezeDurationSetEvent>;
+
 export interface MainInitializedEventObject {}
 export type MainInitializedEvent = TypedEvent<[], MainInitializedEventObject>;
 
 export type MainInitializedEventFilter = TypedEventFilter<MainInitializedEvent>;
-
-export interface OneshotFreezeDurationSetEventObject {
-  oldDuration: number;
-  newDuration: number;
-}
-export type OneshotFreezeDurationSetEvent = TypedEvent<
-  [number, number],
-  OneshotFreezeDurationSetEventObject
->;
-
-export type OneshotFreezeDurationSetEventFilter =
-  TypedEventFilter<OneshotFreezeDurationSetEvent>;
 
 export interface PausedSetEventObject {
   oldVal: boolean;
@@ -622,6 +627,18 @@ export type RoleRevokedEvent = TypedEvent<
 
 export type RoleRevokedEventFilter = TypedEventFilter<RoleRevokedEvent>;
 
+export interface ShortFreezeDurationSetEventObject {
+  oldDuration: number;
+  newDuration: number;
+}
+export type ShortFreezeDurationSetEvent = TypedEvent<
+  [number, number],
+  ShortFreezeDurationSetEventObject
+>;
+
+export type ShortFreezeDurationSetEventFilter =
+  TypedEventFilter<ShortFreezeDurationSetEvent>;
+
 export interface StRSRSetEventObject {
   oldVal: string;
   newVal: string;
@@ -677,13 +694,13 @@ export interface Main extends BaseContract {
   functions: {
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
-    FREEZE_EXTENDER_ROLE(overrides?: CallOverrides): Promise<[string]>;
-
-    FREEZE_STARTER_ROLE(overrides?: CallOverrides): Promise<[string]>;
+    LONG_FREEZER_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
     OWNER_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
     PAUSER_ROLE(overrides?: CallOverrides): Promise<[string]>;
+
+    SHORT_FREEZER_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
     assetRegistry(overrides?: CallOverrides): Promise<[string]>;
 
@@ -695,15 +712,15 @@ export interface Main extends BaseContract {
 
     distributor(overrides?: CallOverrides): Promise<[string]>;
 
-    foreverFrozen(overrides?: CallOverrides): Promise<[boolean]>;
-
-    freeze(
+    freezeForever(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    freezeDuration(overrides?: CallOverrides): Promise<[number]>;
+    freezeLong(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
-    freezeForever(
+    freezeShort(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -728,12 +745,14 @@ export interface Main extends BaseContract {
     init(
       components: ComponentsStruct,
       rsr_: string,
-      manifestoURI_: string,
-      freezeDuration_: BigNumberish,
+      shortFreeze_: BigNumberish,
+      longFreeze_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    manifestoURI(overrides?: CallOverrides): Promise<[string]>;
+    longFreeze(overrides?: CallOverrides): Promise<[number]>;
+
+    longFreezes(arg0: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
     pause(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -769,10 +788,17 @@ export interface Main extends BaseContract {
 
     rsrTrader(overrides?: CallOverrides): Promise<[string]>;
 
-    setOneshotFreezeDuration(
-      freezeDuration_: BigNumberish,
+    setLongFreeze(
+      longFreeze_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    setShortFreeze(
+      shortFreeze_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    shortFreeze(overrides?: CallOverrides): Promise<[number]>;
 
     stRSR(overrides?: CallOverrides): Promise<[string]>;
 
@@ -805,13 +831,13 @@ export interface Main extends BaseContract {
 
   DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
-  FREEZE_EXTENDER_ROLE(overrides?: CallOverrides): Promise<string>;
-
-  FREEZE_STARTER_ROLE(overrides?: CallOverrides): Promise<string>;
+  LONG_FREEZER_ROLE(overrides?: CallOverrides): Promise<string>;
 
   OWNER_ROLE(overrides?: CallOverrides): Promise<string>;
 
   PAUSER_ROLE(overrides?: CallOverrides): Promise<string>;
+
+  SHORT_FREEZER_ROLE(overrides?: CallOverrides): Promise<string>;
 
   assetRegistry(overrides?: CallOverrides): Promise<string>;
 
@@ -823,15 +849,15 @@ export interface Main extends BaseContract {
 
   distributor(overrides?: CallOverrides): Promise<string>;
 
-  foreverFrozen(overrides?: CallOverrides): Promise<boolean>;
-
-  freeze(
+  freezeForever(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  freezeDuration(overrides?: CallOverrides): Promise<number>;
+  freezeLong(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
-  freezeForever(
+  freezeShort(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -856,12 +882,14 @@ export interface Main extends BaseContract {
   init(
     components: ComponentsStruct,
     rsr_: string,
-    manifestoURI_: string,
-    freezeDuration_: BigNumberish,
+    shortFreeze_: BigNumberish,
+    longFreeze_: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  manifestoURI(overrides?: CallOverrides): Promise<string>;
+  longFreeze(overrides?: CallOverrides): Promise<number>;
+
+  longFreezes(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
   pause(
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -897,10 +925,17 @@ export interface Main extends BaseContract {
 
   rsrTrader(overrides?: CallOverrides): Promise<string>;
 
-  setOneshotFreezeDuration(
-    freezeDuration_: BigNumberish,
+  setLongFreeze(
+    longFreeze_: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
+
+  setShortFreeze(
+    shortFreeze_: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  shortFreeze(overrides?: CallOverrides): Promise<number>;
 
   stRSR(overrides?: CallOverrides): Promise<string>;
 
@@ -933,13 +968,13 @@ export interface Main extends BaseContract {
   callStatic: {
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
-    FREEZE_EXTENDER_ROLE(overrides?: CallOverrides): Promise<string>;
-
-    FREEZE_STARTER_ROLE(overrides?: CallOverrides): Promise<string>;
+    LONG_FREEZER_ROLE(overrides?: CallOverrides): Promise<string>;
 
     OWNER_ROLE(overrides?: CallOverrides): Promise<string>;
 
     PAUSER_ROLE(overrides?: CallOverrides): Promise<string>;
+
+    SHORT_FREEZER_ROLE(overrides?: CallOverrides): Promise<string>;
 
     assetRegistry(overrides?: CallOverrides): Promise<string>;
 
@@ -951,13 +986,11 @@ export interface Main extends BaseContract {
 
     distributor(overrides?: CallOverrides): Promise<string>;
 
-    foreverFrozen(overrides?: CallOverrides): Promise<boolean>;
-
-    freeze(overrides?: CallOverrides): Promise<void>;
-
-    freezeDuration(overrides?: CallOverrides): Promise<number>;
-
     freezeForever(overrides?: CallOverrides): Promise<void>;
+
+    freezeLong(overrides?: CallOverrides): Promise<void>;
+
+    freezeShort(overrides?: CallOverrides): Promise<void>;
 
     frozen(overrides?: CallOverrides): Promise<boolean>;
 
@@ -980,12 +1013,14 @@ export interface Main extends BaseContract {
     init(
       components: ComponentsStruct,
       rsr_: string,
-      manifestoURI_: string,
-      freezeDuration_: BigNumberish,
+      shortFreeze_: BigNumberish,
+      longFreeze_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    manifestoURI(overrides?: CallOverrides): Promise<string>;
+    longFreeze(overrides?: CallOverrides): Promise<number>;
+
+    longFreezes(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     pause(overrides?: CallOverrides): Promise<void>;
 
@@ -1017,10 +1052,17 @@ export interface Main extends BaseContract {
 
     rsrTrader(overrides?: CallOverrides): Promise<string>;
 
-    setOneshotFreezeDuration(
-      freezeDuration_: BigNumberish,
+    setLongFreeze(
+      longFreeze_: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    setShortFreeze(
+      shortFreeze_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    shortFreeze(overrides?: CallOverrides): Promise<number>;
 
     stRSR(overrides?: CallOverrides): Promise<string>;
 
@@ -1107,15 +1149,6 @@ export interface Main extends BaseContract {
       newVal?: string | null
     ): DistributorSetEventFilter;
 
-    "ForeverFrozenSet(bool,bool)"(
-      oldVal?: boolean | null,
-      newVal?: boolean | null
-    ): ForeverFrozenSetEventFilter;
-    ForeverFrozenSet(
-      oldVal?: boolean | null,
-      newVal?: boolean | null
-    ): ForeverFrozenSetEventFilter;
-
     "FurnaceSet(address,address)"(
       oldVal?: string | null,
       newVal?: string | null
@@ -1128,17 +1161,17 @@ export interface Main extends BaseContract {
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
 
+    "LongFreezeDurationSet(uint48,uint48)"(
+      oldDuration?: BigNumberish | null,
+      newDuration?: BigNumberish | null
+    ): LongFreezeDurationSetEventFilter;
+    LongFreezeDurationSet(
+      oldDuration?: BigNumberish | null,
+      newDuration?: BigNumberish | null
+    ): LongFreezeDurationSetEventFilter;
+
     "MainInitialized()"(): MainInitializedEventFilter;
     MainInitialized(): MainInitializedEventFilter;
-
-    "OneshotFreezeDurationSet(uint32,uint32)"(
-      oldDuration?: BigNumberish | null,
-      newDuration?: BigNumberish | null
-    ): OneshotFreezeDurationSetEventFilter;
-    OneshotFreezeDurationSet(
-      oldDuration?: BigNumberish | null,
-      newDuration?: BigNumberish | null
-    ): OneshotFreezeDurationSetEventFilter;
 
     "PausedSet(bool,bool)"(
       oldVal?: boolean | null,
@@ -1209,6 +1242,15 @@ export interface Main extends BaseContract {
       sender?: string | null
     ): RoleRevokedEventFilter;
 
+    "ShortFreezeDurationSet(uint48,uint48)"(
+      oldDuration?: BigNumberish | null,
+      newDuration?: BigNumberish | null
+    ): ShortFreezeDurationSetEventFilter;
+    ShortFreezeDurationSet(
+      oldDuration?: BigNumberish | null,
+      newDuration?: BigNumberish | null
+    ): ShortFreezeDurationSetEventFilter;
+
     "StRSRSet(address,address)"(
       oldVal?: string | null,
       newVal?: string | null
@@ -1218,7 +1260,7 @@ export interface Main extends BaseContract {
       newVal?: string | null
     ): StRSRSetEventFilter;
 
-    "UnfreezeAtSet(uint32,uint32)"(
+    "UnfreezeAtSet(uint48,uint48)"(
       oldVal?: BigNumberish | null,
       newVal?: BigNumberish | null
     ): UnfreezeAtSetEventFilter;
@@ -1234,13 +1276,13 @@ export interface Main extends BaseContract {
   estimateGas: {
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
-    FREEZE_EXTENDER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
-
-    FREEZE_STARTER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
+    LONG_FREEZER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
     OWNER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
     PAUSER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    SHORT_FREEZER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
     assetRegistry(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1252,15 +1294,15 @@ export interface Main extends BaseContract {
 
     distributor(overrides?: CallOverrides): Promise<BigNumber>;
 
-    foreverFrozen(overrides?: CallOverrides): Promise<BigNumber>;
-
-    freeze(
+    freezeForever(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    freezeDuration(overrides?: CallOverrides): Promise<BigNumber>;
+    freezeLong(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
-    freezeForever(
+    freezeShort(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -1288,12 +1330,14 @@ export interface Main extends BaseContract {
     init(
       components: ComponentsStruct,
       rsr_: string,
-      manifestoURI_: string,
-      freezeDuration_: BigNumberish,
+      shortFreeze_: BigNumberish,
+      longFreeze_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    manifestoURI(overrides?: CallOverrides): Promise<BigNumber>;
+    longFreeze(overrides?: CallOverrides): Promise<BigNumber>;
+
+    longFreezes(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     pause(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1329,10 +1373,17 @@ export interface Main extends BaseContract {
 
     rsrTrader(overrides?: CallOverrides): Promise<BigNumber>;
 
-    setOneshotFreezeDuration(
-      freezeDuration_: BigNumberish,
+    setLongFreeze(
+      longFreeze_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    setShortFreeze(
+      shortFreeze_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    shortFreeze(overrides?: CallOverrides): Promise<BigNumber>;
 
     stRSR(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1368,17 +1419,15 @@ export interface Main extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    FREEZE_EXTENDER_ROLE(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    FREEZE_STARTER_ROLE(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    LONG_FREEZER_ROLE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     OWNER_ROLE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     PAUSER_ROLE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    SHORT_FREEZER_ROLE(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     assetRegistry(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -1390,15 +1439,15 @@ export interface Main extends BaseContract {
 
     distributor(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    foreverFrozen(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    freeze(
+    freezeForever(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    freezeDuration(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    freezeLong(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
 
-    freezeForever(
+    freezeShort(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1426,12 +1475,17 @@ export interface Main extends BaseContract {
     init(
       components: ComponentsStruct,
       rsr_: string,
-      manifestoURI_: string,
-      freezeDuration_: BigNumberish,
+      shortFreeze_: BigNumberish,
+      longFreeze_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    manifestoURI(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    longFreeze(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    longFreezes(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     pause(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -1467,10 +1521,17 @@ export interface Main extends BaseContract {
 
     rsrTrader(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    setOneshotFreezeDuration(
-      freezeDuration_: BigNumberish,
+    setLongFreeze(
+      longFreeze_: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
+
+    setShortFreeze(
+      shortFreeze_: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    shortFreeze(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     stRSR(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

@@ -46,6 +46,7 @@ export interface FacadeInterface extends utils.Interface {
     "maxIssuable(address,address)": FunctionFragment;
     "pendingIssuances(address,address)": FunctionFragment;
     "pendingUnstakings(address,address)": FunctionFragment;
+    "price(address)": FunctionFragment;
     "runAuctionsForAllTraders(address)": FunctionFragment;
     "stToken(address)": FunctionFragment;
     "totalAssetValue(address)": FunctionFragment;
@@ -61,6 +62,7 @@ export interface FacadeInterface extends utils.Interface {
       | "maxIssuable"
       | "pendingIssuances"
       | "pendingUnstakings"
+      | "price"
       | "runAuctionsForAllTraders"
       | "stToken"
       | "totalAssetValue"
@@ -98,6 +100,7 @@ export interface FacadeInterface extends utils.Interface {
     functionFragment: "pendingUnstakings",
     values: [string, string]
   ): string;
+  encodeFunctionData(functionFragment: "price", values: [string]): string;
   encodeFunctionData(
     functionFragment: "runAuctionsForAllTraders",
     values: [string]
@@ -137,6 +140,7 @@ export interface FacadeInterface extends utils.Interface {
     functionFragment: "pendingUnstakings",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "price", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "runAuctionsForAllTraders",
     data: BytesLike
@@ -231,6 +235,8 @@ export interface Facade extends BaseContract {
       }
     >;
 
+    price(rToken: string, overrides?: CallOverrides): Promise<[BigNumber]>;
+
     runAuctionsForAllTraders(
       rToken: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -290,6 +296,8 @@ export interface Facade extends BaseContract {
     overrides?: CallOverrides
   ): Promise<IFacadeP1.PendingStructOutput[]>;
 
+  price(rToken: string, overrides?: CallOverrides): Promise<BigNumber>;
+
   runAuctionsForAllTraders(
     rToken: string,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -346,6 +354,8 @@ export interface Facade extends BaseContract {
       account: string,
       overrides?: CallOverrides
     ): Promise<IFacadeP1.PendingStructOutput[]>;
+
+    price(rToken: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     runAuctionsForAllTraders(
       rToken: string,
@@ -404,6 +414,8 @@ export interface Facade extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    price(rToken: string, overrides?: CallOverrides): Promise<BigNumber>;
+
     runAuctionsForAllTraders(
       rToken: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -459,6 +471,11 @@ export interface Facade extends BaseContract {
     pendingUnstakings(
       rToken: string,
       account: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    price(
+      rToken: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

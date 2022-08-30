@@ -30,6 +30,9 @@ import type {
 export interface StRsrInterface extends utils.Interface {
   functions: {
     "DOMAIN_SEPARATOR()": FunctionFragment;
+    "MAX_REWARD_PERIOD()": FunctionFragment;
+    "MAX_REWARD_RATIO()": FunctionFragment;
+    "MAX_UNSTAKING_DELAY()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
@@ -42,7 +45,7 @@ export interface StRsrInterface extends utils.Interface {
     "exchangeRate()": FunctionFragment;
     "firstRemainingDraft(uint256,address)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
-    "init(address,string,string,uint32,uint32,uint192)": FunctionFragment;
+    "init(address,string,string,uint48,uint48,uint192)": FunctionFragment;
     "main()": FunctionFragment;
     "name()": FunctionFragment;
     "nonces(address)": FunctionFragment;
@@ -53,10 +56,10 @@ export interface StRsrInterface extends utils.Interface {
     "rewardRatio()": FunctionFragment;
     "seizeRSR(uint256)": FunctionFragment;
     "setName(string)": FunctionFragment;
-    "setRewardPeriod(uint32)": FunctionFragment;
+    "setRewardPeriod(uint48)": FunctionFragment;
     "setRewardRatio(uint192)": FunctionFragment;
     "setSymbol(string)": FunctionFragment;
-    "setUnstakingDelay(uint32)": FunctionFragment;
+    "setUnstakingDelay(uint48)": FunctionFragment;
     "stake(uint256)": FunctionFragment;
     "stakeRate()": FunctionFragment;
     "symbol()": FunctionFragment;
@@ -73,6 +76,9 @@ export interface StRsrInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "DOMAIN_SEPARATOR"
+      | "MAX_REWARD_PERIOD"
+      | "MAX_REWARD_RATIO"
+      | "MAX_UNSTAKING_DELAY"
       | "allowance"
       | "approve"
       | "balanceOf"
@@ -115,6 +121,18 @@ export interface StRsrInterface extends utils.Interface {
 
   encodeFunctionData(
     functionFragment: "DOMAIN_SEPARATOR",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "MAX_REWARD_PERIOD",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "MAX_REWARD_RATIO",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "MAX_UNSTAKING_DELAY",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -246,6 +264,18 @@ export interface StRsrInterface extends utils.Interface {
     functionFragment: "DOMAIN_SEPARATOR",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "MAX_REWARD_PERIOD",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "MAX_REWARD_RATIO",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "MAX_UNSTAKING_DELAY",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
@@ -342,28 +372,32 @@ export interface StRsrInterface extends utils.Interface {
   events: {
     "AdminChanged(address,address)": EventFragment;
     "AllBalancesReset(uint256)": EventFragment;
+    "AllUnstakingReset(uint256)": EventFragment;
     "Approval(address,address,uint256)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
     "ExchangeRateSet(uint192,uint192)": EventFragment;
     "Initialized(uint8)": EventFragment;
-    "RewardPeriodSet(uint32,uint32)": EventFragment;
+    "RewardPeriodSet(uint48,uint48)": EventFragment;
     "RewardRatioSet(uint192,uint192)": EventFragment;
+    "RewardsPaid(uint256)": EventFragment;
     "Staked(uint256,address,uint256,uint256)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
     "UnstakingCompleted(uint256,uint256,uint256,address,uint256)": EventFragment;
-    "UnstakingDelaySet(uint32,uint32)": EventFragment;
+    "UnstakingDelaySet(uint48,uint48)": EventFragment;
     "UnstakingStarted(uint256,uint256,address,uint256,uint256,uint256)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "AllBalancesReset"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "AllUnstakingReset"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ExchangeRateSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RewardPeriodSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RewardRatioSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RewardsPaid"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Staked"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UnstakingCompleted"): EventFragment;
@@ -393,6 +427,17 @@ export type AllBalancesResetEvent = TypedEvent<
 
 export type AllBalancesResetEventFilter =
   TypedEventFilter<AllBalancesResetEvent>;
+
+export interface AllUnstakingResetEventObject {
+  newEra: BigNumber;
+}
+export type AllUnstakingResetEvent = TypedEvent<
+  [BigNumber],
+  AllUnstakingResetEventObject
+>;
+
+export type AllUnstakingResetEventFilter =
+  TypedEventFilter<AllUnstakingResetEvent>;
 
 export interface ApprovalEventObject {
   owner: string;
@@ -455,6 +500,13 @@ export type RewardRatioSetEvent = TypedEvent<
 >;
 
 export type RewardRatioSetEventFilter = TypedEventFilter<RewardRatioSetEvent>;
+
+export interface RewardsPaidEventObject {
+  rsrAmt: BigNumber;
+}
+export type RewardsPaidEvent = TypedEvent<[BigNumber], RewardsPaidEventObject>;
+
+export type RewardsPaidEventFilter = TypedEventFilter<RewardsPaidEvent>;
 
 export interface StakedEventObject {
   era: BigNumber;
@@ -559,6 +611,12 @@ export interface StRsr extends BaseContract {
 
   functions: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<[string]>;
+
+    MAX_REWARD_PERIOD(overrides?: CallOverrides): Promise<[number]>;
+
+    MAX_REWARD_RATIO(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    MAX_UNSTAKING_DELAY(overrides?: CallOverrides): Promise<[number]>;
 
     allowance(
       owner: string,
@@ -736,6 +794,12 @@ export interface StRsr extends BaseContract {
 
   DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
 
+  MAX_REWARD_PERIOD(overrides?: CallOverrides): Promise<number>;
+
+  MAX_REWARD_RATIO(overrides?: CallOverrides): Promise<BigNumber>;
+
+  MAX_UNSTAKING_DELAY(overrides?: CallOverrides): Promise<number>;
+
   allowance(
     owner: string,
     spender: string,
@@ -912,6 +976,12 @@ export interface StRsr extends BaseContract {
   callStatic: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
 
+    MAX_REWARD_PERIOD(overrides?: CallOverrides): Promise<number>;
+
+    MAX_REWARD_RATIO(overrides?: CallOverrides): Promise<BigNumber>;
+
+    MAX_UNSTAKING_DELAY(overrides?: CallOverrides): Promise<number>;
+
     allowance(
       owner: string,
       spender: string,
@@ -1084,6 +1154,13 @@ export interface StRsr extends BaseContract {
     ): AllBalancesResetEventFilter;
     AllBalancesReset(newEra?: BigNumberish | null): AllBalancesResetEventFilter;
 
+    "AllUnstakingReset(uint256)"(
+      newEra?: BigNumberish | null
+    ): AllUnstakingResetEventFilter;
+    AllUnstakingReset(
+      newEra?: BigNumberish | null
+    ): AllUnstakingResetEventFilter;
+
     "Approval(address,address,uint256)"(
       owner?: string | null,
       spender?: string | null,
@@ -1112,7 +1189,7 @@ export interface StRsr extends BaseContract {
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
 
-    "RewardPeriodSet(uint32,uint32)"(
+    "RewardPeriodSet(uint48,uint48)"(
       oldVal?: BigNumberish | null,
       newVal?: BigNumberish | null
     ): RewardPeriodSetEventFilter;
@@ -1129,6 +1206,11 @@ export interface StRsr extends BaseContract {
       oldVal?: BigNumberish | null,
       newVal?: BigNumberish | null
     ): RewardRatioSetEventFilter;
+
+    "RewardsPaid(uint256)"(
+      rsrAmt?: BigNumberish | null
+    ): RewardsPaidEventFilter;
+    RewardsPaid(rsrAmt?: BigNumberish | null): RewardsPaidEventFilter;
 
     "Staked(uint256,address,uint256,uint256)"(
       era?: BigNumberish | null,
@@ -1169,7 +1251,7 @@ export interface StRsr extends BaseContract {
       rsrAmount?: null
     ): UnstakingCompletedEventFilter;
 
-    "UnstakingDelaySet(uint32,uint32)"(
+    "UnstakingDelaySet(uint48,uint48)"(
       oldVal?: BigNumberish | null,
       newVal?: BigNumberish | null
     ): UnstakingDelaySetEventFilter;
@@ -1201,6 +1283,12 @@ export interface StRsr extends BaseContract {
 
   estimateGas: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<BigNumber>;
+
+    MAX_REWARD_PERIOD(overrides?: CallOverrides): Promise<BigNumber>;
+
+    MAX_REWARD_RATIO(overrides?: CallOverrides): Promise<BigNumber>;
+
+    MAX_UNSTAKING_DELAY(overrides?: CallOverrides): Promise<BigNumber>;
 
     allowance(
       owner: string,
@@ -1376,6 +1464,14 @@ export interface StRsr extends BaseContract {
 
   populateTransaction: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    MAX_REWARD_PERIOD(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    MAX_REWARD_RATIO(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    MAX_UNSTAKING_DELAY(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     allowance(
       owner: string,

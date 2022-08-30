@@ -26,11 +26,23 @@ import type {
   OnEvent,
 } from "./common";
 
-export type TradingRangeStruct = { min: BigNumberish; max: BigNumberish };
+export type TradingRangeStruct = {
+  minVal: BigNumberish;
+  maxVal: BigNumberish;
+  minAmt: BigNumberish;
+  maxAmt: BigNumberish;
+};
 
-export type TradingRangeStructOutput = [BigNumber, BigNumber] & {
-  min: BigNumber;
-  max: BigNumber;
+export type TradingRangeStructOutput = [
+  BigNumber,
+  BigNumber,
+  BigNumber,
+  BigNumber
+] & {
+  minVal: BigNumber;
+  maxVal: BigNumber;
+  minAmt: BigNumber;
+  maxAmt: BigNumber;
 };
 
 export type RevenueShareStruct = {
@@ -44,8 +56,7 @@ export type RevenueShareStructOutput = [number, number] & {
 };
 
 export type DeploymentParamsStruct = {
-  freezeDuration: BigNumberish;
-  tradingRange: TradingRangeStruct;
+  rTokenTradingRange: TradingRangeStruct;
   dist: RevenueShareStruct;
   rewardPeriod: BigNumberish;
   rewardRatio: BigNumberish;
@@ -54,11 +65,14 @@ export type DeploymentParamsStruct = {
   auctionLength: BigNumberish;
   backingBuffer: BigNumberish;
   maxTradeSlippage: BigNumberish;
+  shortFreeze: BigNumberish;
+  longFreeze: BigNumberish;
   issuanceRate: BigNumberish;
+  maxRedemptionCharge: BigNumberish;
+  redemptionVirtualSupply: BigNumberish;
 };
 
 export type DeploymentParamsStructOutput = [
-  number,
   TradingRangeStructOutput,
   RevenueShareStructOutput,
   number,
@@ -68,10 +82,13 @@ export type DeploymentParamsStructOutput = [
   number,
   BigNumber,
   BigNumber,
+  number,
+  number,
+  BigNumber,
+  BigNumber,
   BigNumber
 ] & {
-  freezeDuration: number;
-  tradingRange: TradingRangeStructOutput;
+  rTokenTradingRange: TradingRangeStructOutput;
   dist: RevenueShareStructOutput;
   rewardPeriod: number;
   rewardRatio: BigNumber;
@@ -80,13 +97,17 @@ export type DeploymentParamsStructOutput = [
   auctionLength: number;
   backingBuffer: BigNumber;
   maxTradeSlippage: BigNumber;
+  shortFreeze: number;
+  longFreeze: number;
   issuanceRate: BigNumber;
+  maxRedemptionCharge: BigNumber;
+  redemptionVirtualSupply: BigNumber;
 };
 
 export type ConfigurationParamsStruct = {
   name: string;
   symbol: string;
-  manifestoURI: string;
+  mandate: string;
   params: DeploymentParamsStruct;
 };
 
@@ -98,7 +119,7 @@ export type ConfigurationParamsStructOutput = [
 ] & {
   name: string;
   symbol: string;
-  manifestoURI: string;
+  mandate: string;
   params: DeploymentParamsStructOutput;
 };
 
@@ -138,7 +159,7 @@ export type GovernanceParamsStruct = {
   votingPeriod: BigNumberish;
   proposalThresholdAsMicroPercent: BigNumberish;
   quorumPercent: BigNumberish;
-  minDelay: BigNumberish;
+  timelockDelay: BigNumberish;
 };
 
 export type GovernanceParamsStructOutput = [
@@ -152,12 +173,12 @@ export type GovernanceParamsStructOutput = [
   votingPeriod: BigNumber;
   proposalThresholdAsMicroPercent: BigNumber;
   quorumPercent: BigNumber;
-  minDelay: BigNumber;
+  timelockDelay: BigNumber;
 };
 
 export interface FacadeWriteInterface extends utils.Interface {
   functions: {
-    "deployRToken((string,string,string,(uint32,(uint192,uint192),(uint16,uint16),uint32,uint192,uint32,uint32,uint32,uint192,uint192,uint192)),(address[],address[],uint192[],(bytes32,uint256,address[])[]))": FunctionFragment;
+    "deployRToken((string,string,string,((uint192,uint192,uint192,uint192),(uint16,uint16),uint48,uint192,uint48,uint48,uint48,uint192,uint192,uint48,uint48,uint192,uint192,uint256)),(address[],address[],uint192[],(bytes32,uint256,address[])[]))": FunctionFragment;
     "deployer()": FunctionFragment;
     "setupGovernance(address,bool,bool,(uint256,uint256,uint256,uint256,uint256),address,address,address)": FunctionFragment;
   };
@@ -252,7 +273,7 @@ export interface FacadeWrite extends BaseContract {
     setupGovernance(
       rToken: string,
       deployGovernance: boolean,
-      unfreeze: boolean,
+      unpause: boolean,
       govParams: GovernanceParamsStruct,
       owner: string,
       guardian: string,
@@ -272,7 +293,7 @@ export interface FacadeWrite extends BaseContract {
   setupGovernance(
     rToken: string,
     deployGovernance: boolean,
-    unfreeze: boolean,
+    unpause: boolean,
     govParams: GovernanceParamsStruct,
     owner: string,
     guardian: string,
@@ -292,7 +313,7 @@ export interface FacadeWrite extends BaseContract {
     setupGovernance(
       rToken: string,
       deployGovernance: boolean,
-      unfreeze: boolean,
+      unpause: boolean,
       govParams: GovernanceParamsStruct,
       owner: string,
       guardian: string,
@@ -326,7 +347,7 @@ export interface FacadeWrite extends BaseContract {
     setupGovernance(
       rToken: string,
       deployGovernance: boolean,
-      unfreeze: boolean,
+      unpause: boolean,
       govParams: GovernanceParamsStruct,
       owner: string,
       guardian: string,
@@ -347,7 +368,7 @@ export interface FacadeWrite extends BaseContract {
     setupGovernance(
       rToken: string,
       deployGovernance: boolean,
-      unfreeze: boolean,
+      unpause: boolean,
       govParams: GovernanceParamsStruct,
       owner: string,
       guardian: string,

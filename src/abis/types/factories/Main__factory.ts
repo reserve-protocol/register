@@ -144,25 +144,6 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "bool",
-        name: "oldVal",
-        type: "bool",
-      },
-      {
-        indexed: true,
-        internalType: "bool",
-        name: "newVal",
-        type: "bool",
-      },
-    ],
-    name: "ForeverFrozenSet",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
         internalType: "contract IFurnace",
         name: "oldVal",
         type: "address",
@@ -192,27 +173,27 @@ const _abi = [
   },
   {
     anonymous: false,
-    inputs: [],
-    name: "MainInitialized",
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint48",
+        name: "oldDuration",
+        type: "uint48",
+      },
+      {
+        indexed: true,
+        internalType: "uint48",
+        name: "newDuration",
+        type: "uint48",
+      },
+    ],
+    name: "LongFreezeDurationSet",
     type: "event",
   },
   {
     anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint32",
-        name: "oldDuration",
-        type: "uint32",
-      },
-      {
-        indexed: true,
-        internalType: "uint32",
-        name: "newDuration",
-        type: "uint32",
-      },
-    ],
-    name: "OneshotFreezeDurationSet",
+    inputs: [],
+    name: "MainInitialized",
     type: "event",
   },
   {
@@ -371,6 +352,25 @@ const _abi = [
     inputs: [
       {
         indexed: true,
+        internalType: "uint48",
+        name: "oldDuration",
+        type: "uint48",
+      },
+      {
+        indexed: true,
+        internalType: "uint48",
+        name: "newDuration",
+        type: "uint48",
+      },
+    ],
+    name: "ShortFreezeDurationSet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
         internalType: "contract IStRSR",
         name: "oldVal",
         type: "address",
@@ -390,15 +390,15 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "uint32",
+        internalType: "uint48",
         name: "oldVal",
-        type: "uint32",
+        type: "uint48",
       },
       {
         indexed: true,
-        internalType: "uint32",
+        internalType: "uint48",
         name: "newVal",
-        type: "uint32",
+        type: "uint48",
       },
     ],
     name: "UnfreezeAtSet",
@@ -432,20 +432,7 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "FREEZE_EXTENDER_ROLE",
-    outputs: [
-      {
-        internalType: "bytes32",
-        name: "",
-        type: "bytes32",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "FREEZE_STARTER_ROLE",
+    name: "LONG_FREEZER_ROLE",
     outputs: [
       {
         internalType: "bytes32",
@@ -472,6 +459,19 @@ const _abi = [
   {
     inputs: [],
     name: "PAUSER_ROLE",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "SHORT_FREEZER_ROLE",
     outputs: [
       {
         internalType: "bytes32",
@@ -549,40 +549,21 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "foreverFrozen",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "freeze",
+    name: "freezeForever",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
   {
     inputs: [],
-    name: "freezeDuration",
-    outputs: [
-      {
-        internalType: "uint32",
-        name: "",
-        type: "uint32",
-      },
-    ],
-    stateMutability: "view",
+    name: "freezeLong",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
     inputs: [],
-    name: "freezeForever",
+    name: "freezeShort",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -739,14 +720,14 @@ const _abi = [
         type: "address",
       },
       {
-        internalType: "string",
-        name: "manifestoURI_",
-        type: "string",
+        internalType: "uint48",
+        name: "shortFreeze_",
+        type: "uint48",
       },
       {
-        internalType: "uint32",
-        name: "freezeDuration_",
-        type: "uint32",
+        internalType: "uint48",
+        name: "longFreeze_",
+        type: "uint48",
       },
     ],
     name: "init",
@@ -756,12 +737,31 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "manifestoURI",
+    name: "longFreeze",
     outputs: [
       {
-        internalType: "string",
+        internalType: "uint48",
         name: "",
-        type: "string",
+        type: "uint48",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "longFreezes",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -911,14 +911,40 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint32",
-        name: "freezeDuration_",
-        type: "uint32",
+        internalType: "uint48",
+        name: "longFreeze_",
+        type: "uint48",
       },
     ],
-    name: "setOneshotFreezeDuration",
+    name: "setLongFreeze",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint48",
+        name: "shortFreeze_",
+        type: "uint48",
+      },
+    ],
+    name: "setShortFreeze",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "shortFreeze",
+    outputs: [
+      {
+        internalType: "uint48",
+        name: "",
+        type: "uint48",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -965,9 +991,9 @@ const _abi = [
     name: "unfreezeAt",
     outputs: [
       {
-        internalType: "uint32",
+        internalType: "uint48",
         name: "",
-        type: "uint32",
+        type: "uint48",
       },
     ],
     stateMutability: "view",
