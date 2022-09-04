@@ -54,7 +54,7 @@ const DeployIntro = () => {
         py={4}
         sx={{ borderRight: '1px solid', borderColor: 'border' }}
       >
-        <Title prefix="Tx 1." text={t`RToken Deploy`} />
+        <Title prefix="Tx 1." text={t`RToken Deployment`} />
         <StepItem
           title={t`Set Primary & Emergency collaterals`}
           subtitle={t`Primary, emergency, target units & their initial scale`}
@@ -68,24 +68,24 @@ const DeployIntro = () => {
         />
         <StepItem
           title={t`Deploy RToken`}
-          subtitle={t`Primary, emergency, target units & their initial scale`}
+          subtitle={t`Create necessary smart contracts for all RTokens ops`}
           mb={4}
         />
-        <Title prefix="Tx 2." text={t`Governance Deploy`} />
+        <Title prefix="Tx 2." text={t`Governance Deployment`} />
         <StepItem
-          title={t`Set Primary & Emergency collaterals`}
-          subtitle={t`Primary, emergency, target units & their initial scale`}
+          title={t`Default RSR Governance`}
+          subtitle={t`Anyone can stake RSR to participate in governance decisions`}
           mb={4}
           mt={4}
         />
         <StepItem
-          title={t`Set RToken parameters`}
-          subtitle={t`Choose between simple setup & advanced settings`}
+          title={t`Roles & Permissions`}
+          subtitle={t`Set the guardian, and pauser roles`}
           mb={4}
         />
         <StepItem
-          title={t`Deploy RToken`}
-          subtitle={t`Primary, emergency, target units & their initial scale`}
+          title={t`Voting Schedules`}
+          subtitle={t`Set proposal period, voting period, implementation period`}
         />
       </Box>
       <Box px={5} py={4}>
@@ -105,10 +105,10 @@ const DeployIntro = () => {
           </Text>
           <Text as="p" variant="legend" sx={{ fontSize: 1 }}>
             <Trans>
-              The Register RToken Deployer requires a good understanding of the
-              Reserve Protocol. The interface itself doesn’t require deep
-              technical knowledge, but it’s not for beginners. Talk to the
-              Reserve team or read our docs to learn more.
+              While it doesn’t require deep technical knowledge, this wizard
+              requires you to thoughtfully design a good token. We encourage you
+              to talk to the Reserve team and read the docs to learn more before
+              confirming any transactions.
             </Trans>
           </Text>
           <Flex mt={3}>
@@ -122,18 +122,13 @@ const DeployIntro = () => {
         </Box>
         <Box mt={6}>
           <InfoBox
-            title="Something something"
-            subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam maximus facilisis velit, at venenatis nunc iaculis vitae. Vestibulum ante ipsum primis in faucibus orci luctus et  posuere cubilia curae"
+            title={t`Default Configuration`}
+            subtitle={t`This tool will guide you through the RToken deployment process with the out-of-the-box collateral plugins, parameter recommendations, and governance contracts. `}
             mb={3}
           />
           <InfoBox
-            title="Something something"
-            subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam maximus facilisis velit, at venenatis nunc iaculis vitae. Vestibulum ante ipsum primis in faucibus orci luctus et  posuere cubilia curae"
-            mb={3}
-          />
-          <InfoBox
-            title="Something something"
-            subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam maximus facilisis velit, at venenatis nunc iaculis vitae. Vestibulum ante ipsum primis in faucibus orci luctus et  posuere cubilia curae"
+            title="Customization is Possible"
+            subtitle="But most things can be customized! There is a huge amount of flexibility possible with the Reserve protocol and if you are considering changes, please check with team in case there are unforseen consequences."
             mb={3}
           />
         </Box>

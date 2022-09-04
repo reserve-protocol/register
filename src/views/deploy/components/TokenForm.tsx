@@ -1,8 +1,6 @@
 import { t } from '@lingui/macro'
-import { Text } from 'theme-ui'
 import { FormField } from 'components/field'
-import RIcon from 'components/icons/RIcon'
-import { Box, BoxProps } from 'theme-ui'
+import { Box, BoxProps, Text } from 'theme-ui'
 import { isAddress } from 'utils'
 
 /**
@@ -11,7 +9,6 @@ import { isAddress } from 'utils'
 const TokenForm = (props: BoxProps) => (
   <Box {...props}>
     <Box variant="layout.verticalAlign" mb={4}>
-      <RIcon />
       <Text ml={2} variant="title">
         RToken Details
       </Text>
