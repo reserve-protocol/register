@@ -13,6 +13,12 @@ export const useTransactions = (ids: string[], sample = 20) => {
   )
 }
 
+export const useLastTransaction = (): TransactionState | null => {
+  const txs = useAtomValue(currentTxAtom)
+
+  return txs[txs.length - 1]
+}
+
 export const useTransaction = (id: string): TransactionState | null => {
   const txs = useAtomValue(currentTxAtom)
 

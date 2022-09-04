@@ -50,7 +50,6 @@ const TransactionManager = () => {
             }
 
             // Fill extra data with rToken address and persist it on localStorage
-            // TODO: Show select rToken from tx sidebar
             if (transaction.call.method === 'deployRToken') {
               transaction.extra = {
                 rTokenAddress: getDeployedRToken(receipt),

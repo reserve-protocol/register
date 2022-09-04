@@ -8,6 +8,7 @@ import { accountRoleAtom, walletAtom } from 'state/atoms'
 import { Box, Card, Divider, Grid, Text } from 'theme-ui'
 import DeploymentStepTracker from 'views/deploy/components/DeployStep'
 import GovernanceHero from './components/GovernanceHero'
+import ListingInfo from './components/ListingInfo'
 
 const Management = () => {
   const account = useAtomValue(walletAtom)
@@ -42,13 +43,29 @@ const Management = () => {
         <Grid columns={2} mt={4} gap={5}>
           <Card>
             <Text variant="title">
-              <Trans>Basic Info</Trans>
+              <Trans>RToken Info</Trans>
             </Text>
             <Divider my={3} />
             <InfoBox mb={3} title={t`Token name`} subtitle={rToken?.name} />
-            <InfoBox title={t`Token ticker`} subtitle={rToken?.symbol} />
+            <InfoBox mb={3} title={t`Token ticker`} subtitle={rToken?.symbol} />
+            <InfoBox mb={4} title={t`Address`} subtitle={rToken?.address} />
+            <Text variant="title">
+              <Trans>Staking token Info</Trans>
+            </Text>
+            <Divider my={3} />
+            <InfoBox
+              mb={3}
+              title={t`Token name`}
+              subtitle={rToken?.stToken?.name}
+            />
+            <InfoBox
+              mb={3}
+              title={t`Token ticker`}
+              subtitle={rToken?.stToken?.symbol}
+            />
+            <InfoBox title={t`Address`} subtitle={rToken?.stToken?.address} />
           </Card>
-          <Box variant="layout.borderBox">TODO TODO Copy</Box>
+          <ListingInfo />
         </Grid>
       </Box>
     </Box>
