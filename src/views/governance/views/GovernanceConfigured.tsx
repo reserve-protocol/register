@@ -3,6 +3,7 @@ import { useLastTransaction } from 'state/web3/hooks/useTransactions'
 import { Box, Text, Card, Grid, Flex, Button, Divider } from 'theme-ui'
 import ListingInfo from 'views/management/components/ListingInfo'
 
+// TODO: Show addresses and governance configuration
 const GovernanceConfigured = () => {
   const tx = useLastTransaction()
 
