@@ -1,7 +1,6 @@
 import styled from '@emotion/styled'
 import { t, Trans } from '@lingui/macro'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
-import CalculatorIcon from 'components/icons/CalculatorIcon'
 import DiscussionsIcon from 'components/icons/DiscussionsIcon'
 import GovernanceIcon from 'components/icons/GovernanceIcon'
 import HomeIcon from 'components/icons/HomeIcon'

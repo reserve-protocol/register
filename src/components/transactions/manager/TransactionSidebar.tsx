@@ -156,6 +156,7 @@ const TransactionSidebar = () => {
   return (
     <Portal>
       <Box
+        onClick={() => setSidebar(false)}
         sx={{
           position: 'fixed',
           left: 0,
