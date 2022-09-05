@@ -26,7 +26,7 @@ const useRTokenPrice = (tokenAddress: string, isRToken = false): number => {
         const result = await facadeContract.price(rTokenAddress)
         setPrice(+formatEther(result))
       } catch (e) {
-        console.error('Error getting token price', e)
+        console.warn('Error getting token price', e)
       }
     },
     []

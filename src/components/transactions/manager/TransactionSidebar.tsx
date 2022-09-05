@@ -8,6 +8,7 @@ import dayjs from 'dayjs'
 import { atom, useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { Check, Edit, ExternalLink, X } from 'react-feather'
+import { Link as RouterLink } from 'react-router-dom'
 import { currentTxAtom, isWalletModalVisibleAtom } from 'state/atoms'
 import { borderRadius } from 'theme'
 import { Box, Flex, Grid, Link, Spinner, Text } from 'theme-ui'
@@ -113,7 +114,16 @@ const TransactionList = () => {
               }}
             >
               <Flex sx={{ overflow: 'hidden', alignItems: 'center' }}>
-                <Text>{tx.description}</Text>
+                {tx.extra?.rTokenAddress ? (
+                  <RouterLink
+                    style={{ color: 'var(--theme-ui-colors-lightText)' }}
+                    to={`/overview?token=${tx.extra.rTokenAddress}`}
+                  >
+                    <Trans>Use deployed token</Trans>
+                  </RouterLink>
+                ) : (
+                  <Text>{tx.description}</Text>
+                )}
               </Flex>
               <Flex sx={{ overflow: 'hidden' }} variant="layout.verticalAlign">
                 <TokenLogo symbol="rsv" mr={3} />
