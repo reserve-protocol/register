@@ -350,7 +350,7 @@ export const theme: Theme = {
   layout: {
     borderBox: {
       border: '1px solid',
-      borderColor: 'border',
+      borderColor: 'darkBorder',
       borderRadius: borderRadius.boxes,
       padding: 4,
     },

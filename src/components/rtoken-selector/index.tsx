@@ -86,7 +86,7 @@ const RTokenSelector = (props: BoxProps) => {
     (token: string) => {
       if (token !== selected) {
         setSelected(token)
-        navigate(`/${ROUTES.OVERVIEW}?token=${token}`)
+        navigate(`${ROUTES.OVERVIEW}?token=${token}`)
         setVisible(false)
       }
     },

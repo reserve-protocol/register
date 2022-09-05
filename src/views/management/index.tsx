@@ -48,7 +48,12 @@ const Management = () => {
             <Divider my={3} />
             <InfoBox mb={3} title={t`Token name`} subtitle={rToken?.name} />
             <InfoBox mb={3} title={t`Token ticker`} subtitle={rToken?.symbol} />
-            <InfoBox mb={4} title={t`Address`} subtitle={rToken?.address} />
+            <InfoBox mb={3} title={t`Address`} subtitle={rToken?.address} />
+            <InfoBox
+              mb={4}
+              title={t`Register share`}
+              subtitle={`${window.location.origin}/overview?token=${rToken?.address}`}
+            />
             <Text variant="title">
               <Trans>Staking token Info</Trans>
             </Text>
