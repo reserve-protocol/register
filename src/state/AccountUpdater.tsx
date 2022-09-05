@@ -1,3 +1,4 @@
+import { formatEther } from '@ethersproject/units'
 import { useWeb3React } from '@web3-react/core'
 import { gql } from 'graphql-request'
 import useBlockNumber from 'hooks/useBlockNumber'
@@ -90,7 +91,8 @@ const AccountUpdater = () => {
         }
 
         if (stake > 0) {
-          const rsrAmount = stake * +rToken.rToken.rsrExchangeRate
+          const rate = Number(formatEther(rToken.rToken.rsrExchangeRate))
+          const rsrAmount = stake * rate
           const usdAmount = rsrAmount * rsrPrice
           holdings += usdAmount
 
@@ -99,7 +101,7 @@ const AccountUpdater = () => {
             symbol: rToken.rToken.rewardToken.token.symbol,
             balance: stake,
             apy: 0, // TODO
-            exchangeRate: Number(rToken.rToken.rsrExchangeRate),
+            exchangeRate: rate,
             rsrAmount,
             usdAmount,
           })
