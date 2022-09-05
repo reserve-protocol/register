@@ -2,16 +2,19 @@ import { t, Trans } from '@lingui/macro'
 import { ContentHead } from 'components/info-box'
 import { Table } from 'components/table'
 import { useMemo } from 'react'
-import { Box, BoxProps, Flex } from 'theme-ui'
+import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import tokenList from 'rtokens'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import { formatEther } from '@ethersproject/units'
 import { formatCurrencyCell, formatUsdCurrencyCell } from 'utils'
-import { Button } from 'components'
 import { useNavigate } from 'react-router-dom'
 import { SmallButton } from 'components/button'
 import { ROUTES } from 'utils/constants'
+import { CHAIN_ID } from 'utils/chains'
+import { useAtomValue } from 'jotai/utils'
+import { rTokenPriceAtom } from 'state/atoms'
+import { RSV_ADDRESS } from 'utils/addresses'
 
 interface ListedToken {
   id: string
@@ -29,7 +32,10 @@ interface ListedToken {
   stakingApy: number
 }
 
-const tokenKeys = Object.keys(tokenList).map((s) => s.toLowerCase())
+const tokenKeys = [
+  ...Object.keys(tokenList[CHAIN_ID]).map((s) => s.toLowerCase()),
+  RSV_ADDRESS[CHAIN_ID].toLowerCase(),
+]
 
 const tokenListQuery = gql`
   query GetTokenListOverview($tokenIds: [String]!) {
@@ -57,6 +63,7 @@ const tokenListQuery = gql`
 const TokenList = (props: BoxProps) => {
   const navigate = useNavigate()
   const { data } = useQuery(tokenListQuery, { tokenIds: tokenKeys })
+  const rTokenPrice = useAtomValue(rTokenPriceAtom)
 
   const tokenList = useMemo((): ListedToken[] => {
     if (data) {
@@ -65,7 +72,7 @@ const TokenList = (props: BoxProps) => {
           id: token.id,
           name: token.name,
           symbol: token.symbol,
-          supply: +formatEther(token.totalSupply),
+          supply: +formatEther(token.totalSupply) * rTokenPrice,
           holders: token.holderCount,
           price: token.lastPriceUSD,
           transactionCount: token.transferCount,
@@ -80,40 +87,52 @@ const TokenList = (props: BoxProps) => {
     }
 
     return []
-  }, [data])
+  }, [data, rTokenPrice])
 
   const rTokenColumns = useMemo(
     () => [
       { Header: t`Token`, accessor: 'symbol' },
       { Header: t`Price`, accessor: 'price', Cell: formatUsdCurrencyCell },
-      { Header: t`Mkt Cap`, accessor: 'supply', Cell: formatCurrencyCell },
+      { Header: t`Mkt Cap`, accessor: 'supply', Cell: formatUsdCurrencyCell },
       { Header: t`Holders`, accessor: 'holders' },
-      { Header: t`Transactions`, accessor: 'transactionCount' },
+      { Header: t`Txs`, accessor: 'transactionCount' },
       {
         Header: t`24h Volume`,
         accessor: 'cumulativeVolume', // TODO: Daily volume
         Cell: formatCurrencyCell,
       },
-      { Header: t`Target(s)`, accessor: 'name' },
-      { Header: t`APY`, accessor: 'tokenApy' },
-      { Header: t`St APY`, accessor: 'stakingApy' },
+      { Header: t`Target(s)`, accessor: 'name' }, // TODO: Targets
+      {
+        Header: t`APY`,
+        accessor: 'tokenApy',
+        Cell: (cell: any) => <Text>{cell.value}%</Text>,
+      },
+      {
+        Header: t`St APY`,
+        accessor: 'stakingApy',
+        Cell: (cell: any) => <Text>{cell.value}%</Text>,
+      },
       {
         Header: t`Shortcuts`,
         accessor: 'id',
         Cell: (cell: any) => {
           return (
             <Flex>
-              <Button
+              <SmallButton
                 mr={2}
+                px={3}
+                variant="muted"
                 onClick={() => navigate(`/issuance?token=${cell.value}`)}
               >
                 <Trans>Mint</Trans>
-              </Button>
-              <Button
+              </SmallButton>
+              <SmallButton
+                px={3}
+                variant="muted"
                 onClick={() => navigate(`/insurance?token=${cell.value}`)}
               >
                 <Trans>Stake</Trans>
-              </Button>
+              </SmallButton>
             </Flex>
           )
         },
