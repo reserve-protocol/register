@@ -15,7 +15,7 @@ const Home = () => {
       {!!account && <Portfolio />}
       <TokenStats mb={6} />
       <TokenList mt={6} />
-      <Divider my={6} mx={-7} sx={{ borderColor: 'darkBorder' }} />
+      <Divider my={6} sx={{ borderColor: 'darkBorder' }} />
       <TransactionsOverview mb={6} />
       <Grid columns={2} pt={6} gap={5}>
         <Box mb={5}>

@@ -1,11 +1,10 @@
 import { t } from '@lingui/macro'
 import { InfoBox } from 'components'
 import { SmallButton } from 'components/button'
-import RIcon from 'components/icons/RIcon'
 import { Box, BoxProps, Flex } from 'theme-ui'
 
 const ListingInfo = (props: BoxProps) => (
-  <Box variant="layout.borderBox">
+  <Box variant="layout.borderBox" {...props}>
     <InfoBox
       title={t`Register Listing`}
       subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam maximus facilisis velit, at venenatis nunc iaculis vitae. Vestibulum ante ipsum primis in faucibus orci luctu."
