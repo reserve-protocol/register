@@ -42,8 +42,8 @@ const RecentTokenTransactions = () => {
 
   return (
     <TransactionsTable
-      bordered
       compact
+      card
       maxHeight={420}
       help="TODO"
       title={t`Transactions`}

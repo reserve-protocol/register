@@ -12,7 +12,7 @@ import { transition } from 'theme'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { CHAIN_ID } from 'utils/chains'
-import { DEFAULT_TOKENS } from 'utils/constants'
+import { DEFAULT_TOKENS, ROUTES } from 'utils/constants'
 
 // TODO: Separate component
 const ActionItem = styled(Flex)`
@@ -86,7 +86,7 @@ const RTokenSelector = (props: BoxProps) => {
     (token: string) => {
       if (token !== selected) {
         setSelected(token)
-        navigate(`${pathname}?token=${token}`)
+        navigate(`/${ROUTES.OVERVIEW}?token=${token}`)
         setVisible(false)
       }
     },

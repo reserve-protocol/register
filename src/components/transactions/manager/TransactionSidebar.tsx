@@ -169,7 +169,7 @@ const TransactionSidebar = () => {
         }}
       />
       <Flex
-        px={4}
+        px={6}
         sx={{
           flexDirection: 'column',
           zIndex: 100001,

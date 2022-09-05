@@ -45,7 +45,7 @@ const RecentProtocolTransactions = () => {
 
   return (
     <TransactionsTable
-      bordered
+      card
       compact
       maxHeight={420}
       help="TODO"
