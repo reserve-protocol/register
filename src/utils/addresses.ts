@@ -45,3 +45,33 @@ export const COMPOUND_ADDRESS: AddressMap = {
   [ChainId.Goerli]: '0x8B4493db76159314b6a285254CD6667bAeD537ab',
   [ChainId.Hardhat]: '0x87006e75a5B6bE9D1bbF61AC8Cd84f05D9140589',
 }
+
+export const RSV_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',
+  [ChainId.Goerli]: '0xE794eA53578837f6193bBb77885A52c2ee394e14',
+  [ChainId.Hardhat]: '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',
+}
+
+export const RSV_MANAGER_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x4B481872f31bab47C6780D5488c84D309b1B8Bb6',
+  [ChainId.Goerli]: '0xd6c7488831aA08c11AF2e30E24095305b230d298',
+  [ChainId.Hardhat]: '0x4B481872f31bab47C6780D5488c84D309b1B8Bb6',
+}
+
+export const USDC_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+  [ChainId.Goerli]: '0xfd7201C314532c4eF42CBF3fcB4A2f9CfCe0f57A',
+  [ChainId.Hardhat]: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+}
+
+export const TUSD_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x0000000000085d4780B73119b644AE5ecd22b376',
+  [ChainId.Goerli]: '0xc6aA873112Ff1628a4b8512c5Cb666F2E3B4FD6A',
+  [ChainId.Hardhat]: '0x0000000000085d4780B73119b644AE5ecd22b376',
+}
+
+export const PAX_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x8E870D67F660D95d5be530380D0eC0bd388289E1',
+  [ChainId.Goerli]: '0x1e0D00502E0DB65084EEaf95b525574E30DE41C5',
+  [ChainId.Hardhat]: '0x8E870D67F660D95d5be530380D0eC0bd388289E1',
+}

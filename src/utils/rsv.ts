@@ -1,6 +1,14 @@
+import { CHAIN_ID } from 'utils/chains'
 import { BigNumber } from '@ethersproject/bignumber'
 import { parseEther } from '@ethersproject/units'
 import { ReserveToken, StringMap } from 'types'
+import {
+  PAX_ADDRESS,
+  RSV_ADDRESS,
+  RSV_MANAGER_ADDRESS,
+  TUSD_ADDRESS,
+  USDC_ADDRESS,
+} from './addresses'
 import { ONE_ETH } from './numbers'
 
 /**
@@ -10,9 +18,9 @@ import { ONE_ETH } from './numbers'
  * * It follows different rules as other tokens, so it needs to be treated different
  * * Only the Overview page and Mint/Redeem are available for this token
  */
-const PAX_ADDRESS = '0x8E870D67F660D95d5be530380D0eC0bd388289E1'
-const USDC_ADDRESS = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
-const TUSD_ADDRESS = '0x0000000000085d4780B73119b644AE5ecd22b376'
+const PAX = PAX_ADDRESS[CHAIN_ID]
+const USDC = USDC_ADDRESS[CHAIN_ID]
+const TUSD = TUSD_ADDRESS[CHAIN_ID]
 const PAX_QTY = BigNumber.from(333333)
 const USDC_QTY = BigNumber.from(333334)
 const EXPO = BigNumber.from(10).pow(BigNumber.from(12))
@@ -42,31 +50,31 @@ export const getIssuable = (rsv: ReserveToken, tokenBalances: StringMap) => {
 }
 
 export const quote = (amount: BigNumber): { [x: string]: BigNumber } => ({
-  [PAX_ADDRESS]: amount.mul(PAX_QTY).mul(EXPO).div(DIV), // PAX
-  [USDC_ADDRESS]: amount.mul(USDC_QTY).div(DIV), // USDC
-  [TUSD_ADDRESS]: amount.mul(PAX_QTY).mul(EXPO).div(DIV), // USDT
+  [PAX]: amount.mul(PAX_QTY).mul(EXPO).div(DIV), // PAX
+  [USDC]: amount.mul(USDC_QTY).div(DIV), // USDC
+  [TUSD]: amount.mul(PAX_QTY).mul(EXPO).div(DIV), // USDT
 })
 
 const RSV: ReserveToken = {
-  address: '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',
+  address: RSV_ADDRESS[CHAIN_ID],
   name: 'Reserve',
   symbol: 'RSV',
   decimals: 18,
   collaterals: [
     {
-      address: TUSD_ADDRESS,
+      address: TUSD,
       name: 'TrueUSD',
       symbol: 'TUSD',
       decimals: 18,
     },
     {
-      address: PAX_ADDRESS,
+      address: PAX,
       name: 'Pax Dollar',
       symbol: 'USDP',
       decimals: 18,
     },
     {
-      address: USDC_ADDRESS,
+      address: USDC,
       name: 'USD Coin',
       symbol: 'USDC',
       decimals: 6,
@@ -75,6 +83,6 @@ const RSV: ReserveToken = {
   isRSV: true,
 }
 
-export const RSV_MANAGER = '0x4B481872f31bab47C6780D5488c84D309b1B8Bb6'
+export const RSV_MANAGER = RSV_MANAGER_ADDRESS[CHAIN_ID]
 
 export default RSV
