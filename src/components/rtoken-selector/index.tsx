@@ -38,10 +38,10 @@ const ActionItem = styled(Flex)`
 `
 
 const TokenItem = ({ symbol, logo }: { symbol: string; logo: string }) => (
-  <>
-    <TokenLogo size="1.5em" mr={2} src={require(`rtokens/images/${logo}`)} />
-    {symbol}
-  </>
+  <Flex sx={{ alignItems: 'center' }}>
+    <TokenLogo size="1.2em" mr={2} src={require(`rtokens/images/${logo}`)} />
+    <Text>{symbol}</Text>
+  </Flex>
 )
 
 const TokenList = ({ onSelect }: { onSelect(address: string): void }) => (

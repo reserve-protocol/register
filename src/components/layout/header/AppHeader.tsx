@@ -55,7 +55,7 @@ const AppHeader = () => {
   const isDeployer = isContentOnlyView(pathname)
 
   return (
-    <Container px={[3, 4]}>
+    <Container px={[3, 7]}>
       {(isDeployer || !selectedToken) && (
         <Flex mr={[2, 2, 4]} px={[2, 4]} sx={{ alignItems: 'center' }}>
           <Brand />
