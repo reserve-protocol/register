@@ -118,7 +118,9 @@ const AssetOverview = () => {
             <Flex mb={2} key={c.address}>
               <TokenLogo symbol={c.symbol} mr={3} />
               <Text>{c.symbol}</Text>
-              <Text ml="auto">30%</Text>
+              <Text ml="auto">
+                {Math.round(100 / (rToken?.collaterals.length ?? 1))}%
+              </Text>
             </Flex>
           ))}
         </Box>

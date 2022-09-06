@@ -347,6 +347,15 @@ export const theme: Theme = {
       padding: 1,
     },
   },
+  badges: {
+    primary: {
+      color: 'text',
+      backgroundColor: 'border',
+      fontWeight: 400,
+      borderRadius: 30,
+      padding: '6px 14px',
+    },
+  },
   layout: {
     borderBox: {
       border: '1px solid',

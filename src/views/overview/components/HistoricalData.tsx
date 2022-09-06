@@ -2,9 +2,9 @@ import { Trans } from '@lingui/macro'
 import AreaChart from 'components/charts/area/AreaChart'
 import Help from 'components/help'
 import useRToken from 'hooks/useRToken'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtomValue } from 'jotai'
 import { rTokenDistributionAtom, rTokenPriceAtom } from 'state/atoms'
-import { Box, BoxProps, Card, Flex, Text } from 'theme-ui'
+import { Badge, Box, BoxProps, Card, Flex, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 
 const data = [
@@ -34,6 +34,13 @@ const HistoricalData = (props: BoxProps) => {
           <Help content="TODO" />
         </Flex>
         <AreaChart title={`$${formatCurrency(price)}`} data={data} />
+        <Flex mt={3} sx={{ alignItems: 'center' }}>
+          <Badge mr={3}>24h</Badge>
+          <Text sx={{ cursor: 'pointer' }} mr={3}>
+            7d
+          </Text>
+          <Text sx={{ cursor: 'pointer' }}>30d</Text>
+        </Flex>
       </Box>
       <Box>
         <Flex variant="layout.verticalAlign" mb={4}>
@@ -44,6 +51,13 @@ const HistoricalData = (props: BoxProps) => {
           <Help content="TODO" />
         </Flex>
         <AreaChart title={'0'} data={data} />
+        <Flex mt={3} sx={{ alignItems: 'center' }}>
+          <Badge mr={3}>24h</Badge>
+          <Text sx={{ cursor: 'pointer' }} mr={3}>
+            7d
+          </Text>
+          <Text sx={{ cursor: 'pointer' }}>30d</Text>
+        </Flex>
       </Box>
       {!rToken?.isRSV && (
         <Box mt={5}>
@@ -55,6 +69,13 @@ const HistoricalData = (props: BoxProps) => {
             <Help content="TODO" />
           </Flex>
           <AreaChart title={`${insurance}%`} data={data} />
+          <Flex mt={3} sx={{ alignItems: 'center' }}>
+            <Badge mr={3}>24h</Badge>
+            <Text sx={{ cursor: 'pointer' }} mr={3}>
+              7d
+            </Text>
+            <Text sx={{ cursor: 'pointer' }}>30d</Text>
+          </Flex>
         </Box>
       )}
     </Card>

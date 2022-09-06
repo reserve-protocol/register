@@ -149,6 +149,11 @@ const TransactionList = () => {
           ))}
         </Box>
       ))}
+      {!Object.keys(txs).length && (
+        <Box mt={5} sx={{ textAlign: 'center' }}>
+          <Text variant="legend">No transactions...</Text>
+        </Box>
+      )}
     </Box>
   )
 }
