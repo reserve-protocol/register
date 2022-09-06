@@ -1,17 +1,36 @@
 import { Trans } from '@lingui/macro'
 import { useAtomValue } from 'jotai'
+import { useEffect, useState } from 'react'
 import { walletAtom } from 'state/atoms'
 import { Box, Divider, Grid, Text } from 'theme-ui'
 import TransactionsOverview from './components/GeneralOverview'
+import Greet from './components/Greet'
 import Portfolio from './components/Portfolio'
 import TokenList from './components/TokenList'
 import TokenStats from './components/TokenStats'
 
+const VISITED_KEY = 'visited'
+
 const Home = () => {
   const account = useAtomValue(walletAtom)
+  const [visited, setVisited] = useState(
+    !!account || !!localStorage.getItem(VISITED_KEY)
+  )
+
+  const handleDismiss = () => {
+    setVisited(true)
+    localStorage.setItem(VISITED_KEY, 'true')
+  }
+
+  useEffect(() => {
+    if (account && !visited) {
+      handleDismiss()
+    }
+  }, [account])
 
   return (
     <Box m={7}>
+      {!account && !visited && <Greet onDismiss={handleDismiss} />}
       {!!account && <Portfolio />}
       <TokenStats mb={6} />
       <TokenList mt={6} />

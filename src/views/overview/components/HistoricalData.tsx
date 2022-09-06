@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro'
 import AreaChart from 'components/charts/area/AreaChart'
 import Help from 'components/help'
 import useRToken from 'hooks/useRToken'
-import { Box, BoxProps, Flex, Text } from 'theme-ui'
+import { Box, BoxProps, Card, Flex, Text } from 'theme-ui'
 
 const data = [
   { name: 'A1', value: 100 },
@@ -19,8 +19,8 @@ const HistoricalData = (props: BoxProps) => {
   const rToken = useRToken()
 
   return (
-    <Box {...props}>
-      <Box variant="layout.borderBox" sx={{ borderColor: 'darkBorder' }} mb={4}>
+    <Card {...props} p={3}>
+      <Box mb={5}>
         <Flex variant="layout.verticalAlign" mb={4}>
           <Text sx={{ fontSize: 3 }}>
             <Trans>Historical Yield - {rToken?.symbol}</Trans>
@@ -30,7 +30,7 @@ const HistoricalData = (props: BoxProps) => {
         </Flex>
         <AreaChart data={data} />
       </Box>
-      <Box variant="layout.borderBox" sx={{ borderColor: 'darkBorder' }} mb={4}>
+      <Box mb={5}>
         <Flex variant="layout.verticalAlign" mb={4}>
           <Text sx={{ fontSize: 3 }}>
             <Trans>Historical Yield - {rToken?.symbol}</Trans>
@@ -40,7 +40,7 @@ const HistoricalData = (props: BoxProps) => {
         </Flex>
         <AreaChart data={data} />
       </Box>
-      <Box variant="layout.borderBox" sx={{ borderColor: 'darkBorder' }}>
+      <Box>
         <Flex variant="layout.verticalAlign" mb={4}>
           <Text sx={{ fontSize: 3 }}>
             <Trans>Historical Yield - {rToken?.symbol}</Trans>
@@ -50,7 +50,7 @@ const HistoricalData = (props: BoxProps) => {
         </Flex>
         <AreaChart data={data} />
       </Box>
-    </Box>
+    </Card>
   )
 }
 
