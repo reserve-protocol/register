@@ -157,8 +157,8 @@ const ReserveTokenUpdater = () => {
         const [backing, insurance] = await facade.backingOverview(tokenAddress)
 
         setDistribution({
-          backing: Math.round(Number(formatEther(backing)) * 100),
-          insurance: Math.round(Number(formatEther(insurance)) * 100),
+          backing: Math.ceil(Number(formatEther(backing)) * 100),
+          insurance: Math.ceil(Number(formatEther(insurance)) * 100),
         })
       } catch (e) {
         console.error('Error getting rToken backing distribution')

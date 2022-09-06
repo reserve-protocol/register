@@ -23,8 +23,6 @@ const HistoricalData = (props: BoxProps) => {
   const price = useAtomValue(rTokenPriceAtom)
   const { insurance } = useAtomValue(rTokenDistributionAtom)
 
-  console.log('insurance?', insurance)
-
   return (
     <Card {...props} p={5}>
       <Box mb={5}>
