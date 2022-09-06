@@ -54,7 +54,10 @@ export const rTokenMainAtom = atom<string | null>((get) => {
 })
 
 // Get rToken collateral distribution
-export const rTokenDistributionAtom = atom<any>({
+export const rTokenDistributionAtom = atom<{
+  backing: number
+  insurance: number
+}>({
   backing: 0,
   insurance: 0,
 })

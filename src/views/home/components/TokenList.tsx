@@ -148,11 +148,11 @@ const TokenList = (props: BoxProps) => {
         subtitle={t`Including off-chain in-app transactions of RToken in the Reserve App.`}
       />
       <Table mt={3} columns={rTokenColumns} data={tokenList} />
-      <Flex sx={{ justifyContent: 'center' }}>
+      {/* <Flex sx={{ justifyContent: 'center' }}>
         <SmallButton py={2} mt={6} onClick={() => navigate(ROUTES.DEPLOY)}>
           <Trans>Deploy RToken</Trans>
         </SmallButton>
-      </Flex>
+      </Flex> */}
     </Box>
   )
 }

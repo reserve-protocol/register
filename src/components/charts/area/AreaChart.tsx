@@ -8,17 +8,18 @@ import { Box, BoxProps, Flex, Text } from 'theme-ui'
 
 interface Props extends BoxProps {
   data: { value: number }[]
+  title: string
 }
 
 // TODO: Dark mode colors
 // TODO: Use dataset to calculate +- value between range
-const AreaChart = ({ data, ...props }: Props) => {
+const AreaChart = ({ data, title, ...props }: Props) => {
   return (
     <Box {...props}>
       <Flex sx={{ fontSize: 3 }} mb={4}>
-        <Text>4%</Text>
+        <Text>{title}</Text>
         <Text ml="auto" sx={{ color: '#11BB8D' }}>
-          10%
+          0%
         </Text>
       </Flex>
       <ResponsiveContainer height={100}>
