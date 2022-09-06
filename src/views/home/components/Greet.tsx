@@ -18,10 +18,10 @@ const TimeLoading = ({
   const [count, setCount] = useState(0)
 
   useEffect(() => {
-    if (count <= seconds) {
+    if (count <= seconds * 10) {
       const interval = setInterval(() => {
         setCount(count + 1)
-      }, 950)
+      }, 60)
 
       return () => {
         clearInterval(interval)
@@ -32,7 +32,7 @@ const TimeLoading = ({
     }
   }, [count])
 
-  return <Progress max={seconds} value={count} />
+  return <Progress max={seconds * 10} value={count} />
 }
 
 const Greet = ({ onDismiss, ...props }: Props) => {
