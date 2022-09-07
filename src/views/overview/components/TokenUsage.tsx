@@ -1,8 +1,6 @@
 import { t } from '@lingui/macro'
-import { ContentHead, InfoHeading } from 'components/info-box'
-import { useAtomValue } from 'jotai'
-import { rTokenAtom } from 'state/atoms'
-import { Box, BoxProps, Grid } from 'theme-ui'
+import { InfoHeading } from 'components/info-box'
+import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { TokenStats } from 'types'
 import { formatCurrency } from 'utils'
 
@@ -11,33 +9,36 @@ interface Props extends BoxProps {
 }
 
 const TokenUsage = ({ metrics, ...props }: Props) => {
-  const rToken = useAtomValue(rTokenAtom)
-
   return (
     <Box {...props}>
-      <ContentHead
-        title={t`${rToken?.symbol} Usage stats`}
-        subtitle={
-          !!rToken?.isRSV
-            ? t`Including off-chain in-app transactions of RSV in the Reserve App.`
-            : undefined
-        }
-      />
-      <Grid columns={2} mt={4} gap={4}>
-        <InfoHeading title={t`24h Tx Vol`} subtitle={metrics.dailyVolume} />
-        <InfoHeading
-          title={t`24h Txs`}
-          subtitle={metrics.dailyTransferCount.toString()}
-        />
-        <InfoHeading
-          title={t`Cumulative Tx Volume`}
-          subtitle={metrics.cumulativeVolumeUsd}
-        />
-        <InfoHeading
-          title={t`Cumulative Txs`}
-          subtitle={formatCurrency(metrics.transferCount)}
-        />
-      </Grid>
+      <Text variant="title" sx={{ fontSize: 3 }}>
+        Usage stats
+      </Text>
+      <Flex mt={4} sx={{ flexWrap: 'wrap' }}>
+        <Box mr={5}>
+          <InfoHeading
+            mb={3}
+            title={t`24h Tx Vol`}
+            subtitle={metrics.dailyVolume}
+          />
+          <InfoHeading
+            title={t`Cumulative Tx Volume`}
+            subtitle={metrics.cumulativeVolumeUsd}
+          />
+        </Box>
+
+        <Box>
+          <InfoHeading
+            title={t`24h Txs`}
+            mb={3}
+            subtitle={metrics.dailyTransferCount.toString()}
+          />
+          <InfoHeading
+            title={t`Cumulative Txs`}
+            subtitle={formatCurrency(metrics.transferCount)}
+          />
+        </Box>
+      </Flex>
     </Box>
   )
 }

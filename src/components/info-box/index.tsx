@@ -32,12 +32,10 @@ export const ContentHead = ({ title, subtitle, ...props }: Props) => (
 
 export const InfoHeading = ({ title, subtitle, ...props }: Props) => (
   <Box {...props}>
-    <Text variant="legend" mb={2} sx={{ display: 'block' }}>
+    <Text variant="legend" mb={2} sx={{ display: 'block', fontWeight: 300 }}>
       {title}
     </Text>
-    {!!subtitle && (
-      <Text sx={{ fontSize: 4, fontWeight: 500 }}>{subtitle}</Text>
-    )}
+    {!!subtitle && <Text variant="title">{subtitle}</Text>}
   </Box>
 )
 

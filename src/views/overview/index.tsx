@@ -98,19 +98,20 @@ const Overview = () => {
 
   return (
     <Container>
-      <TokenOverview metrics={rTokenMetrics} />
-      <Divider {...dividerProps} />
-      <Grid {...gridProps}>
-        <TokenUsage metrics={rTokenMetrics} />
-        <RecentTokenTransactions />
+      <Grid {...gridProps} ml={5} gap={0}>
+        <Box>
+          <TokenOverview metrics={rTokenMetrics} />
+          <TokenUsage mt={7} metrics={rTokenMetrics} />
+        </Box>
+        <RecentTokenTransactions mt={7} />
       </Grid>
       <Divider {...dividerProps} />
       <Grid {...gridProps}>
-        <About />
+        <About ml={5} />
         <AssetOverview />
       </Grid>
       <Divider {...dividerProps} />
-      <Box variant="layout.verticalAlign">
+      <Box variant="layout.verticalAlign" ml={5}>
         <Button variant="muted" px={5} mr={3}>
           <Trans>Constitution</Trans>
         </Button>
@@ -133,7 +134,7 @@ const Overview = () => {
       <Divider {...dividerProps} />
       <ContentHead
         title={t`Live & Historical data`}
-        pl={3}
+        ml={5}
         mb={4}
         subtitle={
           !!rToken?.isRSV

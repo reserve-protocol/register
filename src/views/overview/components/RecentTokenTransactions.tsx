@@ -5,6 +5,7 @@ import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
 import { useMemo } from 'react'
+import { BoxProps } from 'theme-ui'
 
 const tokenRecentTxsQuery = gql`
   query GetTokenRecentTransactions($tokenId: String!) {
@@ -23,7 +24,7 @@ const tokenRecentTxsQuery = gql`
   }
 `
 
-const RecentTokenTransactions = () => {
+const RecentTokenTransactions = (props: BoxProps) => {
   const rToken = useRToken()
   const { data } = useQuery(tokenRecentTxsQuery, {
     tokenId: rToken?.address.toLowerCase() ?? '',
@@ -48,6 +49,7 @@ const RecentTokenTransactions = () => {
       help="TODO"
       title={t`Transactions`}
       data={txs}
+      {...props}
     />
   )
 }

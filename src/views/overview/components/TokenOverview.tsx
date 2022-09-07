@@ -15,28 +15,29 @@ const TokenOverview = ({ metrics, ...props }: Props) => {
   return (
     <Box {...props}>
       <ContentHead
-        title={t`${rToken?.symbol} Overview`}
+        title={t`Overview`}
         subtitle={
           rToken?.isRSV
             ? t`Including off-chain in-app transactions of RSV in the Reserve App.`
             : undefined
         }
       />
-      <Flex sx={{ flexWrap: 'wrap' }}>
-        <InfoHeading
-          mt={4}
-          mr={5}
-          title={t`Market cap`}
-          subtitle={metrics.supplyUsd}
-        />
-        <InfoHeading
-          mt={4}
-          mr={5}
-          title={t`Insurance Pool`}
-          subtitle={metrics.insuranceUsd}
-        />
-        <InfoHeading mt={4} mr={5} title={t`RToken Yield`} subtitle="0%" />
-        <InfoHeading mt={4} title={t`stRSR Yield`} subtitle="0%" />
+      <Flex mt={6} sx={{ flexWrap: 'wrap' }}>
+        <Box mr={5}>
+          <InfoHeading
+            mb={3}
+            title={t`Market cap`}
+            subtitle={metrics.supplyUsd}
+          />
+          <InfoHeading
+            title={t`Insurance Pool`}
+            subtitle={metrics.insuranceUsd}
+          />
+        </Box>
+        <Box>
+          <InfoHeading mb={3} title={t`RToken Yield`} subtitle="0%" />
+          <InfoHeading title={t`stRSR Yield`} subtitle="0%" />
+        </Box>
       </Flex>
     </Box>
   )
