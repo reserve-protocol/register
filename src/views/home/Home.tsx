@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/macro'
+import { Container } from 'components'
 import { useAtomValue } from 'jotai'
 import { useEffect, useState } from 'react'
 import { walletAtom } from 'state/atoms'
@@ -29,7 +30,7 @@ const Home = () => {
   }, [account])
 
   return (
-    <Box mx={7} my={8}>
+    <Container>
       {!account && !visited && <Greet onDismiss={handleDismiss} />}
       {!!account && <Portfolio />}
       <Grid columns={[1, 1, 1, 2]}>
@@ -87,7 +88,7 @@ const Home = () => {
         </Box>
         <Box>Intro video? Tutorial?</Box>
       </Grid>
-    </Box>
+    </Container>
   )
 }
 

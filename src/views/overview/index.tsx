@@ -26,7 +26,7 @@ import RecentTokenTransactions from './components/RecentTokenTransactions'
 import TokenOverview from './components/TokenOverview'
 import TokenUsage from './components/TokenUsage'
 
-const dividerProps = { my: 6, sx: { borderColor: 'darkBorder' } }
+const dividerProps = { my: 6, mx: -8, sx: { borderColor: 'darkBorder' } }
 const gridProps = { columns: [1, 1, 1, 2], gap: 6 }
 
 const rTokenMetricsQuery = gql`
