@@ -14,7 +14,7 @@ interface Props extends BoxProps {
 
 const CollateralBalances = ({ collaterals }: { collaterals: Token[] }) => (
   <Box p={4} mb={-2} sx={{ overflowX: 'auto' }}>
-    <Text variant="subtitle" mb={2}>
+    <Text variant="subtitle" mb={3}>
       <Trans>Available collateral</Trans>
     </Text>
     {collaterals.map((collateral) => (
@@ -27,8 +27,8 @@ const RTokenBalance = ({ token }: { token: Token }) => {
   const balance = useAtomValue(rTokenBalanceAtom)
 
   return (
-    <Box p={4} pb={2}>
-      <Text variant="subtitle" mb={2}>
+    <Box p={4}>
+      <Text variant="subtitle" mb={3}>
         <Trans>RToken In Wallet</Trans>
       </Text>
       <TokenBalance symbol={token.symbol} balance={balance} />
@@ -52,7 +52,7 @@ const Balances = ({ rToken, ...props }: Props) => (
         <RTokenBalance token={rToken} />
         {!rToken.isRSV && (
           <>
-            <Divider />
+            <Divider m={0} />
             <PendingIssuances token={rToken} />
           </>
         )}

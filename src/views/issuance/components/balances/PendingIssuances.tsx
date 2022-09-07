@@ -87,8 +87,8 @@ const PendingIssuances = ({ token }: { token: Token }) => {
 
   return (
     <>
-      <Box px={4} py={2}>
-        <Text variant="subtitle" mb={2}>
+      <Box p={4}>
+        <Text variant="subtitle" mb={3}>
           <Trans>Available</Trans>
         </Text>
         <TokenBalance symbol={token.symbol} balance={availableAmount} />
@@ -102,9 +102,9 @@ const PendingIssuances = ({ token }: { token: Token }) => {
           mt={3}
         />
       </Box>
-      <Divider />
-      <Box px={4} py={2} mb={2}>
-        <Text variant="subtitle" mb={2}>
+      <Divider m={0} />
+      <Box p={4}>
+        <Text variant="subtitle" mb={3}>
           <Trans>Pending</Trans>
         </Text>
         <TokenBalance symbol={token.symbol} balance={pendingAmount} />
