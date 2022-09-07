@@ -7,6 +7,7 @@ import useQuery from 'hooks/useQuery'
 import { useAtom } from 'jotai'
 import { useAtomValue } from 'jotai/utils'
 import { useEffect } from 'react'
+import { Copy } from 'react-feather'
 import {
   blockTimestampAtom,
   rsrPriceAtom,
@@ -14,9 +15,9 @@ import {
   rTokenPriceAtom,
 } from 'state/atoms'
 import { tokenMetricsAtom } from 'state/metrics/atoms'
-import { Box, Divider, Grid } from 'theme-ui'
+import { Box, Divider, Grid, IconButton, Text } from 'theme-ui'
 import { TokenStats } from 'types'
-import { formatCurrency } from 'utils'
+import { formatCurrency, shortenAddress } from 'utils'
 import About from './components/About'
 import AssetOverview from './components/AssetOverview'
 import HistoricalData from './components/HistoricalData'
@@ -109,10 +110,25 @@ const Overview = () => {
         <AssetOverview />
       </Grid>
       <Divider {...dividerProps} />
-      <Box>
-        <Button px={3}>
+      <Box variant="layout.verticalAlign">
+        <Button variant="muted" px={5} mr={3}>
           <Trans>Constitution</Trans>
         </Button>
+        <Button variant="muted" px={5}>
+          <Trans>Governance</Trans>
+        </Button>
+        {!!rToken?.address && (
+          <>
+            <Text ml="auto">{shortenAddress(rToken.address)}</Text>
+            <IconButton
+              ml={2}
+              sx={{ cursor: 'pointer' }}
+              onClick={() => navigator.clipboard.writeText(rToken.address)}
+            >
+              <Copy color="#666666" size={14} />
+            </IconButton>
+          </>
+        )}
       </Box>
       <Divider {...dividerProps} />
       <ContentHead

@@ -30,8 +30,8 @@ const PendingBalance = () => {
   const balance = useAtomValue(pendingRSRBalanceAtom)
 
   return (
-    <Box p={4} py={2} mb={2}>
-      <Text variant="subtitle" mb={2}>
+    <Box p={4}>
+      <Text variant="subtitle" mb={3}>
         <Trans>In Cooldown</Trans>
       </Text>
       <TokenBalance symbol="RSR" balance={balance} />
@@ -80,8 +80,8 @@ const AvailableBalance = () => {
   }, [claimTx, claiming])
 
   return (
-    <Box p={4} py={2}>
-      <Text variant="subtitle" mb={2}>
+    <Box p={4}>
+      <Text variant="subtitle" mb={3}>
         <Trans>Available</Trans>
       </Text>
       <TokenBalance symbol="RSR" balance={availableAmount} />
@@ -105,7 +105,7 @@ const StakeBalance = () => {
 
   return (
     <Box p={4}>
-      <Text variant="subtitle" mb={2}>
+      <Text variant="subtitle" mb={3}>
         <Trans>Your stake</Trans>
       </Text>
       <TokenBalance symbol={rToken?.stToken?.symbol ?? ''} balance={balance} />
@@ -125,8 +125,8 @@ const RSRBalance = () => {
   const rsrPrice = useAtomValue(rsrPriceAtom)
 
   return (
-    <Box p={4} pb={2}>
-      <Text variant="subtitle" mb={2}>
+    <Box p={4}>
+      <Text variant="subtitle" mb={3}>
         <Trans>In Wallet</Trans>
       </Text>
       <TokenBalance symbol="RSR" balance={balance} />
@@ -149,9 +149,9 @@ const Balances = (props: BoxProps) => (
         })}
       >
         <RSRBalance />
-        <Divider />
+        <Divider m={0} />
         <AvailableBalance />
-        <Divider />
+        <Divider m={0} />
         <PendingBalance />
       </Box>
     </Grid>

@@ -9,16 +9,18 @@ export const centeredContent = {
   flexDirection: 'column',
 }
 export const borderRadius = {
-  inputs: 10,
-  boxes: 16,
+  inputs: 6,
+  boxes: 12,
 }
 export const baseButton = {
-  borderRadius: 60,
+  borderRadius: 50,
   fontWeight: 500,
   cursor: 'pointer',
   color: '#fff',
   backgroundColor: 'primary',
-  padding: 12,
+  padding: 2,
+  paddingLeft: 3,
+  paddingRight: 3,
 
   '&:hover': {
     filter: 'brightness(0.85)',
@@ -32,7 +34,8 @@ export const baseButton = {
 
 export const baseInput = {
   borderColor: 'inputBorder',
-  outlineColor: '#000',
+  outlineColor: 'text',
+  padding: '12px',
   borderRadius: borderRadius.inputs,
 
   '&:disabled': {

@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/macro'
+import { InfoBox } from 'components'
 import { useLastTransaction } from 'state/web3/hooks/useTransactions'
 import { Box, Text, Card, Grid, Flex, Button, Divider } from 'theme-ui'
 import ListingInfo from 'views/management/components/ListingInfo'
@@ -34,7 +35,21 @@ const GovernanceConfigured = () => {
             <Trans>Main addresses</Trans>
           </Text>
           <Divider my={3} />
-          TODO
+          <InfoBox
+            mb={3}
+            title="Governor address"
+            subtitle="0xcR3A4e734342872bT4934529103206c453456Ab3"
+          />
+          <InfoBox
+            mb={3}
+            title="Guardian address"
+            subtitle="0xfB654e7F7202872bA35C9852910320607b390344"
+          />{' '}
+          <InfoBox
+            mb={3}
+            title="Pauser address"
+            subtitle="0xfB654e7F7202872bA35C9852910320607b390344"
+          />
         </Card>
         <ListingInfo />
       </Grid>

@@ -9,7 +9,7 @@ import styled from '@emotion/styled'
  */
 const Container = styled(Box)`
   box-sizing: border-box;
-  padding: 40px 48px;
+  padding: 28px 48px;
 `
 
 export default Container

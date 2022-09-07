@@ -14,13 +14,13 @@ const ExchangeRate = (props: BoxProps) => {
   const rToken = useAtomValue(rTokenAtom)
 
   return (
-    <Card {...props}>
+    <Box variant="layout.borderBox" {...props} padding={4}>
       <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
         <Text>
           {rate} {rToken?.stToken?.symbol ?? 'stRSR'} = 1 RSR
         </Text>
       </Flex>
-    </Card>
+    </Box>
   )
 }
 
@@ -28,17 +28,17 @@ const Stats = (props: BoxProps) => {
   const distribution = useAtomValue(rTokenDistributionAtom)
 
   return (
-    <Card {...props} p={0}>
+    <Box {...props} variant="layout.borderBox" p={0}>
       <Grid gap={0} columns={2}>
         <Box
-          p={3}
+          p={4}
           sx={{
             borderRight: '1px solid',
             borderBottom: '1px solid',
-            borderColor: 'border',
+            borderColor: 'darkBorder',
           }}
         >
-          <Text variant="subtitle" mb={2}>
+          <Text variant="subtitle" mb={3}>
             <Trans>Your stake</Trans>
           </Text>
           <IconInfo
@@ -52,8 +52,11 @@ const Stats = (props: BoxProps) => {
             text="0%" // TODO
           />
         </Box>
-        <Box p={3} sx={{ borderBottom: '1px solid', borderColor: 'border' }}>
-          <Text variant="subtitle" mb={2}>
+        <Box
+          p={4}
+          sx={{ borderBottom: '1px solid', borderColor: 'darkBorder' }}
+        >
+          <Text variant="subtitle" mb={3}>
             <Trans>Collateral backing</Trans>
           </Text>
           <IconInfo
@@ -67,8 +70,8 @@ const Stats = (props: BoxProps) => {
             text={`${distribution.backing}%`}
           />
         </Box>
-        <Box p={3} sx={{ borderRight: '1px solid', borderColor: 'border' }}>
-          <Text variant="subtitle" mb={2}>
+        <Box p={4} sx={{ borderRight: '1px solid', borderColor: 'darkBorder' }}>
+          <Text variant="subtitle" mb={3}>
             <Trans>Backing + Insurance</Trans>
           </Text>
           <IconInfo
@@ -83,7 +86,7 @@ const Stats = (props: BoxProps) => {
           />
         </Box>
       </Grid>
-    </Card>
+    </Box>
   )
 }
 
