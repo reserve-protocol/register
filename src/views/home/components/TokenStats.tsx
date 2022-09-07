@@ -8,7 +8,7 @@ import { Box, Text, Flex, Grid, BoxProps } from 'theme-ui'
 import { formatCurrency } from 'utils'
 
 const Stat = ({ title, value }: { title: string; value: string }) => (
-  <Box mr={5} mb={4}>
+  <Box mb={2}>
     <Text sx={{ whiteSpace: 'nowrap' }} variant="legend">
       {title}
     </Text>{' '}
@@ -89,6 +89,7 @@ const TokenStats = (props: BoxProps) => {
   return (
     <Box pl={3} {...props}>
       <ContentHead
+        mr={5}
         sx={{ maxWidth: 600 }}
         title={t`RToken stats`}
         subtitle={t`These stats are aggregated across all RTokens on the Reserve Protocol that are supported by this dApp. This also includes anonymized data from the Reserve App API if RTokens are supported by RPay to give insights into total currency usage.`}
@@ -118,7 +119,7 @@ const TokenStats = (props: BoxProps) => {
             />
           </Box>
         </Grid>
-        <Flex mt={7} sx={{ flexWrap: 'wrap' }}>
+        <Box mt={6}>
           <Stat title={t`24h Tx Vol`} value={metrics.dailyVolume} />
           <Stat
             title={t`Cumulative Tx Volume`}
@@ -126,7 +127,7 @@ const TokenStats = (props: BoxProps) => {
           />
           <Stat title={t`24h Txs`} value={metrics.dailyTransactionCount} />
           <Stat title={t`Cumulative Txs`} value={metrics.transactionCount} />
-        </Flex>
+        </Box>
       </Box>
     </Box>
   )

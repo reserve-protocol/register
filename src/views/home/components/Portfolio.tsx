@@ -64,17 +64,19 @@ const Portfolio = (props: BoxProps) => {
 
   return (
     <Box {...props}>
-      <Text>
-        <Trans>Total Staked RSR + Rtoken Value</Trans>
-      </Text>
-      <Text
-        mt={0}
-        pt={0}
-        sx={{ fontSize: 6, fontWeight: 400, color: 'boldText' }}
-        as="h1"
-      >
-        ${formatCurrency(holdings)}
-      </Text>
+      <Box ml={3}>
+        <Text sx={{ fontWeight: 500 }}>
+          <Trans>Staked RSR + Rtoken Value</Trans>
+        </Text>
+        <Text
+          mt={0}
+          pt={0}
+          sx={{ fontSize: 7, fontWeight: 400, color: 'boldText' }}
+          as="h1"
+        >
+          ${formatCurrency(holdings)}
+        </Text>
+      </Box>
       <Grid columns={[1, 1, 1, 2]} mt={5} gap={5}>
         <Box>
           <Text pl={3} variant="sectionTitle">
@@ -103,7 +105,7 @@ const Portfolio = (props: BoxProps) => {
           )}
         </Box>
       </Grid>
-      <Divider my={6} sx={{ borderColor: 'darkBorder' }} />
+      <Divider mx={-7} my={8} sx={{ borderColor: 'darkBorder' }} />
     </Box>
   )
 }

@@ -66,6 +66,7 @@ export const colors = {
   background: '#F9F8F4',
   lightBackground: '#F2F2F2',
   contentBackground: '#fff',
+  contentLightBackground: '#FCFBF9',
   primary: '#000000',
   success: '#11BB8D',
   accent: '#00FFBF',
@@ -86,6 +87,7 @@ export const colors = {
       border: '#333333',
       darkBorder: '#333333', // TODO
       contentBackground: '#1A1A1A',
+      contentLightBackground: '#1A1A1A',
       secondaryBackground: '#202128',
       primary: '#00b600',
       bgCard: '#FBFDFE',
@@ -95,13 +97,13 @@ export const colors = {
 
 export const theme: Theme = {
   breakpoints: ['52em', '64em', '72em', '100em'],
-  space: [0, 4, 8, 16, 24, 32, 40, 48, 128, 256],
+  space: [0, 4, 8, 16, 24, 32, 40, 48, 80, 256],
   fonts: {
     body: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
     heading: 'inherit',
     monospace: 'Menlo, monospace',
   },
-  fontSizes: [12, 14, 16, 20, 24, 32, 48, 64, 96],
+  fontSizes: [12, 14, 16, 20, 24, 32, 48, 56, 96],
   fontWeights: {
     body: 400,
     heading: 400,

@@ -50,10 +50,8 @@ const Greet = ({ onDismiss, ...props }: Props) => {
 
   return (
     <Flex {...props} my={8}>
-      <Box>
+      <Box ml={3} mt={3} mb={6}>
         <Text
-          mt={2}
-          mb={2}
           sx={{
             display: 'block',
             fontSize: 4,

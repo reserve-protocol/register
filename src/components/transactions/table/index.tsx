@@ -86,7 +86,7 @@ const TransactionsTable = ({
       px={3}
       pt={4}
       sx={(theme: any) => ({
-        backgroundColor: card ? theme.colors.contentBackground : 'none',
+        backgroundColor: card ? theme.colors.contentLightBackground : 'none',
         border: bordered ? `1px solid ${theme.colors.darkBorder}` : 'none',
         borderRadius: borderRadius.boxes,
         height: 'fit-content',

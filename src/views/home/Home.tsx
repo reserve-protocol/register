@@ -29,15 +29,18 @@ const Home = () => {
   }, [account])
 
   return (
-    <Box m={7}>
+    <Box mx={7} my={8}>
       {!account && !visited && <Greet onDismiss={handleDismiss} />}
       {!!account && <Portfolio />}
-      <TokenStats mb={6} />
+      <Grid columns={2}>
+        <TokenStats mb={6} />
+        <TransactionsOverview mb={6} />
+      </Grid>
+      <Divider mb={8} mt={6} mx={-7} sx={{ borderColor: 'darkBorder' }} />
       <TokenList mt={6} />
-      <Divider my={6} sx={{ borderColor: 'darkBorder' }} />
-      <TransactionsOverview mb={6} />
-      <Grid columns={2} pt={6} gap={5}>
-        <Box mb={5}>
+      <Divider my={8} mx={-7} sx={{ borderColor: 'darkBorder' }} />
+      <Grid columns={2} mt={6} px={8} gap={8}>
+        <Box>
           <Text mb={2} sx={{ fontSize: 3, display: 'block', fontWeight: 500 }}>
             <Trans>RTokens</Trans>
           </Text>
