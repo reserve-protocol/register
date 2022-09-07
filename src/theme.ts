@@ -34,7 +34,7 @@ export const baseButton = {
 
 export const baseInput = {
   borderColor: 'inputBorder',
-  outlineColor: 'text',
+  outline: 'none',
   padding: '12px',
   borderRadius: borderRadius.inputs,
 
@@ -42,6 +42,10 @@ export const baseInput = {
     backgroundColor: 'secondary',
     borderColor: 'secondary',
     cursor: 'default',
+  },
+
+  '&:hover': {
+    borderColor: 'text',
   },
 }
 
@@ -294,7 +298,6 @@ export const theme: Theme = {
     },
     inputError: {
       ...baseInput,
-      outlineColor: 'danger',
       borderColor: 'danger',
       color: 'danger',
     },
