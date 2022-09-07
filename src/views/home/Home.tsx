@@ -32,7 +32,7 @@ const Home = () => {
     <Box mx={7} my={8}>
       {!account && !visited && <Greet onDismiss={handleDismiss} />}
       {!!account && <Portfolio />}
-      <Grid columns={2}>
+      <Grid columns={[1, 1, 1, 2]}>
         <TokenStats mb={6} />
         <TransactionsOverview mb={6} />
       </Grid>
