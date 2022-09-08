@@ -100,7 +100,11 @@ const TokenList = (props: BoxProps) => {
         const recentRate = token?.rToken?.recentRate[0]
         const lastRate = token?.rToken?.lastRate[0]
 
-        if (recentRate && lastRate) {
+        if (
+          recentRate &&
+          lastRate &&
+          recentRate.timestamp !== lastRate.timestamp
+        ) {
           ;[tokenApy, stakingApy] = calculateApy(recentRate, lastRate)
         }
 

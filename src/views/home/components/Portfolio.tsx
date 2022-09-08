@@ -26,7 +26,11 @@ const Portfolio = (props: BoxProps) => {
       { Header: t`Price`, accessor: 'usdPrice', Cell: formatUsdCurrencyCell },
       { Header: t`Balance`, accessor: 'balance', Cell: formatCurrencyCell },
       { Header: t`Value`, accessor: 'usdAmount', Cell: formatUsdCurrencyCell },
-      { Header: `APY`, accessor: 'apy' },
+      {
+        Header: `APY`,
+        accessor: 'apy',
+        Cell: ({ cell }: { cell: any }) => `${cell.value}%`,
+      },
     ],
     []
   )
@@ -53,7 +57,11 @@ const Portfolio = (props: BoxProps) => {
         accessor: 'usdAmount',
         Cell: formatUsdCurrencyCell,
       },
-      { Header: 'APY', accessor: 'apy' },
+      {
+        Header: 'APY',
+        accessor: 'apy',
+        Cell: ({ cell }: { cell: any }) => `${cell.value}%`,
+      },
     ],
     []
   )

@@ -3,18 +3,20 @@ import { gql } from 'graphql-request'
 import useBlockNumber from 'hooks/useBlockNumber'
 import useQuery from 'hooks/useQuery'
 import { useAtomValue, useUpdateAtom } from 'jotai/utils'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { AccountPosition, AccountToken } from 'types'
+import { calculateApy } from 'utils'
 import {
   accountHoldingsAtom,
   accountPositionsAtom,
   accountTokensAtom,
+  blockTimestampAtom,
   rsrPriceAtom,
 } from './atoms'
 
 // TODO: Include RSV hardcoded into the query and check for balance
 const accountQuery = gql`
-  query getAccountTokens($id: String!) {
+  query getAccountTokens($id: String!, $fromTime: Int!) {
     account(id: $id) {
       id
       balances(where: { token: "0x196f4727526ea7fb1e17b2071b3d8eaa38486988" }) {
@@ -33,6 +35,26 @@ const accountQuery = gql`
               name
               symbol
             }
+          }
+          recentRate: hourlySnapshots(
+            first: 1
+            orderBy: timestamp
+            where: { timestamp_gte: $fromTime }
+            orderDirection: desc
+          ) {
+            rsrExchangeRate
+            basketRate
+            timestamp
+          }
+          lastRate: hourlySnapshots(
+            first: 1
+            orderBy: timestamp
+            where: { timestamp_gte: $fromTime }
+            orderDirection: asc
+          ) {
+            rsrExchangeRate
+            basketRate
+            timestamp
           }
         }
         balance {
@@ -53,6 +75,10 @@ const AccountUpdater = () => {
   const [lastFetched, setLastFetched] = useState(0)
   const blockNumber = useBlockNumber() ?? 0
   const rsrPrice = useAtomValue(rsrPriceAtom)
+  const timestamp = useAtomValue(blockTimestampAtom)
+  const fromTime = useMemo(() => {
+    return timestamp - 2592000
+  }, [!!timestamp])
   const updateTokens = useUpdateAtom(accountTokensAtom)
   const updatePositions = useUpdateAtom(accountPositionsAtom)
   const updateHoldings = useUpdateAtom(accountHoldingsAtom)
@@ -62,6 +88,7 @@ const AccountUpdater = () => {
     account ? accountQuery : null,
     {
       id: account?.toLocaleLowerCase(),
+      fromTime,
     }
   )
 
@@ -74,6 +101,18 @@ const AccountUpdater = () => {
       for (const rToken of data?.account?.rTokens || []) {
         const balance = Number(rToken?.balance?.amount)
         const stake = Number(rToken?.stake)
+        let tokenApy = 0
+        let stakingApy = 0
+        const recentRate = rToken?.rToken?.recentRate[0]
+        const lastRate = rToken?.rToken?.lastRate[0]
+
+        if (
+          recentRate &&
+          lastRate &&
+          recentRate.timestamp !== lastRate.timestamp
+        ) {
+          ;[tokenApy, stakingApy] = calculateApy(recentRate, lastRate)
+        }
 
         if (balance > 0) {
           const usdAmount = Number(rToken.balance.token.lastPriceUSD) * balance
@@ -85,7 +124,7 @@ const AccountUpdater = () => {
             usdPrice: Number(rToken.balance.token.lastPriceUSD),
             usdAmount,
             balance,
-            apy: 0, // TODO
+            apy: +tokenApy.toFixed(2),
           })
         }
 
@@ -99,7 +138,7 @@ const AccountUpdater = () => {
             name: rToken.rToken.rewardToken.token.name,
             symbol: rToken.rToken.rewardToken.token.symbol,
             balance: stake,
-            apy: 0, // TODO
+            apy: +stakingApy.toFixed(2),
             exchangeRate: rate,
             rsrAmount,
             usdAmount,
