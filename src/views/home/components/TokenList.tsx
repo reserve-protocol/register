@@ -1,20 +1,19 @@
+import { formatEther } from '@ethersproject/units'
 import { t, Trans } from '@lingui/macro'
+import { SmallButton } from 'components/button'
 import { ContentHead } from 'components/info-box'
 import { Table } from 'components/table'
-import { useMemo } from 'react'
-import { Box, BoxProps, Flex, Text } from 'theme-ui'
-import tokenList from 'rtokens'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
-import { formatEther } from '@ethersproject/units'
-import { formatCurrencyCell, formatUsdCurrencyCell } from 'utils'
-import { useNavigate } from 'react-router-dom'
-import { SmallButton } from 'components/button'
-import { ROUTES } from 'utils/constants'
-import { CHAIN_ID } from 'utils/chains'
 import { useAtomValue } from 'jotai/utils'
-import { rTokenPriceAtom } from 'state/atoms'
+import { useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
+import tokenList from 'rtokens'
+import { blockTimestampAtom, rTokenPriceAtom } from 'state/atoms'
+import { Box, BoxProps, Flex, Text } from 'theme-ui'
+import { calculateApy, formatCurrencyCell, formatUsdCurrencyCell } from 'utils'
 import { RSV_ADDRESS } from 'utils/addresses'
+import { CHAIN_ID } from 'utils/chains'
 
 interface ListedToken {
   id: string
@@ -38,7 +37,7 @@ const tokenKeys = [
 ]
 
 const tokenListQuery = gql`
-  query GetTokenListOverview($tokenIds: [String]!) {
+  query GetTokenListOverview($tokenIds: [String]!, $fromTime: Int!) {
     tokens(
       where: { id_in: $tokenIds }
       orderBy: totalSupply
@@ -55,6 +54,26 @@ const tokenListQuery = gql`
       rToken {
         backing
         backingInsurance
+        recentRate: hourlySnapshots(
+          first: 1
+          orderBy: timestamp
+          where: { timestamp_gte: $fromTime }
+          orderDirection: desc
+        ) {
+          rsrExchangeRate
+          basketRate
+          timestamp
+        }
+        lastRate: hourlySnapshots(
+          first: 1
+          orderBy: timestamp
+          where: { timestamp_gte: $fromTime }
+          orderDirection: asc
+        ) {
+          rsrExchangeRate
+          basketRate
+          timestamp
+        }
       }
     }
   }
@@ -62,13 +81,30 @@ const tokenListQuery = gql`
 
 const TokenList = (props: BoxProps) => {
   const navigate = useNavigate()
-  const { data } = useQuery(tokenListQuery, { tokenIds: tokenKeys })
+  const timestamp = useAtomValue(blockTimestampAtom)
+  const fromTime = useMemo(() => {
+    return timestamp - 2592000
+  }, [!!timestamp])
+  const { data, error } = useQuery(tokenListQuery, {
+    tokenIds: tokenKeys,
+    fromTime,
+  })
   const rTokenPrice = useAtomValue(rTokenPriceAtom)
 
   const tokenList = useMemo((): ListedToken[] => {
     if (data) {
-      return data.tokens.map(
-        (token: any): ListedToken => ({
+      return data.tokens.map((token: any): ListedToken => {
+        let tokenApy = 0
+        let stakingApy = 0
+
+        const recentRate = token?.rToken?.recentRate[0]
+        const lastRate = token?.rToken?.lastRate[0]
+
+        if (recentRate && lastRate) {
+          ;[tokenApy, stakingApy] = calculateApy(recentRate, lastRate)
+        }
+
+        return {
           id: token.id,
           name: token.name,
           symbol: token.symbol,
@@ -78,12 +114,12 @@ const TokenList = (props: BoxProps) => {
           transactionCount: token.transferCount,
           cumulativeVolume: +formatEther(token.cumulativeVolume),
           targetUnit: 'USD',
-          tokenApy: 0,
+          tokenApy: +tokenApy.toFixed(2),
           backing: token?.rToken?.backing || 100,
           backingInsurance: token?.rToken.backingInsurance || 0,
-          stakingApy: 0,
-        })
-      )
+          stakingApy: +stakingApy.toFixed(2),
+        }
+      })
     }
 
     return []

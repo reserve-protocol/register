@@ -17,6 +17,33 @@ export function isAddress(value: string): string | false {
   }
 }
 
+interface ApyRate {
+  basketRate: number
+  rsrExchangeRate: number
+  timestamp: number
+}
+
+export function calculateApy(
+  recentRate: ApyRate,
+  lastRate: ApyRate
+): [number, number] {
+  let tokenApy = 0
+  let stakingApy = 0
+
+  const priceGrowth =
+    ((recentRate.basketRate - lastRate.basketRate) / lastRate.basketRate) * 100
+  const stGrowth =
+    ((recentRate.rsrExchangeRate - lastRate.rsrExchangeRate) /
+      lastRate.rsrExchangeRate) *
+    100
+  const range = 31536000 / (recentRate.timestamp - lastRate.timestamp)
+
+  tokenApy = priceGrowth * range
+  stakingApy = stGrowth * range
+
+  return [tokenApy, stakingApy]
+}
+
 export function shortenString(str: string) {
   return `${str.substring(0, 6)}...${str.substring(str.length - 4)}`
 }
