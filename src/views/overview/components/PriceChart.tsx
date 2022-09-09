@@ -60,7 +60,7 @@ const PriceChart = (props: BoxProps) => {
             label: dayjs.unix(+timestamp).format('YYYY-M-d HH:mm:ss'),
             display: `$${formatCurrency(+priceUSD)}`,
           })
-        ) ?? []
+        ) || []
       )
     }
   }, [data])

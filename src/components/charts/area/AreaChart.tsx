@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/macro'
 import InfoBox from 'components/info-box'
 import { useMemo } from 'react'
 import {
@@ -6,7 +7,7 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from 'recharts'
-import { Badge, Box, BoxProps, Card, Flex, Text } from 'theme-ui'
+import { Badge, Box, BoxProps, Card, Flex, Spinner, Text } from 'theme-ui'
 import { StringMap } from 'types'
 
 interface Props extends BoxProps {
@@ -69,17 +70,31 @@ const AreaChart = ({
           {gain}%
         </Text>
       </Flex>
-      <ResponsiveContainer height={100}>
-        <Chart data={data}>
-          <Tooltip content={<CustomTooltip />} />
-          <Area
-            type="monotone"
-            dataKey="value"
-            stroke="#000"
-            fill="rgba(0, 0, 0, 0.05)"
-          />
-        </Chart>
-      </ResponsiveContainer>
+      {data && !!data.length && (
+        <ResponsiveContainer height={100}>
+          <Chart data={data}>
+            <Tooltip content={<CustomTooltip />} />
+            <Area
+              type="monotone"
+              dataKey="value"
+              stroke="#000"
+              fill="rgba(0, 0, 0, 0.05)"
+            />
+          </Chart>
+        </ResponsiveContainer>
+      )}
+      {data && !data.length && (
+        <Box my={6} sx={{ textAlign: 'center' }}>
+          <Text variant="legend">
+            <Trans>No data</Trans>
+          </Text>
+        </Box>
+      )}
+      {!data && (
+        <Box my={6} sx={{ textAlign: 'center' }}>
+          <Spinner size={24} />
+        </Box>
+      )}
       {!!timeRange && onRangeChange && (
         <Flex mt={3} sx={{ alignItems: 'center' }}>
           {Object.values(timeRange).map((range) =>
