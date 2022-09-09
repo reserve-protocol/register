@@ -1,7 +1,7 @@
 import { t } from '@lingui/macro'
 import { ContentHead, InfoHeading } from 'components/info-box'
 import { useAtomValue } from 'jotai'
-import { rTokenAtom } from 'state/atoms'
+import { rTokenAtom, rTokenYieldAtom } from 'state/atoms'
 import { Box, BoxProps, Flex } from 'theme-ui'
 import { TokenStats } from 'types'
 
@@ -11,6 +11,7 @@ interface Props extends BoxProps {
 
 const TokenOverview = ({ metrics, ...props }: Props) => {
   const rToken = useAtomValue(rTokenAtom)
+  const { tokenApy, stakingApy } = useAtomValue(rTokenYieldAtom)
 
   return (
     <Box {...props}>
@@ -35,8 +36,12 @@ const TokenOverview = ({ metrics, ...props }: Props) => {
           />
         </Box>
         <Box>
-          <InfoHeading mb={3} title={t`RToken Yield`} subtitle="0%" />
-          <InfoHeading title={t`stRSR Yield`} subtitle="0%" />
+          <InfoHeading
+            mb={3}
+            title={t`RToken Yield`}
+            subtitle={`${tokenApy}%`}
+          />
+          <InfoHeading title={t`stRSR Yield`} subtitle={`${stakingApy}%`} />
         </Box>
       </Flex>
     </Box>

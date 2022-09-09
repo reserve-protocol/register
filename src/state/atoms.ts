@@ -38,6 +38,9 @@ export const rTokenAtom = atom<ReserveToken | null>((get) =>
     : null
 )
 
+// Token APY
+export const rTokenYieldAtom = atom({ tokenApy: 0, stakingApy: 0 })
+
 // Current rToken status
 export const rTokenStatusAtom = atom(RTOKEN_STATUS.SOUND)
 export const isRTokenDisabledAtom = atom<boolean>((get) => {

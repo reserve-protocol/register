@@ -9,31 +9,62 @@ import {
 } from 'abis'
 import { Facade } from 'abis/types'
 import { ethers } from 'ethers'
+import { gql } from 'graphql-request'
 import useBlockNumber from 'hooks/useBlockNumber'
 import { useFacadeContract } from 'hooks/useContract'
 import useIsWindowVisible from 'hooks/useIsWindowVisible'
+import useQuery from 'hooks/useQuery'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useResetAtom, useUpdateAtom } from 'jotai/utils'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { ContractCall, ReserveToken, Token } from 'types'
-import { isAddress } from 'utils'
+import { calculateApy, isAddress } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 import { RTOKEN_STATUS } from 'utils/constants'
 import RSV from 'utils/rsv'
 import {
   accountRoleAtom,
+  blockTimestampAtom,
   reserveTokensAtom,
   rTokenDistributionAtom,
   rTokenMainAtom,
   rTokenStatusAtom,
+  rTokenYieldAtom,
   selectedRTokenAtom,
   walletAtom,
 } from './atoms'
 import { tokenMetricsAtom } from './metrics/atoms'
 import { promiseMulticall } from './web3/lib/multicall'
 import { error } from './web3/lib/notifications'
+
+const apyQuery = gql`
+  query getRTokenGrowth($id: String!, $fromTime: Int!) {
+    rToken(id: $id) {
+      recentRate: hourlySnapshots(
+        first: 1
+        orderBy: timestamp
+        where: { timestamp_gte: $fromTime }
+        orderDirection: desc
+      ) {
+        rsrExchangeRate
+        basketRate
+        timestamp
+      }
+      lastRate: hourlySnapshots(
+        first: 1
+        orderBy: timestamp
+        where: { timestamp_gte: $fromTime }
+        orderDirection: asc
+      ) {
+        rsrExchangeRate
+        basketRate
+        timestamp
+      }
+    }
+  }
+`
 
 /**
  * Fetch a list of tokens metadata from the blockchain
@@ -104,6 +135,7 @@ const ReserveTokenUpdater = () => {
   const blockNumber = useBlockNumber()
   const windowVisible = useIsWindowVisible()
   const mainAddress = useAtomValue(rTokenMainAtom)
+  const updateApy = useUpdateAtom(rTokenYieldAtom)
   const updateTokenStatus = useUpdateAtom(rTokenStatusAtom)
   const updateToken = useUpdateAtom(updateTokenAtom)
   const resetMetrics = useResetAtom(tokenMetricsAtom)
@@ -114,6 +146,15 @@ const ReserveTokenUpdater = () => {
   const account = useAtomValue(walletAtom)
   const { provider } = useWeb3React()
   const facadeContract = useFacadeContract()
+  const timestamp = useAtomValue(blockTimestampAtom)
+  const fromTime = useMemo(() => {
+    return timestamp - 2592000
+  }, [!!timestamp])
+  // TODO: poll from blockNumber
+  const { data } = useQuery(mainAddress ? apyQuery : null, {
+    id: selectedAddress.toLowerCase(),
+    fromTime,
+  })
 
   const setTokenStatus = useCallback(
     async (mainAddress: string, provider: Web3Provider) => {
@@ -310,6 +351,27 @@ const ReserveTokenUpdater = () => {
       getBackingDistribution(selectedAddress, facadeContract)
     }
   }, [blockNumber, mainAddress])
+
+  useEffect(() => {
+    if (data) {
+      // TODO: Repeated logic, encapsulate in a diff place
+      let tokenApy = 0
+      let stakingApy = 0
+
+      const recentRate = data.rToken?.recentRate[0]
+      const lastRate = data.rToken?.lastRate[0]
+
+      if (
+        recentRate &&
+        lastRate &&
+        recentRate.timestamp !== lastRate.timestamp
+      ) {
+        ;[tokenApy, stakingApy] = calculateApy(recentRate, lastRate)
+      }
+
+      updateApy({ tokenApy, stakingApy })
+    }
+  }, [data])
 
   return null
 }

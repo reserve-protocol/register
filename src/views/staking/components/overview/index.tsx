@@ -6,8 +6,9 @@ import {
   rsrExchangeRateAtom,
   rTokenAtom,
   rTokenDistributionAtom,
+  rTokenYieldAtom,
 } from 'state/atoms'
-import { Box, Text, Flex, Grid, BoxProps, Card } from 'theme-ui'
+import { Box, BoxProps, Flex, Grid, Text } from 'theme-ui'
 
 const ExchangeRate = (props: BoxProps) => {
   const rate = useAtomValue(rsrExchangeRateAtom)
@@ -26,6 +27,7 @@ const ExchangeRate = (props: BoxProps) => {
 
 const Stats = (props: BoxProps) => {
   const distribution = useAtomValue(rTokenDistributionAtom)
+  const { tokenApy, stakingApy } = useAtomValue(rTokenYieldAtom)
 
   return (
     <Box {...props} variant="layout.borderBox" p={0}>
@@ -49,7 +51,7 @@ const Stats = (props: BoxProps) => {
               />
             }
             title="Est. APY"
-            text="0%" // TODO
+            text={`${stakingApy}%`}
           />
         </Box>
         <Box

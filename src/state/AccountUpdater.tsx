@@ -87,7 +87,7 @@ const AccountUpdater = () => {
   const { data, error, mutate, isValidating } = useQuery(
     account ? accountQuery : null,
     {
-      id: account?.toLocaleLowerCase(),
+      id: account?.toLowerCase(),
       fromTime,
     }
   )
