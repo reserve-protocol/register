@@ -1,4 +1,5 @@
 import InfoBox from 'components/info-box'
+import { useMemo } from 'react'
 import {
   Area,
   AreaChart as Chart,
@@ -43,6 +44,18 @@ const AreaChart = ({
   onRangeChange,
   ...props
 }: Props) => {
+  const gain = useMemo(() => {
+    if (data && data.length > 1) {
+      console.log('last', data[data.length - 1].value)
+      return (
+        ((data[data.length - 1].value - data[0].value) / (data[0].value || 1)) *
+        100
+      )
+    }
+
+    return 0
+  }, [data])
+
   return (
     <Box {...props}>
       {heading && (
@@ -52,8 +65,8 @@ const AreaChart = ({
       )}
       <Flex sx={{ fontSize: 3 }} mb={4}>
         <Text>{title}</Text>
-        <Text ml="auto" sx={{ color: '#11BB8D' }}>
-          0%
+        <Text ml="auto" sx={{ color: 'success' }}>
+          {gain}%
         </Text>
       </Flex>
       <ResponsiveContainer height={100}>
