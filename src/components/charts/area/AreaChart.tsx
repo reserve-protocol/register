@@ -47,10 +47,9 @@ const AreaChart = ({
 }: Props) => {
   const gain = useMemo(() => {
     if (data && data.length > 1) {
-      console.log('last', data[data.length - 1].value)
-      return (
+      return Math.floor(
         ((data[data.length - 1].value - data[0].value) / (data[0].value || 1)) *
-        100
+          100
       )
     }
 
