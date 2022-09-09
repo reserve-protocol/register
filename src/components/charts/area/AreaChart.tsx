@@ -56,6 +56,14 @@ const AreaChart = ({
     return 0
   }, [data])
 
+  let gainColor = 'lightText'
+
+  if (gain > 0) {
+    gainColor = 'success'
+  } else if (gain < 0) {
+    gainColor = 'danger'
+  }
+
   return (
     <Box {...props}>
       {heading && (
@@ -65,7 +73,7 @@ const AreaChart = ({
       )}
       <Flex sx={{ fontSize: 3 }} mb={4}>
         <Text>{title}</Text>
-        <Text ml="auto" sx={{ color: 'success' }}>
+        <Text ml="auto" sx={{ color: gainColor }}>
           {gain}%
         </Text>
       </Flex>

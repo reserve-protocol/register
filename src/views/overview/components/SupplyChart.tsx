@@ -1,12 +1,14 @@
 import { formatEther } from '@ethersproject/units'
 import { t } from '@lingui/macro'
+import { RToken } from 'abis/types'
 import AreaChart from 'components/charts/area/AreaChart'
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
+import { useRTokenContract } from 'hooks/useContract'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
 import useTimeFrom from 'hooks/useTimeFrom'
-import { useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { BoxProps } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { TIME_RANGES } from 'utils/constants'
@@ -35,6 +37,7 @@ const dailyPriceQuery = gql`
 
 const SupplyChart = (props: BoxProps) => {
   const rToken = useRToken()
+  const [supply, setSupply] = useState(0)
   const [current, setCurrent] = useState(TIME_RANGES.DAY)
   const fromTime = useTimeFrom(current)
   const query = current === TIME_RANGES.DAY ? hourlyPriceQuery : dailyPriceQuery
@@ -42,6 +45,19 @@ const SupplyChart = (props: BoxProps) => {
     id: rToken?.address.toLowerCase(),
     fromTime,
   })
+  const contract = useRTokenContract(rToken?.address)
+
+  const getSupply = useCallback(async (contract: RToken) => {
+    const supply = await contract.totalSupply()
+
+    setSupply(+formatEther(supply))
+  }, [])
+
+  useEffect(() => {
+    if (contract) {
+      getSupply(contract)
+    }
+  }, [contract])
 
   const rows = useMemo(() => {
     if (data) {
@@ -59,8 +75,6 @@ const SupplyChart = (props: BoxProps) => {
     }
   }, [data])
 
-  const currentValue = rows && rows.length ? rows[rows.length - 1].value : 0
-
   const handleChange = (range: string) => {
     setCurrent(range)
   }
@@ -68,7 +82,7 @@ const SupplyChart = (props: BoxProps) => {
   return (
     <AreaChart
       heading={t`Supply`}
-      title={`${formatCurrency(currentValue)} ${rToken?.symbol}`}
+      title={`${formatCurrency(supply)} ${rToken?.symbol}`}
       data={rows}
       timeRange={TIME_RANGES}
       currentRange={current}
