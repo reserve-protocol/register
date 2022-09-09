@@ -3,9 +3,9 @@ import AreaChart from 'components/charts/area/AreaChart'
 import Help from 'components/help'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
-import { rTokenDistributionAtom, rTokenPriceAtom } from 'state/atoms'
+import { rTokenDistributionAtom } from 'state/atoms'
 import { Badge, Box, BoxProps, Card, Flex, Text } from 'theme-ui'
-import { formatCurrency } from 'utils'
+import PriceChart from './PriceChart'
 
 const data = [
   { name: 'A1', value: 1 },
@@ -20,28 +20,11 @@ const data = [
 
 const HistoricalData = (props: BoxProps) => {
   const rToken = useRToken()
-  const price = useAtomValue(rTokenPriceAtom)
   const { insurance } = useAtomValue(rTokenDistributionAtom)
 
   return (
     <Card {...props} p={5}>
-      <Box mb={5}>
-        <Flex variant="layout.verticalAlign" mb={4}>
-          <Text sx={{ fontSize: 3 }}>
-            <Trans>Price</Trans>
-          </Text>
-          <Box mx="auto" />
-          <Help content="TODO" />
-        </Flex>
-        <AreaChart title={`$${formatCurrency(price)}`} data={data} />
-        <Flex mt={3} sx={{ alignItems: 'center' }}>
-          <Badge mr={3}>24h</Badge>
-          <Text sx={{ cursor: 'pointer' }} mr={3}>
-            7d
-          </Text>
-          <Text sx={{ cursor: 'pointer' }}>30d</Text>
-        </Flex>
-      </Box>
+      <PriceChart mb={5} />
       <Box>
         <Flex variant="layout.verticalAlign" mb={4}>
           <Text sx={{ fontSize: 3 }}>

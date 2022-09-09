@@ -1,5 +1,5 @@
+import { Token, StringMap } from 'types'
 import { ChainId, CHAIN_ID } from 'utils/chains'
-import { AddressMap, Token } from 'types'
 import { RSR_ADDRESS } from './addresses'
 
 export const TRANSACTION_STATUS = {
@@ -18,6 +18,18 @@ export const RTOKEN_STATUS = {
 }
 
 export const COINGECKO_API = 'https://api.coingecko.com/api/v3'
+
+export const TIME_RANGES = {
+  DAY: '24h',
+  WEEK: '7d',
+  MONTH: '30d',
+}
+
+export const TIME_RANGE_VALUE: { [x: string]: number } = {
+  [TIME_RANGES.DAY]: 86400,
+  [TIME_RANGES.WEEK]: 604800,
+  [TIME_RANGES.MONTH]: 2592000,
+}
 
 export const ROUTES = Object.freeze({
   OVERVIEW: '/overview',
