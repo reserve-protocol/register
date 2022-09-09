@@ -6,6 +6,8 @@ import useQuery from 'hooks/useQuery'
 import { useMemo } from 'react'
 import { Box, Text, Flex, Grid, BoxProps } from 'theme-ui'
 import { formatCurrency } from 'utils'
+import { DEPLOYER_ADDRESS } from 'utils/addresses'
+import { CHAIN_ID } from 'utils/chains'
 
 const Stat = ({ title, value }: { title: string; value: string }) => (
   <Box mb={2}>
@@ -28,8 +30,8 @@ export const defaultProtocolMetrics = {
 }
 
 const protocolMetricsQuery = gql`
-  query GetProtocolMetrics {
-    protocol(id: "0x70bDA08DBe07363968e9EE53d899dFE48560605B") {
+  query GetProtocolMetrics($id: String!) {
+    protocol(id: $id) {
       totalValueLockedUSD
       totalRTokenUSD
       cumulativeVolumeUSD
@@ -55,7 +57,9 @@ const protocolMetricsQuery = gql`
 `
 
 const TokenStats = (props: BoxProps) => {
-  const { data } = useQuery(protocolMetricsQuery)
+  const { data } = useQuery(protocolMetricsQuery, {
+    id: DEPLOYER_ADDRESS[CHAIN_ID],
+  })
   const metrics = useMemo(() => {
     if (data) {
       return {
