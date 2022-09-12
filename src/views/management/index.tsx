@@ -36,12 +36,12 @@ const Management = () => {
         </>
       )}
 
-      <Box p={5}>
-        <Text variant="title" px={3} sx={{ fontSize: 4 }}>
+      <Box p="40px 48px">
+        <Text variant="title" pl={5} sx={{ fontSize: 4 }}>
           {rToken?.symbol} <Trans>Manager</Trans>
         </Text>
         <Grid columns={2} mt={4} gap={5}>
-          <Card>
+          <Card p={5}>
             <Text variant="title">
               <Trans>RToken Info</Trans>
             </Text>

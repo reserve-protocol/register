@@ -4,7 +4,7 @@ import { SmallButton } from 'components/button'
 import { Box, BoxProps, Flex } from 'theme-ui'
 
 const ListingInfo = (props: BoxProps) => (
-  <Box variant="layout.borderBox" {...props}>
+  <Box variant="layout.borderBox" p={5} {...props}>
     <InfoBox
       title={t`Register Listing`}
       subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam maximus facilisis velit, at venenatis nunc iaculis vitae. Vestibulum ante ipsum primis in faucibus orci luctu."
