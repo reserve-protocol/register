@@ -24,7 +24,7 @@ const OutgoingAuctions = (props: BoxProps) => {
 
   return (
     <Box {...props}>
-      <Text variant="title" sx={{ fontSize: 3 }} mb={4}>
+      <Text variant="title" sx={{ fontSize: 3 }} ml={5} mb={4}>
         <Trans>Ongoing Auctions</Trans>
       </Text>
       {data.length ? (
@@ -67,7 +67,7 @@ const FinalizedAuctions = (props: BoxProps) => {
 
   return (
     <Box {...props}>
-      <Text variant="title" sx={{ fontSize: 3 }} mb={4}>
+      <Text variant="title" sx={{ fontSize: 3 }} ml={5} mb={4}>
         <Trans>Ended Auctions</Trans>
       </Text>
       {data.length ? (
@@ -100,6 +100,7 @@ const Auctions = () => {
         title={rToken?.symbol + ' ' + t`related Auctions`}
         subtitle={t`Ongoing & historical auctions of USD+ from the Gnosis Auction app`}
         mb={7}
+        ml={5}
       />
       <OutgoingAuctions mb={7} />
       <FinalizedAuctions />
