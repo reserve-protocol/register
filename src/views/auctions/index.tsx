@@ -5,22 +5,81 @@ import { ContentHead } from 'components/info-box'
 import useRToken from 'hooks/useRToken'
 import { Table } from 'components/table'
 import { useMemo } from 'react'
+import { gql } from 'graphql-request'
+import { useAtomValue } from 'jotai'
+import { blockTimestampAtom } from 'state/atoms'
+import useQuery from 'hooks/useQuery'
 
-const OutgoingAuctions = (props: BoxProps) => {
+const tradesQuery = gql`
+  query Trades($id: String!, $time: Int!) {
+    current: trades(
+      where: { endedAt_gt: $time, rToken: $id }
+      orderBy: startedAt
+      orderDirection: desc
+    ) {
+      id
+      amount
+      auctionId
+      buying
+      endAt
+      selling
+      startedAt
+      worstCasePrice
+    }
+    ended: trades(
+      where: { endedAt_lte: $time, rToken: $id }
+      first: 50
+      orderBy: startedAt
+      orderDirection: desc
+    ) {
+      id
+      amount
+      auctionId
+      buying
+      endAt
+      selling
+      startedAt
+      worstCasePrice
+    }
+  }
+`
+
+interface Trade {
+  id: string
+  amount: number
+  auctionId: number
+  buying: string
+  endAt: number
+  selling: string
+  startedAt: number
+  worstCasePrice: number
+}
+
+interface TableProps extends BoxProps {
+  data: Trade[]
+}
+
+const OutgoingAuctions = ({ data, ...props }: TableProps) => {
   const columns = useMemo(
     () => [
       {
         Header: t`Selling`,
-        accessor: 'test6',
+        accessor: 'selling',
       },
-      { Header: t`Buying`, accessor: 'test2' },
-      { Header: t`Worst case price`, accessor: 'test3' }, // TODO: replace
-      { Header: t`Ends at`, accessor: 'test4' },
-      { Header: '', accessor: 'test5' }, // Auction link
+      { Header: t`Buying`, accessor: 'buying' },
+      { Header: t`Amount`, accessor: 'amount' },
+      { Header: t`Worst case price`, accessor: 'worstCasePrice' },
+      { Header: t`Ends at`, accessor: 'endAt' },
+      {
+        Header: '',
+        accessor: 'auctionId',
+        Cell: (cell: any) => {
+          return <Text>{cell.auctionId}</Text>
+        },
+      },
     ],
     []
   )
-  const data = []
 
   return (
     <Box {...props}>
@@ -48,22 +107,26 @@ const OutgoingAuctions = (props: BoxProps) => {
   )
 }
 
-const FinalizedAuctions = (props: BoxProps) => {
+const FinalizedAuctions = ({ data, ...props }: TableProps) => {
   const columns = useMemo(
     () => [
       {
         Header: t`Sold`,
-        accessor: 'test6',
+        accessor: 'selling',
       },
-      { Header: t`Bought`, accessor: 'test' },
-      { Header: t`Total amount traded`, accessor: 'test3' }, // TODO: replace
-      { Header: t`Ended at`, accessor: 'test4' },
-      { Header: '', accessor: 'test5' }, // Auction link
+      { Header: t`Bought`, accessor: 'buying' },
+      { Header: t`Amount`, accessor: 'amount' },
+      { Header: t`Ended at`, accessor: 'endAt' },
+      {
+        Header: '',
+        accessor: 'auctionId',
+        Cell: (cell: any) => {
+          return <Text>{cell.auctionId}</Text>
+        },
+      },
     ],
     []
   )
-
-  const data = []
 
   return (
     <Box {...props}>
@@ -93,6 +156,23 @@ const FinalizedAuctions = (props: BoxProps) => {
 
 const Auctions = () => {
   const rToken = useRToken()
+  const time = useAtomValue(blockTimestampAtom)
+
+  const { data } = useQuery(rToken ? tradesQuery : null, {
+    id: rToken?.address.toLowerCase(),
+    time,
+  })
+
+  const rows = useMemo(() => {
+    if (!data) {
+      return { current: [], ended: [] }
+    }
+
+    return {
+      current: data.current as Trade[],
+      ended: data.ended as Trade[],
+    }
+  }, [data])
 
   return (
     <Container>
@@ -102,8 +182,8 @@ const Auctions = () => {
         mb={7}
         ml={5}
       />
-      <OutgoingAuctions mb={7} />
-      <FinalizedAuctions />
+      <OutgoingAuctions data={rows.current} mb={7} />
+      <FinalizedAuctions data={rows.ended} />
     </Container>
   )
 }
