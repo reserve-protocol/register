@@ -91,14 +91,14 @@ const AreaChart = ({
         </ResponsiveContainer>
       )}
       {data && !data.length && (
-        <Box my={6} sx={{ textAlign: 'center' }}>
+        <Box my={6} sx={{ textAlign: 'center', height: 60 }}>
           <Text variant="legend">
             <Trans>No data</Trans>
           </Text>
         </Box>
       )}
       {!data && (
-        <Box my={6} sx={{ textAlign: 'center' }}>
+        <Box my={6} sx={{ textAlign: 'center', height: 60 }}>
           <Spinner size={24} />
         </Box>
       )}

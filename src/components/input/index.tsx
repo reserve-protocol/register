@@ -5,7 +5,6 @@ interface InputProps extends Omit<ThemeInputProps, 'onChange'> {
   onChange(value: string): void
 }
 
-// TODO: Props and styling
 const Input = ({ onChange, ...props }: InputProps) => {
   const handleChange = useCallback(
     (event: any) => {
