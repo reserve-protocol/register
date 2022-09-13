@@ -45,7 +45,7 @@ const useRTokenPrice = (tokenAddress: string, isRToken = false): number => {
 
   // TODO: should price be fetched block by block?
   useEffect(() => {
-    if (rToken?.address && contract) {
+    if (rToken?.address && contract && !rToken.isRSV) {
       getTokenPrice(contract, rToken.address)
     } else if (rToken?.isRSV) {
       getRSVPrice(rToken.address)
