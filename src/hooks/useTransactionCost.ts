@@ -33,7 +33,6 @@ export const useTransactionGasFee = (
               const estimate = await contract.estimateGas[tx.call.method](
                 ...tx.call.args
               )
-              console.log('estimate?', estimate)
               const parsed = +formatEther(estimate)
               totalFee += parsed
               return parsed
