@@ -46,7 +46,7 @@ const MaxIssuableUpdater = () => {
   useEffect(() => {
     if (rToken && !rToken.isRSV && account && facadeContract) {
       updateMaxIssuable(account, rToken.address, facadeContract)
-    } else {
+    } else if (!rToken?.isRSV) {
       setMaxIssuable(0)
     }
   }, [rToken?.address, account, facadeContract, JSON.stringify(tokenBalances)])

@@ -42,11 +42,7 @@ export const getIssuable = (rsv: ReserveToken, tokenBalances: StringMap) => {
     )
   }
 
-  return (
-    parseEther(lowestCollateralBalance.toString())
-      .div(ONE_ETH.div(3))
-      .toNumber() || 0
-  )
+  return lowestCollateralBalance / 3
 }
 
 export const quote = (amount: BigNumber): { [x: string]: BigNumber } => ({
