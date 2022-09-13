@@ -129,6 +129,7 @@ export interface ReserveToken extends Token {
   stToken?: Token // staking RSR token
   main?: string // main contract address
   isRSV?: boolean // only for RSV
+  unlisted?: boolean // Mark if the token is not listed
 }
 
 export interface AccountToken {

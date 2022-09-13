@@ -4,6 +4,7 @@ import { Button, Container } from 'components'
 import { ContentHead } from 'components/info-box'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
+import useTimeFrom from 'hooks/useTimeFrom'
 import { useAtom } from 'jotai'
 import { useAtomValue } from 'jotai/utils'
 import { useEffect } from 'react'
@@ -18,6 +19,7 @@ import { tokenMetricsAtom } from 'state/metrics/atoms'
 import { Box, Divider, Grid, IconButton, Text } from 'theme-ui'
 import { TokenStats } from 'types'
 import { formatCurrency, shortenAddress } from 'utils'
+import { TIME_RANGES } from 'utils/constants'
 import About from './components/About'
 import AssetOverview from './components/AssetOverview'
 import HistoricalData from './components/HistoricalData'
@@ -30,7 +32,7 @@ const dividerProps = { my: 7, mx: -7, sx: { borderColor: 'darkBorder' } }
 const gridProps = { columns: [1, 1, 1, 2], gap: 6 }
 
 const rTokenMetricsQuery = gql`
-  query GetProtocolMetrics($id: String!, $from: String!, $to: String!) {
+  query GetProtocolMetrics($id: String!, $fromTime: Int!) {
     rtoken(id: $id) {
       insurance
     }
@@ -38,7 +40,12 @@ const rTokenMetricsQuery = gql`
       totalSupply
       transferCount
       cumulativeVolume
-      dailyTokenSnapshot(orderBy: timestamp, orderDirection: desc, first: 1) {
+      dailyTokenSnapshot(
+        orderBy: timestamp
+        orderDirection: desc
+        first: 1
+        where: { timestamp_gte: $fromTime }
+      ) {
         dailyVolume
         dailyEventCount
       }
@@ -47,12 +54,12 @@ const rTokenMetricsQuery = gql`
 `
 
 const useTokenStats = (rTokenId: string): TokenStats => {
-  const currentTime = useAtomValue(blockTimestampAtom)
   const [stats, setStats] = useAtom(tokenMetricsAtom)
+  const fromTime = useTimeFrom(TIME_RANGES.DAY)
+
   const { data } = useQuery(rTokenMetricsQuery, {
     id: rTokenId,
-    from: (currentTime - 24 * 60 * 60).toString(),
-    to: currentTime.toString(),
+    fromTime,
   })
   const rsrPrice = useAtomValue(rsrPriceAtom)
   const rTokenPrice = useAtomValue(rTokenPriceAtom)

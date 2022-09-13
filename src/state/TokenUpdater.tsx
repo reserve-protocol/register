@@ -23,6 +23,7 @@ import { calculateApy, isAddress } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 import { RTOKEN_STATUS } from 'utils/constants'
+import rtokens from 'rtokens'
 import RSV from 'utils/rsv'
 import {
   accountRoleAtom,
@@ -247,6 +248,7 @@ const ReserveTokenUpdater = () => {
           stToken,
           collaterals,
           main,
+          unlisted: !rtokens[CHAIN_ID][rToken.address],
         })
       } catch (e) {
         console.error('Error fetching token info', e)

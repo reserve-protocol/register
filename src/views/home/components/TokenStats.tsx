@@ -3,11 +3,13 @@ import { t } from '@lingui/macro'
 import { ContentHead, InfoHeading } from 'components/info-box'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
+import useTimeFrom from 'hooks/useTimeFrom'
 import { useMemo } from 'react'
 import { Box, Text, Flex, Grid, BoxProps } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { DEPLOYER_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
+import { TIME_RANGES } from 'utils/constants'
 
 const Stat = ({ title, value }: { title: string; value: string }) => (
   <Box mb={2}>
@@ -30,7 +32,7 @@ export const defaultProtocolMetrics = {
 }
 
 const protocolMetricsQuery = gql`
-  query GetProtocolMetrics($id: String!) {
+  query GetProtocolMetrics($id: String!, $fromTime: Int!) {
     protocol(id: $id) {
       totalValueLockedUSD
       totalRTokenUSD
@@ -43,6 +45,7 @@ const protocolMetricsQuery = gql`
       orderBy: timestamp
       orderDirection: desc
       fist: 1
+      where: { timestamp_gte: $fromTime }
     ) {
       dailyVolumeUSD
     }
@@ -50,6 +53,7 @@ const protocolMetricsQuery = gql`
       orderBy: timestamp
       orderDirection: desc
       first: 1
+      where: { timestamp_gte: $fromTime }
     ) {
       dailyTransactionCount
     }
@@ -57,8 +61,10 @@ const protocolMetricsQuery = gql`
 `
 
 const TokenStats = (props: BoxProps) => {
+  const fromTime = useTimeFrom(TIME_RANGES.DAY)
   const { data } = useQuery(protocolMetricsQuery, {
     id: DEPLOYER_ADDRESS[CHAIN_ID],
+    fromTime,
   })
   const metrics = useMemo(() => {
     if (data) {
