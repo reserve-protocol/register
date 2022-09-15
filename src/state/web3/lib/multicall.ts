@@ -63,7 +63,12 @@ export const promiseMulticall = async (
       throw new Error('Error running multicall')
     }
 
-    return calls[i].abi.decodeFunctionResult(calls[i].method, result.value)[0]
+    const decodedResult = calls[i].abi.decodeFunctionResult(
+      calls[i].method,
+      result.value
+    )
+
+    return decodedResult.length === 1 ? decodedResult[0] : decodedResult
   })
 }
 

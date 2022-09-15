@@ -7,7 +7,6 @@ import {
   MainInterface,
   RTokenInterface,
 } from 'abis'
-import { Facade } from 'abis/types'
 import { ethers } from 'ethers'
 import { gql } from 'graphql-request'
 import useBlockNumber from 'hooks/useBlockNumber'
@@ -18,17 +17,18 @@ import { atom, useAtom, useAtomValue } from 'jotai'
 import { useResetAtom, useUpdateAtom } from 'jotai/utils'
 import { useCallback, useEffect, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import rtokens from 'rtokens'
 import { ContractCall, ReserveToken, Token } from 'types'
 import { calculateApy, isAddress } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 import { RTOKEN_STATUS } from 'utils/constants'
-import rtokens from 'rtokens'
 import RSV from 'utils/rsv'
 import {
   accountRoleAtom,
   blockTimestampAtom,
   reserveTokensAtom,
+  rTokenCollateralDist,
   rTokenDistributionAtom,
   rTokenMainAtom,
   rTokenStatusAtom,
@@ -142,6 +142,7 @@ const ReserveTokenUpdater = () => {
   const resetMetrics = useResetAtom(tokenMetricsAtom)
   const updateAccountRole = useUpdateAtom(accountRoleAtom)
   const setDistribution = useUpdateAtom(rTokenDistributionAtom)
+  const setCollateralDist = useUpdateAtom(rTokenCollateralDist)
   const [searchParams] = useSearchParams()
   const currentAddress = searchParams.get('token')
   const account = useAtomValue(walletAtom)
@@ -194,16 +195,44 @@ const ReserveTokenUpdater = () => {
   )
 
   const getBackingDistribution = useCallback(
-    async (tokenAddress: string, facade: Facade) => {
+    async (tokenAddress: string, provider: Web3Provider) => {
       try {
-        const [backing, insurance] = await facade.backingOverview(tokenAddress)
+        const callParams = {
+          abi: FacadeInterface,
+          address: FACADE_ADDRESS[CHAIN_ID],
+          args: [tokenAddress],
+        }
+
+        const [{ erc20s, uoaShares }, { backing, insurance }] =
+          await promiseMulticall(
+            [
+              {
+                ...callParams,
+                method: 'basketBreakdown',
+              },
+              {
+                ...callParams,
+                method: 'backingOverview',
+              },
+            ],
+            provider
+          )
 
         setDistribution({
           backing: Math.ceil(Number(formatEther(backing)) * 100),
           insurance: Math.ceil(Number(formatEther(insurance)) * 100),
         })
+        setCollateralDist(
+          erc20s.reduce(
+            (acc: any, current: any, index: any) => ({
+              ...acc,
+              [current]: +formatEther(uoaShares[index]) * 100,
+            }),
+            {}
+          )
+        )
       } catch (e) {
-        console.error('Error getting rToken backing distribution')
+        console.error('Error getting rToken backing distribution', e)
       }
     },
     []
@@ -349,8 +378,8 @@ const ReserveTokenUpdater = () => {
 
   useEffect(() => {
     // Use mainAddress to validate we have an rToken selected
-    if (mainAddress && facadeContract) {
-      getBackingDistribution(selectedAddress, facadeContract)
+    if (mainAddress && provider) {
+      getBackingDistribution(selectedAddress, provider)
     }
   }, [blockNumber, mainAddress])
 

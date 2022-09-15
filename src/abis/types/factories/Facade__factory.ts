@@ -49,6 +49,30 @@ const _abi = [
         type: "address",
       },
     ],
+    name: "basketBreakdown",
+    outputs: [
+      {
+        internalType: "address[]",
+        name: "erc20s",
+        type: "address[]",
+      },
+      {
+        internalType: "uint192[]",
+        name: "uoaShares",
+        type: "uint192[]",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "contract IRToken",
+        name: "rToken",
+        type: "address",
+      },
+    ],
     name: "basketTokens",
     outputs: [
       {

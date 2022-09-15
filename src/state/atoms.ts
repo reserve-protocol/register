@@ -56,6 +56,8 @@ export const rTokenMainAtom = atom<string | null>((get) => {
   return rToken?.main || null
 })
 
+export const rTokenCollateralDist = atom<{ [x: string]: number }>({})
+
 // Get rToken collateral distribution
 export const rTokenDistributionAtom = atom<{
   backing: number

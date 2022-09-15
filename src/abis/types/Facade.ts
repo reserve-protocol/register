@@ -39,6 +39,7 @@ export declare namespace IFacadeP1 {
 export interface FacadeInterface extends utils.Interface {
   functions: {
     "backingOverview(address)": FunctionFragment;
+    "basketBreakdown(address)": FunctionFragment;
     "basketTokens(address)": FunctionFragment;
     "claimRewards(address)": FunctionFragment;
     "currentAssets(address)": FunctionFragment;
@@ -55,6 +56,7 @@ export interface FacadeInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "backingOverview"
+      | "basketBreakdown"
       | "basketTokens"
       | "claimRewards"
       | "currentAssets"
@@ -70,6 +72,10 @@ export interface FacadeInterface extends utils.Interface {
 
   encodeFunctionData(
     functionFragment: "backingOverview",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "basketBreakdown",
     values: [string]
   ): string;
   encodeFunctionData(
@@ -113,6 +119,10 @@ export interface FacadeInterface extends utils.Interface {
 
   decodeFunctionResult(
     functionFragment: "backingOverview",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "basketBreakdown",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -188,6 +198,11 @@ export interface Facade extends BaseContract {
       [BigNumber, BigNumber] & { backing: BigNumber; insurance: BigNumber }
     >;
 
+    basketBreakdown(
+      rToken: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     basketTokens(
       rToken: string,
       overrides?: CallOverrides
@@ -260,6 +275,11 @@ export interface Facade extends BaseContract {
     [BigNumber, BigNumber] & { backing: BigNumber; insurance: BigNumber }
   >;
 
+  basketBreakdown(
+    rToken: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   basketTokens(rToken: string, overrides?: CallOverrides): Promise<string[]>;
 
   claimRewards(
@@ -316,6 +336,13 @@ export interface Facade extends BaseContract {
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber] & { backing: BigNumber; insurance: BigNumber }
+    >;
+
+    basketBreakdown(
+      rToken: string,
+      overrides?: CallOverrides
+    ): Promise<
+      [string[], BigNumber[]] & { erc20s: string[]; uoaShares: BigNumber[] }
     >;
 
     basketTokens(rToken: string, overrides?: CallOverrides): Promise<string[]>;
@@ -378,6 +405,11 @@ export interface Facade extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    basketBreakdown(
+      rToken: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     basketTokens(rToken: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     claimRewards(
@@ -433,6 +465,11 @@ export interface Facade extends BaseContract {
     backingOverview(
       rToken: string,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    basketBreakdown(
+      rToken: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     basketTokens(

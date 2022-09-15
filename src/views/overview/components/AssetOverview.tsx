@@ -3,7 +3,11 @@ import TokenLogo from 'components/icons/TokenLogo'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
-import { rTokenDistributionAtom, rTokenPriceAtom } from 'state/atoms'
+import {
+  rTokenCollateralDist,
+  rTokenDistributionAtom,
+  rTokenPriceAtom,
+} from 'state/atoms'
 import { Box, BoxProps, Card, Flex, Grid, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 
@@ -82,6 +86,7 @@ const getAngles = (value: number) => {
 
 const AssetOverview = () => {
   const rToken = useRToken()
+  const basketDist = useAtomValue(rTokenCollateralDist)
   const distribution = useAtomValue(rTokenDistributionAtom)
   const price = useAtomValue(rTokenPriceAtom)
 
@@ -118,9 +123,7 @@ const AssetOverview = () => {
             <Flex mb={2} key={c.address}>
               <TokenLogo symbol={c.symbol} mr={3} />
               <Text>{c.symbol}</Text>
-              <Text ml="auto">
-                {Math.round(100 / (rToken?.collaterals.length ?? 1))}%
-              </Text>
+              <Text ml="auto">{basketDist[c.address] || 0}%</Text>
             </Flex>
           ))}
         </Box>
