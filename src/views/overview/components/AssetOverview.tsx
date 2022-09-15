@@ -1,97 +1,77 @@
 import { Trans } from '@lingui/macro'
 import TokenLogo from 'components/icons/TokenLogo'
 import useRToken from 'hooks/useRToken'
-import { useAtomValue } from 'jotai'
-import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
+import { atom, useAtomValue } from 'jotai'
+import { useMemo } from 'react'
 import {
+  rTokenAtom,
   rTokenCollateralDist,
   rTokenDistributionAtom,
   rTokenPriceAtom,
 } from 'state/atoms'
-import { Box, BoxProps, Card, Flex, Grid, Text } from 'theme-ui'
-import { formatCurrency } from 'utils'
+import { Box, Card, Flex, Grid, Text } from 'theme-ui'
+import { StringMap } from 'types'
+import { formatCurrency, stringToColor } from 'utils'
+import RSV from 'utils/rsv'
+import CollateralPieChart from './CollateralPieChart'
 
-const data = [
-  { name: 'A1', value: 100 },
-  { name: 'A2', value: 300 },
-  { name: 'B1', value: 100 },
-  { name: 'A2', value: 300 },
-  { name: 'B1', value: 100 },
-  { name: 'A2', value: 300 },
-  { name: 'B1', value: 100 },
-  { name: 'A1', value: 100 },
-]
-
-const colors = [
-  '#000000',
-  '#333333',
-  '#4C4C4C',
-  '#666666',
-  '#808080',
-  '#999999',
-  '#B3B3B3',
-  '#CCCCCC',
-]
-
-interface ChartProps extends BoxProps {
-  data: { name: string; value: number }[]
-  insurance: number
+const collateralColor: StringMap = {
+  dai: '',
+  usdc: '#2775CA',
+  usdt: '',
+  usdp: '#28813F',
+  tusd: '#2B2E7C',
+  busd: '',
+  adai: '',
+  ausdc: '',
+  ausdt: '',
+  abusd: '',
+  cdai: '',
+  cusdc: '',
+  cusdt: '',
+  cwbtc: '',
+  ceth: '',
+  wbtc: '',
+  weth: '',
+  eurt: '',
 }
 
-const CollateralChart = ({ data, insurance, ...props }: ChartProps) => (
-  <Box {...props} sx={{ position: 'relative' }}>
-    <ResponsiveContainer height={200}>
-      <PieChart>
-        <Pie
-          data={data}
-          dataKey="value"
-          cx="50%"
-          cy="50%"
-          innerRadius={70}
-          outerRadius={80}
-        >
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={colors[index]} />
-          ))}
-        </Pie>
-        <Pie
-          dataKey="value"
-          data={[{ value: 100, name: 'insurance' }]}
-          cx="50%"
-          cy="50%"
-          innerRadius={90}
-          outerRadius={100}
-          fill="#11BB8D"
-          {...getAngles(insurance)}
-        />
-      </PieChart>
-    </ResponsiveContainer>
-    <Box
-      sx={{
-        top: 'calc(50% - 8px)',
-        left: 'calc(50% - 12px)',
-        position: 'absolute',
-      }}
-    >
-      <TokenLogo size={24} symbol="rsv" />
-    </Box>
-  </Box>
-)
+const basketDistAtom = atom((get) => {
+  const rToken = get(rTokenAtom)
 
-// Value % between 0-100
-const getAngles = (value: number) => {
-  const radius = Math.floor((value * 360) / 100) / 2
-  return { startAngle: 270 + radius, endAngle: 270 - radius }
-}
+  if (rToken?.isRSV) {
+    return RSV.collaterals.reduce(
+      (acc, current) => ({
+        ...acc,
+        [current.address]: current.symbol === 'USDC' ? 33.34 : 33.33,
+      }),
+      {} as StringMap
+    )
+  }
+
+  return get(rTokenCollateralDist)
+})
 
 const AssetOverview = () => {
   const rToken = useRToken()
-  const basketDist = useAtomValue(rTokenCollateralDist)
+  const basketDist = useAtomValue(basketDistAtom)
   const distribution = useAtomValue(rTokenDistributionAtom)
   const price = useAtomValue(rTokenPriceAtom)
+  const pieData = useMemo(() => {
+    if (rToken?.address && basketDist && Object.keys(basketDist)) {
+      return rToken.collaterals.map((c) => ({
+        name: c.name,
+        value: basketDist[c.address],
+        color:
+          collateralColor[c.symbol.toLowerCase()] || stringToColor(c.address),
+      }))
+    }
+
+    return []
+  }, [JSON.stringify(basketDist), rToken?.address])
 
   return (
-    <Card py={5}>
+    <Card py={5} sx={{ height: 'fit-content' }}>
       <Grid columns={2} gap={2}>
         <Flex
           sx={{
@@ -104,19 +84,28 @@ const AssetOverview = () => {
             <Trans>Basket of 1 {rToken?.symbol}</Trans>
           </Text>
           <Text variant="legend">${formatCurrency(price ?? 0)}</Text>
-          <CollateralChart mb={4} mt={2} data={data} insurance={30} />
+          <CollateralPieChart
+            mb={4}
+            mt={2}
+            data={pieData}
+            symbol={rToken?.symbol || 'rsv'}
+            isRSV={rToken?.isRSV}
+            insurance={distribution.insurance}
+          />
           <Text variant="legend">
             <Trans>Backing</Trans>
             <Box as="span" ml={2} sx={{ fontWeight: 'bold', color: 'text' }}>
-              {distribution.backing}%
+              {rToken?.isRSV ? 100 : distribution.backing}%
             </Box>
           </Text>
-          <Text variant="legend">
-            <Trans>Insurance coverage</Trans>
-            <Box as="span" ml={2} sx={{ fontWeight: 'bold', color: 'text' }}>
-              {distribution.insurance}%
-            </Box>
-          </Text>{' '}
+          {!rToken?.isRSV && (
+            <Text variant="legend">
+              <Trans>Insurance coverage</Trans>
+              <Box as="span" ml={2} sx={{ fontWeight: 'bold', color: 'text' }}>
+                {distribution.insurance}%
+              </Box>
+            </Text>
+          )}
         </Flex>
         <Box>
           {(rToken?.collaterals ?? []).map((c) => (

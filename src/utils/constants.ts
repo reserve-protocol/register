@@ -1,4 +1,4 @@
-import { Token, StringMap } from 'types'
+import { Token } from 'types'
 import { ChainId, CHAIN_ID } from 'utils/chains'
 import { RSR_ADDRESS, RSV_ADDRESS } from './addresses'
 
