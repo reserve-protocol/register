@@ -1,6 +1,6 @@
 import { Token, StringMap } from 'types'
 import { ChainId, CHAIN_ID } from 'utils/chains'
-import { RSR_ADDRESS } from './addresses'
+import { RSR_ADDRESS, RSV_ADDRESS } from './addresses'
 
 export const TRANSACTION_STATUS = {
   PENDING: 'PENDING', // Tx to be executed
@@ -66,7 +66,7 @@ export const RSR: Token = {
 export const DEFAULT_TOKENS = {
   [ChainId.Goerli]: [
     '0x8431278459066BF0d2536db436709b1BB96Fdc4D',
-    '0xE794eA53578837f6193bBb77885A52c2ee394e14',
+    RSV_ADDRESS[ChainId.Goerli],
   ],
   [ChainId.Hardhat]: [
     '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',

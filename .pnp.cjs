@@ -4893,7 +4893,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ],\
       [\
         "rtokens",\
-        "https://github.com/lc-labs/rtokens.git#commit=3ecd473362c83e87e99d2ef758e947a20817e99a"\
+        "https://github.com/lc-labs/rtokens.git#commit=29af2d8b8d59cfe651d118fb02e069bccc5b8f16"\
       ],\
       [\
         "run-async",\
@@ -5797,7 +5797,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-scripts", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:5.0.1"],\
             ["react-table", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:7.7.0"],\
             ["recharts", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:2.1.9"],\
-            ["rtokens", "https://github.com/lc-labs/rtokens.git#commit=3ecd473362c83e87e99d2ef758e947a20817e99a"],\
+            ["rtokens", "https://github.com/lc-labs/rtokens.git#commit=29af2d8b8d59cfe651d118fb02e069bccc5b8f16"],\
             ["source-map-explorer", "npm:2.5.2"],\
             ["swr", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.2.2"],\
             ["theme-ui", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:0.14.6"],\
@@ -24031,7 +24031,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-scripts", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:5.0.1"],\
             ["react-table", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:7.7.0"],\
             ["recharts", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:2.1.9"],\
-            ["rtokens", "https://github.com/lc-labs/rtokens.git#commit=3ecd473362c83e87e99d2ef758e947a20817e99a"],\
+            ["rtokens", "https://github.com/lc-labs/rtokens.git#commit=29af2d8b8d59cfe651d118fb02e069bccc5b8f16"],\
             ["source-map-explorer", "npm:2.5.2"],\
             ["swr", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:1.2.2"],\
             ["theme-ui", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:0.14.6"],\
@@ -25301,10 +25301,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["rtokens", [\
-        ["https://github.com/lc-labs/rtokens.git#commit=3ecd473362c83e87e99d2ef758e947a20817e99a", {\
-          "packageLocation": "./.yarn/cache/rtokens-https-995df8f4b3-60921c6672.zip/node_modules/rtokens/",\
+        ["https://github.com/lc-labs/rtokens.git#commit=29af2d8b8d59cfe651d118fb02e069bccc5b8f16", {\
+          "packageLocation": "./.yarn/cache/rtokens-https-56bdcbc3c0-0b9d85a50d.zip/node_modules/rtokens/",\
           "packageDependencies": [\
-            ["rtokens", "https://github.com/lc-labs/rtokens.git#commit=3ecd473362c83e87e99d2ef758e947a20817e99a"]\
+            ["rtokens", "https://github.com/lc-labs/rtokens.git#commit=29af2d8b8d59cfe651d118fb02e069bccc5b8f16"]\
           ],\
           "linkType": "HARD"\
         }]\

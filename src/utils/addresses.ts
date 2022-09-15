@@ -12,7 +12,7 @@ export const DEPLOYER_ADDRESS: AddressMap = {
 
 export const FACADE_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xD6b040736e948621c5b6E0a494473c47a6113eA8',
-  [ChainId.Goerli]: '0xf02481eAaf3F17606e03D063FDCF666954956568',
+  [ChainId.Goerli]: '0x120458d2e8B5C38e60F852472e1255305f276461',
   [ChainId.Hardhat]: '0xD6b040736e948621c5b6E0a494473c47a6113eA8',
 }
 
@@ -48,13 +48,13 @@ export const COMPOUND_ADDRESS: AddressMap = {
 
 export const RSV_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',
-  [ChainId.Goerli]: '0xE794eA53578837f6193bBb77885A52c2ee394e14',
+  [ChainId.Goerli]: '0xC54cA3D2A4fE68D079b45c92D703DADfE3Ad0AA0',
   [ChainId.Hardhat]: '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',
 }
 
 export const RSV_MANAGER_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x4B481872f31bab47C6780D5488c84D309b1B8Bb6',
-  [ChainId.Goerli]: '0xd6c7488831aA08c11AF2e30E24095305b230d298',
+  [ChainId.Goerli]: '0x08d95a020cE6FCfF46ACb323E2416Bc847D68b9a',
   [ChainId.Hardhat]: '0x4B481872f31bab47C6780D5488c84D309b1B8Bb6',
 }
 
