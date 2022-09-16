@@ -10,31 +10,27 @@ import {
   rTokenPriceAtom,
 } from 'state/atoms'
 import { Box, Card, Flex, Grid, Text } from 'theme-ui'
-import { StringMap } from 'types'
 import { formatCurrency, stringToColor } from 'utils'
 import RSV from 'utils/rsv'
 import CollateralPieChart from './CollateralPieChart'
 
-const collateralColor: StringMap = {
-  dai: '',
-  usdc: '#2775CA',
-  usdt: '',
-  usdp: '#28813F',
-  tusd: '#2B2E7C',
-  busd: '',
-  adai: '',
-  ausdc: '',
-  ausdt: '',
-  abusd: '',
-  cdai: '',
-  cusdc: '',
-  cusdt: '',
-  cwbtc: '',
-  ceth: '',
-  wbtc: '',
-  weth: '',
-  eurt: '',
-}
+const colors = [
+  '#2B2E7C',
+  '#28813F',
+  '#2775CA',
+  '#003F5C',
+  '#2F4B7C',
+  '#665191',
+  '#A05195',
+  '#D45087',
+  '#F95D6A',
+  '#FF7C43',
+  '#FFA600',
+  '#333333',
+  '#666666',
+  '#999999',
+  '#CCCCCC',
+]
 
 const basketDistAtom = atom((get) => {
   const rToken = get(rTokenAtom)
@@ -62,11 +58,10 @@ const AssetOverview = () => {
   const price = useAtomValue(rTokenPriceAtom)
   const pieData = useMemo(() => {
     if (rToken?.address && basketDist && Object.keys(basketDist)) {
-      return rToken.collaterals.map((c) => ({
+      return rToken.collaterals.map((c, index) => ({
         name: c.name,
         value: basketDist[c.address].share,
-        color:
-          collateralColor[c.symbol.toLowerCase()] || stringToColor(c.address),
+        color: colors[index] || stringToColor(c.address),
       }))
     }
 

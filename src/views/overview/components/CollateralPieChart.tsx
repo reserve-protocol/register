@@ -1,5 +1,5 @@
 import TokenLogo from 'components/icons/TokenLogo'
-import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 import { Box, BoxProps } from 'theme-ui'
 
 interface ChartProps extends BoxProps {
@@ -23,6 +23,15 @@ const CollateralChart = ({
   ...props
 }: ChartProps) => (
   <Box {...props} sx={{ position: 'relative' }}>
+    <Box
+      sx={{
+        top: 'calc(50% - 8px)',
+        left: 'calc(50% - 12px)',
+        position: 'absolute',
+      }}
+    >
+      <TokenLogo size={24} symbol={symbol} />
+    </Box>
     <ResponsiveContainer height={200}>
       <PieChart>
         <Pie
@@ -37,6 +46,7 @@ const CollateralChart = ({
             <Cell key={`cell-${index}`} fill={entry.color} />
           ))}
         </Pie>
+        <Tooltip />
         {!isRSV && (
           <Pie
             dataKey="value"
@@ -51,15 +61,6 @@ const CollateralChart = ({
         )}
       </PieChart>
     </ResponsiveContainer>
-    <Box
-      sx={{
-        top: 'calc(50% - 8px)',
-        left: 'calc(50% - 12px)',
-        position: 'absolute',
-      }}
-    >
-      <TokenLogo size={24} symbol={symbol} />
-    </Box>
   </Box>
 )
 
