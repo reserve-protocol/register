@@ -342,7 +342,11 @@ export interface Facade extends BaseContract {
       rToken: string,
       overrides?: CallOverrides
     ): Promise<
-      [string[], BigNumber[]] & { erc20s: string[]; uoaShares: BigNumber[] }
+      [string[], BigNumber[], string[]] & {
+        erc20s: string[];
+        uoaShares: BigNumber[];
+        targets: string[];
+      }
     >;
 
     basketTokens(rToken: string, overrides?: CallOverrides): Promise<string[]>;

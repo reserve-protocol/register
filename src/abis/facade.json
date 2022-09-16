@@ -52,6 +52,11 @@
         "internalType": "uint192[]",
         "name": "uoaShares",
         "type": "uint192[]"
+      },
+      {
+        "internalType": "bytes32[]",
+        "name": "targets",
+        "type": "bytes32[]"
       }
     ],
     "stateMutability": "nonpayable",

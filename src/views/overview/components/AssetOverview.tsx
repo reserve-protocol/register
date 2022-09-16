@@ -43,9 +43,12 @@ const basketDistAtom = atom((get) => {
     return RSV.collaterals.reduce(
       (acc, current) => ({
         ...acc,
-        [current.address]: current.symbol === 'USDC' ? 33.34 : 33.33,
+        [current.address]: {
+          share: current.symbol === 'USDC' ? 33.34 : 33.33,
+          targetUnit: 'USD',
+        },
       }),
-      {} as StringMap
+      {} as { [x: string]: { share: number; targetUnit: string } }
     )
   }
 
@@ -61,7 +64,7 @@ const AssetOverview = () => {
     if (rToken?.address && basketDist && Object.keys(basketDist)) {
       return rToken.collaterals.map((c) => ({
         name: c.name,
-        value: basketDist[c.address],
+        value: basketDist[c.address].share,
         color:
           collateralColor[c.symbol.toLowerCase()] || stringToColor(c.address),
       }))
@@ -108,11 +111,19 @@ const AssetOverview = () => {
           )}
         </Flex>
         <Box>
+          <Text variant="legend">
+            <Trans>Primary Basket</Trans>
+          </Text>
           {(rToken?.collaterals ?? []).map((c) => (
-            <Flex mb={2} key={c.address}>
+            <Flex mt={3} key={c.address} sx={{ alignItems: 'center' }}>
               <TokenLogo symbol={c.symbol} mr={3} />
-              <Text>{c.symbol}</Text>
-              <Text ml="auto">{basketDist[c.address] || 0}%</Text>
+              <Box>
+                <Text variant="legend" sx={{ fontSize: 1, display: 'block' }}>
+                  {basketDist[c.address]?.targetUnit}
+                </Text>
+                <Text>{c.symbol}</Text>
+              </Box>
+              <Text ml="auto">{basketDist[c.address]?.share || 0}%</Text>
             </Flex>
           ))}
         </Box>

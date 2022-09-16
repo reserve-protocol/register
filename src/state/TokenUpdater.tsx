@@ -10,7 +10,6 @@ import {
 import { ethers } from 'ethers'
 import { gql } from 'graphql-request'
 import useBlockNumber from 'hooks/useBlockNumber'
-import { useFacadeContract } from 'hooks/useContract'
 import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import useQuery from 'hooks/useQuery'
 import { atom, useAtom, useAtomValue } from 'jotai'
@@ -147,7 +146,6 @@ const ReserveTokenUpdater = () => {
   const currentAddress = searchParams.get('token')
   const account = useAtomValue(walletAtom)
   const { provider } = useWeb3React()
-  const facadeContract = useFacadeContract()
   const timestamp = useAtomValue(blockTimestampAtom)
   const fromTime = useMemo(() => {
     return timestamp - 2592000
@@ -203,7 +201,7 @@ const ReserveTokenUpdater = () => {
           args: [tokenAddress],
         }
 
-        const [{ erc20s, uoaShares }, { backing, insurance }] =
+        const [{ erc20s, uoaShares, targets }, { backing, insurance }] =
           await promiseMulticall(
             [
               {
@@ -226,7 +224,12 @@ const ReserveTokenUpdater = () => {
           erc20s.reduce(
             (acc: any, current: any, index: any) => ({
               ...acc,
-              [current]: +formatEther(uoaShares[index]) * 100,
+              [current]: {
+                share: +formatEther(uoaShares[index]) * 100,
+                targetUnit: ethers.utils
+                  .parseBytes32String(targets[index])
+                  .toUpperCase(),
+              },
             }),
             {}
           )

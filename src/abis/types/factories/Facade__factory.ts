@@ -61,6 +61,11 @@ const _abi = [
         name: "uoaShares",
         type: "uint192[]",
       },
+      {
+        internalType: "bytes32[]",
+        name: "targets",
+        type: "bytes32[]",
+      },
     ],
     stateMutability: "nonpayable",
     type: "function",
