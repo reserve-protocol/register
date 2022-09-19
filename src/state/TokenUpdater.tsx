@@ -18,7 +18,7 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import rtokens from 'rtokens'
 import { ContractCall, ReserveToken, Token } from 'types'
-import { calculateApy, isAddress } from 'utils'
+import { calculateApy, isAddress, truncateDecimals } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 import { RTOKEN_STATUS } from 'utils/constants'
@@ -225,7 +225,10 @@ const ReserveTokenUpdater = () => {
             (acc: any, current: any, index: any) => ({
               ...acc,
               [current]: {
-                share: +formatEther(uoaShares[index]) * 100,
+                share: truncateDecimals(
+                  +formatEther(uoaShares[index]) * 100,
+                  4
+                ),
                 targetUnit: ethers.utils
                   .parseBytes32String(targets[index])
                   .toUpperCase(),

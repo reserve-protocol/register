@@ -137,6 +137,14 @@ export function isZero(hexNumberString: string) {
   return /^0x0*$/.test(hexNumberString)
 }
 
+export const truncateDecimals = (number: number, digits = 3) => {
+  const multiplier = Math.pow(10, digits),
+    adjustedNum = number * multiplier,
+    truncatedNum = Math[adjustedNum < 0 ? 'ceil' : 'floor'](adjustedNum)
+
+  return truncatedNum / multiplier
+}
+
 export const stringToColor = (str: string) => {
   let hash = 0
   for (let i = 0; i < str.length; i++) {

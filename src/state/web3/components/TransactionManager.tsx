@@ -7,7 +7,7 @@ import { useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { useCallback, useEffect } from 'react'
 import { pendingTxAtom, updateTransactionAtom } from 'state/atoms'
-import { TransactionState } from 'types'
+import { StringMap, TransactionState } from 'types'
 import { getContract } from 'utils'
 import { DEPLOYER_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
@@ -25,6 +25,12 @@ const getDeployedRToken = (receipt: TransactionReceipt): string => {
 
   return ''
 }
+
+// const getGovernance = (receipt: TransactionReceipt): StringMap => {
+//   const log = receipt.logs.find(
+//     (logs) => logs.address === DEPLOYER_ADDRESS[CHAIN_ID]
+//   )
+// }
 
 const TransactionManager = () => {
   const setTxs = useUpdateAtom(updateTransactionAtom)
@@ -54,6 +60,8 @@ const TransactionManager = () => {
               transaction.extra = {
                 rTokenAddress: getDeployedRToken(receipt),
               }
+            } else if (transaction.call.method === 'setupGovernance') {
+              console.log('receipt', receipt)
             }
 
             setTxs([index, transaction])

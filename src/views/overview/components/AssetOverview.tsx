@@ -60,7 +60,7 @@ const AssetOverview = () => {
     if (rToken?.address && basketDist && Object.keys(basketDist)) {
       return rToken.collaterals.map((c, index) => ({
         name: c.name,
-        value: basketDist[c.address].share,
+        value: basketDist[c.address]?.share ?? 0,
         color: colors[index] || stringToColor(c.address),
       }))
     }

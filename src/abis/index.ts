@@ -41,4 +41,5 @@ export default <StringMap>{
   rsv: RSVManagerInterface,
   facade: FacadeInterface,
   facadeWrite: FacadeWriteInterface,
+  main: MainInterface,
 }
