@@ -112,7 +112,7 @@ const TokenList = (props: BoxProps) => {
           id: token.id,
           name: token.name,
           symbol: token.symbol,
-          supply: +formatEther(token.totalSupply) * rTokenPrice,
+          supply: +formatEther(token.totalSupply) * +token.lastPriceUSD,
           holders: token.holderCount,
           price: token.lastPriceUSD,
           transactionCount: token.transferCount,

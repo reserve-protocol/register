@@ -6,6 +6,7 @@ import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import { useEffect, useMemo, useState } from 'react'
 import { AccountPosition, AccountToken } from 'types'
 import { calculateApy } from 'utils'
+import RSV from 'utils/rsv'
 import {
   accountHoldingsAtom,
   accountPositionsAtom,
@@ -16,10 +17,10 @@ import {
 
 // TODO: Include RSV hardcoded into the query and check for balance
 const accountQuery = gql`
-  query getAccountTokens($id: String!, $fromTime: Int!) {
+  query getAccountTokens($id: String!, $fromTime: Int!, $rsvAddress: String!) {
     account(id: $id) {
       id
-      balances(where: { token: "0x196f4727526ea7fb1e17b2071b3d8eaa38486988" }) {
+      balances(where: { token: $rsvAddress }) {
         amount
         token {
           lastPriceUSD
@@ -89,7 +90,9 @@ const AccountUpdater = () => {
     {
       id: account?.toLowerCase(),
       fromTime,
-    }
+      rsvAddress: RSV.address,
+    },
+    { refreshInterval: 5000 }
   )
 
   useEffect(() => {

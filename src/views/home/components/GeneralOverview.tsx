@@ -8,7 +8,7 @@ import { BoxProps } from 'theme-ui'
 
 const protocolRecentTxsQuery = gql`
   query GetProtocolRecentTransactions {
-    entries(orderBy: timestamp, orderDirection: desc, first: 10) {
+    entries(orderBy: timestamp, orderDirection: desc, first: 25) {
       type
       amount
       amountUSD
@@ -20,7 +20,11 @@ const protocolRecentTxsQuery = gql`
 
 const TransactionsOverview = (props: BoxProps) => {
   // TODO: poll on blocknumber change
-  const { data } = useQuery(protocolRecentTxsQuery)
+  const { data } = useQuery(
+    protocolRecentTxsQuery,
+    {},
+    { refreshInterval: 1000 }
+  )
   const txs = useMemo(() => {
     if (!data?.entries) {
       return []

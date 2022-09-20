@@ -1,11 +1,10 @@
-import { formatEther } from '@ethersproject/units'
 import { t } from '@lingui/macro'
 import { ContentHead, InfoHeading } from 'components/info-box'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import useTimeFrom from 'hooks/useTimeFrom'
 import { useMemo } from 'react'
-import { Box, Text, Flex, Grid, BoxProps } from 'theme-ui'
+import { Box, BoxProps, Grid, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { DEPLOYER_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
@@ -62,10 +61,14 @@ const protocolMetricsQuery = gql`
 
 const TokenStats = (props: BoxProps) => {
   const fromTime = useTimeFrom(TIME_RANGES.DAY)
-  const { data } = useQuery(protocolMetricsQuery, {
-    id: DEPLOYER_ADDRESS[CHAIN_ID],
-    fromTime,
-  })
+  const { data } = useQuery(
+    protocolMetricsQuery,
+    {
+      id: DEPLOYER_ADDRESS[CHAIN_ID],
+      fromTime,
+    },
+    { refreshInterval: 5000 }
+  )
   const metrics = useMemo(() => {
     if (data) {
       return {
