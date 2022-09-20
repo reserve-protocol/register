@@ -89,13 +89,7 @@ const Portfolio = (props: BoxProps) => {
         <Text pl={3} variant="sectionTitle">
           <Trans>Your RTokens</Trans>
         </Text>
-        <Table
-          mt={3}
-          mb="-16px"
-          maxHeight={220}
-          columns={rTokenColumns}
-          data={rTokens}
-        />
+        <Table mt={3} maxHeight={220} columns={rTokenColumns} data={rTokens} />
         {!rTokens?.length && (
           <Box mt={3} mb={5} sx={{ textAlign: 'center' }}>
             <Text variant="legend">

@@ -47,7 +47,7 @@ const RecentProtocolTransactions = () => {
     <TransactionsTable
       card
       compact
-      maxHeight={420}
+      maxHeight="810px"
       help="TODO"
       title={t`Protocol Transactions`}
       data={txs}
