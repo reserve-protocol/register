@@ -57,10 +57,14 @@ const useTokenStats = (rTokenId: string): TokenStats => {
   const [stats, setStats] = useAtom(tokenMetricsAtom)
   const fromTime = useTimeFrom(TIME_RANGES.DAY)
 
-  const { data } = useQuery(rTokenMetricsQuery, {
-    id: rTokenId,
-    fromTime,
-  })
+  const { data } = useQuery(
+    rTokenMetricsQuery,
+    {
+      id: rTokenId,
+      fromTime,
+    },
+    { refreshInterval: 5000 }
+  )
   const rsrPrice = useAtomValue(rsrPriceAtom)
   const rTokenPrice = useAtomValue(rTokenPriceAtom)
 
@@ -110,7 +114,7 @@ const Overview = () => {
           <TokenOverview metrics={rTokenMetrics} />
           <TokenUsage mt={7} metrics={rTokenMetrics} />
         </Box>
-        <RecentTokenTransactions mt={7} />
+        <RecentTokenTransactions />
       </Grid>
       <Divider {...dividerProps} />
       <Grid {...gridProps}>

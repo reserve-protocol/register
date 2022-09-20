@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
+import { SmallButton } from 'components/button'
 import WalletIcon from 'components/icons/WalletIcon'
 import { MouseoverTooltipContent } from 'components/tooltip'
 import { txSidebarToggleAtom } from 'components/transactions/manager/atoms'
@@ -85,14 +86,15 @@ const Account = () => {
   return (
     <>
       {!account ? (
-        <Button
+        <SmallButton
           px={3}
           py={2}
           variant="accent"
+          sx={{ fontSize: 1 }}
           onClick={() => setWalletVisible(true)}
         >
           <Trans>Connect</Trans>
-        </Button>
+        </SmallButton>
       ) : (
         <ErrorWrapper isValid={!isInvalid} chainId={chainId}>
           <Container onClick={() => setVisible(true)}>

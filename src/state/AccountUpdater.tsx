@@ -169,6 +169,9 @@ const AccountUpdater = () => {
         }
       }
 
+      tokens.sort((a, b) => b.usdAmount - a.usdAmount)
+      positions.sort((a, b) => b.usdAmount - a.usdAmount)
+
       setLastFetched(blockNumber)
       updateTokens(tokens)
       updatePositions(positions)

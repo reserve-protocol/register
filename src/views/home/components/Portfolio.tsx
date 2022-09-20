@@ -85,34 +85,44 @@ const Portfolio = (props: BoxProps) => {
           ${formatCurrency(holdings)}
         </Text>
       </Box>
-      <Grid columns={[1, 1, 1, 2]} mt={5} gap={5}>
-        <Box>
-          <Text pl={3} variant="sectionTitle">
-            <Trans>Your RTokens</Trans>
-          </Text>
-          <Table mt={3} mb="-16px" columns={rTokenColumns} data={rTokens} />
-          {!rTokens?.length && (
-            <Box mt={3} mb={5} sx={{ textAlign: 'center' }}>
-              <Text variant="legend">
-                <Trans>No rToken holdings</Trans>
-              </Text>
-            </Box>
-          )}
-        </Box>
-        <Box>
-          <Text pl={3} variant="sectionTitle">
-            <Trans>Your staked RSR positions</Trans>
-          </Text>
-          <Table mt={3} mb="-16px" columns={stTokenColumns} data={stTokens} />
-          {!stTokens?.length && (
-            <Box mt={3} mb={5} sx={{ textAlign: 'center' }}>
-              <Text variant="legend">
-                <Trans>No stake positions</Trans>
-              </Text>
-            </Box>
-          )}
-        </Box>
-      </Grid>
+      <Box mt={5}>
+        <Text pl={3} variant="sectionTitle">
+          <Trans>Your RTokens</Trans>
+        </Text>
+        <Table
+          mt={3}
+          mb="-16px"
+          maxHeight={220}
+          columns={rTokenColumns}
+          data={rTokens}
+        />
+        {!rTokens?.length && (
+          <Box mt={3} mb={5} sx={{ textAlign: 'center' }}>
+            <Text variant="legend">
+              <Trans>No rToken holdings</Trans>
+            </Text>
+          </Box>
+        )}
+      </Box>
+      <Box mt={5}>
+        <Text pl={3} variant="sectionTitle">
+          <Trans>Your staked RSR positions</Trans>
+        </Text>
+        <Table
+          mt={3}
+          mb="-16px"
+          maxHeight={220}
+          columns={stTokenColumns}
+          data={stTokens}
+        />
+        {!stTokens?.length && (
+          <Box mt={3} mb={5} sx={{ textAlign: 'center' }}>
+            <Text variant="legend">
+              <Trans>No stake positions</Trans>
+            </Text>
+          </Box>
+        )}
+      </Box>
       <Divider mx={-7} my={8} sx={{ borderColor: 'darkBorder' }} />
     </Box>
   )

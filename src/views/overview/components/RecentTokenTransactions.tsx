@@ -45,7 +45,7 @@ const RecentTokenTransactions = (props: BoxProps) => {
     <TransactionsTable
       compact
       card
-      maxHeight={420}
+      maxHeight={400}
       help="TODO"
       title={t`Transactions`}
       data={txs}
