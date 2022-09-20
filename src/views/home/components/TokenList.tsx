@@ -120,7 +120,7 @@ const TokenList = (props: BoxProps) => {
           targetUnit: 'USD',
           tokenApy: +tokenApy.toFixed(2),
           backing: token?.rToken?.backing || 100,
-          backingInsurance: token?.rToken.backingInsurance || 0,
+          backingInsurance: token?.rToken?.backingInsurance || 0,
           stakingApy: +stakingApy.toFixed(2),
         }
       })

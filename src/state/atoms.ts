@@ -1,3 +1,4 @@
+import { CHAIN_ID } from 'utils/chains'
 /**
  * This file contains application level atoms
  * At some point this file is expected to be divided into multiple files per atom type
@@ -95,7 +96,7 @@ export const isManagerAtom = atom<boolean>((get) => {
  * Chain state related atoms
  * #########################
  */
-export const chainIdAtom = atom<number | undefined>(undefined)
+export const chainIdAtom = atom<number | undefined>(CHAIN_ID)
 export const blockAtom = atom<number | undefined>(undefined)
 export const blockTimestampAtom = atom<number>(0)
 
@@ -270,7 +271,7 @@ export const txAtom = atomWithStorage<TransactionMap>(
   txStorage
 )
 export const currentTxAtom = atom((get) => {
-  const chain = get(chainIdAtom) ?? 0
+  const chain = get(chainIdAtom) ?? CHAIN_ID
   const account = get(walletAtom) ?? ''
   const txs = get(txAtom)
 

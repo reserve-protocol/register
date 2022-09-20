@@ -1,14 +1,16 @@
 import { i18n } from '@lingui/core'
+import { Trans } from '@lingui/macro'
 import { I18nProvider } from '@lingui/react'
 import { useAtomValue } from 'jotai'
 import { en, es } from 'make-plural/plurals'
 import React from 'react'
+import { AlertCircle, AlertTriangle } from 'react-feather'
 import { Toaster } from 'react-hot-toast'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { rTokenAtom } from 'state/atoms'
 import Updater from 'state/updater'
 import Web3Provider from 'state/web3'
-import { ThemeProvider } from 'theme-ui'
+import { Box, ThemeProvider, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import Auctions from 'views/auctions'
 import Deploy from 'views/deploy'
@@ -27,7 +29,17 @@ import Issuance from './views/issuance'
 // Requires rToken to exist for route to render
 const Guard = ({ children }: { children: React.ReactNode }) => {
   const rToken = useAtomValue(rTokenAtom)
-  return !rToken ? <div>Select an rToken</div> : <>{children}</>
+  return !rToken ? (
+    <Box sx={{ textAlign: 'center', color: 'lightText' }} mt={8}>
+      <AlertCircle />
+      <br />
+      <Text sx={{ fontSize: 3, fontWeight: 300 }}>
+        <Trans>No rToken data</Trans>
+      </Text>
+    </Box>
+  ) : (
+    <>{children}</>
+  )
 }
 
 i18n.load('en', enMessages)

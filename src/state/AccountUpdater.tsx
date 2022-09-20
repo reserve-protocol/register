@@ -90,7 +90,7 @@ const AccountUpdater = () => {
     {
       id: account?.toLowerCase(),
       fromTime,
-      rsvAddress: RSV.address,
+      rsvAddress: RSV.address.toLowerCase(),
     },
     { refreshInterval: 5000 }
   )

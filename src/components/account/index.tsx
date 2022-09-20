@@ -12,7 +12,7 @@ import { AlertCircle, Menu } from 'react-feather'
 import { isWalletModalVisibleAtom, pendingTxAtom } from 'state/atoms'
 import { Box, Button, Card, Flex, Spinner, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
-import { CHAINS } from 'utils/chains'
+import { CHAINS, CHAIN_ID } from 'utils/chains'
 
 const Container = styled(Box)`
   display: flex;
@@ -80,7 +80,7 @@ const Account = () => {
   )
   const isProcessing = useAtomValue(isProcessingAtom)
   const { ENSName, account, chainId } = useWeb3React()
-  const isInvalid = !CHAINS[chainId ?? 0]
+  const isInvalid = chainId !== CHAIN_ID
 
   return (
     <>
