@@ -60,16 +60,3 @@ export const RSR: Token = {
   decimals: 18,
   logo: 'rsr.png',
 }
-
-// tokens used in the rtoken selector screen and dashboard
-// TODO: should be fetched, top 5 using market cap
-export const DEFAULT_TOKENS = {
-  [ChainId.Goerli]: [
-    '0x8431278459066BF0d2536db436709b1BB96Fdc4D',
-    RSV_ADDRESS[ChainId.Goerli],
-  ],
-  [ChainId.Hardhat]: [
-    '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',
-    '0x0bdB19551E641D25ea56AD1C66927313B331a955',
-  ],
-}

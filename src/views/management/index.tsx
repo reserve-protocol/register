@@ -93,7 +93,7 @@ const Management = () => {
               />
             )}
         </Flex>
-        <Grid columns={2} mt={4} gap={5}>
+        <Grid columns={[1, 1, 1, 2]} mt={4} gap={5}>
           <Card p={5}>
             <Text variant="title">
               <Trans>RToken Info</Trans>

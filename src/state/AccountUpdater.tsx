@@ -1,3 +1,4 @@
+import { getAddress, isAddress } from '@ethersproject/address'
 import { useWeb3React } from '@web3-react/core'
 import { gql } from 'graphql-request'
 import useBlockNumber from 'hooks/useBlockNumber'
@@ -30,6 +31,7 @@ const accountQuery = gql`
         id
         stake
         rToken {
+          id
           rsrExchangeRate
           rewardToken {
             token {
@@ -122,6 +124,7 @@ const AccountUpdater = () => {
           holdings += usdAmount
 
           tokens.push({
+            address: getAddress(rToken.rToken.id),
             name: rToken.balance.token.name,
             symbol: rToken.balance.token.symbol,
             usdPrice: Number(rToken.balance.token.lastPriceUSD),
@@ -159,6 +162,7 @@ const AccountUpdater = () => {
           holdings += balance * usdPrice
 
           tokens.push({
+            address: RSV.address,
             name: 'Reserve',
             symbol: 'RSV',
             usdPrice,

@@ -133,6 +133,7 @@ export interface ReserveToken extends Token {
 }
 
 export interface AccountToken {
+  address: string
   name: string
   symbol: string
   usdPrice: number

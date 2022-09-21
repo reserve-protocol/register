@@ -2,17 +2,56 @@ import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
 import TokenLogo from 'components/icons/TokenLogo'
 import Popup from 'components/popup'
-import { useAtom, useAtomValue } from 'jotai'
-import { useCallback, useState } from 'react'
+import { atom, useAtom, useAtomValue } from 'jotai'
+import { useCallback, useMemo, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import rtokens from 'rtokens'
-import { rTokenAtom, selectedRTokenAtom } from 'state/atoms'
+import { accountTokensAtom, rTokenAtom, selectedRTokenAtom } from 'state/atoms'
 import { transition } from 'theme'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
+import { DEFAULT_TOKENS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
-import { DEFAULT_TOKENS, ROUTES } from 'utils/constants'
+import { ROUTES } from 'utils/constants'
+
+interface TokenDisplay {
+  address: string
+  symbol: string
+  logo: string
+}
+
+const availableTokensAtom = atom((get) => {
+  const defaultTokens = DEFAULT_TOKENS[CHAIN_ID]
+  const owned = get(accountTokensAtom)
+  const tokenList: {
+    [x: string]: TokenDisplay
+  } = {}
+
+  for (const tokenAddress of defaultTokens) {
+    const token = rtokens[CHAIN_ID][tokenAddress]
+
+    if (token) {
+      tokenList[tokenAddress] = {
+        address: tokenAddress,
+        symbol: token.symbol,
+        logo: require(`rtokens/images/${token.logo}`),
+      }
+    }
+  }
+
+  for (const token of owned) {
+    if (!tokenList[token.address]) {
+      tokenList[token.address] = {
+        address: token.address,
+        symbol: token.symbol,
+        logo: '/imgs/default.png',
+      }
+    }
+  }
+
+  return tokenList
+})
 
 // TODO: Separate component
 const ActionItem = styled(Flex)`
@@ -39,28 +78,48 @@ const ActionItem = styled(Flex)`
 
 const TokenItem = ({ symbol, logo }: { symbol: string; logo: string }) => (
   <Flex sx={{ alignItems: 'center' }}>
-    <TokenLogo size="1.2em" mr={2} src={require(`rtokens/images/${logo}`)} />
+    <TokenLogo size="1.2em" mr={2} src={logo} />
     <Text>{symbol}</Text>
   </Flex>
 )
 
-const TokenList = ({ onSelect }: { onSelect(address: string): void }) => (
-  <Box>
-    {DEFAULT_TOKENS[CHAIN_ID].map((address) => (
-      <ActionItem key={address} onClick={() => onSelect(address)}>
-        <TokenItem
-          symbol={rtokens[CHAIN_ID][address].symbol}
-          logo={rtokens[CHAIN_ID][address].logo}
-        />
-      </ActionItem>
-    ))}
-  </Box>
-)
+const TokenList = ({ onSelect }: { onSelect(address: string): void }) => {
+  const tokens = useAtomValue(availableTokensAtom)
+
+  return (
+    <Box>
+      {Object.values(tokens).map(({ address, logo, symbol }) => (
+        <ActionItem key={address} onClick={() => onSelect(address)}>
+          <TokenItem symbol={symbol} logo={logo} />
+        </ActionItem>
+      ))}
+    </Box>
+  )
+}
 
 const SelectedToken = () => {
   const selectedAddress = useAtomValue(selectedRTokenAtom)
-  const selected =
-    useAtomValue(rTokenAtom) ?? rtokens[CHAIN_ID][selectedAddress]
+  const rToken = useAtomValue(rTokenAtom)
+  const tokenList = useAtomValue(availableTokensAtom)
+  const { symbol, logo } = useMemo(() => {
+    const defaultLogo = '/imgs/default.png'
+
+    if (tokenList[selectedAddress]) {
+      return tokenList[selectedAddress]
+    }
+
+    if (rToken) {
+      return {
+        symbol: rToken.symbol,
+        logo: defaultLogo,
+      }
+    }
+
+    return {
+      symbol: shortenAddress(selectedAddress),
+      logo: defaultLogo,
+    }
+  }, [selectedAddress])
 
   if (!selectedAddress) {
     return (
@@ -70,15 +129,11 @@ const SelectedToken = () => {
     )
   }
 
-  const { symbol = shortenAddress(selectedAddress), logo = 'rsv.png' } =
-    selected ?? {}
-
   return <TokenItem logo={logo} symbol={symbol} />
 }
 
 const RTokenSelector = (props: BoxProps) => {
   const navigate = useNavigate()
-  const { pathname } = useLocation()
   const [isVisible, setVisible] = useState(false)
   const [selected, setSelected] = useAtom(selectedRTokenAtom)
 

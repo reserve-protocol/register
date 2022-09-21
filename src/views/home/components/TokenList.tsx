@@ -14,6 +14,7 @@ import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { calculateApy, formatCurrencyCell, formatUsdCurrencyCell } from 'utils'
 import { RSV_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
+import RSV from 'utils/rsv'
 
 interface ListedToken {
   id: string
@@ -166,13 +167,15 @@ const TokenList = (props: BoxProps) => {
               >
                 <Trans>Mint</Trans>
               </SmallButton>
-              <SmallButton
-                px={3}
-                variant="muted"
-                onClick={() => navigate(`/insurance?token=${cell.value}`)}
-              >
-                <Trans>Stake</Trans>
-              </SmallButton>
+              {cell.value !== RSV.address.toLowerCase() && (
+                <SmallButton
+                  px={3}
+                  variant="muted"
+                  onClick={() => navigate(`/insurance?token=${cell.value}`)}
+                >
+                  <Trans>Stake</Trans>
+                </SmallButton>
+              )}
             </Flex>
           )
         },
