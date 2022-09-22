@@ -39,6 +39,7 @@ const TokenForm = (props: BoxProps) => (
       name="mandate"
       options={{
         required: t`Mandate is required`,
+        maxLength: 256,
       }}
     />
     <FormField

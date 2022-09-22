@@ -356,3 +356,21 @@ export const updateTransactionAtom = atom(
     })
   }
 )
+
+// RSV Metrics
+export interface RPayTx {
+  id: string
+  type: string
+  amount: string
+  timestamp: string
+}
+
+export const rpayTransactionsAtom = atom<{
+  [x: string]: RPayTx
+}>({})
+
+export const rpayOverviewAtom = atom({
+  volume: 0,
+  txCount: 0,
+  holders: 0,
+})

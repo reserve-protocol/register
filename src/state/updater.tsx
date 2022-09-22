@@ -32,6 +32,7 @@ import { ReserveToken, StringMap } from 'types'
 import { COINGECKO_API, RSR } from 'utils/constants'
 import { RSV_MANAGER } from 'utils/rsv'
 import AccountUpdater from './AccountUpdater'
+import RSVUpdater from './RSVUpdater'
 import TokenUpdater from './TokenUpdater'
 
 // Gets ReserveToken related token addresses and decimals
@@ -259,6 +260,7 @@ const Updater = () => (
     <PricesUpdater />
     <ExchangeRateUpdater />
     <AccountUpdater />
+    <RSVUpdater />
   </>
 )
 
