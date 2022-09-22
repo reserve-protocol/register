@@ -87,7 +87,7 @@ const TokenList = ({ onSelect }: { onSelect(address: string): void }) => {
   const tokens = useAtomValue(availableTokensAtom)
 
   return (
-    <Box>
+    <Box sx={{ maxHeight: 320, overflow: 'auto' }}>
       {Object.values(tokens).map(({ address, logo, symbol }) => (
         <ActionItem key={address} onClick={() => onSelect(address)}>
           <TokenItem symbol={symbol} logo={logo} />

@@ -81,6 +81,7 @@ const Management = () => {
             {rToken?.symbol} <Trans>Manager</Trans>
           </Text>
           {rTokenStatus === RTOKEN_STATUS.PAUSED &&
+            !accountRole.owner &&
             !!rToken?.main &&
             !isTxConfirmed && (
               <LoadingButton
