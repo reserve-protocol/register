@@ -52,6 +52,7 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "react-table": "^7.7.0",
+    "react-use-websocket": "^4.2.0",
     "recharts": "^2.1.6",
     "rtokens": "github:lc-labs/rtokens.git",
     "swr": "^1.2.2",

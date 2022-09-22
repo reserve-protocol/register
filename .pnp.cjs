@@ -4740,6 +4740,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "virtual:dfdb7a851ebc24e60d1725e658498e2bac2c3a3f98d17b3167dcd95d0a733c596afe22a69eeb909d17e45e7bc7295c3b69dc769f984d54c79bde7cebfcd5d274#npm:2.9.0"\
       ],\
       [\
+        "react-use-websocket",\
+        "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:4.2.0"\
+      ],\
+      [\
         "readable-stream",\
         "npm:3.6.0"\
       ],\
@@ -5796,6 +5800,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-router-dom", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:6.3.0"],\
             ["react-scripts", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:5.0.1"],\
             ["react-table", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:7.7.0"],\
+            ["react-use-websocket", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:4.2.0"],\
             ["recharts", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:2.1.9"],\
             ["rtokens", "https://github.com/lc-labs/rtokens.git#commit=29af2d8b8d59cfe651d118fb02e069bccc5b8f16"],\
             ["source-map-explorer", "npm:2.5.2"],\
@@ -24030,6 +24035,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-router-dom", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:6.3.0"],\
             ["react-scripts", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:5.0.1"],\
             ["react-table", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:7.7.0"],\
+            ["react-use-websocket", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:4.2.0"],\
             ["recharts", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:2.1.9"],\
             ["rtokens", "https://github.com/lc-labs/rtokens.git#commit=29af2d8b8d59cfe651d118fb02e069bccc5b8f16"],\
             ["source-map-explorer", "npm:2.5.2"],\
@@ -24788,6 +24794,32 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:18.2.0"],\
             ["react-lifecycles-compat", "npm:3.0.4"]\
+          ],\
+          "packagePeers": [\
+            "@types/react-dom",\
+            "@types/react",\
+            "react-dom",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["react-use-websocket", [\
+        ["npm:4.2.0", {\
+          "packageLocation": "./.yarn/cache/react-use-websocket-npm-4.2.0-9ed5536ff5-f28b1e6f5a.zip/node_modules/react-use-websocket/",\
+          "packageDependencies": [\
+            ["react-use-websocket", "npm:4.2.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:4.2.0", {\
+          "packageLocation": "./.yarn/__virtual__/react-use-websocket-virtual-ae83207692/0/cache/react-use-websocket-npm-4.2.0-9ed5536ff5-f28b1e6f5a.zip/node_modules/react-use-websocket/",\
+          "packageDependencies": [\
+            ["react-use-websocket", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:4.2.0"],\
+            ["@types/react", "npm:18.0.0"],\
+            ["@types/react-dom", "npm:18.0.0"],\
+            ["react", "npm:18.2.0"],\
+            ["react-dom", "virtual:9118ec530883ac3479cbc4d7e350439d651ed30a97829aef97c61ecc5d1fc6034fcb7b7567eb2f99e658da54cf97b16684ab587d2d8cb88c3dc9039177089082#npm:18.2.0"]\
           ],\
           "packagePeers": [\
             "@types/react-dom",\
