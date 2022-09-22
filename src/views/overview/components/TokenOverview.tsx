@@ -30,19 +30,23 @@ const TokenOverview = ({ metrics, ...props }: Props) => {
             title={t`Market cap`}
             subtitle={metrics.supplyUsd}
           />
-          <InfoHeading
-            title={t`Insurance Pool`}
-            subtitle={metrics.insuranceUsd}
-          />
+          {!rToken?.isRSV && (
+            <InfoHeading
+              title={t`Insurance Pool`}
+              subtitle={metrics.insuranceUsd}
+            />
+          )}
         </Box>
-        <Box>
-          <InfoHeading
-            mb={3}
-            title={t`RToken Yield`}
-            subtitle={`${tokenApy}%`}
-          />
-          <InfoHeading title={t`stRSR Yield`} subtitle={`${stakingApy}%`} />
-        </Box>
+        {!rToken?.isRSV && (
+          <Box>
+            <InfoHeading
+              mb={3}
+              title={t`RToken Yield`}
+              subtitle={`${tokenApy}%`}
+            />
+            <InfoHeading title={t`stRSR Yield`} subtitle={`${stakingApy}%`} />
+          </Box>
+        )}
       </Flex>
     </Box>
   )

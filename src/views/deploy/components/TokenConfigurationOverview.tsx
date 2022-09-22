@@ -1,25 +1,12 @@
 import { t, Trans } from '@lingui/macro'
 import { useFormContext } from 'react-hook-form'
 import { Box, BoxProps, Divider, Flex, Text } from 'theme-ui'
-import { formatCurrency } from 'utils'
+import { formatCurrency, getTime } from 'utils'
 
 interface InfoProps extends BoxProps {
   title: string
   subtitle: string
   time?: boolean
-}
-
-const getTime = (seconds: number) => {
-  const d = Math.floor(seconds / (3600 * 24))
-  const h = Math.floor((seconds % (3600 * 24)) / 3600)
-  const m = Math.floor((seconds % 3600) / 60)
-  const s = Math.floor(seconds % 60)
-
-  const dDisplay = d > 0 ? `${d}d` : ''
-  const hDisplay = h > 0 ? h + `${h}h` : ''
-  const mDisplay = m > 0 ? m + `${m}m` : ''
-  const sDisplay = s > 0 ? s + `${s}s` : ''
-  return dDisplay + hDisplay + mDisplay + sDisplay
 }
 
 const Info = ({ title, subtitle, time, ...props }: InfoProps) => {

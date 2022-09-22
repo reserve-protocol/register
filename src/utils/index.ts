@@ -3,6 +3,7 @@ import { BigNumberMap } from './../types/index'
 import { getAddress } from '@ethersproject/address'
 import { Contract } from '@ethersproject/contracts'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
+import { t } from '@lingui/macro'
 
 export const decimalPattern = /^[0-9]*[.]?[0-9]*$/i
 export const numberPattern = /^\d+$/
@@ -15,6 +16,46 @@ export function isAddress(value: string): string | false {
   } catch {
     return false
   }
+}
+
+const timeUnits = {
+  year: 24 * 60 * 60 * 365,
+  month: (24 * 60 * 60 * 365) / 12,
+  day: 24 * 60 * 60,
+  hour: 60 * 60,
+  minute: 60,
+  second: 0,
+}
+
+export const relativeTime = (from: number, to: number) => {
+  let delta = to - from
+
+  if (delta >= timeUnits.year) {
+    return t`A year ago`
+  } else if (delta >= timeUnits.month) {
+    return `>${Math.floor(delta / timeUnits.month)}` + t`m`
+  } else if (delta >= timeUnits.day) {
+    return `>${Math.floor(delta / timeUnits.day)}d`
+  } else if (delta >= timeUnits.hour) {
+    return `>${Math.floor(delta / timeUnits.hour)}h`
+  } else if (delta >= timeUnits.minute) {
+    return `>${Math.floor(delta / timeUnits.minute)}m`
+  } else {
+    return `>${delta}s`
+  }
+}
+
+export const getTime = (seconds: number) => {
+  const d = Math.floor(seconds / (3600 * 24))
+  const h = Math.floor((seconds % (3600 * 24)) / 3600)
+  const m = Math.floor((seconds % 3600) / 60)
+  const s = Math.floor(seconds % 60)
+
+  const dDisplay = d > 0 ? `${d}d` : ''
+  const hDisplay = h > 0 ? h + `${h}h` : ''
+  const mDisplay = m > 0 ? m + `${m}m` : ''
+  const sDisplay = s > 0 ? s + `${s}s` : ''
+  return dDisplay + hDisplay + mDisplay + sDisplay
 }
 
 interface ApyRate {

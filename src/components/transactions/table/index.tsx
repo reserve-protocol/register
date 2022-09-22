@@ -2,11 +2,19 @@ import styled from '@emotion/styled'
 import { t, Trans } from '@lingui/macro'
 import Help from 'components/help'
 import { Table } from 'components/table'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
+import { blockTimestampAtom } from 'state/atoms'
 import { borderRadius } from 'theme'
-import { Box, BoxProps, Flex, Text } from 'theme-ui'
+import { Box, BoxProps, Flex, Link, Text } from 'theme-ui'
 import { StringMap, TransactionRecord } from 'types'
-import { formatCurrencyCell, formatUsdCurrencyCell, shortenString } from 'utils'
+import {
+  formatUsdCurrencyCell,
+  getTime,
+  relativeTime,
+  shortenString,
+} from 'utils'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
 const Container = styled(Box)`
   overflow: auto;
@@ -33,6 +41,7 @@ const TransactionsTable = ({
   sx = {},
   ...props
 }: Props) => {
+  const currentTime = useAtomValue(blockTimestampAtom)
   // TODO: update changing lang
   const transactionTypes: StringMap = useMemo(
     () => ({
@@ -61,23 +70,33 @@ const TransactionsTable = ({
       },
       {
         Header: t`Amount`,
-        accessor: 'amount',
-        Cell: formatCurrencyCell,
-      },
-      {
-        Header: t`USD value`,
         id: 'test',
         accessor: 'amountUSD',
         Cell: formatUsdCurrencyCell,
       },
       {
+        Header: t`Time`,
+        accessor: 'timestamp',
+        Cell: ({ cell }: { cell: any }) =>
+          relativeTime(cell.value, currentTime),
+      },
+      {
         Header: 'Explore',
         accessor: 'hash',
         Cell: ({ cell }: { cell: any }) =>
-          cell.value ? shortenString(cell.value) : 'RPay TX',
+          cell.value ? (
+            <Link
+              href={getExplorerLink(cell.value, ExplorerDataType.TRANSACTION)}
+              target="_blank"
+            >
+              {shortenString(cell.value)}
+            </Link>
+          ) : (
+            'RPay'
+          ),
       },
     ],
-    []
+    [currentTime]
   )
 
   return (
