@@ -38,7 +38,7 @@ const dailyPriceQuery = gql`
 const InsuranceChart = (props: BoxProps) => {
   const rToken = useRToken()
   const rsrPrice = useAtomValue(rsrPriceAtom)
-  const [current, setCurrent] = useState(TIME_RANGES.DAY)
+  const [current, setCurrent] = useState(TIME_RANGES.MONTH)
   const fromTime = useTimeFrom(current)
   const query = current === TIME_RANGES.DAY ? hourlyPriceQuery : dailyPriceQuery
   const { data } = useQuery(rToken ? query : null, {

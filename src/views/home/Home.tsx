@@ -1,9 +1,12 @@
 import { Trans } from '@lingui/macro'
 import { Container } from 'components'
+import { SmallButton } from 'components/button'
 import { useAtomValue } from 'jotai'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { walletAtom } from 'state/atoms'
 import { Box, Divider, Grid, Text } from 'theme-ui'
+import { ROUTES } from 'utils/constants'
 import TransactionsOverview from './components/GeneralOverview'
 import Greet from './components/Greet'
 import Portfolio from './components/Portfolio'
@@ -13,6 +16,7 @@ import TokenStats from './components/TokenStats'
 const VISITED_KEY = 'visited'
 
 const Home = () => {
+  const navigate = useNavigate()
   const account = useAtomValue(walletAtom)
   const [visited, setVisited] = useState(
     !!account || !!localStorage.getItem(VISITED_KEY)
@@ -40,7 +44,7 @@ const Home = () => {
       <Divider mb={8} mt={6} mx={-7} sx={{ borderColor: 'darkBorder' }} />
       <TokenList mt={6} />
       <Divider my={8} mx={-7} sx={{ borderColor: 'darkBorder' }} />
-      <Grid columns={2} mt={6} px={8} gap={8}>
+      <Grid columns={2} mt={6} pl={5} gap={8}>
         <Box>
           <Text mb={2} sx={{ fontSize: 3, display: 'block', fontWeight: 500 }}>
             <Trans>RTokens</Trans>
@@ -86,7 +90,13 @@ const Home = () => {
             venenatis nunc iaculis vitae.
           </Text>
         </Box>
-        <Box>Intro video? Tutorial?</Box>
+        <Box>
+          Deploy rToken copy
+          <br />
+          <SmallButton py={2} mt={6} onClick={() => navigate(ROUTES.DEPLOY)}>
+            <Trans>Deploy RToken</Trans>
+          </SmallButton>
+        </Box>
       </Grid>
     </Container>
   )

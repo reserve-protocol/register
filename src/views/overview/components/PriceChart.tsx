@@ -36,7 +36,7 @@ const dailyPriceQuery = gql`
 
 const PriceChart = (props: BoxProps) => {
   const rToken = useRToken()
-  const [current, setCurrent] = useState(TIME_RANGES.DAY)
+  const [current, setCurrent] = useState(TIME_RANGES.MONTH)
   const price = useAtomValue(rTokenPriceAtom)
   const fromTime = useTimeFrom(current)
   const query = current === TIME_RANGES.DAY ? hourlyPriceQuery : dailyPriceQuery

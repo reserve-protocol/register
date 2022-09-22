@@ -8,12 +8,7 @@ import { blockTimestampAtom } from 'state/atoms'
 import { borderRadius } from 'theme'
 import { Box, BoxProps, Flex, Link, Text } from 'theme-ui'
 import { StringMap, TransactionRecord } from 'types'
-import {
-  formatUsdCurrencyCell,
-  getTime,
-  relativeTime,
-  shortenString,
-} from 'utils'
+import { formatUsdCurrencyCell, relativeTime, shortenString } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
 const Container = styled(Box)`
