@@ -108,15 +108,17 @@ const PendingIssuances = ({ token }: { token: Token }) => {
           <Trans>Pending</Trans>
         </Text>
         <TokenBalance symbol={token.symbol} balance={pendingAmount} />
-        <LoadingButton
-          loading={!!canceling}
-          disabled={!availableAmount && !pendingAmount}
-          text={t`Revert & Receive collateral`}
-          onClick={handleCancel}
-          sx={{ ...smallButton }}
-          variant={!canceling ? 'primary' : 'accent'}
-          mt={3}
-        />
+        {(pendingAmount > 0 || availableAmount > 0) && (
+          <LoadingButton
+            loading={!!canceling}
+            disabled={!availableAmount && !pendingAmount}
+            text={t`Revert & Receive collateral`}
+            onClick={handleCancel}
+            sx={{ ...smallButton }}
+            variant={!canceling ? 'primary' : 'accent'}
+            mt={3}
+          />
+        )}
       </Box>
     </>
   )
