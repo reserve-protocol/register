@@ -97,7 +97,7 @@ const App = () => (
               <Route path={ROUTES.MANAGEMENT} element={<Management />} />
               <Route path={ROUTES.GOVERNANCE} element={<Governance />} />
               <Route
-                path={ROUTES.GOVERNANCE_INFO}
+                path={`${ROUTES.GOVERNANCE_INFO}/:txId`}
                 element={<GovernanceConfigured />}
               />
             </Routes>

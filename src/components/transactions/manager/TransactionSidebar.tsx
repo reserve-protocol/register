@@ -14,7 +14,7 @@ import { borderRadius } from 'theme'
 import { Box, Flex, Grid, Link, Spinner, Text } from 'theme-ui'
 import { TransactionState, WalletTransaction } from 'types'
 import { formatCurrency, shortenAddress } from 'utils'
-import { TRANSACTION_STATUS } from 'utils/constants'
+import { ROUTES, TRANSACTION_STATUS } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { txSidebarToggleAtom } from './atoms'
 
@@ -91,6 +91,33 @@ const TransactionStatus = ({ tx }: { tx: TransactionState }) => {
   }
 }
 
+const getTxDescription = (tx: TransactionState) => {
+  // rToken deployed
+  if (tx.extra?.rTokenAddress) {
+    return (
+      <RouterLink
+        style={{ color: 'var(--theme-ui-colors-lightText)' }}
+        to={`/overview?token=${tx.extra.rTokenAddress}`}
+      >
+        <Trans>Use deployed token</Trans>
+      </RouterLink>
+    )
+  }
+  // Governance deployed
+  if (tx.call.method === 'setupGovernance') {
+    return (
+      <RouterLink
+        style={{ color: 'var(--theme-ui-colors-lightText)' }}
+        to={`${ROUTES.GOVERNANCE_INFO}/${tx.id}`}
+      >
+        {tx.description}
+      </RouterLink>
+    )
+  }
+
+  return <Text>{tx.description}</Text>
+}
+
 const TransactionList = () => {
   const txs = useAtomValue(txByDateAtom)
 
@@ -114,16 +141,7 @@ const TransactionList = () => {
               }}
             >
               <Flex sx={{ overflow: 'hidden', alignItems: 'center' }}>
-                {tx.extra?.rTokenAddress ? (
-                  <RouterLink
-                    style={{ color: 'var(--theme-ui-colors-lightText)' }}
-                    to={`/overview?token=${tx.extra.rTokenAddress}`}
-                  >
-                    <Trans>Use deployed token</Trans>
-                  </RouterLink>
-                ) : (
-                  <Text>{tx.description}</Text>
-                )}
+                {getTxDescription(tx)}
               </Flex>
               <Flex sx={{ overflow: 'hidden' }} variant="layout.verticalAlign">
                 <TokenLogo symbol="rsv" mr={3} />

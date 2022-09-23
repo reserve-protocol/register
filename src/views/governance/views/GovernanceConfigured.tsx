@@ -1,14 +1,40 @@
-import { Trans } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 import { InfoBox } from 'components'
-import { useLastTransaction } from 'state/web3/hooks/useTransactions'
-import { Box, Text, Card, Grid, Flex, Button, Divider } from 'theme-ui'
+import { useMemo } from 'react'
+import { useParams } from 'react-router-dom'
+import { useTransaction } from 'state/web3/hooks/useTransactions'
+import { Box, Button, Card, Divider, Flex, Grid, Text } from 'theme-ui'
 import ListingInfo from 'views/management/components/ListingInfo'
 
-// TODO: Show addresses and governance configuration
 const GovernanceConfigured = () => {
-  const tx = useLastTransaction()
+  let { txId } = useParams()
+  const tx = useTransaction(txId ?? '')
+  const config = useMemo(() => {
+    const data = {
+      owner: '',
+      pauser: '',
+      guardian: '',
+      timelock: '',
+      governance: '',
+      rToken: '',
+    }
 
-  console.log('tx', tx)
+    if (tx) {
+      data.rToken = tx.call.args[0] || ''
+      data.guardian = tx.call.args[5] || ''
+      data.pauser = tx.call.args[6] || ''
+
+      // Governance configured
+      if (tx.call.args[1]) {
+        data.governance = tx.extra?.governance ?? ''
+        data.timelock = tx.extra?.timelock ?? ''
+      } else {
+        data.owner = tx.call.args[4] || ''
+      }
+    }
+
+    return data
+  }, [tx])
 
   const handleTally = () => {
     window.open('https://www.tally.xyz/?action=start-a-dao', '_blank')
@@ -35,21 +61,28 @@ const GovernanceConfigured = () => {
             <Trans>Main addresses</Trans>
           </Text>
           <Divider my={3} />
+          <InfoBox mb={3} title={t`rToken address`} subtitle={config.rToken} />
           <InfoBox
             mb={3}
-            title="Governor address"
-            subtitle="0xcR3A4e734342872bT4934529103206c453456Ab3"
+            title={t`Guardian address`}
+            subtitle={config.guardian}
           />
-          <InfoBox
-            mb={3}
-            title="Guardian address"
-            subtitle="0xfB654e7F7202872bA35C9852910320607b390344"
-          />{' '}
-          <InfoBox
-            mb={3}
-            title="Pauser address"
-            subtitle="0xfB654e7F7202872bA35C9852910320607b390344"
-          />
+          <InfoBox mb={3} title={t`Pauser address`} subtitle={config.pauser} />
+          {config.governance ? (
+            <>
+              <InfoBox
+                mb={3}
+                title={t`Governor address`}
+                subtitle={config.governance}
+              />
+              <InfoBox
+                title={t`Timelock contract address`}
+                subtitle={config.timelock}
+              />
+            </>
+          ) : (
+            <InfoBox title={t`Owner address`} subtitle={config.owner} />
+          )}
         </Card>
         <ListingInfo />
       </Grid>

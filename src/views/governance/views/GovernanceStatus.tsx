@@ -45,7 +45,7 @@ const GovernanceSetup = () => {
 
   useEffect(() => {
     if (tx?.status === TRANSACTION_STATUS.CONFIRMED) {
-      navigate(ROUTES.GOVERNANCE_INFO)
+      navigate(`${ROUTES.GOVERNANCE_INFO}/${txId}`)
     }
   }, [tx?.status])
 
