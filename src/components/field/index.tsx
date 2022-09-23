@@ -74,7 +74,7 @@ export const FormField = ({
           {...register(name, options)}
         />
 
-        {!!errors[name] && (
+        {!!errors && !!errors[name] && (
           <Text
             mt={1}
             ml={2}
