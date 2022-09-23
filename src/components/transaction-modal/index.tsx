@@ -65,7 +65,6 @@ const TransactionConfirmed = ({
   </Modal>
 )
 
-// TODO: ??? Disable close on backdrop click?
 const TransactionModal = ({
   title,
   requiredAllowance,
