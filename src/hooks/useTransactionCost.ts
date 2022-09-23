@@ -1,10 +1,12 @@
 import { Web3Provider } from '@ethersproject/providers'
 import { formatEther } from '@ethersproject/units'
+import { t } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
 import abis from 'abis'
 import { useAtomValue } from 'jotai'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ethPriceAtom, gasPriceAtom } from 'state/atoms'
+import { error } from 'state/web3/lib/notifications'
 import { TransactionState } from 'types'
 import { getContract } from 'utils'
 
@@ -41,6 +43,7 @@ export const useTransactionGasFee = (
 
           setState({ value: result, loading: false })
         } catch (e) {
+          error(t`Error estimating fees`, t`Transaction failed`)
           console.error('error fetching gas fees', e)
         }
       }

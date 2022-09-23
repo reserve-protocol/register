@@ -105,7 +105,7 @@ const Management = () => {
             <InfoBox mb={3} title={t`Address`} subtitle={rToken?.address} />
             <InfoBox
               mb={4}
-              title={t`Register share`}
+              title={t`Register link`}
               subtitle={`${window.location.origin}/overview?token=${rToken?.address}`}
             />
             <Text variant="title">
