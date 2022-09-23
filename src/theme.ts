@@ -87,6 +87,7 @@ export const colors = {
       border: '#333333',
       darkBorder: '#333333', // TODO
       contentBackground: '#1A1A1A',
+      lightBackground: '#1A1A1A',
       contentLightBackground: '#1A1A1A',
       secondaryBackground: '#202128',
       primary: '#00b600',

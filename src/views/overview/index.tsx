@@ -1,6 +1,7 @@
 import { formatEther } from '@ethersproject/units'
 import { t, Trans } from '@lingui/macro'
 import { Button, Container } from 'components'
+import CopyValue from 'components/button/CopyValue'
 import { ContentHead } from 'components/info-box'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
@@ -132,13 +133,7 @@ const Overview = () => {
         {!!rToken?.address && (
           <>
             <Text ml="auto">{shortenAddress(rToken.address)}</Text>
-            <IconButton
-              ml={2}
-              sx={{ cursor: 'pointer' }}
-              onClick={() => navigator.clipboard.writeText(rToken.address)}
-            >
-              <Copy color="#666666" size={14} />
-            </IconButton>
+            <CopyValue ml={2} value={rToken.address} />
           </>
         )}
       </Box>

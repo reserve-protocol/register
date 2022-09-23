@@ -7,7 +7,7 @@ import { usePopper } from 'react-popper'
 import useInterval from '../../hooks/useInterval'
 
 const PopoverContainer = styled.div<{ show: boolean }>`
-  z-index: 9999;
+  z-index: 100010;
   visibility: ${(props) => (props.show ? 'visible' : 'hidden')};
   opacity: ${(props) => (props.show ? 1 : 0)};
   transition: visibility 150ms linear, opacity 150ms linear;
@@ -23,7 +23,7 @@ const ReferenceElement = styled.div`
 const Arrow = styled.div`
   width: 8px;
   height: 8px;
-  z-index: 9998;
+  z-index: 100010;
   ::before {
     position: absolute;
     width: 8px;

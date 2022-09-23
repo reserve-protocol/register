@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro'
 import Portal from '@reach/portal'
 import { useWeb3React } from '@web3-react/core'
 import Button from 'components/button'
+import CopyValue from 'components/button/CopyValue'
 import WalletIcon from 'components/icons/WalletIcon'
 import { useUpdateAtom } from 'jotai/utils'
 import { ArrowUpRight, ChevronDown, Copy, Edit, X } from 'react-feather'
@@ -62,7 +63,7 @@ const TransactionSidebar = () => {
           <Text variant="title" sx={{ fontSize: 2 }} mr={3}>
             <Trans>Your account</Trans>
           </Text>
-          <Copy color="#666666" size={16} style={{ marginRight: 8 }} />
+          <CopyValue mr={2} value={account || ''} />
           <ArrowUpRight color="#666666" size={16} />
           <Box
             ml="auto"
