@@ -9,15 +9,9 @@ import useTimeFrom from 'hooks/useTimeFrom'
 import { useAtom } from 'jotai'
 import { useAtomValue } from 'jotai/utils'
 import { useEffect } from 'react'
-import { Copy } from 'react-feather'
-import {
-  blockTimestampAtom,
-  rsrPriceAtom,
-  rTokenAtom,
-  rTokenPriceAtom,
-} from 'state/atoms'
+import { rsrPriceAtom, rTokenAtom, rTokenPriceAtom } from 'state/atoms'
 import { tokenMetricsAtom } from 'state/metrics/atoms'
-import { Box, Divider, Grid, IconButton, Text } from 'theme-ui'
+import { Box, Divider, Grid, Text } from 'theme-ui'
 import { TokenStats } from 'types'
 import { formatCurrency, shortenAddress } from 'utils'
 import { TIME_RANGES } from 'utils/constants'
@@ -133,7 +127,7 @@ const Overview = () => {
         {!!rToken?.address && (
           <>
             <Text ml="auto">{shortenAddress(rToken.address)}</Text>
-            <CopyValue ml={2} value={rToken.address} />
+            <CopyValue ml={3} value={rToken.address} />
           </>
         )}
       </Box>

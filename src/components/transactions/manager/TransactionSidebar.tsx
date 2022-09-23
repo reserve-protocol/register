@@ -3,12 +3,14 @@ import Portal from '@reach/portal'
 import { useWeb3React } from '@web3-react/core'
 import Button from 'components/button'
 import CopyValue from 'components/button/CopyValue'
+import GoTo from 'components/button/GoTo'
 import WalletIcon from 'components/icons/WalletIcon'
 import { useUpdateAtom } from 'jotai/utils'
-import { ArrowUpRight, ChevronDown, Copy, Edit, X } from 'react-feather'
+import { ChevronDown, X } from 'react-feather'
 import { isWalletModalVisibleAtom } from 'state/atoms'
 import { Box, Flex, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { txSidebarToggleAtom } from './atoms'
 import TransactionList from './TransactionList'
 
@@ -64,7 +66,9 @@ const TransactionSidebar = () => {
             <Trans>Your account</Trans>
           </Text>
           <CopyValue mr={2} value={account || ''} />
-          <ArrowUpRight color="#666666" size={16} />
+          <GoTo
+            href={getExplorerLink(account || '', ExplorerDataType.ADDRESS)}
+          />
           <Box
             ml="auto"
             variant="layout.verticalAlign"
