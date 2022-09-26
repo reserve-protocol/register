@@ -3,7 +3,7 @@ import { Trans } from '@lingui/macro'
 import TokenLogo from 'components/icons/TokenLogo'
 import Popup from 'components/popup'
 import { atom, useAtom, useAtomValue } from 'jotai'
-import { useCallback, useMemo, useState } from 'react'
+import { memo, useCallback, useMemo, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import rtokens from 'rtokens'
@@ -83,7 +83,7 @@ const TokenItem = ({ symbol, logo }: { symbol: string; logo: string }) => (
   </Flex>
 )
 
-const TokenList = ({ onSelect }: { onSelect(address: string): void }) => {
+const TokenList = memo(({ onSelect }: { onSelect(address: string): void }) => {
   const tokens = useAtomValue(availableTokensAtom)
 
   return (
@@ -95,7 +95,7 @@ const TokenList = ({ onSelect }: { onSelect(address: string): void }) => {
       ))}
     </Box>
   )
-}
+})
 
 const SelectedToken = () => {
   const selectedAddress = useAtomValue(selectedRTokenAtom)

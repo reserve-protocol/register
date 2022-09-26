@@ -123,11 +123,11 @@ export default function Popover({
   }, [update])
   useInterval(updateCallback, show ? 200 : null)
 
-  useEffect(() => {
-    if (show) {
-      updateCallback()
-    }
-  }, [show])
+  // useEffect(() => {
+  //   if (show) {
+  //     updateCallback()
+  //   }
+  // }, [show])
 
   return (
     <>
