@@ -38,7 +38,7 @@ const TokenOverview = ({ metrics, ...props }: Props) => {
           )}
         </Box>
         {!rToken?.isRSV && (
-          <Box>
+          <Box mt={[3, 0]}>
             <InfoHeading
               mb={3}
               title={t`RToken Yield`}

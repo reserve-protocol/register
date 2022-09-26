@@ -70,7 +70,7 @@ const AssetOverview = () => {
 
   return (
     <Card py={5} sx={{ height: 'fit-content' }}>
-      <Grid columns={2} gap={2}>
+      <Grid columns={[0, 2]} gap={[4, 2]}>
         <Flex
           sx={{
             textAlign: 'center',
@@ -105,7 +105,7 @@ const AssetOverview = () => {
             </Text>
           )}
         </Flex>
-        <Box>
+        <Box sx={{ maxHeight: 380, overflow: 'auto' }} pr={3}>
           <Text variant="legend">
             <Trans>Primary Basket</Trans>
           </Text>

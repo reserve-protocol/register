@@ -1,5 +1,4 @@
-import { Box } from 'theme-ui'
-import styled from '@emotion/styled'
+import { Box, BoxProps } from 'theme-ui'
 
 /**
  * Wraps the page content
@@ -7,9 +6,11 @@ import styled from '@emotion/styled'
  * @param {ReactNode} children
  * @returns
  */
-const Container = styled(Box)`
-  box-sizing: border-box;
-  padding: 40px 48px;
-`
+const Container = ({ sx = {}, ...props }: BoxProps) => (
+  <Box
+    sx={{ boxSizing: 'border-box', padding: [4, '40px 48px'], ...sx }}
+    {...props}
+  />
+)
 
 export default Container

@@ -1,8 +1,7 @@
 import { ReactNode } from 'react'
-import { useLocation } from 'react-router-dom'
 import { Box, Flex } from 'theme-ui'
-import { isContentOnlyView } from 'utils/constants'
 import Header from './header'
+import MobileNav from './MobileNav'
 import Sidebar from './sidebar'
 
 /**
@@ -36,6 +35,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
         <Box sx={{ overflow: 'auto', flexGrow: 99999, position: 'relative' }}>
           {children}
         </Box>
+        <MobileNav />
       </Flex>
     </Flex>
   )

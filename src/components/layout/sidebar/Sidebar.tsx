@@ -22,7 +22,6 @@ const Container = styled(Box)`
   padding-top: 0;
   flex-grow: 1;
   box-sizing: border-box;
-  display: flex;
   flex-direction: column;
   border-right: 1px solid var(--theme-ui-colors-darkBorder);
 `
@@ -189,7 +188,7 @@ const Sidebar = () => {
   }
 
   return (
-    <Container sx={{ flexBasis: [64, 72, 264] }}>
+    <Container sx={{ flexBasis: [64, 72, 264], display: ['none', 'flex'] }}>
       <Brand ml={[0, 0, 4]} mt={3} />
       <Navigation currentToken={rToken} />
       <Box my="auto" />

@@ -160,7 +160,7 @@ const RTokenSelector = (props: BoxProps) => {
         onClick={() => setVisible(!isVisible)}
       >
         <SelectedToken />
-        <Box mx="auto" />
+        <Box mr="2" />
         {isVisible ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
       </Flex>
     </Popup>

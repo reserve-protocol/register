@@ -104,20 +104,27 @@ const Overview = () => {
 
   return (
     <Container>
-      <Grid {...gridProps} ml={5} gap={0}>
+      <Grid {...gridProps} ml={[0, 5]} gap={0}>
         <Box>
-          <TokenOverview metrics={rTokenMetrics} />
-          <TokenUsage mt={7} metrics={rTokenMetrics} />
+          <TokenOverview ml={[5, 0]} metrics={rTokenMetrics} />
+          <TokenUsage ml={[5, 0]} mt={7} metrics={rTokenMetrics} />
         </Box>
-        <RecentTokenTransactions />
+        <RecentTokenTransactions mt={[7, 7, 7, 0]} />
       </Grid>
       <Divider {...dividerProps} />
       <Grid {...gridProps}>
         <About ml={5} />
         <AssetOverview />
       </Grid>
-      <Divider {...dividerProps} />
-      <Box variant="layout.verticalAlign" ml={5}>
+      <Divider
+        {...dividerProps}
+        sx={{ borderColor: 'darkBorder', display: ['none', 'block'] }}
+      />
+      <Box
+        variant="layout.verticalAlign"
+        sx={{ display: ['none', 'flex'], flexWrap: 'wrap' }}
+        ml={5}
+      >
         <Button variant="muted" px={5} mr={3}>
           <Trans>Constitution</Trans>
         </Button>

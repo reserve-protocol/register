@@ -79,7 +79,7 @@ const Portfolio = (props: BoxProps) => {
         <Text
           mt={0}
           pt={0}
-          sx={{ fontSize: 7, fontWeight: 400, color: 'boldText' }}
+          sx={{ fontSize: [4, 7], fontWeight: 400, color: 'boldText' }}
           as="h1"
         >
           ${formatCurrency(holdings)}

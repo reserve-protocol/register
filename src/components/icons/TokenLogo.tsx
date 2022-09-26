@@ -12,7 +12,6 @@ const Container = styled(Box)`
   display: flex;
   align-items: center;
   position: relative;
-  top: -1px;
 `
 
 const IMGS = new Set(['dai', 'rsdp', 'rsr', 'rsv', 'tusd', 'usdc', 'usdp'])

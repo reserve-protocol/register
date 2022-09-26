@@ -27,7 +27,7 @@ const TokenUsage = ({ metrics, ...props }: Props) => {
           />
         </Box>
 
-        <Box>
+        <Box mt={[3, 0]}>
           <InfoHeading
             title={t`24h Txs`}
             mb={3}
