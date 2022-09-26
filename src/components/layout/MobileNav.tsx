@@ -40,6 +40,7 @@ const MobileNav = () => {
             paddingBottom: isActive ? '13px' : 16,
             borderBottom: isActive ? '3px solid black' : 'none',
           })}
+          key={path}
           to={`${path}?token=${rToken?.address}`}
         >
           <Icon />
