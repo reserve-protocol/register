@@ -42,7 +42,7 @@ const TransactionStatus = ({ tx }: { tx: TransactionState }) => {
       return (
         <Flex variant="layout.verticalAlign">
           <Spinner size={18} />
-          <Text ml={2}>
+          <Text ml={2} sx={{ display: ['none', 'flex'] }}>
             <Trans>Signing...</Trans>
           </Text>
         </Flex>
@@ -51,7 +51,7 @@ const TransactionStatus = ({ tx }: { tx: TransactionState }) => {
       return (
         <Flex variant="layout.verticalAlign">
           <Spinner size={18} />
-          <Text ml={2}>
+          <Text ml={2} sx={{ display: ['none', 'flex'] }}>
             <Trans>Mining</Trans>
           </Text>
         </Flex>
@@ -60,7 +60,7 @@ const TransactionStatus = ({ tx }: { tx: TransactionState }) => {
       return (
         <Flex variant="layout.verticalAlign">
           <Check size={18} />
-          <Text ml={2}>
+          <Text ml={2} sx={{ display: ['none', 'flex'] }}>
             <Trans>Confirmed, Block {tx.confirmedAt}</Trans>
           </Text>
         </Flex>
@@ -69,7 +69,7 @@ const TransactionStatus = ({ tx }: { tx: TransactionState }) => {
       return (
         <Flex variant="layout.verticalAlign">
           <X size={18} />
-          <Text ml={2}>
+          <Text ml={2} sx={{ display: ['none', 'flex'] }}>
             <Trans>Failed</Trans>
           </Text>
         </Flex>
@@ -123,7 +123,7 @@ const TransactionList = () => {
           </Text>
           {txs[day].map((tx) => (
             <Grid
-              columns={'140px 160px auto 64px'}
+              columns={['140px 1fr 1fr', '140px 160px auto 64px']}
               gap={3}
               mt={3}
               p={3}
@@ -136,7 +136,10 @@ const TransactionList = () => {
               <Flex sx={{ overflow: 'hidden', alignItems: 'center' }}>
                 {getTxDescription(tx)}
               </Flex>
-              <Flex sx={{ overflow: 'hidden' }} variant="layout.verticalAlign">
+              <Flex
+                sx={{ overflow: 'hidden', display: ['none', 'flex'] }}
+                variant="layout.verticalAlign"
+              >
                 <TokenLogo symbol="rsv" mr={3} />
                 <Text>{formatCurrency(Number(tx.value))}</Text>
               </Flex>

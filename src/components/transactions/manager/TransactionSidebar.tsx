@@ -65,8 +65,13 @@ const TransactionSidebar = () => {
           <Text variant="title" sx={{ fontSize: 2 }} mr={3}>
             <Trans>Your account</Trans>
           </Text>
-          <CopyValue mr={2} value={account || ''} />
+          <CopyValue
+            sx={{ display: ['none', 'flex'] }}
+            mr={2}
+            value={account || ''}
+          />
           <GoTo
+            sx={{ display: ['none', 'flex'] }}
             href={getExplorerLink(account || '', ExplorerDataType.ADDRESS)}
           />
           <Box

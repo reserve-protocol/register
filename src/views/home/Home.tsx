@@ -41,9 +41,9 @@ const Home = () => {
         <TokenStats mb={6} />
         <TransactionsOverview mb={6} />
       </Grid>
-      <Divider mb={8} mt={6} mx={-7} sx={{ borderColor: 'darkBorder' }} />
+      <Divider mb={8} mt={6} mx={[-4, -7]} sx={{ borderColor: 'darkBorder' }} />
       <TokenList mt={6} />
-      <Divider my={8} mx={-7} sx={{ borderColor: 'darkBorder' }} />
+      <Divider my={8} mx={[-4, -7]} sx={{ borderColor: 'darkBorder' }} />
       <Grid columns={2} mt={6} pl={5} gap={8}>
         <Box>
           <Text mb={2} sx={{ fontSize: 3, display: 'block', fontWeight: 500 }}>
