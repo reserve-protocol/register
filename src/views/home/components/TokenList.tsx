@@ -150,8 +150,12 @@ const TokenList = (props: BoxProps) => {
       { Header: t`Token`, accessor: 'symbol' },
       { Header: t`Price`, accessor: 'price', Cell: formatUsdCurrencyCell },
       { Header: t`Mkt Cap`, accessor: 'supply', Cell: formatUsdCurrencyCell },
-      { Header: t`Holders`, accessor: 'holders' },
-      { Header: t`Txs`, accessor: 'transactionCount' },
+      { Header: t`Holders`, accessor: 'holders', Cell: formatCurrencyCell },
+      {
+        Header: t`Txs`,
+        accessor: 'transactionCount',
+        Cell: formatCurrencyCell,
+      },
       {
         Header: t`Volume`,
         accessor: 'cumulativeVolume',

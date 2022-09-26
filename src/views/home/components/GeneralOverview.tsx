@@ -35,7 +35,7 @@ const TransactionsOverview = (props: BoxProps) => {
       return []
     }
 
-    const txs = [...(Object.values(rpayTx) as TransactionRecord[])]
+    const txs = [...rpayTx]
 
     // TODO: Parse type depending on lang
     txs.push(
@@ -49,8 +49,6 @@ const TransactionsOverview = (props: BoxProps) => {
 
     return txs
   }, [data, rpayTx])
-
-  console.log('final tx', txs)
 
   return (
     <TransactionsTable

@@ -22,11 +22,14 @@ const fetcher = async (url: string): Promise<StringMap> => {
   return data
 }
 
+// TODO: Limit to 25 txs
 const updateTxAtom = atom(null, (get, set, txs: RPayTx[]) => {
-  const currentTxs = { ...get(rpayTransactionsAtom) }
+  let currentTxs = { ...get(rpayTransactionsAtom) }
 
-  for (const tx of txs) {
-    currentTxs[tx.id] = tx
+  if (txs.length > 1) {
+    currentTxs = txs
+  } else {
+    currentTxs = [txs[0], ...currentTxs.slice(1)]
   }
 
   set(rpayTransactionsAtom, currentTxs)

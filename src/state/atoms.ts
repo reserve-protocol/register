@@ -365,9 +365,7 @@ export interface RPayTx {
   timestamp: number
 }
 
-export const rpayTransactionsAtom = atom<{
-  [x: string]: RPayTx
-}>({})
+export const rpayTransactionsAtom = atom<RPayTx[]>([])
 
 export const rpayOverviewAtom = atom({
   volume: 0,
