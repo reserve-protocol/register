@@ -5,7 +5,7 @@ import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { blockTimestampAtom, rpayTransactionsAtom } from 'state/atoms'
+import { rpayTransactionsAtom } from 'state/atoms'
 import { BoxProps } from 'theme-ui'
 import { TransactionRecord } from 'types'
 

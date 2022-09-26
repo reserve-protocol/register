@@ -9,7 +9,11 @@ import { useAtomValue } from 'jotai/utils'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import tokenList from 'rtokens'
-import { blockTimestampAtom, rTokenPriceAtom } from 'state/atoms'
+import {
+  blockTimestampAtom,
+  rpayOverviewAtom,
+  rTokenPriceAtom,
+} from 'state/atoms'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { calculateApy, formatCurrencyCell, formatUsdCurrencyCell } from 'utils'
 import { RSV_ADDRESS } from 'utils/addresses'
@@ -83,6 +87,7 @@ const tokenListQuery = gql`
 const TokenList = (props: BoxProps) => {
   const navigate = useNavigate()
   const timestamp = useAtomValue(blockTimestampAtom)
+  const rpayOverview = useAtomValue(rpayOverviewAtom)
   const fromTime = useMemo(() => {
     return timestamp - 2592000
   }, [!!timestamp])
@@ -109,7 +114,7 @@ const TokenList = (props: BoxProps) => {
           ;[tokenApy, stakingApy] = calculateApy(recentRate, lastRate)
         }
 
-        return {
+        const tokenData = {
           id: token.id,
           name: token.name,
           symbol: token.symbol,
@@ -117,18 +122,28 @@ const TokenList = (props: BoxProps) => {
           holders: token.holderCount,
           price: token.lastPriceUSD,
           transactionCount: token.transferCount,
-          cumulativeVolume: +formatEther(token.cumulativeVolume),
+          cumulativeVolume:
+            +formatEther(token.cumulativeVolume) * +token.lastPriceUSD,
           targetUnit: 'USD',
           tokenApy: +tokenApy.toFixed(2),
           backing: token?.rToken?.backing || 100,
           backingInsurance: token?.rToken?.backingInsurance || 0,
           stakingApy: +stakingApy.toFixed(2),
         }
+
+        // RSV Data
+        if (token.id === RSV_ADDRESS[CHAIN_ID].toLowerCase()) {
+          tokenData.holders += rpayOverview.holders
+          tokenData.transactionCount += rpayOverview.txCount
+          tokenData.cumulativeVolume += rpayOverview.volume
+        }
+
+        return tokenData
       })
     }
 
     return []
-  }, [data, rTokenPrice])
+  }, [data, rTokenPrice, rpayOverview.txCount])
 
   const rTokenColumns = useMemo(
     () => [
@@ -138,9 +153,9 @@ const TokenList = (props: BoxProps) => {
       { Header: t`Holders`, accessor: 'holders' },
       { Header: t`Txs`, accessor: 'transactionCount' },
       {
-        Header: t`24h Volume`,
-        accessor: 'cumulativeVolume', // TODO: Daily volume
-        Cell: formatCurrencyCell,
+        Header: t`Volume`,
+        accessor: 'cumulativeVolume',
+        Cell: formatUsdCurrencyCell,
       },
       { Header: t`Target(s)`, accessor: 'name' }, // TODO: Targets
       {
