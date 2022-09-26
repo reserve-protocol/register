@@ -3,7 +3,9 @@ import { ContentHead, InfoHeading } from 'components/info-box'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import useTimeFrom from 'hooks/useTimeFrom'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
+import { rpayOverviewAtom } from 'state/atoms'
 import { Box, BoxProps, Grid, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { DEPLOYER_ADDRESS } from 'utils/addresses'
@@ -69,6 +71,8 @@ const TokenStats = (props: BoxProps) => {
     },
     { refreshInterval: 5000 }
   )
+  const rpayOverview = useAtomValue(rpayOverviewAtom)
+
   const metrics = useMemo(() => {
     if (data) {
       return {
@@ -79,7 +83,7 @@ const TokenStats = (props: BoxProps) => {
           +data.protocol?.totalRTokenUSD || 0
         )}`,
         cumulativeVolumeUSD: `$${formatCurrency(
-          +data.protocol?.cumulativeVolumeUSD || 0
+          rpayOverview.volume + (+data.protocol?.cumulativeVolumeUSD || 0)
         )}`,
         cumulativeRTokenRevenueUSD: `$${formatCurrency(
           +data.protocol?.cumulativeRTokenRevenueUSD || 0
@@ -87,7 +91,8 @@ const TokenStats = (props: BoxProps) => {
         cumulativeInsuranceRevenueUSD: `$${formatCurrency(
           +data.protocol?.cumulativeInsuranceRevenueUSD || 0
         )}`,
-        transactionCount: data.protocol?.transactionCount || 0,
+        transactionCount:
+          rpayOverview.txCount + (data.protocol?.transactionCount || 0),
         dailyTransactionCount:
           data.usageMetricsDailySnapshots[0]?.dailyTransactionCount || 0,
         dailyVolume: `$${formatCurrency(
@@ -97,7 +102,7 @@ const TokenStats = (props: BoxProps) => {
     }
 
     return defaultProtocolMetrics
-  }, [data])
+  }, [data, rpayOverview.txCount])
 
   return (
     <Box pl={3} {...props}>

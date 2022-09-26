@@ -51,6 +51,8 @@ const TransactionsTable = ({
       STAKE: t`Stake`,
       UNSTAKE: t`UnStake`,
       WITHDRAW: t`Withdraw`,
+      DEPOSIT: t`Deposit`,
+      WITHDRAWAL: t`Withdrawal`,
     }),
     []
   )
@@ -60,14 +62,23 @@ const TransactionsTable = ({
       {
         Header: t`Type`,
         accessor: 'type',
-        Cell: ({ cell }: { cell: any }) =>
-          transactionTypes[cell.value] || cell.value,
+        Cell: ({ cell }: { cell: any }) => (
+          <Text sx={{ textTransform: 'capitalize' }}>
+            {transactionTypes[cell.value] || cell.value}
+          </Text>
+        ),
       },
       {
         Header: t`Amount`,
         id: 'test',
         accessor: 'amountUSD',
-        Cell: formatUsdCurrencyCell,
+        Cell: (cell: any) => {
+          if (isNaN(cell.cell.value)) {
+            return `$${cell.cell.value}`
+          }
+
+          return formatUsdCurrencyCell(cell)
+        },
       },
       {
         Header: t`Time`,
@@ -77,6 +88,7 @@ const TransactionsTable = ({
       },
       {
         Header: 'Explore',
+        id: 'id',
         accessor: 'hash',
         Cell: ({ cell }: { cell: any }) =>
           cell.value ? (

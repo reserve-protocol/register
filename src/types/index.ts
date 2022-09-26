@@ -45,10 +45,10 @@ export interface TransactionState {
 
 export interface TransactionRecord {
   type: string
-  amount: number
-  amountUSD: number
+  amount?: number
+  amountUSD: number | string
   timestamp: number
-  hash: string
+  hash?: string
 }
 
 export interface Wallet {

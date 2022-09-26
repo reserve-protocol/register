@@ -5,6 +5,7 @@ import useSWR from 'swr'
 import { StringMap } from 'types'
 import { rpayOverviewAtom, rpayTransactionsAtom, RPayTx } from './atoms'
 import useWebSocket from 'react-use-websocket'
+import dayjs from 'dayjs'
 
 const OVERVIEW_URL = `${process.env.REACT_APP_RPAY_FEED}/aggregate`
 const TXS_URL = `${process.env.REACT_APP_RPAY_FEED}/transactions`
@@ -43,20 +44,31 @@ const RSVUpdater = () => {
     console.log('response', event.data)
   }
 
-  useWebSocket('wss://rpay-explorer-feed.herokuapp.com/ws', {
-    shouldReconnect: () => true,
-    onMessage: (event: WebSocketEventMap['message']) => processMessages(event),
-  })
+  // useWebSocket('wss://rpay-explorer-feed.herokuapp.com/ws', {
+  //   shouldReconnect: () => true,
+  //   onMessage: (event: WebSocketEventMap['message']) => processMessages(event),
+  // })
 
   useEffect(() => {
     if (overviewData) {
-      updateOverview(overviewData as any)
+      updateOverview({
+        volume: overviewData['tx_volume'],
+        txCount: overviewData['tx_count'],
+        holders: overviewData['user_count'],
+      })
     }
   }, [overviewData])
 
   useEffect(() => {
     if (txData) {
-      updateTx(txData as RPayTx[])
+      updateTx(
+        txData.map(([id, type, amountUSD, timestamp]: string[]) => ({
+          id,
+          type,
+          amountUSD,
+          timestamp: dayjs(timestamp).unix() - 10850,
+        }))
+      )
     }
   }, [txData])
 

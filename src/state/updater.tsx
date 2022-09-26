@@ -260,7 +260,7 @@ const Updater = () => (
     <PricesUpdater />
     <ExchangeRateUpdater />
     <AccountUpdater />
-    {/* <RSVUpdater /> */}
+    <RSVUpdater />
   </>
 )
 

@@ -361,8 +361,8 @@ export const updateTransactionAtom = atom(
 export interface RPayTx {
   id: string
   type: string
-  amount: string
-  timestamp: string
+  amountUSD: string
+  timestamp: number
 }
 
 export const rpayTransactionsAtom = atom<{

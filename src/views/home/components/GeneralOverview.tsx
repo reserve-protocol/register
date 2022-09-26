@@ -3,8 +3,11 @@ import { t } from '@lingui/macro'
 import TransactionsTable from 'components/transactions/table'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
+import { blockTimestampAtom, rpayTransactionsAtom } from 'state/atoms'
 import { BoxProps } from 'theme-ui'
+import { TransactionRecord } from 'types'
 
 const protocolRecentTxsQuery = gql`
   query GetProtocolRecentTransactions {
@@ -23,19 +26,31 @@ const TransactionsOverview = (props: BoxProps) => {
   const { data } = useQuery(
     protocolRecentTxsQuery,
     {},
-    { refreshInterval: 1000 }
+    { refreshInterval: 5000 }
   )
+  const rpayTx = useAtomValue(rpayTransactionsAtom)
+
   const txs = useMemo(() => {
     if (!data?.entries) {
       return []
     }
 
+    const txs = [...(Object.values(rpayTx) as TransactionRecord[])]
+
     // TODO: Parse type depending on lang
-    return data.entries.map((tx: any) => ({
-      ...tx,
-      amount: Number(formatEther(tx.amount)),
-    }))
-  }, [data])
+    txs.push(
+      ...data.entries.map((tx: any) => ({
+        ...tx,
+        amount: Number(formatEther(tx.amount)),
+      }))
+    )
+
+    txs.sort((a, b) => +b.timestamp - +a.timestamp)
+
+    return txs
+  }, [data, rpayTx])
+
+  console.log('final tx', txs)
 
   return (
     <TransactionsTable
