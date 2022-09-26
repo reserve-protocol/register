@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode, Suspense } from 'react'
 import { Box, Flex } from 'theme-ui'
 import Header from './header'
 import MobileNav from './MobileNav'
@@ -32,9 +32,11 @@ const Layout = ({ children }: { children: ReactNode }) => {
         }}
       >
         <Header />
-        <Box sx={{ overflow: 'auto', flexGrow: 99999, position: 'relative' }}>
-          {children}
-        </Box>
+        <Suspense>
+          <Box sx={{ overflow: 'auto', flexGrow: 99999, position: 'relative' }}>
+            {children}
+          </Box>
+        </Suspense>
         <MobileNav />
       </Flex>
     </Flex>
