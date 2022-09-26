@@ -7,6 +7,7 @@ import OverviewIcon from 'components/icons/OverviewIcon'
 import StakeIcon from 'components/icons/StakeIcon'
 import { NavLink } from 'react-router-dom'
 import useRToken from 'hooks/useRToken'
+import { useMemo } from 'react'
 
 const items = [
   { path: ROUTES.HOME, Icon: HomeIcon },
@@ -18,6 +19,13 @@ const items = [
 
 const MobileNav = () => {
   const rToken = useRToken()
+  const menuItems = useMemo(() => {
+    if (rToken?.isRSV) {
+      return [...items.slice(0, 3)]
+    }
+
+    return items
+  }, [rToken?.address])
 
   return (
     <Box
@@ -29,7 +37,7 @@ const MobileNav = () => {
         justifyContent: 'space-evenly',
       }}
     >
-      {items.map(({ path, Icon }) => (
+      {menuItems.map(({ path, Icon }) => (
         <NavLink
           style={({ isActive }) => ({
             padding: 16,
