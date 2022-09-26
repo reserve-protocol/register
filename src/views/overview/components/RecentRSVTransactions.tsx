@@ -3,15 +3,21 @@ import { t } from '@lingui/macro'
 import TransactionsTable from 'components/transactions/table'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
+import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { rpayTransactionsAtom } from 'state/atoms'
 import RSVTxListener from 'state/RSVTxListener'
 import { BoxProps } from 'theme-ui'
 
-const protocolRecentTxsQuery = gql`
-  query GetProtocolRecentTransactions {
-    entries(orderBy: timestamp, orderDirection: desc, first: 25) {
+const tokenRecentTxsQuery = gql`
+  query GetTokenRecentTransactions($tokenId: String!) {
+    entries(
+      orderBy: timestamp
+      where: { token: $tokenId, type_in: ["TRANSFER", "MINT", "BURN"] }
+      orderDirection: desc
+      first: 20
+    ) {
       type
       amount
       amountUSD
@@ -21,13 +27,11 @@ const protocolRecentTxsQuery = gql`
   }
 `
 
-const TransactionsOverview = (props: BoxProps) => {
-  // TODO: poll on blocknumber change
-  const { data } = useQuery(
-    protocolRecentTxsQuery,
-    {},
-    { refreshInterval: 5000 }
-  )
+const RecentRSVTransactions = (props: BoxProps) => {
+  const rToken = useRToken()
+  const { data } = useQuery(tokenRecentTxsQuery, {
+    tokenId: rToken?.address.toLowerCase() ?? '',
+  })
   const rpayTx = useAtomValue(rpayTransactionsAtom)
 
   const txs = useMemo(() => {
@@ -56,9 +60,9 @@ const TransactionsOverview = (props: BoxProps) => {
       <TransactionsTable
         compact
         card
-        maxHeight={420}
-        title={t`Transactions`}
+        maxHeight={400}
         help="TODO"
+        title={t`Transactions`}
         data={txs}
         {...props}
       />
@@ -66,4 +70,4 @@ const TransactionsOverview = (props: BoxProps) => {
   )
 }
 
-export default TransactionsOverview
+export default RecentRSVTransactions

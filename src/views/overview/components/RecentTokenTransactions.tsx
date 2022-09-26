@@ -26,9 +26,13 @@ const tokenRecentTxsQuery = gql`
 
 const RecentTokenTransactions = (props: BoxProps) => {
   const rToken = useRToken()
-  const { data } = useQuery(tokenRecentTxsQuery, {
-    tokenId: rToken?.address.toLowerCase() ?? '',
-  })
+  const { data } = useQuery(
+    tokenRecentTxsQuery,
+    {
+      tokenId: rToken?.address.toLowerCase() ?? '',
+    },
+    { refreshInterval: 5000 }
+  )
   const txs = useMemo(() => {
     if (!data?.entries) {
       return []

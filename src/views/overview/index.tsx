@@ -19,6 +19,7 @@ import About from './components/About'
 import AssetOverview from './components/AssetOverview'
 import HistoricalData from './components/HistoricalData'
 import RecentProtocolTransactions from './components/RecentProtocolTransactions'
+import RecentRSVTransactions from './components/RecentRSVTransactions'
 import RecentTokenTransactions from './components/RecentTokenTransactions'
 import TokenOverview from './components/TokenOverview'
 import TokenUsage from './components/TokenUsage'
@@ -109,7 +110,11 @@ const Overview = () => {
           <TokenOverview ml={[5, 0]} metrics={rTokenMetrics} />
           <TokenUsage ml={[5, 0]} mt={7} metrics={rTokenMetrics} />
         </Box>
-        <RecentTokenTransactions mt={[7, 7, 7, 0]} />
+        {rToken?.isRSV ? (
+          <RecentRSVTransactions />
+        ) : (
+          <RecentTokenTransactions mt={[7, 7, 7, 0]} />
+        )}
       </Grid>
       <Divider {...dividerProps} />
       <Grid {...gridProps}>

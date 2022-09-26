@@ -1,14 +1,13 @@
+import dayjs from 'dayjs'
 import { atom } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { useEffect } from 'react'
 import useSWR from 'swr'
 import { StringMap } from 'types'
 import { rpayOverviewAtom, rpayTransactionsAtom, RPayTx } from './atoms'
-import useWebSocket from 'react-use-websocket'
-import dayjs from 'dayjs'
 
-const OVERVIEW_URL = `${process.env.REACT_APP_RPAY_FEED}/aggregate`
-const TXS_URL = `${process.env.REACT_APP_RPAY_FEED}/transactions`
+const OVERVIEW_URL = `https:${process.env.REACT_APP_RPAY_FEED}/aggregate`
+const TXS_URL = `https:${process.env.REACT_APP_RPAY_FEED}/transactions`
 
 const fetcher = async (url: string): Promise<StringMap> => {
   const data: Response = await fetch(url, {
@@ -24,15 +23,7 @@ const fetcher = async (url: string): Promise<StringMap> => {
 
 // TODO: Limit to 25 txs
 const updateTxAtom = atom(null, (get, set, txs: RPayTx[]) => {
-  let currentTxs = { ...get(rpayTransactionsAtom) }
-
-  if (txs.length > 1) {
-    currentTxs = txs
-  } else {
-    currentTxs = [txs[0], ...currentTxs.slice(1)]
-  }
-
-  set(rpayTransactionsAtom, currentTxs)
+  set(rpayTransactionsAtom, txs)
 })
 
 const RSVUpdater = () => {
@@ -40,17 +31,6 @@ const RSVUpdater = () => {
   const updateOverview = useUpdateAtom(rpayOverviewAtom)
   const { data: overviewData } = useSWR(OVERVIEW_URL, fetcher)
   const { data: txData } = useSWR(TXS_URL, fetcher)
-
-  const processMessages = (event: { data: string }) => {
-    // const response = JSON.parse(event.data)
-
-    console.log('response', event.data)
-  }
-
-  // useWebSocket('wss://rpay-explorer-feed.herokuapp.com/ws', {
-  //   shouldReconnect: () => true,
-  //   onMessage: (event: WebSocketEventMap['message']) => processMessages(event),
-  // })
 
   useEffect(() => {
     if (overviewData) {
@@ -69,7 +49,7 @@ const RSVUpdater = () => {
           id,
           type,
           amountUSD,
-          timestamp: dayjs(timestamp).unix() - 10850,
+          timestamp: dayjs(timestamp).unix() - 10880,
         }))
       )
     }
