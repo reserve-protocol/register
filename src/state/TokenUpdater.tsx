@@ -283,7 +283,7 @@ const ReserveTokenUpdater = () => {
           stToken,
           collaterals,
           main,
-          unlisted: !rtokens[CHAIN_ID][rToken.address],
+          unlisted: !rtokens[rToken.address],
         })
       } catch (e) {
         console.error('Error fetching token info', e)

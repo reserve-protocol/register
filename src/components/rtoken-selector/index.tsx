@@ -29,7 +29,7 @@ const availableTokensAtom = atom((get) => {
   } = {}
 
   for (const tokenAddress of defaultTokens) {
-    const token = rtokens[CHAIN_ID][tokenAddress]
+    const token = rtokens[tokenAddress]
 
     if (token) {
       tokenList[tokenAddress] = {

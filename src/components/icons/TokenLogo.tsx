@@ -22,7 +22,7 @@ const TokenLogo = ({ symbol, src, size = '1em', ...props }: Props) => {
   if (!imgSrc) {
     imgSrc = IMGS.has(symbol?.toLowerCase() ?? '')
       ? `/imgs/${symbol?.toLowerCase()}.png`
-      : '/imgs/default.png'
+      : '/svgs/default.svg'
   }
 
   return (
@@ -31,7 +31,7 @@ const TokenLogo = ({ symbol, src, size = '1em', ...props }: Props) => {
         src={imgSrc}
         onError={({ currentTarget }) => {
           currentTarget.onerror = null // prevents looping
-          currentTarget.src = '/imgs/default.png'
+          currentTarget.src = '/svgs/default.svg'
         }}
         style={{
           borderRadius: '50%',

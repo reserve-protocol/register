@@ -37,7 +37,7 @@ interface ListedToken {
 }
 
 const tokenKeys = [
-  ...Object.keys(tokenList[CHAIN_ID]).map((s) => s.toLowerCase()),
+  ...Object.keys(tokenList).map((s) => s.toLowerCase()),
   RSV_ADDRESS[CHAIN_ID].toLowerCase(),
 ]
 

@@ -150,7 +150,7 @@ const PendingBalancesUpdater = () => {
 
         const pendingRSR = await facade.pendingUnstakings(rToken, account)
         const pendingRSRSummary = pendingRSR.map((item) => ({
-          availableAt: item.availableAt.toNumber() * 1000,
+          availableAt: item.availableAt.toNumber(),
           index: item.index,
           amount: parseFloat(formatEther(item.amount)),
         }))

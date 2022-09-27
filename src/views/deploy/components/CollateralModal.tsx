@@ -74,8 +74,6 @@ const CollateralModal = ({
     }
   }
 
-  // Add custom collateral to the collaterals list and selected
-  // TODO
   const handleAddCustom = (collateral: CollateralPlugin) => {
     if (selected.indexOf(collateral.address) === -1) {
       setSelected([...selected, collateral.address])
