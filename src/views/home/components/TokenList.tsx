@@ -1,10 +1,13 @@
+import { getAddress } from '@ethersproject/address'
 import { formatEther } from '@ethersproject/units'
 import { t, Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import { ContentHead } from 'components/info-box'
 import { Table } from 'components/table'
+import TokenItem from 'components/token-item'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
+import { getRTokenLogo } from 'hooks/useRTokenLogo'
 import { useAtomValue } from 'jotai/utils'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -115,7 +118,7 @@ const TokenList = (props: BoxProps) => {
         }
 
         const tokenData = {
-          id: token.id,
+          id: getAddress(token.id),
           name: token.name,
           symbol: token.symbol,
           supply: +formatEther(token.totalSupply) * +token.lastPriceUSD,
@@ -147,7 +150,14 @@ const TokenList = (props: BoxProps) => {
 
   const rTokenColumns = useMemo(
     () => [
-      { Header: t`Token`, accessor: 'symbol' },
+      {
+        Header: t`Token`,
+        accessor: 'symbol',
+        Cell: (data: any) => {
+          const logo = getRTokenLogo(data.row.original.id)
+          return <TokenItem symbol={data.cell.value} logo={logo} />
+        },
+      },
       { Header: t`Price`, accessor: 'price', Cell: formatUsdCurrencyCell },
       { Header: t`Mkt Cap`, accessor: 'supply', Cell: formatUsdCurrencyCell },
       { Header: t`Holders`, accessor: 'holders', Cell: formatCurrencyCell },

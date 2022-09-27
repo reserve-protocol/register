@@ -1,5 +1,8 @@
 import { t, Trans } from '@lingui/macro'
+import TokenLogo from 'components/icons/TokenLogo'
 import { Table } from 'components/table'
+import TokenItem from 'components/token-item'
+import { getRTokenLogo } from 'hooks/useRTokenLogo'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import {
@@ -7,7 +10,7 @@ import {
   accountPositionsAtom,
   accountTokensAtom,
 } from 'state/atoms'
-import { Box, BoxProps, Divider, Grid, Text } from 'theme-ui'
+import { Box, BoxProps, Divider, Text } from 'theme-ui'
 import {
   formatCurrency,
   formatCurrencyCell,
@@ -22,7 +25,15 @@ const Portfolio = (props: BoxProps) => {
   // TODO: Update changing lang
   const rTokenColumns = useMemo(
     () => [
-      { Header: 'RToken', accessor: 'symbol' },
+      {
+        Header: 'RToken',
+        accessor: 'symbol',
+        Cell: (data: any) => {
+          const logo = getRTokenLogo(data.row.original.address)
+
+          return <TokenItem symbol={data.cell.value} logo={logo} />
+        },
+      },
       { Header: t`Price`, accessor: 'usdPrice', Cell: formatUsdCurrencyCell },
       { Header: t`Balance`, accessor: 'balance', Cell: formatCurrencyCell },
       { Header: t`Value`, accessor: 'usdAmount', Cell: formatUsdCurrencyCell },

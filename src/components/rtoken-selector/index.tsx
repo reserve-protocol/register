@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
 import TokenLogo from 'components/icons/TokenLogo'
 import Popup from 'components/popup'
+import TokenItem from 'components/token-item'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { memo, useCallback, useMemo, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
@@ -21,6 +22,8 @@ interface TokenDisplay {
   logo: string
 }
 
+const DEFAULT_LOGO = '/svgs/default.svg'
+
 const availableTokensAtom = atom((get) => {
   const defaultTokens = DEFAULT_TOKENS[CHAIN_ID]
   const owned = get(accountTokensAtom)
@@ -35,7 +38,9 @@ const availableTokensAtom = atom((get) => {
       tokenList[tokenAddress] = {
         address: tokenAddress,
         symbol: token.symbol,
-        logo: require(`rtokens/images/${token.logo}`),
+        logo: token.logo
+          ? require(`rtokens/images/${token.logo}`)
+          : DEFAULT_LOGO,
       }
     }
   }
@@ -45,7 +50,7 @@ const availableTokensAtom = atom((get) => {
       tokenList[token.address] = {
         address: token.address,
         symbol: token.symbol,
-        logo: '/svgs/default.svg',
+        logo: DEFAULT_LOGO,
       }
     }
   }
@@ -76,13 +81,6 @@ const ActionItem = styled(Flex)`
   }
 `
 
-const TokenItem = ({ symbol, logo }: { symbol: string; logo: string }) => (
-  <Flex sx={{ alignItems: 'center' }}>
-    <TokenLogo size="1.2em" mr={2} src={logo} />
-    <Text>{symbol}</Text>
-  </Flex>
-)
-
 const TokenList = memo(({ onSelect }: { onSelect(address: string): void }) => {
   const tokens = useAtomValue(availableTokensAtom)
 
@@ -102,8 +100,6 @@ const SelectedToken = () => {
   const rToken = useAtomValue(rTokenAtom)
   const tokenList = useAtomValue(availableTokensAtom)
   const { symbol, logo } = useMemo(() => {
-    const defaultLogo = '/svgs/default.svg'
-
     if (tokenList[selectedAddress]) {
       return tokenList[selectedAddress]
     }
@@ -111,13 +107,13 @@ const SelectedToken = () => {
     if (rToken) {
       return {
         symbol: rToken.symbol,
-        logo: defaultLogo,
+        logo: DEFAULT_LOGO,
       }
     }
 
     return {
       symbol: shortenAddress(selectedAddress),
-      logo: defaultLogo,
+      logo: DEFAULT_LOGO,
     }
   }, [selectedAddress])
 

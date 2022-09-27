@@ -2,6 +2,7 @@ import { formatEther } from '@ethersproject/units'
 import { t } from '@lingui/macro'
 import TransactionsTable from 'components/transactions/table'
 import { gql } from 'graphql-request'
+import useDebounce from 'hooks/useDebounce'
 import useQuery from 'hooks/useQuery'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
@@ -28,7 +29,7 @@ const TransactionsOverview = (props: BoxProps) => {
     {},
     { refreshInterval: 5000 }
   )
-  const rpayTx = useAtomValue(rpayTransactionsAtom)
+  const rpayTx = useDebounce(useAtomValue(rpayTransactionsAtom), 1000)
 
   const txs = useMemo(() => {
     if (!data?.entries) {
@@ -47,7 +48,7 @@ const TransactionsOverview = (props: BoxProps) => {
 
     txs.sort((a, b) => +b.timestamp - +a.timestamp)
 
-    return txs.slice(0, 50)
+    return txs.slice(0, 25)
   }, [data, rpayTx])
 
   return (

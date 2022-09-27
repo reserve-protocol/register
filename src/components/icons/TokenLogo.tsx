@@ -25,8 +25,6 @@ const TokenLogo = ({ symbol, src, size = '1em', ...props }: Props) => {
       : '/svgs/default.svg'
   }
 
-  console.log('src', imgSrc)
-
   return (
     <Container {...props}>
       <Image
