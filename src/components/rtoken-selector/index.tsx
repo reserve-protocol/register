@@ -45,7 +45,7 @@ const availableTokensAtom = atom((get) => {
       tokenList[token.address] = {
         address: token.address,
         symbol: token.symbol,
-        logo: '/imgs/default.png',
+        logo: '/svgs/default.svg',
       }
     }
   }
@@ -102,7 +102,7 @@ const SelectedToken = () => {
   const rToken = useAtomValue(rTokenAtom)
   const tokenList = useAtomValue(availableTokensAtom)
   const { symbol, logo } = useMemo(() => {
-    const defaultLogo = '/imgs/default.png'
+    const defaultLogo = '/svgs/default.svg'
 
     if (tokenList[selectedAddress]) {
       return tokenList[selectedAddress]

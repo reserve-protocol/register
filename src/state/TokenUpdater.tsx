@@ -259,6 +259,10 @@ const ReserveTokenUpdater = () => {
           args: [address],
         }
 
+        const logo = rtokens[address]?.logo
+          ? require(`rtokens/images/${rtokens[address].logo}`)
+          : '/svgs/default.svg'
+
         const [basket, stTokenAddress] = await promiseMulticall(
           [
             {
@@ -283,6 +287,7 @@ const ReserveTokenUpdater = () => {
           stToken,
           collaterals,
           main,
+          logo,
           unlisted: !rtokens[rToken.address],
         })
       } catch (e) {

@@ -1,7 +1,10 @@
 import { Trans } from '@lingui/macro'
 import { Card } from 'components'
+import TokenLogo from 'components/icons/TokenLogo'
 import TokenBalance from 'components/token-balance'
+import useRTokenLogo from 'hooks/useRTokenLogo'
 import { useAtomValue } from 'jotai/utils'
+import { useMemo } from 'react'
 import { rTokenBalanceAtom } from 'state/atoms'
 import { Box, BoxProps, Divider, Grid, Text } from 'theme-ui'
 import { ReserveToken, Token } from 'types'
@@ -25,13 +28,18 @@ const CollateralBalances = ({ collaterals }: { collaterals: Token[] }) => (
 
 const RTokenBalance = ({ token }: { token: Token }) => {
   const balance = useAtomValue(rTokenBalanceAtom)
+  const logo = useRTokenLogo(token.address)
 
   return (
     <Box p={4}>
       <Text variant="subtitle" mb={3}>
         <Trans>RToken In Wallet</Trans>
       </Text>
-      <TokenBalance symbol={token.symbol} balance={balance} />
+      <TokenBalance
+        symbol={token.symbol}
+        icon={<TokenLogo src={logo} />}
+        balance={balance}
+      />
     </Box>
   )
 }

@@ -56,6 +56,7 @@ const RSV: ReserveToken = {
   name: 'Reserve',
   symbol: 'RSV',
   decimals: 18,
+  logo: '/svgs/rsv.svg',
   collaterals: [
     {
       address: TUSD,

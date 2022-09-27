@@ -14,16 +14,18 @@ const Container = styled(Box)`
   position: relative;
 `
 
-const IMGS = new Set(['dai', 'rsdp', 'rsr', 'rsv', 'tusd', 'usdc', 'usdp'])
+const IMGS = new Set(['dai', 'rsr', 'rsv', 'tusd', 'usdc', 'usdp'])
 
 const TokenLogo = ({ symbol, src, size = '1em', ...props }: Props) => {
   let imgSrc = src
 
   if (!imgSrc) {
     imgSrc = IMGS.has(symbol?.toLowerCase() ?? '')
-      ? `/imgs/${symbol?.toLowerCase()}.png`
+      ? `/svgs/${symbol?.toLowerCase()}.svg`
       : '/svgs/default.svg'
   }
+
+  console.log('src', imgSrc)
 
   return (
     <Container {...props}>

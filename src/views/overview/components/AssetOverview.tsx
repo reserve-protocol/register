@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro'
 import TokenLogo from 'components/icons/TokenLogo'
 import useRToken from 'hooks/useRToken'
+import useRTokenLogo from 'hooks/useRTokenLogo'
 import { atom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import {
@@ -86,7 +87,7 @@ const AssetOverview = () => {
             mb={4}
             mt={2}
             data={pieData}
-            symbol={rToken?.symbol || 'rsv'}
+            logo={rToken?.logo ?? ''}
             isRSV={rToken?.isRSV}
             insurance={distribution.insurance}
           />

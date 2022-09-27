@@ -58,5 +58,5 @@ export const RSR: Token = {
   name: 'Reserve Rights',
   symbol: 'RSR',
   decimals: 18,
-  logo: 'rsr.png',
+  logo: 'rsr.svg',
 }

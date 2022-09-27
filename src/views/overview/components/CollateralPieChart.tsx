@@ -4,9 +4,9 @@ import { Box, BoxProps } from 'theme-ui'
 
 interface ChartProps extends BoxProps {
   data: { name: string; value: number; color: string }[]
-  symbol: string
   insurance: number
   isRSV?: boolean
+  logo: string
 }
 
 // Value % between 0-100
@@ -17,7 +17,7 @@ const getAngles = (value: number) => {
 
 const CollateralChart = ({
   data,
-  symbol,
+  logo,
   isRSV,
   insurance,
   ...props
@@ -30,7 +30,7 @@ const CollateralChart = ({
         position: 'absolute',
       }}
     >
-      <TokenLogo size={24} symbol={symbol} />
+      <TokenLogo size={24} src={logo} />
     </Box>
     <ResponsiveContainer height={200}>
       <PieChart>
