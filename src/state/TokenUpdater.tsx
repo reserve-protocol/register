@@ -392,7 +392,7 @@ const ReserveTokenUpdater = () => {
   // User role
   useEffect(() => {
     if (provider) {
-      if (!mainAddress) {
+      if (!mainAddress || !account) {
         updateAccountRole({ owner: false, freezer: false, pauser: false })
       } else {
         getUserRole(provider, mainAddress, account)
