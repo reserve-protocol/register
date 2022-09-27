@@ -6,6 +6,7 @@ interface Props extends Partial<IconInfoProps> {
   symbol?: string
   balance: number
   usd?: boolean
+  logoSrc?: string
 }
 
 const TokenBalance = ({
@@ -13,13 +14,14 @@ const TokenBalance = ({
   title,
   balance,
   usd = false,
+  logoSrc,
   icon,
   ...props
 }: Props) => (
   <IconInfo
     title={title || symbol}
     text={`${usd ? '$' : ''}${formatCurrency(balance || 0)}`}
-    icon={icon || <TokenLogo symbol={symbol} />}
+    icon={icon || <TokenLogo src={logoSrc} symbol={symbol} />}
     {...props}
   />
 )

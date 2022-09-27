@@ -2,6 +2,7 @@ import { t, Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
 import { Card } from 'components'
 import { LoadingButton } from 'components/button'
+import TokenLogo from 'components/icons/TokenLogo'
 import TokenBalance from 'components/token-balance'
 import { BigNumber } from 'ethers/lib/ethers'
 import useRToken from 'hooks/useRToken'
@@ -109,9 +110,15 @@ const StakeBalance = () => {
         <Trans>Your stake</Trans>
       </Text>
       <TokenBalance symbol={rToken?.stToken?.symbol ?? ''} balance={balance} />
-      <TokenBalance mt={2} symbol="RSR Value" balance={balance * rate} />
+      <TokenBalance
+        mt={2}
+        symbol="RSR Value"
+        logoSrc="/svgs/equals.svg"
+        balance={balance * rate}
+      />
       <TokenBalance
         symbol="USD"
+        logoSrc="/svgs/equals.svg"
         usd
         balance={balance * rate * rsrPrice}
         mt={2}
@@ -130,7 +137,13 @@ const RSRBalance = () => {
         <Trans>In Wallet</Trans>
       </Text>
       <TokenBalance symbol="RSR" balance={balance} />
-      <TokenBalance symbol="USD" usd balance={balance * rsrPrice} mt={2} />
+      <TokenBalance
+        logoSrc="/svgs/equals.svg"
+        symbol="USD"
+        usd
+        balance={balance * rsrPrice}
+        mt={2}
+      />
     </Box>
   )
 }

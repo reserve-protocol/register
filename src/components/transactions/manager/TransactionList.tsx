@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro'
 import TokenLogo from 'components/icons/TokenLogo'
 import dayjs from 'dayjs'
 import { atom, useAtomValue } from 'jotai'
-import { Check, ExternalLink, X } from 'react-feather'
+import { ArrowUpRight, Check, X } from 'react-feather'
 import { Link as RouterLink } from 'react-router-dom'
 import { currentTxAtom } from 'state/atoms'
 import { borderRadius } from 'theme'
@@ -123,7 +123,7 @@ const TransactionList = () => {
           </Text>
           {txs[day].map((tx) => (
             <Grid
-              columns={['140px 1fr 1fr', '140px 160px auto 64px']}
+              columns={['140px 1fr 1fr', '140px 160px auto 72px']}
               gap={3}
               mt={3}
               p={3}
@@ -152,8 +152,12 @@ const TransactionList = () => {
                       ExplorerDataType.TRANSACTION
                     )}
                     target="_blank"
+                    sx={{ display: 'flex', alignItems: 'center' }}
                   >
-                    <ExternalLink size={12} /> <Trans>View</Trans>
+                    <Text mr={2}>
+                      <Trans>Inspect</Trans>
+                    </Text>
+                    <ArrowUpRight size={16} />
                   </Link>
                 ) : (
                   ''
