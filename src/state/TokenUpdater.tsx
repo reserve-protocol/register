@@ -72,7 +72,7 @@ const apyQuery = gql`
 const getRTokenMeta = async (
   addresses: string[],
   provider: Web3Provider
-): Promise<{ tokens: Token[]; main: string }> => {
+): Promise<{ tokens: Token[]; main: string; mandate: string }> => {
   const calls = addresses.reduce((acc, address) => {
     const params = { abi: ERC20Interface, address, args: [] }
 
@@ -93,15 +93,24 @@ const getRTokenMeta = async (
     ]
   }, [] as ContractCall[])
 
-  calls.unshift({
-    abi: RTokenInterface,
-    address: addresses[0],
-    args: [],
-    method: 'main',
-  })
+  calls.unshift(
+    {
+      abi: RTokenInterface,
+      address: addresses[0],
+      args: [],
+      method: 'main',
+    },
+    {
+      abi: RTokenInterface,
+      address: addresses[0],
+      args: [],
+      method: 'mandate',
+    }
+  )
 
   const multicallResult = await promiseMulticall(calls, provider)
   const main = multicallResult.shift()
+  const mandate = multicallResult.shift()
 
   const tokens = addresses.reduce((tokens, address) => {
     const [name, symbol, decimals] = multicallResult.splice(0, 3)
@@ -119,6 +128,7 @@ const getRTokenMeta = async (
   return {
     tokens,
     main,
+    mandate,
   }
 }
 
@@ -249,7 +259,7 @@ const ReserveTokenUpdater = () => {
       const isRSV = address === RSV.address
 
       if (isRSV) {
-        return updateToken(RSV)
+        return updateToken({ ...RSV, meta: rtokens[address] })
       }
 
       try {
@@ -258,10 +268,6 @@ const ReserveTokenUpdater = () => {
           address: FACADE_ADDRESS[CHAIN_ID],
           args: [address],
         }
-
-        const logo = rtokens[address]?.logo
-          ? require(`rtokens/images/${rtokens[address].logo}`)
-          : '/svgs/default.svg'
 
         const [basket, stTokenAddress] = await promiseMulticall(
           [
@@ -279,8 +285,13 @@ const ReserveTokenUpdater = () => {
 
         const {
           main,
+          mandate,
           tokens: [rToken, stToken, ...collaterals],
         } = await getRTokenMeta([address, stTokenAddress, ...basket], provider)
+
+        const logo = rtokens[address]?.logo
+          ? require(`rtokens/images/${rtokens[address].logo}`)
+          : '/svgs/default.svg'
 
         return updateToken({
           ...rToken,
@@ -288,7 +299,9 @@ const ReserveTokenUpdater = () => {
           collaterals,
           main,
           logo,
+          mandate,
           unlisted: !rtokens[rToken.address],
+          meta: rtokens[rToken.address],
         })
       } catch (e) {
         console.error('Error fetching token info', e)

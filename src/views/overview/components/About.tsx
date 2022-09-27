@@ -9,32 +9,24 @@ const About = (props: BoxProps) => {
 
   return (
     <Box {...props}>
-      <Text mb={3} sx={{ fontSize: 4, display: 'block', fontWeight: 500 }}>
-        <Trans>About {rToken?.symbol}</Trans>
-      </Text>
-      <Text variant="legend">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam maximus
-        facilisis velit, at venenatis nunc iaculis . Vestibulum ante ipsum
-        primis in faucibus orci luctus et posuere curae. Lorem ipsum dolor sit
-        amet, consectetur elit. Etiam maximus facilisis velit, at venenatis nunc
-        iaculis vitae.
-      </Text>
-      <br />
-      <br />
-      <Text variant="legend">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. maximus
-        facilisis velit, at venenatis nunc iaculis . Vestibulum ante ipsum
-        primis in faucibus orci luctus et posuere curae. Lorem ipsum dolor sit
-        amet, consectetur adipiscing elit.
-      </Text>
-      <br />
-      <br />
-      <Text variant="legend">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam maximus
-        facilisis velit, at venenatis nurae. Lorem ipsum dolor amet, consectetur
-        adipiscing elit. Etiam maximus facilisis velit, venenatis nunc iaculis
-        vitae.
-      </Text>
+      {rToken?.mandate && (
+        <>
+          <Text mb={3} sx={{ fontSize: 4, display: 'block', fontWeight: 500 }}>
+            {rToken?.symbol} <Trans>Mandate</Trans>
+          </Text>
+          <Text as="p" variant="legend">
+            {rToken?.mandate}
+          </Text>
+        </>
+      )}
+      {rToken?.meta?.about && (
+        <>
+          <Text mb={3} sx={{ fontSize: 4, display: 'block', fontWeight: 500 }}>
+            <Trans>About</Trans> {rToken?.symbol}
+          </Text>
+          <Text as="p">{rToken?.meta?.about}</Text>
+        </>
+      )}
     </Box>
   )
 }

@@ -140,7 +140,7 @@ const TransactionList = () => {
                 sx={{ overflow: 'hidden', display: ['none', 'flex'] }}
                 variant="layout.verticalAlign"
               >
-                <TokenLogo symbol="rsv" mr={3} />
+                <TokenLogo src="/svgs/equals.svg" mr={3} />
                 <Text>{formatCurrency(Number(tx.value))}</Text>
               </Flex>
               <TransactionStatus tx={tx} />
