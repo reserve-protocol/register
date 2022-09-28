@@ -48,6 +48,8 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
   }
 
   const handleDistribution = (index: number, value: string) => {
+    console.log('value', value)
+
     updateBasket([
       unit,
       {
@@ -115,11 +117,7 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
                     ? 'input'
                     : 'inputError'
                 }
-                value={
-                  +data.distribution[index] > 0
-                    ? Math.round(+data.distribution[index] * 100) / 100
-                    : data.distribution[index]
-                }
+                value={data.distribution[index]}
                 onChange={(value) => handleDistribution(index, value)}
               />
             </Box>
