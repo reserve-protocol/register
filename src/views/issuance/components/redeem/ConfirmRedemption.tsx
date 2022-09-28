@@ -17,6 +17,7 @@ import { v4 as uuid } from 'uuid'
 import { isValidRedeemAmountAtom, redeemAmountAtom } from 'views/issuance/atoms'
 import CollateralDistribution from '../issue/CollateralDistribution'
 import RedeemInput from './RedeemInput'
+import { quote } from 'utils/rsv'
 
 const redeemCollateralAtom = atom<BigNumberMap>({})
 
@@ -73,8 +74,15 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
   )
 
   useEffect(() => {
-    if (facadeContract && rToken?.address && Number(amount) > 0) {
+    if (
+      facadeContract &&
+      rToken?.address &&
+      !rToken.isRSV &&
+      Number(amount) > 0
+    ) {
       getQuantities(facadeContract, rToken.address, amount)
+    } else if (rToken?.isRSV && Number(amount) > 0) {
+      setCollateralQuantities(quote(parseEther(amount)))
     } else {
       setCollateralQuantities({})
     }
