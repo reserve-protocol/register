@@ -6,6 +6,7 @@ import { Box, BoxProps, Flex, Text, Divider, Spinner } from 'theme-ui'
 import { BigNumberMap, Token } from 'types'
 import { formatCurrency } from 'utils'
 import { Trans } from '@lingui/macro'
+import TokenItem from 'components/token-item'
 
 interface Props extends BoxProps {
   collaterals: Token[]
@@ -45,8 +46,8 @@ const CollateralDistribution = ({
         <Box>
           <Divider mx={-2} />
           {collaterals.map((collateral) => (
-            <Flex key={collateral.address}>
-              <Text>{collateral.symbol}</Text>
+            <Flex mt={2} key={collateral.address}>
+              <TokenItem symbol={collateral.symbol} />
               <Box mx="auto" />
               <Text sx={{ fontWeight: '500' }}>
                 {quantities[getAddress(collateral.address)] ? (
