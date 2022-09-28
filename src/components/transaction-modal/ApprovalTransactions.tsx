@@ -24,7 +24,7 @@ const ApprovalTransactions = ({
 }) => {
   const addTransaction = useSetAtom(addTransactionAtom)
   const [signing, setSigning] = useState('')
-  const fee = useTransactionCost(txs)
+  const [fee] = useTransactionCost(txs)
   const txState = useTransactions(signing.split(','))
   const [signed, failedTx] = useMemo(() => {
     const fail = txState.find((tx) => tx.status === TRANSACTION_STATUS.REJECTED)

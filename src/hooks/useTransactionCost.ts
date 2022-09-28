@@ -12,9 +12,13 @@ import { getContract } from 'utils'
 
 export const useTransactionGasFee = (
   transactions: TransactionState[]
-): { loading: boolean; value: number[] } => {
+): { loading: boolean; value: number[]; error: string } => {
   const { provider, account } = useWeb3React()
-  const [state, setState] = useState({ loading: false, value: [] as number[] })
+  const [state, setState] = useState({
+    loading: false,
+    value: [] as number[],
+    error: '',
+  })
 
   const fetchTxFees = useCallback(
     async (txs: TransactionState[]) => {
@@ -41,9 +45,14 @@ export const useTransactionGasFee = (
             })
           )
 
-          setState({ value: result, loading: false })
-        } catch (e) {
+          setState({ value: result, loading: false, error: '' })
+        } catch (e: any) {
           error(t`Error estimating fees`, t`Transaction failed`)
+          setState({
+            value: [],
+            loading: false,
+            error: e?.error?.message || t`Error running transaction`,
+          })
           console.error('error fetching gas fees', e)
         }
       }
@@ -58,14 +67,19 @@ export const useTransactionGasFee = (
   return state
 }
 
-const useTransactionCost = (transactions: TransactionState[]): number => {
-  const { value: fees } = useTransactionGasFee(transactions)
+const useTransactionCost = (
+  transactions: TransactionState[]
+): [number, string] => {
+  const { value: fees, error } = useTransactionGasFee(transactions)
   const gasPrice = useAtomValue(gasPriceAtom)
   const ethPrice = useAtomValue(ethPriceAtom)
 
   return useMemo(
-    () => fees.reduce((acc, fee) => acc + fee, 0) * gasPrice * ethPrice,
-    [fees, gasPrice, ethPrice]
+    () => [
+      fees.reduce((acc, fee) => acc + fee, 0) * gasPrice * ethPrice,
+      error,
+    ],
+    [fees, gasPrice, ethPrice, error]
   )
 }
 

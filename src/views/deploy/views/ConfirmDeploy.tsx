@@ -1,6 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { parseEther } from '@ethersproject/units'
 import { t } from '@lingui/macro'
+import Alert from 'components/alert'
 import { ethers } from 'ethers'
 import useTransactionCost from 'hooks/useTransactionCost'
 import { useAtom, useSetAtom } from 'jotai'
@@ -200,7 +201,7 @@ const ConfirmDeploy = () => {
     }
   }, [])
 
-  const fee = useTransactionCost(transaction ? [transaction] : [])
+  const [fee, gasError] = useTransactionCost(transaction ? [transaction] : [])
 
   const handleDeploy = () => {
     if (transaction) {
@@ -219,6 +220,7 @@ const ConfirmDeploy = () => {
         onConfirm={handleDeploy}
         gasCost={fee}
       />
+      {!!gasError && <Alert text={gasError} mb={5} />}
       <DeployPreview />
     </>
   )

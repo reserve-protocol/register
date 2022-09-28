@@ -1,5 +1,6 @@
 import { t } from '@lingui/macro'
 import { Container } from 'components'
+import Alert from 'components/alert'
 import { BigNumber } from 'ethers'
 import useTransactionCost from 'hooks/useTransactionCost'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -77,7 +78,7 @@ const ConfirmGovernanceSetup = () => {
       return null
     }
   }, [])
-  const fee = useTransactionCost(transaction ? [transaction] : [])
+  const [fee, gasError] = useTransactionCost(transaction ? [transaction] : [])
 
   const handleDeploy = () => {
     if (transaction) {
@@ -94,10 +95,11 @@ const ConfirmGovernanceSetup = () => {
           isValid={!!fee}
           title={t`Governance Summary`}
           subtitle={t`Lorem ipsum dolor sit amet, consectetur adipiscing elit.`}
-          confirmText={fee ? t`Confirm Setup` : 'Validating...'}
+          confirmText={fee ? t`Confirm Setup` : t`Validating...`}
           gasCost={fee}
           onConfirm={handleDeploy}
         />
+        {!!gasError && <Alert text={gasError} mb={5} />}
         <GovernanceSummary />
       </Container>
     </>

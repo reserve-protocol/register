@@ -51,9 +51,11 @@ const GovernanceConfigured = () => {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           </Text>
         </Box>
-        <Button ml="auto" px={3} onClick={handleTally}>
-          <Trans>Setup Tally</Trans>
-        </Button>
+        {!!config.governance && (
+          <Button ml="auto" px={3} onClick={handleTally}>
+            <Trans>Setup Tally</Trans>
+          </Button>
+        )}
       </Flex>
       <Grid columns={2} gap={5}>
         <Card px={4}>

@@ -90,7 +90,7 @@ const TransactionModal = ({
   const signed =
     txState?.status === TRANSACTION_STATUS.MINING ||
     txState?.status === TRANSACTION_STATUS.CONFIRMED
-  const fee = useTransactionCost(canSubmit ? [tx] : [])
+  const [fee] = useTransactionCost(canSubmit ? [tx] : [])
 
   const handleConfirm = () => {
     const id = uuid()

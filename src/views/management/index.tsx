@@ -67,7 +67,7 @@ const Management = () => {
 
   return (
     <Box>
-      {accountRole.owner && (
+      {accountRole.owner && rTokenStatus === RTOKEN_STATUS.PAUSED && (
         <>
           <DeploymentStepTracker step={5} />
           <GovernanceHero mx={5} p={5} />
