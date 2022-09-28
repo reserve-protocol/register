@@ -1,11 +1,16 @@
 import TokenLogo from 'components/icons/TokenLogo'
-import { Flex, Text } from 'theme-ui'
+import { Text, BoxProps, Box } from 'theme-ui'
 
-const TokenItem = ({ symbol, logo }: { symbol: string; logo?: string }) => (
-  <Flex sx={{ alignItems: 'center' }}>
-    <TokenLogo size="1.2em" mr={2} symbol={symbol} src={logo} />
-    <Text>{symbol}</Text>
-  </Flex>
+interface Props extends BoxProps {
+  symbol: string
+  logo?: string
+}
+
+const TokenItem = ({ symbol, logo, ...props }: Props) => (
+  <Box variant="layout.verticalAlign">
+    <TokenLogo size={18} mr={2} symbol={symbol} src={logo} />
+    <Text {...props}>{symbol}</Text>
+  </Box>
 )
 
 export default TokenItem

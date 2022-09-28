@@ -125,7 +125,13 @@ const SelectedToken = () => {
     )
   }
 
-  return <TokenItem logo={logo} symbol={symbol} />
+  return (
+    <TokenItem
+      sx={{ overflow: 'hidden', width: [60, 'auto'], textOverflow: 'ellipsis' }}
+      logo={logo}
+      symbol={symbol}
+    />
+  )
 }
 
 const RTokenSelector = (props: BoxProps) => {

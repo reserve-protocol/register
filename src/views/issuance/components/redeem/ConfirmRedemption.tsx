@@ -21,7 +21,6 @@ import { quote } from 'utils/rsv'
 
 const redeemCollateralAtom = atom<BigNumberMap>({})
 
-// TODO: Display redeemable collateral?
 const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
   const [signing, setSigning] = useState(false)
   const rToken = useAtomValue(rTokenAtom)
