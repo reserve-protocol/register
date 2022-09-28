@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import { atom } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import useWebSocket from 'react-use-websocket'
@@ -14,19 +15,22 @@ const updateTxAtom = atom(null, (get, set, txs: RPayTx[]) => {
 
 const RSVTxListener = () => {
   const updateTx = useUpdateAtom(updateTxAtom)
+  const isWindowOpen = useIsWindowVisible()
 
   const processMessages = (event: any) => {
     try {
-      updateTx(
-        JSON.parse(event.data).map(
-          ([id, type, amountUSD, timestamp]: string[]) => ({
-            id,
-            type,
-            amountUSD,
-            timestamp: dayjs(timestamp).unix() - 10880,
-          })
+      if (isWindowOpen) {
+        updateTx(
+          JSON.parse(event.data).map(
+            ([id, type, amountUSD, timestamp]: string[]) => ({
+              id,
+              type,
+              amountUSD,
+              timestamp: dayjs(timestamp).unix() - 10880,
+            })
+          )
         )
-      )
+      }
     } catch (e) {}
   }
 

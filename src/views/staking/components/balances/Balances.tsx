@@ -109,7 +109,11 @@ const StakeBalance = () => {
       <Text variant="subtitle" mb={3}>
         <Trans>Your stake</Trans>
       </Text>
-      <TokenBalance symbol={rToken?.stToken?.symbol ?? ''} balance={balance} />
+      <TokenBalance
+        symbol={rToken?.stToken?.symbol ?? ''}
+        logoSrc="/svgs/strsr.svg"
+        balance={balance}
+      />
       <TokenBalance
         mt={2}
         symbol="RSR Value"

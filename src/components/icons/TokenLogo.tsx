@@ -14,7 +14,23 @@ const Container = styled(Box)`
   position: relative;
 `
 
-const IMGS = new Set(['dai', 'rsr', 'rsv', 'tusd', 'usdc', 'usdp'])
+const IMGS = new Set([
+  'dai',
+  'cdai',
+  'rsr',
+  'strsr',
+  'rsv',
+  'tusd',
+  'usdt',
+  'cusdt',
+  'usdc',
+  'cusdc',
+  'usdp',
+  'wbtc',
+  'cwbtc',
+  'ceth',
+  'eth',
+])
 
 const TokenLogo = ({ symbol, src, size = '1em', ...props }: Props) => {
   let imgSrc = src
@@ -26,18 +42,24 @@ const TokenLogo = ({ symbol, src, size = '1em', ...props }: Props) => {
   }
 
   return (
-    <Container {...props}>
+    <Container
+      {...props}
+      sx={{
+        borderRadius: '50%',
+        overflow: 'visible',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxShadow: '0 0 1px 0px white inset, 0 0 1px 0px white',
+        height: size,
+        width: size,
+      }}
+    >
       <Image
         src={imgSrc}
         onError={({ currentTarget }) => {
           currentTarget.onerror = null // prevents looping
           currentTarget.src = '/svgs/default.svg'
-        }}
-        style={{
-          borderRadius: '50%',
-          boxShadow: '0 0 3px 0px white inset, 0 0 3px 0px white',
-          height: size,
-          width: size,
         }}
       />
     </Container>

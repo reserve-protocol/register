@@ -47,7 +47,13 @@ const Portfolio = (props: BoxProps) => {
   )
   const stTokenColumns = useMemo(
     () => [
-      { Header: 'IP Token', accessor: 'symbol' },
+      {
+        Header: 'IP Token',
+        accessor: 'symbol',
+        Cell: (data: any) => {
+          return <TokenItem symbol={data.cell.value} logo="/svgs/strsr.svg" />
+        },
+      },
       {
         Header: t`RSR Rate`,
         accessor: 'exchangeRate',
