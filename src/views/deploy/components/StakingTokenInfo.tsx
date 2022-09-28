@@ -19,13 +19,13 @@ const StakingTokenInfo = (props: BoxProps) => {
       </Text>
       <IconInfo
         mt={4}
-        icon={<TokenLogo />}
+        icon={<TokenLogo symbol="strsr" />}
         title={t`Staking Token`}
         text={`${stRSR} Token`}
       />
       <IconInfo
         mt={3}
-        icon={<TokenLogo />}
+        icon={<TokenLogo symbol="strsr" />}
         title={t`Staking token Ticker`}
         text={stRSR}
       />
