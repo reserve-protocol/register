@@ -57,9 +57,9 @@ const TransactionSidebar = () => {
             alignItems: 'center',
             borderBottom: '1px solid',
             borderColor: 'darkBorder',
+            height: '3.5em',
           }}
           px={5}
-          py={3}
           mb={5}
         >
           <Text variant="title" sx={{ fontSize: 2 }} mr={3}>

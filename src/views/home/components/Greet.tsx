@@ -51,7 +51,7 @@ const Greet = ({ onDismiss, ...props }: Props) => {
   return (
     <>
       <Flex {...props} mt={6} mb={8}>
-        <Box ml={3} mb={6}>
+        <Box ml={3} pr={3} mb={[0, 6]}>
           <Text
             sx={{
               display: 'block',
@@ -89,6 +89,7 @@ const Greet = ({ onDismiss, ...props }: Props) => {
             alignItems: 'center',
             borderLeft: '1px solid',
             borderColor: 'darkBorder',
+            display: ['none', 'flex'],
           }}
           ml="auto"
         >
