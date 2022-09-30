@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 import { FormField } from 'components/field'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { isAddress } from 'utils'
@@ -10,7 +10,7 @@ const TokenForm = (props: BoxProps) => (
   <Box {...props}>
     <Box variant="layout.verticalAlign" mb={4}>
       <Text ml={2} variant="title">
-        RToken Details
+        <Trans>RToken Details</Trans>
       </Text>
     </Box>
     <FormField
@@ -39,7 +39,10 @@ const TokenForm = (props: BoxProps) => (
       name="mandate"
       options={{
         required: t`Mandate is required`,
-        maxLength: 256,
+        maxLength: {
+          value: 256,
+          message: t`Mandate cannot be longer than 256 characters`,
+        },
       }}
     />
     <FormField

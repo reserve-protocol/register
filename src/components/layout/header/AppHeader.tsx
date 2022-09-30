@@ -16,7 +16,7 @@ const Container = styled(Flex)`
   align-items: center;
   flex-shrink: 0;
   position: relative;
-  /* border-bottom: 1px solid var(--theme-ui-colors-darkBorder); */
+  border-bottom: 1px solid var(--theme-ui-colors-darkBorder);
   height: 3.5em;
 `
 
