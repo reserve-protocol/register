@@ -1,6 +1,5 @@
 import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
-import TokenLogo from 'components/icons/TokenLogo'
 import Popup from 'components/popup'
 import TokenItem from 'components/token-item'
 import { atom, useAtom, useAtomValue } from 'jotai'
@@ -115,7 +114,7 @@ const SelectedToken = () => {
       symbol: shortenAddress(selectedAddress),
       logo: DEFAULT_LOGO,
     }
-  }, [selectedAddress])
+  }, [selectedAddress, rToken?.symbol])
 
   if (!selectedAddress) {
     return (

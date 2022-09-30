@@ -118,7 +118,7 @@ const Navigation = ({
       currentToken?.symbol && currentToken.symbol.length > 8
         ? `${currentToken.symbol.substring(0, 8)}...`
         : currentToken?.symbol
-    PAGES[1].title = `${tokenSymbol} Overview`
+    PAGES[1].title = `${tokenSymbol || ''} Overview`
 
     if (currentToken?.isRSV) {
       return [...PAGES.slice(0, 3)]
