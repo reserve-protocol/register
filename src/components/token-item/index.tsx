@@ -8,7 +8,7 @@ interface Props extends BoxProps {
 
 const TokenItem = ({ symbol, logo, ...props }: Props) => (
   <Box variant="layout.verticalAlign">
-    <TokenLogo size={18} mr={2} symbol={symbol} src={logo} />
+    <TokenLogo size={20} mr={2} symbol={symbol} src={logo} />
     <Text {...props}>{symbol}</Text>
   </Box>
 )

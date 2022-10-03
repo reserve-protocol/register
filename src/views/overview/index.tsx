@@ -105,15 +105,15 @@ const Overview = () => {
 
   return (
     <Container>
-      <Grid {...gridProps} ml={[0, 5]} gap={0}>
+      <Grid {...gridProps} ml={[0, 0, 0, 5]} gap={0}>
         <Box>
-          <TokenOverview ml={[5, 0]} metrics={rTokenMetrics} />
-          <TokenUsage ml={[5, 0]} mt={7} metrics={rTokenMetrics} />
+          <TokenOverview ml={[5, 5, 5, 0]} metrics={rTokenMetrics} />
+          <TokenUsage ml={[5, 5, 5, 0]} mt={7} metrics={rTokenMetrics} />
         </Box>
         {rToken?.isRSV ? (
-          <RecentRSVTransactions />
+          <RecentRSVTransactions mt={[5, 5, 5, 0]} />
         ) : (
-          <RecentTokenTransactions mt={[7, 7, 7, 0]} />
+          <RecentTokenTransactions mt={[5, 5, 5, 0]} />
         )}
       </Grid>
       <Divider {...dividerProps} />

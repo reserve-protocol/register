@@ -69,7 +69,8 @@ export const colors = {
   contentLightBackground: '#FCFBF9',
   primary: '#000000',
   success: '#11BB8D',
-  accent: '#00FFBF',
+  accentAction: '#00FFBF',
+  accent: '#003326',
   secondary: '#E8E8E8',
   border: '#F2F2F2',
   darkBorder: '#DFDFDF',
@@ -322,6 +323,10 @@ export const theme: Theme = {
     accent: {
       ...baseButton,
       backgroundColor: 'accent',
+    },
+    accentAction: {
+      ...baseButton,
+      backgroundColor: 'accentAction',
       color: 'black',
     },
     transparent: {

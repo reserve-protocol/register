@@ -89,7 +89,7 @@ const Account = () => {
         <SmallButton
           px={3}
           py={2}
-          variant="accent"
+          variant="accentAction"
           sx={{ fontSize: 1 }}
           onClick={() => setWalletVisible(true)}
         >

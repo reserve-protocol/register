@@ -27,7 +27,7 @@ const CollateralBalance = ({ token, ...props }: Props) => {
     )
   }
 
-  const current = +balances[token.address].toFixed(3)
+  const current = +balances[token.address]?.toFixed(3) || 0
   const required = +formatUnits(quantities[token.address], token.decimals)
   const isValid = current >= +required.toFixed(3)
 

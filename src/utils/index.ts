@@ -33,7 +33,7 @@ export const relativeTime = (from: number, to: number) => {
   if (delta >= timeUnits.year) {
     return t`A year ago`
   } else if (delta >= timeUnits.month) {
-    return `>${Math.floor(delta / timeUnits.month)}` + t`m`
+    return `>${Math.floor(delta / timeUnits.month)}` + t`mth`
   } else if (delta >= timeUnits.day) {
     return `>${Math.floor(delta / timeUnits.day)}d`
   } else if (delta >= timeUnits.hour) {
