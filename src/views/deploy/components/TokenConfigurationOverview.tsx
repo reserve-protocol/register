@@ -102,7 +102,7 @@ const TokenConfigurationOverview = () => {
       />
       <Info
         mt={3}
-        title={t`Max trade volume`}
+        title={t`RToken Max trade volume`}
         subtitle={formatCurrency(data.maxTrade)}
       />
     </Box>

@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/macro'
+import CopyValue from 'components/button/CopyValue'
 import GoTo from 'components/button/GoTo'
 import { useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
@@ -21,21 +22,24 @@ const Pending = () => (
     </Text>
     <Text as="p" variant="legend">
       <Trans>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit adipiscing elit
-        consectetur.
+        Please sign the transaction in your wallet to continue with the
+        government configuration process.
       </Trans>
     </Text>
   </Box>
 )
 
 const Mining = ({ hash }: { hash: string }) => (
-  <Box sx={{ textAlign: 'center', width: 400 }}>
+  <Box sx={{ textAlign: 'center', width: 420 }}>
     <Spinner size={24} />
     <Text sx={{ fontWeight: 500, display: 'block' }}>
       <Trans>RToken governance is deploying</Trans>
     </Text>
     <Text as="p" variant="legend">
-      <Trans>TODO TODO TODO</Trans>
+      <Trans>
+        Stay patient while the transaction is in progress & don’t close this
+        window to avoid issues finding your way back here.
+      </Trans>
     </Text>
     <Box
       variant="layout.verticalAlign"
@@ -43,8 +47,9 @@ const Mining = ({ hash }: { hash: string }) => (
       mt={4}
     >
       <Text mr={3} variant="legend">
-        Tx hash: {shortenString(hash)}
+        {shortenString(hash)}
       </Text>
+      <CopyValue ml={3} mr={2} value={hash} />
       <GoTo href={getExplorerLink(hash, ExplorerDataType.TRANSACTION)} />
     </Box>
   </Box>

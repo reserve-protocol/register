@@ -37,7 +37,7 @@ const TokenConfiguration = () => {
             <Trans>Advanced config:</Trans>
           </Text>
           <Text mx={2} variant="title" sx={{ color: 'secondaryText' }}>
-            <Trans>13 params</Trans>
+            <Trans>16 params</Trans>
           </Text>
           <Help content="testtesttest" />
           <SmallButton
