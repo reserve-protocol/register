@@ -103,7 +103,7 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
       {data.collaterals.map((collateral, index) => (
         <Flex key={collateral.address} variant="layout.verticalAlign" mt={3}>
           <IconInfo
-            icon={<TokenLogo symbol={collateral.symbol} />}
+            icon={<TokenLogo size={18} symbol={collateral.symbol} />}
             title={unit}
             text={`${getCollateralDist(index)} in ${collateral.symbol}`}
           />

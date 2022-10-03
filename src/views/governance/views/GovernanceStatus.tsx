@@ -1,11 +1,14 @@
 import { Trans } from '@lingui/macro'
 import { useAtomValue } from 'jotai'
+import { useUpdateAtom } from 'jotai/utils'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTransaction } from 'state/web3/hooks/useTransactions'
 import { Box, Card, Spinner, Text } from 'theme-ui'
 import { shortenString } from 'utils'
 import { ROUTES, TRANSACTION_STATUS } from 'utils/constants'
+import { deployStepAtom } from 'views/deploy/components/DeployHeader'
+import { Steps } from 'views/deploy/components/DeployStep'
 import { govTxIdAtom } from '../atoms'
 
 const Pending = () => (
@@ -41,11 +44,15 @@ const Mining = ({ hash }: { hash: string }) => (
 const GovernanceSetup = () => {
   const txId = useAtomValue(govTxIdAtom)
   const tx = useTransaction(txId)
+  const setStep = useUpdateAtom(deployStepAtom)
   const navigate = useNavigate()
 
   useEffect(() => {
     if (tx?.status === TRANSACTION_STATUS.CONFIRMED) {
       navigate(`${ROUTES.GOVERNANCE_INFO}/${txId}`)
+    }
+    if (tx?.status === TRANSACTION_STATUS.REJECTED) {
+      setStep(Steps.GovernanceSummary)
     }
   }, [tx?.status])
 

@@ -103,20 +103,20 @@ const OtherForm = (props: BoxProps) => {
         options={{
           required: true,
           pattern: decimalPattern,
-          max: maxTrade,
-          min: 0.01,
+          max: 10000000,
+          min: 0,
         }}
       />
       <FormField
-        label={t`Maximum trade volume`}
-        placeholder={t`Maximum trade`}
+        label={t`RToken Maximum trade volume`}
+        placeholder={t`Maximum trade for RToken`}
         mb={3}
         name="maxTrade"
         options={{
           required: true,
           pattern: decimalPattern,
           max: 480000000000,
-          min: minTrade,
+          min: 0,
         }}
       />
     </Box>

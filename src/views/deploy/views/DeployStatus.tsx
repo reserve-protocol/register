@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
 import useRToken from 'hooks/useRToken'
-import { useAtomValue } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -8,8 +8,9 @@ import { accountRoleAtom, selectedRTokenAtom } from 'state/atoms'
 import { useTransaction } from 'state/web3/hooks/useTransactions'
 import { Box, Card, Spinner, Text } from 'theme-ui'
 import { shortenString } from 'utils'
-import { ROUTES } from 'utils/constants'
+import { ROUTES, TRANSACTION_STATUS } from 'utils/constants'
 import { deployIdAtom } from '../atoms'
+import { deployStepAtom } from '../components/DeployHeader'
 
 const Pending = () => (
   <Box sx={{ textAlign: 'center', width: 400 }}>
@@ -52,11 +53,16 @@ const DeployStatus = () => {
   const setRToken = useUpdateAtom(selectedRTokenAtom)
   const setOwner = useUpdateAtom(accountRoleAtom)
   const navigate = useNavigate()
+  const [current, setStep] = useAtom(deployStepAtom)
 
   // TODO: Error case? user can get stuck here
   useEffect(() => {
     if (tx?.extra?.rTokenAddress) {
       setRToken(tx?.extra?.rTokenAddress)
+    }
+
+    if (tx?.status === TRANSACTION_STATUS.REJECTED) {
+      setStep(current - 1)
     }
   }, [tx?.status])
 

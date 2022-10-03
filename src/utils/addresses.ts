@@ -6,20 +6,32 @@ export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 // The deployer version is also related to the protocol version
 export const DEPLOYER_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x139e1D41943ee15dDe4DF876f9d0E7F85e26660A',
-  [ChainId.Goerli]: '0x2A5679683fF5485F5D776841B1639255D3fDAF57',
+  [ChainId.Goerli]: '0x6D80CEE7065848233d81c7621C736149a6666979',
   [ChainId.Hardhat]: '0x139e1D41943ee15dDe4DF876f9d0E7F85e26660A',
 }
 
 export const FACADE_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xD6b040736e948621c5b6E0a494473c47a6113eA8',
-  [ChainId.Goerli]: '0xc77Bb7521fe9F633001567368D3872d96179257D',
+  [ChainId.Goerli]: '0x8B84160CF8d9066Ba45f71471a06F2BFAc364626',
   [ChainId.Hardhat]: '0xD6b040736e948621c5b6E0a494473c47a6113eA8',
 }
 
 export const FACADE_WRITE_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x7B4f352Cd40114f12e82fC675b5BA8C7582FC513',
-  [ChainId.Goerli]: '0x468AA6da8BF5CBa01A0f6DE0Da6DaD0605C1198F',
+  [ChainId.Goerli]: '0x261bccA3a9E67bDd1e5A1a3D72c5e3393843c824',
   [ChainId.Hardhat]: '0x7B4f352Cd40114f12e82fC675b5BA8C7582FC513',
+}
+
+export const STAKE_AAVE_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x82EdA215Fa92B45a3a76837C65Ab862b6C7564a8',
+  [ChainId.Goerli]: '0x7b5109144EA8cC4903dE7F85012515D603226d93',
+  [ChainId.Hardhat]: '0x82EdA215Fa92B45a3a76837C65Ab862b6C7564a8',
+}
+
+export const COMPOUND_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x87006e75a5B6bE9D1bbF61AC8Cd84f05D9140589',
+  [ChainId.Goerli]: '0x7e1Ee9185877Aaa0bF9689478Ff8e706eea1BD31',
+  [ChainId.Hardhat]: '0x87006e75a5B6bE9D1bbF61AC8Cd84f05D9140589',
 }
 
 export const RSR_ADDRESS: AddressMap = {
@@ -32,18 +44,6 @@ export const MULTICALL_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x5ba1e12693dc8f9c48aad8770482f4739beed696',
   [ChainId.Goerli]: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
   [ChainId.Hardhat]: '0x5ba1e12693dc8f9c48aad8770482f4739beed696',
-}
-
-export const STAKE_AAVE_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0x82EdA215Fa92B45a3a76837C65Ab862b6C7564a8',
-  [ChainId.Goerli]: '0x6715b44e9E3021e78647772A75A3BAE0e0E2bD27',
-  [ChainId.Hardhat]: '0x82EdA215Fa92B45a3a76837C65Ab862b6C7564a8',
-}
-
-export const COMPOUND_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0x87006e75a5B6bE9D1bbF61AC8Cd84f05D9140589',
-  [ChainId.Goerli]: '0x8B4493db76159314b6a285254CD6667bAeD537ab',
-  [ChainId.Hardhat]: '0x87006e75a5B6bE9D1bbF61AC8Cd84f05D9140589',
 }
 
 export const RSV_ADDRESS: AddressMap = {
@@ -78,10 +78,7 @@ export const PAX_ADDRESS: AddressMap = {
 
 // Fixed tokens used in the rtoken selector screen and dashboard
 export const DEFAULT_TOKENS = {
-  [ChainId.Goerli]: [
-    '0x8431278459066BF0d2536db436709b1BB96Fdc4D',
-    RSV_ADDRESS[ChainId.Goerli],
-  ],
+  [ChainId.Goerli]: [RSV_ADDRESS[ChainId.Goerli]],
   [ChainId.Hardhat]: [
     '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',
     '0x0bdB19551E641D25ea56AD1C66927313B331a955',

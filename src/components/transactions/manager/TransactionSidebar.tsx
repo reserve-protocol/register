@@ -57,7 +57,7 @@ const TransactionSidebar = () => {
             alignItems: 'center',
             borderBottom: '1px solid',
             borderColor: 'darkBorder',
-            height: '3.5em',
+            height: '56px',
           }}
           px={5}
           mb={5}

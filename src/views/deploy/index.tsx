@@ -4,7 +4,6 @@ import { useUpdateAtom } from 'jotai/utils'
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Box } from 'theme-ui'
-import { v4 as uuid } from 'uuid'
 import { backupCollateralAtom, basketAtom, deployIdAtom } from './atoms'
 import { deployStepAtom } from './components/DeployHeader'
 import DeploymentStepTracker from './components/DeployStep'
@@ -27,8 +26,8 @@ const defaultValues = {
   maxTradeSlippage: '1', // 1%
   dustAmount: '1',
   issuanceRate: '0.025', // 0.025% per block or ~0.1% per minute
-  maxRedemptionCharge: '5', // 5% per block
-  redemptionVirtualSupply: '20000000', // Anticipated redemption minimum amount for throttling
+  scalingRedemptionRate: '5', // 5% per block
+  redemptionRateFloor: '1000000', // Anticipated redemption minimum amount for throttling
   // other
   rTokenDist: 40, // reward dist %
   rsrDist: 60, // reward dist %
@@ -51,7 +50,6 @@ const DeploymentViews = [
 
 const Deploy = () => {
   const { account } = useWeb3React()
-  const setId = useUpdateAtom(deployIdAtom)
   const setBasket = useUpdateAtom(basketAtom)
   const setBackupBasket = useUpdateAtom(backupCollateralAtom)
   const [currentView, setCurrentView] = useAtom(deployStepAtom)
@@ -70,8 +68,6 @@ const Deploy = () => {
   }, [account])
 
   useEffect(() => {
-    setId(uuid())
-
     return () => {
       setCurrentView(0)
       setBasket({})

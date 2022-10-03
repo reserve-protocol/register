@@ -17,7 +17,7 @@ const Container = styled(Flex)`
   flex-shrink: 0;
   position: relative;
   border-bottom: 1px solid var(--theme-ui-colors-darkBorder);
-  height: 3.5em;
+  height: 56px;
 `
 
 const RTokenStatus = () => {

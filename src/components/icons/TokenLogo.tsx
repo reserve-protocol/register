@@ -30,6 +30,8 @@ const IMGS = new Set([
   'cwbtc',
   'ceth',
   'eth',
+  'busd',
+  'weth',
 ])
 
 const TokenLogo = ({ symbol, src, size = '1em', ...props }: Props) => {

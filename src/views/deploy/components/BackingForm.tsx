@@ -72,10 +72,10 @@ const BackingForm = (props: BoxProps) => (
       }}
     />
     <FormField
-      label={t`Max redemption charge (%)`}
+      label={t`Scaling Redemption Rate (%)`}
       placeholder={t`Max % per hour`}
       mb={3}
-      name="maxRedemptionCharge"
+      name="scalingRedemptionRate"
       options={{
         required: true,
         pattern: decimalPattern,
@@ -84,10 +84,10 @@ const BackingForm = (props: BoxProps) => (
       }}
     />
     <FormField
-      label={t`Redemption virtual supply`}
-      placeholder={t`Virtual supply`}
+      label={t`Redemption rate floor`}
+      placeholder={t`Redemption rate`}
       mb={3}
-      name="redemptionVirtualSupply"
+      name="redemptionRateFloor"
       options={{
         required: true,
         pattern: decimalPattern,
