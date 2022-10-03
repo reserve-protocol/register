@@ -18,7 +18,7 @@ const ExchangeRate = (props: BoxProps) => {
     <Box variant="layout.borderBox" {...props} padding={4}>
       <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
         <Text>
-          {rate} {rToken?.stToken?.symbol ?? 'stRSR'} = 1 RSR
+          1 {rToken?.stToken?.symbol ?? 'stRSR'} = {rate} RSR
         </Text>
       </Flex>
     </Box>

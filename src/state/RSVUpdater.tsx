@@ -4,6 +4,7 @@ import { useUpdateAtom } from 'jotai/utils'
 import { useEffect } from 'react'
 import useSWR from 'swr'
 import { StringMap } from 'types'
+import { dateToUnix } from 'utils'
 import { rpayOverviewAtom, rpayTransactionsAtom, RPayTx } from './atoms'
 
 const OVERVIEW_URL = `https:${process.env.REACT_APP_RPAY_FEED}/aggregate`
@@ -20,6 +21,8 @@ const fetcher = async (url: string): Promise<StringMap> => {
 
   return data
 }
+
+dayjs.extend
 
 // TODO: Limit to 25 txs
 const updateTxAtom = atom(null, (get, set, txs: RPayTx[]) => {
@@ -49,7 +52,7 @@ const RSVUpdater = () => {
           id,
           type,
           amountUSD,
-          timestamp: dayjs(timestamp).unix() - 10880,
+          timestamp: dateToUnix(timestamp),
         }))
       )
     }

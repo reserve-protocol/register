@@ -3,6 +3,7 @@ import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import { atom } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import useWebSocket from 'react-use-websocket'
+import { dateToUnix } from 'utils'
 import { rpayTransactionsAtom, RPayTx } from './atoms'
 
 // TODO: Limit to 25 txs
@@ -26,7 +27,7 @@ const RSVTxListener = () => {
               id,
               type,
               amountUSD,
-              timestamp: dayjs(timestamp).unix() - 10880,
+              timestamp: dateToUnix(timestamp),
             })
           )
         )

@@ -2428,6 +2428,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "npm:1.11.3"\
       ],\
       [\
+        "dayjs-plugin-utc",\
+        "npm:0.1.2"\
+      ],\
+      [\
         "debug",\
         "virtual:5a1b3f046c6200f09cee6e8120724cd08ee56ae67fca8835d35ab2095c2a4116681affe0dc3d6f52fa0522d02572c61ec073799a7e5983912c71fd0f2a00929b#npm:4.3.4"\
       ],\
@@ -5781,6 +5785,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["babel-preset-react-app", "npm:10.0.1"],\
             ["buffer", "npm:6.0.3"],\
             ["dayjs", "npm:1.11.3"],\
+            ["dayjs-plugin-utc", "npm:0.1.2"],\
             ["ethers", "npm:5.6.2"],\
             ["fast-deep-equal", "npm:3.1.3"],\
             ["fast-memoize", "npm:2.5.2"],\
@@ -16065,6 +16070,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["dayjs-plugin-utc", [\
+        ["npm:0.1.2", {\
+          "packageLocation": "./.yarn/cache/dayjs-plugin-utc-npm-0.1.2-2221afbf0f-80a3732407.zip/node_modules/dayjs-plugin-utc/",\
+          "packageDependencies": [\
+            ["dayjs-plugin-utc", "npm:0.1.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["debug", [\
         ["npm:2.6.9", {\
           "packageLocation": "./.yarn/cache/debug-npm-2.6.9-7d4cb597dc-d2f51589ca.zip/node_modules/debug/",\
@@ -24016,6 +24030,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["babel-preset-react-app", "npm:10.0.1"],\
             ["buffer", "npm:6.0.3"],\
             ["dayjs", "npm:1.11.3"],\
+            ["dayjs-plugin-utc", "npm:0.1.2"],\
             ["ethers", "npm:5.6.2"],\
             ["fast-deep-equal", "npm:3.1.3"],\
             ["fast-memoize", "npm:2.5.2"],\

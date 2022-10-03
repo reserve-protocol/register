@@ -20,5 +20,5 @@
     "types": ["react-spring", "jest"],
     "jsx": "react-jsx"
   },
-  "include": ["src"]
+  "include": ["src", "node_modules/dayjs/plugin/utc.d.ts"]
 }
