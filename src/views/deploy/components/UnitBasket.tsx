@@ -48,8 +48,6 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
   }
 
   const handleDistribution = (index: number, value: string) => {
-    console.log('value', value)
-
     updateBasket([
       unit,
       {

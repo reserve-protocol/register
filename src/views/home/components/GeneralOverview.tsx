@@ -45,12 +45,7 @@ const TransactionsOverview = (props: BoxProps) => {
         amount: Number(formatEther(tx.amount)),
       }))
     )
-
-    console.log('before sortt', txs.slice(0, 25))
-
     txs.sort((a, b) => Number(b.timestamp) - Number(a.timestamp))
-
-    console.log('txs', txs.slice(0, 25))
 
     return txs.slice(0, 25)
   }, [data, rpayTx])

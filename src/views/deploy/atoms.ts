@@ -1,3 +1,4 @@
+import { truncateDecimals } from './../../utils/index'
 import { t } from '@lingui/macro'
 import { atom } from 'jotai'
 
@@ -138,9 +139,11 @@ export const addBasketCollateralAtom = atom(
         ...(basket[unit]?.collaterals ?? []),
       ]
 
-      const distribution = new Array(unitCollaterals.length).fill(
-        100 / unitCollaterals.length
+      const distribution = new Array(unitCollaterals.length - 1).fill(
+        truncateDecimals(100 / unitCollaterals.length)
       )
+      const sum = distribution.reduce((a, b) => a + b, 0)
+      distribution.push(100 - sum)
 
       basket[unit] = {
         collaterals: unitCollaterals,

@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/macro'
+import GoTo from 'components/button/GoTo'
 import { useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { useEffect } from 'react'
@@ -7,6 +8,7 @@ import { useTransaction } from 'state/web3/hooks/useTransactions'
 import { Box, Card, Spinner, Text } from 'theme-ui'
 import { shortenString } from 'utils'
 import { ROUTES, TRANSACTION_STATUS } from 'utils/constants'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { deployStepAtom } from 'views/deploy/components/DeployHeader'
 import { Steps } from 'views/deploy/components/DeployStep'
 import { govTxIdAtom } from '../atoms'
@@ -35,9 +37,16 @@ const Mining = ({ hash }: { hash: string }) => (
     <Text as="p" variant="legend">
       <Trans>TODO TODO TODO</Trans>
     </Text>
-    <Text mt={4} sx={{ display: 'block' }} variant="legend">
-      Tx hash: {shortenString(hash)}
-    </Text>
+    <Box
+      variant="layout.verticalAlign"
+      sx={{ justifyContent: 'center' }}
+      mt={4}
+    >
+      <Text mr={3} variant="legend">
+        Tx hash: {shortenString(hash)}
+      </Text>
+      <GoTo href={getExplorerLink(hash, ExplorerDataType.TRANSACTION)} />
+    </Box>
   </Box>
 )
 

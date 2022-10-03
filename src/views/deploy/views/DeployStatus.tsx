@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/macro'
+import GoTo from 'components/button/GoTo'
 import useRToken from 'hooks/useRToken'
 import { useAtom, useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
@@ -9,6 +10,7 @@ import { useTransaction } from 'state/web3/hooks/useTransactions'
 import { Box, Card, Spinner, Text } from 'theme-ui'
 import { shortenString } from 'utils'
 import { ROUTES, TRANSACTION_STATUS } from 'utils/constants'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { deployIdAtom } from '../atoms'
 import { deployStepAtom } from '../components/DeployHeader'
 
@@ -39,9 +41,16 @@ const Mining = ({ hash }: { hash: string }) => (
         your next steps.
       </Trans>
     </Text>
-    <Text mt={4} sx={{ display: 'block' }} variant="legend">
-      Tx hash: {shortenString(hash)}
-    </Text>
+    <Box
+      variant="layout.verticalAlign"
+      sx={{ justifyContent: 'center' }}
+      mt={4}
+    >
+      <Text mr={3} variant="legend">
+        Tx hash: {shortenString(hash)}
+      </Text>
+      <GoTo href={getExplorerLink(hash, ExplorerDataType.TRANSACTION)} />
+    </Box>
   </Box>
 )
 
@@ -68,7 +77,10 @@ const DeployStatus = () => {
 
   // Wait until rToken is selected and fetched to redirect the user to the management screen
   useEffect(() => {
-    if (rToken?.address === tx?.extra?.rTokenAddress) {
+    if (
+      tx?.extra?.rTokenAddress &&
+      rToken?.address === tx.extra.rTokenAddress
+    ) {
       // In case user role is still being fetched, set the current account as owner
       setOwner({
         owner: true,
