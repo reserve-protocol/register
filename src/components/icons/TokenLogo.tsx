@@ -57,6 +57,7 @@ const TokenLogo = ({ symbol, src, size = '1em', ...props }: Props) => {
     >
       <Image
         src={imgSrc}
+        sx={{ height: '100%' }}
         onError={({ currentTarget }) => {
           currentTarget.onerror = null // prevents looping
           currentTarget.src = '/svgs/default.svg'

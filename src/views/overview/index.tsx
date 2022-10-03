@@ -2,6 +2,7 @@ import { formatEther } from '@ethersproject/units'
 import { t, Trans } from '@lingui/macro'
 import { Button, Container } from 'components'
 import CopyValue from 'components/button/CopyValue'
+import GoTo from 'components/button/GoTo'
 import { ContentHead } from 'components/info-box'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
@@ -15,6 +16,7 @@ import { Box, Divider, Grid, Text } from 'theme-ui'
 import { TokenStats } from 'types'
 import { formatCurrency, shortenAddress } from 'utils'
 import { TIME_RANGES } from 'utils/constants'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import About from './components/About'
 import AssetOverview from './components/AssetOverview'
 import HistoricalData from './components/HistoricalData'
@@ -139,7 +141,13 @@ const Overview = () => {
         {!!rToken?.address && (
           <>
             <Text ml="auto">{shortenAddress(rToken.address)}</Text>
-            <CopyValue ml={3} value={rToken.address} />
+            <CopyValue ml={3} mr={2} value={rToken.address} />
+            <GoTo
+              href={getExplorerLink(
+                rToken?.address ?? '',
+                ExplorerDataType.TOKEN
+              )}
+            />
           </>
         )}
       </Box>
