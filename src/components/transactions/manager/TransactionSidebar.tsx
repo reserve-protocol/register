@@ -58,6 +58,7 @@ const TransactionSidebar = () => {
             borderBottom: '1px solid',
             borderColor: 'darkBorder',
             height: '56px',
+            flexShrink: 0,
           }}
           px={5}
           mb={5}
