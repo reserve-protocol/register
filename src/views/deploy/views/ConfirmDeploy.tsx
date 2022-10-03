@@ -170,7 +170,7 @@ const ConfirmDeploy = () => {
   const [current, setStep] = useAtom(deployStepAtom)
 
   useEffect(() => {
-    uuid()
+    setDeployId(uuid())
   }, [])
 
   const transaction = useMemo(() => {

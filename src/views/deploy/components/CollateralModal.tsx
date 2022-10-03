@@ -105,6 +105,7 @@ const CollateralModal = ({
           // height: 'calc(100vh - 500px)',
           maxHeight: 370,
           overflow: 'auto',
+          position: 'relative',
         }}
         mt={-2}
         mb={-2}
