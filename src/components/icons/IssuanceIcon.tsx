@@ -8,20 +8,8 @@ const IssuanceIcon = (props: SVGProps<SVGSVGElement>) => (
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
-    <circle
-      cx={9.146}
-      cy={11.946}
-      r={6.896}
-      stroke="currentColor"
-      strokeWidth={0.5}
-    />
-    <circle
-      cx={15.031}
-      cy={11.946}
-      r={6.896}
-      stroke="currentColor"
-      strokeWidth={0.5}
-    />
+    <circle cx={8.792} cy={12.002} r={7.292} stroke="currentColor" />
+    <circle cx={15.208} cy={12.002} r={7.292} stroke="currentColor" />
   </svg>
 )
 

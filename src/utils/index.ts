@@ -28,7 +28,7 @@ const timeUnits = {
 }
 
 export const relativeTime = (from: number, to: number) => {
-  let delta = to - from
+  let delta = Math.abs(to - from)
 
   if (delta >= timeUnits.year) {
     return t`A year ago`
