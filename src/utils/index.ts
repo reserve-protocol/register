@@ -30,6 +30,10 @@ const timeUnits = {
 export const relativeTime = (from: number, to: number) => {
   let delta = to - from
 
+  if (delta < 0) {
+    delta = timeUnits.hour
+  }
+
   if (delta >= timeUnits.year) {
     return t`A year ago`
   } else if (delta >= timeUnits.month) {

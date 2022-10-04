@@ -1,5 +1,4 @@
 import { t, Trans } from '@lingui/macro'
-import TokenLogo from 'components/icons/TokenLogo'
 import { Table } from 'components/table'
 import TokenItem from 'components/token-item'
 import { getRTokenLogo } from 'hooks/useRTokenLogo'
@@ -102,38 +101,33 @@ const Portfolio = (props: BoxProps) => {
           ${formatCurrency(holdings)}
         </Text>
       </Box>
-      <Box mt={5}>
-        <Text pl={3} variant="sectionTitle">
-          <Trans>Your RTokens</Trans>
-        </Text>
-        <Table mt={3} maxHeight={220} columns={rTokenColumns} data={rTokens} />
-        {!rTokens?.length && (
-          <Box mt={3} mb={5} sx={{ textAlign: 'center' }}>
-            <Text variant="legend">
-              <Trans>No rToken holdings</Trans>
-            </Text>
-          </Box>
-        )}
-      </Box>
-      <Box mt={5}>
-        <Text pl={3} variant="sectionTitle">
-          <Trans>Your staked RSR positions</Trans>
-        </Text>
-        <Table
-          mt={3}
-          mb="-16px"
-          maxHeight={220}
-          columns={stTokenColumns}
-          data={stTokens}
-        />
-        {!stTokens?.length && (
-          <Box mt={3} mb={5} sx={{ textAlign: 'center' }}>
-            <Text variant="legend">
-              <Trans>No stake positions</Trans>
-            </Text>
-          </Box>
-        )}
-      </Box>
+      {rTokens?.length > 0 && (
+        <Box mt={5}>
+          <Text pl={3} variant="sectionTitle">
+            <Trans>Your RTokens</Trans>
+          </Text>
+          <Table
+            mt={3}
+            maxHeight={220}
+            columns={rTokenColumns}
+            data={rTokens}
+          />
+        </Box>
+      )}
+      {stTokens?.length > 0 && (
+        <Box mt={5}>
+          <Text pl={3} variant="sectionTitle">
+            <Trans>Your staked RSR positions</Trans>
+          </Text>
+          <Table
+            mt={3}
+            mb="-16px"
+            maxHeight={220}
+            columns={stTokenColumns}
+            data={stTokens}
+          />
+        </Box>
+      )}
       <Divider mx={[-4, -7]} my={8} sx={{ borderColor: 'darkBorder' }} />
     </Box>
   )
