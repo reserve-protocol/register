@@ -196,7 +196,7 @@ const EmergencyCollateral = ({
                     sx={{ cursor: 'pointer' }}
                     onClick={() => handleRemove(index)}
                   >
-                    <X size={20} color="var(--theme-ui-colors-secondaryText)" />
+                    <X size={20} color="var(--theme-ui-colors-lightText)" />
                   </IconButton>
                 </Flex>
               </SortableItem>

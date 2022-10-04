@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import { useAtomValue } from 'jotai'
 import { Box, Divider, Flex, Text } from 'theme-ui'
+import { truncateDecimals } from 'utils'
 import { Basket, basketAtom } from '../atoms'
 import UnitBasket from './UnitBasket'
 
@@ -18,7 +19,7 @@ interface Props {
 const getBasketComposition = (basket: Basket) => {
   return Object.keys(basket)
     .reduce((acc, unit) => {
-      return `${acc} + ${basket[unit].scale} ${unit}`
+      return `${acc} + ${truncateDecimals(+basket[unit].scale, 5)} ${unit}`
     }, '')
     .substring(2)
 }
@@ -58,7 +59,7 @@ const PrimaryBasket = ({ onAdd = () => {}, readOnly = false }: Props) => {
       </Flex>
       <Divider my={3} />
       <Flex>
-        <Text>1 [RToken] =</Text>
+        <Text sx={{ width: 140 }}>1 [RToken] =</Text>
         <Text ml="auto">
           {!!units.length ? getBasketComposition(basket) : '--'}
         </Text>
