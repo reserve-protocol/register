@@ -199,7 +199,12 @@ const PricesUpdater = () => {
   const fetchGasPrice = useCallback(async (provider: Web3Provider) => {
     try {
       const feeData = await provider.getFeeData()
-      setGasPrice(Number(feeData.maxFeePerGas?.toString()) || 0)
+
+      if (feeData.maxFeePerGas) {
+        setGasPrice(Number(feeData.maxFeePerGas?.toString()) * 0.6)
+      } else {
+        setGasPrice(0)
+      }
     } catch (e) {
       console.error('Error fetching gas price', e)
     }

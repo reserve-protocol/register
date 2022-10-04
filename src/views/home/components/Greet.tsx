@@ -99,7 +99,11 @@ const Greet = ({ onDismiss, ...props }: Props) => {
             </Text>
             <Flex mt={2} sx={{ alignItems: 'center' }}>
               {steps.map((title: string, index: number) => (
-                <Text variant={index === active ? 'title' : 'legend'} mr={3}>
+                <Text
+                  key={index}
+                  variant={index === active ? 'title' : 'legend'}
+                  mr={3}
+                >
                   {title}
                 </Text>
               ))}
