@@ -28,6 +28,10 @@ const ConfirmGovernanceSetup = () => {
   const [txId, setId] = useAtom(govTxIdAtom)
   const setStep = useUpdateAtom(deployStepAtom)
   const transaction = useMemo(() => {
+    if (!txId) {
+      return null
+    }
+
     try {
       const {
         defaultGovernance,
@@ -92,6 +96,11 @@ const ConfirmGovernanceSetup = () => {
     }
   }
 
+  const handleBack = () => {
+    setStep(Steps.GovernanceSetup)
+    setId('')
+  }
+
   return (
     <>
       <DeploymentStepTracker step={Steps.GovernanceSummary} />
@@ -102,6 +111,7 @@ const ConfirmGovernanceSetup = () => {
           subtitle={t`Lorem ipsum dolor sit amet, consectetur adipiscing elit.`}
           confirmText={fee ? t`Confirm Setup` : t`Validating...`}
           gasCost={fee}
+          onBack={handleBack}
           onConfirm={handleDeploy}
         />
         {!!gasError && <Alert text={gasError} mb={5} />}

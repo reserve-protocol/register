@@ -18,7 +18,9 @@ const Alert = ({ text, ...props }: Props) => (
     {...props}
   >
     <AlertCircle />
-    <Text ml={3}>{text}</Text>
+    <Text sx={{ wordBreak: 'break-word' }} ml={3}>
+      {text}
+    </Text>
   </Box>
 )
 

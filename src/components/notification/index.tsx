@@ -1,6 +1,6 @@
 import { X } from 'react-feather'
 import toast from 'react-hot-toast'
-import { Box, Flex, Text } from 'theme-ui'
+import { Box, Button, Flex, Text } from 'theme-ui'
 
 const Notification = ({
   toastId,
@@ -17,17 +17,16 @@ const Notification = ({
     <Box p={2} sx={{ width: '100%' }}>
       <Flex>
         {!!icon && icon}
-        <Box
-          onClick={() => {
-            toast.remove(toastId)
-          }}
-          sx={{ marginLeft: 'auto', cursor: 'pointer' }}
+        <Button
+          ml="auto"
+          variant="circle"
+          onClick={() => toast.remove(toastId)}
         >
-          <X color="#ccc" />
-        </Box>
+          <X />
+        </Button>
       </Flex>
       <Box mt={2}>
-        <Text sx={{ display: 'block' }} mb={1}>
+        <Text sx={{ display: 'block', color: 'text' }} mb={1}>
           {title}
         </Text>
         {!!subtitle && (

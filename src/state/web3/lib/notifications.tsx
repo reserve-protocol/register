@@ -32,7 +32,7 @@ export const error = (title: string, subtitle: string) => {
       title={title}
       subtitle={subtitle}
       toastId={t.id}
-      icon={<AlertCircle />}
+      icon={<AlertCircle stroke="var(--theme-ui-colors-text" />}
     />
   ))
 }

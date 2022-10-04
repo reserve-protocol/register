@@ -21,48 +21,52 @@ export const useTransactionGasFee = (
   })
 
   const fetchTxFees = useCallback(
-    async (txs: TransactionState[]) => {
-      if (txs.length && provider) {
-        setState({ ...state, loading: true })
-        let totalFee = 0
+    async (
+      provider: Web3Provider,
+      txs: TransactionState[],
+      account: string
+    ) => {
+      setState({ ...state, loading: true })
+      let totalFee = 0
 
-        try {
-          const result = await Promise.all(
-            txs.map(async (tx) => {
-              const contract = getContract(
-                tx.call.address,
-                abis[tx.call.abi],
-                provider as Web3Provider,
-                account
-              )
+      try {
+        const result = await Promise.all(
+          txs.map(async (tx) => {
+            const contract = getContract(
+              tx.call.address,
+              abis[tx.call.abi],
+              provider as Web3Provider,
+              account
+            )
 
-              const estimate = await contract.estimateGas[tx.call.method](
-                ...tx.call.args
-              )
-              const parsed = +formatEther(estimate)
-              totalFee += parsed
-              return parsed
-            })
-          )
-
-          setState({ value: result, loading: false, error: '' })
-        } catch (e: any) {
-          error(t`Error estimating fees`, t`Transaction failed`)
-          setState({
-            value: [],
-            loading: false,
-            error: e?.error?.message || t`Error running transaction`,
+            const estimate = await contract.estimateGas[tx.call.method](
+              ...tx.call.args
+            )
+            const parsed = +formatEther(estimate)
+            totalFee += parsed
+            return parsed
           })
-          console.error('error fetching gas fees', e)
-        }
+        )
+
+        setState({ value: result, loading: false, error: '' })
+      } catch (e: any) {
+        error(t`Error estimating fees`, t`Transaction failed`)
+        setState({
+          value: [],
+          loading: false,
+          error: e?.error?.message || t`Error running transaction`,
+        })
+        console.error('error fetching gas fees', e)
       }
     },
-    [JSON.stringify(transactions), provider, account]
+    []
   )
 
   useEffect(() => {
-    fetchTxFees(transactions)
-  }, [fetchTxFees])
+    if (provider && account && transactions.length) {
+      fetchTxFees(provider, transactions, account)
+    }
+  }, [provider, account, JSON.stringify(transactions)])
 
   return state
 }
