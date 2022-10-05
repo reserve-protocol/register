@@ -32,6 +32,11 @@ const IMGS = new Set([
   'eth',
   'busd',
   'weth',
+  'abusd',
+  'adai',
+  'ausdc',
+  'ausdt',
+  'eurt',
 ])
 
 const TokenLogo = ({ symbol, src, size = '1em', ...props }: Props) => {
