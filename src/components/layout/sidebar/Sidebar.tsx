@@ -164,6 +164,18 @@ const Navigation = ({
 // Sidebar footer
 const Footer = () => (
   <Box m={4}>
+    <Box sx={{ fontSize: 1 }} mb={3}>
+      <Text sx={{ fontWeight: 500 }}>
+        <Trans>Heads up!</Trans>
+      </Text>
+      <Text as="p" variant="legend" mt={1}>
+        <Trans>
+          Register & the Reserve Protocol is brand new software that has not yet
+          been given the green light and should not be used without
+          understanding the risks.
+        </Trans>
+      </Text>
+    </Box>
     <Flex sx={{ alignItems: 'center', display: ['none', 'none', 'flex'] }}>
       <Text
         sx={{

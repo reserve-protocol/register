@@ -14533,8 +14533,8 @@ __metadata:
 
 "rtokens@github:lc-labs/rtokens.git":
   version: 1.0.0
-  resolution: "rtokens@https://github.com/lc-labs/rtokens.git#commit=fbeec5b920410ad8a24c1d4aa56d5d3a54f17163"
-  checksum: 41d315c98809c364f530f19aa42fd93556849c41fe40ad8ae979069787067e9a7080271af1d18d5bc9d54978878d56c1e51065a6351df0b949cb57ab8be3097a
+  resolution: "rtokens@https://github.com/lc-labs/rtokens.git#commit=e56730ba78d2846294bc47236e874466428f551d"
+  checksum: 88131946ead7275194d6be740fa7a3baa0e3cfd16e3f5b3c05c2c6b0bf977f8e27cbc80678f37404c7e91905d4e6a7fdcb27c114a8612d2de5603253edbd7399
   languageName: node
   linkType: hard
 
