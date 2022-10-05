@@ -90,12 +90,15 @@ const TransactionModal = ({
   const signed =
     txState?.status === TRANSACTION_STATUS.MINING ||
     txState?.status === TRANSACTION_STATUS.CONFIRMED
-  const [fee] = useTransactionCost(canSubmit ? [tx] : [])
+  const [fee, gasError, gasLimit] = useTransactionCost(canSubmit ? [tx] : [])
 
   const handleConfirm = () => {
     const id = uuid()
     setSigning(id)
     onChange(true)
+    if (fee && !gasError) {
+      tx.call.args.push({ gasLimit: Math.floor(gasLimit + gasLimit * 0.05) })
+    }
     addTransaction([{ ...tx, id }])
   }
 
