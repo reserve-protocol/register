@@ -70,7 +70,12 @@ const TokenConfigurationOverview = () => {
         title={t`Max trade slippage`}
         subtitle={`${data.maxTradeSlippage}%`}
       />
-      <Info mt={3} title={t`Issuance rate`} subtitle={data.issuanceRate} />
+      <Info
+        mt={3}
+        mb={4}
+        title={t`Issuance rate`}
+        subtitle={data.issuanceRate}
+      />
       <Text variant="title">
         <Trans>Other</Trans>
       </Text>

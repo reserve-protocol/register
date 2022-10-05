@@ -12,8 +12,6 @@ const OtherForm = (props: BoxProps) => {
   const { getValues, setValue, watch } = useFormContext()
   const { rTokenDist, rsrDist } = getValues()
   const [, setDist] = useState(rTokenDist)
-  const minTrade = watch('minTrade')
-  const maxTrade = watch('maxTrade')
 
   const handleChange = (e: any) => {
     const value = Number(e.target.value)
