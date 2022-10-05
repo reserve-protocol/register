@@ -1,5 +1,4 @@
 import { Web3Provider } from '@ethersproject/providers'
-import { formatEther } from '@ethersproject/units'
 import { t } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
 import abis from 'abis'
@@ -42,9 +41,8 @@ export const useTransactionGasFee = (
             const estimate = await contract.estimateGas[tx.call.method](
               ...tx.call.args
             )
-            const parsed = +formatEther(estimate)
-            totalFee += parsed
-            return parsed
+            totalFee += estimate.toNumber()
+            return estimate.toNumber()
           })
         )
 
@@ -73,18 +71,16 @@ export const useTransactionGasFee = (
 
 const useTransactionCost = (
   transactions: TransactionState[]
-): [number, string] => {
+): [number, string, number] => {
   const { value: fees, error } = useTransactionGasFee(transactions)
   const gasPrice = useAtomValue(gasPriceAtom)
   const ethPrice = useAtomValue(ethPriceAtom)
 
-  return useMemo(
-    () => [
-      fees.reduce((acc, fee) => acc + fee, 0) * gasPrice * ethPrice,
-      error,
-    ],
-    [fees, gasPrice, ethPrice, error]
-  )
+  return useMemo(() => {
+    const gasLimit = fees.reduce((acc, fee) => acc + fee, 0)
+
+    return [gasLimit * gasPrice * ethPrice, error, gasLimit]
+  }, [fees, gasPrice, ethPrice, error])
 }
 
 export default useTransactionCost

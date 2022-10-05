@@ -190,15 +190,20 @@ const ConfirmDeploy = () => {
         abi: 'facadeWrite',
         address: FACADE_WRITE_ADDRESS[CHAIN_ID],
         method: 'deployRToken',
-        args: params,
+        args: params as any,
       },
     }
   }, [deployId])
 
-  const [fee, gasError] = useTransactionCost(transaction ? [transaction] : [])
+  const [fee, gasError, gasLimit] = useTransactionCost(
+    transaction ? [transaction] : []
+  )
 
   const handleDeploy = () => {
     if (transaction) {
+      transaction.call.args.push({
+        gasLimit: Math.floor(gasLimit + gasLimit * 0.05),
+      })
       addTransaction([transaction])
       setStep(Steps.DeployToken)
     }

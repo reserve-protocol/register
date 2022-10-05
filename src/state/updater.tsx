@@ -201,7 +201,7 @@ const PricesUpdater = () => {
       const feeData = await provider.getFeeData()
 
       if (feeData.maxFeePerGas) {
-        setGasPrice(Number(feeData.maxFeePerGas?.toString()) * 0.6)
+        setGasPrice(Number(formatEther(feeData.maxFeePerGas?.toString())) * 0.6)
       } else {
         setGasPrice(0)
       }
