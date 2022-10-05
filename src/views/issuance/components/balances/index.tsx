@@ -16,13 +16,15 @@ interface Props extends BoxProps {
 }
 
 const CollateralBalances = ({ collaterals }: { collaterals: Token[] }) => (
-  <Box p={4} mb={-2} sx={{ overflowX: 'auto' }}>
+  <Box p={4} mb={-2}>
     <Text variant="subtitle" mb={3}>
       <Trans>Available collateral</Trans>
     </Text>
-    {collaterals.map((collateral) => (
-      <CollateralBalance mb={2} token={collateral} key={collateral.address} />
-    ))}
+    <Box sx={{ overflow: 'auto', maxHeight: 360 }}>
+      {collaterals.map((collateral) => (
+        <CollateralBalance mb={2} token={collateral} key={collateral.address} />
+      ))}
+    </Box>
   </Box>
 )
 

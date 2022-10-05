@@ -7,7 +7,7 @@ import { memo, useCallback, useMemo, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import rtokens from 'rtokens'
-import { accountTokensAtom, rTokenAtom, selectedRTokenAtom } from 'state/atoms'
+import { accountRTokensAtom, rTokenAtom, selectedRTokenAtom } from 'state/atoms'
 import { transition } from 'theme'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
@@ -25,7 +25,7 @@ const DEFAULT_LOGO = '/svgs/default.svg'
 
 const availableTokensAtom = atom((get) => {
   const defaultTokens = DEFAULT_TOKENS[CHAIN_ID]
-  const owned = get(accountTokensAtom)
+  const owned = get(accountRTokensAtom)
   const tokenList: {
     [x: string]: TokenDisplay
   } = {}

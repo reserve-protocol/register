@@ -17,6 +17,7 @@ import {
 } from 'types'
 import { RSR, RTOKEN_STATUS, TRANSACTION_STATUS } from 'utils/constants'
 import { WalletTransaction } from './../types/index'
+import { hasViewportRelativeCoordinates } from '@dnd-kit/utilities'
 
 /**
  * ######################
@@ -150,6 +151,11 @@ export const rsrBalanceAtom = atom((get) => {
 
 // Tracks allowance for stRSR/RSR and Collaterals/rToken
 export const allowanceAtom = atom<{ [x: string]: BigNumber }>({})
+
+// Store account related rtokens
+export const accountRTokensAtom = atom<
+  { address: string; name: string; symbol: string }[]
+>([])
 
 // Store current rToken holdings for an account
 export const accountTokensAtom = atom<AccountToken[]>([])

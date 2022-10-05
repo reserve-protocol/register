@@ -1,4 +1,4 @@
-import { getAddress, isAddress } from '@ethersproject/address'
+import { getAddress } from '@ethersproject/address'
 import { useWeb3React } from '@web3-react/core'
 import { gql } from 'graphql-request'
 import useBlockNumber from 'hooks/useBlockNumber'
@@ -11,6 +11,7 @@ import RSV from 'utils/rsv'
 import {
   accountHoldingsAtom,
   accountPositionsAtom,
+  accountRTokensAtom,
   accountTokensAtom,
   blockTimestampAtom,
   rsrPriceAtom,
@@ -85,6 +86,7 @@ const AccountUpdater = () => {
   const updateTokens = useUpdateAtom(accountTokensAtom)
   const updatePositions = useUpdateAtom(accountPositionsAtom)
   const updateHoldings = useUpdateAtom(accountHoldingsAtom)
+  const updateAccountTokens = useUpdateAtom(accountRTokensAtom)
 
   // TODO: poll from blockNumber
   const { data, error, mutate, isValidating } = useQuery(
@@ -101,6 +103,11 @@ const AccountUpdater = () => {
     if (data && !error) {
       const tokens: AccountToken[] = []
       const positions: AccountPosition[] = []
+      const accountRTokens: {
+        address: string
+        name: string
+        symbol: string
+      }[] = []
       let holdings = 0
 
       for (const rToken of data?.account?.rTokens || []) {
@@ -117,6 +124,15 @@ const AccountUpdater = () => {
           recentRate.timestamp !== lastRate.timestamp
         ) {
           ;[tokenApy, stakingApy] = calculateApy(recentRate, lastRate)
+        }
+
+        // Relate RToken to account
+        if (balance > 0 || stake > 0) {
+          accountRTokens.push({
+            address: getAddress(rToken.rToken.id),
+            name: rToken.balance.token.name,
+            symbol: rToken.balance.token.symbol,
+          })
         }
 
         if (balance > 0) {
@@ -180,6 +196,7 @@ const AccountUpdater = () => {
       updateTokens(tokens)
       updatePositions(positions)
       updateHoldings(holdings)
+      updateAccountTokens(accountRTokens)
     }
   }, [data])
 
