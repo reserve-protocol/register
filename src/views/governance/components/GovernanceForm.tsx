@@ -159,7 +159,7 @@ const GovernanceForm = () => {
             options={{
               required: true,
               pattern: numberPattern,
-              min: 1,
+              min: 0,
               max: 336,
             }}
           />
