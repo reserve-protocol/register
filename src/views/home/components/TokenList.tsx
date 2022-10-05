@@ -32,7 +32,7 @@ interface ListedToken {
   price: number
   transactionCount: number
   cumulativeVolume: number
-  targetUnit: string
+  targetUnits: string
   tokenApy: number
   backing: number
   backingInsurance: number
@@ -62,6 +62,7 @@ const tokenListQuery = gql`
       rToken {
         backing
         backingInsurance
+        targetUnits
         recentRate: hourlySnapshots(
           first: 1
           orderBy: timestamp
@@ -127,7 +128,7 @@ const TokenList = (props: BoxProps) => {
           transactionCount: token.transferCount,
           cumulativeVolume:
             +formatEther(token.cumulativeVolume) * +token.lastPriceUSD,
-          targetUnit: 'USD',
+          targetUnits: token?.rToken?.targetUnits,
           tokenApy: +tokenApy.toFixed(2),
           backing: token?.rToken?.backing || 100,
           backingInsurance: token?.rToken?.backingInsurance || 0,
@@ -139,6 +140,7 @@ const TokenList = (props: BoxProps) => {
           tokenData.holders += rpayOverview.holders
           tokenData.transactionCount += rpayOverview.txCount
           tokenData.cumulativeVolume += rpayOverview.volume
+          tokenData.targetUnits = 'USD'
         }
 
         return tokenData
@@ -171,7 +173,7 @@ const TokenList = (props: BoxProps) => {
         accessor: 'cumulativeVolume',
         Cell: formatUsdCurrencyCell,
       },
-      { Header: t`Target(s)`, accessor: 'name' }, // TODO: Targets
+      { Header: t`Target(s)`, accessor: 'targetUnits' },
       {
         Header: t`APY`,
         accessor: 'tokenApy',
@@ -220,11 +222,6 @@ const TokenList = (props: BoxProps) => {
         subtitle={t`Including off-chain in-app transactions of RToken in the Reserve App.`}
       />
       <Table mt={3} columns={rTokenColumns} data={tokenList} />
-      {/* <Flex sx={{ justifyContent: 'center' }}>
-        <SmallButton py={2} mt={6} onClick={() => navigate(ROUTES.DEPLOY)}>
-          <Trans>Deploy RToken</Trans>
-        </SmallButton>
-      </Flex> */}
     </Box>
   )
 }
