@@ -2,11 +2,12 @@ import { Trans } from '@lingui/macro'
 import TokenLogo from 'components/icons/TokenLogo'
 import dayjs from 'dayjs'
 import { atom, useAtomValue } from 'jotai'
-import { ArrowUpRight, Check, X } from 'react-feather'
+import { useUpdateAtom } from 'jotai/utils'
+import { ArrowUpRight, Check, EyeOff, X } from 'react-feather'
 import { Link as RouterLink } from 'react-router-dom'
-import { currentTxAtom } from 'state/atoms'
+import { currentTxAtom, updateTransactionAtom } from 'state/atoms'
 import { borderRadius } from 'theme'
-import { Box, Flex, Grid, Link, Spinner, Text } from 'theme-ui'
+import { Box, Flex, Grid, IconButton, Link, Spinner, Text } from 'theme-ui'
 import { TransactionState, WalletTransaction } from 'types'
 import { formatCurrency } from 'utils'
 import { ROUTES, TRANSACTION_STATUS } from 'utils/constants'
@@ -28,7 +29,28 @@ const txByDateAtom = atom((get) => {
   }, {} as WalletTransaction)
 })
 
-const TransactionStatus = ({ tx }: { tx: TransactionState }) => {
+const txIndexAtom = atom((get) => {
+  const txs = get(currentTxAtom)
+
+  return txs.reduce((acc, tx, index) => {
+    acc[tx.id] = index
+    return acc
+  }, {} as { [x: string]: number })
+})
+
+const TransactionStatus = ({
+  tx,
+  index,
+}: {
+  tx: TransactionState
+  index: number
+}) => {
+  const updateTx = useUpdateAtom(updateTransactionAtom)
+
+  const handleUntrack = () => {
+    updateTx([index, { ...tx, status: TRANSACTION_STATUS.UNKNOWN }])
+  }
+
   switch (tx.status) {
     case TRANSACTION_STATUS.PENDING:
       return (
@@ -54,6 +76,15 @@ const TransactionStatus = ({ tx }: { tx: TransactionState }) => {
           <Text ml={2} sx={{ display: ['none', 'flex'] }}>
             <Trans>Mining</Trans>
           </Text>
+          <IconButton
+            p={0}
+            variant="layout.verticalAlign"
+            ml={3}
+            onClick={handleUntrack}
+            sx={{ cursor: 'pointer', width: 'auto', height: 'auto' }}
+          >
+            <EyeOff color="#666666" size={12} />
+          </IconButton>
         </Flex>
       )
     case TRANSACTION_STATUS.CONFIRMED:
@@ -113,6 +144,7 @@ const getTxDescription = (tx: TransactionState) => {
 
 const TransactionList = () => {
   const txs = useAtomValue(txByDateAtom)
+  const txIdMap = useAtomValue(txIndexAtom)
 
   return (
     <Box px={5} sx={{ flexGrow: 1, fontSize: 1, overflow: 'auto' }}>
@@ -143,7 +175,7 @@ const TransactionList = () => {
                 <TokenLogo src="/svgs/equals.svg" mr={3} />
                 <Text>{formatCurrency(Number(tx.value))}</Text>
               </Flex>
-              <TransactionStatus tx={tx} />
+              <TransactionStatus tx={tx} index={txIdMap[tx.id]} />
               <Flex sx={{ alignItems: 'center' }}>
                 {tx.hash ? (
                   <Link
