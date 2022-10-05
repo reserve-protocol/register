@@ -61,31 +61,44 @@ const TransactionManager = () => {
         try {
           const receipt = await provider?.getTransactionReceipt(tx.hash ?? '')
           if (receipt) {
-            if (tx?.call.method !== 'approve') {
-              success(t`Transaction confirmed`, tx.description)
-            }
-
-            const transaction = {
-              ...tx,
-              status: TRANSACTION_STATUS.CONFIRMED,
-              confirmedAt: receipt.blockNumber,
-              updatedAt: +Date.now(),
-            }
-
-            // Fill extra data with rToken address and persist it on localStorage
-            if (transaction.call.method === 'deployRToken') {
-              transaction.extra = {
-                rTokenAddress: getDeployedRToken(receipt),
+            if (receipt.status) {
+              if (tx?.call.method !== 'approve') {
+                success(t`Transaction confirmed`, tx.description)
               }
-            } else if (
-              // Get governor address if governance is setted
-              transaction.call.method === 'setupGovernance' &&
-              transaction.call.args[1]
-            ) {
-              transaction.extra = getGovernance(receipt)
-            }
 
-            setTxs([index, transaction])
+              const transaction = {
+                ...tx,
+                status: TRANSACTION_STATUS.CONFIRMED,
+                confirmedAt: receipt.blockNumber,
+                updatedAt: +Date.now(),
+              }
+
+              // Fill extra data with rToken address and persist it on localStorage
+              if (transaction.call.method === 'deployRToken') {
+                transaction.extra = {
+                  rTokenAddress: getDeployedRToken(receipt),
+                }
+              } else if (
+                // Get governor address if governance is setted
+                transaction.call.method === 'setupGovernance' &&
+                transaction.call.args[1]
+              ) {
+                transaction.extra = getGovernance(receipt)
+              }
+
+              setTxs([index, transaction])
+            } else {
+              setTxs([
+                index,
+                {
+                  ...tx,
+                  status: TRANSACTION_STATUS.REJECTED,
+                  confirmedAt: receipt.blockNumber,
+                  updatedAt: +Date.now(),
+                  error: t`Transaction out of gas`,
+                },
+              ])
+            }
           }
         } catch (e) {
           console.error('error getting receipt', e)
