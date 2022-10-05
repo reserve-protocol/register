@@ -43,7 +43,7 @@ const BackingForm = (props: BoxProps) => (
       options={{
         required: true,
         pattern: decimalPattern,
-        min: 0.01,
+        min: 0,
         max: 100,
       }}
     />
@@ -92,18 +92,6 @@ const BackingForm = (props: BoxProps) => (
         required: true,
         pattern: decimalPattern,
         min: 0,
-      }}
-    />
-    <FormField
-      label={t`Dust amount`}
-      placeholder={t`Dust Amount`}
-      mb={3}
-      name="dustAmount"
-      options={{
-        required: true,
-        pattern: numberPattern,
-        min: 1,
-        max: 1000000000,
       }}
     />
   </Box>

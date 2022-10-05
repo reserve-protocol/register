@@ -24,7 +24,6 @@ const defaultValues = {
   auctionLength: '900', // 15 minutes
   backingBuffer: '0.01', // 0.01%
   maxTradeSlippage: '1', // 1%
-  dustAmount: '1',
   issuanceRate: '0.025', // 0.025% per block or ~0.1% per minute
   scalingRedemptionRate: '5', // 5% per block
   redemptionRateFloor: '1000000', // Anticipated redemption minimum amount for throttling
