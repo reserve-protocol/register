@@ -91,10 +91,12 @@ const TokenStats = (props: BoxProps) => {
         cumulativeInsuranceRevenueUSD: `$${formatCurrency(
           +data.protocol?.cumulativeInsuranceRevenueUSD || 0
         )}`,
-        transactionCount:
-          rpayOverview.txCount + (data.protocol?.transactionCount || 0),
-        dailyTransactionCount:
-          data.usageMetricsDailySnapshots[0]?.dailyTransactionCount || 0,
+        transactionCount: formatCurrency(
+          rpayOverview.txCount + (data.protocol?.transactionCount || 0)
+        ),
+        dailyTransactionCount: formatCurrency(
+          +data.usageMetricsDailySnapshots[0]?.dailyTransactionCount || 0
+        ),
         dailyVolume: `$${formatCurrency(
           +data.financialsDailySnapshots[0]?.dailyVolumeUSD || 0
         )}`,
