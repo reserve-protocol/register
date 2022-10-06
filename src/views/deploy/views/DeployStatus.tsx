@@ -38,8 +38,13 @@ const Mining = ({ hash }: { hash: string }) => (
     </Text>
     <Text as="p" variant="legend">
       <Trans>
-        Stay patient while the RToken is deploying & don’t close this window to
-        avoid issues finding your way back here.
+        Meditate peacefully on the stability of a future asset backed reserve
+        currency while your RToken deploys 🧘‍♂️
+      </Trans>
+      <br />
+      <Trans>
+        Please don't close this window to avoid issues finding your way back
+        here.
       </Trans>
     </Text>
     <Box

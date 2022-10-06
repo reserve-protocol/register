@@ -83,7 +83,9 @@ const ConfirmGovernanceSetup = () => {
       return null
     }
   }, [txId])
-  const [fee, gasError] = useTransactionCost(transaction ? [transaction] : [])
+  const [fee, gasError, gasLimit] = useTransactionCost(
+    transaction ? [transaction] : []
+  )
 
   useEffect(() => {
     setId(uuid())
@@ -91,6 +93,9 @@ const ConfirmGovernanceSetup = () => {
 
   const handleDeploy = () => {
     if (transaction) {
+      transaction.call.args.push({
+        gasLimit: Math.floor(gasLimit + gasLimit * 0.1),
+      })
       addTransaction([transaction])
       setStep(Steps.GovernanceTx)
     }

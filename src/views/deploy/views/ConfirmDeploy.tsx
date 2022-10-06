@@ -202,7 +202,7 @@ const ConfirmDeploy = () => {
   const handleDeploy = () => {
     if (transaction) {
       transaction.call.args.push({
-        gasLimit: Math.floor(gasLimit + gasLimit * 0.05),
+        gasLimit: Math.floor(gasLimit + gasLimit * 0.1),
       })
       addTransaction([transaction])
       setStep(Steps.DeployToken)

@@ -97,7 +97,7 @@ const TransactionModal = ({
     setSigning(id)
     onChange(true)
     if (fee && !gasError) {
-      tx.call.args.push({ gasLimit: Math.floor(gasLimit + gasLimit * 0.05) })
+      tx.call.args.push({ gasLimit: Math.floor(gasLimit + gasLimit * 0.1) })
     }
     addTransaction([{ ...tx, id }])
   }

@@ -107,7 +107,7 @@ const StakeBalance = () => {
   return (
     <Box p={4}>
       <Text variant="subtitle" mb={3}>
-        <Trans>Your stake</Trans>
+        <Trans>Your staked RSR</Trans>
       </Text>
       <TokenBalance
         symbol={rToken?.stToken?.symbol ?? ''}
