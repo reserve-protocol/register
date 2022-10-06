@@ -142,6 +142,10 @@ export const theme: Theme = {
       display: 'block',
       fontSize: 1,
     },
+    strong: {
+      fontWeight: 500,
+      display: 'block',
+    },
     primary: {
       color: 'text',
     },

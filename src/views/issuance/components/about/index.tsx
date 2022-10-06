@@ -1,34 +1,41 @@
 import { Trans } from '@lingui/macro'
-import { Box, Text } from 'theme-ui'
+import { Box, Link, Text } from 'theme-ui'
 
 const About = () => (
-  <Box
-    sx={{
-      border: '1px solid',
-      borderColor: 'darkBorder',
-      borderRadius: '16px',
-    }}
-    p={4}
-  >
-    <Text sx={{ fontWeight: 500 }}>
-      <Trans>About this app</Trans>
+  <Box variant="layout.borderBox" p={4}>
+    <Text variant="strong" mb={2}>
+      <Trans>How does this work? </Trans>
     </Text>
-    <br /> <br />
-    <Text>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Senectus et netus et
-      malesuada fames ac turpis egestas integer. Ac turpis egestas integer eget
-      et pharetra pharetra massa massa. Nibh venenatis cras sed felis. Ante
-      metus dictum at tempor commodo ullamcorper.
+    <Text as="p" variant="legend">
+      <Trans>
+        Minting requires a deposit of the defined collateral tokens in equal
+        value amounts to the RToken smart contracts.
+      </Trans>
+    </Text>
+    <Text variant="strong" mb={2} mt={4}>
+      <Trans>When will I get my RTokens?</Trans>
+    </Text>
+    <Text as="p" variant="legend">
+      <Trans>
+        Depending on RToken minting activity and the size of your deposit, the
+        protocol will either issue your RTokens immediately or mint them over
+        the period of a few blocks (a "slow mint"). "Slow mints" are designed
+        into the protocol to ensure stability of the RToken's price and
+        redemption rate while there are ongoing mints and revenue operations.
+      </Trans>
       <br />
       <br />
-      <Text sx={{ fontWeight: 500 }}>Mint/Redeem</Text>
-      <br /> <br />
-      Ac turpis egestas maecenas pharetra. Habitant morbi tristique senectus et.
-      Dapibus ultrices in iaculis nunc sed augue lacus viverra vitae. Bibendum
-      est ultricies integer quis auctor. Nunc congue nisi vitae suscipit tellus
-      mauris. ollicitudin. Nulla facilisi etiam dignissim diam quis enim
-      lobortis.
+      <Trans>
+        To learn more about minting and redemption operations, read the
+        documentation
+      </Trans>{' '}
+      <Link
+        href="https://reserve.org/protocol/protocol_operations/"
+        target="_blank"
+        sx={{ textDecoration: 'underline' }}
+      >
+        <Trans>here</Trans>
+      </Link>
     </Text>
   </Box>
 )
