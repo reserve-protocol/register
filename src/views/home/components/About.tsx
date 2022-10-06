@@ -44,7 +44,8 @@ const About = (props: BoxProps) => {
               to interact with the Reserve Protocol and various RTokens deployed
               with the platform.
             </Trans>
-            <Box m={2} />
+            <br />
+            <br />
             <Trans>
               If an RToken is listed on Register, it doesn't mean that Reserve
               or LC Labs endorses the safety or risk levels of the RToken. LC
@@ -63,7 +64,8 @@ const About = (props: BoxProps) => {
               understand usage and improve the user experience. LC labs does not
               collect any information about users or their financial activity.
             </Trans>
-            <Box m={2} />
+            <br />
+            <br />
             <Trans>
               Please keep in mind that interactions with the Ethereum blockchain
               are pseudonymous and publicly available.

@@ -11,7 +11,7 @@ const About = (props: BoxProps) => {
     <Box {...props}>
       {rToken?.mandate && (
         <>
-          <Text mb={3} sx={{ fontSize: 4, display: 'block', fontWeight: 500 }}>
+          <Text mb={3} variant="title">
             {rToken?.symbol} <Trans>Mandate</Trans>
           </Text>
           <Text as="p" variant="legend">
@@ -21,8 +21,8 @@ const About = (props: BoxProps) => {
       )}
       {rToken?.meta?.about && (
         <>
-          <Text mb={3} sx={{ fontSize: 4, display: 'block', fontWeight: 500 }}>
-            <Trans>About</Trans> {rToken?.symbol}
+          <Text mt={4} mb={3} variant="title">
+            <Trans>About</Trans>
           </Text>
           <Text as="p">{rToken?.meta?.about}</Text>
         </>
