@@ -1,7 +1,6 @@
-import { CHAIN_ID } from 'utils/chains'
 import { BigNumber } from '@ethersproject/bignumber'
-import { parseEther } from '@ethersproject/units'
 import { ReserveToken, StringMap } from 'types'
+import { CHAIN_ID } from 'utils/chains'
 import {
   PAX_ADDRESS,
   RSV_ADDRESS,
@@ -9,7 +8,6 @@ import {
   TUSD_ADDRESS,
   USDC_ADDRESS,
 } from './addresses'
-import { ONE_ETH } from './numbers'
 
 /**
  * RSV Token utility

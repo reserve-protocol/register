@@ -27,7 +27,7 @@ const StepItem = ({ title, subtitle, ...props }: InfoBoxProps) => (
       <Circle size={10} fill="#999999" stroke="#999999" />
     </Box>
     <Box ml={3}>
-      <Text sx={{ display: 'block', fontWeight: 500 }}>{title}</Text>
+      <Text variant="strong">{title}</Text>
       <Text variant="legend" sx={{ fontSize: 1 }}>
         {subtitle}
       </Text>
@@ -112,10 +112,21 @@ const DeployIntro = () => {
             </Trans>
           </Text>
           <Flex mt={3}>
-            <SmallButton variant="muted" mr={3}>
+            <SmallButton
+              variant="muted"
+              onClick={() =>
+                window.open('https://discord.gg/Ryk6P67c', '_blank')
+              }
+              mr={3}
+            >
               <Trans>Community Discord</Trans>
             </SmallButton>
-            <SmallButton variant="muted">
+            <SmallButton
+              variant="muted"
+              onClick={() =>
+                window.open('https://reserve.org/protocol/', '_blank')
+              }
+            >
               <Trans>Protocol docs</Trans>
             </SmallButton>
           </Flex>
