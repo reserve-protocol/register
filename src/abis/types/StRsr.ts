@@ -25,6 +25,7 @@ import type {
   TypedEvent,
   TypedListener,
   OnEvent,
+  PromiseOrValue,
 } from "./common";
 
 export interface StRsrInterface extends utils.Interface {
@@ -49,6 +50,7 @@ export interface StRsrInterface extends utils.Interface {
     "main()": FunctionFragment;
     "name()": FunctionFragment;
     "nonces(address)": FunctionFragment;
+    "payoutLastPaid()": FunctionFragment;
     "payoutRewards()": FunctionFragment;
     "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
@@ -95,6 +97,7 @@ export interface StRsrInterface extends utils.Interface {
       | "main"
       | "name"
       | "nonces"
+      | "payoutLastPaid"
       | "payoutRewards"
       | "permit"
       | "proxiableUUID"
@@ -137,30 +140,37 @@ export interface StRsrInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "allowance",
-    values: [string, string]
+    values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "approve",
-    values: [string, BigNumberish]
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
-  encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "balanceOf",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "decreaseAllowance",
-    values: [string, BigNumberish]
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "draftQueueLen",
-    values: [BigNumberish, string]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "draftQueues",
-    values: [BigNumberish, string, BigNumberish]
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
   encodeFunctionData(functionFragment: "draftRate", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "endIdForWithdraw",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "exchangeRate",
@@ -168,19 +178,33 @@ export interface StRsrInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "firstRemainingDraft",
-    values: [BigNumberish, string]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "increaseAllowance",
-    values: [string, BigNumberish]
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "init",
-    values: [string, string, string, BigNumberish, BigNumberish, BigNumberish]
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
   encodeFunctionData(functionFragment: "main", values?: undefined): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
-  encodeFunctionData(functionFragment: "nonces", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "nonces",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "payoutLastPaid",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "payoutRewards",
     values?: undefined
@@ -188,13 +212,13 @@ export interface StRsrInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "permit",
     values: [
-      string,
-      string,
-      BigNumberish,
-      BigNumberish,
-      BigNumberish,
-      BytesLike,
-      BytesLike
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<BytesLike>
     ]
   ): string;
   encodeFunctionData(
@@ -211,23 +235,32 @@ export interface StRsrInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "seizeRSR",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
-  encodeFunctionData(functionFragment: "setName", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "setName",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "setRewardPeriod",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "setRewardRatio",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
-  encodeFunctionData(functionFragment: "setSymbol", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "setSymbol",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "setUnstakingDelay",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
-  encodeFunctionData(functionFragment: "stake", values: [BigNumberish]): string;
+  encodeFunctionData(
+    functionFragment: "stake",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
   encodeFunctionData(functionFragment: "stakeRate", values?: undefined): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
   encodeFunctionData(
@@ -236,28 +269,35 @@ export interface StRsrInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "transfer",
-    values: [string, BigNumberish]
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "transferFrom",
-    values: [string, string, BigNumberish]
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "unstake",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "unstakingDelay",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "upgradeTo", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "upgradeTo",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "upgradeToAndCall",
-    values: [string, BytesLike]
+    values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "withdraw",
-    values: [string, BigNumberish]
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
 
   decodeFunctionResult(
@@ -313,6 +353,10 @@ export interface StRsrInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "main", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "nonces", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "payoutLastPaid",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "payoutRewards",
     data: BytesLike
@@ -619,37 +663,40 @@ export interface StRsr extends BaseContract {
     MAX_UNSTAKING_DELAY(overrides?: CallOverrides): Promise<[number]>;
 
     allowance(
-      owner: string,
-      spender: string,
+      owner: PromiseOrValue<string>,
+      spender: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
     approve(
-      spender: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      spender: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    balanceOf(account: string, overrides?: CallOverrides): Promise<[BigNumber]>;
+    balanceOf(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     decimals(overrides?: CallOverrides): Promise<[number]>;
 
     decreaseAllowance(
-      spender: string,
-      subtractedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      spender: PromiseOrValue<string>,
+      subtractedValue: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     draftQueueLen(
-      era_: BigNumberish,
-      account: string,
+      era_: PromiseOrValue<BigNumberish>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
     draftQueues(
-      arg0: BigNumberish,
-      arg1: string,
-      arg2: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
+      arg2: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber] & { drafts: BigNumber; availableAt: BigNumber }
@@ -658,53 +705,58 @@ export interface StRsr extends BaseContract {
     draftRate(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     endIdForWithdraw(
-      account: string,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
     exchangeRate(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     firstRemainingDraft(
-      arg0: BigNumberish,
-      arg1: string,
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
     increaseAllowance(
-      spender: string,
-      addedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      spender: PromiseOrValue<string>,
+      addedValue: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     init(
-      main_: string,
-      name_: string,
-      symbol_: string,
-      unstakingDelay_: BigNumberish,
-      rewardPeriod_: BigNumberish,
-      rewardRatio_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      main_: PromiseOrValue<string>,
+      name_: PromiseOrValue<string>,
+      symbol_: PromiseOrValue<string>,
+      unstakingDelay_: PromiseOrValue<BigNumberish>,
+      rewardPeriod_: PromiseOrValue<BigNumberish>,
+      rewardRatio_: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     main(overrides?: CallOverrides): Promise<[string]>;
 
     name(overrides?: CallOverrides): Promise<[string]>;
 
-    nonces(owner: string, overrides?: CallOverrides): Promise<[BigNumber]>;
+    nonces(
+      owner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    payoutLastPaid(overrides?: CallOverrides): Promise<[number]>;
 
     payoutRewards(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     permit(
-      owner: string,
-      spender: string,
-      value: BigNumberish,
-      deadline: BigNumberish,
-      v: BigNumberish,
-      r: BytesLike,
-      s: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      owner: PromiseOrValue<string>,
+      spender: PromiseOrValue<string>,
+      value: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      v: PromiseOrValue<BigNumberish>,
+      r: PromiseOrValue<BytesLike>,
+      s: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
@@ -714,38 +766,38 @@ export interface StRsr extends BaseContract {
     rewardRatio(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     seizeRSR(
-      rsrAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      rsrAmount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     setName(
-      name_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      name_: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     setRewardPeriod(
-      val: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      val: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     setRewardRatio(
-      val: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      val: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     setSymbol(
-      symbol_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      symbol_: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     setUnstakingDelay(
-      val: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      val: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     stake(
-      rsrAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      rsrAmount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     stakeRate(overrides?: CallOverrides): Promise<[BigNumber]>;
@@ -755,40 +807,40 @@ export interface StRsr extends BaseContract {
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     transfer(
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     transferFrom(
-      from: string,
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      from: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     unstake(
-      stakeAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      stakeAmount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     unstakingDelay(overrides?: CallOverrides): Promise<[number]>;
 
     upgradeTo(
-      newImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      newImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
+      newImplementation: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     withdraw(
-      account: string,
-      endId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      account: PromiseOrValue<string>,
+      endId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
 
@@ -801,37 +853,40 @@ export interface StRsr extends BaseContract {
   MAX_UNSTAKING_DELAY(overrides?: CallOverrides): Promise<number>;
 
   allowance(
-    owner: string,
-    spender: string,
+    owner: PromiseOrValue<string>,
+    spender: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
   approve(
-    spender: string,
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    spender: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
+  balanceOf(
+    account: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   decimals(overrides?: CallOverrides): Promise<number>;
 
   decreaseAllowance(
-    spender: string,
-    subtractedValue: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    spender: PromiseOrValue<string>,
+    subtractedValue: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   draftQueueLen(
-    era_: BigNumberish,
-    account: string,
+    era_: PromiseOrValue<BigNumberish>,
+    account: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
   draftQueues(
-    arg0: BigNumberish,
-    arg1: string,
-    arg2: BigNumberish,
+    arg0: PromiseOrValue<BigNumberish>,
+    arg1: PromiseOrValue<string>,
+    arg2: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<
     [BigNumber, BigNumber] & { drafts: BigNumber; availableAt: BigNumber }
@@ -840,53 +895,58 @@ export interface StRsr extends BaseContract {
   draftRate(overrides?: CallOverrides): Promise<BigNumber>;
 
   endIdForWithdraw(
-    account: string,
+    account: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
   exchangeRate(overrides?: CallOverrides): Promise<BigNumber>;
 
   firstRemainingDraft(
-    arg0: BigNumberish,
-    arg1: string,
+    arg0: PromiseOrValue<BigNumberish>,
+    arg1: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
   increaseAllowance(
-    spender: string,
-    addedValue: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    spender: PromiseOrValue<string>,
+    addedValue: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   init(
-    main_: string,
-    name_: string,
-    symbol_: string,
-    unstakingDelay_: BigNumberish,
-    rewardPeriod_: BigNumberish,
-    rewardRatio_: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    main_: PromiseOrValue<string>,
+    name_: PromiseOrValue<string>,
+    symbol_: PromiseOrValue<string>,
+    unstakingDelay_: PromiseOrValue<BigNumberish>,
+    rewardPeriod_: PromiseOrValue<BigNumberish>,
+    rewardRatio_: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   main(overrides?: CallOverrides): Promise<string>;
 
   name(overrides?: CallOverrides): Promise<string>;
 
-  nonces(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
+  nonces(
+    owner: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  payoutLastPaid(overrides?: CallOverrides): Promise<number>;
 
   payoutRewards(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   permit(
-    owner: string,
-    spender: string,
-    value: BigNumberish,
-    deadline: BigNumberish,
-    v: BigNumberish,
-    r: BytesLike,
-    s: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    owner: PromiseOrValue<string>,
+    spender: PromiseOrValue<string>,
+    value: PromiseOrValue<BigNumberish>,
+    deadline: PromiseOrValue<BigNumberish>,
+    v: PromiseOrValue<BigNumberish>,
+    r: PromiseOrValue<BytesLike>,
+    s: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   proxiableUUID(overrides?: CallOverrides): Promise<string>;
@@ -896,38 +956,38 @@ export interface StRsr extends BaseContract {
   rewardRatio(overrides?: CallOverrides): Promise<BigNumber>;
 
   seizeRSR(
-    rsrAmount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    rsrAmount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   setName(
-    name_: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    name_: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   setRewardPeriod(
-    val: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    val: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   setRewardRatio(
-    val: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    val: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   setSymbol(
-    symbol_: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    symbol_: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   setUnstakingDelay(
-    val: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    val: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   stake(
-    rsrAmount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    rsrAmount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   stakeRate(overrides?: CallOverrides): Promise<BigNumber>;
@@ -937,40 +997,40 @@ export interface StRsr extends BaseContract {
   totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
   transfer(
-    to: string,
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    to: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   transferFrom(
-    from: string,
-    to: string,
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    from: PromiseOrValue<string>,
+    to: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   unstake(
-    stakeAmount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    stakeAmount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   unstakingDelay(overrides?: CallOverrides): Promise<number>;
 
   upgradeTo(
-    newImplementation: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    newImplementation: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   upgradeToAndCall(
-    newImplementation: string,
-    data: BytesLike,
-    overrides?: PayableOverrides & { from?: string | Promise<string> }
+    newImplementation: PromiseOrValue<string>,
+    data: PromiseOrValue<BytesLike>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   withdraw(
-    account: string,
-    endId: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    account: PromiseOrValue<string>,
+    endId: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
@@ -983,37 +1043,40 @@ export interface StRsr extends BaseContract {
     MAX_UNSTAKING_DELAY(overrides?: CallOverrides): Promise<number>;
 
     allowance(
-      owner: string,
-      spender: string,
+      owner: PromiseOrValue<string>,
+      spender: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     approve(
-      spender: string,
-      amount: BigNumberish,
+      spender: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
+    balanceOf(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     decimals(overrides?: CallOverrides): Promise<number>;
 
     decreaseAllowance(
-      spender: string,
-      subtractedValue: BigNumberish,
+      spender: PromiseOrValue<string>,
+      subtractedValue: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
     draftQueueLen(
-      era_: BigNumberish,
-      account: string,
+      era_: PromiseOrValue<BigNumberish>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     draftQueues(
-      arg0: BigNumberish,
-      arg1: string,
-      arg2: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
+      arg2: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber] & { drafts: BigNumber; availableAt: BigNumber }
@@ -1022,31 +1085,31 @@ export interface StRsr extends BaseContract {
     draftRate(overrides?: CallOverrides): Promise<BigNumber>;
 
     endIdForWithdraw(
-      account: string,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     exchangeRate(overrides?: CallOverrides): Promise<BigNumber>;
 
     firstRemainingDraft(
-      arg0: BigNumberish,
-      arg1: string,
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     increaseAllowance(
-      spender: string,
-      addedValue: BigNumberish,
+      spender: PromiseOrValue<string>,
+      addedValue: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
     init(
-      main_: string,
-      name_: string,
-      symbol_: string,
-      unstakingDelay_: BigNumberish,
-      rewardPeriod_: BigNumberish,
-      rewardRatio_: BigNumberish,
+      main_: PromiseOrValue<string>,
+      name_: PromiseOrValue<string>,
+      symbol_: PromiseOrValue<string>,
+      unstakingDelay_: PromiseOrValue<BigNumberish>,
+      rewardPeriod_: PromiseOrValue<BigNumberish>,
+      rewardRatio_: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1054,18 +1117,23 @@ export interface StRsr extends BaseContract {
 
     name(overrides?: CallOverrides): Promise<string>;
 
-    nonces(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
+    nonces(
+      owner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    payoutLastPaid(overrides?: CallOverrides): Promise<number>;
 
     payoutRewards(overrides?: CallOverrides): Promise<void>;
 
     permit(
-      owner: string,
-      spender: string,
-      value: BigNumberish,
-      deadline: BigNumberish,
-      v: BigNumberish,
-      r: BytesLike,
-      s: BytesLike,
+      owner: PromiseOrValue<string>,
+      spender: PromiseOrValue<string>,
+      value: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      v: PromiseOrValue<BigNumberish>,
+      r: PromiseOrValue<BytesLike>,
+      s: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1075,25 +1143,40 @@ export interface StRsr extends BaseContract {
 
     rewardRatio(overrides?: CallOverrides): Promise<BigNumber>;
 
-    seizeRSR(rsrAmount: BigNumberish, overrides?: CallOverrides): Promise<void>;
+    seizeRSR(
+      rsrAmount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    setName(name_: string, overrides?: CallOverrides): Promise<void>;
+    setName(
+      name_: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     setRewardPeriod(
-      val: BigNumberish,
+      val: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setRewardRatio(val: BigNumberish, overrides?: CallOverrides): Promise<void>;
+    setRewardRatio(
+      val: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    setSymbol(symbol_: string, overrides?: CallOverrides): Promise<void>;
+    setSymbol(
+      symbol_: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     setUnstakingDelay(
-      val: BigNumberish,
+      val: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    stake(rsrAmount: BigNumberish, overrides?: CallOverrides): Promise<void>;
+    stake(
+      rsrAmount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     stakeRate(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1102,39 +1185,39 @@ export interface StRsr extends BaseContract {
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     transfer(
-      to: string,
-      amount: BigNumberish,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
     transferFrom(
-      from: string,
-      to: string,
-      amount: BigNumberish,
+      from: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
     unstake(
-      stakeAmount: BigNumberish,
+      stakeAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     unstakingDelay(overrides?: CallOverrides): Promise<number>;
 
     upgradeTo(
-      newImplementation: string,
+      newImplementation: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
+      newImplementation: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     withdraw(
-      account: string,
-      endId: BigNumberish,
+      account: PromiseOrValue<string>,
+      endId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -1150,135 +1233,145 @@ export interface StRsr extends BaseContract {
     ): AdminChangedEventFilter;
 
     "AllBalancesReset(uint256)"(
-      newEra?: BigNumberish | null
+      newEra?: PromiseOrValue<BigNumberish> | null
     ): AllBalancesResetEventFilter;
-    AllBalancesReset(newEra?: BigNumberish | null): AllBalancesResetEventFilter;
+    AllBalancesReset(
+      newEra?: PromiseOrValue<BigNumberish> | null
+    ): AllBalancesResetEventFilter;
 
     "AllUnstakingReset(uint256)"(
-      newEra?: BigNumberish | null
+      newEra?: PromiseOrValue<BigNumberish> | null
     ): AllUnstakingResetEventFilter;
     AllUnstakingReset(
-      newEra?: BigNumberish | null
+      newEra?: PromiseOrValue<BigNumberish> | null
     ): AllUnstakingResetEventFilter;
 
     "Approval(address,address,uint256)"(
-      owner?: string | null,
-      spender?: string | null,
+      owner?: PromiseOrValue<string> | null,
+      spender?: PromiseOrValue<string> | null,
       value?: null
     ): ApprovalEventFilter;
     Approval(
-      owner?: string | null,
-      spender?: string | null,
+      owner?: PromiseOrValue<string> | null,
+      spender?: PromiseOrValue<string> | null,
       value?: null
     ): ApprovalEventFilter;
 
     "BeaconUpgraded(address)"(
-      beacon?: string | null
+      beacon?: PromiseOrValue<string> | null
     ): BeaconUpgradedEventFilter;
-    BeaconUpgraded(beacon?: string | null): BeaconUpgradedEventFilter;
+    BeaconUpgraded(
+      beacon?: PromiseOrValue<string> | null
+    ): BeaconUpgradedEventFilter;
 
     "ExchangeRateSet(uint192,uint192)"(
-      oldVal?: BigNumberish | null,
-      newVal?: BigNumberish | null
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
     ): ExchangeRateSetEventFilter;
     ExchangeRateSet(
-      oldVal?: BigNumberish | null,
-      newVal?: BigNumberish | null
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
     ): ExchangeRateSetEventFilter;
 
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
 
     "RewardPeriodSet(uint48,uint48)"(
-      oldVal?: BigNumberish | null,
-      newVal?: BigNumberish | null
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
     ): RewardPeriodSetEventFilter;
     RewardPeriodSet(
-      oldVal?: BigNumberish | null,
-      newVal?: BigNumberish | null
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
     ): RewardPeriodSetEventFilter;
 
     "RewardRatioSet(uint192,uint192)"(
-      oldVal?: BigNumberish | null,
-      newVal?: BigNumberish | null
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
     ): RewardRatioSetEventFilter;
     RewardRatioSet(
-      oldVal?: BigNumberish | null,
-      newVal?: BigNumberish | null
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
     ): RewardRatioSetEventFilter;
 
     "RewardsPaid(uint256)"(
-      rsrAmt?: BigNumberish | null
+      rsrAmt?: PromiseOrValue<BigNumberish> | null
     ): RewardsPaidEventFilter;
-    RewardsPaid(rsrAmt?: BigNumberish | null): RewardsPaidEventFilter;
+    RewardsPaid(
+      rsrAmt?: PromiseOrValue<BigNumberish> | null
+    ): RewardsPaidEventFilter;
 
     "Staked(uint256,address,uint256,uint256)"(
-      era?: BigNumberish | null,
-      staker?: string | null,
+      era?: PromiseOrValue<BigNumberish> | null,
+      staker?: PromiseOrValue<string> | null,
       rsrAmount?: null,
-      stRSRAmount?: BigNumberish | null
+      stRSRAmount?: PromiseOrValue<BigNumberish> | null
     ): StakedEventFilter;
     Staked(
-      era?: BigNumberish | null,
-      staker?: string | null,
+      era?: PromiseOrValue<BigNumberish> | null,
+      staker?: PromiseOrValue<string> | null,
       rsrAmount?: null,
-      stRSRAmount?: BigNumberish | null
+      stRSRAmount?: PromiseOrValue<BigNumberish> | null
     ): StakedEventFilter;
 
     "Transfer(address,address,uint256)"(
-      from?: string | null,
-      to?: string | null,
+      from?: PromiseOrValue<string> | null,
+      to?: PromiseOrValue<string> | null,
       value?: null
     ): TransferEventFilter;
     Transfer(
-      from?: string | null,
-      to?: string | null,
+      from?: PromiseOrValue<string> | null,
+      to?: PromiseOrValue<string> | null,
       value?: null
     ): TransferEventFilter;
 
     "UnstakingCompleted(uint256,uint256,uint256,address,uint256)"(
-      firstId?: BigNumberish | null,
-      endId?: BigNumberish | null,
+      firstId?: PromiseOrValue<BigNumberish> | null,
+      endId?: PromiseOrValue<BigNumberish> | null,
       draftEra?: null,
-      staker?: string | null,
+      staker?: PromiseOrValue<string> | null,
       rsrAmount?: null
     ): UnstakingCompletedEventFilter;
     UnstakingCompleted(
-      firstId?: BigNumberish | null,
-      endId?: BigNumberish | null,
+      firstId?: PromiseOrValue<BigNumberish> | null,
+      endId?: PromiseOrValue<BigNumberish> | null,
       draftEra?: null,
-      staker?: string | null,
+      staker?: PromiseOrValue<string> | null,
       rsrAmount?: null
     ): UnstakingCompletedEventFilter;
 
     "UnstakingDelaySet(uint48,uint48)"(
-      oldVal?: BigNumberish | null,
-      newVal?: BigNumberish | null
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
     ): UnstakingDelaySetEventFilter;
     UnstakingDelaySet(
-      oldVal?: BigNumberish | null,
-      newVal?: BigNumberish | null
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
     ): UnstakingDelaySetEventFilter;
 
     "UnstakingStarted(uint256,uint256,address,uint256,uint256,uint256)"(
-      draftId?: BigNumberish | null,
-      draftEra?: BigNumberish | null,
-      staker?: string | null,
+      draftId?: PromiseOrValue<BigNumberish> | null,
+      draftEra?: PromiseOrValue<BigNumberish> | null,
+      staker?: PromiseOrValue<string> | null,
       rsrAmount?: null,
       stRSRAmount?: null,
       availableAt?: null
     ): UnstakingStartedEventFilter;
     UnstakingStarted(
-      draftId?: BigNumberish | null,
-      draftEra?: BigNumberish | null,
-      staker?: string | null,
+      draftId?: PromiseOrValue<BigNumberish> | null,
+      draftEra?: PromiseOrValue<BigNumberish> | null,
+      staker?: PromiseOrValue<string> | null,
       rsrAmount?: null,
       stRSRAmount?: null,
       availableAt?: null
     ): UnstakingStartedEventFilter;
 
-    "Upgraded(address)"(implementation?: string | null): UpgradedEventFilter;
-    Upgraded(implementation?: string | null): UpgradedEventFilter;
+    "Upgraded(address)"(
+      implementation?: PromiseOrValue<string> | null
+    ): UpgradedEventFilter;
+    Upgraded(
+      implementation?: PromiseOrValue<string> | null
+    ): UpgradedEventFilter;
   };
 
   estimateGas: {
@@ -1291,90 +1384,98 @@ export interface StRsr extends BaseContract {
     MAX_UNSTAKING_DELAY(overrides?: CallOverrides): Promise<BigNumber>;
 
     allowance(
-      owner: string,
-      spender: string,
+      owner: PromiseOrValue<string>,
+      spender: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     approve(
-      spender: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      spender: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
+    balanceOf(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
 
     decreaseAllowance(
-      spender: string,
-      subtractedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      spender: PromiseOrValue<string>,
+      subtractedValue: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     draftQueueLen(
-      era_: BigNumberish,
-      account: string,
+      era_: PromiseOrValue<BigNumberish>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     draftQueues(
-      arg0: BigNumberish,
-      arg1: string,
-      arg2: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
+      arg2: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     draftRate(overrides?: CallOverrides): Promise<BigNumber>;
 
     endIdForWithdraw(
-      account: string,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     exchangeRate(overrides?: CallOverrides): Promise<BigNumber>;
 
     firstRemainingDraft(
-      arg0: BigNumberish,
-      arg1: string,
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     increaseAllowance(
-      spender: string,
-      addedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      spender: PromiseOrValue<string>,
+      addedValue: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     init(
-      main_: string,
-      name_: string,
-      symbol_: string,
-      unstakingDelay_: BigNumberish,
-      rewardPeriod_: BigNumberish,
-      rewardRatio_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      main_: PromiseOrValue<string>,
+      name_: PromiseOrValue<string>,
+      symbol_: PromiseOrValue<string>,
+      unstakingDelay_: PromiseOrValue<BigNumberish>,
+      rewardPeriod_: PromiseOrValue<BigNumberish>,
+      rewardRatio_: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     main(overrides?: CallOverrides): Promise<BigNumber>;
 
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
-    nonces(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
+    nonces(
+      owner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    payoutLastPaid(overrides?: CallOverrides): Promise<BigNumber>;
 
     payoutRewards(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     permit(
-      owner: string,
-      spender: string,
-      value: BigNumberish,
-      deadline: BigNumberish,
-      v: BigNumberish,
-      r: BytesLike,
-      s: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      owner: PromiseOrValue<string>,
+      spender: PromiseOrValue<string>,
+      value: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      v: PromiseOrValue<BigNumberish>,
+      r: PromiseOrValue<BytesLike>,
+      s: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1384,38 +1485,38 @@ export interface StRsr extends BaseContract {
     rewardRatio(overrides?: CallOverrides): Promise<BigNumber>;
 
     seizeRSR(
-      rsrAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      rsrAmount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     setName(
-      name_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      name_: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     setRewardPeriod(
-      val: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      val: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     setRewardRatio(
-      val: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      val: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     setSymbol(
-      symbol_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      symbol_: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     setUnstakingDelay(
-      val: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      val: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     stake(
-      rsrAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      rsrAmount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     stakeRate(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1425,40 +1526,40 @@ export interface StRsr extends BaseContract {
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     transfer(
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     transferFrom(
-      from: string,
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      from: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     unstake(
-      stakeAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      stakeAmount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     unstakingDelay(overrides?: CallOverrides): Promise<BigNumber>;
 
     upgradeTo(
-      newImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      newImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
+      newImplementation: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     withdraw(
-      account: string,
-      endId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      account: PromiseOrValue<string>,
+      endId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
 
@@ -1474,72 +1575,72 @@ export interface StRsr extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     allowance(
-      owner: string,
-      spender: string,
+      owner: PromiseOrValue<string>,
+      spender: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     approve(
-      spender: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      spender: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     balanceOf(
-      account: string,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     decreaseAllowance(
-      spender: string,
-      subtractedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      spender: PromiseOrValue<string>,
+      subtractedValue: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     draftQueueLen(
-      era_: BigNumberish,
-      account: string,
+      era_: PromiseOrValue<BigNumberish>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     draftQueues(
-      arg0: BigNumberish,
-      arg1: string,
-      arg2: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
+      arg2: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     draftRate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     endIdForWithdraw(
-      account: string,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     exchangeRate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     firstRemainingDraft(
-      arg0: BigNumberish,
-      arg1: string,
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     increaseAllowance(
-      spender: string,
-      addedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      spender: PromiseOrValue<string>,
+      addedValue: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     init(
-      main_: string,
-      name_: string,
-      symbol_: string,
-      unstakingDelay_: BigNumberish,
-      rewardPeriod_: BigNumberish,
-      rewardRatio_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      main_: PromiseOrValue<string>,
+      name_: PromiseOrValue<string>,
+      symbol_: PromiseOrValue<string>,
+      unstakingDelay_: PromiseOrValue<BigNumberish>,
+      rewardPeriod_: PromiseOrValue<BigNumberish>,
+      rewardRatio_: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     main(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1547,23 +1648,25 @@ export interface StRsr extends BaseContract {
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     nonces(
-      owner: string,
+      owner: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    payoutLastPaid(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     payoutRewards(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     permit(
-      owner: string,
-      spender: string,
-      value: BigNumberish,
-      deadline: BigNumberish,
-      v: BigNumberish,
-      r: BytesLike,
-      s: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      owner: PromiseOrValue<string>,
+      spender: PromiseOrValue<string>,
+      value: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      v: PromiseOrValue<BigNumberish>,
+      r: PromiseOrValue<BytesLike>,
+      s: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1573,38 +1676,38 @@ export interface StRsr extends BaseContract {
     rewardRatio(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     seizeRSR(
-      rsrAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      rsrAmount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     setName(
-      name_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      name_: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     setRewardPeriod(
-      val: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      val: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     setRewardRatio(
-      val: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      val: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     setSymbol(
-      symbol_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      symbol_: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     setUnstakingDelay(
-      val: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      val: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     stake(
-      rsrAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      rsrAmount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     stakeRate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1614,40 +1717,40 @@ export interface StRsr extends BaseContract {
     totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     transfer(
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     transferFrom(
-      from: string,
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      from: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     unstake(
-      stakeAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      stakeAmount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     unstakingDelay(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     upgradeTo(
-      newImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      newImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
+      newImplementation: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     withdraw(
-      account: string,
-      endId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      account: PromiseOrValue<string>,
+      endId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

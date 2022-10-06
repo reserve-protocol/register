@@ -24,6 +24,7 @@ import type {
   TypedEvent,
   TypedListener,
   OnEvent,
+  PromiseOrValue,
 } from "./common";
 
 export interface AssetRegistryInterface extends utils.Interface {
@@ -63,11 +64,11 @@ export interface AssetRegistryInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "erc20s", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "init",
-    values: [string, string[]]
+    values: [PromiseOrValue<string>, PromiseOrValue<string>[]]
   ): string;
   encodeFunctionData(
     functionFragment: "isRegistered",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(functionFragment: "main", values?: undefined): string;
   encodeFunctionData(
@@ -75,18 +76,33 @@ export interface AssetRegistryInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "refresh", values?: undefined): string;
-  encodeFunctionData(functionFragment: "register", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "register",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "swapRegistered",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
-  encodeFunctionData(functionFragment: "toAsset", values: [string]): string;
-  encodeFunctionData(functionFragment: "toColl", values: [string]): string;
-  encodeFunctionData(functionFragment: "unregister", values: [string]): string;
-  encodeFunctionData(functionFragment: "upgradeTo", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "toAsset",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "toColl",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "unregister",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "upgradeTo",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "upgradeToAndCall",
-    values: [string, BytesLike]
+    values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
   ): string;
 
   decodeFunctionResult(functionFragment: "erc20s", data: BytesLike): Result;
@@ -222,110 +238,131 @@ export interface AssetRegistry extends BaseContract {
     ): Promise<[string[]] & { erc20s_: string[] }>;
 
     init(
-      main_: string,
-      assets_: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      main_: PromiseOrValue<string>,
+      assets_: PromiseOrValue<string>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    isRegistered(erc20: string, overrides?: CallOverrides): Promise<[boolean]>;
+    isRegistered(
+      erc20: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     main(overrides?: CallOverrides): Promise<[string]>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
 
     refresh(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     register(
-      asset: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      asset: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     swapRegistered(
-      asset: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      asset: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    toAsset(erc20: string, overrides?: CallOverrides): Promise<[string]>;
+    toAsset(
+      erc20: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
-    toColl(erc20: string, overrides?: CallOverrides): Promise<[string]>;
+    toColl(
+      erc20: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
     unregister(
-      asset: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      asset: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     upgradeTo(
-      newImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      newImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
+      newImplementation: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
 
   erc20s(overrides?: CallOverrides): Promise<string[]>;
 
   init(
-    main_: string,
-    assets_: string[],
-    overrides?: Overrides & { from?: string | Promise<string> }
+    main_: PromiseOrValue<string>,
+    assets_: PromiseOrValue<string>[],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  isRegistered(erc20: string, overrides?: CallOverrides): Promise<boolean>;
+  isRegistered(
+    erc20: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   main(overrides?: CallOverrides): Promise<string>;
 
   proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
   refresh(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   register(
-    asset: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    asset: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   swapRegistered(
-    asset: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    asset: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  toAsset(erc20: string, overrides?: CallOverrides): Promise<string>;
+  toAsset(
+    erc20: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
-  toColl(erc20: string, overrides?: CallOverrides): Promise<string>;
+  toColl(
+    erc20: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   unregister(
-    asset: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    asset: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   upgradeTo(
-    newImplementation: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    newImplementation: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   upgradeToAndCall(
-    newImplementation: string,
-    data: BytesLike,
-    overrides?: PayableOverrides & { from?: string | Promise<string> }
+    newImplementation: PromiseOrValue<string>,
+    data: PromiseOrValue<BytesLike>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
     erc20s(overrides?: CallOverrides): Promise<string[]>;
 
     init(
-      main_: string,
-      assets_: string[],
+      main_: PromiseOrValue<string>,
+      assets_: PromiseOrValue<string>[],
       overrides?: CallOverrides
     ): Promise<void>;
 
-    isRegistered(erc20: string, overrides?: CallOverrides): Promise<boolean>;
+    isRegistered(
+      erc20: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     main(overrides?: CallOverrides): Promise<string>;
 
@@ -333,24 +370,39 @@ export interface AssetRegistry extends BaseContract {
 
     refresh(overrides?: CallOverrides): Promise<void>;
 
-    register(asset: string, overrides?: CallOverrides): Promise<boolean>;
+    register(
+      asset: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
-    swapRegistered(asset: string, overrides?: CallOverrides): Promise<boolean>;
+    swapRegistered(
+      asset: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
-    toAsset(erc20: string, overrides?: CallOverrides): Promise<string>;
+    toAsset(
+      erc20: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
-    toColl(erc20: string, overrides?: CallOverrides): Promise<string>;
+    toColl(
+      erc20: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
-    unregister(asset: string, overrides?: CallOverrides): Promise<void>;
+    unregister(
+      asset: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     upgradeTo(
-      newImplementation: string,
+      newImplementation: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
+      newImplementation: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -366,82 +418,97 @@ export interface AssetRegistry extends BaseContract {
     ): AdminChangedEventFilter;
 
     "AssetRegistered(address,address)"(
-      erc20?: string | null,
-      asset?: string | null
+      erc20?: PromiseOrValue<string> | null,
+      asset?: PromiseOrValue<string> | null
     ): AssetRegisteredEventFilter;
     AssetRegistered(
-      erc20?: string | null,
-      asset?: string | null
+      erc20?: PromiseOrValue<string> | null,
+      asset?: PromiseOrValue<string> | null
     ): AssetRegisteredEventFilter;
 
     "AssetUnregistered(address,address)"(
-      erc20?: string | null,
-      asset?: string | null
+      erc20?: PromiseOrValue<string> | null,
+      asset?: PromiseOrValue<string> | null
     ): AssetUnregisteredEventFilter;
     AssetUnregistered(
-      erc20?: string | null,
-      asset?: string | null
+      erc20?: PromiseOrValue<string> | null,
+      asset?: PromiseOrValue<string> | null
     ): AssetUnregisteredEventFilter;
 
     "BeaconUpgraded(address)"(
-      beacon?: string | null
+      beacon?: PromiseOrValue<string> | null
     ): BeaconUpgradedEventFilter;
-    BeaconUpgraded(beacon?: string | null): BeaconUpgradedEventFilter;
+    BeaconUpgraded(
+      beacon?: PromiseOrValue<string> | null
+    ): BeaconUpgradedEventFilter;
 
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
 
-    "Upgraded(address)"(implementation?: string | null): UpgradedEventFilter;
-    Upgraded(implementation?: string | null): UpgradedEventFilter;
+    "Upgraded(address)"(
+      implementation?: PromiseOrValue<string> | null
+    ): UpgradedEventFilter;
+    Upgraded(
+      implementation?: PromiseOrValue<string> | null
+    ): UpgradedEventFilter;
   };
 
   estimateGas: {
     erc20s(overrides?: CallOverrides): Promise<BigNumber>;
 
     init(
-      main_: string,
-      assets_: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      main_: PromiseOrValue<string>,
+      assets_: PromiseOrValue<string>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    isRegistered(erc20: string, overrides?: CallOverrides): Promise<BigNumber>;
+    isRegistered(
+      erc20: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     main(overrides?: CallOverrides): Promise<BigNumber>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
 
     refresh(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     register(
-      asset: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      asset: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     swapRegistered(
-      asset: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      asset: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    toAsset(erc20: string, overrides?: CallOverrides): Promise<BigNumber>;
+    toAsset(
+      erc20: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
-    toColl(erc20: string, overrides?: CallOverrides): Promise<BigNumber>;
+    toColl(
+      erc20: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     unregister(
-      asset: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      asset: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     upgradeTo(
-      newImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      newImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
+      newImplementation: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
 
@@ -449,13 +516,13 @@ export interface AssetRegistry extends BaseContract {
     erc20s(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     init(
-      main_: string,
-      assets_: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      main_: PromiseOrValue<string>,
+      assets_: PromiseOrValue<string>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     isRegistered(
-      erc20: string,
+      erc20: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -464,43 +531,43 @@ export interface AssetRegistry extends BaseContract {
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     refresh(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     register(
-      asset: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      asset: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     swapRegistered(
-      asset: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      asset: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     toAsset(
-      erc20: string,
+      erc20: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     toColl(
-      erc20: string,
+      erc20: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     unregister(
-      asset: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      asset: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     upgradeTo(
-      newImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      newImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
+      newImplementation: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

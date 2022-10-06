@@ -1,15 +1,15 @@
-import { BigNumber } from '@ethersproject/bignumber'
-import { Falsy } from 'types'
-import { useCall } from './useCall'
-import { useTokenContract } from './useContract'
+import { BigNumber } from '@ethersproject/bignumber';
+import { ERC20Interface } from 'abis';
+import { Falsy } from 'types';
+import { useContractCall } from './useCall';
 
 const useTokenSupply = (address: string | Falsy): BigNumber => {
-  const contract = useTokenContract(address || '')
-  const { value, error } =
-    useCall(
+  const { value } =
+    useContractCall(
       address &&
-        contract && {
-          contract,
+        {
+          abi: ERC20Interface,
+          address,
           method: 'totalSupply',
           args: [],
         }

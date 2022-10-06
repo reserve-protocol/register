@@ -1,10 +1,10 @@
 import { Web3Provider } from '@ethersproject/providers'
 import { formatEther } from '@ethersproject/units'
 import { useWeb3React } from '@web3-react/core'
-import { StRSR } from 'abis'
+import { StRSR, StRSRInterface } from 'abis'
 import { Facade } from 'abis/types'
 import useBlockNumber from 'hooks/useBlockNumber'
-import { useCall } from 'hooks/useCall'
+import { useContractCall } from 'hooks/useCall'
 import { useContract, useFacadeContract } from 'hooks/useContract'
 import useRToken from 'hooks/useRToken'
 import useRTokenPrice from 'hooks/useRTokenPrice'
@@ -233,16 +233,14 @@ const PricesUpdater = () => {
 // TODO: Change place
 const ExchangeRateUpdater = () => {
   const rToken = useAtomValue(rTokenAtom)
-  const contract = useContract(rToken?.stToken?.address, StRSR, false)
   const setRate = useUpdateAtom(rsrExchangeRateAtom)
   const { value } =
-    useCall(
-      contract && {
-        contract,
+    useContractCall(rToken?.stToken?.address && {
+        abi: StRSRInterface,
+        address: rToken?.stToken?.address ?? '',
         method: 'exchangeRate',
         args: [],
-      }
-    ) ?? {}
+      }) ?? {}
 
   useEffect(() => {
     if (value && value[0]) {

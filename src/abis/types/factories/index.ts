@@ -11,5 +11,4 @@ export { Facade__factory } from "./Facade__factory";
 export { FacadeWrite__factory } from "./FacadeWrite__factory";
 export { Main__factory } from "./Main__factory";
 export { RsvManager__factory } from "./RsvManager__factory";
-export { RtokenAsset__factory } from "./RtokenAsset__factory";
 export { StRsr__factory } from "./StRsr__factory";

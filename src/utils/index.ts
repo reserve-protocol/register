@@ -1,9 +1,9 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { BigNumberMap } from './../types/index'
 import { getAddress } from '@ethersproject/address'
-import { Contract } from '@ethersproject/contracts'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { t } from '@lingui/macro'
+import { Contract } from 'ethers'
 
 export const decimalPattern = /^[0-9]*[.]?[0-9]*$/i
 export const numberPattern = /^\d+$/

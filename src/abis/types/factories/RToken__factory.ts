@@ -260,25 +260,6 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
-        indexed: true,
-        internalType: "uint192",
-        name: "oldVal",
-        type: "uint192",
-      },
-      {
-        indexed: true,
-        internalType: "uint192",
-        name: "newVal",
-        type: "uint192",
-      },
-    ],
-    name: "MaxRedemptionSet",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
         indexed: false,
         internalType: "uint256",
         name: "amount",
@@ -329,7 +310,7 @@ const _abi = [
         type: "uint256",
       },
     ],
-    name: "RedemptionVirtualSupplySet",
+    name: "RedemptionRateFloorSet",
     type: "event",
   },
   {
@@ -349,6 +330,25 @@ const _abi = [
       },
     ],
     name: "RewardsClaimed",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint192",
+        name: "oldVal",
+        type: "uint192",
+      },
+      {
+        indexed: true,
+        internalType: "uint192",
+        name: "newVal",
+        type: "uint192",
+      },
+    ],
+    name: "ScalingRedemptionRateSet",
     type: "event",
   },
   {
@@ -542,25 +542,6 @@ const _abi = [
       },
     ],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "account",
-        type: "address",
-      },
-    ],
-    name: "endIdForVest",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
   {
@@ -892,6 +873,30 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "queueBounds",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "left",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "right",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint256",
         name: "amount",
         type: "uint256",
@@ -917,12 +922,38 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "redemptionRateFloor",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "redemptionVirtualSupply",
     outputs: [
       {
         internalType: "uint256",
         name: "",
         type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "scalingRedemptionRate",
+    outputs: [
+      {
+        internalType: "uint192",
+        name: "",
+        type: "uint192",
       },
     ],
     stateMutability: "view",
@@ -957,12 +988,12 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint192",
+        internalType: "uint256",
         name: "val",
-        type: "uint192",
+        type: "uint256",
       },
     ],
-    name: "setMaxRedemption",
+    name: "setRedemptionRateFloor",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -970,12 +1001,12 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint256",
+        internalType: "uint192",
         name: "val",
-        type: "uint256",
+        type: "uint192",
       },
     ],
-    name: "setRedemptionVirtualSupply",
+    name: "setScalingRedemptionRate",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

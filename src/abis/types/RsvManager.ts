@@ -24,6 +24,7 @@ import type {
   TypedEvent,
   TypedListener,
   OnEvent,
+  PromiseOrValue,
 } from "./common";
 
 export interface RsvManagerInterface extends utils.Interface {
@@ -104,7 +105,7 @@ export interface RsvManagerInterface extends utils.Interface {
 
   encodeFunctionData(
     functionFragment: "setEmergency",
-    values: [boolean]
+    values: [PromiseOrValue<boolean>]
   ): string;
   encodeFunctionData(
     functionFragment: "isFullyCollateralized",
@@ -112,19 +113,19 @@ export interface RsvManagerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "executeProposal",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "nominateNewOwner",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "toIssue",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "toRedeem",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "trustedVault",
@@ -140,7 +141,7 @@ export interface RsvManagerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
-    values: [string]
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "nominatedOwner",
@@ -153,9 +154,12 @@ export interface RsvManagerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "acceptProposal",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
-  encodeFunctionData(functionFragment: "setVault", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "setVault",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(functionFragment: "delay", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "acceptOwnership",
@@ -164,20 +168,27 @@ export interface RsvManagerInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "proposeSwap",
-    values: [string[], BigNumberish[], boolean[]]
+    values: [
+      PromiseOrValue<string>[],
+      PromiseOrValue<BigNumberish>[],
+      PromiseOrValue<boolean>[]
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "trustedBasket",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "setOperator", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "setOperator",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "trustedRSV",
     values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "trustedProposals",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "issuancePaused",
@@ -185,29 +196,32 @@ export interface RsvManagerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "setIssuancePaused",
-    values: [boolean]
+    values: [PromiseOrValue<boolean>]
   ): string;
   encodeFunctionData(
     functionFragment: "proposeWeights",
-    values: [string[], BigNumberish[]]
+    values: [PromiseOrValue<string>[], PromiseOrValue<BigNumberish>[]]
   ): string;
   encodeFunctionData(functionFragment: "emergency", values?: undefined): string;
-  encodeFunctionData(functionFragment: "issue", values: [BigNumberish]): string;
+  encodeFunctionData(
+    functionFragment: "issue",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
   encodeFunctionData(
     functionFragment: "setSeigniorage",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "redeem",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "cancelProposal",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "setDelay",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "trustedProposalFactory",
@@ -569,29 +583,29 @@ export interface RsvManager extends BaseContract {
 
   functions: {
     setEmergency(
-      val: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      val: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     isFullyCollateralized(overrides?: CallOverrides): Promise<[boolean]>;
 
     executeProposal(
-      id: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      id: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     nominateNewOwner(
-      newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      newOwner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     toIssue(
-      rsvAmount: BigNumberish,
+      rsvAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber[]]>;
 
     toRedeem(
-      rsvAmount: BigNumberish,
+      rsvAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber[]]>;
 
@@ -602,8 +616,8 @@ export interface RsvManager extends BaseContract {
     seigniorage(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     renounceOwnership(
-      declaration: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      declaration: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     nominatedOwner(overrides?: CallOverrides): Promise<[string]>;
@@ -611,86 +625,86 @@ export interface RsvManager extends BaseContract {
     operator(overrides?: CallOverrides): Promise<[string]>;
 
     clearProposals(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     acceptProposal(
-      id: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      id: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     setVault(
-      newVaultAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      newVaultAddress: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     delay(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     acceptOwnership(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
 
     proposeSwap(
-      tokens: string[],
-      amounts: BigNumberish[],
-      toVault: boolean[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      tokens: PromiseOrValue<string>[],
+      amounts: PromiseOrValue<BigNumberish>[],
+      toVault: PromiseOrValue<boolean>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     trustedBasket(overrides?: CallOverrides): Promise<[string]>;
 
     setOperator(
-      _operator: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _operator: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     trustedRSV(overrides?: CallOverrides): Promise<[string]>;
 
     trustedProposals(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[string]>;
 
     issuancePaused(overrides?: CallOverrides): Promise<[boolean]>;
 
     setIssuancePaused(
-      val: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      val: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     proposeWeights(
-      tokens: string[],
-      weights: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      tokens: PromiseOrValue<string>[],
+      weights: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     emergency(overrides?: CallOverrides): Promise<[boolean]>;
 
     issue(
-      rsvAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      rsvAmount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     setSeigniorage(
-      _seigniorage: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _seigniorage: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     redeem(
-      rsvAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      rsvAmount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     cancelProposal(
-      id: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      id: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     setDelay(
-      _delay: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _delay: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     trustedProposalFactory(overrides?: CallOverrides): Promise<[string]>;
@@ -699,29 +713,29 @@ export interface RsvManager extends BaseContract {
   };
 
   setEmergency(
-    val: boolean,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    val: PromiseOrValue<boolean>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   isFullyCollateralized(overrides?: CallOverrides): Promise<boolean>;
 
   executeProposal(
-    id: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    id: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   nominateNewOwner(
-    newOwner: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    newOwner: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   toIssue(
-    rsvAmount: BigNumberish,
+    rsvAmount: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber[]>;
 
   toRedeem(
-    rsvAmount: BigNumberish,
+    rsvAmount: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber[]>;
 
@@ -732,8 +746,8 @@ export interface RsvManager extends BaseContract {
   seigniorage(overrides?: CallOverrides): Promise<BigNumber>;
 
   renounceOwnership(
-    declaration: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    declaration: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   nominatedOwner(overrides?: CallOverrides): Promise<string>;
@@ -741,86 +755,86 @@ export interface RsvManager extends BaseContract {
   operator(overrides?: CallOverrides): Promise<string>;
 
   clearProposals(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   acceptProposal(
-    id: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    id: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   setVault(
-    newVaultAddress: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    newVaultAddress: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   delay(overrides?: CallOverrides): Promise<BigNumber>;
 
   acceptOwnership(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   owner(overrides?: CallOverrides): Promise<string>;
 
   proposeSwap(
-    tokens: string[],
-    amounts: BigNumberish[],
-    toVault: boolean[],
-    overrides?: Overrides & { from?: string | Promise<string> }
+    tokens: PromiseOrValue<string>[],
+    amounts: PromiseOrValue<BigNumberish>[],
+    toVault: PromiseOrValue<boolean>[],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   trustedBasket(overrides?: CallOverrides): Promise<string>;
 
   setOperator(
-    _operator: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _operator: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   trustedRSV(overrides?: CallOverrides): Promise<string>;
 
   trustedProposals(
-    arg0: BigNumberish,
+    arg0: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<string>;
 
   issuancePaused(overrides?: CallOverrides): Promise<boolean>;
 
   setIssuancePaused(
-    val: boolean,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    val: PromiseOrValue<boolean>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   proposeWeights(
-    tokens: string[],
-    weights: BigNumberish[],
-    overrides?: Overrides & { from?: string | Promise<string> }
+    tokens: PromiseOrValue<string>[],
+    weights: PromiseOrValue<BigNumberish>[],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   emergency(overrides?: CallOverrides): Promise<boolean>;
 
   issue(
-    rsvAmount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    rsvAmount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   setSeigniorage(
-    _seigniorage: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _seigniorage: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   redeem(
-    rsvAmount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    rsvAmount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   cancelProposal(
-    id: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    id: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   setDelay(
-    _delay: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    _delay: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   trustedProposalFactory(overrides?: CallOverrides): Promise<string>;
@@ -828,24 +842,30 @@ export interface RsvManager extends BaseContract {
   VERSION(overrides?: CallOverrides): Promise<BigNumber>;
 
   callStatic: {
-    setEmergency(val: boolean, overrides?: CallOverrides): Promise<void>;
+    setEmergency(
+      val: PromiseOrValue<boolean>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     isFullyCollateralized(overrides?: CallOverrides): Promise<boolean>;
 
-    executeProposal(id: BigNumberish, overrides?: CallOverrides): Promise<void>;
+    executeProposal(
+      id: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     nominateNewOwner(
-      newOwner: string,
+      newOwner: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     toIssue(
-      rsvAmount: BigNumberish,
+      rsvAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber[]>;
 
     toRedeem(
-      rsvAmount: BigNumberish,
+      rsvAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber[]>;
 
@@ -856,7 +876,7 @@ export interface RsvManager extends BaseContract {
     seigniorage(overrides?: CallOverrides): Promise<BigNumber>;
 
     renounceOwnership(
-      declaration: string,
+      declaration: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -866,9 +886,15 @@ export interface RsvManager extends BaseContract {
 
     clearProposals(overrides?: CallOverrides): Promise<void>;
 
-    acceptProposal(id: BigNumberish, overrides?: CallOverrides): Promise<void>;
+    acceptProposal(
+      id: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    setVault(newVaultAddress: string, overrides?: CallOverrides): Promise<void>;
+    setVault(
+      newVaultAddress: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     delay(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -877,47 +903,65 @@ export interface RsvManager extends BaseContract {
     owner(overrides?: CallOverrides): Promise<string>;
 
     proposeSwap(
-      tokens: string[],
-      amounts: BigNumberish[],
-      toVault: boolean[],
+      tokens: PromiseOrValue<string>[],
+      amounts: PromiseOrValue<BigNumberish>[],
+      toVault: PromiseOrValue<boolean>[],
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     trustedBasket(overrides?: CallOverrides): Promise<string>;
 
-    setOperator(_operator: string, overrides?: CallOverrides): Promise<void>;
+    setOperator(
+      _operator: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     trustedRSV(overrides?: CallOverrides): Promise<string>;
 
     trustedProposals(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<string>;
 
     issuancePaused(overrides?: CallOverrides): Promise<boolean>;
 
-    setIssuancePaused(val: boolean, overrides?: CallOverrides): Promise<void>;
+    setIssuancePaused(
+      val: PromiseOrValue<boolean>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     proposeWeights(
-      tokens: string[],
-      weights: BigNumberish[],
+      tokens: PromiseOrValue<string>[],
+      weights: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     emergency(overrides?: CallOverrides): Promise<boolean>;
 
-    issue(rsvAmount: BigNumberish, overrides?: CallOverrides): Promise<void>;
-
-    setSeigniorage(
-      _seigniorage: BigNumberish,
+    issue(
+      rsvAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    redeem(rsvAmount: BigNumberish, overrides?: CallOverrides): Promise<void>;
+    setSeigniorage(
+      _seigniorage: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    cancelProposal(id: BigNumberish, overrides?: CallOverrides): Promise<void>;
+    redeem(
+      rsvAmount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    setDelay(_delay: BigNumberish, overrides?: CallOverrides): Promise<void>;
+    cancelProposal(
+      id: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setDelay(
+      _delay: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     trustedProposalFactory(overrides?: CallOverrides): Promise<string>;
 
@@ -929,48 +973,48 @@ export interface RsvManager extends BaseContract {
     ProposalsCleared(): ProposalsClearedEventFilter;
 
     "Issuance(address,uint256)"(
-      user?: string | null,
-      amount?: BigNumberish | null
+      user?: PromiseOrValue<string> | null,
+      amount?: PromiseOrValue<BigNumberish> | null
     ): IssuanceEventFilter;
     Issuance(
-      user?: string | null,
-      amount?: BigNumberish | null
+      user?: PromiseOrValue<string> | null,
+      amount?: PromiseOrValue<BigNumberish> | null
     ): IssuanceEventFilter;
 
     "Redemption(address,uint256)"(
-      user?: string | null,
-      amount?: BigNumberish | null
+      user?: PromiseOrValue<string> | null,
+      amount?: PromiseOrValue<BigNumberish> | null
     ): RedemptionEventFilter;
     Redemption(
-      user?: string | null,
-      amount?: BigNumberish | null
+      user?: PromiseOrValue<string> | null,
+      amount?: PromiseOrValue<BigNumberish> | null
     ): RedemptionEventFilter;
 
     "IssuancePausedChanged(bool,bool)"(
-      oldVal?: boolean | null,
-      newVal?: boolean | null
+      oldVal?: PromiseOrValue<boolean> | null,
+      newVal?: PromiseOrValue<boolean> | null
     ): IssuancePausedChangedEventFilter;
     IssuancePausedChanged(
-      oldVal?: boolean | null,
-      newVal?: boolean | null
+      oldVal?: PromiseOrValue<boolean> | null,
+      newVal?: PromiseOrValue<boolean> | null
     ): IssuancePausedChangedEventFilter;
 
     "EmergencyChanged(bool,bool)"(
-      oldVal?: boolean | null,
-      newVal?: boolean | null
+      oldVal?: PromiseOrValue<boolean> | null,
+      newVal?: PromiseOrValue<boolean> | null
     ): EmergencyChangedEventFilter;
     EmergencyChanged(
-      oldVal?: boolean | null,
-      newVal?: boolean | null
+      oldVal?: PromiseOrValue<boolean> | null,
+      newVal?: PromiseOrValue<boolean> | null
     ): EmergencyChangedEventFilter;
 
     "OperatorChanged(address,address)"(
-      oldAccount?: string | null,
-      newAccount?: string | null
+      oldAccount?: PromiseOrValue<string> | null,
+      newAccount?: PromiseOrValue<string> | null
     ): OperatorChangedEventFilter;
     OperatorChanged(
-      oldAccount?: string | null,
-      newAccount?: string | null
+      oldAccount?: PromiseOrValue<string> | null,
+      newAccount?: PromiseOrValue<string> | null
     ): OperatorChangedEventFilter;
 
     "SeigniorageChanged(uint256,uint256)"(
@@ -983,12 +1027,12 @@ export interface RsvManager extends BaseContract {
     ): SeigniorageChangedEventFilter;
 
     "VaultChanged(address,address)"(
-      oldVaultAddr?: string | null,
-      newVaultAddr?: string | null
+      oldVaultAddr?: PromiseOrValue<string> | null,
+      newVaultAddr?: PromiseOrValue<string> | null
     ): VaultChangedEventFilter;
     VaultChanged(
-      oldVaultAddr?: string | null,
-      newVaultAddr?: string | null
+      oldVaultAddr?: PromiseOrValue<string> | null,
+      newVaultAddr?: PromiseOrValue<string> | null
     ): VaultChangedEventFilter;
 
     "DelayChanged(uint256,uint256)"(
@@ -998,112 +1042,112 @@ export interface RsvManager extends BaseContract {
     DelayChanged(oldVal?: null, newVal?: null): DelayChangedEventFilter;
 
     "WeightsProposed(uint256,address,address[],uint256[])"(
-      id?: BigNumberish | null,
-      proposer?: string | null,
+      id?: PromiseOrValue<BigNumberish> | null,
+      proposer?: PromiseOrValue<string> | null,
       tokens?: null,
       weights?: null
     ): WeightsProposedEventFilter;
     WeightsProposed(
-      id?: BigNumberish | null,
-      proposer?: string | null,
+      id?: PromiseOrValue<BigNumberish> | null,
+      proposer?: PromiseOrValue<string> | null,
       tokens?: null,
       weights?: null
     ): WeightsProposedEventFilter;
 
     "SwapProposed(uint256,address,address[],uint256[],bool[])"(
-      id?: BigNumberish | null,
-      proposer?: string | null,
+      id?: PromiseOrValue<BigNumberish> | null,
+      proposer?: PromiseOrValue<string> | null,
       tokens?: null,
       amounts?: null,
       toVault?: null
     ): SwapProposedEventFilter;
     SwapProposed(
-      id?: BigNumberish | null,
-      proposer?: string | null,
+      id?: PromiseOrValue<BigNumberish> | null,
+      proposer?: PromiseOrValue<string> | null,
       tokens?: null,
       amounts?: null,
       toVault?: null
     ): SwapProposedEventFilter;
 
     "ProposalAccepted(uint256,address)"(
-      id?: BigNumberish | null,
-      proposer?: string | null
+      id?: PromiseOrValue<BigNumberish> | null,
+      proposer?: PromiseOrValue<string> | null
     ): ProposalAcceptedEventFilter;
     ProposalAccepted(
-      id?: BigNumberish | null,
-      proposer?: string | null
+      id?: PromiseOrValue<BigNumberish> | null,
+      proposer?: PromiseOrValue<string> | null
     ): ProposalAcceptedEventFilter;
 
     "ProposalCanceled(uint256,address,address)"(
-      id?: BigNumberish | null,
-      proposer?: string | null,
-      canceler?: string | null
+      id?: PromiseOrValue<BigNumberish> | null,
+      proposer?: PromiseOrValue<string> | null,
+      canceler?: PromiseOrValue<string> | null
     ): ProposalCanceledEventFilter;
     ProposalCanceled(
-      id?: BigNumberish | null,
-      proposer?: string | null,
-      canceler?: string | null
+      id?: PromiseOrValue<BigNumberish> | null,
+      proposer?: PromiseOrValue<string> | null,
+      canceler?: PromiseOrValue<string> | null
     ): ProposalCanceledEventFilter;
 
     "ProposalExecuted(uint256,address,address,address,address)"(
-      id?: BigNumberish | null,
-      proposer?: string | null,
-      executor?: string | null,
+      id?: PromiseOrValue<BigNumberish> | null,
+      proposer?: PromiseOrValue<string> | null,
+      executor?: PromiseOrValue<string> | null,
       oldBasket?: null,
       newBasket?: null
     ): ProposalExecutedEventFilter;
     ProposalExecuted(
-      id?: BigNumberish | null,
-      proposer?: string | null,
-      executor?: string | null,
+      id?: PromiseOrValue<BigNumberish> | null,
+      proposer?: PromiseOrValue<string> | null,
+      executor?: PromiseOrValue<string> | null,
       oldBasket?: null,
       newBasket?: null
     ): ProposalExecutedEventFilter;
 
     "NewOwnerNominated(address,address)"(
-      previousOwner?: string | null,
-      nominee?: string | null
+      previousOwner?: PromiseOrValue<string> | null,
+      nominee?: PromiseOrValue<string> | null
     ): NewOwnerNominatedEventFilter;
     NewOwnerNominated(
-      previousOwner?: string | null,
-      nominee?: string | null
+      previousOwner?: PromiseOrValue<string> | null,
+      nominee?: PromiseOrValue<string> | null
     ): NewOwnerNominatedEventFilter;
 
     "OwnershipTransferred(address,address)"(
-      previousOwner?: string | null,
-      newOwner?: string | null
+      previousOwner?: PromiseOrValue<string> | null,
+      newOwner?: PromiseOrValue<string> | null
     ): OwnershipTransferredEventFilter;
     OwnershipTransferred(
-      previousOwner?: string | null,
-      newOwner?: string | null
+      previousOwner?: PromiseOrValue<string> | null,
+      newOwner?: PromiseOrValue<string> | null
     ): OwnershipTransferredEventFilter;
   };
 
   estimateGas: {
     setEmergency(
-      val: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      val: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     isFullyCollateralized(overrides?: CallOverrides): Promise<BigNumber>;
 
     executeProposal(
-      id: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      id: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     nominateNewOwner(
-      newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      newOwner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     toIssue(
-      rsvAmount: BigNumberish,
+      rsvAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     toRedeem(
-      rsvAmount: BigNumberish,
+      rsvAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1114,8 +1158,8 @@ export interface RsvManager extends BaseContract {
     seigniorage(overrides?: CallOverrides): Promise<BigNumber>;
 
     renounceOwnership(
-      declaration: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      declaration: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     nominatedOwner(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1123,86 +1167,86 @@ export interface RsvManager extends BaseContract {
     operator(overrides?: CallOverrides): Promise<BigNumber>;
 
     clearProposals(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     acceptProposal(
-      id: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      id: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     setVault(
-      newVaultAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      newVaultAddress: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     delay(overrides?: CallOverrides): Promise<BigNumber>;
 
     acceptOwnership(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     proposeSwap(
-      tokens: string[],
-      amounts: BigNumberish[],
-      toVault: boolean[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      tokens: PromiseOrValue<string>[],
+      amounts: PromiseOrValue<BigNumberish>[],
+      toVault: PromiseOrValue<boolean>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     trustedBasket(overrides?: CallOverrides): Promise<BigNumber>;
 
     setOperator(
-      _operator: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _operator: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     trustedRSV(overrides?: CallOverrides): Promise<BigNumber>;
 
     trustedProposals(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     issuancePaused(overrides?: CallOverrides): Promise<BigNumber>;
 
     setIssuancePaused(
-      val: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      val: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     proposeWeights(
-      tokens: string[],
-      weights: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      tokens: PromiseOrValue<string>[],
+      weights: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     emergency(overrides?: CallOverrides): Promise<BigNumber>;
 
     issue(
-      rsvAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      rsvAmount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     setSeigniorage(
-      _seigniorage: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _seigniorage: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     redeem(
-      rsvAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      rsvAmount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     cancelProposal(
-      id: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      id: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     setDelay(
-      _delay: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _delay: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     trustedProposalFactory(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1212,8 +1256,8 @@ export interface RsvManager extends BaseContract {
 
   populateTransaction: {
     setEmergency(
-      val: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      val: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     isFullyCollateralized(
@@ -1221,22 +1265,22 @@ export interface RsvManager extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     executeProposal(
-      id: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      id: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     nominateNewOwner(
-      newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      newOwner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     toIssue(
-      rsvAmount: BigNumberish,
+      rsvAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     toRedeem(
-      rsvAmount: BigNumberish,
+      rsvAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1247,8 +1291,8 @@ export interface RsvManager extends BaseContract {
     seigniorage(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     renounceOwnership(
-      declaration: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      declaration: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     nominatedOwner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1256,86 +1300,86 @@ export interface RsvManager extends BaseContract {
     operator(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     clearProposals(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     acceptProposal(
-      id: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      id: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     setVault(
-      newVaultAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      newVaultAddress: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     delay(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     acceptOwnership(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     proposeSwap(
-      tokens: string[],
-      amounts: BigNumberish[],
-      toVault: boolean[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      tokens: PromiseOrValue<string>[],
+      amounts: PromiseOrValue<BigNumberish>[],
+      toVault: PromiseOrValue<boolean>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     trustedBasket(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     setOperator(
-      _operator: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _operator: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     trustedRSV(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     trustedProposals(
-      arg0: BigNumberish,
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     issuancePaused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     setIssuancePaused(
-      val: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      val: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     proposeWeights(
-      tokens: string[],
-      weights: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      tokens: PromiseOrValue<string>[],
+      weights: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     emergency(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     issue(
-      rsvAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      rsvAmount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     setSeigniorage(
-      _seigniorage: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _seigniorage: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     redeem(
-      rsvAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      rsvAmount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     cancelProposal(
-      id: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      id: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     setDelay(
-      _delay: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      _delay: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     trustedProposalFactory(

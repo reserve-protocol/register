@@ -75,12 +75,51 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "delayUntilDefault",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "erc20",
     outputs: [
       {
         internalType: "contract IERC20Metadata",
         name: "",
         type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "erc20Decimals",
+    outputs: [
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "fallbackPrice",
+    outputs: [
+      {
+        internalType: "uint192",
+        name: "",
+        type: "uint192",
       },
     ],
     stateMutability: "view",
@@ -119,20 +158,7 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "maxTradeSize",
-    outputs: [
-      {
-        internalType: "uint192",
-        name: "",
-        type: "uint192",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "minTradeSize",
+    name: "maxTradeVolume",
     outputs: [
       {
         internalType: "uint192",
@@ -148,18 +174,29 @@ const _abi = [
     name: "oracleTimeout",
     outputs: [
       {
-        internalType: "uint32",
+        internalType: "uint48",
         name: "",
-        type: "uint32",
+        type: "uint48",
       },
     ],
     stateMutability: "view",
     type: "function",
   },
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: "bool",
+        name: "allowFallback",
+        type: "bool",
+      },
+    ],
     name: "price",
     outputs: [
+      {
+        internalType: "bool",
+        name: "isFallback",
+        type: "bool",
+      },
       {
         internalType: "uint192",
         name: "",
@@ -177,19 +214,6 @@ const _abi = [
         internalType: "uint192",
         name: "",
         type: "uint192",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "priceable",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
       },
     ],
     stateMutability: "view",
@@ -243,6 +267,19 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "strictPrice",
+    outputs: [
+      {
+        internalType: "uint192",
+        name: "",
+        type: "uint192",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "targetName",
     outputs: [
       {
@@ -269,17 +306,12 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "tradingRange",
+    name: "whenDefault",
     outputs: [
       {
-        internalType: "uint192",
-        name: "min",
-        type: "uint192",
-      },
-      {
-        internalType: "uint192",
-        name: "max",
-        type: "uint192",
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
     stateMutability: "view",

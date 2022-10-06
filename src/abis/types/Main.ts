@@ -25,19 +25,20 @@ import type {
   TypedEvent,
   TypedListener,
   OnEvent,
+  PromiseOrValue,
 } from "./common";
 
 export type ComponentsStruct = {
-  rToken: string;
-  stRSR: string;
-  assetRegistry: string;
-  basketHandler: string;
-  backingManager: string;
-  distributor: string;
-  furnace: string;
-  broker: string;
-  rsrTrader: string;
-  rTokenTrader: string;
+  rToken: PromiseOrValue<string>;
+  stRSR: PromiseOrValue<string>;
+  assetRegistry: PromiseOrValue<string>;
+  basketHandler: PromiseOrValue<string>;
+  backingManager: PromiseOrValue<string>;
+  distributor: PromiseOrValue<string>;
+  furnace: PromiseOrValue<string>;
+  broker: PromiseOrValue<string>;
+  rsrTrader: PromiseOrValue<string>;
+  rTokenTrader: PromiseOrValue<string>;
 };
 
 export type ComponentsStructOutput = [
@@ -209,25 +210,33 @@ export interface MainInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "furnace", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "getRoleAdmin",
-    values: [BytesLike]
+    values: [PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "grantRole",
-    values: [BytesLike, string]
+    values: [PromiseOrValue<BytesLike>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "hasRole",
-    values: [BytesLike, string]
+    values: [PromiseOrValue<BytesLike>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "init",
-    values: [ComponentsStruct, string, BigNumberish, BigNumberish]
+    values: [
+      ComponentsStruct,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "longFreeze",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "longFreezes", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "longFreezes",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(functionFragment: "pause", values?: undefined): string;
   encodeFunctionData(functionFragment: "paused", values?: undefined): string;
   encodeFunctionData(
@@ -246,21 +255,21 @@ export interface MainInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "renounceRole",
-    values: [BytesLike, string]
+    values: [PromiseOrValue<BytesLike>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "revokeRole",
-    values: [BytesLike, string]
+    values: [PromiseOrValue<BytesLike>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(functionFragment: "rsr", values?: undefined): string;
   encodeFunctionData(functionFragment: "rsrTrader", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "setLongFreeze",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "setShortFreeze",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "shortFreeze",
@@ -269,7 +278,7 @@ export interface MainInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "stRSR", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "supportsInterface",
-    values: [BytesLike]
+    values: [PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(functionFragment: "unfreeze", values?: undefined): string;
   encodeFunctionData(
@@ -277,10 +286,13 @@ export interface MainInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
-  encodeFunctionData(functionFragment: "upgradeTo", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "upgradeTo",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "upgradeToAndCall",
-    values: [string, BytesLike]
+    values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
   ): string;
 
   decodeFunctionResult(
@@ -713,49 +725,55 @@ export interface Main extends BaseContract {
     distributor(overrides?: CallOverrides): Promise<[string]>;
 
     freezeForever(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     freezeLong(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     freezeShort(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     frozen(overrides?: CallOverrides): Promise<[boolean]>;
 
     furnace(overrides?: CallOverrides): Promise<[string]>;
 
-    getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<[string]>;
+    getRoleAdmin(
+      role: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
     grantRole(
-      role: BytesLike,
-      account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     hasRole(
-      role: BytesLike,
-      account: string,
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
     init(
       components: ComponentsStruct,
-      rsr_: string,
-      shortFreeze_: BigNumberish,
-      longFreeze_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      rsr_: PromiseOrValue<string>,
+      shortFreeze_: PromiseOrValue<BigNumberish>,
+      longFreeze_: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     longFreeze(overrides?: CallOverrides): Promise<[number]>;
 
-    longFreezes(arg0: string, overrides?: CallOverrides): Promise<[BigNumber]>;
+    longFreezes(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     pause(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     paused(overrides?: CallOverrides): Promise<[boolean]>;
@@ -763,7 +781,7 @@ export interface Main extends BaseContract {
     pausedOrFrozen(overrides?: CallOverrides): Promise<[boolean]>;
 
     poke(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
@@ -773,15 +791,15 @@ export interface Main extends BaseContract {
     rTokenTrader(overrides?: CallOverrides): Promise<[string]>;
 
     renounceRole(
-      role: BytesLike,
-      account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     revokeRole(
-      role: BytesLike,
-      account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     rsr(overrides?: CallOverrides): Promise<[string]>;
@@ -789,13 +807,13 @@ export interface Main extends BaseContract {
     rsrTrader(overrides?: CallOverrides): Promise<[string]>;
 
     setLongFreeze(
-      longFreeze_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      longFreeze_: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     setShortFreeze(
-      shortFreeze_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      shortFreeze_: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     shortFreeze(overrides?: CallOverrides): Promise<[number]>;
@@ -803,29 +821,29 @@ export interface Main extends BaseContract {
     stRSR(overrides?: CallOverrides): Promise<[string]>;
 
     supportsInterface(
-      interfaceId: BytesLike,
+      interfaceId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
     unfreeze(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     unfreezeAt(overrides?: CallOverrides): Promise<[number]>;
 
     unpause(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     upgradeTo(
-      newImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      newImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
+      newImplementation: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
 
@@ -850,49 +868,55 @@ export interface Main extends BaseContract {
   distributor(overrides?: CallOverrides): Promise<string>;
 
   freezeForever(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   freezeLong(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   freezeShort(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   frozen(overrides?: CallOverrides): Promise<boolean>;
 
   furnace(overrides?: CallOverrides): Promise<string>;
 
-  getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
+  getRoleAdmin(
+    role: PromiseOrValue<BytesLike>,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   grantRole(
-    role: BytesLike,
-    account: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    role: PromiseOrValue<BytesLike>,
+    account: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   hasRole(
-    role: BytesLike,
-    account: string,
+    role: PromiseOrValue<BytesLike>,
+    account: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
   init(
     components: ComponentsStruct,
-    rsr_: string,
-    shortFreeze_: BigNumberish,
-    longFreeze_: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    rsr_: PromiseOrValue<string>,
+    shortFreeze_: PromiseOrValue<BigNumberish>,
+    longFreeze_: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   longFreeze(overrides?: CallOverrides): Promise<number>;
 
-  longFreezes(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+  longFreezes(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   pause(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   paused(overrides?: CallOverrides): Promise<boolean>;
@@ -900,7 +924,7 @@ export interface Main extends BaseContract {
   pausedOrFrozen(overrides?: CallOverrides): Promise<boolean>;
 
   poke(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   proxiableUUID(overrides?: CallOverrides): Promise<string>;
@@ -910,15 +934,15 @@ export interface Main extends BaseContract {
   rTokenTrader(overrides?: CallOverrides): Promise<string>;
 
   renounceRole(
-    role: BytesLike,
-    account: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    role: PromiseOrValue<BytesLike>,
+    account: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   revokeRole(
-    role: BytesLike,
-    account: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    role: PromiseOrValue<BytesLike>,
+    account: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   rsr(overrides?: CallOverrides): Promise<string>;
@@ -926,13 +950,13 @@ export interface Main extends BaseContract {
   rsrTrader(overrides?: CallOverrides): Promise<string>;
 
   setLongFreeze(
-    longFreeze_: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    longFreeze_: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   setShortFreeze(
-    shortFreeze_: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    shortFreeze_: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   shortFreeze(overrides?: CallOverrides): Promise<number>;
@@ -940,29 +964,29 @@ export interface Main extends BaseContract {
   stRSR(overrides?: CallOverrides): Promise<string>;
 
   supportsInterface(
-    interfaceId: BytesLike,
+    interfaceId: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
   unfreeze(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   unfreezeAt(overrides?: CallOverrides): Promise<number>;
 
   unpause(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   upgradeTo(
-    newImplementation: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    newImplementation: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   upgradeToAndCall(
-    newImplementation: string,
-    data: BytesLike,
-    overrides?: PayableOverrides & { from?: string | Promise<string> }
+    newImplementation: PromiseOrValue<string>,
+    data: PromiseOrValue<BytesLike>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
@@ -996,31 +1020,37 @@ export interface Main extends BaseContract {
 
     furnace(overrides?: CallOverrides): Promise<string>;
 
-    getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
+    getRoleAdmin(
+      role: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     grantRole(
-      role: BytesLike,
-      account: string,
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     hasRole(
-      role: BytesLike,
-      account: string,
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
     init(
       components: ComponentsStruct,
-      rsr_: string,
-      shortFreeze_: BigNumberish,
-      longFreeze_: BigNumberish,
+      rsr_: PromiseOrValue<string>,
+      shortFreeze_: PromiseOrValue<BigNumberish>,
+      longFreeze_: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     longFreeze(overrides?: CallOverrides): Promise<number>;
 
-    longFreezes(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+    longFreezes(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     pause(overrides?: CallOverrides): Promise<void>;
 
@@ -1037,14 +1067,14 @@ export interface Main extends BaseContract {
     rTokenTrader(overrides?: CallOverrides): Promise<string>;
 
     renounceRole(
-      role: BytesLike,
-      account: string,
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     revokeRole(
-      role: BytesLike,
-      account: string,
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1053,12 +1083,12 @@ export interface Main extends BaseContract {
     rsrTrader(overrides?: CallOverrides): Promise<string>;
 
     setLongFreeze(
-      longFreeze_: BigNumberish,
+      longFreeze_: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     setShortFreeze(
-      shortFreeze_: BigNumberish,
+      shortFreeze_: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1067,7 +1097,7 @@ export interface Main extends BaseContract {
     stRSR(overrides?: CallOverrides): Promise<string>;
 
     supportsInterface(
-      interfaceId: BytesLike,
+      interfaceId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
@@ -1078,13 +1108,13 @@ export interface Main extends BaseContract {
     unpause(overrides?: CallOverrides): Promise<void>;
 
     upgradeTo(
-      newImplementation: string,
+      newImplementation: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
+      newImplementation: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -1100,177 +1130,183 @@ export interface Main extends BaseContract {
     ): AdminChangedEventFilter;
 
     "AssetRegistrySet(address,address)"(
-      oldVal?: string | null,
-      newVal?: string | null
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
     ): AssetRegistrySetEventFilter;
     AssetRegistrySet(
-      oldVal?: string | null,
-      newVal?: string | null
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
     ): AssetRegistrySetEventFilter;
 
     "BackingManagerSet(address,address)"(
-      oldVal?: string | null,
-      newVal?: string | null
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
     ): BackingManagerSetEventFilter;
     BackingManagerSet(
-      oldVal?: string | null,
-      newVal?: string | null
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
     ): BackingManagerSetEventFilter;
 
     "BasketHandlerSet(address,address)"(
-      oldVal?: string | null,
-      newVal?: string | null
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
     ): BasketHandlerSetEventFilter;
     BasketHandlerSet(
-      oldVal?: string | null,
-      newVal?: string | null
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
     ): BasketHandlerSetEventFilter;
 
     "BeaconUpgraded(address)"(
-      beacon?: string | null
+      beacon?: PromiseOrValue<string> | null
     ): BeaconUpgradedEventFilter;
-    BeaconUpgraded(beacon?: string | null): BeaconUpgradedEventFilter;
+    BeaconUpgraded(
+      beacon?: PromiseOrValue<string> | null
+    ): BeaconUpgradedEventFilter;
 
     "BrokerSet(address,address)"(
-      oldVal?: string | null,
-      newVal?: string | null
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
     ): BrokerSetEventFilter;
     BrokerSet(
-      oldVal?: string | null,
-      newVal?: string | null
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
     ): BrokerSetEventFilter;
 
     "DistributorSet(address,address)"(
-      oldVal?: string | null,
-      newVal?: string | null
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
     ): DistributorSetEventFilter;
     DistributorSet(
-      oldVal?: string | null,
-      newVal?: string | null
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
     ): DistributorSetEventFilter;
 
     "FurnaceSet(address,address)"(
-      oldVal?: string | null,
-      newVal?: string | null
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
     ): FurnaceSetEventFilter;
     FurnaceSet(
-      oldVal?: string | null,
-      newVal?: string | null
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
     ): FurnaceSetEventFilter;
 
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
 
     "LongFreezeDurationSet(uint48,uint48)"(
-      oldDuration?: BigNumberish | null,
-      newDuration?: BigNumberish | null
+      oldDuration?: PromiseOrValue<BigNumberish> | null,
+      newDuration?: PromiseOrValue<BigNumberish> | null
     ): LongFreezeDurationSetEventFilter;
     LongFreezeDurationSet(
-      oldDuration?: BigNumberish | null,
-      newDuration?: BigNumberish | null
+      oldDuration?: PromiseOrValue<BigNumberish> | null,
+      newDuration?: PromiseOrValue<BigNumberish> | null
     ): LongFreezeDurationSetEventFilter;
 
     "MainInitialized()"(): MainInitializedEventFilter;
     MainInitialized(): MainInitializedEventFilter;
 
     "PausedSet(bool,bool)"(
-      oldVal?: boolean | null,
-      newVal?: boolean | null
+      oldVal?: PromiseOrValue<boolean> | null,
+      newVal?: PromiseOrValue<boolean> | null
     ): PausedSetEventFilter;
     PausedSet(
-      oldVal?: boolean | null,
-      newVal?: boolean | null
+      oldVal?: PromiseOrValue<boolean> | null,
+      newVal?: PromiseOrValue<boolean> | null
     ): PausedSetEventFilter;
 
     "RSRTraderSet(address,address)"(
-      oldVal?: string | null,
-      newVal?: string | null
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
     ): RSRTraderSetEventFilter;
     RSRTraderSet(
-      oldVal?: string | null,
-      newVal?: string | null
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
     ): RSRTraderSetEventFilter;
 
     "RTokenSet(address,address)"(
-      oldVal?: string | null,
-      newVal?: string | null
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
     ): RTokenSetEventFilter;
     RTokenSet(
-      oldVal?: string | null,
-      newVal?: string | null
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
     ): RTokenSetEventFilter;
 
     "RTokenTraderSet(address,address)"(
-      oldVal?: string | null,
-      newVal?: string | null
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
     ): RTokenTraderSetEventFilter;
     RTokenTraderSet(
-      oldVal?: string | null,
-      newVal?: string | null
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
     ): RTokenTraderSetEventFilter;
 
     "RoleAdminChanged(bytes32,bytes32,bytes32)"(
-      role?: BytesLike | null,
-      previousAdminRole?: BytesLike | null,
-      newAdminRole?: BytesLike | null
+      role?: PromiseOrValue<BytesLike> | null,
+      previousAdminRole?: PromiseOrValue<BytesLike> | null,
+      newAdminRole?: PromiseOrValue<BytesLike> | null
     ): RoleAdminChangedEventFilter;
     RoleAdminChanged(
-      role?: BytesLike | null,
-      previousAdminRole?: BytesLike | null,
-      newAdminRole?: BytesLike | null
+      role?: PromiseOrValue<BytesLike> | null,
+      previousAdminRole?: PromiseOrValue<BytesLike> | null,
+      newAdminRole?: PromiseOrValue<BytesLike> | null
     ): RoleAdminChangedEventFilter;
 
     "RoleGranted(bytes32,address,address)"(
-      role?: BytesLike | null,
-      account?: string | null,
-      sender?: string | null
+      role?: PromiseOrValue<BytesLike> | null,
+      account?: PromiseOrValue<string> | null,
+      sender?: PromiseOrValue<string> | null
     ): RoleGrantedEventFilter;
     RoleGranted(
-      role?: BytesLike | null,
-      account?: string | null,
-      sender?: string | null
+      role?: PromiseOrValue<BytesLike> | null,
+      account?: PromiseOrValue<string> | null,
+      sender?: PromiseOrValue<string> | null
     ): RoleGrantedEventFilter;
 
     "RoleRevoked(bytes32,address,address)"(
-      role?: BytesLike | null,
-      account?: string | null,
-      sender?: string | null
+      role?: PromiseOrValue<BytesLike> | null,
+      account?: PromiseOrValue<string> | null,
+      sender?: PromiseOrValue<string> | null
     ): RoleRevokedEventFilter;
     RoleRevoked(
-      role?: BytesLike | null,
-      account?: string | null,
-      sender?: string | null
+      role?: PromiseOrValue<BytesLike> | null,
+      account?: PromiseOrValue<string> | null,
+      sender?: PromiseOrValue<string> | null
     ): RoleRevokedEventFilter;
 
     "ShortFreezeDurationSet(uint48,uint48)"(
-      oldDuration?: BigNumberish | null,
-      newDuration?: BigNumberish | null
+      oldDuration?: PromiseOrValue<BigNumberish> | null,
+      newDuration?: PromiseOrValue<BigNumberish> | null
     ): ShortFreezeDurationSetEventFilter;
     ShortFreezeDurationSet(
-      oldDuration?: BigNumberish | null,
-      newDuration?: BigNumberish | null
+      oldDuration?: PromiseOrValue<BigNumberish> | null,
+      newDuration?: PromiseOrValue<BigNumberish> | null
     ): ShortFreezeDurationSetEventFilter;
 
     "StRSRSet(address,address)"(
-      oldVal?: string | null,
-      newVal?: string | null
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
     ): StRSRSetEventFilter;
     StRSRSet(
-      oldVal?: string | null,
-      newVal?: string | null
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
     ): StRSRSetEventFilter;
 
     "UnfreezeAtSet(uint48,uint48)"(
-      oldVal?: BigNumberish | null,
-      newVal?: BigNumberish | null
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
     ): UnfreezeAtSetEventFilter;
     UnfreezeAtSet(
-      oldVal?: BigNumberish | null,
-      newVal?: BigNumberish | null
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
     ): UnfreezeAtSetEventFilter;
 
-    "Upgraded(address)"(implementation?: string | null): UpgradedEventFilter;
-    Upgraded(implementation?: string | null): UpgradedEventFilter;
+    "Upgraded(address)"(
+      implementation?: PromiseOrValue<string> | null
+    ): UpgradedEventFilter;
+    Upgraded(
+      implementation?: PromiseOrValue<string> | null
+    ): UpgradedEventFilter;
   };
 
   estimateGas: {
@@ -1295,15 +1331,15 @@ export interface Main extends BaseContract {
     distributor(overrides?: CallOverrides): Promise<BigNumber>;
 
     freezeForever(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     freezeLong(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     freezeShort(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     frozen(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1311,36 +1347,39 @@ export interface Main extends BaseContract {
     furnace(overrides?: CallOverrides): Promise<BigNumber>;
 
     getRoleAdmin(
-      role: BytesLike,
+      role: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     grantRole(
-      role: BytesLike,
-      account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     hasRole(
-      role: BytesLike,
-      account: string,
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     init(
       components: ComponentsStruct,
-      rsr_: string,
-      shortFreeze_: BigNumberish,
-      longFreeze_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      rsr_: PromiseOrValue<string>,
+      shortFreeze_: PromiseOrValue<BigNumberish>,
+      longFreeze_: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     longFreeze(overrides?: CallOverrides): Promise<BigNumber>;
 
-    longFreezes(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+    longFreezes(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     pause(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     paused(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1348,7 +1387,7 @@ export interface Main extends BaseContract {
     pausedOrFrozen(overrides?: CallOverrides): Promise<BigNumber>;
 
     poke(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1358,15 +1397,15 @@ export interface Main extends BaseContract {
     rTokenTrader(overrides?: CallOverrides): Promise<BigNumber>;
 
     renounceRole(
-      role: BytesLike,
-      account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     revokeRole(
-      role: BytesLike,
-      account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     rsr(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1374,13 +1413,13 @@ export interface Main extends BaseContract {
     rsrTrader(overrides?: CallOverrides): Promise<BigNumber>;
 
     setLongFreeze(
-      longFreeze_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      longFreeze_: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     setShortFreeze(
-      shortFreeze_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      shortFreeze_: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     shortFreeze(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1388,29 +1427,29 @@ export interface Main extends BaseContract {
     stRSR(overrides?: CallOverrides): Promise<BigNumber>;
 
     supportsInterface(
-      interfaceId: BytesLike,
+      interfaceId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     unfreeze(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     unfreezeAt(overrides?: CallOverrides): Promise<BigNumber>;
 
     unpause(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     upgradeTo(
-      newImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      newImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
+      newImplementation: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
 
@@ -1440,15 +1479,15 @@ export interface Main extends BaseContract {
     distributor(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     freezeForever(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     freezeLong(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     freezeShort(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     frozen(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1456,39 +1495,39 @@ export interface Main extends BaseContract {
     furnace(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getRoleAdmin(
-      role: BytesLike,
+      role: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     grantRole(
-      role: BytesLike,
-      account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     hasRole(
-      role: BytesLike,
-      account: string,
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     init(
       components: ComponentsStruct,
-      rsr_: string,
-      shortFreeze_: BigNumberish,
-      longFreeze_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      rsr_: PromiseOrValue<string>,
+      shortFreeze_: PromiseOrValue<BigNumberish>,
+      longFreeze_: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     longFreeze(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     longFreezes(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     pause(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     paused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1496,7 +1535,7 @@ export interface Main extends BaseContract {
     pausedOrFrozen(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     poke(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1506,15 +1545,15 @@ export interface Main extends BaseContract {
     rTokenTrader(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     renounceRole(
-      role: BytesLike,
-      account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     revokeRole(
-      role: BytesLike,
-      account: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      role: PromiseOrValue<BytesLike>,
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     rsr(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1522,13 +1561,13 @@ export interface Main extends BaseContract {
     rsrTrader(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     setLongFreeze(
-      longFreeze_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      longFreeze_: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     setShortFreeze(
-      shortFreeze_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      shortFreeze_: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     shortFreeze(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1536,29 +1575,29 @@ export interface Main extends BaseContract {
     stRSR(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     supportsInterface(
-      interfaceId: BytesLike,
+      interfaceId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     unfreeze(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     unfreezeAt(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     unpause(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     upgradeTo(
-      newImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      newImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
+      newImplementation: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

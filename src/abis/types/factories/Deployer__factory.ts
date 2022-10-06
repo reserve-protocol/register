@@ -24,11 +24,6 @@ const _abi = [
         type: "address",
       },
       {
-        internalType: "contract IFacade",
-        name: "facade_",
-        type: "address",
-      },
-      {
         internalType: "contract IAsset",
         name: "rsrAsset_",
         type: "address",
@@ -182,33 +177,6 @@ const _abi = [
           {
             components: [
               {
-                internalType: "uint192",
-                name: "minVal",
-                type: "uint192",
-              },
-              {
-                internalType: "uint192",
-                name: "maxVal",
-                type: "uint192",
-              },
-              {
-                internalType: "uint192",
-                name: "minAmt",
-                type: "uint192",
-              },
-              {
-                internalType: "uint192",
-                name: "maxAmt",
-                type: "uint192",
-              },
-            ],
-            internalType: "struct TradingRange",
-            name: "rTokenTradingRange",
-            type: "tuple",
-          },
-          {
-            components: [
-              {
                 internalType: "uint16",
                 name: "rTokenDist",
                 type: "uint16",
@@ -224,14 +192,34 @@ const _abi = [
             type: "tuple",
           },
           {
+            internalType: "uint192",
+            name: "minTradeVolume",
+            type: "uint192",
+          },
+          {
+            internalType: "uint192",
+            name: "rTokenMaxTradeVolume",
+            type: "uint192",
+          },
+          {
             internalType: "uint48",
-            name: "rewardPeriod",
+            name: "shortFreeze",
+            type: "uint48",
+          },
+          {
+            internalType: "uint48",
+            name: "longFreeze",
             type: "uint48",
           },
           {
             internalType: "uint192",
             name: "rewardRatio",
             type: "uint192",
+          },
+          {
+            internalType: "uint48",
+            name: "rewardPeriod",
+            type: "uint48",
           },
           {
             internalType: "uint48",
@@ -259,28 +247,18 @@ const _abi = [
             type: "uint192",
           },
           {
-            internalType: "uint48",
-            name: "shortFreeze",
-            type: "uint48",
-          },
-          {
-            internalType: "uint48",
-            name: "longFreeze",
-            type: "uint48",
-          },
-          {
             internalType: "uint192",
             name: "issuanceRate",
             type: "uint192",
           },
           {
             internalType: "uint192",
-            name: "maxRedemptionCharge",
+            name: "scalingRedemptionRate",
             type: "uint192",
           },
           {
             internalType: "uint256",
-            name: "redemptionVirtualSupply",
+            name: "redemptionRateFloor",
             type: "uint256",
           },
         ],
@@ -298,19 +276,6 @@ const _abi = [
       },
     ],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "facade",
-    outputs: [
-      {
-        internalType: "contract IFacade",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
   {

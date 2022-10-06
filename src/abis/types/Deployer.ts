@@ -24,19 +24,20 @@ import type {
   TypedEvent,
   TypedListener,
   OnEvent,
+  PromiseOrValue,
 } from "./common";
 
 export type ComponentsStruct = {
-  rToken: string;
-  stRSR: string;
-  assetRegistry: string;
-  basketHandler: string;
-  backingManager: string;
-  distributor: string;
-  furnace: string;
-  broker: string;
-  rsrTrader: string;
-  rTokenTrader: string;
+  rToken: PromiseOrValue<string>;
+  stRSR: PromiseOrValue<string>;
+  assetRegistry: PromiseOrValue<string>;
+  basketHandler: PromiseOrValue<string>;
+  backingManager: PromiseOrValue<string>;
+  distributor: PromiseOrValue<string>;
+  furnace: PromiseOrValue<string>;
+  broker: PromiseOrValue<string>;
+  rsrTrader: PromiseOrValue<string>;
+  rTokenTrader: PromiseOrValue<string>;
 };
 
 export type ComponentsStructOutput = [
@@ -64,9 +65,9 @@ export type ComponentsStructOutput = [
 };
 
 export type ImplementationsStruct = {
-  main: string;
+  main: PromiseOrValue<string>;
   components: ComponentsStruct;
-  trade: string;
+  trade: PromiseOrValue<string>;
 };
 
 export type ImplementationsStructOutput = [
@@ -75,28 +76,9 @@ export type ImplementationsStructOutput = [
   string
 ] & { main: string; components: ComponentsStructOutput; trade: string };
 
-export type TradingRangeStruct = {
-  minVal: BigNumberish;
-  maxVal: BigNumberish;
-  minAmt: BigNumberish;
-  maxAmt: BigNumberish;
-};
-
-export type TradingRangeStructOutput = [
-  BigNumber,
-  BigNumber,
-  BigNumber,
-  BigNumber
-] & {
-  minVal: BigNumber;
-  maxVal: BigNumber;
-  minAmt: BigNumber;
-  maxAmt: BigNumber;
-};
-
 export type RevenueShareStruct = {
-  rTokenDist: BigNumberish;
-  rsrDist: BigNumberish;
+  rTokenDist: PromiseOrValue<BigNumberish>;
+  rsrDist: PromiseOrValue<BigNumberish>;
 };
 
 export type RevenueShareStructOutput = [number, number] & {
@@ -105,59 +87,61 @@ export type RevenueShareStructOutput = [number, number] & {
 };
 
 export type DeploymentParamsStruct = {
-  rTokenTradingRange: TradingRangeStruct;
   dist: RevenueShareStruct;
-  rewardPeriod: BigNumberish;
-  rewardRatio: BigNumberish;
-  unstakingDelay: BigNumberish;
-  tradingDelay: BigNumberish;
-  auctionLength: BigNumberish;
-  backingBuffer: BigNumberish;
-  maxTradeSlippage: BigNumberish;
-  shortFreeze: BigNumberish;
-  longFreeze: BigNumberish;
-  issuanceRate: BigNumberish;
-  maxRedemptionCharge: BigNumberish;
-  redemptionVirtualSupply: BigNumberish;
+  minTradeVolume: PromiseOrValue<BigNumberish>;
+  rTokenMaxTradeVolume: PromiseOrValue<BigNumberish>;
+  shortFreeze: PromiseOrValue<BigNumberish>;
+  longFreeze: PromiseOrValue<BigNumberish>;
+  rewardRatio: PromiseOrValue<BigNumberish>;
+  rewardPeriod: PromiseOrValue<BigNumberish>;
+  unstakingDelay: PromiseOrValue<BigNumberish>;
+  tradingDelay: PromiseOrValue<BigNumberish>;
+  auctionLength: PromiseOrValue<BigNumberish>;
+  backingBuffer: PromiseOrValue<BigNumberish>;
+  maxTradeSlippage: PromiseOrValue<BigNumberish>;
+  issuanceRate: PromiseOrValue<BigNumberish>;
+  scalingRedemptionRate: PromiseOrValue<BigNumberish>;
+  redemptionRateFloor: PromiseOrValue<BigNumberish>;
 };
 
 export type DeploymentParamsStructOutput = [
-  TradingRangeStructOutput,
   RevenueShareStructOutput,
+  BigNumber,
+  BigNumber,
+  number,
   number,
   BigNumber,
   number,
   number,
   number,
+  number,
   BigNumber,
   BigNumber,
-  number,
-  number,
   BigNumber,
   BigNumber,
   BigNumber
 ] & {
-  rTokenTradingRange: TradingRangeStructOutput;
   dist: RevenueShareStructOutput;
-  rewardPeriod: number;
+  minTradeVolume: BigNumber;
+  rTokenMaxTradeVolume: BigNumber;
+  shortFreeze: number;
+  longFreeze: number;
   rewardRatio: BigNumber;
+  rewardPeriod: number;
   unstakingDelay: number;
   tradingDelay: number;
   auctionLength: number;
   backingBuffer: BigNumber;
   maxTradeSlippage: BigNumber;
-  shortFreeze: number;
-  longFreeze: number;
   issuanceRate: BigNumber;
-  maxRedemptionCharge: BigNumber;
-  redemptionVirtualSupply: BigNumber;
+  scalingRedemptionRate: BigNumber;
+  redemptionRateFloor: BigNumber;
 };
 
 export interface DeployerInterface extends utils.Interface {
   functions: {
     "ENS()": FunctionFragment;
-    "deploy(string,string,string,address,((uint192,uint192,uint192,uint192),(uint16,uint16),uint48,uint192,uint48,uint48,uint48,uint192,uint192,uint48,uint48,uint192,uint192,uint256))": FunctionFragment;
-    "facade()": FunctionFragment;
+    "deploy(string,string,string,address,((uint16,uint16),uint192,uint192,uint48,uint48,uint192,uint48,uint48,uint48,uint48,uint192,uint192,uint192,uint192,uint256))": FunctionFragment;
     "gnosis()": FunctionFragment;
     "implementations()": FunctionFragment;
     "rsr()": FunctionFragment;
@@ -168,7 +152,6 @@ export interface DeployerInterface extends utils.Interface {
     nameOrSignatureOrTopic:
       | "ENS"
       | "deploy"
-      | "facade"
       | "gnosis"
       | "implementations"
       | "rsr"
@@ -178,9 +161,14 @@ export interface DeployerInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "ENS", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "deploy",
-    values: [string, string, string, string, DeploymentParamsStruct]
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      DeploymentParamsStruct
+    ]
   ): string;
-  encodeFunctionData(functionFragment: "facade", values?: undefined): string;
   encodeFunctionData(functionFragment: "gnosis", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "implementations",
@@ -191,7 +179,6 @@ export interface DeployerInterface extends utils.Interface {
 
   decodeFunctionResult(functionFragment: "ENS", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "deploy", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "facade", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "gnosis", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "implementations",
@@ -250,15 +237,13 @@ export interface Deployer extends BaseContract {
     ENS(overrides?: CallOverrides): Promise<[string]>;
 
     deploy(
-      name: string,
-      symbol: string,
-      mandate: string,
-      owner: string,
+      name: PromiseOrValue<string>,
+      symbol: PromiseOrValue<string>,
+      mandate: PromiseOrValue<string>,
+      owner: PromiseOrValue<string>,
       params: DeploymentParamsStruct,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
-
-    facade(overrides?: CallOverrides): Promise<[string]>;
 
     gnosis(overrides?: CallOverrides): Promise<[string]>;
 
@@ -280,15 +265,13 @@ export interface Deployer extends BaseContract {
   ENS(overrides?: CallOverrides): Promise<string>;
 
   deploy(
-    name: string,
-    symbol: string,
-    mandate: string,
-    owner: string,
+    name: PromiseOrValue<string>,
+    symbol: PromiseOrValue<string>,
+    mandate: PromiseOrValue<string>,
+    owner: PromiseOrValue<string>,
     params: DeploymentParamsStruct,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
-
-  facade(overrides?: CallOverrides): Promise<string>;
 
   gnosis(overrides?: CallOverrides): Promise<string>;
 
@@ -310,15 +293,13 @@ export interface Deployer extends BaseContract {
     ENS(overrides?: CallOverrides): Promise<string>;
 
     deploy(
-      name: string,
-      symbol: string,
-      mandate: string,
-      owner: string,
+      name: PromiseOrValue<string>,
+      symbol: PromiseOrValue<string>,
+      mandate: PromiseOrValue<string>,
+      owner: PromiseOrValue<string>,
       params: DeploymentParamsStruct,
       overrides?: CallOverrides
     ): Promise<string>;
-
-    facade(overrides?: CallOverrides): Promise<string>;
 
     gnosis(overrides?: CallOverrides): Promise<string>;
 
@@ -339,16 +320,16 @@ export interface Deployer extends BaseContract {
 
   filters: {
     "RTokenCreated(address,address,address,address)"(
-      main?: string | null,
-      rToken?: string | null,
+      main?: PromiseOrValue<string> | null,
+      rToken?: PromiseOrValue<string> | null,
       stRSR?: null,
-      owner?: string | null
+      owner?: PromiseOrValue<string> | null
     ): RTokenCreatedEventFilter;
     RTokenCreated(
-      main?: string | null,
-      rToken?: string | null,
+      main?: PromiseOrValue<string> | null,
+      rToken?: PromiseOrValue<string> | null,
       stRSR?: null,
-      owner?: string | null
+      owner?: PromiseOrValue<string> | null
     ): RTokenCreatedEventFilter;
   };
 
@@ -356,15 +337,13 @@ export interface Deployer extends BaseContract {
     ENS(overrides?: CallOverrides): Promise<BigNumber>;
 
     deploy(
-      name: string,
-      symbol: string,
-      mandate: string,
-      owner: string,
+      name: PromiseOrValue<string>,
+      symbol: PromiseOrValue<string>,
+      mandate: PromiseOrValue<string>,
+      owner: PromiseOrValue<string>,
       params: DeploymentParamsStruct,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
-
-    facade(overrides?: CallOverrides): Promise<BigNumber>;
 
     gnosis(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -379,15 +358,13 @@ export interface Deployer extends BaseContract {
     ENS(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     deploy(
-      name: string,
-      symbol: string,
-      mandate: string,
-      owner: string,
+      name: PromiseOrValue<string>,
+      symbol: PromiseOrValue<string>,
+      mandate: PromiseOrValue<string>,
+      owner: PromiseOrValue<string>,
       params: DeploymentParamsStruct,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
-
-    facade(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     gnosis(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

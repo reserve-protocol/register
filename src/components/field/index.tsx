@@ -81,7 +81,7 @@ export const FormField = ({
             sx={{ display: 'block', fontSize: 1 }}
             variant="error"
           >
-            {errors[name].message || getErrorMessage(errors[name])}
+            {errors[name]?.message || getErrorMessage(errors[name])}
           </Text>
         )}
       </Field>

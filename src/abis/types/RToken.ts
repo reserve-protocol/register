@@ -25,14 +25,15 @@ import type {
   TypedEvent,
   TypedListener,
   OnEvent,
+  PromiseOrValue,
 } from "./common";
 
 export declare namespace RTokenP1 {
   export type IssueItemStruct = {
-    when: BigNumberish;
-    amtRToken: BigNumberish;
-    amtBaskets: BigNumberish;
-    deposits: BigNumberish[];
+    when: PromiseOrValue<BigNumberish>;
+    amtRToken: PromiseOrValue<BigNumberish>;
+    amtBaskets: PromiseOrValue<BigNumberish>;
+    deposits: PromiseOrValue<BigNumberish>[];
   };
 
   export type IssueItemStructOutput = [
@@ -59,7 +60,6 @@ export interface RTokenInterface extends utils.Interface {
     "claimAndSweepRewards()": FunctionFragment;
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
-    "endIdForVest(address)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
     "init(address,string,string,string,uint192,uint192,uint256)": FunctionFragment;
     "issuanceRate()": FunctionFragment;
@@ -75,13 +75,16 @@ export interface RTokenInterface extends utils.Interface {
     "nonces(address)": FunctionFragment;
     "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
+    "queueBounds(address)": FunctionFragment;
     "redeem(uint256)": FunctionFragment;
     "redemptionLimit()": FunctionFragment;
+    "redemptionRateFloor()": FunctionFragment;
     "redemptionVirtualSupply()": FunctionFragment;
+    "scalingRedemptionRate()": FunctionFragment;
     "setBasketsNeeded(uint192)": FunctionFragment;
     "setIssuanceRate(uint192)": FunctionFragment;
-    "setMaxRedemption(uint192)": FunctionFragment;
-    "setRedemptionVirtualSupply(uint256)": FunctionFragment;
+    "setRedemptionRateFloor(uint256)": FunctionFragment;
+    "setScalingRedemptionRate(uint192)": FunctionFragment;
     "symbol()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
@@ -102,7 +105,6 @@ export interface RTokenInterface extends utils.Interface {
       | "claimAndSweepRewards"
       | "decimals"
       | "decreaseAllowance"
-      | "endIdForVest"
       | "increaseAllowance"
       | "init"
       | "issuanceRate"
@@ -118,13 +120,16 @@ export interface RTokenInterface extends utils.Interface {
       | "nonces"
       | "permit"
       | "proxiableUUID"
+      | "queueBounds"
       | "redeem"
       | "redemptionLimit"
+      | "redemptionRateFloor"
       | "redemptionVirtualSupply"
+      | "scalingRedemptionRate"
       | "setBasketsNeeded"
       | "setIssuanceRate"
-      | "setMaxRedemption"
-      | "setRedemptionVirtualSupply"
+      | "setRedemptionRateFloor"
+      | "setScalingRedemptionRate"
       | "symbol"
       | "totalSupply"
       | "transfer"
@@ -140,20 +145,23 @@ export interface RTokenInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "allowance",
-    values: [string, string]
+    values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "approve",
-    values: [string, BigNumberish]
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
-  encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "balanceOf",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "basketsNeeded",
     values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "cancel",
-    values: [BigNumberish, boolean]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<boolean>]
   ): string;
   encodeFunctionData(
     functionFragment: "claimAndSweepRewards",
@@ -162,61 +170,69 @@ export interface RTokenInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "decreaseAllowance",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "endIdForVest",
-    values: [string]
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "increaseAllowance",
-    values: [string, BigNumberish]
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "init",
     values: [
-      string,
-      string,
-      string,
-      string,
-      BigNumberish,
-      BigNumberish,
-      BigNumberish
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
     ]
   ): string;
   encodeFunctionData(
     functionFragment: "issuanceRate",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "issue", values: [BigNumberish]): string;
+  encodeFunctionData(
+    functionFragment: "issue",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
   encodeFunctionData(
     functionFragment: "issueItem",
-    values: [string, BigNumberish]
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
-  encodeFunctionData(functionFragment: "issueQueues", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "issueQueues",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(functionFragment: "main", values?: undefined): string;
   encodeFunctionData(functionFragment: "mandate", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "maxRedemptionCharge",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "melt", values: [BigNumberish]): string;
+  encodeFunctionData(
+    functionFragment: "melt",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
   encodeFunctionData(
     functionFragment: "mint",
-    values: [string, BigNumberish]
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
-  encodeFunctionData(functionFragment: "nonces", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "nonces",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "permit",
     values: [
-      string,
-      string,
-      BigNumberish,
-      BigNumberish,
-      BigNumberish,
-      BytesLike,
-      BytesLike
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<BytesLike>
     ]
   ): string;
   encodeFunctionData(
@@ -224,11 +240,19 @@ export interface RTokenInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "queueBounds",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "redeem",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "redemptionLimit",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "redemptionRateFloor",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -236,20 +260,24 @@ export interface RTokenInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "scalingRedemptionRate",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "setBasketsNeeded",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "setIssuanceRate",
-    values: [BigNumberish]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "setMaxRedemption",
-    values: [BigNumberish]
+    functionFragment: "setRedemptionRateFloor",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "setRedemptionVirtualSupply",
-    values: [BigNumberish]
+    functionFragment: "setScalingRedemptionRate",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
   encodeFunctionData(
@@ -258,20 +286,27 @@ export interface RTokenInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "transfer",
-    values: [string, BigNumberish]
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "transferFrom",
-    values: [string, string, BigNumberish]
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
-  encodeFunctionData(functionFragment: "upgradeTo", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "upgradeTo",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "upgradeToAndCall",
-    values: [string, BytesLike]
+    values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "vest",
-    values: [string, BigNumberish]
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
 
   decodeFunctionResult(
@@ -293,10 +328,6 @@ export interface RTokenInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "decreaseAllowance",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "endIdForVest",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -329,13 +360,25 @@ export interface RTokenInterface extends utils.Interface {
     functionFragment: "proxiableUUID",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "queueBounds",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "redeem", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "redemptionLimit",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "redemptionRateFloor",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "redemptionVirtualSupply",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "scalingRedemptionRate",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -347,11 +390,11 @@ export interface RTokenInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setMaxRedemption",
+    functionFragment: "setRedemptionRateFloor",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setRedemptionVirtualSupply",
+    functionFragment: "setScalingRedemptionRate",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
@@ -382,11 +425,11 @@ export interface RTokenInterface extends utils.Interface {
     "IssuanceStarted(address,uint256,uint256,uint192,address[],uint256[],uint192)": EventFragment;
     "IssuancesCanceled(address,uint256,uint256,uint256)": EventFragment;
     "IssuancesCompleted(address,uint256,uint256,uint256)": EventFragment;
-    "MaxRedemptionSet(uint192,uint192)": EventFragment;
     "Melted(uint256)": EventFragment;
     "Redemption(address,uint256,uint192)": EventFragment;
-    "RedemptionVirtualSupplySet(uint256,uint256)": EventFragment;
+    "RedemptionRateFloorSet(uint256,uint256)": EventFragment;
     "RewardsClaimed(address,uint256)": EventFragment;
+    "ScalingRedemptionRateSet(uint192,uint192)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
@@ -401,11 +444,11 @@ export interface RTokenInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "IssuanceStarted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "IssuancesCanceled"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "IssuancesCompleted"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "MaxRedemptionSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Melted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Redemption"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "RedemptionVirtualSupplySet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RedemptionRateFloorSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RewardsClaimed"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ScalingRedemptionRateSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
@@ -529,18 +572,6 @@ export type IssuancesCompletedEvent = TypedEvent<
 export type IssuancesCompletedEventFilter =
   TypedEventFilter<IssuancesCompletedEvent>;
 
-export interface MaxRedemptionSetEventObject {
-  oldVal: BigNumber;
-  newVal: BigNumber;
-}
-export type MaxRedemptionSetEvent = TypedEvent<
-  [BigNumber, BigNumber],
-  MaxRedemptionSetEventObject
->;
-
-export type MaxRedemptionSetEventFilter =
-  TypedEventFilter<MaxRedemptionSetEvent>;
-
 export interface MeltedEventObject {
   amount: BigNumber;
 }
@@ -560,17 +591,17 @@ export type RedemptionEvent = TypedEvent<
 
 export type RedemptionEventFilter = TypedEventFilter<RedemptionEvent>;
 
-export interface RedemptionVirtualSupplySetEventObject {
+export interface RedemptionRateFloorSetEventObject {
   oldVal: BigNumber;
   newVal: BigNumber;
 }
-export type RedemptionVirtualSupplySetEvent = TypedEvent<
+export type RedemptionRateFloorSetEvent = TypedEvent<
   [BigNumber, BigNumber],
-  RedemptionVirtualSupplySetEventObject
+  RedemptionRateFloorSetEventObject
 >;
 
-export type RedemptionVirtualSupplySetEventFilter =
-  TypedEventFilter<RedemptionVirtualSupplySetEvent>;
+export type RedemptionRateFloorSetEventFilter =
+  TypedEventFilter<RedemptionRateFloorSetEvent>;
 
 export interface RewardsClaimedEventObject {
   erc20: string;
@@ -582,6 +613,18 @@ export type RewardsClaimedEvent = TypedEvent<
 >;
 
 export type RewardsClaimedEventFilter = TypedEventFilter<RewardsClaimedEvent>;
+
+export interface ScalingRedemptionRateSetEventObject {
+  oldVal: BigNumber;
+  newVal: BigNumber;
+}
+export type ScalingRedemptionRateSetEvent = TypedEvent<
+  [BigNumber, BigNumber],
+  ScalingRedemptionRateSetEventObject
+>;
+
+export type ScalingRedemptionRateSetEventFilter =
+  TypedEventFilter<ScalingRedemptionRateSetEvent>;
 
 export interface TransferEventObject {
   from: string;
@@ -632,76 +675,74 @@ export interface RToken extends BaseContract {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<[string]>;
 
     allowance(
-      owner: string,
-      spender: string,
+      owner: PromiseOrValue<string>,
+      spender: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
     approve(
-      spender: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      spender: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    balanceOf(account: string, overrides?: CallOverrides): Promise<[BigNumber]>;
+    balanceOf(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     basketsNeeded(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     cancel(
-      endId: BigNumberish,
-      earliest: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      endId: PromiseOrValue<BigNumberish>,
+      earliest: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     claimAndSweepRewards(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     decimals(overrides?: CallOverrides): Promise<[number]>;
 
     decreaseAllowance(
-      spender: string,
-      subtractedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      spender: PromiseOrValue<string>,
+      subtractedValue: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    endIdForVest(
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
     increaseAllowance(
-      spender: string,
-      addedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      spender: PromiseOrValue<string>,
+      addedValue: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     init(
-      main_: string,
-      name_: string,
-      symbol_: string,
-      mandate_: string,
-      issuanceRate_: BigNumberish,
-      maxRedemptionCharge_: BigNumberish,
-      redemptionVirtualSupply_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      main_: PromiseOrValue<string>,
+      name_: PromiseOrValue<string>,
+      symbol_: PromiseOrValue<string>,
+      mandate_: PromiseOrValue<string>,
+      issuanceRate_: PromiseOrValue<BigNumberish>,
+      maxRedemptionCharge_: PromiseOrValue<BigNumberish>,
+      redemptionVirtualSupply_: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     issuanceRate(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     issue(
-      amtRToken: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      amtRToken: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     issueItem(
-      account: string,
-      index: BigNumberish,
+      account: PromiseOrValue<string>,
+      index: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[RTokenP1.IssueItemStructOutput]>;
 
     issueQueues(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber, BigNumber] & {
@@ -718,60 +759,72 @@ export interface RToken extends BaseContract {
     maxRedemptionCharge(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     melt(
-      amtRToken: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      amtRToken: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     mint(
-      recipient: string,
-      amtRToken: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      recipient: PromiseOrValue<string>,
+      amtRToken: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     name(overrides?: CallOverrides): Promise<[string]>;
 
-    nonces(owner: string, overrides?: CallOverrides): Promise<[BigNumber]>;
+    nonces(
+      owner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     permit(
-      owner: string,
-      spender: string,
-      value: BigNumberish,
-      deadline: BigNumberish,
-      v: BigNumberish,
-      r: BytesLike,
-      s: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      owner: PromiseOrValue<string>,
+      spender: PromiseOrValue<string>,
+      value: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      v: PromiseOrValue<BigNumberish>,
+      r: PromiseOrValue<BytesLike>,
+      s: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
 
+    queueBounds(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber, BigNumber] & { left: BigNumber; right: BigNumber }>;
+
     redeem(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     redemptionLimit(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    redemptionRateFloor(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     redemptionVirtualSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    scalingRedemptionRate(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     setBasketsNeeded(
-      basketsNeeded_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      basketsNeeded_: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     setIssuanceRate(
-      val: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      val: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    setMaxRedemption(
-      val: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    setRedemptionRateFloor(
+      val: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    setRedemptionVirtualSupply(
-      val: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    setScalingRedemptionRate(
+      val: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<[string]>;
@@ -779,106 +832,107 @@ export interface RToken extends BaseContract {
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     transfer(
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     transferFrom(
-      from: string,
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      from: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     upgradeTo(
-      newImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      newImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
+      newImplementation: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     vest(
-      account: string,
-      endId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      account: PromiseOrValue<string>,
+      endId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
 
   DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
 
   allowance(
-    owner: string,
-    spender: string,
+    owner: PromiseOrValue<string>,
+    spender: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
   approve(
-    spender: string,
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    spender: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
+  balanceOf(
+    account: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   basketsNeeded(overrides?: CallOverrides): Promise<BigNumber>;
 
   cancel(
-    endId: BigNumberish,
-    earliest: boolean,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    endId: PromiseOrValue<BigNumberish>,
+    earliest: PromiseOrValue<boolean>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   claimAndSweepRewards(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   decimals(overrides?: CallOverrides): Promise<number>;
 
   decreaseAllowance(
-    spender: string,
-    subtractedValue: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    spender: PromiseOrValue<string>,
+    subtractedValue: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  endIdForVest(account: string, overrides?: CallOverrides): Promise<BigNumber>;
-
   increaseAllowance(
-    spender: string,
-    addedValue: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    spender: PromiseOrValue<string>,
+    addedValue: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   init(
-    main_: string,
-    name_: string,
-    symbol_: string,
-    mandate_: string,
-    issuanceRate_: BigNumberish,
-    maxRedemptionCharge_: BigNumberish,
-    redemptionVirtualSupply_: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    main_: PromiseOrValue<string>,
+    name_: PromiseOrValue<string>,
+    symbol_: PromiseOrValue<string>,
+    mandate_: PromiseOrValue<string>,
+    issuanceRate_: PromiseOrValue<BigNumberish>,
+    maxRedemptionCharge_: PromiseOrValue<BigNumberish>,
+    redemptionVirtualSupply_: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   issuanceRate(overrides?: CallOverrides): Promise<BigNumber>;
 
   issue(
-    amtRToken: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    amtRToken: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   issueItem(
-    account: string,
-    index: BigNumberish,
+    account: PromiseOrValue<string>,
+    index: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<RTokenP1.IssueItemStructOutput>;
 
   issueQueues(
-    arg0: string,
+    arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<
     [BigNumber, BigNumber, BigNumber] & {
@@ -895,60 +949,72 @@ export interface RToken extends BaseContract {
   maxRedemptionCharge(overrides?: CallOverrides): Promise<BigNumber>;
 
   melt(
-    amtRToken: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    amtRToken: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   mint(
-    recipient: string,
-    amtRToken: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    recipient: PromiseOrValue<string>,
+    amtRToken: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   name(overrides?: CallOverrides): Promise<string>;
 
-  nonces(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
+  nonces(
+    owner: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   permit(
-    owner: string,
-    spender: string,
-    value: BigNumberish,
-    deadline: BigNumberish,
-    v: BigNumberish,
-    r: BytesLike,
-    s: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    owner: PromiseOrValue<string>,
+    spender: PromiseOrValue<string>,
+    value: PromiseOrValue<BigNumberish>,
+    deadline: PromiseOrValue<BigNumberish>,
+    v: PromiseOrValue<BigNumberish>,
+    r: PromiseOrValue<BytesLike>,
+    s: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
+  queueBounds(
+    account: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<[BigNumber, BigNumber] & { left: BigNumber; right: BigNumber }>;
+
   redeem(
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   redemptionLimit(overrides?: CallOverrides): Promise<BigNumber>;
 
+  redemptionRateFloor(overrides?: CallOverrides): Promise<BigNumber>;
+
   redemptionVirtualSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
+  scalingRedemptionRate(overrides?: CallOverrides): Promise<BigNumber>;
+
   setBasketsNeeded(
-    basketsNeeded_: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    basketsNeeded_: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   setIssuanceRate(
-    val: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    val: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  setMaxRedemption(
-    val: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+  setRedemptionRateFloor(
+    val: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  setRedemptionVirtualSupply(
-    val: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+  setScalingRedemptionRate(
+    val: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   symbol(overrides?: CallOverrides): Promise<string>;
@@ -956,57 +1022,60 @@ export interface RToken extends BaseContract {
   totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
   transfer(
-    to: string,
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    to: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   transferFrom(
-    from: string,
-    to: string,
-    amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    from: PromiseOrValue<string>,
+    to: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   upgradeTo(
-    newImplementation: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    newImplementation: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   upgradeToAndCall(
-    newImplementation: string,
-    data: BytesLike,
-    overrides?: PayableOverrides & { from?: string | Promise<string> }
+    newImplementation: PromiseOrValue<string>,
+    data: PromiseOrValue<BytesLike>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   vest(
-    account: string,
-    endId: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    account: PromiseOrValue<string>,
+    endId: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
 
     allowance(
-      owner: string,
-      spender: string,
+      owner: PromiseOrValue<string>,
+      spender: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     approve(
-      spender: string,
-      amount: BigNumberish,
+      spender: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
+    balanceOf(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     basketsNeeded(overrides?: CallOverrides): Promise<BigNumber>;
 
     cancel(
-      endId: BigNumberish,
-      earliest: boolean,
+      endId: PromiseOrValue<BigNumberish>,
+      earliest: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1015,45 +1084,43 @@ export interface RToken extends BaseContract {
     decimals(overrides?: CallOverrides): Promise<number>;
 
     decreaseAllowance(
-      spender: string,
-      subtractedValue: BigNumberish,
+      spender: PromiseOrValue<string>,
+      subtractedValue: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    endIdForVest(
-      account: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     increaseAllowance(
-      spender: string,
-      addedValue: BigNumberish,
+      spender: PromiseOrValue<string>,
+      addedValue: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
     init(
-      main_: string,
-      name_: string,
-      symbol_: string,
-      mandate_: string,
-      issuanceRate_: BigNumberish,
-      maxRedemptionCharge_: BigNumberish,
-      redemptionVirtualSupply_: BigNumberish,
+      main_: PromiseOrValue<string>,
+      name_: PromiseOrValue<string>,
+      symbol_: PromiseOrValue<string>,
+      mandate_: PromiseOrValue<string>,
+      issuanceRate_: PromiseOrValue<BigNumberish>,
+      maxRedemptionCharge_: PromiseOrValue<BigNumberish>,
+      redemptionVirtualSupply_: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     issuanceRate(overrides?: CallOverrides): Promise<BigNumber>;
 
-    issue(amtRToken: BigNumberish, overrides?: CallOverrides): Promise<void>;
+    issue(
+      amtRToken: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     issueItem(
-      account: string,
-      index: BigNumberish,
+      account: PromiseOrValue<string>,
+      index: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<RTokenP1.IssueItemStructOutput>;
 
     issueQueues(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<
       [BigNumber, BigNumber, BigNumber] & {
@@ -1069,54 +1136,72 @@ export interface RToken extends BaseContract {
 
     maxRedemptionCharge(overrides?: CallOverrides): Promise<BigNumber>;
 
-    melt(amtRToken: BigNumberish, overrides?: CallOverrides): Promise<void>;
+    melt(
+      amtRToken: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     mint(
-      recipient: string,
-      amtRToken: BigNumberish,
+      recipient: PromiseOrValue<string>,
+      amtRToken: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     name(overrides?: CallOverrides): Promise<string>;
 
-    nonces(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
+    nonces(
+      owner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     permit(
-      owner: string,
-      spender: string,
-      value: BigNumberish,
-      deadline: BigNumberish,
-      v: BigNumberish,
-      r: BytesLike,
-      s: BytesLike,
+      owner: PromiseOrValue<string>,
+      spender: PromiseOrValue<string>,
+      value: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      v: PromiseOrValue<BigNumberish>,
+      r: PromiseOrValue<BytesLike>,
+      s: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
-    redeem(amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
+    queueBounds(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber, BigNumber] & { left: BigNumber; right: BigNumber }>;
+
+    redeem(
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     redemptionLimit(overrides?: CallOverrides): Promise<BigNumber>;
 
+    redemptionRateFloor(overrides?: CallOverrides): Promise<BigNumber>;
+
     redemptionVirtualSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
+    scalingRedemptionRate(overrides?: CallOverrides): Promise<BigNumber>;
+
     setBasketsNeeded(
-      basketsNeeded_: BigNumberish,
+      basketsNeeded_: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     setIssuanceRate(
-      val: BigNumberish,
+      val: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setMaxRedemption(
-      val: BigNumberish,
+    setRedemptionRateFloor(
+      val: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setRedemptionVirtualSupply(
-      val: BigNumberish,
+    setScalingRedemptionRate(
+      val: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1125,32 +1210,32 @@ export interface RToken extends BaseContract {
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     transfer(
-      to: string,
-      amount: BigNumberish,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
     transferFrom(
-      from: string,
-      to: string,
-      amount: BigNumberish,
+      from: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
     upgradeTo(
-      newImplementation: string,
+      newImplementation: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
+      newImplementation: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     vest(
-      account: string,
-      endId: BigNumberish,
+      account: PromiseOrValue<string>,
+      endId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -1166,13 +1251,13 @@ export interface RToken extends BaseContract {
     ): AdminChangedEventFilter;
 
     "Approval(address,address,uint256)"(
-      owner?: string | null,
-      spender?: string | null,
+      owner?: PromiseOrValue<string> | null,
+      spender?: PromiseOrValue<string> | null,
       value?: null
     ): ApprovalEventFilter;
     Approval(
-      owner?: string | null,
-      spender?: string | null,
+      owner?: PromiseOrValue<string> | null,
+      spender?: PromiseOrValue<string> | null,
       value?: null
     ): ApprovalEventFilter;
 
@@ -1186,46 +1271,48 @@ export interface RToken extends BaseContract {
     ): BasketsNeededChangedEventFilter;
 
     "BeaconUpgraded(address)"(
-      beacon?: string | null
+      beacon?: PromiseOrValue<string> | null
     ): BeaconUpgradedEventFilter;
-    BeaconUpgraded(beacon?: string | null): BeaconUpgradedEventFilter;
+    BeaconUpgraded(
+      beacon?: PromiseOrValue<string> | null
+    ): BeaconUpgradedEventFilter;
 
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
 
     "Issuance(address,uint256,uint192)"(
-      issuer?: string | null,
-      amount?: BigNumberish | null,
-      baskets?: BigNumberish | null
+      issuer?: PromiseOrValue<string> | null,
+      amount?: PromiseOrValue<BigNumberish> | null,
+      baskets?: PromiseOrValue<BigNumberish> | null
     ): IssuanceEventFilter;
     Issuance(
-      issuer?: string | null,
-      amount?: BigNumberish | null,
-      baskets?: BigNumberish | null
+      issuer?: PromiseOrValue<string> | null,
+      amount?: PromiseOrValue<BigNumberish> | null,
+      baskets?: PromiseOrValue<BigNumberish> | null
     ): IssuanceEventFilter;
 
     "IssuanceRateSet(uint192,uint192)"(
-      oldVal?: BigNumberish | null,
-      newVal?: BigNumberish | null
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
     ): IssuanceRateSetEventFilter;
     IssuanceRateSet(
-      oldVal?: BigNumberish | null,
-      newVal?: BigNumberish | null
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
     ): IssuanceRateSetEventFilter;
 
     "IssuanceStarted(address,uint256,uint256,uint192,address[],uint256[],uint192)"(
-      issuer?: string | null,
-      index?: BigNumberish | null,
-      amount?: BigNumberish | null,
+      issuer?: PromiseOrValue<string> | null,
+      index?: PromiseOrValue<BigNumberish> | null,
+      amount?: PromiseOrValue<BigNumberish> | null,
       baskets?: null,
       erc20s?: null,
       quantities?: null,
       blockAvailableAt?: null
     ): IssuanceStartedEventFilter;
     IssuanceStarted(
-      issuer?: string | null,
-      index?: BigNumberish | null,
-      amount?: BigNumberish | null,
+      issuer?: PromiseOrValue<string> | null,
+      index?: PromiseOrValue<BigNumberish> | null,
+      amount?: PromiseOrValue<BigNumberish> | null,
       baskets?: null,
       erc20s?: null,
       quantities?: null,
@@ -1233,160 +1320,165 @@ export interface RToken extends BaseContract {
     ): IssuanceStartedEventFilter;
 
     "IssuancesCanceled(address,uint256,uint256,uint256)"(
-      issuer?: string | null,
-      firstId?: BigNumberish | null,
-      endId?: BigNumberish | null,
+      issuer?: PromiseOrValue<string> | null,
+      firstId?: PromiseOrValue<BigNumberish> | null,
+      endId?: PromiseOrValue<BigNumberish> | null,
       amount?: null
     ): IssuancesCanceledEventFilter;
     IssuancesCanceled(
-      issuer?: string | null,
-      firstId?: BigNumberish | null,
-      endId?: BigNumberish | null,
+      issuer?: PromiseOrValue<string> | null,
+      firstId?: PromiseOrValue<BigNumberish> | null,
+      endId?: PromiseOrValue<BigNumberish> | null,
       amount?: null
     ): IssuancesCanceledEventFilter;
 
     "IssuancesCompleted(address,uint256,uint256,uint256)"(
-      issuer?: string | null,
-      firstId?: BigNumberish | null,
-      endId?: BigNumberish | null,
+      issuer?: PromiseOrValue<string> | null,
+      firstId?: PromiseOrValue<BigNumberish> | null,
+      endId?: PromiseOrValue<BigNumberish> | null,
       amount?: null
     ): IssuancesCompletedEventFilter;
     IssuancesCompleted(
-      issuer?: string | null,
-      firstId?: BigNumberish | null,
-      endId?: BigNumberish | null,
+      issuer?: PromiseOrValue<string> | null,
+      firstId?: PromiseOrValue<BigNumberish> | null,
+      endId?: PromiseOrValue<BigNumberish> | null,
       amount?: null
     ): IssuancesCompletedEventFilter;
-
-    "MaxRedemptionSet(uint192,uint192)"(
-      oldVal?: BigNumberish | null,
-      newVal?: BigNumberish | null
-    ): MaxRedemptionSetEventFilter;
-    MaxRedemptionSet(
-      oldVal?: BigNumberish | null,
-      newVal?: BigNumberish | null
-    ): MaxRedemptionSetEventFilter;
 
     "Melted(uint256)"(amount?: null): MeltedEventFilter;
     Melted(amount?: null): MeltedEventFilter;
 
     "Redemption(address,uint256,uint192)"(
-      redeemer?: string | null,
-      amount?: BigNumberish | null,
+      redeemer?: PromiseOrValue<string> | null,
+      amount?: PromiseOrValue<BigNumberish> | null,
       baskets?: null
     ): RedemptionEventFilter;
     Redemption(
-      redeemer?: string | null,
-      amount?: BigNumberish | null,
+      redeemer?: PromiseOrValue<string> | null,
+      amount?: PromiseOrValue<BigNumberish> | null,
       baskets?: null
     ): RedemptionEventFilter;
 
-    "RedemptionVirtualSupplySet(uint256,uint256)"(
-      oldVal?: BigNumberish | null,
-      newVal?: BigNumberish | null
-    ): RedemptionVirtualSupplySetEventFilter;
-    RedemptionVirtualSupplySet(
-      oldVal?: BigNumberish | null,
-      newVal?: BigNumberish | null
-    ): RedemptionVirtualSupplySetEventFilter;
+    "RedemptionRateFloorSet(uint256,uint256)"(
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
+    ): RedemptionRateFloorSetEventFilter;
+    RedemptionRateFloorSet(
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
+    ): RedemptionRateFloorSetEventFilter;
 
     "RewardsClaimed(address,uint256)"(
-      erc20?: string | null,
-      amount?: BigNumberish | null
+      erc20?: PromiseOrValue<string> | null,
+      amount?: PromiseOrValue<BigNumberish> | null
     ): RewardsClaimedEventFilter;
     RewardsClaimed(
-      erc20?: string | null,
-      amount?: BigNumberish | null
+      erc20?: PromiseOrValue<string> | null,
+      amount?: PromiseOrValue<BigNumberish> | null
     ): RewardsClaimedEventFilter;
 
+    "ScalingRedemptionRateSet(uint192,uint192)"(
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
+    ): ScalingRedemptionRateSetEventFilter;
+    ScalingRedemptionRateSet(
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
+    ): ScalingRedemptionRateSetEventFilter;
+
     "Transfer(address,address,uint256)"(
-      from?: string | null,
-      to?: string | null,
+      from?: PromiseOrValue<string> | null,
+      to?: PromiseOrValue<string> | null,
       value?: null
     ): TransferEventFilter;
     Transfer(
-      from?: string | null,
-      to?: string | null,
+      from?: PromiseOrValue<string> | null,
+      to?: PromiseOrValue<string> | null,
       value?: null
     ): TransferEventFilter;
 
-    "Upgraded(address)"(implementation?: string | null): UpgradedEventFilter;
-    Upgraded(implementation?: string | null): UpgradedEventFilter;
+    "Upgraded(address)"(
+      implementation?: PromiseOrValue<string> | null
+    ): UpgradedEventFilter;
+    Upgraded(
+      implementation?: PromiseOrValue<string> | null
+    ): UpgradedEventFilter;
   };
 
   estimateGas: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<BigNumber>;
 
     allowance(
-      owner: string,
-      spender: string,
+      owner: PromiseOrValue<string>,
+      spender: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     approve(
-      spender: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      spender: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
+    balanceOf(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     basketsNeeded(overrides?: CallOverrides): Promise<BigNumber>;
 
     cancel(
-      endId: BigNumberish,
-      earliest: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      endId: PromiseOrValue<BigNumberish>,
+      earliest: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     claimAndSweepRewards(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
 
     decreaseAllowance(
-      spender: string,
-      subtractedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    endIdForVest(
-      account: string,
-      overrides?: CallOverrides
+      spender: PromiseOrValue<string>,
+      subtractedValue: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     increaseAllowance(
-      spender: string,
-      addedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      spender: PromiseOrValue<string>,
+      addedValue: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     init(
-      main_: string,
-      name_: string,
-      symbol_: string,
-      mandate_: string,
-      issuanceRate_: BigNumberish,
-      maxRedemptionCharge_: BigNumberish,
-      redemptionVirtualSupply_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      main_: PromiseOrValue<string>,
+      name_: PromiseOrValue<string>,
+      symbol_: PromiseOrValue<string>,
+      mandate_: PromiseOrValue<string>,
+      issuanceRate_: PromiseOrValue<BigNumberish>,
+      maxRedemptionCharge_: PromiseOrValue<BigNumberish>,
+      redemptionVirtualSupply_: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     issuanceRate(overrides?: CallOverrides): Promise<BigNumber>;
 
     issue(
-      amtRToken: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      amtRToken: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     issueItem(
-      account: string,
-      index: BigNumberish,
+      account: PromiseOrValue<string>,
+      index: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    issueQueues(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+    issueQueues(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     main(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1395,60 +1487,72 @@ export interface RToken extends BaseContract {
     maxRedemptionCharge(overrides?: CallOverrides): Promise<BigNumber>;
 
     melt(
-      amtRToken: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      amtRToken: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     mint(
-      recipient: string,
-      amtRToken: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      recipient: PromiseOrValue<string>,
+      amtRToken: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
-    nonces(owner: string, overrides?: CallOverrides): Promise<BigNumber>;
+    nonces(
+      owner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     permit(
-      owner: string,
-      spender: string,
-      value: BigNumberish,
-      deadline: BigNumberish,
-      v: BigNumberish,
-      r: BytesLike,
-      s: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      owner: PromiseOrValue<string>,
+      spender: PromiseOrValue<string>,
+      value: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      v: PromiseOrValue<BigNumberish>,
+      r: PromiseOrValue<BytesLike>,
+      s: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
 
+    queueBounds(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     redeem(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     redemptionLimit(overrides?: CallOverrides): Promise<BigNumber>;
 
+    redemptionRateFloor(overrides?: CallOverrides): Promise<BigNumber>;
+
     redemptionVirtualSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
+    scalingRedemptionRate(overrides?: CallOverrides): Promise<BigNumber>;
+
     setBasketsNeeded(
-      basketsNeeded_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      basketsNeeded_: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     setIssuanceRate(
-      val: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      val: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    setMaxRedemption(
-      val: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    setRedemptionRateFloor(
+      val: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    setRedemptionVirtualSupply(
-      val: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    setScalingRedemptionRate(
+      val: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     symbol(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1456,33 +1560,33 @@ export interface RToken extends BaseContract {
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     transfer(
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     transferFrom(
-      from: string,
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      from: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     upgradeTo(
-      newImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      newImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
+      newImplementation: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     vest(
-      account: string,
-      endId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      account: PromiseOrValue<string>,
+      endId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
 
@@ -1490,79 +1594,74 @@ export interface RToken extends BaseContract {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     allowance(
-      owner: string,
-      spender: string,
+      owner: PromiseOrValue<string>,
+      spender: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     approve(
-      spender: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      spender: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     balanceOf(
-      account: string,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     basketsNeeded(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     cancel(
-      endId: BigNumberish,
-      earliest: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      endId: PromiseOrValue<BigNumberish>,
+      earliest: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     claimAndSweepRewards(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     decreaseAllowance(
-      spender: string,
-      subtractedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    endIdForVest(
-      account: string,
-      overrides?: CallOverrides
+      spender: PromiseOrValue<string>,
+      subtractedValue: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     increaseAllowance(
-      spender: string,
-      addedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      spender: PromiseOrValue<string>,
+      addedValue: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     init(
-      main_: string,
-      name_: string,
-      symbol_: string,
-      mandate_: string,
-      issuanceRate_: BigNumberish,
-      maxRedemptionCharge_: BigNumberish,
-      redemptionVirtualSupply_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      main_: PromiseOrValue<string>,
+      name_: PromiseOrValue<string>,
+      symbol_: PromiseOrValue<string>,
+      mandate_: PromiseOrValue<string>,
+      issuanceRate_: PromiseOrValue<BigNumberish>,
+      maxRedemptionCharge_: PromiseOrValue<BigNumberish>,
+      redemptionVirtualSupply_: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     issuanceRate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     issue(
-      amtRToken: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      amtRToken: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     issueItem(
-      account: string,
-      index: BigNumberish,
+      account: PromiseOrValue<string>,
+      index: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     issueQueues(
-      arg0: string,
+      arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1575,65 +1674,78 @@ export interface RToken extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     melt(
-      amtRToken: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      amtRToken: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     mint(
-      recipient: string,
-      amtRToken: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      recipient: PromiseOrValue<string>,
+      amtRToken: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     nonces(
-      owner: string,
+      owner: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     permit(
-      owner: string,
-      spender: string,
-      value: BigNumberish,
-      deadline: BigNumberish,
-      v: BigNumberish,
-      r: BytesLike,
-      s: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      owner: PromiseOrValue<string>,
+      spender: PromiseOrValue<string>,
+      value: PromiseOrValue<BigNumberish>,
+      deadline: PromiseOrValue<BigNumberish>,
+      v: PromiseOrValue<BigNumberish>,
+      r: PromiseOrValue<BytesLike>,
+      s: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    queueBounds(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     redeem(
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     redemptionLimit(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    redemptionRateFloor(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     redemptionVirtualSupply(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    scalingRedemptionRate(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     setBasketsNeeded(
-      basketsNeeded_: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      basketsNeeded_: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     setIssuanceRate(
-      val: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      val: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    setMaxRedemption(
-      val: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    setRedemptionRateFloor(
+      val: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    setRedemptionVirtualSupply(
-      val: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+    setScalingRedemptionRate(
+      val: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1641,33 +1753,33 @@ export interface RToken extends BaseContract {
     totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     transfer(
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     transferFrom(
-      from: string,
-      to: string,
-      amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      from: PromiseOrValue<string>,
+      to: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     upgradeTo(
-      newImplementation: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      newImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: PayableOverrides & { from?: string | Promise<string> }
+      newImplementation: PromiseOrValue<string>,
+      data: PromiseOrValue<BytesLike>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     vest(
-      account: string,
-      endId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      account: PromiseOrValue<string>,
+      endId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

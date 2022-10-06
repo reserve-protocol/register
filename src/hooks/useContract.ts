@@ -1,5 +1,4 @@
 import { isAddress } from '@ethersproject/address'
-import { Contract } from '@ethersproject/contracts'
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import {
@@ -10,6 +9,7 @@ import {
   StRSR as StRSRAbi,
   Main as MainAbi,
 } from 'abis'
+import { Contract } from 'ethers'
 import { useMemo } from 'react'
 import { CHAIN_ID } from 'utils/chains'
 import { ERC20, Facade, RToken, StRsr, FacadeWrite, Main } from '../abis/types'

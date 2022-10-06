@@ -24,58 +24,78 @@ import type {
   TypedEvent,
   TypedListener,
   OnEvent,
+  PromiseOrValue,
 } from "./common";
 
 export interface CollateralInterface extends utils.Interface {
   functions: {
     "bal(address)": FunctionFragment;
     "chainlinkFeed()": FunctionFragment;
+    "delayUntilDefault()": FunctionFragment;
     "erc20()": FunctionFragment;
+    "erc20Decimals()": FunctionFragment;
+    "fallbackPrice()": FunctionFragment;
     "getClaimCalldata()": FunctionFragment;
     "isCollateral()": FunctionFragment;
-    "maxTradeSize()": FunctionFragment;
-    "minTradeSize()": FunctionFragment;
+    "maxTradeVolume()": FunctionFragment;
     "oracleTimeout()": FunctionFragment;
-    "price()": FunctionFragment;
+    "price(bool)": FunctionFragment;
     "pricePerTarget()": FunctionFragment;
-    "priceable()": FunctionFragment;
     "refPerTok()": FunctionFragment;
     "refresh()": FunctionFragment;
     "rewardERC20()": FunctionFragment;
     "status()": FunctionFragment;
+    "strictPrice()": FunctionFragment;
     "targetName()": FunctionFragment;
     "targetPerRef()": FunctionFragment;
-    "tradingRange()": FunctionFragment;
+    "whenDefault()": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
       | "bal"
       | "chainlinkFeed"
+      | "delayUntilDefault"
       | "erc20"
+      | "erc20Decimals"
+      | "fallbackPrice"
       | "getClaimCalldata"
       | "isCollateral"
-      | "maxTradeSize"
-      | "minTradeSize"
+      | "maxTradeVolume"
       | "oracleTimeout"
       | "price"
       | "pricePerTarget"
-      | "priceable"
       | "refPerTok"
       | "refresh"
       | "rewardERC20"
       | "status"
+      | "strictPrice"
       | "targetName"
       | "targetPerRef"
-      | "tradingRange"
+      | "whenDefault"
   ): FunctionFragment;
 
-  encodeFunctionData(functionFragment: "bal", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "bal",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "chainlinkFeed",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "delayUntilDefault",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "erc20", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "erc20Decimals",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "fallbackPrice",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "getClaimCalldata",
     values?: undefined
@@ -85,23 +105,21 @@ export interface CollateralInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "maxTradeSize",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "minTradeSize",
+    functionFragment: "maxTradeVolume",
     values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "oracleTimeout",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "price", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "price",
+    values: [PromiseOrValue<boolean>]
+  ): string;
   encodeFunctionData(
     functionFragment: "pricePerTarget",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "priceable", values?: undefined): string;
   encodeFunctionData(functionFragment: "refPerTok", values?: undefined): string;
   encodeFunctionData(functionFragment: "refresh", values?: undefined): string;
   encodeFunctionData(
@@ -109,6 +127,10 @@ export interface CollateralInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "status", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "strictPrice",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "targetName",
     values?: undefined
@@ -118,7 +140,7 @@ export interface CollateralInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "tradingRange",
+    functionFragment: "whenDefault",
     values?: undefined
   ): string;
 
@@ -127,7 +149,19 @@ export interface CollateralInterface extends utils.Interface {
     functionFragment: "chainlinkFeed",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "delayUntilDefault",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "erc20", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "erc20Decimals",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "fallbackPrice",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getClaimCalldata",
     data: BytesLike
@@ -137,11 +171,7 @@ export interface CollateralInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "maxTradeSize",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "minTradeSize",
+    functionFragment: "maxTradeVolume",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -153,7 +183,6 @@ export interface CollateralInterface extends utils.Interface {
     functionFragment: "pricePerTarget",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "priceable", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "refPerTok", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "refresh", data: BytesLike): Result;
   decodeFunctionResult(
@@ -161,13 +190,17 @@ export interface CollateralInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "status", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "strictPrice",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "targetName", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "targetPerRef",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "tradingRange",
+    functionFragment: "whenDefault",
     data: BytesLike
   ): Result;
 
@@ -217,11 +250,20 @@ export interface Collateral extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    bal(account: string, overrides?: CallOverrides): Promise<[BigNumber]>;
+    bal(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     chainlinkFeed(overrides?: CallOverrides): Promise<[string]>;
 
+    delayUntilDefault(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     erc20(overrides?: CallOverrides): Promise<[string]>;
+
+    erc20Decimals(overrides?: CallOverrides): Promise<[number]>;
+
+    fallbackPrice(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getClaimCalldata(
       overrides?: CallOverrides
@@ -229,42 +271,50 @@ export interface Collateral extends BaseContract {
 
     isCollateral(overrides?: CallOverrides): Promise<[boolean]>;
 
-    maxTradeSize(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    minTradeSize(overrides?: CallOverrides): Promise<[BigNumber]>;
+    maxTradeVolume(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     oracleTimeout(overrides?: CallOverrides): Promise<[number]>;
 
-    price(overrides?: CallOverrides): Promise<[BigNumber]>;
+    price(
+      allowFallback: PromiseOrValue<boolean>,
+      overrides?: CallOverrides
+    ): Promise<[boolean, BigNumber] & { isFallback: boolean }>;
 
     pricePerTarget(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    priceable(overrides?: CallOverrides): Promise<[boolean]>;
 
     refPerTok(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     refresh(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     rewardERC20(overrides?: CallOverrides): Promise<[string]>;
 
     status(overrides?: CallOverrides): Promise<[number]>;
 
+    strictPrice(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     targetName(overrides?: CallOverrides): Promise<[string]>;
 
     targetPerRef(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    tradingRange(
-      overrides?: CallOverrides
-    ): Promise<[BigNumber, BigNumber] & { min: BigNumber; max: BigNumber }>;
+    whenDefault(overrides?: CallOverrides): Promise<[BigNumber]>;
   };
 
-  bal(account: string, overrides?: CallOverrides): Promise<BigNumber>;
+  bal(
+    account: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   chainlinkFeed(overrides?: CallOverrides): Promise<string>;
 
+  delayUntilDefault(overrides?: CallOverrides): Promise<BigNumber>;
+
   erc20(overrides?: CallOverrides): Promise<string>;
+
+  erc20Decimals(overrides?: CallOverrides): Promise<number>;
+
+  fallbackPrice(overrides?: CallOverrides): Promise<BigNumber>;
 
   getClaimCalldata(
     overrides?: CallOverrides
@@ -272,42 +322,50 @@ export interface Collateral extends BaseContract {
 
   isCollateral(overrides?: CallOverrides): Promise<boolean>;
 
-  maxTradeSize(overrides?: CallOverrides): Promise<BigNumber>;
-
-  minTradeSize(overrides?: CallOverrides): Promise<BigNumber>;
+  maxTradeVolume(overrides?: CallOverrides): Promise<BigNumber>;
 
   oracleTimeout(overrides?: CallOverrides): Promise<number>;
 
-  price(overrides?: CallOverrides): Promise<BigNumber>;
+  price(
+    allowFallback: PromiseOrValue<boolean>,
+    overrides?: CallOverrides
+  ): Promise<[boolean, BigNumber] & { isFallback: boolean }>;
 
   pricePerTarget(overrides?: CallOverrides): Promise<BigNumber>;
-
-  priceable(overrides?: CallOverrides): Promise<boolean>;
 
   refPerTok(overrides?: CallOverrides): Promise<BigNumber>;
 
   refresh(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   rewardERC20(overrides?: CallOverrides): Promise<string>;
 
   status(overrides?: CallOverrides): Promise<number>;
 
+  strictPrice(overrides?: CallOverrides): Promise<BigNumber>;
+
   targetName(overrides?: CallOverrides): Promise<string>;
 
   targetPerRef(overrides?: CallOverrides): Promise<BigNumber>;
 
-  tradingRange(
-    overrides?: CallOverrides
-  ): Promise<[BigNumber, BigNumber] & { min: BigNumber; max: BigNumber }>;
+  whenDefault(overrides?: CallOverrides): Promise<BigNumber>;
 
   callStatic: {
-    bal(account: string, overrides?: CallOverrides): Promise<BigNumber>;
+    bal(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     chainlinkFeed(overrides?: CallOverrides): Promise<string>;
 
+    delayUntilDefault(overrides?: CallOverrides): Promise<BigNumber>;
+
     erc20(overrides?: CallOverrides): Promise<string>;
+
+    erc20Decimals(overrides?: CallOverrides): Promise<number>;
+
+    fallbackPrice(overrides?: CallOverrides): Promise<BigNumber>;
 
     getClaimCalldata(
       overrides?: CallOverrides
@@ -315,17 +373,16 @@ export interface Collateral extends BaseContract {
 
     isCollateral(overrides?: CallOverrides): Promise<boolean>;
 
-    maxTradeSize(overrides?: CallOverrides): Promise<BigNumber>;
-
-    minTradeSize(overrides?: CallOverrides): Promise<BigNumber>;
+    maxTradeVolume(overrides?: CallOverrides): Promise<BigNumber>;
 
     oracleTimeout(overrides?: CallOverrides): Promise<number>;
 
-    price(overrides?: CallOverrides): Promise<BigNumber>;
+    price(
+      allowFallback: PromiseOrValue<boolean>,
+      overrides?: CallOverrides
+    ): Promise<[boolean, BigNumber] & { isFallback: boolean }>;
 
     pricePerTarget(overrides?: CallOverrides): Promise<BigNumber>;
-
-    priceable(overrides?: CallOverrides): Promise<boolean>;
 
     refPerTok(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -335,106 +392,123 @@ export interface Collateral extends BaseContract {
 
     status(overrides?: CallOverrides): Promise<number>;
 
+    strictPrice(overrides?: CallOverrides): Promise<BigNumber>;
+
     targetName(overrides?: CallOverrides): Promise<string>;
 
     targetPerRef(overrides?: CallOverrides): Promise<BigNumber>;
 
-    tradingRange(
-      overrides?: CallOverrides
-    ): Promise<[BigNumber, BigNumber] & { min: BigNumber; max: BigNumber }>;
+    whenDefault(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   filters: {
     "DefaultStatusChanged(uint8,uint8)"(
-      oldStatus?: BigNumberish | null,
-      newStatus?: BigNumberish | null
+      oldStatus?: PromiseOrValue<BigNumberish> | null,
+      newStatus?: PromiseOrValue<BigNumberish> | null
     ): DefaultStatusChangedEventFilter;
     DefaultStatusChanged(
-      oldStatus?: BigNumberish | null,
-      newStatus?: BigNumberish | null
+      oldStatus?: PromiseOrValue<BigNumberish> | null,
+      newStatus?: PromiseOrValue<BigNumberish> | null
     ): DefaultStatusChangedEventFilter;
   };
 
   estimateGas: {
-    bal(account: string, overrides?: CallOverrides): Promise<BigNumber>;
+    bal(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     chainlinkFeed(overrides?: CallOverrides): Promise<BigNumber>;
 
+    delayUntilDefault(overrides?: CallOverrides): Promise<BigNumber>;
+
     erc20(overrides?: CallOverrides): Promise<BigNumber>;
+
+    erc20Decimals(overrides?: CallOverrides): Promise<BigNumber>;
+
+    fallbackPrice(overrides?: CallOverrides): Promise<BigNumber>;
 
     getClaimCalldata(overrides?: CallOverrides): Promise<BigNumber>;
 
     isCollateral(overrides?: CallOverrides): Promise<BigNumber>;
 
-    maxTradeSize(overrides?: CallOverrides): Promise<BigNumber>;
-
-    minTradeSize(overrides?: CallOverrides): Promise<BigNumber>;
+    maxTradeVolume(overrides?: CallOverrides): Promise<BigNumber>;
 
     oracleTimeout(overrides?: CallOverrides): Promise<BigNumber>;
 
-    price(overrides?: CallOverrides): Promise<BigNumber>;
+    price(
+      allowFallback: PromiseOrValue<boolean>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     pricePerTarget(overrides?: CallOverrides): Promise<BigNumber>;
-
-    priceable(overrides?: CallOverrides): Promise<BigNumber>;
 
     refPerTok(overrides?: CallOverrides): Promise<BigNumber>;
 
     refresh(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     rewardERC20(overrides?: CallOverrides): Promise<BigNumber>;
 
     status(overrides?: CallOverrides): Promise<BigNumber>;
 
+    strictPrice(overrides?: CallOverrides): Promise<BigNumber>;
+
     targetName(overrides?: CallOverrides): Promise<BigNumber>;
 
     targetPerRef(overrides?: CallOverrides): Promise<BigNumber>;
 
-    tradingRange(overrides?: CallOverrides): Promise<BigNumber>;
+    whenDefault(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
     bal(
-      account: string,
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     chainlinkFeed(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    delayUntilDefault(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     erc20(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    erc20Decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    fallbackPrice(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getClaimCalldata(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     isCollateral(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    maxTradeSize(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    minTradeSize(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    maxTradeVolume(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     oracleTimeout(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    price(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    price(
+      allowFallback: PromiseOrValue<boolean>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     pricePerTarget(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    priceable(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     refPerTok(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     refresh(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     rewardERC20(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     status(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    strictPrice(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     targetName(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     targetPerRef(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    tradingRange(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    whenDefault(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

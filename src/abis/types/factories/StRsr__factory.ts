@@ -738,6 +738,19 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "payoutLastPaid",
+    outputs: [
+      {
+        internalType: "uint48",
+        name: "",
+        type: "uint48",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "payoutRewards",
     outputs: [],
     stateMutability: "nonpayable",

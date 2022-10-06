@@ -218,7 +218,7 @@ export function Table<D extends { [key: string]: any }>({
       </Box>
       {pagination && (
         <TablePagination
-          {...pagination}
+          // {...pagination}
           pageIndex={statePageIndex}
           pageSize={statePageSize}
           {...tableOptions}

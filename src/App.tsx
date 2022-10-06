@@ -56,62 +56,71 @@ i18n.activate('en')
  *
  * @returns {JSX.Element}
  */
-const App = () => (
-  <Router>
-    <I18nProvider i18n={i18n}>
-      <Web3Provider>
-        <Updater />
-        <ThemeProvider theme={theme}>
-          <Toaster
-            gutter={20}
-            toastOptions={{
-              position: 'bottom-right',
-              style: {
-                width: 300,
-                background: 'var(--theme-ui-colors-contentBackground)',
-              },
-            }}
-            containerStyle={{
-              top: 40,
-              left: 40,
-              bottom: 40,
-              right: 40,
-            }}
-          />
-          <Layout>
-            <Routes>
-              <Route path={ROUTES.HOME} element={<Home />} />
-              <Route path={ROUTES.OVERVIEW} element={<Overview />} />
-              <Route
-                path={ROUTES.ISSUANCE}
-                element={
-                  <Guard>
-                    <Issuance />
-                  </Guard>
-                }
-              />
-              <Route
-                path={ROUTES.INSURANCE}
-                element={
-                  <Guard>
-                    <Insurance />
-                  </Guard>
-                }
-              />
-              <Route path={ROUTES.AUCTIONS} element={<Auctions />} />
-              <Route path={ROUTES.DEPLOY} element={<Deploy />} />
-              <Route path={ROUTES.MANAGEMENT} element={<Management />} />
-              <Route path={ROUTES.GOVERNANCE} element={<Governance />} />
-              <Route
-                path={`${ROUTES.GOVERNANCE_INFO}/:txId`}
-                element={<GovernanceConfigured />}
-              />
-            </Routes>
-          </Layout>
-        </ThemeProvider>
-      </Web3Provider>
-    </I18nProvider>
-  </Router>
-)
+const App = () => {
+
+  if (process.env.REACT_APP_MAINTENANCE) {
+    return <Text>
+      Maintenance
+    </Text>
+  }
+
+  return (
+    <Router>
+      <I18nProvider i18n={i18n}>
+        <Web3Provider>
+          <Updater />
+          <ThemeProvider theme={theme}>
+            <Toaster
+              gutter={20}
+              toastOptions={{
+                position: 'bottom-right',
+                style: {
+                  width: 300,
+                  background: 'var(--theme-ui-colors-contentBackground)',
+                },
+              }}
+              containerStyle={{
+                top: 40,
+                left: 40,
+                bottom: 40,
+                right: 40,
+              }}
+            />
+            <Layout>
+              <Routes>
+                <Route path={ROUTES.HOME} element={<Home />} />
+                <Route path={ROUTES.OVERVIEW} element={<Overview />} />
+                <Route
+                  path={ROUTES.ISSUANCE}
+                  element={
+                    <Guard>
+                      <Issuance />
+                    </Guard>
+                  }
+                />
+                <Route
+                  path={ROUTES.INSURANCE}
+                  element={
+                    <Guard>
+                      <Insurance />
+                    </Guard>
+                  }
+                />
+                <Route path={ROUTES.AUCTIONS} element={<Auctions />} />
+                <Route path={ROUTES.DEPLOY} element={<Deploy />} />
+                <Route path={ROUTES.MANAGEMENT} element={<Management />} />
+                <Route path={ROUTES.GOVERNANCE} element={<Governance />} />
+                <Route
+                  path={`${ROUTES.GOVERNANCE_INFO}/:txId`}
+                  element={<GovernanceConfigured />}
+                />
+              </Routes>
+            </Layout>
+          </ThemeProvider>
+        </Web3Provider>
+      </I18nProvider>
+    </Router>
+  )
+} 
 
 export default App
