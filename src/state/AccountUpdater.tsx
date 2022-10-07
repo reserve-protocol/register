@@ -117,7 +117,7 @@ const AccountUpdater = () => {
         let stakingApy = 0
         const recentRate = rToken?.rToken?.recentRate[0]
         const lastRate = rToken?.rToken?.lastRate[0]
-
+        
         if (
           recentRate &&
           lastRate &&

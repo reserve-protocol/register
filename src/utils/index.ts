@@ -82,6 +82,8 @@ export function calculateApy(
   let tokenApy = 0
   let stakingApy = 0
 
+  console.log('priceGrow', { recent: recentRate.basketRate, last: lastRate.basketRate })
+
   const priceGrowth =
     ((recentRate.basketRate - lastRate.basketRate) / lastRate.basketRate) * 100
   const stGrowth =

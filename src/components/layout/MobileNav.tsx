@@ -27,6 +27,10 @@ const MobileNav = () => {
     return items
   }, [rToken?.address])
 
+  if (!rToken) {
+    return null
+  }
+
   return (
     <Box
       variant="layout.verticalAlign"

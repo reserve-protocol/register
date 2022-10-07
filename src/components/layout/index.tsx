@@ -1,8 +1,19 @@
+import styled from '@emotion/styled'
 import { ReactNode, Suspense } from 'react'
 import { Box, Flex } from 'theme-ui'
 import Header from './header'
 import MobileNav from './MobileNav'
 import Sidebar from './sidebar'
+
+const Container = styled(Flex)`
+  flex-grow: 99999;
+  flex-basis: 0;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  flex-direction: column;
+`
+
 
 /**
  * Application Layout
@@ -21,16 +32,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
       }}
     >
       <Sidebar />
-      <Flex
-        sx={{
-          flexGrow: 99999,
-          flexBasis: 0,
-          height: '100vh',
-          overflow: 'hidden',
-          position: 'relative',
-          flexDirection: 'column',
-        }}
-      >
+      <Container>
         <Header />
         <Suspense>
           <Box sx={{ overflow: 'auto', flexGrow: 99999, position: 'relative' }}>
@@ -38,7 +40,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
           </Box>
         </Suspense>
         <MobileNav />
-      </Flex>
+      </Container>
     </Flex>
   )
 }
