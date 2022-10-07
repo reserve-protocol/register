@@ -219,7 +219,7 @@ const ConfirmDeploy = () => {
       <DeployHeader
         isValid={!!fee}
         title={t`RToken Summary`}
-        subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+        subtitle="Confirm that your RToken configuration is as you intended."
         confirmText={fee ? t`Deploy RToken` : 'Validating...'}
         onBack={handleBack}
         onConfirm={handleDeploy}

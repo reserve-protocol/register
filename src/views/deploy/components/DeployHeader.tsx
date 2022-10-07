@@ -55,6 +55,7 @@ const DeployHeader = ({
       {showBack && (
         <IconButton
           mr={3}
+          ml={5}
           onClick={onBack ? onBack : back}
           sx={{
             cursor: 'pointer',

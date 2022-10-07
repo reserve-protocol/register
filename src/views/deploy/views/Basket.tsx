@@ -11,8 +11,8 @@ const Basket = () => {
     <>
       <DeployHeader
         isValid={isValidBasket}
-        title={t`Define baskets`}
-        subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+        title={t`Define Collateral Baskets`}
+        subtitle="What will back your RToken? What happens in default scenarios?"
         confirmText={t`Confirm Basket`}
       />
       <BasketSetup />

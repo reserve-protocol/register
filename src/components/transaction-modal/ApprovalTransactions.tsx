@@ -53,7 +53,7 @@ const ApprovalTransactions = ({
   if (signed) {
     return (
       <TextPlaceholder
-        mt={3}
+        mt={4}
         text="Transactions signed! Waiting for allowance..."
       />
     )
@@ -68,7 +68,7 @@ const ApprovalTransactions = ({
           onClose={handleRetry}
         />
       )}
-      <Box mt={3}>
+      <Box mt={4}>
         <LoadingButton
           loading={!!signing}
           text={title}

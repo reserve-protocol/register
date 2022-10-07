@@ -20,8 +20,8 @@ export const baseButton = {
   color: '#fff',
   backgroundColor: 'primary',
   padding: 2,
-  paddingLeft: 3,
-  paddingRight: 3,
+  paddingLeft: 4,
+  paddingRight: 4,
 
   '&:hover': {
     filter: 'brightness(0.85)',
@@ -52,8 +52,8 @@ export const baseInput = {
 
 export const smallButton = {
   fontSize: 0,
-  paddingTop: 1,
-  paddingBottom: 1,
+  paddingTop: 2,
+  paddingBottom: 2,
   paddingLeft: 3,
   paddingRight: 3,
   borderRadius: 4,
@@ -84,15 +84,17 @@ export const colors = {
     dark: {
       text: '#fff',
       boldText: '#fff',
-      background: '#121212',
-      secondary: '#333333',
+      background: '#080D0B',
+      secondary: '#262B29',
+      disabled: '#2E3331',
       border: '#333333',
+      inputBorder: '#2E3331',
       darkBorder: '#333333', // TODO
-      contentBackground: '#1A1A1A',
+      contentBackground: '#171C1A',
       lightBackground: '#1A1A1A',
-      contentLightBackground: '#1A1A1A',
+      contentLightBackground: '#0E1311',
       secondaryBackground: '#202128',
-      primary: '#00b600',
+      primary: '#008060',
       bgCard: '#FBFDFE',
     },
   },

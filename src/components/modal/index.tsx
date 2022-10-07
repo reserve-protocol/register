@@ -44,7 +44,7 @@ const Modal = ({
     {(onClose || title) && (
       <>
         <Flex
-          mb={3}
+          mb={4}
           sx={{
             alignItems: 'center',
             justifyContent: 'center',
@@ -60,7 +60,7 @@ const Modal = ({
             />
           )}
         </Flex>
-        {!!title && <Divider mx={-4} />}
+        {!!title && <Divider mx={-4} mb={4} />}
       </>
     )}
     {children}

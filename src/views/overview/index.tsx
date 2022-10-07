@@ -26,8 +26,8 @@ import RecentTokenTransactions from './components/RecentTokenTransactions'
 import TokenOverview from './components/TokenOverview'
 import TokenUsage from './components/TokenUsage'
 
-const dividerProps = { my: 7, mx: [-4, -7], sx: { borderColor: 'darkBorder' } }
-const gridProps = { columns: [1, 1, 1, 2], gap: 6 }
+const dividerProps = { my: 7, mx: [-4, -4], sx: { borderColor: 'darkBorder' } }
+const gridProps = { columns: [1, 1, 1, 2], gap: 4 }
 
 const rTokenMetricsQuery = gql`
   query GetProtocolMetrics($id: String!, $fromTime: Int!) {
@@ -107,10 +107,10 @@ const Overview = () => {
 
   return (
     <Container>
-      <Grid {...gridProps} ml={[0, 0, 0, 5]} gap={0}>
+      <Grid {...gridProps} ml={[0, 0, 0, 3]} gap={0}>
         <Box>
-          <TokenOverview ml={[5, 5, 5, 0]} metrics={rTokenMetrics} />
-          <TokenUsage ml={[5, 5, 5, 0]} mt={7} metrics={rTokenMetrics} />
+          <TokenOverview ml={[3, 3, 3, 0]} metrics={rTokenMetrics} />
+          <TokenUsage ml={[3, 3, 3, 0]} mt={7} metrics={rTokenMetrics} />
         </Box>
         {rToken?.isRSV ? (
           <RecentRSVTransactions mt={[5, 5, 5, 0]} />
@@ -120,7 +120,7 @@ const Overview = () => {
       </Grid>
       <Divider {...dividerProps} />
       <Grid {...gridProps}>
-        <About ml={5} />
+        <About ml={3} />
         <AssetOverview />
       </Grid>
       <Divider
@@ -130,7 +130,7 @@ const Overview = () => {
       <Box
         variant="layout.verticalAlign"
         sx={{ display: ['none', 'flex'], flexWrap: 'wrap' }}
-        ml={5}
+        ml={4}
       >
         <Button variant="muted" px={5} mr={3}>
           <Trans>Constitution</Trans>
@@ -141,7 +141,7 @@ const Overview = () => {
         {!!rToken?.address && (
           <>
             <Text ml="auto">{shortenAddress(rToken.address)}</Text>
-            <CopyValue ml={3} mr={2} value={rToken.address} />
+            <CopyValue ml={2} mr={2} value={rToken.address} />
             <GoTo
               href={getExplorerLink(
                 rToken?.address ?? '',
@@ -154,7 +154,7 @@ const Overview = () => {
       <Divider {...dividerProps} />
       <ContentHead
         title={t`Live & Historical data`}
-        ml={5}
+        ml={4}
         mb={4}
         subtitle={
           !!rToken?.isRSV
@@ -162,7 +162,7 @@ const Overview = () => {
             : undefined
         }
       />
-      <Grid {...gridProps} mb={3}>
+      <Grid {...gridProps}>
         <HistoricalData />
         <RecentProtocolTransactions />
       </Grid>

@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import Help from 'components/help'
+import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { useAtomValue } from 'jotai'
 import { useCallback } from 'react'
 import { Box, BoxProps, Divider, Flex, Text } from 'theme-ui'
@@ -19,7 +20,7 @@ interface Props extends BoxProps {
 
 const Placeholder = () => (
   <Box>
-    <Box>
+    <Box sx={{ opacity: '40%' }}>
       <Flex variant="layout.verticalAlign">
         <Text variant="title" mr={2}>
           <Trans>Emergency collateral</Trans>
@@ -44,14 +45,15 @@ const Placeholder = () => (
         <Help content="TODO" />
       </Flex>
       <Divider my={3} />
-      <Box sx={{ textAlign: 'center' }} mt={5}>
+      <Box sx={{ textAlign: 'center' }} py={8} px={4}>
+        <EmptyBoxIcon />
         <Text sx={{ fontWeight: 500, display: 'block' }}>
-          <Trans>Add Primary first</Trans>
+          <Trans>Emergency Collateral</Trans>
         </Text>
         <Text variant="legend" sx={{ fontSize: 1 }}>
           <Trans>
-            Each target unit of your primary basket will have a list of
-            emergency collateral to replace with in case of default.
+            Each target unit of your primary basket will have defined emergency
+            collateral to replace with in case of default.
           </Trans>
         </Text>
       </Box>

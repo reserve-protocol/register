@@ -122,7 +122,7 @@ const EmergencyCollateral = ({
           </SmallButton>
         )}
       </Flex>
-      <Divider my={3} />
+      <Divider my={4} />
       <Flex variant="layout.verticalAlign">
         <Text>
           <Trans>Diversity factor</Trans>

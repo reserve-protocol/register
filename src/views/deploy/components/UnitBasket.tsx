@@ -85,7 +85,7 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
             <Text mr={2}>{unit}</Text>
             <Help content="TODO" />
           </Flex>
-          <Divider my={3} />
+          <Divider my={4} />
           <Flex variant="layout.verticalAlign">
             <Text variant="legend" sx={{ fontSize: 1 }}>
               <Trans>Basket</Trans>

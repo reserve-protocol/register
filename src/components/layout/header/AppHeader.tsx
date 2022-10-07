@@ -28,7 +28,7 @@ const RTokenStatus = () => {
   }
 
   return (
-    <Card ml={3} py={2} px={3} sx={{ display: ['none', 'block'] }}>
+    <Box ml={3} sx={{ display: ['none', 'block'] }}>
       <Box
         variant="layout.verticalAlign"
         sx={{ color: status === RTOKEN_STATUS.FROZEN ? 'danger' : 'warning' }}
@@ -42,7 +42,7 @@ const RTokenStatus = () => {
           )}
         </Text>
       </Box>
-    </Card>
+    </Box>
   )
 }
 

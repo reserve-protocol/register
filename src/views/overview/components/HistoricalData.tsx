@@ -8,7 +8,7 @@ const HistoricalData = (props: BoxProps) => {
   const rToken = useRToken()
 
   return (
-    <Card {...props} p={5}>
+    <Card {...props} p={5} sx={{ backgroundColor: 'contentLightBackground' }}>
       <PriceChart mb={5} />
       <SupplyChart />
       {!rToken?.isRSV && <InsuranceChart mt={5} />}

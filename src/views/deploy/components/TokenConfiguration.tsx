@@ -64,24 +64,6 @@ const TokenConfiguration = () => {
       </Box>
       <Box p={4}>
         <StakingTokenInfo />
-        <Divider my={5} />
-        <Box>
-          <InfoBox
-            title="Something something"
-            subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam maximus facilisis velit, at venenatis nunc iaculis vitae. Vestibulum ante ipsum primis in faucibus orci luctus et  posuere cubilia curae"
-            mb={3}
-          />
-          <InfoBox
-            title="Something something"
-            subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam maximus facilisis velit, at venenatis nunc iaculis vitae. Vestibulum ante ipsum primis in faucibus orci luctus et  posuere cubilia curae"
-            mb={3}
-          />
-          <InfoBox
-            title="Something something"
-            subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam maximus facilisis velit, at venenatis nunc iaculis vitae. Vestibulum ante ipsum primis in faucibus orci luctus et  posuere cubilia curae"
-            mb={3}
-          />
-        </Box>
       </Box>
     </Grid>
   )

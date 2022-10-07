@@ -24,7 +24,7 @@ const Title = ({ prefix, text }: { prefix: string; text: string }) => (
 const StepItem = ({ title, subtitle, ...props }: InfoBoxProps) => (
   <Box variant="layout.verticalAlign" {...props}>
     <Box>
-      <Circle size={10} fill="#999999" stroke="#999999" />
+      <Circle size={7} fill="#000" stroke="#999999" />
     </Box>
     <Box ml={3}>
       <Text variant="strong">{title}</Text>
@@ -100,10 +100,10 @@ const DeployIntro = () => {
           >
             👋
           </Text>
-          <Text variant="sectionTitle" sx={{ fontWeight: 500 }}>
+          <Text variant="sectionTitle" sx={{ fontWeight: 500 }} mb={2}>
             <Trans>First, Who is this for?</Trans>
           </Text>
-          <Text as="p" variant="legend" sx={{ fontSize: 1 }}>
+          <Text as="p" variant="legend" sx={{ fontSize: 2 }}>
             <Trans>
               While it doesn’t require deep technical knowledge, this wizard
               requires you to thoughtfully design a good token. We encourage you
@@ -130,18 +130,6 @@ const DeployIntro = () => {
               <Trans>Protocol docs</Trans>
             </SmallButton>
           </Flex>
-        </Box>
-        <Box mt={6}>
-          <InfoBox
-            title={t`Default Configuration`}
-            subtitle={t`This tool will guide you through the RToken deployment process with the out-of-the-box collateral plugins, parameter recommendations, and governance contracts. `}
-            mb={3}
-          />
-          <InfoBox
-            title="Customization is Possible"
-            subtitle="But most things can be customized! There is a huge amount of flexibility possible with the Reserve protocol and if you are considering changes, please check with team in case there are unforseen consequences."
-            mb={3}
-          />
         </Box>
       </Box>
     </Grid>

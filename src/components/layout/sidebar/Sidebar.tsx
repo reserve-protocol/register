@@ -163,20 +163,19 @@ const Navigation = ({
 
 // Sidebar footer
 const Footer = () => (
-  <Box m={4} sx={{ display: ['none', 'none', 'block']  }}>
+  <Box m={4} sx={{ display: ['none', 'none', 'block'] }}>
     <Box sx={{ fontSize: 1 }} mb={3}>
       <Text sx={{ fontWeight: 500 }}>
-        <Trans>Heads up!</Trans>
+        <Trans>Proceed with caution</Trans>
       </Text>
       <Text as="p" variant="legend" mt={1}>
         <Trans>
-          Register & the Reserve Protocol is brand new software that has not yet
-          been given the green light and should not be used without
-          understanding the risks.
+          Both Register & the Reserve Protocol are brand new. There are risks
+          with using any new smart contract technology.
         </Trans>
       </Text>
     </Box>
-    <Flex sx={{ alignItems: 'center'}}>
+    <Flex sx={{ alignItems: 'center' }}>
       <Text
         sx={{
           fontSize: 0,
@@ -205,7 +204,7 @@ const Sidebar = () => {
 
   return (
     <Container sx={{ flexBasis: [64, 72, 264], display: ['none', 'flex'] }}>
-      <Brand ml={[0, 0, 4]} mt={3} />
+      <Brand ml={[0, 0, 4]} mt={4} />
       <Navigation currentToken={rToken} />
       <Box my="auto" />
       <Footer />

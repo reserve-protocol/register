@@ -97,7 +97,19 @@ const TransactionModal = ({
     setSigning(id)
     onChange(true)
     if (fee && !gasError) {
-      addTransaction([{ ...tx, call: { ...tx.call, args: [...tx.call.args, { gasLimit: Math.floor(gasLimit + gasLimit * 0.1) }] }, id }])
+      addTransaction([
+        {
+          ...tx,
+          call: {
+            ...tx.call,
+            args: [
+              ...tx.call.args,
+              { gasLimit: Math.floor(gasLimit + gasLimit * 0.1) },
+            ],
+          },
+          id,
+        },
+      ])
     } else {
       addTransaction([{ ...tx, id }])
     }
@@ -138,7 +150,7 @@ const TransactionModal = ({
       {children}
       {requiredApprovals.length > 0 && !canSubmit && isValid && (
         <>
-          <Divider mx={-4} mt={3} />
+          <Divider mx={-4} my={4} />
           <ApprovalTransactions
             onConfirm={() => onChange(true)}
             onError={() => {
@@ -150,7 +162,7 @@ const TransactionModal = ({
           />
         </>
       )}
-      <Divider mx={-4} mt={3} />
+      <Divider mx={-4} mt={4} />
       <LoadingButton
         loading={!!signing}
         disabled={!canSubmit}
@@ -158,7 +170,7 @@ const TransactionModal = ({
         text={confirmLabel}
         onClick={handleConfirm}
         sx={{ width: '100%' }}
-        mt={2}
+        mt={3}
       />
       {!!canSubmit && (
         <Box mt={2} sx={{ fontSize: 1, textAlign: 'center' }}>

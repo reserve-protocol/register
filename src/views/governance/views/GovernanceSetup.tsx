@@ -19,20 +19,20 @@ const GovernanceSetup = () => {
       <Container mt={-4}>
         <DeployHeader
           isValid={isValid}
-          title={t`Configure Governance`}
+          title={t`Define Governance`}
           subtitle={t`Lorem ipsum dolor sit amet, consectetur adipiscing elit.`}
-          confirmText={t`Confirm Config`}
+          confirmText={t`Confirm governance setup`}
         />
         <Card p={0}>
           <Grid columns={2} gap={0}>
             <Box
               sx={{ borderRight: '1px solid', borderColor: 'border' }}
-              my={4}
-              px={4}
+              my={5}
+              px={5}
             >
               <GovernanceForm />
             </Box>
-            <Box p={4}>
+            <Box p={5}>
               <InfoBox title="Something something" subtitle="sd" />
               <InfoBox mt={3} title="Something something" subtitle="sd" />
             </Box>

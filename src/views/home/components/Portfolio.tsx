@@ -88,7 +88,7 @@ const Portfolio = (props: BoxProps) => {
 
   return (
     <Box {...props}>
-      <Box ml={3}>
+      <Box ml={3} mt={2}>
         <Text variant="sectionTitle">
           <Trans>Staked RSR + Rtoken Value</Trans>
         </Text>
@@ -128,7 +128,7 @@ const Portfolio = (props: BoxProps) => {
           />
         </Box>
       )}
-      <Divider mx={[-4, -7]} my={8} sx={{ borderColor: 'darkBorder' }} />
+      <Divider mx={-5} my={6} sx={{ borderColor: 'darkBorder' }} />
     </Box>
   )
 }
