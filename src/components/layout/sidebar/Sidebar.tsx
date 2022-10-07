@@ -163,7 +163,7 @@ const Navigation = ({
 
 // Sidebar footer
 const Footer = () => (
-  <Box m={4}>
+  <Box m={4} sx={{ display: ['none', 'none', 'block']  }}>
     <Box sx={{ fontSize: 1 }} mb={3}>
       <Text sx={{ fontWeight: 500 }}>
         <Trans>Heads up!</Trans>
@@ -176,7 +176,7 @@ const Footer = () => (
         </Trans>
       </Text>
     </Box>
-    <Flex sx={{ alignItems: 'center', display: ['none', 'none', 'flex'] }}>
+    <Flex sx={{ alignItems: 'center'}}>
       <Text
         sx={{
           fontSize: 0,

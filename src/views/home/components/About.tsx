@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import { useNavigate } from 'react-router-dom'
-import { Box, BoxProps, Text, Grid, Link } from 'theme-ui'
+import { Box, BoxProps, Grid, Link, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 
 /**
@@ -12,7 +12,7 @@ const About = (props: BoxProps) => {
 
   return (
     <Box {...props}>
-      <Grid columns={2} mt={6} pl={5} gap={8}>
+      <Grid columns={[1, 1, 2]} mt={6} pl={5} gap={[4, 4, 7]}>
         <Box>
           <Text mb={2} variant="strong">
             <Trans>RTokens & Deploying your own</Trans>
@@ -35,6 +35,26 @@ const About = (props: BoxProps) => {
           >
             <Trans>Deploy RToken</Trans>
           </SmallButton>
+          <Text mb={2} variant="strong">
+            <Trans>The Reserve Project</Trans>
+          </Text>
+          <Text variant="legend" as="p">
+            <Trans>
+              Reserve aims to help people around the world maintain their
+              spending power by allowing anyone to create asset-backed
+              currencies with tokenized assets on the Ethereum blockchain in
+              customizable and novel ways. Read more here in
+            </Trans>{' '}
+            <Link
+              sx={{ textDecoration: 'underline' }}
+              href="https://reserve.org/protocol/"
+              target="_blank"
+            >
+              <Trans>Reserve's documentation.</Trans>
+            </Link>
+          </Text>
+        </Box>
+        <Box>
           <Text mb={2} variant="strong">
             <Trans>This app</Trans>
           </Text>
@@ -70,24 +90,6 @@ const About = (props: BoxProps) => {
               Please keep in mind that interactions with the Ethereum blockchain
               are pseudonymous and publicly available.
             </Trans>
-          </Text>
-          <Text mb={2} variant="strong">
-            <Trans>The Reserve Project</Trans>
-          </Text>
-          <Text variant="legend" as="p">
-            <Trans>
-              Reserve aims to help people around the world maintain their
-              spending power by allowing anyone to create asset-backed
-              currencies with tokenized assets on the Ethereum blockchain in
-              customizable and novel ways. Read more here in
-            </Trans>{' '}
-            <Link
-              sx={{ textDecoration: 'underline' }}
-              href="https://reserve.org/protocol/"
-              target="_blank"
-            >
-              <Trans>Reserve's documentation.</Trans>
-            </Link>
           </Text>
         </Box>
       </Grid>

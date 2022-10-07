@@ -38,7 +38,12 @@ const TimeLoading = ({
 const Greet = ({ onDismiss, ...props }: Props) => {
   const [active, setActive] = useState(0)
   // TODO: update on trans change
-  const steps = useMemo(() => [t`Learn`, t`Mint`, t`Stake`, t`Explore`], [])
+  const steps = useMemo(() => [
+    { title: t`Learn`, text: t`Understand why each RToken exists. What is its backing? It's governing mandate?` }, 
+    { title: t`Mint`, text: t`Use this dApp to transform your various collateral types into RTokens.` }, 
+    { title: t`Stake`, text: t`Choose your own adventure with your RSR. Find your preferred RToken to stake, govern, and backstop.` },
+    { title: t`Explore`, text: t`Discover how an RToken is configured to operate in the good times and in emergency situations where collateral defaults.` }
+  ], [])
 
   const handleActive = () => {
     if (active === steps.length - 1) {
@@ -64,9 +69,11 @@ const Greet = ({ onDismiss, ...props }: Props) => {
             <Trans>Welcome to Register</Trans>
           </Text>
           <Text as="p" variant="legend" sx={{ maxWidth: 520 }}>
-            Register.io is an independent project but with tight collaboration
-            with the core team of the Reserve project. It’s created as the first
-            Explorer/UI to interact with RTokens in different ways.
+            <Trans>
+              Register.io is an independent project but with tight collaboration
+              with the core team of the Reserve project. It’s created as the first
+              Explorer/UI to interact with RTokens in different ways.
+            </Trans>
           </Text>
           <Box mt={4}>
             <SmallButton
@@ -93,12 +100,12 @@ const Greet = ({ onDismiss, ...props }: Props) => {
           }}
           ml="auto"
         >
-          <Box sx={{ width: 296 }}>
+          <Box sx={{ width: 296, height: 200 }}>
             <Text>
               <Trans>Select an RToken to:</Trans>
             </Text>
             <Flex mt={2} sx={{ alignItems: 'center' }}>
-              {steps.map((title: string, index: number) => (
+              {steps.map(({ title }, index: number) => (
                 <Text
                   key={index}
                   variant={index === active ? 'title' : 'legend'}
@@ -112,8 +119,7 @@ const Greet = ({ onDismiss, ...props }: Props) => {
               <TimeLoading onComplete={handleActive} />
             </Box>
             <Text mt={3}>
-              Lorem ipsum dolor sit amet, consectetur ipsum dolor adipiscing
-              elit. dolor sit amet.
+              { steps[active].text }
             </Text>
           </Box>
         </Flex>

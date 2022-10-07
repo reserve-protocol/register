@@ -49,6 +49,7 @@ const RTokenStatus = () => {
 /**
  * Application header
  */
+// TODO: Enable int
 const AppHeader = () => {
   const { pathname } = useLocation()
   const selectedToken = useAtomValue(selectedRTokenAtom)
@@ -79,10 +80,10 @@ const AppHeader = () => {
       >
         <HelpCircle size={20} />
       </Box>
-      <ThemeColorMode ml={4} mt={1} />
-      <Box ml={4} sx={{ alignItems: 'center', display: 'flex' }}>
+      <ThemeColorMode ml={4} mr={3} mt={1} />
+      {/* <Box ml={4} sx={{ alignItems: 'center', display: 'flex' }}>
         <LanguageSelector />
-      </Box>
+      </Box> */}
       <Account />
     </Container>
   )
