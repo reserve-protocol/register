@@ -8,7 +8,7 @@ const EmptyBoxIcon = (props: SVGProps<SVGSVGElement>) => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g clip-path="url(#clip0_4063_166006)">
+    <g clipPath="url(#clip0_4063_166006)">
       <path
         d="M40.7705 28.2323C40.7009 28.2323 40.5616 28.2323 40.492 28.1627L31.9989 23.2896L23.5058 28.1627C23.2273 28.302 22.8793 28.2323 22.74 27.9539C22.6008 27.6754 22.6704 27.3273 22.9489 27.1881L31.7204 22.1062C31.8597 22.0366 32.1381 22.0366 32.2774 22.1062L41.0489 27.1881C41.3274 27.3273 41.397 27.6754 41.2578 27.9539C41.1186 28.0931 40.9793 28.2323 40.7705 28.2323Z"
         fill="#CCCCCC"
@@ -48,8 +48,8 @@ const EmptyBoxIcon = (props: SVGProps<SVGSVGElement>) => (
         height="62.2857"
         rx="31.1429"
         stroke="#CCCCCC"
-        stroke-width="1.71429"
-        stroke-dasharray="3.43 3.43"
+        strokeWidth="1.71429"
+        strokeDasharray="3.43 3.43"
       />
     </g>
     <defs>
