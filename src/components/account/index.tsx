@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
 import { SmallButton } from 'components/button'
+import MenuIcon from 'components/icons/MenuIcon'
 import WalletIcon from 'components/icons/WalletIcon'
 import { MouseoverTooltipContent } from 'components/tooltip'
 import { txSidebarToggleAtom } from 'components/transactions/manager/atoms'
@@ -11,7 +12,7 @@ import { atom, useAtom, useAtomValue } from 'jotai'
 import { ReactNode } from 'react'
 import { AlertCircle, Menu } from 'react-feather'
 import { isWalletModalVisibleAtom, pendingTxAtom } from 'state/atoms'
-import { Box, Button, Card, Flex, Spinner, Text } from 'theme-ui'
+import { Box, Button, Card, Flex, IconButton, Spinner, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { CHAINS, CHAIN_ID } from 'utils/chains'
 
@@ -21,7 +22,6 @@ const Container = styled(Box)`
   align-items: center;
   height: 38px;
   padding: 8px;
-  border-radius: 4px;
   cursor: pointer;
 `
 
@@ -107,11 +107,7 @@ const Account = () => {
               {ENSName || shortenAddress(account)}
             </Text>
             {isProcessing && <Spinner size={20} marginLeft={10} />}
-            <Menu
-              size={16}
-              style={{ cursor: 'pointer', marginLeft: 10 }}
-              onClick={() => setVisible(!isVisible)}
-            />
+            <MenuIcon style={{ marginLeft: 10 }} />
           </Container>
         </ErrorWrapper>
       )}

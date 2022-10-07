@@ -8,7 +8,7 @@ import {
   rTokenDistributionAtom,
   rTokenYieldAtom,
 } from 'state/atoms'
-import { Box, BoxProps, Flex, Grid, Text } from 'theme-ui'
+import { Box, BoxProps, Flex, Image, Grid, Text } from 'theme-ui'
 
 const ExchangeRate = (props: BoxProps) => {
   const rate = useAtomValue(rsrExchangeRateAtom)
@@ -44,12 +44,7 @@ const Stats = (props: BoxProps) => {
             <Trans>Your stake</Trans>
           </Text>
           <IconInfo
-            icon={
-              <TrendingUp
-                size={20}
-                style={{ color: 'var(--theme-ui-colors-secondaryText)' }}
-              />
-            }
+            icon={<Image src="/svgs/trendup.svg" />}
             title="Est. APY"
             text={`${stakingApy}%`}
           />
@@ -62,12 +57,7 @@ const Stats = (props: BoxProps) => {
             <Trans>Collateral backing</Trans>
           </Text>
           <IconInfo
-            icon={
-              <Hash
-                size={20}
-                style={{ color: 'var(--theme-ui-colors-secondaryText)' }}
-              />
-            }
+            icon={<Image src="/svgs/backing.svg" />}
             title="Current"
             text={`${distribution.backing}%`}
           />
@@ -77,12 +67,7 @@ const Stats = (props: BoxProps) => {
             <Trans>Backing + Insurance</Trans>
           </Text>
           <IconInfo
-            icon={
-              <Hash
-                size={20}
-                style={{ color: 'var(--theme-ui-colors-secondaryText)' }}
-              />
-            }
+            icon={<Image src="/svgs/insurance.svg" />}
             title="Current"
             text={`${distribution.backing + distribution.insurance}%`}
           />

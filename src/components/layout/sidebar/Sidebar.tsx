@@ -166,6 +166,7 @@ const Navigation = ({
               target="_blank"
               key={index}
               sx={{
+                transition: 'none',
                 display: 'flex',
                 lineHeight: '32px',
                 paddingLeft: '5px',
