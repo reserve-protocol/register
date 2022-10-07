@@ -13,7 +13,7 @@ import { useAtomValue } from 'jotai/utils'
 import { useMemo } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { isManagerAtom, rTokenAtom, selectedRTokenAtom } from 'state/atoms'
-import { Box, Flex, Text } from 'theme-ui'
+import { Box, Flex, Link, NavLinkProps, Text } from 'theme-ui'
 import { ReserveToken } from 'types'
 import { isContentOnlyView, ROUTES } from 'utils/constants'
 import Brand from '../Brand'
@@ -32,24 +32,13 @@ interface Item {
   Icon: React.ElementType
 }
 
-interface NavItemProps extends Item {
+interface NavItemProps extends Item, Omit<NavLinkProps, 'title'> {
   rTokenAddress: string
+  to?: any
 }
 
-const NavItem = ({ path, title, Icon, rTokenAddress }: NavItemProps) => (
-  <NavLink
-    style={({ isActive }) => ({
-      paddingLeft: '5px',
-      textDecoration: 'none',
-      color: 'inherit',
-      lineHeight: '32px',
-      boxShadow: isActive
-        ? 'inset 0 12px 0px var(--theme-ui-colors-background), inset 0 -12px 0px var(--theme-ui-colors-background), inset 4px 0px 0px currentColor'
-        : 'none',
-      display: 'flex',
-    })}
-    to={`${path}?token=${rTokenAddress}`}
-  >
+const MenuItem = ({ title, Icon }: Omit<Item, 'path'>) => {
+  return (
     <Box
       sx={{
         display: 'flex',
@@ -65,6 +54,31 @@ const NavItem = ({ path, title, Icon, rTokenAddress }: NavItemProps) => (
         {title}
       </Text>
     </Box>
+  )
+}
+
+const NavItem = ({
+  path,
+  title,
+  Icon,
+  rTokenAddress,
+  ...props
+}: NavItemProps) => (
+  <NavLink
+    style={({ isActive }) => ({
+      paddingLeft: '5px',
+      textDecoration: 'none',
+      color: 'inherit',
+      lineHeight: '32px',
+      boxShadow: isActive
+        ? 'inset 0 12px 0px var(--theme-ui-colors-background), inset 0 -12px 0px var(--theme-ui-colors-background), inset 4px 0px 0px currentColor'
+        : 'none',
+      display: 'flex',
+    })}
+    to={`${path}?token=${rTokenAddress}`}
+    {...props}
+  >
+    <MenuItem title={title} Icon={Icon} />
   </NavLink>
 )
 
@@ -98,19 +112,17 @@ const Navigation = ({
   const externalPages = useMemo(
     () => [
       {
-        // TODO: get from token
-        path: '/todo/1',
+        path: currentToken?.meta?.governance?.discussion ?? '',
         title: t`Governance Discussions`,
         Icon: DiscussionsIcon,
       },
       {
-        // TODO: get from token
-        path: '/todo/2',
+        path: currentToken?.meta?.governance?.voting ?? '',
         title: t`Governance Voting`,
         Icon: GovernanceIcon,
       },
     ],
-    []
+    [currentToken?.meta?.governance?.voting]
   )
 
   const pages = useMemo(() => {
@@ -148,12 +160,21 @@ const Navigation = ({
           >
             <Trans>External Links</Trans>
           </Text>
-          {externalPages.map((item) => (
-            <NavItem
-              {...item}
-              key={item.path}
-              rTokenAddress={currentToken.address}
-            />
+          {externalPages.map((item, index) => (
+            <Link
+              href={item.path}
+              target="_blank"
+              key={index}
+              sx={{
+                display: 'flex',
+                lineHeight: '32px',
+                paddingLeft: '5px',
+                textDecoration: 'none',
+                color: 'inherit',
+              }}
+            >
+              <MenuItem {...item} />
+            </Link>
           ))}
         </>
       )}

@@ -38,12 +38,27 @@ const TimeLoading = ({
 const Greet = ({ onDismiss, ...props }: Props) => {
   const [active, setActive] = useState(0)
   // TODO: update on trans change
-  const steps = useMemo(() => [
-    { title: t`Learn`, text: t`Understand why each RToken exists. What is its backing? It's governing mandate?` }, 
-    { title: t`Mint`, text: t`Use this dApp to transform your various collateral types into RTokens.` }, 
-    { title: t`Stake`, text: t`Choose your own adventure with your RSR. Find your preferred RToken to stake, govern, and backstop.` },
-    { title: t`Explore`, text: t`Discover how an RToken is configured to operate in the good times and in emergency situations where collateral defaults.` }
-  ], [])
+  const steps = useMemo(
+    () => [
+      {
+        title: t`Learn`,
+        text: t`Understand why each RToken exists. What is its backing? It's governing mandate?`,
+      },
+      {
+        title: t`Mint`,
+        text: t`Use this dApp to transform your various collateral types into RTokens.`,
+      },
+      {
+        title: t`Stake`,
+        text: t`Choose your own adventure with your RSR. Find your preferred RToken to stake, govern, and backstop.`,
+      },
+      {
+        title: t`Explore`,
+        text: t`Discover how an RToken is configured to operate in the good times and in emergency situations where collateral defaults.`,
+      },
+    ],
+    []
+  )
 
   const handleActive = () => {
     if (active === steps.length - 1) {
@@ -71,8 +86,8 @@ const Greet = ({ onDismiss, ...props }: Props) => {
           <Text as="p" variant="legend" sx={{ maxWidth: 520 }}>
             <Trans>
               Register.io is an independent project but with tight collaboration
-              with the core team of the Reserve project. It’s created as the first
-              Explorer/UI to interact with RTokens in different ways.
+              with the core team of the Reserve project. It’s created as the
+              first Explorer/UI to interact with RTokens in different ways.
             </Trans>
           </Text>
           <Box mt={4}>
@@ -118,13 +133,11 @@ const Greet = ({ onDismiss, ...props }: Props) => {
             <Box my={3}>
               <TimeLoading onComplete={handleActive} />
             </Box>
-            <Text mt={3}>
-              { steps[active].text }
-            </Text>
+            <Text mt={3}>{steps[active].text}</Text>
           </Box>
         </Flex>
       </Flex>
-      <Divider my={8} mx={[-4, -7]} sx={{ borderColor: 'darkBorder' }} />
+      <Divider my={5} mx={[-5]} sx={{ borderColor: 'darkBorder' }} />
     </>
   )
 }

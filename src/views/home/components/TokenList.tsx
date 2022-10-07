@@ -168,6 +168,7 @@ const TokenList = (props: BoxProps) => {
         accessor: 'symbol',
         Cell: (data: any) => {
           const logo = getRTokenLogo(data.row.original.id)
+
           return <TokenItem symbol={data.cell.value} logo={logo} />
         },
       },
@@ -226,7 +227,7 @@ const TokenList = (props: BoxProps) => {
               >
                 <Trans>Mint</Trans>
               </SmallButton>
-              {cell.value !== RSV.address.toLowerCase() && (
+              {cell.value !== RSV.address && (
                 <SmallButton
                   px={3}
                   variant="muted"

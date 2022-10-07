@@ -14,7 +14,6 @@ const Container = styled(Flex)`
   flex-direction: column;
 `
 
-
 /**
  * Application Layout
  *
@@ -27,7 +26,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
       sx={{
         flexWrap: 'wrap',
         height: '100%',
-        maxWidth: '108em',
+        maxWidth: '120em',
         margin: 'auto',
       }}
     >
