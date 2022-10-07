@@ -75,7 +75,7 @@ const Management = () => {
         </>
       )}
 
-      <Box p="40px 48px">
+      <Box p={[4, 5]}>
         <Flex>
           <Text variant="title" pl={5} sx={{ fontSize: 4 }}>
             {rToken?.symbol} <Trans>Manager</Trans>
