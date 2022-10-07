@@ -183,13 +183,12 @@ const PendingBalancesUpdater = () => {
  * GasPrice
  */
 const PricesUpdater = () => {
-  const rToken = useRToken()
   const { provider, chainId } = useWeb3React()
   const { data } = useSWR(
     `${COINGECKO_API}/simple/price?vs_currencies=usd&ids=ethereum,reserve-rights-token`,
     fetcher
   )
-  const rTokenPrice = useRTokenPrice(rToken?.address ?? '', !rToken?.isRSV)
+  const rTokenPrice = useRTokenPrice()
   const setRSRPrice = useUpdateAtom(rsrPriceAtom)
   const setEthPrice = useUpdateAtom(ethPriceAtom)
   const setGasPrice = useUpdateAtom(gasPriceAtom)
@@ -235,12 +234,14 @@ const ExchangeRateUpdater = () => {
   const rToken = useAtomValue(rTokenAtom)
   const setRate = useUpdateAtom(rsrExchangeRateAtom)
   const { value } =
-    useContractCall(rToken?.stToken?.address && {
+    useContractCall(
+      rToken?.stToken?.address && {
         abi: StRSRInterface,
         address: rToken?.stToken?.address ?? '',
         method: 'exchangeRate',
         args: [],
-      }) ?? {}
+      }
+    ) ?? {}
 
   useEffect(() => {
     if (value && value[0]) {

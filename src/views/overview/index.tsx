@@ -67,8 +67,8 @@ const useTokenStats = (rTokenId: string): TokenStats => {
   const rTokenPrice = useAtomValue(rTokenPriceAtom)
 
   useEffect(() => {
-    if (data?.rtoken && data?.token) {
-      const insurance = +formatEther(data?.rtoken.insurance)
+    if (data?.rtoken || data?.token) {
+      const insurance = +formatEther(data?.rtoken?.insurance ?? '0')
       const supply = +formatEther(data?.token.totalSupply)
       const cumulativeVolume = +formatEther(data?.token.cumulativeVolume)
       const dailyVolume = +formatEther(

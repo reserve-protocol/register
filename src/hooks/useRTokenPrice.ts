@@ -15,7 +15,7 @@ const priceAtom = atom(0)
  * @param isRToken
  * @returns tokenPrice<numbeR>
  */
-const useRTokenPrice = (tokenAddress: string, isRToken = false): number => {
+const useRTokenPrice = (): number => {
   const [price, setPrice] = useAtom(priceAtom)
   const contract = useFacadeContract()
   const rToken = useRToken()
@@ -35,9 +35,9 @@ const useRTokenPrice = (tokenAddress: string, isRToken = false): number => {
   const getRSVPrice = useCallback(async (address: string) => {
     try {
       const result = await fetch(
-        `${COINGECKO_API}/simple/token_price/ethereum?contract_addresses=${tokenAddress}&vs_currencies=usd`
+        `${COINGECKO_API}/simple/token_price/ethereum?contract_addresses=${address}&vs_currencies=usd`
       ).then((res) => res.json())
-      setPrice(result[tokenAddress.toLowerCase()]?.usd ?? 0)
+      setPrice(result[address.toLowerCase()]?.usd ?? 0)
     } catch (e) {
       console.error('Error fetching RSV price', e)
     }
