@@ -14,7 +14,7 @@ import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { v4 as uuid } from 'uuid'
 import ApprovalTransactions from './ApprovalTransactions'
 import TransactionError from './TransactionError'
-import { Trans } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 
 export interface ITransactionModal {
   title: string
@@ -97,9 +97,10 @@ const TransactionModal = ({
     setSigning(id)
     onChange(true)
     if (fee && !gasError) {
-      tx.call.args.push({ gasLimit: Math.floor(gasLimit + gasLimit * 0.1) })
+      addTransaction([{ ...tx, call: { ...tx.call, args: [...tx.call.args, { gasLimit: Math.floor(gasLimit + gasLimit * 0.1) }] }, id }])
+    } else {
+      addTransaction([{ ...tx, id }])
     }
-    addTransaction([{ ...tx, id }])
   }
 
   const handleRetry = () => {
@@ -129,7 +130,7 @@ const TransactionModal = ({
     <Modal title={title} onClose={onClose} style={modalStyle}>
       {txState?.status === TRANSACTION_STATUS.REJECTED && (
         <TransactionError
-          title="Transaction failed"
+          title={t`Transaction failed`}
           subtitle={txState.description}
           onClose={handleRetry}
         />
