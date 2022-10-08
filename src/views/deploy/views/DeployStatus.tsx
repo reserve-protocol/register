@@ -42,6 +42,7 @@ const Mining = ({ hash }: { hash: string }) => (
         currency while your RToken deploys 🧘‍♂️
       </Trans>
       <br />
+      <br />
       <Trans>
         Please don't close this window to avoid issues finding your way back
         here.

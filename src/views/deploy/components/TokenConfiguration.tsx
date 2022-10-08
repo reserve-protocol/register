@@ -1,7 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { InfoBox } from 'components'
 import { SmallButton } from 'components/button'
-import Help from 'components/help'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { Box, Divider, Flex, Grid, Text } from 'theme-ui'
@@ -39,7 +37,6 @@ const TokenConfiguration = () => {
           <Text mx={2} variant="title" sx={{ color: 'secondaryText' }}>
             <Trans>16 params</Trans>
           </Text>
-          <Help content="testtesttest" />
           <SmallButton
             ml="auto"
             variant="muted"

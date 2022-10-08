@@ -113,7 +113,7 @@ const ConfirmGovernanceSetup = () => {
         <DeployHeader
           isValid={!!fee}
           title={t`Governance Summary`}
-          subtitle={t`Lorem ipsum dolor sit amet, consectetur adipiscing elit.`}
+          subtitle={t`Confirm your configuration`}
           confirmText={fee ? t`Confirm Setup` : t`Validating...`}
           gasCost={fee}
           onBack={handleBack}

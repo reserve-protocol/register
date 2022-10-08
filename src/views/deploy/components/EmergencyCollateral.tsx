@@ -13,7 +13,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
-import { Trans } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import Help from 'components/help'
 import SortableItem from 'components/sortable/SortableItem'
@@ -43,7 +43,6 @@ interface Props extends CardProps {
  * View: Deploy -> BasketSetup
  * Display emergency collateral card per target unit
  *
- * TODO: Help copy
  */
 const EmergencyCollateral = ({
   targetUnit,
@@ -145,7 +144,7 @@ const EmergencyCollateral = ({
                 {!collaterals.length && <option>0</option>}
               </Select>
             </Box>
-            <Help content="TODO" />
+            <Help content={t`Priority for the collateral`} />
           </>
         )}
       </Flex>

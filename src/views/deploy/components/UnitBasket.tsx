@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 import { NumericalInput } from 'components'
 import Help from 'components/help'
 import TokenLogo from 'components/icons/TokenLogo'
@@ -72,7 +72,7 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
         <>
           <Flex variant="layout.verticalAlign">
             <Text sx={{ fontWeight: 500 }}>
-              {unit} <Trans>- Basket scale</Trans>
+              {unit} - <Trans>Basket scale</Trans>
             </Text>
             <Box ml="auto" sx={{ width: 97 }} mr={2}>
               <NumericalInput
@@ -83,7 +83,7 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
               />
             </Box>
             <Text mr={2}>{unit}</Text>
-            <Help content="TODO" />
+            <Help content={t`Target value for this unit of account`} />
           </Flex>
           <Divider my={4} />
           <Flex variant="layout.verticalAlign">

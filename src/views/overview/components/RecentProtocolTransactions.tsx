@@ -48,7 +48,7 @@ const RecentProtocolTransactions = () => {
       card
       compact
       maxHeight={rToken?.isRSV ? 525 : 810}
-      help="TODO"
+      help="Protocol on-chain transactions related to RTokens"
       title={t`Protocol Transactions`}
       data={txs}
     />

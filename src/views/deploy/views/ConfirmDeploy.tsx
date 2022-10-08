@@ -161,7 +161,9 @@ export const getDeployParameters = (
   }
 }
 
-// TODO: Error case estimating gas (transaction revert)
+/**
+ * Execute RToken deployment
+ */
 const ConfirmDeploy = () => {
   const { getValues } = useFormContext()
   const addTransaction = useSetAtom(addTransactionAtom)

@@ -61,7 +61,7 @@ const RecentRSVTransactions = (props: BoxProps) => {
         compact
         card
         maxHeight={400}
-        help="TODO"
+        help="This includes on-chain transactions in addition to anonymized RPay transactions to show the full story of the RSV ecosystem."
         title={t`Transactions`}
         data={txs}
         {...props}

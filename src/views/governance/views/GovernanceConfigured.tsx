@@ -40,6 +40,8 @@ const GovernanceConfigured = () => {
     window.open('https://www.tally.xyz/?action=start-a-dao', '_blank')
   }
 
+  console.log('config', config)
+
   return (
     <Box p={5}>
       <Flex ml={3} mb={4} sx={{ alignItems: 'center' }}>
@@ -48,7 +50,7 @@ const GovernanceConfigured = () => {
             <Trans>Governance setup completed</Trans>
           </Text>
           <Text variant="legend">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            <Trans>Review your configuration</Trans>
           </Text>
         </Box>
         {!!config.governance && (

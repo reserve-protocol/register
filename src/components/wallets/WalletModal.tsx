@@ -122,9 +122,10 @@ const WalletModal = () => {
             <Box mt={5} sx={{ textAlign: 'center', fontSize: 1 }}>
               <Text>
                 <Trans>
-                  By connecting a wallet, you agree to LC Labs’ Terms of Service
-                  and acknowledge that you have read and understand the LC Labs
-                  Register Disclaimer.
+                  Wallets are provided by External Providers and by selecting
+                  you agree to Terms of those Providers. Your access to the
+                  wallet might be reliant on the External Provider being
+                  operational.
                 </Trans>
               </Text>
             </Box>

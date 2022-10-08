@@ -100,7 +100,7 @@ const CustomCollateral = ({
 
   if (isActive) {
     return (
-      <Box pt={2}>
+      <Box>
         <Box>
           <Text variant="legend" ml={2}>
             Plugin address
@@ -134,7 +134,7 @@ const CustomCollateral = ({
   }
 
   return (
-    <Flex variant="layout.verticalAlign" pt={2}>
+    <Flex variant="layout.verticalAlign">
       <Box>
         <Text>
           <Trans>Made your own collateral?</Trans>

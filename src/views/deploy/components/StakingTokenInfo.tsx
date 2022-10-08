@@ -10,7 +10,7 @@ import { Box, BoxProps, Text } from 'theme-ui'
 const StakingTokenInfo = (props: BoxProps) => {
   const { watch } = useFormContext()
   const ticker = watch('ticker')
-  const stRSR = ticker ? `st${ticker.toString().toUpperCase()}RSR` : 'stRSR'
+  const stRSR = ticker ? `${ticker.toString().toLowerCase()}RSR` : 'stRSR'
 
   return (
     <Box {...props}>

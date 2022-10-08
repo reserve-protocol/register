@@ -58,7 +58,7 @@ const TransactionsOverview = (props: BoxProps) => {
         card
         maxHeight={420}
         title={t`Transactions`}
-        help="TODO"
+        help={t`This includes on-chain transactions for RTokens and RSV in addition to anonymized RPay transactions to show the full story of the Reserve ecosystem.`}
         data={txs}
         {...props}
       />

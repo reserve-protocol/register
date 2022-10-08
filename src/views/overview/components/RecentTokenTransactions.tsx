@@ -50,7 +50,7 @@ const RecentTokenTransactions = (props: BoxProps) => {
       compact
       card
       maxHeight={400}
-      help="TODO"
+      help="RToken related on-chain transactions"
       title={t`Transactions`}
       data={txs}
       {...props}
