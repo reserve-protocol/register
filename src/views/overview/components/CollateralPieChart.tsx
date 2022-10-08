@@ -50,7 +50,7 @@ const CollateralChart = ({
         {!isRSV && (
           <Pie
             dataKey="value"
-            data={[{ value: 100, name: 'insurance' }]}
+            data={[{ value: insurance, name: 'insurance' }]}
             cx="50%"
             cy="50%"
             innerRadius={90}

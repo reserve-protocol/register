@@ -132,12 +132,26 @@ const Overview = () => {
         sx={{ display: ['none', 'flex'], flexWrap: 'wrap' }}
         ml={4}
       >
-        <Button variant="muted" px={5} mr={3}>
-          <Trans>Constitution</Trans>
-        </Button>
-        <Button variant="muted" px={5}>
-          <Trans>Governance</Trans>
-        </Button>
+        {rToken?.meta?.website && (
+          <Button
+            variant="muted"
+            px={5}
+            mr={3}
+            onClick={() => window.open(rToken.meta?.website, '_blank')}
+          >
+            <Trans>Website</Trans>
+          </Button>
+        )}
+        {rToken?.meta?.social?.twitter && (
+          <Button
+            variant="muted"
+            px={5}
+            mr={3}
+            onClick={() => window.open(rToken?.meta?.social?.twitter, '_blank')}
+          >
+            <Trans>Twitter</Trans>
+          </Button>
+        )}
         {!!rToken?.address && (
           <>
             <Text ml="auto">{shortenAddress(rToken.address)}</Text>
