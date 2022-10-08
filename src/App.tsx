@@ -3,7 +3,7 @@ import { Trans } from '@lingui/macro'
 import { I18nProvider } from '@lingui/react'
 import { useAtomValue } from 'jotai'
 import { en, es } from 'make-plural/plurals'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { AlertCircle } from 'react-feather'
 import { Toaster } from 'react-hot-toast'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
@@ -57,11 +57,8 @@ i18n.activate('en')
  * @returns {JSX.Element}
  */
 const App = () => {
-
   if (process.env.REACT_APP_MAINTENANCE) {
-    return <Text>
-      Maintenance
-    </Text>
+    return <Text>Maintenance</Text>
   }
 
   return (
@@ -121,6 +118,6 @@ const App = () => {
       </I18nProvider>
     </Router>
   )
-} 
+}
 
 export default App

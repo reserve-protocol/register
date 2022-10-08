@@ -17,7 +17,16 @@ import {
 } from 'types'
 import { RSR, RTOKEN_STATUS, TRANSACTION_STATUS } from 'utils/constants'
 import { WalletTransaction } from './../types/index'
-import { hasViewportRelativeCoordinates } from '@dnd-kit/utilities'
+
+const VERSION = '1'
+
+if (
+  !localStorage.getItem('version') ||
+  localStorage.getItem('version') !== VERSION
+) {
+  localStorage.clear()
+  localStorage.setItem('version', VERSION)
+}
 
 /**
  * ######################

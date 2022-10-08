@@ -1,6 +1,6 @@
 import { Token } from 'types'
-import { ChainId, CHAIN_ID } from 'utils/chains'
-import { RSR_ADDRESS, RSV_ADDRESS } from './addresses'
+import { CHAIN_ID } from 'utils/chains'
+import { RSR_ADDRESS } from './addresses'
 
 export const TRANSACTION_STATUS = {
   PENDING: 'PENDING', // Tx to be executed
