@@ -192,10 +192,8 @@ const TokenList = (props: BoxProps) => {
           return (
             <Text
               sx={{
-                whiteSpace: 'nowrap',
-                maxWidth: '80px',
+                width: '74px',
                 display: 'block',
-                overflow: 'auto',
               }}
             >
               {cell.value}
