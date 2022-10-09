@@ -228,7 +228,7 @@ const Sidebar = () => {
 
   return (
     <Container sx={{ flexBasis: [64, 72, 264], display: ['none', 'flex'] }}>
-      <Brand ml={[0, 0, 4]} mt={4} />
+      <Brand ml={4} mt={4} />
       <Navigation currentToken={rToken} />
       <Box my="auto" />
       <Footer />
