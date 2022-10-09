@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/macro'
+import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import dayjs from 'dayjs'
 import { atom, useAtomValue } from 'jotai'
@@ -201,7 +202,10 @@ const TransactionList = () => {
       ))}
       {!Object.keys(txs).length && (
         <Box mt={5} sx={{ textAlign: 'center' }}>
-          <Text variant="legend">No transactions...</Text>
+          <EmptyBoxIcon />
+          <Text variant="legend" mt={3} sx={{ display: 'block' }}>
+            No transactions...
+          </Text>
         </Box>
       )}
     </Box>
