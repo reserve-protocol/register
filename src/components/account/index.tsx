@@ -10,7 +10,7 @@ import TransactionSidebar from 'components/transactions/manager/TransactionSideb
 import WalletModal from 'components/wallets/WalletModal'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { ReactNode } from 'react'
-import { AlertCircle, Menu } from 'react-feather'
+import { AlertCircle, Menu, Power } from 'react-feather'
 import { isWalletModalVisibleAtom, pendingTxAtom } from 'state/atoms'
 import { Box, Button, Card, Flex, IconButton, Spinner, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
@@ -93,7 +93,12 @@ const Account = () => {
           sx={{ fontSize: 1 }}
           onClick={() => setWalletVisible(true)}
         >
-          <Trans>Connect</Trans>
+          <Text sx={{ display: ['none', 'initial'] }}>
+            <Trans>Connect</Trans>
+          </Text>
+          <Box sx={{ display: ['inline', 'none'] }}>
+            <Power size={12} />
+          </Box>
         </SmallButton>
       ) : (
         <ErrorWrapper isValid={!isInvalid} chainId={chainId}>

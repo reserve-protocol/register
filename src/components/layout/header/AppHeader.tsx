@@ -2,13 +2,12 @@ import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
 import Account from 'components/account'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
-import LanguageSelector from 'components/language-selector'
 import RTokenSelector from 'components/rtoken-selector'
 import { useAtomValue } from 'jotai/utils'
 import { AlertCircle, HelpCircle } from 'react-feather'
 import { useLocation } from 'react-router-dom'
 import { rTokenStatusAtom, selectedRTokenAtom } from 'state/atoms'
-import { Box, Card, Flex, Text } from 'theme-ui'
+import { Box, Flex, Text } from 'theme-ui'
 import { isContentOnlyView, RTOKEN_STATUS } from 'utils/constants'
 import Brand from '../Brand'
 
@@ -56,7 +55,7 @@ const AppHeader = () => {
   const isDeployer = isContentOnlyView(pathname)
 
   return (
-    <Container px={[3, 7]}>
+    <Container px={[5, 7]}>
       {(isDeployer || !selectedToken) && (
         <Flex mr={[2, 2, 4]} sx={{ alignItems: 'center' }}>
           <Brand />
