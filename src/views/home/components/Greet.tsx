@@ -10,8 +10,10 @@ interface Props extends BoxProps {
 // Load bar for every "second"
 const TimeLoading = ({
   seconds = 10,
+  active,
   onComplete,
 }: {
+  active: number
   seconds?: number
   onComplete(): void
 }) => {
@@ -28,9 +30,12 @@ const TimeLoading = ({
       }
     } else {
       onComplete()
-      setCount(0)
     }
   }, [count])
+
+  useEffect(() => {
+    setCount(0)
+  }, [active])
 
   return <Progress max={seconds * 10} value={count} />
 }
@@ -85,9 +90,10 @@ const Greet = ({ onDismiss, ...props }: Props) => {
           </Text>
           <Text as="p" variant="legend" sx={{ maxWidth: 520 }}>
             <Trans>
-              Register.io is an independent project but with tight collaboration
-              with the core team of the Reserve project. It’s created as the
-              first Explorer/UI to interact with RTokens in different ways.
+              Register.app is an independent project but with tight
+              collaboration with the core team of the Reserve project. It’s
+              created as the first Explorer/UI to interact with RTokens in
+              different ways.
             </Trans>
           </Text>
           <Box mt={4}>
@@ -95,10 +101,12 @@ const Greet = ({ onDismiss, ...props }: Props) => {
               px={3}
               py={2}
               mr={4}
-              onClick={() => window.open('https://about.register.io', '_blank')}
+              onClick={() =>
+                window.open('https://github.com/lc-labs/register', '_blank')
+              }
               variant="muted"
             >
-              <Trans>Go to about.register.io</Trans>
+              <Trans>Go to source</Trans>
             </SmallButton>
             <SmallButton px={4} py={2} onClick={onDismiss}>
               <Trans>Got it!</Trans>
@@ -122,8 +130,10 @@ const Greet = ({ onDismiss, ...props }: Props) => {
             <Flex mt={2} sx={{ alignItems: 'center' }}>
               {steps.map(({ title }, index: number) => (
                 <Text
+                  onClick={() => setActive(index)}
                   key={index}
                   variant={index === active ? 'title' : 'legend'}
+                  sx={{ cursor: 'pointer' }}
                   mr={3}
                 >
                   {title}
@@ -131,7 +141,7 @@ const Greet = ({ onDismiss, ...props }: Props) => {
               ))}
             </Flex>
             <Box my={3}>
-              <TimeLoading onComplete={handleActive} />
+              <TimeLoading active={active} onComplete={handleActive} />
             </Box>
             <Text mt={3}>{steps[active].text}</Text>
           </Box>
