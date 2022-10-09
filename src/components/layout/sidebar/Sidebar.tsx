@@ -187,7 +187,7 @@ const Navigation = ({
 const Footer = () => (
   <Box m={4} sx={{ display: ['none', 'none', 'block'] }}>
     <Box sx={{ fontSize: 1 }} mb={3}>
-      <Text sx={{ fontWeight: 500 }}>
+      <Text sx={{ fontWeight: 500, color: 'danger' }}>
         <Trans>Proceed with caution</Trans>
       </Text>
       <Text as="p" variant="legend" mt={1}>
@@ -198,14 +198,16 @@ const Footer = () => (
       </Text>
     </Box>
     <Flex sx={{ alignItems: 'center' }}>
-      <Text
-        sx={{
-          fontSize: 0,
-        }}
-        variant="legend"
-      >
-        Made by LC Labs
-      </Text>
+      <Link target="_blank" href="https://github.com/lc-labs/register">
+        <Text
+          sx={{
+            fontSize: 0,
+          }}
+          variant="legend"
+        >
+          Made by LC Labs
+        </Text>
+      </Link>
       <Box mx="auto" />
       <SyncedBlock />
     </Flex>

@@ -22,16 +22,14 @@ const About = (props: BoxProps) => {
           <Trans>About</Trans>
         </Text>
         <Text variant="legend" as="p">
-          Here you can find usage data about RSV, which is mostly used in the
-          RPay app. Transactions data includes off-chain data that as been
-          anonymized to protect user privacy. About RSV is backed by a basket of
-          on-chain collateral assets, held by the Reserve Vault smart contract.
-          This basket is comprised of equal parts TUSD, USDP, and USDC — so each
-          RSV is initially redeemable with the Reserve smart contracts for 1/3
-          TUSD + 1/3 USDP + 1/3 USDC. Since each RSV token is redeemable
-          directly for this basket, value of the RSV token is economically
-          linked to the value of the basket. This anchors RSV at $1.00, as each
-          of the current collateral tokens is redeemable for USD 1:1.
+          RSV is backed by a basket of on-chain collateral assets, held by the
+          Reserve Vault smart contract. This basket is comprised of equal parts
+          TUSD, USDP, and USDC — so each RSV is initially redeemable with the
+          Reserve smart contracts for 1/3 TUSD + 1/3 USDP + 1/3 USDC. Since each
+          RSV token is redeemable directly for this basket, value of the RSV
+          token is economically linked to the value of the basket. This anchors
+          RSV at $1.00, as each of the current collateral tokens is redeemable
+          for USD 1:1.
           <br />
           <br />
           RSV is not integrated with the Reserve protocol at this time and is a

@@ -87,7 +87,7 @@ const TransactionsTable = ({
           relativeTime(cell.value, currentTime),
       },
       {
-        Header: 'Explore',
+        Header: t`Platform`,
         id: 'id',
         accessor: 'hash',
         Cell: ({ cell }: { cell: any }) =>

@@ -185,7 +185,7 @@ const ConfirmDeploy = () => {
 
     return {
       id: deployId,
-      description: t`Deploy rToken`,
+      description: t`Deploy RToken`,
       status: TRANSACTION_STATUS.PENDING,
       value: '0',
       call: {

@@ -45,7 +45,7 @@ const ConfirmUnstake = ({ onClose }: { onClose: () => void }) => {
       tx={transaction}
       isValid={isValid}
       requiredAllowance={{}}
-      confirmLabel={t`Begin unStake cooldown`}
+      confirmLabel={t`Begin unstake cooldown`}
       onClose={handleClose}
       onChange={(signing) => setSigning(signing)}
     >

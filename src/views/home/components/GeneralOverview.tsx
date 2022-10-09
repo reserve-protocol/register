@@ -47,7 +47,7 @@ const TransactionsOverview = (props: BoxProps) => {
     )
     txs.sort((a, b) => Number(b.timestamp) - Number(a.timestamp))
 
-    return txs.slice(0, 25)
+    return txs.slice(0, 20)
   }, [data, rpayTx])
 
   return (

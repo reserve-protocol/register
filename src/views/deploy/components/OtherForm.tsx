@@ -26,7 +26,7 @@ const OtherForm = (props: BoxProps) => {
         <Trans>Other</Trans>
       </Text>
       <Field
-        label={t`Reward distribution [${rTokenDist}% rToken - ${rsrDist}% RSR]`}
+        label={t`Reward distribution [${rTokenDist}% RToken - ${rsrDist}% RSR]`}
         mb={4}
       >
         <Box mx={2} mt={4}>

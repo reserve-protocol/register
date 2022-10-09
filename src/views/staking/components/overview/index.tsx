@@ -115,7 +115,7 @@ const About = (props: BoxProps) => (
       </Trans>
     </Text>
     <Text variant="strong" mb={2} mt={4}>
-      <Trans>Risk evaluation:</Trans>
+      <Trans>Risk evaluation</Trans>
     </Text>
     <Text as="p" variant="legend">
       <Trans>
@@ -126,7 +126,7 @@ const About = (props: BoxProps) => (
       </Trans>
     </Text>
     <Text variant="strong" mb={2} mt={4}>
-      <Trans>Governor Alexios:</Trans>
+      <Trans>Governor Alexios</Trans>
     </Text>
     <Text as="p" variant="legend">
       <Trans>

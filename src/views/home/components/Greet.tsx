@@ -47,7 +47,7 @@ const Greet = ({ onDismiss, ...props }: Props) => {
     () => [
       {
         title: t`Learn`,
-        text: t`Understand why each RToken exists. What is its backing? It's governing mandate?`,
+        text: t`Understand why each RToken exists. What is its backing? its governing mandate?`,
       },
       {
         title: t`Mint`,
