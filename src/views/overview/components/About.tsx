@@ -67,6 +67,16 @@ const About = (props: BoxProps) => {
           </Text>
         </>
       )}
+      {!rToken?.meta?.about && !rToken?.mandate && (
+        <>
+          <Text mb={3} variant="title">
+            <Trans>About</Trans>
+          </Text>
+          <Text as="p" variant="legend">
+            <Trans>There is no information about this token.</Trans>
+          </Text>
+        </>
+      )}
     </Box>
   )
 }

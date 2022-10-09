@@ -1,24 +1,13 @@
-import { formatEther } from '@ethersproject/units'
-import { t, Trans } from '@lingui/macro'
-import { Button, Container } from 'components'
-import CopyValue from 'components/button/CopyValue'
-import GoTo from 'components/button/GoTo'
+import { t } from '@lingui/macro'
+import { Container } from 'components'
 import { ContentHead } from 'components/info-box'
-import { gql } from 'graphql-request'
-import useQuery from 'hooks/useQuery'
-import useTimeFrom from 'hooks/useTimeFrom'
-import { useAtom } from 'jotai'
+import useTokenStats from 'hooks/useTokenStats'
 import { useAtomValue } from 'jotai/utils'
-import { useEffect } from 'react'
-import { rsrPriceAtom, rTokenAtom, rTokenPriceAtom } from 'state/atoms'
-import { tokenMetricsAtom } from 'state/metrics/atoms'
-import { Box, Divider, Grid, Text } from 'theme-ui'
-import { TokenStats } from 'types'
-import { formatCurrency, shortenAddress } from 'utils'
-import { TIME_RANGES } from 'utils/constants'
-import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import { rTokenAtom } from 'state/atoms'
+import { Box, Divider, Grid } from 'theme-ui'
 import About from './components/About'
 import AssetOverview from './components/AssetOverview'
+import External from './components/External'
 import HistoricalData from './components/HistoricalData'
 import RecentProtocolTransactions from './components/RecentProtocolTransactions'
 import RecentRSVTransactions from './components/RecentRSVTransactions'
@@ -26,74 +15,8 @@ import RecentTokenTransactions from './components/RecentTokenTransactions'
 import TokenOverview from './components/TokenOverview'
 import TokenUsage from './components/TokenUsage'
 
-const dividerProps = { my: 7, mx: [-4, -4], sx: { borderColor: 'darkBorder' } }
-const gridProps = { columns: [1, 1, 1, 2], gap: 4 }
-
-const rTokenMetricsQuery = gql`
-  query GetProtocolMetrics($id: String!, $fromTime: Int!) {
-    rtoken(id: $id) {
-      insurance
-    }
-    token(id: $id) {
-      totalSupply
-      transferCount
-      cumulativeVolume
-      dailyTokenSnapshot(
-        orderBy: timestamp
-        orderDirection: desc
-        first: 1
-        where: { timestamp_gte: $fromTime }
-      ) {
-        dailyVolume
-        dailyEventCount
-      }
-    }
-  }
-`
-
-const useTokenStats = (rTokenId: string): TokenStats => {
-  const [stats, setStats] = useAtom(tokenMetricsAtom)
-  const fromTime = useTimeFrom(TIME_RANGES.DAY)
-
-  const { data } = useQuery(
-    rTokenMetricsQuery,
-    {
-      id: rTokenId,
-      fromTime,
-    },
-    { refreshInterval: 5000 }
-  )
-  const rsrPrice = useAtomValue(rsrPriceAtom)
-  const rTokenPrice = useAtomValue(rTokenPriceAtom)
-
-  useEffect(() => {
-    if (data?.rtoken || data?.token) {
-      const insurance = +formatEther(data?.rtoken?.insurance ?? '0')
-      const supply = +formatEther(data?.token.totalSupply)
-      const cumulativeVolume = +formatEther(data?.token.cumulativeVolume)
-      const dailyVolume = +formatEther(
-        data?.token.dailyTokenSnapshot[0]?.dailyVolume ?? '0'
-      )
-
-      setStats({
-        insurance,
-        supply,
-        cumulativeVolume,
-        transferCount: +data?.token.transferCount,
-        dailyTransferCount:
-          +data?.token.dailyTokenSnapshot[0]?.dailyEventCount || 0,
-        dailyVolume: `$${formatCurrency(dailyVolume)}`,
-        insuranceUsd: `$${formatCurrency(insurance * rsrPrice)}`,
-        supplyUsd: `$${formatCurrency(supply * rTokenPrice)}`,
-        cumulativeVolumeUsd: `$${formatCurrency(
-          cumulativeVolume * rTokenPrice
-        )}`,
-      })
-    }
-  }, [JSON.stringify(data), rTokenPrice])
-
-  return stats
-}
+const dividerProps = { my: 5, mx: [-4, -5], sx: { borderColor: 'darkBorder' } }
+const gridProps = { columns: [1, 1, 1, 2], gap: [5, 5, 5, 4] }
 
 /**
  * RToken Overview
@@ -103,7 +26,10 @@ const useTokenStats = (rTokenId: string): TokenStats => {
  */
 const Overview = () => {
   const rToken = useAtomValue(rTokenAtom)
-  const rTokenMetrics = useTokenStats(rToken?.address.toLowerCase() ?? '')
+  const rTokenMetrics = useTokenStats(
+    rToken?.address.toLowerCase() ?? '',
+    rToken?.isRSV
+  )
 
   return (
     <Container>
@@ -127,44 +53,7 @@ const Overview = () => {
         {...dividerProps}
         sx={{ borderColor: 'darkBorder', display: ['none', 'block'] }}
       />
-      <Box
-        variant="layout.verticalAlign"
-        sx={{ display: ['none', 'flex'], flexWrap: 'wrap' }}
-        ml={4}
-      >
-        {rToken?.meta?.website && (
-          <Button
-            variant="muted"
-            px={5}
-            mr={3}
-            onClick={() => window.open(rToken.meta?.website, '_blank')}
-          >
-            <Trans>Website</Trans>
-          </Button>
-        )}
-        {rToken?.meta?.social?.twitter && (
-          <Button
-            variant="muted"
-            px={5}
-            mr={3}
-            onClick={() => window.open(rToken?.meta?.social?.twitter, '_blank')}
-          >
-            <Trans>Twitter</Trans>
-          </Button>
-        )}
-        {!!rToken?.address && (
-          <>
-            <Text ml="auto">{shortenAddress(rToken.address)}</Text>
-            <CopyValue ml={2} mr={2} value={rToken.address} />
-            <GoTo
-              href={getExplorerLink(
-                rToken?.address ?? '',
-                ExplorerDataType.TOKEN
-              )}
-            />
-          </>
-        )}
-      </Box>
+      <External />
       <Divider {...dividerProps} />
       <ContentHead
         title={t`Live & Historical data`}

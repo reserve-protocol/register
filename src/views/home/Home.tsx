@@ -35,7 +35,7 @@ const Home = () => {
       {!!account && <Portfolio />}
       <Grid columns={[1, 1, 1, 2]}>
         <TokenStats mb={[5, 5, 5, 0]} />
-        <TransactionsOverview mb={[5, 5, 5, 0]} />
+        <TransactionsOverview />
       </Grid>
       <Divider mb={2} mt={5} mx={[-4, -5]} sx={{ borderColor: 'darkBorder' }} />
       <TokenList mt={6} />

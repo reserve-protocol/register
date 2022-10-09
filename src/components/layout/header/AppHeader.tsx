@@ -75,7 +75,7 @@ const AppHeader = () => {
       )}
       <Box mx="auto" />
       <Box
-        sx={{ display: ['none', 'block'], marginTop: 1 }}
+        sx={{ display: ['none', 'block'], marginTop: '7px' }}
         variant="layout.verticalAlign"
       >
         <HelpCircle size={20} />

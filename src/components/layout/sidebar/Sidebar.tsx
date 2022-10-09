@@ -198,7 +198,7 @@ const Footer = () => (
       </Text>
     </Box>
     <Flex sx={{ alignItems: 'center' }}>
-      <Link target="_blank" href="https://github.com/lc-labs/register">
+      <Link target="_blank" href="https://github.com/lc-labs">
         <Text
           sx={{
             fontSize: 0,
