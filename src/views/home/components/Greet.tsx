@@ -1,7 +1,7 @@
 import { t, Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import { useEffect, useMemo, useState } from 'react'
-import { BoxProps, Box, Flex, Text, Button, Progress, Divider } from 'theme-ui'
+import { Box, BoxProps, Divider, Flex, Progress, Text } from 'theme-ui'
 
 interface Props extends BoxProps {
   onDismiss(): void

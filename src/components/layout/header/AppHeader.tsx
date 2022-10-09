@@ -58,7 +58,7 @@ const AppHeader = () => {
   return (
     <Container px={[3, 7]}>
       {(isDeployer || !selectedToken) && (
-        <Flex mr={[2, 2, 4]} px={[2, 3]} sx={{ alignItems: 'center' }}>
+        <Flex mr={[2, 2, 4]} sx={{ alignItems: 'center' }}>
           <Brand />
           {isDeployer && (
             <Text ml={3} sx={{ fontSize: 3 }} variant="subtitle">
