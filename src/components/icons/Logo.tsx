@@ -26,7 +26,7 @@ const Logo = (props: SVGProps<SVGSVGElement>) => (
 export const SmallLogo = (props: SVGProps<SVGSVGElement>) => (
   <svg
     width="30"
-    height="30"
+    height="24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}

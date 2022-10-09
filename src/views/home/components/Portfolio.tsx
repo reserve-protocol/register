@@ -128,7 +128,7 @@ const Portfolio = (props: BoxProps) => {
           />
         </Box>
       )}
-      <Divider mx={-5} my={6} sx={{ borderColor: 'darkBorder' }} />
+      <Divider mx={[-4, -5]} my={6} sx={{ borderColor: 'darkBorder' }} />
     </Box>
   )
 }

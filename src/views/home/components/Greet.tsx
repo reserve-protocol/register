@@ -147,7 +147,7 @@ const Greet = ({ onDismiss, ...props }: Props) => {
           </Box>
         </Flex>
       </Flex>
-      <Divider my={5} mx={[-5]} sx={{ borderColor: 'darkBorder' }} />
+      <Divider my={5} mx={[-4, -5]} sx={{ borderColor: 'darkBorder' }} />
     </>
   )
 }

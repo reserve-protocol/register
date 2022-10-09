@@ -8,17 +8,21 @@ import StakeIcon from 'components/icons/StakeIcon'
 import { NavLink } from 'react-router-dom'
 import useRToken from 'hooks/useRToken'
 import { useMemo } from 'react'
+import { useAtomValue } from 'jotai'
+import { selectedRTokenAtom } from 'state/atoms'
 
 const items = [
   { path: ROUTES.HOME, Icon: HomeIcon },
   { path: ROUTES.OVERVIEW, Icon: OverviewIcon },
   { path: ROUTES.ISSUANCE, Icon: IssuanceIcon },
   { path: ROUTES.INSURANCE, Icon: StakeIcon },
-  { path: ROUTES.AUCTIONS, Icon: AuctionsIcon },
+  // { path: ROUTES.AUCTIONS, Icon: AuctionsIcon },
 ]
 
 const MobileNav = () => {
   const rToken = useRToken()
+  const address = useAtomValue(selectedRTokenAtom)
+
   const menuItems = useMemo(() => {
     if (rToken?.isRSV) {
       return [...items.slice(0, 3)]
@@ -26,10 +30,6 @@ const MobileNav = () => {
 
     return items
   }, [rToken?.address])
-
-  if (!rToken) {
-    return null
-  }
 
   return (
     <Box
@@ -53,7 +53,7 @@ const MobileNav = () => {
             borderBottom: isActive ? '3px solid black' : 'none',
           })}
           key={path}
-          to={`${path}?token=${rToken?.address}`}
+          to={`${path}?token=${address}`}
         >
           <Icon />
         </NavLink>

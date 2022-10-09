@@ -34,7 +34,7 @@ const Guard = ({ children }: { children: React.ReactNode }) => {
       <AlertCircle />
       <br />
       <Text sx={{ fontSize: 3, fontWeight: 300 }}>
-        <Trans>No rToken data</Trans>
+        <Trans>No RToken data</Trans>
       </Text>
     </Box>
   ) : (
