@@ -74,8 +74,9 @@ const AppHeader = () => {
       )}
       <Box mx="auto" />
       <Box
-        sx={{ display: ['none', 'block'], marginTop: '7px' }}
+        sx={{ display: ['none', 'block'], marginTop: '7px', cursor: 'pointer' }}
         variant="layout.verticalAlign"
+        onClick={() => window.open('https://reserve.org/protocol/', '_blank')}
       >
         <HelpCircle size={20} />
       </Box>

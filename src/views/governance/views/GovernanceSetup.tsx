@@ -1,5 +1,5 @@
 import { t, Trans } from '@lingui/macro'
-import { Container, InfoBox } from 'components'
+import { Container } from 'components'
 import { SmallButton } from 'components/button'
 import { useFormContext } from 'react-hook-form'
 import { Box, Card, Grid, Text } from 'theme-ui'
