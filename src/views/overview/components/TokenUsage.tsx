@@ -31,7 +31,7 @@ const TokenUsage = ({ metrics, ...props }: Props) => {
           <InfoHeading
             title={t`24h Txs`}
             mb={3}
-            subtitle={metrics.dailyTransferCount.toString()}
+            subtitle={formatCurrency(metrics.dailyTransferCount)}
           />
           <InfoHeading
             title={t`Cumulative Txs`}

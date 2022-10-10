@@ -38,9 +38,11 @@ const RSVUpdater = () => {
   useEffect(() => {
     if (overviewData) {
       updateOverview({
-        volume: overviewData['tx_volume'],
-        txCount: overviewData['tx_count'],
-        holders: overviewData['user_count'],
+        volume: overviewData['total_tx_volume'] || 0,
+        txCount: overviewData['total_tx_count'] || 0,
+        holders: overviewData['user_count'] || 0,
+        dayVolume: overviewData['24_hour_tx_volume'] || 0,
+        dayTxCount: overviewData['24_hour_tx_count'] || 0,
       })
     }
   }, [overviewData])

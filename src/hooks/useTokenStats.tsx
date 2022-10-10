@@ -82,6 +82,11 @@ const useTokenStats = (rTokenId: string, isRSV = false): TokenStats => {
         tokenData.cumulativeVolumeUsd = `$${formatCurrency(
           volumeUsd + rpayOverview.volume
         )}`
+        ;(tokenData.dailyVolume = `$${formatCurrency(
+          dailyVolume + rpayOverview.dayVolume
+        )}`),
+          (tokenData.dailyTransferCount =
+            tokenData.dailyTransferCount + rpayOverview.dayTxCount)
       }
 
       setStats(tokenData)

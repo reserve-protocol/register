@@ -104,10 +104,12 @@ const TokenStats = (props: BoxProps) => {
           rpayOverview.txCount + (data.protocol?.transactionCount || 0)
         ),
         dailyTransactionCount: formatCurrency(
-          +data.usageMetricsDailySnapshots[0]?.dailyTransactionCount || 0
+          rpayOverview.dayTxCount +
+            (+data.usageMetricsDailySnapshots[0]?.dailyTransactionCount || 0)
         ),
         dailyVolume: `$${formatCurrency(
-          +data.financialsDailySnapshots[0]?.dailyVolumeUSD || 0
+          rpayOverview.dayVolume +
+            (+data.financialsDailySnapshots[0]?.dailyVolumeUSD || 0)
         )}`,
       }
     }

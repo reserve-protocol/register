@@ -386,4 +386,6 @@ export const rpayOverviewAtom = atom({
   volume: 0,
   txCount: 0,
   holders: 0,
+  dayVolume: 0,
+  dayTxCount: 0,
 })
