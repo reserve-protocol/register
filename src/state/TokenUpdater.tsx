@@ -386,6 +386,8 @@ const ReserveTokenUpdater = () => {
   useEffect(() => {
     if (provider && blockNumber && mainAddress) {
       setTokenStatus(mainAddress, provider)
+    } else {
+      updateTokenStatus(RTOKEN_STATUS.SOUND)
     }
   }, [blockNumber, mainAddress])
 
