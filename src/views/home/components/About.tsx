@@ -10,6 +10,11 @@ import { ROUTES } from 'utils/constants'
 const About = (props: BoxProps) => {
   const navigate = useNavigate()
 
+  const handleDeploy = () => {
+    navigate(ROUTES.DEPLOY)
+    document.getElementById('app-container')?.scrollTo(0, 0)
+  }
+
   return (
     <Box {...props}>
       <Grid columns={[1, 1, 2]} mt={6} pl={4} gap={[4, 4, 7]}>
@@ -27,12 +32,7 @@ const About = (props: BoxProps) => {
               community.
             </Trans>
           </Text>
-          <SmallButton
-            py={2}
-            mt={3}
-            mb={4}
-            onClick={() => navigate(ROUTES.DEPLOY)}
-          >
+          <SmallButton py={2} mt={3} mb={4} onClick={handleDeploy}>
             <Trans>Deploy RToken</Trans>
           </SmallButton>
           <Text mb={2} variant="strong">

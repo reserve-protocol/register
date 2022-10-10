@@ -13722,6 +13722,7 @@ __metadata:
     react: ^18.2.0
     react-dom: 18.2.0
     react-feather: ^2.0.9
+    react-ga: ^3.3.1
     react-hook-form: 7.31.3
     react-hot-toast: ^2.2.0
     react-popper: ^2.2.5
@@ -14004,6 +14005,16 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 4dbc2166ac397d9e9340bd0722c6165c23f21629515f13e9cb96eaff82aa1543a2f7f3cccf15689821f19166e3a3ce59f380c43643099eb119b5f9c529b23181
+  languageName: node
+  linkType: hard
+
+"react-ga@npm:^3.3.1":
+  version: 3.3.1
+  resolution: "react-ga@npm:3.3.1"
+  peerDependencies:
+    prop-types: ^15.6.0
+    react: ^15.6.2 || ^16.0 || ^17 || ^18
+  checksum: 3026976d0249fbf80e7b5dad7707964198064d7ac460f3397de40524e76dd6c29dead0900f850e2bd3135a86a9b083af8cda9cfa087f195852bf8d2b17c1fcfb
   languageName: node
   linkType: hard
 

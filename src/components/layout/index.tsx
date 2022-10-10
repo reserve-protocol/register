@@ -34,7 +34,10 @@ const Layout = ({ children }: { children: ReactNode }) => {
       <Container>
         <Header />
         <Suspense>
-          <Box sx={{ overflow: 'auto', flexGrow: 99999, position: 'relative' }}>
+          <Box
+            id="app-container"
+            sx={{ overflow: 'auto', flexGrow: 99999, position: 'relative' }}
+          >
             {children}
           </Box>
         </Suspense>

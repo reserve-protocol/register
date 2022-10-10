@@ -1,7 +1,6 @@
 import { getAddress } from '@ethersproject/address'
 import { formatEther } from '@ethersproject/units'
-import { t, Trans } from '@lingui/macro'
-import { SmallButton } from 'components/button'
+import { t } from '@lingui/macro'
 import { ContentHead } from 'components/info-box'
 import { Table } from 'components/table'
 import TokenItem from 'components/token-item'
@@ -18,11 +17,10 @@ import {
   rpayOverviewAtom,
   rTokenPriceAtom,
 } from 'state/atoms'
-import { Box, BoxProps, Flex, Text } from 'theme-ui'
+import { Box, BoxProps, Text } from 'theme-ui'
 import { calculateApy, formatCurrencyCell, formatUsdCurrencyCell } from 'utils'
 import { RSV_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
-import RSV from 'utils/rsv'
 
 interface ListedToken {
   id: string
@@ -211,36 +209,15 @@ const TokenList = (props: BoxProps) => {
         accessor: 'stakingApy',
         Cell: (cell: any) => <Text>{cell.value}%</Text>,
       },
-      {
-        Header: t`Shortcuts`,
-        accessor: 'id',
-        Cell: (cell: any) => {
-          return (
-            <Flex>
-              <SmallButton
-                mr={2}
-                px={3}
-                variant="muted"
-                onClick={() => navigate(`/issuance?token=${cell.value}`)}
-              >
-                <Trans>Mint</Trans>
-              </SmallButton>
-              {cell.value !== RSV.address && (
-                <SmallButton
-                  px={3}
-                  variant="muted"
-                  onClick={() => navigate(`/insurance?token=${cell.value}`)}
-                >
-                  <Trans>Stake</Trans>
-                </SmallButton>
-              )}
-            </Flex>
-          )
-        },
-      },
     ],
     []
   )
+
+  const handleClick = (data: any) => {
+    navigate(`/overview?token=${data.id}`)
+    document.getElementById('app-container')?.scrollTo(0, 0)
+  }
+
   return (
     <Box {...props}>
       <ContentHead
@@ -248,7 +225,12 @@ const TokenList = (props: BoxProps) => {
         title={t`Compare RTokens`}
         subtitle={t`Including off-chain in-app transactions of RToken in the Reserve App.`}
       />
-      <Table mt={3} columns={rTokenColumns} data={tokenList} />
+      <Table
+        mt={3}
+        columns={rTokenColumns}
+        onRowClick={handleClick}
+        data={tokenList}
+      />
     </Box>
   )
 }

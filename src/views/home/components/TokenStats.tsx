@@ -1,5 +1,6 @@
 import { t } from '@lingui/macro'
 import { ContentHead, InfoHeading } from 'components/info-box'
+import { formatEther } from 'ethers/lib/utils'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import useTimeFrom from 'hooks/useTimeFrom'
@@ -34,6 +35,10 @@ export const defaultProtocolMetrics = {
 
 const protocolMetricsQuery = gql`
   query GetProtocolMetrics($id: String!, $fromTime: Int!) {
+    token(id: "0x196f4727526ea7fb1e17b2071b3d8eaa38486988") {
+      lastPriceUSD
+      totalSupply
+    }
     protocol(id: $id) {
       totalValueLockedUSD
       totalRTokenUSD
@@ -75,12 +80,16 @@ const TokenStats = (props: BoxProps) => {
 
   const metrics = useMemo(() => {
     if (data) {
+      const rsvMarket =
+        +formatEther(data.token?.totalSupply || '0') *
+        (+data.token?.lastPriceUSD || 0)
+
       return {
         totalValueLockedUSD: `$${formatCurrency(
-          +data.protocol?.totalValueLockedUSD || 0
+          (+data.protocol?.totalValueLockedUSD || 0) + rsvMarket
         )}`,
         totalRTokenUSD: `$${formatCurrency(
-          +data.protocol?.totalRTokenUSD || 0
+          (+data.protocol?.totalRTokenUSD || 0) + rsvMarket
         )}`,
         cumulativeVolumeUSD: `$${formatCurrency(
           rpayOverview.volume + (+data.protocol?.cumulativeVolumeUSD || 0)
@@ -120,10 +129,12 @@ const TokenStats = (props: BoxProps) => {
             <InfoHeading
               title={t`Total RToken Market Cap`}
               subtitle={metrics.totalRTokenUSD}
+              help={t`Includes market cap of all RTokens and RSV.`}
               mb={4}
             />
             <InfoHeading
               title={t`TVL in Reserve`}
+              help={t`Includes RTokens, staked RSR, and RSV.`}
               subtitle={metrics.totalValueLockedUSD}
             />
           </Box>

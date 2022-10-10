@@ -48,6 +48,7 @@ interface TableOwnProps<D extends { [key: string]: any }> {
   renderRowSubComponent?: (props: { row: Row }) => ReactNode
   sortBy?: Array<SortingRule<any>>
   pagination?: TablePaginationProps | boolean
+  onRowClick?(data: any): void
 }
 
 export type TableProps<D extends { [key: string]: any }> = TableOwnProps<D> &
@@ -66,6 +67,7 @@ export function Table<D extends { [key: string]: any }>({
   renderRowSubComponent,
   sortBy,
   pagination,
+  onRowClick,
   ...rest
 }: TableProps<D>): ReactElement<any, any> | null {
   const plugins: PluginHook<D>[] = [useTableLayout, useSortBy]
@@ -162,7 +164,15 @@ export function Table<D extends { [key: string]: any }>({
 
               return (
                 <React.Fragment key={key}>
-                  <Box variant="styles.tr" as="tr" {...rowProps}>
+                  <Box
+                    variant="styles.tr"
+                    as="tr"
+                    onClick={
+                      !!onRowClick ? () => onRowClick(row.original) : undefined
+                    }
+                    sx={{ cursor: !!onRowClick ? 'pointer' : 'inherit' }}
+                    {...rowProps}
+                  >
                     {row.cells.map(
                       (
                         cell: Cell & Partial<UseGroupByCellProps<D>>,

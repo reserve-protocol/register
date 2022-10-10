@@ -75,6 +75,7 @@ interface ApyRate {
   timestamp: number
 }
 
+// TODO: Uncomment when tested
 export function calculateApy(
   recentRate: ApyRate,
   lastRate: ApyRate
@@ -93,7 +94,8 @@ export function calculateApy(
   tokenApy = priceGrowth * range
   stakingApy = stGrowth * range
 
-  return [tokenApy, stakingApy]
+  // return [tokenApy, stakingApy]
+  return [0, 0]
 }
 
 export function shortenString(str: string) {

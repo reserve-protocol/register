@@ -1,9 +1,11 @@
+import Help from 'components/help'
 import { Flex, Text, BoxProps, Box } from 'theme-ui'
 
 // TODO: Change component structure for "InfoBoxes" or something more generic
 interface Props extends BoxProps {
   title: string
   subtitle?: string
+  help?: string
 }
 
 const InfoBox = ({ title, subtitle, ...props }: Props) => (
@@ -30,11 +32,14 @@ export const ContentHead = ({ title, subtitle, ...props }: Props) => (
   </Box>
 )
 
-export const InfoHeading = ({ title, subtitle, ...props }: Props) => (
+export const InfoHeading = ({ title, subtitle, help, ...props }: Props) => (
   <Box {...props}>
-    <Text variant="legend" mb={2} sx={{ display: 'block', fontWeight: 300 }}>
-      {title}
-    </Text>
+    <Flex mb={2} variant="layout.verticalAlign">
+      <Text variant="legend" sx={{ fontWeight: 300 }}>
+        {title}
+      </Text>
+      {!!help && <Help ml={2} size={14} mt="1px" content={help} />}
+    </Flex>
     {!!subtitle && <Text variant="title">{subtitle}</Text>}
   </Box>
 )

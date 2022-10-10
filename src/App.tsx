@@ -6,7 +6,12 @@ import { en, es } from 'make-plural/plurals'
 import React, { useEffect } from 'react'
 import { AlertCircle } from 'react-feather'
 import { Toaster } from 'react-hot-toast'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useLocation,
+} from 'react-router-dom'
 import { rTokenAtom } from 'state/atoms'
 import Updater from 'state/updater'
 import Web3Provider from 'state/web3'
@@ -25,6 +30,7 @@ import { messages as enMessages } from './locales/en/messages'
 import { messages as esMessages } from './locales/es/messages'
 import { theme } from './theme'
 import Issuance from './views/issuance'
+import ReactGA from 'react-ga'
 
 // Requires rToken to exist for route to render
 const Guard = ({ children }: { children: React.ReactNode }) => {
@@ -40,6 +46,17 @@ const Guard = ({ children }: { children: React.ReactNode }) => {
   ) : (
     <>{children}</>
   )
+}
+
+const Analytics = () => {
+  const location = useLocation()
+
+  useEffect(() => {
+    ReactGA.initialize('G-DMSRQ8XLEE')
+    ReactGA.pageview(location.pathname + location.search)
+  }, [location])
+
+  return null
 }
 
 i18n.load('en', enMessages)
@@ -66,6 +83,7 @@ const App = () => {
       <I18nProvider i18n={i18n}>
         <Web3Provider>
           <Updater />
+          <Analytics />
           <ThemeProvider theme={theme}>
             <Toaster
               gutter={20}
