@@ -78,7 +78,10 @@ export const PAX_ADDRESS: AddressMap = {
 
 // Fixed tokens used in the rtoken selector screen and dashboard
 export const DEFAULT_TOKENS = {
-  [ChainId.Mainnet]: [RSV_ADDRESS[ChainId.Mainnet]],
+  [ChainId.Mainnet]: [
+    RSV_ADDRESS[ChainId.Mainnet],
+    '0xcEC59484A59e0EE908B25Ae6C9e2FeC43c012bbD',
+  ],
   [ChainId.Goerli]: [RSV_ADDRESS[ChainId.Goerli]],
   [ChainId.Hardhat]: [
     '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',
