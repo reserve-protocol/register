@@ -344,7 +344,7 @@ export const theme: Theme = {
     muted: {
       ...baseButton,
       backgroundColor: 'inputBorder',
-      color: 'black',
+      color: 'text',
     },
     error: {
       ...baseButton,
