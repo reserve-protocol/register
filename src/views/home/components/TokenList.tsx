@@ -38,10 +38,7 @@ interface ListedToken {
   stakingApy: number
 }
 
-const tokenKeys = [
-  ...Object.keys(tokenList).map((s) => s.toLowerCase()),
-  RSV_ADDRESS[CHAIN_ID].toLowerCase(),
-]
+const tokenKeys = [...Object.keys(tokenList).map((s) => s.toLowerCase())]
 
 const tokenListQuery = gql`
   query GetTokenListOverview($tokenIds: [String]!, $fromTime: Int!) {

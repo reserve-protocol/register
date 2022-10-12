@@ -144,7 +144,9 @@ const EmergencyCollateral = ({
                 {!collaterals.length && <option>0</option>}
               </Select>
             </Box>
-            <Help content={t`Priority for the collateral`} />
+            <Help
+              content={t`The diversity factor determines the amount of emergency collateral that will be deployed to the RToken basket in the case of a default.`}
+            />
           </>
         )}
       </Flex>

@@ -5,9 +5,10 @@ import { useAtomValue } from 'jotai'
 import { en, es } from 'make-plural/plurals'
 import React, { useEffect } from 'react'
 import { AlertCircle } from 'react-feather'
+import ReactGA from 'react-ga'
 import { Toaster } from 'react-hot-toast'
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Route,
   Routes,
   useLocation,
@@ -30,7 +31,6 @@ import { messages as enMessages } from './locales/en/messages'
 import { messages as esMessages } from './locales/es/messages'
 import { theme } from './theme'
 import Issuance from './views/issuance'
-import ReactGA from 'react-ga'
 
 // Requires rToken to exist for route to render
 const Guard = ({ children }: { children: React.ReactNode }) => {
@@ -74,10 +74,6 @@ i18n.activate('en')
  * @returns {JSX.Element}
  */
 const App = () => {
-  if (process.env.REACT_APP_MAINTENANCE) {
-    return <Text>Maintenance</Text>
-  }
-
   return (
     <Router>
       <I18nProvider i18n={i18n}>

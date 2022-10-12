@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
-import Help from 'components/help'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { useAtomValue } from 'jotai'
 import { useCallback } from 'react'
@@ -42,7 +41,6 @@ const Placeholder = () => (
         >
           <Text sx={{ color: '#333' }}>0</Text>
         </Box>
-        <Help content="TODO" />
       </Flex>
       <Divider my={3} />
       <Box sx={{ textAlign: 'center' }} py={8} px={4}>

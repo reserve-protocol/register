@@ -82,7 +82,7 @@ const SupplyChart = (props: BoxProps) => {
   return (
     <AreaChart
       heading={t`Supply`}
-      title={`${formatCurrency(supply)} ${rToken?.symbol}`}
+      title={`${formatCurrency(supply || 0)} ${rToken?.symbol}`}
       data={rows}
       timeRange={TIME_RANGES}
       currentRange={current}
