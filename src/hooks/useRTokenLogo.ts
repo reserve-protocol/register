@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
-import rtokens from 'rtokens'
+import rtokens from '@lc-labs/rtokens'
 
 export const getRTokenLogo = (address: string) => {
   if (rtokens[address]?.logo) {
-    return require(`rtokens/images/${rtokens[address].logo}`)
+    return require(`@lc-labs/rtokens/images/${rtokens[address].logo}`)
   }
 
   return '/svgs/default.svg'

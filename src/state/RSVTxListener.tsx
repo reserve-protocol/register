@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import { atom } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
@@ -35,15 +34,11 @@ const RSVTxListener = () => {
     } catch (e) {}
   }
 
-  useWebSocket(
-    `wss:${process.env.REACT_APP_RPAY_FEED}/ws?pw=${process.env.REACT_APP_RPAY_FEED_SECRET}`,
-    {
-      share: true,
-      shouldReconnect: () => true,
-      onMessage: (event: WebSocketEventMap['message']) =>
-        processMessages(event),
-    }
-  )
+  useWebSocket(`wss:${process.env.REACT_APP_RPAY_FEED}/ws`, {
+    share: true,
+    shouldReconnect: () => true,
+    onMessage: (event: WebSocketEventMap['message']) => processMessages(event),
+  })
 
   return null
 }

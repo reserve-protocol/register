@@ -11,7 +11,7 @@ import { getRTokenLogo } from 'hooks/useRTokenLogo'
 import { useAtomValue } from 'jotai/utils'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import tokenList from 'rtokens'
+import tokenList from '@lc-labs/rtokens'
 import {
   blockTimestampAtom,
   rpayOverviewAtom,

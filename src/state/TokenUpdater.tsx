@@ -16,7 +16,7 @@ import { atom, useAtom, useAtomValue } from 'jotai'
 import { useResetAtom, useUpdateAtom } from 'jotai/utils'
 import { useCallback, useEffect, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import rtokens from 'rtokens'
+import rtokens from '@lc-labs/rtokens'
 import { ContractCall, ReserveToken, Token } from 'types'
 import { calculateApy, isAddress, truncateDecimals } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
@@ -290,7 +290,7 @@ const ReserveTokenUpdater = () => {
         } = await getRTokenMeta([address, stTokenAddress, ...basket], provider)
 
         const logo = rtokens[address]?.logo
-          ? require(`rtokens/images/${rtokens[address].logo}`)
+          ? require(`@lc-labs/rtokens/images/${rtokens[address].logo}`)
           : '/svgs/default.svg'
 
         return updateToken({

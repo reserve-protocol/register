@@ -6,7 +6,7 @@ import { atom, useAtom, useAtomValue } from 'jotai'
 import { memo, useCallback, useMemo, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
-import rtokens from 'rtokens'
+import rtokens from '@lc-labs/rtokens'
 import { accountRTokensAtom, rTokenAtom, selectedRTokenAtom } from 'state/atoms'
 import { transition } from 'theme'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
@@ -38,7 +38,7 @@ const availableTokensAtom = atom((get) => {
         address: tokenAddress,
         symbol: token.symbol,
         logo: token.logo
-          ? require(`rtokens/images/${token.logo}`)
+          ? require(`@lc-labs/rtokens/images/${token.logo}`)
           : DEFAULT_LOGO,
       }
     }

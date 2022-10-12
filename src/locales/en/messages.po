@@ -58,7 +58,7 @@ msgstr "24h Txs"
 msgid "A year ago"
 msgstr "A year ago"
 
-#: src/views/home/components/TokenList.tsx:203
+#: src/views/home/components/TokenList.tsx:200
 msgid "APY"
 msgstr "APY"
 
@@ -85,7 +85,7 @@ msgstr "Add"
 #~ msgid "Add Primary first"
 #~ msgstr "Add Primary first"
 
-#: src/views/deploy/components/BackupBasket.tsx:29
+#: src/views/deploy/components/BackupBasket.tsx:28
 msgid "Add Token"
 msgstr "Add Token"
 
@@ -319,7 +319,7 @@ msgstr "Community Discord"
 #~ msgid "Community discord"
 #~ msgstr "Community discord"
 
-#: src/views/home/components/TokenList.tsx:225
+#: src/views/home/components/TokenList.tsx:222
 msgid "Compare RTokens"
 msgstr "Compare RTokens"
 
@@ -532,7 +532,7 @@ msgstr "Discover how an RToken is configured to operate in the good times and in
 msgid "Dismiss"
 msgstr "Dismiss"
 
-#: src/views/deploy/components/BackupBasket.tsx:35
+#: src/views/deploy/components/BackupBasket.tsx:34
 #: src/views/deploy/components/EmergencyCollateral.tsx:127
 msgid "Diversity factor"
 msgstr "Diversity factor"
@@ -571,7 +571,7 @@ msgstr "Duration in seconds"
 #~ msgid "Each target unit of your primary basket will have a list of emergency collateral to replace with in case of default."
 #~ msgstr "Each target unit of your primary basket will have a list of emergency collateral to replace with in case of default."
 
-#: src/views/deploy/components/BackupBasket.tsx:54
+#: src/views/deploy/components/BackupBasket.tsx:52
 msgid "Each target unit of your primary basket will have defined emergency collateral to replace with in case of default."
 msgstr "Each target unit of your primary basket will have defined emergency collateral to replace with in case of default."
 
@@ -583,11 +583,11 @@ msgstr "Each target unit of your primary basket will have defined emergency coll
 #~ msgid "Emergancy collateral with listed in the order of “priority” and the diversity factor defining the amount of tokens to replace a default with."
 #~ msgstr "Emergancy collateral with listed in the order of “priority” and the diversity factor defining the amount of tokens to replace a default with."
 
-#: src/views/deploy/components/BackupBasket.tsx:51
+#: src/views/deploy/components/BackupBasket.tsx:49
 msgid "Emergency Collateral"
 msgstr "Emergency Collateral"
 
-#: src/views/deploy/components/BackupBasket.tsx:26
+#: src/views/deploy/components/BackupBasket.tsx:25
 #: src/views/deploy/components/EmergencyCollateral.tsx:115
 msgid "Emergency collateral"
 msgstr "Emergency collateral"
@@ -740,7 +740,7 @@ msgstr "Guardian address"
 #~ msgid "Historical Yield - {0}"
 #~ msgstr "Historical Yield - {0}"
 
-#: src/views/home/components/TokenList.tsx:175
+#: src/views/home/components/TokenList.tsx:172
 msgid "Holders"
 msgstr "Holders"
 
@@ -785,7 +785,7 @@ msgstr "Includes market cap of all RTokens and RSV."
 msgid "Including off-chain in-app transactions of RSV in the Reserve App."
 msgstr "Including off-chain in-app transactions of RSV in the Reserve App."
 
-#: src/views/home/components/TokenList.tsx:226
+#: src/views/home/components/TokenList.tsx:223
 msgid "Including off-chain in-app transactions of RToken in the Reserve App."
 msgstr "Including off-chain in-app transactions of RToken in the Reserve App."
 
@@ -1105,7 +1105,7 @@ msgstr "Minting requires a deposit of the defined collateral tokens in equal val
 msgid "Missing collateral"
 msgstr "Missing collateral"
 
-#: src/views/home/components/TokenList.tsx:174
+#: src/views/home/components/TokenList.tsx:171
 msgid "Mkt Cap"
 msgstr "Mkt Cap"
 
@@ -1284,7 +1284,7 @@ msgid "Please sign the transaction in your wallet to continue with the governmen
 msgstr "Please sign the transaction in your wallet to continue with the government configuration process."
 
 #: src/views/home/components/Portfolio.tsx:36
-#: src/views/home/components/TokenList.tsx:173
+#: src/views/home/components/TokenList.tsx:170
 #: src/views/overview/components/PriceChart.tsx:74
 msgid "Price"
 msgstr "Price"
@@ -1310,8 +1310,8 @@ msgid "Primary, emergency, target units & their initial scale"
 msgstr "Primary, emergency, target units & their initial scale"
 
 #: src/views/deploy/components/EmergencyCollateral.tsx:147
-msgid "Priority for the collateral"
-msgstr "Priority for the collateral"
+#~ msgid "Priority for the collateral"
+#~ msgstr "Priority for the collateral"
 
 #: src/components/layout/sidebar/Sidebar.tsx:191
 msgid "Proceed with caution"
@@ -1660,7 +1660,7 @@ msgstr "Signing..."
 msgid "Sold"
 msgstr "Sold"
 
-#: src/views/home/components/TokenList.tsx:208
+#: src/views/home/components/TokenList.tsx:205
 msgid "St APY"
 msgstr "St APY"
 
@@ -1775,7 +1775,7 @@ msgstr "Target"
 msgid "Target value for this unit of account"
 msgstr "Target value for this unit of account"
 
-#: src/views/home/components/TokenList.tsx:187
+#: src/views/home/components/TokenList.tsx:184
 msgid "Target(s)"
 msgstr "Target(s)"
 
@@ -1815,6 +1815,10 @@ msgstr "The default governance structure instead of your custom setup."
 #: src/views/staking/components/overview/index.tsx:132
 msgid "The description below applies to the default Reserve Governor Alexios. If an RToken's deployer opted out of this scheme, please consult with the RToken's documentation to understand how staking functions."
 msgstr "The description below applies to the default Reserve Governor Alexios. If an RToken's deployer opted out of this scheme, please consult with the RToken's documentation to understand how staking functions."
+
+#: src/views/deploy/components/EmergencyCollateral.tsx:148
+msgid "The diversity factor determines the amount of emergency collateral that will be deployed to the RToken basket in the case of a default."
+msgstr "The diversity factor determines the amount of emergency collateral that will be deployed to the RToken basket in the case of a default."
 
 #: src/views/overview/components/About.tsx:76
 msgid "There is no information about this token."
@@ -1864,7 +1868,7 @@ msgstr "Timelock contract address"
 msgid "To learn more about minting and redemption operations, read the documentation"
 msgstr "To learn more about minting and redemption operations, read the documentation"
 
-#: src/views/home/components/TokenList.tsx:165
+#: src/views/home/components/TokenList.tsx:162
 msgid "Token"
 msgstr "Token"
 
@@ -1940,7 +1944,7 @@ msgstr "Transfer"
 msgid "Twitter"
 msgstr "Twitter"
 
-#: src/views/home/components/TokenList.tsx:177
+#: src/views/home/components/TokenList.tsx:174
 msgid "Txs"
 msgstr "Txs"
 
@@ -2054,7 +2058,7 @@ msgstr "Value"
 msgid "View on etherscan"
 msgstr "View on etherscan"
 
-#: src/views/home/components/TokenList.tsx:182
+#: src/views/home/components/TokenList.tsx:179
 msgid "Volume"
 msgstr "Volume"
 
