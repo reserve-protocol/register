@@ -76,6 +76,18 @@ export const PAX_ADDRESS: AddressMap = {
   [ChainId.Hardhat]: '0x8E870D67F660D95d5be530380D0eC0bd388289E1',
 }
 
+export const WETH_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+  [ChainId.Goerli]: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+  [ChainId.Hardhat]: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+}
+
+export const ORACLE_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x8263e161A855B644f582d9C164C66aABEe53f927',
+  [ChainId.Goerli]: '0x8263e161A855B644f582d9C164C66aABEe53f927',
+  [ChainId.Hardhat]: '0x8263e161A855B644f582d9C164C66aABEe53f927',
+}
+
 // Fixed tokens used in the rtoken selector screen and dashboard
 export const DEFAULT_TOKENS = {
   [ChainId.Mainnet]: [RSV_ADDRESS[ChainId.Mainnet]],

@@ -101,7 +101,7 @@ const TokenStats = (props: BoxProps) => {
           +data.protocol?.cumulativeInsuranceRevenueUSD || 0
         )}`,
         transactionCount: formatCurrency(
-          rpayOverview.txCount + (data.protocol?.transactionCount || 0)
+          rpayOverview.txCount + (+data.protocol?.transactionCount || 0)
         ),
         dailyTransactionCount: formatCurrency(
           rpayOverview.dayTxCount +

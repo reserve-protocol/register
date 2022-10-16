@@ -49,7 +49,7 @@ const TransactionsTable = ({
       CLAIM: t`Claim`,
       CANCEL_ISSUANCE: t`Cancel Issue`,
       STAKE: t`Stake`,
-      UNSTAKE: t`UnStake`,
+      UNSTAKE: t`Unstake`,
       WITHDRAW: t`Withdraw`,
       DEPOSIT: t`Deposit`,
       WITHDRAWAL: t`Withdrawal`,

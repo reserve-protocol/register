@@ -56,7 +56,7 @@ const BackingForm = (props: BoxProps) => (
         required: true,
         pattern: decimalPattern,
         min: 0.01,
-        max: 100,
+        max: 10,
       }}
     />
     <FormField

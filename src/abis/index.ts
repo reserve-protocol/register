@@ -10,6 +10,7 @@ import FacadeWrite from './facade-write.json'
 import Deployer from './deployer.json'
 import Main from './main.json'
 import Collateral from './collateral.json'
+import Oracle from './oracle.json'
 
 const ERC20Interface = new Interface(ERC20)
 const FacadeInterface = new Interface(Facade)
@@ -21,6 +22,7 @@ const RSVManagerInterface = new Interface(RSVManager)
 const DeployerInterface = new Interface(Deployer)
 const MainInterface = new Interface(Main)
 const CollateralInterface = new Interface(Collateral)
+const OracleInterface = new Interface(Oracle)
 
 export { ERC20, ERC20Interface }
 export { Facade, FacadeInterface }
@@ -32,6 +34,7 @@ export { FacadeWrite, FacadeWriteInterface }
 export { Deployer, DeployerInterface }
 export { Main, MainInterface }
 export { Collateral, CollateralInterface }
+export { Oracle, OracleInterface }
 
 // Used for tx management
 export default <StringMap>{

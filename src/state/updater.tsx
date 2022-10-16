@@ -1,11 +1,12 @@
 import { Web3Provider } from '@ethersproject/providers'
 import { formatEther } from '@ethersproject/units'
 import { useWeb3React } from '@web3-react/core'
-import { StRSRInterface } from 'abis'
+import { OracleInterface, StRSRInterface } from 'abis'
 import { Facade } from 'abis/types'
+import { formatUnits } from 'ethers/lib/utils'
 import useBlockNumber from 'hooks/useBlockNumber'
 import { useContractCall } from 'hooks/useCall'
-import { useFacadeContract } from 'hooks/useContract'
+import { useContract, useFacadeContract } from 'hooks/useContract'
 import useRTokenPrice from 'hooks/useRTokenPrice'
 import useTokensAllowance from 'hooks/useTokensAllowance'
 import useTokensBalance from 'hooks/useTokensBalance'
@@ -28,11 +29,19 @@ import {
 } from 'state/atoms'
 import useSWR from 'swr'
 import { ReserveToken, StringMap } from 'types'
+import {
+  ORACLE_ADDRESS,
+  RSR_ADDRESS,
+  RSV_ADDRESS,
+  WETH_ADDRESS,
+} from 'utils/addresses'
+import { CHAIN_ID } from 'utils/chains'
 import { COINGECKO_API, RSR } from 'utils/constants'
 import { RSV_MANAGER } from 'utils/rsv'
 import AccountUpdater from './AccountUpdater'
 import RSVUpdater from './RSVUpdater'
 import TokenUpdater from './TokenUpdater'
+import { promiseMulticall } from './web3/lib/multicall'
 
 // Gets ReserveToken related token addresses and decimals
 const getTokens = (reserveToken: ReserveToken): [string, number][] => {
@@ -183,10 +192,6 @@ const PendingBalancesUpdater = () => {
  */
 const PricesUpdater = () => {
   const { provider, chainId } = useWeb3React()
-  const { data } = useSWR(
-    `${COINGECKO_API}/simple/price?vs_currencies=usd&ids=ethereum,reserve-rights-token`,
-    fetcher
-  )
   const rTokenPrice = useRTokenPrice()
   const setRSRPrice = useUpdateAtom(rsrPriceAtom)
   const setEthPrice = useUpdateAtom(ethPriceAtom)
@@ -208,18 +213,35 @@ const PricesUpdater = () => {
     }
   }, [])
 
+  const fetchTokenPrices = useCallback(async (provider: Web3Provider) => {
+    try {
+      const callParams = {
+        abi: OracleInterface,
+        address: ORACLE_ADDRESS[CHAIN_ID],
+        method: 'getPriceUsdc',
+      }
+
+      const [rsvPrice, rsrPrice, wethPrice] = await promiseMulticall(
+        [
+          { ...callParams, args: [RSV_ADDRESS[CHAIN_ID]] },
+          { ...callParams, args: [RSR_ADDRESS[CHAIN_ID]] },
+          { ...callParams, args: [WETH_ADDRESS[CHAIN_ID]] },
+        ],
+        provider
+      )
+      setRSRPrice(+formatUnits(rsrPrice, 6))
+      setEthPrice(+formatUnits(wethPrice, 6))
+    } catch (e) {
+      console.error('Error fetching token prices', e)
+    }
+  }, [])
+
   useEffect(() => {
     if (chainId && blockNumber && provider) {
       fetchGasPrice(provider)
+      fetchTokenPrices(provider)
     }
   }, [chainId, blockNumber])
-
-  useEffect(() => {
-    if (data) {
-      setRSRPrice(data['reserve-rights-token']?.usd ?? 0)
-      setEthPrice(data?.ethereum?.usd ?? 0)
-    }
-  }, [data])
 
   useEffect(() => {
     setRTokenPrice(rTokenPrice)

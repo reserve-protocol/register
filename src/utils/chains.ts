@@ -30,7 +30,7 @@ export const CHAINS: {
     name: 'Mainnet',
   },
   [ChainId.Goerli]: {
-    urls: [process.env.REACT_APP_RPC_URL_GOERLI ?? ''],
+    urls: ['https://rpc.ankr.com/eth_goerli'],
     name: 'Goerli',
   },
   // Hardhat
