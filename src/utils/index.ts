@@ -124,8 +124,10 @@ export function addressEqual(
   }
 }
 
-export function formatCurrency(value: number): string {
-  return Intl.NumberFormat('en-US').format(value)
+export function formatCurrency(value: number, decimals = 2): string {
+  return Intl.NumberFormat('en-US', { maximumFractionDigits: decimals }).format(
+    value
+  )
 }
 
 // Utils for rable parsing

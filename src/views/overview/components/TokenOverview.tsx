@@ -19,7 +19,9 @@ const TokenOverview = ({ metrics, ...props }: Props) => {
         title={t`Overview`}
         subtitle={
           rToken?.isRSV
-            ? t`Including off-chain in-app transactions of RSV in the Reserve App.`
+            ? t`Here you can find usage data about RSV, which is mostly used in the
+            RPay app. Transactions data includes off-chain data that as been
+            anonymized to protect user privacy.`
             : undefined
         }
       />
