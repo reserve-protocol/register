@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import rtokens from '@lc-labs/rtokens'
+import rtokens from 'utils/rtokens'
 
 export const getRTokenLogo = (address: string) => {
   if (rtokens[address]?.logo) {

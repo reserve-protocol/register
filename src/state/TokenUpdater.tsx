@@ -16,13 +16,13 @@ import { atom, useAtom, useAtomValue } from 'jotai'
 import { useResetAtom, useUpdateAtom } from 'jotai/utils'
 import { useCallback, useEffect, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import rtokens from '@lc-labs/rtokens'
 import { ContractCall, ReserveToken, Token } from 'types'
 import { calculateApy, isAddress, truncateDecimals } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 import { RTOKEN_STATUS } from 'utils/constants'
 import RSV from 'utils/rsv'
+import rtokens from 'utils/rtokens'
 import {
   accountRoleAtom,
   blockTimestampAtom,

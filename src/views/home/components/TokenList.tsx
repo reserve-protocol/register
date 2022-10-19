@@ -11,7 +11,6 @@ import { getRTokenLogo } from 'hooks/useRTokenLogo'
 import { useAtomValue } from 'jotai/utils'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import tokenList from '@lc-labs/rtokens'
 import {
   blockTimestampAtom,
   rpayOverviewAtom,
@@ -21,6 +20,7 @@ import { Box, BoxProps, Text } from 'theme-ui'
 import { calculateApy, formatCurrencyCell, formatUsdCurrencyCell } from 'utils'
 import { RSV_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
+import tokenList from 'utils/rtokens'
 
 interface ListedToken {
   id: string

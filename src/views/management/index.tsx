@@ -1,9 +1,12 @@
 import { t, Trans } from '@lingui/macro'
+import { Main } from 'abis/types'
 import { InfoBox } from 'components'
 import { LoadingButton } from 'components/button'
+import { ethers } from 'ethers'
+import { useMainContract } from 'hooks/useContract'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   accountRoleAtom,
@@ -14,6 +17,8 @@ import {
 import { useTransaction } from 'state/web3/hooks/useTransactions'
 import { smallButton } from 'theme'
 import { Box, Card, Divider, Flex, Grid, Text } from 'theme-ui'
+import { FACADE_WRITE_ADDRESS } from 'utils/addresses'
+import { CHAIN_ID } from 'utils/chains'
 import { RTOKEN_STATUS, TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
 import DeploymentStepTracker from 'views/deploy/components/DeployStep'
@@ -23,6 +28,7 @@ import ListingInfo from './components/ListingInfo'
 const Management = () => {
   const addTransaction = useSetAtom(addTransactionAtom)
   const [unpausing, setUnpausing] = useState('')
+  const [govRequired, setGovRequired] = useState(false)
   const unpauseTx = useTransaction(unpausing)
   const isTxConfirmed =
     unpauseTx &&
@@ -33,6 +39,20 @@ const Management = () => {
   const rToken = useRToken()
   const navigate = useNavigate()
   const rTokenStatus = useAtomValue(rTokenStatusAtom)
+  const mainContract = useMainContract(rToken?.main)
+
+  const isGovRequired = useCallback(async (contract: Main) => {
+    try {
+      const hasRole = await contract.hasRole(
+        ethers.utils.formatBytes32String('OWNER'),
+        FACADE_WRITE_ADDRESS[CHAIN_ID]
+      )
+
+      setGovRequired(hasRole)
+    } catch (e) {
+      console.error('Error getting gov required', e)
+    }
+  }, [])
 
   // Guard route in case the user doesnt have role
   useEffect(() => {
@@ -43,6 +63,12 @@ const Management = () => {
       navigate('/')
     }
   }, [accountRole, rToken?.address])
+
+  useEffect(() => {
+    if (mainContract) {
+      isGovRequired(mainContract)
+    }
+  }, [mainContract])
 
   const handleUnpause = () => {
     if (rToken?.main) {
@@ -67,7 +93,7 @@ const Management = () => {
 
   return (
     <Box>
-      {accountRole.owner && rTokenStatus === RTOKEN_STATUS.PAUSED && (
+      {accountRole.owner && govRequired && (
         <>
           <DeploymentStepTracker step={5} />
           <GovernanceHero mx={5} p={5} />
@@ -80,8 +106,8 @@ const Management = () => {
           <Text variant="title" pl={5} sx={{ fontSize: 4 }}>
             {rToken?.symbol} <Trans>Manager</Trans>
           </Text>
-          {rTokenStatus === RTOKEN_STATUS.PAUSED &&
-            !accountRole.owner &&
+          {!govRequired &&
+            rTokenStatus === RTOKEN_STATUS.PAUSED &&
             !!rToken?.main &&
             !isTxConfirmed && (
               <LoadingButton

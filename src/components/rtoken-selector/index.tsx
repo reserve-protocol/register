@@ -6,7 +6,6 @@ import { atom, useAtom, useAtomValue } from 'jotai'
 import { memo, useCallback, useMemo, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
-import rtokens from '@lc-labs/rtokens'
 import { accountRTokensAtom, rTokenAtom, selectedRTokenAtom } from 'state/atoms'
 import { transition } from 'theme'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
@@ -14,6 +13,7 @@ import { shortenAddress } from 'utils'
 import { DEFAULT_TOKENS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 import { ROUTES } from 'utils/constants'
+import rtokens from 'utils/rtokens'
 
 interface TokenDisplay {
   address: string
