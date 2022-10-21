@@ -20,7 +20,7 @@ const InfoBox = ({ title, subtitle, ...props }: Props) => (
 export const ContentHead = ({ title, subtitle, ...props }: Props) => (
   <Box {...props}>
     <Text
-      sx={{ display: 'block', marginBottom: 1, fontWeight: 500, fontSize: 4 }}
+      sx={{ display: 'block', marginBottom: 1, fontWeight: 500, fontSize: 5 }}
     >
       {title}
     </Text>
