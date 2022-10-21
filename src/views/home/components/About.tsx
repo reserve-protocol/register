@@ -17,7 +17,7 @@ const About = (props: BoxProps) => {
 
   return (
     <Box {...props}>
-      <Grid columns={[1, 1, 2]} mt={6} pl={4} gap={[4, 4, 7]}>
+      <Grid columns={[1, 1, 2]} mt={6} px={3} gap={[4, 4, 7]}>
         <Box>
           <Text mb={2} variant="strong">
             <Trans>RTokens & Deploying your own</Trans>
