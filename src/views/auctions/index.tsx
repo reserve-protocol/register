@@ -296,7 +296,7 @@ const Auctions = () => {
     <Container>
       <ContentHead
         title={rToken?.symbol + ' ' + t`related Auctions`}
-        subtitle={t`Ongoing & historical auctions of USD+ from the Gnosis Auction app`}
+        subtitle={t`Ongoing & historical auctions`}
         mb={7}
         ml={5}
       />
