@@ -6,7 +6,7 @@ import useDebounce from 'hooks/useDebounce'
 import useQuery from 'hooks/useQuery'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { rpayTransactionsAtom } from 'state/atoms'
+import { blockTimestampAtom, rpayTransactionsAtom } from 'state/atoms'
 import RSVTxListener from 'state/RSVTxListener'
 import { BoxProps } from 'theme-ui'
 
@@ -23,7 +23,6 @@ const protocolRecentTxsQuery = gql`
 `
 
 const TransactionsOverview = (props: BoxProps) => {
-  // TODO: poll on blocknumber change
   const { data } = useQuery(
     protocolRecentTxsQuery,
     {},

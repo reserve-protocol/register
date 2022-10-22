@@ -28,10 +28,10 @@ const timeUnits = {
 }
 
 export const relativeTime = (from: number, to: number) => {
-  let delta = to - from
+  let delta = Math.abs(to - from)
 
   if (delta < 0) {
-    delta = timeUnits.hour
+    delta = timeUnits.minute
   }
 
   if (delta >= timeUnits.year) {
@@ -52,7 +52,6 @@ export const relativeTime = (from: number, to: number) => {
 export const dateToUnix = (str: string): number => {
   const date = new Date(str)
   const time = date.getTime() - 50000 - date.getTimezoneOffset() * 60000
-
   return Math.floor(time / 1000)
 }
 

@@ -51,7 +51,7 @@ const RecentRSVTransactions = (props: BoxProps) => {
 
     txs.sort((a, b) => +b.timestamp - +a.timestamp)
 
-    return txs.slice(0, 50)
+    return txs.slice(0, 20)
   }, [data, rpayTx])
 
   return (
