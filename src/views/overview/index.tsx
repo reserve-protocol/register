@@ -46,7 +46,7 @@ const Overview = () => {
       </Grid>
       <Divider {...dividerProps} />
       <Grid {...gridProps}>
-        <About ml={3} />
+        <About mt={3} px={3} />
         <AssetOverview />
       </Grid>
       <Divider
