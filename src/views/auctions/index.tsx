@@ -39,7 +39,11 @@ const tradesQuery = gql`
       startedAt
       worstCasePrice
     }
-    ended: trades {
+    ended: trades(
+      where: { endAt_lte: $time, rToken: $id }
+      orderBy: startedAt
+      orderDirection: desc
+    ) {
       id
       amount
       auctionId
