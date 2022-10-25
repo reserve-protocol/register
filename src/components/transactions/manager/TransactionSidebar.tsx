@@ -1,28 +1,12 @@
-import { Trans } from '@lingui/macro'
 import Portal from '@reach/portal'
-import { useWeb3React } from '@web3-react/core'
-import Button from 'components/button'
-import CopyValue from 'components/button/CopyValue'
-import GoTo from 'components/button/GoTo'
-import WalletIcon from 'components/icons/WalletIcon'
 import { useUpdateAtom } from 'jotai/utils'
-import { ChevronDown, X } from 'react-feather'
-import { isWalletModalVisibleAtom } from 'state/atoms'
-import { Box, Flex, Text } from 'theme-ui'
-import { shortenAddress } from 'utils'
-import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import { Box, Flex } from 'theme-ui'
 import { txSidebarToggleAtom } from './atoms'
+import TransactionHeader from './TransactionHeader'
 import TransactionList from './TransactionList'
 
-const TransactionSidebar = () => {
+const Container = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   const setSidebar = useUpdateAtom(txSidebarToggleAtom)
-  const setWalletModal = useUpdateAtom(isWalletModalVisibleAtom)
-  const { ENSName, account } = useWeb3React()
-
-  const handleChangeWallet = () => {
-    setSidebar(false)
-    setWalletModal(true)
-  }
 
   return (
     <Portal>
@@ -52,49 +36,18 @@ const TransactionSidebar = () => {
           height: '100vh',
         }}
       >
-        <Flex
-          sx={{
-            alignItems: 'center',
-            borderBottom: '1px solid',
-            borderColor: 'darkBorder',
-            height: '56px',
-            flexShrink: 0,
-          }}
-          px={5}
-          mb={5}
-        >
-          <Text variant="title" sx={{ fontSize: 2 }} mr={3}>
-            <Trans>Your account</Trans>
-          </Text>
-          <CopyValue
-            sx={{ display: ['none', 'flex'] }}
-            mr={2}
-            value={account || ''}
-          />
-          <GoTo
-            sx={{ display: ['none', 'flex'] }}
-            href={getExplorerLink(account || '', ExplorerDataType.ADDRESS)}
-          />
-          <Box
-            ml="auto"
-            variant="layout.verticalAlign"
-            mr={4}
-            sx={{ cursor: 'pointer' }}
-            onClick={handleChangeWallet}
-          >
-            <WalletIcon />
-            <Text ml={2} mr={2}>
-              {ENSName || shortenAddress(account ?? '')}
-            </Text>
-            <ChevronDown size={18} />
-          </Box>
-          <Button variant="circle" onClick={() => setSidebar(false)}>
-            <X />
-          </Button>
-        </Flex>
-        <TransactionList />
+        {children}
       </Flex>
     </Portal>
+  )
+}
+
+const TransactionSidebar = () => {
+  return (
+    <Container>
+      <TransactionHeader />
+      <TransactionList />
+    </Container>
   )
 }
 
