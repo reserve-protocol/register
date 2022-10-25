@@ -13464,84 +13464,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"protocol-interface@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "protocol-interface@workspace:."
-  dependencies:
-    "@coinbase/wallet-sdk": 3.0.5
-    "@dnd-kit/core": ^6.0.5
-    "@dnd-kit/sortable": ^7.0.1
-    "@dnd-kit/utilities": ^3.2.0
-    "@emotion/react": ^11.9.0
-    "@emotion/styled": ^11.8.1
-    "@lc-labs/rtokens": ^1.0.0
-    "@lingui/cli": ^3.13.3
-    "@lingui/core": ^3.13.3
-    "@lingui/macro": ^3.13.3
-    "@lingui/react": ^3.13.3
-    "@mdx-js/react": ^2.1.1
-    "@metamask/contract-metadata": ^1.35.0
-    "@popperjs/core": ^2.11.5
-    "@reach/dialog": ^0.17.0
-    "@reach/portal": ^0.17.0
-    "@react-spring/types": ^9.4.5
-    "@react-spring/web": ^9.4.4
-    "@testing-library/jest-dom": ^5.16.4
-    "@testing-library/react": ^13.0.0
-    "@testing-library/user-event": ^14.0.4
-    "@typechain/ethers-v5": 10.1.0
-    "@types/jest": ^27.4.1
-    "@types/node": ^17.0.23
-    "@types/react": 18.0.0
-    "@types/react-blockies": ^1.4.1
-    "@types/react-dom": 18.0.0
-    "@types/react-table": ^7.7.10
-    "@types/uuid": ^8.3.4
-    "@walletconnect/ethereum-provider": ^1.7.7
-    "@web3-react/coinbase-wallet": 8.0.33-beta.0
-    "@web3-react/core": 8.0.33-beta.0
-    "@web3-react/metamask": 8.0.26-beta.0
-    "@web3-react/network": 8.0.26-beta.0
-    "@web3-react/types": 8.0.19-beta.0
-    "@web3-react/url": 8.0.16-beta.0
-    "@web3-react/walletconnect": 8.0.34-beta.0
-    babel-plugin-macros: ^3.1.0
-    babel-preset-react-app: ^10.0.1
-    buffer: ^6.0.3
-    dayjs: ^1.11.3
-    ethers: 5.7.1
-    fast-deep-equal: ^3.1.3
-    fast-memoize: ^2.5.2
-    graphql: ^16.5.0
-    graphql-request: ^4.2.0
-    i18next-browser-languagedetector: ^6.1.2
-    immer: ^9.0.12
-    jotai: ^1.8.1
-    make-plural: ^7.1.0
-    prettier: ^2.3.2
-    react: ^18.2.0
-    react-dom: 18.2.0
-    react-feather: ^2.0.9
-    react-ga: ^3.3.1
-    react-hook-form: 7.31.3
-    react-hot-toast: ^2.2.0
-    react-popper: ^2.2.5
-    react-router-dom: 6.3.0
-    react-scripts: 5.0.1
-    react-table: ^7.7.0
-    react-use-websocket: ^4.2.0
-    recharts: ^2.1.6
-    source-map-explorer: ^2.5.2
-    swr: ^1.2.2
-    theme-ui: ^0.14.6
-    typechain: ^8.1.0
-    typescript: ^4.6.2
-    util: ^0.12.4
-    uuid: ^8.3.2
-    web-vitals: ^1.0.1
-  languageName: unknown
-  linkType: soft
-
 "proxy-addr@npm:~2.0.7":
   version: 2.0.7
   resolution: "proxy-addr@npm:2.0.7"
@@ -14284,6 +14206,84 @@ __metadata:
   checksum: c1244db79f7a4597414cd7fdf5171fa73905f0cbc684385c78127fc6198f9cade8fe829a1c4036c8ec57ac75b1ffb8c196451abdd2e153f26a4d8043fa10bbb3
   languageName: node
   linkType: hard
+
+"register@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "register@workspace:."
+  dependencies:
+    "@coinbase/wallet-sdk": 3.0.5
+    "@dnd-kit/core": ^6.0.5
+    "@dnd-kit/sortable": ^7.0.1
+    "@dnd-kit/utilities": ^3.2.0
+    "@emotion/react": ^11.9.0
+    "@emotion/styled": ^11.8.1
+    "@lc-labs/rtokens": ^1.0.0
+    "@lingui/cli": ^3.13.3
+    "@lingui/core": ^3.13.3
+    "@lingui/macro": ^3.13.3
+    "@lingui/react": ^3.13.3
+    "@mdx-js/react": ^2.1.1
+    "@metamask/contract-metadata": ^1.35.0
+    "@popperjs/core": ^2.11.5
+    "@reach/dialog": ^0.17.0
+    "@reach/portal": ^0.17.0
+    "@react-spring/types": ^9.4.5
+    "@react-spring/web": ^9.4.4
+    "@testing-library/jest-dom": ^5.16.4
+    "@testing-library/react": ^13.0.0
+    "@testing-library/user-event": ^14.0.4
+    "@typechain/ethers-v5": 10.1.0
+    "@types/jest": ^27.4.1
+    "@types/node": ^17.0.23
+    "@types/react": 18.0.0
+    "@types/react-blockies": ^1.4.1
+    "@types/react-dom": 18.0.0
+    "@types/react-table": ^7.7.10
+    "@types/uuid": ^8.3.4
+    "@walletconnect/ethereum-provider": ^1.7.7
+    "@web3-react/coinbase-wallet": 8.0.33-beta.0
+    "@web3-react/core": 8.0.33-beta.0
+    "@web3-react/metamask": 8.0.26-beta.0
+    "@web3-react/network": 8.0.26-beta.0
+    "@web3-react/types": 8.0.19-beta.0
+    "@web3-react/url": 8.0.16-beta.0
+    "@web3-react/walletconnect": 8.0.34-beta.0
+    babel-plugin-macros: ^3.1.0
+    babel-preset-react-app: ^10.0.1
+    buffer: ^6.0.3
+    dayjs: ^1.11.3
+    ethers: 5.7.1
+    fast-deep-equal: ^3.1.3
+    fast-memoize: ^2.5.2
+    graphql: ^16.5.0
+    graphql-request: ^4.2.0
+    i18next-browser-languagedetector: ^6.1.2
+    immer: ^9.0.12
+    jotai: ^1.8.1
+    make-plural: ^7.1.0
+    prettier: ^2.3.2
+    react: ^18.2.0
+    react-dom: 18.2.0
+    react-feather: ^2.0.9
+    react-ga: ^3.3.1
+    react-hook-form: 7.31.3
+    react-hot-toast: ^2.2.0
+    react-popper: ^2.2.5
+    react-router-dom: 6.3.0
+    react-scripts: 5.0.1
+    react-table: ^7.7.0
+    react-use-websocket: ^4.2.0
+    recharts: ^2.1.6
+    source-map-explorer: ^2.5.2
+    swr: ^1.2.2
+    theme-ui: ^0.14.6
+    typechain: ^8.1.0
+    typescript: ^4.6.2
+    util: ^0.12.4
+    uuid: ^8.3.2
+    web-vitals: ^1.0.1
+  languageName: unknown
+  linkType: soft
 
 "regjsgen@npm:^0.7.1":
   version: 0.7.1
