@@ -19,7 +19,7 @@ const Container = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
           zIndex: 100000,
           opacity: '50%',
           width: '100vw',
-          height: '100vh',
+          height: '100%',
           backgroundColor: 'black',
         }}
       />
@@ -33,7 +33,7 @@ const Container = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
           backgroundColor: 'background',
           right: 0,
           top: 0,
-          height: '100vh',
+          height: '100%',
         }}
       >
         {children}

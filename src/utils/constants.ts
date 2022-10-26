@@ -44,6 +44,7 @@ export const ROUTES = Object.freeze({
   LIST: '/list',
   HOME: '/',
   WALLET: '/wallet',
+  TOKENS: '/tokens',
 })
 
 export const DEPLOYMENT_ROUTES = Object.freeze({})
