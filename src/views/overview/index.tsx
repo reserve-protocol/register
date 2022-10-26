@@ -55,16 +55,6 @@ const Overview = () => {
       />
       <External />
       <Divider {...dividerProps} />
-      <ContentHead
-        title={t`Live & Historical data`}
-        ml={4}
-        mb={4}
-        subtitle={
-          !!rToken?.isRSV
-            ? t`Including off-chain in-app transactions of RSV in the Reserve App.`
-            : undefined
-        }
-      />
       <Grid {...gridProps}>
         <HistoricalData />
         <RecentProtocolTransactions />

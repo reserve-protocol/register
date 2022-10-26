@@ -14,13 +14,6 @@ const Issuance = () => {
 
   return (
     <Container pb={4}>
-      <Text
-        ml={5}
-        mb={4}
-        sx={{ fontWeidht: 500, fontSize: 4, display: 'block' }}
-      >
-        <Trans>Mint + Redeem</Trans>
-      </Text>
       <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={5}>
         <Box>
           <Grid columns={[1, 2]} gap={4} mb={4}>
