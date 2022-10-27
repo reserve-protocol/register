@@ -23,7 +23,6 @@ const protocolRecentTxsQuery = gql`
 `
 
 const TransactionsOverview = (props: BoxProps) => {
-  // TODO: poll on blocknumber change
   const { data } = useQuery(
     protocolRecentTxsQuery,
     {},

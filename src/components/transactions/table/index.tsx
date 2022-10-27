@@ -37,7 +37,6 @@ const TransactionsTable = ({
   ...props
 }: Props) => {
   const currentTime = useAtomValue(blockTimestampAtom)
-  // TODO: update changing lang
   const transactionTypes: StringMap = useMemo(
     () => ({
       MINT: t`Mint`,
