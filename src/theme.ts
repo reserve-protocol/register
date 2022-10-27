@@ -84,15 +84,15 @@ export const colors = {
     dark: {
       text: '#fff',
       boldText: '#fff',
-      background: '#080D0B',
+      background: '#000',
       secondary: '#262B29',
       disabled: '#2E3331',
-      border: '#333333',
+      border: '#ffffff0d',
       inputBorder: '#2E3331',
-      darkBorder: '#333333', // TODO
-      contentBackground: '#171C1A',
+      darkBorder: '#131614', // TODO
+      contentBackground: '#0D0D0D',
       lightBackground: '#1A1A1A',
-      contentLightBackground: '#0E1311',
+      contentLightBackground: '#0D0D0D',
       secondaryBackground: '#202128',
       primary: '#008060',
       bgCard: '#FBFDFE',
