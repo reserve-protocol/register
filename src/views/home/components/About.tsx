@@ -32,7 +32,7 @@ const About = (props: BoxProps) => {
               community.
             </Trans>
           </Text>
-          <SmallButton py={2} mt={3} mb={4} onClick={handleDeploy}>
+          <SmallButton py={2} mt={3} mb={5} onClick={handleDeploy}>
             <Trans>Deploy RToken</Trans>
           </SmallButton>
           <Text mb={2} variant="strong">
@@ -58,7 +58,7 @@ const About = (props: BoxProps) => {
           <Text mb={2} variant="strong">
             <Trans>This app</Trans>
           </Text>
-          <Text variant="legend" as="p" mb={4}>
+          <Text variant="legend" as="p" mb={5}>
             <Trans>
               Register is developed and maintained by LC Labs as the first dApp
               to interact with the Reserve Protocol and various RTokens deployed
