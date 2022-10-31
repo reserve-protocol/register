@@ -26,6 +26,7 @@ import Home from 'views/home'
 import Management from 'views/management'
 import Overview from 'views/overview'
 import Insurance from 'views/staking'
+import Tokens from 'views/tokens/Tokens'
 import Layout from './components/layout'
 import { messages as enMessages } from './locales/en/messages'
 import { messages as esMessages } from './locales/es/messages'
@@ -125,6 +126,7 @@ const App = () => {
                   path={`${ROUTES.GOVERNANCE_INFO}/:txId`}
                   element={<GovernanceConfigured />}
                 />
+                <Route path={ROUTES.TOKENS} element={<Tokens />} />
               </Routes>
             </Layout>
           </ThemeProvider>
