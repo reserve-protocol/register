@@ -12,7 +12,7 @@ const Container = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
     <Portal>
       <Box
         onClick={() => setSidebar(false)}
-        sx={{
+        sx={(theme: any) => ({
           position: 'fixed',
           left: 0,
           top: 0,
@@ -20,8 +20,8 @@ const Container = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
           opacity: '50%',
           width: '100vw',
           height: '100vh',
-          backgroundColor: 'black',
-        }}
+          backgroundColor: theme.colors.modalOverlay,
+        })}
       />
       <Flex
         sx={{
