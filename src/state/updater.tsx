@@ -6,7 +6,7 @@ import { Facade } from 'abis/types'
 import { formatUnits } from 'ethers/lib/utils'
 import useBlockNumber from 'hooks/useBlockNumber'
 import { useContractCall } from 'hooks/useCall'
-import { useContract, useFacadeContract } from 'hooks/useContract'
+import { useFacadeContract } from 'hooks/useContract'
 import useRTokenPrice from 'hooks/useRTokenPrice'
 import useTokensAllowance from 'hooks/useTokensAllowance'
 import useTokensBalance from 'hooks/useTokensBalance'
@@ -27,7 +27,6 @@ import {
   rTokenPriceAtom,
   walletAtom,
 } from 'state/atoms'
-import useSWR from 'swr'
 import { ReserveToken, StringMap } from 'types'
 import {
   ORACLE_ADDRESS,
@@ -36,7 +35,7 @@ import {
   WETH_ADDRESS,
 } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
-import { COINGECKO_API, RSR } from 'utils/constants'
+import { RSR } from 'utils/constants'
 import { RSV_MANAGER } from 'utils/rsv'
 import AccountUpdater from './AccountUpdater'
 import RSVUpdater from './RSVUpdater'
