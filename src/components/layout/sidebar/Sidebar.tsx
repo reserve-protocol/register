@@ -50,7 +50,7 @@ const MenuItem = ({ title, Icon }: Omit<Item, 'path'>) => {
       my={[10, 10, 10]}
     >
       <Icon />
-      <Text sx={{ display: ['none', 'none', 'inherit'] }} ml={2}>
+      <Text sx={{ display: ['none', 'none', 'inherit'] }} ml={3}>
         {title}
       </Text>
     </Box>
