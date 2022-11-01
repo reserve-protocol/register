@@ -173,7 +173,7 @@ const TransactionModal = ({
         mt={3}
       />
       {!!canSubmit && (
-        <Box mt={2} sx={{ fontSize: 1, textAlign: 'center' }}>
+        <Box mt={3} sx={{ fontSize: 1, textAlign: 'center' }}>
           <Text mr={1}>
             <Trans>Estimated gas cost:</Trans>
           </Text>
