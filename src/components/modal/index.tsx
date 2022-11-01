@@ -1,4 +1,4 @@
-import { Dialog } from '@reach/dialog'
+import { Dialog, DialogOverlay } from '@reach/dialog'
 import '@reach/dialog/styles.css'
 import { Flex, Text, ButtonProps, Button, Divider } from 'theme-ui'
 import { X } from 'react-feather'
@@ -19,6 +19,12 @@ const StyledDialog = styled((props: any) => <Dialog {...props} />)`
     padding: ${({ theme }) => theme.space[4]}px;
     position: relative;
     border-radius: 12px;
+    box-shadow: ${({ theme }) => theme.strongBoxShadow};
+  }
+`
+const Overlay = styled((props: any) => <DialogOverlay {...props} />)`
+  && {
+    background-color: ${({ theme }) => theme.colors.modalOverlay};
   }
 `
 
@@ -35,36 +41,38 @@ const Modal = ({
   children,
   style = {},
 }: ModalProps) => (
-  <StyledDialog
-    aria-label="Modal"
-    isOpen={open}
-    onDismiss={onClose}
-    style={style}
-  >
-    {(onClose || title) && (
-      <>
-        <Flex
-          mb={4}
-          sx={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'relative',
-          }}
-        >
-          <Text variant="sectionTitle">{title && title}</Text>
-          {!!onClose && (
-            <CloseButton
-              sx={{ position: 'absolute', right: 0 }}
-              variant="circle"
-              onClick={onClose}
-            />
-          )}
-        </Flex>
-        {!!title && <Divider mx={-4} mb={4} />}
-      </>
-    )}
-    {children}
-  </StyledDialog>
+  <Overlay>
+    <StyledDialog
+      aria-label="Modal"
+      isOpen={open}
+      onDismiss={onClose}
+      style={style}
+    >
+      {(onClose || title) && (
+        <>
+          <Flex
+            mb={4}
+            sx={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative',
+            }}
+          >
+            <Text variant="sectionTitle">{title && title}</Text>
+            {!!onClose && (
+              <CloseButton
+                sx={{ position: 'absolute', right: 0 }}
+                variant="circle"
+                onClick={onClose}
+              />
+            )}
+          </Flex>
+          {!!title && <Divider mx={-4} mb={4} />}
+        </>
+      )}
+      {children}
+    </StyledDialog>
+  </Overlay>
 )
 
 export default Modal
