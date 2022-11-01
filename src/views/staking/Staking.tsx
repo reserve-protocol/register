@@ -8,7 +8,7 @@ import Unstake from './components/unstake'
 
 const Staking = () => (
   <Container pb={4}>
-    <Text ml={5} mb={4} sx={{ fontWeidht: 500, fontSize: 4, display: 'block' }}>
+    <Text ml={5} mb={4} variant="strong" sx={{ display: 'block' }}>
       <Trans>Stake + Unstake</Trans>
     </Text>
     <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={5}>

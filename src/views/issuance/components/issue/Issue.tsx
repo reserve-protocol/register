@@ -5,7 +5,6 @@ import { useAtom, useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { useState } from 'react'
 import { Card } from 'theme-ui'
-import { ReserveToken } from 'types'
 import {
   issueAmountAtom,
   isValidIssuableAmountAtom,
