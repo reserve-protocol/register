@@ -26,7 +26,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
       sx={{
         flexWrap: 'wrap',
         height: '100%',
-        maxWidth: '100em',
+        maxWidth: '95em',
         margin: 'auto',
       }}
     >
