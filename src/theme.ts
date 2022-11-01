@@ -80,6 +80,7 @@ export const colors = {
   danger: '#FF0000',
   muted: '#D9D9D9',
   warning: '#FF7A00',
+  modalOverlay: 'rgb(0, 0, 0, 0.3)',
   modes: {
     dark: {
       text: '#fff',
@@ -90,12 +91,13 @@ export const colors = {
       border: '#ffffff0d',
       inputBorder: '#2E3331',
       darkBorder: '#131614', // TODO
-      contentBackground: '#0D0D0D',
+      contentBackground: '#121212',
       lightBackground: '#1A1A1A',
-      contentLightBackground: '#0D0D0D',
+      contentLightBackground: '#090909',
       secondaryBackground: '#202128',
       primary: '#008060',
       bgCard: '#FBFDFE',
+      modalOverlay: 'rgb(255, 255, 255, 0.1)',
     },
   },
 }
