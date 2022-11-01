@@ -68,6 +68,7 @@ const NavItem = ({
     style={({ isActive }) => ({
       paddingLeft: '5px',
       textDecoration: 'none',
+      opacity: isActive ? '100%' : '80%',
       color: 'inherit',
       lineHeight: '32px',
       boxShadow: isActive
@@ -186,7 +187,7 @@ const Navigation = ({
 // Sidebar footer
 const Footer = () => (
   <Box m={4} sx={{ display: ['none', 'none', 'block'] }}>
-    <Box sx={{ fontSize: 1 }} mb={3}>
+    <Box sx={{ fontSize: 1 }} mb={4}>
       <Text sx={{ fontWeight: 500, color: 'danger' }}>
         <Trans>Proceed with caution</Trans>
       </Text>
