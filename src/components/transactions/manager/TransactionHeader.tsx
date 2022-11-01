@@ -33,7 +33,7 @@ const TransactionHeader = () => {
         flexShrink: 0,
       }}
       px={5}
-      mb={5}
+      mb={3}
     >
       <Text variant="title" sx={{ fontSize: 2 }} mr={3}>
         <Trans>Your account</Trans>
