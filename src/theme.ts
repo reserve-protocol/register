@@ -80,7 +80,7 @@ export const colors = {
   danger: '#FF0000',
   muted: '#D9D9D9',
   warning: '#FF7A00',
-  modalOverlay: 'rgb(0, 0, 0, 0.3)',
+  modalOverlay: 'rgb(0, 0, 0, 0.2)',
   modes: {
     dark: {
       text: '#fff',
