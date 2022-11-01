@@ -1,6 +1,8 @@
 import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import { useNavigate } from 'react-router-dom'
+import { t } from '@lingui/macro'
+import { ContentHead } from 'components/info-box'
 import { Box, BoxProps, Grid, Link, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 
@@ -17,6 +19,7 @@ const About = (props: BoxProps) => {
 
   return (
     <Box {...props}>
+      <ContentHead pl={3} title={t`About`} />
       <Grid columns={[1, 1, 2]} mt={7} px={3} gap={[4, 4, 7]}>
         <Box>
           <Text mb={2} variant="strong">
