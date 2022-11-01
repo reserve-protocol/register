@@ -17,9 +17,15 @@ const StyledDialog = styled((props: any) => <Dialog {...props} />)`
     width: 'auto';
     background-color: ${({ theme }) => theme.colors.contentBackground};
     padding: ${({ theme }) => theme.space[4]}px;
-    position: relative;
     border-radius: 12px;
     box-shadow: ${({ theme }) => theme.strongBoxShadow};
+    box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.1);
+    border: 1px solid ${({ theme }) => theme.colors.inputBorder};
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: 0;
+    transform: translate(-50%, -50%);
   }
 `
 const Overlay = styled((props: any) => <DialogOverlay {...props} />)`
