@@ -15,10 +15,7 @@ export const CONNECTOR_TYPES = {
   gnosis: 'gnosis',
 }
 
-export type WalletConnector =
-  | MetaMask
-  | WalletConnect
-  | CoinbaseWallet
+export type WalletConnector = MetaMask | WalletConnect | CoinbaseWallet
 
 export function getConnectorType(connector: Connector) {
   if (connector instanceof MetaMask) return CONNECTOR_TYPES.metamask

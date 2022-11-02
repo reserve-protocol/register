@@ -4,7 +4,6 @@ import { t } from '@lingui/macro'
 import { ContentHead } from 'components/info-box'
 import { Table } from 'components/table'
 import TokenItem from 'components/token-item'
-import { ethers } from 'ethers'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import { getRTokenLogo } from 'hooks/useRTokenLogo'
@@ -84,14 +83,6 @@ const tokenListQuery = gql`
   }
 `
 
-function getUnits(units: string[]): string[] {
-  const set = new Set(units)
-
-  return Array.from(set).map((unit: string) => {
-    return ethers.utils.parseBytes32String(unit)
-  })
-}
-
 const TokenList = (props: BoxProps) => {
   const navigate = useNavigate()
   const timestamp = useAtomValue(blockTimestampAtom)
@@ -132,9 +123,7 @@ const TokenList = (props: BoxProps) => {
           transactionCount: Number(token.transferCount),
           cumulativeVolume:
             +formatEther(token.cumulativeVolume) * +token.lastPriceUSD,
-          targetUnits: getUnits(
-            token?.rToken?.targetUnits.split(',') || []
-          ).join(', '),
+          targetUnits: token?.rToken?.targetUnits,
           tokenApy: +tokenApy.toFixed(2),
           backing: token?.rToken?.backing || 100,
           backingInsurance: token?.rToken?.backingInsurance || 0,

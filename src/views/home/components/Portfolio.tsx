@@ -2,6 +2,7 @@ import { t, Trans } from '@lingui/macro'
 import { Table } from 'components/table'
 import TokenItem from 'components/token-item'
 import { getRTokenLogo } from 'hooks/useRTokenLogo'
+import { localeAtom } from 'i18n'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import {
@@ -17,11 +18,11 @@ import {
 } from 'utils'
 
 const Portfolio = (props: BoxProps) => {
+  const lang = useAtomValue(localeAtom)
   const rTokens = useAtomValue(accountTokensAtom)
   const stTokens = useAtomValue(accountPositionsAtom)
   const holdings = useAtomValue(accountHoldingsAtom)
 
-  // TODO: Update changing lang
   const rTokenColumns = useMemo(
     () => [
       {
@@ -42,7 +43,7 @@ const Portfolio = (props: BoxProps) => {
         Cell: ({ cell }: { cell: any }) => `${cell.value}%`,
       },
     ],
-    []
+    [lang]
   )
   const stTokenColumns = useMemo(
     () => [
@@ -79,7 +80,7 @@ const Portfolio = (props: BoxProps) => {
         Cell: ({ cell }: { cell: any }) => `${cell.value}%`,
       },
     ],
-    []
+    [lang]
   )
 
   if (!holdings) {

@@ -1,7 +1,8 @@
 import { i18n } from '@lingui/core'
 import { I18nProvider } from '@lingui/react'
+import { atom, useAtomValue } from 'jotai'
 import { en, es, PluralCategory } from 'make-plural/plurals'
-import { ReactNode, useEffect } from 'react'
+import { ReactNode, useCallback, useEffect } from 'react'
 
 const SUPPORTED_LOCALES = [
   // order as they appear in the language dropdown
@@ -42,7 +43,7 @@ interface ProviderProps {
   children: ReactNode
 }
 
-export default function Provider({
+export function Provider({
   locale,
   forceRenderAfterLocaleChange = true,
   onActivate,
@@ -71,5 +72,31 @@ export default function Provider({
     >
       {children}
     </I18nProvider>
+  )
+}
+
+dynamicActivate(DEFAULT_LOCALE)
+
+export const localeAtom = atom(DEFAULT_LOCALE)
+
+export default function LanguageProvider({
+  children,
+}: {
+  children: ReactNode
+}) {
+  const locale = useAtomValue(localeAtom)
+
+  const onActivate = useCallback((locale: SupportedLocale) => {
+    document.documentElement.setAttribute('lang', locale)
+  }, [])
+
+  return (
+    <Provider
+      forceRenderAfterLocaleChange={false}
+      onActivate={onActivate}
+      locale={locale}
+    >
+      {children}
+    </Provider>
   )
 }

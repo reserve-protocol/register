@@ -15,7 +15,7 @@ import Overview from 'views/overview'
 import Insurance from 'views/staking'
 import Tokens from 'views/tokens/Tokens'
 import Layout from './components/layout'
-import LanguageProvider, { DEFAULT_LOCALE } from './i18n'
+import LanguageProvider from './i18n'
 import { theme } from './theme'
 import Issuance from './views/issuance'
 
@@ -28,7 +28,7 @@ const App = () => (
   <Router>
     <Analytics />
     <ThemeProvider theme={theme}>
-      <LanguageProvider locale={DEFAULT_LOCALE}>
+      <LanguageProvider>
         <ToastContainer />
         <Web3Provider>
           <Updater />
