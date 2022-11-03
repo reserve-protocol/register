@@ -3,18 +3,26 @@ import { Container } from 'components'
 import { SmallButton } from 'components/button'
 import { ContentHead } from 'components/info-box'
 import ListedTokensTable from 'components/tables/ListedTokensTable'
+import { useUpdateAtom } from 'jotai/utils'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { selectedRTokenAtom } from 'state/atoms'
 import { Flex } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import UnlistedTokensTable from './components/UnlistedTokensTable'
 
 const Tokens = () => {
   const navigate = useNavigate()
+  const updateToken = useUpdateAtom(selectedRTokenAtom)
 
   const handleDeploy = () => {
     navigate(ROUTES.DEPLOY)
     document.getElementById('app-container')?.scrollTo(0, 0)
   }
+
+  useEffect(() => {
+    updateToken('')
+  }, [])
 
   return (
     <Container>
