@@ -1,87 +1,20 @@
-import { t } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 import { Container } from 'components'
+import { SmallButton } from 'components/button'
 import { ContentHead } from 'components/info-box'
-import { Table } from 'components/table'
-import { formatEther } from 'ethers/lib/utils'
-import { gql } from 'graphql-request'
-import useQuery from 'hooks/useQuery'
-import { useEffect, useMemo, useState } from 'react'
-import { formatUsdCurrencyCell } from 'utils'
-
-const query = gql`
-  query GetTokenListOverview {
-    rtokens(orderBy: cumulativeUniqueUsers, orderDirection: desc) {
-      id
-      cumulativeUniqueUsers
-      targetUnits
-      rsrStaked
-      rsrPriceUSD
-      token {
-        name
-        symbol
-        lastPriceUSD
-        holderCount
-        totalSupply
-      }
-    }
-  }
-`
-
-const useTokens = () => {
-  const { data } = useQuery(query)
-  const [tokens, setTokens] = useState([])
-
-  useEffect(() => {
-    if (data?.rtokens) {
-      setTokens(
-        data.rtokens.map((rtoken: any) => ({
-          address: rtoken.id,
-          targetUnits: rtoken.targetUnits,
-          name: rtoken.token.name,
-          symbol: rtoken.token.symbol,
-          price: rtoken.token.lastPriceUSD,
-          holders: rtoken.token.holderCount,
-          insurance: +formatEther(rtoken.rsrStaked) * rtoken.rsrPriceUSD,
-          marketCap:
-            +formatEther(rtoken.token.totalSupply) * rtoken.token.lastPriceUSD,
-        }))
-      )
-    }
-  }, [data])
-
-  return tokens
-}
+import ListedTokensTable from 'components/tables/ListedTokensTable'
+import { useNavigate } from 'react-router-dom'
+import { Flex } from 'theme-ui'
+import { ROUTES } from 'utils/constants'
+import UnlistedTokensTable from './components/UnlistedTokensTable'
 
 const Tokens = () => {
-  const columns = useMemo(
-    () => [
-      {
-        Header: t`Name`,
-        accessor: 'name',
-      },
-      {
-        Header: t`Price`,
-        accessor: 'price',
-        Cell: formatUsdCurrencyCell,
-      },
-      {
-        Header: t`MarketCap`,
-        accessor: 'marketCap',
-        Cell: formatUsdCurrencyCell,
-      },
-      {
-        Header: t`RSR Staked`,
-        accessor: 'insurance',
-        Cell: formatUsdCurrencyCell,
-      },
-      {
-        Header: t`Holders`,
-        accessor: 'holders',
-      },
-    ],
-    []
-  )
-  const data = useTokens()
+  const navigate = useNavigate()
+
+  const handleDeploy = () => {
+    navigate(ROUTES.DEPLOY)
+    document.getElementById('app-container')?.scrollTo(0, 0)
+  }
 
   return (
     <Container>
@@ -91,7 +24,28 @@ const Tokens = () => {
         mb={5}
         ml={3}
       />
-      <Table pagination={{ pageSize: 5 }} columns={columns} data={data} />
+      <ListedTokensTable />
+      <ContentHead
+        title={t`All unlisted RTokens`}
+        subtitle={t`Be aware that anyone can create an RToken that ends up on this list. We don't apply any standards beyond what can be done with the Reserve Protocol.`}
+        my={5}
+        ml={3}
+      />
+      <UnlistedTokensTable />
+      <Flex mt={3} sx={{ justifyContent: 'center' }}>
+        <SmallButton
+          mr={3}
+          variant="muted"
+          onClick={() =>
+            window.open('https://github.com/lc-labs/rtokens', '_blank')
+          }
+        >
+          <Trans>Apply for listing</Trans>
+        </SmallButton>
+        <SmallButton onClick={handleDeploy}>
+          <Trans>Deploy RToken</Trans>
+        </SmallButton>
+      </Flex>
     </Container>
   )
 }

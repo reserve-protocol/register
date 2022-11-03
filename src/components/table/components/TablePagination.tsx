@@ -2,6 +2,7 @@
 import { FC } from 'react'
 import { Box, Select, Button, Input } from 'theme-ui'
 import { UsePaginationInstanceProps } from 'react-table'
+import { SmallButton } from 'components/button'
 
 const runtimeTemplate = (str: string, obj: Record<string, any>) =>
   str.replace(/\${(.*?)}/g, (x, g) => obj[g])
@@ -106,41 +107,41 @@ export const TablePagination: FC<
       >
         {(canPreviousPage || canNextPage) && (
           <Box variant="table.pagination.navigation" sx={{ display: 'flex' }}>
-            <Box variant="table.pagination.navigation.button">
-              <Button
-                variant="circle"
+            <Box variant="table.pagination.navigation.button" mr={1}>
+              <SmallButton
+                variant="muted"
                 onClick={() => gotoPage(0)}
                 disabled={!canPreviousPage}
               >
                 {'<<'}
-              </Button>
+              </SmallButton>
             </Box>
-            <Box variant="table.pagination.navigation.button">
-              <Button
-                variant="circle"
+            <Box variant="table.pagination.navigation.button" mr={1}>
+              <SmallButton
+                variant="muted"
                 onClick={() => previousPage()}
                 disabled={!canPreviousPage}
               >
                 {'<'}
-              </Button>
+              </SmallButton>
             </Box>
-            <Box variant="table.pagination.navigation.button">
-              <Button
-                variant="circle"
+            <Box variant="table.pagination.navigation.button" mr={1}>
+              <SmallButton
+                variant="muted"
                 onClick={() => nextPage()}
                 disabled={!canNextPage}
               >
                 {'>'}
-              </Button>
+              </SmallButton>
             </Box>
             <Box variant="table.pagination.navigation.button">
-              <Button
-                variant="circle"
+              <SmallButton
+                variant="muted"
                 onClick={() => gotoPage(pageCount - 1)}
                 disabled={!canNextPage}
               >
                 {'>>'}
-              </Button>
+              </SmallButton>
             </Box>
           </Box>
         )}
