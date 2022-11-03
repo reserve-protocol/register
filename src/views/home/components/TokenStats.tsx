@@ -9,9 +9,7 @@ import { useMemo } from 'react'
 import { rpayOverviewAtom } from 'state/atoms'
 import { Box, BoxProps, Grid, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { DEPLOYER_ADDRESS } from 'utils/addresses'
-import { CHAIN_ID } from 'utils/chains'
-import { TIME_RANGES } from 'utils/constants'
+import { PROTOCOL_SLUG, TIME_RANGES } from 'utils/constants'
 
 const Stat = ({ title, value }: { title: string; value: string }) => (
   <Box mb={2}>
@@ -38,6 +36,8 @@ const protocolMetricsQuery = gql`
     token(id: "0x196f4727526ea7fb1e17b2071b3d8eaa38486988") {
       lastPriceUSD
       totalSupply
+      cumulativeVolume
+      transferCount
     }
     protocol(id: $id) {
       totalValueLockedUSD
@@ -71,7 +71,7 @@ const TokenStats = (props: BoxProps) => {
   const { data } = useQuery(
     protocolMetricsQuery,
     {
-      id: DEPLOYER_ADDRESS[CHAIN_ID],
+      id: PROTOCOL_SLUG,
       fromTime,
     },
     { refreshInterval: 5000 }
@@ -83,6 +83,10 @@ const TokenStats = (props: BoxProps) => {
       const rsvMarket =
         +formatEther(data.token?.totalSupply || '0') *
         (+data.token?.lastPriceUSD || 0)
+      const rsvVolume =
+        +formatEther(data.token?.cumulativeVolume || '0') *
+          (+data.token?.lastPriceUSD || 0) +
+        rpayOverview.volume
 
       return {
         totalValueLockedUSD: `$${formatCurrency(
@@ -92,7 +96,7 @@ const TokenStats = (props: BoxProps) => {
           (+data.protocol?.totalRTokenUSD || 0) + rsvMarket
         )}`,
         cumulativeVolumeUSD: `$${formatCurrency(
-          rpayOverview.volume + (+data.protocol?.cumulativeVolumeUSD || 0)
+          rsvVolume + (+data.protocol?.cumulativeVolumeUSD || 0)
         )}`,
         cumulativeRTokenRevenueUSD: `$${formatCurrency(
           +data.protocol?.cumulativeRTokenRevenueUSD || 0
@@ -101,7 +105,9 @@ const TokenStats = (props: BoxProps) => {
           +data.protocol?.cumulativeInsuranceRevenueUSD || 0
         )}`,
         transactionCount: formatCurrency(
-          rpayOverview.txCount + (+data.protocol?.transactionCount || 0)
+          rpayOverview.txCount +
+            (+data.token?.transferCount || 0) +
+            (+data.protocol?.transactionCount || 0)
         ),
         dailyTransactionCount: formatCurrency(
           rpayOverview.dayTxCount +

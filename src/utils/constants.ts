@@ -61,3 +61,5 @@ export const RSR: Token = {
   decimals: 18,
   logo: 'rsr.svg',
 }
+
+export const PROTOCOL_SLUG = 'reserveprotocol-v1'
