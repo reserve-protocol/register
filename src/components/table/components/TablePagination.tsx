@@ -1,6 +1,6 @@
 /* eslint-disable no-template-curly-in-string */
 import { FC } from 'react'
-import { Box, Select, Button, Input } from 'theme-ui'
+import { Box, Select, Text, Input } from 'theme-ui'
 import { UsePaginationInstanceProps } from 'react-table'
 import { SmallButton } from 'components/button'
 
@@ -98,8 +98,10 @@ export const TablePagination: FC<
       sx={{ display: 'flex', alignItems: 'center' }}
       variant="table.pagination.container"
     >
-      <Box variant="table.pagination.total">
-        {totalCountVisible && totalCountResolvedTemplate}
+      <Box variant="table.pagination.total" ml={3}>
+        <Text variant="legend" sx={{ fontSize: 1 }}>
+          {totalCountVisible && totalCountResolvedTemplate}
+        </Text>
       </Box>
       <Box
         sx={{ marginLeft: 'auto' }}

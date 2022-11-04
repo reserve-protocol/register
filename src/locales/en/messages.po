@@ -17,7 +17,7 @@ msgstr ""
 msgid "% Acceptable"
 msgstr "% Acceptable"
 
-#: src/views/issuance/components/issue/Issue.tsx:52
+#: src/views/issuance/components/issue/Issue.tsx:53
 msgid "+ Mint {0}"
 msgstr "+ Mint {0}"
 
@@ -29,7 +29,7 @@ msgstr "+ Mint {0}"
 #~ msgid "- Basket scale"
 #~ msgstr "- Basket scale"
 
-#: src/views/issuance/components/redeem/index.tsx:25
+#: src/views/issuance/components/redeem/index.tsx:26
 msgid "- Redeem {0}"
 msgstr "- Redeem {0}"
 
@@ -45,11 +45,11 @@ msgstr "15 params"
 msgid "24h Tx Vol"
 msgstr "24h Tx Vol"
 
-#: src/views/home/components/TokenStats.tsx:156
+#: src/views/home/components/TokenStats.tsx:162
 msgid "24h Tx Volume"
 msgstr "24h Tx Volume"
 
-#: src/views/home/components/TokenStats.tsx:161
+#: src/views/home/components/TokenStats.tsx:167
 #: src/views/overview/components/TokenUsage.tsx:32
 msgid "24h Txs"
 msgstr "24h Txs"
@@ -58,7 +58,7 @@ msgstr "24h Txs"
 msgid "A year ago"
 msgstr "A year ago"
 
-#: src/views/home/components/TokenList.tsx:200
+#: src/components/tables/ListedTokensTable.tsx:58
 msgid "APY"
 msgstr "APY"
 
@@ -118,6 +118,10 @@ msgstr "Advanced config:"
 msgid "Alexios is standard token-voting adopted from Compound Governor Bravo, with adjustments accounting for RSR being staked across multiple RTokens."
 msgstr "Alexios is standard token-voting adopted from Compound Governor Bravo, with adjustments accounting for RSR being staked across multiple RTokens."
 
+#: src/views/tokens/Tokens.tsx:37
+msgid "All unlisted RTokens"
+msgstr "All unlisted RTokens"
+
 #: src/views/staking/components/stake/ConfirmStake.tsx:72
 msgid "Allow use of RSR"
 msgstr "Allow use of RSR"
@@ -127,14 +131,18 @@ msgid "Allow use of collateral tokens"
 msgstr "Allow use of collateral tokens"
 
 #: src/components/transactions/table/index.tsx:71
-#: src/views/auctions/index.tsx:105
-#: src/views/auctions/index.tsx:200
+#: src/views/auctions/index.tsx:109
+#: src/views/auctions/index.tsx:204
 msgid "Amount"
 msgstr "Amount"
 
 #: src/views/deploy/components/DeployIntro.tsx:77
 msgid "Anyone can stake RSR to participate in governance decisions"
 msgstr "Anyone can stake RSR to participate in governance decisions"
+
+#: src/views/tokens/Tokens.tsx:51
+msgid "Apply for listing"
+msgstr "Apply for listing"
 
 #: src/views/staking/components/stake/ConfirmStake.tsx:45
 msgid "Approve RSR"
@@ -161,11 +169,11 @@ msgid "Auctions"
 msgstr "Auctions"
 
 #: src/views/issuance/components/balances/PendingIssuances.tsx:92
-#: src/views/staking/components/balances/Balances.tsx:86
+#: src/views/staking/components/balances/Balances.tsx:85
 msgid "Available"
 msgstr "Available"
 
-#: src/views/issuance/components/balances/index.tsx:21
+#: src/views/issuance/components/balances/index.tsx:22
 msgid "Available collateral"
 msgstr "Available collateral"
 
@@ -190,8 +198,8 @@ msgstr "Backing buffer"
 msgid "Backing buffer (%)"
 msgstr "Backing buffer (%)"
 
-#: src/views/home/components/Portfolio.tsx:37
-#: src/views/home/components/Portfolio.tsx:62
+#: src/views/home/components/Portfolio.tsx:38
+#: src/views/home/components/Portfolio.tsx:63
 msgid "Balance"
 msgstr "Balance"
 
@@ -219,6 +227,10 @@ msgstr "Basket scale"
 msgid "Baskets"
 msgstr "Baskets"
 
+#: src/views/tokens/Tokens.tsx:38
+msgid "Be aware that anyone can create an RToken that ends up on this list. We don't apply any standards beyond what can be done with the Reserve Protocol."
+msgstr "Be aware that anyone can create an RToken that ends up on this list. We don't apply any standards beyond what can be done with the Reserve Protocol."
+
 #: src/views/issuance/components/issue/ConfirmIssuance.tsx:96
 msgid "Begin minting {0} {1}"
 msgstr "Begin minting {0} {1}"
@@ -243,8 +255,8 @@ msgstr "Begin unstake cooldown"
 msgid "Both Register & the Reserve Protocol are brand new. There are risks with using any new smart contract technology."
 msgstr "Both Register & the Reserve Protocol are brand new. There are risks with using any new smart contract technology."
 
-#: src/views/auctions/index.tsx:91
-#: src/views/auctions/index.tsx:186
+#: src/views/auctions/index.tsx:95
+#: src/views/auctions/index.tsx:190
 msgid "Bought"
 msgstr "Bought"
 
@@ -320,7 +332,7 @@ msgstr "Community Discord"
 #~ msgid "Community discord"
 #~ msgstr "Community discord"
 
-#: src/views/home/components/TokenList.tsx:222
+#: src/views/home/components/TokenList.tsx:21
 msgid "Compare RTokens"
 msgstr "Compare RTokens"
 
@@ -416,20 +428,20 @@ msgstr "Create necessary smart contracts for all RTokens ops"
 #~ msgid "Cumalitive - Staked RSR Income"
 #~ msgstr "Cumalitive - Staked RSR Income"
 
-#: src/views/home/components/TokenStats.tsx:145
+#: src/views/home/components/TokenStats.tsx:151
 msgid "Cumulative - RToken holder income"
 msgstr "Cumulative - RToken holder income"
 
-#: src/views/home/components/TokenStats.tsx:150
+#: src/views/home/components/TokenStats.tsx:156
 msgid "Cumulative - Staked RSR income"
 msgstr "Cumulative - Staked RSR income"
 
-#: src/views/home/components/TokenStats.tsx:158
+#: src/views/home/components/TokenStats.tsx:164
 #: src/views/overview/components/TokenUsage.tsx:25
 msgid "Cumulative Tx Volume"
 msgstr "Cumulative Tx Volume"
 
-#: src/views/home/components/TokenStats.tsx:162
+#: src/views/home/components/TokenStats.tsx:168
 #: src/views/overview/components/TokenUsage.tsx:37
 msgid "Cumulative Txs"
 msgstr "Cumulative Txs"
@@ -498,6 +510,7 @@ msgstr "Depending on RToken minting activity and the size of your deposit, the p
 #: src/views/deploy/views/ConfirmDeploy.tsx:188
 #: src/views/deploy/views/ConfirmDeploy.tsx:225
 #: src/views/home/components/About.tsx:36
+#: src/views/tokens/Tokens.tsx:54
 msgid "Deploy RToken"
 msgstr "Deploy RToken"
 
@@ -597,15 +610,15 @@ msgstr "Emergency collateral"
 msgid "Empty Basket"
 msgstr "Empty Basket"
 
-#: src/views/auctions/index.tsx:233
+#: src/views/auctions/index.tsx:237
 msgid "Ended Auctions"
 msgstr "Ended Auctions"
 
-#: src/views/auctions/index.tsx:205
+#: src/views/auctions/index.tsx:209
 msgid "Ended at"
 msgstr "Ended at"
 
-#: src/views/auctions/index.tsx:115
+#: src/views/auctions/index.tsx:119
 msgid "Ends at"
 msgstr "Ends at"
 
@@ -751,7 +764,8 @@ msgstr ""
 #~ msgid "Historical Yield - {0}"
 #~ msgstr "Historical Yield - {0}"
 
-#: src/views/home/components/TokenList.tsx:172
+#: src/components/tables/ListedTokensTable.tsx:30
+#: src/views/tokens/components/UnlistedTokensTable.tsx:90
 msgid "Holders"
 msgstr "Holders"
 
@@ -775,19 +789,19 @@ msgstr "If an RToken is listed on Register, it doesn't mean that Reserve or LC L
 msgid "If your token is paused and you have the correct role, you can unpause it here."
 msgstr "If your token is paused and you have the correct role, you can unpause it here."
 
-#: src/views/staking/components/balances/Balances.tsx:36
+#: src/views/staking/components/balances/Balances.tsx:35
 msgid "In Cooldown"
 msgstr "In Cooldown"
 
-#: src/views/staking/components/balances/Balances.tsx:141
+#: src/views/staking/components/balances/Balances.tsx:140
 msgid "In Wallet"
 msgstr "In Wallet"
 
-#: src/views/home/components/TokenStats.tsx:139
+#: src/views/home/components/TokenStats.tsx:145
 msgid "Includes RTokens, staked RSR, and RSV."
 msgstr "Includes RTokens, staked RSR, and RSV."
 
-#: src/views/home/components/TokenStats.tsx:134
+#: src/views/home/components/TokenStats.tsx:140
 msgid "Includes market cap of all RTokens and RSV."
 msgstr "Includes market cap of all RTokens and RSV."
 
@@ -795,7 +809,7 @@ msgstr "Includes market cap of all RTokens and RSV."
 msgid "Including off-chain in-app transactions of RSV in the Reserve App."
 msgstr "Including off-chain in-app transactions of RSV in the Reserve App."
 
-#: src/views/home/components/TokenList.tsx:223
+#: src/views/home/components/TokenList.tsx:22
 msgid "Including off-chain in-app transactions of RToken in the Reserve App."
 msgstr "Including off-chain in-app transactions of RToken in the Reserve App."
 
@@ -853,6 +867,7 @@ msgid "Inspect"
 msgstr "Inspect"
 
 #: src/views/overview/components/InsuranceChart.tsx:77
+#: src/views/tokens/components/UnlistedTokensTable.tsx:119
 msgid "Insurance"
 msgstr "Insurance"
 
@@ -1090,12 +1105,12 @@ msgstr "Mining"
 
 #: src/components/transactions/table/index.tsx:42
 #: src/views/home/components/Greet.tsx:53
-#: src/views/issuance/components/issue/Issue.tsx:41
+#: src/views/issuance/components/issue/Issue.tsx:42
 msgid "Mint"
 msgstr "Mint"
 
 #: src/components/layout/sidebar/Sidebar.tsx:96
-#: src/views/issuance/index.tsx:22
+#: src/views/issuance/index.tsx:15
 msgid "Mint + Redeem"
 msgstr "Mint + Redeem"
 
@@ -1111,13 +1126,18 @@ msgstr "Mint {0}"
 msgid "Minting requires a deposit of the defined collateral tokens in equal value amounts to the RToken smart contracts."
 msgstr "Minting requires a deposit of the defined collateral tokens in equal value amounts to the RToken smart contracts."
 
-#: src/views/issuance/components/issue/Issue.tsx:50
+#: src/views/issuance/components/issue/Issue.tsx:51
 msgid "Missing collateral"
 msgstr "Missing collateral"
 
-#: src/views/home/components/TokenList.tsx:171
+#: src/components/tables/ListedTokensTable.tsx:29
+#: src/views/tokens/components/UnlistedTokensTable.tsx:85
 msgid "Mkt Cap"
 msgstr "Mkt Cap"
+
+#: src/views/tokens/components/UnlistedTokensTable.tsx:69
+msgid "Name"
+msgstr "Name"
 
 #: src/views/deploy/components/DeployHeader.tsx:18
 #~ msgid "Need help?"
@@ -1136,18 +1156,18 @@ msgid "Next"
 msgstr "Next"
 
 #: src/App.tsx:43
-msgid "No RToken data"
-msgstr "No RToken data"
+#~ msgid "No RToken data"
+#~ msgstr "No RToken data"
 
 #: src/components/charts/area/AreaChart.tsx:96
 msgid "No data"
 msgstr "No data"
 
-#: src/views/auctions/index.tsx:248
+#: src/views/auctions/index.tsx:252
 msgid "No ended auctions"
 msgstr "No ended auctions"
 
-#: src/views/auctions/index.tsx:158
+#: src/views/auctions/index.tsx:162
 msgid "No ongoing auctions"
 msgstr "No ongoing auctions"
 
@@ -1183,7 +1203,7 @@ msgstr "No transactions"
 #~ msgid "One shot pause duration (s)"
 #~ msgstr "One shot pause duration (s)"
 
-#: src/views/auctions/index.tsx:299
+#: src/views/auctions/index.tsx:303
 msgid "Ongoing & historical auctions"
 msgstr "Ongoing & historical auctions"
 
@@ -1191,7 +1211,7 @@ msgstr "Ongoing & historical auctions"
 #~ msgid "Ongoing & historical auctions of USD+ from the Gnosis Auction app"
 #~ msgstr "Ongoing & historical auctions of USD+ from the Gnosis Auction app"
 
-#: src/views/auctions/index.tsx:143
+#: src/views/auctions/index.tsx:147
 msgid "Ongoing Auctions"
 msgstr "Ongoing Auctions"
 
@@ -1296,9 +1316,10 @@ msgstr "Please sign the transaction in your wallet to continue with the deployme
 msgid "Please sign the transaction in your wallet to continue with the government configuration process."
 msgstr "Please sign the transaction in your wallet to continue with the government configuration process."
 
-#: src/views/home/components/Portfolio.tsx:36
-#: src/views/home/components/TokenList.tsx:170
+#: src/components/tables/ListedTokensTable.tsx:28
+#: src/views/home/components/Portfolio.tsx:37
 #: src/views/overview/components/PriceChart.tsx:74
+#: src/views/tokens/components/UnlistedTokensTable.tsx:80
 msgid "Price"
 msgstr "Price"
 
@@ -1351,11 +1372,11 @@ msgstr "Quorum"
 msgid "Quorum (%)"
 msgstr "Quorum (%)"
 
-#: src/views/home/components/Portfolio.tsx:57
+#: src/views/home/components/Portfolio.tsx:58
 msgid "RSR Rate"
 msgstr "RSR Rate"
 
-#: src/views/home/components/Portfolio.tsx:67
+#: src/views/home/components/Portfolio.tsx:68
 msgid "RSR Value"
 msgstr "RSR Value"
 
@@ -1399,7 +1420,7 @@ msgstr "RToken Details"
 msgid "RToken Guardian address"
 msgstr "RToken Guardian address"
 
-#: src/views/issuance/components/balances/index.tsx:38
+#: src/views/issuance/components/balances/index.tsx:39
 msgid "RToken In Wallet"
 msgstr "RToken In Wallet"
 
@@ -1459,7 +1480,7 @@ msgstr "RToken owner address is required"
 msgid "RToken state after transaction"
 msgstr "RToken state after transaction"
 
-#: src/views/home/components/TokenStats.tsx:125
+#: src/views/home/components/TokenStats.tsx:131
 msgid "RToken stats"
 msgstr "RToken stats"
 
@@ -1482,6 +1503,10 @@ msgstr "RToken will be left in pause state"
 #: src/views/home/components/About.tsx:23
 msgid "RTokens & Deploying your own"
 msgstr "RTokens & Deploying your own"
+
+#: src/views/tokens/Tokens.tsx:31
+msgid "RTokens in this list is not an endorsement or audited by us. It’s simply RTokens that have gone through our listing process and don’t seem like clear scams."
+msgstr "RTokens in this list is not an endorsement or audited by us. It’s simply RTokens that have gone through our listing process and don’t seem like clear scams."
 
 #: src/views/deploy/components/BackingForm.tsx:64
 msgid "Rate"
@@ -1528,6 +1553,10 @@ msgstr "Register is developed and maintained by LC Labs as the first dApp to int
 #: src/views/management/index.tsx:134
 msgid "Register link"
 msgstr "Register link"
+
+#: src/views/tokens/Tokens.tsx:30
+msgid "Register listed RTokens"
+msgstr "Register listed RTokens"
 
 #: src/views/home/components/Greet.tsx:92
 msgid "Register.app is an independent project but with tight collaboration with the core team of the Reserve project. It’s created as the first Explorer/UI to interact with RTokens in different ways."
@@ -1669,12 +1698,12 @@ msgstr "Short freeze duration (s)"
 msgid "Signing..."
 msgstr "Signing..."
 
-#: src/views/auctions/index.tsx:77
-#: src/views/auctions/index.tsx:172
+#: src/views/auctions/index.tsx:81
+#: src/views/auctions/index.tsx:176
 msgid "Sold"
 msgstr "Sold"
 
-#: src/views/home/components/TokenList.tsx:205
+#: src/components/tables/ListedTokensTable.tsx:63
 msgid "St APY"
 msgstr "St APY"
 
@@ -1702,7 +1731,7 @@ msgstr "Stake RSR"
 #~ msgid "Stake/Unstake"
 #~ msgstr "Stake/Unstake"
 
-#: src/views/home/components/Portfolio.tsx:93
+#: src/views/home/components/Portfolio.tsx:94
 msgid "Staked RSR + Rtoken Value"
 msgstr "Staked RSR + Rtoken Value"
 
@@ -1769,7 +1798,7 @@ msgstr "Supply"
 #~ msgid "TODO: Help copy"
 #~ msgstr "TODO: Help copy"
 
-#: src/views/home/components/TokenStats.tsx:138
+#: src/views/home/components/TokenStats.tsx:144
 msgid "TVL in Reserve"
 msgstr "TVL in Reserve"
 
@@ -1789,7 +1818,8 @@ msgstr "Target"
 msgid "Target value for this unit of account"
 msgstr "Target value for this unit of account"
 
-#: src/views/home/components/TokenList.tsx:184
+#: src/components/tables/ListedTokensTable.tsx:42
+#: src/views/tokens/components/UnlistedTokensTable.tsx:103
 msgid "Target(s)"
 msgstr "Target(s)"
 
@@ -1846,7 +1876,7 @@ msgstr "There is no information about this token."
 #~ msgid "These stats are aggregated across all RTokens on the Reserve Protocol that are supported by this dApp. This also includes anonymized data from the Reserve App API if RTokens are supported by RPay to give insights into total currency usage."
 #~ msgstr "These stats are aggregated across all RTokens on the Reserve Protocol that are supported by this dApp. This also includes anonymized data from the Reserve App API if RTokens are supported by RPay to give insights into total currency usage."
 
-#: src/views/home/components/TokenStats.tsx:126
+#: src/views/home/components/TokenStats.tsx:132
 msgid "These stats are aggregated across all RTokens on the Reserve Protocol that are supported by this dApp. This also includes anonymized data from the Reserve app API if RTokens are supported by RPay to give insights into total currency usage."
 msgstr "These stats are aggregated across all RTokens on the Reserve Protocol that are supported by this dApp. This also includes anonymized data from the Reserve app API if RTokens are supported by RPay to give insights into total currency usage."
 
@@ -1882,7 +1912,7 @@ msgstr "Timelock contract address"
 msgid "To learn more about minting and redemption operations, read the documentation"
 msgstr "To learn more about minting and redemption operations, read the documentation"
 
-#: src/views/home/components/TokenList.tsx:162
+#: src/components/tables/ListedTokensTable.tsx:20
 msgid "Token"
 msgstr "Token"
 
@@ -1907,7 +1937,7 @@ msgstr "Token ticker"
 msgid "Token ticker is required"
 msgstr "Token ticker is required"
 
-#: src/views/home/components/TokenStats.tsx:132
+#: src/views/home/components/TokenStats.tsx:138
 msgid "Total RToken Market Cap"
 msgstr "Total RToken Market Cap"
 
@@ -1958,7 +1988,8 @@ msgstr "Transfer"
 msgid "Twitter"
 msgstr "Twitter"
 
-#: src/views/home/components/TokenList.tsx:174
+#: src/components/tables/ListedTokensTable.tsx:32
+#: src/views/tokens/components/UnlistedTokensTable.tsx:94
 msgid "Txs"
 msgstr "Txs"
 
@@ -1966,7 +1997,7 @@ msgstr "Txs"
 msgid "Type"
 msgstr "Type"
 
-#: src/views/home/components/Portfolio.tsx:72
+#: src/views/home/components/Portfolio.tsx:73
 msgid "USD Value"
 msgstr "USD Value"
 
@@ -2061,20 +2092,25 @@ msgstr "User tracking"
 msgid "Validating..."
 msgstr "Validating..."
 
-#: src/views/home/components/Portfolio.tsx:38
+#: src/views/home/components/Portfolio.tsx:39
 msgid "Value"
 msgstr "Value"
 
-#: src/views/auctions/index.tsx:130
-#: src/views/auctions/index.tsx:220
+#: src/views/auctions/index.tsx:134
+#: src/views/auctions/index.tsx:224
 msgid "View"
 msgstr "View"
+
+#: src/views/home/components/TokenList.tsx:27
+msgid "View All"
+msgstr "View All"
 
 #: src/components/transaction-modal/index.tsx:62
 msgid "View on etherscan"
 msgstr "View on etherscan"
 
-#: src/views/home/components/TokenList.tsx:179
+#: src/components/tables/ListedTokensTable.tsx:37
+#: src/views/tokens/components/UnlistedTokensTable.tsx:98
 msgid "Volume"
 msgstr "Volume"
 
@@ -2155,11 +2191,11 @@ msgstr "While it doesn’t require deep technical knowledge, this wizard require
 #~ msgstr "Who is this for?"
 
 #: src/components/transactions/table/index.tsx:52
-#: src/views/staking/components/balances/Balances.tsx:92
+#: src/views/staking/components/balances/Balances.tsx:91
 msgid "Withdraw"
 msgstr "Withdraw"
 
-#: src/views/staking/components/balances/Balances.tsx:58
+#: src/views/staking/components/balances/Balances.tsx:57
 msgid "Withdraw RSR"
 msgstr "Withdraw RSR"
 
@@ -2167,11 +2203,11 @@ msgstr "Withdraw RSR"
 msgid "Withdrawal"
 msgstr "Withdrawal"
 
-#: src/views/auctions/index.tsx:110
+#: src/views/auctions/index.tsx:114
 msgid "Worst case price"
 msgstr "Worst case price"
 
-#: src/views/home/components/Portfolio.tsx:107
+#: src/views/home/components/Portfolio.tsx:108
 msgid "Your RTokens"
 msgstr "Your RTokens"
 
@@ -2179,7 +2215,7 @@ msgstr "Your RTokens"
 msgid "Your Rtoken has been deployed and the \"owner\" role is set to your wallet. Next, let's configure a robust governance module for your currency. We recommend the default Reserve Governor Alexios but it is a flexible platform."
 msgstr "Your Rtoken has been deployed and the \"owner\" role is set to your wallet. Next, let's configure a robust governance module for your currency. We recommend the default Reserve Governor Alexios but it is a flexible platform."
 
-#: src/components/transactions/manager/TransactionSidebar.tsx:67
+#: src/components/transactions/manager/TransactionHeader.tsx:39
 msgid "Your account"
 msgstr "Your account"
 
@@ -2187,11 +2223,11 @@ msgstr "Your account"
 msgid "Your stake"
 msgstr "Your stake"
 
-#: src/views/staking/components/balances/Balances.tsx:110
+#: src/views/staking/components/balances/Balances.tsx:109
 msgid "Your staked RSR"
 msgstr "Your staked RSR"
 
-#: src/views/home/components/Portfolio.tsx:120
+#: src/views/home/components/Portfolio.tsx:121
 msgid "Your staked RSR positions"
 msgstr "Your staked RSR positions"
 
@@ -2211,7 +2247,7 @@ msgstr "proposalThreshold (%)"
 msgid "rToken address"
 msgstr "rToken address"
 
-#: src/views/auctions/index.tsx:298
+#: src/views/auctions/index.tsx:302
 msgid "related Auctions"
 msgstr "related Auctions"
 

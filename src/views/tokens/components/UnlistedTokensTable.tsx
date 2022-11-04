@@ -70,7 +70,7 @@ const UnlistedTokensTable = () => {
         accessor: 'name',
         Cell: (data: any) => {
           return (
-            <Box>
+            <Box sx={{ minWidth: 150 }}>
               <TokenItem symbol={data.cell.value} logo={'/svgs/default.svg'} />
             </Box>
           )
