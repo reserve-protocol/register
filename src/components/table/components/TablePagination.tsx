@@ -98,10 +98,8 @@ export const TablePagination: FC<
       sx={{ display: 'flex', alignItems: 'center' }}
       variant="table.pagination.container"
     >
-      <Box variant="table.pagination.total" ml={3}>
-        <Text variant="legend" sx={{ fontSize: 1 }}>
-          {totalCountVisible && totalCountResolvedTemplate}
-        </Text>
+      <Box sx={{ fontSize: 1, color: 'lightText' }} ml={3}>
+        {totalCountVisible && totalCountResolvedTemplate}
       </Box>
       <Box
         sx={{ marginLeft: 'auto' }}
