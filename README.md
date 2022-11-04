@@ -19,8 +19,6 @@ yarn
 yarn start
 ```
 
-This project uses yarn PnP, avoid using NPM
-
 ## Adding an RToken to the supported list
 
 Please go to [this repository](https://github.com/lc-labs/rtokens) and create a pull request with the token you want to add following the instructions of the README.

@@ -6,8 +6,8 @@ import { ReactNode, useCallback, useEffect } from 'react'
 
 const SUPPORTED_LOCALES = [
   // order as they appear in the language dropdown
-  'en-US',
-  'es-ES',
+  'en',
+  'es',
 ]
 
 type SupportedLocale = typeof SUPPORTED_LOCALES[number] | 'pseudo'
@@ -18,11 +18,11 @@ type LocalePlural = {
   ) => PluralCategory
 }
 
-export const DEFAULT_LOCALE: SupportedLocale = 'en-US'
+export const DEFAULT_LOCALE: SupportedLocale = 'en'
 
 const plurals: LocalePlural = {
-  'en-US': en,
-  'es-ES': es,
+  en: en,
+  es: es,
   pseudo: en,
 }
 
