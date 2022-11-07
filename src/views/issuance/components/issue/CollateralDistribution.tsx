@@ -23,7 +23,7 @@ const CollateralDistribution = ({
 
   return (
     <Box
-      sx={{ border: '1px solid', borderColor: 'secondary', borderRadius: 10 }}
+      sx={{ border: '1px solid', borderColor: 'inputBorder', borderRadius: 10 }}
       p={2}
       {...props}
     >
