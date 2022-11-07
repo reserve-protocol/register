@@ -86,7 +86,7 @@ export const colors = {
       text: '#fff',
       boldText: '#fff',
       background: '#000',
-      secondary: '#262B29',
+      secondary: '#191919',
       disabled: '#2E3331',
       border: '#ffffff0d',
       inputBorder: '#2E3331',
@@ -97,7 +97,7 @@ export const colors = {
       secondaryBackground: '#202128',
       primary: '#008060',
       bgCard: '#FBFDFE',
-      modalOverlay: 'rgb(255, 255, 255, 0.1)',
+      modalOverlay: 'rgb(100, 100, 100, 0.35)',
     },
   },
 }
