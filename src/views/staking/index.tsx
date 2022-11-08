@@ -1,13 +1,11 @@
-import { useAtomValue } from 'jotai'
+import useRToken from 'hooks/useRToken'
 import { Navigate } from 'react-router-dom'
-import { rTokenAtom } from 'state/atoms'
-import { ReserveToken } from 'types'
 import StakePage from './Staking'
 
 export default () => {
-  const RToken = useAtomValue(rTokenAtom) as ReserveToken
+  const rToken = useRToken()
 
-  if (RToken.isRSV) {
+  if (rToken?.isRSV) {
     return <Navigate to="/" />
   }
 

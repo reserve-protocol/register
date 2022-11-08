@@ -26,7 +26,12 @@ export const CHAINS: {
   [chainId: number]: BasicChainInformation | ExtendedChainInformation
 } = {
   [ChainId.Mainnet]: {
-    urls: ['https://cloudflare-eth.com/v1/mainnet'],
+    urls: [
+      'https://cloudflare-eth.com/v1/mainnet',
+      'https://api.mycryptoapi.com/eth',
+      'https://rpc.ankr.com/eth',
+      'https://eth-mainnet.public.blastapi.io',
+    ],
     name: 'Mainnet',
   },
   [ChainId.Goerli]: {

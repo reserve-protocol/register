@@ -143,7 +143,7 @@ export const theme: Theme = {
       display: 'block',
     },
     contentTitle: {
-      color: '#808080',
+      color: 'lightText',
       display: 'block',
       fontSize: 1,
     },
@@ -158,14 +158,14 @@ export const theme: Theme = {
       color: 'danger',
     },
     legend: {
-      color: '#808080',
+      color: 'lightText',
     },
     muted: {
       color: 'muted',
     },
     a: {
       transition,
-      color: '#808080',
+      color: 'lightText',
       textDecoration: 'underline',
       cursor: 'pointer',
       '&:hover': {
@@ -176,7 +176,7 @@ export const theme: Theme = {
   styles: {
     a: {
       transition,
-      color: '#808080',
+      color: 'lightText',
       textDecoration: 'none',
       cursor: 'pointer',
       '&:hover': {

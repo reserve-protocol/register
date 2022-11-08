@@ -1,7 +1,6 @@
 import { useWeb3React } from '@web3-react/core'
 import { Connector } from '@web3-react/types'
 import { metaMask, network } from 'components/wallets/connectors'
-import { useAtom } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { useEffect } from 'react'
 import { walletAtom } from 'state/atoms'

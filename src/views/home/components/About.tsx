@@ -61,14 +61,14 @@ const About = (props: BoxProps) => {
           <Text mb={2} variant="strong">
             <Trans>This app</Trans>
           </Text>
-          <Text variant="legend" as="p" mb={5}>
+          <Text variant="legend" as="p" mb={2}>
             <Trans>
               Register is developed and maintained by LC Labs as the first dApp
               to interact with the Reserve Protocol and various RTokens deployed
               with the platform.
             </Trans>
-            <br />
-            <br />
+          </Text>
+          <Text variant="legend" as="p" mb={4}>
             <Trans>
               If an RToken is listed on Register, it doesn't mean that Reserve
               or LC Labs endorses the safety or risk levels of the RToken. LC
@@ -81,14 +81,14 @@ const About = (props: BoxProps) => {
           <Text mb={2} variant="strong">
             <Trans>User tracking</Trans>
           </Text>
-          <Text variant="legend" as="p" mb={4}>
+          <Text variant="legend" as="p" mb={2}>
             <Trans>
               LC Labs uses industry standard anonymized analytics tools to
               understand usage and improve the user experience. LC labs does not
               collect any information about users or their financial activity.
             </Trans>
-            <br />
-            <br />
+          </Text>
+          <Text variant="legend" as="p">
             <Trans>
               Please keep in mind that interactions with the Ethereum blockchain
               are pseudonymous and publicly available.

@@ -155,7 +155,7 @@ const TransactionManager = () => {
           })
       }
     },
-    [provider]
+    [provider, account]
   )
 
   // check mining

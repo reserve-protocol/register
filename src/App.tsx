@@ -1,22 +1,9 @@
-import { i18n } from '@lingui/core'
-import { Trans } from '@lingui/macro'
-import { I18nProvider } from '@lingui/react'
-import { useAtomValue } from 'jotai'
-import { en, es } from 'make-plural/plurals'
-import React, { useEffect } from 'react'
-import { AlertCircle } from 'react-feather'
-import ReactGA from 'react-ga'
-import { Toaster } from 'react-hot-toast'
-import {
-  HashRouter as Router,
-  Route,
-  Routes,
-  useLocation,
-} from 'react-router-dom'
-import { rTokenAtom } from 'state/atoms'
+import Analytics from 'components/analytics/Analytics'
+import ToastContainer from 'components/toaster-container/ToastContainer'
+import { HashRouter as Router, Route, Routes } from 'react-router-dom'
 import Updater from 'state/updater'
 import Web3Provider from 'state/web3'
-import { Box, Text, ThemeProvider } from 'theme-ui'
+import { ThemeProvider } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import Auctions from 'views/auctions'
 import Deploy from 'views/deploy'
@@ -26,112 +13,46 @@ import Home from 'views/home'
 import Management from 'views/management'
 import Overview from 'views/overview'
 import Insurance from 'views/staking'
+import Tokens from 'views/tokens/Tokens'
 import Layout from './components/layout'
-import { messages as enMessages } from './locales/en/messages'
-import { messages as esMessages } from './locales/es/messages'
+import LanguageProvider from './i18n'
 import { theme } from './theme'
 import Issuance from './views/issuance'
-
-// Requires rToken to exist for route to render
-const Guard = ({ children }: { children: React.ReactNode }) => {
-  const rToken = useAtomValue(rTokenAtom)
-  return !rToken ? (
-    <Box sx={{ textAlign: 'center', color: 'lightText' }} mt={8}>
-      <AlertCircle />
-      <br />
-      <Text sx={{ fontSize: 3, fontWeight: 300 }}>
-        <Trans>No RToken data</Trans>
-      </Text>
-    </Box>
-  ) : (
-    <>{children}</>
-  )
-}
-
-const Analytics = () => {
-  const location = useLocation()
-
-  useEffect(() => {
-    ReactGA.initialize('G-DMSRQ8XLEE')
-    ReactGA.pageview(location.pathname + location.search)
-  }, [location])
-
-  return null
-}
-
-i18n.load('en', enMessages)
-i18n.load('es', esMessages)
-
-i18n.loadLocaleData({
-  en: { plurals: en },
-  es: { plurals: es },
-})
-i18n.activate('en')
 
 /**
  * App Entry point - Handles views routing
  *
  * @returns {JSX.Element}
  */
-const App = () => {
-  return (
-    <Router>
-      <I18nProvider i18n={i18n}>
+const App = () => (
+  <Router>
+    <Analytics />
+    <ThemeProvider theme={theme}>
+      <LanguageProvider>
+        <ToastContainer />
         <Web3Provider>
           <Updater />
-          <Analytics />
-          <ThemeProvider theme={theme}>
-            <Toaster
-              gutter={20}
-              toastOptions={{
-                position: 'bottom-right',
-                style: {
-                  width: 300,
-                  background: 'var(--theme-ui-colors-contentBackground)',
-                },
-              }}
-              containerStyle={{
-                top: 40,
-                left: 40,
-                bottom: 40,
-                right: 40,
-              }}
-            />
-            <Layout>
-              <Routes>
-                <Route path={ROUTES.HOME} element={<Home />} />
-                <Route path={ROUTES.OVERVIEW} element={<Overview />} />
-                <Route
-                  path={ROUTES.ISSUANCE}
-                  element={
-                    <Guard>
-                      <Issuance />
-                    </Guard>
-                  }
-                />
-                <Route
-                  path={ROUTES.INSURANCE}
-                  element={
-                    <Guard>
-                      <Insurance />
-                    </Guard>
-                  }
-                />
-                <Route path={ROUTES.AUCTIONS} element={<Auctions />} />
-                <Route path={ROUTES.DEPLOY} element={<Deploy />} />
-                <Route path={ROUTES.MANAGEMENT} element={<Management />} />
-                <Route path={ROUTES.GOVERNANCE} element={<Governance />} />
-                <Route
-                  path={`${ROUTES.GOVERNANCE_INFO}/:txId`}
-                  element={<GovernanceConfigured />}
-                />
-              </Routes>
-            </Layout>
-          </ThemeProvider>
+          <Layout>
+            <Routes>
+              <Route path={ROUTES.HOME} element={<Home />} />
+              <Route path={ROUTES.OVERVIEW} element={<Overview />} />
+              <Route path={ROUTES.ISSUANCE} element={<Issuance />} />
+              <Route path={ROUTES.INSURANCE} element={<Insurance />} />
+              <Route path={ROUTES.AUCTIONS} element={<Auctions />} />
+              <Route path={ROUTES.DEPLOY} element={<Deploy />} />
+              <Route path={ROUTES.MANAGEMENT} element={<Management />} />
+              <Route path={ROUTES.GOVERNANCE} element={<Governance />} />
+              <Route
+                path={`${ROUTES.GOVERNANCE_INFO}/:txId`}
+                element={<GovernanceConfigured />}
+              />
+              <Route path={ROUTES.TOKENS} element={<Tokens />} />
+            </Routes>
+          </Layout>
         </Web3Provider>
-      </I18nProvider>
-    </Router>
-  )
-}
+      </LanguageProvider>
+    </ThemeProvider>
+  </Router>
+)
 
 export default App

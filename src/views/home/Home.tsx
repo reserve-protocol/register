@@ -12,6 +12,14 @@ import TokenStats from './components/TokenStats'
 
 const VISITED_KEY = 'visited'
 
+const dividerProps = {
+  mx: [-4, -5],
+  sx: { borderColor: 'darkBorder' },
+}
+
+/**
+ * Main home screen
+ */
 const Home = () => {
   const account = useAtomValue(walletAtom)
   const [visited, setVisited] = useState(
@@ -37,9 +45,9 @@ const Home = () => {
         <TokenStats mb={[5, 5, 5, 0]} />
         <TransactionsOverview />
       </Grid>
-      <Divider mb={2} mt={5} mx={[-4, -5]} sx={{ borderColor: 'darkBorder' }} />
+      <Divider mb={2} mt={5} {...dividerProps} />
       <TokenList mt={6} />
-      <Divider my={5} mx={[-4, -5]} sx={{ borderColor: 'darkBorder' }} />
+      <Divider my={5} {...dividerProps} />
       <About />
     </Container>
   )

@@ -25,7 +25,12 @@ export const ContentHead = ({ title, subtitle, ...props }: Props) => (
       {title}
     </Text>
     {!!subtitle && (
-      <Text as="p" pr={3} variant="legend">
+      <Text
+        as="p"
+        pr={3}
+        sx={{ maxWidth: 620, fontWeight: 300 }}
+        variant="legend"
+      >
         {subtitle}
       </Text>
     )}

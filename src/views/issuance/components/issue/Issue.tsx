@@ -1,10 +1,10 @@
 import { t, Trans } from '@lingui/macro'
 import { Button } from 'components'
+import useRToken from 'hooks/useRToken'
 import { useAtom, useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { useState } from 'react'
 import { Card } from 'theme-ui'
-import { ReserveToken } from 'types'
 import {
   issueAmountAtom,
   isValidIssuableAmountAtom,
@@ -18,12 +18,13 @@ import QuantitiesUpdater from './QuantitiesUpdater'
 /**
  * Issuance
  */
-const Issue = ({ data, ...props }: { data: ReserveToken }) => {
+const Issue = () => {
   const [amount, setAmount] = useAtom(issueAmountAtom)
   const setQuantities = useUpdateAtom(quantitiesAtom)
   const isValid = useAtomValue(isValidIssuableAmountAtom)
   const [issuing, setIssuing] = useState(false)
   const missingCollateral = amount && !isValid
+  const rToken = useRToken()
 
   return (
     <>
@@ -37,7 +38,7 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
           }}
         />
       )}
-      <Card p={4} {...props}>
+      <Card p={4}>
         <IssueInput title={t`Mint`} />
         <Button
           sx={{ width: '100%' }}
@@ -49,7 +50,7 @@ const Issue = ({ data, ...props }: { data: ReserveToken }) => {
           {missingCollateral ? (
             <Trans>Missing collateral</Trans>
           ) : (
-            <Trans>+ Mint {data.symbol}</Trans>
+            <Trans>+ Mint {rToken?.symbol ?? ''}</Trans>
           )}
         </Button>
       </Card>

@@ -19,7 +19,7 @@ const Container = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
           zIndex: 100000,
           opacity: '50%',
           width: '100vw',
-          height: '100vh',
+          height: '100%',
           backgroundColor: theme.colors.modalOverlay,
         })}
       />
@@ -36,7 +36,7 @@ const Container = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
           borderLeft: `solid 2px ${theme.colors.darkBorder}`,
           boxShadow: '-32px 0px 64px rgba(0, 0, 0, 0.15)',
           top: 0,
-          height: '100vh',
+          height: '100%',
         })}
       >
         {children}

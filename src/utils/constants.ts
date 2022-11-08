@@ -44,6 +44,7 @@ export const ROUTES = Object.freeze({
   LIST: '/list',
   HOME: '/',
   WALLET: '/wallet',
+  TOKENS: '/tokens',
 })
 
 export const DEPLOYMENT_ROUTES = Object.freeze({})
@@ -60,3 +61,5 @@ export const RSR: Token = {
   decimals: 18,
   logo: 'rsr.svg',
 }
+
+export const PROTOCOL_SLUG = 'reserveprotocol-v1'

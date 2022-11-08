@@ -1,217 +1,16 @@
-import { getAddress } from '@ethersproject/address'
-import { formatEther } from '@ethersproject/units'
-import { t } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
+import { SmallButton } from 'components/button'
 import { ContentHead } from 'components/info-box'
-import { Table } from 'components/table'
-import TokenItem from 'components/token-item'
-import { ethers } from 'ethers'
-import { gql } from 'graphql-request'
-import useQuery from 'hooks/useQuery'
-import { getRTokenLogo } from 'hooks/useRTokenLogo'
-import { useAtomValue } from 'jotai/utils'
-import { useMemo } from 'react'
+import ListedTokensTable from 'components/tables/ListedTokensTable'
 import { useNavigate } from 'react-router-dom'
-import {
-  blockTimestampAtom,
-  rpayOverviewAtom,
-  rTokenPriceAtom,
-} from 'state/atoms'
-import { Box, BoxProps, Text } from 'theme-ui'
-import { calculateApy, formatCurrencyCell, formatUsdCurrencyCell } from 'utils'
-import { RSV_ADDRESS } from 'utils/addresses'
-import { CHAIN_ID } from 'utils/chains'
-import tokenList from 'utils/rtokens'
-
-interface ListedToken {
-  id: string
-  name: string
-  symbol: string
-  supply: number
-  holders: number
-  price: number
-  transactionCount: number
-  cumulativeVolume: number
-  targetUnits: string
-  tokenApy: number
-  backing: number
-  backingInsurance: number
-  stakingApy: number
-}
-
-const tokenKeys = [...Object.keys(tokenList).map((s) => s.toLowerCase())]
-
-const tokenListQuery = gql`
-  query GetTokenListOverview($tokenIds: [String]!, $fromTime: Int!) {
-    tokens(
-      where: { id_in: $tokenIds }
-      orderBy: totalSupply
-      orderDirection: desc
-    ) {
-      id
-      lastPriceUSD
-      name
-      symbol
-      totalSupply
-      holderCount
-      transferCount
-      cumulativeVolume
-      rToken {
-        backing
-        backingInsurance
-        targetUnits
-        recentRate: hourlySnapshots(
-          first: 1
-          orderBy: timestamp
-          where: { timestamp_gte: $fromTime }
-          orderDirection: desc
-        ) {
-          rsrExchangeRate
-          basketRate
-          timestamp
-        }
-        lastRate: hourlySnapshots(
-          first: 1
-          orderBy: timestamp
-          where: { timestamp_gte: $fromTime }
-          orderDirection: asc
-        ) {
-          rsrExchangeRate
-          basketRate
-          timestamp
-        }
-      }
-    }
-  }
-`
-
-function getUnits(units: string[]): string[] {
-  const set = new Set(units)
-
-  return Array.from(set).map((unit: string) => {
-    return ethers.utils.parseBytes32String(unit)
-  })
-}
+import { Box, BoxProps, Flex } from 'theme-ui'
+import { ROUTES } from 'utils/constants'
 
 const TokenList = (props: BoxProps) => {
   const navigate = useNavigate()
-  const timestamp = useAtomValue(blockTimestampAtom)
-  const rpayOverview = useAtomValue(rpayOverviewAtom)
-  const fromTime = useMemo(() => {
-    return timestamp - 2592000
-  }, [!!timestamp])
-  const { data, error } = useQuery(tokenListQuery, {
-    tokenIds: tokenKeys,
-    fromTime,
-  })
-  const rTokenPrice = useAtomValue(rTokenPriceAtom)
 
-  const tokenList = useMemo((): ListedToken[] => {
-    if (data) {
-      return data.tokens.map((token: any): ListedToken => {
-        let tokenApy = 0
-        let stakingApy = 0
-
-        const recentRate = token?.rToken?.recentRate[0]
-        const lastRate = token?.rToken?.lastRate[0]
-
-        if (
-          recentRate &&
-          lastRate &&
-          recentRate.timestamp !== lastRate.timestamp
-        ) {
-          ;[tokenApy, stakingApy] = calculateApy(recentRate, lastRate)
-        }
-
-        const tokenData = {
-          id: getAddress(token.id),
-          name: token.name,
-          symbol: token.symbol,
-          supply: +formatEther(token.totalSupply) * +token.lastPriceUSD,
-          holders: Number(token.holderCount),
-          price: token.lastPriceUSD,
-          transactionCount: Number(token.transferCount),
-          cumulativeVolume:
-            +formatEther(token.cumulativeVolume) * +token.lastPriceUSD,
-          targetUnits: getUnits(
-            token?.rToken?.targetUnits.split(',') || []
-          ).join(', '),
-          tokenApy: +tokenApy.toFixed(2),
-          backing: token?.rToken?.backing || 100,
-          backingInsurance: token?.rToken?.backingInsurance || 0,
-          stakingApy: +stakingApy.toFixed(2),
-        }
-
-        // RSV Data
-        if (token.id === RSV_ADDRESS[CHAIN_ID].toLowerCase()) {
-          tokenData.holders += rpayOverview.holders
-          tokenData.transactionCount += rpayOverview.txCount
-          tokenData.cumulativeVolume += rpayOverview.volume
-          tokenData.targetUnits = 'USD'
-        }
-
-        return tokenData
-      })
-    }
-
-    return []
-  }, [data, rTokenPrice, rpayOverview.txCount])
-
-  const rTokenColumns = useMemo(
-    () => [
-      {
-        Header: t`Token`,
-        accessor: 'symbol',
-        Cell: (data: any) => {
-          const logo = getRTokenLogo(data.row.original.id)
-
-          return <TokenItem symbol={data.cell.value} logo={logo} />
-        },
-      },
-      { Header: t`Price`, accessor: 'price', Cell: formatUsdCurrencyCell },
-      { Header: t`Mkt Cap`, accessor: 'supply', Cell: formatUsdCurrencyCell },
-      { Header: t`Holders`, accessor: 'holders', Cell: formatCurrencyCell },
-      {
-        Header: t`Txs`,
-        accessor: 'transactionCount',
-        Cell: formatCurrencyCell,
-      },
-      {
-        Header: t`Volume`,
-        accessor: 'cumulativeVolume',
-        Cell: formatUsdCurrencyCell,
-      },
-      {
-        Header: t`Target(s)`,
-        accessor: 'targetUnits',
-        Cell: (cell: any) => {
-          return (
-            <Text
-              sx={{
-                width: '74px',
-                display: 'block',
-              }}
-            >
-              {cell.value}
-            </Text>
-          )
-        },
-      },
-      {
-        Header: t`APY`,
-        accessor: 'tokenApy',
-        Cell: (cell: any) => <Text>{cell.value}%</Text>,
-      },
-      {
-        Header: t`St APY`,
-        accessor: 'stakingApy',
-        Cell: (cell: any) => <Text>{cell.value}%</Text>,
-      },
-    ],
-    []
-  )
-
-  const handleClick = (data: any) => {
-    navigate(`/overview?token=${data.id}`)
+  const handleViewAll = () => {
+    navigate(ROUTES.TOKENS)
     document.getElementById('app-container')?.scrollTo(0, 0)
   }
 
@@ -222,12 +21,12 @@ const TokenList = (props: BoxProps) => {
         title={t`Compare RTokens`}
         subtitle={t`Including off-chain in-app transactions of RToken in the Reserve App.`}
       />
-      <Table
-        mt={3}
-        columns={rTokenColumns}
-        onRowClick={handleClick}
-        data={tokenList}
-      />
+      <ListedTokensTable />
+      <Flex mt={2} sx={{ justifyContent: 'center' }}>
+        <SmallButton variant="muted" onClick={handleViewAll}>
+          <Trans>View All</Trans>
+        </SmallButton>
+      </Flex>
     </Box>
   )
 }

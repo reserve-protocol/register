@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro'
 import { Card } from 'components'
 import TokenLogo from 'components/icons/TokenLogo'
 import TokenBalance from 'components/token-balance'
+import useRToken from 'hooks/useRToken'
 import useRTokenLogo from 'hooks/useRTokenLogo'
 import { useAtomValue } from 'jotai/utils'
 import { useMemo } from 'react'
@@ -49,26 +50,34 @@ const RTokenBalance = ({ token }: { token: Token }) => {
 /**
  * Display collateral tokens balances
  */
-const Balances = ({ rToken, ...props }: Props) => (
-  <Card p={0} {...props}>
-    <Grid columns={[1, 2]} gap={0}>
-      <CollateralBalances collaterals={rToken.collaterals} />
-      <Box
-        sx={(theme: any) => ({
-          borderLeft: ['none', `1px solid ${theme.colors.border}`],
-          borderTop: [`1px solid ${theme.colors.border}`, 'none'],
-        })}
-      >
-        <RTokenBalance token={rToken} />
-        {!rToken.isRSV && (
-          <>
-            <Divider m={0} />
-            <PendingIssuances token={rToken} />
-          </>
-        )}
-      </Box>
-    </Grid>
-  </Card>
-)
+const Balances = () => {
+  const rToken = useRToken()
+
+  if (!rToken) {
+    return null
+  }
+
+  return (
+    <Card p={0}>
+      <Grid columns={[1, 2]} gap={0}>
+        <CollateralBalances collaterals={rToken?.collaterals} />
+        <Box
+          sx={(theme: any) => ({
+            borderLeft: ['none', `1px solid ${theme.colors.border}`],
+            borderTop: [`1px solid ${theme.colors.border}`, 'none'],
+          })}
+        >
+          <RTokenBalance token={rToken} />
+          {!rToken.isRSV && (
+            <>
+              <Divider m={0} />
+              <PendingIssuances token={rToken} />
+            </>
+          )}
+        </Box>
+      </Grid>
+    </Card>
+  )
+}
 
 export default Balances
