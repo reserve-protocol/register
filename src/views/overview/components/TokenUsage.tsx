@@ -14,7 +14,7 @@ const TokenUsage = ({ metrics, ...props }: Props) => {
       <Text variant="title" sx={{ fontSize: 3 }}>
         Usage stats
       </Text>
-      <Flex mt={4} sx={{ flexWrap: 'wrap' }}>
+      <Flex mt={4} mb={2} sx={{ flexWrap: 'wrap' }}>
         <Box mr={5}>
           <InfoHeading
             mb={3}

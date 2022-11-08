@@ -80,22 +80,24 @@ export const colors = {
   danger: '#FF0000',
   muted: '#D9D9D9',
   warning: '#FF7A00',
+  modalOverlay: 'rgb(0, 0, 0, 0.2)',
   modes: {
     dark: {
       text: '#fff',
       boldText: '#fff',
-      background: '#080D0B',
-      secondary: '#262B29',
+      background: '#000',
+      secondary: '#191919',
       disabled: '#2E3331',
-      border: '#333333',
+      border: '#ffffff0d',
       inputBorder: '#2E3331',
-      darkBorder: '#333333', // TODO
-      contentBackground: '#171C1A',
+      darkBorder: '#131614', // TODO
+      contentBackground: '#121212',
       lightBackground: '#1A1A1A',
-      contentLightBackground: '#0E1311',
+      contentLightBackground: '#090909',
       secondaryBackground: '#202128',
       primary: '#008060',
       bgCard: '#FBFDFE',
+      modalOverlay: 'rgb(100, 100, 100, 0.35)',
     },
   },
 }

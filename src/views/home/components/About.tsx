@@ -1,6 +1,8 @@
 import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import { useNavigate } from 'react-router-dom'
+import { t } from '@lingui/macro'
+import { ContentHead } from 'components/info-box'
 import { Box, BoxProps, Grid, Link, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 
@@ -17,7 +19,8 @@ const About = (props: BoxProps) => {
 
   return (
     <Box {...props}>
-      <Grid columns={[1, 1, 2]} mt={6} pl={4} gap={[4, 4, 7]}>
+      <ContentHead pl={3} title={t`About`} />
+      <Grid columns={[1, 1, 2]} mt={7} px={3} gap={[4, 4, 7]}>
         <Box>
           <Text mb={2} variant="strong">
             <Trans>RTokens & Deploying your own</Trans>
@@ -32,7 +35,7 @@ const About = (props: BoxProps) => {
               community.
             </Trans>
           </Text>
-          <SmallButton py={2} mt={3} mb={4} onClick={handleDeploy}>
+          <SmallButton py={2} mt={3} mb={5} onClick={handleDeploy}>
             <Trans>Deploy RToken</Trans>
           </SmallButton>
           <Text mb={2} variant="strong">
