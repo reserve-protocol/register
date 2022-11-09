@@ -7,7 +7,7 @@ import { useUpdateAtom } from 'jotai/utils'
 import { useMemo } from 'react'
 import { X } from 'react-feather'
 import { Box, CardProps, Divider, Flex, IconButton, Text } from 'theme-ui'
-import { formatCurrency, truncateDecimals } from 'utils'
+import { truncateDecimals } from 'utils'
 import { PrimaryUnitBasket, updateBasketUnitAtom } from '../atoms'
 
 interface UnitBasketProps extends CardProps {

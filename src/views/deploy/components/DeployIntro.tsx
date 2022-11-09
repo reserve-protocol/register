@@ -1,5 +1,4 @@
 import { t, Trans } from '@lingui/macro'
-import { InfoBox } from 'components'
 import { SmallButton } from 'components/button'
 import { Circle } from 'react-feather'
 import { Box, BoxProps, Flex, Grid, Text } from 'theme-ui'
@@ -37,9 +36,6 @@ const StepItem = ({ title, subtitle, ...props }: InfoBoxProps) => (
 
 /**
  * View: Deploy
- *
- * TODO: Info links
- * TODO: Text copy
  */
 const DeployIntro = () => {
   // const navigate = useNavigate()

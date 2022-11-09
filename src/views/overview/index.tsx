@@ -1,6 +1,4 @@
-import { t } from '@lingui/macro'
 import { Container } from 'components'
-import { ContentHead } from 'components/info-box'
 import useTokenStats from 'hooks/useTokenStats'
 import { useAtomValue } from 'jotai/utils'
 import { rTokenAtom } from 'state/atoms'
