@@ -3,8 +3,8 @@ import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { accountRoleAtom } from 'state/atoms'
-import { deployStepAtom } from '../deploy/components/DeployHeader'
-import { Steps } from '../deploy/components/DeployStep'
+import { deployStepAtom } from '../../deploy/components/DeployHeader'
+import { Steps } from '../../deploy/components/DeployStep'
 import ConfirmGovernanceSetup from './views/ConfirmGovernanceSetup'
 import GovernanceSetup from './views/GovernanceSetup'
 import GovernanceStatus from './views/GovernanceStatus'
@@ -28,7 +28,9 @@ const Views = {
   [Steps.GovernanceTx.toString()]: GovernanceStatus,
 }
 
-// TODO: Refactor into multiple components
+/**
+ * Management -> Governance configuration
+ */
 const Governance = () => {
   const [currentStep, setCurrentStep] = useAtom(deployStepAtom)
   const form = useForm({

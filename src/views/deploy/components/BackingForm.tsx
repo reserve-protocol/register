@@ -1,5 +1,5 @@
 import { t, Trans } from '@lingui/macro'
-import { FormField, FormFieldRange } from 'components/field'
+import { FormField } from 'components/field'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { decimalPattern, numberPattern } from 'utils'
 

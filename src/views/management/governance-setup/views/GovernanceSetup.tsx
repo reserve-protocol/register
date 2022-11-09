@@ -3,10 +3,10 @@ import { Container } from 'components'
 import { SmallButton } from 'components/button'
 import { useFormContext } from 'react-hook-form'
 import { Box, Card, Grid, Text } from 'theme-ui'
-import DeployHeader from '../../deploy/components/DeployHeader'
+import DeployHeader from '../../../deploy/components/DeployHeader'
 import DeploymentStepTracker, {
   Steps,
-} from '../../deploy/components/DeployStep'
+} from '../../../deploy/components/DeployStep'
 import GovernanceForm from '../components/GovernanceForm'
 
 const GovernanceSetup = () => {
