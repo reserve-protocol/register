@@ -6,7 +6,6 @@ import MobileNav from './navigation/MobileNav'
 import Sidebar from './sidebar'
 
 const Container = styled(Flex)`
-  flex-wrap: wrap;
   height: 100%;
   max-width: 95em;
   margin: auto;
@@ -21,10 +20,17 @@ const Wrapper = styled(Flex)`
   flex-direction: column;
 `
 
+const Body = styled(Box)`
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+`
+
 const ContentContainer = styled(Box)`
   overflow: auto;
-  flex-grow: 99999;
-  position: 'relative';
+  height: 100%;
+  position: relative;
+  flex: auto;
 `
 
 /**
@@ -33,18 +39,19 @@ const ContentContainer = styled(Box)`
  * @param children - required
  * @returns {JSX.Element}
  */
-const Layout = ({ children }: { children: ReactNode }) => {
-  return (
-    <Container>
-      <Sidebar />
-      <Wrapper>
-        <Header />
+const Layout = ({ children }: { children: ReactNode }) => (
+  <Container>
+    <Wrapper>
+      <Header />
+      <Body>
+        <Sidebar />
         <Suspense>
           <ContentContainer id="app-container">{children}</ContentContainer>
         </Suspense>
-        <MobileNav />
-      </Wrapper>
-    </Container>
-  )
-}
+      </Body>
+      <MobileNav />
+    </Wrapper>
+  </Container>
+)
+
 export default Layout

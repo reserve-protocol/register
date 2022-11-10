@@ -48,8 +48,9 @@ const MobileNav = () => {
             display: 'flex',
             alignItems: 'center',
             paddingBottom: isActive ? '13px' : 16,
-            borderBottom: isActive ? '3px solid' : 'none',
-            borderColor: 'text',
+            borderBottom: isActive
+              ? '3px solid var(--theme-ui-colors-text)'
+              : 'none',
           })}
           key={path}
           to={`${path}?token=${address}`}
