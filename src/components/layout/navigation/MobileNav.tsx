@@ -2,6 +2,7 @@ import HomeIcon from 'components/icons/HomeIcon'
 import IssuanceIcon from 'components/icons/IssuanceIcon'
 import OverviewIcon from 'components/icons/OverviewIcon'
 import StakeIcon from 'components/icons/StakeIcon'
+import useIsSidebarVisible from 'hooks/useIsSidebarVisible'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
@@ -19,6 +20,7 @@ const items = [
 
 const MobileNav = () => {
   const rToken = useRToken()
+  const isVisible = useIsSidebarVisible()
   const address = useAtomValue(selectedRTokenAtom)
 
   const menuItems = useMemo(() => {
@@ -28,6 +30,10 @@ const MobileNav = () => {
 
     return items
   }, [rToken?.address])
+
+  if (!isVisible) {
+    return null
+  }
 
   return (
     <Box
