@@ -25,7 +25,7 @@ const GovernanceHero = (props: BoxProps) => {
         <Button px={4} variant="muted" mr={3}>
           <Trans>Learn more</Trans>
         </Button>
-        <Button px={4} onClick={() => navigate(ROUTES.GOVERNANCE)}>
+        <Button px={4} onClick={() => navigate(ROUTES.GOVERNANCE_SETUP)}>
           <Trans>Configure Governance</Trans>
         </Button>
       </Flex>

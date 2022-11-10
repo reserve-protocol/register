@@ -31,7 +31,7 @@ const Views = {
 /**
  * Management -> Governance configuration
  */
-const Governance = () => {
+const GovernanceSetupView = () => {
   const [currentStep, setCurrentStep] = useAtom(deployStepAtom)
   const form = useForm({
     mode: 'onChange',
@@ -63,4 +63,4 @@ const Governance = () => {
   )
 }
 
-export default Governance
+export default GovernanceSetupView

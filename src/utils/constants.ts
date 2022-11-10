@@ -39,18 +39,20 @@ export const ROUTES = Object.freeze({
   AUCTIONS: '/auctions',
   DEPLOY: '/deploy',
   MANAGEMENT: '/management',
-  GOVERNANCE: '/management/governance',
+  GOVERNANCE_SETUP: '/management/governance',
   GOVERNANCE_INFO: '/governance-info',
   LIST: '/list',
   HOME: '/',
   WALLET: '/wallet',
   TOKENS: '/tokens',
+  GOVERNANCE: '/governance',
 })
 
 export const DEPLOYMENT_ROUTES = Object.freeze({})
 
 export const isContentOnlyView = (pathname: string) =>
-  pathname.indexOf(ROUTES.DEPLOY) !== -1
+  pathname.indexOf(ROUTES.DEPLOY) !== -1 ||
+  pathname.toLowerCase() === ROUTES.GOVERNANCE
 
 export const DEPLOY_ROUTES = [ROUTES.DEPLOY]
 

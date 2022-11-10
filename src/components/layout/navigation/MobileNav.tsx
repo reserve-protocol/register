@@ -1,22 +1,20 @@
-import { Box } from 'theme-ui'
-import { ROUTES } from 'utils/constants'
-import AuctionsIcon from 'components/icons/AuctionsIcon'
 import HomeIcon from 'components/icons/HomeIcon'
 import IssuanceIcon from 'components/icons/IssuanceIcon'
 import OverviewIcon from 'components/icons/OverviewIcon'
 import StakeIcon from 'components/icons/StakeIcon'
-import { NavLink } from 'react-router-dom'
 import useRToken from 'hooks/useRToken'
-import { useMemo } from 'react'
 import { useAtomValue } from 'jotai'
+import { useMemo } from 'react'
+import { NavLink } from 'react-router-dom'
 import { selectedRTokenAtom } from 'state/atoms'
+import { Box } from 'theme-ui'
+import { ROUTES } from 'utils/constants'
 
 const items = [
   { path: ROUTES.HOME, Icon: HomeIcon },
   { path: ROUTES.OVERVIEW, Icon: OverviewIcon },
   { path: ROUTES.ISSUANCE, Icon: IssuanceIcon },
   { path: ROUTES.INSURANCE, Icon: StakeIcon },
-  // { path: ROUTES.AUCTIONS, Icon: AuctionsIcon },
 ]
 
 const MobileNav = () => {
@@ -33,11 +31,11 @@ const MobileNav = () => {
 
   return (
     <Box
-      variant="layout.verticalAlign"
       sx={{
         display: ['flex', 'none'],
         borderTop: '1px solid',
         borderColor: 'darkBorder',
+        alignItems: 'center',
         justifyContent: 'space-evenly',
       }}
     >
@@ -50,7 +48,8 @@ const MobileNav = () => {
             display: 'flex',
             alignItems: 'center',
             paddingBottom: isActive ? '13px' : 16,
-            borderBottom: isActive ? '3px solid black' : 'none',
+            borderBottom: isActive ? '3px solid' : 'none',
+            borderColor: 'text',
           })}
           key={path}
           to={`${path}?token=${address}`}
