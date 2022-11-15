@@ -1,23 +1,8 @@
 import { Box, Card, Grid } from 'theme-ui'
 import Navigation from './components/Navigation'
+import Proposal from './components/Proposal'
 import SectionWrapper from './components/SectionWrapper'
 import Summary from './components/Summary'
-
-const Proposal = () => {
-  return (
-    <Card sx={{ overflow: 'auto' }}>
-      <SectionWrapper navigationIndex={0}>
-        <Box sx={{ height: 1000, backgroundColor: 'black' }}>Section 1</Box>
-      </SectionWrapper>
-      <SectionWrapper navigationIndex={1}>
-        <Box sx={{ height: 1000, backgroundColor: 'red' }}>Section 2</Box>
-      </SectionWrapper>
-      <SectionWrapper navigationIndex={2}>
-        <Box>Section 3</Box>
-      </SectionWrapper>
-    </Card>
-  )
-}
 
 const Governance = () => {
   return (
