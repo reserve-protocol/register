@@ -3,7 +3,7 @@ import { useUpdateAtom } from 'jotai/utils'
 import { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { Box, BoxProps } from 'theme-ui'
-import { navigationIndexAtom } from '../atoms'
+import { navigationIndexAtom } from './atoms'
 
 interface Props extends BoxProps {
   navigationIndex: number

@@ -4,7 +4,7 @@ import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { useAtomValue } from 'jotai'
 import { Box, BoxProps, Divider, Flex, Text } from 'theme-ui'
 import { truncateDecimals } from 'utils'
-import { Basket, basketAtom } from './atoms'
+import { Basket, basketAtom } from '../atoms'
 import UnitBasket from './UnitBasket'
 
 interface Props extends BoxProps {

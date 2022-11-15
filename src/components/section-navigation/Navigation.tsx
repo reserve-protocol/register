@@ -1,28 +1,20 @@
 import styled from '@emotion/styled'
-import { t, Trans } from '@lingui/macro'
 import { useAtom } from 'jotai'
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import { Box, BoxProps, Text } from 'theme-ui'
-import { navigationIndexAtom } from '../atoms'
+import { navigationIndexAtom } from './atoms'
 
 const Container = styled(Box)`
   height: fit-content;
 `
 
-const Navigation = (props: BoxProps) => {
-  const [current, setNavigationIndex] = useAtom(navigationIndexAtom)
+interface Props extends BoxProps {
+  title?: string
+  sections: string[]
+}
 
-  const items = useMemo(
-    () => [
-      { label: t`Intro` },
-      { label: t`Primary basket` },
-      { label: t`Emergency basket` },
-      { label: t`RToken params` },
-      { label: t`Governance params` },
-      { label: t`Roles` },
-    ],
-    []
-  )
+const Navigation = ({ title, sections, ...props }: Props) => {
+  const [current, setNavigationIndex] = useAtom(navigationIndexAtom)
 
   useEffect(() => {
     return () => {
@@ -38,16 +30,14 @@ const Navigation = (props: BoxProps) => {
 
   return (
     <Container {...props}>
-      <Text variant="title">
-        <Trans>Navigation</Trans>
-      </Text>
+      {!!title && <Text variant="title">{title}</Text>}
       <Box as="ul" mt={5} mr={3} p={0} sx={{ listStyle: 'none' }}>
-        {items.map((item, index) => {
+        {sections.map((item, index) => {
           const active = Math.min(...current) === index
 
           return (
             <Box
-              key={item.label}
+              key={item}
               onClick={() => !active && handleNavigate(index)}
               as="li"
               pl={4}
@@ -60,7 +50,7 @@ const Navigation = (props: BoxProps) => {
                 cursor: 'pointer',
               }}
             >
-              <Text variant={active ? 'primary' : 'legend'}>{item.label}</Text>
+              <Text variant={active ? 'primary' : 'legend'}>{item}</Text>
             </Box>
           )
         })}

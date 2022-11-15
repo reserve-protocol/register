@@ -1,10 +1,24 @@
-import { Box, Card, Grid } from 'theme-ui'
-import Navigation from './components/Navigation'
+import { t } from '@lingui/macro'
+import Navigation from 'components/section-navigation/Navigation'
+import { useMemo } from 'react'
+import { Grid } from 'theme-ui'
 import Proposal from './components/Proposal'
-import SectionWrapper from './components/SectionWrapper'
 import Summary from './components/Summary'
 
 const Governance = () => {
+  // TODO: Listen for lang
+  const sections = useMemo(
+    () => [
+      t`Intro`,
+      t`Primary basket`,
+      t`Emergency basket`,
+      t`RToken params`,
+      t`Governance params`,
+      t`Roles`,
+    ],
+    []
+  )
+
   return (
     <Grid
       columns={['1fr', '1fr 1fr', '1fr 1fr', 'auto 1fr 420px']}
@@ -18,6 +32,7 @@ const Governance = () => {
       }}
     >
       <Navigation
+        sections={sections}
         sx={{
           display: ['none', 'none', 'none', 'inherit'],
         }}
