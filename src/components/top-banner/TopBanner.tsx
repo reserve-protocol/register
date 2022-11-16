@@ -29,9 +29,12 @@ const TopBanner = ({ id }: Props) => {
       sx={{
         justifyContent: 'center',
         backgroundColor: '#F1FFF9',
+        textAlign: 'center',
         color: '#333',
+        flexWrap: 'wrap',
       }}
-      p="10px"
+      py="10px"
+      px={3}
     >
       <Text>
         <strong>FYI</strong>, there has been a recent basket change to RSV that
