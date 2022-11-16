@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import TopBanner from 'components/top-banner/TopBanner'
 import { ReactNode, Suspense } from 'react'
 import { Box, Flex } from 'theme-ui'
 import Header from './header'
@@ -32,6 +33,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
     >
       <Sidebar />
       <Container>
+        <TopBanner id="rsv-basket-change" />
         <Header />
         <Suspense>
           <Box
