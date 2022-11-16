@@ -26,14 +26,12 @@ const Navigation = ({ title, sections, ...props }: Props) => {
     document.getElementById(`section-${index}`)?.scrollIntoView()
   }
 
-  console.log('current', current)
-
   return (
     <Container {...props}>
       {!!title && <Text variant="title">{title}</Text>}
       <Box as="ul" mt={5} mr={3} p={0} sx={{ listStyle: 'none' }}>
         {sections.map((item, index) => {
-          const active = Math.min(...current) === index
+          const active = current.indexOf(index) !== -1
 
           return (
             <Box

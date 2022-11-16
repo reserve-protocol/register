@@ -9,7 +9,7 @@ const Governance = () => {
   // TODO: Listen for lang
   const sections = useMemo(
     () => [
-      t`Intro`,
+      // t`Intro`,
       t`Primary basket`,
       t`Emergency basket`,
       t`RToken params`,
@@ -32,6 +32,7 @@ const Governance = () => {
       }}
     >
       <Navigation
+        title={t`Navigation`}
         sections={sections}
         sx={{
           display: ['none', 'none', 'none', 'inherit'],

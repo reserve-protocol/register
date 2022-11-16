@@ -116,7 +116,11 @@ const EmergencyCollateral = ({
         </Text>
         <Text variant="title">- {targetUnit}</Text>
         {!readOnly && (
-          <SmallButton onClick={() => onAdd(targetUnit)} ml="auto">
+          <SmallButton
+            onClick={() => onAdd(targetUnit)}
+            ml="auto"
+            variant="muted"
+          >
             <Trans>Add token</Trans>
           </SmallButton>
         )}
