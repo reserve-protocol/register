@@ -28,7 +28,7 @@ const TopBanner = ({ id }: Props) => {
     <Flex
       sx={{
         justifyContent: 'center',
-        backgroundColor: '#ebfffa',
+        backgroundColor: '#F1FFF9',
         color: '#333',
       }}
       p="10px"
