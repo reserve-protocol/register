@@ -1,13 +1,14 @@
+import { truncateDecimals } from './index'
 import { BigNumber } from '@ethersproject/bignumber'
 import { ReserveToken, StringMap } from 'types'
 import { CHAIN_ID } from 'utils/chains'
 import {
-  PAX_ADDRESS,
+  BUSD_ADDRESS,
   RSV_ADDRESS,
   RSV_MANAGER_ADDRESS,
-  TUSD_ADDRESS,
   USDC_ADDRESS,
 } from './addresses'
+import { parseEther, parseUnits } from 'ethers/lib/utils'
 
 /**
  * RSV Token utility
@@ -16,16 +17,9 @@ import {
  * * It follows different rules as other tokens, so it needs to be treated different
  * * Only the Overview page and Mint/Redeem are available for this token
  */
-const PAX = PAX_ADDRESS[CHAIN_ID]
+const BUSD = BUSD_ADDRESS[CHAIN_ID]
 const USDC = USDC_ADDRESS[CHAIN_ID]
-const TUSD = TUSD_ADDRESS[CHAIN_ID]
-const PAX_QTY = BigNumber.from(333333)
-const USDC_QTY = BigNumber.from(333334)
-const EXPO = BigNumber.from(10).pow(BigNumber.from(12))
-const DIV = BigNumber.from(10).pow(BigNumber.from(18))
 
-// Collateral order
-// [PAX, USDC, USDT]
 export const getIssuable = (rsv: ReserveToken, tokenBalances: StringMap) => {
   let lowestCollateralBalance = Infinity
 
@@ -40,13 +34,12 @@ export const getIssuable = (rsv: ReserveToken, tokenBalances: StringMap) => {
     )
   }
 
-  return lowestCollateralBalance / 3
+  return truncateDecimals(lowestCollateralBalance / 2)
 }
 
-export const quote = (amount: BigNumber): { [x: string]: BigNumber } => ({
-  [PAX]: amount.mul(PAX_QTY).mul(EXPO).div(DIV), // PAX
-  [USDC]: amount.mul(USDC_QTY).div(DIV), // USDC
-  [TUSD]: amount.mul(PAX_QTY).mul(EXPO).div(DIV), // USDT
+export const quote = (amount: number): { [x: string]: BigNumber } => ({
+  [BUSD]: parseEther((amount / 2).toString()),
+  [USDC]: parseUnits((amount / 2).toString(), 6),
 })
 
 const RSV: ReserveToken = {
@@ -57,22 +50,16 @@ const RSV: ReserveToken = {
   logo: '/svgs/rsv.svg',
   collaterals: [
     {
-      address: TUSD,
-      name: 'TrueUSD',
-      symbol: 'TUSD',
-      decimals: 18,
-    },
-    {
-      address: PAX,
-      name: 'Pax Dollar',
-      symbol: 'USDP',
-      decimals: 18,
-    },
-    {
       address: USDC,
       name: 'USD Coin',
       symbol: 'USDC',
       decimals: 6,
+    },
+    {
+      address: BUSD,
+      name: 'Binance USD',
+      symbol: 'BUSD',
+      decimals: 18,
     },
   ],
   isRSV: true,

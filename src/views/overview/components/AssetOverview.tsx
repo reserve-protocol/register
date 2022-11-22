@@ -17,6 +17,7 @@ import CollateralPieChart from './CollateralPieChart'
 
 const colors = [
   '#2B2E7C',
+  '#FFA600',
   '#28813F',
   '#2775CA',
   '#003F5C',
@@ -26,7 +27,6 @@ const colors = [
   '#D45087',
   '#F95D6A',
   '#FF7C43',
-  '#FFA600',
   '#333333',
   '#666666',
   '#999999',
@@ -41,7 +41,7 @@ const basketDistAtom = atom((get) => {
       (acc, current) => ({
         ...acc,
         [current.address]: {
-          share: current.symbol === 'USDC' ? 33.34 : 33.33,
+          share: 50,
           targetUnit: 'USD',
         },
       }),

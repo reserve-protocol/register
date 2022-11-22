@@ -76,6 +76,12 @@ export const PAX_ADDRESS: AddressMap = {
   [ChainId.Hardhat]: '0x8E870D67F660D95d5be530380D0eC0bd388289E1',
 }
 
+export const BUSD_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x4Fabb145d64652a948d72533023f6E7A623C7C53',
+  [ChainId.Goerli]: '0x4Fabb145d64652a948d72533023f6E7A623C7C53',
+  [ChainId.Hardhat]: '0x4Fabb145d64652a948d72533023f6E7A623C7C53',
+}
+
 export const WETH_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
   [ChainId.Goerli]: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
