@@ -33,7 +33,6 @@ const Layout = ({ children }: { children: ReactNode }) => {
     >
       <Sidebar />
       <Container>
-        <TopBanner id="rsv-basket-change" />
         <Header />
         <Suspense>
           <Box
