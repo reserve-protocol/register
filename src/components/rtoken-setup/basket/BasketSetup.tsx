@@ -1,6 +1,6 @@
 import SectionWrapper from 'components/section-navigation/SectionWrapper'
 import { useState } from 'react'
-import { Box, Card } from 'theme-ui'
+import { Card } from 'theme-ui'
 import BackupBasket from './BackupBasket'
 import CollateralModal from './CollateralModal'
 import PrimaryBasket from './PrimaryBasket'
@@ -13,12 +13,12 @@ const BasketSetup = () => {
 
   return (
     <>
-      <Card p={5}>
+      <Card p={4}>
         <SectionWrapper navigationIndex={0}>
           <PrimaryBasket onAdd={setCollateralModal} />
         </SectionWrapper>
       </Card>
-      <Card mt={4} p={5}>
+      <Card mt={4} p={4}>
         <SectionWrapper navigationIndex={1}>
           <BackupBasket onAdd={setCollateralModal} />
         </SectionWrapper>

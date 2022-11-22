@@ -25,7 +25,7 @@ const updateSectionAtom = atom(null, (get, set, section: [boolean, number]) => {
 })
 
 const SectionWrapper = ({ navigationIndex, ...props }: Props) => {
-  const { ref, inView } = useInView({ threshold: 0.5 })
+  const { ref, inView } = useInView({ threshold: 0.8 })
   const updateNavigationIndex = useUpdateAtom(updateSectionAtom)
 
   useEffect(() => {
