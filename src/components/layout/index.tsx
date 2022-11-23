@@ -1,5 +1,4 @@
 import styled from '@emotion/styled'
-import TopBanner from 'components/top-banner/TopBanner'
 import { ReactNode, Suspense } from 'react'
 import { Box, Flex } from 'theme-ui'
 import Header from './header'

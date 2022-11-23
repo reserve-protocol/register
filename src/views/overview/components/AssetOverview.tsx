@@ -1,7 +1,6 @@
 import { Trans } from '@lingui/macro'
 import TokenLogo from 'components/icons/TokenLogo'
 import useRToken from 'hooks/useRToken'
-import useRTokenLogo from 'hooks/useRTokenLogo'
 import { atom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import {
