@@ -62,7 +62,7 @@ const QuantitiesUpdater = ({
   useEffect(() => {
     if (rToken?.isRSV) {
       if (Number(amount) > 0) {
-        onChange(quote(parseEther(amount)))
+        onChange(quote(+amount))
       } else {
         onChange({})
       }
