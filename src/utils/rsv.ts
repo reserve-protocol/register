@@ -34,7 +34,7 @@ export const getIssuable = (rsv: ReserveToken, tokenBalances: StringMap) => {
     )
   }
 
-  return truncateDecimals(lowestCollateralBalance / 2)
+  return truncateDecimals(lowestCollateralBalance * 2)
 }
 
 export const quote = (amount: number): { [x: string]: BigNumber } => ({
