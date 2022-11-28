@@ -1,17 +1,14 @@
+import { t } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
+import Navigation from 'components/section-navigation/Navigation'
 import { useAtom } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { Box } from 'theme-ui'
+import { Box, Grid } from 'theme-ui'
 import { backupCollateralAtom, basketAtom } from './atoms'
 import { deployStepAtom } from './components/DeployHeader'
-import DeploymentStepTracker from './components/DeployStep'
-import BasketView from './views/Basket'
-import ConfirmDeploy from './views/ConfirmDeploy'
-import DeployStatus from './views/DeployStatus'
-import Intro from './views/Intro'
-import TokenParameters from './views/TokenParameters'
+import RTokenSetup from './components/RTokenSetup'
 
 const defaultValues = {
   // token params
@@ -39,14 +36,6 @@ const defaultValues = {
   longFreeze: '2592000', // 30days
 }
 
-const DeploymentViews = [
-  Intro,
-  BasketView,
-  TokenParameters,
-  ConfirmDeploy,
-  DeployStatus,
-]
-
 const Deploy = () => {
   const { account } = useWeb3React()
   const setBasket = useUpdateAtom(basketAtom)
@@ -57,8 +46,18 @@ const Deploy = () => {
     defaultValues,
   })
 
-  // current tab view [config - basket]
-  const View = DeploymentViews[currentView]
+  // TODO: Listen for lang
+  const sections = useMemo(
+    () => [
+      // t`Intro`,
+      t`Primary basket`,
+      t`Emergency basket`,
+      t`RToken params`,
+      t`Governance params`,
+      t`Roles`,
+    ],
+    []
+  )
 
   useEffect(() => {
     if (account) {
@@ -68,7 +67,6 @@ const Deploy = () => {
 
   useEffect(() => {
     return () => {
-      setCurrentView(0)
       setBasket({})
       setBackupBasket({})
     }
@@ -76,12 +74,27 @@ const Deploy = () => {
 
   return (
     <FormProvider {...form}>
-      <Box sx={{ width: '100%' }}>
-        <DeploymentStepTracker step={currentView} />
-        <Box sx={{ width: 1180, margin: 'auto' }} mb={7}>
-          {View && <View />}
-        </Box>
-      </Box>
+      <Grid
+        columns={['1fr', '1fr 1fr', '1fr 1fr', 'auto 1fr 420px']}
+        gap={4}
+        px={[4, 5]}
+        pt={[4, 5]}
+        sx={{
+          height: '100%',
+          position: 'relative',
+          overflow: 'hidden',
+          alignContent: 'flex-start',
+        }}
+      >
+        <Navigation
+          sections={sections}
+          sx={{
+            display: ['none', 'none', 'none', 'inherit'],
+          }}
+        />
+        <RTokenSetup />
+        <Box variant="layout.borderBox">test</Box>
+      </Grid>
     </FormProvider>
   )
 }

@@ -1,6 +1,6 @@
+import BackupBasket from 'components/rtoken-setup/basket/BackupBasket'
+import PrimaryBasket from 'components/rtoken-setup/basket/PrimaryBasket'
 import { Box, Grid } from 'theme-ui'
-import BackupBasket from './BackupBasket'
-import PrimaryBasket from './PrimaryBasket'
 import TokenConfigurationOverview from './TokenConfigurationOverview'
 
 const DeployPreview = () => {

@@ -1,7 +1,7 @@
+import CollateralModal from 'components/rtoken-setup/basket/CollateralModal'
 import PrimaryBasket from 'components/rtoken-setup/basket/PrimaryBasket'
 import { useState } from 'react'
 import { Box } from 'theme-ui'
-import CollateralModal from 'views/deploy/components/CollateralModal'
 
 const BasketSetup = () => {
   const [collateralModal, setCollateralModal] = useState<{
