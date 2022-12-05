@@ -1,12 +1,12 @@
-import { t, Trans } from '@lingui/macro'
+import { t } from '@lingui/macro'
 import { useMemo } from 'react'
 import { HelpCircle } from 'react-feather'
 import { RegisterOptions, useFormContext } from 'react-hook-form'
-import { Box, Flex, Input, Textarea, Text, InputProps, Slider } from 'theme-ui'
+import { Box, Flex, Input, InputProps, Slider, Text, Textarea } from 'theme-ui'
 import { StringMap } from 'types'
 
 interface FieldProps extends InputProps {
-  label: string
+  label?: string
   help?: string
 }
 
@@ -14,6 +14,7 @@ interface FormFieldProps extends FieldProps {
   placeholder?: string
   name: string
   textarea?: boolean
+  error?: string
   options?: RegisterOptions
 }
 
@@ -49,6 +50,35 @@ export const Field = ({ label, help, children, ...props }: FieldProps) => (
   </Box>
 )
 
+export const FieldInput = ({
+  sx = {},
+  textarea = false,
+  error,
+  ...props
+}: FormFieldProps) => {
+  const InputComponent = textarea ? Textarea : Input
+
+  return (
+    <>
+      <InputComponent
+        sx={{ ...sx, borderColor: !!error ? 'danger' : 'inputBorder' }}
+        {...(props as any)}
+      />
+
+      {!!error && (
+        <Text
+          mt={1}
+          ml={2}
+          sx={{ display: 'block', fontSize: 1 }}
+          variant="error"
+        >
+          {error}
+        </Text>
+      )}
+    </>
+  )
+}
+
 export const FormField = ({
   placeholder,
   name,
@@ -62,28 +92,21 @@ export const FormField = ({
     formState: { errors },
   } = useFormContext()
 
-  const InputComponent = textarea ? Textarea : Input
+  let errorMessage = ''
+
+  if (errors && errors[name]) {
+    errorMessage = errors[name]?.message || getErrorMessage(errors[name])
+  }
 
   return useMemo(
     () => (
       <Field {...props}>
-        <InputComponent
+        <FieldInput
           disabled={!!disabled}
           placeholder={placeholder}
-          sx={{ borderColor: errors[name] ? 'danger' : 'inputBorder' }}
+          error={errorMessage}
           {...register(name, options)}
         />
-
-        {!!errors && !!errors[name] && (
-          <Text
-            mt={1}
-            ml={2}
-            sx={{ display: 'block', fontSize: 1 }}
-            variant="error"
-          >
-            {errors[name]?.message || getErrorMessage(errors[name])}
-          </Text>
-        )}
       </Field>
     ),
     [register, errors[name]]

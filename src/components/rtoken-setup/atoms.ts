@@ -206,6 +206,23 @@ export const revenueSplitAtom = atom<RevenueSplit>({
 })
 
 // The sum of all allocations should be 100%
-export const isRevenueValid = atom(null, (get) => {
+// Multiply by 10 to avoid floating point precision issues (only 1 decimal allowed)
+export const isRevenueValid = atom((get) => {
   const revenue = get(revenueSplitAtom)
+  let total = 0
+
+  for (const external of revenue.external) {
+    // Validate internal address allocation
+    if (external.holders * 10 + external.stakers * 10 !== 1000) {
+      return false
+    }
+
+    total += external.total * 10
+  }
+
+  if (revenue.stakers * 10 + revenue.holders * 10 + total !== 1000) {
+    return false
+  }
+
+  return true
 })

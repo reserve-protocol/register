@@ -2,19 +2,64 @@ import { t, Trans } from '@lingui/macro'
 import Button from 'components/button'
 import Field from 'components/field'
 import Input from 'components/input'
+import NumericalInput from 'components/numerical-input'
 import { useAtom } from 'jotai'
+import { useEffect, useState } from 'react'
 import { Plus } from 'react-feather'
-import { BoxProps, Card, Divider, Flex, Text } from 'theme-ui'
+import { useForm } from 'react-hook-form'
+import { Box, BoxProps, Card, Divider, Flex, Text } from 'theme-ui'
+import { StringMap } from 'types'
 import { revenueSplitAtom } from '../atoms'
 
+interface ExternalRevenueSplitProps extends BoxProps {
+  index: number
+}
+
+const ExternalRevenueSpit = ({
+  index,
+  ...props
+}: ExternalRevenueSplitProps) => {
+  const { register, handleSubmit, setValue } = useForm({
+    defaultValues: {
+      total: '',
+      stakers: '',
+      holders: '',
+    },
+  })
+  const [split, setSplit] = useAtom(revenueSplitAtom)
+  const [total, setTotal] = useState(split.external[index].total)
+  const [stakers, setStakers] = useState(split.external[index].stakers)
+  const [holders, setHolders] = useState(split.external[index].holders)
+  const [errors, setErrors] = useState<StringMap>({})
+
+  const handleChange = (name: string) => (value: string) => {
+    if (name !== 'total') {
+    }
+  }
+
+  return (
+    <Box {...props}>
+      <Field label={t`% Revenue to RSR Stakers`}>
+        <NumericalInput
+          onChange={(value) => handleChange('total')}
+          pattern="^[0-9]*[.,]?[0-9]$"
+          placeholder={t`Input RSR stakers revenue distribution`}
+        />
+      </Field>
+    </Box>
+  )
+}
+
 const RevenueSplit = (props: BoxProps) => {
-  const distribution = useAtom(revenueSplitAtom)
+  const [revenueSplit, setRevenueSplit] = useAtom(revenueSplitAtom)
 
   const handleAddExternal = () => {}
 
   const handleChange = (value: string) => {
     console.log('value', value)
   }
+
+  const handleExternalChange = (index: number, value: string) => {}
 
   return (
     <Card {...props}>
