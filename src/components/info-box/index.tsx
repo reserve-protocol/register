@@ -6,12 +6,22 @@ interface Props extends BoxProps {
   title: string
   subtitle?: string
   help?: string
+  light?: boolean
 }
 
-const InfoBox = ({ title, subtitle, ...props }: Props) => (
+const InfoBox = ({ title, subtitle, light, ...props }: Props) => (
   <Box {...props}>
-    <Text sx={{ fontSize: 1, fontWeight: 500, display: 'block' }}>{title}</Text>
-    <Text variant="legend" as="p" sx={{ fontSize: 1 }}>
+    <Text
+      variant={light ? 'legend' : 'strong'}
+      sx={{ fontSize: 1, display: 'block' }}
+    >
+      {title}
+    </Text>
+    <Text
+      variant={light ? 'primary' : 'legend'}
+      as="p"
+      sx={{ fontSize: light ? 2 : 1 }}
+    >
       {subtitle}
     </Text>
   </Box>

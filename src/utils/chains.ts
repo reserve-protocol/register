@@ -28,7 +28,6 @@ export const CHAINS: {
   [ChainId.Mainnet]: {
     urls: [
       'https://cloudflare-eth.com/v1/mainnet',
-      'https://api.mycryptoapi.com/eth',
       'https://rpc.ankr.com/eth',
       'https://eth-mainnet.public.blastapi.io',
     ],

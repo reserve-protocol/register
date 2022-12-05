@@ -7,6 +7,7 @@ import { navigationIndexAtom } from './atoms'
 
 interface Props extends BoxProps {
   navigationIndex: number
+  threshold?: number
 }
 
 const updateSectionAtom = atom(null, (get, set, section: [boolean, number]) => {
@@ -24,8 +25,12 @@ const updateSectionAtom = atom(null, (get, set, section: [boolean, number]) => {
   }
 })
 
-const SectionWrapper = ({ navigationIndex, ...props }: Props) => {
-  const { ref, inView } = useInView({ threshold: 0.3 })
+const SectionWrapper = ({
+  navigationIndex,
+  threshold = 0.5,
+  ...props
+}: Props) => {
+  const { ref, inView } = useInView({ threshold })
   const updateNavigationIndex = useUpdateAtom(updateSectionAtom)
 
   useEffect(() => {

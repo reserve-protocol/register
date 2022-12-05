@@ -29,6 +29,16 @@ export interface Basket {
   [x: string]: PrimaryUnitBasket
 }
 
+export interface RevenueSplit {
+  holders: number
+  stakers: number
+  external: {
+    total: number
+    holders: number
+    stakers: number
+  }[]
+}
+
 export const basketAtom = atom<Basket>({})
 export const backupCollateralAtom = atom<BackupBasket>({})
 export const isBasketValidAtom = atom((get) => {
@@ -188,3 +198,14 @@ export const updateBasketUnitAtom = atom(
     set(basketAtom, basket)
   }
 )
+
+export const revenueSplitAtom = atom<RevenueSplit>({
+  holders: 40, // %
+  stakers: 60, // %
+  external: [],
+})
+
+// The sum of all allocations should be 100%
+export const isRevenueValid = atom(null, (get) => {
+  const revenue = get(revenueSplitAtom)
+})

@@ -5,9 +5,10 @@ import { useAtom } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { useEffect, useMemo } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { Box, Grid } from 'theme-ui'
+import { Box, Grid, Image, Text } from 'theme-ui'
 import { backupCollateralAtom, basketAtom } from './atoms'
 import { deployStepAtom } from './components/DeployHeader'
+import DeployOverview from './components/DeployOverview'
 import RTokenSetup from './components/RTokenSetup'
 
 const defaultValues = {
@@ -75,7 +76,7 @@ const Deploy = () => {
   return (
     <FormProvider {...form}>
       <Grid
-        columns={['1fr', '1fr 1fr', '1fr 1fr', 'auto 1fr 420px']}
+        columns={['1fr', '1fr 1fr', '1.5fr 1fr', 'auto 1fr 420px']}
         gap={4}
         px={[4, 5]}
         pt={[4, 5]}
@@ -87,13 +88,14 @@ const Deploy = () => {
         }}
       >
         <Navigation
+          title={t`Step 1`}
           sections={sections}
           sx={{
             display: ['none', 'none', 'none', 'inherit'],
           }}
         />
         <RTokenSetup />
-        <Box variant="layout.borderBox">test</Box>
+        <DeployOverview />
       </Grid>
     </FormProvider>
   )

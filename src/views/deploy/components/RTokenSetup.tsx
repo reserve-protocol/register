@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import BasketSetup from 'components/rtoken-setup/basket/BasketSetup'
+import RevenueSplit from 'components/rtoken-setup/token/RevenueSplit'
 import { Box } from 'theme-ui'
 import TokenParameters from './TokenParameters'
 
@@ -16,6 +17,7 @@ const RTokenSetup = () => {
   return (
     <Container>
       <BasketSetup />
+      <RevenueSplit mt={4} />
       <TokenParameters my={4} />
     </Container>
   )

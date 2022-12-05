@@ -23,7 +23,7 @@ const TokenParameters = (props: BoxProps) => {
   const [advanceConfig, setAdvanceConfig] = useState(false)
 
   return (
-    <SectionWrapper navigationIndex={2}>
+    <SectionWrapper threshold={advanceConfig ? 0.3 : 0.9} navigationIndex={2}>
       <Card p={4} {...props}>
         <TokenForm />
         <Divider my={4} />
