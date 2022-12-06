@@ -58,7 +58,7 @@ const availableTokensAtom = atom((get) => {
 })
 
 // TODO: Separate component
-const ActionItem = styled(Flex)`
+export const ActionItem = styled(Flex)`
   transition: ${transition};
   padding: 16px;
   border-bottom: 1px solid var(--theme-ui-colors-border);
@@ -80,19 +80,21 @@ const ActionItem = styled(Flex)`
   }
 `
 
-const TokenList = memo(({ onSelect }: { onSelect(address: string): void }) => {
-  const tokens = useAtomValue(availableTokensAtom)
+export const TokenList = memo(
+  ({ onSelect }: { onSelect(address: string): void }) => {
+    const tokens = useAtomValue(availableTokensAtom)
 
-  return (
-    <Box sx={{ maxHeight: 320, overflow: 'auto' }}>
-      {Object.values(tokens).map(({ address, logo, symbol }) => (
-        <ActionItem key={address} onClick={() => onSelect(address)}>
-          <TokenItem symbol={symbol} logo={logo} />
-        </ActionItem>
-      ))}
-    </Box>
-  )
-})
+    return (
+      <Box sx={{ maxHeight: 320, overflow: 'auto' }}>
+        {Object.values(tokens).map(({ address, logo, symbol }) => (
+          <ActionItem key={address} onClick={() => onSelect(address)}>
+            <TokenItem symbol={symbol} logo={logo} />
+          </ActionItem>
+        ))}
+      </Box>
+    )
+  }
+)
 
 const SelectedToken = () => {
   const selectedAddress = useAtomValue(selectedRTokenAtom)
