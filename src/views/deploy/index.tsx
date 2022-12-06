@@ -41,7 +41,6 @@ const Deploy = () => {
   const { account } = useWeb3React()
   const setBasket = useUpdateAtom(basketAtom)
   const setBackupBasket = useUpdateAtom(backupCollateralAtom)
-  const [currentView, setCurrentView] = useAtom(deployStepAtom)
   const form = useForm({
     mode: 'onChange',
     defaultValues,

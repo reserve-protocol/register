@@ -1,4 +1,5 @@
 import { t } from '@lingui/macro'
+import React from 'react'
 import { useMemo } from 'react'
 import { HelpCircle } from 'react-feather'
 import { RegisterOptions, useFormContext } from 'react-hook-form'
@@ -18,7 +19,7 @@ interface FormFieldProps extends FieldProps {
   options?: RegisterOptions
 }
 
-const getErrorMessage = (error: StringMap): string => {
+export const getErrorMessage = (error: StringMap): string => {
   switch (error.type) {
     case 'required':
       return t`This field is required`
@@ -50,34 +51,32 @@ export const Field = ({ label, help, children, ...props }: FieldProps) => (
   </Box>
 )
 
-export const FieldInput = ({
-  sx = {},
-  textarea = false,
-  error,
-  ...props
-}: FormFieldProps) => {
-  const InputComponent = textarea ? Textarea : Input
+export const FieldInput = React.forwardRef(
+  ({ sx = {}, textarea = false, error, ...props }: FormFieldProps, ref) => {
+    const InputComponent = textarea ? Textarea : Input
 
-  return (
-    <>
-      <InputComponent
-        sx={{ ...sx, borderColor: !!error ? 'danger' : 'inputBorder' }}
-        {...(props as any)}
-      />
+    return (
+      <>
+        <InputComponent
+          sx={{ ...sx, borderColor: !!error ? 'danger' : 'inputBorder' }}
+          ref={ref}
+          {...(props as any)}
+        />
 
-      {!!error && (
-        <Text
-          mt={1}
-          ml={2}
-          sx={{ display: 'block', fontSize: 1 }}
-          variant="error"
-        >
-          {error}
-        </Text>
-      )}
-    </>
-  )
-}
+        {!!error && (
+          <Text
+            mt={1}
+            ml={2}
+            sx={{ display: 'block', fontSize: 1 }}
+            variant="error"
+          >
+            {error}
+          </Text>
+        )}
+      </>
+    )
+  }
+)
 
 export const FormField = ({
   placeholder,

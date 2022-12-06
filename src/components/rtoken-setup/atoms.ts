@@ -30,12 +30,12 @@ export interface Basket {
 }
 
 export interface RevenueSplit {
-  holders: number
-  stakers: number
+  holders: string
+  stakers: string
   external: {
-    total: number
-    holders: number
-    stakers: number
+    total: string
+    holders: string
+    stakers: string
   }[]
 }
 
@@ -200,8 +200,8 @@ export const updateBasketUnitAtom = atom(
 )
 
 export const revenueSplitAtom = atom<RevenueSplit>({
-  holders: 40, // %
-  stakers: 60, // %
+  holders: '40', // %
+  stakers: '60', // %
   external: [],
 })
 
@@ -213,14 +213,14 @@ export const isRevenueValid = atom((get) => {
 
   for (const external of revenue.external) {
     // Validate internal address allocation
-    if (external.holders * 10 + external.stakers * 10 !== 1000) {
+    if (+external.holders * 10 + +external.stakers * 10 !== 1000) {
       return false
     }
 
-    total += external.total * 10
+    total += +external.total * 10
   }
 
-  if (revenue.stakers * 10 + revenue.holders * 10 + total !== 1000) {
+  if (+revenue.stakers * 10 + +revenue.holders * 10 + total !== 1000) {
     return false
   }
 

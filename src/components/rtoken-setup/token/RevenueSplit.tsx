@@ -1,6 +1,6 @@
 import { t, Trans } from '@lingui/macro'
 import Button from 'components/button'
-import Field from 'components/field'
+import Field, { FieldInput, getErrorMessage } from 'components/field'
 import Input from 'components/input'
 import NumericalInput from 'components/numerical-input'
 import { useAtom } from 'jotai'
@@ -9,6 +9,7 @@ import { Plus } from 'react-feather'
 import { useForm } from 'react-hook-form'
 import { Box, BoxProps, Card, Divider, Flex, Text } from 'theme-ui'
 import { StringMap } from 'types'
+import { decimalPattern } from 'utils'
 import { revenueSplitAtom } from '../atoms'
 
 interface ExternalRevenueSplitProps extends BoxProps {
@@ -19,31 +20,60 @@ const ExternalRevenueSpit = ({
   index,
   ...props
 }: ExternalRevenueSplitProps) => {
-  const { register, handleSubmit, setValue } = useForm({
+  const [split, setSplit] = useAtom(revenueSplitAtom)
+  const {
+    register,
+    watch,
+    formState: { errors, isDirty, isValid },
+  } = useForm({
+    mode: 'onChange',
     defaultValues: {
-      total: '',
-      stakers: '',
-      holders: '',
+      total: split.external[index].total,
+      stakers: split.external[index].stakers,
+      holders: split.external[index].holders,
     },
   })
-  const [split, setSplit] = useAtom(revenueSplitAtom)
-  const [total, setTotal] = useState(split.external[index].total)
-  const [stakers, setStakers] = useState(split.external[index].stakers)
-  const [holders, setHolders] = useState(split.external[index].holders)
-  const [errors, setErrors] = useState<StringMap>({})
+  const formValues = watch(['total', 'stakers', 'holders'])
 
-  const handleChange = (name: string) => (value: string) => {
-    if (name !== 'total') {
+  useEffect(() => {
+    if (!isDirty) {
+      const [total, stakers, holders] = formValues
+      setSplit({
+        ...split,
+        external: [
+          ...split.external.slice(0, index),
+          { total, stakers, holders },
+          ...split.external.slice(index + 1),
+        ],
+      })
     }
+  }, [...formValues])
+
+  const options = {
+    required: true,
+    pattern: decimalPattern,
+    min: 0,
+    max: 100,
   }
 
   return (
     <Box {...props}>
-      <Field label={t`% Revenue to RSR Stakers`}>
-        <NumericalInput
-          onChange={(value) => handleChange('total')}
-          pattern="^[0-9]*[.,]?[0-9]$"
-          placeholder={t`Input RSR stakers revenue distribution`}
+      <Field label={t`% Totals`} mb={3}>
+        <FieldInput
+          {...register('total', options)}
+          error={errors['total'] ? getErrorMessage(errors['total']) : ''}
+        />
+      </Field>
+      <Field label={t`% Stakers`} mb={3}>
+        <FieldInput
+          {...register('stakers', options)}
+          error={errors['stakers'] ? getErrorMessage(errors['stakers']) : ''}
+        />
+      </Field>
+      <Field label={t`% Holders`}>
+        <FieldInput
+          {...register('holders', options)}
+          error={errors['holders'] ? getErrorMessage(errors['holders']) : ''}
         />
       </Field>
     </Box>
@@ -53,13 +83,19 @@ const ExternalRevenueSpit = ({
 const RevenueSplit = (props: BoxProps) => {
   const [revenueSplit, setRevenueSplit] = useAtom(revenueSplitAtom)
 
-  const handleAddExternal = () => {}
+  const handleAddExternal = () => {
+    setRevenueSplit({
+      ...revenueSplit,
+      external: [
+        ...revenueSplit.external,
+        { total: '', stakers: '50', holders: '50' },
+      ],
+    })
+  }
 
   const handleChange = (value: string) => {
     console.log('value', value)
   }
-
-  const handleExternalChange = (index: number, value: string) => {}
 
   return (
     <Card {...props}>
@@ -79,7 +115,15 @@ const RevenueSplit = (props: BoxProps) => {
           placeholder={t`Input RSR stakers revenue distribution`}
         />
       </Field>
-      <Button mt={5} variant="muted" sx={{ width: '100%' }}>
+      {revenueSplit.external.map((split, index) => (
+        <ExternalRevenueSpit index={index} />
+      ))}
+      <Button
+        mt={5}
+        variant="muted"
+        sx={{ width: '100%' }}
+        onClick={handleAddExternal}
+      >
         <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
           <Plus size={14} />
           <Text pl={2}>
