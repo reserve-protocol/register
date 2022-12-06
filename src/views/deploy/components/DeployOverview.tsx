@@ -1,13 +1,32 @@
 import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
 import { InfoBox } from 'components'
-import { Box, Flex, BoxProps, Image, Text, Button, Divider } from 'theme-ui'
+import useTransactionCost from 'hooks/useTransactionCost'
+import {
+  Box,
+  Flex,
+  BoxProps,
+  Image,
+  Text,
+  Button,
+  Divider,
+  Spinner,
+} from 'theme-ui'
+import { formatCurrency } from 'utils'
+import useDeployTx from '../useDeployTx'
 
 const Container = styled(Box)`
   height: fit-content;
 `
 
 const DeployOverview = (props: BoxProps) => {
+  const deployTx = useDeployTx()
+  const [fee, gasError, gasLimit] = useTransactionCost(
+    deployTx ? [deployTx] : []
+  )
+
+  const handleDeploy = () => {}
+
   return (
     <Container variant="layout.borderBox" {...props}>
       <Flex sx={{ alignItems: 'center', flexDirection: 'column' }}>
@@ -20,18 +39,22 @@ const DeployOverview = (props: BoxProps) => {
           sit amet, consectetur adipiscing elit. Sit amet, consectetur
           adipiscing elit.
         </Text>
-        <Button variant="accentAction" mt={3} sx={{ width: '100%' }}>
+        <Button
+          onClick={handleDeploy}
+          variant="accentAction"
+          disabled={!fee}
+          mt={3}
+          sx={{ width: '100%' }}
+        >
           <Trans>Deploy RToken</Trans>
         </Button>
         <Box mt={3} sx={{ fontSize: 1, textAlign: 'center' }}>
           <Text variant="legend" mr={1}>
-            <Trans>Estimated gas cost: --</Trans>
+            <Trans>Estimated gas cost:</Trans>
           </Text>
-          {/* {fee ? (
-          <Text sx={{ fontWeight: 500 }}>${formatCurrency(fee)}</Text>
-        ) : (
-          <Spinner color="black" size={12} />
-        )} */}
+          {!deployTx && '--'}
+          {!!deployTx && !fee && <Spinner color="black" size={12} />}
+          {!!fee && `$${formatCurrency(fee)}`}
         </Box>
       </Flex>
 

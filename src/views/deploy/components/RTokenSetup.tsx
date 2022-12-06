@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import BasketSetup from 'components/rtoken-setup/basket/BasketSetup'
 import RevenueSplit from 'components/rtoken-setup/token/RevenueSplit'
+import SectionWrapper from 'components/section-navigation/SectionWrapper'
 import { Box } from 'theme-ui'
 import TokenParameters from './TokenParameters'
 
@@ -17,7 +18,9 @@ const RTokenSetup = () => {
   return (
     <Container>
       <BasketSetup />
-      <RevenueSplit mt={4} />
+      <SectionWrapper navigationIndex={2}>
+        <RevenueSplit mt={4} />
+      </SectionWrapper>
       <TokenParameters my={4} />
     </Container>
   )

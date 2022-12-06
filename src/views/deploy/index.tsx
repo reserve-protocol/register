@@ -52,6 +52,7 @@ const Deploy = () => {
       // t`Intro`,
       t`Primary basket`,
       t`Emergency basket`,
+      t`Revenue split`,
       t`RToken params`,
       t`Governance params`,
       t`Roles`,

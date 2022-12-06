@@ -225,9 +225,7 @@ export const isRevenueValidAtom = atom((get) => {
 
   const sum = +revenue.stakers * 10 + +revenue.holders * 10 + total
 
-  console.log('sum total', sum)
-
-  if (+revenue.stakers * 10 + +revenue.holders * 10 + total !== 1000) {
+  if (sum !== 1000) {
     return false
   }
 

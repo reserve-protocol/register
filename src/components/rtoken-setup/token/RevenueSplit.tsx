@@ -56,7 +56,6 @@ const RevenueSplit = (props: BoxProps) => {
   useEffect(() => {
     if (isDirty) {
       const [stakers, holders] = formValues
-      console.log('set!!!', { stakers, holders })
       setRevenueSplit({
         ...revenueSplit,
         stakers,
@@ -76,8 +75,8 @@ const RevenueSplit = (props: BoxProps) => {
   }
 
   return (
-    <Card {...props}>
-      <Text variant="strong" sx={{ fontSize: 4 }}>
+    <Card p={4} {...props}>
+      <Text ml={2} variant="title">
         <Trans>Revenue Distribution</Trans>
       </Text>
       <Divider my={3} />
