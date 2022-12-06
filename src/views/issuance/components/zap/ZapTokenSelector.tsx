@@ -71,7 +71,7 @@ export const TokenList = memo(({ onSelect, tokens }: TokenListProps) => {
 })
 
 // TODO: these should come from zap contract
-const supportedTokens: string[] = [
+export const supportedZapTokens: string[] = [
   '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
   '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
   '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
@@ -105,7 +105,7 @@ const ZapTokenSelector = (props: BoxProps) => {
   useEffect(() => {
     const updateTokens = async () => {
       if (!provider) return
-      const tokens = await getTokenMeta(supportedTokens, provider)
+      const tokens = await getTokenMeta(supportedZapTokens, provider)
       setTokens(tokens)
       if (!selectedToken) setSelectedToken(tokens[0])
     }
@@ -118,7 +118,7 @@ const ZapTokenSelector = (props: BoxProps) => {
   return (
     <Box style={{ paddingLeft: '0.5rem' }}>
       <Flex sx={{ alignItems: 'center' }} mb={2}>
-        <Text as="label" variant="legend" ml={2}>
+        <Text as="label" variant="legend">
           <Trans>Mint with Zap</Trans>
         </Text>
       </Flex>

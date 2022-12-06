@@ -12,6 +12,7 @@ import {
   MulticallState,
   RawCall,
   ReserveToken,
+  Token,
   TransactionMap,
   TransactionState,
 } from 'types'
@@ -38,6 +39,8 @@ if (
 export const reserveTokensAtom = atomWithStorage<{
   [x: string]: ReserveToken
 }>('reserveTokens', {})
+
+export const zapTokensAtom = atomWithStorage<Token[]>('zapTokens', [])
 
 // Current selected rToken address
 export const selectedRTokenAtom = atomWithStorage('selectedRToken', '')
@@ -130,7 +133,7 @@ export const rsrExchangeRateAtom = atom(1)
 // Tracks current connected address
 export const walletAtom = atom('')
 
-// Tracks rToken/collaterals/stRSR/RSR balances for a connected account
+// Tracks rToken/collaterals/stRSR/RSR/zap balances for a connected account
 export const balancesAtom = atom<{ [x: string]: number }>({})
 
 // Get balance for current rToken for the selected account

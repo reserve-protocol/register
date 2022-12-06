@@ -4,17 +4,17 @@ import TransactionInput, {
 } from 'components/transaction-input'
 import { useAtomValue } from 'jotai'
 import { isRTokenDisabledAtom } from 'state/atoms'
-import { issueAmountAtom, maxIssuableAtom } from '../../atoms'
+import { maxZappableAmountAtom, zapInputAmountAtom } from '../../atoms'
 
 const ZapInput = (props: Partial<TransactionInputProps>) => {
-  const issuableAmount = useAtomValue(maxIssuableAtom)
+  const zappableAmount = useAtomValue(maxZappableAmountAtom)
   const isTokenDisabled = useAtomValue(isRTokenDisabledAtom)
 
   return (
     <TransactionInput
       placeholder={t`Zap amount`}
-      amountAtom={issueAmountAtom}
-      maxAmount={issuableAmount}
+      amountAtom={zapInputAmountAtom}
+      maxAmount={zappableAmount}
       disabled={isTokenDisabled}
       {...props}
     />

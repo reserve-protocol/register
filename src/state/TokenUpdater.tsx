@@ -23,6 +23,7 @@ import { CHAIN_ID } from 'utils/chains'
 import { RTOKEN_STATUS } from 'utils/constants'
 import RSV from 'utils/rsv'
 import rtokens from 'utils/rtokens'
+import { supportedZapTokens } from 'views/issuance/components/zap/ZapTokenSelector'
 import {
   accountRoleAtom,
   blockTimestampAtom,
@@ -34,6 +35,7 @@ import {
   rTokenYieldAtom,
   selectedRTokenAtom,
   walletAtom,
+  zapTokensAtom,
 } from './atoms'
 import { tokenMetricsAtom } from './metrics/atoms'
 import { promiseMulticall } from './web3/lib/multicall'
@@ -72,7 +74,12 @@ const apyQuery = gql`
 const getRTokenMeta = async (
   addresses: string[],
   provider: Web3Provider
-): Promise<{ tokens: Token[]; main: string; mandate: string }> => {
+): Promise<{
+  tokens: Token[]
+  zapTokens: Token[]
+  main: string
+  mandate: string
+}> => {
   const calls = addresses.reduce((acc, address) => {
     const params = { abi: ERC20Interface, address, args: [] }
 
@@ -125,7 +132,10 @@ const getRTokenMeta = async (
     return tokens
   }, [] as Token[])
 
+  const zapTokens = tokens.splice(tokens.length - supportedZapTokens.length)
+
   return {
+    zapTokens,
     tokens,
     main,
     mandate,
@@ -135,6 +145,10 @@ const getRTokenMeta = async (
 const updateTokenAtom = atom(null, (get, set, data: ReserveToken) => {
   const tokens = get(reserveTokensAtom)
   set(reserveTokensAtom, { ...tokens, [data.address]: data })
+})
+
+const updateZapTokensAtom = atom(null, (get, set, data: Token[]) => {
+  set(zapTokensAtom, data)
 })
 
 // Try to grab the token meta from theGraph
@@ -148,6 +162,7 @@ const ReserveTokenUpdater = () => {
   const updateApy = useUpdateAtom(rTokenYieldAtom)
   const updateTokenStatus = useUpdateAtom(rTokenStatusAtom)
   const updateToken = useUpdateAtom(updateTokenAtom)
+  const updateZapTokens = useUpdateAtom(updateZapTokensAtom)
   const resetMetrics = useResetAtom(tokenMetricsAtom)
   const updateAccountRole = useUpdateAtom(accountRoleAtom)
   const setDistribution = useUpdateAtom(rTokenDistributionAtom)
@@ -287,11 +302,17 @@ const ReserveTokenUpdater = () => {
           main,
           mandate,
           tokens: [rToken, stToken, ...collaterals],
-        } = await getRTokenMeta([address, stTokenAddress, ...basket], provider)
+          zapTokens,
+        } = await getRTokenMeta(
+          [address, stTokenAddress, ...basket, ...supportedZapTokens],
+          provider
+        )
 
         const logo = rtokens[address]?.logo
           ? require(`@lc-labs/rtokens/images/${rtokens[address].logo}`)
           : '/svgs/default.svg'
+
+        updateZapTokens(zapTokens)
 
         return updateToken({
           ...rToken,
