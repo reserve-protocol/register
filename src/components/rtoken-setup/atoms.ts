@@ -29,14 +29,17 @@ export interface Basket {
   [x: string]: PrimaryUnitBasket
 }
 
+export interface ExternalAddressSplit {
+  address: string
+  total: string
+  holders: string
+  stakers: string
+}
+
 export interface RevenueSplit {
   holders: string
   stakers: string
-  external: {
-    total: string
-    holders: string
-    stakers: string
-  }[]
+  external: ExternalAddressSplit[]
 }
 
 export const basketAtom = atom<Basket>({})
@@ -207,7 +210,7 @@ export const revenueSplitAtom = atom<RevenueSplit>({
 
 // The sum of all allocations should be 100%
 // Multiply by 10 to avoid floating point precision issues (only 1 decimal allowed)
-export const isRevenueValid = atom((get) => {
+export const isRevenueValidAtom = atom((get) => {
   const revenue = get(revenueSplitAtom)
   let total = 0
 
@@ -219,6 +222,10 @@ export const isRevenueValid = atom((get) => {
 
     total += +external.total * 10
   }
+
+  const sum = +revenue.stakers * 10 + +revenue.holders * 10 + total
+
+  console.log('sum total', sum)
 
   if (+revenue.stakers * 10 + +revenue.holders * 10 + total !== 1000) {
     return false
