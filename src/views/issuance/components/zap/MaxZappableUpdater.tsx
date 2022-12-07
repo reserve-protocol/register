@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 import { balancesAtom, selectedZapTokenAtom, walletAtom } from 'state/atoms'
 import { maxZappableAmountAtom } from 'views/issuance/atoms'
 

@@ -26,6 +26,7 @@ import {
   rTokenAtom,
   rTokenPriceAtom,
   walletAtom,
+  zapTokensAllowanceAtom,
   zapTokensAtom,
 } from 'state/atoms'
 import { ReserveToken, StringMap, Token } from 'types'
@@ -34,6 +35,7 @@ import {
   RSR_ADDRESS,
   RSV_ADDRESS,
   WETH_ADDRESS,
+  ZAPPER_CONTRACT,
 } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 import { RSR } from 'utils/constants'
@@ -66,17 +68,12 @@ const getTokens = (
   return addresses
 }
 
-const getTokenAllowances = (
-  reserveToken: ReserveToken,
-  zapTokens: Token[]
-): [string, string][] => {
+const getTokenAllowances = (reserveToken: ReserveToken): [string, string][] => {
   const tokens: [string, string][] = [
-    ...[...reserveToken.collaterals, ...zapTokens].map(
-      (token): [string, string] => [
-        token.address,
-        reserveToken.isRSV ? RSV_MANAGER : reserveToken.address,
-      ]
-    ),
+    ...reserveToken.collaterals.map((token): [string, string] => [
+      token.address,
+      reserveToken.isRSV ? RSV_MANAGER : reserveToken.address,
+    ]),
   ]
 
   // RSR -> stRSR allowance
@@ -90,6 +87,15 @@ const getTokenAllowances = (
   }
 
   return tokens
+}
+
+const getZapTokenAllowances = (zapTokens: Token[]): [string, string][] => {
+  return [
+    ...zapTokens.map((token): [string, string] => [
+      token.address,
+      ZAPPER_CONTRACT[CHAIN_ID],
+    ]),
+  ]
 }
 
 /**
@@ -123,14 +129,22 @@ const TokensAllowanceUpdater = () => {
   const reserveToken = useAtomValue(rTokenAtom)
   const zapTokens = useAtomValue(zapTokensAtom)
   const updateAllowances = useSetAtom(allowanceAtom)
+  const updateZapAllowances = useSetAtom(zapTokensAllowanceAtom)
+
   const allowances = useTokensAllowance(
-    reserveToken && account ? getTokenAllowances(reserveToken, zapTokens) : [],
+    reserveToken && account ? getTokenAllowances(reserveToken) : [],
+    account
+  )
+
+  const zapAllowances = useTokensAllowance(
+    account ? getZapTokenAllowances(zapTokens) : [],
     account
   )
 
   useEffect(() => {
     updateAllowances(allowances)
-  }, [JSON.stringify(allowances)])
+    updateZapAllowances(zapAllowances)
+  }, [JSON.stringify(allowances), JSON.stringify(zapAllowances)])
 
   return null
 }

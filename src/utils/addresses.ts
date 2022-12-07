@@ -100,3 +100,8 @@ export const DEFAULT_TOKENS = {
   [ChainId.Goerli]: [RSV_ADDRESS[ChainId.Goerli]],
   [ChainId.Hardhat]: [],
 }
+
+export const ZAPPER_CONTRACT: AddressMap = {
+  [ChainId.Mainnet]: '0x2538a10b7fFb1B78c890c870FC152b10be121f04',
+  [ChainId.Hardhat]: '0x2538a10b7fFb1B78c890c870FC152b10be121f04',
+}

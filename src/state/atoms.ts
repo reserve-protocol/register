@@ -40,11 +40,10 @@ export const reserveTokensAtom = atomWithStorage<{
   [x: string]: ReserveToken
 }>('reserveTokens', {})
 
+// Atoms for zapping feature
 export const zapTokensAtom = atomWithStorage<Token[]>('zapTokens', [])
-export const selectedZapTokenAtom = atomWithStorage<Token | undefined>(
-  'selectedZapToken',
-  undefined
-)
+export const selectedZapTokenAtom = atom<Token | undefined>(undefined)
+export const zapTokensAllowanceAtom = atom<{ [x: string]: BigNumber }>({})
 
 // Current selected rToken address
 export const selectedRTokenAtom = atomWithStorage('selectedRToken', '')

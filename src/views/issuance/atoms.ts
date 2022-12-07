@@ -23,3 +23,7 @@ export const isValidZappableAmountAtom = atom((get) => {
     get(maxZappableAmountAtom)
   )
 })
+
+export const zapContractAllowance = atom<BigNumberMap>({})
+
+export const issueQuoteAtom = atom('')
