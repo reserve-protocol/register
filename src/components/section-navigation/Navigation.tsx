@@ -26,12 +26,14 @@ const Navigation = ({ title, sections, ...props }: Props) => {
     document.getElementById(`section-${index}`)?.scrollIntoView()
   }
 
+  const active = Math.min(...current)
+
   return (
     <Container {...props}>
       {!!title && <Text variant="title">{title}</Text>}
       <Box as="ul" mt={5} mr={3} p={0} sx={{ listStyle: 'none' }}>
         {sections.map((item, index) => {
-          const active = current.indexOf(index) !== -1
+          const isActive = active === index
 
           return (
             <Box
@@ -42,13 +44,13 @@ const Navigation = ({ title, sections, ...props }: Props) => {
               mb={4}
               sx={{
                 lineHeight: '24px',
-                borderLeft: active ? '3px solid' : 'none',
+                borderLeft: isActive ? '3px solid' : 'none',
                 borderColor: 'text',
-                marginLeft: active ? 0 : '3px',
+                marginLeft: isActive ? 0 : '3px',
                 cursor: 'pointer',
               }}
             >
-              <Text variant={active ? 'primary' : 'legend'}>{item}</Text>
+              <Text variant={isActive ? 'primary' : 'legend'}>{item}</Text>
             </Box>
           )
         })}

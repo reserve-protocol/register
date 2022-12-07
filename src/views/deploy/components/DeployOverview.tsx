@@ -1,24 +1,19 @@
 import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
 import { InfoBox } from 'components'
-import useTransactionCost from 'hooks/useTransactionCost'
-import { useSetAtom } from 'jotai'
-import { useState } from 'react'
-import { addTransactionAtom } from 'state/atoms'
-import { v4 as uuid } from 'uuid'
+import { useTransaction } from 'state/web3/hooks/useTransactions'
 import {
   Box,
-  Flex,
   BoxProps,
-  Image,
-  Text,
   Button,
   Divider,
+  Flex,
+  Image,
   Spinner,
+  Text,
 } from 'theme-ui'
-import { formatCurrency, getTransactionWithGasLimit } from 'utils'
-import useDeployTx from '../useDeployTx'
-import { useTransaction } from 'state/web3/hooks/useTransactions'
+import { formatCurrency } from 'utils'
+import useDeploy from '../useDeploy'
 
 const Container = styled(Box)`
   height: fit-content;
@@ -35,23 +30,7 @@ const DeployStatus = ({ txId }: DeployStatusProps) => {
 }
 
 const DeployOverview = (props: BoxProps) => {
-  const [deployId, setDeployId] = useState('')
-  const deployTx = useDeployTx()
-  const addTransaction = useSetAtom(addTransactionAtom)
-
-  const [fee, gasError, gasLimit] = useTransactionCost(
-    deployTx ? [deployTx] : []
-  )
-
-  const handleDeploy = () => {
-    if (deployTx) {
-      const id = uuid()
-      addTransaction([
-        { ...getTransactionWithGasLimit(deployTx, gasLimit), id },
-      ])
-      setDeployId(id)
-    }
-  }
+  const { fee, deploy, isValid } = useDeploy()
 
   return (
     <Container variant="layout.borderBox" {...props}>
@@ -66,7 +45,7 @@ const DeployOverview = (props: BoxProps) => {
           adipiscing elit.
         </Text>
         <Button
-          onClick={handleDeploy}
+          onClick={deploy}
           variant="accentAction"
           disabled={!fee}
           mt={3}
@@ -77,9 +56,9 @@ const DeployOverview = (props: BoxProps) => {
         <Box mt={3} sx={{ fontSize: 1, textAlign: 'center' }}>
           <Text variant="legend" mr={1}>
             <Trans>Estimated gas cost:</Trans>
-            {!deployTx && '--'}
+            {!isValid && '--'}
           </Text>
-          {!!deployTx && !fee && <Spinner color="black" size={12} />}
+          {isValid && !fee && <Spinner color="black" size={12} />}
           {!!fee && (
             <Text sx={{ fontWeight: 500 }}>${formatCurrency(fee)}</Text>
           )}

@@ -1,25 +1,11 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { parseEther } from '@ethersproject/units'
-import { t } from '@lingui/macro'
 import { ethers } from 'ethers'
-import { useAtomValue } from 'jotai/utils'
-import { useMemo } from 'react'
-import { useFormContext, useWatch } from 'react-hook-form'
 import { StringMap } from 'types'
-import { FACADE_WRITE_ADDRESS, ZERO_ADDRESS } from 'utils/addresses'
-import { CHAIN_ID } from 'utils/chains'
-import { TRANSACTION_STATUS } from 'utils/constants'
-import {
-  BackupBasket,
-  backupCollateralAtom,
-  Basket,
-  basketAtom,
-  isBasketValidAtom,
-  isRevenueValidAtom,
-  revenueSplitAtom,
-} from './../../components/rtoken-setup/atoms'
+import { ZERO_ADDRESS } from 'utils/addresses'
+import { BackupBasket, Basket } from './../../components/rtoken-setup/atoms'
 
-interface RTokenConfiguration {
+export interface RTokenConfiguration {
   name: string
   symbol: string
   mandate: string
@@ -45,13 +31,13 @@ interface RTokenConfiguration {
   }
 }
 
-interface BackupBasketConfiguration {
+export interface BackupBasketConfiguration {
   backupUnit: string
   diversityFactor: BigNumber
   backupCollateral: string[]
 }
 
-interface BasketConfiguration {
+export interface BasketConfiguration {
   assets: string[]
   primaryBasket: string[]
   weights: BigNumber[]
@@ -154,43 +140,3 @@ export const getDeployParameters = (
     return null
   }
 }
-
-const useDeployTx = () => {
-  const {
-    getValues,
-    formState: { isValid },
-  } = useFormContext()
-  const isBasketValid = useAtomValue(isBasketValidAtom)
-  const isRevenueSplitValid = useAtomValue(isRevenueValidAtom)
-  const primaryBasket = useAtomValue(basketAtom)
-  const backupBasket = useAtomValue(backupCollateralAtom)
-  const revenueSplit = useAtomValue(revenueSplitAtom)
-  const formFields = useWatch()
-
-  return useMemo(() => {
-    if (!isBasketValid || !isRevenueSplitValid || !isValid) {
-      return null
-    }
-
-    const params = getDeployParameters(getValues(), primaryBasket, backupBasket)
-
-    if (!params) {
-      return null
-    }
-
-    return {
-      id: '', // Assign when running tx
-      description: t`Deploy RToken`,
-      status: TRANSACTION_STATUS.PENDING,
-      value: '0',
-      call: {
-        abi: 'facadeWrite',
-        address: FACADE_WRITE_ADDRESS[CHAIN_ID],
-        method: 'deployRToken',
-        args: params as any,
-      },
-    }
-  }, [primaryBasket, backupBasket, revenueSplit, JSON.stringify(formFields)])
-}
-
-export default useDeployTx
