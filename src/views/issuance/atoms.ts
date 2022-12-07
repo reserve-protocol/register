@@ -26,4 +26,5 @@ export const isValidZappableAmountAtom = atom((get) => {
 
 export const zapContractAllowance = atom<BigNumberMap>({})
 
-export const issueQuoteAtom = atom('')
+export const zapQuoteAtom = atom('')
+export const zapQuantitiesAtom = atom<BigNumberMap>({})

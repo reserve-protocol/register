@@ -2,49 +2,69 @@ import { getAddress } from '@ethersproject/address'
 import { parseEther } from '@ethersproject/units'
 import { t } from '@lingui/macro'
 import { BigNumber } from 'ethers'
-import { formatEther } from 'ethers/lib/utils'
+import { formatEther, parseUnits } from 'ethers/lib/utils'
 import { useFacadeContract, useZapperContract } from 'hooks/useContract'
 import useDebounce from 'hooks/useDebounce'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
-import { rTokenAtom } from 'state/atoms'
+import { rTokenAtom, selectedZapTokenAtom } from 'state/atoms'
 import { error } from 'state/web3/lib/notifications'
-import { BigNumberMap, Token } from 'types'
-import { quote } from 'utils/rsv'
+import { BigNumberMap } from 'types'
+import { zapQuantitiesAtom, zapQuoteAtom } from 'views/issuance/atoms'
 
 /**
  * Listen for amountAtom value change and update needed collateral quantities for issuance
  */
 const ZapQuoteUpdater = ({
-  zapToken,
   amount,
-  onChange,
+  hasAllowance,
 }: {
-  zapToken: Token | undefined
   amount: string
-  onChange(issueQuote: string): void
+  hasAllowance: boolean
 }) => {
   const rToken = useAtomValue(rTokenAtom)
+  const zapToken = useAtomValue(selectedZapTokenAtom)
   const debouncedValue = useDebounce(amount, 400)
   const zapContract = useZapperContract()
+  const facadeContract = useFacadeContract()
+
+  const setZapQuote = useSetAtom(zapQuoteAtom)
+  const setZapQuantities = useSetAtom(zapQuantitiesAtom)
 
   const fetchIssueAmount = useCallback(
     async (value: string) => {
       try {
-        onChange('')
-        if (zapContract && zapToken && rToken && Number(value) > 0) {
-          const zapAmount = parseEther(value)
-          console.log('trying zap callstatic with args', {
-            zapToken: zapToken.address,
-            rToken: rToken.address,
-            zapAmount,
-          })
+        if (
+          zapContract &&
+          facadeContract &&
+          zapToken &&
+          rToken &&
+          hasAllowance &&
+          Number(value) > 0
+        ) {
+          const zapAmount = parseUnits(value, zapToken.decimals)
+
           const quoteResult = await zapContract.callStatic.zapIn(
             zapToken.address,
             rToken.address,
             zapAmount
           )
-          onChange(formatEther(quoteResult))
+
+          const quantitiesQuoteResult = await facadeContract.callStatic.issue(
+            rToken.address,
+            quoteResult
+          )
+          const quantitiesQuoteMap = quantitiesQuoteResult.tokens.reduce(
+            (prev, current, currentIndex) => {
+              prev[getAddress(current)] =
+                quantitiesQuoteResult.deposits[currentIndex]
+              return prev
+            },
+            {} as BigNumberMap
+          )
+
+          setZapQuote(formatEther(quoteResult))
+          setZapQuantities(quantitiesQuoteMap)
         }
       } catch (e) {
         // TODO: Handle error case
@@ -53,7 +73,7 @@ const ZapQuoteUpdater = ({
         console.error('failed fetching issue quote', e)
       }
     },
-    [zapContract, rToken?.address]
+    [zapContract, zapToken, rToken?.address]
   )
 
   // Fetch quantities from smart contract (rTokens)
@@ -65,7 +85,8 @@ const ZapQuoteUpdater = ({
 
   useEffect(() => {
     return () => {
-      onChange('')
+      setZapQuote('')
+      setZapQuantities({} as BigNumberMap)
     }
   }, [])
 

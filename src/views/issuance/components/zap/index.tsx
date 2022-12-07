@@ -8,14 +8,11 @@ import { useMemo, useState } from 'react'
 import { Card, Flex, Grid, Text } from 'theme-ui'
 import { v4 as uuid } from 'uuid'
 import {
-  issueAmountAtom,
-  issueQuoteAtom,
+  zapQuoteAtom,
   isValidZappableAmountAtom,
   quantitiesAtom,
   zapInputAmountAtom,
 } from 'views/issuance/atoms'
-import ConfirmIssuance from '../issue/ConfirmIssuance'
-import QuantitiesUpdater from '../issue/QuantitiesUpdater'
 import ZapInput from './ZapInput'
 import MaxZappableUpdater from './MaxZappableUpdater'
 import {
@@ -33,12 +30,13 @@ import { ethers } from 'ethers'
 import ApprovalTransactions from 'components/transaction-modal/ApprovalTransactions'
 import { TransactionState } from 'types'
 import { useTransactions } from 'state/web3/hooks/useTransactions'
+import ConfirmZap from './ConfirmZap'
 
 /**
  * Issuance
  */
 const Zap = () => {
-  const [issueQuote, setIssueQuote] = useAtom(issueQuoteAtom)
+  const [zapQuote, setZapQuote] = useAtom(zapQuoteAtom)
   const addTransaction = useSetAtom(addTransactionAtom)
 
   const setQuantities = useUpdateAtom(quantitiesAtom)
@@ -73,7 +71,6 @@ const Zap = () => {
       },
     ]
   }, [selectedZapToken, zapInputAmount])
-  const [issuing, setIssuing] = useState(false)
   const [zapping, setZapping] = useState(false)
   const [approving, setApproving] = useState(false)
 
@@ -90,24 +87,20 @@ const Zap = () => {
     return [allSigned, fail]
   }, [txState])
 
-  console.log({ approving, txState, signed, failedTx })
-
-  const missingZapTokens = issueQuote && !isValid // might not need
+  const missingZapTokens = !selectedZapToken || !zapInputAmount || !isValid
   const rToken = useRToken()
 
   return (
     <>
       <MaxZappableUpdater />
       <ZapQuoteUpdater
-        zapToken={selectedZapToken}
         amount={zapInputAmount}
-        onChange={setIssueQuote}
+        hasAllowance={!insuffcientAllowance}
       />
-      {issuing && (
-        <ConfirmIssuance
+      {zapping && (
+        <ConfirmZap
           onClose={() => {
-            setIssuing(false)
-            setIssueQuote('')
+            setZapping(false)
           }}
         />
       )}
@@ -120,12 +113,11 @@ const Zap = () => {
           loading={zapping || approving}
           sx={{ width: '100%' }}
           text={
-            insuffcientAllowance
+            insuffcientAllowance && !missingZapTokens
               ? `Approve ${selectedZapToken?.symbol} for Zapping`
               : `Zap to ${rToken?.symbol ?? ''}`
           }
-          disabled={approving || issuing}
-          variant={missingZapTokens ? 'error' : 'primary'}
+          disabled={missingZapTokens || approving || zapping}
           mt={3}
           onClick={async () => {
             if (insuffcientAllowance) {
@@ -134,7 +126,7 @@ const Zap = () => {
               setSigning(approvalTransaction[0].id)
               addTransaction(approvalTransaction)
             } else {
-              setIssuing(true)
+              setZapping(true)
             }
           }}
         />

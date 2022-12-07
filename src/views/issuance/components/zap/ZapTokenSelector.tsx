@@ -9,7 +9,7 @@ import { ActionItem } from 'components/rtoken-selector'
 import TokenItem from 'components/token-item'
 import { ContractCall, Token } from 'types'
 import Popup from 'components/popup'
-import { ChevronDown, ChevronUp } from 'react-feather'
+import { ChevronDown, ChevronUp, Zap } from 'react-feather'
 import { select, Trans } from '@lingui/macro'
 import { selectedZapTokenAtom, zapTokensAtom } from 'state/atoms'
 import { useAtomValue } from 'jotai'
@@ -119,6 +119,7 @@ const ZapTokenSelector = (props: BoxProps) => {
     <Box style={{ paddingLeft: '0.5rem' }}>
       <Flex sx={{ alignItems: 'center' }} mb={2}>
         <Text as="label" variant="legend">
+          <Zap size={15} style={{ marginRight: '5px' }} />
           <Trans>Mint with Zap</Trans>
         </Text>
       </Flex>
