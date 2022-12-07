@@ -14,12 +14,12 @@ const BasketSetup = () => {
   return (
     <>
       <Card p={4}>
-        <SectionWrapper navigationIndex={0}>
+        <SectionWrapper navigationIndex={1}>
           <PrimaryBasket onAdd={setCollateralModal} />
         </SectionWrapper>
       </Card>
       <Card mt={4} p={4}>
-        <SectionWrapper navigationIndex={1}>
+        <SectionWrapper navigationIndex={2}>
           <BackupBasket onAdd={setCollateralModal} />
         </SectionWrapper>
       </Card>

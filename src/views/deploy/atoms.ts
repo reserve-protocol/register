@@ -1,3 +1,4 @@
+import { atomWithReset } from 'jotai/utils'
 import { truncateDecimals } from './../../utils/index'
 import { t } from '@lingui/macro'
 import { atom } from 'jotai'
@@ -203,3 +204,10 @@ export enum DeploymentSteps {
 export const deployIdAtom = atom('')
 
 export const currentStepAtom = atom(DeploymentSteps.Intro)
+
+export const deployStateAtom = atomWithReset({
+  deployId: '',
+  deployStatus: '',
+  rTokenAddress: '',
+  errorMessage: '',
+})

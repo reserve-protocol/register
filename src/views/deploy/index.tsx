@@ -1,13 +1,11 @@
 import { t } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
 import Navigation from 'components/section-navigation/Navigation'
-import { useAtom } from 'jotai'
+import { Provider } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { useEffect, useMemo } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { Box, Grid, Image, Text } from 'theme-ui'
-import { backupCollateralAtom, basketAtom } from './atoms'
-import { deployStepAtom } from './components/DeployHeader'
+import { Grid } from 'theme-ui'
 import DeployOverview from './components/DeployOverview'
 import RTokenSetup from './components/RTokenSetup'
 
@@ -39,8 +37,6 @@ const defaultValues = {
 
 const Deploy = () => {
   const { account } = useWeb3React()
-  const setBasket = useUpdateAtom(basketAtom)
-  const setBackupBasket = useUpdateAtom(backupCollateralAtom)
   const form = useForm({
     mode: 'onChange',
     defaultValues,
@@ -49,7 +45,7 @@ const Deploy = () => {
   // TODO: Listen for lang
   const sections = useMemo(
     () => [
-      // t`Intro`,
+      t`Intro`,
       t`Primary basket`,
       t`Emergency basket`,
       t`Revenue split`,
@@ -66,38 +62,33 @@ const Deploy = () => {
     }
   }, [account])
 
-  useEffect(() => {
-    return () => {
-      setBasket({})
-      setBackupBasket({})
-    }
-  }, [])
-
   return (
-    <FormProvider {...form}>
-      <Grid
-        columns={['1fr', '1fr 1fr', '1.5fr 1fr', 'auto 1fr 420px']}
-        gap={4}
-        px={[4, 5]}
-        pt={[4, 5]}
-        sx={{
-          height: '100%',
-          position: 'relative',
-          overflow: 'hidden',
-          alignContent: 'flex-start',
-        }}
-      >
-        <Navigation
-          title={t`Step 1`}
-          sections={sections}
+    <Provider>
+      <FormProvider {...form}>
+        <Grid
+          columns={['1fr', '1fr 1fr', '1.5fr 1fr', 'auto 1fr 420px']}
+          gap={4}
+          px={[4, 5]}
+          pt={[4, 5]}
           sx={{
-            display: ['none', 'none', 'none', 'inherit'],
+            height: '100%',
+            position: 'relative',
+            overflow: 'hidden',
+            alignContent: 'flex-start',
           }}
-        />
-        <RTokenSetup />
-        <DeployOverview />
-      </Grid>
-    </FormProvider>
+        >
+          <Navigation
+            title={t`Step 1`}
+            sections={sections}
+            sx={{
+              display: ['none', 'none', 'none', 'inherit'],
+            }}
+          />
+          <RTokenSetup />
+          <DeployOverview />
+        </Grid>
+      </FormProvider>
+    </Provider>
   )
 }
 

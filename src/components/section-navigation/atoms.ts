@@ -1,3 +1,3 @@
 import { atom } from 'jotai'
 
-export const navigationIndexAtom = atom([0])
+export const navigationIndexAtom = atom<number[]>([])

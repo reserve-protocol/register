@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { BigNumberMap } from './../types/index'
+import { BigNumberMap, TransactionState } from './../types'
 import { getAddress } from '@ethersproject/address'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { t } from '@lingui/macro'
@@ -15,6 +15,26 @@ export function isAddress(value: string): string | false {
     return getAddress(value)
   } catch {
     return false
+  }
+}
+
+// returns the same contract call with an increased gas limit (10% increase)
+export const getTransactionWithGasLimit = (
+  tx: TransactionState,
+  gasLimit: number,
+  multiplier = 0.1 // 10%
+) => {
+  return {
+    ...tx,
+    call: {
+      ...tx.call,
+      args: [
+        ...tx.call.args,
+        {
+          gasLimit: Math.floor(gasLimit + gasLimit * multiplier),
+        },
+      ],
+    },
   }
 }
 

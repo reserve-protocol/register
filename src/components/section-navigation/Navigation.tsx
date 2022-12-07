@@ -18,7 +18,7 @@ const Navigation = ({ title, sections, ...props }: Props) => {
 
   useEffect(() => {
     return () => {
-      setNavigationIndex([0])
+      setNavigationIndex([])
     }
   }, [])
 
