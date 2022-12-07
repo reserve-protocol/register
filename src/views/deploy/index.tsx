@@ -72,7 +72,6 @@ const Deploy = () => {
           sx={{
             height: '100%',
             position: 'relative',
-            overflow: 'hidden',
             alignContent: 'flex-start',
           }}
         >
@@ -80,11 +79,13 @@ const Deploy = () => {
             title={t`Step 1`}
             sections={sections}
             sx={{
+              position: 'sticky',
+              top: [4, 5],
               display: ['none', 'none', 'none', 'inherit'],
             }}
           />
           <RTokenSetup />
-          <DeployOverview />
+          <DeployOverview sx={{ position: 'sticky', top: [4, 5] }} />
         </Grid>
       </FormProvider>
     </Provider>
