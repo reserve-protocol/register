@@ -8,7 +8,7 @@ import { useState } from 'react'
 import { Card, Grid } from 'theme-ui'
 import {
   issueAmountAtom,
-  isValidIssuableAmountAtom,
+  isValidZappableAmountAtom,
   quantitiesAtom,
 } from 'views/issuance/atoms'
 import ConfirmIssuance from '../issue/ConfirmIssuance'
@@ -23,9 +23,9 @@ import ZapInput from './ZapInput'
 const Zap = () => {
   const [amount, setAmount] = useAtom(issueAmountAtom)
   const setQuantities = useUpdateAtom(quantitiesAtom)
-  const isValid = useAtomValue(isValidIssuableAmountAtom)
+  const isValid = useAtomValue(isValidZappableAmountAtom)
   const [issuing, setIssuing] = useState(false)
-  const missingCollateral = amount && !isValid
+  const missingZapTokens = amount && !isValid
   const rToken = useRToken()
 
   return (
@@ -48,14 +48,14 @@ const Zap = () => {
         <Button
           sx={{ width: '100%' }}
           disabled={!isValid || issuing}
-          variant={missingCollateral ? 'error' : 'primary'}
+          variant={missingZapTokens ? 'error' : 'primary'}
           mt={3}
           onClick={() => setIssuing(true)}
         >
-          {missingCollateral ? (
-            <Trans>Missing collateral</Trans>
+          {missingZapTokens ? (
+            <Trans>Missing Zap Tokens</Trans>
           ) : (
-            <Trans>+ Mint {rToken?.symbol ?? ''}</Trans>
+            <Trans>+ Zap to {rToken?.symbol ?? ''}</Trans>
           )}
         </Button>
       </Card>

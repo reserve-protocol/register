@@ -38,7 +38,6 @@ import {
 import { CHAIN_ID } from 'utils/chains'
 import { RSR } from 'utils/constants'
 import { RSV_MANAGER } from 'utils/rsv'
-import { supportedZapTokens } from 'views/issuance/components/zap/ZapTokenSelector'
 import AccountUpdater from './AccountUpdater'
 import RSVUpdater from './RSVUpdater'
 import TokenUpdater from './TokenUpdater'
@@ -67,16 +66,17 @@ const getTokens = (
   return addresses
 }
 
-const getTokenAllowances = (reserveToken: ReserveToken): [string, string][] => {
+const getTokenAllowances = (
+  reserveToken: ReserveToken,
+  zapTokens: Token[]
+): [string, string][] => {
   const tokens: [string, string][] = [
-    ...reserveToken.collaterals.map((token): [string, string] => [
-      token.address,
-      reserveToken.isRSV ? RSV_MANAGER : reserveToken.address,
-    ]),
-    ...supportedZapTokens.map((tokenAddr): [string, string] => [
-      tokenAddr,
-      reserveToken.isRSV ? RSV_MANAGER : reserveToken.address,
-    ]),
+    ...[...reserveToken.collaterals, ...zapTokens].map(
+      (token): [string, string] => [
+        token.address,
+        reserveToken.isRSV ? RSV_MANAGER : reserveToken.address,
+      ]
+    ),
   ]
 
   // RSR -> stRSR allowance
@@ -121,9 +121,10 @@ const TokensBalanceUpdater = () => {
 const TokensAllowanceUpdater = () => {
   const account = useAtomValue(walletAtom)
   const reserveToken = useAtomValue(rTokenAtom)
+  const zapTokens = useAtomValue(zapTokensAtom)
   const updateAllowances = useSetAtom(allowanceAtom)
   const allowances = useTokensAllowance(
-    reserveToken && account ? getTokenAllowances(reserveToken) : [],
+    reserveToken && account ? getTokenAllowances(reserveToken, zapTokens) : [],
     account
   )
 

@@ -11,6 +11,9 @@ import { ContractCall, Token } from 'types'
 import Popup from 'components/popup'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { select, Trans } from '@lingui/macro'
+import { selectedZapTokenAtom, zapTokensAtom } from 'state/atoms'
+import { useAtomValue } from 'jotai'
+import { useUpdateAtom } from 'jotai/utils'
 
 /**
  * Fetch a list of tokens metadata from the blockchain
@@ -86,34 +89,31 @@ export const supportedZapTokens: string[] = [
 
 const ZapTokenSelector = (props: BoxProps) => {
   const { provider } = useWeb3React()
-  const [tokens, setTokens] = useState<Token[]>([])
   const [isVisible, setVisible] = useState(false)
 
-  const [selectedToken, setSelectedToken] = useState<Token | undefined>(
-    undefined
-  )
+  const zapTokens = useAtomValue(zapTokensAtom)
+  const selectedZapToken = useAtomValue(selectedZapTokenAtom)
+  const setSelectedZapToken = useUpdateAtom(selectedZapTokenAtom)
 
   const handleSelect = useCallback(
     (tokenAddr: string) => {
-      if (tokenAddr !== selectedToken?.address) {
-        setSelectedToken(tokens.find((t) => t.address === tokenAddr))
+      if (tokenAddr !== selectedZapToken?.address) {
+        setSelectedZapToken(zapTokens.find((t) => t.address === tokenAddr))
         setVisible(false)
       }
     },
-    [setSelectedToken, selectedToken]
+    [selectedZapToken]
   )
   useEffect(() => {
     const updateTokens = async () => {
       if (!provider) return
-      const tokens = await getTokenMeta(supportedZapTokens, provider)
-      setTokens(tokens)
-      if (!selectedToken) setSelectedToken(tokens[0])
+      if (!selectedZapToken) setSelectedZapToken(zapTokens[0])
     }
 
     updateTokens()
   }, [provider])
 
-  if (!tokens.length) return null
+  if (!zapTokens.length) return null
 
   return (
     <Box style={{ paddingLeft: '0.5rem' }}>
@@ -125,22 +125,22 @@ const ZapTokenSelector = (props: BoxProps) => {
       <Popup
         show={isVisible}
         onDismiss={() => setVisible(false)}
-        content={<TokenList onSelect={handleSelect} tokens={tokens} />}
+        content={<TokenList onSelect={handleSelect} tokens={zapTokens} />}
       >
         <Flex
           {...props}
           sx={{ alignItems: 'center', cursor: 'pointer', minWidth: 100 }}
           onClick={() => setVisible(!isVisible)}
         >
-          {selectedToken && (
+          {selectedZapToken && (
             <TokenItem
               sx={{
                 overflow: 'hidden',
                 width: [60, 'auto'],
                 textOverflow: 'ellipsis',
               }}
-              logo={selectedToken.logo}
-              symbol={selectedToken.symbol}
+              logo={selectedZapToken.logo}
+              symbol={selectedZapToken.symbol}
             />
           )}
           <Box mr="2" />

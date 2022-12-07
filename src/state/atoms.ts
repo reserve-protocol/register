@@ -41,6 +41,10 @@ export const reserveTokensAtom = atomWithStorage<{
 }>('reserveTokens', {})
 
 export const zapTokensAtom = atomWithStorage<Token[]>('zapTokens', [])
+export const selectedZapTokenAtom = atomWithStorage<Token | undefined>(
+  'selectedZapToken',
+  undefined
+)
 
 // Current selected rToken address
 export const selectedRTokenAtom = atomWithStorage('selectedRToken', '')

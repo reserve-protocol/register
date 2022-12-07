@@ -10,6 +10,7 @@ import {
   isValidIssuableAmountAtom,
   quantitiesAtom,
 } from 'views/issuance/atoms'
+import MaxZappableUpdater from '../zap/MaxZappableUpdater'
 import ConfirmIssuance from './ConfirmIssuance'
 import IssueInput from './IssueInput'
 import MaxIssuableUpdater from './MaxIssuableUpdater'
@@ -28,6 +29,7 @@ const Issue = () => {
 
   return (
     <>
+      <MaxZappableUpdater />
       <MaxIssuableUpdater />
       <QuantitiesUpdater amount={amount} onChange={setQuantities} />
       {issuing && (
