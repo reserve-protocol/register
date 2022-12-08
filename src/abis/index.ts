@@ -11,6 +11,7 @@ import Deployer from './deployer.json'
 import Main from './main.json'
 import Collateral from './collateral.json'
 import Oracle from './oracle.json'
+import Zapper from './zapper.json'
 
 const ERC20Interface = new Interface(ERC20)
 const FacadeInterface = new Interface(Facade)
@@ -23,6 +24,7 @@ const DeployerInterface = new Interface(Deployer)
 const MainInterface = new Interface(Main)
 const CollateralInterface = new Interface(Collateral)
 const OracleInterface = new Interface(Oracle)
+const ZapperInterface = new Interface(Zapper)
 
 export { ERC20, ERC20Interface }
 export { Facade, FacadeInterface }
@@ -35,6 +37,7 @@ export { Deployer, DeployerInterface }
 export { Main, MainInterface }
 export { Collateral, CollateralInterface }
 export { Oracle, OracleInterface }
+export { Zapper, ZapperInterface }
 
 // Used for tx management
 export default <StringMap>{
@@ -45,4 +48,5 @@ export default <StringMap>{
   facade: FacadeInterface,
   facadeWrite: FacadeWriteInterface,
   main: MainInterface,
+  zapper: ZapperInterface,
 }

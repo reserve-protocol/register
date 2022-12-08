@@ -1,8 +1,9 @@
 import { getAddress } from '@ethersproject/address'
-import { formatUnits, parseEther } from '@ethersproject/units'
+import { formatUnits, parseUnits } from '@ethersproject/units'
 import { t, Trans } from '@lingui/macro'
 import TextPlaceholder from 'components/placeholder/TextPlaceholder'
 import { Zap } from 'react-feather'
+import { v4 as uuid } from 'uuid'
 
 import TransactionModal from 'components/transaction-modal'
 import { useAtomValue } from 'jotai'
@@ -14,10 +15,10 @@ import { formatCurrency, truncateDecimals } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { ONE_ETH } from 'utils/numbers'
 import { RSV_MANAGER } from 'utils/rsv'
-import { v4 as uuid } from 'uuid'
 import {
   issueAmountAtom,
   isValidIssuableAmountAtom,
+  isValidZappableAmountAtom,
   quantitiesAtom,
   zapInputAmountAtom,
   zapQuantitiesAtom,
@@ -25,78 +26,44 @@ import {
 } from 'views/issuance/atoms'
 import CollateralDistribution from '../issue/CollateralDistribution'
 import TokenLogo from 'components/icons/TokenLogo'
-
-/**
- * Build issuance required approval transactions
- */
-const buildApprovalTransactions = (
-  data: ReserveToken,
-  quantities: BigNumberMap,
-  allowances: BigNumberMap
-): TransactionState[] => {
-  const transactions = data.collaterals.reduce((txs, token) => {
-    // Specific token approvals
-    const tokenAmount = quantities[getAddress(token.address)].add(ONE_ETH)
-    // Unlimited approval
-    // const tokenAmount = BigNumber.from(Number.MAX_SAFE_INTEGER)
-
-    if (!allowances[getAddress(token.address)].gte(tokenAmount)) {
-      return [
-        ...txs,
-        {
-          id: uuid(),
-          description: t`Approve ${token.symbol}`,
-          status: TRANSACTION_STATUS.PENDING,
-          value: formatUnits(tokenAmount, token.decimals),
-          call: {
-            abi: 'erc20',
-            address: token.address,
-            method: 'approve',
-            args: [data.isRSV ? RSV_MANAGER : data.address, tokenAmount],
-          },
-        },
-      ]
-    }
-
-    return txs
-  }, [] as TransactionState[])
-
-  return transactions
-}
+import { ZAPPER_CONTRACT } from 'utils/addresses'
+import { CHAIN_ID } from 'utils/chains'
 
 const ConfirmZap = ({ onClose }: { onClose: () => void }) => {
   const [signing, setSigning] = useState(false)
   const rToken = useAtomValue(rTokenAtom)
-  const amount = useAtomValue(issueAmountAtom)
-  const quantities = useAtomValue(quantitiesAtom)
-  const loadingQuantities = !Object.keys(quantities).length
-  const isValid = useAtomValue(isValidIssuableAmountAtom)
+  const isValid = useAtomValue(isValidZappableAmountAtom)
 
   const selectedZapToken = useAtomValue(selectedZapTokenAtom)
   const zapInputAmount = useAtomValue(zapInputAmountAtom)
   const zapQuote = useAtomValue(zapQuoteAtom)
   const zapQuantities = useAtomValue(zapQuantitiesAtom)
 
+  const loadingQuantities = !Object.keys(zapQuantities).length
   const transaction = useMemo(
     () => ({
-      id: '',
-      description: t`Issue ${rToken?.symbol}`,
+      id: uuid(),
+      description: t`Zap to ${rToken?.symbol}`,
       status: TRANSACTION_STATUS.PENDING,
-      value: amount,
+      value: zapInputAmount,
       call: {
-        abi: rToken?.isRSV ? 'rsv' : 'rToken',
-        address: rToken?.isRSV ? RSV_MANAGER : rToken?.address ?? '',
-        method: 'issue',
-        args: [isValid ? parseEther(amount) : 0],
+        abi: 'zapper',
+        address: ZAPPER_CONTRACT[CHAIN_ID],
+        method: 'zapIn',
+        args: [
+          selectedZapToken?.address,
+          rToken?.address,
+          isValid ? parseUnits(zapInputAmount, selectedZapToken?.decimals) : 0,
+        ],
       },
     }),
-    [rToken?.address, amount]
-  )
-
-  const buildApprovals = useCallback(
-    (required: BigNumberMap, allowances: BigNumberMap) =>
-      rToken ? buildApprovalTransactions(rToken, required, allowances) : [],
-    [rToken?.address]
+    [
+      rToken?.address,
+      zapInputAmount,
+      selectedZapToken?.address,
+      zapQuantities,
+      zapQuote,
+    ]
   )
 
   return (
@@ -104,12 +71,8 @@ const ConfirmZap = ({ onClose }: { onClose: () => void }) => {
       title={t`Zap to ${rToken?.symbol}`}
       tx={transaction}
       isValid={!loadingQuantities && isValid}
-      requiredAllowance={quantities}
-      confirmLabel={t`Begin zapping ${formatCurrency(Number(amount))} ${
-        rToken?.symbol
-      }`}
-      approvalsLabel={t`Allow use of collateral tokens`}
-      buildApprovals={buildApprovals}
+      requiredAllowance={{}}
+      confirmLabel={t`Begin Zap`}
       onClose={onClose}
       onChange={(signing) => setSigning(signing)}
     >

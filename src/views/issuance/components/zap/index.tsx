@@ -12,6 +12,7 @@ import {
   isValidZappableAmountAtom,
   quantitiesAtom,
   zapInputAmountAtom,
+  zapQuantitiesAtom,
 } from 'views/issuance/atoms'
 import ZapInput from './ZapInput'
 import MaxZappableUpdater from './MaxZappableUpdater'
@@ -27,7 +28,6 @@ import { TRANSACTION_STATUS } from 'utils/constants'
 import { ZAPPER_CONTRACT } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 import { ethers } from 'ethers'
-import ApprovalTransactions from 'components/transaction-modal/ApprovalTransactions'
 import { TransactionState } from 'types'
 import { useTransactions } from 'state/web3/hooks/useTransactions'
 import ConfirmZap from './ConfirmZap'
@@ -39,13 +39,13 @@ const Zap = () => {
   const [zapQuote, setZapQuote] = useAtom(zapQuoteAtom)
   const addTransaction = useSetAtom(addTransactionAtom)
 
-  const setQuantities = useUpdateAtom(quantitiesAtom)
   const selectedZapToken = useAtomValue(selectedZapTokenAtom)
 
   const zapInputAmount = useAtomValue(zapInputAmountAtom)
   const isValid = useAtomValue(isValidZappableAmountAtom)
 
   const zapTokensAllowance = useAtomValue(zapTokensAllowanceAtom)
+  const setZapQuantities = useSetAtom(zapQuantitiesAtom)
 
   const insuffcientAllowance =
     !!zapInputAmount &&
@@ -61,7 +61,7 @@ const Zap = () => {
         id: uuid(),
         description: t`Approve ${selectedZapToken.symbol} for Zapping`,
         status: TRANSACTION_STATUS.PENDING,
-        value: formatUnits(zapInputAmount, selectedZapToken.decimals),
+        value: zapInputAmount,
         call: {
           abi: 'erc20',
           address: selectedZapToken.address,
@@ -101,6 +101,7 @@ const Zap = () => {
         <ConfirmZap
           onClose={() => {
             setZapping(false)
+            setZapQuantities({})
           }}
         />
       )}
