@@ -1,7 +1,7 @@
 import { getAddress } from '@ethersproject/address'
 import { parseEther } from '@ethersproject/units'
 import { t } from '@lingui/macro'
-import { BigNumber } from 'ethers'
+import { BigNumber, ethers } from 'ethers'
 import { formatEther, parseUnits } from 'ethers/lib/utils'
 import { useFacadeContract, useZapperContract } from 'hooks/useContract'
 import useDebounce from 'hooks/useDebounce'

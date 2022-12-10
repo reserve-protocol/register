@@ -13,11 +13,7 @@ import { rTokenAtom, selectedZapTokenAtom } from 'state/atoms'
 import { BigNumberMap, ReserveToken, TransactionState } from 'types'
 import { formatCurrency, truncateDecimals } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
-import { ONE_ETH } from 'utils/numbers'
-import { RSV_MANAGER } from 'utils/rsv'
 import {
-  issueAmountAtom,
-  isValidIssuableAmountAtom,
   isValidZappableAmountAtom,
   quantitiesAtom,
   zapInputAmountAtom,

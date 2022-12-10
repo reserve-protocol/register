@@ -45,6 +45,8 @@ export const zapTokensAtom = atomWithStorage<Token[]>('zapTokens', [])
 export const selectedZapTokenAtom = atom<Token | undefined>(undefined)
 export const zapTokensAllowanceAtom = atom<{ [x: string]: BigNumber }>({})
 
+export const selectedZapOutTokenAtom = atom<Token | undefined>(undefined)
+
 // Current selected rToken address
 export const selectedRTokenAtom = atomWithStorage('selectedRToken', '')
 

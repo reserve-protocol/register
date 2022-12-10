@@ -13,50 +13,6 @@ import { ChevronDown, ChevronUp, Zap } from 'react-feather'
 import { select, Trans } from '@lingui/macro'
 import { selectedZapTokenAtom, zapTokensAtom } from 'state/atoms'
 import { useAtomValue } from 'jotai'
-import { useUpdateAtom } from 'jotai/utils'
-
-/**
- * Fetch a list of tokens metadata from the blockchain
- */
-const getTokenMeta = async (
-  addresses: string[],
-  provider: Web3Provider
-): Promise<Token[]> => {
-  const calls = addresses.reduce((acc, address) => {
-    const params: any = { abi: ERC20Interface, address, args: [] }
-
-    return [
-      ...acc,
-      {
-        ...params,
-        method: 'name',
-      },
-      {
-        ...params,
-        method: 'symbol',
-      },
-      {
-        ...params,
-        method: 'decimals',
-      },
-    ]
-  }, [] as ContractCall[])
-
-  const multicallResult = await promiseMulticall(calls, provider)
-
-  return addresses.reduce((tokens, address) => {
-    const [name, symbol, decimals] = multicallResult.splice(0, 3)
-
-    tokens.push({
-      address,
-      name,
-      symbol,
-      decimals,
-    })
-    return tokens
-  }, [] as Token[])
-}
-
 interface TokenListProps {
   onSelect(address: string): void
   tokens: Token[]
@@ -82,32 +38,36 @@ export const supportedZapTokens: string[] = [
   '0xdAC17F958D2ee523a2206206994597C13D831ec7',
   '0x4Fabb145d64652a948d72533023f6E7A623C7C53',
   '0x853d955aCEf822Db058eb8505911ED77F175b99e',
-  '0x39AA39c021dfbaE8faC545936693aC917d5E7563',
-  '0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643',
-  '0x12392F67bdf24faE0AF363c24aC620a2f67DAd86',
 ]
 
-const ZapTokenSelector = (props: BoxProps) => {
+interface ZapTokenSelectorProps extends BoxProps {
+  setZapToken(token: Token | undefined): void
+  zapToken: Token | undefined
+}
+
+const ZapTokenSelector = ({
+  setZapToken,
+  zapToken,
+  ...props
+}: ZapTokenSelectorProps) => {
   const { provider } = useWeb3React()
   const [isVisible, setVisible] = useState(false)
 
   const zapTokens = useAtomValue(zapTokensAtom)
-  const selectedZapToken = useAtomValue(selectedZapTokenAtom)
-  const setSelectedZapToken = useUpdateAtom(selectedZapTokenAtom)
 
   const handleSelect = useCallback(
     (tokenAddr: string) => {
-      if (tokenAddr !== selectedZapToken?.address) {
-        setSelectedZapToken(zapTokens.find((t) => t.address === tokenAddr))
+      if (tokenAddr !== zapToken?.address) {
+        setZapToken(zapTokens.find((t) => t.address === tokenAddr))
         setVisible(false)
       }
     },
-    [selectedZapToken]
+    [zapToken]
   )
   useEffect(() => {
     const updateTokens = async () => {
       if (!provider) return
-      if (!selectedZapToken) setSelectedZapToken(zapTokens[0])
+      if (!zapToken) setZapToken(zapTokens[0])
     }
 
     updateTokens()
@@ -117,12 +77,6 @@ const ZapTokenSelector = (props: BoxProps) => {
 
   return (
     <Box style={{ paddingLeft: '0.5rem' }}>
-      <Flex sx={{ alignItems: 'center' }} mb={2}>
-        <Text as="label" variant="legend">
-          <Zap size={15} style={{ marginRight: '5px' }} />
-          <Trans>Mint with Zap</Trans>
-        </Text>
-      </Flex>
       <Popup
         show={isVisible}
         onDismiss={() => setVisible(false)}
@@ -130,18 +84,22 @@ const ZapTokenSelector = (props: BoxProps) => {
       >
         <Flex
           {...props}
-          sx={{ alignItems: 'center', cursor: 'pointer', minWidth: 100 }}
+          sx={{
+            alignItems: 'center',
+            cursor: 'pointer',
+            minWidth: 100,
+          }}
           onClick={() => setVisible(!isVisible)}
         >
-          {selectedZapToken && (
+          {zapToken && (
             <TokenItem
               sx={{
                 overflow: 'hidden',
                 width: [60, 'auto'],
                 textOverflow: 'ellipsis',
               }}
-              logo={selectedZapToken.logo}
-              symbol={selectedZapToken.symbol}
+              logo={zapToken.logo}
+              symbol={zapToken.symbol}
             />
           )}
           <Box mr="2" />

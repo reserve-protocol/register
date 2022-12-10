@@ -3,7 +3,7 @@ import { Button } from 'components'
 import ZapTokenSelector from './ZapTokenSelector'
 import useRToken from 'hooks/useRToken'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useUpdateAtom } from 'jotai/utils'
+import { Zap as ZapIcon } from 'react-feather'
 import { useMemo, useState } from 'react'
 import { Card, Flex, Grid, Text } from 'theme-ui'
 import { v4 as uuid } from 'uuid'
@@ -36,10 +36,9 @@ import ConfirmZap from './ConfirmZap'
  * Issuance
  */
 const Zap = () => {
-  const [zapQuote, setZapQuote] = useAtom(zapQuoteAtom)
   const addTransaction = useSetAtom(addTransactionAtom)
 
-  const selectedZapToken = useAtomValue(selectedZapTokenAtom)
+  const [selectedZapToken, setSelectedZapToken] = useAtom(selectedZapTokenAtom)
 
   const zapInputAmount = useAtomValue(zapInputAmountAtom)
   const isValid = useAtomValue(isValidZappableAmountAtom)
@@ -107,7 +106,18 @@ const Zap = () => {
       )}
       <Card p={4}>
         <Grid columns={2}>
-          <ZapTokenSelector />
+          <Flex pt={1} sx={{ flexDirection: 'column', alignItems: 'center' }}>
+            <Flex sx={{ alignItems: 'center' }} mb={2}>
+              <Text as="label" variant="legend">
+                <ZapIcon size={15} style={{ marginRight: '5px' }} />
+                <Trans>Mint with Zap</Trans>
+              </Text>
+            </Flex>
+            <ZapTokenSelector
+              setZapToken={setSelectedZapToken}
+              zapToken={selectedZapToken}
+            />
+          </Flex>
           <ZapInput />
         </Grid>
         <LoadingButton

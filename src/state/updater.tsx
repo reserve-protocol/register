@@ -89,9 +89,12 @@ const getTokenAllowances = (reserveToken: ReserveToken): [string, string][] => {
   return tokens
 }
 
-const getZapTokenAllowances = (zapTokens: Token[]): [string, string][] => {
+const getZapTokenAllowances = (
+  zapTokens: Token[],
+  reserveToken: ReserveToken
+): [string, string][] => {
   return [
-    ...zapTokens.map((token): [string, string] => [
+    ...[...zapTokens, reserveToken].map((token): [string, string] => [
       token.address,
       ZAPPER_CONTRACT[CHAIN_ID],
     ]),
@@ -137,7 +140,9 @@ const TokensAllowanceUpdater = () => {
   )
 
   const zapAllowances = useTokensAllowance(
-    account ? getZapTokenAllowances(zapTokens) : [],
+    reserveToken && account
+      ? getZapTokenAllowances(zapTokens, reserveToken)
+      : [],
     account
   )
 
