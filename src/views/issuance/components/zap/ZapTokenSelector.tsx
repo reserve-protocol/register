@@ -12,7 +12,12 @@ import Popup from 'components/popup'
 import { ChevronDown, ChevronUp, Zap } from 'react-feather'
 import { select, Trans } from '@lingui/macro'
 import { selectedZapTokenAtom, zapTokensAtom } from 'state/atoms'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
+import {
+  zapInputAmountAtom,
+  zapQuantitiesAtom,
+  zapQuoteAtom,
+} from 'views/issuance/atoms'
 interface TokenListProps {
   onSelect(address: string): void
   tokens: Token[]
@@ -54,11 +59,18 @@ const ZapTokenSelector = ({
   const [isVisible, setVisible] = useState(false)
 
   const zapTokens = useAtomValue(zapTokensAtom)
+  const setZapQuantities = useSetAtom(zapQuantitiesAtom)
+  const setZapQuote = useSetAtom(zapQuoteAtom)
+  const setZapInputAmount = useSetAtom(zapInputAmountAtom)
 
   const handleSelect = useCallback(
     (tokenAddr: string) => {
       if (tokenAddr !== zapToken?.address) {
+        setZapInputAmount('')
+        setZapQuote('')
+        setZapQuantities({})
         setZapToken(zapTokens.find((t) => t.address === tokenAddr))
+
         setVisible(false)
       }
     },

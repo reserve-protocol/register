@@ -4,7 +4,7 @@ import { parseEther } from '@ethersproject/units'
 import { t, Trans } from '@lingui/macro'
 import { Facade } from 'abis/types'
 import TransactionModal from 'components/transaction-modal'
-import { useFacadeContract } from 'hooks/useContract'
+import { useFacadeContract, useZapperContract } from 'hooks/useContract'
 import useDebounce from 'hooks/useDebounce'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -33,6 +33,8 @@ const redeemCollateralAtom = atom<BigNumberMap>({})
 const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
   const [signing, setSigning] = useState(false)
   const [useZap, setUseZap] = useState(true)
+  const zapContract = useZapperContract()
+
   const rToken = useAtomValue(rTokenAtom)
   const [amount, setAmount] = useAtom(redeemAmountAtom)
   const debounceAmount = useDebounce(amount, 300)
@@ -88,6 +90,28 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
         }
       : {}
 
+  const getZapOutQuantity = useCallback(
+    async (rToken: string, outputToken: string, value: string) => {
+      try {
+        const zapOutAmount = parseEther(value)
+        const quoteResult = await zapContract?.callStatic.zapOut(
+          rToken,
+          outputToken,
+          zapOutAmount
+        )
+
+        if (quoteResult) {
+          setCollateralQuantities({
+            [getAddress(outputToken)]: quoteResult,
+          })
+        }
+      } catch (e) {
+        console.error('Error getting redemption quantities', e)
+      }
+    },
+    [selectedZapOutToken]
+  )
+
   const getQuantities = useCallback(
     async (facade: Facade, rToken: string, value: string) => {
       try {
@@ -114,13 +138,23 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
       !rToken.isRSV &&
       Number(amount) > 0
     ) {
-      getQuantities(facadeContract, rToken.address, amount)
+      if (useZap && zapContract && selectedZapOutToken) {
+        getZapOutQuantity(rToken.address, selectedZapOutToken.address, amount)
+      } else {
+        getQuantities(facadeContract, rToken.address, amount)
+      }
     } else if (rToken?.isRSV && Number(amount) > 0) {
       setCollateralQuantities(quote(+amount))
     } else {
       setCollateralQuantities({})
     }
-  }, [facadeContract, rToken?.address, debounceAmount])
+  }, [
+    facadeContract,
+    rToken?.address,
+    debounceAmount,
+    selectedZapOutToken,
+    useZap,
+  ])
 
   const buildApproval = useCallback(() => {
     if (rToken && rToken.isRSV) {
@@ -197,7 +231,7 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
           <Checkbox
             sx={{ cursor: 'pointer' }}
             checked={useZap}
-            onChange={(e) => {
+            onChange={() => {
               setUseZap(!useZap)
             }}
           />
@@ -212,7 +246,11 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
 
       <CollateralDistribution
         mt={3}
-        collaterals={rToken?.collaterals ?? []}
+        collaterals={
+          (useZap && selectedZapOutToken
+            ? [selectedZapOutToken]
+            : rToken?.collaterals) ?? []
+        }
         quantities={collateralQuantities}
       />
     </TransactionModal>
