@@ -102,6 +102,6 @@ export const DEFAULT_TOKENS = {
 }
 
 export const ZAPPER_CONTRACT: AddressMap = {
-  [ChainId.Mainnet]: '0x2538a10b7fFb1B78c890c870FC152b10be121f04',
-  [ChainId.Hardhat]: '0x2538a10b7fFb1B78c890c870FC152b10be121f04',
+  [ChainId.Mainnet]: '0x3a622DB2db50f463dF562Dc5F341545A64C580fc',
+  [ChainId.Hardhat]: '0x3a622DB2db50f463dF562Dc5F341545A64C580fc',
 }

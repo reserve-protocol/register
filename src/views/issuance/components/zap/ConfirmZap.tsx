@@ -7,7 +7,7 @@ import { v4 as uuid } from 'uuid'
 
 import TransactionModal from 'components/transaction-modal'
 import { useAtomValue } from 'jotai'
-import { Flex, Text } from 'theme-ui'
+import { Flex, Spinner, Text } from 'theme-ui'
 import { useCallback, useMemo, useState } from 'react'
 import { rTokenAtom, selectedZapTokenAtom } from 'state/atoms'
 import { BigNumberMap, ReserveToken, TransactionState } from 'types'
@@ -95,14 +95,20 @@ const ConfirmZap = ({ onClose }: { onClose: () => void }) => {
         </Text>
         <Zap size={15} style={{ marginTop: '8px', marginBottom: '8px' }} />
         <Text as="div" sx={{ display: 'inline-flex' }}>
-          ~ {`${truncateDecimals(parseFloat(zapQuote))} ${rToken?.symbol}`}{' '}
-          <TokenLogo
-            size={20}
-            ml={2}
-            mt={'0.35rem'}
-            symbol={rToken?.symbol}
-            src={rToken?.logo}
-          />
+          {zapQuote ? (
+            <>
+              {truncateDecimals(parseFloat(zapQuote))} {rToken?.symbol}
+              <TokenLogo
+                size={20}
+                ml={2}
+                mt={'0.35rem'}
+                symbol={rToken?.symbol}
+                src={rToken?.logo}
+              />
+            </>
+          ) : (
+            <Spinner size={24} />
+          )}
         </Text>
       </Flex>
       <CollateralDistribution

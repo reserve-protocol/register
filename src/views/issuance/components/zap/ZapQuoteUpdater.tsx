@@ -17,10 +17,10 @@ import { zapQuantitiesAtom, zapQuoteAtom } from 'views/issuance/atoms'
  */
 const ZapQuoteUpdater = ({
   amount,
-  hasAllowance,
+  shouldEstimate,
 }: {
   amount: string
-  hasAllowance: boolean
+  shouldEstimate: boolean
 }) => {
   const rToken = useAtomValue(rTokenAtom)
   const zapToken = useAtomValue(selectedZapTokenAtom)
@@ -39,7 +39,7 @@ const ZapQuoteUpdater = ({
           facadeContract &&
           zapToken &&
           rToken &&
-          hasAllowance &&
+          shouldEstimate &&
           Number(value) > 0
         ) {
           const zapAmount = parseUnits(value, zapToken.decimals)
@@ -73,7 +73,7 @@ const ZapQuoteUpdater = ({
         console.error('failed fetching issue quote', e)
       }
     },
-    [zapContract, zapToken, rToken?.address]
+    [zapContract, zapToken, rToken?.address, shouldEstimate]
   )
 
   // Fetch quantities from smart contract (rTokens)

@@ -27,6 +27,7 @@ import ZapTokenSelector from '../zap/ZapTokenSelector'
 import { Zap } from 'react-feather'
 import { ZAPPER_CONTRACT } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
+import rtokens from '@lc-labs/rtokens'
 
 const redeemCollateralAtom = atom<BigNumberMap>({})
 
@@ -94,6 +95,7 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
     async (rToken: string, outputToken: string, value: string) => {
       try {
         const zapOutAmount = parseEther(value)
+        if (!rToken || zapTokensAllowance[rToken].lt(zapOutAmount)) return
         const quoteResult = await zapContract?.callStatic.zapOut(
           rToken,
           outputToken,
@@ -109,7 +111,7 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
         console.error('Error getting redemption quantities', e)
       }
     },
-    [selectedZapOutToken]
+    [selectedZapOutToken, amount, zapTokensAllowance]
   )
 
   const getQuantities = useCallback(

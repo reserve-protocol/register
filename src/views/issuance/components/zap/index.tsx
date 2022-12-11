@@ -4,7 +4,7 @@ import ZapTokenSelector from './ZapTokenSelector'
 import useRToken from 'hooks/useRToken'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Zap as ZapIcon } from 'react-feather'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Card, Flex, Grid, Text } from 'theme-ui'
 import { v4 as uuid } from 'uuid'
 import {
@@ -19,6 +19,7 @@ import MaxZappableUpdater from './MaxZappableUpdater'
 import {
   addTransactionAtom,
   selectedZapTokenAtom,
+  walletAtom,
   zapTokensAllowanceAtom,
 } from 'state/atoms'
 import ZapQuoteUpdater from './ZapQuoteUpdater'
@@ -31,6 +32,7 @@ import { ethers } from 'ethers'
 import { TransactionState } from 'types'
 import { useTransactions } from 'state/web3/hooks/useTransactions'
 import ConfirmZap from './ConfirmZap'
+import { ERC20, ERC20Interface } from 'abis'
 
 /**
  * Issuance
@@ -45,8 +47,9 @@ const Zap = () => {
 
   const zapTokensAllowance = useAtomValue(zapTokensAllowanceAtom)
   const setZapQuantities = useSetAtom(zapQuantitiesAtom)
+  const setZapQuote = useSetAtom(zapQuoteAtom)
 
-  const insuffcientAllowance =
+  const insufficientAllowance =
     !!zapInputAmount &&
     !!zapTokensAllowance[selectedZapToken?.address || ''] &&
     zapTokensAllowance[selectedZapToken?.address || ''].lt(
@@ -94,12 +97,13 @@ const Zap = () => {
       <MaxZappableUpdater />
       <ZapQuoteUpdater
         amount={zapInputAmount}
-        hasAllowance={!insuffcientAllowance}
+        shouldEstimate={!insufficientAllowance && isValid}
       />
       {zapping && (
         <ConfirmZap
           onClose={() => {
             setZapping(false)
+            setZapQuote('')
             setZapQuantities({})
           }}
         />
@@ -124,14 +128,14 @@ const Zap = () => {
           loading={zapping || approving}
           sx={{ width: '100%' }}
           text={
-            insuffcientAllowance && !missingZapTokens
+            insufficientAllowance && !missingZapTokens
               ? `Approve ${selectedZapToken?.symbol} for Zapping`
               : `Zap to ${rToken?.symbol ?? ''}`
           }
           disabled={missingZapTokens || approving || zapping}
           mt={3}
           onClick={async () => {
-            if (insuffcientAllowance) {
+            if (insufficientAllowance) {
               if (!approvalTransaction) return
               setApproving(true)
               setSigning(approvalTransaction[0].id)
