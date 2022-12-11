@@ -158,6 +158,10 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
     useZap,
   ])
 
+  useEffect(() => {
+    setCollateralQuantities({})
+  }, [])
+
   const buildApproval = useCallback(() => {
     if (rToken && rToken.isRSV) {
       return [
