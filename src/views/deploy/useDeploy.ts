@@ -1,3 +1,4 @@
+import useDebounce from 'hooks/useDebounce'
 import { t } from '@lingui/macro'
 import useTransactionCost from 'hooks/useTransactionCost'
 import { atom, useAtom, useSetAtom } from 'jotai'
@@ -62,11 +63,16 @@ export const useDeployTx = () => {
 
 const useDeploy = () => {
   const tx = useDeployTx()
+  const debouncedTx = useDebounce(tx, 100)
   const [txId, setTxId] = useAtom(deployIdAtom)
   const addTransaction = useSetAtom(addTransactionAtom)
-  const [fee, gasError, gasLimit] = useTransactionCost(tx ? [tx] : [])
+  const [fee, gasError, gasLimit] = useTransactionCost(
+    debouncedTx ? [debouncedTx] : [] // use debounceTx to avoid too many requests
+  )
   const transactionState = useTransaction(txId)
   const isValid = !!tx
+
+  console.log('fee?', fee)
 
   const handleDeploy = useCallback(() => {
     if (tx) {

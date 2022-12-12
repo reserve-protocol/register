@@ -8,7 +8,7 @@ const RTokenSetup = (props: BoxProps) => {
   return (
     <Box {...props}>
       <BasketSetup />
-      <SectionWrapper navigationIndex={2}>
+      <SectionWrapper navigationIndex={3}>
         <RevenueSplit mt={4} />
       </SectionWrapper>
       <TokenParameters my={4} />

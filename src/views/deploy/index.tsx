@@ -1,10 +1,9 @@
 import { t } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
 import Navigation from 'components/section-navigation/Navigation'
-import { Provider } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { Grid } from 'theme-ui'
+import { Box, Grid } from 'theme-ui'
 import DeployOverview from './components/DeployOverview'
 import RTokenSetup from './components/RTokenSetup'
 
@@ -49,9 +48,12 @@ const Deploy = () => {
       t`Emergency basket`,
       t`Revenue split`,
       t`RToken params`,
-      t`Governance params`,
-      t`Roles`,
     ],
+    []
+  )
+
+  const step2Navigation = useMemo(
+    () => [t`Governance params`, t`Governance Roles`],
     []
   )
 
@@ -62,33 +64,38 @@ const Deploy = () => {
   }, [account])
 
   return (
-    <Provider>
-      <FormProvider {...form}>
-        <Grid
-          columns={['1fr', '1fr 1fr', '1.5fr 1fr', 'auto 1fr 420px']}
-          gap={4}
-          px={[4, 5]}
-          pt={[4, 5]}
+    <FormProvider {...form}>
+      <Grid
+        columns={['1fr', '1fr 1fr', '1.5fr 1fr', 'auto 1fr 420px']}
+        gap={4}
+        px={[4, 5]}
+        pt={[4, 5]}
+        sx={{
+          height: '100%',
+          position: 'relative',
+          alignContent: 'flex-start',
+          alignItems: 'flex-start',
+          overflowY: 'auto',
+        }}
+      >
+        <Box
           sx={{
-            height: '100%',
-            position: 'relative',
-            alignContent: 'flex-start',
+            position: 'sticky',
+            top: 0,
+            display: ['none', 'none', 'none', 'inherit'],
           }}
         >
+          <Navigation title={t`Step 1`} sections={sections} />
           <Navigation
-            title={t`Step 1`}
-            sections={sections}
-            sx={{
-              position: 'sticky',
-              top: [4, 5],
-              display: ['none', 'none', 'none', 'inherit'],
-            }}
+            title={t`Step 2`}
+            initialIndex={5}
+            sections={step2Navigation}
           />
-          <RTokenSetup />
-          <DeployOverview sx={{ position: 'sticky', top: [4, 5] }} />
-        </Grid>
-      </FormProvider>
-    </Provider>
+        </Box>
+        <RTokenSetup />
+        <DeployOverview sx={{ position: 'sticky', top: 0 }} />
+      </Grid>
+    </FormProvider>
   )
 }
 

@@ -11,9 +11,10 @@ const Container = styled(Box)`
 interface Props extends BoxProps {
   title?: string
   sections: string[]
+  initialIndex?: number
 }
 
-const Navigation = ({ title, sections, ...props }: Props) => {
+const Navigation = ({ title, sections, initialIndex = 0, ...props }: Props) => {
   const [current, setNavigationIndex] = useAtom(navigationIndexAtom)
 
   useEffect(() => {
@@ -33,12 +34,13 @@ const Navigation = ({ title, sections, ...props }: Props) => {
       {!!title && <Text variant="title">{title}</Text>}
       <Box as="ul" mt={5} mr={3} p={0} sx={{ listStyle: 'none' }}>
         {sections.map((item, index) => {
-          const isActive = active === index
+          const currentIndex = index + initialIndex
+          const isActive = active === currentIndex
 
           return (
             <Box
               key={item}
-              onClick={() => !active && handleNavigate(index)}
+              onClick={() => !active && handleNavigate(currentIndex)}
               as="li"
               pl={4}
               mb={4}
