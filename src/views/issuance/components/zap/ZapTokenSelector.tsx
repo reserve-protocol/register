@@ -1,17 +1,12 @@
 import { memo, useCallback, useEffect, useState } from 'react'
-import { Box, BoxProps, Divider, Flex, Text } from 'theme-ui'
-import { Web3Provider } from '@ethersproject/providers'
+import { Box, BoxProps, Flex } from 'theme-ui'
 import { useWeb3React } from '@web3-react/core'
-import { promiseMulticall } from 'state/web3/lib/multicall'
-
-import { ERC20Interface } from 'abis'
 import { ActionItem } from 'components/rtoken-selector'
 import TokenItem from 'components/token-item'
-import { ContractCall, Token } from 'types'
+import { Token } from 'types'
 import Popup from 'components/popup'
-import { ChevronDown, ChevronUp, Zap } from 'react-feather'
-import { select, Trans } from '@lingui/macro'
-import { selectedZapTokenAtom, zapTokensAtom } from 'state/atoms'
+import { ChevronDown, ChevronUp } from 'react-feather'
+import { zapTokensAtom } from 'state/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import {
   zapInputAmountAtom,
@@ -34,7 +29,6 @@ export const TokenList = memo(({ onSelect, tokens }: TokenListProps) => {
   )
 })
 
-// TODO: these should come from zap contract
 export const supportedZapTokens: string[] = [
   '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
   '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',

@@ -1,6 +1,5 @@
-import { getAddress } from '@ethersproject/address'
-import { formatUnits, parseUnits } from '@ethersproject/units'
-import { t, Trans } from '@lingui/macro'
+import { parseUnits } from '@ethersproject/units'
+import { t } from '@lingui/macro'
 import TextPlaceholder from 'components/placeholder/TextPlaceholder'
 import { Zap } from 'react-feather'
 import { v4 as uuid } from 'uuid'
@@ -8,14 +7,12 @@ import { v4 as uuid } from 'uuid'
 import TransactionModal from 'components/transaction-modal'
 import { useAtomValue } from 'jotai'
 import { Flex, Spinner, Text } from 'theme-ui'
-import { useCallback, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { rTokenAtom, selectedZapTokenAtom } from 'state/atoms'
-import { BigNumberMap, ReserveToken, TransactionState } from 'types'
-import { formatCurrency, truncateDecimals } from 'utils'
+import { truncateDecimals } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import {
   isValidZappableAmountAtom,
-  quantitiesAtom,
   zapInputAmountAtom,
   zapQuantitiesAtom,
   zapQuoteAtom,

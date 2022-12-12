@@ -1,7 +1,7 @@
 import { getAddress } from '@ethersproject/address'
 import { BigNumber } from '@ethersproject/bignumber'
 import { parseEther } from '@ethersproject/units'
-import { t, Trans } from '@lingui/macro'
+import { t } from '@lingui/macro'
 import { Facade } from 'abis/types'
 import TransactionModal from 'components/transaction-modal'
 import { useFacadeContract, useZapperContract } from 'hooks/useContract'
@@ -27,7 +27,6 @@ import ZapTokenSelector from '../zap/ZapTokenSelector'
 import { Zap } from 'react-feather'
 import { ZAPPER_CONTRACT } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
-import rtokens from '@lc-labs/rtokens'
 
 const redeemCollateralAtom = atom<BigNumberMap>({})
 

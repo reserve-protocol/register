@@ -1,16 +1,14 @@
 import { t, Trans } from '@lingui/macro'
-import { Button } from 'components'
 import ZapTokenSelector from './ZapTokenSelector'
 import useRToken from 'hooks/useRToken'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Zap as ZapIcon } from 'react-feather'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Card, Flex, Grid, Text } from 'theme-ui'
 import { v4 as uuid } from 'uuid'
 import {
   zapQuoteAtom,
   isValidZappableAmountAtom,
-  quantitiesAtom,
   zapInputAmountAtom,
   zapQuantitiesAtom,
   zappingAtom,
@@ -20,11 +18,10 @@ import MaxZappableUpdater from './MaxZappableUpdater'
 import {
   addTransactionAtom,
   selectedZapTokenAtom,
-  walletAtom,
   zapTokensAllowanceAtom,
 } from 'state/atoms'
 import ZapQuoteUpdater from './ZapQuoteUpdater'
-import { formatUnits, parseUnits } from 'ethers/lib/utils'
+import { parseUnits } from 'ethers/lib/utils'
 import { LoadingButton } from 'components/button'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { ZAPPER_CONTRACT } from 'utils/addresses'
@@ -33,7 +30,6 @@ import { ethers } from 'ethers'
 import { TransactionState } from 'types'
 import { useTransactions } from 'state/web3/hooks/useTransactions'
 import ConfirmZap from './ConfirmZap'
-import { ERC20, ERC20Interface } from 'abis'
 
 /**
  * Issuance
