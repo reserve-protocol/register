@@ -26,13 +26,16 @@ import {
   rTokenAtom,
   rTokenPriceAtom,
   walletAtom,
+  zapTokensAllowanceAtom,
+  zapTokensAtom,
 } from 'state/atoms'
-import { ReserveToken, StringMap } from 'types'
+import { ReserveToken, StringMap, Token } from 'types'
 import {
   ORACLE_ADDRESS,
   RSR_ADDRESS,
   RSV_ADDRESS,
   WETH_ADDRESS,
+  ZAPPER_CONTRACT,
 } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 import { RSR } from 'utils/constants'
@@ -43,14 +46,16 @@ import TokenUpdater from './TokenUpdater'
 import { promiseMulticall } from './web3/lib/multicall'
 
 // Gets ReserveToken related token addresses and decimals
-const getTokens = (reserveToken: ReserveToken): [string, number][] => {
+const getTokens = (
+  reserveToken: ReserveToken,
+  zapTokens: Token[]
+): [string, number][] => {
   const addresses: [string, number][] = [
     [reserveToken.address, reserveToken.decimals],
     [RSR.address, RSR.decimals],
-    ...reserveToken.collaterals.map((token): [string, number] => [
-      token.address,
-      token.decimals,
-    ]),
+    ...[...reserveToken.collaterals, ...zapTokens].map(
+      (token): [string, number] => [token.address, token.decimals]
+    ),
   ]
 
   if (reserveToken.stToken) {
@@ -84,15 +89,28 @@ const getTokenAllowances = (reserveToken: ReserveToken): [string, string][] => {
   return tokens
 }
 
+const getZapTokenAllowances = (
+  zapTokens: Token[],
+  reserveToken: ReserveToken
+): [string, string][] => {
+  return [
+    ...[...zapTokens, reserveToken].map((token): [string, string] => [
+      token.address,
+      ZAPPER_CONTRACT[CHAIN_ID],
+    ]),
+  ]
+}
+
 /**
  * Updates the balances of the current ReserveToken related tokens
  */
 const TokensBalanceUpdater = () => {
   const account = useAtomValue(walletAtom)
   const reserveToken = useAtomValue(rTokenAtom)
+  const zapTokens = useAtomValue(zapTokensAtom)
   const updateBalances = useSetAtom(balancesAtom)
   const balances = useTokensBalance(
-    reserveToken && account ? getTokens(reserveToken) : [],
+    reserveToken && account ? getTokens(reserveToken, zapTokens) : [],
     account
   )
 
@@ -112,15 +130,26 @@ const TokensBalanceUpdater = () => {
 const TokensAllowanceUpdater = () => {
   const account = useAtomValue(walletAtom)
   const reserveToken = useAtomValue(rTokenAtom)
+  const zapTokens = useAtomValue(zapTokensAtom)
   const updateAllowances = useSetAtom(allowanceAtom)
+  const updateZapAllowances = useSetAtom(zapTokensAllowanceAtom)
+
   const allowances = useTokensAllowance(
     reserveToken && account ? getTokenAllowances(reserveToken) : [],
     account
   )
 
+  const zapAllowances = useTokensAllowance(
+    reserveToken && account
+      ? getZapTokenAllowances(zapTokens, reserveToken)
+      : [],
+    account
+  )
+
   useEffect(() => {
     updateAllowances(allowances)
-  }, [JSON.stringify(allowances)])
+    updateZapAllowances(zapAllowances)
+  }, [JSON.stringify(allowances), JSON.stringify(zapAllowances)])
 
   return null
 }

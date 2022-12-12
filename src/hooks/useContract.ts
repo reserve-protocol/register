@@ -9,12 +9,18 @@ import {
   StRSR as StRSRAbi,
   Main as MainAbi,
 } from 'abis'
+import { Zapper__factory } from 'abis/types/factories/Zapper__factory'
+import { Zapper } from 'abis/types/Zapper'
 import { Contract } from 'ethers'
 import { useMemo } from 'react'
 import { CHAIN_ID } from 'utils/chains'
 import { ERC20, Facade, RToken, StRsr, FacadeWrite, Main } from '../abis/types'
 import { getContract } from '../utils'
-import { FACADE_ADDRESS, FACADE_WRITE_ADDRESS } from './../utils/addresses'
+import {
+  FACADE_ADDRESS,
+  FACADE_WRITE_ADDRESS,
+  ZAPPER_CONTRACT,
+} from './../utils/addresses'
 
 // returns null on errors
 export function useContract<T extends Contract = Contract>(
@@ -82,4 +88,12 @@ export function useMainContract(
   withSignerIfPossible?: boolean
 ): Main | null {
   return useContract<Main>(mainAddress, MainAbi, withSignerIfPossible)
+}
+
+export function useZapperContract(): Zapper | null {
+  return useContract<Zapper>(
+    ZAPPER_CONTRACT[CHAIN_ID],
+    Zapper__factory.abi,
+    true
+  )
 }

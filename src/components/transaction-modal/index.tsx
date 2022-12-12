@@ -23,6 +23,7 @@ export interface ITransactionModal {
   requiredAllowance: BigNumberMap
   confirmLabel: string
   approvalsLabel?: string
+  customAllowances?: BigNumberMap
   buildApprovals?: (
     required: BigNumberMap,
     allowances: BigNumberMap
@@ -73,12 +74,13 @@ const TransactionModal = ({
   isValid,
   confirmLabel,
   approvalsLabel,
+  customAllowances,
   buildApprovals,
   onClose,
   onChange = () => {},
 }: ITransactionModal) => {
   const addTransaction = useSetAtom(addTransactionAtom)
-  const allowances = useAtomValue(allowanceAtom)
+  const allowances = customAllowances || useAtomValue(allowanceAtom)
   const [signing, setSigning] = useState('')
   const [requiredApprovals, setApprovalsTx] = useState([] as TransactionState[])
   const canSubmit = useMemo(
