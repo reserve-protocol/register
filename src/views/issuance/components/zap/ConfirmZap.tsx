@@ -64,7 +64,7 @@ const ConfirmZap = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <TransactionModal
-      title={t`Zap to ${rToken?.symbol}`}
+      title={`Zap to ${rToken!.symbol}`}
       tx={transaction}
       isValid={!loadingQuantities && isValid}
       requiredAllowance={{}}
@@ -82,22 +82,21 @@ const ConfirmZap = ({ onClose }: { onClose: () => void }) => {
         }}
       >
         <Text as="div" sx={{ display: 'inline-flex' }}>
-          <Trans>
-            {zapInputAmount} {selectedZapToken?.symbol}
-            <TokenLogo
-              size={20}
-              ml={2}
-              mt={'0.35rem'}
-              symbol={selectedZapToken?.symbol}
-              src={selectedZapToken?.logo}
-            />
-          </Trans>
+          {zapInputAmount} {selectedZapToken?.symbol}
+          <TokenLogo
+            size={20}
+            ml={2}
+            mt={'0.35rem'}
+            symbol={selectedZapToken?.symbol}
+            src={selectedZapToken?.logo}
+          />
         </Text>
         <Zap size={15} style={{ marginTop: '8px', marginBottom: '8px' }} />
         <Text as="div" sx={{ display: 'inline-flex' }}>
           {zapQuote ? (
             <>
-              {truncateDecimals(parseFloat(zapQuote))} {rToken?.symbol}
+              {truncateDecimals(parseFloat(zapQuote))}&nbsp;
+              {rToken?.symbol}
               <TokenLogo
                 size={20}
                 ml={2}

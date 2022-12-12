@@ -156,6 +156,7 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
     debounceAmount,
     selectedZapOutToken,
     useZap,
+    zapTokensAllowance,
   ])
 
   useEffect(() => {
@@ -211,7 +212,7 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <TransactionModal
-      title={t`Redeem ${rToken?.symbol}`}
+      title={t`Redeem ${rToken!.symbol}`}
       tx={useZap ? zapOutTransaction : redeemTransaction}
       isValid={isValid}
       requiredAllowance={requiredAllowance}
@@ -223,7 +224,7 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
       onClose={handleClose}
       onChange={(signing) => setSigning(signing)}
     >
-      <RedeemInput compact disabled={signing} />
+      <RedeemInput compact disabled={true} />
 
       <Flex
         pt={1}

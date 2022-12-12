@@ -13,6 +13,7 @@ import {
   quantitiesAtom,
   zapInputAmountAtom,
   zapQuantitiesAtom,
+  zappingAtom,
 } from 'views/issuance/atoms'
 import ZapInput from './ZapInput'
 import MaxZappableUpdater from './MaxZappableUpdater'
@@ -73,10 +74,10 @@ const Zap = () => {
       },
     ]
   }, [selectedZapToken, zapInputAmount])
-  const [zapping, setZapping] = useState(false)
   const [approving, setApproving] = useState(false)
 
   const [signing, setSigning] = useState('')
+  const [zapping, setZapping] = useAtom(zappingAtom)
   const txState = useTransactions(signing.split(','))
 
   const [signed, failedTx] = useMemo(() => {

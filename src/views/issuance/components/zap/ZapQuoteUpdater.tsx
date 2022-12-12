@@ -10,7 +10,11 @@ import { useCallback, useEffect } from 'react'
 import { rTokenAtom, selectedZapTokenAtom } from 'state/atoms'
 import { error } from 'state/web3/lib/notifications'
 import { BigNumberMap } from 'types'
-import { zapQuantitiesAtom, zapQuoteAtom } from 'views/issuance/atoms'
+import {
+  zappingAtom,
+  zapQuantitiesAtom,
+  zapQuoteAtom,
+} from 'views/issuance/atoms'
 
 /**
  * Listen for amountAtom value change and update needed collateral quantities for issuance
@@ -24,6 +28,7 @@ const ZapQuoteUpdater = ({
 }) => {
   const rToken = useAtomValue(rTokenAtom)
   const zapToken = useAtomValue(selectedZapTokenAtom)
+  const zapping = useAtomValue(zappingAtom)
   const debouncedValue = useDebounce(amount, 400)
   const zapContract = useZapperContract()
   const facadeContract = useFacadeContract()
@@ -78,10 +83,10 @@ const ZapQuoteUpdater = ({
 
   // Fetch quantities from smart contract (rTokens)
   useEffect(() => {
-    if (!rToken?.isRSV) {
+    if (!rToken?.isRSV && zapping) {
       fetchIssueAmount(amount)
     }
-  }, [debouncedValue, fetchIssueAmount, amount, zapToken])
+  }, [debouncedValue, fetchIssueAmount, amount, zapToken, zapping])
 
   useEffect(() => {
     return () => {
