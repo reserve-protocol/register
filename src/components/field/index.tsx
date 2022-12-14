@@ -15,7 +15,7 @@ interface FormFieldProps extends FieldProps {
   placeholder?: string
   name: string
   textarea?: boolean
-  error?: string
+  error?: string | boolean
   options?: RegisterOptions
 }
 
@@ -63,7 +63,7 @@ export const FieldInput = React.forwardRef(
           {...(props as any)}
         />
 
-        {!!error && (
+        {!!error && typeof error === 'string' && (
           <Text
             mt={1}
             ml={2}

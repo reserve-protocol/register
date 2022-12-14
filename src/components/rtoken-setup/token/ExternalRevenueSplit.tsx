@@ -1,11 +1,12 @@
 import { t, Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import Field, { FieldInput, getErrorMessage } from 'components/field'
+import { useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { ArrowRight } from 'react-feather'
 import { useForm } from 'react-hook-form'
-import { Box, BoxProps, Grid } from 'theme-ui'
-import { ExternalAddressSplit } from '../atoms'
+import { Box, BoxProps, Flex, Grid } from 'theme-ui'
+import { ExternalAddressSplit, isRevenueValidAtom } from '../atoms'
 
 interface ExternalRevenueSplitProps extends Omit<BoxProps, 'onChange'> {
   defaultValues?: Partial<ExternalAddressSplit>
@@ -29,12 +30,13 @@ const ExternalRevenueSpit = ({
   const {
     register,
     watch,
-    formState: { errors, isDirty, isValid },
+    formState: { errors, isDirty },
   } = useForm({
     mode: 'onChange',
     defaultValues,
   })
   const formValues = watch(['total', 'stakers', 'holders', 'address'])
+  const isSplitValid = useAtomValue(isRevenueValidAtom)
 
   useEffect(() => {
     const [total = '', stakers = '', holders = '', address = ''] = formValues
@@ -50,33 +52,36 @@ const ExternalRevenueSpit = ({
         <Field label={t`% Totals`}>
           <FieldInput
             {...register('total', inputValidation)}
-            error={errors['total'] ? getErrorMessage(errors['total']) : ''}
+            error={!!errors['total'] || !isSplitValid}
             placeholder={t`% Revenue share`}
           />
         </Field>
         <Field label={t`As RToken`}>
           <FieldInput
             {...register('holders', inputValidation)}
-            error={errors['holders'] ? getErrorMessage(errors['holders']) : ''}
+            error={!!errors['holders']}
           />
         </Field>
         <Field label={t`As RSR`}>
           <FieldInput
             {...register('stakers', inputValidation)}
-            error={errors['stakers'] ? getErrorMessage(errors['stakers']) : ''}
+            error={!!errors['stakers']}
           />
         </Field>
       </Grid>
-      <Box variant="layout.verticalAlign">
-        <ArrowRight size={20} color="#666666" />
-        <FieldInput
-          ml={3}
-          sx={{ flex: 1 }}
-          {...register('address', inputValidation)}
-          placeholder={t`Receiving eth address`}
-          error={errors['holders'] ? getErrorMessage(errors['holders']) : ''}
-        />
-      </Box>
+      <Flex>
+        <Box sx={{ position: 'relative', top: 3, color: 'secondaryText' }}>
+          <ArrowRight size={20} />
+        </Box>
+        <Box sx={{ flex: 1 }} ml={3}>
+          <FieldInput
+            sx={{ flex: 1 }}
+            {...register('address', inputValidation)}
+            placeholder={t`Receiving eth address`}
+            error={errors['holders'] ? getErrorMessage(errors['holders']) : ''}
+          />
+        </Box>
+      </Flex>
       <SmallButton
         mt={3}
         sx={{ color: 'danger' }}

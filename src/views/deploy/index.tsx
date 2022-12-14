@@ -22,8 +22,6 @@ const defaultValues = {
   scalingRedemptionRate: '5', // 5% per block
   redemptionRateFloor: '1000000', // Anticipated redemption minimum amount for throttling
   // other
-  rTokenDist: 40, // reward dist %
-  rsrDist: 60, // reward dist %
   rewardPeriod: '604800', // 1 week
   rewardRatio: '0.02284', // approx. half life of 30 pay periods
   unstakingDelay: '1209600', // seconds 2 week
@@ -31,6 +29,17 @@ const defaultValues = {
   maxTrade: '1000000',
   shortFreeze: '259200', // 3days
   longFreeze: '2592000', // 30days
+  // governance
+  defaultGovernance: true,
+  unpause: '0',
+  votingDelay: '5', // 5 blocks
+  votingPeriod: '18000', // 100 blocks
+  proposalThresholdAsMicroPercent: '1', // 1%
+  quorumPercent: '4', // 4%
+  minDelay: '24', // 24 hours -> 86400
+  guardian: '',
+  pauser: '',
+  owner: '',
 }
 
 const Deploy = () => {

@@ -1,6 +1,6 @@
 import { t } from '@lingui/macro'
 import { atom } from 'jotai'
-import { truncateDecimals } from 'utils'
+import { isAddress, truncateDecimals } from 'utils'
 
 export interface Collateral {
   symbol: string
@@ -227,6 +227,18 @@ export const isRevenueValidAtom = atom((get) => {
 
   if (sum !== 1000) {
     return false
+  }
+
+  return true
+})
+
+export const isValidExternalMapAtom = atom((get) => {
+  const { external } = get(revenueSplitAtom)
+
+  for (const { address } of external) {
+    if (!isAddress(address)) {
+      return false
+    }
   }
 
   return true

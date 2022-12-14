@@ -6,10 +6,11 @@ import { useUpdateAtom } from 'jotai/utils'
 import { useEffect } from 'react'
 import { Plus } from 'react-feather'
 import { useForm } from 'react-hook-form'
-import { BoxProps, Card, Divider, Flex, Text } from 'theme-ui'
+import { Box, BoxProps, Card, Divider, Flex, Text } from 'theme-ui'
 import {
   ExternalAddressSplit,
   isRevenueValidAtom,
+  isValidExternalMapAtom,
   revenueSplitAtom,
 } from '../atoms'
 import ExternalRevenueSpit from './ExternalRevenueSplit'
@@ -40,6 +41,7 @@ const RevenueSplit = (props: BoxProps) => {
   const [revenueSplit, setRevenueSplit] = useAtom(revenueSplitAtom)
   const updateExternalShare = useUpdateAtom(updateExternalShareAtom)
   const isValid = useAtomValue(isRevenueValidAtom)
+  const isValidExteranls = useAtomValue(isValidExternalMapAtom)
   const {
     register,
     watch,
@@ -90,19 +92,22 @@ const RevenueSplit = (props: BoxProps) => {
         <Trans>Revenue Distribution</Trans>
       </Text>
       <Divider my={3} />
-      {!isValid && <Text variant="error">Invalid</Text>}
       <Field label={t`% Revenue to RToken Holders`} mb={3}>
         <FieldInput
           placeholder={t`Input token holders revenue distribution`}
           {...register('holders', inputValidation)}
-          error={errors['holders'] ? getErrorMessage(errors['holders']) : ''}
+          error={
+            errors['holders'] ? getErrorMessage(errors['holders']) : !isValid
+          }
         />
       </Field>
       <Field label={t`% Revenue to RSR Stakers`}>
         <FieldInput
           placeholder={t`Input RSR stakers revenue distribution`}
           {...register('stakers', inputValidation)}
-          error={errors['stakers'] ? getErrorMessage(errors['stakers']) : ''}
+          error={
+            errors['stakers'] ? getErrorMessage(errors['stakers']) : !isValid
+          }
         />
       </Field>
       {revenueSplit.external.map((split, index) => (
@@ -114,6 +119,17 @@ const RevenueSplit = (props: BoxProps) => {
           onChange={(data) => updateExternalShare([index, data])}
         />
       ))}
+      {(!isValid || !isValidExteranls) && (
+        <Box mt={3}>
+          <Text variant="error" sx={{ fontSize: 1 }}>
+            {!isValid ? (
+              <Trans>Distributed revenue does not add up to 100%</Trans>
+            ) : (
+              <Trans>Invalid destination address</Trans>
+            )}
+          </Text>
+        </Box>
+      )}
       <Button
         mt={5}
         variant="muted"
