@@ -20,8 +20,19 @@ const RTokenSetup = (props: BoxProps) => {
         title={t`Transaction 1`}
         subtitle={t`RToken gets deployed with your address as temporary owner`}
       />
-      <SectionWrapper navigationIndex={5}>
-        <GovernanceSetup />
+      <SectionWrapper sx={{ position: 'relative' }} navigationIndex={5}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            width: '100%',
+            backgroundColor: 'inputBorder',
+            opacity: 0.3,
+            zIndex: 9999,
+          }}
+        />
+        <GovernanceSetup disabled />
       </SectionWrapper>
       <TransactionDivider
         title={t`Transaction 2`}

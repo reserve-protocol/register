@@ -15,7 +15,11 @@ import {
 import { addressPattern } from 'utils'
 import GovernanceParameters from './GovernanceParameters'
 
-const GovernanceSetup = (props: BoxProps) => {
+interface Props extends BoxProps {
+  disabled?: boolean
+}
+
+const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
   const { register, watch } = useFormContext()
   const defaultGovernance = watch('defaultGovernance')
   const unfreeze = watch('unfreeze')
@@ -55,6 +59,7 @@ const GovernanceSetup = (props: BoxProps) => {
           mb={3}
           name="owner"
           options={{
+            disabled,
             required: true,
             pattern: {
               value: addressPattern,
@@ -69,6 +74,7 @@ const GovernanceSetup = (props: BoxProps) => {
         mb={3}
         name="guardian"
         options={{
+          disabled,
           required: true,
           pattern: {
             value: addressPattern,
@@ -82,6 +88,7 @@ const GovernanceSetup = (props: BoxProps) => {
         mb={4}
         name="pauser"
         options={{
+          disabled,
           required: true,
           pattern: {
             value: addressPattern,
@@ -93,7 +100,7 @@ const GovernanceSetup = (props: BoxProps) => {
         <Trans>RToken state after transaction</Trans>
       </Text>
       <Field label={t`Pause status`} mb={4}>
-        <Select {...register('unpause')}>
+        <Select {...register('unpause')} disabled={disabled}>
           <option value={0}>
             <Trans>RToken will be left in pause state</Trans>
           </option>

@@ -74,6 +74,16 @@ const RevenueSplit = (props: BoxProps) => {
     })
   }
 
+  const handleRemoveExternal = (index: number) => {
+    setRevenueSplit({
+      ...revenueSplit,
+      external: [
+        ...revenueSplit.external.slice(0, index),
+        ...revenueSplit.external.slice(index + 1),
+      ],
+    })
+  }
+
   return (
     <Card p={4} {...props}>
       <Text ml={2} variant="title">
@@ -100,6 +110,7 @@ const RevenueSplit = (props: BoxProps) => {
           mt={3}
           key={index}
           defaultValues={split}
+          onRemove={() => handleRemoveExternal(index)}
           onChange={(data) => updateExternalShare([index, data])}
         />
       ))}
