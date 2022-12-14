@@ -1,4 +1,3 @@
-import { t } from '@lingui/macro'
 import { InfoBox } from 'components'
 import { Box, Card, Flex, Image } from 'theme-ui'
 
@@ -8,17 +7,13 @@ const Spacer = () => (
   </Flex>
 )
 
-const TransactionDivider = () => (
+const TransactionDivider = (props: { title: string; subtitle: string }) => (
   <Box>
     <Spacer />
     <Card>
       <Box variant="layout.verticalAlign">
         <Image src="/svgs/asterisk.svg" mr={3} />
-        <InfoBox
-          light
-          title={t`Transaction 1`}
-          subtitle={t`RToken gets deployed with your address as temporary owner`}
-        />
+        <InfoBox light {...props} />
       </Box>
     </Card>
     <Spacer />

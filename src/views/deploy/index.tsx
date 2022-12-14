@@ -53,7 +53,7 @@ const Deploy = () => {
   )
 
   const step2Navigation = useMemo(
-    () => [t`Governance params`, t`Governance Roles`],
+    () => [t`Governance setup`, t`Register listing`],
     []
   )
 
