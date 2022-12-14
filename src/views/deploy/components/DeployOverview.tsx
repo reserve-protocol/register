@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
 import { InfoBox } from 'components'
+import { useFormContext } from 'react-hook-form'
 import { useTransaction } from 'state/web3/hooks/useTransactions'
 import {
   Box,
@@ -27,6 +28,27 @@ const DeployStatus = ({ txId }: DeployStatusProps) => {
   const tx = useTransaction(txId)
 
   return <Box>Deploy status</Box>
+}
+
+const StakingTokenOverview = () => {
+  const { watch } = useFormContext()
+  const [tickerValue] = watch(['ticker'])
+
+  return (
+    <Box>
+      <InfoBox
+        light
+        mb={3}
+        title={'Staking token'}
+        subtitle={tickerValue ? `${tickerValue}RSR Token` : 'Undefined'}
+      />
+      <InfoBox
+        light
+        title={'Staking token ticker'}
+        subtitle={tickerValue ? `${tickerValue}RSR` : 'Undefined'}
+      />
+    </Box>
+  )
 }
 
 const DeployOverview = (props: BoxProps) => {
@@ -56,7 +78,7 @@ const DeployOverview = (props: BoxProps) => {
         <Box mt={3} sx={{ fontSize: 1, textAlign: 'center' }}>
           <Text variant="legend" mr={1}>
             <Trans>Estimated gas cost:</Trans>
-            {!isValid && '--'}
+            {!isValid && ' --'}
           </Text>
           {isValid && !fee && <Spinner color="black" size={12} />}
           {!!fee && (
@@ -66,10 +88,7 @@ const DeployOverview = (props: BoxProps) => {
       </Flex>
 
       <Divider sx={{ borderColor: 'darkBorder' }} my={3} mx={-4} />
-      <Box>
-        <InfoBox light mb={3} title={'Staking token'} subtitle={'test'} />
-        <InfoBox light title={'Staking token ticker'} subtitle={'test'} />
-      </Box>
+      <StakingTokenOverview />
       <Divider sx={{ borderColor: 'darkBorder' }} my={3} mx={-4} />
       <Box>
         <Text variant="strong" mb={2}>

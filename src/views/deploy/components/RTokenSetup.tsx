@@ -1,8 +1,9 @@
 import BasketSetup from 'components/rtoken-setup/basket/BasketSetup'
 import RevenueSplit from 'components/rtoken-setup/token/RevenueSplit'
 import SectionWrapper from 'components/section-navigation/SectionWrapper'
-import { Box, BoxProps } from 'theme-ui'
+import { Box, BoxProps, Card, Image } from 'theme-ui'
 import TokenParameters from './TokenParameters'
+import TransactionDivider from './TransactionDivider'
 
 const RTokenSetup = (props: BoxProps) => {
   return (
@@ -11,7 +12,8 @@ const RTokenSetup = (props: BoxProps) => {
       <SectionWrapper navigationIndex={3}>
         <RevenueSplit mt={4} />
       </SectionWrapper>
-      <TokenParameters my={4} />
+      <TokenParameters mt={4} />
+      <TransactionDivider />
     </Box>
   )
 }

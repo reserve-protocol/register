@@ -340,8 +340,10 @@ export const theme: Theme = {
     },
     transparent: {
       ...baseButton,
-      backgroundColor: 'primary',
-      color: '#E5E6E9',
+      backgroundColor: 'transparent',
+      border: '1px solid',
+      borderColor: 'inputBorder',
+      color: 'text',
     },
     muted: {
       ...baseButton,

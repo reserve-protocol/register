@@ -1,18 +1,18 @@
 import { Trans } from '@lingui/macro'
-import { SmallButton } from 'components/button'
+import Button from 'components/button'
 import BackingForm from 'components/rtoken-setup/token/BackingForm'
 import OtherForm from 'components/rtoken-setup/token/OtherForm'
 import SectionWrapper from 'components/section-navigation/SectionWrapper'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
-import { Box, BoxProps, Card, Divider, Flex, Grid, Text } from 'theme-ui'
+import { Box, BoxProps, Card, Divider } from 'theme-ui'
 import TokenForm from './TokenForm'
 
 const chevronProps = {
   style: {
-    marginLeft: 10,
+    marginRight: 10,
   },
-  size: 14,
+  size: 20,
 }
 
 /**
@@ -23,32 +23,24 @@ const TokenParameters = (props: BoxProps) => {
   const [advanceConfig, setAdvanceConfig] = useState(false)
 
   return (
-    <SectionWrapper threshold={advanceConfig ? 0.3 : 0.9} navigationIndex={4}>
+    <SectionWrapper threshold={advanceConfig ? 0.2 : 0.8} navigationIndex={4}>
       <Card p={4} {...props}>
         <TokenForm />
         <Divider my={4} />
-        <Flex mt={3} variant="layout.verticalAlign">
-          <Text variant="title">
-            <Trans>Advanced config:</Trans>
-          </Text>
-          <Text mx={2} variant="title" sx={{ color: 'secondaryText' }}>
-            <Trans>15 params</Trans>
-          </Text>
-          <SmallButton
-            ml="auto"
-            variant="muted"
-            onClick={() => setAdvanceConfig(!advanceConfig)}
-          >
-            <Box variant="layout.verticalAlign">
-              <Trans>Edit</Trans>
-              {advanceConfig ? (
-                <ChevronUp {...chevronProps} />
-              ) : (
-                <ChevronDown {...chevronProps} />
-              )}
-            </Box>
-          </SmallButton>
-        </Flex>
+        <Button
+          sx={{ width: '100%' }}
+          variant="transparent"
+          onClick={() => setAdvanceConfig(!advanceConfig)}
+        >
+          <Box variant="layout.verticalAlign" sx={{ justifyContent: 'center' }}>
+            {advanceConfig ? (
+              <ChevronUp {...chevronProps} />
+            ) : (
+              <ChevronDown {...chevronProps} />
+            )}
+            <Trans>View all parameters</Trans>
+          </Box>
+        </Button>
         {advanceConfig && (
           <>
             <BackingForm my={4} />

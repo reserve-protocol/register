@@ -103,6 +103,7 @@ export const FormField = ({
         <FieldInput
           disabled={!!disabled}
           placeholder={placeholder}
+          textarea={textarea}
           error={errorMessage}
           {...register(name, options)}
         />

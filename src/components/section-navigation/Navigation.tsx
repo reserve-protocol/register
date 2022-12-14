@@ -24,7 +24,11 @@ const Navigation = ({ title, sections, initialIndex = 0, ...props }: Props) => {
   }, [])
 
   const handleNavigate = (index: number) => {
-    document.getElementById(`section-${index}`)?.scrollIntoView()
+    console.log('working')
+    console.log('?', document.getElementById(`section-${index}`))
+    document
+      .getElementById(`section-${index}`)
+      ?.scrollIntoView({ behavior: 'smooth' })
   }
 
   const active = Math.min(...current)
@@ -40,7 +44,7 @@ const Navigation = ({ title, sections, initialIndex = 0, ...props }: Props) => {
           return (
             <Box
               key={item}
-              onClick={() => !active && handleNavigate(currentIndex)}
+              onClick={() => !isActive && handleNavigate(currentIndex)}
               as="li"
               pl={4}
               mb={4}

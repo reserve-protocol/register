@@ -1,6 +1,7 @@
 import { t, Trans } from '@lingui/macro'
+import Button from 'components/button'
 import { FormField } from 'components/field'
-import { Box, BoxProps, Text } from 'theme-ui'
+import { Box, BoxProps, Divider, Text } from 'theme-ui'
 import { isAddress } from 'utils'
 
 /**
@@ -43,16 +44,6 @@ const TokenForm = (props: BoxProps) => (
           value: 256,
           message: t`Mandate cannot be longer than 256 characters`,
         },
-      }}
-    />
-    <FormField
-      label={t`Ownership address`}
-      placeholder={t`Ownership address`}
-      name="ownerAddress"
-      disabled
-      options={{
-        required: t`RToken owner address is required`,
-        validate: (value) => !!isAddress(value) || t`Invalid address`,
       }}
     />
   </Box>
