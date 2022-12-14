@@ -3,7 +3,11 @@ import { parseEther } from '@ethersproject/units'
 import { ethers } from 'ethers'
 import { StringMap } from 'types'
 import { ZERO_ADDRESS } from 'utils/addresses'
-import { BackupBasket, Basket } from './../../components/rtoken-setup/atoms'
+import {
+  BackupBasket,
+  Basket,
+  RevenueSplit,
+} from './../../components/rtoken-setup/atoms'
 
 export interface RTokenConfiguration {
   name: string
@@ -47,7 +51,8 @@ export interface BasketConfiguration {
 export const getDeployParameters = (
   tokenConfig: StringMap,
   basket: Basket,
-  backup: BackupBasket
+  backup: BackupBasket,
+  revenueSplit: RevenueSplit
 ): [RTokenConfiguration, BasketConfiguration] | null => {
   try {
     // RToken configuration parameters
@@ -58,9 +63,10 @@ export const getDeployParameters = (
       params: {
         minTradeVolume: parseEther(tokenConfig.minTrade.toString()),
         rTokenMaxTradeVolume: parseEther(tokenConfig.maxTrade.toString()),
+        // TODO: New revenue split format
         dist: {
-          rTokenDist: BigNumber.from(tokenConfig.rTokenDist),
-          rsrDist: BigNumber.from(tokenConfig.rsrDist),
+          rTokenDist: BigNumber.from(revenueSplit.holders),
+          rsrDist: BigNumber.from(revenueSplit.stakers),
         },
         rewardPeriod: BigNumber.from(tokenConfig.rewardPeriod),
         rewardRatio: parseEther(tokenConfig.rewardRatio),

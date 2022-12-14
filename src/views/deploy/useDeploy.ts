@@ -40,7 +40,12 @@ export const useDeployTx = () => {
       return null
     }
 
-    const params = getDeployParameters(getValues(), primaryBasket, backupBasket)
+    const params = getDeployParameters(
+      getValues(),
+      primaryBasket,
+      backupBasket,
+      revenueSplit
+    )
 
     if (!params) {
       return null

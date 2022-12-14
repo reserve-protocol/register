@@ -81,7 +81,7 @@ const DeployOverview = (props: BoxProps) => {
             {!isValid && ' --'}
           </Text>
           {isValid && !fee && <Spinner color="black" size={12} />}
-          {!!fee && (
+          {isValid && !!fee && (
             <Text sx={{ fontWeight: 500 }}>${formatCurrency(fee)}</Text>
           )}
         </Box>
