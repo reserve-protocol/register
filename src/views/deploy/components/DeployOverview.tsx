@@ -69,7 +69,7 @@ const DeployOverview = (props: BoxProps) => {
         <Button
           onClick={deploy}
           variant="accentAction"
-          disabled={!fee}
+          disabled={!isValid || !fee}
           mt={3}
           sx={{ width: '100%' }}
         >

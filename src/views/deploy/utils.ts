@@ -9,6 +9,41 @@ import {
   RevenueSplit,
 } from './../../components/rtoken-setup/atoms'
 
+export const defaultValues = {
+  // token params
+  name: '',
+  symbol: '',
+  manifesto: '',
+  ownerAddress: '',
+  // backing params
+  tradingDelay: '2160', // delay after default confirmed
+  auctionLength: '900', // 15 minutes
+  backingBuffer: '0.01', // 0.01%
+  maxTradeSlippage: '1', // 1%
+  issuanceRate: '0.025', // 0.025% per block or ~0.1% per minute
+  scalingRedemptionRate: '5', // 5% per block
+  redemptionRateFloor: '1000000', // Anticipated redemption minimum amount for throttling
+  // other
+  rewardPeriod: '604800', // 1 week
+  rewardRatio: '0.02284', // approx. half life of 30 pay periods
+  unstakingDelay: '1209600', // seconds 2 week
+  minTrade: '0.01',
+  maxTrade: '1000000',
+  shortFreeze: '259200', // 3days
+  longFreeze: '2592000', // 30days
+  // governance
+  defaultGovernance: true,
+  unpause: '0',
+  votingDelay: '5', // 5 blocks
+  votingPeriod: '18000', // 100 blocks
+  proposalThresholdAsMicroPercent: '1', // 1%
+  quorumPercent: '4', // 4%
+  minDelay: '24', // 24 hours -> 86400
+  guardian: '',
+  pauser: '',
+  owner: '',
+}
+
 export interface RTokenConfiguration {
   name: string
   symbol: string
