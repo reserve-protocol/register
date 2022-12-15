@@ -1,3 +1,4 @@
+import { atomWithReset } from 'jotai/utils'
 import { t } from '@lingui/macro'
 import { atom } from 'jotai'
 import { isAddress, truncateDecimals } from 'utils'
@@ -42,8 +43,18 @@ export interface RevenueSplit {
   external: ExternalAddressSplit[]
 }
 
-export const basketAtom = atom<Basket>({})
-export const backupCollateralAtom = atom<BackupBasket>({})
+/**
+ * State atoms
+ */
+export const basketAtom = atomWithReset<Basket>({})
+export const backupCollateralAtom = atomWithReset<BackupBasket>({})
+export const revenueSplitAtom = atomWithReset<RevenueSplit>({
+  holders: '40', // %
+  stakers: '60', // %
+  external: [],
+})
+//
+
 export const isBasketValidAtom = atom((get) => {
   return !!Object.keys(get(basketAtom)).length
 })
@@ -201,12 +212,6 @@ export const updateBasketUnitAtom = atom(
     set(basketAtom, basket)
   }
 )
-
-export const revenueSplitAtom = atom<RevenueSplit>({
-  holders: '40', // %
-  stakers: '60', // %
-  external: [],
-})
 
 // The sum of all allocations should be 100%
 // Multiply by 10 to avoid floating point precision issues (only 1 decimal allowed)

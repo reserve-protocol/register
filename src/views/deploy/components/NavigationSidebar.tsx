@@ -34,7 +34,7 @@ const NavigationSidebar = () => {
         display: ['none', 'none', 'none', 'inherit'],
       }}
     >
-      <Box mb={3}>
+      <Box mb={4}>
         <SmallButton variant="muted" onClick={() => navigate('/')}>
           <Box variant="layout.verticalAlign">
             <ArrowLeft size={14} style={{ marginRight: 10 }} />
