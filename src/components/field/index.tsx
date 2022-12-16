@@ -101,7 +101,7 @@ export const FormField = ({
     () => (
       <Field {...props}>
         <FieldInput
-          disabled={!!disabled}
+          disabled={disabled}
           placeholder={placeholder}
           textarea={textarea}
           error={errorMessage}

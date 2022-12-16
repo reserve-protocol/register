@@ -17,7 +17,7 @@ import {
 import { formatCurrency, shortenString } from 'utils'
 import { ROUTES, TRANSACTION_STATUS } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import useDeploy, { useDeployTxState } from '../useDeploy'
+import useGovernance, { useGovernanceTxState } from '../useGovernance'
 
 const Container = styled(Box)`
   height: fit-content;
@@ -25,8 +25,8 @@ const Container = styled(Box)`
 
 const GovernanceStatus = () => {
   const navigate = useNavigate()
-  const { fee, deploy, isValid } = useDeploy()
-  const tx = useDeployTxState()
+  const { fee, deploy, isValid } = useGovernance()
+  const tx = useGovernanceTxState()
 
   useEffect(() => {
     if (tx?.status === TRANSACTION_STATUS.CONFIRMED) {

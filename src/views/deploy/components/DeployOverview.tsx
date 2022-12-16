@@ -34,6 +34,9 @@ const DeployStatus = () => {
   useEffect(() => {
     if (tx?.extra?.rTokenAddress) {
       setRToken(tx?.extra?.rTokenAddress)
+      document
+        .getElementById(`rtoken-setup-container`)
+        ?.scrollIntoView({ behavior: 'smooth' })
     }
   }, [tx?.extra?.rTokenAddress])
 

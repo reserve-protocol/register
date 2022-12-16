@@ -2,6 +2,7 @@ import { BoxProps, Grid } from 'theme-ui'
 
 const Layout = ({ children, ...props }: BoxProps) => (
   <Grid
+    id="rtoken-setup-container"
     columns={['1fr', '1fr 1fr', '1.5fr 1fr', 'auto 1fr 420px']}
     gap={4}
     px={[4, 5]}

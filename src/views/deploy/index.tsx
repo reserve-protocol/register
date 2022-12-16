@@ -6,7 +6,7 @@ import {
 } from 'components/rtoken-setup/atoms'
 import Layout from 'components/rtoken-setup/Layout'
 import useRToken from 'hooks/useRToken'
-import { useResetAtom, useUpdateAtom } from 'jotai/utils'
+import { useResetAtom } from 'jotai/utils'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import DeployOverview from './components/DeployOverview'
@@ -14,6 +14,7 @@ import GovernanceOverview from './components/GovernanceOverview'
 import NavigationSidebar from './components/NavigationSidebar'
 import RTokenSetup from './components/RTokenSetup'
 import { deployIdAtom, useDeployTxState } from './useDeploy'
+import { governanceIdAtom } from './useGovernance'
 import { defaultValues } from './utils'
 
 const Deploy = () => {
@@ -29,14 +30,16 @@ const Deploy = () => {
   const resetBasket = useResetAtom(basketAtom)
   const resetBackup = useResetAtom(backupCollateralAtom)
   const resetRevenueSplit = useResetAtom(revenueSplitAtom)
-  const setDeployId = useUpdateAtom(deployIdAtom)
+  const resetGovId = useResetAtom(governanceIdAtom)
+  const resetDeployId = useResetAtom(deployIdAtom)
 
   useEffect(() => {
     return () => {
       resetBackup()
       resetBasket()
       resetRevenueSplit()
-      setDeployId('')
+      resetGovId()
+      resetDeployId()
     }
   }, [])
 

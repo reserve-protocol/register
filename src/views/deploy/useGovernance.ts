@@ -55,7 +55,7 @@ export const useGovernanceTx = () => {
       }
 
       const args = [
-        rToken,
+        rToken.address,
         !!defaultGovernance,
         unpause === '1',
         govConfig,
@@ -80,10 +80,10 @@ export const useGovernanceTx = () => {
       console.error('Error setting up tx', e)
       return null
     }
-  }, [JSON.stringify(formFields), rToken?.address])
+  }, [JSON.stringify(formFields), rToken?.address, isValid])
 }
 
-export const useDeployTxState = () => {
+export const useGovernanceTxState = () => {
   const txId = useAtomValue(governanceIdAtom)
   const tx = useTransaction(txId)
 

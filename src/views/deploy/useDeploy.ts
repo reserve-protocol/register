@@ -1,8 +1,8 @@
 import { t } from '@lingui/macro'
 import useDebounce from 'hooks/useDebounce'
 import useTransactionCost from 'hooks/useTransactionCost'
-import { atom, useSetAtom } from 'jotai'
-import { useAtomValue, useUpdateAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
+import { atomWithReset, useAtomValue, useUpdateAtom } from 'jotai/utils'
 import { useCallback, useMemo } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { addTransactionAtom } from 'state/atoms'
@@ -21,7 +21,7 @@ import {
 } from '../../components/rtoken-setup/atoms'
 import { getDeployParameters } from './utils'
 
-export const deployIdAtom = atom('')
+export const deployIdAtom = atomWithReset('')
 
 export const useDeployTx = () => {
   const {
