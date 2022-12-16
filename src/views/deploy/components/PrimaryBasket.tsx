@@ -3,8 +3,7 @@ import { SmallButton } from 'components/button'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { useAtomValue } from 'jotai'
 import { Box, Divider, Flex, Text } from 'theme-ui'
-import { truncateDecimals } from 'utils'
-import { Basket, basketAtom } from '../atoms'
+import { basketAtom } from '../atoms'
 import UnitBasket from './UnitBasket'
 
 interface Props {
@@ -15,14 +14,6 @@ interface Props {
     } | null
   ): void
   readOnly?: boolean
-}
-
-const getBasketComposition = (basket: Basket) => {
-  return Object.keys(basket)
-    .reduce((acc, unit) => {
-      return `${acc} + ${truncateDecimals(+basket[unit].scale, 5)} ${unit}`
-    }, '')
-    .substring(2)
 }
 
 const Placeholder = () => (
@@ -69,18 +60,10 @@ const PrimaryBasket = ({ onAdd = () => {}, readOnly = false }: Props) => {
           </SmallButton>
         )}
       </Flex>
-      <Divider my={4} />
-      <Flex>
-        <Text sx={{ width: 140 }}>1 [RToken] =</Text>
-        <Text ml="auto">
-          {!!units.length ? getBasketComposition(basket) : '--'}
-        </Text>
-      </Flex>
-      <Divider mt={4} />
       {!units.length && <Placeholder />}
       {units.map((targetUnit, index) => (
         <Box>
-          <Divider mt={6} mx={-5} />
+          <Divider mt={5} mx={-5} />
           <UnitBasket
             mt={3}
             readOnly={readOnly}
