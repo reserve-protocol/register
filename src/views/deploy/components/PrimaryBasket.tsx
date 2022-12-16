@@ -58,9 +58,13 @@ const PrimaryBasket = ({ onAdd = () => {}, readOnly = false }: Props) => {
   return (
     <Box>
       <Flex variant="layout.verticalAlign">
-        <Text variant="title">Primary Basket</Text>
+        <Text variant="sectionTitle">Primary Basket</Text>
         {!readOnly && (
-          <SmallButton onClick={() => onAdd({ basket: 'primary' })} ml="auto">
+          <SmallButton
+            variant="muted"
+            onClick={() => onAdd({ basket: 'primary' })}
+            ml="auto"
+          >
             <Trans>Add token plugin</Trans>
           </SmallButton>
         )}
@@ -74,15 +78,17 @@ const PrimaryBasket = ({ onAdd = () => {}, readOnly = false }: Props) => {
       </Flex>
       <Divider mt={4} />
       {!units.length && <Placeholder />}
-
       {units.map((targetUnit, index) => (
-        <UnitBasket
-          mt={3}
-          readOnly={readOnly}
-          key={targetUnit}
-          data={basket[targetUnit]}
-          unit={targetUnit}
-        />
+        <Box>
+          <Divider mt={6} mx={-5} />
+          <UnitBasket
+            mt={3}
+            readOnly={readOnly}
+            key={targetUnit}
+            data={basket[targetUnit]}
+            unit={targetUnit}
+          />
+        </Box>
       ))}
     </Box>
   )
