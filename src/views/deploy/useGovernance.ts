@@ -30,6 +30,8 @@ export const useGovernanceTx = () => {
       return null
     }
 
+    console.log('isvalid?', isValid)
+
     try {
       const {
         defaultGovernance,
@@ -95,6 +97,8 @@ const useGovernance = () => {
   const debouncedTx = useDebounce(tx, 100)
   const setTxId = useUpdateAtom(governanceIdAtom)
   const addTransaction = useSetAtom(addTransactionAtom)
+
+  console.log('tx?', tx)
   const [fee, gasError, gasLimit] = useTransactionCost(
     debouncedTx ? [debouncedTx] : [] // use debounceTx to avoid too many requests
   )

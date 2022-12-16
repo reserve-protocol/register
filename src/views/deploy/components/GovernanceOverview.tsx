@@ -133,10 +133,22 @@ const GovernanceOverview = (props: BoxProps) => (
     <Divider sx={{ borderColor: 'darkBorder' }} my={3} mx={-4} />
     <Box>
       <Text variant="strong" mb={2}>
-        Help title
+        What’s Alexios Governance?
       </Text>
       <Text as="p" variant="legend">
-        Help text
+        Please read our documentation on the matter to understand the difference
+        between setting your own ownership address and using our custom build
+        standard format.
+      </Text>
+    </Box>
+    <Divider sx={{ borderColor: 'darkBorder' }} my={3} mx={-4} />
+    <Box>
+      <Text variant="strong" mb={2}>
+        Not ready to set up governance?
+      </Text>
+      <Text as="p" variant="legend">
+        You can leave your RToken frozen and come back to setting up governance
+        later.
       </Text>
     </Box>
   </Container>

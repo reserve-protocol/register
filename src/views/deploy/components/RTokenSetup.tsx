@@ -20,6 +20,10 @@ const DeploySection = ({ enabled = true }) => {
     return <DeploySuccessDivider hash={tx.hash} />
   }
 
+  if (!enabled) {
+    return null
+  }
+
   return (
     <>
       <BasketSetup />

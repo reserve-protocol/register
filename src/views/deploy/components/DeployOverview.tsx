@@ -34,9 +34,6 @@ const DeployStatus = () => {
   useEffect(() => {
     if (tx?.extra?.rTokenAddress) {
       setRToken(tx?.extra?.rTokenAddress)
-      document
-        .getElementById(`rtoken-setup-container`)
-        ?.scrollIntoView({ behavior: 'smooth' })
     }
   }, [tx?.extra?.rTokenAddress])
 
@@ -87,7 +84,7 @@ const DeployStatus = () => {
           sx={{ justifyContent: 'center' }}
           mt={4}
         >
-          <Text variant="legend">{shortenString(tx?.hash ?? '')}</Text>
+          <Text>{shortenString(tx?.hash ?? '')}</Text>
           <CopyValue ml={3} mr={2} value={tx?.hash ?? ''} />
           <GoTo
             href={getExplorerLink(tx?.hash ?? '', ExplorerDataType.TRANSACTION)}

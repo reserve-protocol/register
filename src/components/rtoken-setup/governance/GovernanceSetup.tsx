@@ -59,7 +59,6 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
           mb={3}
           name="owner"
           options={{
-            disabled,
             required: true,
             pattern: {
               value: addressPattern,
@@ -100,7 +99,7 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
         <Trans>RToken state after transaction</Trans>
       </Text>
       <Field label={t`Pause status`} mb={4}>
-        <Select {...register('unpause')} disabled={disabled}>
+        <Select {...register('unpause')}>
           <option value={0}>
             <Trans>RToken will be left in pause state</Trans>
           </option>

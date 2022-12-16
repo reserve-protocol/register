@@ -24,8 +24,6 @@ const Navigation = ({ title, sections, initialIndex = 0, ...props }: Props) => {
   }, [])
 
   const handleNavigate = (index: number) => {
-    console.log('working')
-    console.log('?', document.getElementById(`section-${index}`))
     document
       .getElementById(`section-${index}`)
       ?.scrollIntoView({ behavior: 'smooth' })
