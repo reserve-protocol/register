@@ -204,7 +204,7 @@ const TransactionList = () => {
         <Box mt={5} sx={{ textAlign: 'center' }}>
           <EmptyBoxIcon />
           <Text variant="legend" mt={3} sx={{ display: 'block' }}>
-            No transactions...
+            <Trans>No transactions...</Trans>
           </Text>
         </Box>
       )}

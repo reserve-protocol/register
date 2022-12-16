@@ -5,12 +5,23 @@ import RevenueSplit from 'components/rtoken-setup/token/RevenueSplit'
 import SectionWrapper from 'components/section-navigation/SectionWrapper'
 import { Box, BoxProps } from 'theme-ui'
 import ListingInfo from 'views/management/components/ListingInfo'
+import { useDeployTxState } from '../useDeploy'
 import TokenParameters from './TokenParameters'
-import TransactionDivider from './TransactionDivider'
+import TransactionDivider, { DeploySuccessDivider } from './TransactionDivider'
 
-const RTokenSetup = (props: BoxProps) => {
+interface Props extends BoxProps {
+  governance?: boolean
+}
+
+const DeploySection = ({ enabled = true }) => {
+  const tx = useDeployTxState()
+
+  if (!enabled && tx) {
+    return <DeploySuccessDivider hash={tx.hash} />
+  }
+
   return (
-    <Box {...props}>
+    <>
       <BasketSetup />
       <SectionWrapper navigationIndex={3}>
         <RevenueSplit mt={4} />
@@ -20,7 +31,14 @@ const RTokenSetup = (props: BoxProps) => {
         title={t`Transaction 1`}
         subtitle={t`RToken gets deployed with your address as temporary owner`}
       />
-      <SectionWrapper sx={{ position: 'relative' }} navigationIndex={5}>
+    </>
+  )
+}
+
+const GovernanceSection = ({ enabled = true }) => (
+  <>
+    <SectionWrapper sx={{ position: 'relative' }} navigationIndex={5}>
+      {!enabled && (
         <Box
           sx={{
             position: 'absolute',
@@ -32,15 +50,24 @@ const RTokenSetup = (props: BoxProps) => {
             zIndex: 9999,
           }}
         />
-        <GovernanceSetup disabled />
-      </SectionWrapper>
-      <TransactionDivider
-        title={t`Transaction 2`}
-        subtitle={t`Governance gets deployed & your RToken is now usable (if unpaused)`}
-      />
-      <SectionWrapper navigationIndex={6} mb={4}>
-        <ListingInfo />
-      </SectionWrapper>
+      )}
+      <GovernanceSetup disabled={!enabled} />
+    </SectionWrapper>
+    <TransactionDivider
+      title={t`Transaction 2`}
+      subtitle={t`Governance gets deployed & your RToken is now usable (if unpaused)`}
+    />
+    <SectionWrapper navigationIndex={6} mb={4}>
+      <ListingInfo />
+    </SectionWrapper>
+  </>
+)
+
+const RTokenSetup = ({ governance = false, ...props }: Props) => {
+  return (
+    <Box {...props}>
+      <DeploySection enabled={!governance} />
+      <GovernanceSection enabled={governance} />
     </Box>
   )
 }

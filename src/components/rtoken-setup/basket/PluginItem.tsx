@@ -75,12 +75,10 @@ const PluginItem = ({ data, onCheck, selected, ...props }: PluginItemProps) => {
           <Text>{data.symbol} plug-in</Text>
           <Text sx={{ fontSize: 1, display: 'block' }} variant="legend">
             <Trans>Target</Trans> {data.targetUnit}{' '}
-            {data.custom ? (
+            {!!data.custom && (
               <>
                 | <Trans>Custom</Trans>
               </>
-            ) : (
-              `| ${'description' in data ? data.description : ''}`
             )}
           </Text>
         </Box>

@@ -9,6 +9,19 @@ import {
   RevenueSplit,
 } from './../../components/rtoken-setup/atoms'
 
+export const governanceDefaultValues = {
+  defaultGovernance: true,
+  unpause: '0',
+  votingDelay: '5', // 5 blocks
+  votingPeriod: '18000', // 100 blocks
+  proposalThresholdAsMicroPercent: '1', // 1%
+  quorumPercent: '4', // 4%
+  minDelay: '24', // 24 hours -> 86400
+  guardian: '',
+  pauser: '',
+  owner: '',
+}
+
 export const defaultValues = {
   // token params
   name: '',
@@ -32,16 +45,7 @@ export const defaultValues = {
   shortFreeze: '259200', // 3days
   longFreeze: '2592000', // 30days
   // governance
-  defaultGovernance: true,
-  unpause: '0',
-  votingDelay: '5', // 5 blocks
-  votingPeriod: '18000', // 100 blocks
-  proposalThresholdAsMicroPercent: '1', // 1%
-  quorumPercent: '4', // 4%
-  minDelay: '24', // 24 hours -> 86400
-  guardian: '',
-  pauser: '',
-  owner: '',
+  ...governanceDefaultValues,
 }
 
 export interface RTokenConfiguration {

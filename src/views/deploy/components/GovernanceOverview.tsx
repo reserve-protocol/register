@@ -1,12 +1,9 @@
 import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
-import { InfoBox } from 'components'
 import CopyValue from 'components/button/CopyValue'
 import GoTo from 'components/button/GoTo'
-import { useUpdateAtom } from 'jotai/utils'
 import { useEffect } from 'react'
-import { useFormContext } from 'react-hook-form'
-import { selectedRTokenAtom } from 'state/atoms'
+import { useNavigate } from 'react-router-dom'
 import {
   Box,
   BoxProps,
@@ -18,7 +15,7 @@ import {
   Text,
 } from 'theme-ui'
 import { formatCurrency, shortenString } from 'utils'
-import { TRANSACTION_STATUS } from 'utils/constants'
+import { ROUTES, TRANSACTION_STATUS } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import useDeploy, { useDeployTxState } from '../useDeploy'
 
@@ -26,16 +23,16 @@ const Container = styled(Box)`
   height: fit-content;
 `
 
-const DeployStatus = () => {
-  const setRToken = useUpdateAtom(selectedRTokenAtom)
+const GovernanceStatus = () => {
+  const navigate = useNavigate()
   const { fee, deploy, isValid } = useDeploy()
   const tx = useDeployTxState()
 
   useEffect(() => {
-    if (tx?.extra?.rTokenAddress) {
-      setRToken(tx?.extra?.rTokenAddress)
+    if (tx?.status === TRANSACTION_STATUS.CONFIRMED) {
+      navigate(`${ROUTES.GOVERNANCE_INFO}/${tx.id}`)
     }
-  }, [tx?.extra?.rTokenAddress])
+  }, [tx?.status])
 
   if (
     tx?.status === TRANSACTION_STATUS.PENDING ||
@@ -50,7 +47,7 @@ const DeployStatus = () => {
         <Text as="p" variant="legend">
           <Trans>
             Please sign the transaction in your wallet to continue with the
-            deployment process.
+            government configuration process.
           </Trans>
         </Text>
       </>
@@ -69,14 +66,8 @@ const DeployStatus = () => {
         </Text>
         <Text as="p" variant="legend">
           <Trans>
-            Meditate peacefully on the stability of a future asset backed
-            reserve currency while your RToken deploys 🧘‍♂️
-          </Trans>
-        </Text>
-        <Text as="p" variant="legend" mt={2}>
-          <Trans>
-            Please don't close this window to avoid issues finding your way back
-            here.
+            Stay patient while the transaction is in progress & don’t close this
+            window to avoid issues finding your way back here.
           </Trans>
         </Text>
         <Box
@@ -108,7 +99,7 @@ const DeployStatus = () => {
         mt={3}
         sx={{ width: '100%' }}
       >
-        <Trans>Deploy RToken</Trans>
+        <Trans>Deploy Governance</Trans>
       </Button>
       <Box mt={3} sx={{ fontSize: 1, textAlign: 'center' }}>
         <Text variant="legend" mr={1}>
@@ -124,28 +115,7 @@ const DeployStatus = () => {
   )
 }
 
-const StakingTokenOverview = () => {
-  const { watch } = useFormContext()
-  const [tickerValue] = watch(['ticker'])
-
-  return (
-    <Box>
-      <InfoBox
-        light
-        mb={3}
-        title={'Staking token'}
-        subtitle={tickerValue ? `${tickerValue}RSR Token` : 'Undefined'}
-      />
-      <InfoBox
-        light
-        title={'Staking token ticker'}
-        subtitle={tickerValue ? `${tickerValue}RSR` : 'Undefined'}
-      />
-    </Box>
-  )
-}
-
-const DeployOverview = (props: BoxProps) => (
+const GovernanceOverview = (props: BoxProps) => (
   <Container variant="layout.borderBox" {...props}>
     <Flex
       sx={{
@@ -156,12 +126,10 @@ const DeployOverview = (props: BoxProps) => (
     >
       <Image height={32} width={32} src="/svgs/deploytx.svg" />
       <Text variant="title" sx={{ fontSize: 4 }} mt={2}>
-        <Trans>Tx1. RToken Deploy</Trans>
+        <Trans>Tx2. Governance</Trans>
       </Text>
-      <DeployStatus />
+      <GovernanceStatus />
     </Flex>
-    <Divider sx={{ borderColor: 'darkBorder' }} my={3} mx={-4} />
-    <StakingTokenOverview />
     <Divider sx={{ borderColor: 'darkBorder' }} my={3} mx={-4} />
     <Box>
       <Text variant="strong" mb={2}>
@@ -174,4 +142,4 @@ const DeployOverview = (props: BoxProps) => (
   </Container>
 )
 
-export default DeployOverview
+export default GovernanceOverview

@@ -1,8 +1,8 @@
-import useDebounce from 'hooks/useDebounce'
 import { t } from '@lingui/macro'
+import useDebounce from 'hooks/useDebounce'
 import useTransactionCost from 'hooks/useTransactionCost'
-import { atom, useAtom, useSetAtom } from 'jotai'
-import { useAtomValue } from 'jotai/utils'
+import { atom, useSetAtom } from 'jotai'
+import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import { useCallback, useMemo } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { addTransactionAtom } from 'state/atoms'
@@ -21,7 +21,7 @@ import {
 } from '../../components/rtoken-setup/atoms'
 import { getDeployParameters } from './utils'
 
-const deployIdAtom = atom('')
+export const deployIdAtom = atom('')
 
 export const useDeployTx = () => {
   const {
@@ -66,18 +66,22 @@ export const useDeployTx = () => {
   }, [primaryBasket, backupBasket, revenueSplit, JSON.stringify(formFields)])
 }
 
+export const useDeployTxState = () => {
+  const txId = useAtomValue(deployIdAtom)
+  const tx = useTransaction(txId)
+
+  return tx
+}
+
 const useDeploy = () => {
   const tx = useDeployTx()
   const debouncedTx = useDebounce(tx, 100)
-  const [txId, setTxId] = useAtom(deployIdAtom)
+  const setTxId = useUpdateAtom(deployIdAtom)
   const addTransaction = useSetAtom(addTransactionAtom)
   const [fee, gasError, gasLimit] = useTransactionCost(
     debouncedTx ? [debouncedTx] : [] // use debounceTx to avoid too many requests
   )
-  const transactionState = useTransaction(txId)
   const isValid = !!tx
-
-  console.log('fee?', fee)
 
   const handleDeploy = useCallback(() => {
     if (tx) {
@@ -89,13 +93,12 @@ const useDeploy = () => {
 
   return useMemo(
     () => ({
-      txId,
       fee,
       error: gasError,
       isValid,
       deploy: handleDeploy,
     }),
-    [txId, fee, gasError, handleDeploy, isValid]
+    [fee, gasError, handleDeploy, isValid]
   )
 }
 
