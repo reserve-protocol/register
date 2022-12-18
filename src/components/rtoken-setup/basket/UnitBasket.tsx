@@ -68,6 +68,7 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
 
   return (
     <Box {...props}>
+      <Divider my={4} mx={-4} />
       {!readOnly && (
         <>
           <Flex sx={{ justifyContent: 'space-between' }} mb={3} mt={4}>
@@ -88,12 +89,15 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
             </Flex>
           </Flex>
           <Flex variant="layout.verticalAlign">
-            <Text>
+            <Text variant="contentTitle">
               <Trans>{unit} Token distribution</Trans>
             </Text>
             <Text
               ml="auto"
-              sx={{ color: totalDistribution !== 100 ? 'danger' : 'text' }}
+              sx={{
+                color: totalDistribution !== 100 ? 'danger' : 'text',
+                fontSize: 1,
+              }}
             >
               ({totalDistribution}%)
             </Text>
