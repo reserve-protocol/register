@@ -63,9 +63,8 @@ const PrimaryBasket = ({ onAdd = () => {}, readOnly = false }: Props) => {
       {!units.length && <Placeholder />}
       {units.map((targetUnit, index) => (
         <Box>
-          <Divider mt={5} mx={-5} />
+          <Divider my={5} mx={-5} />
           <UnitBasket
-            mt={3}
             readOnly={readOnly}
             key={targetUnit}
             data={basket[targetUnit]}
