@@ -44,13 +44,12 @@ const Navigation = ({ title, sections, initialIndex = 0, ...props }: Props) => {
               key={item}
               onClick={() => !isActive && handleNavigate(currentIndex)}
               as="li"
-              pl={4}
               mb={4}
               sx={{
-                lineHeight: '24px',
+                lineHeight: '16px',
                 borderLeft: isActive ? '3px solid' : 'none',
                 borderColor: 'text',
-                marginLeft: isActive ? 0 : '3px',
+                paddingLeft: isActive ? '12px' : 0,
                 cursor: 'pointer',
               }}
             >
