@@ -303,6 +303,10 @@ export const theme: Theme = {
     input: {
       ...baseInput,
     },
+    smallInput: {
+      ...baseInput,
+      padding: '6px',
+    },
     select: {
       ...baseInput,
       backgroundColor: 'contentBackground',
