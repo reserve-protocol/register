@@ -87,7 +87,6 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
     }
   }, [facadeContract, rToken?.address, debounceAmount])
 
-  // TODO: Unlimited approval
   const buildApproval = useCallback(() => {
     if (rToken && rToken.isRSV) {
       return [

@@ -4,8 +4,13 @@ import { Card } from 'theme-ui'
 import BackupBasket from './BackupBasket'
 import CollateralModal from './CollateralModal'
 import PrimaryBasket from './PrimaryBasket'
+import { truncateDecimals } from 'utils'
+import { useAtomValue } from 'jotai'
+import { Basket, basketAtom } from '../atoms'
 
 const BasketSetup = () => {
+  const basket = useAtomValue(basketAtom)
+  const units = Object.keys(basket)
   const [collateralModal, setCollateralModal] = useState<{
     basket: 'primary' | 'backup'
     targetUnit?: string

@@ -111,7 +111,7 @@ const EmergencyCollateral = ({
   return (
     <Box {...props}>
       <Flex variant="layout.verticalAlign">
-        <Text variant="title" mr={2}>
+        <Text variant="sectionTitle" mr={2}>
           <Trans>Emergency collateral</Trans>
         </Text>
         <Text variant="title">- {targetUnit}</Text>
@@ -121,7 +121,7 @@ const EmergencyCollateral = ({
             ml="auto"
             variant="muted"
           >
-            <Trans>Add token</Trans>
+            <Trans>Add token plugin</Trans>
           </SmallButton>
         )}
       </Flex>
@@ -209,6 +209,7 @@ const EmergencyCollateral = ({
           </SortableContext>
         </DndContext>
       )}
+      <Divider my={4} mx={-5} />
     </Box>
   )
 }

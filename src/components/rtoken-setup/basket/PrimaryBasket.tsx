@@ -17,14 +17,6 @@ interface Props extends BoxProps {
   readOnly?: boolean
 }
 
-const getBasketComposition = (basket: Basket) => {
-  return Object.keys(basket)
-    .reduce((acc, unit) => {
-      return `${acc} + ${truncateDecimals(+basket[unit].scale, 5)} ${unit}`
-    }, '')
-    .substring(2)
-}
-
 const Placeholder = () => (
   <Box
     sx={{ textAlign: 'center', maxWidth: 400, margin: 'auto' }}
@@ -62,7 +54,7 @@ const PrimaryBasket = ({
   return (
     <Box {...props}>
       <Flex variant="layout.verticalAlign">
-        <Text variant="title">Primary Basket</Text>
+        <Text variant="sectionTitle">Primary Basket</Text>
         {!readOnly && (
           <SmallButton
             onClick={() => onAdd({ basket: 'primary' })}
@@ -73,14 +65,6 @@ const PrimaryBasket = ({
           </SmallButton>
         )}
       </Flex>
-      <Divider my={4} />
-      <Flex>
-        <Text sx={{ width: 140 }}>1 [RToken] =</Text>
-        <Text ml="auto">
-          {!!units.length ? getBasketComposition(basket) : '--'}
-        </Text>
-      </Flex>
-      <Divider mt={4} />
       {!units.length && <Placeholder />}
 
       {units.map((targetUnit) => (
