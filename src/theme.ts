@@ -136,8 +136,8 @@ export const theme: Theme = {
       display: 'block',
     },
     sectionTitle: {
-      fontSize: 3,
-      fontWeight: 400,
+      fontSize: 4,
+      fontWeight: 500,
       display: 'block',
     },
     contentTitle: {
