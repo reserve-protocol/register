@@ -16,15 +16,12 @@ const NavigationSidebar = () => {
       t`Primary basket`,
       t`Emergency basket`,
       t`Revenue split`,
-      t`RToken params`,
+      t`Parameters`,
     ],
     []
   )
 
-  const step2Navigation = useMemo(
-    () => [t`Governance setup`, t`Register listing`],
-    []
-  )
+  const step2Navigation = useMemo(() => [t`Governance`, t`Next steps`], [])
 
   return (
     <Box
@@ -34,20 +31,16 @@ const NavigationSidebar = () => {
         display: ['none', 'none', 'none', 'inherit'],
       }}
     >
-      <Box mb={4}>
-        <SmallButton variant="muted" onClick={() => navigate('/')}>
+      <Box my={5}>
+        <SmallButton variant="transparent" onClick={() => navigate('/')}>
           <Box variant="layout.verticalAlign">
             <ArrowLeft size={14} style={{ marginRight: 10 }} />
             <Trans>Back to "Main"</Trans>
           </Box>
         </SmallButton>
       </Box>
-      <Navigation title={t`Step 1`} sections={sections} />
-      <Navigation
-        title={t`Step 2`}
-        initialIndex={5}
-        sections={step2Navigation}
-      />
+      <Navigation title={t`Tx 1`} sections={sections} />
+      <Navigation title={t`Tx 2`} initialIndex={5} sections={step2Navigation} />
     </Box>
   )
 }
