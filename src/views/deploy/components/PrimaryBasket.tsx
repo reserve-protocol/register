@@ -23,7 +23,7 @@ const Placeholder = () => (
     py={6}
   >
     <EmptyBoxIcon />
-    <Text sx={{ fontWeight: 500, display: 'block' }}>
+    <Text sx={{ fontWeight: 500, display: 'block' }} my={2}>
       <Trans>Empty Basket</Trans>
     </Text>
     <Text variant="legend" sx={{ fontSize: 1, display: 'block' }} mb={2}>

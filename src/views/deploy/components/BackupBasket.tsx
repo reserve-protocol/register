@@ -45,7 +45,7 @@ const Placeholder = () => (
       <Divider my={3} />
       <Box sx={{ textAlign: 'center' }} py={8} px={4}>
         <EmptyBoxIcon />
-        <Text sx={{ fontWeight: 500, display: 'block' }}>
+        <Text sx={{ fontWeight: 500, display: 'block' }} my={2}>
           <Trans>Emergency Collateral</Trans>
         </Text>
         <Text variant="legend" sx={{ fontSize: 1 }}>
