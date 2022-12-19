@@ -88,10 +88,10 @@ const RevenueSplit = (props: BoxProps) => {
 
   return (
     <Card p={4} {...props}>
-      <Text ml={2} variant="title">
+      <Text ml={2} variant="sectionTitle">
         <Trans>Revenue Distribution</Trans>
       </Text>
-      <Divider my={3} />
+      <Divider my={4} mx={-4} />
       <Field label={t`% Revenue to RToken Holders`} mb={3}>
         <FieldInput
           placeholder={t`Input token holders revenue distribution`}
@@ -137,7 +137,7 @@ const RevenueSplit = (props: BoxProps) => {
         onClick={handleAddExternal}
       >
         <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
-          <Plus size={14} />
+          <Plus size={16} />
           <Text pl={2}>
             <Trans>New external destination</Trans>
           </Text>
