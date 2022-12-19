@@ -350,6 +350,11 @@ export const theme: Theme = {
       backgroundColor: 'inputBorder',
       color: 'text',
     },
+    danger: {
+      ...baseButton,
+      backgroundColor: 'inputBorder',
+      color: 'danger',
+    },
     error: {
       ...baseButton,
       '&:disabled': {

@@ -82,12 +82,7 @@ const ExternalRevenueSpit = ({
           />
         </Box>
       </Flex>
-      <SmallButton
-        mt={3}
-        sx={{ color: 'danger' }}
-        variant="muted"
-        onClick={onRemove}
-      >
+      <SmallButton mt={3} variant="danger" onClick={onRemove}>
         <Trans>Remove</Trans>
       </SmallButton>
     </Box>
