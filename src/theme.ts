@@ -402,5 +402,9 @@ export const theme: Theme = {
       display: 'flex',
       alignItems: 'center',
     },
+    sticky: {
+      position: 'sticky',
+      top: 0,
+    },
   },
 }

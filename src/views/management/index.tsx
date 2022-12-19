@@ -2,6 +2,7 @@ import { t, Trans } from '@lingui/macro'
 import { Main } from 'abis/types'
 import { InfoBox } from 'components'
 import { LoadingButton } from 'components/button'
+import Layout from 'components/rtoken-setup/Layout'
 import { ethers } from 'ethers'
 import { useMainContract } from 'hooks/useContract'
 import useRToken from 'hooks/useRToken'
@@ -22,10 +23,9 @@ import { CHAIN_ID } from 'utils/chains'
 import { RTOKEN_STATUS, TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
 import DeploymentStepTracker from 'views/deploy/components/DeployStep'
-import GovernanceHero from './components/GovernanceHero'
 import ListingInfo from './components/ListingInfo'
 
-const Management = () => {
+const _Management = () => {
   const addTransaction = useSetAtom(addTransactionAtom)
   const [unpausing, setUnpausing] = useState('')
   const [govRequired, setGovRequired] = useState(false)
@@ -96,7 +96,7 @@ const Management = () => {
       {accountRole.owner && govRequired && (
         <>
           <DeploymentStepTracker step={5} />
-          <GovernanceHero mx={5} p={5} />
+          {/* <GovernanceHero mx={5} p={5} /> */}
           <Divider my={3} sx={{ borderColor: 'darkBorder' }} />
         </>
       )}
@@ -155,6 +155,12 @@ const Management = () => {
       </Box>
     </Box>
   )
+}
+
+const NavigationSidebar = () => {}
+
+const Management = () => {
+  return <Layout></Layout>
 }
 
 export default Management
