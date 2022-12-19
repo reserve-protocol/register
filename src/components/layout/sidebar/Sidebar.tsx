@@ -6,7 +6,7 @@ import Footer from './Footer'
 
 const Container = styled(Box)`
   padding-top: 0;
-  flex-grow: 1;
+  flex-grow: 0;
   box-sizing: border-box;
   flex-direction: column;
   border-right: 1px solid var(--theme-ui-colors-darkBorder);
