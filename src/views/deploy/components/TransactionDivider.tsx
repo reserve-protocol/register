@@ -14,7 +14,7 @@ const TransactionDivider = (props: { title: string; subtitle: string }) => (
   <Box>
     <Spacer />
     <Card>
-      <Box variant="layout.verticalAlign">
+      <Box variant="layout.verticalAlign" px={2}>
         <Image src="/svgs/asterisk.svg" mr={3} />
         <InfoBox light {...props} />
       </Box>
