@@ -72,7 +72,7 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
       {!readOnly && (
         <>
           <Flex sx={{ justifyContent: 'space-between' }} mb={3} mt={4}>
-            <Text sx={{ fontWeight: 500, fontSize: 3 }}>
+            <Text variant="title">
               {unit} <Trans>Basket</Trans>
             </Text>
             <Flex sx={{ alignItems: 'center' }}>

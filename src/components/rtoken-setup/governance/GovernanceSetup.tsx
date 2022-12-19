@@ -26,29 +26,32 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
 
   return (
     <Card p={4} {...props}>
-      <Text variant="title">
+      <Text variant="sectionTitle">
         <Trans>Governance</Trans>
       </Text>
       <Divider my={4} mx={-4} />
       <Image src="/svgs/governance.svg" />
-      <Flex mb={5} variant="layout.verticalAlign">
+      <Box mb={5}>
         <Box>
-          <Text sx={{ fontWeight: 500, display: 'block' }}>
-            <Trans>Use Default Governance format?</Trans>
+          <Text variant="title" sx={{ display: 'block' }} mb={1}>
+            <Trans>Do you want to use the Alexios governor format?</Trans>
           </Text>
-          <Text variant="legend" sx={{ fontSize: 1 }}>
+          <Text variant="legend">
             <Trans>
-              The default governance structure instead of your custom setup.
+              Choose between our Alexios Governor and anything between one man
+              rule to arbitrary DAO structure under your defined Ethereum
+              address.
             </Trans>
           </Text>
         </Box>
-        <Box ml="auto">
+        <Box ml="auto" mt={3}>
           <Switch
             defaultChecked={defaultGovernance}
             {...register('defaultGovernance')}
           />
         </Box>
-      </Flex>
+      </Box>
+      <Divider my={4} mx={-4} />
       <Text variant="title" mb={4}>
         <Trans>Permissions</Trans>
       </Text>
@@ -95,6 +98,7 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
           },
         }}
       />
+      <Divider my={4} mx={-4} />
       <Text variant="title" mb={4}>
         <Trans>RToken state after transaction</Trans>
       </Text>
@@ -119,6 +123,7 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
           </Text>
         )}
       </Field>
+      <Divider my={4} mx={-4} />
       {defaultGovernance && <GovernanceParameters />}
     </Card>
   )

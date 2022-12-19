@@ -14,8 +14,8 @@ const NavigationSidebar = () => {
     () => [
       t`Intro`,
       t`Primary basket`,
-      t`Emergency basket`,
-      t`Revenue split`,
+      t`Emergency collateral`,
+      t`Revenue distribution`,
       t`Parameters`,
     ],
     []
@@ -31,7 +31,7 @@ const NavigationSidebar = () => {
         display: ['none', 'none', 'none', 'inherit'],
       }}
     >
-      <Box my={5}>
+      <Box my={6}>
         <SmallButton variant="transparent" onClick={() => navigate('/')}>
           <Box variant="layout.verticalAlign">
             <ArrowLeft size={14} style={{ marginRight: 10 }} />

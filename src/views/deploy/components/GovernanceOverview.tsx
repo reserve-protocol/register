@@ -88,9 +88,8 @@ const GovernanceStatus = () => {
   return (
     <>
       <Text variant="legend" as="p" mt={2} sx={{ textAlign: 'center' }}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ipsum dolor sit
-        amet, consectetur adipiscing elit. Sit amet, consectetur adipiscing
-        elit.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, ipsum dolor sit
+        amet.
       </Text>
       <Button
         onClick={deploy}
