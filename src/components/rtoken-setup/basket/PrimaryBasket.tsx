@@ -17,6 +17,14 @@ interface Props extends BoxProps {
   readOnly?: boolean
 }
 
+const getBasketComposition = (basket: Basket) => {
+  return Object.keys(basket)
+    .reduce((acc, unit) => {
+      return `${acc} + ${truncateDecimals(+basket[unit].scale, 5)} ${unit}`
+    }, '')
+    .substring(2)
+}
+
 const Placeholder = () => (
   <Box
     sx={{ textAlign: 'center', maxWidth: 400, margin: 'auto' }}
@@ -59,14 +67,13 @@ const PrimaryBasket = ({
           <SmallButton
             onClick={() => onAdd({ basket: 'primary' })}
             ml="auto"
-            variant="muted"
+            variant="secondary"
           >
             <Trans>Add token plugin</Trans>
           </SmallButton>
         )}
       </Flex>
       {!units.length && <Placeholder />}
-
       {units.map((targetUnit) => (
         <UnitBasket
           mt={3}
@@ -76,6 +83,13 @@ const PrimaryBasket = ({
           unit={targetUnit}
         />
       ))}
+      <Divider my={4} mx={-4} />
+      <Flex sx={{ flexDirection: 'column' }}>
+        <Text>1 Token</Text>
+        <Text variant="title">
+          = {!!units.length ? getBasketComposition(basket) : '0'}
+        </Text>
+      </Flex>
     </Box>
   )
 }
