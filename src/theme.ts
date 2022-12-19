@@ -40,7 +40,7 @@ export const baseInput = {
   borderRadius: borderRadius.inputs,
 
   '&:disabled': {
-    backgroundColor: 'secondary',
+    backgroundColor: 'border',
     borderColor: 'secondary',
     cursor: 'default',
   },
