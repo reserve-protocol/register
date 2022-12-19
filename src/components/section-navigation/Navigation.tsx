@@ -34,7 +34,7 @@ const Navigation = ({ title, sections, initialIndex = 0, ...props }: Props) => {
   return (
     <Container {...props}>
       {!!title && <Text variant="title">{title}</Text>}
-      <Box as="ul" mt={5} mr={3} p={0} sx={{ listStyle: 'none' }}>
+      <Box as="ul" mt={5} mb={6} mr={3} p={0} sx={{ listStyle: 'none' }}>
         {sections.map((item, index) => {
           const currentIndex = index + initialIndex
           const isActive = active === currentIndex
