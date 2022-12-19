@@ -49,20 +49,21 @@ const GovernanceSection = ({ enabled = true }) => (
             top: 0,
             bottom: 0,
             width: '100%',
-            backgroundColor: 'inputBorder',
-            opacity: 0.3,
+            backgroundColor: 'background',
+            opacity: '50%',
             zIndex: 9999,
           }}
         />
       )}
       <GovernanceSetup disabled={!enabled} />
-    </SectionWrapper>
-    <TransactionDivider
-      title={t`Transaction 2`}
-      subtitle={t`Governance gets deployed & your RToken is now usable (if unpaused)`}
-    />
-    <SectionWrapper navigationIndex={6} mb={4}>
-      <ListingInfo />
+
+      <TransactionDivider
+        title={t`Transaction 2`}
+        subtitle={t`Governance gets deployed & your RToken is now usable (if unpaused)`}
+      />
+      <SectionWrapper navigationIndex={6} mb={4}>
+        <ListingInfo />
+      </SectionWrapper>
     </SectionWrapper>
   </>
 )
