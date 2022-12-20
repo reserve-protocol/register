@@ -34,7 +34,7 @@ const TokenConfiguration = (props: BoxProps) => {
           <Text mx={2} variant="title" sx={{ color: 'secondaryText' }}>
             <Trans>15 params</Trans>
           </Text>
-          <SmallButton
+        <SmallButton
             ml="auto"
             variant="muted"
             onClick={() => setAdvanceConfig(!advanceConfig)}

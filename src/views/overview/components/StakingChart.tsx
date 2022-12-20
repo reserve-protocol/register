@@ -13,6 +13,7 @@ import { BoxProps } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { TIME_RANGES } from 'utils/constants'
 
+// TODO: Remove insurance reference
 const hourlyPriceQuery = gql`
   query getTokenHourlyPrice($id: String!, $fromTime: Int!) {
     rtoken(id: $id) {
@@ -35,7 +36,7 @@ const dailyPriceQuery = gql`
   }
 `
 
-const InsuranceChart = (props: BoxProps) => {
+const StakingChart = (props: BoxProps) => {
   const rToken = useRToken()
   const rsrPrice = useAtomValue(rsrPriceAtom)
   const [current, setCurrent] = useState(TIME_RANGES.MONTH)
@@ -74,7 +75,7 @@ const InsuranceChart = (props: BoxProps) => {
 
   return (
     <AreaChart
-      heading={t`Insurance`}
+      heading={t`RSR Staked`}
       title={`$${formatCurrency(currentValue)}`}
       data={rows}
       timeRange={TIME_RANGES}
@@ -85,4 +86,4 @@ const InsuranceChart = (props: BoxProps) => {
   )
 }
 
-export default InsuranceChart
+export default StakingChart

@@ -8,24 +8,22 @@ const NavigationSidebar = () => {
   // TODO: Listen for lang
   const sections = useMemo(
     () => [
-      t`Intro`,
       t`Primary basket`,
-      t`Emergency collateral`,
-      t`Revenue distribution`,
-      t`Parameters`,
+      t`Emergency basket`,
+      t`Revenue share`,
+      t`RToken Details`,
+      t`Governance`,
+      t`Contract Addresses`,
     ],
     []
   )
-
-  const step2Navigation = useMemo(() => [t`Governance`, t`Next steps`], [])
 
   return (
     <Box variant="layout.sticky">
       <Box mb={4}>
         <BackButton />
       </Box>
-      <Navigation title={t`Tx 1`} sections={sections} />
-      <Navigation title={t`Tx 2`} initialIndex={5} sections={step2Navigation} />
+      <Navigation title={t`Navigation`} sections={sections} />
     </Box>
   )
 }

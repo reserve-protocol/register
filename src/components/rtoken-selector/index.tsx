@@ -1,14 +1,16 @@
 import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
+import { SmallButton } from 'components/button'
 import Popup from 'components/popup'
 import TokenItem from 'components/token-item'
 import { atom, useAtom, useAtomValue } from 'jotai'
+import { useUpdateAtom } from 'jotai/utils'
 import { memo, useCallback, useMemo, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import { accountRTokensAtom, rTokenAtom, selectedRTokenAtom } from 'state/atoms'
 import { transition } from 'theme'
-import { Box, BoxProps, Flex, Text } from 'theme-ui'
+import { Box, BoxProps, Divider, Flex, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { DEFAULT_TOKENS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
@@ -61,38 +63,49 @@ const availableTokensAtom = atom((get) => {
 const ActionItem = styled(Flex)`
   transition: ${transition};
   padding: 16px;
-  border-bottom: 1px solid var(--theme-ui-colors-border);
   cursor: pointer;
-
-  &:first-of-type {
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-  }
-
-  &:last-of-type {
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border-bottom: none;
-  }
 
   &:hover {
     background-color: var(--theme-ui-colors-secondary);
   }
 `
 
-const TokenList = memo(({ onSelect }: { onSelect(address: string): void }) => {
-  const tokens = useAtomValue(availableTokensAtom)
+const TokenList = memo(
+  ({
+    onSelect,
+    onHome,
+  }: {
+    onSelect(address: string): void
+    onHome(): void
+  }) => {
+    const tokens = useAtomValue(availableTokensAtom)
 
-  return (
-    <Box sx={{ maxHeight: 320, overflow: 'auto' }}>
-      {Object.values(tokens).map(({ address, logo, symbol }) => (
-        <ActionItem key={address} onClick={() => onSelect(address)}>
-          <TokenItem symbol={symbol} logo={logo} />
-        </ActionItem>
-      ))}
-    </Box>
-  )
-})
+    return (
+      <Box
+        sx={{
+          maxHeight: 320,
+          overflow: 'auto',
+          backgroundColor: 'contentBackground',
+          borderRadius: '8px',
+        }}
+      >
+        <Box p={3}>
+          <SmallButton variant="muted" onClick={onHome}>
+            <Trans>Go to Dashboard</Trans>
+          </SmallButton>
+        </Box>
+        {!!Object.values(tokens).length && (
+          <Divider sx={{ border: 'darkBorder' }} my={0} />
+        )}
+        {Object.values(tokens).map(({ address, logo, symbol }) => (
+          <ActionItem key={address} onClick={() => onSelect(address)}>
+            <TokenItem symbol={symbol} logo={logo} />
+          </ActionItem>
+        ))}
+      </Box>
+    )
+  }
+)
 
 const SelectedToken = () => {
   const selectedAddress = useAtomValue(selectedRTokenAtom)
@@ -137,6 +150,7 @@ const RTokenSelector = (props: BoxProps) => {
   const navigate = useNavigate()
   const [isVisible, setVisible] = useState(false)
   const [selected, setSelected] = useAtom(selectedRTokenAtom)
+  const updateToken = useUpdateAtom(selectedRTokenAtom)
 
   const handleSelect = useCallback(
     (token: string) => {
@@ -149,11 +163,17 @@ const RTokenSelector = (props: BoxProps) => {
     [setSelected, selected]
   )
 
+  const handleHome = useCallback(() => {
+    updateToken('')
+    navigate('/')
+    setVisible(false)
+  }, [setVisible, updateToken, navigate])
+
   return (
     <Popup
       show={isVisible}
       onDismiss={() => setVisible(false)}
-      content={<TokenList onSelect={handleSelect} />}
+      content={<TokenList onSelect={handleSelect} onHome={handleHome} />}
     >
       <Flex
         {...props}

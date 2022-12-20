@@ -74,10 +74,10 @@ export const rTokenCollateralDist = atom<{
 // Get rToken collateral distribution
 export const rTokenDistributionAtom = atom<{
   backing: number
-  insurance: number
+  staked: number
 }>({
   backing: 0,
-  insurance: 0,
+  staked: 0,
 })
 
 /**

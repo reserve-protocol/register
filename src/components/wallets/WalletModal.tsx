@@ -2,7 +2,6 @@ import { t, Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
 import SelectedIcon from 'components/icons/SelectedIcon'
 import Modal from 'components/modal'
-import { useAtom } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
 import { useState } from 'react'
 import { ChevronRight } from 'react-feather'
@@ -15,7 +14,7 @@ import {
   getConnectorType,
   metaMask,
   walletConnect,
-  WalletConnector,
+  WalletConnector
 } from './connectors'
 import coinbaseLogo from './imgs/coinbase.png'
 import metamaskLogo from './imgs/metamask.png'

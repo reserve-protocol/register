@@ -34,8 +34,8 @@ const TokenOverview = ({ metrics, ...props }: Props) => {
           />
           {!rToken?.isRSV && (
             <InfoHeading
-              title={t`Insurance Pool`}
-              subtitle={metrics.insuranceUsd}
+              title={t`RSR Staked Pool`}
+              subtitle={metrics.stakedUsd}
             />
           )}
         </Box>

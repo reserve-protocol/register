@@ -88,7 +88,7 @@ const AssetOverview = () => {
             data={pieData}
             logo={rToken?.logo ?? ''}
             isRSV={rToken?.isRSV}
-            insurance={distribution.insurance}
+            staked={distribution.staked}
           />
           <Text variant="legend">
             <Trans>Backing</Trans>
@@ -98,9 +98,9 @@ const AssetOverview = () => {
           </Text>
           {!rToken?.isRSV && (
             <Text variant="legend">
-              <Trans>Insurance coverage</Trans>
+              <Trans>Staked RSR coverage</Trans>
               <Box as="span" ml={2} sx={{ fontWeight: 'bold', color: 'text' }}>
-                {distribution.insurance}%
+                {distribution.staked}%
               </Box>
             </Text>
           )}

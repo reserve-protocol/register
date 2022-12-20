@@ -7,7 +7,10 @@ import { Box, BoxProps } from 'theme-ui'
  * @returns
  */
 const Container = ({ sx = {}, ...props }: BoxProps) => (
-  <Box sx={{ boxSizing: 'border-box', padding: [4, 5], ...sx }} {...props} />
+  <Box
+    sx={{ boxSizing: 'border-box', flexShrink: 0, padding: [4, 5], ...sx }}
+    {...props}
+  />
 )
 
 export default Container

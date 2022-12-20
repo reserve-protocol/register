@@ -1,6 +1,6 @@
 import useRToken from 'hooks/useRToken'
 import { BoxProps, Card } from 'theme-ui'
-import InsuranceChart from './InsuranceChart'
+import StakingChart from './StakingChart'
 import PriceChart from './PriceChart'
 import SupplyChart from './SupplyChart'
 
@@ -11,7 +11,7 @@ const HistoricalData = (props: BoxProps) => {
     <Card {...props} p={5} sx={{ backgroundColor: 'contentLightBackground' }}>
       <PriceChart mb={5} />
       <SupplyChart />
-      {!rToken?.isRSV && <InsuranceChart mt={5} />}
+      {!rToken?.isRSV && <StakingChart mt={5} />}
     </Card>
   )
 }

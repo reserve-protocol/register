@@ -33,7 +33,7 @@ export const TIME_RANGE_VALUE: { [x: string]: number } = {
 
 export const ROUTES = Object.freeze({
   OVERVIEW: '/overview',
-  INSURANCE: '/insurance',
+  STAKING: '/staking',
   ISSUANCE: '/issuance',
   STAKING_CALCULATOR: '/staking-calculator',
   AUCTIONS: '/auctions',

@@ -25,12 +25,13 @@ export const defaultProtocolMetrics = {
   totalRTokenUSD: '$0',
   cumulativeVolumeUSD: '$0',
   cumulativeRTokenRevenueUSD: '$0',
-  cumulativeInsuranceRevenueUSD: '$0',
+  cumulativeStakingRevenueUSD: '$0',
   transactionCount: '0',
   dailyTransactionCount: '0',
   dailyVolume: '$0',
 }
 
+// TODO: Remove insurance term from subgraph
 const protocolMetricsQuery = gql`
   query GetProtocolMetrics($id: String!, $fromTime: Int!) {
     token(id: "0x196f4727526ea7fb1e17b2071b3d8eaa38486988") {
@@ -101,7 +102,8 @@ const TokenStats = (props: BoxProps) => {
         cumulativeRTokenRevenueUSD: `$${formatCurrency(
           +data.protocol?.cumulativeRTokenRevenueUSD || 0
         )}`,
-        cumulativeInsuranceRevenueUSD: `$${formatCurrency(
+        // TODO: Remove insurance
+        cumulativeStakingRevenueUSD: `$${formatCurrency(
           +data.protocol?.cumulativeInsuranceRevenueUSD || 0
         )}`,
         transactionCount: formatCurrency(
@@ -154,7 +156,7 @@ const TokenStats = (props: BoxProps) => {
             />
             <InfoHeading
               title={t`Cumulative - Staked RSR income`}
-              subtitle={metrics.cumulativeInsuranceRevenueUSD}
+              subtitle={metrics.cumulativeStakingRevenueUSD}
             />
           </Box>
         </Grid>

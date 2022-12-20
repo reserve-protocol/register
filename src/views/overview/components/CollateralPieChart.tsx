@@ -4,7 +4,7 @@ import { Box, BoxProps } from 'theme-ui'
 
 interface ChartProps extends BoxProps {
   data: { name: string; value: number; color: string }[]
-  insurance: number
+  staked: number
   isRSV?: boolean
   logo: string
 }
@@ -19,7 +19,7 @@ const CollateralChart = ({
   data,
   logo,
   isRSV,
-  insurance,
+  staked,
   ...props
 }: ChartProps) => (
   <Box {...props} sx={{ position: 'relative' }}>
@@ -50,13 +50,13 @@ const CollateralChart = ({
         {!isRSV && (
           <Pie
             dataKey="value"
-            data={[{ value: insurance, name: 'insurance' }]}
+            data={[{ value: staked, name: 'staked' }]}
             cx="50%"
             cy="50%"
             innerRadius={90}
             outerRadius={100}
             fill="#000000"
-            {...getAngles(insurance)}
+            {...getAngles(staked)}
           />
         )}
       </PieChart>

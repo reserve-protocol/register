@@ -354,6 +354,11 @@ export const theme: Theme = {
       backgroundColor: 'inputBorder',
       color: 'text',
     },
+    danger: {
+      ...baseButton,
+      backgroundColor: 'inputBorder',
+      color: 'danger',
+    },
     error: {
       ...baseButton,
       '&:disabled': {
@@ -405,6 +410,10 @@ export const theme: Theme = {
     verticalAlign: {
       display: 'flex',
       alignItems: 'center',
+    },
+    sticky: {
+      position: 'sticky',
+      top: 0,
     },
   },
 }
