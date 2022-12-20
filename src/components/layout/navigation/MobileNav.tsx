@@ -15,7 +15,7 @@ const items = [
   { path: ROUTES.HOME, Icon: HomeIcon },
   { path: ROUTES.OVERVIEW, Icon: OverviewIcon },
   { path: ROUTES.ISSUANCE, Icon: IssuanceIcon },
-  { path: ROUTES.INSURANCE, Icon: StakeIcon },
+  { path: ROUTES.STAKING, Icon: StakeIcon },
 ]
 
 const MobileNav = () => {

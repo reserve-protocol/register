@@ -8,7 +8,6 @@ export interface RTokenMetrics {
   rsrPriceUSD: number
   rsrPriceLastBlock: number
   rsrExchangeRate: number
-  insurance: number
   rsrStaked: number
   rsrUnstaked: number
   basketUnits: number
@@ -27,12 +26,12 @@ export interface TokenMetrics {
 }
 
 export interface ProtocolMetrics {
-  insurance: number
-  insuranceUSD: number
+  staked: number
+  stakedUSD: number
   totalValueLockedUSD: number
   cumulativeVolumeUSD: number
   cumulativeRTokenRevenueUSD: number
-  cumulativeInsuranceRevenueUSD: number
+  cumulativeStakingRevenueUSD: number
   cumulativeTotalRevenueUSD: number
   cumulativeUniqueUsers: number
   rsrStaked: number
@@ -49,7 +48,6 @@ export const defaultRTokenMetrics: RTokenMetrics = {
   rsrPriceUSD: 0,
   rsrPriceLastBlock: 0,
   rsrExchangeRate: 0,
-  insurance: 0,
   rsrStaked: 0,
   rsrUnstaked: 0,
   basketUnits: 0,
@@ -68,12 +66,12 @@ export const defaultTokenMetrics: TokenMetrics = {
 }
 
 export const defaultProtocolMetrics: ProtocolMetrics = {
-  insurance: 0,
-  insuranceUSD: 0,
+  staked: 0,
+  stakedUSD: 0,
   totalValueLockedUSD: 0,
   cumulativeVolumeUSD: 0,
   cumulativeRTokenRevenueUSD: 0,
-  cumulativeInsuranceRevenueUSD: 0,
+  cumulativeStakingRevenueUSD: 0,
   cumulativeTotalRevenueUSD: 0,
   cumulativeUniqueUsers: 0,
   rsrStaked: 0,
@@ -89,8 +87,8 @@ export const rTokenMetricsAtom = atom<RTokenMetrics>(defaultRTokenMetrics)
 export const protocolMetricsAtom = atom<ProtocolMetrics>(defaultProtocolMetrics)
 
 export const tokenMetricsAtom = atomWithReset<TokenStats>({
-  insurance: 0,
-  insuranceUsd: '$0',
+  staked: 0,
+  stakedUsd: '$0',
   supply: 0,
   supplyUsd: '$0',
   cumulativeVolume: 0,

@@ -189,8 +189,8 @@ export interface AccountPosition {
 }
 
 export interface TokenStats {
-  insurance: number
-  insuranceUsd: string
+  staked: number
+  stakedUsd: string
   supply: number
   supplyUsd: string
   cumulativeVolume: number

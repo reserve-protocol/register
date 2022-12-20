@@ -64,7 +64,7 @@
     "build": "react-scripts build",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "test": "react-scripts test",
-    "translations": "lingui extract && lingui compile"
+    "translations": "lingui extract --clean && lingui compile"
   },
   "browserslist": {
     "production": [

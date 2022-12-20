@@ -63,12 +63,12 @@ const Stats = (props: BoxProps) => {
         </Box>
         <Box p={4} sx={{ borderRight: '1px solid', borderColor: 'darkBorder' }}>
           <Text variant="subtitle" mb={3}>
-            <Trans>Backing + Insurance</Trans>
+            <Trans>Backing + Staked</Trans>
           </Text>
           <IconInfo
-            icon={<Image src="/svgs/insurance.svg" />}
+            icon={<Image src="/svgs/staked.svg" />}
             title="Current"
-            text={`${distribution.backing + distribution.insurance}%`}
+            text={`${distribution.backing + distribution.staked}%`}
           />
         </Box>
       </Grid>
@@ -110,7 +110,7 @@ const About = (props: BoxProps) => (
       <Trans>
         When you unstake your stRSR, there will be a delay (defined by
         governance). This is to eliminate game theory scenarios that would make
-        the backstop insurance pool less effective because people would
+        the backstop RSR staked pool less effective because people would
         continually be incentivized to unstake and restake.
       </Trans>
     </Text>

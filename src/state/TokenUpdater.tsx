@@ -211,7 +211,8 @@ const ReserveTokenUpdater = () => {
           args: [tokenAddress],
         }
 
-        const [{ erc20s, uoaShares, targets }, { backing, insurance }] =
+        // TODO: Remove insurance term from theGraph
+        const [{ erc20s, uoaShares, targets }, { backing, insurance: staked }] =
           await promiseMulticall(
             [
               {
@@ -228,7 +229,7 @@ const ReserveTokenUpdater = () => {
 
         setDistribution({
           backing: Math.ceil(Number(formatEther(backing)) * 100),
-          insurance: Math.ceil(Number(formatEther(insurance)) * 100),
+          staked: Math.ceil(Number(formatEther(staked)) * 100),
         })
         setCollateralDist(
           erc20s.reduce(
