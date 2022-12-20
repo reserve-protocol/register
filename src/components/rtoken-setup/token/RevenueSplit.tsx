@@ -1,5 +1,5 @@
 import { t, Trans } from '@lingui/macro'
-import Button from 'components/button'
+import { SmallButton } from 'components/button'
 import Field, { FieldInput, getErrorMessage } from 'components/field'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useUpdateAtom } from 'jotai/utils'
@@ -130,19 +130,14 @@ const RevenueSplit = (props: BoxProps) => {
           </Text>
         </Box>
       )}
-      <Button
-        mt={5}
-        variant="muted"
-        sx={{ width: '100%' }}
-        onClick={handleAddExternal}
-      >
+      <SmallButton variant="muted" mt={5} onClick={handleAddExternal}>
         <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
           <Plus size={16} />
           <Text pl={2}>
             <Trans>New external destination</Trans>
           </Text>
         </Flex>
-      </Button>
+      </SmallButton>
     </Card>
   )
 }
