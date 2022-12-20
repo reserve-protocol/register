@@ -3,7 +3,7 @@ import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import dayjs from 'dayjs'
 import { atom, useAtomValue } from 'jotai'
-import { useUpdateAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import { ArrowUpRight, Check, EyeOff, X } from 'react-feather'
 import { Link as RouterLink } from 'react-router-dom'
 import { currentTxAtom, updateTransactionAtom } from 'state/atoms'
@@ -46,7 +46,7 @@ const TransactionStatus = ({
   tx: TransactionState
   index: number
 }) => {
-  const updateTx = useUpdateAtom(updateTransactionAtom)
+  const updateTx = useSetAtom(updateTransactionAtom)
 
   const handleUntrack = () => {
     updateTx([index, { ...tx, status: TRANSACTION_STATUS.UNKNOWN }])

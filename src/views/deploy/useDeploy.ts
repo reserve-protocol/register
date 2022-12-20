@@ -1,8 +1,8 @@
+import { atomWithReset } from 'jotai/utils'
 import { t } from '@lingui/macro'
 import useDebounce from 'hooks/useDebounce'
 import useTransactionCost from 'hooks/useTransactionCost'
-import { useSetAtom } from 'jotai'
-import { atomWithReset, useAtomValue, useUpdateAtom } from 'jotai/utils'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useMemo } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { addTransactionAtom } from 'state/atoms'
@@ -76,7 +76,7 @@ export const useDeployTxState = () => {
 const useDeploy = () => {
   const tx = useDeployTx()
   const debouncedTx = useDebounce(tx, 100)
-  const setTxId = useUpdateAtom(deployIdAtom)
+  const setTxId = useSetAtom(deployIdAtom)
   const addTransaction = useSetAtom(addTransactionAtom)
   const [fee, gasError, gasLimit] = useTransactionCost(
     debouncedTx ? [debouncedTx] : [] // use debounceTx to avoid too many requests

@@ -1,5 +1,5 @@
 import { atom } from 'jotai'
-import { useUpdateAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { Box, BoxProps } from 'theme-ui'
@@ -26,7 +26,7 @@ const updateSectionAtom = atom(null, (get, set, section: [boolean, number]) => {
 
 const SectionWrapper = ({ navigationIndex, ...props }: Props) => {
   const { ref, inView } = useInView({ threshold: 0.8 })
-  const updateNavigationIndex = useUpdateAtom(updateSectionAtom)
+  const updateNavigationIndex = useSetAtom(updateSectionAtom)
 
   useEffect(() => {
     updateNavigationIndex([inView, navigationIndex])

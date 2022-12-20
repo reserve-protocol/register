@@ -4,7 +4,7 @@ import Button from 'components/button'
 import CopyValue from 'components/button/CopyValue'
 import GoTo from 'components/button/GoTo'
 import WalletIcon from 'components/icons/WalletIcon'
-import { useUpdateAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import { useCallback } from 'react'
 import { ChevronDown, X } from 'react-feather'
 import { isWalletModalVisibleAtom } from 'state/atoms'
@@ -14,8 +14,8 @@ import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { txSidebarToggleAtom } from './atoms'
 
 const TransactionHeader = () => {
-  const setSidebar = useUpdateAtom(txSidebarToggleAtom)
-  const setWalletModal = useUpdateAtom(isWalletModalVisibleAtom)
+  const setSidebar = useSetAtom(txSidebarToggleAtom)
+  const setWalletModal = useSetAtom(isWalletModalVisibleAtom)
   const { ENSName, account } = useWeb3React()
 
   const handleChangeWallet = useCallback(() => {

@@ -3,7 +3,7 @@ import { Trans } from '@lingui/macro'
 import { InfoBox } from 'components'
 import CopyValue from 'components/button/CopyValue'
 import GoTo from 'components/button/GoTo'
-import { useUpdateAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { selectedRTokenAtom } from 'state/atoms'
@@ -27,7 +27,7 @@ const Container = styled(Box)`
 `
 
 const DeployStatus = () => {
-  const setRToken = useUpdateAtom(selectedRTokenAtom)
+  const setRToken = useSetAtom(selectedRTokenAtom)
   const { fee, deploy, isValid } = useDeploy()
   const tx = useDeployTxState()
 

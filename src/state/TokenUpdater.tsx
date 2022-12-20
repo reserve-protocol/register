@@ -12,8 +12,8 @@ import { gql } from 'graphql-request'
 import useBlockNumber from 'hooks/useBlockNumber'
 import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import useQuery from 'hooks/useQuery'
-import { atom, useAtom, useAtomValue } from 'jotai'
-import { useResetAtom, useUpdateAtom } from 'jotai/utils'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useResetAtom } from 'jotai/utils'
 import { useCallback, useEffect, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { ContractCall, ReserveToken, Token } from 'types'
@@ -145,13 +145,13 @@ const ReserveTokenUpdater = () => {
   const blockNumber = useBlockNumber()
   const windowVisible = useIsWindowVisible()
   const mainAddress = useAtomValue(rTokenMainAtom)
-  const updateApy = useUpdateAtom(rTokenYieldAtom)
-  const updateTokenStatus = useUpdateAtom(rTokenStatusAtom)
-  const updateToken = useUpdateAtom(updateTokenAtom)
+  const updateApy = useSetAtom(rTokenYieldAtom)
+  const updateTokenStatus = useSetAtom(rTokenStatusAtom)
+  const updateToken = useSetAtom(updateTokenAtom)
   const resetMetrics = useResetAtom(tokenMetricsAtom)
-  const updateAccountRole = useUpdateAtom(accountRoleAtom)
-  const setDistribution = useUpdateAtom(rTokenDistributionAtom)
-  const setCollateralDist = useUpdateAtom(rTokenCollateralDist)
+  const updateAccountRole = useSetAtom(accountRoleAtom)
+  const setDistribution = useSetAtom(rTokenDistributionAtom)
+  const setCollateralDist = useSetAtom(rTokenCollateralDist)
   const [searchParams] = useSearchParams()
   const currentAddress = searchParams.get('token')
   const account = useAtomValue(walletAtom)

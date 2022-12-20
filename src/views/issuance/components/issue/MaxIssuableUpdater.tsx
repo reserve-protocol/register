@@ -2,7 +2,7 @@ import { formatEther } from '@ethersproject/units'
 import { Facade } from 'abis/types'
 import { useFacadeContract } from 'hooks/useContract'
 import { useAtomValue } from 'jotai'
-import { useUpdateAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import { balancesAtom, chainIdAtom, rTokenAtom, walletAtom } from 'state/atoms'
 import { getIssuable } from 'utils/rsv'
@@ -15,7 +15,7 @@ import { maxIssuableAtom } from 'views/issuance/atoms'
 const MaxIssuableUpdater = () => {
   const rToken = useAtomValue(rTokenAtom)
   const tokenBalances = useAtomValue(balancesAtom)
-  const setMaxIssuable = useUpdateAtom(maxIssuableAtom)
+  const setMaxIssuable = useSetAtom(maxIssuableAtom)
   const account = useAtomValue(walletAtom)
   const chainId = useAtomValue(chainIdAtom)
   const facadeContract = useFacadeContract()

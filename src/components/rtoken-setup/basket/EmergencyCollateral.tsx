@@ -17,7 +17,7 @@ import { t, Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import Help from 'components/help'
 import SortableItem from 'components/sortable/SortableItem'
-import { useUpdateAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import { useMemo } from 'react'
 import { Move, X } from 'react-feather'
 import {
@@ -52,7 +52,7 @@ const EmergencyCollateral = ({
   onAdd,
   ...props
 }: Props) => {
-  const updateBasket = useUpdateAtom(updateBackupBasketUnitAtom)
+  const updateBasket = useSetAtom(updateBackupBasketUnitAtom)
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {

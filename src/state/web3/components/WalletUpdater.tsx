@@ -1,7 +1,7 @@
 import { useWeb3React } from '@web3-react/core'
 import { Connector } from '@web3-react/types'
 import { metaMask, network } from 'components/wallets/connectors'
-import { useUpdateAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { walletAtom } from 'state/atoms'
 
@@ -19,7 +19,7 @@ const connect = async (connector: Connector) => {
 
 const WalletUpdater = () => {
   const { account } = useWeb3React()
-  const setConnected = useUpdateAtom(walletAtom)
+  const setConnected = useSetAtom(walletAtom)
 
   // TODO: Perfect place to program wallet popups
   useEffect(() => {

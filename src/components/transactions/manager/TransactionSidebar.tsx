@@ -1,12 +1,12 @@
 import Portal from '@reach/portal'
-import { useUpdateAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import { Box, Flex } from 'theme-ui'
 import { txSidebarToggleAtom } from './atoms'
 import TransactionHeader from './TransactionHeader'
 import TransactionList from './TransactionList'
 
 const Container = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
-  const setSidebar = useUpdateAtom(txSidebarToggleAtom)
+  const setSidebar = useSetAtom(txSidebarToggleAtom)
 
   return (
     <Portal>

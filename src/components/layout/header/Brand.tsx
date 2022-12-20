@@ -1,12 +1,12 @@
 import Logo, { SmallLogo } from 'components/icons/Logo'
-import { useUpdateAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import { useNavigate } from 'react-router-dom'
 import { selectedRTokenAtom } from 'state/atoms'
 import { Box, BoxProps, Flex } from 'theme-ui'
 
 const Brand = (props: BoxProps) => {
   const navigate = useNavigate()
-  const updateToken = useUpdateAtom(selectedRTokenAtom)
+  const updateToken = useSetAtom(selectedRTokenAtom)
 
   const handleClick = () => {
     updateToken('')

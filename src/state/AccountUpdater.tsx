@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { gql } from 'graphql-request'
 import useBlockNumber from 'hooks/useBlockNumber'
 import useQuery from 'hooks/useQuery'
-import { useAtomValue, useUpdateAtom } from 'jotai/utils'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { AccountPosition, AccountToken } from 'types'
 import { calculateApy } from 'utils'
@@ -83,10 +83,10 @@ const AccountUpdater = () => {
   const fromTime = useMemo(() => {
     return timestamp - 2592000
   }, [!!timestamp])
-  const updateTokens = useUpdateAtom(accountTokensAtom)
-  const updatePositions = useUpdateAtom(accountPositionsAtom)
-  const updateHoldings = useUpdateAtom(accountHoldingsAtom)
-  const updateAccountTokens = useUpdateAtom(accountRTokensAtom)
+  const updateTokens = useSetAtom(accountTokensAtom)
+  const updatePositions = useSetAtom(accountPositionsAtom)
+  const updateHoldings = useSetAtom(accountHoldingsAtom)
+  const updateAccountTokens = useSetAtom(accountRTokensAtom)
 
   // TODO: poll from blockNumber
   const { data, error, mutate, isValidating } = useQuery(
@@ -117,7 +117,7 @@ const AccountUpdater = () => {
         let stakingApy = 0
         const recentRate = rToken?.rToken?.recentRate[0]
         const lastRate = rToken?.rToken?.lastRate[0]
-        
+
         if (
           recentRate &&
           lastRate &&
