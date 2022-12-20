@@ -78,7 +78,6 @@ const Navigation = () => {
   const isManager = useAtomValue(isManagerAtom)
   const PAGES = useMemo(() => {
     const items = [
-      { path: ROUTES.HOME, title: t`Home`, Icon: HomeIcon },
       { path: ROUTES.OVERVIEW, title: t`Overview`, Icon: OverviewIcon },
       { path: ROUTES.ISSUANCE, title: t`Mint + Redeem`, Icon: IssuanceIcon },
       { path: ROUTES.STAKING, title: t`Stake + Unstake`, Icon: StakeIcon },
@@ -117,10 +116,10 @@ const Navigation = () => {
       currentToken?.symbol && currentToken.symbol.length > 8
         ? `${currentToken.symbol.substring(0, 8)}...`
         : currentToken?.symbol
-    PAGES[1].title = `${tokenSymbol || ''} Overview`
+    PAGES[0].title = `${tokenSymbol || ''} Overview`
 
     if (currentToken?.isRSV) {
-      return [...PAGES.slice(0, 3)]
+      return [...PAGES.slice(0, 2)]
     }
 
     return PAGES

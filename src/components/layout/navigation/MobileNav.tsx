@@ -1,4 +1,3 @@
-import HomeIcon from 'components/icons/HomeIcon'
 import IssuanceIcon from 'components/icons/IssuanceIcon'
 import OverviewIcon from 'components/icons/OverviewIcon'
 import StakeIcon from 'components/icons/StakeIcon'
@@ -12,7 +11,6 @@ import { Box } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 
 const items = [
-  { path: ROUTES.HOME, Icon: HomeIcon },
   { path: ROUTES.OVERVIEW, Icon: OverviewIcon },
   { path: ROUTES.ISSUANCE, Icon: IssuanceIcon },
   { path: ROUTES.STAKING, Icon: StakeIcon },
