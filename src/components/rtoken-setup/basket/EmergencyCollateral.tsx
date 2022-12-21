@@ -117,7 +117,7 @@ const EmergencyCollateral = ({
           <SmallButton
             onClick={() => onAdd(targetUnit)}
             ml="auto"
-            variant="secondary"
+            variant="primary"
           >
             <Trans>Add token plugin</Trans>
           </SmallButton>

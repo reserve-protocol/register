@@ -32,7 +32,7 @@ const Placeholder = () => (
     py={6}
   >
     <EmptyBoxIcon />
-    <Text variant="strong">
+    <Text variant="strong" my={2}>
       <Trans>Empty Basket</Trans>
     </Text>
     <Text variant="legend" as="p" sx={{ fontSize: 1 }} mb={2}>
@@ -67,7 +67,7 @@ const PrimaryBasket = ({
           <SmallButton
             onClick={() => onAdd({ basket: 'primary' })}
             ml="auto"
-            variant="secondary"
+            variant="primary"
           >
             <Trans>Add token plugin</Trans>
           </SmallButton>
