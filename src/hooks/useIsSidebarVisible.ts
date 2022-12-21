@@ -14,7 +14,6 @@ const useIsSidebarVisible = () => {
 
   if (
     pathname.indexOf(ROUTES.DEPLOY) !== -1 ||
-    pathname.indexOf(ROUTES.MANAGEMENT) !== -1 ||
     pathname.toLowerCase() === ROUTES.GOVERNANCE ||
     !selectedToken
   ) {

@@ -16,6 +16,7 @@ interface Item {
   path: string
   title: string
   Icon: React.ElementType
+  collapsed?: boolean
 }
 
 interface NavItemProps extends Item, Omit<NavLinkProps, 'title'> {
@@ -23,20 +24,23 @@ interface NavItemProps extends Item, Omit<NavLinkProps, 'title'> {
   to?: any
 }
 
-const MenuItem = ({ title, Icon }: Omit<Item, 'path'>) => {
+const MenuItem = ({ title, Icon, collapsed }: Omit<Item, 'path'>) => {
   return (
     <Box
       sx={{
         display: 'flex',
         flexGrow: 1,
         alignItems: 'center',
-        paddingLeft: [0, 0, 4],
-        justifyContent: ['center', 'center', 'inherit'],
+        paddingLeft: collapsed ? 0 : [0, 0, 4],
+        justifyContent: collapsed ? 'center' : ['center', 'center', 'inherit'],
       }}
       my={[10, 10, 10]}
     >
       <Icon />
-      <Text sx={{ display: ['none', 'none', 'inherit'] }} ml={3}>
+      <Text
+        sx={{ display: collapsed ? 'none' : ['none', 'none', 'inherit'] }}
+        ml={3}
+      >
         {title}
       </Text>
     </Box>
@@ -48,6 +52,7 @@ const NavItem = ({
   title,
   Icon,
   rTokenAddress,
+  collapsed,
   ...props
 }: NavItemProps) => (
   <NavLink
@@ -65,12 +70,12 @@ const NavItem = ({
     to={`${path}?token=${rTokenAddress}`}
     {...props}
   >
-    <MenuItem title={title} Icon={Icon} />
+    <MenuItem title={title} Icon={Icon} collapsed={collapsed} />
   </NavLink>
 )
 
 // Sidebar Navigation
-const Navigation = () => {
+const Navigation = ({ collapsed = false }) => {
   const currentToken = useRToken()
   const PAGES = useMemo(() => {
     const items = [
@@ -118,6 +123,7 @@ const Navigation = () => {
         <NavItem
           key={item.path}
           {...item}
+          collapsed={collapsed}
           rTokenAddress={currentToken?.address ?? ''}
         />
       ))}
@@ -128,7 +134,7 @@ const Navigation = () => {
             variant="legend"
             sx={{
               fontSize: 1,
-              display: ['none', 'none', 'block'],
+              display: collapsed ? 'none' : ['none', 'none', 'block'],
               paddingLeft: 5,
               marginTop: 3,
               marginBottom: 2,
@@ -150,7 +156,7 @@ const Navigation = () => {
                 color: 'inherit',
               }}
             >
-              <MenuItem {...item} />
+              <MenuItem {...item} collapsed={collapsed} />
             </Link>
           ))}
         </>

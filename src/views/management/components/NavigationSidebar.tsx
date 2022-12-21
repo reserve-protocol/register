@@ -20,9 +20,6 @@ const NavigationSidebar = () => {
 
   return (
     <Box variant="layout.sticky">
-      <Box mb={4}>
-        <BackButton />
-      </Box>
       <Navigation title={t`Navigation`} sections={sections} />
     </Box>
   )
