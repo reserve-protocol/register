@@ -87,7 +87,7 @@ const Navigation = () => {
     if (isManager) {
       items.push({
         path: ROUTES.MANAGEMENT,
-        title: t`Manager`,
+        title: t`Settings`,
         Icon: ManagerIcon,
       })
     }
