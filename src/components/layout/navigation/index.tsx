@@ -36,7 +36,7 @@ const MenuItem = ({ title, Icon }: Omit<Item, 'path'>) => {
         paddingLeft: [0, 0, 4],
         justifyContent: ['center', 'center', 'inherit'],
       }}
-      my={[10, 10, 10]}
+      my={[10, 10, 12]}
     >
       <Icon />
       <Text sx={{ display: ['none', 'none', 'inherit'] }} ml={3}>
@@ -57,7 +57,7 @@ const NavItem = ({
     style={({ isActive }) => ({
       paddingLeft: '5px',
       textDecoration: 'none',
-      opacity: isActive ? '100%' : '80%',
+      opacity: isActive ? '1' : '0.8',
       color: 'inherit',
       lineHeight: '32px',
       boxShadow: isActive
@@ -126,7 +126,7 @@ const Navigation = () => {
   }, [currentToken])
 
   return (
-    <Box mt={5}>
+    <Box mt={3}>
       {pages.map((item) => (
         <NavItem
           key={item.path}

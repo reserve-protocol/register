@@ -83,11 +83,12 @@ export const colors = {
   modalOverlay: 'rgb(0, 0, 0, 0.2)',
   modes: {
     dark: {
-      text: '#fff',
+      text: '#D6D6D6',
       boldText: '#fff',
       background: '#000',
       secondary: '#191919',
       disabled: '#2E3331',
+      accentAction: '#fff',
       border: '#ffffff0d',
       inputBorder: '#2E3331',
       darkBorder: '#131614', // TODO
@@ -95,7 +96,7 @@ export const colors = {
       lightBackground: '#1A1A1A',
       contentLightBackground: '#090909',
       secondaryBackground: '#202128',
-      primary: '#008060',
+      primary: '#4C3121',
       bgCard: '#FBFDFE',
       modalOverlay: 'rgb(100, 100, 100, 0.35)',
     },
