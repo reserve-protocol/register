@@ -1,6 +1,5 @@
-import { Trans } from '@lingui/macro'
 import { Container } from 'components'
-import { Box, Grid, Text } from 'theme-ui'
+import { Box, Grid } from 'theme-ui'
 import Balances from './components/balances'
 import Overview from './components/overview'
 import Stake from './components/stake'
