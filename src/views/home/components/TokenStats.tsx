@@ -126,7 +126,7 @@ const TokenStats = (props: BoxProps) => {
   }, [data, rpayOverview.txCount])
 
   return (
-    <Box pl={3} {...props}>
+    <Box pl={3} mt={2} {...props}>
       <ContentHead
         mr={5}
         sx={{ maxWidth: 600 }}

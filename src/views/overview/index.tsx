@@ -33,7 +33,7 @@ const Overview = () => {
     <Container>
       <Grid {...gridProps} ml={[0, 0, 0, 3]} gap={0}>
         <Box>
-          <TokenOverview ml={[3, 3, 3, 0]} metrics={rTokenMetrics} />
+          <TokenOverview ml={[3, 3, 3, 0]} mr={2} metrics={rTokenMetrics} />
           <TokenUsage ml={[3, 3, 3, 0]} mt={5} metrics={rTokenMetrics} />
         </Box>
         {rToken?.isRSV ? (
@@ -44,7 +44,7 @@ const Overview = () => {
       </Grid>
       <Divider {...dividerProps} />
       <Grid {...gridProps}>
-        <About mt={3} px={3} />
+        <About mt={3} px={3} mr={2} />
         <AssetOverview />
       </Grid>
       <Divider
