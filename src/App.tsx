@@ -9,7 +9,7 @@ import Auctions from 'views/auctions'
 import Deploy from 'views/deploy'
 import GovernanceConfigured from 'views/deploy/components/GovernanceConfigured'
 import Home from 'views/home'
-import Management from 'views/management'
+import Management from 'views/settings'
 import Overview from 'views/overview'
 import Staking from 'views/staking'
 import Tokens from 'views/tokens/Tokens'
@@ -40,7 +40,7 @@ const App = () => (
               <Route path={ROUTES.STAKING} element={<Staking />} />
               <Route path={ROUTES.AUCTIONS} element={<Auctions />} />
               <Route path={ROUTES.DEPLOY} element={<Deploy />} />
-              <Route path={ROUTES.MANAGEMENT} element={<Management />} />
+              <Route path={ROUTES.SETTINGS} element={<Management />} />
               <Route path={ROUTES.GOVERNANCE_SETUP} element={<Governance />} />
               <Route
                 path={`${ROUTES.GOVERNANCE_INFO}/:txId`}

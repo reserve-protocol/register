@@ -1,5 +1,4 @@
 import { t } from '@lingui/macro'
-import BackButton from 'components/rtoken-setup/components/BackButton'
 import Navigation from 'components/section-navigation/Navigation'
 import { useMemo } from 'react'
 import { Box } from 'theme-ui'

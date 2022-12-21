@@ -6,7 +6,7 @@ import NavigationSidebar from './components/NavigationSidebar'
 import RTokenManagement from './components/RTokenManagement'
 import RTokenOverview from './components/RTokenOverview'
 
-const Management = () => {
+const Settings = () => {
   const toggleSidebar = useSetAtom(sidebarToggleAtom)
 
   useEffect(() => {
@@ -26,4 +26,4 @@ const Management = () => {
   )
 }
 
-export default Management
+export default Settings

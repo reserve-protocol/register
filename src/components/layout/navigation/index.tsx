@@ -9,6 +9,7 @@ import StakeIcon from 'components/icons/StakeIcon'
 import useRToken from 'hooks/useRToken'
 import { useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
+import { transition } from 'theme'
 import { Box, Link, NavLinkProps, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 
@@ -31,6 +32,7 @@ const MenuItem = ({ title, Icon, collapsed }: Omit<Item, 'path'>) => {
         display: 'flex',
         flexGrow: 1,
         alignItems: 'center',
+        transition,
         paddingLeft: collapsed ? 0 : [0, 0, 4],
         justifyContent: collapsed ? 'center' : ['center', 'center', 'inherit'],
       }}
@@ -38,7 +40,10 @@ const MenuItem = ({ title, Icon, collapsed }: Omit<Item, 'path'>) => {
     >
       <Icon />
       <Text
-        sx={{ display: collapsed ? 'none' : ['none', 'none', 'inherit'] }}
+        sx={{
+          display: collapsed ? 'none' : ['none', 'none', 'inherit'],
+          whiteSpace: 'nowrap',
+        }}
         ml={3}
       >
         {title}
@@ -84,7 +89,7 @@ const Navigation = ({ collapsed = false }) => {
       { path: ROUTES.STAKING, title: t`Stake + Unstake`, Icon: StakeIcon },
       { path: ROUTES.AUCTIONS, title: t`Auctions`, Icon: AuctionsIcon },
       {
-        path: ROUTES.MANAGEMENT,
+        path: ROUTES.SETTINGS,
         title: t`Settings`,
         Icon: ManagerIcon,
       },
