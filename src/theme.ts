@@ -11,7 +11,7 @@ export const centeredContent = {
 }
 export const borderRadius = {
   inputs: 6,
-  boxes: 12,
+  boxes: 10,
 }
 export const baseButton = {
   borderRadius: 50,
@@ -51,7 +51,7 @@ export const baseInput = {
 }
 
 export const smallButton = {
-  fontSize: 0,
+  fontSize: 1,
   paddingTop: 2,
   paddingBottom: 2,
   paddingLeft: 3,
