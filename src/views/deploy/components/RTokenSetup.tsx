@@ -28,7 +28,7 @@ const DeploySection = ({ enabled = true }) => {
     <>
       <BasketSetup />
       <SectionWrapper navigationIndex={3}>
-        <RevenueSplit mt={4} />
+        <RevenueSplit mt={5} />
       </SectionWrapper>
       <TokenParameters mt={4} />
       <TransactionDivider
