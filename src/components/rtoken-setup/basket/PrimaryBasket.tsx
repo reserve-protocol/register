@@ -85,7 +85,7 @@ const PrimaryBasket = ({
       ))}
       <Divider my={4} mx={-4} />
       <Flex sx={{ flexDirection: 'column' }}>
-        <Text>1 Token</Text>
+        <Text variant="legend">1 Token</Text>
         <Text variant="title">
           = {!!units.length ? getBasketComposition(basket) : '0'}
         </Text>

@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import Button from 'components/button'
+import { SmallButton } from 'components/button'
 import BackingForm from 'components/rtoken-setup/token/BackingForm'
 import OtherForm from 'components/rtoken-setup/token/OtherForm'
 import SectionWrapper from 'components/section-navigation/SectionWrapper'
@@ -26,9 +26,8 @@ const TokenParameters = (props: BoxProps) => {
     <SectionWrapper threshold={advanceConfig ? 0.2 : 0.8} navigationIndex={4}>
       <Card p={4} {...props}>
         <TokenForm />
-        <Divider my={4} />
-        <Button
-          sx={{ width: '100%' }}
+        <Divider my={4} mx={-4} />
+        <SmallButton
           variant="transparent"
           onClick={() => setAdvanceConfig(!advanceConfig)}
         >
@@ -40,7 +39,7 @@ const TokenParameters = (props: BoxProps) => {
             )}
             <Trans>View all parameters</Trans>
           </Box>
-        </Button>
+        </SmallButton>
         {advanceConfig && (
           <>
             <BackingForm my={4} />

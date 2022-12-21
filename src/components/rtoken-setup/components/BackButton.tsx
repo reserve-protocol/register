@@ -8,10 +8,10 @@ const BackButton = () => {
   const navigate = useNavigate()
 
   return (
-    <SmallButton variant="muted" onClick={() => navigate('/')}>
+    <SmallButton variant="transparent" onClick={() => navigate('/')}>
       <Box variant="layout.verticalAlign">
         <ArrowLeft size={14} style={{ marginRight: 10 }} />
-        <Trans>Back to "Main"</Trans>
+        <Trans>Exit Deployer</Trans>
       </Box>
     </SmallButton>
   )

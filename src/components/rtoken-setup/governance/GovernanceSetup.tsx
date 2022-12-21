@@ -33,7 +33,7 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
       <Image src="/svgs/governance.svg" />
       <Box mb={5}>
         <Box>
-          <Text variant="title" sx={{ display: 'block' }} mb={1}>
+          <Text variant="title" sx={{ display: 'block' }} mb={2}>
             <Trans>Do you want to use the Alexios governor format?</Trans>
           </Text>
           <Text variant="legend">
