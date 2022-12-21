@@ -7,10 +7,8 @@ import ManagerIcon from 'components/icons/ManagerIcon'
 import OverviewIcon from 'components/icons/OverviewIcon'
 import StakeIcon from 'components/icons/StakeIcon'
 import useRToken from 'hooks/useRToken'
-import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
-import { isManagerAtom } from 'state/atoms'
 import { Box, Link, NavLinkProps, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 
@@ -74,25 +72,21 @@ const NavItem = ({
 // Sidebar Navigation
 const Navigation = () => {
   const currentToken = useRToken()
-  const isManager = useAtomValue(isManagerAtom)
   const PAGES = useMemo(() => {
     const items = [
       { path: ROUTES.OVERVIEW, title: t`Overview`, Icon: OverviewIcon },
       { path: ROUTES.ISSUANCE, title: t`Mint + Redeem`, Icon: IssuanceIcon },
       { path: ROUTES.STAKING, title: t`Stake + Unstake`, Icon: StakeIcon },
       { path: ROUTES.AUCTIONS, title: t`Auctions`, Icon: AuctionsIcon },
+      {
+        path: ROUTES.MANAGEMENT,
+        title: t`Settings`,
+        Icon: ManagerIcon,
+      },
     ]
 
-    if (isManager) {
-      items.push({
-        path: ROUTES.MANAGEMENT,
-        title: t`Manager`,
-        Icon: ManagerIcon,
-      })
-    }
-
     return items
-  }, [isManager])
+  }, [])
 
   const externalPages = useMemo(
     () => [
@@ -111,18 +105,12 @@ const Navigation = () => {
   )
 
   const pages = useMemo(() => {
-    const tokenSymbol =
-      currentToken?.symbol && currentToken.symbol.length > 8
-        ? `${currentToken.symbol.substring(0, 8)}...`
-        : currentToken?.symbol
-    PAGES[0].title = `${tokenSymbol || ''} Overview`
-
     if (currentToken?.isRSV) {
       return [...PAGES.slice(0, 2)]
     }
 
     return PAGES
-  }, [currentToken])
+  }, [currentToken?.isRSV])
 
   return (
     <Box mt={5}>
