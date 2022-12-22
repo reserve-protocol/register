@@ -18,7 +18,11 @@ const TokenList = (props: BoxProps) => {
     <Box {...props}>
       <ContentHead
         pl={3}
+<<<<<<< Updated upstream
         mb={2}
+=======
+        mb={3}
+>>>>>>> Stashed changes
         title={t`Compare RTokens`}
         subtitle={t`Including off-chain in-app transactions of RToken in the Reserve App.`}
       />
