@@ -22,7 +22,7 @@ const About = (props: BoxProps) => {
       <ContentHead pl={3} title={t`About`} />
       <Grid columns={[1, 1, 2]} mt={7} px={3} gap={[4, 4, 7]}>
         <Box>
-          <Text mb={2} variant="strong">
+          <Text mb={2} variant="title">
             <Trans>RTokens & Deploying your own</Trans>
           </Text>
           <Text variant="legend" as="p">
@@ -35,10 +35,10 @@ const About = (props: BoxProps) => {
               community.
             </Trans>
           </Text>
-          <SmallButton py={2} mt={3} mb={5} onClick={handleDeploy}>
+          <SmallButton py={2} mt={4} mb={5} onClick={handleDeploy}>
             <Trans>Deploy RToken</Trans>
           </SmallButton>
-          <Text mb={2} variant="strong">
+          <Text mb={2} variant="title">
             <Trans>The Reserve Project</Trans>
           </Text>
           <Text variant="legend" as="p">
@@ -58,7 +58,7 @@ const About = (props: BoxProps) => {
           </Text>
         </Box>
         <Box>
-          <Text mb={2} variant="strong">
+          <Text mb={2} variant="title">
             <Trans>This app</Trans>
           </Text>
           <Text variant="legend" as="p" mb={2}>
@@ -78,7 +78,7 @@ const About = (props: BoxProps) => {
               carefully before holding or staking your RSR on them.
             </Trans>
           </Text>
-          <Text mb={2} variant="strong">
+          <Text mb={2} variant="title">
             <Trans>User tracking</Trans>
           </Text>
           <Text variant="legend" as="p" mb={2}>
