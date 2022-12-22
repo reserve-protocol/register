@@ -133,8 +133,8 @@ const Greet = ({ onDismiss, ...props }: Props) => {
                 <Text
                   onClick={() => setActive(index)}
                   key={index}
-                  variant={index === active ? 'title' : 'legend'}
-                  sx={{ cursor: 'pointer' }}
+                  variant="title"
+                  sx={index === active ? { opacity: 1 } : { opacity: 0.4 }}
                   mr={3}
                 >
                   {title}
