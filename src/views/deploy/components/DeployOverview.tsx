@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
 import { InfoBox } from 'components'
 import CopyValue from 'components/button/CopyValue'
+import DeployActionIcon from 'components/icons/DeployActionIcon'
 import GoTo from 'components/button/GoTo'
 import { useUpdateAtom } from 'jotai/utils'
 import { useEffect } from 'react'
@@ -97,8 +98,7 @@ const DeployStatus = () => {
   return (
     <>
       <Text variant="legend" as="p" mt={2} sx={{ textAlign: 'center' }}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, ipsum dolor sit
-        amet.
+        The first of two transactions until your RToken can be interacted with.
       </Text>
       <Button
         onClick={deploy}
@@ -152,9 +152,10 @@ const DeployOverview = (props: BoxProps) => (
         flexDirection: 'column',
         textAlign: 'center',
       }}
+      py={2}
     >
-      <Image height={32} width={32} src="/svgs/deploytx.svg" />
-      <Text variant="title" sx={{ fontSize: 4 }} mt={2}>
+      <DeployActionIcon />
+      <Text variant="title" mt={2}>
         <Trans>Tx1. RToken Deploy</Trans>
       </Text>
       <DeployStatus />

@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
 import CopyValue from 'components/button/CopyValue'
+import GovernanceActionIcon from 'components/icons/GovernanceActionIcon'
 import GoTo from 'components/button/GoTo'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -88,8 +89,8 @@ const GovernanceStatus = () => {
   return (
     <>
       <Text variant="legend" as="p" mt={2} sx={{ textAlign: 'center' }}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, ipsum dolor sit
-        amet.
+        You can come back to this page later through the settings nav item if
+        you need time.
       </Text>
       <Button
         onClick={deploy}
@@ -122,9 +123,10 @@ const GovernanceOverview = (props: BoxProps) => (
         flexDirection: 'column',
         textAlign: 'center',
       }}
+      py={2}
     >
-      <Image height={32} width={32} src="/svgs/deploytx.svg" />
-      <Text variant="title" sx={{ fontSize: 4 }} mt={2}>
+      <GovernanceActionIcon />
+      <Text variant="title" mt={2}>
         <Trans>Tx2. Governance</Trans>
       </Text>
       <GovernanceStatus />
