@@ -38,7 +38,7 @@ export const ROUTES = Object.freeze({
   STAKING_CALCULATOR: '/staking-calculator',
   AUCTIONS: '/auctions',
   DEPLOY: '/deploy',
-  MANAGEMENT: '/management',
+  SETTINGS: '/settings',
   GOVERNANCE_SETUP: '/management/governance',
   GOVERNANCE_INFO: '/governance-info',
   LIST: '/list',

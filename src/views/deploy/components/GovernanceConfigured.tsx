@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { useTransaction } from 'state/web3/hooks/useTransactions'
 import { Box, Button, Card, Divider, Flex, Grid, Text } from 'theme-ui'
-import ListingInfo from 'views/management/components/ListingInfo'
+import ListingInfo from 'views/settings/components/ListingInfo'
 
 const GovernanceConfigured = () => {
   let { txId } = useParams()

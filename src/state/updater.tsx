@@ -10,8 +10,7 @@ import { useFacadeContract } from 'hooks/useContract'
 import useRTokenPrice from 'hooks/useRTokenPrice'
 import useTokensAllowance from 'hooks/useTokensAllowance'
 import useTokensBalance from 'hooks/useTokensBalance'
-import { useSetAtom } from 'jotai'
-import { useAtomValue, useUpdateAtom } from 'jotai/utils'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import {
   allowanceAtom,
@@ -138,8 +137,8 @@ const PendingBalancesUpdater = () => {
   const account = useAtomValue(walletAtom)
   const chainId = useAtomValue(chainIdAtom)
   const rToken = useAtomValue(rTokenAtom)
-  const setPendingIssuances = useUpdateAtom(pendingIssuancesAtom)
-  const setPendingRSR = useUpdateAtom(pendingRSRAtom)
+  const setPendingIssuances = useSetAtom(pendingIssuancesAtom)
+  const setPendingRSR = useSetAtom(pendingRSRAtom)
   const facadeContract = useFacadeContract()
   const blockNumber = useBlockNumber()
 
@@ -192,10 +191,10 @@ const PendingBalancesUpdater = () => {
 const PricesUpdater = () => {
   const { provider, chainId } = useWeb3React()
   const rTokenPrice = useRTokenPrice()
-  const setRSRPrice = useUpdateAtom(rsrPriceAtom)
-  const setEthPrice = useUpdateAtom(ethPriceAtom)
-  const setGasPrice = useUpdateAtom(gasPriceAtom)
-  const setRTokenPrice = useUpdateAtom(rTokenPriceAtom)
+  const setRSRPrice = useSetAtom(rsrPriceAtom)
+  const setEthPrice = useSetAtom(ethPriceAtom)
+  const setGasPrice = useSetAtom(gasPriceAtom)
+  const setRTokenPrice = useSetAtom(rTokenPriceAtom)
   const blockNumber = useBlockNumber()
 
   const fetchGasPrice = useCallback(async (provider: Web3Provider) => {
@@ -252,7 +251,7 @@ const PricesUpdater = () => {
 // TODO: Change place
 const ExchangeRateUpdater = () => {
   const rToken = useAtomValue(rTokenAtom)
-  const setRate = useUpdateAtom(rsrExchangeRateAtom)
+  const setRate = useSetAtom(rsrExchangeRateAtom)
   const { value } =
     useContractCall(
       rToken?.stToken?.address && {

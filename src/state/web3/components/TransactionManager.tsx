@@ -5,7 +5,7 @@ import abis, { DeployerInterface, FacadeWriteInterface } from 'abis'
 import useBlockNumber from 'hooks/useBlockNumber'
 import useDebounce from 'hooks/useDebounce'
 import { useAtomValue } from 'jotai'
-import { useUpdateAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import { pendingTxAtom, updateTransactionAtom } from 'state/atoms'
 import { StringMap, TransactionState } from 'types'
@@ -50,7 +50,7 @@ const getGovernance = (receipt: TransactionReceipt): StringMap => {
  * Execute and check transactions in the queue
  */
 const TransactionManager = () => {
-  const setTxs = useUpdateAtom(updateTransactionAtom)
+  const setTxs = useSetAtom(updateTransactionAtom)
   const { pending, mining } = useDebounce(useAtomValue(pendingTxAtom), 200)
   const { account, provider } = useWeb3React()
   const blockNumber = useBlockNumber()

@@ -3,7 +3,7 @@ import { NumericalInput } from 'components'
 import Help from 'components/help'
 import TokenLogo from 'components/icons/TokenLogo'
 import IconInfo from 'components/info-icon'
-import { useUpdateAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import { useMemo } from 'react'
 import { X } from 'react-feather'
 import { Box, CardProps, Divider, Flex, IconButton, Text } from 'theme-ui'
@@ -21,7 +21,7 @@ interface UnitBasketProps extends CardProps {
  * Display collateral composition for target unit
  */
 const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
-  const updateBasket = useUpdateAtom(updateBasketUnitAtom)
+  const updateBasket = useSetAtom(updateBasketUnitAtom)
 
   const totalDistribution = useMemo(
     () => data.distribution.reduce((count, n) => count + Number(n), 0),

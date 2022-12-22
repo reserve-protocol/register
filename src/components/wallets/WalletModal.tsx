@@ -2,7 +2,7 @@ import { t, Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
 import SelectedIcon from 'components/icons/SelectedIcon'
 import Modal from 'components/modal'
-import { useUpdateAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import { useState } from 'react'
 import { ChevronRight } from 'react-feather'
 import { isWalletModalVisibleAtom } from 'state/atoms'
@@ -14,7 +14,7 @@ import {
   getConnectorType,
   metaMask,
   walletConnect,
-  WalletConnector
+  WalletConnector,
 } from './connectors'
 import coinbaseLogo from './imgs/coinbase.png'
 import metamaskLogo from './imgs/metamask.png'
@@ -50,7 +50,7 @@ const wallets = [
 const WalletModal = () => {
   const { connector: currentConnector, account } = useWeb3React()
   const [connecting, setConnecting] = useState(false)
-  const setWalletModalVisible = useUpdateAtom(isWalletModalVisibleAtom)
+  const setWalletModalVisible = useSetAtom(isWalletModalVisibleAtom)
   const [error, setError] = useState('')
 
   const onClose = () => setWalletModalVisible(false)

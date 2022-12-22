@@ -1,7 +1,7 @@
 import { t, Trans } from '@lingui/macro'
 import { Button, Modal } from 'components'
 import { ModalProps } from 'components/modal'
-import { useAtomValue, useUpdateAtom } from 'jotai/utils'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useState } from 'react'
 import { Box, Divider, Text } from 'theme-ui'
 import {
@@ -55,7 +55,7 @@ const CollateralModal = ({
       ? primaryBasketCollateralAtom
       : backupBasketCollateralAtom
   )
-  const addCollateral = useUpdateAtom(
+  const addCollateral = useSetAtom(
     basket === 'primary' ? addBasketCollateralAtom : addBackupCollateralAtom
   )
 

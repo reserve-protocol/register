@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
 import RTokenSelector from 'components/rtoken-selector'
-import { useAtomValue } from 'jotai/utils'
+import { useAtomValue } from 'jotai'
 import { AlertCircle } from 'react-feather'
 import { rTokenStatusAtom } from 'state/atoms'
 import { Box, Text } from 'theme-ui'

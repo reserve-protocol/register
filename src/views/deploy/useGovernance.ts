@@ -3,8 +3,8 @@ import { BigNumber } from 'ethers'
 import useDebounce from 'hooks/useDebounce'
 import useRToken from 'hooks/useRToken'
 import useTransactionCost from 'hooks/useTransactionCost'
-import { useSetAtom } from 'jotai'
-import { atomWithReset, useAtomValue, useUpdateAtom } from 'jotai/utils'
+import { atomWithReset } from 'jotai/utils'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useMemo } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { addTransactionAtom } from 'state/atoms'
@@ -29,8 +29,6 @@ export const useGovernanceTx = () => {
     if (!isValid || !rToken?.address) {
       return null
     }
-
-    console.log('isvalid?', isValid)
 
     try {
       const {
@@ -95,7 +93,7 @@ export const useGovernanceTxState = () => {
 const useGovernance = () => {
   const tx = useGovernanceTx()
   const debouncedTx = useDebounce(tx, 100)
-  const setTxId = useUpdateAtom(governanceIdAtom)
+  const setTxId = useSetAtom(governanceIdAtom)
   const addTransaction = useSetAtom(addTransactionAtom)
 
   console.log('tx?', tx)

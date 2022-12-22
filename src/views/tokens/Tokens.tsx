@@ -3,7 +3,7 @@ import { Container } from 'components'
 import { SmallButton } from 'components/button'
 import { ContentHead } from 'components/info-box'
 import ListedTokensTable from 'components/tables/ListedTokensTable'
-import { useUpdateAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { selectedRTokenAtom } from 'state/atoms'
@@ -13,7 +13,7 @@ import UnlistedTokensTable from './components/UnlistedTokensTable'
 
 const Tokens = () => {
   const navigate = useNavigate()
-  const updateToken = useUpdateAtom(selectedRTokenAtom)
+  const updateToken = useSetAtom(selectedRTokenAtom)
 
   const handleDeploy = () => {
     navigate(ROUTES.DEPLOY)

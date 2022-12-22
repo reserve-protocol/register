@@ -18,6 +18,11 @@ import {
 import { RSR, RTOKEN_STATUS, TRANSACTION_STATUS } from 'utils/constants'
 import { WalletTransaction } from './../types/index'
 
+/**
+ * ######################
+ * ? Utility to clean-up storage in case of breaking changes
+ * ######################
+ */
 const VERSION = '1'
 
 if (
@@ -40,7 +45,7 @@ export const reserveTokensAtom = atomWithStorage<{
 }>('reserveTokens', {})
 
 // Current selected rToken address
-export const selectedRTokenAtom = atomWithStorage('selectedRToken', '')
+export const selectedRTokenAtom = atom('')
 
 // Grab rToken data from the atom list
 export const rTokenAtom = atom<ReserveToken | null>((get) =>

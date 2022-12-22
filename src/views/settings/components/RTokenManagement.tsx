@@ -149,7 +149,6 @@ const RTokenManagement = () => {
           onAction={handleEdit}
         />
       </Box>
-      <ListingInfo />
     </Box>
   )
 }

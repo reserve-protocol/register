@@ -2,7 +2,7 @@ import { t, Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import Field, { FieldInput, getErrorMessage } from 'components/field'
 import { atom, useAtom, useAtomValue } from 'jotai'
-import { useUpdateAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Plus } from 'react-feather'
 import { useForm } from 'react-hook-form'
@@ -39,7 +39,7 @@ const inputValidation = {
 
 const RevenueSplit = (props: BoxProps) => {
   const [revenueSplit, setRevenueSplit] = useAtom(revenueSplitAtom)
-  const updateExternalShare = useUpdateAtom(updateExternalShareAtom)
+  const updateExternalShare = useSetAtom(updateExternalShareAtom)
   const isValid = useAtomValue(isRevenueValidAtom)
   const isValidExteranls = useAtomValue(isValidExternalMapAtom)
   const {

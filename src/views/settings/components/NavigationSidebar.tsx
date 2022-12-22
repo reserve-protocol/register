@@ -1,5 +1,4 @@
 import { t } from '@lingui/macro'
-import BackButton from 'components/rtoken-setup/components/BackButton'
 import Navigation from 'components/section-navigation/Navigation'
 import { useMemo } from 'react'
 import { Box } from 'theme-ui'
@@ -20,9 +19,6 @@ const NavigationSidebar = () => {
 
   return (
     <Box variant="layout.sticky">
-      <Box mb={4}>
-        <BackButton />
-      </Box>
       <Navigation title={t`Navigation`} sections={sections} />
     </Box>
   )

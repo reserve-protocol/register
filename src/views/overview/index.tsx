@@ -1,6 +1,6 @@
 import { Container } from 'components'
 import useTokenStats from 'hooks/useTokenStats'
-import { useAtomValue } from 'jotai/utils'
+import { useAtomValue } from 'jotai'
 import { rTokenAtom } from 'state/atoms'
 import { Box, Divider, Grid } from 'theme-ui'
 import About from './components/About'
