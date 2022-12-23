@@ -45,7 +45,7 @@ const ErrorWrapper = ({
   ) : (
     <MouseoverTooltipContent
       content={
-        <Card sx={{ width: 320 }}>
+        <Card sx={{ width: 320, border: '1px solid black' }}>
           <Text sx={{ fontWeight: 400 }} variant="legend">
             <Trans>Network</Trans>
           </Text>
@@ -87,14 +87,11 @@ const Account = () => {
     <>
       {!account ? (
         <SmallButton
-          px={3}
-          py={2}
           variant="accentAction"
-          sx={{ fontSize: 1 }}
           onClick={() => setWalletVisible(true)}
         >
           <Text sx={{ display: ['none', 'initial'] }}>
-            <Trans>Connect</Trans>
+            <Trans>Connect wallet</Trans>
           </Text>
           <Box sx={{ display: ['inline', 'none'] }}>
             <Power size={12} />

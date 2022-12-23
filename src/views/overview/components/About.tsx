@@ -42,7 +42,7 @@ const About = (props: BoxProps) => {
     <Box {...props}>
       {rToken?.mandate && (
         <>
-          <Text mb={3} variant="title">
+          <Text mb={3} variant="pageTitle">
             {rToken?.symbol} <Trans>Mandate</Trans>
           </Text>
           <Text as="p" variant="legend">

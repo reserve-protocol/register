@@ -43,6 +43,8 @@ const MenuItem = ({ title, Icon, collapsed }: Omit<Item, 'path'>) => {
         sx={{
           display: collapsed ? 'none' : ['none', 'none', 'inherit'],
           whiteSpace: 'nowrap',
+          fontSize: 3,
+          fontWeight: 300,
         }}
         ml={3}
       >
@@ -64,11 +66,11 @@ const NavItem = ({
     style={({ isActive }) => ({
       paddingLeft: '5px',
       textDecoration: 'none',
-      opacity: isActive ? '1' : '0.8',
+      opacity: isActive ? '1' : '0.68',
       color: 'inherit',
       lineHeight: '32px',
       boxShadow: isActive
-        ? 'inset 0 12px 0px var(--theme-ui-colors-background), inset 0 -12px 0px var(--theme-ui-colors-background), inset 4px 0px 0px currentColor'
+        ? 'inset 0 16px 0px var(--theme-ui-colors-background), inset 0 -16px 0px var(--theme-ui-colors-background), inset 4px 0px 0px currentColor'
         : 'none',
       display: 'flex',
     })}

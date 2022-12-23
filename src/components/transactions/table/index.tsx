@@ -112,7 +112,7 @@ const TransactionsTable = ({
       pt={4}
       sx={(theme: any) => ({
         backgroundColor: card ? theme.colors.contentLightBackground : 'none',
-        border: bordered ? `1px solid ${theme.colors.darkBorder}` : 'none',
+        border: bordered ? `1px solid ${theme.colors.border}` : 'none',
         borderRadius: borderRadius.boxes,
         height: 'fit-content',
         ...sx,
@@ -120,7 +120,7 @@ const TransactionsTable = ({
     >
       <Flex variant="layout.verticalAlign">
         {!!title && (
-          <Text mb={4} pl={3} sx={{ fontSize: 3, display: 'block' }}>
+          <Text mb={4} pl={3} variant="title" sx={{ display: 'block' }}>
             {title}
           </Text>
         )}

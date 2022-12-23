@@ -166,7 +166,7 @@ const TransactionModal = ({
       <LoadingButton
         loading={!!signing}
         disabled={!canSubmit}
-        variant={!!signing ? 'accent' : 'primary'}
+        variant={!!signing ? 'accentAction' : 'primary'}
         text={confirmLabel}
         onClick={handleConfirm}
         sx={{ width: '100%' }}

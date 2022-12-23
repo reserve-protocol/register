@@ -32,13 +32,13 @@ const Item = ({
   return (
     <Box variant="layout.verticalAlign" {...props}>
       {!!icon ? (
-        <Image src={`/svgs/${icon}.svg`} height={14} width={14} />
+        <Image src={`/svgs/${icon}.svg`} height={16} width={16} />
       ) : (
         <Box
           mx={1}
           sx={{
-            height: '6px',
-            width: '6px',
+            height: '4px',
+            width: '4px',
             borderRadius: '100%',
             backgroundColor: 'text',
           }}
@@ -92,8 +92,6 @@ const RTokenManagement = () => {
   return (
     <Box variant="layout.sticky" sx={{ height: '100%', overflowY: 'auto' }}>
       <Box variant="layout.borderBox" mb={4}>
-        <About />
-        <Divider />
         <Item
           title="RToken is not paused"
           subtitle={t`Current status:`}
@@ -114,6 +112,7 @@ const RTokenManagement = () => {
           title="RToken is not paused"
           subtitle={t`Current status:`}
           value="Unpaused"
+          icon="danger"
           mb={3}
         />
         <Item
@@ -143,8 +142,8 @@ const RTokenManagement = () => {
         />
         <Divider />
         <Item
-          title="Make changes to RToken"
-          subtitle={t`Available when no governance set up:`}
+          title="RToken Changes"
+          subtitle={t`Available to owners pre governance`}
           action={t`Edit`}
           onAction={handleEdit}
         />

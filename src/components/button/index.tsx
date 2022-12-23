@@ -17,7 +17,7 @@ export const LoadingButton = ({
   ...props
 }: LoadingButtonProps) => (
   <Button
-    variant="accent"
+    variant="accentAction"
     onClick={(e) => {
       if (!loading && onClick) onClick(e)
     }}

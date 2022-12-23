@@ -34,7 +34,12 @@ const Overview = () => {
       <Grid {...gridProps} ml={[0, 0, 0, 3]} gap={0}>
         <Box>
           <TokenOverview ml={[3, 3, 3, 0]} mr={2} metrics={rTokenMetrics} />
-          <TokenUsage ml={[3, 3, 3, 0]} mt={5} metrics={rTokenMetrics} />
+        </Box>
+      </Grid>
+      <Divider {...dividerProps} />
+      <Grid {...gridProps} ml={[0, 0, 0, 3]} gap={0}>
+        <Box>
+          <TokenUsage ml={[3, 3, 3, 0]} mt={1} metrics={rTokenMetrics} />
         </Box>
         {rToken?.isRSV ? (
           <RecentRSVTransactions mt={[5, 5, 5, 0]} />

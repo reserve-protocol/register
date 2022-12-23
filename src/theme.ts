@@ -11,7 +11,7 @@ export const centeredContent = {
 }
 export const borderRadius = {
   inputs: 6,
-  boxes: 10,
+  boxes: 14,
 }
 export const baseButton = {
   borderRadius: 50,
@@ -29,7 +29,8 @@ export const baseButton = {
   '&:disabled': {
     backgroundColor: 'disabled',
     cursor: 'default',
-    color: '#999999',
+    color: '#484848',
+    border: 'none',
   },
 }
 
@@ -38,43 +39,44 @@ export const baseInput = {
   outline: 'none',
   padding: '12px',
   borderRadius: borderRadius.inputs,
-
   '&:disabled': {
     backgroundColor: 'border',
     borderColor: 'secondary',
     cursor: 'default',
   },
-
   '&:hover': {
-    borderColor: 'text',
+    borderColor: 'lightText',
+  },
+  '&:focus': {
+    backgroundColor: 'background',
   },
 }
 
 export const smallButton = {
   fontSize: 1,
-  paddingTop: 2,
-  paddingBottom: 2,
-  paddingLeft: 3,
-  paddingRight: 3,
-  borderRadius: 4,
+  paddingTop: 1,
+  paddingBottom: 1,
+  paddingLeft: '10px',
+  paddingRight: '10px',
+  borderRadius: 6,
 }
 
 export const colors = {
-  boldText: '#111',
-  text: '#333',
+  boldText: '#292929',
+  text: '#292929',
   secondaryText: '#666666',
   lightText: '#808080',
-  background: '#F9F8F4',
+  background: 'white',
   lightBackground: '#F2F2F2',
-  contentBackground: '#fff',
-  contentLightBackground: '#FCFBF9',
+  contentBackground: '#F9F8F4',
+  contentLightBackground: 'rgba(255, 255, 255, 0.5)',
   primary: '#000000',
   success: '#11BB8D',
-  accentAction: '#00FFBF',
+  accentAction: 'white',
   accent: '#003326',
   secondary: '#E8E8E8',
   border: '#F2F2F2',
-  darkBorder: '#DFDFDF',
+  darkBorder: '#F0ECDB',
   inputBorder: '#E5E5E5',
   disabled: '#E5E5E5',
   danger: '#FF0000',
@@ -83,17 +85,18 @@ export const colors = {
   modalOverlay: 'rgb(0, 0, 0, 0.2)',
   modes: {
     dark: {
-      text: '#D6D6D6',
-      boldText: '#fff',
+      text: '#CCCCCC',
+      boldText: '#CCCCCC',
       background: '#000',
       secondary: '#191919',
-      disabled: '#2E3331',
-      accentAction: '#D6D6D6',
-      border: '#ffffff0d',
+      disabled: '#171717',
+      accentAction: 'white',
+      accent: 'white',
+      border: '#1A1A1A',
       inputBorder: '#1F1F1F',
-      darkBorder: '#131614', // TODO
-      contentBackground: '#0C0C0C',
-      lightBackground: '#1A1A1A',
+      darkBorder: '#1A1A1A', // TODO
+      contentBackground: '#0F0E0D',
+      lightBackground: '#131313',
       contentLightBackground: '#090909',
       secondaryBackground: '#202128',
       primary: '#4C3121',
@@ -141,6 +144,13 @@ export const theme: Theme = {
     sectionTitle: {
       fontSize: 4,
       fontWeight: 500,
+      letterSpacing: '0.01em',
+      display: 'block',
+    },
+    pageTitle: {
+      fontSize: 5,
+      fontWeight: 500,
+      letterSpacing: '0.01em',
       display: 'block',
     },
     contentTitle: {
@@ -265,8 +275,7 @@ export const theme: Theme = {
         borderBottom: 0,
       },
       display: 'table',
-      width: '100%',
-    },
+      width: '100%',    },
     thead: {
       display: 'table',
       width: '100%',
@@ -342,12 +351,13 @@ export const theme: Theme = {
       ...baseButton,
       backgroundColor: 'accentAction',
       color: 'black',
+      border: '1px solid #00FF66'
     },
     transparent: {
       ...baseButton,
       backgroundColor: 'transparent',
       border: '1px solid',
-      borderColor: 'inputBorder',
+      borderColor: 'darkBorder',
       color: 'text',
     },
     muted: {
@@ -396,7 +406,7 @@ export const theme: Theme = {
   layout: {
     borderBox: {
       border: '1px solid',
-      borderColor: 'darkBorder',
+      borderColor: 'border',
       borderRadius: borderRadius.boxes,
       padding: 4,
     },
