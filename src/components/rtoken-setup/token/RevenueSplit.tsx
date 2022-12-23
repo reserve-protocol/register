@@ -91,7 +91,7 @@ const RevenueSplit = (props: BoxProps) => {
       <Text ml={2} variant="sectionTitle">
         <Trans>Revenue Distribution</Trans>
       </Text>
-      <Divider my={4} mx={-4} />
+      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
       <Field label={t`% Revenue to RToken Holders`} mb={3}>
         <FieldInput
           placeholder={t`Input token holders revenue distribution`}
@@ -133,8 +133,8 @@ const RevenueSplit = (props: BoxProps) => {
       <SmallButton variant="muted" mt={5} onClick={handleAddExternal}>
         <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
           <Plus size={16} />
-          <Text pl={2}>
-            <Trans>New external destination</Trans>
+          <Text pl={1}>
+            <Trans>Add external destination</Trans>
           </Text>
         </Flex>
       </SmallButton>

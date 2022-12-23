@@ -83,11 +83,11 @@ const PrimaryBasket = ({
           unit={targetUnit}
         />
       ))}
-      <Divider my={4} mx={-4} />
+      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
       <Flex sx={{ flexDirection: 'column' }}>
-        <Text variant="legend">1 Token</Text>
+        <Text variant="legend">1 Token =</Text>
         <Text variant="title">
-          = {!!units.length ? getBasketComposition(basket) : '0'}
+          {!!units.length ? getBasketComposition(basket) : '--'}
         </Text>
       </Flex>
     </Box>

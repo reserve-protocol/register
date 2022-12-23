@@ -88,7 +88,7 @@ const GovernanceStatus = () => {
 
   return (
     <>
-      <Text variant="legend" as="p" mt={2} sx={{ textAlign: 'center' }}>
+      <Text variant="legend" as="p" sx={{ textAlign: 'center' }}>
         You can come back to this page later through the settings nav item if
         you need time.
       </Text>
@@ -96,7 +96,7 @@ const GovernanceStatus = () => {
         onClick={deploy}
         variant="accentAction"
         disabled={!isValid || !fee}
-        mt={3}
+        mt={4}
         sx={{ width: '100%' }}
       >
         <Trans>Deploy Governance</Trans>
@@ -131,7 +131,7 @@ const GovernanceOverview = (props: BoxProps) => (
       </Text>
       <GovernanceStatus />
     </Flex>
-    <Divider sx={{ borderColor: 'darkBorder' }} my={3} mx={-4} />
+    <Divider my={3} mx={-4} />
     <Box>
       <Text variant="strong" mb={2}>
         What’s Alexios Governance?
@@ -142,7 +142,7 @@ const GovernanceOverview = (props: BoxProps) => (
         standard format.
       </Text>
     </Box>
-    <Divider sx={{ borderColor: 'darkBorder' }} my={3} mx={-4} />
+    <Divider my={3} mx={-4} />
     <Box>
       <Text variant="strong" mb={2}>
         Not ready to set up governance?

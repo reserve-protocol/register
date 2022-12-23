@@ -68,7 +68,7 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
 
   return (
     <Box {...props}>
-      <Divider my={4} mx={-4} />
+      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
       {!readOnly && (
         <>
           <Flex sx={{ justifyContent: 'space-between' }} mb={3} mt={4}>

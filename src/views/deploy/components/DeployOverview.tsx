@@ -97,14 +97,14 @@ const DeployStatus = () => {
 
   return (
     <>
-      <Text variant="legend" as="p" mt={2} sx={{ textAlign: 'center' }}>
+      <Text variant="legend" as="p" sx={{ textAlign: 'center' }}>
         The first of two transactions until your RToken can be interacted with.
       </Text>
       <Button
         onClick={deploy}
         variant="accentAction"
         disabled={!isValid || !fee}
-        mt={3}
+        mt={4}
         sx={{ width: '100%' }}
       >
         <Trans>Deploy RToken</Trans>
@@ -160,9 +160,9 @@ const DeployOverview = (props: BoxProps) => (
       </Text>
       <DeployStatus />
     </Flex>
-    <Divider sx={{ borderColor: 'darkBorder' }} my={3} mx={-4} />
+    <Divider my={3} mx={-4} />
     <StakingTokenOverview />
-    <Divider sx={{ borderColor: 'darkBorder' }} my={3} mx={-4} />
+    <Divider my={3} mx={-4} />
     <Box>
       <Text variant="strong" mb={2}>
         Help title

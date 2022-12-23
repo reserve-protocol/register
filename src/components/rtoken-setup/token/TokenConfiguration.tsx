@@ -26,7 +26,7 @@ const TokenConfiguration = (props: BoxProps) => {
     <SectionWrapper navigationIndex={2}>
       <Card p={4} {...props}>
         <TokenForm />
-        <Divider my={4} />
+        <Divider my={4} sx={{ borderColor: 'darkBorder' }} />
         <Flex mt={3} variant="layout.verticalAlign">
           <Text variant="title">
             <Trans>Advanced config:</Trans>
@@ -34,7 +34,7 @@ const TokenConfiguration = (props: BoxProps) => {
           <Text mx={2} variant="title" sx={{ color: 'secondaryText' }}>
             <Trans>15 params</Trans>
           </Text>
-        <SmallButton
+          <SmallButton
             ml="auto"
             variant="muted"
             onClick={() => setAdvanceConfig(!advanceConfig)}

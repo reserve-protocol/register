@@ -26,7 +26,7 @@ const TokenParameters = (props: BoxProps) => {
     <SectionWrapper threshold={advanceConfig ? 0.2 : 0.8} navigationIndex={4}>
       <Card p={4} {...props}>
         <TokenForm />
-        <Divider my={4} mx={-4} />
+        <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
         <SmallButton
           variant="transparent"
           onClick={() => setAdvanceConfig(!advanceConfig)}

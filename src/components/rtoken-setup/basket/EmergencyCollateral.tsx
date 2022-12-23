@@ -110,7 +110,7 @@ const EmergencyCollateral = ({
 
   return (
     <Box {...props}>
-      <Divider my={4} mx={-4} />
+      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
       <Flex variant="layout.verticalAlign" mb={4}>
         <Text variant="title">{targetUnit} Backups</Text>
         {!readOnly && (
@@ -123,7 +123,6 @@ const EmergencyCollateral = ({
           </SmallButton>
         )}
       </Flex>
-
       <Flex variant="layout.verticalAlign">
         <Text>
           <Trans>Diversity factor</Trans>

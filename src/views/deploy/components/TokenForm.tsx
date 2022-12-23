@@ -17,7 +17,7 @@ const TokenForm = (props: BoxProps) => {
           <Trans>RToken Parameters</Trans>
         </Text>
       </Box>
-      <Divider my={4} mx={-4} />
+      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
       <FormField
         label={t`Token name`}
         placeholder={t`Input token name`}
