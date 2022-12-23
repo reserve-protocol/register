@@ -1,5 +1,5 @@
 import { t } from '@lingui/macro'
-import { InfoHeading } from 'components/info-box'
+import { InfoHeading, ContentHead } from 'components/info-box'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { TokenStats } from 'types'
 import { formatCurrency } from 'utils'
@@ -11,31 +11,30 @@ interface Props extends BoxProps {
 const TokenUsage = ({ metrics, ...props }: Props) => {
   return (
     <Box {...props}>
-      <Text variant="title" sx={{ fontSize: 3 }}>
-        Usage stats
-      </Text>
-      <Flex mt={4} mb={2} sx={{ flexWrap: 'wrap' }}>
-        <Box mr={5}>
+      <ContentHead title={t`Usage Stats`} />
+      <Flex mt={5} mb={2} sx={{ flexWrap: 'wrap' }}>
+        <Box mr={6}>
           <InfoHeading
-            mb={3}
+            title={t`Cumulative Tx Volume`}
+            mb={4}
+            subtitle={metrics.cumulativeVolumeUsd}
+          />
+          <InfoHeading
+            mb={4}
             title={t`24h Tx Vol`}
             subtitle={metrics.dailyVolume}
           />
-          <InfoHeading
-            title={t`Cumulative Tx Volume`}
-            subtitle={metrics.cumulativeVolumeUsd}
-          />
         </Box>
-
         <Box>
           <InfoHeading
-            title={t`24h Txs`}
-            mb={3}
-            subtitle={formatCurrency(metrics.dailyTransferCount)}
+            title={t`Cumulative Txs`}
+            mb={4}
+            subtitle={formatCurrency(metrics.transferCount)}
           />
           <InfoHeading
-            title={t`Cumulative Txs`}
-            subtitle={formatCurrency(metrics.transferCount)}
+            title={t`24h Txs`}
+            mb={4}
+            subtitle={formatCurrency(metrics.dailyTransferCount)}
           />
         </Box>
       </Flex>
