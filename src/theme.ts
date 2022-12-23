@@ -351,7 +351,7 @@ export const theme: Theme = {
       ...baseButton,
       backgroundColor: 'accentAction',
       color: 'black',
-      border: '1px solid #00FF66'
+      border: '2px solid #75FBC3'
     },
     transparent: {
       ...baseButton,
