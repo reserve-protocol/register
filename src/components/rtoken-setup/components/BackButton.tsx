@@ -20,7 +20,7 @@ const BackButton = () => {
   }, [rToken?.address, navigate])
 
   return (
-    <SmallButton variant="muted" onClick={handleBack}>
+    <SmallButton variant="transparent" onClick={handleBack}>
       <Box variant="layout.verticalAlign">
         <ArrowLeft size={14} style={{ marginRight: 10 }} />
         <Trans>Exit Deployer</Trans>

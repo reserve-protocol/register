@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { useAtom } from 'jotai'
 import { useEffect } from 'react'
-import { Box, BoxProps, Text } from 'theme-ui'
+import { Box, BoxProps, Text, Divider, Flex } from 'theme-ui'
 import { navigationIndexAtom } from './atoms'
 
 const Container = styled(Box)`
@@ -33,8 +33,8 @@ const Navigation = ({ title, sections, initialIndex = 0, ...props }: Props) => {
 
   return (
     <Container {...props}>
-      {!!title && <Text variant="title">{title}</Text>}
-      <Box as="ul" mt={5} mb={6} mr={3} p={0} sx={{ listStyle: 'none' }}>
+      {!!title && <Text variant="sectionTitle">{title}</Text>}
+      <Box as="ul" mt={4} mb={6} mr={3} p={0} sx={{ listStyle: 'none' }}>
         {sections.map((item, index) => {
           const currentIndex = index + initialIndex
           const isActive = active === currentIndex
@@ -57,6 +57,19 @@ const Navigation = ({ title, sections, initialIndex = 0, ...props }: Props) => {
             </Box>
           )
         })}
+        <Flex
+          sx={{
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+          mt={5}
+        >
+          <Box
+            sx={{ backgroundColor: 'text', width: '6px', height: '6px' }}
+            mr={2}
+          />
+          <Text sx={{ fontSize: 0, color: 'text' }}>CONFIRM & SIGN TX</Text>
+        </Flex>
       </Box>
     </Container>
   )

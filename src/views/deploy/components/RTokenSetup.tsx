@@ -33,7 +33,7 @@ const DeploySection = ({ enabled = true }) => {
       <TokenParameters mt={4} />
       <TransactionDivider
         title={t`Transaction 1`}
-        subtitle={t`RToken gets deployed with your address as temporary owner`}
+        subtitle={t`You submit the transaction configuring your RToken design`}
       />
     </>
   )
@@ -59,7 +59,7 @@ const GovernanceSection = ({ enabled = true }) => (
 
       <TransactionDivider
         title={t`Transaction 2`}
-        subtitle={t`Governance gets deployed & your RToken is now usable (if unpaused)`}
+        subtitle={t`You submit the transaction configuration your RToken governance`}
       />
       <SectionWrapper navigationIndex={6} mb={4}>
         <ListingInfo />

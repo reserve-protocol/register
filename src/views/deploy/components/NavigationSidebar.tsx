@@ -21,11 +21,15 @@ const NavigationSidebar = () => {
 
   return (
     <Box variant="layout.sticky">
-      <Box mb={4}>
+      <Box mt={4} mb={6}>
         <BackButton />
       </Box>
-      <Navigation title={t`Tx 1`} sections={sections} />
-      <Navigation title={t`Tx 2`} initialIndex={5} sections={step2Navigation} />
+      <Navigation title={t`Tx. 1`} sections={sections} />
+      <Navigation
+        title={t`Tx. 2`}
+        initialIndex={5}
+        sections={step2Navigation}
+      />
     </Box>
   )
 }

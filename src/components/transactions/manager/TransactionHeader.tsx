@@ -35,7 +35,7 @@ const TransactionHeader = () => {
       px={5}
       mb={3}
     >
-      <Text variant="title" sx={{ fontSize: 2 }} mr={3}>
+      <Text variant="sectionTitle" sx={{ fontSize: 2 }} mr={3}>
         <Trans>Your account</Trans>
       </Text>
       <CopyValue

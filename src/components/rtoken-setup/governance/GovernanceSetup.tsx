@@ -34,7 +34,7 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
       <Box mb={5}>
         <Box>
           <Text variant="title" sx={{ display: 'block' }} mb={2}>
-            <Trans>Do you want to use the Alexios governor format?</Trans>
+            <Trans>Use the Alexios governor format?</Trans>
           </Text>
           <Text variant="legend">
             <Trans>
