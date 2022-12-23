@@ -57,19 +57,6 @@ const Navigation = ({ title, sections, initialIndex = 0, ...props }: Props) => {
             </Box>
           )
         })}
-        <Flex
-          sx={{
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-          mt={5}
-        >
-          <Box
-            sx={{ backgroundColor: 'text', width: '6px', height: '6px' }}
-            mr={2}
-          />
-          <Text sx={{ fontSize: 0, color: 'text' }}>CONFIRM & SIGN TX</Text>
-        </Flex>
       </Box>
     </Container>
   )
