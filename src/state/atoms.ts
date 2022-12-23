@@ -98,12 +98,13 @@ export const isWalletModalVisibleAtom = atom(false)
 export const accountRoleAtom = atom({
   owner: false,
   pauser: false,
-  freezer: false,
+  shortFreezer: false,
+  longFreezer: false,
 })
 export const isManagerAtom = atom<boolean>((get) => {
   const role = get(accountRoleAtom)
 
-  return role.owner || role.pauser || role.freezer
+  return role.owner || role.pauser || role.shortFreezer || role.longFreezer
 })
 
 /**

@@ -10,11 +10,11 @@ import TransactionSidebar from 'components/transactions/manager/TransactionSideb
 import WalletModal from 'components/wallets/WalletModal'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { ReactNode } from 'react'
-import { AlertCircle, Menu, Power } from 'react-feather'
+import { AlertCircle, Power } from 'react-feather'
 import { isWalletModalVisibleAtom, pendingTxAtom } from 'state/atoms'
-import { Box, Button, Card, Flex, IconButton, Spinner, Text } from 'theme-ui'
+import { Box, Card, Flex, Spinner, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
-import { CHAINS, CHAIN_ID } from 'utils/chains'
+import { CHAIN_ID } from 'utils/chains'
 
 const Container = styled(Box)`
   display: flex;

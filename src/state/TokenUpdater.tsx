@@ -327,34 +327,46 @@ const ReserveTokenUpdater = () => {
           method: 'hasRole',
         }
 
-        const [isOwner, isPauser, isFreezer] = await promiseMulticall(
-          [
-            {
-              ...callParams,
-              args: [ethers.utils.formatBytes32String('OWNER'), accountAddress],
-            },
-            {
-              ...callParams,
-              args: [
-                ethers.utils.formatBytes32String('PAUSER'),
-                accountAddress,
-              ],
-            },
-            {
-              ...callParams,
-              args: [
-                ethers.utils.formatBytes32String('FREEZER'),
-                accountAddress,
-              ],
-            },
-          ],
-          provider
-        )
+        const [isOwner, isPauser, isShortFreezer, isLongFreezer] =
+          await promiseMulticall(
+            [
+              {
+                ...callParams,
+                args: [
+                  ethers.utils.formatBytes32String('OWNER'),
+                  accountAddress,
+                ],
+              },
+              {
+                ...callParams,
+                args: [
+                  ethers.utils.formatBytes32String('PAUSER'),
+                  accountAddress,
+                ],
+              },
+              {
+                ...callParams,
+                args: [
+                  ethers.utils.formatBytes32String('SHORT_FREEZER'),
+                  accountAddress,
+                ],
+              },
+              {
+                ...callParams,
+                args: [
+                  ethers.utils.formatBytes32String('LONG_FREEZER'),
+                  accountAddress,
+                ],
+              },
+            ],
+            provider
+          )
 
         updateAccountRole({
           owner: isOwner,
           pauser: isPauser,
-          freezer: isFreezer,
+          shortFreezer: isShortFreezer,
+          longFreezer: isLongFreezer,
         })
       } catch (e) {
         console.error('Error fetching user role', e)
@@ -396,7 +408,12 @@ const ReserveTokenUpdater = () => {
   useEffect(() => {
     if (provider) {
       if (!mainAddress || !account) {
-        updateAccountRole({ owner: false, freezer: false, pauser: false })
+        updateAccountRole({
+          owner: false,
+          shortFreezer: false,
+          longFreezer: false,
+          pauser: false,
+        })
       } else {
         getUserRole(provider, mainAddress, account)
       }
