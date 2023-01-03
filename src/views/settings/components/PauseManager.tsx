@@ -1,48 +1,57 @@
 import { t } from '@lingui/macro'
-import { useAtomValue } from 'jotai'
-import { useState } from 'react'
-import { accountRoleAtom, rTokenStatusAtom } from 'state/atoms'
-import { RTOKEN_STATUS } from 'utils/constants'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { useEffect, useState } from 'react'
+import { v4 as uuid } from 'uuid'
+import {
+  accountRoleAtom,
+  addTransactionAtom,
+  rTokenStatusAtom,
+} from 'state/atoms'
+import { RTOKEN_STATUS, TRANSACTION_STATUS } from 'utils/constants'
 import SettingItem from './SettingItem'
+import useRToken from 'hooks/useRToken'
+import { useTransaction } from 'state/web3/hooks/useTransactions'
 
 const PauseManager = () => {
+  const rToken = useRToken()
   const accountRole = useAtomValue(accountRoleAtom)
-  const rTokenStatus = useAtomValue(rTokenStatusAtom)
-  const isPaused = rTokenStatus === RTOKEN_STATUS.PAUSED
+  const { paused: isPaused } = useAtomValue(rTokenStatusAtom)
+  const addTransaction = useSetAtom(addTransactionAtom)
   const pauseActionLabel = isPaused ? t`Unpause` : t`Pause`
-  const [tx, setTx] = useState('')
+  const [txId, setTx] = useState('')
+  const tx = useTransaction(txId)
 
-  const handlePause = () => {}
+  useEffect(() => {
+    if (
+      tx?.status === TRANSACTION_STATUS.CONFIRMED ||
+      tx?.status === TRANSACTION_STATUS.REJECTED
+    ) {
+      setTx('')
+    }
+  }, [tx?.status])
 
-  // const handleUnpause = () => {
-  //   if (rToken?.main) {
-  //     const txId = uuid()
-  //     setUnpausing(txId)
-  //     addTransaction([
-  //       {
-  //         id: txId,
-  //         description: t`Unpause ${rToken?.symbol}`,
-  //         status: TRANSACTION_STATUS.PENDING,
-  //         value: '0',
-  //         call: {
-  //           abi: 'main',
-  //           address: rToken?.main || '',
-  //           method: 'unpause',
-  //           args: [],
-  //         },
-  //       },
-  //     ])
-  //   }
-  // }
-
-  //   <LoadingButton
-  //   loading={!!unpausing}
-  //   text={t`Unpause`}
-  //   onClick={handleUnpause}
-  //   variant={!unpausing ? 'primary' : 'accent'}
-  //   sx={{ ...smallButton }}
-  //   ml="auto"
-  // />
+  const handlePause = () => {
+    if (rToken?.main) {
+      const id = uuid()
+      setTx(id)
+      addTransaction([
+        {
+          id,
+          description: isPaused
+            ? t`Unpause ${rToken?.symbol}`
+            : t`Pause ${rToken?.symbol}`,
+          status: TRANSACTION_STATUS.PENDING,
+          value: '0',
+          call: {
+            abi: 'main',
+            address: rToken?.main || '',
+            method: isPaused ? 'unpause' : 'pause',
+            args: [],
+          },
+        },
+      ])
+    }
+  }
 
   return (
     <>
@@ -59,7 +68,7 @@ const PauseManager = () => {
         value="0xfb...0344"
         action={accountRole.pauser || accountRole.owner ? pauseActionLabel : ''}
         onAction={handlePause}
-        loading={!!tx}
+        loading={!!txId}
         actionVariant="danger"
       />
     </>

@@ -1,21 +1,96 @@
 import { t } from '@lingui/macro'
-import { useAtomValue } from 'jotai'
-import { useState } from 'react'
-import { accountRoleAtom, rTokenStatusAtom } from 'state/atoms'
-import { RTOKEN_STATUS } from 'utils/constants'
+import useRToken from 'hooks/useRToken'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { useEffect, useState } from 'react'
+import {
+  accountRoleAtom,
+  addTransactionAtom,
+  rTokenStatusAtom,
+} from 'state/atoms'
+import { useTransaction } from 'state/web3/hooks/useTransactions'
+import { TRANSACTION_STATUS } from 'utils/constants'
+import { v4 as uuid } from 'uuid'
 import SettingItem from './SettingItem'
 
 const FreezeManager = () => {
+  const [txId, setTx] = useState('')
+  const tx = useTransaction(txId)
+  const rToken = useRToken()
   const accountRole = useAtomValue(accountRoleAtom)
-  const rTokenStatus = useAtomValue(rTokenStatusAtom)
-  const isFrozen = rTokenStatus === RTOKEN_STATUS.FROZEN
-  const [tx, setTx] = useState('')
-  const freezeActionLabel = isFrozen ? t`Unfreeze` : t`Freeze`
-  const longFreezeActionLabel = isFrozen ? t`Unfreeze` : t`Long Freeze`
+  const { frozen: isFrozen } = useAtomValue(rTokenStatusAtom)
+  const addTransaction = useSetAtom(addTransactionAtom)
 
-  const handleFreeze = () => {}
+  useEffect(() => {
+    if (
+      tx?.status === TRANSACTION_STATUS.CONFIRMED ||
+      tx?.status === TRANSACTION_STATUS.REJECTED
+    ) {
+      setTx('')
+    }
+  }, [tx?.status])
 
-  const handleLongFreeze = () => {}
+  const handleFreeze = () => {
+    if (rToken?.main && !isFrozen) {
+      const id = uuid()
+      setTx(id)
+      addTransaction([
+        {
+          id,
+          description: t`Short Freeze ${rToken.symbol}`,
+          status: TRANSACTION_STATUS.PENDING,
+          value: '0',
+          call: {
+            abi: 'main',
+            address: rToken.main,
+            method: 'freezeShort',
+            args: [],
+          },
+        },
+      ])
+    }
+  }
+
+  const handleLongFreeze = () => {
+    if (rToken?.main && !isFrozen) {
+      const id = uuid()
+      setTx(id)
+      addTransaction([
+        {
+          id,
+          description: t`Long Freeze ${rToken.symbol}`,
+          status: TRANSACTION_STATUS.PENDING,
+          value: '0',
+          call: {
+            abi: 'main',
+            address: rToken.main,
+            method: 'freezeLong',
+            args: [],
+          },
+        },
+      ])
+    }
+  }
+
+  const handleUnfreeze = () => {
+    if (rToken?.main && isFrozen) {
+      const id = uuid()
+      setTx(id)
+      addTransaction([
+        {
+          id,
+          description: t`Unfreeze ${rToken?.symbol}`,
+          status: TRANSACTION_STATUS.PENDING,
+          value: '0',
+          call: {
+            abi: 'main',
+            address: rToken.main,
+            method: 'unfreeze',
+            args: [],
+          },
+        },
+      ])
+    }
+  }
 
   return (
     <>
@@ -25,13 +100,19 @@ const FreezeManager = () => {
         value={isFrozen ? t`Frozen` : t`Not frozen`}
         icon="freeze"
         mb={3}
+        action={isFrozen && accountRole.owner ? t`Unfreeze` : ''}
+        onAction={handleUnfreeze}
+        actionVariant="danger"
+        loading={!!tx}
       />
       <SettingItem
         title={t`Short Freeze`}
         subtitle={t`Role held by:`}
         value="0xfb...0344"
         action={
-          accountRole.shortFreezer || accountRole.owner ? freezeActionLabel : ''
+          !isFrozen && (accountRole.shortFreezer || accountRole.owner)
+            ? t`Freeze`
+            : ''
         }
         onAction={handleFreeze}
         actionVariant="danger"
@@ -43,8 +124,8 @@ const FreezeManager = () => {
         subtitle={t`Role held by:`}
         value="0xfb...0344"
         action={
-          accountRole.longFreezer || accountRole.owner
-            ? longFreezeActionLabel
+          !isFrozen && (accountRole.longFreezer || accountRole.owner)
+            ? t`Long Freeze`
             : ''
         }
         onAction={handleLongFreeze}

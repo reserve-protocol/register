@@ -1,3 +1,4 @@
+import { t } from '@lingui/macro'
 import { LoadingButton } from 'components/button'
 import { Box, BoxProps, Image, Text } from 'theme-ui'
 
@@ -49,9 +50,10 @@ const SettingItem = ({
         <LoadingButton
           small
           loading={loading}
+          loadingText={t`Loading...`}
           text={action}
           ml="auto"
-          variant={actionVariant}
+          variant={loading ? 'accentAction' : actionVariant}
           onClick={onAction}
         />
       )}
