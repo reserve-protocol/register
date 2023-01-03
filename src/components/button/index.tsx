@@ -7,6 +7,7 @@ interface LoadingButtonProps extends ButtonProps {
   loading: boolean
   loadingText?: string
   text: string
+  small?: boolean
 }
 
 export const LoadingButton = ({
@@ -14,31 +15,35 @@ export const LoadingButton = ({
   text,
   onClick,
   loadingText = 'Pending, Sign in wallet',
+  small = false,
   ...props
-}: LoadingButtonProps) => (
-  <Button
-    variant="accent"
-    onClick={(e) => {
-      if (!loading && onClick) onClick(e)
-    }}
-    {...props}
-  >
-    {loading ? (
-      <Text
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Spinner sx={{ color: '#fff' }} size={14} mr={2} /> {loadingText}
-      </Text>
-    ) : (
-      <Text>{text}</Text>
-    )}
-  </Button>
-)
+}: LoadingButtonProps) => {
+  const ButtonComponent = small ? SmallButton : Button
 
+  return (
+    <ButtonComponent
+      variant="accent"
+      onClick={(e) => {
+        if (!loading && onClick) onClick(e)
+      }}
+      {...props}
+    >
+      {loading ? (
+        <Text
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Spinner sx={{ color: '#fff' }} size={14} mr={2} /> {loadingText}
+        </Text>
+      ) : (
+        <Text>{text}</Text>
+      )}
+    </ButtonComponent>
+  )
+}
 export const SmallButton = ({ sx = {}, ...props }: ButtonProps) => (
   <Button {...props} sx={{ ...smallButton, ...sx }} />
 )

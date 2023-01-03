@@ -81,18 +81,21 @@ const About = () => (
   </Flex>
 )
 
-// TODO: Fetch roles from theGraph
+// TODO: Fetch roles from theGraph - display correct address
 // TODO: detect if it is alexios governance
 const RTokenManagement = () => {
   const accountRole = useAtomValue(accountRoleAtom)
-  const rtokenStatus = useAtomValue(rTokenStatusAtom)
+  const rTokenStatus = useAtomValue(rTokenStatusAtom)
+  const isPaused = rTokenStatus === RTOKEN_STATUS.PAUSED
+  const isFrozen = rTokenStatus === RTOKEN_STATUS.FROZEN
+
   const [pauseActionLabel, freezeActionLabel, longFreezeActionLabel] = useMemo(
     () => [
-      rtokenStatus === RTOKEN_STATUS.PAUSED ? t`Unpause` : t`Pause`,
-      rtokenStatus === RTOKEN_STATUS.FROZEN ? t`Unfreeze` : t`Freeze`,
-      rtokenStatus === RTOKEN_STATUS.FROZEN ? t`Unfreeze` : t`Long Freeze`,
+      isPaused ? t`Unpause` : t`Pause`,
+      isFrozen ? t`Unfreeze` : t`Freeze`,
+      isFrozen ? t`Unfreeze` : t`Long Freeze`,
     ],
-    [rtokenStatus]
+    [rTokenStatus]
   )
 
   // const handleUnpause = () => {
@@ -140,9 +143,9 @@ const RTokenManagement = () => {
         <About />
         <Divider />
         <Item
-          title="RToken is not paused"
+          title={isPaused ? t`RToken is paused` : t`RToken is not paused`}
           subtitle={t`Current status:`}
-          value="Unpaused"
+          value={isPaused ? t`Paused` : t`Unpaused`}
           icon="danger"
           mb={3}
         />
@@ -158,13 +161,13 @@ const RTokenManagement = () => {
         />
         <Divider />
         <Item
-          title="RToken is not frozen"
+          title={isFrozen ? t`RToken is frozen` : t`RToken is not frozen`}
           subtitle={t`Current status:`}
-          value="Active"
+          value={isFrozen ? t`Frozen` : t`Not frozen`}
           mb={3}
         />
         <Item
-          title="Short Freeze"
+          title={t`Short Freeze`}
           subtitle={t`Role held by:`}
           value="0xfb...0344"
           action={
@@ -177,7 +180,7 @@ const RTokenManagement = () => {
           mb={3}
         />
         <Item
-          title="Long Freeze"
+          title={t`Long Freeze`}
           subtitle={t`Role held by:`}
           value="0xfb...0344"
           action={
@@ -190,9 +193,9 @@ const RTokenManagement = () => {
         />
         <Divider />
         <Item
-          title="Governance proposals"
+          title={t`Governance proposals`}
           subtitle={t`Role held by`}
-          value="All stakers"
+          value={t`All stakers`}
           action={t`Create proposal`}
           onAction={handleProposal}
         />
