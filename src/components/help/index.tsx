@@ -3,13 +3,14 @@ import { MouseoverTooltip } from 'components/tooltip'
 import { useState } from 'react'
 import { HelpCircle } from 'react-feather'
 import { Box, BoxProps } from 'theme-ui'
+import HelpIcon from 'components/icons/HelpIcon'
 
 interface Props extends BoxProps {
   content: any
   size?: number
 }
 
-const Help = ({ content, size = 18, sx = {}, ...props }: Props) => {
+const Help = ({ content, size = 16, sx = {}, ...props }: Props) => {
   return (
     <MouseoverTooltip text={content}>
       <Box
@@ -17,7 +18,7 @@ const Help = ({ content, size = 18, sx = {}, ...props }: Props) => {
         sx={{ cursor: 'pointer', ...sx }}
         {...props}
       >
-        <HelpCircle size={size} color="var(--theme-ui-colors-secondaryText)" />
+        <HelpIcon />
       </Box>
     </MouseoverTooltip>
   )
