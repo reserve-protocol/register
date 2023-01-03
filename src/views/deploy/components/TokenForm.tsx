@@ -21,6 +21,7 @@ const TokenForm = (props: BoxProps) => {
       <FormField
         label={t`Token name`}
         placeholder={t`Input token name`}
+        help={t`Token name - the name of the RToken eg. Savings Dollar`}
         name="name"
         mb={3}
         options={{
@@ -30,24 +31,26 @@ const TokenForm = (props: BoxProps) => {
       <FormField
         label={t`Ticker`}
         placeholder={t`Input ticker`}
+        help={t`Ticker - symbol eg. USD+`}
         name="ticker"
         options={{
           required: t`Token ticker is required`,
         }}
       />
       <Box mt={2} ml={3} mb={3}>
-        <Text variant="legend">
+        <Text variant="legend" sx={{ fontSize: 1 }}>
           <Trans>Staking token</Trans>:
         </Text>{' '}
-        {tickerValue || 'st'}RSR Token,{' '}
-        <Text variant="legend">
+        <Text sx={{ fontSize: 1 }}>{tickerValue || 'st'}RSR Token, </Text>
+        <Text variant="legend" sx={{ fontSize: 1 }}>
           <Trans>St Token Ticker</Trans>:
         </Text>{' '}
-        {tickerValue || 'st'}RSR
+        <Text sx={{ fontSize: 1 }}>{tickerValue || 'st'}RSR</Text>
       </Box>
       <FormField
         label={t`Mandate`}
         placeholder={t`RToken mandate`}
+        help={t`The mandate describes what goals its governors should try to achieve. By briefly explaining the RToken’s purpose and what the RToken is intended to do, it provides common ground for the governors to decide upon priorities and how to weigh tradeoffs.`}
         mb={3}
         textarea
         name="mandate"
