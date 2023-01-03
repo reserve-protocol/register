@@ -99,6 +99,8 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
         }}
       />
       <Divider my={4} mx={-4} />
+      {defaultGovernance && <GovernanceParameters />}
+      <Divider my={4} mx={-4} />
       <Text variant="title" mb={4}>
         <Trans>RToken state after transaction</Trans>
       </Text>
@@ -123,8 +125,6 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
           </Text>
         )}
       </Field>
-      <Divider my={4} mx={-4} />
-      {defaultGovernance && <GovernanceParameters />}
     </Card>
   )
 }
