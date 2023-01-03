@@ -52,10 +52,7 @@ const Overview = () => {
         <About mt={3} px={3} mr={2} />
         <AssetOverview />
       </Grid>
-      <Divider
-        {...dividerProps}
-        sx={{ borderColor: 'darkBorder', display: ['none', 'block'] }}
-      />
+      <Divider {...dividerProps} sx={{ display: ['none', 'block'] }} />
       <External />
       <Divider {...dividerProps} />
       <Grid {...gridProps}>
