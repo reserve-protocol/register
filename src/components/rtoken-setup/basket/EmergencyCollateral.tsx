@@ -119,7 +119,7 @@ const EmergencyCollateral = ({
             ml="auto"
             variant="primary"
           >
-            <Trans>Add token plugin</Trans>
+            <Trans>Add to basket</Trans>
           </SmallButton>
         )}
       </Flex>

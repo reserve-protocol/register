@@ -85,7 +85,9 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
                 />
               </Box>
               <Text mr={2}>{unit}</Text>
-              <Help content={t`Target value for this unit of account`} />
+              <Help
+                content={t`Basket scale for this unit of account. This is used to initially calculate how much of each token is required for minting.`}
+              />
             </Flex>
           </Flex>
           <Flex variant="layout.verticalAlign">
@@ -99,7 +101,7 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
                 fontSize: 1,
               }}
             >
-              ({totalDistribution}%)
+              Filled: {totalDistribution}%
             </Text>
           </Flex>
         </>
