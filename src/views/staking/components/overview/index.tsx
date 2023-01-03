@@ -36,7 +36,7 @@ const Stats = (props: BoxProps) => {
           sx={{
             borderRight: '1px solid',
             borderBottom: '1px solid',
-            borderColor: 'darkBorder',
+            borderColor: 'border',
           }}
         >
           <Text variant="subtitle" mb={3}>
@@ -48,10 +48,7 @@ const Stats = (props: BoxProps) => {
             text={`${stakingApy}%`}
           />
         </Box>
-        <Box
-          p={4}
-          sx={{ borderBottom: '1px solid', borderColor: 'darkBorder' }}
-        >
+        <Box p={4} sx={{ borderBottom: '1px solid', borderColor: 'border' }}>
           <Text variant="subtitle" mb={3}>
             <Trans>Collateral backing</Trans>
           </Text>
@@ -61,7 +58,7 @@ const Stats = (props: BoxProps) => {
             text={`${distribution.backing}%`}
           />
         </Box>
-        <Box p={4} sx={{ borderRight: '1px solid', borderColor: 'darkBorder' }}>
+        <Box p={4} sx={{ borderRight: '1px solid', borderColor: 'border' }}>
           <Text variant="subtitle" mb={3}>
             <Trans>Backing + Staked</Trans>
           </Text>

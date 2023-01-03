@@ -13,7 +13,7 @@ import RecentTokenTransactions from './components/RecentTokenTransactions'
 import TokenOverview from './components/TokenOverview'
 import TokenUsage from './components/TokenUsage'
 
-const dividerProps = { my: 5, mx: [-4, -5], sx: { borderColor: 'darkBorder' } }
+const dividerProps = { my: 5, mx: [-4, -5], sx: { borderColor: 'border' } }
 const gridProps = { columns: [1, 1, 1, 2], gap: [5, 5, 5, 4] }
 
 /**

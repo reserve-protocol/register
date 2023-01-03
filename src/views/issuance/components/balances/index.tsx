@@ -62,14 +62,14 @@ const Balances = () => {
         <CollateralBalances collaterals={rToken?.collaterals} />
         <Box
           sx={(theme: any) => ({
-            borderLeft: ['none', `1px solid ${theme.colors.border}`],
-            borderTop: [`1px solid ${theme.colors.border}`, 'none'],
+            borderLeft: ['none', `1px solid ${theme.colors.darkBorder}`],
+            borderTop: [`1px solid ${theme.colors.darkBorder}`, 'none'],
           })}
         >
           <RTokenBalance token={rToken} />
           {!rToken.isRSV && (
             <>
-              <Divider m={0} />
+              <Divider m={0} sx={{ borderColor: 'darkBorder' }} />
               <PendingIssuances token={rToken} />
             </>
           )}

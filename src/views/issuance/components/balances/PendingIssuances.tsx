@@ -102,7 +102,7 @@ const PendingIssuances = ({ token }: { token: Token }) => {
           mt={3}
         />
       </Box>
-      <Divider m={0} />
+      <Divider sx={{ borderColor: 'darkBorder' }} />
       <Box p={4}>
         <Text variant="subtitle" mb={3}>
           <Trans>Pending</Trans>

@@ -160,14 +160,14 @@ const Balances = (props: BoxProps) => (
       <StakeBalance />
       <Box
         sx={(theme: any) => ({
-          borderLeft: ['none', `1px solid ${theme.colors.border}`],
-          borderTop: [`1px solid ${theme.colors.border}`, 'none'],
+          borderLeft: ['none', `1px solid ${theme.colors.darkBorder}`],
+          borderTop: [`1px solid ${theme.colors.darkBorder}`, 'none'],
         })}
       >
         <RSRBalance />
-        <Divider m={0} />
+        <Divider m={0} sx={{ borderColor: 'darkBorder' }} />
         <AvailableBalance />
-        <Divider m={0} />
+        <Divider m={0} sx={{ borderColor: 'darkBorder' }} />
         <PendingBalance />
       </Box>
     </Grid>
