@@ -46,7 +46,9 @@ const AppHeader = () => {
         onClick={() => window.open('https://reserve.org/protocol/', '_blank')}
       >
         <Text mr={1}>Docs</Text>
-        <ExternalArrowIcon />
+        <Box mt={2}>
+          <ExternalArrowIcon />
+        </Box>
       </Flex>
       <ThemeColorMode ml={4} mr={3} mt={1} />
       {/* <Box ml={4} sx={{ alignItems: 'center', display: 'flex' }}>
