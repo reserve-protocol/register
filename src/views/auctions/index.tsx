@@ -299,7 +299,7 @@ const Auctions = () => {
   return (
     <Container>
       <ContentHead
-        title={rToken?.symbol || 'Unknown' + ' ' + t`related Auctions`}
+        title={(rToken?.symbol || 'Unknown') + ' ' + t`related Auctions`}
         subtitle={t`Ongoing & historical auctions`}
         mb={7}
         ml={5}
