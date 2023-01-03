@@ -4,6 +4,7 @@ import Account from 'components/account'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
 import useIsDeployer from 'hooks/useIsDeployer'
 import useIsSidebarVisible from 'hooks/useIsSidebarVisible'
+import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import { HelpCircle } from 'react-feather'
 import { Box, Flex, Text } from 'theme-ui'
 import Brand from './Brand'
@@ -35,13 +36,18 @@ const AppHeader = () => {
         )}
         {!isDeployer && <TokenToggle />}
       </Box>
-      <Box
-        sx={{ display: ['none', 'block'], marginTop: '7px', cursor: 'pointer' }}
-        variant="layout.verticalAlign"
+      <Flex
+        sx={{
+          display: ['none', 'flex'],
+          cursor: 'pointer',
+          alignItems: 'center',
+          flexDirection: 'row',
+        }}
         onClick={() => window.open('https://reserve.org/protocol/', '_blank')}
       >
-        <HelpCircle size={20} />
-      </Box>
+        <Text mr={1}>Docs</Text>
+        <ExternalArrowIcon />
+      </Flex>
       <ThemeColorMode ml={4} mr={3} mt={1} />
       {/* <Box ml={4} sx={{ alignItems: 'center', display: 'flex' }}>
         <LanguageSelector />
