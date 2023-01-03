@@ -4,12 +4,12 @@ import { ReactNode, useCallback, useState } from 'react'
 import Popover, { PopoverProps } from '../popover'
 
 export const TooltipContainer = styled.div`
-  max-width: 256px;
-  padding: 0.6rem 1rem;
+  max-width: 340px;
+  padding: 0.8rem 1rem;
   font-weight: 400;
   word-break: break-word;
-  background-color: var(--theme-ui-colors-contentBackground);
-  border: 1px solid var(--theme-ui-colors-darkBorder);
+  background-color: var(--theme-ui-colors-background);
+  border: 1px solid var(--theme-ui-colors-text);
   border-radius: 8px;
 `
 
