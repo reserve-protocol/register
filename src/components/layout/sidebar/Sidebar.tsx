@@ -37,6 +37,7 @@ const Sidebar = () => {
         flexBasis: isSidebarCollapsed ? 64 : [64, 72, 264],
         flexShrink: 0,
         display: ['none', 'flex'],
+        transitionProperty: 'width',
         transition,
       }}
     >

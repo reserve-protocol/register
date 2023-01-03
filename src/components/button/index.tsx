@@ -36,7 +36,8 @@ export const LoadingButton = ({
             justifyContent: 'center',
           }}
         >
-          <Spinner sx={{ color: '#fff' }} size={14} mr={2} /> {loadingText}
+          <Spinner sx={{ color: '--theme-ui-colors-text' }} size={14} mr={2} />{' '}
+          {loadingText}
         </Text>
       ) : (
         <Text>{text}</Text>
