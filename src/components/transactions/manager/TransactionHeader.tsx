@@ -28,7 +28,7 @@ const TransactionHeader = () => {
       sx={{
         alignItems: 'center',
         borderBottom: '1px solid',
-        borderColor: 'darkBorder',
+        borderColor: 'border',
         height: '56px',
         flexShrink: 0,
       }}
