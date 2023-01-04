@@ -6,7 +6,8 @@ import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Plus } from 'react-feather'
 import { useForm } from 'react-hook-form'
-import { Box, BoxProps, Card, Divider, Flex, Text } from 'theme-ui'
+import DocsLink from 'components/docs-link/docs-link'
+import { Box, BoxProps, Card, Divider, Flex, Text, Link } from 'theme-ui'
 import {
   ExternalAddressSplit,
   isRevenueValidAtom,
@@ -88,9 +89,12 @@ const RevenueSplit = (props: BoxProps) => {
 
   return (
     <Card p={4} {...props}>
-      <Text ml={2} variant="sectionTitle">
-        <Trans>Revenue Distribution</Trans>
-      </Text>
+      <Flex>
+        <Text ml={2} variant="sectionTitle">
+          <Trans>Revenue Distribution</Trans>
+        </Text>
+        <DocsLink link="https://reserve.org/protocol/protocol_operations/#revenue-handling" />
+      </Flex>
       <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
       <Field label={t`% Revenue to RToken Holders`} mb={3}>
         <FieldInput
@@ -130,7 +134,7 @@ const RevenueSplit = (props: BoxProps) => {
           </Text>
         </Box>
       )}
-      <SmallButton variant="muted" mt={5} onClick={handleAddExternal}>
+      <SmallButton variant="muted" mt={4} onClick={handleAddExternal}>
         <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
           <Plus size={16} />
           <Text pl={1}>
@@ -138,6 +142,23 @@ const RevenueSplit = (props: BoxProps) => {
           </Text>
         </Flex>
       </SmallButton>
+      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+      <Text variant="legend" as="p" sx={{ fontSize: 1 }} mb={1} mr={2}>
+        <Trans>
+          Define what portion of the revenue goes to the RToken holders versus
+          RSR stakers. It can also be configured to send (part of the) revenue
+          of an RToken to any arbitrary Ethereum address.
+          <br />
+          <br />
+        </Trans>
+        <Link
+          href="https://reserve.org/protocol/protocol_operations/#revenue-distribution"
+          target="_blank"
+          sx={{ textDecoration: 'underline' }}
+        >
+          <Trans>Read more about revenue distribution</Trans>
+        </Link>
+      </Text>
     </Card>
   )
 }

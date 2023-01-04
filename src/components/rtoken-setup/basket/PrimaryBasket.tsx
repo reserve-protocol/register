@@ -1,12 +1,14 @@
 import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
+import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import Help from 'components/help'
 import { useAtomValue } from 'jotai'
 import { Box, BoxProps, Divider, Flex, Text } from 'theme-ui'
 import { truncateDecimals } from 'utils'
 import { Basket, basketAtom } from '../atoms'
 import UnitBasket from './UnitBasket'
+import DocsLink from 'components/docs-link/docs-link'
 
 interface Props extends BoxProps {
   onAdd?(
@@ -28,7 +30,7 @@ const getBasketComposition = (basket: Basket) => {
 
 const Placeholder = () => (
   <Box
-    sx={{ textAlign: 'center', maxWidth: 400, margin: 'auto' }}
+    sx={{ textAlign: 'center', maxWidth: 440, margin: 'auto' }}
     mt={5}
     py={6}
   >
@@ -38,12 +40,11 @@ const Placeholder = () => (
     </Text>
     <Text variant="legend" as="p" sx={{ fontSize: 1 }} mb={2}>
       <Trans>
-        The basket & weights of the collateral for your RToken will populate
-        here.
+        This is the target collateral basket at the onset of an RToken that
+        defines which collateral needs to be deposited for issuances. The prime
+        basket is directly set by governance, and only changes through
+        successful governance proposals.
       </Trans>
-    </Text>
-    <Text variant="legend" as="p" sx={{ fontSize: 1 }}>
-      <Trans>Want more than one target unit? That’s possible!</Trans>
     </Text>
   </Box>
 )
@@ -64,6 +65,7 @@ const PrimaryBasket = ({
     <Box {...props}>
       <Flex variant="layout.verticalAlign">
         <Text variant="sectionTitle">Primary Basket</Text>
+        <DocsLink link="https://reserve.org/protocol/monetary_units_baskets/#baskets" />
         {!readOnly && (
           <SmallButton
             onClick={() => onAdd({ basket: 'primary' })}

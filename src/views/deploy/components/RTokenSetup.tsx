@@ -28,9 +28,9 @@ const DeploySection = ({ enabled = true }) => {
     <>
       <BasketSetup />
       <SectionWrapper navigationIndex={3}>
-        <RevenueSplit mt={4} />
+        <RevenueSplit mt={5} />
       </SectionWrapper>
-      <TokenParameters mt={4} />
+      <TokenParameters mt={5} />
       <TransactionDivider
         title={t`Transaction 1`}
         subtitle={t`You submit the transaction configuring your RToken design`}

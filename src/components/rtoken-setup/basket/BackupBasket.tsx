@@ -6,6 +6,7 @@ import { useCallback } from 'react'
 import { Box, BoxProps, Divider, Flex, Text } from 'theme-ui'
 import { backupCollateralAtom, basketAtom } from '../atoms'
 import EmergencyCollateral from './EmergencyCollateral'
+import DocsLink from 'components/docs-link/docs-link'
 
 interface Props extends BoxProps {
   onAdd?(
@@ -36,7 +37,7 @@ const Placeholder = () => (
       <Box sx={{ textAlign: 'center' }} py={8} px={4}>
         <EmptyBoxIcon />
         <Text sx={{ fontWeight: 500, display: 'block' }} my={2}>
-          <Trans>Emergency Collateral</Trans>
+          <Trans>Empty backup basket</Trans>
         </Text>
         <Text variant="legend" sx={{ fontSize: 1 }}>
           <Trans>
@@ -76,6 +77,7 @@ const BackupBasket = ({
     <Box {...props}>
       <Flex variant="layout.verticalAlign">
         <Text variant="sectionTitle">Emergency Collateral</Text>
+        <DocsLink link="https://reserve.org/protocol/monetary_units_baskets/#baskets" />
       </Flex>
       {targetUnits.map((targetUnit) =>
         readOnly && !backupBasket[targetUnit]?.collaterals.length ? null : (

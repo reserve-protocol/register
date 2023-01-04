@@ -23,7 +23,7 @@ const BasketSetup = () => {
           <PrimaryBasket onAdd={setCollateralModal} />
         </SectionWrapper>
       </Card>
-      <Card mt={4} p={4}>
+      <Card mt={5} p={4}>
         <SectionWrapper navigationIndex={2}>
           <BackupBasket onAdd={setCollateralModal} />
         </SectionWrapper>
