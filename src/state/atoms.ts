@@ -58,11 +58,11 @@ export const rTokenAtom = atom<ReserveToken | null>((get) =>
 export const rTokenYieldAtom = atom({ tokenApy: 0, stakingApy: 0 })
 
 // Current rToken status
-export const rTokenStatusAtom = atom(RTOKEN_STATUS.SOUND)
+export const rTokenStatusAtom = atom({ paused: false, frozen: false })
 export const isRTokenDisabledAtom = atom<boolean>((get) => {
   const status = get(rTokenStatusAtom)
 
-  return status === RTOKEN_STATUS.FROZEN || status === RTOKEN_STATUS.PAUSED
+  return status.paused || status.frozen
 })
 
 // Get rToken main contract, not available for RSV

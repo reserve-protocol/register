@@ -1,7 +1,6 @@
 import styled from '@emotion/styled'
 import useIsSidebarVisible from 'hooks/useIsSidebarVisible'
 import { atom, useAtom } from 'jotai'
-import { transition } from 'theme'
 import { Box } from 'theme-ui'
 import Navigation from '../navigation'
 import Footer from './Footer'
@@ -37,7 +36,6 @@ const Sidebar = () => {
         flexBasis: isSidebarCollapsed ? 64 : [64, 72, 264],
         flexShrink: 0,
         display: ['none', 'flex'],
-        transition,
       }}
     >
       <Navigation collapsed={isSidebarCollapsed} />

@@ -169,7 +169,6 @@ const ReserveTokenUpdater = () => {
   const setTokenStatus = useCallback(
     async (mainAddress: string, provider: Web3Provider) => {
       try {
-        let status = RTOKEN_STATUS.SOUND
         const [isPaused, isFrozen] = await promiseMulticall(
           [
             {
@@ -188,13 +187,7 @@ const ReserveTokenUpdater = () => {
           provider
         )
 
-        if (isPaused) {
-          status = RTOKEN_STATUS.PAUSED
-        } else if (isFrozen) {
-          status = RTOKEN_STATUS.FROZEN
-        }
-
-        updateTokenStatus(status)
+        updateTokenStatus({ paused: isPaused, frozen: isFrozen })
       } catch (e) {
         console.error('Error getting token status', e)
       }
@@ -400,7 +393,7 @@ const ReserveTokenUpdater = () => {
     if (provider && blockNumber && mainAddress) {
       setTokenStatus(mainAddress, provider)
     } else {
-      updateTokenStatus(RTOKEN_STATUS.SOUND)
+      updateTokenStatus({ paused: false, frozen: false })
     }
   }, [blockNumber, mainAddress])
 

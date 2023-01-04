@@ -6,6 +6,9 @@ import SectionWrapper from 'components/section-navigation/SectionWrapper'
 import { Box, BoxProps } from 'theme-ui'
 import ListingInfo from 'views/settings/components/ListingInfo'
 import { useDeployTxState } from '../useDeploy'
+import BackingManager from './BackingManager'
+import Intro from './Intro'
+import OtherSetup from './OtherSetup'
 import TokenParameters from './TokenParameters'
 import TransactionDivider, { DeploySuccessDivider } from './TransactionDivider'
 
@@ -26,11 +29,22 @@ const DeploySection = ({ enabled = true }) => {
 
   return (
     <>
-      <BasketSetup />
-      <SectionWrapper navigationIndex={3}>
+      <SectionWrapper navigationIndex={0}>
+        <Intro />
+      </SectionWrapper>
+      <SectionWrapper navigationIndex={1}>
+        <TokenParameters my={5} />
+      </SectionWrapper>
+      <BasketSetup startIndex={2} />
+      <SectionWrapper navigationIndex={4}>
         <RevenueSplit mt={5} />
       </SectionWrapper>
-      <TokenParameters mt={5} />
+      <SectionWrapper navigationIndex={5}>
+        <BackingManager mt={5} />
+      </SectionWrapper>
+      <SectionWrapper navigationIndex={6}>
+        <OtherSetup mt={5} />
+      </SectionWrapper>
       <TransactionDivider
         title={t`Transaction 1`}
         subtitle={t`You submit the transaction configuring your RToken design`}
@@ -41,7 +55,7 @@ const DeploySection = ({ enabled = true }) => {
 
 const GovernanceSection = ({ enabled = true }) => (
   <>
-    <SectionWrapper sx={{ position: 'relative' }} navigationIndex={5}>
+    <SectionWrapper sx={{ position: 'relative' }} navigationIndex={7}>
       {!enabled && (
         <Box
           sx={{
@@ -56,14 +70,13 @@ const GovernanceSection = ({ enabled = true }) => (
         />
       )}
       <GovernanceSetup disabled={!enabled} />
-
-      <TransactionDivider
-        title={t`Transaction 2`}
-        subtitle={t`You submit the transaction configuration your RToken governance`}
-      />
-      <SectionWrapper navigationIndex={6} mb={4}>
-        <ListingInfo />
-      </SectionWrapper>
+    </SectionWrapper>
+    <TransactionDivider
+      title={t`Transaction 2`}
+      subtitle={t`Governance gets deployed & your RToken is now usable (if unpaused)`}
+    />
+    <SectionWrapper navigationIndex={8} mb={4}>
+      <ListingInfo />
     </SectionWrapper>
   </>
 )
