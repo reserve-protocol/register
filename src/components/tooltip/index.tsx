@@ -9,7 +9,8 @@ export const TooltipContainer = styled.div`
   font-weight: 400;
   word-break: break-word;
   background-color: var(--theme-ui-colors-background);
-  border: 1px solid var(--theme-ui-colors-text);
+  border: 1px solid var(--theme-ui-colors-inputBorder);
+  box-shadow: 0px 4px 24px var(--theme-ui-colors-inputBorder);
   border-radius: 8px;
 `
 

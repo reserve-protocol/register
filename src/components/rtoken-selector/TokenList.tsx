@@ -36,7 +36,7 @@ const TokenList = memo(
         sx={{
           maxHeight: 320,
           overflow: 'auto',
-          backgroundColor: 'contentBackground',
+          backgroundColor: 'background',
           borderRadius: '8px',
         }}
       >

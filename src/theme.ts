@@ -1,7 +1,7 @@
 import type { Theme } from 'theme-ui'
 import './app.css'
 
-export const boxShadow = '0px 4px 34px rgba(0, 0, 0, 0.03)'
+export const boxShadow = '0px 4px 34px rgba(0, 0, 0, 0.05)'
 export const transition = 'all .2s ease'
 export const centeredContent = {
   display: 'flex',
