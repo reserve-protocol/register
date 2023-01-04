@@ -16,7 +16,7 @@ const ExternalArrowIcon = (props: SVGProps<SVGSVGElement>) => (
     </g>
     <defs>
       <clipPath id="a">
-        <path fill="CurrentColor" d="M0 0h16v16H0z" />
+        <path fill="currentColor" d="M0 0h16v16H0z" />
       </clipPath>
     </defs>
   </svg>
