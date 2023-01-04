@@ -18,9 +18,7 @@ const StyledDialog = styled((props: any) => <Dialog {...props} />)`
     background-color: ${({ theme }) => theme.colors.background};
     padding: ${({ theme }) => theme.space[4]}px;
     border-radius: 12px;
-    box-shadow: ${({ theme }) => theme.strongBoxShadow};
     box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.1);
-    border: 2px solid ${({ theme }) => theme.colors.inputBorder};
     position: absolute;
     left: 50%;
     top: 50%;
@@ -73,7 +71,7 @@ const Modal = ({
               />
             )}
           </Flex>
-          {!!title && <Divider mx={-4} mb={4} />}
+          {!!title && <Divider mx={-4} mb={3} />}
         </>
       )}
       {children}

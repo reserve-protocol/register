@@ -132,9 +132,8 @@ const CollateralModal = ({
           </Box>
         )}
       </Box>
-      <Divider mx={-4} mb={3} />
+      <Divider mx={-4} mb={4} />
       <Button
-        mt={1}
         onClick={handleSubmit}
         disabled={!Object.keys(selected).length}
         sx={{ width: '100%' }}
