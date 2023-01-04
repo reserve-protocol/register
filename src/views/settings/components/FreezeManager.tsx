@@ -14,6 +14,7 @@ import SettingItem from './SettingItem'
 
 const FreezeManager = () => {
   const [txId, setTx] = useState('')
+  const [freezeType, setFreezeType] = useState(0) // 0 = short -- 1 = long
   const tx = useTransaction(txId)
   const rToken = useRToken()
   const accountRole = useAtomValue(accountRoleAtom)
@@ -26,6 +27,7 @@ const FreezeManager = () => {
       tx?.status === TRANSACTION_STATUS.REJECTED
     ) {
       setTx('')
+      setFreezeType(0)
     }
   }, [tx?.status])
 
@@ -54,6 +56,7 @@ const FreezeManager = () => {
     if (rToken?.main && !isFrozen) {
       const id = uuid()
       setTx(id)
+      setFreezeType(1)
       addTransaction([
         {
           id,
@@ -109,14 +112,10 @@ const FreezeManager = () => {
         title={t`Short Freeze`}
         subtitle={t`Role held by:`}
         value="0xfb...0344"
-        action={
-          !isFrozen && (accountRole.shortFreezer || accountRole.owner)
-            ? t`Freeze`
-            : ''
-        }
+        action={!isFrozen && accountRole.shortFreezer ? t`Freeze` : ''}
         onAction={handleFreeze}
         actionVariant="danger"
-        loading={!!tx}
+        loading={!!tx && !freezeType}
         mb={3}
       />
       <SettingItem
@@ -130,7 +129,7 @@ const FreezeManager = () => {
         }
         onAction={handleLongFreeze}
         actionVariant="danger"
-        loading={!!tx}
+        loading={!!tx && !!freezeType}
       />
     </>
   )
