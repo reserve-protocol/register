@@ -50,10 +50,18 @@ const AppHeader = () => {
           <ExternalArrowIcon />
         </Box>
       </Flex>
-      <ThemeColorMode ml={4} mr={3} mt={1} />
+      <Box
+        mx={4}
+        sx={{ backgroundColor: 'inputBorder', width: '1px', height: '16px' }}
+      ></Box>
+      <ThemeColorMode pt={1} />
       {/* <Box ml={4} sx={{ alignItems: 'center', display: 'flex' }}>
         <LanguageSelector />
       </Box> */}
+      <Box
+        mx={4}
+        sx={{ backgroundColor: 'inputBorder', width: '1px', height: '16px' }}
+      ></Box>
       <Account />
     </Container>
   )
