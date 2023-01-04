@@ -98,7 +98,7 @@ const DeployStatus = () => {
   return (
     <>
       <Text variant="legend" as="p" sx={{ textAlign: 'center' }}>
-        The first of two transactions until your RToken can be interacted with.
+        The first of two transactions until your RToken is ready for use.
       </Text>
       <Button
         onClick={deploy}
@@ -123,27 +123,6 @@ const DeployStatus = () => {
   )
 }
 
-const StakingTokenOverview = () => {
-  const { watch } = useFormContext()
-  const [tickerValue] = watch(['ticker'])
-
-  return (
-    <Box>
-      <InfoBox
-        light
-        mb={3}
-        title={'Staking token'}
-        subtitle={tickerValue ? `${tickerValue}RSR Token` : 'Undefined'}
-      />
-      <InfoBox
-        light
-        title={'Staking token ticker'}
-        subtitle={tickerValue ? `${tickerValue}RSR` : 'Undefined'}
-      />
-    </Box>
-  )
-}
-
 const DeployOverview = (props: BoxProps) => (
   <Container variant="layout.borderBox" {...props}>
     <Flex
@@ -160,8 +139,6 @@ const DeployOverview = (props: BoxProps) => (
       </Text>
       <DeployStatus />
     </Flex>
-    <Divider my={3} mx={-4} />
-    <StakingTokenOverview />
     <Divider my={3} mx={-4} />
     <Box>
       <Text variant="strong" mb={2}>
