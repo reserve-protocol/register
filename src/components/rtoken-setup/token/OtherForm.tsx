@@ -10,9 +10,6 @@ import { decimalPattern, numberPattern } from 'utils'
  */
 const OtherForm = (props: BoxProps) => (
   <Box {...props}>
-    <Text variant="title" mb={4}>
-      <Trans>Other</Trans>
-    </Text>
     <FormField
       label={t`Short freeze duration (s)`}
       placeholder={t`Duration in seconds`}

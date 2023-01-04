@@ -1,18 +1,22 @@
-import { t } from '@lingui/macro'
-import BackButton from 'components/rtoken-setup/components/BackButton'
+import { t, Trans } from '@lingui/macro'
+import { SmallButton } from 'components/button'
 import Navigation from 'components/section-navigation/Navigation'
 import { useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Box } from 'theme-ui'
 
 const NavigationSidebar = () => {
   // TODO: Listen for lang
+  const navigate = useNavigate()
   const sections = useMemo(
     () => [
       t`Intro`,
+      t`Basics`,
       t`Primary basket`,
       t`Emergency basket`,
-      t`Revenue split`,
-      t`RToken params`,
+      t`Revenue distribution`,
+      t`Backing Manager`,
+      t`Other`,
     ],
     []
   )
@@ -22,17 +26,19 @@ const NavigationSidebar = () => {
     []
   )
 
+  const handleBack = () => {
+    navigate('/')
+  }
+
   return (
     <Box variant="layout.sticky">
       <Box mb={4}>
-        <BackButton />
+        <SmallButton variant="muted" onClick={handleBack}>
+          <Trans>Exit Deployer</Trans>
+        </SmallButton>
       </Box>
-      <Navigation title={t`Step 1`} sections={sections} />
-      <Navigation
-        title={t`Step 2`}
-        initialIndex={5}
-        sections={step2Navigation}
-      />
+      <Navigation title={t`Tx 1`} sections={sections} />
+      <Navigation title={t`Tx 2`} initialIndex={7} sections={step2Navigation} />
     </Box>
   )
 }

@@ -12,11 +12,6 @@ const TokenForm = (props: BoxProps) => {
 
   return (
     <Box {...props}>
-      <Box variant="layout.verticalAlign" mb={4}>
-        <Text ml={2} variant="title">
-          <Trans>RToken Details</Trans>
-        </Text>
-      </Box>
       <FormField
         label={t`Token name`}
         placeholder={t`Input token name`}

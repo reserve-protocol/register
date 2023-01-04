@@ -5,7 +5,7 @@ import BackupBasket from './BackupBasket'
 import CollateralModal from './CollateralModal'
 import PrimaryBasket from './PrimaryBasket'
 
-const BasketSetup = () => {
+const BasketSetup = ({ startIndex = 2 }) => {
   const [collateralModal, setCollateralModal] = useState<{
     basket: 'primary' | 'backup'
     targetUnit?: string
@@ -14,12 +14,12 @@ const BasketSetup = () => {
   return (
     <>
       <Card p={4}>
-        <SectionWrapper navigationIndex={1}>
+        <SectionWrapper navigationIndex={startIndex}>
           <PrimaryBasket onAdd={setCollateralModal} />
         </SectionWrapper>
       </Card>
       <Card mt={4} p={4}>
-        <SectionWrapper navigationIndex={2}>
+        <SectionWrapper navigationIndex={startIndex + 1}>
           <BackupBasket onAdd={setCollateralModal} />
         </SectionWrapper>
       </Card>

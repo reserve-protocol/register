@@ -8,9 +8,6 @@ import { decimalPattern, numberPattern } from 'utils'
  */
 const BackingForm = (props: BoxProps) => (
   <Box {...props}>
-    <Text variant="title" mb={4}>
-      <Trans>Backing Manager</Trans>
-    </Text>
     <FormField
       label={t`Trading delay (s)`}
       placeholder={t`Delay in seconds`}
