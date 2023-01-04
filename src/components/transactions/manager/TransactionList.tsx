@@ -201,10 +201,15 @@ const TransactionList = () => {
         </Box>
       ))}
       {!Object.keys(txs).length && (
-        <Box mt={5} sx={{ textAlign: 'center' }}>
+        <Box
+          mt={'42%'}
+          sx={{
+            textAlign: 'center',
+          }}
+        >
           <EmptyBoxIcon />
           <Text variant="legend" mt={3} sx={{ display: 'block' }}>
-            <Trans>No transactions...</Trans>
+            <Trans>No transactions in local memory...</Trans>
           </Text>
         </Box>
       )}
