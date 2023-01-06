@@ -22,7 +22,7 @@ export const LoadingButton = ({
 
   return (
     <ButtonComponent
-      variant="accent"
+      variant="accentAction"
       onClick={(e) => {
         if (!loading && onClick) onClick(e)
       }}

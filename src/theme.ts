@@ -72,11 +72,11 @@ export const colors = {
   contentLightBackground: 'rgba(255, 255, 255, 0.5)',
   primary: '#000000',
   success: '#11BB8D',
-  accentAction: 'white',
+  accentAction: '#75FBC3',
   accent: '#003326',
   secondary: '#E8E8E8',
   border: '#F2F2F2',
-  darkBorder: '#F0ECDB',
+  darkBorder: '#EEEDE9',
   inputBorder: '#E5E5E5',
   disabled: '#E5E5E5',
   danger: '#FF0000',
@@ -349,9 +349,13 @@ export const theme: Theme = {
     },
     accentAction: {
       ...baseButton,
-      backgroundColor: 'accentAction',
+      backgroundColor: 'white',
       color: 'black',
-      border: '2px solid #75FBC3'
+      border: '2px solid',
+      borderColor: 'accentAction',
+      '&:hover': {
+        backgroundColor: 'accentAction',
+      },
     },
     transparent: {
       ...baseButton,
