@@ -63,7 +63,15 @@ export const useDeployTx = () => {
         args: params as any,
       },
     }
-  }, [primaryBasket, backupBasket, revenueSplit, JSON.stringify(formFields)])
+  }, [
+    primaryBasket,
+    isBasketValid,
+    isRevenueSplitValid,
+    isValid,
+    backupBasket,
+    revenueSplit,
+    JSON.stringify(formFields),
+  ])
 }
 
 export const useDeployTxState = () => {
