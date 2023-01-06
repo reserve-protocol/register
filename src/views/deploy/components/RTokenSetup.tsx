@@ -33,17 +33,17 @@ const DeploySection = ({ enabled = true }) => {
         <Intro />
       </SectionWrapper>
       <SectionWrapper navigationIndex={1}>
-        <TokenParameters my={5} />
+        <TokenParameters my={4} />
       </SectionWrapper>
       <BasketSetup startIndex={2} />
       <SectionWrapper navigationIndex={4}>
-        <RevenueSplit mt={5} />
+        <RevenueSplit mt={4} />
       </SectionWrapper>
       <SectionWrapper navigationIndex={5}>
-        <BackingManager mt={5} />
+        <BackingManager mt={4} />
       </SectionWrapper>
       <SectionWrapper navigationIndex={6}>
-        <OtherSetup mt={5} />
+        <OtherSetup mt={4} />
       </SectionWrapper>
       <TransactionDivider
         title={t`Transaction 1`}

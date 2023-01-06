@@ -131,18 +131,7 @@ const GovernanceOverview = (props: BoxProps) => (
       </Text>
       <GovernanceStatus />
     </Flex>
-    <Divider my={3} mx={-4} />
-    <Box>
-      <Text variant="strong" mb={2}>
-        What’s Alexios Governance?
-      </Text>
-      <Text as="p" variant="legend">
-        Please read our documentation on the matter to understand the difference
-        between setting your own ownership address and using our custom build
-        standard format.
-      </Text>
-    </Box>
-    <Divider my={3} mx={-4} />
+    <Divider my={4} mx={-4} />
     <Box>
       <Text variant="strong" mb={2}>
         Not ready to set up governance?

@@ -45,7 +45,6 @@ const TokenForm = (props: BoxProps) => {
         label={t`Mandate`}
         placeholder={t`RToken mandate`}
         help={t`The mandate describes what goals its governors should try to achieve. By briefly explaining the RToken’s purpose and what the RToken is intended to do, it provides common ground for the governors to decide upon priorities and how to weigh tradeoffs.`}
-        mb={3}
         textarea
         name="mandate"
         options={{

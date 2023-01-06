@@ -1,11 +1,13 @@
 import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import { Text, BoxProps, Card, Flex } from 'theme-ui'
+import DeployIntro from 'components/icons/DeployIntroIcon'
 
 const Intro = (props: BoxProps) => (
-  <Card p={4} {...props} sx={{ position: 'relative' }}>
-    <Text variant="title" sx={{ fontSize: 4 }} mb={2}>
-      <Trans>Welcome to our Deployer UI</Trans>
+  <Card p={5} {...props} sx={{ position: 'relative' }}>
+    <DeployIntro />
+    <Text variant="sectionTitle" mb={2} mt={2}>
+      <Trans>Deploy an RToken</Trans>
     </Text>
     <Text as="p" variant="legend" pr={4}>
       <Trans>
@@ -15,8 +17,8 @@ const Intro = (props: BoxProps) => (
         and read the docs to learn more before confirming any transactions.
       </Trans>
     </Text>
-    <Flex mt={3}>
-      <SmallButton variant="transparent" mr={2}>
+    <Flex mt={4}>
+      <SmallButton variant="transparent" mr="12px">
         <Trans>Community Discord</Trans>
       </SmallButton>
       <SmallButton variant="muted">

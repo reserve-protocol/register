@@ -63,7 +63,7 @@ const PrimaryBasket = ({
 
   return (
     <Box {...props}>
-      <Flex variant="layout.verticalAlign">
+      <Flex variant="layout.verticalAlign" px={1}>
         <Text variant="sectionTitle">Primary Basket</Text>
         <DocsLink link="https://reserve.org/protocol/monetary_units_baskets/#baskets" />
         {!readOnly && (
