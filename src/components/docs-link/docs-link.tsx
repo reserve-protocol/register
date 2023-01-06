@@ -6,11 +6,11 @@ interface Props extends BoxProps {
   size?: number
 }
 
-const DocsLink = ({ link, sx = {}, ...props }: Props) => {
+const DocsLink = ({ link }: Props) => {
   return (
     <Box
-      onClick={() => window.open('{ link }', '_blank')}
-      sx={{ cursor: 'pointer', ...sx }}
+      onClick={() => window.open(link, '_blank')}
+      sx={{ cursor: 'pointer' }}
       pt={2}
       ml={2}
     >
