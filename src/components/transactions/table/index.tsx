@@ -118,13 +118,13 @@ const TransactionsTable = ({
         ...sx,
       })}
     >
-      <Flex variant="layout.verticalAlign">
+      <Flex variant="layout.verticalAlign" mb={4}>
         {!!title && (
-          <Text mb={4} pl={3} variant="title" sx={{ display: 'block' }}>
+          <Text pl={3} variant="title" sx={{ display: 'block' }}>
             {title}
           </Text>
         )}
-        {!!help && <Help ml="4" mb={4} content={help} />}
+        {!!help && <Help ml="2" mt={1} content={help} />}
       </Flex>
       <Table
         maxHeight={maxHeight}
