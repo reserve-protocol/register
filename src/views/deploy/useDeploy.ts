@@ -1,3 +1,4 @@
+import { isValidExternalMapAtom } from './../../components/rtoken-setup/atoms'
 import { atomWithReset } from 'jotai/utils'
 import { t } from '@lingui/macro'
 import useDebounce from 'hooks/useDebounce'
@@ -30,13 +31,17 @@ export const useDeployTx = () => {
   } = useFormContext()
   const isBasketValid = useAtomValue(isBasketValidAtom)
   const isRevenueSplitValid = useAtomValue(isRevenueValidAtom)
+  const isValidExternalMap = useAtomValue(isValidExternalMapAtom)
   const primaryBasket = useAtomValue(basketAtom)
   const backupBasket = useAtomValue(backupCollateralAtom)
   const revenueSplit = useAtomValue(revenueSplitAtom)
   const formFields = useWatch()
 
+  const isDeployValid =
+    isBasketValid && isRevenueSplitValid && isValidExternalMap && isValid
+
   return useMemo(() => {
-    if (!isBasketValid || !isRevenueSplitValid || !isValid) {
+    if (!isDeployValid) {
       return null
     }
 
@@ -65,9 +70,7 @@ export const useDeployTx = () => {
     }
   }, [
     primaryBasket,
-    isBasketValid,
-    isRevenueSplitValid,
-    isValid,
+    isDeployValid,
     backupBasket,
     revenueSplit,
     JSON.stringify(formFields),

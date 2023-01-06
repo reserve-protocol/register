@@ -82,12 +82,52 @@ export interface BackupBasketConfiguration {
   backupCollateral: string[]
 }
 
+export interface ExternalDistribution {
+  beneficiary: string
+  revShare: RevenueDist
+}
+
 export interface BasketConfiguration {
   assets: string[]
   primaryBasket: string[]
   weights: BigNumber[]
   backups: BackupBasketConfiguration[]
-  beneficiaries: { beneficiary: string; revShare: RevenueDist }[]
+  beneficiaries: ExternalDistribution[]
+}
+
+/**
+ * Convert revenue distribution (%) to number of shares
+ * The number of shares cannot have decimal numbers
+ * To avoid decimals, TOTAL_SHARES = 10000000
+ */
+export const getSharesFromSplit = (
+  split: RevenueSplit
+): [RevenueDist, ExternalDistribution[]] => {
+  const SHARE_MULTIPLIER = 100 // being 0.1 of 0.1 the min number for share distribution
+
+  return [
+    {
+      rTokenDist: BigNumber.from(Math.floor(+split.holders * SHARE_MULTIPLIER)),
+      rsrDist: BigNumber.from(Math.floor(+split.stakers * SHARE_MULTIPLIER)),
+    },
+    split.external.map((externalSplit) => {
+      const totalShares = +externalSplit.total * SHARE_MULTIPLIER
+      const rTokenDist = BigNumber.from(
+        Math.floor((totalShares * +externalSplit.holders) / 100)
+      )
+      const rsrDist = BigNumber.from(
+        Math.floor((totalShares * +externalSplit.stakers) / 100)
+      )
+
+      return {
+        beneficiary: externalSplit.address,
+        revShare: {
+          rTokenDist,
+          rsrDist,
+        },
+      }
+    }),
+  ]
 }
 
 export const getDeployParameters = (
@@ -97,6 +137,10 @@ export const getDeployParameters = (
   revenueSplit: RevenueSplit
 ): [RTokenConfiguration, BasketConfiguration] | null => {
   try {
+    const [dist, beneficiaries] = getSharesFromSplit(revenueSplit)
+
+    console.log('dist?', dist)
+
     // RToken configuration parameters
     const config: RTokenConfiguration = {
       name: tokenConfig.name,
@@ -105,11 +149,7 @@ export const getDeployParameters = (
       params: {
         minTradeVolume: parseEther(tokenConfig.minTrade.toString()),
         rTokenMaxTradeVolume: parseEther(tokenConfig.maxTrade.toString()),
-        // TODO: New revenue split format
-        dist: {
-          rTokenDist: BigNumber.from(revenueSplit.holders),
-          rsrDist: BigNumber.from(revenueSplit.stakers),
-        },
+        dist,
         rewardPeriod: BigNumber.from(tokenConfig.rewardPeriod),
         rewardRatio: parseEther(tokenConfig.rewardRatio),
         unstakingDelay: BigNumber.from(tokenConfig.unstakingDelay),
@@ -178,7 +218,7 @@ export const getDeployParameters = (
       primaryBasket,
       weights,
       backups,
-      beneficiaries: [],
+      beneficiaries,
     }
 
     return [config, basketConfig]
