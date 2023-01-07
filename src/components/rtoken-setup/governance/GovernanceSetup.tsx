@@ -14,6 +14,7 @@ import {
 } from 'theme-ui'
 import { addressPattern } from 'utils'
 import GovernanceParameters from './GovernanceParameters'
+import DocsLink from 'components/docs-link/docs-link'
 
 interface Props extends BoxProps {
   disabled?: boolean
@@ -26,9 +27,12 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
 
   return (
     <Card p={4} {...props}>
-      <Text variant="sectionTitle">
-        <Trans>Governance</Trans>
-      </Text>
+      <Flex>
+        <Text variant="sectionTitle">
+          <Trans>Governance</Trans>
+        </Text>
+        <DocsLink link="https://reserve.org/protocol/reserve_rights_rsr/#reserve-rights-governance" />
+      </Flex>
       <Divider my={4} mx={-4} />
       <Image src="/svgs/governance.svg" />
       <Box mb={5}>
