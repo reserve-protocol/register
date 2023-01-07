@@ -45,7 +45,7 @@ export const baseInput = {
     cursor: 'default',
   },
   '&:hover': {
-    borderColor: 'lightText',
+    backgroundColor: 'background',
   },
   '&:focus': {
     backgroundColor: 'background',

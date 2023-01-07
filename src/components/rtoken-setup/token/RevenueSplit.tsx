@@ -138,7 +138,7 @@ const RevenueSplit = (props: BoxProps) => {
         <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
           <Plus size={16} />
           <Text pl={1}>
-            <Trans>Add external destination</Trans>
+            <Trans>Add new address</Trans>
           </Text>
         </Flex>
       </SmallButton>
