@@ -16,16 +16,17 @@ const BasketSetup = ({ startIndex = 2 }) => {
 
   return (
     <>
-      <Card p={4}>
-        <SectionWrapper navigationIndex={startIndex}>
+      <SectionWrapper navigationIndex={startIndex}>
+        <Card p={4}>
           <PrimaryBasket onAdd={setCollateralModal} />
-        </SectionWrapper>
-      </Card>
-      <Card mt={4} p={4}>
-        <SectionWrapper navigationIndex={startIndex + 1}>
+        </Card>
+      </SectionWrapper>
+      <SectionWrapper navigationIndex={startIndex + 1}>
+        <Card mt={4} p={4}>
           <BackupBasket onAdd={setCollateralModal} />
-        </SectionWrapper>
-      </Card>
+        </Card>
+      </SectionWrapper>
+
       {!!collateralModal && (
         <CollateralModal
           targetUnit={collateralModal?.targetUnit}

@@ -48,6 +48,11 @@ export const defaultValues = {
   ...governanceDefaultValues,
 }
 
+export interface RevenueDist {
+  rTokenDist: BigNumber
+  rsrDist: BigNumber
+}
+
 export interface RTokenConfiguration {
   name: string
   symbol: string
@@ -55,10 +60,7 @@ export interface RTokenConfiguration {
   params: {
     minTradeVolume: BigNumber
     rTokenMaxTradeVolume: BigNumber
-    dist: {
-      rTokenDist: BigNumber
-      rsrDist: BigNumber
-    }
+    dist: RevenueDist
     rewardPeriod: BigNumber
     rewardRatio: BigNumber
     unstakingDelay: BigNumber
@@ -85,6 +87,7 @@ export interface BasketConfiguration {
   primaryBasket: string[]
   weights: BigNumber[]
   backups: BackupBasketConfiguration[]
+  beneficiaries: { beneficiary: string; revShare: RevenueDist }[]
 }
 
 export const getDeployParameters = (
@@ -175,6 +178,7 @@ export const getDeployParameters = (
       primaryBasket,
       weights,
       backups,
+      beneficiaries: [],
     }
 
     return [config, basketConfig]
