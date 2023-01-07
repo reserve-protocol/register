@@ -50,7 +50,7 @@ const ExternalRevenueSpit = ({
     <Box {...props} sx={{ display: 'flex' }}>
       <Box mr={3}>
         <Grid columns={['1fr', '1fr', '2fr 1fr 1fr']} gap={0}>
-          <Field label={t`Total % to external address 1`}>
+          <Field label={t`Total % to arbitrary address`}>
             <FieldInput
               {...register('total', inputValidation)}
               error={!!errors['total'] || !isSplitValid}
