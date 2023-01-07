@@ -98,7 +98,8 @@ const DeployStatus = () => {
   return (
     <>
       <Text variant="legend" as="p" sx={{ textAlign: 'center' }}>
-        The first of two transactions until your RToken is ready for use.
+        You will be temporary owner until governance is deployed in transaction
+        2.
       </Text>
       <Button
         onClick={deploy}
@@ -134,7 +135,7 @@ const DeployOverview = (props: BoxProps) => (
       py={2}
     >
       <DeployActionIcon />
-      <Text variant="title" mt={2}>
+      <Text variant="title" mt={2} mb={1}>
         <Trans>Tx1. RToken Deploy</Trans>
       </Text>
       <DeployStatus />
