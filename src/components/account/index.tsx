@@ -91,7 +91,7 @@ const Account = () => {
           onClick={() => setWalletVisible(true)}
         >
           <Text sx={{ display: ['none', 'initial'] }}>
-            <Trans>Connect wallet</Trans>
+            <Trans>Connect</Trans>
           </Text>
           <Box sx={{ display: ['inline', 'none'] }}>
             <Power size={12} />
