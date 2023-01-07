@@ -90,7 +90,6 @@ const BackingForm = (props: BoxProps) => (
       label={t`Redemption rate floor`}
       placeholder={t`Redemption rate`}
       help={t`Redemption rate floor - minimum quantity of RToken to allow redemption of per-hour, and thereby the rate to charge the redemption battery at. The default is 1,000,000 RTokens. Goes hand in hand with scaling redemption rate above.`}
-      mb={3}
       name="redemptionRateFloor"
       options={{
         required: true,

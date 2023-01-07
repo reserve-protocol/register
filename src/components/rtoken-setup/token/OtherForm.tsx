@@ -93,7 +93,6 @@ const OtherForm = (props: BoxProps) => (
       label={t`RToken Maximum trade volume`}
       placeholder={t`Maximum trade for RToken`}
       help={t`Maximum trade volume - maximum sized trade for any trade involving RToken, in terms of the unit of account eg. USD. The default is $1M.`}
-      mb={3}
       name="maxTrade"
       options={{
         required: true,
