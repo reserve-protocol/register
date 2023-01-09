@@ -15,12 +15,10 @@ export interface ModalProps {
 const StyledDialog = styled((props: any) => <Dialog {...props} />)`
   &[data-reach-dialog-content] {
     width: 'auto';
-    background-color: ${({ theme }) => theme.colors.contentBackground};
+    background-color: ${({ theme }) => theme.colors.background};
     padding: ${({ theme }) => theme.space[4]}px;
     border-radius: 12px;
-    box-shadow: ${({ theme }) => theme.strongBoxShadow};
     box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.1);
-    border: 1px solid ${({ theme }) => theme.colors.inputBorder};
     position: absolute;
     left: 50%;
     top: 50%;
@@ -64,7 +62,7 @@ const Modal = ({
               position: 'relative',
             }}
           >
-            <Text variant="sectionTitle">{title && title}</Text>
+            <Text variant="title">{title && title}</Text>
             {!!onClose && (
               <CloseButton
                 sx={{ position: 'absolute', right: 0 }}
@@ -73,7 +71,7 @@ const Modal = ({
               />
             )}
           </Flex>
-          {!!title && <Divider mx={-4} mb={4} />}
+          {!!title && <Divider mx={-4} mb={3} />}
         </>
       )}
       {children}

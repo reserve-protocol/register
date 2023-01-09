@@ -48,7 +48,7 @@ const RecentTokenTransactions = (props: BoxProps) => {
   return (
     <TransactionsTable
       compact
-      card
+      bordered
       maxHeight={400}
       help="RToken related on-chain transactions"
       title={t`Transactions`}

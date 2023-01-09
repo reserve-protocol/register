@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
 import { InfoBox } from 'components'
 import CopyValue from 'components/button/CopyValue'
+import DeployActionIcon from 'components/icons/DeployActionIcon'
 import GoTo from 'components/button/GoTo'
 import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
@@ -96,16 +97,15 @@ const DeployStatus = () => {
 
   return (
     <>
-      <Text variant="legend" as="p" mt={2} sx={{ textAlign: 'center' }}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ipsum dolor sit
-        amet, consectetur adipiscing elit. Sit amet, consectetur adipiscing
-        elit.
+      <Text variant="legend" as="p" sx={{ textAlign: 'center' }}>
+        You will be temporary owner until governance is deployed in transaction
+        2.
       </Text>
       <Button
         onClick={deploy}
-        variant="accentAction"
+        variant="primary"
         disabled={!isValid || !fee}
-        mt={3}
+        mt={4}
         sx={{ width: '100%' }}
       >
         <Trans>Deploy RToken</Trans>
@@ -124,27 +124,6 @@ const DeployStatus = () => {
   )
 }
 
-const StakingTokenOverview = () => {
-  const { watch } = useFormContext()
-  const [tickerValue] = watch(['ticker'])
-
-  return (
-    <Box>
-      <InfoBox
-        light
-        mb={3}
-        title={'Staking token'}
-        subtitle={tickerValue ? `${tickerValue}RSR Token` : 'Undefined'}
-      />
-      <InfoBox
-        light
-        title={'Staking token ticker'}
-        subtitle={tickerValue ? `${tickerValue}RSR` : 'Undefined'}
-      />
-    </Box>
-  )
-}
-
 const DeployOverview = (props: BoxProps) => (
   <Container variant="layout.borderBox" {...props}>
     <Flex
@@ -153,16 +132,15 @@ const DeployOverview = (props: BoxProps) => (
         flexDirection: 'column',
         textAlign: 'center',
       }}
+      py={2}
     >
-      <Image height={32} width={32} src="/svgs/deploytx.svg" />
-      <Text variant="title" sx={{ fontSize: 4 }} mt={2}>
+      <DeployActionIcon />
+      <Text variant="title" mt={2} mb={1}>
         <Trans>Tx1. RToken Deploy</Trans>
       </Text>
       <DeployStatus />
     </Flex>
-    <Divider sx={{ borderColor: 'darkBorder' }} my={3} mx={-4} />
-    <StakingTokenOverview />
-    <Divider sx={{ borderColor: 'darkBorder' }} my={3} mx={-4} />
+    <Divider my={3} mx={-4} />
     <Box>
       <Text variant="strong" mb={2}>
         Help title

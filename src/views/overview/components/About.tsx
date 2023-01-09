@@ -15,13 +15,13 @@ const About = (props: BoxProps) => {
         </Text>
         <Text variant="legend" as="p">
           RSV is backed by a basket of on-chain collateral assets, held by the
-          Reserve Vault smart contract. This basket is comprised of equal parts
-          TUSD, USDP, and USDC — so each RSV is initially redeemable with the
-          Reserve smart contracts for 1/3 TUSD + 1/3 USDP + 1/3 USDC. Since each
-          RSV token is redeemable directly for this basket, value of the RSV
-          token is economically linked to the value of the basket. This anchors
-          RSV at $1.00, as each of the current collateral tokens is redeemable
-          for USD 1:1.
+          Reserve Vault smart contract. This basket is compromised of equal
+          parts BUSD and USDC — so each RSV is initially redeemable with the
+          Reserve smart contracts for 1/2 BUSD + 1/2 USDC. Since each RSV token
+          is redeemable directly for this basket, value of the RSV token is
+          economically linked to the value of the basket. This anchors RSV at
+          $1.00, as each of the current collateral tokens is redeemable for USD
+          1:1.
         </Text>
         <Text variant="legend" as="p" mt={2}>
           RSV is not integrated with the Reserve protocol at this time and is a
@@ -42,7 +42,7 @@ const About = (props: BoxProps) => {
     <Box {...props}>
       {rToken?.mandate && (
         <>
-          <Text mb={3} variant="title">
+          <Text mb={3} variant="pageTitle">
             {rToken?.symbol} <Trans>Mandate</Trans>
           </Text>
           <Text as="p" variant="legend">

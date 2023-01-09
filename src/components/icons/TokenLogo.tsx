@@ -58,7 +58,7 @@ const TokenLogo = ({ symbol, src, size = '1em', ...props }: Props) => {
         alignItems: 'center',
         flexShrink: 0,
         justifyContent: 'center',
-        boxShadow: '0 0 1px 0px white inset, 0 0 1px 0px white',
+        border: '1px solid 0 0 1px 0px white',
         height: size,
         width: size,
       }}

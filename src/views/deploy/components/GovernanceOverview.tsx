@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
 import CopyValue from 'components/button/CopyValue'
+import GovernanceActionIcon from 'components/icons/GovernanceActionIcon'
 import GoTo from 'components/button/GoTo'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -87,16 +88,15 @@ const GovernanceStatus = () => {
 
   return (
     <>
-      <Text variant="legend" as="p" mt={2} sx={{ textAlign: 'center' }}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ipsum dolor sit
-        amet, consectetur adipiscing elit. Sit amet, consectetur adipiscing
-        elit.
+      <Text variant="legend" as="p" sx={{ textAlign: 'center' }}>
+        You can come back to this page later through the settings nav item if
+        you need time.
       </Text>
       <Button
         onClick={deploy}
         variant="accentAction"
         disabled={!isValid || !fee}
-        mt={3}
+        mt={4}
         sx={{ width: '100%' }}
       >
         <Trans>Deploy Governance</Trans>
@@ -123,25 +123,15 @@ const GovernanceOverview = (props: BoxProps) => (
         flexDirection: 'column',
         textAlign: 'center',
       }}
+      py={2}
     >
-      <Image height={32} width={32} src="/svgs/deploytx.svg" />
-      <Text variant="title" sx={{ fontSize: 4 }} mt={2}>
+      <GovernanceActionIcon />
+      <Text variant="title" mt={2}>
         <Trans>Tx2. Governance</Trans>
       </Text>
       <GovernanceStatus />
     </Flex>
-    <Divider sx={{ borderColor: 'darkBorder' }} my={3} mx={-4} />
-    <Box>
-      <Text variant="strong" mb={2}>
-        What’s Alexios Governance?
-      </Text>
-      <Text as="p" variant="legend">
-        Please read our documentation on the matter to understand the difference
-        between setting your own ownership address and using our custom build
-        standard format.
-      </Text>
-    </Box>
-    <Divider sx={{ borderColor: 'darkBorder' }} my={3} mx={-4} />
+    <Divider my={4} mx={-4} />
     <Box>
       <Text variant="strong" mb={2}>
         Not ready to set up governance?

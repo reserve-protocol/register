@@ -54,7 +54,7 @@ const TransactionsOverview = (props: BoxProps) => {
       <RSVTxListener />
       <TransactionsTable
         compact
-        card
+        bordered
         maxHeight={420}
         title={t`Transactions`}
         help={t`This includes on-chain transactions for RTokens and RSV in addition to anonymized RPay transactions to show the full story of the Reserve ecosystem.`}

@@ -28,14 +28,14 @@ const TransactionHeader = () => {
       sx={{
         alignItems: 'center',
         borderBottom: '1px solid',
-        borderColor: 'darkBorder',
+        borderColor: 'border',
         height: '56px',
         flexShrink: 0,
       }}
       px={5}
       mb={3}
     >
-      <Text variant="title" sx={{ fontSize: 2 }} mr={3}>
+      <Text variant="sectionTitle" sx={{ fontSize: 2 }} mr={3}>
         <Trans>Your account</Trans>
       </Text>
       <CopyValue

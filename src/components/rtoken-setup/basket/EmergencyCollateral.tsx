@@ -110,22 +110,19 @@ const EmergencyCollateral = ({
 
   return (
     <Box {...props}>
-      <Flex variant="layout.verticalAlign">
-        <Text variant="title" mr={2}>
-          <Trans>Emergency collateral</Trans>
-        </Text>
-        <Text variant="title">- {targetUnit}</Text>
+      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+      <Flex variant="layout.verticalAlign" mb={4}>
+        <Text variant="title">{targetUnit} Backups</Text>
         {!readOnly && (
           <SmallButton
             onClick={() => onAdd(targetUnit)}
             ml="auto"
-            variant="muted"
+            variant="primary"
           >
-            <Trans>Add token</Trans>
+            <Trans>Add to basket</Trans>
           </SmallButton>
         )}
       </Flex>
-      <Divider my={4} />
       <Flex variant="layout.verticalAlign">
         <Text>
           <Trans>Diversity factor</Trans>

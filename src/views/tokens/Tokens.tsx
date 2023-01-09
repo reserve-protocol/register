@@ -29,14 +29,15 @@ const Tokens = () => {
       <ContentHead
         title={t`Register listed RTokens`}
         subtitle={t`RTokens in this list is not an endorsement or audited by us. It’s simply RTokens that have gone through our listing process and don’t seem like clear scams.`}
-        mb={5}
+        mb={2}
         ml={3}
       />
       <ListedTokensTable />
       <ContentHead
         title={t`All unlisted RTokens`}
         subtitle={t`Be aware that anyone can create an RToken that ends up on this list. We don't apply any standards beyond what can be done with the Reserve Protocol.`}
-        my={5}
+        mb={2}
+        mt={4}
         ml={3}
       />
       <UnlistedTokensTable />

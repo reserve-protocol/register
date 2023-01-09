@@ -47,7 +47,7 @@ const DeploySection = ({ enabled = true }) => {
       </SectionWrapper>
       <TransactionDivider
         title={t`Transaction 1`}
-        subtitle={t`RToken gets deployed with your address as temporary owner`}
+        subtitle={t`You submit the transaction configuring your RToken design`}
       />
     </>
   )
@@ -63,8 +63,8 @@ const GovernanceSection = ({ enabled = true }) => (
             top: 0,
             bottom: 0,
             width: '100%',
-            backgroundColor: 'inputBorder',
-            opacity: 0.3,
+            backgroundColor: 'background',
+            opacity: '50%',
             zIndex: 9999,
           }}
         />

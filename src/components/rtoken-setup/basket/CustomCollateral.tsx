@@ -136,10 +136,10 @@ const CustomCollateral = ({
   return (
     <Flex variant="layout.verticalAlign">
       <Box>
-        <Text>
+        <Text variant="strong">
           <Trans>Made your own collateral?</Trans>
         </Text>
-        <Text variant="legend" mt={1} sx={{ fontSize: 1, display: 'block' }}>
+        <Text variant="legend" sx={{ fontSize: 1, display: 'block' }}>
           <Trans>Use a custom plugin contract address</Trans>
         </Text>
       </Box>

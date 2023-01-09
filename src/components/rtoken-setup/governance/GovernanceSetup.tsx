@@ -14,6 +14,7 @@ import {
 } from 'theme-ui'
 import { addressPattern } from 'utils'
 import GovernanceParameters from './GovernanceParameters'
+import DocsLink from 'components/docs-link/docs-link'
 
 interface Props extends BoxProps {
   disabled?: boolean
@@ -26,29 +27,35 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
 
   return (
     <Card p={4} {...props}>
-      <Text variant="title">
-        <Trans>Governance</Trans>
-      </Text>
+      <Flex>
+        <Text variant="sectionTitle">
+          <Trans>Governance</Trans>
+        </Text>
+        <DocsLink link="https://reserve.org/protocol/reserve_rights_rsr/#reserve-rights-governance" />
+      </Flex>
       <Divider my={4} mx={-4} />
       <Image src="/svgs/governance.svg" />
-      <Flex mb={5} variant="layout.verticalAlign">
+      <Box mb={5}>
         <Box>
-          <Text sx={{ fontWeight: 500, display: 'block' }}>
-            <Trans>Use Default Governance format?</Trans>
+          <Text variant="title" sx={{ display: 'block' }} mb={2}>
+            <Trans>Use the Alexios governor format?</Trans>
           </Text>
-          <Text variant="legend" sx={{ fontSize: 1 }}>
+          <Text variant="legend">
             <Trans>
-              The default governance structure instead of your custom setup.
+              Choose between our Alexios Governor and anything between one man
+              rule to arbitrary DAO structure under your defined Ethereum
+              address.
             </Trans>
           </Text>
         </Box>
-        <Box ml="auto">
+        <Box ml="auto" mt={3}>
           <Switch
             defaultChecked={defaultGovernance}
             {...register('defaultGovernance')}
           />
         </Box>
-      </Flex>
+      </Box>
+      <Divider my={4} mx={-4} />
       <Text variant="title" mb={4}>
         <Trans>Permissions</Trans>
       </Text>
@@ -95,6 +102,9 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
           },
         }}
       />
+      <Divider my={4} mx={-4} />
+      {defaultGovernance && <GovernanceParameters />}
+      <Divider my={4} mx={-4} />
       <Text variant="title" mb={4}>
         <Trans>RToken state after transaction</Trans>
       </Text>
@@ -119,7 +129,6 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
           </Text>
         )}
       </Field>
-      {defaultGovernance && <GovernanceParameters />}
     </Card>
   )
 }

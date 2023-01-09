@@ -2,6 +2,7 @@ import { t } from '@lingui/macro'
 import React from 'react'
 import { useMemo } from 'react'
 import { HelpCircle } from 'react-feather'
+import Help from 'components/help'
 import { RegisterOptions, useFormContext } from 'react-hook-form'
 import { Box, Flex, Input, InputProps, Slider, Text, Textarea } from 'theme-ui'
 import { StringMap } from 'types'
@@ -36,16 +37,11 @@ export const getErrorMessage = (error: StringMap): string => {
 
 export const Field = ({ label, help, children, ...props }: FieldProps) => (
   <Box {...props}>
-    <Flex mb={1}>
+    <Flex mb={1} sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
       <Text variant="subtitle" ml={2} sx={{ fontSize: 1 }}>
         {label}
       </Text>
-      {!!help && (
-        <>
-          <Box mx="auto" />
-          <HelpCircle size={16} />
-        </>
-      )}
+      {!!help && <Help mx={2} content={help} />}
     </Flex>
     {children}
   </Box>

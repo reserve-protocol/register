@@ -3,7 +3,7 @@ import { SmallButton } from 'components/button'
 import Navigation from 'components/section-navigation/Navigation'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Box } from 'theme-ui'
+import { Box, Text } from 'theme-ui'
 
 const NavigationSidebar = () => {
   // TODO: Listen for lang
@@ -20,11 +20,7 @@ const NavigationSidebar = () => {
     ],
     []
   )
-
-  const step2Navigation = useMemo(
-    () => [t`Governance setup`, t`Register listing`],
-    []
-  )
+  const step2Navigation = useMemo(() => [t`Governance`, t`Next steps`], [])
 
   const handleBack = () => {
     navigate('/')
@@ -32,13 +28,22 @@ const NavigationSidebar = () => {
 
   return (
     <Box variant="layout.sticky">
-      <Box mb={4}>
-        <SmallButton variant="muted" onClick={handleBack}>
+      <Box my={5}>
+        <SmallButton variant="transparent" onClick={handleBack}>
           <Trans>Exit Deployer</Trans>
         </SmallButton>
       </Box>
-      <Navigation title={t`Tx 1`} sections={sections} />
-      <Navigation title={t`Tx 2`} initialIndex={7} sections={step2Navigation} />
+      <Navigation
+        title={t`Tx 1`}
+        txLabel={t`Signing of Tx 1`}
+        sections={sections}
+      />
+      <Navigation
+        title={t`Tx 2`}
+        txLabel={t`Signing Tx 2`}
+        initialIndex={7}
+        sections={step2Navigation}
+      />
     </Box>
   )
 }

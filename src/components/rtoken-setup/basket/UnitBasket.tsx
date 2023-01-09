@@ -68,33 +68,40 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
 
   return (
     <Box {...props}>
+      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
       {!readOnly && (
         <>
-          <Flex variant="layout.verticalAlign">
-            <Text sx={{ fontWeight: 500 }}>
-              {unit} - <Trans>Basket scale</Trans>
+          <Flex sx={{ justifyContent: 'space-between' }} mb={3} mt={4}>
+            <Text variant="title">
+              {unit} <Trans>Basket</Trans>
             </Text>
-            <Box ml="auto" sx={{ width: 97 }} mr={2}>
-              <NumericalInput
-                variant={+data.scale > 0 ? 'input' : 'inputError'}
-                value={data.scale}
-                sx={{ textAlign: 'center' }}
-                onChange={handleScale}
+            <Flex sx={{ alignItems: 'center' }}>
+              <Box sx={{ width: 64 }} mx={3}>
+                <NumericalInput
+                  variant={+data.scale > 0 ? 'smallInput' : 'inputError'}
+                  value={data.scale}
+                  sx={{ textAlign: 'center' }}
+                  onChange={handleScale}
+                />
+              </Box>
+              <Text mr={2}>{unit}</Text>
+              <Help
+                content={t`Basket scale for this unit of account. This is used to initially calculate how much of each token is required for minting.`}
               />
-            </Box>
-            <Text mr={2}>{unit}</Text>
-            <Help content={t`Target value for this unit of account`} />
+            </Flex>
           </Flex>
-          <Divider my={4} />
           <Flex variant="layout.verticalAlign">
-            <Text variant="legend" sx={{ fontSize: 1 }}>
-              <Trans>Basket</Trans>
+            <Text variant="contentTitle">
+              <Trans>{unit} Token distribution</Trans>
             </Text>
             <Text
               ml="auto"
-              sx={{ color: totalDistribution !== 100 ? 'danger' : 'text' }}
+              sx={{
+                color: totalDistribution !== 100 ? 'danger' : 'text',
+                fontSize: 1,
+              }}
             >
-              {totalDistribution}%
+              Filled: {totalDistribution}%
             </Text>
           </Flex>
         </>
@@ -107,13 +114,13 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
             text={`${getCollateralDist(index)} in ${collateral.symbol}`}
           />
           {!readOnly ? (
-            <Box ml="auto" sx={{ width: 100 }} mr={2}>
+            <Box ml="auto" sx={{ width: 56 }} mr={2}>
               <NumericalInput
                 sx={{ textAlign: 'center' }}
                 variant={
                   +data.distribution[index] > 0 &&
                   +data.distribution[index] <= 100
-                    ? 'input'
+                    ? 'smallInput'
                     : 'inputError'
                 }
                 value={data.distribution[index]}

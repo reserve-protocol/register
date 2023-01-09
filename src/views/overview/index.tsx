@@ -13,7 +13,7 @@ import RecentTokenTransactions from './components/RecentTokenTransactions'
 import TokenOverview from './components/TokenOverview'
 import TokenUsage from './components/TokenUsage'
 
-const dividerProps = { my: 5, mx: [-4, -5], sx: { borderColor: 'darkBorder' } }
+const dividerProps = { my: 5, mx: [-4, -5], sx: { borderColor: 'border' } }
 const gridProps = { columns: [1, 1, 1, 2], gap: [5, 5, 5, 4] }
 
 /**
@@ -33,8 +33,13 @@ const Overview = () => {
     <Container>
       <Grid {...gridProps} ml={[0, 0, 0, 3]} gap={0}>
         <Box>
-          <TokenOverview ml={[3, 3, 3, 0]} metrics={rTokenMetrics} />
-          <TokenUsage ml={[3, 3, 3, 0]} mt={5} metrics={rTokenMetrics} />
+          <TokenOverview ml={[3, 3, 3, 0]} mr={2} metrics={rTokenMetrics} />
+        </Box>
+      </Grid>
+      <Divider {...dividerProps} />
+      <Grid {...gridProps} ml={[0, 0, 0, 3]} gap={0}>
+        <Box>
+          <TokenUsage ml={[3, 3, 3, 0]} mt={1} metrics={rTokenMetrics} />
         </Box>
         {rToken?.isRSV ? (
           <RecentRSVTransactions mt={[5, 5, 5, 0]} />
@@ -44,13 +49,10 @@ const Overview = () => {
       </Grid>
       <Divider {...dividerProps} />
       <Grid {...gridProps}>
-        <About mt={3} px={3} />
+        <About mt={2} px={3} mr={2} />
         <AssetOverview />
       </Grid>
-      <Divider
-        {...dividerProps}
-        sx={{ borderColor: 'darkBorder', display: ['none', 'block'] }}
-      />
+      <Divider {...dividerProps} sx={{ display: ['none', 'block'] }} />
       <External />
       <Divider {...dividerProps} />
       <Grid {...gridProps}>

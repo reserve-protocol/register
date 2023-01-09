@@ -5,7 +5,7 @@ import { useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { ArrowRight } from 'react-feather'
 import { useForm } from 'react-hook-form'
-import { Box, BoxProps, Flex, Grid } from 'theme-ui'
+import { Box, BoxProps, Flex, Grid, Text } from 'theme-ui'
 import { ExternalAddressSplit, isRevenueValidAtom } from '../atoms'
 
 interface ExternalRevenueSplitProps extends Omit<BoxProps, 'onChange'> {
@@ -47,43 +47,61 @@ const ExternalRevenueSpit = ({
   }, [...formValues])
 
   return (
-    <Box {...props}>
-      <Grid columns={['1fr', '1fr', '3fr 1fr 1fr']} mb={3}>
-        <Field label={t`% Totals`}>
+    <Box {...props} sx={{ display: 'flex' }}>
+      <Box mr={3}>
+        <Grid columns={['1fr', '1fr', '2fr 1fr 1fr']} gap={0}>
+          <Field label={t`Total % to arbitrary address`}>
+            <FieldInput
+              {...register('total', inputValidation)}
+              error={!!errors['total'] || !isSplitValid}
+              placeholder={t`% Revenue share`}
+              sx={{
+                borderRadius: '6px 0 0 0',
+              }}
+            />
+          </Field>
+          <Field label={t`As RToken`}>
+            <FieldInput
+              {...register('holders', inputValidation)}
+              error={!!errors['holders']}
+              sx={{
+                borderRadius: '0',
+                borderLeft: 'none',
+              }}
+            />
+          </Field>
+          <Field label={t`As RSR`}>
+            <FieldInput
+              {...register('stakers', inputValidation)}
+              error={!!errors['stakers']}
+              sx={{
+                borderRadius: '0 6px 0 0',
+                borderLeft: 'none',
+              }}
+            />
+          </Field>
+        </Grid>
+        <Box sx={{ flex: 1 }}>
           <FieldInput
-            {...register('total', inputValidation)}
-            error={!!errors['total'] || !isSplitValid}
-            placeholder={t`% Revenue share`}
-          />
-        </Field>
-        <Field label={t`As RToken`}>
-          <FieldInput
-            {...register('holders', inputValidation)}
-            error={!!errors['holders']}
-          />
-        </Field>
-        <Field label={t`As RSR`}>
-          <FieldInput
-            {...register('stakers', inputValidation)}
-            error={!!errors['stakers']}
-          />
-        </Field>
-      </Grid>
-      <Flex>
-        <Box sx={{ position: 'relative', top: 3, color: 'secondaryText' }}>
-          <ArrowRight size={20} />
-        </Box>
-        <Box sx={{ flex: 1 }} ml={3}>
-          <FieldInput
-            sx={{ flex: 1 }}
+            sx={{
+              flex: 1,
+              borderRadius: '0 0 6px 6px',
+              borderTop: 'none',
+            }}
             {...register('address', inputValidation)}
             placeholder={t`Receiving eth address`}
             error={errors['holders'] ? getErrorMessage(errors['holders']) : ''}
           />
         </Box>
-      </Flex>
-      <SmallButton mt={3} variant="danger" onClick={onRemove}>
-        <Trans>Remove</Trans>
+      </Box>
+      <SmallButton
+        sx={{ flexShrink: 0 }}
+        mt={4}
+        px={2}
+        variant="danger"
+        onClick={onRemove}
+      >
+        <Trans>X</Trans>
       </SmallButton>
     </Box>
   )

@@ -45,7 +45,7 @@ const RecentProtocolTransactions = () => {
 
   return (
     <TransactionsTable
-      card
+      bordered
       compact
       maxHeight={rToken?.isRSV ? 525 : 810}
       help="Protocol on-chain transactions related to RTokens"

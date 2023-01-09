@@ -33,7 +33,7 @@ const Container = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
           width: ['100vw', '100vw', '60vw'],
           backgroundColor: 'background',
           right: 0,
-          borderLeft: `solid 2px ${theme.colors.darkBorder}`,
+          borderLeft: `solid 3px ${theme.colors.border}`,
           boxShadow: '-32px 0px 64px rgba(0, 0, 0, 0.15)',
           top: 0,
           height: '100%',

@@ -1,11 +1,14 @@
 import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
+import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
+import Help from 'components/help'
 import { useAtomValue } from 'jotai'
 import { Box, BoxProps, Divider, Flex, Text } from 'theme-ui'
 import { truncateDecimals } from 'utils'
 import { Basket, basketAtom } from '../atoms'
 import UnitBasket from './UnitBasket'
+import DocsLink from 'components/docs-link/docs-link'
 
 interface Props extends BoxProps {
   onAdd?(
@@ -27,22 +30,21 @@ const getBasketComposition = (basket: Basket) => {
 
 const Placeholder = () => (
   <Box
-    sx={{ textAlign: 'center', maxWidth: 400, margin: 'auto' }}
+    sx={{ textAlign: 'center', maxWidth: 440, margin: 'auto' }}
     mt={5}
     py={6}
   >
     <EmptyBoxIcon />
-    <Text variant="strong">
+    <Text variant="strong" my={2}>
       <Trans>Empty Basket</Trans>
     </Text>
     <Text variant="legend" as="p" sx={{ fontSize: 1 }} mb={2}>
       <Trans>
-        The basket & weights of the collateral for your RToken will populate
-        here.
+        This is the target collateral basket at the onset of an RToken that
+        defines which collateral needs to be deposited for issuances. The prime
+        basket is directly set by governance, and only changes through
+        successful governance proposals.
       </Trans>
-    </Text>
-    <Text variant="legend" as="p" sx={{ fontSize: 1 }}>
-      <Trans>Want more than one target unit? That’s possible!</Trans>
     </Text>
   </Box>
 )
@@ -61,28 +63,20 @@ const PrimaryBasket = ({
 
   return (
     <Box {...props}>
-      <Flex variant="layout.verticalAlign">
-        <Text variant="title">Primary Basket</Text>
+      <Flex variant="layout.verticalAlign" px={1}>
+        <Text variant="sectionTitle">Primary Basket</Text>
+        <DocsLink link="https://reserve.org/protocol/monetary_units_baskets/#baskets" />
         {!readOnly && (
           <SmallButton
             onClick={() => onAdd({ basket: 'primary' })}
             ml="auto"
-            variant="muted"
+            variant="primary"
           >
-            <Trans>Add token plugin</Trans>
+            <Trans>Add to basket</Trans>
           </SmallButton>
         )}
       </Flex>
-      <Divider my={4} />
-      <Flex>
-        <Text sx={{ width: 140 }}>1 [RToken] =</Text>
-        <Text ml="auto">
-          {!!units.length ? getBasketComposition(basket) : '--'}
-        </Text>
-      </Flex>
-      <Divider mt={4} />
       {!units.length && <Placeholder />}
-
       {units.map((targetUnit) => (
         <UnitBasket
           mt={3}
@@ -92,6 +86,21 @@ const PrimaryBasket = ({
           unit={targetUnit}
         />
       ))}
+      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+      <Flex sx={{ justiftContent: 'space-between', alignItems: 'center' }}>
+        <Flex mr={'auto'} sx={{ flexDirection: 'column' }}>
+          <Text variant="legend">1 Token =</Text>
+          <Text variant="title">
+            {!!units.length ? getBasketComposition(basket) : '--'}
+          </Text>
+        </Flex>
+        <Help
+          ml={2}
+          size={14}
+          mt="1px"
+          content="Total initial RToken scale including all targets. If your RToken only has one target unit this will be the same as the basket scale input."
+        />
+      </Flex>
     </Box>
   )
 }

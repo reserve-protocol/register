@@ -1,12 +1,13 @@
 import { t, Trans } from '@lingui/macro'
-import Button from 'components/button'
+import { SmallButton } from 'components/button'
 import Field, { FieldInput, getErrorMessage } from 'components/field'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Plus } from 'react-feather'
 import { useForm } from 'react-hook-form'
-import { Box, BoxProps, Card, Divider, Flex, Text } from 'theme-ui'
+import DocsLink from 'components/docs-link/docs-link'
+import { Box, BoxProps, Card, Divider, Flex, Text, Link } from 'theme-ui'
 import {
   ExternalAddressSplit,
   isRevenueValidAtom,
@@ -88,10 +89,13 @@ const RevenueSplit = (props: BoxProps) => {
 
   return (
     <Card p={4} {...props}>
-      <Text ml={2} variant="title">
-        <Trans>Revenue Distribution</Trans>
-      </Text>
-      <Divider my={3} />
+      <Flex>
+        <Text ml={2} variant="sectionTitle">
+          <Trans>Revenue Distribution</Trans>
+        </Text>
+        <DocsLink link="https://reserve.org/protocol/protocol_operations/#revenue-handling" />
+      </Flex>
+      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
       <Field label={t`% Revenue to RToken Holders`} mb={3}>
         <FieldInput
           placeholder={t`Input token holders revenue distribution`}
@@ -130,19 +134,31 @@ const RevenueSplit = (props: BoxProps) => {
           </Text>
         </Box>
       )}
-      <Button
-        mt={5}
-        variant="muted"
-        sx={{ width: '100%' }}
-        onClick={handleAddExternal}
-      >
+      <SmallButton variant="muted" mt={4} onClick={handleAddExternal}>
         <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
-          <Plus size={14} />
-          <Text pl={2}>
-            <Trans>New external destination</Trans>
+          <Plus size={16} />
+          <Text pl={1}>
+            <Trans>Add new address</Trans>
           </Text>
         </Flex>
-      </Button>
+      </SmallButton>
+      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+      <Text variant="legend" as="p" sx={{ fontSize: 1 }} mb={1} mr={2}>
+        <Trans>
+          Define what portion of the revenue goes to the RToken holders versus
+          RSR stakers. It can also be configured to send (part of the) revenue
+          of an RToken to any arbitrary Ethereum address.
+          <br />
+          <br />
+        </Trans>
+        <Link
+          href="https://reserve.org/protocol/protocol_operations/#revenue-distribution"
+          target="_blank"
+          sx={{ textDecoration: 'underline' }}
+        >
+          <Trans>Read more about revenue distribution</Trans>
+        </Link>
+      </Text>
     </Card>
   )
 }
