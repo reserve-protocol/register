@@ -34,6 +34,7 @@ const ContentContainer = styled(Box)`
   position: relative;
   flex: auto;
   scrollbar-width: none;
+  -ms-overflow-style: none;
   &::-webkit-scrollbar {
     display: none;
   }

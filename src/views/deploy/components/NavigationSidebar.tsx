@@ -33,17 +33,14 @@ const NavigationSidebar = () => {
           <Trans>Exit Deployer</Trans>
         </SmallButton>
       </Box>
-      <Navigation
-        title={t`Tx 1`}
-        txLabel={t`Signing of Tx 1`}
-        sections={sections}
-      />
-      <Navigation
-        title={t`Tx 2`}
-        txLabel={t`Signing Tx 2`}
-        initialIndex={7}
-        sections={step2Navigation}
-      />
+      <Navigation title={t`Tx 1`} sections={sections} />
+      <Text sx={{ fontSize: 1, fontStyle: 'italic' }} mb={4}>
+        <Trans>Signing Tx 1</Trans>
+      </Text>
+      <Navigation title={t`Tx 2`} initialIndex={7} sections={step2Navigation} />
+      <Text sx={{ fontSize: 1, fontStyle: 'italic' }}>
+        <Trans>Signing Tx 2</Trans>
+      </Text>
     </Box>
   )
 }

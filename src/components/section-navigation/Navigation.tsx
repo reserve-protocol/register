@@ -1,8 +1,8 @@
 import styled from '@emotion/styled'
-import { t, Trans } from '@lingui/macro'
+import { Trans } from '@lingui/macro'
 import { useAtom } from 'jotai'
 import { useEffect } from 'react'
-import { Box, BoxProps, Text, Divider, Flex } from 'theme-ui'
+import { Box, BoxProps, Text } from 'theme-ui'
 import { navigationIndexAtom } from './atoms'
 
 const Container = styled(Box)`
@@ -12,18 +12,11 @@ const Container = styled(Box)`
 
 interface Props extends BoxProps {
   title?: string
-  txLabel?: string
   sections: string[]
   initialIndex?: number
 }
 
-const Navigation = ({
-  title,
-  txLabel,
-  sections,
-  initialIndex = 0,
-  ...props
-}: Props) => {
+const Navigation = ({ title, sections, initialIndex = 0, ...props }: Props) => {
   const [current, setNavigationIndex] = useAtom(navigationIndexAtom)
 
   useEffect(() => {
@@ -42,16 +35,18 @@ const Navigation = ({
 
   return (
     <Container {...props}>
-      {!!title && <Text variant="title">{title}</Text>}
+      {!!title && (
+        <Text variant="title" mb={4}>
+          {title}
+        </Text>
+      )}
       <Box
         as="ul"
-        mt={4}
-        mb={2}
-        mr={3}
         p={0}
         sx={{
           listStyle: 'none',
-          borderLeft: '1px dashed var(--theme-ui-colors-inputBorder)',
+          borderLeft: '1px dashed',
+          borderColor: 'inputBorder',
         }}
       >
         {sections.map((item, index) => {
@@ -63,7 +58,7 @@ const Navigation = ({
               key={item}
               onClick={() => !isActive && handleNavigate(currentIndex)}
               as="li"
-              mb={4}
+              mt={!!index ? 4 : 0}
               sx={{
                 lineHeight: '16px',
                 borderLeft: isActive ? '3px solid' : 'none',
@@ -77,9 +72,6 @@ const Navigation = ({
           )
         })}
       </Box>
-      <Text sx={{ fontSize: 1 }}>
-        <Trans>{txLabel}</Trans>
-      </Text>
     </Container>
   )
 }

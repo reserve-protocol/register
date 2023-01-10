@@ -1,7 +1,6 @@
 import { t, Trans } from '@lingui/macro'
-import { SmallButton } from 'components/button'
 import { useEffect, useMemo, useState } from 'react'
-import { Button, Box, BoxProps, Divider, Flex, Progress, Text } from 'theme-ui'
+import { Box, BoxProps, Button, Divider, Flex, Progress, Text } from 'theme-ui'
 
 interface Props extends BoxProps {
   onDismiss(): void
@@ -116,7 +115,6 @@ const Greet = ({ onDismiss, ...props }: Props) => {
         <Flex
           sx={{
             paddingLeft: 7,
-
             marginTop: 'auto',
             borderLeft: '1px solid',
             borderColor: 'darkBorder',
@@ -134,7 +132,10 @@ const Greet = ({ onDismiss, ...props }: Props) => {
                   onClick={() => setActive(index)}
                   key={index}
                   variant="title"
-                  sx={index === active ? { opacity: 1 } : { opacity: 0.4 }}
+                  sx={{
+                    opacity: index === active ? 1 : 0.4,
+                    cursor: 'pointer',
+                  }}
                   mr={3}
                 >
                   {title}
