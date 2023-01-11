@@ -6,7 +6,7 @@ import { numberPattern } from 'utils'
 const GovernanceParameters = (props: BoxProps) => {
   return (
     <Box {...props}>
-      <Text variant="title" mb={4}>
+      <Text variant="title" mb={4} px={2}>
         <Trans>Governance parameters</Trans>
       </Text>
       <FormField
