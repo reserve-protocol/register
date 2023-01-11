@@ -25,7 +25,7 @@ const TokenOverview = ({ metrics, ...props }: Props) => {
             : undefined
         }
       />
-      <Flex mt={6} sx={{ flexDirection: 'column' }}>
+      <Flex mt={[3, 6]} sx={{ flexDirection: 'column' }}>
         <Flex mr={5}>
           <Text
             variant="sectionTitle"

@@ -139,8 +139,8 @@ const Overview = (props: BoxProps) => {
   return (
     <Box {...props}>
       <ExchangeRate />
-      <Stats mt={4} />
-      <About mt={4} />
+      <Stats mt={[3, 4]} />
+      <About mt={[3, 4]} />
     </Box>
   )
 }

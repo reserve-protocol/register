@@ -148,7 +148,7 @@ const TransactionList = () => {
   const txIdMap = useAtomValue(txIndexAtom)
 
   return (
-    <Box px={3} sx={{ flexGrow: 1, fontSize: 1, overflow: 'auto' }}>
+    <Box px={[2, 3]} sx={{ flexGrow: 1, fontSize: 1, overflow: 'auto' }}>
       {Object.keys(txs).map((day) => (
         <Box key={day} mb={4}>
           <Text variant="legend" ml={3}>

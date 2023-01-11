@@ -13,7 +13,7 @@ import TokenStats from './components/TokenStats'
 const VISITED_KEY = 'visited'
 
 const dividerProps = {
-  mx: [-4, -5],
+  mx: [-1, -5],
 }
 
 /**

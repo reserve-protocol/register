@@ -32,7 +32,7 @@ const TransactionHeader = () => {
         height: '56px',
         flexShrink: 0,
       }}
-      px={5}
+      px={[3, 5]}
       mb={3}
     >
       <Text variant="sectionTitle" sx={{ fontSize: 2 }} mr={3}>
