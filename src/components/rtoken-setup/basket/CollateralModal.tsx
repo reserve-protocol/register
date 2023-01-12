@@ -98,8 +98,6 @@ const CollateralModal = ({
       onClose={onClose}
       {...props}
     >
-      <CustomCollateral onAdd={handleAddCustom} />
-      <Divider mx={-4} mt={3} />
       <Box
         sx={{
           maxHeight: 370,
@@ -111,6 +109,10 @@ const CollateralModal = ({
         pt={3}
         mx={-4}
       >
+        <Box px={4}>
+          <CustomCollateral onAdd={handleAddCustom} />
+        </Box>
+        <Divider my={4} />
         {Object.values<Collateral | CollateralPlugin>(collaterals).map(
           (plugin) => (
             <Box key={plugin.address}>

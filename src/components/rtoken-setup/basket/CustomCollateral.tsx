@@ -4,6 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 import { CollateralInterface, ERC20Interface } from 'abis'
 import { Input } from 'components'
 import { SmallButton } from 'components/button'
+import PluginsIcon from 'components/icons/PluginsIcon'
 import { ethers } from 'ethers'
 import { useCallback, useState } from 'react'
 import { promiseMulticall } from 'state/web3/lib/multicall'
@@ -135,8 +136,9 @@ const CustomCollateral = ({
 
   return (
     <Flex variant="layout.verticalAlign">
-      <Box>
-        <Text variant="strong">
+      <PluginsIcon />
+      <Box ml={2}>
+        <Text>
           <Trans>Made your own collateral?</Trans>
         </Text>
         <Text variant="legend" sx={{ fontSize: 1, display: 'block' }}>
