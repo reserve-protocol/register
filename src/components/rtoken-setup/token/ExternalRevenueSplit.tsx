@@ -48,7 +48,7 @@ const ExternalRevenueSpit = ({
 
   return (
     <Box {...props} sx={{ display: 'flex' }}>
-      <Box mr={3}>
+      <Box mr={3} sx={{ flexGrow: 1 }}>
         <Grid columns={['1fr', '1fr', '2fr 1fr 1fr']} gap={0}>
           <Field label={t`Total % to arbitrary address`}>
             <FieldInput
@@ -95,10 +95,10 @@ const ExternalRevenueSpit = ({
         </Box>
       </Box>
       <SmallButton
-        sx={{ flexShrink: 0 }}
+        sx={{ flexShrink: 0, color: 'danger' }}
         mt={4}
         px={2}
-        variant="danger"
+        variant="transparent"
         onClick={onRemove}
       >
         <Trans>X</Trans>

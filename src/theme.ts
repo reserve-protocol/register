@@ -36,6 +36,7 @@ export const baseButton = {
 
 export const baseInput = {
   borderColor: 'inputBorder',
+  backgroundColor: 'background',
   outline: 'none',
   padding: '12px',
   borderRadius: borderRadius.inputs,

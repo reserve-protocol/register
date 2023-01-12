@@ -26,9 +26,9 @@ const AppHeader = () => {
   const isDeployer = useIsDeployer()
 
   return (
-    <Container px={[5, isSidebarVisible ? 5 : 7]}>
+    <Container px={[3, isSidebarVisible ? 5 : 7]}>
       <Box mr="auto" variant="layout.verticalAlign">
-        <Brand mr={4} />
+        <Brand mr={[2, 4]} />
         {isDeployer && (
           <Text sx={{ fontSize: 2 }} variant="subtitle">
             <Trans>RToken Deployer</Trans>
@@ -52,15 +52,25 @@ const AppHeader = () => {
       </Flex>
       <Box
         mx={4}
-        sx={{ backgroundColor: 'inputBorder', width: '1px', height: '16px' }}
+        sx={{
+          backgroundColor: 'inputBorder',
+          width: '1px',
+          height: '16px',
+          display: ['none', 'block'],
+        }}
       ></Box>
-      <ThemeColorMode pt={1} />
+      <ThemeColorMode pt={1} mr={[3, 0]} />
       {/* <Box ml={4} sx={{ alignItems: 'center', display: 'flex' }}>
         <LanguageSelector />
       </Box> */}
       <Box
         mx={4}
-        sx={{ backgroundColor: 'inputBorder', width: '1px', height: '16px' }}
+        sx={{
+          backgroundColor: 'inputBorder',
+          width: '1px',
+          height: '16px',
+          display: ['none', 'block'],
+        }}
       ></Box>
       <Account />
     </Container>

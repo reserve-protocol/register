@@ -13,7 +13,7 @@ import RecentTokenTransactions from './components/RecentTokenTransactions'
 import TokenOverview from './components/TokenOverview'
 import TokenUsage from './components/TokenUsage'
 
-const dividerProps = { my: 5, mx: [-4, -5], sx: { borderColor: 'border' } }
+const dividerProps = { my: 5, mx: [-1, -5], sx: { borderColor: 'border' } }
 const gridProps = { columns: [1, 1, 1, 2], gap: [5, 5, 5, 4] }
 
 /**
@@ -33,7 +33,12 @@ const Overview = () => {
     <Container>
       <Grid {...gridProps} ml={[0, 0, 0, 3]} gap={0}>
         <Box>
-          <TokenOverview ml={[3, 3, 3, 0]} mr={2} metrics={rTokenMetrics} />
+          <TokenOverview
+            mt={[3, 0]}
+            ml={[3, 3, 3, 0]}
+            mr={2}
+            metrics={rTokenMetrics}
+          />
         </Box>
       </Grid>
       <Divider {...dividerProps} />
@@ -42,9 +47,9 @@ const Overview = () => {
           <TokenUsage ml={[3, 3, 3, 0]} mt={1} metrics={rTokenMetrics} />
         </Box>
         {rToken?.isRSV ? (
-          <RecentRSVTransactions mt={[5, 5, 5, 0]} />
+          <RecentRSVTransactions mt={[0, 3, 3, 0]} />
         ) : (
-          <RecentTokenTransactions mt={[5, 5, 5, 0]} />
+          <RecentTokenTransactions mt={[0, 3, 3, 0]} />
         )}
       </Grid>
       <Divider {...dividerProps} />

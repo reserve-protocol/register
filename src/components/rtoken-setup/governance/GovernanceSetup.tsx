@@ -28,14 +28,14 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
   return (
     <Card p={4} {...props}>
       <Flex>
-        <Text variant="sectionTitle">
+        <Text variant="sectionTitle" px={2}>
           <Trans>Governance</Trans>
         </Text>
         <DocsLink link="https://reserve.org/protocol/reserve_rights_rsr/#reserve-rights-governance" />
       </Flex>
       <Divider my={4} mx={-4} />
-      <Image src="/svgs/governance.svg" />
-      <Box mb={5}>
+      <Box mb={5} px={2}>
+        <Image src="/svgs/governance.svg" />
         <Box>
           <Text variant="title" sx={{ display: 'block' }} mb={2}>
             <Trans>Use the Alexios governor format?</Trans>
@@ -56,7 +56,7 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
         </Box>
       </Box>
       <Divider my={4} mx={-4} />
-      <Text variant="title" mb={4}>
+      <Text variant="title" mb={4} px={2}>
         <Trans>Permissions</Trans>
       </Text>
       {!defaultGovernance && (
@@ -77,6 +77,7 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
       <FormField
         label={t`Guardian address`}
         placeholder={t`Input the guardian ethereum address`}
+        help={t`Testing`}
         mb={3}
         name="guardian"
         options={{
@@ -105,8 +106,8 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
       <Divider my={4} mx={-4} />
       {defaultGovernance && <GovernanceParameters />}
       <Divider my={4} mx={-4} />
-      <Text variant="title" mb={4}>
-        <Trans>RToken state after transaction</Trans>
+      <Text variant="title" mb={4} px={2}>
+        <Trans>Initial RToken state after deployment</Trans>
       </Text>
       <Field label={t`Pause status`} mb={4}>
         <Select {...register('unpause')}>

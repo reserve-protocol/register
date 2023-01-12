@@ -133,14 +133,14 @@ const TokenStats = (props: BoxProps) => {
         title={t`RToken stats`}
         subtitle={t`These stats are across all RTokens on the Reserve Protocol listed by this dApp, including anonymized data from the Reserve RPay app API.`}
       />
-      <Box mt={6}>
-        <Grid columns={[1, 'max-content max-content']} gap={5}>
+      <Box mt={[4, 6]}>
+        <Grid columns={[1, 'max-content max-content']} gap={[3, 5]}>
           <Box>
             <InfoHeading
               title={t`Total RToken Market Cap`}
               subtitle={metrics.totalRTokenUSD}
               help={t`Includes market cap of all RTokens and RSV.`}
-              mb={4}
+              mb={[3, 4]}
             />
             <InfoHeading
               title={t`TVL in Reserve`}
@@ -152,7 +152,7 @@ const TokenStats = (props: BoxProps) => {
             <InfoHeading
               title={t`Cumulative - RToken holder income`}
               subtitle={metrics.cumulativeRTokenRevenueUSD}
-              mb={4}
+              mb={[3, 4]}
             />
             <InfoHeading
               title={t`Cumulative - Staked RSR income`}
@@ -160,7 +160,7 @@ const TokenStats = (props: BoxProps) => {
             />
           </Box>
         </Grid>
-        <Box mt={6}>
+        <Box mt={[4, 6]}>
           <Stat title={t`24h Tx Volume`} value={metrics.dailyVolume} />
           <Stat
             title={t`Cumulative Tx Volume`}
