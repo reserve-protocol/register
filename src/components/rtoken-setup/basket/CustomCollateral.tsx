@@ -135,9 +135,9 @@ const CustomCollateral = ({
   }
 
   return (
-    <Flex variant="layout.verticalAlign" ml={'-3px'}>
+    <Flex variant="layout.verticalAlign" ml={'-2px'}>
       <PluginsIcon />
-      <Box ml={2}>
+      <Box ml={3}>
         <Text>
           <Trans>Made your own collateral?</Trans>
         </Text>

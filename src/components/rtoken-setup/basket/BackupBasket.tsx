@@ -75,7 +75,7 @@ const BackupBasket = ({
 
   return (
     <Box {...props}>
-      <Flex variant="layout.verticalAlign" px={1}>
+      <Flex variant="layout.verticalAlign">
         <Text variant="sectionTitle">Emergency Collateral</Text>
         <DocsLink link="https://reserve.org/protocol/monetary_units_baskets/#baskets" />
       </Flex>
