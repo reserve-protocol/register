@@ -15,7 +15,7 @@ const chevronProps = {
  */
 const TokenParameters = (props: BoxProps) => (
   <Card p={4} {...props}>
-    <Text ml={2} variant="sectionTitle">
+    <Text variant="sectionTitle">
       <Trans>Basics</Trans>
     </Text>
     <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
