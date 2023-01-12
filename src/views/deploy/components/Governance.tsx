@@ -24,7 +24,7 @@ const Governance = () => {
   return (
     <FormProvider {...form}>
       <Layout>
-        <NavigationSidebar />
+        <NavigationSidebar governance />
         <RTokenSetup governance />
         <GovernanceOverview sx={{ position: 'sticky', top: 0 }} />
       </Layout>
