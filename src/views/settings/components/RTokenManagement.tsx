@@ -28,7 +28,7 @@ const Divider = () => (
 )
 
 const Container = ({ children }: BoxProps) => (
-  <Box variant="layout.sticky" sx={{ height: '100%', overflowY: 'auto' }}>
+  <Box variant="layout.sticky">
     <Box variant="layout.borderBox" mb={4}>
       {children}
     </Box>

@@ -137,7 +137,7 @@ const GovernanceOverview = (props: BoxProps) => (
         Not ready to set up governance?
       </Text>
       <Text as="p" variant="legend">
-        You can leave your RToken frozen and come back to setting up governance
+        You can leave your RToken paused and come back to setting up governance
         later.
       </Text>
     </Box>
