@@ -22,24 +22,6 @@ const RTokenManagement = () => {
   return (
     <Box variant="layout.sticky" sx={{ height: '100%', overflowY: 'auto' }}>
       <Box variant="layout.borderBox" mb={4}>
-        <Flex
-          sx={{
-            alignItems: 'center',
-            flexDirection: 'column',
-            textAlign: 'center',
-          }}
-        >
-          <Image height={32} width={32} src="/svgs/deploytx.svg" />
-          <Text variant="title" sx={{ fontSize: 4 }} mt={2}>
-            <Trans>RToken Controls</Trans>
-          </Text>
-          <Text variant="legend" as="p" mt={2} sx={{ textAlign: 'center' }}>
-            All possible governance related actions are listed here, but
-            disabled if you’re not connected with the address with the right
-            permissions.
-          </Text>
-        </Flex>
-        <Divider />
         <PauseManager />
         <Divider />
         <FreezeManager />
