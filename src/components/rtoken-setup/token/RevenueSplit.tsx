@@ -42,7 +42,7 @@ const RevenueSplit = (props: BoxProps) => {
   const [revenueSplit, setRevenueSplit] = useAtom(revenueSplitAtom)
   const updateExternalShare = useSetAtom(updateExternalShareAtom)
   const isValid = useAtomValue(isRevenueValidAtom)
-  const isValidExteranls = useAtomValue(isValidExternalMapAtom)
+  const isValidExternals = useAtomValue(isValidExternalMapAtom)
   const {
     register,
     watch,
@@ -123,7 +123,7 @@ const RevenueSplit = (props: BoxProps) => {
           onChange={(data) => updateExternalShare([index, data])}
         />
       ))}
-      {(!isValid || !isValidExteranls) && (
+      {isDirty && (!isValid || !isValidExternals) && (
         <Box mt={3}>
           <Text variant="error" sx={{ fontSize: 1 }}>
             {!isValid ? (

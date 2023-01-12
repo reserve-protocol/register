@@ -232,7 +232,7 @@ const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
     // FIAT COLLATERAL
     {
       symbol: 'DAI',
-      address: '0xF7F5cC0416C555bAbF9A53bf9cb59bd5E87F04B1',
+      address: '0xffef97179f58a582dEf73e6d2e4BcD2BDC8ca128',
       decimals: 18,
       targetUnit: TARGET_UNITS.USD,
       referenceUnit: 'DAI',
@@ -243,7 +243,7 @@ const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
     },
     {
       symbol: 'USDC',
-      address: '0xeFe433CE0a99872e2753b12C27c1cd87FB9Da5e3',
+      address: '0x529D7e23Ce63efdcE41dA2a41296Fd7399157F5b',
       decimals: 6,
       targetUnit: TARGET_UNITS.USD,
       referenceUnit: 'USDC',
@@ -254,7 +254,7 @@ const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
     },
     {
       symbol: 'USDT',
-      address: '0x7a1BDB770C2a10F68cC33E591B9c7F2131014D27',
+      address: '0xd54804250E9C561AEa9Dee34e9cf2342f767ACC5',
       decimals: 6,
       targetUnit: TARGET_UNITS.USD,
       referenceUnit: 'USDT',
@@ -265,7 +265,7 @@ const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
     },
     {
       symbol: 'USDP',
-      address: '0x2B02cD2BFA6E6a15f71d8A53332065865c68dE8e',
+      address: '0xe664d294824C2A8C952A10c4034e1105d2907F46',
       decimals: 18,
       targetUnit: TARGET_UNITS.USD,
       referenceUnit: 'USDP',
@@ -276,7 +276,7 @@ const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
     },
     {
       symbol: 'TUSD',
-      address: '0x5bfFB6efcF7C571a864503F4c3fd777b6b01DAc9',
+      address: '0x0938FA066054e5C7C47514e6010964713481eDFc',
       decimals: 18,
       targetUnit: TARGET_UNITS.USD,
       referenceUnit: 'TUSD',
@@ -287,7 +287,7 @@ const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
     },
     {
       symbol: 'BUSD',
-      address: '0x8753D10082Dc83CA490b4735aC0463C8251EDc86',
+      address: '0x8A458C9684c55ef52D560E28E9B27Af24eAE6e66',
       decimals: 18,
       targetUnit: TARGET_UNITS.USD,
       referenceUnit: 'BUSD',
@@ -299,7 +299,7 @@ const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
     // YIELD TOKEN COLLATERAL
     {
       symbol: 'aDAI',
-      address: '0xb06903A5e0261F85abEBf5AF4083a5572A954C19',
+      address: '0x520CF948147C3DF196B8a21cd3687e7f17555032',
       decimals: 6,
       targetUnit: TARGET_UNITS.USD,
       referenceUnit: 'DAI',
@@ -310,7 +310,7 @@ const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
     },
     {
       symbol: 'aUSDC',
-      address: '0x4FB59A2c3470c9D819FC2A72408e1fb1636D1dFb',
+      address: '0x73094D84683d712E02f47eddEfF70A6EDf6D59eD',
       decimals: 6,
       targetUnit: TARGET_UNITS.USD,
       referenceUnit: 'USDC',
@@ -321,7 +321,7 @@ const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
     },
     {
       symbol: 'aUSDT',
-      address: '0x36Cc6F0b52Cf11582eb294D6d72b4AfE6CBCDFcD',
+      address: '0x5269bF9D2F5Aa32Bd290063B99814D7DA4AFa086',
       decimals: 6,
       targetUnit: TARGET_UNITS.USD,
       referenceUnit: 'USDT',
@@ -332,7 +332,7 @@ const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
     },
     {
       symbol: 'aBUSD',
-      address: '0x6231c0d0C86C3541E152d2E4b3C1Ac1839448a2C',
+      address: '0x0F2717B041Ac182bc2A7FE6185602d9D2984E391',
       decimals: 18,
       targetUnit: TARGET_UNITS.USD,
       referenceUnit: 'BUSD',
@@ -343,7 +343,7 @@ const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
     },
     {
       symbol: 'cDAI',
-      address: '0xC0114A8576FA3c0E42aEa0838a20db24F1d0449d',
+      address: '0x88CF647f1CE5a83E699157b9D84b5a39266F010D',
       decimals: 6,
       targetUnit: TARGET_UNITS.USD,
       referenceUnit: 'DAI',
@@ -354,7 +354,7 @@ const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
     },
     {
       symbol: 'cUSDC',
-      address: '0x5553FBbaB2E0025Cf64C01025AB0082Fe48fB5af',
+      address: '0xBE6F7489773bBB43991EdA6f4c9e02850094Cbb1',
       decimals: 6,
       targetUnit: TARGET_UNITS.USD,
       referenceUnit: 'USDC',
@@ -365,7 +365,7 @@ const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
     },
     {
       symbol: 'cUSDT',
-      address: '0xa9e5298d3C5b621fE8195BA0E3Fbf46170DacaCc',
+      address: '0xd2783c5BD9bFE8bA09170828E120F49F1C76208c',
       decimals: 6,
       targetUnit: TARGET_UNITS.USD,
       referenceUnit: 'USDT',
@@ -376,7 +376,7 @@ const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
     },
     {
       symbol: 'cWBTC',
-      address: '0x410c567660edAa758339FA273Bb4182D12bf604a',
+      address: '0x38c7e9427960E427f6c84b3A096021f47a9Afb82',
       decimals: 18,
       targetUnit: TARGET_UNITS.BTC,
       referenceUnit: 'WBTC',
@@ -387,7 +387,7 @@ const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
     },
     {
       symbol: 'cETH',
-      address: '0xbcE2795FFC0C2BA8B5bd41521676EDD8Fd161160',
+      address: '0xeA22abC49b4daDc189900AD6eE4033545468997e',
       decimals: 18,
       targetUnit: TARGET_UNITS.ETH,
       referenceUnit: 'ETH',
@@ -398,7 +398,7 @@ const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
     },
     {
       symbol: 'wBTC',
-      address: '0x02FFfDCbb160fb9C6DE3fE3b8EEca5aEEe28Af0d',
+      address: '0xe238999f9588c7c579A431143e909090FDCF28b5',
       decimals: 6,
       targetUnit: TARGET_UNITS.BTC,
       referenceUnit: 'wBTC',
@@ -409,7 +409,7 @@ const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
     },
     {
       symbol: 'wETH',
-      address: '0x3E276718F7A82715a1Df28Bde41342ae6005EBD7',
+      address: '0x6AF7559e0e0FA720205eB34bf10a2e1de8AF3895',
       decimals: 18,
       targetUnit: TARGET_UNITS.ETH,
       referenceUnit: 'wETH',
@@ -420,7 +420,7 @@ const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
     },
     {
       symbol: 'EURT',
-      address: '0xED592434CbDc35B47C4CDa82C7a02ECcf5Df8cA2',
+      address: '0x78B6BD38a4bDDfB2D15cfBFE3bC048D262901DdA',
       decimals: 6,
       targetUnit: TARGET_UNITS.EUR,
       referenceUnit: 'EURT',

@@ -278,7 +278,8 @@ export const theme: Theme = {
         borderBottom: 0,
       },
       display: 'table',
-      width: '100%',    },
+      width: '100%',
+    },
     thead: {
       display: 'table',
       width: '100%',
@@ -325,7 +326,7 @@ export const theme: Theme = {
     },
     select: {
       ...baseInput,
-      backgroundColor: 'contentBackground',
+      backgroundColor: 'background',
     },
     inputError: {
       ...baseInput,

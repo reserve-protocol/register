@@ -33,6 +33,11 @@ const ContentContainer = styled(Box)`
   height: 100%;
   position: relative;
   flex: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 
 /**
