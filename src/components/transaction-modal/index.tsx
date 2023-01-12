@@ -32,7 +32,7 @@ export interface ITransactionModal {
   isValid: boolean
 }
 
-const modalStyle = { maxWidth: '420px' }
+const modalStyle = { maxWidth: '390px' }
 
 const TransactionConfirmed = ({
   hash,
@@ -150,7 +150,7 @@ const TransactionModal = ({
       {children}
       {requiredApprovals.length > 0 && !canSubmit && isValid && (
         <>
-          <Divider mx={-4} my={4} />
+          <Divider sx={{ borderColor: 'darkBorder' }} mx={-4} my={4} />
           <ApprovalTransactions
             onConfirm={() => onChange(true)}
             onError={() => {
@@ -162,7 +162,7 @@ const TransactionModal = ({
           />
         </>
       )}
-      <Divider mx={-4} mt={4} />
+      <Divider sx={{ borderColor: 'darkBorder' }} mx={-4} mt={4} />
       <LoadingButton
         loading={!!signing}
         disabled={!canSubmit}
