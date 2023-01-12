@@ -36,9 +36,10 @@ export const baseButton = {
 
 export const baseInput = {
   borderColor: 'inputBorder',
-  backgroundColor: 'background',
+  backgroundColor: 'secondaryBackground',
   outline: 'none',
   padding: '12px',
+  paddingLeft: '16px',
   borderRadius: borderRadius.inputs,
   '&:disabled': {
     backgroundColor: 'border',
@@ -68,6 +69,7 @@ export const colors = {
   secondaryText: '#666666',
   lightText: '#808080',
   background: 'white',
+  secondaryBackground: 'background',
   lightBackground: '#F2F2F2',
   contentBackground: '#F9F8F4',
   contentLightBackground: 'rgba(255, 255, 255, 0.5)',
@@ -95,14 +97,14 @@ export const colors = {
       accent: 'white',
       border: '#1A1A1A',
       inputBorder: '#1F1F1F',
-      darkBorder: '#1A1A1A', // TODO
+      darkBorder: '#1A1A1A',
       contentBackground: '#0F0E0D',
       lightBackground: '#131313',
       contentLightBackground: '#090909',
-      secondaryBackground: '#202128',
+      secondaryBackground: '#050404',
       primary: '#4C3121',
       bgCard: '#FBFDFE',
-      modalOverlay: 'rgb(100, 100, 100, 0.35)',
+      modalOverlay: 'rgb(140, 140, 140, 0.4)',
     },
   },
 }
@@ -319,6 +321,7 @@ export const theme: Theme = {
     smallInput: {
       ...baseInput,
       padding: '6px',
+      paddingLeft: '6px',
     },
     select: {
       ...baseInput,
