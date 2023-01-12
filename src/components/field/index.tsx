@@ -37,8 +37,8 @@ export const getErrorMessage = (error: StringMap): string => {
 
 export const Field = ({ label, help, children, ...props }: FieldProps) => (
   <Box {...props}>
-    <Flex mb={1} sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-      <Text variant="subtitle" ml={2} sx={{ fontSize: 1 }}>
+    <Flex mb={2} sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+      <Text variant="subtitle" ml={3} sx={{ fontSize: 1 }}>
         {label}
       </Text>
       {!!help && <Help mx={2} content={help} />}
