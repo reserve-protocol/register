@@ -47,7 +47,8 @@ const EmptyBoxIcon = (props: SVGProps<SVGSVGElement>) => (
         width="62.2857"
         height="62.2857"
         rx="31.1429"
-        stroke="#CCCCCC"
+        stroke="currentColor"
+        opacity="0.15"
         strokeWidth="1.71429"
         strokeDasharray="3.43 3.43"
       />
