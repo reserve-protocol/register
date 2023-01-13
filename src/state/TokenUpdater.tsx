@@ -204,24 +204,26 @@ const ReserveTokenUpdater = () => {
         }
 
         // TODO: Remove insurance term from theGraph
-        const [{ erc20s, uoaShares, targets }, { backing, insurance: staked }] =
-          await promiseMulticall(
-            [
-              {
-                ...callParams,
-                method: 'basketBreakdown',
-              },
-              {
-                ...callParams,
-                method: 'backingOverview',
-              },
-            ],
-            provider
-          )
+        const [
+          { erc20s, uoaShares, targets },
+          { backing, overCollateralization },
+        ] = await promiseMulticall(
+          [
+            {
+              ...callParams,
+              method: 'basketBreakdown',
+            },
+            {
+              ...callParams,
+              method: 'backingOverview',
+            },
+          ],
+          provider
+        )
 
         setDistribution({
           backing: Math.ceil(Number(formatEther(backing)) * 100),
-          staked: Math.ceil(Number(formatEther(staked)) * 100),
+          staked: Math.ceil(Number(formatEther(overCollateralization)) * 100),
         })
         setCollateralDist(
           erc20s.reduce(
