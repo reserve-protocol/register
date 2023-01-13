@@ -1,20 +1,12 @@
-import { useWeb3React } from '@web3-react/core'
-import { FacadeInterface } from 'abis'
-import { Collateral } from 'components/rtoken-setup/atoms'
 import BackupBasket from 'components/rtoken-setup/basket/BackupBasket'
 import PrimaryBasket from 'components/rtoken-setup/basket/PrimaryBasket'
 import SectionWrapper from 'components/section-navigation/SectionWrapper'
-import { useContractCall } from 'hooks/useCall'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
-import { useEffect } from 'react'
 import { rTokenPriceAtom } from 'state/atoms'
 import { Box, Card, Divider, Flex, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { FACADE_ADDRESS } from 'utils/addresses'
-import { CHAIN_ID } from 'utils/chains'
-import BackingManager from 'views/deploy/components/BackingManager'
-import OtherSetup from 'views/deploy/components/OtherSetup'
+import BasicInfo from './BasicInfo'
 import ListingInfo from './ListingInfo'
 
 const RTokenOverview = () => {
@@ -24,7 +16,7 @@ const RTokenOverview = () => {
   return (
     <Box>
       <SectionWrapper navigationIndex={0}>
-        <Card p={4}>Basic info</Card>
+        <BasicInfo />
       </SectionWrapper>
       <SectionWrapper navigationIndex={1} mt={4}>
         <Card p={4}>

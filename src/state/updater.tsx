@@ -26,13 +26,8 @@ import {
   rTokenPriceAtom,
   walletAtom,
 } from 'state/atoms'
-import { ReserveToken, StringMap } from 'types'
-import {
-  ORACLE_ADDRESS,
-  RSR_ADDRESS,
-  RSV_ADDRESS,
-  WETH_ADDRESS,
-} from 'utils/addresses'
+import { ReserveToken } from 'types'
+import { ORACLE_ADDRESS, RSR_ADDRESS, WETH_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 import { RSR } from 'utils/constants'
 import { RSV_MANAGER } from 'utils/rsv'
@@ -122,12 +117,6 @@ const TokensAllowanceUpdater = () => {
   }, [JSON.stringify(allowances)])
 
   return null
-}
-
-const fetcher = async (url: string): Promise<StringMap> => {
-  const data: Response = await fetch(url).then((res) => res.json())
-
-  return data
 }
 
 /**
