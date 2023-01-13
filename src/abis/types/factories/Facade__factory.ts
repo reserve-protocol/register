@@ -9,11 +9,6 @@ import type { Facade, FacadeInterface } from "../Facade";
 const _abi = [
   {
     inputs: [],
-    stateMutability: "nonpayable",
-    type: "constructor",
-  },
-  {
-    inputs: [],
     name: "UIntOutOfBounds",
     type: "error",
   },
@@ -34,7 +29,7 @@ const _abi = [
       },
       {
         internalType: "uint192",
-        name: "insurance",
+        name: "overCollateralization",
         type: "uint192",
       },
     ],
@@ -44,7 +39,36 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "contract IRToken",
+        internalType: "contract RTokenP1",
+        name: "rToken",
+        type: "address",
+      },
+      {
+        internalType: "bytes32",
+        name: "targetName",
+        type: "bytes32",
+      },
+    ],
+    name: "backupConfig",
+    outputs: [
+      {
+        internalType: "contract IERC20[]",
+        name: "erc20s",
+        type: "address[]",
+      },
+      {
+        internalType: "uint256",
+        name: "max",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "contract RTokenP1",
         name: "rToken",
         type: "address",
       },
@@ -81,7 +105,7 @@ const _abi = [
     name: "basketTokens",
     outputs: [
       {
-        internalType: "address[]",
+        internalType: "contract IERC20[]",
         name: "tokens",
         type: "address[]",
       },
@@ -92,38 +116,25 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "contract IRToken",
+        internalType: "contract RTokenP1",
         name: "rToken",
         type: "address",
       },
-    ],
-    name: "claimRewards",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
       {
-        internalType: "contract IRToken",
-        name: "rToken",
+        internalType: "address",
+        name: "account",
         type: "address",
       },
     ],
-    name: "currentAssets",
+    name: "endIdForVest",
     outputs: [
       {
-        internalType: "address[]",
-        name: "tokens",
-        type: "address[]",
-      },
-      {
-        internalType: "uint256[]",
-        name: "amounts",
-        type: "uint256[]",
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
-    stateMutability: "nonpayable",
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -182,7 +193,7 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "contract IRToken",
+        internalType: "contract RTokenP1",
         name: "rToken",
         type: "address",
       },
@@ -212,7 +223,7 @@ const _abi = [
             type: "uint256",
           },
         ],
-        internalType: "struct IFacadeP1.Pending[]",
+        internalType: "struct IFacadeRead.Pending[]",
         name: "issuances",
         type: "tuple[]",
       },
@@ -223,7 +234,7 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "contract IRToken",
+        internalType: "contract RTokenP1",
         name: "rToken",
         type: "address",
       },
@@ -253,7 +264,7 @@ const _abi = [
             type: "uint256",
           },
         ],
-        internalType: "struct IFacadeP1.Pending[]",
+        internalType: "struct IFacadeRead.Pending[]",
         name: "unstakings",
         type: "tuple[]",
       },
@@ -273,7 +284,12 @@ const _abi = [
     outputs: [
       {
         internalType: "uint192",
-        name: "",
+        name: "low",
+        type: "uint192",
+      },
+      {
+        internalType: "uint192",
+        name: "high",
         type: "uint192",
       },
     ],
@@ -283,14 +299,30 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "contract IRToken",
+        internalType: "contract RTokenP1",
         name: "rToken",
         type: "address",
       },
     ],
-    name: "runAuctionsForAllTraders",
-    outputs: [],
-    stateMutability: "nonpayable",
+    name: "primeBasket",
+    outputs: [
+      {
+        internalType: "contract IERC20[]",
+        name: "erc20s",
+        type: "address[]",
+      },
+      {
+        internalType: "bytes32[]",
+        name: "targetNames",
+        type: "bytes32[]",
+      },
+      {
+        internalType: "uint192[]",
+        name: "targetAmts",
+        type: "uint192[]",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -310,25 +342,6 @@ const _abi = [
       },
     ],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract IRToken",
-        name: "rToken",
-        type: "address",
-      },
-    ],
-    name: "totalAssetValue",
-    outputs: [
-      {
-        internalType: "uint192",
-        name: "total",
-        type: "uint192",
-      },
-    ],
-    stateMutability: "nonpayable",
     type: "function",
   },
 ];

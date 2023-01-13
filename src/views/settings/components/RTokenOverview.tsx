@@ -20,16 +20,6 @@ import ListingInfo from './ListingInfo'
 const RTokenOverview = () => {
   const price = useAtomValue(rTokenPriceAtom)
   const rToken = useRToken()
-  // const backupBasket = useContractCall(
-  //   rToken?.address
-  //     ? {
-  //         address: FACADE_ADDRESS[CHAIN_ID],
-  //         abi: FacadeInterface,
-  //         method: 'backupConfig',
-  //         args: [rToken.address],
-  //       }
-  //     : false
-  // )
 
   return (
     <Box>

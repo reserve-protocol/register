@@ -200,6 +200,35 @@ const _abi = [
             name: "backups",
             type: "tuple[]",
           },
+          {
+            components: [
+              {
+                internalType: "address",
+                name: "beneficiary",
+                type: "address",
+              },
+              {
+                components: [
+                  {
+                    internalType: "uint16",
+                    name: "rTokenDist",
+                    type: "uint16",
+                  },
+                  {
+                    internalType: "uint16",
+                    name: "rsrDist",
+                    type: "uint16",
+                  },
+                ],
+                internalType: "struct RevenueShare",
+                name: "revShare",
+                type: "tuple",
+              },
+            ],
+            internalType: "struct BeneficiaryInfo[]",
+            name: "beneficiaries",
+            type: "tuple[]",
+          },
         ],
         internalType: "struct SetupParams",
         name: "setup",

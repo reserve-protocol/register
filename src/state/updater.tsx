@@ -211,6 +211,7 @@ const PricesUpdater = () => {
     }
   }, [])
 
+  // TODO: Replace sushi oracle with chainlink
   const fetchTokenPrices = useCallback(async (provider: Web3Provider) => {
     try {
       const callParams = {
@@ -219,9 +220,8 @@ const PricesUpdater = () => {
         method: 'getPriceUsdc',
       }
 
-      const [rsvPrice, rsrPrice, wethPrice] = await promiseMulticall(
+      const [rsrPrice, wethPrice] = await promiseMulticall(
         [
-          { ...callParams, args: [RSV_ADDRESS[CHAIN_ID]] },
           { ...callParams, args: [RSR_ADDRESS[CHAIN_ID]] },
           { ...callParams, args: [WETH_ADDRESS[CHAIN_ID]] },
         ],
@@ -237,7 +237,11 @@ const PricesUpdater = () => {
   useEffect(() => {
     if (chainId && blockNumber && provider) {
       fetchGasPrice(provider)
-      fetchTokenPrices(provider)
+
+      // Only fetch token prices in ethereum
+      if (chainId === 1) {
+        fetchTokenPrices(provider)
+      }
     }
   }, [chainId, blockNumber])
 
