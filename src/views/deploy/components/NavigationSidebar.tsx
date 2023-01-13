@@ -43,7 +43,7 @@ const NavigationSidebar = ({ governance = false }) => {
         </SmallButton>
       </Box>
       <Navigation title={t`Tx 1`} sections={sections} />
-      <Text sx={{ fontSize: 1, fontStyle: 'italic' }} mb={4}>
+      <Text sx={{ fontSize: 1, fontStyle: 'italic' }} mb={5}>
         <Trans>Signing Tx 1</Trans>
       </Text>
       <Navigation title={t`Tx 2`} initialIndex={7} sections={step2Navigation} />
