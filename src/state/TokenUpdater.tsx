@@ -20,7 +20,6 @@ import { ContractCall, ReserveToken, Token } from 'types'
 import { calculateApy, isAddress, truncateDecimals } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
-import { RTOKEN_STATUS } from 'utils/constants'
 import RSV from 'utils/rsv'
 import rtokens from 'utils/rtokens'
 import {
@@ -205,24 +204,26 @@ const ReserveTokenUpdater = () => {
         }
 
         // TODO: Remove insurance term from theGraph
-        const [{ erc20s, uoaShares, targets }, { backing, insurance: staked }] =
-          await promiseMulticall(
-            [
-              {
-                ...callParams,
-                method: 'basketBreakdown',
-              },
-              {
-                ...callParams,
-                method: 'backingOverview',
-              },
-            ],
-            provider
-          )
+        const [
+          { erc20s, uoaShares, targets },
+          { backing, overCollateralization },
+        ] = await promiseMulticall(
+          [
+            {
+              ...callParams,
+              method: 'basketBreakdown',
+            },
+            {
+              ...callParams,
+              method: 'backingOverview',
+            },
+          ],
+          provider
+        )
 
         setDistribution({
           backing: Math.ceil(Number(formatEther(backing)) * 100),
-          staked: Math.ceil(Number(formatEther(staked)) * 100),
+          staked: Math.ceil(Number(formatEther(overCollateralization)) * 100),
         })
         setCollateralDist(
           erc20s.reduce(

@@ -7,10 +7,12 @@ const NavigationSidebar = () => {
   // TODO: Listen for lang
   const sections = useMemo(
     () => [
+      t`Token details`,
       t`Primary basket`,
       t`Emergency basket`,
       t`Revenue share`,
-      t`RToken Details`,
+      t`Backing config`,
+      t`Other config`,
       t`Governance`,
       t`Contract Addresses`,
     ],

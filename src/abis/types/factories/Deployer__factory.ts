@@ -133,6 +133,12 @@ const _abi = [
         name: "owner",
         type: "address",
       },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "version",
+        type: "string",
+      },
     ],
     name: "RTokenCreated",
     type: "event",
@@ -390,6 +396,19 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "version",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "pure",
     type: "function",
   },
 ];

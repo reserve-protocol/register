@@ -85,6 +85,13 @@ export const rTokenDistributionAtom = atom<{
   staked: 0,
 })
 
+export const rTokenAdmins = atom({
+  owners: [] as string[],
+  pausers: [] as string[],
+  freezers: [] as string[],
+  longFreezers: [] as string[],
+})
+
 /**
  * ##############################
  * ? Wallet/Account related atoms

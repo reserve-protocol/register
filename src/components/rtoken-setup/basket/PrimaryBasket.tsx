@@ -86,21 +86,25 @@ const PrimaryBasket = ({
           unit={targetUnit}
         />
       ))}
-      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
-      <Flex sx={{ justiftContent: 'space-between', alignItems: 'center' }}>
-        <Flex mr={'auto'} sx={{ flexDirection: 'column' }}>
-          <Text variant="legend">1 Token =</Text>
-          <Text variant="title">
-            {!!units.length ? getBasketComposition(basket) : '--'}
-          </Text>
-        </Flex>
-        <Help
-          ml={2}
-          size={14}
-          mt="1px"
-          content="Total initial RToken scale including all targets. If your RToken only has one target unit this will be the same as the basket scale input."
-        />
-      </Flex>
+      {!readOnly && (
+        <>
+          <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+          <Flex sx={{ justiftContent: 'space-between', alignItems: 'center' }}>
+            <Flex mr={'auto'} sx={{ flexDirection: 'column' }}>
+              <Text variant="legend">1 Token =</Text>
+              <Text variant="title">
+                {!!units.length ? getBasketComposition(basket) : '--'}
+              </Text>
+            </Flex>
+            <Help
+              ml={2}
+              size={14}
+              mt="1px"
+              content="Total initial RToken scale including all targets. If your RToken only has one target unit this will be the same as the basket scale input."
+            />
+          </Flex>
+        </>
+      )}
     </Box>
   )
 }

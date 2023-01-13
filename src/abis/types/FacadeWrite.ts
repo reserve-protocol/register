@@ -120,23 +120,36 @@ export type BackupInfoStructOutput = [string, BigNumber, string[]] & {
   backupCollateral: string[];
 };
 
+export type BeneficiaryInfoStruct = {
+  beneficiary: PromiseOrValue<string>;
+  revShare: RevenueShareStruct;
+};
+
+export type BeneficiaryInfoStructOutput = [string, RevenueShareStructOutput] & {
+  beneficiary: string;
+  revShare: RevenueShareStructOutput;
+};
+
 export type SetupParamsStruct = {
   assets: PromiseOrValue<string>[];
   primaryBasket: PromiseOrValue<string>[];
   weights: PromiseOrValue<BigNumberish>[];
   backups: BackupInfoStruct[];
+  beneficiaries: BeneficiaryInfoStruct[];
 };
 
 export type SetupParamsStructOutput = [
   string[],
   string[],
   BigNumber[],
-  BackupInfoStructOutput[]
+  BackupInfoStructOutput[],
+  BeneficiaryInfoStructOutput[]
 ] & {
   assets: string[];
   primaryBasket: string[];
   weights: BigNumber[];
   backups: BackupInfoStructOutput[];
+  beneficiaries: BeneficiaryInfoStructOutput[];
 };
 
 export type GovernanceParamsStruct = {
@@ -163,7 +176,7 @@ export type GovernanceParamsStructOutput = [
 
 export interface FacadeWriteInterface extends utils.Interface {
   functions: {
-    "deployRToken((string,string,string,((uint16,uint16),uint192,uint192,uint48,uint48,uint192,uint48,uint48,uint48,uint48,uint192,uint192,uint192,uint192,uint256)),(address[],address[],uint192[],(bytes32,uint256,address[])[]))": FunctionFragment;
+    "deployRToken((string,string,string,((uint16,uint16),uint192,uint192,uint48,uint48,uint192,uint48,uint48,uint48,uint48,uint192,uint192,uint192,uint192,uint256)),(address[],address[],uint192[],(bytes32,uint256,address[])[],(address,(uint16,uint16))[]))": FunctionFragment;
     "deployer()": FunctionFragment;
     "setupGovernance(address,bool,bool,(uint256,uint256,uint256,uint256,uint256),address,address,address)": FunctionFragment;
   };

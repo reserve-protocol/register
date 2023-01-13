@@ -81,7 +81,7 @@ const BackupBasket = ({
       </Flex>
       {targetUnits.map((targetUnit) =>
         readOnly && !backupBasket[targetUnit]?.collaterals.length ? null : (
-          <Box>
+          <Box key={targetUnit}>
             <EmergencyCollateral
               readOnly={readOnly}
               onAdd={handleAdd}

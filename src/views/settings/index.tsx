@@ -1,12 +1,15 @@
 import { sidebarToggleAtom } from 'components/layout/sidebar/Sidebar'
 import Layout from 'components/rtoken-setup/Layout'
+import useRToken from 'hooks/useRToken'
 import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import NavigationSidebar from './components/NavigationSidebar'
 import RTokenManagement from './components/RTokenManagement'
 import RTokenOverview from './components/RTokenOverview'
+import useRTokenMeta from './useRTokenMeta'
 
 const Settings = () => {
+  useRTokenMeta()
   const toggleSidebar = useSetAtom(sidebarToggleAtom)
 
   useEffect(() => {

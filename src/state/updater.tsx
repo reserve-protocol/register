@@ -26,13 +26,8 @@ import {
   rTokenPriceAtom,
   walletAtom,
 } from 'state/atoms'
-import { ReserveToken, StringMap } from 'types'
-import {
-  ORACLE_ADDRESS,
-  RSR_ADDRESS,
-  RSV_ADDRESS,
-  WETH_ADDRESS,
-} from 'utils/addresses'
+import { ReserveToken } from 'types'
+import { ORACLE_ADDRESS, RSR_ADDRESS, WETH_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 import { RSR } from 'utils/constants'
 import { RSV_MANAGER } from 'utils/rsv'
@@ -124,12 +119,6 @@ const TokensAllowanceUpdater = () => {
   return null
 }
 
-const fetcher = async (url: string): Promise<StringMap> => {
-  const data: Response = await fetch(url).then((res) => res.json())
-
-  return data
-}
-
 /**
  * Fetch pending issuances
  */
@@ -211,6 +200,7 @@ const PricesUpdater = () => {
     }
   }, [])
 
+  // TODO: Replace sushi oracle with chainlink
   const fetchTokenPrices = useCallback(async (provider: Web3Provider) => {
     try {
       const callParams = {
@@ -219,9 +209,8 @@ const PricesUpdater = () => {
         method: 'getPriceUsdc',
       }
 
-      const [rsvPrice, rsrPrice, wethPrice] = await promiseMulticall(
+      const [rsrPrice, wethPrice] = await promiseMulticall(
         [
-          { ...callParams, args: [RSV_ADDRESS[CHAIN_ID]] },
           { ...callParams, args: [RSR_ADDRESS[CHAIN_ID]] },
           { ...callParams, args: [WETH_ADDRESS[CHAIN_ID]] },
         ],
@@ -237,7 +226,11 @@ const PricesUpdater = () => {
   useEffect(() => {
     if (chainId && blockNumber && provider) {
       fetchGasPrice(provider)
-      fetchTokenPrices(provider)
+
+      // Only fetch token prices in ethereum
+      if (chainId === 1) {
+        fetchTokenPrices(provider)
+      }
     }
   }, [chainId, blockNumber])
 

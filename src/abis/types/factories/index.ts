@@ -10,5 +10,6 @@ export { Deployer__factory } from "./Deployer__factory";
 export { Facade__factory } from "./Facade__factory";
 export { FacadeWrite__factory } from "./FacadeWrite__factory";
 export { Main__factory } from "./Main__factory";
+export { Oracle__factory } from "./Oracle__factory";
 export { RsvManager__factory } from "./RsvManager__factory";
 export { StRsr__factory } from "./StRsr__factory";

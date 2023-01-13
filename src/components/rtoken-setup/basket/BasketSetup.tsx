@@ -4,9 +4,6 @@ import { Card } from 'theme-ui'
 import BackupBasket from './BackupBasket'
 import CollateralModal from './CollateralModal'
 import PrimaryBasket from './PrimaryBasket'
-import { truncateDecimals } from 'utils'
-import { useAtomValue } from 'jotai'
-import { Basket, basketAtom } from '../atoms'
 
 const BasketSetup = ({ startIndex = 2 }) => {
   const [collateralModal, setCollateralModal] = useState<{
