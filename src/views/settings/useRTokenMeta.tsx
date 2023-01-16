@@ -1,5 +1,10 @@
 import { useWeb3React } from '@web3-react/core'
-import { ERC20Interface, FacadeInterface } from 'abis'
+import {
+  Distributor,
+  ERC20Interface,
+  FacadeInterface,
+  MainInterface,
+} from 'abis'
 import {
   BackupBasket,
   backupCollateralAtom,
@@ -8,17 +13,21 @@ import {
   Collateral,
 } from 'components/rtoken-setup/atoms'
 import { BigNumber } from 'ethers'
-import { formatBytes32String, formatEther, parseEther } from 'ethers/lib/utils'
+import { formatBytes32String, formatEther } from 'ethers/lib/utils'
 import useRToken from 'hooks/useRToken'
-import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { rTokenAtom, rTokenCollateralDist } from 'state/atoms'
 import { promiseMulticall } from 'state/web3/lib/multicall'
-import { ContractCall } from 'types'
+import { ContractCall, StringMap } from 'types'
+import { getContract } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 
+/**
+ * Get RToken primary basket
+ */
 const primaryBasketAtom = atom((get) => {
   const rToken = get(rTokenAtom)
   const basketDistribution = get(rTokenCollateralDist)
@@ -52,6 +61,9 @@ const primaryBasketAtom = atom((get) => {
   }, {} as Basket)
 })
 
+/**
+ * Get RToken backup basket
+ */
 const useTokenBackup = (): {
   targetUnit: string
   max: number
@@ -126,11 +138,70 @@ const useTokenBackup = (): {
   return []
 }
 
+const useRTokenParameters = () => {
+  const rToken = useRToken()
+  const { provider } = useWeb3React()
+  const [revenueDistribution, setRevenueDistribution] = useState(
+    {} as StringMap
+  )
+
+  const fetchParams = useCallback(async () => {
+    if (rToken?.main && provider) {
+      try {
+        const [distribution] = await promiseMulticall(
+          [
+            {
+              abi: MainInterface,
+              address: rToken.main,
+              args: [],
+              method: 'distributor',
+            },
+          ],
+          provider
+        )
+
+        const contract = getContract(distribution, Distributor, provider)
+        const events = await contract.queryFilter(
+          'DistributionSet(address,uint16,uint16)'
+        )
+        const dist: StringMap = {}
+        for (const event of events) {
+          if (event.args) {
+            const { dest, rTokenDist, rsrDist } = event.args
+
+            // Dist removed
+            if (!rTokenDist && !rsrDist) {
+              delete dist[dest]
+            } else {
+              dist[dest] = {
+                rTokenDist: rTokenDist,
+                rsrDist: rsrDist,
+              }
+            }
+          }
+        }
+
+        console.log('dist', dist)
+        setRevenueDistribution(dist)
+      } catch (e) {
+        console.error(e)
+      }
+    }
+  }, [rToken, provider])
+
+  useEffect(() => {
+    fetchParams()
+  }, [fetchParams])
+
+  return [revenueDistribution]
+}
+
 const useRTokenMeta = () => {
   const basketDist = useAtomValue(primaryBasketAtom)
   const setPrimaryBasket = useSetAtom(basketAtom)
   const resetBackup = useResetAtom(backupCollateralAtom)
   useTokenBackup()
+  useRTokenParameters()
 
   useEffect(() => {
     setPrimaryBasket(basketDist || {})

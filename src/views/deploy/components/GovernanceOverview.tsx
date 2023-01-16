@@ -1,20 +1,11 @@
 import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
 import CopyValue from 'components/button/CopyValue'
-import GovernanceActionIcon from 'components/icons/GovernanceActionIcon'
 import GoTo from 'components/button/GoTo'
+import GovernanceActionIcon from 'components/icons/GovernanceActionIcon'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  Box,
-  BoxProps,
-  Button,
-  Divider,
-  Flex,
-  Image,
-  Spinner,
-  Text,
-} from 'theme-ui'
+import { Box, BoxProps, Button, Divider, Flex, Spinner, Text } from 'theme-ui'
 import { formatCurrency, shortenString } from 'utils'
 import { ROUTES, TRANSACTION_STATUS } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
@@ -29,9 +20,10 @@ const GovernanceStatus = () => {
   const { fee, deploy, isValid } = useGovernance()
   const tx = useGovernanceTxState()
 
+  // TODO: Promp configure tally pop up? maybe as a route parameter?
   useEffect(() => {
     if (tx?.status === TRANSACTION_STATUS.CONFIRMED) {
-      navigate(`${ROUTES.GOVERNANCE_INFO}/${tx.id}`)
+      navigate(ROUTES.SETTINGS)
     }
   }, [tx?.status])
 
