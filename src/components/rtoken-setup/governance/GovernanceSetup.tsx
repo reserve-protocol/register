@@ -14,7 +14,7 @@ import {
 } from 'theme-ui'
 import { addressPattern } from 'utils'
 import GovernanceParameters from './GovernanceParameters'
-import DocsLink from 'components/docs-link/docs-link'
+import DocsLink from 'components/docs-link/DocsLink'
 
 interface Props extends BoxProps {
   disabled?: boolean

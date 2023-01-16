@@ -6,7 +6,7 @@ import { useCallback } from 'react'
 import { Box, BoxProps, Divider, Flex, Text } from 'theme-ui'
 import { backupCollateralAtom, basketAtom } from '../atoms'
 import EmergencyCollateral from './EmergencyCollateral'
-import DocsLink from 'components/docs-link/docs-link'
+import DocsLink from 'components/docs-link/DocsLink'
 
 interface Props extends BoxProps {
   onAdd?(

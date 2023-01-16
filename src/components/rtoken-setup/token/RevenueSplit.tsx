@@ -6,7 +6,7 @@ import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Plus } from 'react-feather'
 import { useForm } from 'react-hook-form'
-import DocsLink from 'components/docs-link/docs-link'
+import DocsLink from 'components/docs-link/DocsLink'
 import { Box, BoxProps, Card, Divider, Flex, Text, Link } from 'theme-ui'
 import {
   ExternalAddressSplit,

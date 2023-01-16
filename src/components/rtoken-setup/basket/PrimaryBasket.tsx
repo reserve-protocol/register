@@ -8,7 +8,7 @@ import { Box, BoxProps, Divider, Flex, Text } from 'theme-ui'
 import { truncateDecimals } from 'utils'
 import { Basket, basketAtom } from '../atoms'
 import UnitBasket from './UnitBasket'
-import DocsLink from 'components/docs-link/docs-link'
+import DocsLink from 'components/docs-link/DocsLink'
 
 interface Props extends BoxProps {
   onAdd?(
