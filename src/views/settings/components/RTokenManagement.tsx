@@ -121,7 +121,7 @@ const RTokenManagement = () => {
         <>
           <Divider />
           <SettingItem
-            title="Owner change"
+            title="Change by owner"
             subtitle={t`Available pre-governance`}
             action={t`Edit`}
             icon="owner-edit"
