@@ -1,6 +1,7 @@
 import { t, Trans } from '@lingui/macro'
 import { FacadeInterface, MainInterface } from 'abis'
 import GovernanceActionIcon from 'components/icons/GovernanceActionIcon'
+import DocsLink from 'components/docs-link/DocsLink'
 import { ethers } from 'ethers'
 import { useContractCall } from 'hooks/useCall'
 import useRToken from 'hooks/useRToken'
@@ -24,7 +25,7 @@ import PauseManager from './PauseManager'
 import SettingItem from './SettingItem'
 
 const Divider = () => (
-  <_Divider sx={{ borderColor: 'darkBorder' }} my={3} mx={-4} />
+  <_Divider sx={{ borderColor: 'darkBorder' }} my={4} mx={-4} />
 )
 
 const Container = ({ children }: BoxProps) => (
@@ -96,42 +97,34 @@ const RTokenManagement = () => {
 
   return (
     <Container>
-      <Flex
-        sx={{
-          alignItems: 'center',
-          flexDirection: 'column',
-          textAlign: 'center',
-        }}
-      >
-        <Image height={32} width={32} src="/svgs/deploytx.svg" />
-        <Text variant="title" sx={{ fontSize: 4 }} mt={2}>
-          <Trans>RToken Controls</Trans>
+      <Flex mb={4} sx={{ alignItems: 'center' }}>
+        <Text variant="sectionTitle">
+          <Trans>Actions</Trans>
         </Text>
-        <Text variant="legend" as="p" mt={2} sx={{ textAlign: 'center' }}>
-          All possible governance related actions are listed here, but disabled
-          if you’re not connected with the address with the right permissions.
-        </Text>
+        <DocsLink link="https://reserve.org/" />
       </Flex>
       <Divider />
+
       <PauseManager />
       <Divider />
       <FreezeManager />
       <Divider />
       <SettingItem
-        title={t`Governance proposals`}
-        subtitle={t`Role held by`}
+        title={t`Proposals`}
+        subtitle={t`Available to:`}
         value={t`All stakers`}
-        icon="hammer"
-        action={t`Create proposal`}
+        icon="proposals"
+        action={t`New proposal`}
         onAction={handleProposal}
       />
       {accountRole.owner && (
         <>
           <Divider />
           <SettingItem
-            title="Make changes to RToken"
-            subtitle={t`Available when no governance set up:`}
+            title="Owner change"
+            subtitle={t`Available pre-governance`}
             action={t`Edit`}
+            icon="owner-edit"
             onAction={handleEdit}
           />
         </>
