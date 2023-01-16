@@ -11,6 +11,8 @@ import {
   Basket,
   basketAtom,
   Collateral,
+  RevenueSplit,
+  revenueSplitAtom,
 } from 'components/rtoken-setup/atoms'
 import { BigNumber } from 'ethers'
 import { formatBytes32String, formatEther } from 'ethers/lib/utils'
@@ -141,9 +143,7 @@ const useTokenBackup = (): {
 const useRTokenParameters = () => {
   const rToken = useRToken()
   const { provider } = useWeb3React()
-  const [revenueDistribution, setRevenueDistribution] = useState(
-    {} as StringMap
-  )
+  const setRevenueSplit = useSetAtom(revenueSplitAtom)
 
   const fetchParams = useCallback(async () => {
     if (rToken?.main && provider) {
@@ -164,7 +164,14 @@ const useRTokenParameters = () => {
         const events = await contract.queryFilter(
           'DistributionSet(address,uint16,uint16)'
         )
-        const dist: StringMap = {}
+        const dist: StringMap = { external: {}, holders: '', stakers: '' }
+        const furnace = '0x0000000000000000000000000000000000000001'
+        const stRSR = '0x0000000000000000000000000000000000000002'
+
+        const shareToPercent = (shares: number): string => {
+          return Math.floor((shares * 100) / 10000).toString()
+        }
+
         for (const event of events) {
           if (event.args) {
             const { dest, rTokenDist, rsrDist } = event.args
@@ -172,17 +179,28 @@ const useRTokenParameters = () => {
             // Dist removed
             if (!rTokenDist && !rsrDist) {
               delete dist[dest]
+            } else if (dest === furnace) {
+              dist.holders = shareToPercent(rTokenDist)
+            } else if (dest === stRSR) {
+              dist.stakers = shareToPercent(rsrDist)
             } else {
-              dist[dest] = {
-                rTokenDist: rTokenDist,
-                rsrDist: rsrDist,
+              const holders = shareToPercent(rTokenDist)
+              const stakers = shareToPercent(rsrDist)
+
+              dist.external[dest] = {
+                holders,
+                stakers,
+                total: (+holders + +stakers).toString(),
+                address: dest,
               }
             }
           }
         }
 
-        console.log('dist', dist)
-        setRevenueDistribution(dist)
+        setRevenueSplit({
+          ...dist,
+          external: Object.values(dist.external),
+        } as RevenueSplit)
       } catch (e) {
         console.error(e)
       }
@@ -193,13 +211,14 @@ const useRTokenParameters = () => {
     fetchParams()
   }, [fetchParams])
 
-  return [revenueDistribution]
+  return null
 }
 
 const useRTokenMeta = () => {
   const basketDist = useAtomValue(primaryBasketAtom)
   const setPrimaryBasket = useSetAtom(basketAtom)
   const resetBackup = useResetAtom(backupCollateralAtom)
+  const resetRevenueSplit = useResetAtom(revenueSplitAtom)
   useTokenBackup()
   useRTokenParameters()
 
@@ -211,6 +230,7 @@ const useRTokenMeta = () => {
     return () => {
       setPrimaryBasket({})
       resetBackup()
+      resetRevenueSplit()
     }
   }, [])
 
