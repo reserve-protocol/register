@@ -24,6 +24,7 @@ const RevenueSplitInfo = (props: BoxProps) => {
       />
       {distribution.external.map((dist) => (
         <InfoHeading
+          key={dist.address}
           title={shortenAddress(dist.address)}
           subtitle={`${dist.total}%`}
           mb={3}

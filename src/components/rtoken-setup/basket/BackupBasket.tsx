@@ -1,12 +1,11 @@
 import { Trans } from '@lingui/macro'
-import { SmallButton } from 'components/button'
+import DocsLink from 'components/docs-link/docs-link'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { useAtomValue } from 'jotai'
 import { useCallback } from 'react'
-import { Box, BoxProps, Divider, Flex, Text } from 'theme-ui'
+import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { backupCollateralAtom, basketAtom } from '../atoms'
 import EmergencyCollateral from './EmergencyCollateral'
-import DocsLink from 'components/docs-link/docs-link'
 
 interface Props extends BoxProps {
   onAdd?(
@@ -80,7 +79,13 @@ const BackupBasket = ({
         <DocsLink link="https://reserve.org/protocol/monetary_units_baskets/#baskets" />
       </Flex>
       {targetUnits.map((targetUnit) =>
-        readOnly && !backupBasket[targetUnit]?.collaterals.length ? null : (
+        readOnly && !backupBasket[targetUnit]?.collaterals.length ? (
+          <Box my={3} px={1} key={targetUnit}>
+            <Text>
+              <Trans>No emergency collateral for target</Trans> {targetUnit}
+            </Text>
+          </Box>
+        ) : (
           <Box key={targetUnit}>
             <EmergencyCollateral
               readOnly={readOnly}

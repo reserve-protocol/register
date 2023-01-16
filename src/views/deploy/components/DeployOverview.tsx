@@ -1,23 +1,12 @@
 import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
-import { InfoBox } from 'components'
 import CopyValue from 'components/button/CopyValue'
-import DeployActionIcon from 'components/icons/DeployActionIcon'
 import GoTo from 'components/button/GoTo'
+import DeployActionIcon from 'components/icons/DeployActionIcon'
 import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { useFormContext } from 'react-hook-form'
 import { selectedRTokenAtom } from 'state/atoms'
-import {
-  Box,
-  BoxProps,
-  Button,
-  Divider,
-  Flex,
-  Image,
-  Spinner,
-  Text,
-} from 'theme-ui'
+import { Box, BoxProps, Button, Divider, Flex, Spinner, Text } from 'theme-ui'
 import { formatCurrency, shortenString } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
