@@ -83,6 +83,7 @@ export const colors = {
   inputBorder: '#E5E5E5',
   disabled: '#E5E5E5',
   danger: '#FF0000',
+  dangerBG: 'rgba(255, 0, 0, 0.15)',
   muted: '#D9D9D9',
   warning: '#FF7A00',
   modalOverlay: 'rgb(0, 0, 0, 0.2)',
@@ -376,7 +377,7 @@ export const theme: Theme = {
     },
     danger: {
       ...baseButton,
-      backgroundColor: 'inputBorder',
+      backgroundColor: 'dangerBG',
       color: 'danger',
     },
     error: {
