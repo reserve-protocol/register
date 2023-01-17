@@ -1,24 +1,35 @@
 import { useWeb3React } from '@web3-react/core'
-import { ERC20Interface, FacadeInterface } from 'abis'
+import {
+  Distributor,
+  ERC20Interface,
+  FacadeInterface,
+  MainInterface,
+} from 'abis'
 import {
   BackupBasket,
   backupCollateralAtom,
   Basket,
   basketAtom,
   Collateral,
+  RevenueSplit,
+  revenueSplitAtom,
 } from 'components/rtoken-setup/atoms'
 import { BigNumber } from 'ethers'
-import { formatBytes32String, formatEther, parseEther } from 'ethers/lib/utils'
+import { formatBytes32String, formatEther } from 'ethers/lib/utils'
 import useRToken from 'hooks/useRToken'
-import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { rTokenAtom, rTokenCollateralDist } from 'state/atoms'
 import { promiseMulticall } from 'state/web3/lib/multicall'
-import { ContractCall } from 'types'
+import { ContractCall, StringMap } from 'types'
+import { getContract } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 
+/**
+ * Get RToken primary basket
+ */
 const primaryBasketAtom = atom((get) => {
   const rToken = get(rTokenAtom)
   const basketDistribution = get(rTokenCollateralDist)
@@ -52,6 +63,9 @@ const primaryBasketAtom = atom((get) => {
   }, {} as Basket)
 })
 
+/**
+ * Get RToken backup basket
+ */
 const useTokenBackup = (): {
   targetUnit: string
   max: number
@@ -126,11 +140,87 @@ const useTokenBackup = (): {
   return []
 }
 
+const useRTokenParameters = () => {
+  const rToken = useRToken()
+  const { provider } = useWeb3React()
+  const setRevenueSplit = useSetAtom(revenueSplitAtom)
+
+  const fetchParams = useCallback(async () => {
+    if (rToken?.main && provider) {
+      try {
+        const [distribution] = await promiseMulticall(
+          [
+            {
+              abi: MainInterface,
+              address: rToken.main,
+              args: [],
+              method: 'distributor',
+            },
+          ],
+          provider
+        )
+
+        const contract = getContract(distribution, Distributor, provider)
+        const events = await contract.queryFilter(
+          'DistributionSet(address,uint16,uint16)'
+        )
+        const dist: StringMap = { external: {}, holders: '', stakers: '' }
+        const furnace = '0x0000000000000000000000000000000000000001'
+        const stRSR = '0x0000000000000000000000000000000000000002'
+
+        const shareToPercent = (shares: number): string => {
+          return Math.floor((shares * 100) / 10000).toString()
+        }
+
+        for (const event of events) {
+          if (event.args) {
+            const { dest, rTokenDist, rsrDist } = event.args
+
+            // Dist removed
+            if (!rTokenDist && !rsrDist) {
+              delete dist[dest]
+            } else if (dest === furnace) {
+              dist.holders = shareToPercent(rTokenDist)
+            } else if (dest === stRSR) {
+              dist.stakers = shareToPercent(rsrDist)
+            } else {
+              const holders = shareToPercent(rTokenDist)
+              const stakers = shareToPercent(rsrDist)
+
+              dist.external[dest] = {
+                holders,
+                stakers,
+                total: (+holders + +stakers).toString(),
+                address: dest,
+              }
+            }
+          }
+        }
+
+        setRevenueSplit({
+          ...dist,
+          external: Object.values(dist.external),
+        } as RevenueSplit)
+      } catch (e) {
+        console.error(e)
+      }
+    }
+  }, [rToken, provider])
+
+  useEffect(() => {
+    fetchParams()
+  }, [fetchParams])
+
+  return null
+}
+
 const useRTokenMeta = () => {
   const basketDist = useAtomValue(primaryBasketAtom)
   const setPrimaryBasket = useSetAtom(basketAtom)
   const resetBackup = useResetAtom(backupCollateralAtom)
+  const resetRevenueSplit = useResetAtom(revenueSplitAtom)
   useTokenBackup()
+  useRTokenParameters()
 
   useEffect(() => {
     setPrimaryBasket(basketDist || {})
@@ -140,6 +230,7 @@ const useRTokenMeta = () => {
     return () => {
       setPrimaryBasket({})
       resetBackup()
+      resetRevenueSplit()
     }
   }, [])
 

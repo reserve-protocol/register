@@ -118,6 +118,7 @@ const TransactionStatus = ({
 
 const getTxDescription = (tx: TransactionState) => {
   // rToken deployed
+  // TODO: If user has token role, show token on token list then remove this!
   if (tx.extra?.rTokenAddress) {
     return (
       <RouterLink
@@ -125,17 +126,6 @@ const getTxDescription = (tx: TransactionState) => {
         to={`/overview?token=${tx.extra.rTokenAddress}`}
       >
         <Trans>Use deployed token</Trans>
-      </RouterLink>
-    )
-  }
-  // Governance deployed
-  if (tx.call.method === 'setupGovernance') {
-    return (
-      <RouterLink
-        style={{ color: 'var(--theme-ui-colors-lightText)' }}
-        to={`${ROUTES.GOVERNANCE_INFO}/${tx.id}`}
-      >
-        {tx.description}
       </RouterLink>
     )
   }

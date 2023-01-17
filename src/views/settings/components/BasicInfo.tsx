@@ -1,4 +1,3 @@
-import { InfoBox } from 'components'
 import { InfoHeading } from 'components/info-box'
 import useRToken from 'hooks/useRToken'
 import { Card, Divider, Text } from 'theme-ui'

@@ -8,6 +8,7 @@ import { Box, Card, Divider, Flex, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import BasicInfo from './BasicInfo'
 import ListingInfo from './ListingInfo'
+import RevenueSplitInfo from './RevenueSplitInfo'
 
 const RTokenOverview = () => {
   const price = useAtomValue(rTokenPriceAtom)
@@ -34,16 +35,19 @@ const RTokenOverview = () => {
           <BackupBasket readOnly />
         </Card>
       </SectionWrapper>
-      <SectionWrapper navigationIndex={5} mt={4}>
+      <SectionWrapper navigationIndex={3} mt={4}>
+        <RevenueSplitInfo />
+      </SectionWrapper>
+      <SectionWrapper navigationIndex={4} mt={4}>
         <Card p={4}>Backing info</Card>
       </SectionWrapper>
-      <SectionWrapper navigationIndex={6} mt={4}>
+      <SectionWrapper navigationIndex={5} mt={4}>
         <Card p={4}>Other info</Card>
       </SectionWrapper>
       <SectionWrapper navigationIndex={6} mt={4}>
         <Card p={4}>Governance info</Card>
       </SectionWrapper>
-      <SectionWrapper navigationIndex={8} mt={4} mb={4}>
+      <SectionWrapper navigationIndex={7} mt={4} mb={4}>
         <ListingInfo />
       </SectionWrapper>
     </Box>

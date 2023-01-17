@@ -7,6 +7,7 @@ export { RToken__factory } from "./RToken__factory";
 export { AssetRegistry__factory } from "./AssetRegistry__factory";
 export { Collateral__factory } from "./Collateral__factory";
 export { Deployer__factory } from "./Deployer__factory";
+export { Distributor__factory } from "./Distributor__factory";
 export { Facade__factory } from "./Facade__factory";
 export { FacadeWrite__factory } from "./FacadeWrite__factory";
 export { Main__factory } from "./Main__factory";

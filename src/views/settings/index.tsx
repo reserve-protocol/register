@@ -1,6 +1,5 @@
 import { sidebarToggleAtom } from 'components/layout/sidebar/Sidebar'
 import Layout from 'components/rtoken-setup/Layout'
-import useRToken from 'hooks/useRToken'
 import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import NavigationSidebar from './components/NavigationSidebar'

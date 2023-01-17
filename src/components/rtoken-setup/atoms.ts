@@ -27,7 +27,7 @@ export interface PrimaryUnitBasket {
 }
 
 export interface Basket {
-[x: string]: PrimaryUnitBasket
+  [x: string]: PrimaryUnitBasket
 }
 
 export interface ExternalAddressSplit {

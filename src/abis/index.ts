@@ -11,6 +11,7 @@ import Deployer from './deployer.json'
 import Main from './main.json'
 import Collateral from './collateral.json'
 import Oracle from './oracle.json'
+import Distributor from './distributor.json'
 
 const ERC20Interface = new Interface(ERC20)
 const FacadeInterface = new Interface(Facade)
@@ -23,6 +24,7 @@ const DeployerInterface = new Interface(Deployer)
 const MainInterface = new Interface(Main)
 const CollateralInterface = new Interface(Collateral)
 const OracleInterface = new Interface(Oracle)
+const DistributorInterface = new Interface(Distributor)
 
 export { ERC20, ERC20Interface }
 export { Facade, FacadeInterface }
@@ -35,6 +37,7 @@ export { Deployer, DeployerInterface }
 export { Main, MainInterface }
 export { Collateral, CollateralInterface }
 export { Oracle, OracleInterface }
+export { Distributor, DistributorInterface }
 
 // Used for tx management
 export default <StringMap>{
