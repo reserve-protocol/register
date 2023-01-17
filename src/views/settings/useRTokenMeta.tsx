@@ -35,6 +35,7 @@ import { ContractCall, StringMap } from 'types'
 import { getContract } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
+import { rTokenParamsAtom } from './atoms'
 
 /**
  * Get RToken primary basket
@@ -160,6 +161,7 @@ const useRTokenParameters = () => {
   const rToken = useRToken()
   const { provider } = useWeb3React()
   const setRevenueSplit = useSetAtom(revenueSplitAtom)
+  const setRTokenParams = useSetAtom(rTokenParamsAtom)
 
   const fetchParams = useCallback(async () => {
     if (rToken?.main && provider) {
@@ -311,6 +313,25 @@ const useRTokenParameters = () => {
         ) as Asset
 
         const maxTradeVolume = await rTokenAssetContract.maxTradeVolume()
+
+        setRTokenParams({
+          tradingDelay: tradingDelay.toString(),
+          backingBuffer: (+formatEther(backingBuffer) * 100).toString(),
+          maxTradeSlippage: (+formatEther(maxTradeSlippage) * 100).toString(),
+          minTradeVolume: formatEther(minTradeVolume),
+          rewardPeriod: rewardPeriod.toString(),
+          rewardRatio: formatEther(rewardRatio),
+          unstakingDelay: unstakingDelay.toString(),
+          auctionLength: auctionLength.toString(),
+          issuanceRate: (+formatEther(issuanceRate) * 100).toString(),
+          scalingRedemptionRate: (
+            +formatEther(scalingRedemptionRate) * 100
+          ).toString(),
+          redemptionRateFloor: formatEther(redemptionRateFloor),
+          maxTradeVolume: formatEther(maxTradeVolume),
+          longFreeze: longFreeze.toString(),
+          shortFreeze: shortFreeze.toString(),
+        })
 
         // Revenue distribution
         const contract = getContract(distribution, DistributorAbi, provider)
