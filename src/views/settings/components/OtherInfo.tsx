@@ -8,7 +8,7 @@ const OtherInfo = () => {
 
   return (
     <Card p={4}>
-      <Text variant="sectionTitle">Token Details</Text>
+      <Text variant="sectionTitle">Other Parameters</Text>
       <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
 
       <InfoHeading
