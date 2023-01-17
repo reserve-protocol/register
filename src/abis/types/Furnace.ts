@@ -4,6 +4,7 @@
 import type {
   BaseContract,
   BigNumber,
+  BigNumberish,
   BytesLike,
   CallOverrides,
   ContractTransaction,
@@ -27,30 +28,20 @@ import type {
   PromiseOrValue,
 } from "./common";
 
-export type RegistryStruct = {
-  erc20s: PromiseOrValue<string>[];
-  assets: PromiseOrValue<string>[];
-};
-
-export type RegistryStructOutput = [string[], string[]] & {
-  erc20s: string[];
-  assets: string[];
-};
-
-export interface AssetRegistryInterface extends utils.Interface {
+export interface FurnaceInterface extends utils.Interface {
   functions: {
-    "erc20s()": FunctionFragment;
-    "getRegistry()": FunctionFragment;
-    "init(address,address[])": FunctionFragment;
-    "isRegistered(address)": FunctionFragment;
+    "MAX_PERIOD()": FunctionFragment;
+    "MAX_RATIO()": FunctionFragment;
+    "init(address,uint48,uint192)": FunctionFragment;
+    "lastPayout()": FunctionFragment;
+    "lastPayoutBal()": FunctionFragment;
     "main()": FunctionFragment;
+    "melt()": FunctionFragment;
+    "period()": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
-    "refresh()": FunctionFragment;
-    "register(address)": FunctionFragment;
-    "swapRegistered(address)": FunctionFragment;
-    "toAsset(address)": FunctionFragment;
-    "toColl(address)": FunctionFragment;
-    "unregister(address)": FunctionFragment;
+    "ratio()": FunctionFragment;
+    "setPeriod(uint48)": FunctionFragment;
+    "setRatio(uint192)": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
     "version()": FunctionFragment;
@@ -58,61 +49,59 @@ export interface AssetRegistryInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "erc20s"
-      | "getRegistry"
+      | "MAX_PERIOD"
+      | "MAX_RATIO"
       | "init"
-      | "isRegistered"
+      | "lastPayout"
+      | "lastPayoutBal"
       | "main"
+      | "melt"
+      | "period"
       | "proxiableUUID"
-      | "refresh"
-      | "register"
-      | "swapRegistered"
-      | "toAsset"
-      | "toColl"
-      | "unregister"
+      | "ratio"
+      | "setPeriod"
+      | "setRatio"
       | "upgradeTo"
       | "upgradeToAndCall"
       | "version"
   ): FunctionFragment;
 
-  encodeFunctionData(functionFragment: "erc20s", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "getRegistry",
+    functionFragment: "MAX_PERIOD",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "MAX_RATIO", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "init",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "lastPayout",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "init",
-    values: [PromiseOrValue<string>, PromiseOrValue<string>[]]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "isRegistered",
-    values: [PromiseOrValue<string>]
+    functionFragment: "lastPayoutBal",
+    values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "main", values?: undefined): string;
+  encodeFunctionData(functionFragment: "melt", values?: undefined): string;
+  encodeFunctionData(functionFragment: "period", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "proxiableUUID",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "refresh", values?: undefined): string;
+  encodeFunctionData(functionFragment: "ratio", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "register",
-    values: [PromiseOrValue<string>]
+    functionFragment: "setPeriod",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "swapRegistered",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "toAsset",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "toColl",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "unregister",
-    values: [PromiseOrValue<string>]
+    functionFragment: "setRatio",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "upgradeTo",
@@ -124,30 +113,24 @@ export interface AssetRegistryInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "version", values?: undefined): string;
 
-  decodeFunctionResult(functionFragment: "erc20s", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "getRegistry",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "MAX_PERIOD", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "MAX_RATIO", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "init", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "lastPayout", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "isRegistered",
+    functionFragment: "lastPayoutBal",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "main", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "melt", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "period", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "proxiableUUID",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "refresh", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "register", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "swapRegistered",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "toAsset", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "toColl", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "unregister", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "ratio", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "setPeriod", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "setRatio", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "upgradeTo", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "upgradeToAndCall",
@@ -157,18 +140,18 @@ export interface AssetRegistryInterface extends utils.Interface {
 
   events: {
     "AdminChanged(address,address)": EventFragment;
-    "AssetRegistered(address,address)": EventFragment;
-    "AssetUnregistered(address,address)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
     "Initialized(uint8)": EventFragment;
+    "PeriodSet(uint48,uint48)": EventFragment;
+    "RatioSet(uint192,uint192)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "AssetRegistered"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "AssetUnregistered"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "PeriodSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RatioSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
 
@@ -182,29 +165,6 @@ export type AdminChangedEvent = TypedEvent<
 >;
 
 export type AdminChangedEventFilter = TypedEventFilter<AdminChangedEvent>;
-
-export interface AssetRegisteredEventObject {
-  erc20: string;
-  asset: string;
-}
-export type AssetRegisteredEvent = TypedEvent<
-  [string, string],
-  AssetRegisteredEventObject
->;
-
-export type AssetRegisteredEventFilter = TypedEventFilter<AssetRegisteredEvent>;
-
-export interface AssetUnregisteredEventObject {
-  erc20: string;
-  asset: string;
-}
-export type AssetUnregisteredEvent = TypedEvent<
-  [string, string],
-  AssetUnregisteredEventObject
->;
-
-export type AssetUnregisteredEventFilter =
-  TypedEventFilter<AssetUnregisteredEvent>;
 
 export interface BeaconUpgradedEventObject {
   beacon: string;
@@ -223,6 +183,25 @@ export type InitializedEvent = TypedEvent<[number], InitializedEventObject>;
 
 export type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
 
+export interface PeriodSetEventObject {
+  oldPeriod: number;
+  newPeriod: number;
+}
+export type PeriodSetEvent = TypedEvent<[number, number], PeriodSetEventObject>;
+
+export type PeriodSetEventFilter = TypedEventFilter<PeriodSetEvent>;
+
+export interface RatioSetEventObject {
+  oldRatio: BigNumber;
+  newRatio: BigNumber;
+}
+export type RatioSetEvent = TypedEvent<
+  [BigNumber, BigNumber],
+  RatioSetEventObject
+>;
+
+export type RatioSetEventFilter = TypedEventFilter<RatioSetEvent>;
+
 export interface UpgradedEventObject {
   implementation: string;
 }
@@ -230,12 +209,12 @@ export type UpgradedEvent = TypedEvent<[string], UpgradedEventObject>;
 
 export type UpgradedEventFilter = TypedEventFilter<UpgradedEvent>;
 
-export interface AssetRegistry extends BaseContract {
+export interface Furnace extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: AssetRegistryInterface;
+  interface: FurnaceInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -257,55 +236,40 @@ export interface AssetRegistry extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    erc20s(
-      overrides?: CallOverrides
-    ): Promise<[string[]] & { erc20s_: string[] }>;
+    MAX_PERIOD(overrides?: CallOverrides): Promise<[number]>;
 
-    getRegistry(
-      overrides?: CallOverrides
-    ): Promise<[RegistryStructOutput] & { reg: RegistryStructOutput }>;
+    MAX_RATIO(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     init(
       main_: PromiseOrValue<string>,
-      assets_: PromiseOrValue<string>[],
+      period_: PromiseOrValue<BigNumberish>,
+      ratio_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    isRegistered(
-      erc20: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
+    lastPayout(overrides?: CallOverrides): Promise<[number]>;
+
+    lastPayoutBal(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     main(overrides?: CallOverrides): Promise<[string]>;
 
+    melt(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    period(overrides?: CallOverrides): Promise<[number]>;
+
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
 
-    refresh(
+    ratio(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    setPeriod(
+      period_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    register(
-      asset: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    swapRegistered(
-      asset: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    toAsset(
-      erc20: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
-
-    toColl(
-      erc20: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
-
-    unregister(
-      asset: PromiseOrValue<string>,
+    setRatio(
+      ratio_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -323,51 +287,40 @@ export interface AssetRegistry extends BaseContract {
     version(overrides?: CallOverrides): Promise<[string]>;
   };
 
-  erc20s(overrides?: CallOverrides): Promise<string[]>;
+  MAX_PERIOD(overrides?: CallOverrides): Promise<number>;
 
-  getRegistry(overrides?: CallOverrides): Promise<RegistryStructOutput>;
+  MAX_RATIO(overrides?: CallOverrides): Promise<BigNumber>;
 
   init(
     main_: PromiseOrValue<string>,
-    assets_: PromiseOrValue<string>[],
+    period_: PromiseOrValue<BigNumberish>,
+    ratio_: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  isRegistered(
-    erc20: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
+  lastPayout(overrides?: CallOverrides): Promise<number>;
+
+  lastPayoutBal(overrides?: CallOverrides): Promise<BigNumber>;
 
   main(overrides?: CallOverrides): Promise<string>;
 
+  melt(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  period(overrides?: CallOverrides): Promise<number>;
+
   proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
-  refresh(
+  ratio(overrides?: CallOverrides): Promise<BigNumber>;
+
+  setPeriod(
+    period_: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  register(
-    asset: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  swapRegistered(
-    asset: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  toAsset(
-    erc20: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<string>;
-
-  toColl(
-    erc20: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<string>;
-
-  unregister(
-    asset: PromiseOrValue<string>,
+  setRatio(
+    ratio_: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -385,49 +338,38 @@ export interface AssetRegistry extends BaseContract {
   version(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
-    erc20s(overrides?: CallOverrides): Promise<string[]>;
+    MAX_PERIOD(overrides?: CallOverrides): Promise<number>;
 
-    getRegistry(overrides?: CallOverrides): Promise<RegistryStructOutput>;
+    MAX_RATIO(overrides?: CallOverrides): Promise<BigNumber>;
 
     init(
       main_: PromiseOrValue<string>,
-      assets_: PromiseOrValue<string>[],
+      period_: PromiseOrValue<BigNumberish>,
+      ratio_: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    isRegistered(
-      erc20: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
+    lastPayout(overrides?: CallOverrides): Promise<number>;
+
+    lastPayoutBal(overrides?: CallOverrides): Promise<BigNumber>;
 
     main(overrides?: CallOverrides): Promise<string>;
 
+    melt(overrides?: CallOverrides): Promise<void>;
+
+    period(overrides?: CallOverrides): Promise<number>;
+
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
-    refresh(overrides?: CallOverrides): Promise<void>;
+    ratio(overrides?: CallOverrides): Promise<BigNumber>;
 
-    register(
-      asset: PromiseOrValue<string>,
+    setPeriod(
+      period_: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<boolean>;
+    ): Promise<void>;
 
-    swapRegistered(
-      asset: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    toAsset(
-      erc20: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    toColl(
-      erc20: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    unregister(
-      asset: PromiseOrValue<string>,
+    setRatio(
+      ratio_: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -455,24 +397,6 @@ export interface AssetRegistry extends BaseContract {
       newAdmin?: null
     ): AdminChangedEventFilter;
 
-    "AssetRegistered(address,address)"(
-      erc20?: PromiseOrValue<string> | null,
-      asset?: PromiseOrValue<string> | null
-    ): AssetRegisteredEventFilter;
-    AssetRegistered(
-      erc20?: PromiseOrValue<string> | null,
-      asset?: PromiseOrValue<string> | null
-    ): AssetRegisteredEventFilter;
-
-    "AssetUnregistered(address,address)"(
-      erc20?: PromiseOrValue<string> | null,
-      asset?: PromiseOrValue<string> | null
-    ): AssetUnregisteredEventFilter;
-    AssetUnregistered(
-      erc20?: PromiseOrValue<string> | null,
-      asset?: PromiseOrValue<string> | null
-    ): AssetUnregisteredEventFilter;
-
     "BeaconUpgraded(address)"(
       beacon?: PromiseOrValue<string> | null
     ): BeaconUpgradedEventFilter;
@@ -483,6 +407,24 @@ export interface AssetRegistry extends BaseContract {
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
 
+    "PeriodSet(uint48,uint48)"(
+      oldPeriod?: PromiseOrValue<BigNumberish> | null,
+      newPeriod?: PromiseOrValue<BigNumberish> | null
+    ): PeriodSetEventFilter;
+    PeriodSet(
+      oldPeriod?: PromiseOrValue<BigNumberish> | null,
+      newPeriod?: PromiseOrValue<BigNumberish> | null
+    ): PeriodSetEventFilter;
+
+    "RatioSet(uint192,uint192)"(
+      oldRatio?: PromiseOrValue<BigNumberish> | null,
+      newRatio?: PromiseOrValue<BigNumberish> | null
+    ): RatioSetEventFilter;
+    RatioSet(
+      oldRatio?: PromiseOrValue<BigNumberish> | null,
+      newRatio?: PromiseOrValue<BigNumberish> | null
+    ): RatioSetEventFilter;
+
     "Upgraded(address)"(
       implementation?: PromiseOrValue<string> | null
     ): UpgradedEventFilter;
@@ -492,51 +434,40 @@ export interface AssetRegistry extends BaseContract {
   };
 
   estimateGas: {
-    erc20s(overrides?: CallOverrides): Promise<BigNumber>;
+    MAX_PERIOD(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getRegistry(overrides?: CallOverrides): Promise<BigNumber>;
+    MAX_RATIO(overrides?: CallOverrides): Promise<BigNumber>;
 
     init(
       main_: PromiseOrValue<string>,
-      assets_: PromiseOrValue<string>[],
+      period_: PromiseOrValue<BigNumberish>,
+      ratio_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    isRegistered(
-      erc20: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    lastPayout(overrides?: CallOverrides): Promise<BigNumber>;
+
+    lastPayoutBal(overrides?: CallOverrides): Promise<BigNumber>;
 
     main(overrides?: CallOverrides): Promise<BigNumber>;
 
+    melt(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    period(overrides?: CallOverrides): Promise<BigNumber>;
+
     proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
 
-    refresh(
+    ratio(overrides?: CallOverrides): Promise<BigNumber>;
+
+    setPeriod(
+      period_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    register(
-      asset: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    swapRegistered(
-      asset: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    toAsset(
-      erc20: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    toColl(
-      erc20: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    unregister(
-      asset: PromiseOrValue<string>,
+    setRatio(
+      ratio_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -555,51 +486,40 @@ export interface AssetRegistry extends BaseContract {
   };
 
   populateTransaction: {
-    erc20s(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    MAX_PERIOD(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getRegistry(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    MAX_RATIO(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     init(
       main_: PromiseOrValue<string>,
-      assets_: PromiseOrValue<string>[],
+      period_: PromiseOrValue<BigNumberish>,
+      ratio_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    isRegistered(
-      erc20: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    lastPayout(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    lastPayoutBal(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     main(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    melt(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    period(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    refresh(
+    ratio(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    setPeriod(
+      period_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    register(
-      asset: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    swapRegistered(
-      asset: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    toAsset(
-      erc20: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    toColl(
-      erc20: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    unregister(
-      asset: PromiseOrValue<string>,
+    setRatio(
+      ratio_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

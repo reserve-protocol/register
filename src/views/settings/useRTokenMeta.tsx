@@ -1,10 +1,19 @@
 import { useWeb3React } from '@web3-react/core'
 import {
-  Distributor,
+  Asset as AssetAbi,
+  AssetRegistryInterface,
+  BackingManagerInterface,
+  BrokerInterface,
+  Distributor as DistributorAbi,
   ERC20Interface,
   FacadeInterface,
+  FurnaceInterface,
   MainInterface,
+  RevenueTraderInterface,
+  RTokenInterface,
+  StRSRInterface,
 } from 'abis'
+import { Asset } from 'abis/types'
 import {
   BackupBasket,
   backupCollateralAtom,
@@ -161,7 +170,8 @@ const useRTokenParameters = () => {
           distribution,
           backingManager,
           rTokenTrader,
-          furnaceAddress,
+          brokerAddress,
+          assetRegistry,
           stRSRAddress,
           shortFreeze,
           longFreeze,
@@ -181,7 +191,11 @@ const useRTokenParameters = () => {
             },
             {
               ...mainCall,
-              method: 'furnace',
+              method: 'broker',
+            },
+            {
+              ...mainCall,
+              method: 'assetRegistry',
             },
             {
               ...mainCall,
@@ -199,8 +213,107 @@ const useRTokenParameters = () => {
           provider
         )
 
+        const [
+          tradingDelay,
+          backingBuffer,
+          maxTradeSlippage,
+          minTradeVolume,
+          rewardPeriod,
+          rewardRatio,
+          unstakingDelay,
+          auctionLength,
+          issuanceRate,
+          scalingRedemptionRate,
+          redemptionRateFloor,
+          rTokenAsset,
+        ] = await promiseMulticall(
+          [
+            {
+              abi: BackingManagerInterface,
+              address: backingManager,
+              args: [],
+              method: 'tradingDelay',
+            },
+            {
+              abi: BackingManagerInterface,
+              address: backingManager,
+              args: [],
+              method: 'backingBuffer',
+            },
+            {
+              abi: RevenueTraderInterface,
+              address: rTokenTrader,
+              args: [],
+              method: 'maxTradeSlippage',
+            },
+            {
+              abi: RevenueTraderInterface,
+              address: rTokenTrader,
+              args: [],
+              method: 'minTradeVolume',
+            },
+            {
+              abi: StRSRInterface,
+              address: stRSRAddress,
+              args: [],
+              method: 'rewardPeriod',
+            },
+            {
+              abi: StRSRInterface,
+              address: stRSRAddress,
+              args: [],
+              method: 'rewardRatio',
+            },
+            {
+              abi: StRSRInterface,
+              address: stRSRAddress,
+              args: [],
+              method: 'unstakingDelay',
+            },
+            {
+              abi: BrokerInterface,
+              address: brokerAddress,
+              args: [],
+              method: 'auctionLength',
+            },
+            {
+              abi: RTokenInterface,
+              address: rToken.address,
+              args: [],
+              method: 'issuanceRate',
+            },
+            {
+              abi: RTokenInterface,
+              address: rToken.address,
+              args: [],
+              method: 'scalingRedemptionRate',
+            },
+            {
+              abi: RTokenInterface,
+              address: rToken.address,
+              args: [],
+              method: 'redemptionRateFloor',
+            },
+            {
+              abi: AssetRegistryInterface,
+              address: assetRegistry,
+              args: [rToken.address],
+              method: 'toAsset',
+            },
+          ],
+          provider
+        )
+
+        const rTokenAssetContract = getContract(
+          rTokenAsset,
+          AssetAbi,
+          provider
+        ) as Asset
+
+        const maxTradeVolume = await rTokenAssetContract.maxTradeVolume()
+
         // Revenue distribution
-        const contract = getContract(distribution, Distributor, provider)
+        const contract = getContract(distribution, DistributorAbi, provider)
         const events = await contract.queryFilter(
           'DistributionSet(address,uint16,uint16)'
         )

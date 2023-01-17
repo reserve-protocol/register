@@ -72,6 +72,7 @@ export interface StRsrInterface extends utils.Interface {
     "unstakingDelay()": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
+    "version()": FunctionFragment;
     "withdraw(address,uint256)": FunctionFragment;
   };
 
@@ -119,6 +120,7 @@ export interface StRsrInterface extends utils.Interface {
       | "unstakingDelay"
       | "upgradeTo"
       | "upgradeToAndCall"
+      | "version"
       | "withdraw"
   ): FunctionFragment;
 
@@ -295,6 +297,7 @@ export interface StRsrInterface extends utils.Interface {
     functionFragment: "upgradeToAndCall",
     values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
   ): string;
+  encodeFunctionData(functionFragment: "version", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "withdraw",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
@@ -411,6 +414,7 @@ export interface StRsrInterface extends utils.Interface {
     functionFragment: "upgradeToAndCall",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "version", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 
   events: {
@@ -837,6 +841,8 @@ export interface StRsr extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    version(overrides?: CallOverrides): Promise<[string]>;
+
     withdraw(
       account: PromiseOrValue<string>,
       endId: PromiseOrValue<BigNumberish>,
@@ -1027,6 +1033,8 @@ export interface StRsr extends BaseContract {
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  version(overrides?: CallOverrides): Promise<string>;
+
   withdraw(
     account: PromiseOrValue<string>,
     endId: PromiseOrValue<BigNumberish>,
@@ -1214,6 +1222,8 @@ export interface StRsr extends BaseContract {
       data: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    version(overrides?: CallOverrides): Promise<string>;
 
     withdraw(
       account: PromiseOrValue<string>,
@@ -1556,6 +1566,8 @@ export interface StRsr extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    version(overrides?: CallOverrides): Promise<BigNumber>;
+
     withdraw(
       account: PromiseOrValue<string>,
       endId: PromiseOrValue<BigNumberish>,
@@ -1746,6 +1758,8 @@ export interface StRsr extends BaseContract {
       data: PromiseOrValue<BytesLike>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    version(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     withdraw(
       account: PromiseOrValue<string>,

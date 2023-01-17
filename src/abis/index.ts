@@ -12,6 +12,12 @@ import Main from './main.json'
 import Collateral from './collateral.json'
 import Oracle from './oracle.json'
 import Distributor from './distributor.json'
+import BackingManager from './backingManager.json'
+import Furnace from './furnace.json'
+import RevenueTrader from './revenueTrader.json'
+import Broker from './broker.json'
+import AssetRegistry from './asset-registry.json'
+import Asset from './asset.json'
 
 const ERC20Interface = new Interface(ERC20)
 const FacadeInterface = new Interface(Facade)
@@ -25,6 +31,12 @@ const MainInterface = new Interface(Main)
 const CollateralInterface = new Interface(Collateral)
 const OracleInterface = new Interface(Oracle)
 const DistributorInterface = new Interface(Distributor)
+const BackingManagerInterface = new Interface(BackingManager)
+const FurnaceInterface = new Interface(Furnace)
+const RevenueTraderInterface = new Interface(RevenueTrader)
+const BrokerInterface = new Interface(Broker)
+const AssetRegistryInterface = new Interface(AssetRegistry)
+const AssetInterface = new Interface(Asset)
 
 export { ERC20, ERC20Interface }
 export { Facade, FacadeInterface }
@@ -38,6 +50,12 @@ export { Main, MainInterface }
 export { Collateral, CollateralInterface }
 export { Oracle, OracleInterface }
 export { Distributor, DistributorInterface }
+export { BackingManager, BackingManagerInterface }
+export { Furnace, FurnaceInterface }
+export { RevenueTrader, RevenueTraderInterface }
+export { Broker, BrokerInterface }
+export { AssetRegistry, AssetRegistryInterface }
+export { Asset, AssetInterface }
 
 // Used for tx management
 export default <StringMap>{

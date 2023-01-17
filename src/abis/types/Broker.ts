@@ -4,6 +4,7 @@
 import type {
   BaseContract,
   BigNumber,
+  BigNumberish,
   BytesLike,
   CallOverrides,
   ContractTransaction,
@@ -27,30 +28,39 @@ import type {
   PromiseOrValue,
 } from "./common";
 
-export type RegistryStruct = {
-  erc20s: PromiseOrValue<string>[];
-  assets: PromiseOrValue<string>[];
+export type TradeRequestStruct = {
+  sell: PromiseOrValue<string>;
+  buy: PromiseOrValue<string>;
+  sellAmount: PromiseOrValue<BigNumberish>;
+  minBuyAmount: PromiseOrValue<BigNumberish>;
 };
 
-export type RegistryStructOutput = [string[], string[]] & {
-  erc20s: string[];
-  assets: string[];
+export type TradeRequestStructOutput = [
+  string,
+  string,
+  BigNumber,
+  BigNumber
+] & {
+  sell: string;
+  buy: string;
+  sellAmount: BigNumber;
+  minBuyAmount: BigNumber;
 };
 
-export interface AssetRegistryInterface extends utils.Interface {
+export interface BrokerInterface extends utils.Interface {
   functions: {
-    "erc20s()": FunctionFragment;
-    "getRegistry()": FunctionFragment;
-    "init(address,address[])": FunctionFragment;
-    "isRegistered(address)": FunctionFragment;
+    "MAX_AUCTION_LENGTH()": FunctionFragment;
+    "auctionLength()": FunctionFragment;
+    "disabled()": FunctionFragment;
+    "gnosis()": FunctionFragment;
+    "init(address,address,address,uint48)": FunctionFragment;
     "main()": FunctionFragment;
+    "openTrade((address,address,uint256,uint256))": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
-    "refresh()": FunctionFragment;
-    "register(address)": FunctionFragment;
-    "swapRegistered(address)": FunctionFragment;
-    "toAsset(address)": FunctionFragment;
-    "toColl(address)": FunctionFragment;
-    "unregister(address)": FunctionFragment;
+    "reportViolation()": FunctionFragment;
+    "setAuctionLength(uint48)": FunctionFragment;
+    "setDisabled(bool)": FunctionFragment;
+    "tradeImplementation()": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
     "version()": FunctionFragment;
@@ -58,61 +68,66 @@ export interface AssetRegistryInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "erc20s"
-      | "getRegistry"
+      | "MAX_AUCTION_LENGTH"
+      | "auctionLength"
+      | "disabled"
+      | "gnosis"
       | "init"
-      | "isRegistered"
       | "main"
+      | "openTrade"
       | "proxiableUUID"
-      | "refresh"
-      | "register"
-      | "swapRegistered"
-      | "toAsset"
-      | "toColl"
-      | "unregister"
+      | "reportViolation"
+      | "setAuctionLength"
+      | "setDisabled"
+      | "tradeImplementation"
       | "upgradeTo"
       | "upgradeToAndCall"
       | "version"
   ): FunctionFragment;
 
-  encodeFunctionData(functionFragment: "erc20s", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "getRegistry",
+    functionFragment: "MAX_AUCTION_LENGTH",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "init",
-    values: [PromiseOrValue<string>, PromiseOrValue<string>[]]
+    functionFragment: "auctionLength",
+    values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "disabled", values?: undefined): string;
+  encodeFunctionData(functionFragment: "gnosis", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "isRegistered",
-    values: [PromiseOrValue<string>]
+    functionFragment: "init",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
   encodeFunctionData(functionFragment: "main", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "openTrade",
+    values: [TradeRequestStruct]
+  ): string;
   encodeFunctionData(
     functionFragment: "proxiableUUID",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "refresh", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "register",
-    values: [PromiseOrValue<string>]
+    functionFragment: "reportViolation",
+    values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "swapRegistered",
-    values: [PromiseOrValue<string>]
+    functionFragment: "setAuctionLength",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "toAsset",
-    values: [PromiseOrValue<string>]
+    functionFragment: "setDisabled",
+    values: [PromiseOrValue<boolean>]
   ): string;
   encodeFunctionData(
-    functionFragment: "toColl",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "unregister",
-    values: [PromiseOrValue<string>]
+    functionFragment: "tradeImplementation",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "upgradeTo",
@@ -124,30 +139,39 @@ export interface AssetRegistryInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "version", values?: undefined): string;
 
-  decodeFunctionResult(functionFragment: "erc20s", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getRegistry",
+    functionFragment: "MAX_AUCTION_LENGTH",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "auctionLength",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "disabled", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "gnosis", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "init", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "isRegistered",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "main", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "openTrade", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "proxiableUUID",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "refresh", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "register", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "swapRegistered",
+    functionFragment: "reportViolation",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "toAsset", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "toColl", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "unregister", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setAuctionLength",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setDisabled",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "tradeImplementation",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "upgradeTo", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "upgradeToAndCall",
@@ -157,17 +181,17 @@ export interface AssetRegistryInterface extends utils.Interface {
 
   events: {
     "AdminChanged(address,address)": EventFragment;
-    "AssetRegistered(address,address)": EventFragment;
-    "AssetUnregistered(address,address)": EventFragment;
+    "AuctionLengthSet(uint48,uint48)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
+    "DisabledSet(bool,bool)": EventFragment;
     "Initialized(uint8)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "AssetRegistered"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "AssetUnregistered"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "AuctionLengthSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DisabledSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
@@ -183,28 +207,17 @@ export type AdminChangedEvent = TypedEvent<
 
 export type AdminChangedEventFilter = TypedEventFilter<AdminChangedEvent>;
 
-export interface AssetRegisteredEventObject {
-  erc20: string;
-  asset: string;
+export interface AuctionLengthSetEventObject {
+  oldVal: number;
+  newVal: number;
 }
-export type AssetRegisteredEvent = TypedEvent<
-  [string, string],
-  AssetRegisteredEventObject
+export type AuctionLengthSetEvent = TypedEvent<
+  [number, number],
+  AuctionLengthSetEventObject
 >;
 
-export type AssetRegisteredEventFilter = TypedEventFilter<AssetRegisteredEvent>;
-
-export interface AssetUnregisteredEventObject {
-  erc20: string;
-  asset: string;
-}
-export type AssetUnregisteredEvent = TypedEvent<
-  [string, string],
-  AssetUnregisteredEventObject
->;
-
-export type AssetUnregisteredEventFilter =
-  TypedEventFilter<AssetUnregisteredEvent>;
+export type AuctionLengthSetEventFilter =
+  TypedEventFilter<AuctionLengthSetEvent>;
 
 export interface BeaconUpgradedEventObject {
   beacon: string;
@@ -215,6 +228,17 @@ export type BeaconUpgradedEvent = TypedEvent<
 >;
 
 export type BeaconUpgradedEventFilter = TypedEventFilter<BeaconUpgradedEvent>;
+
+export interface DisabledSetEventObject {
+  prevVal: boolean;
+  newVal: boolean;
+}
+export type DisabledSetEvent = TypedEvent<
+  [boolean, boolean],
+  DisabledSetEventObject
+>;
+
+export type DisabledSetEventFilter = TypedEventFilter<DisabledSetEvent>;
 
 export interface InitializedEventObject {
   version: number;
@@ -230,12 +254,12 @@ export type UpgradedEvent = TypedEvent<[string], UpgradedEventObject>;
 
 export type UpgradedEventFilter = TypedEventFilter<UpgradedEvent>;
 
-export interface AssetRegistry extends BaseContract {
+export interface Broker extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: AssetRegistryInterface;
+  interface: BrokerInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -257,57 +281,46 @@ export interface AssetRegistry extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    erc20s(
-      overrides?: CallOverrides
-    ): Promise<[string[]] & { erc20s_: string[] }>;
+    MAX_AUCTION_LENGTH(overrides?: CallOverrides): Promise<[number]>;
 
-    getRegistry(
-      overrides?: CallOverrides
-    ): Promise<[RegistryStructOutput] & { reg: RegistryStructOutput }>;
+    auctionLength(overrides?: CallOverrides): Promise<[number]>;
+
+    disabled(overrides?: CallOverrides): Promise<[boolean]>;
+
+    gnosis(overrides?: CallOverrides): Promise<[string]>;
 
     init(
       main_: PromiseOrValue<string>,
-      assets_: PromiseOrValue<string>[],
+      gnosis_: PromiseOrValue<string>,
+      tradeImplementation_: PromiseOrValue<string>,
+      auctionLength_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
-
-    isRegistered(
-      erc20: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
 
     main(overrides?: CallOverrides): Promise<[string]>;
 
+    openTrade(
+      req: TradeRequestStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
 
-    refresh(
+    reportViolation(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    register(
-      asset: PromiseOrValue<string>,
+    setAuctionLength(
+      newAuctionLength: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    swapRegistered(
-      asset: PromiseOrValue<string>,
+    setDisabled(
+      disabled_: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    toAsset(
-      erc20: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
-
-    toColl(
-      erc20: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
-
-    unregister(
-      asset: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    tradeImplementation(overrides?: CallOverrides): Promise<[string]>;
 
     upgradeTo(
       newImplementation: PromiseOrValue<string>,
@@ -323,53 +336,46 @@ export interface AssetRegistry extends BaseContract {
     version(overrides?: CallOverrides): Promise<[string]>;
   };
 
-  erc20s(overrides?: CallOverrides): Promise<string[]>;
+  MAX_AUCTION_LENGTH(overrides?: CallOverrides): Promise<number>;
 
-  getRegistry(overrides?: CallOverrides): Promise<RegistryStructOutput>;
+  auctionLength(overrides?: CallOverrides): Promise<number>;
+
+  disabled(overrides?: CallOverrides): Promise<boolean>;
+
+  gnosis(overrides?: CallOverrides): Promise<string>;
 
   init(
     main_: PromiseOrValue<string>,
-    assets_: PromiseOrValue<string>[],
+    gnosis_: PromiseOrValue<string>,
+    tradeImplementation_: PromiseOrValue<string>,
+    auctionLength_: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
-
-  isRegistered(
-    erc20: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
 
   main(overrides?: CallOverrides): Promise<string>;
 
+  openTrade(
+    req: TradeRequestStruct,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
-  refresh(
+  reportViolation(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  register(
-    asset: PromiseOrValue<string>,
+  setAuctionLength(
+    newAuctionLength: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  swapRegistered(
-    asset: PromiseOrValue<string>,
+  setDisabled(
+    disabled_: PromiseOrValue<boolean>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  toAsset(
-    erc20: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<string>;
-
-  toColl(
-    erc20: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<string>;
-
-  unregister(
-    asset: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  tradeImplementation(overrides?: CallOverrides): Promise<string>;
 
   upgradeTo(
     newImplementation: PromiseOrValue<string>,
@@ -385,51 +391,44 @@ export interface AssetRegistry extends BaseContract {
   version(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
-    erc20s(overrides?: CallOverrides): Promise<string[]>;
+    MAX_AUCTION_LENGTH(overrides?: CallOverrides): Promise<number>;
 
-    getRegistry(overrides?: CallOverrides): Promise<RegistryStructOutput>;
+    auctionLength(overrides?: CallOverrides): Promise<number>;
+
+    disabled(overrides?: CallOverrides): Promise<boolean>;
+
+    gnosis(overrides?: CallOverrides): Promise<string>;
 
     init(
       main_: PromiseOrValue<string>,
-      assets_: PromiseOrValue<string>[],
+      gnosis_: PromiseOrValue<string>,
+      tradeImplementation_: PromiseOrValue<string>,
+      auctionLength_: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    isRegistered(
-      erc20: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
 
     main(overrides?: CallOverrides): Promise<string>;
 
+    openTrade(
+      req: TradeRequestStruct,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
-    refresh(overrides?: CallOverrides): Promise<void>;
+    reportViolation(overrides?: CallOverrides): Promise<void>;
 
-    register(
-      asset: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    swapRegistered(
-      asset: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    toAsset(
-      erc20: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    toColl(
-      erc20: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    unregister(
-      asset: PromiseOrValue<string>,
+    setAuctionLength(
+      newAuctionLength: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    setDisabled(
+      disabled_: PromiseOrValue<boolean>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    tradeImplementation(overrides?: CallOverrides): Promise<string>;
 
     upgradeTo(
       newImplementation: PromiseOrValue<string>,
@@ -455,23 +454,14 @@ export interface AssetRegistry extends BaseContract {
       newAdmin?: null
     ): AdminChangedEventFilter;
 
-    "AssetRegistered(address,address)"(
-      erc20?: PromiseOrValue<string> | null,
-      asset?: PromiseOrValue<string> | null
-    ): AssetRegisteredEventFilter;
-    AssetRegistered(
-      erc20?: PromiseOrValue<string> | null,
-      asset?: PromiseOrValue<string> | null
-    ): AssetRegisteredEventFilter;
-
-    "AssetUnregistered(address,address)"(
-      erc20?: PromiseOrValue<string> | null,
-      asset?: PromiseOrValue<string> | null
-    ): AssetUnregisteredEventFilter;
-    AssetUnregistered(
-      erc20?: PromiseOrValue<string> | null,
-      asset?: PromiseOrValue<string> | null
-    ): AssetUnregisteredEventFilter;
+    "AuctionLengthSet(uint48,uint48)"(
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
+    ): AuctionLengthSetEventFilter;
+    AuctionLengthSet(
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
+    ): AuctionLengthSetEventFilter;
 
     "BeaconUpgraded(address)"(
       beacon?: PromiseOrValue<string> | null
@@ -479,6 +469,15 @@ export interface AssetRegistry extends BaseContract {
     BeaconUpgraded(
       beacon?: PromiseOrValue<string> | null
     ): BeaconUpgradedEventFilter;
+
+    "DisabledSet(bool,bool)"(
+      prevVal?: PromiseOrValue<boolean> | null,
+      newVal?: PromiseOrValue<boolean> | null
+    ): DisabledSetEventFilter;
+    DisabledSet(
+      prevVal?: PromiseOrValue<boolean> | null,
+      newVal?: PromiseOrValue<boolean> | null
+    ): DisabledSetEventFilter;
 
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
@@ -492,53 +491,46 @@ export interface AssetRegistry extends BaseContract {
   };
 
   estimateGas: {
-    erc20s(overrides?: CallOverrides): Promise<BigNumber>;
+    MAX_AUCTION_LENGTH(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getRegistry(overrides?: CallOverrides): Promise<BigNumber>;
+    auctionLength(overrides?: CallOverrides): Promise<BigNumber>;
+
+    disabled(overrides?: CallOverrides): Promise<BigNumber>;
+
+    gnosis(overrides?: CallOverrides): Promise<BigNumber>;
 
     init(
       main_: PromiseOrValue<string>,
-      assets_: PromiseOrValue<string>[],
+      gnosis_: PromiseOrValue<string>,
+      tradeImplementation_: PromiseOrValue<string>,
+      auctionLength_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    isRegistered(
-      erc20: PromiseOrValue<string>,
-      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     main(overrides?: CallOverrides): Promise<BigNumber>;
 
+    openTrade(
+      req: TradeRequestStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
 
-    refresh(
+    reportViolation(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    register(
-      asset: PromiseOrValue<string>,
+    setAuctionLength(
+      newAuctionLength: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    swapRegistered(
-      asset: PromiseOrValue<string>,
+    setDisabled(
+      disabled_: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    toAsset(
-      erc20: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    toColl(
-      erc20: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    unregister(
-      asset: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    tradeImplementation(overrides?: CallOverrides): Promise<BigNumber>;
 
     upgradeTo(
       newImplementation: PromiseOrValue<string>,
@@ -555,52 +547,49 @@ export interface AssetRegistry extends BaseContract {
   };
 
   populateTransaction: {
-    erc20s(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    MAX_AUCTION_LENGTH(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
-    getRegistry(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    auctionLength(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    disabled(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    gnosis(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     init(
       main_: PromiseOrValue<string>,
-      assets_: PromiseOrValue<string>[],
+      gnosis_: PromiseOrValue<string>,
+      tradeImplementation_: PromiseOrValue<string>,
+      auctionLength_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    isRegistered(
-      erc20: PromiseOrValue<string>,
-      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     main(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    openTrade(
+      req: TradeRequestStruct,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    refresh(
+    reportViolation(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    register(
-      asset: PromiseOrValue<string>,
+    setAuctionLength(
+      newAuctionLength: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    swapRegistered(
-      asset: PromiseOrValue<string>,
+    setDisabled(
+      disabled_: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    toAsset(
-      erc20: PromiseOrValue<string>,
+    tradeImplementation(
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    toColl(
-      erc20: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    unregister(
-      asset: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     upgradeTo(

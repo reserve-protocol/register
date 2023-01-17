@@ -1,5 +1,10 @@
 [
   {
+    "inputs": [],
+    "name": "UIntOutOfBounds",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -16,44 +21,6 @@
       }
     ],
     "name": "AdminChanged",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "contract IERC20",
-        "name": "erc20",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "contract IAsset",
-        "name": "asset",
-        "type": "address"
-      }
-    ],
-    "name": "AssetRegistered",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "contract IERC20",
-        "name": "erc20",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "contract IAsset",
-        "name": "asset",
-        "type": "address"
-      }
-    ],
-    "name": "AssetUnregistered",
     "type": "event"
   },
   {
@@ -87,6 +54,44 @@
     "inputs": [
       {
         "indexed": true,
+        "internalType": "uint48",
+        "name": "oldPeriod",
+        "type": "uint48"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint48",
+        "name": "newPeriod",
+        "type": "uint48"
+      }
+    ],
+    "name": "PeriodSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint192",
+        "name": "oldRatio",
+        "type": "uint192"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint192",
+        "name": "newRatio",
+        "type": "uint192"
+      }
+    ],
+    "name": "RatioSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
         "internalType": "address",
         "name": "implementation",
         "type": "address"
@@ -97,12 +102,12 @@
   },
   {
     "inputs": [],
-    "name": "erc20s",
+    "name": "MAX_PERIOD",
     "outputs": [
       {
-        "internalType": "contract IERC20[]",
-        "name": "erc20s_",
-        "type": "address[]"
+        "internalType": "uint48",
+        "name": "",
+        "type": "uint48"
       }
     ],
     "stateMutability": "view",
@@ -110,24 +115,12 @@
   },
   {
     "inputs": [],
-    "name": "getRegistry",
+    "name": "MAX_RATIO",
     "outputs": [
       {
-        "components": [
-          {
-            "internalType": "contract IERC20[]",
-            "name": "erc20s",
-            "type": "address[]"
-          },
-          {
-            "internalType": "contract IAsset[]",
-            "name": "assets",
-            "type": "address[]"
-          }
-        ],
-        "internalType": "struct Registry",
-        "name": "reg",
-        "type": "tuple"
+        "internalType": "uint192",
+        "name": "",
+        "type": "uint192"
       }
     ],
     "stateMutability": "view",
@@ -141,9 +134,14 @@
         "type": "address"
       },
       {
-        "internalType": "contract IAsset[]",
-        "name": "assets_",
-        "type": "address[]"
+        "internalType": "uint48",
+        "name": "period_",
+        "type": "uint48"
+      },
+      {
+        "internalType": "uint192",
+        "name": "ratio_",
+        "type": "uint192"
       }
     ],
     "name": "init",
@@ -152,19 +150,26 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "contract IERC20",
-        "name": "erc20",
-        "type": "address"
-      }
-    ],
-    "name": "isRegistered",
+    "inputs": [],
+    "name": "lastPayout",
     "outputs": [
       {
-        "internalType": "bool",
+        "internalType": "uint48",
         "name": "",
-        "type": "bool"
+        "type": "uint48"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "lastPayoutBal",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -185,6 +190,26 @@
   },
   {
     "inputs": [],
+    "name": "melt",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "period",
+    "outputs": [
+      {
+        "internalType": "uint48",
+        "name": "",
+        "type": "uint48"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "proxiableUUID",
     "outputs": [
       {
@@ -198,7 +223,26 @@
   },
   {
     "inputs": [],
-    "name": "refresh",
+    "name": "ratio",
+    "outputs": [
+      {
+        "internalType": "uint192",
+        "name": "",
+        "type": "uint192"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint48",
+        "name": "period_",
+        "type": "uint48"
+      }
+    ],
+    "name": "setPeriod",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -206,88 +250,12 @@
   {
     "inputs": [
       {
-        "internalType": "contract IAsset",
-        "name": "asset",
-        "type": "address"
+        "internalType": "uint192",
+        "name": "ratio_",
+        "type": "uint192"
       }
     ],
-    "name": "register",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "contract IAsset",
-        "name": "asset",
-        "type": "address"
-      }
-    ],
-    "name": "swapRegistered",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "swapped",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "contract IERC20",
-        "name": "erc20",
-        "type": "address"
-      }
-    ],
-    "name": "toAsset",
-    "outputs": [
-      {
-        "internalType": "contract IAsset",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "contract IERC20",
-        "name": "erc20",
-        "type": "address"
-      }
-    ],
-    "name": "toColl",
-    "outputs": [
-      {
-        "internalType": "contract ICollateral",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "contract IAsset",
-        "name": "asset",
-        "type": "address"
-      }
-    ],
-    "name": "unregister",
+    "name": "setRatio",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
