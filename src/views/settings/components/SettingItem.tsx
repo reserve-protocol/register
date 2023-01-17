@@ -1,6 +1,6 @@
 import { t } from '@lingui/macro'
 import { LoadingButton } from 'components/button'
-import { Box, BoxProps, Image, Text } from 'theme-ui'
+import { Box, Flex, BoxProps, Image, Text } from 'theme-ui'
 
 interface ItemProps extends BoxProps {
   icon?: string
@@ -25,13 +25,17 @@ const SettingItem = ({
   ...props
 }: ItemProps) => {
   return (
-    <Box>
-      <Box variant="layout.verticalAlign" {...props}>
+    <Flex
+      variant="layout.verticalAlign"
+      sx={{ justifyContent: 'space-between' }}
+      {...props}
+    >
+      <Flex variant="layout.verticalAlign">
         {!!icon ? (
           <Image src={`/svgs/${icon}.svg`} height={16} width={16} />
         ) : (
           <Box
-            mx={1}
+            mx={'7px'}
             sx={{
               height: '3px',
               width: '3px',
@@ -47,7 +51,7 @@ const SettingItem = ({
             {!!value && <Text ml={1}>{value}</Text>}
           </Box>
         </Box>
-      </Box>
+      </Flex>
       <Box ml={4} mt={2}>
         {!!action && (
           <LoadingButton
@@ -61,7 +65,7 @@ const SettingItem = ({
           />
         )}
       </Box>
-    </Box>
+    </Flex>
   )
 }
 

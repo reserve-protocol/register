@@ -56,21 +56,20 @@ const PauseManager = () => {
   return (
     <>
       <SettingItem
-        title={t`Pause State`}
+        title={isPaused ? t`RToken is paused` : t`RToken is not paused`}
         subtitle={t`Current status:`}
         value={isPaused ? t`Paused` : t`Unpaused`}
         icon="danger"
         mb={3}
       />
       <SettingItem
-        title="Pauser role"
+        title="RToken pauser"
         subtitle={t`Role held by:`}
         value="0xfb...0344"
         action={accountRole.pauser || accountRole.owner ? pauseActionLabel : ''}
         onAction={handlePause}
         loading={!!txId}
         actionVariant="danger"
-        ml={4}
       />
     </>
   )

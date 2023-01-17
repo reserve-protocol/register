@@ -112,11 +112,10 @@ const FreezeManager = () => {
         title={t`Short Freeze`}
         subtitle={t`Role held by:`}
         value="0xfb...0344"
-        action={!isFrozen && accountRole.shortFreezer ? t`Freeze` : ''}
+        action={!isFrozen && accountRole.shortFreezer ? t`Short Freeze` : ''}
         onAction={handleFreeze}
         actionVariant="danger"
         loading={!!tx && !freezeType}
-        ml={4}
       />
       <SettingItem
         title={t`Long Freeze`}
@@ -131,7 +130,6 @@ const FreezeManager = () => {
         onAction={handleLongFreeze}
         actionVariant="danger"
         loading={!!tx && !!freezeType}
-        ml={4}
       />
     </>
   )

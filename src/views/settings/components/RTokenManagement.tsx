@@ -24,9 +24,7 @@ import FreezeManager from './FreezeManager'
 import PauseManager from './PauseManager'
 import SettingItem from './SettingItem'
 
-const Divider = () => (
-  <_Divider sx={{ borderColor: 'darkBorder' }} my={4} mx={-4} />
-)
+const Divider = () => <_Divider sx={{ borderColor: 'border' }} my={4} mx={-4} />
 
 const Container = ({ children }: BoxProps) => (
   <Box variant="layout.sticky">
@@ -97,14 +95,13 @@ const RTokenManagement = () => {
 
   return (
     <Container>
-      <Flex mb={4} sx={{ alignItems: 'center' }}>
+      <Flex sx={{ alignItems: 'center' }}>
         <Text variant="sectionTitle">
           <Trans>Actions</Trans>
         </Text>
         <DocsLink link="https://reserve.org/" />
       </Flex>
       <Divider />
-
       <PauseManager />
       <Divider />
       <FreezeManager />
