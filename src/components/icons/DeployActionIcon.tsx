@@ -24,7 +24,7 @@ const DeployActionIcon = (props: SVGProps<SVGSVGElement>) => (
         cy="17.1547"
         r="8.54167"
         stroke="currentColor"
-        stroke-width="1.46429"
+        strokeWidth="1.46429"
       />
       <path
         fillRule="evenodd"

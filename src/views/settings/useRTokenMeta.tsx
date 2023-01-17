@@ -19,7 +19,7 @@ import { formatBytes32String, formatEther } from 'ethers/lib/utils'
 import useRToken from 'hooks/useRToken'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
 import { rTokenAtom, rTokenCollateralDist } from 'state/atoms'
 import { promiseMulticall } from 'state/web3/lib/multicall'
 import { ContractCall, StringMap } from 'types'
@@ -140,6 +140,13 @@ const useTokenBackup = (): {
   return []
 }
 
+const shareToPercent = (shares: number): string => {
+  return Math.floor((shares * 100) / 10000).toString()
+}
+
+// TODO: Refactor the whole fetch layer for an rToken
+// TODO: Start doing and SDK like way to fetch all this data
+// TODO: Promise base layer or react sdk?
 const useRTokenParameters = () => {
   const rToken = useRToken()
   const { provider } = useWeb3React()
@@ -148,18 +155,51 @@ const useRTokenParameters = () => {
   const fetchParams = useCallback(async () => {
     if (rToken?.main && provider) {
       try {
-        const [distribution] = await promiseMulticall(
+        const mainCall = { abi: MainInterface, address: rToken.main, args: [] }
+        // TODO: Fetch addresses and store it in an atom
+        const [
+          distribution,
+          backingManager,
+          rTokenTrader,
+          furnaceAddress,
+          stRSRAddress,
+          shortFreeze,
+          longFreeze,
+        ] = await promiseMulticall(
           [
             {
-              abi: MainInterface,
-              address: rToken.main,
-              args: [],
+              ...mainCall,
               method: 'distributor',
+            },
+            {
+              ...mainCall,
+              method: 'backingManager',
+            },
+            {
+              ...mainCall,
+              method: 'rTokenTrader',
+            },
+            {
+              ...mainCall,
+              method: 'furnace',
+            },
+            {
+              ...mainCall,
+              method: 'stRSR',
+            },
+            {
+              ...mainCall,
+              method: 'shortFreeze',
+            },
+            {
+              ...mainCall,
+              method: 'longFreeze',
             },
           ],
           provider
         )
 
+        // Revenue distribution
         const contract = getContract(distribution, Distributor, provider)
         const events = await contract.queryFilter(
           'DistributionSet(address,uint16,uint16)'
@@ -167,10 +207,6 @@ const useRTokenParameters = () => {
         const dist: StringMap = { external: {}, holders: '', stakers: '' }
         const furnace = '0x0000000000000000000000000000000000000001'
         const stRSR = '0x0000000000000000000000000000000000000002'
-
-        const shareToPercent = (shares: number): string => {
-          return Math.floor((shares * 100) / 10000).toString()
-        }
 
         for (const event of events) {
           if (event.args) {

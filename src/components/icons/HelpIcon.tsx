@@ -8,7 +8,7 @@ const HelpIcon = (props: SVGProps<SVGSVGElement>) => (
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
-    <g clip-path="url(#clip0_3954_144848)">
+    <g clipPath="url(#clip0_3954_144848)">
       <path
         fillRule="evenodd"
         clipRule="evenodd"
