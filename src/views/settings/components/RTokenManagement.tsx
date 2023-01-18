@@ -111,7 +111,7 @@ const RTokenManagement = () => {
         subtitle={t`Available to:`}
         value={t`All stakers`}
         icon="proposals"
-        action={t`New proposal`}
+        action={t`Create`}
         onAction={handleProposal}
       />
       {accountRole.owner && (

@@ -26,7 +26,7 @@ interface PluginItemProps extends BoxProps {
 const PluginInfo = ({ data }: { data: CollateralPlugin }) => (
   <>
     <Divider mt={2} />
-    <Flex variant="layout.verticalAlign" ml={4} mt={3} sx={{ fontSize: 1 }}>
+    <Flex variant="layout.verticalAlign" ml={0} mt={3} sx={{ fontSize: 1 }}>
       <Box mr={4}>
         <Text variant="legend">
           <Trans>Reference unit</Trans>

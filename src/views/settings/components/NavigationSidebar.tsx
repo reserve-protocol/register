@@ -21,7 +21,7 @@ const NavigationSidebar = () => {
 
   return (
     <Box variant="layout.sticky">
-      <Navigation title={t`Navigation`} sections={sections} />
+      <Navigation title={t`Sections`} sections={sections} />
     </Box>
   )
 }
