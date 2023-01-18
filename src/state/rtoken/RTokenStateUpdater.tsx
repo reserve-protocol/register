@@ -17,7 +17,12 @@ import { truncateDecimals } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 
-const StateUpdater = () => {
+/**
+ * Fetchs RToken state variables that could change block by block
+ *
+ * ? Fetch block by block / when rToken changes
+ */
+const RTokenStateUpdater = () => {
   const rToken = useRToken()
   const updateTokenStatus = useSetAtom(rTokenStatusAtom)
   const setDistribution = useSetAtom(rTokenDistributionAtom)
@@ -124,4 +129,4 @@ const StateUpdater = () => {
   return null
 }
 
-export default StateUpdater
+export default RTokenStateUpdater

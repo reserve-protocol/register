@@ -1,3 +1,4 @@
+import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import {
   Asset as AssetAbi,
@@ -5,173 +6,53 @@ import {
   BackingManagerInterface,
   BrokerInterface,
   Distributor as DistributorAbi,
-  ERC20Interface,
-  FacadeInterface,
-  FurnaceInterface,
   MainInterface,
   RevenueTraderInterface,
   RTokenInterface,
   StRSRInterface,
 } from 'abis'
 import { Asset } from 'abis/types'
-import {
-  BackupBasket,
-  backupCollateralAtom,
-  Basket,
-  basketAtom,
-  Collateral,
-  RevenueSplit,
-  revenueSplitAtom,
-} from 'components/rtoken-setup/atoms'
-import { BigNumber } from 'ethers'
-import { formatBytes32String, formatEther } from 'ethers/lib/utils'
+import { RevenueSplit, revenueSplitAtom } from 'components/rtoken-setup/atoms'
+import { formatEther } from 'ethers/lib/utils'
 import useRToken from 'hooks/useRToken'
-import { atom, useAtomValue, useSetAtom } from 'jotai'
-import { useResetAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
-import { rTokenAtom, rTokenCollateralDist } from 'state/atoms'
+import { rTokenContractsAtom, rTokenParamsAtom } from 'state/atoms'
 import { promiseMulticall } from 'state/web3/lib/multicall'
-import { ContractCall, StringMap } from 'types'
+import { StringMap } from 'types'
 import { getContract } from 'utils'
-import { FACADE_ADDRESS } from 'utils/addresses'
-import { CHAIN_ID } from 'utils/chains'
-import { rTokenParamsAtom } from './atoms'
-
-/**
- * Get RToken primary basket
- */
-const primaryBasketAtom = atom((get) => {
-  const rToken = get(rTokenAtom)
-  const basketDistribution = get(rTokenCollateralDist)
-
-  return rToken?.collaterals.reduce((prev, { address, symbol }) => {
-    if (!basketDistribution[address]) {
-      return prev
-    }
-
-    const { targetUnit, share } = basketDistribution[address]
-    let targetBasket = prev[targetUnit]
-    const collateral = {
-      targetUnit,
-      address,
-      symbol,
-    }
-
-    if (!targetBasket) {
-      targetBasket = {
-        scale: '',
-        collaterals: [collateral],
-        distribution: [share.toFixed(2)],
-      }
-    } else {
-      targetBasket.collaterals.push(collateral)
-      targetBasket.distribution.push(share.toFixed(2))
-    }
-
-    prev[targetUnit] = targetBasket
-    return prev
-  }, {} as Basket)
-})
-
-/**
- * Get RToken backup basket
- */
-const useTokenBackup = (): {
-  targetUnit: string
-  max: number
-  tokens: Collateral[]
-}[] => {
-  const { provider } = useWeb3React()
-  const rToken = useRToken()
-  const primaryBasket = useAtomValue(basketAtom)
-  const setBackupBasket = useSetAtom(backupCollateralAtom)
-
-  const setBackupConfig = async () => {
-    const targetUnits = Object.keys(primaryBasket)
-
-    if (!provider || !rToken || !targetUnits.length) {
-      return
-    }
-
-    try {
-      const calls = targetUnits.reduce(
-        (prev, curr) => [
-          ...prev,
-          {
-            address: FACADE_ADDRESS[CHAIN_ID],
-            abi: FacadeInterface,
-            method: 'backupConfig',
-            args: [rToken.address, formatBytes32String(curr)],
-          },
-        ],
-        [] as ContractCall[]
-      )
-
-      const multicallResult = await promiseMulticall(calls, provider)
-      const backupBasket: BackupBasket = {}
-      let index = 0
-
-      for (const result of multicallResult) {
-        const { erc20s, max }: { erc20s: string[]; max: BigNumber } = result
-
-        const symbols: string[] = await promiseMulticall(
-          erc20s.map((address) => ({
-            address,
-            abi: ERC20Interface,
-            method: 'symbol',
-            args: [],
-          })),
-          provider
-        )
-
-        backupBasket[targetUnits[index]] = {
-          diversityFactor: +formatEther(max),
-          collaterals: erc20s.map((address, i) => ({
-            address,
-            targetUnit: targetUnits[index],
-            symbol: symbols[i],
-          })),
-        }
-        index += 1
-      }
-
-      setBackupBasket(backupBasket)
-    } catch (e) {
-      console.warn('Error getting backup config', e)
-    }
-  }
-
-  useEffect(() => {
-    if (rToken && provider && !!Object.keys(primaryBasket)) {
-      setBackupConfig()
-    }
-  }, [rToken?.address, primaryBasket, provider])
-
-  return []
-}
 
 const shareToPercent = (shares: number): string => {
   return Math.floor((shares * 100) / 10000).toString()
 }
 
-// TODO: Refactor the whole fetch layer for an rToken
-// TODO: Start doing and SDK like way to fetch all this data
-// TODO: Promise base layer or react sdk?
-const useRTokenParameters = () => {
+/**
+ * Fetchs RToken setup parameters, only updated through governance
+ *
+ * ? Fetch only when rToken changes
+ */
+const RTokenSetupUpdater = () => {
   const rToken = useRToken()
   const { provider } = useWeb3React()
   const setRevenueSplit = useSetAtom(revenueSplitAtom)
   const setRTokenParams = useSetAtom(rTokenParamsAtom)
+  const setRTokenContracts = useSetAtom(rTokenContractsAtom)
 
-  const fetchParams = useCallback(async () => {
-    if (rToken?.main && provider) {
+  const fetchParams = useCallback(
+    async (
+      rTokenAddress: string,
+      mainAddress: string,
+      provider: Web3Provider
+    ) => {
       try {
-        const mainCall = { abi: MainInterface, address: rToken.main, args: [] }
+        const mainCall = { abi: MainInterface, address: mainAddress, args: [] }
         // TODO: Fetch addresses and store it in an atom
         const [
           distribution,
           backingManager,
           rTokenTrader,
+          rsrTrader,
+          furnaceAddress,
           brokerAddress,
           assetRegistry,
           stRSRAddress,
@@ -190,6 +71,14 @@ const useRTokenParameters = () => {
             {
               ...mainCall,
               method: 'rTokenTrader',
+            },
+            {
+              ...mainCall,
+              method: 'rsrTrader',
+            },
+            {
+              ...mainCall,
+              method: 'furnace',
             },
             {
               ...mainCall,
@@ -214,6 +103,18 @@ const useRTokenParameters = () => {
           ],
           provider
         )
+
+        const rTokenCall = {
+          abi: RTokenInterface,
+          address: rTokenAddress,
+          args: [],
+        }
+
+        const stRSRCall = {
+          abi: StRSRInterface,
+          address: stRSRAddress,
+          args: [],
+        }
 
         const [
           tradingDelay,
@@ -255,21 +156,15 @@ const useRTokenParameters = () => {
               method: 'minTradeVolume',
             },
             {
-              abi: StRSRInterface,
-              address: stRSRAddress,
-              args: [],
+              ...stRSRCall,
               method: 'rewardPeriod',
             },
             {
-              abi: StRSRInterface,
-              address: stRSRAddress,
-              args: [],
+              ...stRSRCall,
               method: 'rewardRatio',
             },
             {
-              abi: StRSRInterface,
-              address: stRSRAddress,
-              args: [],
+              ...stRSRCall,
               method: 'unstakingDelay',
             },
             {
@@ -279,27 +174,21 @@ const useRTokenParameters = () => {
               method: 'auctionLength',
             },
             {
-              abi: RTokenInterface,
-              address: rToken.address,
-              args: [],
+              ...rTokenCall,
               method: 'issuanceRate',
             },
             {
-              abi: RTokenInterface,
-              address: rToken.address,
-              args: [],
+              ...rTokenCall,
               method: 'scalingRedemptionRate',
             },
             {
-              abi: RTokenInterface,
-              address: rToken.address,
-              args: [],
+              ...rTokenCall,
               method: 'redemptionRateFloor',
             },
             {
               abi: AssetRegistryInterface,
               address: assetRegistry,
-              args: [rToken.address],
+              args: [rTokenAddress],
               method: 'toAsset',
             },
           ],
@@ -371,40 +260,34 @@ const useRTokenParameters = () => {
           ...dist,
           external: Object.values(dist.external),
         } as RevenueSplit)
+
+        // RToken contracts update
+        setRTokenContracts({
+          main: mainAddress,
+          backingManager,
+          distributor: distribution,
+          rTokenTrader,
+          rsrTrader,
+          broker: brokerAddress,
+          assetRegistry,
+          stRSR: stRSRAddress,
+          furnace: furnaceAddress,
+          rTokenAsset,
+        })
       } catch (e) {
-        console.error(e)
+        console.error('Error getting RToken Setup', e)
       }
-    }
-  }, [rToken, provider])
+    },
+    []
+  )
 
   useEffect(() => {
-    fetchParams()
-  }, [fetchParams])
+    if (rToken?.address && rToken?.main && provider) {
+      fetchParams(rToken.address, rToken.main, provider)
+    }
+  }, [rToken?.address, provider])
 
   return null
 }
 
-const useRTokenMeta = () => {
-  const basketDist = useAtomValue(primaryBasketAtom)
-  const setPrimaryBasket = useSetAtom(basketAtom)
-  const resetBackup = useResetAtom(backupCollateralAtom)
-  const resetRevenueSplit = useResetAtom(revenueSplitAtom)
-  useTokenBackup()
-  useRTokenParameters()
-
-  useEffect(() => {
-    setPrimaryBasket(basketDist || {})
-  }, [basketDist])
-
-  useEffect(() => {
-    return () => {
-      setPrimaryBasket({})
-      resetBackup()
-      resetRevenueSplit()
-    }
-  }, [])
-
-  return null
-}
-
-export default useRTokenMeta
+export default RTokenSetupUpdater

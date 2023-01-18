@@ -1,10 +1,14 @@
-import RTokenUpdater from './RTokenUpdater'
-import StateUpdater from './StateUpdater'
+import TokenUpdater from './RTokenUpdater'
+import StateUpdater from './RTokenStateUpdater'
+import SetupUpdater from './RTokenSetupUpdater'
+import RTokenBasketUpdater from './RTokenBasketUpdater'
 
 const Updater = () => (
   <>
-    <RTokenUpdater />
+    <TokenUpdater />
     <StateUpdater />
+    <SetupUpdater />
+    <RTokenBasketUpdater />
   </>
 )
 

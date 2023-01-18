@@ -17,6 +17,11 @@ import {
 } from 'types'
 import { RSR, TRANSACTION_STATUS } from 'utils/constants'
 import { WalletTransaction } from './../types/index'
+import {
+  BackupBasket,
+  Basket,
+  RevenueSplit,
+} from 'components/rtoken-setup/atoms'
 
 /**
  * ######################
@@ -58,6 +63,32 @@ export const rTokenContractsAtom = atomWithReset({
   stRSR: '',
   furnace: '',
   rTokenAsset: '',
+  distributor: '',
+})
+
+export const rTokenParamsAtom = atomWithReset({
+  tradingDelay: '',
+  backingBuffer: '',
+  maxTradeSlippage: '',
+  minTradeVolume: '',
+  rewardPeriod: '',
+  rewardRatio: '',
+  unstakingDelay: '',
+  auctionLength: '',
+  issuanceRate: '',
+  scalingRedemptionRate: '',
+  redemptionRateFloor: '',
+  shortFreeze: '',
+  longFreeze: '',
+  maxTradeVolume: '',
+})
+
+export const rTokenBasketAtom = atomWithReset<Basket>({})
+export const rtokenBackupAtom = atomWithReset<BackupBasket>({})
+export const rTokenRevenueSplitAtom = atomWithReset<RevenueSplit>({
+  holders: '40', // %
+  stakers: '60', // %
+  external: [],
 })
 
 // Grab rToken data from the atom list

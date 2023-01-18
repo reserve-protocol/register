@@ -4,6 +4,7 @@ import DocsLink from 'components/docs-link/docs-link'
 import Help from 'components/help'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { useAtomValue } from 'jotai'
+import { rTokenBasketAtom } from 'state/atoms'
 import { Box, BoxProps, Divider, Flex, Text } from 'theme-ui'
 import { truncateDecimals } from 'utils'
 import { Basket, basketAtom } from '../atoms'
@@ -48,6 +49,7 @@ const Placeholder = () => (
   </Box>
 )
 
+// TODO: Create read only component and remove readOnly flag
 /**
  * View: Deploy -> Basket setup
  * Display primary basket (per target unit) and token composition
@@ -57,7 +59,9 @@ const PrimaryBasket = ({
   readOnly = false,
   ...props
 }: Props) => {
-  const basket = useAtomValue(basketAtom)
+  const setupBasket = useAtomValue(basketAtom)
+  const stateBasket = useAtomValue(rTokenBasketAtom)
+  const basket = readOnly ? stateBasket : setupBasket
   const units = Object.keys(basket)
 
   return (
