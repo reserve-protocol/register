@@ -33,6 +33,7 @@ import { RSR } from 'utils/constants'
 import { RSV_MANAGER } from 'utils/rsv'
 import AccountUpdater from './AccountUpdater'
 import RSVUpdater from './RSVUpdater'
+import RTokenUpdater from './rtoken'
 import TokenUpdater from './TokenUpdater'
 import { promiseMulticall } from './web3/lib/multicall'
 
@@ -277,6 +278,7 @@ const Updater = () => (
     <ExchangeRateUpdater />
     <AccountUpdater />
     <RSVUpdater />
+    <RTokenUpdater />
   </>
 )
 

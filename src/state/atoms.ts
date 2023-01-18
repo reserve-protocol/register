@@ -5,7 +5,7 @@ import { CHAIN_ID } from 'utils/chains'
  */
 import { BigNumber } from '@ethersproject/bignumber'
 import { atom } from 'jotai'
-import { atomWithStorage, createJSONStorage } from 'jotai/utils'
+import { atomWithReset, atomWithStorage, createJSONStorage } from 'jotai/utils'
 import {
   AccountPosition,
   AccountToken,
@@ -15,7 +15,7 @@ import {
   TransactionMap,
   TransactionState,
 } from 'types'
-import { RSR, RTOKEN_STATUS, TRANSACTION_STATUS } from 'utils/constants'
+import { RSR, TRANSACTION_STATUS } from 'utils/constants'
 import { WalletTransaction } from './../types/index'
 
 /**
@@ -46,6 +46,19 @@ export const reserveTokensAtom = atomWithStorage<{
 
 // Current selected rToken address
 export const selectedRTokenAtom = atom('')
+
+// RToken related contracts
+export const rTokenContractsAtom = atomWithReset({
+  main: '',
+  backingManager: '',
+  rTokenTrader: '',
+  rsrTrader: '',
+  broker: '',
+  assetRegistry: '',
+  stRSR: '',
+  furnace: '',
+  rTokenAsset: '',
+})
 
 // Grab rToken data from the atom list
 export const rTokenAtom = atom<ReserveToken | null>((get) =>
