@@ -139,8 +139,6 @@ export const getDeployParameters = (
   try {
     const [dist, beneficiaries] = getSharesFromSplit(revenueSplit)
 
-    console.log('dist?', dist)
-
     // RToken configuration parameters
     const config: RTokenConfiguration = {
       name: tokenConfig.name,

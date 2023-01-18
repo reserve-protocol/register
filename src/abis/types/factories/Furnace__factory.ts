@@ -4,9 +4,14 @@
 
 import { Contract, Signer, utils } from "ethers";
 import type { Provider } from "@ethersproject/providers";
-import type { AssetRegistry, AssetRegistryInterface } from "../AssetRegistry";
+import type { Furnace, FurnaceInterface } from "../Furnace";
 
 const _abi = [
+  {
+    inputs: [],
+    name: "UIntOutOfBounds",
+    type: "error",
+  },
   {
     anonymous: false,
     inputs: [
@@ -24,44 +29,6 @@ const _abi = [
       },
     ],
     name: "AdminChanged",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "contract IERC20",
-        name: "erc20",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "contract IAsset",
-        name: "asset",
-        type: "address",
-      },
-    ],
-    name: "AssetRegistered",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "contract IERC20",
-        name: "erc20",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "contract IAsset",
-        name: "asset",
-        type: "address",
-      },
-    ],
-    name: "AssetUnregistered",
     type: "event",
   },
   {
@@ -95,6 +62,44 @@ const _abi = [
     inputs: [
       {
         indexed: true,
+        internalType: "uint48",
+        name: "oldPeriod",
+        type: "uint48",
+      },
+      {
+        indexed: true,
+        internalType: "uint48",
+        name: "newPeriod",
+        type: "uint48",
+      },
+    ],
+    name: "PeriodSet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint192",
+        name: "oldRatio",
+        type: "uint192",
+      },
+      {
+        indexed: true,
+        internalType: "uint192",
+        name: "newRatio",
+        type: "uint192",
+      },
+    ],
+    name: "RatioSet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
         internalType: "address",
         name: "implementation",
         type: "address",
@@ -105,12 +110,12 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "erc20s",
+    name: "MAX_PERIOD",
     outputs: [
       {
-        internalType: "contract IERC20[]",
-        name: "erc20s_",
-        type: "address[]",
+        internalType: "uint48",
+        name: "",
+        type: "uint48",
       },
     ],
     stateMutability: "view",
@@ -118,24 +123,12 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "getRegistry",
+    name: "MAX_RATIO",
     outputs: [
       {
-        components: [
-          {
-            internalType: "contract IERC20[]",
-            name: "erc20s",
-            type: "address[]",
-          },
-          {
-            internalType: "contract IAsset[]",
-            name: "assets",
-            type: "address[]",
-          },
-        ],
-        internalType: "struct Registry",
-        name: "reg",
-        type: "tuple",
+        internalType: "uint192",
+        name: "",
+        type: "uint192",
       },
     ],
     stateMutability: "view",
@@ -149,9 +142,14 @@ const _abi = [
         type: "address",
       },
       {
-        internalType: "contract IAsset[]",
-        name: "assets_",
-        type: "address[]",
+        internalType: "uint48",
+        name: "period_",
+        type: "uint48",
+      },
+      {
+        internalType: "uint192",
+        name: "ratio_",
+        type: "uint192",
       },
     ],
     name: "init",
@@ -160,19 +158,26 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "contract IERC20",
-        name: "erc20",
-        type: "address",
-      },
-    ],
-    name: "isRegistered",
+    inputs: [],
+    name: "lastPayout",
     outputs: [
       {
-        internalType: "bool",
+        internalType: "uint48",
         name: "",
-        type: "bool",
+        type: "uint48",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "lastPayoutBal",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -193,6 +198,26 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "melt",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "period",
+    outputs: [
+      {
+        internalType: "uint48",
+        name: "",
+        type: "uint48",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "proxiableUUID",
     outputs: [
       {
@@ -206,7 +231,26 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "refresh",
+    name: "ratio",
+    outputs: [
+      {
+        internalType: "uint192",
+        name: "",
+        type: "uint192",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint48",
+        name: "period_",
+        type: "uint48",
+      },
+    ],
+    name: "setPeriod",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -214,88 +258,12 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "contract IAsset",
-        name: "asset",
-        type: "address",
+        internalType: "uint192",
+        name: "ratio_",
+        type: "uint192",
       },
     ],
-    name: "register",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract IAsset",
-        name: "asset",
-        type: "address",
-      },
-    ],
-    name: "swapRegistered",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "swapped",
-        type: "bool",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract IERC20",
-        name: "erc20",
-        type: "address",
-      },
-    ],
-    name: "toAsset",
-    outputs: [
-      {
-        internalType: "contract IAsset",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract IERC20",
-        name: "erc20",
-        type: "address",
-      },
-    ],
-    name: "toColl",
-    outputs: [
-      {
-        internalType: "contract ICollateral",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract IAsset",
-        name: "asset",
-        type: "address",
-      },
-    ],
-    name: "unregister",
+    name: "setRatio",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -346,15 +314,15 @@ const _abi = [
   },
 ];
 
-export class AssetRegistry__factory {
+export class Furnace__factory {
   static readonly abi = _abi;
-  static createInterface(): AssetRegistryInterface {
-    return new utils.Interface(_abi) as AssetRegistryInterface;
+  static createInterface(): FurnaceInterface {
+    return new utils.Interface(_abi) as FurnaceInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
-  ): AssetRegistry {
-    return new Contract(address, _abi, signerOrProvider) as AssetRegistry;
+  ): Furnace {
+    return new Contract(address, _abi, signerOrProvider) as Furnace;
   }
 }

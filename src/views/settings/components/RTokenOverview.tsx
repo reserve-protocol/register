@@ -6,8 +6,10 @@ import { useAtomValue } from 'jotai'
 import { rTokenPriceAtom } from 'state/atoms'
 import { Box, Card, Divider, Flex, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
+import BackingInfo from './BackingInfo'
 import BasicInfo from './BasicInfo'
 import ListingInfo from './ListingInfo'
+import OtherInfo from './OtherInfo'
 import RevenueSplitInfo from './RevenueSplitInfo'
 
 const RTokenOverview = () => {
@@ -39,10 +41,10 @@ const RTokenOverview = () => {
         <RevenueSplitInfo />
       </SectionWrapper>
       <SectionWrapper navigationIndex={4} mt={4}>
-        <Card p={4}>Backing info</Card>
+        <BackingInfo />
       </SectionWrapper>
       <SectionWrapper navigationIndex={5} mt={4}>
-        <Card p={4}>Other info</Card>
+        <OtherInfo />
       </SectionWrapper>
       <SectionWrapper navigationIndex={6} mt={4}>
         <Card p={4}>Governance info</Card>

@@ -4,9 +4,14 @@
 
 import { Contract, Signer, utils } from "ethers";
 import type { Provider } from "@ethersproject/providers";
-import type { AssetRegistry, AssetRegistryInterface } from "../AssetRegistry";
+import type { Broker, BrokerInterface } from "../Broker";
 
 const _abi = [
+  {
+    inputs: [],
+    name: "UIntOutOfBounds",
+    type: "error",
+  },
   {
     anonymous: false,
     inputs: [
@@ -31,37 +36,18 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "contract IERC20",
-        name: "erc20",
-        type: "address",
+        internalType: "uint48",
+        name: "oldVal",
+        type: "uint48",
       },
       {
         indexed: true,
-        internalType: "contract IAsset",
-        name: "asset",
-        type: "address",
+        internalType: "uint48",
+        name: "newVal",
+        type: "uint48",
       },
     ],
-    name: "AssetRegistered",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "contract IERC20",
-        name: "erc20",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "contract IAsset",
-        name: "asset",
-        type: "address",
-      },
-    ],
-    name: "AssetUnregistered",
+    name: "AuctionLengthSet",
     type: "event",
   },
   {
@@ -75,6 +61,25 @@ const _abi = [
       },
     ],
     name: "BeaconUpgraded",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "bool",
+        name: "prevVal",
+        type: "bool",
+      },
+      {
+        indexed: true,
+        internalType: "bool",
+        name: "newVal",
+        type: "bool",
+      },
+    ],
+    name: "DisabledSet",
     type: "event",
   },
   {
@@ -105,12 +110,12 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "erc20s",
+    name: "MAX_AUCTION_LENGTH",
     outputs: [
       {
-        internalType: "contract IERC20[]",
-        name: "erc20s_",
-        type: "address[]",
+        internalType: "uint48",
+        name: "",
+        type: "uint48",
       },
     ],
     stateMutability: "view",
@@ -118,24 +123,38 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "getRegistry",
+    name: "auctionLength",
     outputs: [
       {
-        components: [
-          {
-            internalType: "contract IERC20[]",
-            name: "erc20s",
-            type: "address[]",
-          },
-          {
-            internalType: "contract IAsset[]",
-            name: "assets",
-            type: "address[]",
-          },
-        ],
-        internalType: "struct Registry",
-        name: "reg",
-        type: "tuple",
+        internalType: "uint48",
+        name: "",
+        type: "uint48",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "disabled",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "gnosis",
+    outputs: [
+      {
+        internalType: "contract IGnosis",
+        name: "",
+        type: "address",
       },
     ],
     stateMutability: "view",
@@ -149,33 +168,24 @@ const _abi = [
         type: "address",
       },
       {
-        internalType: "contract IAsset[]",
-        name: "assets_",
-        type: "address[]",
+        internalType: "contract IGnosis",
+        name: "gnosis_",
+        type: "address",
+      },
+      {
+        internalType: "contract ITrade",
+        name: "tradeImplementation_",
+        type: "address",
+      },
+      {
+        internalType: "uint48",
+        name: "auctionLength_",
+        type: "uint48",
       },
     ],
     name: "init",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract IERC20",
-        name: "erc20",
-        type: "address",
-      },
-    ],
-    name: "isRegistered",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
   {
@@ -189,6 +199,47 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "contract IAsset",
+            name: "sell",
+            type: "address",
+          },
+          {
+            internalType: "contract IAsset",
+            name: "buy",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "sellAmount",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "minBuyAmount",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct TradeRequest",
+        name: "req",
+        type: "tuple",
+      },
+    ],
+    name: "openTrade",
+    outputs: [
+      {
+        internalType: "contract ITrade",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -206,7 +257,7 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "refresh",
+    name: "reportViolation",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -214,90 +265,40 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "contract IAsset",
-        name: "asset",
-        type: "address",
+        internalType: "uint48",
+        name: "newAuctionLength",
+        type: "uint48",
       },
     ],
-    name: "register",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract IAsset",
-        name: "asset",
-        type: "address",
-      },
-    ],
-    name: "swapRegistered",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "swapped",
-        type: "bool",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract IERC20",
-        name: "erc20",
-        type: "address",
-      },
-    ],
-    name: "toAsset",
-    outputs: [
-      {
-        internalType: "contract IAsset",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract IERC20",
-        name: "erc20",
-        type: "address",
-      },
-    ],
-    name: "toColl",
-    outputs: [
-      {
-        internalType: "contract ICollateral",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract IAsset",
-        name: "asset",
-        type: "address",
-      },
-    ],
-    name: "unregister",
+    name: "setAuctionLength",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bool",
+        name: "disabled_",
+        type: "bool",
+      },
+    ],
+    name: "setDisabled",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "tradeImplementation",
+    outputs: [
+      {
+        internalType: "contract ITrade",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -346,15 +347,12 @@ const _abi = [
   },
 ];
 
-export class AssetRegistry__factory {
+export class Broker__factory {
   static readonly abi = _abi;
-  static createInterface(): AssetRegistryInterface {
-    return new utils.Interface(_abi) as AssetRegistryInterface;
+  static createInterface(): BrokerInterface {
+    return new utils.Interface(_abi) as BrokerInterface;
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): AssetRegistry {
-    return new Contract(address, _abi, signerOrProvider) as AssetRegistry;
+  static connect(address: string, signerOrProvider: Signer | Provider): Broker {
+    return new Contract(address, _abi, signerOrProvider) as Broker;
   }
 }

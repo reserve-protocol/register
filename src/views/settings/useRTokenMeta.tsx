@@ -1,10 +1,19 @@
 import { useWeb3React } from '@web3-react/core'
 import {
-  Distributor,
+  Asset as AssetAbi,
+  AssetRegistryInterface,
+  BackingManagerInterface,
+  BrokerInterface,
+  Distributor as DistributorAbi,
   ERC20Interface,
   FacadeInterface,
+  FurnaceInterface,
   MainInterface,
+  RevenueTraderInterface,
+  RTokenInterface,
+  StRSRInterface,
 } from 'abis'
+import { Asset } from 'abis/types'
 import {
   BackupBasket,
   backupCollateralAtom,
@@ -19,13 +28,14 @@ import { formatBytes32String, formatEther } from 'ethers/lib/utils'
 import useRToken from 'hooks/useRToken'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
 import { rTokenAtom, rTokenCollateralDist } from 'state/atoms'
 import { promiseMulticall } from 'state/web3/lib/multicall'
 import { ContractCall, StringMap } from 'types'
 import { getContract } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
+import { rTokenParamsAtom } from './atoms'
 
 /**
  * Get RToken primary basket
@@ -140,37 +150,197 @@ const useTokenBackup = (): {
   return []
 }
 
+const shareToPercent = (shares: number): string => {
+  return Math.floor((shares * 100) / 10000).toString()
+}
+
+// TODO: Refactor the whole fetch layer for an rToken
+// TODO: Start doing and SDK like way to fetch all this data
+// TODO: Promise base layer or react sdk?
 const useRTokenParameters = () => {
   const rToken = useRToken()
   const { provider } = useWeb3React()
   const setRevenueSplit = useSetAtom(revenueSplitAtom)
+  const setRTokenParams = useSetAtom(rTokenParamsAtom)
 
   const fetchParams = useCallback(async () => {
     if (rToken?.main && provider) {
       try {
-        const [distribution] = await promiseMulticall(
+        const mainCall = { abi: MainInterface, address: rToken.main, args: [] }
+        // TODO: Fetch addresses and store it in an atom
+        const [
+          distribution,
+          backingManager,
+          rTokenTrader,
+          brokerAddress,
+          assetRegistry,
+          stRSRAddress,
+          shortFreeze,
+          longFreeze,
+        ] = await promiseMulticall(
           [
             {
-              abi: MainInterface,
-              address: rToken.main,
-              args: [],
+              ...mainCall,
               method: 'distributor',
+            },
+            {
+              ...mainCall,
+              method: 'backingManager',
+            },
+            {
+              ...mainCall,
+              method: 'rTokenTrader',
+            },
+            {
+              ...mainCall,
+              method: 'broker',
+            },
+            {
+              ...mainCall,
+              method: 'assetRegistry',
+            },
+            {
+              ...mainCall,
+              method: 'stRSR',
+            },
+            {
+              ...mainCall,
+              method: 'shortFreeze',
+            },
+            {
+              ...mainCall,
+              method: 'longFreeze',
             },
           ],
           provider
         )
 
-        const contract = getContract(distribution, Distributor, provider)
+        const [
+          tradingDelay,
+          backingBuffer,
+          maxTradeSlippage,
+          minTradeVolume,
+          rewardPeriod,
+          rewardRatio,
+          unstakingDelay,
+          auctionLength,
+          issuanceRate,
+          scalingRedemptionRate,
+          redemptionRateFloor,
+          rTokenAsset,
+        ] = await promiseMulticall(
+          [
+            {
+              abi: BackingManagerInterface,
+              address: backingManager,
+              args: [],
+              method: 'tradingDelay',
+            },
+            {
+              abi: BackingManagerInterface,
+              address: backingManager,
+              args: [],
+              method: 'backingBuffer',
+            },
+            {
+              abi: RevenueTraderInterface,
+              address: rTokenTrader,
+              args: [],
+              method: 'maxTradeSlippage',
+            },
+            {
+              abi: RevenueTraderInterface,
+              address: rTokenTrader,
+              args: [],
+              method: 'minTradeVolume',
+            },
+            {
+              abi: StRSRInterface,
+              address: stRSRAddress,
+              args: [],
+              method: 'rewardPeriod',
+            },
+            {
+              abi: StRSRInterface,
+              address: stRSRAddress,
+              args: [],
+              method: 'rewardRatio',
+            },
+            {
+              abi: StRSRInterface,
+              address: stRSRAddress,
+              args: [],
+              method: 'unstakingDelay',
+            },
+            {
+              abi: BrokerInterface,
+              address: brokerAddress,
+              args: [],
+              method: 'auctionLength',
+            },
+            {
+              abi: RTokenInterface,
+              address: rToken.address,
+              args: [],
+              method: 'issuanceRate',
+            },
+            {
+              abi: RTokenInterface,
+              address: rToken.address,
+              args: [],
+              method: 'scalingRedemptionRate',
+            },
+            {
+              abi: RTokenInterface,
+              address: rToken.address,
+              args: [],
+              method: 'redemptionRateFloor',
+            },
+            {
+              abi: AssetRegistryInterface,
+              address: assetRegistry,
+              args: [rToken.address],
+              method: 'toAsset',
+            },
+          ],
+          provider
+        )
+
+        const rTokenAssetContract = getContract(
+          rTokenAsset,
+          AssetAbi,
+          provider
+        ) as Asset
+
+        const maxTradeVolume = await rTokenAssetContract.maxTradeVolume()
+
+        setRTokenParams({
+          tradingDelay: tradingDelay.toString(),
+          backingBuffer: (+formatEther(backingBuffer) * 100).toString(),
+          maxTradeSlippage: (+formatEther(maxTradeSlippage) * 100).toString(),
+          minTradeVolume: formatEther(minTradeVolume),
+          rewardPeriod: rewardPeriod.toString(),
+          rewardRatio: formatEther(rewardRatio),
+          unstakingDelay: unstakingDelay.toString(),
+          auctionLength: auctionLength.toString(),
+          issuanceRate: (+formatEther(issuanceRate) * 100).toString(),
+          scalingRedemptionRate: (
+            +formatEther(scalingRedemptionRate) * 100
+          ).toString(),
+          redemptionRateFloor: formatEther(redemptionRateFloor),
+          maxTradeVolume: formatEther(maxTradeVolume),
+          longFreeze: longFreeze.toString(),
+          shortFreeze: shortFreeze.toString(),
+        })
+
+        // Revenue distribution
+        const contract = getContract(distribution, DistributorAbi, provider)
         const events = await contract.queryFilter(
           'DistributionSet(address,uint16,uint16)'
         )
         const dist: StringMap = { external: {}, holders: '', stakers: '' }
         const furnace = '0x0000000000000000000000000000000000000001'
         const stRSR = '0x0000000000000000000000000000000000000002'
-
-        const shareToPercent = (shares: number): string => {
-          return Math.floor((shares * 100) / 10000).toString()
-        }
 
         for (const event of events) {
           if (event.args) {
