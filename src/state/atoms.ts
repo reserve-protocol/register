@@ -12,6 +12,7 @@ import {
   MulticallState,
   RawCall,
   ReserveToken,
+  StringMap,
   TransactionMap,
   TransactionState,
 } from 'types'
@@ -53,7 +54,7 @@ export const reserveTokensAtom = atomWithStorage<{
 export const selectedRTokenAtom = atom('')
 
 // RToken related contracts
-export const rTokenContractsAtom = atomWithReset({
+export const rTokenContractsAtom = atomWithReset<StringMap>({
   main: '',
   backingManager: '',
   rTokenTrader: '',
@@ -81,6 +82,20 @@ export const rTokenParamsAtom = atomWithReset({
   shortFreeze: '',
   longFreeze: '',
   maxTradeVolume: '',
+})
+
+export const rTokenGovernanceAtom = atomWithReset<{
+  name: string
+  governor: string
+  timelock?: string
+  votingDelay?: string
+  votingPeriod?: string
+  proposalThreshold?: string
+  quorum?: string
+  minDelay?: string
+}>({
+  name: 'Custom',
+  governor: '',
 })
 
 export const rTokenBasketAtom = atomWithReset<Basket>({})

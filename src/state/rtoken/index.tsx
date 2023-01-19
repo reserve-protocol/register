@@ -2,6 +2,7 @@ import TokenUpdater from './RTokenUpdater'
 import StateUpdater from './RTokenStateUpdater'
 import SetupUpdater from './RTokenSetupUpdater'
 import RTokenBasketUpdater from './RTokenBasketUpdater'
+import RTokenGovernanceUpdater from './RTokenGovernanceUpdater'
 
 const Updater = () => (
   <>
@@ -9,6 +10,7 @@ const Updater = () => (
     <StateUpdater />
     <SetupUpdater />
     <RTokenBasketUpdater />
+    <RTokenGovernanceUpdater />
   </>
 )
 

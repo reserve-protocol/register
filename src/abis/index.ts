@@ -18,6 +18,8 @@ import RevenueTrader from './revenueTrader.json'
 import Broker from './broker.json'
 import AssetRegistry from './asset-registry.json'
 import Asset from './asset.json'
+import Timelock from './timelock.json'
+import Governance from './governance.json'
 
 const ERC20Interface = new Interface(ERC20)
 const FacadeInterface = new Interface(Facade)
@@ -37,6 +39,8 @@ const RevenueTraderInterface = new Interface(RevenueTrader)
 const BrokerInterface = new Interface(Broker)
 const AssetRegistryInterface = new Interface(AssetRegistry)
 const AssetInterface = new Interface(Asset)
+const TimelockInterface = new Interface(Timelock)
+const GovernanceInterface = new Interface(Governance)
 
 export { ERC20, ERC20Interface }
 export { Facade, FacadeInterface }
@@ -56,6 +60,8 @@ export { RevenueTrader, RevenueTraderInterface }
 export { Broker, BrokerInterface }
 export { AssetRegistry, AssetRegistryInterface }
 export { Asset, AssetInterface }
+export { Timelock, TimelockInterface }
+export { Governance, GovernanceInterface }
 
 // Used for tx management
 export default <StringMap>{

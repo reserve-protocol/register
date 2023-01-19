@@ -12,12 +12,16 @@ import {
   StRSRInterface,
 } from 'abis'
 import { Asset } from 'abis/types'
-import { RevenueSplit, revenueSplitAtom } from 'components/rtoken-setup/atoms'
+import { RevenueSplit } from 'components/rtoken-setup/atoms'
 import { formatEther } from 'ethers/lib/utils'
 import useRToken from 'hooks/useRToken'
 import { useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
-import { rTokenContractsAtom, rTokenParamsAtom } from 'state/atoms'
+import {
+  rTokenContractsAtom,
+  rTokenParamsAtom,
+  rTokenRevenueSplitAtom,
+} from 'state/atoms'
 import { promiseMulticall } from 'state/web3/lib/multicall'
 import { StringMap } from 'types'
 import { getContract } from 'utils'
@@ -34,7 +38,7 @@ const shareToPercent = (shares: number): string => {
 const RTokenSetupUpdater = () => {
   const rToken = useRToken()
   const { provider } = useWeb3React()
-  const setRevenueSplit = useSetAtom(revenueSplitAtom)
+  const setRevenueSplit = useSetAtom(rTokenRevenueSplitAtom)
   const setRTokenParams = useSetAtom(rTokenParamsAtom)
   const setRTokenContracts = useSetAtom(rTokenContractsAtom)
 

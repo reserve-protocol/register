@@ -8,7 +8,8 @@ import { Box, Card, Divider, Flex, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import BackingInfo from './BackingInfo'
 import BasicInfo from './BasicInfo'
-import ListingInfo from './ListingInfo'
+import ContractsInfo from './ContractsInfo'
+import GovernanceInfo from './GovernanceInfo'
 import OtherInfo from './OtherInfo'
 import RevenueSplitInfo from './RevenueSplitInfo'
 
@@ -47,10 +48,10 @@ const RTokenOverview = () => {
         <OtherInfo />
       </SectionWrapper>
       <SectionWrapper navigationIndex={6} mt={4}>
-        <Card p={4}>Governance info</Card>
+        <GovernanceInfo />
       </SectionWrapper>
-      <SectionWrapper navigationIndex={7} mt={4} mb={4}>
-        <ListingInfo />
+      <SectionWrapper navigationIndex={7} mt={4} mb={3}>
+        <ContractsInfo />
       </SectionWrapper>
     </Box>
   )

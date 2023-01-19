@@ -4,7 +4,6 @@ import { MainInterface } from 'abis'
 import { ethers } from 'ethers'
 import { gql } from 'graphql-request'
 import useBlockNumber from 'hooks/useBlockNumber'
-import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import useQuery from 'hooks/useQuery'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
@@ -16,10 +15,7 @@ import {
   accountRoleAtom,
   blockTimestampAtom,
   reserveTokensAtom,
-  rTokenCollateralDist,
-  rTokenDistributionAtom,
   rTokenMainAtom,
-  rTokenStatusAtom,
   rTokenYieldAtom,
   selectedRTokenAtom,
   walletAtom,
@@ -53,12 +49,6 @@ const apyQuery = gql`
     }
   }
 `
-
-const updateTokenAtom = atom(null, (get, set, data: ReserveToken) => {
-  const tokens = get(reserveTokensAtom)
-  set(reserveTokensAtom, { ...tokens, [data.address]: data })
-})
-
 // Try to grab the token meta from theGraph
 // If it fails, get it from the blockchain (only whitelisted tokens)
 // TODO: Loading state?
