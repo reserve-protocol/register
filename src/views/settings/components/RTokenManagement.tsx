@@ -1,12 +1,12 @@
 import { t, Trans } from '@lingui/macro'
-import { FacadeInterface, MainInterface } from 'abis'
+import { MainInterface } from 'abis'
 import GovernanceActionIcon from 'components/icons/GovernanceActionIcon'
 import { ethers } from 'ethers'
 import { useContractCall } from 'hooks/useCall'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useNavigate } from 'react-router-dom'
-import { accountRoleAtom } from 'state/atoms'
+import { accountRoleAtom, rTokenGovernanceAtom } from 'state/atoms'
 import {
   Box,
   BoxProps,
@@ -71,6 +71,7 @@ const GovernancePromp = () => {
 // TODO: detect if it is alexios governance
 const RTokenManagement = () => {
   const rToken = useRToken()
+  const governance = useAtomValue(rTokenGovernanceAtom)
   const govRequired = useContractCall(
     rToken?.main
       ? {
@@ -116,15 +117,20 @@ const RTokenManagement = () => {
       <PauseManager />
       <Divider />
       <FreezeManager />
-      <Divider />
-      <SettingItem
-        title={t`Governance proposals`}
-        subtitle={t`Role held by`}
-        value={t`All stakers`}
-        icon="hammer"
-        action={t`Create proposal`}
-        onAction={handleProposal}
-      />
+      {!!governance.governor && !!governance.timelock && (
+        <>
+          <Divider />
+          <SettingItem
+            title={t`Governance proposals`}
+            subtitle={t`Role held by`}
+            value={t`All stakers`}
+            icon="hammer"
+            action={t`Create proposal`}
+            onAction={handleProposal}
+          />
+        </>
+      )}
+
       {accountRole.owner && (
         <>
           <Divider />
