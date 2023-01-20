@@ -6,14 +6,9 @@ import useRToken from 'hooks/useRToken'
 import useRTokenLogo from 'hooks/useRTokenLogo'
 import { useAtomValue } from 'jotai'
 import { rTokenBalanceAtom } from 'state/atoms'
-import { Box, BoxProps, Divider, Grid, Text } from 'theme-ui'
-import { ReserveToken, Token } from 'types'
+import { Box, Grid, Text } from 'theme-ui'
+import { Token } from 'types'
 import CollateralBalance from './CollateralBalance'
-import PendingIssuances from './PendingIssuances'
-
-interface Props extends BoxProps {
-  rToken: ReserveToken
-}
 
 const CollateralBalances = ({ collaterals }: { collaterals: Token[] }) => (
   <Box p={4} mb={-2}>
@@ -67,12 +62,6 @@ const Balances = () => {
           })}
         >
           <RTokenBalance token={rToken} />
-          {!rToken.isRSV && (
-            <>
-              <Divider m={0} sx={{ borderColor: 'darkBorder' }} />
-              <PendingIssuances token={rToken} />
-            </>
-          )}
         </Box>
       </Grid>
     </Card>

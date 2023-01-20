@@ -247,37 +247,6 @@ export const accountPositionsAtom = atom<AccountPosition[]>([])
 // Store how much RSR is staked for a given account across the whole protocol
 export const accountHoldingsAtom = atom(0)
 
-// List of pending user issuances for the selected rToken
-export const pendingIssuancesAtom = atom<any[]>([])
-export const pendingIssuancesSummary = atom((get) => {
-  const pending = get(pendingIssuancesAtom)
-  const currentBlock = get(blockAtom) ?? 0
-
-  // TODO: Correct timestamp formatting
-  return pending.reduce(
-    (acc, issuance) => {
-      acc.index = issuance.index
-      acc.availableAt = issuance.availableAt
-
-      if (currentBlock >= issuance.availableAt) {
-        acc.availableAmount += issuance.amount
-        acc.availableIndex = issuance.index
-      } else {
-        acc.pendingAmount += issuance.amount
-      }
-
-      return acc
-    },
-    {
-      index: BigNumber.from(0),
-      availableIndex: BigNumber.from(0),
-      pendingAmount: 0,
-      availableAmount: 0,
-      availableAt: 0,
-    }
-  )
-})
-
 // List of unstake cooldown for the selected rToken
 export const pendingRSRAtom = atom<any[]>([])
 export const pendingRSRSummaryAtom = atom((get) => {
