@@ -20,8 +20,8 @@ const NavigationSidebar = () => {
   )
 
   return (
-    <Box variant="layout.sticky">
-      <Navigation title={t`Sections`} sections={sections} />
+    <Box variant="layout.sticky" py={5}>
+      <Navigation sections={sections} />
     </Box>
   )
 }
