@@ -1,12 +1,11 @@
 import { t, Trans } from '@lingui/macro'
-import { InfoHeading } from 'components/info-box'
-import useRToken from 'hooks/useRToken'
+import { InfoItem } from 'components/info-box'
 import { useAtomValue } from 'jotai'
 import { rTokenContractsAtom } from 'state/atoms'
-import { BoxProps, Card, Divider, Text } from 'theme-ui'
+import { BoxProps, Card, Text } from 'theme-ui'
+import { shortenAddress } from 'utils'
 
 const ContractsInfo = (props: BoxProps) => {
-  const rToken = useRToken()
   const contracts = useAtomValue(rTokenContractsAtom)
   const contractList = [
     [t`Main`, 'main'],
@@ -22,19 +21,16 @@ const ContractsInfo = (props: BoxProps) => {
 
   return (
     <Card p={4} {...props}>
-      <Text variant="sectionTitle">
+      <Text variant="sectionTitle" mb={5}>
         <Trans>Related contracts</Trans>
       </Text>
-      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
-
-      <InfoHeading title="RToken" subtitle={rToken?.address} mb={3} />
-
-      {contractList.map(([label, prop]) => (
-        <InfoHeading
+      {contractList.map(([label, prop], index) => (
+        <InfoItem
           key={label}
           title={label}
-          subtitle={contracts[prop]}
-          mb={3}
+          subtitle={shortenAddress(contracts[prop])}
+          address={contracts[prop]}
+          mt={index ? 3 : 0}
         />
       ))}
     </Card>

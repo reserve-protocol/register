@@ -8,10 +8,11 @@ import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 // TODO: Change component structure for "InfoBoxes" or something more generic
 interface Props extends BoxProps {
   title: string
-  subtitle?: any
+  subtitle?: React.ReactNode
   help?: string
   light?: boolean
   address?: string
+  right?: React.ReactNode
   addressType?: ExplorerDataType
 }
 
@@ -70,6 +71,7 @@ export const InfoItem = ({
   subtitle,
   help,
   address,
+  right,
   addressType = ExplorerDataType.ADDRESS,
   ...props
 }: Props) => (
@@ -96,6 +98,11 @@ export const InfoItem = ({
       <Box ml="auto" variant="layout.verticalAlign">
         <CopyValue mr={2} value={address} />
         <GoTo href={getExplorerLink(address, addressType)} />
+      </Box>
+    )}
+    {!!right && (
+      <Box ml="auto" variant="layout.verticalAlign">
+        {right}
       </Box>
     )}
   </Box>

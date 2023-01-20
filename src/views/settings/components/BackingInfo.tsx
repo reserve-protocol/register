@@ -29,7 +29,7 @@ const BackingInfo = () => {
         mb={3}
       />
       <InfoItem
-        title={t`Max trade slippage (%) (s)`}
+        title={t`Max trade slippage (%)`}
         subtitle={params.maxTradeSlippage}
         mb={3}
       />

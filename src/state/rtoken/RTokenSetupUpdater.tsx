@@ -249,11 +249,12 @@ const RTokenSetupUpdater = () => {
             } else {
               const holders = shareToPercent(rTokenDist)
               const stakers = shareToPercent(rsrDist)
+              const total = +holders + +stakers
 
               dist.external[dest] = {
-                holders,
-                stakers,
-                total: (+holders + +stakers).toString(),
+                holders: (+holders * 100) / total,
+                stakers: (+stakers * 100) / total,
+                total: total.toString(),
                 address: dest,
               }
             }

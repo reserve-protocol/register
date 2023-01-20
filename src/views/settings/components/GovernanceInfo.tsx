@@ -1,9 +1,10 @@
-import { Trans } from '@lingui/macro'
-import { InfoHeading } from 'components/info-box'
+import { t, Trans } from '@lingui/macro'
+import { InfoItem } from 'components/info-box'
 
 import { useAtomValue } from 'jotai'
 import { rTokenGovernanceAtom } from 'state/atoms'
 import { BoxProps, Card, Text } from 'theme-ui'
+import { shortenAddress } from 'utils'
 
 const GovernanceInfo = (props: BoxProps) => {
   const governance = useAtomValue(rTokenGovernanceAtom)
@@ -13,44 +14,45 @@ const GovernanceInfo = (props: BoxProps) => {
       <Text mb={5} variant="sectionTitle">
         <Trans>Governance Details</Trans>
       </Text>
+      <InfoItem title={t`Name`} subtitle={governance.name} mb={3} />
 
-      <InfoHeading title="Name" subtitle={governance.name} mb={3} />
-      {governance.governor && (
-        <InfoHeading
-          title="Governor address"
-          subtitle={governance.governor}
-          mb={3}
-        />
-      )}
-      {governance.timelock && (
+      {!!governance.timelock && (
         <>
-          <InfoHeading
-            title="Timelock address"
-            subtitle={governance.timelock}
-            mb={3}
-          />
-          <InfoHeading
-            title="Voting Delay"
+          <InfoItem
+            title={t`Voting Delay`}
             subtitle={governance.votingDelay}
             mb={3}
           />
-          <InfoHeading
-            title="Voting Period"
+          <InfoItem
+            title={t`Voting Period`}
             subtitle={governance.votingPeriod}
             mb={3}
           />
-          <InfoHeading
-            title="Proposal Threshold (%)"
+          <InfoItem
+            title={t`Proposal Threshold (%)`}
             subtitle={governance.proposalThreshold}
             mb={3}
           />
-          <InfoHeading title="Quorum" subtitle={governance.quorum} mb={3} />
-          <InfoHeading
-            title="Minimum Delay"
+          <InfoItem title={t`Quorum`} subtitle={governance.quorum} mb={3} />
+          <InfoItem
+            title={t`Minimum Delay (s)`}
             subtitle={governance.minDelay}
             mb={3}
           />
+          <InfoItem
+            title={t`Timelock address`}
+            subtitle={shortenAddress(governance.timelock)}
+            address={governance.timelock}
+            mb={3}
+          />
         </>
+      )}
+      {!!governance.governor && (
+        <InfoItem
+          title={t`Governor address`}
+          subtitle={shortenAddress(governance.governor)}
+          address={governance.governor}
+        />
       )}
     </Card>
   )
