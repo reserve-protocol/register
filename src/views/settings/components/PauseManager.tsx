@@ -1,16 +1,16 @@
 import { t } from '@lingui/macro'
+import useRToken from 'hooks/useRToken'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
-import { v4 as uuid } from 'uuid'
 import {
   accountRoleAtom,
   addTransactionAtom,
   rTokenStatusAtom,
 } from 'state/atoms'
-import { RTOKEN_STATUS, TRANSACTION_STATUS } from 'utils/constants'
-import SettingItem from './SettingItem'
-import useRToken from 'hooks/useRToken'
 import { useTransaction } from 'state/web3/hooks/useTransactions'
+import { TRANSACTION_STATUS } from 'utils/constants'
+import { v4 as uuid } from 'uuid'
+import SettingItem from './SettingItem'
 
 const PauseManager = () => {
   const rToken = useRToken()

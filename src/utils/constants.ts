@@ -46,6 +46,7 @@ export const ROUTES = Object.freeze({
   WALLET: '/wallet',
   TOKENS: '/tokens',
   GOVERNANCE: '/governance',
+  GOVERNANCE_PROPOSAL: '/governance/proposal',
 })
 
 export const DEPLOYMENT_ROUTES = Object.freeze({})

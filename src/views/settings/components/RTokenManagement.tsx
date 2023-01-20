@@ -67,11 +67,24 @@ const GovernancePromp = () => {
   )
 }
 
-// TODO: Fetch roles from theGraph - display correct address
-// TODO: detect if it is alexios governance
+const RTokenRoleManagement = () => {
+  return (
+    <>
+      <Divider />
+      <PauseManager />
+      <Divider />
+      <FreezeManager />
+    </>
+  )
+}
+
+/**
+ * Manage RToken
+ */
 const RTokenManagement = () => {
   const rToken = useRToken()
   const governance = useAtomValue(rTokenGovernanceAtom)
+  const navigate = useNavigate()
   const govRequired = useContractCall(
     rToken?.main
       ? {
@@ -87,8 +100,11 @@ const RTokenManagement = () => {
   )
   const accountRole = useAtomValue(accountRoleAtom)
 
-  const handleProposal = () => {}
+  const handleProposal = () => {
+    navigate(ROUTES.GOVERNANCE_PROPOSAL)
+  }
 
+  // TODO: Owner edit
   const handleEdit = () => {}
 
   if (govRequired?.value[0] && accountRole.owner) {
@@ -113,10 +129,7 @@ const RTokenManagement = () => {
           if you’re not connected with the address with the right permissions.
         </Text>
       </Flex>
-      <Divider />
-      <PauseManager />
-      <Divider />
-      <FreezeManager />
+      <RTokenRoleManagement />
       {!!governance.governor && !!governance.timelock && (
         <>
           <Divider />
