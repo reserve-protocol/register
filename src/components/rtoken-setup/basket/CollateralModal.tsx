@@ -112,7 +112,7 @@ const CollateralModal = ({
         <Box px={4}>
           <CustomCollateral onAdd={handleAddCustom} />
         </Box>
-        <Divider my={4} />
+        <Divider my={4} sx={{ borderColor: 'darkBorder' }} />
         {Object.values<Collateral | CollateralPlugin>(collaterals).map(
           (plugin) => (
             <Box key={plugin.address}>
@@ -122,7 +122,7 @@ const CollateralModal = ({
                 selected={plugin.custom}
                 onCheck={handleToggle}
               />
-              <Divider my={3} />
+              <Divider my={3} sx={{ borderColor: 'darkBorder' }} />
             </Box>
           )
         )}
@@ -134,7 +134,7 @@ const CollateralModal = ({
           </Box>
         )}
       </Box>
-      <Divider mx={-4} mb={4} />
+      <Divider mx={-4} mb={4} sx={{ borderColor: 'darkBorder' }} />
       <Button
         onClick={handleSubmit}
         disabled={!Object.keys(selected).length}

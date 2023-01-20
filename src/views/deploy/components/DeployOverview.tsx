@@ -129,15 +129,6 @@ const DeployOverview = (props: BoxProps) => (
       </Text>
       <DeployStatus />
     </Flex>
-    <Divider my={3} mx={-4} />
-    <Box>
-      <Text variant="strong" mb={2}>
-        Help title
-      </Text>
-      <Text as="p" variant="legend">
-        Help text
-      </Text>
-    </Box>
   </Container>
 )
 

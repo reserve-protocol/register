@@ -4,7 +4,7 @@ import { SmallButton } from 'components/button'
 import { Box, BoxProps, Flex } from 'theme-ui'
 
 const ListingInfo = (props: BoxProps) => (
-  <Box variant="layout.borderBox" p={5} {...props}>
+  <Box variant="layout.borderBox" p={4} {...props}>
     <InfoBox
       title={t`Register Listing`}
       subtitle={t`Please read more about how Register manage tokens on our repository`}
@@ -31,7 +31,6 @@ const ListingInfo = (props: BoxProps) => (
       subtitle={t`If your token is paused and you have the correct role, you can unpause it here.`}
     />
     <InfoBox
-      mb={3}
       title={t`Roles`}
       subtitle="Please read more about the different roles in Alexios and the Reserve protocol in the documentation."
     />

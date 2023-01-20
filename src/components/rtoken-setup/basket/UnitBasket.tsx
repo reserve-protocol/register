@@ -118,7 +118,7 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
             }
           />
           {!readOnly ? (
-            <Box ml="auto" sx={{ width: 56 }} mr={2}>
+            <Box ml="auto" sx={{ width: 48 }} mr={2}>
               <NumericalInput
                 sx={{ textAlign: 'center' }}
                 variant={

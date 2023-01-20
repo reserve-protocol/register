@@ -13,13 +13,13 @@ const RTokenStatus = () => {
   }
 
   return (
-    <Box ml={3} sx={{ display: ['none', 'block'] }}>
+    <Box ml={0} sx={{ display: ['none', 'block'] }}>
       <Box
         variant="layout.verticalAlign"
         sx={{ color: frozen ? 'danger' : 'warning' }}
       >
-        <AlertCircle size={18} />
-        <Text ml={2}>
+        <AlertCircle size={16} />
+        <Text ml={2} sx={{ fontSize: 1, textTransform: 'uppercase' }}>
           {frozen ? (
             <Trans>RToken is frozen</Trans>
           ) : (

@@ -14,7 +14,7 @@ import {
 } from 'theme-ui'
 import { addressPattern } from 'utils'
 import GovernanceParameters from './GovernanceParameters'
-import DocsLink from 'components/docs-link/docs-link'
+import DocsLink from 'components/docs-link/DocsLink'
 
 interface Props extends BoxProps {
   disabled?: boolean
@@ -28,13 +28,13 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
   return (
     <Card p={4} {...props}>
       <Flex>
-        <Text variant="sectionTitle" px={2}>
+        <Text variant="sectionTitle">
           <Trans>Governance</Trans>
         </Text>
         <DocsLink link="https://reserve.org/protocol/reserve_rights_rsr/#reserve-rights-governance" />
       </Flex>
-      <Divider my={4} mx={-4} />
-      <Box mb={5} px={2}>
+      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+      <Box mb={5}>
         <Image src="/svgs/governance.svg" />
         <Box>
           <Text variant="title" sx={{ display: 'block' }} mb={2}>
@@ -55,8 +55,8 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
           />
         </Box>
       </Box>
-      <Divider my={4} mx={-4} />
-      <Text variant="title" mb={4} px={2}>
+      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+      <Text variant="title" mb={4}>
         <Trans>Permissions</Trans>
       </Text>
       {!defaultGovernance && (
@@ -103,13 +103,13 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
           },
         }}
       />
-      <Divider my={4} mx={-4} />
+      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
       {defaultGovernance && <GovernanceParameters />}
-      <Divider my={4} mx={-4} />
-      <Text variant="title" mb={4} px={2}>
+      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+      <Text variant="title" mb={4}>
         <Trans>Initial RToken state after deployment</Trans>
       </Text>
-      <Field label={t`Pause status`} mb={4}>
+      <Field label={t`Pause status`}>
         <Select {...register('unpause')}>
           <option value={0}>
             <Trans>RToken will be left in pause state</Trans>

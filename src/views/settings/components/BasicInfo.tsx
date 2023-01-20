@@ -12,6 +12,7 @@ const BasicInfo = () => {
 
   return (
     <Card p={4}>
+<<<<<<< HEAD
       <Text variant="sectionTitle">
         <Trans>
           <Trans>Token Details</Trans>
@@ -22,15 +23,27 @@ const BasicInfo = () => {
       <InfoItem title={t`Mandate`} subtitle={rToken?.mandate} mb={3} />
       <InfoItem
         title={t`Token Address`}
+=======
+      <Text variant="sectionTitle">Token Details</Text>
+      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+      <InfoHeading title="Name" subtitle={rToken?.name} mb={3} />
+      <InfoHeading title="Symbol" subtitle={rToken?.symbol} mb={3} />
+      <InfoHeading
+        title="Address"
+>>>>>>> origin/Erik-Alexios
         subtitle={shortenAddress(rToken?.address ?? '')}
         address={rToken?.address}
         mb={3}
       />
+<<<<<<< HEAD
       <InfoItem
         title={timelock ? t`Governor Address` : t`Owner Address`}
         subtitle={shortenAddress(timelock ? timelock : governor)}
         address={timelock || governor}
       />
+=======
+      <InfoHeading title="Mandate" subtitle={rToken?.mandate} />
+>>>>>>> origin/Erik-Alexios
     </Card>
   )
 }

@@ -86,7 +86,7 @@ const GovernanceStatus = () => {
       </Text>
       <Button
         onClick={deploy}
-        variant="accentAction"
+        variant="primary"
         disabled={!isValid || !fee}
         mt={4}
         sx={{ width: '100%' }}

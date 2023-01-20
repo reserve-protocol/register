@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
-import DocsLink from 'components/docs-link/docs-link'
 import Help from 'components/help'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { useAtomValue } from 'jotai'
@@ -9,6 +8,7 @@ import { Box, BoxProps, Divider, Flex, Text } from 'theme-ui'
 import { truncateDecimals } from 'utils'
 import { Basket, basketAtom } from '../atoms'
 import UnitBasket from './UnitBasket'
+import DocsLink from 'components/docs-link/DocsLink'
 
 interface Props extends BoxProps {
   onAdd?(
@@ -66,7 +66,7 @@ const PrimaryBasket = ({
 
   return (
     <Box {...props}>
-      <Flex variant="layout.verticalAlign" px={1}>
+      <Flex variant="layout.verticalAlign">
         <Text variant="sectionTitle">Primary Basket</Text>
         <DocsLink link="https://reserve.org/protocol/monetary_units_baskets/#baskets" />
         {!readOnly && (

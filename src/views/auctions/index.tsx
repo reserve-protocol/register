@@ -2,6 +2,7 @@ import { t, Trans } from '@lingui/macro'
 import { Container } from 'components'
 import { ContentHead } from 'components/info-box'
 import { Table } from 'components/table'
+import About from './About'
 import TokenItem from 'components/token-item'
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
@@ -13,7 +14,7 @@ import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { ArrowUpRight } from 'react-feather'
 import { blockTimestampAtom } from 'state/atoms'
-import { Box, BoxProps, Link, Text } from 'theme-ui'
+import { Box, BoxProps, Link, Text, Divider } from 'theme-ui'
 import { StringMap } from 'types'
 import { formatCurrency } from 'utils'
 import { RSR_ADDRESS } from 'utils/addresses'
@@ -143,8 +144,8 @@ const OutgoingAuctions = ({ data, tokens, ...props }: TableProps) => {
 
   return (
     <Box {...props}>
-      <Text variant="title" sx={{ fontSize: 3 }} ml={5} mb={4}>
-        <Trans>Ongoing Auctions</Trans>
+      <Text variant="strong" ml={3} mb={4}>
+        <Trans>Ongoing</Trans>
       </Text>
       {data.length ? (
         <Table columns={columns} data={data} />
@@ -158,8 +159,12 @@ const OutgoingAuctions = ({ data, tokens, ...props }: TableProps) => {
           }}
           p={6}
         >
-          <Text>
-            <Trans>No ongoing auctions</Trans>
+          <Text variant="legend">
+            <Trans>
+              No ongoing {rToken?.symbol || 'Unknown'}-related auctions. Someone
+              has to check surplus revenue and poke the protocol to start a new
+              auction.
+            </Trans>
           </Text>
         </Box>
       )}
@@ -233,8 +238,8 @@ const FinalizedAuctions = ({ data, tokens, ...props }: TableProps) => {
 
   return (
     <Box {...props}>
-      <Text variant="title" sx={{ fontSize: 3 }} ml={5} mb={4}>
-        <Trans>Ended Auctions</Trans>
+      <Text variant="strong" ml={3} mb={4}>
+        <Trans>Ended</Trans>
       </Text>
       {data.length ? (
         <Table columns={columns} data={data} />
@@ -248,8 +253,10 @@ const FinalizedAuctions = ({ data, tokens, ...props }: TableProps) => {
           }}
           p={6}
         >
-          <Text>
-            <Trans>No ended auctions</Trans>
+          <Text variant="legend">
+            <Trans>
+              No ended {rToken?.symbol || 'Unknown'} related auctions
+            </Trans>
           </Text>
         </Box>
       )}{' '}
@@ -298,14 +305,12 @@ const Auctions = () => {
 
   return (
     <Container>
-      <ContentHead
-        title={(rToken?.symbol || 'Unknown') + ' ' + t`related Auctions`}
-        subtitle={t`Ongoing & historical auctions`}
-        mb={7}
-        ml={5}
-      />
+      <ContentHead title={`Auctions`} mb={7} ml={3} />
+
       <OutgoingAuctions data={rows.current} tokens={tokens} mb={7} />
       <FinalizedAuctions data={rows.ended} tokens={tokens} />
+      <Divider mx={-5} my={6} />
+      <About />
     </Container>
   )
 }

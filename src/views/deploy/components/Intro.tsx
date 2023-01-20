@@ -4,13 +4,10 @@ import { Text, BoxProps, Card, Flex } from 'theme-ui'
 import DeployIntro from 'components/icons/DeployIntroIcon'
 
 const Intro = (props: BoxProps) => (
-  <Card p={5} {...props} sx={{ position: 'relative' }}>
+  <Card p={4} pt={5} {...props} sx={{ position: 'relative' }}>
     <DeployIntro />
     <Text variant="sectionTitle" mb={2} mt={2}>
-      <Trans>
-        Launch your own asset backed currency <br />
-        with our deployer UI
-      </Trans>
+      <Trans>Launch your asset backet RToken</Trans>
     </Text>
     <Text as="p" variant="legend" pr={4}>
       <Trans>

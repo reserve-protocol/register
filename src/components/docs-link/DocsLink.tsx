@@ -1,4 +1,4 @@
-import { Box, BoxProps } from 'theme-ui'
+import { Box, Flex, BoxProps } from 'theme-ui'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 
 interface Props extends BoxProps {
@@ -8,14 +8,13 @@ interface Props extends BoxProps {
 
 const DocsLink = ({ link }: Props) => {
   return (
-    <Box
+    <Flex
       onClick={() => window.open(link, '_blank')}
       sx={{ cursor: 'pointer' }}
-      pt={2}
       ml={2}
     >
       <ExternalArrowIcon />
-    </Box>
+    </Flex>
   )
 }
 

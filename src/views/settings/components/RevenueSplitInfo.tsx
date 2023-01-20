@@ -13,19 +13,19 @@ const RevenueSplitInfo = (props: BoxProps) => {
       <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
 
       <InfoHeading
-        title="Holders"
+        title="To holders"
         subtitle={`${distribution.holders}%`}
         mb={3}
       />
       <InfoHeading
-        title="Stakers"
+        title="To Stakers"
         subtitle={`${distribution.stakers}%`}
         mb={3}
       />
       {distribution.external.map((dist) => (
         <InfoHeading
           key={dist.address}
-          title={shortenAddress(dist.address)}
+          title={dist.address}
           subtitle={`${dist.total}%`}
           mb={3}
         />

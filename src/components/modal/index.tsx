@@ -15,10 +15,10 @@ export interface ModalProps {
 const StyledDialog = styled((props: any) => <Dialog {...props} />)`
   &[data-reach-dialog-content] {
     width: 'auto';
-    background-color: ${({ theme }) => theme.colors.background};
+    background-color: ${({ theme }) => theme.colors.contentBackground};
     padding: ${({ theme }) => theme.space[4]}px;
     border-radius: 12px;
-    box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.2);
     position: absolute;
     left: 50%;
     top: 50%;
@@ -71,7 +71,9 @@ const Modal = ({
               />
             )}
           </Flex>
-          {!!title && <Divider mx={-4} mb={3} />}
+          {!!title && (
+            <Divider mx={-4} mb={3} sx={{ borderColor: 'darkBorder' }} />
+          )}
         </>
       )}
       {children}

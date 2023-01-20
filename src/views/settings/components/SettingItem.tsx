@@ -1,6 +1,6 @@
 import { t } from '@lingui/macro'
 import { LoadingButton } from 'components/button'
-import { Box, BoxProps, Image, Text } from 'theme-ui'
+import { Box, Flex, BoxProps, Image, Text } from 'theme-ui'
 
 interface ItemProps extends BoxProps {
   icon?: string
@@ -25,39 +25,47 @@ const SettingItem = ({
   ...props
 }: ItemProps) => {
   return (
-    <Box variant="layout.verticalAlign" {...props}>
-      {!!icon ? (
-        <Image src={`/svgs/${icon}.svg`} height={14} width={14} />
-      ) : (
-        <Box
-          mx={1}
-          sx={{
-            height: '6px',
-            width: '6px',
-            borderRadius: '100%',
-            backgroundColor: 'text',
-          }}
-        />
-      )}
-      <Box ml={3}>
-        <Text>{title}</Text>
-        <Box sx={{ fontSize: 1 }}>
-          <Text variant="legend">{subtitle}</Text>
-          {!!value && <Text ml={1}>{value}</Text>}
+    <Flex
+      variant="layout.verticalAlign"
+      sx={{ justifyContent: 'space-between' }}
+      {...props}
+    >
+      <Flex variant="layout.verticalAlign">
+        {!!icon ? (
+          <Image src={`/svgs/${icon}.svg`} height={16} width={16} />
+        ) : (
+          <Box
+            mx={'7px'}
+            sx={{
+              height: '3px',
+              width: '3px',
+              borderRadius: '100%',
+              backgroundColor: '#808080',
+            }}
+          />
+        )}
+        <Box ml={3}>
+          <Text>{title}</Text>
+          <Box sx={{ fontSize: 1 }}>
+            <Text variant="legend">{subtitle}</Text>
+            {!!value && <Text ml={1}>{value}</Text>}
+          </Box>
         </Box>
+      </Flex>
+      <Box ml={4} mt={2}>
+        {!!action && (
+          <LoadingButton
+            small
+            loading={loading}
+            loadingText={t`Loading...`}
+            text={action}
+            ml="auto"
+            variant={loading ? 'accentAction' : actionVariant}
+            onClick={onAction}
+          />
+        )}
       </Box>
-      {!!action && (
-        <LoadingButton
-          small
-          loading={loading}
-          loadingText={t`Loading...`}
-          text={action}
-          ml="auto"
-          variant={loading ? 'accentAction' : actionVariant}
-          onClick={onAction}
-        />
-      )}
-    </Box>
+    </Flex>
   )
 }
 

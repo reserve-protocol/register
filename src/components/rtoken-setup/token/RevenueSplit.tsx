@@ -6,7 +6,7 @@ import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Plus } from 'react-feather'
 import { useForm } from 'react-hook-form'
-import DocsLink from 'components/docs-link/docs-link'
+import DocsLink from 'components/docs-link/DocsLink'
 import { Box, BoxProps, Card, Divider, Flex, Text, Link } from 'theme-ui'
 import {
   ExternalAddressSplit,
@@ -90,7 +90,7 @@ const RevenueSplit = (props: BoxProps) => {
   return (
     <Card p={4} {...props}>
       <Flex>
-        <Text ml={2} variant="sectionTitle">
+        <Text variant="sectionTitle">
           <Trans>Revenue Distribution</Trans>
         </Text>
         <DocsLink link="https://reserve.org/protocol/protocol_operations/#revenue-handling" />

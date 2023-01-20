@@ -98,7 +98,7 @@ const FreezeManager = () => {
   return (
     <>
       <SettingItem
-        title={isFrozen ? t`RToken is frozen` : t`RToken is not frozen`}
+        title={t`Freeze State`}
         subtitle={t`Current status:`}
         value={isFrozen ? t`Frozen` : t`Not frozen`}
         icon="freeze"
@@ -112,14 +112,14 @@ const FreezeManager = () => {
         title={t`Short Freeze`}
         subtitle={t`Role held by:`}
         value="0xfb...0344"
-        action={!isFrozen && accountRole.shortFreezer ? t`Freeze` : ''}
+        action={!isFrozen && accountRole.shortFreezer ? t`Short Freeze` : ''}
         onAction={handleFreeze}
         actionVariant="danger"
         loading={!!tx && !freezeType}
-        mb={3}
       />
       <SettingItem
         title={t`Long Freeze`}
+        mt={3}
         subtitle={t`Role held by:`}
         value="0xfb...0344"
         action={
