@@ -13,9 +13,7 @@ const BasicInfo = () => {
   return (
     <Card p={4}>
       <Text variant="sectionTitle" mb={5}>
-        <Trans>
-          <Trans>Token Details</Trans>
-        </Trans>
+        <Trans>Token Details</Trans>
       </Text>
       <InfoItem title={t`Name`} subtitle={rToken?.name} mb={3} />
       <InfoItem title={t`Symbol`} subtitle={rToken?.symbol} mb={3} />

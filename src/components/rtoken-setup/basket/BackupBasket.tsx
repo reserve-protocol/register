@@ -60,12 +60,8 @@ const BackupBasket = ({
   readOnly = false,
   ...props
 }: Props) => {
-  const targetUnits = Object.keys(
-    readOnly ? useAtomValue(rTokenBasketAtom) : useAtomValue(basketAtom)
-  )
-  const backupBasket = readOnly
-    ? useAtomValue(rtokenBackupAtom)
-    : useAtomValue(backupCollateralAtom)
+  const targetUnits = Object.keys(useAtomValue(basketAtom))
+  const backupBasket = useAtomValue(backupCollateralAtom)
 
   const handleAdd = useCallback(
     (targetUnit: string) => {

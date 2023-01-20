@@ -4,11 +4,12 @@ import { Text, BoxProps, Box } from 'theme-ui'
 interface Props extends BoxProps {
   symbol: string
   logo?: string
+  size?: number
 }
 
-const TokenItem = ({ symbol, logo, ...props }: Props) => (
+const TokenItem = ({ symbol, logo, size = 20, ...props }: Props) => (
   <Box variant="layout.verticalAlign">
-    <TokenLogo size={20} mr={2} symbol={symbol} src={logo} />
+    <TokenLogo size={size} mr={2} symbol={symbol} src={logo} />
     <Text {...props}>{symbol}</Text>
   </Box>
 )

@@ -13,7 +13,7 @@ const RTokenStatus = () => {
   }
 
   return (
-    <Box ml={0} sx={{ display: ['none', 'block'] }}>
+    <Box sx={{ display: ['none', 'block'] }}>
       <Box
         variant="layout.verticalAlign"
         sx={{ color: frozen ? 'danger' : 'warning' }}

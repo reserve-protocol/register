@@ -1,14 +1,13 @@
-import { Trans } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
+import DocsLink from 'components/docs-link/DocsLink'
 import Help from 'components/help'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { useAtomValue } from 'jotai'
-import { rTokenBasketAtom } from 'state/atoms'
 import { Box, BoxProps, Divider, Flex, Text } from 'theme-ui'
 import { truncateDecimals } from 'utils'
 import { Basket, basketAtom } from '../atoms'
 import UnitBasket from './UnitBasket'
-import DocsLink from 'components/docs-link/DocsLink'
 
 interface Props extends BoxProps {
   onAdd?(
@@ -59,9 +58,7 @@ const PrimaryBasket = ({
   readOnly = false,
   ...props
 }: Props) => {
-  const setupBasket = useAtomValue(basketAtom)
-  const stateBasket = useAtomValue(rTokenBasketAtom)
-  const basket = readOnly ? stateBasket : setupBasket
+  const basket = useAtomValue(basketAtom)
   const units = Object.keys(basket)
 
   return (
@@ -103,7 +100,7 @@ const PrimaryBasket = ({
               ml={2}
               size={14}
               mt="1px"
-              content="Total initial RToken scale including all targets. If your RToken only has one target unit this will be the same as the basket scale input."
+              content={t`Total initial RToken scale including all targets. If your RToken only has one target unit this will be the same as the basket scale input.`}
             />
           </Flex>
         </>
