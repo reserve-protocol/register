@@ -1,50 +1,52 @@
-import { InfoHeading } from 'components/info-box'
+import { t } from '@lingui/macro'
+import { InfoItem } from 'components/info-box'
 import { useAtomValue } from 'jotai'
 import { rTokenParamsAtom } from 'state/atoms'
-import { Card, Divider, Text } from 'theme-ui'
+import { Card, Text } from 'theme-ui'
+import { formatCurrency } from 'utils'
 
 const OtherInfo = () => {
   const params = useAtomValue(rTokenParamsAtom)
 
   return (
     <Card p={4}>
-      <Text variant="sectionTitle">Other Parameters</Text>
-      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+      <Text variant="sectionTitle" mb={5}>
+        Other Parameters
+      </Text>
 
-      <InfoHeading
-        title="Short freeze duration (s)"
+      <InfoItem
+        title={t`Short freeze duration (s)`}
         subtitle={params.shortFreeze}
         mb={3}
       />
-      <InfoHeading
-        title="Long freeze duration (s)"
+      <InfoItem
+        title={t`Long freeze duration (s)`}
         subtitle={params.longFreeze}
         mb={3}
       />
-      <InfoHeading
-        title="Unstaking Delay (s)"
+      <InfoItem
+        title={t`Unstaking Delay (s)`}
         subtitle={params.unstakingDelay}
         mb={3}
       />
-      <InfoHeading
-        title="Reward period (s)"
+      <InfoItem
+        title={t`Reward period (s)`}
         subtitle={params.rewardPeriod}
         mb={3}
       />
-      <InfoHeading
-        title="Reward ratio (decimals)"
+      <InfoItem
+        title={t`Reward ratio (decimals)`}
         subtitle={params.rewardRatio}
         mb={3}
       />
-      <InfoHeading
-        title="Minimum trade volume"
+      <InfoItem
+        title={t`"Minimum trade volume`}
         subtitle={params.minTradeVolume}
         mb={3}
       />
-      <InfoHeading
-        title="RToken Maximum trade volume"
-        subtitle={params.maxTradeVolume}
-        mb={3}
+      <InfoItem
+        title={t`RToken Maximum trade volume`}
+        subtitle={formatCurrency(+params.maxTradeVolume)}
       />
     </Card>
   )

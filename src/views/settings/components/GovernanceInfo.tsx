@@ -1,16 +1,18 @@
+import { Trans } from '@lingui/macro'
 import { InfoHeading } from 'components/info-box'
 
 import { useAtomValue } from 'jotai'
 import { rTokenGovernanceAtom } from 'state/atoms'
-import { BoxProps, Card, Divider, Text } from 'theme-ui'
+import { BoxProps, Card, Text } from 'theme-ui'
 
 const GovernanceInfo = (props: BoxProps) => {
   const governance = useAtomValue(rTokenGovernanceAtom)
 
   return (
-    <Card p={4}>
-      <Text variant="sectionTitle">Governance Details</Text>
-      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+    <Card p={4} {...props}>
+      <Text mb={5} variant="sectionTitle">
+        <Trans>Governance Details</Trans>
+      </Text>
 
       <InfoHeading title="Name" subtitle={governance.name} mb={3} />
       {governance.governor && (
