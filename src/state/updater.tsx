@@ -18,7 +18,6 @@ import {
   chainIdAtom,
   ethPriceAtom,
   gasPriceAtom,
-  pendingIssuancesAtom,
   pendingRSRAtom,
   rsrExchangeRateAtom,
   rsrPriceAtom,
@@ -127,23 +126,13 @@ const PendingBalancesUpdater = () => {
   const account = useAtomValue(walletAtom)
   const chainId = useAtomValue(chainIdAtom)
   const rToken = useAtomValue(rTokenAtom)
-  const setPendingIssuances = useSetAtom(pendingIssuancesAtom)
   const setPendingRSR = useSetAtom(pendingRSRAtom)
   const facadeContract = useFacadeContract()
   const blockNumber = useBlockNumber()
 
-  // TODO: Use multicall for this
   const fetchPending = useCallback(
     async (account: string, rToken: string, facade: Facade) => {
       try {
-        const pendingIssuances = await facade.pendingIssuances(rToken, account)
-        const pending = pendingIssuances.map((issuance) => ({
-          availableAt: parseInt(formatEther(issuance.availableAt)),
-          index: issuance.index,
-          amount: parseFloat(formatEther(issuance.amount)),
-        }))
-        setPendingIssuances(pending)
-
         const pendingRSR = await facade.pendingUnstakings(rToken, account)
         const pendingRSRSummary = pendingRSR.map((item) => ({
           availableAt: item.availableAt.toNumber(),
@@ -163,7 +152,6 @@ const PendingBalancesUpdater = () => {
     if (rToken && !rToken.isRSV && facadeContract && blockNumber && account) {
       fetchPending(account, rToken.address, facadeContract)
     } else {
-      setPendingIssuances([])
       setPendingRSR([])
     }
   }, [rToken?.address, facadeContract, account, blockNumber, chainId])
