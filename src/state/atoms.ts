@@ -5,18 +5,24 @@ import { CHAIN_ID } from 'utils/chains'
  */
 import { BigNumber } from '@ethersproject/bignumber'
 import { atom } from 'jotai'
-import { atomWithStorage, createJSONStorage } from 'jotai/utils'
+import { atomWithReset, atomWithStorage, createJSONStorage } from 'jotai/utils'
 import {
   AccountPosition,
   AccountToken,
   MulticallState,
   RawCall,
   ReserveToken,
+  StringMap,
   TransactionMap,
   TransactionState,
 } from 'types'
-import { RSR, RTOKEN_STATUS, TRANSACTION_STATUS } from 'utils/constants'
+import { RSR, TRANSACTION_STATUS } from 'utils/constants'
 import { WalletTransaction } from './../types/index'
+import {
+  BackupBasket,
+  Basket,
+  RevenueSplit,
+} from 'components/rtoken-setup/atoms'
 
 /**
  * ######################
@@ -46,6 +52,59 @@ export const reserveTokensAtom = atomWithStorage<{
 
 // Current selected rToken address
 export const selectedRTokenAtom = atom('')
+
+// RToken related contracts
+export const rTokenContractsAtom = atomWithReset<StringMap>({
+  main: '',
+  backingManager: '',
+  rTokenTrader: '',
+  rsrTrader: '',
+  broker: '',
+  assetRegistry: '',
+  stRSR: '',
+  furnace: '',
+  rTokenAsset: '',
+  distributor: '',
+})
+
+export const rTokenParamsAtom = atomWithReset({
+  tradingDelay: '',
+  backingBuffer: '',
+  maxTradeSlippage: '',
+  minTradeVolume: '',
+  rewardPeriod: '',
+  rewardRatio: '',
+  unstakingDelay: '',
+  auctionLength: '',
+  issuanceRate: '',
+  scalingRedemptionRate: '',
+  redemptionRateFloor: '',
+  shortFreeze: '',
+  longFreeze: '',
+  maxTradeVolume: '',
+})
+
+export const rTokenGovernanceAtom = atomWithReset<{
+  name: string
+  governor: string
+  timelock?: string
+  votingDelay?: string
+  votingPeriod?: string
+  proposalThreshold?: string
+  quorum?: string
+  minDelay?: string
+}>({
+  name: 'Custom',
+  governor: '',
+})
+
+export const rTokenBasketAtom = atomWithReset<Basket>({})
+export const rtokenBackupAtom = atomWithReset<BackupBasket>({})
+export const rTokenRevenueSplitAtom = atomWithReset<RevenueSplit>({
+  holders: '40', // %
+  stakers: '60', // %
+  external: [],
+})
 
 // Grab rToken data from the atom list
 export const rTokenAtom = atom<ReserveToken | null>((get) =>

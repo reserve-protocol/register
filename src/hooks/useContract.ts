@@ -5,6 +5,7 @@ import {
   ERC20 as ERC20Abi,
   Facade as FacadeAbi,
   FacadeWrite as FacadeWriteAbi,
+  Timelock as TimelockAbi,
   RToken as RTokenAbi,
   StRSR as StRSRAbi,
   Main as MainAbi,
@@ -21,6 +22,7 @@ import {
   FacadeWrite,
   Main,
   Distributor,
+  Timelock,
 } from '../abis/types'
 import { getContract } from '../utils'
 import { FACADE_ADDRESS, FACADE_WRITE_ADDRESS } from './../utils/addresses'
@@ -100,6 +102,17 @@ export function useDistributorContract(
   return useContract<Distributor>(
     distributorAddress,
     DistributorAbi,
+    withSignerIfPossible
+  )
+}
+
+export function useTimelockContract(
+  timelockAddress?: string,
+  withSignerIfPossible?: boolean
+): Timelock | null {
+  return useContract<Timelock>(
+    timelockAddress,
+    TimelockAbi,
     withSignerIfPossible
   )
 }

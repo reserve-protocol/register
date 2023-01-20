@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { useAtomValue } from 'jotai'
 import { useCallback } from 'react'
+import { rtokenBackupAtom, rTokenBasketAtom } from 'state/atoms'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { backupCollateralAtom, basketAtom } from '../atoms'
 import EmergencyCollateral from './EmergencyCollateral'
@@ -49,6 +50,7 @@ const Placeholder = () => (
   </Box>
 )
 
+// TODO: Create readonly component and remove flag
 /**
  * View: Deploy -> BasketSetup
  * Show emergency collateral per target unit
@@ -58,8 +60,12 @@ const BackupBasket = ({
   readOnly = false,
   ...props
 }: Props) => {
-  const targetUnits = Object.keys(useAtomValue(basketAtom))
-  const backupBasket = useAtomValue(backupCollateralAtom)
+  const targetUnits = Object.keys(
+    readOnly ? useAtomValue(rTokenBasketAtom) : useAtomValue(basketAtom)
+  )
+  const backupBasket = readOnly
+    ? useAtomValue(rtokenBackupAtom)
+    : useAtomValue(backupCollateralAtom)
 
   const handleAdd = useCallback(
     (targetUnit: string) => {

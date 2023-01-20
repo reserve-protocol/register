@@ -1,7 +1,7 @@
 import { InfoHeading } from 'components/info-box'
 import { useAtomValue } from 'jotai'
+import { rTokenParamsAtom } from 'state/atoms'
 import { Card, Divider, Text } from 'theme-ui'
-import { rTokenParamsAtom } from '../atoms'
 
 const OtherInfo = () => {
   const params = useAtomValue(rTokenParamsAtom)

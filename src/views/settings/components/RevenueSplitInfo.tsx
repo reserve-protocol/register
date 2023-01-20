@@ -1,11 +1,11 @@
 import { InfoHeading } from 'components/info-box'
-import { revenueSplitAtom } from 'components/rtoken-setup/atoms'
 import { useAtomValue } from 'jotai'
+import { rTokenRevenueSplitAtom } from 'state/atoms'
 import { BoxProps, Card, Text, Divider } from 'theme-ui'
 import { shortenAddress } from 'utils'
 
 const RevenueSplitInfo = (props: BoxProps) => {
-  const distribution = useAtomValue(revenueSplitAtom)
+  const distribution = useAtomValue(rTokenRevenueSplitAtom)
 
   return (
     <Card p={4} {...props}>

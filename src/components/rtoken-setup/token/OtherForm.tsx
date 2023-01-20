@@ -1,8 +1,6 @@
-import { t, Trans } from '@lingui/macro'
-import Field, { FormField } from 'components/field'
-import { useState } from 'react'
-import { useFormContext } from 'react-hook-form'
-import { Box, BoxProps, Slider, Text } from 'theme-ui'
+import { t } from '@lingui/macro'
+import { FormField } from 'components/field'
+import { Box, BoxProps } from 'theme-ui'
 import { decimalPattern, numberPattern } from 'utils'
 
 /**
