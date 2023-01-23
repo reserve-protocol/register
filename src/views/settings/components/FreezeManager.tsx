@@ -13,6 +13,9 @@ import { v4 as uuid } from 'uuid'
 import RolesView from './RolesView'
 import SettingItem from './SettingItem'
 
+/**
+ * View: Settings > Display RToken actions for freezers and long freezers
+ */
 const FreezeManager = ({
   freezers,
   longFreezers,

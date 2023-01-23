@@ -1,7 +1,7 @@
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { Divider as _Divider } from 'theme-ui'
 import FreezeManager from './FreezeManager'
 import PauseManager from './PauseManager'
@@ -18,6 +18,9 @@ const query = gql`
   }
 `
 
+/**
+ * View: Settings > Wrap pausers/freezers actions components
+ */
 const RoleActions = () => {
   const rToken = useRToken()
   const { data } = useQuery(rToken?.address ? query : null, {

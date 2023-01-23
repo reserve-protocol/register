@@ -7,6 +7,9 @@ import { Box, BoxProps, Card, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
+/**
+ * View: Settings > Display RToken revenue split (addresses)
+ */
 const RevenueSplitInfo = (props: BoxProps) => {
   const distribution = useAtomValue(rTokenRevenueSplitAtom)
 

@@ -1,6 +1,5 @@
 import { t, Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
-import BackButton from 'components/rtoken-setup/components/BackButton'
 import Navigation from 'components/section-navigation/Navigation'
 import useRToken from 'hooks/useRToken'
 import { useMemo } from 'react'

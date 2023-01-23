@@ -13,6 +13,9 @@ import { v4 as uuid } from 'uuid'
 import RolesView from './RolesView'
 import SettingItem from './SettingItem'
 
+/**
+ * View: Settings > Actions for an Rtoken pauser (pause/unpause)
+ */
 const PauseManager = ({ pausers }: { pausers: string[] }) => {
   const rToken = useRToken()
   const accountRole = useAtomValue(accountRoleAtom)

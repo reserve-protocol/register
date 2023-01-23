@@ -1,11 +1,13 @@
 import { t, Trans } from '@lingui/macro'
 import { InfoItem } from 'components/info-box'
-
 import { useAtomValue } from 'jotai'
 import { rTokenGovernanceAtom } from 'state/atoms'
 import { BoxProps, Card, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 
+/**
+ * View: Settings > Display RToken governance configuration
+ */
 const GovernanceInfo = (props: BoxProps) => {
   const governance = useAtomValue(rTokenGovernanceAtom)
 

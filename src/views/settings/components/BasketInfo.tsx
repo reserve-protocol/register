@@ -6,6 +6,9 @@ import { rTokenBasketAtom } from 'state/atoms'
 import { Box, BoxProps, Card, Text } from 'theme-ui'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
+/**
+ * View: Settings > Display RToken primary basket composition
+ */
 const BasketInfo = (props: BoxProps) => {
   const basket = useAtomValue(rTokenBasketAtom)
   const units = Object.keys(basket)

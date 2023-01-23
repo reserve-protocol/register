@@ -22,6 +22,9 @@ const RoleList = ({ roles }: { roles: string[] }) => {
   )
 }
 
+/**
+ * View: Settings > Display RToken role list
+ */
 const RolesView = ({ roles }: { roles: string[] }) => {
   const [isVisible, setVisible] = useState(false)
 

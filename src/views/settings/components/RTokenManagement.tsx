@@ -32,8 +32,9 @@ const Container = ({ children }: BoxProps) => (
   </Box>
 )
 
-const GovernancePromp = () => {
+const GovernancePrompt = () => {
   const navigate = useNavigate()
+  const rToken = useRToken()
 
   return (
     <Container>
@@ -49,11 +50,15 @@ const GovernancePromp = () => {
           <Trans>Governance setup required</Trans>
         </Text>
         <Text variant="legend" as="p" mt={2} sx={{ textAlign: 'center' }}>
-          Please complete the required governance configuration to start using
-          your RToken
+          <Trans>
+            Please complete the required governance configuration to start using
+            your RToken
+          </Trans>
         </Text>
         <Button
-          onClick={() => navigate(ROUTES.GOVERNANCE_SETUP)}
+          onClick={() =>
+            navigate(ROUTES.GOVERNANCE_SETUP + `?token=${rToken?.address}`)
+          }
           mt={4}
           sx={{ width: '100%' }}
         >
@@ -94,7 +99,7 @@ const RTokenManagement = () => {
   const handleEdit = () => {}
 
   if (govRequired?.value[0] && accountRole.owner) {
-    return <GovernancePromp />
+    return <GovernancePrompt />
   }
 
   return (

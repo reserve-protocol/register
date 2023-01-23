@@ -5,6 +5,9 @@ import { rTokenContractsAtom } from 'state/atoms'
 import { BoxProps, Card, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 
+/**
+ * View: Settings > Display RToken related contracts
+ */
 const ContractsInfo = (props: BoxProps) => {
   const contracts = useAtomValue(rTokenContractsAtom)
   const contractList = [
