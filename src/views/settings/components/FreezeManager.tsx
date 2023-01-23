@@ -10,9 +10,16 @@ import {
 import { useTransaction } from 'state/web3/hooks/useTransactions'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
+import RolesView from './RolesView'
 import SettingItem from './SettingItem'
 
-const FreezeManager = () => {
+const FreezeManager = ({
+  freezers,
+  longFreezers,
+}: {
+  freezers: string[]
+  longFreezers: string[]
+}) => {
   const [txId, setTx] = useState('')
   const [freezeType, setFreezeType] = useState(0) // 0 = short -- 1 = long
   const tx = useTransaction(txId)
@@ -111,7 +118,7 @@ const FreezeManager = () => {
       <SettingItem
         title={t`Short Freeze`}
         subtitle={t`Role held by:`}
-        value="0xfb...0344"
+        value={<RolesView roles={freezers} />}
         action={!isFrozen && accountRole.shortFreezer ? t`Short Freeze` : ''}
         onAction={handleFreeze}
         actionVariant="danger"
@@ -121,7 +128,7 @@ const FreezeManager = () => {
         title={t`Long Freeze`}
         mt={3}
         subtitle={t`Role held by:`}
-        value="0xfb...0344"
+        value={<RolesView roles={longFreezers} />}
         action={
           !isFrozen && (accountRole.longFreezer || accountRole.owner)
             ? t`Long Freeze`

@@ -6,7 +6,7 @@ interface ItemProps extends BoxProps {
   icon?: string
   title: string
   subtitle: string
-  value?: string
+  value?: string | JSX.Element
   action?: string
   actionVariant?: string
   loading?: boolean
@@ -46,7 +46,7 @@ const SettingItem = ({
         )}
         <Box ml={3}>
           <Text>{title}</Text>
-          <Box sx={{ fontSize: 1 }}>
+          <Box sx={{ fontSize: 1 }} variant="layout.verticalAlign">
             <Text variant="legend">{subtitle}</Text>
             {!!value && <Text ml={1}>{value}</Text>}
           </Box>

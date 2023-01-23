@@ -10,9 +10,10 @@ import {
 import { useTransaction } from 'state/web3/hooks/useTransactions'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
+import RolesView from './RolesView'
 import SettingItem from './SettingItem'
 
-const PauseManager = () => {
+const PauseManager = ({ pausers }: { pausers: string[] }) => {
   const rToken = useRToken()
   const accountRole = useAtomValue(accountRoleAtom)
   const { paused: isPaused } = useAtomValue(rTokenStatusAtom)
@@ -65,7 +66,7 @@ const PauseManager = () => {
       <SettingItem
         title="RToken pauser"
         subtitle={t`Role held by:`}
-        value="0xfb...0344"
+        value={<RolesView roles={pausers} />}
         action={accountRole.pauser || accountRole.owner ? pauseActionLabel : ''}
         onAction={handlePause}
         loading={!!txId}

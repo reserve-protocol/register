@@ -23,6 +23,7 @@ import { ROUTES } from 'utils/constants'
 import FreezeManager from './FreezeManager'
 import PauseManager from './PauseManager'
 import SettingItem from './SettingItem'
+import RoleActions from './RoleActions'
 
 const Divider = () => <_Divider sx={{ borderColor: 'border' }} my={4} mx={-4} />
 
@@ -63,17 +64,6 @@ const GovernancePromp = () => {
         </Button>
       </Flex>
     </Container>
-  )
-}
-
-const RTokenRoleManagement = () => {
-  return (
-    <>
-      <Divider />
-      <PauseManager />
-      <Divider />
-      <FreezeManager />
-    </>
   )
 }
 
@@ -118,7 +108,7 @@ const RTokenManagement = () => {
         </Text>
         <DocsLink link="https://reserve.org/" />
       </Flex>
-      <RTokenRoleManagement />
+      <RoleActions />
       {!!governance.governor && !!governance.timelock && (
         <>
           <Divider />

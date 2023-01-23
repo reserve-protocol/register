@@ -1,9 +1,6 @@
-import Popup from 'components/popup'
-import { MouseoverTooltip } from 'components/tooltip'
-import { useState } from 'react'
-import { HelpCircle } from 'react-feather'
-import { Box, BoxProps } from 'theme-ui'
 import HelpIcon from 'components/icons/HelpIcon'
+import { MouseoverTooltip } from 'components/tooltip'
+import { Box, BoxProps } from 'theme-ui'
 
 interface Props extends BoxProps {
   content: any
