@@ -28,7 +28,7 @@ const RolesView = ({ roles }: { roles: string[] }) => {
   if (roles.length <= 1) {
     return (
       <Box variant="layout.verticalAlign">
-        <Text>{shortenAddress(roles[0]) || 'None'}</Text>
+        <Text>{roles[0] ? shortenAddress(roles[0]) : 'None'}</Text>
         {!!roles[0] && <GoTo ml={2} href={roles[0]} />}
       </Box>
     )

@@ -16,6 +16,7 @@ const useIsSidebarVisible = () => {
     pathname.indexOf(ROUTES.DEPLOY) !== -1 ||
     pathname.toLowerCase() === ROUTES.GOVERNANCE ||
     pathname.toLowerCase() === ROUTES.GOVERNANCE_SETUP ||
+    pathname.toLowerCase() === ROUTES.GOVERNANCE_PROPOSAL ||
     !selectedToken
   ) {
     return false

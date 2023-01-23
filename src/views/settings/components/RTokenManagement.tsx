@@ -1,7 +1,7 @@
 import { t, Trans } from '@lingui/macro'
 import { MainInterface } from 'abis'
-import GovernanceActionIcon from 'components/icons/GovernanceActionIcon'
 import DocsLink from 'components/docs-link/DocsLink'
+import GovernanceActionIcon from 'components/icons/GovernanceActionIcon'
 import { ethers } from 'ethers'
 import { useContractCall } from 'hooks/useCall'
 import useRToken from 'hooks/useRToken'
@@ -14,16 +14,13 @@ import {
   Button,
   Divider as _Divider,
   Flex,
-  Image,
   Text,
 } from 'theme-ui'
 import { FACADE_WRITE_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 import { ROUTES } from 'utils/constants'
-import FreezeManager from './FreezeManager'
-import PauseManager from './PauseManager'
-import SettingItem from './SettingItem'
 import RoleActions from './RoleActions'
+import SettingItem from './SettingItem'
 
 const Divider = () => <_Divider sx={{ borderColor: 'border' }} my={4} mx={-4} />
 
@@ -90,7 +87,7 @@ const RTokenManagement = () => {
   const accountRole = useAtomValue(accountRoleAtom)
 
   const handleProposal = () => {
-    navigate(ROUTES.GOVERNANCE_PROPOSAL)
+    navigate(ROUTES.GOVERNANCE_PROPOSAL + `?token=${rToken?.address}`)
   }
 
   // TODO: Owner edit
@@ -127,7 +124,7 @@ const RTokenManagement = () => {
         <>
           <Divider />
           <SettingItem
-            title="Change by owner"
+            title={t`Change by owner`}
             subtitle={t`Available pre-governance`}
             action={t`Edit`}
             icon="owner-edit"
