@@ -9,9 +9,9 @@ import { ethers } from 'ethers'
 import { useCallback, useState } from 'react'
 import { promiseMulticall } from 'state/web3/lib/multicall'
 import { Box, Flex, Text } from 'theme-ui'
+import { CollateralPlugin } from 'types'
 import { isAddress } from 'utils'
 import { ZERO_ADDRESS } from 'utils/addresses'
-import { CollateralPlugin } from 'utils/plugins'
 
 const CustomCollateral = ({
   onAdd,
