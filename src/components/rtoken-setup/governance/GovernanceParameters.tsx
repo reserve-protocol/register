@@ -6,12 +6,13 @@ import { numberPattern } from 'utils'
 const GovernanceParameters = (props: BoxProps) => {
   return (
     <Box {...props}>
-      <Text variant="title" mb={4} px={2}>
+      <Text variant="title" mb={4}>
         <Trans>Governance parameters</Trans>
       </Text>
       <FormField
         label={t`Voting delay (blocks)`}
         placeholder={t`Input number of blocks`}
+        help={t`Delay (in number of blocks) since the proposal is submitted until voting power is fixed and voting starts. This can be used to enforce a delay after a proposal is published for users to buy tokens, or delegate their votes.`}
         mb={3}
         name="votingDelay"
         options={{
@@ -24,6 +25,7 @@ const GovernanceParameters = (props: BoxProps) => {
       <FormField
         label={t`Voting period (blocks)`}
         placeholder={t`Input number of blocks`}
+        help={t`Delay (in number of blocks) since the proposal starts until voting ends.`}
         mb={4}
         name="votingPeriod"
         options={{
