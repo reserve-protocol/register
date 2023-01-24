@@ -1,17 +1,20 @@
-import { t } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 import { InfoItem } from 'components/info-box'
 import { useAtomValue } from 'jotai'
 import { rTokenParamsAtom } from 'state/atoms'
 import { Card, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 
+/**
+ * View: Settings > Display RToken contracts configuration
+ */
 const OtherInfo = () => {
   const params = useAtomValue(rTokenParamsAtom)
 
   return (
     <Card p={4}>
       <Text variant="sectionTitle" mb={5}>
-        Other Parameters
+        <Trans>Other Parameters</Trans>
       </Text>
 
       <InfoItem
@@ -40,7 +43,7 @@ const OtherInfo = () => {
         mb={3}
       />
       <InfoItem
-        title={t`"Minimum trade volume`}
+        title={t`Minimum trade volume`}
         subtitle={params.minTradeVolume}
         mb={3}
       />

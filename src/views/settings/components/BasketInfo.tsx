@@ -6,6 +6,9 @@ import { rTokenBasketAtom } from 'state/atoms'
 import { Box, BoxProps, Card, Text } from 'theme-ui'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
+/**
+ * View: Settings > Display RToken primary basket composition
+ */
 const BasketInfo = (props: BoxProps) => {
   const basket = useAtomValue(rTokenBasketAtom)
   const units = Object.keys(basket)
@@ -29,6 +32,7 @@ const BasketInfo = (props: BoxProps) => {
               <TokenItem size={14} symbol={collateral.symbol} />
               <Text ml="auto">{+basket[unit].distribution[index]}%</Text>
               <GoTo
+                ml={2}
                 href={getExplorerLink(
                   collateral.address,
                   ExplorerDataType.ADDRESS

@@ -1,7 +1,7 @@
 import { t, Trans } from '@lingui/macro'
 import { MainInterface } from 'abis'
-import GovernanceActionIcon from 'components/icons/GovernanceActionIcon'
 import DocsLink from 'components/docs-link/DocsLink'
+import GovernanceActionIcon from 'components/icons/GovernanceActionIcon'
 import { ethers } from 'ethers'
 import { useContractCall } from 'hooks/useCall'
 import useRToken from 'hooks/useRToken'
@@ -14,14 +14,12 @@ import {
   Button,
   Divider as _Divider,
   Flex,
-  Image,
   Text,
 } from 'theme-ui'
 import { FACADE_WRITE_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 import { ROUTES } from 'utils/constants'
-import FreezeManager from './FreezeManager'
-import PauseManager from './PauseManager'
+import RoleActions from './RoleActions'
 import SettingItem from './SettingItem'
 
 const Divider = () => <_Divider sx={{ borderColor: 'border' }} my={4} mx={-4} />
@@ -34,8 +32,9 @@ const Container = ({ children }: BoxProps) => (
   </Box>
 )
 
-const GovernancePromp = () => {
+const GovernancePrompt = () => {
   const navigate = useNavigate()
+  const rToken = useRToken()
 
   return (
     <Container>
@@ -51,11 +50,15 @@ const GovernancePromp = () => {
           <Trans>Governance setup required</Trans>
         </Text>
         <Text variant="legend" as="p" mt={2} sx={{ textAlign: 'center' }}>
-          Please complete the required governance configuration to start using
-          your RToken
+          <Trans>
+            Please complete the required governance configuration to start using
+            your RToken
+          </Trans>
         </Text>
         <Button
-          onClick={() => navigate(ROUTES.GOVERNANCE_SETUP)}
+          onClick={() =>
+            navigate(ROUTES.GOVERNANCE_SETUP + `?token=${rToken?.address}`)
+          }
           mt={4}
           sx={{ width: '100%' }}
         >
@@ -63,17 +66,6 @@ const GovernancePromp = () => {
         </Button>
       </Flex>
     </Container>
-  )
-}
-
-const RTokenRoleManagement = () => {
-  return (
-    <>
-      <Divider />
-      <PauseManager />
-      <Divider />
-      <FreezeManager />
-    </>
   )
 }
 
@@ -100,14 +92,14 @@ const RTokenManagement = () => {
   const accountRole = useAtomValue(accountRoleAtom)
 
   const handleProposal = () => {
-    navigate(ROUTES.GOVERNANCE_PROPOSAL)
+    navigate(ROUTES.GOVERNANCE_PROPOSAL + `?token=${rToken?.address}`)
   }
 
   // TODO: Owner edit
   const handleEdit = () => {}
 
   if (govRequired?.value[0] && accountRole.owner) {
-    return <GovernancePromp />
+    return <GovernancePrompt />
   }
 
   return (
@@ -118,7 +110,7 @@ const RTokenManagement = () => {
         </Text>
         <DocsLink link="https://reserve.org/" />
       </Flex>
-      <RTokenRoleManagement />
+      <RoleActions />
       {!!governance.governor && !!governance.timelock && (
         <>
           <Divider />
@@ -137,7 +129,7 @@ const RTokenManagement = () => {
         <>
           <Divider />
           <SettingItem
-            title="Change by owner"
+            title={t`Change by owner`}
             subtitle={t`Available pre-governance`}
             action={t`Edit`}
             icon="owner-edit"

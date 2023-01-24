@@ -18,6 +18,7 @@ import LanguageProvider from './i18n'
 import { theme } from './theme'
 import Issuance from './views/issuance'
 import Governance from 'views/deploy/components/Governance'
+import GovernanceProposal from 'views/governance/views/proposal'
 
 /**
  * App Entry point - Handles views routing
@@ -48,6 +49,10 @@ const App = () => (
               />
               <Route path={ROUTES.TOKENS} element={<Tokens />} />
               <Route path={ROUTES.GOVERNANCE} element={<Governance />} />
+              <Route
+                path={ROUTES.GOVERNANCE_PROPOSAL}
+                element={<GovernanceProposal />}
+              />
             </Routes>
           </Layout>
         </Web3Provider>

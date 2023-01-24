@@ -6,6 +6,9 @@ import { rTokenGovernanceAtom } from 'state/atoms'
 import { Card, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 
+/**
+ * View: Settings > Display RToken basic info
+ */
 const BasicInfo = () => {
   const rToken = useRToken()
   const { governor, timelock } = useAtomValue(rTokenGovernanceAtom)

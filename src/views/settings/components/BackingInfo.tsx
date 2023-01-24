@@ -5,6 +5,9 @@ import { rTokenParamsAtom } from 'state/atoms'
 import { Card, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 
+/**
+ * View: Settings > Display RToken backing contracts configuration
+ */
 const BackingInfo = () => {
   const params = useAtomValue(rTokenParamsAtom)
 

@@ -6,6 +6,9 @@ import { rtokenBackupAtom, rTokenBasketAtom } from 'state/atoms'
 import { Box, BoxProps, Card, Flex, Text } from 'theme-ui'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
+/**
+ * View: Settings > Display RToken emergency collaterals per target unit
+ */
 const EmergencyCollateralInfo = (props: BoxProps) => {
   const units = Object.keys(useAtomValue(rTokenBasketAtom))
   const backupBasket = useAtomValue(rtokenBackupAtom)
