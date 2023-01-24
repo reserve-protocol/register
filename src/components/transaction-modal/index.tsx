@@ -32,7 +32,7 @@ export interface ITransactionModal {
   isValid: boolean
 }
 
-const modalStyle = { maxWidth: '390px' }
+const modalStyle = { maxWidth: '420px' }
 
 const TransactionConfirmed = ({
   hash,
