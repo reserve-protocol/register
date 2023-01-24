@@ -22,7 +22,6 @@ interface PluginItemProps extends BoxProps {
   onCheck(address: string): void
 }
 
-// TODO: Remove oracle from asset info?
 const PluginInfo = ({ data }: { data: CollateralPlugin }) => (
   <>
     <Divider mt={2} />

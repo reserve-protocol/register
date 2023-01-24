@@ -24,13 +24,13 @@ export const FACADE_WRITE_ADDRESS: AddressMap = {
 
 export const STAKE_AAVE_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x1895534f4D0fF3E632407DB5327cE3eAfCe2A9f6',
-  [ChainId.Goerli]: '0x7b5109144EA8cC4903dE7F85012515D603226d93',
+  [ChainId.Goerli]: '0x2738bf8E6fEdcb2d4297705fD72F65E8640a22b5',
   [ChainId.Hardhat]: '0x82EdA215Fa92B45a3a76837C65Ab862b6C7564a8',
 }
 
 export const COMPOUND_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xd9e49644f35b5233B5191b14882242bd0bdF58E8',
-  [ChainId.Goerli]: '0x7e1Ee9185877Aaa0bF9689478Ff8e706eea1BD31',
+  [ChainId.Goerli]: '0x0DefA46e5e7258c9a776ADd56e6875a9323B9998',
   [ChainId.Hardhat]: '0x87006e75a5B6bE9D1bbF61AC8Cd84f05D9140589',
 }
 
