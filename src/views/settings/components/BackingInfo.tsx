@@ -37,18 +37,24 @@ const BackingInfo = () => {
         mb={3}
       />
       <InfoItem
-        title={t`Issuance rate (%)`}
-        subtitle={params.issuanceRate}
+        title={t`Issuance throttle rate (%)`}
+        subtitle={params.issuanceThrottleRate}
         mb={3}
       />
       <InfoItem
-        title={t`Scaling Redemption Rate (%)`}
-        subtitle={params.scalingRedemptionRate}
+        title={t`Issuance throttle amount`}
+        subtitle={formatCurrency(+params.issuanceThrottleAmount)}
         mb={3}
       />
       <InfoItem
-        title={t`Redemption rate floor`}
-        subtitle={formatCurrency(+params.redemptionRateFloor)}
+        title={t`Redemption throttle rate (%)`}
+        subtitle={params.redemptionThrottleRate}
+        mb={3}
+      />
+      <InfoItem
+        title={t`Redemption throttle amount`}
+        subtitle={formatCurrency(+params.redemptionThrottleAmount)}
+        mb={3}
       />
     </Card>
   )

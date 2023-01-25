@@ -62,25 +62,6 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "uint48",
-        name: "oldPeriod",
-        type: "uint48",
-      },
-      {
-        indexed: true,
-        internalType: "uint48",
-        name: "newPeriod",
-        type: "uint48",
-      },
-    ],
-    name: "PeriodSet",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
         internalType: "uint192",
         name: "oldRatio",
         type: "uint192",
@@ -110,19 +91,6 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "MAX_PERIOD",
-    outputs: [
-      {
-        internalType: "uint48",
-        name: "",
-        type: "uint48",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "MAX_RATIO",
     outputs: [
       {
@@ -135,16 +103,24 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "PERIOD",
+    outputs: [
+      {
+        internalType: "uint48",
+        name: "",
+        type: "uint48",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "contract IMain",
         name: "main_",
         type: "address",
-      },
-      {
-        internalType: "uint48",
-        name: "period_",
-        type: "uint48",
       },
       {
         internalType: "uint192",
@@ -205,19 +181,6 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "period",
-    outputs: [
-      {
-        internalType: "uint48",
-        name: "",
-        type: "uint48",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "proxiableUUID",
     outputs: [
       {
@@ -240,19 +203,6 @@ const _abi = [
       },
     ],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint48",
-        name: "period_",
-        type: "uint48",
-      },
-    ],
-    name: "setPeriod",
-    outputs: [],
-    stateMutability: "nonpayable",
     type: "function",
   },
   {

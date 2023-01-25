@@ -1037,6 +1037,19 @@ const _abi = [
     stateMutability: "payable",
     type: "function",
   },
+  {
+    inputs: [],
+    name: "version",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
 ];
 
 export class Main__factory {

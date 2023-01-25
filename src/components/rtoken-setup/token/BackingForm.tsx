@@ -1,6 +1,6 @@
-import { t, Trans } from '@lingui/macro'
+import { t } from '@lingui/macro'
 import { FormField } from 'components/field'
-import { Box, BoxProps, Text } from 'theme-ui'
+import { Box, BoxProps } from 'theme-ui'
 import { decimalPattern, numberPattern } from 'utils'
 
 /**
@@ -69,8 +69,8 @@ const BackingForm = (props: BoxProps) => (
       options={{
         required: true,
         pattern: decimalPattern,
-        min: 0.001,
-        max: 1001,
+        min: 0,
+        max: 100,
       }}
     />
     <FormField
@@ -94,8 +94,8 @@ const BackingForm = (props: BoxProps) => (
       options={{
         required: true,
         pattern: decimalPattern,
-        min: 0.001,
-        max: 1001,
+        min: 0,
+        max: 100,
       }}
     />
     <FormField

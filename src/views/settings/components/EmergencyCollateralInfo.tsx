@@ -14,7 +14,7 @@ const EmergencyCollateralInfo = (props: BoxProps) => {
   const backupBasket = useAtomValue(rtokenBackupAtom)
 
   return (
-    <Card p={4}>
+    <Card p={4} {...props}>
       <Text variant="sectionTitle" mb={5}>
         <Trans>Emergency Collateral</Trans>
       </Text>
@@ -35,12 +35,13 @@ const EmergencyCollateralInfo = (props: BoxProps) => {
               {backupBasket[unit].collaterals.map((collateral, index) => (
                 <Box
                   variant="layout.verticalAlign"
-                  mt={index ? 2 : 0}
+                  mt={2}
                   key={collateral.address}
                 >
                   <TokenItem size={14} symbol={collateral.symbol} />
                   <Text ml="auto">{index + 1}</Text>
                   <GoTo
+                    ml={2}
                     href={getExplorerLink(
                       collateral.address,
                       ExplorerDataType.ADDRESS

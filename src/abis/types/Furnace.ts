@@ -30,17 +30,15 @@ import type {
 
 export interface FurnaceInterface extends utils.Interface {
   functions: {
-    "MAX_PERIOD()": FunctionFragment;
     "MAX_RATIO()": FunctionFragment;
-    "init(address,uint48,uint192)": FunctionFragment;
+    "PERIOD()": FunctionFragment;
+    "init(address,uint192)": FunctionFragment;
     "lastPayout()": FunctionFragment;
     "lastPayoutBal()": FunctionFragment;
     "main()": FunctionFragment;
     "melt()": FunctionFragment;
-    "period()": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "ratio()": FunctionFragment;
-    "setPeriod(uint48)": FunctionFragment;
     "setRatio(uint192)": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
@@ -49,35 +47,26 @@ export interface FurnaceInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "MAX_PERIOD"
       | "MAX_RATIO"
+      | "PERIOD"
       | "init"
       | "lastPayout"
       | "lastPayoutBal"
       | "main"
       | "melt"
-      | "period"
       | "proxiableUUID"
       | "ratio"
-      | "setPeriod"
       | "setRatio"
       | "upgradeTo"
       | "upgradeToAndCall"
       | "version"
   ): FunctionFragment;
 
-  encodeFunctionData(
-    functionFragment: "MAX_PERIOD",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "MAX_RATIO", values?: undefined): string;
+  encodeFunctionData(functionFragment: "PERIOD", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "init",
-    values: [
-      PromiseOrValue<string>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
-    ]
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "lastPayout",
@@ -89,16 +78,11 @@ export interface FurnaceInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "main", values?: undefined): string;
   encodeFunctionData(functionFragment: "melt", values?: undefined): string;
-  encodeFunctionData(functionFragment: "period", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "proxiableUUID",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "ratio", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "setPeriod",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
   encodeFunctionData(
     functionFragment: "setRatio",
     values: [PromiseOrValue<BigNumberish>]
@@ -113,8 +97,8 @@ export interface FurnaceInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "version", values?: undefined): string;
 
-  decodeFunctionResult(functionFragment: "MAX_PERIOD", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "MAX_RATIO", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "PERIOD", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "init", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "lastPayout", data: BytesLike): Result;
   decodeFunctionResult(
@@ -123,13 +107,11 @@ export interface FurnaceInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "main", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "melt", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "period", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "proxiableUUID",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "ratio", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "setPeriod", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "setRatio", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "upgradeTo", data: BytesLike): Result;
   decodeFunctionResult(
@@ -142,7 +124,6 @@ export interface FurnaceInterface extends utils.Interface {
     "AdminChanged(address,address)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
     "Initialized(uint8)": EventFragment;
-    "PeriodSet(uint48,uint48)": EventFragment;
     "RatioSet(uint192,uint192)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
@@ -150,7 +131,6 @@ export interface FurnaceInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "PeriodSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RatioSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
@@ -182,14 +162,6 @@ export interface InitializedEventObject {
 export type InitializedEvent = TypedEvent<[number], InitializedEventObject>;
 
 export type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
-
-export interface PeriodSetEventObject {
-  oldPeriod: number;
-  newPeriod: number;
-}
-export type PeriodSetEvent = TypedEvent<[number, number], PeriodSetEventObject>;
-
-export type PeriodSetEventFilter = TypedEventFilter<PeriodSetEvent>;
 
 export interface RatioSetEventObject {
   oldRatio: BigNumber;
@@ -236,13 +208,12 @@ export interface Furnace extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    MAX_PERIOD(overrides?: CallOverrides): Promise<[number]>;
-
     MAX_RATIO(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    PERIOD(overrides?: CallOverrides): Promise<[number]>;
 
     init(
       main_: PromiseOrValue<string>,
-      period_: PromiseOrValue<BigNumberish>,
       ratio_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -257,16 +228,9 @@ export interface Furnace extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    period(overrides?: CallOverrides): Promise<[number]>;
-
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
 
     ratio(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    setPeriod(
-      period_: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
 
     setRatio(
       ratio_: PromiseOrValue<BigNumberish>,
@@ -287,13 +251,12 @@ export interface Furnace extends BaseContract {
     version(overrides?: CallOverrides): Promise<[string]>;
   };
 
-  MAX_PERIOD(overrides?: CallOverrides): Promise<number>;
-
   MAX_RATIO(overrides?: CallOverrides): Promise<BigNumber>;
+
+  PERIOD(overrides?: CallOverrides): Promise<number>;
 
   init(
     main_: PromiseOrValue<string>,
-    period_: PromiseOrValue<BigNumberish>,
     ratio_: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -308,16 +271,9 @@ export interface Furnace extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  period(overrides?: CallOverrides): Promise<number>;
-
   proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
   ratio(overrides?: CallOverrides): Promise<BigNumber>;
-
-  setPeriod(
-    period_: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
 
   setRatio(
     ratio_: PromiseOrValue<BigNumberish>,
@@ -338,13 +294,12 @@ export interface Furnace extends BaseContract {
   version(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
-    MAX_PERIOD(overrides?: CallOverrides): Promise<number>;
-
     MAX_RATIO(overrides?: CallOverrides): Promise<BigNumber>;
+
+    PERIOD(overrides?: CallOverrides): Promise<number>;
 
     init(
       main_: PromiseOrValue<string>,
-      period_: PromiseOrValue<BigNumberish>,
       ratio_: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -357,16 +312,9 @@ export interface Furnace extends BaseContract {
 
     melt(overrides?: CallOverrides): Promise<void>;
 
-    period(overrides?: CallOverrides): Promise<number>;
-
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
     ratio(overrides?: CallOverrides): Promise<BigNumber>;
-
-    setPeriod(
-      period_: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     setRatio(
       ratio_: PromiseOrValue<BigNumberish>,
@@ -407,15 +355,6 @@ export interface Furnace extends BaseContract {
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
 
-    "PeriodSet(uint48,uint48)"(
-      oldPeriod?: PromiseOrValue<BigNumberish> | null,
-      newPeriod?: PromiseOrValue<BigNumberish> | null
-    ): PeriodSetEventFilter;
-    PeriodSet(
-      oldPeriod?: PromiseOrValue<BigNumberish> | null,
-      newPeriod?: PromiseOrValue<BigNumberish> | null
-    ): PeriodSetEventFilter;
-
     "RatioSet(uint192,uint192)"(
       oldRatio?: PromiseOrValue<BigNumberish> | null,
       newRatio?: PromiseOrValue<BigNumberish> | null
@@ -434,13 +373,12 @@ export interface Furnace extends BaseContract {
   };
 
   estimateGas: {
-    MAX_PERIOD(overrides?: CallOverrides): Promise<BigNumber>;
-
     MAX_RATIO(overrides?: CallOverrides): Promise<BigNumber>;
+
+    PERIOD(overrides?: CallOverrides): Promise<BigNumber>;
 
     init(
       main_: PromiseOrValue<string>,
-      period_: PromiseOrValue<BigNumberish>,
       ratio_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -455,16 +393,9 @@ export interface Furnace extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    period(overrides?: CallOverrides): Promise<BigNumber>;
-
     proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
 
     ratio(overrides?: CallOverrides): Promise<BigNumber>;
-
-    setPeriod(
-      period_: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
 
     setRatio(
       ratio_: PromiseOrValue<BigNumberish>,
@@ -486,13 +417,12 @@ export interface Furnace extends BaseContract {
   };
 
   populateTransaction: {
-    MAX_PERIOD(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     MAX_RATIO(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    PERIOD(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     init(
       main_: PromiseOrValue<string>,
-      period_: PromiseOrValue<BigNumberish>,
       ratio_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
@@ -507,16 +437,9 @@ export interface Furnace extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    period(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     ratio(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    setPeriod(
-      period_: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
 
     setRatio(
       ratio_: PromiseOrValue<BigNumberish>,

@@ -33,11 +33,6 @@ const OtherInfo = () => {
         mb={3}
       />
       <InfoItem
-        title={t`Reward period (s)`}
-        subtitle={params.rewardPeriod}
-        mb={3}
-      />
-      <InfoItem
         title={t`Reward ratio (decimals)`}
         subtitle={params.rewardRatio}
         mb={3}
