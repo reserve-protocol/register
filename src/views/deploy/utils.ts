@@ -33,11 +33,11 @@ export const defaultValues = {
   auctionLength: '900', // 15 minutes
   backingBuffer: '0.01', // 0.01%
   maxTradeSlippage: '1', // 1%
-  issuanceRate: '0.025', // 0.025% per block or ~0.1% per minute
-  scalingRedemptionRate: '5', // 5% per block
-  redemptionRateFloor: '1000000', // Anticipated redemption minimum amount for throttling
+  issuanceThrottleAmount: '1000000', // Anticipated redemption minimum amount for throttling
+  issuanceThrottleRate: '5', // 5% per block
+  redemptionThrottleAmount: '1000000',
+  redemptionThrottleRate: '5',
   // other
-  rewardPeriod: '604800', // 1 week
   rewardRatio: '0.02284', // approx. half life of 30 pay periods
   unstakingDelay: '1209600', // seconds 2 week
   minTrade: '0.01',
@@ -53,6 +53,11 @@ export interface RevenueDist {
   rsrDist: BigNumber
 }
 
+export interface IssuanceThrottle {
+  amtRate: BigNumber
+  pctRate: BigNumber
+}
+
 export interface RTokenConfiguration {
   name: string
   symbol: string
@@ -61,7 +66,6 @@ export interface RTokenConfiguration {
     minTradeVolume: BigNumber
     rTokenMaxTradeVolume: BigNumber
     dist: RevenueDist
-    rewardPeriod: BigNumber
     rewardRatio: BigNumber
     unstakingDelay: BigNumber
     tradingDelay: BigNumber
@@ -70,9 +74,8 @@ export interface RTokenConfiguration {
     maxTradeSlippage: BigNumber
     shortFreeze: BigNumber
     longFreeze: BigNumber
-    issuanceRate: BigNumber
-    scalingRedemptionRate: BigNumber
-    redemptionRateFloor: BigNumber
+    issuanceThrottle: IssuanceThrottle
+    redemptionThrottle: IssuanceThrottle
   }
 }
 
@@ -148,7 +151,6 @@ export const getDeployParameters = (
         minTradeVolume: parseEther(tokenConfig.minTrade.toString()),
         rTokenMaxTradeVolume: parseEther(tokenConfig.maxTrade.toString()),
         dist,
-        rewardPeriod: BigNumber.from(tokenConfig.rewardPeriod),
         rewardRatio: parseEther(tokenConfig.rewardRatio),
         unstakingDelay: BigNumber.from(tokenConfig.unstakingDelay),
         tradingDelay: BigNumber.from(tokenConfig.tradingDelay),
@@ -159,15 +161,20 @@ export const getDeployParameters = (
         maxTradeSlippage: parseEther(
           (Number(tokenConfig.maxTradeSlippage) / 100).toString()
         ),
-        issuanceRate: parseEther(
-          (Number(tokenConfig.issuanceRate) / 100).toString()
-        ),
         shortFreeze: BigNumber.from(tokenConfig.shortFreeze),
         longFreeze: BigNumber.from(tokenConfig.longFreeze),
-        scalingRedemptionRate: parseEther(
-          (Number(tokenConfig.scalingRedemptionRate) / 100).toString()
-        ),
-        redemptionRateFloor: parseEther(tokenConfig.redemptionRateFloor),
+        issuanceThrottle: {
+          amtRate: parseEther(tokenConfig.issuanceThrottleAmount),
+          pctRate: parseEther(
+            (Number(tokenConfig.issuanceThrottleRate) / 100).toString()
+          ),
+        },
+        redemptionThrottle: {
+          amtRate: parseEther(tokenConfig.redemptionThrottleAmount),
+          pctRate: parseEther(
+            (Number(tokenConfig.redemptionThrottleRate) / 100).toString()
+          ),
+        },
       },
     }
 

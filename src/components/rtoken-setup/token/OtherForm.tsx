@@ -49,19 +49,6 @@ const OtherForm = (props: BoxProps) => (
       }}
     />
     <FormField
-      label={t`Reward period (s)`}
-      placeholder={t`Seconds`}
-      help={t`Un-staking delay - number of seconds that all RSR un-staking must be delayed in order to account for stakers trying to frontrun defaults. The default is 1209600s or 2 weeks.`}
-      mb={3}
-      name="rewardPeriod"
-      options={{
-        required: true,
-        pattern: numberPattern,
-        min: 10,
-        max: 31536000, // 1year
-      }}
-    />
-    <FormField
       label={t`Reward ratio (decimals)`}
       placeholder={t`stRSR payout fraction 0.0`}
       help={t`Reward period - length of time that comprises a single period. Works in conjunction with reward ratio (see below) to determine the desired payout rate. The default is 604800s or 7 days.`}
