@@ -71,7 +71,7 @@ export const rTokenParamsAtom = atomWithReset({
   tradingDelay: '',
   backingBuffer: '',
   maxTradeSlippage: '',
-  minTradeVolume: '',
+  minTrade: '',
   rewardRatio: '',
   unstakingDelay: '',
   auctionLength: '',
@@ -81,7 +81,7 @@ export const rTokenParamsAtom = atomWithReset({
   redemptionThrottleRate: '',
   shortFreeze: '',
   longFreeze: '',
-  maxTradeVolume: '',
+  maxTrade: '',
 })
 
 export const rTokenGovernanceAtom = atomWithReset<{

@@ -13,7 +13,6 @@ const ProposalNavigation = () => {
   const navigate = useNavigate()
   const sections = useMemo(
     () => [
-      t`Token details`,
       t`Primary basket`,
       t`Emergency basket`,
       t`Revenue share`,

@@ -105,7 +105,7 @@ const RTokenBasketUpdater = () => {
 
           if (!targetBasket) {
             targetBasket = {
-              scale: '',
+              scale: '1',
               collaterals: [collateral],
               distribution: [share.toFixed(2)],
             }

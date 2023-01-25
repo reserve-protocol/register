@@ -1,10 +1,10 @@
 import Layout from 'components/rtoken-setup/Layout'
-import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { defaultValues } from 'views/deploy/utils'
-import ProposalForm from './ProposalForm'
-import ProposalNavigation from './ProposalNavigation'
-import ProposalPreview from './ProposalPreview'
+import ProposalForm from './components/ProposalForm'
+import ProposalNavigation from './components/ProposalNavigation'
+import ProposalPreview from './components/ProposalOverview'
+import RTokenDataUpdater from './components/Updater'
 
 const GovernanceProposal = () => {
   const form = useForm({
@@ -12,10 +12,9 @@ const GovernanceProposal = () => {
     defaultValues,
   })
 
-  useEffect(() => {}, [])
-
   return (
     <FormProvider {...form}>
+      <RTokenDataUpdater />
       <Layout>
         <ProposalNavigation />
         <ProposalForm />
