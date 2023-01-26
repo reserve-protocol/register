@@ -12,9 +12,9 @@ import {
   Link,
   Text,
 } from 'theme-ui'
+import { CollateralPlugin } from 'types'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { Collateral } from '../atoms'
-import { CollateralPlugin } from 'utils/plugins'
 
 interface PluginItemProps extends BoxProps {
   data: CollateralPlugin | Collateral
@@ -22,7 +22,6 @@ interface PluginItemProps extends BoxProps {
   onCheck(address: string): void
 }
 
-// TODO: Remove oracle from asset info?
 const PluginInfo = ({ data }: { data: CollateralPlugin }) => (
   <>
     <Divider mt={2} />

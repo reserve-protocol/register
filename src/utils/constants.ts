@@ -11,6 +11,13 @@ export const TRANSACTION_STATUS = {
   UNKNOWN: 'UNKNOWN', // PENDING&SIGNING transactions that were loaded from localStorage
 }
 
+export const TARGET_UNITS = {
+  USD: 'USD',
+  EUR: 'EUR',
+  ETH: 'ETH',
+  BTC: 'BTC',
+}
+
 export const RTOKEN_STATUS = {
   PAUSED: 'PAUSED',
   FROZEN: 'FROZEN',

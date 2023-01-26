@@ -1,6 +1,6 @@
-import { t, Trans } from '@lingui/macro'
+import { t } from '@lingui/macro'
 import { FormField } from 'components/field'
-import { Box, BoxProps, Text } from 'theme-ui'
+import { Box, BoxProps } from 'theme-ui'
 import { decimalPattern, numberPattern } from 'utils'
 
 /**
@@ -61,24 +61,11 @@ const BackingForm = (props: BoxProps) => (
       }}
     />
     <FormField
-      label={t`Issuance rate (%)`}
-      placeholder={t`Rate`}
+      label={t`Issuance throttle rate (%)`}
+      placeholder={t`Issuance throttle Rate`}
       help={t`Issuance rate - allows the issuer to limit the amount of RTokens issued per block. This matters because in an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued. The default is 0.025%. If an RToken gets deployed with the default settings, only 0.025% of the market cap of the RToken can be issued per block. For more info see the “Issuance throttle” section here.`}
       mb={3}
-      name="issuanceRate"
-      options={{
-        required: true,
-        pattern: decimalPattern,
-        min: 0.001,
-        max: 1001,
-      }}
-    />
-    <FormField
-      label={t`Scaling Redemption Rate (%)`}
-      placeholder={t`Max % per hour`}
-      help={t`Scaling redemption rate - percentage value that describes what proportion of the RToken supply to allow redemption of per-hour. It controls how quickly the protocol can scale down RToken supply. The default is 5%. For more info see “Redemption throttle” section here. Goes hand in hand with redemption rate floor below.`}
-      mb={3}
-      name="scalingRedemptionRate"
+      name="issuanceThrottleRate"
       options={{
         required: true,
         pattern: decimalPattern,
@@ -87,10 +74,36 @@ const BackingForm = (props: BoxProps) => (
       }}
     />
     <FormField
-      label={t`Redemption rate floor`}
-      placeholder={t`Redemption rate`}
-      help={t`Redemption rate floor - minimum quantity of RToken to allow redemption of per-hour, and thereby the rate to charge the redemption battery at. The default is 1,000,000 RTokens. Goes hand in hand with scaling redemption rate above.`}
-      name="redemptionRateFloor"
+      label={t`Issuance throttle amount`}
+      placeholder={t`Issuance throttle amount`}
+      help={t`Issuance rate - allows the issuer to limit the amount of RTokens issued per block. This matters because in an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued. The default is 0.025%. If an RToken gets deployed with the default settings, only 0.025% of the market cap of the RToken can be issued per block. For more info see the “Issuance throttle” section here.`}
+      mb={3}
+      name="issuanceThrottleAmount"
+      options={{
+        required: true,
+        pattern: decimalPattern,
+        min: 0,
+      }}
+    />
+    <FormField
+      label={t`Redemption throttle rate (%)`}
+      placeholder={t`Redemption throttle Rate`}
+      help={t`Redemption rate - allows the issuer to limit the amount of RTokens issued per block. This matters because in an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued. The default is 0.025%. If an RToken gets deployed with the default settings, only 0.025% of the market cap of the RToken can be issued per block. For more info see the “Issuance throttle” section here.`}
+      mb={3}
+      name="redemptionThrottleRate"
+      options={{
+        required: true,
+        pattern: decimalPattern,
+        min: 0,
+        max: 100,
+      }}
+    />
+    <FormField
+      label={t`Redemption throttle amount`}
+      placeholder={t`Redemption throttle amount`}
+      help={t`Redemption rate - allows the issuer to limit the amount of RTokens issued per block. This matters because in an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued. The default is 0.025%. If an RToken gets deployed with the default settings, only 0.025% of the market cap of the RToken can be issued per block. For more info see the “Issuance throttle” section here.`}
+      mb={3}
+      name="redemptionThrottleAmount"
       options={{
         required: true,
         pattern: decimalPattern,

@@ -11,9 +11,10 @@ import {
   Collateral,
   primaryBasketCollateralAtom,
 } from '../atoms'
-import collateralPlugins, { CollateralPlugin } from 'utils/plugins'
+import collateralPlugins from 'utils/plugins'
 import CustomCollateral from './CustomCollateral'
 import PluginItem from './PluginItem'
+import { CollateralPlugin } from 'types'
 
 interface Props extends Omit<ModalProps, 'children'> {
   targetUnit?: string // filter by target unit

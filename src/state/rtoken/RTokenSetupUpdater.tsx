@@ -125,13 +125,11 @@ const RTokenSetupUpdater = () => {
           backingBuffer,
           maxTradeSlippage,
           minTradeVolume,
-          rewardPeriod,
           rewardRatio,
           unstakingDelay,
           auctionLength,
-          issuanceRate,
-          scalingRedemptionRate,
-          redemptionRateFloor,
+          issuanceThrottle,
+          redemptionThrottle,
           rTokenAsset,
         ] = await promiseMulticall(
           [
@@ -161,10 +159,6 @@ const RTokenSetupUpdater = () => {
             },
             {
               ...stRSRCall,
-              method: 'rewardPeriod',
-            },
-            {
-              ...stRSRCall,
               method: 'rewardRatio',
             },
             {
@@ -179,15 +173,11 @@ const RTokenSetupUpdater = () => {
             },
             {
               ...rTokenCall,
-              method: 'issuanceRate',
+              method: 'issuanceThrottleParams',
             },
             {
               ...rTokenCall,
-              method: 'scalingRedemptionRate',
-            },
-            {
-              ...rTokenCall,
-              method: 'redemptionRateFloor',
+              method: 'redemptionThrottleParams',
             },
             {
               abi: AssetRegistryInterface,
@@ -212,15 +202,17 @@ const RTokenSetupUpdater = () => {
           backingBuffer: (+formatEther(backingBuffer) * 100).toString(),
           maxTradeSlippage: (+formatEther(maxTradeSlippage) * 100).toString(),
           minTradeVolume: formatEther(minTradeVolume),
-          rewardPeriod: rewardPeriod.toString(),
           rewardRatio: formatEther(rewardRatio),
           unstakingDelay: unstakingDelay.toString(),
           auctionLength: auctionLength.toString(),
-          issuanceRate: (+formatEther(issuanceRate) * 100).toString(),
-          scalingRedemptionRate: (
-            +formatEther(scalingRedemptionRate) * 100
+          issuanceThrottleAmount: formatEther(issuanceThrottle.amtRate),
+          issuanceThrottleRate: (
+            +formatEther(issuanceThrottle.pctRate) * 100
           ).toString(),
-          redemptionRateFloor: formatEther(redemptionRateFloor),
+          redemptionThrottleAmount: formatEther(redemptionThrottle.amtRate),
+          redemptionThrottleRate: (
+            +formatEther(redemptionThrottle.pctRate) * 100
+          ).toString(),
           maxTradeVolume: formatEther(maxTradeVolume),
           longFreeze: longFreeze.toString(),
           shortFreeze: shortFreeze.toString(),

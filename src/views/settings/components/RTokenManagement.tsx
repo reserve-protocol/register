@@ -19,6 +19,7 @@ import {
 import { FACADE_WRITE_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 import { ROUTES } from 'utils/constants'
+import GovernancePrompt from './GovernancePrompt'
 import RoleActions from './RoleActions'
 import SettingItem from './SettingItem'
 
@@ -32,42 +33,6 @@ const Container = ({ children }: BoxProps) => (
   </Box>
 )
 
-const GovernancePrompt = () => {
-  const navigate = useNavigate()
-  const rToken = useRToken()
-
-  return (
-    <Container>
-      <Flex
-        sx={{
-          alignItems: 'center',
-          flexDirection: 'column',
-          textAlign: 'center',
-        }}
-      >
-        <GovernanceActionIcon />
-        <Text variant="title" sx={{ fontSize: 4 }} mt={2}>
-          <Trans>Governance setup required</Trans>
-        </Text>
-        <Text variant="legend" as="p" mt={2} sx={{ textAlign: 'center' }}>
-          <Trans>
-            Please complete the required governance configuration to start using
-            your RToken
-          </Trans>
-        </Text>
-        <Button
-          onClick={() =>
-            navigate(ROUTES.GOVERNANCE_SETUP + `?token=${rToken?.address}`)
-          }
-          mt={4}
-          sx={{ width: '100%' }}
-        >
-          <Trans>Setup Governance</Trans>
-        </Button>
-      </Flex>
-    </Container>
-  )
-}
 
 /**
  * Manage RToken

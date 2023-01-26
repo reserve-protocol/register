@@ -2,37 +2,35 @@ import { AddressMap } from 'types'
 import { ChainId } from 'utils/chains'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
-export const FURNACE_ADDRESS = '0x0000000000000000000000000000000000000001'
-export const ST_RSR_ADDRESS = '0x0000000000000000000000000000000000000002'
 
 // The deployer version is also related to the protocol version
 export const DEPLOYER_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x9cAc8ED3297040626D8aA6317F5e29813A6A8fc6',
-  [ChainId.Goerli]: '0xa96aE05dFa869F4FCC4142E8D4E4F2706FEe2B57',
+  [ChainId.Goerli]: '0xA6974b81dcB174057C054BfBef512Bb26DDc3cd0',
   [ChainId.Hardhat]: '0x139e1D41943ee15dDe4DF876f9d0E7F85e26660A',
 }
 
 export const FACADE_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x3DAf5a7681a9cfB92fB38983EB3998dFC7963B28',
-  [ChainId.Goerli]: '0x0C9C61Df98E4a2dC4284C68615543BF8D957a94D',
+  [ChainId.Goerli]: '0x7321485aA1D0439296B882bBc85Eb0BD350F8381',
   [ChainId.Hardhat]: '0x3DAf5a7681a9cfB92fB38983EB3998dFC7963B28',
 }
 
 export const FACADE_WRITE_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xF7bd1F8FdE9fBdc8436D45594e792e014c5ac966',
-  [ChainId.Goerli]: '0x3Ac8F000D75a2EA4a9a36c6844410926bc0c32f7',
+  [ChainId.Goerli]: '0xA4FA2df7b139C84D3DA5158316f277484308bF23',
   [ChainId.Hardhat]: '0xF7bd1F8FdE9fBdc8436D45594e792e014c5ac966',
 }
 
 export const STAKE_AAVE_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x1895534f4D0fF3E632407DB5327cE3eAfCe2A9f6',
-  [ChainId.Goerli]: '0x7b5109144EA8cC4903dE7F85012515D603226d93',
+  [ChainId.Goerli]: '0x2738bf8E6fEdcb2d4297705fD72F65E8640a22b5',
   [ChainId.Hardhat]: '0x82EdA215Fa92B45a3a76837C65Ab862b6C7564a8',
 }
 
 export const COMPOUND_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xd9e49644f35b5233B5191b14882242bd0bdF58E8',
-  [ChainId.Goerli]: '0x7e1Ee9185877Aaa0bF9689478Ff8e706eea1BD31',
+  [ChainId.Goerli]: '0x0DefA46e5e7258c9a776ADd56e6875a9323B9998',
   [ChainId.Hardhat]: '0x87006e75a5B6bE9D1bbF61AC8Cd84f05D9140589',
 }
 

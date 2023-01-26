@@ -108,11 +108,6 @@ const _abi = [
               },
               {
                 internalType: "uint48",
-                name: "rewardPeriod",
-                type: "uint48",
-              },
-              {
-                internalType: "uint48",
                 name: "unstakingDelay",
                 type: "uint48",
               },
@@ -137,19 +132,38 @@ const _abi = [
                 type: "uint192",
               },
               {
-                internalType: "uint192",
-                name: "issuanceRate",
-                type: "uint192",
+                components: [
+                  {
+                    internalType: "uint256",
+                    name: "amtRate",
+                    type: "uint256",
+                  },
+                  {
+                    internalType: "uint192",
+                    name: "pctRate",
+                    type: "uint192",
+                  },
+                ],
+                internalType: "struct ThrottleLib.Params",
+                name: "issuanceThrottle",
+                type: "tuple",
               },
               {
-                internalType: "uint192",
-                name: "scalingRedemptionRate",
-                type: "uint192",
-              },
-              {
-                internalType: "uint256",
-                name: "redemptionRateFloor",
-                type: "uint256",
+                components: [
+                  {
+                    internalType: "uint256",
+                    name: "amtRate",
+                    type: "uint256",
+                  },
+                  {
+                    internalType: "uint192",
+                    name: "pctRate",
+                    type: "uint192",
+                  },
+                ],
+                internalType: "struct ThrottleLib.Params",
+                name: "redemptionThrottle",
+                type: "tuple",
               },
             ],
             internalType: "struct DeploymentParams",

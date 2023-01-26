@@ -361,19 +361,6 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "MAX_REWARD_PERIOD",
-    outputs: [
-      {
-        internalType: "uint48",
-        name: "",
-        type: "uint48",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "MAX_REWARD_RATIO",
     outputs: [
       {
@@ -388,6 +375,32 @@ const _abi = [
   {
     inputs: [],
     name: "MAX_UNSTAKING_DELAY",
+    outputs: [
+      {
+        internalType: "uint48",
+        name: "",
+        type: "uint48",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "MIN_UNSTAKING_DELAY",
+    outputs: [
+      {
+        internalType: "uint48",
+        name: "",
+        type: "uint48",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "PERIOD",
     outputs: [
       {
         internalType: "uint48",
@@ -676,11 +689,6 @@ const _abi = [
         type: "uint48",
       },
       {
-        internalType: "uint48",
-        name: "rewardPeriod_",
-        type: "uint48",
-      },
-      {
         internalType: "uint192",
         name: "rewardRatio_",
         type: "uint192",
@@ -814,19 +822,6 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "rewardPeriod",
-    outputs: [
-      {
-        internalType: "uint48",
-        name: "",
-        type: "uint48",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "rewardRatio",
     outputs: [
       {
@@ -860,19 +855,6 @@ const _abi = [
       },
     ],
     name: "setName",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint48",
-        name: "val",
-        type: "uint48",
-      },
-    ],
-    name: "setRewardPeriod",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
