@@ -1,14 +1,16 @@
 import { Trans } from '@lingui/macro'
 import RTokenSelector from 'components/rtoken-selector'
+import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { AlertCircle } from 'react-feather'
 import { rTokenStatusAtom } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
 
 const RTokenStatus = () => {
+  const rToken = useRToken()
   const { paused, frozen } = useAtomValue(rTokenStatusAtom)
 
-  if (!paused && !frozen) {
+  if ((!paused && !frozen) || !rToken) {
     return null
   }
 

@@ -1,13 +1,18 @@
 import { t, Trans } from '@lingui/macro'
 import { MainInterface } from 'abis'
 import DocsLink from 'components/docs-link/DocsLink'
-import GovernanceActionIcon from 'components/icons/GovernanceActionIcon'
 import { ethers } from 'ethers'
 import { useContractCall } from 'hooks/useCall'
 import useRToken from 'hooks/useRToken'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { accountRoleAtom, rTokenGovernanceAtom } from 'state/atoms'
+import {
+  accountRoleAtom,
+  addTransactionAtom,
+  rTokenContractsAtom,
+  rTokenGovernanceAtom,
+} from 'state/atoms'
 import {
   Box,
   BoxProps,
@@ -18,10 +23,12 @@ import {
 } from 'theme-ui'
 import { FACADE_WRITE_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
-import { ROUTES } from 'utils/constants'
+import { ROUTES, TRANSACTION_STATUS } from 'utils/constants'
 import GovernancePrompt from './GovernancePrompt'
 import RoleActions from './RoleActions'
 import SettingItem from './SettingItem'
+import { v4 as uuid } from 'uuid'
+import { useWeb3React } from '@web3-react/core'
 
 const Divider = () => <_Divider sx={{ borderColor: 'border' }} my={4} mx={-4} />
 
@@ -33,6 +40,34 @@ const Container = ({ children }: BoxProps) => (
   </Box>
 )
 
+const DelegateVotes = () => {
+  const addTransaction = useSetAtom(addTransactionAtom)
+  const rTokenContracts = useAtomValue(rTokenContractsAtom)
+  const { account } = useWeb3React()
+
+  const handleDelegate = () => {
+    addTransaction([
+      {
+        id: uuid(),
+        description: 'Delete votes',
+        status: TRANSACTION_STATUS.PENDING,
+        value: '0',
+        call: {
+          abi: 'stRSRVotes',
+          address: rTokenContracts.stRSR,
+          method: 'delegate',
+          args: [account],
+        },
+      },
+    ])
+  }
+
+  return (
+    <Box mt={5}>
+      <Button onClick={handleDelegate}>Delegate votes</Button>
+    </Box>
+  )
+}
 
 /**
  * Manage RToken
@@ -102,6 +137,7 @@ const RTokenManagement = () => {
           />
         </>
       )}
+      <DelegateVotes />
     </Container>
   )
 }
