@@ -48,7 +48,7 @@ export const useGovernanceTx = () => {
         votingDelay: BigNumber.from(votingDelay),
         votingPeriod: BigNumber.from(votingPeriod),
         proposalThresholdAsMicroPercent: BigNumber.from(
-          proposalThresholdAsMicroPercent * 1e6
+          proposalThresholdAsMicroPercent
         ),
         quorumPercent: BigNumber.from(quorumPercent),
         timelockDelay: BigNumber.from(minDelay * 60 * 60),

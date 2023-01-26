@@ -72,4 +72,5 @@ export default <StringMap>{
   facade: FacadeInterface,
   facadeWrite: FacadeWriteInterface,
   main: MainInterface,
+  governance: GovernanceInterface,
 }
