@@ -91,7 +91,7 @@ const RTokenGovernanceUpdater = () => {
           timelock: timelockAddress,
           votingDelay: votingDelay.toString(),
           votingPeriod: votingPeriod.toString(),
-          proposalThreshold: proposalThreshold.toString(),
+          proposalThreshold: (+proposalThreshold / 1e6).toString(),
           quorum: quorum.toString(),
           minDelay: minDelay.toString(),
         })

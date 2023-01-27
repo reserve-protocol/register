@@ -62,7 +62,7 @@ const RTokenBasketUpdater = () => {
           )
 
           backupBasket[targetUnits[index]] = {
-            diversityFactor: +formatEther(max),
+            diversityFactor: max.toNumber(),
             collaterals: erc20s.map((address, i) => ({
               address,
               targetUnit: targetUnits[index],

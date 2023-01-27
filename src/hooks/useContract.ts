@@ -116,3 +116,14 @@ export function useTimelockContract(
     withSignerIfPossible
   )
 }
+
+export function useGovernanceContract(
+  timelockAddress?: string,
+  withSignerIfPossible?: boolean
+): Timelock | null {
+  return useContract<Timelock>(
+    timelockAddress,
+    TimelockAbi,
+    withSignerIfPossible
+  )
+}
