@@ -2,7 +2,7 @@ import Popup from 'components/popup'
 import { useAtom } from 'jotai'
 import { useCallback, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { selectedRTokenAtom } from 'state/atoms'
 import { Box, BoxProps, Flex } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
@@ -16,16 +16,19 @@ const RTokenSelector = (props: BoxProps) => {
   const navigate = useNavigate()
   const [isVisible, setVisible] = useState(false)
   const [selected, setSelected] = useAtom(selectedRTokenAtom)
+  const location = useLocation()
 
   const handleSelect = useCallback(
     (token: string) => {
       if (token !== selected) {
         setSelected(token)
-        navigate(`${ROUTES.OVERVIEW}?token=${token}`)
+        navigate(
+          `${selected ? location.pathname : ROUTES.OVERVIEW}?token=${token}`
+        )
         setVisible(false)
       }
     },
-    [setSelected, selected]
+    [setSelected, selected, location.pathname]
   )
 
   const handleHome = useCallback(() => {
