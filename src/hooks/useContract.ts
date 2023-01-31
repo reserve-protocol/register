@@ -10,6 +10,7 @@ import {
   StRSR as StRSRAbi,
   Main as MainAbi,
   Distributor as DistributorAbi,
+  Governance as GovernanceAbi,
 } from 'abis'
 import { Contract } from 'ethers'
 import { useMemo } from 'react'
@@ -23,6 +24,7 @@ import {
   Main,
   Distributor,
   Timelock,
+  Governance,
 } from '../abis/types'
 import { getContract } from '../utils'
 import { FACADE_ADDRESS, FACADE_WRITE_ADDRESS } from './../utils/addresses'
@@ -118,12 +120,12 @@ export function useTimelockContract(
 }
 
 export function useGovernanceContract(
-  timelockAddress?: string,
+  governanceAddress?: string,
   withSignerIfPossible?: boolean
-): Timelock | null {
-  return useContract<Timelock>(
-    timelockAddress,
-    TimelockAbi,
+): Governance | null {
+  return useContract<Governance>(
+    governanceAddress,
+    GovernanceAbi,
     withSignerIfPossible
   )
 }
