@@ -1,19 +1,20 @@
 import { Trans } from '@lingui/macro'
+import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
 import { useMemo } from 'react'
 import { Badge, Box, Text } from 'theme-ui'
 import { StringMap } from 'types'
-import dayjs from 'dayjs'
 
 const query = gql`
   query getProposals($id: String!) {
-    proposals(governance: $id) {
+    proposals(where: { governance: $id }) {
       id
       description
       creationTime
       state
+      governance
     }
   }
 `
@@ -41,22 +42,24 @@ const ProposalList = () => {
 
   return (
     <Box>
-      <Text variant="strong">
-        <Trans>Recent proposals</Trans>
-      </Text>
-      <Box p={4}>
-        {data.map((proposal: StringMap) => (
-          <Box key={proposal.id} variant="layout.verticalAlign">
-            <Box>
-              <Text variant="strong">{proposal.description}</Text>
-              <Text variant="legend" sx={{ fontSize: 1 }}>
-                <Trans>Created at:</Trans>{' '}
-                {dayjs.unix(+proposal.creationTime).format('YYYY-M-d')}
-              </Text>
+      <Box variant="layout.borderBox">
+        <Text variant="strong">
+          <Trans>Recent proposals</Trans>
+        </Text>
+        <Box px={4} mt={2}>
+          {data.map((proposal: StringMap) => (
+            <Box mt={3} key={proposal.id} variant="layout.verticalAlign">
+              <Box>
+                <Text variant="strong">{proposal.description}</Text>
+                <Text variant="legend" sx={{ fontSize: 1 }}>
+                  <Trans>Created at:</Trans>{' '}
+                  {dayjs.unix(+proposal.creationTime).format('YYYY-M-d')}
+                </Text>
+              </Box>
+              <Badge ml="auto">{proposal.state}</Badge>
             </Box>
-            <Badge ml="auto">{proposal.state}</Badge>
-          </Box>
-        ))}
+          ))}
+        </Box>
       </Box>
     </Box>
   )

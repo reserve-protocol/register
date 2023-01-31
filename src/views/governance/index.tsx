@@ -1,5 +1,5 @@
 import { BoxProps, Grid } from 'theme-ui'
-import GovernanceActions from './components/GovernanceActions'
+import GovernanceActions from './components/GovernanceOverview'
 import ProposalList from './components/ProposalList'
 
 const Governance = (props: BoxProps) => {

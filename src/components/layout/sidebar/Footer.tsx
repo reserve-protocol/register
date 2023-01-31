@@ -5,7 +5,7 @@ import { Box, BoxProps, Flex, Link, Text } from 'theme-ui'
 const Footer = (props: BoxProps) => (
   <Box m={4} {...props}>
     <Box sx={{ fontSize: 1 }} mb={4}>
-      <Text sx={{ fontWeight: 500, color: 'danger' }}>
+      <Text sx={{ fontWeight: 500, color: 'warning' }}>
         <Trans>Proceed with caution</Trans>
       </Text>
       <Text as="p" variant="legend" mt={1}>
