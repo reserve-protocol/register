@@ -2,15 +2,20 @@ import { Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
 import { stRSRVotesInterface } from 'abis'
 import { SmallButton } from 'components/button'
+import GoTo from 'components/button/GoTo'
 import { useContractCall } from 'hooks/useCall'
 import useRToken from 'hooks/useRToken'
+import { useState } from 'react'
 import { Box, Text, Image } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { ZERO_ADDRESS } from 'utils/addresses'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import DelegateModal from './DelegateModal'
 
 const AccountVotes = () => {
   const { account } = useWeb3React()
   const rToken = useRToken()
+  const [isVisible, setVisible] = useState(false)
   const { value = [] } =
     useContractCall(
       account &&
@@ -28,7 +33,9 @@ const AccountVotes = () => {
     return null
   }
 
-  const handleDelegate = () => {}
+  const handleDelegate = () => {
+    setVisible(true)
+  }
 
   return (
     <Box variant="layout.borderBox" mb={4}>
@@ -59,7 +66,11 @@ const AccountVotes = () => {
                 <Trans>Delegated to self</Trans>
               ) : (
                 <>
-                  <Trans>Delegated to: </Trans> {shortenAddress(value[0] || '')}
+                  <Trans>Delegated to: </Trans> {shortenAddress(value[0] || '')}{' '}
+                  <GoTo
+                    ml={2}
+                    href={getExplorerLink(value[0], ExplorerDataType.ADDRESS)}
+                  />
                 </>
               )}
             </Text>
@@ -69,6 +80,7 @@ const AccountVotes = () => {
           </SmallButton>
         </Box>
       )}
+      {isVisible && <DelegateModal onClose={() => setVisible(false)} />}
     </Box>
   )
 }
