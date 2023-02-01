@@ -1,4 +1,5 @@
 import Layout from 'components/rtoken-setup/Layout'
+import useToggledSidebar from 'hooks/useToggledSidebar'
 import { FormProvider, useForm } from 'react-hook-form'
 import { defaultValues } from 'views/deploy/utils'
 import ProposalForm from './components/ProposalForm'
@@ -11,6 +12,7 @@ const GovernanceProposal = () => {
     mode: 'onChange',
     defaultValues,
   })
+  useToggledSidebar()
 
   return (
     <FormProvider {...form}>

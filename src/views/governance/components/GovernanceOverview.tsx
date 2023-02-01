@@ -1,12 +1,15 @@
 import { t, Trans } from '@lingui/macro'
+import { SmallButton } from 'components/button'
 import IconInfo from 'components/info-icon'
 import { formatEther } from 'ethers/lib/utils'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
 import { useMemo } from 'react'
-import { Box, Grid, Image, Text } from 'theme-ui'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { Box, Grid, Image, Text, Divider, Flex } from 'theme-ui'
 import { formatCurrency } from 'utils'
+import { ROUTES } from 'utils/constants'
 
 const query = gql`
   query getGovernanceStats($id: String!) {
@@ -45,9 +48,12 @@ const useStats = () => {
   }, [JSON.stringify(response)])
 }
 
+// TODO: Validate if account is above proposal threshold
 const GovernanceOverview = () => {
   const stats = useStats()
-  const validGovernance = !!stats.governanceFrameworks.length
+  const navigate = useNavigate()
+  const rToken = useRToken()
+  const governance = (stats?.governanceFrameworks || [])[0]
 
   return (
     <Box>
@@ -101,7 +107,45 @@ const GovernanceOverview = () => {
         <Text variant="subtitle">
           <Trans>Format</Trans>
         </Text>
-        <Text sx={{ fontSize: 4 }}></Text>
+        <Text sx={{ fontSize: 4 }}>
+          {governance ? governance.name : 'Custom'}
+        </Text>
+        <Text as="p" variant="legend">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam maximus
+          facilisis velit, at venenatis nunc iaculis vitae vestibulum ante
+          ipsum. facilisis velit, at venenatis nunc iaculis.
+        </Text>
+        <Divider mx={-4} my={4} />
+        <Box variant="layout.verticalAlign">
+          <Image mr={2} src="/svgs/asterisk.svg" />
+          <Text variant="strong">
+            <Trans>Roles & Actions</Trans>
+          </Text>
+          <SmallButton
+            ml="auto"
+            variant="muted"
+            onClick={() =>
+              navigate(`${ROUTES.SETTINGS}?token=${rToken?.address}`)
+            }
+          >
+            <Trans>View settings</Trans>
+          </SmallButton>
+        </Box>
+        <Box mt={4} variant="layout.verticalAlign">
+          <Image mr={2} src="/svgs/asterisk.svg" />
+          <Text variant="strong">
+            <Trans>Proposals</Trans>
+          </Text>
+          <SmallButton
+            ml="auto"
+            variant="muted"
+            onClick={() =>
+              navigate(`${ROUTES.GOVERNANCE_PROPOSAL}?token=${rToken?.address}`)
+            }
+          >
+            <Trans>Create proposal</Trans>
+          </SmallButton>
+        </Box>
       </Box>
     </Box>
   )
