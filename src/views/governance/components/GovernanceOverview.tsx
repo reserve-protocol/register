@@ -6,10 +6,11 @@ import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
 import { useMemo } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { Box, Grid, Image, Text, Divider, Flex } from 'theme-ui'
+import { useNavigate } from 'react-router-dom'
+import { Box, Divider, Grid, Image, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ROUTES } from 'utils/constants'
+import AccountVotes from './AccountVotes'
 
 const query = gql`
   query getGovernanceStats($id: String!) {
@@ -43,7 +44,7 @@ const useStats = () => {
       totalTokenHolders: +formatEther(
         data?.governance?.totalTokenHolders ?? '0'
       ),
-      totalDelegates: +formatEther(data?.governance?.totalDelegates ?? '0'),
+      totalDelegates: data?.governance?.totalDelegates ?? '0',
     }
   }, [JSON.stringify(response)])
 }
@@ -57,11 +58,7 @@ const GovernanceOverview = () => {
 
   return (
     <Box>
-      <Box variant="layout.borderBox" mb={4}>
-        <Text variant="legend">
-          <Trans>Proposals</Trans>
-        </Text>
-      </Box>
+      <AccountVotes />
       <Box variant="layout.borderBox" p={0}>
         <Grid gap={0} columns={2}>
           <Box
@@ -107,10 +104,8 @@ const GovernanceOverview = () => {
         <Text variant="subtitle">
           <Trans>Format</Trans>
         </Text>
-        <Text sx={{ fontSize: 4 }}>
-          {governance ? governance.name : 'Custom'}
-        </Text>
-        <Text as="p" variant="legend">
+        <Text variant="title">{governance ? governance.name : 'Custom'}</Text>
+        <Text as="p" variant="legend" mt={2}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam maximus
           facilisis velit, at venenatis nunc iaculis vitae vestibulum ante
           ipsum. facilisis velit, at venenatis nunc iaculis.

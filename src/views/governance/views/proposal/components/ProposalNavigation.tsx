@@ -25,7 +25,7 @@ const ProposalNavigation = () => {
 
   const handleBack = () => {
     if (rToken?.address) {
-      navigate(ROUTES.SETTINGS + `?token=${rToken.address}`)
+      navigate(ROUTES.GOVERNANCE + `?token=${rToken.address}`)
     } else {
       navigate('/')
     }
@@ -35,7 +35,7 @@ const ProposalNavigation = () => {
     <Box variant="layout.sticky" py={5}>
       <Box mb={5}>
         <SmallButton variant="transparent" onClick={handleBack}>
-          <Trans>Back to settings</Trans>
+          <Trans>Back to Governance</Trans>
         </SmallButton>
       </Box>
       <Navigation sections={sections} />
