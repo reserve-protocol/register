@@ -7,10 +7,9 @@ const Governance = (props: BoxProps) => {
   return (
     <Grid
       id="rtoken-setup-container"
-      columns={['1fr', '1fr 1fr', '1.5fr 1fr', '1fr 400px']}
-      gap={5}
-      px={[4, 7]}
-      pt={[4, 6]}
+      columns={[1, 1, 1, '2fr 1.5fr']}
+      gap={[3, 5]}
+      padding={[1, 5]}
       sx={{
         height: '100%',
         position: 'relative',

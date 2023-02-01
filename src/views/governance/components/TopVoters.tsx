@@ -1,4 +1,5 @@
 import { t, Trans } from '@lingui/macro'
+import GoTo from 'components/button/GoTo'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { Table } from 'components/table'
 import { formatEther } from 'ethers/lib/utils'
@@ -8,6 +9,7 @@ import useRToken from 'hooks/useRToken'
 import { useMemo } from 'react'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { formatCurrencyCell, shortenAddress } from 'utils'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
 const query = gql`
   query getVoters($id: String!) {
@@ -61,7 +63,12 @@ const TopVoters = (props: BoxProps) => {
         Header: t`Address`,
         accessor: 'address',
         Cell: ({ value }: any) => {
-          return <Text>{shortenAddress(value)}</Text>
+          return (
+            <Box variant="layout.verticalAlign">
+              <Text>{shortenAddress(value)}</Text>
+              <GoTo href={getExplorerLink(value, ExplorerDataType.ADDRESS)} />
+            </Box>
+          )
         },
       },
       {
