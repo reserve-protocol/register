@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/macro'
+import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
@@ -47,6 +48,20 @@ const ProposalList = () => {
           <Trans>Recent proposals</Trans>
         </Text>
         <Box px={4} mt={2}>
+          {!data.length && (
+            <Box mt={4} sx={{ textAlign: 'center' }}>
+              <EmptyBoxIcon />
+              <Text
+                mt={3}
+                variant="legend"
+                sx={{
+                  display: 'block',
+                }}
+              >
+                No proposals created...
+              </Text>
+            </Box>
+          )}
           {data.map((proposal: StringMap) => (
             <Box mt={3} key={proposal.id} variant="layout.verticalAlign">
               <Box>

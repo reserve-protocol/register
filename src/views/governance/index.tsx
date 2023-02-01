@@ -1,6 +1,7 @@
-import { BoxProps, Grid } from 'theme-ui'
+import { Box, BoxProps, Grid } from 'theme-ui'
 import GovernanceActions from './components/GovernanceOverview'
 import ProposalList from './components/ProposalList'
+import TopVoters from './components/TopVoters'
 
 const Governance = (props: BoxProps) => {
   return (
@@ -19,7 +20,11 @@ const Governance = (props: BoxProps) => {
       }}
       {...props}
     >
-      <ProposalList />
+      <Box>
+        <ProposalList />
+        <TopVoters mt={5} />
+      </Box>
+
       <GovernanceActions />
     </Grid>
   )
