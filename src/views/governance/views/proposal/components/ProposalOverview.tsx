@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
 import { BackingManagerInterface } from 'abis'
+import { SmallButton } from 'components/button'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { ArrowRight, Square } from 'react-feather'
@@ -19,6 +20,7 @@ import { StringMap } from 'types'
 import { formatCurrency } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
+import PreviewBox from './PreviewBox'
 
 import useProposal from './useProposal'
 
@@ -120,70 +122,66 @@ const useProposalPreview = () => {
   }
 }
 
-const ProposedParametersPreview = () => {
+const ProposedParametersPreview = (props: BoxProps) => {
   const changes = useParametersChanges()
+  const { resetField } = useFormContext()
 
   if (!changes.length) {
     return null
   }
 
-  return (
-    <Box>
-      <Divider my={4} mx={-4} />
-      <Box>
-        <Box>
-          <Box>
-            <Box variant="layout.verticalAlign">
-              <Text variant="strong" mr={2}>
-                {changes.length}
-              </Text>
-              <Text variant="legend" sx={{ fontSize: 1 }}>
-                <Trans>Change in:</Trans>
-              </Text>
-            </Box>
+  const handleRevert = (item: ParameterChange) => {
+    resetField(item.field)
+  }
 
-            <Text variant="strong">
-              <Trans>Parameters</Trans>
-            </Text>
-          </Box>
-        </Box>
-      </Box>
-      {changes.map((change, index) => (
-        <Box mt={3}>
-          <Box variant="layout.verticalAlign">
-            <Box>
-              <Text variant="legend" sx={{ fontSize: 1, display: 'block' }}>
-                <Trans>Change</Trans>
-              </Text>
-              <Text>{change.field}</Text>
-            </Box>
-          </Box>
-          <Box
-            key={index}
-            variant="layout.verticalAlign"
-            mt={2}
-            sx={{ justifyContent: 'center' }}
-          >
-            <Square fill="#FF0000" size={4} color="#FF0000" />
-            <Box ml={2} mr={4}>
-              <Text variant="legend" sx={{ fontSize: 1, display: 'block' }}>
-                <Trans>Current</Trans>
-              </Text>
-              <Text>{change.current}</Text>
-            </Box>
-            <ArrowRight size={18} color="#808080" />
-            <Box ml={4} variant="layout.verticalAlign">
-              <Square fill="#11BB8D" size={4} color="#11BB8D" />
-              <Box ml={2}>
+  return (
+    <Box {...props}>
+      <Divider my={4} mx={-4} />
+      <PreviewBox count={changes.length} title="Parameters">
+        {changes.map((change, index) => (
+          <Box mt={3}>
+            <Box variant="layout.verticalAlign">
+              <Box>
                 <Text variant="legend" sx={{ fontSize: 1, display: 'block' }}>
-                  <Trans>Proposed</Trans>
+                  <Trans>Change</Trans>
                 </Text>
-                <Text>{change.proposed}</Text>
+                <Text>{change.field}</Text>
+              </Box>
+              <SmallButton
+                ml="auto"
+                onClick={() => handleRevert(change)}
+                variant="muted"
+              >
+                <Trans>Revert</Trans>
+              </SmallButton>
+            </Box>
+            <Box
+              key={index}
+              variant="layout.verticalAlign"
+              mt={2}
+              sx={{ justifyContent: 'center' }}
+            >
+              <Square fill="#FF0000" size={4} color="#FF0000" />
+              <Box ml={2} mr={4}>
+                <Text variant="legend" sx={{ fontSize: 1, display: 'block' }}>
+                  <Trans>Current</Trans>
+                </Text>
+                <Text>{change.current}</Text>
+              </Box>
+              <ArrowRight size={18} color="#808080" />
+              <Box ml={4} variant="layout.verticalAlign">
+                <Square fill="#11BB8D" size={4} color="#11BB8D" />
+                <Box ml={2}>
+                  <Text variant="legend" sx={{ fontSize: 1, display: 'block' }}>
+                    <Trans>Proposed</Trans>
+                  </Text>
+                  <Text>{change.proposed}</Text>
+                </Box>
               </Box>
             </Box>
           </Box>
-        </Box>
-      ))}
+        ))}
+      </PreviewBox>
     </Box>
   )
 }
