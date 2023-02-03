@@ -13,8 +13,8 @@ const ProposedParametersPreview = (props: BoxProps) => {
   // TODO: Split by contract or bucket
   return (
     <Box {...props}>
-      <Divider my={4} mx={-4} />
-      <PreviewBox count={changes.length} title="Parameters">
+      <Divider mb={4} mx={-4} />
+      <PreviewBox count={changes.length} title="Parameters" mb={4}>
         {changes.map((change) => (
           <ParameterPreview key={change.field} mt={3} values={change} />
         ))}

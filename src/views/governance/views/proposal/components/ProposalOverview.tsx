@@ -4,7 +4,7 @@ import { BackingManagerInterface } from 'abis'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useNavigate } from 'react-router-dom'
 import { addTransactionAtom, rTokenGovernanceAtom } from 'state/atoms'
-import { Box, BoxProps, Button, Flex, Text } from 'theme-ui'
+import { Box, BoxProps, Button, Divider, Flex, Text } from 'theme-ui'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
 import ProposalPreview from './ProposalPreview'
@@ -69,25 +69,35 @@ const ProposalOverview = (props: BoxProps) => {
       variant="layout.borderBox"
       sx={{ position: 'sticky', top: 0 }}
       {...props}
+      p={0}
     >
-      <Flex
+      <Box
         sx={{
-          alignItems: 'center',
+          maxHeight: '77vh',
+          display: 'flex',
           flexDirection: 'column',
-          textAlign: 'center',
+          overflow: 'hidden',
         }}
-        py={2}
       >
-        <Text variant="title" mb={2}>
-          <Trans>Governance Proposal</Trans>
-        </Text>
-        <Text variant="legend" as="p">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam maxisss
-          nunc iaculis vitae.
-        </Text>
-        <ProposalStatus />
-      </Flex>
-      <ProposalPreview />
+        <Flex
+          sx={{
+            alignItems: 'center',
+            flexDirection: 'column',
+            textAlign: 'center',
+          }}
+          p={4}
+        >
+          <Text variant="title" mb={2}>
+            <Trans>Governance Proposal</Trans>
+          </Text>
+          <Text variant="legend" as="p">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
+            maxisss nunc iaculis vitae.
+          </Text>
+          <ProposalStatus />
+        </Flex>
+        <ProposalPreview sx={{ flexGrow: 1, overflow: 'auto' }} />
+      </Box>
     </Container>
   )
 }

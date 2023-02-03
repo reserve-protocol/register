@@ -1,22 +1,24 @@
 import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import { useAtom } from 'jotai'
-import { Box, Divider, Text } from 'theme-ui'
+import { Box, BoxProps, Divider, Text } from 'theme-ui'
 import { isNewBasketProposedAtom } from '../atoms'
 import ProposedParametersPreview from './ProposedParametersPreview'
 
-const ProposalPreview = () => {
+const ProposalPreview = (props: BoxProps) => {
   const [isNewBasketProposed, setProposeNewBasket] = useAtom(
     isNewBasketProposedAtom
   )
 
   return (
-    <Box>
+    <Box {...props} px={4}>
       {isNewBasketProposed && (
         <>
-          <Divider mx={-4} my={4} />
-          <Box mt={3} variant="layout.verticalAlign">
-            <Text variant="strong">New primary basket </Text>
+          <Divider mt={0} mx={-4} mb={4} />
+          <Box mt={3} variant="layout.verticalAlign" mb={4}>
+            <Text variant="strong" sx={{ color: 'warning' }}>
+              New primary basket
+            </Text>
             <SmallButton
               ml="auto"
               variant="muted"

@@ -26,8 +26,6 @@ const useParametersChanges = (): ParameterChange[] => {
       return []
     }
 
-    console.log('how many times')
-
     const changes: ParameterChange[] = []
     const currentValues = getValues()
 
