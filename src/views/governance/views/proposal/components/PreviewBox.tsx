@@ -26,9 +26,10 @@ const PreviewBox = ({
   // }, [collapsed])
 
   return (
-    <Box onClick={() => setVisible(!visible)} {...props}>
+    <Box {...props}>
       <Box
         variant="layout.verticalAlign"
+        onClick={() => setVisible(!visible)}
         sx={{
           borderBottom: visible ? '1px solid' : 'none',
           borderColor: 'border',
