@@ -8,7 +8,7 @@ import { useResetAtom } from 'jotai/utils'
 import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 import {
-  rtokenBackupAtom,
+  rTokenBackupAtom,
   rTokenBasketAtom,
   rTokenParamsAtom,
   rTokenRevenueSplitAtom,
@@ -25,7 +25,7 @@ const RTokenDataUpdater = () => {
   const resetRevenueSplit = useResetAtom(revenueSplitAtom)
   // RToken state data
   const basket = useAtomValue(rTokenBasketAtom)
-  const backup = useAtomValue(rtokenBackupAtom)
+  const backup = useAtomValue(rTokenBackupAtom)
   const revenueSplit = useAtomValue(rTokenRevenueSplitAtom)
   const tokenParameters = useAtomValue(rTokenParamsAtom)
 

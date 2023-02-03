@@ -4,7 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { defaultValues } from 'views/deploy/utils'
 import ProposalForm from './components/ProposalForm'
 import ProposalNavigation from './components/ProposalNavigation'
-import ProposalPreview from './components/ProposalOverview'
+import ProposalOverview from './components/ProposalOverview'
 import RTokenDataUpdater from './components/Updater'
 
 const GovernanceProposal = () => {
@@ -20,7 +20,7 @@ const GovernanceProposal = () => {
       <Layout>
         <ProposalNavigation />
         <ProposalForm />
-        <ProposalPreview />
+        <ProposalOverview />
       </Layout>
     </FormProvider>
   )

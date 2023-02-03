@@ -99,7 +99,7 @@ export const rTokenGovernanceAtom = atomWithReset<{
 })
 
 export const rTokenBasketAtom = atomWithReset<Basket>({})
-export const rtokenBackupAtom = atomWithReset<BackupBasket>({})
+export const rTokenBackupAtom = atomWithReset<BackupBasket>({})
 export const rTokenRevenueSplitAtom = atomWithReset<RevenueSplit>({
   holders: '40', // %
   stakers: '60', // %
