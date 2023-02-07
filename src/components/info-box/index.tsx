@@ -82,7 +82,6 @@ export const InfoItem = ({
       sx={{
         height: '4px',
         width: '4px',
-        borderRadius: '100%',
         backgroundColor: 'text',
       }}
     />
