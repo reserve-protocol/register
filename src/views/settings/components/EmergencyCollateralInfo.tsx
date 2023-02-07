@@ -1,9 +1,10 @@
 import { Trans } from '@lingui/macro'
 import GoTo from 'components/button/GoTo'
+import DiversityFactorIcon from 'components/icons/DiversityFactorIcon'
 import TokenItem from 'components/token-item'
 import { useAtomValue } from 'jotai'
 import { rtokenBackupAtom, rTokenBasketAtom } from 'state/atoms'
-import { Box, BoxProps, Card, Flex, Text } from 'theme-ui'
+import { Box, BoxProps, Card, Flex, Text, Divider } from 'theme-ui'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
 /**
@@ -15,30 +16,33 @@ const EmergencyCollateralInfo = (props: BoxProps) => {
 
   return (
     <Card p={4} {...props}>
-      <Text variant="sectionTitle" mb={5}>
+      <Text variant="sectionTitle">
         <Trans>Emergency Collateral</Trans>
       </Text>
-
       {units.map((unit, unitIndex) => (
         <Box key={unit} mt={unitIndex ? 4 : 0}>
-          <Text variant="strong" sx={{ display: 'block' }} mb={3}>
+          <Divider mx={-4} my={4} sx={{ borderColor: 'darkBorder' }} />
+          <Text variant="strong" mb={3} sx={{ display: 'block' }}>
             {unit} <Trans>Backups</Trans>
           </Text>
           {backupBasket[unit]?.collaterals.length ? (
             <>
               <Flex>
-                <Text>
-                  <Trans>Diversity Factor</Trans>
-                </Text>
+                <Flex sx={{ alignItems: 'center' }} mb={1}>
+                  <DiversityFactorIcon />
+                  <Text ml={2}>
+                    <Trans>Diversity Factor</Trans>
+                  </Text>
+                </Flex>
                 <Text ml="auto">{backupBasket[unit].diversityFactor}</Text>
               </Flex>
               {backupBasket[unit].collaterals.map((collateral, index) => (
                 <Box
                   variant="layout.verticalAlign"
-                  mt={2}
+                  mt={3}
                   key={collateral.address}
                 >
-                  <TokenItem size={14} symbol={collateral.symbol} />
+                  <TokenItem size={16} symbol={collateral.symbol} />
                   <Text ml="auto">{index + 1}</Text>
                   <GoTo
                     ml={2}

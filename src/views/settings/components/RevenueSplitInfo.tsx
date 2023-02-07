@@ -3,7 +3,7 @@ import GoTo from 'components/button/GoTo'
 import { InfoItem } from 'components/info-box'
 import { useAtomValue } from 'jotai'
 import { rTokenRevenueSplitAtom } from 'state/atoms'
-import { Box, BoxProps, Card, Text } from 'theme-ui'
+import { Box, BoxProps, Card, Text, Divider } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
@@ -15,10 +15,10 @@ const RevenueSplitInfo = (props: BoxProps) => {
 
   return (
     <Card p={4} {...props}>
-      <Text mb={5} variant="sectionTitle">
+      <Text variant="sectionTitle">
         <Trans>Revenue Distribution</Trans>
       </Text>
-
+      <Divider mx={-4} my={4} sx={{ borderColor: 'darkBorder' }} />
       <InfoItem
         title="% to"
         subtitle={t`RToken holders`}
