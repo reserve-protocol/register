@@ -35,12 +35,11 @@ const TransactionHeader = () => {
       px={[3, 5]}
       mb={3}
     >
-      <Text variant="sectionTitle" sx={{ fontSize: 2 }} mr={3}>
+      <Text variant="sectionTitle" sx={{ fontSize: 3 }} mr={1}>
         <Trans>Account</Trans>
       </Text>
       <CopyValue
-        sx={{ display: ['none', 'flex'] }}
-        mr={2}
+        sx={{ display: ['none', 'flex'], cursor: 'pointer' }}
         value={account || ''}
       />
       <GoTo
