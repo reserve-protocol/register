@@ -305,8 +305,6 @@ const Auctions = () => {
 
   return (
     <Container>
-      <ContentHead title={`Auctions`} mb={7} ml={3} />
-
       <OutgoingAuctions data={rows.current} tokens={tokens} mb={7} />
       <FinalizedAuctions data={rows.ended} tokens={tokens} />
       <Divider mx={-5} my={6} />
