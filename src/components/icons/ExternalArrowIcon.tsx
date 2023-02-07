@@ -8,15 +8,20 @@ const ExternalArrowIcon = (props: SVGProps<SVGSVGElement>) => (
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
-    <g clipPath="url(#a)">
+    <g clip-path="url(#clip0_3954_144970)">
       <path
-        d="M12.02 3.851H4.95m7.07 0v7.071m0-7.071-8.484 8.485"
-        stroke="currentColor"
+        d="M12.0208 3.85103L4.94975 3.85103M12.0208 3.85103L12.0208 10.9221M12.0208 3.85103L3.53553 12.3363"
+        stroke="#999999"
       />
     </g>
     <defs>
-      <clipPath id="a">
-        <path fill="currentColor" d="M0 0h16v16H0z" />
+      <clipPath id="clip0_3954_144970">
+        <rect
+          width="16"
+          height="16"
+          fill="white"
+          transform="translate(0 0.000854492)"
+        />
       </clipPath>
     </defs>
   </svg>
