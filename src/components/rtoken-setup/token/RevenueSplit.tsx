@@ -89,7 +89,7 @@ const RevenueSplit = (props: BoxProps) => {
 
   return (
     <Card p={4} {...props}>
-      <Flex>
+      <Flex sx={{ alignItems: 'center' }}>
         <Text variant="sectionTitle">
           <Trans>Revenue Distribution</Trans>
         </Text>
