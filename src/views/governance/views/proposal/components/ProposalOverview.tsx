@@ -73,7 +73,7 @@ const ProposalOverview = (props: BoxProps) => {
     >
       <Box
         sx={{
-          maxHeight: '77vh',
+          maxHeight: 'calc(100vh - 124px)',
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',

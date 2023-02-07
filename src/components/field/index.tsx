@@ -84,24 +84,29 @@ export const FormField = ({
 }: FormFieldProps) => {
   const {
     register,
+    getFieldState,
     formState: { errors },
   } = useFormContext()
+  const fieldState = getFieldState(name)
   let errorMessage = ''
 
   if (errors && errors[name]) {
     errorMessage = errors[name]?.message || getErrorMessage(errors[name])
   }
 
-  return (
-    <Field {...props}>
-      <FieldInput
-        disabled={disabled}
-        placeholder={placeholder}
-        textarea={textarea}
-        error={errorMessage}
-        {...register(name, options)}
-      />
-    </Field>
+  return useMemo(
+    () => (
+      <Field {...props}>
+        <FieldInput
+          disabled={disabled}
+          placeholder={placeholder}
+          textarea={textarea}
+          error={errorMessage}
+          {...register(name, options)}
+        />
+      </Field>
+    ),
+    [register, errors[name], fieldState]
   )
 }
 
@@ -114,10 +119,13 @@ export const FormFieldRange = ({
 }: FormFieldProps) => {
   const { register } = useFormContext()
 
-  return (
-    <Field {...props} mb={4}>
-      <Slider {...register(name, options)} min={min} max={max} />
-    </Field>
+  return useMemo(
+    () => (
+      <Field {...props} mb={4}>
+        <Slider {...register(name, options)} min={min} max={max} />
+      </Field>
+    ),
+    [register]
   )
 }
 

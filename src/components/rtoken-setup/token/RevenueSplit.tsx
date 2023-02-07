@@ -89,12 +89,12 @@ const RevenueSplit = (props: BoxProps) => {
 
   return (
     <Card p={4} {...props}>
-      <Flex>
+      <Box variant="layout.verticalAlign">
         <Text variant="sectionTitle">
           <Trans>Revenue Distribution</Trans>
         </Text>
         <DocsLink link="https://reserve.org/protocol/protocol_operations/#revenue-handling" />
-      </Flex>
+      </Box>
       <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
       <Field label={t`% Revenue to RToken Holders`} mb={3}>
         <FieldInput

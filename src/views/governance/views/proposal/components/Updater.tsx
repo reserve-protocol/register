@@ -50,7 +50,8 @@ const RTokenDataUpdater = () => {
   }, [revenueSplit])
 
   useEffect(() => {
-    reset(tokenParameters)
+    // Delay reset to end of render
+    setTimeout(() => reset(tokenParameters), 10)
   }, [tokenParameters])
 
   return null

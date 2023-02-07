@@ -205,15 +205,19 @@ const RTokenSetupUpdater = () => {
           rewardRatio: formatEther(rewardRatio),
           unstakingDelay: unstakingDelay.toString(),
           auctionLength: auctionLength.toString(),
-          issuanceThrottleAmount: formatEther(issuanceThrottle.amtRate),
+          issuanceThrottleAmount: Number(
+            formatEther(issuanceThrottle.amtRate)
+          ).toString(),
           issuanceThrottleRate: (
             +formatEther(issuanceThrottle.pctRate) * 100
           ).toString(),
-          redemptionThrottleAmount: formatEther(redemptionThrottle.amtRate),
+          redemptionThrottleAmount: Number(
+            formatEther(redemptionThrottle.amtRate)
+          ).toString(),
           redemptionThrottleRate: (
             +formatEther(redemptionThrottle.pctRate) * 100
           ).toString(),
-          maxTrade: formatEther(maxTradeVolume),
+          maxTrade: Number(formatEther(maxTradeVolume)).toString(),
           longFreeze: longFreeze.toString(),
           shortFreeze: shortFreeze.toString(),
         })
