@@ -145,7 +145,7 @@ const OutgoingAuctions = ({ data, tokens, ...props }: TableProps) => {
   return (
     <Box {...props}>
       <Text variant="strong" ml={3} mb={4}>
-        <Trans>Ongoing</Trans>
+        <Trans>Ongoing auctions</Trans>
       </Text>
       {data.length ? (
         <Table columns={columns} data={data} />
@@ -239,7 +239,7 @@ const FinalizedAuctions = ({ data, tokens, ...props }: TableProps) => {
   return (
     <Box {...props}>
       <Text variant="strong" ml={3} mb={4}>
-        <Trans>Ended</Trans>
+        <Trans>Ended auctions</Trans>
       </Text>
       {data.length ? (
         <Table columns={columns} data={data} />
@@ -305,8 +305,6 @@ const Auctions = () => {
 
   return (
     <Container>
-      <ContentHead title={`Auctions`} mb={7} ml={3} />
-
       <OutgoingAuctions data={rows.current} tokens={tokens} mb={7} />
       <FinalizedAuctions data={rows.ended} tokens={tokens} />
       <Divider mx={-5} my={6} />
