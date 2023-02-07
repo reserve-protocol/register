@@ -205,7 +205,7 @@ export const getDeployParameters = (
           backupUnit: ethers.utils.formatBytes32String(
             targetUnit.toUpperCase()
           ),
-          diversityFactor: parseEther(
+          diversityFactor: BigNumber.from(
             backup[targetUnit].diversityFactor.toString()
           ),
           backupCollateral: backup[targetUnit].collaterals.map((c) => {

@@ -39,12 +39,12 @@ const OtherInfo = () => {
       />
       <InfoItem
         title={t`Minimum trade volume`}
-        subtitle={params.minTradeVolume}
+        subtitle={params.minTrade}
         mb={3}
       />
       <InfoItem
         title={t`RToken Maximum trade volume`}
-        subtitle={formatCurrency(+params.maxTradeVolume)}
+        subtitle={formatCurrency(+params.minTrade)}
       />
     </Card>
   )

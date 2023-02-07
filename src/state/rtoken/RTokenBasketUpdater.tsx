@@ -8,7 +8,7 @@ import useRToken from 'hooks/useRToken'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import {
-  rtokenBackupAtom,
+  rTokenBackupAtom,
   rTokenBasketAtom,
   rTokenCollateralDist,
 } from 'state/atoms'
@@ -21,7 +21,7 @@ const RTokenBasketUpdater = () => {
   const rToken = useRToken()
   const basketDistribution = useAtomValue(rTokenCollateralDist)
   const [primaryBasket, setPrimaryBasket] = useAtom(rTokenBasketAtom)
-  const setBackupBasket = useSetAtom(rtokenBackupAtom)
+  const setBackupBasket = useSetAtom(rTokenBackupAtom)
   const { provider } = useWeb3React()
 
   const setBackupConfig = useCallback(
@@ -62,7 +62,7 @@ const RTokenBasketUpdater = () => {
           )
 
           backupBasket[targetUnits[index]] = {
-            diversityFactor: +formatEther(max),
+            diversityFactor: max.toNumber(),
             collaterals: erc20s.map((address, i) => ({
               address,
               targetUnit: targetUnits[index],
@@ -105,9 +105,9 @@ const RTokenBasketUpdater = () => {
 
           if (!targetBasket) {
             targetBasket = {
-              scale: '',
+              scale: '1',
               collaterals: [collateral],
-              distribution: [share.toFixed(2)],
+              distribution: [share.toString()],
             }
           } else {
             targetBasket.collaterals.push(collateral)

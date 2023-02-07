@@ -90,6 +90,7 @@ const Navigation = ({ collapsed = false }) => {
       { path: ROUTES.ISSUANCE, title: t`Mint + Redeem`, Icon: IssuanceIcon },
       { path: ROUTES.STAKING, title: t`Stake + Unstake`, Icon: StakeIcon },
       { path: ROUTES.AUCTIONS, title: t`Auctions`, Icon: AuctionsIcon },
+      { path: ROUTES.GOVERNANCE, title: t`Governance`, Icon: GovernanceIcon },
       {
         path: ROUTES.SETTINGS,
         title: t`Settings`,

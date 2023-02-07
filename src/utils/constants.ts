@@ -2,6 +2,7 @@ import { Token } from 'types'
 import { CHAIN_ID } from 'utils/chains'
 import { RSR_ADDRESS } from './addresses'
 
+// Register transaction status
 export const TRANSACTION_STATUS = {
   PENDING: 'PENDING', // Tx to be executed
   SIGNING: 'SIGNING', // signing tx
@@ -11,17 +12,24 @@ export const TRANSACTION_STATUS = {
   UNKNOWN: 'UNKNOWN', // PENDING&SIGNING transactions that were loaded from localStorage
 }
 
+// Governance proposal states
+export const PROPOSAL_STATES = {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+  CANCELED: 'CANCELED',
+  DEFEATED: 'DEFEATED',
+  SUCCEEDED: 'SUCCEEDED',
+  QUEUED: 'QUEUED',
+  EXPIRED: 'EXPIRED',
+  EXECUTED: 'EXECUTED',
+}
+
+// Supported collateral plugins target unit
 export const TARGET_UNITS = {
   USD: 'USD',
   EUR: 'EUR',
   ETH: 'ETH',
   BTC: 'BTC',
-}
-
-export const RTOKEN_STATUS = {
-  PAUSED: 'PAUSED',
-  FROZEN: 'FROZEN',
-  SOUND: 'SOUND',
 }
 
 export const COINGECKO_API = 'https://api.coingecko.com/api/v3'

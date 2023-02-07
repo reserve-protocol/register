@@ -20,6 +20,7 @@ import AssetRegistry from './asset-registry.json'
 import Asset from './asset.json'
 import Timelock from './timelock.json'
 import Governance from './governance.json'
+import stRSRVotes from './stRSRVotes.json'
 
 const ERC20Interface = new Interface(ERC20)
 const FacadeInterface = new Interface(Facade)
@@ -41,6 +42,7 @@ const AssetRegistryInterface = new Interface(AssetRegistry)
 const AssetInterface = new Interface(Asset)
 const TimelockInterface = new Interface(Timelock)
 const GovernanceInterface = new Interface(Governance)
+const stRSRVotesInterface = new Interface(stRSRVotes)
 
 export { ERC20, ERC20Interface }
 export { Facade, FacadeInterface }
@@ -62,14 +64,17 @@ export { AssetRegistry, AssetRegistryInterface }
 export { Asset, AssetInterface }
 export { Timelock, TimelockInterface }
 export { Governance, GovernanceInterface }
+export { stRSRVotes, stRSRVotesInterface }
 
 // Used for tx management
 export default <StringMap>{
   erc20: ERC20Interface,
   stRSR: StRSRInterface,
+  stRSRVotes: stRSRVotesInterface,
   rToken: RTokenInterface,
   rsv: RSVManagerInterface,
   facade: FacadeInterface,
   facadeWrite: FacadeWriteInterface,
   main: MainInterface,
+  governance: GovernanceInterface,
 }

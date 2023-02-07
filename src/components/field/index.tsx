@@ -84,9 +84,10 @@ export const FormField = ({
 }: FormFieldProps) => {
   const {
     register,
+    getFieldState,
     formState: { errors },
   } = useFormContext()
-
+  const fieldState = getFieldState(name)
   let errorMessage = ''
 
   if (errors && errors[name]) {
@@ -105,7 +106,7 @@ export const FormField = ({
         />
       </Field>
     ),
-    [register, errors[name]]
+    [register, errors[name], fieldState]
   )
 }
 

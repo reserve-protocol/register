@@ -28,7 +28,7 @@ const RevenueSplitInfo = (props: BoxProps) => {
       <InfoItem
         title="% to"
         subtitle={t`RSR Stakers`}
-        right={<Text>{distribution.holders}%</Text>}
+        right={<Text>{distribution.stakers}%</Text>}
         mb={3}
       />
       {distribution.external.map((dist, index) => (

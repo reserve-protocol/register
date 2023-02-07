@@ -1,24 +1,19 @@
 import { t, Trans } from '@lingui/macro'
+import { useWeb3React } from '@web3-react/core'
 import { MainInterface } from 'abis'
 import DocsLink from 'components/docs-link/DocsLink'
-import GovernanceActionIcon from 'components/icons/GovernanceActionIcon'
 import { ethers } from 'ethers'
 import { useContractCall } from 'hooks/useCall'
 import useRToken from 'hooks/useRToken'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { accountRoleAtom, rTokenGovernanceAtom } from 'state/atoms'
-import {
-  Box,
-  BoxProps,
-  Button,
-  Divider as _Divider,
-  Flex,
-  Text,
-} from 'theme-ui'
+import { accountRoleAtom, addTransactionAtom } from 'state/atoms'
+import { useTransaction } from 'state/web3/hooks/useTransactions'
+import { Box, BoxProps, Divider as _Divider, Flex, Text } from 'theme-ui'
 import { FACADE_WRITE_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
-import { ROUTES } from 'utils/constants'
+import { TRANSACTION_STATUS } from 'utils/constants'
 import GovernancePrompt from './GovernancePrompt'
 import RoleActions from './RoleActions'
 import SettingItem from './SettingItem'
@@ -33,14 +28,42 @@ const Container = ({ children }: BoxProps) => (
   </Box>
 )
 
+const RunAuctions = () => {
+  const rToken = useRToken()
+  const { account } = useWeb3React()
+  const addTransaction = useSetAtom(addTransactionAtom)
+  const [txId, setTx] = useState('')
+  const tx = useTransaction(txId)
+
+  useEffect(() => {
+    if (
+      tx?.status === TRANSACTION_STATUS.CONFIRMED ||
+      tx?.status === TRANSACTION_STATUS.REJECTED
+    ) {
+      setTx('')
+    }
+  }, [tx?.status])
+
+  const handleRun = () => {}
+
+  return (
+    <SettingItem
+      title="RToken auctions"
+      subtitle={t`Run all available auctions`}
+      action={account && rToken?.address ? t`Run` : ''}
+      onAction={handleRun}
+      loading={!!txId}
+      actionVariant="muted"
+    />
+  )
+}
 
 /**
  * Manage RToken
+ * TODO: Allow owner to edit RToken
  */
 const RTokenManagement = () => {
   const rToken = useRToken()
-  const governance = useAtomValue(rTokenGovernanceAtom)
-  const navigate = useNavigate()
   const govRequired = useContractCall(
     rToken?.main
       ? {
@@ -56,13 +79,6 @@ const RTokenManagement = () => {
   )
   const accountRole = useAtomValue(accountRoleAtom)
 
-  const handleProposal = () => {
-    navigate(ROUTES.GOVERNANCE_PROPOSAL + `?token=${rToken?.address}`)
-  }
-
-  // TODO: Owner edit
-  const handleEdit = () => {}
-
   if (govRequired?.value[0] && accountRole.owner) {
     return <GovernancePrompt />
   }
@@ -76,21 +92,9 @@ const RTokenManagement = () => {
         <DocsLink link="https://reserve.org/" />
       </Flex>
       <RoleActions />
-      {!!governance.governor && !!governance.timelock && (
-        <>
-          <Divider />
-          <SettingItem
-            title={t`Governance proposals`}
-            subtitle={t`Available to:`}
-            value={t`All stakers`}
-            icon="hammer"
-            action={t`Create proposal`}
-            onAction={handleProposal}
-          />
-        </>
-      )}
-
-      {accountRole.owner && (
+      <Divider />
+      <RunAuctions />
+      {/* {accountRole.owner && (
         <>
           <Divider />
           <SettingItem
@@ -101,7 +105,7 @@ const RTokenManagement = () => {
             onAction={handleEdit}
           />
         </>
-      )}
+      )} */}
     </Container>
   )
 }

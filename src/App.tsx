@@ -7,7 +7,6 @@ import { ThemeProvider } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import Auctions from 'views/auctions'
 import Deploy from 'views/deploy'
-import GovernanceConfigured from 'views/deploy/components/GovernanceConfigured'
 import Home from 'views/home'
 import Management from 'views/settings'
 import Overview from 'views/overview'
@@ -17,8 +16,9 @@ import Layout from './components/layout'
 import LanguageProvider from './i18n'
 import { theme } from './theme'
 import Issuance from './views/issuance'
-import Governance from 'views/deploy/components/Governance'
+import GovernanceSetup from 'views/deploy/components/Governance'
 import GovernanceProposal from 'views/governance/views/proposal'
+import Governance from 'views/governance'
 
 /**
  * App Entry point - Handles views routing
@@ -42,10 +42,9 @@ const App = () => (
               <Route path={ROUTES.AUCTIONS} element={<Auctions />} />
               <Route path={ROUTES.DEPLOY} element={<Deploy />} />
               <Route path={ROUTES.SETTINGS} element={<Management />} />
-              <Route path={ROUTES.GOVERNANCE_SETUP} element={<Governance />} />
               <Route
-                path={`${ROUTES.GOVERNANCE_INFO}/:txId`}
-                element={<GovernanceConfigured />}
+                path={ROUTES.GOVERNANCE_SETUP}
+                element={<GovernanceSetup />}
               />
               <Route path={ROUTES.TOKENS} element={<Tokens />} />
               <Route path={ROUTES.GOVERNANCE} element={<Governance />} />

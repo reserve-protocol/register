@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 import IconInfo from 'components/info-icon'
 import { useAtomValue } from 'jotai'
 import {
@@ -44,7 +44,7 @@ const Stats = (props: BoxProps) => {
           </Text>
           <IconInfo
             icon={<Image src="/svgs/trendup.svg" />}
-            title="Est. APY"
+            title={t`Est. APY`}
             text={`${stakingApy}%`}
           />
         </Box>
@@ -54,7 +54,7 @@ const Stats = (props: BoxProps) => {
           </Text>
           <IconInfo
             icon={<Image src="/svgs/backing.svg" />}
-            title="Current"
+            title={t`Current`}
             text={`${distribution.backing}%`}
           />
         </Box>
@@ -64,7 +64,7 @@ const Stats = (props: BoxProps) => {
           </Text>
           <IconInfo
             icon={<Image src="/svgs/staked.svg" />}
-            title="Current"
+            title={t`Current`}
             text={`${distribution.backing + distribution.staked}%`}
           />
         </Box>

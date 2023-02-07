@@ -71,7 +71,7 @@ export const rTokenParamsAtom = atomWithReset({
   tradingDelay: '',
   backingBuffer: '',
   maxTradeSlippage: '',
-  minTradeVolume: '',
+  minTrade: '',
   rewardRatio: '',
   unstakingDelay: '',
   auctionLength: '',
@@ -81,7 +81,7 @@ export const rTokenParamsAtom = atomWithReset({
   redemptionThrottleRate: '',
   shortFreeze: '',
   longFreeze: '',
-  maxTradeVolume: '',
+  maxTrade: '',
 })
 
 export const rTokenGovernanceAtom = atomWithReset<{
@@ -99,7 +99,7 @@ export const rTokenGovernanceAtom = atomWithReset<{
 })
 
 export const rTokenBasketAtom = atomWithReset<Basket>({})
-export const rtokenBackupAtom = atomWithReset<BackupBasket>({})
+export const rTokenBackupAtom = atomWithReset<BackupBasket>({})
 export const rTokenRevenueSplitAtom = atomWithReset<RevenueSplit>({
   holders: '40', // %
   stakers: '60', // %
