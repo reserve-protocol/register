@@ -1,4 +1,4 @@
-import { Box, BoxProps, Divider } from 'theme-ui'
+import { BoxProps } from 'theme-ui'
 import useParametersChanges from '../hooks/useParametersChanges'
 import { ParameterPreview } from './ItemPreview'
 import PreviewBox from './PreviewBox'

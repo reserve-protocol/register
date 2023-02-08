@@ -14,7 +14,7 @@ interface ParameterChangePreview extends BoxProps {
   subtitle: string
   current: string
   proposed: string
-  onRevert(): void
+  onRevert?(): void
 }
 
 export const ParameterChangePreview = ({
@@ -33,9 +33,11 @@ export const ParameterChangePreview = ({
         </Text>
         <Text>{subtitle}</Text>
       </Box>
-      <SmallButton ml="auto" onClick={onRevert} variant="muted">
-        <Trans>Revert</Trans>
-      </SmallButton>
+      {!!onRevert && (
+        <SmallButton ml="auto" onClick={onRevert} variant="muted">
+          <Trans>Revert</Trans>
+        </SmallButton>
+      )}
     </Box>
     <Box
       variant="layout.verticalAlign"

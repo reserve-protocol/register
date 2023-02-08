@@ -1,10 +1,11 @@
 import { t, Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
-import { Check, Plus, X } from 'react-feather'
+import { backupCollateralAtom } from 'components/rtoken-setup/atoms'
+import { useAtom } from 'jotai'
+import { Plus, X } from 'react-feather'
 import { Box, BoxProps, Text } from 'theme-ui'
 import useBackupChanges, {
   CollateralChange,
-  CollateralPriorityChange,
   DiversityFactorChange,
 } from '../hooks/useBackupChanges'
 import { ParameterChangePreview } from './ItemPreview'
@@ -13,16 +14,54 @@ import PreviewBox from './PreviewBox'
 const ProposedBackupPreview = (props: BoxProps) => {
   const { count, diversityFactor, collateralChanges, priorityChanges } =
     useBackupChanges()
+  const [proposedBackup, setProposedBackup] = useAtom(backupCollateralAtom)
 
   if (!count) {
     return null
   }
 
-  const handleRevertDiversity = (change: DiversityFactorChange) => {}
+  const handleRevertDiversity = (change: DiversityFactorChange) => {
+    setProposedBackup({
+      ...proposedBackup,
+      [change.target]: {
+        diversityFactor: change.current,
+        collaterals: proposedBackup[change.target].collaterals,
+      },
+    })
+  }
 
-  const handleRevertPriority = (change: CollateralPriorityChange) => {}
+  const handleRevertCollateral = (change: CollateralChange) => {
+    const proposedBasket = proposedBackup[change.collateral.targetUnit]
 
-  const handleRevertCollateral = (change: CollateralChange) => {}
+    if (change.isNew) {
+      const index = proposedBasket.collaterals.findIndex(
+        (c) => c.address === change.collateral.address
+      )
+
+      setProposedBackup({
+        ...proposedBackup,
+        [change.collateral.targetUnit]: {
+          diversityFactor:
+            proposedBasket.diversityFactor > 0
+              ? proposedBasket.diversityFactor - 1
+              : 0,
+          collaterals: [
+            ...proposedBasket.collaterals.slice(0, index),
+            ...proposedBasket.collaterals.slice(index + 1),
+          ],
+        },
+      })
+    } else {
+      setProposedBackup({
+        ...proposedBackup,
+        [change.collateral.targetUnit]: {
+          diversityFactor:
+            proposedBackup[change.collateral.targetUnit].diversityFactor + 1,
+          collaterals: [...proposedBasket.collaterals, change.collateral],
+        },
+      })
+    }
+  }
 
   return (
     <PreviewBox
@@ -44,7 +83,7 @@ const ProposedBackupPreview = (props: BoxProps) => {
         <Box
           variant="layout.verticalAlign"
           key={change.collateral.address}
-          mt={index ? 3 : 0}
+          mt={3}
         >
           {change.isNew ? (
             <Plus color="#11BB8D" size={18} />
@@ -72,7 +111,6 @@ const ProposedBackupPreview = (props: BoxProps) => {
           subtitle={change.collateral.symbol}
           current={change.current.toString()}
           proposed={change.proposed.toString()}
-          onRevert={() => handleRevertPriority(change)}
         />
       ))}
     </PreviewBox>
