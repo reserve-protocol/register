@@ -12,7 +12,12 @@ const ProposedParametersPreview = (props: BoxProps) => {
 
   // TODO: Split by contract or bucket
   return (
-    <PreviewBox count={changes.length} title="Parameters" {...props}>
+    <PreviewBox
+      count={changes.length}
+      title="Parameters"
+      variant="layout.borderBox"
+      {...props}
+    >
       {changes.map((change) => (
         <ParameterPreview key={change.field} mt={3} values={change} />
       ))}

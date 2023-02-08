@@ -79,7 +79,7 @@ const RTokenManagement = () => {
   )
   const accountRole = useAtomValue(accountRoleAtom)
 
-  if (govRequired?.value[0] && accountRole.owner) {
+  if ((govRequired?.value || [])[0] && accountRole.owner) {
     return <GovernancePrompt />
   }
 

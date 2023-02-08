@@ -67,16 +67,18 @@ const ProposedBackupPreview = (props: BoxProps) => {
     <PreviewBox
       variant="layout.borderBox"
       count={count}
-      title={`Backup basket`}
+      title={t`Backup basket`}
       {...props}
     >
       {diversityFactor.map((change) => (
         <ParameterChangePreview
+          mt={3}
           title={t`Change diversity factor`}
           subtitle={change.target}
           current={change.current.toString()}
           proposed={change.proposed.toString()}
           onRevert={() => handleRevertDiversity(change)}
+          key={change.target}
         />
       ))}
       {collateralChanges.map((change, index) => (
@@ -107,6 +109,8 @@ const ProposedBackupPreview = (props: BoxProps) => {
       ))}
       {priorityChanges.map((change) => (
         <ParameterChangePreview
+          key={change.collateral.address}
+          mt={3}
           title={t`Change diversity factor`}
           subtitle={change.collateral.symbol}
           current={change.current.toString()}
