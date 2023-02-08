@@ -65,12 +65,7 @@ const ProposalStatus = () => {
 
 const ProposalOverview = (props: BoxProps) => {
   return (
-    <Container
-      variant="layout.borderBox"
-      sx={{ position: 'sticky', top: 0 }}
-      {...props}
-      p={0}
-    >
+    <Container sx={{ position: 'sticky', top: 0 }} {...props} p={0}>
       <Box
         sx={{
           maxHeight: 'calc(100vh - 124px)',
@@ -85,7 +80,7 @@ const ProposalOverview = (props: BoxProps) => {
             flexDirection: 'column',
             textAlign: 'center',
           }}
-          p={4}
+          variant="layout.borderBox"
         >
           <Text variant="title" mb={2}>
             <Trans>Governance Proposal</Trans>

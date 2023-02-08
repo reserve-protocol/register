@@ -18,7 +18,6 @@ const Overlay = ({ onPropose }: { onPropose(): void }) => (
       top: 0,
       bottom: 0,
       right: 0,
-      zIndex: 10,
     }}
   >
     <Box
@@ -74,10 +73,10 @@ const ProposalBasketSetup = () => {
     <>
       <SectionWrapper navigationIndex={0}>
         <Card p={4} sx={{ position: 'relative' }}>
+          <PrimaryBasket onAdd={setCollateralModal} />
           {!isNewBasketProposed && (
             <Overlay onPropose={() => setProposeNewBasket(true)} />
           )}
-          <PrimaryBasket onAdd={setCollateralModal} />
         </Card>
       </SectionWrapper>
       <SectionWrapper navigationIndex={1}>
