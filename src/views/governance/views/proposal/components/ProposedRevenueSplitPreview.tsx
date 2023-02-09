@@ -1,6 +1,9 @@
 import { t, Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
-import { revenueSplitAtom } from 'components/rtoken-setup/atoms'
+import {
+  ExternalAddressSplit,
+  revenueSplitAtom,
+} from 'components/rtoken-setup/atoms'
 import { useAtom } from 'jotai'
 import { Plus, X } from 'react-feather'
 import { Box, BoxProps, Text } from 'theme-ui'
@@ -32,12 +35,62 @@ const ProposedRevenueSplitPreview = (props: BoxProps) => {
     return null
   }
 
-  const handleRevertDistribution = (change: DistributionChange) => {}
+  const handleRevertDistribution = (change: DistributionChange) => {
+    if (change.isExternal) {
+      const index = revenueSplit.external.findIndex(
+        (r) => r.address === change.key
+      )
+      let newExternals: ExternalAddressSplit[]
+
+      if (change.isTotal) {
+        newExternals = [
+          ...revenueSplit.external.slice(0, index),
+          { ...revenueSplit.external[index], total: change.current },
+          ...revenueSplit.external.slice(index + 1),
+        ]
+      } else {
+        const [holders, stakers] = change.current.split('/')
+        newExternals = [
+          ...revenueSplit.external.slice(0, index),
+          { ...revenueSplit.external[index], holders, stakers },
+          ...revenueSplit.external.slice(index + 1),
+        ]
+      }
+
+      // Force re-render of the form to catch the reset values
+      setRevenueSplit({
+        ...revenueSplit,
+        external: [
+          ...revenueSplit.external.slice(0, index),
+          ...revenueSplit.external.slice(index + 1),
+        ],
+      })
+      setTimeout(() => {
+        setRevenueSplit({
+          ...revenueSplit,
+          external: newExternals,
+        })
+      }, 10)
+    } else {
+      setRevenueSplit({ ...revenueSplit, [change.key]: change.current })
+    }
+  }
 
   const handleRevertExternal = (change: ExternalChange) => {
+    const index = change.isNew
+      ? revenueSplit.external.findIndex((r) => {
+          return r.address === change.split.address
+        })
+      : -1
+
     setRevenueSplit({
       ...revenueSplit,
-      external: change.isNew ? [...revenueSplit.external] : [],
+      external: !change.isNew
+        ? [...revenueSplit.external, change.split]
+        : [
+            ...revenueSplit.external.slice(0, index),
+            ...revenueSplit.external.slice(index + 1),
+          ],
     })
   }
 
@@ -60,7 +113,7 @@ const ProposedRevenueSplitPreview = (props: BoxProps) => {
         />
       ))}
       {externals.map((change) => (
-        <Box variant="layout.verticalAlign" key={change.key} mt={3}>
+        <Box variant="layout.verticalAlign" key={change.split.address} mt={3}>
           {change.isNew ? (
             <Plus color="#11BB8D" size={18} />
           ) : (
@@ -70,7 +123,7 @@ const ProposedRevenueSplitPreview = (props: BoxProps) => {
             <Text variant="legend" sx={{ fontSize: 1, display: 'block' }}>
               {change.isNew ? <Trans>Add</Trans> : <Trans>Remove</Trans>}
             </Text>
-            <Text>{shortenAddress(change.key)}</Text>
+            <Text>{shortenAddress(change.split.address)}</Text>
           </Box>
           <SmallButton
             ml="auto"

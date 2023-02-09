@@ -20,7 +20,7 @@ export interface DistributionChange {
 }
 
 export interface ExternalChange {
-  key: string
+  split: ExternalAddressSplit
   isNew: boolean
 }
 
@@ -81,7 +81,7 @@ const useRevenueSplitChanges = () => {
       if (!proposedSplit || !currentSplit) {
         changes.count += 1
         changes.externals.push({
-          key: externalAddress,
+          split: proposedSplit || currentSplit,
           isNew: !!proposedSplit,
         })
       } else {
