@@ -3,9 +3,8 @@ import { SmallButton } from 'components/button'
 import Field, { FieldInput, getErrorMessage } from 'components/field'
 import { useAtomValue } from 'jotai'
 import { useEffect } from 'react'
-import { ArrowRight } from 'react-feather'
 import { useForm } from 'react-hook-form'
-import { Box, BoxProps, Flex, Grid, Text } from 'theme-ui'
+import { Box, BoxProps, Grid } from 'theme-ui'
 import { ExternalAddressSplit, isRevenueValidAtom } from '../atoms'
 
 interface ExternalRevenueSplitProps extends Omit<BoxProps, 'onChange'> {
@@ -41,9 +40,7 @@ const ExternalRevenueSpit = ({
   useEffect(() => {
     const [total = '', stakers = '', holders = '', address = ''] = formValues
 
-    if (isDirty) {
-      onChange({ total, stakers, holders, address })
-    }
+    onChange({ total, stakers, holders, address })
   }, [...formValues])
 
   return (

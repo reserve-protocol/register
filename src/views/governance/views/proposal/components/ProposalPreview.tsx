@@ -5,6 +5,7 @@ import { Box, BoxProps, Text } from 'theme-ui'
 import { isNewBasketProposedAtom } from '../atoms'
 import ProposedBackupPreview from './ProposedBackupPreview'
 import ProposedParametersPreview from './ProposedParametersPreview'
+import ProposedRevenueSplitPreview from './ProposedRevenueSplitPreview'
 
 const ProposalPreview = (props: BoxProps) => {
   const [isNewBasketProposed, setProposeNewBasket] = useAtom(
@@ -30,6 +31,7 @@ const ProposalPreview = (props: BoxProps) => {
         </Box>
       )}
       <ProposedBackupPreview mt={4} />
+      <ProposedRevenueSplitPreview mt={4} />
       <ProposedParametersPreview mt={4} />
     </Box>
   )

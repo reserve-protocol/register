@@ -46,6 +46,7 @@ const RevenueSplit = (props: BoxProps) => {
   const {
     register,
     watch,
+    reset,
     formState: { errors, isDirty },
   } = useForm({
     mode: 'onChange',
@@ -57,14 +58,21 @@ const RevenueSplit = (props: BoxProps) => {
   const formValues = watch(['stakers', 'holders'])
 
   useEffect(() => {
-    if (isDirty) {
-      const [stakers, holders] = formValues
-      setRevenueSplit({
-        ...revenueSplit,
-        stakers,
-        holders,
+    if (!isDirty) {
+      reset({
+        stakers: revenueSplit.stakers,
+        holders: revenueSplit.holders,
       })
     }
+  }, [revenueSplit])
+
+  useEffect(() => {
+    const [stakers, holders] = formValues
+    setRevenueSplit({
+      ...revenueSplit,
+      stakers,
+      holders,
+    })
   }, [...formValues])
 
   const handleAddExternal = () => {
