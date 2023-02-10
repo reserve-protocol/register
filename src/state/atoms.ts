@@ -92,7 +92,6 @@ export const rTokenGovernanceAtom = atomWithReset<{
   votingPeriod?: string
   proposalThreshold?: string
   quorum?: string
-  minDelay?: string
 }>({
   name: 'Custom',
   governor: '',

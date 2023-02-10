@@ -55,7 +55,7 @@ const ExternalRevenueSpit = ({
       +stakers >= 0 &&
       +stakers <= 100
     ) {
-      setValue('holders', (100 - +stakers).toString())
+      setValue('holders', ((1000 - +stakers * 10) / 10).toString())
     }
   }, [formValues[1]])
 
@@ -70,7 +70,7 @@ const ExternalRevenueSpit = ({
       +holders >= 0 &&
       +holders <= 100
     ) {
-      setValue('stakers', (100 - +holders).toString())
+      setValue('stakers', ((1000 - +holders * 10) / 10).toString())
     }
   }, [formValues[2]])
 
@@ -90,7 +90,7 @@ const ExternalRevenueSpit = ({
           </Field>
           <Field label={t`As RToken`}>
             <FieldInput
-              {...register('holders', inputValidation)}
+              {...register('holders', { ...inputValidation, min: 10 })}
               error={!!errors['holders']}
               sx={{
                 borderRadius: '0',
@@ -100,7 +100,7 @@ const ExternalRevenueSpit = ({
           </Field>
           <Field label={t`As RSR`}>
             <FieldInput
-              {...register('stakers', inputValidation)}
+              {...register('stakers', { ...inputValidation, min: 10 })}
               error={!!errors['stakers']}
               sx={{
                 borderRadius: '0 6px 0 0',

@@ -1,10 +1,10 @@
-import BasketSetup from 'components/rtoken-setup/basket/BasketSetup'
 import RevenueSplit from 'components/rtoken-setup/token/RevenueSplit'
 import SectionWrapper from 'components/section-navigation/SectionWrapper'
 import { Box } from 'theme-ui'
 import BackingManager from 'views/deploy/components/BackingManager'
 import OtherSetup from 'views/deploy/components/OtherSetup'
 import ProposalBasketSetup from './ProposalBasketSetup'
+import RolesProposal from './RolesProposal'
 
 const ProposalForm = () => {
   return (
@@ -18,6 +18,9 @@ const ProposalForm = () => {
       </SectionWrapper>
       <SectionWrapper navigationIndex={4} mt={4}>
         <OtherSetup />
+      </SectionWrapper>
+      <SectionWrapper navigationIndex={5} mt={4}>
+        <RolesProposal />
       </SectionWrapper>
     </Box>
   )

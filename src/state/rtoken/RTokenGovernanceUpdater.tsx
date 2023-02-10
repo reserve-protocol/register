@@ -19,6 +19,20 @@ const query = gql`
   query getRTokenOwner($id: String!) {
     rtoken(id: $id) {
       owners
+      pausers
+      freezers
+      longFreezers
+    }
+    governanceFrameworks(id: $id) {
+      id
+      name
+      proposalThreshold
+      quorumDenominator
+      quorumNumerator
+      quorumVotes
+      timelockAddress
+      votingDelay
+      votingPeriod
     }
   }
 `
@@ -61,29 +75,23 @@ const RTokenGovernanceUpdater = () => {
           abi: GovernanceInterface,
         }
 
-        const [
-          name,
-          votingDelay,
-          votingPeriod,
-          proposalThreshold,
-          quorum,
-          minDelay,
-        ] = await promiseMulticall(
-          [
-            { ...govCall, method: 'name' },
-            { ...govCall, method: 'votingDelay' },
-            { ...govCall, method: 'votingPeriod' },
-            { ...govCall, method: 'proposalThreshold' },
-            { ...govCall, method: 'quorumNumerator()' },
-            {
-              address: timelockAddress,
-              args: [],
-              abi: TimelockInterface,
-              method: 'getMinDelay',
-            },
-          ],
-          provider
-        )
+        const [name, votingDelay, votingPeriod, proposalThreshold, quorum] =
+          await promiseMulticall(
+            [
+              { ...govCall, method: 'name' },
+              { ...govCall, method: 'votingDelay' },
+              { ...govCall, method: 'votingPeriod' },
+              { ...govCall, method: 'proposalThreshold' },
+              { ...govCall, method: 'quorumNumerator()' },
+              {
+                address: timelockAddress,
+                args: [],
+                abi: TimelockInterface,
+                method: 'getMinDelay',
+              },
+            ],
+            provider
+          )
 
         setGovernance({
           name,
@@ -93,7 +101,6 @@ const RTokenGovernanceUpdater = () => {
           votingPeriod: votingPeriod.toString(),
           proposalThreshold: (+proposalThreshold / 1e6).toString(),
           quorum: quorum.toString(),
-          minDelay: minDelay.toString(),
         })
       } catch (e) {
         console.error('error getting gov params', e)
