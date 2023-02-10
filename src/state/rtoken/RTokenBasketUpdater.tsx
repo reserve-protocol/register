@@ -107,7 +107,7 @@ const RTokenBasketUpdater = () => {
             targetBasket = {
               scale: '1',
               collaterals: [collateral],
-              distribution: [share.toString()],
+              distribution: [share.toFixed(2)],
             }
           } else {
             targetBasket.collaterals.push(collateral)

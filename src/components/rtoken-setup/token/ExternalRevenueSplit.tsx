@@ -29,6 +29,7 @@ const ExternalRevenueSpit = ({
   const {
     register,
     watch,
+    setValue,
     formState: { errors, isDirty },
   } = useForm({
     mode: 'onChange',
@@ -42,6 +43,36 @@ const ExternalRevenueSpit = ({
 
     onChange({ total, stakers, holders, address })
   }, [...formValues])
+
+  // Stakers
+  useEffect(() => {
+    const [, stakers = '', holders = ''] = formValues
+
+    if (
+      stakers &&
+      !isNaN(+stakers) &&
+      !isNaN(+holders) &&
+      +stakers >= 0 &&
+      +stakers <= 100
+    ) {
+      setValue('holders', (100 - +stakers).toString())
+    }
+  }, [formValues[1]])
+
+  // Holders
+  useEffect(() => {
+    const [, stakers = '', holders = ''] = formValues
+
+    if (
+      holders &&
+      !isNaN(+stakers) &&
+      !isNaN(+holders) &&
+      +holders >= 0 &&
+      +holders <= 100
+    ) {
+      setValue('stakers', (100 - +holders).toString())
+    }
+  }, [formValues[2]])
 
   return (
     <Box {...props} sx={{ display: 'flex' }}>
