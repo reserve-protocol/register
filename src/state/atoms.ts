@@ -91,7 +91,9 @@ export const rTokenGovernanceAtom = atomWithReset<{
   votingDelay?: string
   votingPeriod?: string
   proposalThreshold?: string
-  quorum?: string
+  quorumDenominator?: string
+  quorumNumerator?: string
+  quorumVotes?: string
 }>({
   name: 'Custom',
   governor: '',
@@ -143,7 +145,7 @@ export const rTokenDistributionAtom = atom<{
   staked: 0,
 })
 
-export const rTokenAdmins = atom({
+export const rTokenManagersAtom = atom({
   owners: [] as string[],
   pausers: [] as string[],
   freezers: [] as string[],

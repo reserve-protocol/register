@@ -7,15 +7,15 @@ import { useContractCall } from 'hooks/useCall'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { accountRoleAtom, addTransactionAtom } from 'state/atoms'
 import { useTransaction } from 'state/web3/hooks/useTransactions'
 import { Box, BoxProps, Divider as _Divider, Flex, Text } from 'theme-ui'
 import { FACADE_WRITE_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 import { TRANSACTION_STATUS } from 'utils/constants'
+import FreezeManager from './FreezeManager'
 import GovernancePrompt from './GovernancePrompt'
-import RoleActions from './RoleActions'
+import PauseManager from './PauseManager'
 import SettingItem from './SettingItem'
 
 const Divider = () => <_Divider sx={{ borderColor: 'border' }} my={4} mx={-4} />
@@ -91,7 +91,10 @@ const RTokenManagement = () => {
         </Text>
         <DocsLink link="https://reserve.org/" />
       </Flex>
-      <RoleActions />
+      <Divider />
+      <PauseManager />
+      <Divider />
+      <FreezeManager />
       <Divider />
       <RunAuctions />
       {/* {accountRole.owner && (

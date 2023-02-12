@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import {
   accountRoleAtom,
   addTransactionAtom,
+  rTokenManagersAtom,
   rTokenStatusAtom,
 } from 'state/atoms'
 import { useTransaction } from 'state/web3/hooks/useTransactions'
@@ -16,14 +17,9 @@ import SettingItem from './SettingItem'
 /**
  * View: Settings > Display RToken actions for freezers and long freezers
  */
-const FreezeManager = ({
-  freezers,
-  longFreezers,
-}: {
-  freezers: string[]
-  longFreezers: string[]
-}) => {
+const FreezeManager = () => {
   const [txId, setTx] = useState('')
+  const { freezers, longFreezers } = useAtomValue(rTokenManagersAtom)
   const [freezeType, setFreezeType] = useState(0) // 0 = short -- 1 = long
   const tx = useTransaction(txId)
   const rToken = useRToken()

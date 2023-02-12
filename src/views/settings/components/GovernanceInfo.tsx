@@ -35,7 +35,11 @@ const GovernanceInfo = (props: BoxProps) => {
             subtitle={governance.proposalThreshold}
             mb={3}
           />
-          <InfoItem title={t`Quorum`} subtitle={governance.quorum} mb={3} />
+          <InfoItem
+            title={t`Quorum`}
+            subtitle={governance.quorumNumerator}
+            mb={3}
+          />
           <InfoItem
             title={t`Timelock address`}
             subtitle={shortenAddress(governance.timelock)}

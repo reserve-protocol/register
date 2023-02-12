@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import {
   accountRoleAtom,
   addTransactionAtom,
+  rTokenManagersAtom,
   rTokenStatusAtom,
 } from 'state/atoms'
 import { useTransaction } from 'state/web3/hooks/useTransactions'
@@ -16,9 +17,10 @@ import SettingItem from './SettingItem'
 /**
  * View: Settings > Actions for an Rtoken pauser (pause/unpause)
  */
-const PauseManager = ({ pausers }: { pausers: string[] }) => {
+const PauseManager = () => {
   const rToken = useRToken()
   const accountRole = useAtomValue(accountRoleAtom)
+  const { pausers } = useAtomValue(rTokenManagersAtom)
   const { paused: isPaused } = useAtomValue(rTokenStatusAtom)
   const addTransaction = useSetAtom(addTransactionAtom)
   const pauseActionLabel = isPaused ? t`Unpause` : t`Pause`
