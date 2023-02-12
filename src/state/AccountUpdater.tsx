@@ -96,7 +96,7 @@ const AccountUpdater = () => {
       fromTime,
       rsvAddress: RSV.address.toLowerCase(),
     },
-    { refreshInterval: 5000 }
+    { refreshInterval: 10000 }
   )
 
   useEffect(() => {

@@ -105,42 +105,26 @@ const GovernanceOverview = () => {
           <Trans>Format</Trans>
         </Text>
         <Text variant="title">{governance ? governance.name : 'Custom'}</Text>
-        <Text as="p" variant="legend" mt={2}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam maximus
-          facilisis velit, at venenatis nunc iaculis vitae vestibulum ante
-          ipsum. facilisis velit, at venenatis nunc iaculis.
-        </Text>
-        <Divider mx={-4} my={4} />
-        <Box variant="layout.verticalAlign">
-          <Image mr={2} src="/svgs/asterisk.svg" />
-          <Text variant="strong">
-            <Trans>Roles & Actions</Trans>
-          </Text>
-          <SmallButton
-            ml="auto"
-            variant="muted"
-            onClick={() =>
-              navigate(`${ROUTES.SETTINGS}?token=${rToken?.address}`)
-            }
-          >
-            <Trans>View settings</Trans>
-          </SmallButton>
-        </Box>
-        <Box mt={4} variant="layout.verticalAlign">
-          <Image mr={2} src="/svgs/asterisk.svg" />
-          <Text variant="strong">
-            <Trans>Proposals</Trans>
-          </Text>
-          <SmallButton
-            ml="auto"
-            variant="muted"
-            onClick={() =>
-              navigate(`${ROUTES.GOVERNANCE_PROPOSAL}?token=${rToken?.address}`)
-            }
-          >
-            <Trans>Create proposal</Trans>
-          </SmallButton>
-        </Box>
+
+        <SmallButton
+          mt={3}
+          variant="muted"
+          onClick={() =>
+            navigate(`${ROUTES.SETTINGS}?token=${rToken?.address}`)
+          }
+        >
+          <Trans>Settings & Roles</Trans>
+        </SmallButton>
+        <SmallButton
+          mt={3}
+          ml={3}
+          variant="transparent"
+          onClick={() =>
+            navigate(`${ROUTES.SETTINGS}?token=${rToken?.address}`)
+          }
+        >
+          <Trans>Documentation</Trans>
+        </SmallButton>
       </Box>
     </Box>
   )

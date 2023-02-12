@@ -7,7 +7,7 @@ const Intro = (props: BoxProps) => (
   <Card p={4} pt={5} {...props} sx={{ position: 'relative' }}>
     <DeployIntro />
     <Text variant="sectionTitle" mb={2} mt={2}>
-      <Trans>Launch your asset backet RToken</Trans>
+      <Trans>Launch your asset backed RToken</Trans>
     </Text>
     <Text as="p" variant="legend" pr={4}>
       <Trans>
