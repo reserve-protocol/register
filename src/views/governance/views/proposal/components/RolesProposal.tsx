@@ -5,10 +5,9 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
 import { rTokenManagersAtom } from 'state/atoms'
 import { Box, BoxProps, Card, Divider, Text } from 'theme-ui'
+import { RoleKey } from 'types'
 import { isAddress } from 'utils'
 import { proposedRolesAtom } from '../atoms'
-
-type RoleKey = 'owners' | 'pausers' | 'freezers' | 'longFreezers'
 
 interface RoleEditionProps extends BoxProps {
   roleKey: RoleKey
@@ -63,12 +62,22 @@ const NewRoleAddress = ({
 }
 
 const RoleEdition = ({ roleKey, title, ...props }: RoleEditionProps) => {
-  const [rTokenRoles, setRTokenRoles] = useAtom(rTokenManagersAtom)
   const [roles, setRoles] = useAtom(proposedRolesAtom)
   const [isCreating, setCreate] = useState(false)
 
   const handleAdd = (address: string) => {
     setCreate(false)
+    setRoles({ ...roles, [roleKey]: [...roles[roleKey], address] })
+  }
+
+  const handleRemove = (index: number) => {
+    setRoles({
+      ...roles,
+      [roleKey]: [
+        ...roles[roleKey].slice(0, index),
+        ...roles[roleKey].slice(index + 1),
+      ],
+    })
   }
 
   return (
@@ -84,7 +93,7 @@ const RoleEdition = ({ roleKey, title, ...props }: RoleEditionProps) => {
           No holders for this role...
         </Text>
       )}
-      {roles[roleKey].map((addr) => (
+      {roles[roleKey].map((addr, index) => (
         <Box variant="layout.verticalAlign" sx={{ flexWrap: 'wrap' }} mt={3}>
           <Box mr={2} variant="layout.verticalAlign">
             <Box
@@ -109,6 +118,7 @@ const RoleEdition = ({ roleKey, title, ...props }: RoleEditionProps) => {
             ml="auto"
             variant="danger"
             sx={{ backgroundColor: 'inputBorder' }}
+            onClick={() => handleRemove(index)}
           >
             <Trans>Remove</Trans>
           </SmallButton>
@@ -127,7 +137,7 @@ const RoleEdition = ({ roleKey, title, ...props }: RoleEditionProps) => {
           onClick={() => setCreate(true)}
           variant="muted"
         >
-          Add new {title.toLowerCase()}
+          Add new {title.substring(0, title.length - 1).toLowerCase()}
         </SmallButton>
       )}
     </Box>

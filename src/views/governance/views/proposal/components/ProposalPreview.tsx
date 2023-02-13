@@ -6,6 +6,7 @@ import { isNewBasketProposedAtom } from '../atoms'
 import ProposedBackupPreview from './ProposedBackupPreview'
 import ProposedParametersPreview from './ProposedParametersPreview'
 import ProposedRevenueSplitPreview from './ProposedRevenueSplitPreview'
+import ProposedRolesPreview from './ProposedRolesPreview'
 
 const ProposalPreview = (props: BoxProps) => {
   const [isNewBasketProposed, setProposeNewBasket] = useAtom(
@@ -33,6 +34,7 @@ const ProposalPreview = (props: BoxProps) => {
       <ProposedBackupPreview mt={4} />
       <ProposedRevenueSplitPreview mt={4} />
       <ProposedParametersPreview mt={4} />
+      <ProposedRolesPreview mt={4} />
     </Box>
   )
 }

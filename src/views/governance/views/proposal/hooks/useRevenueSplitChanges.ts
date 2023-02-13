@@ -1,8 +1,10 @@
-import { revenueSplitAtom } from 'components/rtoken-setup/atoms'
+import {
+  revenueSplitAtom,
+  ExternalAddressSplit,
+} from 'components/rtoken-setup/atoms'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { rTokenRevenueSplitAtom } from 'state/atoms'
-import { ExternalAddressSplit } from './../../../../../components/rtoken-setup/atoms'
 
 const parseExternalMap = (externals: ExternalAddressSplit[]) => {
   return externals.reduce((prev, curr) => {

@@ -1,6 +1,6 @@
 import { t, Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
-import { ArrowRight, Square } from 'react-feather'
+import { ArrowRight, Plus, Square, X } from 'react-feather'
 import { useFormContext } from 'react-hook-form'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { ParameterChange } from '../hooks/useParametersChanges'
@@ -16,6 +16,38 @@ interface ParameterChangePreview extends BoxProps {
   proposed: string
   onRevert?(): void
 }
+
+interface ListChangePreviewProps extends BoxProps {
+  isNew: boolean
+  subtitle?: string
+  value: string
+  onRevert(): void
+}
+
+export const ListChangePreview = ({
+  isNew,
+  value,
+  subtitle = '',
+  onRevert,
+  ...props
+}: ListChangePreviewProps) => (
+  <Box variant="layout.verticalAlign" {...props}>
+    {isNew ? (
+      <Plus color="#11BB8D" size={18} />
+    ) : (
+      <X color="#FF0000" size={18} />
+    )}
+    <Box ml={2}>
+      <Text variant="legend" sx={{ fontSize: 1, display: 'block' }}>
+        {isNew ? <Trans>Add</Trans> : <Trans>Remove</Trans>} {subtitle}
+      </Text>
+      <Text>{value}</Text>
+    </Box>
+    <SmallButton ml="auto" variant="muted" onClick={onRevert}>
+      <Trans>Revert</Trans>
+    </SmallButton>
+  </Box>
+)
 
 export const ParameterChangePreview = ({
   title,
