@@ -94,7 +94,12 @@ const RoleEdition = ({ roleKey, title, ...props }: RoleEditionProps) => {
         </Text>
       )}
       {roles[roleKey].map((addr, index) => (
-        <Box variant="layout.verticalAlign" sx={{ flexWrap: 'wrap' }} mt={3}>
+        <Box
+          variant="layout.verticalAlign"
+          sx={{ flexWrap: 'wrap' }}
+          key={addr}
+          mt={3}
+        >
           <Box mr={2} variant="layout.verticalAlign">
             <Box
               ml={1}
@@ -170,7 +175,7 @@ const RolesProposal = (props: BoxProps) => {
       </Text>
       <Divider my={4} mx={-4} />
       {roleMap.map((value, index) => (
-        <Box>
+        <Box key={value.roleKey}>
           {!!index && <Divider mb={3} mt={4} mx={-4} />}
           <RoleEdition {...value} key={value.roleKey} />
         </Box>

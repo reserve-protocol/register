@@ -30,3 +30,6 @@ export const backupChangesAtom = atomWithReset<BackupChanges>({
   diversityFactor: [],
   count: 0,
 })
+
+export const isProposalValidAtom = atom(false)
+export const isProposalEditingAtom = atom(true)

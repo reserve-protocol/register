@@ -1,9 +1,8 @@
-import { isValidExternalMapAtom } from './../../components/rtoken-setup/atoms'
-import { atomWithReset } from 'jotai/utils'
 import { t } from '@lingui/macro'
 import useDebounce from 'hooks/useDebounce'
 import useTransactionCost from 'hooks/useTransactionCost'
 import { useAtomValue, useSetAtom } from 'jotai'
+import { atomWithReset } from 'jotai/utils'
 import { useCallback, useMemo } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { addTransactionAtom } from 'state/atoms'
@@ -20,6 +19,7 @@ import {
   isRevenueValidAtom,
   revenueSplitAtom,
 } from '../../components/rtoken-setup/atoms'
+import { isValidExternalMapAtom } from './../../components/rtoken-setup/atoms'
 import { getDeployParameters } from './utils'
 
 export const deployIdAtom = atomWithReset('')

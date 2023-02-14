@@ -1,19 +1,22 @@
-import Layout from 'components/rtoken-setup/Layout'
 import useToggledSidebar from 'hooks/useToggledSidebar'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { rTokenParamsAtom } from 'state/atoms'
-import { isNewBasketProposedAtom, proposedRolesAtom } from './atoms'
-import ProposalForm from './components/ProposalForm'
-import ProposalNavigation from './components/ProposalNavigation'
-import ProposalOverview from './components/ProposalOverview'
+import {
+  isNewBasketProposedAtom,
+  isProposalEditingAtom,
+  proposedRolesAtom,
+} from './atoms'
+import ConfirmProposal from './components/ConfirmProposal'
+import Proposal from './components/Proposal'
 import RTokenDataUpdater from './components/Updater'
 import ChangesUpdater from './updater'
 
 const GovernanceProposal = () => {
   const tokenParameters = useAtomValue(rTokenParamsAtom)
+  const isEditing = useAtomValue(isProposalEditingAtom)
 
   const form = useForm({
     mode: 'onChange',
@@ -34,11 +37,7 @@ const GovernanceProposal = () => {
     <FormProvider {...form}>
       <RTokenDataUpdater />
       <ChangesUpdater />
-      <Layout>
-        <ProposalNavigation />
-        <ProposalForm />
-        <ProposalOverview />
-      </Layout>
+      {isEditing ? <Proposal /> : <ConfirmProposal />}
     </FormProvider>
   )
 }
