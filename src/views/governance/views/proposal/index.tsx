@@ -10,6 +10,7 @@ import ProposalForm from './components/ProposalForm'
 import ProposalNavigation from './components/ProposalNavigation'
 import ProposalOverview from './components/ProposalOverview'
 import RTokenDataUpdater from './components/Updater'
+import ChangesUpdater from './updater'
 
 const GovernanceProposal = () => {
   const tokenParameters = useAtomValue(rTokenParamsAtom)
@@ -32,6 +33,7 @@ const GovernanceProposal = () => {
   return (
     <FormProvider {...form}>
       <RTokenDataUpdater />
+      <ChangesUpdater />
       <Layout>
         <ProposalNavigation />
         <ProposalForm />

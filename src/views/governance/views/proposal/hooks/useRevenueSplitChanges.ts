@@ -26,16 +26,18 @@ export interface ExternalChange {
   isNew: boolean
 }
 
+export interface RevenueSplitChanges {
+  externals: ExternalChange[]
+  distributions: DistributionChange[]
+  count: number
+}
+
 const useRevenueSplitChanges = () => {
   const proposedRevenueSplit = useAtomValue(revenueSplitAtom)
   const currentRevenueSplit = useAtomValue(rTokenRevenueSplitAtom)
 
   return useMemo(() => {
-    const changes: {
-      externals: ExternalChange[]
-      distributions: DistributionChange[]
-      count: number
-    } = {
+    const changes: RevenueSplitChanges = {
       externals: [],
       distributions: [],
       count: 0,

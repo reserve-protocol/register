@@ -1,10 +1,11 @@
+import { useAtomValue } from 'jotai'
 import { BoxProps } from 'theme-ui'
-import useParametersChanges from '../hooks/useParametersChanges'
+import { parametersChangesAtom } from '../atoms'
 import { ParameterPreview } from './ItemPreview'
 import PreviewBox from './PreviewBox'
 
 const ProposedParametersPreview = (props: BoxProps) => {
-  const changes = useParametersChanges()
+  const changes = useAtomValue(parametersChangesAtom)
 
   if (!changes.length) {
     return null

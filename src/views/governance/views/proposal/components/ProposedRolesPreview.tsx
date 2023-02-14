@@ -1,14 +1,14 @@
 import { t } from '@lingui/macro'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { BoxProps } from 'theme-ui'
 import { shortenAddress } from 'utils'
-import { proposedRolesAtom } from '../atoms'
-import useRoleChanges, { RoleChange } from '../hooks/useRoleChanges'
+import { proposedRolesAtom, roleChangesAtom } from '../atoms'
+import { RoleChange } from '../hooks/useRoleChanges'
 import { ListChangePreview } from './ItemPreview'
 import PreviewBox from './PreviewBox'
 
 const ProposedRolesPreview = (props: BoxProps) => {
-  const changes = useRoleChanges()
+  const changes = useAtomValue(roleChangesAtom)
   const [proposedRoles, setProposedRoles] = useAtom(proposedRolesAtom)
 
   if (!changes.length) {

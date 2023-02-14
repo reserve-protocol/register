@@ -1,10 +1,11 @@
 import { t, Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import { backupCollateralAtom } from 'components/rtoken-setup/atoms'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { Plus, X } from 'react-feather'
 import { Box, BoxProps, Text } from 'theme-ui'
-import useBackupChanges, {
+import { backupChangesAtom } from '../atoms'
+import {
   CollateralChange,
   DiversityFactorChange,
 } from '../hooks/useBackupChanges'
@@ -13,7 +14,7 @@ import PreviewBox from './PreviewBox'
 
 const ProposedBackupPreview = (props: BoxProps) => {
   const { count, diversityFactor, collateralChanges, priorityChanges } =
-    useBackupChanges()
+    useAtomValue(backupChangesAtom)
   const [proposedBackup, setProposedBackup] = useAtom(backupCollateralAtom)
 
   if (!count) {

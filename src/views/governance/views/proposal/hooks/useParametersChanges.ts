@@ -34,7 +34,7 @@ const useParametersChanges = (): ParameterChange[] => {
         changes.push({
           field: key,
           current: currentParameters[key],
-          proposed: currentValues[key],
+          proposed: currentValues[key] || 'Invalid',
         })
       }
     }

@@ -4,11 +4,12 @@ import {
   ExternalAddressSplit,
   revenueSplitAtom,
 } from 'components/rtoken-setup/atoms'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { Plus, X } from 'react-feather'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
-import useRevenueSplitChanges, {
+import { revenueSplitChangesAtom } from '../atoms'
+import {
   DistributionChange,
   ExternalChange,
 } from '../hooks/useRevenueSplitChanges'
@@ -28,7 +29,9 @@ const getDistributionSubtitle = (change: DistributionChange) => {
 }
 
 const ProposedRevenueSplitPreview = (props: BoxProps) => {
-  const { distributions, externals, count } = useRevenueSplitChanges()
+  const { distributions, externals, count } = useAtomValue(
+    revenueSplitChangesAtom
+  )
   const [revenueSplit, setRevenueSplit] = useAtom(revenueSplitAtom)
 
   if (!count) {
