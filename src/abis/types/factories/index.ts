@@ -20,4 +20,5 @@ export { Oracle__factory } from "./Oracle__factory";
 export { RevenueTrader__factory } from "./RevenueTrader__factory";
 export { RsvManager__factory } from "./RsvManager__factory";
 export { StRsr__factory } from "./StRsr__factory";
+export { StRSRVotes__factory } from "./StRSRVotes__factory";
 export { Timelock__factory } from "./Timelock__factory";

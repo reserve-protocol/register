@@ -28,7 +28,19 @@ import type {
   PromiseOrValue,
 } from "./common";
 
-export interface StRsrInterface extends utils.Interface {
+export declare namespace StRSRP1Votes {
+  export type CheckpointStruct = {
+    fromBlock: PromiseOrValue<BigNumberish>;
+    val: PromiseOrValue<BigNumberish>;
+  };
+
+  export type CheckpointStructOutput = [number, BigNumber] & {
+    fromBlock: number;
+    val: BigNumber;
+  };
+}
+
+export interface StRSRVotesInterface extends utils.Interface {
   functions: {
     "DOMAIN_SEPARATOR()": FunctionFragment;
     "MAX_REWARD_RATIO()": FunctionFragment;
@@ -38,8 +50,13 @@ export interface StRsrInterface extends utils.Interface {
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
+    "checkpoints(address,uint48)": FunctionFragment;
+    "currentEra()": FunctionFragment;
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
+    "delegate(address)": FunctionFragment;
+    "delegateBySig(address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
+    "delegates(address)": FunctionFragment;
     "delegationNonces(address)": FunctionFragment;
     "draftQueueLen(uint256,address)": FunctionFragment;
     "draftQueues(uint256,address,uint256)": FunctionFragment;
@@ -47,11 +64,16 @@ export interface StRsrInterface extends utils.Interface {
     "endIdForWithdraw(address)": FunctionFragment;
     "exchangeRate()": FunctionFragment;
     "firstRemainingDraft(uint256,address)": FunctionFragment;
+    "getPastEra(uint256)": FunctionFragment;
+    "getPastTotalSupply(uint256)": FunctionFragment;
+    "getPastVotes(address,uint256)": FunctionFragment;
+    "getVotes(address)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
     "init(address,string,string,uint48,uint192)": FunctionFragment;
     "main()": FunctionFragment;
     "name()": FunctionFragment;
     "nonces(address)": FunctionFragment;
+    "numCheckpoints(address)": FunctionFragment;
     "payoutLastPaid()": FunctionFragment;
     "payoutRewards()": FunctionFragment;
     "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
@@ -84,8 +106,13 @@ export interface StRsrInterface extends utils.Interface {
       | "allowance"
       | "approve"
       | "balanceOf"
+      | "checkpoints"
+      | "currentEra"
       | "decimals"
       | "decreaseAllowance"
+      | "delegate"
+      | "delegateBySig"
+      | "delegates"
       | "delegationNonces"
       | "draftQueueLen"
       | "draftQueues"
@@ -93,11 +120,16 @@ export interface StRsrInterface extends utils.Interface {
       | "endIdForWithdraw"
       | "exchangeRate"
       | "firstRemainingDraft"
+      | "getPastEra"
+      | "getPastTotalSupply"
+      | "getPastVotes"
+      | "getVotes"
       | "increaseAllowance"
       | "init"
       | "main"
       | "name"
       | "nonces"
+      | "numCheckpoints"
       | "payoutLastPaid"
       | "payoutRewards"
       | "permit"
@@ -149,10 +181,37 @@ export interface StRsrInterface extends utils.Interface {
     functionFragment: "balanceOf",
     values: [PromiseOrValue<string>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "checkpoints",
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "currentEra",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "decreaseAllowance",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "delegate",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "delegateBySig",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BytesLike>,
+      PromiseOrValue<BytesLike>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "delegates",
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "delegationNonces",
@@ -184,6 +243,22 @@ export interface StRsrInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
+    functionFragment: "getPastEra",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getPastTotalSupply",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getPastVotes",
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getVotes",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "increaseAllowance",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
@@ -201,6 +276,10 @@ export interface StRsrInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "nonces",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "numCheckpoints",
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
@@ -307,11 +386,22 @@ export interface StRsrInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "checkpoints",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "currentEra", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "decreaseAllowance",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "delegate", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "delegateBySig",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "delegates", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "delegationNonces",
     data: BytesLike
@@ -337,6 +427,16 @@ export interface StRsrInterface extends utils.Interface {
     functionFragment: "firstRemainingDraft",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "getPastEra", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getPastTotalSupply",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getPastVotes",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "getVotes", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "increaseAllowance",
     data: BytesLike
@@ -345,6 +445,10 @@ export interface StRsrInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "main", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "nonces", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "numCheckpoints",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "payoutLastPaid",
     data: BytesLike
@@ -402,6 +506,8 @@ export interface StRsrInterface extends utils.Interface {
     "AllUnstakingReset(uint256)": EventFragment;
     "Approval(address,address,uint256)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
+    "DelegateChanged(address,address,address)": EventFragment;
+    "DelegateVotesChanged(address,uint256,uint256)": EventFragment;
     "ExchangeRateSet(uint192,uint192)": EventFragment;
     "Initialized(uint8)": EventFragment;
     "RewardPeriodSet(uint48,uint48)": EventFragment;
@@ -420,6 +526,8 @@ export interface StRsrInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "AllUnstakingReset"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DelegateChanged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "DelegateVotesChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ExchangeRateSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RewardPeriodSet"): EventFragment;
@@ -487,6 +595,31 @@ export type BeaconUpgradedEvent = TypedEvent<
 >;
 
 export type BeaconUpgradedEventFilter = TypedEventFilter<BeaconUpgradedEvent>;
+
+export interface DelegateChangedEventObject {
+  delegator: string;
+  fromDelegate: string;
+  toDelegate: string;
+}
+export type DelegateChangedEvent = TypedEvent<
+  [string, string, string],
+  DelegateChangedEventObject
+>;
+
+export type DelegateChangedEventFilter = TypedEventFilter<DelegateChangedEvent>;
+
+export interface DelegateVotesChangedEventObject {
+  delegate: string;
+  previousBalance: BigNumber;
+  newBalance: BigNumber;
+}
+export type DelegateVotesChangedEvent = TypedEvent<
+  [string, BigNumber, BigNumber],
+  DelegateVotesChangedEventObject
+>;
+
+export type DelegateVotesChangedEventFilter =
+  TypedEventFilter<DelegateVotesChangedEvent>;
 
 export interface ExchangeRateSetEventObject {
   oldVal: BigNumber;
@@ -610,12 +743,12 @@ export type UpgradedEvent = TypedEvent<[string], UpgradedEventObject>;
 
 export type UpgradedEventFilter = TypedEventFilter<UpgradedEvent>;
 
-export interface StRsr extends BaseContract {
+export interface StRSRVotes extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: StRsrInterface;
+  interface: StRSRVotesInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -664,6 +797,14 @@ export interface StRsr extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    checkpoints(
+      account: PromiseOrValue<string>,
+      pos: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[StRSRP1Votes.CheckpointStructOutput]>;
+
+    currentEra(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     decimals(overrides?: CallOverrides): Promise<[number]>;
 
     decreaseAllowance(
@@ -671,6 +812,26 @@ export interface StRsr extends BaseContract {
       subtractedValue: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    delegate(
+      delegatee: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    delegateBySig(
+      delegatee: PromiseOrValue<string>,
+      nonce: PromiseOrValue<BigNumberish>,
+      expiry: PromiseOrValue<BigNumberish>,
+      v: PromiseOrValue<BigNumberish>,
+      r: PromiseOrValue<BytesLike>,
+      s: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    delegates(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
     delegationNonces(
       owner: PromiseOrValue<string>,
@@ -707,6 +868,27 @@ export interface StRsr extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    getPastEra(
+      blockNumber: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getPastTotalSupply(
+      blockNumber: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getPastVotes(
+      account: PromiseOrValue<string>,
+      blockNumber: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getVotes(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     increaseAllowance(
       spender: PromiseOrValue<string>,
       addedValue: PromiseOrValue<BigNumberish>,
@@ -730,6 +912,11 @@ export interface StRsr extends BaseContract {
       owner: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    numCheckpoints(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[number]>;
 
     payoutLastPaid(overrides?: CallOverrides): Promise<[number]>;
 
@@ -845,6 +1032,14 @@ export interface StRsr extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  checkpoints(
+    account: PromiseOrValue<string>,
+    pos: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<StRSRP1Votes.CheckpointStructOutput>;
+
+  currentEra(overrides?: CallOverrides): Promise<BigNumber>;
+
   decimals(overrides?: CallOverrides): Promise<number>;
 
   decreaseAllowance(
@@ -852,6 +1047,26 @@ export interface StRsr extends BaseContract {
     subtractedValue: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  delegate(
+    delegatee: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  delegateBySig(
+    delegatee: PromiseOrValue<string>,
+    nonce: PromiseOrValue<BigNumberish>,
+    expiry: PromiseOrValue<BigNumberish>,
+    v: PromiseOrValue<BigNumberish>,
+    r: PromiseOrValue<BytesLike>,
+    s: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  delegates(
+    account: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   delegationNonces(
     owner: PromiseOrValue<string>,
@@ -888,6 +1103,27 @@ export interface StRsr extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  getPastEra(
+    blockNumber: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getPastTotalSupply(
+    blockNumber: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getPastVotes(
+    account: PromiseOrValue<string>,
+    blockNumber: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getVotes(
+    account: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   increaseAllowance(
     spender: PromiseOrValue<string>,
     addedValue: PromiseOrValue<BigNumberish>,
@@ -911,6 +1147,11 @@ export interface StRsr extends BaseContract {
     owner: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  numCheckpoints(
+    account: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<number>;
 
   payoutLastPaid(overrides?: CallOverrides): Promise<number>;
 
@@ -1026,6 +1267,14 @@ export interface StRsr extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    checkpoints(
+      account: PromiseOrValue<string>,
+      pos: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<StRSRP1Votes.CheckpointStructOutput>;
+
+    currentEra(overrides?: CallOverrides): Promise<BigNumber>;
+
     decimals(overrides?: CallOverrides): Promise<number>;
 
     decreaseAllowance(
@@ -1033,6 +1282,26 @@ export interface StRsr extends BaseContract {
       subtractedValue: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    delegate(
+      delegatee: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    delegateBySig(
+      delegatee: PromiseOrValue<string>,
+      nonce: PromiseOrValue<BigNumberish>,
+      expiry: PromiseOrValue<BigNumberish>,
+      v: PromiseOrValue<BigNumberish>,
+      r: PromiseOrValue<BytesLike>,
+      s: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    delegates(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     delegationNonces(
       owner: PromiseOrValue<string>,
@@ -1069,6 +1338,27 @@ export interface StRsr extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getPastEra(
+      blockNumber: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getPastTotalSupply(
+      blockNumber: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getPastVotes(
+      account: PromiseOrValue<string>,
+      blockNumber: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getVotes(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     increaseAllowance(
       spender: PromiseOrValue<string>,
       addedValue: PromiseOrValue<BigNumberish>,
@@ -1092,6 +1382,11 @@ export interface StRsr extends BaseContract {
       owner: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    numCheckpoints(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<number>;
 
     payoutLastPaid(overrides?: CallOverrides): Promise<number>;
 
@@ -1219,6 +1514,28 @@ export interface StRsr extends BaseContract {
     BeaconUpgraded(
       beacon?: PromiseOrValue<string> | null
     ): BeaconUpgradedEventFilter;
+
+    "DelegateChanged(address,address,address)"(
+      delegator?: PromiseOrValue<string> | null,
+      fromDelegate?: PromiseOrValue<string> | null,
+      toDelegate?: PromiseOrValue<string> | null
+    ): DelegateChangedEventFilter;
+    DelegateChanged(
+      delegator?: PromiseOrValue<string> | null,
+      fromDelegate?: PromiseOrValue<string> | null,
+      toDelegate?: PromiseOrValue<string> | null
+    ): DelegateChangedEventFilter;
+
+    "DelegateVotesChanged(address,uint256,uint256)"(
+      delegate?: PromiseOrValue<string> | null,
+      previousBalance?: null,
+      newBalance?: null
+    ): DelegateVotesChangedEventFilter;
+    DelegateVotesChanged(
+      delegate?: PromiseOrValue<string> | null,
+      previousBalance?: null,
+      newBalance?: null
+    ): DelegateVotesChangedEventFilter;
 
     "ExchangeRateSet(uint192,uint192)"(
       oldVal?: PromiseOrValue<BigNumberish> | null,
@@ -1358,12 +1675,40 @@ export interface StRsr extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    checkpoints(
+      account: PromiseOrValue<string>,
+      pos: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    currentEra(overrides?: CallOverrides): Promise<BigNumber>;
+
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
 
     decreaseAllowance(
       spender: PromiseOrValue<string>,
       subtractedValue: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    delegate(
+      delegatee: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    delegateBySig(
+      delegatee: PromiseOrValue<string>,
+      nonce: PromiseOrValue<BigNumberish>,
+      expiry: PromiseOrValue<BigNumberish>,
+      v: PromiseOrValue<BigNumberish>,
+      r: PromiseOrValue<BytesLike>,
+      s: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    delegates(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     delegationNonces(
@@ -1399,6 +1744,27 @@ export interface StRsr extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getPastEra(
+      blockNumber: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getPastTotalSupply(
+      blockNumber: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getPastVotes(
+      account: PromiseOrValue<string>,
+      blockNumber: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getVotes(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     increaseAllowance(
       spender: PromiseOrValue<string>,
       addedValue: PromiseOrValue<BigNumberish>,
@@ -1420,6 +1786,11 @@ export interface StRsr extends BaseContract {
 
     nonces(
       owner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    numCheckpoints(
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1542,12 +1913,40 @@ export interface StRsr extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    checkpoints(
+      account: PromiseOrValue<string>,
+      pos: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    currentEra(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     decreaseAllowance(
       spender: PromiseOrValue<string>,
       subtractedValue: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    delegate(
+      delegatee: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    delegateBySig(
+      delegatee: PromiseOrValue<string>,
+      nonce: PromiseOrValue<BigNumberish>,
+      expiry: PromiseOrValue<BigNumberish>,
+      v: PromiseOrValue<BigNumberish>,
+      r: PromiseOrValue<BytesLike>,
+      s: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    delegates(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     delegationNonces(
@@ -1583,6 +1982,27 @@ export interface StRsr extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    getPastEra(
+      blockNumber: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getPastTotalSupply(
+      blockNumber: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getPastVotes(
+      account: PromiseOrValue<string>,
+      blockNumber: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getVotes(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     increaseAllowance(
       spender: PromiseOrValue<string>,
       addedValue: PromiseOrValue<BigNumberish>,
@@ -1604,6 +2024,11 @@ export interface StRsr extends BaseContract {
 
     nonces(
       owner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    numCheckpoints(
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

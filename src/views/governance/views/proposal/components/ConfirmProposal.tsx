@@ -68,6 +68,8 @@ const useProposal = () => {
         }
         redemptionThrottleChange = true
       } else {
+        const affectedContracts = 
+        addresses.push(parameterMap[paramChange.field])
       }
     }
 
