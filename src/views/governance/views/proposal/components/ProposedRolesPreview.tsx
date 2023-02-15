@@ -43,7 +43,7 @@ const ProposedRolesPreview = (props: BoxProps) => {
     >
       {changes.map((change) => (
         <ListChangePreview
-          key={change.address}
+          key={`${change.role}-${change.address}`}
           subtitle={change.role.substring(0, change.role.length - 1)}
           onRevert={() => handleRevert(change)}
           isNew={change.isNew}
