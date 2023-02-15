@@ -7,12 +7,35 @@ import {
 import { ChainId } from 'utils/chains'
 import { TARGET_UNITS } from 'utils/constants'
 
+const collateralAddresses = {
+  DAI: '0xCff2e85C2706d76fF2d2F876D534bA5C0F9866f3',
+  USDC: '0x4284D76a03F9B398FF7aEc58C9dEc94b289070CF',
+  USDT: '0x67FdB8D6e9e3adaD3C7baE4Cab29eec81A0555E0',
+  USDP: '0xeECA9D1394c2792615DABc53C94bb0B9d8B173bf',
+  TUSD: '0x8a5DfEa5cdA35AB374ac558951A3dF1437A6FcA6',
+  BUSD: '0x21fBa52dA03e1F964fa521532f8B8951fC212055',
+  aDAI: '0x0F2717B041Ac182bc2A7FE6185602d9D2984E391',
+  aUSDC: '0xb48a407e225b4764fD3BCc2a2329fF7745af7e64',
+  aUSDT: '0x382Ee5dBaCA900211D0B64D2FdB180C4B276E5ce',
+  aBUSD: '0xd2783c5BD9bFE8bA09170828E120F49F1C76208c',
+  aUSDP: '0x38c7e9427960E427f6c84b3A096021f47a9Afb82',
+  cDAI: '0xeA22abC49b4daDc189900AD6eE4033545468997e',
+  cUSDC: '0xe238999f9588c7c579A431143e909090FDCF28b5',
+  cUSDT: '0x6AF7559e0e0FA720205eB34bf10a2e1de8AF3895',
+  cUSDP: '0x78B6BD38a4bDDfB2D15cfBFE3bC048D262901DdA',
+  cWBTC: '0xFf635846942Fb0F1212180FD9a63A65231A23bCB',
+  cETH: '0xA575a22A6f61Dc58070f35019fDFAb8DC71671B8',
+  WBTC: '0xBa67f5e2883ca174D85709D5ae3F2E5161B1FF68',
+  WETH: '0x4Be45f83e38D2e2abEc64B41854960EAE3Df77aA',
+  EURT: '0xea525Dc6Ca85C051915aC125D889086185fF5C90',
+}
+
 // MAINNET - ChainId = 1
 const plugins: CollateralPlugin[] = [
   // FIAT COLLATERAL
   {
     symbol: 'DAI',
-    address: '0xe5E6bBE251c22C9E100a3A10e88C5Abdfd24f6d8',
+    address: collateralAddresses.DAI,
     decimals: 18,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'DAI',
@@ -23,18 +46,18 @@ const plugins: CollateralPlugin[] = [
   },
   {
     symbol: 'USDC',
-    address: '0xb241baed74a8b2199D4d516F20Ec529FBb32F3c7',
+    address: collateralAddresses.USDC,
     decimals: 6,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDC',
     collateralToken: 'USDC',
     description: 'Used in RSV',
-    collateralAddress: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+    collateralAddress: '0x67FdB8D6e9e3adaD3C7baE4Cab29eec81A0555E0',
     rewardToken: ZERO_ADDRESS,
   },
   {
     symbol: 'USDT',
-    address: '0xd73F2858A7Bf1d5Bc7523670c14F5EF4b7E37A54',
+    address: collateralAddresses.USDT,
     decimals: 6,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDT',
@@ -45,7 +68,7 @@ const plugins: CollateralPlugin[] = [
   },
   {
     symbol: 'USDP',
-    address: '0x45C515e8E7cB1543364303cfB1dDBA9B0Ad13de9',
+    address: collateralAddresses.USDP,
     decimals: 18,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDP',
@@ -56,7 +79,7 @@ const plugins: CollateralPlugin[] = [
   },
   {
     symbol: 'TUSD',
-    address: '0x0023b264bDD45Dd95B12198A659109Edc3C8b9Bd',
+    address: collateralAddresses.TUSD,
     decimals: 18,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'TUSD',
@@ -67,7 +90,7 @@ const plugins: CollateralPlugin[] = [
   },
   {
     symbol: 'BUSD',
-    address: '0x22594aD1C779732E6D015712478445A68cC39fe4',
+    address: collateralAddresses.BUSD,
     decimals: 18,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'BUSD',
@@ -79,7 +102,7 @@ const plugins: CollateralPlugin[] = [
   // YIELD TOKEN COLLATERAL
   {
     symbol: 'aDAI',
-    address: '0x533BFe91fd2Db80A331e4FD815b19D052cbBA0Bf',
+    address: collateralAddresses.aDAI,
     decimals: 6,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'DAI',
@@ -90,7 +113,7 @@ const plugins: CollateralPlugin[] = [
   },
   {
     symbol: 'aUSDC',
-    address: '0xD995836dA78F416C4bD60Edd7EC1282Ec08a7e0C',
+    address: collateralAddresses.aUSDC,
     decimals: 6,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDC',
@@ -101,7 +124,7 @@ const plugins: CollateralPlugin[] = [
   },
   {
     symbol: 'aUSDT',
-    address: '0x75fAC74B93F9e919493cfb77099572AacAa67BD7',
+    address: collateralAddresses.aUSDT,
     decimals: 6,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDT',
@@ -112,7 +135,7 @@ const plugins: CollateralPlugin[] = [
   },
   {
     symbol: 'aBUSD',
-    address: '0x5f933959a92170B46AF82053d1Af289709f6A6f1',
+    address: collateralAddresses.aBUSD,
     decimals: 18,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'BUSD',
@@ -123,7 +146,7 @@ const plugins: CollateralPlugin[] = [
   },
   {
     symbol: 'cDAI',
-    address: '0x52160CA2651CBEFCc6b603828290A67f80C14764',
+    address: collateralAddresses.cDAI,
     decimals: 6,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'DAI',
@@ -134,7 +157,7 @@ const plugins: CollateralPlugin[] = [
   },
   {
     symbol: 'cUSDC',
-    address: '0xA5CBDe1A0FeB3112bBbe421226a24EF806A44a30',
+    address: collateralAddresses.cUSDC,
     decimals: 6,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDC',
@@ -145,7 +168,7 @@ const plugins: CollateralPlugin[] = [
   },
   {
     symbol: 'cUSDT',
-    address: '0x94494d7C044Eb8847701C6e96B15d8FF78667623',
+    address: collateralAddresses.cUSDT,
     decimals: 6,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDT',
@@ -156,7 +179,7 @@ const plugins: CollateralPlugin[] = [
   },
   {
     symbol: 'cWBTC',
-    address: '0x6C44A7270FCEd64Ca0A9A8c4DB998A8b218e9301',
+    address: collateralAddresses.cWBTC,
     decimals: 18,
     targetUnit: TARGET_UNITS.BTC,
     referenceUnit: 'WBTC',
@@ -167,7 +190,7 @@ const plugins: CollateralPlugin[] = [
   },
   {
     symbol: 'cETH',
-    address: '0x1A406077d4BA972e2d879aA62D00BF553CdF6621',
+    address: collateralAddresses.cETH,
     decimals: 18,
     targetUnit: TARGET_UNITS.ETH,
     referenceUnit: 'ETH',
@@ -178,7 +201,7 @@ const plugins: CollateralPlugin[] = [
   },
   {
     symbol: 'wBTC',
-    address: '0xC301E3299b2014f9Db052582978e7282f2c3119a',
+    address: collateralAddresses.WBTC,
     decimals: 6,
     targetUnit: TARGET_UNITS.BTC,
     referenceUnit: 'wBTC',
@@ -189,7 +212,7 @@ const plugins: CollateralPlugin[] = [
   },
   {
     symbol: 'wETH',
-    address: '0x7d61D0d965Db9ED75eb170742259c6F40AF31605',
+    address: collateralAddresses.WETH,
     decimals: 18,
     targetUnit: TARGET_UNITS.ETH,
     referenceUnit: 'wETH',
@@ -200,7 +223,7 @@ const plugins: CollateralPlugin[] = [
   },
   {
     symbol: 'EURT',
-    address: '0x650C62eC7aC3DB6d08fd922Cc859183Cd79903E7',
+    address: collateralAddresses.EURT,
     decimals: 6,
     targetUnit: TARGET_UNITS.EUR,
     referenceUnit: 'EURT',
