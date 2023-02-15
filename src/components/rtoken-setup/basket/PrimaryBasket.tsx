@@ -22,7 +22,7 @@ interface Props extends BoxProps {
 const getBasketComposition = (basket: Basket) => {
   return Object.keys(basket)
     .reduce((acc, unit) => {
-      return `${acc} + ${truncateDecimals(+basket[unit].scale, 5)} ${unit}`
+      return `${acc} + ${truncateDecimals(+basket[unit].scale, 18)} ${unit}`
     }, '')
     .substring(2)
 }

@@ -195,7 +195,7 @@ export const getDeployParameters = (
 
         weights.push(
           parseEther(
-            ((Number(distribution[index]) / 100) * Number(scale)).toString()
+            ((Number(distribution[index]) / 100) * Number(scale)).toFixed(18)
           )
         )
       })
