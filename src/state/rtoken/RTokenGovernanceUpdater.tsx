@@ -39,6 +39,8 @@ const RTokenGovernanceUpdater = () => {
     id: rToken?.address.toLowerCase(),
   })
 
+  console.log('data?', data)
+
   useEffect(() => {
     if (data?.rtoken && provider) {
       setTokenManagers(data.rtoken)
