@@ -210,7 +210,9 @@ export interface CollateralPlugin {
   referenceUnit: string // Underlay ERC20 (USDC)
   collateralToken: string // Wrapper token (usually yield token)
   collateralAddress: string
+  depositContract?: string // Only for aave collaterals erc20() contract from collateral
   description: string // Small description
   rewardToken: string // yield token aave / compound wrapped Asset
   custom?: boolean
+  underlyingToken?: string
 }

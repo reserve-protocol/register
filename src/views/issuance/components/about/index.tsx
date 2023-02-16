@@ -1,36 +1,8 @@
 import { Trans } from '@lingui/macro'
-import { Modal } from 'components'
-import Button, { SmallButton } from 'components/button'
+import { SmallButton } from 'components/button'
 import { useState } from 'react'
-import { Box, Divider, Input, Text } from 'theme-ui'
-import { STAKE_AAVE_ADDRESS } from 'utils/addresses'
-import { CHAIN_ID } from 'utils/chains'
-import collateralPlugins from 'utils/plugins'
-
-const aavePlugins = collateralPlugins.filter(
-  (p) => p.rewardToken === STAKE_AAVE_ADDRESS[CHAIN_ID]
-)
-
-const WrappingModal = ({ onClose }: { onClose(): void }) => {
-  return (
-    <Modal style={{ maxWidth: '390px' }}>
-      <Text variant="title">
-        <Trans>Wrap your Aave collaterals</Trans>
-      </Text>
-      <Divider mt={4} />
-      {aavePlugins.map((plugin) => (
-        <Box mt={3}>
-          <Text ml={3} variant="legend">
-            {plugin.symbol}
-          </Text>
-          <Input mt={2} placeholder="Token amount" />
-        </Box>
-      ))}
-      <Divider my={4} />
-      <Button sx={{ width: '100%' }}>Wrap tokens</Button>
-    </Modal>
-  )
-}
+import { Box, Text } from 'theme-ui'
+import WrapCollateralModal from '../issue/WrapCollateralModal'
 
 const About = () => {
   const [isWrapping, setWrapping] = useState(false)
@@ -59,7 +31,7 @@ const About = () => {
           <Trans>Wrap tokens</Trans>
         </SmallButton>
       </Box>
-      {isWrapping && <WrappingModal onClose={() => setWrapping(false)} />}
+      {isWrapping && <WrapCollateralModal onClose={() => setWrapping(false)} />}
     </Box>
   )
 }

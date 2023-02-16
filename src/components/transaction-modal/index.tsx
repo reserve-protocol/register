@@ -52,7 +52,9 @@ const TransactionConfirmed = ({
     >
       <CheckCircle size={36} />
       <br />
-      <Text>Transaction signed!</Text>
+      <Text>
+        <Trans>Transaction signed!</Trans>
+      </Text>
       <br />
       <Link
         href={getExplorerLink(hash, ExplorerDataType.TRANSACTION)}

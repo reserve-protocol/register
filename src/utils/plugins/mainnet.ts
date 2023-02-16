@@ -30,6 +30,29 @@ const collateralAddresses = {
   EURT: '0xb38810F7898Fdb747e8E1a490Da0C218622Aef78',
 }
 
+const underlyingCollateralAddresses = {
+  DAI: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+  USDC: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+  USDT: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+  BUSD: '0x4Fabb145d64652a948d72533023f6E7A623C7C53',
+  USDP: '0x8E870D67F660D95d5be530380D0eC0bd388289E1',
+  TUSD: '0x0000000000085d4780B73119b644AE5ecd22b376',
+  aDAI: '0x028171bCA77440897B824Ca71D1c56caC55b68A3',
+  aUSDC: '0xBcca60bB61934080951369a648Fb03DF4F96263C',
+  aUSDT: '0x3Ed3B47Dd13EC9a98b44e6204A523E766B225811',
+  aBUSD: '0xA361718326c15715591c299427c62086F69923D9',
+  aUSDP: '0x2e8F4bdbE3d47d7d7DE490437AeA9915D930F1A3',
+  cDAI: '0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643',
+  cUSDC: '0x39AA39c021dfbaE8faC545936693aC917d5E7563',
+  cUSDT: '0xf650C3d88D12dB855b8bf7D11Be6C55A4e07dCC9',
+  cUSDP: '0x041171993284df560249B57358F931D9eB7b925D',
+  cETH: '0x4Ddc2D193948926D02f9B1fE9e1daa0718270ED5',
+  cWBTC: '0xC11b1268C1A384e55C48c2391d8d480264A3A7F4',
+  WETH: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+  WBTC: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
+  EURT: '0xC581b735A1688071A1746c968e0798D642EDE491',
+}
+
 // MAINNET - ChainId = 1
 const plugins: CollateralPlugin[] = [
   // FIAT COLLATERAL
@@ -41,7 +64,7 @@ const plugins: CollateralPlugin[] = [
     referenceUnit: 'DAI',
     collateralToken: 'DAI',
     description: '',
-    collateralAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+    collateralAddress: underlyingCollateralAddresses.DAI,
     rewardToken: ZERO_ADDRESS,
   },
   {
@@ -52,7 +75,7 @@ const plugins: CollateralPlugin[] = [
     referenceUnit: 'USDC',
     collateralToken: 'USDC',
     description: 'Used in RSV',
-    collateralAddress: '0x67FdB8D6e9e3adaD3C7baE4Cab29eec81A0555E0',
+    collateralAddress: underlyingCollateralAddresses.USDC,
     rewardToken: ZERO_ADDRESS,
   },
   {
@@ -63,7 +86,7 @@ const plugins: CollateralPlugin[] = [
     referenceUnit: 'USDT',
     collateralToken: 'USDT',
     description: '',
-    collateralAddress: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+    collateralAddress: underlyingCollateralAddresses.USDT,
     rewardToken: ZERO_ADDRESS,
   },
   {
@@ -74,7 +97,7 @@ const plugins: CollateralPlugin[] = [
     referenceUnit: 'USDP',
     collateralToken: 'USDP',
     description: 'Used in RSV',
-    collateralAddress: '0x8E870D67F660D95d5be530380D0eC0bd388289E1',
+    collateralAddress: underlyingCollateralAddresses.USDP,
     rewardToken: ZERO_ADDRESS,
   },
   {
@@ -85,7 +108,7 @@ const plugins: CollateralPlugin[] = [
     referenceUnit: 'TUSD',
     collateralToken: 'TUSD',
     description: 'Used in RSV',
-    collateralAddress: '0x0000000000085d4780B73119b644AE5ecd22b376',
+    collateralAddress: underlyingCollateralAddresses.TUSD,
     rewardToken: ZERO_ADDRESS,
   },
   {
@@ -96,20 +119,22 @@ const plugins: CollateralPlugin[] = [
     referenceUnit: 'BUSD',
     collateralToken: 'BUSD',
     description: '',
-    collateralAddress: '0x4Fabb145d64652a948d72533023f6E7A623C7C53',
+    collateralAddress: underlyingCollateralAddresses.BUSD,
     rewardToken: ZERO_ADDRESS,
   },
   // YIELD TOKEN COLLATERAL
   {
     symbol: 'aDAI',
     address: collateralAddresses.aDAI,
-    decimals: 6,
+    decimals: 18,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'DAI',
     collateralToken: 'aDAI',
     description: '',
-    collateralAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+    collateralAddress: underlyingCollateralAddresses.aDAI,
+    depositContract: '0x67b48d65a7d3d18e56d37e0750bd2536e5BC4EB8',
     rewardToken: STAKE_AAVE_ADDRESS[ChainId.Mainnet],
+    underlyingToken: underlyingCollateralAddresses.DAI,
   },
   {
     symbol: 'aUSDC',
@@ -119,8 +144,10 @@ const plugins: CollateralPlugin[] = [
     referenceUnit: 'USDC',
     collateralToken: 'aUSDC',
     description: '',
-    collateralAddress: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+    collateralAddress: underlyingCollateralAddresses.aUSDC,
+    depositContract: '0x536308b71a0Aa70e14dCcb4c4250055286b8483b',
     rewardToken: STAKE_AAVE_ADDRESS[ChainId.Mainnet],
+    underlyingToken: underlyingCollateralAddresses.USDC,
   },
   {
     symbol: 'aUSDT',
@@ -130,8 +157,10 @@ const plugins: CollateralPlugin[] = [
     referenceUnit: 'USDT',
     collateralToken: 'aUSDT',
     description: '',
-    collateralAddress: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+    collateralAddress: underlyingCollateralAddresses.aUSDT,
+    depositContract: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
     rewardToken: STAKE_AAVE_ADDRESS[ChainId.Mainnet],
+    underlyingToken: underlyingCollateralAddresses.USDT,
   },
   {
     symbol: 'aBUSD',
@@ -141,8 +170,10 @@ const plugins: CollateralPlugin[] = [
     referenceUnit: 'BUSD',
     collateralToken: 'aBUSD',
     description: '',
-    collateralAddress: '0x4Fabb145d64652a948d72533023f6E7A623C7C53',
+    collateralAddress: underlyingCollateralAddresses.aBUSD,
+    depositContract: '0x4Fabb145d64652a948d72533023f6E7A623C7C53',
     rewardToken: STAKE_AAVE_ADDRESS[ChainId.Mainnet],
+    underlyingToken: underlyingCollateralAddresses.BUSD,
   },
   {
     symbol: 'cDAI',
