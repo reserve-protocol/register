@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/macro'
+import GoTo from 'components/button/GoTo'
 import TokenLogo from 'components/icons/TokenLogo'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
@@ -71,7 +72,14 @@ const PluginItem = ({ data, onCheck, selected, ...props }: PluginItemProps) => {
       <Flex variant="layout.verticalAlign">
         <TokenLogo size={20} symbol={data.symbol} />
         <Box ml={3}>
-          <Text>{data.symbol} plug-in</Text>
+          <Box variant="layout.verticalAlign">
+            <Text>{data.symbol} plugin</Text>
+            <GoTo
+              ml={1}
+              href={getExplorerLink(data.address, ExplorerDataType.ADDRESS)}
+            />
+          </Box>
+
           <Text sx={{ fontSize: 1, display: 'block' }} variant="legend">
             <Trans>Target:</Trans> {data.targetUnit}{' '}
             {!!data.custom && (
