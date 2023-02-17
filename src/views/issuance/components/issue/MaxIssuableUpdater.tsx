@@ -16,7 +16,7 @@ import { maxIssuableAtom } from 'views/issuance/atoms'
 
 /**
  * View: Mint -> Issue
- * Fex maximun issuable amount for rToken
+ * Fex maximum issuable amount for rToken
  */
 const MaxIssuableUpdater = () => {
   const rToken = useAtomValue(rTokenAtom)
