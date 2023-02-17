@@ -34,6 +34,18 @@ const GovernanceParameters = (props: BoxProps) => {
         }}
       />
       <FormField
+        label={t`Proposal execution delay (hours)`}
+        placeholder={t`Input delay in hours`}
+        mb={3}
+        name="minDelay"
+        options={{
+          required: true,
+          pattern: numberPattern,
+          min: 0,
+          max: 336,
+        }}
+      />
+      <FormField
         label={t`proposalThreshold (%)`}
         placeholder={t`Input proposal threshold`}
         mb={3}
@@ -55,18 +67,6 @@ const GovernanceParameters = (props: BoxProps) => {
           pattern: numberPattern,
           min: 0,
           max: 50,
-        }}
-      />
-      <FormField
-        label={t`Minimum delay (hours)`}
-        placeholder={t`Input Minimum delay in hours`}
-        mb={3}
-        name="minDelay"
-        options={{
-          required: true,
-          pattern: numberPattern,
-          min: 0,
-          max: 336,
         }}
       />
     </Box>

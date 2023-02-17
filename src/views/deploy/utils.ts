@@ -7,7 +7,7 @@ import {
   BackupBasket,
   Basket,
   RevenueSplit,
-} from './../../components/rtoken-setup/atoms'
+} from 'components/rtoken-setup/atoms'
 
 export const governanceDefaultValues = {
   defaultGovernance: true,
@@ -29,18 +29,18 @@ export const defaultValues = {
   manifesto: '',
   ownerAddress: '',
   // backing params
-  tradingDelay: '2160', // delay after default confirmed
+  tradingDelay: '21600', // delay after default confirmed
   auctionLength: '900', // 15 minutes
   backingBuffer: '0.01', // 0.01%
-  maxTradeSlippage: '1', // 1%
+  maxTradeSlippage: '0.5', // 0.2%
   issuanceThrottleAmount: '1000000', // Anticipated redemption minimum amount for throttling
   issuanceThrottleRate: '5', // 5% per block
   redemptionThrottleAmount: '1000000',
-  redemptionThrottleRate: '5',
+  redemptionThrottleRate: '2.5',
   // other
-  rewardRatio: '0.02284', // approx. half life of 30 pay periods
-  unstakingDelay: '1209600', // seconds 2 week
-  minTrade: '0.01',
+  rewardRatio: '0.0000032090147', // approx. half life of 30 pay periods
+  unstakingDelay: '1209600', // seconds 2 weeks
+  minTrade: '10000',
   maxTrade: '1000000',
   shortFreeze: '259200', // 3days
   longFreeze: '2592000', // 30days

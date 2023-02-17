@@ -18,7 +18,7 @@ const BackingForm = (props: BoxProps) => (
         required: true,
         pattern: numberPattern,
         min: 0,
-        max: 604800,
+        max: 86400,
       }}
     />
     <FormField
@@ -30,7 +30,7 @@ const BackingForm = (props: BoxProps) => (
       options={{
         required: true,
         pattern: numberPattern,
-        max: 604800, // 1 week
+        max: 3600,
         min: 60,
       }}
     />
@@ -44,7 +44,7 @@ const BackingForm = (props: BoxProps) => (
         required: true,
         pattern: decimalPattern,
         min: 0,
-        max: 100,
+        max: 1,
       }}
     />
     <FormField
@@ -56,7 +56,7 @@ const BackingForm = (props: BoxProps) => (
       options={{
         required: true,
         pattern: decimalPattern,
-        min: 0.01,
+        min: 0,
         max: 5,
       }}
     />
@@ -70,7 +70,7 @@ const BackingForm = (props: BoxProps) => (
         required: true,
         pattern: decimalPattern,
         min: 0,
-        max: 100,
+        max: 50,
       }}
     />
     <FormField
@@ -83,6 +83,7 @@ const BackingForm = (props: BoxProps) => (
         required: true,
         pattern: decimalPattern,
         min: 0,
+        max: 1e30,
       }}
     />
     <FormField
@@ -95,7 +96,7 @@ const BackingForm = (props: BoxProps) => (
         required: true,
         pattern: decimalPattern,
         min: 0,
-        max: 100,
+        max: 50,
       }}
     />
     <FormField
@@ -107,7 +108,7 @@ const BackingForm = (props: BoxProps) => (
       options={{
         required: true,
         pattern: decimalPattern,
-        min: 0,
+        min: 1e30,
       }}
     />
   </Box>
