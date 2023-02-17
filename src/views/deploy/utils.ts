@@ -14,8 +14,8 @@ export const governanceDefaultValues = {
   unpause: '0',
   votingDelay: '14400', // 2 blocks
   votingPeriod: '21600', // 3 blocks
-  proposalThresholdAsMicroPercent: '0.01', // 1%
-  quorumPercent: '4', // 4%
+  proposalThresholdAsMicroPercent: '0.01', // 0.01%
+  quorumPercent: '10', // 10%
   minDelay: '72', // 72 hours -> 86400
   guardian: '',
   pauser: '',
