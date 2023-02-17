@@ -41,7 +41,7 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
         abi: rToken?.isRSV ? 'rsv' : 'rToken',
         address: rToken?.isRSV ? RSV_MANAGER : rToken?.address ?? '',
         method: 'redeem',
-        args: [parsedAmount],
+        args: rToken?.isRSV ? [parsedAmount] : [parsedAmount, false],
       },
     }),
     [rToken?.address, amount]
