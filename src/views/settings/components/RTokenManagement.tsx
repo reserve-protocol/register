@@ -95,8 +95,6 @@ const RTokenManagement = () => {
       <PauseManager />
       <Divider />
       <FreezeManager />
-      <Divider />
-      <RunAuctions />
       {/* {accountRole.owner && (
         <>
           <Divider />

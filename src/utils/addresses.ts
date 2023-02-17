@@ -16,6 +16,12 @@ export const FACADE_ADDRESS: AddressMap = {
   [ChainId.Hardhat]: '0x3DAf5a7681a9cfB92fB38983EB3998dFC7963B28',
 }
 
+export const FACADE_ACT_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x6FE56A3EEa3fEc93601a94D26bEa1876bD48192F',
+  [ChainId.Goerli]: '0x5c46b718Cd79F2BBA6869A3BeC13401b9a4B69bB',
+  [ChainId.Hardhat]: '0x6FE56A3EEa3fEc93601a94D26bEa1876bD48192F',
+}
+
 export const FACADE_WRITE_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xBa4aF886Ee09f7CfE078d998085E9d63904F68c0',
   [ChainId.Goerli]: '0x243105ac960CDC1fae10FfE446F7a61EAB570E98',

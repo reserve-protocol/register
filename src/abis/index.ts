@@ -22,6 +22,7 @@ import Timelock from './timelock.json'
 import Governance from './governance.json'
 import stRSRVotes from './stRSRVotes.json'
 import StaticAToken from './static-atoken.json'
+import FacadeAct from './facade-act.json'
 
 const ERC20Interface = new Interface(ERC20)
 const FacadeInterface = new Interface(Facade)
@@ -45,6 +46,7 @@ const TimelockInterface = new Interface(Timelock)
 const GovernanceInterface = new Interface(Governance)
 const stRSRVotesInterface = new Interface(stRSRVotes)
 const StaticATokenInterfcae = new Interface(StaticAToken)
+const FacadeActInterface = new Interface(FacadeAct)
 
 export { ERC20, ERC20Interface }
 export { Facade, FacadeInterface }
@@ -68,6 +70,7 @@ export { Timelock, TimelockInterface }
 export { Governance, GovernanceInterface }
 export { stRSRVotes, stRSRVotesInterface }
 export { StaticAToken, StaticATokenInterfcae }
+export { FacadeAct, FacadeActInterface }
 
 // Used for tx management
 export default <StringMap>{
@@ -81,4 +84,5 @@ export default <StringMap>{
   main: MainInterface,
   governance: GovernanceInterface,
   atoken: StaticATokenInterfcae,
+  facadeAct: FacadeActInterface,
 }
