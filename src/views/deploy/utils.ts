@@ -12,11 +12,11 @@ import {
 export const governanceDefaultValues = {
   defaultGovernance: true,
   unpause: '0',
-  votingDelay: '5', // 5 blocks
-  votingPeriod: '18000', // 100 blocks
-  proposalThresholdAsMicroPercent: '1', // 1%
+  votingDelay: '14400', // 2 blocks
+  votingPeriod: '21600', // 3 blocks
+  proposalThresholdAsMicroPercent: '0.01', // 1%
   quorumPercent: '4', // 4%
-  minDelay: '24', // 24 hours -> 86400
+  minDelay: '72', // 72 hours -> 86400
   guardian: '',
   pauser: '',
   owner: '',

@@ -1,8 +1,9 @@
 import { t, Trans } from '@lingui/macro'
 import { FormField } from 'components/field'
 import { Box, BoxProps, Text } from 'theme-ui'
-import { numberPattern } from 'utils'
+import { decimalPattern, numberPattern } from 'utils'
 
+// TODO: Move block to hours
 const GovernanceParameters = (props: BoxProps) => {
   return (
     <Box {...props}>
@@ -10,7 +11,7 @@ const GovernanceParameters = (props: BoxProps) => {
         <Trans>Governance parameters</Trans>
       </Text>
       <FormField
-        label={t`Voting delay (blocks)`}
+        label={t`Snapshot delay (blocks)`}
         placeholder={t`Input number of blocks`}
         mb={3}
         name="votingDelay"
@@ -18,7 +19,7 @@ const GovernanceParameters = (props: BoxProps) => {
           required: true,
           pattern: numberPattern,
           min: 1,
-          max: 80640,
+          max: 50400,
         }}
       />
       <FormField
@@ -29,8 +30,8 @@ const GovernanceParameters = (props: BoxProps) => {
         options={{
           required: true,
           pattern: numberPattern,
-          min: 300,
-          max: 80640,
+          min: 7200,
+          max: 100800,
         }}
       />
       <FormField
@@ -41,8 +42,8 @@ const GovernanceParameters = (props: BoxProps) => {
         options={{
           required: true,
           pattern: numberPattern,
-          min: 0,
-          max: 336,
+          min: 24,
+          max: 504,
         }}
       />
       <FormField
@@ -54,7 +55,7 @@ const GovernanceParameters = (props: BoxProps) => {
           required: true,
           pattern: numberPattern,
           min: 0,
-          max: 5,
+          max: 1,
         }}
       />
       <FormField
@@ -64,8 +65,8 @@ const GovernanceParameters = (props: BoxProps) => {
         name="quorumPercent"
         options={{
           required: true,
-          pattern: numberPattern,
-          min: 0,
+          pattern: decimalPattern,
+          min: 0.1,
           max: 50,
         }}
       />
