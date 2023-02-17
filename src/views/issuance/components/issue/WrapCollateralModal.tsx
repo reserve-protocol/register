@@ -66,7 +66,7 @@ const WrapCollateralModal = ({ onClose }: { onClose(): void }) => {
   const [signing, setSigning] = useState(false)
   const [loading, setLoading] = useState(false)
   const { provider, account } = useWeb3React()
-  const [fromUnderlying, setFromUnderlying] = useState(0)
+  const [fromUnderlying, setFromUnderlying] = useState(1)
   const [txIds, setTxIds] = useState<string[]>([])
   const addTransactions = useSetAtom(addTransactionAtom)
   const transactionsState = useTransactions(txIds)
