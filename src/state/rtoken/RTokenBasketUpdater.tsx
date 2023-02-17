@@ -107,11 +107,11 @@ const RTokenBasketUpdater = () => {
             targetBasket = {
               scale: '1',
               collaterals: [collateral],
-              distribution: [share.toFixed(2)],
+              distribution: [share.toPrecision(6)],
             }
           } else {
             targetBasket.collaterals.push(collateral)
-            targetBasket.distribution.push(share.toFixed(2))
+            targetBasket.distribution.push(share.toPrecision(6))
           }
 
           prev[targetUnit] = targetBasket

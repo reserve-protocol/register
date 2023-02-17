@@ -118,9 +118,9 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
             }
           />
           {!readOnly ? (
-            <Box ml="auto" sx={{ width: 48 }} mr={2}>
+            <Box ml="auto" sx={{ width: 80 }} mr={2}>
               <NumericalInput
-                sx={{ textAlign: 'center' }}
+                sx={{ textAlign: 'center', padding: '6px', paddingLeft: '6px' }}
                 variant={
                   +data.distribution[index] > 0 &&
                   +data.distribution[index] <= 100
