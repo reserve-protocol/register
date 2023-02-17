@@ -36,7 +36,6 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
     [RSR.address]: parsedAmount,
   }
 
-  // TODO: Unlimited approval
   const buildApproval = useCallback(() => {
     if (rToken?.stToken) {
       return [

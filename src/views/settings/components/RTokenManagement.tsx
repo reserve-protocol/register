@@ -1,22 +1,17 @@
-import { t, Trans } from '@lingui/macro'
-import { useWeb3React } from '@web3-react/core'
+import { Trans } from '@lingui/macro'
 import { MainInterface } from 'abis'
 import DocsLink from 'components/docs-link/DocsLink'
 import { ethers } from 'ethers'
 import { useContractCall } from 'hooks/useCall'
 import useRToken from 'hooks/useRToken'
-import { useAtomValue, useSetAtom } from 'jotai'
-import { useEffect, useState } from 'react'
-import { accountRoleAtom, addTransactionAtom } from 'state/atoms'
-import { useTransaction } from 'state/web3/hooks/useTransactions'
+import { useAtomValue } from 'jotai'
+import { accountRoleAtom } from 'state/atoms'
 import { Box, BoxProps, Divider as _Divider, Flex, Text } from 'theme-ui'
 import { FACADE_WRITE_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
-import { TRANSACTION_STATUS } from 'utils/constants'
 import FreezeManager from './FreezeManager'
 import GovernancePrompt from './GovernancePrompt'
 import PauseManager from './PauseManager'
-import SettingItem from './SettingItem'
 
 const Divider = () => <_Divider sx={{ borderColor: 'border' }} my={4} mx={-4} />
 
@@ -27,36 +22,6 @@ const Container = ({ children }: BoxProps) => (
     </Box>
   </Box>
 )
-
-const RunAuctions = () => {
-  const rToken = useRToken()
-  const { account } = useWeb3React()
-  const addTransaction = useSetAtom(addTransactionAtom)
-  const [txId, setTx] = useState('')
-  const tx = useTransaction(txId)
-
-  useEffect(() => {
-    if (
-      tx?.status === TRANSACTION_STATUS.CONFIRMED ||
-      tx?.status === TRANSACTION_STATUS.REJECTED
-    ) {
-      setTx('')
-    }
-  }, [tx?.status])
-
-  const handleRun = () => {}
-
-  return (
-    <SettingItem
-      title="RToken auctions"
-      subtitle={t`Run all available auctions`}
-      action={account && rToken?.address ? t`Run` : ''}
-      onAction={handleRun}
-      loading={!!txId}
-      actionVariant="muted"
-    />
-  )
-}
 
 /**
  * Manage RToken

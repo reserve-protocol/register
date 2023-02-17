@@ -49,8 +49,8 @@ export interface RevenueSplit {
 export const basketAtom = atomWithReset<Basket>({})
 export const backupCollateralAtom = atomWithReset<BackupBasket>({})
 export const revenueSplitAtom = atomWithReset<RevenueSplit>({
-  holders: '40', // %
-  stakers: '60', // %
+  holders: '60', // %
+  stakers: '40', // %
   external: [],
 })
 //
