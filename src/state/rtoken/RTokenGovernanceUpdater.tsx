@@ -14,17 +14,19 @@ const query = gql`
       freezers
       longFreezers
     }
-    governanceFrameworks(id: $id) {
-      id
-      name
-      proposalThreshold
-      contractAddress
-      quorumDenominator
-      quorumNumerator
-      quorumVotes
-      timelockAddress
-      votingDelay
-      votingPeriod
+    governance(id: $id) {
+      governanceFrameworks {
+        id
+        name
+        proposalThreshold
+        contractAddress
+        quorumDenominator
+        quorumNumerator
+        quorumVotes
+        timelockAddress
+        votingDelay
+        votingPeriod
+      }
     }
   }
 `
@@ -35,18 +37,21 @@ const RTokenGovernanceUpdater = () => {
   const setGovernance = useSetAtom(rTokenGovernanceAtom)
   const setTokenManagers = useSetAtom(rTokenManagersAtom)
 
-  const { data } = useQuery(rToken?.address && !rToken.isRSV ? query : null, {
-    id: rToken?.address.toLowerCase(),
-  })
+  const { data, error } = useQuery(
+    rToken?.address && !rToken.isRSV ? query : null,
+    {
+      id: rToken?.address.toLowerCase(),
+    }
+  )
 
-  console.log('data?', data)
+  console.log('data?', error)
 
   useEffect(() => {
     if (data?.rtoken && provider) {
       setTokenManagers(data.rtoken)
 
       // Governance is set up
-      if (data.governanceFrameworks?.length) {
+      if (data.governance?.governanceFrameworks?.length) {
         // TODO: Multiple governances, currently use 1
         const {
           name,
@@ -58,7 +63,7 @@ const RTokenGovernanceUpdater = () => {
           timelockAddress,
           votingDelay,
           votingPeriod,
-        } = data.governanceFrameworks[0]
+        } = data.governance.governanceFrameworks[0]
         setGovernance({
           name,
           proposalThreshold: (+proposalThreshold / 1e6).toString(),
