@@ -53,7 +53,7 @@ export interface DistributorInterface extends utils.Interface {
     "FURNACE()": FunctionFragment;
     "MAX_DESTINATIONS_ALLOWED()": FunctionFragment;
     "ST_RSR()": FunctionFragment;
-    "distribute(address,address,uint256)": FunctionFragment;
+    "distribute(address,uint256)": FunctionFragment;
     "distribution(address)": FunctionFragment;
     "init(address,(uint16,uint16))": FunctionFragment;
     "main()": FunctionFragment;
@@ -90,11 +90,7 @@ export interface DistributorInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "ST_RSR", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "distribute",
-    values: [
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<BigNumberish>
-    ]
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "distribution",
@@ -265,7 +261,6 @@ export interface Distributor extends BaseContract {
 
     distribute(
       erc20: PromiseOrValue<string>,
-      from: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -319,7 +314,6 @@ export interface Distributor extends BaseContract {
 
   distribute(
     erc20: PromiseOrValue<string>,
-    from: PromiseOrValue<string>,
     amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -369,7 +363,6 @@ export interface Distributor extends BaseContract {
 
     distribute(
       erc20: PromiseOrValue<string>,
-      from: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -470,7 +463,6 @@ export interface Distributor extends BaseContract {
 
     distribute(
       erc20: PromiseOrValue<string>,
-      from: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -523,7 +515,6 @@ export interface Distributor extends BaseContract {
 
     distribute(
       erc20: PromiseOrValue<string>,
-      from: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;

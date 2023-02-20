@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { ERC20Interface, FacadeInterface } from 'abis'
 import { BackupBasket, Basket } from 'components/rtoken-setup/atoms'
 import { BigNumber } from 'ethers'
-import { formatBytes32String, formatEther } from 'ethers/lib/utils'
+import { formatBytes32String } from 'ethers/lib/utils'
 import useRToken from 'hooks/useRToken'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
@@ -107,11 +107,11 @@ const RTokenBasketUpdater = () => {
             targetBasket = {
               scale: '1',
               collaterals: [collateral],
-              distribution: [share.toString()],
+              distribution: [share.toPrecision(6)],
             }
           } else {
             targetBasket.collaterals.push(collateral)
-            targetBasket.distribution.push(share.toFixed(2))
+            targetBasket.distribution.push(share.toPrecision(6))
           }
 
           prev[targetUnit] = targetBasket

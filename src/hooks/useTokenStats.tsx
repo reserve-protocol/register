@@ -45,7 +45,7 @@ const useTokenStats = (rTokenId: string, isRSV = false): TokenStats => {
       id: rTokenId,
       fromTime,
     },
-    { refreshInterval: 5000 }
+    { refreshInterval: 10000 }
   )
   const rsrPrice = useAtomValue(rsrPriceAtom)
   const rTokenPrice = useAtomValue(rTokenPriceAtom)

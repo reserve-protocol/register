@@ -39,15 +39,15 @@ const RTokenDataUpdater = () => {
 
   useEffect(() => {
     setSetupBasket(basket)
-  }, [basket])
+  }, [JSON.stringify(basket)])
 
   useEffect(() => {
     setSetupBackupBasket(backup)
-  }, [backup])
+  }, [JSON.stringify(backup)])
 
   useEffect(() => {
     setSetupRevenueSplit(revenueSplit)
-  }, [revenueSplit])
+  }, [JSON.stringify(revenueSplit)])
 
   useEffect(() => {
     // Delay reset to end of render

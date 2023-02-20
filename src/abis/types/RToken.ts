@@ -43,8 +43,10 @@ export declare namespace ThrottleLib {
 export interface RTokenInterface extends utils.Interface {
   functions: {
     "DOMAIN_SEPARATOR()": FunctionFragment;
+    "MAX_EXCHANGE_RATE()": FunctionFragment;
     "MAX_THROTTLE_PCT_AMT()": FunctionFragment;
     "MAX_THROTTLE_RATE_AMT()": FunctionFragment;
+    "MIN_EXCHANGE_RATE()": FunctionFragment;
     "MIN_THROTTLE_RATE_AMT()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
@@ -62,12 +64,13 @@ export interface RTokenInterface extends utils.Interface {
     "mandate()": FunctionFragment;
     "melt(uint256)": FunctionFragment;
     "mint(address,uint256)": FunctionFragment;
+    "monetizeDonations(address)": FunctionFragment;
     "name()": FunctionFragment;
     "nonces(address)": FunctionFragment;
     "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
-    "redeem(uint256)": FunctionFragment;
-    "redeemTo(address,uint256)": FunctionFragment;
+    "redeem(uint256,bool)": FunctionFragment;
+    "redeemTo(address,uint256,bool)": FunctionFragment;
     "redemptionAvailable()": FunctionFragment;
     "redemptionThrottleParams()": FunctionFragment;
     "setBasketsNeeded(uint192)": FunctionFragment;
@@ -85,8 +88,10 @@ export interface RTokenInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "DOMAIN_SEPARATOR"
+      | "MAX_EXCHANGE_RATE"
       | "MAX_THROTTLE_PCT_AMT"
       | "MAX_THROTTLE_RATE_AMT"
+      | "MIN_EXCHANGE_RATE"
       | "MIN_THROTTLE_RATE_AMT"
       | "allowance"
       | "approve"
@@ -104,6 +109,7 @@ export interface RTokenInterface extends utils.Interface {
       | "mandate"
       | "melt"
       | "mint"
+      | "monetizeDonations"
       | "name"
       | "nonces"
       | "permit"
@@ -129,11 +135,19 @@ export interface RTokenInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "MAX_EXCHANGE_RATE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "MAX_THROTTLE_PCT_AMT",
     values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "MAX_THROTTLE_RATE_AMT",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "MIN_EXCHANGE_RATE",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -202,6 +216,10 @@ export interface RTokenInterface extends utils.Interface {
     functionFragment: "mint",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "monetizeDonations",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "nonces",
@@ -225,11 +243,15 @@ export interface RTokenInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "redeem",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<boolean>]
   ): string;
   encodeFunctionData(
     functionFragment: "redeemTo",
-    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<boolean>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "redemptionAvailable",
@@ -283,11 +305,19 @@ export interface RTokenInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "MAX_EXCHANGE_RATE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "MAX_THROTTLE_PCT_AMT",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "MAX_THROTTLE_RATE_AMT",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "MIN_EXCHANGE_RATE",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -325,6 +355,10 @@ export interface RTokenInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "mandate", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "melt", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "monetizeDonations",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "nonces", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "permit", data: BytesLike): Result;
@@ -557,9 +591,13 @@ export interface RToken extends BaseContract {
   functions: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<[string]>;
 
+    MAX_EXCHANGE_RATE(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     MAX_THROTTLE_PCT_AMT(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     MAX_THROTTLE_RATE_AMT(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    MIN_EXCHANGE_RATE(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     MIN_THROTTLE_RATE_AMT(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -638,6 +676,11 @@ export interface RToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    monetizeDonations(
+      erc20: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     name(overrides?: CallOverrides): Promise<[string]>;
 
     nonces(
@@ -660,12 +703,14 @@ export interface RToken extends BaseContract {
 
     redeem(
       amount: PromiseOrValue<BigNumberish>,
+      revertOnPartialRedemption: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     redeemTo(
       recipient: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
+      revertOnPartialRedemption: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -725,9 +770,13 @@ export interface RToken extends BaseContract {
 
   DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
 
+  MAX_EXCHANGE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
+
   MAX_THROTTLE_PCT_AMT(overrides?: CallOverrides): Promise<BigNumber>;
 
   MAX_THROTTLE_RATE_AMT(overrides?: CallOverrides): Promise<BigNumber>;
+
+  MIN_EXCHANGE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
 
   MIN_THROTTLE_RATE_AMT(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -806,6 +855,11 @@ export interface RToken extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  monetizeDonations(
+    erc20: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   name(overrides?: CallOverrides): Promise<string>;
 
   nonces(
@@ -828,12 +882,14 @@ export interface RToken extends BaseContract {
 
   redeem(
     amount: PromiseOrValue<BigNumberish>,
+    revertOnPartialRedemption: PromiseOrValue<boolean>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   redeemTo(
     recipient: PromiseOrValue<string>,
     amount: PromiseOrValue<BigNumberish>,
+    revertOnPartialRedemption: PromiseOrValue<boolean>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -891,9 +947,13 @@ export interface RToken extends BaseContract {
   callStatic: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
 
+    MAX_EXCHANGE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
+
     MAX_THROTTLE_PCT_AMT(overrides?: CallOverrides): Promise<BigNumber>;
 
     MAX_THROTTLE_RATE_AMT(overrides?: CallOverrides): Promise<BigNumber>;
+
+    MIN_EXCHANGE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
 
     MIN_THROTTLE_RATE_AMT(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -972,6 +1032,11 @@ export interface RToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    monetizeDonations(
+      erc20: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     name(overrides?: CallOverrides): Promise<string>;
 
     nonces(
@@ -994,12 +1059,14 @@ export interface RToken extends BaseContract {
 
     redeem(
       amount: PromiseOrValue<BigNumberish>,
+      revertOnPartialRedemption: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     redeemTo(
       recipient: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
+      revertOnPartialRedemption: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1164,9 +1231,13 @@ export interface RToken extends BaseContract {
   estimateGas: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<BigNumber>;
 
+    MAX_EXCHANGE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
+
     MAX_THROTTLE_PCT_AMT(overrides?: CallOverrides): Promise<BigNumber>;
 
     MAX_THROTTLE_RATE_AMT(overrides?: CallOverrides): Promise<BigNumber>;
+
+    MIN_EXCHANGE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
 
     MIN_THROTTLE_RATE_AMT(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1243,6 +1314,11 @@ export interface RToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    monetizeDonations(
+      erc20: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
     nonces(
@@ -1265,12 +1341,14 @@ export interface RToken extends BaseContract {
 
     redeem(
       amount: PromiseOrValue<BigNumberish>,
+      revertOnPartialRedemption: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     redeemTo(
       recipient: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
+      revertOnPartialRedemption: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1327,6 +1405,8 @@ export interface RToken extends BaseContract {
   populateTransaction: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    MAX_EXCHANGE_RATE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     MAX_THROTTLE_PCT_AMT(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -1334,6 +1414,8 @@ export interface RToken extends BaseContract {
     MAX_THROTTLE_RATE_AMT(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    MIN_EXCHANGE_RATE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     MIN_THROTTLE_RATE_AMT(
       overrides?: CallOverrides
@@ -1414,6 +1496,11 @@ export interface RToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    monetizeDonations(
+      erc20: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     nonces(
@@ -1436,12 +1523,14 @@ export interface RToken extends BaseContract {
 
     redeem(
       amount: PromiseOrValue<BigNumberish>,
+      revertOnPartialRedemption: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     redeemTo(
       recipient: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
+      revertOnPartialRedemption: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

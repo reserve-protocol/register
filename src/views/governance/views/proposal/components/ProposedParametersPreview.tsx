@@ -1,10 +1,11 @@
-import { Box, BoxProps, Divider } from 'theme-ui'
-import useParametersChanges from '../hooks/useParametersChanges'
+import { useAtomValue } from 'jotai'
+import { BoxProps } from 'theme-ui'
+import { parametersChangesAtom } from '../atoms'
 import { ParameterPreview } from './ItemPreview'
 import PreviewBox from './PreviewBox'
 
 const ProposedParametersPreview = (props: BoxProps) => {
-  const changes = useParametersChanges()
+  const changes = useAtomValue(parametersChangesAtom)
 
   if (!changes.length) {
     return null
@@ -12,14 +13,16 @@ const ProposedParametersPreview = (props: BoxProps) => {
 
   // TODO: Split by contract or bucket
   return (
-    <Box {...props}>
-      <Divider mb={4} mx={-4} />
-      <PreviewBox count={changes.length} title="Parameters" mb={4}>
-        {changes.map((change) => (
-          <ParameterPreview key={change.field} mt={3} values={change} />
-        ))}
-      </PreviewBox>
-    </Box>
+    <PreviewBox
+      count={changes.length}
+      title="Parameters"
+      variant="layout.borderBox"
+      {...props}
+    >
+      {changes.map((change) => (
+        <ParameterPreview key={change.field} mt={3} values={change} />
+      ))}
+    </PreviewBox>
   )
 }
 

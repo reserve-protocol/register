@@ -1,12 +1,11 @@
 import { Trans } from '@lingui/macro'
+import DocsLink from 'components/docs-link/DocsLink'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { useAtomValue } from 'jotai'
 import { useCallback } from 'react'
-import { rTokenBackupAtom, rTokenBasketAtom } from 'state/atoms'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { backupCollateralAtom, basketAtom } from '../atoms'
 import EmergencyCollateral from './EmergencyCollateral'
-import DocsLink from 'components/docs-link/DocsLink'
 
 interface Props extends BoxProps {
   onAdd?(

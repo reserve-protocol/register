@@ -162,11 +162,6 @@ const _abi = [
         type: "address",
       },
       {
-        internalType: "address",
-        name: "from",
-        type: "address",
-      },
-      {
         internalType: "uint256",
         name: "amount",
         type: "uint256",

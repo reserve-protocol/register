@@ -17,8 +17,8 @@ const OtherForm = (props: BoxProps) => (
       options={{
         required: true,
         pattern: numberPattern,
-        min: 3600, // 1hour
-        max: 2592000, //1month
+        min: 21600,
+        max: 604800,
       }}
     />
     <FormField
@@ -30,8 +30,8 @@ const OtherForm = (props: BoxProps) => (
       options={{
         required: true,
         pattern: numberPattern,
-        min: 86400, // 1day
-        max: 31536000, //1year
+        min: 86400,
+        max: 5184000,
       }}
     />
     <FormField
@@ -44,8 +44,8 @@ const OtherForm = (props: BoxProps) => (
       options={{
         required: true,
         pattern: numberPattern,
-        max: 31536000, // 1year
-        min: 1,
+        max: 63072000, // 2 year
+        min: 1209600, // 2 weeks
       }}
     />
     <FormField
@@ -57,8 +57,8 @@ const OtherForm = (props: BoxProps) => (
       options={{
         required: true,
         pattern: decimalPattern,
-        min: 0.000000001,
-        max: 1,
+        min: 0.000000534835787499996,
+        max: 0.00001375292025,
       }}
     />
     <FormField
@@ -70,8 +70,8 @@ const OtherForm = (props: BoxProps) => (
       options={{
         required: true,
         pattern: decimalPattern,
-        max: 10000000,
-        min: 0,
+        max: 1000000,
+        min: 1000,
       }}
     />
     <FormField

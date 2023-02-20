@@ -518,6 +518,25 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+    ],
+    name: "delegationNonces",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint256",
         name: "era_",
         type: "uint256",
@@ -849,38 +868,12 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "string",
-        name: "name_",
-        type: "string",
-      },
-    ],
-    name: "setName",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "uint192",
         name: "val",
         type: "uint192",
       },
     ],
     name: "setRewardRatio",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "string",
-        name: "symbol_",
-        type: "string",
-      },
-    ],
-    name: "setSymbol",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

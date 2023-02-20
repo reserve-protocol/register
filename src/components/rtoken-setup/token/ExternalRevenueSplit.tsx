@@ -3,9 +3,8 @@ import { SmallButton } from 'components/button'
 import Field, { FieldInput, getErrorMessage } from 'components/field'
 import { useAtomValue } from 'jotai'
 import { useEffect } from 'react'
-import { ArrowRight } from 'react-feather'
 import { useForm } from 'react-hook-form'
-import { Box, BoxProps, Flex, Grid, Text } from 'theme-ui'
+import { Box, BoxProps, Grid } from 'theme-ui'
 import { ExternalAddressSplit, isRevenueValidAtom } from '../atoms'
 
 interface ExternalRevenueSplitProps extends Omit<BoxProps, 'onChange'> {
@@ -30,6 +29,7 @@ const ExternalRevenueSpit = ({
   const {
     register,
     watch,
+    setValue,
     formState: { errors, isDirty },
   } = useForm({
     mode: 'onChange',
@@ -41,10 +41,38 @@ const ExternalRevenueSpit = ({
   useEffect(() => {
     const [total = '', stakers = '', holders = '', address = ''] = formValues
 
-    if (isDirty) {
-      onChange({ total, stakers, holders, address })
-    }
+    onChange({ total, stakers, holders, address })
   }, [...formValues])
+
+  // Stakers
+  useEffect(() => {
+    const [, stakers = '', holders = ''] = formValues
+
+    if (
+      stakers &&
+      !isNaN(+stakers) &&
+      !isNaN(+holders) &&
+      +stakers >= 0 &&
+      +stakers <= 100
+    ) {
+      setValue('holders', ((1000 - +stakers * 10) / 10).toString())
+    }
+  }, [formValues[1]])
+
+  // Holders
+  useEffect(() => {
+    const [, stakers = '', holders = ''] = formValues
+
+    if (
+      holders &&
+      !isNaN(+stakers) &&
+      !isNaN(+holders) &&
+      +holders >= 0 &&
+      +holders <= 100
+    ) {
+      setValue('stakers', ((1000 - +holders * 10) / 10).toString())
+    }
+  }, [formValues[2]])
 
   return (
     <Box {...props} sx={{ display: 'flex' }}>
@@ -62,7 +90,7 @@ const ExternalRevenueSpit = ({
           </Field>
           <Field label={t`As RToken`}>
             <FieldInput
-              {...register('holders', inputValidation)}
+              {...register('holders', { ...inputValidation, min: 10 })}
               error={!!errors['holders']}
               sx={{
                 borderRadius: '0',
@@ -72,7 +100,7 @@ const ExternalRevenueSpit = ({
           </Field>
           <Field label={t`As RSR`}>
             <FieldInput
-              {...register('stakers', inputValidation)}
+              {...register('stakers', { ...inputValidation, min: 10 })}
               error={!!errors['stakers']}
               sx={{
                 borderRadius: '0 6px 0 0',

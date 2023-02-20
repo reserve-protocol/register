@@ -32,8 +32,8 @@ export interface BackingManagerInterface extends utils.Interface {
   functions: {
     "MAX_BACKING_BUFFER()": FunctionFragment;
     "MAX_TRADE_SLIPPAGE()": FunctionFragment;
+    "MAX_TRADE_VOLUME()": FunctionFragment;
     "MAX_TRADING_DELAY()": FunctionFragment;
-    "MIN_TRADE_VOLUME()": FunctionFragment;
     "backingBuffer()": FunctionFragment;
     "claimRewards()": FunctionFragment;
     "claimRewardsSingle(address)": FunctionFragment;
@@ -64,8 +64,8 @@ export interface BackingManagerInterface extends utils.Interface {
     nameOrSignatureOrTopic:
       | "MAX_BACKING_BUFFER"
       | "MAX_TRADE_SLIPPAGE"
+      | "MAX_TRADE_VOLUME"
       | "MAX_TRADING_DELAY"
-      | "MIN_TRADE_VOLUME"
       | "backingBuffer"
       | "claimRewards"
       | "claimRewardsSingle"
@@ -101,11 +101,11 @@ export interface BackingManagerInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "MAX_TRADING_DELAY",
+    functionFragment: "MAX_TRADE_VOLUME",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "MIN_TRADE_VOLUME",
+    functionFragment: "MAX_TRADING_DELAY",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -218,11 +218,11 @@ export interface BackingManagerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "MAX_TRADING_DELAY",
+    functionFragment: "MAX_TRADE_VOLUME",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "MIN_TRADE_VOLUME",
+    functionFragment: "MAX_TRADING_DELAY",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -477,9 +477,9 @@ export interface BackingManager extends BaseContract {
 
     MAX_TRADE_SLIPPAGE(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    MAX_TRADING_DELAY(overrides?: CallOverrides): Promise<[number]>;
+    MAX_TRADE_VOLUME(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    MIN_TRADE_VOLUME(overrides?: CallOverrides): Promise<[BigNumber]>;
+    MAX_TRADING_DELAY(overrides?: CallOverrides): Promise<[number]>;
 
     backingBuffer(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -588,9 +588,9 @@ export interface BackingManager extends BaseContract {
 
   MAX_TRADE_SLIPPAGE(overrides?: CallOverrides): Promise<BigNumber>;
 
-  MAX_TRADING_DELAY(overrides?: CallOverrides): Promise<number>;
+  MAX_TRADE_VOLUME(overrides?: CallOverrides): Promise<BigNumber>;
 
-  MIN_TRADE_VOLUME(overrides?: CallOverrides): Promise<BigNumber>;
+  MAX_TRADING_DELAY(overrides?: CallOverrides): Promise<number>;
 
   backingBuffer(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -699,9 +699,9 @@ export interface BackingManager extends BaseContract {
 
     MAX_TRADE_SLIPPAGE(overrides?: CallOverrides): Promise<BigNumber>;
 
-    MAX_TRADING_DELAY(overrides?: CallOverrides): Promise<number>;
+    MAX_TRADE_VOLUME(overrides?: CallOverrides): Promise<BigNumber>;
 
-    MIN_TRADE_VOLUME(overrides?: CallOverrides): Promise<BigNumber>;
+    MAX_TRADING_DELAY(overrides?: CallOverrides): Promise<number>;
 
     backingBuffer(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -912,9 +912,9 @@ export interface BackingManager extends BaseContract {
 
     MAX_TRADE_SLIPPAGE(overrides?: CallOverrides): Promise<BigNumber>;
 
-    MAX_TRADING_DELAY(overrides?: CallOverrides): Promise<BigNumber>;
+    MAX_TRADE_VOLUME(overrides?: CallOverrides): Promise<BigNumber>;
 
-    MIN_TRADE_VOLUME(overrides?: CallOverrides): Promise<BigNumber>;
+    MAX_TRADING_DELAY(overrides?: CallOverrides): Promise<BigNumber>;
 
     backingBuffer(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1028,9 +1028,9 @@ export interface BackingManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    MAX_TRADING_DELAY(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    MAX_TRADE_VOLUME(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    MIN_TRADE_VOLUME(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    MAX_TRADING_DELAY(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     backingBuffer(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

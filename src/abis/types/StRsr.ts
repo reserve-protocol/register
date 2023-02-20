@@ -40,6 +40,7 @@ export interface StRsrInterface extends utils.Interface {
     "balanceOf(address)": FunctionFragment;
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
+    "delegationNonces(address)": FunctionFragment;
     "draftQueueLen(uint256,address)": FunctionFragment;
     "draftQueues(uint256,address,uint256)": FunctionFragment;
     "draftRate()": FunctionFragment;
@@ -57,9 +58,7 @@ export interface StRsrInterface extends utils.Interface {
     "proxiableUUID()": FunctionFragment;
     "rewardRatio()": FunctionFragment;
     "seizeRSR(uint256)": FunctionFragment;
-    "setName(string)": FunctionFragment;
     "setRewardRatio(uint192)": FunctionFragment;
-    "setSymbol(string)": FunctionFragment;
     "setUnstakingDelay(uint48)": FunctionFragment;
     "stake(uint256)": FunctionFragment;
     "stakeRate()": FunctionFragment;
@@ -87,6 +86,7 @@ export interface StRsrInterface extends utils.Interface {
       | "balanceOf"
       | "decimals"
       | "decreaseAllowance"
+      | "delegationNonces"
       | "draftQueueLen"
       | "draftQueues"
       | "draftRate"
@@ -104,9 +104,7 @@ export interface StRsrInterface extends utils.Interface {
       | "proxiableUUID"
       | "rewardRatio"
       | "seizeRSR"
-      | "setName"
       | "setRewardRatio"
-      | "setSymbol"
       | "setUnstakingDelay"
       | "stake"
       | "stakeRate"
@@ -155,6 +153,10 @@ export interface StRsrInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "decreaseAllowance",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "delegationNonces",
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "draftQueueLen",
@@ -234,16 +236,8 @@ export interface StRsrInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "setName",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "setRewardRatio",
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setSymbol",
-    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "setUnstakingDelay",
@@ -319,6 +313,10 @@ export interface StRsrInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "delegationNonces",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "draftQueueLen",
     data: BytesLike
   ): Result;
@@ -365,12 +363,10 @@ export interface StRsrInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "seizeRSR", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "setName", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "setRewardRatio",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "setSymbol", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "setUnstakingDelay",
     data: BytesLike
@@ -676,6 +672,11 @@ export interface StRsr extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    delegationNonces(
+      owner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     draftQueueLen(
       era_: PromiseOrValue<BigNumberish>,
       account: PromiseOrValue<string>,
@@ -756,18 +757,8 @@ export interface StRsr extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    setName(
-      name_: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     setRewardRatio(
       val: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    setSymbol(
-      symbol_: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -862,6 +853,11 @@ export interface StRsr extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  delegationNonces(
+    owner: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   draftQueueLen(
     era_: PromiseOrValue<BigNumberish>,
     account: PromiseOrValue<string>,
@@ -942,18 +938,8 @@ export interface StRsr extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  setName(
-    name_: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   setRewardRatio(
     val: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  setSymbol(
-    symbol_: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -1048,6 +1034,11 @@ export interface StRsr extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
+    delegationNonces(
+      owner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     draftQueueLen(
       era_: PromiseOrValue<BigNumberish>,
       account: PromiseOrValue<string>,
@@ -1126,18 +1117,8 @@ export interface StRsr extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setName(
-      name_: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     setRewardRatio(
       val: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    setSymbol(
-      symbol_: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1385,6 +1366,11 @@ export interface StRsr extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    delegationNonces(
+      owner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     draftQueueLen(
       era_: PromiseOrValue<BigNumberish>,
       account: PromiseOrValue<string>,
@@ -1463,18 +1449,8 @@ export interface StRsr extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    setName(
-      name_: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     setRewardRatio(
       val: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    setSymbol(
-      symbol_: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1574,6 +1550,11 @@ export interface StRsr extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    delegationNonces(
+      owner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     draftQueueLen(
       era_: PromiseOrValue<BigNumberish>,
       account: PromiseOrValue<string>,
@@ -1652,18 +1633,8 @@ export interface StRsr extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    setName(
-      name_: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
     setRewardRatio(
       val: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setSymbol(
-      symbol_: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

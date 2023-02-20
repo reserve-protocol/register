@@ -31,7 +31,7 @@ import type {
 export interface RevenueTraderInterface extends utils.Interface {
   functions: {
     "MAX_TRADE_SLIPPAGE()": FunctionFragment;
-    "MIN_TRADE_VOLUME()": FunctionFragment;
+    "MAX_TRADE_VOLUME()": FunctionFragment;
     "claimRewards()": FunctionFragment;
     "claimRewardsSingle(address)": FunctionFragment;
     "init(address,address,uint192,uint192)": FunctionFragment;
@@ -56,7 +56,7 @@ export interface RevenueTraderInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "MAX_TRADE_SLIPPAGE"
-      | "MIN_TRADE_VOLUME"
+      | "MAX_TRADE_VOLUME"
       | "claimRewards"
       | "claimRewardsSingle"
       | "init"
@@ -83,7 +83,7 @@ export interface RevenueTraderInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "MIN_TRADE_VOLUME",
+    functionFragment: "MAX_TRADE_VOLUME",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -171,7 +171,7 @@ export interface RevenueTraderInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "MIN_TRADE_VOLUME",
+    functionFragment: "MAX_TRADE_VOLUME",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -374,7 +374,7 @@ export interface RevenueTrader extends BaseContract {
   functions: {
     MAX_TRADE_SLIPPAGE(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    MIN_TRADE_VOLUME(overrides?: CallOverrides): Promise<[BigNumber]>;
+    MAX_TRADE_VOLUME(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     claimRewards(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -458,7 +458,7 @@ export interface RevenueTrader extends BaseContract {
 
   MAX_TRADE_SLIPPAGE(overrides?: CallOverrides): Promise<BigNumber>;
 
-  MIN_TRADE_VOLUME(overrides?: CallOverrides): Promise<BigNumber>;
+  MAX_TRADE_VOLUME(overrides?: CallOverrides): Promise<BigNumber>;
 
   claimRewards(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -542,7 +542,7 @@ export interface RevenueTrader extends BaseContract {
   callStatic: {
     MAX_TRADE_SLIPPAGE(overrides?: CallOverrides): Promise<BigNumber>;
 
-    MIN_TRADE_VOLUME(overrides?: CallOverrides): Promise<BigNumber>;
+    MAX_TRADE_VOLUME(overrides?: CallOverrides): Promise<BigNumber>;
 
     claimRewards(overrides?: CallOverrides): Promise<void>;
 
@@ -710,7 +710,7 @@ export interface RevenueTrader extends BaseContract {
   estimateGas: {
     MAX_TRADE_SLIPPAGE(overrides?: CallOverrides): Promise<BigNumber>;
 
-    MIN_TRADE_VOLUME(overrides?: CallOverrides): Promise<BigNumber>;
+    MAX_TRADE_VOLUME(overrides?: CallOverrides): Promise<BigNumber>;
 
     claimRewards(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -797,7 +797,7 @@ export interface RevenueTrader extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    MIN_TRADE_VOLUME(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    MAX_TRADE_VOLUME(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     claimRewards(
       overrides?: Overrides & { from?: PromiseOrValue<string> }

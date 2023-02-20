@@ -6,8 +6,10 @@ import { formatEther } from 'ethers/lib/utils'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { rTokenGovernanceAtom } from 'state/atoms'
 import { Box, Divider, Grid, Image, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ROUTES } from 'utils/constants'
@@ -21,9 +23,6 @@ const query = gql`
       totalTokenHolders
       totalDelegates
       proposals
-      governanceFrameworks {
-        name
-      }
     }
   }
 `
@@ -55,7 +54,7 @@ const GovernanceOverview = () => {
   const stats = useStats()
   const navigate = useNavigate()
   const rToken = useRToken()
-  const governance = (stats?.governanceFrameworks || [])[0]
+  const governance = useAtomValue(rTokenGovernanceAtom)
 
   return (
     <Box>
@@ -102,38 +101,30 @@ const GovernanceOverview = () => {
         </Grid>
       </Box>
       <Box mt={4} variant="layout.borderBox">
-        <Box variant="layout.verticalAlign">
-          <GovernanceFormatIcon />
-          <Box ml={2}>
-            <Text variant="subtitle">
-              <Trans>Governance Format</Trans>
-            </Text>
-            <Text variant="title">
-              {governance ? governance.name : 'Custom'}
-            </Text>
-          </Box>
-        </Box>
-        <Box mt={4}>
-          <SmallButton
-            ml="auto"
-            mr={2}
-            variant="muted"
-            onClick={() =>
-              navigate(`${ROUTES.SETTINGS}?token=${rToken?.address}`)
-            }
-          >
-            <Trans>View settings</Trans>
-          </SmallButton>
-          <SmallButton
-            ml="auto"
-            variant="transparent"
-            onClick={() =>
-              navigate(`${ROUTES.SETTINGS}?token=${rToken?.address}`)
-            }
-          >
-            <Trans>Documentation</Trans>
-          </SmallButton>
-        </Box>
+        <Text variant="subtitle">
+          <Trans>Format</Trans>
+        </Text>
+        <Text variant="title">{governance ? governance.name : 'Custom'}</Text>
+
+        <SmallButton
+          mt={3}
+          variant="muted"
+          onClick={() =>
+            navigate(`${ROUTES.SETTINGS}?token=${rToken?.address}`)
+          }
+        >
+          <Trans>Settings & Roles</Trans>
+        </SmallButton>
+        <SmallButton
+          mt={3}
+          ml={3}
+          variant="transparent"
+          onClick={() =>
+            navigate(`${ROUTES.SETTINGS}?token=${rToken?.address}`)
+          }
+        >
+          <Trans>Documentation</Trans>
+        </SmallButton>
       </Box>
     </Box>
   )

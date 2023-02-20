@@ -122,9 +122,20 @@ const RTokenStateUpdater = () => {
       chainId === CHAIN_ID
     ) {
       getTokenStatus(rToken.main, provider)
-      getBackingDistribution(rToken.address, provider)
     }
   }, [rToken?.address, blockNumber])
+
+  useEffect(() => {
+    if (
+      rToken?.address &&
+      provider &&
+      blockNumber &&
+      rToken.main &&
+      chainId === CHAIN_ID
+    ) {
+      getBackingDistribution(rToken.address, provider)
+    }
+  }, [rToken?.address, !!blockNumber, chainId])
 
   return null
 }

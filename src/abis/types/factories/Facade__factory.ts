@@ -105,7 +105,7 @@ const _abi = [
     name: "basketTokens",
     outputs: [
       {
-        internalType: "contract IERC20[]",
+        internalType: "address[]",
         name: "tokens",
         type: "address[]",
       },

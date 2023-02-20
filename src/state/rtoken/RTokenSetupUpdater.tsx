@@ -248,8 +248,8 @@ const RTokenSetupUpdater = () => {
               const total = +holders + +stakers
 
               dist.external[dest] = {
-                holders: (+holders * 100) / total,
-                stakers: (+stakers * 100) / total,
+                holders: ((+holders * 100) / total).toString(),
+                stakers: ((+stakers * 100) / total).toString(),
                 total: total.toString(),
                 address: dest,
               }

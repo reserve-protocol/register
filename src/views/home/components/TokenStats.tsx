@@ -75,7 +75,7 @@ const TokenStats = (props: BoxProps) => {
       id: PROTOCOL_SLUG,
       fromTime,
     },
-    { refreshInterval: 5000 }
+    { refreshInterval: 10000 }
   )
   const rpayOverview = useAtomValue(rpayOverviewAtom)
 

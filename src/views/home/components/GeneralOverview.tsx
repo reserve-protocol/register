@@ -26,7 +26,7 @@ const TransactionsOverview = (props: BoxProps) => {
   const { data } = useQuery(
     protocolRecentTxsQuery,
     {},
-    { refreshInterval: 5000 }
+    { refreshInterval: 10000 }
   )
   const rpayTx = useDebounce(useAtomValue(rpayTransactionsAtom), 1000)
 

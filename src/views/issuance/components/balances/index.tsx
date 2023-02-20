@@ -11,11 +11,11 @@ import { Token } from 'types'
 import CollateralBalance from './CollateralBalance'
 
 const CollateralBalances = ({ collaterals }: { collaterals: Token[] }) => (
-  <Box p={4} mb={-2}>
-    <Text variant="subtitle" mb={3}>
+  <Box>
+    <Text variant="subtitle" mb={3} p={4} pb={0}>
       <Trans>Available collateral</Trans>
     </Text>
-    <Box sx={{ overflow: 'auto', maxHeight: 360 }}>
+    <Box sx={{ overflow: 'auto', maxHeight: 360 }} p={4} pt={0}>
       {collaterals.map((collateral) => (
         <CollateralBalance mb={2} token={collateral} key={collateral.address} />
       ))}

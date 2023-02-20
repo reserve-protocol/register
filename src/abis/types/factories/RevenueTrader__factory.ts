@@ -216,7 +216,7 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "MIN_TRADE_VOLUME",
+    name: "MAX_TRADE_VOLUME",
     outputs: [
       {
         internalType: "uint192",

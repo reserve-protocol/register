@@ -91,8 +91,9 @@ export const rTokenGovernanceAtom = atomWithReset<{
   votingDelay?: string
   votingPeriod?: string
   proposalThreshold?: string
-  quorum?: string
-  minDelay?: string
+  quorumDenominator?: string
+  quorumNumerator?: string
+  quorumVotes?: string
 }>({
   name: 'Custom',
   governor: '',
@@ -101,8 +102,8 @@ export const rTokenGovernanceAtom = atomWithReset<{
 export const rTokenBasketAtom = atomWithReset<Basket>({})
 export const rTokenBackupAtom = atomWithReset<BackupBasket>({})
 export const rTokenRevenueSplitAtom = atomWithReset<RevenueSplit>({
-  holders: '40', // %
-  stakers: '60', // %
+  holders: '60', // %
+  stakers: '40', // %
   external: [],
 })
 
@@ -144,7 +145,7 @@ export const rTokenDistributionAtom = atom<{
   staked: 0,
 })
 
-export const rTokenAdmins = atom({
+export const rTokenManagersAtom = atom({
   owners: [] as string[],
   pausers: [] as string[],
   freezers: [] as string[],

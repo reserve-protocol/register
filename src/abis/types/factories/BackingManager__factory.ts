@@ -270,12 +270,12 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "MAX_TRADING_DELAY",
+    name: "MAX_TRADE_VOLUME",
     outputs: [
       {
-        internalType: "uint48",
+        internalType: "uint192",
         name: "",
-        type: "uint48",
+        type: "uint192",
       },
     ],
     stateMutability: "view",
@@ -283,12 +283,12 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "MIN_TRADE_VOLUME",
+    name: "MAX_TRADING_DELAY",
     outputs: [
       {
-        internalType: "uint192",
+        internalType: "uint48",
         name: "",
-        type: "uint192",
+        type: "uint48",
       },
     ],
     stateMutability: "view",

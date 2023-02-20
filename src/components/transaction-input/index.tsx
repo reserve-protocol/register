@@ -32,7 +32,7 @@ const TransactionInput = ({
       ml={'auto'}
       mr={2}
     >
-      Max: {formatCurrency(maxAmount)}
+      Max: {formatCurrency(maxAmount, 5)}
     </Text>
   )
 

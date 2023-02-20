@@ -315,6 +315,19 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "MAX_EXCHANGE_RATE",
+    outputs: [
+      {
+        internalType: "uint192",
+        name: "",
+        type: "uint192",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "MAX_THROTTLE_PCT_AMT",
     outputs: [
       {
@@ -334,6 +347,19 @@ const _abi = [
         internalType: "uint256",
         name: "",
         type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "MIN_EXCHANGE_RATE",
+    outputs: [
+      {
+        internalType: "uint192",
+        name: "",
+        type: "uint192",
       },
     ],
     stateMutability: "view",
@@ -682,6 +708,19 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "contract IERC20",
+        name: "erc20",
+        type: "address",
+      },
+    ],
+    name: "monetizeDonations",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "name",
     outputs: [
@@ -776,6 +815,11 @@ const _abi = [
         name: "amount",
         type: "uint256",
       },
+      {
+        internalType: "bool",
+        name: "revertOnPartialRedemption",
+        type: "bool",
+      },
     ],
     name: "redeem",
     outputs: [],
@@ -793,6 +837,11 @@ const _abi = [
         internalType: "uint256",
         name: "amount",
         type: "uint256",
+      },
+      {
+        internalType: "bool",
+        name: "revertOnPartialRedemption",
+        type: "bool",
       },
     ],
     name: "redeemTo",

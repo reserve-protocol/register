@@ -3,7 +3,7 @@ import { ChainId, CHAIN_ID } from 'utils/chains'
 import goerliPlugins from './goerli'
 import mainnetPlugins from './mainnet'
 
-const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
+export const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
   [ChainId.Mainnet]: mainnetPlugins,
   [ChainId.Goerli]: goerliPlugins,
 }
