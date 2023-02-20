@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { Box, BoxProps, Button, Flex, Text } from 'theme-ui'
 import { isProposalEditingAtom, isProposalValidAtom } from '../atoms'
+import CreateProposalActionIcon from 'components/icons/CreateProposalActionIcon'
 import ProposalPreview from './ProposalPreview'
 
 const Container = styled(Box)`
@@ -36,12 +37,13 @@ const ProposalOverview = (props: BoxProps) => {
           }}
           variant="layout.borderBox"
         >
+          <CreateProposalActionIcon />
           <Text variant="title" mb={2}>
-            <Trans>Governance Proposal</Trans>
+            <Trans>Create Proposal</Trans>
           </Text>
           <Text variant="legend" as="p">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
-            maxisss nunc iaculis vitae.
+            Review of function calls & adding a description of your proposal
+            will be done in the next step.
           </Text>
           <Button
             onClick={handleProposal}
@@ -50,7 +52,7 @@ const ProposalOverview = (props: BoxProps) => {
             mt={4}
             sx={{ width: '100%' }}
           >
-            <Trans>Propose changes</Trans>
+            <Trans>Confirm changes</Trans>
           </Button>
         </Flex>
         <ProposalPreview sx={{ flexGrow: 1, overflow: 'auto' }} />
