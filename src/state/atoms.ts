@@ -65,6 +65,7 @@ export const rTokenContractsAtom = atomWithReset<StringMap>({
   furnace: '',
   rTokenAsset: '',
   distributor: '',
+  basketHandler: '',
 })
 
 export const rTokenParamsAtom = atomWithReset({

@@ -1,6 +1,11 @@
-import { Box } from 'theme-ui'
+import { Box, BoxProps } from 'theme-ui'
 
-const ProposalDetail = () => {
+interface Props extends BoxProps {
+  addresses: string[]
+  calldatas: string[]
+}
+
+const ProposalDetail = ({ addresses, calldatas, ...props }: Props) => {
   return <Box>proposal detail</Box>
 }
 

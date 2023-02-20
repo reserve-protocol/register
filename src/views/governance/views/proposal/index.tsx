@@ -11,8 +11,7 @@ import {
 } from './atoms'
 import ConfirmProposal from './components/ConfirmProposal'
 import Proposal from './components/Proposal'
-import RTokenDataUpdater from './components/Updater'
-import ChangesUpdater from './updater'
+import Updater from './updater'
 
 const GovernanceProposal = () => {
   const tokenParameters = useAtomValue(rTokenParamsAtom)
@@ -35,8 +34,7 @@ const GovernanceProposal = () => {
 
   return (
     <FormProvider {...form}>
-      <RTokenDataUpdater />
-      <ChangesUpdater />
+      <Updater />
       {isEditing ? <Proposal /> : <ConfirmProposal />}
     </FormProvider>
   )

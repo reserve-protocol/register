@@ -18,6 +18,7 @@ import { rTokenAtom, rTokenContractsAtom } from 'state/atoms'
 import { Interface } from 'ethers/lib/utils'
 
 export const isNewBasketProposedAtom = atom(false)
+export const isNewBackupProposedAtom = atom(false)
 
 export const proposedRolesAtom = atomWithReset({
   owners: [] as string[],
