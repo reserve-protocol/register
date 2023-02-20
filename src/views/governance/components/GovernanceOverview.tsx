@@ -1,6 +1,7 @@
 import { t, Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import IconInfo from 'components/info-icon'
+import GovernanceFormatIcon from 'components/icons/GovernanceFormatIcon'
 import { formatEther } from 'ethers/lib/utils'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
@@ -73,7 +74,7 @@ const GovernanceOverview = () => {
               <Trans>Proposals</Trans>
             </Text>
             <IconInfo
-              icon={<Image src="/svgs/asterisk.svg" />}
+              icon={<Image src="/svgs/proposals.svg" />}
               title={t`All time`}
               text={formatCurrency(stats.proposals)}
             />
@@ -83,7 +84,7 @@ const GovernanceOverview = () => {
               <Trans>Vote Supply</Trans>
             </Text>
             <IconInfo
-              icon={<Image src="/svgs/asterisk.svg" />}
+              icon={<Image src="/svgs/vote-supply.svg" />}
               title={t`Current`}
               text={formatCurrency(stats.totalTokenSupply)}
             />
@@ -93,7 +94,7 @@ const GovernanceOverview = () => {
               <Trans>Voting Addresses</Trans>
             </Text>
             <IconInfo
-              icon={<Image src="/svgs/asterisk.svg" />}
+              icon={<Image src="/svgs/voting-addresses.svg" />}
               title={t`Current`}
               text={formatCurrency(stats.totalDelegates)}
             />
@@ -101,23 +102,21 @@ const GovernanceOverview = () => {
         </Grid>
       </Box>
       <Box mt={4} variant="layout.borderBox">
-        <Text variant="subtitle">
-          <Trans>Format</Trans>
-        </Text>
-        <Text variant="title">{governance ? governance.name : 'Custom'}</Text>
-        <Text as="p" variant="legend" mt={2}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam maximus
-          facilisis velit, at venenatis nunc iaculis vitae vestibulum ante
-          ipsum. facilisis velit, at venenatis nunc iaculis.
-        </Text>
-        <Divider mx={-4} my={4} />
         <Box variant="layout.verticalAlign">
-          <Image mr={2} src="/svgs/asterisk.svg" />
-          <Text variant="strong">
-            <Trans>Roles & Actions</Trans>
-          </Text>
+          <GovernanceFormatIcon />
+          <Box ml={2}>
+            <Text variant="subtitle">
+              <Trans>Governance Format</Trans>
+            </Text>
+            <Text variant="title">
+              {governance ? governance.name : 'Custom'}
+            </Text>
+          </Box>
+        </Box>
+        <Box mt={4}>
           <SmallButton
             ml="auto"
+            mr={2}
             variant="muted"
             onClick={() =>
               navigate(`${ROUTES.SETTINGS}?token=${rToken?.address}`)
@@ -125,20 +124,14 @@ const GovernanceOverview = () => {
           >
             <Trans>View settings</Trans>
           </SmallButton>
-        </Box>
-        <Box mt={4} variant="layout.verticalAlign">
-          <Image mr={2} src="/svgs/asterisk.svg" />
-          <Text variant="strong">
-            <Trans>Proposals</Trans>
-          </Text>
           <SmallButton
             ml="auto"
-            variant="muted"
+            variant="transparent"
             onClick={() =>
-              navigate(`${ROUTES.GOVERNANCE_PROPOSAL}?token=${rToken?.address}`)
+              navigate(`${ROUTES.SETTINGS}?token=${rToken?.address}`)
             }
           >
-            <Trans>Create proposal</Trans>
+            <Trans>Documentation</Trans>
           </SmallButton>
         </Box>
       </Box>
