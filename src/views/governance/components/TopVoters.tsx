@@ -112,7 +112,7 @@ const TopVoters = (props: BoxProps) => {
       </Text>
       <Table mt={4} maxHeight={420} compact columns={columns} data={data} />
       {!data.length && (
-        <Box mt={3} sx={{ textAlign: 'center' }}>
+        <Box py={4} mt={3} sx={{ textAlign: 'center' }}>
           <EmptyBoxIcon />
           <Text
             mt={3}
