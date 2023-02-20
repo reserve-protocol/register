@@ -20,11 +20,11 @@ const Overlay = ({ onPropose }: { onPropose(): void }) => (
       right: 0,
     }}
   >
-    <Box
+    <Card
       sx={{
         width: '100%',
         height: '100%',
-        opacity: '70%',
+        opacity: '90%',
         backgroundColor: 'contentBackground',
       }}
     />
@@ -40,7 +40,7 @@ const Overlay = ({ onPropose }: { onPropose(): void }) => (
         justifyContent: 'center',
       }}
     >
-      <Box sx={{ maxWidth: 340, textAlign: 'center' }}>
+      <Box sx={{ maxWidth: 360, textAlign: 'center' }}>
         <OverviewIcon />
         <Text variant="title" mb={2}>
           <Trans>Change primary basket</Trans>
