@@ -69,16 +69,24 @@ const About = (props: BoxProps) => {
         </Box>
         <Box>
           <Text mb={3} variant="strong">
-            <Trans>How to see current surplus & trigger an auction</Trans>
+            <Trans>Collateral surplus & triggering of auctions</Trans>
           </Text>
-          <Text variant="legend" as="p" mb={3}>
+          <Text variant="legend" as="p" mb={4}>
             <Trans>
-              Here we should put text and add links to tools they can use to
-              monitor and trigger auctions. We explain that this feature should
-              eventually come to Register but it's not currently being worked
-              on.
+              Register currently only supports triggering all available revenue
+              suplus auctions at once and a total current surplus. Learn more
+              about how to monitor invidivial collateral surplusses.
             </Trans>
           </Text>
+          <Box variant="layout.verticalAlign">
+            <SmallButton variant={'accentAction'}>Run all auctions</SmallButton>
+            <Text variant="legend" ml={3}>
+              Current combined surplus
+            </Text>
+            <Text variant="strong" ml={2}>
+              $0.00
+            </Text>
+          </Box>
         </Box>
       </Grid>
     </Box>
