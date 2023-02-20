@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Interface } from 'ethers/lib/utils'
 import { useAtomValue } from 'jotai'
 import { Box, BoxProps } from 'theme-ui'
@@ -64,6 +65,16 @@ const ProposalDetail = ({ addresses, calldatas, ...props }: Props) => {
   const interfaceMap = useAtomValue(interfaceMapAtom)
   const parse = parseCallDatas(addresses, calldatas, interfaceMap)
 
+=======
+import { Box, BoxProps } from 'theme-ui'
+
+interface Props extends BoxProps {
+  addresses: string[]
+  calldatas: string[]
+}
+
+const ProposalDetail = ({ addresses, calldatas, ...props }: Props) => {
+>>>>>>> 5a51e3974da02228abd257a80e04641b9a962810
   return <Box>proposal detail</Box>
 }
 
