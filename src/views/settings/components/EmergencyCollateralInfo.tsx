@@ -4,7 +4,7 @@ import DiversityFactorIcon from 'components/icons/DiversityFactorIcon'
 import TokenItem from 'components/token-item'
 import { useAtomValue } from 'jotai'
 import { rTokenBackupAtom, rTokenBasketAtom } from 'state/atoms'
-import { Box, BoxProps, Card, Flex, Text } from 'theme-ui'
+import { Box, BoxProps, Card, Flex, Text, Divider } from 'theme-ui'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
 /**

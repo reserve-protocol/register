@@ -49,7 +49,7 @@ const ProposalList = () => {
         </Text>
         <Box px={4} mt={2}>
           {!data.length && (
-            <Box mt={4} sx={{ textAlign: 'center' }}>
+            <Box py={4} mt={4} sx={{ textAlign: 'center' }}>
               <EmptyBoxIcon />
               <Text
                 mt={3}
