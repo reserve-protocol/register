@@ -108,7 +108,8 @@ const BackingForm = (props: BoxProps) => (
       options={{
         required: true,
         pattern: decimalPattern,
-        min: 1e30,
+        min: 0,
+        max: 1e30,
       }}
     />
   </Box>

@@ -1,13 +1,22 @@
 import { Trans } from '@lingui/macro'
 import { Button } from 'components'
 import { SmallButton } from 'components/button'
+import useTransactionCost from 'hooks/useTransactionCost'
 import { useSetAtom } from 'jotai'
 import { Box, BoxProps, Container, Flex, Text } from 'theme-ui'
+import { TransactionState } from 'types'
 import { isProposalEditingAtom } from '../atoms'
 
+interface Props extends BoxProps {
+  tx: TransactionState
+}
+
 // TODO: Display gas estimate
-const ConfirmProposalOverview = (props: BoxProps) => {
+const ConfirmProposalOverview = ({ tx, ...props }: Props) => {
   const setProposalEditing = useSetAtom(isProposalEditingAtom)
+  const [fee, gasError, gasLimit] = useTransactionCost([tx])
+
+  console.log('fee', fee)
 
   // Change to confirmation screen
   const handleProposal = () => {

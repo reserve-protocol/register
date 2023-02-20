@@ -1,7 +1,14 @@
 import { t } from '@lingui/macro'
+import {
+  BackingManagerInterface,
+  BasketHandlerInterface,
+  MainInterface,
+} from 'abis'
 
 import { basketAtom } from 'components/rtoken-setup/atoms'
 import Layout from 'components/rtoken-setup/Layout'
+import { BigNumber } from 'ethers'
+import { parseEther } from 'ethers/lib/utils'
 import { atom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { rTokenContractsAtom, rTokenGovernanceAtom } from 'state/atoms'
@@ -18,22 +25,6 @@ import {
 } from '../atoms'
 import ConfirmProposalOverview from './ConfirmProposalOverview'
 
-// call: {
-//   abi: 'governance',
-//   address: governance.governor,
-//   method: 'propose',
-//   args: [
-//     ['0x2b38755345B73f4F41533c80177C6eca55538F71'],
-//     [0],
-//     [
-//       BackingManagerInterface.encodeFunctionData('setTradingDelay', [
-//         2000,
-//       ]),
-//     ],
-//     'test',
-//   ],
-// },
-
 const useProposal = () => {
   const backupChanges = useAtomValue(backupChangesAtom)
   const revenueChanges = useAtomValue(revenueSplitChangesAtom)
@@ -43,6 +34,7 @@ const useProposal = () => {
   const basket = useAtomValue(basketAtom)
   const governance = useAtomValue(rTokenGovernanceAtom)
   const parameterMap = useAtomValue(parameterContractMapAtom)
+  const contracts = useAtomValue(rTokenContractsAtom)
 
   return useMemo(() => {
     const addresses: string[] = []
@@ -71,6 +63,34 @@ const useProposal = () => {
       }
     }
 
+    if (newBasket) {
+      const primaryBasket: string[] = []
+      const weights: BigNumber[] = []
+
+      // TODO: Update asset registry / Assets comp/aave
+      for (const targetUnit of Object.keys(basket)) {
+        const { collaterals, distribution, scale } = basket[targetUnit]
+
+        collaterals.forEach((collateral, index) => {
+          primaryBasket.push(collateral.address)
+
+          weights.push(
+            parseEther(
+              ((Number(distribution[index]) / 100) * Number(scale)).toFixed(18)
+            )
+          )
+        })
+      }
+
+      addresses.push(contracts.basketHandler)
+      calls.push(
+        BasketHandlerInterface.encodeFunctionData('setPrimeBasket', [
+          primaryBasket,
+          weights,
+        ])
+      )
+    }
+
     return {
       id: '',
       description: t`New proposal`,
@@ -80,10 +100,15 @@ const useProposal = () => {
         abi: 'governance',
         address: governance.governor,
         method: 'propose',
-        args: [addresses, new Array(calls.length).fill(0), calls, ''], // fill with empty description
+        args: [
+          addresses,
+          new Array(calls.length).fill(0),
+          calls,
+          'change basket',
+        ], // fill with empty description
       },
     }
-  }, [])
+  }, [contracts])
 }
 
 // TODO: Build proposal
@@ -93,8 +118,11 @@ const ConfirmProposal = () => {
   return (
     <Layout>
       <ProposalDetailNavigation />
-      <ProposalDetail />
-      <ConfirmProposalOverview />
+      <ProposalDetail
+        addresses={tx.call.args[0] as string[]}
+        calldatas={tx.call.args[2] as string[]}
+      />
+      <ConfirmProposalOverview tx={tx} />
     </Layout>
   )
 }

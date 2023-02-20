@@ -62,6 +62,7 @@ const RTokenSetupUpdater = () => {
           stRSRAddress,
           shortFreeze,
           longFreeze,
+          basketHandler,
         ] = await promiseMulticall(
           [
             {
@@ -103,6 +104,10 @@ const RTokenSetupUpdater = () => {
             {
               ...mainCall,
               method: 'longFreeze',
+            },
+            {
+              ...mainCall,
+              method: 'basketHandler',
             },
           ],
           provider
@@ -274,6 +279,7 @@ const RTokenSetupUpdater = () => {
           stRSR: stRSRAddress,
           furnace: furnaceAddress,
           rTokenAsset,
+          basketHandler,
         })
       } catch (e) {
         console.error('Error getting RToken Setup', e)

@@ -29,17 +29,17 @@ export const defaultValues = {
   manifesto: '',
   ownerAddress: '',
   // backing params
-  tradingDelay: '21600', // delay after default confirmed
-  auctionLength: '900', // 15 minutes
+  tradingDelay: '21600',
+  auctionLength: '900',
   backingBuffer: '0.01', // 0.01%
-  maxTradeSlippage: '0.5', // 0.2%
+  maxTradeSlippage: '0.5', // 0.5%
   issuanceThrottleAmount: '1000000', // Anticipated redemption minimum amount for throttling
   issuanceThrottleRate: '5', // 5% per block
   redemptionThrottleAmount: '1000000',
   redemptionThrottleRate: '2.5',
   // other
-  rewardRatio: '0.0000032090147', // approx. half life of 30 pay periods
-  unstakingDelay: '1209600', // seconds 2 weeks
+  rewardRatio: '0.0000032090147',
+  unstakingDelay: '1209600',
   minTrade: '10000',
   maxTrade: '1000000',
   shortFreeze: '259200', // 3days

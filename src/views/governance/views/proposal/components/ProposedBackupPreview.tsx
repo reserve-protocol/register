@@ -4,7 +4,7 @@ import { backupCollateralAtom } from 'components/rtoken-setup/atoms'
 import { useAtom, useAtomValue } from 'jotai'
 import { Plus, X } from 'react-feather'
 import { Box, BoxProps, Text } from 'theme-ui'
-import { backupChangesAtom } from '../atoms'
+import { backupChangesAtom, isNewBackupProposedAtom } from '../atoms'
 import {
   CollateralChange,
   DiversityFactorChange,
@@ -13,11 +13,14 @@ import { ParameterChangePreview } from './ItemPreview'
 import PreviewBox from './PreviewBox'
 
 const ProposedBackupPreview = (props: BoxProps) => {
+  const [isNewBackupProposed, setProposeNewBackup] = useAtom(
+    isNewBackupProposedAtom
+  )
   const { count, diversityFactor, collateralChanges, priorityChanges } =
     useAtomValue(backupChangesAtom)
   const [proposedBackup, setProposedBackup] = useAtom(backupCollateralAtom)
 
-  if (!count) {
+  if (!isNewBackupProposed) {
     return null
   }
 
@@ -65,60 +68,78 @@ const ProposedBackupPreview = (props: BoxProps) => {
   }
 
   return (
-    <PreviewBox
-      variant="layout.borderBox"
-      count={count}
-      title={t`Backup basket`}
-      {...props}
-    >
-      {diversityFactor.map((change) => (
-        <ParameterChangePreview
-          mt={3}
-          title={t`Change diversity factor`}
-          subtitle={change.target}
-          current={change.current.toString()}
-          proposed={change.proposed.toString()}
-          onRevert={() => handleRevertDiversity(change)}
-          key={change.target}
-        />
-      ))}
-      {collateralChanges.map((change, index) => (
-        <Box
-          variant="layout.verticalAlign"
-          key={change.collateral.address}
-          mt={3}
-        >
-          {change.isNew ? (
-            <Plus color="#11BB8D" size={18} />
-          ) : (
-            <X color="#FF0000" size={18} />
-          )}
-          <Box ml={2}>
-            <Text variant="legend" sx={{ fontSize: 1, display: 'block' }}>
-              {change.isNew ? <Trans>Add</Trans> : <Trans>Remove</Trans>}
-            </Text>
-            <Text>{change.collateral.symbol}</Text>
-          </Box>
+    <>
+      <Box variant="layout.borderBox" mt={4}>
+        <Box variant="layout.verticalAlign">
+          <Text variant="strong" sx={{ color: 'warning' }}>
+            <Trans>New backup configuration</Trans>
+          </Text>
           <SmallButton
             ml="auto"
             variant="muted"
-            onClick={() => handleRevertCollateral(change)}
+            onClick={() => setProposeNewBackup(false)}
           >
             <Trans>Revert</Trans>
           </SmallButton>
         </Box>
-      ))}
-      {priorityChanges.map((change) => (
-        <ParameterChangePreview
-          key={change.collateral.address}
-          mt={3}
-          title={t`Change diversity factor`}
-          subtitle={change.collateral.symbol}
-          current={change.current.toString()}
-          proposed={change.proposed.toString()}
-        />
-      ))}
-    </PreviewBox>
+      </Box>
+      {!!count && (
+        <PreviewBox
+          variant="layout.borderBox"
+          count={count}
+          title={t`Backup basket`}
+          {...props}
+        >
+          {diversityFactor.map((change) => (
+            <ParameterChangePreview
+              mt={3}
+              title={t`Change diversity factor`}
+              subtitle={change.target}
+              current={change.current.toString()}
+              proposed={change.proposed.toString()}
+              onRevert={() => handleRevertDiversity(change)}
+              key={change.target}
+            />
+          ))}
+          {collateralChanges.map((change, index) => (
+            <Box
+              variant="layout.verticalAlign"
+              key={change.collateral.address}
+              mt={3}
+            >
+              {change.isNew ? (
+                <Plus color="#11BB8D" size={18} />
+              ) : (
+                <X color="#FF0000" size={18} />
+              )}
+              <Box ml={2}>
+                <Text variant="legend" sx={{ fontSize: 1, display: 'block' }}>
+                  {change.isNew ? <Trans>Add</Trans> : <Trans>Remove</Trans>}
+                </Text>
+                <Text>{change.collateral.symbol}</Text>
+              </Box>
+              <SmallButton
+                ml="auto"
+                variant="muted"
+                onClick={() => handleRevertCollateral(change)}
+              >
+                <Trans>Revert</Trans>
+              </SmallButton>
+            </Box>
+          ))}
+          {priorityChanges.map((change) => (
+            <ParameterChangePreview
+              key={change.collateral.address}
+              mt={3}
+              title={t`Change diversity factor`}
+              subtitle={change.collateral.symbol}
+              current={change.current.toString()}
+              proposed={change.proposed.toString()}
+            />
+          ))}
+        </PreviewBox>
+      )}
+    </>
   )
 }
 

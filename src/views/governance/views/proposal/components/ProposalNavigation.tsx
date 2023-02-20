@@ -13,12 +13,13 @@ const ProposalNavigation = () => {
   const navigate = useNavigate()
   const sections = useMemo(
     () => [
-      t`Primary basket`,
-      t`Emergency basket`,
-      t`Revenue share`,
+      t`Intro`,
       t`Backing config`,
       t`Other config`,
       t`Governance`,
+      t`Revenue share`,
+      t`Primary basket`,
+      t`Emergency basket`,
     ],
     []
   )

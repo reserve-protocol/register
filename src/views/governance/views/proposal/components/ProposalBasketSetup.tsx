@@ -7,10 +7,10 @@ import PrimaryBasket from 'components/rtoken-setup/basket/PrimaryBasket'
 import SectionWrapper from 'components/section-navigation/SectionWrapper'
 import { useAtom } from 'jotai'
 import { useState } from 'react'
-import { Box, Card, Text } from 'theme-ui'
-import { isNewBasketProposedAtom } from '../atoms'
+import { Box, BoxProps, Card, Text } from 'theme-ui'
+import { isNewBackupProposedAtom, isNewBasketProposedAtom } from '../atoms'
 
-const Overlay = ({ onPropose }: { onPropose(): void }) => (
+const Overlay = ({ children, ...props }: BoxProps) => (
   <Box
     sx={{
       position: 'absolute',
@@ -19,20 +19,20 @@ const Overlay = ({ onPropose }: { onPropose(): void }) => (
       bottom: 0,
       right: 0,
     }}
+    {...props}
   >
     <Box
       sx={{
         width: '100%',
         height: '100%',
-        opacity: '70%',
+        opacity: '85%',
         backgroundColor: 'contentBackground',
       }}
     />
     <Box
       sx={{
         position: 'absolute',
-        top: 0,
-        bottom: 0,
+        top: 100,
         left: 0,
         right: 0,
         display: 'flex',
@@ -40,29 +40,55 @@ const Overlay = ({ onPropose }: { onPropose(): void }) => (
         justifyContent: 'center',
       }}
     >
-      <Box sx={{ maxWidth: 340, textAlign: 'center' }}>
-        <OverviewIcon />
-        <Text variant="title" mb={2}>
-          <Trans>Change primary basket</Trans>
-        </Text>
-        <Text as="p" variant="legend">
-          <Trans>
-            Pre-filled token weights won’t accurately match the current
-            distribution. Changing the basket means defining how you want the
-            distribution going forward.
-          </Trans>
-        </Text>
-        <SmallButton mt={3} onClick={onPropose}>
-          <Trans>Propose new basket</Trans>
-        </SmallButton>
-      </Box>
+      {children}
     </Box>
   </Box>
 )
 
-const ProposalBasketSetup = () => {
+const PrimaryBasketWarning = ({ onPropose }: { onPropose(): void }) => (
+  <Box sx={{ maxWidth: 340, textAlign: 'center' }}>
+    <OverviewIcon />
+    <Text variant="title" mb={2}>
+      <Trans>Change primary basket</Trans>
+    </Text>
+    <Text as="p" variant="legend">
+      <Trans>
+        Pre-filled token weights won’t accurately match the current
+        distribution. Changing the basket means defining how you want the
+        distribution going forward.
+      </Trans>
+    </Text>
+    <SmallButton mt={3} onClick={onPropose}>
+      <Trans>Propose new basket</Trans>
+    </SmallButton>
+  </Box>
+)
+
+const BackupBasketWarning = ({ onPropose }: { onPropose(): void }) => (
+  <Box sx={{ maxWidth: 340, textAlign: 'center' }}>
+    <OverviewIcon />
+    <Text variant="title" mb={2}>
+      <Trans>Change backup basket</Trans>
+    </Text>
+    <Text as="p" variant="legend">
+      <Trans>
+        Backup configuration tracks primary basket changes to update its values.
+        This may not be desired on a proposal, you can choose to propose new
+        changes.
+      </Trans>
+    </Text>
+    <SmallButton mt={3} onClick={onPropose}>
+      <Trans>Propose new backup configuration</Trans>
+    </SmallButton>
+  </Box>
+)
+
+const ProposalBasketSetup = ({ startIndex }: { startIndex: number }) => {
   const [isNewBasketProposed, setProposeNewBasket] = useAtom(
     isNewBasketProposedAtom
+  )
+  const [isNewBackupProposed, setProposeNewBackup] = useAtom(
+    isNewBackupProposedAtom
   )
   const [collateralModal, setCollateralModal] = useState<{
     basket: 'primary' | 'backup'
@@ -71,17 +97,28 @@ const ProposalBasketSetup = () => {
 
   return (
     <>
-      <SectionWrapper navigationIndex={0}>
+      <SectionWrapper navigationIndex={startIndex}>
         <Card p={4} sx={{ position: 'relative' }}>
           <PrimaryBasket onAdd={setCollateralModal} />
           {!isNewBasketProposed && (
-            <Overlay onPropose={() => setProposeNewBasket(true)} />
+            <Overlay>
+              <PrimaryBasketWarning
+                onPropose={() => setProposeNewBasket(true)}
+              />
+            </Overlay>
           )}
         </Card>
       </SectionWrapper>
-      <SectionWrapper navigationIndex={1}>
-        <Card mt={4} p={4}>
+      <SectionWrapper navigationIndex={startIndex + 1}>
+        <Card mt={4} p={4} sx={{ position: 'relative' }}>
           <BackupBasket onAdd={setCollateralModal} />
+          {!isNewBackupProposed && (
+            <Overlay>
+              <BackupBasketWarning
+                onPropose={() => setProposeNewBackup(true)}
+              />
+            </Overlay>
+          )}
         </Card>
       </SectionWrapper>
 

@@ -172,7 +172,7 @@ export const addBasketCollateralAtom = atom(
       basket[unit] = {
         collaterals: unitCollaterals,
         distribution,
-        scale: basket[unit]?.scale ?? 1,
+        scale: basket[unit]?.scale ?? '1',
       }
     }
 

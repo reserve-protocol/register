@@ -23,6 +23,7 @@ import Governance from './governance.json'
 import stRSRVotes from './stRSRVotes.json'
 import StaticAToken from './static-atoken.json'
 import FacadeAct from './facade-act.json'
+import BasketHandler from './basket-handler.json'
 
 const ERC20Interface = new Interface(ERC20)
 const FacadeInterface = new Interface(Facade)
@@ -47,6 +48,7 @@ const GovernanceInterface = new Interface(Governance)
 const stRSRVotesInterface = new Interface(stRSRVotes)
 const StaticATokenInterfcae = new Interface(StaticAToken)
 const FacadeActInterface = new Interface(FacadeAct)
+const BasketHandlerInterface = new Interface(BasketHandler)
 
 export { ERC20, ERC20Interface }
 export { Facade, FacadeInterface }
@@ -71,6 +73,7 @@ export { Governance, GovernanceInterface }
 export { stRSRVotes, stRSRVotesInterface }
 export { StaticAToken, StaticATokenInterfcae }
 export { FacadeAct, FacadeActInterface }
+export { BasketHandler, BasketHandlerInterface }
 
 // Used for tx management
 export default <StringMap>{
