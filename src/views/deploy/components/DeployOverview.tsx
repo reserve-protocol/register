@@ -92,7 +92,7 @@ const DeployStatus = () => {
       </Text>
       <Button
         onClick={deploy}
-        variant="primary"
+        variant="accentAction"
         disabled={!isValid || !fee}
         mt={4}
         sx={{ width: '100%' }}

@@ -52,7 +52,7 @@ const TransactionConfirmed = ({
     >
       <CheckCircle size={36} />
       <br />
-      <Text>Transaction signed!</Text>
+      <Text variant="title">Transaction signed!</Text>
       <br />
       <Link
         href={getExplorerLink(hash, ExplorerDataType.TRANSACTION)}
@@ -166,7 +166,7 @@ const TransactionModal = ({
       <LoadingButton
         loading={!!signing}
         disabled={!canSubmit}
-        variant={!!signing ? 'accentAction' : 'primary'}
+        variant={!!signing ? 'accentAction' : 'accentAction'}
         text={confirmLabel}
         onClick={handleConfirm}
         sx={{ width: '100%' }}
