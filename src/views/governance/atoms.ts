@@ -15,6 +15,7 @@ import { rTokenContractsAtom } from 'state/atoms'
 
 export interface ProposalCall {
   signature: string
+  parameters: string[]
   callData: string
   data: any
 }

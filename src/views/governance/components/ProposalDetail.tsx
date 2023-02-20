@@ -1,6 +1,12 @@
 import { useAtomValue } from 'jotai'
 import { Box, BoxProps } from 'theme-ui'
-import { ContractProposal, InterfaceMap, interfaceMapAtom } from '../atoms'
+import {
+  contractDetails,
+  ContractProposal,
+  InterfaceMap,
+  interfaceMapAtom,
+} from '../atoms'
+import BasketProposalDetails from './proposal-detail/BasketProposalDetails'
 
 interface Props extends BoxProps {
   addresses: string[]
@@ -28,9 +34,9 @@ const parseCallDatas = (
         const functionCall = contractDetail.interface.getFunction(
           calldatas[i].slice(0, 10)
         )
-        const signature = `${functionCall.name}${functionCall.inputs
+        const signature = `${functionCall.name}(${functionCall.inputs
           .map((input) => `${input.name}: ${input.type}`)
-          .join(', ')}`
+          .join(', ')})`
         const data = contractDetail.interface.decodeFunctionData(
           functionCall.name,
           calldatas[i]
@@ -45,6 +51,9 @@ const parseCallDatas = (
         }
         contractProposals[address].calls.push({
           signature,
+          parameters: functionCall.inputs.map(
+            (input) => `${input.name} (${input.type})`
+          ),
           callData: calldatas[i],
           data,
         })
@@ -59,15 +68,31 @@ const parseCallDatas = (
   return [contractProposals, unparsed]
 }
 
-// const DetailComponentMap = {
-//   [contractDetails.main.label]:
-// }
+const DetailComponentMap: { [x: string]: any } = {
+  [contractDetails.basketHandler.label]: BasketProposalDetails,
+}
+
+const getComponent = (label: string) => {
+  return DetailComponentMap[label]
+}
 
 const ProposalDetail = ({ addresses, calldatas, ...props }: Props) => {
   const interfaceMap = useAtomValue(interfaceMapAtom)
-  const parse = parseCallDatas(addresses, calldatas, interfaceMap)
+  const [parse] = parseCallDatas(addresses, calldatas, interfaceMap)
 
-  return <Box>proposal detail</Box>
+  return (
+    <Box>
+      {Object.keys(parse).map((address) => {
+        const Component = getComponent(interfaceMap[address].label)
+
+        if (!Component) {
+          return null
+        }
+
+        return <Component key={address} data={parse[address]} mb={4} />
+      })}
+    </Box>
+  )
 }
 
 export default ProposalDetail
