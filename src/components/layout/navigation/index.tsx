@@ -36,7 +36,7 @@ const MenuItem = ({ title, Icon, collapsed }: Omit<Item, 'path'>) => {
         paddingLeft: collapsed ? 0 : [0, 0, 4],
         justifyContent: collapsed ? 'center' : ['center', 'center', 'inherit'],
       }}
-      my={[10, 10, 12]}
+      my={[10, 10, '11px']}
     >
       <Icon />
       <Text
