@@ -282,7 +282,7 @@ const WrapCollateralModal = ({ onClose }: { onClose(): void }) => {
 
   return (
     <Modal
-      style={{ maxWidth: '390px' }}
+      style={{ maxWidth: '440px' }}
       title={t`Wrap your Aave collaterals`}
       onClose={onClose}
     >
