@@ -16,6 +16,7 @@
     "@reach/dialog": "^0.17.0",
     "@reach/portal": "^0.17.0",
     "@react-spring/web": "^9.4.4",
+    "@uiw/react-md-editor": "^3.20.5",
     "@walletconnect/ethereum-provider": "^1.7.7",
     "@web3-react/coinbase-wallet": "8.0.33-beta.0",
     "@web3-react/core": "8.0.33-beta.0",

@@ -11,10 +11,14 @@ import { Box, BoxProps, Text } from 'theme-ui'
 import { formatCurrencyCell, shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
+// TODO: Filter zero address from mappings on theGraph side
 const query = gql`
   query getVoters($id: String!) {
     delegates(
-      where: { governance: $id }
+      where: {
+        governance: $id
+        address_not: "0x0000000000000000000000000000000000000000"
+      }
       orderBy: "delegatedVotes"
       orderDirection: "desc"
     ) {

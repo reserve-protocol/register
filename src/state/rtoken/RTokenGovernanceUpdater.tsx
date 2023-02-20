@@ -44,8 +44,6 @@ const RTokenGovernanceUpdater = () => {
     }
   )
 
-  console.log('data?', error)
-
   useEffect(() => {
     if (data?.rtoken && provider) {
       setTokenManagers(data.rtoken)
