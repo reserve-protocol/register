@@ -11,7 +11,7 @@ const OtherForm = (props: BoxProps) => (
     <FormField
       label={t`Short freeze duration (s)`}
       placeholder={t`Duration in seconds`}
-      help={t`Reward distribution - sliding scale that determines what percentage of the reward goes to RToken Holders and what percentage goes to RSR Stakers. The default is 40% to RToken Holders and 60% to RSR stakers. For more info see the appropriate sections on “Revenue distribution” here.`}
+      help={t`Reward distribution - sliding scale that determines what percentage of the reward goes to RToken Holders and what percentage goes to RSR Stakers. The default is 40% to RToken Holders and 60% to RSR stakers.`}
       mb={3}
       name="shortFreeze"
       options={{
