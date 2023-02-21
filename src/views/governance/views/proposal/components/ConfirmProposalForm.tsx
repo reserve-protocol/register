@@ -24,7 +24,7 @@ const ConfirmProposalForm = ({ tx }: { tx: TransactionState }) => {
   }, [title, description])
 
   return (
-    <Box mb={4}>
+    <Box>
       <Card p={4} mb={4}>
         <Text variant="sectionTitle">
           <Trans>Proposal description</Trans>
@@ -34,6 +34,7 @@ const ConfirmProposalForm = ({ tx }: { tx: TransactionState }) => {
           <Input
             value={title}
             onChange={setTitle}
+            autoFocus
             placeholder={t`Input proposal title`}
           />
         </Field>

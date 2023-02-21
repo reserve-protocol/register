@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/macro'
+import GoTo from 'components/button/GoTo'
 import { MODES } from 'components/dark-mode-toggle'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
@@ -10,6 +11,7 @@ import {
 } from 'react-json-view-lite'
 import 'react-json-view-lite/dist/index.css'
 import { Box, BoxProps, Card, Divider, Text, useColorMode } from 'theme-ui'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { ContractProposal } from 'views/governance/atoms'
 
 interface Props extends BoxProps {
@@ -53,10 +55,18 @@ const ContractProposalDetails = ({ data, ...props }: Props) => {
 
   return (
     <Card p={4} pb={3} {...props}>
-      <Text variant="sectionTitle">{data.label}</Text>
+      <Box variant="layout.verticalAlign">
+        <Text variant="sectionTitle" mr={2}>
+          {data.label}
+        </Text>
+        <GoTo href={getExplorerLink(data.address, ExplorerDataType.ADDRESS)} />
+      </Box>
       <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
       {data.calls.map((call, index) => (
         <Box key={index}>
+          {!!index && (
+            <Divider mb={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+          )}
           <Box mb={3}>
             <Text
               variant="legend"
@@ -71,22 +81,20 @@ const ContractProposalDetails = ({ data, ...props }: Props) => {
           <Text variant="legend" sx={{ fontSize: 1, display: 'block' }} mb={2}>
             <Trans>Parameters</Trans>
           </Text>
-          {data.calls[0].data.length > 1 ? (
+          {call.data.length > 1 ? (
             <JsonView
               shouldInitiallyExpand={collapseAllNested}
               style={colorMode === MODES.LIGHT ? defaultStyles : darkStyles}
-              data={data.calls[0].data}
+              data={call.data}
             />
           ) : (
             <Text>
-              {data.calls[0].data && data.calls[0].data[0]
-                ? data.calls[0].data[0]
-                : 'None'}
+              {call.data && call.data[0] ? call.data[0].toString() : 'None'}
             </Text>
           )}
 
           <Divider mt={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
-          <CallData data={data.calls[0]?.callData ?? ''} />
+          <CallData data={call.callData} />
         </Box>
       ))}
     </Card>

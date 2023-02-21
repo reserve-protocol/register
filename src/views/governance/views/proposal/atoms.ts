@@ -16,6 +16,8 @@ import { ParameterChange } from './hooks/useParametersChanges'
 import { RevenueSplitChanges } from './hooks/useRevenueSplitChanges'
 import { RoleChange } from './hooks/useRoleChanges'
 
+export const proposalTxIdAtom = atom('')
+
 export const isNewBasketProposedAtom = atom(false)
 export const isNewBackupProposedAtom = atom(false)
 

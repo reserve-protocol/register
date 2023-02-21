@@ -1,3 +1,4 @@
+import SectionWrapper from 'components/section-navigation/SectionWrapper'
 import { getAddress } from 'ethers/lib/utils'
 import { useAtomValue } from 'jotai'
 import { Box, BoxProps } from 'theme-ui'
@@ -70,8 +71,10 @@ const ProposalDetail = ({ addresses, calldatas, ...props }: Props) => {
 
   return (
     <Box>
-      {Object.keys(parse).map((address) => (
-        <ContractProposalDetail key={address} data={parse[address]} mb={4} />
+      {Object.keys(parse).map((address, index) => (
+        <SectionWrapper key={address} navigationIndex={index}>
+          <ContractProposalDetail data={parse[address]} mb={4} />
+        </SectionWrapper>
       ))}
     </Box>
   )

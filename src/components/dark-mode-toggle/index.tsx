@@ -1,4 +1,5 @@
 import { useSpring, animated } from '@react-spring/web'
+import { useEffect } from 'react'
 
 export const MODES = {
   LIGHT: 'light',
@@ -51,6 +52,12 @@ const DarkModeToggle = ({
     )
     onToggle(mode === MODES.LIGHT ? MODES.DARK : MODES.LIGHT)
   }
+
+  useEffect(() => {
+    if (mode !== document.documentElement.getAttribute('data-color-mode')) {
+      document.documentElement.setAttribute('data-color-mode', mode)
+    }
+  }, [])
 
   return (
     <animated.svg
