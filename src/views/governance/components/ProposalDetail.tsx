@@ -1,12 +1,7 @@
 import { useAtomValue } from 'jotai'
 import { Box, BoxProps } from 'theme-ui'
-import {
-  contractDetails,
-  ContractProposal,
-  InterfaceMap,
-  interfaceMapAtom,
-} from '../atoms'
-import BasketProposalDetails from './proposal-detail/BasketProposalDetails'
+import { ContractProposal, InterfaceMap, interfaceMapAtom } from '../atoms'
+import ContractProposalDetail from './proposal-detail/ContractProposalDetails'
 
 interface Props extends BoxProps {
   addresses: string[]
@@ -68,29 +63,15 @@ const parseCallDatas = (
   return [contractProposals, unparsed]
 }
 
-const DetailComponentMap: { [x: string]: any } = {
-  [contractDetails.basketHandler.label]: BasketProposalDetails,
-}
-
-const getComponent = (label: string) => {
-  return DetailComponentMap[label]
-}
-
 const ProposalDetail = ({ addresses, calldatas, ...props }: Props) => {
   const interfaceMap = useAtomValue(interfaceMapAtom)
   const [parse] = parseCallDatas(addresses, calldatas, interfaceMap)
 
   return (
     <Box>
-      {Object.keys(parse).map((address) => {
-        const Component = getComponent(interfaceMap[address].label)
-
-        if (!Component) {
-          return null
-        }
-
-        return <Component key={address} data={parse[address]} mb={4} />
-      })}
+      {Object.keys(parse).map((address) => (
+        <ContractProposalDetail key={address} data={parse[address]} mb={4} />
+      ))}
     </Box>
   )
 }

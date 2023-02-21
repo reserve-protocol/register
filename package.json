@@ -43,6 +43,7 @@
     "react-hook-form": "7.31.3",
     "react-hot-toast": "^2.4.0",
     "react-intersection-observer": "^9.4.0",
+    "react-json-view-lite": "^0.9.4",
     "react-popper": "^2.3.0",
     "react-router-dom": "6.3.0",
     "react-scripts": "5.0.1",
