@@ -67,7 +67,7 @@ export const InfoHeading = ({ title, subtitle, help, ...props }: Props) => (
   </Box>
 )
 
-export const InfoItem = ({
+export const  InfoItem = ({
   title,
   subtitle,
   help,

@@ -27,12 +27,12 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
 
   return (
     <Card p={4} {...props}>
-      <Flex sx={{ alignItems: 'center' }}>
+      <Box variant="layout.verticalAlign">
         <Text variant="sectionTitle">
           <Trans>Governance</Trans>
         </Text>
         <DocsLink link="https://reserve.org/protocol/reserve_rights_rsr/#reserve-rights-governance" />
-      </Flex>
+      </Box>
       <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
       <Box mb={5}>
         <Box>

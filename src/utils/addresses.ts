@@ -6,37 +6,37 @@ export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 // The deployer version is also related to the protocol version
 export const DEPLOYER_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xE898790455F6AC247782484Acc8508F72348D262',
-  [ChainId.Goerli]: '0x9cd0F8387672fEaaf7C269b62c34C53590d7e948',
+  [ChainId.Goerli]: '0xE234DE9052d12a4903F4A8CcE4492Af8F2369d3F',
   [ChainId.Hardhat]: '0x139e1D41943ee15dDe4DF876f9d0E7F85e26660A',
 }
 
 export const FACADE_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xE774CCF1431c3DEe7Fa4c20f67534b61289CAa45',
-  [ChainId.Goerli]: '0xfDa8C62d86E426D5fB653B6c44a455Bb657b693f',
+  [ChainId.Goerli]: '0x3d08EF64830137FBd426CBe3153a404104E4b103',
   [ChainId.Hardhat]: '0x3DAf5a7681a9cfB92fB38983EB3998dFC7963B28',
 }
 
 export const FACADE_ACT_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x6FE56A3EEa3fEc93601a94D26bEa1876bD48192F',
-  [ChainId.Goerli]: '0x5c46b718Cd79F2BBA6869A3BeC13401b9a4B69bB',
+  [ChainId.Goerli]: '0xF68F5cde346729ADB14a89402605a26c5C8Bf028',
   [ChainId.Hardhat]: '0x6FE56A3EEa3fEc93601a94D26bEa1876bD48192F',
 }
 
 export const FACADE_WRITE_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xBa4aF886Ee09f7CfE078d998085E9d63904F68c0',
-  [ChainId.Goerli]: '0x243105ac960CDC1fae10FfE446F7a61EAB570E98',
+  [ChainId.Goerli]: '0x0F55Bff9b07Ec1B11BC7763D797cde163340c558',
   [ChainId.Hardhat]: '0xF7bd1F8FdE9fBdc8436D45594e792e014c5ac966',
 }
 
 export const STAKE_AAVE_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x0C9C61Df98E4a2dC4284C68615543BF8D957a94D',
-  [ChainId.Goerli]: '0xe33cEF9f56F0d8d2b683c6E1F6afcd1e43b77ea8',
+  [ChainId.Goerli]: '0xb2EeD19C381b71d0f54327D61596312144f66fA7',
   [ChainId.Hardhat]: '0x82EdA215Fa92B45a3a76837C65Ab862b6C7564a8',
 }
 
 export const COMPOUND_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x6983356580516Ea6BE654D89D43c2DA58cf16dEB',
-  [ChainId.Goerli]: '0x933c5DBdA80f03C102C560e9ed0c29812998fA78',
+  [ChainId.Goerli]: '0x83cD6Bd8591Ac6090Bd336C96e61062C103F0AD9',
   [ChainId.Hardhat]: '0x87006e75a5B6bE9D1bbF61AC8Cd84f05D9140589',
 }
 

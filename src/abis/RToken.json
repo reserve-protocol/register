@@ -808,9 +808,9 @@
         "type": "uint256"
       },
       {
-        "internalType": "bool",
-        "name": "revertOnPartialRedemption",
-        "type": "bool"
+        "internalType": "uint48",
+        "name": "basketNonce",
+        "type": "uint48"
       }
     ],
     "name": "redeem",
@@ -831,9 +831,9 @@
         "type": "uint256"
       },
       {
-        "internalType": "bool",
-        "name": "revertOnPartialRedemption",
-        "type": "bool"
+        "internalType": "uint48",
+        "name": "basketNonce",
+        "type": "uint48"
       }
     ],
     "name": "redeemTo",

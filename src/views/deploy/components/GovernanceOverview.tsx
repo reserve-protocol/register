@@ -20,7 +20,6 @@ const GovernanceStatus = () => {
   const { fee, deploy, isValid } = useGovernance()
   const tx = useGovernanceTxState()
 
-  // TODO: Promp configure tally pop up? maybe as a route parameter?
   useEffect(() => {
     if (tx?.status === TRANSACTION_STATUS.CONFIRMED) {
       navigate(ROUTES.SETTINGS)

@@ -1,3 +1,4 @@
+import { parsePercent } from './../../utils/index'
 import { BigNumber } from '@ethersproject/bignumber'
 import { parseEther } from '@ethersproject/units'
 import { ethers } from 'ethers'
@@ -155,25 +156,17 @@ export const getDeployParameters = (
         unstakingDelay: BigNumber.from(tokenConfig.unstakingDelay),
         tradingDelay: BigNumber.from(tokenConfig.tradingDelay),
         auctionLength: BigNumber.from(tokenConfig.auctionLength),
-        backingBuffer: parseEther(
-          (Number(tokenConfig.backingBuffer) / 100).toString()
-        ),
-        maxTradeSlippage: parseEther(
-          (Number(tokenConfig.maxTradeSlippage) / 100).toString()
-        ),
+        backingBuffer: parsePercent(tokenConfig.backingBuffer),
+        maxTradeSlippage: parsePercent(tokenConfig.maxTradeSlippage),
         shortFreeze: BigNumber.from(tokenConfig.shortFreeze),
         longFreeze: BigNumber.from(tokenConfig.longFreeze),
         issuanceThrottle: {
           amtRate: parseEther(tokenConfig.issuanceThrottleAmount),
-          pctRate: parseEther(
-            (Number(tokenConfig.issuanceThrottleRate) / 100).toString()
-          ),
+          pctRate: parsePercent(tokenConfig.issuanceThrottleRate),
         },
         redemptionThrottle: {
           amtRate: parseEther(tokenConfig.redemptionThrottleAmount),
-          pctRate: parseEther(
-            (Number(tokenConfig.redemptionThrottleRate) / 100).toString()
-          ),
+          pctRate: parsePercent(tokenConfig.redemptionThrottleRate),
         },
       },
     }

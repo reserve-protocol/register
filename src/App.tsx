@@ -19,6 +19,8 @@ import Issuance from './views/issuance'
 import GovernanceSetup from 'views/deploy/components/Governance'
 import GovernanceProposal from 'views/governance/views/proposal'
 import Governance from 'views/governance'
+import ProposalDetail from 'views/governance/components/ProposalDetail'
+import GovernanceProposalDetail from 'views/governance/views/proposal-detail'
 
 /**
  * App Entry point - Handles views routing
@@ -51,6 +53,10 @@ const App = () => (
               <Route
                 path={ROUTES.GOVERNANCE_PROPOSAL}
                 element={<GovernanceProposal />}
+              />
+              <Route
+                path={`${ROUTES.GOVERNANCE_PROPOSAL}/:proposalId`}
+                element={<GovernanceProposalDetail />}
               />
             </Routes>
           </Layout>

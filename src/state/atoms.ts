@@ -68,6 +68,8 @@ export const rTokenContractsAtom = atomWithReset<StringMap>({
   basketHandler: '',
 })
 
+export const basketNonceAtom = atom(0)
+
 export const rTokenParamsAtom = atomWithReset({
   tradingDelay: '',
   backingBuffer: '',

@@ -1,9 +1,3 @@
-import { atomWithReset } from 'jotai/utils'
-import { atom } from 'jotai'
-import { BackupChanges } from './hooks/useBackupChanges'
-import { RoleChange } from './hooks/useRoleChanges'
-import { ParameterChange } from './hooks/useParametersChanges'
-import { RevenueSplitChanges } from './hooks/useRevenueSplitChanges'
 import {
   BackingManagerInterface,
   BrokerInterface,
@@ -12,10 +6,17 @@ import {
   RevenueTraderInterface,
   RTokenInterface,
   StRSRInterface,
-  AssetInterface,
 } from 'abis'
-import { rTokenAtom, rTokenContractsAtom } from 'state/atoms'
 import { Interface } from 'ethers/lib/utils'
+import { atom } from 'jotai'
+import { atomWithReset } from 'jotai/utils'
+import { rTokenAtom, rTokenContractsAtom } from 'state/atoms'
+import { BackupChanges } from './hooks/useBackupChanges'
+import { ParameterChange } from './hooks/useParametersChanges'
+import { RevenueSplitChanges } from './hooks/useRevenueSplitChanges'
+import { RoleChange } from './hooks/useRoleChanges'
+
+export const proposalTxIdAtom = atom('')
 
 export const isNewBasketProposedAtom = atom(false)
 export const isNewBackupProposedAtom = atom(false)

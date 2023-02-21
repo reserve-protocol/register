@@ -66,7 +66,7 @@ msgstr ""
 msgid "A good explainer for how Gnosis auctions work can be found (on their github)[https://github.com/gnosis/ido-contracts]."
 msgstr ""
 
-#: src/utils/index.ts:58
+#: src/utils/index.ts:59
 msgid "A year ago"
 msgstr ""
 
@@ -92,7 +92,7 @@ msgstr ""
 
 #: src/components/rtoken-setup/basket/CustomCollateral.tsx:149
 #: src/views/governance/views/proposal/components/ItemPreview.tsx:42
-#: src/views/governance/views/proposal/components/ProposedBackupPreview.tsx:98
+#: src/views/governance/views/proposal/components/ProposedBackupPreview.tsx:117
 #: src/views/governance/views/proposal/components/ProposedRevenueSplitPreview.tsx:127
 msgid "Add"
 msgstr ""
@@ -114,7 +114,7 @@ msgstr ""
 msgid "Add to primary basket"
 msgstr ""
 
-#: src/views/governance/components/TopVoters.tsx:63
+#: src/views/governance/components/TopVoters.tsx:67
 msgid "Address"
 msgstr ""
 
@@ -156,7 +156,7 @@ msgstr ""
 msgid "Approve RSR"
 msgstr ""
 
-#: src/views/issuance/components/redeem/ConfirmRedemption.tsx:95
+#: src/views/issuance/components/redeem/ConfirmRedemption.tsx:96
 msgid "Approve RSV"
 msgstr ""
 
@@ -198,7 +198,7 @@ msgstr ""
 msgid "Available collateral"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ProposalNavigation.tsx:38
+#: src/views/governance/views/proposal/components/ProposalNavigation.tsx:39
 msgid "Back to Governance"
 msgstr ""
 
@@ -229,7 +229,7 @@ msgstr ""
 msgid "Backing buffer - percentage value that describes how much additional collateral tokens to keep in the BackingManager before forwarding tokens to the RevenueTraders. The RevenueTraders here refers to the RToken and RSR traders. Why this matters? It allows collateral tokens to be periodically converted into the RToken, which is a more efficient form of revenue production than trading each individual collateral for the desired RToken. For more info on the BackingManager and Trader types see the “Revenue distribution to RToken holders” and “Summary of revenue distribution” <a href=\\\"http://www.example.com\\\">here</a>. The default value is 0.01%."
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ProposalNavigation.tsx:19
+#: src/views/governance/views/proposal/components/ProposalNavigation.tsx:17
 #: src/views/settings/components/NavigationSidebar.tsx:14
 msgid "Backing config"
 msgstr ""
@@ -238,8 +238,12 @@ msgstr ""
 msgid "Backing parameters"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ProposedBackupPreview.tsx:71
+#: src/views/governance/views/proposal/components/ProposedBackupPreview.tsx:90
 msgid "Backup basket"
+msgstr ""
+
+#: src/views/governance/views/proposal/components/ProposalBasketSetup.tsx:74
+msgid "Backup configuration tracks primary basket changes to update its values. This may not be desired on a proposal, you can choose to propose new changes."
 msgstr ""
 
 #: src/views/settings/components/EmergencyCollateralInfo.tsx:25
@@ -252,7 +256,7 @@ msgid "Balance"
 msgstr ""
 
 #: src/views/deploy/components/NavigationSidebar.tsx:15
-#: src/views/deploy/components/TokenParameters.tsx:19
+#: src/views/deploy/components/TokenParameters.tsx:12
 msgid "Basics"
 msgstr ""
 
@@ -277,7 +281,7 @@ msgstr ""
 msgid "Begin minting {0} {1}"
 msgstr ""
 
-#: src/views/issuance/components/redeem/ConfirmRedemption.tsx:122
+#: src/views/issuance/components/redeem/ConfirmRedemption.tsx:123
 msgid "Begin redemption of {0} {1}"
 msgstr ""
 
@@ -315,12 +319,16 @@ msgstr ""
 msgid "Change"
 msgstr ""
 
+#: src/views/governance/views/proposal/components/ProposalBasketSetup.tsx:71
+msgid "Change backup basket"
+msgstr ""
+
 #: src/views/governance/views/proposal/components/ProposedRevenueSplitPreview.tsx:110
 msgid "Change distribution"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ProposedBackupPreview.tsx:77
-#: src/views/governance/views/proposal/components/ProposedBackupPreview.tsx:115
+#: src/views/governance/views/proposal/components/ProposedBackupPreview.tsx:96
+#: src/views/governance/views/proposal/components/ProposedBackupPreview.tsx:134
 msgid "Change diversity factor"
 msgstr ""
 
@@ -328,7 +336,7 @@ msgstr ""
 msgid "Change in:"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ProposalBasketSetup.tsx:46
+#: src/views/governance/views/proposal/components/ProposalBasketSetup.tsx:52
 msgid "Change primary basket"
 msgstr ""
 
@@ -361,6 +369,7 @@ msgid "Collateral token"
 msgstr ""
 
 #: src/views/deploy/components/Intro.tsx:26
+#: src/views/governance/views/proposal/components/Intro.tsx:25
 msgid "Community Discord"
 msgstr ""
 
@@ -372,7 +381,7 @@ msgstr ""
 msgid "Configure your vote"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:44
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:148
 msgid "Confirm Proposal"
 msgstr ""
 
@@ -400,6 +409,10 @@ msgstr ""
 msgid "Contract Addresses"
 msgstr ""
 
+#: src/views/governance/components/proposal-detail/ProposalDetailNavigation.tsx:7
+msgid "Contracts"
+msgstr ""
+
 #: src/components/button/CopyValue.tsx:15
 msgid "Copied to clipboard!"
 msgstr ""
@@ -408,11 +421,11 @@ msgstr ""
 msgid "Copy to clipboard"
 msgstr ""
 
-#: src/views/governance/components/ProposalList.tsx:65
+#: src/views/governance/components/ProposalList.tsx:70
 msgid "Create proposal"
 msgstr ""
 
-#: src/views/governance/components/ProposalList.tsx:89
+#: src/views/governance/components/ProposalList.tsx:104
 msgid "Created at:"
 msgstr ""
 
@@ -499,7 +512,7 @@ msgstr ""
 msgid "Delegated to:"
 msgstr ""
 
-#: src/views/deploy/components/GovernanceOverview.tsx:94
+#: src/views/deploy/components/GovernanceOverview.tsx:93
 msgid "Deploy Governance"
 msgstr ""
 
@@ -511,7 +524,8 @@ msgid "Deploy RToken"
 msgstr ""
 
 #: src/views/deploy/components/DeployOverview.tsx:58
-#: src/views/deploy/components/GovernanceOverview.tsx:58
+#: src/views/deploy/components/GovernanceOverview.tsx:57
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:66
 msgid "Deploy transaction submitted"
 msgstr ""
 
@@ -525,6 +539,10 @@ msgstr ""
 
 #: src/views/issuance/components/issue/WrapCollateralModal.tsx:142
 msgid "Deposit {0}"
+msgstr ""
+
+#: src/views/governance/views/proposal/components/ConfirmProposalForm.tsx:43
+msgid "Description"
 msgstr ""
 
 #: src/views/home/components/Greet.tsx:61
@@ -574,7 +592,7 @@ msgstr ""
 msgid "Each type of trade can currently happen in only one way; the protocol launches a Gnosis EasyAuction. The Reserve Protocol is designed to make it easy to add other trading methods, but none others are currently supported."
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:41
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:145
 msgid "Edit"
 msgstr ""
 
@@ -583,7 +601,7 @@ msgid "Emergency Collateral"
 msgstr ""
 
 #: src/views/deploy/components/NavigationSidebar.tsx:17
-#: src/views/governance/views/proposal/components/ProposalNavigation.tsx:17
+#: src/views/governance/views/proposal/components/ProposalNavigation.tsx:22
 #: src/views/settings/components/NavigationSidebar.tsx:12
 msgid "Emergency basket"
 msgstr ""
@@ -626,7 +644,8 @@ msgstr ""
 
 #: src/components/transaction-modal/index.tsx:180
 #: src/views/deploy/components/DeployOverview.tsx:104
-#: src/views/deploy/components/GovernanceOverview.tsx:98
+#: src/views/deploy/components/GovernanceOverview.tsx:97
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:106
 msgid "Estimated gas cost:"
 msgstr ""
 
@@ -634,8 +653,8 @@ msgstr ""
 msgid "Eth address"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:56
-msgid "Execute proposal"
+#: src/views/governance/components/proposal-detail/ContractProposalDetails.tsx:33
+msgid "Executable code"
 msgstr ""
 
 #: src/components/rtoken-setup/components/BackButton.tsx:26
@@ -694,7 +713,7 @@ msgstr ""
 #: src/components/layout/navigation/index.tsx:93
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:32
 #: src/views/deploy/components/NavigationSidebar.tsx:24
-#: src/views/governance/views/proposal/components/ProposalNavigation.tsx:21
+#: src/views/governance/views/proposal/components/ProposalNavigation.tsx:19
 #: src/views/settings/components/NavigationSidebar.tsx:16
 msgid "Governance"
 msgstr ""
@@ -833,6 +852,10 @@ msgstr ""
 msgid "Input proposal threshold"
 msgstr ""
 
+#: src/views/governance/views/proposal/components/ConfirmProposalForm.tsx:38
+msgid "Input proposal title"
+msgstr ""
+
 #: src/components/rtoken-setup/governance/GovernanceParameters.tsx:63
 msgid "Input quorum percent"
 msgstr ""
@@ -864,6 +887,7 @@ msgid "Inspect"
 msgstr ""
 
 #: src/views/deploy/components/NavigationSidebar.tsx:14
+#: src/views/governance/views/proposal/components/ProposalNavigation.tsx:16
 msgid "Intro"
 msgstr ""
 
@@ -1092,11 +1116,15 @@ msgstr ""
 msgid "Network Error"
 msgstr ""
 
+#: src/views/governance/views/proposal/components/ProposedBackupPreview.tsx:75
+msgid "New backup configuration"
+msgstr ""
+
 #: src/views/governance/views/proposal/components/ProposalPreview.tsx:22
 msgid "New primary basket"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ConfirmProposal.tsx:76
+#: src/views/governance/views/proposal/hooks/useProposalTx.ts:146
 msgid "New proposal"
 msgstr ""
 
@@ -1156,7 +1184,7 @@ msgstr ""
 msgid "Other Parameters"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ProposalNavigation.tsx:20
+#: src/views/governance/views/proposal/components/ProposalNavigation.tsx:18
 #: src/views/settings/components/NavigationSidebar.tsx:15
 msgid "Other config"
 msgstr ""
@@ -1176,6 +1204,10 @@ msgstr ""
 
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:64
 msgid "Owner address"
+msgstr ""
+
+#: src/views/governance/components/proposal-detail/ContractProposalDetails.tsx:82
+msgid "Parameters"
 msgstr ""
 
 #: src/views/settings/components/PauseManager.tsx:26
@@ -1203,7 +1235,8 @@ msgid "Pending"
 msgstr ""
 
 #: src/views/deploy/components/DeployOverview.tsx:38
-#: src/views/deploy/components/GovernanceOverview.tsx:38
+#: src/views/deploy/components/GovernanceOverview.tsx:37
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:46
 msgid "Pending, sign in wallet"
 msgstr ""
 
@@ -1239,11 +1272,15 @@ msgstr ""
 msgid "Please sign the transaction in your wallet to continue with the deployment process."
 msgstr ""
 
-#: src/views/deploy/components/GovernanceOverview.tsx:41
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:49
+msgid "Please sign the transaction in your wallet to continue with the governance process."
+msgstr ""
+
+#: src/views/deploy/components/GovernanceOverview.tsx:40
 msgid "Please sign the transaction in your wallet to continue with the government configuration process."
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ProposalBasketSetup.tsx:49
+#: src/views/governance/views/proposal/components/ProposalBasketSetup.tsx:55
 msgid "Pre-filled token weights won’t accurately match the current distribution. Changing the basket means defining how you want the distribution going forward."
 msgstr ""
 
@@ -1260,7 +1297,7 @@ msgid "Primary Basket"
 msgstr ""
 
 #: src/views/deploy/components/NavigationSidebar.tsx:16
-#: src/views/governance/views/proposal/components/ProposalNavigation.tsx:16
+#: src/views/governance/views/proposal/components/ProposalNavigation.tsx:21
 #: src/views/settings/components/NavigationSidebar.tsx:11
 msgid "Primary basket"
 msgstr ""
@@ -1277,15 +1314,23 @@ msgstr ""
 msgid "Proposal Threshold (%)"
 msgstr ""
 
+#: src/views/governance/views/proposal/components/ConfirmProposalForm.tsx:30
+msgid "Proposal description"
+msgstr ""
+
 #: src/components/rtoken-setup/governance/GovernanceParameters.tsx:38
 msgid "Proposal execution delay (hours)"
+msgstr ""
+
+#: src/views/governance/views/proposal/components/Intro.tsx:17
+msgid "Proposal text!"
 msgstr ""
 
 #: src/views/governance/components/GovernanceOverview.tsx:72
 msgid "Proposals"
 msgstr ""
 
-#: src/views/governance/components/TopVoters.tsx:101
+#: src/views/governance/components/TopVoters.tsx:105
 msgid "Proposals voted"
 msgstr ""
 
@@ -1293,7 +1338,15 @@ msgstr ""
 msgid "Propose changes"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ProposalBasketSetup.tsx:56
+#: src/views/governance/views/proposal/components/Intro.tsx:14
+msgid "Propose changes to ${0}"
+msgstr ""
+
+#: src/views/governance/views/proposal/components/ProposalBasketSetup.tsx:81
+msgid "Propose new backup configuration"
+msgstr ""
+
+#: src/views/governance/views/proposal/components/ProposalBasketSetup.tsx:62
 msgid "Propose new basket"
 msgstr ""
 
@@ -1302,6 +1355,7 @@ msgid "Proposed"
 msgstr ""
 
 #: src/views/deploy/components/Intro.tsx:32
+#: src/views/governance/views/proposal/components/Intro.tsx:31
 msgid "Protocol Docs"
 msgstr ""
 
@@ -1412,7 +1466,7 @@ msgstr ""
 msgid "RTokens in this list is not an endorsement or audited by us. It’s simply RTokens that have gone through our listing process and don’t seem like clear scams."
 msgstr ""
 
-#: src/views/governance/components/TopVoters.tsx:56
+#: src/views/governance/components/TopVoters.tsx:60
 msgid "Rank"
 msgstr ""
 
@@ -1424,7 +1478,7 @@ msgstr ""
 msgid "Receiving eth address"
 msgstr ""
 
-#: src/views/governance/components/ProposalList.tsx:57
+#: src/views/governance/components/ProposalList.tsx:62
 msgid "Recent proposals"
 msgstr ""
 
@@ -1437,8 +1491,8 @@ msgstr ""
 msgid "Redeem amount"
 msgstr ""
 
-#: src/views/issuance/components/redeem/ConfirmRedemption.tsx:37
-#: src/views/issuance/components/redeem/ConfirmRedemption.tsx:118
+#: src/views/issuance/components/redeem/ConfirmRedemption.tsx:38
+#: src/views/issuance/components/redeem/ConfirmRedemption.tsx:119
 msgid "Redeem {0}"
 msgstr ""
 
@@ -1487,7 +1541,7 @@ msgid "Related contracts"
 msgstr ""
 
 #: src/views/governance/views/proposal/components/ItemPreview.tsx:42
-#: src/views/governance/views/proposal/components/ProposedBackupPreview.tsx:98
+#: src/views/governance/views/proposal/components/ProposedBackupPreview.tsx:117
 #: src/views/governance/views/proposal/components/ProposedRevenueSplitPreview.tsx:127
 #: src/views/governance/views/proposal/components/RolesProposal.tsx:128
 msgid "Remove"
@@ -1514,7 +1568,7 @@ msgstr ""
 msgid "Revenue distribution"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ProposalNavigation.tsx:18
+#: src/views/governance/views/proposal/components/ProposalNavigation.tsx:20
 #: src/views/settings/components/NavigationSidebar.tsx:13
 msgid "Revenue share"
 msgstr ""
@@ -1526,7 +1580,8 @@ msgstr ""
 #: src/views/governance/views/proposal/components/ItemPreview.tsx:47
 #: src/views/governance/views/proposal/components/ItemPreview.tsx:70
 #: src/views/governance/views/proposal/components/ProposalPreview.tsx:29
-#: src/views/governance/views/proposal/components/ProposedBackupPreview.tsx:107
+#: src/views/governance/views/proposal/components/ProposedBackupPreview.tsx:82
+#: src/views/governance/views/proposal/components/ProposedBackupPreview.tsx:126
 #: src/views/governance/views/proposal/components/ProposedRevenueSplitPreview.tsx:136
 msgid "Revert"
 msgstr ""
@@ -1607,6 +1662,10 @@ msgstr ""
 msgid "Short freeze duration - number of seconds an initial freeze lasts. The default is 259200s or 3 days. This provides the ability to freeze an RToken’s system for a short period of time which is useful to thwart an attack."
 msgstr ""
 
+#: src/views/governance/components/proposal-detail/ContractProposalDetails.tsx:76
+msgid "Signature"
+msgstr ""
+
 #: src/views/deploy/components/NavigationSidebar.tsx:47
 msgid "Signing Tx 1"
 msgstr ""
@@ -1676,8 +1735,13 @@ msgstr ""
 msgid "Start Issue"
 msgstr ""
 
-#: src/views/deploy/components/GovernanceOverview.tsx:61
+#: src/views/deploy/components/GovernanceOverview.tsx:60
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:69
 msgid "Stay patient while the transaction is in progress & don’t close this window to avoid issues finding your way back here."
+msgstr ""
+
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:102
+msgid "Submit proposal"
 msgstr ""
 
 #: src/views/overview/components/SupplyChart.tsx:84
@@ -1774,6 +1838,10 @@ msgstr ""
 msgid "Timelock address"
 msgstr ""
 
+#: src/views/governance/views/proposal/components/ConfirmProposalForm.tsx:33
+msgid "Title"
+msgstr ""
+
 #: src/components/tables/ListedTokensTable.tsx:20
 msgid "Token"
 msgstr ""
@@ -1809,7 +1877,7 @@ msgstr ""
 msgid "Token ticker is required"
 msgstr ""
 
-#: src/views/governance/components/TopVoters.tsx:115
+#: src/views/governance/components/TopVoters.tsx:119
 msgid "Top voting addresses"
 msgstr ""
 
@@ -1890,7 +1958,7 @@ msgstr ""
 msgid "Tx1. RToken Deploy"
 msgstr ""
 
-#: src/views/deploy/components/GovernanceOverview.tsx:122
+#: src/views/deploy/components/GovernanceOverview.tsx:121
 msgid "Tx2. Governance"
 msgstr ""
 
@@ -2026,11 +2094,11 @@ msgstr ""
 msgid "Vote Supply"
 msgstr ""
 
-#: src/views/governance/components/TopVoters.tsx:80
+#: src/views/governance/components/TopVoters.tsx:84
 msgid "Vote weight"
 msgstr ""
 
-#: src/views/governance/components/TopVoters.tsx:75
+#: src/views/governance/components/TopVoters.tsx:79
 msgid "Votes"
 msgstr ""
 
@@ -2144,7 +2212,7 @@ msgstr ""
 msgid "Your staked RSR positions"
 msgstr ""
 
-#: src/utils/index.ts:60
+#: src/utils/index.ts:61
 msgid "mth"
 msgstr ""
 

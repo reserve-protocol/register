@@ -69,8 +69,8 @@ export interface RTokenInterface extends utils.Interface {
     "nonces(address)": FunctionFragment;
     "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
-    "redeem(uint256,bool)": FunctionFragment;
-    "redeemTo(address,uint256,bool)": FunctionFragment;
+    "redeem(uint256,uint48)": FunctionFragment;
+    "redeemTo(address,uint256,uint48)": FunctionFragment;
     "redemptionAvailable()": FunctionFragment;
     "redemptionThrottleParams()": FunctionFragment;
     "setBasketsNeeded(uint192)": FunctionFragment;
@@ -243,14 +243,14 @@ export interface RTokenInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "redeem",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<boolean>]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "redeemTo",
     values: [
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<boolean>
+      PromiseOrValue<BigNumberish>
     ]
   ): string;
   encodeFunctionData(
@@ -703,14 +703,14 @@ export interface RToken extends BaseContract {
 
     redeem(
       amount: PromiseOrValue<BigNumberish>,
-      revertOnPartialRedemption: PromiseOrValue<boolean>,
+      basketNonce: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     redeemTo(
       recipient: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
-      revertOnPartialRedemption: PromiseOrValue<boolean>,
+      basketNonce: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -882,14 +882,14 @@ export interface RToken extends BaseContract {
 
   redeem(
     amount: PromiseOrValue<BigNumberish>,
-    revertOnPartialRedemption: PromiseOrValue<boolean>,
+    basketNonce: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   redeemTo(
     recipient: PromiseOrValue<string>,
     amount: PromiseOrValue<BigNumberish>,
-    revertOnPartialRedemption: PromiseOrValue<boolean>,
+    basketNonce: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -1059,14 +1059,14 @@ export interface RToken extends BaseContract {
 
     redeem(
       amount: PromiseOrValue<BigNumberish>,
-      revertOnPartialRedemption: PromiseOrValue<boolean>,
+      basketNonce: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     redeemTo(
       recipient: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
-      revertOnPartialRedemption: PromiseOrValue<boolean>,
+      basketNonce: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1341,14 +1341,14 @@ export interface RToken extends BaseContract {
 
     redeem(
       amount: PromiseOrValue<BigNumberish>,
-      revertOnPartialRedemption: PromiseOrValue<boolean>,
+      basketNonce: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     redeemTo(
       recipient: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
-      revertOnPartialRedemption: PromiseOrValue<boolean>,
+      basketNonce: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1523,14 +1523,14 @@ export interface RToken extends BaseContract {
 
     redeem(
       amount: PromiseOrValue<BigNumberish>,
-      revertOnPartialRedemption: PromiseOrValue<boolean>,
+      basketNonce: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     redeemTo(
       recipient: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
-      revertOnPartialRedemption: PromiseOrValue<boolean>,
+      basketNonce: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
