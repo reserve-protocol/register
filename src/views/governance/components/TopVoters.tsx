@@ -110,11 +110,7 @@ const TopVoters = (props: BoxProps) => {
   )
 
   return (
-    <Box
-      variant="layout.borderBox"
-      sx={{ backgroundColor: 'contentBackground' }}
-      {...props}
-    >
+    <Box variant="layout.borderBox" {...props}>
       <Text variant="title">
         <Trans>Top voting addresses</Trans>
       </Text>

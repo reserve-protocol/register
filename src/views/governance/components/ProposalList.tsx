@@ -48,10 +48,7 @@ const ProposalList = () => {
 
   return (
     <Box>
-      <Box
-        variant="layout.borderBox"
-        sx={{ backgroundColor: 'contentBackground' }}
-      >
+      <Box variant="layout.borderBox">
         <Box variant="layout.verticalAlign">
           <Text variant="title">
             <Trans>Recent proposals</Trans>
