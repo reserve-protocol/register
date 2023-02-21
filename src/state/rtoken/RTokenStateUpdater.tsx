@@ -86,7 +86,7 @@ const RTokenStateUpdater = () => {
         )
 
         setDistribution({
-          backing: Math.ceil(Number(formatEther(backing)) * 100),
+          backing: Math.min(100, Math.ceil(Number(formatEther(backing)) * 100)),
           staked: Math.ceil(Number(formatEther(overCollateralization)) * 100),
         })
         setCollateralDist(

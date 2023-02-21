@@ -93,7 +93,7 @@ const AssetOverview = () => {
           <Text variant="legend">
             <Trans>Backing</Trans>
             <Box as="span" ml={2} sx={{ fontWeight: 'bold', color: 'text' }}>
-              {rToken?.isRSV ? 100 : distribution.backing}%
+              {rToken?.isRSV ? 100 : Math.min(100, distribution.backing)}%
             </Box>
           </Text>
           {!rToken?.isRSV && (

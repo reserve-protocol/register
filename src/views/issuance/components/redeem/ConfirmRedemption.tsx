@@ -8,7 +8,7 @@ import { useFacadeContract } from 'hooks/useContract'
 import useDebounce from 'hooks/useDebounce'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { rTokenAtom } from 'state/atoms'
+import { rTokenAtom, rTokenContractsAtom } from 'state/atoms'
 import { BigNumberMap } from 'types'
 import { formatCurrency } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
@@ -18,6 +18,8 @@ import { isValidRedeemAmountAtom, redeemAmountAtom } from 'views/issuance/atoms'
 import CollateralDistribution from '../issue/CollateralDistribution'
 import RedeemInput from './RedeemInput'
 import { quote } from 'utils/rsv'
+import { useContractCall } from 'hooks/useCall'
+import { BasketHandlerInterface } from 'abis'
 
 const redeemCollateralAtom = atom<BigNumberMap>({})
 
@@ -30,7 +32,19 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
     useAtom(redeemCollateralAtom)
   const isValid = useAtomValue(isValidRedeemAmountAtom)
   const facadeContract = useFacadeContract()
+  const contracts = useAtomValue(rTokenContractsAtom)
   const parsedAmount = isValid ? parseEther(amount) : BigNumber.from(0)
+  const result =
+    useContractCall(
+      contracts.basketHandler && {
+        abi: BasketHandlerInterface,
+        address: contracts.basketHandler,
+        method: 'nonce',
+        args: [],
+      }
+    ) || {}
+
+  console.log('result', result)
   const transaction = useMemo(
     () => ({
       id: '',
@@ -41,7 +55,7 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
         abi: rToken?.isRSV ? 'rsv' : 'rToken',
         address: rToken?.isRSV ? RSV_MANAGER : rToken?.address ?? '',
         method: 'redeem',
-        args: rToken?.isRSV ? [parsedAmount] : [parsedAmount, false],
+        args: rToken?.isRSV ? [parsedAmount] : [parsedAmount, 0],
       },
     }),
     [rToken?.address, amount]
