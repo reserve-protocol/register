@@ -110,7 +110,7 @@ const ProposalBasketSetup = ({ startIndex }: { startIndex: number }) => {
         </Card>
       </SectionWrapper>
       <SectionWrapper navigationIndex={startIndex + 1}>
-        <Card mt={4} p={4} sx={{ position: 'relative' }}>
+        <Card mt={4} p={4} sx={{ position: 'relative', minHeight: 360 }}>
           <BackupBasket onAdd={setCollateralModal} />
           {!isNewBackupProposed && (
             <Overlay>
