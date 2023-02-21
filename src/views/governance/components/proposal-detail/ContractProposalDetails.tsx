@@ -34,7 +34,7 @@ const CallData = ({ data }: { data: string }) => {
       </Box>
       {isOpen && (
         <>
-          <Divider mb={3} sx={{ borderColor: 'darkBorder' }} />
+          <Divider mb={3} mx={-4} sx={{ borderColor: 'darkBorder' }} />
           <Box as="code" sx={{ overflowWrap: 'break-word' }}>
             {data}
           </Box>
@@ -52,7 +52,7 @@ const ContractProposalDetails = ({ data, ...props }: Props) => {
   }
 
   return (
-    <Card p={4} {...props}>
+    <Card p={4} pb={3} {...props}>
       <Text variant="sectionTitle">{data.label}</Text>
       <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
       {data.calls.map((call, index) => (
