@@ -2,13 +2,6 @@ import { Trans } from '@lingui/macro'
 import { BoxProps, Card, Divider, Text } from 'theme-ui'
 import TokenForm from './TokenForm'
 
-const chevronProps = {
-  style: {
-    marginRight: 10,
-  },
-  size: 20,
-}
-
 /**
  * View: Deploy -> Token setup
  * Display token forms

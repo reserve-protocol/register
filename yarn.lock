@@ -15791,6 +15791,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-json-view-lite@npm:^0.9.4":
+  version: 0.9.4
+  resolution: "react-json-view-lite@npm:0.9.4"
+  peerDependencies:
+    react: ^16.13.1 || ^17.0.0
+  checksum: 708d2a0d83fed80c53d5f40ef756008f8e7e6f8600dd15bbf9379684633ec9be6d660cf4469f21c06773854559dc450955a035522ea9c9564e5dba049f4444cc
+  languageName: node
+  linkType: hard
+
 "react-lifecycles-compat@npm:^3.0.4":
   version: 3.0.4
   resolution: "react-lifecycles-compat@npm:3.0.4"
@@ -16382,6 +16391,7 @@ __metadata:
     react-hook-form: 7.31.3
     react-hot-toast: ^2.4.0
     react-intersection-observer: ^9.4.0
+    react-json-view-lite: ^0.9.4
     react-popper: ^2.3.0
     react-router-dom: 6.3.0
     react-scripts: 5.0.1

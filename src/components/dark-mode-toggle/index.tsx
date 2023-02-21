@@ -45,6 +45,10 @@ const DarkModeToggle = ({
   const linesProps = useSpring({ opacity, config: properties.springConfig })
 
   const handleToggle = () => {
+    document.documentElement.setAttribute(
+      'data-color-mode',
+      mode === MODES.LIGHT ? 'dark' : 'light'
+    )
     onToggle(mode === MODES.LIGHT ? MODES.DARK : MODES.LIGHT)
   }
 

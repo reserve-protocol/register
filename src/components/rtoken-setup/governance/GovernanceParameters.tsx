@@ -55,7 +55,7 @@ const GovernanceParameters = (props: BoxProps) => {
         name="proposalThresholdAsMicroPercent"
         options={{
           required: true,
-          pattern: numberPattern,
+          pattern: decimalPattern,
           min: 0,
           max: 1,
         }}
