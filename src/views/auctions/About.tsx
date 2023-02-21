@@ -7,7 +7,7 @@ import { useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
 import { addTransactionAtom } from 'state/atoms'
 import { useTransaction } from 'state/web3/hooks/useTransactions'
-import { Box, BoxProps, Grid, Text } from 'theme-ui'
+import { Box, BoxProps, Grid, Text, Link } from 'theme-ui'
 import { FACADE_ACT_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 import { TRANSACTION_STATUS } from 'utils/constants'
@@ -78,34 +78,40 @@ const About = (props: BoxProps) => {
           <ul>
             <Text variant="legend" as="p" mb={3}>
               <li>
-                From collateral to RSR or RToken, in order to distribute
-                collateral yields. These happen often.
+                [FREQUENT] From collateral to RSR or RToken, in order to
+                distribute collateral yields. These happen often.
+              </li>
+            </Text>
+            <Text variant="legend" as="p" mb={3}>
+              <li>
+                [FREQUENT] From reward tokens to RSR or RToken, in order to
+                distribute tokens rewards from collateral. These also happen
+                often.
               </li>
             </Text>
 
             <Text variant="legend" as="p" mb={3}>
               <li>
-                From reward tokens to RSR or RToken, in order to distribute
-                tokens rewards from collateral. These also happen often.
+                [FREQUENT] From RToken to RSR, in order to distribute revenue
+                that has accrued evenly across all collateral tokens in the
+                basket to stRSR holders.
               </li>
             </Text>
 
             <Text variant="legend" as="p" mb={3}>
               <li>
-                RSR to collateral, in order to recollateralize the protocol from
-                stRSR over-collateralization, after a basket change. These
-                auctions should be even rarer, happening when there's a basket
-                change and insufficient capital to achieve recollateralization
-                without using the over-collateralization buffer.
+                [RARE] From collateral to collateral, in order to execute a
+                basket change proposal that has passed through governance.
               </li>
             </Text>
             <Text variant="legend" as="p" mb={4}>
               <li>
-                RSR to collateral, in order to recollateralize the protocol from
-                stRSR over-collateralization, after a basket change. These
-                auctions should be even rarer, happening when there's a basket
-                change and insufficient capital to achieve recollateralization
-                without using the over-collateralization buffer.
+                [RARE] RSR to collateral, in order to recollateralize the
+                protocol from the stRSR over-collateralization, after a basket
+                change. These auctions should be even rarer, happening when
+                there's a basket change and insufficient capital to achieve
+                recollateralization without using the over-collateralization
+                buffer.
               </li>
             </Text>
           </ul>
@@ -113,29 +119,47 @@ const About = (props: BoxProps) => {
             <Trans>
               Each type of trade can currently happen in only one way; the
               protocol launches a Gnosis EasyAuction. The Reserve Protocol is
-              designed to make it easy to add other trading methods, but none
-              others are currently supported.
+              designed to make it easy to add other trading methods, but no
+              other methods are currently supported.
             </Trans>
           </Text>
           <Text variant="legend" as="p" mb={3}>
             <Trans>
-              A good explainer for how Gnosis auctions work can be found (on
-              their github)[https://github.com/gnosis/ido-contracts].
-            </Trans>
+              A good explainer for how Gnosis auctions work can be found
+            </Trans>{' '}
+            <Link
+              sx={{ textDecoration: 'underline' }}
+              href="https://github.com/gnosis/ido-contracts"
+              target="_blank"
+            >
+              <Trans>(in their Github repository)</Trans>
+            </Link>
           </Text>
         </Box>
         <Box>
           <Text mb={3} variant="strong">
-            <Trans>Collateral surplus & triggering of auctions</Trans>
+            <Trans>Trigger an Auction</Trans>
           </Text>
           <Text variant="legend" as="p" mb={4}>
             <Trans>
-              Register currently only supports triggering all available revenue
-              suplus auctions at once and a total current surplus. Learn more
-              about how to monitor invidivial collateral surplusses.
+              Anyone can click the button below to trigger an auction for any
+              revenue that has accrued or for rebalances that need to happen.
+              Please note that for RTokens with many collateral types in the
+              basket, this may be an expensive transaction to execute.
             </Trans>
           </Text>
           <RunAuctions />
+          <Text mt={6} mb={3} variant="strong">
+            <Trans>
+              Coming Soon: See current surplus available for auction
+            </Trans>
+          </Text>
+          <Text variant="legend" as="p" mb={4}>
+            <Trans>
+              We aim to add a way to view the current auctions that could be
+              triggered but have not yet.
+            </Trans>
+          </Text>
         </Box>
       </Grid>
     </Box>

@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import { useState } from 'react'
-import { Box, Text } from 'theme-ui'
+import { Box, Text, Link } from 'theme-ui'
 import WrapCollateralModal from '../issue/WrapCollateralModal'
 
 const About = () => {
@@ -22,10 +22,25 @@ const About = () => {
       </Box>
       <Box variant="layout.borderBox" mt={4} p={4}>
         <Text variant="strong" mb={2}>
-          <Trans>Wrapping your Aave tokens</Trans>
+          <Trans>Wrapping Aave aTokens</Trans>
         </Text>
         <Text as="p" variant="legend">
-          <Trans>... explanation about why and the progress...</Trans>
+          <Trans>
+            aTokens from Aave don’t operate exactly the same technically as some
+            other collateral tokens. In order for the protocol to predictably
+            know how to handle them, they need to be wrapped into an additional
+            “wrapper” contract so that the collateral can be handled and
+            monitored appropriately. When wrapped, the aToken collateral is
+            exactly the same, but it just has a new interface that the protocol
+            can use to monitor price and appreciation. More information in the
+          </Trans>{' '}
+          <Link
+            sx={{ textDecoration: 'underline' }}
+            href="https://reserve.org/protocol/rtokens/#non-compatible-erc20-assets"
+            target="_blank"
+          >
+            <Trans>Docs</Trans>
+          </Link>
         </Text>
         <SmallButton mt={3} onClick={() => setWrapping(true)}>
           <Trans>Wrap tokens</Trans>

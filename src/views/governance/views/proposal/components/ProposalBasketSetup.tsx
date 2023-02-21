@@ -53,9 +53,9 @@ const PrimaryBasketWarning = ({ onPropose }: { onPropose(): void }) => (
     </Text>
     <Text as="p" variant="legend">
       <Trans>
-        Pre-filled token weights won’t accurately match the current
-        distribution. Changing the basket means defining how you want the
-        distribution going forward.
+        Pre-filled token weights on this page won’t accurately match the current
+        basket distribution. Define how you would like to propose the basket
+        should be distributed going forward.
       </Trans>
     </Text>
     <SmallButton mt={3} onClick={onPropose}>

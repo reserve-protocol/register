@@ -42,8 +42,8 @@ const ProposalOverview = (props: BoxProps) => {
             <Trans>Create Proposal</Trans>
           </Text>
           <Text variant="legend" as="p">
-            Review of function calls & adding a description of your proposal
-            will be done in the next step.
+            'Submit the proposal to be voted on by [stRSR] holders. Note this is
+            an on-chain action and will require gas to propose.'
           </Text>
           <Button
             onClick={handleProposal}

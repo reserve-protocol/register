@@ -154,8 +154,9 @@ const RevenueSplit = (props: BoxProps) => {
       <Text variant="legend" as="p" sx={{ fontSize: 1 }} mb={1} mr={2}>
         <Trans>
           Define what portion of the revenue goes to the RToken holders versus
-          RSR stakers. It can also be configured to send (part of the) revenue
-          of an RToken to any arbitrary Ethereum address.
+          RSR stakers. It can also be configured to send a portion of the
+          revenue of an RToken to any arbitrary Ethereum address (wallet or
+          smart contract).
           <br />
           <br />
         </Trans>
