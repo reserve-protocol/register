@@ -55,8 +55,8 @@ const ContractProposalDetails = ({ data, ...props }: Props) => {
     <Card p={4} {...props}>
       <Text variant="sectionTitle">{data.label}</Text>
       <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
-      {data.calls.map((call) => (
-        <Box>
+      {data.calls.map((call, index) => (
+        <Box key={index}>
           <Box mb={3}>
             <Text
               variant="legend"
@@ -69,13 +69,18 @@ const ContractProposalDetails = ({ data, ...props }: Props) => {
           </Box>
 
           <Text variant="legend" sx={{ fontSize: 1, display: 'block' }} mb={2}>
-            Parameters
+            <Trans>Parameters</Trans>
           </Text>
-          <JsonView
-            shouldInitiallyExpand={collapseAllNested}
-            style={colorMode === MODES.LIGHT ? defaultStyles : darkStyles}
-            data={data.calls[0].data}
-          />
+          {data.calls[0].data.length ? (
+            <JsonView
+              shouldInitiallyExpand={collapseAllNested}
+              style={colorMode === MODES.LIGHT ? defaultStyles : darkStyles}
+              data={data.calls[0].data}
+            />
+          ) : (
+            <Text>None</Text>
+          )}
+
           <Divider mt={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
           <CallData data={data.calls[0]?.callData ?? ''} />
         </Box>

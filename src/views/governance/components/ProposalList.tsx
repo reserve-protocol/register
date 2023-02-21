@@ -41,6 +41,11 @@ const useProposals = () => {
   }, [JSON.stringify(response)])
 }
 
+const getTitle = (description: string) => {
+  const titleRaw = description.split(/\r?\n/)[0].split('#')
+  return titleRaw[1] || titleRaw[0]
+}
+
 const ProposalList = () => {
   const rToken = useRToken()
   const navigate = useNavigate()
@@ -82,9 +87,19 @@ const ProposalList = () => {
             </Box>
           )}
           {data.map((proposal: StringMap) => (
-            <Box mt={4} key={proposal.id} variant="layout.verticalAlign">
+            <Box
+              mt={4}
+              key={proposal.id}
+              sx={{ cursor: 'pointer' }}
+              variant="layout.verticalAlign"
+              onClick={() =>
+                navigate(
+                  `${ROUTES.GOVERNANCE_PROPOSAL}/${proposal.id}?token=${rToken?.address}`
+                )
+              }
+            >
               <Box>
-                <Text variant="strong">{proposal.description}</Text>
+                <Text variant="strong">{getTitle(proposal.description)}</Text>
                 <Text variant="legend" sx={{ fontSize: 1 }}>
                   <Trans>Created at:</Trans>{' '}
                   {dayjs.unix(+proposal.creationTime).format('YYYY-M-d')}

@@ -1,3 +1,4 @@
+import { getAddress } from 'ethers/lib/utils'
 import { useAtomValue } from 'jotai'
 import { Box, BoxProps } from 'theme-ui'
 import { ContractProposal, InterfaceMap, interfaceMapAtom } from '../atoms'
@@ -22,12 +23,12 @@ const parseCallDatas = (
 
   try {
     for (let i = 0; i < addresses.length; i++) {
-      const address = addresses[i]
+      const address = getAddress(addresses[i])
       const contractDetail = interfaceMap[address]
 
       if (contractDetail) {
         const functionCall = contractDetail.interface.getFunction(
-          calldatas[i].slice(0, 10)
+          calldatas[i].slice(0, Math.min(calldatas[i].length, 10))
         )
         const signature = `${functionCall.name}(${functionCall.inputs
           .map((input) => `${input.name}: ${input.type}`)
@@ -57,7 +58,7 @@ const parseCallDatas = (
       }
     }
   } catch (e) {
-    console.error('Error parsing call datas')
+    console.error('Error parsing call datas', e)
   }
 
   return [contractProposals, unparsed]
