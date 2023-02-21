@@ -71,14 +71,18 @@ const ContractProposalDetails = ({ data, ...props }: Props) => {
           <Text variant="legend" sx={{ fontSize: 1, display: 'block' }} mb={2}>
             <Trans>Parameters</Trans>
           </Text>
-          {data.calls[0].data.length ? (
+          {data.calls[0].data.length > 1 ? (
             <JsonView
               shouldInitiallyExpand={collapseAllNested}
               style={colorMode === MODES.LIGHT ? defaultStyles : darkStyles}
               data={data.calls[0].data}
             />
           ) : (
-            <Text>None</Text>
+            <Text>
+              {data.calls[0].data && data.calls[0].data[0]
+                ? data.calls[0].data[0]
+                : 'None'}
+            </Text>
           )}
 
           <Divider mt={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />

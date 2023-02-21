@@ -1,3 +1,4 @@
+import { proposalDescriptionAtom } from './../atoms'
 import { t } from '@lingui/macro'
 import { BasketHandlerInterface } from 'abis'
 
@@ -8,6 +9,7 @@ import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { rTokenContractsAtom, rTokenGovernanceAtom } from 'state/atoms'
+import { parsePercent } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import {
   backupChangesAtom,
@@ -18,6 +20,20 @@ import {
   roleChangesAtom,
 } from '../atoms'
 
+const paramParse: { [x: string]: (v: string) => BigNumber } = {
+  minTradeVolume: parseEther,
+  rTokenMaxTradeVolume: parseEther,
+  rewardRatio: parseEther,
+  unstakingDelay: BigNumber.from,
+  tradingDelay: BigNumber.from,
+  auctionLength: BigNumber.from,
+  backingBuffer: parsePercent,
+  maxTradeSlippage: parsePercent,
+  shortFreeze: BigNumber.from,
+  longFreeze: BigNumber.from,
+}
+
+// TODO: May want to use a separate memo to calculate the calldatas
 const useProposalTx = () => {
   const backupChanges = useAtomValue(backupChangesAtom)
   const revenueChanges = useAtomValue(revenueSplitChangesAtom)
@@ -28,6 +44,7 @@ const useProposalTx = () => {
   const governance = useAtomValue(rTokenGovernanceAtom)
   const parameterMap = useAtomValue(parameterContractMapAtom)
   const contracts = useAtomValue(rTokenContractsAtom)
+  const description = useAtomValue(proposalDescriptionAtom)
   const { getValues } = useFormContext()
 
   return useMemo(() => {
@@ -52,11 +69,7 @@ const useProposalTx = () => {
                 [
                   {
                     amtRate: parseEther(tokenConfig.issuanceThrottleAmount),
-                    pctRate: parseEther(
-                      (
-                        Number(tokenConfig.issuanceThrottleRate) / 100
-                      ).toString()
-                    ),
+                    pctRate: parsePercent(tokenConfig.issuanceThrottleRate),
                   },
                 ]
               )
@@ -76,11 +89,7 @@ const useProposalTx = () => {
                 [
                   {
                     amtRate: parseEther(tokenConfig.redemptionThrottleAmount),
-                    pctRate: parseEther(
-                      (
-                        Number(tokenConfig.redemptionThrottleRate) / 100
-                      ).toString()
-                    ),
+                    pctRate: parsePercent(tokenConfig.redemptionThrottleRate),
                   },
                 ]
               )
@@ -88,6 +97,14 @@ const useProposalTx = () => {
           }
           redemptionThrottleChange = true
         } else {
+          for (const contract of parameterMap[paramChange.field]) {
+            addresses.push(contract.address)
+            calls.push(
+              contract.interface.encodeFunctionData(contract.method, [
+                paramParse[paramChange.field](paramChange.proposed),
+              ])
+            )
+          }
         }
       }
 
@@ -133,15 +150,10 @@ const useProposalTx = () => {
         abi: 'governance',
         address: governance.governor,
         method: 'propose',
-        args: [
-          addresses,
-          new Array(calls.length).fill(0),
-          calls,
-          'change basket',
-        ], // fill with empty description
+        args: [addresses, new Array(calls.length).fill(0), calls, description],
       },
     }
-  }, [contracts])
+  }, [contracts, description])
 }
 
 export default useProposalTx

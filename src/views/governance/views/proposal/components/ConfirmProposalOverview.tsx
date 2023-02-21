@@ -60,7 +60,7 @@ const ConfirmProposalOverview = ({ tx, ...props }: Props) => {
             mt={4}
             sx={{ width: '100%' }}
           >
-            <Trans>Execute proposal</Trans>
+            <Trans>Submit proposal</Trans>
           </Button>
         </Flex>
       </Box>

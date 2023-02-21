@@ -4,6 +4,7 @@ import { getAddress } from '@ethersproject/address'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { t } from '@lingui/macro'
 import { Contract } from 'ethers'
+import { parseEther } from 'ethers/lib/utils'
 
 export const decimalPattern = /^[0-9]*[.]?[0-9]*$/i
 export const numberPattern = /^\d+$/
@@ -231,4 +232,8 @@ export const stringToColor = (str: string) => {
     color += `00${value.toString(16)}`.substr(-2)
   }
   return color
+}
+
+export const parsePercent = (n: string): BigNumber => {
+  return parseEther((Number(n) / 100).toString())
 }
