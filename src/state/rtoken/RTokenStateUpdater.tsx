@@ -1,14 +1,17 @@
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
-import { FacadeInterface, MainInterface } from 'abis'
+import { BasketHandlerInterface, FacadeInterface, MainInterface } from 'abis'
 import { ethers } from 'ethers'
 import { formatEther } from 'ethers/lib/utils'
 import useBlockNumber from 'hooks/useBlockNumber'
+import { useContractCall } from 'hooks/useCall'
 import useRToken from 'hooks/useRToken'
-import { useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import {
+  basketNonceAtom,
   rTokenCollateralDist,
+  rTokenContractsAtom,
   rTokenDistributionAtom,
   rTokenStatusAtom,
 } from 'state/atoms'
@@ -27,8 +30,21 @@ const RTokenStateUpdater = () => {
   const updateTokenStatus = useSetAtom(rTokenStatusAtom)
   const setDistribution = useSetAtom(rTokenDistributionAtom)
   const setCollateralDist = useSetAtom(rTokenCollateralDist)
+  const setBasketNonce = useSetAtom(basketNonceAtom)
   const { provider, chainId } = useWeb3React()
   const blockNumber = useBlockNumber()
+  const contracts = useAtomValue(rTokenContractsAtom)
+
+  const {
+    value: [basketNonce],
+  } = useContractCall(
+    contracts.basketHandler && {
+      abi: BasketHandlerInterface,
+      address: contracts.basketHandler,
+      method: 'nonce',
+      args: [],
+    }
+  ) || { value: [0], error: null }
 
   const getTokenStatus = useCallback(
     async (mainAddress: string, provider: Web3Provider) => {
@@ -124,6 +140,12 @@ const RTokenStateUpdater = () => {
       getTokenStatus(rToken.main, provider)
     }
   }, [rToken?.address, blockNumber])
+
+  useEffect(() => {
+    if (basketNonce) {
+      setBasketNonce(basketNonce)
+    }
+  }, [basketNonce])
 
   useEffect(() => {
     if (

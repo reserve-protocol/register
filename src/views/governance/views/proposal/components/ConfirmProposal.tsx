@@ -1,15 +1,11 @@
 import { t } from '@lingui/macro'
-import {
-  BackingManagerInterface,
-  BasketHandlerInterface,
-  MainInterface,
-} from 'abis'
+import { BasketHandlerInterface } from 'abis'
 
 import { basketAtom } from 'components/rtoken-setup/atoms'
 import Layout from 'components/rtoken-setup/Layout'
 import { BigNumber } from 'ethers'
 import { parseEther } from 'ethers/lib/utils'
-import { atom, useAtomValue } from 'jotai'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { rTokenContractsAtom, rTokenGovernanceAtom } from 'state/atoms'
 import { TRANSACTION_STATUS } from 'utils/constants'

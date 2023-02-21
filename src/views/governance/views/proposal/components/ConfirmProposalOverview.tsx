@@ -16,8 +16,6 @@ const ConfirmProposalOverview = ({ tx, ...props }: Props) => {
   const setProposalEditing = useSetAtom(isProposalEditingAtom)
   const [fee, gasError, gasLimit] = useTransactionCost([tx])
 
-  console.log('fee', fee)
-
   // Change to confirmation screen
   const handleProposal = () => {
     setProposalEditing(true)

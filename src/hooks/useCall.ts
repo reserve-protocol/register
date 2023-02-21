@@ -58,6 +58,8 @@ export const useContractCalls = (calls: (ContractCall | Falsy)[]): any[] => {
   )
 }
 
-export function useContractCall(call: ContractCall | Falsy): { value: any, error: any } | undefined {
+export function useContractCall(
+  call: ContractCall | Falsy
+): { value: any; error: any } | undefined {
   return useContractCalls([call])[0]
 }
