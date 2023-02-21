@@ -35,9 +35,7 @@ const RTokenStateUpdater = () => {
   const blockNumber = useBlockNumber()
   const contracts = useAtomValue(rTokenContractsAtom)
 
-  const {
-    value: [basketNonce],
-  } = useContractCall(
+  const { value } = useContractCall(
     contracts.basketHandler && {
       abi: BasketHandlerInterface,
       address: contracts.basketHandler,
@@ -45,6 +43,7 @@ const RTokenStateUpdater = () => {
       args: [],
     }
   ) || { value: [0], error: null }
+  const basketNonce = value ? value[0] : 0
 
   const getTokenStatus = useCallback(
     async (mainAddress: string, provider: Web3Provider) => {

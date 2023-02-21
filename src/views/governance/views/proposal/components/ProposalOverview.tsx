@@ -18,6 +18,7 @@ const ProposalOverview = (props: BoxProps) => {
     setProposalEditing(false)
   }
 
+  // TODO: CHECK VALIDATION
   return (
     <Container sx={{ position: 'sticky', top: 0 }} p={0} {...props}>
       <Box
@@ -46,7 +47,7 @@ const ProposalOverview = (props: BoxProps) => {
           <Button
             onClick={handleProposal}
             variant="primary"
-            disabled={!isValid}
+            // disabled={!isValid}
             mt={4}
             sx={{ width: '100%' }}
           >
