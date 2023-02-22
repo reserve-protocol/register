@@ -64,7 +64,7 @@ const ProposalStatus = ({
       <>
         <Spinner size={24} mt={3} mb={2} />
         <Text sx={{ fontWeight: 500, fontSize: 3, display: 'block' }} mb={2}>
-          <Trans>Deploy transaction submitted</Trans>
+          <Trans>Proposal transaction submitted</Trans>
         </Text>
         <Text as="p" variant="legend">
           <Trans>
