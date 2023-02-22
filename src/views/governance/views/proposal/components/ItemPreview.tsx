@@ -67,7 +67,7 @@ export const ParameterChangePreview = ({
       </Box>
       {!!onRevert && (
         <SmallButton ml="auto" onClick={onRevert} variant="muted">
-          <Trans>Revert</Trans>
+          <Trans>Discard</Trans>
         </SmallButton>
       )}
     </Box>
