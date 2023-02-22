@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { currentTxAtom } from 'state/atoms'
-import { useAtomValue } from 'jotai/utils'
+import { useAtomValue } from 'jotai'
 import { TransactionState } from 'types'
 
 export const useTransactions = (ids: string[], sample = 20) => {

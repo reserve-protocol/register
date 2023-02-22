@@ -60,6 +60,12 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
+        indexed: true,
+        internalType: "uint256",
+        name: "nonce",
+        type: "uint256",
+      },
+      {
         indexed: false,
         internalType: "contract IERC20[]",
         name: "erc20s",
@@ -146,6 +152,19 @@ const _abi = [
     type: "event",
   },
   {
+    inputs: [],
+    name: "MAX_TARGET_AMT",
+    outputs: [
+      {
+        internalType: "uint192",
+        name: "",
+        type: "uint192",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "address",
@@ -173,12 +192,59 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "fullyCapitalized",
+    name: "fullyCollateralized",
     outputs: [
       {
         internalType: "bool",
         name: "",
         type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "targetName",
+        type: "bytes32",
+      },
+    ],
+    name: "getBackupConfig",
+    outputs: [
+      {
+        internalType: "contract IERC20[]",
+        name: "erc20s",
+        type: "address[]",
+      },
+      {
+        internalType: "uint256",
+        name: "max",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getPrimeBasket",
+    outputs: [
+      {
+        internalType: "contract IERC20[]",
+        name: "erc20s",
+        type: "address[]",
+      },
+      {
+        internalType: "bytes32[]",
+        name: "targetNames",
+        type: "bytes32[]",
+      },
+      {
+        internalType: "uint192[]",
+        name: "targetAmts",
+        type: "uint192[]",
       },
     ],
     stateMutability: "view",
@@ -199,17 +265,17 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "lastSet",
+    name: "lotPrice",
     outputs: [
       {
-        internalType: "uint256",
-        name: "nonce",
-        type: "uint256",
+        internalType: "uint192",
+        name: "lotLow",
+        type: "uint192",
       },
       {
-        internalType: "uint256",
-        name: "timestamp",
-        type: "uint256",
+        internalType: "uint192",
+        name: "lotHigh",
+        type: "uint192",
       },
     ],
     stateMutability: "view",
@@ -230,11 +296,29 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "nonce",
+    outputs: [
+      {
+        internalType: "uint48",
+        name: "",
+        type: "uint48",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "price",
     outputs: [
       {
         internalType: "uint192",
-        name: "p",
+        name: "low",
+        type: "uint192",
+      },
+      {
+        internalType: "uint192",
+        name: "high",
         type: "uint192",
       },
     ],
@@ -263,6 +347,30 @@ const _abi = [
       },
     ],
     name: "quantity",
+    outputs: [
+      {
+        internalType: "uint192",
+        name: "",
+        type: "uint192",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "contract IERC20",
+        name: "erc20",
+        type: "address",
+      },
+      {
+        internalType: "contract IAsset",
+        name: "asset",
+        type: "address",
+      },
+    ],
+    name: "quantityUnsafe",
     outputs: [
       {
         internalType: "uint192",
@@ -365,9 +473,15 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "switchBasket",
-    outputs: [],
-    stateMutability: "nonpayable",
+    name: "timestamp",
+    outputs: [
+      {
+        internalType: "uint48",
+        name: "",
+        type: "uint48",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -399,6 +513,19 @@ const _abi = [
     name: "upgradeToAndCall",
     outputs: [],
     stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "version",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "pure",
     type: "function",
   },
 ];

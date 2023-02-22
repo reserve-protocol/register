@@ -52,7 +52,9 @@ const TransactionConfirmed = ({
     >
       <CheckCircle size={36} />
       <br />
-      <Text>Transaction signed!</Text>
+      <Text>
+        <Trans>Transaction signed!</Trans>
+      </Text>
       <br />
       <Link
         href={getExplorerLink(hash, ExplorerDataType.TRANSACTION)}
@@ -150,7 +152,7 @@ const TransactionModal = ({
       {children}
       {requiredApprovals.length > 0 && !canSubmit && isValid && (
         <>
-          <Divider mx={-4} my={4} />
+          <Divider sx={{ borderColor: 'darkBorder' }} mx={-4} my={4} />
           <ApprovalTransactions
             onConfirm={() => onChange(true)}
             onError={() => {
@@ -162,18 +164,18 @@ const TransactionModal = ({
           />
         </>
       )}
-      <Divider mx={-4} mt={4} />
+      <Divider sx={{ borderColor: 'darkBorder' }} mx={-4} mt={4} />
       <LoadingButton
         loading={!!signing}
         disabled={!canSubmit}
-        variant={!!signing ? 'accent' : 'primary'}
+        variant={!!signing ? 'accentAction' : 'accentAction'}
         text={confirmLabel}
         onClick={handleConfirm}
         sx={{ width: '100%' }}
         mt={3}
       />
       {!!canSubmit && (
-        <Box mt={2} sx={{ fontSize: 1, textAlign: 'center' }}>
+        <Box mt={3} sx={{ fontSize: 1, textAlign: 'center' }}>
           <Text mr={1}>
             <Trans>Estimated gas cost:</Trans>
           </Text>

@@ -1,7 +1,7 @@
 import { t } from '@lingui/macro'
 import { MouseoverTooltip } from 'components/tooltip'
 import { useState } from 'react'
-import { Copy } from 'react-feather'
+import CopyIcon from 'components/icons/CopyIcon'
 import { ButtonProps, IconButton } from 'theme-ui'
 
 interface Props extends ButtonProps {
@@ -33,7 +33,7 @@ const CopyValue = ({ text, value, size = 16, ...props }: Props) => {
         onClick={handleCopy}
         {...props}
       >
-        <Copy color="#666666" size={size} />
+        <CopyIcon />
       </IconButton>
     </MouseoverTooltip>
   )

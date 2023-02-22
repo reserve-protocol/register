@@ -4,7 +4,7 @@ import Button from 'components/button'
 import CopyValue from 'components/button/CopyValue'
 import GoTo from 'components/button/GoTo'
 import WalletIcon from 'components/icons/WalletIcon'
-import { useUpdateAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import { useCallback } from 'react'
 import { ChevronDown, X } from 'react-feather'
 import { isWalletModalVisibleAtom } from 'state/atoms'
@@ -14,8 +14,8 @@ import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { txSidebarToggleAtom } from './atoms'
 
 const TransactionHeader = () => {
-  const setSidebar = useUpdateAtom(txSidebarToggleAtom)
-  const setWalletModal = useUpdateAtom(isWalletModalVisibleAtom)
+  const setSidebar = useSetAtom(txSidebarToggleAtom)
+  const setWalletModal = useSetAtom(isWalletModalVisibleAtom)
   const { ENSName, account } = useWeb3React()
 
   const handleChangeWallet = useCallback(() => {
@@ -28,19 +28,17 @@ const TransactionHeader = () => {
       sx={{
         alignItems: 'center',
         borderBottom: '1px solid',
-        borderColor: 'darkBorder',
+        borderColor: 'border',
         height: '56px',
         flexShrink: 0,
       }}
-      px={5}
-      mb={5}
+      px={[3, 5]}
     >
-      <Text variant="title" sx={{ fontSize: 2 }} mr={3}>
-        <Trans>Your account</Trans>
+      <Text variant="sectionTitle" sx={{ fontSize: 3 }} mr={1}>
+        <Trans>Account</Trans>
       </Text>
       <CopyValue
-        sx={{ display: ['none', 'flex'] }}
-        mr={2}
+        sx={{ display: ['none', 'flex'], cursor: 'pointer' }}
         value={account || ''}
       />
       <GoTo

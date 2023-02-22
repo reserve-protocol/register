@@ -4,24 +4,18 @@ import TokenLogo from 'components/icons/TokenLogo'
 import TokenBalance from 'components/token-balance'
 import useRToken from 'hooks/useRToken'
 import useRTokenLogo from 'hooks/useRTokenLogo'
-import { useAtomValue } from 'jotai/utils'
-import { useMemo } from 'react'
+import { useAtomValue } from 'jotai'
 import { rTokenBalanceAtom } from 'state/atoms'
-import { Box, BoxProps, Divider, Grid, Text } from 'theme-ui'
-import { ReserveToken, Token } from 'types'
+import { Box, Grid, Text } from 'theme-ui'
+import { Token } from 'types'
 import CollateralBalance from './CollateralBalance'
-import PendingIssuances from './PendingIssuances'
-
-interface Props extends BoxProps {
-  rToken: ReserveToken
-}
 
 const CollateralBalances = ({ collaterals }: { collaterals: Token[] }) => (
-  <Box p={4} mb={-2}>
-    <Text variant="subtitle" mb={3}>
+  <Box>
+    <Text variant="subtitle" mb={3} p={4} pb={0}>
       <Trans>Available collateral</Trans>
     </Text>
-    <Box sx={{ overflow: 'auto', maxHeight: 360 }}>
+    <Box sx={{ overflow: 'auto', maxHeight: 360 }} p={4} pt={0}>
       {collaterals.map((collateral) => (
         <CollateralBalance mb={2} token={collateral} key={collateral.address} />
       ))}
@@ -63,17 +57,11 @@ const Balances = () => {
         <CollateralBalances collaterals={rToken?.collaterals} />
         <Box
           sx={(theme: any) => ({
-            borderLeft: ['none', `1px solid ${theme.colors.border}`],
-            borderTop: [`1px solid ${theme.colors.border}`, 'none'],
+            borderLeft: ['none', `1px solid ${theme.colors.darkBorder}`],
+            borderTop: [`1px solid ${theme.colors.darkBorder}`, 'none'],
           })}
         >
           <RTokenBalance token={rToken} />
-          {!rToken.isRSV && (
-            <>
-              <Divider m={0} />
-              <PendingIssuances token={rToken} />
-            </>
-          )}
         </Box>
       </Grid>
     </Card>

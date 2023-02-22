@@ -28,16 +28,18 @@ const TransactionInput = ({
       onClick={() => setAmount(maxAmount.toString())}
       as="a"
       variant="a"
-      sx={{ display: 'block', marginLeft: 'auto', fontSize: compact ? 1 : 2 }}
+      sx={{ display: 'block', fontSize: compact ? 1 : 2 }}
+      ml={'auto'}
+      mr={2}
     >
-      Max: {formatCurrency(maxAmount)}
+      Max: {formatCurrency(maxAmount, 5)}
     </Text>
   )
 
   return (
     <Box {...props}>
       <Flex sx={{ alignItems: 'center' }} mb={2}>
-        <Text as="label" variant="legend" ml={2}>
+        <Text as="label" variant="legend" ml={3}>
           {title}
         </Text>
         {compact && maxLabel}

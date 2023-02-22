@@ -31,14 +31,16 @@ import type {
 export interface StRsrInterface extends utils.Interface {
   functions: {
     "DOMAIN_SEPARATOR()": FunctionFragment;
-    "MAX_REWARD_PERIOD()": FunctionFragment;
     "MAX_REWARD_RATIO()": FunctionFragment;
     "MAX_UNSTAKING_DELAY()": FunctionFragment;
+    "MIN_UNSTAKING_DELAY()": FunctionFragment;
+    "PERIOD()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
+    "delegationNonces(address)": FunctionFragment;
     "draftQueueLen(uint256,address)": FunctionFragment;
     "draftQueues(uint256,address,uint256)": FunctionFragment;
     "draftRate()": FunctionFragment;
@@ -46,7 +48,7 @@ export interface StRsrInterface extends utils.Interface {
     "exchangeRate()": FunctionFragment;
     "firstRemainingDraft(uint256,address)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
-    "init(address,string,string,uint48,uint48,uint192)": FunctionFragment;
+    "init(address,string,string,uint48,uint192)": FunctionFragment;
     "main()": FunctionFragment;
     "name()": FunctionFragment;
     "nonces(address)": FunctionFragment;
@@ -54,13 +56,9 @@ export interface StRsrInterface extends utils.Interface {
     "payoutRewards()": FunctionFragment;
     "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
-    "rewardPeriod()": FunctionFragment;
     "rewardRatio()": FunctionFragment;
     "seizeRSR(uint256)": FunctionFragment;
-    "setName(string)": FunctionFragment;
-    "setRewardPeriod(uint48)": FunctionFragment;
     "setRewardRatio(uint192)": FunctionFragment;
-    "setSymbol(string)": FunctionFragment;
     "setUnstakingDelay(uint48)": FunctionFragment;
     "stake(uint256)": FunctionFragment;
     "stakeRate()": FunctionFragment;
@@ -72,20 +70,23 @@ export interface StRsrInterface extends utils.Interface {
     "unstakingDelay()": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
+    "version()": FunctionFragment;
     "withdraw(address,uint256)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
       | "DOMAIN_SEPARATOR"
-      | "MAX_REWARD_PERIOD"
       | "MAX_REWARD_RATIO"
       | "MAX_UNSTAKING_DELAY"
+      | "MIN_UNSTAKING_DELAY"
+      | "PERIOD"
       | "allowance"
       | "approve"
       | "balanceOf"
       | "decimals"
       | "decreaseAllowance"
+      | "delegationNonces"
       | "draftQueueLen"
       | "draftQueues"
       | "draftRate"
@@ -101,13 +102,9 @@ export interface StRsrInterface extends utils.Interface {
       | "payoutRewards"
       | "permit"
       | "proxiableUUID"
-      | "rewardPeriod"
       | "rewardRatio"
       | "seizeRSR"
-      | "setName"
-      | "setRewardPeriod"
       | "setRewardRatio"
-      | "setSymbol"
       | "setUnstakingDelay"
       | "stake"
       | "stakeRate"
@@ -119,15 +116,12 @@ export interface StRsrInterface extends utils.Interface {
       | "unstakingDelay"
       | "upgradeTo"
       | "upgradeToAndCall"
+      | "version"
       | "withdraw"
   ): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "DOMAIN_SEPARATOR",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "MAX_REWARD_PERIOD",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -138,6 +132,11 @@ export interface StRsrInterface extends utils.Interface {
     functionFragment: "MAX_UNSTAKING_DELAY",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "MIN_UNSTAKING_DELAY",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "PERIOD", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "allowance",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
@@ -154,6 +153,10 @@ export interface StRsrInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "decreaseAllowance",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "delegationNonces",
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "draftQueueLen",
@@ -191,7 +194,6 @@ export interface StRsrInterface extends utils.Interface {
       PromiseOrValue<string>,
       PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>
     ]
   ): string;
@@ -226,10 +228,6 @@ export interface StRsrInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "rewardPeriod",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "rewardRatio",
     values?: undefined
   ): string;
@@ -238,20 +236,8 @@ export interface StRsrInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "setName",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setRewardPeriod",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "setRewardRatio",
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setSymbol",
-    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "setUnstakingDelay",
@@ -295,6 +281,7 @@ export interface StRsrInterface extends utils.Interface {
     functionFragment: "upgradeToAndCall",
     values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
   ): string;
+  encodeFunctionData(functionFragment: "version", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "withdraw",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
@@ -305,10 +292,6 @@ export interface StRsrInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "MAX_REWARD_PERIOD",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "MAX_REWARD_RATIO",
     data: BytesLike
   ): Result;
@@ -316,12 +299,21 @@ export interface StRsrInterface extends utils.Interface {
     functionFragment: "MAX_UNSTAKING_DELAY",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "MIN_UNSTAKING_DELAY",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "PERIOD", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "decreaseAllowance",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "delegationNonces",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -367,24 +359,14 @@ export interface StRsrInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "rewardPeriod",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "rewardRatio",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "seizeRSR", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "setName", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "setRewardPeriod",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "setRewardRatio",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "setSymbol", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "setUnstakingDelay",
     data: BytesLike
@@ -411,6 +393,7 @@ export interface StRsrInterface extends utils.Interface {
     functionFragment: "upgradeToAndCall",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "version", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 
   events: {
@@ -656,11 +639,13 @@ export interface StRsr extends BaseContract {
   functions: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<[string]>;
 
-    MAX_REWARD_PERIOD(overrides?: CallOverrides): Promise<[number]>;
-
     MAX_REWARD_RATIO(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     MAX_UNSTAKING_DELAY(overrides?: CallOverrides): Promise<[number]>;
+
+    MIN_UNSTAKING_DELAY(overrides?: CallOverrides): Promise<[number]>;
+
+    PERIOD(overrides?: CallOverrides): Promise<[number]>;
 
     allowance(
       owner: PromiseOrValue<string>,
@@ -686,6 +671,11 @@ export interface StRsr extends BaseContract {
       subtractedValue: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    delegationNonces(
+      owner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     draftQueueLen(
       era_: PromiseOrValue<BigNumberish>,
@@ -728,7 +718,6 @@ export interface StRsr extends BaseContract {
       name_: PromiseOrValue<string>,
       symbol_: PromiseOrValue<string>,
       unstakingDelay_: PromiseOrValue<BigNumberish>,
-      rewardPeriod_: PromiseOrValue<BigNumberish>,
       rewardRatio_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -761,8 +750,6 @@ export interface StRsr extends BaseContract {
 
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
 
-    rewardPeriod(overrides?: CallOverrides): Promise<[number]>;
-
     rewardRatio(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     seizeRSR(
@@ -770,23 +757,8 @@ export interface StRsr extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    setName(
-      name_: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    setRewardPeriod(
-      val: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     setRewardRatio(
       val: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    setSymbol(
-      symbol_: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -837,6 +809,8 @@ export interface StRsr extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    version(overrides?: CallOverrides): Promise<[string]>;
+
     withdraw(
       account: PromiseOrValue<string>,
       endId: PromiseOrValue<BigNumberish>,
@@ -846,11 +820,13 @@ export interface StRsr extends BaseContract {
 
   DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
 
-  MAX_REWARD_PERIOD(overrides?: CallOverrides): Promise<number>;
-
   MAX_REWARD_RATIO(overrides?: CallOverrides): Promise<BigNumber>;
 
   MAX_UNSTAKING_DELAY(overrides?: CallOverrides): Promise<number>;
+
+  MIN_UNSTAKING_DELAY(overrides?: CallOverrides): Promise<number>;
+
+  PERIOD(overrides?: CallOverrides): Promise<number>;
 
   allowance(
     owner: PromiseOrValue<string>,
@@ -876,6 +852,11 @@ export interface StRsr extends BaseContract {
     subtractedValue: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  delegationNonces(
+    owner: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   draftQueueLen(
     era_: PromiseOrValue<BigNumberish>,
@@ -918,7 +899,6 @@ export interface StRsr extends BaseContract {
     name_: PromiseOrValue<string>,
     symbol_: PromiseOrValue<string>,
     unstakingDelay_: PromiseOrValue<BigNumberish>,
-    rewardPeriod_: PromiseOrValue<BigNumberish>,
     rewardRatio_: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -951,8 +931,6 @@ export interface StRsr extends BaseContract {
 
   proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
-  rewardPeriod(overrides?: CallOverrides): Promise<number>;
-
   rewardRatio(overrides?: CallOverrides): Promise<BigNumber>;
 
   seizeRSR(
@@ -960,23 +938,8 @@ export interface StRsr extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  setName(
-    name_: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  setRewardPeriod(
-    val: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   setRewardRatio(
     val: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  setSymbol(
-    symbol_: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -1027,6 +990,8 @@ export interface StRsr extends BaseContract {
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  version(overrides?: CallOverrides): Promise<string>;
+
   withdraw(
     account: PromiseOrValue<string>,
     endId: PromiseOrValue<BigNumberish>,
@@ -1036,11 +1001,13 @@ export interface StRsr extends BaseContract {
   callStatic: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
 
-    MAX_REWARD_PERIOD(overrides?: CallOverrides): Promise<number>;
-
     MAX_REWARD_RATIO(overrides?: CallOverrides): Promise<BigNumber>;
 
     MAX_UNSTAKING_DELAY(overrides?: CallOverrides): Promise<number>;
+
+    MIN_UNSTAKING_DELAY(overrides?: CallOverrides): Promise<number>;
+
+    PERIOD(overrides?: CallOverrides): Promise<number>;
 
     allowance(
       owner: PromiseOrValue<string>,
@@ -1066,6 +1033,11 @@ export interface StRsr extends BaseContract {
       subtractedValue: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    delegationNonces(
+      owner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     draftQueueLen(
       era_: PromiseOrValue<BigNumberish>,
@@ -1108,7 +1080,6 @@ export interface StRsr extends BaseContract {
       name_: PromiseOrValue<string>,
       symbol_: PromiseOrValue<string>,
       unstakingDelay_: PromiseOrValue<BigNumberish>,
-      rewardPeriod_: PromiseOrValue<BigNumberish>,
       rewardRatio_: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -1139,8 +1110,6 @@ export interface StRsr extends BaseContract {
 
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
-    rewardPeriod(overrides?: CallOverrides): Promise<number>;
-
     rewardRatio(overrides?: CallOverrides): Promise<BigNumber>;
 
     seizeRSR(
@@ -1148,23 +1117,8 @@ export interface StRsr extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setName(
-      name_: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    setRewardPeriod(
-      val: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     setRewardRatio(
       val: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    setSymbol(
-      symbol_: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1214,6 +1168,8 @@ export interface StRsr extends BaseContract {
       data: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    version(overrides?: CallOverrides): Promise<string>;
 
     withdraw(
       account: PromiseOrValue<string>,
@@ -1377,11 +1333,13 @@ export interface StRsr extends BaseContract {
   estimateGas: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<BigNumber>;
 
-    MAX_REWARD_PERIOD(overrides?: CallOverrides): Promise<BigNumber>;
-
     MAX_REWARD_RATIO(overrides?: CallOverrides): Promise<BigNumber>;
 
     MAX_UNSTAKING_DELAY(overrides?: CallOverrides): Promise<BigNumber>;
+
+    MIN_UNSTAKING_DELAY(overrides?: CallOverrides): Promise<BigNumber>;
+
+    PERIOD(overrides?: CallOverrides): Promise<BigNumber>;
 
     allowance(
       owner: PromiseOrValue<string>,
@@ -1406,6 +1364,11 @@ export interface StRsr extends BaseContract {
       spender: PromiseOrValue<string>,
       subtractedValue: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    delegationNonces(
+      owner: PromiseOrValue<string>,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     draftQueueLen(
@@ -1447,7 +1410,6 @@ export interface StRsr extends BaseContract {
       name_: PromiseOrValue<string>,
       symbol_: PromiseOrValue<string>,
       unstakingDelay_: PromiseOrValue<BigNumberish>,
-      rewardPeriod_: PromiseOrValue<BigNumberish>,
       rewardRatio_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -1480,8 +1442,6 @@ export interface StRsr extends BaseContract {
 
     proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
 
-    rewardPeriod(overrides?: CallOverrides): Promise<BigNumber>;
-
     rewardRatio(overrides?: CallOverrides): Promise<BigNumber>;
 
     seizeRSR(
@@ -1489,23 +1449,8 @@ export interface StRsr extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    setName(
-      name_: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    setRewardPeriod(
-      val: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     setRewardRatio(
       val: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    setSymbol(
-      symbol_: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1556,6 +1501,8 @@ export interface StRsr extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    version(overrides?: CallOverrides): Promise<BigNumber>;
+
     withdraw(
       account: PromiseOrValue<string>,
       endId: PromiseOrValue<BigNumberish>,
@@ -1566,13 +1513,17 @@ export interface StRsr extends BaseContract {
   populateTransaction: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    MAX_REWARD_PERIOD(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     MAX_REWARD_RATIO(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     MAX_UNSTAKING_DELAY(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    MIN_UNSTAKING_DELAY(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    PERIOD(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     allowance(
       owner: PromiseOrValue<string>,
@@ -1597,6 +1548,11 @@ export interface StRsr extends BaseContract {
       spender: PromiseOrValue<string>,
       subtractedValue: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    delegationNonces(
+      owner: PromiseOrValue<string>,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     draftQueueLen(
@@ -1638,7 +1594,6 @@ export interface StRsr extends BaseContract {
       name_: PromiseOrValue<string>,
       symbol_: PromiseOrValue<string>,
       unstakingDelay_: PromiseOrValue<BigNumberish>,
-      rewardPeriod_: PromiseOrValue<BigNumberish>,
       rewardRatio_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
@@ -1671,8 +1626,6 @@ export interface StRsr extends BaseContract {
 
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    rewardPeriod(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     rewardRatio(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     seizeRSR(
@@ -1680,23 +1633,8 @@ export interface StRsr extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    setName(
-      name_: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setRewardPeriod(
-      val: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
     setRewardRatio(
       val: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setSymbol(
-      symbol_: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1746,6 +1684,8 @@ export interface StRsr extends BaseContract {
       data: PromiseOrValue<BytesLike>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    version(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     withdraw(
       account: PromiseOrValue<string>,

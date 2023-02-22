@@ -2,6 +2,7 @@ import { t, Trans } from '@lingui/macro'
 import { Container } from 'components'
 import { ContentHead } from 'components/info-box'
 import { Table } from 'components/table'
+import About from './About'
 import TokenItem from 'components/token-item'
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
@@ -13,9 +14,9 @@ import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { ArrowUpRight } from 'react-feather'
 import { blockTimestampAtom } from 'state/atoms'
-import { Box, BoxProps, Link, Text } from 'theme-ui'
+import { Box, BoxProps, Link, Text, Divider } from 'theme-ui'
 import { StringMap } from 'types'
-import { formatCurrency } from 'utils'
+import { formatCurrency, shortenAddress } from 'utils'
 import { RSR_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 
@@ -78,11 +79,11 @@ const OutgoingAuctions = ({ data, tokens, ...props }: TableProps) => {
   const columns = useMemo(
     () => [
       {
-        Header: t`Sold`,
+        Header: t`Selling`,
         accessor: 'selling',
         Cell: (cell: any) => (
           <TokenItem
-            symbol={tokens[cell.cell.value]}
+            symbol={tokens[cell.cell.value] || shortenAddress(cell.cell.value)}
             logo={
               rToken?.symbol === cell.cell.value
                 ? getRTokenLogo(rToken?.address ?? '')
@@ -92,11 +93,11 @@ const OutgoingAuctions = ({ data, tokens, ...props }: TableProps) => {
         ),
       },
       {
-        Header: t`Bought`,
+        Header: t`Buying`,
         accessor: 'buying',
         Cell: (cell: any) => (
           <TokenItem
-            symbol={tokens[cell.cell.value]}
+            symbol={tokens[cell.cell.value] || shortenAddress(cell.cell.value)}
             logo={
               rToken?.symbol === cell.cell.value
                 ? getRTokenLogo(rToken?.address ?? '')
@@ -119,7 +120,7 @@ const OutgoingAuctions = ({ data, tokens, ...props }: TableProps) => {
         Header: t`Ends at`,
         accessor: 'endAt',
         Cell: (cell: any) => (
-          <Text>{dayjs(+cell.cell.value * 1000).format('YYYY-M-d HH:mm')}</Text>
+          <Text>{dayjs(+cell.cell.value * 1000).format('YYYY-M-D HH:mm')}</Text>
         ),
       },
       {
@@ -138,13 +139,13 @@ const OutgoingAuctions = ({ data, tokens, ...props }: TableProps) => {
         ),
       },
     ],
-    []
+    [JSON.stringify(tokens)]
   )
 
   return (
     <Box {...props}>
-      <Text variant="title" sx={{ fontSize: 3 }} ml={5} mb={4}>
-        <Trans>Ongoing Auctions</Trans>
+      <Text variant="strong" ml={3} mb={4}>
+        <Trans>Ongoing auctions</Trans>
       </Text>
       {data.length ? (
         <Table columns={columns} data={data} />
@@ -158,8 +159,12 @@ const OutgoingAuctions = ({ data, tokens, ...props }: TableProps) => {
           }}
           p={6}
         >
-          <Text>
-            <Trans>No ongoing auctions</Trans>
+          <Text variant="legend">
+            <Trans>
+              No ongoing {rToken?.symbol || 'Unknown'}-related auctions. Someone
+              has to check surplus revenue and poke the protocol to start a new
+              auction.
+            </Trans>
           </Text>
         </Box>
       )}
@@ -177,7 +182,7 @@ const FinalizedAuctions = ({ data, tokens, ...props }: TableProps) => {
         accessor: 'selling',
         Cell: (cell: any) => (
           <TokenItem
-            symbol={tokens[cell.cell.value]}
+            symbol={tokens[cell.cell.value] || shortenAddress(cell.cell.value)}
             logo={
               rToken?.symbol === cell.cell.value
                 ? getRTokenLogo(rToken?.address ?? '')
@@ -191,7 +196,7 @@ const FinalizedAuctions = ({ data, tokens, ...props }: TableProps) => {
         accessor: 'buying',
         Cell: (cell: any) => (
           <TokenItem
-            symbol={tokens[cell.cell.value]}
+            symbol={tokens[cell.cell.value] || shortenAddress(cell.cell.value)}
             logo={
               rToken?.symbol === cell.cell.value
                 ? getRTokenLogo(rToken?.address ?? '')
@@ -209,7 +214,7 @@ const FinalizedAuctions = ({ data, tokens, ...props }: TableProps) => {
         Header: t`Ended at`,
         accessor: 'endAt',
         Cell: (cell: any) => (
-          <Text>{dayjs(+cell.cell.value * 1000).format('YYYY-M-d HH:mm')}</Text>
+          <Text>{dayjs(+cell.cell.value * 1000).format('YYYY-M-D HH:mm')}</Text>
         ),
       },
       {
@@ -233,8 +238,8 @@ const FinalizedAuctions = ({ data, tokens, ...props }: TableProps) => {
 
   return (
     <Box {...props}>
-      <Text variant="title" sx={{ fontSize: 3 }} ml={5} mb={4}>
-        <Trans>Ended Auctions</Trans>
+      <Text variant="strong" ml={3} mb={4}>
+        <Trans>Ended auctions</Trans>
       </Text>
       {data.length ? (
         <Table columns={columns} data={data} />
@@ -248,8 +253,10 @@ const FinalizedAuctions = ({ data, tokens, ...props }: TableProps) => {
           }}
           p={6}
         >
-          <Text>
-            <Trans>No ended auctions</Trans>
+          <Text variant="legend">
+            <Trans>
+              No ended {rToken?.symbol || 'Unknown'} related auctions
+            </Trans>
           </Text>
         </Box>
       )}{' '}
@@ -286,7 +293,7 @@ const Auctions = () => {
   })
 
   const rows = useMemo(() => {
-    if (!data || !blockTimestamp) {
+    if (!data) {
       return { current: [], ended: [] }
     }
 
@@ -298,14 +305,10 @@ const Auctions = () => {
 
   return (
     <Container>
-      <ContentHead
-        title={rToken?.symbol + ' ' + t`related Auctions`}
-        subtitle={t`Ongoing & historical auctions`}
-        mb={7}
-        ml={5}
-      />
       <OutgoingAuctions data={rows.current} tokens={tokens} mb={7} />
       <FinalizedAuctions data={rows.ended} tokens={tokens} />
+      <Divider mx={-5} my={6} />
+      <About />
     </Container>
   )
 }

@@ -1,5 +1,5 @@
 import { atom, useAtom } from 'jotai'
-import { useAtomValue, useUpdateAtom } from 'jotai/utils'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { callsAtom, multicallStateAtom } from 'state/atoms'
 import { Falsy, MulticallState, RawCall, RawCallResult } from 'types'
@@ -35,8 +35,8 @@ const removeCallsAtom = atom(null, (get, set, calls: any) => {
  * The hook will cause the component to refresh when values change.
  */
 export function useRawCalls(calls: (RawCall | Falsy)[]): RawCallResult[] {
-  const setCalls = useUpdateAtom(setCallsAtom)
-  const removeCalls = useUpdateAtom(removeCallsAtom)
+  const setCalls = useSetAtom(setCallsAtom)
+  const removeCalls = useSetAtom(removeCallsAtom)
   const multicallState = useAtomValue(multicallStateAtom)
   const callsString = JSON.stringify(calls)
 

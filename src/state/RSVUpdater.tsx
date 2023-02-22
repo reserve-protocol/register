@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import { atom } from 'jotai'
-import { useUpdateAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import useSWR from 'swr'
 import { StringMap } from 'types'
@@ -24,8 +24,8 @@ const updateTxAtom = atom(null, (get, set, txs: RPayTx[]) => {
 })
 
 const RSVUpdater = () => {
-  const updateTx = useUpdateAtom(updateTxAtom)
-  const updateOverview = useUpdateAtom(rpayOverviewAtom)
+  const updateTx = useSetAtom(updateTxAtom)
+  const updateOverview = useSetAtom(rpayOverviewAtom)
   const { data: overviewData } = useSWR(OVERVIEW_URL, fetcher)
   const { data: txData } = useSWR(TXS_URL, fetcher)
 

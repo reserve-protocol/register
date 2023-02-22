@@ -23,8 +23,8 @@ const useRTokenPrice = (): number => {
   const getTokenPrice = useCallback(
     async (facadeContract: Facade, rTokenAddress: string) => {
       try {
-        const result = await facadeContract.price(rTokenAddress)
-        setPrice(+formatEther(result))
+        const { low, high } = await facadeContract.price(rTokenAddress)
+        setPrice((+formatEther(low) + +formatEther(high)) / 2)
       } catch (e) {
         console.warn('Error getting token price', e)
       }

@@ -5,14 +5,27 @@ import {
   ERC20 as ERC20Abi,
   Facade as FacadeAbi,
   FacadeWrite as FacadeWriteAbi,
+  Timelock as TimelockAbi,
   RToken as RTokenAbi,
   StRSR as StRSRAbi,
   Main as MainAbi,
+  Distributor as DistributorAbi,
+  Governance as GovernanceAbi,
 } from 'abis'
 import { Contract } from 'ethers'
 import { useMemo } from 'react'
 import { CHAIN_ID } from 'utils/chains'
-import { ERC20, Facade, RToken, StRsr, FacadeWrite, Main } from '../abis/types'
+import {
+  ERC20,
+  Facade,
+  RToken,
+  StRsr,
+  FacadeWrite,
+  Main,
+  Distributor,
+  Timelock,
+  Governance,
+} from '../abis/types'
 import { getContract } from '../utils'
 import { FACADE_ADDRESS, FACADE_WRITE_ADDRESS } from './../utils/addresses'
 
@@ -82,4 +95,37 @@ export function useMainContract(
   withSignerIfPossible?: boolean
 ): Main | null {
   return useContract<Main>(mainAddress, MainAbi, withSignerIfPossible)
+}
+
+export function useDistributorContract(
+  distributorAddress?: string,
+  withSignerIfPossible?: boolean
+): Distributor | null {
+  return useContract<Distributor>(
+    distributorAddress,
+    DistributorAbi,
+    withSignerIfPossible
+  )
+}
+
+export function useTimelockContract(
+  timelockAddress?: string,
+  withSignerIfPossible?: boolean
+): Timelock | null {
+  return useContract<Timelock>(
+    timelockAddress,
+    TimelockAbi,
+    withSignerIfPossible
+  )
+}
+
+export function useGovernanceContract(
+  governanceAddress?: string,
+  withSignerIfPossible?: boolean
+): Governance | null {
+  return useContract<Governance>(
+    governanceAddress,
+    GovernanceAbi,
+    withSignerIfPossible
+  )
 }

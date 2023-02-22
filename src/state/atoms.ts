@@ -5,19 +5,30 @@ import { CHAIN_ID } from 'utils/chains'
  */
 import { BigNumber } from '@ethersproject/bignumber'
 import { atom } from 'jotai'
-import { atomWithStorage, createJSONStorage } from 'jotai/utils'
+import { atomWithReset, atomWithStorage, createJSONStorage } from 'jotai/utils'
 import {
   AccountPosition,
   AccountToken,
   MulticallState,
   RawCall,
   ReserveToken,
+  StringMap,
   TransactionMap,
   TransactionState,
 } from 'types'
-import { RSR, RTOKEN_STATUS, TRANSACTION_STATUS } from 'utils/constants'
+import { RSR, TRANSACTION_STATUS } from 'utils/constants'
 import { WalletTransaction } from './../types/index'
+import {
+  BackupBasket,
+  Basket,
+  RevenueSplit,
+} from 'components/rtoken-setup/atoms'
 
+/**
+ * ######################
+ * ? Utility to clean-up storage in case of breaking changes
+ * ######################
+ */
 const VERSION = '1'
 
 if (
@@ -40,7 +51,64 @@ export const reserveTokensAtom = atomWithStorage<{
 }>('reserveTokens', {})
 
 // Current selected rToken address
-export const selectedRTokenAtom = atomWithStorage('selectedRToken', '')
+export const selectedRTokenAtom = atom('')
+
+// RToken related contracts
+export const rTokenContractsAtom = atomWithReset<StringMap>({
+  main: '',
+  backingManager: '',
+  rTokenTrader: '',
+  rsrTrader: '',
+  broker: '',
+  assetRegistry: '',
+  stRSR: '',
+  furnace: '',
+  rTokenAsset: '',
+  distributor: '',
+  basketHandler: '',
+})
+
+export const basketNonceAtom = atom(0)
+
+export const rTokenParamsAtom = atomWithReset({
+  tradingDelay: '',
+  backingBuffer: '',
+  maxTradeSlippage: '',
+  minTrade: '',
+  rewardRatio: '',
+  unstakingDelay: '',
+  auctionLength: '',
+  issuanceThrottleAmount: '',
+  issuanceThrottleRate: '',
+  redemptionThrottleAmount: '',
+  redemptionThrottleRate: '',
+  shortFreeze: '',
+  longFreeze: '',
+  maxTrade: '',
+})
+
+export const rTokenGovernanceAtom = atomWithReset<{
+  name: string
+  governor: string
+  timelock?: string
+  votingDelay?: string
+  votingPeriod?: string
+  proposalThreshold?: string
+  quorumDenominator?: string
+  quorumNumerator?: string
+  quorumVotes?: string
+}>({
+  name: 'Custom',
+  governor: '',
+})
+
+export const rTokenBasketAtom = atomWithReset<Basket>({})
+export const rTokenBackupAtom = atomWithReset<BackupBasket>({})
+export const rTokenRevenueSplitAtom = atomWithReset<RevenueSplit>({
+  holders: '60', // %
+  stakers: '40', // %
+  external: [],
+})
 
 // Grab rToken data from the atom list
 export const rTokenAtom = atom<ReserveToken | null>((get) =>
@@ -53,11 +121,11 @@ export const rTokenAtom = atom<ReserveToken | null>((get) =>
 export const rTokenYieldAtom = atom({ tokenApy: 0, stakingApy: 0 })
 
 // Current rToken status
-export const rTokenStatusAtom = atom(RTOKEN_STATUS.SOUND)
+export const rTokenStatusAtom = atom({ paused: false, frozen: false })
 export const isRTokenDisabledAtom = atom<boolean>((get) => {
   const status = get(rTokenStatusAtom)
 
-  return status === RTOKEN_STATUS.FROZEN || status === RTOKEN_STATUS.PAUSED
+  return status.paused || status.frozen
 })
 
 // Get rToken main contract, not available for RSV
@@ -74,10 +142,17 @@ export const rTokenCollateralDist = atom<{
 // Get rToken collateral distribution
 export const rTokenDistributionAtom = atom<{
   backing: number
-  insurance: number
+  staked: number
 }>({
   backing: 0,
-  insurance: 0,
+  staked: 0,
+})
+
+export const rTokenManagersAtom = atom({
+  owners: [] as string[],
+  pausers: [] as string[],
+  freezers: [] as string[],
+  longFreezers: [] as string[],
 })
 
 /**
@@ -93,12 +168,13 @@ export const isWalletModalVisibleAtom = atom(false)
 export const accountRoleAtom = atom({
   owner: false,
   pauser: false,
-  freezer: false,
+  shortFreezer: false,
+  longFreezer: false,
 })
 export const isManagerAtom = atom<boolean>((get) => {
   const role = get(accountRoleAtom)
 
-  return role.owner || role.pauser || role.freezer
+  return role.owner || role.pauser || role.shortFreezer || role.longFreezer
 })
 
 /**
@@ -174,37 +250,6 @@ export const accountPositionsAtom = atom<AccountPosition[]>([])
 
 // Store how much RSR is staked for a given account across the whole protocol
 export const accountHoldingsAtom = atom(0)
-
-// List of pending user issuances for the selected rToken
-export const pendingIssuancesAtom = atom<any[]>([])
-export const pendingIssuancesSummary = atom((get) => {
-  const pending = get(pendingIssuancesAtom)
-  const currentBlock = get(blockAtom) ?? 0
-
-  // TODO: Correct timestamp formatting
-  return pending.reduce(
-    (acc, issuance) => {
-      acc.index = issuance.index
-      acc.availableAt = issuance.availableAt
-
-      if (currentBlock >= issuance.availableAt) {
-        acc.availableAmount += issuance.amount
-        acc.availableIndex = issuance.index
-      } else {
-        acc.pendingAmount += issuance.amount
-      }
-
-      return acc
-    },
-    {
-      index: BigNumber.from(0),
-      availableIndex: BigNumber.from(0),
-      pendingAmount: 0,
-      availableAmount: 0,
-      availableAt: 0,
-    }
-  )
-})
 
 // List of unstake cooldown for the selected rToken
 export const pendingRSRAtom = atom<any[]>([])

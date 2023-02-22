@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 import IconInfo from 'components/info-icon'
 import { useAtomValue } from 'jotai'
 import {
@@ -36,7 +36,7 @@ const Stats = (props: BoxProps) => {
           sx={{
             borderRight: '1px solid',
             borderBottom: '1px solid',
-            borderColor: 'darkBorder',
+            borderColor: 'border',
           }}
         >
           <Text variant="subtitle" mb={3}>
@@ -44,31 +44,28 @@ const Stats = (props: BoxProps) => {
           </Text>
           <IconInfo
             icon={<Image src="/svgs/trendup.svg" />}
-            title="Est. APY"
+            title={t`Est. APY`}
             text={`${stakingApy}%`}
           />
         </Box>
-        <Box
-          p={4}
-          sx={{ borderBottom: '1px solid', borderColor: 'darkBorder' }}
-        >
+        <Box p={4} sx={{ borderBottom: '1px solid', borderColor: 'border' }}>
           <Text variant="subtitle" mb={3}>
             <Trans>Collateral backing</Trans>
           </Text>
           <IconInfo
             icon={<Image src="/svgs/backing.svg" />}
-            title="Current"
+            title={t`Current`}
             text={`${distribution.backing}%`}
           />
         </Box>
-        <Box p={4} sx={{ borderRight: '1px solid', borderColor: 'darkBorder' }}>
+        <Box p={4} sx={{ borderRight: '1px solid', borderColor: 'border' }}>
           <Text variant="subtitle" mb={3}>
-            <Trans>Backing + Insurance</Trans>
+            <Trans>Backing + Staked</Trans>
           </Text>
           <IconInfo
-            icon={<Image src="/svgs/insurance.svg" />}
-            title="Current"
-            text={`${distribution.backing + distribution.insurance}%`}
+            icon={<Image src="/svgs/staked.svg" />}
+            title={t`Current`}
+            text={`${distribution.backing + distribution.staked}%`}
           />
         </Box>
       </Grid>
@@ -110,7 +107,7 @@ const About = (props: BoxProps) => (
       <Trans>
         When you unstake your stRSR, there will be a delay (defined by
         governance). This is to eliminate game theory scenarios that would make
-        the backstop insurance pool less effective because people would
+        the backstop RSR staked pool less effective because people would
         continually be incentivized to unstake and restake.
       </Trans>
     </Text>
@@ -142,8 +139,8 @@ const Overview = (props: BoxProps) => {
   return (
     <Box {...props}>
       <ExchangeRate />
-      <Stats mt={4} />
-      <About mt={4} />
+      <Stats mt={[3, 4]} />
+      <About mt={[3, 4]} />
     </Box>
   )
 }

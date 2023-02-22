@@ -2,7 +2,7 @@ import { t, Trans } from '@lingui/macro'
 import { Button } from 'components'
 import useRToken from 'hooks/useRToken'
 import { useAtom, useAtomValue } from 'jotai'
-import { useUpdateAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import { useState } from 'react'
 import { Card } from 'theme-ui'
 import {
@@ -20,7 +20,7 @@ import QuantitiesUpdater from './QuantitiesUpdater'
  */
 const Issue = () => {
   const [amount, setAmount] = useAtom(issueAmountAtom)
-  const setQuantities = useUpdateAtom(quantitiesAtom)
+  const setQuantities = useSetAtom(quantitiesAtom)
   const isValid = useAtomValue(isValidIssuableAmountAtom)
   const [issuing, setIssuing] = useState(false)
   const missingCollateral = amount && !isValid

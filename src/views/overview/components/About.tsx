@@ -14,18 +14,29 @@ const About = (props: BoxProps) => {
           <Trans>About</Trans>
         </Text>
         <Text variant="legend" as="p">
-          RSV is backed by a basket of on-chain collateral assets, held by the
-          Reserve Vault smart contract. This basket is compromised of equal
-          parts BUSD and USDC — so each RSV is initially redeemable with the
-          Reserve smart contracts for 1/2 BUSD + 1/2 USDC. Since each RSV token
-          is redeemable directly for this basket, value of the RSV token is
-          economically linked to the value of the basket. This anchors RSV at
-          $1.00, as each of the current collateral tokens is redeemable for USD
-          1:1.
+          <Trans>
+            RSV is backed by a basket of on-chain collateral assets, held by the
+            Reserve Vault smart contract. This basket is currently compromised
+            of entirely USDC — so each RSV is initially redeemable with the
+            Reserve smart contracts for 1 USDC. Since each RSV token is
+            redeemable directly for this basket, value of the RSV token is
+            economically linked to the value of the basket. This anchors RSV at
+            $1.00, as each of the current collateral tokens is redeemable for
+            USD 1:1.
+          </Trans>{' '}
         </Text>
-        <Text variant="legend" as="p" mt={2}>
-          RSV is not integrated with the Reserve protocol at this time and is a
-          separate discrete set of smart contracts.{' '}
+        <Link
+          href="https://medium.com/reserve-currency/preparing-to-exclude-busd-from-rsvs-backing-4af7e575dcfb"
+          target="_blank"
+          sx={{ textDecoration: 'underline' }}
+        >
+          <Trans>Read more here on most recent backing change.</Trans>
+        </Link>
+        <Text variant="legend" as="p" mt={3}>
+          <Trans>
+            RSV is not integrated with the Reserve protocol at this time and is
+            a separate discrete set of smart contracts.
+          </Trans>{' '}
           <Link
             href="https://reserve.org/protocol/how_rsv_works/index.html"
             target="_blank"
@@ -42,7 +53,7 @@ const About = (props: BoxProps) => {
     <Box {...props}>
       {rToken?.mandate && (
         <>
-          <Text mb={3} variant="title">
+          <Text mb={3} variant="pageTitle">
             {rToken?.symbol} <Trans>Mandate</Trans>
           </Text>
           <Text as="p" variant="legend">

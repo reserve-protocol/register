@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
 import { Button } from 'components'
-import { useAtomValue } from 'jotai/utils'
+import { useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { BoxProps, Card } from 'theme-ui'
 import { isValidStakeAmountAtom } from 'views/staking/atoms'

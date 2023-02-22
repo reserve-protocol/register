@@ -1,6 +1,8 @@
 import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import { useNavigate } from 'react-router-dom'
+import { t } from '@lingui/macro'
+import { ContentHead } from 'components/info-box'
 import { Box, BoxProps, Grid, Link, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 
@@ -17,7 +19,8 @@ const About = (props: BoxProps) => {
 
   return (
     <Box {...props}>
-      <Grid columns={[1, 1, 2]} mt={6} pl={4} gap={[4, 4, 7]}>
+      <ContentHead pl={3} title={t`About`} />
+      <Grid columns={[1, 1, 2]} mt={7} px={3} gap={[4, 4, 7]}>
         <Box>
           <Text mb={2} variant="strong">
             <Trans>RTokens & Deploying your own</Trans>
@@ -32,13 +35,13 @@ const About = (props: BoxProps) => {
               community.
             </Trans>
           </Text>
-          <SmallButton py={2} mt={3} mb={4} onClick={handleDeploy}>
+          <SmallButton mt={4} mb={5} onClick={handleDeploy}>
             <Trans>Deploy RToken</Trans>
           </SmallButton>
           <Text mb={2} variant="strong">
             <Trans>The Reserve Project</Trans>
           </Text>
-          <Text variant="legend" as="p">
+          <Text variant="legend" as="p" mb={5}>
             <Trans>
               Reserve aims to help people around the world maintain their
               spending power by allowing anyone to create asset-backed
@@ -53,8 +56,6 @@ const About = (props: BoxProps) => {
               <Trans>Reserve's documentation.</Trans>
             </Link>
           </Text>
-        </Box>
-        <Box>
           <Text mb={2} variant="strong">
             <Trans>This app</Trans>
           </Text>
@@ -65,7 +66,7 @@ const About = (props: BoxProps) => {
               with the platform.
             </Trans>
           </Text>
-          <Text variant="legend" as="p" mb={4}>
+          <Text variant="legend" as="p" mb={5}>
             <Trans>
               If an RToken is listed on Register, it doesn't mean that Reserve
               or LC Labs endorses the safety or risk levels of the RToken. LC
@@ -85,13 +86,14 @@ const About = (props: BoxProps) => {
               collect any information about users or their financial activity.
             </Trans>
           </Text>
-          <Text variant="legend" as="p">
+          <Text variant="legend" as="p" mb={3}>
             <Trans>
               Please keep in mind that interactions with the Ethereum blockchain
               are pseudonymous and publicly available.
             </Trans>
           </Text>
         </Box>
+        <Box></Box>
       </Grid>
     </Box>
   )

@@ -93,15 +93,13 @@ export type DeploymentParamsStruct = {
   shortFreeze: PromiseOrValue<BigNumberish>;
   longFreeze: PromiseOrValue<BigNumberish>;
   rewardRatio: PromiseOrValue<BigNumberish>;
-  rewardPeriod: PromiseOrValue<BigNumberish>;
   unstakingDelay: PromiseOrValue<BigNumberish>;
   tradingDelay: PromiseOrValue<BigNumberish>;
   auctionLength: PromiseOrValue<BigNumberish>;
   backingBuffer: PromiseOrValue<BigNumberish>;
   maxTradeSlippage: PromiseOrValue<BigNumberish>;
-  issuanceRate: PromiseOrValue<BigNumberish>;
-  scalingRedemptionRate: PromiseOrValue<BigNumberish>;
-  redemptionRateFloor: PromiseOrValue<BigNumberish>;
+  issuanceThrottle: ThrottleLib.ParamsStruct;
+  redemptionThrottle: ThrottleLib.ParamsStruct;
 };
 
 export type DeploymentParamsStructOutput = [
@@ -114,12 +112,10 @@ export type DeploymentParamsStructOutput = [
   number,
   number,
   number,
-  number,
   BigNumber,
   BigNumber,
-  BigNumber,
-  BigNumber,
-  BigNumber
+  ThrottleLib.ParamsStructOutput,
+  ThrottleLib.ParamsStructOutput
 ] & {
   dist: RevenueShareStructOutput;
   minTradeVolume: BigNumber;
@@ -127,25 +123,36 @@ export type DeploymentParamsStructOutput = [
   shortFreeze: number;
   longFreeze: number;
   rewardRatio: BigNumber;
-  rewardPeriod: number;
   unstakingDelay: number;
   tradingDelay: number;
   auctionLength: number;
   backingBuffer: BigNumber;
   maxTradeSlippage: BigNumber;
-  issuanceRate: BigNumber;
-  scalingRedemptionRate: BigNumber;
-  redemptionRateFloor: BigNumber;
+  issuanceThrottle: ThrottleLib.ParamsStructOutput;
+  redemptionThrottle: ThrottleLib.ParamsStructOutput;
 };
+
+export declare namespace ThrottleLib {
+  export type ParamsStruct = {
+    amtRate: PromiseOrValue<BigNumberish>;
+    pctRate: PromiseOrValue<BigNumberish>;
+  };
+
+  export type ParamsStructOutput = [BigNumber, BigNumber] & {
+    amtRate: BigNumber;
+    pctRate: BigNumber;
+  };
+}
 
 export interface DeployerInterface extends utils.Interface {
   functions: {
     "ENS()": FunctionFragment;
-    "deploy(string,string,string,address,((uint16,uint16),uint192,uint192,uint48,uint48,uint192,uint48,uint48,uint48,uint48,uint192,uint192,uint192,uint192,uint256))": FunctionFragment;
+    "deploy(string,string,string,address,((uint16,uint16),uint192,uint192,uint48,uint48,uint192,uint48,uint48,uint48,uint192,uint192,(uint256,uint192),(uint256,uint192)))": FunctionFragment;
     "gnosis()": FunctionFragment;
     "implementations()": FunctionFragment;
     "rsr()": FunctionFragment;
     "rsrAsset()": FunctionFragment;
+    "version()": FunctionFragment;
   };
 
   getFunction(
@@ -156,6 +163,7 @@ export interface DeployerInterface extends utils.Interface {
       | "implementations"
       | "rsr"
       | "rsrAsset"
+      | "version"
   ): FunctionFragment;
 
   encodeFunctionData(functionFragment: "ENS", values?: undefined): string;
@@ -176,6 +184,7 @@ export interface DeployerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "rsr", values?: undefined): string;
   encodeFunctionData(functionFragment: "rsrAsset", values?: undefined): string;
+  encodeFunctionData(functionFragment: "version", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "ENS", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "deploy", data: BytesLike): Result;
@@ -186,9 +195,10 @@ export interface DeployerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "rsr", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "rsrAsset", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "version", data: BytesLike): Result;
 
   events: {
-    "RTokenCreated(address,address,address,address)": EventFragment;
+    "RTokenCreated(address,address,address,address,string)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "RTokenCreated"): EventFragment;
@@ -199,9 +209,10 @@ export interface RTokenCreatedEventObject {
   rToken: string;
   stRSR: string;
   owner: string;
+  version: string;
 }
 export type RTokenCreatedEvent = TypedEvent<
-  [string, string, string, string],
+  [string, string, string, string, string],
   RTokenCreatedEventObject
 >;
 
@@ -260,6 +271,8 @@ export interface Deployer extends BaseContract {
     rsr(overrides?: CallOverrides): Promise<[string]>;
 
     rsrAsset(overrides?: CallOverrides): Promise<[string]>;
+
+    version(overrides?: CallOverrides): Promise<[string]>;
   };
 
   ENS(overrides?: CallOverrides): Promise<string>;
@@ -289,6 +302,8 @@ export interface Deployer extends BaseContract {
 
   rsrAsset(overrides?: CallOverrides): Promise<string>;
 
+  version(overrides?: CallOverrides): Promise<string>;
+
   callStatic: {
     ENS(overrides?: CallOverrides): Promise<string>;
 
@@ -316,20 +331,24 @@ export interface Deployer extends BaseContract {
     rsr(overrides?: CallOverrides): Promise<string>;
 
     rsrAsset(overrides?: CallOverrides): Promise<string>;
+
+    version(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {
-    "RTokenCreated(address,address,address,address)"(
+    "RTokenCreated(address,address,address,address,string)"(
       main?: PromiseOrValue<string> | null,
       rToken?: PromiseOrValue<string> | null,
       stRSR?: null,
-      owner?: PromiseOrValue<string> | null
+      owner?: PromiseOrValue<string> | null,
+      version?: null
     ): RTokenCreatedEventFilter;
     RTokenCreated(
       main?: PromiseOrValue<string> | null,
       rToken?: PromiseOrValue<string> | null,
       stRSR?: null,
-      owner?: PromiseOrValue<string> | null
+      owner?: PromiseOrValue<string> | null,
+      version?: null
     ): RTokenCreatedEventFilter;
   };
 
@@ -352,6 +371,8 @@ export interface Deployer extends BaseContract {
     rsr(overrides?: CallOverrides): Promise<BigNumber>;
 
     rsrAsset(overrides?: CallOverrides): Promise<BigNumber>;
+
+    version(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -373,5 +394,7 @@ export interface Deployer extends BaseContract {
     rsr(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     rsrAsset(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    version(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

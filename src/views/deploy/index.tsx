@@ -1,85 +1,69 @@
-import { useWeb3React } from '@web3-react/core'
-import { useAtom } from 'jotai'
-import { useUpdateAtom } from 'jotai/utils'
-import { useEffect } from 'react'
+import {
+  backupCollateralAtom,
+  basketAtom,
+  revenueSplitAtom,
+} from 'components/rtoken-setup/atoms'
+import Layout from 'components/rtoken-setup/Layout'
+import useRToken from 'hooks/useRToken'
+import { useResetAtom } from 'jotai/utils'
+import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { Box } from 'theme-ui'
-import { backupCollateralAtom, basketAtom, deployIdAtom } from './atoms'
-import { deployStepAtom } from './components/DeployHeader'
-import DeploymentStepTracker from './components/DeployStep'
-import BasketView from './views/Basket'
-import ConfirmDeploy from './views/ConfirmDeploy'
-import DeployStatus from './views/DeployStatus'
-import Intro from './views/Intro'
-import TokenParameters from './views/TokenParameters'
-
-const defaultValues = {
-  // token params
-  name: '',
-  symbol: '',
-  manifesto: '',
-  ownerAddress: '',
-  // backing params
-  tradingDelay: '2160', // delay after default confirmed
-  auctionLength: '900', // 15 minutes
-  backingBuffer: '0.01', // 0.01%
-  maxTradeSlippage: '1', // 1%
-  issuanceRate: '0.025', // 0.025% per block or ~0.1% per minute
-  scalingRedemptionRate: '5', // 5% per block
-  redemptionRateFloor: '1000000', // Anticipated redemption minimum amount for throttling
-  // other
-  rTokenDist: 40, // reward dist %
-  rsrDist: 60, // reward dist %
-  rewardPeriod: '604800', // 1 week
-  rewardRatio: '0.02284', // approx. half life of 30 pay periods
-  unstakingDelay: '1209600', // seconds 2 week
-  minTrade: '0.01',
-  maxTrade: '1000000',
-  shortFreeze: '259200', // 3days
-  longFreeze: '2592000', // 30days
-}
-
-const DeploymentViews = [
-  Intro,
-  BasketView,
-  TokenParameters,
-  ConfirmDeploy,
-  DeployStatus,
-]
+import DeployOverview from './components/DeployOverview'
+import Governance from './components/Governance'
+import NavigationSidebar from './components/NavigationSidebar'
+import RTokenSetup from './components/RTokenSetup'
+import { deployIdAtom, useDeployTxState } from './useDeploy'
+import { governanceIdAtom } from './useGovernance'
+import { defaultValues } from './utils'
 
 const Deploy = () => {
-  const { account } = useWeb3React()
-  const setBasket = useUpdateAtom(basketAtom)
-  const setBackupBasket = useUpdateAtom(backupCollateralAtom)
-  const [currentView, setCurrentView] = useAtom(deployStepAtom)
+  const [governance, setGovernance] = useState(false)
+  const rToken = useRToken()
+  const deployTx = useDeployTxState()
+
   const form = useForm({
     mode: 'onChange',
     defaultValues,
   })
-
-  // current tab view [config - basket]
-  const View = DeploymentViews[currentView]
-
-  useEffect(() => {
-    if (account) {
-      form.setValue('ownerAddress', account)
-    }
-  }, [account])
+  const resetBasket = useResetAtom(basketAtom)
+  const resetBackup = useResetAtom(backupCollateralAtom)
+  const resetRevenueSplit = useResetAtom(revenueSplitAtom)
+  const resetGovId = useResetAtom(governanceIdAtom)
+  const resetDeployId = useResetAtom(deployIdAtom)
 
   useEffect(() => {
     return () => {
-      setCurrentView(0)
-      setBasket({})
-      setBackupBasket({})
+      resetBackup()
+      resetBasket()
+      resetRevenueSplit()
+      resetGovId()
+      resetDeployId()
     }
   }, [])
 
+  // Listen for RToken change, if we have a tx and the rtoken
+  // then switch to governance setup
+  useEffect(() => {
+    if (
+      deployTx?.extra?.rTokenAddress &&
+      rToken?.address === deployTx.extra.rTokenAddress
+    ) {
+      form.reset()
+      setGovernance(true)
+    }
+  }, [rToken?.address])
+
+  if (governance) {
+    return <Governance />
+  }
+
   return (
     <FormProvider {...form}>
-      <DeploymentStepTracker step={currentView} />
-      <Box sx={{ width: 1180, margin: 'auto' }} mb={7}>
-        {View && <View />}
-      </Box>
+      <Layout>
+        <NavigationSidebar />
+        <RTokenSetup governance={governance} />
+        <DeployOverview sx={{ position: 'sticky', top: 0 }} />
+      </Layout>
     </FormProvider>
   )
 }

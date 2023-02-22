@@ -28,119 +28,130 @@ import type {
   PromiseOrValue,
 } from "./common";
 
-export declare namespace RTokenP1 {
-  export type IssueItemStruct = {
-    when: PromiseOrValue<BigNumberish>;
-    amtRToken: PromiseOrValue<BigNumberish>;
-    amtBaskets: PromiseOrValue<BigNumberish>;
-    deposits: PromiseOrValue<BigNumberish>[];
+export declare namespace ThrottleLib {
+  export type ParamsStruct = {
+    amtRate: PromiseOrValue<BigNumberish>;
+    pctRate: PromiseOrValue<BigNumberish>;
   };
 
-  export type IssueItemStructOutput = [
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber[]
-  ] & {
-    when: BigNumber;
-    amtRToken: BigNumber;
-    amtBaskets: BigNumber;
-    deposits: BigNumber[];
+  export type ParamsStructOutput = [BigNumber, BigNumber] & {
+    amtRate: BigNumber;
+    pctRate: BigNumber;
   };
 }
 
 export interface RTokenInterface extends utils.Interface {
   functions: {
     "DOMAIN_SEPARATOR()": FunctionFragment;
+    "MAX_EXCHANGE_RATE()": FunctionFragment;
+    "MAX_THROTTLE_PCT_AMT()": FunctionFragment;
+    "MAX_THROTTLE_RATE_AMT()": FunctionFragment;
+    "MIN_EXCHANGE_RATE()": FunctionFragment;
+    "MIN_THROTTLE_RATE_AMT()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "basketsNeeded()": FunctionFragment;
-    "cancel(uint256,bool)": FunctionFragment;
-    "claimAndSweepRewards()": FunctionFragment;
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
-    "init(address,string,string,string,uint192,uint192,uint256)": FunctionFragment;
-    "issuanceRate()": FunctionFragment;
+    "init(address,string,string,string,(uint256,uint192),(uint256,uint192))": FunctionFragment;
+    "issuanceAvailable()": FunctionFragment;
+    "issuanceThrottleParams()": FunctionFragment;
     "issue(uint256)": FunctionFragment;
-    "issueItem(address,uint256)": FunctionFragment;
-    "issueQueues(address)": FunctionFragment;
+    "issueTo(address,uint256)": FunctionFragment;
     "main()": FunctionFragment;
     "mandate()": FunctionFragment;
-    "maxRedemptionCharge()": FunctionFragment;
     "melt(uint256)": FunctionFragment;
     "mint(address,uint256)": FunctionFragment;
+    "monetizeDonations(address)": FunctionFragment;
     "name()": FunctionFragment;
     "nonces(address)": FunctionFragment;
     "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
-    "queueBounds(address)": FunctionFragment;
-    "redeem(uint256)": FunctionFragment;
-    "redemptionLimit()": FunctionFragment;
-    "redemptionRateFloor()": FunctionFragment;
-    "redemptionVirtualSupply()": FunctionFragment;
-    "scalingRedemptionRate()": FunctionFragment;
+    "redeem(uint256,uint48)": FunctionFragment;
+    "redeemTo(address,uint256,uint48)": FunctionFragment;
+    "redemptionAvailable()": FunctionFragment;
+    "redemptionThrottleParams()": FunctionFragment;
     "setBasketsNeeded(uint192)": FunctionFragment;
-    "setIssuanceRate(uint192)": FunctionFragment;
-    "setRedemptionRateFloor(uint256)": FunctionFragment;
-    "setScalingRedemptionRate(uint192)": FunctionFragment;
+    "setIssuanceThrottleParams((uint256,uint192))": FunctionFragment;
+    "setRedemptionThrottleParams((uint256,uint192))": FunctionFragment;
     "symbol()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
-    "vest(address,uint256)": FunctionFragment;
+    "version()": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
       | "DOMAIN_SEPARATOR"
+      | "MAX_EXCHANGE_RATE"
+      | "MAX_THROTTLE_PCT_AMT"
+      | "MAX_THROTTLE_RATE_AMT"
+      | "MIN_EXCHANGE_RATE"
+      | "MIN_THROTTLE_RATE_AMT"
       | "allowance"
       | "approve"
       | "balanceOf"
       | "basketsNeeded"
-      | "cancel"
-      | "claimAndSweepRewards"
       | "decimals"
       | "decreaseAllowance"
       | "increaseAllowance"
       | "init"
-      | "issuanceRate"
+      | "issuanceAvailable"
+      | "issuanceThrottleParams"
       | "issue"
-      | "issueItem"
-      | "issueQueues"
+      | "issueTo"
       | "main"
       | "mandate"
-      | "maxRedemptionCharge"
       | "melt"
       | "mint"
+      | "monetizeDonations"
       | "name"
       | "nonces"
       | "permit"
       | "proxiableUUID"
-      | "queueBounds"
       | "redeem"
-      | "redemptionLimit"
-      | "redemptionRateFloor"
-      | "redemptionVirtualSupply"
-      | "scalingRedemptionRate"
+      | "redeemTo"
+      | "redemptionAvailable"
+      | "redemptionThrottleParams"
       | "setBasketsNeeded"
-      | "setIssuanceRate"
-      | "setRedemptionRateFloor"
-      | "setScalingRedemptionRate"
+      | "setIssuanceThrottleParams"
+      | "setRedemptionThrottleParams"
       | "symbol"
       | "totalSupply"
       | "transfer"
       | "transferFrom"
       | "upgradeTo"
       | "upgradeToAndCall"
-      | "vest"
+      | "version"
   ): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "DOMAIN_SEPARATOR",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "MAX_EXCHANGE_RATE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "MAX_THROTTLE_PCT_AMT",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "MAX_THROTTLE_RATE_AMT",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "MIN_EXCHANGE_RATE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "MIN_THROTTLE_RATE_AMT",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -159,14 +170,6 @@ export interface RTokenInterface extends utils.Interface {
     functionFragment: "basketsNeeded",
     values?: undefined
   ): string;
-  encodeFunctionData(
-    functionFragment: "cancel",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<boolean>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "claimAndSweepRewards",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "decreaseAllowance",
@@ -183,13 +186,16 @@ export interface RTokenInterface extends utils.Interface {
       PromiseOrValue<string>,
       PromiseOrValue<string>,
       PromiseOrValue<string>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
+      ThrottleLib.ParamsStruct,
+      ThrottleLib.ParamsStruct
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "issuanceRate",
+    functionFragment: "issuanceAvailable",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "issuanceThrottleParams",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -197,19 +203,11 @@ export interface RTokenInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "issueItem",
+    functionFragment: "issueTo",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "issueQueues",
-    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(functionFragment: "main", values?: undefined): string;
   encodeFunctionData(functionFragment: "mandate", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "maxRedemptionCharge",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "melt",
     values: [PromiseOrValue<BigNumberish>]
@@ -217,6 +215,10 @@ export interface RTokenInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "mint",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "monetizeDonations",
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(
@@ -240,27 +242,23 @@ export interface RTokenInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "queueBounds",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "redeem",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "redemptionLimit",
+    functionFragment: "redeemTo",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "redemptionAvailable",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "redemptionRateFloor",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "redemptionVirtualSupply",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "scalingRedemptionRate",
+    functionFragment: "redemptionThrottleParams",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -268,16 +266,12 @@ export interface RTokenInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "setIssuanceRate",
-    values: [PromiseOrValue<BigNumberish>]
+    functionFragment: "setIssuanceThrottleParams",
+    values: [ThrottleLib.ParamsStruct]
   ): string;
   encodeFunctionData(
-    functionFragment: "setRedemptionRateFloor",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setScalingRedemptionRate",
-    values: [PromiseOrValue<BigNumberish>]
+    functionFragment: "setRedemptionThrottleParams",
+    values: [ThrottleLib.ParamsStruct]
   ): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
   encodeFunctionData(
@@ -304,13 +298,30 @@ export interface RTokenInterface extends utils.Interface {
     functionFragment: "upgradeToAndCall",
     values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
   ): string;
-  encodeFunctionData(
-    functionFragment: "vest",
-    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
-  ): string;
+  encodeFunctionData(functionFragment: "version", values?: undefined): string;
 
   decodeFunctionResult(
     functionFragment: "DOMAIN_SEPARATOR",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "MAX_EXCHANGE_RATE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "MAX_THROTTLE_PCT_AMT",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "MAX_THROTTLE_RATE_AMT",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "MIN_EXCHANGE_RATE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "MIN_THROTTLE_RATE_AMT",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
@@ -318,11 +329,6 @@ export interface RTokenInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "basketsNeeded",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "cancel", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "claimAndSweepRewards",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
@@ -336,23 +342,23 @@ export interface RTokenInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "init", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "issuanceRate",
+    functionFragment: "issuanceAvailable",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "issuanceThrottleParams",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "issue", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "issueItem", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "issueQueues",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "issueTo", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "main", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "mandate", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "maxRedemptionCharge",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "melt", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "monetizeDonations",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "nonces", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "permit", data: BytesLike): Result;
@@ -360,25 +366,14 @@ export interface RTokenInterface extends utils.Interface {
     functionFragment: "proxiableUUID",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "queueBounds",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "redeem", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "redeemTo", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "redemptionLimit",
+    functionFragment: "redemptionAvailable",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "redemptionRateFloor",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "redemptionVirtualSupply",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "scalingRedemptionRate",
+    functionFragment: "redemptionThrottleParams",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -386,15 +381,11 @@ export interface RTokenInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setIssuanceRate",
+    functionFragment: "setIssuanceThrottleParams",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setRedemptionRateFloor",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setScalingRedemptionRate",
+    functionFragment: "setRedemptionThrottleParams",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
@@ -412,7 +403,7 @@ export interface RTokenInterface extends utils.Interface {
     functionFragment: "upgradeToAndCall",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "vest", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "version", data: BytesLike): Result;
 
   events: {
     "AdminChanged(address,address)": EventFragment;
@@ -420,16 +411,11 @@ export interface RTokenInterface extends utils.Interface {
     "BasketsNeededChanged(uint192,uint192)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
     "Initialized(uint8)": EventFragment;
-    "Issuance(address,uint256,uint192)": EventFragment;
-    "IssuanceRateSet(uint192,uint192)": EventFragment;
-    "IssuanceStarted(address,uint256,uint256,uint192,address[],uint256[],uint192)": EventFragment;
-    "IssuancesCanceled(address,uint256,uint256,uint256)": EventFragment;
-    "IssuancesCompleted(address,uint256,uint256,uint256)": EventFragment;
+    "Issuance(address,address,uint256,uint192)": EventFragment;
+    "IssuanceThrottleSet(tuple,tuple)": EventFragment;
     "Melted(uint256)": EventFragment;
-    "Redemption(address,uint256,uint192)": EventFragment;
-    "RedemptionRateFloorSet(uint256,uint256)": EventFragment;
-    "RewardsClaimed(address,uint256)": EventFragment;
-    "ScalingRedemptionRateSet(uint192,uint192)": EventFragment;
+    "Redemption(address,address,uint256,uint192)": EventFragment;
+    "RedemptionThrottleSet(tuple,tuple)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
@@ -440,15 +426,10 @@ export interface RTokenInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Issuance"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "IssuanceRateSet"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "IssuanceStarted"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "IssuancesCanceled"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "IssuancesCompleted"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "IssuanceThrottleSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Melted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Redemption"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "RedemptionRateFloorSet"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "RewardsClaimed"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ScalingRedemptionRateSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RedemptionThrottleSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
@@ -507,70 +488,28 @@ export type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
 
 export interface IssuanceEventObject {
   issuer: string;
+  recipient: string;
   amount: BigNumber;
   baskets: BigNumber;
 }
 export type IssuanceEvent = TypedEvent<
-  [string, BigNumber, BigNumber],
+  [string, string, BigNumber, BigNumber],
   IssuanceEventObject
 >;
 
 export type IssuanceEventFilter = TypedEventFilter<IssuanceEvent>;
 
-export interface IssuanceRateSetEventObject {
-  oldVal: BigNumber;
-  newVal: BigNumber;
+export interface IssuanceThrottleSetEventObject {
+  oldVal: ThrottleLib.ParamsStructOutput;
+  newVal: ThrottleLib.ParamsStructOutput;
 }
-export type IssuanceRateSetEvent = TypedEvent<
-  [BigNumber, BigNumber],
-  IssuanceRateSetEventObject
+export type IssuanceThrottleSetEvent = TypedEvent<
+  [ThrottleLib.ParamsStructOutput, ThrottleLib.ParamsStructOutput],
+  IssuanceThrottleSetEventObject
 >;
 
-export type IssuanceRateSetEventFilter = TypedEventFilter<IssuanceRateSetEvent>;
-
-export interface IssuanceStartedEventObject {
-  issuer: string;
-  index: BigNumber;
-  amount: BigNumber;
-  baskets: BigNumber;
-  erc20s: string[];
-  quantities: BigNumber[];
-  blockAvailableAt: BigNumber;
-}
-export type IssuanceStartedEvent = TypedEvent<
-  [string, BigNumber, BigNumber, BigNumber, string[], BigNumber[], BigNumber],
-  IssuanceStartedEventObject
->;
-
-export type IssuanceStartedEventFilter = TypedEventFilter<IssuanceStartedEvent>;
-
-export interface IssuancesCanceledEventObject {
-  issuer: string;
-  firstId: BigNumber;
-  endId: BigNumber;
-  amount: BigNumber;
-}
-export type IssuancesCanceledEvent = TypedEvent<
-  [string, BigNumber, BigNumber, BigNumber],
-  IssuancesCanceledEventObject
->;
-
-export type IssuancesCanceledEventFilter =
-  TypedEventFilter<IssuancesCanceledEvent>;
-
-export interface IssuancesCompletedEventObject {
-  issuer: string;
-  firstId: BigNumber;
-  endId: BigNumber;
-  amount: BigNumber;
-}
-export type IssuancesCompletedEvent = TypedEvent<
-  [string, BigNumber, BigNumber, BigNumber],
-  IssuancesCompletedEventObject
->;
-
-export type IssuancesCompletedEventFilter =
-  TypedEventFilter<IssuancesCompletedEvent>;
+export type IssuanceThrottleSetEventFilter =
+  TypedEventFilter<IssuanceThrottleSetEvent>;
 
 export interface MeltedEventObject {
   amount: BigNumber;
@@ -581,50 +520,28 @@ export type MeltedEventFilter = TypedEventFilter<MeltedEvent>;
 
 export interface RedemptionEventObject {
   redeemer: string;
+  recipient: string;
   amount: BigNumber;
   baskets: BigNumber;
 }
 export type RedemptionEvent = TypedEvent<
-  [string, BigNumber, BigNumber],
+  [string, string, BigNumber, BigNumber],
   RedemptionEventObject
 >;
 
 export type RedemptionEventFilter = TypedEventFilter<RedemptionEvent>;
 
-export interface RedemptionRateFloorSetEventObject {
-  oldVal: BigNumber;
-  newVal: BigNumber;
+export interface RedemptionThrottleSetEventObject {
+  oldVal: ThrottleLib.ParamsStructOutput;
+  newVal: ThrottleLib.ParamsStructOutput;
 }
-export type RedemptionRateFloorSetEvent = TypedEvent<
-  [BigNumber, BigNumber],
-  RedemptionRateFloorSetEventObject
+export type RedemptionThrottleSetEvent = TypedEvent<
+  [ThrottleLib.ParamsStructOutput, ThrottleLib.ParamsStructOutput],
+  RedemptionThrottleSetEventObject
 >;
 
-export type RedemptionRateFloorSetEventFilter =
-  TypedEventFilter<RedemptionRateFloorSetEvent>;
-
-export interface RewardsClaimedEventObject {
-  erc20: string;
-  amount: BigNumber;
-}
-export type RewardsClaimedEvent = TypedEvent<
-  [string, BigNumber],
-  RewardsClaimedEventObject
->;
-
-export type RewardsClaimedEventFilter = TypedEventFilter<RewardsClaimedEvent>;
-
-export interface ScalingRedemptionRateSetEventObject {
-  oldVal: BigNumber;
-  newVal: BigNumber;
-}
-export type ScalingRedemptionRateSetEvent = TypedEvent<
-  [BigNumber, BigNumber],
-  ScalingRedemptionRateSetEventObject
->;
-
-export type ScalingRedemptionRateSetEventFilter =
-  TypedEventFilter<ScalingRedemptionRateSetEvent>;
+export type RedemptionThrottleSetEventFilter =
+  TypedEventFilter<RedemptionThrottleSetEvent>;
 
 export interface TransferEventObject {
   from: string;
@@ -674,6 +591,16 @@ export interface RToken extends BaseContract {
   functions: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<[string]>;
 
+    MAX_EXCHANGE_RATE(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    MAX_THROTTLE_PCT_AMT(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    MAX_THROTTLE_RATE_AMT(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    MIN_EXCHANGE_RATE(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    MIN_THROTTLE_RATE_AMT(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     allowance(
       owner: PromiseOrValue<string>,
       spender: PromiseOrValue<string>,
@@ -692,16 +619,6 @@ export interface RToken extends BaseContract {
     ): Promise<[BigNumber]>;
 
     basketsNeeded(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    cancel(
-      endId: PromiseOrValue<BigNumberish>,
-      earliest: PromiseOrValue<boolean>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    claimAndSweepRewards(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
 
     decimals(overrides?: CallOverrides): Promise<[number]>;
 
@@ -722,41 +639,31 @@ export interface RToken extends BaseContract {
       name_: PromiseOrValue<string>,
       symbol_: PromiseOrValue<string>,
       mandate_: PromiseOrValue<string>,
-      issuanceRate_: PromiseOrValue<BigNumberish>,
-      maxRedemptionCharge_: PromiseOrValue<BigNumberish>,
-      redemptionVirtualSupply_: PromiseOrValue<BigNumberish>,
+      issuanceThrottleParams_: ThrottleLib.ParamsStruct,
+      redemptionThrottleParams_: ThrottleLib.ParamsStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    issuanceRate(overrides?: CallOverrides): Promise<[BigNumber]>;
+    issuanceAvailable(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    issuanceThrottleParams(
+      overrides?: CallOverrides
+    ): Promise<[ThrottleLib.ParamsStructOutput]>;
 
     issue(
-      amtRToken: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    issueItem(
-      account: PromiseOrValue<string>,
-      index: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[RTokenP1.IssueItemStructOutput]>;
-
-    issueQueues(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<
-      [BigNumber, BigNumber, BigNumber] & {
-        basketNonce: BigNumber;
-        left: BigNumber;
-        right: BigNumber;
-      }
-    >;
+    issueTo(
+      recipient: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     main(overrides?: CallOverrides): Promise<[string]>;
 
     mandate(overrides?: CallOverrides): Promise<[string]>;
-
-    maxRedemptionCharge(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     melt(
       amtRToken: PromiseOrValue<BigNumberish>,
@@ -766,6 +673,11 @@ export interface RToken extends BaseContract {
     mint(
       recipient: PromiseOrValue<string>,
       amtRToken: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    monetizeDonations(
+      erc20: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -789,41 +701,39 @@ export interface RToken extends BaseContract {
 
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
 
-    queueBounds(
-      account: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber, BigNumber] & { left: BigNumber; right: BigNumber }>;
-
     redeem(
       amount: PromiseOrValue<BigNumberish>,
+      basketNonce: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    redemptionLimit(overrides?: CallOverrides): Promise<[BigNumber]>;
+    redeemTo(
+      recipient: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      basketNonce: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
-    redemptionRateFloor(overrides?: CallOverrides): Promise<[BigNumber]>;
+    redemptionAvailable(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber] & { available: BigNumber }>;
 
-    redemptionVirtualSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    scalingRedemptionRate(overrides?: CallOverrides): Promise<[BigNumber]>;
+    redemptionThrottleParams(
+      overrides?: CallOverrides
+    ): Promise<[ThrottleLib.ParamsStructOutput]>;
 
     setBasketsNeeded(
       basketsNeeded_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    setIssuanceRate(
-      val: PromiseOrValue<BigNumberish>,
+    setIssuanceThrottleParams(
+      params: ThrottleLib.ParamsStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    setRedemptionRateFloor(
-      val: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    setScalingRedemptionRate(
-      val: PromiseOrValue<BigNumberish>,
+    setRedemptionThrottleParams(
+      params: ThrottleLib.ParamsStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -855,14 +765,20 @@ export interface RToken extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    vest(
-      account: PromiseOrValue<string>,
-      endId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    version(overrides?: CallOverrides): Promise<[string]>;
   };
 
   DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
+
+  MAX_EXCHANGE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
+
+  MAX_THROTTLE_PCT_AMT(overrides?: CallOverrides): Promise<BigNumber>;
+
+  MAX_THROTTLE_RATE_AMT(overrides?: CallOverrides): Promise<BigNumber>;
+
+  MIN_EXCHANGE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
+
+  MIN_THROTTLE_RATE_AMT(overrides?: CallOverrides): Promise<BigNumber>;
 
   allowance(
     owner: PromiseOrValue<string>,
@@ -883,16 +799,6 @@ export interface RToken extends BaseContract {
 
   basketsNeeded(overrides?: CallOverrides): Promise<BigNumber>;
 
-  cancel(
-    endId: PromiseOrValue<BigNumberish>,
-    earliest: PromiseOrValue<boolean>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  claimAndSweepRewards(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   decimals(overrides?: CallOverrides): Promise<number>;
 
   decreaseAllowance(
@@ -912,41 +818,31 @@ export interface RToken extends BaseContract {
     name_: PromiseOrValue<string>,
     symbol_: PromiseOrValue<string>,
     mandate_: PromiseOrValue<string>,
-    issuanceRate_: PromiseOrValue<BigNumberish>,
-    maxRedemptionCharge_: PromiseOrValue<BigNumberish>,
-    redemptionVirtualSupply_: PromiseOrValue<BigNumberish>,
+    issuanceThrottleParams_: ThrottleLib.ParamsStruct,
+    redemptionThrottleParams_: ThrottleLib.ParamsStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  issuanceRate(overrides?: CallOverrides): Promise<BigNumber>;
+  issuanceAvailable(overrides?: CallOverrides): Promise<BigNumber>;
+
+  issuanceThrottleParams(
+    overrides?: CallOverrides
+  ): Promise<ThrottleLib.ParamsStructOutput>;
 
   issue(
-    amtRToken: PromiseOrValue<BigNumberish>,
+    amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  issueItem(
-    account: PromiseOrValue<string>,
-    index: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<RTokenP1.IssueItemStructOutput>;
-
-  issueQueues(
-    arg0: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<
-    [BigNumber, BigNumber, BigNumber] & {
-      basketNonce: BigNumber;
-      left: BigNumber;
-      right: BigNumber;
-    }
-  >;
+  issueTo(
+    recipient: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   main(overrides?: CallOverrides): Promise<string>;
 
   mandate(overrides?: CallOverrides): Promise<string>;
-
-  maxRedemptionCharge(overrides?: CallOverrides): Promise<BigNumber>;
 
   melt(
     amtRToken: PromiseOrValue<BigNumberish>,
@@ -956,6 +852,11 @@ export interface RToken extends BaseContract {
   mint(
     recipient: PromiseOrValue<string>,
     amtRToken: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  monetizeDonations(
+    erc20: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -979,41 +880,37 @@ export interface RToken extends BaseContract {
 
   proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
-  queueBounds(
-    account: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<[BigNumber, BigNumber] & { left: BigNumber; right: BigNumber }>;
-
   redeem(
     amount: PromiseOrValue<BigNumberish>,
+    basketNonce: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  redemptionLimit(overrides?: CallOverrides): Promise<BigNumber>;
+  redeemTo(
+    recipient: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    basketNonce: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
-  redemptionRateFloor(overrides?: CallOverrides): Promise<BigNumber>;
+  redemptionAvailable(overrides?: CallOverrides): Promise<BigNumber>;
 
-  redemptionVirtualSupply(overrides?: CallOverrides): Promise<BigNumber>;
-
-  scalingRedemptionRate(overrides?: CallOverrides): Promise<BigNumber>;
+  redemptionThrottleParams(
+    overrides?: CallOverrides
+  ): Promise<ThrottleLib.ParamsStructOutput>;
 
   setBasketsNeeded(
     basketsNeeded_: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  setIssuanceRate(
-    val: PromiseOrValue<BigNumberish>,
+  setIssuanceThrottleParams(
+    params: ThrottleLib.ParamsStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  setRedemptionRateFloor(
-    val: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  setScalingRedemptionRate(
-    val: PromiseOrValue<BigNumberish>,
+  setRedemptionThrottleParams(
+    params: ThrottleLib.ParamsStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -1045,14 +942,20 @@ export interface RToken extends BaseContract {
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  vest(
-    account: PromiseOrValue<string>,
-    endId: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  version(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
+
+    MAX_EXCHANGE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    MAX_THROTTLE_PCT_AMT(overrides?: CallOverrides): Promise<BigNumber>;
+
+    MAX_THROTTLE_RATE_AMT(overrides?: CallOverrides): Promise<BigNumber>;
+
+    MIN_EXCHANGE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    MIN_THROTTLE_RATE_AMT(overrides?: CallOverrides): Promise<BigNumber>;
 
     allowance(
       owner: PromiseOrValue<string>,
@@ -1073,14 +976,6 @@ export interface RToken extends BaseContract {
 
     basketsNeeded(overrides?: CallOverrides): Promise<BigNumber>;
 
-    cancel(
-      endId: PromiseOrValue<BigNumberish>,
-      earliest: PromiseOrValue<boolean>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    claimAndSweepRewards(overrides?: CallOverrides): Promise<void>;
-
     decimals(overrides?: CallOverrides): Promise<number>;
 
     decreaseAllowance(
@@ -1100,41 +995,31 @@ export interface RToken extends BaseContract {
       name_: PromiseOrValue<string>,
       symbol_: PromiseOrValue<string>,
       mandate_: PromiseOrValue<string>,
-      issuanceRate_: PromiseOrValue<BigNumberish>,
-      maxRedemptionCharge_: PromiseOrValue<BigNumberish>,
-      redemptionVirtualSupply_: PromiseOrValue<BigNumberish>,
+      issuanceThrottleParams_: ThrottleLib.ParamsStruct,
+      redemptionThrottleParams_: ThrottleLib.ParamsStruct,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    issuanceRate(overrides?: CallOverrides): Promise<BigNumber>;
+    issuanceAvailable(overrides?: CallOverrides): Promise<BigNumber>;
+
+    issuanceThrottleParams(
+      overrides?: CallOverrides
+    ): Promise<ThrottleLib.ParamsStructOutput>;
 
     issue(
-      amtRToken: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    issueItem(
-      account: PromiseOrValue<string>,
-      index: PromiseOrValue<BigNumberish>,
+    issueTo(
+      recipient: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<RTokenP1.IssueItemStructOutput>;
-
-    issueQueues(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<
-      [BigNumber, BigNumber, BigNumber] & {
-        basketNonce: BigNumber;
-        left: BigNumber;
-        right: BigNumber;
-      }
-    >;
+    ): Promise<void>;
 
     main(overrides?: CallOverrides): Promise<string>;
 
     mandate(overrides?: CallOverrides): Promise<string>;
-
-    maxRedemptionCharge(overrides?: CallOverrides): Promise<BigNumber>;
 
     melt(
       amtRToken: PromiseOrValue<BigNumberish>,
@@ -1144,6 +1029,11 @@ export interface RToken extends BaseContract {
     mint(
       recipient: PromiseOrValue<string>,
       amtRToken: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    monetizeDonations(
+      erc20: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1167,41 +1057,37 @@ export interface RToken extends BaseContract {
 
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
-    queueBounds(
-      account: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber, BigNumber] & { left: BigNumber; right: BigNumber }>;
-
     redeem(
       amount: PromiseOrValue<BigNumberish>,
+      basketNonce: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    redemptionLimit(overrides?: CallOverrides): Promise<BigNumber>;
+    redeemTo(
+      recipient: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      basketNonce: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    redemptionRateFloor(overrides?: CallOverrides): Promise<BigNumber>;
+    redemptionAvailable(overrides?: CallOverrides): Promise<BigNumber>;
 
-    redemptionVirtualSupply(overrides?: CallOverrides): Promise<BigNumber>;
-
-    scalingRedemptionRate(overrides?: CallOverrides): Promise<BigNumber>;
+    redemptionThrottleParams(
+      overrides?: CallOverrides
+    ): Promise<ThrottleLib.ParamsStructOutput>;
 
     setBasketsNeeded(
       basketsNeeded_: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setIssuanceRate(
-      val: PromiseOrValue<BigNumberish>,
+    setIssuanceThrottleParams(
+      params: ThrottleLib.ParamsStruct,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setRedemptionRateFloor(
-      val: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    setScalingRedemptionRate(
-      val: PromiseOrValue<BigNumberish>,
+    setRedemptionThrottleParams(
+      params: ThrottleLib.ParamsStruct,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1233,11 +1119,7 @@ export interface RToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    vest(
-      account: PromiseOrValue<string>,
-      endId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    version(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {
@@ -1280,111 +1162,52 @@ export interface RToken extends BaseContract {
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
 
-    "Issuance(address,uint256,uint192)"(
+    "Issuance(address,address,uint256,uint192)"(
       issuer?: PromiseOrValue<string> | null,
+      recipient?: PromiseOrValue<string> | null,
       amount?: PromiseOrValue<BigNumberish> | null,
-      baskets?: PromiseOrValue<BigNumberish> | null
+      baskets?: null
     ): IssuanceEventFilter;
     Issuance(
       issuer?: PromiseOrValue<string> | null,
+      recipient?: PromiseOrValue<string> | null,
       amount?: PromiseOrValue<BigNumberish> | null,
-      baskets?: PromiseOrValue<BigNumberish> | null
+      baskets?: null
     ): IssuanceEventFilter;
 
-    "IssuanceRateSet(uint192,uint192)"(
-      oldVal?: PromiseOrValue<BigNumberish> | null,
-      newVal?: PromiseOrValue<BigNumberish> | null
-    ): IssuanceRateSetEventFilter;
-    IssuanceRateSet(
-      oldVal?: PromiseOrValue<BigNumberish> | null,
-      newVal?: PromiseOrValue<BigNumberish> | null
-    ): IssuanceRateSetEventFilter;
-
-    "IssuanceStarted(address,uint256,uint256,uint192,address[],uint256[],uint192)"(
-      issuer?: PromiseOrValue<string> | null,
-      index?: PromiseOrValue<BigNumberish> | null,
-      amount?: PromiseOrValue<BigNumberish> | null,
-      baskets?: null,
-      erc20s?: null,
-      quantities?: null,
-      blockAvailableAt?: null
-    ): IssuanceStartedEventFilter;
-    IssuanceStarted(
-      issuer?: PromiseOrValue<string> | null,
-      index?: PromiseOrValue<BigNumberish> | null,
-      amount?: PromiseOrValue<BigNumberish> | null,
-      baskets?: null,
-      erc20s?: null,
-      quantities?: null,
-      blockAvailableAt?: null
-    ): IssuanceStartedEventFilter;
-
-    "IssuancesCanceled(address,uint256,uint256,uint256)"(
-      issuer?: PromiseOrValue<string> | null,
-      firstId?: PromiseOrValue<BigNumberish> | null,
-      endId?: PromiseOrValue<BigNumberish> | null,
-      amount?: null
-    ): IssuancesCanceledEventFilter;
-    IssuancesCanceled(
-      issuer?: PromiseOrValue<string> | null,
-      firstId?: PromiseOrValue<BigNumberish> | null,
-      endId?: PromiseOrValue<BigNumberish> | null,
-      amount?: null
-    ): IssuancesCanceledEventFilter;
-
-    "IssuancesCompleted(address,uint256,uint256,uint256)"(
-      issuer?: PromiseOrValue<string> | null,
-      firstId?: PromiseOrValue<BigNumberish> | null,
-      endId?: PromiseOrValue<BigNumberish> | null,
-      amount?: null
-    ): IssuancesCompletedEventFilter;
-    IssuancesCompleted(
-      issuer?: PromiseOrValue<string> | null,
-      firstId?: PromiseOrValue<BigNumberish> | null,
-      endId?: PromiseOrValue<BigNumberish> | null,
-      amount?: null
-    ): IssuancesCompletedEventFilter;
+    "IssuanceThrottleSet(tuple,tuple)"(
+      oldVal?: null,
+      newVal?: null
+    ): IssuanceThrottleSetEventFilter;
+    IssuanceThrottleSet(
+      oldVal?: null,
+      newVal?: null
+    ): IssuanceThrottleSetEventFilter;
 
     "Melted(uint256)"(amount?: null): MeltedEventFilter;
     Melted(amount?: null): MeltedEventFilter;
 
-    "Redemption(address,uint256,uint192)"(
+    "Redemption(address,address,uint256,uint192)"(
       redeemer?: PromiseOrValue<string> | null,
+      recipient?: PromiseOrValue<string> | null,
       amount?: PromiseOrValue<BigNumberish> | null,
       baskets?: null
     ): RedemptionEventFilter;
     Redemption(
       redeemer?: PromiseOrValue<string> | null,
+      recipient?: PromiseOrValue<string> | null,
       amount?: PromiseOrValue<BigNumberish> | null,
       baskets?: null
     ): RedemptionEventFilter;
 
-    "RedemptionRateFloorSet(uint256,uint256)"(
-      oldVal?: PromiseOrValue<BigNumberish> | null,
-      newVal?: PromiseOrValue<BigNumberish> | null
-    ): RedemptionRateFloorSetEventFilter;
-    RedemptionRateFloorSet(
-      oldVal?: PromiseOrValue<BigNumberish> | null,
-      newVal?: PromiseOrValue<BigNumberish> | null
-    ): RedemptionRateFloorSetEventFilter;
-
-    "RewardsClaimed(address,uint256)"(
-      erc20?: PromiseOrValue<string> | null,
-      amount?: PromiseOrValue<BigNumberish> | null
-    ): RewardsClaimedEventFilter;
-    RewardsClaimed(
-      erc20?: PromiseOrValue<string> | null,
-      amount?: PromiseOrValue<BigNumberish> | null
-    ): RewardsClaimedEventFilter;
-
-    "ScalingRedemptionRateSet(uint192,uint192)"(
-      oldVal?: PromiseOrValue<BigNumberish> | null,
-      newVal?: PromiseOrValue<BigNumberish> | null
-    ): ScalingRedemptionRateSetEventFilter;
-    ScalingRedemptionRateSet(
-      oldVal?: PromiseOrValue<BigNumberish> | null,
-      newVal?: PromiseOrValue<BigNumberish> | null
-    ): ScalingRedemptionRateSetEventFilter;
+    "RedemptionThrottleSet(tuple,tuple)"(
+      oldVal?: null,
+      newVal?: null
+    ): RedemptionThrottleSetEventFilter;
+    RedemptionThrottleSet(
+      oldVal?: null,
+      newVal?: null
+    ): RedemptionThrottleSetEventFilter;
 
     "Transfer(address,address,uint256)"(
       from?: PromiseOrValue<string> | null,
@@ -1408,6 +1231,16 @@ export interface RToken extends BaseContract {
   estimateGas: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<BigNumber>;
 
+    MAX_EXCHANGE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    MAX_THROTTLE_PCT_AMT(overrides?: CallOverrides): Promise<BigNumber>;
+
+    MAX_THROTTLE_RATE_AMT(overrides?: CallOverrides): Promise<BigNumber>;
+
+    MIN_EXCHANGE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    MIN_THROTTLE_RATE_AMT(overrides?: CallOverrides): Promise<BigNumber>;
+
     allowance(
       owner: PromiseOrValue<string>,
       spender: PromiseOrValue<string>,
@@ -1426,16 +1259,6 @@ export interface RToken extends BaseContract {
     ): Promise<BigNumber>;
 
     basketsNeeded(overrides?: CallOverrides): Promise<BigNumber>;
-
-    cancel(
-      endId: PromiseOrValue<BigNumberish>,
-      earliest: PromiseOrValue<boolean>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    claimAndSweepRewards(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
 
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1456,35 +1279,29 @@ export interface RToken extends BaseContract {
       name_: PromiseOrValue<string>,
       symbol_: PromiseOrValue<string>,
       mandate_: PromiseOrValue<string>,
-      issuanceRate_: PromiseOrValue<BigNumberish>,
-      maxRedemptionCharge_: PromiseOrValue<BigNumberish>,
-      redemptionVirtualSupply_: PromiseOrValue<BigNumberish>,
+      issuanceThrottleParams_: ThrottleLib.ParamsStruct,
+      redemptionThrottleParams_: ThrottleLib.ParamsStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    issuanceRate(overrides?: CallOverrides): Promise<BigNumber>;
+    issuanceAvailable(overrides?: CallOverrides): Promise<BigNumber>;
+
+    issuanceThrottleParams(overrides?: CallOverrides): Promise<BigNumber>;
 
     issue(
-      amtRToken: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    issueItem(
-      account: PromiseOrValue<string>,
-      index: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    issueQueues(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
+    issueTo(
+      recipient: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     main(overrides?: CallOverrides): Promise<BigNumber>;
 
     mandate(overrides?: CallOverrides): Promise<BigNumber>;
-
-    maxRedemptionCharge(overrides?: CallOverrides): Promise<BigNumber>;
 
     melt(
       amtRToken: PromiseOrValue<BigNumberish>,
@@ -1494,6 +1311,11 @@ export interface RToken extends BaseContract {
     mint(
       recipient: PromiseOrValue<string>,
       amtRToken: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    monetizeDonations(
+      erc20: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1517,41 +1339,35 @@ export interface RToken extends BaseContract {
 
     proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
 
-    queueBounds(
-      account: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     redeem(
       amount: PromiseOrValue<BigNumberish>,
+      basketNonce: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    redemptionLimit(overrides?: CallOverrides): Promise<BigNumber>;
+    redeemTo(
+      recipient: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      basketNonce: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
 
-    redemptionRateFloor(overrides?: CallOverrides): Promise<BigNumber>;
+    redemptionAvailable(overrides?: CallOverrides): Promise<BigNumber>;
 
-    redemptionVirtualSupply(overrides?: CallOverrides): Promise<BigNumber>;
-
-    scalingRedemptionRate(overrides?: CallOverrides): Promise<BigNumber>;
+    redemptionThrottleParams(overrides?: CallOverrides): Promise<BigNumber>;
 
     setBasketsNeeded(
       basketsNeeded_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    setIssuanceRate(
-      val: PromiseOrValue<BigNumberish>,
+    setIssuanceThrottleParams(
+      params: ThrottleLib.ParamsStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    setRedemptionRateFloor(
-      val: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    setScalingRedemptionRate(
-      val: PromiseOrValue<BigNumberish>,
+    setRedemptionThrottleParams(
+      params: ThrottleLib.ParamsStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1583,15 +1399,27 @@ export interface RToken extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    vest(
-      account: PromiseOrValue<string>,
-      endId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    version(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    MAX_EXCHANGE_RATE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    MAX_THROTTLE_PCT_AMT(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    MAX_THROTTLE_RATE_AMT(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    MIN_EXCHANGE_RATE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    MIN_THROTTLE_RATE_AMT(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     allowance(
       owner: PromiseOrValue<string>,
@@ -1612,16 +1440,6 @@ export interface RToken extends BaseContract {
 
     basketsNeeded(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    cancel(
-      endId: PromiseOrValue<BigNumberish>,
-      earliest: PromiseOrValue<boolean>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    claimAndSweepRewards(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     decreaseAllowance(
@@ -1641,37 +1459,31 @@ export interface RToken extends BaseContract {
       name_: PromiseOrValue<string>,
       symbol_: PromiseOrValue<string>,
       mandate_: PromiseOrValue<string>,
-      issuanceRate_: PromiseOrValue<BigNumberish>,
-      maxRedemptionCharge_: PromiseOrValue<BigNumberish>,
-      redemptionVirtualSupply_: PromiseOrValue<BigNumberish>,
+      issuanceThrottleParams_: ThrottleLib.ParamsStruct,
+      redemptionThrottleParams_: ThrottleLib.ParamsStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    issuanceRate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    issuanceAvailable(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    issuanceThrottleParams(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     issue(
-      amtRToken: PromiseOrValue<BigNumberish>,
+      amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    issueItem(
-      account: PromiseOrValue<string>,
-      index: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    issueQueues(
-      arg0: PromiseOrValue<string>,
-      overrides?: CallOverrides
+    issueTo(
+      recipient: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     main(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     mandate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    maxRedemptionCharge(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
 
     melt(
       amtRToken: PromiseOrValue<BigNumberish>,
@@ -1681,6 +1493,11 @@ export interface RToken extends BaseContract {
     mint(
       recipient: PromiseOrValue<string>,
       amtRToken: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    monetizeDonations(
+      erc20: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1704,27 +1521,24 @@ export interface RToken extends BaseContract {
 
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    queueBounds(
-      account: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     redeem(
       amount: PromiseOrValue<BigNumberish>,
+      basketNonce: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    redemptionLimit(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    redeemTo(
+      recipient: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      basketNonce: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
 
-    redemptionRateFloor(
+    redemptionAvailable(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    redemptionVirtualSupply(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    scalingRedemptionRate(
+    redemptionThrottleParams(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1733,18 +1547,13 @@ export interface RToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    setIssuanceRate(
-      val: PromiseOrValue<BigNumberish>,
+    setIssuanceThrottleParams(
+      params: ThrottleLib.ParamsStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    setRedemptionRateFloor(
-      val: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setScalingRedemptionRate(
-      val: PromiseOrValue<BigNumberish>,
+    setRedemptionThrottleParams(
+      params: ThrottleLib.ParamsStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1776,10 +1585,6 @@ export interface RToken extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    vest(
-      account: PromiseOrValue<string>,
-      endId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    version(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

@@ -2,23 +2,30 @@ import { formatEther } from '@ethersproject/units'
 import { Facade } from 'abis/types'
 import { useFacadeContract } from 'hooks/useContract'
 import { useAtomValue } from 'jotai'
-import { useUpdateAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
-import { balancesAtom, chainIdAtom, rTokenAtom, walletAtom } from 'state/atoms'
+import {
+  balancesAtom,
+  chainIdAtom,
+  isRTokenDisabledAtom,
+  rTokenAtom,
+  walletAtom,
+} from 'state/atoms'
 import { getIssuable } from 'utils/rsv'
 import { maxIssuableAtom } from 'views/issuance/atoms'
 
 /**
  * View: Mint -> Issue
- * Fex maximun issuable amount for rToken
+ * Fex maximum issuable amount for rToken
  */
 const MaxIssuableUpdater = () => {
   const rToken = useAtomValue(rTokenAtom)
   const tokenBalances = useAtomValue(balancesAtom)
-  const setMaxIssuable = useUpdateAtom(maxIssuableAtom)
+  const setMaxIssuable = useSetAtom(maxIssuableAtom)
   const account = useAtomValue(walletAtom)
   const chainId = useAtomValue(chainIdAtom)
   const facadeContract = useFacadeContract()
+  const isTokenDisabled = useAtomValue(isRTokenDisabledAtom)
 
   const updateMaxIssuable = useCallback(
     async (account: string, rTokenAddress: string, facade: Facade) => {
@@ -44,12 +51,24 @@ const MaxIssuableUpdater = () => {
   }, [JSON.stringify(tokenBalances), rToken?.address, chainId])
 
   useEffect(() => {
-    if (rToken && !rToken.isRSV && account && facadeContract) {
+    if (
+      rToken &&
+      !rToken.isRSV &&
+      account &&
+      facadeContract &&
+      !isTokenDisabled
+    ) {
       updateMaxIssuable(account, rToken.address, facadeContract)
     } else if (!rToken?.isRSV) {
       setMaxIssuable(0)
     }
-  }, [rToken?.address, account, facadeContract, JSON.stringify(tokenBalances)])
+  }, [
+    rToken?.address,
+    account,
+    facadeContract,
+    isRTokenDisabledAtom,
+    JSON.stringify(tokenBalances),
+  ])
 
   return null
 }

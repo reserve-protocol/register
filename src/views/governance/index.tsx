@@ -1,63 +1,29 @@
-import { useAtom, useAtomValue } from 'jotai'
-import { useEffect } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
-import { accountRoleAtom } from 'state/atoms'
-import { deployStepAtom } from '../deploy/components/DeployHeader'
-import { Steps } from '../deploy/components/DeployStep'
-import ConfirmGovernanceSetup from './views/ConfirmGovernanceSetup'
-import GovernanceSetup from './views/GovernanceSetup'
-import GovernanceStatus from './views/GovernanceStatus'
+import { Box, BoxProps, Grid } from 'theme-ui'
+import GovernanceActions from './components/GovernanceOverview'
+import ProposalList from './components/ProposalList'
+import TopVoters from './components/TopVoters'
 
-const defaultValues = {
-  defaultGovernance: true,
-  unpause: '0',
-  votingDelay: '5', // 5 blocks
-  votingPeriod: '18000', // 100 blocks
-  proposalThresholdAsMicroPercent: '1', // 1%
-  quorumPercent: '4', // 4%
-  minDelay: '24', // 24 hours -> 86400
-  guardian: '',
-  pauser: '',
-  owner: '',
-}
-
-const Views = {
-  [Steps.GovernanceSetup.toString()]: GovernanceSetup,
-  [Steps.GovernanceSummary.toString()]: ConfirmGovernanceSetup,
-  [Steps.GovernanceTx.toString()]: GovernanceStatus,
-}
-
-// TODO: Refactor into multiple components
-const Governance = () => {
-  const [currentStep, setCurrentStep] = useAtom(deployStepAtom)
-  const form = useForm({
-    mode: 'onChange',
-    defaultValues,
-  })
-  const accountRole = useAtomValue(accountRoleAtom)
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    setCurrentStep(Steps.GovernanceSetup)
-
-    return () => {
-      setCurrentStep(Steps.Intro)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (!accountRole.owner) {
-      navigate('/')
-    }
-  }, [accountRole])
-
-  const GovernanceView = Views[currentStep.toString()] || GovernanceSetup
-
+const Governance = (props: BoxProps) => {
   return (
-    <FormProvider {...form}>
-      <GovernanceView />
-    </FormProvider>
+    <Grid
+      columns={[1, 1, 1, '2fr 1.5fr']}
+      gap={[3, 5]}
+      padding={[1, 5]}
+      sx={{
+        height: '100%',
+        position: 'relative',
+        alignContent: 'flex-start',
+        alignItems: 'flex-start',
+        overflowY: 'auto',
+      }}
+      {...props}
+    >
+      <Box>
+        <ProposalList />
+        <TopVoters mt={5} />
+      </Box>
+      <GovernanceActions />
+    </Grid>
   )
 }
 

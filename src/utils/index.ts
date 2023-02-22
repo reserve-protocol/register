@@ -1,9 +1,10 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { BigNumberMap } from './../types/index'
+import { BigNumberMap, TransactionState } from './../types'
 import { getAddress } from '@ethersproject/address'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { t } from '@lingui/macro'
 import { Contract } from 'ethers'
+import { parseEther } from 'ethers/lib/utils'
 
 export const decimalPattern = /^[0-9]*[.]?[0-9]*$/i
 export const numberPattern = /^\d+$/
@@ -15,6 +16,29 @@ export function isAddress(value: string): string | false {
     return getAddress(value)
   } catch {
     return false
+  }
+}
+
+// returns the same contract call with an increased gas limit (10% increase)
+export const getTransactionWithGasLimit = (
+  tx: TransactionState,
+  gasLimit: number,
+  multiplier = 0.1 // 10%
+) => {
+  return {
+    ...tx,
+    call: {
+      ...tx.call,
+      args: [
+        ...tx.call.args,
+        {
+          gasLimit: Math.min(
+            Math.floor(gasLimit + gasLimit * multiplier),
+            20000000
+          ),
+        },
+      ],
+    },
   }
 }
 
@@ -211,4 +235,13 @@ export const stringToColor = (str: string) => {
     color += `00${value.toString(16)}`.substr(-2)
   }
   return color
+}
+
+export const parsePercent = (n: string): BigNumber => {
+  return parseEther((Number(n) / 100).toString())
+}
+
+// TODO: More robust title parsing?
+export const getProposalTitle = (description: string) => {
+  return description.split(/\r?\n/)[0].replaceAll('#', '').trim()
 }
