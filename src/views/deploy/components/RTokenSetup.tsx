@@ -75,9 +75,6 @@ const GovernanceSection = ({ enabled = true }) => (
       title={t`Transaction 2`}
       subtitle={t`Governance gets deployed & your RToken is now usable (if unpaused)`}
     />
-    <SectionWrapper navigationIndex={8} mb={4}>
-      <ListingInfo />
-    </SectionWrapper>
   </>
 )
 

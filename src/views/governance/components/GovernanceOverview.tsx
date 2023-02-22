@@ -1,6 +1,7 @@
 import { t, Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import IconInfo from 'components/info-icon'
+import GovernanceFormatIcon from 'components/icons/GovernanceFormatIcon'
 import { formatEther } from 'ethers/lib/utils'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
@@ -72,7 +73,7 @@ const GovernanceOverview = () => {
               <Trans>Proposals</Trans>
             </Text>
             <IconInfo
-              icon={<Image src="/svgs/asterisk.svg" />}
+              icon={<Image src="/svgs/proposals.svg" />}
               title={t`All time`}
               text={formatCurrency(stats.proposals)}
             />
@@ -82,7 +83,7 @@ const GovernanceOverview = () => {
               <Trans>Vote Supply</Trans>
             </Text>
             <IconInfo
-              icon={<Image src="/svgs/asterisk.svg" />}
+              icon={<Image src="/svgs/vote-supply.svg" />}
               title={t`Current`}
               text={formatCurrency(stats.totalTokenSupply)}
             />
@@ -92,7 +93,7 @@ const GovernanceOverview = () => {
               <Trans>Voting Addresses</Trans>
             </Text>
             <IconInfo
-              icon={<Image src="/svgs/asterisk.svg" />}
+              icon={<Image src="/svgs/voting-addresses.svg" />}
               title={t`Current`}
               text={formatCurrency(stats.totalDelegates)}
             />
@@ -101,7 +102,7 @@ const GovernanceOverview = () => {
       </Box>
       <Box mt={4} variant="layout.borderBox">
         <Text variant="subtitle">
-          <Trans>Format</Trans>
+          <Trans>Governance format</Trans>
         </Text>
         <Text variant="title">{governance ? governance.name : 'Custom'}</Text>
 

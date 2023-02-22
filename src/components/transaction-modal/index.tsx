@@ -32,7 +32,7 @@ export interface ITransactionModal {
   isValid: boolean
 }
 
-const modalStyle = { maxWidth: '390px' }
+const modalStyle = { maxWidth: '420px' }
 
 const TransactionConfirmed = ({
   hash,
@@ -168,7 +168,7 @@ const TransactionModal = ({
       <LoadingButton
         loading={!!signing}
         disabled={!canSubmit}
-        variant={!!signing ? 'accentAction' : 'primary'}
+        variant={!!signing ? 'accentAction' : 'accentAction'}
         text={confirmLabel}
         onClick={handleConfirm}
         sx={{ width: '100%' }}

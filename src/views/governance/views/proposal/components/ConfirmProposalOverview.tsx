@@ -3,6 +3,7 @@ import { Button } from 'components'
 import { SmallButton } from 'components/button'
 import CopyValue from 'components/button/CopyValue'
 import GoTo from 'components/button/GoTo'
+import ConfirmProposalActionIcon from 'components/icons/ConfirmProposalActionIcon'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -63,7 +64,7 @@ const ProposalStatus = ({
       <>
         <Spinner size={24} mt={3} mb={2} />
         <Text sx={{ fontWeight: 500, fontSize: 3, display: 'block' }} mb={2}>
-          <Trans>Deploy transaction submitted</Trans>
+          <Trans>Proposal transaction submitted</Trans>
         </Text>
         <Text as="p" variant="legend">
           <Trans>
@@ -88,10 +89,6 @@ const ProposalStatus = ({
 
   return (
     <>
-      <Text variant="legend" as="p" sx={{ textAlign: 'center' }}>
-        You can come back to this page later through the settings nav item if
-        you need time.
-      </Text>
       <Button
         onClick={propose}
         variant="primary"
@@ -99,7 +96,7 @@ const ProposalStatus = ({
         mt={4}
         sx={{ width: '100%' }}
       >
-        <Trans>Submit proposal</Trans>
+        <Trans>Submit proposal on-chain</Trans>
       </Button>
       <Box mt={3} sx={{ fontSize: 1, textAlign: 'center' }}>
         <Text variant="legend" mr={1}>
@@ -139,17 +136,17 @@ const ConfirmProposalOverview = ({ tx, ...props }: Props) => {
           <SmallButton
             onClick={() => setProposalEditing(true)}
             variant="muted"
-            mb={3}
             mr="auto"
           >
             <Trans>Edit</Trans>
           </SmallButton>
+          <ConfirmProposalActionIcon />
           <Text variant="title" mb={2}>
             <Trans>Confirm Proposal</Trans>
           </Text>
           <Text variant="legend" as="p">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
-            maxisss nunc iaculis vitae.
+            Submit the proposal to be voted on by [stRSR] holders. Note this is
+            an on-chain action and will require gas to propose.
           </Text>
           <ProposalStatus transactionState={tx} />
         </Flex>

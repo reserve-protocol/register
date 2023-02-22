@@ -18,6 +18,7 @@ const RTokenStatus = () => {
     <Box sx={{ display: ['none', 'block'] }}>
       <Box
         variant="layout.verticalAlign"
+        ml={3}
         sx={{ color: frozen ? 'danger' : 'warning' }}
       >
         <AlertCircle size={16} />

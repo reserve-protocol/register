@@ -108,17 +108,13 @@ const TopVoters = (props: BoxProps) => {
   )
 
   return (
-    <Box
-      variant="layout.borderBox"
-      sx={{ backgroundColor: 'contentBackground' }}
-      {...props}
-    >
+    <Box variant="layout.borderBox" {...props}>
       <Text variant="title">
         <Trans>Top voting addresses</Trans>
       </Text>
       <Table mt={4} maxHeight={420} compact columns={columns} data={data} />
       {!data.length && (
-        <Box mt={3} sx={{ textAlign: 'center' }}>
+        <Box py={4} mt={3} sx={{ textAlign: 'center' }}>
           <EmptyBoxIcon />
           <Text
             mt={3}

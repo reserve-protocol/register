@@ -62,7 +62,7 @@ const PauseManager = () => {
   return (
     <>
       <SettingItem
-        title={isPaused ? t`RToken is paused` : t`RToken is not paused`}
+        title={t`Pause state`}
         subtitle={t`Current status:`}
         value={isPaused ? t`Paused` : t`Unpaused`}
         icon="danger"

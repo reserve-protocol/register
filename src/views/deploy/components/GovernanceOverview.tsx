@@ -132,6 +132,15 @@ const GovernanceOverview = (props: BoxProps) => (
         later.
       </Text>
     </Box>
+    <Divider my={4} mx={-4} />
+    <Box>
+      <Text variant="strong" mb={2}>
+        What happens after deploy?
+      </Text>
+      <Text as="p" variant="legend">
+        Add link here
+      </Text>
+    </Box>
   </Container>
 )
 

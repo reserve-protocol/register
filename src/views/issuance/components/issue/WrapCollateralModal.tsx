@@ -282,13 +282,24 @@ const WrapCollateralModal = ({ onClose }: { onClose(): void }) => {
 
   return (
     <Modal
-      style={{ maxWidth: '390px' }}
-      title={t`Wrap your Aave collaterals`}
+      style={{ maxWidth: '560px' }}
+      title={
+        !fromUnderlying
+          ? t`Unwrapping needs to be done after redeeming`
+          : t`Wrapping needs to be done before minting`
+      }
       onClose={onClose}
     >
       <Box
         variant="layout.verticalAlign"
-        sx={{ cursor: 'pointer', borderRadius: 50, overflow: 'hidden' }}
+        sx={{
+          cursor: 'pointer',
+          borderRadius: 12,
+          overflow: 'hidden',
+          padding: 1,
+          border: '1px solid',
+          borderColor: 'inputBorder',
+        }}
         mb={5}
       >
         <Box
@@ -296,8 +307,9 @@ const WrapCollateralModal = ({ onClose }: { onClose(): void }) => {
           sx={{
             flexGrow: 1,
             textAlign: 'center',
-            backgroundColor: fromUnderlying ? 'primary' : 'background',
-            color: fromUnderlying ? 'white' : 'text',
+            borderRadius: 8,
+            backgroundColor: fromUnderlying ? 'inputBorder' : 'none',
+            color: 'text',
           }}
           onClick={() => setFromUnderlying(1)}
         >
@@ -310,8 +322,9 @@ const WrapCollateralModal = ({ onClose }: { onClose(): void }) => {
           sx={{
             flexGrow: 1,
             textAlign: 'center',
-            backgroundColor: !fromUnderlying ? 'primary' : 'background',
-            color: !fromUnderlying ? 'white' : 'text',
+            borderRadius: 8,
+            backgroundColor: !fromUnderlying ? 'inputBorder' : 'none',
+            color: 'text',
           }}
           onClick={() => setFromUnderlying(0)}
         >
@@ -374,7 +387,7 @@ const WrapCollateralModal = ({ onClose }: { onClose(): void }) => {
         loading={!!loading}
         disabled={!isValid || !canSubmit}
         variant={!!loading ? 'accentAction' : 'primary'}
-        text={t`Wrap tokens`}
+        text={!fromUnderlying ? t`Unwrap aTokens` : t`Wrap aTokens`}
         onClick={handleConfirm}
         sx={{ width: '100%' }}
         mt={3}

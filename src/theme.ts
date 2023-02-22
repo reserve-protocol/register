@@ -91,10 +91,10 @@ export const colors = {
     dark: {
       text: '#CCCCCC',
       boldText: '#CCCCCC',
-      background: '#000',
+      background: '#040302',
       secondary: '#191919',
       disabled: '#171717',
-      accentAction: 'white',
+      accentAction: '#75FBC3',
       accent: 'white',
       border: '#1A1A1A',
       inputBorder: '#1F1F1F',

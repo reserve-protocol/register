@@ -20,7 +20,8 @@ const InfoBox = ({ title, subtitle, light, ...props }: Props) => (
   <Box {...props}>
     <Text
       variant={light ? 'legend' : 'strong'}
-      sx={{ fontSize: 1, display: 'block' }}
+      sx={{ fontSize: 2, display: 'block' }}
+      mb={1}
     >
       {title}
     </Text>
@@ -81,7 +82,6 @@ export const  InfoItem = ({
       sx={{
         height: '4px',
         width: '4px',
-        borderRadius: '100%',
         backgroundColor: 'text',
       }}
     />

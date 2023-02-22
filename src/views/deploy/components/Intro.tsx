@@ -6,10 +6,10 @@ import DeployIntro from 'components/icons/DeployIntroIcon'
 const Intro = (props: BoxProps) => (
   <Card p={4} pt={5} {...props} sx={{ position: 'relative' }}>
     <DeployIntro />
-    <Text variant="sectionTitle" mb={2} mt={2}>
+    <Text variant="sectionTitle" mb={2} mt={1}>
       <Trans>Launch your asset backed RToken</Trans>
     </Text>
-    <Text as="p" variant="legend" pr={4}>
+    <Text as="p" variant="legend" pr={4} sx={{ maxWidth: '580px' }}>
       <Trans>
         Deploying through this UI doesn't require deep technical knowledge as
         long as you don't need novel collateral plugins for your baskets.

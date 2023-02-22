@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro'
 import GovernanceActionIcon from 'components/icons/GovernanceActionIcon'
+import { AlertCircle } from 'react-feather'
 import useRToken from 'hooks/useRToken'
 import { useNavigate } from 'react-router-dom'
 import { Box, Button, Flex, Text } from 'theme-ui'
@@ -18,20 +19,32 @@ const GovernancePrompt = () => {
     <Box variant="layout.sticky">
       <Box variant="layout.borderBox" mb={4}>
         <Flex
+          pt={2}
           sx={{
             alignItems: 'center',
             flexDirection: 'column',
             textAlign: 'center',
           }}
         >
-          <GovernanceActionIcon />
-          <Text variant="title" sx={{ fontSize: 4 }} mt={2}>
-            <Trans>Governance setup required</Trans>
+          <Flex
+            sx={{
+              color: 'warning',
+              alignItems: 'center',
+              flexDirection: 'column',
+            }}
+          >
+            <AlertCircle />
+            <Text variant="legend" mt={2} sx={{ color: 'warning' }}>
+              <Trans>Required setup:</Trans>
+            </Text>
+          </Flex>
+          <Text variant="title" mt={1}>
+            <Trans>Setup Governance</Trans>
           </Text>
           <Text variant="legend" as="p" mt={2} sx={{ textAlign: 'center' }}>
             <Trans>
-              Please complete the required governance configuration to start
-              using your RToken
+              Please complete the required governance configuration to complete
+              deployment.
             </Trans>
           </Text>
           <Button
@@ -41,7 +54,7 @@ const GovernancePrompt = () => {
             mt={4}
             sx={{ width: '100%' }}
           >
-            <Trans>Setup Governance</Trans>
+            <Trans>Begin governance setup</Trans>
           </Button>
         </Flex>
       </Box>

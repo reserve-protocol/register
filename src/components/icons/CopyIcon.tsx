@@ -1,6 +1,6 @@
 import { SVGProps } from 'react'
 
-const ExternalArrowIcon = (props: SVGProps<SVGSVGElement>) => (
+const CopyIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
     width={16}
     height={16}
@@ -8,14 +8,16 @@ const ExternalArrowIcon = (props: SVGProps<SVGSVGElement>) => (
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
-    <g clip-path="url(#clip0_3954_144970)">
+    <g clip-path="url(#clip0_3954_145060)">
       <path
-        d="M12.0208 3.85103L4.94975 3.85103M12.0208 3.85103L12.0208 10.9221M12.0208 3.85103L3.53553 12.3363"
-        stroke="#999999"
+        d="M3 3.00085H10.5V10.5009H3V3.00085Z"
+        fill="currentColor"
+        opacity="35%"
       />
+      <rect x="5.5" y="5.50098" width="7.5" height="7.5" fill="currentColor" />
     </g>
     <defs>
-      <clipPath id="clip0_3954_144970">
+      <clipPath id="clip0_3954_145060">
         <rect
           width="16"
           height="16"
@@ -27,4 +29,4 @@ const ExternalArrowIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 )
 
-export default ExternalArrowIcon
+export default CopyIcon

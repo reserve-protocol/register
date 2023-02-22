@@ -53,10 +53,7 @@ const ProposalList = () => {
 
   return (
     <Box>
-      <Box
-        variant="layout.borderBox"
-        sx={{ backgroundColor: 'contentBackground' }}
-      >
+      <Box variant="layout.borderBox">
         <Box variant="layout.verticalAlign">
           <Text variant="title">
             <Trans>Recent proposals</Trans>
@@ -73,7 +70,7 @@ const ProposalList = () => {
 
         <Box px={4} mt={3}>
           {!data.length && (
-            <Box mt={4} sx={{ textAlign: 'center' }}>
+            <Box py={4} mt={4} sx={{ textAlign: 'center' }}>
               <EmptyBoxIcon />
               <Text
                 mt={4}

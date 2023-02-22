@@ -135,7 +135,7 @@ const CustomCollateral = ({
   }
 
   return (
-    <Flex variant="layout.verticalAlign" ml={'-2px'}>
+    <Flex variant="layout.verticalAlign" ml={'-3px'}>
       <PluginsIcon />
       <Box ml={3}>
         <Text>

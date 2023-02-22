@@ -8,7 +8,7 @@ const BackingManager = (props: BoxProps) => {
       <Text variant="sectionTitle">
         <Trans>Backing Manager</Trans>
       </Text>
-      <Divider my={4} mx={-4} />
+      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
       <BackingForm />
     </Card>
   )

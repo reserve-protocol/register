@@ -35,7 +35,6 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
       </Box>
       <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
       <Box mb={5}>
-        <Image src="/svgs/governance.svg" />
         <Box>
           <Text variant="title" sx={{ display: 'block' }} mb={2}>
             <Trans>Use the Alexios governor format?</Trans>
@@ -56,13 +55,22 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
         </Box>
       </Box>
       <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
-      <Text variant="title" mb={4}>
-        <Trans>Permissions</Trans>
-      </Text>
+      <Flex variant="layout.verticalAlign" mb={4}>
+        <Text variant="title">
+          <Trans>Permissions</Trans>
+        </Text>
+        <DocsLink link="https://reserve.org/protocol/system_states_roles/" />
+      </Flex>
       {!defaultGovernance && (
         <FormField
           label={t`Owner address`}
           placeholder={t`Input owner ethereum address`}
+          help={t`The top level decision maker, typically a decentralized governance smart contract, responsible for setting or updating all RToken parameter values, RToken baskets, etc. - The RToken OWNER has the power to:
+          grant and revoke roles to any Ethereum account
+          pause and unpause the system
+          freeze and unfreeze the system
+          set governance parameters
+          upgrade system contracts`}
           mb={3}
           name="owner"
           options={{
@@ -77,7 +85,7 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
       <FormField
         label={t`Guardian address`}
         placeholder={t`Input the guardian ethereum address`}
-        help={t`Testing`}
+        help={t`The Guardian has the permissions of the Pauser, the ability to invoke a LONG_FREEZE, and the ability to cancel any active proposals prior to execution.`}
         mb={3}
         name="guardian"
         options={{
@@ -92,6 +100,9 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
       <FormField
         label={t`Pauser address`}
         placeholder={t`Input pauser ethereum address`}
+        help={t`The Pauser can PAUSE and SHORT_FREEZE.
+        When an RToken’s system is paused, all interactions besides redemption, issuance cancellation, ERC20 functions and staking of RSR are disabled.
+        When an RToken’s system is frozen, all interactions besides ERC20 functions and staking of RSR are disabled.`}
         mb={4}
         name="pauser"
         options={{
@@ -103,12 +114,19 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
           },
         }}
       />
+      {defaultGovernance && (
+        <>
+          <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+          <GovernanceParameters />{' '}
+        </>
+      )}
       <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
-      {defaultGovernance && <GovernanceParameters />}
-      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
-      <Text variant="title" mb={4}>
-        <Trans>Initial RToken state after deployment</Trans>
-      </Text>
+      <Flex mb={4} sx={{ alignItems: 'center' }}>
+        <Text variant="title">
+          <Trans>Initial RToken state after deployment</Trans>
+        </Text>
+        <DocsLink link="https://reserve.org/protocol/reserve_rights_rsr/#reserve-governor-alexios" />
+      </Flex>
       <Field label={t`Pause status`}>
         <Select {...register('unpause')}>
           <option value={0}>

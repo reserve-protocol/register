@@ -2,7 +2,7 @@ import { t, Trans } from '@lingui/macro'
 import { InfoItem } from 'components/info-box'
 import { useAtomValue } from 'jotai'
 import { rTokenParamsAtom } from 'state/atoms'
-import { Card, Text } from 'theme-ui'
+import { Card, Text, Divider } from 'theme-ui'
 import { formatCurrency } from 'utils'
 
 /**
@@ -13,9 +13,10 @@ const BackingInfo = () => {
 
   return (
     <Card p={4}>
-      <Text variant="sectionTitle" mb={5}>
-        <Trans>Backing parameters</Trans>
+      <Text variant="sectionTitle">
+        <Trans>Backing Parameters</Trans>
       </Text>
+      <Divider mx={-4} my={4} sx={{ borderColor: 'darkBorder' }} />
       <InfoItem
         title={t`Trading delay (s)`}
         subtitle={params.tradingDelay}

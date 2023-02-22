@@ -11,7 +11,7 @@ const OtherForm = (props: BoxProps) => (
     <FormField
       label={t`Short freeze duration (s)`}
       placeholder={t`Duration in seconds`}
-      help={t`Reward distribution - sliding scale that determines what percentage of the reward goes to RToken Holders and what percentage goes to RSR Stakers. The default is 40% to RToken Holders and 60% to RSR stakers. For more info see the appropriate sections on “Revenue distribution” here.`}
+      help={t`Short freezers have the responsibility of freezing an RToken if anything dangerous or suspicious is happening. This is a one-shot freeze and the role will be revoked after a single use. This field determines how long the RToken will remain frozen until the freeze expires or is extended by another actor. The default is 259200 second, or 3 days which we believe is enough time for appropriate parties to act.`}
       mb={3}
       name="shortFreeze"
       options={{
@@ -24,7 +24,7 @@ const OtherForm = (props: BoxProps) => (
     <FormField
       label={t`Long freeze duration (s)`}
       placeholder={t`Duration in seconds`}
-      help={t`Short freeze duration - number of seconds an initial freeze lasts. The default is 259200s or 3 days. This provides the ability to freeze an RToken’s system for a short period of time which is useful to thwart an attack.`}
+      help={t`Long freeze duration - freeze an RToken’s system for a longer period of time. The default value is 2592000s or 30 days.`}
       mb={3}
       name="longFreeze"
       options={{
@@ -37,8 +37,7 @@ const OtherForm = (props: BoxProps) => (
     <FormField
       label={t`Unstaking Delay (s)`}
       placeholder={t`Delay in Seconds`}
-      help={t`Long freeze duration - freeze an RToken’s system for a longer period of time. The default value is 2592000s or 30 days.
-      `}
+      help={t`Unstaking delay - number of seconds that all RSR unstaking must be delayed in order to account for stakers trying to frontrun defaults and needs to be longer than "governance" for proper incentives for basket changes. The default is 1209600s or 2 weeks.`}
       mb={3}
       name="unstakingDelay"
       options={{
@@ -51,7 +50,7 @@ const OtherForm = (props: BoxProps) => (
     <FormField
       label={t`Reward ratio (decimals)`}
       placeholder={t`stRSR payout fraction 0.0`}
-      help={t`Reward period - length of time that comprises a single period. Works in conjunction with reward ratio (see below) to determine the desired payout rate. The default is 604800s or 7 days.`}
+      help={t`Reward ratio - amount of the current reward amount that should be handed out in a single period. Works in conjunction with reward period (see above) to determine the desired payout rate. The default is 0.0000032090147. This is approximately half life of 30 pay periods.`}
       mb={3}
       name="rewardRatio"
       options={{
@@ -62,8 +61,8 @@ const OtherForm = (props: BoxProps) => (
       }}
     />
     <FormField
-      label={t`Minimum trade volume`}
-      placeholder={t`Minimum trade`}
+      label={t`Minimum trade volume ($)`}
+      placeholder={t`Minimum trade in USD terms`}
       help={t`Minimum trade volume - minimum sized trade that can be performed, in terms of the unit of account eg. USD. The default is $10K.`}
       mb={3}
       name="minTrade"
@@ -75,7 +74,7 @@ const OtherForm = (props: BoxProps) => (
       }}
     />
     <FormField
-      label={t`RToken Maximum trade volume`}
+      label={t`RToken Maximum trade volume ($)`}
       placeholder={t`Maximum trade for RToken`}
       help={t`Maximum trade volume - maximum sized trade for any trade involving RToken, in terms of the unit of account eg. USD. The default is $1M.`}
       name="maxTrade"

@@ -2,7 +2,7 @@ import { t, Trans } from '@lingui/macro'
 import { InfoItem } from 'components/info-box'
 import { useAtomValue } from 'jotai'
 import { rTokenParamsAtom } from 'state/atoms'
-import { Card, Text } from 'theme-ui'
+import { Card, Text, Divider } from 'theme-ui'
 import { formatCurrency } from 'utils'
 
 /**
@@ -13,10 +13,10 @@ const OtherInfo = () => {
 
   return (
     <Card p={4}>
-      <Text variant="sectionTitle" mb={5}>
+      <Text variant="sectionTitle">
         <Trans>Other Parameters</Trans>
       </Text>
-
+      <Divider mx={-4} my={4} sx={{ borderColor: 'darkBorder' }} />
       <InfoItem
         title={t`Short freeze duration (s)`}
         subtitle={params.shortFreeze}

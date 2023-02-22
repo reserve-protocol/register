@@ -2,7 +2,7 @@ import { t, Trans } from '@lingui/macro'
 import { InfoItem } from 'components/info-box'
 import { useAtomValue } from 'jotai'
 import { rTokenGovernanceAtom } from 'state/atoms'
-import { BoxProps, Card, Text } from 'theme-ui'
+import { BoxProps, Card, Text, Divider } from 'theme-ui'
 import { shortenAddress } from 'utils'
 
 /**
@@ -13,11 +13,11 @@ const GovernanceInfo = (props: BoxProps) => {
 
   return (
     <Card p={4} {...props}>
-      <Text mb={5} variant="sectionTitle">
+      <Text variant="sectionTitle">
         <Trans>Governance Details</Trans>
       </Text>
+      <Divider mx={-4} my={4} sx={{ borderColor: 'darkBorder' }} />
       <InfoItem title={t`Name`} subtitle={governance.name} mb={3} />
-
       {!!governance.timelock && (
         <>
           <InfoItem

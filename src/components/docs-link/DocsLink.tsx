@@ -12,6 +12,7 @@ const DocsLink = ({ link }: Props) => {
       onClick={() => window.open(link, '_blank')}
       sx={{ cursor: 'pointer' }}
       ml={2}
+      mt={1}
     >
       <ExternalArrowIcon />
     </Flex>

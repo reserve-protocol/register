@@ -2,7 +2,7 @@ import { t, Trans } from '@lingui/macro'
 import { InfoItem } from 'components/info-box'
 import { useAtomValue } from 'jotai'
 import { rTokenContractsAtom } from 'state/atoms'
-import { BoxProps, Card, Text } from 'theme-ui'
+import { BoxProps, Card, Text, Divider } from 'theme-ui'
 import { shortenAddress } from 'utils'
 
 /**
@@ -26,9 +26,10 @@ const ContractsInfo = (props: BoxProps) => {
 
   return (
     <Card p={4} {...props}>
-      <Text variant="sectionTitle" mb={5}>
-        <Trans>Related contracts</Trans>
+      <Text variant="sectionTitle">
+        <Trans>Related Contracts</Trans>
       </Text>
+      <Divider mx={-4} my={4} sx={{ borderColor: 'darkBorder' }} />
       {contractList.map(([label, prop], index) => (
         <InfoItem
           key={label}
