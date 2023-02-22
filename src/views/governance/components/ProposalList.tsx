@@ -14,7 +14,11 @@ import { ROUTES } from 'utils/constants'
 
 const query = gql`
   query getProposals($id: String!) {
-    proposals(where: { governance: $id }) {
+    proposals(
+      where: { governance: $id }
+      orderBy: creationTime
+      orderDirection: desc
+    ) {
       id
       description
       creationTime
