@@ -40,7 +40,7 @@ const basketDistAtom = atom((get) => {
       (acc, current) => ({
         ...acc,
         [current.address]: {
-          share: 50,
+          share: 100,
           targetUnit: 'USD',
         },
       }),
