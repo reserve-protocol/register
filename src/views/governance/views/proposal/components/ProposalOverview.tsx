@@ -40,11 +40,11 @@ const ProposalOverview = (props: BoxProps) => {
         >
           <CreateProposalActionIcon />
           <Text variant="title" mb={2}>
-            <Trans>Create Proposal</Trans>
+            <Trans>Create your proposal</Trans>
           </Text>
           <Text variant="legend" as="p">
-            'Submit the proposal to be voted on by [stRSR] holders. Note this is
-            an on-chain action and will require gas to propose.'
+            Preview of function calls & adding of a proposal description is
+            added in the next step.
           </Text>
           <Button
             onClick={handleProposal}
@@ -53,7 +53,7 @@ const ProposalOverview = (props: BoxProps) => {
             mt={4}
             sx={{ width: '100%' }}
           >
-            <Trans>Confirm changes</Trans>
+            <Trans>Confirm & prepare proposal</Trans>
           </Button>
         </Flex>
         <ProposalPreview sx={{ flexGrow: 1, overflow: 'auto' }} />

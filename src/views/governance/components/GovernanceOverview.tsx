@@ -102,7 +102,7 @@ const GovernanceOverview = () => {
       </Box>
       <Box mt={4} variant="layout.borderBox">
         <Text variant="subtitle">
-          <Trans>Format</Trans>
+          <Trans>Governance format</Trans>
         </Text>
         <Text variant="title">{governance ? governance.name : 'Custom'}</Text>
 

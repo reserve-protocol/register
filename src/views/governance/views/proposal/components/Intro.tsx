@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import { Text, BoxProps, Card, Flex } from 'theme-ui'
-import DeployIntro from 'components/icons/DeployIntroIcon'
+import ProposalIntroIcon from 'components/icons/ProposalIntroIcon'
 import useRToken from 'hooks/useRToken'
 
 const Intro = (props: BoxProps) => {
@@ -9,12 +9,17 @@ const Intro = (props: BoxProps) => {
 
   return (
     <Card p={4} pt={5} {...props} sx={{ position: 'relative' }}>
-      <DeployIntro />
+      <ProposalIntroIcon />
       <Text variant="sectionTitle" mb={2} mt={2}>
         <Trans>Propose changes to ${rToken?.symbol}</Trans>
       </Text>
       <Text as="p" variant="legend" pr={4}>
-        <Trans>Proposal text!</Trans>
+        <Trans>
+          Make proposed changes to the backing basket, emergency collateral,
+          governance params, etc. Changes in multiple areas can be batched into
+          a single proposal although to make voting on issues simpler it may
+          make sense to separate things if unrelated.
+        </Trans>
       </Text>
       <Flex mt={4}>
         <SmallButton
