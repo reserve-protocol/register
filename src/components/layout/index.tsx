@@ -9,8 +9,6 @@ const Container = styled(Flex)`
   height: 100%;
   max-width: 95em;
   margin: auto;
-  border-left: 1px dashed var(--theme-ui-colors-border);
-  border-right: 1px dashed var(--theme-ui-colors-border);
 `
 
 const Wrapper = styled(Flex)`
