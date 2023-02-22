@@ -3,7 +3,6 @@ import Modal from 'components/modal'
 import useTransactionCost from 'hooks/useTransactionCost'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
-import { CheckCircle, ExternalLink } from 'react-feather'
 import { addTransactionAtom, allowanceAtom } from 'state/atoms'
 import { useTransaction } from 'state/web3/hooks/useTransactions'
 import { Divider, Flex, Text, Link, Box, Spinner } from 'theme-ui'
@@ -14,7 +13,9 @@ import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { v4 as uuid } from 'uuid'
 import ApprovalTransactions from './ApprovalTransactions'
 import TransactionError from './TransactionError'
+import TransactionSignedIcon from 'components/icons/SignedTransactionIcon'
 import { t, Trans } from '@lingui/macro'
+import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 
 export interface ITransactionModal {
   title: string
@@ -50,18 +51,19 @@ const TransactionConfirmed = ({
         justifyContent: 'center',
       }}
     >
-      <CheckCircle size={36} />
+      <TransactionSignedIcon />
       <br />
-      <Text>
+      <Text variant="title">
         <Trans>Transaction signed!</Trans>
       </Text>
       <br />
       <Link
         href={getExplorerLink(hash, ExplorerDataType.TRANSACTION)}
         target="_blank"
-        sx={{ fontSize: 1 }}
+        sx={{ fontSize: 1, alignItems: 'center', display: 'flex' }}
       >
-        <ExternalLink size={12} /> <Trans>View on etherscan</Trans>
+        <Trans>View on etherscan </Trans>
+        <ExternalArrowIcon />
       </Link>
     </Flex>
   </Modal>
