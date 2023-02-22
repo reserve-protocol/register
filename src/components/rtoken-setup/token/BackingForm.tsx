@@ -103,7 +103,6 @@ const BackingForm = (props: BoxProps) => (
       label={t`Redemption throttle amount`}
       placeholder={t`Redemption throttle amount`}
       help={t`Redemption rate - allows the issuer to limit the amount of RTokens issued per block. This matters because in an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued. The default is 1,000,000.`}
-      mb={3}
       name="redemptionThrottleAmount"
       options={{
         required: true,
