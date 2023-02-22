@@ -8,6 +8,7 @@ import {
   isNewBasketProposedAtom,
   isProposalEditingAtom,
   proposalDescriptionAtom,
+  proposalTxIdAtom,
   proposedRolesAtom,
 } from './atoms'
 import ConfirmProposal from './components/ConfirmProposal'
@@ -25,6 +26,7 @@ const GovernanceProposal = () => {
   const setBasketProposed = useSetAtom(isNewBasketProposedAtom)
   const setDescription = useSetAtom(proposalDescriptionAtom)
   const resetProposedRoles = useResetAtom(proposedRolesAtom)
+  const setId = useSetAtom(proposalTxIdAtom)
   useToggledSidebar()
 
   useEffect(() => {
@@ -33,6 +35,7 @@ const GovernanceProposal = () => {
       resetProposedRoles()
       setEditing(true)
       setDescription('')
+      setId('')
     }
   }, [])
 
