@@ -1,10 +1,12 @@
+import MDEditor from '@uiw/react-md-editor'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
-import useRToken from 'hooks/useRToken'
 import { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
-import { Box, Grid, Spinner } from 'theme-ui'
+import { Box, Card, Grid, Spinner } from 'theme-ui'
+import { Proposal } from 'types'
 import ProposalDetail from 'views/governance/components/ProposalDetail'
+import ProposalVote from './components/ProposalVote'
 
 const query = gql`
   query getProposal($id: String!) {
@@ -15,6 +17,9 @@ const query = gql`
       state
       calldatas
       targets
+      proposer {
+        address
+      }
     }
   }
 `
@@ -39,7 +44,9 @@ const GovernanceProposalDetail = () => {
   const { proposalId } = useParams()
   const { data: proposal, loading } = useProposal(proposalId ?? '')
 
-  console.log('proposal', loading)
+  if (proposal?.proposer?.address) {
+    proposal.proposer = proposal.proposer.address
+  }
 
   return (
     <Grid
@@ -54,13 +61,26 @@ const GovernanceProposalDetail = () => {
         overflowY: 'auto',
       }}
     >
-      {loading && <Spinner />}
-      {!!proposal && (
-        <ProposalDetail
-          addresses={proposal.targets}
-          calldatas={proposal.calldatas}
-        />
-      )}
+      <Box>
+        <Card p={4} mb={4}>
+          {loading && <Spinner size={24} />}
+          {proposal?.description && (
+            <MDEditor.Markdown
+              source={proposal.description}
+              style={{ whiteSpace: 'pre-wrap', backgroundColor: 'transparent' }}
+            />
+          )}
+        </Card>
+        {!!proposal && (
+          <ProposalDetail
+            addresses={proposal.targets}
+            calldatas={proposal.calldatas}
+          />
+        )}
+      </Box>
+      <Box>
+        <ProposalVote proposal={proposal as Proposal} />
+      </Box>
     </Grid>
   )
 }

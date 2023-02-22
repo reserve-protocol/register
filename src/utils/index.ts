@@ -237,3 +237,8 @@ export const stringToColor = (str: string) => {
 export const parsePercent = (n: string): BigNumber => {
   return parseEther((Number(n) / 100).toString())
 }
+
+export const getProposalTitle = (description: string) => {
+  const titleRaw = description.split(/\r?\n/)[0].split('#')
+  return titleRaw[1] || titleRaw[0]
+}

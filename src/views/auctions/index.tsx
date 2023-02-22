@@ -120,7 +120,7 @@ const OutgoingAuctions = ({ data, tokens, ...props }: TableProps) => {
         Header: t`Ends at`,
         accessor: 'endAt',
         Cell: (cell: any) => (
-          <Text>{dayjs(+cell.cell.value * 1000).format('YYYY-M-d HH:mm')}</Text>
+          <Text>{dayjs(+cell.cell.value * 1000).format('YYYY-M-D HH:mm')}</Text>
         ),
       },
       {
@@ -214,7 +214,7 @@ const FinalizedAuctions = ({ data, tokens, ...props }: TableProps) => {
         Header: t`Ended at`,
         accessor: 'endAt',
         Cell: (cell: any) => (
-          <Text>{dayjs(+cell.cell.value * 1000).format('YYYY-M-d HH:mm')}</Text>
+          <Text>{dayjs(+cell.cell.value * 1000).format('YYYY-M-D HH:mm')}</Text>
         ),
       },
       {

@@ -19,8 +19,8 @@ const GovernanceParameters = (props: BoxProps) => {
         options={{
           required: true,
           pattern: numberPattern,
-          min: 1,
-          max: 50400,
+          // min: 1,
+          // max: 50400,
         }}
       />
       <FormField
@@ -32,8 +32,8 @@ const GovernanceParameters = (props: BoxProps) => {
         options={{
           required: true,
           pattern: numberPattern,
-          min: 7200,
-          max: 100800,
+          // min: 7200,
+          // max: 100800,
         }}
       />
       <FormField
@@ -45,8 +45,8 @@ const GovernanceParameters = (props: BoxProps) => {
         options={{
           required: true,
           pattern: numberPattern,
-          min: 24,
-          max: 504,
+          // min: 24,
+          // max: 504,
         }}
       />
       <FormField
@@ -58,8 +58,8 @@ const GovernanceParameters = (props: BoxProps) => {
         options={{
           required: true,
           pattern: decimalPattern,
-          min: 0,
-          max: 1,
+          // min: 0,
+          // max: 1,
         }}
       />
       <FormField
@@ -71,8 +71,8 @@ const GovernanceParameters = (props: BoxProps) => {
         options={{
           required: true,
           pattern: decimalPattern,
-          min: 0.1,
-          max: 50,
+          // min: 0.1,
+          // max: 50,
         }}
       />
     </Box>

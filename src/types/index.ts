@@ -10,6 +10,16 @@ export interface StringMap {
   [key: string]: any
 }
 
+export interface Proposal {
+  id: string
+  description: string
+  creationTime: string
+  state: string
+  calldatas: string
+  targets: string
+  proposer: string
+}
+
 export interface WalletTransaction {
   [x: string]: TransactionState[]
 }
