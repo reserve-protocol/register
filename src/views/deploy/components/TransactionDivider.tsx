@@ -27,7 +27,7 @@ export const DeploySuccessDivider = ({ hash = '' }) => (
   <Box>
     <Card>
       <Box variant="layout.verticalAlign">
-        <Image src="/svgs/asterisk.svg" mr={3} ml={2} />
+        <Image src="/svgs/up-arrow.svg" mr={3} ml={2} />
         <InfoBox
           light
           title={t`Transaction 1`}
