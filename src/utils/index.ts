@@ -238,8 +238,7 @@ export const parsePercent = (n: string): BigNumber => {
   return parseEther((Number(n) / 100).toString())
 }
 
+// TODO: More robust title parsing?
 export const getProposalTitle = (description: string) => {
-  console.log('desc', description)
-  const titleRaw = description.split(/\r?\n/)[0].split('##')
-  return titleRaw[1] || titleRaw[0]
+  return description.split(/\r?\n/)[0].replaceAll('#', '').trim()
 }

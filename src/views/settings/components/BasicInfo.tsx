@@ -28,7 +28,7 @@ const BasicInfo = () => {
         mb={3}
       />
       <InfoItem
-        title={timelock ? t`Governor Address` : t`Owner Address`}
+        title={t`Owner Address`}
         subtitle={shortenAddress(timelock ? timelock : governor)}
         address={timelock || governor}
       />
