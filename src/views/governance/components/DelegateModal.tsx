@@ -8,10 +8,16 @@ import { TRANSACTION_STATUS } from 'utils/constants'
 import { Text } from 'theme-ui'
 import Input from 'components/input'
 
-const DelegateModal = ({ onClose }: { onClose: () => void }) => {
+const DelegateModal = ({
+  onClose,
+  delegated,
+}: {
+  onClose: () => void
+  delegated: boolean
+}) => {
   const { account } = useWeb3React()
   const rToken = useRToken()
-  const [address, setAddress] = useState(account || '')
+  const [address, setAddress] = useState(!delegated && account ? account : '')
   const validAddress = isAddress(address)
   const transaction = useMemo(
     () => ({
@@ -42,6 +48,7 @@ const DelegateModal = ({ onClose }: { onClose: () => void }) => {
         <Trans>Delegate to</Trans>
       </Text>
       <Input
+        autoFocus
         mt={2}
         value={address}
         onChange={setAddress}

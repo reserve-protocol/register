@@ -1,3 +1,4 @@
+import { BasketHandler } from './../../../../../abis/types/BasketHandler'
 import { proposalDescriptionAtom } from './../atoms'
 import { t } from '@lingui/macro'
 import { BasketHandlerInterface } from 'abis'
@@ -135,6 +136,10 @@ const useProposalTx = () => {
             primaryBasket,
             weights,
           ])
+        )
+        addresses.push(contracts.BasketHandler)
+        calls.push(
+          BasketHandlerInterface.encodeFunctionData('refreshBasket', [])
         )
       }
     } catch (e) {
