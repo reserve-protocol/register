@@ -59,7 +59,7 @@ const StakingChart = (props: BoxProps) => {
             insurance: string
           }) => ({
             value: +formatEther(insurance) * rsrPrice,
-            label: dayjs.unix(+timestamp).format('YYYY-M-d HH:mm:ss'),
+            label: dayjs.unix(+timestamp).format('YYYY-M-D HH:mm:ss'),
             display: `$${formatCurrency(+formatEther(insurance) * rsrPrice)}`,
           })
         ) || []

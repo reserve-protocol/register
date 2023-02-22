@@ -8,7 +8,7 @@ export interface ModalProps {
   open?: boolean
   title?: string
   onClose?(): void
-  children: any
+  children?: any
   style?: any
 }
 

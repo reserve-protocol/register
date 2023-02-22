@@ -9,6 +9,7 @@ import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Badge, Box, Text } from 'theme-ui'
 import { StringMap } from 'types'
+import { getProposalTitle } from 'utils'
 import { ROUTES } from 'utils/constants'
 
 const query = gql`
@@ -41,15 +42,10 @@ const useProposals = () => {
   }, [JSON.stringify(response)])
 }
 
-const getTitle = (description: string) => {
-  const titleRaw = description.split(/\r?\n/)[0].split('#')
-  return titleRaw[1] || titleRaw[0]
-}
-
 const ProposalList = () => {
   const rToken = useRToken()
   const navigate = useNavigate()
-  const { data, loading, error } = useProposals()
+  const { data } = useProposals()
 
   return (
     <Box>
@@ -82,7 +78,7 @@ const ProposalList = () => {
                   display: 'block',
                 }}
               >
-                No proposals created...
+                <Trans>No proposals created...</Trans>
               </Text>
             </Box>
           )}
@@ -99,10 +95,12 @@ const ProposalList = () => {
               }
             >
               <Box>
-                <Text variant="strong">{getTitle(proposal.description)}</Text>
+                <Text variant="strong">
+                  {getProposalTitle(proposal.description)}
+                </Text>
                 <Text variant="legend" sx={{ fontSize: 1 }}>
                   <Trans>Created at:</Trans>{' '}
-                  {dayjs.unix(+proposal.creationTime).format('YYYY-M-d')}
+                  {dayjs.unix(+proposal.creationTime).format('YYYY-M-D')}
                 </Text>
               </Box>
               <Badge ml="auto">{proposal.state}</Badge>
