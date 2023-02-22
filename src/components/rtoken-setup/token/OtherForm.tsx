@@ -70,8 +70,8 @@ const OtherForm = (props: BoxProps) => (
       options={{
         required: true,
         pattern: decimalPattern,
-        max: 1000000,
-        min: 1000,
+        // max: 1000000,
+        // min: 1000,
       }}
     />
     <FormField
