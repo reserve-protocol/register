@@ -32,7 +32,10 @@ export const getTransactionWithGasLimit = (
       args: [
         ...tx.call.args,
         {
-          gasLimit: Math.floor(gasLimit + gasLimit * multiplier),
+          gasLimit: Math.min(
+            Math.floor(gasLimit + gasLimit * multiplier),
+            20000000
+          ),
         },
       ],
     },
