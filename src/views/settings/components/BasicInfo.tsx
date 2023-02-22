@@ -23,7 +23,7 @@ const BasicInfo = () => {
       <InfoItem title={t`Symbol`} subtitle={rToken?.symbol} mb={3} />
       <InfoItem title={t`Mandate`} subtitle={rToken?.mandate} mb={3} />
       <InfoItem
-        title={t`Token Address`}
+        title={t`RToken Address`}
         subtitle={shortenAddress(rToken?.address ?? '')}
         address={rToken?.address}
         mb={3}
