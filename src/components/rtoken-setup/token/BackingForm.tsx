@@ -50,7 +50,7 @@ const BackingForm = (props: BoxProps) => (
     <FormField
       label={t`Max trade slippage (%)`}
       placeholder={t`% Acceptable`}
-      help={t`Max trade slippage — maximum deviation from oracle prices that any trade can clear at. The default value is 1%. Why this matters? Acts as a form of slippage protection.`}
+      help={t`Max trade slippage — maximum deviation from oracle prices that any trade can clear at. The default value is 0.5%. Why this matters? Acts as a form of slippage protection.`}
       mb={3}
       name="maxTradeSlippage"
       options={{
@@ -63,7 +63,7 @@ const BackingForm = (props: BoxProps) => (
     <FormField
       label={t`Issuance throttle rate (%)`}
       placeholder={t`Issuance throttle Rate`}
-      help={t`Issuance rate - allows the issuer to limit the amount of RTokens issued per block. This matters because in an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued. The default is 0.025%. If an RToken gets deployed with the default settings, only 0.025% of the market cap of the RToken can be issued per block.`}
+      help={t`Issuance rate - allows the issuer to limit the amount of RTokens issued per block. This matters because in an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued. The default is 1,000,000.`}
       mb={3}
       name="issuanceThrottleRate"
       options={{
@@ -89,7 +89,7 @@ const BackingForm = (props: BoxProps) => (
     <FormField
       label={t`Redemption throttle rate (%)`}
       placeholder={t`Redemption throttle Rate`}
-      help={t`Redemption rate - allows the issuer to limit the amount of RTokens issued per block. This matters because in an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued. The default is 0.025%. If an RToken gets deployed with the default settings, only 0.025% of the market cap of the RToken can be issued per block.`}
+      help={t`Redemption rate - allows the issuer to limit the amount of RTokens issued per block. This matters because in an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued. The default is 0.25%. If an RToken gets deployed with the default settings, only 2.5% of the market cap of the RToken can be issued per block.`}
       mb={3}
       name="redemptionThrottleRate"
       options={{
@@ -102,7 +102,7 @@ const BackingForm = (props: BoxProps) => (
     <FormField
       label={t`Redemption throttle amount`}
       placeholder={t`Redemption throttle amount`}
-      help={t`Redemption rate - allows the issuer to limit the amount of RTokens issued per block. This matters because in an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued. The default is 0.025%. If an RToken gets deployed with the default settings, only 0.025% of the market cap of the RToken can be issued per block.`}
+      help={t`Redemption rate - allows the issuer to limit the amount of RTokens issued per block. This matters because in an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued. The default is 1,000,000.`}
       mb={3}
       name="redemptionThrottleAmount"
       options={{
