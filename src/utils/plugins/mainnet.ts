@@ -145,7 +145,7 @@ const plugins: CollateralPlugin[] = [
     collateralToken: 'aUSDC',
     description: '',
     collateralAddress: underlyingCollateralAddresses.aUSDC,
-    depositContract: '0x8f471832C6d35F2a51606a60f482BCfae055D986 ',
+    depositContract: '0x8f471832C6d35F2a51606a60f482BCfae055D986',
     rewardToken: STAKE_AAVE_ADDRESS[ChainId.Mainnet],
     underlyingToken: underlyingCollateralAddresses.USDC,
   },
