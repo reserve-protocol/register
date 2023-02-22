@@ -11,7 +11,7 @@ const OtherForm = (props: BoxProps) => (
     <FormField
       label={t`Short freeze duration (s)`}
       placeholder={t`Duration in seconds`}
-      help={t`Short freeze duration - number of seconds an initial freeze lasts. The default is 259200s or 3 days. This provides the ability to freeze an RToken’s system for a short period of time which is useful to thwart an attack.`}
+      help={t`Short freezers have the responsibility of freezing an RToken if anything dangerous or suspicious is happening. This is a one-shot freeze and the role will be revoked after a single use. This field determines how long the RToken will remain frozen until the freeze expires or is extended by another actor. The default is 259200 second, or 3 days which we believe is enough time for appropriate parties to act.`}
       mb={3}
       name="shortFreeze"
       options={{
