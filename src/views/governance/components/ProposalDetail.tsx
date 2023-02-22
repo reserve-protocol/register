@@ -3,7 +3,7 @@ import { getAddress } from 'ethers/lib/utils'
 import { useAtomValue } from 'jotai'
 import { Box, BoxProps } from 'theme-ui'
 import { ContractProposal, InterfaceMap, interfaceMapAtom } from '../atoms'
-import ContractProposalDetail from './proposal-detail/ContractProposalDetails'
+import ContractProposalDetail from '../views/proposal-detail/components/ContractProposalDetails'
 
 interface Props extends BoxProps {
   addresses: string[]

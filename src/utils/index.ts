@@ -239,6 +239,7 @@ export const parsePercent = (n: string): BigNumber => {
 }
 
 export const getProposalTitle = (description: string) => {
-  const titleRaw = description.split(/\r?\n/)[0].split('#')
+  console.log('desc', description)
+  const titleRaw = description.split(/\r?\n/)[0].split('##')
   return titleRaw[1] || titleRaw[0]
 }
