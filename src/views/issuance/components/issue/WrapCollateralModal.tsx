@@ -283,11 +283,7 @@ const WrapCollateralModal = ({ onClose }: { onClose(): void }) => {
   return (
     <Modal
       style={{ maxWidth: '560px' }}
-      title={
-        !fromUnderlying
-          ? t`Unwrapping needs to be done after redeeming`
-          : t`Wrapping needs to be done before minting`
-      }
+      title={t`Wrapping needs to be done before minting`}
       onClose={onClose}
     >
       <Box
@@ -313,9 +309,9 @@ const WrapCollateralModal = ({ onClose }: { onClose(): void }) => {
           }}
           onClick={() => setFromUnderlying(1)}
         >
-          DAI{' '}
+          Token{' '}
           <ArrowRight size={14} style={{ position: 'relative', top: '1px' }} />{' '}
-          saDAI
+          saToken
         </Box>
         <Box
           p={1}
@@ -328,9 +324,9 @@ const WrapCollateralModal = ({ onClose }: { onClose(): void }) => {
           }}
           onClick={() => setFromUnderlying(0)}
         >
-          aDAI{' '}
+          aToken{' '}
           <ArrowRight size={14} style={{ position: 'relative', top: '1px' }} />{' '}
-          saDAI
+          saToken
         </Box>
       </Box>
       {aavePlugins.map((plugin) => (
@@ -387,7 +383,7 @@ const WrapCollateralModal = ({ onClose }: { onClose(): void }) => {
         loading={!!loading}
         disabled={!isValid || !canSubmit}
         variant={!!loading ? 'accentAction' : 'primary'}
-        text={!fromUnderlying ? t`Unwrap aTokens` : t`Wrap aTokens`}
+        text={!fromUnderlying ? t`Wrap aTokens` : t`Wrap tokens`}
         onClick={handleConfirm}
         sx={{ width: '100%' }}
         mt={3}
