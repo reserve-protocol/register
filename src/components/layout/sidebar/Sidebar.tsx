@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import useIsSidebarVisible from 'hooks/useIsSidebarVisible'
 import { atom, useAtom } from 'jotai'
 import { Box } from 'theme-ui'
-import Navigation from '../navigation'
+import Navigation from '../navigation/index'
 import Footer from './Footer'
 
 const Container = styled(Box)`

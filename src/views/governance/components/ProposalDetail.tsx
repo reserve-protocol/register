@@ -28,6 +28,7 @@ const parseCallDatas = (
       const contractDetail = interfaceMap[address]
 
       if (contractDetail) {
+        console.log('contract detail')
         const functionCall = contractDetail.interface.getFunction(
           calldatas[i].slice(0, Math.min(calldatas[i].length, 10))
         )

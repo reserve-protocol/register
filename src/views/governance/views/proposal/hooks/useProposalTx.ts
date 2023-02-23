@@ -1,7 +1,12 @@
 import { BasketHandler } from './../../../../../abis/types/BasketHandler'
 import { proposalDescriptionAtom } from './../atoms'
 import { t } from '@lingui/macro'
-import { BasketHandlerInterface, MainInterface } from 'abis'
+import {
+  BasketHandlerInterface,
+  GovernanceInterface,
+  MainInterface,
+  TimelockInterface,
+} from 'abis'
 
 import { basketAtom } from 'components/rtoken-setup/atoms'
 import { BigNumber } from 'ethers'
@@ -162,6 +167,26 @@ const useProposalTx = () => {
           BasketHandlerInterface.encodeFunctionData('refreshBasket', [])
         )
       }
+
+      // TODO: REMOVE THIS!!!!
+      // addresses.push(governance.governor)
+      // calls.push(
+      //   GovernanceInterface.encodeFunctionData('setVotingDelay', [
+      //     BigNumber.from('14400'),
+      //   ])
+      // )
+      // addresses.push(governance.governor)
+      // calls.push(
+      //   GovernanceInterface.encodeFunctionData('setVotingPeriod', [
+      //     BigNumber.from('21600'),
+      //   ])
+      // )
+      // addresses.push(governance.timelock || '')
+      // calls.push(
+      //   TimelockInterface.encodeFunctionData('updateDelay', [
+      //     BigNumber.from('259200'),
+      //   ])
+      // )
     } catch (e) {
       console.error('Error generating proposal call', e)
     }
