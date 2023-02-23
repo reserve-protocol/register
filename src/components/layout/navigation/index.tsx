@@ -33,8 +33,8 @@ const MenuItem = ({ title, Icon, collapsed }: Omit<Item, 'path'>) => {
         flexGrow: 1,
         alignItems: 'center',
         transition,
-        paddingLeft: collapsed ? 0 : [0, 0, 4],
-        justifyContent: collapsed ? 'center' : ['center', 'center', 'inherit'],
+        paddingLeft: collapsed ? 4 : [0, 0, 4],
+        justifyContent: collapsed ? 'left' : ['center', 'center', 'inherit'],
       }}
       my={[10, 10, 2]}
     >

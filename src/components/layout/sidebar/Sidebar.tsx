@@ -33,7 +33,7 @@ const Sidebar = () => {
   return (
     <Container
       sx={{
-        flexBasis: isSidebarCollapsed ? 64 : [64, 72, 264],
+        flexBasis: isSidebarCollapsed ? 76 : [64, 72, 264],
         flexShrink: 0,
         display: ['none', 'flex'],
       }}
