@@ -80,7 +80,12 @@ const AccountVotes = () => {
           </SmallButton>
         </Box>
       )}
-      {isVisible && <DelegateModal onClose={() => setVisible(false)} />}
+      {isVisible && (
+        <DelegateModal
+          delegated={!hasNoDelegates}
+          onClose={() => setVisible(false)}
+        />
+      )}
     </Box>
   )
 }

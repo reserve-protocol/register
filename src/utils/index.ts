@@ -32,7 +32,10 @@ export const getTransactionWithGasLimit = (
       args: [
         ...tx.call.args,
         {
-          gasLimit: Math.floor(gasLimit + gasLimit * multiplier),
+          gasLimit: Math.min(
+            Math.floor(gasLimit + gasLimit * multiplier),
+            20000000
+          ),
         },
       ],
     },
@@ -238,7 +241,7 @@ export const parsePercent = (n: string): BigNumber => {
   return parseEther((Number(n) / 100).toString())
 }
 
+// TODO: More robust title parsing?
 export const getProposalTitle = (description: string) => {
-  const titleRaw = description.split(/\r?\n/)[0].split('#')
-  return titleRaw[1] || titleRaw[0]
+  return description.split(/\r?\n/)[0].replaceAll('#', '').trim()
 }

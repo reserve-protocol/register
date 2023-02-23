@@ -16,7 +16,7 @@ import { ArrowUpRight } from 'react-feather'
 import { blockTimestampAtom } from 'state/atoms'
 import { Box, BoxProps, Link, Text, Divider } from 'theme-ui'
 import { StringMap } from 'types'
-import { formatCurrency } from 'utils'
+import { formatCurrency, shortenAddress } from 'utils'
 import { RSR_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 
@@ -79,11 +79,11 @@ const OutgoingAuctions = ({ data, tokens, ...props }: TableProps) => {
   const columns = useMemo(
     () => [
       {
-        Header: t`Sold`,
+        Header: t`Selling`,
         accessor: 'selling',
         Cell: (cell: any) => (
           <TokenItem
-            symbol={tokens[cell.cell.value]}
+            symbol={tokens[cell.cell.value] || shortenAddress(cell.cell.value)}
             logo={
               rToken?.symbol === cell.cell.value
                 ? getRTokenLogo(rToken?.address ?? '')
@@ -93,11 +93,11 @@ const OutgoingAuctions = ({ data, tokens, ...props }: TableProps) => {
         ),
       },
       {
-        Header: t`Bought`,
+        Header: t`Buying`,
         accessor: 'buying',
         Cell: (cell: any) => (
           <TokenItem
-            symbol={tokens[cell.cell.value]}
+            symbol={tokens[cell.cell.value] || shortenAddress(cell.cell.value)}
             logo={
               rToken?.symbol === cell.cell.value
                 ? getRTokenLogo(rToken?.address ?? '')
@@ -139,7 +139,7 @@ const OutgoingAuctions = ({ data, tokens, ...props }: TableProps) => {
         ),
       },
     ],
-    []
+    [JSON.stringify(tokens)]
   )
 
   return (
@@ -182,7 +182,7 @@ const FinalizedAuctions = ({ data, tokens, ...props }: TableProps) => {
         accessor: 'selling',
         Cell: (cell: any) => (
           <TokenItem
-            symbol={tokens[cell.cell.value]}
+            symbol={tokens[cell.cell.value] || shortenAddress(cell.cell.value)}
             logo={
               rToken?.symbol === cell.cell.value
                 ? getRTokenLogo(rToken?.address ?? '')
@@ -196,7 +196,7 @@ const FinalizedAuctions = ({ data, tokens, ...props }: TableProps) => {
         accessor: 'buying',
         Cell: (cell: any) => (
           <TokenItem
-            symbol={tokens[cell.cell.value]}
+            symbol={tokens[cell.cell.value] || shortenAddress(cell.cell.value)}
             logo={
               rToken?.symbol === cell.cell.value
                 ? getRTokenLogo(rToken?.address ?? '')
@@ -293,7 +293,7 @@ const Auctions = () => {
   })
 
   const rows = useMemo(() => {
-    if (!data || !blockTimestamp) {
+    if (!data) {
       return { current: [], ended: [] }
     }
 

@@ -19,7 +19,7 @@ const ConfirmProposalForm = ({ tx }: { tx: TransactionState }) => {
     if (!title) {
       setDescription('')
     } else {
-      setProposalDescription(`## ${title} \n ${description || ''}`)
+      setProposalDescription(`# ${title} \n ${description || ''}`)
     }
   }, [title, description])
 

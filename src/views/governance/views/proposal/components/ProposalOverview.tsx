@@ -49,7 +49,7 @@ const ProposalOverview = (props: BoxProps) => {
           <Button
             onClick={handleProposal}
             variant="primary"
-            // disabled={!isValid}
+            disabled={!isValid}
             mt={4}
             sx={{ width: '100%' }}
           >

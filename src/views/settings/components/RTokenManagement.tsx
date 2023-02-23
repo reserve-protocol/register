@@ -60,18 +60,6 @@ const RTokenManagement = () => {
       <PauseManager />
       <Divider />
       <FreezeManager />
-      {/* {accountRole.owner && (
-        <>
-          <Divider />
-          <SettingItem
-            title={t`Change by owner`}
-            subtitle={t`Available pre-governance`}
-            action={t`Edit`}
-            icon="owner-edit"
-            onAction={handleEdit}
-          />
-        </>
-      )} */}
     </Container>
   )
 }

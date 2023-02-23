@@ -13,7 +13,9 @@ const ContractsInfo = (props: BoxProps) => {
   const contractList = [
     [t`Main`, 'main'],
     [t`Backing Manager`, 'backingManager'],
+    [t`Basket Handler`, 'basketHandler'],
     [t`RToken Trader`, 'rTokenTrader'],
+    [t`RSR Trader`, 'rsrTrader'],
     [t`Broker`, 'broker'],
     [t`Asset Registry`, 'assetRegistry'],
     [t`Staking token`, 'stRSR'],

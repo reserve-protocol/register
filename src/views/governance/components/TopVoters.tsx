@@ -90,12 +90,10 @@ const TopVoters = (props: BoxProps) => {
 
           return (
             <Text>
-              {
-                +(
-                  (delegatedVotes / +formatEther(totalTokenSupply)) *
-                  100
-                ).toFixed(2)
-              }
+              {+(
+                (delegatedVotes / +formatEther(totalTokenSupply)) *
+                100
+              ).toFixed(2) || 0}
               %
             </Text>
           )

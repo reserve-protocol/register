@@ -1,6 +1,12 @@
+import { BasketHandler } from './../../../../../abis/types/BasketHandler'
 import { proposalDescriptionAtom } from './../atoms'
 import { t } from '@lingui/macro'
-import { BasketHandlerInterface } from 'abis'
+import {
+  BasketHandlerInterface,
+  GovernanceInterface,
+  MainInterface,
+  TimelockInterface,
+} from 'abis'
 
 import { basketAtom } from 'components/rtoken-setup/atoms'
 import { BigNumber } from 'ethers'
@@ -19,6 +25,7 @@ import {
   revenueSplitChangesAtom,
   roleChangesAtom,
 } from '../atoms'
+import { RoleKey } from 'types'
 
 const paramParse: { [x: string]: (v: string) => BigNumber } = {
   minTradeVolume: parseEther,
@@ -31,6 +38,15 @@ const paramParse: { [x: string]: (v: string) => BigNumber } = {
   maxTradeSlippage: parsePercent,
   shortFreeze: BigNumber.from,
   longFreeze: BigNumber.from,
+}
+
+const ROLES: { [x: string]: string } = {
+  longFreezers:
+    '0x4c4f4e475f465245455a45520000000000000000000000000000000000000000',
+  freezers:
+    '0x53484f52545f465245455a455200000000000000000000000000000000000000',
+  pausers: '0x5041555345520000000000000000000000000000000000000000000000000000',
+  owners: '0x4f574e4552000000000000000000000000000000000000000000000000000000',
 }
 
 // TODO: May want to use a separate memo to calculate the calldatas
@@ -108,6 +124,16 @@ const useProposalTx = () => {
         }
       }
 
+      for (const roleChange of roleChanges) {
+        addresses.push(contracts.main)
+        calls.push(
+          MainInterface.encodeFunctionData(
+            roleChange.isNew ? 'grantRole' : 'revokeRole',
+            [ROLES[roleChange.role], roleChange.address]
+          )
+        )
+      }
+
       if (newBasket) {
         const primaryBasket: string[] = []
         const weights: BigNumber[] = []
@@ -136,7 +162,31 @@ const useProposalTx = () => {
             weights,
           ])
         )
+        addresses.push(contracts.BasketHandler)
+        calls.push(
+          BasketHandlerInterface.encodeFunctionData('refreshBasket', [])
+        )
       }
+
+      // TODO: REMOVE THIS!!!!
+      // addresses.push(governance.governor)
+      // calls.push(
+      //   GovernanceInterface.encodeFunctionData('setVotingDelay', [
+      //     BigNumber.from('14400'),
+      //   ])
+      // )
+      // addresses.push(governance.governor)
+      // calls.push(
+      //   GovernanceInterface.encodeFunctionData('setVotingPeriod', [
+      //     BigNumber.from('21600'),
+      //   ])
+      // )
+      // addresses.push(governance.timelock || '')
+      // calls.push(
+      //   TimelockInterface.encodeFunctionData('updateDelay', [
+      //     BigNumber.from('259200'),
+      //   ])
+      // )
     } catch (e) {
       console.error('Error generating proposal call', e)
     }

@@ -11,7 +11,7 @@ import { getTransactionWithGasLimit } from 'utils'
 
 const useProposal = (tx: TransactionState) => {
   const addTransaction = useSetAtom(addTransactionAtom)
-  const debouncedTx = useDebounce(tx, 100)
+  const debouncedTx = useDebounce(tx, 300)
   const [fee, gasError, gasLimit] = useTransactionCost([debouncedTx])
   const proposalDescription = useAtomValue(proposalDescriptionAtom)
   const isValid = !!proposalDescription
