@@ -8,7 +8,7 @@ const CopyIcon = (props: SVGProps<SVGSVGElement>) => (
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
-    <g clip-path="url(#clip0_3954_145060)">
+    <g clipPath="url(#clip0_3954_145060)">
       <path
         d="M3 3.00085H10.5V10.5009H3V3.00085Z"
         fill="currentColor"

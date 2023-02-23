@@ -1,7 +1,7 @@
 import { BasketHandler } from './../../../../../abis/types/BasketHandler'
 import { proposalDescriptionAtom } from './../atoms'
 import { t } from '@lingui/macro'
-import { BasketHandlerInterface } from 'abis'
+import { BasketHandlerInterface, MainInterface } from 'abis'
 
 import { basketAtom } from 'components/rtoken-setup/atoms'
 import { BigNumber } from 'ethers'
@@ -20,6 +20,7 @@ import {
   revenueSplitChangesAtom,
   roleChangesAtom,
 } from '../atoms'
+import { RoleKey } from 'types'
 
 const paramParse: { [x: string]: (v: string) => BigNumber } = {
   minTradeVolume: parseEther,
@@ -32,6 +33,15 @@ const paramParse: { [x: string]: (v: string) => BigNumber } = {
   maxTradeSlippage: parsePercent,
   shortFreeze: BigNumber.from,
   longFreeze: BigNumber.from,
+}
+
+const ROLES: { [x: string]: string } = {
+  longFreezers:
+    '0x4c4f4e475f465245455a45520000000000000000000000000000000000000000',
+  shortFreezers:
+    '0x53484f52545f465245455a455200000000000000000000000000000000000000',
+  pausers: '0x5041555345520000000000000000000000000000000000000000000000000000',
+  owners: '0x4f574e4552000000000000000000000000000000000000000000000000000000',
 }
 
 // TODO: May want to use a separate memo to calculate the calldatas
@@ -107,6 +117,16 @@ const useProposalTx = () => {
             )
           }
         }
+      }
+
+      for (const roleChange of roleChanges) {
+        addresses.push(contracts.main)
+        calls.push(
+          MainInterface.encodeFunctionData(
+            roleChange.isNew ? 'grantRole' : 'revokeRole',
+            [ROLES[roleChange.role], roleChange.address]
+          )
+        )
       }
 
       if (newBasket) {
