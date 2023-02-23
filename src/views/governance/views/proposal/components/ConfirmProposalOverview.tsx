@@ -64,7 +64,7 @@ const ProposalStatus = ({
       <>
         <Spinner size={24} mt={3} mb={2} />
         <Text sx={{ fontWeight: 500, fontSize: 3, display: 'block' }} mb={2}>
-          <Trans>Proposal transaction submitted</Trans>
+          <Trans>Transaction submitted</Trans>
         </Text>
         <Text as="p" variant="legend">
           <Trans>
@@ -142,7 +142,7 @@ const ConfirmProposalOverview = ({ tx, ...props }: Props) => {
           </SmallButton>
           <ConfirmProposalActionIcon />
           <Text variant="title" mb={2}>
-            <Trans>Confirm Proposal</Trans>
+            <Trans>Confirm & Submit</Trans>
           </Text>
           <Text variant="legend" as="p">
             Submit the proposal to be voted on by [stRSR] holders. Note this is
