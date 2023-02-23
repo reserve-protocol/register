@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core'
-import { useAtomValue, useUpdateAtom } from 'jotai/utils'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect, useState } from 'react'
 import { blockAtom, blockTimestampAtom, chainIdAtom } from './../state/atoms'
 import useDebounce from './useDebounce'
@@ -55,9 +55,9 @@ function useBlock() {
 
 // TODO: Move to state/web3
 export function BlockUpdater() {
-  const setBlock = useUpdateAtom(blockAtom)
-  const setChain = useUpdateAtom(chainIdAtom)
-  const setBlockTimestamp = useUpdateAtom(blockTimestampAtom)
+  const setBlock = useSetAtom(blockAtom)
+  const setChain = useSetAtom(chainIdAtom)
+  const setBlockTimestamp = useSetAtom(blockTimestampAtom)
   const block = useBlock()
   const { provider, chainId } = useWeb3React()
 
@@ -89,5 +89,5 @@ export default function useBlockNumber(): number | undefined {
 }
 
 export function useFastForwardBlockNumber(): (block: number) => void {
-  return useUpdateAtom(blockAtom)
+  return useSetAtom(blockAtom)
 }

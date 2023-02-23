@@ -1,5 +1,5 @@
-import { truncateDecimals } from './index'
 import { BigNumber } from '@ethersproject/bignumber'
+import { parseUnits } from 'ethers/lib/utils'
 import { ReserveToken, StringMap } from 'types'
 import { CHAIN_ID } from 'utils/chains'
 import {
@@ -8,7 +8,7 @@ import {
   RSV_MANAGER_ADDRESS,
   USDC_ADDRESS,
 } from './addresses'
-import { parseEther, parseUnits } from 'ethers/lib/utils'
+import { truncateDecimals } from './index'
 
 /**
  * RSV Token utility
@@ -34,12 +34,11 @@ export const getIssuable = (rsv: ReserveToken, tokenBalances: StringMap) => {
     )
   }
 
-  return truncateDecimals(lowestCollateralBalance * 2)
+  return truncateDecimals(lowestCollateralBalance)
 }
 
 export const quote = (amount: number): { [x: string]: BigNumber } => ({
-  [BUSD]: parseEther((amount / 2).toString()),
-  [USDC]: parseUnits((amount / 2).toString(), 6),
+  [USDC]: parseUnits(amount.toString(), 6),
 })
 
 const RSV: ReserveToken = {
@@ -54,12 +53,6 @@ const RSV: ReserveToken = {
       name: 'USD Coin',
       symbol: 'USDC',
       decimals: 6,
-    },
-    {
-      address: BUSD,
-      name: 'Binance USD',
-      symbol: 'BUSD',
-      decimals: 18,
     },
   ],
   isRSV: true,

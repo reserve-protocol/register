@@ -1,7 +1,6 @@
 import { t, Trans } from '@lingui/macro'
-import { SmallButton } from 'components/button'
 import { useEffect, useMemo, useState } from 'react'
-import { Box, BoxProps, Divider, Flex, Progress, Text } from 'theme-ui'
+import { Box, BoxProps, Button, Divider, Flex, Progress, Text } from 'theme-ui'
 
 interface Props extends BoxProps {
   onDismiss(): void
@@ -59,7 +58,7 @@ const Greet = ({ onDismiss, ...props }: Props) => {
       },
       {
         title: t`Explore`,
-        text: t`Discover how an RToken is configured to operate in the good times and in emergency situations where collateral defaults.`,
+        text: t`Discover how an RToken is configured to operate in the good times and in emergencies if collateral defaults.`,
       },
     ],
     []
@@ -75,17 +74,17 @@ const Greet = ({ onDismiss, ...props }: Props) => {
 
   return (
     <>
-      <Flex {...props} mt={6} mb={8}>
-        <Box ml={3} pr={3} mb={[0, 6]}>
+      <Flex {...props} mt={8} pt={4} mb={0}>
+        <Box ml={3} pr={3} mb={[0, 0]}>
           <Text
             sx={{
               display: 'block',
-              fontSize: 4,
+              fontSize: 5,
             }}
           >
             👋
           </Text>
-          <Text variant="title" mb={3} sx={{ fontSize: 4 }}>
+          <Text variant="title" my={3} sx={{ fontSize: 5 }}>
             <Trans>Welcome to Register</Trans>
           </Text>
           <Text as="p" variant="legend" sx={{ maxWidth: 520 }}>
@@ -96,34 +95,34 @@ const Greet = ({ onDismiss, ...props }: Props) => {
               different ways.
             </Trans>
           </Text>
-          <Box mt={4}>
-            <SmallButton
-              px={3}
+          <Box mt={5}>
+            <Button
+              px={4}
               py={2}
-              mr={4}
+              mr={3}
               onClick={() =>
                 window.open('https://github.com/lc-labs/register', '_blank')
               }
               variant="muted"
             >
               <Trans>Go to source</Trans>
-            </SmallButton>
-            <SmallButton px={4} py={2} onClick={onDismiss}>
+            </Button>
+            <Button px={4} py={2} onClick={onDismiss}>
               <Trans>Got it!</Trans>
-            </SmallButton>
+            </Button>
           </Box>
         </Box>
         <Flex
           sx={{
             paddingLeft: 7,
-            alignItems: 'center',
+            marginTop: 'auto',
             borderLeft: '1px solid',
             borderColor: 'darkBorder',
             display: ['none', 'flex'],
           }}
           ml="auto"
         >
-          <Box sx={{ width: 296, height: 200 }}>
+          <Box sx={{ width: 400 }}>
             <Text>
               <Trans>Select an RToken to:</Trans>
             </Text>
@@ -132,8 +131,11 @@ const Greet = ({ onDismiss, ...props }: Props) => {
                 <Text
                   onClick={() => setActive(index)}
                   key={index}
-                  variant={index === active ? 'title' : 'legend'}
-                  sx={{ cursor: 'pointer' }}
+                  variant="title"
+                  sx={{
+                    opacity: index === active ? 1 : 0.4,
+                    cursor: 'pointer',
+                  }}
                   mr={3}
                 >
                   {title}
@@ -147,7 +149,7 @@ const Greet = ({ onDismiss, ...props }: Props) => {
           </Box>
         </Flex>
       </Flex>
-      <Divider my={5} mx={[-4, -5]} sx={{ borderColor: 'darkBorder' }} />
+      <Divider my={7} mx={[-1, -5]} sx={{ borderColor: 'darkBorder' }} />
     </>
   )
 }

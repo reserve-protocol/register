@@ -17,7 +17,6 @@ const NumericalInput = ({ onChange, ...props }: InputProps) => {
 
   return (
     <Input
-      {...props}
       onChange={handleChange}
       inputMode="decimal"
       autoComplete="off"
@@ -27,6 +26,7 @@ const NumericalInput = ({ onChange, ...props }: InputProps) => {
       minLength={1}
       maxLength={79}
       spellCheck="false"
+      {...props}
     />
   )
 }

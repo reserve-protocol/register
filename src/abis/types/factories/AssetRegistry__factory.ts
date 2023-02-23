@@ -117,6 +117,31 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "getRegistry",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "contract IERC20[]",
+            name: "erc20s",
+            type: "address[]",
+          },
+          {
+            internalType: "contract IAsset[]",
+            name: "assets",
+            type: "address[]",
+          },
+        ],
+        internalType: "struct Registry",
+        name: "reg",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "contract IMain",
@@ -304,6 +329,19 @@ const _abi = [
     name: "upgradeToAndCall",
     outputs: [],
     stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "version",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "pure",
     type: "function",
   },
 ];

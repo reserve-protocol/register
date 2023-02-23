@@ -25,12 +25,13 @@ export const defaultProtocolMetrics = {
   totalRTokenUSD: '$0',
   cumulativeVolumeUSD: '$0',
   cumulativeRTokenRevenueUSD: '$0',
-  cumulativeInsuranceRevenueUSD: '$0',
+  cumulativeStakingRevenueUSD: '$0',
   transactionCount: '0',
   dailyTransactionCount: '0',
   dailyVolume: '$0',
 }
 
+// TODO: Remove insurance term from subgraph
 const protocolMetricsQuery = gql`
   query GetProtocolMetrics($id: String!, $fromTime: Int!) {
     token(id: "0x196f4727526ea7fb1e17b2071b3d8eaa38486988") {
@@ -74,7 +75,7 @@ const TokenStats = (props: BoxProps) => {
       id: PROTOCOL_SLUG,
       fromTime,
     },
-    { refreshInterval: 5000 }
+    { refreshInterval: 10000 }
   )
   const rpayOverview = useAtomValue(rpayOverviewAtom)
 
@@ -101,7 +102,8 @@ const TokenStats = (props: BoxProps) => {
         cumulativeRTokenRevenueUSD: `$${formatCurrency(
           +data.protocol?.cumulativeRTokenRevenueUSD || 0
         )}`,
-        cumulativeInsuranceRevenueUSD: `$${formatCurrency(
+        // TODO: Remove insurance
+        cumulativeStakingRevenueUSD: `$${formatCurrency(
           +data.protocol?.cumulativeInsuranceRevenueUSD || 0
         )}`,
         transactionCount: formatCurrency(
@@ -124,21 +126,21 @@ const TokenStats = (props: BoxProps) => {
   }, [data, rpayOverview.txCount])
 
   return (
-    <Box pl={3} {...props}>
+    <Box pl={3} mt={2} {...props}>
       <ContentHead
         mr={5}
         sx={{ maxWidth: 600 }}
         title={t`RToken stats`}
-        subtitle={t`These stats are aggregated across all RTokens on the Reserve Protocol that are supported by this dApp. This also includes anonymized data from the Reserve app API if RTokens are supported by RPay to give insights into total currency usage.`}
+        subtitle={t`These stats are across all RTokens on the Reserve Protocol listed by this dApp, including anonymized data from the Reserve RPay app API.`}
       />
-      <Box mt={6}>
-        <Grid columns={[1, 'max-content max-content']} gap={5}>
+      <Box mt={[4, 6]}>
+        <Grid columns={[1, 'max-content max-content']} gap={[3, 5]}>
           <Box>
             <InfoHeading
               title={t`Total RToken Market Cap`}
               subtitle={metrics.totalRTokenUSD}
               help={t`Includes market cap of all RTokens and RSV.`}
-              mb={4}
+              mb={[3, 4]}
             />
             <InfoHeading
               title={t`TVL in Reserve`}
@@ -150,15 +152,15 @@ const TokenStats = (props: BoxProps) => {
             <InfoHeading
               title={t`Cumulative - RToken holder income`}
               subtitle={metrics.cumulativeRTokenRevenueUSD}
-              mb={4}
+              mb={[3, 4]}
             />
             <InfoHeading
               title={t`Cumulative - Staked RSR income`}
-              subtitle={metrics.cumulativeInsuranceRevenueUSD}
+              subtitle={metrics.cumulativeStakingRevenueUSD}
             />
           </Box>
         </Grid>
-        <Box mt={6}>
+        <Box mt={[4, 6]}>
           <Stat title={t`24h Tx Volume`} value={metrics.dailyVolume} />
           <Stat
             title={t`Cumulative Tx Volume`}

@@ -31,7 +31,7 @@ const RecentTokenTransactions = (props: BoxProps) => {
     {
       tokenId: rToken?.address.toLowerCase() ?? '',
     },
-    { refreshInterval: 5000 }
+    { refreshInterval: 10000 }
   )
   const txs = useMemo(() => {
     if (!data?.entries) {
@@ -48,7 +48,7 @@ const RecentTokenTransactions = (props: BoxProps) => {
   return (
     <TransactionsTable
       compact
-      card
+      bordered
       maxHeight={400}
       help="RToken related on-chain transactions"
       title={t`Transactions`}

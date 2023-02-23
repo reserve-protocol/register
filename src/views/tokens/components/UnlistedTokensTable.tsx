@@ -48,7 +48,7 @@ const useTokens = () => {
           cumulativeVolume:
             +formatEther(rtoken.token.cumulativeVolume) *
             +rtoken.token.lastPriceUSD,
-          insurance: +formatEther(rtoken.rsrStaked) * rtoken.rsrPriceUSD,
+          staked: +formatEther(rtoken.rsrStaked) * rtoken.rsrPriceUSD,
           marketCap:
             +formatEther(rtoken.token.totalSupply) * rtoken.token.lastPriceUSD,
         }))
@@ -116,8 +116,8 @@ const UnlistedTokensTable = () => {
         },
       },
       {
-        Header: t`Insurance`,
-        accessor: 'insurance',
+        Header: t`Staked`,
+        accessor: 'staked',
         Cell: formatUsdCurrencyCell,
       },
     ],

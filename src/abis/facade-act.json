@@ -1,0 +1,44 @@
+[
+  {
+    "inputs": [],
+    "name": "UIntOutOfBounds",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract RTokenP1",
+        "name": "rToken",
+        "type": "address"
+      }
+    ],
+    "name": "claimRewards",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract RTokenP1",
+        "name": "rToken",
+        "type": "address"
+      }
+    ],
+    "name": "getActCalldata",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

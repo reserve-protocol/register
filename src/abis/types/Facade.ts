@@ -23,7 +23,7 @@ import type {
   PromiseOrValue,
 } from "./common";
 
-export declare namespace IFacadeP1 {
+export declare namespace IFacadeRead {
   export type PendingStruct = {
     index: PromiseOrValue<BigNumberish>;
     availableAt: PromiseOrValue<BigNumberish>;
@@ -40,35 +40,29 @@ export declare namespace IFacadeP1 {
 export interface FacadeInterface extends utils.Interface {
   functions: {
     "backingOverview(address)": FunctionFragment;
+    "backupConfig(address,bytes32)": FunctionFragment;
     "basketBreakdown(address)": FunctionFragment;
     "basketTokens(address)": FunctionFragment;
-    "claimRewards(address)": FunctionFragment;
-    "currentAssets(address)": FunctionFragment;
     "issue(address,uint256)": FunctionFragment;
     "maxIssuable(address,address)": FunctionFragment;
-    "pendingIssuances(address,address)": FunctionFragment;
     "pendingUnstakings(address,address)": FunctionFragment;
     "price(address)": FunctionFragment;
-    "runAuctionsForAllTraders(address)": FunctionFragment;
+    "primeBasket(address)": FunctionFragment;
     "stToken(address)": FunctionFragment;
-    "totalAssetValue(address)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
       | "backingOverview"
+      | "backupConfig"
       | "basketBreakdown"
       | "basketTokens"
-      | "claimRewards"
-      | "currentAssets"
       | "issue"
       | "maxIssuable"
-      | "pendingIssuances"
       | "pendingUnstakings"
       | "price"
-      | "runAuctionsForAllTraders"
+      | "primeBasket"
       | "stToken"
-      | "totalAssetValue"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -76,19 +70,15 @@ export interface FacadeInterface extends utils.Interface {
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
+    functionFragment: "backupConfig",
+    values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "basketBreakdown",
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "basketTokens",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "claimRewards",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "currentAssets",
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
@@ -100,10 +90,6 @@ export interface FacadeInterface extends utils.Interface {
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
-    functionFragment: "pendingIssuances",
-    values: [PromiseOrValue<string>, PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "pendingUnstakings",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
@@ -112,20 +98,20 @@ export interface FacadeInterface extends utils.Interface {
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
-    functionFragment: "runAuctionsForAllTraders",
+    functionFragment: "primeBasket",
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "stToken",
     values: [PromiseOrValue<string>]
   ): string;
-  encodeFunctionData(
-    functionFragment: "totalAssetValue",
-    values: [PromiseOrValue<string>]
-  ): string;
 
   decodeFunctionResult(
     functionFragment: "backingOverview",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "backupConfig",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -136,21 +122,9 @@ export interface FacadeInterface extends utils.Interface {
     functionFragment: "basketTokens",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "claimRewards",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "currentAssets",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "issue", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "maxIssuable",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "pendingIssuances",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -159,14 +133,10 @@ export interface FacadeInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "price", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "runAuctionsForAllTraders",
+    functionFragment: "primeBasket",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "stToken", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "totalAssetValue",
-    data: BytesLike
-  ): Result;
 
   events: {};
 }
@@ -202,8 +172,17 @@ export interface Facade extends BaseContract {
       rToken: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<
-      [BigNumber, BigNumber] & { backing: BigNumber; insurance: BigNumber }
+      [BigNumber, BigNumber] & {
+        backing: BigNumber;
+        overCollateralization: BigNumber;
+      }
     >;
+
+    backupConfig(
+      rToken: PromiseOrValue<string>,
+      targetName: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<[string[], BigNumber] & { erc20s: string[]; max: BigNumber }>;
 
     basketBreakdown(
       rToken: PromiseOrValue<string>,
@@ -214,16 +193,6 @@ export interface Facade extends BaseContract {
       rToken: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[string[]] & { tokens: string[] }>;
-
-    claimRewards(
-      rToken: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    currentAssets(
-      rToken: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
 
     issue(
       rToken: PromiseOrValue<string>,
@@ -237,53 +206,53 @@ export interface Facade extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    pendingIssuances(
-      rToken: PromiseOrValue<string>,
-      account: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<
-      [IFacadeP1.PendingStructOutput[]] & {
-        issuances: IFacadeP1.PendingStructOutput[];
-      }
-    >;
-
     pendingUnstakings(
       rToken: PromiseOrValue<string>,
       account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<
-      [IFacadeP1.PendingStructOutput[]] & {
-        unstakings: IFacadeP1.PendingStructOutput[];
+      [IFacadeRead.PendingStructOutput[]] & {
+        unstakings: IFacadeRead.PendingStructOutput[];
       }
     >;
 
     price(
       rToken: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    ): Promise<[BigNumber, BigNumber] & { low: BigNumber; high: BigNumber }>;
 
-    runAuctionsForAllTraders(
+    primeBasket(
       rToken: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+      overrides?: CallOverrides
+    ): Promise<
+      [string[], string[], BigNumber[]] & {
+        erc20s: string[];
+        targetNames: string[];
+        targetAmts: BigNumber[];
+      }
+    >;
 
     stToken(
       rToken: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[string] & { stTokenAddress: string }>;
-
-    totalAssetValue(
-      rToken: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
   };
 
   backingOverview(
     rToken: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<
-    [BigNumber, BigNumber] & { backing: BigNumber; insurance: BigNumber }
+    [BigNumber, BigNumber] & {
+      backing: BigNumber;
+      overCollateralization: BigNumber;
+    }
   >;
+
+  backupConfig(
+    rToken: PromiseOrValue<string>,
+    targetName: PromiseOrValue<BytesLike>,
+    overrides?: CallOverrides
+  ): Promise<[string[], BigNumber] & { erc20s: string[]; max: BigNumber }>;
 
   basketBreakdown(
     rToken: PromiseOrValue<string>,
@@ -294,16 +263,6 @@ export interface Facade extends BaseContract {
     rToken: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<string[]>;
-
-  claimRewards(
-    rToken: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  currentAssets(
-    rToken: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
 
   issue(
     rToken: PromiseOrValue<string>,
@@ -317,45 +276,49 @@ export interface Facade extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  pendingIssuances(
-    rToken: PromiseOrValue<string>,
-    account: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<IFacadeP1.PendingStructOutput[]>;
-
   pendingUnstakings(
     rToken: PromiseOrValue<string>,
     account: PromiseOrValue<string>,
     overrides?: CallOverrides
-  ): Promise<IFacadeP1.PendingStructOutput[]>;
+  ): Promise<IFacadeRead.PendingStructOutput[]>;
 
   price(
     rToken: PromiseOrValue<string>,
     overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  ): Promise<[BigNumber, BigNumber] & { low: BigNumber; high: BigNumber }>;
 
-  runAuctionsForAllTraders(
+  primeBasket(
     rToken: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+    overrides?: CallOverrides
+  ): Promise<
+    [string[], string[], BigNumber[]] & {
+      erc20s: string[];
+      targetNames: string[];
+      targetAmts: BigNumber[];
+    }
+  >;
 
   stToken(
     rToken: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<string>;
 
-  totalAssetValue(
-    rToken: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   callStatic: {
     backingOverview(
       rToken: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<
-      [BigNumber, BigNumber] & { backing: BigNumber; insurance: BigNumber }
+      [BigNumber, BigNumber] & {
+        backing: BigNumber;
+        overCollateralization: BigNumber;
+      }
     >;
+
+    backupConfig(
+      rToken: PromiseOrValue<string>,
+      targetName: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<[string[], BigNumber] & { erc20s: string[]; max: BigNumber }>;
 
     basketBreakdown(
       rToken: PromiseOrValue<string>,
@@ -373,18 +336,6 @@ export interface Facade extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string[]>;
 
-    claimRewards(
-      rToken: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    currentAssets(
-      rToken: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<
-      [string[], BigNumber[]] & { tokens: string[]; amounts: BigNumber[] }
-    >;
-
     issue(
       rToken: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
@@ -399,37 +350,32 @@ export interface Facade extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    pendingIssuances(
-      rToken: PromiseOrValue<string>,
-      account: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<IFacadeP1.PendingStructOutput[]>;
-
     pendingUnstakings(
       rToken: PromiseOrValue<string>,
       account: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<IFacadeP1.PendingStructOutput[]>;
+    ): Promise<IFacadeRead.PendingStructOutput[]>;
 
     price(
       rToken: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<[BigNumber, BigNumber] & { low: BigNumber; high: BigNumber }>;
 
-    runAuctionsForAllTraders(
+    primeBasket(
       rToken: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<
+      [string[], string[], BigNumber[]] & {
+        erc20s: string[];
+        targetNames: string[];
+        targetAmts: BigNumber[];
+      }
+    >;
 
     stToken(
       rToken: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<string>;
-
-    totalAssetValue(
-      rToken: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
   };
 
   filters: {};
@@ -440,6 +386,12 @@ export interface Facade extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    backupConfig(
+      rToken: PromiseOrValue<string>,
+      targetName: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     basketBreakdown(
       rToken: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -448,16 +400,6 @@ export interface Facade extends BaseContract {
     basketTokens(
       rToken: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    claimRewards(
-      rToken: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    currentAssets(
-      rToken: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     issue(
@@ -472,12 +414,6 @@ export interface Facade extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    pendingIssuances(
-      rToken: PromiseOrValue<string>,
-      account: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     pendingUnstakings(
       rToken: PromiseOrValue<string>,
       account: PromiseOrValue<string>,
@@ -489,19 +425,14 @@ export interface Facade extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    runAuctionsForAllTraders(
+    primeBasket(
       rToken: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     stToken(
       rToken: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    totalAssetValue(
-      rToken: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
 
@@ -511,6 +442,12 @@ export interface Facade extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    backupConfig(
+      rToken: PromiseOrValue<string>,
+      targetName: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     basketBreakdown(
       rToken: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -519,16 +456,6 @@ export interface Facade extends BaseContract {
     basketTokens(
       rToken: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    claimRewards(
-      rToken: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    currentAssets(
-      rToken: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     issue(
@@ -543,12 +470,6 @@ export interface Facade extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    pendingIssuances(
-      rToken: PromiseOrValue<string>,
-      account: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     pendingUnstakings(
       rToken: PromiseOrValue<string>,
       account: PromiseOrValue<string>,
@@ -560,19 +481,14 @@ export interface Facade extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    runAuctionsForAllTraders(
+    primeBasket(
       rToken: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     stToken(
       rToken: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    totalAssetValue(
-      rToken: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

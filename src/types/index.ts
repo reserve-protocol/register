@@ -2,10 +2,22 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { Interface } from '@ethersproject/abi'
 import { Contract, ContractTransaction } from '@ethersproject/contracts'
 
+export type RoleKey = 'owners' | 'pausers' | 'freezers' | 'longFreezers'
+
 export type AddressMap = { [chainId: number]: string }
 
 export interface StringMap {
   [key: string]: any
+}
+
+export interface Proposal {
+  id: string
+  description: string
+  creationTime: string
+  state: string
+  calldatas: string
+  targets: string
+  proposer: string
 }
 
 export interface WalletTransaction {
@@ -189,8 +201,8 @@ export interface AccountPosition {
 }
 
 export interface TokenStats {
-  insurance: number
-  insuranceUsd: string
+  staked: number
+  stakedUsd: string
   supply: number
   supplyUsd: string
   cumulativeVolume: number
@@ -198,4 +210,19 @@ export interface TokenStats {
   transferCount: number
   dailyTransferCount: number
   dailyVolume: string
+}
+
+export interface CollateralPlugin {
+  symbol: string // collateral symbol
+  address: string // collateral plugin address
+  decimals: number // 6-18
+  targetUnit: string // USD / EUR / etc
+  referenceUnit: string // Underlay ERC20 (USDC)
+  collateralToken: string // Wrapper token (usually yield token)
+  collateralAddress: string
+  depositContract?: string // Only for aave collaterals erc20() contract from collateral
+  description: string // Small description
+  rewardToken: string // yield token aave / compound wrapped Asset
+  custom?: boolean
+  underlyingToken?: string
 }

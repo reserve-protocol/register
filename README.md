@@ -7,7 +7,7 @@ Enabling users to:
 - Create new RTokens
 - View/use existing RTokens and related metrics
 - Mint/Issue RTokens (RSV included)
-- Stake/Unstake to provide insurance for a given RToken
+- Stake/Unstake to get yield with an RToken
 
 ## Getting started
 

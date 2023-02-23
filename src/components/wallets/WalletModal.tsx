@@ -2,12 +2,11 @@ import { t, Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
 import SelectedIcon from 'components/icons/SelectedIcon'
 import Modal from 'components/modal'
-import { useAtom } from 'jotai'
-import { useUpdateAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import { useState } from 'react'
 import { ChevronRight } from 'react-feather'
 import { isWalletModalVisibleAtom } from 'state/atoms'
-import { Box, Flex, Image, Spinner, Text } from 'theme-ui'
+import { Box, Flex, Image, Spinner, Text, Divider } from 'theme-ui'
 import { CHAIN_ID } from 'utils/chains'
 import {
   coinbaseWallet,
@@ -51,7 +50,7 @@ const wallets = [
 const WalletModal = () => {
   const { connector: currentConnector, account } = useWeb3React()
   const [connecting, setConnecting] = useState(false)
-  const setWalletModalVisible = useUpdateAtom(isWalletModalVisibleAtom)
+  const setWalletModalVisible = useSetAtom(isWalletModalVisibleAtom)
   const [error, setError] = useState('')
 
   const onClose = () => setWalletModalVisible(false)
@@ -102,7 +101,7 @@ const WalletModal = () => {
                 key={label}
                 onClick={() => handleSelection(connector)}
                 variant="layout.verticalAlign"
-                py={2}
+                py={3}
               >
                 <Image height={24} width={24} src={icon} />
                 <Text ml={3} sx={{ fontSize: 3 }}>
@@ -119,8 +118,9 @@ const WalletModal = () => {
                 )}
               </Box>
             ))}
-            <Box mt={5} sx={{ textAlign: 'center', fontSize: 1 }}>
-              <Text>
+            <Divider mx={-4} my={3} />
+            <Box mt={3} sx={{ textAlign: 'center', fontSize: 1 }}>
+              <Text variant="legend">
                 <Trans>
                   Wallets are provided by External Providers and by selecting
                   you agree to Terms of those Providers. Your access to the

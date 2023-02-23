@@ -40,7 +40,7 @@ const basketDistAtom = atom((get) => {
       (acc, current) => ({
         ...acc,
         [current.address]: {
-          share: 50,
+          share: 100,
           targetUnit: 'USD',
         },
       }),
@@ -88,19 +88,19 @@ const AssetOverview = () => {
             data={pieData}
             logo={rToken?.logo ?? ''}
             isRSV={rToken?.isRSV}
-            insurance={distribution.insurance}
+            staked={distribution.staked}
           />
           <Text variant="legend">
             <Trans>Backing</Trans>
             <Box as="span" ml={2} sx={{ fontWeight: 'bold', color: 'text' }}>
-              {rToken?.isRSV ? 100 : distribution.backing}%
+              {rToken?.isRSV ? 100 : Math.min(100, distribution.backing)}%
             </Box>
           </Text>
           {!rToken?.isRSV && (
             <Text variant="legend">
-              <Trans>Insurance coverage</Trans>
+              <Trans>Staked RSR coverage</Trans>
               <Box as="span" ml={2} sx={{ fontWeight: 'bold', color: 'text' }}>
-                {distribution.insurance}%
+                {distribution.staked}%
               </Box>
             </Text>
           )}

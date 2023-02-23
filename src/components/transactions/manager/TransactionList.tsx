@@ -3,7 +3,7 @@ import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import dayjs from 'dayjs'
 import { atom, useAtomValue } from 'jotai'
-import { useUpdateAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import { ArrowUpRight, Check, EyeOff, X } from 'react-feather'
 import { Link as RouterLink } from 'react-router-dom'
 import { currentTxAtom, updateTransactionAtom } from 'state/atoms'
@@ -46,7 +46,7 @@ const TransactionStatus = ({
   tx: TransactionState
   index: number
 }) => {
-  const updateTx = useUpdateAtom(updateTransactionAtom)
+  const updateTx = useSetAtom(updateTransactionAtom)
 
   const handleUntrack = () => {
     updateTx([index, { ...tx, status: TRANSACTION_STATUS.UNKNOWN }])
@@ -118,6 +118,7 @@ const TransactionStatus = ({
 
 const getTxDescription = (tx: TransactionState) => {
   // rToken deployed
+  // TODO: If user has token role, show token on token list then remove this!
   if (tx.extra?.rTokenAddress) {
     return (
       <RouterLink
@@ -125,17 +126,6 @@ const getTxDescription = (tx: TransactionState) => {
         to={`/overview?token=${tx.extra.rTokenAddress}`}
       >
         <Trans>Use deployed token</Trans>
-      </RouterLink>
-    )
-  }
-  // Governance deployed
-  if (tx.call.method === 'setupGovernance') {
-    return (
-      <RouterLink
-        style={{ color: 'var(--theme-ui-colors-lightText)' }}
-        to={`${ROUTES.GOVERNANCE_INFO}/${tx.id}`}
-      >
-        {tx.description}
       </RouterLink>
     )
   }
@@ -148,7 +138,7 @@ const TransactionList = () => {
   const txIdMap = useAtomValue(txIndexAtom)
 
   return (
-    <Box px={5} sx={{ flexGrow: 1, fontSize: 1, overflow: 'auto' }}>
+    <Box pt={3} px={[2, 3]} sx={{ flexGrow: 1, fontSize: 1, overflow: 'auto' }}>
       {Object.keys(txs).map((day) => (
         <Box key={day} mb={4}>
           <Text variant="legend" ml={3}>
@@ -201,10 +191,15 @@ const TransactionList = () => {
         </Box>
       ))}
       {!Object.keys(txs).length && (
-        <Box mt={5} sx={{ textAlign: 'center' }}>
+        <Box
+          mt={'42%'}
+          sx={{
+            textAlign: 'center',
+          }}
+        >
           <EmptyBoxIcon />
           <Text variant="legend" mt={3} sx={{ display: 'block' }}>
-            No transactions...
+            <Trans>No transactions in local memory...</Trans>
           </Text>
         </Box>
       )}

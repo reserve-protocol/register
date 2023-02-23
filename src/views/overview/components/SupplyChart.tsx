@@ -65,7 +65,7 @@ const SupplyChart = (props: BoxProps) => {
         data.token?.snapshots.map(
           ({ timestamp, supply }: { timestamp: string; supply: string }) => ({
             value: +formatEther(supply),
-            label: dayjs.unix(+timestamp).format('YYYY-M-d HH:mm:ss'),
+            label: dayjs.unix(+timestamp).format('YYYY-M-D HH:mm:ss'),
             display: `${formatCurrency(+formatEther(supply))} ${
               rToken?.symbol
             }`,

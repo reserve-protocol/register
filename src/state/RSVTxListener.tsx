@@ -1,6 +1,6 @@
 import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import { atom } from 'jotai'
-import { useUpdateAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import useWebSocket from 'react-use-websocket'
 import { dateToUnix } from 'utils'
 import { rpayTransactionsAtom, RPayTx } from './atoms'
@@ -14,7 +14,7 @@ const updateTxAtom = atom(null, (get, set, txs: RPayTx[]) => {
 })
 
 const RSVTxListener = () => {
-  const updateTx = useUpdateAtom(updateTxAtom)
+  const updateTx = useSetAtom(updateTxAtom)
   const isWindowOpen = useIsWindowVisible()
 
   const processMessages = (event: any) => {

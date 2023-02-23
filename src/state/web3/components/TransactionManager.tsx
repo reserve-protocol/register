@@ -1,16 +1,15 @@
 import { TransactionReceipt, Web3Provider } from '@ethersproject/providers'
 import { t } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
-import abis, { DeployerInterface, FacadeWriteInterface } from 'abis'
+import abis, { DeployerInterface } from 'abis'
 import useBlockNumber from 'hooks/useBlockNumber'
 import useDebounce from 'hooks/useDebounce'
-import { useAtomValue } from 'jotai'
-import { useUpdateAtom } from 'jotai/utils'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import { pendingTxAtom, updateTransactionAtom } from 'state/atoms'
-import { StringMap, TransactionState } from 'types'
+import { TransactionState } from 'types'
 import { getContract } from 'utils'
-import { DEPLOYER_ADDRESS, FACADE_WRITE_ADDRESS } from 'utils/addresses'
+import { DEPLOYER_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { error, signed, success } from '../lib/notifications'
@@ -27,30 +26,11 @@ const getDeployedRToken = (receipt: TransactionReceipt): string => {
   return ''
 }
 
-const getGovernance = (receipt: TransactionReceipt): StringMap => {
-  const log = receipt.logs.find(
-    (logs) => logs.address === FACADE_WRITE_ADDRESS[CHAIN_ID]
-  )
-
-  if (log) {
-    const { rToken, governance, timelock } =
-      FacadeWriteInterface.parseLog(log).args
-
-    return {
-      rToken,
-      governance,
-      timelock,
-    }
-  }
-
-  return {}
-}
-
 /**
  * Execute and check transactions in the queue
  */
 const TransactionManager = () => {
-  const setTxs = useUpdateAtom(updateTransactionAtom)
+  const setTxs = useSetAtom(updateTransactionAtom)
   const { pending, mining } = useDebounce(useAtomValue(pendingTxAtom), 200)
   const { account, provider } = useWeb3React()
   const blockNumber = useBlockNumber()
@@ -78,12 +58,6 @@ const TransactionManager = () => {
                 transaction.extra = {
                   rTokenAddress: getDeployedRToken(receipt),
                 }
-              } else if (
-                // Get governor address if governance is setted
-                transaction.call.method === 'setupGovernance' &&
-                transaction.call.args[1]
-              ) {
-                transaction.extra = getGovernance(receipt)
               }
 
               setTxs([index, transaction])

@@ -1,7 +1,7 @@
 import { formatUnits } from '@ethersproject/units'
 import { getAddress } from '@ethersproject/address'
 import { useState } from 'react'
-import { ChevronDown, ChevronUp, PieChart } from 'react-feather'
+import { ChevronDown, ChevronUp, Package } from 'react-feather'
 import { Box, BoxProps, Flex, Text, Divider, Spinner } from 'theme-ui'
 import { BigNumberMap, Token } from 'types'
 import { formatCurrency } from 'utils'
@@ -23,7 +23,11 @@ const CollateralDistribution = ({
 
   return (
     <Box
-      sx={{ border: '1px solid', borderColor: 'secondary', borderRadius: 10 }}
+      sx={{
+        border: '1px solid',
+        borderColor: 'inputBorder',
+        borderRadius: '6px',
+      }}
       p={2}
       {...props}
     >
@@ -35,8 +39,8 @@ const CollateralDistribution = ({
         }}
         onClick={() => setVisible(!isVisible)}
       >
-        <PieChart size={20} />
-        <Text ml={3}>
+        <Package size={20} strokeWidth={1} />
+        <Text ml={2}>
           <Trans>Collateral distribution</Trans>
         </Text>
         <Box mx="auto" />

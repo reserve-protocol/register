@@ -1,4 +1,4 @@
-import { ArrowUpRight } from 'react-feather'
+import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import { Link, LinkProps } from 'theme-ui'
 
 const GoTo = (props: LinkProps) => {
@@ -9,7 +9,7 @@ const GoTo = (props: LinkProps) => {
       sx={{ cursor: 'pointer' }}
       {...props}
     >
-      <ArrowUpRight color="#666666" size={16} />
+      <ExternalArrowIcon />
     </Link>
   )
 }

@@ -10,8 +10,7 @@ import { useFacadeContract } from 'hooks/useContract'
 import useRTokenPrice from 'hooks/useRTokenPrice'
 import useTokensAllowance from 'hooks/useTokensAllowance'
 import useTokensBalance from 'hooks/useTokensBalance'
-import { useSetAtom } from 'jotai'
-import { useAtomValue, useUpdateAtom } from 'jotai/utils'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import {
   allowanceAtom,
@@ -19,7 +18,6 @@ import {
   chainIdAtom,
   ethPriceAtom,
   gasPriceAtom,
-  pendingIssuancesAtom,
   pendingRSRAtom,
   rsrExchangeRateAtom,
   rsrPriceAtom,
@@ -27,18 +25,14 @@ import {
   rTokenPriceAtom,
   walletAtom,
 } from 'state/atoms'
-import { ReserveToken, StringMap } from 'types'
-import {
-  ORACLE_ADDRESS,
-  RSR_ADDRESS,
-  RSV_ADDRESS,
-  WETH_ADDRESS,
-} from 'utils/addresses'
+import { ReserveToken } from 'types'
+import { ORACLE_ADDRESS, RSR_ADDRESS, WETH_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 import { RSR } from 'utils/constants'
 import { RSV_MANAGER } from 'utils/rsv'
 import AccountUpdater from './AccountUpdater'
 import RSVUpdater from './RSVUpdater'
+import RTokenUpdater from './rtoken'
 import TokenUpdater from './TokenUpdater'
 import { promiseMulticall } from './web3/lib/multicall'
 
@@ -125,12 +119,6 @@ const TokensAllowanceUpdater = () => {
   return null
 }
 
-const fetcher = async (url: string): Promise<StringMap> => {
-  const data: Response = await fetch(url).then((res) => res.json())
-
-  return data
-}
-
 /**
  * Fetch pending issuances
  */
@@ -138,23 +126,13 @@ const PendingBalancesUpdater = () => {
   const account = useAtomValue(walletAtom)
   const chainId = useAtomValue(chainIdAtom)
   const rToken = useAtomValue(rTokenAtom)
-  const setPendingIssuances = useUpdateAtom(pendingIssuancesAtom)
-  const setPendingRSR = useUpdateAtom(pendingRSRAtom)
+  const setPendingRSR = useSetAtom(pendingRSRAtom)
   const facadeContract = useFacadeContract()
   const blockNumber = useBlockNumber()
 
-  // TODO: Use multicall for this
   const fetchPending = useCallback(
     async (account: string, rToken: string, facade: Facade) => {
       try {
-        const pendingIssuances = await facade.pendingIssuances(rToken, account)
-        const pending = pendingIssuances.map((issuance) => ({
-          availableAt: parseInt(formatEther(issuance.availableAt)),
-          index: issuance.index,
-          amount: parseFloat(formatEther(issuance.amount)),
-        }))
-        setPendingIssuances(pending)
-
         const pendingRSR = await facade.pendingUnstakings(rToken, account)
         const pendingRSRSummary = pendingRSR.map((item) => ({
           availableAt: item.availableAt.toNumber(),
@@ -174,7 +152,6 @@ const PendingBalancesUpdater = () => {
     if (rToken && !rToken.isRSV && facadeContract && blockNumber && account) {
       fetchPending(account, rToken.address, facadeContract)
     } else {
-      setPendingIssuances([])
       setPendingRSR([])
     }
   }, [rToken?.address, facadeContract, account, blockNumber, chainId])
@@ -192,10 +169,10 @@ const PendingBalancesUpdater = () => {
 const PricesUpdater = () => {
   const { provider, chainId } = useWeb3React()
   const rTokenPrice = useRTokenPrice()
-  const setRSRPrice = useUpdateAtom(rsrPriceAtom)
-  const setEthPrice = useUpdateAtom(ethPriceAtom)
-  const setGasPrice = useUpdateAtom(gasPriceAtom)
-  const setRTokenPrice = useUpdateAtom(rTokenPriceAtom)
+  const setRSRPrice = useSetAtom(rsrPriceAtom)
+  const setEthPrice = useSetAtom(ethPriceAtom)
+  const setGasPrice = useSetAtom(gasPriceAtom)
+  const setRTokenPrice = useSetAtom(rTokenPriceAtom)
   const blockNumber = useBlockNumber()
 
   const fetchGasPrice = useCallback(async (provider: Web3Provider) => {
@@ -212,6 +189,7 @@ const PricesUpdater = () => {
     }
   }, [])
 
+  // TODO: Replace sushi oracle with chainlink
   const fetchTokenPrices = useCallback(async (provider: Web3Provider) => {
     try {
       const callParams = {
@@ -220,9 +198,8 @@ const PricesUpdater = () => {
         method: 'getPriceUsdc',
       }
 
-      const [rsvPrice, rsrPrice, wethPrice] = await promiseMulticall(
+      const [rsrPrice, wethPrice] = await promiseMulticall(
         [
-          { ...callParams, args: [RSV_ADDRESS[CHAIN_ID]] },
           { ...callParams, args: [RSR_ADDRESS[CHAIN_ID]] },
           { ...callParams, args: [WETH_ADDRESS[CHAIN_ID]] },
         ],
@@ -238,7 +215,11 @@ const PricesUpdater = () => {
   useEffect(() => {
     if (chainId && blockNumber && provider) {
       fetchGasPrice(provider)
-      fetchTokenPrices(provider)
+
+      // Only fetch token prices in ethereum
+      if (chainId === 1) {
+        fetchTokenPrices(provider)
+      }
     }
   }, [chainId, blockNumber])
 
@@ -252,7 +233,7 @@ const PricesUpdater = () => {
 // TODO: Change place
 const ExchangeRateUpdater = () => {
   const rToken = useAtomValue(rTokenAtom)
-  const setRate = useUpdateAtom(rsrExchangeRateAtom)
+  const setRate = useSetAtom(rsrExchangeRateAtom)
   const { value } =
     useContractCall(
       rToken?.stToken?.address && {
@@ -285,6 +266,7 @@ const Updater = () => (
     <ExchangeRateUpdater />
     <AccountUpdater />
     <RSVUpdater />
+    <RTokenUpdater />
   </>
 )
 

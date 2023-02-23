@@ -59,7 +59,7 @@ const RecentRSVTransactions = (props: BoxProps) => {
       <RSVTxListener />
       <TransactionsTable
         compact
-        card
+        bordered
         maxHeight={400}
         help="This includes on-chain transactions in addition to anonymized RPay transactions to show the full story of the RSV ecosystem."
         title={t`Transactions`}

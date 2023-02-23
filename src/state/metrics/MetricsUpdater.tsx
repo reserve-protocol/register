@@ -2,7 +2,7 @@ import { useWeb3React } from '@web3-react/core'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import { useAtomValue } from 'jotai'
-import { useUpdateAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { selectedRTokenAtom } from '../atoms'
 import { defaultRTokenMetrics, rTokenMetricsAtom } from './atoms'
@@ -38,7 +38,7 @@ const accountMetricsQuery = gql`
 
 const protocolMetricsUpdater = () => {
   const { account } = useWeb3React()
-  // const updateMetrics = useUpdateAtom(accountMetr)
+  // const updateMetrics = useSetAtom(accountMetr)
   const rTokenMetrics = useQuery(account ? accountMetricsQuery : null)
 
   return null
@@ -47,7 +47,7 @@ const protocolMetricsUpdater = () => {
 // TODO: Polling, every block?
 const RTokenMetricsUpdater = () => {
   const rToken = useAtomValue(selectedRTokenAtom)
-  const updateMetrics = useUpdateAtom(rTokenMetricsAtom)
+  const updateMetrics = useSetAtom(rTokenMetricsAtom)
   const rTokenMetrics = useQuery(rToken ? accountMetricsQuery : null)
 
   useEffect(() => {

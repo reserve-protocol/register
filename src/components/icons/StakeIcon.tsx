@@ -9,24 +9,27 @@ const StakeIcon = (props: SVGProps<SVGSVGElement>) => (
     {...props}
   >
     <rect
-      x={3}
-      y={10.265}
-      width={18}
-      height={10.735}
-      rx={1.5}
+      x="3"
+      y="10.2646"
+      width="18"
+      height="10.7353"
+      rx="1.5"
       stroke="currentColor"
     />
     <circle
-      cx={12}
-      cy={8.647}
-      r={5.647}
+      cx="12.0001"
+      cy="8.64706"
+      r="5.64706"
       fill="var(--theme-ui-colors-background)"
       stroke="currentColor"
     />
     <path stroke="currentColor" d="M5.033 13.177h13.971" />
-    <path
+    <rect
+      x="5.0332"
+      y="13.6765"
+      width="13.9706"
+      height="5.58824"
       fill="var(--theme-ui-colors-background)"
-      d="M5.033 13.677h13.971v5.588H5.033z"
     />
   </svg>
 )

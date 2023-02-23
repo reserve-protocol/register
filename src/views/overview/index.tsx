@@ -1,8 +1,6 @@
-import { t } from '@lingui/macro'
 import { Container } from 'components'
-import { ContentHead } from 'components/info-box'
 import useTokenStats from 'hooks/useTokenStats'
-import { useAtomValue } from 'jotai/utils'
+import { useAtomValue } from 'jotai'
 import { rTokenAtom } from 'state/atoms'
 import { Box, Divider, Grid } from 'theme-ui'
 import About from './components/About'
@@ -15,7 +13,7 @@ import RecentTokenTransactions from './components/RecentTokenTransactions'
 import TokenOverview from './components/TokenOverview'
 import TokenUsage from './components/TokenUsage'
 
-const dividerProps = { my: 5, mx: [-4, -5], sx: { borderColor: 'darkBorder' } }
+const dividerProps = { my: 5, mx: [-1, -5], sx: { borderColor: 'border' } }
 const gridProps = { columns: [1, 1, 1, 2], gap: [5, 5, 5, 4] }
 
 /**
@@ -35,36 +33,33 @@ const Overview = () => {
     <Container>
       <Grid {...gridProps} ml={[0, 0, 0, 3]} gap={0}>
         <Box>
-          <TokenOverview ml={[3, 3, 3, 0]} metrics={rTokenMetrics} />
-          <TokenUsage ml={[3, 3, 3, 0]} mt={5} metrics={rTokenMetrics} />
+          <TokenOverview
+            mt={[3, 0]}
+            ml={[3, 3, 3, 0]}
+            mr={2}
+            metrics={rTokenMetrics}
+          />
+        </Box>
+      </Grid>
+      <Divider {...dividerProps} />
+      <Grid {...gridProps} ml={[0, 0, 0, 3]} gap={0}>
+        <Box>
+          <TokenUsage ml={[3, 3, 3, 0]} mt={1} metrics={rTokenMetrics} />
         </Box>
         {rToken?.isRSV ? (
-          <RecentRSVTransactions mt={[5, 5, 5, 0]} />
+          <RecentRSVTransactions mt={[0, 3, 3, 0]} />
         ) : (
-          <RecentTokenTransactions mt={[5, 5, 5, 0]} />
+          <RecentTokenTransactions mt={[0, 3, 3, 0]} />
         )}
       </Grid>
       <Divider {...dividerProps} />
       <Grid {...gridProps}>
-        <About ml={3} />
+        <About mt={2} px={3} mr={2} />
         <AssetOverview />
       </Grid>
-      <Divider
-        {...dividerProps}
-        sx={{ borderColor: 'darkBorder', display: ['none', 'block'] }}
-      />
+      <Divider {...dividerProps} sx={{ display: ['none', 'block'] }} />
       <External />
       <Divider {...dividerProps} />
-      <ContentHead
-        title={t`Live & Historical data`}
-        ml={4}
-        mb={4}
-        subtitle={
-          !!rToken?.isRSV
-            ? t`Including off-chain in-app transactions of RSV in the Reserve App.`
-            : undefined
-        }
-      />
       <Grid {...gridProps}>
         <HistoricalData />
         <RecentProtocolTransactions />

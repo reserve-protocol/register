@@ -27,9 +27,20 @@ import type {
   PromiseOrValue,
 } from "./common";
 
+export type RegistryStruct = {
+  erc20s: PromiseOrValue<string>[];
+  assets: PromiseOrValue<string>[];
+};
+
+export type RegistryStructOutput = [string[], string[]] & {
+  erc20s: string[];
+  assets: string[];
+};
+
 export interface AssetRegistryInterface extends utils.Interface {
   functions: {
     "erc20s()": FunctionFragment;
+    "getRegistry()": FunctionFragment;
     "init(address,address[])": FunctionFragment;
     "isRegistered(address)": FunctionFragment;
     "main()": FunctionFragment;
@@ -42,11 +53,13 @@ export interface AssetRegistryInterface extends utils.Interface {
     "unregister(address)": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
+    "version()": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
       | "erc20s"
+      | "getRegistry"
       | "init"
       | "isRegistered"
       | "main"
@@ -59,9 +72,14 @@ export interface AssetRegistryInterface extends utils.Interface {
       | "unregister"
       | "upgradeTo"
       | "upgradeToAndCall"
+      | "version"
   ): FunctionFragment;
 
   encodeFunctionData(functionFragment: "erc20s", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "getRegistry",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "init",
     values: [PromiseOrValue<string>, PromiseOrValue<string>[]]
@@ -104,8 +122,13 @@ export interface AssetRegistryInterface extends utils.Interface {
     functionFragment: "upgradeToAndCall",
     values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
   ): string;
+  encodeFunctionData(functionFragment: "version", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "erc20s", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getRegistry",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "init", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "isRegistered",
@@ -130,6 +153,7 @@ export interface AssetRegistryInterface extends utils.Interface {
     functionFragment: "upgradeToAndCall",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "version", data: BytesLike): Result;
 
   events: {
     "AdminChanged(address,address)": EventFragment;
@@ -237,6 +261,10 @@ export interface AssetRegistry extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string[]] & { erc20s_: string[] }>;
 
+    getRegistry(
+      overrides?: CallOverrides
+    ): Promise<[RegistryStructOutput] & { reg: RegistryStructOutput }>;
+
     init(
       main_: PromiseOrValue<string>,
       assets_: PromiseOrValue<string>[],
@@ -291,9 +319,13 @@ export interface AssetRegistry extends BaseContract {
       data: PromiseOrValue<BytesLike>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    version(overrides?: CallOverrides): Promise<[string]>;
   };
 
   erc20s(overrides?: CallOverrides): Promise<string[]>;
+
+  getRegistry(overrides?: CallOverrides): Promise<RegistryStructOutput>;
 
   init(
     main_: PromiseOrValue<string>,
@@ -350,8 +382,12 @@ export interface AssetRegistry extends BaseContract {
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  version(overrides?: CallOverrides): Promise<string>;
+
   callStatic: {
     erc20s(overrides?: CallOverrides): Promise<string[]>;
+
+    getRegistry(overrides?: CallOverrides): Promise<RegistryStructOutput>;
 
     init(
       main_: PromiseOrValue<string>,
@@ -405,6 +441,8 @@ export interface AssetRegistry extends BaseContract {
       data: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    version(overrides?: CallOverrides): Promise<string>;
   };
 
   filters: {
@@ -455,6 +493,8 @@ export interface AssetRegistry extends BaseContract {
 
   estimateGas: {
     erc20s(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getRegistry(overrides?: CallOverrides): Promise<BigNumber>;
 
     init(
       main_: PromiseOrValue<string>,
@@ -510,10 +550,14 @@ export interface AssetRegistry extends BaseContract {
       data: PromiseOrValue<BytesLike>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    version(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
     erc20s(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getRegistry(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     init(
       main_: PromiseOrValue<string>,
@@ -569,5 +613,7 @@ export interface AssetRegistry extends BaseContract {
       data: PromiseOrValue<BytesLike>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    version(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

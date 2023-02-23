@@ -1,12 +1,14 @@
-import { t, Trans } from '@lingui/macro'
+import { t } from '@lingui/macro'
+import React from 'react'
 import { useMemo } from 'react'
 import { HelpCircle } from 'react-feather'
+import Help from 'components/help'
 import { RegisterOptions, useFormContext } from 'react-hook-form'
-import { Box, Flex, Input, Textarea, Text, InputProps, Slider } from 'theme-ui'
+import { Box, Flex, Input, InputProps, Slider, Text, Textarea } from 'theme-ui'
 import { StringMap } from 'types'
 
 interface FieldProps extends InputProps {
-  label: string
+  label?: string
   help?: string
 }
 
@@ -14,10 +16,11 @@ interface FormFieldProps extends FieldProps {
   placeholder?: string
   name: string
   textarea?: boolean
+  error?: string | boolean
   options?: RegisterOptions
 }
 
-const getErrorMessage = (error: StringMap): string => {
+export const getErrorMessage = (error: StringMap): string => {
   switch (error.type) {
     case 'required':
       return t`This field is required`
@@ -34,19 +37,41 @@ const getErrorMessage = (error: StringMap): string => {
 
 export const Field = ({ label, help, children, ...props }: FieldProps) => (
   <Box {...props}>
-    <Flex mb={1}>
-      <Text variant="subtitle" ml={2} sx={{ fontSize: 1 }}>
+    <Flex mb={2} sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+      <Text variant="subtitle" ml={3} sx={{ fontSize: 1 }}>
         {label}
       </Text>
-      {!!help && (
-        <>
-          <Box mx="auto" />
-          <HelpCircle size={16} />
-        </>
-      )}
+      {!!help && <Help mx={2} content={help} />}
     </Flex>
     {children}
   </Box>
+)
+
+export const FieldInput = React.forwardRef(
+  ({ sx = {}, textarea = false, error, ...props }: FormFieldProps, ref) => {
+    const InputComponent = textarea ? Textarea : Input
+
+    return (
+      <>
+        <InputComponent
+          sx={{ ...sx, borderColor: !!error ? 'danger' : 'inputBorder' }}
+          ref={ref}
+          {...(props as any)}
+        />
+
+        {!!error && typeof error === 'string' && (
+          <Text
+            mt={1}
+            ml={2}
+            sx={{ display: 'block', fontSize: 1 }}
+            variant="error"
+          >
+            {error}
+          </Text>
+        )}
+      </>
+    )
+  }
 )
 
 export const FormField = ({
@@ -59,34 +84,29 @@ export const FormField = ({
 }: FormFieldProps) => {
   const {
     register,
+    getFieldState,
     formState: { errors },
   } = useFormContext()
+  const fieldState = getFieldState(name)
+  let errorMessage = ''
 
-  const InputComponent = textarea ? Textarea : Input
+  if (errors && errors[name]) {
+    errorMessage = errors[name]?.message || getErrorMessage(errors[name])
+  }
 
   return useMemo(
     () => (
       <Field {...props}>
-        <InputComponent
-          disabled={!!disabled}
+        <FieldInput
+          disabled={disabled}
           placeholder={placeholder}
-          sx={{ borderColor: errors[name] ? 'danger' : 'inputBorder' }}
+          textarea={textarea}
+          error={errorMessage}
           {...register(name, options)}
         />
-
-        {!!errors && !!errors[name] && (
-          <Text
-            mt={1}
-            ml={2}
-            sx={{ display: 'block', fontSize: 1 }}
-            variant="error"
-          >
-            {errors[name]?.message || getErrorMessage(errors[name])}
-          </Text>
-        )}
       </Field>
     ),
-    [register, errors[name]]
+    [register, errors[name], fieldState]
   )
 }
 
