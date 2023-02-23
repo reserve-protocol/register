@@ -54,7 +54,7 @@ const GovernanceStatus = () => {
       <>
         <Spinner size={24} mt={3} mb={2} />
         <Text sx={{ fontWeight: 500, fontSize: 3, display: 'block' }} mb={2}>
-          <Trans>Deploy transaction submitted</Trans>
+          <Trans>Transaction submitted</Trans>
         </Text>
         <Text as="p" variant="legend">
           <Trans>
@@ -80,8 +80,7 @@ const GovernanceStatus = () => {
   return (
     <>
       <Text variant="legend" as="p" sx={{ textAlign: 'center' }}>
-        You can come back to this page later through the settings nav item if
-        you need time.
+        RToken will be ready to use after this TX if you choose to unpause.
       </Text>
       <Button
         onClick={deploy}
@@ -117,7 +116,7 @@ const GovernanceOverview = (props: BoxProps) => (
       py={2}
     >
       <GovernanceActionIcon />
-      <Text variant="title" mt={2}>
+      <Text variant="title" mt={2} mb={1}>
         <Trans>Tx2. Governance</Trans>
       </Text>
       <GovernanceStatus />

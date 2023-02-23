@@ -40,7 +40,7 @@ const ProposalOverview = (props: BoxProps) => {
         >
           <CreateProposalActionIcon />
           <Text variant="title" mb={2}>
-            <Trans>Create your proposal</Trans>
+            <Trans>Confirm changes made</Trans>
           </Text>
           <Text variant="legend" as="p">
             Preview of function calls & adding of a proposal description is

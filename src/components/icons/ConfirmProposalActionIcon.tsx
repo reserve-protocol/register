@@ -9,9 +9,9 @@ const ConfirmProposalActionIcon = (props: SVGProps<SVGSVGElement>) => (
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      d="M23.9999 10.8L12.6665 22.1333M23.9999 10.8L35.3332 22.1333M23.9999 10.8V38"
-      stroke="#333333"
-      strokeWidth="2"
+      d="M24 12L14 22M24 12L34 22M24 12V36"
+      stroke="currentColor"
+      stroke-width="1.7647"
     />
   </svg>
 )
