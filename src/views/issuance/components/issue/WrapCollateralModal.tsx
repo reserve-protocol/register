@@ -4,6 +4,7 @@ import { ERC20Interface } from 'abis'
 import { Modal, NumericalInput } from 'components'
 import { LoadingButton } from 'components/button'
 import ApprovalTransactions from 'components/transaction-modal/ApprovalTransactions'
+import TransactionError from 'components/transaction-modal/TransactionError'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import useTokensAllowance from 'hooks/useTokensAllowance'
 import { useSetAtom } from 'jotai'
@@ -25,34 +26,6 @@ import { v4 as uuid } from 'uuid'
 const aavePlugins = collateralPlugins.filter(
   (p) => p.rewardToken === STAKE_AAVE_ADDRESS[CHAIN_ID]
 )
-
-// const fetchAddresses = async () => {
-//   try {
-//     if (provider) {
-//       const callParams = {
-//         abi: AssetInterface,
-//         method: 'erc20',
-//         args: [],
-//       }
-
-//       const results = await promiseMulticall(
-//         aavePlugins.map((p) => ({
-//           ...callParams,
-//           address: p.address,
-//         })),
-//         provider
-//       )
-
-//       console.log('results!', results)
-//     }
-//   } catch (e) {
-//     console.error('error fetching addresses', e)
-//   }
-// }
-
-// useEffect(() => {
-//   fetchAddresses()
-// }, [])
 
 type FormState = {
   [x: string]: {
@@ -77,6 +50,9 @@ const WrapCollateralModal = ({ onClose }: { onClose(): void }) => {
           tx.status === TRANSACTION_STATUS.MINING ||
           tx.status === TRANSACTION_STATUS.CONFIRMED
       )
+  const failed = transactionsState.find(
+    (tx) => tx.status === TRANSACTION_STATUS.REJECTED
+  )
 
   const [formState, setFormState] = useState<FormState>(
     aavePlugins.reduce((prev, curr) => {
@@ -165,6 +141,17 @@ const WrapCollateralModal = ({ onClose }: { onClose(): void }) => {
     account ?? ''
   )
 
+  const filteredApprovals = approvals.filter((approval) => {
+    if (
+      !allowances[approval.call.address] ||
+      allowances[approval.call.address].gte(approval.call.args[1])
+    ) {
+      return false
+    }
+
+    return true
+  })
+
   const canSubmit = useMemo(
     () =>
       isValid &&
@@ -233,7 +220,7 @@ const WrapCollateralModal = ({ onClose }: { onClose(): void }) => {
       [tokenAddress]: {
         ...formState[tokenAddress],
         value,
-        isValid: +formState[tokenAddress].value <= formState[tokenAddress].max,
+        isValid: +value <= formState[tokenAddress].max,
       },
     })
   }
@@ -283,13 +270,19 @@ const WrapCollateralModal = ({ onClose }: { onClose(): void }) => {
   return (
     <Modal
       style={{ maxWidth: '560px' }}
-      title={
-        !fromUnderlying
-          ? t`Unwrapping needs to be done after redeeming`
-          : t`Wrapping needs to be done before minting`
-      }
+      title={t`Wrapping needs to be done before minting`}
       onClose={onClose}
     >
+      {!!failed && (
+        <TransactionError
+          title="Transaction failed"
+          subtitle={t`Error wrapping tokens`}
+          onClose={() => {
+            setTxIds([])
+            setLoading(false)
+          }}
+        />
+      )}
       <Box
         variant="layout.verticalAlign"
         sx={{
@@ -313,9 +306,9 @@ const WrapCollateralModal = ({ onClose }: { onClose(): void }) => {
           }}
           onClick={() => setFromUnderlying(1)}
         >
-          DAI{' '}
+          Token{' '}
           <ArrowRight size={14} style={{ position: 'relative', top: '1px' }} />{' '}
-          saDAI
+          saToken
         </Box>
         <Box
           p={1}
@@ -328,9 +321,9 @@ const WrapCollateralModal = ({ onClose }: { onClose(): void }) => {
           }}
           onClick={() => setFromUnderlying(0)}
         >
-          aDAI{' '}
+          aToken{' '}
           <ArrowRight size={14} style={{ position: 'relative', top: '1px' }} />{' '}
-          saDAI
+          saToken
         </Box>
       </Box>
       {aavePlugins.map((plugin) => (
@@ -378,7 +371,7 @@ const WrapCollateralModal = ({ onClose }: { onClose(): void }) => {
               setSigning(false)
             }}
             title={'Approve'}
-            txs={approvals}
+            txs={filteredApprovals}
           />
         </>
       )}
@@ -387,7 +380,7 @@ const WrapCollateralModal = ({ onClose }: { onClose(): void }) => {
         loading={!!loading}
         disabled={!isValid || !canSubmit}
         variant={!!loading ? 'accentAction' : 'primary'}
-        text={!fromUnderlying ? t`Unwrap aTokens` : t`Wrap aTokens`}
+        text={!fromUnderlying ? t`Wrap aTokens` : t`Wrap tokens`}
         onClick={handleConfirm}
         sx={{ width: '100%' }}
         mt={3}

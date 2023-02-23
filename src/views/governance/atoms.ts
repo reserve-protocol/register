@@ -11,7 +11,7 @@ import {
   StRSRInterface,
   TimelockInterface,
 } from 'abis'
-import { Interface } from 'ethers/lib/utils'
+import { getAddress, Interface } from 'ethers/lib/utils'
 import { atom } from 'jotai'
 import { rTokenContractsAtom, rTokenGovernanceAtom } from 'state/atoms'
 
@@ -90,10 +90,10 @@ export const interfaceMapAtom = atom((get) => {
     }
     return prev
   }, {} as InterfaceMap)
-  map[governance.governor] = contractDetails.governor
 
   if (governance.timelock) {
-    map[governance.timelock] = contractDetails.timelock
+    map[getAddress(governance.governor)] = contractDetails.governor
+    map[getAddress(governance.timelock)] = contractDetails.timelock
   }
 
   return map

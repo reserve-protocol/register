@@ -1,10 +1,9 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { StringMap } from 'types'
-import { useMemo } from 'react'
 import { ERC20Interface } from 'abis'
-import { useContractCalls } from './useCall'
+import { useMemo } from 'react'
+import { StringMap } from 'types'
 import useBlockNumber from './useBlockNumber'
-import { formatUnits } from '@ethersproject/units'
+import { useContractCalls } from './useCall'
 
 // TODO: Edge case if RSR is used as part of the basket?
 // TODO: Maybe to be extra secure the hash key could be the two addresses token+spender

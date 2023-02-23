@@ -38,7 +38,7 @@ const dailyPriceQuery = gql`
 const SupplyChart = (props: BoxProps) => {
   const rToken = useRToken()
   const [supply, setSupply] = useState(0)
-  const [current, setCurrent] = useState(TIME_RANGES.MONTH)
+  const [current, setCurrent] = useState(TIME_RANGES.DAY)
   const fromTime = useTimeFrom(current)
   const query = current === TIME_RANGES.DAY ? hourlyPriceQuery : dailyPriceQuery
   const { data } = useQuery(rToken ? query : null, {
