@@ -67,7 +67,7 @@ export const InfoHeading = ({ title, subtitle, help, ...props }: Props) => (
   </Box>
 )
 
-export const  InfoItem = ({
+export const InfoItem = ({
   title,
   subtitle,
   help,
@@ -82,7 +82,7 @@ export const  InfoItem = ({
       sx={{
         height: '4px',
         width: '4px',
-        backgroundColor: 'text',
+        backgroundColor: 'lightText',
       }}
     />
     <Box ml={2}>
