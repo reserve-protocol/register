@@ -8,6 +8,7 @@ import {
   rTokenYieldAtom,
 } from 'state/atoms'
 import { Box, BoxProps, Flex, Grid, Image, Text } from 'theme-ui'
+import Help from 'components/help'
 
 const ExchangeRate = (props: BoxProps) => {
   const rate = useAtomValue(rsrExchangeRateAtom)
@@ -39,9 +40,19 @@ const Stats = (props: BoxProps) => {
             borderColor: 'border',
           }}
         >
-          <Text variant="subtitle" mb={3}>
-            <Trans>Your stake</Trans>
-          </Text>
+          <Box
+            mb={3}
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
+            <Text mr={2} variant="subtitle">
+              <Trans>Staking APY</Trans>
+            </Text>
+            <Help content="This will always be 0% for a few months after RToken creation. We're adding Projected APY in the near future." />
+          </Box>
           <IconInfo
             icon={<Image src="/svgs/trendup.svg" />}
             title={t`Est. APY`}

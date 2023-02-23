@@ -103,14 +103,14 @@ const CustomCollateral = ({
     return (
       <Box>
         <Box>
-          <Text variant="legend" ml={2}>
+          <Text variant="legend" ml={3}>
             Plugin address
           </Text>
           <Input
             mt={2}
             onChange={handleChange}
             value={address}
-            placeholder={t`Input plugin address`}
+            placeholder={t`Input plugin address (not ERC-20 address)`}
           />
           {error && address && (
             <Text sx={{ color: 'danger' }} ml={2}>
@@ -118,12 +118,12 @@ const CustomCollateral = ({
             </Text>
           )}
         </Box>
-        <Flex mt={3}>
+        <Flex mt={3} px={3}>
           <SmallButton variant="muted" onClick={() => setActive(false)}>
             <Trans>Dismiss</Trans>
           </SmallButton>
           <SmallButton
-            ml="auto"
+            ml={3}
             disabled={!!error || isValidating}
             onClick={handleAdd}
           >
