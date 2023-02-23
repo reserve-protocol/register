@@ -32,7 +32,8 @@ const About = () => {
             “wrapper” contract so that the collateral can be handled and
             monitored appropriately. When wrapped, the aToken collateral is
             exactly the same, but it just has a new interface that the protocol
-            can use to monitor price and appreciation. More information in the
+            can use to monitor price and appreciation. <br />
+            More information in the
           </Trans>{' '}
           <Link
             sx={{ textDecoration: 'underline' }}
