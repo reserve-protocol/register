@@ -166,9 +166,6 @@ const useProposalTx = () => {
       console.error('Error generating proposal call', e)
     }
 
-    console.log('calls', calls)
-    console.log('role changes', roleChanges)
-
     return {
       id: '',
       description: t`New proposal`,
