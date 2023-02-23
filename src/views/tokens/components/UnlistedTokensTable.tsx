@@ -8,10 +8,19 @@ import { gql } from 'graphql-request'
 import { useNavigate } from 'react-router-dom'
 import { t } from '@lingui/macro'
 import TokenItem from 'components/token-item'
+import tokenList from 'utils/rtokens'
+
+const listedTokens = Object.keys(tokenList).map((address) =>
+  address.toLowerCase()
+)
 
 const query = gql`
-  query GetTokenListOverview {
-    rtokens(orderBy: cumulativeUniqueUsers, orderDirection: desc) {
+  query GetTokenListOverview($listed: [String]!) {
+    rtokens(
+      orderBy: cumulativeUniqueUsers
+      orderDirection: desc
+      where: { id_not_in: $listed }
+    ) {
       id
       cumulativeUniqueUsers
       targetUnits
@@ -31,7 +40,7 @@ const query = gql`
 `
 
 const useTokens = () => {
-  const { data } = useQuery(query)
+  const { data } = useQuery(query, { listed: listedTokens })
   const [tokens, setTokens] = useState([])
 
   useEffect(() => {
