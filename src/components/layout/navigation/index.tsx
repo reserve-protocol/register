@@ -101,22 +101,6 @@ const Navigation = ({ collapsed = false }) => {
     return items
   }, [])
 
-  const externalPages = useMemo(
-    () => [
-      {
-        path: currentToken?.meta?.governance?.discussion ?? '',
-        title: t`Governance Discussions`,
-        Icon: DiscussionsIcon,
-      },
-      {
-        path: currentToken?.meta?.governance?.voting ?? '',
-        title: t`Governance Voting`,
-        Icon: GovernanceIcon,
-      },
-    ],
-    [currentToken?.meta?.governance?.voting]
-  )
-
   const pages = useMemo(() => {
     if (currentToken?.isRSV) {
       return [...PAGES.slice(0, 2)]
@@ -135,40 +119,6 @@ const Navigation = ({ collapsed = false }) => {
           rTokenAddress={currentToken?.address ?? ''}
         />
       ))}
-
-      {currentToken && !currentToken.isRSV && !currentToken.unlisted && (
-        <>
-          <Text
-            variant="legend"
-            sx={{
-              fontSize: 1,
-              display: collapsed ? 'none' : ['none', 'none', 'block'],
-              paddingLeft: 5,
-              marginTop: 3,
-              marginBottom: 2,
-            }}
-          >
-            <Trans>External Links</Trans>
-          </Text>
-          {externalPages.map((item, index) => (
-            <Link
-              href={item.path}
-              target="_blank"
-              key={index}
-              sx={{
-                transition: 'none',
-                display: 'flex',
-                lineHeight: '32px',
-                paddingLeft: '5px',
-                textDecoration: 'none',
-                color: 'inherit',
-              }}
-            >
-              <MenuItem {...item} collapsed={collapsed} />
-            </Link>
-          ))}
-        </>
-      )}
     </Box>
   )
 }
