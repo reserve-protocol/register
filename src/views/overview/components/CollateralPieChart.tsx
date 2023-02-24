@@ -1,6 +1,7 @@
 import TokenLogo from 'components/icons/TokenLogo'
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 import { Box, BoxProps } from 'theme-ui'
+import { formatPercentage } from 'utils'
 
 interface ChartProps extends BoxProps {
   data: { name: string; value: number; color: string }[]
@@ -46,7 +47,10 @@ const CollateralChart = ({
             <Cell key={`cell-${index}`} fill={entry.color} stroke={'none'} />
           ))}
         </Pie>
-        <Tooltip />
+        <Tooltip
+          wrapperStyle={{ zIndex: 10 }}
+          formatter={(value) => formatPercentage(Number(value), 4)}
+        />
         {!isRSV && (
           <Pie
             dataKey="value"

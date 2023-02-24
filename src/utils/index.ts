@@ -153,6 +153,12 @@ export function formatCurrency(value: number, decimals = 2): string {
   )
 }
 
+export const formatPercentage = (value: number, decimals = 2): string =>
+  (value / 100).toLocaleString('en-US', {
+    style: 'percent',
+    maximumFractionDigits: decimals,
+  })
+
 // Utils for rable parsing
 export const formatCurrencyCell = ({ cell }: { cell: any }) =>
   formatCurrency(+cell.value)
