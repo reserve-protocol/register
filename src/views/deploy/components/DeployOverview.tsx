@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
+import { useWeb3React } from '@web3-react/core'
 import CopyValue from 'components/button/CopyValue'
 import GoTo from 'components/button/GoTo'
 import DeployActionIcon from 'components/icons/DeployActionIcon'
@@ -17,6 +18,7 @@ const Container = styled(Box)`
 `
 
 const DeployStatus = () => {
+  const { account } = useWeb3React()
   const setRToken = useSetAtom(selectedRTokenAtom)
   const { fee, deploy, isValid } = useDeploy()
   const tx = useDeployTxState()
@@ -87,8 +89,10 @@ const DeployStatus = () => {
   return (
     <>
       <Text variant="legend" as="p" sx={{ textAlign: 'center' }}>
-        You will be temporary owner until governance is deployed in transaction
-        2.
+        <Trans>
+          You will be the temporary owner until governance is deployed in
+          transaction 2.
+        </Trans>
       </Text>
       <Button
         onClick={deploy}
@@ -107,6 +111,11 @@ const DeployStatus = () => {
         {isValid && !fee && <Spinner color="black" size={12} />}
         {isValid && !!fee && (
           <Text sx={{ fontWeight: 500 }}>${formatCurrency(fee)}</Text>
+        )}
+        {!account && (
+          <Text mt={3} sx={{ display: 'block', color: 'warning' }}>
+            <Trans>Please connect your wallet</Trans>
+          </Text>
         )}
       </Box>
     </>
