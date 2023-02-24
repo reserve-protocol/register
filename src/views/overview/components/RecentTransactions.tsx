@@ -45,9 +45,10 @@ const RecentTransactions = () => {
       bordered
       compact
       maxHeight={809}
-      help="Recent on-chain transactions"
+      help={t`Recent on-chain transactions`}
       title={t`Transactions`}
       data={txs}
+      external={false}
     />
   )
 }

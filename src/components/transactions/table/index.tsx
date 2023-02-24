@@ -23,6 +23,7 @@ interface Props extends BoxProps {
   compact?: boolean
   bordered?: boolean
   maxHeight?: number | string
+  external?: boolean
 }
 
 const TransactionsTable = ({
@@ -33,6 +34,7 @@ const TransactionsTable = ({
   maxHeight,
   bordered,
   compact,
+  external = true,
   sx = {},
   ...props
 }: Props) => {
@@ -86,7 +88,7 @@ const TransactionsTable = ({
           relativeTime(cell.value, currentTime),
       },
       {
-        Header: t`Platform`,
+        Header: external ? t`Platform` : t`Hash`,
         id: 'id',
         accessor: 'hash',
         Cell: ({ cell }: { cell: any }) =>
