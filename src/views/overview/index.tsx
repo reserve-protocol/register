@@ -10,6 +10,7 @@ import HistoricalData from './components/HistoricalData'
 import RecentProtocolTransactions from './components/RecentProtocolTransactions'
 import RecentRSVTransactions from './components/RecentRSVTransactions'
 import RecentTokenTransactions from './components/RecentTokenTransactions'
+import RecentTransactions from './components/RecentTransactions'
 import RevenueSplitOverview from './components/RevenueSplitOverview'
 import TokenOverview from './components/TokenOverview'
 import TokenUsage from './components/TokenUsage'
@@ -59,16 +60,8 @@ const Overview = () => {
       </Grid>
       <Divider {...dividerProps} />
       <Grid {...gridProps}>
-        {rToken?.isRSV ? (
-          <RecentRSVTransactions mt={[0, 3, 3, 0]} />
-        ) : (
-          <RecentTokenTransactions mt={[0, 3, 3, 0]} />
-        )}
-        <RecentProtocolTransactions />
-      </Grid>
-      <Divider my={3} sx={{ border: 'none' }} />
-      <Grid {...gridProps}>
         <HistoricalData />
+        {rToken?.isRSV ? <RecentRSVTransactions /> : <RecentTransactions />}
       </Grid>
     </Container>
   )
