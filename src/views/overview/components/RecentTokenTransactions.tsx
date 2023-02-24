@@ -51,7 +51,7 @@ const RecentTokenTransactions = (props: BoxProps) => {
       bordered
       maxHeight={400}
       help="RToken related on-chain transactions"
-      title={t`Transactions`}
+      title={t`RToken transfers`}
       data={txs}
       {...props}
     />

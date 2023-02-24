@@ -10,6 +10,7 @@ import HistoricalData from './components/HistoricalData'
 import RecentProtocolTransactions from './components/RecentProtocolTransactions'
 import RecentRSVTransactions from './components/RecentRSVTransactions'
 import RecentTokenTransactions from './components/RecentTokenTransactions'
+import RevenueSplitOverview from './components/RevenueSplitOverview'
 import TokenOverview from './components/TokenOverview'
 import TokenUsage from './components/TokenUsage'
 
@@ -46,23 +47,28 @@ const Overview = () => {
         <Box>
           <TokenUsage ml={[3, 3, 3, 0]} mt={1} metrics={rTokenMetrics} />
         </Box>
+      </Grid>
+      <Divider {...dividerProps} />
+      <About mt={2} px={3} />
+      <Divider mt={4} sx={{ border: 'none' }} />
+      <External />
+      <Divider my={5} />
+      <Grid {...gridProps}>
+        <AssetOverview />
+        <RevenueSplitOverview />
+      </Grid>
+      <Divider {...dividerProps} />
+      <Grid {...gridProps}>
         {rToken?.isRSV ? (
           <RecentRSVTransactions mt={[0, 3, 3, 0]} />
         ) : (
           <RecentTokenTransactions mt={[0, 3, 3, 0]} />
         )}
+        <RecentProtocolTransactions />
       </Grid>
-      <Divider {...dividerProps} />
-      <Grid {...gridProps}>
-        <About mt={2} px={3} mr={2} />
-        <AssetOverview />
-      </Grid>
-      <Divider {...dividerProps} sx={{ display: ['none', 'block'] }} />
-      <External />
-      <Divider {...dividerProps} />
+      <Divider my={3} sx={{ border: 'none' }} />
       <Grid {...gridProps}>
         <HistoricalData />
-        <RecentProtocolTransactions />
       </Grid>
     </Container>
   )

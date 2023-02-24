@@ -38,17 +38,12 @@ const InfoBox = ({ title, subtitle, light, ...props }: Props) => (
 export const ContentHead = ({ title, subtitle, ...props }: Props) => (
   <Box {...props}>
     <Text
-      sx={{ display: 'block', marginBottom: 1, fontWeight: 500, fontSize: 5 }}
+      sx={{ display: 'block', marginBottom: 2, fontWeight: 500, fontSize: 5 }}
     >
       {title}
     </Text>
     {!!subtitle && (
-      <Text
-        as="p"
-        pr={3}
-        sx={{ maxWidth: 620, fontWeight: 300 }}
-        variant="legend"
-      >
+      <Text as="p" pr={3} sx={{ maxWidth: 620 }} variant="legend">
         {subtitle}
       </Text>
     )}
