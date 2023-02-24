@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import { useState } from 'react'
-import { Box, Text, Link } from 'theme-ui'
+import { Box, Link, Text } from 'theme-ui'
 import WrapCollateralModal from '../issue/WrapCollateralModal'
 
 const About = () => {
