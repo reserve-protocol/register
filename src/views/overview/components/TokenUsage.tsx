@@ -12,7 +12,7 @@ const TokenUsage = ({ metrics, ...props }: Props) => {
   return (
     <Box {...props}>
       <ContentHead title={t`Usage Stats`} />
-      <Flex mt={5} sx={{ flexWrap: 'wrap' }}>
+      <Flex mt={5} sx={{ flexWrap: 'wrap' }} mb={-4}>
         <InfoHeading
           title={t`Cumulative Tx Volume`}
           mb={4}

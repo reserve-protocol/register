@@ -31,22 +31,9 @@ const Overview = () => {
 
   return (
     <Container>
-      <Grid {...gridProps} ml={[0, 0, 0, 3]} gap={0}>
-        <Box>
-          <TokenOverview
-            mt={[3, 0]}
-            ml={[3, 3, 3, 0]}
-            mr={2}
-            metrics={rTokenMetrics}
-          />
-        </Box>
-      </Grid>
+      <TokenOverview mt={[3, 0]} ml={3} metrics={rTokenMetrics} />
       <Divider {...dividerProps} />
-      <Grid {...gridProps} ml={[0, 0, 0, 3]} gap={0}>
-        <Box>
-          <TokenUsage ml={[3, 3, 3, 0]} mt={1} metrics={rTokenMetrics} />
-        </Box>
-      </Grid>
+      <TokenUsage ml={3} metrics={rTokenMetrics} />
       <Divider {...dividerProps} />
       <About mt={2} px={3} />
       <Divider mt={4} sx={{ border: 'none' }} />

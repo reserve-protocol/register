@@ -38,7 +38,7 @@ const TokenOverview = ({ metrics, ...props }: Props) => {
           </Flex>
         </Flex>
         {!rToken?.isRSV && (
-          <Flex mt={5}>
+          <Flex mt={5} mb={-3}>
             <InfoHeading
               title={t`RSR Staked Pool`}
               subtitle={metrics.stakedUsd}
