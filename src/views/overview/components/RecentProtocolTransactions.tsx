@@ -47,7 +47,7 @@ const RecentProtocolTransactions = () => {
     <TransactionsTable
       bordered
       compact
-      maxHeight={rToken?.isRSV ? 525 : 810}
+      maxHeight={400}
       help="Protocol on-chain transactions related to RTokens"
       title={t`Protocol Transactions`}
       data={txs}

@@ -14,6 +14,7 @@ const VISITED_KEY = 'visited'
 
 const dividerProps = {
   mx: [-1, -5],
+  my: [4, 6],
 }
 
 /**
@@ -41,12 +42,12 @@ const Home = () => {
       {!account && !visited && <Greet onDismiss={handleDismiss} />}
       {!!account && <Portfolio />}
       <Grid columns={[1, 1, 1, 2]}>
-        <TokenStats mb={[5, 5, 5, 0]} mt={3} />
+        <TokenStats mb={[5, 5, 5, 0]} mt={[0, 3]} />
         <TransactionsOverview />
       </Grid>
-      <Divider mb={2} my={6} {...dividerProps} />
-      <TokenList mt={6} />
-      <Divider my={6} {...dividerProps} />
+      <Divider mb={[0, 2]} {...dividerProps} />
+      <TokenList mt={[4, 6]} />
+      <Divider {...dividerProps} />
       <About />
     </Container>
   )

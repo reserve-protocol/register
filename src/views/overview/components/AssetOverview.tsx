@@ -92,14 +92,14 @@ const AssetOverview = () => {
           />
           <Text variant="legend">
             <Trans>Backing</Trans>
-            <Box as="span" ml={2} sx={{ fontWeight: 'bold', color: 'text' }}>
+            <Box as="span" ml={2} sx={{ fontWeight: '500', color: 'text' }}>
               {rToken?.isRSV ? 100 : Math.min(100, distribution.backing)}%
             </Box>
           </Text>
           {!rToken?.isRSV && (
             <Text variant="legend">
               <Trans>Staked RSR coverage</Trans>
-              <Box as="span" ml={2} sx={{ fontWeight: 'bold', color: 'text' }}>
+              <Box as="span" ml={2} sx={{ fontWeight: '500', color: 'text' }}>
                 {distribution.staked}%
               </Box>
             </Text>

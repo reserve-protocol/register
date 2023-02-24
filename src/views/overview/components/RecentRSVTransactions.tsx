@@ -62,7 +62,7 @@ const RecentRSVTransactions = (props: BoxProps) => {
         bordered
         maxHeight={400}
         help="This includes on-chain transactions in addition to anonymized RPay transactions to show the full story of the RSV ecosystem."
-        title={t`Transactions`}
+        title={t`User Transactions`}
         data={txs}
         {...props}
       />

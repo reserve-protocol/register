@@ -2,7 +2,7 @@ import { t, Trans } from '@lingui/macro'
 import { ContentHead, InfoHeading } from 'components/info-box'
 import { useAtomValue } from 'jotai'
 import { rTokenAtom, rTokenYieldAtom } from 'state/atoms'
-import { Box, BoxProps, Flex, Text } from 'theme-ui'
+import { Box, BoxProps, Flex, Text, Image } from 'theme-ui'
 import { TokenStats } from 'types'
 
 interface Props extends BoxProps {
@@ -15,28 +15,27 @@ const TokenOverview = ({ metrics, ...props }: Props) => {
 
   return (
     <Box {...props}>
-      <ContentHead
-        title={t`Overview`}
-        subtitle={
-          rToken?.isRSV
-            ? t`Here you can find usage data about RSV, which is mostly used in the
-            RPay app. Transactions data includes off-chain data that as been
-            anonymized to protect user privacy.`
-            : undefined
-        }
-      />
-      <Flex mt={[3, 6]} sx={{ flexDirection: 'column' }}>
-        <Flex mr={5}>
-          <Text
-            variant="sectionTitle"
-            sx={{ whiteSpace: 'nowrap', fontWeight: '300', color: 'lightText' }}
-            mr={3}
-          >
-            <Trans>Market cap</Trans>
-          </Text>{' '}
-          <Text variant="sectionTitle" sx={{ color: 'boldText' }}>
-            {metrics.supplyUsd}
-          </Text>
+      {rToken?.isRSV ? (
+        <ContentHead
+          mb={[3, 6]}
+          title={t`Overview`}
+          subtitle={t`Here you can find usage data about RSV, which is mostly used in the
+             RPay app. Transactions data includes off-chain data that as been
+             anonymized to protect user privacy.`}
+        />
+      ) : undefined}
+
+      <Flex sx={{ flexDirection: 'column' }}>
+        <Flex sx={{ alignItems: 'center' }}>
+          <Image src={rToken?.logo} sx={{ width: 40, height: 40 }} />
+          <Flex ml={3} sx={{ flexDirection: 'column' }}>
+            <Text variant="legend" sx={{ fontWeight: 300 }}>
+              <Trans>Market cap</Trans>
+            </Text>{' '}
+            <Text sx={{ fontWeight: '500', fontSize: 5 }}>
+              {metrics.supplyUsd}
+            </Text>
+          </Flex>
         </Flex>
         {!rToken?.isRSV && (
           <Flex mt={5}>

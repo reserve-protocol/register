@@ -1,7 +1,8 @@
-import { Trans } from '@lingui/macro'
+import { Trans, t } from '@lingui/macro'
 import { useAtomValue } from 'jotai'
 import { rTokenAtom } from 'state/atoms'
 import { Box, BoxProps, Link, Text } from 'theme-ui'
+import MandateIcon from 'components/icons/MandateIcon'
 
 // TODO: Pull this info from listing
 const About = (props: BoxProps) => {
@@ -9,7 +10,7 @@ const About = (props: BoxProps) => {
 
   if (rToken?.isRSV) {
     return (
-      <Box {...props}>
+      <Box {...props} px={3} sx={{ maxWidth: '720px' }}>
         <Text variant="title" mb={3}>
           <Trans>About</Trans>
         </Text>
@@ -32,28 +33,16 @@ const About = (props: BoxProps) => {
         >
           <Trans>Read more here on most recent backing change.</Trans>
         </Link>
-        <Text variant="legend" as="p" mt={3}>
-          <Trans>
-            RSV is not integrated with the Reserve protocol at this time and is
-            a separate discrete set of smart contracts.
-          </Trans>{' '}
-          <Link
-            href="https://reserve.org/protocol/how_rsv_works/index.html"
-            target="_blank"
-            sx={{ textDecoration: 'underline' }}
-          >
-            Learn more here.
-          </Link>
-        </Text>
       </Box>
     )
   }
 
   return (
-    <Box {...props}>
+    <Box {...props} pt={2} px={3} sx={{ maxWidth: '720px' }}>
       {rToken?.mandate && (
         <>
-          <Text mb={3} variant="pageTitle">
+          <MandateIcon />
+          <Text mb={2} mt={2} variant="sectionTitle" sx={{ fontSize: 5 }}>
             {rToken?.symbol} <Trans>Mandate</Trans>
           </Text>
           <Text as="p" variant="legend">
@@ -63,8 +52,8 @@ const About = (props: BoxProps) => {
       )}
       {rToken?.meta?.about && (
         <>
-          <Text mt={4} mb={3} variant="title">
-            <Trans>About</Trans>
+          <Text mt={4} mb={2} variant="title">
+            <Trans>+ Off-chain note</Trans>
           </Text>
           <Text as="p" variant="legend">
             {rToken?.meta?.about}
