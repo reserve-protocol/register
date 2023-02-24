@@ -1,10 +1,10 @@
-import { BigNumber } from '@ethersproject/bignumber'
-import { BigNumberMap, TransactionState } from './../types'
 import { getAddress } from '@ethersproject/address'
+import { BigNumber } from '@ethersproject/bignumber'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { t } from '@lingui/macro'
 import { Contract } from 'ethers'
 import { parseEther } from 'ethers/lib/utils'
+import { BigNumberMap, TransactionState } from './../types'
 
 export const decimalPattern = /^[0-9]*[.]?[0-9]*$/i
 export const numberPattern = /^\d+$/
@@ -152,6 +152,12 @@ export function formatCurrency(value: number, decimals = 2): string {
     value
   )
 }
+
+export const formatPercentage = (value: number, decimals = 2): string =>
+  (value / 100).toLocaleString('en-US', {
+    style: 'percent',
+    maximumFractionDigits: decimals,
+  })
 
 // Utils for rable parsing
 export const formatCurrencyCell = ({ cell }: { cell: any }) =>
