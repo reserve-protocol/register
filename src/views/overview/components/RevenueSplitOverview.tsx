@@ -1,18 +1,15 @@
-import { Trans, t } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 import GoTo from 'components/button/GoTo'
-import { useAtomValue } from 'jotai'
-import { rTokenAtom } from 'state/atoms'
-import { Box, Button, Text, Link, Image } from 'theme-ui'
-import { useNavigate } from 'react-router-dom'
-import { ContentHead, InfoItem } from 'components/info-box'
-import { rTokenRevenueSplitAtom } from 'state/atoms'
 import RevenueSplitIcon from 'components/icons/RevenueSplitIcon'
-import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import { ContentHead, InfoItem } from 'components/info-box'
+import { useAtomValue } from 'jotai'
+import { rTokenAtom, rTokenRevenueSplitAtom } from 'state/atoms'
+import { Box, BoxProps, Image, Link, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
-const RevenueSplitOverview = () => {
+const RevenueSplitOverview = (props: BoxProps) => {
   const rToken = useAtomValue(rTokenAtom)
-  const navigate = useNavigate()
   const distribution = useAtomValue(rTokenRevenueSplitAtom)
 
   if (rToken?.isRSV) {
@@ -47,7 +44,7 @@ const RevenueSplitOverview = () => {
   }
 
   return (
-    <Box px={4} py={4}>
+    <Box px={4} py={4} {...props}>
       <RevenueSplitIcon />
       <ContentHead
         mb={4}

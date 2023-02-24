@@ -53,12 +53,12 @@ const Overview = () => {
       <About mt={2} px={3} />
       <Divider mt={4} sx={{ border: 'none' }} />
       <External />
-      <Divider my={5} />
+      <Divider {...dividerProps} />
       <Grid {...gridProps}>
         <AssetOverview />
         <RevenueSplitOverview />
       </Grid>
-      <Divider {...dividerProps} />
+      <Divider {...dividerProps} mt={[0, 0, 0, 5]} />
       <Grid {...gridProps}>
         <HistoricalData />
         {rToken?.isRSV ? <RecentRSVTransactions /> : <RecentTransactions />}
