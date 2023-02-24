@@ -29,7 +29,7 @@ const Container = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
           zIndex: 100001,
           display: 'flex',
           position: 'absolute',
-          maxWidth: ['100vw', '768px'],
+          maxWidth: ['100vw', '840px'],
           width: ['100vw', '100vw', '60vw'],
           backgroundColor: 'background',
           right: 0,
