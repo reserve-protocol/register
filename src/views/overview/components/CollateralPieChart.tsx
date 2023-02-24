@@ -44,7 +44,7 @@ const CollateralChart = ({
           outerRadius={80}
         >
           {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={entry.color} />
+            <Cell key={`cell-${index}`} fill={entry.color} stroke={'none'} />
           ))}
         </Pie>
         <Tooltip
@@ -59,7 +59,8 @@ const CollateralChart = ({
             cy="50%"
             innerRadius={90}
             outerRadius={100}
-            fill="#000000"
+            fill="currentColor"
+            stroke="none"
             {...getAngles(staked)}
           />
         )}

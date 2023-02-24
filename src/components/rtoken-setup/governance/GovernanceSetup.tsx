@@ -64,7 +64,7 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
       {!defaultGovernance && (
         <FormField
           label={t`Owner address`}
-          placeholder={t`Input owner ethereum address`}
+          placeholder={t`Input the owner ethereum address`}
           help={t`The top level decision maker, typically a decentralized governance smart contract, responsible for setting or updating all RToken parameter values, RToken baskets, etc. - The RToken OWNER has the power to:
           grant and revoke roles to any Ethereum account
           pause and unpause the system
@@ -117,7 +117,7 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
       {defaultGovernance && (
         <>
           <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
-          <GovernanceParameters />{' '}
+          <GovernanceParameters />
         </>
       )}
       <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />

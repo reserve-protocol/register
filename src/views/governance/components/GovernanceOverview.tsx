@@ -120,7 +120,10 @@ const GovernanceOverview = () => {
           ml={3}
           variant="transparent"
           onClick={() =>
-            navigate(`${ROUTES.SETTINGS}?token=${rToken?.address}`)
+            window.open(
+              'https://reserve.org/protocol/reserve_rights_rsr/#reserve-governor-alexios',
+              '_blank'
+            )
           }
         >
           <Trans>Documentation</Trans>

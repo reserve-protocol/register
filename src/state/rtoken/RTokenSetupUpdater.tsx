@@ -50,7 +50,6 @@ const RTokenSetupUpdater = () => {
     ) => {
       try {
         const mainCall = { abi: MainInterface, address: mainAddress, args: [] }
-        // TODO: Fetch addresses and store it in an atom
         const [
           distribution,
           backingManager,
@@ -112,6 +111,46 @@ const RTokenSetupUpdater = () => {
           ],
           provider
         )
+
+        // Revenue distribution
+        const contract = getContract(distribution, DistributorAbi, provider)
+        const events = await contract.queryFilter(
+          'DistributionSet(address,uint16,uint16)'
+        )
+        const dist: StringMap = { external: {}, holders: '', stakers: '' }
+        const furnace = '0x0000000000000000000000000000000000000001'
+        const stRSR = '0x0000000000000000000000000000000000000002'
+
+        for (const event of events) {
+          if (event.args) {
+            const { dest, rTokenDist, rsrDist } = event.args
+
+            // Dist removed
+            if (!rTokenDist && !rsrDist) {
+              delete dist[dest]
+            } else if (dest === furnace) {
+              dist.holders = shareToPercent(rTokenDist)
+            } else if (dest === stRSR) {
+              dist.stakers = shareToPercent(rsrDist)
+            } else {
+              const holders = shareToPercent(rTokenDist)
+              const stakers = shareToPercent(rsrDist)
+              const total = +holders + +stakers
+
+              dist.external[dest] = {
+                holders: ((+holders * 100) / total).toString(),
+                stakers: ((+stakers * 100) / total).toString(),
+                total: total.toString(),
+                address: dest,
+              }
+            }
+          }
+        }
+
+        setRevenueSplit({
+          ...dist,
+          external: Object.values(dist.external),
+        } as RevenueSplit)
 
         const rTokenCall = {
           abi: RTokenInterface,
@@ -227,46 +266,6 @@ const RTokenSetupUpdater = () => {
           shortFreeze: shortFreeze.toString(),
         })
 
-        // Revenue distribution
-        const contract = getContract(distribution, DistributorAbi, provider)
-        const events = await contract.queryFilter(
-          'DistributionSet(address,uint16,uint16)'
-        )
-        const dist: StringMap = { external: {}, holders: '', stakers: '' }
-        const furnace = '0x0000000000000000000000000000000000000001'
-        const stRSR = '0x0000000000000000000000000000000000000002'
-
-        for (const event of events) {
-          if (event.args) {
-            const { dest, rTokenDist, rsrDist } = event.args
-
-            // Dist removed
-            if (!rTokenDist && !rsrDist) {
-              delete dist[dest]
-            } else if (dest === furnace) {
-              dist.holders = shareToPercent(rTokenDist)
-            } else if (dest === stRSR) {
-              dist.stakers = shareToPercent(rsrDist)
-            } else {
-              const holders = shareToPercent(rTokenDist)
-              const stakers = shareToPercent(rsrDist)
-              const total = +holders + +stakers
-
-              dist.external[dest] = {
-                holders: ((+holders * 100) / total).toString(),
-                stakers: ((+stakers * 100) / total).toString(),
-                total: total.toString(),
-                address: dest,
-              }
-            }
-          }
-        }
-
-        setRevenueSplit({
-          ...dist,
-          external: Object.values(dist.external),
-        } as RevenueSplit)
-
         // RToken contracts update
         setRTokenContracts({
           main: mainAddress,
@@ -289,10 +288,10 @@ const RTokenSetupUpdater = () => {
   )
 
   useEffect(() => {
-    if (rToken?.address && rToken?.main && provider) {
+    if (rToken?.main && provider) {
       fetchParams(rToken.address, rToken.main, provider)
     }
-  }, [rToken?.address, provider])
+  }, [rToken?.main, provider])
 
   return null
 }

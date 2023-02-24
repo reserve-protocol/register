@@ -133,16 +133,6 @@ const About = (props: BoxProps) => (
         difference for RToken holders.
       </Trans>
     </Text>
-    <Text variant="strong" mb={2} mt={4}>
-      <Trans>Governor Alexios</Trans>
-    </Text>
-    <Text as="p" variant="legend">
-      <Trans>
-        The description below applies to the default Reserve Governor Alexios.
-        If an RToken's deployer opted out of this scheme, please consult with
-        the RToken's documentation to understand how staking functions.
-      </Trans>
-    </Text>
   </Box>
 )
 

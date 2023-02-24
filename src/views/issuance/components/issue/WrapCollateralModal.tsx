@@ -35,7 +35,13 @@ type FormState = {
   }
 }
 
-const WrapCollateralModal = ({ onClose }: { onClose(): void }) => {
+const WrapCollateralModal = ({
+  onClose,
+  unwrap = false,
+}: {
+  onClose(): void
+  unwrap?: boolean
+}) => {
   const [signing, setSigning] = useState(false)
   const [loading, setLoading] = useState(false)
   const { provider, account } = useWeb3React()

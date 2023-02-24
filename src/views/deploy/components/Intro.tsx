@@ -21,7 +21,7 @@ const Intro = (props: BoxProps) => (
       <SmallButton
         variant="transparent"
         mr="12px"
-        onClick={() => window.open('https://t.co/kis3OapvFw', '_blank')}
+        onClick={() => window.open('https://discord.gg/hQ2VJbjjg7', '_blank')}
       >
         <Trans>Community Discord</Trans>
       </SmallButton>

@@ -1,11 +1,9 @@
 import { Trans } from '@lingui/macro'
-import CopyValue from 'components/button/CopyValue'
-import GoTo from 'components/button/GoTo'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { selectedRTokenAtom } from 'state/atoms'
-import { Box, Button, Text } from 'theme-ui'
-import { shortenAddress } from 'utils'
+import { Box } from 'theme-ui'
+import { SmallButton } from 'components/button'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
 const External = () => {
@@ -16,39 +14,39 @@ const External = () => {
     <Box
       variant="layout.verticalAlign"
       sx={{ display: ['none', 'flex'], flexWrap: 'wrap' }}
-      ml={4}
+      ml={3}
     >
       {rToken?.meta?.website && (
-        <Button
-          variant="muted"
-          px={5}
+        <SmallButton
+          variant="transparent"
           mr={3}
           onClick={() => window.open(rToken.meta?.website, '_blank')}
         >
           <Trans>Website</Trans>
-        </Button>
+        </SmallButton>
       )}
       {rToken?.meta?.social?.twitter && (
-        <Button
-          variant="muted"
-          px={5}
+        <SmallButton
+          variant="transparent"
           mr={3}
           onClick={() => window.open(rToken?.meta?.social?.twitter, '_blank')}
         >
           <Trans>Twitter</Trans>
-        </Button>
+        </SmallButton>
       )}
       {!!rTokenAddress && (
-        <>
-          <Text ml="auto">{shortenAddress(rTokenAddress)}</Text>
-          <CopyValue ml={2} mr={2} value={rTokenAddress} />
-          <GoTo
-            href={getExplorerLink(
-              rToken?.address ?? '',
-              ExplorerDataType.TOKEN
-            )}
-          />
-        </>
+        <SmallButton
+          variant="transparent"
+          mr={3}
+          onClick={() =>
+            window.open(
+              getExplorerLink(rToken?.address ?? '', ExplorerDataType.TOKEN),
+              '_blank'
+            )
+          }
+        >
+          <Trans>Token contract</Trans>
+        </SmallButton>
       )}
     </Box>
   )

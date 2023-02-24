@@ -5,15 +5,14 @@ import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
 import { useMemo } from 'react'
-import { BoxProps } from 'theme-ui'
 
-const tokenRecentTxsQuery = gql`
-  query GetTokenRecentTransactions($tokenId: String!) {
+const recentTxsQuery = gql`
+  query GetRecentTransactions($tokenId: String!) {
     entries(
       orderBy: timestamp
-      where: { token: $tokenId, type_in: ["TRANSFER", "MINT", "BURN"] }
+      where: { token: $tokenId, type_not_in: ["ISSUE", "BURN"] }
       orderDirection: desc
-      first: 20
+      first: 50
     ) {
       type
       amount
@@ -24,15 +23,11 @@ const tokenRecentTxsQuery = gql`
   }
 `
 
-const RecentTokenTransactions = (props: BoxProps) => {
+const RecentTransactions = () => {
   const rToken = useRToken()
-  const { data } = useQuery(
-    tokenRecentTxsQuery,
-    {
-      tokenId: rToken?.address.toLowerCase() ?? '',
-    },
-    { refreshInterval: 10000 }
-  )
+  const { data } = useQuery(recentTxsQuery, {
+    tokenId: rToken?.address.toLowerCase() ?? '',
+  })
   const txs = useMemo(() => {
     if (!data?.entries) {
       return []
@@ -47,15 +42,15 @@ const RecentTokenTransactions = (props: BoxProps) => {
 
   return (
     <TransactionsTable
-      compact
       bordered
-      maxHeight={400}
-      help="RToken related on-chain transactions"
-      title={t`RToken transfers`}
+      compact
+      maxHeight={809}
+      help={t`Recent on-chain transactions`}
+      title={t`Transactions`}
       data={txs}
-      {...props}
+      external={false}
     />
   )
 }
 
-export default RecentTokenTransactions
+export default RecentTransactions

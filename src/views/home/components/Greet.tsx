@@ -1,6 +1,7 @@
 import { t, Trans } from '@lingui/macro'
 import { useEffect, useMemo, useState } from 'react'
 import { Box, BoxProps, Button, Divider, Flex, Progress, Text } from 'theme-ui'
+import DeployIntroIcon from 'components/icons/DeployIntroIcon'
 
 interface Props extends BoxProps {
   onDismiss(): void
@@ -74,18 +75,11 @@ const Greet = ({ onDismiss, ...props }: Props) => {
 
   return (
     <>
-      <Flex {...props} mt={8} pt={4} mb={0}>
-        <Box ml={3} pr={3} mb={[0, 0]}>
-          <Text
-            sx={{
-              display: 'block',
-              fontSize: 5,
-            }}
-          >
-            👋
-          </Text>
-          <Text variant="title" my={3} sx={{ fontSize: 5 }}>
-            <Trans>Welcome to Register</Trans>
+      <Flex {...props} mt={8} pt={[0, 4]} mb={0}>
+        <Box ml={3} pr={3}>
+          <DeployIntroIcon />
+          <Text variant="title" my={2} sx={{ fontSize: 5 }}>
+            <Trans>The RToken Register</Trans>
           </Text>
           <Text as="p" variant="legend" sx={{ maxWidth: 520 }}>
             <Trans>
@@ -95,7 +89,7 @@ const Greet = ({ onDismiss, ...props }: Props) => {
               different ways.
             </Trans>
           </Text>
-          <Box mt={5}>
+          <Flex mt={5}>
             <Button
               px={4}
               py={2}
@@ -105,12 +99,12 @@ const Greet = ({ onDismiss, ...props }: Props) => {
               }
               variant="muted"
             >
-              <Trans>Go to source</Trans>
+              View source code
             </Button>
             <Button px={4} py={2} onClick={onDismiss}>
-              <Trans>Got it!</Trans>
+              <Trans>Got it</Trans>
             </Button>
-          </Box>
+          </Flex>
         </Box>
         <Flex
           sx={{
@@ -145,11 +139,13 @@ const Greet = ({ onDismiss, ...props }: Props) => {
             <Box my={3}>
               <TimeLoading active={active} onComplete={handleActive} />
             </Box>
-            <Text mt={3}>{steps[active].text}</Text>
+            <Text variant="legend" mt={3}>
+              {steps[active].text}
+            </Text>
           </Box>
         </Flex>
       </Flex>
-      <Divider my={7} mx={[-1, -5]} sx={{ borderColor: 'darkBorder' }} />
+      <Divider my={[5, 7]} mx={[-1, -5]} sx={{ borderColor: 'darkBorder' }} />
     </>
   )
 }
