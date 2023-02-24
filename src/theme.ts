@@ -41,6 +41,8 @@ export const baseInput = {
   padding: '12px',
   paddingLeft: '16px',
   borderRadius: borderRadius.inputs,
+  mozAppearance: 'none',
+  webkitAppearance: 'none',
   '&:disabled': {
     backgroundColor: 'border',
     borderColor: 'secondary',
@@ -62,6 +64,7 @@ export const smallButton = {
   paddingRight: '10px',
   borderRadius: 6,
 }
+
 
 export const colors = {
   boldText: '#292929',
@@ -103,7 +106,7 @@ export const colors = {
       lightBackground: '#131313',
       contentLightBackground: '#090909',
       secondaryBackground: '#050404',
-      primary: '#4C3121',
+      primary: '#6D3210',
       bgCard: '#FBFDFE',
       modalOverlay: 'rgb(140, 140, 140, 0.4)',
     },
