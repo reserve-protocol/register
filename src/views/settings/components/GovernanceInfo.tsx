@@ -3,7 +3,7 @@ import { InfoItem } from 'components/info-box'
 import { useAtomValue } from 'jotai'
 import { rTokenGovernanceAtom } from 'state/atoms'
 import { BoxProps, Card, Text, Divider } from 'theme-ui'
-import { shortenAddress } from 'utils'
+import { parseDuration, shortenAddress } from 'utils'
 
 /**
  * View: Settings > Display RToken governance configuration
@@ -22,12 +22,16 @@ const GovernanceInfo = (props: BoxProps) => {
         <>
           <InfoItem
             title={t`Voting Delay`}
-            subtitle={governance.votingDelay}
+            subtitle={`${parseDuration(
+              Number(governance.votingDelay) || 0 * 12
+            )} (${governance.votingDelay} blocks)`}
             mb={3}
           />
           <InfoItem
             title={t`Voting Period`}
-            subtitle={governance.votingPeriod}
+            subtitle={`${parseDuration(
+              Number(governance.votingPeriod) || 0 * 12
+            )} (${governance.votingPeriod} blocks)`}
             mb={3}
           />
           <InfoItem
@@ -36,7 +40,7 @@ const GovernanceInfo = (props: BoxProps) => {
             mb={3}
           />
           <InfoItem
-            title={t`Quorum`}
+            title={t`Quorum (%)`}
             subtitle={governance.quorumNumerator}
             mb={3}
           />

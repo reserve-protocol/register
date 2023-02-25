@@ -3,7 +3,7 @@ import { InfoItem } from 'components/info-box'
 import { useAtomValue } from 'jotai'
 import { rTokenParamsAtom } from 'state/atoms'
 import { Card, Text, Divider } from 'theme-ui'
-import { formatCurrency } from 'utils'
+import { formatCurrency, parseDuration } from 'utils'
 
 /**
  * View: Settings > Display RToken contracts configuration
@@ -18,28 +18,28 @@ const OtherInfo = () => {
       </Text>
       <Divider mx={-4} my={4} sx={{ borderColor: 'darkBorder' }} />
       <InfoItem
-        title={t`Short freeze duration (s)`}
-        subtitle={params.shortFreeze}
+        title={t`Short freeze duration`}
+        subtitle={parseDuration(+params.shortFreeze || 0)}
         mb={3}
       />
       <InfoItem
-        title={t`Long freeze duration (s)`}
-        subtitle={params.longFreeze}
+        title={t`Long freeze duration`}
+        subtitle={parseDuration(+params.longFreeze || 0)}
         mb={3}
       />
       <InfoItem
-        title={t`Unstaking Delay (s)`}
-        subtitle={params.unstakingDelay}
+        title={t`Unstaking Delay`}
+        subtitle={parseDuration(+params.unstakingDelay || 0)}
         mb={3}
       />
       <InfoItem
-        title={t`Reward ratio (decimals)`}
+        title={t`Reward ratio (%)`}
         subtitle={params.rewardRatio}
         mb={3}
       />
       <InfoItem
         title={t`Minimum trade volume`}
-        subtitle={params.minTrade}
+        subtitle={formatCurrency(+params.minTrade)}
         mb={3}
       />
       <InfoItem

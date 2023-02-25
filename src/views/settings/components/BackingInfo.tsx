@@ -3,7 +3,7 @@ import { InfoItem } from 'components/info-box'
 import { useAtomValue } from 'jotai'
 import { rTokenParamsAtom } from 'state/atoms'
 import { Card, Text, Divider } from 'theme-ui'
-import { formatCurrency } from 'utils'
+import { formatCurrency, parseDuration } from 'utils'
 
 /**
  * View: Settings > Display RToken backing contracts configuration
@@ -18,13 +18,13 @@ const BackingInfo = () => {
       </Text>
       <Divider mx={-4} my={4} sx={{ borderColor: 'darkBorder' }} />
       <InfoItem
-        title={t`Trading delay (s)`}
-        subtitle={params.tradingDelay}
+        title={t`Trading delay`}
+        subtitle={parseDuration(+params.tradingDelay)}
         mb={3}
       />
       <InfoItem
-        title={t`Auction length (s)`}
-        subtitle={params.auctionLength}
+        title={t`Auction length`}
+        subtitle={parseDuration(+params.auctionLength)}
         mb={3}
       />
       <InfoItem

@@ -4,7 +4,8 @@ import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { t } from '@lingui/macro'
 import { Contract } from 'ethers'
 import { parseEther } from 'ethers/lib/utils'
-import { BigNumberMap, TransactionState } from './../types'
+import humanizeDuration from 'humanize-duration'
+import { BigNumberMap, TransactionState } from 'types'
 
 export const decimalPattern = /^[0-9]*[.]?[0-9]*$/i
 export const numberPattern = /^\d+$/
@@ -250,4 +251,8 @@ export const parsePercent = (n: string): BigNumber => {
 // TODO: More robust title parsing?
 export const getProposalTitle = (description: string) => {
   return description.split(/\r?\n/)[0].replaceAll('#', '').trim()
+}
+
+export const parseDuration = (duration: number) => {
+  return humanizeDuration(duration * 1000)
 }

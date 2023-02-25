@@ -2,13 +2,16 @@ import { t, Trans } from '@lingui/macro'
 import IconInfo from 'components/info-icon'
 import { useAtomValue } from 'jotai'
 import {
+  estimatedApyAtom,
   rsrExchangeRateAtom,
   rTokenAtom,
   rTokenDistributionAtom,
+  rTokenParamsAtom,
   rTokenYieldAtom,
 } from 'state/atoms'
 import { Box, BoxProps, Flex, Grid, Image, Text } from 'theme-ui'
 import Help from 'components/help'
+import { formatPercentage, parseDuration } from 'utils'
 
 const ExchangeRate = (props: BoxProps) => {
   const rate = useAtomValue(rsrExchangeRateAtom)
@@ -26,8 +29,10 @@ const ExchangeRate = (props: BoxProps) => {
 }
 
 const Stats = (props: BoxProps) => {
+  const { stakers } = useAtomValue(estimatedApyAtom)
   const distribution = useAtomValue(rTokenDistributionAtom)
   const { stakingApy } = useAtomValue(rTokenYieldAtom)
+  const { unstakingDelay } = useAtomValue(rTokenParamsAtom)
 
   return (
     <Box {...props} variant="layout.borderBox" p={0}>
@@ -51,7 +56,7 @@ const Stats = (props: BoxProps) => {
             <Text mr={2} variant="subtitle">
               <Trans>Staking APY</Trans>
             </Text>
-            <Help content="This will always be 0% for a few months after RToken creation. We're adding Projected APY in the near future." />
+            <Help content="This will always be 0% for a few months after RToken creation." />
           </Box>
           <IconInfo
             icon={<Image src="/svgs/trendup.svg" />}
@@ -60,16 +65,31 @@ const Stats = (props: BoxProps) => {
           />
         </Box>
         <Box p={4} sx={{ borderBottom: '1px solid', borderColor: 'border' }}>
-          <Text variant="subtitle" mb={3}>
-            <Trans>Collateral backing</Trans>
-          </Text>
+          <Box variant="layout.verticalAlign" mb={3}>
+            <Text mr={2} variant="subtitle">
+              <Trans>Est. Staking APY</Trans>
+            </Text>
+            <Help content="Manually estimated APY base on basket averaged yield, Calculation = [avgCollateralYield * rTokenMarketCap / rsrStaked]" />
+          </Box>
+
           <IconInfo
-            icon={<Image src="/svgs/backing.svg" />}
+            icon={<Image src="/svgs/trendup.svg" />}
             title={t`Current`}
-            text={`${distribution.backing}%`}
+            text={formatPercentage(stakers || 0)}
           />
         </Box>
         <Box p={4} sx={{ borderRight: '1px solid', borderColor: 'border' }}>
+          <Text mr={2} variant="subtitle" mb={3}>
+            <Trans>Unstaking Delay</Trans>
+          </Text>
+
+          <IconInfo
+            icon={<Image src="/svgs/backing.svg" />}
+            title={t`Current`}
+            text={parseDuration(+unstakingDelay || 0)}
+          />
+        </Box>
+        <Box p={4} sx={{ borderBottom: '1px solid', borderColor: 'border' }}>
           <Text variant="subtitle" mb={3}>
             <Trans>Backing + Staked</Trans>
           </Text>
