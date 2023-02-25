@@ -2,6 +2,7 @@ import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import {
   BasketHandlerInterface,
+  ERC20Interface,
   FacadeInterface,
   MainInterface,
   StRSRInterface,
@@ -21,6 +22,8 @@ import {
   rTokenContractsAtom,
   rTokenDistributionAtom,
   rTokenStatusAtom,
+  rTokenTotalSupplyAtom,
+  stRSRSupplyAtom,
 } from 'state/atoms'
 import { promiseMulticall } from 'state/web3/lib/multicall'
 import { getContract, truncateDecimals } from 'utils'
@@ -39,6 +42,8 @@ const RTokenStateUpdater = () => {
   const setExchangeRate = useSetAtom(rsrExchangeRateAtom)
   const setCollateralDist = useSetAtom(rTokenCollateralDist)
   const setBasketNonce = useSetAtom(basketNonceAtom)
+  const setSupply = useSetAtom(rTokenTotalSupplyAtom)
+  const setStaked = useSetAtom(stRSRSupplyAtom)
   const { provider, chainId } = useWeb3React()
   const blockNumber = useBlockNumber()
   const contracts = useAtomValue(rTokenContractsAtom)
@@ -136,17 +141,40 @@ const RTokenStateUpdater = () => {
     []
   )
 
-  const getExchangeRate = useCallback(
-    async (stRSRAddress: string, provider: Web3Provider) => {
+  const getTokenMetrics = useCallback(
+    async (
+      rTokenAddress: string,
+      stRSRAddress: string,
+      provider: Web3Provider
+    ) => {
       try {
-        const contract = getContract(
-          stRSRAddress,
-          StRSRInterface,
-          provider
-        ) as StRsr
-
-        const rate = await contract.exchangeRate()
-        setExchangeRate(+formatEther(rate))
+        const [tokenSupply, stTokenSupply, exchangeRate] =
+          await promiseMulticall(
+            [
+              {
+                abi: ERC20Interface,
+                method: 'totalSupply',
+                args: [],
+                address: rTokenAddress,
+              },
+              {
+                abi: ERC20Interface,
+                method: 'totalSupply',
+                args: [],
+                address: stRSRAddress,
+              },
+              {
+                abi: StRSRInterface,
+                method: 'exchangeRate',
+                args: [],
+                address: stRSRAddress,
+              },
+            ],
+            provider
+          )
+        setSupply(formatEther(tokenSupply))
+        setStaked(formatEther(stTokenSupply))
+        setExchangeRate(+formatEther(exchangeRate))
       } catch (e) {
         console.error('Error fetching exchange rate', e)
       }
@@ -158,7 +186,7 @@ const RTokenStateUpdater = () => {
     if (provider && blockNumber && rToken?.main && chainId === CHAIN_ID) {
       getTokenStatus(rToken.main, provider)
       if (rToken.stToken?.address) {
-        getExchangeRate(rToken.stToken.address, provider)
+        getTokenMetrics(rToken.address, rToken.stToken.address, provider)
       }
     }
   }, [rToken?.main, blockNumber])

@@ -4194,6 +4194,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/humanize-duration@npm:^3.27.1":
+  version: 3.27.1
+  resolution: "@types/humanize-duration@npm:3.27.1"
+  checksum: d3d69b64918d0cee4aa69580dd04d1b96e3385645d398e27b1535f8c6d0252b0235defb16619379a6196c6bbdfc7b6032f010b25cac44903a32b09db8aa06f30
+  languageName: node
+  linkType: hard
+
 "@types/istanbul-lib-coverage@npm:*, @types/istanbul-lib-coverage@npm:^2.0.0, @types/istanbul-lib-coverage@npm:^2.0.1":
   version: 2.0.4
   resolution: "@types/istanbul-lib-coverage@npm:2.0.4"
@@ -10298,6 +10305,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"humanize-duration@npm:^3.28.0":
+  version: 3.28.0
+  resolution: "humanize-duration@npm:3.28.0"
+  checksum: dde595ab4729d82147db41d8ca0afa86bf3f20d74cd1323ea52f299091a4f1dcb2a45b2d27ce78ab9bb0d9e66d8eb8f2628a67be36a535af645eb282a963ff7f
+  languageName: node
+  linkType: hard
+
 "humanize-ms@npm:^1.2.1":
   version: 1.2.1
   resolution: "humanize-ms@npm:1.2.1"
@@ -16355,6 +16369,7 @@ __metadata:
     "@testing-library/react": ^13.0.0
     "@testing-library/user-event": ^14.0.4
     "@typechain/ethers-v5": 10.1.0
+    "@types/humanize-duration": ^3.27.1
     "@types/jest": ^27.4.1
     "@types/node": ^17.0.23
     "@types/react": 18.0.0
@@ -16379,6 +16394,7 @@ __metadata:
     fast-memoize: ^2.5.2
     graphql: ^16.6.0
     graphql-request: ^5.1.0
+    humanize-duration: ^3.28.0
     i18next-browser-languagedetector: ^6.1.2
     jotai: ^1.12.0
     make-plural: ^7.1.0
