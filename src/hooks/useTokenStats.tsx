@@ -89,7 +89,6 @@ const useTokenStats = (rTokenId: string, isRSV = false): TokenStats => {
           (tokenData.dailyTransferCount =
             tokenData.dailyTransferCount + rpayOverview.dayTxCount)
       }
-
       setStats(tokenData)
     }
   }, [JSON.stringify(data), rTokenPrice, rpayOverview])
