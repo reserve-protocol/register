@@ -72,7 +72,7 @@ const PriceChart = (props: BoxProps) => {
   return (
     <AreaChart
       heading={t`Price`}
-      title={`$${formatCurrency(price)}`}
+      title={`$${formatCurrency(price, 3)}`}
       data={rows}
       timeRange={TIME_RANGES}
       currentRange={current}
