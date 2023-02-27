@@ -5,6 +5,7 @@ import {
 } from 'components/rtoken-setup/atoms'
 import Layout from 'components/rtoken-setup/Layout'
 import useRToken from 'hooks/useRToken'
+import { useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -28,10 +29,13 @@ const Deploy = () => {
   const resetBasket = useResetAtom(basketAtom)
   const resetBackup = useResetAtom(backupCollateralAtom)
   const resetRevenueSplit = useResetAtom(revenueSplitAtom)
+  const setRevenueSplit = useSetAtom(revenueSplitAtom)
   const resetGovId = useResetAtom(governanceIdAtom)
   const resetDeployId = useResetAtom(deployIdAtom)
 
   useEffect(() => {
+    setRevenueSplit({ holders: '60', stakers: '40', external: [] })
+
     return () => {
       resetBackup()
       resetBasket()

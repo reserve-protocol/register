@@ -105,8 +105,8 @@ export const rTokenGovernanceAtom = atomWithReset<{
 export const rTokenBasketAtom = atomWithReset<Basket>({})
 export const rTokenBackupAtom = atomWithReset<BackupBasket>({})
 export const rTokenRevenueSplitAtom = atomWithReset<RevenueSplit>({
-  holders: '60', // %
-  stakers: '40', // %
+  holders: '0', // %
+  stakers: '0', // %
   external: [],
 })
 
