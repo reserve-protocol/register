@@ -4,9 +4,9 @@ import { formatEther } from 'ethers/lib/utils'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import useTimeFrom from 'hooks/useTimeFrom'
-import { useAtomValue } from 'jotai'
-import { useMemo } from 'react'
-import { rpayOverviewAtom } from 'state/atoms'
+import { useAtom, useAtomValue } from 'jotai'
+import { useEffect } from 'react'
+import { rpayOverviewAtom, rTokenMetricsAtom } from 'state/atoms'
 import { Box, BoxProps, Grid, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { PROTOCOL_SLUG, TIME_RANGES } from 'utils/constants'
@@ -78,8 +78,9 @@ const TokenStats = (props: BoxProps) => {
     { refreshInterval: 10000 }
   )
   const rpayOverview = useAtomValue(rpayOverviewAtom)
+  const [metrics, setMetrics] = useAtom(rTokenMetricsAtom)
 
-  const metrics = useMemo(() => {
+  useEffect(() => {
     if (data) {
       const rsvMarket =
         +formatEther(data.token?.totalSupply || '0') *
@@ -89,7 +90,7 @@ const TokenStats = (props: BoxProps) => {
           (+data.token?.lastPriceUSD || 0) +
         rpayOverview.volume
 
-      return {
+      setMetrics({
         totalValueLockedUSD: `$${formatCurrency(
           (+data.protocol?.totalValueLockedUSD || 0) + rsvMarket
         )}`,
@@ -119,10 +120,8 @@ const TokenStats = (props: BoxProps) => {
           rpayOverview.dayVolume +
             (+data.financialsDailySnapshots[0]?.dailyVolumeUSD || 0)
         )}`,
-      }
+      })
     }
-
-    return defaultProtocolMetrics
   }, [data, rpayOverview.txCount])
 
   return (

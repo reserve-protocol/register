@@ -247,6 +247,16 @@ export const estimatedApyAtom = atom((get) => {
 
   return apys
 })
+export const rTokenMetricsAtom = atom({
+  totalValueLockedUSD: '$0',
+  totalRTokenUSD: '$0',
+  cumulativeVolumeUSD: '$0',
+  cumulativeRTokenRevenueUSD: '$0',
+  cumulativeStakingRevenueUSD: '$0',
+  transactionCount: '0',
+  dailyTransactionCount: '0',
+  dailyVolume: '$0',
+})
 
 /**
  * #################
@@ -259,6 +269,9 @@ export const walletAtom = atom('')
 
 // Tracks rToken/collaterals/stRSR/RSR balances for a connected account
 export const balancesAtom = atom<{ [x: string]: number }>({})
+
+// TODO: Temporary
+export const rawBalancesAtom = atom<{ [x: string]: BigNumber }>({})
 
 // Get balance for current rToken for the selected account
 export const rTokenBalanceAtom = atom((get) => {
