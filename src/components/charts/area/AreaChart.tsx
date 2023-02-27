@@ -9,6 +9,7 @@ import {
 } from 'recharts'
 import { Badge, Box, BoxProps, Card, Flex, Spinner, Text } from 'theme-ui'
 import { StringMap } from 'types'
+import { formatCurrency } from 'utils'
 
 interface Props extends BoxProps {
   data: { value: number; label?: string; display?: string }[]
@@ -47,7 +48,7 @@ const AreaChart = ({
 }: Props) => {
   const gain = useMemo(() => {
     if (data && data.length > 1) {
-      return Math.floor(
+      return formatCurrency(
         ((data[data.length - 1].value - data[0].value) / (data[0].value || 1)) *
           100
       )
