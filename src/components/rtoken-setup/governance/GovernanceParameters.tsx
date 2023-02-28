@@ -1,10 +1,21 @@
 import { t, Trans } from '@lingui/macro'
 import { FormField } from 'components/field'
+import { useFormContext } from 'react-hook-form'
 import { Box, BoxProps, Text } from 'theme-ui'
-import { decimalPattern, numberPattern } from 'utils'
+import { decimalPattern, numberPattern, parseDuration } from 'utils'
 
 // TODO: Move block to hours
 const GovernanceParameters = (props: BoxProps) => {
+  const { watch } = useFormContext()
+  const [votingDelay, votingPeriod, minDelay] = watch([
+    'votingDelay',
+    'votingPeriod',
+    'minDelay',
+  ])
+  const votingDelayHelper = parseDuration(Number(votingDelay) || 0 * 12)
+  const votingPeriodHelper = parseDuration(Number(votingPeriod) || 0 * 12)
+  const minDelayHelper = parseDuration((Number(minDelay) || 0) * 60 * 60)
+
   return (
     <Box {...props}>
       <Text variant="title" mb={4}>
@@ -13,6 +24,7 @@ const GovernanceParameters = (props: BoxProps) => {
       <FormField
         label={t`Snapshot delay (blocks)`}
         placeholder={t`Input number of blocks`}
+        helper={votingDelayHelper}
         help={t`Delay (in number of blocks) since the proposal is submitted until voting power is fixed and voting starts. This can be used to enforce a delay after a proposal is published for users to buy tokens, or delegate their votes.`}
         mb={3}
         name="votingDelay"
@@ -26,6 +38,7 @@ const GovernanceParameters = (props: BoxProps) => {
       <FormField
         label={t`Voting period (blocks)`}
         placeholder={t`Input number of blocks`}
+        helper={votingPeriodHelper}
         help={t`Delay (in number of blocks) since the proposal starts until voting ends.`}
         mb={4}
         name="votingPeriod"
@@ -39,6 +52,7 @@ const GovernanceParameters = (props: BoxProps) => {
       <FormField
         label={t`Proposal execution delay (hours)`}
         placeholder={t`Input delay in hours`}
+        helper={minDelayHelper}
         help={t`The minimum amount of time after a proposal passes before it can be executed.`}
         mb={3}
         name="minDelay"

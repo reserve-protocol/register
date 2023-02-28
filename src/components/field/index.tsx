@@ -1,8 +1,6 @@
 import { t } from '@lingui/macro'
-import React from 'react'
-import { useMemo } from 'react'
-import { HelpCircle } from 'react-feather'
 import Help from 'components/help'
+import React, { useMemo } from 'react'
 import { RegisterOptions, useFormContext } from 'react-hook-form'
 import { Box, Flex, Input, InputProps, Slider, Text, Textarea } from 'theme-ui'
 import { StringMap } from 'types'
@@ -18,6 +16,7 @@ interface FormFieldProps extends FieldProps {
   textarea?: boolean
   error?: string | boolean
   options?: RegisterOptions
+  helper?: string
 }
 
 export const getErrorMessage = (error: StringMap): string => {
@@ -35,8 +34,14 @@ export const getErrorMessage = (error: StringMap): string => {
   }
 }
 
-export const Field = ({ label, help, children, ...props }: FieldProps) => (
-  <Box {...props}>
+export const Field = ({
+  label,
+  help,
+  children,
+  sx = {},
+  ...props
+}: FieldProps) => (
+  <Box sx={{ ...sx, position: 'relative' }} {...props}>
     <Flex mb={2} sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
       <Text variant="subtitle" ml={3} sx={{ fontSize: 1 }}>
         {label}
@@ -80,6 +85,7 @@ export const FormField = ({
   options,
   textarea = false,
   disabled,
+  helper,
   ...props
 }: FormFieldProps) => {
   const {
@@ -104,9 +110,22 @@ export const FormField = ({
           error={errorMessage}
           {...register(name, options)}
         />
+        {helper && (
+          <Text
+            variant="legend"
+            sx={{
+              position: 'absolute',
+              right: '20px',
+              bottom: '14px',
+              fontSize: 1,
+            }}
+          >
+            {helper}
+          </Text>
+        )}
       </Field>
     ),
-    [register, errors[name], fieldState]
+    [register, errors[name], helper, fieldState]
   )
 }
 
