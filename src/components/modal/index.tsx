@@ -32,6 +32,7 @@ const StyledDialog = styled((props: any) => <Dialog {...props} />)`
       width: 100%;
       max-width: 52em !important;
       transform: none;
+      border-radius: 0;
     }
   }
 `
