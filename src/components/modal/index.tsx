@@ -24,6 +24,15 @@ const StyledDialog = styled((props: any) => <Dialog {...props} />)`
     top: 50%;
     margin: 0;
     transform: translate(-50%, -50%);
+    @media (max-width: 52em) {
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      max-width: 52em !important;
+      transform: none;
+    }
   }
 `
 const Overlay = styled((props: any) => <DialogOverlay {...props} />)`
