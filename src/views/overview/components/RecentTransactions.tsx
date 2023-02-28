@@ -45,7 +45,9 @@ const RecentTransactions = () => {
       bordered
       compact
       maxHeight={809}
-      help={t`Recent on-chain transactions`}
+      help={`${
+        rToken?.symbol || ''
+      } related ${t`recent on-chain transactions`}`}
       title={t`Transactions`}
       data={txs}
       external={false}

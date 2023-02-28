@@ -65,14 +65,13 @@ export const smallButton = {
   borderRadius: 6,
 }
 
-
 export const colors = {
   boldText: '#292929',
   text: '#292929',
   secondaryText: '#666666',
   lightText: '#808080',
   background: 'white',
-  secondaryBackground: 'background',
+  secondaryBackground: 'white',
   lightBackground: '#F2F2F2',
   contentBackground: '#F9F8F4',
   contentLightBackground: 'rgba(255, 255, 255, 0.5)',
