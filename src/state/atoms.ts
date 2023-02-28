@@ -193,7 +193,7 @@ export const blockTimestampAtom = atom<number>(0)
  */
 
 // 30 day avg apy taken from https://defillama.com/yields?token=USDT&token=CUSDT&token=USDC&token=CUSDC&token=DAI&token=BUSD&token=USDP&token=WBTC&token=ETH&project=aave-v2&project=compound&chain=Ethereum
-const collateralYieldAtom = atom<{ [x: string]: number }>({
+export const collateralYieldAtom = atom<{ [x: string]: number }>({
   sadai: 1.61,
   sausdc: 1.94,
   sausdt: 2.98,
@@ -271,9 +271,6 @@ export const walletAtom = atom('')
 
 // Tracks rToken/collaterals/stRSR/RSR balances for a connected account
 export const balancesAtom = atom<{ [x: string]: number }>({})
-
-// TODO: Temporary
-export const rawBalancesAtom = atom<{ [x: string]: BigNumber }>({})
 
 // Get balance for current rToken for the selected account
 export const rTokenBalanceAtom = atom((get) => {

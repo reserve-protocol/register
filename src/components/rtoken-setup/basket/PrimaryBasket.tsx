@@ -4,9 +4,11 @@ import DocsLink from 'components/docs-link/DocsLink'
 import Help from 'components/help'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { useAtomValue } from 'jotai'
+import { useCallback } from 'react'
+import { collateralYieldAtom } from 'state/atoms'
 import { Box, BoxProps, Divider, Flex, Text } from 'theme-ui'
-import { truncateDecimals } from 'utils'
-import { Basket, basketAtom } from '../atoms'
+import { formatPercentage, truncateDecimals } from 'utils'
+import { Basket, basketAtom, Collateral } from '../atoms'
 import UnitBasket from './UnitBasket'
 
 interface Props extends BoxProps {
@@ -60,11 +62,28 @@ const PrimaryBasket = ({
 }: Props) => {
   const basket = useAtomValue(basketAtom)
   const units = Object.keys(basket)
+  const collateralYield = useAtomValue(collateralYieldAtom)
+
+  const getEstApy = useCallback(() => {
+    return Object.keys(basket).reduce((prev, current) => {
+      const currentBasket = basket[current]
+
+      for (let i = 0; i < currentBasket.collaterals.length; i++) {
+        prev +=
+          (collateralYield[currentBasket.collaterals[i].symbol.toLowerCase()] ||
+            0) * (+currentBasket.distribution[i] / 100 || 0)
+      }
+
+      return prev
+    }, 0)
+  }, [collateralYield, basket])
 
   return (
     <Box {...props}>
       <Flex variant="layout.verticalAlign">
-        <Text variant="sectionTitle">Primary Basket</Text>
+        <Text variant="sectionTitle">
+          <Trans>Primary Basket</Trans>
+        </Text>
         <DocsLink link="https://reserve.org/protocol/monetary_units_baskets/#baskets" />
         {!readOnly && (
           <SmallButton
@@ -95,6 +114,10 @@ const PrimaryBasket = ({
               <Text variant="title">
                 {!!units.length ? getBasketComposition(basket) : '--'}
               </Text>
+              <Text variant="legend" mt={2}>
+                <Trans>Estimated basket APY</Trans> =
+              </Text>
+              <Text variant="title">{formatPercentage(getEstApy())}</Text>
             </Flex>
             <Help
               ml={2}

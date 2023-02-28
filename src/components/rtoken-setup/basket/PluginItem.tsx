@@ -1,8 +1,10 @@
 import { Trans } from '@lingui/macro'
 import GoTo from 'components/button/GoTo'
 import TokenLogo from 'components/icons/TokenLogo'
+import { useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
+import { collateralYieldAtom } from 'state/atoms'
 import {
   Box,
   BoxProps,
@@ -14,6 +16,7 @@ import {
   Text,
 } from 'theme-ui'
 import { CollateralPlugin } from 'types'
+import { formatPercentage } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { Collateral } from '../atoms'
 
@@ -66,6 +69,7 @@ const PluginInfo = ({ data }: { data: CollateralPlugin }) => (
  */
 const PluginItem = ({ data, onCheck, selected, ...props }: PluginItemProps) => {
   const [isVisible, setVisible] = useState(false)
+  const collateralYields = useAtomValue(collateralYieldAtom)
 
   return (
     <Box {...props}>
@@ -81,12 +85,8 @@ const PluginItem = ({ data, onCheck, selected, ...props }: PluginItemProps) => {
           </Box>
 
           <Text sx={{ fontSize: 1, display: 'block' }} variant="legend">
-            <Trans>Target:</Trans> {data.targetUnit}{' '}
-            {!!data.custom && (
-              <>
-                | <Trans>Custom</Trans>
-              </>
-            )}
+            <Trans>Target:</Trans> {data.targetUnit} | <Trans>Est. APY:</Trans>{' '}
+            {formatPercentage(collateralYields[data.symbol.toLowerCase()] || 0)}
           </Text>
         </Box>
         <Box mx="auto" />
