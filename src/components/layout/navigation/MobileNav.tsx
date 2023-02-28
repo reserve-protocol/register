@@ -1,4 +1,6 @@
+import GovernanceIcon from 'components/icons/GovernanceIcon'
 import IssuanceIcon from 'components/icons/IssuanceIcon'
+import ManagerIcon from 'components/icons/ManagerIcon'
 import OverviewIcon from 'components/icons/OverviewIcon'
 import StakeIcon from 'components/icons/StakeIcon'
 import useIsSidebarVisible from 'hooks/useIsSidebarVisible'
@@ -14,6 +16,11 @@ const items = [
   { path: ROUTES.OVERVIEW, Icon: OverviewIcon },
   { path: ROUTES.ISSUANCE, Icon: IssuanceIcon },
   { path: ROUTES.STAKING, Icon: StakeIcon },
+  { path: ROUTES.GOVERNANCE, Icon: GovernanceIcon },
+  {
+    path: ROUTES.SETTINGS,
+    Icon: ManagerIcon,
+  },
 ]
 
 const MobileNav = () => {
@@ -57,6 +64,9 @@ const MobileNav = () => {
               : 'none',
           })}
           key={path}
+          onClick={() =>
+            document.getElementById('app-container')?.scrollTo(0, 0)
+          }
           to={`${path}?token=${address}`}
         >
           <Icon />

@@ -214,6 +214,7 @@ export const rTokenPriceAtom = atom(0)
 export const rsrExchangeRateAtom = atom(1)
 export const rTokenTotalSupplyAtom = atom('')
 export const stRSRSupplyAtom = atom('')
+
 export const estimatedApyAtom = atom((get) => {
   const rToken = get(rTokenAtom)
   const supply = +get(rTokenTotalSupplyAtom) || 0
@@ -247,6 +248,7 @@ export const estimatedApyAtom = atom((get) => {
 
   return apys
 })
+
 export const rTokenMetricsAtom = atom({
   totalValueLockedUSD: '$0',
   totalRTokenUSD: '$0',

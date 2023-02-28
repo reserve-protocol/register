@@ -3,7 +3,7 @@ import { InfoItem } from 'components/info-box'
 import { useAtomValue } from 'jotai'
 import { rTokenGovernanceAtom } from 'state/atoms'
 import { BoxProps, Card, Text, Divider } from 'theme-ui'
-import { parseDuration, shortenAddress } from 'utils'
+import { formatPercentage, parseDuration, shortenAddress } from 'utils'
 
 /**
  * View: Settings > Display RToken governance configuration
@@ -35,13 +35,13 @@ const GovernanceInfo = (props: BoxProps) => {
             mb={3}
           />
           <InfoItem
-            title={t`Proposal Threshold (%)`}
-            subtitle={governance.proposalThreshold}
+            title={t`Proposal Threshold`}
+            subtitle={formatPercentage(+(governance.proposalThreshold || 0))}
             mb={3}
           />
           <InfoItem
-            title={t`Quorum (%)`}
-            subtitle={governance.quorumNumerator}
+            title={t`Quorum`}
+            subtitle={formatPercentage(+(governance.quorumNumerator || 0))}
             mb={3}
           />
           <InfoItem

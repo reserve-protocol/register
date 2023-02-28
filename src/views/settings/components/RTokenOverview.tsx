@@ -32,7 +32,7 @@ const RTokenOverview = () => (
     <SectionWrapper navigationIndex={6} mt={4}>
       <GovernanceInfo />
     </SectionWrapper>
-    <SectionWrapper navigationIndex={7} mt={4} mb={7}>
+    <SectionWrapper navigationIndex={7} mt={4} mb={[0, 7]}>
       <ContractsInfo />
     </SectionWrapper>
   </Box>

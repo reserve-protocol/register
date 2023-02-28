@@ -29,6 +29,12 @@ const BasicInfo = () => {
         mb={3}
       />
       <InfoItem
+        title={rToken?.stToken?.name || 'stRSR'}
+        subtitle={shortenAddress(rToken?.address ?? '')}
+        address={rToken?.address}
+        mb={3}
+      />
+      <InfoItem
         title={t`Owner Address`}
         subtitle={shortenAddress(timelock ? timelock : governor)}
         address={timelock || governor}
