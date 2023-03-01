@@ -1,5 +1,5 @@
 import { getAddress } from '@ethersproject/address'
-import { formatUnits, parseEther } from '@ethersproject/units'
+import { formatUnits } from '@ethersproject/units'
 import { t } from '@lingui/macro'
 import TextPlaceholder from 'components/placeholder/TextPlaceholder'
 import TransactionModal from 'components/transaction-modal'
@@ -7,7 +7,7 @@ import { useAtomValue } from 'jotai'
 import { useCallback, useMemo, useState } from 'react'
 import { rTokenAtom } from 'state/atoms'
 import { BigNumberMap, ReserveToken, TransactionState } from 'types'
-import { formatCurrency } from 'utils'
+import { formatCurrency, safeParseEther } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { ONE_ETH } from 'utils/numbers'
 import { RSV_MANAGER } from 'utils/rsv'
@@ -29,10 +29,7 @@ const buildApprovalTransactions = (
   allowances: BigNumberMap
 ): TransactionState[] => {
   const transactions = data.collaterals.reduce((txs, token) => {
-    // Specific token approvals
     const tokenAmount = quantities[getAddress(token.address)].add(ONE_ETH)
-    // Unlimited approval
-    // const tokenAmount = BigNumber.from(Number.MAX_SAFE_INTEGER)
 
     if (!allowances[getAddress(token.address)].gte(tokenAmount)) {
       return [
@@ -75,7 +72,7 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
         abi: rToken?.isRSV ? 'rsv' : 'rToken',
         address: rToken?.isRSV ? RSV_MANAGER : rToken?.address ?? '',
         method: 'issue',
-        args: [isValid ? parseEther(amount) : 0],
+        args: [isValid ? safeParseEther(amount) : 0],
       },
     }),
     [rToken?.address, amount]

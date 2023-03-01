@@ -148,6 +148,20 @@ export function addressEqual(
   }
 }
 
+// Prevents more than 18 decimals
+export function safeParseEther(value: string): BigNumber {
+  let safeValue = ''
+
+  if (value[0] === '.') {
+    safeValue = `0.${value.substring(1, 19) || 0}`
+  } else {
+    const split = value.split('.')
+    safeValue = `${split[0]}.${split[1]?.substring(0, 18) ?? '0'}`
+  }
+
+  return parseEther(safeValue)
+}
+
 export function formatCurrency(value: number, decimals = 2): string {
   return Intl.NumberFormat('en-US', { maximumFractionDigits: decimals }).format(
     value

@@ -1,6 +1,6 @@
 import { BigNumber } from 'ethers'
-import { parseEther } from 'ethers/lib/utils'
 import { atom } from 'jotai'
+import { safeParseEther } from 'utils'
 import { BI_ZERO } from 'utils/constants'
 import { rsrBalanceAtom, stRsrBalanceAtom } from './../../state/atoms'
 
@@ -11,14 +11,14 @@ export const stakeAmountAtom = atom('')
 export const unStakeAmountAtom = atom('')
 export const isValidStakeAmountAtom = atom((get) => {
   return isValid(
-    parseEther(get(stakeAmountAtom) || '0'),
+    safeParseEther(get(stakeAmountAtom) || '0'),
     get(rsrBalanceAtom).value
   )
 })
 
 export const isValidUnstakeAmountAtom = atom((get) => {
   return isValid(
-    parseEther(get(unStakeAmountAtom) || '0'),
+    safeParseEther(get(unStakeAmountAtom) || '0'),
     get(stRsrBalanceAtom).value
   )
 })

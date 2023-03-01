@@ -1,6 +1,5 @@
 import { getAddress } from '@ethersproject/address'
 import { BigNumber } from '@ethersproject/bignumber'
-import { parseEther } from '@ethersproject/units'
 import { t } from '@lingui/macro'
 import { Facade } from 'abis/types'
 import TransactionModal from 'components/transaction-modal'
@@ -10,7 +9,7 @@ import { atom, useAtom, useAtomValue } from 'jotai'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { basketNonceAtom, rTokenAtom } from 'state/atoms'
 import { BigNumberMap } from 'types'
-import { formatCurrency } from 'utils'
+import { formatCurrency, safeParseEther } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { quote, RSV_MANAGER } from 'utils/rsv'
 import { v4 as uuid } from 'uuid'
@@ -29,7 +28,7 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
     useAtom(redeemCollateralAtom)
   const isValid = useAtomValue(isValidRedeemAmountAtom)
   const facadeContract = useFacadeContract()
-  const parsedAmount = isValid ? parseEther(amount) : BigNumber.from(0)
+  const parsedAmount = isValid ? safeParseEther(amount) : BigNumber.from(0)
   const basketNonce = useAtomValue(basketNonceAtom)
 
   const transaction = useMemo(
@@ -57,7 +56,7 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
   const getQuantities = useCallback(
     async (facade: Facade, rToken: string, value: string) => {
       try {
-        const issueAmount = parseEther(value)
+        const issueAmount = safeParseEther(value)
         const quoteResult = await facade.callStatic.issue(rToken, issueAmount)
 
         setCollateralQuantities(
