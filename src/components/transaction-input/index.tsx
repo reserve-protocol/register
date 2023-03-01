@@ -10,6 +10,7 @@ export interface TransactionInputProps extends BoxProps {
   amountAtom: any
   maxAmount: number
   disabled?: boolean
+  autoFocus?: boolean
 }
 
 const TransactionInput = ({
@@ -19,6 +20,7 @@ const TransactionInput = ({
   maxAmount,
   disabled = false,
   compact = false,
+  autoFocus = false,
   ...props
 }: TransactionInputProps) => {
   const [amount, setAmount] = useAtom(amountAtom)
@@ -49,6 +51,7 @@ const TransactionInput = ({
         placeholder={placeholder}
         value={amount as string}
         onChange={setAmount}
+        autoFocus={autoFocus}
       />
       {!compact && <Flex mt={2}>{maxLabel}</Flex>}
     </Box>

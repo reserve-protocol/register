@@ -93,12 +93,15 @@ const TransactionsTable = ({
         accessor: 'hash',
         Cell: ({ cell }: { cell: any }) =>
           cell.value ? (
-            <Link
-              href={getExplorerLink(cell.value, ExplorerDataType.TRANSACTION)}
-              target="_blank"
-            >
-              {shortenString(cell.value)}
-            </Link>
+            <>
+              <Link
+                href={getExplorerLink(cell.value, ExplorerDataType.TRANSACTION)}
+                target="_blank"
+                sx={{ display: ['none', 'inherit'] }}
+              >
+                {shortenString(cell.value)}
+              </Link>
+            </>
           ) : (
             'RPay'
           ),

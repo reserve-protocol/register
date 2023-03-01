@@ -193,6 +193,7 @@ export const blockTimestampAtom = atom<number>(0)
  */
 
 // 30 day avg apy taken from https://defillama.com/yields?token=USDT&token=CUSDT&token=USDC&token=CUSDC&token=DAI&token=BUSD&token=USDP&token=WBTC&token=ETH&project=aave-v2&project=compound&chain=Ethereum
+// TODO: Fetch this list directly from defillama
 export const collateralYieldAtom = atom<{ [x: string]: number }>({
   sadai: 1.61,
   sausdc: 1.94,
