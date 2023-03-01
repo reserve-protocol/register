@@ -335,7 +335,16 @@ const WrapCollateralModal = ({
       {aavePlugins.map((plugin) => (
         <Box mt={3} key={plugin.address}>
           <Box variant="layout.verticalAlign" mb={2}>
-            <Text ml={3} variant="legend">
+            <Text ml={3} mr={2} variant="legend">
+              {fromUnderlying
+                ? plugin.symbol.substring(2)
+                : plugin.symbol.substring(1)}
+            </Text>
+            <ArrowRight
+              size={14}
+              style={{ position: 'relative', top: '1px' }}
+            />
+            <Text ml={2} variant="legend">
               {plugin.symbol}
             </Text>
             <Text

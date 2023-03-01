@@ -11,9 +11,9 @@ const RoleList = ({ roles }: { roles: string[] }) => {
     <Card>
       {roles.map((address, index) => (
         <Box mt={index ? 2 : 0} variant="layout.verticalAlign" key={address}>
-          <Text>{shortenAddress(address)}</Text>
+          <Text mr={1}>{shortenAddress(address)}</Text>
           <GoTo
-            ml={2}
+            ml="auto"
             href={getExplorerLink(address, ExplorerDataType.ADDRESS)}
           />
         </Box>

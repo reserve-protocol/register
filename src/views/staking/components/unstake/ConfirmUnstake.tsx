@@ -1,9 +1,9 @@
-import { parseEther } from '@ethersproject/units'
 import { t } from '@lingui/macro'
 import TransactionModal from 'components/transaction-modal'
 import { useAtom, useAtomValue } from 'jotai'
 import { useMemo, useState } from 'react'
 import { rTokenAtom } from 'state/atoms'
+import { safeParseEther } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
 import {
@@ -17,7 +17,7 @@ const ConfirmUnstake = ({ onClose }: { onClose: () => void }) => {
   const rToken = useAtomValue(rTokenAtom)
   const [amount, setAmount] = useAtom(unStakeAmountAtom)
   const isValid = useAtomValue(isValidUnstakeAmountAtom)
-  const parsedAmount = isValid ? parseEther(amount) : 0
+  const parsedAmount = isValid ? safeParseEther(amount) : 0
   const transaction = useMemo(
     () => ({
       id: uuid(),

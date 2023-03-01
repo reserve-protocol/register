@@ -2,6 +2,7 @@ import { t } from '@lingui/macro'
 import TransactionInput, {
   TransactionInputProps,
 } from 'components/transaction-input'
+import { formatEther } from 'ethers/lib/utils'
 import { useAtomValue } from 'jotai'
 import { isRTokenDisabledAtom } from 'state/atoms'
 import { issueAmountAtom, maxIssuableAtom } from '../../atoms'
@@ -14,7 +15,7 @@ const IssueInput = (props: Partial<TransactionInputProps>) => {
     <TransactionInput
       placeholder={t`Mint amount`}
       amountAtom={issueAmountAtom}
-      maxAmount={issuableAmount}
+      maxAmount={formatEther(issuableAmount)}
       disabled={isTokenDisabled}
       {...props}
     />

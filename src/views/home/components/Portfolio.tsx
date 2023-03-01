@@ -104,7 +104,7 @@ const Portfolio = (props: BoxProps) => {
       </Box>
       {rTokens?.length > 0 && (
         <Box mt={5}>
-          <Text pl={3} variant="sectionTitle">
+          <Text pl={3} variant="title">
             <Trans>Your RTokens</Trans>
           </Text>
           <Table
@@ -117,7 +117,7 @@ const Portfolio = (props: BoxProps) => {
       )}
       {stTokens?.length > 0 && (
         <Box mt={5}>
-          <Text pl={3} variant="sectionTitle">
+          <Text pl={3} variant="title">
             <Trans>Your staked RSR positions</Trans>
           </Text>
           <Table

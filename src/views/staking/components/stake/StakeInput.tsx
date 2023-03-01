@@ -14,7 +14,7 @@ const StakeInput = (props: Partial<TransactionInputProps>) => {
       title={t`Stake`}
       placeholder={t`RSR amount`}
       amountAtom={stakeAmountAtom}
-      maxAmount={max}
+      maxAmount={max.balance}
       {...props}
     />
   )

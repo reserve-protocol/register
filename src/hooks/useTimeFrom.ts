@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { blockTimestampAtom } from 'state/atoms'
@@ -7,7 +8,7 @@ const useTimeFrom = (range = TIME_RANGES.DAY): number => {
   const timestamp = useAtomValue(blockTimestampAtom)
 
   return useMemo(() => {
-    return timestamp - TIME_RANGE_VALUE[range] || 0
+    return (timestamp || dayjs().unix()) - TIME_RANGE_VALUE[range] || 0
   }, [!!timestamp, range])
 }
 

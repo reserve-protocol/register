@@ -1,8 +1,6 @@
-import { formatEther } from '@ethersproject/units'
 import { Facade } from 'abis/types'
 import { useFacadeContract } from 'hooks/useContract'
-import { useAtomValue } from 'jotai'
-import { useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import {
   balancesAtom,
@@ -11,6 +9,7 @@ import {
   rTokenAtom,
   walletAtom,
 } from 'state/atoms'
+import { BI_ZERO } from 'utils/constants'
 import { getIssuable } from 'utils/rsv'
 import { maxIssuableAtom } from 'views/issuance/atoms'
 
@@ -34,10 +33,10 @@ const MaxIssuableUpdater = () => {
           rTokenAddress,
           account
         )
-        setMaxIssuable(maxIssuable ? Number(formatEther(maxIssuable)) : 0)
+        setMaxIssuable(maxIssuable ? maxIssuable : BI_ZERO)
       } catch (e) {
-        setMaxIssuable(0)
-        console.error('error with max issuable', e)
+        setMaxIssuable(BI_ZERO)
+        console.error('Error fetching MAX_ISSUABLE', e)
       }
     },
     []
@@ -48,7 +47,7 @@ const MaxIssuableUpdater = () => {
     if (rToken && rToken.isRSV) {
       setMaxIssuable(getIssuable(rToken, tokenBalances))
     }
-  }, [JSON.stringify(tokenBalances), rToken?.address, chainId])
+  }, [tokenBalances, rToken?.address, chainId])
 
   useEffect(() => {
     if (
@@ -60,14 +59,14 @@ const MaxIssuableUpdater = () => {
     ) {
       updateMaxIssuable(account, rToken.address, facadeContract)
     } else if (!rToken?.isRSV) {
-      setMaxIssuable(0)
+      setMaxIssuable(BI_ZERO)
     }
   }, [
     rToken?.address,
     account,
     facadeContract,
     isRTokenDisabledAtom,
-    JSON.stringify(tokenBalances),
+    tokenBalances,
   ])
 
   return null

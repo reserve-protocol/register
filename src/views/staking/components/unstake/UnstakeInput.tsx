@@ -14,7 +14,7 @@ const UnstakeInput = (props: Partial<TransactionInputProps>) => {
       title={t`Unstake`}
       placeholder={t`stRSR amount`}
       amountAtom={unStakeAmountAtom}
-      maxAmount={max}
+      maxAmount={max.balance}
       {...props}
     />
   )

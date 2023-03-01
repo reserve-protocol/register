@@ -95,13 +95,13 @@ const CollateralModal = ({
   return (
     <Modal
       title={t`Collateral Plugins`}
-      style={{ width: 480 }}
+      style={{ maxWidth: 480 }}
       onClose={onClose}
       {...props}
     >
       <Box
         sx={{
-          maxHeight: 370,
+          maxHeight: ['calc(100% - 128px)', 370],
           overflow: 'auto',
           position: 'relative',
         }}

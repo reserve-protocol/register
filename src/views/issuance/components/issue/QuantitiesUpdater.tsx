@@ -1,5 +1,4 @@
 import { getAddress } from '@ethersproject/address'
-import { parseEther } from '@ethersproject/units'
 import { t } from '@lingui/macro'
 import { useFacadeContract } from 'hooks/useContract'
 import useDebounce from 'hooks/useDebounce'
@@ -8,6 +7,7 @@ import { useCallback, useEffect } from 'react'
 import { rTokenAtom } from 'state/atoms'
 import { error } from 'state/web3/lib/notifications'
 import { BigNumberMap } from 'types'
+import { safeParseEther } from 'utils'
 import { quote } from 'utils/rsv'
 
 /**
@@ -29,7 +29,7 @@ const QuantitiesUpdater = ({
       try {
         onChange({})
         if (facadeContract && rToken && Number(value) > 0) {
-          const issueAmount = parseEther(value)
+          const issueAmount = safeParseEther(value)
           const quoteResult = await facadeContract.callStatic.issue(
             rToken.address,
             issueAmount
@@ -62,7 +62,7 @@ const QuantitiesUpdater = ({
   useEffect(() => {
     if (rToken?.isRSV) {
       if (Number(amount) > 0) {
-        onChange(quote(+amount))
+        onChange(quote(amount))
       } else {
         onChange({})
       }

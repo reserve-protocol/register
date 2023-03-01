@@ -9,6 +9,7 @@ import { atomWithReset, atomWithStorage, createJSONStorage } from 'jotai/utils'
 import {
   AccountPosition,
   AccountToken,
+  BalanceMap,
   MulticallState,
   RawCall,
   ReserveToken,
@@ -193,6 +194,7 @@ export const blockTimestampAtom = atom<number>(0)
  */
 
 // 30 day avg apy taken from https://defillama.com/yields?token=USDT&token=CUSDT&token=USDC&token=CUSDC&token=DAI&token=BUSD&token=USDP&token=WBTC&token=ETH&project=aave-v2&project=compound&chain=Ethereum
+// TODO: Fetch this list directly from defillama
 export const collateralYieldAtom = atom<{ [x: string]: number }>({
   sadai: 1.61,
   sausdc: 1.94,
@@ -269,8 +271,14 @@ export const rTokenMetricsAtom = atom({
 // Tracks current connected address
 export const walletAtom = atom('')
 
+const defaultBalance = {
+  value: BigNumber.from(0),
+  decimals: 18,
+  balance: '0',
+}
+
 // Tracks rToken/collaterals/stRSR/RSR balances for a connected account
-export const balancesAtom = atom<{ [x: string]: number }>({})
+export const balancesAtom = atom<BalanceMap>({})
 
 // Get balance for current rToken for the selected account
 export const rTokenBalanceAtom = atom((get) => {
@@ -280,21 +288,21 @@ export const rTokenBalanceAtom = atom((get) => {
     return get(balancesAtom)[rToken.address]
   }
 
-  return 0
+  return defaultBalance
 })
 
 export const stRsrBalanceAtom = atom((get) => {
   const stRSR = get(rTokenAtom)?.stToken?.address
 
   if (stRSR) {
-    return get(balancesAtom)[stRSR] || 0
+    return get(balancesAtom)[stRSR] || defaultBalance
   }
 
-  return 0
+  return defaultBalance
 })
 
 export const rsrBalanceAtom = atom((get) => {
-  return get(balancesAtom)[RSR.address] || 0
+  return get(balancesAtom)[RSR.address] || defaultBalance
 })
 
 // Tracks allowance for stRSR/RSR and Collaterals/rToken

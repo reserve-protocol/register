@@ -8,6 +8,7 @@ Enabling users to:
 - View/use existing RTokens and related metrics
 - Mint/Issue RTokens (RSV included)
 - Stake/Unstake to get yield with an RToken
+- Govern and manage RTokens
 
 ## Getting started
 
