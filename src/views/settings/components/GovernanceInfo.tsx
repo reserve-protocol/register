@@ -10,6 +10,8 @@ import { formatPercentage, parseDuration, shortenAddress } from 'utils'
  */
 const GovernanceInfo = (props: BoxProps) => {
   const governance = useAtomValue(rTokenGovernanceAtom)
+  const votingPeriod = (Number(governance.votingPeriod) || 0) * 12
+  const snapshotDelay = (Number(governance.votingDelay) || 0) * 12
 
   return (
     <Card p={4} {...props}>
@@ -21,17 +23,17 @@ const GovernanceInfo = (props: BoxProps) => {
       {!!governance.timelock && (
         <>
           <InfoItem
-            title={t`Voting Delay`}
-            subtitle={`${parseDuration(
-              Number(governance.votingDelay) || 0 * 12
-            )} (${governance.votingDelay} blocks)`}
+            title={t`Snapshot Delay`}
+            subtitle={`${parseDuration(snapshotDelay)} (${
+              governance.votingDelay
+            } blocks)`}
             mb={3}
           />
           <InfoItem
             title={t`Voting Period`}
-            subtitle={`${parseDuration(
-              Number(governance.votingPeriod) || 0 * 12
-            )} (${governance.votingPeriod} blocks)`}
+            subtitle={`${parseDuration(votingPeriod)} (${
+              governance.votingPeriod
+            } blocks)`}
             mb={3}
           />
           <InfoItem
