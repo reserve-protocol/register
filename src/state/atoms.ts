@@ -9,6 +9,7 @@ import { atomWithReset, atomWithStorage, createJSONStorage } from 'jotai/utils'
 import {
   AccountPosition,
   AccountToken,
+  BalanceMap,
   MulticallState,
   RawCall,
   ReserveToken,
@@ -270,8 +271,14 @@ export const rTokenMetricsAtom = atom({
 // Tracks current connected address
 export const walletAtom = atom('')
 
+const defaultBalance = {
+  value: BigNumber.from(0),
+  decimals: 18,
+  balance: '0',
+}
+
 // Tracks rToken/collaterals/stRSR/RSR balances for a connected account
-export const balancesAtom = atom<{ [x: string]: number }>({})
+export const balancesAtom = atom<BalanceMap>({})
 
 // Get balance for current rToken for the selected account
 export const rTokenBalanceAtom = atom((get) => {
@@ -281,21 +288,21 @@ export const rTokenBalanceAtom = atom((get) => {
     return get(balancesAtom)[rToken.address]
   }
 
-  return 0
+  return defaultBalance
 })
 
 export const stRsrBalanceAtom = atom((get) => {
   const stRSR = get(rTokenAtom)?.stToken?.address
 
   if (stRSR) {
-    return get(balancesAtom)[stRSR] || 0
+    return get(balancesAtom)[stRSR] || defaultBalance
   }
 
-  return 0
+  return defaultBalance
 })
 
 export const rsrBalanceAtom = atom((get) => {
-  return get(balancesAtom)[RSR.address] || 0
+  return get(balancesAtom)[RSR.address] || defaultBalance
 })
 
 // Tracks allowance for stRSR/RSR and Collaterals/rToken

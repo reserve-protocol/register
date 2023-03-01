@@ -21,20 +21,24 @@ const CollateralBalance = ({ token, ...props }: Props) => {
     return (
       <TokenBalance
         symbol={token.symbol}
-        balance={balances[token.address]}
+        balance={+balances[token.address]?.balance ?? '0'}
         {...props}
       />
     )
   }
 
-  const current = +balances[token.address] || 0
+  const current = +balances[token.address]?.balance ?? 0
   const required = +formatUnits(quantities[token.address], token.decimals)
-  const isValid = current && current >= +required
+  const isValid =
+    current && balances[token.address].value.gte(quantities[token.address])
 
   return (
     <Box {...props}>
       <Flex variant="layout.verticalAlign">
-        <TokenBalance symbol={token.symbol} balance={balances[token.address]} />
+        <TokenBalance
+          symbol={token.symbol}
+          balance={+balances[token.address]?.balance ?? ''}
+        />
         <Box ml="auto">
           <Circle
             size={8}

@@ -82,7 +82,7 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
     ) {
       getQuantities(facadeContract, rToken.address, amount)
     } else if (rToken?.isRSV && Number(amount) > 0) {
-      setCollateralQuantities(quote(+amount))
+      setCollateralQuantities(quote(amount))
     } else {
       setCollateralQuantities({})
     }

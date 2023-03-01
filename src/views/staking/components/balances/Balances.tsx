@@ -111,19 +111,19 @@ const StakeBalance = () => {
       <TokenBalance
         symbol={rToken?.stToken?.symbol ?? ''}
         logoSrc="/svgs/strsr.svg"
-        balance={balance}
+        balance={+balance.balance}
       />
       <TokenBalance
         mt={2}
         symbol="RSR Value"
         logoSrc="/svgs/equals.svg"
-        balance={balance * rate}
+        balance={+balance.balance * rate}
       />
       <TokenBalance
         symbol="USD"
         logoSrc="/svgs/equals.svg"
         usd
-        balance={balance * rate * rsrPrice}
+        balance={+balance.balance * rate * rsrPrice}
         mt={2}
       />
     </Box>
@@ -139,12 +139,12 @@ const RSRBalance = () => {
       <Text variant="subtitle" mb={3}>
         <Trans>In Wallet</Trans>
       </Text>
-      <TokenBalance symbol="RSR" balance={balance} />
+      <TokenBalance symbol="RSR" balance={+balance.balance} />
       <TokenBalance
         logoSrc="/svgs/equals.svg"
         symbol="USD"
         usd
-        balance={balance * rsrPrice}
+        balance={+balance.balance * rsrPrice}
         mt={2}
       />
     </Box>

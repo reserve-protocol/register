@@ -8,7 +8,7 @@ export interface TransactionInputProps extends BoxProps {
   placeholder?: string
   compact?: boolean
   amountAtom: any
-  maxAmount: number
+  maxAmount: string
   disabled?: boolean
   autoFocus?: boolean
 }
@@ -27,14 +27,14 @@ const TransactionInput = ({
 
   const maxLabel = (
     <Text
-      onClick={() => setAmount(maxAmount.toString())}
+      onClick={() => setAmount(maxAmount)}
       as="a"
       variant="a"
       sx={{ display: 'block', fontSize: compact ? 1 : 2 }}
       ml={'auto'}
       mr={2}
     >
-      Max: {formatCurrency(maxAmount, 5)}
+      Max: {formatCurrency(+maxAmount, 5)}
     </Text>
   )
 

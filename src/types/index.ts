@@ -10,6 +10,14 @@ export interface StringMap {
   [key: string]: any
 }
 
+export interface BalanceMap {
+  [key: string]: {
+    value: BigNumber
+    decimals: number
+    balance: string
+  }
+}
+
 export interface Proposal {
   id: string
   description: string

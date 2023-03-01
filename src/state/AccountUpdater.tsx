@@ -1,18 +1,20 @@
 import { getAddress } from '@ethersproject/address'
 import { useWeb3React } from '@web3-react/core'
 import { gql } from 'graphql-request'
-import useBlockNumber from 'hooks/useBlockNumber'
 import useQuery from 'hooks/useQuery'
+import useTokensBalance from 'hooks/useTokensBalance'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { AccountPosition, AccountToken } from 'types'
 import { calculateApy } from 'utils'
+
 import RSV from 'utils/rsv'
 import {
   accountHoldingsAtom,
   accountPositionsAtom,
   accountRTokensAtom,
   accountTokensAtom,
+  balancesAtom,
   blockTimestampAtom,
   rsrPriceAtom,
 } from './atoms'
@@ -76,29 +78,25 @@ const accountQuery = gql`
 
 const AccountUpdater = () => {
   const { account } = useWeb3React()
-  const [lastFetched, setLastFetched] = useState(0)
-  const blockNumber = useBlockNumber() ?? 0
+  const balances = useTokensBalance()
   const rsrPrice = useAtomValue(rsrPriceAtom)
   const timestamp = useAtomValue(blockTimestampAtom)
   const fromTime = useMemo(() => {
     return timestamp - 2592000
   }, [!!timestamp])
+  const updateBalances = useSetAtom(balancesAtom)
   const updateTokens = useSetAtom(accountTokensAtom)
   const updatePositions = useSetAtom(accountPositionsAtom)
   const updateHoldings = useSetAtom(accountHoldingsAtom)
   const updateAccountTokens = useSetAtom(accountRTokensAtom)
 
-  // TODO: poll from blockNumber
-  const { data, error, mutate, isValidating } = useQuery(
-    account ? accountQuery : null,
-    {
-      id: account?.toLowerCase(),
-      fromTime,
-      rsvAddress: RSV.address.toLowerCase(),
-    },
-    { refreshInterval: 10000 }
-  )
+  const { data, error } = useQuery(account ? accountQuery : null, {
+    id: account?.toLowerCase(),
+    fromTime,
+    rsvAddress: RSV.address.toLowerCase(),
+  })
 
+  // TODO: Move this code to a independent function outside of component
   useEffect(() => {
     if (data && !error) {
       const tokens: AccountToken[] = []
@@ -192,7 +190,6 @@ const AccountUpdater = () => {
       tokens.sort((a, b) => b.usdAmount - a.usdAmount)
       positions.sort((a, b) => b.usdAmount - a.usdAmount)
 
-      setLastFetched(blockNumber)
       updateTokens(tokens)
       updatePositions(positions)
       updateHoldings(holdings)
@@ -200,12 +197,9 @@ const AccountUpdater = () => {
     }
   }, [data])
 
-  // Update data on new block
   useEffect(() => {
-    if (lastFetched && blockNumber > lastFetched && !isValidating) {
-      mutate()
-    }
-  }, [blockNumber])
+    updateBalances(balances)
+  }, [balances])
 
   return null
 }

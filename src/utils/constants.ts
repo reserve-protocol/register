@@ -1,6 +1,9 @@
+import { BigNumber } from 'ethers'
 import { Token } from 'types'
 import { CHAIN_ID } from 'utils/chains'
 import { RSR_ADDRESS } from './addresses'
+
+export const BI_ZERO = BigNumber.from(0)
 
 // Register transaction status
 export const TRANSACTION_STATUS = {

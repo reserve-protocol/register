@@ -9,12 +9,10 @@ import { useContractCall } from 'hooks/useCall'
 import { useFacadeContract } from 'hooks/useContract'
 import useRTokenPrice from 'hooks/useRTokenPrice'
 import useTokensAllowance from 'hooks/useTokensAllowance'
-import useTokensBalance from 'hooks/useTokensBalance'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import {
   allowanceAtom,
-  balancesAtom,
   chainIdAtom,
   ethPriceAtom,
   gasPriceAtom,
@@ -36,27 +34,6 @@ import RTokenUpdater from './rtoken'
 import TokenUpdater from './TokenUpdater'
 import { promiseMulticall } from './web3/lib/multicall'
 
-// Gets ReserveToken related token addresses and decimals
-const getTokens = (reserveToken: ReserveToken): [string, number][] => {
-  const addresses: [string, number][] = [
-    [reserveToken.address, reserveToken.decimals],
-    [RSR.address, RSR.decimals],
-    ...reserveToken.collaterals.map((token): [string, number] => [
-      token.address,
-      token.decimals,
-    ]),
-  ]
-
-  if (reserveToken.stToken) {
-    addresses.push([
-      reserveToken.stToken.address,
-      reserveToken.stToken.decimals,
-    ])
-  }
-
-  return addresses
-}
-
 const getTokenAllowances = (reserveToken: ReserveToken): [string, string][] => {
   const tokens: [string, string][] = [
     ...reserveToken.collaterals.map((token): [string, string] => [
@@ -76,25 +53,6 @@ const getTokenAllowances = (reserveToken: ReserveToken): [string, string][] => {
   }
 
   return tokens
-}
-
-/**
- * Updates the balances of the current ReserveToken related tokens
- */
-const TokensBalanceUpdater = () => {
-  const account = useAtomValue(walletAtom)
-  const reserveToken = useAtomValue(rTokenAtom)
-  const updateBalances = useSetAtom(balancesAtom)
-  const balances = useTokensBalance(
-    reserveToken && account ? getTokens(reserveToken) : [],
-    account
-  )
-
-  useEffect(() => {
-    updateBalances(balances)
-  }, [JSON.stringify(balances)])
-
-  return null
 }
 
 /**
@@ -260,7 +218,6 @@ const Updater = () => (
   <>
     <TokenUpdater />
     <PendingBalancesUpdater />
-    <TokensBalanceUpdater />
     <TokensAllowanceUpdater />
     <PricesUpdater />
     <ExchangeRateUpdater />
