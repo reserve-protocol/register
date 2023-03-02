@@ -127,7 +127,11 @@ export function Table<D extends { [key: string]: any }>({
         variant="styles.table"
         {...getTableProps()}
         {...rest}
-        sx={{ ...sx, maxHeight, borderSpacing: compact ? 0 : undefined }}
+        sx={{
+          ...sx,
+          maxHeight: ['none', maxHeight],
+          borderSpacing: compact ? 0 : undefined,
+        }}
       >
         <Box as="tbody" variant="styles.tbody" {...getTableBodyProps()}>
           {headerGroups.map((headerGroup: any) => (
