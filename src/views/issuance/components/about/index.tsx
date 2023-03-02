@@ -1,11 +1,11 @@
 import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import { useState } from 'react'
-import { Box, Link, Text } from 'theme-ui'
+import { Box, Flex, Link, Text } from 'theme-ui'
 import WrapCollateralModal from '../issue/WrapCollateralModal'
 
 const About = () => {
-  const [isWrapping, setWrapping] = useState(false)
+  const [isWrapping, setWrapping] = useState(0)
 
   return (
     <Box sx={{ height: 'fit-content' }}>
@@ -43,11 +43,21 @@ const About = () => {
             <Trans>Docs</Trans>
           </Link>
         </Text>
-        <SmallButton mt={3} onClick={() => setWrapping(true)}>
-          <Trans>Wrap tokens</Trans>
-        </SmallButton>
+        <Flex mt={3}>
+          <SmallButton mr={3} onClick={() => setWrapping(1)}>
+            <Trans>Wrap tokens</Trans>
+          </SmallButton>
+          {/* <SmallButton onClick={() => setWrapping(2)}>
+            <Trans>Unwrap saTokens</Trans>
+          </SmallButton> */}
+        </Flex>
       </Box>
-      {isWrapping && <WrapCollateralModal onClose={() => setWrapping(false)} />}
+      {!!isWrapping && (
+        <WrapCollateralModal
+          unwrap={isWrapping === 2}
+          onClose={() => setWrapping(0)}
+        />
+      )}
     </Box>
   )
 }

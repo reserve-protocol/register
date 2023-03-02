@@ -37,6 +37,11 @@ const GovernanceInfo = (props: BoxProps) => {
             mb={3}
           />
           <InfoItem
+            title={t`Execution Delay`}
+            subtitle={parseDuration(+(governance.executionDelay || 0))}
+            mb={3}
+          />
+          <InfoItem
             title={t`Proposal Threshold`}
             subtitle={formatPercentage(+(governance.proposalThreshold || 0))}
             mb={3}
