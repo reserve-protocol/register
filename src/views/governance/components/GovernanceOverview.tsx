@@ -6,14 +6,16 @@ import { formatEther } from 'ethers/lib/utils'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
-import { useAtomValue } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { rTokenGovernanceAtom } from 'state/atoms'
+import { rTokenGovernanceAtom, rTokenGuardiansAtom } from 'state/atoms'
 import { Box, Divider, Grid, Image, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ROUTES } from 'utils/constants'
 import AccountVotes from './AccountVotes'
+import SettingItem from 'views/settings/components/SettingItem'
+import RolesView from 'views/settings/components/RolesView'
 
 const query = gql`
   query getGovernanceStats($id: String!) {
@@ -55,6 +57,7 @@ const GovernanceOverview = () => {
   const navigate = useNavigate()
   const rToken = useRToken()
   const governance = useAtomValue(rTokenGovernanceAtom)
+  const guardians = useAtomValue(rTokenGuardiansAtom)
 
   return (
     <Box>
@@ -105,7 +108,14 @@ const GovernanceOverview = () => {
           <Trans>Governance format</Trans>
         </Text>
         <Text variant="title">{governance ? governance.name : 'Custom'}</Text>
-
+        {governance && (
+          <SettingItem
+            my={3}
+            title="Guardian"
+            subtitle={t`Role held by:`}
+            value={<RolesView roles={guardians} />}
+          />
+        )}
         <SmallButton
           mt={3}
           variant="muted"
@@ -113,7 +123,7 @@ const GovernanceOverview = () => {
             navigate(`${ROUTES.SETTINGS}?token=${rToken?.address}`)
           }
         >
-          <Trans>Settings & Roles</Trans>
+          <Trans>Settings</Trans>
         </SmallButton>
         <SmallButton
           mt={3}

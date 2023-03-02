@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import { t, Trans } from '@lingui/macro'
+import GoTo from 'components/button/GoTo'
 import Help from 'components/help'
 import { Table } from 'components/table'
 import { useAtomValue } from 'jotai'
@@ -101,6 +102,10 @@ const TransactionsTable = ({
               >
                 {shortenString(cell.value)}
               </Link>
+              <GoTo
+                href={getExplorerLink(cell.value, ExplorerDataType.TRANSACTION)}
+                sx={{ display: ['block', 'none'] }}
+              />
             </>
           ) : (
             'RPay'

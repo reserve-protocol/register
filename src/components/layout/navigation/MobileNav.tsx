@@ -30,7 +30,7 @@ const MobileNav = () => {
 
   const menuItems = useMemo(() => {
     if (rToken?.isRSV) {
-      return [...items.slice(0, 3)]
+      return [...items.slice(0, 2)]
     }
 
     return items

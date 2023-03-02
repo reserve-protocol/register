@@ -35,6 +35,8 @@ type FormState = {
   }
 }
 
+// TODO: rewrite this whole component
+// TODO: Fix precision issue with balances
 const WrapCollateralModal = ({
   onClose,
   unwrap = false,
@@ -42,9 +44,9 @@ const WrapCollateralModal = ({
   onClose(): void
   unwrap?: boolean
 }) => {
+  const { provider, account } = useWeb3React()
   const [signing, setSigning] = useState(false)
   const [loading, setLoading] = useState(false)
-  const { provider, account } = useWeb3React()
   const [fromUnderlying, setFromUnderlying] = useState(1)
   const [txIds, setTxIds] = useState<string[]>([])
   const addTransactions = useSetAtom(addTransactionAtom)

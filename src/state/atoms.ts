@@ -94,6 +94,7 @@ export const rTokenGovernanceAtom = atomWithReset<{
   timelock?: string
   votingDelay?: string
   votingPeriod?: string
+  executionDelay?: string
   proposalThreshold?: string
   quorumDenominator?: string
   quorumNumerator?: string
@@ -156,6 +157,8 @@ export const rTokenManagersAtom = atom({
   longFreezers: [] as string[],
 })
 
+export const rTokenGuardiansAtom = atom([] as string[])
+
 /**
  * ##############################
  * ? Wallet/Account related atoms
@@ -171,11 +174,6 @@ export const accountRoleAtom = atom({
   pauser: false,
   shortFreezer: false,
   longFreezer: false,
-})
-export const isManagerAtom = atom<boolean>((get) => {
-  const role = get(accountRoleAtom)
-
-  return role.owner || role.pauser || role.shortFreezer || role.longFreezer
 })
 
 /**
