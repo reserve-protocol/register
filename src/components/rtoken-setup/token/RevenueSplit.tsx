@@ -60,8 +60,8 @@ const RevenueSplit = (props: BoxProps) => {
   useEffect(() => {
     if (!isDirty) {
       reset({
-        stakers: revenueSplit.stakers,
-        holders: revenueSplit.holders,
+        stakers: revenueSplit.stakers || '0',
+        holders: revenueSplit.holders || '0',
       })
     }
   }, [revenueSplit])

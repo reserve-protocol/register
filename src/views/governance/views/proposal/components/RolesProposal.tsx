@@ -3,7 +3,7 @@ import { Input } from 'components'
 import { SmallButton } from 'components/button'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
-import { rTokenManagersAtom } from 'state/atoms'
+import { rTokenGuardiansAtom, rTokenManagersAtom } from 'state/atoms'
 import { Box, BoxProps, Card, Divider, Text } from 'theme-ui'
 import { RoleKey } from 'types'
 import { isAddress } from 'utils'
@@ -90,7 +90,7 @@ const RoleEdition = ({ roleKey, title, ...props }: RoleEditionProps) => {
           mt={3}
           ml={3}
         >
-          No holders for this role...
+          <Trans>No holders for this role...</Trans>
         </Text>
       )}
       {roles[roleKey].map((addr, index) => (
@@ -158,15 +158,17 @@ const roleMap: {
   { roleKey: 'pausers', title: 'Pausers' },
   { roleKey: 'freezers', title: 'Freezers' },
   { roleKey: 'longFreezers', title: 'Long Freezers' },
+  { roleKey: 'guardians', title: 'Guardians' },
 ]
 
 const RolesProposal = (props: BoxProps) => {
   const rTokenRoles = useAtomValue(rTokenManagersAtom)
+  const guardians = useAtomValue(rTokenGuardiansAtom)
   const setProposedRoles = useSetAtom(proposedRolesAtom)
 
   useEffect(() => {
-    setProposedRoles({ ...rTokenRoles })
-  }, [JSON.stringify(rTokenRoles)])
+    setProposedRoles({ ...rTokenRoles, guardians })
+  }, [JSON.stringify({ ...rTokenRoles, guardians })])
 
   return (
     <Card {...props} p={4}>
@@ -177,7 +179,7 @@ const RolesProposal = (props: BoxProps) => {
       {roleMap.map((value, index) => (
         <Box key={value.roleKey}>
           {!!index && <Divider mb={3} mt={4} mx={-4} />}
-          <RoleEdition {...value} key={value.roleKey} />
+          <RoleEdition {...value} />
         </Box>
       ))}
     </Card>

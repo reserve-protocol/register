@@ -2,7 +2,12 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { Interface } from '@ethersproject/abi'
 import { Contract, ContractTransaction } from '@ethersproject/contracts'
 
-export type RoleKey = 'owners' | 'pausers' | 'freezers' | 'longFreezers'
+export type RoleKey =
+  | 'owners'
+  | 'pausers'
+  | 'freezers'
+  | 'longFreezers'
+  | 'guardians'
 
 export type AddressMap = { [chainId: number]: string }
 

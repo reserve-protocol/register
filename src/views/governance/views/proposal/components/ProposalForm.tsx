@@ -18,7 +18,12 @@ const sections = [
 const ProposalForm = () => (
   <Box mb={4}>
     {sections.map((Component, index) => (
-      <SectionWrapper key={index} navigationIndex={index} mb={4}>
+      <SectionWrapper
+        key={index}
+        threshold={index === 3 ? 0.3 : 0.5}
+        navigationIndex={index}
+        mb={4}
+      >
         <Component />
       </SectionWrapper>
     ))}
