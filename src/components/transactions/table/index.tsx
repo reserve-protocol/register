@@ -108,7 +108,7 @@ const TransactionsTable = ({
               />
             </>
           ) : (
-            'RPay'
+            'Rpay'
           ),
       },
     ],

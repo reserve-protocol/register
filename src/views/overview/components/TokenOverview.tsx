@@ -22,7 +22,7 @@ const TokenOverview = ({ metrics, ...props }: Props) => {
           mb={[3, 6]}
           title={t`Overview`}
           subtitle={t`Here you can find usage data about RSV, which is mostly used in the
-             RPay app. Transactions data includes off-chain data that as been
+             Rpay app. Transactions data includes off-chain data that as been
              anonymized to protect user privacy.`}
         />
       ) : undefined}
