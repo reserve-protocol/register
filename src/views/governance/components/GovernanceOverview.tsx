@@ -1,21 +1,20 @@
 import { t, Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import IconInfo from 'components/info-icon'
-import GovernanceFormatIcon from 'components/icons/GovernanceFormatIcon'
 import { formatEther } from 'ethers/lib/utils'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { rTokenGovernanceAtom, rTokenGuardiansAtom } from 'state/atoms'
-import { Box, Divider, Grid, Image, Text } from 'theme-ui'
+import { Box, Grid, Image, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ROUTES } from 'utils/constants'
-import AccountVotes from './AccountVotes'
-import SettingItem from 'views/settings/components/SettingItem'
 import RolesView from 'views/settings/components/RolesView'
+import SettingItem from 'views/settings/components/SettingItem'
+import AccountVotes from './AccountVotes'
 
 const query = gql`
   query getGovernanceStats($id: String!) {
@@ -111,7 +110,7 @@ const GovernanceOverview = () => {
         {governance && (
           <SettingItem
             my={3}
-            title="Guardian"
+            title={t`Guardian`}
             subtitle={t`Role held by:`}
             value={<RolesView roles={guardians} />}
           />

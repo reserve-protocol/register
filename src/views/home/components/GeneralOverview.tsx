@@ -57,7 +57,7 @@ const TransactionsOverview = (props: BoxProps) => {
         bordered
         maxHeight={420}
         title={t`Transactions`}
-        help={t`This includes on-chain transactions for RTokens and RSV in addition to anonymized RPay transactions to show the full story of the Reserve ecosystem.`}
+        help={t`This includes on-chain transactions for RTokens and RSV in addition to anonymized Rpay transactions to show the full story of the Reserve ecosystem.`}
         data={txs}
         {...props}
       />

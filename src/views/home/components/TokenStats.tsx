@@ -130,7 +130,7 @@ const TokenStats = (props: BoxProps) => {
         mr={5}
         sx={{ maxWidth: 600 }}
         title={t`RToken stats`}
-        subtitle={t`These stats are across all RTokens on the Reserve Protocol listed by this dApp, including anonymized data from the Reserve RPay app API.`}
+        subtitle={t`These stats are across all RTokens on the Reserve Protocol listed by this dApp, including anonymized data from the Reserve Rpay app API.`}
       />
       <Box mt={[4, 6]}>
         <Grid columns={[1, 'max-content max-content']} gap={[3, 5]}>

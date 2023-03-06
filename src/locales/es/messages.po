@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:52
+#: src/components/rtoken-setup/token/BackingForm.tsx:62
 msgid "% Acceptable"
 msgstr ""
 
@@ -29,44 +29,49 @@ msgstr ""
 msgid "% Revenue to RToken Holders"
 msgstr ""
 
+#: src/views/overview/components/RevenueSplitOverview.tsx:71
 #: src/views/settings/components/RevenueSplitInfo.tsx:38
 msgid "% to external address"
+msgstr ""
+
+#: src/views/auctions/About.tsx:135
+msgid "(in their Github repository)"
 msgstr ""
 
 #: src/views/issuance/components/issue/Issue.tsx:53
 msgid "+ Mint {0}"
 msgstr ""
 
-#: src/views/issuance/components/redeem/index.tsx:26
-msgid "- Redeem {0}"
+#: src/views/overview/components/About.tsx:56
+msgid "+ Off-chain note"
 msgstr ""
 
-#: src/views/issuance/components/about/index.tsx:28
-msgid "... explanation about why and the progress..."
+#: src/views/issuance/components/redeem/index.tsx:26
+msgid "- Redeem {0}"
 msgstr ""
 
 #: src/components/rtoken-setup/token/TokenConfiguration.tsx:35
 msgid "15 params"
 msgstr ""
 
-#: src/views/overview/components/TokenUsage.tsx:24
+#: src/views/overview/components/TokenUsage.tsx:25
 msgid "24h Tx Vol"
 msgstr ""
 
-#: src/views/home/components/TokenStats.tsx:164
+#: src/views/home/components/TokenStats.tsx:163
 msgid "24h Tx Volume"
 msgstr ""
 
-#: src/views/home/components/TokenStats.tsx:169
+#: src/views/home/components/TokenStats.tsx:168
 #: src/views/overview/components/TokenUsage.tsx:35
 msgid "24h Txs"
 msgstr ""
 
-#: src/views/auctions/About.tsx:121
-msgid "A good explainer for how Gnosis auctions work can be found (on their github)[https://github.com/gnosis/ido-contracts]."
+#: src/views/auctions/About.tsx:127
+msgid "A good explainer for how Gnosis auctions work can be found"
 msgstr ""
 
-#: src/utils/index.ts:59
+#: src/utils/index.ts:63
 msgid "A year ago"
 msgstr ""
 
@@ -76,13 +81,16 @@ msgstr ""
 
 #: src/views/auctions/About.tsx:70
 #: src/views/home/components/About.tsx:22
-#: src/views/overview/components/About.tsx:14
-#: src/views/overview/components/About.tsx:56
+#: src/views/overview/components/About.tsx:15
 #: src/views/overview/components/About.tsx:66
 msgid "About"
 msgstr ""
 
-#: src/components/transactions/manager/TransactionHeader.tsx:39
+#: src/views/governance/views/proposal-detail/components/VoteModal.tsx:84
+msgid "Abstain"
+msgstr ""
+
+#: src/components/transactions/manager/TransactionHeader.tsx:38
 msgid "Account"
 msgstr ""
 
@@ -106,7 +114,7 @@ msgid "Add to backup basket"
 msgstr ""
 
 #: src/components/rtoken-setup/basket/EmergencyCollateral.tsx:122
-#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:75
+#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:94
 msgid "Add to basket"
 msgstr ""
 
@@ -122,11 +130,15 @@ msgstr ""
 msgid "Advanced config:"
 msgstr ""
 
+#: src/views/governance/views/proposal-detail/components/VoteModal.tsx:83
+msgid "Against"
+msgstr ""
+
 #: src/views/settings/components/ListingInfo.tsx:26
 msgid "Alexios is standard token-voting adopted from Compound Governor Bravo, with adjustments accounting for RSR being staked across multiple RTokens."
 msgstr ""
 
-#: src/views/governance/components/GovernanceOverview.tsx:76
+#: src/views/governance/components/GovernanceOverview.tsx:79
 msgid "All time"
 msgstr ""
 
@@ -134,34 +146,38 @@ msgstr ""
 msgid "All unlisted RTokens"
 msgstr ""
 
-#: src/views/staking/components/stake/ConfirmStake.tsx:71
+#: src/views/staking/components/stake/ConfirmStake.tsx:70
 msgid "Allow use of RSR"
 msgstr ""
 
-#: src/views/issuance/components/issue/ConfirmIssuance.tsx:99
+#: src/views/issuance/components/issue/ConfirmIssuance.tsx:96
 msgid "Allow use of collateral tokens"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:71
+#: src/components/transactions/table/index.tsx:74
 #: src/views/auctions/index.tsx:110
 #: src/views/auctions/index.tsx:209
 msgid "Amount"
+msgstr ""
+
+#: src/views/auctions/About.tsx:144
+msgid "Anyone can click the button below to trigger an auction for any revenue that has accrued or for rebalances that need to happen. Please note that for RTokens with many collateral types in the basket, this may be an expensive transaction to execute."
 msgstr ""
 
 #: src/views/tokens/Tokens.tsx:52
 msgid "Apply for listing"
 msgstr ""
 
-#: src/views/staking/components/stake/ConfirmStake.tsx:44
+#: src/views/staking/components/stake/ConfirmStake.tsx:43
 msgid "Approve RSR"
 msgstr ""
 
-#: src/views/issuance/components/redeem/ConfirmRedemption.tsx:96
+#: src/views/issuance/components/redeem/ConfirmRedemption.tsx:95
 msgid "Approve RSV"
 msgstr ""
 
-#: src/views/issuance/components/issue/ConfirmIssuance.tsx:42
-#: src/views/issuance/components/issue/WrapCollateralModal.tsx:124
+#: src/views/issuance/components/issue/ConfirmIssuance.tsx:39
+#: src/views/issuance/components/issue/WrapCollateralModal.tsx:108
 msgid "Approve {0}"
 msgstr ""
 
@@ -173,16 +189,19 @@ msgstr ""
 msgid "As RToken"
 msgstr ""
 
-#: src/views/settings/components/ContractsInfo.tsx:18
+#: src/views/settings/components/ContractsInfo.tsx:24
 msgid "Asset Registry"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:25
-#: src/views/settings/components/BackingInfo.tsx:25
+#: src/views/settings/components/BackingInfo.tsx:28
+msgid "Auction length"
+msgstr ""
+
+#: src/components/rtoken-setup/token/BackingForm.tsx:34
 msgid "Auction length (s)"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:27
+#: src/components/rtoken-setup/token/BackingForm.tsx:36
 msgid "Auction length - defines how long Gnosis auctions should be. Gnosis Auction is a platform enabling fair price discovery for token auctions. The aim of the platform is to make it easy for teams to discover a fair price for their token. The default value is 900s or 15 minutes."
 msgstr ""
 
@@ -210,32 +229,35 @@ msgstr ""
 msgid "Backing"
 msgstr ""
 
-#: src/views/staking/components/overview/index.tsx:63
+#: src/views/staking/components/overview/index.tsx:94
 msgid "Backing + Staked"
 msgstr ""
 
 #: src/views/deploy/components/BackingManager.tsx:9
 #: src/views/deploy/components/NavigationSidebar.tsx:19
-#: src/views/settings/components/ContractsInfo.tsx:15
+#: src/views/settings/components/ContractsInfo.tsx:19
 msgid "Backing Manager"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:38
-#: src/views/settings/components/BackingInfo.tsx:30
+#: src/views/settings/components/BackingInfo.tsx:19
+msgid "Backing Parameters"
+msgstr ""
+
+#: src/views/settings/components/BackingInfo.tsx:33
+msgid "Backing buffer"
+msgstr ""
+
+#: src/components/rtoken-setup/token/BackingForm.tsx:48
 msgid "Backing buffer (%)"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:40
-msgid "Backing buffer - percentage value that describes how much additional collateral tokens to keep in the BackingManager before forwarding tokens to the RevenueTraders. The RevenueTraders here refers to the RToken and RSR traders. Why this matters? It allows collateral tokens to be periodically converted into the RToken, which is a more efficient form of revenue production than trading each individual collateral for the desired RToken. For more info on the BackingManager and Trader types see the “Revenue distribution to RToken holders” and “Summary of revenue distribution” <a href=\\\"http://www.example.com\\\">here</a>. The default value is 0.01%."
+#: src/components/rtoken-setup/token/BackingForm.tsx:50
+msgid "Backing buffer - percentage value that describes how much additional collateral tokens to keep in the BackingManager before forwarding tokens to the RevenueTraders. The RevenueTraders here refers to the RToken and RSR traders. Why this matters? It allows collateral tokens to be periodically converted into the RToken, which is a more efficient form of revenue production than trading each individual collateral for the desired RToken. For more info on the BackingManager and Trader types see the “Revenue distribution to RToken holders” and “Summary of revenue distribution” in our documentation. The default value is 0.01%."
 msgstr ""
 
 #: src/views/governance/views/proposal/components/ProposalNavigation.tsx:17
 #: src/views/settings/components/NavigationSidebar.tsx:14
 msgid "Backing config"
-msgstr ""
-
-#: src/views/settings/components/BackingInfo.tsx:17
-msgid "Backing parameters"
 msgstr ""
 
 #: src/views/governance/views/proposal/components/ProposedBackupPreview.tsx:90
@@ -246,7 +268,7 @@ msgstr ""
 msgid "Backup configuration tracks primary basket changes to update its values. This may not be desired on a proposal, you can choose to propose new changes."
 msgstr ""
 
-#: src/views/settings/components/EmergencyCollateralInfo.tsx:25
+#: src/views/settings/components/EmergencyCollateralInfo.tsx:26
 msgid "Backups"
 msgstr ""
 
@@ -261,8 +283,12 @@ msgid "Basics"
 msgstr ""
 
 #: src/components/rtoken-setup/basket/UnitBasket.tsx:76
-#: src/views/settings/components/BasketInfo.tsx:24
+#: src/views/settings/components/BasketInfo.tsx:25
 msgid "Basket"
+msgstr ""
+
+#: src/views/settings/components/ContractsInfo.tsx:20
+msgid "Basket Handler"
 msgstr ""
 
 #: src/views/overview/components/AssetOverview.tsx:82
@@ -277,15 +303,19 @@ msgstr ""
 msgid "Be aware that anyone can create an RToken that ends up on this list. We don't apply any standards beyond what can be done with the Reserve Protocol."
 msgstr ""
 
-#: src/views/issuance/components/issue/ConfirmIssuance.tsx:96
+#: src/views/settings/components/GovernancePrompt.tsx:57
+msgid "Begin governance setup"
+msgstr ""
+
+#: src/views/issuance/components/issue/ConfirmIssuance.tsx:93
 msgid "Begin minting {0} {1}"
 msgstr ""
 
-#: src/views/issuance/components/redeem/ConfirmRedemption.tsx:123
+#: src/views/issuance/components/redeem/ConfirmRedemption.tsx:122
 msgid "Begin redemption of {0} {1}"
 msgstr ""
 
-#: src/views/staking/components/stake/ConfirmStake.tsx:72
+#: src/views/staking/components/stake/ConfirmStake.tsx:71
 msgid "Begin stake of {0} RSR"
 msgstr ""
 
@@ -293,24 +323,23 @@ msgstr ""
 msgid "Begin unstake cooldown"
 msgstr ""
 
-#: src/components/layout/sidebar/Footer.tsx:12
-msgid "Both Register & the Reserve Protocol are brand new. There are risks with using any new smart contract technology."
-msgstr ""
-
-#: src/views/auctions/index.tsx:96
 #: src/views/auctions/index.tsx:195
 msgid "Bought"
 msgstr ""
 
-#: src/views/settings/components/ContractsInfo.tsx:17
+#: src/views/settings/components/ContractsInfo.tsx:23
 msgid "Broker"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:45
+#: src/components/transactions/table/index.tsx:48
 msgid "Burn"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:49
+#: src/views/auctions/index.tsx:96
+msgid "Buying"
+msgstr ""
+
+#: src/components/transactions/table/index.tsx:52
 msgid "Cancel Issue"
 msgstr ""
 
@@ -340,15 +369,15 @@ msgstr ""
 msgid "Change primary basket"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:44
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:43
 msgid "Choose between our Alexios Governor and anything between one man rule to arbitrary DAO structure under your defined Ethereum address."
 msgstr ""
 
-#: src/views/home/components/Greet.tsx:57
+#: src/views/home/components/Greet.tsx:58
 msgid "Choose your own adventure with your RSR. Find your preferred RToken to stake, govern, and backstop."
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:48
+#: src/components/transactions/table/index.tsx:51
 msgid "Claim"
 msgstr ""
 
@@ -356,20 +385,20 @@ msgstr ""
 msgid "Collateral Plugins"
 msgstr ""
 
-#: src/views/staking/components/overview/index.tsx:53
-msgid "Collateral backing"
-msgstr ""
-
 #: src/views/issuance/components/issue/CollateralDistribution.tsx:44
 msgid "Collateral distribution"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/PluginItem.tsx:38
+#: src/components/rtoken-setup/basket/PluginItem.tsx:41
 msgid "Collateral token"
 msgstr ""
 
+#: src/views/auctions/About.tsx:153
+msgid "Coming Soon: See current surplus available for auction"
+msgstr ""
+
 #: src/views/deploy/components/Intro.tsx:26
-#: src/views/governance/views/proposal/components/Intro.tsx:25
+#: src/views/governance/views/proposal/components/Intro.tsx:30
 msgid "Community Discord"
 msgstr ""
 
@@ -381,11 +410,19 @@ msgstr ""
 msgid "Configure your vote"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:148
-msgid "Confirm Proposal"
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:145
+msgid "Confirm & Submit"
 msgstr ""
 
-#: src/views/governance/components/DelegateModal.tsx:38
+#: src/views/governance/views/proposal/components/ProposalOverview.tsx:56
+msgid "Confirm & prepare proposal"
+msgstr ""
+
+#: src/views/governance/views/proposal/components/ProposalOverview.tsx:43
+msgid "Confirm changes made"
+msgstr ""
+
+#: src/views/governance/components/DelegateModal.tsx:44
 msgid "Confirm delegate"
 msgstr ""
 
@@ -409,7 +446,7 @@ msgstr ""
 msgid "Contract Addresses"
 msgstr ""
 
-#: src/views/governance/components/proposal-detail/ProposalDetailNavigation.tsx:7
+#: src/views/governance/views/proposal-detail/components/ProposalDetailNavigation.tsx:7
 msgid "Contracts"
 msgstr ""
 
@@ -421,37 +458,38 @@ msgstr ""
 msgid "Copy to clipboard"
 msgstr ""
 
-#: src/views/governance/components/ProposalList.tsx:70
+#: src/views/governance/components/ProposalList.tsx:67
 msgid "Create proposal"
 msgstr ""
 
-#: src/views/governance/components/ProposalList.tsx:104
+#: src/views/governance/components/ProposalList.tsx:103
 msgid "Created at:"
 msgstr ""
 
-#: src/views/home/components/TokenStats.tsx:153
+#: src/views/home/components/TokenStats.tsx:152
 msgid "Cumulative - RToken holder income"
 msgstr ""
 
-#: src/views/home/components/TokenStats.tsx:158
+#: src/views/home/components/TokenStats.tsx:157
 msgid "Cumulative - Staked RSR income"
 msgstr ""
 
-#: src/views/home/components/TokenStats.tsx:166
-#: src/views/overview/components/TokenUsage.tsx:18
+#: src/views/home/components/TokenStats.tsx:165
+#: src/views/overview/components/TokenUsage.tsx:17
 msgid "Cumulative Tx Volume"
 msgstr ""
 
-#: src/views/home/components/TokenStats.tsx:170
-#: src/views/overview/components/TokenUsage.tsx:30
+#: src/views/home/components/TokenStats.tsx:169
+#: src/views/overview/components/TokenUsage.tsx:29
 msgid "Cumulative Txs"
 msgstr ""
 
-#: src/views/governance/components/GovernanceOverview.tsx:86
-#: src/views/governance/components/GovernanceOverview.tsx:96
+#: src/views/governance/components/GovernanceOverview.tsx:89
+#: src/views/governance/components/GovernanceOverview.tsx:99
 #: src/views/governance/views/proposal/components/ItemPreview.tsx:82
-#: src/views/staking/components/overview/index.tsx:57
-#: src/views/staking/components/overview/index.tsx:67
+#: src/views/staking/components/overview/index.tsx:77
+#: src/views/staking/components/overview/index.tsx:88
+#: src/views/staking/components/overview/index.tsx:98
 msgid "Current"
 msgstr ""
 
@@ -464,27 +502,31 @@ msgstr ""
 msgid "Current status:"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/PluginItem.tsx:87
-msgid "Custom"
-msgstr ""
-
 #: src/components/rtoken-setup/token/TokenConfiguration.tsx:43
 msgid "Customize"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/PluginItem.tsx:55
+#: src/components/rtoken-setup/basket/PluginItem.tsx:58
 msgid "Decimals"
 msgstr ""
 
 #: src/components/rtoken-setup/token/RevenueSplit.tsx:155
-msgid "Define what portion of the revenue goes to the RToken holders versus RSR stakers. It can also be configured to send (part of the) revenue of an RToken to any arbitrary Ethereum address.<0/><1/>"
+msgid "Define what portion of the revenue goes to the RToken holders versus RSR stakers. It can also be configured to send a portion of the revenue of an RToken to any arbitrary Ethereum address (wallet or smart contract).<0/><1/>"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:39
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:28
+msgid "Delay (in number of blocks) since the proposal is submitted until voting power is fixed and voting starts. This can be used to enforce a delay after a proposal is published for users to buy tokens, or delegate their votes."
+msgstr ""
+
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:42
+msgid "Delay (in number of blocks) since the proposal starts until voting ends."
+msgstr ""
+
+#: src/components/rtoken-setup/token/OtherForm.tsx:48
 msgid "Delay in Seconds"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:13
+#: src/components/rtoken-setup/token/BackingForm.tsx:21
 msgid "Delay in seconds"
 msgstr ""
 
@@ -492,15 +534,15 @@ msgstr ""
 msgid "Delegate"
 msgstr ""
 
-#: src/views/governance/components/DelegateModal.tsx:42
+#: src/views/governance/components/DelegateModal.tsx:48
 msgid "Delegate to"
 msgstr ""
 
-#: src/views/governance/components/DelegateModal.tsx:34
+#: src/views/governance/components/DelegateModal.tsx:40
 msgid "Delegate votes"
 msgstr ""
 
-#: src/views/governance/components/DelegateModal.tsx:19
+#: src/views/governance/components/DelegateModal.tsx:25
 msgid "Delegate voting"
 msgstr ""
 
@@ -512,20 +554,18 @@ msgstr ""
 msgid "Delegated to:"
 msgstr ""
 
-#: src/views/deploy/components/GovernanceOverview.tsx:93
+#: src/views/deploy/components/GovernanceOverview.tsx:92
 msgid "Deploy Governance"
 msgstr ""
 
-#: src/views/deploy/components/DeployOverview.tsx:100
+#: src/views/deploy/components/DeployOverview.tsx:104
 #: src/views/deploy/useDeploy.ts:61
 #: src/views/home/components/About.tsx:39
 #: src/views/tokens/Tokens.tsx:55
 msgid "Deploy RToken"
 msgstr ""
 
-#: src/views/deploy/components/DeployOverview.tsx:58
-#: src/views/deploy/components/GovernanceOverview.tsx:57
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:66
+#: src/views/deploy/components/DeployOverview.tsx:60
 msgid "Deploy transaction submitted"
 msgstr ""
 
@@ -533,11 +573,11 @@ msgstr ""
 msgid "Deploying through this UI doesn't require deep technical knowledge as long as you don't need novel collateral plugins for your baskets. However, we encourage you to talk to someone proficient in the protocol and read the docs to learn more before confirming any transactions."
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:53
+#: src/components/transactions/table/index.tsx:56
 msgid "Deposit"
 msgstr ""
 
-#: src/views/issuance/components/issue/WrapCollateralModal.tsx:142
+#: src/views/issuance/components/issue/WrapCollateralModal.tsx:126
 msgid "Deposit {0}"
 msgstr ""
 
@@ -545,7 +585,11 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: src/views/home/components/Greet.tsx:61
+#: src/views/governance/views/proposal/components/ItemPreview.tsx:70
+msgid "Discard"
+msgstr ""
+
+#: src/views/home/components/Greet.tsx:62
 msgid "Discover how an RToken is configured to operate in the good times and in emergencies if collateral defaults."
 msgstr ""
 
@@ -558,11 +602,11 @@ msgstr ""
 msgid "Distributed revenue does not add up to 100%"
 msgstr ""
 
-#: src/views/settings/components/ContractsInfo.tsx:21
+#: src/views/settings/components/ContractsInfo.tsx:27
 msgid "Distributor"
 msgstr ""
 
-#: src/views/settings/components/EmergencyCollateralInfo.tsx:31
+#: src/views/settings/components/EmergencyCollateralInfo.tsx:34
 msgid "Diversity Factor"
 msgstr ""
 
@@ -571,16 +615,20 @@ msgstr ""
 msgid "Diversity factor"
 msgstr ""
 
-#: src/views/governance/components/GovernanceOverview.tsx:125
+#: src/views/issuance/components/about/index.tsx:43
+msgid "Docs"
+msgstr ""
+
+#: src/views/governance/components/GovernanceOverview.tsx:138
 msgid "Documentation"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:26
+#: src/components/rtoken-setup/token/BackingForm.tsx:35
 msgid "Duration in Seconds"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:13
-#: src/components/rtoken-setup/token/OtherForm.tsx:26
+#: src/components/rtoken-setup/token/OtherForm.tsx:20
+#: src/components/rtoken-setup/token/OtherForm.tsx:34
 msgid "Duration in seconds"
 msgstr ""
 
@@ -588,15 +636,15 @@ msgstr ""
 msgid "Each target unit of your primary basket will have defined emergency collateral to replace with in case of default."
 msgstr ""
 
-#: src/views/auctions/About.tsx:113
-msgid "Each type of trade can currently happen in only one way; the protocol launches a Gnosis EasyAuction. The Reserve Protocol is designed to make it easy to add other trading methods, but none others are currently supported."
+#: src/views/auctions/About.tsx:119
+msgid "Each type of trade can currently happen in only one way; the protocol launches a Gnosis EasyAuction. The Reserve Protocol is designed to make it easy to add other trading methods, but no other methods are currently supported."
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:145
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:141
 msgid "Edit"
 msgstr ""
 
-#: src/views/settings/components/EmergencyCollateralInfo.tsx:19
+#: src/views/settings/components/EmergencyCollateralInfo.tsx:20
 msgid "Emergency Collateral"
 msgstr ""
 
@@ -606,7 +654,7 @@ msgstr ""
 msgid "Emergency basket"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:38
+#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:40
 msgid "Empty Basket"
 msgstr ""
 
@@ -614,12 +662,12 @@ msgstr ""
 msgid "Empty backup basket"
 msgstr ""
 
-#: src/views/auctions/index.tsx:242
-msgid "Ended"
-msgstr ""
-
 #: src/views/auctions/index.tsx:214
 msgid "Ended at"
+msgstr ""
+
+#: src/views/auctions/index.tsx:242
+msgid "Ended auctions"
 msgstr ""
 
 #: src/views/auctions/index.tsx:120
@@ -638,23 +686,52 @@ msgstr ""
 msgid "Error running transaction"
 msgstr ""
 
-#: src/views/staking/components/overview/index.tsx:47
+#: src/views/issuance/components/issue/WrapCollateralModal.tsx:287
+msgid "Error wrapping tokens"
+msgstr ""
+
+#: src/views/staking/components/overview/index.tsx:63
 msgid "Est. APY"
 msgstr ""
 
-#: src/components/transaction-modal/index.tsx:180
-#: src/views/deploy/components/DeployOverview.tsx:104
-#: src/views/deploy/components/GovernanceOverview.tsx:97
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:106
+#: src/components/rtoken-setup/basket/PluginItem.tsx:88
+msgid "Est. APY:"
+msgstr ""
+
+#: src/views/overview/components/TokenOverview.tsx:59
+msgid "Est. RToken Yield"
+msgstr ""
+
+#: src/views/staking/components/overview/index.tsx:70
+msgid "Est. Staking APY"
+msgstr ""
+
+#: src/views/overview/components/TokenOverview.tsx:70
+msgid "Est. stRSR Yield"
+msgstr ""
+
+#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:118
+msgid "Estimated basket APY"
+msgstr ""
+
+#: src/components/transaction-modal/index.tsx:182
+#: src/views/deploy/components/DeployOverview.tsx:108
+#: src/views/deploy/components/GovernanceOverview.tsx:96
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:103
+#: src/views/governance/views/proposal-detail/components/VoteModal.tsx:170
 msgid "Estimated gas cost:"
 msgstr ""
 
-#: src/views/governance/components/DelegateModal.tsx:48
+#: src/views/governance/components/DelegateModal.tsx:55
 msgid "Eth address"
 msgstr ""
 
-#: src/views/governance/components/proposal-detail/ContractProposalDetails.tsx:33
+#: src/views/governance/views/proposal-detail/components/ContractProposalDetails.tsx:33
 msgid "Executable code"
+msgstr ""
+
+#: src/views/settings/components/GovernanceInfo.tsx:40
+msgid "Execution Delay"
 msgstr ""
 
 #: src/components/rtoken-setup/components/BackButton.tsx:26
@@ -662,15 +739,11 @@ msgstr ""
 msgid "Exit Deployer"
 msgstr ""
 
-#: src/views/home/components/Greet.tsx:60
+#: src/views/home/components/Greet.tsx:61
 msgid "Explore"
 msgstr ""
 
-#: src/components/layout/navigation/index.tsx:151
-msgid "External Links"
-msgstr ""
-
-#: src/components/rtoken-setup/token/BackingForm.tsx:39
+#: src/components/rtoken-setup/token/BackingForm.tsx:49
 msgid "Extra collateral to keep"
 msgstr ""
 
@@ -678,12 +751,12 @@ msgstr ""
 msgid "Failed"
 msgstr ""
 
-#: src/views/issuance/components/issue/ConfirmIssuance.tsx:116
+#: src/views/issuance/components/issue/ConfirmIssuance.tsx:113
 msgid "Fetching required collateral amounts"
 msgstr ""
 
-#: src/views/governance/components/GovernanceOverview.tsx:104
-msgid "Format"
+#: src/views/governance/views/proposal-detail/components/VoteModal.tsx:82
+msgid "For"
 msgstr ""
 
 #: src/views/settings/components/FreezeManager.tsx:107
@@ -694,7 +767,7 @@ msgstr ""
 msgid "Frozen"
 msgstr ""
 
-#: src/views/settings/components/ContractsInfo.tsx:20
+#: src/views/settings/components/ContractsInfo.tsx:26
 msgid "Furnace"
 msgstr ""
 
@@ -702,12 +775,8 @@ msgstr ""
 msgid "Go to Dashboard"
 msgstr ""
 
-#: src/views/home/components/Greet.tsx:108
-msgid "Go to source"
-msgstr ""
-
-#: src/views/home/components/Greet.tsx:111
-msgid "Got it!"
+#: src/views/home/components/Greet.tsx:105
+msgid "Got it"
 msgstr ""
 
 #: src/components/layout/navigation/index.tsx:93
@@ -718,77 +787,69 @@ msgstr ""
 msgid "Governance"
 msgstr ""
 
-#: src/views/settings/components/GovernanceInfo.tsx:17
+#: src/views/settings/components/GovernanceInfo.tsx:19
 msgid "Governance Details"
 msgstr ""
 
-#: src/components/layout/navigation/index.tsx:108
-msgid "Governance Discussions"
+#: src/views/overview/components/RevenueSplitOverview.tsx:53
+msgid "Governance defines how an RToken's revenue is split between different parties. The default split is between RToken holders and RSR stakers, but it might also be shared to any arbitrary Eth address"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ProposalOverview.tsx:40
-msgid "Governance Proposal"
-msgstr ""
-
-#: src/components/layout/navigation/index.tsx:113
-msgid "Governance Voting"
+#: src/views/governance/components/GovernanceOverview.tsx:107
+msgid "Governance format"
 msgstr ""
 
 #: src/views/deploy/components/RTokenSetup.tsx:76
 msgid "Governance gets deployed & your RToken is now usable (if unpaused)"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:11
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:22
 msgid "Governance parameters"
 msgstr ""
 
 #: src/views/governance/views/proposal/components/ProposedRolesPreview.tsx:41
-#: src/views/governance/views/proposal/components/RolesProposal.tsx:174
+#: src/views/governance/views/proposal/components/RolesProposal.tsx:176
 msgid "Governance roles"
 msgstr ""
 
-#: src/views/settings/components/GovernancePrompt.tsx:29
-msgid "Governance setup required"
-msgstr ""
-
-#: src/views/settings/components/BasicInfo.tsx:31
-msgid "Governor Address"
-msgstr ""
-
-#: src/views/staking/components/overview/index.tsx:126
-msgid "Governor Alexios"
-msgstr ""
-
-#: src/views/settings/components/GovernanceInfo.tsx:53
+#: src/views/settings/components/GovernanceInfo.tsx:64
 msgid "Governor address"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:78
+#: src/views/governance/components/GovernanceOverview.tsx:113
+msgid "Guardian"
+msgstr ""
+
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:86
 msgid "Guardian address"
 msgstr ""
 
-#: src/views/auctions/About.tsx:132
-msgid "Here we should put text and add links to tools they can use to monitor and trigger auctions. We explain that this feature should eventually come to Register but it's not currently being worked on."
+#: src/components/transactions/table/index.tsx:92
+msgid "Hash"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:22
+#: src/views/overview/components/TokenOverview.tsx:24
 msgid ""
 "Here you can find usage data about RSV, which is mostly used in the\n"
-"RPay app. Transactions data includes off-chain data that as been\n"
+"Rpay app. Transactions data includes off-chain data that as been\n"
 "anonymized to protect user privacy."
 msgstr ""
 
+#: src/views/overview/components/TokenOverview.tsx:52
+msgid "Historic RToken yield, this will be 0% until enough on-chain events ocurred."
+msgstr ""
+
+#: src/views/overview/components/TokenOverview.tsx:66
+msgid "Historic stRSR yield, this will be 0% until enough on-chain events ocurred. Calculated in base of the exchange rate between RSR <> stRSR historic changes"
+msgstr ""
+
 #: src/components/tables/ListedTokensTable.tsx:30
-#: src/views/tokens/components/UnlistedTokensTable.tsx:90
+#: src/views/tokens/components/UnlistedTokensTable.tsx:99
 msgid "Holders"
 msgstr ""
 
 #: src/views/issuance/components/about/index.tsx:14
 msgid "How does this work?"
-msgstr ""
-
-#: src/views/auctions/About.tsx:129
-msgid "How to see current surplus & trigger an auction"
 msgstr ""
 
 #: src/views/home/components/About.tsx:70
@@ -807,11 +868,11 @@ msgstr ""
 msgid "In Wallet"
 msgstr ""
 
-#: src/views/home/components/TokenStats.tsx:147
+#: src/views/home/components/TokenStats.tsx:146
 msgid "Includes RTokens, staked RSR, and RSV."
 msgstr ""
 
-#: src/views/home/components/TokenStats.tsx:142
+#: src/views/home/components/TokenStats.tsx:141
 msgid "Includes market cap of all RTokens and RSV."
 msgstr ""
 
@@ -819,7 +880,7 @@ msgstr ""
 msgid "Including off-chain in-app transactions of RToken in the Reserve App."
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:110
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:126
 msgid "Initial RToken state after deployment"
 msgstr ""
 
@@ -827,28 +888,24 @@ msgstr ""
 msgid "Input RSR stakers revenue distribution"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:39
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:54
 msgid "Input delay in hours"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:15
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:27
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:26
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:40
 msgid "Input number of blocks"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:65
-msgid "Input owner ethereum address"
-msgstr ""
-
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:94
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:102
 msgid "Input pauser ethereum address"
 msgstr ""
 
 #: src/components/rtoken-setup/basket/CustomCollateral.tsx:113
-msgid "Input plugin address"
+msgid "Input plugin address (not ERC-20 address)"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:51
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:68
 msgid "Input proposal threshold"
 msgstr ""
 
@@ -856,12 +913,16 @@ msgstr ""
 msgid "Input proposal title"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:63
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:81
 msgid "Input quorum percent"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:79
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:87
 msgid "Input the guardian ethereum address"
+msgstr ""
+
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:67
+msgid "Input the owner ethereum address"
 msgstr ""
 
 #: src/components/rtoken-setup/token/TokenForm.tsx:28
@@ -869,7 +930,7 @@ msgstr ""
 msgid "Input ticker"
 msgstr ""
 
-#: src/views/issuance/components/issue/WrapCollateralModal.tsx:346
+#: src/views/issuance/components/issue/WrapCollateralModal.tsx:369
 msgid "Input token amount"
 msgstr ""
 
@@ -916,53 +977,59 @@ msgstr ""
 msgid "Invalid destination address"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:72
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:88
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:102
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:80
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:96
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:113
 msgid "Invalid ethereum address"
 msgstr ""
 
-#: src/components/field/index.tsx:30
+#: src/components/field/index.tsx:29
 msgid "Invalid maximum range"
 msgstr ""
 
-#: src/components/field/index.tsx:32
+#: src/components/field/index.tsx:31
 msgid "Invalid minimum range"
 msgstr ""
 
-#: src/components/field/index.tsx:28
+#: src/components/field/index.tsx:27
 msgid "Invalid number"
 msgstr ""
 
-#: src/components/field/index.tsx:34
+#: src/components/field/index.tsx:33
 msgid "Invalid value"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:66
-#: src/components/rtoken-setup/token/BackingForm.tsx:79
-msgid "Issuance rate - allows the issuer to limit the amount of RTokens issued per block. This matters because in an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued. The default is 0.025%. If an RToken gets deployed with the default settings, only 0.025% of the market cap of the RToken can be issued per block. For more info see the “Issuance throttle” section here."
+#: src/components/rtoken-setup/token/BackingForm.tsx:89
+msgid "Issuance rate - allows the issuer to limit the amount of RTokens issued per block. This matters because in an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued. The default is 0.025%. If an RToken gets deployed with the default settings, only 0.025% of the market cap of the RToken can be issued per block."
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:65
+#: src/components/rtoken-setup/token/BackingForm.tsx:76
+msgid "Issuance rate - allows the issuer to limit the amount of RTokens issued per block. This matters because in an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued. The default is 1,000,000."
+msgstr ""
+
+#: src/components/rtoken-setup/token/BackingForm.tsx:75
 msgid "Issuance throttle Rate"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:77
-#: src/components/rtoken-setup/token/BackingForm.tsx:78
-#: src/views/settings/components/BackingInfo.tsx:45
+#: src/components/rtoken-setup/token/BackingForm.tsx:87
+#: src/components/rtoken-setup/token/BackingForm.tsx:88
+#: src/views/settings/components/BackingInfo.tsx:48
 msgid "Issuance throttle amount"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:64
-#: src/views/settings/components/BackingInfo.tsx:40
+#: src/views/settings/components/BackingInfo.tsx:43
+msgid "Issuance throttle rate"
+msgstr ""
+
+#: src/components/rtoken-setup/token/BackingForm.tsx:74
 msgid "Issuance throttle rate (%)"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:46
+#: src/components/transactions/table/index.tsx:49
 msgid "Issue"
 msgstr ""
 
-#: src/views/issuance/components/issue/ConfirmIssuance.tsx:71
+#: src/views/issuance/components/issue/ConfirmIssuance.tsx:68
 msgid "Issue {0}"
 msgstr ""
 
@@ -974,7 +1041,7 @@ msgstr ""
 msgid "Launch your asset backed RToken"
 msgstr ""
 
-#: src/views/home/components/Greet.tsx:48
+#: src/views/home/components/Greet.tsx:49
 msgid "Learn"
 msgstr ""
 
@@ -991,12 +1058,15 @@ msgstr ""
 msgid "Long Freeze {0}"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:25
-#: src/views/settings/components/OtherInfo.tsx:26
+#: src/views/settings/components/OtherInfo.tsx:28
+msgid "Long freeze duration"
+msgstr ""
+
+#: src/components/rtoken-setup/token/OtherForm.tsx:33
 msgid "Long freeze duration (s)"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:40
+#: src/components/rtoken-setup/token/OtherForm.tsx:35
 msgid "Long freeze duration - freeze an RToken’s system for a longer period of time. The default value is 2592000s or 30 days."
 msgstr ""
 
@@ -1004,14 +1074,18 @@ msgstr ""
 msgid "Made your own collateral?"
 msgstr ""
 
-#: src/views/settings/components/ContractsInfo.tsx:14
+#: src/views/settings/components/ContractsInfo.tsx:18
 msgid "Main"
+msgstr ""
+
+#: src/views/governance/views/proposal/components/Intro.tsx:17
+msgid "Make proposed changes to the backing basket, emergency collateral, governance params, etc. Changes in multiple areas can be batched into a single proposal although to make voting on issues simpler it may make sense to separate things if unrelated."
 msgstr ""
 
 #: src/components/rtoken-setup/token/TokenForm.tsx:36
 #: src/views/deploy/components/TokenForm.tsx:45
 #: src/views/overview/components/About.tsx:46
-#: src/views/settings/components/BasicInfo.tsx:23
+#: src/views/settings/components/BasicInfo.tsx:24
 msgid "Mandate"
 msgstr ""
 
@@ -1025,45 +1099,59 @@ msgstr ""
 msgid "Mandate is required"
 msgstr ""
 
+#: src/views/overview/components/TokenOverview.tsx:60
+msgid "Manually estimated APY, calculated base on the RToken basket averaged yield with regards of the total RToken market cap and revenue distribution to holders."
+msgstr ""
+
+#: src/views/overview/components/TokenOverview.tsx:73
+msgid "Manually estimated APY, calculated base on the RToken basket averaged yield with regards of the total RToken market cap and revenue distribution to stakers. Calculation = [avgCollateralYield * rTokenMarketCap / rsrStaked]"
+msgstr ""
+
 #: src/views/overview/components/TokenOverview.tsx:35
 msgid "Market cap"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:51
-#: src/views/settings/components/BackingInfo.tsx:35
+#: src/views/settings/components/BackingInfo.tsx:38
+msgid "Max trade slippage"
+msgstr ""
+
+#: src/components/rtoken-setup/token/BackingForm.tsx:61
 msgid "Max trade slippage (%)"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:53
-msgid "Max trade slippage — maximum deviation from oracle prices that any trade can clear at. The default value is 1%. Why this matters? Acts as a form of slippage protection."
+#: src/components/rtoken-setup/token/BackingForm.tsx:63
+msgid "Max trade slippage — maximum deviation from oracle prices that any trade can clear at. The default value is 0.5%. Why this matters? Acts as a form of slippage protection."
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:79
+#: src/components/rtoken-setup/token/OtherForm.tsx:88
 msgid "Maximum trade for RToken"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:80
+#: src/components/rtoken-setup/token/OtherForm.tsx:89
 msgid "Maximum trade volume - maximum sized trade for any trade involving RToken, in terms of the unit of account eg. USD. The default is $1M."
 msgstr ""
 
-#: src/views/staking/components/overview/index.tsx:91
+#: src/views/staking/components/overview/index.tsx:122
 msgid "Mechanics"
 msgstr ""
 
-#: src/views/deploy/components/DeployOverview.tsx:61
+#: src/views/deploy/components/DeployOverview.tsx:63
 msgid "Meditate peacefully on the stability of a future asset backed reserve currency while your RToken deploys 🧘‍♂️"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:66
-msgid "Minimum trade"
+#: src/components/rtoken-setup/token/OtherForm.tsx:75
+msgid "Minimum trade in USD terms"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:65
-#: src/views/settings/components/OtherInfo.tsx:41
+#: src/views/settings/components/OtherInfo.tsx:43
 msgid "Minimum trade volume"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:67
+#: src/components/rtoken-setup/token/OtherForm.tsx:74
+msgid "Minimum trade volume ($)"
+msgstr ""
+
+#: src/components/rtoken-setup/token/OtherForm.tsx:76
 msgid "Minimum trade volume - minimum sized trade that can be performed, in terms of the unit of account eg. USD. The default is $10K."
 msgstr ""
 
@@ -1071,8 +1159,8 @@ msgstr ""
 msgid "Mining"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:42
-#: src/views/home/components/Greet.tsx:52
+#: src/components/transactions/table/index.tsx:45
+#: src/views/home/components/Greet.tsx:53
 #: src/views/issuance/components/issue/Issue.tsx:42
 msgid "Mint"
 msgstr ""
@@ -1081,11 +1169,11 @@ msgstr ""
 msgid "Mint + Redeem"
 msgstr ""
 
-#: src/views/issuance/components/issue/IssueInput.tsx:15
+#: src/views/issuance/components/issue/IssueInput.tsx:16
 msgid "Mint amount"
 msgstr ""
 
-#: src/views/issuance/components/issue/ConfirmIssuance.tsx:92
+#: src/views/issuance/components/issue/ConfirmIssuance.tsx:89
 msgid "Mint {0}"
 msgstr ""
 
@@ -1098,13 +1186,13 @@ msgid "Missing collateral"
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:29
-#: src/views/tokens/components/UnlistedTokensTable.tsx:85
+#: src/views/tokens/components/UnlistedTokensTable.tsx:94
 msgid "Mkt Cap"
 msgstr ""
 
-#: src/views/settings/components/BasicInfo.tsx:21
-#: src/views/settings/components/GovernanceInfo.tsx:19
-#: src/views/tokens/components/UnlistedTokensTable.tsx:69
+#: src/views/settings/components/BasicInfo.tsx:22
+#: src/views/settings/components/GovernanceInfo.tsx:22
+#: src/views/tokens/components/UnlistedTokensTable.tsx:78
 msgid "Name"
 msgstr ""
 
@@ -1124,7 +1212,7 @@ msgstr ""
 msgid "New primary basket"
 msgstr ""
 
-#: src/views/governance/views/proposal/hooks/useProposalTx.ts:146
+#: src/views/governance/views/proposal/hooks/useProposalTx.ts:198
 msgid "New proposal"
 msgstr ""
 
@@ -1132,7 +1220,7 @@ msgstr ""
 msgid "Next steps"
 msgstr ""
 
-#: src/components/charts/area/AreaChart.tsx:96
+#: src/components/charts/area/AreaChart.tsx:97
 msgid "No data"
 msgstr ""
 
@@ -1140,12 +1228,16 @@ msgstr ""
 msgid "No emergency collateral for target"
 msgstr ""
 
-#: src/views/settings/components/EmergencyCollateralInfo.tsx:55
+#: src/views/settings/components/EmergencyCollateralInfo.tsx:59
 msgid "No emergency collateral for this target unit"
 msgstr ""
 
 #: src/views/auctions/index.tsx:257
 msgid "No ended {0} related auctions"
+msgstr ""
+
+#: src/views/governance/views/proposal/components/RolesProposal.tsx:93
+msgid "No holders for this role..."
 msgstr ""
 
 #: src/views/auctions/index.tsx:163
@@ -1156,7 +1248,11 @@ msgstr ""
 msgid "No plugins available"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:139
+#: src/views/governance/components/ProposalList.tsx:82
+msgid "No proposals created..."
+msgstr ""
+
+#: src/components/transactions/table/index.tsx:149
 msgid "No transactions"
 msgstr ""
 
@@ -1169,10 +1265,10 @@ msgid "Not frozen"
 msgstr ""
 
 #: src/views/auctions/index.tsx:148
-msgid "Ongoing"
+msgid "Ongoing auctions"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:127
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:145
 msgid "Only the guardian address or governance will be able to unpause"
 msgstr ""
 
@@ -1180,7 +1276,7 @@ msgstr ""
 msgid "Other"
 msgstr ""
 
-#: src/views/settings/components/OtherInfo.tsx:17
+#: src/views/settings/components/OtherInfo.tsx:19
 msgid "Other Parameters"
 msgstr ""
 
@@ -1194,19 +1290,19 @@ msgid "Other parameters"
 msgstr ""
 
 #: src/components/layout/navigation/index.tsx:89
-#: src/views/overview/components/TokenOverview.tsx:19
+#: src/views/overview/components/TokenOverview.tsx:23
 msgid "Overview"
 msgstr ""
 
-#: src/views/settings/components/BasicInfo.tsx:31
+#: src/views/settings/components/BasicInfo.tsx:38
 msgid "Owner Address"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:64
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:66
 msgid "Owner address"
 msgstr ""
 
-#: src/views/governance/components/proposal-detail/ContractProposalDetails.tsx:82
+#: src/views/governance/views/proposal-detail/components/ContractProposalDetails.tsx:82
 msgid "Parameters"
 msgstr ""
 
@@ -1214,7 +1310,11 @@ msgstr ""
 msgid "Pause"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:112
+#: src/views/settings/components/PauseManager.tsx:65
+msgid "Pause state"
+msgstr ""
+
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:130
 msgid "Pause status"
 msgstr ""
 
@@ -1226,7 +1326,7 @@ msgstr ""
 msgid "Paused"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:93
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:101
 msgid "Pauser address"
 msgstr ""
 
@@ -1234,9 +1334,9 @@ msgstr ""
 msgid "Pending"
 msgstr ""
 
-#: src/views/deploy/components/DeployOverview.tsx:38
+#: src/views/deploy/components/DeployOverview.tsx:40
 #: src/views/deploy/components/GovernanceOverview.tsx:37
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:46
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:47
 msgid "Pending, sign in wallet"
 msgstr ""
 
@@ -1244,19 +1344,27 @@ msgstr ""
 msgid "Permissions"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:89
+#: src/components/transactions/table/index.tsx:92
 msgid "Platform"
 msgstr ""
 
-#: src/views/staking/components/overview/index.tsx:118
+#: src/views/governance/index.tsx:38
+msgid "Please be patient with us while we improve governance related views"
+msgstr ""
+
+#: src/views/staking/components/overview/index.tsx:149
 msgid "Please carefully evaluate the RToken before choosing to stake your RSR here. If any of the various collaterals of this RToken default, then the staked RSR will be the first funds that get auctioned off to make up the difference for RToken holders."
 msgstr ""
 
-#: src/views/settings/components/GovernancePrompt.tsx:32
-msgid "Please complete the required governance configuration to start using your RToken"
+#: src/views/settings/components/GovernancePrompt.tsx:45
+msgid "Please complete the required governance configuration to complete deployment."
 msgstr ""
 
-#: src/views/deploy/components/DeployOverview.tsx:67
+#: src/views/deploy/components/DeployOverview.tsx:117
+msgid "Please connect your wallet"
+msgstr ""
+
+#: src/views/deploy/components/DeployOverview.tsx:69
 msgid "Please don't close this window to avoid issues finding your way back here."
 msgstr ""
 
@@ -1268,11 +1376,11 @@ msgstr ""
 msgid "Please read more about how Register manage tokens on our repository"
 msgstr ""
 
-#: src/views/deploy/components/DeployOverview.tsx:41
+#: src/views/deploy/components/DeployOverview.tsx:43
 msgid "Please sign the transaction in your wallet to continue with the deployment process."
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:49
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:50
 msgid "Please sign the transaction in your wallet to continue with the governance process."
 msgstr ""
 
@@ -1281,16 +1389,17 @@ msgid "Please sign the transaction in your wallet to continue with the governmen
 msgstr ""
 
 #: src/views/governance/views/proposal/components/ProposalBasketSetup.tsx:55
-msgid "Pre-filled token weights won’t accurately match the current distribution. Changing the basket means defining how you want the distribution going forward."
+msgid "Pre-filled token weights on this page won’t accurately match the current basket distribution. Define how you would like to propose the basket should be distributed going forward."
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:28
 #: src/views/home/components/Portfolio.tsx:37
 #: src/views/overview/components/PriceChart.tsx:74
-#: src/views/tokens/components/UnlistedTokensTable.tsx:80
+#: src/views/tokens/components/UnlistedTokensTable.tsx:89
 msgid "Price"
 msgstr ""
 
+#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:85
 #: src/views/overview/components/AssetOverview.tsx:110
 #: src/views/settings/components/BasketInfo.tsx:19
 msgid "Primary Basket"
@@ -1306,11 +1415,15 @@ msgstr ""
 msgid "Primary basket not defined"
 msgstr ""
 
-#: src/components/layout/sidebar/Footer.tsx:9
+#: src/components/layout/sidebar/Footer.tsx:23
 msgid "Proceed with caution"
 msgstr ""
 
-#: src/views/settings/components/GovernanceInfo.tsx:34
+#: src/views/settings/components/GovernanceInfo.tsx:45
+msgid "Proposal Threshold"
+msgstr ""
+
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:67
 msgid "Proposal Threshold (%)"
 msgstr ""
 
@@ -1318,24 +1431,16 @@ msgstr ""
 msgid "Proposal description"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:38
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:53
 msgid "Proposal execution delay (hours)"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/Intro.tsx:17
-msgid "Proposal text!"
-msgstr ""
-
-#: src/views/governance/components/GovernanceOverview.tsx:72
+#: src/views/governance/components/GovernanceOverview.tsx:75
 msgid "Proposals"
 msgstr ""
 
-#: src/views/governance/components/TopVoters.tsx:105
+#: src/views/governance/components/TopVoters.tsx:103
 msgid "Proposals voted"
-msgstr ""
-
-#: src/views/governance/views/proposal/components/ProposalOverview.tsx:53
-msgid "Propose changes"
 msgstr ""
 
 #: src/views/governance/views/proposal/components/Intro.tsx:14
@@ -1354,8 +1459,12 @@ msgstr ""
 msgid "Proposed"
 msgstr ""
 
+#: src/views/governance/views/proposal-detail/components/VoteModal.tsx:130
+msgid "Proposed by"
+msgstr ""
+
 #: src/views/deploy/components/Intro.tsx:32
-#: src/views/governance/views/proposal/components/Intro.tsx:31
+#: src/views/governance/views/proposal/components/Intro.tsx:36
 msgid "Protocol Docs"
 msgstr ""
 
@@ -1363,11 +1472,11 @@ msgstr ""
 msgid "Protocol Transactions"
 msgstr ""
 
-#: src/views/settings/components/GovernanceInfo.tsx:39
+#: src/views/settings/components/GovernanceInfo.tsx:50
 msgid "Quorum"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:62
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:80
 msgid "Quorum (%)"
 msgstr ""
 
@@ -1379,23 +1488,44 @@ msgstr ""
 msgid "RSR Staked"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:44
+#: src/views/overview/components/TokenOverview.tsx:45
 msgid "RSR Staked Pool"
 msgstr ""
 
+#: src/views/overview/components/RevenueSplitOverview.tsx:63
 #: src/views/settings/components/RevenueSplitInfo.tsx:30
 msgid "RSR Stakers"
+msgstr ""
+
+#: src/views/settings/components/ContractsInfo.tsx:22
+msgid "RSR Trader"
 msgstr ""
 
 #: src/views/home/components/Portfolio.tsx:68
 msgid "RSR Value"
 msgstr ""
 
-#: src/views/settings/components/ContractsInfo.tsx:22
+#: src/views/staking/components/stake/StakeInput.tsx:15
+msgid "RSR amount"
+msgstr ""
+
+#: src/views/overview/components/About.tsx:18
+msgid "RSV is backed by a basket of on-chain collateral assets, held by the Reserve Vault smart contract. This basket is currently compromised of entirely USDC — so each RSV is initially redeemable with the Reserve smart contracts for 1 USDC. Since each RSV token is redeemable directly for this basket, value of the RSV token is economically linked to the value of the basket. This anchors RSV at $1.00, as each of the current collateral tokens is redeemable for USD 1:1."
+msgstr ""
+
+#: src/views/overview/components/RevenueSplitOverview.tsx:29
+msgid "RSV is not integrated with the Reserve protocol at this time and is a separate discrete set of smart contracts."
+msgstr ""
+
+#: src/views/settings/components/BasicInfo.tsx:26
+msgid "RToken Address"
+msgstr ""
+
+#: src/views/settings/components/ContractsInfo.tsx:28
 msgid "RToken Asset"
 msgstr ""
 
-#: src/components/layout/header/AppHeader.tsx:34
+#: src/components/layout/header/AppHeader.tsx:33
 msgid "RToken Deployer"
 msgstr ""
 
@@ -1411,33 +1541,32 @@ msgstr ""
 msgid "RToken In Wallet"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:78
-#: src/views/settings/components/OtherInfo.tsx:46
+#: src/views/settings/components/OtherInfo.tsx:48
 msgid "RToken Maximum trade volume"
 msgstr ""
 
-#: src/views/settings/components/ContractsInfo.tsx:16
+#: src/components/rtoken-setup/token/OtherForm.tsx:87
+msgid "RToken Maximum trade volume ($)"
+msgstr ""
+
+#: src/views/settings/components/ContractsInfo.tsx:21
 msgid "RToken Trader"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:51
+#: src/views/overview/components/TokenOverview.tsx:53
 msgid "RToken Yield"
 msgstr ""
 
+#: src/views/overview/components/RevenueSplitOverview.tsx:57
 #: src/views/settings/components/RevenueSplitInfo.tsx:24
 msgid "RToken holders"
 msgstr ""
 
-#: src/components/layout/header/TokenToggle.tsx:26
+#: src/components/layout/header/TokenToggle.tsx:27
 msgid "RToken is frozen"
 msgstr ""
 
-#: src/views/settings/components/PauseManager.tsx:65
-msgid "RToken is not paused"
-msgstr ""
-
-#: src/components/layout/header/TokenToggle.tsx:28
-#: src/views/settings/components/PauseManager.tsx:65
+#: src/components/layout/header/TokenToggle.tsx:29
 msgid "RToken is paused"
 msgstr ""
 
@@ -1446,15 +1575,19 @@ msgstr ""
 msgid "RToken mandate"
 msgstr ""
 
-#: src/views/home/components/TokenStats.tsx:133
+#: src/views/home/components/TokenStats.tsx:132
 msgid "RToken stats"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:118
+#: src/views/overview/components/RecentTokenTransactions.tsx:54
+msgid "RToken transfers"
+msgstr ""
+
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:136
 msgid "RToken will be fully functional"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:115
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:133
 msgid "RToken will be left in pause state"
 msgstr ""
 
@@ -1470,19 +1603,23 @@ msgstr ""
 msgid "Rank"
 msgstr ""
 
-#: src/components/rtoken-setup/token/RevenueSplit.tsx:167
+#: src/components/rtoken-setup/token/RevenueSplit.tsx:168
 msgid "Read more about revenue distribution"
+msgstr ""
+
+#: src/views/overview/components/About.tsx:34
+msgid "Read more here on most recent backing change."
 msgstr ""
 
 #: src/components/rtoken-setup/token/ExternalRevenueSplit.tsx:120
 msgid "Receiving eth address"
 msgstr ""
 
-#: src/views/governance/components/ProposalList.tsx:62
+#: src/views/governance/components/ProposalList.tsx:59
 msgid "Recent proposals"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:43
+#: src/components/transactions/table/index.tsx:46
 #: src/views/issuance/components/redeem/RedeemInput.tsx:21
 msgid "Redeem"
 msgstr ""
@@ -1491,32 +1628,38 @@ msgstr ""
 msgid "Redeem amount"
 msgstr ""
 
-#: src/views/issuance/components/redeem/ConfirmRedemption.tsx:38
-#: src/views/issuance/components/redeem/ConfirmRedemption.tsx:119
+#: src/views/issuance/components/redeem/ConfirmRedemption.tsx:37
+#: src/views/issuance/components/redeem/ConfirmRedemption.tsx:118
 msgid "Redeem {0}"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:92
-#: src/components/rtoken-setup/token/BackingForm.tsx:105
-msgid "Redemption rate - allows the issuer to limit the amount of RTokens issued per block. This matters because in an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued. The default is 0.025%. If an RToken gets deployed with the default settings, only 0.025% of the market cap of the RToken can be issued per block. For more info see the “Issuance throttle” section here."
+#: src/components/rtoken-setup/token/BackingForm.tsx:102
+msgid "Redemption rate - allows the issuer to limit the amount of RTokens issued per block. This matters because in an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued. The default is 0.25%. If an RToken gets deployed with the default settings, only 2.5% of the market cap of the RToken can be issued per block."
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:91
+#: src/components/rtoken-setup/token/BackingForm.tsx:115
+msgid "Redemption rate - allows the issuer to limit the amount of RTokens issued per block. This matters because in an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued. The default is 1,000,000."
+msgstr ""
+
+#: src/components/rtoken-setup/token/BackingForm.tsx:101
 msgid "Redemption throttle Rate"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:103
-#: src/components/rtoken-setup/token/BackingForm.tsx:104
-#: src/views/settings/components/BackingInfo.tsx:55
+#: src/components/rtoken-setup/token/BackingForm.tsx:113
+#: src/components/rtoken-setup/token/BackingForm.tsx:114
+#: src/views/settings/components/BackingInfo.tsx:60
 msgid "Redemption throttle amount"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:90
-#: src/views/settings/components/BackingInfo.tsx:50
+#: src/views/settings/components/BackingInfo.tsx:55
+msgid "Redemption throttle rate"
+msgstr ""
+
+#: src/components/rtoken-setup/token/BackingForm.tsx:100
 msgid "Redemption throttle rate (%)"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/PluginItem.tsx:32
+#: src/components/rtoken-setup/basket/PluginItem.tsx:35
 msgid "Reference unit"
 msgstr ""
 
@@ -1532,12 +1675,12 @@ msgstr ""
 msgid "Register listed RTokens"
 msgstr ""
 
-#: src/views/home/components/Greet.tsx:91
+#: src/views/home/components/Greet.tsx:85
 msgid "Register.app is an independent project but with tight collaboration with the core team of the Reserve project. It’s created as the first Explorer/UI to interact with RTokens in different ways."
 msgstr ""
 
-#: src/views/settings/components/ContractsInfo.tsx:28
-msgid "Related contracts"
+#: src/views/settings/components/ContractsInfo.tsx:34
+msgid "Related Contracts"
 msgstr ""
 
 #: src/views/governance/views/proposal/components/ItemPreview.tsx:42
@@ -1547,7 +1690,11 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: src/views/issuance/components/balances/CollateralBalance.tsx:48
+#: src/views/settings/components/GovernancePrompt.tsx:38
+msgid "Required setup:"
+msgstr ""
+
+#: src/views/issuance/components/balances/CollateralBalance.tsx:52
 msgid "Required:"
 msgstr ""
 
@@ -1564,6 +1711,10 @@ msgstr ""
 msgid "Revenue Distribution"
 msgstr ""
 
+#: src/views/overview/components/RevenueSplitOverview.tsx:52
+msgid "Revenue Split"
+msgstr ""
+
 #: src/views/deploy/components/NavigationSidebar.tsx:18
 msgid "Revenue distribution"
 msgstr ""
@@ -1578,7 +1729,6 @@ msgid "Revenue split"
 msgstr ""
 
 #: src/views/governance/views/proposal/components/ItemPreview.tsx:47
-#: src/views/governance/views/proposal/components/ItemPreview.tsx:70
 #: src/views/governance/views/proposal/components/ProposalPreview.tsx:29
 #: src/views/governance/views/proposal/components/ProposedBackupPreview.tsx:82
 #: src/views/governance/views/proposal/components/ProposedBackupPreview.tsx:126
@@ -1586,23 +1736,23 @@ msgstr ""
 msgid "Revert"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:14
-msgid "Reward distribution - sliding scale that determines what percentage of the reward goes to RToken Holders and what percentage goes to RSR Stakers. The default is 40% to RToken Holders and 60% to RSR stakers. For more info see the appropriate sections on “Revenue distribution” here."
+#: src/views/settings/components/OtherInfo.tsx:38
+msgid "Reward ratio"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:54
-msgid "Reward period - length of time that comprises a single period. Works in conjunction with reward ratio (see below) to determine the desired payout rate. The default is 604800s or 7 days."
-msgstr ""
-
-#: src/components/rtoken-setup/token/OtherForm.tsx:52
-#: src/views/settings/components/OtherInfo.tsx:36
+#: src/components/rtoken-setup/token/OtherForm.tsx:61
 msgid "Reward ratio (decimals)"
 msgstr ""
 
-#: src/views/staking/components/overview/index.tsx:115
+#: src/components/rtoken-setup/token/OtherForm.tsx:63
+msgid "Reward ratio - amount of the current reward amount that should be handed out in a single period. Works in conjunction with reward period (see above) to determine the desired payout rate. The default is 0.0000032090147. This is approximately half life of 30 pay periods."
+msgstr ""
+
+#: src/views/staking/components/overview/index.tsx:146
 msgid "Risk evaluation"
 msgstr ""
 
+#: src/views/governance/components/GovernanceOverview.tsx:114
 #: src/views/settings/components/FreezeManager.tsx:119
 #: src/views/settings/components/FreezeManager.tsx:129
 #: src/views/settings/components/PauseManager.tsx:73
@@ -1627,20 +1777,21 @@ msgstr ""
 msgid "Select RToken"
 msgstr ""
 
-#: src/views/home/components/Greet.tsx:127
+#: src/views/home/components/Greet.tsx:121
 msgid "Select an RToken to:"
 msgstr ""
 
+#: src/views/auctions/index.tsx:82
+msgid "Selling"
+msgstr ""
+
 #: src/components/layout/navigation/index.tsx:96
+#: src/views/governance/components/GovernanceOverview.tsx:125
 msgid "Settings"
 msgstr ""
 
-#: src/views/governance/components/GovernanceOverview.tsx:115
-msgid "Settings & Roles"
-msgstr ""
-
 #: src/views/deploy/useGovernance.ts:69
-#: src/views/settings/components/GovernancePrompt.tsx:44
+#: src/views/settings/components/GovernancePrompt.tsx:42
 msgid "Setup Governance"
 msgstr ""
 
@@ -1653,16 +1804,19 @@ msgstr ""
 msgid "Short Freeze {0}"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:12
-#: src/views/settings/components/OtherInfo.tsx:21
+#: src/views/settings/components/OtherInfo.tsx:23
+msgid "Short freeze duration"
+msgstr ""
+
+#: src/components/rtoken-setup/token/OtherForm.tsx:19
 msgid "Short freeze duration (s)"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:27
-msgid "Short freeze duration - number of seconds an initial freeze lasts. The default is 259200s or 3 days. This provides the ability to freeze an RToken’s system for a short period of time which is useful to thwart an attack."
+#: src/components/rtoken-setup/token/OtherForm.tsx:21
+msgid "Short freezers have the responsibility of freezing an RToken if anything dangerous or suspicious is happening. This is a one-shot freeze and the role will be revoked after a single use. This field determines how long the RToken will remain frozen until the freeze expires or is extended by another actor. The default is 259200 second, or 3 days which we believe is enough time for appropriate parties to act."
 msgstr ""
 
-#: src/views/governance/components/proposal-detail/ContractProposalDetails.tsx:76
+#: src/views/governance/views/proposal-detail/components/ContractProposalDetails.tsx:76
 msgid "Signature"
 msgstr ""
 
@@ -1678,11 +1832,14 @@ msgstr ""
 msgid "Signing..."
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:14
+#: src/views/settings/components/GovernanceInfo.tsx:26
+msgid "Snapshot Delay"
+msgstr ""
+
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:25
 msgid "Snapshot delay (blocks)"
 msgstr ""
 
-#: src/views/auctions/index.tsx:82
 #: src/views/auctions/index.tsx:181
 msgid "Sold"
 msgstr ""
@@ -1695,8 +1852,9 @@ msgstr ""
 msgid "St Token Ticker"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:50
-#: src/views/home/components/Greet.tsx:56
+#: src/components/transactions/table/index.tsx:53
+#: src/views/home/components/Greet.tsx:57
+#: src/views/staking/components/stake/StakeInput.tsx:14
 msgid "Stake"
 msgstr ""
 
@@ -1704,13 +1862,13 @@ msgstr ""
 msgid "Stake + Unstake"
 msgstr ""
 
-#: src/views/staking/components/stake/ConfirmStake.tsx:23
-#: src/views/staking/components/stake/ConfirmStake.tsx:67
+#: src/views/staking/components/stake/ConfirmStake.tsx:22
+#: src/views/staking/components/stake/ConfirmStake.tsx:66
 #: src/views/staking/components/stake/Stake.tsx:25
 msgid "Stake RSR"
 msgstr ""
 
-#: src/views/tokens/components/UnlistedTokensTable.tsx:119
+#: src/views/tokens/components/UnlistedTokensTable.tsx:128
 msgid "Staked"
 msgstr ""
 
@@ -1722,51 +1880,65 @@ msgstr ""
 msgid "Staked RSR coverage"
 msgstr ""
 
-#: src/views/staking/components/overview/index.tsx:79
+#: src/views/staking/components/overview/index.tsx:57
+msgid "Staking APY"
+msgstr ""
+
+#: src/views/staking/components/overview/index.tsx:110
 msgid "Staking RSR"
 msgstr ""
 
 #: src/views/deploy/components/TokenForm.tsx:36
-#: src/views/settings/components/ContractsInfo.tsx:19
 msgid "Staking token"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:47
+#: src/components/transactions/table/index.tsx:50
 msgid "Start Issue"
 msgstr ""
 
 #: src/views/deploy/components/GovernanceOverview.tsx:60
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:69
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:70
 msgid "Stay patient while the transaction is in progress & don’t close this window to avoid issues finding your way back here."
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:102
-msgid "Submit proposal"
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:99
+msgid "Submit proposal on-chain"
 msgstr ""
 
 #: src/views/overview/components/SupplyChart.tsx:84
 msgid "Supply"
 msgstr ""
 
-#: src/views/settings/components/BasicInfo.tsx:22
+#: src/views/settings/components/BasicInfo.tsx:23
 msgid "Symbol"
 msgstr ""
 
-#: src/views/home/components/TokenStats.tsx:146
+#: src/views/home/components/TokenStats.tsx:145
 msgid "TVL in Reserve"
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:42
-#: src/views/tokens/components/UnlistedTokensTable.tsx:103
+#: src/views/tokens/components/UnlistedTokensTable.tsx:112
 msgid "Target(s)"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/PluginItem.tsx:84
+#: src/components/rtoken-setup/basket/PluginItem.tsx:88
 msgid "Target:"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:80
-msgid "Testing"
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:88
+msgid "The Guardian has the permissions of the Pauser, the ability to invoke a LONG_FREEZE, and the ability to cancel any active proposals prior to execution."
+msgstr ""
+
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:103
+msgid ""
+"The Pauser can PAUSE and SHORT_FREEZE.\n"
+"When an RToken’s system is paused, all interactions besides redemption, issuance cancellation, ERC20 functions and staking of RSR are disabled.\n"
+"When an RToken’s system is frozen, all interactions besides ERC20 functions and staking of RSR are disabled."
+msgstr ""
+
+#: src/views/home/components/Greet.tsx:82
+msgid "The RToken Register"
 msgstr ""
 
 #: src/views/home/components/About.tsx:42
@@ -1781,10 +1953,6 @@ msgstr ""
 msgid "The creation of new RToken designs is permissionless. If you are the inventive type and have ideas for what assets should be in the basket, what a good governance looks like, or anything novel that could work within the realms of the protocol, please consider putting those ideas into practice or sharing them with the community."
 msgstr ""
 
-#: src/views/staking/components/overview/index.tsx:129
-msgid "The description below applies to the default Reserve Governor Alexios. If an RToken's deployer opted out of this scheme, please consult with the RToken's documentation to understand how staking functions."
-msgstr ""
-
 #: src/components/rtoken-setup/basket/EmergencyCollateral.tsx:149
 msgid "The diversity factor determines the amount of emergency collateral that will be deployed to the RToken basket in the case of a default."
 msgstr ""
@@ -1793,12 +1961,34 @@ msgstr ""
 msgid "The mandate describes what goals its governors should try to achieve. By briefly explaining the RToken’s purpose and what the RToken is intended to do, it provides common ground for the governors to decide upon priorities and how to weigh tradeoffs."
 msgstr ""
 
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:56
+msgid "The minimum amount of time after a proposal passes before it can be executed."
+msgstr ""
+
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:69
+msgid "The minimum percentage of stRSR ownership on an RToken to be able to create a proposal."
+msgstr ""
+
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:82
+msgid "The minimum percentage of stRSR voter participation (either For or Abstain) on a proposal before it can be passed."
+msgstr ""
+
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:68
+msgid ""
+"The top level decision maker, typically a decentralized governance smart contract, responsible for setting or updating all RToken parameter values, RToken baskets, etc. - The RToken OWNER has the power to:\n"
+"grant and revoke roles to any Ethereum account\n"
+"pause and unpause the system\n"
+"freeze and unfreeze the system\n"
+"set governance parameters\n"
+"upgrade system contracts"
+msgstr ""
+
 #: src/views/overview/components/About.tsx:69
 msgid "There is no information about this token."
 msgstr ""
 
-#: src/views/home/components/TokenStats.tsx:134
-msgid "These stats are across all RTokens on the Reserve Protocol listed by this dApp, including anonymized data from the Reserve RPay app API."
+#: src/views/home/components/TokenStats.tsx:133
+msgid "These stats are across all RTokens on the Reserve Protocol listed by this dApp, including anonymized data from the Reserve Rpay app API."
 msgstr ""
 
 #: src/views/governance/views/proposal/components/RolesProposal.tsx:44
@@ -1809,15 +1999,15 @@ msgstr ""
 msgid "This app"
 msgstr ""
 
-#: src/components/field/index.tsx:26
+#: src/components/field/index.tsx:25
 msgid "This field is required"
 msgstr ""
 
 #: src/views/home/components/GeneralOverview.tsx:60
-msgid "This includes on-chain transactions for RTokens and RSV in addition to anonymized RPay transactions to show the full story of the Reserve ecosystem."
+msgid "This includes on-chain transactions for RTokens and RSV in addition to anonymized Rpay transactions to show the full story of the Reserve ecosystem."
 msgstr ""
 
-#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:41
+#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:43
 msgid "This is the target collateral basket at the onset of an RToken that defines which collateral needs to be deposited for issuances. The prime basket is directly set by governance, and only changes through successful governance proposals."
 msgstr ""
 
@@ -1830,11 +2020,11 @@ msgstr ""
 msgid "Ticker - symbol eg. USD+"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:83
+#: src/components/transactions/table/index.tsx:86
 msgid "Time"
 msgstr ""
 
-#: src/views/settings/components/GovernanceInfo.tsx:44
+#: src/views/settings/components/GovernanceInfo.tsx:55
 msgid "Timelock address"
 msgstr ""
 
@@ -1846,12 +2036,12 @@ msgstr ""
 msgid "Token"
 msgstr ""
 
-#: src/views/settings/components/BasicInfo.tsx:25
-msgid "Token Address"
-msgstr ""
-
 #: src/views/settings/components/BasicInfo.tsx:19
 msgid "Token Details"
+msgstr ""
+
+#: src/views/overview/components/External.tsx:48
+msgid "Token contract"
 msgstr ""
 
 #: src/views/settings/components/NavigationSidebar.tsx:10
@@ -1877,7 +2067,7 @@ msgstr ""
 msgid "Token ticker is required"
 msgstr ""
 
-#: src/views/governance/components/TopVoters.tsx:119
+#: src/views/governance/components/TopVoters.tsx:113
 msgid "Top voting addresses"
 msgstr ""
 
@@ -1885,20 +2075,23 @@ msgstr ""
 msgid "Total % to arbitrary address"
 msgstr ""
 
-#: src/views/home/components/TokenStats.tsx:140
+#: src/views/home/components/TokenStats.tsx:139
 msgid "Total RToken Market Cap"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:103
+#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:126
 msgid "Total initial RToken scale including all targets. If your RToken only has one target unit this will be the same as the basket scale input."
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:12
-#: src/views/settings/components/BackingInfo.tsx:20
+#: src/views/settings/components/BackingInfo.tsx:23
+msgid "Trading delay"
+msgstr ""
+
+#: src/components/rtoken-setup/token/BackingForm.tsx:20
 msgid "Trading delay (s)"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:14
+#: src/components/rtoken-setup/token/BackingForm.tsx:22
 msgid "Trading delay - how many seconds should pass after the basket has been changed, before a trade is opened. Why does this matter? To avoid losses due to poor liquidity. The default is 2160s or 36 minutes."
 msgstr ""
 
@@ -1915,7 +2108,7 @@ msgstr ""
 msgid "Transaction confirmed"
 msgstr ""
 
-#: src/components/transaction-modal/index.tsx:147
+#: src/components/transaction-modal/index.tsx:149
 #: src/hooks/useTransactionCost.ts:51
 msgid "Transaction failed"
 msgstr ""
@@ -1928,21 +2121,29 @@ msgstr ""
 msgid "Transaction reverted"
 msgstr ""
 
-#: src/components/transaction-modal/index.tsx:56
+#: src/components/transaction-modal/index.tsx:57
 msgid "Transaction signed!"
 msgstr ""
 
+#: src/views/deploy/components/GovernanceOverview.tsx:57
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:67
+msgid "Transaction submitted"
+msgstr ""
+
 #: src/views/home/components/GeneralOverview.tsx:59
-#: src/views/overview/components/RecentRSVTransactions.tsx:65
-#: src/views/overview/components/RecentTokenTransactions.tsx:54
+#: src/views/overview/components/RecentTransactions.tsx:51
 msgid "Transactions"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:44
+#: src/components/transactions/table/index.tsx:47
 msgid "Transfer"
 msgstr ""
 
-#: src/views/overview/components/External.tsx:38
+#: src/views/auctions/About.tsx:141
+msgid "Trigger an Auction"
+msgstr ""
+
+#: src/views/overview/components/External.tsx:34
 msgid "Twitter"
 msgstr ""
 
@@ -1954,20 +2155,20 @@ msgstr ""
 msgid "Tx 2"
 msgstr ""
 
-#: src/views/deploy/components/DeployOverview.tsx:128
+#: src/views/deploy/components/DeployOverview.tsx:137
 msgid "Tx1. RToken Deploy"
 msgstr ""
 
-#: src/views/deploy/components/GovernanceOverview.tsx:121
+#: src/views/deploy/components/GovernanceOverview.tsx:120
 msgid "Tx2. Governance"
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:32
-#: src/views/tokens/components/UnlistedTokensTable.tsx:94
+#: src/views/tokens/components/UnlistedTokensTable.tsx:103
 msgid "Txs"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:62
+#: src/components/transactions/table/index.tsx:65
 msgid "Type"
 msgstr ""
 
@@ -1975,7 +2176,7 @@ msgstr ""
 msgid "USD Value"
 msgstr ""
 
-#: src/views/home/components/Greet.tsx:49
+#: src/views/home/components/Greet.tsx:50
 msgid "Understand why each RToken exists. What is its backing? its governing mandate?"
 msgstr ""
 
@@ -2011,7 +2212,7 @@ msgstr ""
 msgid "Unpausing"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:51
+#: src/components/transactions/table/index.tsx:54
 #: src/views/staking/components/unstake/UnstakeInput.tsx:14
 msgid "Unstake"
 msgstr ""
@@ -2025,13 +2226,21 @@ msgstr ""
 msgid "Unstake {0}"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:38
-#: src/views/settings/components/OtherInfo.tsx:31
+#: src/views/settings/components/OtherInfo.tsx:33
+#: src/views/staking/components/overview/index.tsx:83
+msgid "Unstaking Delay"
+msgstr ""
+
+#: src/components/rtoken-setup/token/OtherForm.tsx:47
 msgid "Unstaking Delay (s)"
 msgstr ""
 
-#: src/views/staking/components/overview/index.tsx:104
+#: src/views/staking/components/overview/index.tsx:135
 msgid "Unstaking RSR"
+msgstr ""
+
+#: src/components/rtoken-setup/token/OtherForm.tsx:49
+msgid "Unstaking delay - number of seconds that all RSR unstaking must be delayed in order to account for stakers trying to frontrun defaults and needs to be longer than \"governance\" for proper incentives for basket changes. The default is 1209600s or 2 weeks."
 msgstr ""
 
 #: src/components/account/index.tsx:56
@@ -2050,12 +2259,16 @@ msgstr ""
 msgid "Use deployed token"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:41
+#: src/components/rtoken-setup/governance/GovernanceSetup.tsx:40
 msgid "Use the Alexios governor format?"
 msgstr ""
 
-#: src/views/home/components/Greet.tsx:53
+#: src/views/home/components/Greet.tsx:54
 msgid "Use this dApp to transform your various collateral types into RTokens."
+msgstr ""
+
+#: src/views/overview/components/RecentRSVTransactions.tsx:65
+msgid "User Transactions"
 msgstr ""
 
 #: src/views/home/components/About.tsx:80
@@ -2072,7 +2285,7 @@ msgstr ""
 
 #: src/views/auctions/index.tsx:135
 #: src/views/auctions/index.tsx:229
-#: src/views/settings/components/RolesView.tsx:51
+#: src/views/settings/components/RolesView.tsx:58
 msgid "View"
 msgstr ""
 
@@ -2080,18 +2293,27 @@ msgstr ""
 msgid "View All"
 msgstr ""
 
-#: src/components/transaction-modal/index.tsx:64
-#: src/views/issuance/components/issue/WrapCollateralModal.tsx:275
+#: src/components/transaction-modal/index.tsx:65
+#: src/views/governance/views/proposal-detail/components/VoteModal.tsx:117
+#: src/views/issuance/components/issue/WrapCollateralModal.tsx:270
 msgid "View on etherscan"
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:37
-#: src/views/tokens/components/UnlistedTokensTable.tsx:98
+#: src/views/tokens/components/UnlistedTokensTable.tsx:107
 msgid "Volume"
 msgstr ""
 
-#: src/views/governance/components/GovernanceOverview.tsx:82
+#: src/views/governance/views/proposal-detail/components/VoteModal.tsx:163
+msgid "Vote"
+msgstr ""
+
+#: src/views/governance/components/GovernanceOverview.tsx:85
 msgid "Vote Supply"
+msgstr ""
+
+#: src/views/governance/views/proposal-detail/components/ProposalVote.tsx:24
+msgid "Vote on-chain"
 msgstr ""
 
 #: src/views/governance/components/TopVoters.tsx:84
@@ -2102,15 +2324,15 @@ msgstr ""
 msgid "Votes"
 msgstr ""
 
-#: src/views/governance/components/GovernanceOverview.tsx:92
+#: src/views/governance/views/proposal-detail/components/VoteModal.tsx:125
+msgid "Voting"
+msgstr ""
+
+#: src/views/governance/components/GovernanceOverview.tsx:95
 msgid "Voting Addresses"
 msgstr ""
 
-#: src/views/settings/components/GovernanceInfo.tsx:24
-msgid "Voting Delay"
-msgstr ""
-
-#: src/views/settings/components/GovernanceInfo.tsx:29
+#: src/views/settings/components/GovernanceInfo.tsx:33
 msgid "Voting Period"
 msgstr ""
 
@@ -2118,7 +2340,7 @@ msgstr ""
 msgid "Voting on the RToken you are staked on requires you to delegate your vote to yourself or another Eth address."
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:26
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:39
 msgid "Voting period (blocks)"
 msgstr ""
 
@@ -2130,35 +2352,35 @@ msgstr ""
 msgid "Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational."
 msgstr ""
 
+#: src/views/auctions/About.tsx:158
+msgid "We aim to add a way to view the current auctions that could be triggered but have not yet."
+msgstr ""
+
 #: src/components/account/index.tsx:60
 msgid "We only support Ethereum Mainnet. Change your network in the connected wallet."
 msgstr ""
 
-#: src/views/overview/components/External.tsx:28
+#: src/views/overview/components/External.tsx:25
 msgid "Website"
-msgstr ""
-
-#: src/views/home/components/Greet.tsx:88
-msgid "Welcome to Register"
 msgstr ""
 
 #: src/views/settings/components/ListingInfo.tsx:25
 msgid "What is Reserve Governor Alexios?"
 msgstr ""
 
-#: src/views/staking/components/overview/index.tsx:82
+#: src/views/staking/components/overview/index.tsx:113
 msgid "When staking RSR, you are putting your RSR at risk in the case of a collateral default in exchange for 1) the rights to govern the RToken and 2) for a portion of the revenue generated by the collateral. The revenue sent to the staked RSR pool will be distributed amongst RSR stakers proportionally to their stake in the pool."
 msgstr ""
 
-#: src/views/staking/components/overview/index.tsx:94
+#: src/views/staking/components/overview/index.tsx:125
 msgid "When you stake your RSR, you will receive a stRSR receipt token which represents your ownership in the staked RSR contract. As revenue is distributed, the receipt token will be redeemable for an increasing amount of RSR. If there is a default scenario where the staked RSR is slashed, then the receipt token will be redeemable for a decreased amount of RSR."
 msgstr ""
 
-#: src/views/staking/components/overview/index.tsx:107
+#: src/views/staking/components/overview/index.tsx:138
 msgid "When you unstake your stRSR, there will be a delay (defined by governance). This is to eliminate game theory scenarios that would make the backstop RSR staked pool less effective because people would continually be incentivized to unstake and restake."
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:52
+#: src/components/transactions/table/index.tsx:55
 #: src/views/staking/components/balances/Balances.tsx:91
 msgid "Withdraw"
 msgstr ""
@@ -2167,7 +2389,7 @@ msgstr ""
 msgid "Withdraw RSR"
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:54
+#: src/components/transactions/table/index.tsx:57
 msgid "Withdrawal"
 msgstr ""
 
@@ -2175,17 +2397,21 @@ msgstr ""
 msgid "Worst case price"
 msgstr ""
 
-#: src/views/issuance/components/about/index.tsx:31
-#: src/views/issuance/components/issue/WrapCollateralModal.tsx:377
+#: src/views/issuance/components/issue/WrapCollateralModal.tsx:400
+msgid "Wrap aTokens"
+msgstr ""
+
+#: src/views/issuance/components/about/index.tsx:48
+#: src/views/issuance/components/issue/WrapCollateralModal.tsx:400
 msgid "Wrap tokens"
 msgstr ""
 
-#: src/views/issuance/components/issue/WrapCollateralModal.tsx:286
-msgid "Wrap your Aave collaterals"
+#: src/views/issuance/components/about/index.tsx:25
+msgid "Wrapping Aave aTokens"
 msgstr ""
 
-#: src/views/issuance/components/about/index.tsx:25
-msgid "Wrapping your Aave tokens"
+#: src/views/issuance/components/issue/WrapCollateralModal.tsx:281
+msgid "Wrapping needs to be done before minting"
 msgstr ""
 
 #: src/components/rtoken-setup/token/ExternalRevenueSplit.tsx:132
@@ -2196,12 +2422,12 @@ msgstr ""
 msgid "You submit the transaction configuring your RToken design"
 msgstr ""
 
-#: src/views/home/components/Portfolio.tsx:108
-msgid "Your RTokens"
+#: src/views/deploy/components/DeployOverview.tsx:92
+msgid "You will be the temporary owner until governance is deployed in transaction 2."
 msgstr ""
 
-#: src/views/staking/components/overview/index.tsx:43
-msgid "Your stake"
+#: src/views/home/components/Portfolio.tsx:108
+msgid "Your RTokens"
 msgstr ""
 
 #: src/views/staking/components/balances/Balances.tsx:109
@@ -2212,15 +2438,23 @@ msgstr ""
 msgid "Your staked RSR positions"
 msgstr ""
 
-#: src/utils/index.ts:61
+#: src/views/issuance/components/about/index.tsx:28
+msgid "aTokens from Aave don’t operate exactly the same technically as some other collateral tokens. In order for the protocol to predictably know how to handle them, they need to be wrapped into an additional “wrapper” contract so that the collateral can be handled and monitored appropriately. When wrapped, the aToken collateral is exactly the same, but it just has a new interface that the protocol can use to monitor price and appreciation. <0/>More information in the"
+msgstr ""
+
+#: src/utils/index.ts:65
 msgid "mth"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:50
-msgid "proposalThreshold (%)"
+#: src/views/overview/components/RecentTransactions.tsx:50
+msgid "recent on-chain transactions"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:55
+#: src/views/settings/components/ContractsInfo.tsx:25
+msgid "stRSR Token"
+msgstr ""
+
+#: src/views/overview/components/TokenOverview.tsx:64
 msgid "stRSR Yield"
 msgstr ""
 
@@ -2228,7 +2462,7 @@ msgstr ""
 msgid "stRSR amount"
 msgstr ""
 
-#: src/components/rtoken-setup/token/OtherForm.tsx:53
+#: src/components/rtoken-setup/token/OtherForm.tsx:62
 msgid "stRSR payout fraction 0.0"
 msgstr ""
 

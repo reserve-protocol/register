@@ -26,6 +26,7 @@ export const proposedRolesAtom = atomWithReset({
   pausers: [] as string[],
   freezers: [] as string[],
   longFreezers: [] as string[],
+  guardians: [] as string[],
 })
 
 export const revenueSplitChangesAtom = atomWithReset<RevenueSplitChanges>({
