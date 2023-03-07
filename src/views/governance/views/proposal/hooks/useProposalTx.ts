@@ -127,9 +127,10 @@ const useProposalTx = () => {
       }
 
       for (const roleChange of roleChanges) {
-        addresses.push(contracts.main)
+        const isGuardian = roleChange.role === 'guardians'
+        addresses.push(isGuardian ? governance.timelock : contracts.main)
         calls.push(
-          MainInterface.encodeFunctionData(
+          (isGuardian ? TimelockInterface : MainInterface).encodeFunctionData(
             roleChange.isNew ? 'grantRole' : 'revokeRole',
             [ROLES[roleChange.role], roleChange.address]
           )

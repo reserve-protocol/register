@@ -1,4 +1,5 @@
 import { useWeb3React } from '@web3-react/core'
+import { getAddress } from 'ethers/lib/utils'
 import { gql } from 'graphql-request'
 import { useTimelockContract } from 'hooks/useContract'
 import useQuery from 'hooks/useQuery'
@@ -10,6 +11,7 @@ import {
   rTokenGuardiansAtom,
   rTokenManagersAtom,
 } from 'state/atoms'
+import { isAddress } from 'utils'
 
 const query = gql`
   query getRTokenOwner($id: String!) {
@@ -114,8 +116,8 @@ const RTokenGovernanceUpdater = () => {
         setGovernance({
           name,
           proposalThreshold: (+proposalThreshold / 1e6).toString(),
-          timelock: timelockAddress,
-          governor: contractAddress,
+          timelock: isAddress(timelockAddress) || '',
+          governor: isAddress(contractAddress) || '',
           votingDelay,
           votingPeriod,
           quorumDenominator,
