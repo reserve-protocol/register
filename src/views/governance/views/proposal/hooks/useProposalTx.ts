@@ -1,19 +1,23 @@
-import { BasketHandler } from './../../../../../abis/types/BasketHandler'
-import { useContractCall } from 'hooks/useCall'
 import { t } from '@lingui/macro'
 import {
   AssetRegistryInterface,
   BasketHandlerInterface,
+  DistributorInterface,
   MainInterface,
   TimelockInterface,
 } from 'abis'
+import { useContractCall } from 'hooks/useCall'
 import {
   basketChangesAtom,
   isNewBackupProposedAtom,
   proposalDescriptionAtom,
 } from './../atoms'
 
-import { backupCollateralAtom, basketAtom } from 'components/rtoken-setup/atoms'
+import {
+  backupCollateralAtom,
+  basketAtom,
+  revenueSplitAtom,
+} from 'components/rtoken-setup/atoms'
 import { BigNumber, ethers } from 'ethers'
 import { parseEther } from 'ethers/lib/utils'
 import { useAtomValue } from 'jotai'
@@ -21,7 +25,9 @@ import { useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { rTokenContractsAtom, rTokenGovernanceAtom } from 'state/atoms'
 import { parsePercent } from 'utils'
+import { FURNACE_ADDRESS, ST_RSR_ADDRESS } from 'utils/addresses'
 import { TRANSACTION_STATUS } from 'utils/constants'
+import { getSharesFromSplit } from 'views/deploy/utils'
 import {
   backupChangesAtom,
   isNewBasketProposedAtom,
@@ -66,6 +72,7 @@ const useProposalTx = () => {
   const newBasket = useAtomValue(isNewBasketProposedAtom)
   const basket = useAtomValue(basketAtom)
   const backup = useAtomValue(backupCollateralAtom)
+  const revenueSplit = useAtomValue(revenueSplitAtom)
   const governance = useAtomValue(rTokenGovernanceAtom)
   const parameterMap = useAtomValue(parameterContractMapAtom)
   const contracts = useAtomValue(rTokenContractsAtom)
@@ -225,12 +232,11 @@ const useProposalTx = () => {
       /* ########################## 
       ## Parse backup            ## 
       ############################# */
-      if (newBackup) {
+      if (newBackup && backupChanges.count) {
         for (const targetUnit of Object.keys(newBackup)) {
           const { collaterals, diversityFactor } = backup[targetUnit]
 
           collaterals.forEach((collateral, index) => {
-            addresses.push(contracts.basketHandler)
             const backupCollaterals: string[] = []
 
             for (const collateral of collaterals) {
@@ -241,6 +247,7 @@ const useProposalTx = () => {
               backupCollaterals.push(collateral.address)
             }
 
+            addresses.push(contracts.basketHandler)
             calls.push(
               BasketHandlerInterface.encodeFunctionData('setBackupConfig', [
                 ethers.utils.formatBytes32String(targetUnit.toUpperCase()),
@@ -255,7 +262,46 @@ const useProposalTx = () => {
       /* ########################## 
       ## Parse revenue changes   ## 
       ############################# */
-      // TODO: revenue changes
+      if (revenueChanges.count) {
+        const [dist, beneficiaries] = getSharesFromSplit(revenueSplit)
+
+        for (const revChange of revenueChanges.externals) {
+          if (!revChange.isNew) {
+            addresses.push(contracts.distributor)
+            calls.push(
+              DistributorInterface.encodeFunctionData('setDistribution', [
+                FURNACE_ADDRESS,
+                { rTokenDist: BigNumber.from(0), rsrDist: BigNumber.from(0) },
+              ])
+            )
+          }
+        }
+
+        addresses.push(contracts.distributor)
+        calls.push(
+          DistributorInterface.encodeFunctionData('setDistribution', [
+            FURNACE_ADDRESS,
+            { rTokenDist: dist.rTokenDist, rsrDist: BigNumber.from(0) },
+          ])
+        )
+        addresses.push(contracts.distributor)
+        calls.push(
+          DistributorInterface.encodeFunctionData('setDistribution', [
+            ST_RSR_ADDRESS,
+            { rTokenDist: BigNumber.from(0), rsrDist: dist.rsrDist },
+          ])
+        )
+
+        for (const external of beneficiaries) {
+          addresses.push(contracts.distributor)
+          calls.push(
+            DistributorInterface.encodeFunctionData('setDistribution', [
+              external.beneficiary,
+              external.revShare,
+            ])
+          )
+        }
+      }
 
       // TODO: REMOVE THIS!!!!
       // addresses.push(governance.governor)

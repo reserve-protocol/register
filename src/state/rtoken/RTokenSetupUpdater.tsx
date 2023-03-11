@@ -25,6 +25,7 @@ import {
 import { promiseMulticall } from 'state/web3/lib/multicall'
 import { StringMap } from 'types'
 import { getContract } from 'utils'
+import { FURNACE_ADDRESS, ST_RSR_ADDRESS } from 'utils/addresses'
 
 const shareToPercent = (shares: number): string => {
   return Math.floor((shares * 100) / 10000).toString()
@@ -118,8 +119,6 @@ const RTokenSetupUpdater = () => {
           'DistributionSet(address,uint16,uint16)'
         )
         const dist: StringMap = { external: {}, holders: '', stakers: '' }
-        const furnace = '0x0000000000000000000000000000000000000001'
-        const stRSR = '0x0000000000000000000000000000000000000002'
 
         for (const event of events) {
           if (event.args) {
@@ -128,9 +127,9 @@ const RTokenSetupUpdater = () => {
             // Dist removed
             if (!rTokenDist && !rsrDist) {
               delete dist[dest]
-            } else if (dest === furnace) {
+            } else if (dest === FURNACE_ADDRESS) {
               dist.holders = shareToPercent(rTokenDist)
-            } else if (dest === stRSR) {
+            } else if (dest === ST_RSR_ADDRESS) {
               dist.stakers = shareToPercent(rsrDist)
             } else {
               const holders = shareToPercent(rTokenDist)
