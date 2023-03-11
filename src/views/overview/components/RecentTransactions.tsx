@@ -10,7 +10,7 @@ const recentTxsQuery = gql`
   query GetRecentTransactions($tokenId: String!) {
     entries(
       orderBy: timestamp
-      where: { token: $tokenId, type_not_in: ["ISSUE", "BURN"] }
+      where: { token: $tokenId, type_not_in: ["ISSUE"] }
       orderDirection: desc
       first: 50
     ) {

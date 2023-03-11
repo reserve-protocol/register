@@ -45,7 +45,7 @@ const TransactionsTable = ({
       MINT: t`Mint`,
       REDEEM: t`Redeem`,
       TRANSFER: t`Transfer`,
-      BURN: t`Burn`,
+      BURN: t`Redeem`,
       ISSUE: t`Issue`,
       ISSUE_START: t`Start Issue`,
       CLAIM: t`Claim`,
