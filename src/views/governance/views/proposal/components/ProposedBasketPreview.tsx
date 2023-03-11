@@ -1,10 +1,8 @@
 import { t, Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
-import { basketAtom } from 'components/rtoken-setup/atoms'
 import { useAtom, useAtomValue } from 'jotai'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { basketChangesAtom, isNewBasketProposedAtom } from '../atoms'
-import { CollateralChange } from '../hooks/useBackupChanges'
 import ListItemPreview from './ListItemPreview'
 import PreviewBox from './PreviewBox'
 
@@ -13,44 +11,9 @@ const ProposedBasketPreview = (props: BoxProps) => {
     isNewBasketProposedAtom
   )
   const basketChanges = useAtomValue(basketChangesAtom)
-  const [proposedPrimaryBasket, setBasketProposed] = useAtom(basketAtom)
 
   if (!isNewBasketProposed) {
     return null
-  }
-
-  const handleRevert = (change: CollateralChange) => {
-    const proposedBasket =
-      proposedPrimaryBasket[change.collateral.targetUnit] || {}
-
-    if (change.isNew) {
-      const index = proposedBasket.collaterals.findIndex(
-        (c) => c.address === change.collateral.address
-      )
-
-      setBasketProposed({
-        ...proposedPrimaryBasket,
-        [change.collateral.targetUnit]: {
-          ...proposedBasket,
-          collaterals: [
-            ...proposedBasket.collaterals.slice(0, index),
-            ...proposedBasket.collaterals.slice(index + 1),
-          ],
-        },
-      })
-    } else {
-      setBasketProposed({
-        ...proposedPrimaryBasket,
-        [change.collateral.targetUnit]: {
-          ...proposedBasket,
-          collaterals: [
-            ...(proposedBasket?.collaterals || []),
-            // TODO: Missing add weight on revert?
-            change.collateral,
-          ],
-        },
-      })
-    }
   }
 
   return (
@@ -78,7 +41,7 @@ const ProposedBasketPreview = (props: BoxProps) => {
         >
           {basketChanges.map((change, index) => (
             <ListItemPreview
-              mt={4}
+              mt={3}
               isNew={change.isNew}
               label={change.collateral.symbol}
               key={index}

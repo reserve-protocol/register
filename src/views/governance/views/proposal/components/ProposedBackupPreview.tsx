@@ -103,6 +103,7 @@ const ProposedBackupPreview = (props: BoxProps) => {
           ))}
           {collateralChanges.map((change) => (
             <ListItemPreview
+              mt={3}
               isNew={change.isNew}
               onRevert={() => handleRevertCollateral(change)}
               label={change.collateral.symbol}

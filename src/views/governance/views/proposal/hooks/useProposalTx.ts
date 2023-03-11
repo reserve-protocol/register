@@ -1,3 +1,4 @@
+import { useContractCall } from 'hooks/useCall'
 import { t } from '@lingui/macro'
 import {
   AssetRegistryInterface,
@@ -5,7 +6,11 @@ import {
   MainInterface,
   TimelockInterface,
 } from 'abis'
-import { basketChangesAtom, proposalDescriptionAtom } from './../atoms'
+import {
+  basketChangesAtom,
+  isNewBackupProposedAtom,
+  proposalDescriptionAtom,
+} from './../atoms'
 
 import { basketAtom } from 'components/rtoken-setup/atoms'
 import { BigNumber } from 'ethers'
@@ -56,11 +61,18 @@ const useProposalTx = () => {
   const revenueChanges = useAtomValue(revenueSplitChangesAtom)
   const parameterChanges = useAtomValue(parametersChangesAtom)
   const roleChanges = useAtomValue(roleChangesAtom)
+  const newBackup = useAtomValue(isNewBackupProposedAtom)
   const newBasket = useAtomValue(isNewBasketProposedAtom)
   const basket = useAtomValue(basketAtom)
   const governance = useAtomValue(rTokenGovernanceAtom)
   const parameterMap = useAtomValue(parameterContractMapAtom)
   const contracts = useAtomValue(rTokenContractsAtom)
+  const { value: registeredAssets } = useContractCall({
+    abi: AssetRegistryInterface,
+    address: contracts.assetRegistry,
+    method: 'getRegistry',
+    args: [],
+  }) || { value: [] }
   const description = useAtomValue(proposalDescriptionAtom)
   const { getValues } = useFormContext()
 
@@ -70,6 +82,12 @@ const useProposalTx = () => {
     let redemptionThrottleChange = false
     let issuanceThrottleChange = false
     const tokenConfig = getValues()
+    const assets = new Set<string>(
+      registeredAssets[0]
+        ? [...(registeredAssets[0][0] || []), ...(registeredAssets[0][1] || [])]
+        : []
+    )
+    const newAssets = new Set<string>()
 
     try {
       /* ########################## 
@@ -149,7 +167,7 @@ const useProposalTx = () => {
         const primaryBasket: string[] = []
         const weights: BigNumber[] = []
 
-        // TODO: Update asset registry / Assets comp/aave
+        // Get call arguments
         for (const targetUnit of Object.keys(basket)) {
           const { collaterals, distribution, scale } = basket[targetUnit]
 
@@ -166,17 +184,34 @@ const useProposalTx = () => {
           })
         }
 
+        // Register missing collateral/assets on the asset registry
         for (const changes of basketChanges) {
-          if (changes.isNew) {
+          if (changes.isNew && !assets.has(changes.collateral.address)) {
             addresses.push(contracts.assetRegistry)
             calls.push(
               AssetRegistryInterface.encodeFunctionData('register', [
                 changes.collateral.address,
               ])
             )
+            newAssets.add(changes.collateral.address)
+
+            if (
+              changes.collateral.rewardToken &&
+              !assets.has(changes.collateral.rewardToken) &&
+              !newAssets.has(changes.collateral.rewardToken)
+            ) {
+              newAssets.add(contracts.assetRegistry)
+              addresses.push(contracts.assetRegistry)
+              calls.push(
+                AssetRegistryInterface.encodeFunctionData('register', [
+                  changes.collateral.rewardToken,
+                ])
+              )
+            }
           }
         }
 
+        // Set primeBasket with new collaterals and weights
         addresses.push(contracts.basketHandler)
         calls.push(
           BasketHandlerInterface.encodeFunctionData('setPrimeBasket', [
@@ -184,6 +219,7 @@ const useProposalTx = () => {
             weights,
           ])
         )
+        // Refresh basket is needed for the action to take effect
         addresses.push(contracts.BasketHandler)
         calls.push(
           BasketHandlerInterface.encodeFunctionData('refreshBasket', [])
@@ -193,7 +229,8 @@ const useProposalTx = () => {
       /* ########################## 
       ## Parse backup            ## 
       ############################# */
-      // TODO: Backup changes
+      if (newBackup) {
+      }
 
       /* ########################## 
       ## Parse revenue changes   ## 
@@ -235,7 +272,7 @@ const useProposalTx = () => {
         args: [addresses, new Array(calls.length).fill(0), calls, description],
       },
     }
-  }, [contracts, description])
+  }, [contracts, description, JSON.stringify(registeredAssets)])
 }
 
 export default useProposalTx
