@@ -2,7 +2,6 @@ import { t, Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import { backupCollateralAtom } from 'components/rtoken-setup/atoms'
 import { useAtom, useAtomValue } from 'jotai'
-import { Plus, X } from 'react-feather'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { backupChangesAtom, isNewBackupProposedAtom } from '../atoms'
 import {
@@ -10,6 +9,7 @@ import {
   DiversityFactorChange,
 } from '../hooks/useBackupChanges'
 import { ParameterChangePreview } from './ItemPreview'
+import ListItemPreview from './ListItemPreview'
 import PreviewBox from './PreviewBox'
 
 const ProposedBackupPreview = (props: BoxProps) => {
@@ -35,7 +35,7 @@ const ProposedBackupPreview = (props: BoxProps) => {
   }
 
   const handleRevertCollateral = (change: CollateralChange) => {
-    const proposedBasket = proposedBackup[change.collateral.targetUnit]
+    const proposedBasket = proposedBackup[change.collateral.targetUnit] || {}
 
     if (change.isNew) {
       const index = proposedBasket.collaterals.findIndex(
@@ -69,7 +69,7 @@ const ProposedBackupPreview = (props: BoxProps) => {
 
   return (
     <>
-      <Box variant="layout.borderBox" mt={4}>
+      <Box variant="layout.borderBox" {...props}>
         <Box variant="layout.verticalAlign">
           <Text variant="strong" sx={{ color: 'warning' }}>
             <Trans>New backup configuration</Trans>
@@ -88,7 +88,7 @@ const ProposedBackupPreview = (props: BoxProps) => {
           variant="layout.borderBox"
           count={count}
           title={t`Backup basket`}
-          {...props}
+          mt={4}
         >
           {diversityFactor.map((change) => (
             <ParameterChangePreview
@@ -101,31 +101,13 @@ const ProposedBackupPreview = (props: BoxProps) => {
               key={change.target}
             />
           ))}
-          {collateralChanges.map((change, index) => (
-            <Box
-              variant="layout.verticalAlign"
-              key={change.collateral.address}
-              mt={3}
-            >
-              {change.isNew ? (
-                <Plus color="#11BB8D" size={18} />
-              ) : (
-                <X color="#FF0000" size={18} />
-              )}
-              <Box ml={2}>
-                <Text variant="legend" sx={{ fontSize: 1, display: 'block' }}>
-                  {change.isNew ? <Trans>Add</Trans> : <Trans>Remove</Trans>}
-                </Text>
-                <Text>{change.collateral.symbol}</Text>
-              </Box>
-              <SmallButton
-                ml="auto"
-                variant="muted"
-                onClick={() => handleRevertCollateral(change)}
-              >
-                <Trans>Revert</Trans>
-              </SmallButton>
-            </Box>
+          {collateralChanges.map((change) => (
+            <ListItemPreview
+              isNew={change.isNew}
+              onRevert={() => handleRevertCollateral(change)}
+              label={change.collateral.symbol}
+              key={change.collateral.symbol}
+            />
           ))}
           {priorityChanges.map((change) => (
             <ParameterChangePreview

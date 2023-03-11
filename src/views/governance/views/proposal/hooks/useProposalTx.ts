@@ -1,12 +1,11 @@
-import { BasketHandler } from './../../../../../abis/types/BasketHandler'
-import { proposalDescriptionAtom } from './../atoms'
 import { t } from '@lingui/macro'
 import {
+  AssetRegistryInterface,
   BasketHandlerInterface,
-  GovernanceInterface,
   MainInterface,
   TimelockInterface,
 } from 'abis'
+import { basketChangesAtom, proposalDescriptionAtom } from './../atoms'
 
 import { basketAtom } from 'components/rtoken-setup/atoms'
 import { BigNumber } from 'ethers'
@@ -25,7 +24,6 @@ import {
   revenueSplitChangesAtom,
   roleChangesAtom,
 } from '../atoms'
-import { RoleKey } from 'types'
 
 const paramParse: { [x: string]: (v: string) => BigNumber } = {
   minTradeVolume: parseEther,
@@ -54,6 +52,7 @@ const ROLES: { [x: string]: string } = {
 // TODO: May want to use a separate memo to calculate the calldatas
 const useProposalTx = () => {
   const backupChanges = useAtomValue(backupChangesAtom)
+  const basketChanges = useAtomValue(basketChangesAtom)
   const revenueChanges = useAtomValue(revenueSplitChangesAtom)
   const parameterChanges = useAtomValue(parametersChangesAtom)
   const roleChanges = useAtomValue(roleChangesAtom)
@@ -73,6 +72,9 @@ const useProposalTx = () => {
     const tokenConfig = getValues()
 
     try {
+      /* ########################## 
+      ## Parse parameter changes ## 
+      ############################# */
       for (const paramChange of parameterChanges) {
         if (
           paramChange.field === 'issuanceThrottleAmount' ||
@@ -126,6 +128,9 @@ const useProposalTx = () => {
         }
       }
 
+      /* ########################## 
+      ##   Parse role changes    ## 
+      ############################# */
       for (const roleChange of roleChanges) {
         const isGuardian = roleChange.role === 'guardians'
         addresses.push(isGuardian ? governance.timelock : contracts.main)
@@ -137,6 +142,9 @@ const useProposalTx = () => {
         )
       }
 
+      /* ########################## 
+      ## Parse basket changes    ## 
+      ############################# */
       if (newBasket) {
         const primaryBasket: string[] = []
         const weights: BigNumber[] = []
@@ -158,6 +166,17 @@ const useProposalTx = () => {
           })
         }
 
+        for (const changes of basketChanges) {
+          if (changes.isNew) {
+            addresses.push(contracts.assetRegistry)
+            calls.push(
+              AssetRegistryInterface.encodeFunctionData('register', [
+                changes.collateral.address,
+              ])
+            )
+          }
+        }
+
         addresses.push(contracts.basketHandler)
         calls.push(
           BasketHandlerInterface.encodeFunctionData('setPrimeBasket', [
@@ -170,6 +189,16 @@ const useProposalTx = () => {
           BasketHandlerInterface.encodeFunctionData('refreshBasket', [])
         )
       }
+
+      /* ########################## 
+      ## Parse backup            ## 
+      ############################# */
+      // TODO: Backup changes
+
+      /* ########################## 
+      ## Parse revenue changes   ## 
+      ############################# */
+      // TODO: revenue changes
 
       // TODO: REMOVE THIS!!!!
       // addresses.push(governance.governor)
