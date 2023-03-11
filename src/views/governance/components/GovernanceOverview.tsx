@@ -102,7 +102,7 @@ const GovernanceOverview = () => {
           </Box>
         </Grid>
       </Box>
-      <Box mt={4} variant="layout.borderBox">
+      <Box mt={4} mb={4} variant="layout.borderBox">
         <Text variant="subtitle">
           <Trans>Governance format</Trans>
         </Text>

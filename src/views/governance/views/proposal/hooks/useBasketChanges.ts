@@ -10,11 +10,17 @@ import { StringMap } from 'types'
 import { isNewBasketProposedAtom } from '../atoms'
 import { CollateralChange } from './useBackupChanges'
 
-function parseBasket(basket: PrimaryUnitBasket): {
+function parseBasket(
+  basket: PrimaryUnitBasket,
+  symbol = false
+): {
   [x: string]: { collateral: Collateral; index: number }
 } {
   return (basket?.collaterals ?? []).reduce((prev, current, index) => {
-    prev[current.address] = { collateral: current, index }
+    prev[symbol ? current.symbol : current.address] = {
+      collateral: current,
+      index,
+    }
     return prev
   }, {} as StringMap)
 }
@@ -49,19 +55,21 @@ const useBasketChanges = () => {
         }
       } else {
         // Traverse collaterals for changes in priority/additions/deletions
-        const proposedBasketCollateralMap = parseBasket(proposedBasket[target])
-        const currentBasketCollateralMap = parseBasket(basket[target])
+        const proposedBasketCollateralMap = parseBasket(
+          proposedBasket[target],
+          true
+        )
+        const currentBasketCollateralMap = parseBasket(basket[target], true)
 
-        const collateralAddresses = new Set([
+        const collateralSymbols = new Set([
           ...Object.keys(proposedBasketCollateralMap),
           ...Object.keys(currentBasketCollateralMap),
         ])
 
-        for (const collateralAddress of Array.from(collateralAddresses)) {
+        for (const collateralSymbol of Array.from(collateralSymbols)) {
           const proposedCollateral =
-            proposedBasketCollateralMap[collateralAddress]
-          const currentCollateral =
-            currentBasketCollateralMap[collateralAddress]
+            proposedBasketCollateralMap[collateralSymbol]
+          const currentCollateral = currentBasketCollateralMap[collateralSymbol]
 
           if (
             (!currentCollateral && proposedCollateral) ||
