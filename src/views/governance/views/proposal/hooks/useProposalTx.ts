@@ -1,3 +1,4 @@
+import { BasketHandler } from './../../../../../abis/types/BasketHandler'
 import { useContractCall } from 'hooks/useCall'
 import { t } from '@lingui/macro'
 import {
@@ -12,8 +13,8 @@ import {
   proposalDescriptionAtom,
 } from './../atoms'
 
-import { basketAtom } from 'components/rtoken-setup/atoms'
-import { BigNumber } from 'ethers'
+import { backupCollateralAtom, basketAtom } from 'components/rtoken-setup/atoms'
+import { BigNumber, ethers } from 'ethers'
 import { parseEther } from 'ethers/lib/utils'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
@@ -64,6 +65,7 @@ const useProposalTx = () => {
   const newBackup = useAtomValue(isNewBackupProposedAtom)
   const newBasket = useAtomValue(isNewBasketProposedAtom)
   const basket = useAtomValue(basketAtom)
+  const backup = useAtomValue(backupCollateralAtom)
   const governance = useAtomValue(rTokenGovernanceAtom)
   const parameterMap = useAtomValue(parameterContractMapAtom)
   const contracts = useAtomValue(rTokenContractsAtom)
@@ -88,6 +90,16 @@ const useProposalTx = () => {
         : []
     )
     const newAssets = new Set<string>()
+
+    const addToRegistry = (address: string) => {
+      if (!assets.has(address) && !newAssets.has(address)) {
+        addresses.push(contracts.assetRegistry)
+        calls.push(
+          AssetRegistryInterface.encodeFunctionData('register', [address])
+        )
+        newAssets.add(address)
+      }
+    }
 
     try {
       /* ########################## 
@@ -186,27 +198,11 @@ const useProposalTx = () => {
 
         // Register missing collateral/assets on the asset registry
         for (const changes of basketChanges) {
-          if (changes.isNew && !assets.has(changes.collateral.address)) {
-            addresses.push(contracts.assetRegistry)
-            calls.push(
-              AssetRegistryInterface.encodeFunctionData('register', [
-                changes.collateral.address,
-              ])
-            )
-            newAssets.add(changes.collateral.address)
+          if (changes.isNew) {
+            addToRegistry(changes.collateral.address)
 
-            if (
-              changes.collateral.rewardToken &&
-              !assets.has(changes.collateral.rewardToken) &&
-              !newAssets.has(changes.collateral.rewardToken)
-            ) {
-              newAssets.add(contracts.assetRegistry)
-              addresses.push(contracts.assetRegistry)
-              calls.push(
-                AssetRegistryInterface.encodeFunctionData('register', [
-                  changes.collateral.rewardToken,
-                ])
-              )
+            if (changes.collateral.rewardToken) {
+              addToRegistry(changes.collateral.rewardToken)
             }
           }
         }
@@ -220,7 +216,7 @@ const useProposalTx = () => {
           ])
         )
         // Refresh basket is needed for the action to take effect
-        addresses.push(contracts.BasketHandler)
+        addresses.push(contracts.basketHandler)
         calls.push(
           BasketHandlerInterface.encodeFunctionData('refreshBasket', [])
         )
@@ -230,6 +226,30 @@ const useProposalTx = () => {
       ## Parse backup            ## 
       ############################# */
       if (newBackup) {
+        for (const targetUnit of Object.keys(newBackup)) {
+          const { collaterals, diversityFactor } = backup[targetUnit]
+
+          collaterals.forEach((collateral, index) => {
+            addresses.push(contracts.basketHandler)
+            const backupCollaterals: string[] = []
+
+            for (const collateral of collaterals) {
+              addToRegistry(collateral.address)
+              if (collateral.rewardToken) {
+                addToRegistry(collateral.rewardToken)
+              }
+              backupCollaterals.push(collateral.address)
+            }
+
+            calls.push(
+              BasketHandlerInterface.encodeFunctionData('setBackupConfig', [
+                ethers.utils.formatBytes32String(targetUnit.toUpperCase()),
+                parseEther(diversityFactor.toString()),
+                backupCollaterals,
+              ])
+            )
+          })
+        }
       }
 
       /* ########################## 
