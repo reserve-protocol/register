@@ -1,13 +1,14 @@
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import {
+  AssetRegistryInterface,
   BasketHandlerInterface,
+  CollateralInterface,
   ERC20Interface,
   FacadeInterface,
   MainInterface,
   StRSRInterface,
 } from 'abis'
-import { StRsr } from 'abis/types'
 import { ethers } from 'ethers'
 import { formatEther } from 'ethers/lib/utils'
 import useBlockNumber from 'hooks/useBlockNumber'
@@ -19,6 +20,7 @@ import {
   basketNonceAtom,
   rsrExchangeRateAtom,
   rTokenCollateralDist,
+  rTokenCollateralStatusAtom,
   rTokenContractsAtom,
   rTokenDistributionAtom,
   rTokenStatusAtom,
@@ -26,7 +28,7 @@ import {
   stRSRSupplyAtom,
 } from 'state/atoms'
 import { promiseMulticall } from 'state/web3/lib/multicall'
-import { getContract, truncateDecimals } from 'utils'
+import { truncateDecimals } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 
@@ -44,6 +46,7 @@ const RTokenStateUpdater = () => {
   const setBasketNonce = useSetAtom(basketNonceAtom)
   const setSupply = useSetAtom(rTokenTotalSupplyAtom)
   const setStaked = useSetAtom(stRSRSupplyAtom)
+  const setCollateralStatus = useSetAtom(rTokenCollateralStatusAtom)
   const { provider, chainId } = useWeb3React()
   const blockNumber = useBlockNumber()
   const contracts = useAtomValue(rTokenContractsAtom)
@@ -86,6 +89,42 @@ const RTokenStateUpdater = () => {
     },
     []
   )
+
+  const getCollateralStatus = async () => {
+    if (rToken && !rToken.isRSV && provider && contracts.assetRegistry) {
+      try {
+        const assets = await promiseMulticall(
+          rToken.collaterals.map((c) => ({
+            address: contracts.assetRegistry,
+            abi: AssetRegistryInterface,
+            method: 'toAsset',
+            args: [c.address],
+          })),
+          provider
+        )
+
+        const status = await promiseMulticall(
+          assets.map((asset) => ({
+            address: asset,
+            abi: CollateralInterface,
+            method: 'status',
+            args: [],
+          })),
+          provider
+        )
+
+        const collateralStatusMap: { [x: string]: 0 | 1 | 2 } = {}
+
+        for (let i = 0; i < status.length; i++) {
+          collateralStatusMap[rToken.collaterals[i].address] = status[i]
+        }
+
+        setCollateralStatus(collateralStatusMap)
+      } catch (e) {
+        console.error('error fetching status', e)
+      }
+    }
+  }
 
   const getBackingDistribution = useCallback(
     async (tokenAddress: string, provider: Web3Provider) => {
@@ -185,11 +224,16 @@ const RTokenStateUpdater = () => {
   useEffect(() => {
     if (provider && blockNumber && rToken?.main && chainId === CHAIN_ID) {
       getTokenStatus(rToken.main, provider)
+      getCollateralStatus()
       if (rToken.stToken?.address) {
         getTokenMetrics(rToken.address, rToken.stToken.address, provider)
       }
     }
   }, [rToken?.main, blockNumber])
+
+  useEffect(() => {
+    getCollateralStatus()
+  }, [contracts.assetRegistry, blockNumber])
 
   useEffect(() => {
     if (basketNonce) {

@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/macro'
+import Help from 'components/help'
 import TokenLogo from 'components/icons/TokenLogo'
 import useRToken from 'hooks/useRToken'
 import { atom, useAtomValue } from 'jotai'
@@ -6,11 +7,13 @@ import { useMemo } from 'react'
 import {
   rTokenAtom,
   rTokenCollateralDist,
+  rTokenCollateralStatusAtom,
   rTokenDistributionAtom,
   rTokenPriceAtom,
 } from 'state/atoms'
 import { Box, Card, Flex, Grid, Text } from 'theme-ui'
 import { formatCurrency, stringToColor } from 'utils'
+import { COLLATERAL_STATUS } from 'utils/constants'
 import RSV from 'utils/rsv'
 import CollateralPieChart from './CollateralPieChart'
 
@@ -51,11 +54,22 @@ const basketDistAtom = atom((get) => {
   return get(rTokenCollateralDist)
 })
 
+const getCollateralColor = (status: 0 | 1 | 2) => {
+  if (status === COLLATERAL_STATUS.IFFY) {
+    return 'warning'
+  } else if (status === COLLATERAL_STATUS.DEFAULT) {
+    return 'danger'
+  }
+
+  return 'text'
+}
+
 const AssetOverview = () => {
   const rToken = useRToken()
   const basketDist = useAtomValue(basketDistAtom)
   const distribution = useAtomValue(rTokenDistributionAtom)
   const price = useAtomValue(rTokenPriceAtom)
+  const collateralStatus = useAtomValue(rTokenCollateralStatusAtom)
   const pieData = useMemo(() => {
     if (rToken?.address && basketDist && Object.keys(basketDist)) {
       return rToken.collaterals.map((c, index) => ({
@@ -109,14 +123,37 @@ const AssetOverview = () => {
           <Text variant="legend">
             <Trans>Primary Basket</Trans>
           </Text>
-          {(rToken?.collaterals ?? []).map((c) => (
-            <Flex mt={3} key={c.address} sx={{ alignItems: 'center' }}>
+          {(rToken?.collaterals ?? []).map((c, index) => (
+            <Flex
+              mt={3}
+              key={c.address}
+              sx={{
+                alignItems: 'center',
+              }}
+            >
               <TokenLogo symbol={c.symbol} mr={3} />
               <Box>
                 <Text variant="legend" sx={{ fontSize: 1, display: 'block' }}>
                   {basketDist[c.address]?.targetUnit}
                 </Text>
-                <Text>{c.symbol}</Text>
+                <Box
+                  variant="layout.verticalAlign"
+                  sx={{
+                    color: getCollateralColor(collateralStatus[c.address]),
+                  }}
+                >
+                  <Text>{c.symbol}</Text>
+                  {!!collateralStatus[c.address] && (
+                    <Help
+                      ml={1}
+                      content={
+                        collateralStatus[c.address] === COLLATERAL_STATUS.IFFY
+                          ? 'Collateral on IFFY status'
+                          : 'Collateral on DEFAULT status'
+                      }
+                    />
+                  )}
+                </Box>
               </Box>
               <Text ml="auto">{basketDist[c.address]?.share || 0}%</Text>
             </Flex>

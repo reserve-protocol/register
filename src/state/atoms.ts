@@ -17,7 +17,7 @@ import {
   TransactionMap,
   TransactionState,
 } from 'types'
-import { RSR, TRANSACTION_STATUS } from 'utils/constants'
+import { COLLATERAL_STATUS, RSR, TRANSACTION_STATUS } from 'utils/constants'
 import { WalletTransaction } from './../types/index'
 import {
   BackupBasket,
@@ -53,6 +53,15 @@ export const reserveTokensAtom = atomWithStorage<{
 
 // Current selected rToken address
 export const selectedRTokenAtom = atom('')
+
+// TODO: Temporal measure - track collateral status
+export const rTokenCollateralStatusAtom = atom<{ [x: string]: 0 | 1 | 2 }>({})
+
+export const rTokenBasketStatusAtom = atom((get) => {
+  const status = get(rTokenCollateralStatusAtom)
+
+  return Math.max(...Object.values(status))
+})
 
 // RToken related contracts
 export const rTokenContractsAtom = atomWithReset<StringMap>({
