@@ -20,6 +20,7 @@ import {
 import { truncateDecimals } from 'utils'
 import {
   backupChangesAtom,
+  basketChangesAtom,
   isNewBackupProposedAtom,
   isNewBasketProposedAtom,
   isProposalValidAtom,
@@ -28,6 +29,7 @@ import {
   roleChangesAtom,
 } from './atoms'
 import useBackupChanges from './hooks/useBackupChanges'
+import useBasketChanges from './hooks/useBasketChanges'
 import useParametersChanges from './hooks/useParametersChanges'
 import useRevenueSplitChanges from './hooks/useRevenueSplitChanges'
 import useRoleChanges from './hooks/useRoleChanges'
@@ -98,6 +100,7 @@ export const RTokenDataUpdater = () => {
 export const ChangesUpdater = () => {
   // Changes hooks
   const backupChanges = useBackupChanges()
+  const basketChanges = useBasketChanges()
   const revenueChanges = useRevenueSplitChanges()
   const parameterChanges = useParametersChanges()
   const roleChanges = useRoleChanges()
@@ -116,6 +119,11 @@ export const ChangesUpdater = () => {
   const setParameterChanges = useSetAtom(parametersChangesAtom)
   const setRoleChanges = useSetAtom(roleChangesAtom)
   const setValidState = useSetAtom(isProposalValidAtom)
+  const setBasketChanges = useSetAtom(basketChangesAtom)
+
+  useEffect(() => {
+    setBasketChanges(basketChanges)
+  }, [basketChanges])
 
   useEffect(() => {
     setBackupChanges(backupChanges)

@@ -1,9 +1,13 @@
-import { BackupUnitBasket, BackupBasket } from 'components/rtoken-setup/atoms'
-import { backupCollateralAtom, Collateral } from 'components/rtoken-setup/atoms'
+import {
+  backupCollateralAtom,
+  BackupUnitBasket,
+  Collateral,
+} from 'components/rtoken-setup/atoms'
 import { useAtomValue } from 'jotai'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { rTokenBackupAtom } from 'state/atoms'
 import { StringMap } from 'types'
+import { isNewBackupProposedAtom } from '../atoms'
 
 export interface DiversityFactorChange {
   target: string
@@ -44,7 +48,7 @@ function parseBackupBasket(basket: BackupUnitBasket): {
 const useBackupChanges = (): BackupChanges => {
   const backup = useAtomValue(rTokenBackupAtom)
   const proposedBackup = useAtomValue(backupCollateralAtom)
-  const [hasRendered, setRendered] = useState(false)
+  const isNewBackupProposed = useAtomValue(isNewBackupProposedAtom)
 
   return useMemo(() => {
     const changes: BackupChanges = {
@@ -54,12 +58,10 @@ const useBackupChanges = (): BackupChanges => {
       count: 0,
     }
 
-    if (!hasRendered) {
-      setRendered(true)
-      return changes
-    }
-
-    if (!Object.keys(backup) && !Object.keys(proposedBackup)) {
+    if (
+      !isNewBackupProposed ||
+      (!Object.keys(backup) && !Object.keys(proposedBackup))
+    ) {
       return changes
     }
 
@@ -111,17 +113,15 @@ const useBackupChanges = (): BackupChanges => {
           const currentCollateral =
             currentBasketCollateralMap[collateralAddress]
 
-          if (!currentCollateral && proposedCollateral) {
+          if (
+            (!currentCollateral && proposedCollateral) ||
+            (currentCollateral && !proposedCollateral)
+          ) {
             changes.count += 1
             changes.collateralChanges.push({
-              collateral: proposedCollateral.collateral,
-              isNew: true,
-            })
-          } else if (currentCollateral && !proposedCollateral) {
-            changes.count += 1
-            changes.collateralChanges.push({
-              collateral: currentCollateral.collateral,
-              isNew: false,
+              collateral:
+                proposedCollateral?.collateral || currentCollateral?.collateral,
+              isNew: !!proposedCollateral,
             })
           } else if (currentCollateral.index !== proposedCollateral.index) {
             changes.count += 1

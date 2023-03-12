@@ -2,6 +2,8 @@ import { AddressMap } from 'types'
 import { ChainId } from 'utils/chains'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
+export const FURNACE_ADDRESS = '0x0000000000000000000000000000000000000001'
+export const ST_RSR_ADDRESS = '0x0000000000000000000000000000000000000002'
 
 // The deployer version is also related to the protocol version
 export const DEPLOYER_ADDRESS: AddressMap = {
