@@ -1,7 +1,6 @@
 import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import {
-  AssetRegistryInterface,
   BasketHandlerInterface,
   CollateralInterface,
   ERC20Interface,
@@ -19,6 +18,7 @@ import { useCallback, useEffect } from 'react'
 import {
   basketNonceAtom,
   rsrExchangeRateAtom,
+  rTokenCollateralAssetsAtom,
   rTokenCollateralDist,
   rTokenCollateralStatusAtom,
   rTokenContractsAtom,
@@ -39,6 +39,7 @@ import { CHAIN_ID } from 'utils/chains'
  */
 const RTokenStateUpdater = () => {
   const rToken = useRToken()
+  const assets = useAtomValue(rTokenCollateralAssetsAtom)
   const updateTokenStatus = useSetAtom(rTokenStatusAtom)
   const setDistribution = useSetAtom(rTokenDistributionAtom)
   const setExchangeRate = useSetAtom(rsrExchangeRateAtom)
@@ -91,18 +92,14 @@ const RTokenStateUpdater = () => {
   )
 
   const getCollateralStatus = async () => {
-    if (rToken && !rToken.isRSV && provider && contracts.assetRegistry) {
+    if (
+      rToken &&
+      !rToken.isRSV &&
+      assets.length &&
+      provider &&
+      contracts.assetRegistry
+    ) {
       try {
-        const assets = await promiseMulticall(
-          rToken.collaterals.map((c) => ({
-            address: contracts.assetRegistry,
-            abi: AssetRegistryInterface,
-            method: 'toAsset',
-            args: [c.address],
-          })),
-          provider
-        )
-
         const status = await promiseMulticall(
           assets.map((asset) => ({
             address: asset,
@@ -233,7 +230,7 @@ const RTokenStateUpdater = () => {
 
   useEffect(() => {
     getCollateralStatus()
-  }, [contracts.assetRegistry, blockNumber])
+  }, [contracts.assetRegistry, JSON.stringify(assets), blockNumber])
 
   useEffect(() => {
     if (basketNonce) {

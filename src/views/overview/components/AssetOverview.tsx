@@ -93,7 +93,7 @@ const AssetOverview = () => {
           }}
         >
           <Text>
-            <Trans>Basket of 1 {rToken?.symbol}</Trans>
+            <Trans>Target basket of 1 {rToken?.symbol}</Trans>
           </Text>
           <Text variant="legend">${formatCurrency(price ?? 0)}</Text>
           <CollateralPieChart
@@ -107,7 +107,7 @@ const AssetOverview = () => {
           <Text variant="legend">
             <Trans>Backing</Trans>
             <Box as="span" ml={2} sx={{ fontWeight: '500', color: 'text' }}>
-              {rToken?.isRSV ? 100 : +price.toFixed(2) * 100}%
+              {rToken?.isRSV ? 100 : Math.min(100, distribution.backing)}%{' '}
             </Box>
           </Text>
           {!rToken?.isRSV && (

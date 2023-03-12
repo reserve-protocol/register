@@ -45,7 +45,7 @@ export const defaultValues = {
   maxTrade: '1000000',
   shortFreeze: '259200', // 3days
   longFreeze: '2592000', // 30days
-  // governance
+// governance
   ...governanceDefaultValues,
 }
 

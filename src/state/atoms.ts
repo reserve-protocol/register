@@ -55,10 +55,15 @@ export const reserveTokensAtom = atomWithStorage<{
 export const selectedRTokenAtom = atom('')
 
 // TODO: Temporal measure - track collateral status
+export const rTokenCollateralAssetsAtom = atom<string[]>([])
 export const rTokenCollateralStatusAtom = atom<{ [x: string]: 0 | 1 | 2 }>({})
 
 export const rTokenBasketStatusAtom = atom((get) => {
   const status = get(rTokenCollateralStatusAtom)
+
+  if (!Object.keys(status).length) {
+    return 0
+  }
 
   return Math.max(...Object.values(status))
 })
