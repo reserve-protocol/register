@@ -225,7 +225,7 @@ msgstr ""
 msgid "Back to settings"
 msgstr ""
 
-#: src/views/overview/components/AssetOverview.tsx:94
+#: src/views/overview/components/AssetOverview.tsx:108
 msgid "Backing"
 msgstr ""
 
@@ -291,8 +291,12 @@ msgstr ""
 msgid "Basket Handler"
 msgstr ""
 
-#: src/views/overview/components/AssetOverview.tsx:82
-msgid "Basket of 1 {0}"
+#: src/components/layout/header/TokenToggle.tsx:65
+msgid "Basket defaulted"
+msgstr ""
+
+#: src/components/layout/header/TokenToggle.tsx:67
+msgid "Basket iffy"
 msgstr ""
 
 #: src/components/rtoken-setup/basket/UnitBasket.tsx:89
@@ -329,10 +333,6 @@ msgstr ""
 
 #: src/views/settings/components/ContractsInfo.tsx:23
 msgid "Broker"
-msgstr ""
-
-#: src/components/transactions/table/index.tsx:48
-msgid "Burn"
 msgstr ""
 
 #: src/views/auctions/index.tsx:96
@@ -1400,7 +1400,7 @@ msgid "Price"
 msgstr ""
 
 #: src/components/rtoken-setup/basket/PrimaryBasket.tsx:85
-#: src/views/overview/components/AssetOverview.tsx:110
+#: src/views/overview/components/AssetOverview.tsx:124
 #: src/views/settings/components/BasketInfo.tsx:19
 msgid "Primary Basket"
 msgstr ""
@@ -1562,11 +1562,11 @@ msgstr ""
 msgid "RToken holders"
 msgstr ""
 
-#: src/components/layout/header/TokenToggle.tsx:27
+#: src/components/layout/header/TokenToggle.tsx:36
 msgid "RToken is frozen"
 msgstr ""
 
-#: src/components/layout/header/TokenToggle.tsx:29
+#: src/components/layout/header/TokenToggle.tsx:38
 msgid "RToken is paused"
 msgstr ""
 
@@ -1620,6 +1620,7 @@ msgid "Recent proposals"
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:46
+#: src/components/transactions/table/index.tsx:48
 #: src/views/issuance/components/redeem/RedeemInput.tsx:21
 msgid "Redeem"
 msgstr ""
@@ -1876,7 +1877,7 @@ msgstr ""
 msgid "Staked RSR + Rtoken Value"
 msgstr ""
 
-#: src/views/overview/components/AssetOverview.tsx:101
+#: src/views/overview/components/AssetOverview.tsx:115
 msgid "Staked RSR coverage"
 msgstr ""
 
@@ -1915,6 +1916,10 @@ msgstr ""
 
 #: src/views/home/components/TokenStats.tsx:145
 msgid "TVL in Reserve"
+msgstr ""
+
+#: src/views/overview/components/AssetOverview.tsx:96
+msgid "Target basket of 1 {0}"
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:42

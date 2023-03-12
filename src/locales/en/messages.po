@@ -225,7 +225,7 @@ msgstr "Back to Governance"
 msgid "Back to settings"
 msgstr "Back to settings"
 
-#: src/views/overview/components/AssetOverview.tsx:94
+#: src/views/overview/components/AssetOverview.tsx:108
 msgid "Backing"
 msgstr "Backing"
 
@@ -291,9 +291,13 @@ msgstr "Basket"
 msgid "Basket Handler"
 msgstr "Basket Handler"
 
-#: src/views/overview/components/AssetOverview.tsx:82
-msgid "Basket of 1 {0}"
-msgstr "Basket of 1 {0}"
+#: src/components/layout/header/TokenToggle.tsx:65
+msgid "Basket defaulted"
+msgstr "Basket defaulted"
+
+#: src/components/layout/header/TokenToggle.tsx:67
+msgid "Basket iffy"
+msgstr "Basket iffy"
 
 #: src/components/rtoken-setup/basket/UnitBasket.tsx:89
 msgid "Basket scale for this unit of account. This is used to initially calculate how much of each token is required for minting."
@@ -330,10 +334,6 @@ msgstr "Bought"
 #: src/views/settings/components/ContractsInfo.tsx:23
 msgid "Broker"
 msgstr "Broker"
-
-#: src/components/transactions/table/index.tsx:48
-msgid "Burn"
-msgstr "Burn"
 
 #: src/views/auctions/index.tsx:96
 msgid "Buying"
@@ -1403,7 +1403,7 @@ msgid "Price"
 msgstr "Price"
 
 #: src/components/rtoken-setup/basket/PrimaryBasket.tsx:85
-#: src/views/overview/components/AssetOverview.tsx:110
+#: src/views/overview/components/AssetOverview.tsx:124
 #: src/views/settings/components/BasketInfo.tsx:19
 msgid "Primary Basket"
 msgstr "Primary Basket"
@@ -1565,11 +1565,11 @@ msgstr "RToken Yield"
 msgid "RToken holders"
 msgstr "RToken holders"
 
-#: src/components/layout/header/TokenToggle.tsx:27
+#: src/components/layout/header/TokenToggle.tsx:36
 msgid "RToken is frozen"
 msgstr "RToken is frozen"
 
-#: src/components/layout/header/TokenToggle.tsx:29
+#: src/components/layout/header/TokenToggle.tsx:38
 msgid "RToken is paused"
 msgstr "RToken is paused"
 
@@ -1623,6 +1623,7 @@ msgid "Recent proposals"
 msgstr "Recent proposals"
 
 #: src/components/transactions/table/index.tsx:46
+#: src/components/transactions/table/index.tsx:48
 #: src/views/issuance/components/redeem/RedeemInput.tsx:21
 msgid "Redeem"
 msgstr "Redeem"
@@ -1879,7 +1880,7 @@ msgstr "Staked"
 msgid "Staked RSR + Rtoken Value"
 msgstr "Staked RSR + Rtoken Value"
 
-#: src/views/overview/components/AssetOverview.tsx:101
+#: src/views/overview/components/AssetOverview.tsx:115
 msgid "Staked RSR coverage"
 msgstr "Staked RSR coverage"
 
@@ -1919,6 +1920,10 @@ msgstr "Symbol"
 #: src/views/home/components/TokenStats.tsx:145
 msgid "TVL in Reserve"
 msgstr "TVL in Reserve"
+
+#: src/views/overview/components/AssetOverview.tsx:96
+msgid "Target basket of 1 {0}"
+msgstr "Target basket of 1 {0}"
 
 #: src/components/tables/ListedTokensTable.tsx:42
 #: src/views/tokens/components/UnlistedTokensTable.tsx:112
