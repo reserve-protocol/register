@@ -1,17 +1,16 @@
 import { Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
+import { useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { Box, BoxProps, Button } from 'theme-ui'
 import { Proposal } from 'types'
+import { proposalDetailAtom } from '../atom'
 import VoteModal from './VoteModal'
 
-interface Props extends BoxProps {
-  proposal: Proposal
-}
-
 // TODO: Validate voting power first?
-const ProposalVote = ({ proposal, ...props }: Props) => {
+const ProposalVote = (props: BoxProps) => {
   const { account } = useWeb3React()
+  const proposal = useAtomValue(proposalDetailAtom)
   const [isVisible, setVisible] = useState(false)
 
   if (!account) {
@@ -23,9 +22,7 @@ const ProposalVote = ({ proposal, ...props }: Props) => {
       <Button sx={{ width: '100%' }} onClick={() => setVisible(true)}>
         <Trans>Vote on-chain</Trans>
       </Button>
-      {isVisible && (
-        <VoteModal proposal={proposal} onClose={() => setVisible(false)} />
-      )}
+      {isVisible && <VoteModal onClose={() => setVisible(false)} />}
     </Box>
   )
 }

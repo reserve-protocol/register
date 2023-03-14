@@ -1,51 +1,40 @@
+import { Trans } from '@lingui/macro'
 import MDEditor from '@uiw/react-md-editor'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import { useMemo } from 'react'
-import { useParams } from 'react-router-dom'
-import { Box, Card, Grid, Spinner } from 'theme-ui'
+import { useNavigate, useParams } from 'react-router-dom'
+import { Box, Card, Divider, Grid, Text } from 'theme-ui'
 import { Proposal } from 'types'
-import ProposalDetail from 'views/governance/components/ProposalDetail'
+import { shortenAddress } from 'utils'
+import ProposalDetail from 'views/governance/components/ProposalDetailPreview'
 import ProposalVote from './components/ProposalVote'
-
-const query = gql`
-  query getProposal($id: String!) {
-    proposal(id: $id) {
-      id
-      description
-      creationTime
-      state
-      calldatas
-      targets
-      proposer {
-        address
-      }
-    }
-  }
-`
-
-const useProposal = (id: string) => {
-  const response = useQuery(id ? query : null, {
-    id,
-  })
-
-  return useMemo(() => {
-    const { data, error } = response
-
-    return {
-      data: data?.proposal ?? null,
-      error: !!error,
-      loading: !data?.proposal && !error,
-    }
-  }, [response])
-}
+import dayjs from 'dayjs'
+import GoTo from 'components/button/GoTo'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import { SmallButton } from 'components/button'
+import { ArrowLeft } from 'react-feather'
+import useRToken from 'hooks/useRToken'
+import { ROUTES } from 'utils/constants'
+import useProposalDetail from './useProposalDetail'
 
 const GovernanceProposalDetail = () => {
   const { proposalId } = useParams()
-  const { data: proposal, loading } = useProposal(proposalId ?? '')
+  const rToken = useRToken()
+  const { data: proposal, loading } = useProposalDetail(proposalId ?? '')
+  const navigate = useNavigate()
 
-  if (proposal?.proposer?.address) {
-    proposal.proposer = proposal.proposer.address
+  let title = 'Loading...'
+  let description = ''
+
+  if (proposal?.description) {
+    const [heading, ...content] = proposal.description.split(/\r?\n/)
+    title = heading.replaceAll('#', '').trim()
+    description = content.join('\n')
+  }
+
+  const handleBack = () => {
+    navigate(`${ROUTES.GOVERNANCE}?token=${rToken?.address}`)
   }
 
   return (
@@ -62,14 +51,52 @@ const GovernanceProposalDetail = () => {
       }}
     >
       <Box>
+        <Box variant="layout.verticalAlign" mb={4}>
+          <SmallButton variant="muted" onClick={handleBack}>
+            <Box variant="layout.verticalAlign">
+              <ArrowLeft size={14} style={{ marginRight: 10 }} />
+              <Trans>Back</Trans>
+            </Box>
+          </SmallButton>
+        </Box>
+
         <Card p={4} mb={4}>
-          {loading && <Spinner size={24} />}
-          {proposal?.description && (
-            <MDEditor.Markdown
-              source={proposal.description}
-              style={{ whiteSpace: 'pre-wrap', backgroundColor: 'transparent' }}
-            />
-          )}
+          <Text variant="title" mb={2}>
+            {title}
+          </Text>
+          <Box variant="layout.verticalAlign" sx={{ fontSize: 1 }}>
+            <Text variant="legend" mr={1}>
+              <Trans>Proposed by</Trans>:
+            </Text>
+            <Text>
+              {proposal?.proposer
+                ? shortenAddress(proposal.proposer)
+                : 'Loading...'}
+            </Text>
+            {!!proposal?.proposer && (
+              <GoTo
+                ml={1}
+                href={getExplorerLink(
+                  proposal.proposer,
+                  ExplorerDataType.ADDRESS
+                )}
+              />
+            )}
+
+            <Text variant="legend" ml={3} mr={1}>
+              <Trans>Proposed on</Trans>:
+            </Text>
+            <Text>
+              {proposal?.creationTime
+                ? dayjs.unix(+proposal.creationTime).format('MMM D, YYYY')
+                : 'Loading...'}
+            </Text>
+          </Box>
+          <Divider my={3} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+          <MDEditor.Markdown
+            source={description}
+            style={{ whiteSpace: 'pre-wrap', backgroundColor: 'transparent' }}
+          />
         </Card>
         {!!proposal && (
           <ProposalDetail
@@ -79,7 +106,7 @@ const GovernanceProposalDetail = () => {
         )}
       </Box>
       <Box>
-        <ProposalVote proposal={proposal as Proposal} />
+        <ProposalVote />
       </Box>
     </Grid>
   )
