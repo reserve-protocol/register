@@ -11,7 +11,7 @@ const ConfirmProposalActionIcon = (props: SVGProps<SVGSVGElement>) => (
     <path
       d="M24 12L14 22M24 12L34 22M24 12V36"
       stroke="currentColor"
-      stroke-width="1.7647"
+      strokeWidth="1.7647"
     />
   </svg>
 )

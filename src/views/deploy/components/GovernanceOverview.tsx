@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro'
 import CopyValue from 'components/button/CopyValue'
 import GoTo from 'components/button/GoTo'
 import GovernanceActionIcon from 'components/icons/GovernanceActionIcon'
+import useRToken from 'hooks/useRToken'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Box, BoxProps, Button, Divider, Flex, Spinner, Text } from 'theme-ui'
@@ -17,12 +18,13 @@ const Container = styled(Box)`
 
 const GovernanceStatus = () => {
   const navigate = useNavigate()
+  const rToken = useRToken()
   const { fee, deploy, isValid } = useGovernance()
   const tx = useGovernanceTxState()
 
   useEffect(() => {
-    if (tx?.status === TRANSACTION_STATUS.CONFIRMED) {
-      navigate(ROUTES.SETTINGS)
+    if (tx?.status === TRANSACTION_STATUS.CONFIRMED && rToken) {
+      navigate(`${ROUTES.SETTINGS}?token=${rToken.address}`)
     }
   }, [tx?.status])
 
@@ -131,7 +133,7 @@ const GovernanceOverview = (props: BoxProps) => (
         later.
       </Text>
     </Box>
-    <Divider my={4} mx={-4} />
+    {/* <Divider my={4} mx={-4} />
     <Box>
       <Text variant="strong" mb={2}>
         What happens after deploy?
@@ -139,7 +141,7 @@ const GovernanceOverview = (props: BoxProps) => (
       <Text as="p" variant="legend">
         Add link here
       </Text>
-    </Box>
+    </Box> */}
   </Container>
 )
 

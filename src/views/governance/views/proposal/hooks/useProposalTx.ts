@@ -1,22 +1,33 @@
-import { BasketHandler } from './../../../../../abis/types/BasketHandler'
-import { proposalDescriptionAtom } from './../atoms'
 import { t } from '@lingui/macro'
 import {
+  AssetRegistryInterface,
   BasketHandlerInterface,
-  GovernanceInterface,
+  DistributorInterface,
   MainInterface,
   TimelockInterface,
 } from 'abis'
+import { useContractCall } from 'hooks/useCall'
+import {
+  basketChangesAtom,
+  isNewBackupProposedAtom,
+  proposalDescriptionAtom,
+} from './../atoms'
 
-import { basketAtom } from 'components/rtoken-setup/atoms'
-import { BigNumber } from 'ethers'
+import {
+  backupCollateralAtom,
+  basketAtom,
+  revenueSplitAtom,
+} from 'components/rtoken-setup/atoms'
+import { BigNumber, ethers } from 'ethers'
 import { parseEther } from 'ethers/lib/utils'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { rTokenContractsAtom, rTokenGovernanceAtom } from 'state/atoms'
 import { parsePercent } from 'utils'
+import { FURNACE_ADDRESS, ST_RSR_ADDRESS } from 'utils/addresses'
 import { TRANSACTION_STATUS } from 'utils/constants'
+import { getSharesFromSplit } from 'views/deploy/utils'
 import {
   backupChangesAtom,
   isNewBasketProposedAtom,
@@ -25,7 +36,6 @@ import {
   revenueSplitChangesAtom,
   roleChangesAtom,
 } from '../atoms'
-import { RoleKey } from 'types'
 
 const paramParse: { [x: string]: (v: string) => BigNumber } = {
   minTradeVolume: parseEther,
@@ -54,14 +64,24 @@ const ROLES: { [x: string]: string } = {
 // TODO: May want to use a separate memo to calculate the calldatas
 const useProposalTx = () => {
   const backupChanges = useAtomValue(backupChangesAtom)
+  const basketChanges = useAtomValue(basketChangesAtom)
   const revenueChanges = useAtomValue(revenueSplitChangesAtom)
   const parameterChanges = useAtomValue(parametersChangesAtom)
   const roleChanges = useAtomValue(roleChangesAtom)
+  const newBackup = useAtomValue(isNewBackupProposedAtom)
   const newBasket = useAtomValue(isNewBasketProposedAtom)
   const basket = useAtomValue(basketAtom)
+  const backup = useAtomValue(backupCollateralAtom)
+  const revenueSplit = useAtomValue(revenueSplitAtom)
   const governance = useAtomValue(rTokenGovernanceAtom)
   const parameterMap = useAtomValue(parameterContractMapAtom)
   const contracts = useAtomValue(rTokenContractsAtom)
+  const { value: registeredAssets } = useContractCall({
+    abi: AssetRegistryInterface,
+    address: contracts.assetRegistry,
+    method: 'getRegistry',
+    args: [],
+  }) || { value: [] }
   const description = useAtomValue(proposalDescriptionAtom)
   const { getValues } = useFormContext()
 
@@ -71,8 +91,27 @@ const useProposalTx = () => {
     let redemptionThrottleChange = false
     let issuanceThrottleChange = false
     const tokenConfig = getValues()
+    const assets = new Set<string>(
+      registeredAssets[0]
+        ? [...(registeredAssets[0][0] || []), ...(registeredAssets[0][1] || [])]
+        : []
+    )
+    const newAssets = new Set<string>()
+
+    const addToRegistry = (address: string) => {
+      if (!assets.has(address) && !newAssets.has(address)) {
+        addresses.push(contracts.assetRegistry)
+        calls.push(
+          AssetRegistryInterface.encodeFunctionData('register', [address])
+        )
+        newAssets.add(address)
+      }
+    }
 
     try {
+      /* ########################## 
+      ## Parse parameter changes ## 
+      ############################# */
       for (const paramChange of parameterChanges) {
         if (
           paramChange.field === 'issuanceThrottleAmount' ||
@@ -126,21 +165,28 @@ const useProposalTx = () => {
         }
       }
 
+      /* ########################## 
+      ##   Parse role changes    ## 
+      ############################# */
       for (const roleChange of roleChanges) {
-        addresses.push(contracts.main)
+        const isGuardian = roleChange.role === 'guardians'
+        addresses.push(isGuardian ? governance.timelock : contracts.main)
         calls.push(
-          MainInterface.encodeFunctionData(
+          (isGuardian ? TimelockInterface : MainInterface).encodeFunctionData(
             roleChange.isNew ? 'grantRole' : 'revokeRole',
             [ROLES[roleChange.role], roleChange.address]
           )
         )
       }
 
+      /* ########################## 
+      ## Parse basket changes    ## 
+      ############################# */
       if (newBasket) {
         const primaryBasket: string[] = []
         const weights: BigNumber[] = []
 
-        // TODO: Update asset registry / Assets comp/aave
+        // Get call arguments
         for (const targetUnit of Object.keys(basket)) {
           const { collaterals, distribution, scale } = basket[targetUnit]
 
@@ -157,6 +203,18 @@ const useProposalTx = () => {
           })
         }
 
+        // Register missing collateral/assets on the asset registry
+        for (const changes of basketChanges) {
+          if (changes.isNew) {
+            addToRegistry(changes.collateral.address)
+
+            if (changes.collateral.rewardToken) {
+              addToRegistry(changes.collateral.rewardToken)
+            }
+          }
+        }
+
+        // Set primeBasket with new collaterals and weights
         addresses.push(contracts.basketHandler)
         calls.push(
           BasketHandlerInterface.encodeFunctionData('setPrimeBasket', [
@@ -164,10 +222,85 @@ const useProposalTx = () => {
             weights,
           ])
         )
-        addresses.push(contracts.BasketHandler)
+        // Refresh basket is needed for the action to take effect
+        addresses.push(contracts.basketHandler)
         calls.push(
           BasketHandlerInterface.encodeFunctionData('refreshBasket', [])
         )
+      }
+
+      /* ########################## 
+      ## Parse backup            ## 
+      ############################# */
+      if (newBackup && backupChanges.count) {
+        for (const targetUnit of Object.keys(newBackup)) {
+          const { collaterals, diversityFactor } = backup[targetUnit]
+
+          collaterals.forEach((collateral, index) => {
+            const backupCollaterals: string[] = []
+
+            for (const collateral of collaterals) {
+              addToRegistry(collateral.address)
+              if (collateral.rewardToken) {
+                addToRegistry(collateral.rewardToken)
+              }
+              backupCollaterals.push(collateral.address)
+            }
+
+            addresses.push(contracts.basketHandler)
+            calls.push(
+              BasketHandlerInterface.encodeFunctionData('setBackupConfig', [
+                ethers.utils.formatBytes32String(targetUnit.toUpperCase()),
+                parseEther(diversityFactor.toString()),
+                backupCollaterals,
+              ])
+            )
+          })
+        }
+      }
+
+      /* ########################## 
+      ## Parse revenue changes   ## 
+      ############################# */
+      if (revenueChanges.count) {
+        const [dist, beneficiaries] = getSharesFromSplit(revenueSplit)
+
+        for (const revChange of revenueChanges.externals) {
+          if (!revChange.isNew) {
+            addresses.push(contracts.distributor)
+            calls.push(
+              DistributorInterface.encodeFunctionData('setDistribution', [
+                FURNACE_ADDRESS,
+                { rTokenDist: BigNumber.from(0), rsrDist: BigNumber.from(0) },
+              ])
+            )
+          }
+        }
+
+        addresses.push(contracts.distributor)
+        calls.push(
+          DistributorInterface.encodeFunctionData('setDistribution', [
+            FURNACE_ADDRESS,
+            { rTokenDist: dist.rTokenDist, rsrDist: BigNumber.from(0) },
+          ])
+        )
+        addresses.push(contracts.distributor)
+        calls.push(
+          DistributorInterface.encodeFunctionData('setDistribution', [
+            ST_RSR_ADDRESS,
+            { rTokenDist: BigNumber.from(0), rsrDist: dist.rsrDist },
+          ])
+        )
+
+        for (const external of beneficiaries) {
+          addresses.push(contracts.distributor)
+          calls.push(
+            DistributorInterface.encodeFunctionData('setDistribution', [
+              external.beneficiary,
+              external.revShare,
+            ])
+          )
+        }
       }
 
       // TODO: REMOVE THIS!!!!
@@ -205,7 +338,7 @@ const useProposalTx = () => {
         args: [addresses, new Array(calls.length).fill(0), calls, description],
       },
     }
-  }, [contracts, description])
+  }, [contracts, description, JSON.stringify(registeredAssets)])
 }
 
 export default useProposalTx

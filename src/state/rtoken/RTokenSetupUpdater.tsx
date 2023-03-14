@@ -27,6 +27,7 @@ import {
 import { promiseMulticall } from 'state/web3/lib/multicall'
 import { ContractCall, StringMap } from 'types'
 import { getContract } from 'utils'
+import { FURNACE_ADDRESS, ST_RSR_ADDRESS } from 'utils/addresses'
 
 const shareToPercent = (shares: number): string => {
   return Math.floor((shares * 100) / 10000).toString()
@@ -121,8 +122,6 @@ const RTokenSetupUpdater = () => {
           'DistributionSet(address,uint16,uint16)'
         )
         const dist: StringMap = { external: {}, holders: '', stakers: '' }
-        const furnace = '0x0000000000000000000000000000000000000001'
-        const stRSR = '0x0000000000000000000000000000000000000002'
 
         for (const event of events) {
           if (event.args) {
@@ -131,24 +130,26 @@ const RTokenSetupUpdater = () => {
             // Dist removed
             if (!rTokenDist && !rsrDist) {
               delete dist[dest]
-            } else if (dest === furnace) {
-              dist.holders = shareToPercent(rTokenDist)
-            } else if (dest === stRSR) {
-              dist.stakers = shareToPercent(rsrDist)
+            } else if (dest === FURNACE_ADDRESS) {
+              dist.holders = shareToPercent(rTokenDist) || '0'
+            } else if (dest === ST_RSR_ADDRESS) {
+              dist.stakers = shareToPercent(rsrDist) || '0'
             } else {
               const holders = shareToPercent(rTokenDist)
               const stakers = shareToPercent(rsrDist)
               const total = +holders + +stakers
 
               dist.external[dest] = {
-                holders: ((+holders * 100) / total).toString(),
-                stakers: ((+stakers * 100) / total).toString(),
+                holders: ((+holders * 100) / total).toString() || '0',
+                stakers: ((+stakers * 100) / total).toString() || '0',
                 total: total.toString(),
                 address: dest,
               }
             }
           }
         }
+
+        console.log('distribution', dist)
 
         setRevenueSplit({
           ...dist,
