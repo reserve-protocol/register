@@ -8,24 +8,56 @@ import Help from 'components/help'
 
 const Governance = (props: BoxProps) => {
   return (
-    <Grid
-      columns={[1, 1, 1, '2fr 1.5fr']}
-      gap={[3, 5]}
-      padding={[1, 5]}
+    <Flex
       sx={{
-        height: '100%',
-        position: 'relative',
-        alignContent: 'flex-start',
-        alignItems: 'flex-start',
+        border: '1px dashed',
+        borderColor: '#FF8A00',
+        flexDirection: 'column',
+        alignItems: 'center',
+        minHeight: '100%',
       }}
-      {...props}
     >
-      <Box>
-        <ProposalList />
-        <TopVoters mt={5} />
+      <Box
+        py={2}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          borderBottom: '1px dashed',
+          borderColor: '#FF8A00',
+          width: '100%',
+        }}
+      >
+        <Box
+          sx={{ flexDirection: 'row', display: 'flex', alignItems: 'center' }}
+        >
+          <ConstructionIcon />
+          <Box mx={2} py={2}>
+            <Text>Page under construction</Text>
+          </Box>
+          <Help
+            content={t`Please be patient with us while we improve governance related views`}
+          />
+        </Box>
       </Box>
-      <GovernanceActions />
-    </Grid>
+      <Grid
+        columns={[1, 1, 1, '2fr 1.5fr']}
+        gap={[3, 5]}
+        padding={[1, 5]}
+        sx={{
+          height: '100%',
+          position: 'relative',
+          alignContent: 'flex-start',
+          alignItems: 'flex-start',
+        }}
+        {...props}
+      >
+        <Box>
+          <ProposalList />
+          <TopVoters mt={5} />
+        </Box>
+        <GovernanceActions />
+      </Grid>
+    </Flex>
   )
 }
 
