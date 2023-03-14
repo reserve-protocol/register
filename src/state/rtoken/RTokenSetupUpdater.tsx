@@ -131,23 +131,25 @@ const RTokenSetupUpdater = () => {
             if (!rTokenDist && !rsrDist) {
               delete dist[dest]
             } else if (dest === FURNACE_ADDRESS) {
-              dist.holders = shareToPercent(rTokenDist)
+              dist.holders = shareToPercent(rTokenDist) || '0'
             } else if (dest === ST_RSR_ADDRESS) {
-              dist.stakers = shareToPercent(rsrDist)
+              dist.stakers = shareToPercent(rsrDist) || '0'
             } else {
               const holders = shareToPercent(rTokenDist)
               const stakers = shareToPercent(rsrDist)
               const total = +holders + +stakers
 
               dist.external[dest] = {
-                holders: ((+holders * 100) / total).toString(),
-                stakers: ((+stakers * 100) / total).toString(),
+                holders: ((+holders * 100) / total).toString() || '0',
+                stakers: ((+stakers * 100) / total).toString() || '0',
                 total: total.toString(),
                 address: dest,
               }
             }
           }
         }
+
+        console.log('distribution', dist)
 
         setRevenueSplit({
           ...dist,
