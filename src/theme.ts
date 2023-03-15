@@ -34,6 +34,14 @@ export const baseButton = {
   },
 }
 
+const baseBadge = {
+  color: 'text',
+  backgroundColor: 'border',
+  fontWeight: 400,
+  borderRadius: 30,
+  padding: '6px 14px',
+}
+
 export const baseInput = {
   borderColor: 'inputBorder',
   backgroundColor: 'secondaryBackground',
@@ -83,6 +91,8 @@ export const colors = {
   border: '#F2F2F2',
   darkBorder: '#EEEDE9',
   inputBorder: '#E5E5E5',
+  info: '#20678E',
+  infoBG: 'rgba(32, 103, 142, 0.15)',
   disabled: '#E5E5E5',
   danger: '#FF0000',
   dangerBG: 'rgba(255, 0, 0, 0.15)',
@@ -407,12 +417,26 @@ export const theme: Theme = {
     },
   },
   badges: {
-    primary: {
+    primary: baseBadge,
+    muted: {
+      ...baseBadge,
       color: 'text',
-      backgroundColor: 'border',
-      fontWeight: 400,
-      borderRadius: 30,
-      padding: '6px 14px',
+      backgroundColor: 'background',
+    },
+    info: {
+      ...baseBadge,
+      color: 'info',
+      backgroundColor: 'background',
+    },
+    danger: {
+      ...baseBadge,
+      color: 'danger',
+      backgroundColor: 'background',
+    },
+    success: {
+      ...baseBadge,
+      color: 'success',
+      backgroundColor: 'background',
     },
   },
   layout: {

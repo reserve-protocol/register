@@ -107,6 +107,7 @@ export const ParameterPreview = ({
   const handleRevert = () => {
     resetField(field)
   }
+  console.log('values', field)
   return (
     <ParameterChangePreview
       title={t`Change`}

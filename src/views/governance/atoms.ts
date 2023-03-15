@@ -8,12 +8,17 @@ import {
   GovernanceInterface,
   MainInterface,
   RevenueTraderInterface,
+  RTokenInterface,
   StRSRInterface,
   TimelockInterface,
 } from 'abis'
 import { getAddress, Interface } from 'ethers/lib/utils'
 import { atom } from 'jotai'
-import { rTokenContractsAtom, rTokenGovernanceAtom } from 'state/atoms'
+import {
+  rTokenAtom,
+  rTokenContractsAtom,
+  rTokenGovernanceAtom,
+} from 'state/atoms'
 
 export interface ProposalCall {
   signature: string
@@ -78,11 +83,16 @@ export const contractDetails: InterfaceMap = {
     interface: TimelockInterface,
     label: 'Timelock',
   },
+  rToken: {
+    interface: RTokenInterface,
+    label: 'RToken',
+  },
 }
 
 export const interfaceMapAtom = atom((get) => {
   const contracts = get(rTokenContractsAtom)
   const governance = get(rTokenGovernanceAtom)
+  const rToken = get(rTokenAtom)
 
   const map = Object.keys(contractDetails).reduce((prev, curr) => {
     if (contracts[curr]) {
@@ -94,6 +104,10 @@ export const interfaceMapAtom = atom((get) => {
   if (governance.timelock) {
     map[getAddress(governance.governor)] = contractDetails.governor
     map[getAddress(governance.timelock)] = contractDetails.timelock
+  }
+
+  if (rToken) {
+    map[rToken.address] = contractDetails.rToken
   }
 
   return map
