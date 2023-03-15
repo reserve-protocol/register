@@ -14,6 +14,7 @@ import { useCallback, useEffect } from 'react'
 import {
   allowanceAtom,
   chainIdAtom,
+  collateralYieldAtom,
   ethPriceAtom,
   gasPriceAtom,
   pendingRSRAtom,
@@ -23,7 +24,8 @@ import {
   rTokenPriceAtom,
   walletAtom,
 } from 'state/atoms'
-import { ReserveToken } from 'types'
+import useSWR from 'swr'
+import { ReserveToken, StringMap } from 'types'
 import { ORACLE_ADDRESS, RSR_ADDRESS, WETH_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 import { RSR } from 'utils/constants'
@@ -211,6 +213,42 @@ const ExchangeRateUpdater = () => {
   return null
 }
 
+const poolsMap: StringMap = {
+  '405d8dad-5c99-4c91-90d3-82813ade1ff1': 'sadai',
+  'a349fea4-d780-4e16-973e-70ca9b606db2': 'sausdc',
+  '60d657c9-5f63-4771-a85b-2cf8d507ec00': 'sausdt',
+  '1d53fa29-b918-4d74-9508-8fcf8173ca51': 'sausdp',
+  'cc110152-36c2-4e10-9c12-c5b4eb662143': 'cdai',
+  'cefa9bb8-c230-459a-a855-3b94e96acd8c': 'cusdc',
+  '57647093-2868-4e65-97ab-9cae8ec74e7d': 'cusdt',
+  '6c2b7a5c-6c4f-49ea-a08c-0366b772f2c2': 'cusdp',
+  '1d876729-4445-4623-8b6b-c5290db5d100': 'cwbtc',
+  '1e5da7c6-59bb-49bd-9f97-4f4fceeffad4': 'ceth',
+}
+
+const CollateralYieldUpdater = () => {
+  const setCollateralYield = useSetAtom(collateralYieldAtom)
+  const { data } = useSWR('https://yields.llama.fi/pools', (...args) =>
+    fetch(...args).then((res) => res.json())
+  )
+
+  useEffect(() => {
+    if (data?.data) {
+      const poolYield: { [x: string]: number } = {}
+
+      for (const pool of data.data) {
+        if (poolsMap[pool.pool]) {
+          poolYield[poolsMap[pool.pool]] = pool.apyMean30d || 0
+        }
+      }
+
+      setCollateralYield(poolYield)
+    }
+  }, [data])
+
+  return null
+}
+
 /**
  * Updater
  */
@@ -224,6 +262,7 @@ const Updater = () => (
     <AccountUpdater />
     <RSVUpdater />
     <RTokenUpdater />
+    <CollateralYieldUpdater />
   </>
 )
 
