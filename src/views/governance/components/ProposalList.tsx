@@ -86,7 +86,7 @@ const ProposalList = () => {
         </SmallButton>
       </Box>
 
-      <Box px={4} mt={3} sx={{ maxHeight: 520, overflow: 'auto' }}>
+      <Box px={4} mt={3} sx={{ maxHeight: 540, overflow: 'auto' }}>
         {!data.length && (
           <Box py={4} mt={4} sx={{ textAlign: 'center' }}>
             <EmptyBoxIcon />
