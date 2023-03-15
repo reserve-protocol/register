@@ -99,7 +99,9 @@ const ContractProposalDetails = ({ data, ...props }: Props) => {
             />
           ) : (
             <Text>
-              {call.data && call.data[0] ? call.data[0].toString() : 'None'}
+              {call.data && call.data[0] !== undefined
+                ? call.data[0].toString()
+                : 'None'}
             </Text>
           )}
 

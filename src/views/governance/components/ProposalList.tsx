@@ -3,6 +3,8 @@ import { SmallButton } from 'components/button'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
+import useBlockNumber from 'hooks/useBlockNumber'
+import useDebounce from 'hooks/useDebounce'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
 import { useMemo } from 'react'
@@ -10,7 +12,8 @@ import { useNavigate } from 'react-router-dom'
 import { Badge, Box, Text } from 'theme-ui'
 import { StringMap } from 'types'
 import { getProposalTitle } from 'utils'
-import { ROUTES } from 'utils/constants'
+import { PROPOSAL_STATES, ROUTES } from 'utils/constants'
+import { getProposalStatus } from '../views/proposal-detail/atom'
 
 const query = gql`
   query getProposals($id: String!) {
@@ -24,9 +27,20 @@ const query = gql`
       creationTime
       state
       governance
+      forWeightedVotes
+      againstWeightedVotes
+      quorumVotes
+      startBlock
+      endBlock
     }
   }
 `
+
+const BADGE_VARIANT: StringMap = {
+  [PROPOSAL_STATES.DEFEATED]: 'danger',
+  [PROPOSAL_STATES.ACTIVE]: 'info',
+  [PROPOSAL_STATES.EXECUTED]: 'success',
+}
 
 // TODO: Proposal data casting?
 const useProposals = () => {
@@ -50,40 +64,47 @@ const ProposalList = () => {
   const rToken = useRToken()
   const navigate = useNavigate()
   const { data } = useProposals()
+  const block = useBlockNumber()
+  const blockNumber = useMemo(() => block, [!!block])
 
   return (
-    <Box>
-      <Box variant="layout.borderBox">
-        <Box variant="layout.verticalAlign">
-          <Text variant="title">
-            <Trans>Recent proposals</Trans>
-          </Text>
-          <SmallButton
-            ml="auto"
-            onClick={() =>
-              navigate(`${ROUTES.GOVERNANCE_PROPOSAL}?token=${rToken?.address}`)
-            }
-          >
-            <Trans>Create proposal</Trans>
-          </SmallButton>
-        </Box>
+    <Box
+      variant="layout.borderBox"
+      sx={{ backgroundColor: 'contentBackground' }}
+    >
+      <Box variant="layout.verticalAlign">
+        <Text variant="title">
+          <Trans>Recent proposals</Trans>
+        </Text>
+        <SmallButton
+          ml="auto"
+          onClick={() =>
+            navigate(`${ROUTES.GOVERNANCE_PROPOSAL}?token=${rToken?.address}`)
+          }
+        >
+          <Trans>Create proposal</Trans>
+        </SmallButton>
+      </Box>
 
-        <Box px={4} mt={3}>
-          {!data.length && (
-            <Box py={4} mt={4} sx={{ textAlign: 'center' }}>
-              <EmptyBoxIcon />
-              <Text
-                mt={4}
-                variant="legend"
-                sx={{
-                  display: 'block',
-                }}
-              >
-                <Trans>No proposals created...</Trans>
-              </Text>
-            </Box>
-          )}
-          {data.map((proposal: StringMap) => (
+      <Box px={4} mt={3} sx={{ maxHeight: 540, overflow: 'auto' }}>
+        {!data.length && (
+          <Box py={4} mt={4} sx={{ textAlign: 'center' }}>
+            <EmptyBoxIcon />
+            <Text
+              mt={4}
+              variant="legend"
+              sx={{
+                display: 'block',
+              }}
+            >
+              <Trans>No proposals created...</Trans>
+            </Text>
+          </Box>
+        )}
+        {data.map((proposal: StringMap) => {
+          const status = getProposalStatus(proposal, blockNumber || 0)
+
+          return (
             <Box
               mt={4}
               key={proposal.id}
@@ -104,10 +125,12 @@ const ProposalList = () => {
                   {dayjs.unix(+proposal.creationTime).format('YYYY-M-D')}
                 </Text>
               </Box>
-              <Badge ml="auto">{proposal.state}</Badge>
+              <Badge ml="auto" variant={BADGE_VARIANT[status] || 'muted'}>
+                {status}
+              </Badge>
             </Box>
-          ))}
-        </Box>
+          )
+        })}
       </Box>
     </Box>
   )

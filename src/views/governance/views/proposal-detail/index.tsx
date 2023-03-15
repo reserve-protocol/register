@@ -50,9 +50,9 @@ const ProposalAlert = () => {
       sx={{
         display: 'flex',
         alignItems: 'center',
-        background: 'rgba(32, 103, 142, 0.15)',
+        background: 'infoBG',
         borderRadius: '30px',
-        color: '#20678E',
+        color: 'info',
         fontSize: 0,
       }}
     >
