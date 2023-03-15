@@ -3,6 +3,8 @@ import { SmallButton } from 'components/button'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
+import useBlockNumber from 'hooks/useBlockNumber'
+import useDebounce from 'hooks/useDebounce'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
 import { useMemo } from 'react'
@@ -11,6 +13,7 @@ import { Badge, Box, Text } from 'theme-ui'
 import { StringMap } from 'types'
 import { getProposalTitle } from 'utils'
 import { ROUTES } from 'utils/constants'
+import { getProposalStatus } from '../views/proposal-detail/atom'
 
 const query = gql`
   query getProposals($id: String!) {
@@ -24,6 +27,11 @@ const query = gql`
       creationTime
       state
       governance
+      forWeightedVotes
+      againstWeightedVotes
+      quorumVotes
+      startBlock
+      endBlock
     }
   }
 `
@@ -50,6 +58,8 @@ const ProposalList = () => {
   const rToken = useRToken()
   const navigate = useNavigate()
   const { data } = useProposals()
+  const block = useBlockNumber()
+  const blockNumber = useMemo(() => block, [!!block])
 
   return (
     <Box>
@@ -68,7 +78,7 @@ const ProposalList = () => {
           </SmallButton>
         </Box>
 
-        <Box px={4} mt={3}>
+        <Box px={4} mt={3} sx={{ maxHeight: 420, overflow: 'auto' }}>
           {!data.length && (
             <Box py={4} mt={4} sx={{ textAlign: 'center' }}>
               <EmptyBoxIcon />
@@ -104,7 +114,9 @@ const ProposalList = () => {
                   {dayjs.unix(+proposal.creationTime).format('YYYY-M-D')}
                 </Text>
               </Box>
-              <Badge ml="auto">{proposal.state}</Badge>
+              <Badge ml="auto">
+                {getProposalStatus(proposal, blockNumber || 0)}
+              </Badge>
             </Box>
           ))}
         </Box>
