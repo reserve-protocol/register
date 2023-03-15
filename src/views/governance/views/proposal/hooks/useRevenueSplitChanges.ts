@@ -43,7 +43,10 @@ const useRevenueSplitChanges = () => {
       count: 0,
     }
 
-    if (proposedRevenueSplit.holders !== currentRevenueSplit.holders) {
+    if (
+      (proposedRevenueSplit.holders || '0') !==
+      (currentRevenueSplit.holders || '0')
+    ) {
       changes.count += 1
       changes.distributions.push({
         key: 'holders',
@@ -54,7 +57,10 @@ const useRevenueSplitChanges = () => {
       })
     }
 
-    if (proposedRevenueSplit.stakers !== currentRevenueSplit.stakers) {
+    if (
+      (proposedRevenueSplit.stakers || '0') !==
+      (currentRevenueSplit.stakers || '0')
+    ) {
       changes.count += 1
       changes.distributions.push({
         key: 'stakers',

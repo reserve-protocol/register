@@ -11,7 +11,6 @@ import { CheckCircle, ExternalLink, ThumbsUp } from 'react-feather'
 import { addTransactionAtom, rTokenGovernanceAtom } from 'state/atoms'
 import { useTransaction } from 'state/web3/hooks/useTransactions'
 import { Box, Checkbox, Divider, Flex, Link, Spinner, Text } from 'theme-ui'
-import { StringMap } from 'types'
 import {
   formatCurrency,
   getProposalTitle,
@@ -21,11 +20,7 @@ import {
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { v4 as uuid } from 'uuid'
-
-// TODO: proper proposal types
-interface Props extends ModalProps {
-  proposal: StringMap
-}
+import { proposalDetailAtom } from '../atom'
 
 export const VOTE_TYPE = {
   AGAINST: 0,
@@ -33,13 +28,14 @@ export const VOTE_TYPE = {
   ABSTAIN: 2,
 }
 
-const VoteModal = ({ proposal, ...props }: Props) => {
+const VoteModal = (props: ModalProps) => {
   const [vote, setVote] = useState(-1)
   const [txId, setId] = useState('')
+  const proposal = useAtomValue(proposalDetailAtom)
   const governance = useAtomValue(rTokenGovernanceAtom)
 
   const transaction = useMemo(() => {
-    if (!governance.governor) {
+    if (!governance.governor || !proposal?.id) {
       return null
     }
 
@@ -58,7 +54,7 @@ const VoteModal = ({ proposal, ...props }: Props) => {
         ],
       },
     }
-  }, [vote, proposal.id, governance.governor])
+  }, [vote, proposal?.id ?? '', governance.governor])
   const [fee, gasError, gasLimit] = useTransactionCost(
     transaction ? [transaction] : []
   )
@@ -124,7 +120,13 @@ const VoteModal = ({ proposal, ...props }: Props) => {
   return (
     <Modal {...props} title={t`Voting`} style={{ maxWidth: 420 }}>
       <Flex sx={{ alignItems: 'center', flexDirection: 'column' }}>
-        <Text variant="title">"{getProposalTitle(proposal.description)}"</Text>
+        <Text variant="title">
+          "
+          {proposal?.description
+            ? getProposalTitle(proposal.description)
+            : 'Loading...'}
+          "
+        </Text>
         <Box variant="layout.verticalAlign" mt={2}>
           <Text variant="legend">
             <Trans>Proposed by</Trans>:
@@ -132,7 +134,10 @@ const VoteModal = ({ proposal, ...props }: Props) => {
           <Text ml={1}>{shortenAddress(proposal?.proposer || '')}</Text>
           <GoTo
             ml={2}
-            href={getExplorerLink(proposal.proposer, ExplorerDataType.ADDRESS)}
+            href={getExplorerLink(
+              proposal?.proposer ?? '',
+              ExplorerDataType.ADDRESS
+            )}
           />
         </Box>
       </Flex>

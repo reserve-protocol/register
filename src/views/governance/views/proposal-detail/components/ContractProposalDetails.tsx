@@ -29,7 +29,7 @@ const CallData = ({ data }: { data: string }) => {
         variant="layout.verticalAlign"
         onClick={() => setOpen(!isOpen)}
       >
-        <Text mr={3}>
+        <Text variant="strong" mr="auto">
           <Trans>Executable code</Trans>
         </Text>
         {isOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
@@ -55,11 +55,21 @@ const ContractProposalDetails = ({ data, ...props }: Props) => {
 
   return (
     <Card p={4} pb={3} {...props}>
-      <Box variant="layout.verticalAlign">
-        <Text variant="sectionTitle" mr={2}>
-          {data.label}
+      <Box>
+        <Text sx={{ fontWeight: 500 }} mr={1}>
+          {data.calls.length}
         </Text>
-        <GoTo href={getExplorerLink(data.address, ExplorerDataType.ADDRESS)} />
+        <Text variant="legend">
+          change{data.calls.length > 1 ? 's' : ''} in:
+        </Text>
+        <Box variant="layout.verticalAlign">
+          <Text variant="strong" mr={2}>
+            {data.label}
+          </Text>
+          <GoTo
+            href={getExplorerLink(data.address, ExplorerDataType.ADDRESS)}
+          />
+        </Box>
       </Box>
       <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
       {data.calls.map((call, index) => (

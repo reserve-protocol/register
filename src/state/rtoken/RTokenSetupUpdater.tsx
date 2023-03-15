@@ -149,8 +149,6 @@ const RTokenSetupUpdater = () => {
           }
         }
 
-        console.log('distribution', dist)
-
         setRevenueSplit({
           ...dist,
           external: Object.values(dist.external),

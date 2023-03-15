@@ -1,5 +1,5 @@
 import { Box, Card, Text } from 'theme-ui'
-import ProposalDetail from 'views/governance/components/ProposalDetail'
+import ProposalDetail from 'views/governance/components/ProposalDetailPreview'
 import MDEditor from '@uiw/react-md-editor'
 import { useEffect, useState } from 'react'
 import { Input } from 'components'

@@ -5,6 +5,8 @@ import { RSR_ADDRESS } from './addresses'
 
 export const BI_ZERO = BigNumber.from(0)
 
+export const BLOCK_DELAY = 12 // 12 seconds per block
+
 export const COLLATERAL_STATUS = {
   SOUND: 0,
   IFFY: 1,
