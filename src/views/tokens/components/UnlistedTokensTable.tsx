@@ -74,8 +74,8 @@ const UnlistedTokensTable = () => {
   const columns = useMemo(
     () => [
       {
-        Header: t`Name`,
-        accessor: 'name',
+        Header: t`Token`,
+        accessor: 'symbol',
         Cell: (data: any) => {
           return (
             <Box sx={{ minWidth: 150 }}>
