@@ -1,14 +1,22 @@
 import { t, Trans } from '@lingui/macro'
+import { useWeb3React } from '@web3-react/core'
+import { GovernanceInterface } from 'abis'
 import { SmallButton } from 'components/button'
 import IconInfo from 'components/info-icon'
 import { formatEther } from 'ethers/lib/utils'
 import { gql } from 'graphql-request'
+import useBlockNumber from 'hooks/useBlockNumber'
+import { useContractCall } from 'hooks/useCall'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { rTokenGovernanceAtom, rTokenGuardiansAtom } from 'state/atoms'
+import {
+  rTokenGovernanceAtom,
+  rTokenGuardiansAtom,
+  stRsrBalanceAtom,
+} from 'state/atoms'
 import { Box, Grid, Image, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ROUTES } from 'utils/constants'
@@ -53,10 +61,23 @@ const useStats = () => {
 // TODO: Validate if account is above proposal threshold
 const GovernanceOverview = () => {
   const stats = useStats()
+  const { account } = useWeb3React()
   const navigate = useNavigate()
   const rToken = useRToken()
+  const blockNumber = useBlockNumber()
   const governance = useAtomValue(rTokenGovernanceAtom)
   const guardians = useAtomValue(rTokenGuardiansAtom)
+  const { value = [] } =
+    useContractCall(
+      account &&
+        governance.governor &&
+        !!blockNumber && {
+          abi: GovernanceInterface,
+          address: governance.governor,
+          method: 'getVotes',
+          args: [account, blockNumber - 1],
+        }
+    ) ?? {}
 
   return (
     <Box>
@@ -98,6 +119,16 @@ const GovernanceOverview = () => {
               icon={<Image src="/svgs/voting-addresses.svg" />}
               title={t`Current`}
               text={formatCurrency(stats.totalDelegates)}
+            />
+          </Box>
+          <Box p={4} sx={{ borderBottom: '1px solid', borderColor: 'border' }}>
+            <Text variant="subtitle" mb={3}>
+              <Trans>Voting power</Trans>
+            </Text>
+            <IconInfo
+              icon={<Image src="/svgs/vote-supply.svg" />}
+              title={t`Current`}
+              text={formatCurrency(value[0] ? +formatEther(value[0]) : 0)}
             />
           </Box>
         </Grid>

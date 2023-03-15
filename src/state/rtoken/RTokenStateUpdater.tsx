@@ -113,7 +113,7 @@ const RTokenStateUpdater = () => {
         const collateralStatusMap: { [x: string]: 0 | 1 | 2 } = {}
 
         for (let i = 0; i < status.length; i++) {
-          collateralStatusMap[rToken.collaterals[i].address] = status[i]
+          collateralStatusMap[rToken.collaterals[i]?.address || ''] = status[i]
         }
 
         setCollateralStatus(collateralStatusMap)

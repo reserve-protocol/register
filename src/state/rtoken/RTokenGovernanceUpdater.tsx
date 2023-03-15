@@ -96,7 +96,6 @@ const RTokenGovernanceUpdater = () => {
   }, [timelockContract])
 
   useEffect(() => {
-    console.log('data?', data)
     if (data?.rtoken && provider) {
       setTokenManagers(data.rtoken)
 
