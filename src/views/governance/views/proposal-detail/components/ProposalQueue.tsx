@@ -45,7 +45,9 @@ const ProposalQueue = () => {
               proposal.targets,
               new Array(proposal.targets.length).fill(0),
               proposal.calldatas,
-              ethers.utils.formatBytes32String(proposal.description),
+              ethers.utils.keccak256(
+                ethers.utils.toUtf8Bytes(proposal.description)
+              ),
             ],
           },
         },

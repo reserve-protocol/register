@@ -14,7 +14,11 @@ import { promiseMulticall } from 'state/web3/lib/multicall'
 import { Box, Grid } from 'theme-ui'
 import { CHAIN_ID } from 'utils/chains'
 import { PROPOSAL_STATES, ROUTES } from 'utils/constants'
-import { accountVotesAtom, proposalDetailAtom } from './atom'
+import {
+  accountVotesAtom,
+  getProposalStateAtom,
+  proposalDetailAtom,
+} from './atom'
 import ProposalAlert from './components/ProposalAlert'
 import ProposalDetailContent from './components/ProposalDetailContent'
 import ProposalDetailStats from './components/ProposalDetailStats'
@@ -34,6 +38,7 @@ const GovernanceProposalDetail = () => {
   const setAccountVoting = useSetAtom(accountVotesAtom)
   const blockNumber = useBlockNumber()
   const navigate = useNavigate()
+  const { state } = useAtomValue(getProposalStateAtom)
 
   const handleBack = () => {
     navigate(`${ROUTES.GOVERNANCE}?token=${rToken?.address}`)
@@ -125,14 +130,14 @@ const GovernanceProposalDetail = () => {
             </Box>
           </SmallButton>
           <ProposalAlert />
-          {proposal?.state === PROPOSAL_STATES.SUCCEEDED && <ProposalQueue />}
-          {proposal?.state === PROPOSAL_STATES.QUEUED && <ProposalExecute />}
+          {state === PROPOSAL_STATES.SUCCEEDED && <ProposalQueue />}
+          {state === PROPOSAL_STATES.QUEUED && <ProposalExecute />}
         </Box>
         <ProposalDetailContent />
       </Box>
       <Box>
-        {(proposal?.state === PROPOSAL_STATES.PENDING ||
-          proposal?.state === PROPOSAL_STATES.ACTIVE) && <ProposalVote />}
+        {(state === PROPOSAL_STATES.PENDING ||
+          state === PROPOSAL_STATES.ACTIVE) && <ProposalVote />}
         <ProposalDetailStats />
         <ProposalVotes />
       </Box>
