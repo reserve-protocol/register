@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro'
 import { atom, useAtomValue } from 'jotai'
-import { useState } from 'react'
-import { Box, Text } from 'theme-ui'
+import { useMemo, useState } from 'react'
+import { Box, Progress, Text } from 'theme-ui'
 import { formatCurrency, shortenAddress } from 'utils'
 import { proposalDetailAtom } from '../atom'
 
@@ -38,11 +38,22 @@ const getProposalVotes = atom((get) => {
 
 const ProposalVotes = () => {
   const votes = useAtomValue(getProposalVotes)
+  const proposal = useAtomValue(proposalDetailAtom)
   const [current, setCurrent] = useState(VOTE_TYPE.FOR)
+
+  const forVotesWeight = useMemo(() => {
+    if (proposal?.abstainWeightedVotes && proposal.forWeightedVotes) {
+      const total = +proposal.abstainWeightedVotes + +proposal.forWeightedVotes
+
+      return (+proposal.forWeightedVotes * 100) / total
+    }
+
+    return 0
+  }, [proposal])
 
   return (
     <Box variant="layout.borderBox" mt={4}>
-      <Box variant="layout.verticalAlign">
+      <Box variant="layout.verticalAlign" mb={4}>
         <Box
           variant="layout.verticalAlign"
           sx={{
@@ -54,7 +65,6 @@ const ProposalVotes = () => {
             border: '1px solid',
             borderColor: 'inputBorder',
           }}
-          mb={5}
         >
           <Box
             py={1}
@@ -85,7 +95,22 @@ const ProposalVotes = () => {
             <Trans>Votes against</Trans>
           </Box>
         </Box>
+        {(!!Number(proposal?.forWeightedVotes) ||
+          !!Number(proposal?.againstWeightedVotes)) && (
+          <Progress
+            ml="auto"
+            max={1}
+            sx={{
+              width: '30%',
+              color: 'success',
+              backgroundColor: 'danger',
+              height: 10,
+            }}
+            value={forVotesWeight}
+          />
+        )}
       </Box>
+
       <Box variant="layout.verticalAlign" mb={3}>
         <Box variant="layout.square" mr={2} />
         <Text variant="legend">Voter</Text>
