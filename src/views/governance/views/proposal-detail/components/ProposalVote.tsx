@@ -42,7 +42,7 @@ const ProposalVote = (props: BoxProps) => {
           <Trans>Please connect your wallet</Trans>
         </Text>
       )}
-      {!!account && votePower && !!Number(votePower) && !!Number(balance) && (
+      {!!account && votePower && !Number(votePower) && !!Number(balance) && (
         <Text mt={3} sx={{ display: 'block', color: 'warning' }}>
           <Trans>Please delegate your voting power</Trans>
         </Text>
