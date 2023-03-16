@@ -462,5 +462,11 @@ export const theme: Theme = {
       position: 'sticky',
       top: 0,
     },
+    square: {
+      marginX: 1,
+      height: '4px',
+      width: '4px',
+      backgroundColor: 'lightText',
+    },
   },
 }

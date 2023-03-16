@@ -11,8 +11,6 @@ const ProposalDetailStats = () => {
   const proposal = useAtomValue(proposalDetailAtom)
   const accountVotes = useAtomValue(accountVotesAtom)
 
-  console.log('proposal', proposal)
-
   return (
     <Box variant="layout.borderBox" mt={4} p={0}>
       <Grid gap={0} columns={2}>

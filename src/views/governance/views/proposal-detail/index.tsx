@@ -28,6 +28,7 @@ import {
 } from './atom'
 import ProposalAction from './components/ProposalAction'
 import ProposalDetailStats from './components/ProposalDetailStats'
+import ProposalVotes from './components/ProposalVotes'
 import useProposalDetail from './useProposalDetail'
 
 const ProposalAlert = () => {
@@ -233,6 +234,7 @@ const GovernanceProposalDetail = () => {
       <Box>
         <ProposalAction />
         <ProposalDetailStats />
+        <ProposalVotes />
       </Box>
     </Grid>
   )

@@ -6,20 +6,15 @@ import { stRsrBalanceAtom } from 'state/atoms'
 import { Box, BoxProps, Button, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { PROPOSAL_STATES } from 'utils/constants'
-import {
-  accountVotesAtom,
-  getProposalStateAtom,
-  proposalDetailAtom,
-} from '../atom'
+import { accountVotesAtom, getProposalStateAtom } from '../atom'
 import VoteModal from './VoteModal'
 
 // TODO: Validate voting power first?
 const ProposalVote = (props: BoxProps) => {
   const { account } = useWeb3React()
-  const proposal = useAtomValue(proposalDetailAtom)
   const [isVisible, setVisible] = useState(false)
   const { state } = useAtomValue(getProposalStateAtom)
-  const { votePower = '0' } = useAtomValue(accountVotesAtom)
+  const { votePower = '0.0' } = useAtomValue(accountVotesAtom)
   const { balance } = useAtomValue(stRsrBalanceAtom)
 
   return (
@@ -35,7 +30,7 @@ const ProposalVote = (props: BoxProps) => {
           !account ||
           state === PROPOSAL_STATES.PENDING ||
           !votePower ||
-          votePower === '0'
+          votePower === '0.0'
         }
         sx={{ width: '100%' }}
         onClick={() => setVisible(true)}
