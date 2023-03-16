@@ -14,7 +14,7 @@ const ProposalVote = (props: BoxProps) => {
   const { account } = useWeb3React()
   const [isVisible, setVisible] = useState(false)
   const { state } = useAtomValue(getProposalStateAtom)
-  const { votePower = '0.0' } = useAtomValue(accountVotesAtom)
+  const { votePower = '0.0', vote } = useAtomValue(accountVotesAtom)
   const { balance } = useAtomValue(stRsrBalanceAtom)
 
   return (
@@ -28,6 +28,7 @@ const ProposalVote = (props: BoxProps) => {
       <Button
         disabled={
           !account ||
+          !!vote ||
           state === PROPOSAL_STATES.PENDING ||
           !votePower ||
           votePower === '0.0'
@@ -35,7 +36,7 @@ const ProposalVote = (props: BoxProps) => {
         sx={{ width: '100%' }}
         onClick={() => setVisible(true)}
       >
-        <Trans>Vote on-chain</Trans>
+        {vote ? `You voted "${vote}"` : <Trans>Vote on-chain</Trans>}
       </Button>
       {!account && (
         <Text mt={3} sx={{ display: 'block', color: 'warning' }}>
