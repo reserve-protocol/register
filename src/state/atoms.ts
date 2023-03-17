@@ -125,6 +125,7 @@ export const rTokenRevenueSplitAtom = atomWithReset<RevenueSplit>({
   stakers: '0', // %
   external: [],
 })
+export const rTokenCollaterizedAtom = atom(true)
 
 // Grab rToken data from the atom list
 export const rTokenAtom = atom<ReserveToken | null>((get) =>

@@ -2,11 +2,13 @@ import { t, Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
 import { Card } from 'components'
 import { LoadingButton } from 'components/button'
+import Help from 'components/help'
 import TokenBalance from 'components/token-balance'
 import { BigNumber } from 'ethers/lib/ethers'
 import useRToken from 'hooks/useRToken'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
+import { AlertCircle } from 'react-feather'
 import {
   addTransactionAtom,
   pendingRSRSummaryAtom,
@@ -14,6 +16,7 @@ import {
   rsrExchangeRateAtom,
   rsrPriceAtom,
   rTokenAtom,
+  rTokenCollaterizedAtom,
   stRsrBalanceAtom,
 } from 'state/atoms'
 import { useTransaction } from 'state/web3/hooks/useTransactions'
@@ -47,6 +50,7 @@ const AvailableBalance = () => {
   const [claiming, setClaiming] = useState('')
   const { account } = useWeb3React()
   const claimTx = useTransaction(claiming)
+  const canWithdraw = useAtomValue(rTokenCollaterizedAtom)
 
   const handleClaim = () => {
     const txId = uuid()
@@ -87,12 +91,24 @@ const AvailableBalance = () => {
       <TokenBalance symbol="RSR" balance={availableAmount} />
       <LoadingButton
         loading={!!claiming}
-        disabled={!availableAmount}
+        disabled={!availableAmount || !canWithdraw}
         text={t`Withdraw`}
         onClick={handleClaim}
         sx={{ ...smallButton }}
         mt={3}
       />
+      {!canWithdraw && (
+        <Box
+          mt={3}
+          variant="layout.verticalAlign"
+          sx={{ color: 'warning', fontSize: '1' }}
+        >
+          <Text mr={2}>Withdrawals unavailable</Text>
+          <Help
+            content={t`This RToken is currently on recollaterization, when this process is finish withdrawals will be available again.`}
+          />
+        </Box>
+      )}
     </Box>
   )
 }

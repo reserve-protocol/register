@@ -31,7 +31,7 @@ const BasicInfo = () => {
       <InfoItem
         title={rToken?.stToken?.name || 'stRSR'}
         subtitle={shortenAddress(rToken?.stToken?.address ?? '')}
-        address={rToken?.address}
+        address={rToken?.stToken?.address ?? ''}
         mb={3}
       />
       <InfoItem

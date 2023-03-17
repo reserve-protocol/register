@@ -1,8 +1,10 @@
 import { Trans } from '@lingui/macro'
+import GoTo from 'components/button/GoTo'
 import { atom, useAtomValue } from 'jotai'
 import { useMemo, useState } from 'react'
 import { Box, Progress, Text } from 'theme-ui'
 import { formatCurrency, shortenAddress } from 'utils'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { proposalDetailAtom } from '../atom'
 
 interface Vote {
@@ -134,6 +136,10 @@ const ProposalVotes = () => {
               mr={2}
             />
             <Text>{shortenAddress(vote.voter)}</Text>
+            <GoTo
+              ml={1}
+              href={getExplorerLink(vote.voter, ExplorerDataType.ADDRESS)}
+            />
             <Text ml="auto">{formatCurrency(+vote.weight)}</Text>
           </Box>
         ))}

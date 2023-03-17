@@ -4,6 +4,7 @@ import {
   Asset as AssetAbi,
   AssetRegistryInterface,
   BackingManagerInterface,
+  BasketHandlerInterface,
   BrokerInterface,
   CollateralInterface,
   Distributor as DistributorAbi,
@@ -20,6 +21,7 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import {
   rTokenCollateralAssetsAtom,
+  rTokenCollaterizedAtom,
   rTokenContractsAtom,
   rTokenParamsAtom,
   rTokenRevenueSplitAtom,
@@ -44,6 +46,7 @@ const RTokenSetupUpdater = () => {
   const setRevenueSplit = useSetAtom(rTokenRevenueSplitAtom)
   const setRTokenParams = useSetAtom(rTokenParamsAtom)
   const setCollateralAssets = useSetAtom(rTokenCollateralAssetsAtom)
+  const setBackingCollateralStatus = useSetAtom(rTokenCollaterizedAtom)
   const [contracts, setRTokenContracts] = useAtom(rTokenContractsAtom)
 
   const fetchParams = useCallback(
@@ -177,6 +180,7 @@ const RTokenSetupUpdater = () => {
           issuanceThrottle,
           redemptionThrottle,
           rTokenAsset,
+          isCollaterized,
         ] = await promiseMulticall(
           [
             {
@@ -231,9 +235,17 @@ const RTokenSetupUpdater = () => {
               args: [rTokenAddress],
               method: 'toAsset',
             },
+            {
+              abi: BasketHandlerInterface,
+              address: basketHandler,
+              args: [],
+              method: 'fullyCollateralized',
+            },
           ],
           provider
         )
+
+        setBackingCollateralStatus(isCollaterized)
 
         const rTokenAssetContract = getContract(
           rTokenAsset,
