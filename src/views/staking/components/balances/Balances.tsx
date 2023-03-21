@@ -8,7 +8,6 @@ import { BigNumber } from 'ethers/lib/ethers'
 import useRToken from 'hooks/useRToken'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
-import { AlertCircle } from 'react-feather'
 import {
   addTransactionAtom,
   pendingRSRSummaryAtom,

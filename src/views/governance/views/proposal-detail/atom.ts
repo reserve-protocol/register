@@ -68,9 +68,12 @@ export const getProposalStatus = (
     const againstVotes = BigNumber.from(proposal.againstWeightedVotes)
     const quorum = BigNumber.from(proposal.quorumVotes)
 
-    return forVotes.lte(againstVotes) || forVotes.lt(quorum)
-      ? PROPOSAL_STATES.DEFEATED
-      : PROPOSAL_STATES.SUCCEEDED
+    if (forVotes.lte(againstVotes)) {
+      return PROPOSAL_STATES.DEFEATED
+    } else if (forVotes.lt(quorum)) {
+      return PROPOSAL_STATES.QUORUM_NOT_REACHED
+    }
+    return PROPOSAL_STATES.SUCCEEDED
   }
 
   return status
@@ -114,10 +117,13 @@ export const getProposalStateAtom = atom((get) => {
         const againstVotes = parseEther(proposal.againstWeightedVotes)
         const quorum = parseEther(proposal.quorumVotes)
 
-        state.state =
-          forVotes.lte(againstVotes) || forVotes.lt(quorum)
-            ? PROPOSAL_STATES.DEFEATED
-            : PROPOSAL_STATES.SUCCEEDED
+        if (forVotes.lte(againstVotes)) {
+          state.state = PROPOSAL_STATES.DEFEATED
+        } else if (forVotes.lt(quorum)) {
+          state.state = PROPOSAL_STATES.QUORUM_NOT_REACHED
+        } else {
+          state.state = PROPOSAL_STATES.SUCCEEDED
+        }
       } else {
         state.deadline = (proposal.endBlock - blockNumber) * BLOCK_DELAY
       }
