@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom'
 import { Badge, Box, Text } from 'theme-ui'
 import { StringMap } from 'types'
 import { getProposalTitle } from 'utils'
-import { PROPOSAL_STATES, ROUTES } from 'utils/constants'
+import { formatConstant, PROPOSAL_STATES, ROUTES } from 'utils/constants'
 import { getProposalStatus } from '../views/proposal-detail/atom'
 
 const query = gql`
@@ -38,6 +38,7 @@ const query = gql`
 
 const BADGE_VARIANT: StringMap = {
   [PROPOSAL_STATES.DEFEATED]: 'danger',
+  [PROPOSAL_STATES.QUORUM_NOT_REACHED]: 'danger',
   [PROPOSAL_STATES.ACTIVE]: 'info',
   [PROPOSAL_STATES.EXECUTED]: 'success',
 }
@@ -126,7 +127,7 @@ const ProposalList = () => {
                 </Text>
               </Box>
               <Badge ml="auto" variant={BADGE_VARIANT[status] || 'muted'}>
-                {status}
+                {formatConstant(status)}
               </Badge>
             </Box>
           )

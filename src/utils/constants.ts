@@ -29,6 +29,7 @@ export const PROPOSAL_STATES = {
   ACTIVE: 'ACTIVE',
   CANCELED: 'CANCELED',
   DEFEATED: 'DEFEATED',
+  QUORUM_NOT_REACHED: 'QUORUM_NOT_REACHED',
   SUCCEEDED: 'SUCCEEDED',
   QUEUED: 'QUEUED',
   EXPIRED: 'EXPIRED',
@@ -92,3 +93,9 @@ export const RSR: Token = {
 }
 
 export const PROTOCOL_SLUG = 'reserveprotocol-v1'
+
+export const capitalize = (str: string) =>
+  str.slice(0, 1).toUpperCase() + str.slice(1)
+
+export const formatConstant = (str: string) =>
+  capitalize(str.toLowerCase().replaceAll('_', ' '))
