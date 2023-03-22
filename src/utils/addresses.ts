@@ -102,11 +102,17 @@ export const ORACLE_ADDRESS: AddressMap = {
   [ChainId.Hardhat]: '0x8263e161A855B644f582d9C164C66aABEe53f927',
 }
 
+export const EUSD_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
+  [ChainId.Goerli]: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
+  [ChainId.Hardhat]: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
+}
+
 // Fixed tokens used in the rtoken selector screen and dashboard
 export const DEFAULT_TOKENS = {
   [ChainId.Mainnet]: [
     RSV_ADDRESS[ChainId.Mainnet],
-    '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
+    EUSD_ADDRESS[ChainId.Mainnet],
   ],
   [ChainId.Goerli]: [RSV_ADDRESS[ChainId.Goerli]],
   [ChainId.Hardhat]: [],

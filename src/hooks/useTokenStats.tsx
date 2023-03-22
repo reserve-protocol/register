@@ -2,10 +2,17 @@ import { formatEther } from 'ethers/lib/utils'
 import { gql } from 'graphql-request'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
-import { rpayOverviewAtom, rsrPriceAtom, rTokenPriceAtom } from 'state/atoms'
+import {
+  rpayOverviewAtom,
+  rsrPriceAtom,
+  RSVOverview,
+  rTokenPriceAtom,
+} from 'state/atoms'
 import { tokenMetricsAtom } from 'state/metrics/atoms'
 import { TokenStats } from 'types'
 import { formatCurrency } from 'utils'
+import { EUSD_ADDRESS } from 'utils/addresses'
+import { CHAIN_ID } from 'utils/chains'
 import { TIME_RANGES } from 'utils/constants'
 import useQuery from './useQuery'
 import useTimeFrom from './useTimeFrom'
@@ -79,16 +86,24 @@ const useTokenStats = (rTokenId: string, isRSV = false): TokenStats => {
       }
 
       if (isRSV) {
+        tokenData.transferCount += RSVOverview.txCount
+        tokenData.cumulativeVolumeUsd = `$${formatCurrency(
+          volumeUsd + RSVOverview.volume
+        )}`
+      }
+
+      if (rTokenId.toLowerCase() === EUSD_ADDRESS[CHAIN_ID].toLowerCase()) {
         tokenData.transferCount += rpayOverview.txCount
         tokenData.cumulativeVolumeUsd = `$${formatCurrency(
           volumeUsd + rpayOverview.volume
         )}`
-        ;(tokenData.dailyVolume = `$${formatCurrency(
+        tokenData.dailyVolume = `$${formatCurrency(
           dailyVolume + rpayOverview.dayVolume
-        )}`),
-          (tokenData.dailyTransferCount =
-            tokenData.dailyTransferCount + rpayOverview.dayTxCount)
+        )}`
+        tokenData.dailyTransferCount =
+          tokenData.dailyTransferCount + rpayOverview.dayTxCount
       }
+
       setStats(tokenData)
     }
   }, [JSON.stringify(data), rTokenPrice, rpayOverview])

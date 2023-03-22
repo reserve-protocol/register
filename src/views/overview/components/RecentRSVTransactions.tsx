@@ -4,9 +4,7 @@ import TransactionsTable from 'components/transactions/table'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
-import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { rpayTransactionsAtom } from 'state/atoms'
 import RSVTxListener from 'state/RSVTxListener'
 import { BoxProps } from 'theme-ui'
 
@@ -32,27 +30,17 @@ const RecentRSVTransactions = (props: BoxProps) => {
   const { data } = useQuery(tokenRecentTxsQuery, {
     tokenId: rToken?.address.toLowerCase() ?? '',
   })
-  const rpayTx = useAtomValue(rpayTransactionsAtom)
 
   const txs = useMemo(() => {
     if (!data?.entries) {
       return []
     }
 
-    const txs = [...rpayTx]
-
-    // TODO: Parse type depending on lang
-    txs.push(
-      ...data.entries.map((tx: any) => ({
-        ...tx,
-        amount: Number(formatEther(tx.amount)),
-      }))
-    )
-
-    txs.sort((a, b) => +b.timestamp - +a.timestamp)
-
-    return txs.slice(0, 20)
-  }, [data, rpayTx])
+    return data.entries.map((tx: any) => ({
+      ...tx,
+      amount: Number(formatEther(tx.amount)),
+    }))
+  }, [data])
 
   return (
     <>
@@ -61,7 +49,7 @@ const RecentRSVTransactions = (props: BoxProps) => {
         compact
         bordered
         maxHeight={520}
-        help="This includes on-chain transactions in addition to anonymized Rpay transactions to show the full story of the RSV ecosystem."
+        help="Recent on-chain RSV transactions."
         title={t`User Transactions`}
         data={txs}
         {...props}
