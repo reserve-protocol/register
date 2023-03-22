@@ -1,15 +1,31 @@
 import { t, Trans } from '@lingui/macro'
 import IconInfo from 'components/info-icon'
-import { formatEther } from 'ethers/lib/utils'
+import useBlockNumber from 'hooks/useBlockNumber'
 import { useAtomValue } from 'jotai'
-import { Archive, ThumbsDown, ThumbsUp, XOctagon } from 'react-feather'
-import { Box, Grid, Image, Text } from 'theme-ui'
+import { useMemo } from 'react'
+import { Archive, Shield, ThumbsDown, ThumbsUp, XOctagon } from 'react-feather'
+import { Box, Grid, Image, Progress, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { accountVotesAtom, proposalDetailAtom } from '../atom'
 
 const ProposalDetailStats = () => {
   const proposal = useAtomValue(proposalDetailAtom)
   const accountVotes = useAtomValue(accountVotesAtom)
+
+  const blockNumber = useBlockNumber()
+  const quorumWeight = useMemo(() => {
+    if (
+      proposal?.abstainWeightedVotes &&
+      proposal.forWeightedVotes &&
+      proposal.startBlock
+    ) {
+      const total = +proposal.abstainWeightedVotes + +proposal.forWeightedVotes
+
+      return total / +proposal.quorumVotes
+    }
+
+    return 0
+  }, [proposal])
 
   return (
     <Box variant="layout.borderBox" mt={4} p={0}>
@@ -22,14 +38,47 @@ const ProposalDetailStats = () => {
             borderColor: 'border',
           }}
         >
-          <Text variant="subtitle" mb={3}>
-            <Trans>For Votes</Trans>
-          </Text>
-          <IconInfo
-            icon={<ThumbsUp size={14} />}
-            title={t`Current`}
-            text={formatCurrency(Number(proposal?.forWeightedVotes ?? '0'))}
-          />
+          <Box mb={2}>
+            <Text variant="subtitle" mb={3}>
+              <Trans>For Votes</Trans>
+            </Text>
+            <IconInfo
+              icon={<ThumbsUp size={14} />}
+              title={t`Current`}
+              text={formatCurrency(Number(proposal?.forWeightedVotes ?? '0'))}
+            />
+          </Box>
+
+          <Box>
+            {Number(blockNumber) > Number(proposal?.startBlock) ? (
+              <>
+                <IconInfo
+                  icon={<Shield size={14} />}
+                  title={t`Quorum`}
+                  text={formatCurrency(Number(proposal?.quorumVotes ?? '0'))}
+                />
+
+                <Progress
+                  max={1}
+                  sx={{
+                    width: '100%',
+                    color: 'success',
+                    backgroundColor: 'red',
+                    height: 10,
+                  }}
+                  value={quorumWeight}
+                />
+              </>
+            ) : (
+              <>
+                <IconInfo
+                  icon={<Shield size={14} />}
+                  title={t`Snapshot Block`}
+                  text={proposal?.startBlock.toString() ?? '0'}
+                />
+              </>
+            )}
+          </Box>
         </Box>
         <Box p={4} sx={{ borderBottom: '1px solid', borderColor: 'border' }}>
           <Text variant="subtitle" mb={3}>
