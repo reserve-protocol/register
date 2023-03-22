@@ -191,6 +191,8 @@ export interface ReserveToken extends Token {
   unlisted?: boolean // Mark if the token is not listed
   mandate?: string
   meta?: RTokenMeta
+  redemptionAvailable?: number
+  issuanceAvailable?: number
 }
 
 export interface AccountToken {
