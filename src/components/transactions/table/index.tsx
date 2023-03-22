@@ -54,7 +54,7 @@ const TransactionsTable = ({
       UNSTAKE: t`Unstake`,
       WITHDRAW: t`Withdraw`,
       DEPOSIT: t`Deposit`,
-      WITHDRAWAL: t`Withdrawal`,
+      WITHDRAWAL: t`Withdraw`,
     }),
     []
   )
@@ -65,8 +65,11 @@ const TransactionsTable = ({
         Header: t`Type`,
         accessor: 'type',
         Cell: ({ cell }: { cell: any }) => (
-          <Text sx={{ textTransform: 'capitalize' }}>
-            {transactionTypes[cell.value] || cell.value}
+          <Text>
+            <span style={{ textTransform: 'capitalize' }}>
+              {transactionTypes[cell.value] || cell.value}
+            </span>{' '}
+            {external && cell.row.original.symbol}
           </Text>
         ),
       },

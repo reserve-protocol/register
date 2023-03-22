@@ -26,6 +26,7 @@ const RSVTxListener = () => {
               id,
               type,
               amountUSD,
+              symbol: 'eUSD',
               timestamp: dateToUnix(timestamp),
             })
           )

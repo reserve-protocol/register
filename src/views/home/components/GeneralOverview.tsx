@@ -18,6 +18,9 @@ const protocolRecentTxsQuery = gql`
       amountUSD
       hash
       timestamp
+      token {
+        symbol
+      }
     }
   }
 `
@@ -42,6 +45,7 @@ const TransactionsOverview = (props: BoxProps) => {
       ...data.entries.map((tx: any) => ({
         ...tx,
         amount: Number(formatEther(tx.amount)),
+        symbol: tx?.token?.symbol ?? '',
       }))
     )
     txs.sort((a, b) => Number(b.timestamp) - Number(a.timestamp))
