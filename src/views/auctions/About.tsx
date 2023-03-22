@@ -36,7 +36,7 @@ const RunAuctions = () => {
       addTransaction([
         {
           id,
-          description: t`Run all auctions`,
+          description: t`Claim rewards`,
           status: TRANSACTION_STATUS.PENDING,
           value: '0',
           call: {
@@ -54,7 +54,7 @@ const RunAuctions = () => {
     <LoadingButton
       variant="accentAction"
       loading={!!txId}
-      text={t`Run all auctions`}
+      text={t`Claim rewards`}
       onClick={handleRun}
       small
     />
