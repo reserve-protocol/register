@@ -1,4 +1,5 @@
 import { NumericalInput } from 'components'
+import Help from 'components/help'
 import { useAtom } from 'jotai'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
@@ -9,8 +10,40 @@ export interface TransactionInputProps extends BoxProps {
   compact?: boolean
   amountAtom: any
   maxAmount: string
+  globalMaxAmount?: number
+  help?: string
   disabled?: boolean
   autoFocus?: boolean
+  hasThrottle?: boolean
+}
+
+interface MaxLabelProps {
+  text: string
+  compact: boolean
+  clickable: boolean
+  help?: string
+  handleClick: () => void
+}
+
+const MaxLabel = ({
+  text,
+  compact,
+  clickable,
+  help = '',
+  handleClick,
+}: MaxLabelProps) => {
+  return (
+    <Text
+      onClick={handleClick}
+      as={clickable ? 'a' : 'span'}
+      variant={clickable ? 'a' : 'legend'}
+      sx={{ display: 'block', fontSize: compact ? 1 : 2 }}
+      ml={'auto'}
+      mr={2}
+    >
+      {text} {!!help && <Help content={help} />}
+    </Text>
+  )
 }
 
 const TransactionInput = ({
@@ -18,24 +51,33 @@ const TransactionInput = ({
   placeholder = '',
   amountAtom,
   maxAmount,
+  globalMaxAmount = 0,
+  help = '',
   disabled = false,
-  compact = false,
+  compact = true,
   autoFocus = false,
+  hasThrottle = false,
   ...props
 }: TransactionInputProps) => {
   const [amount, setAmount] = useAtom(amountAtom)
 
   const maxLabel = (
-    <Text
-      onClick={() => setAmount(maxAmount)}
-      as="a"
-      variant="a"
-      sx={{ display: 'block', fontSize: compact ? 1 : 2 }}
-      ml={'auto'}
-      mr={2}
-    >
-      Max: {formatCurrency(+maxAmount, 5)}
-    </Text>
+    <MaxLabel
+      text={`Max: ${formatCurrency(+maxAmount, 5)}`}
+      handleClick={() => setAmount(maxAmount)}
+      clickable={true}
+      compact
+    />
+  )
+
+  const throttleLabel = (
+    <MaxLabel
+      text={`Global Max: ${formatCurrency(+globalMaxAmount, 2)}`}
+      handleClick={() => {}}
+      help={help}
+      clickable={false}
+      compact
+    />
   )
 
   return (
@@ -53,7 +95,11 @@ const TransactionInput = ({
         onChange={setAmount}
         autoFocus={autoFocus}
       />
-      {!compact && <Flex mt={2}>{maxLabel}</Flex>}
+      {!compact ? (
+        <Flex mt={2}>{maxLabel}</Flex>
+      ) : (
+        !!globalMaxAmount && <Flex mt={2}>{throttleLabel}</Flex>
+      )}
     </Box>
   )
 }

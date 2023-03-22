@@ -6,6 +6,7 @@ import {
   ERC20Interface,
   FacadeInterface,
   MainInterface,
+  RTokenInterface,
   StRSRInterface,
 } from 'abis'
 import { ethers } from 'ethers'
@@ -17,6 +18,8 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import {
   basketNonceAtom,
+  maxIssuanceAtom,
+  maxRedemptionAtom,
   rsrExchangeRateAtom,
   rTokenCollateralAssetsAtom,
   rTokenCollateralDist,
@@ -43,6 +46,8 @@ const RTokenStateUpdater = () => {
   const updateTokenStatus = useSetAtom(rTokenStatusAtom)
   const setDistribution = useSetAtom(rTokenDistributionAtom)
   const setExchangeRate = useSetAtom(rsrExchangeRateAtom)
+  const setMaxIssuance = useSetAtom(maxIssuanceAtom)
+  const setMaxRedemption = useSetAtom(maxRedemptionAtom)
   const setCollateralDist = useSetAtom(rTokenCollateralDist)
   const setBasketNonce = useSetAtom(basketNonceAtom)
   const setSupply = useSetAtom(rTokenTotalSupplyAtom)
@@ -184,33 +189,52 @@ const RTokenStateUpdater = () => {
       provider: Web3Provider
     ) => {
       try {
-        const [tokenSupply, stTokenSupply, exchangeRate] =
-          await promiseMulticall(
-            [
-              {
-                abi: ERC20Interface,
-                method: 'totalSupply',
-                args: [],
-                address: rTokenAddress,
-              },
-              {
-                abi: ERC20Interface,
-                method: 'totalSupply',
-                args: [],
-                address: stRSRAddress,
-              },
-              {
-                abi: StRSRInterface,
-                method: 'exchangeRate',
-                args: [],
-                address: stRSRAddress,
-              },
-            ],
-            provider
-          )
+        const [
+          tokenSupply,
+          stTokenSupply,
+          exchangeRate,
+          issuanceAvailable,
+          redemptionAvailable,
+        ] = await promiseMulticall(
+          [
+            {
+              abi: ERC20Interface,
+              method: 'totalSupply',
+              args: [],
+              address: rTokenAddress,
+            },
+            {
+              abi: ERC20Interface,
+              method: 'totalSupply',
+              args: [],
+              address: stRSRAddress,
+            },
+            {
+              abi: StRSRInterface,
+              method: 'exchangeRate',
+              args: [],
+              address: stRSRAddress,
+            },
+            {
+              abi: RTokenInterface,
+              method: 'issuanceAvailable',
+              args: [],
+              address: rTokenAddress,
+            },
+            {
+              abi: RTokenInterface,
+              method: 'redemptionAvailable',
+              args: [],
+              address: rTokenAddress,
+            },
+          ],
+          provider
+        )
         setSupply(formatEther(tokenSupply))
         setStaked(formatEther(stTokenSupply))
         setExchangeRate(+formatEther(exchangeRate))
+        setMaxIssuance(+formatEther(issuanceAvailable))
+        setMaxRedemption(+formatEther(redemptionAvailable))
       } catch (e) {
         console.error('Error fetching exchange rate', e)
       }
