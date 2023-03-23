@@ -7,9 +7,9 @@ import tokenList from 'utils/rtokens'
 import { useEffect } from 'react'
 import { calculateApy } from 'utils'
 import { formatEther, getAddress } from 'ethers/lib/utils'
-import { RSV_ADDRESS } from 'utils/addresses'
+import { EUSD_ADDRESS, RSV_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
-import { rpayOverviewAtom } from 'state/atoms'
+import { rpayOverviewAtom, RSVOverview } from 'state/atoms'
 
 interface ListedToken {
   id: string
@@ -124,10 +124,12 @@ const useTokenList = () => {
 
           // RSV Data
           if (token.id === RSV_ADDRESS[CHAIN_ID].toLowerCase()) {
-            tokenData.holders += rpayOverview.holders
+            tokenData.transactionCount += RSVOverview.txCount
+            tokenData.cumulativeVolume += RSVOverview.volume
+            tokenData.targetUnits = 'USD'
+          } else if (token.id === EUSD_ADDRESS[CHAIN_ID].toLowerCase()) {
             tokenData.transactionCount += rpayOverview.txCount
             tokenData.cumulativeVolume += rpayOverview.volume
-            tokenData.targetUnits = 'USD'
           }
 
           return tokenData
