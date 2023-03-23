@@ -2,8 +2,9 @@ import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import { useCallback, useEffect, useState } from 'react'
 import { getContract } from 'utils'
+import { ENS_ADDRESS } from 'utils/addresses'
+import { CHAIN_ID } from 'utils/chains'
 
-const ENS_REVERSE_LOOKUP = '0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C'
 const ENS_ABI = [
   'function getNames(address[] addresses) view returns (string[] r)',
 ]
@@ -14,7 +15,7 @@ export const useEnsAddresses = (addresses: string[]) => {
 
   const ensReverseRecordRequest = useCallback(async () => {
     const ensReverseRecords = getContract(
-      ENS_REVERSE_LOOKUP,
+      ENS_ADDRESS[CHAIN_ID],
       ENS_ABI,
       provider as Web3Provider
     )
