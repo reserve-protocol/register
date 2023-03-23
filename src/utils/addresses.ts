@@ -102,6 +102,12 @@ export const ORACLE_ADDRESS: AddressMap = {
   [ChainId.Hardhat]: '0x8263e161A855B644f582d9C164C66aABEe53f927',
 }
 
+export const ENS_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C',
+  [ChainId.Goerli]: '0x333Fc8f550043f239a2CF79aEd5e9cF4A20Eb41e',
+  [ChainId.Hardhat]: '0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C',
+}
+
 export const EUSD_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
   [ChainId.Goerli]: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
