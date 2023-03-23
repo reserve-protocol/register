@@ -4,6 +4,7 @@ import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { Table } from 'components/table'
 import { formatEther } from 'ethers/lib/utils'
 import { gql } from 'graphql-request'
+import { useEnsAddresses } from 'hooks/useENSAddresses'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
 import { useMemo } from 'react'
@@ -40,15 +41,33 @@ const useVoters = () => {
     id: rToken?.address.toLowerCase(),
   })
 
-  return useMemo(() => {
-    const { data, error } = response
+  const { data, error } = response
 
+  const addresses = data?.delegates?.map((delegate: any) => delegate.address)
+  const ensRes: string[] = useEnsAddresses(addresses)
+
+  return useMemo(() => {
+    if (!ensRes?.length)
+      return {
+        data: [],
+        error: false,
+        loading: true,
+      }
+    const delegatesWithEns = data?.delegates?.map(
+      (delegate: any, idx: number) => {
+        const ens = ensRes[idx]
+        return {
+          ...delegate,
+          displayAddress: !!ens ? ens : shortenAddress(delegate.address),
+        }
+      }
+    )
     return {
-      data: data?.delegates ?? [],
+      data: delegatesWithEns ?? [],
       error: !!error,
       loading: !data?.delegates && !error,
     }
-  }, [JSON.stringify(response)])
+  }, [JSON.stringify(response), ensRes])
 }
 
 const TopVoters = (props: BoxProps) => {
@@ -65,12 +84,12 @@ const TopVoters = (props: BoxProps) => {
       },
       {
         Header: t`Address`,
-        accessor: 'address',
-        Cell: ({ value }: any) => {
+        Cell: ({ row }: any) => {
+          const { displayAddress, address } = row.original
           return (
             <Box variant="layout.verticalAlign">
-              <Text>{shortenAddress(value)}</Text>
-              <GoTo href={getExplorerLink(value, ExplorerDataType.ADDRESS)} />
+              <Text>{displayAddress}</Text>
+              <GoTo href={getExplorerLink(address, ExplorerDataType.ADDRESS)} />
             </Box>
           )
         },
