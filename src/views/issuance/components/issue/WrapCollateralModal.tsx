@@ -102,7 +102,6 @@ const WrapCollateralModal = ({
 
       for (const plugin of valids) {
         const amount = formState[plugin.address].value
-
         approvalTxs.push(
           getTransactionWithGasLimit(
             {
@@ -118,7 +117,12 @@ const WrapCollateralModal = ({
                 method: 'approve',
                 args: [
                   plugin.depositContract,
-                  parseUnits(amount, fromUnderlying ? plugin.decimals : 18),
+                  parseUnits(
+                    amount,
+                    fromUnderlying
+                      ? plugin.decimals
+                      : plugin.collateralDecimals || 18
+                  ),
                 ],
               },
             },
@@ -138,7 +142,12 @@ const WrapCollateralModal = ({
             method: 'deposit',
             args: [
               account,
-              parseUnits(amount, fromUnderlying ? plugin.decimals : 18),
+              parseUnits(
+                amount,
+                fromUnderlying
+                  ? plugin.decimals
+                  : plugin.collateralDecimals || 18
+              ),
               0,
               fromUnderlying,
             ],
@@ -207,7 +216,7 @@ const WrapCollateralModal = ({
         for (const plugin of aavePlugins) {
           const max = +formatUnits(
             results[index],
-            fromUnderlying ? plugin.decimals : 18
+            fromUnderlying ? plugin.decimals : plugin.collateralDecimals || 18
           )
           newState[plugin.address] = {
             ...formState[plugin.address],
