@@ -32,7 +32,6 @@ const IMGS = new Set([
   'eth',
   'busd',
   'weth',
-  'sabusd',
   'sadai',
   'sausdc',
   'sausdt',

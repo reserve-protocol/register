@@ -212,7 +212,6 @@ export const collateralYieldAtom = atom<{ [x: string]: number }>({
   sadai: 1.61,
   sausdc: 1.94,
   sausdt: 2.98,
-  sabusd: 2.31,
   sausdp: 3.37,
   cdai: 2.21,
   cusdc: 2.47,

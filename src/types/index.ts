@@ -240,4 +240,5 @@ export interface CollateralPlugin {
   rewardToken: string // yield token aave / compound wrapped Asset
   custom?: boolean
   underlyingToken?: string
+  collateralDecimals?: number // Decimals of exogenous collateral deposited in wrapper e.g. aUSDC
 }
