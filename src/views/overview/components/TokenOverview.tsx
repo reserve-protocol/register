@@ -21,9 +21,7 @@ const TokenOverview = ({ metrics, ...props }: Props) => {
         <ContentHead
           mb={[3, 6]}
           title={t`Overview`}
-          subtitle={t`Here you can find usage data about RSV, which is mostly used in the
-             Rpay app. Transactions data includes off-chain data that as been
-             anonymized to protect user privacy.`}
+          subtitle={t`Here you can find usage data about RSV, which is used to mostly be used in the Rpay app. Usage data includes off-chain data from before the migration on March 22, 2023 that as been anonymized to protect user privacy. This page will likely be removed from Register in the future.`}
         />
       ) : undefined}
 
