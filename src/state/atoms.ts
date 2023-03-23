@@ -524,7 +524,7 @@ export const rpayOverviewAtom = atom({
 export const RSVOverview = {
   dayVolume: 0,
   dayTxCount: 0,
-  volume: 5789609842,
-  txCount: 12651886,
+  volume: 5784335728,
+  txCount: 12640025,
   holders: 0,
 }
