@@ -15,7 +15,7 @@ import { useTransactions } from 'state/web3/hooks/useTransactions'
 import { promiseMulticall } from 'state/web3/lib/multicall'
 import { Box, Divider, Flex, Link, Text } from 'theme-ui'
 import { BigNumberMap, TransactionState } from 'types'
-import { formatCurrency, hasAllowance } from 'utils'
+import { formatCurrency, getTransactionWithGasLimit, hasAllowance } from 'utils'
 import { STAKE_AAVE_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 import { TRANSACTION_STATUS } from 'utils/constants'
@@ -103,23 +103,29 @@ const WrapCollateralModal = ({
       for (const plugin of valids) {
         const amount = formState[plugin.address].value
 
-        approvalTxs.push({
-          id: uuid(),
-          description: t`Approve ${plugin.symbol}`,
-          status: TRANSACTION_STATUS.PENDING,
-          value: amount,
-          call: {
-            abi: 'erc20',
-            address: fromUnderlying
-              ? (plugin.underlyingToken as string)
-              : plugin.collateralAddress,
-            method: 'approve',
-            args: [
-              plugin.depositContract,
-              parseUnits(amount, fromUnderlying ? plugin.decimals : 18),
-            ],
-          },
-        })
+        approvalTxs.push(
+          getTransactionWithGasLimit(
+            {
+              id: uuid(),
+              description: t`Approve ${plugin.symbol}`,
+              status: TRANSACTION_STATUS.PENDING,
+              value: amount,
+              call: {
+                abi: 'erc20',
+                address: fromUnderlying
+                  ? (plugin.underlyingToken as string)
+                  : plugin.collateralAddress,
+                method: 'approve',
+                args: [
+                  plugin.depositContract,
+                  parseUnits(amount, fromUnderlying ? plugin.decimals : 18),
+                ],
+              },
+            },
+            65_000,
+            0
+          )
+        )
 
         depositTxs.push({
           id: '',
