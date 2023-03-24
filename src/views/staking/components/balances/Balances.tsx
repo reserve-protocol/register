@@ -30,13 +30,14 @@ const pendingRSRBalanceAtom = atom(
 
 const PendingBalance = () => {
   const balance = useAtomValue(pendingRSRBalanceAtom)
+  const rate = useAtomValue(rsrExchangeRateAtom)
 
   return (
     <Box p={4}>
       <Text variant="subtitle" mb={3}>
         <Trans>In Cooldown</Trans>
       </Text>
-      <TokenBalance symbol="RSR" balance={balance} />
+      <TokenBalance symbol={'RSR'} balance={balance * rate} />
     </Box>
   )
 }
@@ -44,6 +45,8 @@ const PendingBalance = () => {
 // TODO: Create "Claim" component
 const AvailableBalance = () => {
   const rToken = useRToken()
+  const rate = useAtomValue(rsrExchangeRateAtom)
+
   const addTransaction = useSetAtom(addTransactionAtom)
   const { index, availableAmount } = useAtomValue(pendingRSRSummaryAtom)
   const [claiming, setClaiming] = useState('')
@@ -87,7 +90,7 @@ const AvailableBalance = () => {
       <Text variant="subtitle" mb={3}>
         <Trans>Available</Trans>
       </Text>
-      <TokenBalance symbol="RSR" balance={availableAmount} />
+      <TokenBalance symbol="RSR" balance={availableAmount * rate} />
       <LoadingButton
         loading={!!claiming}
         disabled={!availableAmount || !canWithdraw}
