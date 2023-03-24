@@ -160,6 +160,7 @@ export const ChangesUpdater = () => {
       )
     }
   }, [
+    isBasketValid,
     isNewBasket,
     backupChanges,
     revenueChanges,
