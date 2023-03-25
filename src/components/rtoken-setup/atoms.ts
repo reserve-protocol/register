@@ -8,6 +8,7 @@ export interface Collateral {
   address: string
   targetUnit: string
   rewardToken?: string
+  collateralAddress?: string
   custom?: boolean
 }
 

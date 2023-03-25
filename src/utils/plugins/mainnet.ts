@@ -171,7 +171,7 @@ const plugins: CollateralPlugin[] = [
     referenceUnit: 'DAI',
     collateralToken: 'cDAI',
     description: '',
-    collateralAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+    collateralAddress: underlyingCollateralAddresses.cDAI,
     rewardToken: COMPOUND_ADDRESS[ChainId.Mainnet],
   },
   {
@@ -182,7 +182,7 @@ const plugins: CollateralPlugin[] = [
     referenceUnit: 'USDC',
     collateralToken: 'cUSDC',
     description: '',
-    collateralAddress: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+    collateralAddress: underlyingCollateralAddresses.cUSDC,
     rewardToken: COMPOUND_ADDRESS[ChainId.Mainnet],
   },
   {
@@ -193,7 +193,7 @@ const plugins: CollateralPlugin[] = [
     referenceUnit: 'USDT',
     collateralToken: 'aUSDT',
     description: '',
-    collateralAddress: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+    collateralAddress: underlyingCollateralAddresses.cUSDT,
     rewardToken: COMPOUND_ADDRESS[ChainId.Mainnet],
   },
   {
@@ -204,7 +204,7 @@ const plugins: CollateralPlugin[] = [
     referenceUnit: 'WBTC',
     collateralToken: 'cWBTC',
     description: '',
-    collateralAddress: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
+    collateralAddress: underlyingCollateralAddresses.cWBTC,
     rewardToken: COMPOUND_ADDRESS[ChainId.Mainnet],
   },
   {
@@ -215,7 +215,7 @@ const plugins: CollateralPlugin[] = [
     referenceUnit: 'ETH',
     collateralToken: 'cETH',
     description: '',
-    collateralAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+    collateralAddress: underlyingCollateralAddresses.cETH,
     rewardToken: COMPOUND_ADDRESS[ChainId.Mainnet],
   },
   {
