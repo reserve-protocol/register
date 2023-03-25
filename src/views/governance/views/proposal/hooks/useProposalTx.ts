@@ -98,9 +98,19 @@ const useProposalTx = () => {
     )
     const newAssets = new Set<string>()
 
-    const addToRegistry = (address: string) => {
-      if (!assets.has(address) && !newAssets.has(address)) {
-        addresses.push(contracts.assetRegistry)
+    const addToRegistry = (address: string, underlyingAddress?: string) => {
+      if (newAssets.has(address) || assets.has(address)) return
+      addresses.push(contracts.assetRegistry)
+
+      // Underlying asset (from another plugin instance)
+      // registered in past - swapRegistered
+      if (assets.has(underlyingAddress || '') && !assets.has(address)) {
+        calls.push(
+          AssetRegistryInterface.encodeFunctionData('swapRegistered', [address])
+        )
+        newAssets.add(address)
+        // Brand new plugin - register
+      } else {
         calls.push(
           AssetRegistryInterface.encodeFunctionData('register', [address])
         )
@@ -206,7 +216,10 @@ const useProposalTx = () => {
         // Register missing collateral/assets on the asset registry
         for (const changes of basketChanges) {
           if (changes.isNew) {
-            addToRegistry(changes.collateral.address)
+            addToRegistry(
+              changes.collateral.address,
+              changes.collateral.collateralAddress
+            )
 
             if (changes.collateral.rewardToken) {
               addToRegistry(changes.collateral.rewardToken)
