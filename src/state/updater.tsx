@@ -227,6 +227,9 @@ const poolsMap: StringMap = {
   'fa4d7ee4-0001-4133-9e8d-cf7d5d194a91': 'fusdc',
   'ed227286-abb0-4a34-ada5-39f7ebd81afb': 'fdai',
   '6600934f-6323-447d-8a7d-67fbede8529d': 'fusdt',
+  '747c1d2a-c668-4682-b9f9-296708a3dd90': 'wsteth',
+  'd4b3c522-6127-4b89-bedf-83641cdcd2eb': 'reth',
+  '7da72d09-56ca-4ec5-a45f-59114353e487': 'cusdcv3',
 }
 
 const CollateralYieldUpdater = () => {
