@@ -39,6 +39,7 @@ const IMGS = new Set([
   'fusdc',
   'fusdt',
   'fdai',
+  'cusdcv3',
   'wsteth',
   'reth',
 ])
