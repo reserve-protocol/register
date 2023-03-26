@@ -219,6 +219,12 @@ export const collateralYieldAtom = atom<{ [x: string]: number }>({
   cusdp: 0.31,
   cwbtc: 0.03,
   ceth: 0.07,
+  fusdc: 3.46,
+  fdai: 3.76,
+  fusdt: 3.74,
+  wsteth: 5,
+  reth: 4.12,
+  cusdcv3: 2.1,
 })
 
 export const ethPriceAtom = atom(1)
