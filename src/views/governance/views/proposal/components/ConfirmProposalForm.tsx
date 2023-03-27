@@ -17,7 +17,7 @@ const ConfirmProposalForm = ({ tx }: { tx: TransactionState }) => {
 
   useEffect(() => {
     if (!title) {
-      setDescription('')
+      setProposalDescription('')
     } else {
       setProposalDescription(`# ${title} \n ${description || ''}`)
     }
