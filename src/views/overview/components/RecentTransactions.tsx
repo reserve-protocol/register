@@ -28,13 +28,20 @@ const RecentTransactions = () => {
   const { data } = useQuery(recentTxsQuery, {
     tokenId: rToken?.address.toLowerCase() ?? '',
   })
+
   const txs = useMemo(() => {
     if (!data?.entries) {
       return []
     }
 
     // TODO: Parse type depending on lang
-    return data.entries.map((tx: any) => ({
+    const uniqueEntries = Object.values(
+      data.entries.reduce(
+        (acc: any, obj: any) => ({ ...acc, [obj.hash]: obj }),
+        {}
+      )
+    )
+    return uniqueEntries.map((tx: any) => ({
       ...tx,
       amount: Number(formatEther(tx.amount)),
     }))
