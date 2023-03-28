@@ -13,9 +13,11 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import {
   allowanceAtom,
+  btcPriceAtom,
   chainIdAtom,
   collateralYieldAtom,
   ethPriceAtom,
+  eurPriceAtom,
   gasPriceAtom,
   pendingRSRAtom,
   rsrExchangeRateAtom,
@@ -26,9 +28,15 @@ import {
 } from 'state/atoms'
 import useSWR from 'swr'
 import { ReserveToken, StringMap } from 'types'
-import { ORACLE_ADDRESS, RSR_ADDRESS, WETH_ADDRESS } from 'utils/addresses'
-import { CHAIN_ID } from 'utils/chains'
-import { RSR } from 'utils/constants'
+import {
+  EURT_ADDRESS,
+  ORACLE_ADDRESS,
+  RSR_ADDRESS,
+  WBTC_ADDRESS,
+  WETH_ADDRESS,
+} from 'utils/addresses'
+import { ChainId, CHAIN_ID } from 'utils/chains'
+import { COINGECKO_API, RSR } from 'utils/constants'
 import { RSV_MANAGER } from 'utils/rsv'
 import AccountUpdater from './AccountUpdater'
 import RSVUpdater from './RSVUpdater'
@@ -123,14 +131,20 @@ const PendingBalancesUpdater = () => {
  * Fetch prices for:
  * ETH    -> USD
  * RSR    -> USD
+ * BTC    -> USD
+ * EUR    -> USD
  * RToken -> USD
  * GasPrice
+ * TODO: consolidate into `tokenPrice` atom
  */
 const PricesUpdater = () => {
   const { provider, chainId } = useWeb3React()
   const rTokenPrice = useRTokenPrice()
+
   const setRSRPrice = useSetAtom(rsrPriceAtom)
   const setEthPrice = useSetAtom(ethPriceAtom)
+  const setBtcPrice = useSetAtom(btcPriceAtom)
+  const setEurPrice = useSetAtom(eurPriceAtom)
   const setGasPrice = useSetAtom(gasPriceAtom)
   const setRTokenPrice = useSetAtom(rTokenPriceAtom)
   const blockNumber = useBlockNumber()
@@ -150,23 +164,25 @@ const PricesUpdater = () => {
   }, [])
 
   // TODO: Replace sushi oracle with chainlink
-  const fetchTokenPrices = useCallback(async (provider: Web3Provider) => {
+  const fetchTokenPrices = useCallback(async () => {
     try {
-      const callParams = {
-        abi: OracleInterface,
-        address: ORACLE_ADDRESS[CHAIN_ID],
-        method: 'getPriceUsdc',
-      }
+      const tokenAddresses = [
+        RSR_ADDRESS[ChainId.Mainnet],
+        WETH_ADDRESS[ChainId.Mainnet],
+        WBTC_ADDRESS[ChainId.Mainnet],
+        EURT_ADDRESS[ChainId.Mainnet],
+      ]
 
-      const [rsrPrice, wethPrice] = await promiseMulticall(
-        [
-          { ...callParams, args: [RSR_ADDRESS[CHAIN_ID]] },
-          { ...callParams, args: [WETH_ADDRESS[CHAIN_ID]] },
-        ],
-        provider
-      )
-      setRSRPrice(+formatUnits(rsrPrice, 6))
-      setEthPrice(+formatUnits(wethPrice, 6))
+      const joinedAddresses = tokenAddresses.join('%2C')
+
+      const res = await fetch(
+        `${COINGECKO_API}/simple/token_price/ethereum?contract_addresses=${joinedAddresses}&vs_currencies=usd`
+      ).then((res) => res.json())
+
+      setRSRPrice(res[RSR_ADDRESS[ChainId.Mainnet].toLowerCase()]?.usd)
+      setEthPrice(res[WETH_ADDRESS[ChainId.Mainnet].toLowerCase()]?.usd)
+      setBtcPrice(res[WBTC_ADDRESS[ChainId.Mainnet].toLowerCase()]?.usd)
+      setEurPrice(res[EURT_ADDRESS[ChainId.Mainnet].toLowerCase()]?.usd)
     } catch (e) {
       console.error('Error fetching token prices', e)
     }
@@ -178,7 +194,7 @@ const PricesUpdater = () => {
 
       // Only fetch token prices in ethereum
       if (chainId === 1) {
-        fetchTokenPrices(provider)
+        fetchTokenPrices()
       }
     }
   }, [chainId, blockNumber])

@@ -114,6 +114,18 @@ export const EUSD_ADDRESS: AddressMap = {
   [ChainId.Hardhat]: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
 }
 
+export const WBTC_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
+  [ChainId.Goerli]: '0xC04B0d3107736C32e19F1c62b2aF67BE61d63a05',
+  [ChainId.Hardhat]: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
+}
+
+export const EURT_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0xc581b735a1688071a1746c968e0798d642ede491',
+  [ChainId.Goerli]: '0xc581b735a1688071a1746c968e0798d642ede491',
+  [ChainId.Hardhat]: '0xc581b735a1688071a1746c968e0798d642ede491',
+}
+
 // Fixed tokens used in the rtoken selector screen and dashboard
 export const DEFAULT_TOKENS = {
   [ChainId.Mainnet]: [

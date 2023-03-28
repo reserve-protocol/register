@@ -5,9 +5,15 @@ import Help from 'components/help'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { useAtomValue } from 'jotai'
 import { useCallback } from 'react'
-import { collateralYieldAtom } from 'state/atoms'
+import {
+  btcPriceAtom,
+  collateralYieldAtom,
+  ethPriceAtom,
+  eurPriceAtom,
+} from 'state/atoms'
 import { Box, BoxProps, Divider, Flex, Text } from 'theme-ui'
 import { formatPercentage, truncateDecimals } from 'utils'
+import { TARGET_UNITS } from 'utils/constants'
 import { Basket, basketAtom, Collateral } from '../atoms'
 import UnitBasket from './UnitBasket'
 
@@ -63,19 +69,34 @@ const PrimaryBasket = ({
   const basket = useAtomValue(basketAtom)
   const units = Object.keys(basket)
   const collateralYield = useAtomValue(collateralYieldAtom)
+  const usdPrice = 1
+  const ethPrice = useAtomValue(ethPriceAtom)
+  const btcPrice = useAtomValue(btcPriceAtom)
+  const eurPrice = useAtomValue(eurPriceAtom)
+
+  let primeBasketUsd = 0
 
   const getEstApy = useCallback(() => {
-    return Object.keys(basket).reduce((prev, current) => {
-      const currentBasket = basket[current]
+    return (
+      Object.keys(basket).reduce((prev, current) => {
+        const currentUnitInUsd = eval(`${current.toLowerCase()}Price`)
+        const currentBasket = basket[current]
 
-      for (let i = 0; i < currentBasket.collaterals.length; i++) {
-        prev +=
-          (collateralYield[currentBasket.collaterals[i].symbol.toLowerCase()] ||
-            0) * (+currentBasket.distribution[i] / 100 || 0)
-      }
+        const unitValueInBasket = currentUnitInUsd * +currentBasket.scale
+        primeBasketUsd += unitValueInBasket
 
-      return prev
-    }, 0)
+        for (let i = 0; i < currentBasket.collaterals.length; i++) {
+          prev +=
+            (collateralYield[
+              currentBasket.collaterals[i].symbol.toLowerCase()
+            ] || 0) *
+            unitValueInBasket *
+            (+currentBasket.distribution[i] / 100 || 0)
+        }
+
+        return prev
+      }, 0) / primeBasketUsd
+    )
   }, [collateralYield, basket])
 
   return (
