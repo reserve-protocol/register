@@ -126,7 +126,11 @@ const ProposalList = () => {
                   {dayjs.unix(+proposal.creationTime).format('YYYY-M-D')}
                 </Text>
               </Box>
-              <Badge ml="auto" variant={BADGE_VARIANT[status] || 'muted'}>
+              <Badge
+                ml="auto"
+                sx={{ flexShrink: 0 }}
+                variant={BADGE_VARIANT[status] || 'muted'}
+              >
                 {formatConstant(status)}
               </Badge>
             </Box>
