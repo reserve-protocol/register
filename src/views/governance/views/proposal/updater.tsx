@@ -18,6 +18,7 @@ import {
   rTokenRevenueSplitAtom,
 } from 'state/atoms'
 import { truncateDecimals } from 'utils'
+import { pluginAddresses } from 'utils/plugins'
 import {
   backupChangesAtom,
   basketChangesAtom,
@@ -69,8 +70,13 @@ export const RTokenDataUpdater = () => {
       const sum = distribution.reduce((a, b) => a + b, 0)
       distribution.push(100 - sum)
 
+      // TODO: Currently it gets the address from our plugin list, If the plugin was updated or it doesnt exist on the list this is a BUG
+      // TODO: Fetch collateral asset address from the smart contract
       setupBasket[targetUnit] = {
-        collaterals: basket[targetUnit].collaterals,
+        collaterals: basket[targetUnit].collaterals.map((c) => ({
+          ...c,
+          address: pluginAddresses[c.symbol.toLowerCase() || c.address],
+        })),
         distribution,
         scale: '1',
       }
