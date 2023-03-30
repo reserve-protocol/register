@@ -30,7 +30,7 @@ const aavePlugins = collateralPlugins.filter(
 
 // TODO: rewrite this whole component
 // TODO: Fix precision issue with balances
-const WrapCollateralModal = ({
+const UnwrapCollateralModal = ({
   onClose,
   unwrap = false,
 }: {
@@ -38,9 +38,7 @@ const WrapCollateralModal = ({
   unwrap?: boolean
 }) => {
   const { provider, account } = useWeb3React()
-  const [signing, setSigning] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [fromUnderlying, setFromUnderlying] = useState(1)
   const [txIds, setTxIds] = useState<string[]>([])
   const addTransactions = useSetAtom(addTransactionAtom)
   const transactionsState = useTransactions(txIds)
@@ -68,9 +66,8 @@ const WrapCollateralModal = ({
   )
   const isValid = isFormValid(formState)
 
-  const [txs, approvals] = useMemo(() => {
-    const depositTxs: TransactionState[] = []
-    const approvalTxs: TransactionState[] = []
+  const [txs] = useMemo(() => {
+    const withdrawTxs: TransactionState[] = []
 
     if (isValid) {
       const valids = aavePlugins.filter(
@@ -79,94 +76,24 @@ const WrapCollateralModal = ({
 
       for (const plugin of valids) {
         const amount = formState[plugin.address].value
-        approvalTxs.push(
-          getTransactionWithGasLimit(
-            {
-              id: uuid(),
-              description: t`Approve ${plugin.symbol}`,
-              status: TRANSACTION_STATUS.PENDING,
-              value: amount,
-              call: {
-                abi: 'erc20',
-                address: fromUnderlying
-                  ? (plugin.underlyingToken as string)
-                  : plugin.collateralAddress,
-                method: 'approve',
-                args: [
-                  plugin.depositContract,
-                  parseUnits(
-                    amount,
-                    fromUnderlying
-                      ? plugin.decimals
-                      : plugin.collateralDecimals || 18
-                  ),
-                ],
-              },
-            },
-            65_000,
-            0
-          )
-        )
 
-        depositTxs.push({
+        withdrawTxs.push({
           id: '',
-          description: t`Deposit ${plugin.symbol}`,
+          description: t`Withdraw ${plugin.symbol}`,
           status: TRANSACTION_STATUS.PENDING,
           value: amount,
           call: {
             abi: 'atoken',
             address: plugin.depositContract ?? '',
-            method: 'deposit',
-            args: [
-              account,
-              parseUnits(
-                amount,
-                fromUnderlying
-                  ? plugin.decimals
-                  : plugin.collateralDecimals || 18
-              ),
-              0,
-              fromUnderlying,
-            ],
+            method: 'withdraw',
+            args: [account, parseUnits(amount, plugin.decimals), true],
           },
         })
       }
     }
 
-    return [depositTxs, approvalTxs]
-  }, [JSON.stringify(formState), signing])
-
-  const allowances = useTokensAllowance(
-    approvals.map((tx) => [tx.call.address, tx.call.args[0]]),
-    account ?? ''
-  )
-
-  const filteredApprovals = approvals.filter((approval) => {
-    if (
-      !allowances[approval.call.address] ||
-      allowances[approval.call.address].gte(approval.call.args[1])
-    ) {
-      return false
-    }
-
-    return true
-  })
-
-  const canSubmit = useMemo(
-    () =>
-      isValid &&
-      hasAllowance(
-        allowances,
-        approvals.reduce(
-          (prev, curr) => ({
-            ...prev,
-            [curr.call.address]: curr.call.args[1],
-          }),
-          {} as BigNumberMap
-        )
-      ),
-    [allowances, isValid, approvals]
-  )
+    return [withdrawTxs]
+  }, [JSON.stringify(formState)])
 
   const fetchBalances = async () => {
     try {
@@ -180,9 +107,7 @@ const WrapCollateralModal = ({
         const results = await promiseMulticall(
           aavePlugins.map((p) => ({
             ...callParams,
-            address: fromUnderlying
-              ? (p.underlyingToken as string)
-              : p.collateralAddress,
+            address: p.depositContract!,
           })),
           provider
         )
@@ -191,10 +116,7 @@ const WrapCollateralModal = ({
 
         let index = 0
         for (const plugin of aavePlugins) {
-          const max = +formatUnits(
-            results[index],
-            fromUnderlying ? plugin.decimals : plugin.collateralDecimals || 18
-          )
+          const max = +formatUnits(results[index], plugin.decimals)
           newState[plugin.address] = {
             ...formState[plugin.address],
             max,
@@ -212,7 +134,7 @@ const WrapCollateralModal = ({
 
   useEffect(() => {
     fetchBalances()
-  }, [account, fromUnderlying])
+  }, [account])
 
   const handleChange = (tokenAddress: string) => (value: string) => {
     setFormState({
@@ -270,13 +192,13 @@ const WrapCollateralModal = ({
   return (
     <Modal
       style={{ maxWidth: '560px' }}
-      title={t`Wrapping needs to be done before minting`}
+      title={t`Unwrap to underlying token`}
       onClose={onClose}
     >
       {!!failed && (
         <TransactionError
           title="Transaction failed"
-          subtitle={t`Error wrapping tokens`}
+          subtitle={t`Error unwrapping tokens`}
           onClose={() => {
             setTxIds([])
             setLoading(false)
@@ -301,45 +223,27 @@ const WrapCollateralModal = ({
             flexGrow: 1,
             textAlign: 'center',
             borderRadius: 8,
-            backgroundColor: fromUnderlying ? 'inputBorder' : 'none',
+            backgroundColor: 'inputBorder',
             color: 'text',
           }}
-          onClick={() => setFromUnderlying(1)}
         >
-          Token{' '}
+          saToken{' '}
           <ArrowRight size={14} style={{ position: 'relative', top: '1px' }} />{' '}
-          saToken
-        </Box>
-        <Box
-          p={1}
-          sx={{
-            flexGrow: 1,
-            textAlign: 'center',
-            borderRadius: 8,
-            backgroundColor: !fromUnderlying ? 'inputBorder' : 'none',
-            color: 'text',
-          }}
-          onClick={() => setFromUnderlying(0)}
-        >
-          aToken{' '}
-          <ArrowRight size={14} style={{ position: 'relative', top: '1px' }} />{' '}
-          saToken
+          Token
         </Box>
       </Box>
       {aavePlugins.map((plugin) => (
         <Box mt={3} key={plugin.address}>
           <Box variant="layout.verticalAlign" mb={2}>
             <Text ml={3} mr={2} variant="legend">
-              {fromUnderlying
-                ? plugin.symbol.substring(2)
-                : plugin.symbol.substring(1)}
+              {plugin.symbol}
             </Text>
             <ArrowRight
               size={14}
               style={{ position: 'relative', top: '1px' }}
             />
             <Text ml={2} variant="legend">
-              {plugin.symbol}
+              {plugin.symbol.substring(2)}
             </Text>
             <Text
               onClick={() =>
@@ -361,7 +265,6 @@ const WrapCollateralModal = ({
             placeholder={t`Input token amount`}
             value={formState[plugin.address].value}
             onChange={handleChange(plugin.address)}
-            disabled={signing}
             variant={
               formState[plugin.address].value &&
               !formState[plugin.address].isValid
@@ -371,25 +274,12 @@ const WrapCollateralModal = ({
           />
         </Box>
       ))}
-      {approvals.length > 0 && !canSubmit && isValid && (
-        <>
-          <Divider sx={{ borderColor: 'darkBorder' }} mx={-4} my={4} />
-          <ApprovalTransactions
-            onConfirm={() => setSigning(true)}
-            onError={() => {
-              setSigning(false)
-            }}
-            title={'Approve'}
-            txs={filteredApprovals}
-          />
-        </>
-      )}
       <Divider sx={{ borderColor: 'darkBorder' }} mx={-4} mt={4} />
       <LoadingButton
         loading={!!loading}
-        disabled={!isValid || !canSubmit}
+        disabled={!isValid}
         variant={!!loading ? 'accentAction' : 'primary'}
-        text={!fromUnderlying ? t`Wrap aTokens` : t`Wrap tokens`}
+        text={t`Unwrap tokens`}
         onClick={handleConfirm}
         sx={{ width: '100%' }}
         mt={3}
@@ -398,4 +288,4 @@ const WrapCollateralModal = ({
   )
 }
 
-export default WrapCollateralModal
+export default UnwrapCollateralModal
