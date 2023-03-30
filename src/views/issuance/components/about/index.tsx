@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import { useState } from 'react'
 import { Box, Flex, Link, Text } from 'theme-ui'
+import UnwrapCollateralModal from '../issue/UnwrapCollateraModal'
 import WrapCollateralModal from '../issue/WrapCollateralModal'
 
 const About = () => {
@@ -47,16 +48,16 @@ const About = () => {
           <SmallButton mr={3} onClick={() => setWrapping(1)}>
             <Trans>Wrap tokens</Trans>
           </SmallButton>
-          {/* <SmallButton onClick={() => setWrapping(2)}>
-            <Trans>Unwrap saTokens</Trans>
-          </SmallButton> */}
+          <SmallButton onClick={() => setWrapping(2)}>
+            <Trans>Unwrap tokens</Trans>
+          </SmallButton>
         </Flex>
       </Box>
-      {!!isWrapping && (
-        <WrapCollateralModal
-          unwrap={isWrapping === 2}
-          onClose={() => setWrapping(0)}
-        />
+      {isWrapping === 1 && (
+        <WrapCollateralModal unwrap={false} onClose={() => setWrapping(0)} />
+      )}
+      {isWrapping === 2 && (
+        <UnwrapCollateralModal unwrap={true} onClose={() => setWrapping(0)} />
       )}
     </Box>
   )
