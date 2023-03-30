@@ -19,7 +19,7 @@ const ProposalVote = (props: BoxProps) => {
   const { account } = useWeb3React()
   const rToken = useRToken()
 
-  const [isVisible, setVisible] = useState(false)
+  const [isVoteVisible, setVoteVisible] = useState(false)
   const [isDelegateVisible, setDelegateVisible] = useState(false)
   const { state } = useAtomValue(getProposalStateAtom)
   const { votePower = '0.0', vote } = useAtomValue(accountVotesAtom)
@@ -35,10 +35,15 @@ const ProposalVote = (props: BoxProps) => {
           args: [account],
         }
     ) ?? {}
+
   const hasNoDelegates = !value[0] || value[0] === ZERO_ADDRESS
 
   const hasUndelegatedBalance =
-    !!account && votePower && !Number(votePower) && !!Number(balance)
+    !!account &&
+    votePower &&
+    !Number(votePower) &&
+    !!Number(balance) &&
+    hasNoDelegates
 
   return (
     <Box variant="layout.borderBox" sx={{ textAlign: 'center' }} {...props}>
@@ -50,7 +55,7 @@ const ProposalVote = (props: BoxProps) => {
       </Text>
       {hasUndelegatedBalance ? (
         <Button sx={{ width: '100%' }} onClick={() => setDelegateVisible(true)}>
-          <Trans>Please delegate your voting power</Trans>
+          <Trans>Delegate voting power for future votes</Trans>
         </Button>
       ) : (
         <Button
@@ -73,7 +78,7 @@ const ProposalVote = (props: BoxProps) => {
           <Trans>Please connect your wallet</Trans>
         </Text>
       )}
-      {isVisible && <VoteModal onClose={() => setVisible(false)} />}
+      {isVoteVisible && <VoteModal onClose={() => setVoteVisible(false)} />}
       {isDelegateVisible && (
         <DelegateModal
           delegated={!hasNoDelegates}
