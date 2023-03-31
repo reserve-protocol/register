@@ -11,7 +11,7 @@ const ENS_ABI = [
 
 export const useEnsAddresses = (addresses: string[]) => {
   const { provider } = useWeb3React()
-  const [ensNames, setEnsNames] = useState<any>()
+  const [ensNames, setEnsNames] = useState<any>([])
 
   const ensReverseRecordRequest = useCallback(async () => {
     const ensReverseRecords = getContract(
