@@ -30,10 +30,6 @@ const collateralAddresses = {
   fUSDC: '0x1289a753e0BaE82CF7f87747f22Eaf8E4eb7C216',
   fUSDT: '0x5F471bDE4950CdB00714A6dD033cA7f912a4f9Ee',
   fDAI: '0xA4410B71033fFE8fA41c6096332Be58E3641326d',
-  wstETH: '0x47df1465672bFc4dC83f712531F7Eb1D658C0B66',
-  rETH: '0x45B9BCc340AFF7497e6F06dE763B6A69644B4645',
-  fFRAX: '0x5D7906a1E865dcc6f57ddcbAa0af698fB306b3F1',
-  cUSDCv3: '0xB60A2dC7b1745aC00314c238ad2BBA05022ec1D1',
 }
 
 const underlyingCollateralAddresses = {
@@ -56,13 +52,9 @@ const underlyingCollateralAddresses = {
   WETH: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
   WBTC: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
   EURT: '0xC581b735A1688071A1746c968e0798D642EDE491',
-  wstETH: '0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0',
-  rETH: '0xae78736Cd615f374D3085123A210448E74Fc6393',
   fUSDC: '0x465a5a630482f3abD6d3b84B39B29b07214d19e5',
   fUSDT: '0x81994b9607e06ab3d5cF3AffF9a67374f05F27d7',
   fDAI: '0xe2bA8693cE7474900A045757fe0efCa900F6530b',
-  fFRAX: '0x1C9A2d6b33B4826757273D47ebEe0e2DddcD978B',
-  cUSDCv3: '0x77e9cBdD675D44Ac11aB3682AAb52B29cea9241B',
 }
 
 // MAINNET - ChainId = 1
@@ -266,28 +258,6 @@ const plugins: CollateralPlugin[] = [
     rewardToken: ZERO_ADDRESS,
   },
   {
-    symbol: 'wstETH',
-    address: collateralAddresses.wstETH,
-    decimals: 18,
-    targetUnit: TARGET_UNITS.ETH,
-    referenceUnit: 'wETH',
-    collateralToken: 'wstETH',
-    description: '',
-    collateralAddress: underlyingCollateralAddresses.wstETH,
-    rewardToken: ZERO_ADDRESS,
-  },
-  {
-    symbol: 'rETH',
-    address: collateralAddresses.rETH,
-    decimals: 18,
-    targetUnit: TARGET_UNITS.ETH,
-    referenceUnit: 'wETH',
-    collateralToken: 'rETH',
-    description: '',
-    collateralAddress: underlyingCollateralAddresses.rETH,
-    rewardToken: ZERO_ADDRESS,
-  },
-  {
     symbol: 'fUSDC',
     address: collateralAddresses.fUSDC,
     decimals: 6,
@@ -319,30 +289,6 @@ const plugins: CollateralPlugin[] = [
     description: '',
     collateralAddress: underlyingCollateralAddresses.fDAI,
     rewardToken: ZERO_ADDRESS,
-  },
-
-  // Negligible volume, so disabling for now
-  // {
-  //   symbol: 'fFRAX',
-  //   address: collateralAddresses.fFRAX,
-  //   decimals: 18,
-  //   targetUnit: TARGET_UNITS.USD,
-  //   referenceUnit: 'FRAX',
-  //   collateralToken: 'fFRAX',
-  //   description: '',
-  //   collateralAddress: underlyingCollateralAddresses.fFRAX,
-  //   rewardToken: ZERO_ADDRESS,
-  // },
-  {
-    symbol: 'cUSDCv3',
-    address: collateralAddresses.cUSDCv3,
-    decimals: 6,
-    targetUnit: TARGET_UNITS.USD,
-    referenceUnit: 'USDC',
-    collateralToken: 'cUSDCv3',
-    description: '',
-    collateralAddress: underlyingCollateralAddresses.cUSDCv3,
-    rewardToken: COMPOUND_ADDRESS[ChainId.Mainnet],
   },
 ]
 
