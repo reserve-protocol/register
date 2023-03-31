@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro'
 import GoTo from 'components/button/GoTo'
+import { useEnsAddresses } from 'hooks/useEnsAddresses'
 import { atom, useAtomValue } from 'jotai'
 import { useMemo, useState } from 'react'
 import { Box, Progress, Text } from 'theme-ui'
@@ -42,6 +43,9 @@ const ProposalVotes = () => {
   const votes = useAtomValue(getProposalVotes)
   const proposal = useAtomValue(proposalDetailAtom)
   const [current, setCurrent] = useState(VOTE_TYPE.FOR)
+
+  const addresses = (votes[current] || []).map((vote: Vote) => vote.voter)
+  const ensRes: string[] = useEnsAddresses(addresses)
 
   const forVotesWeight = useMemo(() => {
     if (proposal?.abstainWeightedVotes && proposal.forWeightedVotes) {
@@ -135,7 +139,9 @@ const ProposalVotes = () => {
               }}
               mr={2}
             />
-            <Text>{shortenAddress(vote.voter)}</Text>
+            <Text>
+              {!!ensRes[index] ? ensRes[index] : shortenAddress(vote.voter)}
+            </Text>
             <GoTo
               ml={1}
               href={getExplorerLink(vote.voter, ExplorerDataType.ADDRESS)}
