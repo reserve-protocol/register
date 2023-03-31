@@ -31,8 +31,8 @@ const MaxLabel = ({
   clickable,
   help = '',
   handleClick,
-}: MaxLabelProps) => {
-  return (
+}: MaxLabelProps) => (
+  <Box variant="layout.verticalAlign">
     <Text
       onClick={handleClick}
       as={clickable ? 'a' : 'span'}
@@ -41,10 +41,11 @@ const MaxLabel = ({
       ml={'auto'}
       mr={2}
     >
-      {text} {!!help && <Help content={help} />}
+      {text}
     </Text>
-  )
-}
+    {!!help && <Help content={help} />}
+  </Box>
+)
 
 const TransactionInput = ({
   title = '',
@@ -65,7 +66,7 @@ const TransactionInput = ({
     <MaxLabel
       text={`Max: ${formatCurrency(+maxAmount, 5)}`}
       handleClick={() => setAmount(maxAmount)}
-      clickable={true}
+      clickable
       compact
     />
   )
@@ -82,12 +83,12 @@ const TransactionInput = ({
 
   return (
     <Box {...props}>
-      <Flex sx={{ alignItems: 'center' }} mb={2}>
+      <Box variant="layout.verticalAlign" mb={2}>
         <Text as="label" variant="legend" ml={3}>
           {title}
         </Text>
-        {compact && maxLabel}
-      </Flex>
+        {compact && <Box ml="auto">{maxLabel}</Box>}
+      </Box>
       <NumericalInput
         disabled={disabled}
         placeholder={placeholder}
@@ -98,7 +99,7 @@ const TransactionInput = ({
       {!compact ? (
         <Flex mt={2}>{maxLabel}</Flex>
       ) : (
-        !!globalMaxAmount && <Flex mt={2}>{throttleLabel}</Flex>
+        !!globalMaxAmount && <Box mt={2}>{throttleLabel}</Box>
       )}
     </Box>
   )
