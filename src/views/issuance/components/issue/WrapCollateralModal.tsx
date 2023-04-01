@@ -25,7 +25,7 @@ import { FormState, isFormValid } from 'utils/wrapping'
 import { v4 as uuid } from 'uuid'
 
 const aavePlugins = collateralPlugins.filter(
-  (p) => p.rewardToken === STAKE_AAVE_ADDRESS[CHAIN_ID]
+  (p) => p.rewardToken[0] === STAKE_AAVE_ADDRESS[CHAIN_ID]
 )
 
 // TODO: rewrite this whole component

@@ -25,7 +25,7 @@ import { useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { rTokenContractsAtom, rTokenGovernanceAtom } from 'state/atoms'
 import { parsePercent } from 'utils'
-import { FURNACE_ADDRESS, ST_RSR_ADDRESS } from 'utils/addresses'
+import { FURNACE_ADDRESS, ST_RSR_ADDRESS, ZERO_ADDRESS } from 'utils/addresses'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { getSharesFromSplit } from 'views/deploy/utils'
 import {
@@ -221,8 +221,13 @@ const useProposalTx = () => {
               changes.collateral.collateralAddress
             )
 
-            if (changes.collateral.rewardToken) {
-              addToRegistry(changes.collateral.rewardToken)
+            if (
+              !!changes.collateral.rewardToken?.length &&
+              changes.collateral.rewardToken[0] != ZERO_ADDRESS
+            ) {
+              changes.collateral.rewardToken.forEach((reward) =>
+                addToRegistry(reward)
+              )
             }
           }
         }
@@ -254,8 +259,13 @@ const useProposalTx = () => {
 
             for (const collateral of collaterals) {
               addToRegistry(collateral.address)
-              if (collateral.rewardToken) {
-                addToRegistry(collateral.rewardToken)
+              if (
+                !!collateral.rewardToken?.length &&
+                collateral.rewardToken[0] != ZERO_ADDRESS
+              ) {
+                collateral.rewardToken.forEach((reward) =>
+                  addToRegistry(reward)
+                )
               }
               backupCollaterals.push(collateral.address)
             }

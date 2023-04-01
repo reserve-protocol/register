@@ -182,8 +182,11 @@ export const getDeployParameters = (
 
       collaterals.forEach((collateral, index) => {
         primaryBasket.push(collateral.address)
-        if (collateral.rewardToken && collateral.rewardToken !== ZERO_ADDRESS) {
-          assets.add(collateral.rewardToken)
+        if (
+          !!collateral.rewardToken?.length &&
+          collateral.rewardToken[0] !== ZERO_ADDRESS
+        ) {
+          collateral.rewardToken.forEach((reward) => assets.add(reward))
         }
 
         weights.push(
@@ -202,8 +205,8 @@ export const getDeployParameters = (
             backup[targetUnit].diversityFactor.toString()
           ),
           backupCollateral: backup[targetUnit].collaterals.map((c) => {
-            if (c.rewardToken && c.rewardToken !== ZERO_ADDRESS) {
-              assets.add(c.rewardToken)
+            if (!!c.rewardToken?.length && c.rewardToken[0] !== ZERO_ADDRESS) {
+              c.rewardToken.forEach((reward) => assets.add(reward))
             }
             return c.address
           }),
