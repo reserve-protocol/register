@@ -9,7 +9,7 @@ import { useContractCall } from 'hooks/useCall'
 import { useFacadeContract } from 'hooks/useContract'
 import useRTokenPrice from 'hooks/useRTokenPrice'
 import useTokensAllowance from 'hooks/useTokensAllowance'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import {
   allowanceAtom,
@@ -230,10 +230,14 @@ const poolsMap: StringMap = {
   '747c1d2a-c668-4682-b9f9-296708a3dd90': 'wsteth',
   'd4b3c522-6127-4b89-bedf-83641cdcd2eb': 'reth',
   '7da72d09-56ca-4ec5-a45f-59114353e487': 'cusdcv3',
+  '8a20c472-142c-4442-b724-40f2183c073e': 'cvxmim3pool',
+  'ad3d7253-fb8f-402f-a6f8-821bc0a055cb': 'cvxtricrypto',
+  '7394f1bc-840a-4ff0-9e87-5e0ef932943a': 'cvx3pool',
+  // TODO add eusdFRAXBP when live on DefiLlama
 }
 
 const CollateralYieldUpdater = () => {
-  const setCollateralYield = useSetAtom(collateralYieldAtom)
+  const [collateralYield, setCollateralYield] = useAtom(collateralYieldAtom)
   const { data } = useSWR('https://yields.llama.fi/pools', (...args) =>
     fetch(...args).then((res) => res.json())
   )
@@ -248,7 +252,7 @@ const CollateralYieldUpdater = () => {
         }
       }
 
-      setCollateralYield(poolYield)
+      setCollateralYield({ ...collateralYield, ...poolYield })
     }
   }, [data])
 

@@ -1,6 +1,8 @@
 import { CollateralPlugin } from 'types'
 import {
   COMPOUND_ADDRESS,
+  CVX_ADDRESS,
+  CRV_ADDRESS,
   STAKE_AAVE_ADDRESS,
   ZERO_ADDRESS,
 } from 'utils/addresses'
@@ -30,6 +32,12 @@ const collateralAddresses = {
   fUSDC: '0x1289a753e0BaE82CF7f87747f22Eaf8E4eb7C216',
   fUSDT: '0x5F471bDE4950CdB00714A6dD033cA7f912a4f9Ee',
   fDAI: '0xA4410B71033fFE8fA41c6096332Be58E3641326d',
+
+  cUSDCv3: '0x615D92fAF203Faa9ea7a4D8cdDC49b2Ad0702a1f',
+  cvx3Pool: '0x14548a0aEcA46418cD9cFd08c6Bf8E02FbE53B5E',
+  cvxTriCrypto: '0xb2EeD19C381b71d0f54327D61596312144f66fA7',
+  cvxeUSDFRAXBP: '0xa0d16856cF76E13c42a20E35E0b7127Ee821957f',
+  cvxMIM3Pool: '0xD5BE0AeC2b537481A4fE2EcF52422a24644e1EF3',
 }
 
 const underlyingCollateralAddresses = {
@@ -55,6 +63,12 @@ const underlyingCollateralAddresses = {
   fUSDC: '0x465a5a630482f3abD6d3b84B39B29b07214d19e5',
   fUSDT: '0x81994b9607e06ab3d5cF3AffF9a67374f05F27d7',
   fDAI: '0xe2bA8693cE7474900A045757fe0efCa900F6530b',
+
+  cUSDCv3: '0xc3d688B66703497DAA19211EEdff47f25384cdc3',
+  cvx3Pool: '0x30D9410ED1D5DA1F6C8391af5338C93ab8d4035C',
+  cvxTriCrypto: '0x903C9974aAA431A765e60bC07aF45f0A1B3b61fb',
+  cvxeUSDFRAXBP: '0x8e074d44aaBC1b3b4406fE03Da7ceF787ea85938',
+  cvxMIM3Pool: '0xabB54222c2b77158CC975a2b715a3d703c256F05',
 }
 
 // MAINNET - ChainId = 1
@@ -289,6 +303,66 @@ const plugins: CollateralPlugin[] = [
     description: '',
     collateralAddress: underlyingCollateralAddresses.fDAI,
     rewardToken: [ZERO_ADDRESS],
+  },
+  {
+    symbol: 'cUSDCv3',
+    address: collateralAddresses.cUSDCv3,
+    decimals: 6,
+    targetUnit: TARGET_UNITS.USD,
+    referenceUnit: 'USDC',
+    collateralToken: 'cUSDCv3',
+    description: '',
+    depositContract: '0x45fd57EFd43f9Cf96859e38C15380A822C3c2352',
+    collateralAddress: underlyingCollateralAddresses.cUSDCv3,
+    rewardToken: [COMPOUND_ADDRESS[ChainId.Mainnet]],
+  },
+  {
+    symbol: 'cvx3Pool',
+    address: collateralAddresses.cvx3Pool,
+    decimals: 18,
+    targetUnit: TARGET_UNITS.USD,
+    referenceUnit: 'USDC/USDT/DAI',
+    collateralToken: 'cvx3Pool',
+    description: '',
+    depositContract: '0x3d08EF64830137FBd426CBe3153a404104E4b103',
+    collateralAddress: underlyingCollateralAddresses.cvx3Pool,
+    rewardToken: [CVX_ADDRESS[ChainId.Mainnet], CRV_ADDRESS[ChainId.Mainnet]],
+  },
+  {
+    symbol: 'cvxTriCrypto',
+    address: collateralAddresses.cvxTriCrypto,
+    decimals: 18,
+    targetUnit: TARGET_UNITS.TRICRYPTO,
+    referenceUnit: 'USDT/WBTC/ETH',
+    collateralToken: 'cvxTriCrypto',
+    description: '',
+    depositContract: '0xF68F5cde346729ADB14a89402605a26c5C8Bf028',
+    collateralAddress: underlyingCollateralAddresses.cvxTriCrypto,
+    rewardToken: [CVX_ADDRESS[ChainId.Mainnet], CRV_ADDRESS[ChainId.Mainnet]],
+  },
+  {
+    symbol: 'cvxeUSDFRAXBP',
+    address: collateralAddresses.cvxeUSDFRAXBP,
+    decimals: 18,
+    targetUnit: TARGET_UNITS.USD,
+    referenceUnit: 'eUSD/FRAX/USDC',
+    collateralToken: 'cvxeUSDFRAXBP',
+    description: '',
+    depositContract: '0x83cD6Bd8591Ac6090Bd336C96e61062C103F0AD9',
+    collateralAddress: underlyingCollateralAddresses.cvxeUSDFRAXBP,
+    rewardToken: [CVX_ADDRESS[ChainId.Mainnet], CRV_ADDRESS[ChainId.Mainnet]],
+  },
+  {
+    symbol: 'cvxMIM3Pool',
+    address: collateralAddresses.cvxMIM3Pool,
+    decimals: 18,
+    targetUnit: TARGET_UNITS.USD,
+    referenceUnit: 'MIM/USDC/USDT/DAI',
+    collateralToken: 'cvxMIM3Pool',
+    description: '',
+    depositContract: '0x1B05624Bd47d0C69cFf2A4ae7Ef139A8166213ed',
+    collateralAddress: underlyingCollateralAddresses.cvxMIM3Pool,
+    rewardToken: [CVX_ADDRESS[ChainId.Mainnet], CRV_ADDRESS[ChainId.Mainnet]],
   },
 ]
 
