@@ -69,7 +69,7 @@ const plugins: CollateralPlugin[] = [
     collateralToken: 'DAI',
     description: '',
     collateralAddress: underlyingCollateralAddresses.DAI,
-    rewardToken: ZERO_ADDRESS,
+    rewardToken: [ZERO_ADDRESS],
   },
   {
     symbol: 'USDC',
@@ -80,7 +80,7 @@ const plugins: CollateralPlugin[] = [
     collateralToken: 'USDC',
     description: 'Used in RSV',
     collateralAddress: underlyingCollateralAddresses.USDC,
-    rewardToken: ZERO_ADDRESS,
+    rewardToken: [ZERO_ADDRESS],
   },
   {
     symbol: 'USDT',
@@ -91,7 +91,7 @@ const plugins: CollateralPlugin[] = [
     collateralToken: 'USDT',
     description: '',
     collateralAddress: underlyingCollateralAddresses.USDT,
-    rewardToken: ZERO_ADDRESS,
+    rewardToken: [ZERO_ADDRESS],
   },
   {
     symbol: 'USDP',
@@ -102,7 +102,7 @@ const plugins: CollateralPlugin[] = [
     collateralToken: 'USDP',
     description: 'Used in RSV',
     collateralAddress: underlyingCollateralAddresses.USDP,
-    rewardToken: ZERO_ADDRESS,
+    rewardToken: [ZERO_ADDRESS],
   },
   {
     symbol: 'TUSD',
@@ -113,7 +113,7 @@ const plugins: CollateralPlugin[] = [
     collateralToken: 'TUSD',
     description: 'Used in RSV',
     collateralAddress: underlyingCollateralAddresses.TUSD,
-    rewardToken: ZERO_ADDRESS,
+    rewardToken: [ZERO_ADDRESS],
   },
   {
     symbol: 'BUSD',
@@ -124,7 +124,7 @@ const plugins: CollateralPlugin[] = [
     collateralToken: 'BUSD',
     description: '',
     collateralAddress: underlyingCollateralAddresses.BUSD,
-    rewardToken: ZERO_ADDRESS,
+    rewardToken: [ZERO_ADDRESS],
   },
   // YIELD TOKEN COLLATERAL
   {
@@ -138,7 +138,7 @@ const plugins: CollateralPlugin[] = [
     description: '',
     collateralAddress: underlyingCollateralAddresses.aDAI,
     depositContract: '0xF6147b4B44aE6240F7955803B2fD5E15c77bD7ea',
-    rewardToken: STAKE_AAVE_ADDRESS[ChainId.Mainnet],
+    rewardToken: [STAKE_AAVE_ADDRESS[ChainId.Mainnet]],
     underlyingToken: underlyingCollateralAddresses.DAI,
   },
   {
@@ -152,7 +152,7 @@ const plugins: CollateralPlugin[] = [
     description: '',
     collateralAddress: underlyingCollateralAddresses.aUSDC,
     depositContract: '0x8f471832C6d35F2a51606a60f482BCfae055D986',
-    rewardToken: STAKE_AAVE_ADDRESS[ChainId.Mainnet],
+    rewardToken: [STAKE_AAVE_ADDRESS[ChainId.Mainnet]],
     underlyingToken: underlyingCollateralAddresses.USDC,
   },
   {
@@ -166,7 +166,7 @@ const plugins: CollateralPlugin[] = [
     description: '',
     collateralAddress: underlyingCollateralAddresses.aUSDT,
     depositContract: '0x21fe646D1Ed0733336F2D4d9b2FE67790a6099D9',
-    rewardToken: STAKE_AAVE_ADDRESS[ChainId.Mainnet],
+    rewardToken: [STAKE_AAVE_ADDRESS[ChainId.Mainnet]],
     underlyingToken: underlyingCollateralAddresses.USDT,
   },
   {
@@ -178,7 +178,7 @@ const plugins: CollateralPlugin[] = [
     collateralToken: 'cDAI',
     description: '',
     collateralAddress: underlyingCollateralAddresses.cDAI,
-    rewardToken: COMPOUND_ADDRESS[ChainId.Mainnet],
+    rewardToken: [COMPOUND_ADDRESS[ChainId.Mainnet]],
   },
   {
     symbol: 'cUSDC',
@@ -189,7 +189,7 @@ const plugins: CollateralPlugin[] = [
     collateralToken: 'cUSDC',
     description: '',
     collateralAddress: underlyingCollateralAddresses.cUSDC,
-    rewardToken: COMPOUND_ADDRESS[ChainId.Mainnet],
+    rewardToken: [COMPOUND_ADDRESS[ChainId.Mainnet]],
   },
   {
     symbol: 'cUSDT',
@@ -200,7 +200,7 @@ const plugins: CollateralPlugin[] = [
     collateralToken: 'cUSDT',
     description: '',
     collateralAddress: underlyingCollateralAddresses.cUSDT,
-    rewardToken: COMPOUND_ADDRESS[ChainId.Mainnet],
+    rewardToken: [COMPOUND_ADDRESS[ChainId.Mainnet]],
   },
   {
     symbol: 'cWBTC',
@@ -211,7 +211,7 @@ const plugins: CollateralPlugin[] = [
     collateralToken: 'cWBTC',
     description: '',
     collateralAddress: underlyingCollateralAddresses.cWBTC,
-    rewardToken: COMPOUND_ADDRESS[ChainId.Mainnet],
+    rewardToken: [COMPOUND_ADDRESS[ChainId.Mainnet]],
   },
   {
     symbol: 'cETH',
@@ -222,7 +222,7 @@ const plugins: CollateralPlugin[] = [
     collateralToken: 'cETH',
     description: '',
     collateralAddress: underlyingCollateralAddresses.cETH,
-    rewardToken: COMPOUND_ADDRESS[ChainId.Mainnet],
+    rewardToken: [COMPOUND_ADDRESS[ChainId.Mainnet]],
   },
   {
     symbol: 'wBTC',
@@ -233,7 +233,7 @@ const plugins: CollateralPlugin[] = [
     collateralToken: 'wBTC',
     description: '',
     collateralAddress: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
-    rewardToken: ZERO_ADDRESS,
+    rewardToken: [ZERO_ADDRESS],
   },
   {
     symbol: 'wETH',
@@ -244,7 +244,7 @@ const plugins: CollateralPlugin[] = [
     collateralToken: 'wETH',
     description: '',
     collateralAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-    rewardToken: ZERO_ADDRESS,
+    rewardToken: [ZERO_ADDRESS],
   },
   {
     symbol: 'EURT',
@@ -255,7 +255,7 @@ const plugins: CollateralPlugin[] = [
     collateralToken: 'EURT',
     description: '',
     collateralAddress: '0xC581b735A1688071A1746c968e0798D642EDE491',
-    rewardToken: ZERO_ADDRESS,
+    rewardToken: [ZERO_ADDRESS],
   },
   {
     symbol: 'fUSDC',
@@ -266,7 +266,7 @@ const plugins: CollateralPlugin[] = [
     collateralToken: 'fUSDC',
     description: '',
     collateralAddress: underlyingCollateralAddresses.fUSDC,
-    rewardToken: ZERO_ADDRESS,
+    rewardToken: [ZERO_ADDRESS],
   },
   {
     symbol: 'fUSDT',
@@ -277,7 +277,7 @@ const plugins: CollateralPlugin[] = [
     collateralToken: 'fUSDT',
     description: '',
     collateralAddress: underlyingCollateralAddresses.fUSDT,
-    rewardToken: ZERO_ADDRESS,
+    rewardToken: [ZERO_ADDRESS],
   },
   {
     symbol: 'fDAI',
@@ -288,7 +288,7 @@ const plugins: CollateralPlugin[] = [
     collateralToken: 'fDAI',
     description: '',
     collateralAddress: underlyingCollateralAddresses.fDAI,
-    rewardToken: ZERO_ADDRESS,
+    rewardToken: [ZERO_ADDRESS],
   },
 ]
 

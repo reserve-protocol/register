@@ -114,16 +114,18 @@ export const EUSD_ADDRESS: AddressMap = {
   [ChainId.Hardhat]: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
 }
 
+// Asset address
 export const CVX_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0x4e3fbd56cd56c3e72c1403e103b45db9da5b9d2b',
-  [ChainId.Goerli]: '0x4e3fbd56cd56c3e72c1403e103b45db9da5b9d2b',
-  [ChainId.Hardhat]: '0x4e3fbd56cd56c3e72c1403e103b45db9da5b9d2b',
+  [ChainId.Mainnet]: '0xbE301280e593d1665A2D54DA65687E92f46D5c44',
+  [ChainId.Goerli]: '0xbE301280e593d1665A2D54DA65687E92f46D5c44',
+  [ChainId.Hardhat]: '0xbE301280e593d1665A2D54DA65687E92f46D5c44',
 }
 
+// Asset address
 export const CRV_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0xD533a949740bb3306d119CC777fa900bA034cd52',
-  [ChainId.Goerli]: '0xD533a949740bb3306d119CC777fa900bA034cd52',
-  [ChainId.Hardhat]: '0xD533a949740bb3306d119CC777fa900bA034cd52',
+  [ChainId.Mainnet]: '0x3752098adf2C9E1E17e48D9cE2Ea48961905064A',
+  [ChainId.Goerli]: '0x3752098adf2C9E1E17e48D9cE2Ea48961905064A',
+  [ChainId.Hardhat]: '0x3752098adf2C9E1E17e48D9cE2Ea48961905064A',
 }
 
 // Fixed tokens used in the rtoken selector screen and dashboard
