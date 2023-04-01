@@ -38,7 +38,7 @@ export const useDeployTx = () => {
   const formFields = useWatch()
 
   const isDeployValid =
-    isBasketValid && isRevenueSplitValid && isValidExternalMap && isValid
+    isBasketValid && isRevenueSplitValid && isValidExternalMap
 
   return useMemo(() => {
     if (!isDeployValid) {
