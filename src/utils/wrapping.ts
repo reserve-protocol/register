@@ -12,7 +12,7 @@ export type FormState = {
 }
 
 export const aavePlugins = collateralPlugins.filter(
-  (p) => p.rewardToken === STAKE_AAVE_ADDRESS[CHAIN_ID]
+  (p) => p.rewardToken[0] === STAKE_AAVE_ADDRESS[CHAIN_ID]
 )
 
 export const isFormValid = (formState: FormState) => {
