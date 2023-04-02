@@ -26,7 +26,7 @@ export const useGovernanceTx = () => {
   const rToken = useRToken()
 
   return useMemo(() => {
-    if (!isValid || !rToken?.address) {
+    if (!rToken?.address) {
       return null
     }
 
