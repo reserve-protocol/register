@@ -1,16 +1,15 @@
-import { BigNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
 import { useWeb3React } from '@web3-react/core'
-import { ERC20Interface } from 'abis'
+import { ethers } from 'ethers'
 import { useMemo } from 'react'
+import { useTokenBalances } from 'state/TokenBalancesUpdater'
 import { BalanceMap, ReserveToken } from 'types'
 import { CHAIN_ID } from 'utils/chains'
 import { RSR } from 'utils/constants'
-import { useContractCalls } from './useCall'
 import useRToken from './useRToken'
 
 // Gets ReserveToken related token addresses and decimals
-const getTokens = (reserveToken: ReserveToken): [string, number][] => {
+export const getTokens = (reserveToken: ReserveToken): [string, number][] => {
   const addresses: [string, number][] = [
     [reserveToken.address, reserveToken.decimals],
     [RSR.address, RSR.decimals],
@@ -36,40 +35,23 @@ const getTokens = (reserveToken: ReserveToken): [string, number][] => {
 const useTokensBalance = (): BalanceMap => {
   const rToken = useRToken()
   const { chainId, account } = useWeb3React()
-  const tokens =
-    rToken && account && CHAIN_ID === chainId ? getTokens(rToken) : []
+  const tokens = useMemo(() => rToken && account && (chainId === 31337 || CHAIN_ID === chainId) ? getTokens(rToken) : [], [rToken, chainId, account])
+    
+  const balances = useTokenBalances(tokens.map(i => i[0]))
 
-  const calls = useMemo(() => {
-    return tokens.map(([address]) => ({
-      abi: ERC20Interface,
-      address,
-      method: 'balanceOf',
-      args: [account],
-    }))
-  }, [tokens.toString(), account])
-
-  const balances = <any[]>useContractCalls(calls) ?? []
-
-  return useMemo(() => {
-    return balances.reduce((acc, current, index) => {
-      const [address, decimals] = tokens[index]
-      if (current?.value) {
-        acc[address] = {
-          value: current.value[0],
-          decimals,
-          balance: formatUnits(current.value[0], decimals),
-        }
-      } else {
-        acc[address] = {
-          value: BigNumber.from(0),
-          decimals,
-          balance: '0',
-        }
-      }
-
-      return acc
-    }, <BalanceMap>{})
-  }, [JSON.stringify(balances)])
+  return Object.fromEntries(
+    balances.map((atomValue, i) => ({
+      atomValue,
+      decimals: tokens[i][1]
+    })).map(entry => ([entry.atomValue.address, {
+      value: entry.atomValue.value??ethers.constants.Zero,
+      decimals: entry.decimals,
+      balance: formatUnits(
+        entry.atomValue.value??ethers.constants.Zero,
+        entry.decimals
+      )
+    }]))
+  )
 }
 
 export default useTokensBalance

@@ -16,12 +16,13 @@ import {
   chainIdAtom,
   collateralYieldAtom,
   ethPriceAtom,
-  gasPriceAtom,
+  gasPriceAtomBn,
   pendingRSRAtom,
   rsrExchangeRateAtom,
   rsrPriceAtom,
   rTokenAtom,
   rTokenPriceAtom,
+  searchParamsAtom,
   walletAtom,
 } from 'state/atoms'
 import useSWR from 'swr'
@@ -35,6 +36,9 @@ import RSVUpdater from './RSVUpdater'
 import RTokenUpdater from './rtoken'
 import TokenUpdater from './TokenUpdater'
 import { promiseMulticall } from './web3/lib/multicall'
+
+import { TokenBalancesUpdater } from './TokenBalancesUpdater'
+import { useSearchParams } from 'react-router-dom'
 
 const getTokenAllowances = (reserveToken: ReserveToken): [string, string][] => {
   const tokens: [string, string][] = [
@@ -131,19 +135,14 @@ const PricesUpdater = () => {
   const rTokenPrice = useRTokenPrice()
   const setRSRPrice = useSetAtom(rsrPriceAtom)
   const setEthPrice = useSetAtom(ethPriceAtom)
-  const setGasPrice = useSetAtom(gasPriceAtom)
+  const setGasPrice = useSetAtom(gasPriceAtomBn)
   const setRTokenPrice = useSetAtom(rTokenPriceAtom)
   const blockNumber = useBlockNumber()
 
   const fetchGasPrice = useCallback(async (provider: Web3Provider) => {
     try {
-      const feeData = await provider.getFeeData()
-
-      if (feeData.maxFeePerGas) {
-        setGasPrice(Number(formatEther(feeData.maxFeePerGas?.toString())) * 0.6)
-      } else {
-        setGasPrice(0)
-      }
+      const gasPrice = await provider.getGasPrice()
+      setGasPrice(gasPrice)
     } catch (e) {
       console.error('Error fetching gas price', e)
     }
@@ -259,11 +258,20 @@ const CollateralYieldUpdater = () => {
   return null
 }
 
+const SearchParamsUpdater = () => {
+  const [searchParams] = useSearchParams()
+  const setSearchParams = useSetAtom(searchParamsAtom)
+  useEffect(() => {
+    setSearchParams(searchParams)
+  }, [searchParams])
+  return null
+}
 /**
  * Updater
  */
 const Updater = () => (
   <>
+    <SearchParamsUpdater />
     <TokenUpdater />
     <PendingBalancesUpdater />
     <TokensAllowanceUpdater />
@@ -273,6 +281,7 @@ const Updater = () => (
     <RSVUpdater />
     <RTokenUpdater />
     <CollateralYieldUpdater />
+    <TokenBalancesUpdater />
   </>
 )
 

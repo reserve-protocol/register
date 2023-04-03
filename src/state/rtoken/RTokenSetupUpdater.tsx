@@ -17,7 +17,7 @@ import { Asset } from 'abis/types'
 import { RevenueSplit } from 'components/rtoken-setup/atoms'
 import { formatEther } from 'ethers/lib/utils'
 import useRToken from 'hooks/useRToken'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import {
   rTokenCollateralAssetsAtom,

@@ -25,7 +25,7 @@ interface MaxLabelProps {
   handleClick: () => void
 }
 
-const MaxLabel = ({
+export const MaxLabel = ({
   text,
   compact,
   clickable,
