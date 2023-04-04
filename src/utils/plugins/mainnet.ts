@@ -27,6 +27,9 @@ const collateralAddresses = {
   WBTC: '0xA9C7aE7a71355E5D7A901fB5153D7339f7195A13',
   WETH: '0xB3522270B6d8a02AA6d789eA887B1D34af35A193',
   EURT: '0xb4eB87250Ecd8f32BeA775dA6D164D92A398d05b',
+  fUSDC: '0x1289a753e0BaE82CF7f87747f22Eaf8E4eb7C216',
+  fUSDT: '0x5F471bDE4950CdB00714A6dD033cA7f912a4f9Ee',
+  fDAI: '0xA4410B71033fFE8fA41c6096332Be58E3641326d',
 }
 
 const underlyingCollateralAddresses = {
@@ -49,6 +52,9 @@ const underlyingCollateralAddresses = {
   WETH: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
   WBTC: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
   EURT: '0xC581b735A1688071A1746c968e0798D642EDE491',
+  fUSDC: '0x465a5a630482f3abD6d3b84B39B29b07214d19e5',
+  fUSDT: '0x81994b9607e06ab3d5cF3AffF9a67374f05F27d7',
+  fDAI: '0xe2bA8693cE7474900A045757fe0efCa900F6530b',
 }
 
 // MAINNET - ChainId = 1
@@ -191,7 +197,7 @@ const plugins: CollateralPlugin[] = [
     decimals: 6,
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDT',
-    collateralToken: 'aUSDT',
+    collateralToken: 'cUSDT',
     description: '',
     collateralAddress: underlyingCollateralAddresses.cUSDT,
     rewardToken: COMPOUND_ADDRESS[ChainId.Mainnet],
@@ -249,6 +255,39 @@ const plugins: CollateralPlugin[] = [
     collateralToken: 'EURT',
     description: '',
     collateralAddress: '0xC581b735A1688071A1746c968e0798D642EDE491',
+    rewardToken: ZERO_ADDRESS,
+  },
+  {
+    symbol: 'fUSDC',
+    address: collateralAddresses.fUSDC,
+    decimals: 6,
+    targetUnit: TARGET_UNITS.USD,
+    referenceUnit: 'USDC',
+    collateralToken: 'fUSDC',
+    description: '',
+    collateralAddress: underlyingCollateralAddresses.fUSDC,
+    rewardToken: ZERO_ADDRESS,
+  },
+  {
+    symbol: 'fUSDT',
+    address: collateralAddresses.fUSDT,
+    decimals: 6,
+    targetUnit: TARGET_UNITS.USD,
+    referenceUnit: 'USDT',
+    collateralToken: 'fUSDT',
+    description: '',
+    collateralAddress: underlyingCollateralAddresses.fUSDT,
+    rewardToken: ZERO_ADDRESS,
+  },
+  {
+    symbol: 'fDAI',
+    address: collateralAddresses.fDAI,
+    decimals: 18,
+    targetUnit: TARGET_UNITS.USD,
+    referenceUnit: 'DAI',
+    collateralToken: 'fDAI',
+    description: '',
+    collateralAddress: underlyingCollateralAddresses.fDAI,
     rewardToken: ZERO_ADDRESS,
   },
 ]
