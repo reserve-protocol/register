@@ -5,7 +5,9 @@ import { SmallButton } from 'components/button'
 import GoTo from 'components/button/GoTo'
 import { useContractCall } from 'hooks/useCall'
 import useRToken from 'hooks/useRToken'
+import { useAtomValue } from 'jotai'
 import { useState } from 'react'
+import { stRsrBalanceAtom } from 'state/atoms'
 import { Box, Text, Image } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { ZERO_ADDRESS } from 'utils/addresses'
@@ -15,6 +17,7 @@ import DelegateModal from './DelegateModal'
 const AccountVotes = () => {
   const { account } = useWeb3React()
   const rToken = useRToken()
+  const stRsrBalance = useAtomValue(stRsrBalanceAtom)
   const [isVisible, setVisible] = useState(false)
   const { value = [] } =
     useContractCall(
@@ -53,6 +56,10 @@ const AccountVotes = () => {
           <SmallButton mt={3} variant="muted" onClick={handleDelegate}>
             <Trans>Delegate</Trans>
           </SmallButton>
+          <Text ml={3} variant="legend" as="span">
+            <Trans>Balance: </Trans>
+          </Text>{' '}
+          <Text variant="legend">{stRsrBalance.balance}</Text>
         </Box>
       ) : (
         <Box variant="layout.verticalAlign">
