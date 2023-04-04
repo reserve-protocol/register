@@ -57,7 +57,7 @@ const AccountVotes = () => {
             <Trans>Delegate</Trans>
           </SmallButton>
           <Text ml={3} variant="legend" as="span">
-            <Trans>Voting Power: </Trans>
+            <Trans>Balance: </Trans>
           </Text>{' '}
           <Text variant="legend">{stRsrBalance.balance}</Text>
         </Box>
