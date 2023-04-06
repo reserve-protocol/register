@@ -30,6 +30,8 @@ const collateralAddresses = {
   fUSDC: '0x1289a753e0BaE82CF7f87747f22Eaf8E4eb7C216',
   fUSDT: '0x5F471bDE4950CdB00714A6dD033cA7f912a4f9Ee',
   fDAI: '0xA4410B71033fFE8fA41c6096332Be58E3641326d',
+  wstETH: '0x3879C820c3cC4547Cb76F8dC842005946Cedb385',
+  rETH: '0xD2270A3E17DBeA5Cb491E0120441bFD0177Da913',
 }
 
 const underlyingCollateralAddresses = {
@@ -55,6 +57,8 @@ const underlyingCollateralAddresses = {
   fUSDC: '0x465a5a630482f3abD6d3b84B39B29b07214d19e5',
   fUSDT: '0x81994b9607e06ab3d5cF3AffF9a67374f05F27d7',
   fDAI: '0xe2bA8693cE7474900A045757fe0efCa900F6530b',
+  wstETH: '0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0',
+  rETH: '0xae78736Cd615f374D3085123A210448E74Fc6393',
 }
 
 // MAINNET - ChainId = 1
@@ -288,6 +292,28 @@ const plugins: CollateralPlugin[] = [
     collateralToken: 'fDAI',
     description: '',
     collateralAddress: underlyingCollateralAddresses.fDAI,
+    rewardToken: ZERO_ADDRESS,
+  },
+  {
+    symbol: 'wstETH',
+    address: collateralAddresses.wstETH,
+    decimals: 18,
+    targetUnit: TARGET_UNITS.ETH,
+    referenceUnit: 'wETH',
+    collateralToken: 'wstETH',
+    description: '',
+    collateralAddress: underlyingCollateralAddresses.wstETH,
+    rewardToken: ZERO_ADDRESS,
+  },
+  {
+    symbol: 'rETH',
+    address: collateralAddresses.rETH,
+    decimals: 18,
+    targetUnit: TARGET_UNITS.ETH,
+    referenceUnit: 'wETH',
+    collateralToken: 'rETH',
+    description: '',
+    collateralAddress: underlyingCollateralAddresses.rETH,
     rewardToken: ZERO_ADDRESS,
   },
 ]
