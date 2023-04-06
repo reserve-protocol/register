@@ -18,7 +18,7 @@ import {
   rTokenRevenueSplitAtom,
 } from 'state/atoms'
 import { truncateDecimals } from 'utils'
-import { pluginAddresses } from 'utils/plugins'
+import plugins, { pluginAddresses } from 'utils/plugins'
 import {
   backupChangesAtom,
   basketChangesAtom,
