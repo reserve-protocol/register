@@ -67,7 +67,7 @@ const ProposalVote = (props: BoxProps) => {
             votePower === '0.0'
           }
           sx={{ width: '100%' }}
-          onClick={() => setDelegateVisible(true)}
+          onClick={() => setVoteVisible(true)}
         >
           {vote ? `You voted "${vote}"` : <Trans>Vote on-chain</Trans>}
         </Button>
