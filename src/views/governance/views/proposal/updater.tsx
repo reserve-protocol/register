@@ -161,8 +161,7 @@ export const ChangesUpdater = () => {
       setValidState(
         (!isNewBasket || isBasketValid) &&
           isRevenueSplitValid &&
-          isValidExternalMap &&
-          isValid
+          isValidExternalMap
       )
     }
   }, [
