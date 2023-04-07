@@ -78,6 +78,7 @@ const getCollateralByTarget = (collaterals: CollateralPlugin[]) => {
       {
         symbol: collateral.symbol,
         address: collateral?.depositContract || collateral.collateralAddress,
+        collateralAddress: collateral.address,
         targetUnit: collateral.targetUnit,
       },
     ]
