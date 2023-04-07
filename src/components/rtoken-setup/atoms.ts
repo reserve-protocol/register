@@ -2,6 +2,7 @@ import { atomWithReset } from 'jotai/utils'
 import { t } from '@lingui/macro'
 import { atom } from 'jotai'
 import { isAddress, truncateDecimals } from 'utils'
+import { CollateralPlugin } from 'types'
 
 export interface Collateral {
   symbol: string
@@ -70,11 +71,15 @@ export const getCollateralFromBasket = (basket: Basket | BackupBasket) => {
   )
 }
 
-const getCollateralByTarget = (collaterals: Collateral[]) => {
+const getCollateralByTarget = (collaterals: CollateralPlugin[]) => {
   return collaterals.reduce((acc, collateral) => {
     acc[collateral.targetUnit] = [
       ...(acc[collateral.targetUnit] ?? []),
-      collateral,
+      {
+        symbol: collateral.symbol,
+        address: collateral?.depositContract || collateral.collateralAddress,
+        targetUnit: collateral.targetUnit,
+      },
     ]
 
     return acc
@@ -131,7 +136,7 @@ export const backupBasketCollateralAtom = atom((get) => {
 
 export const addBackupCollateralAtom = atom(
   null,
-  (get, set, collaterals: Collateral[]) => {
+  (get, set, collaterals: CollateralPlugin[]) => {
     const basket = { ...get(backupCollateralAtom) }
     const collateralByTarget = getCollateralByTarget(collaterals)
 
@@ -154,7 +159,7 @@ export const addBackupCollateralAtom = atom(
 
 export const addBasketCollateralAtom = atom(
   null,
-  (get, set, collaterals: Collateral[]) => {
+  (get, set, collaterals: CollateralPlugin[]) => {
     const basket = { ...get(basketAtom) }
     const collateralByTarget = getCollateralByTarget(collaterals)
 
