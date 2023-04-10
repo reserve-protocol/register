@@ -32,7 +32,7 @@ const GovernanceParameters = (props: BoxProps) => {
           required: true,
           pattern: numberPattern,
           min: 1,
-          max: 50400,
+          max: 259200, // 3 days
         }}
       />
       <FormField
@@ -46,7 +46,7 @@ const GovernanceParameters = (props: BoxProps) => {
           required: true,
           pattern: numberPattern,
           min: 7200,
-          max: 100800,
+          max: 432000, // 5 days
         }}
       />
       <FormField
