@@ -22,10 +22,10 @@ const GovernanceParameters = (props: BoxProps) => {
         <Trans>Governance parameters</Trans>
       </Text>
       <FormField
-        label={t`Snapshot delay (blocks)`}
-        placeholder={t`Input number of blocks`}
+        label={t`Snapshot delay (seconds)`}
+        placeholder={t`Input number of seconds`}
         helper={votingDelayHelper}
-        help={t`Delay (in number of blocks) since the proposal is submitted until voting power is fixed and voting starts. This can be used to enforce a delay after a proposal is published for users to buy tokens, or delegate their votes.`}
+        help={t`Delay (in number of seconds) since the proposal is submitted until voting power is fixed and voting starts. This can be used to enforce a delay after a proposal is published for users to buy tokens, or delegate their votes.`}
         mb={3}
         name="votingDelay"
         options={{

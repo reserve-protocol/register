@@ -13,8 +13,8 @@ import {
 export const governanceDefaultValues = {
   defaultGovernance: true,
   unpause: '0',
-  votingDelay: '14400', // 2 blocks
-  votingPeriod: '21600', // 3 blocks
+  votingDelay: '172800', // 2 days
+  votingPeriod: '259200', // 3 days
   proposalThresholdAsMicroPercent: '0.01', // 0.01%
   quorumPercent: '10', // 10%
   minDelay: '72', // 72 hours -> 86400
@@ -30,22 +30,22 @@ export const defaultValues = {
   manifesto: '',
   ownerAddress: '',
   // backing params
-  tradingDelay: '21600',
+  tradingDelay: '7200',
   auctionLength: '900',
-  backingBuffer: '0.01', // 0.01%
+  backingBuffer: '0.1', // 0.1%
   maxTradeSlippage: '0.5', // 0.5%
   issuanceThrottleAmount: '1000000', // Anticipated redemption minimum amount for throttling
-  issuanceThrottleRate: '5', // 5% per block
-  redemptionThrottleAmount: '1000000',
-  redemptionThrottleRate: '2.5',
+  issuanceThrottleRate: '2.5', // 2.5% per hour
+  redemptionThrottleAmount: '2000000',
+  redemptionThrottleRate: '5',
   // other
   rewardRatio: '0.0000032090147',
   unstakingDelay: '1209600',
-  minTrade: '10000',
+  minTrade: '1000',
   maxTrade: '1000000',
-  shortFreeze: '259200', // 3days
-  longFreeze: '2592000', // 30days
-// governance
+  shortFreeze: '259200', // 3 days
+  longFreeze: '604800', // 1 week
+  // governance
   ...governanceDefaultValues,
 }
 
