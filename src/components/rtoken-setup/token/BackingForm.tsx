@@ -33,7 +33,7 @@ const BackingForm = (props: BoxProps) => {
       <FormField
         label={t`Auction length (s)`}
         placeholder={t`Duration in Seconds`}
-        help={t`Auction length - defines how long Gnosis auctions should be. Gnosis Auction is a platform enabling fair price discovery for token auctions. The aim of the platform is to make it easy for teams to discover a fair price for their token.`}
+        help={t`Auction length - defines how long Gnosis EasyAuction auctions should be. Gnosis EasyAuction is a platform enabling fair price discovery for tokens through the use of batch auctions.`}
         mb={3}
         helper={auctionLengthHelp}
         name="auctionLength"
@@ -73,7 +73,7 @@ const BackingForm = (props: BoxProps) => {
       <FormField
         label={t`Issuance throttle rate (%)`}
         placeholder={t`Issuance throttle Rate`}
-        help={t`Issuance rate - allows the issuer to limit the amount of RTokens issued per hour based on a percentage of the current RToken market cap. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued.`}
+        help={t`Issuance rate - allows the issuer to limit the amount of RTokens issued per hour based on a percentage of the current RToken market cap. This matters in the event of an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued.`}
         mb={3}
         name="issuanceThrottleRate"
         options={{
@@ -86,7 +86,7 @@ const BackingForm = (props: BoxProps) => {
       <FormField
         label={t`Issuance throttle amount`}
         placeholder={t`Issuance throttle amount`}
-        help={t`Issuance rate - allows the issuer to limit the amount of RTokens issued per hour. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued.`}
+        help={t`Issuance rate - allows the issuer to limit the amount of RTokens issued per hour. This matters in the event of an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued.`}
         mb={3}
         name="issuanceThrottleAmount"
         options={{
@@ -99,7 +99,7 @@ const BackingForm = (props: BoxProps) => {
       <FormField
         label={t`Redemption throttle rate (%)`}
         placeholder={t`Redemption throttle Rate`}
-        help={t`Redemption rate - allows the issuer to limit the amount of RTokens redeemed per hour based on a percentage of the current RToken market cap. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be redeemed.`}
+        help={t`Redemption rate - allows the issuer to limit the amount of RTokens redeemed per hour based on a percentage of the current RToken market cap. This matters in the event of an exploit where an attacker tries to redeem RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be redeemed.`}
         mb={3}
         name="redemptionThrottleRate"
         options={{
@@ -112,7 +112,7 @@ const BackingForm = (props: BoxProps) => {
       <FormField
         label={t`Redemption throttle amount`}
         placeholder={t`Redemption throttle amount`}
-        help={t`Redemption rate - allows the issuer to limit the amount of RTokens redeemed per hour. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be redeemed.`}
+        help={t`Redemption rate - allows the issuer to limit the amount of RTokens redeemed per hour. This matters in the event of an exploit where an attacker tries to redeem RTokens.This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be redeemed.`}
         name="redemptionThrottleAmount"
         options={{
           required: true,
