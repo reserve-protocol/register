@@ -13,9 +13,9 @@ export const DEPLOYER_ADDRESS: AddressMap = {
 }
 
 export const FACADE_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0x15f06B2907594905D820a4AB3631f4b097a0bE07',
+  [ChainId.Mainnet]: '0xf535Cab96457558eE3eeAF1402fCA6441E832f08',
   [ChainId.Goerli]: '0x7F9999B2C9D310a5f48dfD070eb5129e1e8565E2',
-  [ChainId.Hardhat]: '0x15f06B2907594905D820a4AB3631f4b097a0bE07',
+  [ChainId.Hardhat]: '0xf535Cab96457558eE3eeAF1402fCA6441E832f08',
 }
 
 export const FACADE_ACT_ADDRESS: AddressMap = {
