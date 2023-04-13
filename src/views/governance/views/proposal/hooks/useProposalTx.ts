@@ -217,9 +217,8 @@ const useProposalTx = () => {
         for (const changes of basketChanges) {
           if (changes.isNew) {
             addToRegistry(
-              changes.collateral.collateralAddress ||
-                changes.collateral.address,
-              changes.collateral.address
+              changes.collateral.address,
+              changes.collateral.collateralAddress
             )
 
             if (changes.collateral.rewardToken) {

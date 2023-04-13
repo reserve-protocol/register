@@ -87,7 +87,7 @@ const CollateralModal = ({
 
   const handleSubmit = () => {
     addCollateral(
-      selected.map((address) => collaterals[address]) as CollateralPlugin[]
+      selected.map((address) => collaterals[address]) as Collateral[]
     )
     onClose()
   }
