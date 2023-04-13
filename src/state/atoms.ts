@@ -224,6 +224,7 @@ export const collateralYieldAtom = atom<{ [x: string]: number }>({
   fusdt: 3.74,
   wsteth: 5,
   reth: 4.12,
+  'stkcvxeusd3crv-f': 23.17,
 })
 
 export const ethPriceAtom = atom(1)
@@ -265,7 +266,7 @@ export const estimatedApyAtom = atom((get) => {
   apys.holders = rTokenYield * (+(revenueSplit.holders || 0) / 100)
   apys.stakers =
     ((rTokenYield * (supply * rTokenPrice)) / (staked * rsrPrice)) *
-    (+(revenueSplit.stakers || 0) / 100)
+    ((+revenueSplit.stakers || 0) / 100)
 
   return apys
 })

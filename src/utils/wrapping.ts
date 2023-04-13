@@ -12,15 +12,15 @@ export type FormState = {
 }
 
 export const aavePlugins = collateralPlugins.filter(
-  (p) => p.rewardToken === STAKE_AAVE_ADDRESS[CHAIN_ID]
+  (p) => p.rewardToken[0] === STAKE_AAVE_ADDRESS[CHAIN_ID]
 )
 
-export const isFormValid = (formState: FormState) => {
+export const isFormValid = (formState: FormState, pluginSet = aavePlugins) => {
   const isValid = useMemo(() => {
     let isValid = false
     let hasInvalid = false
 
-    for (const plugin of aavePlugins) {
+    for (const plugin of pluginSet) {
       if (formState[plugin.address].value) {
         if (+formState[plugin.address].value > formState[plugin.address].max) {
           hasInvalid = true
