@@ -181,7 +181,7 @@ export const getDeployParameters = (
       const { collaterals, distribution, scale } = basket[targetUnit]
 
       collaterals.forEach((collateral, index) => {
-        primaryBasket.push(collateral.collateralAddress!)
+        primaryBasket.push(collateral.address)
         if (collateral.rewardToken && collateral.rewardToken !== ZERO_ADDRESS) {
           assets.add(collateral.rewardToken)
         }
