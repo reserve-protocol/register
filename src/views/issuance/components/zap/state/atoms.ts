@@ -61,6 +61,10 @@ export const tokenToZapUserSelected = atomWithOnWrite(
 // The hidden state of the UI. A lot of this could probably be refactored out via async atoms
 export const permitSignature = atom(null as null | string)
 
+// The amount of slippage we allow when zap involves a trade:
+// This is not exposed in the UI yet, but probably should be.
+const tradeSlippage = atom(0)
+
 // We sent the zap transaction,
 // and are waiting for the user to sign off on it and for it to commit
 export const zapIsPending = atom(false)
@@ -136,7 +140,7 @@ export const zapQuotePromise = loadable(
       input.inputQuantity,
       input.rToken,
       input.signer,
-      0.0
+      get(tradeSlippage)
     )
     return result
   })
@@ -149,7 +153,7 @@ export const selectedZapTokenBalance = onlyNonNullAtom((get) => {
   const bal =
     get(tokenBalancesStore.getBalanceAtom(token.address.address)).value ??
     ethers.constants.Zero
-  return token.quantityFromBigInt(bal.toBigInt())
+  return token.from(bal)
 })
 
 export const approvalNeededAtom = loadable(
@@ -252,9 +256,7 @@ export const approvalTxFee = loadable(
       tx: approveTx.tx,
       gasBalance,
       gasUnits,
-      fee: universe.nativeToken
-        .quantityFromBigInt(universe.gasPrice)
-        .scalarMul(gasUnits),
+      fee: universe.nativeToken.from(universe.gasPrice).scalarMul(gasUnits),
     }
   })
 )
@@ -325,7 +327,7 @@ const zapTransactionGasEstimateFee = onlyNonNullAtom((get) => {
   const quote = get(zapQuote)
   const estimate = get(resolvedZapTransactionGasEstimateUnits, 0n)
   return quote.universe.nativeToken
-    .quantityFromBigInt(estimate ?? 0n)
+    .from(estimate ?? 0n)
     .scalarMul(quote.universe.gasPrice)
 })
 

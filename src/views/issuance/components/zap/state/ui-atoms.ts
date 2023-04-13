@@ -80,10 +80,7 @@ const zapTransactionFeeDisplayAtom = onlyNonNullAtom((get) => {
   const zapTxUnits = get(resolvedZapTransactionGasEstimateUnits, 0n)
   return [
     'Zap tx',
-    formatQty(
-      nativeToken.quantityFromBigInt(zapTxUnits).scalarMul(gasPrice),
-      FOUR_DIGITS
-    ),
+    formatQty(nativeToken.from(zapTxUnits).scalarMul(gasPrice), FOUR_DIGITS),
   ].join(' ')
 })
 
