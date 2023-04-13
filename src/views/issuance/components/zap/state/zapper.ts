@@ -1,12 +1,10 @@
-import {
-  aggregators,
-  configuration,
-  Universe,
-} from '@reserve-protocol/token-zapper'
+import { configuration, Universe } from '@reserve-protocol/token-zapper'
+
 import { atom } from 'jotai'
 import { loadable } from 'jotai/utils'
 import { currentProvierAtom } from 'state/atoms'
 import { onlyNonNullAtom, simplifyLoadable } from 'utils/atoms/utils'
+import { createProxiedOneInchAggregator } from './createProxiedOneInchAggregator'
 
 export const connectionName = onlyNonNullAtom((get) => {
   return get(currentProvierAtom).connection.url
@@ -18,13 +16,12 @@ export const supportsPermit2Signatures = onlyNonNullAtom((get) => {
   return PERMIT2_SUPPORTED_CONNECTIONS.has(get(connectionName))
 })
 
-const ONE_INCH_URLS =
-  process.env.REACT_APP_ONE_INCH_URLS != null
-    ? process.env.REACT_APP_ONE_INCH_URLS.split(',')
-    : ([] as string[])
-const ONE_INCH_URL = ONE_INCH_URLS[
-  Math.floor(Math.random() * ONE_INCH_URLS.length)
-] as undefined | string
+const ONE_INCH_PROXIES = [
+  'https://cold-mouse-7d43.mig2151.workers.dev/',
+  'https://blue-cake-3548.mig2151.workers.dev/',
+  'https://bitter-tree-ed5a.mig2151.workers.dev/',
+  'https://square-morning-0921.mig2151.workers.dev/',
+]
 
 export const zapperState = loadable(
   atom(async (get) => {
@@ -38,9 +35,9 @@ export const zapperState = loadable(
       await provider.getNetwork()
     )
 
-    if (ONE_INCH_URL != null) {
+    if (ONE_INCH_PROXIES.length !== 0) {
       universe.dexAggregators.push(
-        aggregators.initOneInch(universe, ONE_INCH_URL)
+        createProxiedOneInchAggregator(universe, ONE_INCH_PROXIES)
       )
     }
 

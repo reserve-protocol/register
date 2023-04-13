@@ -9,9 +9,9 @@ const formatQty_ = (qty: entities.TokenQuantity, divisor: bigint) => {
   }
   const withScaleDecimals = (qty.amount / divisor) * divisor;
   if (withScaleDecimals === 0n) {
-    return '<' + qty.token.quantityFromBigInt(divisor).formatWithSymbol();
+    return '<' + qty.token.from(divisor).formatWithSymbol();
   }
-  return qty.token.quantityFromBigInt(withScaleDecimals).formatWithSymbol();
+  return qty.token.from(withScaleDecimals).formatWithSymbol();
 };
 
 /** Formats a token quantity into string rounding the number of digits to 
