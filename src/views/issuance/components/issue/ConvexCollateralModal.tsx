@@ -17,21 +17,24 @@ import { promiseMulticall } from 'state/web3/lib/multicall'
 import { Box, Divider, Flex, Link, Text } from 'theme-ui'
 import { BigNumberMap, TransactionState } from 'types'
 import { formatCurrency, getTransactionWithGasLimit, hasAllowance } from 'utils'
-import { STAKE_AAVE_ADDRESS } from 'utils/addresses'
-import { CHAIN_ID } from 'utils/chains'
+import { CVX_ADDRESS } from 'utils/addresses'
+import { ChainId } from 'utils/chains'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import collateralPlugins from 'utils/plugins'
 import { FormState, isFormValid } from 'utils/wrapping'
 import { v4 as uuid } from 'uuid'
 
-const aavePlugins = collateralPlugins.filter(
-  (p) => p.rewardToken[0] === STAKE_AAVE_ADDRESS[CHAIN_ID]
+const convexPlugins = collateralPlugins.filter((p) =>
+  p.rewardToken.includes(CVX_ADDRESS[ChainId.Mainnet])
 )
 
-// TODO: rewrite this whole component
-// TODO: Fix precision issue with balances
-const WrapCollateralModal = ({
+enum ConvexMode {
+  DEPOSIT = 'deposit',
+  WITHDRAW = 'withdraw',
+}
+
+const ConvexCollateralModal = ({
   onClose,
   unwrap = false,
 }: {
@@ -41,7 +44,8 @@ const WrapCollateralModal = ({
   const { provider, account } = useWeb3React()
   const [signing, setSigning] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [fromUnderlying, setFromUnderlying] = useState(1)
+  const [activeMode, setActiveMode] = useState(ConvexMode.DEPOSIT)
+
   const [txIds, setTxIds] = useState<string[]>([])
   const addTransactions = useSetAtom(addTransactionAtom)
   const transactionsState = useTransactions(txIds)
@@ -57,7 +61,7 @@ const WrapCollateralModal = ({
   )
 
   const [formState, setFormState] = useState<FormState>(
-    aavePlugins.reduce((prev, curr) => {
+    convexPlugins.reduce((prev, curr) => {
       prev[curr.address] = {
         value: '',
         max: 0,
@@ -67,75 +71,76 @@ const WrapCollateralModal = ({
       return prev
     }, {} as FormState)
   )
-  const isValid = isFormValid(formState)
+  const isValid = isFormValid(formState, convexPlugins)
 
-  const [txs, approvals] = useMemo(() => {
+  const [deposits, approvals, withdraws] = useMemo(() => {
     const depositTxs: TransactionState[] = []
+    const withdrawTxs: TransactionState[] = []
     const approvalTxs: TransactionState[] = []
 
     if (isValid) {
-      const valids = aavePlugins.filter(
+      const valids = convexPlugins.filter(
         (p) => formState[p.address].isValid && formState[p.address].value
       )
 
       for (const plugin of valids) {
         const amount = formState[plugin.address].value
-        approvalTxs.push(
-          getTransactionWithGasLimit(
-            {
-              id: uuid(),
-              description: t`Approve ${plugin.symbol}`,
-              status: TRANSACTION_STATUS.PENDING,
-              value: amount,
-              call: {
-                abi: 'erc20',
-                address: fromUnderlying
-                  ? (plugin.underlyingToken as string)
-                  : plugin.collateralAddress,
-                method: 'approve',
-                args: [
-                  plugin.depositContract,
-                  parseUnits(
-                    amount,
-                    fromUnderlying
-                      ? plugin.decimals
-                      : plugin.collateralDecimals || 18
-                  ),
-                ],
+        if (activeMode == ConvexMode.DEPOSIT) {
+          approvalTxs.push(
+            getTransactionWithGasLimit(
+              {
+                id: uuid(),
+                description: t`Approve ${plugin.symbol}`,
+                status: TRANSACTION_STATUS.PENDING,
+                value: amount,
+                call: {
+                  abi: 'erc20',
+                  address: plugin.collateralAddress,
+                  method: 'approve',
+                  args: [
+                    plugin.depositContract,
+                    parseUnits(amount, plugin.collateralDecimals || 18),
+                  ],
+                },
               },
-            },
-            65_000,
-            0
+              65_000,
+              0
+            )
           )
-        )
-
+        }
         depositTxs.push({
           id: '',
           description: t`Deposit ${plugin.symbol}`,
           status: TRANSACTION_STATUS.PENDING,
           value: amount,
           call: {
-            abi: 'atoken',
+            abi: 'convexStakingWrapper',
             address: plugin.depositContract ?? '',
             method: 'deposit',
             args: [
+              parseUnits(amount, plugin.collateralDecimals || 18),
               account,
-              parseUnits(
-                amount,
-                fromUnderlying
-                  ? plugin.decimals
-                  : plugin.collateralDecimals || 18
-              ),
-              0,
-              fromUnderlying,
             ],
+          },
+        })
+
+        withdrawTxs.push({
+          id: '',
+          description: t`Withdraw ${plugin.symbol}`,
+          status: TRANSACTION_STATUS.PENDING,
+          value: amount,
+          call: {
+            abi: 'convexStakingWrapper',
+            address: plugin.depositContract ?? '',
+            method: 'withdrawAndUnwrap',
+            args: [parseUnits(amount, plugin.collateralDecimals || 18)],
           },
         })
       }
     }
 
-    return [depositTxs, approvalTxs]
-  }, [JSON.stringify(formState), signing])
+    return [depositTxs, approvalTxs, withdrawTxs]
+  }, [JSON.stringify(formState), signing, activeMode])
 
   const allowances = useTokensAllowance(
     approvals.map((tx) => [tx.call.address, tx.call.args[0]]),
@@ -179,11 +184,12 @@ const WrapCollateralModal = ({
         }
 
         const results = await promiseMulticall(
-          aavePlugins.map((p) => ({
+          convexPlugins.map((p) => ({
             ...callParams,
-            address: fromUnderlying
-              ? (p.underlyingToken as string)
-              : p.collateralAddress,
+            address:
+              activeMode === ConvexMode.DEPOSIT
+                ? p.collateralAddress
+                : p.depositContract!,
           })),
           provider
         )
@@ -191,14 +197,15 @@ const WrapCollateralModal = ({
         const newState = { ...formState }
 
         let index = 0
-        for (const plugin of aavePlugins) {
+        for (const plugin of convexPlugins) {
           const max = +formatUnits(
             results[index],
-            fromUnderlying ? plugin.decimals : plugin.collateralDecimals || 18
+            plugin.collateralDecimals || 18
           )
           newState[plugin.address] = {
             ...formState[plugin.address],
             max,
+            // max: 100,
             isValid: +formState[plugin.address].value <= max,
           }
           index++
@@ -213,7 +220,7 @@ const WrapCollateralModal = ({
 
   useEffect(() => {
     fetchBalances()
-  }, [account, fromUnderlying])
+  }, [account, activeMode])
 
   const handleChange = (tokenAddress: string) => (value: string) => {
     setFormState({
@@ -227,12 +234,17 @@ const WrapCollateralModal = ({
   }
 
   const handleConfirm = () => {
-    const ids = txs.map(() => uuid())
+    const processedTxs = (
+      activeMode === ConvexMode.DEPOSIT ? deposits : withdraws
+    ).map((tx, index) => ({
+      ...tx,
+      id: uuid(),
+    }))
 
-    addTransactions(txs.map((tx, index) => ({ ...tx, id: ids[index] })))
+    addTransactions(processedTxs)
     setLoading(true)
 
-    setTxIds(ids)
+    setTxIds(processedTxs.map((e) => e.id))
   }
 
   if (signed) {
@@ -271,7 +283,7 @@ const WrapCollateralModal = ({
   return (
     <Modal
       style={{ maxWidth: '560px' }}
-      title={t`Wrapping needs to be done before minting`}
+      title={t`Convex Staking Wrapper`}
       onClose={onClose}
     >
       {!!failed && (
@@ -302,14 +314,13 @@ const WrapCollateralModal = ({
             flexGrow: 1,
             textAlign: 'center',
             borderRadius: 8,
-            backgroundColor: fromUnderlying ? 'inputBorder' : 'none',
+            backgroundColor:
+              activeMode == ConvexMode.DEPOSIT ? 'inputBorder' : 'none',
             color: 'text',
           }}
-          onClick={() => setFromUnderlying(1)}
+          onClick={() => setActiveMode(ConvexMode.DEPOSIT)}
         >
-          Token{' '}
-          <ArrowRight size={14} style={{ position: 'relative', top: '1px' }} />{' '}
-          saToken
+          Wrap
         </Box>
         <Box
           p={1}
@@ -317,30 +328,31 @@ const WrapCollateralModal = ({
             flexGrow: 1,
             textAlign: 'center',
             borderRadius: 8,
-            backgroundColor: !fromUnderlying ? 'inputBorder' : 'none',
+            backgroundColor:
+              activeMode == ConvexMode.WITHDRAW ? 'inputBorder' : 'none',
             color: 'text',
           }}
-          onClick={() => setFromUnderlying(0)}
+          onClick={() => setActiveMode(ConvexMode.WITHDRAW)}
         >
-          aToken{' '}
-          <ArrowRight size={14} style={{ position: 'relative', top: '1px' }} />{' '}
-          saToken
+          Unwrap
         </Box>
       </Box>
-      {aavePlugins.map((plugin) => (
+      {convexPlugins.map((plugin) => (
         <Box mt={3} key={plugin.address}>
           <Box variant="layout.verticalAlign" mb={2}>
             <Text ml={3} mr={2} variant="legend">
-              {fromUnderlying
-                ? plugin.symbol.substring(2)
-                : plugin.symbol.substring(1)}
+              {activeMode == ConvexMode.DEPOSIT
+                ? plugin.symbol.substring(3)
+                : plugin.symbol}
             </Text>
             <ArrowRight
               size={14}
               style={{ position: 'relative', top: '1px' }}
             />
             <Text ml={2} variant="legend">
-              {plugin.symbol}
+              {activeMode == ConvexMode.WITHDRAW
+                ? plugin.symbol.substring(3)
+                : plugin.symbol}
             </Text>
             <Text
               onClick={() =>
@@ -390,7 +402,9 @@ const WrapCollateralModal = ({
         loading={!!loading}
         disabled={!isValid || !canSubmit}
         variant={!!loading ? 'accentAction' : 'primary'}
-        text={!fromUnderlying ? t`Wrap aTokens` : t`Wrap tokens`}
+        text={
+          activeMode == ConvexMode.DEPOSIT ? t`Wrap Tokens` : t`Unwrap Tokens`
+        }
         onClick={handleConfirm}
         sx={{ width: '100%' }}
         mt={3}
@@ -399,4 +413,4 @@ const WrapCollateralModal = ({
   )
 }
 
-export default WrapCollateralModal
+export default ConvexCollateralModal

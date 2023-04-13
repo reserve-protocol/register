@@ -267,7 +267,7 @@ export const estimatedApyAtom = atom((get) => {
   apys.holders = rTokenYield * (+(revenueSplit.holders || 0) / 100)
   apys.stakers =
     ((rTokenYield * (supply * rTokenPrice)) / (staked * rsrPrice)) *
-    (+(revenueSplit.stakers || 0) / 100)
+    ((+revenueSplit.stakers || 0) / 100)
 
   return apys
 })
