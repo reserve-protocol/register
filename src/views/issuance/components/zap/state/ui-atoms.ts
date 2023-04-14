@@ -232,6 +232,7 @@ const buttonLoadingLabel = atom((get) => {
 
 const zapEnabledForRTokens = new Set<string>([
   '0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f',
+  '0x2adb7a8216fb13cdb7a60cbed2322a68b59f4f05',
 ])
 
 export const ui = {
