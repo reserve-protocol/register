@@ -114,11 +114,16 @@ export const EUSD_ADDRESS: AddressMap = {
   [ChainId.Hardhat]: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
 }
 
+export const ETHPLUS_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x2ADb7A8216fB13cDb7a60cBed2322a68b59f4F05',
+}
+
 // Fixed tokens used in the rtoken selector screen and dashboard
 export const DEFAULT_TOKENS = {
   [ChainId.Mainnet]: [
     RSV_ADDRESS[ChainId.Mainnet],
     EUSD_ADDRESS[ChainId.Mainnet],
+    ETHPLUS_ADDRESS[ChainId.Mainnet],
   ],
   [ChainId.Goerli]: [RSV_ADDRESS[ChainId.Goerli]],
   [ChainId.Hardhat]: [],
