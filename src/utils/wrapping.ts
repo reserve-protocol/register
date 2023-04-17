@@ -1,7 +1,5 @@
 import { useMemo } from 'react'
-import collateralPlugins from 'utils/plugins'
-import { STAKE_AAVE_ADDRESS } from './addresses'
-import { CHAIN_ID } from './chains'
+import { aavePlugins } from 'utils/plugins'
 
 export type FormState = {
   [x: string]: {
@@ -10,10 +8,6 @@ export type FormState = {
     isValid: boolean
   }
 }
-
-export const aavePlugins = collateralPlugins.filter(
-  (p) => p.rewardToken[0] === STAKE_AAVE_ADDRESS[CHAIN_ID]
-)
 
 export const isFormValid = (formState: FormState, pluginSet = aavePlugins) => {
   const isValid = useMemo(() => {

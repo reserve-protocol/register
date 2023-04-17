@@ -116,7 +116,7 @@ const ConvexCollateralModal = ({
           call: {
             abi: 'convexStakingWrapper',
             address: plugin.depositContract ?? '',
-            method: 'deposit',
+            method: 'stake',
             args: [
               parseUnits(amount, plugin.collateralDecimals || 18),
               account,
@@ -132,7 +132,7 @@ const ConvexCollateralModal = ({
           call: {
             abi: 'convexStakingWrapper',
             address: plugin.depositContract ?? '',
-            method: 'withdrawAndUnwrap',
+            method: 'withdraw',
             args: [parseUnits(amount, plugin.collateralDecimals || 18)],
           },
         })
