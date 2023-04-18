@@ -4,9 +4,11 @@ import { useState } from 'react'
 import { Box, Flex, Link, Text } from 'theme-ui'
 import UnwrapCollateralModal from '../issue/UnwrapCollateraModal'
 import WrapCollateralModal from '../issue/WrapCollateralModal'
+import ConvexCollateralModal from '../issue/ConvexCollateralModal'
 
 const About = () => {
   const [isWrapping, setWrapping] = useState(0)
+  const [isConvexWrapping, setIsConvexWrapping] = useState(false)
 
   return (
     <Box sx={{ height: 'fit-content' }}>
@@ -53,11 +55,27 @@ const About = () => {
           </SmallButton>
         </Flex>
       </Box>
+      <Box variant="layout.borderBox" mt={4} p={4}>
+        <Text variant="strong" mb={2}>
+          <Trans>Wrapping Convex LP Tokens</Trans>
+        </Text>
+        <Flex mt={3}>
+          <SmallButton mr={3} onClick={() => setIsConvexWrapping(true)}>
+            <Trans>Wrap/unwrap tokens</Trans>
+          </SmallButton>
+        </Flex>
+      </Box>
       {isWrapping === 1 && (
         <WrapCollateralModal unwrap={false} onClose={() => setWrapping(0)} />
       )}
       {isWrapping === 2 && (
         <UnwrapCollateralModal unwrap={true} onClose={() => setWrapping(0)} />
+      )}
+      {isConvexWrapping && (
+        <ConvexCollateralModal
+          unwrap={false}
+          onClose={() => setIsConvexWrapping(false)}
+        />
       )}
     </Box>
   )

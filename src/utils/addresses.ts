@@ -31,13 +31,13 @@ export const FACADE_WRITE_ADDRESS: AddressMap = {
 }
 
 export const STAKE_AAVE_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0xC6e5CF6a9d215D2D3d4D433FABaeA44D5f396c43',
+  [ChainId.Mainnet]: '0x5cAF60bf01A5ecd436b2Cd0b68e4c04547eCb872',
   [ChainId.Goerli]: '0x3ddc60c2dFa57F78972466ca805C9dA69795FdB7',
   [ChainId.Hardhat]: '0x82EdA215Fa92B45a3a76837C65Ab862b6C7564a8',
 }
 
 export const COMPOUND_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0xd5cc2875Bbc53AFBcc41Bf04E7bA37F2894CBFa1',
+  [ChainId.Mainnet]: '0x159Af360D99b3dd6c4a47Cd08b730Ff7C9d113CC',
   [ChainId.Goerli]: '0x0F875eE2b36a7B6BdF6c9cb5f2f608E287C3d619',
   [ChainId.Hardhat]: '0x87006e75a5B6bE9D1bbF61AC8Cd84f05D9140589',
 }
@@ -112,6 +112,20 @@ export const EUSD_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
   [ChainId.Goerli]: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
   [ChainId.Hardhat]: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
+}
+
+// Asset address
+export const CVX_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0xbE301280e593d1665A2D54DA65687E92f46D5c44',
+  [ChainId.Goerli]: '0xbE301280e593d1665A2D54DA65687E92f46D5c44',
+  [ChainId.Hardhat]: '0xbE301280e593d1665A2D54DA65687E92f46D5c44',
+}
+
+// Asset address
+export const CRV_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x3752098adf2C9E1E17e48D9cE2Ea48961905064A',
+  [ChainId.Goerli]: '0x3752098adf2C9E1E17e48D9cE2Ea48961905064A',
+  [ChainId.Hardhat]: '0x3752098adf2C9E1E17e48D9cE2Ea48961905064A',
 }
 
 export const ETHPLUS_ADDRESS: AddressMap = {

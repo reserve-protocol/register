@@ -42,6 +42,7 @@ export const TARGET_UNITS = {
   EUR: 'EUR',
   ETH: 'ETH',
   BTC: 'BTC',
+  TRICRYPTO: 'TRICRYPTOLP',
 }
 
 export const COINGECKO_API = 'https://api.coingecko.com/api/v3'
