@@ -224,7 +224,7 @@ export const collateralYieldAtom = atom<{ [x: string]: number }>({
   fusdt: 3.74,
   wsteth: 5,
   reth: 4.12,
-  'stkcvxeusd3crv-f': 23.17,
+  'stkcvxeusd3crv-f': 17.06,
 })
 
 export const ethPriceAtom = atom(1)
