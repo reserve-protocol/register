@@ -2835,10 +2835,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lc-labs/rtokens@npm:1.0.3":
-  version: 1.0.3
-  resolution: "@lc-labs/rtokens@npm:1.0.3"
-  checksum: 928ec4a767f367b5174b6d3fecc3077ab615520e0e2d8f47a6ae033ba884b24070ac8a321f1a1a4360c6e7eab81d7fdd6748c7e9ca5053871e20951d7349cb1c
+"@lc-labs/rtokens@npm:1.0.4":
+  version: 1.0.4
+  resolution: "@lc-labs/rtokens@npm:1.0.4"
+  checksum: 79a59d535785b9c872f3995305c7b6b3889c15cea04471922a99a28e8a8a5bd48bdc5b6a101e20a57142d4d8380fccb2bc5355390b2cf2d2bae6e7151f6def53
   languageName: node
   linkType: hard
 
@@ -16641,7 +16641,7 @@ __metadata:
     "@dnd-kit/utilities": ^3.2.0
     "@emotion/react": ^11.9.0
     "@emotion/styled": ^11.8.1
-    "@lc-labs/rtokens": 1.0.3
+    "@lc-labs/rtokens": 1.0.4
     "@lingui/cli": ^3.13.3
     "@lingui/core": ^3.13.3
     "@lingui/macro": ^3.13.3

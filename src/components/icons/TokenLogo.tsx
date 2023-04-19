@@ -42,6 +42,10 @@ const IMGS = new Set([
   'wcUSDCv3',
   'wsteth',
   'reth',
+  'stkcvx3crv',
+  'stkcvxcrv3crypto',
+  'stkcvxeusd3crv-f',
+  'stkcvxmim-3lp3crv-f',
 ])
 
 const TokenLogo = ({ symbol, src, size = '1em', ...props }: Props) => {

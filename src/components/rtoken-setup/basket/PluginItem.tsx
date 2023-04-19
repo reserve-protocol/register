@@ -74,7 +74,7 @@ const PluginItem = ({ data, onCheck, selected, ...props }: PluginItemProps) => {
   return (
     <Box {...props}>
       <Flex variant="layout.verticalAlign">
-        <TokenLogo size={20} symbol={data.symbol} />
+        <TokenLogo size={35} symbol={data.symbol} />
         <Box ml={3}>
           <Box variant="layout.verticalAlign">
             <Text>{data.symbol} plugin</Text>

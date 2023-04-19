@@ -24,6 +24,7 @@ import stRSRVotes from './stRSRVotes.json'
 import StaticAToken from './static-atoken.json'
 import FacadeAct from './facade-act.json'
 import BasketHandler from './basket-handler.json'
+import ConvexStakingWrapper from './convex-staking-wrapper.json'
 
 const ERC20Interface = new Interface(ERC20)
 const FacadeInterface = new Interface(Facade)
@@ -49,6 +50,7 @@ const stRSRVotesInterface = new Interface(stRSRVotes)
 const StaticATokenInterfcae = new Interface(StaticAToken)
 const FacadeActInterface = new Interface(FacadeAct)
 const BasketHandlerInterface = new Interface(BasketHandler)
+const ConvexStakingWrapperInterface = new Interface(ConvexStakingWrapper)
 
 export { ERC20, ERC20Interface }
 export { Facade, FacadeInterface }
@@ -74,6 +76,7 @@ export { stRSRVotes, stRSRVotesInterface }
 export { StaticAToken, StaticATokenInterfcae }
 export { FacadeAct, FacadeActInterface }
 export { BasketHandler, BasketHandlerInterface }
+export { ConvexStakingWrapper, ConvexStakingWrapperInterface }
 
 // Used for tx management
 export default <StringMap>{
@@ -88,4 +91,5 @@ export default <StringMap>{
   governance: GovernanceInterface,
   atoken: StaticATokenInterfcae,
   facadeAct: FacadeActInterface,
+  convexStakingWrapper: ConvexStakingWrapperInterface,
 }

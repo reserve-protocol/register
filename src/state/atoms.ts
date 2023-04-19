@@ -13,7 +13,12 @@ import { ethers, providers, utils } from 'ethers'
 import { formatEther, formatUnits } from 'ethers/lib/utils'
 import { getTokens } from 'hooks/useTokensBalance'
 import { atom } from 'jotai'
-import { atomFamily, atomWithReset, atomWithStorage, createJSONStorage } from 'jotai/utils'
+import {
+  atomFamily,
+  atomWithReset,
+  atomWithStorage,
+  createJSONStorage,
+} from 'jotai/utils'
 import {
   AccountPosition,
   AccountToken,
@@ -28,10 +33,12 @@ import { RSR, TRANSACTION_STATUS } from 'utils/constants'
 import { WalletTransaction } from './../types/index'
 import { tokenBalancesStore } from './TokenBalancesUpdater'
 
-export const searchParamsAtom = atom(new URLSearchParams(window.location.search))
+export const searchParamsAtom = atom(
+  new URLSearchParams(window.location.search)
+)
 export const searchParamAtom = atomFamily(
   (key: string) => atom((get) => get(searchParamsAtom).get(key)),
-  (l,r) => l === r
+  (l, r) => l === r
 )
 
 /**
@@ -238,7 +245,7 @@ export const collateralYieldAtom = atom<{ [x: string]: number }>({
   wsteth: 5,
   reth: 4.12,
   wcUSDCv3: 2.1,
-  'stkcvxeUSD3CRV-f': 29.46,
+  'stkcvxeusd3crv-f': 17.06,
 })
 
 export const ethPriceAtom = atom(1)
@@ -283,7 +290,7 @@ export const estimatedApyAtom = atom((get) => {
   apys.holders = rTokenYield * (+(revenueSplit.holders || 0) / 100)
   apys.stakers =
     ((rTokenYield * (supply * rTokenPrice)) / (staked * rsrPrice)) *
-    (+(revenueSplit.stakers || 0) / 100)
+    ((+revenueSplit.stakers || 0) / 100)
 
   return apys
 })

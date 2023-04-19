@@ -3,10 +3,8 @@ import { useWeb3React } from '@web3-react/core'
 import { ERC20Interface } from 'abis'
 import { Modal, NumericalInput } from 'components'
 import { LoadingButton } from 'components/button'
-import ApprovalTransactions from 'components/transaction-modal/ApprovalTransactions'
 import TransactionError from 'components/transaction-modal/TransactionError'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
-import useTokensAllowance from 'hooks/useTokensAllowance'
 import { useSetAtom } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { ArrowRight, CheckCircle, ExternalLink } from 'react-feather'
@@ -14,19 +12,13 @@ import { addTransactionAtom } from 'state/atoms'
 import { useTransactions } from 'state/web3/hooks/useTransactions'
 import { promiseMulticall } from 'state/web3/lib/multicall'
 import { Box, Divider, Flex, Link, Text } from 'theme-ui'
-import { BigNumberMap, TransactionState } from 'types'
-import { formatCurrency, getTransactionWithGasLimit, hasAllowance } from 'utils'
-import { STAKE_AAVE_ADDRESS } from 'utils/addresses'
-import { CHAIN_ID } from 'utils/chains'
+import { TransactionState } from 'types'
+import { formatCurrency } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import collateralPlugins from 'utils/plugins'
+import { aavePlugins } from 'utils/plugins'
 import { FormState, isFormValid } from 'utils/wrapping'
 import { v4 as uuid } from 'uuid'
-
-const aavePlugins = collateralPlugins.filter(
-  (p) => p.rewardToken[0] === STAKE_AAVE_ADDRESS[CHAIN_ID]
-)
 
 // TODO: rewrite this whole component
 // TODO: Fix precision issue with balances

@@ -212,6 +212,7 @@ const ExchangeRateUpdater = () => {
   return null
 }
 
+// TODO add eusdFRAXBP when live on DefiLlama
 const poolsMap: StringMap = {
   '405d8dad-5c99-4c91-90d3-82813ade1ff1': 'sadai',
   'a349fea4-d780-4e16-973e-70ca9b606db2': 'sausdc',
@@ -228,11 +229,10 @@ const poolsMap: StringMap = {
   '6600934f-6323-447d-8a7d-67fbede8529d': 'fusdt',
   '747c1d2a-c668-4682-b9f9-296708a3dd90': 'wsteth',
   'd4b3c522-6127-4b89-bedf-83641cdcd2eb': 'reth',
-  '7da72d09-56ca-4ec5-a45f-59114353e487': 'wcUSDCv3',
-  '8a20c472-142c-4442-b724-40f2183c073e': 'stkcvxMIM-3LP3CRV-f',
-  'ad3d7253-fb8f-402f-a6f8-821bc0a055cb': 'stkCvxCrv3crypto',
-  '7394f1bc-840a-4ff0-9e87-5e0ef932943a': 'stkcvx3Crv',
-  // TODO add eusdFRAXBP when live on DefiLlama
+  '7da72d09-56ca-4ec5-a45f-59114353e487': 'wcusdcv3',
+  '8a20c472-142c-4442-b724-40f2183c073e': 'stkcvxmim-3lp3crv-f',
+  'ad3d7253-fb8f-402f-a6f8-821bc0a055cb': 'stkcvxcrv3crypto',
+  '7394f1bc-840a-4ff0-9e87-5e0ef932943a': 'stkcvx3crv',
 }
 
 const CollateralYieldUpdater = () => {

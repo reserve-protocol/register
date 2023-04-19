@@ -237,7 +237,7 @@ export interface CollateralPlugin {
   collateralAddress: string
   depositContract?: string // Only for aave collaterals erc20() contract from collateral
   description: string // Small description
-  rewardToken: string // yield token aave / compound wrapped Asset
+  rewardToken: string[] // yield token aave / compound wrapped Asset
   custom?: boolean
   underlyingToken?: string
   collateralDecimals?: number // Decimals of exogenous collateral deposited in wrapper e.g. aUSDC
