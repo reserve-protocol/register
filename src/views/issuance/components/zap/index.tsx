@@ -5,18 +5,20 @@ import { MaxLabel } from 'components/transaction-input'
 import useBlockNumber from 'hooks/useBlockNumber'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
-import { Zap as ZapIcon } from 'react-feather'
 import { gasPriceAtomBn } from 'state/atoms'
-import { Box, Card, Flex, Grid, Switch, Text } from 'theme-ui'
+import { Box, Card, Flex, Grid, Spinner, Text } from 'theme-ui'
 import ZapTokenSelector from './components/ZapTokenSelector'
-import { ui, zapAvailableAtom, zapEnabledAtom } from './state/ui-atoms'
+import { selectedZapTokenAtom } from './state/atoms'
+import { ui } from './state/ui-atoms'
 import { resolvedZapState, zapperState } from './state/zapper'
 
 const ZapTextInputField = () => {
   const [[textInput, disabled], onChange] = useAtom(ui.input.textInput)
+  const token = useAtomValue(selectedZapTokenAtom)
+
   return (
     <NumericalInput
-      placeholder={t`Zap amount`}
+      placeholder={`${token?.symbol} ${t`Amount`}`}
       value={textInput}
       disabled={disabled}
       onChange={onChange}
@@ -40,7 +42,6 @@ const ZapInput = () => (
   <Flex sx={{ alignItems: 'center' }}>
     <ZapTextInputField />
     <Box mr={2} />
-    <ZapTokenSelector />
   </Flex>
 )
 
@@ -106,24 +107,36 @@ const Zap = () => {
   const zapState = useAtomValue(zapperState)
   if (zapState.state === 'loading') {
     return (
-      <Card p={4}>
-        <Text>Loading token Zap</Text>
+      <Card
+        p={4}
+        sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      >
+        <Spinner />
       </Card>
     )
   }
   if (zapState.state === 'hasError') {
-    return null
+    return (
+      <Card
+        p={4}
+        sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      >
+        <Text variant="warning">Error loading zap</Text>
+      </Card>
+    )
   }
   return (
     <>
       <UpdateBlockAndGas />
-      <Card p={4} mb={4}>
+      <Card p={4}>
         <Grid columns={1} gap={2}>
           <Text ml={3} as="label" variant="legend">
             <Trans>Mint using Zap</Trans>
           </Text>
           <ZapInput />
-          <ZapMaxInput />
+          <Box variant="layout.verticalAlign">
+            <ZapMaxInput />
+          </Box>
           <Box mt={2} />
           <ZapOutput />
           <TransactionFee />
@@ -134,45 +147,4 @@ const Zap = () => {
   )
 }
 
-const ZapToggle = () => {
-  const [zapEnabled, setEnabled] = useAtom(zapEnabledAtom)
-
-  const handleToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEnabled(e.target.checked)
-  }
-
-  return (
-    <Box
-      variant="layout.verticalAlign"
-      mb={4}
-      pb={3}
-      sx={{ borderBottom: '1px solid', borderColor: 'border' }}
-    >
-      <ZapIcon size={14} />
-      <Text ml={2}>
-        <Trans>Turn on Zaps to mint from 1 asset</Trans>
-      </Text>
-      <Box ml="auto">
-        <label>
-          <Switch defaultChecked={zapEnabled} onChange={handleToggle} />
-        </label>
-      </Box>
-    </Box>
-  )
-}
-
-export default () => {
-  const zapAvailable = useAtomValue(zapAvailableAtom)
-  const zapEnabled = useAtomValue(zapEnabledAtom)
-
-  if (!zapAvailable) {
-    return null
-  }
-
-  return (
-    <>
-      <ZapToggle />
-      {zapEnabled && <Zap />}
-    </>
-  )
-}
+export default Zap
