@@ -4,12 +4,12 @@ import { LoadingButton } from 'components/button'
 import { MaxLabel } from 'components/transaction-input'
 import useBlockNumber from 'hooks/useBlockNumber'
 import { useAtom, useAtomValue } from 'jotai'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Zap as ZapIcon } from 'react-feather'
 import { gasPriceAtomBn } from 'state/atoms'
 import { Box, Card, Flex, Grid, Switch, Text } from 'theme-ui'
 import ZapTokenSelector from './components/ZapTokenSelector'
-import { ui } from './state/ui-atoms'
+import { ui, zapAvailableAtom, zapEnabledAtom } from './state/ui-atoms'
 import { resolvedZapState, zapperState } from './state/zapper'
 
 const ZapTextInputField = () => {
@@ -134,9 +134,11 @@ const Zap = () => {
   )
 }
 
-const ZapToggle = ({ onToggle }: { onToggle(enabled: boolean): void }) => {
+const ZapToggle = () => {
+  const [zapEnabled, setEnabled] = useAtom(zapEnabledAtom)
+
   const handleToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onToggle(e.target.checked)
+    setEnabled(e.target.checked)
   }
 
   return (
@@ -152,7 +154,7 @@ const ZapToggle = ({ onToggle }: { onToggle(enabled: boolean): void }) => {
       </Text>
       <Box ml="auto">
         <label>
-          <Switch defaultChecked={false} onChange={handleToggle} />
+          <Switch defaultChecked={zapEnabled} onChange={handleToggle} />
         </label>
       </Box>
     </Box>
@@ -160,15 +162,17 @@ const ZapToggle = ({ onToggle }: { onToggle(enabled: boolean): void }) => {
 }
 
 export default () => {
-  const [enabled, setEnabled] = useState(false)
+  const zapAvailable = useAtomValue(zapAvailableAtom)
+  const zapEnabled = useAtomValue(zapEnabledAtom)
 
-  if (useAtomValue(ui.zapWidgetEnabled) !== true) {
+  if (!zapAvailable) {
     return null
   }
+
   return (
     <>
-      <ZapToggle onToggle={setEnabled} />
-      {enabled && <Zap />}
+      <ZapToggle />
+      {zapEnabled && <Zap />}
     </>
   )
 }

@@ -1,6 +1,7 @@
 import { entities } from '@reserve-protocol/token-zapper'
 import { ethers } from 'ethers'
 import { atom, Getter, SetStateAction, Setter } from 'jotai'
+import { atomWithStorage } from 'jotai/utils'
 import { Atom } from 'jotai/vanilla'
 import {
   isRTokenDisabledAtom,
@@ -234,11 +235,14 @@ const zapEnabledForRTokens = new Set<string>([
   '0x2adb7a8216fb13cdb7a60cbed2322a68b59f4f05',
 ])
 
+export const zapEnabledAtom = atomWithStorage('zap-enabled', false)
+export const zapAvailableAtom = atom((get) => {
+  const rTokenAddress = get(rTokenAtom)?.address.toLowerCase()
+  return rTokenAddress != null && zapEnabledForRTokens.has(rTokenAddress)
+})
+
 export const ui = {
-  zapWidgetEnabled: atom((get) => {
-    const rTokenAddress = get(rTokenAtom)?.address.toLowerCase()
-    return rTokenAddress != null && zapEnabledForRTokens.has(rTokenAddress)
-  }),
+  zapWidgetEnabled: atom((get) => get(zapEnabledAtom) && get(zapAvailableAtom)),
   input: {
     textInput: atom(
       (get) => {
