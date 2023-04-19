@@ -12,8 +12,8 @@ const GovernanceParameters = (props: BoxProps) => {
     'votingPeriod',
     'minDelay',
   ])
-  const votingDelayHelper = parseDuration(Number(votingDelay) || 0 * 12)
-  const votingPeriodHelper = parseDuration(Number(votingPeriod) || 0 * 12)
+  const votingDelayHelper = parseDuration(Number(votingDelay) * 12 || 0)
+  const votingPeriodHelper = parseDuration(Number(votingPeriod) * 12 || 0)
   const minDelayHelper = parseDuration((Number(minDelay) || 0) * 60 * 60)
 
   return (
@@ -32,7 +32,7 @@ const GovernanceParameters = (props: BoxProps) => {
           required: true,
           pattern: numberPattern,
           min: 1,
-          max: 259200, // 3 days
+          max: 50400, // 3 days
         }}
       />
       <FormField
@@ -46,7 +46,7 @@ const GovernanceParameters = (props: BoxProps) => {
           required: true,
           pattern: numberPattern,
           min: 7200,
-          max: 432000, // 5 days
+          max: 100800, // 5 days
         }}
       />
       <FormField

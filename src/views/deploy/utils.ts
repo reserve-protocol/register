@@ -13,8 +13,8 @@ import {
 export const governanceDefaultValues = {
   defaultGovernance: true,
   unpause: '0',
-  votingDelay: '172800', // 2 days
-  votingPeriod: '259200', // 3 days
+  votingDelay: '14400', // 2 days
+  votingPeriod: '21600', // 3 days
   proposalThresholdAsMicroPercent: '0.01', // 0.01%
   quorumPercent: '10', // 10%
   minDelay: '72', // 72 hours -> 86400
