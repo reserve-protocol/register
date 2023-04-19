@@ -14,7 +14,7 @@ const Issuance = () => (
     <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[3, 5]}>
       <Box>
         <Zap />
-        <Grid columns={[1, 2]} gap={4} mt={4} mb={4}>
+        <Grid columns={[1, 2]} gap={4} mb={4}>
           <Issue />
           <Redeem />
         </Grid>

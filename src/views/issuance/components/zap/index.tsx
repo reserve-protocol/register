@@ -4,9 +4,10 @@ import { LoadingButton } from 'components/button'
 import { MaxLabel } from 'components/transaction-input'
 import useBlockNumber from 'hooks/useBlockNumber'
 import { useAtom, useAtomValue } from 'jotai'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useState } from 'react'
+import { Zap as ZapIcon } from 'react-feather'
 import { gasPriceAtomBn } from 'state/atoms'
-import { Box, Card, Flex, Grid, Text } from 'theme-ui'
+import { Box, Card, Flex, Grid, Switch, Text } from 'theme-ui'
 import ZapTokenSelector from './components/ZapTokenSelector'
 import { ui } from './state/ui-atoms'
 import { resolvedZapState, zapperState } from './state/zapper'
@@ -116,7 +117,7 @@ const Zap = () => {
   return (
     <>
       <UpdateBlockAndGas />
-      <Card p={4}>
+      <Card p={4} mb={4}>
         <Grid columns={1} gap={2}>
           <Text ml={3} as="label" variant="legend">
             <Trans>Mint using Zap</Trans>
@@ -133,10 +134,41 @@ const Zap = () => {
   )
 }
 
+const ZapToggle = ({ onToggle }: { onToggle(enabled: boolean): void }) => {
+  const handleToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onToggle(e.target.checked)
+  }
+
+  return (
+    <Box
+      variant="layout.verticalAlign"
+      mb={4}
+      pb={3}
+      sx={{ borderBottom: '1px solid', borderColor: 'border' }}
+    >
+      <ZapIcon size={14} />
+      <Text ml={2}>
+        <Trans>Turn on Zaps to mint from 1 asset</Trans>
+      </Text>
+      <Box ml="auto">
+        <label>
+          <Switch defaultChecked={false} onChange={handleToggle} />
+        </label>
+      </Box>
+    </Box>
+  )
+}
 
 export default () => {
+  const [enabled, setEnabled] = useState(false)
+
   if (useAtomValue(ui.zapWidgetEnabled) !== true) {
     return null
   }
-  return <Zap />
+  return (
+    <>
+      <ZapToggle onToggle={setEnabled} />
+      {enabled && <Zap />}
+    </>
+  )
 }

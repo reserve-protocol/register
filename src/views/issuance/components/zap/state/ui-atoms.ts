@@ -1,6 +1,5 @@
 import { entities } from '@reserve-protocol/token-zapper'
 import { ethers } from 'ethers'
-import { formatEther, formatUnits, parseUnits } from 'ethers/lib/utils'
 import { atom, Getter, SetStateAction, Setter } from 'jotai'
 import { Atom } from 'jotai/vanilla'
 import {
@@ -237,9 +236,6 @@ const zapEnabledForRTokens = new Set<string>([
 
 export const ui = {
   zapWidgetEnabled: atom((get) => {
-    if (get(searchParamAtom('zaps')) !== 'true') {
-      return false
-    }
     const rTokenAddress = get(rTokenAtom)?.address.toLowerCase()
     return rTokenAddress != null && zapEnabledForRTokens.has(rTokenAddress)
   }),
