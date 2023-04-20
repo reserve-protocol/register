@@ -42,7 +42,7 @@ const ZapTokenList = () => {
   )
 
   return (
-    <Box sx={{ maxHeight: 320, overflow: 'auto' }}>
+    <Box sx={{ maxHeight: 320, width: '420px', overflow: 'auto' }}>
       {entries.map(({ token, selectToken }) => (
         <ActionItem key={token.address.address} onClick={selectToken}>
           <TokenItem symbol={token.symbol} />
@@ -75,27 +75,35 @@ const SelectedZapToken = () => {
 const ZapTokenSelector = () => {
   const [isVisible, setVisible] = useAtom(ui.input.tokenSelector.popup)
   const dismiss = useCallback(() => setVisible(false), [setVisible])
-  const toggle = useCallback(() => setVisible((prev) => !prev), [setVisible])
+  const toggle = useCallback(
+    () => setVisible((prev) => !prev),
+    [setVisible, isVisible]
+  )
 
   return (
-    <Box
-      variant="layout.verticalAlign"
-      sx={{
-        cursor: 'pointer',
-        border: '1px solid',
-        borderColor: 'border',
-        borderRadius: 20,
-      }}
-      p={3}
-      mb={4}
-      onClick={toggle}
+    <Popup
+      show={isVisible}
+      placement="bottom-start"
+      onDismiss={dismiss}
+      content={<ZapTokenList />}
     >
-      <SelectedZapToken />
-      <Box ml="auto" />
-      <Popup show={isVisible} onDismiss={dismiss} content={<ZapTokenList />}>
+      <Box
+        variant="layout.verticalAlign"
+        sx={{
+          cursor: 'pointer',
+          border: '1px solid',
+          borderColor: 'border',
+          borderRadius: 20,
+        }}
+        p={3}
+        mb={4}
+        onClick={toggle}
+      >
+        <SelectedZapToken />
+        <Box ml="auto" />
         <ChevronDisplay />
-      </Popup>
-    </Box>
+      </Box>
+    </Popup>
   )
 }
 
