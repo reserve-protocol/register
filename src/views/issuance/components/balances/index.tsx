@@ -1,12 +1,17 @@
 import { Trans } from '@lingui/macro'
+import { useWeb3React } from '@web3-react/core'
 import { Card } from 'components'
 import TokenLogo from 'components/icons/TokenLogo'
 import TokenBalance from 'components/token-balance'
+import { MouseoverTooltip } from 'components/tooltip'
+import TrackAsset from 'components/track-asset'
 import useRToken from 'hooks/useRToken'
 import useRTokenLogo from 'hooks/useRTokenLogo'
 import { useAtomValue } from 'jotai'
+import { Bookmark } from 'react-feather'
 import { rTokenBalanceAtom } from 'state/atoms'
-import { Box, Grid, Text } from 'theme-ui'
+import { success } from 'state/web3/lib/notifications'
+import { Box, Flex, Grid, IconButton, Text } from 'theme-ui'
 import { Token } from 'types'
 import CollateralBalance from './CollateralBalance'
 
@@ -32,11 +37,15 @@ const RTokenBalance = ({ token }: { token: Token }) => {
       <Text variant="subtitle" mb={3}>
         <Trans>RToken In Wallet</Trans>
       </Text>
-      <TokenBalance
-        symbol={token.symbol}
-        icon={<TokenLogo src={logo} />}
-        balance={+balance.balance}
-      />
+      <Flex>
+        <TokenBalance
+          symbol={token.symbol}
+          icon={<TokenLogo src={logo} />}
+          balance={+balance.balance}
+          mr={2}
+        />
+        <TrackAsset token={token} />
+      </Flex>
     </Box>
   )
 }

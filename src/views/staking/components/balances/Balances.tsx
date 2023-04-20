@@ -4,6 +4,7 @@ import { Card } from 'components'
 import { LoadingButton } from 'components/button'
 import Help from 'components/help'
 import TokenBalance from 'components/token-balance'
+import TrackAsset from 'components/track-asset'
 import { BigNumber } from 'ethers/lib/ethers'
 import useRToken from 'hooks/useRToken'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
@@ -20,8 +21,8 @@ import {
 } from 'state/atoms'
 import { useTransaction } from 'state/web3/hooks/useTransactions'
 import { smallButton } from 'theme'
-import { Box, BoxProps, Divider, Grid, Text } from 'theme-ui'
-import { TRANSACTION_STATUS } from 'utils/constants'
+import { Box, BoxProps, Divider, Flex, Grid, Text } from 'theme-ui'
+import { RSR, TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
 
 const pendingRSRBalanceAtom = atom(
@@ -126,11 +127,16 @@ const StakeBalance = () => {
       <Text variant="subtitle" mb={3}>
         <Trans>Your staked RSR</Trans>
       </Text>
-      <TokenBalance
-        symbol={rToken?.stToken?.symbol ?? ''}
-        logoSrc="/svgs/strsr.svg"
-        balance={+balance.balance}
-      />
+      <Flex>
+        <TokenBalance
+          symbol={rToken?.stToken?.symbol ?? ''}
+          logoSrc="/svgs/strsr.svg"
+          balance={+balance.balance}
+          mr={2}
+        />
+        {!!rToken?.stToken && <TrackAsset token={rToken?.stToken} />}
+      </Flex>
+
       <TokenBalance
         mt={2}
         symbol="RSR Value"
@@ -157,7 +163,11 @@ const RSRBalance = () => {
       <Text variant="subtitle" mb={3}>
         <Trans>In Wallet</Trans>
       </Text>
-      <TokenBalance symbol="RSR" balance={+balance.balance} />
+      <Flex>
+        <TokenBalance symbol="RSR" balance={+balance.balance} mr={2} />
+
+        <TrackAsset token={RSR} />
+      </Flex>
       <TokenBalance
         logoSrc="/svgs/equals.svg"
         symbol="USD"
