@@ -200,10 +200,8 @@ const buttonLabel = atom((get) => {
       return `Approve ${loadedState.tokenToZap.symbol} for Zap`
     case 'sign_permit':
       return `Sign & Zap ${loadedState.tokenToZap.symbol} for ${loadedState.rToken.symbol}`
-    case 'send_tx':
-      return `Zap ${loadedState.tokenToZap.symbol} for ${loadedState.rToken.symbol}`
     default:
-      return `Zap`
+      return `+ Mint ${loadedState.rToken.symbol}`
   }
 })
 const buttonLoadingLabel = atom((get) => {

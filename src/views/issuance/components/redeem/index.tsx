@@ -23,9 +23,10 @@ const Redeem = () => {
         <RedeemInput />
         {isZapEnabled && (
           <Text
+            mt={2}
             variant="legend"
             ml={3}
-            sx={{ fontSize: 0, display: 'block', marginTop: '12px' }}
+            sx={{ fontSize: 1, display: 'block' }}
           >
             <Trans>Redeem zaps are not yet supported</Trans>
           </Text>
