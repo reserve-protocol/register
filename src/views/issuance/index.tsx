@@ -4,6 +4,7 @@ import { Box, Grid } from 'theme-ui'
 import About from './components/about'
 import Balances from './components/balances'
 import Issue from './components/issue'
+import IssuanceInfo from './components/issue/IssuanceInfo'
 import Redeem from './components/redeem'
 import Zap from './components/zap'
 import ZapToggle from './components/zap/components/ZapToggle'
@@ -31,7 +32,10 @@ const Issuance = () => {
           </Grid>
           <Balances />
         </Box>
-        <About />
+        <Box>
+          <IssuanceInfo mb={4} />
+          <About />
+        </Box>
       </Grid>
     </Container>
   )

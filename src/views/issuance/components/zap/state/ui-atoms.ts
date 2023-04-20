@@ -3,12 +3,7 @@ import { ethers } from 'ethers'
 import { atom, Getter, SetStateAction, Setter } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import { Atom } from 'jotai/vanilla'
-import {
-  isRTokenDisabledAtom,
-  isWalletModalVisibleAtom,
-  rTokenAtom,
-  searchParamAtom,
-} from 'state/atoms'
+import { isWalletModalVisibleAtom, rTokenAtom } from 'state/atoms'
 import { error, success } from 'state/web3/lib/notifications'
 import { onlyNonNullAtom } from 'utils/atoms/utils'
 import {
@@ -244,14 +239,6 @@ export const zapAvailableAtom = atom((get) => {
 export const ui = {
   zapWidgetEnabled: atom((get) => get(zapEnabledAtom) && get(zapAvailableAtom)),
   input: {
-    textInput: atom(
-      (get) => {
-        return [get(zapInputString), get(isRTokenDisabledAtom)] as const
-      },
-      (_, set, update: string) => {
-        set(zapInputString, update)
-      }
-    ),
     tokenSelector: {
       popup: atom<boolean, SetStateAction<boolean>>(
         (get) => get(tokenToZapPopupState),
@@ -269,10 +256,11 @@ export const ui = {
     },
     maxAmount: atom(
       (get) => {
-        if (get(zapSender) == null) {
-          return null
+        const currentBalance = get(selectedZapTokenBalance)
+        if (currentBalance == null) {
+          return '0'
         }
-        return get(maxZappableAmountStringAtom) ?? '0.0'
+        return currentBalance.format()
       },
       (get, set, _) => {
         const currentBalance = get(selectedZapTokenBalance)
