@@ -71,6 +71,13 @@ export const getCollateralFromBasket = (basket: Basket | BackupBasket) => {
   )
 }
 
+// TODO: Confirm change
+// {
+//   symbol: collateral.symbol,
+//   address: collateral?.depositContract || collateral.collateralAddress,
+//   collateralAddress: collateral.address,
+//   targetUnit: collateral.targetUnit,
+// },
 const getCollateralByTarget = (collaterals: CollateralPlugin[]) => {
   return collaterals.reduce((acc, collateral) => {
     acc[collateral.targetUnit] = [
