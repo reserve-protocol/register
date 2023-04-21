@@ -13,7 +13,7 @@ import { Box, Flex, Grid, Text } from 'theme-ui'
 import { Token } from 'types'
 import { BI_ZERO } from 'utils/constants'
 import { selectedZapTokenAtom } from '../zap/state/atoms'
-import { ui, zapEnabledAtom } from '../zap/state/ui-atoms'
+import { ui } from '../zap/state/ui-atoms'
 import CollateralBalance from './CollateralBalance'
 
 const zapTokenBalancesAtom = atom((get) => {
@@ -102,7 +102,7 @@ const RTokenBalance = ({ token }: { token: Token }) => {
  */
 const Balances = () => {
   const rToken = useRToken()
-  const isZapEnabled = useAtomValue(zapEnabledAtom)
+  const isZapEnabled = useAtomValue(ui.zapWidgetEnabled)
 
   if (!rToken) {
     return null
