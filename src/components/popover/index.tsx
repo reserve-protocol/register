@@ -15,7 +15,7 @@ const PopoverContainer = styled.div<{ show: boolean }>`
 // color: ${({ theme }) => theme.text2};
 
 const ReferenceElement = styled.div`
-  display: inline-block;
+  display: block;
 `
 
 // border: 1px solid ${({ theme }) => theme.bg2};

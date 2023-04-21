@@ -1,89 +1,13 @@
-import { t, Trans } from '@lingui/macro'
-import { NumericalInput } from 'components'
+import { t } from '@lingui/macro'
 import { LoadingButton } from 'components/button'
-import { MaxLabel } from 'components/transaction-input'
 import useBlockNumber from 'hooks/useBlockNumber'
 import { useAtom, useAtomValue } from 'jotai'
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import { gasPriceAtomBn } from 'state/atoms'
-import { Box, Card, Flex, Grid, Text } from 'theme-ui'
-import ZapTokenSelector from './components/ZapTokenSelector'
+import { Card } from 'theme-ui'
+import ZapInput from './components/ZapInput'
 import { ui } from './state/ui-atoms'
 import { resolvedZapState, zapperState } from './state/zapper'
-
-const ZapTextInputField = () => {
-  const [[textInput, disabled], onChange] = useAtom(ui.input.textInput)
-  return (
-    <NumericalInput
-      placeholder={t`Zap amount`}
-      value={textInput}
-      disabled={disabled}
-      onChange={onChange}
-    />
-  )
-}
-
-const TransactionFee = () => (
-  <Text
-    as="span"
-    variant="legend"
-    sx={{ display: 'block', fontSize: 1 }}
-    ml="auto"
-    mr={2}
-  >
-    {useAtomValue(ui.output.txFee)}
-  </Text>
-)
-
-const ZapInput = () => (
-  <Flex sx={{ alignItems: 'center' }}>
-    <ZapTextInputField />
-    <Box mr={2} />
-    <ZapTokenSelector />
-  </Flex>
-)
-
-const ZapOutput = () => (
-  <NumericalInput
-    disabled={true}
-    placeholder={'0.0'}
-    value={useAtomValue(ui.output.textBox)}
-    onChange={() => {}}
-  />
-)
-
-const ZapMaxInput = () => {
-  const [maxAmountString, setToMax] = useAtom(ui.input.maxAmount)
-  if (maxAmountString == null) {
-    return null
-  }
-  return (
-    <MaxLabel
-      text={`Max: ${maxAmountString}`}
-      handleClick={setToMax}
-      clickable={true}
-      compact
-    />
-  )
-}
-
-const ZapButton = () => {
-  const [{ loading, enabled, label, loadingLabel }, onClick] = useAtom(
-    ui.button
-  )
-
-  return (
-    <LoadingButton
-      loading={loading}
-      disabled={!enabled}
-      text={label}
-      loadingText={loadingLabel}
-      mt={3}
-      sx={{ width: '100%' }}
-      onClick={onClick}
-    />
-  )
-}
 
 const UpdateBlockAndGas = () => {
   const zapState = useAtomValue(resolvedZapState)
@@ -101,42 +25,34 @@ const UpdateBlockAndGas = () => {
 /**
  * Zap widget
  */
+// TODO: Use confirm modal instead of direct transaction
 const Zap = () => {
+  const [{ enabled, label }, onZap] = useAtom(ui.button)
   const zapState = useAtomValue(zapperState)
-  if (zapState.state === 'loading') {
-    return (
-      <Card p={4}>
-        <Text>Loading token Zap</Text>
-      </Card>
-    )
-  }
-  if (zapState.state === 'hasError') {
-    return null
-  }
+  const [isLoading, hasError] = [
+    zapState.state === 'loading',
+    zapState.state === 'hasError',
+  ]
+  const inputProps = isLoading || hasError ? { disabled: true } : {}
+
   return (
     <>
       <UpdateBlockAndGas />
       <Card p={4}>
-        <Grid columns={1} gap={2}>
-          <Text ml={3} as="label" variant="legend">
-            <Trans>Mint using Zap</Trans>
-          </Text>
-          <ZapInput />
-          <ZapMaxInput />
-          <Box mt={2} />
-          <ZapOutput />
-          <TransactionFee />
-          <ZapButton />
-        </Grid>
+        <ZapInput {...inputProps} />
+        <LoadingButton
+          loading={isLoading}
+          variant="primary"
+          text={label}
+          loadingText={t`Loading zap`}
+          disabled={!enabled || isLoading || hasError}
+          mt={3}
+          sx={{ width: '100%' }}
+          onClick={onZap}
+        />
       </Card>
     </>
   )
 }
 
-
-export default () => {
-  if (useAtomValue(ui.zapWidgetEnabled) !== true) {
-    return null
-  }
-  return <Zap />
-}
+export default Zap

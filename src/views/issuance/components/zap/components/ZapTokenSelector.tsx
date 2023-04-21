@@ -8,7 +8,6 @@ import { transition } from 'theme'
 import { Box, Flex } from 'theme-ui'
 import { ui } from '../state/ui-atoms'
 
-
 export const ActionItem = styled(Flex)`
   transition: ${transition};
   padding: 16px;
@@ -43,7 +42,7 @@ const ZapTokenList = () => {
   )
 
   return (
-    <Box sx={{ maxHeight: 320, overflow: 'auto' }}>
+    <Box sx={{ maxHeight: 320, width: '420px', overflow: 'auto' }}>
       {entries.map(({ token, selectToken }) => (
         <ActionItem key={token.address.address} onClick={selectToken}>
           <TokenItem symbol={token.symbol} />
@@ -58,29 +57,9 @@ const ChevronDisplay = () => {
   return isVisible ? <ChevronUp size={18} /> : <ChevronDown size={18} />
 }
 
-const ZapTokenSelectorPopup: React.FC<{ children: React.ReactNode }> = (
-  props
-) => {
-  const [isVisible, setVisible] = useAtom(ui.input.tokenSelector.popup)
-  const dismiss = useCallback(() => setVisible(false), [setVisible])
-  const toggle = useCallback(() => setVisible((prev) => !prev), [setVisible])
-  return (
-    <Popup show={isVisible} onDismiss={dismiss} content={<ZapTokenList />}>
-      <Flex
-        sx={{
-          alignItems: 'center',
-          cursor: 'pointer',
-        }}
-        onClick={toggle}
-      >
-        {props.children}
-      </Flex>
-    </Popup>
-  )
-}
-
 const SelectedZapToken = () => {
   const zapToken = useAtomValue(ui.input.tokenSelector.selectedToken)
+
   return (
     <TokenItem
       sx={{
@@ -94,12 +73,37 @@ const SelectedZapToken = () => {
 }
 
 const ZapTokenSelector = () => {
+  const [isVisible, setVisible] = useAtom(ui.input.tokenSelector.popup)
+  const dismiss = useCallback(() => setVisible(false), [setVisible])
+  const toggle = useCallback(
+    () => setVisible((prev) => !prev),
+    [setVisible, isVisible]
+  )
+
   return (
-    <ZapTokenSelectorPopup>
-      <SelectedZapToken />
-      <Box mr="2" />
-      <ChevronDisplay />
-    </ZapTokenSelectorPopup>
+    <Popup
+      show={isVisible}
+      placement="bottom-start"
+      onDismiss={dismiss}
+      content={<ZapTokenList />}
+    >
+      <Box
+        variant="layout.verticalAlign"
+        sx={{
+          cursor: 'pointer',
+          border: '1px solid',
+          borderColor: 'border',
+          borderRadius: 20,
+        }}
+        p={3}
+        mb={4}
+        onClick={toggle}
+      >
+        <SelectedZapToken />
+        <Box ml="auto" />
+        <ChevronDisplay />
+      </Box>
+    </Popup>
   )
 }
 

@@ -10,8 +10,6 @@ export interface TransactionInputProps extends BoxProps {
   compact?: boolean
   amountAtom: any
   maxAmount: string
-  globalMaxAmount?: number
-  help?: string
   disabled?: boolean
   autoFocus?: boolean
   hasThrottle?: boolean
@@ -52,8 +50,6 @@ const TransactionInput = ({
   placeholder = '',
   amountAtom,
   maxAmount,
-  globalMaxAmount = 0,
-  help = '',
   disabled = false,
   compact = true,
   autoFocus = false,
@@ -63,22 +59,16 @@ const TransactionInput = ({
   const [amount, setAmount] = useAtom(amountAtom)
 
   const maxLabel = (
-    <MaxLabel
-      text={`Max: ${formatCurrency(+maxAmount, 5)}`}
-      handleClick={() => setAmount(maxAmount)}
-      clickable
-      compact
-    />
-  )
-
-  const throttleLabel = (
-    <MaxLabel
-      text={`Global Max: ${formatCurrency(+globalMaxAmount, 2)}`}
-      handleClick={() => {}}
-      help={help}
-      clickable={false}
-      compact
-    />
+    <Text
+      onClick={() => setAmount(maxAmount)}
+      as="a"
+      variant="a"
+      sx={{ display: 'block', fontSize: compact ? 1 : 2 }}
+      ml={'auto'}
+      mr={2}
+    >
+      Max: {formatCurrency(+maxAmount, 5)}
+    </Text>
   )
 
   return (
@@ -96,10 +86,10 @@ const TransactionInput = ({
         onChange={setAmount}
         autoFocus={autoFocus}
       />
-      {!compact ? (
-        <Flex mt={2}>{maxLabel}</Flex>
-      ) : (
-        !!globalMaxAmount && <Box mt={2}>{throttleLabel}</Box>
+      {!compact && (
+        <Flex mt={2} ml="auto">
+          {maxLabel}
+        </Flex>
       )}
     </Box>
   )
