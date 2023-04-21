@@ -22,45 +22,34 @@ const About = () => {
             value amounts to the RToken smart contracts.
           </Trans>
         </Text>
-      </Box>
-      <Box variant="layout.borderBox" mt={4} p={4}>
-        <Text variant="strong" mb={2}>
+
+        <Text variant="strong" mt={4} mb={2}>
           <Trans>Wrapping Aave aTokens</Trans>
         </Text>
         <Text as="p" variant="legend">
-          <Trans>
-            aTokens from Aave don’t operate exactly the same technically as some
-            other collateral tokens. In order for the protocol to predictably
-            know how to handle them, they need to be wrapped into an additional
-            “wrapper” contract so that the collateral can be handled and
-            monitored appropriately. When wrapped, the aToken collateral is
-            exactly the same, but it just has a new interface that the protocol
-            can use to monitor price and appreciation. <br />
-            More information in the
-          </Trans>{' '}
-          <Link
-            sx={{ textDecoration: 'underline' }}
-            href="https://reserve.org/protocol/rtokens/#non-compatible-erc20-assets"
-            target="_blank"
-          >
-            <Trans>Docs</Trans>
-          </Link>
+          aTokens from Aave differ technically from other collateral tokens. To
+          ensure proper handling, they must be wrapped in a contract for
+          effective monitoring. Once wrapped, aToken collateral remains the same
+          but has a new interface for price and appreciation tracking.
         </Text>
         <Flex mt={3}>
-          <SmallButton mr={3} onClick={() => setWrapping(1)}>
+          <SmallButton variant="muted" mr={3} onClick={() => setWrapping(1)}>
             <Trans>Wrap tokens</Trans>
           </SmallButton>
-          <SmallButton onClick={() => setWrapping(2)}>
+          <SmallButton variant="muted" onClick={() => setWrapping(2)}>
             <Trans>Unwrap tokens</Trans>
           </SmallButton>
         </Flex>
-      </Box>
-      <Box variant="layout.borderBox" mt={4} p={4}>
-        <Text variant="strong" mb={2}>
+
+        <Text variant="strong" mb={2} mt={4}>
           <Trans>Wrapping Convex LP Tokens</Trans>
         </Text>
         <Flex mt={3}>
-          <SmallButton mr={3} onClick={() => setIsConvexWrapping(true)}>
+          <SmallButton
+            variant="muted"
+            mr={3}
+            onClick={() => setIsConvexWrapping(true)}
+          >
             <Trans>Wrap/unwrap tokens</Trans>
           </SmallButton>
         </Flex>
