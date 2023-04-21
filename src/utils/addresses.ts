@@ -129,7 +129,7 @@ export const CRV_ADDRESS: AddressMap = {
 }
 
 export const ETHPLUS_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0x2ADb7A8216fB13cDb7a60cBed2322a68b59f4F05',
+  [ChainId.Mainnet]: '0xE72B141DF173b999AE7c1aDcbF60Cc9833Ce56a8',
 }
 
 // Fixed tokens used in the rtoken selector screen and dashboard
