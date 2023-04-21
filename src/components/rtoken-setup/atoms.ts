@@ -75,12 +75,7 @@ const getCollateralByTarget = (collaterals: CollateralPlugin[]) => {
   return collaterals.reduce((acc, collateral) => {
     acc[collateral.targetUnit] = [
       ...(acc[collateral.targetUnit] ?? []),
-      {
-        symbol: collateral.symbol,
-        address: collateral?.depositContract || collateral.collateralAddress,
-        collateralAddress: collateral.address,
-        targetUnit: collateral.targetUnit,
-      },
+      collateral,
     ]
 
     return acc
