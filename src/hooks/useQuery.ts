@@ -10,6 +10,6 @@ const useQuery = (
   query: RequestDocument | null = null,
   variables: any = {},
   config: any = {}
-) => useSWR(query ? [query, variables] : null, fetcher, config)
+) => useSWR<any>(query ? [query, variables] : null, fetcher, config)
 
 export default useQuery

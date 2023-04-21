@@ -1,16 +1,17 @@
 import { i18n } from '@lingui/core'
+// import { plural } from '@lingui/macro'
 import { I18nProvider } from '@lingui/react'
 import { atom, useAtomValue } from 'jotai'
 import { en, es, PluralCategory } from 'make-plural/plurals'
 import { ReactNode, useCallback, useEffect } from 'react'
 
-const SUPPORTED_LOCALES = [
-  // order as they appear in the language dropdown
-  'en',
-  'es',
-]
+// const SUPPORTED_LOCALES = [
+//   // order as they appear in the language dropdown
+//   'en',
+//   'es',
+// ]
 
-type SupportedLocale = typeof SUPPORTED_LOCALES[number] | 'pseudo'
+type SupportedLocale = 'en' | 'es' | 'pseudo'
 type LocalePlural = {
   [key in SupportedLocale]: (
     n: number | string,
@@ -26,8 +27,8 @@ const plurals: LocalePlural = {
   pseudo: en,
 }
 
-export async function dynamicActivate(locale: SupportedLocale) {
-  i18n.loadLocaleData(locale, { plurals: () => plurals[locale] })
+export async function dynamicActivate(locale: 'en' | 'es' | 'pseudo') {
+  i18n.loadLocaleData(locale, { plurals: (() => plurals[locale]) as any })
   try {
     const catalog = await import(`locales/${locale}/messages.js`)
     // Bundlers will either export it as default or as a named export named default.
@@ -59,7 +60,7 @@ export function Provider({
 
   if (i18n.locale === undefined && locale === DEFAULT_LOCALE) {
     i18n.loadLocaleData(DEFAULT_LOCALE, {
-      plurals: () => plurals[DEFAULT_LOCALE],
+      plurals: () => plurals[DEFAULT_LOCALE] as any,
     })
     i18n.load(DEFAULT_LOCALE, {})
     i18n.activate(DEFAULT_LOCALE)

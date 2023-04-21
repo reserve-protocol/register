@@ -75,6 +75,7 @@ export const ROUTES = Object.freeze({
   TOKENS: '/tokens',
   GOVERNANCE: '/governance',
   GOVERNANCE_PROPOSAL: '/governance/proposal',
+  ZAP: '/zap'
 })
 
 export const DEPLOYMENT_ROUTES = Object.freeze({})

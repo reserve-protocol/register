@@ -3,11 +3,7 @@ import TransactionInput, {
   TransactionInputProps,
 } from 'components/transaction-input'
 import { atom, useAtomValue } from 'jotai'
-import {
-  maxRedemptionAtom,
-  rTokenBalanceAtom,
-  rTokenStatusAtom,
-} from 'state/atoms'
+import { rTokenBalanceAtom, rTokenStatusAtom } from 'state/atoms'
 import { redeemAmountAtom } from 'views/issuance/atoms'
 
 const isTokenFrozenAtom = atom((get) => {
@@ -19,7 +15,6 @@ const isTokenFrozenAtom = atom((get) => {
 const RedeemInput = (props: Partial<TransactionInputProps>) => {
   const max = useAtomValue(rTokenBalanceAtom)
   const isTokenFrozen = useAtomValue(isTokenFrozenAtom)
-  const redemptionAvailable = useAtomValue(maxRedemptionAtom)
 
   return (
     <TransactionInput
@@ -27,8 +22,6 @@ const RedeemInput = (props: Partial<TransactionInputProps>) => {
       placeholder={t`Redeem amount`}
       amountAtom={redeemAmountAtom}
       maxAmount={max.balance}
-      help={t`Each RToken can have a redemption throttle to limit the amount of extractable value in the case of an attack. After a large redemption, the redemption limit recharges linearly to the defined maximum at a defined speed of recharge.`}
-      globalMaxAmount={redemptionAvailable}
       disabled={isTokenFrozen}
       {...props}
     />

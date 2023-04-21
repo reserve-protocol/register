@@ -5,20 +5,18 @@ import { ethers } from 'ethers'
 import { gql } from 'graphql-request'
 import useBlockNumber from 'hooks/useBlockNumber'
 import useQuery from 'hooks/useQuery'
-import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useCallback, useEffect, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { ReserveToken } from 'types'
 import { calculateApy, isAddress } from 'utils'
 import {
   accountRoleAtom,
-  blockTimestampAtom,
-  reserveTokensAtom,
-  rTokenMainAtom,
+  blockTimestampAtom, rTokenMainAtom,
   rTokenYieldAtom,
+  searchParamAtom,
   selectedRTokenAtom,
-  walletAtom,
+  walletAtom
 } from './atoms'
 import { tokenMetricsAtom } from './metrics/atoms'
 import { promiseMulticall } from './web3/lib/multicall'
@@ -59,8 +57,7 @@ const ReserveTokenUpdater = () => {
   const updateApy = useSetAtom(rTokenYieldAtom)
   const resetMetrics = useResetAtom(tokenMetricsAtom)
   const updateAccountRole = useSetAtom(accountRoleAtom)
-  const [searchParams] = useSearchParams()
-  const currentAddress = searchParams.get('token')
+  const currentAddress = useAtomValue(searchParamAtom('token'))
   const account = useAtomValue(walletAtom)
   const { provider } = useWeb3React()
   const timestamp = useAtomValue(blockTimestampAtom)

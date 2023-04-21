@@ -4,12 +4,24 @@ import { CHAIN_ID } from 'utils/chains'
  * At some point this file is expected to be divided into multiple files per atom type
  */
 import { BigNumber } from '@ethersproject/bignumber'
+import {
+  BackupBasket,
+  Basket,
+  RevenueSplit,
+} from 'components/rtoken-setup/atoms'
+import { ethers, providers, utils } from 'ethers'
+import { formatEther, formatUnits } from 'ethers/lib/utils'
+import { getTokens } from 'hooks/useTokensBalance'
 import { atom } from 'jotai'
-import { atomWithReset, atomWithStorage, createJSONStorage } from 'jotai/utils'
+import {
+  atomFamily,
+  atomWithReset,
+  atomWithStorage,
+  createJSONStorage,
+} from 'jotai/utils'
 import {
   AccountPosition,
   AccountToken,
-  BalanceMap,
   MulticallState,
   RawCall,
   ReserveToken,
@@ -17,13 +29,17 @@ import {
   TransactionMap,
   TransactionState,
 } from 'types'
-import { COLLATERAL_STATUS, RSR, TRANSACTION_STATUS } from 'utils/constants'
+import { RSR, TRANSACTION_STATUS } from 'utils/constants'
 import { WalletTransaction } from './../types/index'
-import {
-  BackupBasket,
-  Basket,
-  RevenueSplit,
-} from 'components/rtoken-setup/atoms'
+import { tokenBalancesStore } from './TokenBalancesUpdater'
+
+export const searchParamsAtom = atom(
+  new URLSearchParams(window.location.search)
+)
+export const searchParamAtom = atomFamily(
+  (key: string) => atom((get) => get(searchParamsAtom).get(key)),
+  (l, r) => l === r
+)
 
 /**
  * ######################
@@ -191,6 +207,10 @@ export const accountRoleAtom = atom({
   longFreezer: false,
 })
 
+export const currentProvierAtom = atom(
+  undefined as undefined | providers.Web3Provider
+)
+
 /**
  * #########################
  * Chain state related atoms
@@ -224,12 +244,16 @@ export const collateralYieldAtom = atom<{ [x: string]: number }>({
   fusdt: 3.74,
   wsteth: 5,
   reth: 4.12,
+  wcUSDCv3: 2.1,
   'stkcvxeusd3crv-f': 17.06,
 })
 
 export const ethPriceAtom = atom(1)
 export const rsrPriceAtom = atom(0)
-export const gasPriceAtom = atom(0)
+export const gasPriceAtomBn = atom(ethers.constants.Zero)
+export const gasPriceAtom = atom((get) =>
+  Number(formatEther(get(gasPriceAtomBn)))
+)
 export const rTokenPriceAtom = atom(0)
 export const rsrExchangeRateAtom = atom(1)
 export const maxIssuanceAtom = atom(0)
@@ -264,9 +288,10 @@ export const estimatedApyAtom = atom((get) => {
   }
 
   apys.holders = rTokenYield * (+(revenueSplit.holders || 0) / 100)
-  apys.stakers =
-    ((rTokenYield * (supply * rTokenPrice)) / (staked * rsrPrice)) *
-    ((+revenueSplit.stakers || 0) / 100)
+  apys.stakers = staked
+    ? ((rTokenYield * (supply * rTokenPrice)) / (staked * rsrPrice)) *
+      ((+revenueSplit.stakers || 0) / 100)
+    : (rTokenYield * (+revenueSplit.stakers || 0)) / 100
 
   return apys
 })
@@ -298,7 +323,35 @@ const defaultBalance = {
 }
 
 // Tracks rToken/collaterals/stRSR/RSR balances for a connected account
-export const balancesAtom = atom<BalanceMap>({})
+export const balancesAtom = atom((get) => {
+  const rToken = get(rTokenAtom)
+  if (rToken == null) {
+    return {}
+  }
+  const tokens = getTokens(rToken)
+  const balances = tokens.map((t) =>
+    get(tokenBalancesStore.getBalanceAtom(utils.getAddress(t[0])))
+  )
+
+  return Object.fromEntries(
+    balances
+      .map((atomValue, i) => ({
+        atomValue,
+        decimals: tokens[i][1],
+      }))
+      .map((entry) => [
+        entry.atomValue.address,
+        {
+          value: entry.atomValue.value ?? ethers.constants.Zero,
+          decimals: entry.decimals,
+          balance: formatUnits(
+            entry.atomValue.value ?? ethers.constants.Zero,
+            entry.decimals
+          ),
+        },
+      ])
+  )
+})
 
 // Get balance for current rToken for the selected account
 export const rTokenBalanceAtom = atom((get) => {
