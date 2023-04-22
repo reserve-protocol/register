@@ -32,7 +32,7 @@ import { getContract } from 'utils'
 import { FURNACE_ADDRESS, ST_RSR_ADDRESS } from 'utils/addresses'
 
 const shareToPercent = (shares: number): string => {
-  return Math.floor((shares * 100) / 10000).toString()
+  return ((shares * 100) / 10000).toString()
 }
 
 /**
