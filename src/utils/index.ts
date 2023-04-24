@@ -3,9 +3,10 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { t } from '@lingui/macro'
 import { Contract } from 'ethers'
-import { parseEther } from 'ethers/lib/utils'
+import { parseEther, parseUnits } from 'ethers/lib/utils'
 import humanizeDuration from 'humanize-duration'
 import { BigNumberMap, TransactionState } from 'types'
+import { BI_ZERO } from './constants'
 
 export const decimalPattern = /^[0-9]*[.]?[0-9]*$/i
 export const numberPattern = /^\d+$/
@@ -19,6 +20,9 @@ export function isAddress(value: string): string | false {
     return false
   }
 }
+
+export const isAmountValid = (value: BigNumber, max: BigNumber) =>
+  value.gt(BI_ZERO) && value.lte(max)
 
 // returns the same contract call with an increased gas limit (10% increase)
 export const getTransactionWithGasLimit = (
@@ -149,17 +153,17 @@ export function addressEqual(
 }
 
 // Prevents more than 18 decimals
-export function safeParseEther(value: string): BigNumber {
+export function safeParseEther(value: string, decimals = 18): BigNumber {
   let safeValue = ''
 
   if (value[0] === '.') {
-    safeValue = `0.${value.substring(1, 19) || 0}`
+    safeValue = `0.${value.substring(1, decimals + 1) || 0}`
   } else {
     const split = value.split('.')
-    safeValue = `${split[0]}.${split[1]?.substring(0, 18) ?? '0'}`
+    safeValue = `${split[0]}.${split[1]?.substring(0, decimals) ?? '0'}`
   }
 
-  return parseEther(safeValue)
+  return parseUnits(safeValue, decimals)
 }
 
 export function formatCurrency(value: number, decimals = 2): string {

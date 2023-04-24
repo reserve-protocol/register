@@ -53,7 +53,7 @@ const WrapCollateralModal = ({
     aavePlugins.reduce((prev, curr) => {
       prev[curr.address] = {
         value: '',
-        max: 0,
+        max: '0',
         isValid: false,
       }
 
@@ -185,14 +185,14 @@ const WrapCollateralModal = ({
 
         let index = 0
         for (const plugin of aavePlugins) {
-          const max = +formatUnits(
+          const max = formatUnits(
             results[index],
             fromUnderlying ? plugin.decimals : plugin.collateralDecimals || 18
           )
           newState[plugin.address] = {
             ...formState[plugin.address],
             max,
-            isValid: +formState[plugin.address].value <= max,
+            isValid: +formState[plugin.address].value <= +max,
           }
           index++
         }
@@ -214,7 +214,7 @@ const WrapCollateralModal = ({
       [tokenAddress]: {
         ...formState[tokenAddress],
         value,
-        isValid: +value <= formState[tokenAddress].max,
+        isValid: +value <= +formState[tokenAddress].max,
       },
     })
   }
@@ -347,7 +347,7 @@ const WrapCollateralModal = ({
               ml="auto"
               mr={2}
             >
-              Max: {formatCurrency(formState[plugin.address].max)}
+              Max: {formatCurrency(+formState[plugin.address].max)}
             </Text>
           </Box>
 
