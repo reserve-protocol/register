@@ -3,8 +3,10 @@ import { useWeb3React } from '@web3-react/core'
 import { ERC20Interface } from 'abis'
 import { Modal, NumericalInput } from 'components'
 import { LoadingButton } from 'components/button'
+import ApprovalTransactions from 'components/transaction-modal/ApprovalTransactions'
 import TransactionError from 'components/transaction-modal/TransactionError'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
+import useTokensAllowance from 'hooks/useTokensAllowance'
 import { useSetAtom } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { ArrowRight, CheckCircle, ExternalLink } from 'react-feather'
@@ -12,8 +14,8 @@ import { addTransactionAtom } from 'state/atoms'
 import { useTransactions } from 'state/web3/hooks/useTransactions'
 import { promiseMulticall } from 'state/web3/lib/multicall'
 import { Box, Divider, Flex, Link, Text } from 'theme-ui'
-import { TransactionState } from 'types'
-import { formatCurrency } from 'utils'
+import { BigNumberMap, TransactionState } from 'types'
+import { formatCurrency, getTransactionWithGasLimit, hasAllowance } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { aavePlugins } from 'utils/plugins'
@@ -49,7 +51,7 @@ const UnwrapCollateralModal = ({
     aavePlugins.reduce((prev, curr) => {
       prev[curr.address] = {
         value: '',
-        max: 0,
+        max: '0',
         isValid: false,
       }
 
@@ -108,11 +110,11 @@ const UnwrapCollateralModal = ({
 
         let index = 0
         for (const plugin of aavePlugins) {
-          const max = +formatUnits(results[index], plugin.decimals)
+          const max = formatUnits(results[index], plugin.decimals)
           newState[plugin.address] = {
             ...formState[plugin.address],
             max,
-            isValid: +formState[plugin.address].value <= max,
+            isValid: +formState[plugin.address].value <= +max,
           }
           index++
         }
@@ -134,7 +136,7 @@ const UnwrapCollateralModal = ({
       [tokenAddress]: {
         ...formState[tokenAddress],
         value,
-        isValid: +value <= formState[tokenAddress].max,
+        isValid: +value <= +formState[tokenAddress].max,
       },
     })
   }
@@ -249,7 +251,7 @@ const UnwrapCollateralModal = ({
               ml="auto"
               mr={2}
             >
-              Max: {formatCurrency(formState[plugin.address].max)}
+              Max: {formatCurrency(+formState[plugin.address].max)}
             </Text>
           </Box>
 

@@ -5,7 +5,6 @@ import { Modal, NumericalInput } from 'components'
 import { LoadingButton } from 'components/button'
 import ApprovalTransactions from 'components/transaction-modal/ApprovalTransactions'
 import TransactionError from 'components/transaction-modal/TransactionError'
-import { ethers } from 'ethers'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import useTokensAllowance from 'hooks/useTokensAllowance'
 import { useSetAtom } from 'jotai'
@@ -64,7 +63,7 @@ const ConvexCollateralModal = ({
     convexPlugins.reduce((prev, curr) => {
       prev[curr.address] = {
         value: '',
-        max: 0,
+        max: '0',
         isValid: false,
       }
 
@@ -198,7 +197,7 @@ const ConvexCollateralModal = ({
 
         let index = 0
         for (const plugin of convexPlugins) {
-          const max = +formatUnits(
+          const max = formatUnits(
             results[index],
             plugin.collateralDecimals || 18
           )
@@ -206,7 +205,7 @@ const ConvexCollateralModal = ({
             ...formState[plugin.address],
             max,
             // max: 100,
-            isValid: +formState[plugin.address].value <= max,
+            isValid: +formState[plugin.address].value <= +max,
           }
           index++
         }
@@ -228,7 +227,7 @@ const ConvexCollateralModal = ({
       [tokenAddress]: {
         ...formState[tokenAddress],
         value,
-        isValid: +value <= formState[tokenAddress].max,
+        isValid: +value <= +formState[tokenAddress].max,
       },
     })
   }
@@ -356,9 +355,7 @@ const ConvexCollateralModal = ({
             </Text>
             <Text
               onClick={() =>
-                handleChange(plugin.address)(
-                  formState[plugin.address].max.toString()
-                )
+                handleChange(plugin.address)(formState[plugin.address].max)
               }
               as="a"
               variant="a"
@@ -366,7 +363,7 @@ const ConvexCollateralModal = ({
               ml="auto"
               mr={2}
             >
-              Max: {formatCurrency(formState[plugin.address].max)}
+              Max: {formatCurrency(+formState[plugin.address].max)}
             </Text>
           </Box>
 
