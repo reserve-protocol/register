@@ -1,4 +1,4 @@
-import { configuration, Universe } from '@reserve-protocol/token-zapper'
+import { base, configuration, Universe } from '@reserve-protocol/token-zapper'
 
 import { atom } from 'jotai'
 import { loadable } from 'jotai/utils'
@@ -23,6 +23,9 @@ const ONE_INCH_PROXIES = [
   'https://square-morning-0921.mig2151.workers.dev/',
 ]
 
+// Here you can define rtokens via the register app.
+const rTokenDeploymentAddresses: string[] = []
+
 export const zapperState = loadable(
   atom(async (get) => {
     const provider = get(currentProvierAtom)
@@ -38,6 +41,12 @@ export const zapperState = loadable(
     if (ONE_INCH_PROXIES.length !== 0) {
       universe.dexAggregators.push(
         createProxiedOneInchAggregator(universe, ONE_INCH_PROXIES)
+      )
+    }
+
+    for (const deploymentMainContractAddress of rTokenDeploymentAddresses) {
+      await universe.defineRToken(
+        base.Address.from(deploymentMainContractAddress)
       )
     }
 
