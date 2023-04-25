@@ -79,7 +79,7 @@ export const CRV_ADDRESS: AddressMap = {
  * ERC20 token addresses
  */
 export const RSR_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0x320623b8e4ff03373931769a31fc52a4e78b5d70',
+  [ChainId.Mainnet]: '0x320623b8E4fF03373931769A31Fc52A4E78B5d70',
   [ChainId.Goerli]: '0xB58b5530332D2E9e15bfd1f2525E6fD84e830307',
   [ChainId.Hardhat]: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
 }
