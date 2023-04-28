@@ -32,9 +32,19 @@ export const zapperState = loadable(
     if (provider == null) {
       return null
     }
+    
     const universe = await Universe.createWithConfig(
       provider,
-      configuration.eth.default,
+      {
+        config: new configuration.StaticConfig(
+          configuration.eth.default.config.nativeToken,
+          configuration.eth.default.config.addresses,
+          {
+            enable: true,
+          }
+        ),
+        initialize: configuration.eth.default.initialize,
+      },
       await provider.getNetwork()
     )
 
