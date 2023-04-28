@@ -136,13 +136,12 @@ export const zapQuotePromise = loadable(
     if (input.inputQuantity.amount === 0n) {
       return null
     }
-    const result = await input.zapSearcher.findSingleInputToRTokenZap(
+    return await input.zapSearcher.findSingleInputToRTokenZap(
       input.inputQuantity,
       input.rToken,
       input.signer,
       get(tradeSlippage)
     )
-    return result
   })
 )
 
