@@ -3,7 +3,7 @@ import { Button as ThemeButton, ButtonProps, Spinner, Text } from 'theme-ui'
 
 const Button = (props: ButtonProps) => <ThemeButton {...props} />
 
-interface LoadingButtonProps extends ButtonProps {
+export interface LoadingButtonProps extends ButtonProps {
   loading: boolean
   loadingText?: string
   text: string

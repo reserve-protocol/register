@@ -1,5 +1,4 @@
 import { Trans } from '@lingui/macro'
-import { Token } from '@reserve-protocol/token-zapper/types/entities'
 import TokenBalance from 'components/token-balance'
 import { formatUnits } from 'ethers/lib/utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'

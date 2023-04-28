@@ -34,7 +34,7 @@ import {
   zapTransactionGasEstimateUnits,
 } from './atoms'
 import { formatQty, FOUR_DIGITS } from './formatTokenQuantity'
-import { resolvedZapState, zappableTokens } from './zapper'
+import { resolvedZapState, zappableTokens, zapperState } from './zapper'
 
 /**
  * This file contains atoms that are used to control the UI state of the Zap component.
@@ -236,6 +236,11 @@ export const zapAvailableAtom = atom((get) => {
 
 export const ui = {
   zapWidgetEnabled: atom((get) => get(zapEnabledAtom) && get(zapAvailableAtom)),
+  zapState: atom((get) => {
+    const zapState = get(zapperState)
+
+    return [zapState.state === 'loading', zapState.state === 'hasError']
+  }),
   input: {
     tokenSelector: {
       popup: atom<boolean, SetStateAction<boolean>>(
@@ -309,7 +314,7 @@ export const ui = {
       } else if (flowState === 'send_tx') {
         await sendTx(get, set, data)
       } else if (flowState === 'sign_permit') {
-        // await signAndSendTx(get, set, data)
+        await signAndSendTx(get, set, data)
       } else {
         console.log('Invalid state', flowState)
       }
