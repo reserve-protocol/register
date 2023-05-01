@@ -1,3 +1,4 @@
+import { t, Trans } from '@lingui/macro'
 import { LoadingButton } from 'components/button'
 import Modal from 'components/modal'
 import useTransactionCost from 'hooks/useTransactionCost'
@@ -5,17 +6,15 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { addTransactionAtom, allowanceAtom } from 'state/atoms'
 import { useTransaction } from 'state/web3/hooks/useTransactions'
-import { Divider, Flex, Text, Link, Box, Spinner } from 'theme-ui'
+import { Box, Divider, Spinner, Text } from 'theme-ui'
 import { BigNumberMap, TransactionState } from 'types'
 import { formatCurrency, hasAllowance } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
-import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { v4 as uuid } from 'uuid'
 import ApprovalTransactions from './ApprovalTransactions'
+import EstimatedGasInfo from './EstimatedGasInfo'
+import TransactionConfirmedModal from './TransactionConfirmedModal'
 import TransactionError from './TransactionError'
-import TransactionSignedIcon from 'components/icons/SignedTransactionIcon'
-import { t, Trans } from '@lingui/macro'
-import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 
 export interface ITransactionModal {
   title: string
@@ -32,42 +31,6 @@ export interface ITransactionModal {
   onChange?(signing: boolean): void
   isValid: boolean
 }
-
-const modalStyle = { maxWidth: '420px' }
-
-const TransactionConfirmed = ({
-  hash,
-  onClose,
-}: {
-  hash: string
-  onClose(): void
-}) => (
-  <Modal onClose={onClose} style={modalStyle}>
-    <Flex
-      p={4}
-      sx={{
-        alignItems: 'center',
-        flexDirection: 'column',
-        justifyContent: 'center',
-      }}
-    >
-      <TransactionSignedIcon />
-      <br />
-      <Text variant="title">
-        <Trans>Transaction signed!</Trans>
-      </Text>
-      <br />
-      <Link
-        href={getExplorerLink(hash, ExplorerDataType.TRANSACTION)}
-        target="_blank"
-        sx={{ fontSize: 1, alignItems: 'center', display: 'flex' }}
-      >
-        <Trans>View on etherscan </Trans>
-        <ExternalArrowIcon />
-      </Link>
-    </Flex>
-  </Modal>
-)
 
 const TransactionModal = ({
   title,
@@ -139,11 +102,13 @@ const TransactionModal = ({
   useEffect(fetchApprovals, [allowances, requiredAllowance])
 
   if (signed) {
-    return <TransactionConfirmed hash={txState.hash ?? ''} onClose={onClose} />
+    return (
+      <TransactionConfirmedModal hash={txState.hash ?? ''} onClose={onClose} />
+    )
   }
 
   return (
-    <Modal title={title} onClose={onClose} style={modalStyle}>
+    <Modal title={title} onClose={onClose} style={{ maxWidth: '420px' }}>
       {txState?.status === TRANSACTION_STATUS.REJECTED && (
         <TransactionError
           title={t`Transaction failed`}
@@ -176,18 +141,7 @@ const TransactionModal = ({
         sx={{ width: '100%' }}
         mt={3}
       />
-      {!!canSubmit && (
-        <Box mt={3} sx={{ fontSize: 1, textAlign: 'center' }}>
-          <Text mr={1}>
-            <Trans>Estimated gas cost:</Trans>
-          </Text>
-          {fee ? (
-            <Text sx={{ fontWeight: 500 }}>${formatCurrency(fee)}</Text>
-          ) : (
-            <Spinner color="black" size={12} />
-          )}
-        </Box>
-      )}
+      {!!canSubmit && <EstimatedGasInfo mt={3} fee={fee} />}
     </Modal>
   )
 }

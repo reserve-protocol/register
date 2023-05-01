@@ -4,19 +4,20 @@ import { useAtom, useAtomValue } from 'jotai'
 import { ui } from '../state/ui-atoms'
 
 const ZapButton = (props: Partial<LoadingButtonProps>) => {
-  const [{ enabled, label }, onZap] = useAtom(ui.button)
-  const [loading, hasError] = useAtomValue(ui.zapState)
+  const [{ loading, enabled, label, loadingLabel }, onClick] = useAtom(
+    ui.button
+  )
 
   return (
     <LoadingButton
       loading={loading}
-      variant="primary"
+      disabled={!enabled}
       text={label}
-      loadingText={t`Loading zap`}
-      disabled={!enabled || loading || hasError}
+      variant="primary"
+      loadingText={loadingLabel}
       mt={3}
       sx={{ width: '100%' }}
-      onClick={onZap}
+      onClick={onClick}
       {...props}
     />
   )
