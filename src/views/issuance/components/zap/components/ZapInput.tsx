@@ -22,6 +22,7 @@ const ZapInput = (props: Partial<TransactionInputProps>) => {
   const isDisabled = useAtomValue(isRTokenDisabledAtom)
   const zapSymbol = token?.symbol ?? 'ETH'
   const maxAmountString = useAtomValue(ui.input.maxAmount)
+  const [loading, hasError] = useAtomValue(ui.zapState)
 
   return (
     <>
@@ -31,7 +32,7 @@ const ZapInput = (props: Partial<TransactionInputProps>) => {
           amountAtom={zapInputString}
           title={t`Zap mint`}
           maxAmount={maxAmountString || '0'}
-          disabled={isDisabled}
+          disabled={isDisabled || loading || hasError}
           {...props}
         />
         <Text
