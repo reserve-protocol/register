@@ -12,7 +12,7 @@ export const ST_RSR_ADDRESS = '0x0000000000000000000000000000000000000002'
 export const DEPLOYER_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x5c46b718Cd79F2BBA6869A3BeC13401b9a4B69bB',
   [ChainId.Goerli]: '0x0F53Aba2a7354C86B64dcaEe0ab9BF852846bAa5',
-  [ChainId.Hardhat]: '0x139e1D41943ee15dDe4DF876f9d0E7F85e26660A',
+  [ChainId.Hardhat]: '0x5c46b718Cd79F2BBA6869A3BeC13401b9a4B69bB',
 }
 
 export const FACADE_ADDRESS: AddressMap = {
@@ -24,13 +24,13 @@ export const FACADE_ADDRESS: AddressMap = {
 export const FACADE_ACT_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x933c5DBdA80f03C102C560e9ed0c29812998fA78',
   [ChainId.Goerli]: '0xafd16aFdE22D42038223A6FfDF00ee49c8fDa985',
-  [ChainId.Hardhat]: '0x6FE56A3EEa3fEc93601a94D26bEa1876bD48192F',
+  [ChainId.Hardhat]: '0x933c5DBdA80f03C102C560e9ed0c29812998fA78',
 }
 
 export const FACADE_WRITE_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x1656D8aAd7Ee892582B9D5c2E9992d9f94ff3629',
   [ChainId.Goerli]: '0x97C75046CE7Ea5253d20A35B3138699865E8813f',
-  [ChainId.Hardhat]: '0xF7bd1F8FdE9fBdc8436D45594e792e014c5ac966',
+  [ChainId.Hardhat]: '0x1656D8aAd7Ee892582B9D5c2E9992d9f94ff3629',
 }
 
 /**
@@ -81,7 +81,7 @@ export const CRV_ADDRESS: AddressMap = {
 export const RSR_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x320623b8E4fF03373931769A31Fc52A4E78B5d70',
   [ChainId.Goerli]: '0xB58b5530332D2E9e15bfd1f2525E6fD84e830307',
-  [ChainId.Hardhat]: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+  [ChainId.Hardhat]: '0x320623b8e4ff03373931769a31fc52a4e78b5d70',
 }
 
 export const USDC_ADDRESS: AddressMap = {

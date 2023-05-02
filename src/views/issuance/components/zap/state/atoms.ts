@@ -69,6 +69,9 @@ const tradeSlippage = atom(0)
 // and are waiting for the user to sign off on it and for it to commit
 export const zapIsPending = atom(false)
 
+// Tx hash for pending zap
+export const zapTxHash = atom('')
+
 // We sent the approval transaction,
 // and are waiting for the user to sign off on it and for it to commit
 export const approvalPending = atom(false)
@@ -136,13 +139,12 @@ export const zapQuotePromise = loadable(
     if (input.inputQuantity.amount === 0n) {
       return null
     }
-    const result = await input.zapSearcher.findSingleInputToRTokenZap(
+    return await input.zapSearcher.findSingleInputToRTokenZap(
       input.inputQuantity,
       input.rToken,
       input.signer,
       get(tradeSlippage)
     )
-    return result
   })
 )
 
