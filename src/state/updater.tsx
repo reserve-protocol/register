@@ -3,7 +3,7 @@ import { formatEther } from '@ethersproject/units'
 import { useWeb3React } from '@web3-react/core'
 import { OracleInterface, StRSRInterface } from 'abis'
 import { Facade } from 'abis/types'
-import { formatUnits } from 'ethers/lib/utils'
+import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import useBlockNumber from 'hooks/useBlockNumber'
 import { useContractCall } from 'hooks/useCall'
 import { useFacadeContract } from 'hooks/useContract'
@@ -153,19 +153,27 @@ const PricesUpdater = () => {
     try {
       const callParams = {
         abi: OracleInterface,
-        address: ORACLE_ADDRESS[CHAIN_ID],
-        method: 'getPriceUsdc',
+        method: 'latestRoundData',
       }
 
       const [rsrPrice, wethPrice] = await promiseMulticall(
         [
-          { ...callParams, args: [RSR_ADDRESS[CHAIN_ID]] },
-          { ...callParams, args: [WETH_ADDRESS[CHAIN_ID]] },
+          {
+            ...callParams,
+            // chainlink aggregator
+            address: '0x759bbc1be8f90ee6457c44abc7d443842a976d02',
+            args: [],
+          },
+          {
+            ...callParams,
+            address: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419',
+            args: [],
+          },
         ],
         provider
       )
-      setRSRPrice(+formatUnits(rsrPrice, 6))
-      setEthPrice(+formatUnits(wethPrice, 6))
+      setRSRPrice(+formatUnits(rsrPrice.answer, 8))
+      setEthPrice(+formatUnits(wethPrice.answer, 8))
     } catch (e) {
       console.error('Error fetching token prices', e)
     }
