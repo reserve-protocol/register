@@ -19,7 +19,11 @@ import Tokens from 'views/tokens/Tokens'
 import Layout from './components/layout'
 import LanguageProvider from './i18n'
 import { theme } from './theme'
-import Issuance from './views/issuance'
+import { ErrorBoundary } from 'react-error-boundary'
+// import Issuance from './views/issuance'
+import React, { Suspense } from 'react'
+
+const Issuance = React.lazy(() => import('./views/issuance'))
 
 /**
  * App Entry point - Handles views routing
@@ -38,7 +42,16 @@ const App = () => (
             <Routes>
               <Route path={ROUTES.HOME} element={<Home />} />
               <Route path={ROUTES.OVERVIEW} element={<Overview />} />
-              <Route path={ROUTES.ISSUANCE} element={<Issuance />} />
+              <Route
+                path={ROUTES.ISSUANCE}
+                element={
+                  <ErrorBoundary fallback={<div>Error loading</div>}>
+                    <Suspense>
+                      <Issuance />
+                    </Suspense>
+                  </ErrorBoundary>
+                }
+              />
               <Route path={ROUTES.STAKING} element={<Staking />} />
               <Route path={ROUTES.AUCTIONS} element={<Auctions />} />
               <Route path={ROUTES.DEPLOY} element={<Deploy />} />
