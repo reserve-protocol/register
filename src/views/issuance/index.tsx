@@ -60,9 +60,9 @@ const Issuance = () => {
     <>
       {isZapEnabled && <ZapWarning />}
       <Container pb={4}>
+        <ZapOverview />
         <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[3, 5]}>
           <Box>
-            <ZapOverview />
             <Grid columns={[1, 2]} gap={4} mb={4}>
               {isZapEnabled ? <Zap /> : <Issue />}
               <Redeem />

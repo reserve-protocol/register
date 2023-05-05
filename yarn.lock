@@ -3493,15 +3493,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@reserve-protocol/token-zapper@npm:1.5.2":
-  version: 1.5.2
-  resolution: "@reserve-protocol/token-zapper@npm:1.5.2"
+"@reserve-protocol/token-zapper@npm:1.5.3":
+  version: 1.5.3
+  resolution: "@reserve-protocol/token-zapper@npm:1.5.3"
   dependencies:
     "@curvefi/api": 2.31.0
     "@nomiclabs/hardhat-ethers": ^2.2.2
     "@uniswap/permit2-sdk": ^1.2.0
     ethers: ^5.7.2
-  checksum: c6c19d40b572cd16b2dd5aa6af66ed4b83f9a5af9def7b83a695a50d0a2c494d15e43400e399222c3eec904970cf496884dc100fb980dea99fafadddc2fe5528
+  checksum: 283da1d1e923af3031cc60ad9e5047e29779e3f8fae3845bdd868add5d3fa660232c77cd46a49806a172387fc97b8f1d15481e3da78913183fed61771d327800
   languageName: node
   linkType: hard
 
@@ -4609,7 +4609,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^18.6.3":
+"@types/node@npm:*":
   version: 18.16.2
   resolution: "@types/node@npm:18.16.2"
   checksum: 7ad66d23b3b93885a9f879bff98e0196790ad35589b47a3d81b52db969ad17ee298082020296df5166c2d72d3cd6a4b9ab34d254483637d967944a4b3e6febdb
@@ -4627,6 +4627,13 @@ __metadata:
   version: 17.0.45
   resolution: "@types/node@npm:17.0.45"
   checksum: aa04366b9103b7d6cfd6b2ef64182e0eaa7d4462c3f817618486ea0422984c51fc69fd0d436eae6c9e696ddfdbec9ccaa27a917f7c2e8c75c5d57827fe3d95e8
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^18.6.3":
+  version: 18.16.5
+  resolution: "@types/node@npm:18.16.5"
+  checksum: b6df96a76a7655cd944794197cf63f5269e5034041bc355f4f243cb3f185ad3e1948011b6f0ac66c22434e50bc53a20ec3a9d95ad284f0e3819813d309d1650b
   languageName: node
   linkType: hard
 
@@ -16671,6 +16678,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-error-boundary@npm:^4.0.4":
+  version: 4.0.4
+  resolution: "react-error-boundary@npm:4.0.4"
+  dependencies:
+    "@babel/runtime": ^7.12.5
+  peerDependencies:
+    react: ">=16.13.1"
+  checksum: 02f04bdf8526f4b2474cb129ece32e5e32fbe81a72a71fdcf056c440aa9f4308b372383f5e817eea76220dcf0901459be2834d6ab8106cd9c36e8ec230df70f9
+  languageName: node
+  linkType: hard
+
 "react-error-overlay@npm:^6.0.11":
   version: 6.0.11
   resolution: "react-error-overlay@npm:6.0.11"
@@ -17325,7 +17343,7 @@ __metadata:
     "@reach/portal": ^0.17.0
     "@react-spring/types": ^9.4.5
     "@react-spring/web": ^9.7.1
-    "@reserve-protocol/token-zapper": 1.5.2
+    "@reserve-protocol/token-zapper": 1.5.3
     "@testing-library/jest-dom": ^5.16.4
     "@testing-library/react": ^13.0.0
     "@testing-library/user-event": ^14.0.4
@@ -17363,6 +17381,7 @@ __metadata:
     prettier: ^2.3.2
     react: ^18.2.0
     react-dom: 18.2.0
+    react-error-boundary: ^4.0.4
     react-feather: ^2.0.10
     react-ga: ^3.3.1
     react-hook-form: 7.31.3
