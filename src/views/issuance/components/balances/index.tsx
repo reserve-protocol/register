@@ -11,7 +11,9 @@ import { Box, Flex, Grid, Text } from 'theme-ui'
 import { Token } from 'types'
 import { ui } from '../zap/state/ui-atoms'
 import CollateralBalance from './CollateralBalance'
-import ZapAssetsBalances from './ZapAssetsBalance'
+import React, { Suspense } from 'react'
+
+const ZapAssetsBalances = React.lazy(() => import('./ZapAssetsBalance'))
 
 const CollateralBalances = ({ collaterals }: { collaterals: Token[] }) => (
   <Box>
@@ -63,7 +65,9 @@ const Balances = () => {
     <Card p={0}>
       <Grid columns={[1, 2]} gap={0}>
         {isZapEnabled ? (
-          <ZapAssetsBalances />
+          <Suspense>
+            <ZapAssetsBalances />
+          </Suspense>
         ) : (
           <CollateralBalances collaterals={rToken?.collaterals} />
         )}
