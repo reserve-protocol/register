@@ -4,7 +4,7 @@ import About from './components/about'
 import BalancesFallback from './components/balances/BalancesFallback'
 import Issue from './components/issue'
 import IssuanceInfo from './components/issue/IssuanceInfo'
-import Redeem from './components/redeem'
+import RedeemFallback from './components/redeem/RedeemFallback'
 
 /**
  * Mint & Redeem view
@@ -16,7 +16,7 @@ const IssuanceFallback = () => {
         <Box>
           <Grid columns={[1, 2]} gap={4} mb={4}>
             <Issue />
-            <Redeem />
+            <RedeemFallback />
           </Grid>
           <BalancesFallback />
         </Box>
