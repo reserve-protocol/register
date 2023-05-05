@@ -11,6 +11,7 @@ import Zap from './components/zap'
 import ZapToggle from './components/zap/components/ZapToggle'
 import ZapTokenSelector from './components/zap/components/ZapTokenSelector'
 import { ui, zapAvailableAtom } from './components/zap/state/ui-atoms'
+import { ErrorBoundary } from 'react-error-boundary'
 
 const ZapOverview = () => {
   const isZapEnabled = useAtomValue(ui.zapWidgetEnabled)
@@ -62,7 +63,9 @@ const Issuance = () => {
       <Container pb={4}>
         <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[3, 5]}>
           <Box>
-            <ZapOverview />
+            <ErrorBoundary fallback={null}>
+              <ZapOverview />
+            </ErrorBoundary>
             <Grid columns={[1, 2]} gap={4} mb={4}>
               {isZapEnabled ? <Zap /> : <Issue />}
               <Redeem />
