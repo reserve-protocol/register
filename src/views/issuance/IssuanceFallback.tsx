@@ -1,7 +1,7 @@
 import { Container } from 'components'
 import { Box, Grid } from 'theme-ui'
 import About from './components/about'
-import Balances from './components/balances'
+import BalancesFallback from './components/balances/BalancesFallback'
 import Issue from './components/issue'
 import IssuanceInfo from './components/issue/IssuanceInfo'
 import Redeem from './components/redeem'
@@ -18,7 +18,7 @@ const IssuanceFallback = () => {
             <Issue />
             <Redeem />
           </Grid>
-          <Balances />
+          <BalancesFallback />
         </Box>
         <Box>
           <IssuanceInfo mb={4} />
