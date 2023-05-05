@@ -22,6 +22,7 @@ import { theme } from './theme'
 import { ErrorBoundary } from 'react-error-boundary'
 // import Issuance from './views/issuance'
 import React, { Suspense } from 'react'
+import IssuanceFallback from 'views/issuance/IssuanceFallback'
 
 const Issuance = React.lazy(() => import('./views/issuance'))
 
@@ -45,7 +46,7 @@ const App = () => (
               <Route
                 path={ROUTES.ISSUANCE}
                 element={
-                  <ErrorBoundary fallback={<div>Error loading</div>}>
+                  <ErrorBoundary fallback={<IssuanceFallback />}>
                     <Suspense>
                       <Issuance />
                     </Suspense>
