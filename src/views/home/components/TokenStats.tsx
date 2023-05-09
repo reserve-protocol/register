@@ -6,7 +6,7 @@ import useQuery from 'hooks/useQuery'
 import useTimeFrom from 'hooks/useTimeFrom'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
-import { rpayOverviewAtom, rTokenMetricsAtom } from 'state/atoms'
+import { rpayOverviewAtom, rsrPriceAtom, rTokenMetricsAtom } from 'state/atoms'
 import { Box, BoxProps, Grid, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { PROTOCOL_SLUG, TIME_RANGES } from 'utils/constants'
@@ -31,7 +31,6 @@ export const defaultProtocolMetrics = {
   dailyVolume: '$0',
 }
 
-// TODO: Remove insurance term from subgraph
 const protocolMetricsQuery = gql`
   query GetProtocolMetrics($id: String!, $fromTime: Int!) {
     token(id: "0x196f4727526ea7fb1e17b2071b3d8eaa38486988") {
@@ -45,7 +44,7 @@ const protocolMetricsQuery = gql`
       totalRTokenUSD
       cumulativeVolumeUSD
       cumulativeRTokenRevenueUSD
-      cumulativeInsuranceRevenueUSD
+      rsrRevenue
       transactionCount
     }
     financialsDailySnapshots(
@@ -69,16 +68,13 @@ const protocolMetricsQuery = gql`
 
 const TokenStats = (props: BoxProps) => {
   const fromTime = useTimeFrom(TIME_RANGES.DAY)
-  const { data } = useQuery(
-    protocolMetricsQuery,
-    {
-      id: PROTOCOL_SLUG,
-      fromTime,
-    },
-    { refreshInterval: 10000 }
-  )
+  const { data } = useQuery(protocolMetricsQuery, {
+    id: PROTOCOL_SLUG,
+    fromTime,
+  })
   const rpayOverview = useAtomValue(rpayOverviewAtom)
   const [metrics, setMetrics] = useAtom(rTokenMetricsAtom)
+  const rsrPrice = useAtomValue(rsrPriceAtom)
 
   useEffect(() => {
     if (data) {
@@ -103,9 +99,8 @@ const TokenStats = (props: BoxProps) => {
         cumulativeRTokenRevenueUSD: `$${formatCurrency(
           +data.protocol?.cumulativeRTokenRevenueUSD || 0
         )}`,
-        // TODO: Remove insurance
         cumulativeStakingRevenueUSD: `$${formatCurrency(
-          +data.protocol?.cumulativeInsuranceRevenueUSD || 0
+          (+data.protocol?.rsrRevenue || 0) * rsrPrice
         )}`,
         transactionCount: formatCurrency(
           rpayOverview.txCount +
@@ -122,7 +117,7 @@ const TokenStats = (props: BoxProps) => {
         )}`,
       })
     }
-  }, [data, rpayOverview.txCount])
+  }, [data, rpayOverview.txCount, rsrPrice])
 
   return (
     <Box pl={3} mt={2} {...props}>
