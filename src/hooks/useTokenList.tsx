@@ -32,7 +32,6 @@ const tokenListAtom = atom<ListedToken[]>([])
 
 const tokenKeys = [...Object.keys(tokenList).map((s) => s.toLowerCase())]
 
-// TODO: Remove backing from theGraph "backingInsurance"
 const tokenListQuery = gql`
   query GetTokenListOverview($tokenIds: [String]!, $fromTime: Int!) {
     tokens(
@@ -50,7 +49,7 @@ const tokenListQuery = gql`
       cumulativeVolume
       rToken {
         backing
-        backingInsurance
+        backingRSR
         targetUnits
         recentRate: hourlySnapshots(
           first: 1
@@ -118,7 +117,7 @@ const useTokenList = () => {
             targetUnits: token?.rToken?.targetUnits,
             tokenApy: +tokenApy.toFixed(2),
             backing: token?.rToken?.backing || 100,
-            staked: token?.rToken?.backingInsurance || 0,
+            staked: token?.rToken?.backingRSR || 0,
             stakingApy: +stakingApy.toFixed(2),
           }
 

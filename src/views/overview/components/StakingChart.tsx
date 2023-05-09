@@ -13,13 +13,12 @@ import { BoxProps } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { TIME_RANGES } from 'utils/constants'
 
-// TODO: Remove insurance reference
 const hourlyPriceQuery = gql`
   query getTokenHourlyPrice($id: String!, $fromTime: Int!) {
     rtoken(id: $id) {
       snapshots: hourlySnapshots(where: { timestamp_gte: $fromTime }) {
         timestamp
-        insurance
+        rsrStaked
       }
     }
   }
@@ -30,7 +29,7 @@ const dailyPriceQuery = gql`
     rtoken(id: $id) {
       snapshots: dailySnapshots(where: { timestamp_gte: $fromTime }) {
         timestamp
-        insurance
+        rsrStaked
       }
     }
   }
@@ -53,14 +52,14 @@ const StakingChart = (props: BoxProps) => {
         data.rtoken?.snapshots.map(
           ({
             timestamp,
-            insurance,
+            rsrStaked,
           }: {
             timestamp: string
-            insurance: string
+            rsrStaked: string
           }) => ({
-            value: +formatEther(insurance) * rsrPrice,
+            value: +formatEther(rsrStaked) * rsrPrice,
             label: dayjs.unix(+timestamp).format('YYYY-M-D HH:mm:ss'),
-            display: `$${formatCurrency(+formatEther(insurance) * rsrPrice)}`,
+            display: `$${formatCurrency(+formatEther(rsrStaked) * rsrPrice)}`,
           })
         ) || []
       )

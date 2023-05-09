@@ -172,7 +172,7 @@ const FinalizedAuctions = ({ data, ...props }: TableProps) => {
         <Trans>Ended auctions</Trans>
       </Text>
       {data.length ? (
-        <Table columns={columns} data={data} />
+        <Table columns={columns} data={data} pagination />
       ) : (
         <Box
           sx={{

@@ -17,11 +17,10 @@ import { TIME_RANGES } from 'utils/constants'
 import useQuery from './useQuery'
 import useTimeFrom from './useTimeFrom'
 
-// TODO: Remove insurance from subGraph
 const rTokenMetricsQuery = gql`
   query GetProtocolMetrics($id: String!, $fromTime: Int!) {
     rtoken(id: $id) {
-      insurance
+      rsrStaked
     }
     token(id: $id) {
       totalSupply
@@ -59,7 +58,7 @@ const useTokenStats = (rTokenId: string, isRSV = false): TokenStats => {
 
   useEffect(() => {
     if (data?.rtoken || data?.token) {
-      const staked = +formatEther(data?.rtoken?.insurance ?? '0')
+      const staked = +formatEther(data?.rtoken?.rsrStaked ?? '0')
       const supply = +formatEther(data?.token.totalSupply)
       const cumulativeVolume = +formatEther(data?.token.cumulativeVolume)
       const dailyVolume = +formatEther(
