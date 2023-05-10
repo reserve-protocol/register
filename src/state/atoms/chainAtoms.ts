@@ -1,10 +1,6 @@
+import { providers } from 'ethers'
 import { atom } from 'jotai'
 import { CHAIN_ID } from 'utils/chains'
-/**
- * This file contains application level atoms
- * At some point this file is expected to be divided into multiple files per atom type
- */
-import { providers } from 'ethers'
 
 /**
  * #########################
@@ -18,3 +14,16 @@ export const walletAtom = atom('')
 export const providerAtom = atom(
   undefined as undefined | providers.Web3Provider
 )
+
+export const getValidWeb3Atom = atom((get) => {
+  const provider = get(providerAtom)
+  const block = get(blockAtom)
+  const account = get(walletAtom)
+  const chainId = get(chainIdAtom)
+
+  if (!provider || !block || chainId !== CHAIN_ID) {
+    return { provider: null, block: null, account: null, chainId: null }
+  }
+
+  return { provider, block, account, chainId }
+})

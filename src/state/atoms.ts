@@ -30,7 +30,7 @@ export const searchParamAtom = atomFamily(
  * ##################
  * Price related atom
  * ##################
- */
+ */ 
 
 export const ethPriceAtom = atom(1)
 export const gasPriceAtomBn = atom(ethers.constants.Zero)

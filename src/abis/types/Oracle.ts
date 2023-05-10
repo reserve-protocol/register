@@ -4,13 +4,20 @@
 import type {
   BaseContract,
   BigNumber,
+  BigNumberish,
   BytesLike,
   CallOverrides,
+  ContractTransaction,
+  Overrides,
   PopulatedTransaction,
   Signer,
   utils,
 } from "ethers";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
+import type {
+  FunctionFragment,
+  Result,
+  EventFragment,
+} from "@ethersproject/abi";
 import type { Listener, Provider } from "@ethersproject/providers";
 import type {
   TypedEventFilter,
@@ -22,143 +29,274 @@ import type {
 
 export interface OracleInterface extends utils.Interface {
   functions: {
-    "getLpTokenPriceUsdc(address)": FunctionFragment;
-    "getLpTokenTotalLiquidityUsdc(address)": FunctionFragment;
-    "getPriceFromRouter(address,address)": FunctionFragment;
-    "getPriceFromRouterUsdc(address)": FunctionFragment;
-    "getPriceUsdc(address)": FunctionFragment;
-    "getRouterForLpToken(address)": FunctionFragment;
-    "isLpToken(address)": FunctionFragment;
-    "primaryFactoryAddress()": FunctionFragment;
-    "primaryRouterAddress()": FunctionFragment;
-    "secondaryFactoryAddress()": FunctionFragment;
-    "secondaryRouterAddress()": FunctionFragment;
-    "usdcAddress()": FunctionFragment;
-    "wethAddress()": FunctionFragment;
+    "acceptOwnership()": FunctionFragment;
+    "accessController()": FunctionFragment;
+    "aggregator()": FunctionFragment;
+    "confirmAggregator(address)": FunctionFragment;
+    "decimals()": FunctionFragment;
+    "description()": FunctionFragment;
+    "getAnswer(uint256)": FunctionFragment;
+    "getRoundData(uint80)": FunctionFragment;
+    "getTimestamp(uint256)": FunctionFragment;
+    "latestAnswer()": FunctionFragment;
+    "latestRound()": FunctionFragment;
+    "latestRoundData()": FunctionFragment;
+    "latestTimestamp()": FunctionFragment;
+    "owner()": FunctionFragment;
+    "phaseAggregators(uint16)": FunctionFragment;
+    "phaseId()": FunctionFragment;
+    "proposeAggregator(address)": FunctionFragment;
+    "proposedAggregator()": FunctionFragment;
+    "proposedGetRoundData(uint80)": FunctionFragment;
+    "proposedLatestRoundData()": FunctionFragment;
+    "setController(address)": FunctionFragment;
+    "transferOwnership(address)": FunctionFragment;
+    "version()": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "getLpTokenPriceUsdc"
-      | "getLpTokenTotalLiquidityUsdc"
-      | "getPriceFromRouter"
-      | "getPriceFromRouterUsdc"
-      | "getPriceUsdc"
-      | "getRouterForLpToken"
-      | "isLpToken"
-      | "primaryFactoryAddress"
-      | "primaryRouterAddress"
-      | "secondaryFactoryAddress"
-      | "secondaryRouterAddress"
-      | "usdcAddress"
-      | "wethAddress"
+      | "acceptOwnership"
+      | "accessController"
+      | "aggregator"
+      | "confirmAggregator"
+      | "decimals"
+      | "description"
+      | "getAnswer"
+      | "getRoundData"
+      | "getTimestamp"
+      | "latestAnswer"
+      | "latestRound"
+      | "latestRoundData"
+      | "latestTimestamp"
+      | "owner"
+      | "phaseAggregators"
+      | "phaseId"
+      | "proposeAggregator"
+      | "proposedAggregator"
+      | "proposedGetRoundData"
+      | "proposedLatestRoundData"
+      | "setController"
+      | "transferOwnership"
+      | "version"
   ): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: "getLpTokenPriceUsdc",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getLpTokenTotalLiquidityUsdc",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getPriceFromRouter",
-    values: [PromiseOrValue<string>, PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getPriceFromRouterUsdc",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getPriceUsdc",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getRouterForLpToken",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "isLpToken",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "primaryFactoryAddress",
+    functionFragment: "acceptOwnership",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "primaryRouterAddress",
+    functionFragment: "accessController",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "secondaryFactoryAddress",
+    functionFragment: "aggregator",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "secondaryRouterAddress",
+    functionFragment: "confirmAggregator",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "description",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "usdcAddress",
+    functionFragment: "getAnswer",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getRoundData",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTimestamp",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "latestAnswer",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "wethAddress",
+    functionFragment: "latestRound",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "latestRoundData",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "latestTimestamp",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "phaseAggregators",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(functionFragment: "phaseId", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "proposeAggregator",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "proposedAggregator",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "proposedGetRoundData",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "proposedLatestRoundData",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setController",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "transferOwnership",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(functionFragment: "version", values?: undefined): string;
 
   decodeFunctionResult(
-    functionFragment: "getLpTokenPriceUsdc",
+    functionFragment: "acceptOwnership",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getLpTokenTotalLiquidityUsdc",
+    functionFragment: "accessController",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "aggregator", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "confirmAggregator",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "description",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "getAnswer", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getRoundData",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getPriceFromRouter",
+    functionFragment: "getTimestamp",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getPriceFromRouterUsdc",
+    functionFragment: "latestAnswer",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getPriceUsdc",
+    functionFragment: "latestRound",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getRouterForLpToken",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "isLpToken", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "primaryFactoryAddress",
+    functionFragment: "latestRoundData",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "primaryRouterAddress",
+    functionFragment: "latestTimestamp",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "phaseAggregators",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "phaseId", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "proposeAggregator",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "secondaryFactoryAddress",
+    functionFragment: "proposedAggregator",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "secondaryRouterAddress",
+    functionFragment: "proposedGetRoundData",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "usdcAddress",
+    functionFragment: "proposedLatestRoundData",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "wethAddress",
+    functionFragment: "setController",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "transferOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "version", data: BytesLike): Result;
 
-  events: {};
+  events: {
+    "AnswerUpdated(int256,uint256,uint256)": EventFragment;
+    "NewRound(uint256,address,uint256)": EventFragment;
+    "OwnershipTransferRequested(address,address)": EventFragment;
+    "OwnershipTransferred(address,address)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "AnswerUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "NewRound"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OwnershipTransferRequested"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
 }
+
+export interface AnswerUpdatedEventObject {
+  current: BigNumber;
+  roundId: BigNumber;
+  updatedAt: BigNumber;
+}
+export type AnswerUpdatedEvent = TypedEvent<
+  [BigNumber, BigNumber, BigNumber],
+  AnswerUpdatedEventObject
+>;
+
+export type AnswerUpdatedEventFilter = TypedEventFilter<AnswerUpdatedEvent>;
+
+export interface NewRoundEventObject {
+  roundId: BigNumber;
+  startedBy: string;
+  startedAt: BigNumber;
+}
+export type NewRoundEvent = TypedEvent<
+  [BigNumber, string, BigNumber],
+  NewRoundEventObject
+>;
+
+export type NewRoundEventFilter = TypedEventFilter<NewRoundEvent>;
+
+export interface OwnershipTransferRequestedEventObject {
+  from: string;
+  to: string;
+}
+export type OwnershipTransferRequestedEvent = TypedEvent<
+  [string, string],
+  OwnershipTransferRequestedEventObject
+>;
+
+export type OwnershipTransferRequestedEventFilter =
+  TypedEventFilter<OwnershipTransferRequestedEvent>;
+
+export interface OwnershipTransferredEventObject {
+  from: string;
+  to: string;
+}
+export type OwnershipTransferredEvent = TypedEvent<
+  [string, string],
+  OwnershipTransferredEventObject
+>;
+
+export type OwnershipTransferredEventFilter =
+  TypedEventFilter<OwnershipTransferredEvent>;
 
 export interface Oracle extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -187,260 +325,537 @@ export interface Oracle extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    getLpTokenPriceUsdc(
-      tokenAddress: PromiseOrValue<string>,
+    acceptOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    accessController(overrides?: CallOverrides): Promise<[string]>;
+
+    aggregator(overrides?: CallOverrides): Promise<[string]>;
+
+    confirmAggregator(
+      _aggregator: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    decimals(overrides?: CallOverrides): Promise<[number]>;
+
+    description(overrides?: CallOverrides): Promise<[string]>;
+
+    getAnswer(
+      _roundId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    getLpTokenTotalLiquidityUsdc(
-      tokenAddress: PromiseOrValue<string>,
+    getRoundData(
+      _roundId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber] & {
+        roundId: BigNumber;
+        answer: BigNumber;
+        startedAt: BigNumber;
+        updatedAt: BigNumber;
+        answeredInRound: BigNumber;
+      }
+    >;
+
+    getTimestamp(
+      _roundId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    getPriceFromRouter(
-      token0Address: PromiseOrValue<string>,
-      token1Address: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    latestAnswer(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    getPriceFromRouterUsdc(
-      tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    latestRound(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    getPriceUsdc(
-      tokenAddress: PromiseOrValue<string>,
+    latestRoundData(
       overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber] & {
+        roundId: BigNumber;
+        answer: BigNumber;
+        startedAt: BigNumber;
+        updatedAt: BigNumber;
+        answeredInRound: BigNumber;
+      }
+    >;
 
-    getRouterForLpToken(
-      tokenAddress: PromiseOrValue<string>,
+    latestTimestamp(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    owner(overrides?: CallOverrides): Promise<[string]>;
+
+    phaseAggregators(
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[string]>;
 
-    isLpToken(
-      tokenAddress: PromiseOrValue<string>,
+    phaseId(overrides?: CallOverrides): Promise<[number]>;
+
+    proposeAggregator(
+      _aggregator: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    proposedAggregator(overrides?: CallOverrides): Promise<[string]>;
+
+    proposedGetRoundData(
+      _roundId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
-    ): Promise<[boolean]>;
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber] & {
+        roundId: BigNumber;
+        answer: BigNumber;
+        startedAt: BigNumber;
+        updatedAt: BigNumber;
+        answeredInRound: BigNumber;
+      }
+    >;
 
-    primaryFactoryAddress(overrides?: CallOverrides): Promise<[string]>;
+    proposedLatestRoundData(
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber] & {
+        roundId: BigNumber;
+        answer: BigNumber;
+        startedAt: BigNumber;
+        updatedAt: BigNumber;
+        answeredInRound: BigNumber;
+      }
+    >;
 
-    primaryRouterAddress(overrides?: CallOverrides): Promise<[string]>;
+    setController(
+      _accessController: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
-    secondaryFactoryAddress(overrides?: CallOverrides): Promise<[string]>;
+    transferOwnership(
+      _to: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
-    secondaryRouterAddress(overrides?: CallOverrides): Promise<[string]>;
-
-    usdcAddress(overrides?: CallOverrides): Promise<[string]>;
-
-    wethAddress(overrides?: CallOverrides): Promise<[string]>;
+    version(overrides?: CallOverrides): Promise<[BigNumber]>;
   };
 
-  getLpTokenPriceUsdc(
-    tokenAddress: PromiseOrValue<string>,
+  acceptOwnership(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  accessController(overrides?: CallOverrides): Promise<string>;
+
+  aggregator(overrides?: CallOverrides): Promise<string>;
+
+  confirmAggregator(
+    _aggregator: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  decimals(overrides?: CallOverrides): Promise<number>;
+
+  description(overrides?: CallOverrides): Promise<string>;
+
+  getAnswer(
+    _roundId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  getLpTokenTotalLiquidityUsdc(
-    tokenAddress: PromiseOrValue<string>,
+  getRoundData(
+    _roundId: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<
+    [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber] & {
+      roundId: BigNumber;
+      answer: BigNumber;
+      startedAt: BigNumber;
+      updatedAt: BigNumber;
+      answeredInRound: BigNumber;
+    }
+  >;
+
+  getTimestamp(
+    _roundId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  getPriceFromRouter(
-    token0Address: PromiseOrValue<string>,
-    token1Address: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  latestAnswer(overrides?: CallOverrides): Promise<BigNumber>;
 
-  getPriceFromRouterUsdc(
-    tokenAddress: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  latestRound(overrides?: CallOverrides): Promise<BigNumber>;
 
-  getPriceUsdc(
-    tokenAddress: PromiseOrValue<string>,
+  latestRoundData(
     overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  ): Promise<
+    [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber] & {
+      roundId: BigNumber;
+      answer: BigNumber;
+      startedAt: BigNumber;
+      updatedAt: BigNumber;
+      answeredInRound: BigNumber;
+    }
+  >;
 
-  getRouterForLpToken(
-    tokenAddress: PromiseOrValue<string>,
+  latestTimestamp(overrides?: CallOverrides): Promise<BigNumber>;
+
+  owner(overrides?: CallOverrides): Promise<string>;
+
+  phaseAggregators(
+    arg0: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<string>;
 
-  isLpToken(
-    tokenAddress: PromiseOrValue<string>,
+  phaseId(overrides?: CallOverrides): Promise<number>;
+
+  proposeAggregator(
+    _aggregator: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  proposedAggregator(overrides?: CallOverrides): Promise<string>;
+
+  proposedGetRoundData(
+    _roundId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
-  ): Promise<boolean>;
+  ): Promise<
+    [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber] & {
+      roundId: BigNumber;
+      answer: BigNumber;
+      startedAt: BigNumber;
+      updatedAt: BigNumber;
+      answeredInRound: BigNumber;
+    }
+  >;
 
-  primaryFactoryAddress(overrides?: CallOverrides): Promise<string>;
+  proposedLatestRoundData(
+    overrides?: CallOverrides
+  ): Promise<
+    [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber] & {
+      roundId: BigNumber;
+      answer: BigNumber;
+      startedAt: BigNumber;
+      updatedAt: BigNumber;
+      answeredInRound: BigNumber;
+    }
+  >;
 
-  primaryRouterAddress(overrides?: CallOverrides): Promise<string>;
+  setController(
+    _accessController: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
-  secondaryFactoryAddress(overrides?: CallOverrides): Promise<string>;
+  transferOwnership(
+    _to: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
-  secondaryRouterAddress(overrides?: CallOverrides): Promise<string>;
-
-  usdcAddress(overrides?: CallOverrides): Promise<string>;
-
-  wethAddress(overrides?: CallOverrides): Promise<string>;
+  version(overrides?: CallOverrides): Promise<BigNumber>;
 
   callStatic: {
-    getLpTokenPriceUsdc(
-      tokenAddress: PromiseOrValue<string>,
+    acceptOwnership(overrides?: CallOverrides): Promise<void>;
+
+    accessController(overrides?: CallOverrides): Promise<string>;
+
+    aggregator(overrides?: CallOverrides): Promise<string>;
+
+    confirmAggregator(
+      _aggregator: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    decimals(overrides?: CallOverrides): Promise<number>;
+
+    description(overrides?: CallOverrides): Promise<string>;
+
+    getAnswer(
+      _roundId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getLpTokenTotalLiquidityUsdc(
-      tokenAddress: PromiseOrValue<string>,
+    getRoundData(
+      _roundId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber] & {
+        roundId: BigNumber;
+        answer: BigNumber;
+        startedAt: BigNumber;
+        updatedAt: BigNumber;
+        answeredInRound: BigNumber;
+      }
+    >;
+
+    getTimestamp(
+      _roundId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getPriceFromRouter(
-      token0Address: PromiseOrValue<string>,
-      token1Address: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    latestAnswer(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getPriceFromRouterUsdc(
-      tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    latestRound(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getPriceUsdc(
-      tokenAddress: PromiseOrValue<string>,
+    latestRoundData(
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber] & {
+        roundId: BigNumber;
+        answer: BigNumber;
+        startedAt: BigNumber;
+        updatedAt: BigNumber;
+        answeredInRound: BigNumber;
+      }
+    >;
 
-    getRouterForLpToken(
-      tokenAddress: PromiseOrValue<string>,
+    latestTimestamp(overrides?: CallOverrides): Promise<BigNumber>;
+
+    owner(overrides?: CallOverrides): Promise<string>;
+
+    phaseAggregators(
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<string>;
 
-    isLpToken(
-      tokenAddress: PromiseOrValue<string>,
+    phaseId(overrides?: CallOverrides): Promise<number>;
+
+    proposeAggregator(
+      _aggregator: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<boolean>;
+    ): Promise<void>;
 
-    primaryFactoryAddress(overrides?: CallOverrides): Promise<string>;
+    proposedAggregator(overrides?: CallOverrides): Promise<string>;
 
-    primaryRouterAddress(overrides?: CallOverrides): Promise<string>;
+    proposedGetRoundData(
+      _roundId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber] & {
+        roundId: BigNumber;
+        answer: BigNumber;
+        startedAt: BigNumber;
+        updatedAt: BigNumber;
+        answeredInRound: BigNumber;
+      }
+    >;
 
-    secondaryFactoryAddress(overrides?: CallOverrides): Promise<string>;
+    proposedLatestRoundData(
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber] & {
+        roundId: BigNumber;
+        answer: BigNumber;
+        startedAt: BigNumber;
+        updatedAt: BigNumber;
+        answeredInRound: BigNumber;
+      }
+    >;
 
-    secondaryRouterAddress(overrides?: CallOverrides): Promise<string>;
+    setController(
+      _accessController: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    usdcAddress(overrides?: CallOverrides): Promise<string>;
+    transferOwnership(
+      _to: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
-    wethAddress(overrides?: CallOverrides): Promise<string>;
+    version(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
-  filters: {};
+  filters: {
+    "AnswerUpdated(int256,uint256,uint256)"(
+      current?: PromiseOrValue<BigNumberish> | null,
+      roundId?: PromiseOrValue<BigNumberish> | null,
+      updatedAt?: null
+    ): AnswerUpdatedEventFilter;
+    AnswerUpdated(
+      current?: PromiseOrValue<BigNumberish> | null,
+      roundId?: PromiseOrValue<BigNumberish> | null,
+      updatedAt?: null
+    ): AnswerUpdatedEventFilter;
+
+    "NewRound(uint256,address,uint256)"(
+      roundId?: PromiseOrValue<BigNumberish> | null,
+      startedBy?: PromiseOrValue<string> | null,
+      startedAt?: null
+    ): NewRoundEventFilter;
+    NewRound(
+      roundId?: PromiseOrValue<BigNumberish> | null,
+      startedBy?: PromiseOrValue<string> | null,
+      startedAt?: null
+    ): NewRoundEventFilter;
+
+    "OwnershipTransferRequested(address,address)"(
+      from?: PromiseOrValue<string> | null,
+      to?: PromiseOrValue<string> | null
+    ): OwnershipTransferRequestedEventFilter;
+    OwnershipTransferRequested(
+      from?: PromiseOrValue<string> | null,
+      to?: PromiseOrValue<string> | null
+    ): OwnershipTransferRequestedEventFilter;
+
+    "OwnershipTransferred(address,address)"(
+      from?: PromiseOrValue<string> | null,
+      to?: PromiseOrValue<string> | null
+    ): OwnershipTransferredEventFilter;
+    OwnershipTransferred(
+      from?: PromiseOrValue<string> | null,
+      to?: PromiseOrValue<string> | null
+    ): OwnershipTransferredEventFilter;
+  };
 
   estimateGas: {
-    getLpTokenPriceUsdc(
-      tokenAddress: PromiseOrValue<string>,
+    acceptOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    accessController(overrides?: CallOverrides): Promise<BigNumber>;
+
+    aggregator(overrides?: CallOverrides): Promise<BigNumber>;
+
+    confirmAggregator(
+      _aggregator: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    decimals(overrides?: CallOverrides): Promise<BigNumber>;
+
+    description(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getAnswer(
+      _roundId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getLpTokenTotalLiquidityUsdc(
-      tokenAddress: PromiseOrValue<string>,
+    getRoundData(
+      _roundId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getPriceFromRouter(
-      token0Address: PromiseOrValue<string>,
-      token1Address: PromiseOrValue<string>,
+    getTimestamp(
+      _roundId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getPriceFromRouterUsdc(
-      tokenAddress: PromiseOrValue<string>,
+    latestAnswer(overrides?: CallOverrides): Promise<BigNumber>;
+
+    latestRound(overrides?: CallOverrides): Promise<BigNumber>;
+
+    latestRoundData(overrides?: CallOverrides): Promise<BigNumber>;
+
+    latestTimestamp(overrides?: CallOverrides): Promise<BigNumber>;
+
+    owner(overrides?: CallOverrides): Promise<BigNumber>;
+
+    phaseAggregators(
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getPriceUsdc(
-      tokenAddress: PromiseOrValue<string>,
+    phaseId(overrides?: CallOverrides): Promise<BigNumber>;
+
+    proposeAggregator(
+      _aggregator: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    proposedAggregator(overrides?: CallOverrides): Promise<BigNumber>;
+
+    proposedGetRoundData(
+      _roundId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getRouterForLpToken(
-      tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
+    proposedLatestRoundData(overrides?: CallOverrides): Promise<BigNumber>;
+
+    setController(
+      _accessController: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    isLpToken(
-      tokenAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
+    transferOwnership(
+      _to: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    primaryFactoryAddress(overrides?: CallOverrides): Promise<BigNumber>;
-
-    primaryRouterAddress(overrides?: CallOverrides): Promise<BigNumber>;
-
-    secondaryFactoryAddress(overrides?: CallOverrides): Promise<BigNumber>;
-
-    secondaryRouterAddress(overrides?: CallOverrides): Promise<BigNumber>;
-
-    usdcAddress(overrides?: CallOverrides): Promise<BigNumber>;
-
-    wethAddress(overrides?: CallOverrides): Promise<BigNumber>;
+    version(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    getLpTokenPriceUsdc(
-      tokenAddress: PromiseOrValue<string>,
+    acceptOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    accessController(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    aggregator(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    confirmAggregator(
+      _aggregator: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    description(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getAnswer(
+      _roundId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getLpTokenTotalLiquidityUsdc(
-      tokenAddress: PromiseOrValue<string>,
+    getRoundData(
+      _roundId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getPriceFromRouter(
-      token0Address: PromiseOrValue<string>,
-      token1Address: PromiseOrValue<string>,
+    getTimestamp(
+      _roundId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getPriceFromRouterUsdc(
-      tokenAddress: PromiseOrValue<string>,
+    latestAnswer(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    latestRound(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    latestRoundData(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    latestTimestamp(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    phaseAggregators(
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getPriceUsdc(
-      tokenAddress: PromiseOrValue<string>,
+    phaseId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    proposeAggregator(
+      _aggregator: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    proposedAggregator(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getRouterForLpToken(
-      tokenAddress: PromiseOrValue<string>,
+    proposedGetRoundData(
+      _roundId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    isLpToken(
-      tokenAddress: PromiseOrValue<string>,
+    proposedLatestRoundData(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    primaryFactoryAddress(
-      overrides?: CallOverrides
+    setController(
+      _accessController: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    primaryRouterAddress(
-      overrides?: CallOverrides
+    transferOwnership(
+      _to: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    secondaryFactoryAddress(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    secondaryRouterAddress(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    usdcAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    wethAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    version(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

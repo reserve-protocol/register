@@ -847,7 +847,7 @@ const _abi = [
     name: "OwnershipTransferred",
     type: "event",
   },
-];
+] as const;
 
 export class RsvManager__factory {
   static readonly abi = _abi;

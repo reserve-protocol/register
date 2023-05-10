@@ -39,32 +39,46 @@ export declare namespace IFacadeRead {
 
 export interface FacadeInterface extends utils.Interface {
   functions: {
+    "auctionsSettleable(address)": FunctionFragment;
     "backingOverview(address)": FunctionFragment;
     "backupConfig(address,bytes32)": FunctionFragment;
+    "balancesAcrossAllTraders(address)": FunctionFragment;
     "basketBreakdown(address)": FunctionFragment;
     "basketTokens(address)": FunctionFragment;
     "issue(address,uint256)": FunctionFragment;
     "maxIssuable(address,address)": FunctionFragment;
+    "nextRecollateralizationAuction(address)": FunctionFragment;
     "pendingUnstakings(address,address)": FunctionFragment;
     "price(address)": FunctionFragment;
     "primeBasket(address)": FunctionFragment;
+    "redeem(address,uint256,uint48)": FunctionFragment;
+    "revenueOverview(address)": FunctionFragment;
     "stToken(address)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "auctionsSettleable"
       | "backingOverview"
       | "backupConfig"
+      | "balancesAcrossAllTraders"
       | "basketBreakdown"
       | "basketTokens"
       | "issue"
       | "maxIssuable"
+      | "nextRecollateralizationAuction"
       | "pendingUnstakings"
       | "price"
       | "primeBasket"
+      | "redeem"
+      | "revenueOverview"
       | "stToken"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "auctionsSettleable",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "backingOverview",
     values: [PromiseOrValue<string>]
@@ -72,6 +86,10 @@ export interface FacadeInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "backupConfig",
     values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "balancesAcrossAllTraders",
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "basketBreakdown",
@@ -90,6 +108,10 @@ export interface FacadeInterface extends utils.Interface {
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
+    functionFragment: "nextRecollateralizationAuction",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "pendingUnstakings",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
@@ -102,16 +124,36 @@ export interface FacadeInterface extends utils.Interface {
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
+    functionFragment: "redeem",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "revenueOverview",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "stToken",
     values: [PromiseOrValue<string>]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "auctionsSettleable",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "backingOverview",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "backupConfig",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "balancesAcrossAllTraders",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -128,12 +170,21 @@ export interface FacadeInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "nextRecollateralizationAuction",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "pendingUnstakings",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "price", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "primeBasket",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "redeem", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "revenueOverview",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "stToken", data: BytesLike): Result;
@@ -168,6 +219,11 @@ export interface Facade extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    auctionsSettleable(
+      trader: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[string[]] & { erc20s: string[] }>;
+
     backingOverview(
       rToken: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -183,6 +239,11 @@ export interface Facade extends BaseContract {
       targetName: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<[string[], BigNumber] & { erc20s: string[]; max: BigNumber }>;
+
+    balancesAcrossAllTraders(
+      rToken: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     basketBreakdown(
       rToken: PromiseOrValue<string>,
@@ -203,6 +264,11 @@ export interface Facade extends BaseContract {
     maxIssuable(
       rToken: PromiseOrValue<string>,
       account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    nextRecollateralizationAuction(
+      bm: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -232,11 +298,28 @@ export interface Facade extends BaseContract {
       }
     >;
 
+    redeem(
+      rToken: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      basketNonce: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    revenueOverview(
+      revenueTrader: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     stToken(
       rToken: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[string] & { stTokenAddress: string }>;
   };
+
+  auctionsSettleable(
+    trader: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<string[]>;
 
   backingOverview(
     rToken: PromiseOrValue<string>,
@@ -253,6 +336,11 @@ export interface Facade extends BaseContract {
     targetName: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
   ): Promise<[string[], BigNumber] & { erc20s: string[]; max: BigNumber }>;
+
+  balancesAcrossAllTraders(
+    rToken: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   basketBreakdown(
     rToken: PromiseOrValue<string>,
@@ -273,6 +361,11 @@ export interface Facade extends BaseContract {
   maxIssuable(
     rToken: PromiseOrValue<string>,
     account: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  nextRecollateralizationAuction(
+    bm: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -298,12 +391,29 @@ export interface Facade extends BaseContract {
     }
   >;
 
+  redeem(
+    rToken: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    basketNonce: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  revenueOverview(
+    revenueTrader: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   stToken(
     rToken: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<string>;
 
   callStatic: {
+    auctionsSettleable(
+      trader: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<string[]>;
+
     backingOverview(
       rToken: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -319,6 +429,17 @@ export interface Facade extends BaseContract {
       targetName: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<[string[], BigNumber] & { erc20s: string[]; max: BigNumber }>;
+
+    balancesAcrossAllTraders(
+      rToken: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<
+      [string[], BigNumber[], BigNumber[]] & {
+        erc20s: string[];
+        balances: BigNumber[];
+        balancesNeededByBackingManager: BigNumber[];
+      }
+    >;
 
     basketBreakdown(
       rToken: PromiseOrValue<string>,
@@ -341,7 +462,11 @@ export interface Facade extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<
-      [string[], BigNumber[]] & { tokens: string[]; deposits: BigNumber[] }
+      [string[], BigNumber[], BigNumber[]] & {
+        tokens: string[];
+        deposits: BigNumber[];
+        depositsUoA: BigNumber[];
+      }
     >;
 
     maxIssuable(
@@ -349,6 +474,18 @@ export interface Facade extends BaseContract {
       account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    nextRecollateralizationAuction(
+      bm: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<
+      [boolean, string, string, BigNumber] & {
+        canStart: boolean;
+        sell: string;
+        buy: string;
+        sellAmount: BigNumber;
+      }
+    >;
 
     pendingUnstakings(
       rToken: PromiseOrValue<string>,
@@ -372,6 +509,31 @@ export interface Facade extends BaseContract {
       }
     >;
 
+    redeem(
+      rToken: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      basketNonce: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<
+      [string[], BigNumber[], boolean] & {
+        tokens: string[];
+        withdrawals: BigNumber[];
+        isProrata: boolean;
+      }
+    >;
+
+    revenueOverview(
+      revenueTrader: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<
+      [string[], boolean[], BigNumber[], BigNumber[]] & {
+        erc20s: string[];
+        canStart: boolean[];
+        surpluses: BigNumber[];
+        minTradeAmounts: BigNumber[];
+      }
+    >;
+
     stToken(
       rToken: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -381,6 +543,11 @@ export interface Facade extends BaseContract {
   filters: {};
 
   estimateGas: {
+    auctionsSettleable(
+      trader: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     backingOverview(
       rToken: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -390,6 +557,11 @@ export interface Facade extends BaseContract {
       rToken: PromiseOrValue<string>,
       targetName: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    balancesAcrossAllTraders(
+      rToken: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     basketBreakdown(
@@ -414,6 +586,11 @@ export interface Facade extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    nextRecollateralizationAuction(
+      bm: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     pendingUnstakings(
       rToken: PromiseOrValue<string>,
       account: PromiseOrValue<string>,
@@ -428,6 +605,18 @@ export interface Facade extends BaseContract {
     primeBasket(
       rToken: PromiseOrValue<string>,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    redeem(
+      rToken: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      basketNonce: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    revenueOverview(
+      revenueTrader: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     stToken(
@@ -437,6 +626,11 @@ export interface Facade extends BaseContract {
   };
 
   populateTransaction: {
+    auctionsSettleable(
+      trader: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     backingOverview(
       rToken: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -446,6 +640,11 @@ export interface Facade extends BaseContract {
       rToken: PromiseOrValue<string>,
       targetName: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    balancesAcrossAllTraders(
+      rToken: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     basketBreakdown(
@@ -470,6 +669,11 @@ export interface Facade extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    nextRecollateralizationAuction(
+      bm: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     pendingUnstakings(
       rToken: PromiseOrValue<string>,
       account: PromiseOrValue<string>,
@@ -484,6 +688,18 @@ export interface Facade extends BaseContract {
     primeBasket(
       rToken: PromiseOrValue<string>,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    redeem(
+      rToken: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      basketNonce: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    revenueOverview(
+      revenueTrader: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     stToken(
