@@ -2,12 +2,12 @@ import { base, configuration, Universe } from '@reserve-protocol/token-zapper'
 
 import { atom } from 'jotai'
 import { loadable } from 'jotai/utils'
-import { currentProvierAtom } from 'state/atoms'
+import { providerAtom } from 'state/atoms'
 import { onlyNonNullAtom, simplifyLoadable } from 'utils/atoms/utils'
 import { createProxiedOneInchAggregator } from './createProxiedOneInchAggregator'
 
 export const connectionName = onlyNonNullAtom((get) => {
-  return get(currentProvierAtom).connection.url
+  return get(providerAtom).connection.url
 })
 
 const PERMIT2_SUPPORTED_CONNECTIONS = new Set(['metamask'])
@@ -28,11 +28,11 @@ const rTokenDeploymentAddresses: string[] = []
 
 export const zapperState = loadable(
   atom(async (get) => {
-    const provider = get(currentProvierAtom)
+    const provider = get(providerAtom)
     if (provider == null) {
       return null
     }
-    
+
     const universe = await Universe.createWithConfig(
       provider,
       {

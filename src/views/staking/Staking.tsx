@@ -4,6 +4,7 @@ import Balances from './components/balances'
 import Overview from './components/overview'
 import Stake from './components/stake'
 import Unstake from './components/unstake'
+import Updater from './Updater'
 
 const Staking = () => (
   <Container pb={4}>
@@ -17,6 +18,7 @@ const Staking = () => (
       </Box>
       <Overview />
     </Grid>
+    <Updater />
   </Container>
 )
 

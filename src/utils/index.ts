@@ -113,6 +113,7 @@ export function calculateApy(
 
   const priceGrowth =
     ((recentRate.basketRate - lastRate.basketRate) / lastRate.basketRate) * 100
+
   const stGrowth =
     ((recentRate.rsrExchangeRate - lastRate.rsrExchangeRate) /
       lastRate.rsrExchangeRate) *

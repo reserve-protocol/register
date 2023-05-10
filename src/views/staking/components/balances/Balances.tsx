@@ -11,7 +11,6 @@ import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
 import {
   addTransactionAtom,
-  pendingRSRSummaryAtom,
   rsrBalanceAtom,
   rsrExchangeRateAtom,
   rsrPriceAtom,
@@ -24,6 +23,7 @@ import { smallButton } from 'theme'
 import { Box, BoxProps, Divider, Flex, Grid, Text } from 'theme-ui'
 import { RSR, TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
+import { pendingRSRSummaryAtom } from 'views/staking/atoms'
 
 const pendingRSRBalanceAtom = atom(
   (get) => get(pendingRSRSummaryAtom).pendingAmount

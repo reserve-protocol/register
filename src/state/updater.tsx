@@ -2,43 +2,37 @@ import { Web3Provider } from '@ethersproject/providers'
 import { formatEther } from '@ethersproject/units'
 import { useWeb3React } from '@web3-react/core'
 import { OracleInterface, StRSRInterface } from 'abis'
-import { Facade } from 'abis/types'
-import { formatUnits, parseUnits } from 'ethers/lib/utils'
+import { formatUnits } from 'ethers/lib/utils'
 import useBlockNumber from 'hooks/useBlockNumber'
 import { useContractCall } from 'hooks/useCall'
-import { useFacadeContract } from 'hooks/useContract'
 import useRTokenPrice from 'hooks/useRTokenPrice'
 import useTokensAllowance from 'hooks/useTokensAllowance'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import {
   allowanceAtom,
-  chainIdAtom,
   collateralYieldAtom,
   ethPriceAtom,
   gasPriceAtomBn,
-  pendingRSRAtom,
-  rsrExchangeRateAtom,
-  rsrPriceAtom,
   rTokenAtom,
   rTokenPriceAtom,
+  rsrExchangeRateAtom,
+  rsrPriceAtom,
   searchParamsAtom,
   walletAtom,
 } from 'state/atoms'
 import useSWR from 'swr'
 import { ReserveToken, StringMap } from 'types'
-import { ORACLE_ADDRESS, RSR_ADDRESS, WETH_ADDRESS } from 'utils/addresses'
-import { CHAIN_ID } from 'utils/chains'
 import { RSR } from 'utils/constants'
 import { RSV_MANAGER } from 'utils/rsv'
 import AccountUpdater from './AccountUpdater'
 import RSVUpdater from './RSVUpdater'
-import RTokenUpdater from './rtoken'
 import TokenUpdater from './TokenUpdater'
+import RTokenUpdater from './rtoken'
 import { promiseMulticall } from './web3/lib/multicall'
 
-import { TokenBalancesUpdater } from './TokenBalancesUpdater'
 import { useSearchParams } from 'react-router-dom'
+import { TokenBalancesUpdater } from './TokenBalancesUpdater'
 
 const getTokenAllowances = (reserveToken: ReserveToken): [string, string][] => {
   const tokens: [string, string][] = [
@@ -79,46 +73,6 @@ const TokensAllowanceUpdater = () => {
   useEffect(() => {
     updateAllowances(allowances)
   }, [JSON.stringify(allowances)])
-
-  return null
-}
-
-/**
- * Fetch pending issuances
- */
-const PendingBalancesUpdater = () => {
-  const account = useAtomValue(walletAtom)
-  const chainId = useAtomValue(chainIdAtom)
-  const rToken = useAtomValue(rTokenAtom)
-  const setPendingRSR = useSetAtom(pendingRSRAtom)
-  const facadeContract = useFacadeContract()
-  const blockNumber = useBlockNumber()
-
-  const fetchPending = useCallback(
-    async (account: string, rToken: string, facade: Facade) => {
-      try {
-        const pendingRSR = await facade.pendingUnstakings(rToken, account)
-        const pendingRSRSummary = pendingRSR.map((item) => ({
-          availableAt: item.availableAt.toNumber(),
-          index: item.index,
-          amount: parseFloat(formatEther(item.amount)),
-        }))
-        setPendingRSR(pendingRSRSummary)
-      } catch (e) {
-        // TODO: handle error case
-        console.log('error fetching pending', e)
-      }
-    },
-    []
-  )
-
-  useEffect(() => {
-    if (rToken && !rToken.isRSV && facadeContract && blockNumber && account) {
-      fetchPending(account, rToken.address, facadeContract)
-    } else {
-      setPendingRSR([])
-    }
-  }, [rToken?.address, facadeContract, account, blockNumber, chainId])
 
   return null
 }
@@ -281,7 +235,6 @@ const Updater = () => (
   <>
     <SearchParamsUpdater />
     <TokenUpdater />
-    <PendingBalancesUpdater />
     <TokensAllowanceUpdater />
     <PricesUpdater />
     <ExchangeRateUpdater />

@@ -8,12 +8,15 @@ import useDebounce from 'hooks/useDebounce'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { ArrowUpRight } from 'react-feather'
 import { blockTimestampAtom } from 'state/atoms'
 import { Box, BoxProps, Divider, Link, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import About from './About'
+import InfoBox, { ContentHead } from 'components/info-box'
+import { SmallButton } from 'components/button'
+import AuctionsSidebar from './auctions-sidebar'
 
 const getGnosisAuction = (auctionId: string): string => {
   return `https://gnosis-auction.eth.link/#/auction?auctionId=${auctionId}&chainId=1`
@@ -196,6 +199,7 @@ const FinalizedAuctions = ({ data, ...props }: TableProps) => {
 
 const Auctions = () => {
   const rToken = useRToken()
+  const [sidebar, setSidebar] = useState(false)
   const blockTimestamp = useDebounce(
     useAtomValue(blockTimestampAtom) || dayjs().unix(),
     60000
@@ -219,10 +223,24 @@ const Auctions = () => {
 
   return (
     <Container>
+      <Box variant="layout.verticalAlign">
+        <Box mb={4}>
+          <Text variant="strong" sx={{ fontSize: 3 }}>
+            {rToken?.symbol || ''} related Auctions
+          </Text>
+          <Text variant="legend" mt="1">
+            Ongoing & historical auctions of USD+ on Gnosis Easy Auction.
+          </Text>
+        </Box>
+        <SmallButton ml="auto" variant="muted" onClick={() => setSidebar(true)}>
+          <Trans>Check for auctions</Trans>
+        </SmallButton>
+      </Box>
       <OutgoingAuctions data={rows.current} mb={7} />
       <FinalizedAuctions data={rows.ended} />
       <Divider mx={-5} my={6} />
       <About />
+      {sidebar && <AuctionsSidebar onClose={() => setSidebar(false)} />}
     </Container>
   )
 }
