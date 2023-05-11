@@ -15,7 +15,6 @@ interface Props extends BoxProps {
   right?: React.ReactNode
   addressType?: ExplorerDataType
 }
-
 const InfoBox = ({ title, subtitle, light, ...props }: Props) => (
   <Box {...props}>
     <Text
@@ -100,6 +99,24 @@ export const InfoItem = ({
         {right}
       </Box>
     )}
+  </Box>
+)
+
+interface InfoProps extends Omit<BoxProps, 'title'> {
+  title: React.ReactNode | string
+  subtitle: React.ReactNode | string
+  icon?: React.ReactNode
+}
+
+export const Info = ({ title, subtitle, icon = null, ...props }: InfoProps) => (
+  <Box variant="layout.verticalAlign" {...props}>
+    {icon}
+    <Box ml={icon ? 3 : 0}>
+      <Text variant="subtitle" sx={{ fontSize: 1, display: 'block' }} mb={1}>
+        {title}
+      </Text>
+      <Text as="p">{subtitle}</Text>
+    </Box>
   </Box>
 )
 

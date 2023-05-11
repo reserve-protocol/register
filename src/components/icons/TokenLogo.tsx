@@ -48,7 +48,7 @@ const IMGS = new Set([
   'stkcvxmim-3lp3crv-f',
 ])
 
-const TokenLogo = ({ symbol, src, size = '1em', ...props }: Props) => {
+const TokenLogo = ({ symbol, src, size = '1em', sx = {}, ...props }: Props) => {
   let imgSrc = src
 
   if (!imgSrc) {
@@ -70,6 +70,7 @@ const TokenLogo = ({ symbol, src, size = '1em', ...props }: Props) => {
         border: '1px solid 0 0 1px 0px white',
         height: size,
         width: size,
+        ...sx,
       }}
     >
       <Image
