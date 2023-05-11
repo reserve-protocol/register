@@ -17,13 +17,12 @@ export const providerAtom = atom(
 
 export const getValidWeb3Atom = atom((get) => {
   const provider = get(providerAtom)
-  const block = get(blockAtom)
   const account = get(walletAtom)
   const chainId = get(chainIdAtom)
 
-  if (!provider || !block || chainId !== CHAIN_ID) {
+  if (!provider || chainId !== CHAIN_ID) {
     return { provider: null, block: null, account: null, chainId: null }
   }
 
-  return { provider, block, account, chainId }
+  return { provider, account, chainId }
 })

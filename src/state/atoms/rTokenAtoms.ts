@@ -5,7 +5,7 @@ import {
 } from 'components/rtoken-setup/atoms'
 import { atom } from 'jotai'
 import { atomWithReset, atomWithStorage } from 'jotai/utils'
-import { ReserveToken, StringMap } from 'types'
+import { ReserveToken, StringMap, Token } from 'types'
 
 // Current selected rToken address
 export const selectedRTokenAtom = atom('')
@@ -215,4 +215,22 @@ export const rTokenMetricsAtom = atom({
   transactionCount: '0',
   dailyTransactionCount: '0',
   dailyVolume: '$0',
+})
+
+// Asset registry
+export const rTokenAssetsAtom = atom<{
+  [x: string]: {
+    token: Token
+    priceUsd: number
+  }
+}>({})
+
+export const rTokenAssetERC20MapAtom = atom((get) => {
+  const assets = get(rTokenAssetsAtom)
+
+  return Object.keys(assets).reduce((map, assetKey) => {
+    map[assets[assetKey].token.address] = assetKey
+
+    return map
+  }, {} as { [x: string]: string })
 })
