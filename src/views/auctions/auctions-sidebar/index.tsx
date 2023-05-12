@@ -1,9 +1,8 @@
 import { Trans, t } from '@lingui/macro'
-import { InfoBox } from 'components'
 import TokenLogo from 'components/icons/TokenLogo'
 import { Info } from 'components/info-box'
 import Sidebar from 'components/sidebar'
-import { useAtomValue } from 'jotai'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useState } from 'react'
 import { AlertTriangle, ChevronDown, ChevronUp, X } from 'react-feather'
 import {
@@ -11,13 +10,18 @@ import {
   Button,
   Checkbox,
   Divider,
-  Image,
   Flex,
+  Image,
   Spinner,
   Text,
 } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { Auction, accumulatedRevenueAtom, auctionsOverviewAtom } from '../atoms'
+import {
+  Auction,
+  accumulatedRevenueAtom,
+  auctionsOverviewAtom,
+  selectedAuctionsAtom,
+} from '../atoms'
 
 const Header = ({ onClose }: { onClose(): void }) => {
   return (
@@ -64,7 +68,13 @@ const SwapIcon = ({ buy, sell }: { buy: string; sell: string }) => {
   )
 }
 
-const AuctionItem = ({ data }: { data: Auction }) => {
+const AuctionItem = ({
+  data,
+  onSelect,
+}: {
+  data: Auction
+  onSelect(): void
+}) => {
   const [isOpen, toggle] = useState(false)
 
   return (
@@ -85,7 +95,7 @@ const AuctionItem = ({ data }: { data: Auction }) => {
         <Box ml="auto">
           {!data.canStart ? (
             <label>
-              <Checkbox sx={{ cursor: 'pointer' }} />
+              <Checkbox onChange={onSelect} sx={{ cursor: 'pointer' }} />
             </label>
           ) : (
             <Box>
@@ -117,8 +127,22 @@ const AuctionItem = ({ data }: { data: Auction }) => {
   )
 }
 
+const setAuctionAtom = atom(null, (get, set, index: number) => {
+  const selected = get(selectedAuctionsAtom)
+  const itemIndex = selected.indexOf(index)
+
+  if (itemIndex === -1) {
+    selected.push(index)
+  } else {
+    selected.splice(itemIndex, 1)
+  }
+
+  set(selectedAuctionsAtom, [...selected])
+})
+
 const AvailableAuctions = () => {
   const data = useAtomValue(auctionsOverviewAtom)
+  const setSelectedAuctions = useSetAtom(setAuctionAtom)
 
   return (
     <Box
@@ -132,12 +156,16 @@ const AvailableAuctions = () => {
       </Text>
       {!!data &&
         data.revenue.map((auction, index) => (
-          <>
+          <Box key={index}>
             {!!index && (
               <Divider mx={-4} mt={3} sx={{ borderColor: 'darkBorder' }} />
             )}
-            <AuctionItem key={index} data={auction} />
-          </>
+            <AuctionItem
+              onSelect={() => setSelectedAuctions(index)}
+              key={index}
+              data={auction}
+            />
+          </Box>
         ))}
       {!data && <Spinner />}
     </Box>

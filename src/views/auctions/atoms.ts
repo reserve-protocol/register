@@ -25,6 +25,8 @@ export interface Auction {
   output: number // estimated token output
 }
 
+export const selectedAuctionsAtom = atom<number[]>([])
+
 const accumulatedRevenue = loadable(
   atom(async (get) => {
     const { provider, chainId } = get(getValidWeb3Atom)
