@@ -28,9 +28,17 @@ const RevenueAuctionList = () => {
       sx={{ backgroundColor: 'contentBackground' }}
       mb={4}
     >
-      <Text variant="subtitle" mb={4}>
-        <Trans>Revenue auctions</Trans>
-      </Text>
+      <Box variant="layout.verticalAlign" mb={4}>
+        <Text variant="subtitle">
+          <Trans>Revenue auctions</Trans>
+        </Text>
+        {!!data?.recollaterization && (
+          <Text ml="auto" variant="legend" sx={{ fontSize: 1 }}>
+            <Trans>Available after recollateralization</Trans>
+          </Text>
+        )}
+      </Box>
+
       {!!data &&
         data.revenue.map((auction, index) => (
           <Box key={index}>

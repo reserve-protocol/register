@@ -42,12 +42,19 @@ const RevenueAuctionItem = ({
             </Box>
           )}
         </Box>
-        {isOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+        {isOpen ? (
+          <ChevronUp size={18} />
+        ) : (
+          <ChevronDown
+            size={18}
+            color={!data.canStart ? '#FF7A00' : undefined}
+          />
+        )}
       </Box>
       {isOpen && (
         <>
           <Divider my={3} mx={-4} sx={{ borderColor: 'darkBorder' }} />
-          {data.canStart && (
+          {!data.canStart && (
             <Info
               icon={<Image src="/svgs/asterisk.svg" />}
               title={t`Tokens to match trade`}

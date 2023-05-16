@@ -31,7 +31,7 @@ const Sidebar = ({
         zIndex: 100001,
         display: 'flex',
         position: 'absolute',
-        maxWidth: ['100vw', '840px'],
+        maxWidth: ['100vw', '100vw', '840px'],
         width: ['100vw', '100vw', width],
         backgroundColor: 'background',
         right: 0,

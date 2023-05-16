@@ -5,6 +5,7 @@ import { Box, Button, Divider, Flex, Text } from 'theme-ui'
 import ConfirmAuction from './ConfirmAuction'
 import RevenueAuctionList from './RevenueAuctionList'
 import RevenueOverview from './RevenueOverview'
+import RecollaterizationAlert from './RecollaterizationAlert'
 
 const Header = ({ onClose }: { onClose(): void }) => (
   <Flex
@@ -24,18 +25,17 @@ const Header = ({ onClose }: { onClose(): void }) => (
   </Flex>
 )
 
-const AuctionsSidebar = ({ onClose }: { onClose(): void }) => {
-  return (
-    <Sidebar onClose={onClose} width="40vw">
-      <Header onClose={onClose} />
-      <RevenueOverview />
-      <Divider my={4} />
-      <Box px={4} sx={{ flexGrow: 1, overflow: 'auto' }}>
-        <RevenueAuctionList />
-      </Box>
-      <ConfirmAuction />
-    </Sidebar>
-  )
-}
+const AuctionsSidebar = ({ onClose }: { onClose(): void }) => (
+  <Sidebar onClose={onClose} width="540px">
+    <Header onClose={onClose} />
+    <RevenueOverview />
+    <Divider my={4} />
+    <RecollaterizationAlert />
+    <Box px={4} sx={{ flexGrow: 1, overflow: 'auto' }}>
+      <RevenueAuctionList />
+    </Box>
+    <ConfirmAuction />
+  </Sidebar>
+)
 
 export default AuctionsSidebar
