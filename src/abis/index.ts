@@ -88,6 +88,7 @@ export default <StringMap>{
   facade: FacadeInterface,
   facadeWrite: FacadeWriteInterface,
   main: MainInterface,
+  trader: RevenueTraderInterface,
   governance: GovernanceInterface,
   atoken: StaticATokenInterfcae,
   facadeAct: FacadeActInterface,

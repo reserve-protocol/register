@@ -65,6 +65,7 @@ const accumulatedRevenue = loadable(
   })
 )
 
+// TODO: This can be executed from the global context to display the number of auctions available
 const auctionsOverview = loadable(
   atom(
     async (
