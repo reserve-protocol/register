@@ -52,7 +52,11 @@ const RevenueAuctionList = () => {
             />
           </Box>
         ))}
-      {!data && <Spinner />}
+      {!data && (
+        <Box sx={{ textAlign: 'center' }}>
+          <Spinner size={24} />
+        </Box>
+      )}
     </Box>
   )
 }

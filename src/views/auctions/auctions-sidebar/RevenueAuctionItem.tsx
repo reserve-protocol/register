@@ -48,7 +48,7 @@ const RevenueAuctionItem = ({
           )}
         </Box>
         {isOpen ? (
-          <ChevronUp size={18} />
+          <ChevronUp size={18} color={!data.canStart ? '#FF7A00' : undefined} />
         ) : (
           <ChevronDown
             size={18}
