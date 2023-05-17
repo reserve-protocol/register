@@ -7,8 +7,9 @@ import TokenBalance from 'components/token-balance'
 import TrackAsset from 'components/track-asset'
 import { BigNumber } from 'ethers/lib/ethers'
 import useRToken from 'hooks/useRToken'
+import useTransactionCost from 'hooks/useTransactionCost'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   addTransactionAtom,
   pendingRSRSummaryAtom,
@@ -22,6 +23,7 @@ import {
 import { useTransaction } from 'state/web3/hooks/useTransactions'
 import { smallButton } from 'theme'
 import { Box, BoxProps, Divider, Flex, Grid, Text } from 'theme-ui'
+import { getTransactionWithGasLimit } from 'utils'
 import { RSR, TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
 
@@ -47,31 +49,40 @@ const PendingBalance = () => {
 const AvailableBalance = () => {
   const rToken = useRToken()
   const rate = useAtomValue(rsrExchangeRateAtom)
-
   const addTransaction = useSetAtom(addTransactionAtom)
   const { index, availableAmount } = useAtomValue(pendingRSRSummaryAtom)
   const [claiming, setClaiming] = useState('')
   const { account } = useWeb3React()
   const claimTx = useTransaction(claiming)
   const canWithdraw = useAtomValue(rTokenCollaterizedAtom)
+  const tx = useMemo(() => {
+    if (!rToken?.stToken?.address || !canWithdraw || !availableAmount) {
+      return null
+    }
+
+    return {
+      id: '',
+      description: t`Withdraw RSR`,
+      status: TRANSACTION_STATUS.PENDING,
+      value: availableAmount,
+      call: {
+        abi: 'stRSR',
+        address: rToken?.stToken?.address,
+        method: 'withdraw',
+        args: [account, index.add(BigNumber.from(1))],
+      },
+    }
+  }, [rToken?.address, availableAmount, account])
+  const [gasLimit] = useTransactionCost(!!tx ? [tx] : [])
 
   const handleClaim = () => {
-    const txId = uuid()
-    setClaiming(txId)
-    addTransaction([
-      {
-        id: txId,
-        description: t`Withdraw RSR`,
-        status: TRANSACTION_STATUS.PENDING,
-        value: availableAmount,
-        call: {
-          abi: 'stRSR',
-          address: rToken?.stToken?.address ?? ' ',
-          method: 'withdraw',
-          args: [account, index.add(BigNumber.from(1))],
-        },
-      },
-    ])
+    if (tx) {
+      const id = uuid()
+      setClaiming(id)
+      addTransaction([
+        { ...getTransactionWithGasLimit(tx, Math.max(gasLimit, 399489)), id },
+      ])
+    }
   }
 
   useEffect(() => {
@@ -94,7 +105,7 @@ const AvailableBalance = () => {
       <TokenBalance symbol="RSR" balance={availableAmount * rate} />
       <LoadingButton
         loading={!!claiming}
-        disabled={!availableAmount || !canWithdraw}
+        disabled={!gasLimit}
         text={t`Withdraw`}
         onClick={handleClaim}
         sx={{ ...smallButton }}
