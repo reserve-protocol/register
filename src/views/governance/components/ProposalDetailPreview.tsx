@@ -22,8 +22,8 @@ const parseCallDatas = (
   const contractProposals: ContractProposalMap = {}
   const unparsed: string[] = []
 
-  try {
-    for (let i = 0; i < addresses.length; i++) {
+  for (let i = 0; i < addresses.length; i++) {
+    try {
       const address = getAddress(addresses[i])
       const contractDetail = interfaceMap[address]
 
@@ -57,9 +57,9 @@ const parseCallDatas = (
       } else {
         unparsed.push(calldatas[i])
       }
+    } catch (e) {
+      console.error('Error parsing call data', e)
     }
-  } catch (e) {
-    console.error('Error parsing call datas', e)
   }
 
   return [contractProposals, unparsed]
