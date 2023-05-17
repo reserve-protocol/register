@@ -1,8 +1,9 @@
 import { Trans } from '@lingui/macro'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
-import { Box, Divider, Spinner, Text } from 'theme-ui'
+import { Box, Button, Divider, Spinner, Text } from 'theme-ui'
 import { auctionsOverviewAtom, selectedAuctionsAtom } from '../atoms'
 import RevenueAuctionItem from './RevenueAuctionItem'
+import { SmallButton } from 'components/button'
 
 const setAuctionAtom = atom(null, (get, set, index: number) => {
   const selected = get(selectedAuctionsAtom)

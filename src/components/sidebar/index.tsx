@@ -39,6 +39,7 @@ const Sidebar = ({
         boxShadow: '-32px 0px 64px rgba(0, 0, 0, 0.15)',
         top: 0,
         height: '100%',
+        overflow: 'hidden',
       })}
     >
       {children}

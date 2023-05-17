@@ -26,7 +26,7 @@ const Header = ({ onClose }: { onClose(): void }) => (
 )
 
 const AuctionsSidebar = ({ onClose }: { onClose(): void }) => (
-  <Sidebar onClose={onClose} width="540px">
+  <Sidebar onClose={onClose} width="600px">
     <Header onClose={onClose} />
     <RevenueOverview />
     <Divider my={4} />

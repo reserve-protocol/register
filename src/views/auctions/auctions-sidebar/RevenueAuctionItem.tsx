@@ -1,8 +1,8 @@
-import { t } from '@lingui/macro'
+import { Trans, t } from '@lingui/macro'
 import { Info } from 'components/info-box'
 import { useState } from 'react'
 import { AlertTriangle, ChevronDown, ChevronUp } from 'react-feather'
-import { Box, Checkbox, Divider, Image } from 'theme-ui'
+import { Box, Checkbox, Text, Divider, Image } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { Auction } from '../atoms'
 import SwapIcon from './SwapIcon'
@@ -15,6 +15,7 @@ const RevenueAuctionItem = ({
   onSelect(): void
 }) => {
   const [isOpen, toggle] = useState(false)
+  const isBelowMinTrade = +data.minAmount > +data.amount
 
   return (
     <Box>
@@ -31,15 +32,19 @@ const RevenueAuctionItem = ({
             data.buy.symbol
           }`}
         />
-        <Box ml="auto">
-          {!data.canStart ? (
+        <Box ml="auto" variant="layout.verticalAlign">
+          {data.canStart ? (
             <label>
               <Checkbox onChange={onSelect} sx={{ cursor: 'pointer' }} />
             </label>
           ) : (
-            <Box>
-              <AlertTriangle color="#FF7A00" />
-            </Box>
+            <Text sx={{ fontSize: 0, color: 'warning' }} mr={2}>
+              {isBelowMinTrade ? (
+                <Trans>Surplus below minimum trade</Trans>
+              ) : (
+                <Trans>Not available</Trans>
+              )}
+            </Text>
           )}
         </Box>
         {isOpen ? (
@@ -54,7 +59,7 @@ const RevenueAuctionItem = ({
       {isOpen && (
         <>
           <Divider my={3} mx={-4} sx={{ borderColor: 'darkBorder' }} />
-          {!data.canStart && (
+          {data.canStart && (
             <Info
               icon={<Image src="/svgs/asterisk.svg" />}
               title={t`Tokens to match trade`}
