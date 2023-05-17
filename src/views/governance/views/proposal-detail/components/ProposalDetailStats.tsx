@@ -60,6 +60,7 @@ const ProposalDetailStats = () => {
 
                 <Progress
                   max={1}
+                  mt={1}
                   sx={{
                     width: '100%',
                     color: 'success',

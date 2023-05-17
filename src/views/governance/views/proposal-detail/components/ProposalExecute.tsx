@@ -9,14 +9,21 @@ import { useTransaction } from 'state/web3/hooks/useTransactions'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
 import { proposalDetailAtom } from '../atom'
+import { CHAIN_ID } from 'utils/chains'
+import useBlockNumber from 'hooks/useBlockNumber'
 
 const ProposalExecute = () => {
-  const { account } = useWeb3React()
+  const { account, chainId } = useWeb3React()
+  const blockNumber = useBlockNumber()
   const governance = useAtomValue(rTokenGovernanceAtom)
   const addTransaction = useSetAtom(addTransactionAtom)
   const [txId, setTx] = useState('')
   const proposal = useAtomValue(proposalDetailAtom)
   const tx = useTransaction(txId)
+  const canExecute =
+    blockNumber &&
+    proposal?.executionStartBlock &&
+    proposal?.executionStartBlock <= blockNumber
 
   useEffect(() => {
     if (
@@ -26,6 +33,10 @@ const ProposalExecute = () => {
       setTx('')
     }
   }, [tx?.status])
+
+  if (!canExecute) {
+    return null
+  }
 
   const handleExecute = () => {
     if (account && governance.governor && proposal) {
@@ -60,7 +71,7 @@ const ProposalExecute = () => {
       small
       loading={!!txId}
       ml="auto"
-      disabled={!account}
+      disabled={!account || chainId !== CHAIN_ID}
       onClick={handleExecute}
       text={t`Execute proposal`}
     />
