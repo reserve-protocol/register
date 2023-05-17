@@ -73,15 +73,13 @@ const AvailableBalance = () => {
       },
     }
   }, [rToken?.address, availableAmount, account])
-  const [gasLimit] = useTransactionCost(!!tx ? [tx] : [])
+  const [, , gasLimit] = useTransactionCost(!!tx ? [tx] : [])
 
   const handleClaim = () => {
     if (tx) {
       const id = uuid()
       setClaiming(id)
-      addTransaction([
-        { ...getTransactionWithGasLimit(tx, Math.max(gasLimit, 399489)), id },
-      ])
+      addTransaction([{ ...getTransactionWithGasLimit(tx, gasLimit), id }])
     }
   }
 
