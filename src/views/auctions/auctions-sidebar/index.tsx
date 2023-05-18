@@ -6,6 +6,7 @@ import ConfirmAuction from './ConfirmAuction'
 import RevenueAuctionList from './RevenueAuctionList'
 import RevenueOverview from './RevenueOverview'
 import RecollaterizationAlert from './RecollaterizationAlert'
+import SettleableAuctions from './SettleableAuctions'
 
 const Header = ({ onClose }: { onClose(): void }) => (
   <Flex
@@ -32,6 +33,7 @@ const AuctionsSidebar = ({ onClose }: { onClose(): void }) => (
     <Divider my={4} />
     <RecollaterizationAlert />
     <Box px={4} sx={{ flexGrow: 1, overflow: 'auto' }}>
+      <SettleableAuctions />
       <RevenueAuctionList />
     </Box>
     <ConfirmAuction />
