@@ -53,15 +53,18 @@ export const useGovernanceTx = () => {
         quorumPercent: BigNumber.from(quorumPercent),
         timelockDelay: BigNumber.from(minDelay * 60 * 60),
       }
-
       const args = [
         rToken.address,
         !!defaultGovernance,
         unpause === '1',
         govConfig,
-        defaultGovernance ? ZERO_ADDRESS : owner,
-        guardian,
-        pauser,
+        {
+          owner: defaultGovernance ? ZERO_ADDRESS : owner,
+          guardian,
+          pausers: [],
+          shortFreezers: [],
+          longFreezers: [],
+        },
       ]
 
       return {

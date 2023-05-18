@@ -69,8 +69,11 @@ export interface RTokenConfiguration {
     dist: RevenueDist
     rewardRatio: BigNumber
     unstakingDelay: BigNumber
+    withdrawalLeak: BigNumber
+    warmupPeriod: BigNumber
     tradingDelay: BigNumber
-    auctionLength: BigNumber
+    batchAuctionLength: BigNumber
+    dutchAuctionLength: BigNumber
     backingBuffer: BigNumber
     maxTradeSlippage: BigNumber
     shortFreeze: BigNumber
@@ -149,13 +152,17 @@ export const getDeployParameters = (
       symbol: tokenConfig.ticker,
       mandate: tokenConfig.mandate,
       params: {
+        withdrawalLeak: parseEther('0'), // TODO: NEW
+        warmupPeriod: BigNumber.from('60'),
+        dutchAuctionLength: BigNumber.from('600'),
+
         minTradeVolume: parseEther(tokenConfig.minTrade.toString()),
         rTokenMaxTradeVolume: parseEther(tokenConfig.maxTrade.toString()),
         dist,
         rewardRatio: parseEther(tokenConfig.rewardRatio),
         unstakingDelay: BigNumber.from(tokenConfig.unstakingDelay),
         tradingDelay: BigNumber.from(tokenConfig.tradingDelay),
-        auctionLength: BigNumber.from(tokenConfig.auctionLength),
+        batchAuctionLength: BigNumber.from(tokenConfig.auctionLength),
         backingBuffer: parsePercent(tokenConfig.backingBuffer),
         maxTradeSlippage: parsePercent(tokenConfig.maxTradeSlippage),
         shortFreeze: BigNumber.from(tokenConfig.shortFreeze),
