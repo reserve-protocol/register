@@ -10,6 +10,7 @@ import {
   rTokenAtom,
   rTokenContractsAtom,
 } from 'state/atoms'
+import { promiseMulticall } from 'state/web3/lib/multicall'
 import { Token } from 'types'
 import { getContract } from 'utils'
 import { FACADE_ADDRESS, RSR_ADDRESS } from 'utils/addresses'
@@ -24,6 +25,37 @@ export interface Auction {
   canStart: boolean
   output: number // estimated token output
 }
+
+export interface AuctionToSettle {
+  type: 'Revenue' | 'Backing'
+  trader: string
+  sell: Token
+  buy: Token | null
+}
+
+export interface Trade {
+  id: string
+  amount: number
+  auctionId: number
+  buying: string
+  buyingTokenSymbol: string
+  sellingTokenSymbol: string
+  endAt: number
+  selling: string
+  startedAt: number
+  worstCasePrice: number
+}
+export const AUCTION_TYPES = {
+  REVENUE: 'Revenue',
+  BACKING: 'Recollaterization',
+}
+
+export const tradesAtom = atom<{ current: Trade[]; ended: Trade[] }>({
+  current: [],
+  ended: [],
+})
+export const currentTradesAtom = atom((get) => get(tradesAtom).current)
+export const endedTradesAtom = atom((get) => get(tradesAtom).ended)
 
 export const selectedAuctionsAtom = atom<number[]>([])
 
@@ -62,6 +94,62 @@ const accumulatedRevenue = loadable(
           priceUsd
       )
     }, 0)
+  })
+)
+
+const settleableAuctions = loadable(
+  atom(async (get): Promise<AuctionToSettle[] | null> => {
+    const { provider, chainId } = get(getValidWeb3Atom)
+    const rToken = get(rTokenAtom)
+    const assetMap = get(rTokenAssetERC20MapAtom)
+    const assets = get(rTokenAssetsAtom)
+    const { rsrTrader, rTokenTrader, backingManager } = get(rTokenContractsAtom)
+
+    if (!provider || !rToken || !Object.keys(assets).length || !rsrTrader) {
+      return null
+    }
+
+    const traders = [
+      {
+        address: rsrTrader,
+        buy: assets[assetMap[RSR_ADDRESS[chainId]]].token,
+        type: AUCTION_TYPES.REVENUE,
+      },
+      {
+        address: rTokenTrader,
+        buy: {
+          symbol: rToken.symbol,
+          address: rToken.address,
+          name: rToken.name,
+          decimals: rToken.decimals,
+        },
+        type: AUCTION_TYPES.REVENUE,
+      },
+      { address: backingManager, buy: null, type: AUCTION_TYPES.BACKING }, // TODO: What to show here?
+    ]
+
+    const result = await promiseMulticall(
+      traders.map(({ address }) => ({
+        abi: FacadeInterface,
+        address: FACADE_ADDRESS[chainId],
+        method: 'auctionsSettleable',
+        args: [address],
+      })),
+      provider
+    )
+
+    return result.reduce((auctionsToSettle, current, index) => {
+      auctionsToSettle.push(
+        ...current.map((erc20: string) => ({
+          type: traders[index].type,
+          trader: traders[index].address,
+          sell: assets[assetMap[erc20]],
+          buy: traders[index].buy,
+        }))
+      )
+
+      return auctionsToSettle
+    }, [] as AuctionToSettle[])
   })
 )
 
@@ -177,5 +265,6 @@ const auctionsOverview = loadable(
   )
 )
 
+export const auctionsToSettleAtom = simplifyLoadable(settleableAuctions)
 export const accumulatedRevenueAtom = simplifyLoadable(accumulatedRevenue)
 export const auctionsOverviewAtom = simplifyLoadable(auctionsOverview)
