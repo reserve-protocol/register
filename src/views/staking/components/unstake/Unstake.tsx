@@ -15,7 +15,7 @@ const Unstake = (props: BoxProps) => {
     <>
       {confirming && <ConfirmUnstake onClose={() => setConfirming(false)} />}
       <Card p={4} {...props}>
-        <UnstakeInput />
+        <UnstakeInput compact={false} />
         <Button
           disabled={!isValid}
           sx={{ width: '100%' }}

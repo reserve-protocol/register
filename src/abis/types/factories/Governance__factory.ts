@@ -1267,7 +1267,7 @@ const _abi = [
     stateMutability: "payable",
     type: "receive",
   },
-];
+] as const;
 
 export class Governance__factory {
   static readonly abi = _abi;

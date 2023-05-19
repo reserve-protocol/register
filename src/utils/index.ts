@@ -5,8 +5,9 @@ import { t } from '@lingui/macro'
 import { Contract } from 'ethers'
 import { parseEther, parseUnits } from 'ethers/lib/utils'
 import humanizeDuration from 'humanize-duration'
-import { BigNumberMap, TransactionState } from 'types'
+import { BigNumberMap, ContractCall, TransactionState } from 'types'
 import { BI_ZERO } from './constants'
+import { ERC20Interface } from 'abis'
 
 export const decimalPattern = /^[0-9]*[.]?[0-9]*$/i
 export const numberPattern = /^\d+$/
@@ -19,6 +20,29 @@ export function isAddress(value: string): string | false {
   } catch {
     return false
   }
+}
+
+export function getTokenMetaCalls(address: string): ContractCall[] {
+  return [
+    {
+      address,
+      abi: ERC20Interface,
+      args: [],
+      method: 'name',
+    },
+    {
+      address,
+      abi: ERC20Interface,
+      args: [],
+      method: 'symbol',
+    },
+    {
+      address,
+      abi: ERC20Interface,
+      args: [],
+      method: 'decimals',
+    },
+  ]
 }
 
 export const isAmountValid = (value: BigNumber, max: BigNumber) =>
@@ -113,6 +137,7 @@ export function calculateApy(
 
   const priceGrowth =
     ((recentRate.basketRate - lastRate.basketRate) / lastRate.basketRate) * 100
+
   const stGrowth =
     ((recentRate.rsrExchangeRate - lastRate.rsrExchangeRate) /
       lastRate.rsrExchangeRate) *

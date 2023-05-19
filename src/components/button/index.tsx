@@ -36,7 +36,16 @@ export const LoadingButton = ({
             justifyContent: 'center',
           }}
         >
-          <Spinner sx={{ color: '--theme-ui-colors-text' }} size={14} mr={2} />{' '}
+          <Spinner
+            sx={{
+              color:
+                props.variant === 'primary'
+                  ? 'white'
+                  : '--theme-ui-colors-text',
+            }}
+            size={14}
+            mr={2}
+          />{' '}
           {loadingText}
         </Text>
       ) : (

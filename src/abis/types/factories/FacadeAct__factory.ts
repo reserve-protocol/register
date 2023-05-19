@@ -8,14 +8,9 @@ import type { FacadeAct, FacadeActInterface } from "../FacadeAct";
 
 const _abi = [
   {
-    inputs: [],
-    name: "UIntOutOfBounds",
-    type: "error",
-  },
-  {
     inputs: [
       {
-        internalType: "contract RTokenP1",
+        internalType: "contract IRToken",
         name: "rToken",
         type: "address",
       },
@@ -28,28 +23,51 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "contract RTokenP1",
-        name: "rToken",
-        type: "address",
+        internalType: "bytes[]",
+        name: "data",
+        type: "bytes[]",
       },
     ],
-    name: "getActCalldata",
+    name: "multicall",
     outputs: [
       {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-      {
-        internalType: "bytes",
-        name: "",
-        type: "bytes",
+        internalType: "bytes[]",
+        name: "results",
+        type: "bytes[]",
       },
     ],
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+  {
+    inputs: [
+      {
+        internalType: "contract IRevenueTrader",
+        name: "revenueTrader",
+        type: "address",
+      },
+      {
+        internalType: "contract IERC20[]",
+        name: "toSettle",
+        type: "address[]",
+      },
+      {
+        internalType: "contract IERC20[]",
+        name: "toStart",
+        type: "address[]",
+      },
+      {
+        internalType: "enum TradeKind",
+        name: "kind",
+        type: "uint8",
+      },
+    ],
+    name: "runRevenueAuctions",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+] as const;
 
 export class FacadeAct__factory {
   static readonly abi = _abi;

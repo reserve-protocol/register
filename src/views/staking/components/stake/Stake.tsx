@@ -15,7 +15,7 @@ const Stake = (props: BoxProps) => {
     <>
       {confirming && <ConfirmStake onClose={() => setConfirming(false)} />}
       <Card p={4} {...props}>
-        <StakeInput />
+        <StakeInput compact={false} />
         <Button
           disabled={!isValid}
           sx={{ width: '100%' }}
