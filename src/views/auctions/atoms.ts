@@ -58,6 +58,7 @@ export const currentTradesAtom = atom((get) => get(tradesAtom).current)
 export const endedTradesAtom = atom((get) => get(tradesAtom).ended)
 
 export const selectedAuctionsAtom = atomWithReset<number[]>([])
+export const auctionSessionAtom = atom(0)
 
 const accumulatedRevenue = loadable(
   atom(async (get) => {
@@ -65,8 +66,9 @@ const accumulatedRevenue = loadable(
     const rToken = get(rTokenAtom)
     const assetMap = get(rTokenAssetERC20MapAtom)
     const assets = get(rTokenAssetsAtom)
+    const session = get(auctionSessionAtom)
 
-    if (!provider || !rToken || !Object.keys(assets).length) {
+    if (!provider || !rToken || !Object.keys(assets).length || !session) {
       return 0
     }
 
@@ -104,8 +106,15 @@ const settleableAuctions = loadable(
     const assetMap = get(rTokenAssetERC20MapAtom)
     const assets = get(rTokenAssetsAtom)
     const { rsrTrader, rTokenTrader, backingManager } = get(rTokenContractsAtom)
+    const session = get(auctionSessionAtom)
 
-    if (!provider || !rToken || !Object.keys(assets).length || !rsrTrader) {
+    if (
+      !provider ||
+      !rToken ||
+      !Object.keys(assets).length ||
+      !rsrTrader ||
+      !session
+    ) {
       return null
     }
 
@@ -168,6 +177,7 @@ const auctionsOverview = loadable(
       const assetMap = get(rTokenAssetERC20MapAtom)
       const assets = get(rTokenAssetsAtom)
       const rToken = get(rTokenAtom)
+      const session = get(auctionSessionAtom)
 
       if (
         !provider ||
@@ -175,7 +185,8 @@ const auctionsOverview = loadable(
         !rTokenTrader ||
         !backingManager ||
         !rToken ||
-        !Object.keys(assets).length
+        !Object.keys(assets).length ||
+        !session
       ) {
         return null
       }

@@ -19,7 +19,7 @@ const settleableAuctionsAtom = atom(
 const Auctions = () => {
   const rToken = useRToken()
   const [sidebar, setSidebar] = useState(false)
-  const toSettle = useAtomValue(settleableAuctionsAtom)
+  // const toSettle = useAtomValue(settleableAuctionsAtom)
 
   return (
     <>
