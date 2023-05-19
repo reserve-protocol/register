@@ -1,9 +1,11 @@
 import { t, Trans } from '@lingui/macro'
+import { Button } from 'components'
+import { SmallButton } from 'components/button'
 import TokenItem from 'components/token-item'
 import dayjs from 'dayjs'
 import { useMemo } from 'react'
 import { ArrowUpRight } from 'react-feather'
-import { Box, Link, Text } from 'theme-ui'
+import { Box, Flex, Link, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 
 const getGnosisAuction = (auctionId: string): string => {
@@ -46,18 +48,19 @@ const useColumns = (ended = false) => {
         ),
       },
       {
-        Header: '',
+        Header: () => <Box sx={{ textAlign: 'right' }}>Auction link</Box>,
         accessor: 'auctionId',
         Cell: (cell: any) => (
-          <Link href={getGnosisAuction(cell.cell.value)} target="_blank">
-            <Box
-              variant="layout.verticalAlign"
-              sx={{ justifyContent: 'right' }}
-            >
-              <Trans>View</Trans>
-              <ArrowUpRight style={{ marginLeft: 10 }} size={16} />
-            </Box>
-          </Link>
+          <Flex sx={{ justifyContent: 'right' }}>
+            <Link href={getGnosisAuction(cell.cell.value)} target="_blank">
+              <SmallButton variant="muted">
+                <Box variant="layout.verticalAlign">
+                  <Trans>Auction</Trans>
+                  <ArrowUpRight style={{ marginLeft: 10 }} size={14} />
+                </Box>
+              </SmallButton>
+            </Link>
+          </Flex>
         ),
       },
     ],
