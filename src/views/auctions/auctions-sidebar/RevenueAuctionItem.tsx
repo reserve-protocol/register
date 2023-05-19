@@ -34,9 +34,11 @@ const RevenueAuctionItem = ({
         />
         <Box ml="auto" variant="layout.verticalAlign">
           {data.canStart ? (
-            <label>
-              <Checkbox onChange={onSelect} sx={{ cursor: 'pointer' }} />
-            </label>
+            <Box sx={{ position: 'relative' }}>
+              <label>
+                <Checkbox onChange={onSelect} sx={{ cursor: 'pointer' }} />
+              </label>
+            </Box>
           ) : (
             <Text sx={{ fontSize: 0, color: 'warning' }} mr={2}>
               {isBelowMinTrade ? (

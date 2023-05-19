@@ -36,7 +36,7 @@ const AuctionsSidebar = ({ onClose }: { onClose(): void }) => (
       <SettleableAuctions />
       <RevenueAuctionList />
     </Box>
-    <ConfirmAuction />
+    <ConfirmAuction onClose={onClose} />
   </Sidebar>
 )
 

@@ -2,7 +2,7 @@ import { FacadeInterface } from 'abis'
 import { Facade } from 'abis/types'
 import { formatUnits } from 'ethers/lib/utils'
 import { atom } from 'jotai'
-import { loadable } from 'jotai/utils'
+import { atomWithReset, loadable } from 'jotai/utils'
 import {
   getValidWeb3Atom,
   rTokenAssetERC20MapAtom,
@@ -57,7 +57,7 @@ export const tradesAtom = atom<{ current: Trade[]; ended: Trade[] }>({
 export const currentTradesAtom = atom((get) => get(tradesAtom).current)
 export const endedTradesAtom = atom((get) => get(tradesAtom).ended)
 
-export const selectedAuctionsAtom = atom<number[]>([])
+export const selectedAuctionsAtom = atomWithReset<number[]>([])
 
 const accumulatedRevenue = loadable(
   atom(async (get) => {

@@ -9,7 +9,7 @@ interface Props extends BoxProps {
 const EstimatedGasInfo = ({ fee, ...props }: Props) => {
   return (
     <Box sx={{ fontSize: 1, textAlign: 'center' }} {...props}>
-      <Text mr={1}>
+      <Text variant="legend" mr={1}>
         <Trans>Estimated gas cost:</Trans>
       </Text>
       {fee ? (
