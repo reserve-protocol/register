@@ -4,9 +4,36 @@ import { useEffect } from 'react'
 import { Box } from 'theme-ui'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import useAuctions from './useAuctions'
+import {
+  auctionsOverviewAtom,
+  auctionsToSettleAtom,
+  selectedAuctionsAtom,
+} from '../atoms'
+import { atom, useAtomValue } from 'jotai'
+
+const confirmButtonLabelAtom = atom((get) => {
+  const settleable = get(auctionsToSettleAtom) || []
+  const selectedAuctions = get(selectedAuctionsAtom)
+  const { recollaterization } = get(auctionsOverviewAtom) || {}
+
+  let label = ''
+
+  if (settleable.length) {
+    label += `Settle ${settleable.length} previous & `
+  }
+
+  if (recollaterization) {
+    label += 'Start next recollaterization auction'
+  } else {
+    label += `Start ${selectedAuctions.length} new auctions`
+  }
+
+  return label
+})
 
 const ConfirmAuction = ({ onClose }: { onClose(): void }) => {
   const { tx, onExecute, fee, status } = useAuctions()
+  const btnLabel = useAtomValue(confirmButtonLabelAtom)
   const isLoading =
     status === TRANSACTION_STATUS.PENDING ||
     status === TRANSACTION_STATUS.SIGNING
@@ -24,8 +51,8 @@ const ConfirmAuction = ({ onClose }: { onClose(): void }) => {
     <Box p={4} sx={{ borderTop: '1px solid', borderColor: 'text' }}>
       <LoadingButton
         sx={{ width: '100%' }}
-        text="Trigger auctions"
-        variant="primary"
+        text={btnLabel}
+        variant={isLoading ? 'accentAction' : 'primary'}
         disabled={!fee}
         loading={isLoading}
         onClick={onExecute}
