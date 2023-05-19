@@ -3,16 +3,15 @@ import { Box, Button, Text } from 'theme-ui'
 import useAuctions from './useAuctions'
 
 const ConfirmAuction = () => {
-  const { txs, onExecute, fee } = useAuctions()
-  const noAuctions = !txs.length
+  const { tx, onExecute, fee } = useAuctions()
 
   return (
     <Box p={4} sx={{ borderTop: '1px solid', borderColor: 'text' }}>
-      <Button disabled={noAuctions} onClick={onExecute} sx={{ width: '100%' }}>
-        {noAuctions ? (
+      <Button disabled={!tx} onClick={onExecute} sx={{ width: '100%' }}>
+        {!tx ? (
           <Trans>No auctions selected</Trans>
         ) : (
-          <Text>Trigger {txs.length} auctions</Text>
+          <Text>Trigger auctions</Text>
         )}
       </Button>
     </Box>
