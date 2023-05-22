@@ -1,5 +1,4 @@
 import { t, Trans } from '@lingui/macro'
-import { Button } from 'components'
 import { SmallButton } from 'components/button'
 import TokenItem from 'components/token-item'
 import dayjs from 'dayjs'
