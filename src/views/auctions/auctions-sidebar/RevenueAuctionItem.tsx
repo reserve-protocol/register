@@ -6,6 +6,9 @@ import { Box, Checkbox, Divider, Image, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { Auction } from '../atoms'
 import SwapIcon from './SwapIcon'
+import GaugeIcon from 'components/icons/GaugeIcon'
+import TokenLogo from 'components/icons/TokenLogo'
+import useRToken from 'hooks/useRToken'
 
 const RevenueAuctionItem = ({
   data,
@@ -16,6 +19,7 @@ const RevenueAuctionItem = ({
 }) => {
   const [isOpen, toggle] = useState(false)
   const isBelowMinTrade = +data.minAmount > +data.amount
+  const rToken = useRToken()
 
   return (
     <Box>
@@ -63,14 +67,19 @@ const RevenueAuctionItem = ({
           <Divider my={3} mx={-4} sx={{ borderColor: 'darkBorder' }} />
           {data.canStart && (
             <Info
-              icon={<Image src="/svgs/asterisk.svg" />}
+              icon={
+                <TokenLogo
+                  symbol={data.buy.symbol}
+                  src={data.buy.symbol === 'RSR' ? undefined : rToken?.logo}
+                />
+              }
               title={t`Tokens to match trade`}
               subtitle={`≈${formatCurrency(data.output)} ${data.buy.symbol}`}
               mb={3}
             />
           )}
           <Info
-            icon={<Image src="/svgs/asterisk.svg" />}
+            icon={<GaugeIcon />}
             title={t`Minimum trade size`}
             subtitle={`${formatCurrency(+data.minAmount)} ${data.sell.symbol}`}
           />

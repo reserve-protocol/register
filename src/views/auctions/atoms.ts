@@ -60,6 +60,8 @@ export const endedTradesAtom = atom((get) => get(tradesAtom).ended)
 export const selectedAuctionsAtom = atomWithReset<number[]>([])
 export const auctionSessionAtom = atom(0)
 
+export const auctionSidebarAtom = atom<boolean>(false)
+
 const accumulatedRevenue = loadable(
   atom(async (get) => {
     const { provider, chainId } = get(getValidWeb3Atom)

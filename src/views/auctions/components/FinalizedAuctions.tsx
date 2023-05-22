@@ -30,7 +30,7 @@ const FinalizedAuctions = (props: BoxProps) => {
             <Trans>No ended auctions</Trans>
           </Text>
         </Box>
-      )}{' '}
+      )}
     </Box>
   )
 }

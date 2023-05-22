@@ -2,31 +2,25 @@ import { Trans } from '@lingui/macro'
 import { Container } from 'components'
 import { SmallButton } from 'components/button'
 import useRToken from 'hooks/useRToken'
-import { atom, useAtomValue } from 'jotai'
-import { useState } from 'react'
+import { useAtom } from 'jotai'
 import { Box, Divider, Text } from 'theme-ui'
-import { auctionsToSettleAtom } from './atoms'
+import { auctionSidebarAtom } from './atoms'
 import AuctionsSidebar from './auctions-sidebar'
 import About from './components/About'
 import FinalizedAuctions from './components/FinalizedAuctions'
 import OngoingAuctions from './components/OngoingAuctions'
 import TradesUpdater from './components/TradesUpdater'
 
-const settleableAuctionsAtom = atom(
-  (get) => (get(auctionsToSettleAtom) || []).length
-)
-
 const Auctions = () => {
   const rToken = useRToken()
-  const [sidebar, setSidebar] = useState(false)
-  // const toSettle = useAtomValue(settleableAuctionsAtom)
+  const [sidebar, setSidebar] = useAtom(auctionSidebarAtom)
 
   return (
     <>
       <TradesUpdater />
       <Container>
         <Box variant="layout.verticalAlign">
-          <Box mb={4}>
+          <Box mb={4} ml={3}>
             <Text variant="strong" sx={{ fontSize: 3 }}>
               {rToken?.symbol || ''} related Auctions
             </Text>

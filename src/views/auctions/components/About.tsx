@@ -142,22 +142,10 @@ const About = (props: BoxProps) => {
           </Text>
           <Text variant="legend" as="p" mb={4}>
             <Trans>
-              Anyone can click the button below to trigger an auction for any
-              revenue that has accrued or for rebalances that need to happen.
-              Please note that for RTokens with many collateral types in the
-              basket, this may be an expensive transaction to execute.
-            </Trans>
-          </Text>
-          <RunAuctions />
-          <Text mt={6} mb={3} variant="strong">
-            <Trans>
-              Coming Soon: See current surplus available for auction
-            </Trans>
-          </Text>
-          <Text variant="legend" as="p" mb={4}>
-            <Trans>
-              We aim to add a way to view the current auctions that could be
-              triggered but have not yet.
+              Anyone can click the button above to check and trigger an auction
+              for any revenue that has accrued or for rebalances that need to
+              happen. Please note that for RTokens with many collateral types in
+              the basket, this may be an expensive transaction to execute.
             </Trans>
           </Text>
         </Box>
