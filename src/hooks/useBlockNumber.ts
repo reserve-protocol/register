@@ -5,7 +5,7 @@ import {
   blockAtom,
   blockTimestampAtom,
   chainIdAtom,
-  currentProvierAtom,
+  providerAtom,
 } from './../state/atoms'
 import useDebounce from './useDebounce'
 import useIsWindowVisible from './useIsWindowVisible'
@@ -62,7 +62,7 @@ function useBlock() {
 export function BlockUpdater() {
   const setBlock = useSetAtom(blockAtom)
   const setChain = useSetAtom(chainIdAtom)
-  const setProvider = useSetAtom(currentProvierAtom)
+  const setProvider = useSetAtom(providerAtom)
   const setBlockTimestamp = useSetAtom(blockTimestampAtom)
   const block = useBlock()
   const { provider, chainId } = useWeb3React()

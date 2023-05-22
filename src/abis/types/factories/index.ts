@@ -10,6 +10,7 @@ export { BackingManager__factory } from "./BackingManager__factory";
 export { BasketHandler__factory } from "./BasketHandler__factory";
 export { Broker__factory } from "./Broker__factory";
 export { Collateral__factory } from "./Collateral__factory";
+export { ConvexStakingWrapper__factory } from "./ConvexStakingWrapper__factory";
 export { Deployer__factory } from "./Deployer__factory";
 export { Distributor__factory } from "./Distributor__factory";
 export { Facade__factory } from "./Facade__factory";

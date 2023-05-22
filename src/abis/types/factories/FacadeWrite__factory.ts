@@ -349,7 +349,7 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
-];
+] as const;
 
 export class FacadeWrite__factory {
   static readonly abi = _abi;

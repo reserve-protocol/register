@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import useRToken from 'hooks/useRToken'
 import React from 'react'
 import { Box, BoxProps, Image } from 'theme-ui'
 
@@ -48,13 +49,18 @@ const IMGS = new Set([
   'stkcvxmim-3lp3crv-f',
 ])
 
-const TokenLogo = ({ symbol, src, size = '1em', ...props }: Props) => {
+const TokenLogo = ({ symbol, src, size = '1em', sx = {}, ...props }: Props) => {
   let imgSrc = src
+  const rToken = useRToken()
 
   if (!imgSrc) {
-    imgSrc = IMGS.has(symbol?.toLowerCase() ?? '')
-      ? `/svgs/${symbol?.toLowerCase()}.svg`
-      : '/svgs/default.svg'
+    if (rToken?.symbol === symbol) {
+      imgSrc = rToken?.logo
+    } else {
+      imgSrc = IMGS.has(symbol?.toLowerCase() ?? '')
+        ? `/svgs/${symbol?.toLowerCase()}.svg`
+        : '/svgs/default.svg'
+    }
   }
 
   return (
@@ -70,6 +76,7 @@ const TokenLogo = ({ symbol, src, size = '1em', ...props }: Props) => {
         border: '1px solid 0 0 1px 0px white',
         height: size,
         width: size,
+        ...sx,
       }}
     >
       <Image

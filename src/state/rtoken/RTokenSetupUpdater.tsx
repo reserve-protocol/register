@@ -2,6 +2,7 @@ import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import {
   Asset as AssetAbi,
+  AssetInterface,
   AssetRegistryInterface,
   BackingManagerInterface,
   BasketHandlerInterface,
@@ -20,6 +21,7 @@ import useRToken from 'hooks/useRToken'
 import { useAtom, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import {
+  rTokenAssetsAtom,
   rTokenCollateralAssetsAtom,
   rTokenCollaterizedAtom,
   rTokenContractsAtom,
@@ -27,8 +29,8 @@ import {
   rTokenRevenueSplitAtom,
 } from 'state/atoms'
 import { promiseMulticall } from 'state/web3/lib/multicall'
-import { ContractCall, StringMap } from 'types'
-import { getContract } from 'utils'
+import { ContractCall, StringMap, Token } from 'types'
+import { getContract, getTokenMetaCalls } from 'utils'
 import { FURNACE_ADDRESS, ST_RSR_ADDRESS } from 'utils/addresses'
 
 const shareToPercent = (shares: number): string => {
@@ -47,6 +49,7 @@ const RTokenSetupUpdater = () => {
   const setRTokenParams = useSetAtom(rTokenParamsAtom)
   const setCollateralAssets = useSetAtom(rTokenCollateralAssetsAtom)
   const setBackingCollateralStatus = useSetAtom(rTokenCollaterizedAtom)
+  const setRTokenAssets = useSetAtom(rTokenAssetsAtom)
   const [contracts, setRTokenContracts] = useAtom(rTokenContractsAtom)
 
   const fetchParams = useCallback(
@@ -120,6 +123,7 @@ const RTokenSetupUpdater = () => {
         )
 
         // Revenue distribution
+        // TODO: Maybe better to move this to theGraph
         const contract = getContract(distribution, DistributorAbi, provider)
         const events = await contract.queryFilter(
           'DistributionSet(address,uint16,uint16)'
@@ -181,6 +185,7 @@ const RTokenSetupUpdater = () => {
           redemptionThrottle,
           rTokenAsset,
           isCollaterized,
+          registry,
         ] = await promiseMulticall(
           [
             {
@@ -241,6 +246,12 @@ const RTokenSetupUpdater = () => {
               args: [],
               method: 'fullyCollateralized',
             },
+            {
+              abi: AssetRegistryInterface,
+              address: assetRegistry,
+              args: [],
+              method: 'getRegistry',
+            },
           ],
           provider
         )
@@ -294,6 +305,51 @@ const RTokenSetupUpdater = () => {
           rTokenAsset,
           basketHandler,
         })
+
+        // Set asset registry
+        if (registry) {
+          const [erc20s, assets] = registry as [string[], string[]]
+          const calls: ContractCall[] = []
+
+          for (let i = 0; i < assets.length; i++) {
+            calls.push(...getTokenMetaCalls(erc20s[i]))
+            calls.push({
+              address: assets[i],
+              abi: AssetInterface,
+              args: [],
+              method: 'price',
+            })
+          }
+
+          const result = await promiseMulticall(calls, provider)
+
+          const registeredAssets: {
+            [x: string]: {
+              token: Token
+              priceUsd: number
+            }
+          } = {}
+
+          // For each asset 4 items of the result array
+          for (let i = 0; i < assets.length; i++) {
+            const [name, symbol, decimals, priceRange] = result.splice(0, 4)
+
+            registeredAssets[assets[i]] = {
+              token: {
+                address: erc20s[i],
+                name,
+                symbol,
+                decimals,
+              },
+              priceUsd:
+                (Number(formatEther(priceRange[0])) +
+                  Number(formatEther(priceRange[1]))) /
+                2,
+            }
+          }
+
+          setRTokenAssets(registeredAssets)
+        }
       } catch (e) {
         console.error('Error getting RToken Setup', e)
       }
@@ -348,9 +404,9 @@ const RTokenSetupUpdater = () => {
     }
   }, [rToken?.main, provider])
 
-  useEffect(() => {
-    fetchBasketAssets()
-  }, [contracts?.assetRegistry, provider])
+  // useEffect(() => {
+  //   fetchBasketAssets()
+  // }, [contracts?.assetRegistry, provider])
 
   return null
 }

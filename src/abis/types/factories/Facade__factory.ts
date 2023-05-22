@@ -15,6 +15,25 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "contract ITrading",
+        name: "trader",
+        type: "address",
+      },
+    ],
+    name: "auctionsSettleable",
+    outputs: [
+      {
+        internalType: "contract IERC20[]",
+        name: "erc20s",
+        type: "address[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "contract IRToken",
         name: "rToken",
         type: "address",
@@ -39,7 +58,7 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "contract RTokenP1",
+        internalType: "contract IRToken",
         name: "rToken",
         type: "address",
       },
@@ -68,7 +87,36 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "contract RTokenP1",
+        internalType: "contract IRToken",
+        name: "rToken",
+        type: "address",
+      },
+    ],
+    name: "balancesAcrossAllTraders",
+    outputs: [
+      {
+        internalType: "contract IERC20[]",
+        name: "erc20s",
+        type: "address[]",
+      },
+      {
+        internalType: "uint256[]",
+        name: "balances",
+        type: "uint256[]",
+      },
+      {
+        internalType: "uint256[]",
+        name: "balancesNeededByBackingManager",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "contract IRToken",
         name: "rToken",
         type: "address",
       },
@@ -138,6 +186,11 @@ const _abi = [
         name: "deposits",
         type: "uint256[]",
       },
+      {
+        internalType: "uint192[]",
+        name: "depositsUoA",
+        type: "uint192[]",
+      },
     ],
     stateMutability: "nonpayable",
     type: "function",
@@ -160,6 +213,40 @@ const _abi = [
       {
         internalType: "uint256",
         name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "contract IBackingManager",
+        name: "bm",
+        type: "address",
+      },
+    ],
+    name: "nextRecollateralizationAuction",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "canStart",
+        type: "bool",
+      },
+      {
+        internalType: "contract IERC20",
+        name: "sell",
+        type: "address",
+      },
+      {
+        internalType: "contract IERC20",
+        name: "buy",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "sellAmount",
         type: "uint256",
       },
     ],
@@ -234,7 +321,7 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "contract RTokenP1",
+        internalType: "contract IRToken",
         name: "rToken",
         type: "address",
       },
@@ -267,6 +354,79 @@ const _abi = [
         name: "rToken",
         type: "address",
       },
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        internalType: "uint48",
+        name: "basketNonce",
+        type: "uint48",
+      },
+    ],
+    name: "redeem",
+    outputs: [
+      {
+        internalType: "address[]",
+        name: "tokens",
+        type: "address[]",
+      },
+      {
+        internalType: "uint256[]",
+        name: "withdrawals",
+        type: "uint256[]",
+      },
+      {
+        internalType: "bool",
+        name: "isProrata",
+        type: "bool",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "contract IRevenueTrader",
+        name: "revenueTrader",
+        type: "address",
+      },
+    ],
+    name: "revenueOverview",
+    outputs: [
+      {
+        internalType: "contract IERC20[]",
+        name: "erc20s",
+        type: "address[]",
+      },
+      {
+        internalType: "bool[]",
+        name: "canStart",
+        type: "bool[]",
+      },
+      {
+        internalType: "uint256[]",
+        name: "surpluses",
+        type: "uint256[]",
+      },
+      {
+        internalType: "uint256[]",
+        name: "minTradeAmounts",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "contract IRToken",
+        name: "rToken",
+        type: "address",
+      },
     ],
     name: "stToken",
     outputs: [
@@ -279,7 +439,7 @@ const _abi = [
     stateMutability: "view",
     type: "function",
   },
-];
+] as const;
 
 export class Facade__factory {
   static readonly abi = _abi;
