@@ -1,14 +1,14 @@
-import { parsePercent } from './../../utils/index'
 import { BigNumber } from '@ethersproject/bignumber'
 import { parseEther } from '@ethersproject/units'
-import { ethers } from 'ethers'
-import { StringMap } from 'types'
-import { ZERO_ADDRESS } from 'utils/addresses'
 import {
   BackupBasket,
   Basket,
   RevenueSplit,
 } from 'components/rtoken-setup/atoms'
+import { ethers } from 'ethers'
+import { StringMap } from 'types'
+import { ZERO_ADDRESS } from 'utils/addresses'
+import { parsePercent } from './../../utils/index'
 
 export const governanceDefaultValues = {
   defaultGovernance: true,
@@ -45,6 +45,9 @@ export const defaultValues = {
   maxTrade: '1000000',
   shortFreeze: '259200', // 3 days
   longFreeze: '604800', // 1 week
+  withdrawalLeak: '5', // 5%
+  warmupPeriod: '900', // 15minutes
+  dutchAuctionLength: '1800',
   // governance
   ...governanceDefaultValues,
 }
@@ -152,10 +155,9 @@ export const getDeployParameters = (
       symbol: tokenConfig.ticker,
       mandate: tokenConfig.mandate,
       params: {
-        withdrawalLeak: parseEther('0'), // TODO: NEW
-        warmupPeriod: BigNumber.from('60'),
-        dutchAuctionLength: BigNumber.from('600'),
-
+        withdrawalLeak: parsePercent(tokenConfig.withdrawalLeak),
+        warmupPeriod: BigNumber.from(tokenConfig.warmupPeriod),
+        dutchAuctionLength: BigNumber.from(tokenConfig.dutchAuctionLength),
         minTradeVolume: parseEther(tokenConfig.minTrade.toString()),
         rTokenMaxTradeVolume: parseEther(tokenConfig.maxTrade.toString()),
         dist,

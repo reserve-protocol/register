@@ -44,6 +44,19 @@ const OtherForm = (props: BoxProps) => {
         }}
       />
       <FormField
+        label={t`Withdrawal leak (%)`}
+        placeholder={t`Input withdrawal leak %`}
+        help={t`The fraction of RSR stake that should be permitted to withdraw without a refresh. When cumulative withdrawals (or a single withdrawal) exceed this fraction, gas must be paid to refresh all assets.`}
+        mb={3}
+        name="withdrawalLeak"
+        options={{
+          required: true,
+          pattern: decimalPattern,
+          min: 0,
+          max: 25,
+        }}
+      />
+      <FormField
         label={t`Unstaking Delay (s)`}
         placeholder={t`Delay in Seconds`}
         help={t`Unstaking delay - number of seconds that all RSR unstaking must be delayed in order to account for stakers trying to frontrun defaults and needs to be longer than "governance" for proper incentives for basket changes.`}

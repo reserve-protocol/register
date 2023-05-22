@@ -9,9 +9,16 @@ import { decimalPattern, numberPattern, parseDuration } from 'utils'
  */
 const BackingForm = (props: BoxProps) => {
   const { watch } = useFormContext()
-  const [tradingDelayHelp, auctionLengthHelp]: string[] = watch([
+  const [
+    tradingDelayHelp,
+    auctionLengthHelp,
+    dutchAuctionLengthHelp,
+    warnupPeriodHelp,
+  ]: string[] = watch([
     'tradingDelay',
     'auctionLength',
+    'dutchAuctionLength',
+    'warmupPeriod',
   ]).map((value) => parseDuration(+value || 0))
 
   return (
@@ -31,9 +38,23 @@ const BackingForm = (props: BoxProps) => {
         }}
       />
       <FormField
-        label={t`Auction length (s)`}
+        label={t`Warmup period (s)`}
+        placeholder={t`Period in seconds`}
+        help={t`The warmup period is how many seconds should pass after the basket regained the SOUND status before an RToken can be issued and/or a trade can be opened.`}
+        mb={3}
+        helper={warnupPeriodHelp}
+        name="warmupPeriod"
+        options={{
+          required: true,
+          pattern: numberPattern,
+          min: 0,
+          max: 604800,
+        }}
+      />
+      <FormField
+        label={t`Batch Auction length (s)`}
         placeholder={t`Duration in Seconds`}
-        help={t`Auction length - defines how long Gnosis EasyAuction auctions should be. Gnosis EasyAuction is a platform enabling fair price discovery for tokens through the use of batch auctions.`}
+        help={t`Batch Auction length - defines how long Gnosis EasyAuction auctions should be. Gnosis EasyAuction is a platform enabling fair price discovery for tokens through the use of batch auctions.`}
         mb={3}
         helper={auctionLengthHelp}
         name="auctionLength"
@@ -42,6 +63,20 @@ const BackingForm = (props: BoxProps) => {
           pattern: numberPattern,
           max: 3600,
           min: 60,
+        }}
+      />
+      <FormField
+        label={t`Dutch Auction length (s)`}
+        placeholder={t`Duration in Seconds`}
+        help={t`The dutch auction length is how many seconds long falling-price dutch auctions should be. A longer period will result in less slippage due to better price granularity, and a shorter period will result in more slippage.`}
+        mb={3}
+        helper={dutchAuctionLengthHelp}
+        name="dutchAuctionLength"
+        options={{
+          required: true,
+          pattern: numberPattern,
+          max: 3600,
+          min: 300,
         }}
       />
       <FormField
