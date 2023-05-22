@@ -73,8 +73,8 @@ const useProposalDetail = (
           queueBlock: data.proposal.queueBlock
             ? +data.proposal.queueBlock
             : undefined,
-          executionStartBlock: data.proposal.queueBlock
-            ? +data.proposal.queueBlock
+          executionStartBlock: data.proposal.executionStartBlock
+            ? +data.proposal.executionStartBlock
             : undefined,
           executionETA: data.proposal.executionETA
             ? +data.proposal.executionETA

@@ -288,7 +288,6 @@ export const zapTransaction = loadable(
     return {
       result,
       transaction: await result.toTransaction({
-        returnDust: false,
         permit2,
       }),
       permit2,

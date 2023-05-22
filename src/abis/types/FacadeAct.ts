@@ -4,6 +4,7 @@
 import type {
   BaseContract,
   BigNumber,
+  BigNumberish,
   BytesLike,
   CallOverrides,
   ContractTransaction,
@@ -25,11 +26,12 @@ import type {
 export interface FacadeActInterface extends utils.Interface {
   functions: {
     "claimRewards(address)": FunctionFragment;
-    "getActCalldata(address)": FunctionFragment;
+    "multicall(bytes[])": FunctionFragment;
+    "runRevenueAuctions(address,address[],address[],uint8)": FunctionFragment;
   };
 
   getFunction(
-    nameOrSignatureOrTopic: "claimRewards" | "getActCalldata"
+    nameOrSignatureOrTopic: "claimRewards" | "multicall" | "runRevenueAuctions"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -37,16 +39,26 @@ export interface FacadeActInterface extends utils.Interface {
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
-    functionFragment: "getActCalldata",
-    values: [PromiseOrValue<string>]
+    functionFragment: "multicall",
+    values: [PromiseOrValue<BytesLike>[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "runRevenueAuctions",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<string>[],
+      PromiseOrValue<string>[],
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
 
   decodeFunctionResult(
     functionFragment: "claimRewards",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "multicall", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getActCalldata",
+    functionFragment: "runRevenueAuctions",
     data: BytesLike
   ): Result;
 
@@ -85,8 +97,16 @@ export interface FacadeAct extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    getActCalldata(
-      rToken: PromiseOrValue<string>,
+    multicall(
+      data: PromiseOrValue<BytesLike>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    runRevenueAuctions(
+      revenueTrader: PromiseOrValue<string>,
+      toSettle: PromiseOrValue<string>[],
+      toStart: PromiseOrValue<string>[],
+      kind: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
@@ -96,8 +116,16 @@ export interface FacadeAct extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  getActCalldata(
-    rToken: PromiseOrValue<string>,
+  multicall(
+    data: PromiseOrValue<BytesLike>[],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  runRevenueAuctions(
+    revenueTrader: PromiseOrValue<string>,
+    toSettle: PromiseOrValue<string>[],
+    toStart: PromiseOrValue<string>[],
+    kind: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -107,10 +135,18 @@ export interface FacadeAct extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    getActCalldata(
-      rToken: PromiseOrValue<string>,
+    multicall(
+      data: PromiseOrValue<BytesLike>[],
       overrides?: CallOverrides
-    ): Promise<[string, string]>;
+    ): Promise<string[]>;
+
+    runRevenueAuctions(
+      revenueTrader: PromiseOrValue<string>,
+      toSettle: PromiseOrValue<string>[],
+      toStart: PromiseOrValue<string>[],
+      kind: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {};
@@ -121,8 +157,16 @@ export interface FacadeAct extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    getActCalldata(
-      rToken: PromiseOrValue<string>,
+    multicall(
+      data: PromiseOrValue<BytesLike>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    runRevenueAuctions(
+      revenueTrader: PromiseOrValue<string>,
+      toSettle: PromiseOrValue<string>[],
+      toStart: PromiseOrValue<string>[],
+      kind: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
@@ -133,8 +177,16 @@ export interface FacadeAct extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    getActCalldata(
-      rToken: PromiseOrValue<string>,
+    multicall(
+      data: PromiseOrValue<BytesLike>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    runRevenueAuctions(
+      revenueTrader: PromiseOrValue<string>,
+      toSettle: PromiseOrValue<string>[],
+      toStart: PromiseOrValue<string>[],
+      kind: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };

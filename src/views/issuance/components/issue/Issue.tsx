@@ -39,7 +39,7 @@ const Issue = () => {
         />
       )}
       <Card p={4}>
-        <IssueInput title={t`Mint`} />
+        <IssueInput title={t`Mint`} compact={false} />
         <Button
           sx={{ width: '100%' }}
           disabled={!isValid || issuing}

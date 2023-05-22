@@ -1,38 +1,51 @@
 import { t } from '@lingui/macro'
+import { FacadeActInterface } from 'abis'
+import { BigNumber } from 'ethers'
 import useTransactionCost from 'hooks/useTransactionCost'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { addTransactionAtom, getValidWeb3Atom } from 'state/atoms'
+import { useTransaction } from 'state/web3/hooks/useTransactions'
 import { TransactionState } from 'types'
+import { getTransactionWithGasLimit } from 'utils'
 import { FACADE_ACT_ADDRESS } from 'utils/addresses'
 import { TRANSACTION_STATUS } from 'utils/constants'
-import { auctionsOverviewAtom, selectedAuctionsAtom } from '../atoms'
+import { v4 as uuid } from 'uuid'
+import {
+  auctionsOverviewAtom,
+  auctionsToSettleAtom,
+  selectedAuctionsAtom,
+} from '../atoms'
+
+export enum TradeKind {
+  DUTCH_AUCTION,
+  BATCH_AUCTION,
+}
 
 // TODO: Add `kind` for 3.0
-const auctionsTxsAtom = atom((get) => {
+const auctionsTxAtom = atom((get) => {
   const { revenue = [], recollaterization } = get(auctionsOverviewAtom) || {}
   const { chainId } = get(getValidWeb3Atom)
   const selectedAuctions = get(selectedAuctionsAtom)
+  const auctionsToSettle = get(auctionsToSettleAtom) || []
 
   if (!chainId) {
-    return []
+    return null
   }
 
   if (recollaterization) {
-    return [
-      {
-        id: '',
-        description: t`Recollaterization`,
-        status: TRANSACTION_STATUS.PENDING,
-        value: recollaterization.amount,
-        call: {
-          abi: 'trader',
-          address: recollaterization.trader,
-          args: [recollaterization.sell.address],
-          method: 'manageToken',
-        },
+    return {
+      id: '',
+      description: t`Recollaterization`,
+      status: TRANSACTION_STATUS.PENDING,
+      value: recollaterization.amount,
+      call: {
+        abi: 'backingManager',
+        address: recollaterization.trader,
+        args: [],
+        method: 'rebalance',
       },
-    ]
+    }
   }
 
   const traderAuctions = selectedAuctions.reduce((auctions, selectedIndex) => {
@@ -46,39 +59,65 @@ const auctionsTxsAtom = atom((get) => {
     return auctions
   }, {} as { [x: string]: string[] })
 
-  return Object.keys(traderAuctions).reduce((auctions, trader) => {
+  const traderToSettle = auctionsToSettle.reduce((acc, auction) => {
+    acc[auction.trader] = [...(acc[auction.trader] || []), auction.sell.address]
+
+    return acc
+  }, {} as { [x: string]: string[] })
+
+  const traders = new Set([
+    ...Object.keys(traderAuctions),
+    ...Object.keys(traderToSettle),
+  ])
+
+  const transactions = [...traders].reduce((auctions, trader) => {
     return [
       ...auctions,
-      {
-        id: '',
-        description: t`Trigger Revenue auction`,
-        status: TRANSACTION_STATUS.PENDING,
-        value: '0',
-        call: {
-          abi: 'facadeAct',
-          address: FACADE_ACT_ADDRESS[chainId],
-          args: [trader, [], traderAuctions[trader]],
-          method: 'runRevenueAuctions',
-        },
-      },
+      FacadeActInterface.encodeFunctionData('runRevenueAuctions', [
+        trader,
+        traderToSettle[trader] || [],
+        traderAuctions[trader] || [],
+        BigNumber.from(TradeKind.BATCH_AUCTION.toString()),
+      ]),
     ]
-  }, [] as TransactionState[])
+  }, [] as string[])
+
+  if (!transactions.length) {
+    return null
+  }
+
+  return {
+    id: '',
+    description: t`Revenue auctions`,
+    status: TRANSACTION_STATUS.PENDING,
+    value: '0',
+    call: {
+      abi: 'facadeAct',
+      address: FACADE_ACT_ADDRESS[chainId],
+      args: [transactions],
+      method: 'multicall',
+    },
+  } as TransactionState
 })
 
 const useAuctions = () => {
-  const txs = useAtomValue(auctionsTxsAtom)
-  const [fee, gasError, gasLimit] = useTransactionCost([])
+  const tx = useAtomValue(auctionsTxAtom)
+  const [fee, error, gasLimit] = useTransactionCost(tx ? [tx] : [])
   const addTransaction = useSetAtom(addTransactionAtom)
+  const [txId, setId] = useState('')
+  const { status } = useTransaction(txId) || {}
 
-  const handleExecute = useCallback(() => {}, [
-    txs.length,
-    gasLimit,
-    addTransaction,
-  ])
+  const handleExecute = useCallback(() => {
+    if (tx) {
+      const id = uuid()
+      addTransaction([{ ...getTransactionWithGasLimit(tx, gasLimit), id }])
+      setId(id)
+    }
+  }, [JSON.stringify(tx), gasLimit, addTransaction])
 
   return useMemo(
-    () => ({ txs, fee, onExecute: handleExecute }),
-    [txs.length, fee, handleExecute]
+    () => ({ tx, fee, status, onExecute: handleExecute, error }),
+    [handleExecute, status, error]
   )
 }
 

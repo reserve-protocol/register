@@ -1,11 +1,15 @@
 import { Trans } from '@lingui/macro'
 import Sidebar from 'components/sidebar'
+import { useSetAtom } from 'jotai'
+import { useEffect } from 'react'
 import { X } from 'react-feather'
 import { Box, Button, Divider, Flex, Text } from 'theme-ui'
+import { auctionSessionAtom } from '../atoms'
 import ConfirmAuction from './ConfirmAuction'
+import RecollaterizationAlert from './RecollaterizationAlert'
 import RevenueAuctionList from './RevenueAuctionList'
 import RevenueOverview from './RevenueOverview'
-import RecollaterizationAlert from './RecollaterizationAlert'
+import SettleableAuctions from './SettleableAuctions'
 
 const Header = ({ onClose }: { onClose(): void }) => (
   <Flex
@@ -25,17 +29,26 @@ const Header = ({ onClose }: { onClose(): void }) => (
   </Flex>
 )
 
-const AuctionsSidebar = ({ onClose }: { onClose(): void }) => (
-  <Sidebar onClose={onClose} width="600px">
-    <Header onClose={onClose} />
-    <RevenueOverview />
-    <Divider my={4} />
-    <RecollaterizationAlert />
-    <Box px={4} sx={{ flexGrow: 1, overflow: 'auto' }}>
-      <RevenueAuctionList />
-    </Box>
-    <ConfirmAuction />
-  </Sidebar>
-)
+const AuctionsSidebar = ({ onClose }: { onClose(): void }) => {
+  const setSession = useSetAtom(auctionSessionAtom)
+
+  useEffect(() => {
+    setSession(Math.random())
+  }, [])
+
+  return (
+    <Sidebar onClose={onClose} width="600px">
+      <Header onClose={onClose} />
+      <RevenueOverview />
+      <Divider my={4} />
+      <RecollaterizationAlert />
+      <Box px={4} sx={{ flexGrow: 1, overflow: 'auto' }}>
+        <SettleableAuctions />
+        <RevenueAuctionList />
+      </Box>
+      <ConfirmAuction onClose={onClose} />
+    </Sidebar>
+  )
+}
 
 export default AuctionsSidebar

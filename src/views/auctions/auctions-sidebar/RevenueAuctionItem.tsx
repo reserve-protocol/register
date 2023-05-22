@@ -1,11 +1,14 @@
 import { Trans, t } from '@lingui/macro'
 import { Info } from 'components/info-box'
 import { useState } from 'react'
-import { AlertTriangle, ChevronDown, ChevronUp } from 'react-feather'
-import { Box, Checkbox, Text, Divider, Image } from 'theme-ui'
+import { ChevronDown, ChevronUp } from 'react-feather'
+import { Box, Checkbox, Divider, Image, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { Auction } from '../atoms'
 import SwapIcon from './SwapIcon'
+import GaugeIcon from 'components/icons/GaugeIcon'
+import TokenLogo from 'components/icons/TokenLogo'
+import useRToken from 'hooks/useRToken'
 
 const RevenueAuctionItem = ({
   data,
@@ -16,6 +19,7 @@ const RevenueAuctionItem = ({
 }) => {
   const [isOpen, toggle] = useState(false)
   const isBelowMinTrade = +data.minAmount > +data.amount
+  const rToken = useRToken()
 
   return (
     <Box>
@@ -34,9 +38,11 @@ const RevenueAuctionItem = ({
         />
         <Box ml="auto" variant="layout.verticalAlign">
           {data.canStart ? (
-            <label>
-              <Checkbox onChange={onSelect} sx={{ cursor: 'pointer' }} />
-            </label>
+            <Box sx={{ position: 'relative' }}>
+              <label>
+                <Checkbox onChange={onSelect} sx={{ cursor: 'pointer' }} />
+              </label>
+            </Box>
           ) : (
             <Text sx={{ fontSize: 0, color: 'warning' }} mr={2}>
               {isBelowMinTrade ? (
@@ -48,7 +54,7 @@ const RevenueAuctionItem = ({
           )}
         </Box>
         {isOpen ? (
-          <ChevronUp size={18} />
+          <ChevronUp size={18} color={!data.canStart ? '#FF7A00' : undefined} />
         ) : (
           <ChevronDown
             size={18}
@@ -61,14 +67,19 @@ const RevenueAuctionItem = ({
           <Divider my={3} mx={-4} sx={{ borderColor: 'darkBorder' }} />
           {data.canStart && (
             <Info
-              icon={<Image src="/svgs/asterisk.svg" />}
+              icon={
+                <TokenLogo
+                  symbol={data.buy.symbol}
+                  src={data.buy.symbol === 'RSR' ? undefined : rToken?.logo}
+                />
+              }
               title={t`Tokens to match trade`}
               subtitle={`≈${formatCurrency(data.output)} ${data.buy.symbol}`}
               mb={3}
             />
           )}
           <Info
-            icon={<Image src="/svgs/asterisk.svg" />}
+            icon={<GaugeIcon />}
             title={t`Minimum trade size`}
             subtitle={`${formatCurrency(+data.minAmount)} ${data.sell.symbol}`}
           />

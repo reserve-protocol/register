@@ -2,7 +2,7 @@ import { FacadeInterface } from 'abis'
 import { Facade } from 'abis/types'
 import { formatUnits } from 'ethers/lib/utils'
 import { atom } from 'jotai'
-import { loadable } from 'jotai/utils'
+import { atomWithReset, loadable } from 'jotai/utils'
 import {
   getValidWeb3Atom,
   rTokenAssetERC20MapAtom,
@@ -10,6 +10,7 @@ import {
   rTokenAtom,
   rTokenContractsAtom,
 } from 'state/atoms'
+import { promiseMulticall } from 'state/web3/lib/multicall'
 import { Token } from 'types'
 import { getContract } from 'utils'
 import { FACADE_ADDRESS, RSR_ADDRESS } from 'utils/addresses'
@@ -25,7 +26,41 @@ export interface Auction {
   output: number // estimated token output
 }
 
-export const selectedAuctionsAtom = atom<number[]>([])
+export interface AuctionToSettle {
+  type: 'Revenue' | 'Backing'
+  trader: string
+  sell: Token
+  buy: Token | null
+}
+
+export interface Trade {
+  id: string
+  amount: number
+  auctionId: number
+  buying: string
+  buyingTokenSymbol: string
+  sellingTokenSymbol: string
+  endAt: number
+  selling: string
+  startedAt: number
+  worstCasePrice: number
+}
+export const AUCTION_TYPES = {
+  REVENUE: 'Revenue',
+  BACKING: 'Recollaterization',
+}
+
+export const tradesAtom = atom<{ current: Trade[]; ended: Trade[] }>({
+  current: [],
+  ended: [],
+})
+export const currentTradesAtom = atom((get) => get(tradesAtom).current)
+export const endedTradesAtom = atom((get) => get(tradesAtom).ended)
+
+export const selectedAuctionsAtom = atomWithReset<number[]>([])
+export const auctionSessionAtom = atom(0)
+
+export const auctionSidebarAtom = atom<boolean>(false)
 
 const accumulatedRevenue = loadable(
   atom(async (get) => {
@@ -33,8 +68,9 @@ const accumulatedRevenue = loadable(
     const rToken = get(rTokenAtom)
     const assetMap = get(rTokenAssetERC20MapAtom)
     const assets = get(rTokenAssetsAtom)
+    const session = get(auctionSessionAtom)
 
-    if (!provider || !rToken || !Object.keys(assets).length) {
+    if (!provider || !rToken || !Object.keys(assets).length || !session) {
       return 0
     }
 
@@ -65,6 +101,69 @@ const accumulatedRevenue = loadable(
   })
 )
 
+const settleableAuctions = loadable(
+  atom(async (get): Promise<AuctionToSettle[] | null> => {
+    const { provider, chainId } = get(getValidWeb3Atom)
+    const rToken = get(rTokenAtom)
+    const assetMap = get(rTokenAssetERC20MapAtom)
+    const assets = get(rTokenAssetsAtom)
+    const { rsrTrader, rTokenTrader, backingManager } = get(rTokenContractsAtom)
+    const session = get(auctionSessionAtom)
+
+    if (
+      !provider ||
+      !rToken ||
+      !Object.keys(assets).length ||
+      !rsrTrader ||
+      !session
+    ) {
+      return null
+    }
+
+    const traders = [
+      {
+        address: rsrTrader,
+        buy: assets[assetMap[RSR_ADDRESS[chainId]]].token,
+        type: AUCTION_TYPES.REVENUE,
+      },
+      {
+        address: rTokenTrader,
+        buy: {
+          symbol: rToken.symbol,
+          address: rToken.address,
+          name: rToken.name,
+          decimals: rToken.decimals,
+        },
+        type: AUCTION_TYPES.REVENUE,
+      },
+      { address: backingManager, buy: null, type: AUCTION_TYPES.BACKING }, // TODO: What to show here?
+    ]
+
+    const result = await promiseMulticall(
+      traders.map(({ address }) => ({
+        abi: FacadeInterface,
+        address: FACADE_ADDRESS[chainId],
+        method: 'auctionsSettleable',
+        args: [address],
+      })),
+      provider
+    )
+
+    return result.reduce((auctionsToSettle, current, index) => {
+      auctionsToSettle.push(
+        ...current.map((erc20: string) => ({
+          type: traders[index].type,
+          trader: traders[index].address,
+          sell: assets[assetMap[erc20]],
+          buy: traders[index].buy,
+        }))
+      )
+
+      return auctionsToSettle
+    }, [] as AuctionToSettle[])
+  })
+)
+
 // TODO: This can be executed from the global context to display the number of auctions available
 const auctionsOverview = loadable(
   atom(
@@ -80,6 +179,7 @@ const auctionsOverview = loadable(
       const assetMap = get(rTokenAssetERC20MapAtom)
       const assets = get(rTokenAssetsAtom)
       const rToken = get(rTokenAtom)
+      const session = get(auctionSessionAtom)
 
       if (
         !provider ||
@@ -87,7 +187,8 @@ const auctionsOverview = loadable(
         !rTokenTrader ||
         !backingManager ||
         !rToken ||
-        !Object.keys(assets).length
+        !Object.keys(assets).length ||
+        !session
       ) {
         return null
       }
@@ -177,5 +278,6 @@ const auctionsOverview = loadable(
   )
 )
 
+export const auctionsToSettleAtom = simplifyLoadable(settleableAuctions)
 export const accumulatedRevenueAtom = simplifyLoadable(accumulatedRevenue)
 export const auctionsOverviewAtom = simplifyLoadable(auctionsOverview)
