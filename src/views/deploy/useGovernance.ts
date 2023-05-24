@@ -26,10 +26,6 @@ export const useGovernanceTx = () => {
   const rToken = useRToken()
 
   return useMemo(() => {
-    if (!rToken?.address) {
-      return null
-    }
-
     try {
       const {
         defaultGovernance,
@@ -43,6 +39,10 @@ export const useGovernanceTx = () => {
         pauser,
         owner,
       } = getValues()
+
+      if (!rToken?.address || !guardian) {
+        return null
+      }
 
       const govConfig = {
         votingDelay: BigNumber.from(votingDelay),
