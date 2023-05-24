@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro'
 import { Input } from 'components'
 import { SmallButton } from 'components/button'
+import Help from 'components/help'
 import { useState } from 'react'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { isAddress } from 'utils'
@@ -22,7 +23,13 @@ const NewRoleAddress = ({
 
   return (
     <Box>
-      <Input my={3} value={address} onChange={setAddress} />
+      <Input
+        my={3}
+        autoFocus
+        value={address}
+        placeholder="Input address"
+        onChange={setAddress}
+      />
       {((address && !isValid) || isExisting) && (
         <Text
           variant="error"
@@ -52,18 +59,22 @@ const NewRoleAddress = ({
   )
 }
 
-interface RoleSetupProps extends Omit<BoxProps, 'onChange'> {
+interface RoleEditProps extends Omit<BoxProps, 'onChange'> {
   title: string
   onChange(addresses: string[]): void
   addresses: string[]
+  help?: string
+  compact?: boolean
 }
 
-const RolesSetup = ({
+const RolesEdit = ({
   title,
   onChange,
+  help,
   addresses,
+  compact = false,
   ...props
-}: RoleSetupProps) => {
+}: RoleEditProps) => {
   const [isCreating, setCreate] = useState(false)
 
   const handleAdd = (address: string) => {
@@ -77,8 +88,13 @@ const RolesSetup = ({
 
   return (
     <Box {...props}>
-      <Text variant="title">{title}</Text>
-      {!addresses.length && (
+      <Box variant="layout.verticalAlign">
+        <Text ml={compact ? 3 : 0} variant={compact ? 'strong' : 'title'}>
+          {title}
+        </Text>
+        {!!help && <Help content={help} ml={2} />}
+      </Box>
+      {!addresses.length && !isCreating && (
         <Text
           variant="legend"
           sx={{ fontStyle: 'italic', display: 'block' }}
@@ -97,7 +113,7 @@ const RolesSetup = ({
         >
           <Box mr={2} variant="layout.verticalAlign">
             <Box
-              ml={1}
+              ml={compact ? 0 : 1}
               mr={3}
               sx={{
                 height: '4px',
@@ -133,7 +149,7 @@ const RolesSetup = ({
       ) : (
         <SmallButton
           ml={3}
-          mt={4}
+          mt={compact ? 3 : 4}
           onClick={() => setCreate(true)}
           variant="muted"
         >
@@ -144,4 +160,4 @@ const RolesSetup = ({
   )
 }
 
-export default RolesSetup
+export default RolesEdit

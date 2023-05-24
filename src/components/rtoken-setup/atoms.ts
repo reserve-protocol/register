@@ -257,3 +257,9 @@ export const isValidExternalMapAtom = atom((get) => {
 
   return true
 })
+
+export const setupRolesAtom = atomWithReset({
+  pausers: [] as string[],
+  shortFreezers: [] as string[],
+  longFreezers: [] as string[],
+})

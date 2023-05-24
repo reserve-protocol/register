@@ -1,10 +1,11 @@
 import { t } from '@lingui/macro'
+import { setupRolesAtom } from 'components/rtoken-setup/atoms'
 import { BigNumber } from 'ethers'
 import useDebounce from 'hooks/useDebounce'
 import useRToken from 'hooks/useRToken'
 import useTransactionCost from 'hooks/useTransactionCost'
-import { atomWithReset } from 'jotai/utils'
 import { useAtomValue, useSetAtom } from 'jotai'
+import { atomWithReset } from 'jotai/utils'
 import { useCallback, useMemo } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { addTransactionAtom } from 'state/atoms'
@@ -23,6 +24,7 @@ export const useGovernanceTx = () => {
     formState: { isValid },
   } = useFormContext()
   const formFields = useWatch()
+  const roles = useAtomValue(setupRolesAtom)
   const rToken = useRToken()
 
   return useMemo(() => {
@@ -36,11 +38,14 @@ export const useGovernanceTx = () => {
         quorumPercent,
         minDelay,
         guardian,
-        pauser,
         owner,
       } = getValues()
 
-      if (!rToken?.address || !guardian) {
+      if (
+        !rToken?.address ||
+        (defaultGovernance && !guardian) ||
+        (!defaultGovernance && !owner)
+      ) {
         return null
       }
 
@@ -61,9 +66,7 @@ export const useGovernanceTx = () => {
         {
           owner: defaultGovernance ? ZERO_ADDRESS : owner,
           guardian,
-          pausers: [],
-          shortFreezers: [],
-          longFreezers: [],
+          ...roles,
         },
       ]
 
@@ -83,7 +86,12 @@ export const useGovernanceTx = () => {
       console.error('Error setting up tx', e)
       return null
     }
-  }, [JSON.stringify(formFields), rToken?.address, isValid])
+  }, [
+    JSON.stringify(formFields),
+    JSON.stringify(roles),
+    rToken?.address,
+    isValid,
+  ])
 }
 
 export const useGovernanceTxState = () => {

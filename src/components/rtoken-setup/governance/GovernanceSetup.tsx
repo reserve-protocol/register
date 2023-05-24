@@ -15,6 +15,7 @@ import {
 import { addressPattern } from 'utils'
 import GovernanceParameters from './GovernanceParameters'
 import DocsLink from 'components/docs-link/DocsLink'
+import RolesSetup from './RoleSetup'
 
 interface Props extends BoxProps {
   disabled?: boolean
@@ -57,11 +58,11 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
       <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
       <Flex variant="layout.verticalAlign" mb={4}>
         <Text variant="title">
-          <Trans>Permissions</Trans>
+          <Trans>Roles</Trans>
         </Text>
         <DocsLink link="https://reserve.org/protocol/system_states_roles/" />
       </Flex>
-      {!defaultGovernance && (
+      {!defaultGovernance ? (
         <FormField
           label={t`Owner address`}
           placeholder={t`Input the owner ethereum address`}
@@ -81,39 +82,24 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
             },
           }}
         />
+      ) : (
+        <FormField
+          label={t`Guardian address`}
+          placeholder={t`Input the guardian ethereum address`}
+          help={t`The guardian has the ability to reject proposals even if they pass. Should be assigned to a multisig or EOA that can be trusted to act as a backstop. It is acceptable if it is relatively slow to act. Only one guardian address should be defined.`}
+          mb={3}
+          name="guardian"
+          options={{
+            disabled,
+            required: true,
+            pattern: {
+              value: addressPattern,
+              message: t`Invalid ethereum address`,
+            },
+          }}
+        />
       )}
-      <FormField
-        label={t`Guardian address`}
-        placeholder={t`Input the guardian ethereum address`}
-        help={t`The Guardian has the permissions of the Pauser, the ability to invoke a LONG_FREEZE, and the ability to cancel any active proposals prior to execution.`}
-        mb={3}
-        name="guardian"
-        options={{
-          disabled,
-          required: true,
-          pattern: {
-            value: addressPattern,
-            message: t`Invalid ethereum address`,
-          },
-        }}
-      />
-      <FormField
-        label={t`Pauser address`}
-        placeholder={t`Input pauser ethereum address`}
-        help={t`The Pauser can PAUSE and SHORT_FREEZE.
-        When an RToken’s system is paused, all interactions besides redemption, issuance cancellation, ERC20 functions and staking of RSR are disabled.
-        When an RToken’s system is frozen, all interactions besides ERC20 functions and staking of RSR are disabled.`}
-        mb={4}
-        name="pauser"
-        options={{
-          disabled,
-          required: true,
-          pattern: {
-            value: addressPattern,
-            message: t`Invalid ethereum address`,
-          },
-        }}
-      />
+      <RolesSetup />
       {defaultGovernance && (
         <>
           <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />

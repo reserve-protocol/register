@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import RolesSetup from 'components/rtoken-setup/governance/RolesSetup'
+import RolesEdit from 'components/rtoken-setup/components/RolesEdit'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { rTokenGuardiansAtom, rTokenManagersAtom } from 'state/atoms'
@@ -27,7 +27,9 @@ const RolesProposal = (props: BoxProps) => {
     setProposedRoles({ ...rTokenRoles, guardians })
   }, [JSON.stringify({ ...rTokenRoles, guardians })])
 
-  const handleChange = (roleKey: RoleKey, value: string[]) => {}
+  const handleChange = (roleKey: RoleKey, value: string[]) => {
+    setProposedRoles({ ...roles, [roleKey]: value })
+  }
 
   return (
     <Card {...props} p={4}>
@@ -38,7 +40,7 @@ const RolesProposal = (props: BoxProps) => {
       {roleMap.map(({ title, roleKey }, index) => (
         <Box key={roleKey}>
           {!!index && <Divider mb={3} mt={4} mx={-4} />}
-          <RolesSetup
+          <RolesEdit
             title={title}
             addresses={roles[roleKey]}
             onChange={(value) => handleChange(roleKey, value)}
