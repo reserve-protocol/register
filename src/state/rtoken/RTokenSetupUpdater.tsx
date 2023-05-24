@@ -7,7 +7,6 @@ import {
   BackingManagerInterface,
   BasketHandlerInterface,
   BrokerInterface,
-  CollateralInterface,
   Distributor as DistributorAbi,
   MainInterface,
   RevenueTraderInterface,
@@ -357,56 +356,11 @@ const RTokenSetupUpdater = () => {
     []
   )
 
-  // TODO: move to the same multicall where the collaterals are fetched
-  const fetchBasketAssets = async () => {
-    if (rToken && provider && contracts.assetRegistry && !rToken.isRSV) {
-      try {
-        const assets = await promiseMulticall(
-          rToken.collaterals.map((c) => ({
-            address: contracts.assetRegistry,
-            abi: AssetRegistryInterface,
-            method: 'toAsset',
-            args: [c.address],
-          })),
-          provider
-        )
-
-        setCollateralAssets(assets)
-
-        // TODO: Optimize code using reduce function, prioritize clarity atm
-        const calls: ContractCall[] = []
-
-        for (const asset of assets) {
-          calls.push({
-            address: asset,
-            abi: CollateralInterface,
-            method: 'delayUntilDefault',
-            args: [],
-          })
-          calls.push({
-            address: asset,
-            abi: CollateralInterface,
-            method: 'delayUntilDefault',
-            args: [],
-          })
-        }
-
-        // const assetInfo = await promiseMulticall(assets.map(address => ) )
-      } catch (e) {
-        console.error('Error fetching basket assets', e)
-      }
-    }
-  }
-
   useEffect(() => {
     if (rToken?.main && provider) {
       fetchParams(rToken.address, rToken.main, provider)
     }
   }, [rToken?.main, provider])
-
-  // useEffect(() => {
-  //   fetchBasketAssets()
-  // }, [contracts?.assetRegistry, provider])
 
   return null
 }

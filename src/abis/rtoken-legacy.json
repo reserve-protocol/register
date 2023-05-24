@@ -490,19 +490,6 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "dissolve",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address",
         "name": "spender",
         "type": "address"
@@ -697,9 +684,14 @@
   {
     "inputs": [
       {
-        "internalType": "uint192",
-        "name": "baskets",
-        "type": "uint192"
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amtRToken",
+        "type": "uint256"
       }
     ],
     "name": "mint",
@@ -814,6 +806,11 @@
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint48",
+        "name": "basketNonce",
+        "type": "uint48"
       }
     ],
     "name": "redeem",
@@ -834,53 +831,9 @@
         "type": "uint256"
       },
       {
-        "internalType": "uint48[]",
-        "name": "basketNonces",
-        "type": "uint48[]"
-      },
-      {
-        "internalType": "uint192[]",
-        "name": "portions",
-        "type": "uint192[]"
-      },
-      {
-        "internalType": "address[]",
-        "name": "expectedERC20sOut",
-        "type": "address[]"
-      },
-      {
-        "internalType": "uint256[]",
-        "name": "minAmounts",
-        "type": "uint256[]"
-      }
-    ],
-    "name": "redeemCustom",
-    "outputs": [
-      {
-        "internalType": "address[]",
-        "name": "erc20sOut",
-        "type": "address[]"
-      },
-      {
-        "internalType": "uint256[]",
-        "name": "amountsOut",
-        "type": "uint256[]"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "recipient",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
+        "internalType": "uint48",
+        "name": "basketNonce",
+        "type": "uint48"
       }
     ],
     "name": "redeemTo",

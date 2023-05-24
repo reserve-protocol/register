@@ -35,6 +35,12 @@ import { truncateDecimals } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 
+// ## System States
+
+// - `tradingPaused`: all interactions disabled EXCEPT ERC20 functions + RToken.issue + RToken.redeem + StRSR.stake + StRSR.payoutRewards
+// - `issuancePaused`: all interactions enabled EXCEPT RToken.issue
+// - `frozen`: all interactions disabled EXCEPT ERC20 functions + StRSR.stake
+
 /**
  * Fetchs RToken state variables that could change block by block
  *

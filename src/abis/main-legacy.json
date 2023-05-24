@@ -168,25 +168,6 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "bool",
-        "name": "oldVal",
-        "type": "bool"
-      },
-      {
-        "indexed": true,
-        "internalType": "bool",
-        "name": "newVal",
-        "type": "bool"
-      }
-    ],
-    "name": "IssuancePausedSet",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
         "internalType": "uint48",
         "name": "oldDuration",
         "type": "uint48"
@@ -205,6 +186,25 @@
     "anonymous": false,
     "inputs": [],
     "name": "MainInitialized",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bool",
+        "name": "oldVal",
+        "type": "bool"
+      },
+      {
+        "indexed": true,
+        "internalType": "bool",
+        "name": "newVal",
+        "type": "bool"
+      }
+    ],
+    "name": "PausedSet",
     "type": "event"
   },
   {
@@ -375,25 +375,6 @@
       }
     ],
     "name": "StRSRSet",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bool",
-        "name": "oldVal",
-        "type": "bool"
-      },
-      {
-        "indexed": true,
-        "internalType": "bool",
-        "name": "newVal",
-        "type": "bool"
-      }
-    ],
-    "name": "TradingPausedSet",
     "type": "event"
   },
   {
@@ -748,32 +729,6 @@
   },
   {
     "inputs": [],
-    "name": "issuancePaused",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "issuancePausedOrFrozen",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "longFreeze",
     "outputs": [
       {
@@ -806,16 +761,35 @@
   },
   {
     "inputs": [],
-    "name": "pauseIssuance",
+    "name": "pause",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [],
-    "name": "pauseTrading",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "name": "paused",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "pausedOrFrozen",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -999,32 +973,6 @@
   },
   {
     "inputs": [],
-    "name": "tradingPaused",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "tradingPausedOrFrozen",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "unfreeze",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -1045,14 +993,7 @@
   },
   {
     "inputs": [],
-    "name": "unpauseIssuance",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "unpauseTrading",
+    "name": "unpause",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

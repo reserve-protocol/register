@@ -107,6 +107,8 @@ const useGovernance = () => {
   const setTxId = useSetAtom(governanceIdAtom)
   const addTransaction = useSetAtom(addTransactionAtom)
 
+  console.log('tx', tx)
+
   const [fee, gasError, gasLimit] = useTransactionCost(
     debouncedTx ? [debouncedTx] : [] // use debounceTx to avoid too many requests
   )
