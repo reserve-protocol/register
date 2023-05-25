@@ -14,7 +14,7 @@ import { BI_ZERO } from './constants'
  */
 const USDC = USDC_ADDRESS[CHAIN_ID]
 
-export const getIssuable = (rsv: ReserveToken, tokenBalances: BalanceMap) => {
+export const getIssuable = (tokenBalances: BalanceMap) => {
   if (tokenBalances[USDC]) {
     return tokenBalances[USDC].value
   }
@@ -40,7 +40,6 @@ const RSV: ReserveToken = {
       decimals: 6,
     },
   ],
-  isRSV: true,
 }
 
 export const RSV_MANAGER = RSV_MANAGER_ADDRESS[CHAIN_ID]

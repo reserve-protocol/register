@@ -1,10 +1,12 @@
 import useSWR from 'swr'
 import { GraphQLClient, RequestDocument } from 'graphql-request'
 
-const client = new GraphQLClient(process.env.REACT_APP_SUBGRAPH_URL ?? '')
+export const gqlClient = new GraphQLClient(
+  process.env.REACT_APP_SUBGRAPH_URL ?? ''
+)
 
 const fetcher = (query: RequestDocument, variables: any) =>
-  client.request(query, variables)
+  gqlClient.request(query, variables)
 
 const useQuery = (
   query: RequestDocument | null = null,

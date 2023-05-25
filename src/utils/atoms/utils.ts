@@ -16,6 +16,10 @@ export const simplifyLoadable = <T>(
     return o.data
   })
 
+export function atomWithLoadable<T>(fn: (get: Getter) => T) {
+  return simplifyLoadable(loadable(atom(fn)))
+}
+
 /**
  * This is a derived atom that will bail out of execution if it "get"'s any atom that is null.
  * The usecase is that you can simplify a lot of null checks away by just using this atom.
