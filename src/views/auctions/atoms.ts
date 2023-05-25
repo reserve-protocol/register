@@ -1,5 +1,5 @@
-import { FacadeInterface } from 'abis'
-import { Facade } from 'abis/types'
+import { FacadeActInterface, FacadeInterface } from 'abis'
+import { Facade, FacadeAct } from 'abis/types'
 import { formatUnits } from 'ethers/lib/utils'
 import { atom } from 'jotai'
 import { atomWithReset, loadable } from 'jotai/utils'
@@ -13,7 +13,11 @@ import {
 import { promiseMulticall } from 'state/web3/lib/multicall'
 import { Token } from 'types'
 import { getContract } from 'utils'
-import { FACADE_ADDRESS, RSR_ADDRESS } from 'utils/addresses'
+import {
+  FACADE_ACT_ADDRESS,
+  FACADE_ADDRESS,
+  RSR_ADDRESS,
+} from 'utils/addresses'
 import { simplifyLoadable } from 'utils/atoms/utils'
 
 export interface Auction {
@@ -60,7 +64,7 @@ export const endedTradesAtom = atom((get) => get(tradesAtom).ended)
 export const selectedAuctionsAtom = atomWithReset<number[]>([])
 export const auctionSessionAtom = atom(0)
 
-export const auctionSidebarAtom = atom<boolean>(false)
+export const auctionSidebarAtom = atom(false)
 
 const accumulatedRevenue = loadable(
   atom(async (get) => {
@@ -194,10 +198,10 @@ const auctionsOverview = loadable(
       }
 
       const contract = getContract(
-        FACADE_ADDRESS[chainId],
-        FacadeInterface,
+        FACADE_ACT_ADDRESS[chainId],
+        FacadeActInterface,
         provider
-      ) as Facade
+      ) as FacadeAct
 
       const [rsrRevenueOverview, rTokenRevenueOverview, recoAuction] =
         await Promise.all([

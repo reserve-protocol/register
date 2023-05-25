@@ -47,12 +47,10 @@ export interface FacadeInterface extends utils.Interface {
     "basketTokens(address)": FunctionFragment;
     "issue(address,uint256)": FunctionFragment;
     "maxIssuable(address,address)": FunctionFragment;
-    "nextRecollateralizationAuction(address)": FunctionFragment;
     "pendingUnstakings(address,address)": FunctionFragment;
     "price(address)": FunctionFragment;
     "primeBasket(address)": FunctionFragment;
-    "redeem(address,uint256,uint48)": FunctionFragment;
-    "revenueOverview(address)": FunctionFragment;
+    "redeem(address,uint256)": FunctionFragment;
     "stToken(address)": FunctionFragment;
   };
 
@@ -66,12 +64,10 @@ export interface FacadeInterface extends utils.Interface {
       | "basketTokens"
       | "issue"
       | "maxIssuable"
-      | "nextRecollateralizationAuction"
       | "pendingUnstakings"
       | "price"
       | "primeBasket"
       | "redeem"
-      | "revenueOverview"
       | "stToken"
   ): FunctionFragment;
 
@@ -108,10 +104,6 @@ export interface FacadeInterface extends utils.Interface {
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
-    functionFragment: "nextRecollateralizationAuction",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "pendingUnstakings",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
@@ -125,15 +117,7 @@ export interface FacadeInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "redeem",
-    values: [
-      PromiseOrValue<string>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
-    ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "revenueOverview",
-    values: [PromiseOrValue<string>]
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "stToken",
@@ -170,10 +154,6 @@ export interface FacadeInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "nextRecollateralizationAuction",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "pendingUnstakings",
     data: BytesLike
   ): Result;
@@ -183,10 +163,6 @@ export interface FacadeInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "redeem", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "revenueOverview",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "stToken", data: BytesLike): Result;
 
   events: {};
@@ -267,11 +243,6 @@ export interface Facade extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    nextRecollateralizationAuction(
-      bm: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     pendingUnstakings(
       rToken: PromiseOrValue<string>,
       account: PromiseOrValue<string>,
@@ -301,12 +272,6 @@ export interface Facade extends BaseContract {
     redeem(
       rToken: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
-      basketNonce: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    revenueOverview(
-      revenueTrader: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -364,11 +329,6 @@ export interface Facade extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  nextRecollateralizationAuction(
-    bm: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   pendingUnstakings(
     rToken: PromiseOrValue<string>,
     account: PromiseOrValue<string>,
@@ -394,12 +354,6 @@ export interface Facade extends BaseContract {
   redeem(
     rToken: PromiseOrValue<string>,
     amount: PromiseOrValue<BigNumberish>,
-    basketNonce: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  revenueOverview(
-    revenueTrader: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -475,18 +429,6 @@ export interface Facade extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    nextRecollateralizationAuction(
-      bm: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<
-      [boolean, string, string, BigNumber] & {
-        canStart: boolean;
-        sell: string;
-        buy: string;
-        sellAmount: BigNumber;
-      }
-    >;
-
     pendingUnstakings(
       rToken: PromiseOrValue<string>,
       account: PromiseOrValue<string>,
@@ -512,25 +454,12 @@ export interface Facade extends BaseContract {
     redeem(
       rToken: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
-      basketNonce: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<
       [string[], BigNumber[], boolean] & {
         tokens: string[];
         withdrawals: BigNumber[];
         isProrata: boolean;
-      }
-    >;
-
-    revenueOverview(
-      revenueTrader: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<
-      [string[], boolean[], BigNumber[], BigNumber[]] & {
-        erc20s: string[];
-        canStart: boolean[];
-        surpluses: BigNumber[];
-        minTradeAmounts: BigNumber[];
       }
     >;
 
@@ -586,11 +515,6 @@ export interface Facade extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    nextRecollateralizationAuction(
-      bm: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     pendingUnstakings(
       rToken: PromiseOrValue<string>,
       account: PromiseOrValue<string>,
@@ -610,12 +534,6 @@ export interface Facade extends BaseContract {
     redeem(
       rToken: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
-      basketNonce: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    revenueOverview(
-      revenueTrader: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -669,11 +587,6 @@ export interface Facade extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    nextRecollateralizationAuction(
-      bm: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
     pendingUnstakings(
       rToken: PromiseOrValue<string>,
       account: PromiseOrValue<string>,
@@ -693,12 +606,6 @@ export interface Facade extends BaseContract {
     redeem(
       rToken: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
-      basketNonce: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    revenueOverview(
-      revenueTrader: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

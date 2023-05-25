@@ -4,7 +4,7 @@
 
 import { Contract, Signer, utils } from "ethers";
 import type { Provider } from "@ethersproject/providers";
-import type { RToken, RTokenInterface } from "../RToken";
+import type { RtokenLegacy, RtokenLegacyInterface } from "../RtokenLegacy";
 
 const _abi = [
   {
@@ -498,19 +498,6 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-    ],
-    name: "dissolve",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "address",
         name: "spender",
         type: "address",
@@ -705,9 +692,14 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint192",
-        name: "baskets",
-        type: "uint192",
+        internalType: "address",
+        name: "recipient",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "amtRToken",
+        type: "uint256",
       },
     ],
     name: "mint",
@@ -823,6 +815,11 @@ const _abi = [
         name: "amount",
         type: "uint256",
       },
+      {
+        internalType: "uint48",
+        name: "basketNonce",
+        type: "uint48",
+      },
     ],
     name: "redeem",
     outputs: [],
@@ -842,53 +839,9 @@ const _abi = [
         type: "uint256",
       },
       {
-        internalType: "uint48[]",
-        name: "basketNonces",
-        type: "uint48[]",
-      },
-      {
-        internalType: "uint192[]",
-        name: "portions",
-        type: "uint192[]",
-      },
-      {
-        internalType: "address[]",
-        name: "expectedERC20sOut",
-        type: "address[]",
-      },
-      {
-        internalType: "uint256[]",
-        name: "minAmounts",
-        type: "uint256[]",
-      },
-    ],
-    name: "redeemCustom",
-    outputs: [
-      {
-        internalType: "address[]",
-        name: "erc20sOut",
-        type: "address[]",
-      },
-      {
-        internalType: "uint256[]",
-        name: "amountsOut",
-        type: "uint256[]",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "recipient",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
+        internalType: "uint48",
+        name: "basketNonce",
+        type: "uint48",
       },
     ],
     name: "redeemTo",
@@ -1122,12 +1075,15 @@ const _abi = [
   },
 ] as const;
 
-export class RToken__factory {
+export class RtokenLegacy__factory {
   static readonly abi = _abi;
-  static createInterface(): RTokenInterface {
-    return new utils.Interface(_abi) as RTokenInterface;
+  static createInterface(): RtokenLegacyInterface {
+    return new utils.Interface(_abi) as RtokenLegacyInterface;
   }
-  static connect(address: string, signerOrProvider: Signer | Provider): RToken {
-    return new Contract(address, _abi, signerOrProvider) as RToken;
+  static connect(
+    address: string,
+    signerOrProvider: Signer | Provider
+  ): RtokenLegacy {
+    return new Contract(address, _abi, signerOrProvider) as RtokenLegacy;
   }
 }

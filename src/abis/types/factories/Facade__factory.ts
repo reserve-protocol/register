@@ -222,40 +222,6 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "contract IBackingManager",
-        name: "bm",
-        type: "address",
-      },
-    ],
-    name: "nextRecollateralizationAuction",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "canStart",
-        type: "bool",
-      },
-      {
-        internalType: "contract IERC20",
-        name: "sell",
-        type: "address",
-      },
-      {
-        internalType: "contract IERC20",
-        name: "buy",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "sellAmount",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "contract RTokenP1",
         name: "rToken",
         type: "address",
@@ -359,11 +325,6 @@ const _abi = [
         name: "amount",
         type: "uint256",
       },
-      {
-        internalType: "uint48",
-        name: "basketNonce",
-        type: "uint48",
-      },
     ],
     name: "redeem",
     outputs: [
@@ -381,40 +342,6 @@ const _abi = [
         internalType: "bool",
         name: "isProrata",
         type: "bool",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract IRevenueTrader",
-        name: "revenueTrader",
-        type: "address",
-      },
-    ],
-    name: "revenueOverview",
-    outputs: [
-      {
-        internalType: "contract IERC20[]",
-        name: "erc20s",
-        type: "address[]",
-      },
-      {
-        internalType: "bool[]",
-        name: "canStart",
-        type: "bool[]",
-      },
-      {
-        internalType: "uint256[]",
-        name: "surpluses",
-        type: "uint256[]",
-      },
-      {
-        internalType: "uint256[]",
-        name: "minTradeAmounts",
-        type: "uint256[]",
       },
     ],
     stateMutability: "nonpayable",

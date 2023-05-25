@@ -73,28 +73,28 @@ const RTokenStateUpdater = () => {
   ) || { value: [0], error: null }
   const basketNonce = value ? value[0] : 0
 
+  // TODO: Finish
   const getTokenStatus = useCallback(
     async (mainAddress: string, provider: Web3Provider) => {
       try {
-        const [isPaused, isFrozen] = await promiseMulticall(
-          [
-            {
-              abi: MainInterface,
-              address: mainAddress,
-              args: [],
-              method: 'paused',
-            },
-            {
-              abi: MainInterface,
-              address: mainAddress,
-              args: [],
-              method: 'frozen',
-            },
-          ],
-          provider
-        )
-
-        updateTokenStatus({ paused: isPaused, frozen: isFrozen })
+        // const [isPaused, isFrozen] = await promiseMulticall(
+        //   [
+        //     {
+        //       abi: MainInterface,
+        //       address: mainAddress,
+        //       args: [],
+        //       method: 'paused',
+        //     },
+        //     {
+        //       abi: MainInterface,
+        //       address: mainAddress,
+        //       args: [],
+        //       method: 'frozen',
+        //     },
+        //   ],
+        //   provider
+        // )
+        // updateTokenStatus({ paused: isPaused, frozen: isFrozen })
       } catch (e) {
         console.error('Error getting token status', e)
       }

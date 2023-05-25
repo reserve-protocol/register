@@ -40,7 +40,7 @@ export declare namespace ThrottleLib {
   };
 }
 
-export interface RTokenInterface extends utils.Interface {
+export interface RtokenLegacyInterface extends utils.Interface {
   functions: {
     "DOMAIN_SEPARATOR()": FunctionFragment;
     "MAX_EXCHANGE_RATE()": FunctionFragment;
@@ -54,7 +54,6 @@ export interface RTokenInterface extends utils.Interface {
     "basketsNeeded()": FunctionFragment;
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
-    "dissolve(uint256)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
     "init(address,string,string,string,(uint256,uint192),(uint256,uint192))": FunctionFragment;
     "issuanceAvailable()": FunctionFragment;
@@ -64,15 +63,14 @@ export interface RTokenInterface extends utils.Interface {
     "main()": FunctionFragment;
     "mandate()": FunctionFragment;
     "melt(uint256)": FunctionFragment;
-    "mint(uint192)": FunctionFragment;
+    "mint(address,uint256)": FunctionFragment;
     "monetizeDonations(address)": FunctionFragment;
     "name()": FunctionFragment;
     "nonces(address)": FunctionFragment;
     "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
-    "redeem(uint256)": FunctionFragment;
-    "redeemCustom(address,uint256,uint48[],uint192[],address[],uint256[])": FunctionFragment;
-    "redeemTo(address,uint256)": FunctionFragment;
+    "redeem(uint256,uint48)": FunctionFragment;
+    "redeemTo(address,uint256,uint48)": FunctionFragment;
     "redemptionAvailable()": FunctionFragment;
     "redemptionThrottleParams()": FunctionFragment;
     "setBasketsNeeded(uint192)": FunctionFragment;
@@ -101,7 +99,6 @@ export interface RTokenInterface extends utils.Interface {
       | "basketsNeeded"
       | "decimals"
       | "decreaseAllowance"
-      | "dissolve"
       | "increaseAllowance"
       | "init"
       | "issuanceAvailable"
@@ -118,7 +115,6 @@ export interface RTokenInterface extends utils.Interface {
       | "permit"
       | "proxiableUUID"
       | "redeem"
-      | "redeemCustom"
       | "redeemTo"
       | "redemptionAvailable"
       | "redemptionThrottleParams"
@@ -180,10 +176,6 @@ export interface RTokenInterface extends utils.Interface {
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "dissolve",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "increaseAllowance",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
@@ -222,7 +214,7 @@ export interface RTokenInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "mint",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "monetizeDonations",
@@ -251,22 +243,15 @@ export interface RTokenInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "redeem",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "redeemCustom",
-    values: [
-      PromiseOrValue<string>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>[],
-      PromiseOrValue<BigNumberish>[],
-      PromiseOrValue<string>[],
-      PromiseOrValue<BigNumberish>[]
-    ]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "redeemTo",
-    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "redemptionAvailable",
@@ -351,7 +336,6 @@ export interface RTokenInterface extends utils.Interface {
     functionFragment: "decreaseAllowance",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "dissolve", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "increaseAllowance",
     data: BytesLike
@@ -383,10 +367,6 @@ export interface RTokenInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "redeem", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "redeemCustom",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "redeemTo", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "redemptionAvailable",
@@ -582,12 +562,12 @@ export type UpgradedEvent = TypedEvent<[string], UpgradedEventObject>;
 
 export type UpgradedEventFilter = TypedEventFilter<UpgradedEvent>;
 
-export interface RToken extends BaseContract {
+export interface RtokenLegacy extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: RTokenInterface;
+  interface: RtokenLegacyInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -648,11 +628,6 @@ export interface RToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    dissolve(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     increaseAllowance(
       spender: PromiseOrValue<string>,
       addedValue: PromiseOrValue<BigNumberish>,
@@ -696,7 +671,8 @@ export interface RToken extends BaseContract {
     ): Promise<ContractTransaction>;
 
     mint(
-      baskets: PromiseOrValue<BigNumberish>,
+      recipient: PromiseOrValue<string>,
+      amtRToken: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -727,22 +703,14 @@ export interface RToken extends BaseContract {
 
     redeem(
       amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    redeemCustom(
-      recipient: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
-      basketNonces: PromiseOrValue<BigNumberish>[],
-      portions: PromiseOrValue<BigNumberish>[],
-      expectedERC20sOut: PromiseOrValue<string>[],
-      minAmounts: PromiseOrValue<BigNumberish>[],
+      basketNonce: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     redeemTo(
       recipient: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
+      basketNonce: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -839,11 +807,6 @@ export interface RToken extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  dissolve(
-    amount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   increaseAllowance(
     spender: PromiseOrValue<string>,
     addedValue: PromiseOrValue<BigNumberish>,
@@ -887,7 +850,8 @@ export interface RToken extends BaseContract {
   ): Promise<ContractTransaction>;
 
   mint(
-    baskets: PromiseOrValue<BigNumberish>,
+    recipient: PromiseOrValue<string>,
+    amtRToken: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -918,22 +882,14 @@ export interface RToken extends BaseContract {
 
   redeem(
     amount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  redeemCustom(
-    recipient: PromiseOrValue<string>,
-    amount: PromiseOrValue<BigNumberish>,
-    basketNonces: PromiseOrValue<BigNumberish>[],
-    portions: PromiseOrValue<BigNumberish>[],
-    expectedERC20sOut: PromiseOrValue<string>[],
-    minAmounts: PromiseOrValue<BigNumberish>[],
+    basketNonce: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   redeemTo(
     recipient: PromiseOrValue<string>,
     amount: PromiseOrValue<BigNumberish>,
+    basketNonce: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -1028,11 +984,6 @@ export interface RToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    dissolve(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     increaseAllowance(
       spender: PromiseOrValue<string>,
       addedValue: PromiseOrValue<BigNumberish>,
@@ -1076,7 +1027,8 @@ export interface RToken extends BaseContract {
     ): Promise<void>;
 
     mint(
-      baskets: PromiseOrValue<BigNumberish>,
+      recipient: PromiseOrValue<string>,
+      amtRToken: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1107,24 +1059,14 @@ export interface RToken extends BaseContract {
 
     redeem(
       amount: PromiseOrValue<BigNumberish>,
+      basketNonce: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    redeemCustom(
-      recipient: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
-      basketNonces: PromiseOrValue<BigNumberish>[],
-      portions: PromiseOrValue<BigNumberish>[],
-      expectedERC20sOut: PromiseOrValue<string>[],
-      minAmounts: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<
-      [string[], BigNumber[]] & { erc20sOut: string[]; amountsOut: BigNumber[] }
-    >;
 
     redeemTo(
       recipient: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
+      basketNonce: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1326,11 +1268,6 @@ export interface RToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    dissolve(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     increaseAllowance(
       spender: PromiseOrValue<string>,
       addedValue: PromiseOrValue<BigNumberish>,
@@ -1372,7 +1309,8 @@ export interface RToken extends BaseContract {
     ): Promise<BigNumber>;
 
     mint(
-      baskets: PromiseOrValue<BigNumberish>,
+      recipient: PromiseOrValue<string>,
+      amtRToken: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1403,22 +1341,14 @@ export interface RToken extends BaseContract {
 
     redeem(
       amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    redeemCustom(
-      recipient: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
-      basketNonces: PromiseOrValue<BigNumberish>[],
-      portions: PromiseOrValue<BigNumberish>[],
-      expectedERC20sOut: PromiseOrValue<string>[],
-      minAmounts: PromiseOrValue<BigNumberish>[],
+      basketNonce: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     redeemTo(
       recipient: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
+      basketNonce: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1518,11 +1448,6 @@ export interface RToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    dissolve(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
     increaseAllowance(
       spender: PromiseOrValue<string>,
       addedValue: PromiseOrValue<BigNumberish>,
@@ -1566,7 +1491,8 @@ export interface RToken extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     mint(
-      baskets: PromiseOrValue<BigNumberish>,
+      recipient: PromiseOrValue<string>,
+      amtRToken: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1597,22 +1523,14 @@ export interface RToken extends BaseContract {
 
     redeem(
       amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    redeemCustom(
-      recipient: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
-      basketNonces: PromiseOrValue<BigNumberish>[],
-      portions: PromiseOrValue<BigNumberish>[],
-      expectedERC20sOut: PromiseOrValue<string>[],
-      minAmounts: PromiseOrValue<BigNumberish>[],
+      basketNonce: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     redeemTo(
       recipient: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
+      basketNonce: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

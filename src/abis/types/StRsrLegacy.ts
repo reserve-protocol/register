@@ -28,110 +28,96 @@ import type {
   PromiseOrValue,
 } from "./common";
 
-export declare namespace ThrottleLib {
-  export type ParamsStruct = {
-    amtRate: PromiseOrValue<BigNumberish>;
-    pctRate: PromiseOrValue<BigNumberish>;
-  };
-
-  export type ParamsStructOutput = [BigNumber, BigNumber] & {
-    amtRate: BigNumber;
-    pctRate: BigNumber;
-  };
-}
-
-export interface RTokenInterface extends utils.Interface {
+export interface StRsrLegacyInterface extends utils.Interface {
   functions: {
     "DOMAIN_SEPARATOR()": FunctionFragment;
-    "MAX_EXCHANGE_RATE()": FunctionFragment;
-    "MAX_THROTTLE_PCT_AMT()": FunctionFragment;
-    "MAX_THROTTLE_RATE_AMT()": FunctionFragment;
-    "MIN_EXCHANGE_RATE()": FunctionFragment;
-    "MIN_THROTTLE_RATE_AMT()": FunctionFragment;
+    "MAX_REWARD_RATIO()": FunctionFragment;
+    "MAX_UNSTAKING_DELAY()": FunctionFragment;
+    "MIN_UNSTAKING_DELAY()": FunctionFragment;
+    "PERIOD()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
-    "basketsNeeded()": FunctionFragment;
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
-    "dissolve(uint256)": FunctionFragment;
+    "delegationNonces(address)": FunctionFragment;
+    "draftQueueLen(uint256,address)": FunctionFragment;
+    "draftQueues(uint256,address,uint256)": FunctionFragment;
+    "draftRate()": FunctionFragment;
+    "endIdForWithdraw(address)": FunctionFragment;
+    "exchangeRate()": FunctionFragment;
+    "firstRemainingDraft(uint256,address)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
-    "init(address,string,string,string,(uint256,uint192),(uint256,uint192))": FunctionFragment;
-    "issuanceAvailable()": FunctionFragment;
-    "issuanceThrottleParams()": FunctionFragment;
-    "issue(uint256)": FunctionFragment;
-    "issueTo(address,uint256)": FunctionFragment;
+    "init(address,string,string,uint48,uint192)": FunctionFragment;
     "main()": FunctionFragment;
-    "mandate()": FunctionFragment;
-    "melt(uint256)": FunctionFragment;
-    "mint(uint192)": FunctionFragment;
-    "monetizeDonations(address)": FunctionFragment;
     "name()": FunctionFragment;
     "nonces(address)": FunctionFragment;
+    "payoutLastPaid()": FunctionFragment;
+    "payoutRewards()": FunctionFragment;
     "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
-    "redeem(uint256)": FunctionFragment;
-    "redeemCustom(address,uint256,uint48[],uint192[],address[],uint256[])": FunctionFragment;
-    "redeemTo(address,uint256)": FunctionFragment;
-    "redemptionAvailable()": FunctionFragment;
-    "redemptionThrottleParams()": FunctionFragment;
-    "setBasketsNeeded(uint192)": FunctionFragment;
-    "setIssuanceThrottleParams((uint256,uint192))": FunctionFragment;
-    "setRedemptionThrottleParams((uint256,uint192))": FunctionFragment;
+    "rewardRatio()": FunctionFragment;
+    "seizeRSR(uint256)": FunctionFragment;
+    "setRewardRatio(uint192)": FunctionFragment;
+    "setUnstakingDelay(uint48)": FunctionFragment;
+    "stake(uint256)": FunctionFragment;
+    "stakeRate()": FunctionFragment;
     "symbol()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
+    "unstake(uint256)": FunctionFragment;
+    "unstakingDelay()": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
     "version()": FunctionFragment;
+    "withdraw(address,uint256)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
       | "DOMAIN_SEPARATOR"
-      | "MAX_EXCHANGE_RATE"
-      | "MAX_THROTTLE_PCT_AMT"
-      | "MAX_THROTTLE_RATE_AMT"
-      | "MIN_EXCHANGE_RATE"
-      | "MIN_THROTTLE_RATE_AMT"
+      | "MAX_REWARD_RATIO"
+      | "MAX_UNSTAKING_DELAY"
+      | "MIN_UNSTAKING_DELAY"
+      | "PERIOD"
       | "allowance"
       | "approve"
       | "balanceOf"
-      | "basketsNeeded"
       | "decimals"
       | "decreaseAllowance"
-      | "dissolve"
+      | "delegationNonces"
+      | "draftQueueLen"
+      | "draftQueues"
+      | "draftRate"
+      | "endIdForWithdraw"
+      | "exchangeRate"
+      | "firstRemainingDraft"
       | "increaseAllowance"
       | "init"
-      | "issuanceAvailable"
-      | "issuanceThrottleParams"
-      | "issue"
-      | "issueTo"
       | "main"
-      | "mandate"
-      | "melt"
-      | "mint"
-      | "monetizeDonations"
       | "name"
       | "nonces"
+      | "payoutLastPaid"
+      | "payoutRewards"
       | "permit"
       | "proxiableUUID"
-      | "redeem"
-      | "redeemCustom"
-      | "redeemTo"
-      | "redemptionAvailable"
-      | "redemptionThrottleParams"
-      | "setBasketsNeeded"
-      | "setIssuanceThrottleParams"
-      | "setRedemptionThrottleParams"
+      | "rewardRatio"
+      | "seizeRSR"
+      | "setRewardRatio"
+      | "setUnstakingDelay"
+      | "stake"
+      | "stakeRate"
       | "symbol"
       | "totalSupply"
       | "transfer"
       | "transferFrom"
+      | "unstake"
+      | "unstakingDelay"
       | "upgradeTo"
       | "upgradeToAndCall"
       | "version"
+      | "withdraw"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -139,25 +125,18 @@ export interface RTokenInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "MAX_EXCHANGE_RATE",
+    functionFragment: "MAX_REWARD_RATIO",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "MAX_THROTTLE_PCT_AMT",
+    functionFragment: "MAX_UNSTAKING_DELAY",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "MAX_THROTTLE_RATE_AMT",
+    functionFragment: "MIN_UNSTAKING_DELAY",
     values?: undefined
   ): string;
-  encodeFunctionData(
-    functionFragment: "MIN_EXCHANGE_RATE",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "MIN_THROTTLE_RATE_AMT",
-    values?: undefined
-  ): string;
+  encodeFunctionData(functionFragment: "PERIOD", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "allowance",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
@@ -170,18 +149,39 @@ export interface RTokenInterface extends utils.Interface {
     functionFragment: "balanceOf",
     values: [PromiseOrValue<string>]
   ): string;
-  encodeFunctionData(
-    functionFragment: "basketsNeeded",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "decreaseAllowance",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "dissolve",
-    values: [PromiseOrValue<BigNumberish>]
+    functionFragment: "delegationNonces",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "draftQueueLen",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "draftQueues",
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
+  encodeFunctionData(functionFragment: "draftRate", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "endIdForWithdraw",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "exchangeRate",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "firstRemainingDraft",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "increaseAllowance",
@@ -193,45 +193,23 @@ export interface RTokenInterface extends utils.Interface {
       PromiseOrValue<string>,
       PromiseOrValue<string>,
       PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      ThrottleLib.ParamsStruct,
-      ThrottleLib.ParamsStruct
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
     ]
   ): string;
-  encodeFunctionData(
-    functionFragment: "issuanceAvailable",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "issuanceThrottleParams",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "issue",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "issueTo",
-    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
-  ): string;
   encodeFunctionData(functionFragment: "main", values?: undefined): string;
-  encodeFunctionData(functionFragment: "mandate", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "melt",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "mint",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "monetizeDonations",
-    values: [PromiseOrValue<string>]
-  ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "nonces",
     values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "payoutLastPaid",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "payoutRewards",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "permit",
@@ -250,44 +228,26 @@ export interface RTokenInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "redeem",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "redeemCustom",
-    values: [
-      PromiseOrValue<string>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>[],
-      PromiseOrValue<BigNumberish>[],
-      PromiseOrValue<string>[],
-      PromiseOrValue<BigNumberish>[]
-    ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "redeemTo",
-    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "redemptionAvailable",
+    functionFragment: "rewardRatio",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "redemptionThrottleParams",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setBasketsNeeded",
+    functionFragment: "seizeRSR",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "setIssuanceThrottleParams",
-    values: [ThrottleLib.ParamsStruct]
+    functionFragment: "setRewardRatio",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "setRedemptionThrottleParams",
-    values: [ThrottleLib.ParamsStruct]
+    functionFragment: "setUnstakingDelay",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "stake",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(functionFragment: "stakeRate", values?: undefined): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
@@ -306,6 +266,14 @@ export interface RTokenInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "unstake",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "unstakingDelay",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "upgradeTo",
     values: [PromiseOrValue<string>]
   ): string;
@@ -314,100 +282,97 @@ export interface RTokenInterface extends utils.Interface {
     values: [PromiseOrValue<string>, PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(functionFragment: "version", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "withdraw",
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
 
   decodeFunctionResult(
     functionFragment: "DOMAIN_SEPARATOR",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "MAX_EXCHANGE_RATE",
+    functionFragment: "MAX_REWARD_RATIO",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "MAX_THROTTLE_PCT_AMT",
+    functionFragment: "MAX_UNSTAKING_DELAY",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "MAX_THROTTLE_RATE_AMT",
+    functionFragment: "MIN_UNSTAKING_DELAY",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "MIN_EXCHANGE_RATE",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "MIN_THROTTLE_RATE_AMT",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "PERIOD", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "basketsNeeded",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "decreaseAllowance",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "dissolve", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "delegationNonces",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "draftQueueLen",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "draftQueues",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "draftRate", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "endIdForWithdraw",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "exchangeRate",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "firstRemainingDraft",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "increaseAllowance",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "init", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "issuanceAvailable",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "issuanceThrottleParams",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "issue", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "issueTo", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "main", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "mandate", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "melt", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "monetizeDonations",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "nonces", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "payoutLastPaid",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "payoutRewards",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "permit", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "proxiableUUID",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "redeem", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "redeemCustom",
+    functionFragment: "rewardRatio",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "redeemTo", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "seizeRSR", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "redemptionAvailable",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "redemptionThrottleParams",
+    functionFragment: "setRewardRatio",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setBasketsNeeded",
+    functionFragment: "setUnstakingDelay",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "setIssuanceThrottleParams",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setRedemptionThrottleParams",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "stakeRate", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
@@ -418,39 +383,53 @@ export interface RTokenInterface extends utils.Interface {
     functionFragment: "transferFrom",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "unstake", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "unstakingDelay",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "upgradeTo", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "upgradeToAndCall",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "version", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 
   events: {
     "AdminChanged(address,address)": EventFragment;
+    "AllBalancesReset(uint256)": EventFragment;
+    "AllUnstakingReset(uint256)": EventFragment;
     "Approval(address,address,uint256)": EventFragment;
-    "BasketsNeededChanged(uint192,uint192)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
+    "ExchangeRateSet(uint192,uint192)": EventFragment;
     "Initialized(uint8)": EventFragment;
-    "Issuance(address,address,uint256,uint192)": EventFragment;
-    "IssuanceThrottleSet(tuple,tuple)": EventFragment;
-    "Melted(uint256)": EventFragment;
-    "Redemption(address,address,uint256,uint192)": EventFragment;
-    "RedemptionThrottleSet(tuple,tuple)": EventFragment;
+    "RewardPeriodSet(uint48,uint48)": EventFragment;
+    "RewardRatioSet(uint192,uint192)": EventFragment;
+    "RewardsPaid(uint256)": EventFragment;
+    "Staked(uint256,address,uint256,uint256)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
+    "UnstakingCompleted(uint256,uint256,uint256,address,uint256)": EventFragment;
+    "UnstakingDelaySet(uint48,uint48)": EventFragment;
+    "UnstakingStarted(uint256,uint256,address,uint256,uint256,uint256)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "AllBalancesReset"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "AllUnstakingReset"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "BasketsNeededChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ExchangeRateSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Issuance"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "IssuanceThrottleSet"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Melted"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Redemption"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "RedemptionThrottleSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RewardPeriodSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RewardRatioSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RewardsPaid"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Staked"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UnstakingCompleted"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UnstakingDelaySet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UnstakingStarted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
 
@@ -465,6 +444,28 @@ export type AdminChangedEvent = TypedEvent<
 
 export type AdminChangedEventFilter = TypedEventFilter<AdminChangedEvent>;
 
+export interface AllBalancesResetEventObject {
+  newEra: BigNumber;
+}
+export type AllBalancesResetEvent = TypedEvent<
+  [BigNumber],
+  AllBalancesResetEventObject
+>;
+
+export type AllBalancesResetEventFilter =
+  TypedEventFilter<AllBalancesResetEvent>;
+
+export interface AllUnstakingResetEventObject {
+  newEra: BigNumber;
+}
+export type AllUnstakingResetEvent = TypedEvent<
+  [BigNumber],
+  AllUnstakingResetEventObject
+>;
+
+export type AllUnstakingResetEventFilter =
+  TypedEventFilter<AllUnstakingResetEvent>;
+
 export interface ApprovalEventObject {
   owner: string;
   spender: string;
@@ -477,18 +478,6 @@ export type ApprovalEvent = TypedEvent<
 
 export type ApprovalEventFilter = TypedEventFilter<ApprovalEvent>;
 
-export interface BasketsNeededChangedEventObject {
-  oldBasketsNeeded: BigNumber;
-  newBasketsNeeded: BigNumber;
-}
-export type BasketsNeededChangedEvent = TypedEvent<
-  [BigNumber, BigNumber],
-  BasketsNeededChangedEventObject
->;
-
-export type BasketsNeededChangedEventFilter =
-  TypedEventFilter<BasketsNeededChangedEvent>;
-
 export interface BeaconUpgradedEventObject {
   beacon: string;
 }
@@ -499,6 +488,17 @@ export type BeaconUpgradedEvent = TypedEvent<
 
 export type BeaconUpgradedEventFilter = TypedEventFilter<BeaconUpgradedEvent>;
 
+export interface ExchangeRateSetEventObject {
+  oldVal: BigNumber;
+  newVal: BigNumber;
+}
+export type ExchangeRateSetEvent = TypedEvent<
+  [BigNumber, BigNumber],
+  ExchangeRateSetEventObject
+>;
+
+export type ExchangeRateSetEventFilter = TypedEventFilter<ExchangeRateSetEvent>;
+
 export interface InitializedEventObject {
   version: number;
 }
@@ -506,62 +506,47 @@ export type InitializedEvent = TypedEvent<[number], InitializedEventObject>;
 
 export type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
 
-export interface IssuanceEventObject {
-  issuer: string;
-  recipient: string;
-  amount: BigNumber;
-  baskets: BigNumber;
+export interface RewardPeriodSetEventObject {
+  oldVal: number;
+  newVal: number;
 }
-export type IssuanceEvent = TypedEvent<
-  [string, string, BigNumber, BigNumber],
-  IssuanceEventObject
+export type RewardPeriodSetEvent = TypedEvent<
+  [number, number],
+  RewardPeriodSetEventObject
 >;
 
-export type IssuanceEventFilter = TypedEventFilter<IssuanceEvent>;
+export type RewardPeriodSetEventFilter = TypedEventFilter<RewardPeriodSetEvent>;
 
-export interface IssuanceThrottleSetEventObject {
-  oldVal: ThrottleLib.ParamsStructOutput;
-  newVal: ThrottleLib.ParamsStructOutput;
+export interface RewardRatioSetEventObject {
+  oldVal: BigNumber;
+  newVal: BigNumber;
 }
-export type IssuanceThrottleSetEvent = TypedEvent<
-  [ThrottleLib.ParamsStructOutput, ThrottleLib.ParamsStructOutput],
-  IssuanceThrottleSetEventObject
+export type RewardRatioSetEvent = TypedEvent<
+  [BigNumber, BigNumber],
+  RewardRatioSetEventObject
 >;
 
-export type IssuanceThrottleSetEventFilter =
-  TypedEventFilter<IssuanceThrottleSetEvent>;
+export type RewardRatioSetEventFilter = TypedEventFilter<RewardRatioSetEvent>;
 
-export interface MeltedEventObject {
-  amount: BigNumber;
+export interface RewardsPaidEventObject {
+  rsrAmt: BigNumber;
 }
-export type MeltedEvent = TypedEvent<[BigNumber], MeltedEventObject>;
+export type RewardsPaidEvent = TypedEvent<[BigNumber], RewardsPaidEventObject>;
 
-export type MeltedEventFilter = TypedEventFilter<MeltedEvent>;
+export type RewardsPaidEventFilter = TypedEventFilter<RewardsPaidEvent>;
 
-export interface RedemptionEventObject {
-  redeemer: string;
-  recipient: string;
-  amount: BigNumber;
-  baskets: BigNumber;
+export interface StakedEventObject {
+  era: BigNumber;
+  staker: string;
+  rsrAmount: BigNumber;
+  stRSRAmount: BigNumber;
 }
-export type RedemptionEvent = TypedEvent<
-  [string, string, BigNumber, BigNumber],
-  RedemptionEventObject
+export type StakedEvent = TypedEvent<
+  [BigNumber, string, BigNumber, BigNumber],
+  StakedEventObject
 >;
 
-export type RedemptionEventFilter = TypedEventFilter<RedemptionEvent>;
-
-export interface RedemptionThrottleSetEventObject {
-  oldVal: ThrottleLib.ParamsStructOutput;
-  newVal: ThrottleLib.ParamsStructOutput;
-}
-export type RedemptionThrottleSetEvent = TypedEvent<
-  [ThrottleLib.ParamsStructOutput, ThrottleLib.ParamsStructOutput],
-  RedemptionThrottleSetEventObject
->;
-
-export type RedemptionThrottleSetEventFilter =
-  TypedEventFilter<RedemptionThrottleSetEvent>;
+export type StakedEventFilter = TypedEventFilter<StakedEvent>;
 
 export interface TransferEventObject {
   from: string;
@@ -575,6 +560,49 @@ export type TransferEvent = TypedEvent<
 
 export type TransferEventFilter = TypedEventFilter<TransferEvent>;
 
+export interface UnstakingCompletedEventObject {
+  firstId: BigNumber;
+  endId: BigNumber;
+  draftEra: BigNumber;
+  staker: string;
+  rsrAmount: BigNumber;
+}
+export type UnstakingCompletedEvent = TypedEvent<
+  [BigNumber, BigNumber, BigNumber, string, BigNumber],
+  UnstakingCompletedEventObject
+>;
+
+export type UnstakingCompletedEventFilter =
+  TypedEventFilter<UnstakingCompletedEvent>;
+
+export interface UnstakingDelaySetEventObject {
+  oldVal: number;
+  newVal: number;
+}
+export type UnstakingDelaySetEvent = TypedEvent<
+  [number, number],
+  UnstakingDelaySetEventObject
+>;
+
+export type UnstakingDelaySetEventFilter =
+  TypedEventFilter<UnstakingDelaySetEvent>;
+
+export interface UnstakingStartedEventObject {
+  draftId: BigNumber;
+  draftEra: BigNumber;
+  staker: string;
+  rsrAmount: BigNumber;
+  stRSRAmount: BigNumber;
+  availableAt: BigNumber;
+}
+export type UnstakingStartedEvent = TypedEvent<
+  [BigNumber, BigNumber, string, BigNumber, BigNumber, BigNumber],
+  UnstakingStartedEventObject
+>;
+
+export type UnstakingStartedEventFilter =
+  TypedEventFilter<UnstakingStartedEvent>;
+
 export interface UpgradedEventObject {
   implementation: string;
 }
@@ -582,12 +610,12 @@ export type UpgradedEvent = TypedEvent<[string], UpgradedEventObject>;
 
 export type UpgradedEventFilter = TypedEventFilter<UpgradedEvent>;
 
-export interface RToken extends BaseContract {
+export interface StRsrLegacy extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: RTokenInterface;
+  interface: StRsrLegacyInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -611,15 +639,13 @@ export interface RToken extends BaseContract {
   functions: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<[string]>;
 
-    MAX_EXCHANGE_RATE(overrides?: CallOverrides): Promise<[BigNumber]>;
+    MAX_REWARD_RATIO(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    MAX_THROTTLE_PCT_AMT(overrides?: CallOverrides): Promise<[BigNumber]>;
+    MAX_UNSTAKING_DELAY(overrides?: CallOverrides): Promise<[number]>;
 
-    MAX_THROTTLE_RATE_AMT(overrides?: CallOverrides): Promise<[BigNumber]>;
+    MIN_UNSTAKING_DELAY(overrides?: CallOverrides): Promise<[number]>;
 
-    MIN_EXCHANGE_RATE(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    MIN_THROTTLE_RATE_AMT(overrides?: CallOverrides): Promise<[BigNumber]>;
+    PERIOD(overrides?: CallOverrides): Promise<[number]>;
 
     allowance(
       owner: PromiseOrValue<string>,
@@ -638,8 +664,6 @@ export interface RToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    basketsNeeded(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     decimals(overrides?: CallOverrides): Promise<[number]>;
 
     decreaseAllowance(
@@ -648,10 +672,40 @@ export interface RToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    dissolve(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    delegationNonces(
+      owner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    draftQueueLen(
+      era_: PromiseOrValue<BigNumberish>,
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    draftQueues(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
+      arg2: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber] & { drafts: BigNumber; availableAt: BigNumber }
+    >;
+
+    draftRate(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    endIdForWithdraw(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    exchangeRate(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    firstRemainingDraft(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     increaseAllowance(
       spender: PromiseOrValue<string>,
@@ -663,47 +717,12 @@ export interface RToken extends BaseContract {
       main_: PromiseOrValue<string>,
       name_: PromiseOrValue<string>,
       symbol_: PromiseOrValue<string>,
-      mandate_: PromiseOrValue<string>,
-      issuanceThrottleParams_: ThrottleLib.ParamsStruct,
-      redemptionThrottleParams_: ThrottleLib.ParamsStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    issuanceAvailable(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    issuanceThrottleParams(
-      overrides?: CallOverrides
-    ): Promise<[ThrottleLib.ParamsStructOutput]>;
-
-    issue(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    issueTo(
-      recipient: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
+      unstakingDelay_: PromiseOrValue<BigNumberish>,
+      rewardRatio_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     main(overrides?: CallOverrides): Promise<[string]>;
-
-    mandate(overrides?: CallOverrides): Promise<[string]>;
-
-    melt(
-      amtRToken: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    mint(
-      baskets: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    monetizeDonations(
-      erc20: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
 
     name(overrides?: CallOverrides): Promise<[string]>;
 
@@ -711,6 +730,12 @@ export interface RToken extends BaseContract {
       owner: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    payoutLastPaid(overrides?: CallOverrides): Promise<[number]>;
+
+    payoutRewards(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     permit(
       owner: PromiseOrValue<string>,
@@ -725,49 +750,29 @@ export interface RToken extends BaseContract {
 
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
 
-    redeem(
-      amount: PromiseOrValue<BigNumberish>,
+    rewardRatio(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    seizeRSR(
+      rsrAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    redeemCustom(
-      recipient: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
-      basketNonces: PromiseOrValue<BigNumberish>[],
-      portions: PromiseOrValue<BigNumberish>[],
-      expectedERC20sOut: PromiseOrValue<string>[],
-      minAmounts: PromiseOrValue<BigNumberish>[],
+    setRewardRatio(
+      val: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    redeemTo(
-      recipient: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
+    setUnstakingDelay(
+      val: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    redemptionAvailable(
-      overrides?: CallOverrides
-    ): Promise<[BigNumber] & { available: BigNumber }>;
-
-    redemptionThrottleParams(
-      overrides?: CallOverrides
-    ): Promise<[ThrottleLib.ParamsStructOutput]>;
-
-    setBasketsNeeded(
-      basketsNeeded_: PromiseOrValue<BigNumberish>,
+    stake(
+      rsrAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    setIssuanceThrottleParams(
-      params: ThrottleLib.ParamsStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    setRedemptionThrottleParams(
-      params: ThrottleLib.ParamsStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    stakeRate(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     symbol(overrides?: CallOverrides): Promise<[string]>;
 
@@ -786,6 +791,13 @@ export interface RToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    unstake(
+      stakeAmount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    unstakingDelay(overrides?: CallOverrides): Promise<[number]>;
+
     upgradeTo(
       newImplementation: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -798,19 +810,23 @@ export interface RToken extends BaseContract {
     ): Promise<ContractTransaction>;
 
     version(overrides?: CallOverrides): Promise<[string]>;
+
+    withdraw(
+      account: PromiseOrValue<string>,
+      endId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
   };
 
   DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
 
-  MAX_EXCHANGE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
+  MAX_REWARD_RATIO(overrides?: CallOverrides): Promise<BigNumber>;
 
-  MAX_THROTTLE_PCT_AMT(overrides?: CallOverrides): Promise<BigNumber>;
+  MAX_UNSTAKING_DELAY(overrides?: CallOverrides): Promise<number>;
 
-  MAX_THROTTLE_RATE_AMT(overrides?: CallOverrides): Promise<BigNumber>;
+  MIN_UNSTAKING_DELAY(overrides?: CallOverrides): Promise<number>;
 
-  MIN_EXCHANGE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
-
-  MIN_THROTTLE_RATE_AMT(overrides?: CallOverrides): Promise<BigNumber>;
+  PERIOD(overrides?: CallOverrides): Promise<number>;
 
   allowance(
     owner: PromiseOrValue<string>,
@@ -829,8 +845,6 @@ export interface RToken extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  basketsNeeded(overrides?: CallOverrides): Promise<BigNumber>;
-
   decimals(overrides?: CallOverrides): Promise<number>;
 
   decreaseAllowance(
@@ -839,10 +853,40 @@ export interface RToken extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  dissolve(
-    amount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  delegationNonces(
+    owner: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  draftQueueLen(
+    era_: PromiseOrValue<BigNumberish>,
+    account: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  draftQueues(
+    arg0: PromiseOrValue<BigNumberish>,
+    arg1: PromiseOrValue<string>,
+    arg2: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<
+    [BigNumber, BigNumber] & { drafts: BigNumber; availableAt: BigNumber }
+  >;
+
+  draftRate(overrides?: CallOverrides): Promise<BigNumber>;
+
+  endIdForWithdraw(
+    account: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  exchangeRate(overrides?: CallOverrides): Promise<BigNumber>;
+
+  firstRemainingDraft(
+    arg0: PromiseOrValue<BigNumberish>,
+    arg1: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   increaseAllowance(
     spender: PromiseOrValue<string>,
@@ -854,47 +898,12 @@ export interface RToken extends BaseContract {
     main_: PromiseOrValue<string>,
     name_: PromiseOrValue<string>,
     symbol_: PromiseOrValue<string>,
-    mandate_: PromiseOrValue<string>,
-    issuanceThrottleParams_: ThrottleLib.ParamsStruct,
-    redemptionThrottleParams_: ThrottleLib.ParamsStruct,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  issuanceAvailable(overrides?: CallOverrides): Promise<BigNumber>;
-
-  issuanceThrottleParams(
-    overrides?: CallOverrides
-  ): Promise<ThrottleLib.ParamsStructOutput>;
-
-  issue(
-    amount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  issueTo(
-    recipient: PromiseOrValue<string>,
-    amount: PromiseOrValue<BigNumberish>,
+    unstakingDelay_: PromiseOrValue<BigNumberish>,
+    rewardRatio_: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   main(overrides?: CallOverrides): Promise<string>;
-
-  mandate(overrides?: CallOverrides): Promise<string>;
-
-  melt(
-    amtRToken: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  mint(
-    baskets: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  monetizeDonations(
-    erc20: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
 
   name(overrides?: CallOverrides): Promise<string>;
 
@@ -902,6 +911,12 @@ export interface RToken extends BaseContract {
     owner: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  payoutLastPaid(overrides?: CallOverrides): Promise<number>;
+
+  payoutRewards(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   permit(
     owner: PromiseOrValue<string>,
@@ -916,47 +931,29 @@ export interface RToken extends BaseContract {
 
   proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
-  redeem(
-    amount: PromiseOrValue<BigNumberish>,
+  rewardRatio(overrides?: CallOverrides): Promise<BigNumber>;
+
+  seizeRSR(
+    rsrAmount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  redeemCustom(
-    recipient: PromiseOrValue<string>,
-    amount: PromiseOrValue<BigNumberish>,
-    basketNonces: PromiseOrValue<BigNumberish>[],
-    portions: PromiseOrValue<BigNumberish>[],
-    expectedERC20sOut: PromiseOrValue<string>[],
-    minAmounts: PromiseOrValue<BigNumberish>[],
+  setRewardRatio(
+    val: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  redeemTo(
-    recipient: PromiseOrValue<string>,
-    amount: PromiseOrValue<BigNumberish>,
+  setUnstakingDelay(
+    val: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  redemptionAvailable(overrides?: CallOverrides): Promise<BigNumber>;
-
-  redemptionThrottleParams(
-    overrides?: CallOverrides
-  ): Promise<ThrottleLib.ParamsStructOutput>;
-
-  setBasketsNeeded(
-    basketsNeeded_: PromiseOrValue<BigNumberish>,
+  stake(
+    rsrAmount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  setIssuanceThrottleParams(
-    params: ThrottleLib.ParamsStruct,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  setRedemptionThrottleParams(
-    params: ThrottleLib.ParamsStruct,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  stakeRate(overrides?: CallOverrides): Promise<BigNumber>;
 
   symbol(overrides?: CallOverrides): Promise<string>;
 
@@ -975,6 +972,13 @@ export interface RToken extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  unstake(
+    stakeAmount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  unstakingDelay(overrides?: CallOverrides): Promise<number>;
+
   upgradeTo(
     newImplementation: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -988,18 +992,22 @@ export interface RToken extends BaseContract {
 
   version(overrides?: CallOverrides): Promise<string>;
 
+  withdraw(
+    account: PromiseOrValue<string>,
+    endId: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
 
-    MAX_EXCHANGE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
+    MAX_REWARD_RATIO(overrides?: CallOverrides): Promise<BigNumber>;
 
-    MAX_THROTTLE_PCT_AMT(overrides?: CallOverrides): Promise<BigNumber>;
+    MAX_UNSTAKING_DELAY(overrides?: CallOverrides): Promise<number>;
 
-    MAX_THROTTLE_RATE_AMT(overrides?: CallOverrides): Promise<BigNumber>;
+    MIN_UNSTAKING_DELAY(overrides?: CallOverrides): Promise<number>;
 
-    MIN_EXCHANGE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
-
-    MIN_THROTTLE_RATE_AMT(overrides?: CallOverrides): Promise<BigNumber>;
+    PERIOD(overrides?: CallOverrides): Promise<number>;
 
     allowance(
       owner: PromiseOrValue<string>,
@@ -1018,8 +1026,6 @@ export interface RToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    basketsNeeded(overrides?: CallOverrides): Promise<BigNumber>;
-
     decimals(overrides?: CallOverrides): Promise<number>;
 
     decreaseAllowance(
@@ -1028,10 +1034,40 @@ export interface RToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    dissolve(
-      amount: PromiseOrValue<BigNumberish>,
+    delegationNonces(
+      owner: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<void>;
+    ): Promise<BigNumber>;
+
+    draftQueueLen(
+      era_: PromiseOrValue<BigNumberish>,
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    draftQueues(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
+      arg2: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber] & { drafts: BigNumber; availableAt: BigNumber }
+    >;
+
+    draftRate(overrides?: CallOverrides): Promise<BigNumber>;
+
+    endIdForWithdraw(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    exchangeRate(overrides?: CallOverrides): Promise<BigNumber>;
+
+    firstRemainingDraft(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     increaseAllowance(
       spender: PromiseOrValue<string>,
@@ -1043,47 +1079,12 @@ export interface RToken extends BaseContract {
       main_: PromiseOrValue<string>,
       name_: PromiseOrValue<string>,
       symbol_: PromiseOrValue<string>,
-      mandate_: PromiseOrValue<string>,
-      issuanceThrottleParams_: ThrottleLib.ParamsStruct,
-      redemptionThrottleParams_: ThrottleLib.ParamsStruct,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    issuanceAvailable(overrides?: CallOverrides): Promise<BigNumber>;
-
-    issuanceThrottleParams(
-      overrides?: CallOverrides
-    ): Promise<ThrottleLib.ParamsStructOutput>;
-
-    issue(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    issueTo(
-      recipient: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
+      unstakingDelay_: PromiseOrValue<BigNumberish>,
+      rewardRatio_: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     main(overrides?: CallOverrides): Promise<string>;
-
-    mandate(overrides?: CallOverrides): Promise<string>;
-
-    melt(
-      amtRToken: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    mint(
-      baskets: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    monetizeDonations(
-      erc20: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     name(overrides?: CallOverrides): Promise<string>;
 
@@ -1091,6 +1092,10 @@ export interface RToken extends BaseContract {
       owner: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    payoutLastPaid(overrides?: CallOverrides): Promise<number>;
+
+    payoutRewards(overrides?: CallOverrides): Promise<void>;
 
     permit(
       owner: PromiseOrValue<string>,
@@ -1105,49 +1110,29 @@ export interface RToken extends BaseContract {
 
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
-    redeem(
-      amount: PromiseOrValue<BigNumberish>,
+    rewardRatio(overrides?: CallOverrides): Promise<BigNumber>;
+
+    seizeRSR(
+      rsrAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    redeemCustom(
-      recipient: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
-      basketNonces: PromiseOrValue<BigNumberish>[],
-      portions: PromiseOrValue<BigNumberish>[],
-      expectedERC20sOut: PromiseOrValue<string>[],
-      minAmounts: PromiseOrValue<BigNumberish>[],
-      overrides?: CallOverrides
-    ): Promise<
-      [string[], BigNumber[]] & { erc20sOut: string[]; amountsOut: BigNumber[] }
-    >;
-
-    redeemTo(
-      recipient: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
+    setRewardRatio(
+      val: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    redemptionAvailable(overrides?: CallOverrides): Promise<BigNumber>;
-
-    redemptionThrottleParams(
-      overrides?: CallOverrides
-    ): Promise<ThrottleLib.ParamsStructOutput>;
-
-    setBasketsNeeded(
-      basketsNeeded_: PromiseOrValue<BigNumberish>,
+    setUnstakingDelay(
+      val: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setIssuanceThrottleParams(
-      params: ThrottleLib.ParamsStruct,
+    stake(
+      rsrAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setRedemptionThrottleParams(
-      params: ThrottleLib.ParamsStruct,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    stakeRate(overrides?: CallOverrides): Promise<BigNumber>;
 
     symbol(overrides?: CallOverrides): Promise<string>;
 
@@ -1166,6 +1151,13 @@ export interface RToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
+    unstake(
+      stakeAmount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    unstakingDelay(overrides?: CallOverrides): Promise<number>;
+
     upgradeTo(
       newImplementation: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -1178,6 +1170,12 @@ export interface RToken extends BaseContract {
     ): Promise<void>;
 
     version(overrides?: CallOverrides): Promise<string>;
+
+    withdraw(
+      account: PromiseOrValue<string>,
+      endId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
@@ -1190,6 +1188,20 @@ export interface RToken extends BaseContract {
       newAdmin?: null
     ): AdminChangedEventFilter;
 
+    "AllBalancesReset(uint256)"(
+      newEra?: PromiseOrValue<BigNumberish> | null
+    ): AllBalancesResetEventFilter;
+    AllBalancesReset(
+      newEra?: PromiseOrValue<BigNumberish> | null
+    ): AllBalancesResetEventFilter;
+
+    "AllUnstakingReset(uint256)"(
+      newEra?: PromiseOrValue<BigNumberish> | null
+    ): AllUnstakingResetEventFilter;
+    AllUnstakingReset(
+      newEra?: PromiseOrValue<BigNumberish> | null
+    ): AllUnstakingResetEventFilter;
+
     "Approval(address,address,uint256)"(
       owner?: PromiseOrValue<string> | null,
       spender?: PromiseOrValue<string> | null,
@@ -1201,15 +1213,6 @@ export interface RToken extends BaseContract {
       value?: null
     ): ApprovalEventFilter;
 
-    "BasketsNeededChanged(uint192,uint192)"(
-      oldBasketsNeeded?: null,
-      newBasketsNeeded?: null
-    ): BasketsNeededChangedEventFilter;
-    BasketsNeededChanged(
-      oldBasketsNeeded?: null,
-      newBasketsNeeded?: null
-    ): BasketsNeededChangedEventFilter;
-
     "BeaconUpgraded(address)"(
       beacon?: PromiseOrValue<string> | null
     ): BeaconUpgradedEventFilter;
@@ -1217,55 +1220,55 @@ export interface RToken extends BaseContract {
       beacon?: PromiseOrValue<string> | null
     ): BeaconUpgradedEventFilter;
 
+    "ExchangeRateSet(uint192,uint192)"(
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
+    ): ExchangeRateSetEventFilter;
+    ExchangeRateSet(
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
+    ): ExchangeRateSetEventFilter;
+
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
 
-    "Issuance(address,address,uint256,uint192)"(
-      issuer?: PromiseOrValue<string> | null,
-      recipient?: PromiseOrValue<string> | null,
-      amount?: PromiseOrValue<BigNumberish> | null,
-      baskets?: null
-    ): IssuanceEventFilter;
-    Issuance(
-      issuer?: PromiseOrValue<string> | null,
-      recipient?: PromiseOrValue<string> | null,
-      amount?: PromiseOrValue<BigNumberish> | null,
-      baskets?: null
-    ): IssuanceEventFilter;
+    "RewardPeriodSet(uint48,uint48)"(
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
+    ): RewardPeriodSetEventFilter;
+    RewardPeriodSet(
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
+    ): RewardPeriodSetEventFilter;
 
-    "IssuanceThrottleSet(tuple,tuple)"(
-      oldVal?: null,
-      newVal?: null
-    ): IssuanceThrottleSetEventFilter;
-    IssuanceThrottleSet(
-      oldVal?: null,
-      newVal?: null
-    ): IssuanceThrottleSetEventFilter;
+    "RewardRatioSet(uint192,uint192)"(
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
+    ): RewardRatioSetEventFilter;
+    RewardRatioSet(
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
+    ): RewardRatioSetEventFilter;
 
-    "Melted(uint256)"(amount?: null): MeltedEventFilter;
-    Melted(amount?: null): MeltedEventFilter;
+    "RewardsPaid(uint256)"(
+      rsrAmt?: PromiseOrValue<BigNumberish> | null
+    ): RewardsPaidEventFilter;
+    RewardsPaid(
+      rsrAmt?: PromiseOrValue<BigNumberish> | null
+    ): RewardsPaidEventFilter;
 
-    "Redemption(address,address,uint256,uint192)"(
-      redeemer?: PromiseOrValue<string> | null,
-      recipient?: PromiseOrValue<string> | null,
-      amount?: PromiseOrValue<BigNumberish> | null,
-      baskets?: null
-    ): RedemptionEventFilter;
-    Redemption(
-      redeemer?: PromiseOrValue<string> | null,
-      recipient?: PromiseOrValue<string> | null,
-      amount?: PromiseOrValue<BigNumberish> | null,
-      baskets?: null
-    ): RedemptionEventFilter;
-
-    "RedemptionThrottleSet(tuple,tuple)"(
-      oldVal?: null,
-      newVal?: null
-    ): RedemptionThrottleSetEventFilter;
-    RedemptionThrottleSet(
-      oldVal?: null,
-      newVal?: null
-    ): RedemptionThrottleSetEventFilter;
+    "Staked(uint256,address,uint256,uint256)"(
+      era?: PromiseOrValue<BigNumberish> | null,
+      staker?: PromiseOrValue<string> | null,
+      rsrAmount?: null,
+      stRSRAmount?: PromiseOrValue<BigNumberish> | null
+    ): StakedEventFilter;
+    Staked(
+      era?: PromiseOrValue<BigNumberish> | null,
+      staker?: PromiseOrValue<string> | null,
+      rsrAmount?: null,
+      stRSRAmount?: PromiseOrValue<BigNumberish> | null
+    ): StakedEventFilter;
 
     "Transfer(address,address,uint256)"(
       from?: PromiseOrValue<string> | null,
@@ -1278,6 +1281,47 @@ export interface RToken extends BaseContract {
       value?: null
     ): TransferEventFilter;
 
+    "UnstakingCompleted(uint256,uint256,uint256,address,uint256)"(
+      firstId?: PromiseOrValue<BigNumberish> | null,
+      endId?: PromiseOrValue<BigNumberish> | null,
+      draftEra?: null,
+      staker?: PromiseOrValue<string> | null,
+      rsrAmount?: null
+    ): UnstakingCompletedEventFilter;
+    UnstakingCompleted(
+      firstId?: PromiseOrValue<BigNumberish> | null,
+      endId?: PromiseOrValue<BigNumberish> | null,
+      draftEra?: null,
+      staker?: PromiseOrValue<string> | null,
+      rsrAmount?: null
+    ): UnstakingCompletedEventFilter;
+
+    "UnstakingDelaySet(uint48,uint48)"(
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
+    ): UnstakingDelaySetEventFilter;
+    UnstakingDelaySet(
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
+    ): UnstakingDelaySetEventFilter;
+
+    "UnstakingStarted(uint256,uint256,address,uint256,uint256,uint256)"(
+      draftId?: PromiseOrValue<BigNumberish> | null,
+      draftEra?: PromiseOrValue<BigNumberish> | null,
+      staker?: PromiseOrValue<string> | null,
+      rsrAmount?: null,
+      stRSRAmount?: null,
+      availableAt?: null
+    ): UnstakingStartedEventFilter;
+    UnstakingStarted(
+      draftId?: PromiseOrValue<BigNumberish> | null,
+      draftEra?: PromiseOrValue<BigNumberish> | null,
+      staker?: PromiseOrValue<string> | null,
+      rsrAmount?: null,
+      stRSRAmount?: null,
+      availableAt?: null
+    ): UnstakingStartedEventFilter;
+
     "Upgraded(address)"(
       implementation?: PromiseOrValue<string> | null
     ): UpgradedEventFilter;
@@ -1289,15 +1333,13 @@ export interface RToken extends BaseContract {
   estimateGas: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<BigNumber>;
 
-    MAX_EXCHANGE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
+    MAX_REWARD_RATIO(overrides?: CallOverrides): Promise<BigNumber>;
 
-    MAX_THROTTLE_PCT_AMT(overrides?: CallOverrides): Promise<BigNumber>;
+    MAX_UNSTAKING_DELAY(overrides?: CallOverrides): Promise<BigNumber>;
 
-    MAX_THROTTLE_RATE_AMT(overrides?: CallOverrides): Promise<BigNumber>;
+    MIN_UNSTAKING_DELAY(overrides?: CallOverrides): Promise<BigNumber>;
 
-    MIN_EXCHANGE_RATE(overrides?: CallOverrides): Promise<BigNumber>;
-
-    MIN_THROTTLE_RATE_AMT(overrides?: CallOverrides): Promise<BigNumber>;
+    PERIOD(overrides?: CallOverrides): Promise<BigNumber>;
 
     allowance(
       owner: PromiseOrValue<string>,
@@ -1316,8 +1358,6 @@ export interface RToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    basketsNeeded(overrides?: CallOverrides): Promise<BigNumber>;
-
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
 
     decreaseAllowance(
@@ -1326,9 +1366,37 @@ export interface RToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    dissolve(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    delegationNonces(
+      owner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    draftQueueLen(
+      era_: PromiseOrValue<BigNumberish>,
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    draftQueues(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
+      arg2: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    draftRate(overrides?: CallOverrides): Promise<BigNumber>;
+
+    endIdForWithdraw(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    exchangeRate(overrides?: CallOverrides): Promise<BigNumber>;
+
+    firstRemainingDraft(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     increaseAllowance(
@@ -1341,51 +1409,24 @@ export interface RToken extends BaseContract {
       main_: PromiseOrValue<string>,
       name_: PromiseOrValue<string>,
       symbol_: PromiseOrValue<string>,
-      mandate_: PromiseOrValue<string>,
-      issuanceThrottleParams_: ThrottleLib.ParamsStruct,
-      redemptionThrottleParams_: ThrottleLib.ParamsStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    issuanceAvailable(overrides?: CallOverrides): Promise<BigNumber>;
-
-    issuanceThrottleParams(overrides?: CallOverrides): Promise<BigNumber>;
-
-    issue(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    issueTo(
-      recipient: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
+      unstakingDelay_: PromiseOrValue<BigNumberish>,
+      rewardRatio_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     main(overrides?: CallOverrides): Promise<BigNumber>;
-
-    mandate(overrides?: CallOverrides): Promise<BigNumber>;
-
-    melt(
-      amtRToken: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    mint(
-      baskets: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    monetizeDonations(
-      erc20: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
 
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
     nonces(
       owner: PromiseOrValue<string>,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    payoutLastPaid(overrides?: CallOverrides): Promise<BigNumber>;
+
+    payoutRewards(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     permit(
@@ -1401,45 +1442,29 @@ export interface RToken extends BaseContract {
 
     proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
 
-    redeem(
-      amount: PromiseOrValue<BigNumberish>,
+    rewardRatio(overrides?: CallOverrides): Promise<BigNumber>;
+
+    seizeRSR(
+      rsrAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    redeemCustom(
-      recipient: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
-      basketNonces: PromiseOrValue<BigNumberish>[],
-      portions: PromiseOrValue<BigNumberish>[],
-      expectedERC20sOut: PromiseOrValue<string>[],
-      minAmounts: PromiseOrValue<BigNumberish>[],
+    setRewardRatio(
+      val: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    redeemTo(
-      recipient: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
+    setUnstakingDelay(
+      val: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    redemptionAvailable(overrides?: CallOverrides): Promise<BigNumber>;
-
-    redemptionThrottleParams(overrides?: CallOverrides): Promise<BigNumber>;
-
-    setBasketsNeeded(
-      basketsNeeded_: PromiseOrValue<BigNumberish>,
+    stake(
+      rsrAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    setIssuanceThrottleParams(
-      params: ThrottleLib.ParamsStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    setRedemptionThrottleParams(
-      params: ThrottleLib.ParamsStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    stakeRate(overrides?: CallOverrides): Promise<BigNumber>;
 
     symbol(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1458,6 +1483,13 @@ export interface RToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    unstake(
+      stakeAmount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    unstakingDelay(overrides?: CallOverrides): Promise<BigNumber>;
+
     upgradeTo(
       newImplementation: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1470,26 +1502,28 @@ export interface RToken extends BaseContract {
     ): Promise<BigNumber>;
 
     version(overrides?: CallOverrides): Promise<BigNumber>;
+
+    withdraw(
+      account: PromiseOrValue<string>,
+      endId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    MAX_EXCHANGE_RATE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    MAX_REWARD_RATIO(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    MAX_THROTTLE_PCT_AMT(
+    MAX_UNSTAKING_DELAY(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    MAX_THROTTLE_RATE_AMT(
+    MIN_UNSTAKING_DELAY(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    MIN_EXCHANGE_RATE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    MIN_THROTTLE_RATE_AMT(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    PERIOD(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     allowance(
       owner: PromiseOrValue<string>,
@@ -1508,8 +1542,6 @@ export interface RToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    basketsNeeded(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     decreaseAllowance(
@@ -1518,9 +1550,37 @@ export interface RToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    dissolve(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    delegationNonces(
+      owner: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    draftQueueLen(
+      era_: PromiseOrValue<BigNumberish>,
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    draftQueues(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
+      arg2: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    draftRate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    endIdForWithdraw(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    exchangeRate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    firstRemainingDraft(
+      arg0: PromiseOrValue<BigNumberish>,
+      arg1: PromiseOrValue<string>,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     increaseAllowance(
@@ -1533,53 +1593,24 @@ export interface RToken extends BaseContract {
       main_: PromiseOrValue<string>,
       name_: PromiseOrValue<string>,
       symbol_: PromiseOrValue<string>,
-      mandate_: PromiseOrValue<string>,
-      issuanceThrottleParams_: ThrottleLib.ParamsStruct,
-      redemptionThrottleParams_: ThrottleLib.ParamsStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    issuanceAvailable(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    issuanceThrottleParams(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    issue(
-      amount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    issueTo(
-      recipient: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
+      unstakingDelay_: PromiseOrValue<BigNumberish>,
+      rewardRatio_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     main(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    mandate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    melt(
-      amtRToken: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    mint(
-      baskets: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    monetizeDonations(
-      erc20: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
 
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     nonces(
       owner: PromiseOrValue<string>,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    payoutLastPaid(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    payoutRewards(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     permit(
@@ -1595,49 +1626,29 @@ export interface RToken extends BaseContract {
 
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    redeem(
-      amount: PromiseOrValue<BigNumberish>,
+    rewardRatio(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    seizeRSR(
+      rsrAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    redeemCustom(
-      recipient: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
-      basketNonces: PromiseOrValue<BigNumberish>[],
-      portions: PromiseOrValue<BigNumberish>[],
-      expectedERC20sOut: PromiseOrValue<string>[],
-      minAmounts: PromiseOrValue<BigNumberish>[],
+    setRewardRatio(
+      val: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    redeemTo(
-      recipient: PromiseOrValue<string>,
-      amount: PromiseOrValue<BigNumberish>,
+    setUnstakingDelay(
+      val: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    redemptionAvailable(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    redemptionThrottleParams(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    setBasketsNeeded(
-      basketsNeeded_: PromiseOrValue<BigNumberish>,
+    stake(
+      rsrAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    setIssuanceThrottleParams(
-      params: ThrottleLib.ParamsStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setRedemptionThrottleParams(
-      params: ThrottleLib.ParamsStruct,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    stakeRate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -1656,6 +1667,13 @@ export interface RToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    unstake(
+      stakeAmount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    unstakingDelay(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     upgradeTo(
       newImplementation: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1668,5 +1686,11 @@ export interface RToken extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     version(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    withdraw(
+      account: PromiseOrValue<string>,
+      endId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
   };
 }

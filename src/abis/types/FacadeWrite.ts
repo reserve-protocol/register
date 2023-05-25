@@ -45,8 +45,11 @@ export type DeploymentParamsStruct = {
   longFreeze: PromiseOrValue<BigNumberish>;
   rewardRatio: PromiseOrValue<BigNumberish>;
   unstakingDelay: PromiseOrValue<BigNumberish>;
+  withdrawalLeak: PromiseOrValue<BigNumberish>;
+  warmupPeriod: PromiseOrValue<BigNumberish>;
   tradingDelay: PromiseOrValue<BigNumberish>;
-  auctionLength: PromiseOrValue<BigNumberish>;
+  batchAuctionLength: PromiseOrValue<BigNumberish>;
+  dutchAuctionLength: PromiseOrValue<BigNumberish>;
   backingBuffer: PromiseOrValue<BigNumberish>;
   maxTradeSlippage: PromiseOrValue<BigNumberish>;
   issuanceThrottle: ThrottleLib.ParamsStruct;
@@ -60,6 +63,9 @@ export type DeploymentParamsStructOutput = [
   number,
   number,
   BigNumber,
+  number,
+  BigNumber,
+  number,
   number,
   number,
   number,
@@ -75,8 +81,11 @@ export type DeploymentParamsStructOutput = [
   longFreeze: number;
   rewardRatio: BigNumber;
   unstakingDelay: number;
+  withdrawalLeak: BigNumber;
+  warmupPeriod: number;
   tradingDelay: number;
-  auctionLength: number;
+  batchAuctionLength: number;
+  dutchAuctionLength: number;
   backingBuffer: BigNumber;
   maxTradeSlippage: BigNumber;
   issuanceThrottle: ThrottleLib.ParamsStructOutput;
@@ -168,6 +177,28 @@ export type GovernanceParamsStructOutput = [
   timelockDelay: BigNumber;
 };
 
+export type GovernanceRolesStruct = {
+  owner: PromiseOrValue<string>;
+  guardian: PromiseOrValue<string>;
+  pausers: PromiseOrValue<string>[];
+  shortFreezers: PromiseOrValue<string>[];
+  longFreezers: PromiseOrValue<string>[];
+};
+
+export type GovernanceRolesStructOutput = [
+  string,
+  string,
+  string[],
+  string[],
+  string[]
+] & {
+  owner: string;
+  guardian: string;
+  pausers: string[];
+  shortFreezers: string[];
+  longFreezers: string[];
+};
+
 export declare namespace ThrottleLib {
   export type ParamsStruct = {
     amtRate: PromiseOrValue<BigNumberish>;
@@ -182,9 +213,9 @@ export declare namespace ThrottleLib {
 
 export interface FacadeWriteInterface extends utils.Interface {
   functions: {
-    "deployRToken((string,string,string,((uint16,uint16),uint192,uint192,uint48,uint48,uint192,uint48,uint48,uint48,uint192,uint192,(uint256,uint192),(uint256,uint192))),(address[],address[],uint192[],(bytes32,uint256,address[])[],(address,(uint16,uint16))[]))": FunctionFragment;
+    "deployRToken((string,string,string,((uint16,uint16),uint192,uint192,uint48,uint48,uint192,uint48,uint192,uint48,uint48,uint48,uint48,uint192,uint192,(uint256,uint192),(uint256,uint192))),(address[],address[],uint192[],(bytes32,uint256,address[])[],(address,(uint16,uint16))[]))": FunctionFragment;
     "deployer()": FunctionFragment;
-    "setupGovernance(address,bool,bool,(uint256,uint256,uint256,uint256,uint256),address,address,address)": FunctionFragment;
+    "setupGovernance(address,bool,bool,(uint256,uint256,uint256,uint256,uint256),(address,address,address[],address[],address[]))": FunctionFragment;
   };
 
   getFunction(
@@ -203,9 +234,7 @@ export interface FacadeWriteInterface extends utils.Interface {
       PromiseOrValue<boolean>,
       PromiseOrValue<boolean>,
       GovernanceParamsStruct,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>
+      GovernanceRolesStruct
     ]
   ): string;
 
@@ -279,9 +308,7 @@ export interface FacadeWrite extends BaseContract {
       deployGovernance: PromiseOrValue<boolean>,
       unpause: PromiseOrValue<boolean>,
       govParams: GovernanceParamsStruct,
-      owner: PromiseOrValue<string>,
-      guardian: PromiseOrValue<string>,
-      pauser: PromiseOrValue<string>,
+      govRoles: GovernanceRolesStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
@@ -299,9 +326,7 @@ export interface FacadeWrite extends BaseContract {
     deployGovernance: PromiseOrValue<boolean>,
     unpause: PromiseOrValue<boolean>,
     govParams: GovernanceParamsStruct,
-    owner: PromiseOrValue<string>,
-    guardian: PromiseOrValue<string>,
-    pauser: PromiseOrValue<string>,
+    govRoles: GovernanceRolesStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -319,9 +344,7 @@ export interface FacadeWrite extends BaseContract {
       deployGovernance: PromiseOrValue<boolean>,
       unpause: PromiseOrValue<boolean>,
       govParams: GovernanceParamsStruct,
-      owner: PromiseOrValue<string>,
-      guardian: PromiseOrValue<string>,
-      pauser: PromiseOrValue<string>,
+      govRoles: GovernanceRolesStruct,
       overrides?: CallOverrides
     ): Promise<string>;
   };
@@ -353,9 +376,7 @@ export interface FacadeWrite extends BaseContract {
       deployGovernance: PromiseOrValue<boolean>,
       unpause: PromiseOrValue<boolean>,
       govParams: GovernanceParamsStruct,
-      owner: PromiseOrValue<string>,
-      guardian: PromiseOrValue<string>,
-      pauser: PromiseOrValue<string>,
+      govRoles: GovernanceRolesStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
@@ -374,9 +395,7 @@ export interface FacadeWrite extends BaseContract {
       deployGovernance: PromiseOrValue<boolean>,
       unpause: PromiseOrValue<boolean>,
       govParams: GovernanceParamsStruct,
-      owner: PromiseOrValue<string>,
-      guardian: PromiseOrValue<string>,
-      pauser: PromiseOrValue<string>,
+      govRoles: GovernanceRolesStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };

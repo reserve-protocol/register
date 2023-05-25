@@ -109,7 +109,12 @@ export const rTokenAtom = atom<ReserveToken | null>((get) =>
 export const rTokenYieldAtom = atom({ tokenApy: 0, stakingApy: 0 })
 
 // Current rToken status
-export const rTokenStatusAtom = atom({ paused: false, frozen: false })
+export const rTokenStatusAtom = atomWithReset({
+  paused: false,
+  issuancePaused: false,
+  redemptionPaused: false,
+  frozen: false,
+})
 export const isRTokenDisabledAtom = atom<boolean>((get) => {
   const status = get(rTokenStatusAtom)
 

@@ -4,7 +4,7 @@
 
 import { Contract, Signer, utils } from "ethers";
 import type { Provider } from "@ethersproject/providers";
-import type { RToken, RTokenInterface } from "../RToken";
+import type { StRsrLegacy, StRsrLegacyInterface } from "../StRsrLegacy";
 
 const _abi = [
   {
@@ -36,6 +36,32 @@ const _abi = [
     inputs: [
       {
         indexed: true,
+        internalType: "uint256",
+        name: "newEra",
+        type: "uint256",
+      },
+    ],
+    name: "AllBalancesReset",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "newEra",
+        type: "uint256",
+      },
+    ],
+    name: "AllUnstakingReset",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
         internalType: "address",
         name: "owner",
         type: "address",
@@ -60,25 +86,6 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
-        internalType: "uint192",
-        name: "oldBasketsNeeded",
-        type: "uint192",
-      },
-      {
-        indexed: false,
-        internalType: "uint192",
-        name: "newBasketsNeeded",
-        type: "uint192",
-      },
-    ],
-    name: "BasketsNeededChanged",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
         indexed: true,
         internalType: "address",
         name: "beacon",
@@ -86,6 +93,25 @@ const _abi = [
       },
     ],
     name: "BeaconUpgraded",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint192",
+        name: "oldVal",
+        type: "uint192",
+      },
+      {
+        indexed: true,
+        internalType: "uint192",
+        name: "newVal",
+        type: "uint192",
+      },
+    ],
+    name: "ExchangeRateSet",
     type: "event",
   },
   {
@@ -106,86 +132,37 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "address",
-        name: "issuer",
-        type: "address",
+        internalType: "uint48",
+        name: "oldVal",
+        type: "uint48",
       },
       {
         indexed: true,
-        internalType: "address",
-        name: "recipient",
-        type: "address",
+        internalType: "uint48",
+        name: "newVal",
+        type: "uint48",
       },
+    ],
+    name: "RewardPeriodSet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
       {
         indexed: true,
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-      {
-        indexed: false,
         internalType: "uint192",
-        name: "baskets",
+        name: "oldVal",
+        type: "uint192",
+      },
+      {
+        indexed: true,
+        internalType: "uint192",
+        name: "newVal",
         type: "uint192",
       },
     ],
-    name: "Issuance",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        components: [
-          {
-            internalType: "uint256",
-            name: "amtRate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint192",
-            name: "pctRate",
-            type: "uint192",
-          },
-        ],
-        indexed: false,
-        internalType: "struct ThrottleLib.Params",
-        name: "oldVal",
-        type: "tuple",
-      },
-      {
-        components: [
-          {
-            internalType: "uint256",
-            name: "amtRate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint192",
-            name: "pctRate",
-            type: "uint192",
-          },
-        ],
-        indexed: false,
-        internalType: "struct ThrottleLib.Params",
-        name: "newVal",
-        type: "tuple",
-      },
-    ],
-    name: "IssuanceThrottleSet",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-    ],
-    name: "Melted",
+    name: "RewardRatioSet",
     type: "event",
   },
   {
@@ -193,73 +170,43 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "address",
-        name: "redeemer",
-        type: "address",
+        internalType: "uint256",
+        name: "rsrAmt",
+        type: "uint256",
+      },
+    ],
+    name: "RewardsPaid",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "era",
+        type: "uint256",
       },
       {
         indexed: true,
         internalType: "address",
-        name: "recipient",
+        name: "staker",
         type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "rsrAmount",
+        type: "uint256",
       },
       {
         indexed: true,
         internalType: "uint256",
-        name: "amount",
+        name: "stRSRAmount",
         type: "uint256",
       },
-      {
-        indexed: false,
-        internalType: "uint192",
-        name: "baskets",
-        type: "uint192",
-      },
     ],
-    name: "Redemption",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        components: [
-          {
-            internalType: "uint256",
-            name: "amtRate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint192",
-            name: "pctRate",
-            type: "uint192",
-          },
-        ],
-        indexed: false,
-        internalType: "struct ThrottleLib.Params",
-        name: "oldVal",
-        type: "tuple",
-      },
-      {
-        components: [
-          {
-            internalType: "uint256",
-            name: "amtRate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint192",
-            name: "pctRate",
-            type: "uint192",
-          },
-        ],
-        indexed: false,
-        internalType: "struct ThrottleLib.Params",
-        name: "newVal",
-        type: "tuple",
-      },
-    ],
-    name: "RedemptionThrottleSet",
+    name: "Staked",
     type: "event",
   },
   {
@@ -292,6 +239,105 @@ const _abi = [
     inputs: [
       {
         indexed: true,
+        internalType: "uint256",
+        name: "firstId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "endId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "draftEra",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "staker",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "rsrAmount",
+        type: "uint256",
+      },
+    ],
+    name: "UnstakingCompleted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint48",
+        name: "oldVal",
+        type: "uint48",
+      },
+      {
+        indexed: true,
+        internalType: "uint48",
+        name: "newVal",
+        type: "uint48",
+      },
+    ],
+    name: "UnstakingDelaySet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "draftId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "draftEra",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "staker",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "rsrAmount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "stRSRAmount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "availableAt",
+        type: "uint256",
+      },
+    ],
+    name: "UnstakingStarted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
         internalType: "address",
         name: "implementation",
         type: "address",
@@ -315,7 +361,7 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "MAX_EXCHANGE_RATE",
+    name: "MAX_REWARD_RATIO",
     outputs: [
       {
         internalType: "uint192",
@@ -328,12 +374,12 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "MAX_THROTTLE_PCT_AMT",
+    name: "MAX_UNSTAKING_DELAY",
     outputs: [
       {
-        internalType: "uint192",
+        internalType: "uint48",
         name: "",
-        type: "uint192",
+        type: "uint48",
       },
     ],
     stateMutability: "view",
@@ -341,12 +387,12 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "MAX_THROTTLE_RATE_AMT",
+    name: "MIN_UNSTAKING_DELAY",
     outputs: [
       {
-        internalType: "uint256",
+        internalType: "uint48",
         name: "",
-        type: "uint256",
+        type: "uint48",
       },
     ],
     stateMutability: "view",
@@ -354,25 +400,12 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "MIN_EXCHANGE_RATE",
+    name: "PERIOD",
     outputs: [
       {
-        internalType: "uint192",
+        internalType: "uint48",
         name: "",
-        type: "uint192",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "MIN_THROTTLE_RATE_AMT",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
+        type: "uint48",
       },
     ],
     stateMutability: "view",
@@ -447,19 +480,6 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "basketsNeeded",
-    outputs: [
-      {
-        internalType: "uint192",
-        name: "",
-        type: "uint192",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "decimals",
     outputs: [
       {
@@ -498,14 +518,147 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+    ],
+    name: "delegationNonces",
+    outputs: [
+      {
         internalType: "uint256",
-        name: "amount",
+        name: "",
         type: "uint256",
       },
     ],
-    name: "dissolve",
-    outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "era_",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "draftQueueLen",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "draftQueues",
+    outputs: [
+      {
+        internalType: "uint176",
+        name: "drafts",
+        type: "uint176",
+      },
+      {
+        internalType: "uint64",
+        name: "availableAt",
+        type: "uint64",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "draftRate",
+    outputs: [
+      {
+        internalType: "uint192",
+        name: "",
+        type: "uint192",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "endIdForWithdraw",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "exchangeRate",
+    outputs: [
+      {
+        internalType: "uint192",
+        name: "",
+        type: "uint192",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "firstRemainingDraft",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -550,115 +703,17 @@ const _abi = [
         type: "string",
       },
       {
-        internalType: "string",
-        name: "mandate_",
-        type: "string",
+        internalType: "uint48",
+        name: "unstakingDelay_",
+        type: "uint48",
       },
       {
-        components: [
-          {
-            internalType: "uint256",
-            name: "amtRate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint192",
-            name: "pctRate",
-            type: "uint192",
-          },
-        ],
-        internalType: "struct ThrottleLib.Params",
-        name: "issuanceThrottleParams_",
-        type: "tuple",
-      },
-      {
-        components: [
-          {
-            internalType: "uint256",
-            name: "amtRate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint192",
-            name: "pctRate",
-            type: "uint192",
-          },
-        ],
-        internalType: "struct ThrottleLib.Params",
-        name: "redemptionThrottleParams_",
-        type: "tuple",
+        internalType: "uint192",
+        name: "rewardRatio_",
+        type: "uint192",
       },
     ],
     name: "init",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "issuanceAvailable",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "issuanceThrottleParams",
-    outputs: [
-      {
-        components: [
-          {
-            internalType: "uint256",
-            name: "amtRate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint192",
-            name: "pctRate",
-            type: "uint192",
-          },
-        ],
-        internalType: "struct ThrottleLib.Params",
-        name: "",
-        type: "tuple",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-    ],
-    name: "issue",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "recipient",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-    ],
-    name: "issueTo",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -674,58 +729,6 @@ const _abi = [
       },
     ],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "mandate",
-    outputs: [
-      {
-        internalType: "string",
-        name: "",
-        type: "string",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "amtRToken",
-        type: "uint256",
-      },
-    ],
-    name: "melt",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint192",
-        name: "baskets",
-        type: "uint192",
-      },
-    ],
-    name: "mint",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract IERC20",
-        name: "erc20",
-        type: "address",
-      },
-    ],
-    name: "monetizeDonations",
-    outputs: [],
-    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -758,6 +761,26 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "payoutLastPaid",
+    outputs: [
+      {
+        internalType: "uint48",
+        name: "",
+        type: "uint48",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "payoutRewards",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -817,132 +840,40 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-    ],
-    name: "redeem",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "recipient",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-      {
-        internalType: "uint48[]",
-        name: "basketNonces",
-        type: "uint48[]",
-      },
-      {
-        internalType: "uint192[]",
-        name: "portions",
-        type: "uint192[]",
-      },
-      {
-        internalType: "address[]",
-        name: "expectedERC20sOut",
-        type: "address[]",
-      },
-      {
-        internalType: "uint256[]",
-        name: "minAmounts",
-        type: "uint256[]",
-      },
-    ],
-    name: "redeemCustom",
-    outputs: [
-      {
-        internalType: "address[]",
-        name: "erc20sOut",
-        type: "address[]",
-      },
-      {
-        internalType: "uint256[]",
-        name: "amountsOut",
-        type: "uint256[]",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "recipient",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-    ],
-    name: "redeemTo",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
     inputs: [],
-    name: "redemptionAvailable",
+    name: "rewardRatio",
     outputs: [
       {
-        internalType: "uint256",
-        name: "available",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "redemptionThrottleParams",
-    outputs: [
-      {
-        components: [
-          {
-            internalType: "uint256",
-            name: "amtRate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint192",
-            name: "pctRate",
-            type: "uint192",
-          },
-        ],
-        internalType: "struct ThrottleLib.Params",
+        internalType: "uint192",
         name: "",
-        type: "tuple",
+        type: "uint192",
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "rsrAmount",
+        type: "uint256",
+      },
+    ],
+    name: "seizeRSR",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
     inputs: [
       {
         internalType: "uint192",
-        name: "basketsNeeded_",
+        name: "val",
         type: "uint192",
       },
     ],
-    name: "setBasketsNeeded",
+    name: "setRewardRatio",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -950,24 +881,12 @@ const _abi = [
   {
     inputs: [
       {
-        components: [
-          {
-            internalType: "uint256",
-            name: "amtRate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint192",
-            name: "pctRate",
-            type: "uint192",
-          },
-        ],
-        internalType: "struct ThrottleLib.Params",
-        name: "params",
-        type: "tuple",
+        internalType: "uint48",
+        name: "val",
+        type: "uint48",
       },
     ],
-    name: "setIssuanceThrottleParams",
+    name: "setUnstakingDelay",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -975,26 +894,27 @@ const _abi = [
   {
     inputs: [
       {
-        components: [
-          {
-            internalType: "uint256",
-            name: "amtRate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint192",
-            name: "pctRate",
-            type: "uint192",
-          },
-        ],
-        internalType: "struct ThrottleLib.Params",
-        name: "params",
-        type: "tuple",
+        internalType: "uint256",
+        name: "rsrAmount",
+        type: "uint256",
       },
     ],
-    name: "setRedemptionThrottleParams",
+    name: "stake",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "stakeRate",
+    outputs: [
+      {
+        internalType: "uint192",
+        name: "",
+        type: "uint192",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -1079,6 +999,32 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "uint256",
+        name: "stakeAmount",
+        type: "uint256",
+      },
+    ],
+    name: "unstake",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "unstakingDelay",
+    outputs: [
+      {
+        internalType: "uint48",
+        name: "",
+        type: "uint48",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "address",
         name: "newImplementation",
         type: "address",
@@ -1120,14 +1066,35 @@ const _abi = [
     stateMutability: "pure",
     type: "function",
   },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "endId",
+        type: "uint256",
+      },
+    ],
+    name: "withdraw",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
 ] as const;
 
-export class RToken__factory {
+export class StRsrLegacy__factory {
   static readonly abi = _abi;
-  static createInterface(): RTokenInterface {
-    return new utils.Interface(_abi) as RTokenInterface;
+  static createInterface(): StRsrLegacyInterface {
+    return new utils.Interface(_abi) as StRsrLegacyInterface;
   }
-  static connect(address: string, signerOrProvider: Signer | Provider): RToken {
-    return new Contract(address, _abi, signerOrProvider) as RToken;
+  static connect(
+    address: string,
+    signerOrProvider: Signer | Provider
+  ): StRsrLegacy {
+    return new Contract(address, _abi, signerOrProvider) as StRsrLegacy;
   }
 }

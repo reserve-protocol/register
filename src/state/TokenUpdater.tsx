@@ -8,15 +8,15 @@ import useQuery from 'hooks/useQuery'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useCallback, useEffect, useMemo } from 'react'
-import { useSearchParams } from 'react-router-dom'
 import { calculateApy, isAddress } from 'utils'
 import {
   accountRoleAtom,
-  blockTimestampAtom, rTokenMainAtom,
+  blockTimestampAtom,
+  rTokenMainAtom,
   rTokenYieldAtom,
   searchParamAtom,
   selectedRTokenAtom,
-  walletAtom
+  walletAtom,
 } from './atoms'
 import { tokenMetricsAtom } from './metrics/atoms'
 import { promiseMulticall } from './web3/lib/multicall'

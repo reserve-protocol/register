@@ -65,7 +65,7 @@ export type ComponentsStructOutput = [
   rTokenTrader: string;
 };
 
-export interface MainInterface extends utils.Interface {
+export interface MainLegacyInterface extends utils.Interface {
   functions: {
     "DEFAULT_ADMIN_ROLE()": FunctionFragment;
     "LONG_FREEZER_ROLE()": FunctionFragment;
@@ -86,12 +86,11 @@ export interface MainInterface extends utils.Interface {
     "grantRole(bytes32,address)": FunctionFragment;
     "hasRole(bytes32,address)": FunctionFragment;
     "init((address,address,address,address,address,address,address,address,address,address),address,uint48,uint48)": FunctionFragment;
-    "issuancePaused()": FunctionFragment;
-    "issuancePausedOrFrozen()": FunctionFragment;
     "longFreeze()": FunctionFragment;
     "longFreezes(address)": FunctionFragment;
-    "pauseIssuance()": FunctionFragment;
-    "pauseTrading()": FunctionFragment;
+    "pause()": FunctionFragment;
+    "paused()": FunctionFragment;
+    "pausedOrFrozen()": FunctionFragment;
     "poke()": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "rToken()": FunctionFragment;
@@ -105,12 +104,9 @@ export interface MainInterface extends utils.Interface {
     "shortFreeze()": FunctionFragment;
     "stRSR()": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
-    "tradingPaused()": FunctionFragment;
-    "tradingPausedOrFrozen()": FunctionFragment;
     "unfreeze()": FunctionFragment;
     "unfreezeAt()": FunctionFragment;
-    "unpauseIssuance()": FunctionFragment;
-    "unpauseTrading()": FunctionFragment;
+    "unpause()": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
     "version()": FunctionFragment;
@@ -137,12 +133,11 @@ export interface MainInterface extends utils.Interface {
       | "grantRole"
       | "hasRole"
       | "init"
-      | "issuancePaused"
-      | "issuancePausedOrFrozen"
       | "longFreeze"
       | "longFreezes"
-      | "pauseIssuance"
-      | "pauseTrading"
+      | "pause"
+      | "paused"
+      | "pausedOrFrozen"
       | "poke"
       | "proxiableUUID"
       | "rToken"
@@ -156,12 +151,9 @@ export interface MainInterface extends utils.Interface {
       | "shortFreeze"
       | "stRSR"
       | "supportsInterface"
-      | "tradingPaused"
-      | "tradingPausedOrFrozen"
       | "unfreeze"
       | "unfreezeAt"
-      | "unpauseIssuance"
-      | "unpauseTrading"
+      | "unpause"
       | "upgradeTo"
       | "upgradeToAndCall"
       | "version"
@@ -240,14 +232,6 @@ export interface MainInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "issuancePaused",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "issuancePausedOrFrozen",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "longFreeze",
     values?: undefined
   ): string;
@@ -255,12 +239,10 @@ export interface MainInterface extends utils.Interface {
     functionFragment: "longFreezes",
     values: [PromiseOrValue<string>]
   ): string;
+  encodeFunctionData(functionFragment: "pause", values?: undefined): string;
+  encodeFunctionData(functionFragment: "paused", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "pauseIssuance",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "pauseTrading",
+    functionFragment: "pausedOrFrozen",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "poke", values?: undefined): string;
@@ -300,27 +282,12 @@ export interface MainInterface extends utils.Interface {
     functionFragment: "supportsInterface",
     values: [PromiseOrValue<BytesLike>]
   ): string;
-  encodeFunctionData(
-    functionFragment: "tradingPaused",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "tradingPausedOrFrozen",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "unfreeze", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "unfreezeAt",
     values?: undefined
   ): string;
-  encodeFunctionData(
-    functionFragment: "unpauseIssuance",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "unpauseTrading",
-    values?: undefined
-  ): string;
+  encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "upgradeTo",
     values: [PromiseOrValue<string>]
@@ -383,25 +350,15 @@ export interface MainInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "grantRole", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "hasRole", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "init", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "issuancePaused",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "issuancePausedOrFrozen",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "longFreeze", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "longFreezes",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "pauseIssuance",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "pauseTrading",
+    functionFragment: "pausedOrFrozen",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "poke", data: BytesLike): Result;
@@ -438,24 +395,9 @@ export interface MainInterface extends utils.Interface {
     functionFragment: "supportsInterface",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "tradingPaused",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "tradingPausedOrFrozen",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "unfreeze", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "unfreezeAt", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "unpauseIssuance",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "unpauseTrading",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "upgradeTo", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "upgradeToAndCall",
@@ -473,9 +415,9 @@ export interface MainInterface extends utils.Interface {
     "DistributorSet(address,address)": EventFragment;
     "FurnaceSet(address,address)": EventFragment;
     "Initialized(uint8)": EventFragment;
-    "IssuancePausedSet(bool,bool)": EventFragment;
     "LongFreezeDurationSet(uint48,uint48)": EventFragment;
     "MainInitialized()": EventFragment;
+    "PausedSet(bool,bool)": EventFragment;
     "RSRTraderSet(address,address)": EventFragment;
     "RTokenSet(address,address)": EventFragment;
     "RTokenTraderSet(address,address)": EventFragment;
@@ -484,7 +426,6 @@ export interface MainInterface extends utils.Interface {
     "RoleRevoked(bytes32,address,address)": EventFragment;
     "ShortFreezeDurationSet(uint48,uint48)": EventFragment;
     "StRSRSet(address,address)": EventFragment;
-    "TradingPausedSet(bool,bool)": EventFragment;
     "UnfreezeAtSet(uint48,uint48)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
@@ -498,9 +439,9 @@ export interface MainInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "DistributorSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "FurnaceSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "IssuancePausedSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "LongFreezeDurationSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "MainInitialized"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "PausedSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RSRTraderSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RTokenSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RTokenTraderSet"): EventFragment;
@@ -509,7 +450,6 @@ export interface MainInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "RoleRevoked"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ShortFreezeDurationSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "StRSRSet"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "TradingPausedSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UnfreezeAtSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
@@ -608,18 +548,6 @@ export type InitializedEvent = TypedEvent<[number], InitializedEventObject>;
 
 export type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
 
-export interface IssuancePausedSetEventObject {
-  oldVal: boolean;
-  newVal: boolean;
-}
-export type IssuancePausedSetEvent = TypedEvent<
-  [boolean, boolean],
-  IssuancePausedSetEventObject
->;
-
-export type IssuancePausedSetEventFilter =
-  TypedEventFilter<IssuancePausedSetEvent>;
-
 export interface LongFreezeDurationSetEventObject {
   oldDuration: number;
   newDuration: number;
@@ -636,6 +564,17 @@ export interface MainInitializedEventObject {}
 export type MainInitializedEvent = TypedEvent<[], MainInitializedEventObject>;
 
 export type MainInitializedEventFilter = TypedEventFilter<MainInitializedEvent>;
+
+export interface PausedSetEventObject {
+  oldVal: boolean;
+  newVal: boolean;
+}
+export type PausedSetEvent = TypedEvent<
+  [boolean, boolean],
+  PausedSetEventObject
+>;
+
+export type PausedSetEventFilter = TypedEventFilter<PausedSetEvent>;
 
 export interface RSRTraderSetEventObject {
   oldVal: string;
@@ -724,18 +663,6 @@ export type StRSRSetEvent = TypedEvent<[string, string], StRSRSetEventObject>;
 
 export type StRSRSetEventFilter = TypedEventFilter<StRSRSetEvent>;
 
-export interface TradingPausedSetEventObject {
-  oldVal: boolean;
-  newVal: boolean;
-}
-export type TradingPausedSetEvent = TypedEvent<
-  [boolean, boolean],
-  TradingPausedSetEventObject
->;
-
-export type TradingPausedSetEventFilter =
-  TypedEventFilter<TradingPausedSetEvent>;
-
 export interface UnfreezeAtSetEventObject {
   oldVal: number;
   newVal: number;
@@ -754,12 +681,12 @@ export type UpgradedEvent = TypedEvent<[string], UpgradedEventObject>;
 
 export type UpgradedEventFilter = TypedEventFilter<UpgradedEvent>;
 
-export interface Main extends BaseContract {
+export interface MainLegacy extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: MainInterface;
+  interface: MainLegacyInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -842,10 +769,6 @@ export interface Main extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    issuancePaused(overrides?: CallOverrides): Promise<[boolean]>;
-
-    issuancePausedOrFrozen(overrides?: CallOverrides): Promise<[boolean]>;
-
     longFreeze(overrides?: CallOverrides): Promise<[number]>;
 
     longFreezes(
@@ -853,13 +776,13 @@ export interface Main extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    pauseIssuance(
+    pause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    pauseTrading(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    paused(overrides?: CallOverrides): Promise<[boolean]>;
+
+    pausedOrFrozen(overrides?: CallOverrides): Promise<[boolean]>;
 
     poke(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -906,21 +829,13 @@ export interface Main extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    tradingPaused(overrides?: CallOverrides): Promise<[boolean]>;
-
-    tradingPausedOrFrozen(overrides?: CallOverrides): Promise<[boolean]>;
-
     unfreeze(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     unfreezeAt(overrides?: CallOverrides): Promise<[number]>;
 
-    unpauseIssuance(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    unpauseTrading(
+    unpause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -999,10 +914,6 @@ export interface Main extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  issuancePaused(overrides?: CallOverrides): Promise<boolean>;
-
-  issuancePausedOrFrozen(overrides?: CallOverrides): Promise<boolean>;
-
   longFreeze(overrides?: CallOverrides): Promise<number>;
 
   longFreezes(
@@ -1010,13 +921,13 @@ export interface Main extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  pauseIssuance(
+  pause(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  pauseTrading(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  paused(overrides?: CallOverrides): Promise<boolean>;
+
+  pausedOrFrozen(overrides?: CallOverrides): Promise<boolean>;
 
   poke(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1063,21 +974,13 @@ export interface Main extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  tradingPaused(overrides?: CallOverrides): Promise<boolean>;
-
-  tradingPausedOrFrozen(overrides?: CallOverrides): Promise<boolean>;
-
   unfreeze(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   unfreezeAt(overrides?: CallOverrides): Promise<number>;
 
-  unpauseIssuance(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  unpauseTrading(
+  unpause(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -1150,10 +1053,6 @@ export interface Main extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    issuancePaused(overrides?: CallOverrides): Promise<boolean>;
-
-    issuancePausedOrFrozen(overrides?: CallOverrides): Promise<boolean>;
-
     longFreeze(overrides?: CallOverrides): Promise<number>;
 
     longFreezes(
@@ -1161,9 +1060,11 @@ export interface Main extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    pauseIssuance(overrides?: CallOverrides): Promise<void>;
+    pause(overrides?: CallOverrides): Promise<void>;
 
-    pauseTrading(overrides?: CallOverrides): Promise<void>;
+    paused(overrides?: CallOverrides): Promise<boolean>;
+
+    pausedOrFrozen(overrides?: CallOverrides): Promise<boolean>;
 
     poke(overrides?: CallOverrides): Promise<void>;
 
@@ -1208,17 +1109,11 @@ export interface Main extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    tradingPaused(overrides?: CallOverrides): Promise<boolean>;
-
-    tradingPausedOrFrozen(overrides?: CallOverrides): Promise<boolean>;
-
     unfreeze(overrides?: CallOverrides): Promise<void>;
 
     unfreezeAt(overrides?: CallOverrides): Promise<number>;
 
-    unpauseIssuance(overrides?: CallOverrides): Promise<void>;
-
-    unpauseTrading(overrides?: CallOverrides): Promise<void>;
+    unpause(overrides?: CallOverrides): Promise<void>;
 
     upgradeTo(
       newImplementation: PromiseOrValue<string>,
@@ -1308,15 +1203,6 @@ export interface Main extends BaseContract {
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
 
-    "IssuancePausedSet(bool,bool)"(
-      oldVal?: PromiseOrValue<boolean> | null,
-      newVal?: PromiseOrValue<boolean> | null
-    ): IssuancePausedSetEventFilter;
-    IssuancePausedSet(
-      oldVal?: PromiseOrValue<boolean> | null,
-      newVal?: PromiseOrValue<boolean> | null
-    ): IssuancePausedSetEventFilter;
-
     "LongFreezeDurationSet(uint48,uint48)"(
       oldDuration?: PromiseOrValue<BigNumberish> | null,
       newDuration?: PromiseOrValue<BigNumberish> | null
@@ -1328,6 +1214,15 @@ export interface Main extends BaseContract {
 
     "MainInitialized()"(): MainInitializedEventFilter;
     MainInitialized(): MainInitializedEventFilter;
+
+    "PausedSet(bool,bool)"(
+      oldVal?: PromiseOrValue<boolean> | null,
+      newVal?: PromiseOrValue<boolean> | null
+    ): PausedSetEventFilter;
+    PausedSet(
+      oldVal?: PromiseOrValue<boolean> | null,
+      newVal?: PromiseOrValue<boolean> | null
+    ): PausedSetEventFilter;
 
     "RSRTraderSet(address,address)"(
       oldVal?: PromiseOrValue<string> | null,
@@ -1406,15 +1301,6 @@ export interface Main extends BaseContract {
       oldVal?: PromiseOrValue<string> | null,
       newVal?: PromiseOrValue<string> | null
     ): StRSRSetEventFilter;
-
-    "TradingPausedSet(bool,bool)"(
-      oldVal?: PromiseOrValue<boolean> | null,
-      newVal?: PromiseOrValue<boolean> | null
-    ): TradingPausedSetEventFilter;
-    TradingPausedSet(
-      oldVal?: PromiseOrValue<boolean> | null,
-      newVal?: PromiseOrValue<boolean> | null
-    ): TradingPausedSetEventFilter;
 
     "UnfreezeAtSet(uint48,uint48)"(
       oldVal?: PromiseOrValue<BigNumberish> | null,
@@ -1495,10 +1381,6 @@ export interface Main extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    issuancePaused(overrides?: CallOverrides): Promise<BigNumber>;
-
-    issuancePausedOrFrozen(overrides?: CallOverrides): Promise<BigNumber>;
-
     longFreeze(overrides?: CallOverrides): Promise<BigNumber>;
 
     longFreezes(
@@ -1506,13 +1388,13 @@ export interface Main extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    pauseIssuance(
+    pause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    pauseTrading(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    paused(overrides?: CallOverrides): Promise<BigNumber>;
+
+    pausedOrFrozen(overrides?: CallOverrides): Promise<BigNumber>;
 
     poke(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1559,21 +1441,13 @@ export interface Main extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    tradingPaused(overrides?: CallOverrides): Promise<BigNumber>;
-
-    tradingPausedOrFrozen(overrides?: CallOverrides): Promise<BigNumber>;
-
     unfreeze(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     unfreezeAt(overrides?: CallOverrides): Promise<BigNumber>;
 
-    unpauseIssuance(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    unpauseTrading(
+    unpause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1657,12 +1531,6 @@ export interface Main extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    issuancePaused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    issuancePausedOrFrozen(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     longFreeze(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     longFreezes(
@@ -1670,13 +1538,13 @@ export interface Main extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    pauseIssuance(
+    pause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    pauseTrading(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    paused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    pausedOrFrozen(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     poke(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1723,23 +1591,13 @@ export interface Main extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    tradingPaused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    tradingPausedOrFrozen(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     unfreeze(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     unfreezeAt(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    unpauseIssuance(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    unpauseTrading(
+    unpause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

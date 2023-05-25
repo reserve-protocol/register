@@ -112,13 +112,28 @@ const _abi = [
                 type: "uint48",
               },
               {
+                internalType: "uint192",
+                name: "withdrawalLeak",
+                type: "uint192",
+              },
+              {
+                internalType: "uint48",
+                name: "warmupPeriod",
+                type: "uint48",
+              },
+              {
                 internalType: "uint48",
                 name: "tradingDelay",
                 type: "uint48",
               },
               {
                 internalType: "uint48",
-                name: "auctionLength",
+                name: "batchAuctionLength",
+                type: "uint48",
+              },
+              {
+                internalType: "uint48",
+                name: "dutchAuctionLength",
                 type: "uint48",
               },
               {
@@ -323,19 +338,36 @@ const _abi = [
         type: "tuple",
       },
       {
-        internalType: "address",
-        name: "owner",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "guardian",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "pauser",
-        type: "address",
+        components: [
+          {
+            internalType: "address",
+            name: "owner",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "guardian",
+            type: "address",
+          },
+          {
+            internalType: "address[]",
+            name: "pausers",
+            type: "address[]",
+          },
+          {
+            internalType: "address[]",
+            name: "shortFreezers",
+            type: "address[]",
+          },
+          {
+            internalType: "address[]",
+            name: "longFreezers",
+            type: "address[]",
+          },
+        ],
+        internalType: "struct GovernanceRoles",
+        name: "govRoles",
+        type: "tuple",
       },
     ],
     name: "setupGovernance",

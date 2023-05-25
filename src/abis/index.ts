@@ -95,3 +95,11 @@ export default <StringMap>{
   facadeAct: FacadeActInterface,
   convexStakingWrapper: ConvexStakingWrapperInterface,
 }
+
+// TODO: Legacy ABIs
+// - stRSR
+// Flows: stake / Cancel unstake
+// - RToken
+// Flows: redeem
+// - Main
+// Flows: rtoken status

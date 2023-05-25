@@ -4,7 +4,7 @@
 
 import { Contract, Signer, utils } from "ethers";
 import type { Provider } from "@ethersproject/providers";
-import type { Main, MainInterface } from "../Main";
+import type { MainLegacy, MainLegacyInterface } from "../MainLegacy";
 
 const _abi = [
   {
@@ -176,25 +176,6 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "bool",
-        name: "oldVal",
-        type: "bool",
-      },
-      {
-        indexed: true,
-        internalType: "bool",
-        name: "newVal",
-        type: "bool",
-      },
-    ],
-    name: "IssuancePausedSet",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
         internalType: "uint48",
         name: "oldDuration",
         type: "uint48",
@@ -213,6 +194,25 @@ const _abi = [
     anonymous: false,
     inputs: [],
     name: "MainInitialized",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "bool",
+        name: "oldVal",
+        type: "bool",
+      },
+      {
+        indexed: true,
+        internalType: "bool",
+        name: "newVal",
+        type: "bool",
+      },
+    ],
+    name: "PausedSet",
     type: "event",
   },
   {
@@ -383,25 +383,6 @@ const _abi = [
       },
     ],
     name: "StRSRSet",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "bool",
-        name: "oldVal",
-        type: "bool",
-      },
-      {
-        indexed: true,
-        internalType: "bool",
-        name: "newVal",
-        type: "bool",
-      },
-    ],
-    name: "TradingPausedSet",
     type: "event",
   },
   {
@@ -756,32 +737,6 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "issuancePaused",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "issuancePausedOrFrozen",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "longFreeze",
     outputs: [
       {
@@ -814,16 +769,35 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "pauseIssuance",
+    name: "pause",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
   {
     inputs: [],
-    name: "pauseTrading",
-    outputs: [],
-    stateMutability: "nonpayable",
+    name: "paused",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "pausedOrFrozen",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -1007,32 +981,6 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "tradingPaused",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "tradingPausedOrFrozen",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "unfreeze",
     outputs: [],
     stateMutability: "nonpayable",
@@ -1053,14 +1001,7 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "unpauseIssuance",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "unpauseTrading",
+    name: "unpause",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -1111,12 +1052,15 @@ const _abi = [
   },
 ] as const;
 
-export class Main__factory {
+export class MainLegacy__factory {
   static readonly abi = _abi;
-  static createInterface(): MainInterface {
-    return new utils.Interface(_abi) as MainInterface;
+  static createInterface(): MainLegacyInterface {
+    return new utils.Interface(_abi) as MainLegacyInterface;
   }
-  static connect(address: string, signerOrProvider: Signer | Provider): Main {
-    return new Contract(address, _abi, signerOrProvider) as Main;
+  static connect(
+    address: string,
+    signerOrProvider: Signer | Provider
+  ): MainLegacy {
+    return new Contract(address, _abi, signerOrProvider) as MainLegacy;
   }
 }
