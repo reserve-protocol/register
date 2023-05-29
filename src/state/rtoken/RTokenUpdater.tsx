@@ -5,11 +5,14 @@ import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useCallback, useEffect, useState } from 'react'
+import { reserveTokensAtom, selectedRTokenAtom } from 'state/atoms'
 import {
-  reserveTokensAtom,
+  rTokenAtom,
+  rTokenRevenueSplitAtom,
   rTokenContractsAtom,
-  selectedRTokenAtom,
-} from 'state/atoms'
+  rTokenAssetsAtom,
+  rTokenConfigurationAtom,
+} from 'state/atoms/rTokenAsyncAtoms'
 import { promiseMulticall } from 'state/web3/lib/multicall'
 import { error } from 'state/web3/lib/notifications'
 import { ContractCall, ReserveToken, Token } from 'types'
@@ -101,10 +104,12 @@ const updateTokenAtom = atom(null, (get, set, data: ReserveToken) => {
 const RTokenUpdater = () => {
   const rTokenAddress = useAtomValue(selectedRTokenAtom)
   const updateToken = useSetAtom(updateTokenAtom)
-  const resetTokenContracts = useResetAtom(rTokenContractsAtom)
   const windowVisible = useIsWindowVisible()
   const { provider, chainId } = useWeb3React()
   const [fetching, setFetching] = useState('') // use rTokenAddress to know if they change token fast
+  const contracts = useAtomValue(rTokenConfigurationAtom)
+
+  console.log('data', { contracts })
 
   const getTokenMeta = useCallback(
     async (address: string, provider: Web3Provider) => {
@@ -178,7 +183,6 @@ const RTokenUpdater = () => {
       fetching !== rTokenAddress
     ) {
       getTokenMeta(rTokenAddress, provider)
-      resetTokenContracts()
     }
   }, [provider, rTokenAddress, chainId])
 

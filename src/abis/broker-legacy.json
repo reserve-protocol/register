@@ -39,26 +39,7 @@
         "type": "uint48"
       }
     ],
-    "name": "BatchAuctionLengthSet",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "contract ITrade",
-        "name": "oldVal",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "contract ITrade",
-        "name": "newVal",
-        "type": "address"
-      }
-    ],
-    "name": "BatchTradeImplementationSet",
+    "name": "AuctionLengthSet",
     "type": "event"
   },
   {
@@ -98,44 +79,6 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "uint48",
-        "name": "oldVal",
-        "type": "uint48"
-      },
-      {
-        "indexed": true,
-        "internalType": "uint48",
-        "name": "newVal",
-        "type": "uint48"
-      }
-    ],
-    "name": "DutchAuctionLengthSet",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "contract ITrade",
-        "name": "oldVal",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "contract ITrade",
-        "name": "newVal",
-        "type": "address"
-      }
-    ],
-    "name": "DutchTradeImplementationSet",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
         "internalType": "contract IGnosis",
         "name": "oldVal",
         "type": "address"
@@ -168,6 +111,25 @@
     "inputs": [
       {
         "indexed": true,
+        "internalType": "contract ITrade",
+        "name": "oldVal",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "contract ITrade",
+        "name": "newVal",
+        "type": "address"
+      }
+    ],
+    "name": "TradeImplementationSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
         "internalType": "address",
         "name": "implementation",
         "type": "address"
@@ -191,38 +153,12 @@
   },
   {
     "inputs": [],
-    "name": "MIN_AUCTION_LENGTH",
+    "name": "auctionLength",
     "outputs": [
       {
         "internalType": "uint48",
         "name": "",
         "type": "uint48"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "batchAuctionLength",
-    "outputs": [
-      {
-        "internalType": "uint48",
-        "name": "",
-        "type": "uint48"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "batchTradeImplementation",
-    "outputs": [
-      {
-        "internalType": "contract ITrade",
-        "name": "",
-        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -236,32 +172,6 @@
         "internalType": "bool",
         "name": "",
         "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "dutchAuctionLength",
-    "outputs": [
-      {
-        "internalType": "uint48",
-        "name": "",
-        "type": "uint48"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "dutchTradeImplementation",
-    "outputs": [
-      {
-        "internalType": "contract ITrade",
-        "name": "",
-        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -294,22 +204,12 @@
       },
       {
         "internalType": "contract ITrade",
-        "name": "batchTradeImplementation_",
+        "name": "tradeImplementation_",
         "type": "address"
       },
       {
         "internalType": "uint48",
-        "name": "batchAuctionLength_",
-        "type": "uint48"
-      },
-      {
-        "internalType": "contract ITrade",
-        "name": "dutchTradeImplementation_",
-        "type": "address"
-      },
-      {
-        "internalType": "uint48",
-        "name": "dutchAuctionLength_",
+        "name": "auctionLength_",
         "type": "uint48"
       }
     ],
@@ -333,11 +233,6 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "enum TradeKind",
-        "name": "kind",
-        "type": "uint8"
-      },
       {
         "components": [
           {
@@ -405,20 +300,7 @@
         "type": "uint48"
       }
     ],
-    "name": "setBatchAuctionLength",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "contract ITrade",
-        "name": "newTradeImplementation",
-        "type": "address"
-      }
-    ],
-    "name": "setBatchTradeImplementation",
+    "name": "setAuctionLength",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -439,12 +321,12 @@
   {
     "inputs": [
       {
-        "internalType": "uint48",
-        "name": "newAuctionLength",
-        "type": "uint48"
+        "internalType": "contract IGnosis",
+        "name": "newGnosis",
+        "type": "address"
       }
     ],
-    "name": "setDutchAuctionLength",
+    "name": "setGnosis",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -457,22 +339,22 @@
         "type": "address"
       }
     ],
-    "name": "setDutchTradeImplementation",
+    "name": "setTradeImplementation",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [
+    "inputs": [],
+    "name": "tradeImplementation",
+    "outputs": [
       {
-        "internalType": "contract IGnosis",
-        "name": "newGnosis",
+        "internalType": "contract ITrade",
+        "name": "",
         "type": "address"
       }
     ],
-    "name": "setGnosis",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {

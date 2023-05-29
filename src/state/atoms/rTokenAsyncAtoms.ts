@@ -7,6 +7,7 @@ import {
   DistributorInterface,
   FacadeInterface,
   FurnaceInterface,
+  LegacyBrokerInterface,
   MainInterface,
   RTokenInterface,
   RevenueTraderInterface,
@@ -17,12 +18,19 @@ import { formatEther, formatUnits } from 'ethers/lib/utils'
 import { promiseMulticall } from 'state/web3/lib/multicall'
 import { ContractCall, Token } from 'types'
 import { getContract, getTokenMetaCalls } from 'utils'
-import { FACADE_ADDRESS } from 'utils/addresses'
+import {
+  FACADE_ADDRESS,
+  FURNACE_ADDRESS,
+  ST_RSR_ADDRESS,
+} from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import RSV from 'utils/rsv'
 import rtokens from 'utils/rtokens'
 import { getValidWeb3Atom } from './chainAtoms'
 import { selectedRTokenAtom } from './rTokenAtoms'
+import { gqlClient } from 'hooks/useQuery'
+import { gql } from 'graphql-request'
+import { VERSION } from 'utils/constants'
 
 const isRSV = (address: string) => address === RSV.address
 
@@ -135,6 +143,15 @@ export const rTokenAtom = atomWithLoadable(
 const getMainCalls = (address: string, methods: string[]): ContractCall[] =>
   methods.map((method) => ({ abi: MainInterface, address, args: [], method }))
 
+// TODO: Fetch state atom
+// {
+//   abi: BasketHandlerInterface,
+//   address: basketHandler,
+//   args: [],
+//   method: 'fullyCollateralized',
+// },
+
+// setBackingCollateralStatus(isCollaterized)
 export const rTokenContractsAtom = atomWithLoadable(async (get) => {
   const rToken = get(rTokenAtom)
   const { provider } = get(getValidWeb3Atom)
@@ -155,18 +172,15 @@ export const rTokenContractsAtom = atomWithLoadable(async (get) => {
     mainVersion,
   ]: string[] = await promiseMulticall(
     getMainCalls(rToken.main, [
-      'distribution',
+      'distributor',
       'backingManager',
       'rTokenTrader',
       'rsrTrader',
-      'furnaceAddress',
-      'brokerAddress',
+      'furnace',
+      'broker',
       'assetRegistry',
-      'stRSRAddress',
-      'shortFreeze',
-      'longFreeze',
       'basketHandler',
-      'mainVersion',
+      'version',
     ]),
     provider
   )
@@ -332,7 +346,7 @@ export const rTokenAssetsAtom = atomWithLoadable(async (get) => {
   return registeredAssets
 })
 
-const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
+export const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
   const contracts = get(rTokenContractsAtom)
   const assets = get(rTokenAssetsAtom)
   const { provider } = get(getValidWeb3Atom)
@@ -359,6 +373,81 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
     args: [],
   }
 
+  const calls = [
+    {
+      ...mainCall,
+      method: 'shortFreeze',
+    },
+    {
+      ...mainCall,
+      method: 'longFreeze',
+    },
+    {
+      abi: BackingManagerInterface,
+      address: contracts.backingManager.address,
+      args: [],
+      method: 'tradingDelay',
+    },
+    {
+      abi: BackingManagerInterface,
+      address: contracts.backingManager.address,
+      args: [],
+      method: 'backingBuffer',
+    },
+    {
+      abi: RevenueTraderInterface,
+      address: contracts.rTokenTrader.address,
+      args: [],
+      method: 'maxTradeSlippage',
+    },
+    {
+      abi: RevenueTraderInterface,
+      address: contracts.rTokenTrader.address,
+      args: [],
+      method: 'minTradeVolume',
+    },
+    {
+      ...stRSRCall,
+      method: 'rewardRatio',
+    },
+    {
+      ...stRSRCall,
+      method: 'unstakingDelay',
+    },
+    {
+      ...rTokenCall,
+      method: 'issuanceThrottleParams',
+    },
+    {
+      ...rTokenCall,
+      method: 'redemptionThrottleParams',
+    },
+  ]
+
+  if (contracts.broker.version !== VERSION) {
+    calls.push({
+      abi: LegacyBrokerInterface,
+      address: contracts.broker.address,
+      args: [],
+      method: 'auctionLength',
+    })
+  } else {
+    calls.push(
+      {
+        abi: BrokerInterface,
+        address: contracts.broker.address,
+        args: [],
+        method: 'batchAuctionLength',
+      },
+      {
+        abi: BrokerInterface,
+        address: contracts.broker.address,
+        args: [],
+        method: 'dutchAuctionLength',
+      }
+    )
+  }
+
   const [
     shortFreeze,
     longFreeze,
@@ -368,68 +457,11 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
     minTradeVolume,
     rewardRatio,
     unstakingDelay,
-    auctionLength,
     issuanceThrottle,
     redemptionThrottle,
-  ] = await promiseMulticall(
-    [
-      {
-        ...mainCall,
-        method: 'shortFreeze',
-      },
-      {
-        ...mainCall,
-        method: 'longFreeze',
-      },
-      {
-        abi: BackingManagerInterface,
-        address: contracts.backingManager.address,
-        args: [],
-        method: 'tradingDelay',
-      },
-      {
-        abi: BackingManagerInterface,
-        address: contracts.backingManager.address,
-        args: [],
-        method: 'backingBuffer',
-      },
-      {
-        abi: RevenueTraderInterface,
-        address: contracts.rTokenTrader.address,
-        args: [],
-        method: 'maxTradeSlippage',
-      },
-      {
-        abi: RevenueTraderInterface,
-        address: contracts.rTokenTrader.address,
-        args: [],
-        method: 'minTradeVolume',
-      },
-      {
-        ...stRSRCall,
-        method: 'rewardRatio',
-      },
-      {
-        ...stRSRCall,
-        method: 'unstakingDelay',
-      },
-      {
-        abi: BrokerInterface,
-        address: contracts.broker.address,
-        args: [],
-        method: 'auctionLength',
-      },
-      {
-        ...rTokenCall,
-        method: 'issuanceThrottleParams',
-      },
-      {
-        ...rTokenCall,
-        method: 'redemptionThrottleParams',
-      },
-    ],
-    provider
-  )
+    batchAuctionLength,
+    dutchAuctionLength,
+  ] = await promiseMulticall(calls, provider)
 
   return {
     tradingDelay: tradingDelay.toString(),
@@ -438,7 +470,8 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
     minTrade: formatEther(minTradeVolume),
     rewardRatio: formatEther(rewardRatio),
     unstakingDelay: unstakingDelay.toString(),
-    auctionLength: auctionLength.toString(),
+    batchAuctionLength: batchAuctionLength.toString(),
+    dutchAuctionLength: dutchAuctionLength?.toString() || '0',
     issuanceThrottleAmount: Number(
       formatEther(issuanceThrottle.amtRate)
     ).toString(),
@@ -454,5 +487,103 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
     maxTrade: assets[contracts.token.address]?.maxTradeVolume ?? '0',
     longFreeze: longFreeze.toString(),
     shortFreeze: shortFreeze.toString(),
+  }
+})
+
+interface RTokenRevenueDistribution {
+  holders: string
+  stakers: string
+  external: {
+    [x: string]: {
+      holders: string
+      stakers: string
+      total: string
+      address: string
+    }
+  }
+}
+
+const shareToPercent = (shares: number): string => {
+  return ((shares * 100) / 10000).toString()
+}
+
+interface Distribution {
+  dest: string
+  rTokenDist: number
+  rsrDist: number
+}
+
+const formatDistribution = (data: Distribution[]) => {
+  const dist: RTokenRevenueDistribution = {
+    external: {},
+    holders: '',
+    stakers: '',
+  }
+
+  for (const distribution of data) {
+    const { dest, rTokenDist, rsrDist } = distribution
+
+    if (!rTokenDist && !rsrDist) {
+      delete dist.external[dest]
+    } else if (dest === FURNACE_ADDRESS) {
+      dist.holders = shareToPercent(rTokenDist) || '0'
+    } else if (dest === ST_RSR_ADDRESS) {
+      dist.stakers = shareToPercent(rsrDist) || '0'
+    } else {
+      const holders = shareToPercent(rTokenDist)
+      const stakers = shareToPercent(rsrDist)
+      const total = +holders + +stakers
+
+      dist.external[dest] = {
+        holders: ((+holders * 100) / total).toString() || '0',
+        stakers: ((+stakers * 100) / total).toString() || '0',
+        total: total.toString(),
+        address: dest,
+      }
+    }
+  }
+
+  return dist
+}
+
+export const rTokenRevenueSplitAtom = atomWithLoadable(async (get) => {
+  const contracts = get(rTokenContractsAtom)
+  const { provider } = get(getValidWeb3Atom)
+
+  if (!contracts || !provider) {
+    return null
+  }
+
+  try {
+    const request: any = await gqlClient.request(gql`
+      query getRTokenDistribution($id: String!) {
+        rtoken(id: $id) {
+          revenueDistribution {
+            id
+            rTokenDist
+            rsrDist
+            destination
+          }
+        }
+      }
+    `)
+
+    console.log('request', request)
+
+    return formatDistribution(request.rtoken.revenueDistribution)
+  } catch (e) {
+    // If there is a theGraph error, try fetching distribution from chain events
+    const contract = getContract(
+      contracts.distributor.address,
+      DistributorInterface,
+      provider
+    )
+    const events = await contract.queryFilter(
+      'DistributionSet(address,uint16,uint16)'
+    )
+
+    return formatDistribution(
+      events.map((event) => (event?.args || { dest: '0' }) as Distribution)
+    )
   }
 })

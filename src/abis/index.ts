@@ -25,6 +25,7 @@ import StaticAToken from './static-atoken.json'
 import FacadeAct from './facade-act.json'
 import BasketHandler from './basket-handler.json'
 import ConvexStakingWrapper from './convex-staking-wrapper.json'
+import LegacyBroker from './broker-legacy.json'
 
 const ERC20Interface = new Interface(ERC20)
 const FacadeInterface = new Interface(Facade)
@@ -51,6 +52,8 @@ const StaticATokenInterfcae = new Interface(StaticAToken)
 const FacadeActInterface = new Interface(FacadeAct)
 const BasketHandlerInterface = new Interface(BasketHandler)
 const ConvexStakingWrapperInterface = new Interface(ConvexStakingWrapper)
+// Legacy
+const LegacyBrokerInterface = new Interface(LegacyBroker)
 
 export { ERC20, ERC20Interface }
 export { Facade, FacadeInterface }
@@ -77,6 +80,8 @@ export { StaticAToken, StaticATokenInterfcae }
 export { FacadeAct, FacadeActInterface }
 export { BasketHandler, BasketHandlerInterface }
 export { ConvexStakingWrapper, ConvexStakingWrapperInterface }
+// Legacy
+export { LegacyBroker, LegacyBrokerInterface }
 
 // Used for tx management
 export default <StringMap>{
@@ -103,3 +108,5 @@ export default <StringMap>{
 // Flows: redeem
 // - Main
 // Flows: rtoken status
+// - Broker
+// Flows: auction length

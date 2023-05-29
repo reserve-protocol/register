@@ -3,6 +3,8 @@ import { Token } from 'types'
 import { CHAIN_ID } from 'utils/chains'
 import { RSR_ADDRESS } from './addresses'
 
+export const VERSION = '3.0.0'
+
 export const BI_ZERO = BigNumber.from(0)
 
 export const BLOCK_DELAY = 12 // 12 seconds per block
@@ -75,7 +77,7 @@ export const ROUTES = Object.freeze({
   TOKENS: '/tokens',
   GOVERNANCE: '/governance',
   GOVERNANCE_PROPOSAL: '/governance/proposal',
-  ZAP: '/zap'
+  ZAP: '/zap',
 })
 
 export const DEPLOYMENT_ROUTES = Object.freeze({})
@@ -91,7 +93,6 @@ export const RSR: Token = {
   name: 'Reserve Rights',
   symbol: 'RSR',
   decimals: 18,
-  logo: 'rsr.svg',
 }
 
 export const PROTOCOL_SLUG = 'reserveprotocol-v1'
