@@ -22,38 +22,42 @@ const RevenueSplitInfo = (props: BoxProps) => {
       <InfoItem
         title="% to"
         subtitle={t`RToken holders`}
-        right={<Text>{distribution.holders || 0}%</Text>}
+        right={<Text>{distribution?.holders || 0}%</Text>}
         mb={3}
       />
       <InfoItem
         title="% to"
         subtitle={t`RSR Stakers`}
-        right={<Text>{distribution.stakers || 0}%</Text>}
+        right={<Text>{distribution?.stakers || 0}%</Text>}
         mb={3}
       />
-      {distribution.external.map((dist, index) => (
-        <Box key={dist.address} mt={index ? 3 : 0}>
-          <InfoItem
-            mb={2}
-            title={t`% to external address`}
-            subtitle={
-              <Box variant="layout.verticalAlign">
-                <Text mr={2}>{shortenAddress(dist.address)}</Text>
-                <GoTo
-                  href={getExplorerLink(dist.address, ExplorerDataType.ADDRESS)}
-                />
-              </Box>
-            }
-            right={<Text>{dist.total}%</Text>}
-          />
-          <Box sx={{ marginLeft: 20 }}>
-            <Text variant="legend">RToken/RSR split:</Text>{' '}
-            <Text>
-              {dist.holders}/{dist.stakers}
-            </Text>
+      {!!distribution &&
+        distribution.external.map((dist, index) => (
+          <Box key={dist.address} mt={index ? 3 : 0}>
+            <InfoItem
+              mb={2}
+              title={t`% to external address`}
+              subtitle={
+                <Box variant="layout.verticalAlign">
+                  <Text mr={2}>{shortenAddress(dist.address)}</Text>
+                  <GoTo
+                    href={getExplorerLink(
+                      dist.address,
+                      ExplorerDataType.ADDRESS
+                    )}
+                  />
+                </Box>
+              }
+              right={<Text>{dist.total}%</Text>}
+            />
+            <Box sx={{ marginLeft: 20 }}>
+              <Text variant="legend">RToken/RSR split:</Text>{' '}
+              <Text>
+                {dist.holders}/{dist.stakers}
+              </Text>
+            </Box>
           </Box>
-        </Box>
-      ))}
+        ))}
     </Card>
   )
 }

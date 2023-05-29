@@ -69,8 +69,8 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
       status: TRANSACTION_STATUS.PENDING,
       value: amount,
       call: {
-        abi: rToken?.isRSV ? 'rsv' : 'rToken',
-        address: rToken?.isRSV ? RSV_MANAGER : rToken?.address ?? '',
+        abi: !rToken?.main ? 'rsv' : 'rToken',
+        address: !rToken?.main ? RSV_MANAGER : rToken?.address ?? '',
         method: 'issue',
         args: [isValid ? safeParseEther(amount) : 0],
       },

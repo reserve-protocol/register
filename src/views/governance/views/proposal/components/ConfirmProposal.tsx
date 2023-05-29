@@ -15,14 +15,19 @@ const ConfirmProposal = () => {
   const navigationSections = useMemo(() => {
     const contractMap: { [x: string]: string } = {}
 
-    if (tx.call.args[0]) {
+    if (tx?.call.args[0]) {
       for (const address of tx.call.args[0]) {
         contractMap[address] = interfaceMap[address]?.label ?? 'Unknown'
       }
     }
 
     return Object.values(contractMap)
-  }, [tx.call.args.length])
+  }, [tx?.call.args.length])
+
+  // TODO: Loading state
+  if (!tx) {
+    return null
+  }
 
   return (
     <Layout>

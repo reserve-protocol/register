@@ -94,9 +94,13 @@ export const interfaceMapAtom = atom((get) => {
   const governance = get(rTokenGovernanceAtom)
   const rToken = get(rTokenAtom)
 
+  if (!contracts) {
+    return {}
+  }
+
   const map = Object.keys(contractDetails).reduce((prev, curr) => {
     if (contracts[curr]) {
-      prev[contracts[curr]] = contractDetails[curr]
+      prev[contracts[curr].address] = contractDetails[curr]
     }
     return prev
   }, {} as InterfaceMap)

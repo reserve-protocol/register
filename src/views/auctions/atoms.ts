@@ -74,7 +74,13 @@ const accumulatedRevenue = loadable(
     const assets = get(rTokenAssetsAtom)
     const session = get(auctionSessionAtom)
 
-    if (!provider || !rToken || !Object.keys(assets).length || !session) {
+    if (
+      !provider ||
+      !rToken ||
+      !assets ||
+      !Object.keys(assets).length ||
+      !session
+    ) {
       return 0
     }
 
@@ -111,12 +117,14 @@ const settleableAuctions = loadable(
     const rToken = get(rTokenAtom)
     const assetMap = get(rTokenAssetERC20MapAtom)
     const assets = get(rTokenAssetsAtom)
-    const { rsrTrader, rTokenTrader, backingManager } = get(rTokenContractsAtom)
+    const { rsrTrader, rTokenTrader, backingManager } =
+      get(rTokenContractsAtom) ?? {}
     const session = get(auctionSessionAtom)
 
     if (
       !provider ||
       !rToken ||
+      !assets ||
       !Object.keys(assets).length ||
       !rsrTrader ||
       !session
@@ -178,8 +186,7 @@ const auctionsOverview = loadable(
       recollaterization: Auction | null
     } | null> => {
       const { provider, chainId } = get(getValidWeb3Atom)
-      const { rsrTrader, rTokenTrader, backingManager } =
-        get(rTokenContractsAtom)
+      const contracts = get(rTokenContractsAtom)
       const assetMap = get(rTokenAssetERC20MapAtom)
       const assets = get(rTokenAssetsAtom)
       const rToken = get(rTokenAtom)
@@ -187,10 +194,9 @@ const auctionsOverview = loadable(
 
       if (
         !provider ||
-        !rsrTrader ||
-        !rTokenTrader ||
-        !backingManager ||
+        !contracts ||
         !rToken ||
+        !assets ||
         !Object.keys(assets).length ||
         !session
       ) {
@@ -205,9 +211,11 @@ const auctionsOverview = loadable(
 
       const [rsrRevenueOverview, rTokenRevenueOverview, recoAuction] =
         await Promise.all([
-          contract.callStatic.revenueOverview(rsrTrader),
-          contract.callStatic.revenueOverview(rTokenTrader),
-          contract.callStatic.nextRecollateralizationAuction(backingManager),
+          contract.callStatic.revenueOverview(contracts.rsrTrader.address),
+          contract.callStatic.revenueOverview(contracts.rTokenTrader.address),
+          contract.callStatic.nextRecollateralizationAuction(
+            contracts.backingManager.address
+          ),
         ])
 
       const auctions = rsrRevenueOverview.erc20s.reduce((acc, erc20, index) => {
@@ -230,7 +238,7 @@ const auctionsOverview = loadable(
               rsrRevenueOverview.minTradeAmounts[index],
               asset.token.decimals
             ),
-            trader: rsrTrader,
+            trader: contracts.rsrTrader.address,
             canStart: rsrRevenueOverview.canStart[index],
             output:
               +rsrTradeAmount /
@@ -248,7 +256,7 @@ const auctionsOverview = loadable(
               rTokenRevenueOverview.minTradeAmounts[index],
               asset.token.decimals
             ),
-            trader: rTokenTrader,
+            trader: contracts.rTokenTrader.address,
             canStart: rTokenRevenueOverview.canStart[index],
             output:
               +rTokenTradeAmount /
@@ -271,7 +279,7 @@ const auctionsOverview = loadable(
           buy: buy.token,
           amount,
           minAmount: '0',
-          trader: backingManager,
+          trader: contracts.backingManager.address,
           canStart: true,
           output: +amount / (buy.priceUsd / sell.priceUsd),
         }

@@ -24,9 +24,11 @@ const gridProps = { columns: [1, 1, 1, 2], gap: [5, 5, 5, 4] }
  */
 const Overview = () => {
   const rToken = useAtomValue(rTokenAtom)
+  const isRSV = !!rToken && !rToken.main
+
   const rTokenMetrics = useTokenStats(
     rToken?.address.toLowerCase() ?? '',
-    rToken?.isRSV
+    isRSV
   )
 
   return (
@@ -46,7 +48,7 @@ const Overview = () => {
       <Divider {...dividerProps} mt={[0, 0, 0, 5]} />
       <Grid {...gridProps}>
         <HistoricalData />
-        {rToken?.isRSV ? <RecentRSVTransactions /> : <RecentTransactions />}
+        {isRSV ? <RecentRSVTransactions /> : <RecentTransactions />}
       </Grid>
     </Container>
   )

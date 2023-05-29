@@ -85,8 +85,10 @@ export const RTokenDataUpdater = () => {
   }, [JSON.stringify(backup)])
 
   useEffect(() => {
-    setTimeout(() => setSetupRevenueSplit(revenueSplit), 10)
-    setSetupRevenueSplit(revenueSplit)
+    if (revenueSplit) {
+      setTimeout(() => setSetupRevenueSplit(revenueSplit), 10)
+      setSetupRevenueSplit(revenueSplit)
+    }
   }, [JSON.stringify(revenueSplit)])
 
   useEffect(() => {

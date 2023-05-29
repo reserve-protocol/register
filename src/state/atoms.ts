@@ -30,7 +30,7 @@ export const searchParamAtom = atomFamily(
  * ##################
  * Price related atom
  * ##################
- */ 
+ */
 
 export const ethPriceAtom = atom(1)
 export const gasPriceAtomBn = atom(ethers.constants.Zero)
@@ -74,3 +74,11 @@ export * from './atoms/accountAtoms'
 export * from './atoms/chainAtoms'
 export * from './atoms/rTokenAtoms'
 export * from './atoms/transactionAtoms'
+export { default as rTokenAssetsAtom } from './rtoken/atoms/rTokenAssetsAtom'
+export {
+  default as rTokenAtom,
+  selectedRTokenAtom,
+} from './rtoken/atoms/rTokenAtom'
+export { default as rTokenConfigurationAtom } from './rtoken/atoms/rTokenConfigurationAtom'
+export { default as rTokenContractsAtom } from './rtoken/atoms/rTokenContractsAtom'
+export { default as rTokenRevenueSplitAtom } from './rtoken/atoms/rTokenRevenueSplitAtom'

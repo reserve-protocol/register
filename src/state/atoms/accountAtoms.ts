@@ -10,7 +10,7 @@ import { atom } from 'jotai'
 import { AccountPosition, AccountToken } from 'types'
 import { RSR } from 'utils/constants'
 import { tokenBalancesStore } from '../TokenBalancesUpdater'
-import { rTokenAtom } from './rTokenAtoms'
+import rTokenAtom from '../rtoken/atoms/rTokenAtom'
 
 const defaultBalance = {
   value: BigNumber.from(0),

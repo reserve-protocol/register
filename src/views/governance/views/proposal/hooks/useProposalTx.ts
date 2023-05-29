@@ -78,7 +78,7 @@ const useProposalTx = () => {
   const contracts = useAtomValue(rTokenContractsAtom)
   const { value: registeredAssets } = useContractCall({
     abi: AssetRegistryInterface,
-    address: contracts.assetRegistry,
+    address: contracts?.assetRegistry.address ?? '',
     method: 'getRegistry',
     args: [],
   }) || { value: [] }
@@ -86,6 +86,10 @@ const useProposalTx = () => {
   const { getValues } = useFormContext()
 
   return useMemo(() => {
+    if (!contracts || !governance) {
+      return null
+    }
+
     const addresses: string[] = []
     const calls: string[] = []
     let redemptionThrottleChange = false
@@ -100,7 +104,7 @@ const useProposalTx = () => {
 
     const addToRegistry = (address: string, underlyingAddress?: string) => {
       if (newAssets.has(address) || assets.has(address)) return
-      addresses.push(contracts.assetRegistry)
+      addresses.push(contracts?.assetRegistry.address ?? '')
 
       // Underlying asset (from another plugin instance)
       // registered in past - swapRegistered
@@ -180,7 +184,15 @@ const useProposalTx = () => {
       ############################# */
       for (const roleChange of roleChanges) {
         const isGuardian = roleChange.role === 'guardians'
-        addresses.push(isGuardian ? governance.timelock : contracts.main)
+
+        if (contracts?.main) {
+          addresses.push(
+            isGuardian && governance.timelock
+              ? governance.timelock
+              : contracts.main.address
+          )
+        }
+
         calls.push(
           (isGuardian ? TimelockInterface : MainInterface).encodeFunctionData(
             roleChange.isNew ? 'grantRole' : 'revokeRole',
@@ -234,7 +246,7 @@ const useProposalTx = () => {
         }
 
         // Set primeBasket with new collaterals and weights
-        addresses.push(contracts.basketHandler)
+        addresses.push(contracts.basketHandler.address)
         calls.push(
           BasketHandlerInterface.encodeFunctionData('setPrimeBasket', [
             primaryBasket,
@@ -242,7 +254,7 @@ const useProposalTx = () => {
           ])
         )
         // Refresh basket is needed for the action to take effect
-        addresses.push(contracts.basketHandler)
+        addresses.push(contracts.basketHandler.address)
         calls.push(
           BasketHandlerInterface.encodeFunctionData('refreshBasket', [])
         )
@@ -271,7 +283,7 @@ const useProposalTx = () => {
               backupCollaterals.push(collateral.address)
             }
 
-            addresses.push(contracts.basketHandler)
+            addresses.push(contracts.basketHandler.address)
             calls.push(
               BasketHandlerInterface.encodeFunctionData('setBackupConfig', [
                 ethers.utils.formatBytes32String(targetUnit.toUpperCase()),
@@ -291,7 +303,7 @@ const useProposalTx = () => {
 
         for (const revChange of revenueChanges.externals) {
           if (!revChange.isNew) {
-            addresses.push(contracts.distributor)
+            addresses.push(contracts.distributor.address)
             calls.push(
               DistributorInterface.encodeFunctionData('setDistribution', [
                 FURNACE_ADDRESS,
@@ -301,14 +313,14 @@ const useProposalTx = () => {
           }
         }
 
-        addresses.push(contracts.distributor)
+        addresses.push(contracts.distributor.address)
         calls.push(
           DistributorInterface.encodeFunctionData('setDistribution', [
             FURNACE_ADDRESS,
             { rTokenDist: dist.rTokenDist, rsrDist: BigNumber.from(0) },
           ])
         )
-        addresses.push(contracts.distributor)
+        addresses.push(contracts.distributor.address)
         calls.push(
           DistributorInterface.encodeFunctionData('setDistribution', [
             ST_RSR_ADDRESS,
@@ -317,7 +329,7 @@ const useProposalTx = () => {
         )
 
         for (const external of beneficiaries) {
-          addresses.push(contracts.distributor)
+          addresses.push(contracts.distributor.address)
           calls.push(
             DistributorInterface.encodeFunctionData('setDistribution', [
               external.beneficiary,

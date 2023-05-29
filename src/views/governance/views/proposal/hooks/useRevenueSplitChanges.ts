@@ -43,6 +43,10 @@ const useRevenueSplitChanges = () => {
       count: 0,
     }
 
+    if (!currentRevenueSplit) {
+      return changes
+    }
+
     if (
       (proposedRevenueSplit.holders || '0') !==
       (currentRevenueSplit.holders || '0')

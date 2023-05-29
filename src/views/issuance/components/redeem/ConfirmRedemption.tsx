@@ -38,20 +38,21 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
       status: TRANSACTION_STATUS.PENDING,
       value: amount,
       call: {
-        abi: rToken?.isRSV ? 'rsv' : 'rToken',
-        address: rToken?.isRSV ? RSV_MANAGER : rToken?.address ?? '',
+        abi: rToken?.main ? 'rToken' : 'rsv',
+        address: rToken?.main ? rToken?.address ?? '' : RSV_MANAGER,
         method: 'redeem',
-        args: rToken?.isRSV ? [parsedAmount] : [parsedAmount, basketNonce],
+        args: rToken?.main ? [parsedAmount, basketNonce] : [parsedAmount],
       },
     }),
     [rToken?.address, amount, basketNonce]
   )
 
-  const requiredAllowance = rToken?.isRSV
-    ? {
-        [rToken.address]: parsedAmount,
-      }
-    : {}
+  const requiredAllowance =
+    rToken && !rToken.main
+      ? {
+          [rToken.address]: parsedAmount,
+        }
+      : {}
 
   const getQuantities = useCallback(
     async (facade: Facade, rToken: string, value: string) => {
@@ -73,14 +74,9 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
   )
 
   useEffect(() => {
-    if (
-      facadeContract &&
-      rToken?.address &&
-      !rToken.isRSV &&
-      Number(amount) > 0
-    ) {
+    if (facadeContract && rToken?.main && Number(amount) > 0) {
       getQuantities(facadeContract, rToken.address, amount)
-    } else if (rToken?.isRSV && Number(amount) > 0) {
+    } else if (rToken && !rToken.main && Number(amount) > 0) {
       setCollateralQuantities(quote(amount))
     } else {
       setCollateralQuantities({})
@@ -88,7 +84,7 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
   }, [facadeContract, rToken?.address, debounceAmount])
 
   const buildApproval = useCallback(() => {
-    if (rToken && rToken.isRSV) {
+    if (rToken && !rToken.main) {
       return [
         {
           id: uuid(),

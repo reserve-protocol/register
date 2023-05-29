@@ -53,14 +53,14 @@ const QuantitiesUpdater = ({
 
   // Fetch quantities from smart contract (rTokens)
   useEffect(() => {
-    if (!rToken?.isRSV) {
+    if (rToken?.main) {
       fetchQuantities(amount)
     }
   }, [debouncedValue, fetchQuantities])
 
   // Reset quantities on amount change or set if its valid number and RSV
   useEffect(() => {
-    if (rToken?.isRSV) {
+    if (rToken && !rToken.main) {
       if (Number(amount) > 0) {
         onChange(quote(amount))
       } else {

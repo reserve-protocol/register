@@ -6,9 +6,8 @@ import {
 import { atom } from 'jotai'
 import { atomWithReset, atomWithStorage } from 'jotai/utils'
 import { ReserveToken, StringMap, Token } from 'types'
-
-// Current selected rToken address
-export const selectedRTokenAtom = atom('')
+import rTokenAtom from '../rtoken/atoms/rTokenAtom'
+import rTokenRevenueSplitAtom from 'state/rtoken/atoms/rTokenRevenueSplitAtom'
 
 // Store rToken meta into localStorage for fast fetching using cache
 export const reserveTokensAtom = atomWithStorage<{
@@ -35,21 +34,6 @@ export const rTokenBasketStatusAtom = atom((get) => {
   }
 
   return Math.max(...Object.values(status))
-})
-
-// RToken related contracts
-export const rTokenContractsAtom = atomWithReset<StringMap>({
-  main: '',
-  backingManager: '',
-  rTokenTrader: '',
-  rsrTrader: '',
-  broker: '',
-  assetRegistry: '',
-  stRSR: '',
-  furnace: '',
-  rTokenAsset: '',
-  distributor: '',
-  basketHandler: '',
 })
 
 export const basketNonceAtom = atom(0)
@@ -91,19 +75,7 @@ export const stRSRSupplyAtom = atom('')
 export const rTokenTotalSupplyAtom = atom('')
 export const rTokenBasketAtom = atomWithReset<Basket>({})
 export const rTokenBackupAtom = atomWithReset<BackupBasket>({})
-export const rTokenRevenueSplitAtom = atomWithReset<RevenueSplit>({
-  holders: '0', // %
-  stakers: '0', // %
-  external: [],
-})
 export const rTokenCollaterizedAtom = atom(true)
-
-// Grab rToken data from the atom list
-export const rTokenAtom = atom<ReserveToken | null>((get) =>
-  get(reserveTokensAtom) && get(reserveTokensAtom)[get(selectedRTokenAtom)]
-    ? get(reserveTokensAtom)[get(selectedRTokenAtom)]
-    : null
-)
 
 // Token APY
 export const rTokenYieldAtom = atom({ tokenApy: 0, stakingApy: 0 })
@@ -188,7 +160,7 @@ export const estimatedApyAtom = atom((get) => {
     holders: 0,
   }
 
-  if (!rToken || !supply || rToken.isRSV) {
+  if (!rToken?.main || !supply || !revenueSplit) {
     return apys
   }
 
@@ -239,3 +211,13 @@ export const rTokenAssetERC20MapAtom = atom((get) => {
     return map
   }, {} as { [x: string]: string })
 })
+
+// TODO: Fetch state atom
+// {
+//   abi: BasketHandlerInterface,
+//   address: basketHandler,
+//   args: [],
+//   method: 'fullyCollateralized',
+// },
+
+// setBackingCollateralStatus(isCollaterized)

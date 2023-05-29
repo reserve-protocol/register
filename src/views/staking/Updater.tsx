@@ -37,7 +37,7 @@ const PendingBalancesUpdater = () => {
   )
 
   useEffect(() => {
-    if (rToken && !rToken.isRSV && facadeContract && blockNumber && account) {
+    if (rToken?.main && facadeContract && blockNumber && account) {
       fetchPending(account, rToken.address, facadeContract)
     } else {
       setPendingRSR([])

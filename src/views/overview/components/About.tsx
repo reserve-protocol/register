@@ -3,12 +3,13 @@ import { useAtomValue } from 'jotai'
 import { rTokenAtom } from 'state/atoms'
 import { Box, BoxProps, Link, Text } from 'theme-ui'
 import MandateIcon from 'components/icons/MandateIcon'
+import rtokens from 'utils/rtokens'
 
 // TODO: Pull this info from listing
 const About = (props: BoxProps) => {
   const rToken = useAtomValue(rTokenAtom)
 
-  if (rToken?.isRSV) {
+  if (rToken && !rToken.main) {
     return (
       <Box {...props} px={3} sx={{ maxWidth: '720px' }}>
         <Text variant="title" mb={3}>
@@ -50,17 +51,17 @@ const About = (props: BoxProps) => {
           </Text>
         </>
       )}
-      {rToken?.meta?.about && (
+      {rToken?.listed && (
         <>
           <Text mt={4} mb={2} variant="title">
             <Trans>+ Off-chain note</Trans>
           </Text>
           <Text as="p" variant="legend">
-            {rToken?.meta?.about}
+            {rtokens[rToken.address]?.about}
           </Text>
         </>
       )}
-      {!rToken?.meta?.about && !rToken?.mandate && (
+      {!rToken?.listed && !rToken?.mandate && (
         <>
           <Text mb={3} variant="title">
             <Trans>About</Trans>

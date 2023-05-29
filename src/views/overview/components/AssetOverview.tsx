@@ -38,7 +38,7 @@ const colors = [
 const basketDistAtom = atom((get) => {
   const rToken = get(rTokenAtom)
 
-  if (rToken?.isRSV) {
+  if (rToken && !rToken.main) {
     return RSV.collaterals.reduce(
       (acc, current) => ({
         ...acc,

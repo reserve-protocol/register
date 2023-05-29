@@ -44,21 +44,15 @@ const MaxIssuableUpdater = () => {
 
   // RSV Max issuable
   useEffect(() => {
-    if (rToken && rToken.isRSV) {
+    if (rToken && !rToken.main) {
       setMaxIssuable(getIssuable(tokenBalances))
     }
   }, [tokenBalances, rToken?.address, chainId])
 
   useEffect(() => {
-    if (
-      rToken &&
-      !rToken.isRSV &&
-      account &&
-      facadeContract &&
-      !isTokenDisabled
-    ) {
+    if (rToken?.main && account && facadeContract && !isTokenDisabled) {
       updateMaxIssuable(account, rToken.address, facadeContract)
-    } else if (!rToken?.isRSV) {
+    } else if (rToken?.main) {
       setMaxIssuable(BI_ZERO)
     }
   }, [

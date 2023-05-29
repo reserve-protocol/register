@@ -5,7 +5,6 @@ import {
   CollateralInterface,
   ERC20Interface,
   FacadeInterface,
-  MainInterface,
   RTokenInterface,
   StRSRInterface,
 } from 'abis'
@@ -20,7 +19,6 @@ import {
   basketNonceAtom,
   maxIssuanceAtom,
   maxRedemptionAtom,
-  rsrExchangeRateAtom,
   rTokenCollateralAssetsAtom,
   rTokenCollateralDist,
   rTokenCollateralStatusAtom,
@@ -28,6 +26,7 @@ import {
   rTokenDistributionAtom,
   rTokenStatusAtom,
   rTokenTotalSupplyAtom,
+  rsrExchangeRateAtom,
   stRSRSupplyAtom,
 } from 'state/atoms'
 import { promiseMulticall } from 'state/web3/lib/multicall'
@@ -64,9 +63,9 @@ const RTokenStateUpdater = () => {
   const contracts = useAtomValue(rTokenContractsAtom)
 
   const { value } = useContractCall(
-    contracts.basketHandler && {
+    contracts?.basketHandler && {
       abi: BasketHandlerInterface,
-      address: contracts.basketHandler,
+      address: contracts.basketHandler.address,
       method: 'nonce',
       args: [],
     }
@@ -108,7 +107,7 @@ const RTokenStateUpdater = () => {
       !rToken.isRSV &&
       assets.length &&
       provider &&
-      contracts.assetRegistry
+      contracts?.assetRegistry
     ) {
       try {
         const status = await promiseMulticall(
@@ -260,7 +259,7 @@ const RTokenStateUpdater = () => {
 
   useEffect(() => {
     getCollateralStatus()
-  }, [contracts.assetRegistry, JSON.stringify(assets), blockNumber])
+  }, [contracts?.assetRegistry.address, JSON.stringify(assets), blockNumber])
 
   useEffect(() => {
     if (basketNonce) {

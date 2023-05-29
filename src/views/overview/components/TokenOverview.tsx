@@ -2,9 +2,9 @@ import { t, Trans } from '@lingui/macro'
 import { ContentHead, InfoHeading } from 'components/info-box'
 import { useAtomValue } from 'jotai'
 import { estimatedApyAtom, rTokenAtom, rTokenYieldAtom } from 'state/atoms'
-import { Box, BoxProps, Flex, Text, Image } from 'theme-ui'
+import { Box, BoxProps, Flex, Image, Text } from 'theme-ui'
 import { TokenStats } from 'types'
-import { formatPercentage, parsePercent } from 'utils'
+import { formatPercentage } from 'utils'
 
 interface Props extends BoxProps {
   metrics: TokenStats
@@ -14,10 +14,11 @@ const TokenOverview = ({ metrics, ...props }: Props) => {
   const rToken = useAtomValue(rTokenAtom)
   const { tokenApy, stakingApy } = useAtomValue(rTokenYieldAtom)
   const { holders, stakers } = useAtomValue(estimatedApyAtom)
+  const isRSV = !!rToken && !rToken.main
 
   return (
     <Box {...props}>
-      {rToken?.isRSV ? (
+      {isRSV ? (
         <ContentHead
           mb={[3, 6]}
           title={t`Overview`}
@@ -37,7 +38,7 @@ const TokenOverview = ({ metrics, ...props }: Props) => {
             </Text>
           </Flex>
         </Flex>
-        {!rToken?.isRSV && (
+        {!isRSV && (
           <Flex mt={5} mb={-3} sx={{ flexWrap: 'wrap' }}>
             <InfoHeading
               title={t`RSR Staked Pool`}
