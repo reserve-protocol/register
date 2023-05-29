@@ -16,7 +16,7 @@
     "@reach/dialog": "^0.17.0",
     "@reach/portal": "^0.17.0",
     "@react-spring/web": "^9.7.1",
-    "@reserve-protocol/token-zapper": "1.6.5",
+    "@reserve-protocol/token-zapper": "1.7.0",
     "@types/humanize-duration": "^3.27.1",
     "@uiw/react-md-editor": "^3.20.5",
     "@uniswap/permit2-sdk": "^1.2.0",

@@ -63,7 +63,7 @@ export const permitSignature = atom(null as null | string)
 
 // The amount of slippage we allow when zap involves a trade:
 // This is not exposed in the UI yet, but probably should be.
-const tradeSlippage = atom(0)
+const tradeSlippage = atom(0.01)
 
 // We sent the zap transaction,
 // and are waiting for the user to sign off on it and for it to commit
