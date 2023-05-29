@@ -8,48 +8,40 @@ import { atomWithLoadable } from 'utils/atoms/utils'
 import rTokenContractsAtom from './rTokenContractsAtom'
 import { ExternalAddressSplit } from 'components/rtoken-setup/atoms'
 
-interface RTokenRevenueDistribution {
-  holders: string
-  stakers: string
-  external: {
-    [x: string]: ExternalAddressSplit
-  }
-}
-
 const shareToPercent = (shares: number): string => {
   return ((shares * 100) / 10000).toString()
 }
 
 interface Distribution {
-  dest: string
+  destination: string
   rTokenDist: number
   rsrDist: number
 }
 
 const formatDistribution = (data: Distribution[]) => {
-  let holders = ''
-  let stakers = ''
+  let holders = '0'
+  let stakers = '0'
   const external: { [x: string]: ExternalAddressSplit } = {}
 
   for (const distribution of data) {
-    const { dest, rTokenDist, rsrDist } = distribution
+    const { destination, rTokenDist, rsrDist } = distribution
 
     if (!rTokenDist && !rsrDist) {
-      delete external[dest]
-    } else if (dest === FURNACE_ADDRESS) {
+      delete external[destination]
+    } else if (destination === FURNACE_ADDRESS) {
       holders = shareToPercent(rTokenDist) || '0'
-    } else if (dest === ST_RSR_ADDRESS) {
+    } else if (destination === ST_RSR_ADDRESS) {
       stakers = shareToPercent(rsrDist) || '0'
     } else {
       const holders = shareToPercent(rTokenDist)
       const stakers = shareToPercent(rsrDist)
       const total = +holders + +stakers
 
-      external[dest] = {
+      external[destination] = {
         holders: ((+holders * 100) / total).toString() || '0',
         stakers: ((+stakers * 100) / total).toString() || '0',
         total: total.toString(),
-        address: dest,
+        address: destination,
       }
     }
   }
@@ -66,23 +58,29 @@ const rTokenRevenueSplitAtom = atomWithLoadable(async (get) => {
   }
 
   try {
-    const request: any = await gqlClient.request(gql`
-      query getRTokenDistribution($id: String!) {
-        rtoken(id: $id) {
-          revenueDistribution {
-            id
-            rTokenDist
-            rsrDist
-            destination
+    const request: any = await gqlClient.request(
+      gql`
+        query getRTokenDistribution($id: String!) {
+          rtoken(id: $id) {
+            revenueDistribution {
+              id
+              rTokenDist
+              rsrDist
+              destination
+            }
           }
         }
-      }
-    `)
+      `,
+      { id: contracts.token.address.toLowerCase() }
+    )
 
-    console.log('request', request)
+    if (!request.rtoken) {
+      throw new Error('Not found')
+    }
 
     return formatDistribution(request.rtoken.revenueDistribution)
   } catch (e) {
+    console.error('Error fetching distribution', e)
     // If there is a theGraph error, try fetching distribution from chain events
     const contract = getContract(
       contracts.distributor.address,
@@ -94,7 +92,13 @@ const rTokenRevenueSplitAtom = atomWithLoadable(async (get) => {
     )
 
     return formatDistribution(
-      events.map((event) => (event?.args || { dest: '0' }) as Distribution)
+      events.map(
+        (event) =>
+          ({
+            ...(event?.args || {}),
+            destination: event?.args?.dest || '0',
+          } as Distribution)
+      )
     )
   }
 })

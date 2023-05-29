@@ -45,7 +45,7 @@ const RTokenGovernanceUpdater = () => {
   const setTokenManagers = useSetAtom(rTokenManagersAtom)
   const setGuardians = useSetAtom(rTokenGuardiansAtom)
   const timelockContract = useTimelockContract(
-    governance?.timelock || '',
+    governance?.timelock || undefined,
     false
   )
 
@@ -83,6 +83,7 @@ const RTokenGovernanceUpdater = () => {
           }
         }
 
+        // TODO: get from theGraph
         setGuardians(Object.keys(guardians).filter((key) => !!guardians[key]))
         setGovernance({ ...governance, executionDelay: minDelay.toString() })
       } catch (e) {

@@ -39,9 +39,9 @@ const ContractsInfo = (props: BoxProps) => {
           key={label}
           title={label}
           subtitle={shortenAddress(
-            contracts ? contracts[prop].address ?? '' : 'Loading...'
+            contracts ? contracts[prop]?.address ?? '' : 'Loading...'
           )}
-          address={contracts ? contracts[prop].address : 'Loading...'}
+          address={contracts ? contracts[prop]?.address : 'Loading...'}
           mt={index ? 3 : 0}
         />
       ))}

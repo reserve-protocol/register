@@ -187,21 +187,23 @@ const auctionsOverview = loadable(
     } | null> => {
       const { provider, chainId } = get(getValidWeb3Atom)
       const contracts = get(rTokenContractsAtom)
-      const assetMap = get(rTokenAssetERC20MapAtom)
       const assets = get(rTokenAssetsAtom)
       const rToken = get(rTokenAtom)
       const session = get(auctionSessionAtom)
 
-      if (
-        !provider ||
-        !contracts ||
-        !rToken ||
-        !assets ||
-        !Object.keys(assets).length ||
-        !session
-      ) {
+      console.log('que fa;ta?', {
+        provider,
+        contracts,
+        rToken,
+        assets,
+        session,
+      })
+
+      if (!provider || !contracts || !rToken || !assets || !session) {
         return null
       }
+
+      console.log('fetching')
 
       const contract = getContract(
         FACADE_ACT_ADDRESS[chainId],
@@ -219,7 +221,7 @@ const auctionsOverview = loadable(
         ])
 
       const auctions = rsrRevenueOverview.erc20s.reduce((acc, erc20, index) => {
-        const asset = assets[assetMap[erc20]]
+        const asset = assets[erc20]
         const rsrTradeAmount = formatUnits(
           rsrRevenueOverview.surpluses[index],
           asset.token.decimals
@@ -232,7 +234,7 @@ const auctionsOverview = loadable(
         if (asset.token.address !== RSR_ADDRESS[chainId]) {
           acc[rsrRevenueOverview.canStart[index] ? 'unshift' : 'push']({
             sell: asset.token,
-            buy: assets[assetMap[RSR_ADDRESS[chainId]]].token,
+            buy: assets[RSR_ADDRESS[chainId]].token,
             amount: rsrTradeAmount,
             minAmount: formatUnits(
               rsrRevenueOverview.minTradeAmounts[index],
@@ -242,15 +244,14 @@ const auctionsOverview = loadable(
             canStart: rsrRevenueOverview.canStart[index],
             output:
               +rsrTradeAmount /
-              (assets[assetMap[RSR_ADDRESS[chainId]]].priceUsd /
-                asset.priceUsd),
+              (assets[RSR_ADDRESS[chainId]].priceUsd / asset.priceUsd),
           })
         }
 
         if (asset.token.address !== rToken.address) {
           acc[rTokenRevenueOverview.canStart[index] ? 'unshift' : 'push']({
             sell: asset.token,
-            buy: assets[assetMap[rToken.address]].token,
+            buy: assets[rToken.address].token,
             amount: rTokenTradeAmount,
             minAmount: formatUnits(
               rTokenRevenueOverview.minTradeAmounts[index],
@@ -260,7 +261,7 @@ const auctionsOverview = loadable(
             canStart: rTokenRevenueOverview.canStart[index],
             output:
               +rTokenTradeAmount /
-              (assets[assetMap[rToken.address]].priceUsd / asset.priceUsd),
+              (assets[rToken.address].priceUsd / asset.priceUsd),
           })
         }
 
@@ -270,8 +271,8 @@ const auctionsOverview = loadable(
       let recollaterizationAuction = null
 
       if (recoAuction.canStart) {
-        const sell = assets[assetMap[recoAuction.sell]]
-        const buy = assets[assetMap[recoAuction.buy]]
+        const sell = assets[recoAuction.sell]
+        const buy = assets[recoAuction.buy]
         const amount = formatUnits(recoAuction.sellAmount, sell.token.decimals)
 
         recollaterizationAuction = {
