@@ -163,6 +163,7 @@ export const approvalNeededAtom = loadable(
     const token = get(selectedZapTokenAtom)
     const user = get(zapSender)
     const universe = get(resolvedZapState)
+    const input = get(parsedUserInput)
     get(approvalRandomId)
 
     let approvalNeeded = false
@@ -174,7 +175,8 @@ export const approvalNeededAtom = loadable(
         !(await universe.approvalStore.needsApproval(
           token,
           user,
-          base.Address.from(PERMIT2_ADDRESS)
+          base.Address.from(PERMIT2_ADDRESS),
+          input.amount === 0n ? 2n ** 64n : input.amount
         ))
       ) {
         spender = base.Address.from(PERMIT2_ADDRESS)
@@ -184,7 +186,8 @@ export const approvalNeededAtom = loadable(
         approvalNeeded = await universe.approvalStore.needsApproval(
           token,
           user,
-          base.Address.from(universe.config.addresses.zapperAddress)
+          base.Address.from(universe.config.addresses.zapperAddress),
+          input.amount === 0n ? 2n ** 64n : input.amount
         )
       }
     }
