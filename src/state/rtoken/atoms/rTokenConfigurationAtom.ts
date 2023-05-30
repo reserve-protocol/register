@@ -14,6 +14,7 @@ import rTokenAssetsAtom from './rTokenAssetsAtom'
 import rTokenContractsAtom from './rTokenContractsAtom'
 import { VERSION } from 'utils/constants'
 import { formatEther } from 'ethers/lib/utils'
+import { StringMap } from 'types'
 
 const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
   const contracts = get(rTokenContractsAtom)
@@ -156,7 +157,7 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
     maxTrade: assets[contracts.token.address]?.maxTradeVolume ?? '0',
     longFreeze: longFreeze.toString(),
     shortFreeze: shortFreeze.toString(),
-  }
+  } as StringMap
 })
 
 export default rTokenConfigurationAtom

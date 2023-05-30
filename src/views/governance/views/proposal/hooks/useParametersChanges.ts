@@ -1,7 +1,7 @@
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
-import { rTokenParamsAtom } from 'state/atoms'
+import { rTokenConfigurationAtom } from 'state/atoms'
 import { StringMap } from 'types'
 
 export interface ParameterChange {
@@ -19,10 +19,10 @@ const useParametersChanges = (): ParameterChange[] => {
     formState: { isDirty },
   } = useFormContext()
   const formFields = useWatch()
-  const currentParameters = useAtomValue(rTokenParamsAtom) as StringMap
+  const currentParameters = useAtomValue(rTokenConfigurationAtom)
 
   return useMemo(() => {
-    if (!isDirty) {
+    if (!isDirty || !currentParameters) {
       return []
     }
 

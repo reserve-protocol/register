@@ -2,7 +2,7 @@ import { t, Trans } from '@lingui/macro'
 import { InfoItem } from 'components/info-box'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
-import { rTokenParamsAtom } from 'state/atoms'
+import { rTokenConfigurationAtom } from 'state/atoms'
 import { Card, Text, Divider } from 'theme-ui'
 import { formatCurrency, parseDuration } from 'utils'
 
@@ -11,7 +11,7 @@ import { formatCurrency, parseDuration } from 'utils'
  */
 const OtherInfo = () => {
   const rToken = useRToken()
-  const params = useAtomValue(rTokenParamsAtom)
+  const params = useAtomValue(rTokenConfigurationAtom)
 
   return (
     <Card p={4}>
@@ -21,32 +21,36 @@ const OtherInfo = () => {
       <Divider mx={-4} my={4} sx={{ borderColor: 'darkBorder' }} />
       <InfoItem
         title={t`Short freeze duration`}
-        subtitle={parseDuration(+params.shortFreeze || 0)}
+        subtitle={parseDuration(+params?.shortFreeze || 0)}
         mb={3}
       />
       <InfoItem
         title={t`Long freeze duration`}
-        subtitle={parseDuration(+params.longFreeze || 0)}
+        subtitle={parseDuration(+params?.longFreeze || 0)}
         mb={3}
       />
       <InfoItem
         title={t`Unstaking Delay`}
-        subtitle={parseDuration(+params.unstakingDelay || 0)}
+        subtitle={parseDuration(+params?.unstakingDelay || 0)}
         mb={3}
       />
       <InfoItem
         title={t`Reward ratio`}
-        subtitle={params.rewardRatio + '%'}
+        subtitle={params?.rewardRatio ?? '0' + '%'}
         mb={3}
       />
       <InfoItem
         title={t`Minimum trade volume`}
-        subtitle={`$${formatCurrency(+params.minTrade)}`}
+        subtitle={params ? `$${formatCurrency(+params.minTrade)}` : 'Loading'}
         mb={3}
       />
       <InfoItem
         title={t`RToken Maximum trade volume`}
-        subtitle={`${formatCurrency(+params.minTrade)} ${rToken?.symbol}`}
+        subtitle={
+          params
+            ? `${formatCurrency(+params.minTrade)} ${rToken?.symbol}`
+            : 'Loading'
+        }
       />
     </Card>
   )

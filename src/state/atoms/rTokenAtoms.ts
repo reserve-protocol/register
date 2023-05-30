@@ -38,23 +38,6 @@ export const rTokenBasketStatusAtom = atom((get) => {
 
 export const basketNonceAtom = atom(0)
 
-export const rTokenParamsAtom = atomWithReset({
-  tradingDelay: '',
-  backingBuffer: '',
-  maxTradeSlippage: '',
-  minTrade: '',
-  rewardRatio: '',
-  unstakingDelay: '',
-  auctionLength: '',
-  issuanceThrottleAmount: '',
-  issuanceThrottleRate: '',
-  redemptionThrottleAmount: '',
-  redemptionThrottleRate: '',
-  shortFreeze: '',
-  longFreeze: '',
-  maxTrade: '',
-})
-
 export const rTokenGovernanceAtom = atomWithReset<{
   name: string
   governor: string

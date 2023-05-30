@@ -2,7 +2,7 @@ import { t, Trans } from '@lingui/macro'
 import { InfoItem } from 'components/info-box'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
-import { rTokenParamsAtom } from 'state/atoms'
+import { rTokenConfigurationAtom } from 'state/atoms'
 import { Card, Text, Divider } from 'theme-ui'
 import { formatCurrency, formatPercentage, parseDuration } from 'utils'
 
@@ -11,7 +11,9 @@ import { formatCurrency, formatPercentage, parseDuration } from 'utils'
  */
 const BackingInfo = () => {
   const rToken = useRToken()
-  const params = useAtomValue(rTokenParamsAtom)
+  const params = useAtomValue(rTokenConfigurationAtom)
+
+  const placeholder = 'Loading...'
 
   return (
     <Card p={4}>
@@ -21,46 +23,64 @@ const BackingInfo = () => {
       <Divider mx={-4} my={4} sx={{ borderColor: 'darkBorder' }} />
       <InfoItem
         title={t`Trading delay`}
-        subtitle={parseDuration(+params.tradingDelay)}
+        subtitle={params ? parseDuration(+params.tradingDelay) : placeholder}
         mb={3}
       />
       <InfoItem
         title={t`Auction length`}
-        subtitle={parseDuration(+params.auctionLength)}
+        subtitle={params ? parseDuration(+params.auctionLength) : placeholder}
         mb={3}
       />
       <InfoItem
         title={t`Backing buffer`}
-        subtitle={formatPercentage(+params.backingBuffer)}
+        subtitle={
+          params ? formatPercentage(+params.backingBuffer) : placeholder
+        }
         mb={3}
       />
       <InfoItem
         title={t`Max trade slippage`}
-        subtitle={formatPercentage(+params.maxTradeSlippage)}
+        subtitle={
+          params ? formatPercentage(+params.maxTradeSlippage) : placeholder
+        }
         mb={3}
       />
       <InfoItem
         title={t`Issuance throttle rate`}
-        subtitle={formatPercentage(+params.issuanceThrottleRate)}
+        subtitle={
+          params ? formatPercentage(+params.issuanceThrottleRate) : placeholder
+        }
         mb={3}
       />
       <InfoItem
         title={t`Issuance throttle amount`}
-        subtitle={`${formatCurrency(+params.issuanceThrottleAmount)} ${
-          rToken?.symbol
-        }`}
+        subtitle={
+          params
+            ? `${formatCurrency(+params.issuanceThrottleAmount)} ${
+                rToken?.symbol
+              }`
+            : placeholder
+        }
         mb={3}
       />
       <InfoItem
         title={t`Redemption throttle rate`}
-        subtitle={formatPercentage(+params.redemptionThrottleRate)}
+        subtitle={
+          params
+            ? formatPercentage(+params.redemptionThrottleRate)
+            : placeholder
+        }
         mb={3}
       />
       <InfoItem
         title={t`Redemption throttle amount`}
-        subtitle={`${formatCurrency(+params.redemptionThrottleAmount)} ${
-          rToken?.symbol
-        }`}
+        subtitle={
+          params
+            ? `${formatCurrency(+params.redemptionThrottleAmount)} ${
+                rToken?.symbol
+              }`
+            : placeholder
+        }
         mb={3}
       />
     </Card>

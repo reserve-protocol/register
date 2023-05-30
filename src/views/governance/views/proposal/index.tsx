@@ -3,7 +3,7 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { rTokenParamsAtom } from 'state/atoms'
+import { rTokenConfigurationAtom } from 'state/atoms'
 import {
   isNewBasketProposedAtom,
   isProposalEditingAtom,
@@ -16,7 +16,7 @@ import Proposal from './components/Proposal'
 import Updater from './updater'
 
 const GovernanceProposal = () => {
-  const tokenParameters = useAtomValue(rTokenParamsAtom)
+  const tokenParameters = useAtomValue(rTokenConfigurationAtom) || {}
   const [isEditing, setEditing] = useAtom(isProposalEditingAtom)
 
   const form = useForm({

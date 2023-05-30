@@ -5,8 +5,8 @@ import {
   estimatedApyAtom,
   rsrExchangeRateAtom,
   rTokenAtom,
+  rTokenConfigurationAtom,
   rTokenDistributionAtom,
-  rTokenParamsAtom,
   rTokenYieldAtom,
 } from 'state/atoms'
 import { Box, BoxProps, Flex, Grid, Image, Text } from 'theme-ui'
@@ -32,7 +32,7 @@ const Stats = (props: BoxProps) => {
   const { stakers } = useAtomValue(estimatedApyAtom)
   const distribution = useAtomValue(rTokenDistributionAtom)
   const { stakingApy } = useAtomValue(rTokenYieldAtom)
-  const { unstakingDelay } = useAtomValue(rTokenParamsAtom)
+  const params = useAtomValue(rTokenConfigurationAtom)
 
   return (
     <Box {...props} variant="layout.borderBox" p={0}>
@@ -86,7 +86,7 @@ const Stats = (props: BoxProps) => {
           <IconInfo
             icon={<Image src="/svgs/backing.svg" />}
             title={t`Current`}
-            text={parseDuration(+unstakingDelay || 0)}
+            text={parseDuration(+params?.unstakingDelay || 0)}
           />
         </Box>
         <Box p={4} sx={{ borderBottom: '1px solid', borderColor: 'border' }}>

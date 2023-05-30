@@ -14,11 +14,9 @@ import { useFormContext } from 'react-hook-form'
 import {
   rTokenBackupAtom,
   rTokenBasketAtom,
-  rTokenParamsAtom,
   rTokenRevenueSplitAtom,
 } from 'state/atoms'
 import { truncateDecimals } from 'utils'
-import plugins, { pluginAddresses } from 'utils/plugins'
 import {
   backupChangesAtom,
   basketChangesAtom,
@@ -48,7 +46,6 @@ export const RTokenDataUpdater = () => {
   const basket = useAtomValue(rTokenBasketAtom)
   const backup = useAtomValue(rTokenBackupAtom)
   const revenueSplit = useAtomValue(rTokenRevenueSplitAtom)
-  const tokenParameters = useAtomValue(rTokenParamsAtom)
 
   useEffect(() => {
     return () => {
@@ -90,11 +87,6 @@ export const RTokenDataUpdater = () => {
       setSetupRevenueSplit(revenueSplit)
     }
   }, [JSON.stringify(revenueSplit)])
-
-  useEffect(() => {
-    // Delay reset to end of render
-    setTimeout(() => reset(tokenParameters), 10)
-  }, [tokenParameters])
 
   return null
 }
