@@ -24,6 +24,8 @@ const RTokenBasketUpdater = () => {
   const setBackupBasket = useSetAtom(rTokenBackupAtom)
   const { provider } = useWeb3React()
 
+  console.log('dist', basketDistribution)
+
   const setBackupConfig = useCallback(
     async (
       rTokenAddress: string,

@@ -72,6 +72,8 @@ const RTokenStateUpdater = () => {
   ) || { value: [0], error: null }
   const basketNonce = value ? value[0] : 0
 
+  console.log('basket nonce', basketNonce)
+
   // TODO: Finish
   const getTokenStatus = useCallback(
     async (mainAddress: string, provider: Web3Provider) => {
@@ -158,6 +160,8 @@ const RTokenStateUpdater = () => {
           ],
           provider
         )
+
+        console.log('erc20s', overCollateralization)
 
         setDistribution({
           backing: Math.min(100, Math.ceil(Number(formatEther(backing)) * 100)),
