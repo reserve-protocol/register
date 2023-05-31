@@ -73,6 +73,7 @@ const RevenueAuctionItem = ({
               icon={
                 <TokenLogo
                   symbol={data.buy.symbol}
+                  width={20}
                   src={data.buy.symbol === 'RSR' ? undefined : rToken?.logo}
                 />
               }

@@ -30,11 +30,7 @@ const RevenueAuctionList = () => {
   }, [])
 
   return (
-    <Box
-      variant="layout.card"
-      p={4}
-      mb={4}
-    >
+    <Box variant="layout.card" p={4} mb={4}>
       <Box variant="layout.verticalAlign" mb={4}>
         <Text variant="subtitle">
           <Trans>Revenue auctions</Trans>
