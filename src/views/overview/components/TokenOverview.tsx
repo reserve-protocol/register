@@ -26,50 +26,64 @@ const TokenOverview = ({ metrics, ...props }: Props) => {
       ) : undefined}
 
       <Flex sx={{ flexDirection: 'column' }}>
-        <Flex sx={{ alignItems: 'center' }}>
-          <Image src={rToken?.logo} sx={{ width: 40, height: 40 }} />
-          <Flex ml={3} sx={{ flexDirection: 'column' }}>
-            <Text variant="legend" sx={{ fontWeight: 300 }}>
+        <Flex
+          sx={{
+            alignItems: ['left', 'center'],
+            flexDirection: ['column', 'row'],
+          }}
+        >
+          <Image
+            src={rToken?.logo}
+            sx={{ width: 52, display: ['none', 'block'] }}
+          />
+          <Flex ml={[0, 4]} mt={[3, 2]} sx={{ flexDirection: 'column' }}>
+            <Text variant="title" sx={{ fontWeight: 300, color: 'lightText' }}>
               <Trans>Market cap</Trans>
             </Text>{' '}
-            <Text sx={{ fontWeight: '500', fontSize: 5 }}>
+            <Text sx={{ fontWeight: 'medium', fontSize: 6 }}>
               {metrics.supplyUsd}
             </Text>
           </Flex>
         </Flex>
         {!rToken?.isRSV && (
-          <Flex mt={5} mb={-3} sx={{ flexWrap: 'wrap' }}>
-            <InfoHeading
-              title={t`RSR Staked Pool`}
-              subtitle={metrics.stakedUsd}
-              mr={5}
-            />
-            <InfoHeading
-              mb={3}
-              mr={5}
-              help={t`Historic RToken yield, this will be 0% until enough on-chain events ocurred.`}
-              title={t`RToken Yield`}
-              subtitle={`${tokenApy}%`}
-            />
-            <InfoHeading
-              mb={3}
-              mr={5}
-              title={t`Est. RToken Yield`}
-              help={t`Manually estimated APY, calculated base on the RToken basket averaged yield with regards of the total RToken market cap and revenue distribution to holders.`}
-              subtitle={`${formatPercentage(holders || 0)}`}
-            />
-            <InfoHeading
-              title={t`stRSR Yield`}
-              mr={5}
-              help={t`Historic stRSR yield, this will be 0% until enough on-chain events ocurred. Calculated in base of the exchange rate between RSR <> stRSR historic changes`}
-              subtitle={`${stakingApy}%`}
-            />
-            <InfoHeading
-              title={t`Est. stRSR Yield`}
-              mr={5}
-              subtitle={`${formatPercentage(stakers || 0)}`}
-              help={t`Manually estimated APY, calculated base on the RToken basket averaged yield with regards of the total RToken market cap and revenue distribution to stakers. Calculation = [avgCollateralYield * rTokenMarketCap / rsrStaked]`}
-            />
+          <Flex
+            mt={[3, 5]}
+            mb={-3}
+            sx={{ flexWrap: 'wrap', verticalAlign: 'top' }}
+          >
+            <Box mr={8}>
+              <InfoHeading
+                title={t`RSR Staked Pool`}
+                subtitle={metrics.stakedUsd}
+                mb={[3, 4]}
+              />
+              <InfoHeading
+                title={t`Est. stRSR Yield`}
+                subtitle={`${formatPercentage(stakers || 0)}`}
+                help={t`Manually estimated APY, calculated base on the RToken basket averaged yield with regards of the total RToken market cap and revenue distribution to stakers. Calculation = [avgCollateralYield * rTokenMarketCap / rsrStaked]`}
+                mb={4}
+              />
+              <InfoHeading
+                title={t`stRSR Yield`}
+                help={t`Historic stRSR yield, this will be 0% until enough on-chain events ocurred. Calculated in base of the exchange rate between RSR <> stRSR historic changes`}
+                subtitle={`${stakingApy}%`}
+                mb={[3, 4]}
+              />
+            </Box>
+            <Box>
+              <InfoHeading
+                title={t`Est. RToken Yield`}
+                help={t`Manually estimated APY, calculated base on the RToken basket averaged yield with regards of the total RToken market cap and revenue distribution to holders.`}
+                subtitle={`${formatPercentage(holders || 0)}`}
+                mb={[3, 4]}
+              />
+              <InfoHeading
+                help={t`Historic RToken yield, this will be 0% until enough on-chain events ocurred.`}
+                title={t`RToken Yield`}
+                subtitle={`${tokenApy}%`}
+                mb={[3, 4]}
+              />
+            </Box>
           </Flex>
         )}
       </Flex>
