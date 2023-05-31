@@ -31,7 +31,7 @@ const CollateralChart = ({
         position: 'absolute',
       }}
     >
-      <TokenLogo size={24} src={logo} />
+      <TokenLogo width={24} src={logo} />
     </Box>
     <ResponsiveContainer height={200}>
       <PieChart>

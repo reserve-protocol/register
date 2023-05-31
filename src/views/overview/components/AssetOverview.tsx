@@ -131,7 +131,7 @@ const AssetOverview = () => {
                 alignItems: 'center',
               }}
             >
-              <TokenLogo symbol={c.symbol} mr={3} />
+              <TokenLogo width={20} symbol={c.symbol} mr={3} />
               <Box>
                 <Text variant="legend" sx={{ fontSize: 1, display: 'block' }}>
                   {basketDist[c.address]?.targetUnit}

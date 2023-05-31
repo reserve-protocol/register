@@ -21,7 +21,7 @@ const TokenBalance = ({
   <IconInfo
     title={title || symbol}
     text={`${usd ? '$' : ''}${formatCurrency(balance || 0, 6)}`}
-    icon={icon || <TokenLogo src={logoSrc} symbol={symbol} />}
+    icon={icon || <TokenLogo width={20} src={logoSrc} symbol={symbol} />}
     {...props}
   />
 )
