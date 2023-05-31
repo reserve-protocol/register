@@ -1,10 +1,30 @@
 import { t, Trans } from '@lingui/macro'
 import { useEffect, useMemo, useState } from 'react'
-import { Box, BoxProps, Button, Divider, Flex, Progress, Text } from 'theme-ui'
+import {
+  Box,
+  ThemeProvider,
+  BoxProps,
+  Button,
+  Divider,
+  Flex,
+  Progress,
+  Text,
+} from 'theme-ui'
 import DeployIntroIcon from 'components/icons/DeployIntroIcon'
 
 interface Props extends BoxProps {
   onDismiss(): void
+}
+
+const theme = {
+  styles: {
+    progressBar: {
+      color: 'primary', // color of the progress bar
+      bg: 'secondary', // background color of the progress bar
+      height: '3px',
+      borderRadius: 'none',
+    },
+  },
 }
 
 // Load bar for every "second"
@@ -37,7 +57,15 @@ const TimeLoading = ({
     setCount(0)
   }, [active])
 
-  return <Progress max={seconds * 10} value={count} />
+  return (
+    <ThemeProvider theme={theme}>
+      <Progress
+        max={seconds * 10}
+        value={count}
+        sx={{ variant: 'styles.progressBar', borderRadius: 0 }}
+      />
+    </ThemeProvider>
+  )
 }
 
 const Greet = ({ onDismiss, ...props }: Props) => {
@@ -75,10 +103,10 @@ const Greet = ({ onDismiss, ...props }: Props) => {
 
   return (
     <>
-      <Flex {...props} mt={8} pt={[0, 4]} mb={0}>
-        <Box ml={3} pr={3}>
+      <Flex {...props} pt={0} mb={0} px={{ justifyContent: 'flex-end' }}>
+        <Box ml={3} mt={'auto'} pr={3}>
           <DeployIntroIcon />
-          <Text variant="title" my={2} sx={{ fontSize: 5 }}>
+          <Text variant="pageTitle" my={2}>
             <Trans>The RToken Register</Trans>
           </Text>
           <Text as="p" variant="legend" sx={{ maxWidth: 520 }}>
@@ -109,18 +137,20 @@ const Greet = ({ onDismiss, ...props }: Props) => {
         <Flex
           sx={{
             paddingLeft: 7,
-            marginTop: 'auto',
+            marginTop: 'none',
             borderLeft: '1px solid',
             borderColor: 'darkBorder',
             display: ['none', 'flex'],
+            height: '340px',
+            justifyContent: 'flex-end',
           }}
           ml="auto"
         >
-          <Box sx={{ width: 400 }}>
-            <Text>
+          <Box mt={'auto'} sx={{ width: 400 }}>
+            <Text sx={{ color: 'text' }}>
               <Trans>Select an RToken to:</Trans>
             </Text>
-            <Flex mt={2} sx={{ alignItems: 'center' }}>
+            <Flex mt={3} sx={{ alignItems: 'center' }}>
               {steps.map(({ title }, index: number) => (
                 <Text
                   onClick={() => setActive(index)}
@@ -139,13 +169,13 @@ const Greet = ({ onDismiss, ...props }: Props) => {
             <Box my={3}>
               <TimeLoading active={active} onComplete={handleActive} />
             </Box>
-            <Text variant="legend" mt={3}>
+            <Text variant="legend" mt={3} sx={{ color: 'text' }}>
               {steps[active].text}
             </Text>
           </Box>
         </Flex>
       </Flex>
-      <Divider my={[5, 7]} mx={[-1, -5]} sx={{ borderColor: 'darkBorder' }} />
+      <Divider my={[5, 8]} mx={[-1, -5]} sx={{ borderColor: 'darkBorder' }} />
     </>
   )
 }
