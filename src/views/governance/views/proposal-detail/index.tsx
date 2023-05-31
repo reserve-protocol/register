@@ -109,39 +109,47 @@ const GovernanceProposalDetail = () => {
   }, [account, provider, chainId, !!blockNumber && JSON.stringify(proposal)])
 
   return (
-    <Grid
-      columns={[1, 1, 1, '2fr 1.5fr']}
-      gap={[3, 5]}
-      padding={[1, 5]}
-      sx={{
-        height: '100%',
-        position: 'relative',
-        alignContent: 'flex-start',
-        alignItems: 'flex-start',
-        overflowY: 'auto',
-      }}
-    >
-      <Box>
-        <Box variant="layout.verticalAlign" mb={4}>
-          <SmallButton variant="muted" onClick={handleBack}>
-            <Box variant="layout.verticalAlign">
-              <ArrowLeft size={14} style={{ marginRight: 10 }} />
-              <Trans>Back</Trans>
-            </Box>
-          </SmallButton>
-          <ProposalAlert />
-          {state === PROPOSAL_STATES.SUCCEEDED && <ProposalQueue />}
-          {state === PROPOSAL_STATES.QUEUED && <ProposalExecute />}
+    <Box>
+      <Box
+        variant="layout.verticalAlign"
+        sx={{ justifyContent: 'space-between' }}
+        mt={6}
+        mb={5}
+        px={[1, 7]}
+      >
+        <SmallButton variant="transparent" onClick={handleBack}>
+          <Box variant="layout.verticalAlign">
+            <ArrowLeft size={14} style={{ marginRight: 10 }} />
+            <Trans>Back to governance</Trans>
+          </Box>
+        </SmallButton>
+        <ProposalAlert />
+        {state === PROPOSAL_STATES.SUCCEEDED && <ProposalQueue />}
+        {state === PROPOSAL_STATES.QUEUED && <ProposalExecute />}
+      </Box>
+      <Grid
+        columns={[1, 1, 1, '2fr 1.5fr']}
+        gap={[3, 5]}
+        px={[1, 5]}
+        sx={{
+          height: '100%',
+          position: 'relative',
+          alignContent: 'flex-start',
+          alignItems: 'flex-start',
+          overflowY: 'auto',
+        }}
+      >
+        <Box>
+          <ProposalDetailContent />
         </Box>
-        <ProposalDetailContent />
-      </Box>
-      <Box>
-        {(state === PROPOSAL_STATES.PENDING ||
-          state === PROPOSAL_STATES.ACTIVE) && <ProposalVote />}
-        <ProposalDetailStats />
-        <ProposalVotes />
-      </Box>
-    </Grid>
+        <Box>
+          {(state === PROPOSAL_STATES.PENDING ||
+            state === PROPOSAL_STATES.ACTIVE) && <ProposalVote />}
+          <ProposalDetailStats />
+          <ProposalVotes />
+        </Box>
+      </Grid>
+    </Box>
   )
 }
 
