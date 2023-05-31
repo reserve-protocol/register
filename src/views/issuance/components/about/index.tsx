@@ -14,7 +14,7 @@ const About = () => {
     <Box sx={{ height: 'fit-content' }}>
       <Box variant="layout.borderBox" p={4}>
         <Text variant="strong" mb={2}>
-          <Trans>How does this work? </Trans>
+          <Trans>Regular minting </Trans>
         </Text>
         <Text as="p" variant="legend">
           <Trans>
@@ -33,11 +33,15 @@ const About = () => {
           but has a new interface for price and appreciation tracking.
         </Text>
         <Flex mt={3}>
-          <SmallButton variant="muted" mr={3} onClick={() => setWrapping(1)}>
-            <Trans>Wrap tokens</Trans>
+          <SmallButton
+            variant="transparent"
+            mr={3}
+            onClick={() => setWrapping(1)}
+          >
+            <Trans>Wrap AAVE tokens</Trans>
           </SmallButton>
-          <SmallButton variant="muted" onClick={() => setWrapping(2)}>
-            <Trans>Unwrap tokens</Trans>
+          <SmallButton variant="transparent" onClick={() => setWrapping(2)}>
+            <Trans>Unwrap AAVE tokens</Trans>
           </SmallButton>
         </Flex>
 
@@ -46,11 +50,11 @@ const About = () => {
         </Text>
         <Flex mt={3}>
           <SmallButton
-            variant="muted"
+            variant="transparent"
             mr={3}
             onClick={() => setIsConvexWrapping(true)}
           >
-            <Trans>Wrap/unwrap tokens</Trans>
+            <Trans>Wrap/unwrap Convex LP tokens</Trans>
           </SmallButton>
         </Flex>
       </Box>

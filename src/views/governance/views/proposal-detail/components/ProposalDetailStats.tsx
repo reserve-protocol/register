@@ -28,7 +28,7 @@ const ProposalDetailStats = () => {
   }, [proposal])
 
   return (
-    <Box variant="layout.borderBox" mt={4} p={0}>
+    <Box variant="layout.borderBox" p={0}>
       <Grid gap={0} columns={2}>
         <Box
           p={4}
@@ -60,12 +60,12 @@ const ProposalDetailStats = () => {
 
                 <Progress
                   max={1}
-                  mt={1}
+                  mt={2}
                   sx={{
                     width: '100%',
                     color: 'success',
                     backgroundColor: 'red',
-                    height: 10,
+                    height: 4,
                   }}
                   value={quorumWeight}
                 />

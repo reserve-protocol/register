@@ -11,7 +11,7 @@ const FinalizedAuctions = (props: BoxProps) => {
 
   return (
     <Box {...props}>
-      <Text variant="strong" ml={3} mb={4}>
+      <Text variant="strong" ml={4} mb={4}>
         <Trans>Ended auctions</Trans>
       </Text>
       {data.length ? (
@@ -20,7 +20,7 @@ const FinalizedAuctions = (props: BoxProps) => {
         <Box
           sx={{
             border: '1px dashed',
-            borderColor: 'darkBorder',
+            borderColor: 'border',
             textAlign: 'center',
             borderRadius: 16,
           }}

@@ -31,9 +31,8 @@ const RevenueAuctionList = () => {
 
   return (
     <Box
-      variant="layout.borderBox"
+      variant="layout.card"
       p={4}
-      sx={{ backgroundColor: 'contentBackground' }}
       mb={4}
     >
       <Box variant="layout.verticalAlign" mb={4}>
