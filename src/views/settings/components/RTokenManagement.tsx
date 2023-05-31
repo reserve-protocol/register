@@ -51,7 +51,7 @@ const RTokenManagement = () => {
   return (
     <Container>
       <Flex sx={{ alignItems: 'center' }}>
-        <Text variant="sectionTitle">
+        <Text variant="title">
           <Trans>Actions</Trans>
         </Text>
         <DocsLink link="https://reserve.org/" />
