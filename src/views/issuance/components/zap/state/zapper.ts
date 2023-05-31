@@ -32,7 +32,6 @@ export const zapperState = loadable(
     if (provider == null) {
       return null
     }
-
     const universe = await Universe.createWithConfig(
       provider,
       {
@@ -48,23 +47,28 @@ export const zapperState = loadable(
       await provider.getNetwork()
     )
 
-    if (ONE_INCH_PROXIES.length !== 0) {
-      universe.dexAggregators.push(
-        createProxiedOneInchAggregator(universe, ONE_INCH_PROXIES)
-      )
-    }
-
     for (const deploymentMainContractAddress of rTokenDeploymentAddresses) {
       await universe.defineRToken(
         base.Address.from(deploymentMainContractAddress)
       )
     }
 
-    void Promise.all([provider.getGasPrice(), provider.getBlockNumber()]).then(
-      ([gasPrice, blockNumber]) => {
-        universe.updateBlockState(blockNumber, gasPrice.toBigInt())
+    try {
+      if (ONE_INCH_PROXIES.length !== 0) {
+        universe.dexAggregators.push(
+          createProxiedOneInchAggregator(universe, ONE_INCH_PROXIES)
+        )
       }
-    )
+
+      void Promise.all([
+        provider.getGasPrice(),
+        provider.getBlockNumber(),
+      ]).then(([gasPrice, blockNumber]) => {
+        universe.updateBlockState(blockNumber, gasPrice.toBigInt())
+      })
+    } catch (e) {
+      console.log(e)
+    }
 
     return universe
   })
