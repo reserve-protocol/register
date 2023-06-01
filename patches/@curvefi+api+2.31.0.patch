@@ -1,0 +1,26 @@
+diff --git a/node_modules/@curvefi/api/lib/pools/poolConstructor.js b/node_modules/@curvefi/api/lib/pools/poolConstructor.js
+index f97c1ed..a9ba580 100644
+--- a/node_modules/@curvefi/api/lib/pools/poolConstructor.js
++++ b/node_modules/@curvefi/api/lib/pools/poolConstructor.js
+@@ -33,7 +33,11 @@ var withdrawOneCoinWrappedExpectedMixins_1 = require("./mixins/withdrawOneCoinWr
+ var withdrawOneCoinWrappedMixins_1 = require("./mixins/withdrawOneCoinWrappedMixins");
+ var swapMixins_1 = require("./mixins/swapMixins");
+ var swapWrappedMixins_1 = require("./mixins/swapWrappedMixins");
++var cache = {}
+ var getPool = function (poolId) {
++    if (cache[poolId]) {
++        return cache[poolId]
++    }
+     var poolDummy = new PoolTemplate_1.PoolTemplate(poolId);
+     var Pool = /** @class */ (function (_super) {
+         __extends(Pool, _super);
+@@ -230,6 +234,8 @@ var getPool = function (poolId) {
+             Object.assign(Pool.prototype, swapWrappedMixins_1.swapWrappedMixin);
+         }
+     }
+-    return new Pool(poolId);
++    const pool = new Pool(poolId)
++    cache[poolId] = pool
++    return pool;
+ };
+ exports.getPool = getPool;
