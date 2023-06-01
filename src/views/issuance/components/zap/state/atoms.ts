@@ -4,6 +4,7 @@ import {
   entities,
   searcher,
 } from '@reserve-protocol/token-zapper'
+import { IERC20__factory } from '@reserve-protocol/token-zapper/types/contracts'
 import {
   PERMIT2_ADDRESS,
   PermitTransferFrom,
@@ -139,12 +140,15 @@ export const zapQuotePromise = loadable(
     if (input.inputQuantity.amount === 0n) {
       return null
     }
-    return await input.zapSearcher.findSingleInputToRTokenZap(
+    const a = input.zapSearcher.findSingleInputToRTokenZap(
       input.inputQuantity,
       input.rToken,
       input.signer,
       get(tradeSlippage)
     )
+    a.catch((e) => console.log(e.message))
+
+    return await a
   })
 )
 
@@ -172,23 +176,27 @@ export const approvalNeededAtom = loadable(
     if (token !== universe.nativeToken) {
       if (
         get(supportsPermit2Signatures) &&
-        !(await universe.approvalStore.needsApproval(
-          token,
-          user,
-          base.Address.from(PERMIT2_ADDRESS),
-          input.amount === 0n ? 2n ** 64n : input.amount
-        ))
+        !(
+          (input.amount === 0n ? 2n ** 64n : input.amount) >
+          (
+            await contracts.IERC20__factory.connect(
+              token.address.address,
+              universe.provider
+            ).allowance(user.address, PERMIT2_ADDRESS)
+          ).toBigInt()
+        )
       ) {
         spender = base.Address.from(PERMIT2_ADDRESS)
         usingPermit2 = true
         approvalNeeded = false
       } else {
-        approvalNeeded = await universe.approvalStore.needsApproval(
-          token,
-          user,
-          base.Address.from(universe.config.addresses.zapperAddress),
-          input.amount === 0n ? 2n ** 64n : input.amount
-        )
+        const allowance = await contracts.IERC20__factory.connect(
+          token.address.address,
+          universe.provider
+        ).allowance(user.address, spender.address)
+        approvalNeeded =
+          (input.amount === 0n ? 2n ** 64n : input.amount) >
+          allowance.toBigInt()
       }
     }
     const out = {
