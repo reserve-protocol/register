@@ -1,5 +1,4 @@
 import { useWeb3React } from '@web3-react/core'
-import { getAddress } from 'ethers/lib/utils'
 import { gql } from 'graphql-request'
 import { useTimelockContract } from 'hooks/useContract'
 import useQuery from 'hooks/useQuery'

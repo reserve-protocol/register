@@ -9,14 +9,15 @@ import { COLLATERAL_STATUS } from 'utils/constants'
 
 const RTokenStatus = () => {
   const rToken = useRToken()
-  const { paused, frozen } = useAtomValue(rTokenStatusAtom)
+  const { issuancePaused, tradingPaused, frozen } =
+    useAtomValue(rTokenStatusAtom)
   const basketStatus = useAtomValue(rTokenBasketStatusAtom)
 
   if (!rToken || rToken.isRSV) {
     return null
   }
 
-  if (paused || frozen) {
+  if (issuancePaused || tradingPaused || frozen) {
     return (
       <Box
         variant="layout.verticalAlign"

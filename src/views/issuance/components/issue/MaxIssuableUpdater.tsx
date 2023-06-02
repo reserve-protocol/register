@@ -5,8 +5,8 @@ import { useCallback, useEffect } from 'react'
 import {
   balancesAtom,
   chainIdAtom,
-  isRTokenDisabledAtom,
   rTokenAtom,
+  rTokenStatusAtom,
   walletAtom,
 } from 'state/atoms'
 import { BI_ZERO } from 'utils/constants'
@@ -24,7 +24,7 @@ const MaxIssuableUpdater = () => {
   const account = useAtomValue(walletAtom)
   const chainId = useAtomValue(chainIdAtom)
   const facadeContract = useFacadeContract()
-  const isTokenDisabled = useAtomValue(isRTokenDisabledAtom)
+  const { issuancePaused, frozen } = useAtomValue(rTokenStatusAtom)
 
   const updateMaxIssuable = useCallback(
     async (account: string, rTokenAddress: string, facade: Facade) => {
@@ -50,7 +50,13 @@ const MaxIssuableUpdater = () => {
   }, [tokenBalances, rToken?.address, chainId])
 
   useEffect(() => {
-    if (rToken?.main && account && facadeContract && !isTokenDisabled) {
+    if (
+      rToken?.main &&
+      account &&
+      facadeContract &&
+      !issuancePaused &&
+      !frozen
+    ) {
       updateMaxIssuable(account, rToken.address, facadeContract)
     } else if (rToken?.main) {
       setMaxIssuable(BI_ZERO)
@@ -59,7 +65,8 @@ const MaxIssuableUpdater = () => {
     rToken?.address,
     account,
     facadeContract,
-    isRTokenDisabledAtom,
+    issuancePaused,
+    frozen,
     tokenBalances,
   ])
 

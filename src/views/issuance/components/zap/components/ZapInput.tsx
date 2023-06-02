@@ -3,7 +3,7 @@ import TransactionInput, {
   TransactionInputProps,
 } from 'components/transaction-input'
 import { useAtomValue } from 'jotai'
-import { isRTokenDisabledAtom } from 'state/atoms'
+import { rTokenStatusAtom } from 'state/atoms'
 import { Box, Flex, Text } from 'theme-ui'
 import { selectedZapTokenAtom, zapInputString } from '../state/atoms'
 import { ui } from '../state/ui-atoms'
@@ -19,7 +19,7 @@ const ZapOutput = () => (
 
 const ZapInput = (props: Partial<TransactionInputProps>) => {
   const token = useAtomValue(selectedZapTokenAtom)
-  const isDisabled = useAtomValue(isRTokenDisabledAtom)
+  const { issuancePaused, frozen } = useAtomValue(rTokenStatusAtom)
   const zapSymbol = token?.symbol ?? 'ETH'
   const maxAmountString = useAtomValue(ui.input.maxAmount)
   const [loading, hasError] = useAtomValue(ui.zapState)
@@ -32,7 +32,7 @@ const ZapInput = (props: Partial<TransactionInputProps>) => {
           amountAtom={zapInputString}
           title={t`Zap mint`}
           maxAmount={maxAmountString || '0'}
-          disabled={isDisabled || loading || hasError}
+          disabled={issuancePaused || frozen || loading || hasError}
           {...props}
         />
         <Text

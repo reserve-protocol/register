@@ -4,19 +4,19 @@ import TransactionInput, {
 } from 'components/transaction-input'
 import { formatEther } from 'ethers/lib/utils'
 import { useAtomValue } from 'jotai'
-import { isRTokenDisabledAtom } from 'state/atoms'
+import { rTokenStatusAtom } from 'state/atoms'
 import { issueAmountAtom, maxIssuableAtom } from '../../atoms'
 
 const IssueInput = (props: Partial<TransactionInputProps>) => {
   const issuableAmount = useAtomValue(maxIssuableAtom)
-  const isTokenDisabled = useAtomValue(isRTokenDisabledAtom)
+  const { issuancePaused, frozen } = useAtomValue(rTokenStatusAtom)
 
   return (
     <TransactionInput
       placeholder={t`Mint amount`}
       amountAtom={issueAmountAtom}
       maxAmount={formatEther(issuableAmount)}
-      disabled={isTokenDisabled}
+      disabled={issuancePaused || frozen}
       {...props}
     />
   )

@@ -21,7 +21,8 @@ const PauseManager = () => {
   const rToken = useRToken()
   const accountRole = useAtomValue(accountRoleAtom)
   const { pausers } = useAtomValue(rTokenManagersAtom)
-  const { paused: isPaused } = useAtomValue(rTokenStatusAtom)
+  // TODO: 3.0 pausing
+  const { tradingPaused: isPaused } = useAtomValue(rTokenStatusAtom)
   const addTransaction = useSetAtom(addTransactionAtom)
   const pauseActionLabel = isPaused ? t`Unpause` : t`Pause`
   const [txId, setTx] = useState('')

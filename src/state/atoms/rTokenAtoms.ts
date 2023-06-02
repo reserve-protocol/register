@@ -1,20 +1,14 @@
 import { BackupBasket, Basket } from 'components/rtoken-setup/atoms'
 import { atom } from 'jotai'
-import { atomWithReset, atomWithStorage } from 'jotai/utils'
-import rTokenRevenueSplitAtom from 'state/rtoken/atoms/rTokenRevenueSplitAtom'
-import { ReserveToken, Token } from 'types'
-import rTokenAtom from '../rtoken/atoms/rTokenAtom'
+import { atomWithReset } from 'jotai/utils'
 import { rTokenBackingDistributionAtom } from 'state/atoms'
-
-// Store rToken meta into localStorage for fast fetching using cache
-export const reserveTokensAtom = atomWithStorage<{
-  [x: string]: ReserveToken
-}>('reserveTokens', {})
+import rTokenRevenueSplitAtom from 'state/rtoken/atoms/rTokenRevenueSplitAtom'
+import rTokenAtom from '../rtoken/atoms/rTokenAtom'
 
 // TODO: Prices atoms?
 export const rsrPriceAtom = atom(0)
-
 export const rTokenPriceAtom = atom(0)
+
 export const rsrExchangeRateAtom = atom(1)
 export const maxIssuanceAtom = atom(0)
 export const maxRedemptionAtom = atom(0)
@@ -60,16 +54,13 @@ export const rTokenCollaterizedAtom = atom(true)
 export const rTokenYieldAtom = atom({ tokenApy: 0, stakingApy: 0 })
 
 // Current rToken status
+// - `tradingPaused`: all interactions disabled EXCEPT ERC20 functions + RToken.issue + RToken.redeem + StRSR.stake + StRSR.payoutRewards
+// - `issuancePaused`: all interactions enabled EXCEPT RToken.issue
+// - `frozen`: all interactions disabled EXCEPT ERC20 functions + StRSR.stake
 export const rTokenStatusAtom = atomWithReset({
-  paused: false,
+  tradingPaused: false,
   issuancePaused: false,
-  redemptionPaused: false,
   frozen: false,
-})
-export const isRTokenDisabledAtom = atom<boolean>((get) => {
-  const status = get(rTokenStatusAtom)
-
-  return status.paused || status.frozen
 })
 
 // Get rToken main contract, not available for RSV
@@ -146,8 +137,6 @@ export const estimatedApyAtom = atom((get) => {
 
   return apys
 })
-
-// Metrics
 
 export const rTokenMetricsAtom = atom({
   totalValueLockedUSD: '$0',
