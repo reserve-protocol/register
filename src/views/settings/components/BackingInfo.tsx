@@ -27,8 +27,26 @@ const BackingInfo = () => {
         mb={3}
       />
       <InfoItem
+        title={t`Batch auction length`}
+        subtitle={
+          params ? parseDuration(+params.batchAuctionLength) : placeholder
+        }
+        mb={3}
+      />
+      {!!params?.dutchAuctionLength && (
+        <InfoItem
+          title={t`Dutch auction length`}
+          subtitle={
+            params ? parseDuration(+params.dutchAuctionLength) : placeholder
+          }
+          mb={3}
+        />
+      )}
+      <InfoItem
         title={t`Auction length`}
-        subtitle={params ? parseDuration(+params.auctionLength) : placeholder}
+        subtitle={
+          params ? parseDuration(+params.batchAuctionLength) : placeholder
+        }
         mb={3}
       />
       <InfoItem

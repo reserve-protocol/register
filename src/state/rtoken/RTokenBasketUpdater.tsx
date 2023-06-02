@@ -8,9 +8,9 @@ import useRToken from 'hooks/useRToken'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import {
+  rTokenBackingDistributionAtom,
   rTokenBackupAtom,
   rTokenBasketAtom,
-  rTokenCollateralDist,
 } from 'state/atoms'
 import { promiseMulticall } from 'state/web3/lib/multicall'
 import { ContractCall } from 'types'
@@ -19,12 +19,10 @@ import { CHAIN_ID } from 'utils/chains'
 
 const RTokenBasketUpdater = () => {
   const rToken = useRToken()
-  const basketDistribution = useAtomValue(rTokenCollateralDist)
+  const distribution = useAtomValue(rTokenBackingDistributionAtom)
   const [primaryBasket, setPrimaryBasket] = useAtom(rTokenBasketAtom)
   const setBackupBasket = useSetAtom(rTokenBackupAtom)
   const { provider } = useWeb3React()
-
-  console.log('dist', basketDistribution)
 
   const setBackupConfig = useCallback(
     async (
@@ -90,14 +88,15 @@ const RTokenBasketUpdater = () => {
 
   // Update primary basket
   useEffect(() => {
-    if (rToken?.address && Object.keys(basketDistribution).length) {
+    if (rToken?.address && distribution) {
       setPrimaryBasket(
         rToken.collaterals.reduce((prev, { address, symbol }) => {
-          if (!basketDistribution[address]) {
+          if (!distribution.collateralDistribution[address]) {
             return prev
           }
 
-          const { targetUnit, share } = basketDistribution[address]
+          const { targetUnit, share } =
+            distribution.collateralDistribution[address]
           let targetBasket = prev[targetUnit]
           const collateral = {
             targetUnit,
@@ -121,7 +120,7 @@ const RTokenBasketUpdater = () => {
         }, {} as Basket)
       )
     }
-  }, [rToken?.address, basketDistribution])
+  }, [rToken?.address, distribution])
 
   return null
 }

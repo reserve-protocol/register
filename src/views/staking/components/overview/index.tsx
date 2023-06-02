@@ -5,8 +5,8 @@ import {
   estimatedApyAtom,
   rsrExchangeRateAtom,
   rTokenAtom,
+  rTokenBackingDistributionAtom,
   rTokenConfigurationAtom,
-  rTokenDistributionAtom,
   rTokenYieldAtom,
 } from 'state/atoms'
 import { Box, BoxProps, Flex, Grid, Image, Text } from 'theme-ui'
@@ -30,7 +30,7 @@ const ExchangeRate = (props: BoxProps) => {
 
 const Stats = (props: BoxProps) => {
   const { stakers } = useAtomValue(estimatedApyAtom)
-  const distribution = useAtomValue(rTokenDistributionAtom)
+  const distribution = useAtomValue(rTokenBackingDistributionAtom)
   const { stakingApy } = useAtomValue(rTokenYieldAtom)
   const params = useAtomValue(rTokenConfigurationAtom)
 
@@ -96,7 +96,9 @@ const Stats = (props: BoxProps) => {
           <IconInfo
             icon={<Image src="/svgs/staked.svg" />}
             title={t`Current`}
-            text={`${distribution.backing + distribution.staked}%`}
+            text={`${
+              (distribution?.backing ?? 0) + (distribution?.staked ?? 0)
+            }%`}
           />
         </Box>
       </Grid>

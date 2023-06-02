@@ -1,13 +1,10 @@
-import {
-  BackupBasket,
-  Basket,
-  RevenueSplit,
-} from 'components/rtoken-setup/atoms'
+import { BackupBasket, Basket } from 'components/rtoken-setup/atoms'
 import { atom } from 'jotai'
 import { atomWithReset, atomWithStorage } from 'jotai/utils'
-import { ReserveToken, StringMap, Token } from 'types'
-import rTokenAtom from '../rtoken/atoms/rTokenAtom'
 import rTokenRevenueSplitAtom from 'state/rtoken/atoms/rTokenRevenueSplitAtom'
+import { ReserveToken, Token } from 'types'
+import rTokenAtom from '../rtoken/atoms/rTokenAtom'
+import { rTokenBackingDistributionAtom } from 'state/atoms'
 
 // Store rToken meta into localStorage for fast fetching using cache
 export const reserveTokensAtom = atomWithStorage<{
@@ -22,8 +19,7 @@ export const rsrExchangeRateAtom = atom(1)
 export const maxIssuanceAtom = atom(0)
 export const maxRedemptionAtom = atom(0)
 
-// TODO: Temporal measure - track collateral status
-export const rTokenCollateralAssetsAtom = atom<string[]>([])
+// Track collateral status
 export const rTokenCollateralStatusAtom = atom<{ [x: string]: 0 | 1 | 2 }>({})
 
 export const rTokenBasketStatusAtom = atom((get) => {
@@ -83,19 +79,6 @@ export const rTokenMainAtom = atom<string | null>((get) => {
   return rToken?.main || null
 })
 
-export const rTokenCollateralDist = atom<{
-  [x: string]: { share: number; targetUnit: string }
-}>({})
-
-// Get rToken collateral distribution
-export const rTokenDistributionAtom = atom<{
-  backing: number
-  staked: number
-}>({
-  backing: 0,
-  staked: 0,
-})
-
 export const rTokenManagersAtom = atom({
   owners: [] as string[],
   pausers: [] as string[],
@@ -108,7 +91,6 @@ export const rTokenGuardiansAtom = atom([] as string[])
 // Yield
 
 // 30 day avg apy taken from https://defillama.com/yields?token=USDT&token=CUSDT&token=USDC&token=CUSDC&token=DAI&token=BUSD&token=USDP&token=WBTC&token=ETH&project=aave-v2&project=compound&chain=Ethereum
-// TODO: Fetch this list directly from defillama
 export const collateralYieldAtom = atom<{ [x: string]: number }>({
   sadai: 1.61,
   sausdc: 1.94,
@@ -134,7 +116,7 @@ export const estimatedApyAtom = atom((get) => {
   const supply = +get(rTokenTotalSupplyAtom) || 0
   const staked = +get(stRSRSupplyAtom) || 0
   const collateralYield = get(collateralYieldAtom)
-  const distribution = get(rTokenCollateralDist)
+  const distribution = get(rTokenBackingDistributionAtom)
   const revenueSplit = get(rTokenRevenueSplitAtom)
   const rTokenPrice = get(rTokenPriceAtom)
   const rsrPrice = get(rsrPriceAtom)
@@ -143,7 +125,7 @@ export const estimatedApyAtom = atom((get) => {
     holders: 0,
   }
 
-  if (!rToken?.main || !supply || !revenueSplit) {
+  if (!rToken?.main || !supply || !revenueSplit || !distribution) {
     return apys
   }
 
@@ -152,7 +134,8 @@ export const estimatedApyAtom = atom((get) => {
   for (const collateral of rToken.collaterals) {
     rTokenYield +=
       (collateralYield[collateral.symbol.toLowerCase()] || 0) *
-      (distribution[collateral.address]?.share / 100 || 0)
+      (distribution.collateralDistribution[collateral.address]?.share / 100 ||
+        0)
   }
 
   apys.holders = rTokenYield * (+(revenueSplit.holders || 0) / 100)
@@ -176,31 +159,3 @@ export const rTokenMetricsAtom = atom({
   dailyTransactionCount: '0',
   dailyVolume: '$0',
 })
-
-// Asset registry
-export const rTokenAssetsAtom = atom<{
-  [x: string]: {
-    token: Token
-    priceUsd: number
-  }
-}>({})
-
-export const rTokenAssetERC20MapAtom = atom((get) => {
-  const assets = get(rTokenAssetsAtom)
-
-  return Object.keys(assets).reduce((map, assetKey) => {
-    map[assets[assetKey].token.address] = assetKey
-
-    return map
-  }, {} as { [x: string]: string })
-})
-
-// TODO: Fetch state atom
-// {
-//   abi: BasketHandlerInterface,
-//   address: basketHandler,
-//   args: [],
-//   method: 'fullyCollateralized',
-// },
-
-// setBackingCollateralStatus(isCollaterized)

@@ -6,9 +6,8 @@ import { atom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import {
   rTokenAtom,
-  rTokenCollateralDist,
+  rTokenBackingDistributionAtom,
   rTokenCollateralStatusAtom,
-  rTokenDistributionAtom,
   rTokenPriceAtom,
 } from 'state/atoms'
 import { Box, Card, Flex, Grid, Text } from 'theme-ui'
@@ -51,7 +50,7 @@ const basketDistAtom = atom((get) => {
     )
   }
 
-  return get(rTokenCollateralDist)
+  return get(rTokenBackingDistributionAtom)?.collateralDistribution || {}
 })
 
 const getCollateralColor = (status: 0 | 1 | 2) => {
@@ -67,7 +66,7 @@ const getCollateralColor = (status: 0 | 1 | 2) => {
 const AssetOverview = () => {
   const rToken = useRToken()
   const basketDist = useAtomValue(basketDistAtom)
-  const distribution = useAtomValue(rTokenDistributionAtom)
+  const distribution = useAtomValue(rTokenBackingDistributionAtom)
   const price = useAtomValue(rTokenPriceAtom)
   const collateralStatus = useAtomValue(rTokenCollateralStatusAtom)
   const pieData = useMemo(() => {
@@ -102,19 +101,19 @@ const AssetOverview = () => {
             data={pieData}
             logo={rToken?.logo ?? ''}
             isRSV={rToken?.isRSV}
-            staked={distribution.staked}
+            staked={distribution?.staked ?? 0}
           />
           <Text variant="legend">
             <Trans>Backing</Trans>
             <Box as="span" ml={2} sx={{ fontWeight: '500', color: 'text' }}>
-              {rToken?.isRSV ? 100 : Math.min(100, distribution.backing)}%{' '}
+              {rToken?.isRSV ? 100 : Math.min(100, distribution?.backing ?? 0)}%{' '}
             </Box>
           </Text>
           {!rToken?.isRSV && (
             <Text variant="legend">
               <Trans>Staked RSR coverage</Trans>
               <Box as="span" ml={2} sx={{ fontWeight: '500', color: 'text' }}>
-                {distribution.staked}%
+                {distribution?.staked ?? 0}%
               </Box>
             </Text>
           )}

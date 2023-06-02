@@ -79,6 +79,7 @@ export {
   default as rTokenAtom,
   selectedRTokenAtom,
 } from './rtoken/atoms/rTokenAtom'
+export { default as rTokenBackingDistributionAtom } from './rtoken/atoms/rTokenBackingDistributionAtom'
 export { default as rTokenConfigurationAtom } from './rtoken/atoms/rTokenConfigurationAtom'
 export { default as rTokenContractsAtom } from './rtoken/atoms/rTokenContractsAtom'
 export { default as rTokenRevenueSplitAtom } from './rtoken/atoms/rTokenRevenueSplitAtom'

@@ -2,7 +2,7 @@ import { t, Trans } from '@lingui/macro'
 import { InfoItem } from 'components/info-box'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
-import { rTokenContractsAtom } from 'state/atoms'
+import { rTokenAssetsAtom, rTokenContractsAtom } from 'state/atoms'
 import { BoxProps, Card, Text, Divider } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { RSR_ADDRESS } from 'utils/addresses'
@@ -13,6 +13,7 @@ import { CHAIN_ID } from 'utils/chains'
  */
 const ContractsInfo = (props: BoxProps) => {
   const contracts = useAtomValue(rTokenContractsAtom)
+  const assets = useAtomValue(rTokenAssetsAtom) ?? {}
   const rToken = useRToken()
   const contractList = [
     [t`Main`, 'main'],
@@ -25,7 +26,6 @@ const ContractsInfo = (props: BoxProps) => {
     [rToken?.stToken?.name ?? t`stRSR Token`, 'stRSR'],
     [t`Furnace`, 'furnace'],
     [t`Distributor`, 'distributor'],
-    [t`RToken Asset`, 'rTokenAsset'],
   ]
 
   return (
@@ -45,6 +45,16 @@ const ContractsInfo = (props: BoxProps) => {
           mt={index ? 3 : 0}
         />
       ))}
+      <InfoItem
+        title="RToken asset"
+        subtitle={
+          rToken?.address && assets[rToken.address]
+            ? shortenAddress(assets[rToken.address].address)
+            : 'Loading...'
+        }
+        address={RSR_ADDRESS[CHAIN_ID] || ''}
+        mt={3}
+      />
       <InfoItem
         title="RSR Token"
         subtitle={shortenAddress(RSR_ADDRESS[CHAIN_ID] || '')}
