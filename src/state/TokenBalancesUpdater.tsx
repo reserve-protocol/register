@@ -138,19 +138,23 @@ class TokenBalancesStore {
 
     const store = getDefaultStore()
     const stored = store.get(a)
-    if (stored.address === ETH_ADDR) {
-      const balance = await this.provider.getBalance(stored.wallet)
-      this.updateAtom(a, () => {
-        return balance
-      })
-    } else {
-      const balance = await ERC20__factory.connect(
-        stored.address,
-        this.provider
-      ).balanceOf(this.account)
-      this.updateAtom(a, () => {
-        return balance
-      })
+    try {
+      if (stored.address === ETH_ADDR) {
+        const balance = await this.provider.getBalance(stored.wallet)
+        this.updateAtom(a, () => {
+          return balance
+        })
+      } else {
+        const balance = await ERC20__factory.connect(
+          stored.address,
+          this.provider
+        ).balanceOf(this.account)
+        this.updateAtom(a, () => {
+          return balance
+        })
+      }
+    } catch (e) {
+      return ethers.BigNumber.from(0)
     }
   }
 
