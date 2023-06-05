@@ -15,10 +15,10 @@ export interface ModalProps {
 const StyledDialog = styled((props: any) => <Dialog {...props} />)`
   &[data-reach-dialog-content] {
     width: 'auto';
-    background-color: ${({ theme }) => theme.colors.contentBackground};
+    background-color: ${({ theme }) => theme.colors.background};
     padding: ${({ theme }) => theme.space[4]}px;
     border-radius: 12px;
-    border: 3px solid ${({ theme }) => theme.colors.background};
+    border: 2px solid ${({ theme }) => theme.colors.darkBorder};
     box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.5);
     box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.2);
     position: absolute;
