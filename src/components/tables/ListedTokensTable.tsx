@@ -53,16 +53,16 @@ const ListedTokensTable = (
           )
         },
       },
-      {
-        Header: t`APY`,
-        accessor: 'tokenApy',
-        Cell: (cell: any) => <Text>{cell.value}%</Text>,
-      },
-      {
-        Header: t`St APY`,
-        accessor: 'stakingApy',
-        Cell: (cell: any) => <Text>{cell.value}%</Text>,
-      },
+      // {
+      //   Header: t`APY`,
+      //   accessor: 'tokenApy',
+      //   Cell: (cell: any) => <Text>{cell.value}%</Text>,
+      // },
+      // {
+      //   Header: t`St APY`,
+      //   accessor: 'stakingApy',
+      //   Cell: (cell: any) => <Text>{cell.value}%</Text>,
+      // },
     ],
     []
   )
