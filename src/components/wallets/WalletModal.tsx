@@ -118,8 +118,8 @@ const WalletModal = () => {
                 )}
               </Box>
             ))}
-            <Divider mx={-4} my={3} />
-            <Box mt={3} sx={{ textAlign: 'center', fontSize: 1 }}>
+            <Divider mx={-4} my={2} sx={{ borderColor: 'darkBorder' }} />
+            <Box mt={4} sx={{ textAlign: 'center', fontSize: 1 }}>
               <Text variant="legend">
                 <Trans>
                   Wallets are provided by External Providers and by selecting

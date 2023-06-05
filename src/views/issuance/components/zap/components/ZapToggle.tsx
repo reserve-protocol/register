@@ -13,22 +13,19 @@ const ZapToggle = () => {
 
   return (
     <Box
-      variant="layout.verticalAlign"
-      mb={zapEnabled ? 0 : 4}
-      pb={3}
-      mx={3}
-      sx={{
-        borderBottom: zapEnabled ? 'none' : '1px solid',
-        borderColor: 'border',
-      }}
+      variant={zapEnabled ? "none" : "layout.borderBox"}
+      sx={{display: 'flex', alignItems: 'center'}}
+      mb={zapEnabled ? [1, 2] : [1, 4]}
+      p={3}
+      mt={[2, 0]}
     >
-      <ZapIcon size={14} />
+      <ZapIcon size={18} />
       <Text ml={2}>
-        <Trans>Turn on Zaps to mint from 1 asset</Trans>
+        <Trans>Turn on Zaps to mint using 1 asset</Trans>
       </Text>
       <Box ml="auto">
         <label>
-          <Switch defaultChecked={zapEnabled} onChange={handleToggle} />
+          <Switch sx={{ background: 'secondary'}} defaultChecked={zapEnabled} onChange={handleToggle} />
         </label>
       </Box>
     </Box>

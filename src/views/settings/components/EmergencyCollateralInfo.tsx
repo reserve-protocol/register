@@ -16,7 +16,7 @@ const EmergencyCollateralInfo = (props: BoxProps) => {
 
   return (
     <Card p={4} {...props}>
-      <Text variant="sectionTitle">
+      <Text variant="title">
         <Trans>Emergency Collateral</Trans>
       </Text>
       {units.map((unit, unitIndex) => (
@@ -42,7 +42,7 @@ const EmergencyCollateralInfo = (props: BoxProps) => {
                   mt={3}
                   key={collateral.address}
                 >
-                  <TokenItem size={16} symbol={collateral.symbol} />
+                  <TokenItem width={16} symbol={collateral.symbol} />
                   <Text ml="auto">{index + 1}</Text>
                   <GoTo
                     ml={2}

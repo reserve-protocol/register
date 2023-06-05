@@ -17,13 +17,13 @@ const TokenList = (props: BoxProps) => {
   return (
     <Box {...props}>
       <ContentHead
-        pl={3}
-        mb={3}
+        pl={[3, 4]}
+        mb={5}
         title={t`Compare RTokens`}
         subtitle={t`Including off-chain in-app transactions of RToken in the Reserve App.`}
       />
       <ListedTokensTable />
-      <Flex mt={2} sx={{ justifyContent: 'center' }}>
+      <Flex mt={4} sx={{ justifyContent: 'center' }}>
         <SmallButton variant="transparent" onClick={handleViewAll}>
           <Trans>View All</Trans>
         </SmallButton>

@@ -15,7 +15,7 @@ const Help = ({ content, size = 16, sx = {}, ...props }: Props) => {
         sx={{ cursor: 'pointer', ...sx }}
         {...props}
       >
-        <HelpIcon />
+        <HelpIcon color="gray" />
       </Box>
     </MouseoverTooltip>
   )

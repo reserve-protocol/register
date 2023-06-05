@@ -40,10 +40,10 @@ const MenuItem = ({ title, Icon, collapsed }: Omit<Item, 'path'>) => {
     >
       <Icon />
       <Text
+        variant="title"
         sx={{
           display: collapsed ? 'none' : ['none', 'none', 'inherit'],
           whiteSpace: 'nowrap',
-          fontSize: 3,
           fontWeight: 300,
         }}
         ml={3}

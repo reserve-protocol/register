@@ -13,7 +13,7 @@ import RevenueSplitOverview from './components/RevenueSplitOverview'
 import TokenOverview from './components/TokenOverview'
 import TokenUsage from './components/TokenUsage'
 
-const dividerProps = { my: 5, mx: [-1, -5], sx: { borderColor: 'border' } }
+const dividerProps = { my: [4, 6], mx: [-1, -5], sx: { borderColor: 'border' } }
 const gridProps = { columns: [1, 1, 1, 2], gap: [5, 5, 5, 4] }
 
 /**
@@ -35,7 +35,7 @@ const Overview = () => {
       <Divider {...dividerProps} />
       <TokenUsage ml={3} metrics={rTokenMetrics} />
       <Divider {...dividerProps} />
-      <About mt={2} px={3} />
+      <About mt={6} px={3} />
       <Divider mt={4} sx={{ border: 'none' }} />
       <External />
       <Divider {...dividerProps} />

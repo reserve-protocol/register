@@ -70,7 +70,8 @@ const ProposalList = () => {
 
   return (
     <Box
-      variant="layout.borderBox"
+      variant="layout.card"
+      p={4}
       sx={{ backgroundColor: 'contentBackground' }}
     >
       <Box variant="layout.verticalAlign">
@@ -87,7 +88,16 @@ const ProposalList = () => {
         </SmallButton>
       </Box>
 
-      <Box px={4} mt={3} sx={{ maxHeight: 540, overflow: 'auto' }}>
+      <Box
+        mt={3}
+        sx={{
+          maxHeight: 540,
+          overflow: 'scroll',
+          '::-webkit-scrollbar': { display: 'none' },
+          '-ms-overflow-style': 'none',
+          'scrollbar-width': 'none',
+        }}
+      >
         {!data.length && (
           <Box py={4} mt={4} sx={{ textAlign: 'center' }}>
             <EmptyBoxIcon />
@@ -117,7 +127,7 @@ const ProposalList = () => {
                 )
               }
             >
-              <Box>
+              <Box mr={3}>
                 <Text variant="strong">
                   {getProposalTitle(proposal.description)}
                 </Text>

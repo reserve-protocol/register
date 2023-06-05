@@ -38,7 +38,7 @@ const RTokenBalance = ({ token }: { token: Token }) => {
       <Flex>
         <TokenBalance
           symbol={token.symbol}
-          icon={<TokenLogo src={logo} />}
+          icon={<TokenLogo width={20} src={logo} />}
           balance={+balance.balance}
           mr={2}
         />

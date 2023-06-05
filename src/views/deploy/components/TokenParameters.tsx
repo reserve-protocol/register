@@ -8,7 +8,7 @@ import TokenForm from './TokenForm'
  */
 const TokenParameters = (props: BoxProps) => (
   <Card p={4} {...props}>
-    <Text variant="sectionTitle">
+    <Text variant="title">
       <Trans>Basics</Trans>
     </Text>
     <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />

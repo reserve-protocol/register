@@ -1,6 +1,7 @@
 import CopyValue from 'components/button/CopyValue'
 import GoTo from 'components/button/GoTo'
 import Help from 'components/help'
+import React from 'react'
 import { Flex, Text, BoxProps, Box } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
@@ -10,6 +11,7 @@ interface Props extends BoxProps {
   title: string
   subtitle?: React.ReactNode
   help?: string
+  icon?: React.ReactNode
   light?: boolean
   address?: string
   right?: React.ReactNode
@@ -36,13 +38,11 @@ const InfoBox = ({ title, subtitle, light, ...props }: Props) => (
 
 export const ContentHead = ({ title, subtitle, ...props }: Props) => (
   <Box {...props}>
-    <Text
-      sx={{ display: 'block', marginBottom: 2, fontWeight: 500, fontSize: 5 }}
-    >
+    <Text variant="pageTitle" sx={{ display: 'block', marginBottom: 2 }}>
       {title}
     </Text>
     {!!subtitle && (
-      <Text as="p" pr={3} sx={{ maxWidth: 620 }} variant="legend">
+      <Text as="p" pr={3} sx={{ maxWidth: 720 }} variant="legend">
         {subtitle}
       </Text>
     )}
@@ -50,15 +50,25 @@ export const ContentHead = ({ title, subtitle, ...props }: Props) => (
 )
 
 export const InfoHeading = ({ title, subtitle, help, ...props }: Props) => (
-  <Box {...props}>
-    <Flex mb={2} variant="layout.verticalAlign">
-      <Text variant="legend" sx={{ fontWeight: 300 }}>
+  <Flex
+    {...props}
+    variant="layout.verticalAlign"
+    sx={{
+      justifyContent: 'space-between',
+      alignItems: 'start',
+      minWidth: 390,
+      maxWidth: '100%',
+      flexDirection: ['column', 'row'],
+    }}
+  >
+    <Flex mr={3} variant="layout.verticalAlign">
+      <Text variant="title" sx={{ color: 'lightText' }}>
         {title}
       </Text>
       {!!help && <Help ml={2} size={14} mt="1px" content={help} />}
     </Flex>
     {!!subtitle && <Text variant="title">{subtitle}</Text>}
-  </Box>
+  </Flex>
 )
 
 export const InfoItem = ({
@@ -66,19 +76,13 @@ export const InfoItem = ({
   subtitle,
   help,
   address,
+  icon,
   right,
   addressType = ExplorerDataType.ADDRESS,
   ...props
 }: Props) => (
   <Box {...props} variant="layout.verticalAlign">
-    <Box
-      mx={1}
-      sx={{
-        height: '4px',
-        width: '4px',
-        backgroundColor: 'lightText',
-      }}
-    />
+    {icon}
     <Box ml={2}>
       <Flex variant="layout.verticalAlign">
         <Text variant="legend" sx={{ fontWeight: 300, fontSize: 1 }}>

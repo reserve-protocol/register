@@ -19,7 +19,7 @@ const Governance = (props: BoxProps) => {
     >
       <Box>
         <ProposalList />
-        <TopVoters mt={5} mb={[0, 0, 4]} />
+        <TopVoters mt={4} mb={[0, 0, 4]} />
       </Box>
       <GovernanceActions />
     </Grid>

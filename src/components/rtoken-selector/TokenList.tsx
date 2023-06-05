@@ -5,8 +5,9 @@ import TokenItem from 'components/token-item'
 import { useAtomValue } from 'jotai'
 import { memo } from 'react'
 import { transition } from 'theme'
-import { Box, Divider, Flex } from 'theme-ui'
+import { Box, Divider, Flex, Text } from 'theme-ui'
 import availableTokensAtom from './atoms'
+import BackHomeIcon from '../icons/BackHomeIcon'
 
 const ActionItem = styled(Flex)`
   transition: ${transition};
@@ -14,7 +15,7 @@ const ActionItem = styled(Flex)`
   cursor: pointer;
 
   &:hover {
-    background-color: var(--theme-ui-colors-secondary);
+    background-color: #6d3210;
   }
 `
 
@@ -35,22 +36,36 @@ const TokenList = memo(
       <Box
         sx={{
           maxHeight: 320,
+          minWidth: 200,
           overflow: 'auto',
-          backgroundColor: 'background',
-          borderRadius: '8px',
+          backgroundColor: 'black',
+          borderRadius: '13px',
         }}
       >
-        <Box p={3}>
-          <SmallButton variant="muted" onClick={onHome}>
-            <Trans>Go to Dashboard</Trans>
-          </SmallButton>
+        <Box>
+          <ActionItem
+            sx={{ display: 'flex', alignItems: 'center' }}
+            onClick={onHome}
+          >
+            <BackHomeIcon />
+            <Text ml={2} sx={{ color: 'invertedText' }}>
+              <Trans>Dashboard</Trans>
+            </Text>
+          </ActionItem>
         </Box>
         {!!Object.values(tokens).length && (
-          <Divider sx={{ border: 'darkBorder' }} my={0} />
+          <Divider
+            sx={{ border: '1px dashed', borderColor: 'invertedText' }}
+            my={0}
+          />
         )}
         {Object.values(tokens).map(({ address, logo, symbol }) => (
           <ActionItem key={address} onClick={() => onSelect(address)}>
-            <TokenItem symbol={symbol} logo={logo} />
+            <TokenItem
+              sx={{ color: 'invertedText' }}
+              symbol={symbol}
+              logo={logo}
+            />
           </ActionItem>
         ))}
       </Box>
