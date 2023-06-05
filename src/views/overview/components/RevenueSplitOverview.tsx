@@ -1,12 +1,15 @@
 import { t, Trans } from '@lingui/macro'
 import GoTo from 'components/button/GoTo'
 import RevenueSplitIcon from 'components/icons/RevenueSplitIcon'
+import RevenueToStakersIcon from 'components/icons/RevenueToStakersIcon'
+import RevenueToHoldersIcon from 'components/icons/RevenueToHoldersIcon'
 import { ContentHead, InfoItem } from 'components/info-box'
 import { useAtomValue } from 'jotai'
 import { rTokenAtom, rTokenRevenueSplitAtom } from 'state/atoms'
 import { Box, BoxProps, Image, Link, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import RevenueToExternalIcon from 'components/icons/RevenueToExternalIcon'
 
 const RevenueSplitOverview = (props: BoxProps) => {
   const rToken = useAtomValue(rTokenAtom)
@@ -56,12 +59,14 @@ const RevenueSplitOverview = (props: BoxProps) => {
         title="% to"
         subtitle={t`RToken holders`}
         right={<Text>{distribution.holders || 0}%</Text>}
+        icon={<RevenueToHoldersIcon />}
         mb={3}
       />
       <InfoItem
         title="% to"
         subtitle={t`RSR Stakers`}
         right={<Text>{distribution.stakers || 0}%</Text>}
+        icon={<RevenueToStakersIcon />}
         mb={3}
       />
       {distribution.external.map((dist, index) => (
@@ -69,6 +74,7 @@ const RevenueSplitOverview = (props: BoxProps) => {
           <InfoItem
             mb={2}
             title={t`% to external address`}
+            icon={<RevenueToExternalIcon />}
             subtitle={
               <Box variant="layout.verticalAlign">
                 <Text mr={2}>{shortenAddress(dist.address)}</Text>
