@@ -6,12 +6,17 @@ const SwapIcon = ({ buy, sell }: { buy: string; sell: string }) => (
     <TokenLogo
       symbol={buy}
       width={20}
-      sx={{ position: 'absolute', zIndex: 1, backgroundColor: 'white' }}
+      sx={{
+        position: 'absolute',
+        bottom: '-3px',
+        zIndex: 1,
+        backgroundColor: 'white',
+      }}
     />
     <TokenLogo
       width={20}
       symbol={sell}
-      sx={{ position: 'absolute', top: '-6px' }}
+      sx={{ position: 'absolute', top: '-3px' }}
     />
   </Box>
 )
