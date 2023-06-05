@@ -26,7 +26,7 @@ const CollateralChart = ({
   <Box {...props} sx={{ position: 'relative' }}>
     <Box
       sx={{
-        top: 'calc(50% - 14px)',
+        top: 'calc(50% - 16px)',
         left: 'calc(50% - 16px)',
         position: 'absolute',
       }}
