@@ -98,7 +98,7 @@ const RevenueSplit = (props: BoxProps) => {
   return (
     <Card p={4} {...props}>
       <Box variant="layout.verticalAlign">
-        <Text variant="sectionTitle">
+        <Text variant="title">
           <Trans>Revenue Distribution</Trans>
         </Text>
         <DocsLink link="https://reserve.org/protocol/protocol_operations/#revenue-handling" />

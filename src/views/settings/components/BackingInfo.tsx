@@ -15,7 +15,7 @@ const BackingInfo = () => {
 
   return (
     <Card p={4}>
-      <Text variant="sectionTitle">
+      <Text variant="title">
         <Trans>Backing Parameters</Trans>
       </Text>
       <Divider mx={-4} my={4} sx={{ borderColor: 'darkBorder' }} />

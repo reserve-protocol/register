@@ -8,7 +8,8 @@ export const TooltipContainer = styled.div`
   padding: 0.8rem 1rem;
   font-weight: 400;
   word-break: break-word;
-  background-color: var(--theme-ui-colors-background);
+  color: var(--theme-ui-colors-invertedText);
+  background-color: black;
   border: 1px solid var(--theme-ui-colors-inputBorder);
   box-shadow: 0px 4px 24px var(--theme-ui-colors-contentBackground);
   border-radius: 8px;

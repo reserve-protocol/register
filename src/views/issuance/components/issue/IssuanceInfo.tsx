@@ -1,5 +1,6 @@
 import { t } from '@lingui/macro'
-import InfoIcon from 'components/icons/InfoIcon'
+import GlobalMaxMintIcon from 'components/icons/GlobalMaxMintIcon'
+import GlobalMaxRedeemIcon from 'components/icons/GlobalMaxRedeemIcon'
 import IconInfo from 'components/info-icon'
 import { useAtomValue } from 'jotai'
 import { maxIssuanceAtom, maxRedemptionAtom } from 'state/atoms'
@@ -15,7 +16,7 @@ const IssuanceInfo = (props: BoxProps) => {
       <Grid gap={0} columns={2}>
         <Box p={4} sx={{ borderRight: '1px solid', borderColor: 'border' }}>
           <IconInfo
-            icon={<InfoIcon />}
+            icon={<GlobalMaxMintIcon />}
             title={t`Global mint max`}
             help={t`Each RToken can have an issuance throttle to limit the amount of extractable value in the case of an attack. After a large isuance, the issuance limit recharges linearly to the defined maximum at a defined speed of recharge`}
             text={formatCurrency(issuanceAvailable)}
@@ -23,7 +24,7 @@ const IssuanceInfo = (props: BoxProps) => {
         </Box>
         <Box p={4}>
           <IconInfo
-            icon={<InfoIcon />}
+            icon={<GlobalMaxRedeemIcon />}
             title={t`Global redeem max`}
             help={t`Each RToken can have a redemption throttle to limit the amount of extractable value in the case of an attack. After a large redemption, the redemption limit recharges linearly to the defined maximum at a defined speed of recharge.`}
             text={formatCurrency(redeemAvailable)}

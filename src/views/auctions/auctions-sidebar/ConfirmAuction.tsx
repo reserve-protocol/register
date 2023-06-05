@@ -48,7 +48,7 @@ const ConfirmAuction = ({ onClose }: { onClose(): void }) => {
   }, [status])
 
   return (
-    <Box p={4} sx={{ borderTop: '1px solid', borderColor: 'text' }}>
+    <Box p={4} sx={{ borderTop: '1px solid', borderColor: 'darkBorder' }}>
       <LoadingButton
         sx={{ width: '100%' }}
         text={btnLabel}

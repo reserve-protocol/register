@@ -15,7 +15,7 @@ const GovernanceInfo = (props: BoxProps) => {
 
   return (
     <Card p={4} {...props}>
-      <Text variant="sectionTitle">
+      <Text variant="title">
         <Trans>Governance Details</Trans>
       </Text>
       <Divider mx={-4} my={4} sx={{ borderColor: 'darkBorder' }} />

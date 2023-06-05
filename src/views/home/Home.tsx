@@ -4,17 +4,16 @@ import { useEffect, useState } from 'react'
 import { walletAtom } from 'state/atoms'
 import { Divider, Grid } from 'theme-ui'
 import About from './components/About'
-import TransactionsOverview from './components/GeneralOverview'
 import Greet from './components/Greet'
 import Portfolio from './components/Portfolio'
 import TokenList from './components/TokenList'
-import TokenStats from './components/TokenStats'
+import Stats from './components/Stats'
 
 const VISITED_KEY = 'visited'
 
 const dividerProps = {
   mx: [-1, -5],
-  my: [4, 6],
+  my: [5, 8],
 }
 
 /**
@@ -40,13 +39,10 @@ const Home = () => {
   return (
     <Container>
       {!account && !visited && <Greet onDismiss={handleDismiss} />}
-      {!!account && <Portfolio />}
-      <Grid columns={[1, 1, 1, 2]}>
-        <TokenStats mb={[5, 5, 5, 0]} mt={[0, 3]} />
-        <TransactionsOverview />
-      </Grid>
-      <Divider mb={[0, 2]} {...dividerProps} />
-      <TokenList mt={[4, 6]} />
+      {!!account && <Portfolio mt={5} mb={8} />}
+      <Stats />
+      <Divider mx={[-1, -5]} mt={[0, 6]} mb={[5, 8]} />
+      <TokenList />
       <Divider {...dividerProps} />
       <About />
     </Container>

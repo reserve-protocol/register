@@ -26,12 +26,12 @@ const CollateralChart = ({
   <Box {...props} sx={{ position: 'relative' }}>
     <Box
       sx={{
-        top: 'calc(50% - 8px)',
-        left: 'calc(50% - 12px)',
+        top: 'calc(50% - 16px)',
+        left: 'calc(50% - 16px)',
         position: 'absolute',
       }}
     >
-      <TokenLogo size={24} src={logo} />
+      <TokenLogo width={32} src={logo} />
     </Box>
     <ResponsiveContainer height={200}>
       <PieChart>

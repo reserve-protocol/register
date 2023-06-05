@@ -128,11 +128,7 @@ const EmergencyCollateral = ({
           <Trans>Diversity factor</Trans>
         </Text>
         {readOnly ? (
-          <Box
-            sx={{ backgroundColor: 'lightBackground', borderRadius: 16 }}
-            ml="auto"
-            px={3}
-          >
+          <Box sx={{ borderRadius: 16 }} ml="auto" px={3}>
             <Text sx={{ color: '#333' }}>{diversityFactor}</Text>
           </Box>
         ) : (

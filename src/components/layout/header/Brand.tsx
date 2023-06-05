@@ -20,7 +20,6 @@ const Brand = (props: BoxProps) => {
     >
       <Box
         sx={{
-          marginTop: '6px',
           display: ['none', 'none', 'flex'],
           alignItems: 'center',
         }}
@@ -29,6 +28,7 @@ const Brand = (props: BoxProps) => {
         <Logo />
       </Box>
       <Box
+        mr={2}
         sx={{
           display: ['flex', 'flex', 'none'],
           alignItems: 'center',

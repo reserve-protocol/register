@@ -23,31 +23,33 @@ const TokenUsage = ({ metrics, ...props }: Props) => {
         </Text>
       )}
 
-      <Flex mt={5} sx={{ flexWrap: 'wrap' }} mb={-4}>
-        <InfoHeading
-          title={t`Cumulative Tx Volume`}
-          mb={4}
-          mr={5}
-          subtitle={metrics.cumulativeVolumeUsd}
-        />
-        <InfoHeading
-          mb={4}
-          mr={5}
-          title={t`24h Tx Vol`}
-          subtitle={metrics.dailyVolume}
-        />
-        <InfoHeading
-          title={t`Cumulative Txs`}
-          mb={4}
-          mr={5}
-          subtitle={formatCurrency(metrics.transferCount)}
-        />
-        <InfoHeading
-          title={t`24h Txs`}
-          mb={4}
-          mr={5}
-          subtitle={formatCurrency(metrics.dailyTransferCount)}
-        />
+      <Flex mt={[4, 7]} mb={-3} sx={{ flexWrap: 'wrap' }}>
+        <Box mr={8}>
+          <InfoHeading
+            title={t`Cumulative Tx Volume`}
+            mb={[3, 4]}
+            subtitle={metrics.cumulativeVolumeUsd}
+          />
+          <InfoHeading
+            mb={[3, 4]}
+            title={t`24h Tx Vol`}
+            subtitle={metrics.dailyVolume}
+          />
+        </Box>
+        <Box>
+          <InfoHeading
+            title={t`Cumulative Txs`}
+            mb={[3, 4]}
+            mr={5}
+            subtitle={formatCurrency(metrics.transferCount)}
+          />
+          <InfoHeading
+            title={t`24h Txs`}
+            mb={[3, 4]}
+            mr={5}
+            subtitle={formatCurrency(metrics.dailyTransferCount)}
+          />
+        </Box>
       </Flex>
     </Box>
   )

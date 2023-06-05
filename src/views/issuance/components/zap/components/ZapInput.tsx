@@ -30,7 +30,7 @@ const ZapInput = (props: Partial<TransactionInputProps>) => {
         <TransactionInput
           placeholder={`${zapSymbol} ${t`Amount`}`}
           amountAtom={zapInputString}
-          title={t`Zap mint`}
+          title={t`Mint with ${zapSymbol}`}
           maxAmount={maxAmountString || '0'}
           disabled={isDisabled || loading || hasError}
           {...props}
@@ -39,9 +39,10 @@ const ZapInput = (props: Partial<TransactionInputProps>) => {
           variant="legend"
           sx={{
             position: 'absolute',
-            right: '20px',
-            top: '44px',
+            right: '16px',
+            top: '47px',
             fontSize: 1,
+            color: 'lightText',
           }}
         >
           {zapSymbol}

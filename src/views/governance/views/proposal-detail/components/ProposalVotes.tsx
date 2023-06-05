@@ -110,7 +110,7 @@ const ProposalVotes = () => {
               width: '30%',
               color: 'success',
               backgroundColor: 'danger',
-              height: 10,
+              height: 4,
             }}
             value={forVotesWeight}
           />

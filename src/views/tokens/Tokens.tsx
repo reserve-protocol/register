@@ -7,7 +7,7 @@ import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { selectedRTokenAtom } from 'state/atoms'
-import { Flex } from 'theme-ui'
+import { Flex, Divider } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import UnlistedTokensTable from './components/UnlistedTokensTable'
 
@@ -29,19 +29,21 @@ const Tokens = () => {
       <ContentHead
         title={t`Register listed RTokens`}
         subtitle={t`RTokens in this list is not an endorsement or audited by us. It’s simply RTokens that have gone through our listing process and don’t seem like clear scams.`}
-        mb={2}
-        ml={3}
+        mb={4}
+        ml={4}
+        mt={5}
       />
       <ListedTokensTable />
+      <Divider my={8} mx={-5} />
       <ContentHead
         title={t`All unlisted RTokens`}
         subtitle={t`Be aware that anyone can create an RToken that ends up on this list. We don't apply any standards beyond what can be done with the Reserve Protocol.`}
-        mb={2}
+        mb={4}
         mt={4}
-        ml={3}
+        ml={4}
       />
       <UnlistedTokensTable />
-      <Flex mt={3} sx={{ justifyContent: 'center' }}>
+      <Flex mt={6} mb={8} sx={{ justifyContent: 'center' }}>
         <SmallButton
           mr={3}
           variant="muted"

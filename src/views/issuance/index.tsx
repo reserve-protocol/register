@@ -1,7 +1,7 @@
 import { Container } from 'components'
 import InfoIcon from 'components/icons/InfoIcon'
 import { useAtomValue } from 'jotai'
-import { Box, Grid, Text } from 'theme-ui'
+import { Box, Grid, Text, Flex } from 'theme-ui'
 import About from './components/about'
 import Balances from './components/balances'
 import Issue from './components/issue'
@@ -25,17 +25,18 @@ const ZapOverview = () => {
 }
 
 const ZapWarning = () => (
-  <Box
+  <Flex
     sx={{
-      borderBottom: '1px dotted',
-      borderColor: 'warning',
+      borderBottom: '1px solid',
+      borderColor: 'border',
       textAlign: 'center',
       justifyContent: 'center',
+      alignItems: 'center',
+      flexWrap: 'wrap',
       color: 'warning',
       fontSize: 1,
     }}
-    p={3}
-    variant="layout.verticalAlign"
+    p={4}
   >
     <InfoIcon />
     <Text variant="strong" mx={2}>
@@ -45,7 +46,7 @@ const ZapWarning = () => (
       The Zap Mint feature is in beta and may result in unexpected behavior.
       Proceed with caution.
     </Text>
-  </Box>
+  </Flex>
 )
 
 /**
@@ -59,18 +60,18 @@ const Issuance = () => {
   return (
     <>
       {isZapEnabled && <ZapWarning />}
-      <Container pb={4}>
-        <ZapOverview />
-        <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[3, 5]}>
+      <Container pb={[1, 4]}>
+        <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[1, 5]}>
           <Box>
-            <Grid columns={[1, 2]} gap={4} mb={4}>
+            <ZapOverview />
+            <Grid columns={[1, 2]} gap={[1, 4]} mb={[1, 4]}>
               {isZapEnabled ? <Zap /> : <Issue />}
               <Redeem />
             </Grid>
             <Balances />
           </Box>
           <Box>
-            <IssuanceInfo mb={4} />
+            <IssuanceInfo mb={[1, 4]} />
             <About />
           </Box>
         </Grid>

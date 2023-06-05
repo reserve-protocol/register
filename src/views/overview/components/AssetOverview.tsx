@@ -18,21 +18,18 @@ import RSV from 'utils/rsv'
 import CollateralPieChart from './CollateralPieChart'
 
 const colors = [
-  '#2B2E7C',
-  '#FFA600',
-  '#28813F',
-  '#2775CA',
-  '#003F5C',
-  '#2F4B7C',
-  '#665191',
-  '#A05195',
-  '#D45087',
-  '#F95D6A',
-  '#FF7C43',
-  '#333333',
-  '#666666',
-  '#999999',
-  '#CCCCCC',
+  '#B87333', // Copper
+  '#8B4513', // SaddleBrown
+  '#F4A460', // SandyBrown
+  '#D2B48C', // Tan
+  '#CD853F', // Peru
+  '#556B2F', // DarkOliveGreen
+  '#708090', // SlateGray
+  '#8B008B', // DarkMagenta
+  '#DA8A67', // Earth Yellow
+  '#FFD700', // Gold
+  '#B8860B', // DarkGoldenRod
+  '#DEB887', // BurlyWood
 ]
 
 const basketDistAtom = atom((get) => {
@@ -131,7 +128,7 @@ const AssetOverview = () => {
                 alignItems: 'center',
               }}
             >
-              <TokenLogo symbol={c.symbol} mr={3} />
+              <TokenLogo width={20} symbol={c.symbol} mr={3} />
               <Box>
                 <Text variant="legend" sx={{ fontSize: 1, display: 'block' }}>
                   {basketDist[c.address]?.targetUnit}
