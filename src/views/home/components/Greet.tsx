@@ -139,7 +139,7 @@ const Greet = ({ onDismiss, ...props }: Props) => {
             paddingLeft: 7,
             marginTop: 'none',
             borderLeft: '1px solid',
-            borderColor: 'darkBorder',
+            borderColor: 'border',
             display: ['none', 'flex'],
             height: '340px',
             justifyContent: 'flex-end',
@@ -175,7 +175,7 @@ const Greet = ({ onDismiss, ...props }: Props) => {
           </Box>
         </Flex>
       </Flex>
-      <Divider my={[5, 8]} mx={[-1, -5]} sx={{ borderColor: 'darkBorder' }} />
+      <Divider my={[5, 8]} mx={[-1, -5]} sx={{ borderColor: 'border' }} />
     </>
   )
 }
