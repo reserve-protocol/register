@@ -296,10 +296,18 @@ export const zapTransaction = loadable(
             }
           : undefined
     }
+
+    // Bit hacky:
+    // if the user is zapping more than 50k, let's explicitly return dust.
+    // The current code to return dust does not seem to always trigger correctly
+    // this leaves a significant amount of dust in the contract, especially when zapping large quantities
+    const FIFTY_K = result.universe.usd.from('50000')
+    const value = (await result.universe.fairPrice(result.userInput)) ?? FIFTY_K
     return {
       result,
       transaction: await result.toTransaction({
         permit2,
+        returnDust: value.gte(FIFTY_K) ? true : undefined,
       }),
       permit2,
     }
