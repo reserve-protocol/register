@@ -126,7 +126,9 @@ export const ENS_ADDRESS: AddressMap = {
 // Fixed tokens used in the rtoken selector screen and dashboard
 // TODO: Change this
 export const DEFAULT_TOKENS = {
-  [ChainId.Mainnet]: Object.keys(tokenList),
+  [ChainId.Mainnet]: Object.keys(tokenList).filter(
+    (addr) => addr !== RSV_ADDRESS[ChainId.Mainnet]
+  ),
   [ChainId.Goerli]: [RSV_ADDRESS[ChainId.Goerli]],
   [ChainId.Hardhat]: [],
 }
