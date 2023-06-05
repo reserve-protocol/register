@@ -39,6 +39,7 @@ export const rTokenGovernanceAtom = atomWithReset<{
   quorumDenominator?: string
   quorumNumerator?: string
   quorumVotes?: string
+  guardians?: string[]
 }>({
   name: 'Custom',
   governor: '',

@@ -21,6 +21,7 @@ const query = gql`
       longFreezers
     }
     governance(id: $id) {
+      guardians
       governanceFrameworks {
         id
         name
@@ -42,7 +43,6 @@ const RTokenGovernanceUpdater = () => {
   const { provider } = useWeb3React()
   const [governance, setGovernance] = useAtom(rTokenGovernanceAtom)
   const setTokenManagers = useSetAtom(rTokenManagersAtom)
-  const setGuardians = useSetAtom(rTokenGuardiansAtom)
   const timelockContract = useTimelockContract(
     governance?.timelock || undefined,
     false
@@ -58,32 +58,7 @@ const RTokenGovernanceUpdater = () => {
   const fetchTimelockData = async () => {
     if (timelockContract) {
       try {
-        const guardian = await timelockContract.CANCELLER_ROLE()
         const minDelay = await timelockContract.getMinDelay()
-        const roleGranted = await timelockContract.queryFilter(
-          timelockContract.filters.RoleGranted(guardian)
-        )
-        const roleRevoked = await timelockContract.queryFilter(
-          timelockContract.filters.RoleRevoked(guardian)
-        )
-
-        const guardians: { [x: string]: number } = {}
-
-        // Grab all events and sort them by block number
-        const events = [...roleGranted, ...roleRevoked]
-
-        for (const event of events) {
-          if (event.event === 'RoleGranted') {
-            guardians[event.args.account] =
-              (guardians[event.args.account] || 0) + 1
-          } else {
-            guardians[event.args.account] =
-              (guardians[event.args.account] || 0) - 1
-          }
-        }
-
-        // TODO: get from theGraph
-        setGuardians(Object.keys(guardians).filter((key) => !!guardians[key]))
         setGovernance({ ...governance, executionDelay: minDelay.toString() })
       } catch (e) {
         console.error('Error getting timelock info', e)
@@ -123,6 +98,7 @@ const RTokenGovernanceUpdater = () => {
           quorumDenominator,
           quorumNumerator,
           quorumVotes,
+          guardians: data.governance.guardians ?? [],
         })
       }
     }

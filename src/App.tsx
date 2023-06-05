@@ -20,7 +20,6 @@ import Layout from './components/layout'
 import LanguageProvider from './i18n'
 import { theme } from './theme'
 import { ErrorBoundary } from 'react-error-boundary'
-// import Issuance from './views/issuance'
 import React, { Suspense } from 'react'
 import IssuanceFallback from 'views/issuance/IssuanceFallback'
 

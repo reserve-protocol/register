@@ -74,6 +74,8 @@ const rTokenRevenueSplitAtom = atomWithLoadable(async (get) => {
       { id: contracts.token.address.toLowerCase() }
     )
 
+    console.log('request', request)
+
     if (!request.rtoken) {
       throw new Error('Not found')
     }

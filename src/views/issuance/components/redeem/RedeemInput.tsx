@@ -2,19 +2,13 @@ import { t } from '@lingui/macro'
 import TransactionInput, {
   TransactionInputProps,
 } from 'components/transaction-input'
-import { atom, useAtomValue } from 'jotai'
+import { useAtomValue } from 'jotai'
 import { rTokenBalanceAtom, rTokenStatusAtom } from 'state/atoms'
 import { redeemAmountAtom } from 'views/issuance/atoms'
 
-const isTokenFrozenAtom = atom((get) => {
-  const { frozen } = get(rTokenStatusAtom)
-
-  return frozen
-})
-
 const RedeemInput = (props: Partial<TransactionInputProps>) => {
   const max = useAtomValue(rTokenBalanceAtom)
-  const isTokenFrozen = useAtomValue(isTokenFrozenAtom)
+  const { frozen } = useAtomValue(rTokenStatusAtom)
 
   return (
     <TransactionInput
@@ -22,7 +16,7 @@ const RedeemInput = (props: Partial<TransactionInputProps>) => {
       placeholder={t`Redeem amount`}
       amountAtom={redeemAmountAtom}
       maxAmount={max.balance}
-      disabled={isTokenFrozen}
+      disabled={frozen}
       {...props}
     />
   )
