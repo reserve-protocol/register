@@ -1,6 +1,7 @@
 import CopyValue from 'components/button/CopyValue'
 import GoTo from 'components/button/GoTo'
 import Help from 'components/help'
+import React from 'react'
 import { Flex, Text, BoxProps, Box } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
@@ -10,6 +11,7 @@ interface Props extends BoxProps {
   title: string
   subtitle?: React.ReactNode
   help?: string
+  icon?: React.ReactNode
   light?: boolean
   address?: string
   right?: React.ReactNode
@@ -74,19 +76,13 @@ export const InfoItem = ({
   subtitle,
   help,
   address,
+  icon,
   right,
   addressType = ExplorerDataType.ADDRESS,
   ...props
 }: Props) => (
   <Box {...props} variant="layout.verticalAlign">
-    <Box
-      mx={1}
-      sx={{
-        height: '4px',
-        width: '4px',
-        backgroundColor: 'lightText',
-      }}
-    />
+    {icon}
     <Box ml={2}>
       <Flex variant="layout.verticalAlign">
         <Text variant="legend" sx={{ fontWeight: 300, fontSize: 1 }}>
