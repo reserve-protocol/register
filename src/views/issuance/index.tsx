@@ -27,7 +27,7 @@ const ZapOverview = () => {
 const ZapWarning = () => (
   <Flex
     sx={{
-      borderBottom: '1px dotted',
+      borderBottom: '1px solid',
       borderColor: 'border',
       textAlign: 'center',
       justifyContent: 'center',
