@@ -1,15 +1,9 @@
-import { useWeb3React } from '@web3-react/core'
 import { gql } from 'graphql-request'
-import { useTimelockContract } from 'hooks/useContract'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
-import { useAtom, useSetAtom } from 'jotai'
+import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import {
-  rTokenGovernanceAtom,
-  rTokenGuardiansAtom,
-  rTokenManagersAtom,
-} from 'state/atoms'
+import { rTokenGovernanceAtom, rTokenManagersAtom } from 'state/atoms'
 import { isAddress } from 'utils'
 
 const query = gql`
@@ -30,6 +24,7 @@ const query = gql`
         quorumDenominator
         quorumNumerator
         quorumVotes
+        executionDelay
         timelockAddress
         votingDelay
         votingPeriod
@@ -40,13 +35,8 @@ const query = gql`
 
 const RTokenGovernanceUpdater = () => {
   const rToken = useRToken()
-  const { provider } = useWeb3React()
-  const [governance, setGovernance] = useAtom(rTokenGovernanceAtom)
+  const setGovernance = useSetAtom(rTokenGovernanceAtom)
   const setTokenManagers = useSetAtom(rTokenManagersAtom)
-  const timelockContract = useTimelockContract(
-    governance?.timelock || undefined,
-    false
-  )
 
   const { data, error } = useQuery(
     rToken?.address && !rToken.isRSV ? query : null,
@@ -55,23 +45,8 @@ const RTokenGovernanceUpdater = () => {
     }
   )
 
-  const fetchTimelockData = async () => {
-    if (timelockContract) {
-      try {
-        const minDelay = await timelockContract.getMinDelay()
-        setGovernance({ ...governance, executionDelay: minDelay.toString() })
-      } catch (e) {
-        console.error('Error getting timelock info', e)
-      }
-    }
-  }
-
   useEffect(() => {
-    fetchTimelockData()
-  }, [timelockContract])
-
-  useEffect(() => {
-    if (data?.rtoken && provider) {
+    if (data?.rtoken) {
       setTokenManagers(data.rtoken)
 
       // Governance is set up
@@ -85,6 +60,7 @@ const RTokenGovernanceUpdater = () => {
           quorumVotes,
           contractAddress,
           timelockAddress,
+          executionDelay,
           votingDelay,
           votingPeriod,
         } = data.governance.governanceFrameworks[0]
@@ -96,13 +72,14 @@ const RTokenGovernanceUpdater = () => {
           votingDelay,
           votingPeriod,
           quorumDenominator,
+          executionDelay,
           quorumNumerator,
           quorumVotes,
           guardians: data.governance.guardians ?? [],
         })
       }
     }
-  }, [data, provider])
+  }, [data])
 
   return null
 }

@@ -35,7 +35,8 @@ const TokenOverview = ({ metrics, ...props }: Props) => {
         >
           <TokenLogo
             symbol={rToken?.symbol}
-            sx={{ width: 52, display: ['none', 'block'] }}
+            width={52}
+            sx={{ display: ['none', 'block'] }}
           />
 
           <Flex ml={[0, 4]} mt={[3, 2]} sx={{ flexDirection: 'column' }}>

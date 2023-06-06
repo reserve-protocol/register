@@ -9,12 +9,6 @@ interface Props extends BoxProps {
   src?: string
 }
 
-const Container = styled(Box)`
-  display: flex;
-  align-items: center;
-  position: relative;
-`
-
 const IMGS = new Set([
   'dai',
   'cdai',
@@ -64,13 +58,13 @@ const TokenLogo = ({ symbol, src, width, sx = {}, ...props }: Props) => {
   }
 
   return (
-    <Container
+    <Box
       {...props}
+      variant="layout.verticalAlign"
       sx={{
+        position: 'relative',
         borderRadius: '50%',
         overflow: 'visible',
-        display: 'flex',
-        alignItems: 'center',
         flexShrink: 0,
         width: width,
         justifyContent: 'center',
@@ -86,7 +80,7 @@ const TokenLogo = ({ symbol, src, width, sx = {}, ...props }: Props) => {
           currentTarget.src = '/svgs/default.svg'
         }}
       />
-    </Container>
+    </Box>
   )
 }
 
