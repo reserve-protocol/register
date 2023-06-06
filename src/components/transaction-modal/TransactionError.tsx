@@ -11,7 +11,7 @@ const TransactionError = ({
   subtitle?: string
 }) => (
   <ModalAlert onClose={onClose}>
-    <Text mb={2} variant="sectionTitle">
+    <Text mb={2} variant="title">
       {title}
     </Text>
     <Text mb={4} variant="legend">

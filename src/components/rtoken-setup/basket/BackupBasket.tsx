@@ -25,11 +25,7 @@ const Placeholder = () => (
           <Trans>Diversity factor</Trans>
         </Text>
         <Text ml="auto">N=</Text>
-        <Box
-          sx={{ backgroundColor: 'lightBackground', borderRadius: 16 }}
-          mr={2}
-          px={3}
-        >
+        <Box sx={{ borderRadius: 16 }} mr={2} px={3}>
           <Text sx={{ color: '#333' }}>0</Text>
         </Box>
       </Flex>
@@ -76,7 +72,7 @@ const BackupBasket = ({
   return (
     <Box {...props}>
       <Flex variant="layout.verticalAlign">
-        <Text variant="sectionTitle">Emergency Collateral</Text>
+        <Text variant="title">Emergency Collateral</Text>
         <DocsLink link="https://reserve.org/protocol/monetary_units_baskets/#baskets" />
       </Flex>
       {targetUnits.map((targetUnit) =>

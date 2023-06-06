@@ -4,7 +4,7 @@ import TokenItem from 'components/token-item'
 import { useAtom, useAtomValue } from 'jotai'
 import { useCallback, useMemo } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
-import { transition } from 'theme'
+import { borderRadius, transition } from 'theme'
 import { Box, Flex } from 'theme-ui'
 import { ui } from '../state/ui-atoms'
 
@@ -13,15 +13,16 @@ export const ActionItem = styled(Flex)`
   padding: 16px;
   border-bottom: 1px solid var(--theme-ui-colors-border);
   cursor: pointer;
+  background: var(--theme-ui-colors-background);
 
   &:first-of-type {
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
+    border-top-left-radius: 13px;
+    border-top-right-radius: 13px;
   }
 
   &:last-of-type {
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 13px;
+    border-bottom-right-radius: 13px;
     border-bottom: none;
   }
 
@@ -93,10 +94,10 @@ const ZapTokenSelector = () => {
           cursor: 'pointer',
           border: '1px solid',
           borderColor: 'border',
-          borderRadius: 20,
+          borderRadius: borderRadius.boxes,
         }}
         p={3}
-        mb={4}
+        mb={[2, 4]}
         onClick={toggle}
       >
         <SelectedZapToken />

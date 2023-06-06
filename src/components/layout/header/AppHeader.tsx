@@ -13,8 +13,7 @@ const Container = styled(Flex)`
   align-items: center;
   flex-shrink: 0;
   position: relative;
-  border-bottom: 1px solid var(--theme-ui-colors-border);
-  height: 56px;
+  height: 72px;
 `
 
 /**
@@ -25,9 +24,24 @@ const AppHeader = () => {
   const isDeployer = useIsDeployer()
 
   return (
-    <Container px={[3, isSidebarVisible ? 5 : 7]}>
+    <Container
+      px={[3, isSidebarVisible ? 5 : 7]}
+      sx={{
+        borderBottom: isSidebarVisible ? '1px solid' : 'none',
+        borderColor: 'border',
+      }}
+    >
       <Box mr="auto" variant="layout.verticalAlign">
-        <Brand mr={[2, 4]} />
+        <Brand />
+        <Box
+          mx={4}
+          sx={{
+            backgroundColor: 'inputBorder',
+            width: '1px',
+            height: '16px',
+            display: ['none', 'block'],
+          }}
+        ></Box>
         {isDeployer && (
           <Text sx={{ fontSize: 2 }} variant="subtitle">
             <Trans>RToken Deployer</Trans>

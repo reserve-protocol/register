@@ -15,7 +15,7 @@ const BasketInfo = (props: BoxProps) => {
 
   return (
     <Card p={4}>
-      <Text variant="sectionTitle">
+      <Text variant="title">
         <Trans>Primary Basket</Trans>
       </Text>
       {units.map((unit, unitIndex) => (
@@ -30,7 +30,7 @@ const BasketInfo = (props: BoxProps) => {
               mt={index ? 3 : 0}
               key={collateral.address}
             >
-              <TokenItem size={16} symbol={collateral.symbol} />
+              <TokenItem width={16} symbol={collateral.symbol} />
               <Text ml="auto">{+basket[unit].distribution[index]}%</Text>
               <GoTo
                 ml={2}

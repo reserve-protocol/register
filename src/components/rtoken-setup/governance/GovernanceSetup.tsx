@@ -29,7 +29,7 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
   return (
     <Card p={4} {...props}>
       <Box variant="layout.verticalAlign">
-        <Text variant="sectionTitle">
+        <Text variant="title">
           <Trans>Governance</Trans>
         </Text>
         <DocsLink link="https://reserve.org/protocol/reserve_rights_rsr/#reserve-rights-governance" />

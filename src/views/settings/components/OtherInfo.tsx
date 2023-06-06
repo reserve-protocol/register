@@ -15,7 +15,7 @@ const OtherInfo = () => {
 
   return (
     <Card p={4}>
-      <Text variant="sectionTitle">
+      <Text variant="title">
         <Trans>Other Parameters</Trans>
       </Text>
       <Divider mx={-4} my={4} sx={{ borderColor: 'darkBorder' }} />

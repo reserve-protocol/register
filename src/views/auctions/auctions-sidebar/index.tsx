@@ -15,12 +15,12 @@ const Header = ({ onClose }: { onClose(): void }) => (
   <Flex
     sx={{
       alignItems: 'center',
-      height: '56px',
       flexShrink: 0,
     }}
     px={[3, 5]}
+    pt={3}
   >
-    <Text variant="sectionTitle" sx={{ fontSize: 3 }} mr={1}>
+    <Text variant="sectionTitle" mr={1}>
       <Trans>Auctions</Trans>
     </Text>
     <Button variant="circle" ml="auto" onClick={onClose}>

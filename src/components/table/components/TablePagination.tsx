@@ -95,19 +95,19 @@ export const TablePagination: FC<
   })
   return (
     <Box
-      sx={{ display: 'flex', alignItems: 'center' }}
+      mt={4}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
       variant="table.pagination.container"
     >
-      <Box sx={{ fontSize: 1, color: 'lightText' }} ml={3}>
-        {totalCountVisible && totalCountResolvedTemplate}
-      </Box>
-      <Box
-        sx={{ marginLeft: 'auto' }}
-        variant="table.pagination.navigationContainer"
-      >
+      <Box variant="table.pagination.navigationContainer">
         {(canPreviousPage || canNextPage) && (
           <Box variant="table.pagination.navigation" sx={{ display: 'flex' }}>
-            <Box variant="table.pagination.navigation.button" mr={1}>
+            <Box variant="table.pagination.navigation.button" mr={2}>
               <SmallButton
                 variant="muted"
                 onClick={() => gotoPage(0)}
@@ -116,18 +116,18 @@ export const TablePagination: FC<
                 {'<<'}
               </SmallButton>
             </Box>
-            <Box variant="table.pagination.navigation.button" mr={1}>
+            <Box variant="table.pagination.navigation.button" mr={2}>
               <SmallButton
-                variant="muted"
+                variant="primary"
                 onClick={() => previousPage()}
                 disabled={!canPreviousPage}
               >
                 {'<'}
               </SmallButton>
             </Box>
-            <Box variant="table.pagination.navigation.button" mr={1}>
+            <Box variant="table.pagination.navigation.button" mr={2}>
               <SmallButton
-                variant="muted"
+                variant="primary"
                 onClick={() => nextPage()}
                 disabled={!canNextPage}
               >
@@ -140,7 +140,7 @@ export const TablePagination: FC<
                 onClick={() => gotoPage(pageCount - 1)}
                 disabled={!canNextPage}
               >
-                {'>>'}
+                {'>'}
               </SmallButton>
             </Box>
           </Box>
@@ -181,6 +181,9 @@ export const TablePagination: FC<
             </Select>
           </Box>
         )}
+      </Box>
+      <Box mt={3} sx={{ fontSize: 1, color: 'lightText' }}>
+        {totalCountVisible && totalCountResolvedTemplate}
       </Box>
     </Box>
   )

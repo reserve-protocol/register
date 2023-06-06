@@ -18,11 +18,11 @@ const About = (props: BoxProps) => {
   }
 
   return (
-    <Box {...props}>
-      <ContentHead pl={3} title={t`About`} />
-      <Grid columns={[1, 1, 2]} mt={7} px={3} gap={[4, 4, 7]}>
-        <Box>
-          <Text mb={2} variant="strong">
+    <Box px={[3, 4]} {...props}>
+      <ContentHead title={t`About`} />
+      <Grid columns={[1, 1, 2]} mt={7} gap={[4, 4, 7]}>
+        <Box mb={[0, 7]}>
+          <Text mb={3} variant="strong">
             <Trans>RTokens & Deploying your own</Trans>
           </Text>
           <Text variant="legend" as="p">
@@ -35,13 +35,13 @@ const About = (props: BoxProps) => {
               community.
             </Trans>
           </Text>
-          <SmallButton mt={4} mb={5} onClick={handleDeploy}>
-            <Trans>Deploy RToken</Trans>
+          <SmallButton variant="primary" mt={4} mb={6} onClick={handleDeploy}>
+            <Trans>Open RToken Deployer</Trans>
           </SmallButton>
-          <Text mb={2} variant="strong">
+          <Text mb={3} variant="strong">
             <Trans>The Reserve Project</Trans>
           </Text>
-          <Text variant="legend" as="p" mb={5}>
+          <Text variant="legend" as="p" mb={6}>
             <Trans>
               Reserve aims to help people around the world maintain their
               spending power by allowing anyone to create asset-backed
@@ -56,17 +56,17 @@ const About = (props: BoxProps) => {
               <Trans>Reserve's documentation.</Trans>
             </Link>
           </Text>
-          <Text mb={2} variant="strong">
+          <Text mb={3} variant="strong">
             <Trans>This app</Trans>
           </Text>
-          <Text variant="legend" as="p" mb={2}>
+          <Text variant="legend" as="p" mb={4}>
             <Trans>
               Register is developed and maintained by LC Labs as the first dApp
               to interact with the Reserve Protocol and various RTokens deployed
               with the platform.
             </Trans>
           </Text>
-          <Text variant="legend" as="p" mb={5}>
+          <Text variant="legend" as="p" mb={6}>
             <Trans>
               If an RToken is listed on Register, it doesn't mean that Reserve
               or LC Labs endorses the safety or risk levels of the RToken. LC
@@ -86,7 +86,7 @@ const About = (props: BoxProps) => {
               collect any information about users or their financial activity.
             </Trans>
           </Text>
-          <Text variant="legend" as="p" mb={3}>
+          <Text variant="legend" as="p" mb={[1, 3]}>
             <Trans>
               Please keep in mind that interactions with the Ethereum blockchain
               are pseudonymous and publicly available.

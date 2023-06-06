@@ -83,9 +83,8 @@ const Stats = (props: BoxProps) => {
           <Text mr={2} variant="subtitle" mb={3}>
             <Trans>Unstaking Delay</Trans>
           </Text>
-
           <IconInfo
-            icon={<Image src="/svgs/backing.svg" />}
+            icon={<Image src="/svgs/unstakingdelay.svg" />}
             title={t`Current`}
             text={parseDuration(+params?.unstakingDelay || 0)}
           />

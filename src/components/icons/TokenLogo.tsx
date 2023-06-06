@@ -5,7 +5,7 @@ import { Box, BoxProps, Image } from 'theme-ui'
 
 interface Props extends BoxProps {
   symbol?: string
-  size?: number | string
+  width?: number | string
   src?: string
 }
 
@@ -49,7 +49,7 @@ const IMGS = new Set([
   'stkcvxmim-3lp3crv-f',
 ])
 
-const TokenLogo = ({ symbol, src, size = '1em', sx = {}, ...props }: Props) => {
+const TokenLogo = ({ symbol, src, width, sx = {}, ...props }: Props) => {
   let imgSrc = src
   const rToken = useRToken()
 
@@ -72,16 +72,15 @@ const TokenLogo = ({ symbol, src, size = '1em', sx = {}, ...props }: Props) => {
         display: 'flex',
         alignItems: 'center',
         flexShrink: 0,
+        width: width,
         justifyContent: 'center',
         border: '1px solid 0 0 1px 0px white',
-        height: size,
-        width: size,
         ...sx,
       }}
     >
       <Image
         src={imgSrc}
-        sx={{ height: '100%' }}
+        sx={{ height: '100%', width: width }}
         onError={({ currentTarget }) => {
           currentTarget.onerror = null // prevents looping
           currentTarget.src = '/svgs/default.svg'

@@ -145,20 +145,21 @@ const StakeBalance = () => {
         />
         {!!rToken?.stToken && <TrackAsset token={rToken?.stToken} />}
       </Flex>
-
-      <TokenBalance
-        mt={2}
-        symbol="RSR Value"
-        logoSrc="/svgs/equals.svg"
-        balance={+balance.balance * rate}
-      />
-      <TokenBalance
-        symbol="USD"
-        logoSrc="/svgs/equals.svg"
-        usd
-        balance={+balance.balance * rate * rsrPrice}
-        mt={2}
-      />
+      <Box ml={4} mt={3}>
+        <TokenBalance
+          mt={2}
+          symbol="RSR Value"
+          logoSrc="/svgs/equals.svg"
+          balance={+balance.balance * rate}
+        />
+        <TokenBalance
+          symbol="USD Value"
+          logoSrc="/svgs/equals.svg"
+          usd
+          balance={+balance.balance * rate * rsrPrice}
+          mt={2}
+        />
+      </Box>
     </Box>
   )
 }
@@ -179,10 +180,11 @@ const RSRBalance = () => {
       </Flex>
       <TokenBalance
         logoSrc="/svgs/equals.svg"
-        symbol="USD"
+        symbol="USD Value"
         usd
         balance={+balance.balance * rsrPrice}
-        mt={2}
+        mt={3}
+        ml={4}
       />
     </Box>
   )

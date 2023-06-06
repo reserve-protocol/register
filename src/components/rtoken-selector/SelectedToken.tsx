@@ -3,9 +3,10 @@ import TokenItem from 'components/token-item'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { rTokenAtom, selectedRTokenAtom } from 'state/atoms'
-import { Text } from 'theme-ui'
+import { Box, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import availableTokensAtom, { DEFAULT_LOGO } from './atoms'
+import BasketCubeIcon from '../icons/BasketCubeIcon'
 
 /**
  * Top header token display
@@ -34,9 +35,12 @@ const SelectedToken = () => {
 
   if (!selectedAddress) {
     return (
-      <Text>
-        <Trans>Select RToken</Trans>
-      </Text>
+      <Box variant="layout.verticalAlign">
+        <BasketCubeIcon />
+        <Text ml={2}>
+          <Trans>Select RToken</Trans>
+        </Text>
+      </Box>
     )
   }
 

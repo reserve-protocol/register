@@ -19,13 +19,17 @@ const Auctions = () => {
     <>
       <TradesUpdater />
       <Container>
-        <Box variant="layout.verticalAlign">
-          <Box mb={4} ml={3}>
-            <Text variant="strong" sx={{ fontSize: 3 }}>
+        <Box
+          px={4}
+          pb={7}
+          mt={4}
+          mb={6}
+          variant="layout.verticalAlign"
+          sx={{ borderBottom: '1px dashed', borderBottomColor: 'border' }}
+        >
+          <Box>
+            <Text variant="pageTitle">
               {rToken?.symbol || ''} related Auctions
-            </Text>
-            <Text variant="legend" mt="1">
-              <Trans>Ongoing & historical auctions.</Trans>
             </Text>
           </Box>
           <SmallButton

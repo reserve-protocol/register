@@ -41,7 +41,7 @@ const AccountVotes = () => {
   }
 
   return (
-    <Box variant="layout.borderBox" mb={4}>
+    <Box variant="layout.borderBox" mb={3}>
       {hasNoDelegates ? (
         <Box>
           <Text variant="title" mb={2}>
@@ -53,7 +53,7 @@ const AccountVotes = () => {
               your vote to yourself or another Eth address.
             </Trans>
           </Text>
-          <SmallButton mt={3} variant="muted" onClick={handleDelegate}>
+          <SmallButton mt={3} variant="primary" onClick={handleDelegate}>
             <Trans>Delegate</Trans>
           </SmallButton>
           <Text ml={3} variant="legend" as="span">
