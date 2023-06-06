@@ -1,5 +1,8 @@
 import { t, Trans } from '@lingui/macro'
+import Help from 'components/help'
 import IconInfo from 'components/info-icon'
+import useRToken from 'hooks/useRToken'
+import useTokenStats from 'hooks/useTokenStats'
 import { useAtomValue } from 'jotai'
 import {
   estimatedApyAtom,
@@ -7,11 +10,9 @@ import {
   rTokenAtom,
   rTokenBackingDistributionAtom,
   rTokenConfigurationAtom,
-  rTokenYieldAtom,
 } from 'state/atoms'
 import { Box, BoxProps, Flex, Grid, Image, Text } from 'theme-ui'
-import Help from 'components/help'
-import { formatPercentage, parseDuration } from 'utils'
+import { formatCurrency, formatPercentage, parseDuration } from 'utils'
 
 const ExchangeRate = (props: BoxProps) => {
   const rate = useAtomValue(rsrExchangeRateAtom)
@@ -31,8 +32,9 @@ const ExchangeRate = (props: BoxProps) => {
 const Stats = (props: BoxProps) => {
   const { stakers } = useAtomValue(estimatedApyAtom)
   const distribution = useAtomValue(rTokenBackingDistributionAtom)
-  const { stakingApy } = useAtomValue(rTokenYieldAtom)
   const params = useAtomValue(rTokenConfigurationAtom)
+  const rToken = useRToken()
+  const stats = useTokenStats(rToken?.address.toLowerCase() ?? '')
 
   return (
     <Box {...props} variant="layout.borderBox" p={0}>
@@ -54,14 +56,13 @@ const Stats = (props: BoxProps) => {
             }}
           >
             <Text mr={2} variant="subtitle">
-              <Trans>Staking APY</Trans>
+              <Trans>Stake pool</Trans>
             </Text>
-            <Help content="This will always be 0% for a few months after RToken creation." />
           </Box>
           <IconInfo
             icon={<Image src="/svgs/trendup.svg" />}
-            title={t`Est. APY`}
-            text={`${stakingApy}%`}
+            title={t`Total RSR staked`}
+            text={`${formatCurrency(stats.staked)}`}
           />
         </Box>
         <Box p={4} sx={{ borderBottom: '1px solid', borderColor: 'border' }}>
