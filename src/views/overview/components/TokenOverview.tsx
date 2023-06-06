@@ -1,10 +1,11 @@
 import { t, Trans } from '@lingui/macro'
+import TokenLogo from 'components/icons/TokenLogo'
 import { ContentHead, InfoHeading } from 'components/info-box'
 import { useAtomValue } from 'jotai'
-import { estimatedApyAtom, rTokenAtom, rTokenYieldAtom } from 'state/atoms'
-import { Box, BoxProps, Flex, Image, Text } from 'theme-ui'
+import { estimatedApyAtom, rTokenAtom } from 'state/atoms'
+import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { TokenStats } from 'types'
-import { formatCurrency, formatPercentage, parsePercent } from 'utils'
+import { formatCurrency, formatPercentage } from 'utils'
 
 interface Props extends BoxProps {
   metrics: TokenStats
@@ -27,7 +28,7 @@ const TokenOverview = ({ metrics, ...props }: Props) => {
 
       <Flex sx={{ flexDirection: 'column' }}>
         <Flex sx={{ alignItems: 'center' }}>
-          <Image src={rToken?.logo} sx={{ width: 40, height: 40 }} />
+          <TokenLogo symbol={rToken?.symbol} sx={{ width: 40, height: 40 }} />
           <Flex ml={3} sx={{ flexDirection: 'column' }}>
             <Text variant="legend" sx={{ fontWeight: 300 }}>
               <Trans>Market cap</Trans>
