@@ -145,20 +145,51 @@ const StakeBalance = () => {
         />
         {!!rToken?.stToken && <TrackAsset token={rToken?.stToken} />}
       </Flex>
-      <Box ml={4} mt={3}>
-        <TokenBalance
-          mt={2}
-          symbol="RSR Value"
-          logoSrc="/svgs/equals.svg"
-          balance={+balance.balance * rate}
-        />
-        <TokenBalance
-          symbol="USD Value"
-          logoSrc="/svgs/equals.svg"
-          usd
-          balance={+balance.balance * rate * rsrPrice}
-          mt={2}
-        />
+      <Box
+        ml={'9px'}
+        pl={3}
+        pt={4}
+        mt={-3}
+        sx={{ borderLeft: 'solid 1px', borderColor: 'darkBorder' }}
+      >
+        <Box variant="layout.verticalAlign">
+          {/* Line connecting to vertical line connecting to stRSR */}
+          <Box
+            mt={'8px'}
+            ml={-3}
+            sx={{
+              width: '16px',
+              borderTop: 'solid 1px',
+              borderColor: 'darkBorder',
+            }}
+          ></Box>
+          <TokenBalance
+            mr={'auto'}
+            mt={2}
+            symbol="RSR Value"
+            logoSrc="/svgs/equals.svg"
+            balance={+balance.balance * rate}
+          />
+        </Box>
+        <Box variant="layout.verticalAlign">
+          {/* Line connecting to vertical line connecting to stRSR */}
+          <Box
+            mt={'8px'}
+            ml={-3}
+            sx={{
+              width: '16px',
+              borderTop: 'solid 1px',
+              borderColor: 'darkBorder',
+            }}
+          ></Box>
+          <TokenBalance
+            symbol="USD Value"
+            logoSrc="/svgs/equals.svg"
+            usd
+            balance={+balance.balance * rate * rsrPrice}
+            mt={2}
+          />
+        </Box>
       </Box>
     </Box>
   )
@@ -171,21 +202,39 @@ const RSRBalance = () => {
   return (
     <Box p={4}>
       <Text variant="subtitle" mb={3}>
-        <Trans>In Wallet</Trans>
+        <Trans>RSR in wallet</Trans>
       </Text>
       <Flex>
         <TokenBalance symbol="RSR" balance={+balance.balance} mr={2} />
-
         <TrackAsset token={RSR} />
       </Flex>
-      <TokenBalance
-        logoSrc="/svgs/equals.svg"
-        symbol="USD Value"
-        usd
-        balance={+balance.balance * rsrPrice}
-        mt={3}
-        ml={4}
-      />
+      <Box
+        ml={'9px'}
+        pl={3}
+        pt={4}
+        mt={-3}
+        sx={{ borderLeft: 'solid 1px', borderColor: 'darkBorder' }}
+      >
+        <Box variant="layout.verticalAlign">
+          {/* Line connecting to vertical line connecting to stRSR */}
+          <Box
+            mt={'8px'}
+            ml={-3}
+            sx={{
+              width: '16px',
+              borderTop: 'solid 1px',
+              borderColor: 'darkBorder',
+            }}
+          ></Box>
+          <TokenBalance
+            logoSrc="/svgs/equals.svg"
+            symbol="USD Value"
+            usd
+            balance={+balance.balance * rsrPrice}
+            mt={2}
+          />
+        </Box>
+      </Box>
     </Box>
   )
 }
