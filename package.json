@@ -16,7 +16,7 @@
     "@reach/dialog": "^0.17.0",
     "@reach/portal": "^0.17.0",
     "@react-spring/web": "^9.7.1",
-    "@reserve-protocol/token-zapper": "1.6.5",
+    "@reserve-protocol/token-zapper": "1.7.8",
     "@types/humanize-duration": "^3.27.1",
     "@uiw/react-md-editor": "^3.20.5",
     "@uniswap/permit2-sdk": "^1.2.0",
@@ -68,7 +68,11 @@
     "build": "react-scripts build",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "test": "react-scripts test",
-    "translations": "lingui extract --clean && lingui compile"
+    "translations": "lingui extract --clean && lingui compile",
+    "postinstall": "npx patch-package"
+  },
+  "engines": {
+    "node": ">=18.13.0"
   },
   "browserslist": {
     "production": [
@@ -98,6 +102,7 @@
     "@types/uuid": "^8.3.4",
     "babel-plugin-macros": "^3.1.0",
     "babel-preset-react-app": "^10.0.1",
+    "patch-package": "^7.0.0",
     "prettier": "^2.3.2",
     "source-map-explorer": "^2.5.2",
     "typechain": "^8.1.0"

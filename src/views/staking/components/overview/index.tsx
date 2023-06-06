@@ -11,7 +11,9 @@ import {
 } from 'state/atoms'
 import { Box, BoxProps, Flex, Grid, Image, Text } from 'theme-ui'
 import Help from 'components/help'
-import { formatPercentage, parseDuration } from 'utils'
+import { formatCurrency, formatPercentage, parseDuration } from 'utils'
+import useTokenStats from 'hooks/useTokenStats'
+import useRToken from 'hooks/useRToken'
 
 const ExchangeRate = (props: BoxProps) => {
   const rate = useAtomValue(rsrExchangeRateAtom)
@@ -33,6 +35,8 @@ const Stats = (props: BoxProps) => {
   const distribution = useAtomValue(rTokenDistributionAtom)
   const { stakingApy } = useAtomValue(rTokenYieldAtom)
   const { unstakingDelay } = useAtomValue(rTokenParamsAtom)
+  const rToken = useRToken()
+  const stats = useTokenStats(rToken?.address.toLowerCase() ?? '')
 
   return (
     <Box {...props} variant="layout.borderBox" p={0}>
@@ -54,14 +58,13 @@ const Stats = (props: BoxProps) => {
             }}
           >
             <Text mr={2} variant="subtitle">
-              <Trans>Staking APY</Trans>
+              <Trans>Stake pool</Trans>
             </Text>
-            <Help content="This will always be 0% for a few months after RToken creation." />
           </Box>
           <IconInfo
             icon={<Image src="/svgs/trendup.svg" />}
-            title={t`Est. APY`}
-            text={`${stakingApy}%`}
+            title={t`Total RSR staked`}
+            text={`${formatCurrency(stats.staked)}`}
           />
         </Box>
         <Box p={4} sx={{ borderBottom: '1px solid', borderColor: 'border' }}>

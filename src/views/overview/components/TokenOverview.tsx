@@ -1,10 +1,10 @@
 import { t, Trans } from '@lingui/macro'
 import { ContentHead, InfoHeading } from 'components/info-box'
 import { useAtomValue } from 'jotai'
-import { estimatedApyAtom, rTokenAtom, rTokenYieldAtom } from 'state/atoms'
-import { Box, BoxProps, Flex, Text, Image } from 'theme-ui'
+import { estimatedApyAtom, rTokenAtom } from 'state/atoms'
+import { Box, BoxProps, Flex, Image, Text } from 'theme-ui'
 import { TokenStats } from 'types'
-import { formatPercentage, parsePercent } from 'utils'
+import { formatCurrency, formatPercentage } from 'utils'
 
 interface Props extends BoxProps {
   metrics: TokenStats
@@ -12,7 +12,6 @@ interface Props extends BoxProps {
 
 const TokenOverview = ({ metrics, ...props }: Props) => {
   const rToken = useAtomValue(rTokenAtom)
-  const { tokenApy, stakingApy } = useAtomValue(rTokenYieldAtom)
   const { holders, stakers } = useAtomValue(estimatedApyAtom)
 
   return (
@@ -53,34 +52,27 @@ const TokenOverview = ({ metrics, ...props }: Props) => {
           >
             <Box mr={8}>
               <InfoHeading
-                title={t`RSR Staked Pool`}
+                title={t`Stake Pool`}
+                subtitle={`${formatCurrency(metrics.staked)} RSR`}
+                mb={[3, 4]}
+              />
+              <InfoHeading
+                title={t`Stake pool USD value`}
                 subtitle={metrics.stakedUsd}
-                mb={[3, 4]}
-              />
-              <InfoHeading
-                title={t`Est. stRSR Yield`}
-                subtitle={`${formatPercentage(stakers || 0)}`}
-                help={t`Manually estimated APY, calculated base on the RToken basket averaged yield with regards of the total RToken market cap and revenue distribution to stakers. Calculation = [avgCollateralYield * rTokenMarketCap / rsrStaked]`}
                 mb={4}
-              />
-              <InfoHeading
-                title={t`stRSR Yield`}
-                help={t`Historic stRSR yield, this will be 0% until enough on-chain events ocurred. Calculated in base of the exchange rate between RSR <> stRSR historic changes`}
-                subtitle={`${stakingApy}%`}
-                mb={[3, 4]}
               />
             </Box>
             <Box>
               <InfoHeading
                 title={t`Est. RToken Yield`}
-                help={t`Manually estimated APY, calculated base on the RToken basket averaged yield with regards of the total RToken market cap and revenue distribution to holders.`}
                 subtitle={`${formatPercentage(holders || 0)}`}
+                help={t`Estimated APY calculated base on the RToken basket averaged yield with regards of the total RToken market cap and revenue distribution to holders.`}
                 mb={[3, 4]}
               />
               <InfoHeading
-                help={t`Historic RToken yield, this will be 0% until enough on-chain events ocurred.`}
-                title={t`RToken Yield`}
-                subtitle={`${tokenApy}%`}
+                title={t`Est. stRSR Yield`}
+                subtitle={`${formatPercentage(stakers || 0)}`}
+                help={t`Estimated APY, calculated base on the RToken basket averaged yield with regards of the total RToken market cap and revenue distribution to stakers. Calculation = [avgCollateralYield * rTokenMarketCap / rsrStaked]`}
                 mb={[3, 4]}
               />
             </Box>

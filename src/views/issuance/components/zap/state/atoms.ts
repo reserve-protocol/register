@@ -4,6 +4,7 @@ import {
   entities,
   searcher,
 } from '@reserve-protocol/token-zapper'
+import { IERC20__factory } from '@reserve-protocol/token-zapper/types/contracts'
 import {
   PERMIT2_ADDRESS,
   PermitTransferFrom,
@@ -63,7 +64,7 @@ export const permitSignature = atom(null as null | string)
 
 // The amount of slippage we allow when zap involves a trade:
 // This is not exposed in the UI yet, but probably should be.
-const tradeSlippage = atom(0)
+const tradeSlippage = atom(0.01)
 
 // We sent the zap transaction,
 // and are waiting for the user to sign off on it and for it to commit
@@ -139,12 +140,15 @@ export const zapQuotePromise = loadable(
     if (input.inputQuantity.amount === 0n) {
       return null
     }
-    return await input.zapSearcher.findSingleInputToRTokenZap(
+    const a = input.zapSearcher.findSingleInputToRTokenZap(
       input.inputQuantity,
       input.rToken,
       input.signer,
       get(tradeSlippage)
     )
+    a.catch((e) => console.log(e.message))
+
+    return await a
   })
 )
 
@@ -163,6 +167,7 @@ export const approvalNeededAtom = loadable(
     const token = get(selectedZapTokenAtom)
     const user = get(zapSender)
     const universe = get(resolvedZapState)
+    const input = get(parsedUserInput)
     get(approvalRandomId)
 
     let approvalNeeded = false
@@ -171,21 +176,27 @@ export const approvalNeededAtom = loadable(
     if (token !== universe.nativeToken) {
       if (
         get(supportsPermit2Signatures) &&
-        !(await universe.approvalStore.needsApproval(
-          token,
-          user,
-          base.Address.from(PERMIT2_ADDRESS)
-        ))
+        !(
+          (input.amount === 0n ? 2n ** 64n : input.amount) >
+          (
+            await contracts.IERC20__factory.connect(
+              token.address.address,
+              universe.provider
+            ).allowance(user.address, PERMIT2_ADDRESS)
+          ).toBigInt()
+        )
       ) {
         spender = base.Address.from(PERMIT2_ADDRESS)
         usingPermit2 = true
         approvalNeeded = false
       } else {
-        approvalNeeded = await universe.approvalStore.needsApproval(
-          token,
-          user,
-          base.Address.from(universe.config.addresses.zapperAddress)
-        )
+        const allowance = await contracts.IERC20__factory.connect(
+          token.address.address,
+          universe.provider
+        ).allowance(user.address, spender.address)
+        approvalNeeded =
+          (input.amount === 0n ? 2n ** 64n : input.amount) >
+          allowance.toBigInt()
       }
     }
     const out = {
@@ -285,10 +296,18 @@ export const zapTransaction = loadable(
             }
           : undefined
     }
+
+    // Bit hacky:
+    // if the user is zapping more than 50k, let's explicitly return dust.
+    // The current code to return dust does not seem to always trigger correctly
+    // this leaves a significant amount of dust in the contract, especially when zapping large quantities
+    const FIFTY_K = result.universe.usd.from('50000')
+    const value = (await result.universe.fairPrice(result.userInput)) ?? FIFTY_K
     return {
       result,
       transaction: await result.toTransaction({
         permit2,
+        returnDust: value.gte(FIFTY_K) ? true : undefined,
       }),
       permit2,
     }

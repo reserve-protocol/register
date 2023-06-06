@@ -71,6 +71,8 @@ const Main = () => {
         cumulativeRTokenRevenueUSD
         rsrRevenue
         transactionCount
+        rsrStaked
+        rsrStakedUSD
       }
       financialsDailySnapshots(
         orderBy: timestamp
@@ -109,13 +111,13 @@ const Main = () => {
           (+data.token?.lastPriceUSD || 0) +
         rpayOverview.volume
 
+      const marketCapUsd = (+data.protocol?.totalRTokenUSD || 0) + rsvMarket
+
       setMetrics({
         totalValueLockedUSD: `$${formatCurrency(
-          (+data.protocol?.totalValueLockedUSD || 0) + rsvMarket
+          marketCapUsd + (+data.protocol?.rsrStakedUSD || 0)
         )}`,
-        totalRTokenUSD: `$${formatCurrency(
-          (+data.protocol?.totalRTokenUSD || 0) + rsvMarket
-        )}`,
+        totalRTokenUSD: `$${formatCurrency(marketCapUsd)}`,
         cumulativeVolumeUSD: `$${formatCurrency(
           rsvVolume + (+data.protocol?.cumulativeVolumeUSD || 0)
         )}`,

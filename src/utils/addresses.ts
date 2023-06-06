@@ -11,7 +11,7 @@ export const ST_RSR_ADDRESS = '0x0000000000000000000000000000000000000002'
  */
 export const DEPLOYER_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x5c46b718Cd79F2BBA6869A3BeC13401b9a4B69bB',
-  [ChainId.Goerli]: '0x14c443d8BdbE9A65F3a23FA4e199d8741D5B38Fa',
+  [ChainId.Goerli]: '0x0F53Aba2a7354C86B64dcaEe0ab9BF852846bAa5',
   [ChainId.Hardhat]: '0x5c46b718Cd79F2BBA6869A3BeC13401b9a4B69bB',
 }
 
@@ -29,7 +29,7 @@ export const FACADE_ACT_ADDRESS: AddressMap = {
 
 export const FACADE_WRITE_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x1656D8aAd7Ee892582B9D5c2E9992d9f94ff3629',
-  [ChainId.Goerli]: '0xdEBe74dc2A415e00bE8B4b9d1e6e0007153D006a',
+  [ChainId.Goerli]: '0x97C75046CE7Ea5253d20A35B3138699865E8813f',
   [ChainId.Hardhat]: '0xdEBe74dc2A415e00bE8B4b9d1e6e0007153D006a',
 }
 
@@ -126,7 +126,9 @@ export const ENS_ADDRESS: AddressMap = {
 // Fixed tokens used in the rtoken selector screen and dashboard
 // TODO: Change this
 export const DEFAULT_TOKENS = {
-  [ChainId.Mainnet]: Object.keys(tokenList),
+  [ChainId.Mainnet]: Object.keys(tokenList).filter(
+    (addr) => addr !== RSV_ADDRESS[ChainId.Mainnet]
+  ),
   [ChainId.Goerli]: [RSV_ADDRESS[ChainId.Goerli]],
   [ChainId.Hardhat]: [],
 }
