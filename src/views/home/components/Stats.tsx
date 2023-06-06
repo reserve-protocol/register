@@ -261,7 +261,7 @@ const Main = () => {
           textAlign: 'center',
           flexDirection: ['column', 'row'],
           justifyContent: 'space-between',
-          maxWidth: '840px',
+          maxWidth: '900px',
         }}
         {...props}
       >
