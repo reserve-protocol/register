@@ -180,10 +180,11 @@ const RSRBalance = () => {
       </Flex>
       <TokenBalance
         logoSrc="/svgs/equals.svg"
-        symbol="USD"
+        symbol="USD Value"
         usd
         balance={+balance.balance * rsrPrice}
-        mt={2}
+        mt={3}
+        ml={4}
       />
     </Box>
   )
