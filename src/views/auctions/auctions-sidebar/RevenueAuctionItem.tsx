@@ -44,7 +44,7 @@ const RevenueAuctionItem = ({
               </label>
             </Box>
           ) : (
-            <Text sx={{ fontSize: 0, color: 'lightText' }} mr={2}>
+            <Text sx={{ fontSize: 0, color: 'text' }} mr={2}>
               {isBelowMinTrade ? (
                 <Trans>Surplus below minimum trade</Trans>
               ) : (
@@ -56,12 +56,12 @@ const RevenueAuctionItem = ({
         {isOpen ? (
           <ChevronUp
             size={18}
-            color={!data.canStart ? 'lightText' : undefined}
+            color={!data.canStart ? 'currentColor' : undefined}
           />
         ) : (
           <ChevronDown
             size={18}
-            color={!data.canStart ? 'lightText' : undefined}
+            color={!data.canStart ? 'currentColor' : undefined}
           />
         )}
       </Box>
