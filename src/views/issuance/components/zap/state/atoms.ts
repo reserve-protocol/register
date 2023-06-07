@@ -134,11 +134,27 @@ const debouncedUserInputGenerator = atomWithDebounce(
   400
 ).debouncedValueAtom
 
+let firstTime = true
 export const zapQuotePromise = loadable(
   onlyNonNullAtom(async (get) => {
     const input = get(debouncedUserInputGenerator)
     if (input.inputQuantity.amount === 0n) {
       return null
+    }
+
+    // I suspect that the first time we call this function it's too slow because caches are being populated.
+    // This seems to cause the estimate to fail. So we call it once before we actually need it.
+    if (firstTime) {
+      try {
+        await input.zapSearcher.findSingleInputToRTokenZap(
+          input.inputQuantity,
+          input.rToken,
+          input.signer,
+          get(tradeSlippage)
+        )
+      } catch (e) { }
+      await base.wait(1000)
+      firstTime = false
     }
     const a = input.zapSearcher.findSingleInputToRTokenZap(
       input.inputQuantity,
