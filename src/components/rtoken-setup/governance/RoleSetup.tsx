@@ -25,7 +25,7 @@ const roleMap: {
   {
     roleKey: 'longFreezers',
     title: 'Long Freezers',
-    help: 'The long freezerhas the ability to freeze an RToken’s system for a long period of time. The LONG_FREEZER role should be assigned to an address that will highly optimize for no false positives. It is much longer than the short freeze. It can act slowly and needs to be trusted. It is probably expected to have only one long-freezer address. It allows only 6x uses per long-freezer. It exists so that in the case of a zero-day exploit, governance can act before the system unfreezes and resumes functioning. ',
+    help: 'The long freezer has the ability to freeze an RToken’s system for a long period of time. The LONG_FREEZER role should be assigned to an address that will highly optimize for no false positives. It is much longer than the short freeze. It can act slowly and needs to be trusted. It is probably expected to have only one long-freezer address. It allows only 6x uses per long-freezer. It exists so that in the case of a zero-day exploit, governance can act before the system unfreezes and resumes functioning. ',
   },
 ]
 
