@@ -1,4 +1,4 @@
-import { entities } from '@reserve-protocol/token-zapper'
+import { entities, base } from '@reserve-protocol/token-zapper'
 import { ethers } from 'ethers'
 import { atom, Getter, SetStateAction, Setter } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
@@ -386,6 +386,7 @@ const approve: ZapperAction = async (
   try {
     const resp = await signer.sendTransaction(approvalNeeded.tx)
     const receipt = await resp.wait(1)
+    await base.wait(3000)
 
     if (receipt.status === 0) {
       error('Approval failed', 'Transaction reverted on chain')

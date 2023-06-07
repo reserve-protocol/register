@@ -45,7 +45,7 @@ const ConfirmZap = ({ onClose }: { onClose: () => void }) => {
   const [zapHash, setHash] = useAtom(zapTxHash)
   const state = useAtomValue(ui.state)
   const zapTxFee = useAtomValue(zapTxFeeAtom)
-  const { enabled, loading } = useAtomValue(ui.button)
+  const { enabled } = useAtomValue(ui.button)
 
   if (zapHash) {
     return (
