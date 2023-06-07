@@ -56,7 +56,7 @@ const TokenOverview = ({ metrics, ...props }: Props) => {
           >
             <Box mr={8}>
               <InfoHeading
-                title={t`Stake Pool`}
+                title={t`Stake pool`}
                 subtitle={`${formatCurrency(metrics.staked)} RSR`}
                 mb={[3, 4]}
               />

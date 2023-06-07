@@ -59,9 +59,9 @@ const AreaChart = ({
 
   let gainColor = 'lightText'
 
-  if (gain > 0) {
+  if (+gain > 0) {
     gainColor = 'success'
-  } else if (gain < 0) {
+  } else if (+gain < 0) {
     gainColor = 'danger'
   }
 
@@ -73,7 +73,7 @@ const AreaChart = ({
         </Flex>
       )}
       <Flex sx={{ fontSize: 3 }} mb={4}>
-        <Text>{title}</Text>
+        <Text sx={{ overflow: 'hidden' }}>{title}</Text>
         <Text ml="auto" sx={{ color: gainColor }}>
           {gain}%
         </Text>

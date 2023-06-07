@@ -6,28 +6,12 @@ import useTokenStats from 'hooks/useTokenStats'
 import { useAtomValue } from 'jotai'
 import {
   estimatedApyAtom,
-  rsrExchangeRateAtom,
-  rTokenAtom,
   rTokenBackingDistributionAtom,
   rTokenConfigurationAtom,
 } from 'state/atoms'
-import { Box, BoxProps, Flex, Grid, Image, Text } from 'theme-ui'
+import { Box, BoxProps, Grid, Image, Text } from 'theme-ui'
 import { formatCurrency, formatPercentage, parseDuration } from 'utils'
-
-const ExchangeRate = (props: BoxProps) => {
-  const rate = useAtomValue(rsrExchangeRateAtom)
-  const rToken = useAtomValue(rTokenAtom)
-
-  return (
-    <Box variant="layout.borderBox" {...props} padding={4}>
-      <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
-        <Text>
-          1 {rToken?.stToken?.symbol ?? 'stRSR'} = {rate} RSR
-        </Text>
-      </Flex>
-    </Box>
-  )
-}
+import ExchangeRate from './ExchangeRate'
 
 const Stats = (props: BoxProps) => {
   const { stakers } = useAtomValue(estimatedApyAtom)

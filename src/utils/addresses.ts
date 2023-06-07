@@ -11,25 +11,25 @@ export const ST_RSR_ADDRESS = '0x0000000000000000000000000000000000000002'
  */
 export const DEPLOYER_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x81b9Ae0740CcA7cDc5211b2737de735FBC4BeB3C',
-  [ChainId.Goerli]: '0x14c443d8BdbE9A65F3a23FA4e199d8741D5B38Fa',
+  [ChainId.Goerli]: '0x7bdAbdA24406A293f230690Ad5305173d266B7d6',
   [ChainId.Hardhat]: '0x5c46b718Cd79F2BBA6869A3BeC13401b9a4B69bB',
 }
 
 export const FACADE_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x339c1509b980D80A0b50858518531eDbe2940dA1',
-  [ChainId.Goerli]: '0xe8461dB45A7430AA7aB40346E68821284980FdFD',
+  [ChainId.Goerli]: '0x62bf08e255706f3855821B2C25007a731D585E59',
   [ChainId.Hardhat]: '0xf535Cab96457558eE3eeAF1402fCA6441E832f08',
 }
 
 export const FACADE_ACT_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xeaCaF85eA2df99e56053FD0250330C148D582547',
-  [ChainId.Goerli]: '0x103BAFaB86f37C407f2C4813ee343020b66b062f',
+  [ChainId.Goerli]: '0x7Bcb39F6d2A902aF8adFe384Ec6D84ABE66D2065',
   [ChainId.Hardhat]: '0x933c5DBdA80f03C102C560e9ed0c29812998fA78',
 }
 
 export const FACADE_WRITE_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x0776Ad71Ae99D759354B3f06fe17454b94837B0D',
-  [ChainId.Goerli]: '0xdEBe74dc2A415e00bE8B4b9d1e6e0007153D006a',
+  [ChainId.Goerli]: '0x264Fb85EF99cb2026de73ef0f6f74AFd6335a006',
   [ChainId.Hardhat]: '0xdEBe74dc2A415e00bE8B4b9d1e6e0007153D006a',
 }
 
@@ -53,13 +53,13 @@ export const RSV_MANAGER_ADDRESS: AddressMap = {
  */
 export const STAKE_AAVE_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x5cAF60bf01A5ecd436b2Cd0b68e4c04547eCb872',
-  [ChainId.Goerli]: '0x3ddc60c2dFa57F78972466ca805C9dA69795FdB7',
+  [ChainId.Goerli]: '0x7B025f359eB0490bB9bC52B755B8A45AC40676B9',
   [ChainId.Hardhat]: '0x5cAF60bf01A5ecd436b2Cd0b68e4c04547eCb872',
 }
 
 export const COMPOUND_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x159Af360D99b3dd6c4a47Cd08b730Ff7C9d113CC',
-  [ChainId.Goerli]: '0x0F875eE2b36a7B6BdF6c9cb5f2f608E287C3d619',
+  [ChainId.Goerli]: '0x882BBbD5dd09DD77c15f89fE8B50fE48b7765835',
   [ChainId.Hardhat]: '0x159Af360D99b3dd6c4a47Cd08b730Ff7C9d113CC',
 }
 

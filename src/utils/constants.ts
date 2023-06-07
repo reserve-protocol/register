@@ -53,12 +53,14 @@ export const TIME_RANGES = {
   DAY: '24h',
   WEEK: '7d',
   MONTH: '30d',
+  YEAR: '1y',
 }
 
 export const TIME_RANGE_VALUE: { [x: string]: number } = {
   [TIME_RANGES.DAY]: 86400,
   [TIME_RANGES.WEEK]: 604800,
   [TIME_RANGES.MONTH]: 2592000,
+  [TIME_RANGES.YEAR]: 31104000,
 }
 
 export const ROUTES = Object.freeze({
