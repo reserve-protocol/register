@@ -56,7 +56,7 @@ export const InfoHeading = ({ title, subtitle, help, ...props }: Props) => (
     sx={{
       justifyContent: 'space-between',
       alignItems: 'start',
-      minWidth: 390,
+      minWidth: [0, 390],
       maxWidth: '100%',
       flexDirection: ['column', 'row'],
     }}

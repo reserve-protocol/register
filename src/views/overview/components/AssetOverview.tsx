@@ -92,7 +92,9 @@ const AssetOverview = () => {
           <Text>
             <Trans>Target basket of 1 {rToken?.symbol}</Trans>
           </Text>
-          <Text variant="legend">${formatCurrency(price ?? 0, 5)}</Text>
+          <Text sx={{ overflow: 'hidden' }} variant="legend">
+            ${formatCurrency(price ?? 0, 5)}
+          </Text>
           <CollateralPieChart
             mb={4}
             mt={2}

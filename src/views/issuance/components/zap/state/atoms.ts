@@ -134,11 +134,27 @@ const debouncedUserInputGenerator = atomWithDebounce(
   400
 ).debouncedValueAtom
 
+let firstTime = true
 export const zapQuotePromise = loadable(
   onlyNonNullAtom(async (get) => {
     const input = get(debouncedUserInputGenerator)
     if (input.inputQuantity.amount === 0n) {
       return null
+    }
+
+    // I suspect that the first time we call this function it's too slow because caches are being populated.
+    // This seems to cause the estimate to fail. So we call it once before we actually need it.
+    if (firstTime) {
+      try {
+        await input.zapSearcher.findSingleInputToRTokenZap(
+          input.inputQuantity,
+          input.rToken,
+          input.signer,
+          get(tradeSlippage)
+        )
+      } catch (e) { }
+      await base.wait(1000)
+      firstTime = false
     }
     const a = input.zapSearcher.findSingleInputToRTokenZap(
       input.inputQuantity,
@@ -291,9 +307,9 @@ export const zapTransaction = loadable(
       permit2 =
         signature != null && permit != null
           ? {
-              permit: permit.permit,
-              signature,
-            }
+            permit: permit.permit,
+            signature,
+          }
           : undefined
     }
 
@@ -325,17 +341,25 @@ export const zapTransactionGasEstimateUnits = loadable(
     ) {
       return null
     }
-    return await tx.result.universe.provider
-      .estimateGas({
-        to: tx.transaction.tx.to,
-        data: tx.transaction.tx.data,
-        value: tx.transaction.tx.value,
-        from: tx.transaction.tx.from,
-      })
-      .then((bn) => {
-        const out = bn.toBigInt()
-        return out + out / 10n
-      })
+    for (let i = 0; i < 3; i++) {
+      try {
+        return await tx.result.universe.provider
+          .estimateGas({
+            to: tx.transaction.tx.to,
+            data: tx.transaction.tx.data,
+            value: tx.transaction.tx.value,
+            from: tx.transaction.tx.from,
+          })
+          .then((bn) => {
+            const out = bn.toBigInt()
+            return out + out / 10n
+          })
+      } catch (e) {
+        await base.wait(1000)
+        continue
+      }
+    }
+    throw new Error('Failed to estimate gas')
   })
 )
 
