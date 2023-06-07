@@ -1,6 +1,6 @@
 import { proposedRolesAtom } from './../atoms'
 import { useAtomValue } from 'jotai'
-import { rTokenGuardiansAtom, rTokenManagersAtom } from 'state/atoms'
+import { rTokenGovernanceAtom, rTokenManagersAtom } from 'state/atoms'
 import { RoleKey } from 'types'
 import { useMemo } from 'react'
 
@@ -12,7 +12,8 @@ export interface RoleChange {
 
 const useRoleChanges = () => {
   const currentRoles = useAtomValue(rTokenManagersAtom)
-  const currentGuardians = useAtomValue(rTokenGuardiansAtom)
+  const { guardians: currentGuardians = [] } =
+    useAtomValue(rTokenGovernanceAtom)
   const proposedRoles = useAtomValue(proposedRolesAtom)
 
   return useMemo(() => {

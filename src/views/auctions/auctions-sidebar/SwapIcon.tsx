@@ -2,7 +2,7 @@ import TokenLogo from 'components/icons/TokenLogo'
 import { Box } from 'theme-ui'
 
 const SwapIcon = ({ buy, sell }: { buy: string; sell: string }) => (
-  <Box sx={{ position: 'relative' }}>
+  <Box sx={{ position: 'relative', width: 20 }}>
     <TokenLogo
       symbol={buy}
       width={20}

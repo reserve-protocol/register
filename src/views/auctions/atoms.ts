@@ -188,19 +188,9 @@ const auctionsOverview = loadable(
       const rToken = get(rTokenAtom)
       const session = get(auctionSessionAtom)
 
-      console.log('que fa;ta?', {
-        provider,
-        contracts,
-        rToken,
-        assets,
-        session,
-      })
-
       if (!provider || !contracts || !rToken || !assets || !session) {
         return null
       }
-
-      console.log('fetching')
 
       const contract = getContract(
         FACADE_ACT_ADDRESS[chainId],

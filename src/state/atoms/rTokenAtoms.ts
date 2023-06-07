@@ -78,8 +78,6 @@ export const rTokenManagersAtom = atom({
   longFreezers: [] as string[],
 })
 
-export const rTokenGuardiansAtom = atom([] as string[])
-
 // Yield
 
 // 30 day avg apy taken from https://defillama.com/yields?token=USDT&token=CUSDT&token=USDC&token=CUSDC&token=DAI&token=BUSD&token=USDP&token=WBTC&token=ETH&project=aave-v2&project=compound&chain=Ethereum

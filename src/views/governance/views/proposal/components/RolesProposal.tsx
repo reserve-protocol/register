@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro'
 import RolesEdit from 'components/rtoken-setup/components/RolesEdit'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
-import { rTokenGuardiansAtom, rTokenManagersAtom } from 'state/atoms'
+import { rTokenGovernanceAtom, rTokenManagersAtom } from 'state/atoms'
 import { Box, BoxProps, Card, Divider, Text } from 'theme-ui'
 import { RoleKey } from 'types'
 import { proposedRolesAtom } from '../atoms'
@@ -20,7 +20,7 @@ const roleMap: {
 
 const RolesProposal = (props: BoxProps) => {
   const rTokenRoles = useAtomValue(rTokenManagersAtom)
-  const guardians = useAtomValue(rTokenGuardiansAtom)
+  const { guardians = [] } = useAtomValue(rTokenGovernanceAtom)
   const [roles, setProposedRoles] = useAtom(proposedRolesAtom)
 
   useEffect(() => {

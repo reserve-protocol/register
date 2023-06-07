@@ -12,11 +12,7 @@ import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  rTokenGovernanceAtom,
-  rTokenGuardiansAtom,
-  stRsrBalanceAtom,
-} from 'state/atoms'
+import { rTokenGovernanceAtom } from 'state/atoms'
 import { Box, Grid, Image, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ROUTES } from 'utils/constants'
@@ -66,7 +62,6 @@ const GovernanceOverview = () => {
   const rToken = useRToken()
   const blockNumber = useBlockNumber()
   const governance = useAtomValue(rTokenGovernanceAtom)
-  const guardians = useAtomValue(rTokenGuardiansAtom)
   const { value = [] } =
     useContractCall(
       account &&
@@ -143,7 +138,7 @@ const GovernanceOverview = () => {
             my={3}
             title={t`Guardian`}
             subtitle={t`Role held by:`}
-            value={<RolesView roles={guardians} />}
+            value={<RolesView roles={governance?.guardians ?? []} />}
           />
         )}
         <SmallButton
