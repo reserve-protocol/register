@@ -11,6 +11,13 @@ import { AccountPosition, AccountToken } from 'types'
 import { RSR } from 'utils/constants'
 import { tokenBalancesStore } from '../TokenBalancesUpdater'
 import rTokenAtom from '../rtoken/atoms/rTokenAtom'
+import { atomWithLoadable } from 'utils/atoms/utils'
+import rTokenContractsAtom from '../rtoken/atoms/rTokenContractsAtom'
+import { getValidWeb3Atom } from './chainAtoms'
+import { getContract } from 'utils'
+import { stRSRVotesInterface } from 'abis'
+import { StRSRVotes } from 'abis/types'
+import { ZERO_ADDRESS } from 'utils/addresses'
 
 const defaultBalance = {
   value: BigNumber.from(0),
@@ -100,4 +107,23 @@ export const accountRoleAtom = atom({
   pauser: false,
   shortFreezer: false,
   longFreezer: false,
+})
+
+export const accountDelegateAtom = atomWithLoadable(async (get) => {
+  const contracts = get(rTokenContractsAtom)
+  const { provider, account } = get(getValidWeb3Atom)
+
+  if (!contracts?.stRSR || !provider || !account) {
+    return null
+  }
+
+  const contract = getContract(
+    contracts.stRSR.address,
+    stRSRVotesInterface,
+    provider
+  ) as StRSRVotes
+
+  const delegate = await contract.delegates(account)
+
+  return delegate !== ZERO_ADDRESS ? delegate : null
 })

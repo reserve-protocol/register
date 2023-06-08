@@ -1,14 +1,14 @@
-import { t, Trans } from '@lingui/macro'
+import { t } from '@lingui/macro'
 import { LoadingButton } from 'components/button'
-import Modal from 'components/modal'
+import Modal, { ModalProps } from 'components/modal'
 import useTransactionCost from 'hooks/useTransactionCost'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { addTransactionAtom, allowanceAtom } from 'state/atoms'
 import { useTransaction } from 'state/web3/hooks/useTransactions'
-import { Box, Divider, Spinner, Text } from 'theme-ui'
+import { Divider } from 'theme-ui'
 import { BigNumberMap, TransactionState } from 'types'
-import { formatCurrency, hasAllowance } from 'utils'
+import { hasAllowance } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
 import ApprovalTransactions from './ApprovalTransactions'
@@ -16,7 +16,7 @@ import EstimatedGasInfo from './EstimatedGasInfo'
 import TransactionConfirmedModal from './TransactionConfirmedModal'
 import TransactionError from './TransactionError'
 
-export interface ITransactionModal {
+export interface ITransactionModal extends Partial<ModalProps> {
   title: string
   children: any
   tx: TransactionState
@@ -43,6 +43,7 @@ const TransactionModal = ({
   buildApprovals,
   onClose,
   onChange = () => {},
+  ...props
 }: ITransactionModal) => {
   const addTransaction = useSetAtom(addTransactionAtom)
   const allowances = useAtomValue(allowanceAtom)
@@ -108,7 +109,12 @@ const TransactionModal = ({
   }
 
   return (
-    <Modal title={title} onClose={onClose} style={{ maxWidth: '420px' }}>
+    <Modal
+      title={title}
+      onClose={onClose}
+      style={{ maxWidth: '420px' }}
+      {...props}
+    >
       {txState?.status === TRANSACTION_STATUS.REJECTED && (
         <TransactionError
           title={t`Transaction failed`}

@@ -94,8 +94,8 @@ const ProposalList = () => {
           maxHeight: 540,
           overflow: 'scroll',
           '::-webkit-scrollbar': { display: 'none' },
-          '-ms-overflow-style': 'none',
-          'scrollbar-width': 'none',
+          msOverflowStyle: 'none',
+          scrollbarWidth: 'none',
         }}
       >
         {!data.length && (

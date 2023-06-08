@@ -15,7 +15,7 @@ import {
   accountRTokensAtom,
   accountTokensAtom,
   blockTimestampAtom,
-  rsrPriceAtom
+  rsrPriceAtom,
 } from './atoms'
 import { tokenBalancesStore } from './TokenBalancesUpdater'
 
@@ -41,26 +41,6 @@ const accountQuery = gql`
               name
               symbol
             }
-          }
-          recentRate: hourlySnapshots(
-            first: 1
-            orderBy: timestamp
-            where: { timestamp_gte: $fromTime }
-            orderDirection: desc
-          ) {
-            rsrExchangeRate
-            basketRate
-            timestamp
-          }
-          lastRate: hourlySnapshots(
-            first: 1
-            orderBy: timestamp
-            where: { timestamp_gte: $fromTime }
-            orderDirection: asc
-          ) {
-            rsrExchangeRate
-            basketRate
-            timestamp
           }
         }
         balance {
@@ -111,16 +91,6 @@ const AccountUpdater = () => {
         const stake = Number(rToken?.stake)
         let tokenApy = 0
         let stakingApy = 0
-        const recentRate = rToken?.rToken?.recentRate[0]
-        const lastRate = rToken?.rToken?.lastRate[0]
-
-        if (
-          recentRate &&
-          lastRate &&
-          recentRate.timestamp !== lastRate.timestamp
-        ) {
-          ;[tokenApy, stakingApy] = calculateApy(recentRate, lastRate)
-        }
 
         // Relate RToken to account
         if (balance > 0 || stake > 0) {

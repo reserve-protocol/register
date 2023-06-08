@@ -25,7 +25,11 @@ import StaticAToken from './static-atoken.json'
 import FacadeAct from './facade-act.json'
 import BasketHandler from './basket-handler.json'
 import ConvexStakingWrapper from './convex-staking-wrapper.json'
-import LegacyBroker from './broker-legacy.json'
+// TODO: Legacy remove
+import _Broker from './broker-legacy.json'
+import _StRSR from './st-rsr-legacy.json'
+import _Main from './main-legacy.json'
+import _RToken from './rtoken-legacy.json'
 
 const ERC20Interface = new Interface(ERC20)
 const FacadeInterface = new Interface(Facade)
@@ -52,8 +56,11 @@ const StaticATokenInterfcae = new Interface(StaticAToken)
 const FacadeActInterface = new Interface(FacadeAct)
 const BasketHandlerInterface = new Interface(BasketHandler)
 const ConvexStakingWrapperInterface = new Interface(ConvexStakingWrapper)
-// Legacy
-const LegacyBrokerInterface = new Interface(LegacyBroker)
+// TODO: Legacy remove
+const _BrokerInterface = new Interface(_Broker)
+const _StRSRInterface = new Interface(_StRSR)
+const _MainInterface = new Interface(_Main)
+const _RTokenInterface = new Interface(_RToken)
 
 export { ERC20, ERC20Interface }
 export { Facade, FacadeInterface }
@@ -81,7 +88,10 @@ export { FacadeAct, FacadeActInterface }
 export { BasketHandler, BasketHandlerInterface }
 export { ConvexStakingWrapper, ConvexStakingWrapperInterface }
 // Legacy
-export { LegacyBroker, LegacyBrokerInterface }
+export { _Broker, _BrokerInterface }
+export { _StRSR, _StRSRInterface }
+export { _Main, _MainInterface }
+export { _RToken, _RTokenInterface }
 
 // Used for tx management
 export default <StringMap>{
@@ -99,6 +109,10 @@ export default <StringMap>{
   atoken: StaticATokenInterfcae,
   facadeAct: FacadeActInterface,
   convexStakingWrapper: ConvexStakingWrapperInterface,
+  // TODO: Legacy abis, remove after migration
+  _stRSR: _StRSRInterface,
+  _rToken: _RTokenInterface,
+  _main: _MainInterface,
 }
 
 // TODO: Legacy ABIs

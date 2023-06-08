@@ -1,7 +1,7 @@
 import {
   BackingManagerInterface,
   BrokerInterface,
-  LegacyBrokerInterface,
+  _BrokerInterface,
   MainInterface,
   RTokenInterface,
   RevenueTraderInterface,
@@ -94,9 +94,10 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
     },
   ]
 
+  // TODO: Legacy check
   if (contracts.broker.version !== VERSION) {
     calls.push({
-      abi: LegacyBrokerInterface,
+      abi: _BrokerInterface,
       address: contracts.broker.address,
       args: [],
       method: 'auctionLength',

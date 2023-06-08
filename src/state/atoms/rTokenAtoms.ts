@@ -1,9 +1,11 @@
 import { BackupBasket, Basket } from 'components/rtoken-setup/atoms'
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
-import { rTokenBackingDistributionAtom } from 'state/atoms'
 import rTokenRevenueSplitAtom from 'state/rtoken/atoms/rTokenRevenueSplitAtom'
+import rTokenContractsAtom from '../rtoken/atoms/rTokenContractsAtom'
+import rTokenBackingDistributionAtom from '../rtoken/atoms/rTokenBackingDistributionAtom'
 import rTokenAtom from '../rtoken/atoms/rTokenAtom'
+import { VERSION } from 'utils/constants'
 
 // TODO: Prices atoms?
 export const rsrPriceAtom = atom(0)
@@ -12,6 +14,18 @@ export const rTokenPriceAtom = atom(0)
 export const rsrExchangeRateAtom = atom(1)
 export const maxIssuanceAtom = atom(0)
 export const maxRedemptionAtom = atom(0)
+
+// TODO: Temporal until migration is finish
+export const isModuleLegacyAtom = atom((get) => {
+  const contracts = get(rTokenContractsAtom)
+
+  return {
+    main: contracts?.main?.version !== VERSION,
+    issuance: contracts?.token?.version !== VERSION,
+    staking: contracts?.stRSR?.version !== VERSION,
+    auctions: contracts?.rTokenTrader?.version !== VERSION,
+  }
+})
 
 // Track collateral status
 export const rTokenCollateralStatusAtom = atom<{ [x: string]: 0 | 1 | 2 }>({})
