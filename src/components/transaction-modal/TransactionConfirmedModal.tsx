@@ -32,8 +32,7 @@ const TransactionConfirmedModal = ({
         target="_blank"
         sx={{ fontSize: 1, alignItems: 'center', display: 'flex' }}
       >
-        <Trans>View on etherscan </Trans>
-        <ExternalArrowIcon />
+        <Trans>View on etherscan </Trans> <ExternalArrowIcon />
       </Link>
     </Flex>
   </Modal>

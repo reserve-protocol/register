@@ -3,8 +3,10 @@ import {
   BasketHandlerInterface,
   CollateralInterface,
   ERC20Interface,
+  MainInterface,
   RTokenInterface,
   StRSRInterface,
+  _MainInterface,
 } from 'abis'
 import { formatEther } from 'ethers/lib/utils'
 import useBlockNumber from 'hooks/useBlockNumber'
@@ -26,12 +28,7 @@ import {
 } from 'state/atoms'
 import { promiseMulticall } from 'state/web3/lib/multicall'
 import { ContractCall } from 'types'
-
-// ## System States
-
-// - `tradingPaused`: all interactions disabled EXCEPT ERC20 functions + RToken.issue + RToken.redeem + StRSR.stake + StRSR.payoutRewards
-// - `issuancePaused`: all interactions enabled EXCEPT RToken.issue
-// - `frozen`: all interactions disabled EXCEPT ERC20 functions + StRSR.stake
+import { VERSION } from 'utils/constants'
 
 /**
  * Fetchs RToken state variables that could change block by block
@@ -56,26 +53,56 @@ const RTokenStateUpdater = () => {
 
   // TODO: Finish
   const getTokenStatus = useCallback(
-    async (mainAddress: string, provider: Web3Provider) => {
+    async (mainAddress: string, provider: Web3Provider, isLegacy: boolean) => {
       try {
-        // const [isPaused, isFrozen] = await promiseMulticall(
-        //   [
-        //     {
-        //       abi: MainInterface,
-        //       address: mainAddress,
-        //       args: [],
-        //       method: 'paused',
-        //     },
-        //     {
-        //       abi: MainInterface,
-        //       address: mainAddress,
-        //       args: [],
-        //       method: 'frozen',
-        //     },
-        //   ],
-        //   provider
-        // )
-        // updateTokenStatus({ paused: isPaused, frozen: isFrozen })
+        const call = { abi: MainInterface, address: mainAddress, args: [] }
+
+        if (!isLegacy) {
+          const [isIssuancePaused, isTradingPaused, isFrozen] =
+            await promiseMulticall(
+              [
+                {
+                  ...call,
+                  method: 'issuancePaused',
+                },
+                {
+                  ...call,
+                  method: 'tradingPaused',
+                },
+                {
+                  ...call,
+                  method: 'frozen',
+                },
+              ],
+              provider
+            )
+          updateTokenStatus({
+            issuancePaused: isIssuancePaused,
+            tradingPaused: isTradingPaused,
+            frozen: isFrozen,
+          })
+        } else {
+          const [isPaused, isFrozen] = await promiseMulticall(
+            [
+              {
+                ...call,
+                abi: _MainInterface,
+                method: 'paused',
+              },
+              {
+                ...call,
+                abi: _MainInterface,
+                method: 'frozen',
+              },
+            ],
+            provider
+          )
+          updateTokenStatus({
+            issuancePaused: isPaused,
+            tradingPaused: isPaused,
+            frozen: isFrozen,
+          })
+        }
       } catch (e) {
         console.error('Error getting token status', e)
       }
@@ -195,14 +222,20 @@ const RTokenStateUpdater = () => {
   )
 
   useEffect(() => {
-    if (provider && blockNumber && rToken?.main) {
-      getTokenStatus(rToken.main, provider)
+    if (provider && blockNumber && contracts?.main) {
+      getTokenStatus(
+        contracts.main.address,
+        provider,
+        contracts.main.version !== VERSION
+      )
       getCollateralStatus()
-      if (rToken.stToken?.address) {
-        getTokenMetrics(rToken.address, rToken.stToken.address, provider)
-      }
+      getTokenMetrics(
+        contracts.token.address,
+        contracts.stRSR.address,
+        provider
+      )
     }
-  }, [rToken?.main, blockNumber])
+  }, [contracts, blockNumber])
 
   return null
 }
