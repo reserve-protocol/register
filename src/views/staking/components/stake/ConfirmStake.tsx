@@ -1,4 +1,6 @@
 import { Trans, t } from '@lingui/macro'
+import { Input } from 'components'
+import { SmallButton } from 'components/button'
 import VoteIcon from 'components/icons/VoteIcon'
 import TransactionModal from 'components/transaction-modal'
 import { BigNumber } from 'ethers'
@@ -10,45 +12,113 @@ import {
   getValidWeb3Atom,
   isModuleLegacyAtom,
   rTokenContractsAtom,
-  walletAtom,
 } from 'state/atoms'
 import { Box, Divider, IconButton, Text } from 'theme-ui'
-import { formatCurrency, safeParseEther, shortenAddress } from 'utils'
+import {
+  formatCurrency,
+  isAddress,
+  safeParseEther,
+  shortenAddress,
+} from 'utils'
 import { RSR, TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
 import { isValidStakeAmountAtom, stakeAmountAtom } from 'views/staking/atoms'
 import StakeInput from './StakeInput'
 
-const DelegateStake = () => {
-  const account = useAtomValue(walletAtom)
+const EditDelegate = ({
+  onSave,
+  onDismiss,
+  current,
+}: {
+  onSave(value: string): void
+  onDismiss(): void
+  current: string
+}) => {
+  const [address, setAddress] = useState(current)
+  const isValid = !!isAddress(address)
 
   return (
-    <>
-      <Divider mx={-4} my={4} sx={{ borderStyle: 'dashed' }} />
+    <Box>
+      <Box variant="layout.verticalAlign">
+        <Text variant="legend">
+          <Trans>Delegate voting power</Trans>
+        </Text>
+        <SmallButton
+          disabled={!isValid}
+          onClick={() => onSave(address)}
+          ml="auto"
+        >
+          <Trans>Save</Trans>
+        </SmallButton>
+        <SmallButton onClick={() => onDismiss()} variant="muted" ml={3}>
+          <Trans>Cancel</Trans>
+        </SmallButton>
+      </Box>
+      <Input
+        my={3}
+        autoFocus
+        value={address}
+        placeholder="Input address"
+        onChange={setAddress}
+      />
+      {address && !isValid && (
+        <Text
+          variant="error"
+          mt={-2}
+          mb={3}
+          ml={3}
+          sx={{ fontSize: 1, display: 'block' }}
+        >
+          <Trans>Invalid address</Trans>
+        </Text>
+      )}
+    </Box>
+  )
+}
+
+const DelegateStake = ({
+  editing,
+  onEdit,
+  value,
+  onChange,
+}: {
+  value: string
+  editing: boolean
+  onEdit(value: boolean): void
+  onChange(value: string): void
+}) => (
+  <>
+    <Divider mx={-4} my={4} sx={{ borderStyle: 'dashed' }} />
+    {editing ? (
+      <EditDelegate
+        current={value}
+        onSave={onChange}
+        onDismiss={() => onEdit(false)}
+      />
+    ) : (
       <Box variant="layout.verticalAlign">
         <VoteIcon />
         <Text ml={3}>
           <Trans>Voting power delegation</Trans>:
         </Text>
-        <Box variant="layout.verticalAlign" ml="auto">
-          {account ? (
-            <>
-              <Text>{shortenAddress(account)}</Text>
-              <IconButton>
-                <Edit2 size={14} />
-              </IconButton>
-            </>
-          ) : (
-            <Text variant="legend">
-              <Trans>Connect your wallet...</Trans>
-            </Text>
-          )}
-        </Box>
+
+        {value ? (
+          <Box variant="layout.verticalAlign" ml="auto">
+            <Text>{shortenAddress(value)}</Text>
+            <IconButton sx={{ cursor: 'pointer' }} onClick={() => onEdit(true)}>
+              <Edit2 size={14} />
+            </IconButton>
+          </Box>
+        ) : (
+          <Text ml="auto" variant="legend">
+            <Trans>Connect your wallet...</Trans>
+          </Text>
+        )}
       </Box>
-    </>
-  )
-}
-9
+    )}
+  </>
+)
+
 const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
   const [signing, setSigning] = useState(false)
   const [amount, setAmount] = useAtom(stakeAmountAtom)
@@ -59,6 +129,7 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
   const { staking: isLegacy } = useAtomValue(isModuleLegacyAtom)
   const currentDelegate = useAtomValue(accountDelegateAtom)
   const [delegate, setDelegate] = useState(currentDelegate || account || '')
+  const [isEditingDelegate, setEditingDelegate] = useState(false)
 
   useEffect(() => {
     if (currentDelegate !== delegate || !delegate) {
@@ -135,7 +206,7 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
     <TransactionModal
       title={t`Stake RSR`}
       tx={transaction}
-      isValid={isValid && !!delegate}
+      isValid={isValid && !!delegate && !isEditingDelegate}
       requiredAllowance={requiredAllowance}
       approvalsLabel={t`Allow use of RSR`}
       confirmLabel={t`Begin stake of ${formatCurrency(Number(amount))} RSR`}
@@ -145,7 +216,17 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
       style={{ maxWidth: '462px' }}
     >
       <StakeInput compact disabled={signing} />
-      {!isLegacy && <DelegateStake />}
+      {!isLegacy && (
+        <DelegateStake
+          value={delegate}
+          editing={isEditingDelegate}
+          onEdit={setEditingDelegate}
+          onChange={(delegate) => {
+            setEditingDelegate(false)
+            setDelegate(delegate)
+          }}
+        />
+      )}
     </TransactionModal>
   )
 }
