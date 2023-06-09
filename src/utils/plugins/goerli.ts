@@ -29,6 +29,8 @@ const collateralAddresses = {
   WBTC: '0xDB5b8cead52f77De0f6B5255f73F348AAf2CBb8D',
   WETH: '0xe7Cb991c70DEa9E7054aD16cDEdFe39134d95bC9',
   EURT: '0x9B8B71c644f97dcD53C8910133134924d1ece945',
+  rETH: '0x4E6f2A55FcC83027c4AF86a93028730DCB2FD739',
+  wstETH: '0xD5A780C6cB1c826d9831d7D52b66463df917F245',
 }
 
 // Addresses for underlying tokens on the plugins
@@ -54,6 +56,8 @@ const underlyingCollateralAddresses = {
   WETH: '0xB5B58F0a853132EA8cB614cb17095dE87AF3E98b',
   WBTC: '0x528FdEd7CC39209ed67B4edA11937A9ABe1f6249',
   EURT: '0xD6da5A7ADE2a906d9992612752A339E3485dB508',
+  rETH: '0x178E141a0E3b34152f73Ff610437A7bf9B83267A',
+  wstETH: '0x6320cD32aA674d2898A68ec82e869385Fc5f7E2f',
 }
 
 // GOERLI
@@ -264,6 +268,28 @@ const plugins: CollateralPlugin[] = [
     collateralToken: 'EURT',
     description: '',
     collateralAddress: '0xC581b735A1688071A1746c968e0798D642EDE491',
+    rewardToken: [ZERO_ADDRESS],
+  },
+  {
+    symbol: 'wstETH',
+    address: collateralAddresses.wstETH,
+    decimals: 18,
+    targetUnit: TARGET_UNITS.ETH,
+    referenceUnit: 'wETH',
+    collateralToken: 'wstETH',
+    description: '',
+    collateralAddress: underlyingCollateralAddresses.wstETH,
+    rewardToken: [ZERO_ADDRESS],
+  },
+  {
+    symbol: 'rETH',
+    address: collateralAddresses.rETH,
+    decimals: 18,
+    targetUnit: TARGET_UNITS.ETH,
+    referenceUnit: 'wETH',
+    collateralToken: 'rETH',
+    description: '',
+    collateralAddress: underlyingCollateralAddresses.rETH,
     rewardToken: [ZERO_ADDRESS],
   },
 ]
