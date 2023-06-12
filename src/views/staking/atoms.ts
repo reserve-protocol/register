@@ -29,7 +29,13 @@ export const isValidUnstakeAmountAtom = atom((get) => {
 
 // List of unstake cooldown for the selected rToken
 export const pendingRSRAtom = atom<any[]>([])
-export const pendingRSRSummaryAtom = atom((get) => {
+export const pendingRSRSummaryAtom = atom<{
+  index: BigNumber
+  availableIndex: BigNumber
+  pendingAmount: number
+  availableAt: number
+  availableAmount: number
+}>((get) => {
   const currentTime = get(blockTimestampAtom)
   return get(pendingRSRAtom).reduce(
     (acc, unstake) => {

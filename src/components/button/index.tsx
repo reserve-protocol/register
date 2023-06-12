@@ -1,5 +1,7 @@
+import useTransaction from 'hooks/useTransaction'
 import { smallButton } from 'theme'
 import { Button as ThemeButton, ButtonProps, Spinner, Text } from 'theme-ui'
+import { TransactionState } from 'types'
 
 const Button = (props: ButtonProps) => <ThemeButton {...props} />
 
@@ -8,6 +10,11 @@ export interface LoadingButtonProps extends ButtonProps {
   loadingText?: string
   text: string
   small?: boolean
+}
+
+export interface ExecuteButtonProps
+  extends Omit<LoadingButtonProps, 'loading'> {
+  tx: TransactionState | null
 }
 
 export const LoadingButton = ({
@@ -54,6 +61,24 @@ export const LoadingButton = ({
     </ButtonComponent>
   )
 }
+
+export const ExecuteButton = ({
+  tx,
+  disabled,
+  ...props
+}: ExecuteButtonProps) => {
+  const { execute, canExecute, isExecuting } = useTransaction(tx)
+
+  return (
+    <LoadingButton
+      loading={isExecuting}
+      disabled={!canExecute || disabled}
+      onClick={execute}
+      {...props}
+    />
+  )
+}
+
 export const SmallButton = ({ sx = {}, ...props }: ButtonProps) => (
   <Button {...props} sx={{ ...smallButton, ...sx }} />
 )
