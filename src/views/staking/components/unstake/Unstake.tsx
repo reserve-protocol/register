@@ -6,10 +6,12 @@ import { BoxProps, Card } from 'theme-ui'
 import { isValidUnstakeAmountAtom } from 'views/staking/atoms'
 import ConfirmUnstake from './ConfirmUnstake'
 import UnstakeInput from './UnstakeInput'
+import { rTokenTradingAvailableAtom } from 'state/atoms'
 
 const Unstake = (props: BoxProps) => {
   const [confirming, setConfirming] = useState(false)
   const isValid = useAtomValue(isValidUnstakeAmountAtom)
+  const isAvailable = useAtomValue(rTokenTradingAvailableAtom)
 
   return (
     <>
@@ -17,7 +19,7 @@ const Unstake = (props: BoxProps) => {
       <Card p={4} {...props}>
         <UnstakeInput compact={false} />
         <Button
-          disabled={!isValid}
+          disabled={!isValid || !isAvailable}
           sx={{ width: '100%' }}
           mt={3}
           onClick={() => setConfirming(true)}

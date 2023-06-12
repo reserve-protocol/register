@@ -78,6 +78,12 @@ export const rTokenStatusAtom = atomWithReset({
   frozen: false,
 })
 
+export const rTokenTradingAvailableAtom = atom((get) => {
+  const { tradingPaused, frozen } = get(rTokenStatusAtom)
+
+  return !tradingPaused && !frozen
+})
+
 // Get rToken main contract, not available for RSV
 export const rTokenMainAtom = atom<string | null>((get) => {
   const rToken = get(rTokenAtom)
