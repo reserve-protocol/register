@@ -5,28 +5,43 @@ import { useEffect, useState } from 'react'
 import {
   accountRoleAtom,
   addTransactionAtom,
+  isModuleLegacyAtom,
   rTokenManagersAtom,
   rTokenStatusAtom,
 } from 'state/atoms'
 import { useTransaction } from 'state/web3/hooks/useTransactions'
+import { Box, Flex, Text } from 'theme-ui'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
 import RolesView from './RolesView'
 import SettingItem from './SettingItem'
 
-/**
- * View: Settings > Actions for an Rtoken pauser (pause/unpause)
- */
-const PauseManager = () => {
+enum PAUSE_TYPES {
+  ISSUANCE,
+  TRADING,
+}
+
+const Pausing = ({
+  type,
+  legacy = false,
+}: {
+  type: PAUSE_TYPES
+  legacy?: boolean
+}) => {
   const rToken = useRToken()
   const accountRole = useAtomValue(accountRoleAtom)
-  const { pausers } = useAtomValue(rTokenManagersAtom)
-  // TODO: 3.0 pausing
-  const { tradingPaused: isPaused } = useAtomValue(rTokenStatusAtom)
+  const { tradingPaused, issuancePaused } = useAtomValue(rTokenStatusAtom)
   const addTransaction = useSetAtom(addTransactionAtom)
-  const pauseActionLabel = isPaused ? t`Unpause` : t`Pause`
   const [txId, setTx] = useState('')
   const tx = useTransaction(txId)
+
+  let isPaused = tradingPaused
+  let pauseLabel = legacy ? '' : 'Trading'
+
+  if (type === PAUSE_TYPES.ISSUANCE) {
+    isPaused = issuancePaused
+    pauseLabel = 'Issuance'
+  }
 
   useEffect(() => {
     if (
@@ -44,15 +59,15 @@ const PauseManager = () => {
       addTransaction([
         {
           id,
-          description: isPaused
-            ? t`Unpause ${rToken?.symbol}`
-            : t`Pause ${rToken?.symbol}`,
+          description: `${
+            isPaused ? 'Unpause' : 'Pause'
+          } ${pauseLabel.toLowerCase()} ${rToken.symbol}`,
           status: TRANSACTION_STATUS.PENDING,
           value: '0',
           call: {
-            abi: 'main',
-            address: rToken?.main || '',
-            method: isPaused ? 'unpause' : 'pause',
+            abi: legacy ? '_main' : 'main',
+            address: rToken.main,
+            method: isPaused ? `unpause${pauseLabel}` : `pause${pauseLabel}`,
             args: [],
           },
         },
@@ -61,25 +76,66 @@ const PauseManager = () => {
   }
 
   return (
-    <>
-      <SettingItem
-        title={t`Pause state`}
-        subtitle={t`Current status:`}
-        value={isPaused ? t`Paused` : t`Unpaused`}
-        icon="danger"
-        mb={3}
-      />
-      <SettingItem
-        title="RToken pauser"
-        subtitle={t`Role held by:`}
-        value={<RolesView roles={pausers} />}
-        action={accountRole.pauser || accountRole.owner ? pauseActionLabel : ''}
-        onAction={handlePause}
-        loading={!!txId}
-        actionVariant="danger"
-      />
-    </>
+    <SettingItem
+      mt={3}
+      title={legacy ? 'Pause' : pauseLabel}
+      subtitle={t`Status:`}
+      value={isPaused ? t`${pauseLabel} paused` : t`${pauseLabel} not paused`}
+      action={
+        accountRole.pauser || accountRole.owner
+          ? `${isPaused ? 'Unpause' : 'Pause'} ${pauseLabel.toLowerCase()}`
+          : ''
+      }
+      onAction={handlePause}
+      loading={!!txId}
+      actionVariant="danger"
+    />
   )
 }
+
+const Pausers = () => (
+  <SettingItem
+    title="Pausing"
+    subtitle={t`Role held by:`}
+    value={<RolesView roles={useAtomValue(rTokenManagersAtom).pausers} />}
+    icon="danger"
+    mb={3}
+  />
+)
+
+const PauseActions = () => {
+  const { main: isLegacy } = useAtomValue(isModuleLegacyAtom)
+
+  return (
+    <Flex>
+      <Box
+        sx={{
+          height: 114,
+          borderRight: '1px dashed',
+          borderColor: 'darkBorder',
+        }}
+      />
+      <Box ml={5}>
+        <Text variant="legend" sx={{ fontSize: 1 }}>
+          The pauser(s) can put the RToken in two states which can be either
+          true or false (no set duration):
+        </Text>
+
+        <Pausing legacy={isLegacy} type={PAUSE_TYPES.TRADING} />
+        {!isLegacy && <Pausing type={PAUSE_TYPES.ISSUANCE} />}
+      </Box>
+    </Flex>
+  )
+}
+
+/**
+ * View: Settings > Actions for an Rtoken pauser (pause/unpause)
+ */
+const PauseManager = () => (
+  <>
+    <Pausers />
+    <PauseActions />
+  </>
+)
 
 export default PauseManager
