@@ -35,7 +35,7 @@ const Pausing = ({
   const [txId, setTx] = useState('')
   const tx = useTransaction(txId)
 
-  let isPaused = tradingPaused
+  let isPaused = tradingPaused // applies for legacy too
   let pauseLabel = legacy ? '' : 'Trading'
 
   if (type === PAUSE_TYPES.ISSUANCE) {
