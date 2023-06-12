@@ -10,7 +10,7 @@ import {
   accountPositionsAtom,
   accountTokensAtom,
 } from 'state/atoms'
-import { Box, Flex, BoxProps, Divider, Text } from 'theme-ui'
+import { Box, Flex, BoxProps, Divider, Text, Grid } from 'theme-ui'
 import {
   formatCurrency,
   formatCurrencyCell,
@@ -37,11 +37,6 @@ const Portfolio = (props: BoxProps) => {
       { Header: t`Price`, accessor: 'usdPrice', Cell: formatUsdCurrencyCell },
       { Header: t`Balance`, accessor: 'balance', Cell: formatCurrencyCell },
       { Header: t`Value`, accessor: 'usdAmount', Cell: formatUsdCurrencyCell },
-      {
-        Header: `APY`,
-        accessor: 'apy',
-        Cell: ({ cell }: { cell: any }) => `${cell.value}%`,
-      },
     ],
     [lang]
   )
@@ -74,11 +69,6 @@ const Portfolio = (props: BoxProps) => {
         accessor: 'usdAmount',
         Cell: formatUsdCurrencyCell,
       },
-      {
-        Header: 'APY',
-        accessor: 'apy',
-        Cell: ({ cell }: { cell: any }) => `${cell.value}%`,
-      },
     ],
     [lang]
   )
@@ -94,7 +84,7 @@ const Portfolio = (props: BoxProps) => {
       <Box>
         <Box ml={3}>
           <Text mb={1} variant="title" sx={{ color: 'lightText' }}>
-            <Trans>Staked RSR + RToken Value</Trans>
+            <Trans>Wallet staked RSR + RToken Value</Trans>
           </Text>
           <Text
             ml={[0, '-1px']}
@@ -104,43 +94,44 @@ const Portfolio = (props: BoxProps) => {
             ${formatCurrency(holdings)}
           </Text>
         </Box>
-        {rTokens?.length > 0 && (
-          <Box mt={5}>
-            <Text
-              pl={3}
-              variant="title"
-              sx={{ color: 'secondaryText', fontWeight: '400' }}
-            >
-              <Trans>Your RTokens</Trans>
-            </Text>
-            <Table
-              mt={3}
-              maxHeight={220}
-              columns={rTokenColumns}
-              data={rTokens}
-            />
-          </Box>
-        )}
-        {stTokens?.length > 0 && (
-          <Box mt={5}>
-            <Text
-              pl={3}
-              variant="title"
-              sx={{ color: 'secondaryText', fontWeight: '400' }}
-            >
-              <Trans>Your staked RSR positions</Trans>
-            </Text>
-            <Table
-              mt={2}
-              mb="-16px"
-              maxHeight={220}
-              columns={stTokenColumns}
-              data={stTokens}
-            />
-          </Box>
-        )}
+        <Grid columns={[1, 1, 1, 2]}>
+          {rTokens?.length > 0 && (
+            <Box mt={5}>
+              <Text
+                pl={3}
+                variant="title"
+                sx={{ color: 'secondaryText', fontWeight: '400' }}
+              >
+                <Trans>Your RTokens</Trans>
+              </Text>
+              <Table
+                mt={3}
+                maxHeight={220}
+                columns={rTokenColumns}
+                data={rTokens}
+              />
+            </Box>
+          )}
+          {stTokens?.length > 0 && (
+            <Box mt={[2, 5]}>
+              <Text
+                pl={3}
+                variant="title"
+                sx={{ color: 'secondaryText', fontWeight: '400' }}
+              >
+                <Trans>Your staked RSR positions</Trans>
+              </Text>
+              <Table
+                mt={3}
+                maxHeight={220}
+                columns={stTokenColumns}
+                data={stTokens}
+              />
+            </Box>
+          )}
+        </Grid>
       </Box>
-      <Divider mx={[-1, -5]} my={[6, 8]} />
+      <Divider mx={[-1, -5]} my={[5, 8]} />
     </Box>
   )
 }
