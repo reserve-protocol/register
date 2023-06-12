@@ -19,7 +19,7 @@ export const useLastTransaction = (): TransactionState | null => {
   return txs[txs.length - 1]
 }
 
-export const useTransaction = (id: string): TransactionState | null => {
+export const useTransactionState = (id: string): TransactionState | null => {
   const txs = useAtomValue(currentTxAtom)
 
   return useMemo(() => {

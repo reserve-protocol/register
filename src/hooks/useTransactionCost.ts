@@ -1,10 +1,9 @@
 import { Web3Provider } from '@ethersproject/providers'
 import { t } from '@lingui/macro'
-import { useWeb3React } from '@web3-react/core'
 import abis from 'abis'
 import { useAtomValue } from 'jotai'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { ethPriceAtom, gasPriceAtom } from 'state/atoms'
+import { ethPriceAtom, gasPriceAtom, getValidWeb3Atom } from 'state/atoms'
 import { error } from 'state/web3/lib/notifications'
 import { TransactionState } from 'types'
 import { getContract } from 'utils'
@@ -12,7 +11,7 @@ import { getContract } from 'utils'
 export const useTransactionGasFee = (
   transactions: TransactionState[]
 ): { loading: boolean; value: number[]; error: string } => {
-  const { provider, account } = useWeb3React()
+  const { provider, account } = useAtomValue(getValidWeb3Atom)
   const [state, setState] = useState({
     loading: false,
     value: [] as number[],

@@ -6,7 +6,7 @@ import useRToken from 'hooks/useRToken'
 import { useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
 import { addTransactionAtom } from 'state/atoms'
-import { useTransaction } from 'state/web3/hooks/useTransactions'
+import { useTransactionState } from 'state/web3/hooks/useTransactions'
 import { Box, BoxProps, Grid, Text, Link } from 'theme-ui'
 import { FACADE_ACT_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
@@ -18,7 +18,7 @@ const RunAuctions = () => {
   const { account } = useWeb3React()
   const addTransaction = useSetAtom(addTransactionAtom)
   const [txId, setTx] = useState('')
-  const tx = useTransaction(txId)
+  const tx = useTransactionState(txId)
 
   useEffect(() => {
     if (

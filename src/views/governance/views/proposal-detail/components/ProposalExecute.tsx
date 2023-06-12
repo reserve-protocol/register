@@ -5,7 +5,7 @@ import { ethers } from 'ethers'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
 import { addTransactionAtom, rTokenGovernanceAtom } from 'state/atoms'
-import { useTransaction } from 'state/web3/hooks/useTransactions'
+import { useTransactionState } from 'state/web3/hooks/useTransactions'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
 import { proposalDetailAtom } from '../atom'
@@ -19,7 +19,7 @@ const ProposalExecute = () => {
   const addTransaction = useSetAtom(addTransactionAtom)
   const [txId, setTx] = useState('')
   const proposal = useAtomValue(proposalDetailAtom)
-  const tx = useTransaction(txId)
+  const tx = useTransactionState(txId)
   const canExecute =
     blockNumber &&
     proposal?.executionStartBlock &&

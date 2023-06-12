@@ -9,7 +9,7 @@ import { atomWithReset } from 'jotai/utils'
 import { useCallback, useMemo } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { addTransactionAtom } from 'state/atoms'
-import { useTransaction } from 'state/web3/hooks/useTransactions'
+import { useTransactionState } from 'state/web3/hooks/useTransactions'
 import { getTransactionWithGasLimit } from 'utils'
 import { FACADE_WRITE_ADDRESS, ZERO_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
@@ -96,7 +96,7 @@ export const useGovernanceTx = () => {
 
 export const useGovernanceTxState = () => {
   const txId = useAtomValue(governanceIdAtom)
-  const tx = useTransaction(txId)
+  const tx = useTransactionState(txId)
 
   return tx
 }

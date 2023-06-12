@@ -6,7 +6,7 @@ import { atomWithReset } from 'jotai/utils'
 import { useCallback, useMemo } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { addTransactionAtom } from 'state/atoms'
-import { useTransaction } from 'state/web3/hooks/useTransactions'
+import { useTransactionState } from 'state/web3/hooks/useTransactions'
 import { getTransactionWithGasLimit } from 'utils'
 import { FACADE_WRITE_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
@@ -79,7 +79,7 @@ export const useDeployTx = () => {
 
 export const useDeployTxState = () => {
   const txId = useAtomValue(deployIdAtom)
-  const tx = useTransaction(txId)
+  const tx = useTransactionState(txId)
 
   return tx
 }

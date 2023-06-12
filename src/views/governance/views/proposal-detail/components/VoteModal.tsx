@@ -9,7 +9,7 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { CheckCircle, ExternalLink, ThumbsUp } from 'react-feather'
 import { addTransactionAtom, rTokenGovernanceAtom } from 'state/atoms'
-import { useTransaction } from 'state/web3/hooks/useTransactions'
+import { useTransactionState } from 'state/web3/hooks/useTransactions'
 import { Box, Checkbox, Divider, Flex, Link, Spinner, Text } from 'theme-ui'
 import {
   formatCurrency,
@@ -58,7 +58,7 @@ const VoteModal = (props: ModalProps) => {
   const [fee, gasError, gasLimit] = useTransactionCost(
     transaction ? [transaction] : []
   )
-  const tx = useTransaction(txId)
+  const tx = useTransactionState(txId)
   const signed =
     tx?.status === TRANSACTION_STATUS.MINING ||
     tx?.status === TRANSACTION_STATUS.CONFIRMED

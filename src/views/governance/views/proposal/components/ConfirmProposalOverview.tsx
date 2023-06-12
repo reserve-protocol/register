@@ -7,7 +7,7 @@ import ConfirmProposalActionIcon from 'components/icons/ConfirmProposalActionIco
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useTransaction } from 'state/web3/hooks/useTransactions'
+import { useTransactionState } from 'state/web3/hooks/useTransactions'
 import { Box, BoxProps, Container, Flex, Spinner, Text } from 'theme-ui'
 import { TransactionState } from 'types'
 import { formatCurrency, shortenString } from 'utils'
@@ -28,7 +28,7 @@ const ProposalStatus = ({
   const txId = useAtomValue(proposalTxIdAtom)
   const navigate = useNavigate()
   const { fee, propose, isValid } = useProposal(transactionState)
-  const tx = useTransaction(txId)
+  const tx = useTransactionState(txId)
 
   useEffect(() => {
     if (tx?.status === TRANSACTION_STATUS.CONFIRMED) {

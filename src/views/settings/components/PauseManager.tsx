@@ -9,7 +9,7 @@ import {
   rTokenManagersAtom,
   rTokenStatusAtom,
 } from 'state/atoms'
-import { useTransaction } from 'state/web3/hooks/useTransactions'
+import { useTransactionState } from 'state/web3/hooks/useTransactions'
 import { Box, Flex, Text } from 'theme-ui'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
@@ -33,7 +33,7 @@ const Pausing = ({
   const { tradingPaused, issuancePaused } = useAtomValue(rTokenStatusAtom)
   const addTransaction = useSetAtom(addTransactionAtom)
   const [txId, setTx] = useState('')
-  const tx = useTransaction(txId)
+  const tx = useTransactionState(txId)
 
   let isPaused = tradingPaused // applies for legacy too
   let pauseLabel = legacy ? '' : 'Trading'

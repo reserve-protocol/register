@@ -8,7 +8,7 @@ import {
   rTokenManagersAtom,
   rTokenStatusAtom,
 } from 'state/atoms'
-import { useTransaction } from 'state/web3/hooks/useTransactions'
+import { useTransactionState } from 'state/web3/hooks/useTransactions'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
 import RolesView from './RolesView'
@@ -21,7 +21,7 @@ const FreezeManager = () => {
   const [txId, setTx] = useState('')
   const { freezers, longFreezers } = useAtomValue(rTokenManagersAtom)
   const [freezeType, setFreezeType] = useState(0) // 0 = short -- 1 = long
-  const tx = useTransaction(txId)
+  const tx = useTransactionState(txId)
   const rToken = useRToken()
   const accountRole = useAtomValue(accountRoleAtom)
   const { frozen: isFrozen } = useAtomValue(rTokenStatusAtom)

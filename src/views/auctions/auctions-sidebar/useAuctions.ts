@@ -5,7 +5,7 @@ import useTransactionCost from 'hooks/useTransactionCost'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useMemo, useState } from 'react'
 import { addTransactionAtom, getValidWeb3Atom } from 'state/atoms'
-import { useTransaction } from 'state/web3/hooks/useTransactions'
+import { useTransactionState } from 'state/web3/hooks/useTransactions'
 import { TransactionState } from 'types'
 import { getTransactionWithGasLimit } from 'utils'
 import { FACADE_ACT_ADDRESS } from 'utils/addresses'
@@ -105,7 +105,7 @@ const useAuctions = () => {
   const [fee, error, gasLimit] = useTransactionCost(tx ? [tx] : [])
   const addTransaction = useSetAtom(addTransactionAtom)
   const [txId, setId] = useState('')
-  const { status } = useTransaction(txId) || {}
+  const { status } = useTransactionState(txId) || {}
 
   const handleExecute = useCallback(() => {
     if (tx) {

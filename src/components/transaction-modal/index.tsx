@@ -5,7 +5,7 @@ import useTransactionCost from 'hooks/useTransactionCost'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { addTransactionAtom, allowanceAtom } from 'state/atoms'
-import { useTransaction } from 'state/web3/hooks/useTransactions'
+import { useTransactionState } from 'state/web3/hooks/useTransactions'
 import { Divider } from 'theme-ui'
 import { BigNumberMap, TransactionState } from 'types'
 import { hasAllowance } from 'utils'
@@ -54,7 +54,7 @@ const TransactionModal = ({
     [allowances, isValid, requiredAllowance]
   )
 
-  const txState = useTransaction(signing)
+  const txState = useTransactionState(signing)
   const signed =
     txState?.status === TRANSACTION_STATUS.MINING ||
     txState?.status === TRANSACTION_STATUS.CONFIRMED
