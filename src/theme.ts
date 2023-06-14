@@ -99,7 +99,7 @@ export const colors = {
   modalOverlay: 'rgba(0, 0, 0, 0.2)',
   modes: {
     dark: {
-      text: '#C1B2B2',
+      text: '#e4dede',
       secondaryText: '#969696',
       invertedText: '#FFFFFF',
       lightText: '#6f6666',
