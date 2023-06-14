@@ -27,8 +27,6 @@ const ZapOverview = () => {
 const ZapWarning = () => (
   <Flex
     sx={{
-      borderBottom: '1px solid',
-      borderColor: 'border',
       textAlign: 'center',
       justifyContent: 'center',
       alignItems: 'center',
@@ -37,6 +35,7 @@ const ZapWarning = () => (
       fontSize: 1,
     }}
     p={4}
+    mt={4}
   >
     <InfoIcon />
     <Text variant="strong" mx={2}>
