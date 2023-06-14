@@ -21,7 +21,7 @@ const Wrapper = styled(Flex)`
 `
 
 const Body = styled(Box)`
-  display: flex;
+  display: block;
   height: 100%;
   overflow: hidden;
 `
@@ -48,8 +48,8 @@ const Layout = ({ children }: { children: ReactNode }) => (
   <Container>
     <Wrapper>
       <Header />
+      <Sidebar />
       <Body>
-        <Sidebar />
         <Suspense>
           <ContentContainer id="app-container">{children}</ContentContainer>
         </Suspense>
