@@ -83,7 +83,7 @@ const Portfolio = (props: BoxProps) => {
     >
       <Box>
         <Box ml={3}>
-          <Text mb={1} variant="title" sx={{ color: 'lightText' }}>
+          <Text mb={1} variant="title" sx={{ color: 'secondaryText' }}>
             <Trans>Wallet staked RSR + RToken Value</Trans>
           </Text>
           <Text

@@ -100,6 +100,7 @@ export const colors = {
   modes: {
     dark: {
       text: '#C1B2B2',
+      secondaryText: '#969696',
       invertedText: '#FFFFFF',
       lightText: '#6f6666',
       background: '#090707',
@@ -187,7 +188,7 @@ export const theme: Theme = {
       color: 'danger',
     },
     legend: {
-      color: 'lightText',
+      color: 'secondaryText',
     },
     muted: {
       color: 'muted',
@@ -284,7 +285,7 @@ export const theme: Theme = {
     th: {
       border: 'none',
       px: [3, 4],
-      color: 'lightText',
+      color: 'secondaryText',
       // pl: 3,
       fontWeight: 'normal',
     },
