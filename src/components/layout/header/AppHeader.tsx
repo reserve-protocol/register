@@ -25,7 +25,7 @@ const AppHeader = () => {
 
   return (
     <Container
-      px={[3, isSidebarVisible ? 5 : 7]}
+      px={[3, 5]}
       sx={{
         borderBottom: isSidebarVisible ? '1px solid' : 'none',
         borderColor: 'border',
