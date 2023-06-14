@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import useIsSidebarVisible from 'hooks/useIsSidebarVisible'
 import { atom, useAtom } from 'jotai'
-import { Box } from 'theme-ui'
+import { Box, Divider } from 'theme-ui'
 import Navigation from '../navigation/index'
 import Footer from './Footer'
 
@@ -10,7 +10,7 @@ const Container = styled(Box)`
   flex-grow: 0;
   box-sizing: border-box;
   flex-direction: column;
-  border-right: 1px solid var(--theme-ui-colors-border);
+  margin-bottom: 0;
 `
 
 export const sidebarToggleAtom = atom(false)
@@ -32,16 +32,14 @@ const Sidebar = () => {
 
   return (
     <Container
+      px={3}
       sx={{
-        flexBasis: isSidebarCollapsed ? 76 : [64, 72, 264],
         flexShrink: 0,
         display: ['none', 'flex'],
       }}
     >
       <Navigation collapsed={isSidebarCollapsed} />
-      {!isSidebarCollapsed && (
-        <Footer mt="auto" sx={{ display: ['none', 'none', 'block'] }} />
-      )}
+      <Divider my={0} mx={-3} />
     </Container>
   )
 }
