@@ -94,7 +94,7 @@ const Portfolio = (props: BoxProps) => {
             ${formatCurrency(holdings)}
           </Text>
         </Box>
-        <Grid columns={[1, 1, 1, 2]}>
+        <Box>
           {rTokens?.length > 0 && (
             <Box mt={5}>
               <Text
@@ -129,9 +129,9 @@ const Portfolio = (props: BoxProps) => {
               />
             </Box>
           )}
-        </Grid>
+        </Box>
       </Box>
-      <Divider mx={[-1, -5]} my={[5, 8]} />
+      <Divider mx={[-1, 0]} my={[5, 8]} />
     </Box>
   )
 }
