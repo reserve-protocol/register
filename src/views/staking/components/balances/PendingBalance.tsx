@@ -6,7 +6,6 @@ import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import {
-  getValidWeb3Atom,
   isModuleLegacyAtom,
   rTokenStatusAtom,
   rsrExchangeRateAtom,

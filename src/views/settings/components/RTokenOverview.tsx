@@ -8,31 +8,35 @@ import EmergencyCollateralInfo from './EmergencyCollateralInfo'
 import GovernanceInfo from './GovernanceInfo'
 import OtherInfo from './OtherInfo'
 import RevenueSplitInfo from './RevenueSplitInfo'
+import RTokenManagement from './RTokenManagement'
 
 const RTokenOverview = () => (
   <Box>
     <SectionWrapper navigationIndex={0}>
-      <BasicInfo />
+      <RTokenManagement />
     </SectionWrapper>
     <SectionWrapper navigationIndex={1} mt={4}>
-      <BasketInfo />
+      <BasicInfo />
     </SectionWrapper>
     <SectionWrapper navigationIndex={2} mt={4}>
-      <EmergencyCollateralInfo />
+      <BasketInfo />
     </SectionWrapper>
     <SectionWrapper navigationIndex={3} mt={4}>
-      <RevenueSplitInfo />
+      <EmergencyCollateralInfo />
     </SectionWrapper>
     <SectionWrapper navigationIndex={4} mt={4}>
-      <BackingInfo />
+      <RevenueSplitInfo />
     </SectionWrapper>
     <SectionWrapper navigationIndex={5} mt={4}>
-      <OtherInfo />
+      <BackingInfo />
     </SectionWrapper>
     <SectionWrapper navigationIndex={6} mt={4}>
+      <OtherInfo />
+    </SectionWrapper>
+    <SectionWrapper navigationIndex={7} mt={4}>
       <GovernanceInfo />
     </SectionWrapper>
-    <SectionWrapper navigationIndex={7} mt={4} mb={[0, 7]}>
+    <SectionWrapper navigationIndex={8} mt={4} mb={[0, 7]}>
       <ContractsInfo />
     </SectionWrapper>
   </Box>

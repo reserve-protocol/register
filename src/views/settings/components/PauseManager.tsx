@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { Trans, t } from '@lingui/macro'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
@@ -117,8 +117,10 @@ const PauseActions = () => {
       />
       <Box ml={5}>
         <Text variant="legend" sx={{ fontSize: 1 }}>
-          The pauser(s) can put the RToken in two states which can be either
-          true or false (no set duration):
+          <Trans>
+            The pauser(s) can put the RToken in two states which can be either
+            true or false (no set duration):
+          </Trans>
         </Text>
 
         <Pausing legacy={isLegacy} type={PAUSE_TYPES.TRADING} />

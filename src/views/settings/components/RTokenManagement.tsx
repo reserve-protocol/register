@@ -6,7 +6,7 @@ import { useContractCall } from 'hooks/useCall'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { accountRoleAtom } from 'state/atoms'
-import { Box, BoxProps, Divider as _Divider, Flex, Text } from 'theme-ui'
+import { Card, Flex, Text, Divider as _Divider } from 'theme-ui'
 import { FACADE_WRITE_ADDRESS } from 'utils/addresses'
 import { CHAIN_ID } from 'utils/chains'
 import FreezeManager from './FreezeManager'
@@ -14,14 +14,6 @@ import GovernancePrompt from './GovernancePrompt'
 import PauseManager from './PauseManager'
 
 const Divider = () => <_Divider sx={{ borderColor: 'border' }} my={4} mx={-4} />
-
-const Container = ({ children }: BoxProps) => (
-  <Box variant="layout.sticky">
-    <Box variant="layout.borderBox" mb={4}>
-      {children}
-    </Box>
-  </Box>
-)
 
 /**
  * Manage RToken
@@ -49,10 +41,10 @@ const RTokenManagement = () => {
   }
 
   return (
-    <Container>
+    <Card p={4}>
       <Flex sx={{ alignItems: 'center' }}>
         <Text variant="title">
-          <Trans>Actions</Trans>
+          <Trans>Roles & Control</Trans>
         </Text>
         <DocsLink link="https://reserve.org/" />
       </Flex>
@@ -60,7 +52,7 @@ const RTokenManagement = () => {
       <PauseManager />
       <Divider />
       <FreezeManager />
-    </Container>
+    </Card>
   )
 }
 

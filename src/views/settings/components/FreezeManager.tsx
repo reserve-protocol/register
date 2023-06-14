@@ -1,4 +1,4 @@
-import { t } from '@lingui/macro'
+import { Trans, t } from '@lingui/macro'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
@@ -13,6 +13,7 @@ import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
 import RolesView from './RolesView'
 import SettingItem from './SettingItem'
+import { Box, Flex, Text } from 'theme-ui'
 
 /**
  * View: Settings > Display RToken actions for freezers and long freezers
@@ -114,29 +115,49 @@ const FreezeManager = () => {
         actionVariant="danger"
         loading={!!tx}
       />
-      <SettingItem
-        title={t`Short Freeze`}
-        subtitle={t`Role held by:`}
-        value={<RolesView roles={freezers} />}
-        action={!isFrozen && accountRole.shortFreezer ? t`Short Freeze` : ''}
-        onAction={handleFreeze}
-        actionVariant="danger"
-        loading={!!tx && !freezeType}
-      />
-      <SettingItem
-        title={t`Long Freeze`}
-        mt={3}
-        subtitle={t`Role held by:`}
-        value={<RolesView roles={longFreezers} />}
-        action={
-          !isFrozen && (accountRole.longFreezer || accountRole.owner)
-            ? t`Long Freeze`
-            : ''
-        }
-        onAction={handleLongFreeze}
-        actionVariant="danger"
-        loading={!!tx && !!freezeType}
-      />
+      <Flex>
+        <Box
+          sx={{
+            height: 114,
+            borderRight: '1px dashed',
+            borderColor: 'darkBorder',
+          }}
+        />
+        <Box ml={5}>
+          <Text variant="legend" sx={{ fontSize: 1 }}>
+            <Trans>
+              There’s two freezing roles that put the system in the same state
+              for different durations:
+            </Trans>
+          </Text>
+          <SettingItem
+            mt={3}
+            title={t`Short Freeze`}
+            subtitle={t`Role held by:`}
+            value={<RolesView roles={freezers} />}
+            action={
+              !isFrozen && accountRole.shortFreezer ? t`Short Freeze` : ''
+            }
+            onAction={handleFreeze}
+            actionVariant="danger"
+            loading={!!tx && !freezeType}
+          />
+          <SettingItem
+            title={t`Long Freeze`}
+            mt={3}
+            subtitle={t`Role held by:`}
+            value={<RolesView roles={longFreezers} />}
+            action={
+              !isFrozen && (accountRole.longFreezer || accountRole.owner)
+                ? t`Long Freeze`
+                : ''
+            }
+            onAction={handleLongFreeze}
+            actionVariant="danger"
+            loading={!!tx && !!freezeType}
+          />
+        </Box>
+      </Flex>
     </>
   )
 }
