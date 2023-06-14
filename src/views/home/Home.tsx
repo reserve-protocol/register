@@ -12,7 +12,7 @@ import Stats from './components/Stats'
 const VISITED_KEY = 'visited'
 
 const dividerProps = {
-  mx: [-1, -5],
+  mx: [-1, 0],
   my: [5, 8],
 }
 
@@ -41,7 +41,7 @@ const Home = () => {
       {!account && !visited && <Greet onDismiss={handleDismiss} />}
       {!!account && <Portfolio mt={5} mb={8} />}
       <Stats />
-      <Divider mx={[-1, -5]} mt={[0, 6]} mb={[5, 8]} />
+      <Divider mt={[0, 6]} mb={[5, 8]} />
       <TokenList />
       <Divider {...dividerProps} />
       <About />

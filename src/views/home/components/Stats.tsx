@@ -275,7 +275,7 @@ const Main = () => {
         </Grid>
         <Divider
           sx={{ display: ['none', 'block'] }}
-          mx={[-1, -5]}
+          mx={[-1, 0]}
           mb={6}
           mt={[0, 8]}
         />
