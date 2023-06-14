@@ -96,7 +96,7 @@ const Portfolio = (props: BoxProps) => {
         </Box>
         <Box>
           {rTokens?.length > 0 && (
-            <Box mt={5}>
+            <Box mt={[4, 5]}>
               <Text
                 pl={3}
                 variant="title"
@@ -113,7 +113,7 @@ const Portfolio = (props: BoxProps) => {
             </Box>
           )}
           {stTokens?.length > 0 && (
-            <Box mt={[2, 5]}>
+            <Box mt={[4, 5]}>
               <Text
                 pl={3}
                 variant="title"
@@ -122,7 +122,7 @@ const Portfolio = (props: BoxProps) => {
                 <Trans>Your staked RSR positions</Trans>
               </Text>
               <Table
-                mt={3}
+                mt={[0, 3]}
                 maxHeight={220}
                 columns={stTokenColumns}
                 data={stTokens}
