@@ -22,7 +22,7 @@ const Auctions = () => {
         <Box
           px={4}
           pb={7}
-          mt={4}
+          mt={2}
           mb={6}
           variant="layout.verticalAlign"
           sx={{ borderBottom: '1px dashed', borderBottomColor: 'border' }}
