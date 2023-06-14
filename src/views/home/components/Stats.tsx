@@ -138,7 +138,7 @@ const Main = () => {
   const MainTokenStats = (props: BoxProps) => {
     return (
       <Box
-        px={[3, 4]}
+        px={3}
         mt={[0, 4]}
         pb={[5, 0]}
         sx={(theme: any) => ({
