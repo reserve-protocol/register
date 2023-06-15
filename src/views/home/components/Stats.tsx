@@ -138,7 +138,7 @@ const Main = () => {
   const MainTokenStats = (props: BoxProps) => {
     return (
       <Box
-        px={[3, 4]}
+        px={3}
         mt={[0, 4]}
         pb={[5, 0]}
         sx={(theme: any) => ({
@@ -275,7 +275,7 @@ const Main = () => {
         </Grid>
         <Divider
           sx={{ display: ['none', 'block'] }}
-          mx={[-1, -5]}
+          mx={[-1, 0]}
           mb={6}
           mt={[0, 8]}
         />
