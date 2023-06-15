@@ -110,7 +110,7 @@ const AssetOverview = () => {
           </Text>
           {!rToken?.isRSV && (
             <Text variant="legend">
-              <Trans>Staked RSR coverage</Trans>
+              <Trans>Staked RSR overcollateralization</Trans>
               <Box as="span" ml={2} sx={{ fontWeight: '500', color: 'text' }}>
                 {distribution?.staked ?? 0}%
               </Box>

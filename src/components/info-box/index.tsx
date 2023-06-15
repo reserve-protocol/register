@@ -64,12 +64,12 @@ export const InfoHeading = ({ title, subtitle, help, ...props }: Props) => (
     }}
   >
     <Flex mr={3} variant="layout.verticalAlign">
-      <Text variant="title" sx={{ color: 'lightText' }}>
+      <Text variant="legend" sx={{ color: 'secondaryText' }}>
         {title}
       </Text>
       {!!help && <Help ml={2} size={14} mt="1px" content={help} />}
     </Flex>
-    {!!subtitle && <Text variant="title">{subtitle}</Text>}
+    {!!subtitle && <Text>{subtitle}</Text>}
   </Flex>
 )
 

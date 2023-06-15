@@ -1,4 +1,3 @@
-import useToggledSidebar from 'hooks/useToggledSidebar'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect } from 'react'
@@ -27,7 +26,6 @@ const GovernanceProposal = () => {
   const setDescription = useSetAtom(proposalDescriptionAtom)
   const resetProposedRoles = useResetAtom(proposedRolesAtom)
   const setId = useSetAtom(proposalTxIdAtom)
-  useToggledSidebar()
 
   useEffect(() => {
     return () => {

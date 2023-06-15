@@ -2,17 +2,20 @@ import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
 import Account from 'components/account'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
-import useIsDeployer from 'hooks/useIsDeployer'
-import useIsSidebarVisible from 'hooks/useIsSidebarVisible'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
+import useIsDeployer from 'hooks/useIsDeployer'
 import { Box, Flex, Text } from 'theme-ui'
+import Caution from '../token-menu/Caution'
 import Brand from './Brand'
 import TokenToggle from './TokenToggle'
 
 const Container = styled(Flex)`
   align-items: center;
   flex-shrink: 0;
-  position: relative;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  max-width: 95em;
   height: 72px;
 `
 
@@ -20,15 +23,15 @@ const Container = styled(Flex)`
  * Application header
  */
 const AppHeader = () => {
-  const isSidebarVisible = useIsSidebarVisible()
   const isDeployer = useIsDeployer()
 
   return (
     <Container
-      px={[3, isSidebarVisible ? 5 : 7]}
+      px={[3, 5]}
       sx={{
-        borderBottom: isSidebarVisible ? '1px solid' : 'none',
+        borderBottom: '1px solid',
         borderColor: 'border',
+        backgroundColor: 'background',
       }}
     >
       <Box mr="auto" variant="layout.verticalAlign">
@@ -49,6 +52,16 @@ const AppHeader = () => {
         )}
         {!isDeployer && <TokenToggle />}
       </Box>
+      <Caution mr={3} />
+      <Box
+        mx={4}
+        sx={{
+          backgroundColor: 'inputBorder',
+          width: '1px',
+          height: '16px',
+          display: ['none', 'block'],
+        }}
+      ></Box>
       <Flex
         sx={{
           display: ['none', 'flex'],

@@ -22,7 +22,7 @@ const Auctions = () => {
         <Box
           px={4}
           pb={7}
-          mt={4}
+          mt={2}
           mb={6}
           variant="layout.verticalAlign"
           sx={{ borderBottom: '1px dashed', borderBottomColor: 'border' }}
@@ -42,7 +42,7 @@ const Auctions = () => {
         </Box>
         <OngoingAuctions mb={6} />
         <FinalizedAuctions />
-        <Divider mx={-5} my={6} />
+        <Divider my={6} />
         <About />
         {sidebar && <AuctionsSidebar onClose={() => setSidebar(false)} />}
       </Container>

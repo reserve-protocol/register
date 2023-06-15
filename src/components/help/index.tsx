@@ -5,9 +5,11 @@ import { Box, BoxProps } from 'theme-ui'
 interface Props extends BoxProps {
   content: any
   size?: number
+  color?: string
 }
 
-const Help = ({ content, size = 16, sx = {}, ...props }: Props) => {
+const Help = ({ content, color, size = 16, sx = {}, ...props }: Props) => {
+  const defaultColor = 'secondaryText'
   return (
     <MouseoverTooltip text={content}>
       <Box
@@ -15,7 +17,7 @@ const Help = ({ content, size = 16, sx = {}, ...props }: Props) => {
         sx={{ cursor: 'pointer', ...sx }}
         {...props}
       >
-        <HelpIcon color="gray" />
+        <HelpIcon color={color ? color : defaultColor} />
       </Box>
     </MouseoverTooltip>
   )

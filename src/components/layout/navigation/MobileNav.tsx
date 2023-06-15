@@ -1,3 +1,4 @@
+import AuctionsIcon from 'components/icons/AuctionsIcon'
 import GovernanceIcon from 'components/icons/GovernanceIcon'
 import IssuanceIcon from 'components/icons/IssuanceIcon'
 import ManagerIcon from 'components/icons/ManagerIcon'
@@ -16,6 +17,7 @@ const items = [
   { path: ROUTES.OVERVIEW, Icon: OverviewIcon },
   { path: ROUTES.ISSUANCE, Icon: IssuanceIcon },
   { path: ROUTES.STAKING, Icon: StakeIcon },
+  { path: ROUTES.AUCTIONS, Icon: AuctionsIcon },
   { path: ROUTES.GOVERNANCE, Icon: GovernanceIcon },
   {
     path: ROUTES.SETTINGS,
@@ -48,6 +50,11 @@ const MobileNav = () => {
         borderColor: 'darkBorder',
         alignItems: 'center',
         justifyContent: 'space-evenly',
+        position: 'fixed',
+        width: '100%',
+        bottom: 0,
+        backgroundColor: 'background',
+        zIndex: 10,
       }}
     >
       {menuItems.map(({ path, Icon }) => (

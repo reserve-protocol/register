@@ -45,17 +45,6 @@ const Main = () => {
     }
   `
 
-  const defaultProtocolMetrics = {
-    totalValueLockedUSD: '$0',
-    totalRTokenUSD: '$0',
-    cumulativeVolumeUSD: '$0',
-    cumulativeRTokenRevenueUSD: '$0',
-    cumulativeStakingRevenueUSD: '$0',
-    transactionCount: '0',
-    dailyTransactionCount: '0',
-    dailyVolume: '$0',
-  }
-
   const protocolMetricsQuery = gql`
     query GetProtocolMetrics($id: String!, $fromTime: Int!) {
       token(id: "0x196f4727526ea7fb1e17b2071b3d8eaa38486988") {
@@ -69,6 +58,7 @@ const Main = () => {
         totalRTokenUSD
         cumulativeVolumeUSD
         cumulativeRTokenRevenueUSD
+        cumulativeRSRRevenueUSD
         rsrRevenue
         transactionCount
         rsrStaked
@@ -125,7 +115,7 @@ const Main = () => {
           +data.protocol?.cumulativeRTokenRevenueUSD || 0
         )}`,
         cumulativeStakingRevenueUSD: `$${formatCurrency(
-          (+data.protocol?.rsrRevenue || 0) * rsrPrice
+          +data.protocol?.cumulativeRSRRevenueUSD || 0
         )}`,
         transactionCount: formatCurrency(
           rpayOverview.txCount +
@@ -148,7 +138,7 @@ const Main = () => {
   const MainTokenStats = (props: BoxProps) => {
     return (
       <Box
-        px={[3, 4]}
+        px={3}
         mt={[0, 4]}
         pb={[5, 0]}
         sx={(theme: any) => ({
@@ -285,7 +275,7 @@ const Main = () => {
         </Grid>
         <Divider
           sx={{ display: ['none', 'block'] }}
-          mx={[-1, -5]}
+          mx={[-1, 0]}
           mb={6}
           mt={[0, 8]}
         />

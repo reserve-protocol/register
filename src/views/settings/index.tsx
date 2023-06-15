@@ -1,12 +1,9 @@
 import Layout from 'components/rtoken-setup/Layout'
-import useToggledSidebar from 'hooks/useToggledSidebar'
 import NavigationSidebar from './components/NavigationSidebar'
 import RTokenOverview from './components/RTokenOverview'
 import { Grid } from 'theme-ui'
 
 const Settings = () => {
-  useToggledSidebar()
-
   return (
     <Grid
       // id="rtoken-setup-container"

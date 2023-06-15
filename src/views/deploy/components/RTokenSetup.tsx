@@ -56,6 +56,7 @@ const DeploySection = ({ enabled = true }) => {
 const GovernanceSection = ({ enabled = true }) => (
   <>
     <SectionWrapper sx={{ position: 'relative' }} navigationIndex={7}>
+      <GovernanceSetup disabled={!enabled} />
       {!enabled && (
         <Box
           sx={{
@@ -65,11 +66,9 @@ const GovernanceSection = ({ enabled = true }) => (
             width: '100%',
             backgroundColor: 'background',
             opacity: '50%',
-            zIndex: 9999,
           }}
         />
       )}
-      <GovernanceSetup disabled={!enabled} />
     </SectionWrapper>
     <TransactionDivider
       title={t`Transaction 2`}

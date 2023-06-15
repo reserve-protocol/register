@@ -40,7 +40,7 @@ const TokenOverview = ({ metrics, ...props }: Props) => {
           />
 
           <Flex ml={[0, 4]} mt={[3, 2]} sx={{ flexDirection: 'column' }}>
-            <Text variant="title" sx={{ fontWeight: 300, color: 'lightText' }}>
+            <Text variant="legend" sx={{ fontWeight: 300, color: 'lightText' }}>
               <Trans>Market cap</Trans>
             </Text>{' '}
             <Text sx={{ fontWeight: 'medium', fontSize: 6 }}>
