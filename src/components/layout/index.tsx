@@ -4,7 +4,7 @@ import { Box, Flex } from 'theme-ui'
 import Header from './header'
 import MobileNav from './navigation/MobileNav'
 import Sidebar from './sidebar'
-
+import Footer from './sidebar/Footer'
 const Container = styled(Flex)`
   height: 100%;
   max-width: 95em;
@@ -51,7 +51,9 @@ const Layout = ({ children }: { children: ReactNode }) => (
       <Sidebar />
       <Body>
         <Suspense>
-          <ContentContainer id="app-container">{children}</ContentContainer>
+          <ContentContainer id="app-container">
+            {children} <Footer />
+          </ContentContainer>
         </Suspense>
       </Body>
       <MobileNav />
