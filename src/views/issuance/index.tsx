@@ -57,7 +57,7 @@ const Issuance = () => {
   const isZapEnabled = useAtomValue(ui.zapWidgetEnabled)
 
   return (
-    <Box sx={{ marginTop: [0, 0, 0, '-244px', -498], position: 'relative' }}>
+    <Box sx={{ height: 500 }}>
       {isZapEnabled && <ZapWarning />}
       <Container pb={[1, 4]}>
         <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[1, 5]}>
