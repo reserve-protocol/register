@@ -26,7 +26,7 @@ const Governance = () => {
       <Layout>
         <NavigationSidebar governance />
         <RTokenSetup governance />
-        <GovernanceOverview sx={{ position: 'sticky', top: 0 }} />
+        <GovernanceOverview variant="layout.stickyNoHeader" />
       </Layout>
     </FormProvider>
   )

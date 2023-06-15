@@ -1,6 +1,5 @@
-import { t, Trans } from '@lingui/macro'
+import { t } from '@lingui/macro'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
-import DiscussionsIcon from 'components/icons/DiscussionsIcon'
 import GovernanceIcon from 'components/icons/GovernanceIcon'
 import IssuanceIcon from 'components/icons/IssuanceIcon'
 import ManagerIcon from 'components/icons/ManagerIcon'
@@ -10,14 +9,13 @@ import useRToken from 'hooks/useRToken'
 import { useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
 import { transition } from 'theme'
-import { Box, Link, NavLinkProps, Text } from 'theme-ui'
+import { Box, NavLinkProps, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 
 interface Item {
   path: string
   title: string
   Icon: React.ElementType
-  collapsed?: boolean
 }
 
 interface NavItemProps extends Item, Omit<NavLinkProps, 'title'> {
@@ -25,28 +23,26 @@ interface NavItemProps extends Item, Omit<NavLinkProps, 'title'> {
   to?: any
 }
 
-const MenuItem = ({ title, Icon, collapsed }: Omit<Item, 'path'>) => {
+const MenuItem = ({ title, Icon }: Omit<Item, 'path'>) => {
   return (
     <Box
+      px={2}
       sx={{
         display: 'flex',
         flexGrow: 1,
         alignItems: 'center',
         transition,
-        paddingLeft: collapsed ? 4 : [0, 0, 4],
-        justifyContent: collapsed ? 'left' : ['center', 'center', 'inherit'],
       }}
       my={[10, 10, 2]}
     >
       <Icon />
       <Text
-        variant="title"
         sx={{
-          display: collapsed ? 'none' : ['none', 'none', 'inherit'],
+          display: ['none', 'none', 'inherit'],
           whiteSpace: 'nowrap',
           fontWeight: 300,
         }}
-        ml={3}
+        ml={2}
       >
         {title}
       </Text>
@@ -59,30 +55,32 @@ const NavItem = ({
   title,
   Icon,
   rTokenAddress,
-  collapsed,
   ...props
 }: NavItemProps) => (
   <NavLink
     style={({ isActive }) => ({
-      paddingLeft: '5px',
       textDecoration: 'none',
+      marginLeft: 12,
+      marginRight: 12,
+      paddingBottom: '12px',
+      paddingTop: '12px',
       opacity: isActive ? '1' : '0.68',
       color: 'inherit',
       lineHeight: '32px',
       boxShadow: isActive
-        ? 'inset 0 16px 0px var(--theme-ui-colors-background), inset 0 -16px 0px var(--theme-ui-colors-background), inset 4px 0px 0px currentColor'
+        ? 'inset 0 0px 0px var(--theme-ui-colors-background), inset 0 -2px 0px currentColor, inset 0 0px 0px var(--theme-ui-colors-background)'
         : 'none',
       display: 'flex',
     })}
     to={`${path}?token=${rTokenAddress}`}
     {...props}
   >
-    <MenuItem title={title} Icon={Icon} collapsed={collapsed} />
+    <MenuItem title={title} Icon={Icon} />
   </NavLink>
 )
 
 // Sidebar Navigation
-const Navigation = ({ collapsed = false }) => {
+const Navigation = () => {
   const currentToken = useRToken()
   const PAGES = useMemo(() => {
     const items = [
@@ -93,7 +91,7 @@ const Navigation = ({ collapsed = false }) => {
       { path: ROUTES.GOVERNANCE, title: t`Governance`, Icon: GovernanceIcon },
       {
         path: ROUTES.SETTINGS,
-        title: t`Settings`,
+        title: t`Details + Roles`,
         Icon: ManagerIcon,
       },
     ]
@@ -110,12 +108,11 @@ const Navigation = ({ collapsed = false }) => {
   }, [currentToken?.isRSV])
 
   return (
-    <Box mt={3}>
+    <Box sx={{ display: 'flex' }} mx={'auto'}>
       {pages.map((item) => (
         <NavItem
           key={item.path}
           {...item}
-          collapsed={collapsed}
           rTokenAddress={currentToken?.address ?? ''}
         />
       ))}

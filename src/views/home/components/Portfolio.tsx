@@ -83,7 +83,7 @@ const Portfolio = (props: BoxProps) => {
     >
       <Box>
         <Box ml={3}>
-          <Text mb={1} variant="title" sx={{ color: 'lightText' }}>
+          <Text mb={1} variant="title" sx={{ color: 'secondaryText' }}>
             <Trans>Wallet staked RSR + RToken Value</Trans>
           </Text>
           <Text
@@ -94,9 +94,9 @@ const Portfolio = (props: BoxProps) => {
             ${formatCurrency(holdings)}
           </Text>
         </Box>
-        <Grid columns={[1, 1, 1, 2]}>
+        <Box>
           {rTokens?.length > 0 && (
-            <Box mt={5}>
+            <Box mt={[4, 5]}>
               <Text
                 pl={3}
                 variant="title"
@@ -113,7 +113,7 @@ const Portfolio = (props: BoxProps) => {
             </Box>
           )}
           {stTokens?.length > 0 && (
-            <Box mt={[2, 5]}>
+            <Box mt={[4, 5]}>
               <Text
                 pl={3}
                 variant="title"
@@ -122,16 +122,16 @@ const Portfolio = (props: BoxProps) => {
                 <Trans>Your staked RSR positions</Trans>
               </Text>
               <Table
-                mt={3}
+                mt={[0, 3]}
                 maxHeight={220}
                 columns={stTokenColumns}
                 data={stTokens}
               />
             </Box>
           )}
-        </Grid>
+        </Box>
       </Box>
-      <Divider mx={[-1, -5]} my={[5, 8]} />
+      <Divider mx={[-1, 0]} my={[5, 8]} />
     </Box>
   )
 }

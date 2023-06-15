@@ -16,6 +16,7 @@ import RTokenSetup from './components/RTokenSetup'
 import { deployIdAtom, useDeployTxState } from './useDeploy'
 import { governanceIdAtom } from './useGovernance'
 import { defaultValues } from './utils'
+import { Box } from 'theme-ui'
 
 const Deploy = () => {
   const [governance, setGovernance] = useState(false)
@@ -66,7 +67,9 @@ const Deploy = () => {
       <Layout>
         <NavigationSidebar />
         <RTokenSetup governance={governance} />
-        <DeployOverview sx={{ position: 'sticky', top: 0 }} />
+        <Box variant="layout.stickyNoHeader">
+          <DeployOverview />
+        </Box>
       </Layout>
     </FormProvider>
   )

@@ -65,7 +65,7 @@ const GovernanceSection = ({ enabled = true }) => (
             width: '100%',
             backgroundColor: 'background',
             opacity: '50%',
-            zIndex: 9999,
+            zIndex: 1,
           }}
         />
       )}

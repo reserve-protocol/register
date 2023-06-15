@@ -27,8 +27,6 @@ const ZapOverview = () => {
 const ZapWarning = () => (
   <Flex
     sx={{
-      borderBottom: '1px solid',
-      borderColor: 'border',
       textAlign: 'center',
       justifyContent: 'center',
       alignItems: 'center',
@@ -37,6 +35,7 @@ const ZapWarning = () => (
       fontSize: 1,
     }}
     p={4}
+    mt={4}
   >
     <InfoIcon />
     <Text variant="strong" mx={2}>
@@ -58,7 +57,7 @@ const Issuance = () => {
   const isZapEnabled = useAtomValue(ui.zapWidgetEnabled)
 
   return (
-    <>
+    <Box sx={{ marginTop: ['-72px', '-144px'] }}>
       {isZapEnabled && <ZapWarning />}
       <Container pb={[1, 4]}>
         <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[1, 5]}>
@@ -76,7 +75,7 @@ const Issuance = () => {
           </Box>
         </Grid>
       </Container>
-    </>
+    </Box>
   )
 }
 

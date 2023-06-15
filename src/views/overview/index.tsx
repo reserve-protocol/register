@@ -2,7 +2,7 @@ import { Container } from 'components'
 import useTokenStats from 'hooks/useTokenStats'
 import { useAtomValue } from 'jotai'
 import { rTokenAtom } from 'state/atoms'
-import { Box, Divider, Grid } from 'theme-ui'
+import { Divider, Grid } from 'theme-ui'
 import About from './components/About'
 import AssetOverview from './components/AssetOverview'
 import External from './components/External'
@@ -13,7 +13,7 @@ import RevenueSplitOverview from './components/RevenueSplitOverview'
 import TokenOverview from './components/TokenOverview'
 import TokenUsage from './components/TokenUsage'
 
-const dividerProps = { my: [4, 6], mx: [-1, -5], sx: { borderColor: 'border' } }
+const dividerProps = { my: [4, 8], mx: [-1, -3], sx: { borderColor: 'border' } }
 const gridProps = { columns: [1, 1, 1, 2], gap: [5, 5, 5, 4] }
 
 /**
@@ -31,7 +31,7 @@ const Overview = () => {
 
   return (
     <Container>
-      <TokenOverview mt={[3, 0]} ml={3} metrics={rTokenMetrics} />
+      <TokenOverview mt={[3, 6]} ml={3} metrics={rTokenMetrics} />
       <Divider {...dividerProps} />
       <TokenUsage ml={3} metrics={rTokenMetrics} />
       <Divider {...dividerProps} />

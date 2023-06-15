@@ -32,7 +32,7 @@ const NavigationSidebar = ({ governance = false }) => {
   }
 
   return (
-    <Box variant="layout.sticky">
+    <Box variant="layout.stickyNoHeader">
       <Box my={5}>
         <SmallButton variant="transparent" onClick={handleBack}>
           {governance ? (
