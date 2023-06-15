@@ -8,6 +8,7 @@ import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import { Box, Flex, Text } from 'theme-ui'
 import Brand from './Brand'
 import TokenToggle from './TokenToggle'
+import Caution from '../sidebar/Caution'
 
 const Container = styled(Flex)`
   align-items: center;
@@ -49,6 +50,16 @@ const AppHeader = () => {
         )}
         {!isDeployer && <TokenToggle />}
       </Box>
+      <Caution mr={3} />
+      <Box
+        mx={4}
+        sx={{
+          backgroundColor: 'inputBorder',
+          width: '1px',
+          height: '16px',
+          display: ['none', 'block'],
+        }}
+      ></Box>
       <Flex
         sx={{
           display: ['none', 'flex'],
