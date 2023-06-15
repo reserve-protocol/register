@@ -2,13 +2,12 @@ import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
 import Account from 'components/account'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
-import useIsDeployer from 'hooks/useIsDeployer'
-import useIsSidebarVisible from 'hooks/useIsSidebarVisible'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
+import useIsDeployer from 'hooks/useIsDeployer'
 import { Box, Flex, Text } from 'theme-ui'
+import Caution from '../token-menu/Caution'
 import Brand from './Brand'
 import TokenToggle from './TokenToggle'
-import Caution from '../token-menu/Caution'
 
 const Container = styled(Flex)`
   align-items: center;
@@ -18,7 +17,6 @@ const Container = styled(Flex)`
   width: 100%;
   max-width: 95em;
   height: 72px;
-  z-index: 10;
 `
 
 /**

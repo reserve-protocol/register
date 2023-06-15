@@ -46,14 +46,14 @@ const BottomSpacer = () => {
 const Layout = ({ children }: { children: ReactNode }) => (
   <Container>
     <Wrapper>
-      <Header />
-      <TokenMenu />
       <TopSpacer />
       <Suspense>
         <ContentContainer id="app-container">{children}</ContentContainer>
       </Suspense>
       <BottomSpacer />
       <MobileNav />
+      <Header />
+      <TokenMenu />
     </Wrapper>
   </Container>
 )
