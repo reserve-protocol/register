@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { ReactNode, Suspense } from 'react'
+import { ReactNode } from 'react'
 import { Box, Flex } from 'theme-ui'
 import Header from './header'
 import MobileNav from './navigation/MobileNav'
@@ -11,24 +11,26 @@ const Container = styled(Flex)`
   height: 100%;
 `
 
-const Wrapper = styled(Flex)`
-  flex-grow: 99999;
-  flex-basis: 0;
+const Wrapper = styled(Box)`
   max-width: 95em;
-  position: relative;
-  flex-direction: column;
-  margin: auto;
-`
-
-const ContentContainer = styled(Box)`
-  position: relative;
-  flex: auto;
+  margin-left: auto;
+  margin-right: auto;
 `
 
 const TopSpacer = () => {
   const isVisible = useIsSidebarVisible()
 
-  return <Box sx={{ height: isVisible ? ['72px', '144px'] : '72px' }} />
+  return (
+    <Box sx={{ overflow: 'hidden' }}>
+      <Box
+        sx={{
+          height: isVisible ? ['72px', '144px'] : '72px',
+          width: '100em',
+          overflow: 'hidden',
+        }}
+      />
+    </Box>
+  )
 }
 
 const BottomSpacer = () => {
@@ -44,12 +46,10 @@ const BottomSpacer = () => {
  * @returns {JSX.Element}
  */
 const Layout = ({ children }: { children: ReactNode }) => (
-  <Container>
+  <Container id="app-container">
     <Wrapper>
       <TopSpacer />
-      <Suspense>
-        <ContentContainer id="app-container">{children}</ContentContainer>
-      </Suspense>
+      <Box>{children}</Box>
       <BottomSpacer />
       <MobileNav />
       <Header />
