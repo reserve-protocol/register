@@ -9,7 +9,7 @@ const Caution = (props: BoxProps) => (
       py={1}
       px={2}
       sx={{
-        display: 'flex',
+        display: ['none', 'flex'],
         alignItems: 'center',
         background: 'rgba(255, 138, 0, 0.1)',
         borderRadius: '8px',
