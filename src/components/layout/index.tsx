@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { ReactNode, Suspense } from 'react'
+import { ReactNode } from 'react'
 import { Box, Flex } from 'theme-ui'
 import Header from './header'
 import MobileNav from './navigation/MobileNav'
