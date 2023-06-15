@@ -1,18 +1,18 @@
 import { Container } from 'components'
-import { useAtomValue } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { useEffect, useState } from 'react'
-import { walletAtom } from 'state/atoms'
-import { Divider, Grid } from 'theme-ui'
+import { selectedRTokenAtom, walletAtom } from 'state/atoms'
+import { Divider } from 'theme-ui'
 import About from './components/About'
 import Greet from './components/Greet'
 import Portfolio from './components/Portfolio'
-import TokenList from './components/TokenList'
 import Stats from './components/Stats'
+import TokenList from './components/TokenList'
 
 const VISITED_KEY = 'visited'
 
 const dividerProps = {
-  mx: [-1, 0],
+  mx: [-1, -3],
   my: [5, 8],
 }
 
@@ -24,6 +24,7 @@ const Home = () => {
   const [visited, setVisited] = useState(
     !!account || !!localStorage.getItem(VISITED_KEY)
   )
+  const [token, setToken] = useAtom(selectedRTokenAtom)
 
   const handleDismiss = () => {
     setVisited(true)
@@ -35,6 +36,13 @@ const Home = () => {
       handleDismiss()
     }
   }, [account])
+
+  // Unselect rToken if on this view ("back" browser action for example)
+  useEffect(() => {
+    if (token) {
+      setToken('')
+    }
+  }, [])
 
   return (
     <Container>

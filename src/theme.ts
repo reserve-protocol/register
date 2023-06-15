@@ -477,7 +477,11 @@ export const theme: Theme = {
     },
     sticky: {
       position: 'sticky',
-      top: 0,
+      top: ['72px', '168px', '184px'],
+    },
+    stickyNoHeader: {
+      position: 'sticky',
+      top: ['72px', '96px', '112px'],
     },
     square: {
       marginX: 1,

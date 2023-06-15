@@ -12,7 +12,6 @@ const Layout = ({ children, ...props }: BoxProps) => (
       position: 'relative',
       alignContent: 'flex-start',
       alignItems: 'flex-start',
-      overflowY: 'auto',
 
       '& > div:first-of-type': {
         display: ['none', 'none', 'none', 'inherit'],

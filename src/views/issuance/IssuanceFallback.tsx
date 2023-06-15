@@ -11,7 +11,7 @@ import RedeemFallback from './components/redeem/RedeemFallback'
  */
 const IssuanceFallback = () => {
   return (
-    <Container pb={4}>
+    <Container pb={4} sx={{ marginTop: ['-72px', '-144px'] }}>
       <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[1, 5]}>
         <Box>
           <Grid columns={[1, 2]} gap={[1, 4]} mb={[1, 4]}>

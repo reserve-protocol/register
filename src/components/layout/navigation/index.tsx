@@ -1,6 +1,5 @@
-import { t, Trans } from '@lingui/macro'
+import { t } from '@lingui/macro'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
-import DiscussionsIcon from 'components/icons/DiscussionsIcon'
 import GovernanceIcon from 'components/icons/GovernanceIcon'
 import IssuanceIcon from 'components/icons/IssuanceIcon'
 import ManagerIcon from 'components/icons/ManagerIcon'
@@ -10,14 +9,13 @@ import useRToken from 'hooks/useRToken'
 import { useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
 import { transition } from 'theme'
-import { Box, Link, NavLinkProps, Text } from 'theme-ui'
+import { Box, NavLinkProps, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 
 interface Item {
   path: string
   title: string
   Icon: React.ElementType
-  collapsed?: boolean
 }
 
 interface NavItemProps extends Item, Omit<NavLinkProps, 'title'> {
@@ -25,7 +23,7 @@ interface NavItemProps extends Item, Omit<NavLinkProps, 'title'> {
   to?: any
 }
 
-const MenuItem = ({ title, Icon, collapsed }: Omit<Item, 'path'>) => {
+const MenuItem = ({ title, Icon }: Omit<Item, 'path'>) => {
   return (
     <Box
       px={2}
@@ -40,7 +38,7 @@ const MenuItem = ({ title, Icon, collapsed }: Omit<Item, 'path'>) => {
       <Icon />
       <Text
         sx={{
-          display: collapsed ? 'none' : ['none', 'none', 'inherit'],
+          display: ['none', 'none', 'inherit'],
           whiteSpace: 'nowrap',
           fontWeight: 300,
         }}
@@ -57,7 +55,6 @@ const NavItem = ({
   title,
   Icon,
   rTokenAddress,
-  collapsed,
   ...props
 }: NavItemProps) => (
   <NavLink
@@ -78,12 +75,12 @@ const NavItem = ({
     to={`${path}?token=${rTokenAddress}`}
     {...props}
   >
-    <MenuItem title={title} Icon={Icon} collapsed={collapsed} />
+    <MenuItem title={title} Icon={Icon} />
   </NavLink>
 )
 
 // Sidebar Navigation
-const Navigation = ({ collapsed = false }) => {
+const Navigation = () => {
   const currentToken = useRToken()
   const PAGES = useMemo(() => {
     const items = [
@@ -116,7 +113,6 @@ const Navigation = ({ collapsed = false }) => {
         <NavItem
           key={item.path}
           {...item}
-          collapsed={collapsed}
           rTokenAddress={currentToken?.address ?? ''}
         />
       ))}

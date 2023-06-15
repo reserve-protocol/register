@@ -116,7 +116,7 @@ const ConfirmProposalOverview = ({ tx, ...props }: Props) => {
   const setProposalEditing = useSetAtom(isProposalEditingAtom)
 
   return (
-    <Container sx={{ position: 'sticky', top: 0 }} p={0} {...props}>
+    <Container variant="layout.sticky" p={0} {...props}>
       <Box
         sx={{
           maxHeight: 'calc(100vh - 124px)',

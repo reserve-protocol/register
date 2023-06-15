@@ -8,28 +8,32 @@ import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import { Box, Flex, Text } from 'theme-ui'
 import Brand from './Brand'
 import TokenToggle from './TokenToggle'
-import Caution from '../sidebar/Caution'
+import Caution from '../token-menu/Caution'
 
 const Container = styled(Flex)`
   align-items: center;
   flex-shrink: 0;
-  position: relative;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  max-width: 95em;
   height: 72px;
+  z-index: 10;
 `
 
 /**
  * Application header
  */
 const AppHeader = () => {
-  const isSidebarVisible = useIsSidebarVisible()
   const isDeployer = useIsDeployer()
 
   return (
     <Container
       px={[3, 5]}
       sx={{
-        borderBottom: isSidebarVisible ? '1px solid' : 'none',
+        borderBottom: '1px solid',
         borderColor: 'border',
+        backgroundColor: 'background',
       }}
     >
       <Box mr="auto" variant="layout.verticalAlign">

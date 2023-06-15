@@ -3,40 +3,39 @@ import { ReactNode, Suspense } from 'react'
 import { Box, Flex } from 'theme-ui'
 import Header from './header'
 import MobileNav from './navigation/MobileNav'
-import Sidebar from './sidebar'
-import Footer from './sidebar/Footer'
+import TokenMenu from './token-menu'
+import useIsSidebarVisible from 'hooks/useIsSidebarVisible'
+
 const Container = styled(Flex)`
+  overflow: auto;
   height: 100%;
-  max-width: 95em;
-  margin: auto;
 `
 
 const Wrapper = styled(Flex)`
   flex-grow: 99999;
   flex-basis: 0;
-  height: 100%;
-  overflow: hidden;
+  max-width: 95em;
   position: relative;
   flex-direction: column;
-`
-
-const Body = styled(Box)`
-  display: block;
-  height: 100%;
-  overflow: hidden;
+  margin: auto;
 `
 
 const ContentContainer = styled(Box)`
-  overflow: auto;
-  height: 100%;
   position: relative;
   flex: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `
+
+const TopSpacer = () => {
+  const isVisible = useIsSidebarVisible()
+
+  return <Box sx={{ height: isVisible ? ['72px', '144px'] : '72px' }} />
+}
+
+const BottomSpacer = () => {
+  const isVisible = useIsSidebarVisible()
+
+  return <Box sx={{ height: isVisible ? ['58px', 0] : 0 }} />
+}
 
 /**
  * Application Layout
@@ -48,14 +47,12 @@ const Layout = ({ children }: { children: ReactNode }) => (
   <Container>
     <Wrapper>
       <Header />
-      <Sidebar />
-      <Body>
-        <Suspense>
-          <ContentContainer id="app-container">
-            {children} <Footer />
-          </ContentContainer>
-        </Suspense>
-      </Body>
+      <TokenMenu />
+      <TopSpacer />
+      <Suspense>
+        <ContentContainer id="app-container">{children}</ContentContainer>
+      </Suspense>
+      <BottomSpacer />
       <MobileNav />
     </Wrapper>
   </Container>
