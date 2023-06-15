@@ -8,7 +8,11 @@ import useTransactionCost from 'hooks/useTransactionCost'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { CheckCircle, ExternalLink, ThumbsUp } from 'react-feather'
-import { addTransactionAtom, rTokenGovernanceAtom } from 'state/atoms'
+import {
+  addTransactionAtom,
+  chainIdAtom,
+  rTokenGovernanceAtom,
+} from 'state/atoms'
 import { useTransactionState } from 'state/web3/hooks/useTransactions'
 import { Box, Checkbox, Divider, Flex, Link, Spinner, Text } from 'theme-ui'
 import {
@@ -29,6 +33,7 @@ export const VOTE_TYPE = {
 }
 
 const VoteModal = (props: ModalProps) => {
+  const chainId = useAtomValue(chainIdAtom)
   const [vote, setVote] = useState(-1)
   const [txId, setId] = useState('')
   const proposal = useAtomValue(proposalDetailAtom)
@@ -106,7 +111,11 @@ const VoteModal = (props: ModalProps) => {
           <br />
           <Link
             key={tx.id}
-            href={getExplorerLink(tx.hash ?? '', ExplorerDataType.TRANSACTION)}
+            href={getExplorerLink(
+              tx.hash ?? '',
+              chainId,
+              ExplorerDataType.TRANSACTION
+            )}
             target="_blank"
             sx={{ fontSize: 1 }}
           >
@@ -125,7 +134,6 @@ const VoteModal = (props: ModalProps) => {
           {proposal?.description
             ? getProposalTitle(proposal.description)
             : 'Loading...'}
-          "
         </Text>
         <Box variant="layout.verticalAlign" mt={2}>
           <Text variant="legend">
@@ -136,6 +144,7 @@ const VoteModal = (props: ModalProps) => {
             ml={2}
             href={getExplorerLink(
               proposal?.proposer ?? '',
+              chainId,
               ExplorerDataType.ADDRESS
             )}
           />

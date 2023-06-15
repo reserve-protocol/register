@@ -1,6 +1,5 @@
 import { Web3Provider } from '@ethersproject/providers'
 import { formatEther } from '@ethersproject/units'
-import { useWeb3React } from '@web3-react/core'
 import { OracleInterface, StRSRInterface } from 'abis'
 import { formatUnits } from 'ethers/lib/utils'
 import useBlockNumber from 'hooks/useBlockNumber'
@@ -9,11 +8,14 @@ import useRTokenPrice from 'hooks/useRTokenPrice'
 import useTokensAllowance from 'hooks/useTokensAllowance'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import {
   allowanceAtom,
   collateralYieldAtom,
   ethPriceAtom,
   gasPriceAtomBn,
+  getValidWeb3Atom,
+  multicallAtom,
   rTokenAtom,
   rTokenPriceAtom,
   rsrExchangeRateAtom,
@@ -23,16 +25,14 @@ import {
 } from 'state/atoms'
 import useSWR from 'swr'
 import { ReserveToken, StringMap } from 'types'
+import { ChainId } from 'utils/chains'
 import { RSR } from 'utils/constants'
 import { RSV_MANAGER } from 'utils/rsv'
 import AccountUpdater from './AccountUpdater'
 import RSVUpdater from './RSVUpdater'
+import { TokenBalancesUpdater } from './TokenBalancesUpdater'
 import TokenUpdater from './TokenUpdater'
 import RTokenUpdater from './rtoken'
-import { promiseMulticall } from './web3/lib/multicall'
-
-import { useSearchParams } from 'react-router-dom'
-import { TokenBalancesUpdater } from './TokenBalancesUpdater'
 
 const getTokenAllowances = (reserveToken: ReserveToken): [string, string][] => {
   const tokens: [string, string][] = [
@@ -85,64 +85,67 @@ const TokensAllowanceUpdater = () => {
  * GasPrice
  */
 const PricesUpdater = () => {
-  const { provider, chainId } = useWeb3React()
+  const { provider, chainId } = useAtomValue(getValidWeb3Atom)
   const rTokenPrice = useRTokenPrice()
   const setRSRPrice = useSetAtom(rsrPriceAtom)
   const setEthPrice = useSetAtom(ethPriceAtom)
   const setGasPrice = useSetAtom(gasPriceAtomBn)
   const setRTokenPrice = useSetAtom(rTokenPriceAtom)
   const blockNumber = useBlockNumber()
+  const multicall = useAtomValue(multicallAtom)
 
-  const fetchGasPrice = useCallback(async (provider: Web3Provider) => {
-    try {
-      const gasPrice = await provider.getGasPrice()
-      setGasPrice(gasPrice)
-    } catch (e) {
-      console.error('Error fetching gas price', e)
+  const fetchGasPrice = useCallback(
+    async (provider: Web3Provider) => {
+      try {
+        const gasPrice = await provider.getGasPrice()
+        setGasPrice(gasPrice)
+      } catch (e) {
+        console.error('Error fetching gas price', e)
+      }
+    },
+    [provider]
+  )
+
+  const fetchTokenPrices = useCallback(async () => {
+    // Only fetch token prices in ethereum
+    // TODO: Base chain oracles? enable this
+    if (!multicall || chainId !== ChainId.Mainnet) {
+      return
     }
-  }, [])
 
-  // TODO: Replace sushi oracle with chainlink
-  const fetchTokenPrices = useCallback(async (provider: Web3Provider) => {
     try {
       const callParams = {
         abi: OracleInterface,
         method: 'latestRoundData',
       }
 
-      const [rsrPrice, wethPrice] = await promiseMulticall(
-        [
-          {
-            ...callParams,
-            // chainlink aggregator
-            address: '0x759bbc1be8f90ee6457c44abc7d443842a976d02',
-            args: [],
-          },
-          {
-            ...callParams,
-            address: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419',
-            args: [],
-          },
-        ],
-        provider
-      )
+      const [rsrPrice, wethPrice] = await multicall([
+        {
+          ...callParams,
+          // chainlink aggregator
+          address: '0x759bbc1be8f90ee6457c44abc7d443842a976d02',
+          args: [],
+        },
+        {
+          ...callParams,
+          address: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419',
+          args: [],
+        },
+      ])
+
       setRSRPrice(+formatUnits(rsrPrice.answer, 8))
       setEthPrice(+formatUnits(wethPrice.answer, 8))
     } catch (e) {
       console.error('Error fetching token prices', e)
     }
-  }, [])
+  }, [multicall])
 
   useEffect(() => {
-    if (chainId && blockNumber && provider) {
+    if (blockNumber && provider) {
       fetchGasPrice(provider)
-
-      // Only fetch token prices in ethereum
-      if (chainId === 1) {
-        fetchTokenPrices(provider)
-      }
+      fetchTokenPrices()
     }
-  }, [chainId, blockNumber])
+  }, [blockNumber, fetchTokenPrices])
 
   useEffect(() => {
     setRTokenPrice(rTokenPrice)

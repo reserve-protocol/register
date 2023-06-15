@@ -1,7 +1,7 @@
 import { FacadeInterface, RTokenInterface } from 'abis'
 import { Atom, atom } from 'jotai'
-import { getValidWeb3Atom } from 'state/atoms/chainAtoms'
-import { promiseMulticall } from 'state/web3/lib/multicall'
+import { multicallAtom } from 'state/atoms'
+import { chainIdAtom } from 'state/atoms/chainAtoms'
 import { ContractCall, Token } from 'types'
 import { getTokenMetaCalls } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
@@ -26,9 +26,10 @@ export const selectedRTokenAtom = atom('')
 const rTokenAtom: Atom<RToken | null> = atomWithLoadable(
   async (get): Promise<RToken | null> => {
     const rTokenAddress = get(selectedRTokenAtom)
-    const { provider, chainId } = get(getValidWeb3Atom)
+    const chainId = get(chainIdAtom)
+    const multicall = get(multicallAtom)
 
-    if (!provider || !rTokenAddress) {
+    if (!multicall || !rTokenAddress) {
       return null
     }
 
@@ -59,33 +60,27 @@ const rTokenAtom: Atom<RToken | null> = atomWithLoadable(
       mandate,
       basket,
       stTokenAddress,
-    ] = await promiseMulticall(
-      [
-        ...getTokenMetaCalls(rTokenAddress),
-        { ...rTokenCallParams, method: 'main' },
-        { ...rTokenCallParams, method: 'mandate' },
-        {
-          ...facadeCallParams,
-          method: 'basketTokens',
-        },
-        {
-          ...facadeCallParams,
-          method: 'stToken',
-        },
-      ],
-      provider
-    )
+    ] = await multicall([
+      ...getTokenMetaCalls(rTokenAddress),
+      { ...rTokenCallParams, method: 'main' },
+      { ...rTokenCallParams, method: 'mandate' },
+      {
+        ...facadeCallParams,
+        method: 'basketTokens',
+      },
+      {
+        ...facadeCallParams,
+        method: 'stToken',
+      },
+    ])
 
-    const tokensMeta = await promiseMulticall(
-      [
-        ...getTokenMetaCalls(stTokenAddress),
-        ...(basket as string[]).reduce(
-          (calls, collateral) => [...calls, ...getTokenMetaCalls(collateral)],
-          [] as ContractCall[]
-        ),
-      ],
-      provider
-    )
+    const tokensMeta = await multicall([
+      ...getTokenMetaCalls(stTokenAddress),
+      ...(basket as string[]).reduce(
+        (calls, collateral) => [...calls, ...getTokenMetaCalls(collateral)],
+        [] as ContractCall[]
+      ),
+    ])
 
     const tokens: Token[] = [stTokenAddress, ...(basket as string[])].reduce(
       (tokens, address) => {

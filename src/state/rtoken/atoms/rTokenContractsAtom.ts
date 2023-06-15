@@ -10,20 +10,19 @@ import {
   RevenueTraderInterface,
   StRSRInterface,
 } from 'abis'
-import { promiseMulticall } from 'state/web3/lib/multicall'
+import { multicallAtom } from 'state/atoms'
+import { ContractCall } from 'types'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import rTokenAtom from './rTokenAtom'
-import { getValidWeb3Atom } from 'state/atoms'
-import { ContractCall } from 'types'
 
 const getMainCalls = (address: string, methods: string[]): ContractCall[] =>
   methods.map((method) => ({ abi: MainInterface, address, args: [], method }))
 
 const rTokenContractsAtom = atomWithLoadable(async (get) => {
   const rToken = get(rTokenAtom)
-  const { provider } = get(getValidWeb3Atom)
+  const multicall = get(multicallAtom)
 
-  if (!rToken?.main || !rToken?.stToken || !provider) {
+  if (!rToken?.main || !rToken?.stToken || !multicall) {
     return null
   }
 
@@ -37,7 +36,7 @@ const rTokenContractsAtom = atomWithLoadable(async (get) => {
     assetRegistry,
     basketHandler,
     mainVersion,
-  ]: string[] = await promiseMulticall(
+  ]: string[] = await multicall(
     getMainCalls(rToken.main, [
       'distributor',
       'backingManager',
@@ -48,8 +47,7 @@ const rTokenContractsAtom = atomWithLoadable(async (get) => {
       'assetRegistry',
       'basketHandler',
       'version',
-    ]),
-    provider
+    ])
   )
 
   const [
@@ -63,71 +61,68 @@ const rTokenContractsAtom = atomWithLoadable(async (get) => {
     brokerVersion,
     assetRegistryVersion,
     basketHandlerVersion,
-  ]: string[] = await promiseMulticall(
-    [
-      {
-        abi: RTokenInterface,
-        address: rToken.address,
-        args: [],
-        method: 'version',
-      },
-      {
-        abi: StRSRInterface,
-        address: rToken.stToken.address,
-        args: [],
-        method: 'version',
-      },
-      {
-        abi: DistributorInterface,
-        address: distributor,
-        args: [],
-        method: 'version',
-      },
-      {
-        abi: BackingManagerInterface,
-        address: backingManager,
-        args: [],
-        method: 'version',
-      },
-      {
-        abi: RevenueTraderInterface,
-        address: rTokenTrader,
-        args: [],
-        method: 'version',
-      },
-      {
-        abi: RevenueTraderInterface,
-        address: rsrTrader,
-        args: [],
-        method: 'version',
-      },
-      {
-        abi: FurnaceInterface,
-        address: furnace,
-        args: [],
-        method: 'version',
-      },
-      {
-        abi: BrokerInterface,
-        address: broker,
-        args: [],
-        method: 'version',
-      },
-      {
-        abi: AssetRegistryInterface,
-        address: assetRegistry,
-        args: [],
-        method: 'version',
-      },
-      {
-        abi: BasketHandlerInterface,
-        address: basketHandler,
-        args: [],
-        method: 'version',
-      },
-    ],
-    provider
-  )
+  ]: string[] = await multicall([
+    {
+      abi: RTokenInterface,
+      address: rToken.address,
+      args: [],
+      method: 'version',
+    },
+    {
+      abi: StRSRInterface,
+      address: rToken.stToken.address,
+      args: [],
+      method: 'version',
+    },
+    {
+      abi: DistributorInterface,
+      address: distributor,
+      args: [],
+      method: 'version',
+    },
+    {
+      abi: BackingManagerInterface,
+      address: backingManager,
+      args: [],
+      method: 'version',
+    },
+    {
+      abi: RevenueTraderInterface,
+      address: rTokenTrader,
+      args: [],
+      method: 'version',
+    },
+    {
+      abi: RevenueTraderInterface,
+      address: rsrTrader,
+      args: [],
+      method: 'version',
+    },
+    {
+      abi: FurnaceInterface,
+      address: furnace,
+      args: [],
+      method: 'version',
+    },
+    {
+      abi: BrokerInterface,
+      address: broker,
+      args: [],
+      method: 'version',
+    },
+    {
+      abi: AssetRegistryInterface,
+      address: assetRegistry,
+      args: [],
+      method: 'version',
+    },
+    {
+      abi: BasketHandlerInterface,
+      address: basketHandler,
+      args: [],
+      method: 'version',
+    },
+  ])
 
   return {
     token: { address: rToken.address, version: rTokenVersion },

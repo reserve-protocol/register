@@ -1,15 +1,14 @@
+import { formatEther, getAddress } from 'ethers/lib/utils'
 import { gql } from 'graphql-request'
 import { atom, useAtom, useAtomValue } from 'jotai'
+import { useEffect } from 'react'
+import { RSVOverview, chainIdAtom, rpayOverviewAtom } from 'state/atoms'
+import { calculateApy } from 'utils'
+import { EUSD_ADDRESS, RSV_ADDRESS } from 'utils/addresses'
 import { TIME_RANGES } from 'utils/constants'
+import tokenList from 'utils/rtokens'
 import useQuery from './useQuery'
 import useTimeFrom from './useTimeFrom'
-import tokenList from 'utils/rtokens'
-import { useEffect } from 'react'
-import { calculateApy } from 'utils'
-import { formatEther, getAddress } from 'ethers/lib/utils'
-import { EUSD_ADDRESS, RSV_ADDRESS } from 'utils/addresses'
-import { CHAIN_ID } from 'utils/chains'
-import { rpayOverviewAtom, RSVOverview } from 'state/atoms'
 
 interface ListedToken {
   id: string
@@ -80,6 +79,7 @@ const useTokenList = () => {
   const [list, setList] = useAtom(tokenListAtom)
   const rpayOverview = useAtomValue(rpayOverviewAtom)
   const fromTime = useTimeFrom(TIME_RANGES.MONTH)
+  const chainId = useAtomValue(chainIdAtom)
 
   const { data } = useQuery(tokenListQuery, {
     tokenIds: tokenKeys,
@@ -122,11 +122,11 @@ const useTokenList = () => {
           }
 
           // RSV Data
-          if (token.id === RSV_ADDRESS[CHAIN_ID].toLowerCase()) {
+          if (token.id === RSV_ADDRESS[chainId].toLowerCase()) {
             tokenData.transactionCount += RSVOverview.txCount
             tokenData.cumulativeVolume += RSVOverview.volume
             tokenData.targetUnits = 'USD'
-          } else if (token.id === EUSD_ADDRESS[CHAIN_ID].toLowerCase()) {
+          } else if (token.id === EUSD_ADDRESS[chainId].toLowerCase()) {
             tokenData.transactionCount += rpayOverview.txCount
             tokenData.cumulativeVolume += rpayOverview.volume
           }

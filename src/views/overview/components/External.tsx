@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
-import { selectedRTokenAtom } from 'state/atoms'
+import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import { Box } from 'theme-ui'
 import { SmallButton } from 'components/button'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
@@ -9,6 +9,7 @@ import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 const External = () => {
   const rToken = useRToken()
   const rTokenAddress = useAtomValue(selectedRTokenAtom)
+  const chainId = useAtomValue(chainIdAtom)
 
   return (
     <Box
@@ -40,7 +41,11 @@ const External = () => {
           mr={3}
           onClick={() =>
             window.open(
-              getExplorerLink(rToken?.address ?? '', ExplorerDataType.TOKEN),
+              getExplorerLink(
+                rToken?.address ?? '',
+                chainId,
+                ExplorerDataType.TOKEN
+              ),
               '_blank'
             )
           }

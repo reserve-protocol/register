@@ -1,7 +1,6 @@
 import { atom } from 'jotai'
-import { accountRTokensAtom } from 'state/atoms'
+import { accountRTokensAtom, chainIdAtom } from 'state/atoms'
 import { DEFAULT_TOKENS } from 'utils/addresses'
-import { CHAIN_ID } from 'utils/chains'
 import rtokens from 'utils/rtokens'
 
 export interface TokenDisplay {
@@ -13,7 +12,8 @@ export interface TokenDisplay {
 export const DEFAULT_LOGO = '/svgs/default.svg'
 
 const availableTokensAtom = atom((get) => {
-  const defaultTokens = DEFAULT_TOKENS[CHAIN_ID]
+  const chainId = get(chainIdAtom)
+  const defaultTokens = DEFAULT_TOKENS[chainId]
   const owned = get(accountRTokensAtom)
   const tokenList: {
     [x: string]: TokenDisplay

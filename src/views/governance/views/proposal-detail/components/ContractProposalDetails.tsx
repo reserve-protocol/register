@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro'
 import GoTo from 'components/button/GoTo'
 import { MODES } from 'components/dark-mode-toggle'
+import { useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import {
@@ -10,6 +11,7 @@ import {
   JsonView,
 } from 'react-json-view-lite'
 import 'react-json-view-lite/dist/index.css'
+import { chainIdAtom } from 'state/atoms'
 import { Box, BoxProps, Card, Divider, Text, useColorMode } from 'theme-ui'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { ContractProposal } from 'views/governance/atoms'
@@ -48,6 +50,7 @@ const CallData = ({ data }: { data: string }) => {
 
 // Actions setPrimeBasket
 const ContractProposalDetails = ({ data, ...props }: Props) => {
+  const chainId = useAtomValue(chainIdAtom)
   const [colorMode] = useColorMode()
   if (!data.calls.length) {
     return null
@@ -67,7 +70,11 @@ const ContractProposalDetails = ({ data, ...props }: Props) => {
             {data.label}
           </Text>
           <GoTo
-            href={getExplorerLink(data.address, ExplorerDataType.ADDRESS)}
+            href={getExplorerLink(
+              data.address,
+              chainId,
+              ExplorerDataType.ADDRESS
+            )}
           />
         </Box>
       </Box>

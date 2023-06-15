@@ -1,9 +1,9 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { parseUnits } from 'ethers/lib/utils'
 import { BalanceMap, ReserveToken } from 'types'
-import { CHAIN_ID } from 'utils/chains'
 import { RSV_ADDRESS, RSV_MANAGER_ADDRESS, USDC_ADDRESS } from './addresses'
 import { BI_ZERO } from './constants'
+import { ChainId } from './chains'
 
 /**
  * RSV Token utility
@@ -12,7 +12,7 @@ import { BI_ZERO } from './constants'
  * * It follows different rules as other tokens, so it needs to be treated different
  * * Only the Overview page and Mint/Redeem are available for this token
  */
-const USDC = USDC_ADDRESS[CHAIN_ID]
+const USDC = USDC_ADDRESS[ChainId.Mainnet]
 
 export const getIssuable = (tokenBalances: BalanceMap) => {
   if (tokenBalances[USDC]) {
@@ -27,7 +27,7 @@ export const quote = (amount: string): { [x: string]: BigNumber } => ({
 })
 
 const RSV: ReserveToken = {
-  address: RSV_ADDRESS[CHAIN_ID],
+  address: RSV_ADDRESS[ChainId.Mainnet],
   name: 'Reserve',
   symbol: 'RSV',
   decimals: 18,
@@ -42,6 +42,6 @@ const RSV: ReserveToken = {
   ],
 }
 
-export const RSV_MANAGER = RSV_MANAGER_ADDRESS[CHAIN_ID]
+export const RSV_MANAGER = RSV_MANAGER_ADDRESS[ChainId.Mainnet]
 
 export default RSV

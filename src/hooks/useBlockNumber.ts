@@ -9,6 +9,7 @@ import {
 } from './../state/atoms'
 import useDebounce from './useDebounce'
 import useIsWindowVisible from './useIsWindowVisible'
+import { supportedChains } from 'utils/chains'
 
 function useBlock() {
   const { chainId, provider } = useWeb3React()
@@ -74,7 +75,9 @@ export function BlockUpdater() {
   // On chain change, store new chain and reset block number
   useEffect(() => {
     setBlock(0)
-    setChain(chainId)
+    if (chainId && supportedChains.has(chainId)) {
+      setChain(chainId)
+    }
   }, [chainId])
 
   useEffect(() => {

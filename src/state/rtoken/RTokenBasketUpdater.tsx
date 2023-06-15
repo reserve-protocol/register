@@ -1,5 +1,3 @@
-import { Web3Provider } from '@ethersproject/providers'
-import { useWeb3React } from '@web3-react/core'
 import { ERC20Interface, FacadeInterface } from 'abis'
 import { BackupBasket, Basket } from 'components/rtoken-setup/atoms'
 import { BigNumber } from 'ethers'
@@ -8,34 +6,35 @@ import useRToken from 'hooks/useRToken'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import {
+  chainIdAtom,
+  multicallAtom,
   rTokenBackingDistributionAtom,
   rTokenBackupAtom,
   rTokenBasketAtom,
 } from 'state/atoms'
-import { promiseMulticall } from 'state/web3/lib/multicall'
 import { ContractCall } from 'types'
 import { FACADE_ADDRESS } from 'utils/addresses'
-import { CHAIN_ID } from 'utils/chains'
 
 const RTokenBasketUpdater = () => {
   const rToken = useRToken()
   const distribution = useAtomValue(rTokenBackingDistributionAtom)
   const [primaryBasket, setPrimaryBasket] = useAtom(rTokenBasketAtom)
   const setBackupBasket = useSetAtom(rTokenBackupAtom)
-  const { provider } = useWeb3React()
+  const chainId = useAtomValue(chainIdAtom)
+  const multicall = useAtomValue(multicallAtom)
 
   const setBackupConfig = useCallback(
-    async (
-      rTokenAddress: string,
-      targetUnits: string[],
-      provider: Web3Provider
-    ) => {
+    async (rTokenAddress: string, targetUnits: string[]) => {
+      if (!multicall) {
+        return
+      }
+
       try {
         const calls = targetUnits.reduce(
           (prev, curr) => [
             ...prev,
             {
-              address: FACADE_ADDRESS[CHAIN_ID],
+              address: FACADE_ADDRESS[chainId],
               abi: FacadeInterface,
               method: 'backupConfig',
               args: [rTokenAddress, formatBytes32String(curr)],
@@ -44,21 +43,20 @@ const RTokenBasketUpdater = () => {
           [] as ContractCall[]
         )
 
-        const multicallResult = await promiseMulticall(calls, provider)
+        const multicallResult = await multicall(calls)
         const backupBasket: BackupBasket = {}
         let index = 0
 
         for (const result of multicallResult) {
           const { erc20s, max }: { erc20s: string[]; max: BigNumber } = result
 
-          const symbols: string[] = await promiseMulticall(
+          const symbols: string[] = await multicall(
             erc20s.map((address) => ({
               address,
               abi: ERC20Interface,
               method: 'symbol',
               args: [],
-            })),
-            provider
+            }))
           )
 
           backupBasket[targetUnits[index]] = {
@@ -77,14 +75,14 @@ const RTokenBasketUpdater = () => {
         console.warn('Error getting backup config', e)
       }
     },
-    []
+    [multicall, chainId]
   )
 
   useEffect(() => {
-    if (rToken && provider && !!Object.keys(primaryBasket)) {
-      setBackupConfig(rToken.address, Object.keys(primaryBasket), provider)
+    if (rToken && !!Object.keys(primaryBasket)) {
+      setBackupConfig(rToken.address, Object.keys(primaryBasket))
     }
-  }, [rToken?.address, primaryBasket, provider])
+  }, [rToken?.address, primaryBasket, setBackupConfig])
 
   // Update primary basket
   useEffect(() => {

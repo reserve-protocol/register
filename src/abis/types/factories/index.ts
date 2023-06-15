@@ -9,6 +9,7 @@ export { AssetRegistry__factory } from "./AssetRegistry__factory";
 export { BackingManager__factory } from "./BackingManager__factory";
 export { BasketHandler__factory } from "./BasketHandler__factory";
 export { Broker__factory } from "./Broker__factory";
+export { BrokerLegacy__factory } from "./BrokerLegacy__factory";
 export { Collateral__factory } from "./Collateral__factory";
 export { ConvexStakingWrapper__factory } from "./ConvexStakingWrapper__factory";
 export { Deployer__factory } from "./Deployer__factory";

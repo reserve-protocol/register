@@ -1,30 +1,30 @@
 import { isAddress } from '@ethersproject/address'
 import { Web3Provider } from '@ethersproject/providers'
-import { useWeb3React } from '@web3-react/core'
 import {
+  Distributor as DistributorAbi,
   ERC20 as ERC20Abi,
   Facade as FacadeAbi,
   FacadeWrite as FacadeWriteAbi,
-  Timelock as TimelockAbi,
+  Governance as GovernanceAbi,
+  Main as MainAbi,
   RToken as RTokenAbi,
   StRSR as StRSRAbi,
-  Main as MainAbi,
-  Distributor as DistributorAbi,
-  Governance as GovernanceAbi,
+  Timelock as TimelockAbi,
 } from 'abis'
 import { Contract } from 'ethers'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { CHAIN_ID } from 'utils/chains'
+import { getValidWeb3Atom } from 'state/atoms'
 import {
+  Distributor,
   ERC20,
   Facade,
+  FacadeWrite,
+  Governance,
+  Main,
   RToken,
   StRsr,
-  FacadeWrite,
-  Main,
-  Distributor,
   Timelock,
-  Governance,
 } from '../abis/types'
 import { getContract } from '../utils'
 import { FACADE_ADDRESS, FACADE_WRITE_ADDRESS } from './../utils/addresses'
@@ -35,13 +35,13 @@ export function useContract<T extends Contract = Contract>(
   ABI: any,
   withSignerIfPossible = true
 ): T | null {
-  const { provider, account } = useWeb3React()
+  const { provider, account, chainId } = useAtomValue(getValidWeb3Atom)
 
   return useMemo(() => {
     if (!addressOrAddressMap || !ABI || !provider) return null
     let address: string | undefined
     if (typeof addressOrAddressMap === 'string') address = addressOrAddressMap
-    else address = addressOrAddressMap[CHAIN_ID]
+    else address = addressOrAddressMap[chainId]
     if (!address || !isAddress(address)) return null
     try {
       return getContract(
@@ -58,15 +58,11 @@ export function useContract<T extends Contract = Contract>(
 }
 
 export function useFacadeContract(): Facade | null {
-  return useContract<Facade>(FACADE_ADDRESS[CHAIN_ID], FacadeAbi, true)
+  return useContract<Facade>(FACADE_ADDRESS, FacadeAbi, true)
 }
 
 export function useFacadeWriteContract(): FacadeWrite | null {
-  return useContract<FacadeWrite>(
-    FACADE_WRITE_ADDRESS[CHAIN_ID],
-    FacadeWriteAbi,
-    true
-  )
+  return useContract<FacadeWrite>(FACADE_WRITE_ADDRESS, FacadeWriteAbi, true)
 }
 
 export function useStakingContract(

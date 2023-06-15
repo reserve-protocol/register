@@ -1,19 +1,21 @@
 import { t } from '@lingui/macro'
-import { useWeb3React } from '@web3-react/core'
 import { LoadingButton } from 'components/button'
 import { ethers } from 'ethers'
+import useBlockNumber from 'hooks/useBlockNumber'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
-import { addTransactionAtom, rTokenGovernanceAtom } from 'state/atoms'
+import {
+  addTransactionAtom,
+  getValidWeb3Atom,
+  rTokenGovernanceAtom,
+} from 'state/atoms'
 import { useTransactionState } from 'state/web3/hooks/useTransactions'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
 import { proposalDetailAtom } from '../atom'
-import { CHAIN_ID } from 'utils/chains'
-import useBlockNumber from 'hooks/useBlockNumber'
 
 const ProposalExecute = () => {
-  const { account, chainId } = useWeb3React()
+  const { account } = useAtomValue(getValidWeb3Atom)
   const blockNumber = useBlockNumber()
   const governance = useAtomValue(rTokenGovernanceAtom)
   const addTransaction = useSetAtom(addTransactionAtom)
@@ -71,7 +73,7 @@ const ProposalExecute = () => {
       small
       loading={!!txId}
       ml="auto"
-      disabled={!account || chainId !== CHAIN_ID}
+      disabled={!account}
       onClick={handleExecute}
       text={t`Execute proposal`}
     />

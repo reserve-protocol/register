@@ -1,4 +1,4 @@
-import { ChainId, CHAIN_ID } from './chains'
+import { ChainId } from './chains'
 
 const ETHERSCAN_PREFIXES: { [chainId: number]: string } = {
   [ChainId.Mainnet]: '',
@@ -19,8 +19,12 @@ export enum ExplorerDataType {
  * @param data the data to return a link for
  * @param type the type of the data
  */
-export function getExplorerLink(data: string, type: ExplorerDataType): string {
-  const prefix = `https://${ETHERSCAN_PREFIXES[CHAIN_ID] ?? ''}etherscan.io`
+export function getExplorerLink(
+  data: string,
+  chainId: number,
+  type: ExplorerDataType
+): string {
+  const prefix = `https://${ETHERSCAN_PREFIXES[chainId] ?? ''}etherscan.io`
 
   switch (type) {
     case ExplorerDataType.TRANSACTION:

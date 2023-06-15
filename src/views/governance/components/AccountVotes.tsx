@@ -7,7 +7,7 @@ import { useContractCall } from 'hooks/useCall'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
-import { stRsrBalanceAtom } from 'state/atoms'
+import { chainIdAtom, stRsrBalanceAtom } from 'state/atoms'
 import { Box, Text, Image } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { ZERO_ADDRESS } from 'utils/addresses'
@@ -16,6 +16,7 @@ import DelegateModal from './DelegateModal'
 
 const AccountVotes = () => {
   const { account } = useWeb3React()
+  const chainId = useAtomValue(chainIdAtom)
   const rToken = useRToken()
   const stRsrBalance = useAtomValue(stRsrBalanceAtom)
   const [isVisible, setVisible] = useState(false)
@@ -76,7 +77,11 @@ const AccountVotes = () => {
                   <Trans>Delegated to: </Trans> {shortenAddress(value[0] || '')}{' '}
                   <GoTo
                     ml={2}
-                    href={getExplorerLink(value[0], ExplorerDataType.ADDRESS)}
+                    href={getExplorerLink(
+                      value[0],
+                      chainId,
+                      ExplorerDataType.ADDRESS
+                    )}
                   />
                 </>
               )}

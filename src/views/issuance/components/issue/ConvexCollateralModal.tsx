@@ -1,5 +1,4 @@
 import { t, Trans } from '@lingui/macro'
-import { useWeb3React } from '@web3-react/core'
 import { ERC20Interface } from 'abis'
 import { Modal, NumericalInput } from 'components'
 import { LoadingButton } from 'components/button'
@@ -7,26 +6,23 @@ import ApprovalTransactions from 'components/transaction-modal/ApprovalTransacti
 import TransactionError from 'components/transaction-modal/TransactionError'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import useTokensAllowance from 'hooks/useTokensAllowance'
-import { useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { ArrowRight, CheckCircle, ExternalLink } from 'react-feather'
-import { addTransactionAtom } from 'state/atoms'
+import {
+  addTransactionAtom,
+  getValidWeb3Atom,
+  multicallAtom,
+} from 'state/atoms'
+import { convexPluginsAtom } from 'state/atoms/pluginAtoms'
 import { useTransactions } from 'state/web3/hooks/useTransactions'
-import { promiseMulticall } from 'state/web3/lib/multicall'
 import { Box, Divider, Flex, Link, Text } from 'theme-ui'
 import { BigNumberMap, TransactionState } from 'types'
 import { formatCurrency, getTransactionWithGasLimit, hasAllowance } from 'utils'
-import { CVX_ADDRESS } from 'utils/addresses'
-import { ChainId } from 'utils/chains'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import collateralPlugins from 'utils/plugins'
 import { FormState, isFormValid } from 'utils/wrapping'
 import { v4 as uuid } from 'uuid'
-
-const convexPlugins = collateralPlugins.filter((p) =>
-  p.rewardToken.includes(CVX_ADDRESS[ChainId.Mainnet])
-)
 
 enum ConvexMode {
   DEPOSIT = 'deposit',
@@ -40,10 +36,12 @@ const ConvexCollateralModal = ({
   onClose(): void
   unwrap?: boolean
 }) => {
-  const { provider, account } = useWeb3React()
+  const { account, chainId } = useAtomValue(getValidWeb3Atom)
+  const multicall = useAtomValue(multicallAtom)
   const [signing, setSigning] = useState(false)
   const [loading, setLoading] = useState(false)
   const [activeMode, setActiveMode] = useState(ConvexMode.DEPOSIT)
+  const convexPlugins = useAtomValue(convexPluginsAtom)
 
   const [txIds, setTxIds] = useState<string[]>([])
   const addTransactions = useSetAtom(addTransactionAtom)
@@ -175,22 +173,21 @@ const ConvexCollateralModal = ({
 
   const fetchBalances = async () => {
     try {
-      if (provider && account) {
+      if (multicall && account) {
         const callParams = {
           abi: ERC20Interface,
           method: 'balanceOf',
           args: [account],
         }
 
-        const results = await promiseMulticall(
+        const results = await multicall(
           convexPlugins.map((p) => ({
             ...callParams,
             address:
               activeMode === ConvexMode.DEPOSIT
                 ? p.collateralAddress
                 : p.depositContract!,
-          })),
-          provider
+          }))
         )
 
         const newState = { ...formState }
@@ -266,6 +263,7 @@ const ConvexCollateralModal = ({
               key={state.id}
               href={getExplorerLink(
                 state.hash ?? '',
+                chainId || 1,
                 ExplorerDataType.TRANSACTION
               )}
               target="_blank"

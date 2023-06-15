@@ -7,7 +7,9 @@ import { gql } from 'graphql-request'
 import { useEnsAddresses } from 'hooks/useEnsAddresses'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
+import { chainIdAtom } from 'state/atoms'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { formatCurrencyCell, shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
@@ -72,6 +74,7 @@ const useVoters = () => {
 
 const TopVoters = (props: BoxProps) => {
   const { data } = useVoters()
+  const chainId = useAtomValue(chainIdAtom)
 
   const columns = useMemo(
     () => [
@@ -89,7 +92,9 @@ const TopVoters = (props: BoxProps) => {
           return (
             <Box variant="layout.verticalAlign">
               <Text>{displayAddress}</Text>
-              <GoTo href={getExplorerLink(address, ExplorerDataType.ADDRESS)} />
+              <GoTo
+                href={getExplorerLink(address, 1, ExplorerDataType.ADDRESS)}
+              />
             </Box>
           )
         },
@@ -136,7 +141,14 @@ const TopVoters = (props: BoxProps) => {
       <Text variant="title" p={3}>
         <Trans>Top voting addresses</Trans>
       </Text>
-      <Table mt={4} p={0} maxHeight={420} compact columns={columns} data={data} />
+      <Table
+        mt={4}
+        p={0}
+        maxHeight={420}
+        compact
+        columns={columns}
+        data={data}
+      />
       {!data.length && (
         <Box py={4} mt={3} sx={{ textAlign: 'center' }}>
           <EmptyBoxIcon />
@@ -147,7 +159,7 @@ const TopVoters = (props: BoxProps) => {
               display: 'block',
             }}
           >
-            No voters at this moment...
+            <Trans>No voters at this moment...</Trans>
           </Text>
         </Box>
       )}

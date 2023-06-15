@@ -132,25 +132,6 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "uint48",
-        name: "oldVal",
-        type: "uint48",
-      },
-      {
-        indexed: true,
-        internalType: "uint48",
-        name: "newVal",
-        type: "uint48",
-      },
-    ],
-    name: "RewardPeriodSet",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
         internalType: "uint192",
         name: "oldVal",
         type: "uint192",
@@ -268,6 +249,43 @@ const _abi = [
         type: "uint256",
       },
     ],
+    name: "UnstakingCancelled",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "firstId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "endId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "draftEra",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "staker",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "rsrAmount",
+        type: "uint256",
+      },
+    ],
     name: "UnstakingCompleted",
     type: "event",
   },
@@ -344,6 +362,25 @@ const _abi = [
       },
     ],
     name: "Upgraded",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint192",
+        name: "oldVal",
+        type: "uint192",
+      },
+      {
+        indexed: true,
+        internalType: "uint192",
+        name: "newVal",
+        type: "uint192",
+      },
+    ],
+    name: "WithdrawalLeakSet",
     type: "event",
   },
   {
@@ -476,6 +513,19 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "endId",
+        type: "uint256",
+      },
+    ],
+    name: "cancelUnstake",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -662,6 +712,45 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "getDraftRSR",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getStakeRSR",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getTotalDrafts",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "address",
@@ -710,6 +799,11 @@ const _abi = [
       {
         internalType: "uint192",
         name: "rewardRatio_",
+        type: "uint192",
+      },
+      {
+        internalType: "uint192",
+        name: "withdrawalLeak_",
         type: "uint192",
       },
     ],
@@ -894,6 +988,19 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "uint192",
+        name: "val",
+        type: "uint192",
+      },
+    ],
+    name: "setWithdrawalLeak",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint256",
         name: "rsrAmount",
         type: "uint256",
@@ -902,19 +1009,6 @@ const _abi = [
     name: "stake",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "stakeRate",
-    outputs: [
-      {
-        internalType: "uint192",
-        name: "",
-        type: "uint192",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
   {
@@ -1082,6 +1176,19 @@ const _abi = [
     name: "withdraw",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "withdrawalLeak",
+    outputs: [
+      {
+        internalType: "uint192",
+        name: "",
+        type: "uint192",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
 ] as const;

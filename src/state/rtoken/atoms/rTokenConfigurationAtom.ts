@@ -1,27 +1,26 @@
 import {
   BackingManagerInterface,
   BrokerInterface,
-  _BrokerInterface,
   MainInterface,
   RTokenInterface,
   RevenueTraderInterface,
   StRSRInterface,
+  _BrokerInterface,
 } from 'abis'
-import { getValidWeb3Atom } from 'state/atoms'
-import { promiseMulticall } from 'state/web3/lib/multicall'
+import { formatEther } from 'ethers/lib/utils'
+import { multicallAtom } from 'state/atoms'
+import { StringMap } from 'types'
 import { atomWithLoadable } from 'utils/atoms/utils'
+import { VERSION } from 'utils/constants'
 import rTokenAssetsAtom from './rTokenAssetsAtom'
 import rTokenContractsAtom from './rTokenContractsAtom'
-import { VERSION } from 'utils/constants'
-import { formatEther } from 'ethers/lib/utils'
-import { StringMap } from 'types'
 
 const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
   const contracts = get(rTokenContractsAtom)
   const assets = get(rTokenAssetsAtom)
-  const { provider } = get(getValidWeb3Atom)
+  const multicall = get(multicallAtom)
 
-  if (!contracts || !provider || !assets) {
+  if (!contracts || !multicall || !assets) {
     return null
   }
 
@@ -132,7 +131,7 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
     redemptionThrottle,
     batchAuctionLength,
     dutchAuctionLength,
-  ] = await promiseMulticall(calls, provider)
+  ] = await multicall(calls)
 
   return {
     tradingDelay: tradingDelay.toString(),

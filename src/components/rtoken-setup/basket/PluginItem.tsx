@@ -4,7 +4,7 @@ import TokenLogo from 'components/icons/TokenLogo'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
-import { collateralYieldAtom } from 'state/atoms'
+import { chainIdAtom, collateralYieldAtom } from 'state/atoms'
 import {
   Box,
   BoxProps,
@@ -26,42 +26,47 @@ interface PluginItemProps extends BoxProps {
   onCheck(address: string): void
 }
 
-const PluginInfo = ({ data }: { data: CollateralPlugin }) => (
-  <>
-    <Divider mt={2} />
-    <Flex variant="layout.verticalAlign" ml={0} mt={3} sx={{ fontSize: 1 }}>
-      <Box mr={4}>
-        <Text variant="legend">
-          <Trans>Reference unit</Trans>
-        </Text>
-        <Text sx={{ display: 'block' }}>{data.referenceUnit}</Text>
-      </Box>
-      <Box mr={4}>
-        <Text variant="legend">
-          <Trans>Collateral token</Trans>
-        </Text>
-        <Link
-          as="a"
-          href={getExplorerLink(
-            data.collateralAddress!,
-            ExplorerDataType.TOKEN
-          )}
-          target="_blank"
-          variant="legend"
-          sx={{ color: 'text', display: 'block' }}
-        >
-          {data.collateralToken}
-        </Link>
-      </Box>
-      <Box>
-        <Text variant="legend">
-          <Trans>Decimals</Trans>
-        </Text>
-        <Text sx={{ display: 'block' }}>{data.decimals}</Text>
-      </Box>
-    </Flex>
-  </>
-)
+const PluginInfo = ({ data }: { data: CollateralPlugin }) => {
+  const chainId = useAtomValue(chainIdAtom)
+
+  return (
+    <>
+      <Divider mt={2} />
+      <Flex variant="layout.verticalAlign" ml={0} mt={3} sx={{ fontSize: 1 }}>
+        <Box mr={4}>
+          <Text variant="legend">
+            <Trans>Reference unit</Trans>
+          </Text>
+          <Text sx={{ display: 'block' }}>{data.referenceUnit}</Text>
+        </Box>
+        <Box mr={4}>
+          <Text variant="legend">
+            <Trans>Collateral token</Trans>
+          </Text>
+          <Link
+            as="a"
+            href={getExplorerLink(
+              data.collateralAddress!,
+              chainId,
+              ExplorerDataType.TOKEN
+            )}
+            target="_blank"
+            variant="legend"
+            sx={{ color: 'text', display: 'block' }}
+          >
+            {data.collateralToken}
+          </Link>
+        </Box>
+        <Box>
+          <Text variant="legend">
+            <Trans>Decimals</Trans>
+          </Text>
+          <Text sx={{ display: 'block' }}>{data.decimals}</Text>
+        </Box>
+      </Flex>
+    </>
+  )
+}
 
 /**
  * View: Deploy -> Basket setup -> CollateralModal
@@ -69,6 +74,7 @@ const PluginInfo = ({ data }: { data: CollateralPlugin }) => (
  */
 const PluginItem = ({ data, onCheck, selected, ...props }: PluginItemProps) => {
   const [isVisible, setVisible] = useState(false)
+  const chainId = useAtomValue(chainIdAtom)
   const collateralYields = useAtomValue(collateralYieldAtom)
 
   return (
@@ -80,7 +86,11 @@ const PluginItem = ({ data, onCheck, selected, ...props }: PluginItemProps) => {
             <Text>{data.symbol} plugin</Text>
             <GoTo
               ml={1}
-              href={getExplorerLink(data.address, ExplorerDataType.ADDRESS)}
+              href={getExplorerLink(
+                data.address,
+                chainId,
+                ExplorerDataType.ADDRESS
+              )}
             />
           </Box>
 

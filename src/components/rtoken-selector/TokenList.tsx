@@ -1,13 +1,12 @@
 import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
-import { SmallButton } from 'components/button'
 import TokenItem from 'components/token-item'
 import { useAtomValue } from 'jotai'
 import { memo } from 'react'
 import { transition } from 'theme'
 import { Box, Divider, Flex, Text } from 'theme-ui'
-import availableTokensAtom from './atoms'
 import BackHomeIcon from '../icons/BackHomeIcon'
+import availableTokensAtom from './atoms'
 
 const ActionItem = styled(Flex)`
   transition: ${transition};

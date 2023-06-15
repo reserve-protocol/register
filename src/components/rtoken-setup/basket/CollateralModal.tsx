@@ -3,7 +3,9 @@ import { Button, Modal } from 'components'
 import { ModalProps } from 'components/modal'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useState } from 'react'
+import { pluginsAtom } from 'state/atoms/pluginAtoms'
 import { Box, Divider, Text } from 'theme-ui'
+import { CollateralPlugin } from 'types'
 import {
   addBackupCollateralAtom,
   addBasketCollateralAtom,
@@ -11,10 +13,8 @@ import {
   Collateral,
   primaryBasketCollateralAtom,
 } from '../atoms'
-import collateralPlugins from 'utils/plugins'
 import CustomCollateral from './CustomCollateral'
 import PluginItem from './PluginItem'
-import { CollateralPlugin } from 'types'
 
 interface Props extends Omit<ModalProps, 'children'> {
   targetUnit?: string // filter by target unit
@@ -26,10 +26,14 @@ interface CollateralMap {
 }
 
 // Get list of collateral plugins filtered by target unit and exclude already added collateral
-const getPlugins = (addedCollaterals: string[], targetUnit?: string) => {
+const getPlugins = (
+  plugins: CollateralPlugin[],
+  addedCollaterals: string[],
+  targetUnit?: string
+) => {
   const collateralSet = new Set(addedCollaterals)
 
-  return collateralPlugins.reduce((acc, plugin) => {
+  return plugins.reduce((acc, plugin) => {
     if (
       !collateralSet.has(plugin.address) &&
       (!targetUnit || targetUnit === plugin.targetUnit)
@@ -59,10 +63,11 @@ const CollateralModal = ({
   const addCollateral = useSetAtom(
     basket === 'primary' ? addBasketCollateralAtom : addBackupCollateralAtom
   )
+  const plugins = useAtomValue(pluginsAtom)
 
   const [selected, setSelected] = useState<string[]>([])
   const [collaterals, setCollaterals] = useState(
-    getPlugins(addedCollaterals, targetUnit)
+    getPlugins(plugins, addedCollaterals, targetUnit)
   )
 
   const handleToggle = (collateralAddress: string) => {

@@ -7,6 +7,7 @@ import { Box, Progress, Text } from 'theme-ui'
 import { formatCurrency, shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { proposalDetailAtom } from '../atom'
+import { chainIdAtom } from 'state/atoms'
 
 interface Vote {
   voter: string
@@ -40,6 +41,7 @@ const getProposalVotes = atom((get) => {
 })
 
 const ProposalVotes = () => {
+  const chainId = useAtomValue(chainIdAtom)
   const votes = useAtomValue(getProposalVotes)
   const proposal = useAtomValue(proposalDetailAtom)
   const [current, setCurrent] = useState(VOTE_TYPE.FOR)
@@ -144,7 +146,11 @@ const ProposalVotes = () => {
             </Text>
             <GoTo
               ml={1}
-              href={getExplorerLink(vote.voter, ExplorerDataType.ADDRESS)}
+              href={getExplorerLink(
+                vote.voter,
+                chainId,
+                ExplorerDataType.ADDRESS
+              )}
             />
             <Text ml="auto">{formatCurrency(+vote.weight)}</Text>
           </Box>

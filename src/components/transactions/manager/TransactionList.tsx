@@ -2,16 +2,15 @@ import { Trans } from '@lingui/macro'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import dayjs from 'dayjs'
-import { atom, useAtomValue } from 'jotai'
-import { useSetAtom } from 'jotai'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { ArrowUpRight, Check, EyeOff, X } from 'react-feather'
 import { Link as RouterLink } from 'react-router-dom'
-import { currentTxAtom, updateTransactionAtom } from 'state/atoms'
+import { chainIdAtom, currentTxAtom, updateTransactionAtom } from 'state/atoms'
 import { borderRadius } from 'theme'
 import { Box, Flex, Grid, IconButton, Link, Spinner, Text } from 'theme-ui'
 import { TransactionState, WalletTransaction } from 'types'
 import { formatCurrency } from 'utils'
-import { ROUTES, TRANSACTION_STATUS } from 'utils/constants'
+import { TRANSACTION_STATUS } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
 const txByDateAtom = atom((get) => {
@@ -136,6 +135,7 @@ const getTxDescription = (tx: TransactionState) => {
 const TransactionList = () => {
   const txs = useAtomValue(txByDateAtom)
   const txIdMap = useAtomValue(txIndexAtom)
+  const chainId = useAtomValue(chainIdAtom)
 
   return (
     <Box pt={3} px={[2, 3]} sx={{ flexGrow: 1, fontSize: 1, overflow: 'auto' }}>
@@ -172,6 +172,7 @@ const TransactionList = () => {
                   <Link
                     href={getExplorerLink(
                       tx.hash,
+                      chainId,
                       ExplorerDataType.TRANSACTION
                     )}
                     target="_blank"

@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers'
 import { Token } from 'types'
-import { CHAIN_ID } from 'utils/chains'
 import { RSR_ADDRESS } from './addresses'
+import { ChainId } from './chains'
 
 export const VERSION = '3.0.0'
 
@@ -91,7 +91,7 @@ export const isContentOnlyView = (pathname: string) =>
 export const DEPLOY_ROUTES = [ROUTES.DEPLOY]
 
 export const RSR: Token = {
-  address: RSR_ADDRESS[CHAIN_ID],
+  address: RSR_ADDRESS[ChainId.Mainnet],
   name: 'Reserve Rights',
   symbol: 'RSR',
   decimals: 18,

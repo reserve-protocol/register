@@ -3,7 +3,6 @@ import { Provider, Web3Provider } from '@ethersproject/providers'
 import { extractCallResult } from 'hooks/useRawCalls'
 import { ContractCall, MulticallState, RawCall } from 'types'
 import { MULTICALL_ADDRESS } from 'utils/addresses'
-import { CHAIN_ID } from 'utils/chains'
 
 const ABI = [
   'function tryAggregate(bool requireSuccess, tuple(address target, bytes callData)[] calls) public view returns (tuple(bool success, bytes returnData)[])',
@@ -47,14 +46,15 @@ async function multicall(
 // Don't expecting failure calls
 export const promiseMulticall = async (
   calls: ContractCall[],
-  provider: Web3Provider
+  provider: Web3Provider,
+  chainId: number
 ): Promise<any[]> => {
   const rawCalls = calls.map((call) => ({
     address: call.address,
     data: call.abi.encodeFunctionData(call.method, call.args),
   }))
 
-  const state = await multicall(provider, MULTICALL_ADDRESS[CHAIN_ID], rawCalls)
+  const state = await multicall(provider, MULTICALL_ADDRESS[chainId], rawCalls)
 
   return rawCalls.map((call, i) => {
     const result = extractCallResult(state, call)

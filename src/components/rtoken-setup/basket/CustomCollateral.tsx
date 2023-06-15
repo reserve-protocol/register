@@ -1,13 +1,12 @@
-import { Web3Provider } from '@ethersproject/providers'
 import { t, Trans } from '@lingui/macro'
-import { useWeb3React } from '@web3-react/core'
 import { CollateralInterface, ERC20Interface } from 'abis'
 import { Input } from 'components'
 import { SmallButton } from 'components/button'
 import PluginsIcon from 'components/icons/PluginsIcon'
 import { ethers } from 'ethers'
+import { useAtomValue } from 'jotai'
 import { useCallback, useState } from 'react'
-import { promiseMulticall } from 'state/web3/lib/multicall'
+import { multicallAtom } from 'state/atoms'
 import { Box, Flex, Text } from 'theme-ui'
 import { CollateralPlugin } from 'types'
 import { isAddress } from 'utils'
@@ -22,64 +21,61 @@ const CustomCollateral = ({
   const [isValidating, setValidating] = useState(false)
   const [address, setAddress] = useState('')
   const [error, setError] = useState('')
-  const { provider } = useWeb3React()
+  const multicall = useAtomValue(multicallAtom)
 
-  const validatePlugin = useCallback(
-    async (address: string, provider: Web3Provider) => {
-      try {
-        setValidating(true)
-        const callParams = {
-          abi: CollateralInterface,
-          address,
-          args: [],
-        }
-
-        const [isCollateral, targetUnit, erc20, rewardERC20] =
-          await promiseMulticall(
-            [
-              { ...callParams, method: 'isCollateral' },
-              { ...callParams, method: 'targetName' },
-              { ...callParams, method: 'erc20' },
-              { ...callParams, method: 'rewardERC20' },
-            ],
-            provider
-          )
-
-        if (!isCollateral) {
-          throw new Error('INVALID COLLATERAL')
-        }
-
-        const metaCalls = [
-          { abi: ERC20Interface, args: [], address: erc20, method: 'symbol' },
-          { abi: ERC20Interface, args: [], address: erc20, method: 'decimals' },
-        ]
-
-        const [symbol, decimals] = await promiseMulticall(metaCalls, provider)
-
-        const collateral: CollateralPlugin = {
-          symbol,
-          address,
-          decimals,
-          targetUnit: ethers.utils.parseBytes32String(targetUnit),
-          referenceUnit: symbol,
-          collateralToken: symbol,
-          description: '',
-          collateralAddress: erc20,
-          rewardToken: rewardERC20 || ZERO_ADDRESS,
-          custom: true,
-        }
-
-        setValidating(false)
-        setAddress('')
-        onAdd(collateral)
-      } catch (e) {
-        console.error('Error validating collateral plugin', e)
-        setValidating(false)
-        setError(t`Invalid collateral`)
+  const handleAdd = useCallback(async () => {
+    try {
+      if (!multicall) {
+        throw new Error('Invalid environment')
       }
-    },
-    []
-  )
+
+      setValidating(true)
+      const callParams = {
+        abi: CollateralInterface,
+        address,
+        args: [],
+      }
+
+      const [isCollateral, targetUnit, erc20, rewardERC20] = await multicall([
+        { ...callParams, method: 'isCollateral' },
+        { ...callParams, method: 'targetName' },
+        { ...callParams, method: 'erc20' },
+        { ...callParams, method: 'rewardERC20' },
+      ])
+
+      if (!isCollateral) {
+        throw new Error('INVALID COLLATERAL')
+      }
+
+      const metaCalls = [
+        { abi: ERC20Interface, args: [], address: erc20, method: 'symbol' },
+        { abi: ERC20Interface, args: [], address: erc20, method: 'decimals' },
+      ]
+
+      const [symbol, decimals] = await multicall(metaCalls)
+
+      const collateral: CollateralPlugin = {
+        symbol,
+        address,
+        decimals,
+        targetUnit: ethers.utils.parseBytes32String(targetUnit),
+        referenceUnit: symbol,
+        collateralToken: symbol,
+        description: '',
+        collateralAddress: erc20,
+        rewardToken: rewardERC20 || ZERO_ADDRESS,
+        custom: true,
+      }
+
+      setValidating(false)
+      setAddress('')
+      onAdd(collateral)
+    } catch (e) {
+      console.error('Error validating collateral plugin', e)
+      setValidating(false)
+      setError(t`Invalid collateral`)
+    }
+  }, [multicall, address])
 
   const handleChange = (value: string) => {
     const parsedAddress = isAddress(value)
@@ -88,14 +84,6 @@ const CustomCollateral = ({
       setError(t`Invalid address`)
     } else if (error) {
       setError('')
-    }
-  }
-
-  const handleAdd = () => {
-    if (!provider) {
-      // TODO: Show error
-    } else {
-      validatePlugin(address, provider)
     }
   }
 

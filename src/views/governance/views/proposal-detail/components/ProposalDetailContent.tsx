@@ -8,9 +8,11 @@ import { shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import ProposalDetail from 'views/governance/components/ProposalDetailPreview'
 import { proposalDetailAtom } from '../atom'
+import { chainIdAtom } from 'state/atoms'
 
 const ProposalDetailContent = () => {
   const proposal = useAtomValue(proposalDetailAtom)
+  const chainId = useAtomValue(chainIdAtom)
   let title = 'Loading...'
   let description = ''
 
@@ -40,6 +42,7 @@ const ProposalDetailContent = () => {
               ml={1}
               href={getExplorerLink(
                 proposal.proposer,
+                chainId,
                 ExplorerDataType.ADDRESS
               )}
             />

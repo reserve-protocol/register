@@ -1,10 +1,10 @@
 import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import { useState } from 'react'
-import { Box, Flex, Link, Text } from 'theme-ui'
+import { Box, Flex, Text } from 'theme-ui'
+import ConvexCollateralModal from '../issue/ConvexCollateralModal'
 import UnwrapCollateralModal from '../issue/UnwrapCollateraModal'
 import WrapCollateralModal from '../issue/WrapCollateralModal'
-import ConvexCollateralModal from '../issue/ConvexCollateralModal'
 
 const About = () => {
   const [isWrapping, setWrapping] = useState(0)

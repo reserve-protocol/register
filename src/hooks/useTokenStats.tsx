@@ -3,16 +3,16 @@ import { gql } from 'graphql-request'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import {
+  RSVOverview,
+  chainIdAtom,
+  rTokenPriceAtom,
   rpayOverviewAtom,
   rsrPriceAtom,
-  RSVOverview,
-  rTokenPriceAtom,
 } from 'state/atoms'
 import { tokenMetricsAtom } from 'state/metrics/atoms'
 import { TokenStats } from 'types'
 import { formatCurrency } from 'utils'
 import { EUSD_ADDRESS } from 'utils/addresses'
-import { CHAIN_ID } from 'utils/chains'
 import { TIME_RANGES } from 'utils/constants'
 import useQuery from './useQuery'
 import useTimeFrom from './useTimeFrom'
@@ -44,6 +44,7 @@ const useTokenStats = (rTokenId: string, isRSV = false): TokenStats => {
   const [stats, setStats] = useAtom(tokenMetricsAtom)
   const rpayOverview = useAtomValue(rpayOverviewAtom)
   const fromTime = useTimeFrom(TIME_RANGES.DAY)
+  const chainId = useAtomValue(chainIdAtom)
 
   const { data } = useQuery(
     rTokenMetricsQuery,
@@ -91,7 +92,7 @@ const useTokenStats = (rTokenId: string, isRSV = false): TokenStats => {
         )}`
       }
 
-      if (rTokenId.toLowerCase() === EUSD_ADDRESS[CHAIN_ID].toLowerCase()) {
+      if (rTokenId.toLowerCase() === EUSD_ADDRESS[chainId].toLowerCase()) {
         tokenData.transferCount += rpayOverview.txCount
         tokenData.cumulativeVolumeUsd = `$${formatCurrency(
           volumeUsd + rpayOverview.volume

@@ -18,7 +18,7 @@ const Container = styled(Box)`
 `
 
 const DeployStatus = () => {
-  const { account } = useWeb3React()
+  const { account, chainId } = useWeb3React()
   const setRToken = useSetAtom(selectedRTokenAtom)
   const { fee, deploy, isValid } = useDeploy()
   const tx = useDeployTxState()
@@ -79,7 +79,11 @@ const DeployStatus = () => {
           <Text>{shortenString(tx?.hash ?? '')}</Text>
           <CopyValue ml={3} mr={2} value={tx?.hash ?? ''} />
           <GoTo
-            href={getExplorerLink(tx?.hash ?? '', ExplorerDataType.TRANSACTION)}
+            href={getExplorerLink(
+              tx?.hash ?? '',
+              chainId ?? 1,
+              ExplorerDataType.TRANSACTION
+            )}
           />
         </Box>
       </>

@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro'
 import GoTo from 'components/button/GoTo'
 import TokenItem from 'components/token-item'
 import { useAtomValue } from 'jotai'
-import { rTokenBasketAtom } from 'state/atoms'
+import { chainIdAtom, rTokenBasketAtom } from 'state/atoms'
 import { Box, BoxProps, Card, Text, Divider } from 'theme-ui'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
@@ -12,6 +12,7 @@ import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 const BasketInfo = (props: BoxProps) => {
   const basket = useAtomValue(rTokenBasketAtom)
   const units = Object.keys(basket)
+  const chainId = useAtomValue(chainIdAtom)
 
   return (
     <Card p={4}>
@@ -36,6 +37,7 @@ const BasketInfo = (props: BoxProps) => {
                 ml={2}
                 href={getExplorerLink(
                   collateral.address,
+                  chainId,
                   ExplorerDataType.ADDRESS
                 )}
               />

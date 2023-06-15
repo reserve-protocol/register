@@ -1,8 +1,7 @@
 import { AssetInterface, AssetRegistryInterface } from 'abis'
 import { AssetRegistry } from 'abis/types'
 import { formatEther, formatUnits } from 'ethers/lib/utils'
-import { getValidWeb3Atom } from 'state/atoms'
-import { promiseMulticall } from 'state/web3/lib/multicall'
+import { getValidWeb3Atom, multicallAtom } from 'state/atoms'
 import { ContractCall, Token } from 'types'
 import { getContract, getTokenMetaCalls } from 'utils'
 import { atomWithLoadable } from 'utils/atoms/utils'
@@ -11,8 +10,9 @@ import rTokenContractsAtom from './rTokenContractsAtom'
 const rTokenAssetsAtom = atomWithLoadable(async (get) => {
   const contracts = get(rTokenContractsAtom)
   const { provider } = get(getValidWeb3Atom)
+  const multicall = get(multicallAtom)
 
-  if (!provider || !contracts) {
+  if (!multicall || !provider || !contracts) {
     return null
   }
 
@@ -40,7 +40,7 @@ const rTokenAssetsAtom = atomWithLoadable(async (get) => {
     return calls
   }, [] as ContractCall[])
 
-  const result = await promiseMulticall(calls, provider)
+  const result = await multicall(calls)
 
   const registeredAssets: {
     [x: string]: {

@@ -50,6 +50,7 @@ export interface StRSRVotesInterface extends utils.Interface {
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
+    "cancelUnstake(uint256)": FunctionFragment;
     "checkpoints(address,uint48)": FunctionFragment;
     "currentEra()": FunctionFragment;
     "decimals()": FunctionFragment;
@@ -64,12 +65,15 @@ export interface StRSRVotesInterface extends utils.Interface {
     "endIdForWithdraw(address)": FunctionFragment;
     "exchangeRate()": FunctionFragment;
     "firstRemainingDraft(uint256,address)": FunctionFragment;
+    "getDraftRSR()": FunctionFragment;
     "getPastEra(uint256)": FunctionFragment;
     "getPastTotalSupply(uint256)": FunctionFragment;
     "getPastVotes(address,uint256)": FunctionFragment;
+    "getStakeRSR()": FunctionFragment;
+    "getTotalDrafts()": FunctionFragment;
     "getVotes(address)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
-    "init(address,string,string,uint48,uint192)": FunctionFragment;
+    "init(address,string,string,uint48,uint192,uint192)": FunctionFragment;
     "main()": FunctionFragment;
     "name()": FunctionFragment;
     "nonces(address)": FunctionFragment;
@@ -82,8 +86,9 @@ export interface StRSRVotesInterface extends utils.Interface {
     "seizeRSR(uint256)": FunctionFragment;
     "setRewardRatio(uint192)": FunctionFragment;
     "setUnstakingDelay(uint48)": FunctionFragment;
+    "setWithdrawalLeak(uint192)": FunctionFragment;
     "stake(uint256)": FunctionFragment;
-    "stakeRate()": FunctionFragment;
+    "stakeAndDelegate(uint256,address)": FunctionFragment;
     "symbol()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
@@ -94,6 +99,7 @@ export interface StRSRVotesInterface extends utils.Interface {
     "upgradeToAndCall(address,bytes)": FunctionFragment;
     "version()": FunctionFragment;
     "withdraw(address,uint256)": FunctionFragment;
+    "withdrawalLeak()": FunctionFragment;
   };
 
   getFunction(
@@ -106,6 +112,7 @@ export interface StRSRVotesInterface extends utils.Interface {
       | "allowance"
       | "approve"
       | "balanceOf"
+      | "cancelUnstake"
       | "checkpoints"
       | "currentEra"
       | "decimals"
@@ -120,9 +127,12 @@ export interface StRSRVotesInterface extends utils.Interface {
       | "endIdForWithdraw"
       | "exchangeRate"
       | "firstRemainingDraft"
+      | "getDraftRSR"
       | "getPastEra"
       | "getPastTotalSupply"
       | "getPastVotes"
+      | "getStakeRSR"
+      | "getTotalDrafts"
       | "getVotes"
       | "increaseAllowance"
       | "init"
@@ -138,8 +148,9 @@ export interface StRSRVotesInterface extends utils.Interface {
       | "seizeRSR"
       | "setRewardRatio"
       | "setUnstakingDelay"
+      | "setWithdrawalLeak"
       | "stake"
-      | "stakeRate"
+      | "stakeAndDelegate"
       | "symbol"
       | "totalSupply"
       | "transfer"
@@ -150,6 +161,7 @@ export interface StRSRVotesInterface extends utils.Interface {
       | "upgradeToAndCall"
       | "version"
       | "withdraw"
+      | "withdrawalLeak"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -180,6 +192,10 @@ export interface StRSRVotesInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "balanceOf",
     values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "cancelUnstake",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "checkpoints",
@@ -243,6 +259,10 @@ export interface StRSRVotesInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
+    functionFragment: "getDraftRSR",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "getPastEra",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
@@ -253,6 +273,14 @@ export interface StRSRVotesInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getPastVotes",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getStakeRSR",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTotalDrafts",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getVotes",
@@ -268,6 +296,7 @@ export interface StRSRVotesInterface extends utils.Interface {
       PromiseOrValue<string>,
       PromiseOrValue<string>,
       PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>
     ]
@@ -323,10 +352,17 @@ export interface StRSRVotesInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "setWithdrawalLeak",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "stake",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
-  encodeFunctionData(functionFragment: "stakeRate", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "stakeAndDelegate",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
@@ -365,6 +401,10 @@ export interface StRSRVotesInterface extends utils.Interface {
     functionFragment: "withdraw",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawalLeak",
+    values?: undefined
+  ): string;
 
   decodeFunctionResult(
     functionFragment: "DOMAIN_SEPARATOR",
@@ -386,6 +426,10 @@ export interface StRSRVotesInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "cancelUnstake",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "checkpoints",
     data: BytesLike
@@ -427,6 +471,10 @@ export interface StRSRVotesInterface extends utils.Interface {
     functionFragment: "firstRemainingDraft",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "getDraftRSR",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "getPastEra", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getPastTotalSupply",
@@ -434,6 +482,14 @@ export interface StRSRVotesInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getPastVotes",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getStakeRSR",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getTotalDrafts",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getVotes", data: BytesLike): Result;
@@ -475,8 +531,15 @@ export interface StRSRVotesInterface extends utils.Interface {
     functionFragment: "setUnstakingDelay",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "setWithdrawalLeak",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "stakeRate", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "stakeAndDelegate",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
@@ -499,6 +562,10 @@ export interface StRSRVotesInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "version", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawalLeak",
+    data: BytesLike
+  ): Result;
 
   events: {
     "AdminChanged(address,address)": EventFragment;
@@ -510,15 +577,16 @@ export interface StRSRVotesInterface extends utils.Interface {
     "DelegateVotesChanged(address,uint256,uint256)": EventFragment;
     "ExchangeRateSet(uint192,uint192)": EventFragment;
     "Initialized(uint8)": EventFragment;
-    "RewardPeriodSet(uint48,uint48)": EventFragment;
     "RewardRatioSet(uint192,uint192)": EventFragment;
     "RewardsPaid(uint256)": EventFragment;
     "Staked(uint256,address,uint256,uint256)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
+    "UnstakingCancelled(uint256,uint256,uint256,address,uint256)": EventFragment;
     "UnstakingCompleted(uint256,uint256,uint256,address,uint256)": EventFragment;
     "UnstakingDelaySet(uint48,uint48)": EventFragment;
     "UnstakingStarted(uint256,uint256,address,uint256,uint256,uint256)": EventFragment;
     "Upgraded(address)": EventFragment;
+    "WithdrawalLeakSet(uint192,uint192)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
@@ -530,15 +598,16 @@ export interface StRSRVotesInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "DelegateVotesChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ExchangeRateSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "RewardPeriodSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RewardRatioSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RewardsPaid"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Staked"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UnstakingCancelled"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UnstakingCompleted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UnstakingDelaySet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UnstakingStarted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "WithdrawalLeakSet"): EventFragment;
 }
 
 export interface AdminChangedEventObject {
@@ -639,17 +708,6 @@ export type InitializedEvent = TypedEvent<[number], InitializedEventObject>;
 
 export type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
 
-export interface RewardPeriodSetEventObject {
-  oldVal: number;
-  newVal: number;
-}
-export type RewardPeriodSetEvent = TypedEvent<
-  [number, number],
-  RewardPeriodSetEventObject
->;
-
-export type RewardPeriodSetEventFilter = TypedEventFilter<RewardPeriodSetEvent>;
-
 export interface RewardRatioSetEventObject {
   oldVal: BigNumber;
   newVal: BigNumber;
@@ -692,6 +750,21 @@ export type TransferEvent = TypedEvent<
 >;
 
 export type TransferEventFilter = TypedEventFilter<TransferEvent>;
+
+export interface UnstakingCancelledEventObject {
+  firstId: BigNumber;
+  endId: BigNumber;
+  draftEra: BigNumber;
+  staker: string;
+  rsrAmount: BigNumber;
+}
+export type UnstakingCancelledEvent = TypedEvent<
+  [BigNumber, BigNumber, BigNumber, string, BigNumber],
+  UnstakingCancelledEventObject
+>;
+
+export type UnstakingCancelledEventFilter =
+  TypedEventFilter<UnstakingCancelledEvent>;
 
 export interface UnstakingCompletedEventObject {
   firstId: BigNumber;
@@ -742,6 +815,18 @@ export interface UpgradedEventObject {
 export type UpgradedEvent = TypedEvent<[string], UpgradedEventObject>;
 
 export type UpgradedEventFilter = TypedEventFilter<UpgradedEvent>;
+
+export interface WithdrawalLeakSetEventObject {
+  oldVal: BigNumber;
+  newVal: BigNumber;
+}
+export type WithdrawalLeakSetEvent = TypedEvent<
+  [BigNumber, BigNumber],
+  WithdrawalLeakSetEventObject
+>;
+
+export type WithdrawalLeakSetEventFilter =
+  TypedEventFilter<WithdrawalLeakSetEvent>;
 
 export interface StRSRVotes extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -796,6 +881,11 @@ export interface StRSRVotes extends BaseContract {
       account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    cancelUnstake(
+      endId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     checkpoints(
       account: PromiseOrValue<string>,
@@ -868,6 +958,8 @@ export interface StRSRVotes extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    getDraftRSR(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     getPastEra(
       blockNumber: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -883,6 +975,10 @@ export interface StRSRVotes extends BaseContract {
       blockNumber: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    getStakeRSR(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    getTotalDrafts(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getVotes(
       account: PromiseOrValue<string>,
@@ -901,6 +997,7 @@ export interface StRSRVotes extends BaseContract {
       symbol_: PromiseOrValue<string>,
       unstakingDelay_: PromiseOrValue<BigNumberish>,
       rewardRatio_: PromiseOrValue<BigNumberish>,
+      withdrawalLeak_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -954,12 +1051,21 @@ export interface StRSRVotes extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    setWithdrawalLeak(
+      val: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     stake(
       rsrAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    stakeRate(overrides?: CallOverrides): Promise<[BigNumber]>;
+    stakeAndDelegate(
+      rsrAmount: PromiseOrValue<BigNumberish>,
+      delegatee: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<[string]>;
 
@@ -1003,6 +1109,8 @@ export interface StRSRVotes extends BaseContract {
       endId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    withdrawalLeak(overrides?: CallOverrides): Promise<[BigNumber]>;
   };
 
   DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
@@ -1031,6 +1139,11 @@ export interface StRSRVotes extends BaseContract {
     account: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  cancelUnstake(
+    endId: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   checkpoints(
     account: PromiseOrValue<string>,
@@ -1103,6 +1216,8 @@ export interface StRSRVotes extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  getDraftRSR(overrides?: CallOverrides): Promise<BigNumber>;
+
   getPastEra(
     blockNumber: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -1118,6 +1233,10 @@ export interface StRSRVotes extends BaseContract {
     blockNumber: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
+
+  getStakeRSR(overrides?: CallOverrides): Promise<BigNumber>;
+
+  getTotalDrafts(overrides?: CallOverrides): Promise<BigNumber>;
 
   getVotes(
     account: PromiseOrValue<string>,
@@ -1136,6 +1255,7 @@ export interface StRSRVotes extends BaseContract {
     symbol_: PromiseOrValue<string>,
     unstakingDelay_: PromiseOrValue<BigNumberish>,
     rewardRatio_: PromiseOrValue<BigNumberish>,
+    withdrawalLeak_: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -1189,12 +1309,21 @@ export interface StRSRVotes extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  setWithdrawalLeak(
+    val: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   stake(
     rsrAmount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  stakeRate(overrides?: CallOverrides): Promise<BigNumber>;
+  stakeAndDelegate(
+    rsrAmount: PromiseOrValue<BigNumberish>,
+    delegatee: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   symbol(overrides?: CallOverrides): Promise<string>;
 
@@ -1239,6 +1368,8 @@ export interface StRSRVotes extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  withdrawalLeak(overrides?: CallOverrides): Promise<BigNumber>;
+
   callStatic: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
 
@@ -1266,6 +1397,11 @@ export interface StRSRVotes extends BaseContract {
       account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    cancelUnstake(
+      endId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     checkpoints(
       account: PromiseOrValue<string>,
@@ -1338,6 +1474,8 @@ export interface StRSRVotes extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getDraftRSR(overrides?: CallOverrides): Promise<BigNumber>;
+
     getPastEra(
       blockNumber: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1353,6 +1491,10 @@ export interface StRSRVotes extends BaseContract {
       blockNumber: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    getStakeRSR(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getTotalDrafts(overrides?: CallOverrides): Promise<BigNumber>;
 
     getVotes(
       account: PromiseOrValue<string>,
@@ -1371,6 +1513,7 @@ export interface StRSRVotes extends BaseContract {
       symbol_: PromiseOrValue<string>,
       unstakingDelay_: PromiseOrValue<BigNumberish>,
       rewardRatio_: PromiseOrValue<BigNumberish>,
+      withdrawalLeak_: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1422,12 +1565,21 @@ export interface StRSRVotes extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    setWithdrawalLeak(
+      val: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     stake(
       rsrAmount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    stakeRate(overrides?: CallOverrides): Promise<BigNumber>;
+    stakeAndDelegate(
+      rsrAmount: PromiseOrValue<BigNumberish>,
+      delegatee: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     symbol(overrides?: CallOverrides): Promise<string>;
 
@@ -1471,6 +1623,8 @@ export interface StRSRVotes extends BaseContract {
       endId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    withdrawalLeak(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   filters: {
@@ -1549,15 +1703,6 @@ export interface StRSRVotes extends BaseContract {
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
 
-    "RewardPeriodSet(uint48,uint48)"(
-      oldVal?: PromiseOrValue<BigNumberish> | null,
-      newVal?: PromiseOrValue<BigNumberish> | null
-    ): RewardPeriodSetEventFilter;
-    RewardPeriodSet(
-      oldVal?: PromiseOrValue<BigNumberish> | null,
-      newVal?: PromiseOrValue<BigNumberish> | null
-    ): RewardPeriodSetEventFilter;
-
     "RewardRatioSet(uint192,uint192)"(
       oldVal?: PromiseOrValue<BigNumberish> | null,
       newVal?: PromiseOrValue<BigNumberish> | null
@@ -1597,6 +1742,21 @@ export interface StRSRVotes extends BaseContract {
       to?: PromiseOrValue<string> | null,
       value?: null
     ): TransferEventFilter;
+
+    "UnstakingCancelled(uint256,uint256,uint256,address,uint256)"(
+      firstId?: PromiseOrValue<BigNumberish> | null,
+      endId?: PromiseOrValue<BigNumberish> | null,
+      draftEra?: null,
+      staker?: PromiseOrValue<string> | null,
+      rsrAmount?: null
+    ): UnstakingCancelledEventFilter;
+    UnstakingCancelled(
+      firstId?: PromiseOrValue<BigNumberish> | null,
+      endId?: PromiseOrValue<BigNumberish> | null,
+      draftEra?: null,
+      staker?: PromiseOrValue<string> | null,
+      rsrAmount?: null
+    ): UnstakingCancelledEventFilter;
 
     "UnstakingCompleted(uint256,uint256,uint256,address,uint256)"(
       firstId?: PromiseOrValue<BigNumberish> | null,
@@ -1645,6 +1805,15 @@ export interface StRSRVotes extends BaseContract {
     Upgraded(
       implementation?: PromiseOrValue<string> | null
     ): UpgradedEventFilter;
+
+    "WithdrawalLeakSet(uint192,uint192)"(
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
+    ): WithdrawalLeakSetEventFilter;
+    WithdrawalLeakSet(
+      oldVal?: PromiseOrValue<BigNumberish> | null,
+      newVal?: PromiseOrValue<BigNumberish> | null
+    ): WithdrawalLeakSetEventFilter;
   };
 
   estimateGas: {
@@ -1673,6 +1842,11 @@ export interface StRSRVotes extends BaseContract {
     balanceOf(
       account: PromiseOrValue<string>,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    cancelUnstake(
+      endId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     checkpoints(
@@ -1744,6 +1918,8 @@ export interface StRSRVotes extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getDraftRSR(overrides?: CallOverrides): Promise<BigNumber>;
+
     getPastEra(
       blockNumber: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1759,6 +1935,10 @@ export interface StRSRVotes extends BaseContract {
       blockNumber: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    getStakeRSR(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getTotalDrafts(overrides?: CallOverrides): Promise<BigNumber>;
 
     getVotes(
       account: PromiseOrValue<string>,
@@ -1777,6 +1957,7 @@ export interface StRSRVotes extends BaseContract {
       symbol_: PromiseOrValue<string>,
       unstakingDelay_: PromiseOrValue<BigNumberish>,
       rewardRatio_: PromiseOrValue<BigNumberish>,
+      withdrawalLeak_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1830,12 +2011,21 @@ export interface StRSRVotes extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    setWithdrawalLeak(
+      val: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     stake(
       rsrAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    stakeRate(overrides?: CallOverrides): Promise<BigNumber>;
+    stakeAndDelegate(
+      rsrAmount: PromiseOrValue<BigNumberish>,
+      delegatee: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
 
     symbol(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1879,6 +2069,8 @@ export interface StRSRVotes extends BaseContract {
       endId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    withdrawalLeak(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -1911,6 +2103,11 @@ export interface StRSRVotes extends BaseContract {
     balanceOf(
       account: PromiseOrValue<string>,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    cancelUnstake(
+      endId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     checkpoints(
@@ -1982,6 +2179,8 @@ export interface StRSRVotes extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    getDraftRSR(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     getPastEra(
       blockNumber: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1997,6 +2196,10 @@ export interface StRSRVotes extends BaseContract {
       blockNumber: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    getStakeRSR(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getTotalDrafts(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getVotes(
       account: PromiseOrValue<string>,
@@ -2015,6 +2218,7 @@ export interface StRSRVotes extends BaseContract {
       symbol_: PromiseOrValue<string>,
       unstakingDelay_: PromiseOrValue<BigNumberish>,
       rewardRatio_: PromiseOrValue<BigNumberish>,
+      withdrawalLeak_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -2068,12 +2272,21 @@ export interface StRSRVotes extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    setWithdrawalLeak(
+      val: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     stake(
       rsrAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    stakeRate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    stakeAndDelegate(
+      rsrAmount: PromiseOrValue<BigNumberish>,
+      delegatee: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -2117,5 +2330,7 @@ export interface StRSRVotes extends BaseContract {
       endId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    withdrawalLeak(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

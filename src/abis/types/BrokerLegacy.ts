@@ -47,27 +47,22 @@ export type TradeRequestStructOutput = [
   minBuyAmount: BigNumber;
 };
 
-export interface BrokerInterface extends utils.Interface {
+export interface BrokerLegacyInterface extends utils.Interface {
   functions: {
     "MAX_AUCTION_LENGTH()": FunctionFragment;
-    "MIN_AUCTION_LENGTH()": FunctionFragment;
-    "batchAuctionLength()": FunctionFragment;
-    "batchTradeImplementation()": FunctionFragment;
+    "auctionLength()": FunctionFragment;
     "disabled()": FunctionFragment;
-    "dutchAuctionLength()": FunctionFragment;
-    "dutchTradeImplementation()": FunctionFragment;
     "gnosis()": FunctionFragment;
-    "init(address,address,address,uint48,address,uint48)": FunctionFragment;
+    "init(address,address,address,uint48)": FunctionFragment;
     "main()": FunctionFragment;
-    "openTrade(uint8,(address,address,uint256,uint256))": FunctionFragment;
+    "openTrade((address,address,uint256,uint256))": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "reportViolation()": FunctionFragment;
-    "setBatchAuctionLength(uint48)": FunctionFragment;
-    "setBatchTradeImplementation(address)": FunctionFragment;
+    "setAuctionLength(uint48)": FunctionFragment;
     "setDisabled(bool)": FunctionFragment;
-    "setDutchAuctionLength(uint48)": FunctionFragment;
-    "setDutchTradeImplementation(address)": FunctionFragment;
     "setGnosis(address)": FunctionFragment;
+    "setTradeImplementation(address)": FunctionFragment;
+    "tradeImplementation()": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
     "version()": FunctionFragment;
@@ -76,24 +71,19 @@ export interface BrokerInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "MAX_AUCTION_LENGTH"
-      | "MIN_AUCTION_LENGTH"
-      | "batchAuctionLength"
-      | "batchTradeImplementation"
+      | "auctionLength"
       | "disabled"
-      | "dutchAuctionLength"
-      | "dutchTradeImplementation"
       | "gnosis"
       | "init"
       | "main"
       | "openTrade"
       | "proxiableUUID"
       | "reportViolation"
-      | "setBatchAuctionLength"
-      | "setBatchTradeImplementation"
+      | "setAuctionLength"
       | "setDisabled"
-      | "setDutchAuctionLength"
-      | "setDutchTradeImplementation"
       | "setGnosis"
+      | "setTradeImplementation"
+      | "tradeImplementation"
       | "upgradeTo"
       | "upgradeToAndCall"
       | "version"
@@ -104,26 +94,10 @@ export interface BrokerInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "MIN_AUCTION_LENGTH",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "batchAuctionLength",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "batchTradeImplementation",
+    functionFragment: "auctionLength",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "disabled", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "dutchAuctionLength",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "dutchTradeImplementation",
-    values?: undefined
-  ): string;
   encodeFunctionData(functionFragment: "gnosis", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "init",
@@ -131,15 +105,13 @@ export interface BrokerInterface extends utils.Interface {
       PromiseOrValue<string>,
       PromiseOrValue<string>,
       PromiseOrValue<string>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>
     ]
   ): string;
   encodeFunctionData(functionFragment: "main", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "openTrade",
-    values: [PromiseOrValue<BigNumberish>, TradeRequestStruct]
+    values: [TradeRequestStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "proxiableUUID",
@@ -150,28 +122,24 @@ export interface BrokerInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "setBatchAuctionLength",
+    functionFragment: "setAuctionLength",
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setBatchTradeImplementation",
-    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "setDisabled",
     values: [PromiseOrValue<boolean>]
   ): string;
   encodeFunctionData(
-    functionFragment: "setDutchAuctionLength",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setDutchTradeImplementation",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "setGnosis",
     values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setTradeImplementation",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "tradeImplementation",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "upgradeTo",
@@ -188,26 +156,10 @@ export interface BrokerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "MIN_AUCTION_LENGTH",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "batchAuctionLength",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "batchTradeImplementation",
+    functionFragment: "auctionLength",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "disabled", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "dutchAuctionLength",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "dutchTradeImplementation",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "gnosis", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "init", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "main", data: BytesLike): Result;
@@ -221,26 +173,22 @@ export interface BrokerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setBatchAuctionLength",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setBatchTradeImplementation",
+    functionFragment: "setAuctionLength",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "setDisabled",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "setDutchAuctionLength",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setDutchTradeImplementation",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "setGnosis", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setTradeImplementation",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "tradeImplementation",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "upgradeTo", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "upgradeToAndCall",
@@ -250,30 +198,22 @@ export interface BrokerInterface extends utils.Interface {
 
   events: {
     "AdminChanged(address,address)": EventFragment;
-    "BatchAuctionLengthSet(uint48,uint48)": EventFragment;
-    "BatchTradeImplementationSet(address,address)": EventFragment;
+    "AuctionLengthSet(uint48,uint48)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
     "DisabledSet(bool,bool)": EventFragment;
-    "DutchAuctionLengthSet(uint48,uint48)": EventFragment;
-    "DutchTradeImplementationSet(address,address)": EventFragment;
     "GnosisSet(address,address)": EventFragment;
     "Initialized(uint8)": EventFragment;
+    "TradeImplementationSet(address,address)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "BatchAuctionLengthSet"): EventFragment;
-  getEvent(
-    nameOrSignatureOrTopic: "BatchTradeImplementationSet"
-  ): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "AuctionLengthSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DisabledSet"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "DutchAuctionLengthSet"): EventFragment;
-  getEvent(
-    nameOrSignatureOrTopic: "DutchTradeImplementationSet"
-  ): EventFragment;
   getEvent(nameOrSignatureOrTopic: "GnosisSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TradeImplementationSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
 
@@ -288,29 +228,17 @@ export type AdminChangedEvent = TypedEvent<
 
 export type AdminChangedEventFilter = TypedEventFilter<AdminChangedEvent>;
 
-export interface BatchAuctionLengthSetEventObject {
+export interface AuctionLengthSetEventObject {
   oldVal: number;
   newVal: number;
 }
-export type BatchAuctionLengthSetEvent = TypedEvent<
+export type AuctionLengthSetEvent = TypedEvent<
   [number, number],
-  BatchAuctionLengthSetEventObject
+  AuctionLengthSetEventObject
 >;
 
-export type BatchAuctionLengthSetEventFilter =
-  TypedEventFilter<BatchAuctionLengthSetEvent>;
-
-export interface BatchTradeImplementationSetEventObject {
-  oldVal: string;
-  newVal: string;
-}
-export type BatchTradeImplementationSetEvent = TypedEvent<
-  [string, string],
-  BatchTradeImplementationSetEventObject
->;
-
-export type BatchTradeImplementationSetEventFilter =
-  TypedEventFilter<BatchTradeImplementationSetEvent>;
+export type AuctionLengthSetEventFilter =
+  TypedEventFilter<AuctionLengthSetEvent>;
 
 export interface BeaconUpgradedEventObject {
   beacon: string;
@@ -333,30 +261,6 @@ export type DisabledSetEvent = TypedEvent<
 
 export type DisabledSetEventFilter = TypedEventFilter<DisabledSetEvent>;
 
-export interface DutchAuctionLengthSetEventObject {
-  oldVal: number;
-  newVal: number;
-}
-export type DutchAuctionLengthSetEvent = TypedEvent<
-  [number, number],
-  DutchAuctionLengthSetEventObject
->;
-
-export type DutchAuctionLengthSetEventFilter =
-  TypedEventFilter<DutchAuctionLengthSetEvent>;
-
-export interface DutchTradeImplementationSetEventObject {
-  oldVal: string;
-  newVal: string;
-}
-export type DutchTradeImplementationSetEvent = TypedEvent<
-  [string, string],
-  DutchTradeImplementationSetEventObject
->;
-
-export type DutchTradeImplementationSetEventFilter =
-  TypedEventFilter<DutchTradeImplementationSetEvent>;
-
 export interface GnosisSetEventObject {
   oldVal: string;
   newVal: string;
@@ -372,6 +276,18 @@ export type InitializedEvent = TypedEvent<[number], InitializedEventObject>;
 
 export type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
 
+export interface TradeImplementationSetEventObject {
+  oldVal: string;
+  newVal: string;
+}
+export type TradeImplementationSetEvent = TypedEvent<
+  [string, string],
+  TradeImplementationSetEventObject
+>;
+
+export type TradeImplementationSetEventFilter =
+  TypedEventFilter<TradeImplementationSetEvent>;
+
 export interface UpgradedEventObject {
   implementation: string;
 }
@@ -379,12 +295,12 @@ export type UpgradedEvent = TypedEvent<[string], UpgradedEventObject>;
 
 export type UpgradedEventFilter = TypedEventFilter<UpgradedEvent>;
 
-export interface Broker extends BaseContract {
+export interface BrokerLegacy extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: BrokerInterface;
+  interface: BrokerLegacyInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -408,34 +324,23 @@ export interface Broker extends BaseContract {
   functions: {
     MAX_AUCTION_LENGTH(overrides?: CallOverrides): Promise<[number]>;
 
-    MIN_AUCTION_LENGTH(overrides?: CallOverrides): Promise<[number]>;
-
-    batchAuctionLength(overrides?: CallOverrides): Promise<[number]>;
-
-    batchTradeImplementation(overrides?: CallOverrides): Promise<[string]>;
+    auctionLength(overrides?: CallOverrides): Promise<[number]>;
 
     disabled(overrides?: CallOverrides): Promise<[boolean]>;
-
-    dutchAuctionLength(overrides?: CallOverrides): Promise<[number]>;
-
-    dutchTradeImplementation(overrides?: CallOverrides): Promise<[string]>;
 
     gnosis(overrides?: CallOverrides): Promise<[string]>;
 
     init(
       main_: PromiseOrValue<string>,
       gnosis_: PromiseOrValue<string>,
-      batchTradeImplementation_: PromiseOrValue<string>,
-      batchAuctionLength_: PromiseOrValue<BigNumberish>,
-      dutchTradeImplementation_: PromiseOrValue<string>,
-      dutchAuctionLength_: PromiseOrValue<BigNumberish>,
+      tradeImplementation_: PromiseOrValue<string>,
+      auctionLength_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     main(overrides?: CallOverrides): Promise<[string]>;
 
     openTrade(
-      kind: PromiseOrValue<BigNumberish>,
       req: TradeRequestStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -446,13 +351,8 @@ export interface Broker extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    setBatchAuctionLength(
+    setAuctionLength(
       newAuctionLength: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    setBatchTradeImplementation(
-      newTradeImplementation: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -461,20 +361,17 @@ export interface Broker extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    setDutchAuctionLength(
-      newAuctionLength: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    setDutchTradeImplementation(
-      newTradeImplementation: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     setGnosis(
       newGnosis: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    setTradeImplementation(
+      newTradeImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    tradeImplementation(overrides?: CallOverrides): Promise<[string]>;
 
     upgradeTo(
       newImplementation: PromiseOrValue<string>,
@@ -492,34 +389,23 @@ export interface Broker extends BaseContract {
 
   MAX_AUCTION_LENGTH(overrides?: CallOverrides): Promise<number>;
 
-  MIN_AUCTION_LENGTH(overrides?: CallOverrides): Promise<number>;
-
-  batchAuctionLength(overrides?: CallOverrides): Promise<number>;
-
-  batchTradeImplementation(overrides?: CallOverrides): Promise<string>;
+  auctionLength(overrides?: CallOverrides): Promise<number>;
 
   disabled(overrides?: CallOverrides): Promise<boolean>;
-
-  dutchAuctionLength(overrides?: CallOverrides): Promise<number>;
-
-  dutchTradeImplementation(overrides?: CallOverrides): Promise<string>;
 
   gnosis(overrides?: CallOverrides): Promise<string>;
 
   init(
     main_: PromiseOrValue<string>,
     gnosis_: PromiseOrValue<string>,
-    batchTradeImplementation_: PromiseOrValue<string>,
-    batchAuctionLength_: PromiseOrValue<BigNumberish>,
-    dutchTradeImplementation_: PromiseOrValue<string>,
-    dutchAuctionLength_: PromiseOrValue<BigNumberish>,
+    tradeImplementation_: PromiseOrValue<string>,
+    auctionLength_: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   main(overrides?: CallOverrides): Promise<string>;
 
   openTrade(
-    kind: PromiseOrValue<BigNumberish>,
     req: TradeRequestStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -530,13 +416,8 @@ export interface Broker extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  setBatchAuctionLength(
+  setAuctionLength(
     newAuctionLength: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  setBatchTradeImplementation(
-    newTradeImplementation: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -545,20 +426,17 @@ export interface Broker extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  setDutchAuctionLength(
-    newAuctionLength: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  setDutchTradeImplementation(
-    newTradeImplementation: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   setGnosis(
     newGnosis: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  setTradeImplementation(
+    newTradeImplementation: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  tradeImplementation(overrides?: CallOverrides): Promise<string>;
 
   upgradeTo(
     newImplementation: PromiseOrValue<string>,
@@ -576,34 +454,23 @@ export interface Broker extends BaseContract {
   callStatic: {
     MAX_AUCTION_LENGTH(overrides?: CallOverrides): Promise<number>;
 
-    MIN_AUCTION_LENGTH(overrides?: CallOverrides): Promise<number>;
-
-    batchAuctionLength(overrides?: CallOverrides): Promise<number>;
-
-    batchTradeImplementation(overrides?: CallOverrides): Promise<string>;
+    auctionLength(overrides?: CallOverrides): Promise<number>;
 
     disabled(overrides?: CallOverrides): Promise<boolean>;
-
-    dutchAuctionLength(overrides?: CallOverrides): Promise<number>;
-
-    dutchTradeImplementation(overrides?: CallOverrides): Promise<string>;
 
     gnosis(overrides?: CallOverrides): Promise<string>;
 
     init(
       main_: PromiseOrValue<string>,
       gnosis_: PromiseOrValue<string>,
-      batchTradeImplementation_: PromiseOrValue<string>,
-      batchAuctionLength_: PromiseOrValue<BigNumberish>,
-      dutchTradeImplementation_: PromiseOrValue<string>,
-      dutchAuctionLength_: PromiseOrValue<BigNumberish>,
+      tradeImplementation_: PromiseOrValue<string>,
+      auctionLength_: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     main(overrides?: CallOverrides): Promise<string>;
 
     openTrade(
-      kind: PromiseOrValue<BigNumberish>,
       req: TradeRequestStruct,
       overrides?: CallOverrides
     ): Promise<string>;
@@ -612,13 +479,8 @@ export interface Broker extends BaseContract {
 
     reportViolation(overrides?: CallOverrides): Promise<void>;
 
-    setBatchAuctionLength(
+    setAuctionLength(
       newAuctionLength: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    setBatchTradeImplementation(
-      newTradeImplementation: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -627,20 +489,17 @@ export interface Broker extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setDutchAuctionLength(
-      newAuctionLength: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    setDutchTradeImplementation(
-      newTradeImplementation: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     setGnosis(
       newGnosis: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    setTradeImplementation(
+      newTradeImplementation: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    tradeImplementation(overrides?: CallOverrides): Promise<string>;
 
     upgradeTo(
       newImplementation: PromiseOrValue<string>,
@@ -666,23 +525,14 @@ export interface Broker extends BaseContract {
       newAdmin?: null
     ): AdminChangedEventFilter;
 
-    "BatchAuctionLengthSet(uint48,uint48)"(
+    "AuctionLengthSet(uint48,uint48)"(
       oldVal?: PromiseOrValue<BigNumberish> | null,
       newVal?: PromiseOrValue<BigNumberish> | null
-    ): BatchAuctionLengthSetEventFilter;
-    BatchAuctionLengthSet(
+    ): AuctionLengthSetEventFilter;
+    AuctionLengthSet(
       oldVal?: PromiseOrValue<BigNumberish> | null,
       newVal?: PromiseOrValue<BigNumberish> | null
-    ): BatchAuctionLengthSetEventFilter;
-
-    "BatchTradeImplementationSet(address,address)"(
-      oldVal?: PromiseOrValue<string> | null,
-      newVal?: PromiseOrValue<string> | null
-    ): BatchTradeImplementationSetEventFilter;
-    BatchTradeImplementationSet(
-      oldVal?: PromiseOrValue<string> | null,
-      newVal?: PromiseOrValue<string> | null
-    ): BatchTradeImplementationSetEventFilter;
+    ): AuctionLengthSetEventFilter;
 
     "BeaconUpgraded(address)"(
       beacon?: PromiseOrValue<string> | null
@@ -700,24 +550,6 @@ export interface Broker extends BaseContract {
       newVal?: PromiseOrValue<boolean> | null
     ): DisabledSetEventFilter;
 
-    "DutchAuctionLengthSet(uint48,uint48)"(
-      oldVal?: PromiseOrValue<BigNumberish> | null,
-      newVal?: PromiseOrValue<BigNumberish> | null
-    ): DutchAuctionLengthSetEventFilter;
-    DutchAuctionLengthSet(
-      oldVal?: PromiseOrValue<BigNumberish> | null,
-      newVal?: PromiseOrValue<BigNumberish> | null
-    ): DutchAuctionLengthSetEventFilter;
-
-    "DutchTradeImplementationSet(address,address)"(
-      oldVal?: PromiseOrValue<string> | null,
-      newVal?: PromiseOrValue<string> | null
-    ): DutchTradeImplementationSetEventFilter;
-    DutchTradeImplementationSet(
-      oldVal?: PromiseOrValue<string> | null,
-      newVal?: PromiseOrValue<string> | null
-    ): DutchTradeImplementationSetEventFilter;
-
     "GnosisSet(address,address)"(
       oldVal?: PromiseOrValue<string> | null,
       newVal?: PromiseOrValue<string> | null
@@ -730,6 +562,15 @@ export interface Broker extends BaseContract {
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
 
+    "TradeImplementationSet(address,address)"(
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
+    ): TradeImplementationSetEventFilter;
+    TradeImplementationSet(
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
+    ): TradeImplementationSetEventFilter;
+
     "Upgraded(address)"(
       implementation?: PromiseOrValue<string> | null
     ): UpgradedEventFilter;
@@ -741,34 +582,23 @@ export interface Broker extends BaseContract {
   estimateGas: {
     MAX_AUCTION_LENGTH(overrides?: CallOverrides): Promise<BigNumber>;
 
-    MIN_AUCTION_LENGTH(overrides?: CallOverrides): Promise<BigNumber>;
-
-    batchAuctionLength(overrides?: CallOverrides): Promise<BigNumber>;
-
-    batchTradeImplementation(overrides?: CallOverrides): Promise<BigNumber>;
+    auctionLength(overrides?: CallOverrides): Promise<BigNumber>;
 
     disabled(overrides?: CallOverrides): Promise<BigNumber>;
-
-    dutchAuctionLength(overrides?: CallOverrides): Promise<BigNumber>;
-
-    dutchTradeImplementation(overrides?: CallOverrides): Promise<BigNumber>;
 
     gnosis(overrides?: CallOverrides): Promise<BigNumber>;
 
     init(
       main_: PromiseOrValue<string>,
       gnosis_: PromiseOrValue<string>,
-      batchTradeImplementation_: PromiseOrValue<string>,
-      batchAuctionLength_: PromiseOrValue<BigNumberish>,
-      dutchTradeImplementation_: PromiseOrValue<string>,
-      dutchAuctionLength_: PromiseOrValue<BigNumberish>,
+      tradeImplementation_: PromiseOrValue<string>,
+      auctionLength_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     main(overrides?: CallOverrides): Promise<BigNumber>;
 
     openTrade(
-      kind: PromiseOrValue<BigNumberish>,
       req: TradeRequestStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -779,13 +609,8 @@ export interface Broker extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    setBatchAuctionLength(
+    setAuctionLength(
       newAuctionLength: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    setBatchTradeImplementation(
-      newTradeImplementation: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -794,20 +619,17 @@ export interface Broker extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    setDutchAuctionLength(
-      newAuctionLength: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    setDutchTradeImplementation(
-      newTradeImplementation: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     setGnosis(
       newGnosis: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    setTradeImplementation(
+      newTradeImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    tradeImplementation(overrides?: CallOverrides): Promise<BigNumber>;
 
     upgradeTo(
       newImplementation: PromiseOrValue<string>,
@@ -828,44 +650,23 @@ export interface Broker extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    MIN_AUCTION_LENGTH(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    batchAuctionLength(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    batchTradeImplementation(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    auctionLength(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     disabled(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    dutchAuctionLength(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    dutchTradeImplementation(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
 
     gnosis(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     init(
       main_: PromiseOrValue<string>,
       gnosis_: PromiseOrValue<string>,
-      batchTradeImplementation_: PromiseOrValue<string>,
-      batchAuctionLength_: PromiseOrValue<BigNumberish>,
-      dutchTradeImplementation_: PromiseOrValue<string>,
-      dutchAuctionLength_: PromiseOrValue<BigNumberish>,
+      tradeImplementation_: PromiseOrValue<string>,
+      auctionLength_: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     main(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     openTrade(
-      kind: PromiseOrValue<BigNumberish>,
       req: TradeRequestStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
@@ -876,13 +677,8 @@ export interface Broker extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    setBatchAuctionLength(
+    setAuctionLength(
       newAuctionLength: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setBatchTradeImplementation(
-      newTradeImplementation: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -891,19 +687,18 @@ export interface Broker extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    setDutchAuctionLength(
-      newAuctionLength: PromiseOrValue<BigNumberish>,
+    setGnosis(
+      newGnosis: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    setDutchTradeImplementation(
+    setTradeImplementation(
       newTradeImplementation: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    setGnosis(
-      newGnosis: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    tradeImplementation(
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     upgradeTo(

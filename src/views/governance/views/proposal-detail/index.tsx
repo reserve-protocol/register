@@ -1,5 +1,4 @@
 import { Trans } from '@lingui/macro'
-import { useWeb3React } from '@web3-react/core'
 import { GovernanceInterface } from 'abis'
 import { SmallButton } from 'components/button'
 import { formatEther } from 'ethers/lib/utils'
@@ -9,10 +8,12 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { ArrowLeft } from 'react-feather'
 import { useNavigate, useParams } from 'react-router-dom'
-import { rTokenGovernanceAtom } from 'state/atoms'
-import { promiseMulticall } from 'state/web3/lib/multicall'
+import {
+  getValidWeb3Atom,
+  multicallAtom,
+  rTokenGovernanceAtom,
+} from 'state/atoms'
 import { Box, Grid } from 'theme-ui'
-import { CHAIN_ID } from 'utils/chains'
 import { PROPOSAL_STATES, ROUTES } from 'utils/constants'
 import {
   accountVotesAtom,
@@ -31,7 +32,8 @@ import useProposalDetail from './useProposalDetail'
 const GovernanceProposalDetail = () => {
   const { proposalId } = useParams()
   const rToken = useRToken()
-  const { account, provider, chainId } = useWeb3React()
+  const { account } = useAtomValue(getValidWeb3Atom)
+  const multicall = useAtomValue(multicallAtom)
   const governance = useAtomValue(rTokenGovernanceAtom)
   const { data: proposal, loading } = useProposalDetail(proposalId ?? '')
   const setProposalDetail = useSetAtom(proposalDetailAtom)
@@ -61,11 +63,10 @@ const GovernanceProposalDetail = () => {
   const fetchAccountVotingPower = async () => {
     if (
       account &&
-      provider &&
+      multicall &&
       proposal &&
       !!blockNumber &&
-      governance.governor &&
-      chainId === CHAIN_ID
+      governance.governor
     ) {
       try {
         const accountVote = proposal.votes.find(
@@ -74,20 +75,17 @@ const GovernanceProposalDetail = () => {
         let votePower = '0'
 
         if (!accountVote) {
-          const [result] = await promiseMulticall(
-            [
-              {
-                abi: GovernanceInterface,
-                method: 'getVotes',
-                address: governance.governor,
-                args: [
-                  account,
-                  Math.min(proposal.startBlock - 1, blockNumber - 1),
-                ],
-              },
-            ],
-            provider
-          )
+          const [result] = await multicall([
+            {
+              abi: GovernanceInterface,
+              method: 'getVotes',
+              address: governance.governor,
+              args: [
+                account,
+                Math.min(proposal.startBlock - 1, blockNumber - 1),
+              ],
+            },
+          ])
 
           votePower = result ? formatEther(result) : '0'
         } else {
@@ -106,7 +104,7 @@ const GovernanceProposalDetail = () => {
 
   useEffect(() => {
     fetchAccountVotingPower()
-  }, [account, provider, chainId, !!blockNumber && JSON.stringify(proposal)])
+  }, [account, multicall, !!blockNumber && JSON.stringify(proposal)])
 
   return (
     <Box>

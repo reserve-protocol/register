@@ -2,12 +2,15 @@ import { t, Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
 import SelectedIcon from 'components/icons/SelectedIcon'
 import Modal from 'components/modal'
-import { useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useState } from 'react'
 import { ChevronRight } from 'react-feather'
-import { isWalletModalVisibleAtom } from 'state/atoms'
+import {
+  chainIdAtom,
+  getValidWeb3Atom,
+  isWalletModalVisibleAtom,
+} from 'state/atoms'
 import { Box, Flex, Image, Spinner, Text, Divider } from 'theme-ui'
-import { CHAIN_ID } from 'utils/chains'
 import {
   coinbaseWallet,
   CONNECTOR_TYPES,
@@ -50,6 +53,7 @@ const wallets = [
 const WalletModal = () => {
   const { connector: currentConnector, account } = useWeb3React()
   const [connecting, setConnecting] = useState(false)
+  const chainId = useAtomValue(chainIdAtom)
   const setWalletModalVisible = useSetAtom(isWalletModalVisibleAtom)
   const [error, setError] = useState('')
 
@@ -69,7 +73,7 @@ const WalletModal = () => {
   const handleSelection = (connector: WalletConnector) => {
     localStorage.removeItem('walletconnect')
     setConnecting(true)
-    connector.activate(CHAIN_ID).then(onClose).catch(handleError)
+    connector.activate(chainId).then(onClose).catch(handleError)
   }
 
   return (

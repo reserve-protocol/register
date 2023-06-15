@@ -1,7 +1,10 @@
-import { ethers } from 'ethers'
+import { BigNumber } from 'ethers'
 import { formatEther } from 'ethers/lib/utils'
 import { atom } from 'jotai'
 import { atomFamily } from 'jotai/utils'
+import { getValidWeb3Atom } from './atoms'
+import { promiseMulticall } from './web3/lib/multicall'
+import { ContractCall } from 'types'
 
 /**
  * ######################
@@ -18,6 +21,14 @@ if (
   localStorage.setItem('version', VERSION)
 }
 
+export const multicallAtom = atom((get) => {
+  const { provider, chainId } = get(getValidWeb3Atom)
+
+  if (!provider) return null
+
+  return (calls: ContractCall[]) => promiseMulticall(calls, provider, chainId)
+})
+
 export const searchParamsAtom = atom(
   new URLSearchParams(window.location.search)
 )
@@ -33,7 +44,7 @@ export const searchParamAtom = atomFamily(
  */
 
 export const ethPriceAtom = atom(1)
-export const gasPriceAtomBn = atom(ethers.constants.Zero)
+export const gasPriceAtomBn = atom(BigNumber.from(0))
 export const gasPriceAtom = atom((get) =>
   Number(formatEther(get(gasPriceAtomBn)))
 )

@@ -1,15 +1,16 @@
 import { FacadeActInterface, FacadeInterface } from 'abis'
 import { Facade, FacadeAct } from 'abis/types'
 import { formatUnits } from 'ethers/lib/utils'
-import { atom } from 'jotai'
+import { atom, useAtomValue } from 'jotai'
 import { atomWithReset, loadable } from 'jotai/utils'
 import {
+  chainIdAtom,
   getValidWeb3Atom,
+  multicallAtom,
   rTokenAssetsAtom,
   rTokenAtom,
   rTokenContractsAtom,
 } from 'state/atoms'
-import { promiseMulticall } from 'state/web3/lib/multicall'
 import { Token } from 'types'
 import { getContract } from 'utils'
 import {
@@ -111,7 +112,8 @@ const accumulatedRevenue = loadable(
 
 const settleableAuctions = loadable(
   atom(async (get): Promise<AuctionToSettle[] | null> => {
-    const { provider, chainId } = get(getValidWeb3Atom)
+    const chainId = useAtomValue(chainIdAtom)
+    const multicall = useAtomValue(multicallAtom)
     const rToken = get(rTokenAtom)
     const assets = get(rTokenAssetsAtom)
     const { rsrTrader, rTokenTrader, backingManager } =
@@ -119,7 +121,7 @@ const settleableAuctions = loadable(
     const session = get(auctionSessionAtom)
 
     if (
-      !provider ||
+      !multicall ||
       !rToken ||
       !assets ||
       !Object.keys(assets).length ||
@@ -148,14 +150,13 @@ const settleableAuctions = loadable(
       { address: backingManager, buy: null, type: AUCTION_TYPES.BACKING }, // TODO: What to show here?
     ]
 
-    const result = await promiseMulticall(
+    const result = await multicall(
       traders.map(({ address }) => ({
         abi: FacadeInterface,
         address: FACADE_ADDRESS[chainId],
         method: 'auctionsSettleable',
         args: [address],
-      })),
-      provider
+      }))
     )
 
     return result.reduce((auctionsToSettle, current, index) => {

@@ -1,4 +1,3 @@
-import { Web3Provider } from '@ethersproject/providers'
 import {
   BasketHandlerInterface,
   CollateralInterface,
@@ -15,9 +14,9 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import {
   basketNonceAtom,
-  getValidWeb3Atom,
   maxIssuanceAtom,
   maxRedemptionAtom,
+  multicallAtom,
   rTokenAssetsAtom,
   rTokenCollateralStatusAtom,
   rTokenContractsAtom,
@@ -26,7 +25,6 @@ import {
   rsrExchangeRateAtom,
   stRSRSupplyAtom,
 } from 'state/atoms'
-import { promiseMulticall } from 'state/web3/lib/multicall'
 import { ContractCall } from 'types'
 import { VERSION } from 'utils/constants'
 
@@ -49,54 +47,53 @@ const RTokenStateUpdater = () => {
   const setBackingCollateralStatus = useSetAtom(rTokenCollateralStatusAtom)
   const blockNumber = useBlockNumber()
   const contracts = useAtomValue(rTokenContractsAtom)
-  const { provider } = useAtomValue(getValidWeb3Atom)
+  const multicall = useAtomValue(multicallAtom)
 
   // TODO: Finish
   const getTokenStatus = useCallback(
-    async (mainAddress: string, provider: Web3Provider, isLegacy: boolean) => {
+    async (mainAddress: string, isLegacy: boolean) => {
+      if (!multicall) {
+        return
+      }
+
       try {
         const call = { abi: MainInterface, address: mainAddress, args: [] }
 
         if (!isLegacy) {
-          const [isIssuancePaused, isTradingPaused, isFrozen] =
-            await promiseMulticall(
-              [
-                {
-                  ...call,
-                  method: 'issuancePaused',
-                },
-                {
-                  ...call,
-                  method: 'tradingPaused',
-                },
-                {
-                  ...call,
-                  method: 'frozen',
-                },
-              ],
-              provider
-            )
+          const [isIssuancePaused, isTradingPaused, isFrozen] = await multicall(
+            [
+              {
+                ...call,
+                method: 'issuancePaused',
+              },
+              {
+                ...call,
+                method: 'tradingPaused',
+              },
+              {
+                ...call,
+                method: 'frozen',
+              },
+            ]
+          )
           updateTokenStatus({
             issuancePaused: isIssuancePaused,
             tradingPaused: isTradingPaused,
             frozen: isFrozen,
           })
         } else {
-          const [isPaused, isFrozen] = await promiseMulticall(
-            [
-              {
-                ...call,
-                abi: _MainInterface,
-                method: 'paused',
-              },
-              {
-                ...call,
-                abi: _MainInterface,
-                method: 'frozen',
-              },
-            ],
-            provider
-          )
+          const [isPaused, isFrozen] = await multicall([
+            {
+              ...call,
+              abi: _MainInterface,
+              method: 'paused',
+            },
+            {
+              ...call,
+              abi: _MainInterface,
+              method: 'frozen',
+            },
+          ])
           updateTokenStatus({
             issuancePaused: isPaused,
             tradingPaused: isPaused,
@@ -107,7 +104,7 @@ const RTokenStateUpdater = () => {
         console.error('Error getting token status', e)
       }
     },
-    []
+    [multicall]
   )
 
   const getCollateralStatus = async () => {
@@ -115,36 +112,33 @@ const RTokenStateUpdater = () => {
       rToken &&
       !rToken.isRSV &&
       assets &&
-      provider &&
+      multicall &&
       contracts?.assetRegistry
     ) {
       try {
-        const [basketNonce, isCollaterized, ...status] = await promiseMulticall(
-          [
-            {
-              abi: BasketHandlerInterface,
-              address: contracts.basketHandler.address,
-              method: 'nonce',
-              args: [],
-            },
-            {
-              abi: BasketHandlerInterface,
-              address: contracts.basketHandler.address,
-              args: [],
-              method: 'fullyCollateralized',
-            },
-            ...rToken.collaterals.map(
-              (collateral) =>
-                ({
-                  address: assets[collateral.address]?.address ?? '',
-                  abi: CollateralInterface,
-                  method: 'status',
-                  args: [],
-                } as ContractCall)
-            ),
-          ],
-          provider
-        )
+        const [basketNonce, isCollaterized, ...status] = await multicall([
+          {
+            abi: BasketHandlerInterface,
+            address: contracts.basketHandler.address,
+            method: 'nonce',
+            args: [],
+          },
+          {
+            abi: BasketHandlerInterface,
+            address: contracts.basketHandler.address,
+            args: [],
+            method: 'fullyCollateralized',
+          },
+          ...rToken.collaterals.map(
+            (collateral) =>
+              ({
+                address: assets[collateral.address]?.address ?? '',
+                abi: CollateralInterface,
+                method: 'status',
+                args: [],
+              } as ContractCall)
+          ),
+        ])
 
         const collateralStatusMap: { [x: string]: 0 | 1 | 2 } = {}
 
@@ -162,11 +156,11 @@ const RTokenStateUpdater = () => {
   }
 
   const getTokenMetrics = useCallback(
-    async (
-      rTokenAddress: string,
-      stRSRAddress: string,
-      provider: Web3Provider
-    ) => {
+    async (rTokenAddress: string, stRSRAddress: string) => {
+      if (!multicall) {
+        return
+      }
+
       try {
         const [
           tokenSupply,
@@ -174,41 +168,38 @@ const RTokenStateUpdater = () => {
           exchangeRate,
           issuanceAvailable,
           redemptionAvailable,
-        ] = await promiseMulticall(
-          [
-            {
-              abi: ERC20Interface,
-              method: 'totalSupply',
-              args: [],
-              address: rTokenAddress,
-            },
-            {
-              abi: ERC20Interface,
-              method: 'totalSupply',
-              args: [],
-              address: stRSRAddress,
-            },
-            {
-              abi: StRSRInterface,
-              method: 'exchangeRate',
-              args: [],
-              address: stRSRAddress,
-            },
-            {
-              abi: RTokenInterface,
-              method: 'issuanceAvailable',
-              args: [],
-              address: rTokenAddress,
-            },
-            {
-              abi: RTokenInterface,
-              method: 'redemptionAvailable',
-              args: [],
-              address: rTokenAddress,
-            },
-          ],
-          provider
-        )
+        ] = await multicall([
+          {
+            abi: ERC20Interface,
+            method: 'totalSupply',
+            args: [],
+            address: rTokenAddress,
+          },
+          {
+            abi: ERC20Interface,
+            method: 'totalSupply',
+            args: [],
+            address: stRSRAddress,
+          },
+          {
+            abi: StRSRInterface,
+            method: 'exchangeRate',
+            args: [],
+            address: stRSRAddress,
+          },
+          {
+            abi: RTokenInterface,
+            method: 'issuanceAvailable',
+            args: [],
+            address: rTokenAddress,
+          },
+          {
+            abi: RTokenInterface,
+            method: 'redemptionAvailable',
+            args: [],
+            address: rTokenAddress,
+          },
+        ])
         setSupply(formatEther(tokenSupply))
         setStaked(formatEther(stTokenSupply))
         setExchangeRate(+formatEther(exchangeRate))
@@ -218,24 +209,16 @@ const RTokenStateUpdater = () => {
         console.error('Error fetching exchange rate', e)
       }
     },
-    []
+    [multicall]
   )
 
   useEffect(() => {
-    if (provider && blockNumber && contracts?.main) {
-      getTokenStatus(
-        contracts.main.address,
-        provider,
-        contracts.main.version !== VERSION
-      )
+    if (blockNumber && contracts?.main) {
+      getTokenStatus(contracts.main.address, contracts.main.version !== VERSION)
       getCollateralStatus()
-      getTokenMetrics(
-        contracts.token.address,
-        contracts.stRSR.address,
-        provider
-      )
+      getTokenMetrics(contracts.token.address, contracts.stRSR.address)
     }
-  }, [contracts, blockNumber])
+  }, [contracts, getTokenMetrics, blockNumber])
 
   return null
 }

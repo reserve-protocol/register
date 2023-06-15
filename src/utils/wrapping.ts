@@ -1,7 +1,7 @@
-import { formatEther } from 'ethers/lib/utils'
+import { CollateralPlugin } from 'types'
 import { useMemo } from 'react'
-import { isAmountValid, safeParseEther } from 'utils'
-import { aavePlugins } from 'utils/plugins'
+import { useAtomValue } from 'jotai'
+import { aavePluginsAtom } from 'state/atoms/pluginAtoms'
 
 export type FormState = {
   [x: string]: {
@@ -11,12 +11,17 @@ export type FormState = {
   }
 }
 
-export const isFormValid = (formState: FormState, pluginSet = aavePlugins) => {
-  const isValid = useMemo(() => {
+export const isFormValid = (
+  formState: FormState,
+  pluginSet = [] as CollateralPlugin[]
+) => {
+  const aavePlugins = useAtomValue(aavePluginsAtom)
+
+  return useMemo(() => {
     let isValid = false
     let hasInvalid = false
 
-    for (const plugin of pluginSet) {
+    for (const plugin of pluginSet || aavePlugins) {
       if (formState[plugin.address].value) {
         if (+formState[plugin.address].value > +formState[plugin.address].max) {
           hasInvalid = true
@@ -27,7 +32,5 @@ export const isFormValid = (formState: FormState, pluginSet = aavePlugins) => {
     }
 
     return isValid && !hasInvalid
-  }, [formState])
-
-  return isValid
+  }, [formState, pluginSet, aavePlugins])
 }

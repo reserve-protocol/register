@@ -5,11 +5,10 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import { useCallback, useMemo } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
-import { addTransactionAtom } from 'state/atoms'
+import { addTransactionAtom, chainIdAtom } from 'state/atoms'
 import { useTransactionState } from 'state/web3/hooks/useTransactions'
 import { getTransactionWithGasLimit } from 'utils'
 import { FACADE_WRITE_ADDRESS } from 'utils/addresses'
-import { CHAIN_ID } from 'utils/chains'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
 import {
@@ -36,6 +35,7 @@ export const useDeployTx = () => {
   const backupBasket = useAtomValue(backupCollateralAtom)
   const revenueSplit = useAtomValue(revenueSplitAtom)
   const formFields = useWatch()
+  const chainId = useAtomValue(chainIdAtom)
 
   const isDeployValid =
     isBasketValid && isRevenueSplitValid && isValidExternalMap
@@ -63,7 +63,7 @@ export const useDeployTx = () => {
       value: '0',
       call: {
         abi: 'facadeWrite',
-        address: FACADE_WRITE_ADDRESS[CHAIN_ID],
+        address: FACADE_WRITE_ADDRESS[chainId],
         method: 'deployRToken',
         args: params as any,
       },
@@ -73,6 +73,7 @@ export const useDeployTx = () => {
     isDeployValid,
     backupBasket,
     revenueSplit,
+    chainId,
     JSON.stringify(formFields),
   ])
 }

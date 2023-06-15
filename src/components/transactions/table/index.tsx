@@ -5,7 +5,7 @@ import Help from 'components/help'
 import { Table } from 'components/table'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { blockTimestampAtom } from 'state/atoms'
+import { blockTimestampAtom, chainIdAtom } from 'state/atoms'
 import { borderRadius } from 'theme'
 import { Box, BoxProps, Flex, Link, Text } from 'theme-ui'
 import { StringMap, TransactionRecord } from 'types'
@@ -40,6 +40,7 @@ const TransactionsTable = ({
   ...props
 }: Props) => {
   const currentTime = useAtomValue(blockTimestampAtom)
+  const chainId = useAtomValue(chainIdAtom)
   const transactionTypes: StringMap = useMemo(
     () => ({
       MINT: t`Mint`,
@@ -99,14 +100,22 @@ const TransactionsTable = ({
           cell.value ? (
             <>
               <Link
-                href={getExplorerLink(cell.value, ExplorerDataType.TRANSACTION)}
+                href={getExplorerLink(
+                  cell.value,
+                  chainId,
+                  ExplorerDataType.TRANSACTION
+                )}
                 target="_blank"
                 sx={{ display: ['none', 'inherit'] }}
               >
                 {shortenString(cell.value)}
               </Link>
               <GoTo
-                href={getExplorerLink(cell.value, ExplorerDataType.TRANSACTION)}
+                href={getExplorerLink(
+                  cell.value,
+                  chainId,
+                  ExplorerDataType.TRANSACTION
+                )}
                 sx={{ display: ['block', 'none'] }}
               />
             </>
@@ -115,7 +124,7 @@ const TransactionsTable = ({
           ),
       },
     ],
-    [currentTime]
+    [currentTime, chainId]
   )
 
   return (

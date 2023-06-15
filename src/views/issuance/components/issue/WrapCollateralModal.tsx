@@ -7,10 +7,11 @@ import ApprovalTransactions from 'components/transaction-modal/ApprovalTransacti
 import TransactionError from 'components/transaction-modal/TransactionError'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import useTokensAllowance from 'hooks/useTokensAllowance'
-import { useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { ArrowRight, CheckCircle, ExternalLink } from 'react-feather'
-import { addTransactionAtom } from 'state/atoms'
+import { addTransactionAtom, getValidWeb3Atom } from 'state/atoms'
+import { aavePluginsAtom } from 'state/atoms/pluginAtoms'
 import { useTransactions } from 'state/web3/hooks/useTransactions'
 import { promiseMulticall } from 'state/web3/lib/multicall'
 import { Box, Divider, Flex, Link, Text } from 'theme-ui'
@@ -18,7 +19,6 @@ import { BigNumberMap, TransactionState } from 'types'
 import { formatCurrency, getTransactionWithGasLimit, hasAllowance } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import { aavePlugins } from 'utils/plugins'
 import { FormState, isFormValid } from 'utils/wrapping'
 import { v4 as uuid } from 'uuid'
 
@@ -31,11 +31,12 @@ const WrapCollateralModal = ({
   onClose(): void
   unwrap?: boolean
 }) => {
-  const { provider, account } = useWeb3React()
+  const { provider, account, chainId } = useAtomValue(getValidWeb3Atom)
   const [signing, setSigning] = useState(false)
   const [loading, setLoading] = useState(false)
   const [fromUnderlying, setFromUnderlying] = useState(1)
   const [txIds, setTxIds] = useState<string[]>([])
+  const aavePlugins = useAtomValue(aavePluginsAtom)
   const addTransactions = useSetAtom(addTransactionAtom)
   const transactionsState = useTransactions(txIds)
   const signed = !transactionsState.length
@@ -178,7 +179,8 @@ const WrapCollateralModal = ({
               ? (p.underlyingToken as string)
               : p.collateralAddress,
           })),
-          provider
+          provider,
+          chainId
         )
 
         const newState = { ...formState }
@@ -248,6 +250,7 @@ const WrapCollateralModal = ({
               key={state.id}
               href={getExplorerLink(
                 state.hash ?? '',
+                chainId ?? 1,
                 ExplorerDataType.TRANSACTION
               )}
               target="_blank"

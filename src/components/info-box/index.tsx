@@ -1,7 +1,9 @@
 import CopyValue from 'components/button/CopyValue'
 import GoTo from 'components/button/GoTo'
 import Help from 'components/help'
+import { useAtomValue } from 'jotai'
 import React from 'react'
+import { chainIdAtom } from 'state/atoms'
 import { Flex, Text, BoxProps, Box } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
@@ -80,31 +82,35 @@ export const InfoItem = ({
   right,
   addressType = ExplorerDataType.ADDRESS,
   ...props
-}: Props) => (
-  <Box {...props} variant="layout.verticalAlign">
-    {icon}
-    <Box ml={2}>
-      <Flex variant="layout.verticalAlign">
-        <Text variant="legend" sx={{ fontWeight: 300, fontSize: 1 }}>
-          {title}
-        </Text>
-        {!!help && <Help ml={2} size={14} mt="1px" content={help} />}
-      </Flex>
-      <Box>{!!subtitle && subtitle}</Box>
+}: Props) => {
+  const chainId = useAtomValue(chainIdAtom)
+
+  return (
+    <Box {...props} variant="layout.verticalAlign">
+      {icon}
+      <Box ml={2}>
+        <Flex variant="layout.verticalAlign">
+          <Text variant="legend" sx={{ fontWeight: 300, fontSize: 1 }}>
+            {title}
+          </Text>
+          {!!help && <Help ml={2} size={14} mt="1px" content={help} />}
+        </Flex>
+        <Box>{!!subtitle && subtitle}</Box>
+      </Box>
+      {!!address && (
+        <Box ml="auto" variant="layout.verticalAlign">
+          <CopyValue mr={2} value={address} />
+          <GoTo href={getExplorerLink(address, chainId, addressType)} />
+        </Box>
+      )}
+      {!!right && (
+        <Box ml="auto" variant="layout.verticalAlign">
+          {right}
+        </Box>
+      )}
     </Box>
-    {!!address && (
-      <Box ml="auto" variant="layout.verticalAlign">
-        <CopyValue mr={2} value={address} />
-        <GoTo href={getExplorerLink(address, addressType)} />
-      </Box>
-    )}
-    {!!right && (
-      <Box ml="auto" variant="layout.verticalAlign">
-        {right}
-      </Box>
-    )}
-  </Box>
-)
+  )
+}
 
 interface InfoProps extends Omit<BoxProps, 'title'> {
   title: React.ReactNode | string

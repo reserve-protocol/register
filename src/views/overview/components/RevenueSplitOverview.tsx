@@ -5,7 +5,7 @@ import RevenueToStakersIcon from 'components/icons/RevenueToStakersIcon'
 import RevenueToHoldersIcon from 'components/icons/RevenueToHoldersIcon'
 import { ContentHead, InfoItem } from 'components/info-box'
 import { useAtomValue } from 'jotai'
-import { rTokenAtom, rTokenRevenueSplitAtom } from 'state/atoms'
+import { chainIdAtom, rTokenAtom, rTokenRevenueSplitAtom } from 'state/atoms'
 import { Box, BoxProps, Image, Link, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
@@ -14,6 +14,7 @@ import RevenueToExternalIcon from 'components/icons/RevenueToExternalIcon'
 const RevenueSplitOverview = (props: BoxProps) => {
   const rToken = useAtomValue(rTokenAtom)
   const distribution = useAtomValue(rTokenRevenueSplitAtom)
+  const chainId = useAtomValue(chainIdAtom)
 
   if (rToken && !rToken.main) {
     return (
@@ -82,6 +83,7 @@ const RevenueSplitOverview = (props: BoxProps) => {
                   <GoTo
                     href={getExplorerLink(
                       dist.address,
+                      chainId,
                       ExplorerDataType.ADDRESS
                     )}
                   />

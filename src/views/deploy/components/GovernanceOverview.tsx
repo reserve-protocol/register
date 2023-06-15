@@ -4,8 +4,10 @@ import CopyValue from 'components/button/CopyValue'
 import GoTo from 'components/button/GoTo'
 import GovernanceActionIcon from 'components/icons/GovernanceActionIcon'
 import useRToken from 'hooks/useRToken'
+import { useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { chainIdAtom } from 'state/atoms'
 import { Box, BoxProps, Button, Divider, Flex, Spinner, Text } from 'theme-ui'
 import { formatCurrency, shortenString } from 'utils'
 import { ROUTES, TRANSACTION_STATUS } from 'utils/constants'
@@ -21,6 +23,7 @@ const GovernanceStatus = () => {
   const rToken = useRToken()
   const { fee, deploy, isValid } = useGovernance()
   const tx = useGovernanceTxState()
+  const chainId = useAtomValue(chainIdAtom)
 
   useEffect(() => {
     if (tx?.status === TRANSACTION_STATUS.CONFIRMED && rToken) {
@@ -72,7 +75,11 @@ const GovernanceStatus = () => {
           <Text variant="legend">{shortenString(tx?.hash ?? '')}</Text>
           <CopyValue ml={3} mr={2} value={tx?.hash ?? ''} />
           <GoTo
-            href={getExplorerLink(tx?.hash ?? '', ExplorerDataType.TRANSACTION)}
+            href={getExplorerLink(
+              tx?.hash ?? '',
+              chainId,
+              ExplorerDataType.TRANSACTION
+            )}
           />
         </Box>
       </>
@@ -82,7 +89,9 @@ const GovernanceStatus = () => {
   return (
     <>
       <Text variant="legend" as="p" sx={{ textAlign: 'center' }}>
-        RToken will be ready to use after this TX if you choose to unpause.
+        <Trans>
+          RToken will be ready to use after this TX if you choose to unpause.
+        </Trans>
       </Text>
       <Button
         onClick={deploy}
@@ -126,22 +135,15 @@ const GovernanceOverview = (props: BoxProps) => (
     <Divider my={4} mx={-4} />
     <Box>
       <Text variant="strong" mb={2}>
-        Not ready to set up governance?
+        <Trans>Not ready to set up governance?</Trans>
       </Text>
       <Text as="p" variant="legend">
-        You can leave your RToken paused and come back to setting up governance
-        later.
+        <Trans>
+          You can leave your RToken paused and come back to setting up
+          governance later.
+        </Trans>
       </Text>
     </Box>
-    {/* <Divider my={4} mx={-4} />
-    <Box>
-      <Text variant="strong" mb={2}>
-        What happens after deploy?
-      </Text>
-      <Text as="p" variant="legend">
-        Add link here
-      </Text>
-    </Box> */}
   </Container>
 )
 

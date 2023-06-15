@@ -1,11 +1,10 @@
-import { CHAIN_ID } from './../../utils/chains'
 import { CoinbaseWallet } from '@web3-react/coinbase-wallet'
 import { initializeConnector, Web3ReactHooks } from '@web3-react/core'
 import { MetaMask } from '@web3-react/metamask'
 import { Network } from '@web3-react/network'
 import { Connector } from '@web3-react/types'
 import { WalletConnect } from '@web3-react/walletconnect'
-import { URLS } from 'utils/chains'
+import { ChainId, URLS } from 'utils/chains'
 
 export const CONNECTOR_TYPES = {
   metamask: 'metamask',
@@ -30,7 +29,8 @@ export const [metaMask, metaMaskHooks] = initializeConnector<MetaMask>(
 )
 
 export const [network, networkHooks] = initializeConnector<Network>(
-  (actions) => new Network({ actions, urlMap: URLS, defaultChainId: CHAIN_ID })
+  (actions) =>
+    new Network({ actions, urlMap: URLS, defaultChainId: ChainId.Mainnet })
 )
 
 export const [walletConnect, walletConnectHooks] =

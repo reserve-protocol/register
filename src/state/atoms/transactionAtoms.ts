@@ -7,7 +7,6 @@ import {
   TransactionState,
   WalletTransaction,
 } from 'types'
-import { CHAIN_ID } from 'utils/chains'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { chainIdAtom, walletAtom } from './chainAtoms'
 
@@ -57,7 +56,7 @@ export const txAtom = atomWithStorage<TransactionMap>(
   txStorage
 )
 export const currentTxAtom = atom((get) => {
-  const chain = get(chainIdAtom) ?? CHAIN_ID
+  const chain = get(chainIdAtom)
   const account = get(walletAtom) ?? ''
   const txs = get(txAtom)
 

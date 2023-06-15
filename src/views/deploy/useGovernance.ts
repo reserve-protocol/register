@@ -8,11 +8,10 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import { useCallback, useMemo } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
-import { addTransactionAtom } from 'state/atoms'
+import { addTransactionAtom, chainIdAtom } from 'state/atoms'
 import { useTransactionState } from 'state/web3/hooks/useTransactions'
 import { getTransactionWithGasLimit } from 'utils'
 import { FACADE_WRITE_ADDRESS, ZERO_ADDRESS } from 'utils/addresses'
-import { CHAIN_ID } from 'utils/chains'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
 
@@ -26,6 +25,7 @@ export const useGovernanceTx = () => {
   const formFields = useWatch()
   const roles = useAtomValue(setupRolesAtom)
   const rToken = useRToken()
+  const chainId = useAtomValue(chainIdAtom)
 
   return useMemo(() => {
     try {
@@ -77,7 +77,7 @@ export const useGovernanceTx = () => {
         value: '0',
         call: {
           abi: 'facadeWrite',
-          address: FACADE_WRITE_ADDRESS[CHAIN_ID],
+          address: FACADE_WRITE_ADDRESS[chainId],
           method: 'setupGovernance',
           args,
         },
@@ -91,6 +91,7 @@ export const useGovernanceTx = () => {
     JSON.stringify(roles),
     rToken?.address,
     isValid,
+    chainId,
   ])
 }
 

@@ -1,23 +1,26 @@
 import { TransactionReceipt, Web3Provider } from '@ethersproject/providers'
 import { t } from '@lingui/macro'
-import { useWeb3React } from '@web3-react/core'
 import abis, { DeployerInterface } from 'abis'
 import useBlockNumber from 'hooks/useBlockNumber'
 import useDebounce from 'hooks/useDebounce'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
-import { pendingTxAtom, updateTransactionAtom } from 'state/atoms'
+import {
+  getValidWeb3Atom,
+  pendingTxAtom,
+  updateTransactionAtom,
+} from 'state/atoms'
 import { TransactionState } from 'types'
 import { getContract } from 'utils'
 import { DEPLOYER_ADDRESS } from 'utils/addresses'
-import { CHAIN_ID } from 'utils/chains'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { error, signed, success } from '../lib/notifications'
 
-const getDeployedRToken = (receipt: TransactionReceipt): string => {
-  const log = receipt.logs.find(
-    (logs) => logs.address === DEPLOYER_ADDRESS[CHAIN_ID]
-  )
+const getDeployedRToken = (
+  receipt: TransactionReceipt,
+  deployerAddress: string
+): string => {
+  const log = receipt.logs.find((logs) => logs.address === deployerAddress)
 
   if (log) {
     return DeployerInterface.parseLog(log).args.rToken as string
@@ -32,14 +35,18 @@ const getDeployedRToken = (receipt: TransactionReceipt): string => {
 const TransactionManager = () => {
   const setTxs = useSetAtom(updateTransactionAtom)
   const { pending, mining } = useDebounce(useAtomValue(pendingTxAtom), 200)
-  const { account, provider } = useWeb3React()
+  const { account, provider, chainId } = useAtomValue(getValidWeb3Atom)
   const blockNumber = useBlockNumber()
 
   const checkMiningTx = useCallback(
     async (txs: [number, TransactionState][]) => {
+      if (!chainId) {
+        return
+      }
+
       for (const [index, tx] of txs) {
         try {
-          const receipt = await provider?.getTransactionReceipt(tx.hash ?? '')
+          const receipt = await provider.getTransactionReceipt(tx.hash ?? '')
           if (receipt) {
             if (receipt.status) {
               if (tx?.call.method !== 'approve') {
@@ -56,7 +63,10 @@ const TransactionManager = () => {
               // Fill extra data with rToken address and persist it on localStorage
               if (transaction.call.method === 'deployRToken') {
                 transaction.extra = {
-                  rTokenAddress: getDeployedRToken(receipt),
+                  rTokenAddress: getDeployedRToken(
+                    receipt,
+                    DEPLOYER_ADDRESS[chainId]
+                  ),
                 }
               }
 
@@ -79,11 +89,15 @@ const TransactionManager = () => {
         }
       }
     },
-    [provider]
+    [provider, chainId, setTxs]
   )
 
   const processTxs = useCallback(
     (txs: [number, TransactionState][]) => {
+      if (!account) {
+        return
+      }
+
       for (const [index, tx] of txs) {
         setTxs([
           index,
@@ -134,7 +148,7 @@ const TransactionManager = () => {
 
   // check mining
   useEffect(() => {
-    if (provider && blockNumber && mining.length) {
+    if (blockNumber && mining.length) {
       checkMiningTx(mining)
     }
   }, [blockNumber, JSON.stringify(mining)])

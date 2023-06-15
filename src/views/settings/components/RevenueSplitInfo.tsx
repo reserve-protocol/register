@@ -2,7 +2,7 @@ import { t, Trans } from '@lingui/macro'
 import GoTo from 'components/button/GoTo'
 import { InfoItem } from 'components/info-box'
 import { useAtomValue } from 'jotai'
-import { rTokenRevenueSplitAtom } from 'state/atoms'
+import { chainIdAtom, rTokenRevenueSplitAtom } from 'state/atoms'
 import { Box, BoxProps, Card, Text, Divider } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
@@ -12,6 +12,7 @@ import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
  */
 const RevenueSplitInfo = (props: BoxProps) => {
   const distribution = useAtomValue(rTokenRevenueSplitAtom)
+  const chainId = useAtomValue(chainIdAtom)
 
   return (
     <Card p={4} {...props}>
@@ -43,6 +44,7 @@ const RevenueSplitInfo = (props: BoxProps) => {
                   <GoTo
                     href={getExplorerLink(
                       dist.address,
+                      chainId,
                       ExplorerDataType.ADDRESS
                     )}
                   />

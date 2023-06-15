@@ -3,7 +3,7 @@ import GoTo from 'components/button/GoTo'
 import DiversityFactorIcon from 'components/icons/DiversityFactorIcon'
 import TokenItem from 'components/token-item'
 import { useAtomValue } from 'jotai'
-import { rTokenBackupAtom, rTokenBasketAtom } from 'state/atoms'
+import { chainIdAtom, rTokenBackupAtom, rTokenBasketAtom } from 'state/atoms'
 import { Box, BoxProps, Card, Flex, Text, Divider } from 'theme-ui'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
@@ -13,6 +13,7 @@ import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 const EmergencyCollateralInfo = (props: BoxProps) => {
   const units = Object.keys(useAtomValue(rTokenBasketAtom))
   const backupBasket = useAtomValue(rTokenBackupAtom)
+  const chainId = useAtomValue(chainIdAtom)
 
   return (
     <Card p={4} {...props}>
@@ -48,6 +49,7 @@ const EmergencyCollateralInfo = (props: BoxProps) => {
                     ml={2}
                     href={getExplorerLink(
                       collateral.address,
+                      chainId,
                       ExplorerDataType.ADDRESS
                     )}
                   />

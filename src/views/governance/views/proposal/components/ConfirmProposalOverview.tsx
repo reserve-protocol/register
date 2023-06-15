@@ -15,6 +15,7 @@ import { ROUTES, TRANSACTION_STATUS } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { isProposalEditingAtom, proposalTxIdAtom } from '../atoms'
 import useProposal from '../hooks/useProposal'
+import { chainIdAtom } from 'state/atoms'
 
 interface Props extends BoxProps {
   tx: TransactionState
@@ -29,6 +30,7 @@ const ProposalStatus = ({
   const navigate = useNavigate()
   const { fee, propose, isValid } = useProposal(transactionState)
   const tx = useTransactionState(txId)
+  const chainId = useAtomValue(chainIdAtom)
 
   useEffect(() => {
     if (tx?.status === TRANSACTION_STATUS.CONFIRMED) {
@@ -80,7 +82,11 @@ const ProposalStatus = ({
           <Text variant="legend">{shortenString(tx?.hash ?? '')}</Text>
           <CopyValue ml={3} mr={2} value={tx?.hash ?? ''} />
           <GoTo
-            href={getExplorerLink(tx?.hash ?? '', ExplorerDataType.TRANSACTION)}
+            href={getExplorerLink(
+              tx?.hash ?? '',
+              chainId,
+              ExplorerDataType.TRANSACTION
+            )}
           />
         </Box>
       </>

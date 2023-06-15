@@ -1,29 +1,32 @@
-import { Web3Provider } from '@ethersproject/providers'
-import { useWeb3React } from '@web3-react/core'
+import { useAtomValue } from 'jotai'
 import { useCallback, useEffect, useState } from 'react'
+import { getValidWeb3Atom } from 'state/atoms'
 import { getContract } from 'utils'
 import { ENS_ADDRESS } from 'utils/addresses'
-import { CHAIN_ID } from 'utils/chains'
 
 const ENS_ABI = [
   'function getNames(address[] addresses) view returns (string[] r)',
 ]
 
 export const useEnsAddresses = (addresses: string[]) => {
-  const { provider } = useWeb3React()
+  const { provider, chainId } = useAtomValue(getValidWeb3Atom)
   const [ensNames, setEnsNames] = useState<any>([])
 
   const ensReverseRecordRequest = useCallback(async () => {
+    if (!chainId || !provider) {
+      return []
+    }
+
     const ensReverseRecords = getContract(
-      ENS_ADDRESS[CHAIN_ID],
+      ENS_ADDRESS[chainId],
       ENS_ABI,
-      provider as Web3Provider
+      provider
     )
 
     const reverseRecords = await ensReverseRecords.getNames(addresses)
 
     return addresses.map((_address, index) => reverseRecords[index])
-  }, [addresses])
+  }, [addresses, chainId, provider])
 
   useEffect(() => {
     const fetchEns = async () => {
@@ -32,7 +35,7 @@ export const useEnsAddresses = (addresses: string[]) => {
     }
 
     if (addresses?.length > 0) fetchEns()
-  }, [addresses && addresses.length])
+  }, [addresses?.toString()])
 
   return ensNames
 }

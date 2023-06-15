@@ -4,7 +4,7 @@
 
 import { Contract, Signer, utils } from "ethers";
 import type { Provider } from "@ethersproject/providers";
-import type { Broker, BrokerInterface } from "../Broker";
+import type { BrokerLegacy, BrokerLegacyInterface } from "../BrokerLegacy";
 
 const _abi = [
   {
@@ -47,26 +47,7 @@ const _abi = [
         type: "uint48",
       },
     ],
-    name: "BatchAuctionLengthSet",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "contract ITrade",
-        name: "oldVal",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "contract ITrade",
-        name: "newVal",
-        type: "address",
-      },
-    ],
-    name: "BatchTradeImplementationSet",
+    name: "AuctionLengthSet",
     type: "event",
   },
   {
@@ -106,44 +87,6 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "uint48",
-        name: "oldVal",
-        type: "uint48",
-      },
-      {
-        indexed: true,
-        internalType: "uint48",
-        name: "newVal",
-        type: "uint48",
-      },
-    ],
-    name: "DutchAuctionLengthSet",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "contract ITrade",
-        name: "oldVal",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "contract ITrade",
-        name: "newVal",
-        type: "address",
-      },
-    ],
-    name: "DutchTradeImplementationSet",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
         internalType: "contract IGnosis",
         name: "oldVal",
         type: "address",
@@ -176,6 +119,25 @@ const _abi = [
     inputs: [
       {
         indexed: true,
+        internalType: "contract ITrade",
+        name: "oldVal",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "contract ITrade",
+        name: "newVal",
+        type: "address",
+      },
+    ],
+    name: "TradeImplementationSet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
         internalType: "address",
         name: "implementation",
         type: "address",
@@ -199,38 +161,12 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "MIN_AUCTION_LENGTH",
+    name: "auctionLength",
     outputs: [
       {
         internalType: "uint48",
         name: "",
         type: "uint48",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "batchAuctionLength",
-    outputs: [
-      {
-        internalType: "uint48",
-        name: "",
-        type: "uint48",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "batchTradeImplementation",
-    outputs: [
-      {
-        internalType: "contract ITrade",
-        name: "",
-        type: "address",
       },
     ],
     stateMutability: "view",
@@ -244,32 +180,6 @@ const _abi = [
         internalType: "bool",
         name: "",
         type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "dutchAuctionLength",
-    outputs: [
-      {
-        internalType: "uint48",
-        name: "",
-        type: "uint48",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "dutchTradeImplementation",
-    outputs: [
-      {
-        internalType: "contract ITrade",
-        name: "",
-        type: "address",
       },
     ],
     stateMutability: "view",
@@ -302,22 +212,12 @@ const _abi = [
       },
       {
         internalType: "contract ITrade",
-        name: "batchTradeImplementation_",
+        name: "tradeImplementation_",
         type: "address",
       },
       {
         internalType: "uint48",
-        name: "batchAuctionLength_",
-        type: "uint48",
-      },
-      {
-        internalType: "contract ITrade",
-        name: "dutchTradeImplementation_",
-        type: "address",
-      },
-      {
-        internalType: "uint48",
-        name: "dutchAuctionLength_",
+        name: "auctionLength_",
         type: "uint48",
       },
     ],
@@ -341,11 +241,6 @@ const _abi = [
   },
   {
     inputs: [
-      {
-        internalType: "enum TradeKind",
-        name: "kind",
-        type: "uint8",
-      },
       {
         components: [
           {
@@ -413,20 +308,7 @@ const _abi = [
         type: "uint48",
       },
     ],
-    name: "setBatchAuctionLength",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "contract ITrade",
-        name: "newTradeImplementation",
-        type: "address",
-      },
-    ],
-    name: "setBatchTradeImplementation",
+    name: "setAuctionLength",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -447,12 +329,12 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint48",
-        name: "newAuctionLength",
-        type: "uint48",
+        internalType: "contract IGnosis",
+        name: "newGnosis",
+        type: "address",
       },
     ],
-    name: "setDutchAuctionLength",
+    name: "setGnosis",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -465,22 +347,22 @@ const _abi = [
         type: "address",
       },
     ],
-    name: "setDutchTradeImplementation",
+    name: "setTradeImplementation",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
   {
-    inputs: [
+    inputs: [],
+    name: "tradeImplementation",
+    outputs: [
       {
-        internalType: "contract IGnosis",
-        name: "newGnosis",
+        internalType: "contract ITrade",
+        name: "",
         type: "address",
       },
     ],
-    name: "setGnosis",
-    outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -529,12 +411,15 @@ const _abi = [
   },
 ] as const;
 
-export class Broker__factory {
+export class BrokerLegacy__factory {
   static readonly abi = _abi;
-  static createInterface(): BrokerInterface {
-    return new utils.Interface(_abi) as BrokerInterface;
+  static createInterface(): BrokerLegacyInterface {
+    return new utils.Interface(_abi) as BrokerLegacyInterface;
   }
-  static connect(address: string, signerOrProvider: Signer | Provider): Broker {
-    return new Contract(address, _abi, signerOrProvider) as Broker;
+  static connect(
+    address: string,
+    signerOrProvider: Signer | Provider
+  ): BrokerLegacy {
+    return new Contract(address, _abi, signerOrProvider) as BrokerLegacy;
   }
 }

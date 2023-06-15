@@ -16,8 +16,7 @@ export const ChainId = {
   Hardhat: 31337,
 }
 
-export const CHAIN_ID =
-  Number(process.env.REACT_APP_CHAIN_ID) || ChainId.Mainnet
+export const supportedChains = new Set(Object.values(ChainId))
 
 /**
  * Supported chains
