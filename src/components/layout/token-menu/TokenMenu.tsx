@@ -12,7 +12,7 @@ const Container = styled(Box)`
   top: 72px;
   width: 100%;
   max-width: 95em;
-  z-index: 10;
+  /* z-index: 10; */
   height: 72px;
 `
 
