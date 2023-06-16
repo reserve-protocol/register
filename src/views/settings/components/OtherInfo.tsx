@@ -46,7 +46,7 @@ const OtherInfo = () => {
       />
       <InfoItem
         title={t`RToken Maximum trade volume`}
-        subtitle={`${formatCurrency(+params.minTrade)} ${rToken?.symbol}`}
+        subtitle={`$${formatCurrency(+params.maxTrade)}`}
       />
     </Card>
   )
