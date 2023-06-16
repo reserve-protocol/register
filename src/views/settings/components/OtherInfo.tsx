@@ -10,7 +10,6 @@ import { formatCurrency, parseDuration } from 'utils'
  * View: Settings > Display RToken contracts configuration
  */
 const OtherInfo = () => {
-  const rToken = useRToken()
   const params = useAtomValue(rTokenConfigurationAtom)
 
   return (
@@ -46,11 +45,7 @@ const OtherInfo = () => {
       />
       <InfoItem
         title={t`RToken Maximum trade volume`}
-        subtitle={
-          params
-            ? `${formatCurrency(+params.minTrade)} ${rToken?.symbol}`
-            : 'Loading'
-        }
+        subtitle={params ? `$${formatCurrency(+params.maxTrade)}` : 'Loading'}
       />
     </Card>
   )

@@ -1,7 +1,6 @@
 import { DistributorInterface } from 'abis'
 import { gql } from 'graphql-request'
-import { gqlClient } from 'hooks/useQuery'
-import { getValidWeb3Atom } from 'state/atoms'
+import { getValidWeb3Atom, gqlClientAtom } from 'state/atoms'
 import { getContract } from 'utils'
 import { FURNACE_ADDRESS, ST_RSR_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
@@ -52,6 +51,7 @@ const formatDistribution = (data: Distribution[]) => {
 const rTokenRevenueSplitAtom = atomWithLoadable(async (get) => {
   const contracts = get(rTokenContractsAtom)
   const { provider } = get(getValidWeb3Atom)
+  const gqlClient = get(gqlClientAtom)
 
   if (!contracts || !provider) {
     return null

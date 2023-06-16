@@ -1,6 +1,7 @@
 import { providers } from 'ethers'
+import { GraphQLClient } from 'graphql-request'
 import { atom } from 'jotai'
-import { supportedChains } from 'utils/chains'
+import { ChainId, supportedChains } from 'utils/chains'
 
 /**
  * #########################
@@ -26,3 +27,18 @@ export const getValidWeb3Atom = atom((get) => {
 
   return { provider, account, chainId }
 })
+
+const SUBGRAPH_URL = {
+  // Dev node
+  [ChainId.Mainnet]: 'http://127.0.0.1:8000/subgraphs/name/lcamargof/reserve',
+  // [ChainId.Mainnet]: 'https://api.thegraph.com/subgraphs/name/lcamargof/reserve-test',
+  [ChainId.Goerli]:
+    'https://api.thegraph.com/subgraphs/name/lcamargof/reserve-goerli',
+}
+
+export const gqlClientAtom = atom(
+  (get) =>
+    new GraphQLClient(
+      SUBGRAPH_URL[get(chainIdAtom)] || SUBGRAPH_URL[ChainId.Mainnet]
+    )
+)
