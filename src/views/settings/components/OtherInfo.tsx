@@ -1,9 +1,8 @@
 import { t, Trans } from '@lingui/macro'
 import { InfoItem } from 'components/info-box'
-import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { rTokenConfigurationAtom } from 'state/atoms'
-import { Card, Text, Divider } from 'theme-ui'
+import { Card, Divider, Text } from 'theme-ui'
 import { formatCurrency, parseDuration } from 'utils'
 
 /**
