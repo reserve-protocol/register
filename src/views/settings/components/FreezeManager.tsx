@@ -123,7 +123,7 @@ const FreezeManager = () => {
             borderColor: 'darkBorder',
           }}
         />
-        <Box ml={5}>
+        <Box ml={5} sx={{ flexGrow: 1 }}>
           <Text variant="legend" sx={{ fontSize: 1 }}>
             <Trans>
               There’s two freezing roles that put the system in the same state

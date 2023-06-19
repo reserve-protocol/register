@@ -115,7 +115,7 @@ const PauseActions = () => {
           borderColor: 'darkBorder',
         }}
       />
-      <Box ml={5}>
+      <Box ml={5} sx={{ flexGrow: 1 }}>
         <Text variant="legend" sx={{ fontSize: 1 }}>
           <Trans>
             The pauser(s) can put the RToken in two states which can be either

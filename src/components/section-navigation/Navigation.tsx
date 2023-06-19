@@ -1,5 +1,4 @@
 import styled from '@emotion/styled'
-import { Trans } from '@lingui/macro'
 import { useAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Box, BoxProps, Text } from 'theme-ui'
@@ -26,9 +25,13 @@ const Navigation = ({ title, sections, initialIndex = 0, ...props }: Props) => {
   }, [])
 
   const handleNavigate = (index: number) => {
-    document
-      .getElementById(`section-${index}`)
-      ?.scrollIntoView({ behavior: 'smooth' })
+    const target = document.getElementById(`section-${index}`)
+    const wrapper = document.getElementById('app-container')
+
+    if (target && wrapper) {
+      const count = target.offsetTop - wrapper.scrollTop - 20 // xx = any extra distance from top ex. 60
+      wrapper.scrollBy({ top: count, left: 0, behavior: 'smooth' })
+    }
   }
 
   const active = Math.min(...current)
