@@ -47,11 +47,6 @@
         "internalType": "contract IERC20[]",
         "name": "toStart",
         "type": "address[]"
-      },
-      {
-        "internalType": "enum TradeKind",
-        "name": "kind",
-        "type": "uint8"
       }
     ],
     "name": "runRevenueAuctions",
