@@ -154,7 +154,7 @@ const settleableAuctions = loadable(
         ...current.map((erc20: string) => ({
           type: traders[index].type,
           trader: traders[index].address,
-          sell: assets[assetMap[erc20]],
+          sell: assets[assetMap[erc20]].token,
           buy: traders[index].buy,
         }))
       )
