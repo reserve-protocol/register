@@ -6,7 +6,11 @@ import useTokenList from 'hooks/useTokenList'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Text } from 'theme-ui'
-import { formatCurrencyCell, formatUsdCurrencyCell } from 'utils'
+import {
+  formatCurrency,
+  formatCurrencyCell,
+  formatUsdCurrencyCell,
+} from 'utils'
 
 const ListedTokensTable = (
   props: Partial<TableProps<{ [key: string]: any }>>
@@ -26,7 +30,11 @@ const ListedTokensTable = (
         },
       },
       { Header: t`Price`, accessor: 'price', Cell: formatUsdCurrencyCell },
-      { Header: t`Mkt Cap`, accessor: 'supply', Cell: formatUsdCurrencyCell },
+      {
+        Header: t`Mkt Cap`,
+        accessor: 'supply',
+        Cell: ({ cell }: { cell: any }) => `$${formatCurrency(+cell.value, 0)}`,
+      },
       {
         Header: t`Txs`,
         accessor: 'transactionCount',
@@ -35,7 +43,7 @@ const ListedTokensTable = (
       {
         Header: t`Volume`,
         accessor: 'cumulativeVolume',
-        Cell: formatUsdCurrencyCell,
+        Cell: ({ cell }: { cell: any }) => `$${formatCurrency(+cell.value, 0)}`,
       },
       {
         Header: t`Target(s)`,
@@ -77,6 +85,8 @@ const ListedTokensTable = (
       data={tokenList}
       columns={columns}
       onRowClick={handleClick}
+      sorting
+      sortBy={[{ id: 'supply', desc: true }]}
       {...props}
     />
   )

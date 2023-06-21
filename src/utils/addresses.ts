@@ -22,7 +22,7 @@ export const FACADE_ADDRESS: AddressMap = {
 }
 
 export const FACADE_ACT_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0xBe70970a10C186185b1bc1bE980eA09BD68fD97A',
+  [ChainId.Mainnet]: '0x98f292e6Bb4722664fEffb81448cCFB5B7211469',
   [ChainId.Goerli]: '0x7Bcb39F6d2A902aF8adFe384Ec6D84ABE66D2065',
   [ChainId.Hardhat]: '0x933c5DBdA80f03C102C560e9ed0c29812998fA78',
 }

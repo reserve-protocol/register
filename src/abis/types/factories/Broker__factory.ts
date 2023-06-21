@@ -86,6 +86,25 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
+        indexed: true,
+        internalType: "contract IGnosis",
+        name: "oldVal",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "contract IGnosis",
+        name: "newVal",
+        type: "address",
+      },
+    ],
+    name: "GnosisSet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: false,
         internalType: "uint8",
         name: "version",
@@ -93,6 +112,25 @@ const _abi = [
       },
     ],
     name: "Initialized",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "contract ITrade",
+        name: "oldVal",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "contract ITrade",
+        name: "newVal",
+        type: "address",
+      },
+    ],
+    name: "TradeImplementationSet",
     type: "event",
   },
   {
@@ -284,6 +322,32 @@ const _abi = [
       },
     ],
     name: "setDisabled",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "contract IGnosis",
+        name: "newGnosis",
+        type: "address",
+      },
+    ],
+    name: "setGnosis",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "contract ITrade",
+        name: "newTradeImplementation",
+        type: "address",
+      },
+    ],
+    name: "setTradeImplementation",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

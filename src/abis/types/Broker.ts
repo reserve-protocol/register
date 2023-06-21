@@ -60,6 +60,8 @@ export interface BrokerInterface extends utils.Interface {
     "reportViolation()": FunctionFragment;
     "setAuctionLength(uint48)": FunctionFragment;
     "setDisabled(bool)": FunctionFragment;
+    "setGnosis(address)": FunctionFragment;
+    "setTradeImplementation(address)": FunctionFragment;
     "tradeImplementation()": FunctionFragment;
     "upgradeTo(address)": FunctionFragment;
     "upgradeToAndCall(address,bytes)": FunctionFragment;
@@ -79,6 +81,8 @@ export interface BrokerInterface extends utils.Interface {
       | "reportViolation"
       | "setAuctionLength"
       | "setDisabled"
+      | "setGnosis"
+      | "setTradeImplementation"
       | "tradeImplementation"
       | "upgradeTo"
       | "upgradeToAndCall"
@@ -126,6 +130,14 @@ export interface BrokerInterface extends utils.Interface {
     values: [PromiseOrValue<boolean>]
   ): string;
   encodeFunctionData(
+    functionFragment: "setGnosis",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setTradeImplementation",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "tradeImplementation",
     values?: undefined
   ): string;
@@ -168,6 +180,11 @@ export interface BrokerInterface extends utils.Interface {
     functionFragment: "setDisabled",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "setGnosis", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setTradeImplementation",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "tradeImplementation",
     data: BytesLike
@@ -184,7 +201,9 @@ export interface BrokerInterface extends utils.Interface {
     "AuctionLengthSet(uint48,uint48)": EventFragment;
     "BeaconUpgraded(address)": EventFragment;
     "DisabledSet(bool,bool)": EventFragment;
+    "GnosisSet(address,address)": EventFragment;
     "Initialized(uint8)": EventFragment;
+    "TradeImplementationSet(address,address)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
 
@@ -192,7 +211,9 @@ export interface BrokerInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "AuctionLengthSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DisabledSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "GnosisSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TradeImplementationSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
 
@@ -240,12 +261,32 @@ export type DisabledSetEvent = TypedEvent<
 
 export type DisabledSetEventFilter = TypedEventFilter<DisabledSetEvent>;
 
+export interface GnosisSetEventObject {
+  oldVal: string;
+  newVal: string;
+}
+export type GnosisSetEvent = TypedEvent<[string, string], GnosisSetEventObject>;
+
+export type GnosisSetEventFilter = TypedEventFilter<GnosisSetEvent>;
+
 export interface InitializedEventObject {
   version: number;
 }
 export type InitializedEvent = TypedEvent<[number], InitializedEventObject>;
 
 export type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
+
+export interface TradeImplementationSetEventObject {
+  oldVal: string;
+  newVal: string;
+}
+export type TradeImplementationSetEvent = TypedEvent<
+  [string, string],
+  TradeImplementationSetEventObject
+>;
+
+export type TradeImplementationSetEventFilter =
+  TypedEventFilter<TradeImplementationSetEvent>;
 
 export interface UpgradedEventObject {
   implementation: string;
@@ -320,6 +361,16 @@ export interface Broker extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    setGnosis(
+      newGnosis: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setTradeImplementation(
+      newTradeImplementation: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     tradeImplementation(overrides?: CallOverrides): Promise<[string]>;
 
     upgradeTo(
@@ -372,6 +423,16 @@ export interface Broker extends BaseContract {
 
   setDisabled(
     disabled_: PromiseOrValue<boolean>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setGnosis(
+    newGnosis: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setTradeImplementation(
+    newTradeImplementation: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -428,6 +489,16 @@ export interface Broker extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    setGnosis(
+      newGnosis: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setTradeImplementation(
+      newTradeImplementation: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     tradeImplementation(overrides?: CallOverrides): Promise<string>;
 
     upgradeTo(
@@ -479,8 +550,26 @@ export interface Broker extends BaseContract {
       newVal?: PromiseOrValue<boolean> | null
     ): DisabledSetEventFilter;
 
+    "GnosisSet(address,address)"(
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
+    ): GnosisSetEventFilter;
+    GnosisSet(
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
+    ): GnosisSetEventFilter;
+
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
+
+    "TradeImplementationSet(address,address)"(
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
+    ): TradeImplementationSetEventFilter;
+    TradeImplementationSet(
+      oldVal?: PromiseOrValue<string> | null,
+      newVal?: PromiseOrValue<string> | null
+    ): TradeImplementationSetEventFilter;
 
     "Upgraded(address)"(
       implementation?: PromiseOrValue<string> | null
@@ -527,6 +616,16 @@ export interface Broker extends BaseContract {
 
     setDisabled(
       disabled_: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setGnosis(
+      newGnosis: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setTradeImplementation(
+      newTradeImplementation: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -585,6 +684,16 @@ export interface Broker extends BaseContract {
 
     setDisabled(
       disabled_: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setGnosis(
+      newGnosis: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setTradeImplementation(
+      newTradeImplementation: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
