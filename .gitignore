@@ -32,3 +32,6 @@ yarn-error.log*
 
 # Visual Studio Code
 .vscode
+/test-results/
+/playwright-report/
+/playwright/.cache/

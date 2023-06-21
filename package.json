@@ -67,6 +67,7 @@
     "build": "react-scripts build",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "test": "react-scripts test",
+    "test:gui": "playwright test",
     "translations": "lingui extract --clean && lingui compile",
     "postinstall": "npx patch-package"
   },
@@ -86,8 +87,10 @@
     ]
   },
   "devDependencies": {
+    "@guardianui/test": "^1.0.4",
     "@lingui/cli": "^3.13.3",
     "@lingui/macro": "^3.13.3",
+    "@playwright/test": "^1.35.1",
     "@react-spring/types": "^9.4.5",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.0.0",
