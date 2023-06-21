@@ -5,12 +5,14 @@ import IssuanceIcon from 'components/icons/IssuanceIcon'
 import ManagerIcon from 'components/icons/ManagerIcon'
 import OverviewIcon from 'components/icons/OverviewIcon'
 import StakeIcon from 'components/icons/StakeIcon'
-import useRToken from 'hooks/useRToken'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
+import { selectedRTokenAtom } from 'state/atoms'
 import { transition } from 'theme'
 import { Box, NavLinkProps, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
+import RSV from 'utils/rsv'
 
 interface Item {
   path: string
@@ -81,7 +83,7 @@ const NavItem = ({
 
 // Sidebar Navigation
 const Navigation = () => {
-  const currentToken = useRToken()
+  const rTokenAddress = useAtomValue(selectedRTokenAtom)
   const PAGES = useMemo(() => {
     const items = [
       { path: ROUTES.OVERVIEW, title: t`Overview`, Icon: OverviewIcon },
@@ -100,21 +102,17 @@ const Navigation = () => {
   }, [])
 
   const pages = useMemo(() => {
-    if (currentToken?.isRSV) {
+    if (rTokenAddress === RSV.address) {
       return [...PAGES.slice(0, 2)]
     }
 
     return PAGES
-  }, [currentToken?.isRSV])
+  }, [rTokenAddress])
 
   return (
     <Box sx={{ display: 'flex' }} mx={'auto'}>
       {pages.map((item) => (
-        <NavItem
-          key={item.path}
-          {...item}
-          rTokenAddress={currentToken?.address ?? ''}
-        />
+        <NavItem key={item.path} {...item} rTokenAddress={rTokenAddress} />
       ))}
     </Box>
   )

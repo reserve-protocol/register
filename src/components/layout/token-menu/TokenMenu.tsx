@@ -1,8 +1,7 @@
 import styled from '@emotion/styled'
-import { Box, Divider } from 'theme-ui'
-import Navigation from '../navigation/index'
-import useRToken from 'hooks/useRToken'
 import useIsSidebarVisible from 'hooks/useIsSidebarVisible'
+import { Box } from 'theme-ui'
+import Navigation from '../navigation/index'
 
 const Container = styled(Box)`
   flex-grow: 0;
@@ -12,7 +11,6 @@ const Container = styled(Box)`
   top: 72px;
   width: 100%;
   max-width: 95em;
-  /* z-index: 10; */
   height: 72px;
 `
 
@@ -20,9 +18,7 @@ const Container = styled(Box)`
  * Application sidebar
  */
 const TokenMenu = () => {
-  const isVisible = useIsSidebarVisible()
-
-  if (!isVisible) return null
+  if (!useIsSidebarVisible()) return null
 
   return (
     <Container
