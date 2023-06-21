@@ -3624,15 +3624,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@reserve-protocol/token-zapper@npm:1.7.10":
-  version: 1.7.10
-  resolution: "@reserve-protocol/token-zapper@npm:1.7.10"
+"@reserve-protocol/token-zapper@npm:1.7.11":
+  version: 1.7.11
+  resolution: "@reserve-protocol/token-zapper@npm:1.7.11"
   dependencies:
     "@curvefi/api": 2.31.0
     "@nomiclabs/hardhat-ethers": ^2.2.2
     "@uniswap/permit2-sdk": ^1.2.0
     ethers: ^5.7.2
-  checksum: 2e737a2aaeb8803e7dbb9d823c5706b855db95de16e8a6c5a3047adf60b49bfc123f9cc967dae2f8c93b31bc8334fdbee5564f407a65f041b1b58fda8e911fa6
+  checksum: 6470d960c553df00b14baf2f7f94803b5f643424ccda1dc02b0b3b2d3375678eb1f2b48961db097f9bda109ebf969ec2175d3695bd1c16cafba90ee4d2633319
   languageName: node
   linkType: hard
 
@@ -17507,7 +17507,7 @@ __metadata:
     "@reach/portal": ^0.17.0
     "@react-spring/types": ^9.4.5
     "@react-spring/web": ^9.7.1
-    "@reserve-protocol/token-zapper": 1.7.10
+    "@reserve-protocol/token-zapper": 1.7.11
     "@testing-library/jest-dom": ^5.16.4
     "@testing-library/react": ^13.0.0
     "@testing-library/user-event": ^14.0.4
