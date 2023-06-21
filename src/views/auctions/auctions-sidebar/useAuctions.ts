@@ -71,20 +71,16 @@ const auctionsTxAtom = atom((get) => {
   ])
 
   const transactions = [...traders].reduce((auctions, trader) => {
-    console.log('test', [
-      trader,
-      traderToSettle[trader] || [],
-      traderAuctions[trader] || [],
-      // BigNumber.from(TradeKind.BATCH_AUCTION.toString()),
-    ])
-
     return [
       ...auctions,
       FacadeActInterface.encodeFunctionData('runRevenueAuctions', [
         trader,
         traderToSettle[trader] || [],
         traderAuctions[trader] || [],
-        // BigNumber.from(TradeKind.BATCH_AUCTION.toString()),
+        [
+          BigNumber.from(TradeKind.BATCH_AUCTION.toString()),
+          BigNumber.from(TradeKind.BATCH_AUCTION.toString()),
+        ],
       ]),
     ]
   }, [] as string[])

@@ -28,6 +28,7 @@ import {
   TablePaginationProps,
 } from './components/TablePagination'
 import { useTableLayout } from './useTableLayout'
+import { ArrowDown, ArrowUp } from 'react-feather'
 
 const defaultColumn = memoize(() => ({
   subRows: undefined,
@@ -148,7 +149,11 @@ export function Table<D extends { [key: string]: any }>({
                     <Box sx={{ mr: 1, flex: 1 }}>{column.render('Header')}</Box>
                     {sorting &&
                       column.isSorted &&
-                      (column.isSortedDesc ? '.' : 'up')}
+                      (column.isSortedDesc ? (
+                        <ArrowDown size={14} />
+                      ) : (
+                        <ArrowUp size={14} />
+                      ))}
                   </Flex>
                 </Box>
               ))}

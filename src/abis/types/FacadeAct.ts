@@ -27,11 +27,18 @@ export interface FacadeActInterface extends utils.Interface {
   functions: {
     "claimRewards(address)": FunctionFragment;
     "multicall(bytes[])": FunctionFragment;
-    "runRevenueAuctions(address,address[],address[],uint8)": FunctionFragment;
+    "nextRecollateralizationAuction(address)": FunctionFragment;
+    "revenueOverview(address)": FunctionFragment;
+    "runRevenueAuctions(address,address[],address[],uint8[])": FunctionFragment;
   };
 
   getFunction(
-    nameOrSignatureOrTopic: "claimRewards" | "multicall" | "runRevenueAuctions"
+    nameOrSignatureOrTopic:
+      | "claimRewards"
+      | "multicall"
+      | "nextRecollateralizationAuction"
+      | "revenueOverview"
+      | "runRevenueAuctions"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -43,12 +50,20 @@ export interface FacadeActInterface extends utils.Interface {
     values: [PromiseOrValue<BytesLike>[]]
   ): string;
   encodeFunctionData(
+    functionFragment: "nextRecollateralizationAuction",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "revenueOverview",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "runRevenueAuctions",
     values: [
       PromiseOrValue<string>,
       PromiseOrValue<string>[],
       PromiseOrValue<string>[],
-      PromiseOrValue<BigNumberish>
+      PromiseOrValue<BigNumberish>[]
     ]
   ): string;
 
@@ -57,6 +72,14 @@ export interface FacadeActInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "multicall", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "nextRecollateralizationAuction",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "revenueOverview",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "runRevenueAuctions",
     data: BytesLike
@@ -102,11 +125,21 @@ export interface FacadeAct extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    nextRecollateralizationAuction(
+      bm: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    revenueOverview(
+      revenueTrader: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     runRevenueAuctions(
       revenueTrader: PromiseOrValue<string>,
       toSettle: PromiseOrValue<string>[],
       toStart: PromiseOrValue<string>[],
-      kind: PromiseOrValue<BigNumberish>,
+      kinds: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
@@ -121,11 +154,21 @@ export interface FacadeAct extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  nextRecollateralizationAuction(
+    bm: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  revenueOverview(
+    revenueTrader: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   runRevenueAuctions(
     revenueTrader: PromiseOrValue<string>,
     toSettle: PromiseOrValue<string>[],
     toStart: PromiseOrValue<string>[],
-    kind: PromiseOrValue<BigNumberish>,
+    kinds: PromiseOrValue<BigNumberish>[],
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -140,11 +183,35 @@ export interface FacadeAct extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string[]>;
 
+    nextRecollateralizationAuction(
+      bm: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<
+      [boolean, string, string, BigNumber] & {
+        canStart: boolean;
+        sell: string;
+        buy: string;
+        sellAmount: BigNumber;
+      }
+    >;
+
+    revenueOverview(
+      revenueTrader: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<
+      [string[], boolean[], BigNumber[], BigNumber[]] & {
+        erc20s: string[];
+        canStart: boolean[];
+        surpluses: BigNumber[];
+        minTradeAmounts: BigNumber[];
+      }
+    >;
+
     runRevenueAuctions(
       revenueTrader: PromiseOrValue<string>,
       toSettle: PromiseOrValue<string>[],
       toStart: PromiseOrValue<string>[],
-      kind: PromiseOrValue<BigNumberish>,
+      kinds: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -162,11 +229,21 @@ export interface FacadeAct extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    nextRecollateralizationAuction(
+      bm: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    revenueOverview(
+      revenueTrader: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     runRevenueAuctions(
       revenueTrader: PromiseOrValue<string>,
       toSettle: PromiseOrValue<string>[],
       toStart: PromiseOrValue<string>[],
-      kind: PromiseOrValue<BigNumberish>,
+      kinds: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
@@ -182,11 +259,21 @@ export interface FacadeAct extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    nextRecollateralizationAuction(
+      bm: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    revenueOverview(
+      revenueTrader: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     runRevenueAuctions(
       revenueTrader: PromiseOrValue<string>,
       toSettle: PromiseOrValue<string>[],
       toStart: PromiseOrValue<string>[],
-      kind: PromiseOrValue<BigNumberish>,
+      kinds: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
