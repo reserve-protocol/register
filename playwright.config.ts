@@ -8,7 +8,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: 1,
   reporter: [['html', { open: 'never' }]],
-  timeout: 180 * 1000,
+  timeout: 180_000,
   use: {
     trace: 'on-first-retry',
   },
@@ -25,9 +25,9 @@ export default defineConfig({
     },
   ],
 
-  // webServer: {
-  //   command: 'yarn start',
-  //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
+  webServer: {
+    command: 'yarn start',
+    url: 'http://127.0.0.1:3000',
+    reuseExistingServer: !process.env.CI,
+  },
 })
