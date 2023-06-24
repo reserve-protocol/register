@@ -1,13 +1,13 @@
 import { test } from '@guardianui/test'
 import { setAllowanceAtSlot, setBalanceAtSlot } from './utils'
 
-test('Mint eUSDC', async ({ page, gui }) => {
+test('Mint hyUSD', async ({ page, gui }) => {
   // Fork Mainnet
   await gui.initializeChain(1, 17550440)
 
   // Go to eUSDC mint page
   await page.goto(
-    'http://localhost:3000/#/issuance?token=0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F'
+    'http://localhost:3000/#/issuance?token=0xaCdf0DBA4B9839b96221a8487e9ca660a48212be'
   )
 
   // Block unnecessary http requests to speed up the tests
@@ -17,42 +17,42 @@ test('Mint eUSDC', async ({ page, gui }) => {
   // Mock balances
   await gui.setEthBalance('100000000000000000000000')
   await setBalanceAtSlot({
-    token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', // USDC
-    slotNumber: '9',
-    value: '1000000000000',
-    gui,
-  })
-  await setBalanceAtSlot({
-    token: '0xdac17f958d2ee523a2206206994597c13d831ec7', // USDT
-    slotNumber: '2',
-    value: '1000000000000',
-    gui,
-  })
-  await setBalanceAtSlot({
-    token: '0x39aa39c021dfbae8fac545936693ac917d5e7563', // cUSDC
-    slotNumber: '15',
-    value: '100000000000000',
-    gui,
-  })
-  await setBalanceAtSlot({
-    token: '0xf650c3d88d12db855b8bf7d11be6c55a4e07dcc9', // cUSDT
+    token: '0x465a5a630482f3abd6d3b84b39b29b07214d19e5', // fUSDC
     slotNumber: '14',
-    value: '100000000000000',
+    value: '10000000000000000000000',
+    gui,
+  })
+  await setBalanceAtSlot({
+    token: '0xe2ba8693ce7474900a045757fe0efca900f6530b', // fDAI
+    slotNumber: '14',
+    value: '10000000000000000000000',
+    gui,
+  })
+  await setBalanceAtSlot({
+    token: '0x8e074d44aabc1b3b4406fe03da7cef787ea85938', // cvxeUSD3CRV-f
+    slotNumber: '0',
+    value: '10000000000000000000000',
+    gui,
+  })
+  await setBalanceAtSlot({
+    token: '0xabb54222c2b77158cc975a2b715a3d703c256f05', // cvxMIM-3LP3CRV-f
+    slotNumber: '0',
+    value: '10000000000000000000000',
     gui,
   })
 
   await page
-    .getByRole('button', { name: 'Wrap AAVE tokens', exact: true })
+    .getByRole('button', { name: 'Wrap/unwrap Convex LP tokens', exact: true })
     .click()
-  await page.getByText('Max: 1,000,000').nth(0).click({ timeout: 90_000 })
+  await page.getByText('Max: 10,000').nth(0).click({ timeout: 60_000 })
   await page.getByText('Estimated gas cost:$').waitFor()
   await gui.validateContractInteraction(
     'div:has-text("Approve") >> button >> nth=1',
-    '0x60c384e226b120d93f3e0f4c502957b2b9c32b15'
+    '0xbf2fbeecc974a171e319b6f92d8f1d042c6f1ac3'
   )
   await gui.validateContractInteraction(
     'button >> span:has-text("Wrap tokens") >> nth=0',
-    '0x60C384e226b120d93f3e0F4C502957b2B9C32B15'
+    '0xbf2fbeecc974a171e319b6f92d8f1d042c6f1ac3'
   )
   await page
     .locator('reach-portal')
@@ -61,17 +61,17 @@ test('Mint eUSDC', async ({ page, gui }) => {
     .click()
 
   await page
-    .getByRole('button', { name: 'Wrap AAVE tokens', exact: true })
+    .getByRole('button', { name: 'Wrap/unwrap Convex LP tokens', exact: true })
     .click()
-  await page.getByPlaceholder('Input token amount').nth(2).type('1000000')
+  await page.getByPlaceholder('Input token amount').nth(2).type('10000')
   await page.getByText('Estimated gas cost:$').waitFor({ timeout: 60_000 })
   await gui.validateContractInteraction(
     'div:has-text("Approve") >> button >> nth=1',
-    '0x21fe646d1ed0733336f2d4d9b2fe67790a6099d9'
+    '0x8443364625e09a33d793acd03acc1f3b5dbfa6f6'
   )
   await gui.validateContractInteraction(
     'button >> span:has-text("Wrap tokens") >> nth=0',
-    '0x21fe646d1ed0733336f2d4d9b2fe67790a6099d9'
+    '0x8443364625e09a33d793acd03acc1f3b5dbfa6f6'
   )
   await page
     .locator('reach-portal')
@@ -85,31 +85,31 @@ test('Mint eUSDC', async ({ page, gui }) => {
   // handling multiple transaction confirmations.
 
   await setAllowanceAtSlot({
-    token: '0x60C384e226b120d93f3e0F4C502957b2B9C32B15', // saUSDC
-    spender: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
-    slotNumber: '2',
-    value: '1000000000000000000',
-    gui,
-  })
-  await setAllowanceAtSlot({
-    token: '0x21fe646D1Ed0733336F2D4d9b2FE67790a6099D9', // saUSDT
-    spender: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
-    slotNumber: '2',
-    value: '1000000000000000000',
-    gui,
-  })
-  await setAllowanceAtSlot({
-    token: '0x39AA39c021dfbaE8faC545936693aC917d5E7563', // cUSDC
-    spender: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
-    slotNumber: '16',
-    value: '1000000000000000000',
-    gui,
-  })
-  await setAllowanceAtSlot({
-    token: '0xf650c3d88d12db855b8bf7d11be6c55a4e07dcc9', // cUSDT
-    spender: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
+    token: '0x465a5a630482f3abd6d3b84b39b29b07214d19e5', // fUSDC
+    spender: '0xaCdf0DBA4B9839b96221a8487e9ca660a48212be',
     slotNumber: '15',
-    value: '1000000000000000000',
+    value: '10000000000000000000000',
+    gui,
+  })
+  await setAllowanceAtSlot({
+    token: '0xe2ba8693ce7474900a045757fe0efca900f6530b', // fDAI
+    spender: '0xaCdf0DBA4B9839b96221a8487e9ca660a48212be',
+    slotNumber: '15',
+    value: '10000000000000000000000',
+    gui,
+  })
+  await setAllowanceAtSlot({
+    token: '0xbf2fbeecc974a171e319b6f92d8f1d042c6f1ac3', // stkcvxeUSD3CRV-f
+    spender: '0xaCdf0DBA4B9839b96221a8487e9ca660a48212be',
+    slotNumber: '1',
+    value: '10000000000000000000000',
+    gui,
+  })
+  await setAllowanceAtSlot({
+    token: '0x8443364625e09a33d793acd03acc1f3b5dbfa6f6', // stkcvxMIM-3LP3CRV-f
+    spender: '0xaCdf0DBA4B9839b96221a8487e9ca660a48212be',
+    slotNumber: '1',
+    value: '10000000000000000000000',
     gui,
   })
 
@@ -118,10 +118,10 @@ test('Mint eUSDC', async ({ page, gui }) => {
     .getByText('Missing collateral')
     .waitFor({ state: 'hidden', timeout: 60_000 })
 
-  await page.getByRole('button', { name: '+ Mint eUSD' }).click()
+  await page.getByRole('button', { name: '+ Mint hyUSD' }).click()
   await page.getByText('Collateral distribution').click()
   await gui.validateContractInteraction(
-    'button >> span:has-text("Begin minting 10,000 eUSD") >> nth=0',
-    '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F'
+    'button >> span:has-text("Begin minting 10,000 hyUSD") >> nth=0',
+    '0xaCdf0DBA4B9839b96221a8487e9ca660a48212be'
   )
 })
