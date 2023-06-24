@@ -16,7 +16,7 @@ jobs:
       - name: Enable corepack
         run: corepack enable
       - name: Activate yarn
-        run: corepack prepare yarn@stable --activate
+        run: corepack prepare yarn@3.2.2 --activate
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
