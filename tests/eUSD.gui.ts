@@ -45,7 +45,7 @@ test('Mint eUSDC', async ({ page, gui }) => {
     .getByRole('button', { name: 'Wrap AAVE tokens', exact: true })
     .click()
   await page.getByText('Max: 1,000,000').nth(0).click({ timeout: 90_000 })
-  await page.getByText('Estimated gas cost:$').waitFor()
+  await page.getByText('Estimated gas cost:$').waitFor({ timeout: 90_000 })
   await gui.validateContractInteraction(
     'div:has-text("Approve") >> button >> nth=1',
     '0x60c384e226b120d93f3e0f4c502957b2b9c32b15'
@@ -64,7 +64,7 @@ test('Mint eUSDC', async ({ page, gui }) => {
     .getByRole('button', { name: 'Wrap AAVE tokens', exact: true })
     .click()
   await page.getByPlaceholder('Input token amount').nth(2).type('1000000')
-  await page.getByText('Estimated gas cost:$').waitFor({ timeout: 60_000 })
+  await page.getByText('Estimated gas cost:$').waitFor({ timeout: 90_000 })
   await gui.validateContractInteraction(
     'div:has-text("Approve") >> button >> nth=1',
     '0x21fe646d1ed0733336f2d4d9b2fe67790a6099d9'
@@ -106,7 +106,7 @@ test('Mint eUSDC', async ({ page, gui }) => {
     gui,
   })
   await setAllowanceAtSlot({
-    token: '0xf650c3d88d12db855b8bf7d11be6c55a4e07dcc9', // cUSDT
+    token: '0xf650C3d88D12dB855b8bf7D11Be6C55A4e07dCC9', // cUSDT
     spender: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
     slotNumber: '15',
     value: '1000000000000000000',

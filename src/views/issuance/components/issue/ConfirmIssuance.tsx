@@ -19,6 +19,7 @@ import {
 } from 'views/issuance/atoms'
 import CollateralDistribution from './CollateralDistribution'
 import IssueInput from './IssueInput'
+import { BigNumber } from 'ethers'
 
 /**
  * Build issuance required approval transactions
@@ -30,8 +31,8 @@ const buildApprovalTransactions = (
 ): TransactionState[] => {
   const transactions = data.collaterals.reduce((txs, token) => {
     const tokenAmount = quantities[getAddress(token.address)].add(ONE_ETH)
-
-    if (!allowances[getAddress(token.address)].gte(tokenAmount)) {
+    const allowance = BigNumber.from(allowances[getAddress(token.address)])
+    if (!allowance.gte(tokenAmount)) {
       return [
         ...txs,
         {
@@ -58,6 +59,7 @@ const buildApprovalTransactions = (
 const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
   const [signing, setSigning] = useState(false)
   const rToken = useAtomValue(rTokenAtom)
+
   const amount = useAtomValue(issueAmountAtom)
   const quantities = useAtomValue(quantitiesAtom)
   const loadingQuantities = !Object.keys(quantities).length

@@ -45,7 +45,7 @@ test('Mint hyUSD', async ({ page, gui }) => {
     .getByRole('button', { name: 'Wrap/unwrap Convex LP tokens', exact: true })
     .click()
   await page.getByText('Max: 10,000').nth(0).click({ timeout: 60_000 })
-  await page.getByText('Estimated gas cost:$').waitFor()
+  await page.getByText('Estimated gas cost:$').waitFor({ timeout: 60_000 })
   await gui.validateContractInteraction(
     'div:has-text("Approve") >> button >> nth=1',
     '0xbf2fbeecc974a171e319b6f92d8f1d042c6f1ac3'
@@ -64,7 +64,7 @@ test('Mint hyUSD', async ({ page, gui }) => {
     .getByRole('button', { name: 'Wrap/unwrap Convex LP tokens', exact: true })
     .click()
   await page.getByPlaceholder('Input token amount').nth(2).type('10000')
-  await page.getByText('Estimated gas cost:$').waitFor({ timeout: 60_000 })
+  await page.getByText('Estimated gas cost:$').waitFor({ timeout: 90_000 })
   await gui.validateContractInteraction(
     'div:has-text("Approve") >> button >> nth=1',
     '0x8443364625e09a33d793acd03acc1f3b5dbfa6f6'

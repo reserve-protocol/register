@@ -67,7 +67,9 @@
     "build": "react-scripts build",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "test": "react-scripts test",
-    "test:gui": "playwright test",
+    "test:gui:ethplus": "playwright test tests/ETHPlus.gui.ts",
+    "test:gui:eusd": "playwright test tests/eUSD.gui.ts",
+    "test:gui:hyusd": "playwright test tests/hyUSD.gui.ts",
     "translations": "lingui extract --clean && lingui compile",
     "postinstall": "npx patch-package"
   },

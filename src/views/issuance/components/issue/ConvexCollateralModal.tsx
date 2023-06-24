@@ -85,27 +85,21 @@ const ConvexCollateralModal = ({
       for (const plugin of valids) {
         const amount = formState[plugin.address].value
         if (activeMode == ConvexMode.DEPOSIT) {
-          approvalTxs.push(
-            getTransactionWithGasLimit(
-              {
-                id: uuid(),
-                description: t`Approve ${plugin.symbol}`,
-                status: TRANSACTION_STATUS.PENDING,
-                value: amount,
-                call: {
-                  abi: 'erc20',
-                  address: plugin.collateralAddress,
-                  method: 'approve',
-                  args: [
-                    plugin.depositContract,
-                    parseUnits(amount, plugin.collateralDecimals || 18),
-                  ],
-                },
-              },
-              65_000,
-              0
-            )
-          )
+          approvalTxs.push({
+            id: uuid(),
+            description: t`Approve ${plugin.symbol}`,
+            status: TRANSACTION_STATUS.PENDING,
+            value: amount,
+            call: {
+              abi: 'erc20',
+              address: plugin.collateralAddress,
+              method: 'approve',
+              args: [
+                plugin.depositContract,
+                parseUnits(amount, plugin.collateralDecimals || 18),
+              ],
+            },
+          })
         }
         depositTxs.push({
           id: '',

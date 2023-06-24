@@ -73,34 +73,28 @@ const WrapCollateralModal = ({
 
       for (const plugin of valids) {
         const amount = formState[plugin.address].value
-        approvalTxs.push(
-          getTransactionWithGasLimit(
-            {
-              id: uuid(),
-              description: t`Approve ${plugin.symbol}`,
-              status: TRANSACTION_STATUS.PENDING,
-              value: amount,
-              call: {
-                abi: 'erc20',
-                address: fromUnderlying
-                  ? (plugin.underlyingToken as string)
-                  : plugin.collateralAddress,
-                method: 'approve',
-                args: [
-                  plugin.depositContract,
-                  parseUnits(
-                    amount,
-                    fromUnderlying
-                      ? plugin.decimals
-                      : plugin.collateralDecimals || 18
-                  ),
-                ],
-              },
-            },
-            65_000,
-            0
-          )
-        )
+        approvalTxs.push({
+          id: uuid(),
+          description: t`Approve ${plugin.symbol}`,
+          status: TRANSACTION_STATUS.PENDING,
+          value: amount,
+          call: {
+            abi: 'erc20',
+            address: fromUnderlying
+              ? (plugin.underlyingToken as string)
+              : plugin.collateralAddress,
+            method: 'approve',
+            args: [
+              plugin.depositContract,
+              parseUnits(
+                amount,
+                fromUnderlying
+                  ? plugin.decimals
+                  : plugin.collateralDecimals || 18
+              ),
+            ],
+          },
+        })
 
         depositTxs.push({
           id: '',
@@ -136,10 +130,7 @@ const WrapCollateralModal = ({
   )
 
   const filteredApprovals = approvals.filter((approval) => {
-    if (
-      !allowances[approval.call.address] ||
-      allowances[approval.call.address].gte(approval.call.args[1])
-    ) {
+    if (approval.call.args[1].lte(allowances[approval.call.address])) {
       return false
     }
 
@@ -171,16 +162,17 @@ const WrapCollateralModal = ({
           args: [account],
         }
 
-        const results = await promiseMulticall(
-          aavePlugins.map((p) => ({
+        const multicall = aavePlugins.map((p) => {
+          const address = fromUnderlying
+            ? (p.underlyingToken as string)
+            : p.collateralAddress
+          return {
             ...callParams,
-            address: fromUnderlying
-              ? (p.underlyingToken as string)
-              : p.collateralAddress,
-          })),
-          provider
-        )
+            address,
+          }
+        })
 
+        const results = await promiseMulticall(multicall, provider)
         const newState = { ...formState }
 
         let index = 0
