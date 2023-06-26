@@ -19,6 +19,7 @@ import {
   multicallAtom,
   rTokenAssetsAtom,
   rTokenCollateralStatusAtom,
+  rTokenCollaterizedAtom,
   rTokenContractsAtom,
   rTokenStatusAtom,
   rTokenTotalSupplyAtom,
@@ -44,7 +45,7 @@ const RTokenStateUpdater = () => {
   const setSupply = useSetAtom(rTokenTotalSupplyAtom)
   const setStaked = useSetAtom(stRSRSupplyAtom)
   const setCollateralStatus = useSetAtom(rTokenCollateralStatusAtom)
-  const setBackingCollateralStatus = useSetAtom(rTokenCollateralStatusAtom)
+  const setBackingCollateralStatus = useSetAtom(rTokenCollaterizedAtom)
   const blockNumber = useBlockNumber()
   const contracts = useAtomValue(rTokenContractsAtom)
   const multicall = useAtomValue(multicallAtom)

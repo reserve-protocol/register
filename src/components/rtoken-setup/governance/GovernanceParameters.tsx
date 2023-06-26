@@ -31,7 +31,7 @@ const GovernanceParameters = (props: BoxProps) => {
         options={{
           required: true,
           pattern: numberPattern,
-          min: 1,
+          // min: 1,
           max: 50400, // 1 week
         }}
       />
@@ -45,7 +45,7 @@ const GovernanceParameters = (props: BoxProps) => {
         options={{
           required: true,
           pattern: numberPattern,
-          min: 7200,
+          // min: 7200,
           max: 100800, // 2 weeks
         }}
       />
@@ -59,7 +59,7 @@ const GovernanceParameters = (props: BoxProps) => {
         options={{
           required: true,
           pattern: numberPattern,
-          min: 24,
+          // min: 24,
           max: 504,
         }}
       />

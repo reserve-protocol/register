@@ -206,6 +206,7 @@ export const formatPercentage = (value: number, decimals = 2): string =>
 // Utils for rable parsing
 export const formatCurrencyCell = ({ cell }: { cell: any }) =>
   formatCurrency(+cell.value)
+  
 export const formatUsdCurrencyCell = ({ cell }: { cell: any }) =>
   `$${formatCurrency(+cell.value)}`
 

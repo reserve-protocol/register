@@ -51,6 +51,7 @@ export interface FacadeInterface extends utils.Interface {
     "price(address)": FunctionFragment;
     "primeBasket(address)": FunctionFragment;
     "redeem(address,uint256)": FunctionFragment;
+    "redeemCustom(address,uint256,uint48[],uint192[])": FunctionFragment;
     "stToken(address)": FunctionFragment;
   };
 
@@ -68,6 +69,7 @@ export interface FacadeInterface extends utils.Interface {
       | "price"
       | "primeBasket"
       | "redeem"
+      | "redeemCustom"
       | "stToken"
   ): FunctionFragment;
 
@@ -120,6 +122,15 @@ export interface FacadeInterface extends utils.Interface {
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "redeemCustom",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>[],
+      PromiseOrValue<BigNumberish>[]
+    ]
+  ): string;
+  encodeFunctionData(
     functionFragment: "stToken",
     values: [PromiseOrValue<string>]
   ): string;
@@ -163,6 +174,10 @@ export interface FacadeInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "redeem", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "redeemCustom",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "stToken", data: BytesLike): Result;
 
   events: {};
@@ -275,6 +290,14 @@ export interface Facade extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    redeemCustom(
+      rToken: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      basketNonces: PromiseOrValue<BigNumberish>[],
+      portions: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     stToken(
       rToken: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -354,6 +377,14 @@ export interface Facade extends BaseContract {
   redeem(
     rToken: PromiseOrValue<string>,
     amount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  redeemCustom(
+    rToken: PromiseOrValue<string>,
+    amount: PromiseOrValue<BigNumberish>,
+    basketNonces: PromiseOrValue<BigNumberish>[],
+    portions: PromiseOrValue<BigNumberish>[],
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -456,11 +487,21 @@ export interface Facade extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<
-      [string[], BigNumber[], boolean] & {
+      [string[], BigNumber[], BigNumber[]] & {
         tokens: string[];
         withdrawals: BigNumber[];
-        isProrata: boolean;
+        available: BigNumber[];
       }
+    >;
+
+    redeemCustom(
+      rToken: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      basketNonces: PromiseOrValue<BigNumberish>[],
+      portions: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<
+      [string[], BigNumber[]] & { tokens: string[]; withdrawals: BigNumber[] }
     >;
 
     stToken(
@@ -537,6 +578,14 @@ export interface Facade extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    redeemCustom(
+      rToken: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      basketNonces: PromiseOrValue<BigNumberish>[],
+      portions: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     stToken(
       rToken: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -606,6 +655,14 @@ export interface Facade extends BaseContract {
     redeem(
       rToken: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    redeemCustom(
+      rToken: PromiseOrValue<string>,
+      amount: PromiseOrValue<BigNumberish>,
+      basketNonces: PromiseOrValue<BigNumberish>[],
+      portions: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

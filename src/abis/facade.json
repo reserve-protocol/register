@@ -331,9 +331,48 @@
         "type": "uint256[]"
       },
       {
-        "internalType": "bool",
-        "name": "isProrata",
-        "type": "bool"
+        "internalType": "uint256[]",
+        "name": "available",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IRToken",
+        "name": "rToken",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint48[]",
+        "name": "basketNonces",
+        "type": "uint48[]"
+      },
+      {
+        "internalType": "uint192[]",
+        "name": "portions",
+        "type": "uint192[]"
+      }
+    ],
+    "name": "redeemCustom",
+    "outputs": [
+      {
+        "internalType": "address[]",
+        "name": "tokens",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "withdrawals",
+        "type": "uint256[]"
       }
     ],
     "stateMutability": "nonpayable",

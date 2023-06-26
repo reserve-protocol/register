@@ -10,25 +10,25 @@ export const ST_RSR_ADDRESS = '0x0000000000000000000000000000000000000002'
  * Protocol related contracts
  */
 export const DEPLOYER_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0x81b9Ae0740CcA7cDc5211b2737de735FBC4BeB3C',
+  [ChainId.Mainnet]: '0x339c1509b980D80A0b50858518531eDbe2940dA1',
   [ChainId.Goerli]: '0x7bdAbdA24406A293f230690Ad5305173d266B7d6',
   [ChainId.Hardhat]: '0x5c46b718Cd79F2BBA6869A3BeC13401b9a4B69bB',
 }
 
 export const FACADE_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0x339c1509b980D80A0b50858518531eDbe2940dA1',
+  [ChainId.Mainnet]: '0xB81a1fa9A497953CEC7f370CACFA5cc364871A73',
   [ChainId.Goerli]: '0x62bf08e255706f3855821B2C25007a731D585E59',
   [ChainId.Hardhat]: '0xf535Cab96457558eE3eeAF1402fCA6441E832f08',
 }
 
 export const FACADE_ACT_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0xeaCaF85eA2df99e56053FD0250330C148D582547',
+  [ChainId.Mainnet]: '0x98f292e6Bb4722664fEffb81448cCFB5B7211469',
   [ChainId.Goerli]: '0x7Bcb39F6d2A902aF8adFe384Ec6D84ABE66D2065',
   [ChainId.Hardhat]: '0x933c5DBdA80f03C102C560e9ed0c29812998fA78',
 }
 
 export const FACADE_WRITE_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0x0776Ad71Ae99D759354B3f06fe17454b94837B0D',
+  [ChainId.Mainnet]: '0x1BD20253c49515D348dad1Af70ff2c0473FEa358',
   [ChainId.Goerli]: '0x264Fb85EF99cb2026de73ef0f6f74AFd6335a006',
   [ChainId.Hardhat]: '0xdEBe74dc2A415e00bE8B4b9d1e6e0007153D006a',
 }

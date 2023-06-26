@@ -16,18 +16,35 @@ import { v4 as uuid } from 'uuid'
 import { isValidRedeemAmountAtom, redeemAmountAtom } from 'views/issuance/atoms'
 import CollateralDistribution from '../issue/CollateralDistribution'
 import RedeemInput from './RedeemInput'
+import { Box } from 'theme-ui'
 
-const redeemCollateralAtom = atom<BigNumberMap>({})
+{
+  /* <CollateralDistribution
+mt={3}
+collaterals={rToken?.collaterals ?? []}
+quantities={collateralQuantities}
+/> */
+}
+
+// useEffect(() => {
+//   if (facadeContract && rToken?.main && Number(amount) > 0) {
+//     getQuantities(facadeContract, rToken.address, amount)
+//   } else if (rToken && !rToken.main && Number(amount) > 0) {
+//     setCollateralQuantities(quote(amount))
+//   } else {
+//     setCollateralQuantities({})
+//   }
+// }, [facadeContract, rToken?.address, debounceAmount])
+
+const RedemptionQuote = () => {
+  return <Box></Box>
+}
 
 const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
   const [signing, setSigning] = useState(false)
   const rToken = useAtomValue(rTokenAtom)
   const [amount, setAmount] = useAtom(redeemAmountAtom)
-  const debounceAmount = useDebounce(amount, 300)
-  const [collateralQuantities, setCollateralQuantities] =
-    useAtom(redeemCollateralAtom)
   const isValid = useAtomValue(isValidRedeemAmountAtom)
-  const facadeContract = useFacadeContract()
   const parsedAmount = isValid ? safeParseEther(amount) : BigNumber.from(0)
   const basketNonce = useAtomValue(basketNonceAtom)
 
@@ -47,43 +64,18 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
     [rToken?.address, amount, basketNonce]
   )
 
-  const requiredAllowance =
-    rToken && !rToken.main
-      ? {
-          [rToken.address]: parsedAmount,
-        }
-      : {}
-
-  const getQuantities = useCallback(
-    async (facade: Facade, rToken: string, value: string) => {
-      try {
-        const issueAmount = safeParseEther(value)
-        const quoteResult = await facade.callStatic.issue(rToken, issueAmount)
-
-        setCollateralQuantities(
-          quoteResult.tokens.reduce((prev, current, currentIndex) => {
-            prev[getAddress(current)] = quoteResult.deposits[currentIndex]
-            return prev
-          }, {} as BigNumberMap)
-        )
-      } catch (e) {
-        console.error('Error getting redemption quantities', e)
-      }
-    },
-    []
+  const requiredAllowance = useMemo(
+    () =>
+      rToken && !rToken.main
+        ? {
+            [rToken.address]: parsedAmount,
+          }
+        : {},
+    [rToken?.address, amount]
   )
 
-  useEffect(() => {
-    if (facadeContract && rToken?.main && Number(amount) > 0) {
-      getQuantities(facadeContract, rToken.address, amount)
-    } else if (rToken && !rToken.main && Number(amount) > 0) {
-      setCollateralQuantities(quote(amount))
-    } else {
-      setCollateralQuantities({})
-    }
-  }, [facadeContract, rToken?.address, debounceAmount])
-
   const buildApproval = useCallback(() => {
+    // TODO: Only for RSV, remove when deprecated
     if (rToken && !rToken.main) {
       return [
         {
@@ -104,10 +96,10 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
     return []
   }, [rToken?.address, amount])
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     onClose()
     setAmount('')
-  }
+  }, [])
 
   return (
     <TransactionModal
@@ -123,11 +115,7 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
       onChange={(signing) => setSigning(signing)}
     >
       <RedeemInput compact disabled={signing} />
-      <CollateralDistribution
-        mt={3}
-        collaterals={rToken?.collaterals ?? []}
-        quantities={collateralQuantities}
-      />
+      <RedemptionQuote />
     </TransactionModal>
   )
 }
