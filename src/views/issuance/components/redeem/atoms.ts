@@ -1,15 +1,15 @@
 import { FacadeInterface } from 'abis'
 import { Facade } from 'abis/types'
 import { BigNumber } from 'ethers'
-import { formatUnits, getAddress } from 'ethers/lib/utils'
+import { formatUnits, getAddress, parseUnits } from 'ethers/lib/utils'
 import { atom } from 'jotai'
 import {
   basketNonceAtom,
   getValidWeb3Atom,
   isModuleLegacyAtom,
   rTokenAssetsAtom,
+  rTokenAtom,
   rTokenCollaterizedAtom,
-  rTokenContractsAtom,
 } from 'state/atoms'
 import { getContract, safeParseEther } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
@@ -30,20 +30,33 @@ export const redeemNonceAtom = atom((get) => {
 
 export const redeemQuotesAtom = atomWithLoadable(async (get) => {
   const currentNonce = get(basketNonceAtom)
-  const contracts = get(rTokenContractsAtom)
   const assets = get(rTokenAssetsAtom)
+  const rToken = get(rTokenAtom)
   const { issuance: isLegacy } = get(isModuleLegacyAtom)
   const isCollaterized = get(rTokenCollaterizedAtom)
   const amount = get(redeemAmountDebouncedAtom)
   const { provider, chainId } = get(getValidWeb3Atom)
   const quotes: { [x: number]: RedeemQuote } = {}
 
-  if (!provider || !contracts?.token || !assets) {
-    return null
-  }
-
   if (isNaN(+amount) || Number(amount) <= 0) {
     return { [currentNonce]: {} } // empty default to 0 on UI but no loading state
+  }
+
+  // TODO: Remove RSV case when is fully deprecated
+  if (rToken && !rToken.main) {
+    return {
+      [currentNonce]: {
+        [rToken.collaterals[0].address]: {
+          amount: parseUnits(amount, 6),
+          targetAmount: BigNumber.from(0),
+          loss: 0,
+        },
+      },
+    }
+  }
+
+  if (!provider || !rToken || !assets) {
+    return null
   }
 
   const facadeReadContract = getContract(
@@ -56,7 +69,7 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
   // TODO: Legacy remove after migration
   if (isLegacy) {
     const quote = await facadeReadContract.callStatic.issue(
-      contracts.token.address,
+      rToken.address,
       parsedAmount
     )
     quotes[currentNonce] = quote.tokens.reduce(
@@ -72,7 +85,7 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
     )
   } else {
     const quote = await facadeReadContract.callStatic.redeem(
-      contracts.token.address,
+      rToken.address,
       parsedAmount
     )
     quotes[currentNonce] = quote.tokens.reduce(
@@ -101,7 +114,7 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
     // Quote previous nonce
     if (!isCollaterized) {
       const prevQuote = await facadeReadContract.callStatic.redeemCustom(
-        contracts.token.address,
+        rToken.address,
         parsedAmount,
         [BigNumber.from(currentNonce - 1)],
         [BigNumber.from('1')]
