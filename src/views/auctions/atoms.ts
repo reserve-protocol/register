@@ -1,7 +1,7 @@
 import { FacadeActInterface, FacadeInterface } from 'abis'
 import { Facade, FacadeAct } from 'abis/types'
 import { formatUnits } from 'ethers/lib/utils'
-import { atom, useAtomValue } from 'jotai'
+import { atom } from 'jotai'
 import { atomWithReset, loadable } from 'jotai/utils'
 import {
   chainIdAtom,
@@ -73,13 +73,7 @@ const accumulatedRevenue = loadable(
     const assets = get(rTokenAssetsAtom)
     const session = get(auctionSessionAtom)
 
-    if (
-      !provider ||
-      !rToken ||
-      !assets ||
-      !Object.keys(assets).length ||
-      !session
-    ) {
+    if (!provider || !rToken || !assets || !session) {
       return 0
     }
 
@@ -112,22 +106,15 @@ const accumulatedRevenue = loadable(
 
 const settleableAuctions = loadable(
   atom(async (get): Promise<AuctionToSettle[] | null> => {
-    const chainId = useAtomValue(chainIdAtom)
-    const multicall = useAtomValue(multicallAtom)
+    const chainId = get(chainIdAtom)
+    const multicall = get(multicallAtom)
     const rToken = get(rTokenAtom)
     const assets = get(rTokenAssetsAtom)
     const { rsrTrader, rTokenTrader, backingManager } =
       get(rTokenContractsAtom) ?? {}
     const session = get(auctionSessionAtom)
 
-    if (
-      !multicall ||
-      !rToken ||
-      !assets ||
-      !Object.keys(assets).length ||
-      !rsrTrader ||
-      !session
-    ) {
+    if (!multicall || !rToken || !assets || !rsrTrader || !session) {
       return null
     }
 
@@ -164,7 +151,7 @@ const settleableAuctions = loadable(
         ...current.map((erc20: string) => ({
           type: traders[index].type,
           trader: traders[index].address,
-          sell: assets[erc20],
+          sell: assets[erc20].token,
           buy: traders[index].buy,
         }))
       )

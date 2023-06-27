@@ -130,9 +130,9 @@ const _abi = [
         type: "address[]",
       },
       {
-        internalType: "enum TradeKind",
-        name: "kind",
-        type: "uint8",
+        internalType: "enum TradeKind[]",
+        name: "kinds",
+        type: "uint8[]",
       },
     ],
     name: "runRevenueAuctions",

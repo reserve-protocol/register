@@ -77,7 +77,10 @@ const auctionsTxAtom = atom((get) => {
         trader,
         traderToSettle[trader] || [],
         traderAuctions[trader] || [],
-        BigNumber.from(TradeKind.BATCH_AUCTION.toString()),
+        [
+          BigNumber.from(TradeKind.BATCH_AUCTION.toString()),
+          BigNumber.from(TradeKind.BATCH_AUCTION.toString()),
+        ],
       ]),
     ]
   }, [] as string[])

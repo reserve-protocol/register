@@ -18,7 +18,7 @@ const confirmButtonLabelAtom = atom((get) => {
 
   let label = ''
 
-  if (settleable.length) {
+  if (settleable?.length) {
     label += `Settle ${settleable.length} previous & `
   }
 
@@ -46,6 +46,8 @@ const ConfirmAuction = ({ onClose }: { onClose(): void }) => {
       onClose()
     }
   }, [status])
+
+  console.log('tx', tx)
 
   return (
     <Box p={4} sx={{ borderTop: '1px solid', borderColor: 'darkBorder' }}>

@@ -4,7 +4,7 @@ import { auctionsToSettleAtom, currentTradesAtom } from '../atoms'
 import { Trans, t } from '@lingui/macro'
 import { Info } from 'components/info-box'
 
-const ongoingAtom = atom((get) => get(currentTradesAtom)?.length)
+const ongoingAtom = atom((get) => get(currentTradesAtom)?.length || 0)
 
 const SettleableAuctions = () => {
   const ongoing = useAtomValue(ongoingAtom)

@@ -29,7 +29,7 @@ export interface FacadeActInterface extends utils.Interface {
     "multicall(bytes[])": FunctionFragment;
     "nextRecollateralizationAuction(address)": FunctionFragment;
     "revenueOverview(address)": FunctionFragment;
-    "runRevenueAuctions(address,address[],address[],uint8)": FunctionFragment;
+    "runRevenueAuctions(address,address[],address[],uint8[])": FunctionFragment;
   };
 
   getFunction(
@@ -63,7 +63,7 @@ export interface FacadeActInterface extends utils.Interface {
       PromiseOrValue<string>,
       PromiseOrValue<string>[],
       PromiseOrValue<string>[],
-      PromiseOrValue<BigNumberish>
+      PromiseOrValue<BigNumberish>[]
     ]
   ): string;
 
@@ -139,7 +139,7 @@ export interface FacadeAct extends BaseContract {
       revenueTrader: PromiseOrValue<string>,
       toSettle: PromiseOrValue<string>[],
       toStart: PromiseOrValue<string>[],
-      kind: PromiseOrValue<BigNumberish>,
+      kinds: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
@@ -168,7 +168,7 @@ export interface FacadeAct extends BaseContract {
     revenueTrader: PromiseOrValue<string>,
     toSettle: PromiseOrValue<string>[],
     toStart: PromiseOrValue<string>[],
-    kind: PromiseOrValue<BigNumberish>,
+    kinds: PromiseOrValue<BigNumberish>[],
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -211,7 +211,7 @@ export interface FacadeAct extends BaseContract {
       revenueTrader: PromiseOrValue<string>,
       toSettle: PromiseOrValue<string>[],
       toStart: PromiseOrValue<string>[],
-      kind: PromiseOrValue<BigNumberish>,
+      kinds: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -243,7 +243,7 @@ export interface FacadeAct extends BaseContract {
       revenueTrader: PromiseOrValue<string>,
       toSettle: PromiseOrValue<string>[],
       toStart: PromiseOrValue<string>[],
-      kind: PromiseOrValue<BigNumberish>,
+      kinds: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
@@ -273,7 +273,7 @@ export interface FacadeAct extends BaseContract {
       revenueTrader: PromiseOrValue<string>,
       toSettle: PromiseOrValue<string>[],
       toStart: PromiseOrValue<string>[],
-      kind: PromiseOrValue<BigNumberish>,
+      kinds: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
