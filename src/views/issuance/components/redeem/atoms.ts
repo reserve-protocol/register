@@ -23,6 +23,8 @@ interface RedeemQuote {
 // UI element controller
 export const customRedeemNonceAtom = atom<null | number>(null)
 
+export const customRedeemModalAtom = atom(false)
+
 // If custom is set return that nonce
 export const redeemNonceAtom = atom((get) => {
   return get(customRedeemNonceAtom) || get(basketNonceAtom)
@@ -36,16 +38,16 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
   const isCollaterized = get(rTokenCollaterizedAtom)
   const amount = get(redeemAmountDebouncedAtom)
   const { provider, chainId } = get(getValidWeb3Atom)
-  const quotes: { [x: number]: RedeemQuote } = {}
+  const quotes: { [x: string]: RedeemQuote } = {}
 
   if (isNaN(+amount) || Number(amount) <= 0) {
-    return { [currentNonce]: {} } // empty default to 0 on UI but no loading state
+    return { [currentNonce.toString()]: {} } // empty default to 0 on UI but no loading state
   }
 
   // TODO: Remove RSV case when is fully deprecated
   if (rToken && !rToken.main) {
     return {
-      [currentNonce]: {
+      [currentNonce.toString()]: {
         [rToken.collaterals[0].address]: {
           amount: parseUnits(amount, 6),
           targetAmount: BigNumber.from(0),
@@ -72,7 +74,7 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
       rToken.address,
       parsedAmount
     )
-    quotes[currentNonce] = quote.tokens.reduce(
+    quotes[currentNonce.toString()] = quote.tokens.reduce(
       (prev, current, currentIndex) => {
         prev[getAddress(current)] = {
           amount: quote.deposits[currentIndex],
@@ -88,7 +90,7 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
       rToken.address,
       parsedAmount
     )
-    quotes[currentNonce] = quote.tokens.reduce(
+    quotes[currentNonce.toString()] = quote.tokens.reduce(
       (prev, current, currentIndex) => {
         const assetAddress = getAddress(current)
         const amount = quote.available[currentIndex]
@@ -96,9 +98,10 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
         let loss = 0
 
         if (!amount.eq(targetAmount)) {
-          loss =
-            (+formatUnits(amount, assets[assetAddress].token.decimals) * 100) /
-            +formatUnits(targetAmount, assets[assetAddress].token.decimals)
+          loss = +formatUnits(
+            targetAmount.sub(amount),
+            assets[assetAddress].token.decimals
+          )
         }
 
         prev[assetAddress] = {

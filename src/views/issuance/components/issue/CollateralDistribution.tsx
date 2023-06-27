@@ -7,6 +7,7 @@ import { BigNumberMap, Token } from 'types'
 import { formatCurrency } from 'utils'
 import { Trans } from '@lingui/macro'
 import TokenItem from 'components/token-item'
+import OverviewIcon from 'components/icons/OverviewIcon'
 
 interface Props extends BoxProps {
   collaterals: Token[]
@@ -28,7 +29,8 @@ const CollateralDistribution = ({
         borderColor: 'inputBorder',
         borderRadius: '6px',
       }}
-      p={2}
+      px={2}
+      py={3}
       {...props}
     >
       <Flex
@@ -39,7 +41,7 @@ const CollateralDistribution = ({
         }}
         onClick={() => setVisible(!isVisible)}
       >
-        <Package size={20} strokeWidth={1} />
+        <OverviewIcon />
         <Text ml={2}>
           <Trans>Collateral distribution</Trans>
         </Text>

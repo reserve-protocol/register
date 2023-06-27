@@ -20,7 +20,8 @@ import {
 } from 'views/issuance/atoms'
 import RedeemInput from './RedeemInput'
 import RedemptionQuote from './RedemptionQuote'
-import { redeemNonceAtom } from './atoms'
+import { customRedeemModalAtom, redeemNonceAtom } from './atoms'
+import RedeemNonceModal from './RedeemNonceModal'
 
 const redeemTxAtom = atom((get) => {
   const rToken = get(rTokenAtom)
@@ -76,6 +77,7 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
   const [amount, setAmount] = useAtom(redeemAmountAtom)
   const isValid = useAtomValue(isValidRedeemAmountAtom)
   const parsedAmount = isValid ? safeParseEther(amount) : BigNumber.from(0)
+  const nonceModal = useAtomValue(customRedeemModalAtom)
 
   const transaction = useAtomValue(redeemTxAtom)
 
@@ -115,6 +117,10 @@ const ConfirmRedemption = ({ onClose }: { onClose: () => void }) => {
     onClose()
     setAmount('')
   }, [])
+
+  if (nonceModal) {
+    return <RedeemNonceModal onClose={handleClose} />
+  }
 
   return (
     <TransactionModal

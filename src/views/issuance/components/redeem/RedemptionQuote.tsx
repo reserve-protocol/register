@@ -1,17 +1,20 @@
-import { atom, useAtomValue } from 'jotai'
-import { useState } from 'react'
+import useRToken from 'hooks/useRToken'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
+import { ChevronRight } from 'react-feather'
 import {
   basketNonceAtom,
   isModuleLegacyAtom,
-  rTokenAssetsAtom,
   rTokenCollaterizedAtom,
 } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
-import CollateralDistribution from '../issue/CollateralDistribution'
-import useRToken from 'hooks/useRToken'
-import { redeemQuotesAtom } from './atoms'
 import { BigNumberMap } from 'types'
-import { ChevronRight } from 'react-feather'
+import CollateralDistribution from '../issue/CollateralDistribution'
+import {
+  customRedeemModalAtom,
+  redeemNonceAtom,
+  redeemQuotesAtom,
+} from './atoms'
+import OverviewIcon from 'components/icons/OverviewIcon'
 
 const quoteQuantitiesAtom = atom((get) => {
   const quote = get(redeemQuotesAtom)
@@ -42,8 +45,8 @@ const CurrentRedemptionQuote = () => {
 
 const RedemptionQuoteSelector = () => {
   const basketNonce = useAtomValue(basketNonceAtom)
-  const assets = useAtomValue(rTokenAssetsAtom)
-  const [selectedNonce, setNonce] = useState()
+  const selectedNonce = useAtomValue(redeemNonceAtom)
+  const setNonceSelection = useSetAtom(customRedeemModalAtom)
 
   return (
     <Box
@@ -57,7 +60,9 @@ const RedemptionQuoteSelector = () => {
       }}
       px={2}
       py={3}
+      onClick={() => setNonceSelection(true)}
     >
+      <OverviewIcon />
       <Text ml="2" mr="auto">
         {basketNonce === selectedNonce
           ? 'Redeem with current basket'
@@ -72,9 +77,9 @@ const RedemptionQuote = () => {
   const isCollaterized = useAtomValue(rTokenCollaterizedAtom)
   const { issuance: isLegacy } = useAtomValue(isModuleLegacyAtom)
 
-  // if (isCollaterized || isLegacy) {
-  //   return <CurrentRedemptionQuote />
-  // }
+  if (isCollaterized || isLegacy) {
+    return <CurrentRedemptionQuote />
+  }
 
   return <RedemptionQuoteSelector />
 }
