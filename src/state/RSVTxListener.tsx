@@ -35,7 +35,7 @@ const RSVTxListener = () => {
     } catch (e) {}
   }
 
-  useWebSocket(`wss:${process.env.REACT_APP_RPAY_FEED}/ws`, {
+  useWebSocket(`wss:${import.meta.env.VITE_RPAY_FEED}/ws`, {
     share: true,
     shouldReconnect: () => true,
     onMessage: (event: WebSocketEventMap['message']) => processMessages(event),

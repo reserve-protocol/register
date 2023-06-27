@@ -1,24 +1,22 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
-    "target": "esnext",
-    "lib": ["dom", "dom.iterable",  "es2020", "esnext"],
-    "allowJs": true,
+    "target": "ESNext",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    // "noUnusedLocals": true,
-    // "noUnusedParameters": true,
     "noEmit": true,
-    "types": ["react-spring", "jest"],
-    "jsx": "react-jsx"
+    "noFallthroughCasesInSwitch": true,
+    "jsx": "react-jsx",
+    "types": ["vite/client", "vite-plugin-svgr/client"],
+    "baseUrl": "src"
   },
-  "include": ["src", "node_modules/dayjs/plugin/utc.d.ts"]
+  "include": ["src"]
 }

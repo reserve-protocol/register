@@ -9,6 +9,8 @@ export interface TokenDisplay {
   logo: string
 }
 
+// require(`@lc-labs/rtokens/images/${token.logo}`)
+
 export const DEFAULT_LOGO = '/svgs/default.svg'
 
 const availableTokensAtom = atom((get) => {
@@ -27,7 +29,7 @@ const availableTokensAtom = atom((get) => {
         address: tokenAddress,
         symbol: token.symbol,
         logo: token.logo
-          ? require(`@lc-labs/rtokens/images/${token.logo}`)
+          ? `/node_modules/@lc-labs/rtokens/images/${token.logo}`
           : DEFAULT_LOGO,
       }
     }

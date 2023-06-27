@@ -7,8 +7,8 @@ import { StringMap } from 'types'
 import { dateToUnix } from 'utils'
 import { rpayOverviewAtom, rpayTransactionsAtom, RPayTx } from './atoms'
 
-const OVERVIEW_URL = `https:${process.env.REACT_APP_RPAY_FEED}/aggregate`
-const TXS_URL = `https:${process.env.REACT_APP_RPAY_FEED}/transactions`
+const OVERVIEW_URL = `https:${import.meta.env.VITE_RPAY_FEED}/aggregate`
+const TXS_URL = `https:${import.meta.env.VITE_RPAY_FEED}/transactions`
 
 const fetcher = async (url: string): Promise<StringMap> => {
   const data: Response = await fetch(url).then((res) => res.json())

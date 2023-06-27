@@ -49,7 +49,7 @@ const rTokenAtom: Atom<RToken | null> = atomWithLoadable(
     }
 
     const logo = rtokens[rTokenAddress]?.logo
-      ? require(`@lc-labs/rtokens/images/${rtokens[rTokenAddress].logo}`)
+      ? `/node_modules/@lc-labs/rtokens/images/${rtokens[rTokenAddress].logo}`
       : '/svgs/default.svg'
 
     const [
