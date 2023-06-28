@@ -1,3 +1,4 @@
+import { BackingManager } from 'views/deploy/components/BackingManager'
 import { FacadeActInterface, FacadeInterface } from 'abis'
 import { Facade, FacadeAct } from 'abis/types'
 import { formatUnits } from 'ethers/lib/utils'

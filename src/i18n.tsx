@@ -1,5 +1,4 @@
 import { i18n } from '@lingui/core'
-// import { plural } from '@lingui/macro'
 import { I18nProvider } from '@lingui/react'
 import { atom, useAtomValue } from 'jotai'
 import { ReactNode, useCallback, useEffect } from 'react'
