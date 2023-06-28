@@ -1,12 +1,14 @@
 import useBlockNumber from 'hooks/useBlockNumber'
 import { useAtomValue } from 'jotai'
 import { useEffect, useState } from 'react'
-import { gasPriceAtomBn } from 'state/atoms'
+import { gasPriceAtomBn, rTokenAtom } from 'state/atoms'
 import { Card } from 'theme-ui'
+import mixpanel from 'mixpanel-browser'
 import ConfirmZap from './components/ConfirmZap'
 import ZapButton from './components/ZapButton'
 import ZapInput from './components/ZapInput'
 import { resolvedZapState } from './state/zapper'
+import { selectedZapTokenAtom } from './state/atoms'
 
 const UpdateBlockAndGas = () => {
   const zapState = useAtomValue(resolvedZapState)
@@ -26,13 +28,23 @@ const UpdateBlockAndGas = () => {
  */
 const Zap = () => {
   const [isZapping, setZapping] = useState(false)
+  const rToken = useAtomValue(rTokenAtom)
+  const selectedToken = useAtomValue(selectedZapTokenAtom)
 
   return (
     <>
       <UpdateBlockAndGas />
       <Card p={4}>
         <ZapInput />
-        <ZapButton onClick={() => setZapping(true)} />
+        <ZapButton
+          onClick={() => {
+            mixpanel.track('Clicked Zap', {
+              RToken: rToken?.address.toLowerCase() ?? '',
+              inputToken: selectedToken?.symbol,
+            })
+            setZapping(true)
+          }}
+        />
       </Card>
       {isZapping && <ConfirmZap onClose={() => setZapping(false)} />}
     </>

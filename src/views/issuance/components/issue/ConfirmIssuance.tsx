@@ -5,6 +5,7 @@ import TextPlaceholder from 'components/placeholder/TextPlaceholder'
 import TransactionModal from 'components/transaction-modal'
 import { useAtomValue } from 'jotai'
 import { useCallback, useMemo, useState } from 'react'
+import mixpanel from 'mixpanel-browser'
 import { rTokenAtom } from 'state/atoms'
 import { BigNumberMap, ReserveToken, TransactionState } from 'types'
 import { formatCurrency, safeParseEther } from 'utils'
@@ -62,8 +63,11 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
   const quantities = useAtomValue(quantitiesAtom)
   const loadingQuantities = !Object.keys(quantities).length
   const isValid = useAtomValue(isValidIssuableAmountAtom)
-  const transaction = useMemo(
-    () => ({
+  const transaction = useMemo(() => {
+    mixpanel.track('Confirmed Mint', {
+      RToken: rToken?.address.toLowerCase() ?? '',
+    })
+    return {
       id: '',
       description: t`Issue ${rToken?.symbol}`,
       status: TRANSACTION_STATUS.PENDING,
@@ -74,9 +78,8 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
         method: 'issue',
         args: [isValid ? safeParseEther(amount) : 0],
       },
-    }),
-    [rToken?.address, amount]
-  )
+    }
+  }, [rToken?.address, amount])
 
   const buildApprovals = useCallback(
     (required: BigNumberMap, allowances: BigNumberMap) =>

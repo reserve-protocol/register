@@ -3,6 +3,7 @@ import TransactionModal from 'components/transaction-modal'
 import { BigNumber } from 'ethers'
 import { useAtom, useAtomValue } from 'jotai'
 import { useCallback, useMemo, useState } from 'react'
+import mixpanel from 'mixpanel-browser'
 import { rTokenAtom } from 'state/atoms'
 import { formatCurrency, safeParseEther } from 'utils'
 import { RSR, TRANSACTION_STATUS } from 'utils/constants'
@@ -16,8 +17,12 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
   const [amount, setAmount] = useAtom(stakeAmountAtom)
   const isValid = useAtomValue(isValidStakeAmountAtom)
   const parsedAmount = isValid ? safeParseEther(amount) : BigNumber.from(0)
-  const transaction = useMemo(
-    () => ({
+  const transaction = useMemo(() => {
+    mixpanel.track('Confirmed Stake RSR', {
+      RToken: rToken?.address.toLowerCase() ?? '',
+    })
+
+    return {
       id: uuid(),
       description: t`Stake RSR`,
       status: TRANSACTION_STATUS.PENDING,
@@ -28,9 +33,8 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
         method: 'stake',
         args: [parsedAmount],
       },
-    }),
-    [rToken?.address, amount]
-  )
+    }
+  }, [rToken?.address, amount])
   const requiredAllowance = {
     [RSR.address]: parsedAmount,
   }

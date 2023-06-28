@@ -3,6 +3,7 @@ import { useAtom, useAtomValue } from 'jotai'
 import { useEffect, useState } from 'react'
 import { selectedRTokenAtom, walletAtom } from 'state/atoms'
 import { Divider } from 'theme-ui'
+import mixpanel from 'mixpanel-browser'
 import About from './components/About'
 import Greet from './components/Greet'
 import Portfolio from './components/Portfolio'
@@ -39,6 +40,8 @@ const Home = () => {
 
   // Unselect rToken if on this view ("back" browser action for example)
   useEffect(() => {
+    mixpanel.track('Land on Home Page', {})
+
     if (token) {
       setToken('')
     }

@@ -3,6 +3,7 @@ import { useAtom } from 'jotai'
 import { useCallback, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { useLocation, useNavigate } from 'react-router-dom'
+import mixpanel from 'mixpanel-browser'
 import { selectedRTokenAtom } from 'state/atoms'
 import { Box, BoxProps, Flex } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
@@ -20,6 +21,11 @@ const RTokenSelector = (props: BoxProps) => {
 
   const handleSelect = useCallback(
     (token: string) => {
+      mixpanel.track('Selected RToken', {
+        Source: 'Dropdown',
+        RToken: token.toLowerCase(),
+      })
+
       if (token !== selected) {
         setSelected(token)
         navigate(
