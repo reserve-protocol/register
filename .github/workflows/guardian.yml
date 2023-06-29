@@ -17,12 +17,14 @@ jobs:
         uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
-      - name: Install playwright browsers
-        run: yarn playwright install --with-deps
       - name: Install dependencies
         run: yarn
+      - name: Install playwright browsers
+        run: yarn playwright install --with-deps
       - name: Run Guardian tests
         run: yarn test:gui
+        env:
+          GUARDIAN_UI_ALCHEMY_API_KEY: ${{ secrets.GUARDIAN_UI_ALCHEMY_API_KEY }}
       - uses: actions/upload-artifact@v3
         if: always()
         with:
