@@ -33,13 +33,17 @@ yarn playwright install
 Then run the test:
 
 ```
-yarn playwright test tests/eUSD.gui.ts --trace on
+# Generate the RToken data (collaterals, balance slot & allowance slot)
+yarn tsx tests/getRTokens.ts > tests/RTokens.json
+
+# Run the test for all RToken
+yarn playwright test tests/RToken.gui.ts --trace on
 ```
 
 Use the following command to view the test trace:
 
 ```
-yarn playwright show-trace test-results/eUSD.gui.ts-Mint-eUSDC-chromium/trace.zip
+yarn playwright show-trace test-results/RToken.gui.ts-Mint-RToken-0xE72B141DF173b999AE7c1aDcbF60Cc9833Ce56a8-chromium/trace.zip
 ```
 
 Use the following command to add new RToken to be tested:
