@@ -20,7 +20,9 @@ yarn
 yarn start
 ```
 
-## Run test
+## Run end-to-end test
+
+You need to install [Anvil](https://github.com/foundry-rs/foundry/blob/master/anvil/README.md).
 
 Setup `playwright` headless browsers using the following command:
 
