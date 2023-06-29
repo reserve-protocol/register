@@ -67,7 +67,6 @@ const WalletModal = () => {
   }
 
   const handleSelection = (connector: WalletConnector) => {
-    localStorage.removeItem('walletconnect')
     setConnecting(true)
     connector.activate(CHAIN_ID).then(onClose).catch(handleError)
   }
