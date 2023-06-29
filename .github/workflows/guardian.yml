@@ -10,6 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Install build-essentials
+        run: |
+          sudo apt update
+          sudo apt install build-essential
       - uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -18,11 +22,6 @@ jobs:
         with:
           version: nightly
       - name: Install dependencies
-        run: yarn
-        # Always failed on first attempt due to @reserve-protocol/token-zapper
-        # post install script
-        continue-on-error: true
-      - name: Re-install dependencies
         run: yarn
       - name: Install playwright browsers
         run: yarn playwright install --with-deps
