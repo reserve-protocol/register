@@ -42,6 +42,12 @@ Use the following command to view the test trace:
 yarn playwright show-trace test-results/eUSD.gui.ts-Mint-eUSDC-chromium/trace.zip
 ```
 
+Use the following command to add new RToken to be tested:
+
+```
+yarn tsx tests/getRTokens.ts > tests/RTokens.json
+```
+
 ## Adding an RToken to the supported list
 
 Please go to [this repository](https://github.com/lc-labs/rtokens) and create a pull request with the token you want to add following the instructions of the README.
