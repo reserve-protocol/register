@@ -20,7 +20,7 @@
     "@types/humanize-duration": "^3.27.1",
     "@uiw/react-md-editor": "^3.20.5",
     "@uniswap/permit2-sdk": "^1.2.0",
-    "@walletconnect/ethereum-provider": "2.8.4",
+    "@walletconnect/ethereum-provider": "2.8.6",
     "@web3-react/coinbase-wallet": "8.2.0",
     "@web3-react/core": "8.2.0",
     "@web3-react/metamask": "8.2.0",

@@ -14,7 +14,6 @@ import {
   getConnectorType,
   metaMask,
   walletConnect,
-  WalletConnector,
 } from './connectors'
 import coinbaseLogo from './imgs/coinbase.png'
 import metamaskLogo from './imgs/metamask.png'
@@ -66,9 +65,25 @@ const WalletModal = () => {
     setError(t`Unexpected error connecting to the wallet`)
   }
 
-  const handleSelection = (connector: WalletConnector) => {
+  const handleSelection = async (connectorIndex: number) => {
     setConnecting(true)
-    connector.activate(CHAIN_ID).then(onClose).catch(handleError)
+    if (currentConnector.deactivate) {
+      try {
+        await currentConnector.deactivate()
+      } catch (error) {
+        console.log('error deactivating wallet', error)
+      }
+    }
+
+    setTimeout(
+      () => {
+        wallets[connectorIndex].connector
+          .activate(CHAIN_ID)
+          .then(onClose)
+          .catch(handleError)
+      },
+      currentConnector.deactivate ? 1000 : 0
+    )
   }
 
   return (
@@ -94,11 +109,11 @@ const WalletModal = () => {
           </Flex>
         ) : (
           <>
-            {wallets.map(({ icon, label, type, connector }) => (
+            {wallets.map(({ icon, label, type, connector }, index) => (
               <Box
                 sx={{ cursor: 'pointer' }}
                 key={label}
-                onClick={() => handleSelection(connector)}
+                onClick={() => handleSelection(index)}
                 variant="layout.verticalAlign"
                 py={3}
               >
