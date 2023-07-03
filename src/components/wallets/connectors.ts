@@ -3,7 +3,7 @@ import { initializeConnector, Web3ReactHooks } from '@web3-react/core'
 import { MetaMask } from '@web3-react/metamask'
 import { Network } from '@web3-react/network'
 import { Connector } from '@web3-react/types'
-import { WalletConnect } from '@web3-react/walletconnect'
+import { WalletConnect as WalletConnectV2 } from '@web3-react/walletconnect-v2'
 import { ChainId, URLS } from 'utils/chains'
 
 export const CONNECTOR_TYPES = {
@@ -14,11 +14,11 @@ export const CONNECTOR_TYPES = {
   gnosis: 'gnosis',
 }
 
-export type WalletConnector = MetaMask | WalletConnect | CoinbaseWallet
+export type WalletConnector = MetaMask | WalletConnectV2 | CoinbaseWallet
 
 export function getConnectorType(connector: Connector) {
   if (connector instanceof MetaMask) return CONNECTOR_TYPES.metamask
-  if (connector instanceof WalletConnect) return CONNECTOR_TYPES.walletConnect
+  if (connector instanceof WalletConnectV2) return CONNECTOR_TYPES.walletConnect
   if (connector instanceof CoinbaseWallet) return CONNECTOR_TYPES.coinbase
   if (connector instanceof Network) return CONNECTOR_TYPES.network
   return 'Unknown'
@@ -34,12 +34,14 @@ export const [network, networkHooks] = initializeConnector<Network>(
 )
 
 export const [walletConnect, walletConnectHooks] =
-  initializeConnector<WalletConnect>(
+  initializeConnector<WalletConnectV2>(
     (actions) =>
-      new WalletConnect({
+      new WalletConnectV2({
         actions,
         options: {
-          rpc: URLS,
+          projectId: 'd28805a208cd2a52707fc6fa0d8f3dd5',
+          chains: [ChainId.Mainnet],
+          showQrModal: true,
         },
       })
   )

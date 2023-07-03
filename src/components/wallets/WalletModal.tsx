@@ -5,11 +5,7 @@ import Modal from 'components/modal'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useState } from 'react'
 import { ChevronRight } from 'react-feather'
-import {
-  chainIdAtom,
-  getValidWeb3Atom,
-  isWalletModalVisibleAtom,
-} from 'state/atoms'
+import { chainIdAtom, isWalletModalVisibleAtom } from 'state/atoms'
 import { Box, Flex, Image, Spinner, Text, Divider } from 'theme-ui'
 import {
   coinbaseWallet,
@@ -17,7 +13,6 @@ import {
   getConnectorType,
   metaMask,
   walletConnect,
-  WalletConnector,
 } from './connectors'
 import coinbaseLogo from './imgs/coinbase.png'
 import metamaskLogo from './imgs/metamask.png'
@@ -70,10 +65,25 @@ const WalletModal = () => {
     setError(t`Unexpected error connecting to the wallet`)
   }
 
-  const handleSelection = (connector: WalletConnector) => {
-    localStorage.removeItem('walletconnect')
+  const handleSelection = async (connectorIndex: number) => {
     setConnecting(true)
-    connector.activate(chainId).then(onClose).catch(handleError)
+    if (currentConnector.deactivate) {
+      try {
+        await currentConnector.deactivate()
+      } catch (error) {
+        console.log('error deactivating wallet', error)
+      }
+    }
+
+    setTimeout(
+      () => {
+        wallets[connectorIndex].connector
+          .activate(chainId)
+          .then(onClose)
+          .catch(handleError)
+      },
+      currentConnector.deactivate ? 1000 : 0
+    )
   }
 
   return (
@@ -99,11 +109,11 @@ const WalletModal = () => {
           </Flex>
         ) : (
           <>
-            {wallets.map(({ icon, label, type, connector }) => (
+            {wallets.map(({ icon, label, type, connector }, index) => (
               <Box
                 sx={{ cursor: 'pointer' }}
                 key={label}
-                onClick={() => handleSelection(connector)}
+                onClick={() => handleSelection(index)}
                 variant="layout.verticalAlign"
                 py={3}
               >

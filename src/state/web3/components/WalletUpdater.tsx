@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core'
 import { Connector } from '@web3-react/types'
-import { metaMask, network } from 'components/wallets/connectors'
+import { metaMask, network, walletConnect } from 'components/wallets/connectors'
 import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { walletAtom } from 'state/atoms'
@@ -30,6 +30,7 @@ const WalletUpdater = () => {
   useEffect(() => {
     connect(network)
     connect(metaMask)
+    connect(walletConnect)
   }, [])
 
   return null
