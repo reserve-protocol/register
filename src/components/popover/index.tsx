@@ -1,10 +1,10 @@
 import styled from '@emotion/styled'
 import { Options, Placement } from '@popperjs/core'
-import Portal from '@reach/portal'
 import useOnClickOutside from 'hooks/useOnClickOutside'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { usePopper } from 'react-popper'
 import useInterval from '../../hooks/useInterval'
+import { createPortal } from 'react-dom'
 
 const PopoverContainer = styled.div<{ show: boolean }>`
   z-index: 100010;
@@ -134,7 +134,7 @@ export default function Popover({
       <ReferenceElement ref={setReferenceElement as any}>
         {children}
       </ReferenceElement>
-      <Portal>
+      {createPortal(
         <PopoverContainer
           show={show}
           ref={popperElement}
@@ -152,8 +152,9 @@ export default function Popover({
               {...attributes.arrow}
             />
           )}
-        </PopoverContainer>
-      </Portal>
+        </PopoverContainer>,
+        document.body
+      )}
     </>
   )
 }
