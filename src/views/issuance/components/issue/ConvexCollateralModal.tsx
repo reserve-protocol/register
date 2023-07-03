@@ -278,11 +278,7 @@ const ConvexCollateralModal = ({
   }
 
   return (
-    <Modal
-      style={{ maxWidth: '560px' }}
-      title={t`Convex Staking Wrapper`}
-      onClose={onClose}
-    >
+    <Modal width={560} title={t`Convex Staking Wrapper`} onClose={onClose}>
       {!!failed && (
         <TransactionError
           title="Transaction failed"

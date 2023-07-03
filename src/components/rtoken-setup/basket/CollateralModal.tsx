@@ -100,7 +100,7 @@ const CollateralModal = ({
   return (
     <Modal
       title={t`Collateral Plugins`}
-      style={{ maxWidth: 480 }}
+      width={480}
       onClose={onClose}
       {...props}
     >

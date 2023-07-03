@@ -96,7 +96,7 @@ const VoteModal = (props: ModalProps) => {
   // TODO: reused on other modals
   if (signed) {
     return (
-      <Modal style={{ maxWidth: '420px' }} {...props}>
+      <Modal {...props}>
         <Flex
           p={4}
           sx={{

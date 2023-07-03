@@ -184,11 +184,7 @@ const UnwrapCollateralModal = ({
   }
 
   return (
-    <Modal
-      style={{ maxWidth: '560px' }}
-      title={t`Unwrap to underlying token`}
-      onClose={onClose}
-    >
+    <Modal width={560} title={t`Unwrap to underlying token`} onClose={onClose}>
       {!!failed && (
         <TransactionError
           title="Transaction failed"

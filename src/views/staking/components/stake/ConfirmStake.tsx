@@ -213,7 +213,6 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
       buildApprovals={buildApproval}
       onClose={handleClose}
       onChange={(signing) => setSigning(signing)}
-      style={{ maxWidth: '462px' }}
     >
       <StakeInput compact disabled={signing} />
       {!isLegacy && (

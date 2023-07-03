@@ -23,7 +23,7 @@ const Overlay = (props: BoxProps) => (
   />
 )
 
-const Dialog = ({ width = '420px', ...props }: ModalProps) => (
+const Dialog = ({ width = '420px', sx = {}, ...props }: ModalProps) => (
   <Box
     {...props}
     aria-label="Modal"
@@ -39,6 +39,7 @@ const Dialog = ({ width = '420px', ...props }: ModalProps) => (
       bottom: [0, 'auto'],
       transform: ['none', 'translate(-50%, -50%)'],
       maxWidth: ['auto', width],
+      ...sx,
     }}
   />
 )

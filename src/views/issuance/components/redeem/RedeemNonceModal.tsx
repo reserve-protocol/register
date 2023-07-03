@@ -38,7 +38,7 @@ const RedeemNonceModal = ({ onClose, ...props }: Props) => {
   return (
     <Modal
       title={t`Choose Redemption Basket`}
-      style={{ maxWidth: '420px', backgroundColor: '#F9F8F4' }}
+      sx={{ backgroundColor: '#F9F8F4' }}
       onClose={handleClose}
       {...props}
     >

@@ -232,7 +232,7 @@ const WrapCollateralModal = ({
 
   if (signed) {
     return (
-      <Modal onClose={onClose} style={{ maxWidth: '390px' }}>
+      <Modal onClose={onClose}>
         <Flex
           p={4}
           sx={{
@@ -266,7 +266,7 @@ const WrapCollateralModal = ({
 
   return (
     <Modal
-      style={{ maxWidth: '560px' }}
+      width={560}
       title={t`Wrapping needs to be done before minting`}
       onClose={onClose}
     >

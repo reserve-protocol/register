@@ -16,7 +16,7 @@ import EstimatedGasInfo from './EstimatedGasInfo'
 import TransactionConfirmedModal from './TransactionConfirmedModal'
 import TransactionError from './TransactionError'
 
-export interface ITransactionModal extends Partial<ModalProps> {
+export interface ITransactionModal extends Omit<ModalProps, 'onChange'> {
   title: string
   children: any
   tx: TransactionState
@@ -109,12 +109,7 @@ const TransactionModal = ({
   }
 
   return (
-    <Modal
-      title={title}
-      onClose={onClose}
-      style={{ maxWidth: '420px' }}
-      {...props}
-    >
+    <Modal title={title} onClose={onClose} {...props}>
       {txState?.status === TRANSACTION_STATUS.REJECTED && (
         <TransactionError
           title={t`Transaction failed`}

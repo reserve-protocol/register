@@ -60,11 +60,7 @@ const ConfirmZap = ({ onClose }: { onClose: () => void }) => {
   }
 
   return (
-    <Modal
-      title={`Easy mint ${rToken?.symbol || ''}`}
-      onClose={onClose}
-      style={{ maxWidth: '420px' }}
-    >
+    <Modal title={`Easy mint ${rToken?.symbol || ''}`} onClose={onClose}>
       <ZapInput />
       <ApproveZap />
       <Divider mb={2} mt={3} />
