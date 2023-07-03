@@ -1,91 +1,88 @@
-import { Flex, Text, ButtonProps, Button, Divider, Box } from 'theme-ui'
+import { createPortal } from 'react-dom'
 import { X } from 'react-feather'
-import styled from '@emotion/styled'
+import { Box, BoxProps, Button, Divider, Flex, Text } from 'theme-ui'
 
-export interface ModalProps {
-  open?: boolean
+export interface ModalProps extends BoxProps {
   title?: string
-  onClose?(): void
-  children?: any
-  style?: any
+  onClose?(): void // unclosable modal if this is not defined
+  width?: string | number
 }
 
-// const StyledDialog = styled((props: any) => <Dialog {...props} />)`
-//   &[data-reach-dialog-content] {
-//     width: 'auto';
-//     background-color: ${({ theme }) => theme.colors.background};
-//     padding: ${({ theme }) => theme.space[4]}px;
-//     border-radius: 12px;
-//     border: 2px solid ${({ theme }) => theme.colors.darkBorder};
-//     box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.5);
-//     box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.2);
-//     position: absolute;
-//     left: 50%;
-//     top: 50%;
-//     margin: 0;
-//     transform: translate(-50%, -50%);
-//     @media (max-width: 52em) {
-//       top: 0;
-//       left: 0;
-//       right: 0;
-//       bottom: 0;
-//       width: 100%;
-//       max-width: 52em !important;
-//       transform: none;
-//       border-radius: 0;
-//     }
-//   }
-// `
-
-const CloseButton = (props: ButtonProps) => (
-  <Button {...props}>
-    <X />
-  </Button>
+const Overlay = (props: BoxProps) => (
+  <Box
+    {...props}
+    sx={{
+      position: 'fixed',
+      right: 0,
+      left: 0,
+      bottom: 0,
+      top: 0,
+      overflow: 'auto',
+      background: '#00000054',
+    }}
+  />
 )
 
-const Modal = ({
-  open = true,
-  onClose,
-  title,
-  children,
-  style = {},
-}: ModalProps) => (
-  <Box>
-    {(onClose || title) && (
-      <>
-        <Flex
-          mb={4}
-          sx={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'relative',
-          }}
-        >
-          <Text variant="title">{title && title}</Text>
-          {!!onClose && (
-            <CloseButton
-              sx={{ position: 'absolute', right: 0 }}
-              variant="circle"
-              onClick={onClose}
-            />
-          )}
-        </Flex>
-        {!!title && (
-          <Divider mx={-4} mb={4} sx={{ borderColor: 'darkBorder' }} />
+const Dialog = ({ width = '420px', ...props }: ModalProps) => (
+  <Box
+    {...props}
+    aria-label="Modal"
+    sx={{
+      backgroundColor: 'background',
+      padding: 4,
+      borderRadius: [0, '12px'],
+      boxShadow: ['none', 'rgba(0, 0, 0, 0.2) 0px 24px 48px'],
+      position: 'absolute',
+      left: [0, '50%'],
+      top: [0, '50%'],
+      right: [0, 'auto'],
+      bottom: [0, 'auto'],
+      transform: ['none', 'translate(-50%, -50%)'],
+      maxWidth: ['auto', width],
+    }}
+  />
+)
+
+const Header = ({ title, onClose }: ModalProps) => {
+  if (!title && !onClose) {
+    return null
+  }
+
+  return (
+    <>
+      <Flex
+        mb={4}
+        sx={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'relative',
+        }}
+      >
+        <Text variant="title">{title && title}</Text>
+        {!!onClose && (
+          <Button
+            sx={{ position: 'absolute', right: 0 }}
+            variant="circle"
+            onClick={onClose}
+          >
+            <X />
+          </Button>
         )}
-      </>
-    )}
-    {children}
-  </Box>
-)
-
-{
-  /* <StyledDialog
-aria-label="Modal"
-isOpen={open}
-onDismiss={onClose}
-style={style}
-> */
+      </Flex>
+      {!!title && <Divider mx={-4} mb={4} sx={{ borderColor: 'darkBorder' }} />}
+    </>
+  )
 }
+
+const Modal = ({ children, ...props }: ModalProps) =>
+  createPortal(
+    <Overlay>
+      <Dialog {...props}>
+        <Header />
+        {children}
+      </Dialog>
+    </Overlay>,
+    document.body
+  )
 
 export default Modal

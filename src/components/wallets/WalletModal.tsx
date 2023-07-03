@@ -87,11 +87,7 @@ const WalletModal = () => {
   }
 
   return (
-    <Modal
-      title={!connecting ? t`Connect your wallet` : ''}
-      style={{ maxWidth: 400 }}
-      onClose={onClose}
-    >
+    <Modal title={!connecting ? t`Connect your wallet` : ''} onClose={onClose}>
       <Box>
         {connecting ? (
           <Flex
