@@ -1,13 +1,11 @@
 import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
-import { useWeb3React } from '@web3-react/core'
 import { SmallButton } from 'components/button'
 import MenuIcon from 'components/icons/MenuIcon'
 import WalletIcon from 'components/icons/WalletIcon'
 import { MouseoverTooltipContent } from 'components/tooltip'
 import { txSidebarToggleAtom } from 'components/transactions/manager/atoms'
 import TransactionSidebar from 'components/transactions/manager/TransactionSidebar'
-import WalletModal from 'components/wallets/WalletModal'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { ReactNode } from 'react'
 import { AlertCircle, Power } from 'react-feather'
@@ -15,6 +13,8 @@ import { isWalletModalVisibleAtom, pendingTxAtom } from 'state/atoms'
 import { Box, Card, Flex, Spinner, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { CHAINS } from 'utils/chains'
+
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 
 const Container = styled(Box)`
   display: flex;
@@ -80,43 +80,44 @@ const Account = () => {
     isWalletModalVisibleAtom
   )
   const isProcessing = useAtomValue(isProcessingAtom)
-  const { ENSName, account, chainId } = useWeb3React()
-  const isInvalid = !CHAINS[chainId || 0]
+  // const isInvalid = !CHAINS[chainId || 0]
 
-  return (
-    <>
-      {!account ? (
-        <SmallButton
-          variant="accentAction"
-          onClick={() => setWalletVisible(true)}
-        >
-          <Text sx={{ display: ['none', 'initial'] }}>
-            <Trans>Connect</Trans>
-          </Text>
-          <Box sx={{ display: ['inline', 'none'] }}>
-            <Power size={12} />
-          </Box>
-        </SmallButton>
-      ) : (
-        <ErrorWrapper isValid={!isInvalid} chainId={chainId}>
-          <Container onClick={() => setVisible(true)}>
-            {!isInvalid ? (
-              <WalletIcon />
-            ) : (
-              <AlertCircle fill="#FF0000" color="#fff" />
-            )}
-            <Text sx={{ display: ['none', 'inherit', 'inherit'] }} ml={2}>
-              {ENSName || shortenAddress(account)}
-            </Text>
-            {isProcessing && <Spinner size={20} marginLeft={10} />}
-            <MenuIcon style={{ marginLeft: 10 }} />
-          </Container>
-        </ErrorWrapper>
-      )}
-      {isVisible && <TransactionSidebar />}
-      {isWalletModalVisible && <WalletModal />}
-    </>
-  )
+  return <ConnectButton />
+
+  // return (
+  //   <>
+  //     {!account ? (
+  //       <SmallButton
+  //         variant="accentAction"
+  //         onClick={() => setWalletVisible(true)}
+  //       >
+  //         <Text sx={{ display: ['none', 'initial'] }}>
+  //           <Trans>Connect</Trans>
+  //         </Text>
+  //         <Box sx={{ display: ['inline', 'none'] }}>
+  //           <Power size={12} />
+  //         </Box>
+  //       </SmallButton>
+  //     ) : (
+  //       <ErrorWrapper isValid={!isInvalid} chainId={chainId}>
+  //         <Container onClick={() => setVisible(true)}>
+  //           {!isInvalid ? (
+  //             <WalletIcon />
+  //           ) : (
+  //             <AlertCircle fill="#FF0000" color="#fff" />
+  //           )}
+  //           <Text sx={{ display: ['none', 'inherit', 'inherit'] }} ml={2}>
+  //             {ENSName || shortenAddress(account)}
+  //           </Text>
+  //           {isProcessing && <Spinner size={20} marginLeft={10} />}
+  //           <MenuIcon style={{ marginLeft: 10 }} />
+  //         </Container>
+  //       </ErrorWrapper>
+  //     )}
+  //     {isVisible && <TransactionSidebar />}
+  //     {isWalletModalVisible && <WalletModal />}
+  //   </>
+  // )
 }
 
 export default Account

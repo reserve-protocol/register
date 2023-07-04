@@ -1,11 +1,8 @@
-import { useWeb3React } from '@web3-react/core'
 import useBlockNumber from 'hooks/useBlockNumber'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
-import { CHAINS } from 'utils/chains'
 
 // TODO: Loading state when blockTag on multicall is different than current block?
 const SyncedBlock = (props: BoxProps) => {
-  const { chainId } = useWeb3React()
   const latestBlock = useBlockNumber()
 
   return (
@@ -13,7 +10,7 @@ const SyncedBlock = (props: BoxProps) => {
       <Box
         mr={2}
         sx={{
-          backgroundColor: !CHAINS[chainId ?? 0] ? '#FF0000' : '#00FFBF',
+          backgroundColor: !latestBlock ? '#FF0000' : '#00FFBF',
           borderRadius: '100%',
           width: 8,
           height: 8,

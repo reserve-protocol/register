@@ -1,21 +1,7 @@
 import { useWeb3React } from '@web3-react/core'
-import { Connector } from '@web3-react/types'
-import { metaMask, network, walletConnect } from 'components/wallets/connectors'
 import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { walletAtom } from 'state/atoms'
-
-const connect = async (connector: Connector) => {
-  try {
-    if (connector.connectEagerly) {
-      await connector.connectEagerly()
-    } else {
-      await connector.activate()
-    }
-  } catch (error) {
-    console.debug(`web3-react eager connection error: ${error}`)
-  }
-}
 
 const WalletUpdater = () => {
   const { account } = useWeb3React()
@@ -25,13 +11,6 @@ const WalletUpdater = () => {
   useEffect(() => {
     setConnected(account ?? '')
   }, [account])
-
-  // TODO: Smart wallet connection using cache
-  useEffect(() => {
-    connect(network)
-    connect(metaMask)
-    connect(walletConnect)
-  }, [])
 
   return null
 }
