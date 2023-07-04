@@ -1,9 +1,8 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { ERC20Interface } from 'abis'
+import ERC20 from 'abis/ERC20'
 import { useMemo } from 'react'
 import { StringMap } from 'types'
-import useBlockNumber from './useBlockNumber'
-import { useContractCalls } from './useCall'
+import { Address, useContractReads } from 'wagmi'
 
 // TODO: Edge case if RSR is used as part of the basket?
 // TODO: Maybe to be extra secure the hash key could be the two addresses token+spender
@@ -17,25 +16,28 @@ const useTokensAllowance = (
   tokens: [string, string][],
   account: string
 ): { [x: string]: BigNumber } => {
-  const blockNumber = useBlockNumber()
-
+  // TODO: This maybe broken
   const calls = useMemo(
     () =>
       tokens.map(([address, spender]) => ({
-        abi: ERC20Interface,
-        address,
-        method: 'allowance',
-        args: [account, spender],
+        abi: ERC20,
+        address: address as Address,
+        functionName: 'allowance',
+        args: [account as Address, spender as Address],
       })),
-    [tokens.toString(), account, blockNumber]
+    [tokens.toString(), account]
   )
 
-  const allowances = <any[]>useContractCalls(calls) ?? []
+  const { data } = useContractReads({ contracts: calls, watch: true })
 
-  return allowances.reduce((acc, current, index) => {
+  if (!data) {
+    return {}
+  }
+
+  return data.reduce((acc, current, index) => {
     const [address] = tokens[index]
-    if (current?.value) {
-      acc[address] = current.value[0]
+    if (current.result) {
+      acc[address] = current.result
     } else {
       acc[address] = 0
     }

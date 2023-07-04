@@ -6,13 +6,13 @@ import {
   MainInterface,
   TimelockInterface,
 } from 'abis'
-import { useContractCall } from 'hooks/useCall'
 import {
   basketChangesAtom,
   isNewBackupProposedAtom,
   proposalDescriptionAtom,
 } from './../atoms'
 
+import AssetRegistry from 'abis/AssetRegistry'
 import {
   backupCollateralAtom,
   basketAtom,
@@ -28,6 +28,7 @@ import { parsePercent } from 'utils'
 import { FURNACE_ADDRESS, ST_RSR_ADDRESS, ZERO_ADDRESS } from 'utils/addresses'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { getSharesFromSplit } from 'views/deploy/utils'
+import { Address, useContractRead } from 'wagmi'
 import {
   backupChangesAtom,
   isNewBasketProposedAtom,
@@ -76,12 +77,12 @@ const useProposalTx = () => {
   const governance = useAtomValue(rTokenGovernanceAtom)
   const parameterMap = useAtomValue(parameterContractMapAtom)
   const contracts = useAtomValue(rTokenContractsAtom)
-  const { value: registeredAssets } = useContractCall({
-    abi: AssetRegistryInterface,
-    address: contracts?.assetRegistry.address ?? '',
-    method: 'getRegistry',
-    args: [],
-  }) || { value: [] }
+  const { data: registeredAssets } = useContractRead({
+    address: contracts?.assetRegistry.address as Address,
+    abi: AssetRegistry,
+    functionName: 'getRegistry',
+  })
+
   const description = useAtomValue(proposalDescriptionAtom)
   const { getValues } = useFormContext()
 
@@ -96,8 +97,8 @@ const useProposalTx = () => {
     let issuanceThrottleChange = false
     const tokenConfig = getValues()
     const assets = new Set<string>(
-      registeredAssets[0]
-        ? [...(registeredAssets[0][0] || []), ...(registeredAssets[0][1] || [])]
+      registeredAssets
+        ? [...registeredAssets.erc20s, ...registeredAssets.assets]
         : []
     )
     const newAssets = new Set<string>()

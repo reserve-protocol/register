@@ -1,12 +1,11 @@
 import { t, Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
-import { GovernanceInterface } from 'abis'
+import Governance from 'abis/Governance'
 import { SmallButton } from 'components/button'
 import IconInfo from 'components/info-icon'
 import { formatEther } from 'ethers/lib/utils'
 import { gql } from 'graphql-request'
 import useBlockNumber from 'hooks/useBlockNumber'
-import { useContractCall } from 'hooks/useCall'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
@@ -16,8 +15,10 @@ import { rTokenGovernanceAtom } from 'state/atoms'
 import { Box, Grid, Image, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ROUTES } from 'utils/constants'
+import { formatEther as formatEtherViem } from 'viem'
 import RolesView from 'views/settings/components/RolesView'
 import SettingItem from 'views/settings/components/SettingItem'
+import { Address, useContractRead } from 'wagmi'
 import AccountVotes from './AccountVotes'
 
 const query = gql`
@@ -62,17 +63,16 @@ const GovernanceOverview = () => {
   const rToken = useRToken()
   const blockNumber = useBlockNumber()
   const governance = useAtomValue(rTokenGovernanceAtom)
-  const { value = [] } =
-    useContractCall(
-      account &&
-        governance.governor &&
-        !!blockNumber && {
-          abi: GovernanceInterface,
-          address: governance.governor,
-          method: 'getVotes',
-          args: [account, blockNumber - 1],
-        }
-    ) ?? {}
+
+  const { data: votes } = useContractRead({
+    address: account ? (governance.governor as Address) : undefined,
+    functionName: 'getVotes',
+    abi: Governance,
+    args:
+      account && blockNumber
+        ? [account as Address, BigInt(blockNumber - 1)]
+        : undefined,
+  })
 
   return (
     <Box>
@@ -123,7 +123,7 @@ const GovernanceOverview = () => {
             <IconInfo
               icon={<Image src="/svgs/vote-supply.svg" />}
               title={t`Current`}
-              text={formatCurrency(value[0] ? +formatEther(value[0]) : 0)}
+              text={formatCurrency(votes ? +formatEtherViem(votes) : 0)}
             />
           </Box>
         </Grid>

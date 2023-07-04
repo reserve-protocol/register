@@ -1,8 +1,14 @@
 import { Contract } from '@ethersproject/contracts'
 import { Provider, Web3Provider } from '@ethersproject/providers'
-import { extractCallResult } from 'hooks/useRawCalls'
-import { ContractCall, MulticallState, RawCall } from 'types'
+import { ContractCall, MulticallState, RawCall, RawCallResult } from 'types'
 import { MULTICALL_ADDRESS } from 'utils/addresses'
+
+export function extractCallResult(
+  state: MulticallState,
+  call: RawCall
+): RawCallResult {
+  return state?.[call.address]?.[call.data]
+}
 
 const ABI = [
   'function tryAggregate(bool requireSuccess, tuple(address target, bytes callData)[] calls) public view returns (tuple(bool success, bytes returnData)[])',

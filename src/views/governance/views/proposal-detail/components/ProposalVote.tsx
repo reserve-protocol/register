@@ -1,7 +1,6 @@
 import { Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
-import { stRSRVotesInterface } from 'abis'
-import { useContractCall } from 'hooks/useCall'
+import StRSRVotes from 'abis/StRSRVotes'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
@@ -11,6 +10,7 @@ import { formatCurrency } from 'utils'
 import { ZERO_ADDRESS } from 'utils/addresses'
 import { PROPOSAL_STATES } from 'utils/constants'
 import DelegateModal from 'views/governance/components/DelegateModal'
+import { Address, useContractRead } from 'wagmi'
 import { accountVotesAtom, getProposalStateAtom } from '../atom'
 import VoteModal from './VoteModal'
 
@@ -25,18 +25,14 @@ const ProposalVote = (props: BoxProps) => {
   const { votePower = '0.0', vote } = useAtomValue(accountVotesAtom)
   const { balance } = useAtomValue(stRsrBalanceAtom)
 
-  const { value = [] } =
-    useContractCall(
-      account &&
-        rToken?.stToken?.address && {
-          abi: stRSRVotesInterface,
-          address: rToken.stToken.address,
-          method: 'delegates',
-          args: [account],
-        }
-    ) ?? {}
+  const { data: delegate } = useContractRead({
+    address: account ? (rToken?.stToken?.address as Address) : undefined,
+    abi: StRSRVotes,
+    functionName: 'delegates',
+    args: account ? [account as Address] : undefined,
+  })
 
-  const hasNoDelegates = !value[0] || value[0] === ZERO_ADDRESS
+  const hasNoDelegates = !delegate || delegate === ZERO_ADDRESS
 
   const hasUndelegatedBalance =
     !!account &&

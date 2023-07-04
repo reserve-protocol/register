@@ -1,4 +1,5 @@
-html, body {  
+html,
+body {
   height: 100%;
   position: relative;
 }
@@ -6,4 +7,9 @@ html, body {
 #root {
   height: 100%;
   position: relative;
+}
+
+/* Rainbowkit wrapper add an empty div, cascade height to make sticky elements to work */
+#root > div {
+  height: 100%;
 }

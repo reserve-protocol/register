@@ -9,6 +9,8 @@ export type RoleKey =
   | 'longFreezers'
   | 'guardians'
 
+export type Address = `0x${string}`
+
 export type AddressMap = { [chainId: number]: string }
 
 export interface StringMap {

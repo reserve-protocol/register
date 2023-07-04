@@ -1,9 +1,9 @@
 import { Web3Provider } from '@ethersproject/providers'
 import { formatEther } from '@ethersproject/units'
-import { OracleInterface, StRSRInterface } from 'abis'
+import { OracleInterface } from 'abis'
 import { formatUnits } from 'ethers/lib/utils'
 import useBlockNumber from 'hooks/useBlockNumber'
-import { useContractCall } from 'hooks/useCall'
+import { useContractRead } from 'wagmi'
 import useRTokenPrice from 'hooks/useRTokenPrice'
 import useTokensAllowance from 'hooks/useTokensAllowance'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
@@ -33,6 +33,7 @@ import RSVUpdater from './RSVUpdater'
 import { TokenBalancesUpdater } from './TokenBalancesUpdater'
 import TokenUpdater from './TokenUpdater'
 import RTokenUpdater from './rtoken'
+import StRSR from 'abis/StRSR'
 
 const getTokenAllowances = (reserveToken: ReserveToken): [string, string][] => {
   const tokens: [string, string][] = [
@@ -158,21 +159,19 @@ const PricesUpdater = () => {
 const ExchangeRateUpdater = () => {
   const rToken = useAtomValue(rTokenAtom)
   const setRate = useSetAtom(rsrExchangeRateAtom)
-  const { value } =
-    useContractCall(
-      rToken?.stToken?.address && {
-        abi: StRSRInterface,
-        address: rToken?.stToken?.address ?? '',
-        method: 'exchangeRate',
-        args: [],
-      }
-    ) ?? {}
+
+  // TODO: Typing
+  const { data } = useContractRead({
+    address: rToken?.stToken?.address as `0x${string}` | undefined,
+    abi: StRSR,
+    functionName: 'exchangeRate',
+  })
 
   useEffect(() => {
-    if (value && value[0]) {
-      setRate(Number(formatEther(value[0])))
+    if (data) {
+      setRate(Number(formatEther(data)))
     }
-  }, [value])
+  }, [data])
 
   return null
 }

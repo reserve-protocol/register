@@ -1,17 +1,17 @@
 import { Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
-import { stRSRVotesInterface } from 'abis'
+import StRSRVotes from 'abis/StRSRVotes'
 import { SmallButton } from 'components/button'
 import GoTo from 'components/button/GoTo'
-import { useContractCall } from 'hooks/useCall'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { chainIdAtom, stRsrBalanceAtom } from 'state/atoms'
-import { Box, Text, Image } from 'theme-ui'
+import { Box, Image, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { ZERO_ADDRESS } from 'utils/addresses'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import { Address, useContractRead } from 'wagmi'
 import DelegateModal from './DelegateModal'
 
 const AccountVotes = () => {
@@ -20,18 +20,16 @@ const AccountVotes = () => {
   const rToken = useRToken()
   const stRsrBalance = useAtomValue(stRsrBalanceAtom)
   const [isVisible, setVisible] = useState(false)
-  const { value = [] } =
-    useContractCall(
-      account &&
-        rToken?.stToken?.address && {
-          abi: stRSRVotesInterface,
-          address: rToken.stToken.address,
-          method: 'delegates',
-          args: [account],
-        }
-    ) ?? {}
-  const hasNoDelegates = !value[0] || value[0] === ZERO_ADDRESS
-  const selfDelegate = !hasNoDelegates && value[0] === account
+
+  const { data: delegate } = useContractRead({
+    address: account ? (rToken?.stToken?.address as Address) : undefined,
+    abi: StRSRVotes,
+    functionName: 'delegates',
+    args: account ? [account as Address] : undefined,
+  })
+
+  const hasNoDelegates = !delegate || delegate === ZERO_ADDRESS
+  const selfDelegate = !hasNoDelegates && delegate === account
 
   if (!account) {
     return null
@@ -74,11 +72,11 @@ const AccountVotes = () => {
                 <Trans>Delegated to self</Trans>
               ) : (
                 <>
-                  <Trans>Delegated to: </Trans> {shortenAddress(value[0] || '')}{' '}
+                  <Trans>Delegated to: </Trans> {shortenAddress(delegate || '')}{' '}
                   <GoTo
                     ml={2}
                     href={getExplorerLink(
-                      value[0],
+                      delegate,
                       chainId,
                       ExplorerDataType.ADDRESS
                     )}
