@@ -1,12 +1,11 @@
 import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
-import { useWeb3React } from '@web3-react/core'
 import CopyValue from 'components/button/CopyValue'
 import GoTo from 'components/button/GoTo'
 import DeployActionIcon from 'components/icons/DeployActionIcon'
-import { useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { selectedRTokenAtom } from 'state/atoms'
+import { getValidWeb3Atom, selectedRTokenAtom } from 'state/atoms'
 import { Box, BoxProps, Button, Divider, Flex, Spinner, Text } from 'theme-ui'
 import { formatCurrency, shortenString } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
@@ -18,7 +17,7 @@ const Container = styled(Box)`
 `
 
 const DeployStatus = () => {
-  const { account, chainId } = useWeb3React()
+  const { account, chainId } = useAtomValue(getValidWeb3Atom)
   const setRToken = useSetAtom(selectedRTokenAtom)
   const { fee, deploy, isValid } = useDeploy()
   const tx = useDeployTxState()

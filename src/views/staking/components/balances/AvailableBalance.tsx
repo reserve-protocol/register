@@ -1,5 +1,4 @@
 import { t, Trans } from '@lingui/macro'
-import { useWeb3React } from '@web3-react/core'
 import { ExecuteButton } from 'components/button'
 import Help from 'components/help'
 import TokenBalance from 'components/token-balance'
@@ -11,6 +10,7 @@ import {
   rsrExchangeRateAtom,
   rTokenCollaterizedAtom,
   rTokenTradingAvailableAtom,
+  walletAtom,
 } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
 import { TRANSACTION_STATUS } from 'utils/constants'
@@ -20,7 +20,7 @@ const AvailableBalance = () => {
   const rToken = useRToken()
   const rate = useAtomValue(rsrExchangeRateAtom)
   const { index, availableAmount } = useAtomValue(pendingRSRSummaryAtom)
-  const { account } = useWeb3React()
+  const account = useAtomValue(walletAtom)
   const canWithdraw = useAtomValue(rTokenCollaterizedAtom)
   const isRTokenAvailable = useAtomValue(rTokenTradingAvailableAtom)
   const tx = useMemo(() => {

@@ -1,13 +1,15 @@
-import { FacadeInterface, RTokenInterface } from 'abis'
+import FacadeRead from 'abis/FacadeRead'
+import RToken from 'abis/RToken'
 import { Atom, atom } from 'jotai'
-import { multicallAtom } from 'state/atoms'
 import { chainIdAtom } from 'state/atoms/chainAtoms'
-import { ContractCall, Token } from 'types'
-import { getTokenMetaCalls } from 'utils'
+import { Token } from 'types'
+import { getTokenReadCalls } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import RSV from 'utils/rsv'
 import rtokens from 'utils/rtokens'
+import { Address } from 'wagmi'
+import { readContracts } from 'wagmi/actions'
 
 interface RToken extends Token {
   logo: string
@@ -27,9 +29,8 @@ const rTokenAtom: Atom<RToken | null> = atomWithLoadable(
   async (get): Promise<RToken | null> => {
     const rTokenAddress = get(selectedRTokenAtom)
     const chainId = get(chainIdAtom)
-    const multicall = get(multicallAtom)
 
-    if (!multicall || !rTokenAddress) {
+    if (!rTokenAddress) {
       return null
     }
 
@@ -38,13 +39,13 @@ const rTokenAtom: Atom<RToken | null> = atomWithLoadable(
     }
 
     const facadeCallParams = {
-      abi: FacadeInterface,
-      address: FACADE_ADDRESS[chainId],
-      args: [rTokenAddress],
+      abi: FacadeRead,
+      address: FACADE_ADDRESS[chainId] as Address,
+      args: [rTokenAddress as Address] as [Address],
     }
     const rTokenCallParams = {
-      abi: RTokenInterface,
-      address: rTokenAddress,
+      abi: RToken,
+      address: rTokenAddress as Address,
       args: [],
     }
 
@@ -60,43 +61,51 @@ const rTokenAtom: Atom<RToken | null> = atomWithLoadable(
       mandate,
       basket,
       stTokenAddress,
-    ] = await multicall([
-      ...getTokenMetaCalls(rTokenAddress),
-      { ...rTokenCallParams, method: 'main' },
-      { ...rTokenCallParams, method: 'mandate' },
-      {
-        ...facadeCallParams,
-        method: 'basketTokens',
-      },
-      {
-        ...facadeCallParams,
-        method: 'stToken',
-      },
-    ])
+    ] = await (<
+      Promise<[string, string, number, string, string, string[], string]>
+    >readContracts({
+      contracts: [
+        ...getTokenReadCalls(rTokenAddress),
+        { ...rTokenCallParams, functionName: 'main' },
+        { ...rTokenCallParams, functionName: 'mandate' },
+        {
+          ...facadeCallParams,
+          functionName: 'basketTokens',
+        },
+        {
+          ...facadeCallParams,
+          functionName: 'stToken',
+        },
+      ],
+      allowFailure: false,
+    }))
 
-    const tokensMeta = await multicall([
-      ...getTokenMetaCalls(stTokenAddress),
-      ...(basket as string[]).reduce(
-        (calls, collateral) => [...calls, ...getTokenMetaCalls(collateral)],
-        [] as ContractCall[]
-      ),
-    ])
+    const tokensMeta = await (<Promise<string[]>>readContracts({
+      contracts: [
+        ...getTokenReadCalls(stTokenAddress),
+        ...basket.reduce(
+          (calls, collateral) => [...calls, ...getTokenReadCalls(collateral)],
+          [] as any[]
+        ),
+      ],
+      allowFailure: false,
+    }))
 
-    const tokens: Token[] = [stTokenAddress, ...(basket as string[])].reduce(
-      (tokens, address) => {
-        const [name, symbol, decimals] = tokensMeta.splice(0, 3)
+    const tokens: Token[] = [
+      stTokenAddress as string,
+      ...(basket as string[]),
+    ].reduce((tokens, address) => {
+      const [name, symbol, decimals] = tokensMeta.splice(0, 3)
 
-        tokens.push({
-          address,
-          name,
-          symbol,
-          decimals,
-        })
+      tokens.push({
+        address,
+        name,
+        symbol,
+        decimals: Number(decimals),
+      })
 
-        return tokens
-      },
-      [] as Token[]
-    )
+      return tokens
+    }, [] as Token[])
 
     return {
       address: rTokenAddress,

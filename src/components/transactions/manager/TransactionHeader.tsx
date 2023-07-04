@@ -1,5 +1,4 @@
 import { Trans } from '@lingui/macro'
-import { useWeb3React } from '@web3-react/core'
 import Button from 'components/button'
 import CopyValue from 'components/button/CopyValue'
 import GoTo from 'components/button/GoTo'
@@ -7,7 +6,7 @@ import WalletIcon from 'components/icons/WalletIcon'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback } from 'react'
 import { ChevronDown, X } from 'react-feather'
-import { chainIdAtom, isWalletModalVisibleAtom } from 'state/atoms'
+import { chainIdAtom, isWalletModalVisibleAtom, walletAtom } from 'state/atoms'
 import { Box, Flex, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
@@ -16,8 +15,11 @@ import { txSidebarToggleAtom } from './atoms'
 const TransactionHeader = () => {
   const setSidebar = useSetAtom(txSidebarToggleAtom)
   const setWalletModal = useSetAtom(isWalletModalVisibleAtom)
-  const { ENSName, account } = useWeb3React()
+  // TODO: ENS Name
+  const account = useAtomValue(walletAtom)
   const chainId = useAtomValue(chainIdAtom)
+
+  const ENSName = ''
 
   const handleChangeWallet = useCallback(() => {
     setSidebar(false)

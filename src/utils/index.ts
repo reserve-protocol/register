@@ -8,6 +8,8 @@ import humanizeDuration from 'humanize-duration'
 import { BigNumberMap, ContractCall, TransactionState } from 'types'
 import { BI_ZERO } from './constants'
 import { ERC20Interface } from 'abis'
+import { Address } from 'viem'
+import ERC20 from 'abis/ERC20'
 
 export const decimalPattern = /^[0-9]*[.]?[0-9]*$/i
 export const numberPattern = /^\d+$/
@@ -41,6 +43,25 @@ export function getTokenMetaCalls(address: string): ContractCall[] {
       abi: ERC20Interface,
       args: [],
       method: 'decimals',
+    },
+  ]
+}
+
+export function getTokenReadCalls(address: string) {
+  const call = { address: address as Address, abi: ERC20, args: [] }
+
+  return [
+    {
+      ...call,
+      functionName: 'name',
+    },
+    {
+      ...call,
+      functionName: 'symbol',
+    },
+    {
+      ...call,
+      functionName: 'decimals',
     },
   ]
 }
@@ -206,7 +227,7 @@ export const formatPercentage = (value: number, decimals = 2): string =>
 // Utils for rable parsing
 export const formatCurrencyCell = ({ cell }: { cell: any }) =>
   formatCurrency(+cell.value)
-  
+
 export const formatUsdCurrencyCell = ({ cell }: { cell: any }) =>
   `$${formatCurrency(+cell.value)}`
 

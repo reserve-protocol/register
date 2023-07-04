@@ -1,5 +1,4 @@
 import { t, Trans } from '@lingui/macro'
-import { useWeb3React } from '@web3-react/core'
 import { ERC20Interface } from 'abis'
 import { Modal, NumericalInput } from 'components'
 import { LoadingButton } from 'components/button'

@@ -1,7 +1,6 @@
-import useBlockNumber from 'hooks/useBlockNumber'
 import { useAtomValue } from 'jotai'
 import { useEffect, useState } from 'react'
-import { gasPriceAtomBn } from 'state/atoms'
+import { blockAtom, gasPriceAtomBn } from 'state/atoms'
 import { Card } from 'theme-ui'
 import ConfirmZap from './components/ConfirmZap'
 import ZapButton from './components/ZapButton'
@@ -10,7 +9,7 @@ import { resolvedZapState } from './state/zapper'
 
 const UpdateBlockAndGas = () => {
   const zapState = useAtomValue(resolvedZapState)
-  const block = useBlockNumber()
+  const block = useAtomValue(blockAtom)
   const gasPriceBn = useAtomValue(gasPriceAtomBn)
   useEffect(() => {
     if (zapState == null || block == null || gasPriceBn == null) return

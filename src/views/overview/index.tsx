@@ -7,7 +7,6 @@ import About from './components/About'
 import AssetOverview from './components/AssetOverview'
 import External from './components/External'
 import HistoricalData from './components/HistoricalData'
-import RecentRSVTransactions from './components/RecentRSVTransactions'
 import RecentTransactions from './components/RecentTransactions'
 import RevenueSplitOverview from './components/RevenueSplitOverview'
 import TokenOverview from './components/TokenOverview'
@@ -48,7 +47,7 @@ const Overview = () => {
       <Divider {...dividerProps} mt={[0, 0, 0, 5]} />
       <Grid {...gridProps}>
         <HistoricalData />
-        {isRSV ? <RecentRSVTransactions /> : <RecentTransactions />}
+        <RecentTransactions />
       </Grid>
     </Container>
   )

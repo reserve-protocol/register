@@ -3,7 +3,6 @@ import { SmallButton } from 'components/button'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
-import useBlockNumber from 'hooks/useBlockNumber'
 import useDebounce from 'hooks/useDebounce'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
@@ -14,6 +13,8 @@ import { StringMap } from 'types'
 import { getProposalTitle } from 'utils'
 import { formatConstant, PROPOSAL_STATES, ROUTES } from 'utils/constants'
 import { getProposalStatus } from '../views/proposal-detail/atom'
+import { useAtomValue } from 'jotai'
+import { blockAtom } from 'state/atoms'
 
 const query = gql`
   query getProposals($id: String!) {
@@ -65,7 +66,7 @@ const ProposalList = () => {
   const rToken = useRToken()
   const navigate = useNavigate()
   const { data } = useProposals()
-  const block = useBlockNumber()
+  const block = useAtomValue(blockAtom)
   const blockNumber = useMemo(() => block, [!!block])
 
   return (

@@ -1,11 +1,11 @@
 import { t } from '@lingui/macro'
 import { LoadingButton } from 'components/button'
 import { ethers } from 'ethers'
-import useBlockNumber from 'hooks/useBlockNumber'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
 import {
   addTransactionAtom,
+  blockAtom,
   getValidWeb3Atom,
   rTokenGovernanceAtom,
 } from 'state/atoms'
@@ -16,7 +16,7 @@ import { proposalDetailAtom } from '../atom'
 
 const ProposalExecute = () => {
   const { account } = useAtomValue(getValidWeb3Atom)
-  const blockNumber = useBlockNumber()
+  const blockNumber = useAtomValue(blockAtom)
   const governance = useAtomValue(rTokenGovernanceAtom)
   const addTransaction = useSetAtom(addTransactionAtom)
   const [txId, setTx] = useState('')

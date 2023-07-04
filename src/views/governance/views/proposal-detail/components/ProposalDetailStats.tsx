@@ -1,18 +1,18 @@
 import { t, Trans } from '@lingui/macro'
 import IconInfo from 'components/info-icon'
-import useBlockNumber from 'hooks/useBlockNumber'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { Archive, Shield, ThumbsDown, ThumbsUp, XOctagon } from 'react-feather'
 import { Box, Grid, Image, Progress, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { accountVotesAtom, proposalDetailAtom } from '../atom'
+import { blockAtom } from 'state/atoms'
 
 const ProposalDetailStats = () => {
   const proposal = useAtomValue(proposalDetailAtom)
   const accountVotes = useAtomValue(accountVotesAtom)
 
-  const blockNumber = useBlockNumber()
+  const blockNumber = useAtomValue(blockAtom)
   const quorumWeight = useMemo(() => {
     if (
       proposal?.abstainWeightedVotes &&

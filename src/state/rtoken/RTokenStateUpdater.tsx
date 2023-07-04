@@ -8,12 +8,12 @@ import {
   _MainInterface,
 } from 'abis'
 import { formatEther } from 'ethers/lib/utils'
-import useBlockNumber from 'hooks/useBlockNumber'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import {
   basketNonceAtom,
+  blockAtom,
   maxIssuanceAtom,
   maxRedemptionAtom,
   multicallAtom,
@@ -46,7 +46,7 @@ const RTokenStateUpdater = () => {
   const setStaked = useSetAtom(stRSRSupplyAtom)
   const setCollateralStatus = useSetAtom(rTokenCollateralStatusAtom)
   const setBackingCollateralStatus = useSetAtom(rTokenCollaterizedAtom)
-  const blockNumber = useBlockNumber()
+  const blockNumber = useAtomValue(blockAtom)
   const contracts = useAtomValue(rTokenContractsAtom)
   const multicall = useAtomValue(multicallAtom)
 

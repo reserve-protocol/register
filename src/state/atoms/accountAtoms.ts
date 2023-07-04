@@ -9,7 +9,6 @@ import { getTokens } from 'hooks/useTokensBalance'
 import { atom } from 'jotai'
 import { AccountPosition, AccountToken } from 'types'
 import { RSR } from 'utils/constants'
-import { tokenBalancesStore } from '../TokenBalancesUpdater'
 import rTokenAtom from '../rtoken/atoms/rTokenAtom'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import rTokenContractsAtom from '../rtoken/atoms/rTokenContractsAtom'
@@ -26,35 +25,38 @@ const defaultBalance = {
 }
 
 // Tracks rToken/collaterals/stRSR/RSR balances for a connected account
-export const balancesAtom = atom((get) => {
-  const rToken = get(rTokenAtom)
-  if (rToken == null) {
-    return {}
-  }
-  const tokens = getTokens(rToken)
-  const balances = tokens.map((t) =>
-    get(tokenBalancesStore.getBalanceAtom(utils.getAddress(t[0])))
-  )
+// export const balancesAtom = atom((get) => {
+//   const rToken = get(rTokenAtom)
+//   if (rToken == null) {
+//     return {}
+//   }
+//   const tokens = getTokens(rToken)
+//   const balances = tokens.map((t) =>
+//     get(tokenBalancesStore.getBalanceAtom(utils.getAddress(t[0])))
+//   )
 
-  return Object.fromEntries(
-    balances
-      .map((atomValue, i) => ({
-        atomValue,
-        decimals: tokens[i][1],
-      }))
-      .map((entry) => [
-        entry.atomValue.address,
-        {
-          value: entry.atomValue.value ?? ethers.constants.Zero,
-          decimals: entry.decimals,
-          balance: formatUnits(
-            entry.atomValue.value ?? ethers.constants.Zero,
-            entry.decimals
-          ),
-        },
-      ])
-  )
-})
+//   return Object.fromEntries(
+//     balances
+//       .map((atomValue, i) => ({
+//         atomValue,
+//         decimals: tokens[i][1],
+//       }))
+//       .map((entry) => [
+//         entry.atomValue.address,
+//         {
+//           value: entry.atomValue.value ?? ethers.constants.Zero,
+//           decimals: entry.decimals,
+//           balance: formatUnits(
+//             entry.atomValue.value ?? ethers.constants.Zero,
+//             entry.decimals
+//           ),
+//         },
+//       ])
+//   )
+// })
+
+// TODO: Fix balances
+export const balancesAtom = atom({} as any)
 
 // Get balance for current rToken for the selected account
 export const rTokenBalanceAtom = atom((get) => {

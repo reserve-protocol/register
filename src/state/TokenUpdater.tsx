@@ -1,12 +1,12 @@
 import { MainInterface } from 'abis'
 import { ethers } from 'ethers'
-import useBlockNumber from 'hooks/useBlockNumber'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useCallback, useEffect } from 'react'
 import { isAddress } from 'utils'
 import {
   accountRoleAtom,
+  blockAtom,
   multicallAtom,
   rTokenMainAtom,
   searchParamAtom,
@@ -20,7 +20,7 @@ import { tokenMetricsAtom } from './metrics/atoms'
 // TODO: Loading state?
 const ReserveTokenUpdater = () => {
   const [selectedAddress, setSelectedToken] = useAtom(selectedRTokenAtom)
-  const blockNumber = useBlockNumber()
+  const blockNumber = useAtomValue(blockAtom)
   const mainAddress = useAtomValue(rTokenMainAtom)
   const resetMetrics = useResetAtom(tokenMetricsAtom)
   const updateAccountRole = useSetAtom(accountRoleAtom)

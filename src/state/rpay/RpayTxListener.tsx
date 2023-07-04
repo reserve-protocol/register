@@ -3,9 +3,8 @@ import { atom } from 'jotai'
 import { useSetAtom } from 'jotai'
 import useWebSocket from 'react-use-websocket'
 import { dateToUnix } from 'utils'
-import { rpayTransactionsAtom, RPayTx } from './atoms'
+import { rpayTransactionsAtom, RPayTx } from '../atoms'
 
-// TODO: Limit to 25 txs
 const updateTxAtom = atom(null, (get, set, txs: RPayTx[]) => {
   const currentTxs = [...get(rpayTransactionsAtom)]
   currentTxs.unshift(...txs)
@@ -13,7 +12,7 @@ const updateTxAtom = atom(null, (get, set, txs: RPayTx[]) => {
   set(rpayTransactionsAtom, currentTxs)
 })
 
-const RSVTxListener = () => {
+const RpayTxListener = () => {
   const updateTx = useSetAtom(updateTxAtom)
   const isWindowOpen = useIsWindowVisible()
 
@@ -44,4 +43,4 @@ const RSVTxListener = () => {
   return null
 }
 
-export default RSVTxListener
+export default RpayTxListener

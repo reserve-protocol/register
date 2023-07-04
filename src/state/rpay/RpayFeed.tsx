@@ -1,11 +1,10 @@
-import dayjs from 'dayjs'
 import { atom } from 'jotai'
 import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import useSWR from 'swr'
 import { StringMap } from 'types'
 import { dateToUnix } from 'utils'
-import { rpayOverviewAtom, rpayTransactionsAtom, RPayTx } from './atoms'
+import { rpayOverviewAtom, rpayTransactionsAtom, RPayTx } from '../atoms'
 
 const OVERVIEW_URL = `https:${import.meta.env.VITE_RPAY_FEED}/aggregate`
 const TXS_URL = `https:${import.meta.env.VITE_RPAY_FEED}/transactions`
@@ -16,14 +15,12 @@ const fetcher = async (url: string): Promise<StringMap> => {
   return data
 }
 
-dayjs.extend
-
 // TODO: Limit to 25 txs
 const updateTxAtom = atom(null, (get, set, txs: RPayTx[]) => {
   set(rpayTransactionsAtom, txs)
 })
 
-const RSVUpdater = () => {
+const RpayFeed = () => {
   const updateTx = useSetAtom(updateTxAtom)
   const updateOverview = useSetAtom(rpayOverviewAtom)
   const { data: overviewData } = useSWR(OVERVIEW_URL, fetcher)
@@ -58,4 +55,4 @@ const RSVUpdater = () => {
   return null
 }
 
-export default RSVUpdater
+export default RpayFeed

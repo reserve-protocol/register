@@ -2,13 +2,13 @@ import { Trans } from '@lingui/macro'
 import { GovernanceInterface } from 'abis'
 import { SmallButton } from 'components/button'
 import { formatEther } from 'ethers/lib/utils'
-import useBlockNumber from 'hooks/useBlockNumber'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { ArrowLeft } from 'react-feather'
 import { useNavigate, useParams } from 'react-router-dom'
 import {
+  blockAtom,
   getValidWeb3Atom,
   multicallAtom,
   rTokenGovernanceAtom,
@@ -38,7 +38,7 @@ const GovernanceProposalDetail = () => {
   const { data: proposal, loading } = useProposalDetail(proposalId ?? '')
   const setProposalDetail = useSetAtom(proposalDetailAtom)
   const setAccountVoting = useSetAtom(accountVotesAtom)
-  const blockNumber = useBlockNumber()
+  const blockNumber = useAtomValue(blockAtom)
   const navigate = useNavigate()
   const { state } = useAtomValue(getProposalStateAtom)
 

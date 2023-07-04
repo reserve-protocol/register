@@ -1,5 +1,4 @@
 import { t, Trans } from '@lingui/macro'
-import { useWeb3React } from '@web3-react/core'
 import TransactionModal from 'components/transaction-modal'
 import useRToken from 'hooks/useRToken'
 import { useMemo, useState } from 'react'
@@ -7,6 +6,8 @@ import { isAddress } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { Text } from 'theme-ui'
 import Input from 'components/input'
+import { useAtomValue } from 'jotai'
+import { walletAtom } from 'state/atoms'
 
 const DelegateModal = ({
   onClose,
@@ -15,7 +16,7 @@ const DelegateModal = ({
   onClose: () => void
   delegated: boolean
 }) => {
-  const { account } = useWeb3React()
+  const account = useAtomValue(walletAtom)
   const rToken = useRToken()
   const [address, setAddress] = useState(!delegated && account ? account : '')
   const validAddress = isAddress(address)

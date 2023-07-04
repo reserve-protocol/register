@@ -1,17 +1,15 @@
 import { t, Trans } from '@lingui/macro'
-import { useWeb3React } from '@web3-react/core'
 import Governance from 'abis/Governance'
 import { SmallButton } from 'components/button'
 import IconInfo from 'components/info-icon'
 import { formatEther } from 'ethers/lib/utils'
 import { gql } from 'graphql-request'
-import useBlockNumber from 'hooks/useBlockNumber'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { rTokenGovernanceAtom } from 'state/atoms'
+import { blockAtom, rTokenGovernanceAtom, walletAtom } from 'state/atoms'
 import { Box, Grid, Image, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ROUTES } from 'utils/constants'
@@ -58,10 +56,10 @@ const useStats = () => {
 // TODO: Validate if account is above proposal threshold
 const GovernanceOverview = () => {
   const stats = useStats()
-  const { account } = useWeb3React()
+  const account = useAtomValue(walletAtom)
   const navigate = useNavigate()
   const rToken = useRToken()
-  const blockNumber = useBlockNumber()
+  const blockNumber = useAtomValue(blockAtom)
   const governance = useAtomValue(rTokenGovernanceAtom)
 
   const { data: votes } = useContractRead({

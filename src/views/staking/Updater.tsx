@@ -1,10 +1,9 @@
 import { Facade } from 'abis/types'
 import { formatEther } from 'ethers/lib/utils'
-import useBlockNumber from 'hooks/useBlockNumber'
 import { useFacadeContract } from 'hooks/useContract'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
-import { chainIdAtom, rTokenAtom, walletAtom } from 'state/atoms'
+import { blockAtom, chainIdAtom, rTokenAtom, walletAtom } from 'state/atoms'
 import { pendingRSRAtom } from './atoms'
 
 /**
@@ -16,7 +15,7 @@ const PendingBalancesUpdater = () => {
   const rToken = useAtomValue(rTokenAtom)
   const setPendingRSR = useSetAtom(pendingRSRAtom)
   const facadeContract = useFacadeContract()
-  const blockNumber = useBlockNumber()
+  const blockNumber = useAtomValue(blockAtom)
 
   const fetchPending = useCallback(
     async (account: string, rToken: string, facade: Facade) => {

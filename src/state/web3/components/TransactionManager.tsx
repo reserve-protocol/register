@@ -1,11 +1,11 @@
 import { TransactionReceipt, Web3Provider } from '@ethersproject/providers'
 import { t } from '@lingui/macro'
 import abis, { DeployerInterface } from 'abis'
-import useBlockNumber from 'hooks/useBlockNumber'
 import useDebounce from 'hooks/useDebounce'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import {
+  blockAtom,
   getValidWeb3Atom,
   pendingTxAtom,
   updateTransactionAtom,
@@ -36,7 +36,7 @@ const TransactionManager = () => {
   const setTxs = useSetAtom(updateTransactionAtom)
   const { pending, mining } = useDebounce(useAtomValue(pendingTxAtom), 200)
   const { account, provider, chainId } = useAtomValue(getValidWeb3Atom)
-  const blockNumber = useBlockNumber()
+  const blockNumber = useAtomValue(blockAtom)
 
   const checkMiningTx = useCallback(
     async (txs: [number, TransactionState][]) => {

@@ -1,10 +1,9 @@
 import { Trans } from '@lingui/macro'
-import { useWeb3React } from '@web3-react/core'
 import StRSRVotes from 'abis/StRSRVotes'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
-import { stRsrBalanceAtom } from 'state/atoms'
+import { stRsrBalanceAtom, walletAtom } from 'state/atoms'
 import { Box, BoxProps, Button, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ZERO_ADDRESS } from 'utils/addresses'
@@ -16,7 +15,7 @@ import VoteModal from './VoteModal'
 
 // TODO: Validate voting power first?
 const ProposalVote = (props: BoxProps) => {
-  const { account } = useWeb3React()
+  const account = useAtomValue(walletAtom)
   const rToken = useRToken()
 
   const [isVoteVisible, setVoteVisible] = useState(false)

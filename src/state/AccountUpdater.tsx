@@ -1,12 +1,9 @@
 import { getAddress } from '@ethersproject/address'
-import { useWeb3React } from '@web3-react/core'
 import { gql } from 'graphql-request'
-import useBlockNumber from 'hooks/useBlockNumber'
 import useQuery from 'hooks/useQuery'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { AccountPosition, AccountToken } from 'types'
-import { calculateApy } from 'utils'
 
 import RSV from 'utils/rsv'
 import {
@@ -16,8 +13,8 @@ import {
   accountTokensAtom,
   blockTimestampAtom,
   rsrPriceAtom,
+  walletAtom,
 } from './atoms'
-import { tokenBalancesStore } from './TokenBalancesUpdater'
 
 // TODO: Include RSV hardcoded into the query and check for balance
 const accountQuery = gql`
@@ -57,7 +54,7 @@ const accountQuery = gql`
 `
 
 const AccountUpdater = () => {
-  const { account } = useWeb3React()
+  const account = useAtomValue(walletAtom)
   const rsrPrice = useAtomValue(rsrPriceAtom)
   const timestamp = useAtomValue(blockTimestampAtom)
   const fromTime = useMemo(() => {
@@ -168,24 +165,25 @@ const AccountUpdater = () => {
   return null
 }
 
-const GasBalanceUpdater = () => {
-  const block = useBlockNumber()
-  const { provider, account } = useWeb3React()
-  const updateGasBalance = useSetAtom(tokenBalancesStore.getGasBalanceAtom())
-  useEffect(() => {
-    if (account == null || provider == null || block == 0 || block == null) {
-      return
-    }
-    provider.getBalance(account).then((balance) => {
-      updateGasBalance(() => balance)
-    })
-  }, [account, block, provider])
-  return null
-}
+// TODO: zapper needs this working
+// const GasBalanceUpdater = () => {
+//   const block = useBlockNumber()
+//   const { provider, account } = useWeb3React()
+//   const updateGasBalance = useSetAtom(tokenBalancesStore.getGasBalanceAtom())
+//   useEffect(() => {
+//     if (account == null || provider == null || block == 0 || block == null) {
+//       return
+//     }
+//     provider.getBalance(account).then((balance) => {
+//       updateGasBalance(() => balance)
+//     })
+//   }, [account, block, provider])
+//   return null
+// }
 
 export default () => (
   <>
-    <GasBalanceUpdater />
+    {/* <GasBalanceUpdater /> */}
     <AccountUpdater />
   </>
 )

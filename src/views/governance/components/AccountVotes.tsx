@@ -1,12 +1,11 @@
 import { Trans } from '@lingui/macro'
-import { useWeb3React } from '@web3-react/core'
 import StRSRVotes from 'abis/StRSRVotes'
 import { SmallButton } from 'components/button'
 import GoTo from 'components/button/GoTo'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
-import { chainIdAtom, stRsrBalanceAtom } from 'state/atoms'
+import { chainIdAtom, stRsrBalanceAtom, walletAtom } from 'state/atoms'
 import { Box, Image, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { ZERO_ADDRESS } from 'utils/addresses'
@@ -15,7 +14,7 @@ import { Address, useContractRead } from 'wagmi'
 import DelegateModal from './DelegateModal'
 
 const AccountVotes = () => {
-  const { account } = useWeb3React()
+  const account = useAtomValue(walletAtom)
   const chainId = useAtomValue(chainIdAtom)
   const rToken = useRToken()
   const stRsrBalance = useAtomValue(stRsrBalanceAtom)

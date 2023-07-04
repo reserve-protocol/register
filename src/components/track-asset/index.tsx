@@ -1,20 +1,23 @@
-import { useWeb3React } from '@web3-react/core'
 import { MouseoverTooltip } from 'components/tooltip'
+import { useAtomValue } from 'jotai'
 import { Bookmark } from 'react-feather'
+import { walletClientAtom } from 'state/atoms'
 import { IconButton } from 'theme-ui'
 import { Token } from 'types'
 
 const TrackAsset = ({ token }: { token: Token }) => {
-  const { connector } = useWeb3React()
+  const client = useAtomValue(walletClientAtom)
 
   const handleWatch = async () => {
     try {
-      if (connector?.watchAsset) {
-        await connector.watchAsset({
-          address: token.address,
-          symbol: token.symbol,
-          decimals: token.decimals,
-          image: '',
+      if (client) {
+        await client.watchAsset({
+          type: 'ERC20',
+          options: {
+            address: token.address,
+            symbol: token.symbol,
+            decimals: token.decimals,
+          },
         })
       }
     } catch (e) {

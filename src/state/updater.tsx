@@ -2,7 +2,6 @@ import { Web3Provider } from '@ethersproject/providers'
 import { formatEther } from '@ethersproject/units'
 import { OracleInterface } from 'abis'
 import { formatUnits } from 'ethers/lib/utils'
-import useBlockNumber from 'hooks/useBlockNumber'
 import { useContractRead } from 'wagmi'
 import useRTokenPrice from 'hooks/useRTokenPrice'
 import useTokensAllowance from 'hooks/useTokensAllowance'
@@ -11,6 +10,7 @@ import { useCallback, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import {
   allowanceAtom,
+  blockAtom,
   collateralYieldAtom,
   ethPriceAtom,
   gasPriceAtomBn,
@@ -29,7 +29,7 @@ import { ChainId } from 'utils/chains'
 import { RSR } from 'utils/constants'
 import { RSV_MANAGER } from 'utils/rsv'
 import AccountUpdater from './AccountUpdater'
-import RSVUpdater from './RSVUpdater'
+import RpayFeed from './rpay/RpayFeed'
 import { TokenBalancesUpdater } from './TokenBalancesUpdater'
 import TokenUpdater from './TokenUpdater'
 import RTokenUpdater from './rtoken'
@@ -73,7 +73,7 @@ const TokensAllowanceUpdater = () => {
 
   useEffect(() => {
     updateAllowances(allowances)
-  }, [JSON.stringify(allowances)])
+  }, [allowances])
 
   return null
 }
@@ -92,7 +92,7 @@ const PricesUpdater = () => {
   const setEthPrice = useSetAtom(ethPriceAtom)
   const setGasPrice = useSetAtom(gasPriceAtomBn)
   const setRTokenPrice = useSetAtom(rTokenPriceAtom)
-  const blockNumber = useBlockNumber()
+  const blockNumber = useAtomValue(blockAtom)
   const multicall = useAtomValue(multicallAtom)
 
   const fetchGasPrice = useCallback(
@@ -241,7 +241,7 @@ const Updater = () => (
     <PricesUpdater />
     <ExchangeRateUpdater />
     <AccountUpdater />
-    <RSVUpdater />
+    <RpayFeed />
     <RTokenUpdater />
     <CollateralYieldUpdater />
     <TokenBalancesUpdater />

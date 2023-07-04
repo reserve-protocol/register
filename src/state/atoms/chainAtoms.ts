@@ -2,6 +2,7 @@ import { providers } from 'ethers'
 import { GraphQLClient } from 'graphql-request'
 import { atom } from 'jotai'
 import { ChainId, supportedChains } from 'utils/chains'
+import { PublicClient, WalletClient } from 'wagmi'
 
 /**
  * #########################
@@ -16,6 +17,13 @@ export const providerAtom = atom(
   undefined as undefined | providers.Web3Provider
 )
 
+export const walletClientAtom = atom<WalletClient | undefined>(undefined)
+export const publicClientAtom = atom<PublicClient | undefined>(undefined)
+
+export const clientAtom = atom((get) =>
+  get(walletClientAtom || get(publicClientAtom))
+)
+
 export const getValidWeb3Atom = atom((get) => {
   const provider = get(providerAtom)
   const account = get(walletAtom)
@@ -26,6 +34,22 @@ export const getValidWeb3Atom = atom((get) => {
   }
 
   return { provider, account, chainId }
+})
+
+export const web3Atom = atom((get) => {
+  const account = get(walletAtom)
+  const publicClient = get(publicClientAtom)
+  const walletClient = get(walletClientAtom)
+  const chainId = get(chainIdAtom)
+
+  if (account && walletClient) {
+    return { chainId, client: walletClient, account }
+  }
+
+  return {
+    chainId,
+    client: publicClient,
+  }
 })
 
 const SUBGRAPH_URL = {

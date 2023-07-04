@@ -6,7 +6,7 @@ import useDebounce from 'hooks/useDebounce'
 import useQuery from 'hooks/useQuery'
 import { useMemo } from 'react'
 import { rpayTransactionsAtom } from 'state/atoms'
-import RSVTxListener from 'state/RSVTxListener'
+import RpayTxListener from 'state/rpay/RpayTxListener'
 
 import { t, Trans } from '@lingui/macro'
 import { ContentHead, InfoHeading } from 'components/info-box'
@@ -215,7 +215,7 @@ const Main = () => {
 
     return (
       <>
-        <RSVTxListener />
+        <RpayTxListener />
         <TransactionsTable
           compact
           bordered
