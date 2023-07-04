@@ -29,6 +29,7 @@ jobs:
           yarn test:e2e
         env:
           GUARDIAN_UI_ALCHEMY_API_KEY: ${{ secrets.GUARDIAN_UI_ALCHEMY_API_KEY }}
+          CI: true
       - uses: actions/upload-artifact@v3
         if: always()
         with:
