@@ -1,7 +1,7 @@
 import { formatUnits } from '@ethersproject/units'
 import { ethers } from 'ethers'
 import { useMemo } from 'react'
-import { useTokenBalances } from 'state/TokenBalancesUpdater'
+import { useTokenBalances } from 'state/wallet/TokenBalancesUpdater'
 import { BalanceMap, ReserveToken } from 'types'
 import { RSR } from 'utils/constants'
 import useRToken from './useRToken'

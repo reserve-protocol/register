@@ -12,8 +12,8 @@ import {
   searchParamAtom,
   selectedRTokenAtom,
   walletAtom,
-} from './atoms'
-import { tokenMetricsAtom } from './metrics/atoms'
+} from '../atoms'
+import { tokenMetricsAtom } from '../metrics/atoms'
 
 // Try to grab the token meta from theGraph
 // If it fails, get it from the blockchain (only whitelisted tokens)

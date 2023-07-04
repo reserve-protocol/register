@@ -14,7 +14,7 @@ import {
   blockTimestampAtom,
   rsrPriceAtom,
   walletAtom,
-} from './atoms'
+} from '../atoms'
 
 // TODO: Include RSV hardcoded into the query and check for balance
 const accountQuery = gql`

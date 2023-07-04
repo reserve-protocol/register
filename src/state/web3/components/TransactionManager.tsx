@@ -31,6 +31,7 @@ const getDeployedRToken = (
 
 /**
  * Execute and check transactions in the queue
+ * TODO: BURN IT
  */
 const TransactionManager = () => {
   const setTxs = useSetAtom(updateTransactionAtom)

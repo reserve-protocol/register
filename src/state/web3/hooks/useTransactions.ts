@@ -3,6 +3,7 @@ import { currentTxAtom } from 'state/atoms'
 import { useAtomValue } from 'jotai'
 import { TransactionState } from 'types'
 
+// TODO: BURN FILE
 export const useTransactions = (ids: string[], sample = 20) => {
   // Usually used to fetch last N txs, slice it to last 20 for fast lookup
   const txs = useAtomValue(currentTxAtom).slice(-sample)
