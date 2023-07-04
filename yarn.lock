@@ -1101,7 +1101,7 @@
   resolved "https://registry.npmjs.org/@babel/regjsgen/-/regjsgen-0.8.0.tgz"
   integrity sha512-x/rqGMdzj+fWZvCOYForTghzbtqPDZ5gPwaoNGHdgDfF2QA/XZbCBp4Moo5scrkAMPhB7z26XM/AaHuIJdgauA==
 
-"@babel/runtime@^7.1.2", "@babel/runtime@^7.12.5", "@babel/runtime@^7.14.6", "@babel/runtime@^7.16.3", "@babel/runtime@^7.17.2", "@babel/runtime@^7.18.3", "@babel/runtime@^7.19.0", "@babel/runtime@^7.20.13", "@babel/runtime@^7.21.0", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.2":
+"@babel/runtime@^7.1.2", "@babel/runtime@^7.12.5", "@babel/runtime@^7.14.6", "@babel/runtime@^7.16.3", "@babel/runtime@^7.17.2", "@babel/runtime@^7.18.3", "@babel/runtime@^7.20.13", "@babel/runtime@^7.21.0", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.2":
   version "7.22.5"
   resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.22.5.tgz"
   integrity sha512-ecjvYlnAaZ/KVneE/OdKYBYfgXV3Ptu6zQWmgEF7vwKhQnvVS6bjMD2XYgj+SNvQ1GfK/pjgokfPkC/2CO8CuA==
@@ -1420,7 +1420,7 @@
     "@ethersproject/logger" "^5.7.0"
     "@ethersproject/properties" "^5.7.0"
 
-"@ethersproject/address@^5", "@ethersproject/address@^5.7.0", "@ethersproject/address@5.7.0":
+"@ethersproject/address@^5.7.0", "@ethersproject/address@5.7.0":
   version "5.7.0"
   resolved "https://registry.npmjs.org/@ethersproject/address/-/address-5.7.0.tgz"
   integrity sha512-9wYhYt7aghVGo758POM5nqcOMaE168Q6aRLJZwUmiqSrAungkG74gSSeKEIR7ukixesdRZGPgVqme6vmxs1fkA==
@@ -1572,7 +1572,7 @@
   dependencies:
     "@ethersproject/logger" "^5.7.0"
 
-"@ethersproject/providers@^5", "@ethersproject/providers@^5.0.0", "@ethersproject/providers@^5.7.1", "@ethersproject/providers@^5.7.2", "@ethersproject/providers@5.7.2":
+"@ethersproject/providers@^5.0.0", "@ethersproject/providers@^5.7.1", "@ethersproject/providers@^5.7.2", "@ethersproject/providers@5.7.2":
   version "5.7.2"
   resolved "https://registry.npmjs.org/@ethersproject/providers/-/providers-5.7.2.tgz"
   integrity sha512-g34EWZ1WWAVgr4aptGlVBF8mhl3VWjv+8hoAnzStu8Ah22VHBsuGzP17eb6xDVRzw895G4W7vvx60lFFur/1Rg==
@@ -1930,16 +1930,6 @@
   integrity sha512-jKlkls3Gewgw6qMjKZ9SFfHUpdzEVdovKFtW1qRhJ3WI4FW5R/NnGDqr8SDGz+krWDO3ki94boMmQvGke1HwUQ==
   dependencies:
     moo "^0.5.1"
-
-"@metamask/contract-metadata@2.3.1":
-  version "2.3.1"
-  resolved "https://registry.npmjs.org/@metamask/contract-metadata/-/contract-metadata-2.3.1.tgz"
-  integrity sha512-pOMzZFR+FZO1Soe9lZ8gIy1TBHBu3sWiAKCYRY42ToEm/p5Buun1muNjbRbAWNJxJrlJ5uszCNqqRsBCtenGPg==
-
-"@metamask/detect-provider@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.npmjs.org/@metamask/detect-provider/-/detect-provider-1.2.0.tgz"
-  integrity sha512-ocA76vt+8D0thgXZ7LxFPyqw3H7988qblgzddTDA6B8a/yU0uKV42QR/DhA+Jh11rJjxW0jKvwb5htA6krNZDQ==
 
 "@metamask/eth-sig-util@^4.0.0":
   version "4.0.1"
@@ -3846,57 +3836,6 @@
   dependencies:
     "@walletconnect/window-getters" "^1.0.1"
     tslib "1.14.1"
-
-"@web3-react/core@8.2.0":
-  version "8.2.0"
-  resolved "https://registry.npmjs.org/@web3-react/core/-/core-8.2.0.tgz"
-  integrity sha512-r7dmK2E8Jrpvm/DF93hGMB+8lECHSI3Oo0NrHbhxkisK6in6rdgAXeYFhZtM48LBAm9py6fQvLzjCM6Qx9q0oQ==
-  dependencies:
-    "@web3-react/store" "^8.2.0"
-    "@web3-react/types" "^8.2.0"
-    zustand "^4.3.5"
-  optionalDependencies:
-    "@ethersproject/providers" "^5"
-
-"@web3-react/metamask@8.2.0":
-  version "8.2.0"
-  resolved "https://registry.npmjs.org/@web3-react/metamask/-/metamask-8.2.0.tgz"
-  integrity sha512-nitDOHFZOUi9FWBmGAKlvExZDxZPWSJaXZn0lxl7LKaM6rPwBoEWKI2wJJvWCf+h5q9+p6ifiaFd7JKqucS6rQ==
-  dependencies:
-    "@metamask/detect-provider" "^1.2.0"
-    "@web3-react/types" "^8.2.0"
-
-"@web3-react/network@8.2.0":
-  version "8.2.0"
-  resolved "https://registry.npmjs.org/@web3-react/network/-/network-8.2.0.tgz"
-  integrity sha512-3OcJwuaot8A+VTSoCe17MZv/K/TNVw7DjtYoS7lBRS/CmzYIwP53Tosea4MkliOuXiUUKj7Ge1D2FpWohq6pHw==
-  dependencies:
-    "@ethersproject/providers" "^5"
-    "@web3-react/types" "^8.2.0"
-
-"@web3-react/store@^8.2.0":
-  version "8.2.0"
-  resolved "https://registry.npmjs.org/@web3-react/store/-/store-8.2.0.tgz"
-  integrity sha512-cG8nb+tBeRUJu+98ko6YZuAWmoipGMEbR3bhineCNd4x2mXv3GbWSPtE17GeWVshZgDbZu2/Du0okTx+22VWCg==
-  dependencies:
-    "@ethersproject/address" "^5"
-    "@web3-react/types" "^8.2.0"
-    zustand "^4.3.5"
-
-"@web3-react/types@^8.2.0", "@web3-react/types@8.2.0":
-  version "8.2.0"
-  resolved "https://registry.npmjs.org/@web3-react/types/-/types-8.2.0.tgz"
-  integrity sha512-TBYTFlqJZaEpVbuAAKRJFX5PZc3lI1TqDZzY94zwCrCh4GBepwwK7+PxmRAppMFuNa5x0vFX/ghLEC44e6TCFg==
-  dependencies:
-    zustand "^4.3.5"
-
-"@web3-react/url@8.2.0":
-  version "8.2.0"
-  resolved "https://registry.npmjs.org/@web3-react/url/-/url-8.2.0.tgz"
-  integrity sha512-dt1i8AgZso6y0sX67JSZ1DzsU511iFu4Gcxksbw/yJPlFybsHco+Fcg94WLjWj4ec26kVRUBySUVCyXrYlg0kQ==
-  dependencies:
-    "@ethersproject/providers" "^5"
-    "@web3-react/types" "^8.2.0"
 
 "@yarnpkg/lockfile@^1.1.0":
   version "1.1.0"
@@ -6371,13 +6310,6 @@ humanize-ms@^1.2.1:
   dependencies:
     ms "^2.0.0"
 
-i18next-browser-languagedetector@^6.1.2:
-  version "6.1.8"
-  resolved "https://registry.npmjs.org/i18next-browser-languagedetector/-/i18next-browser-languagedetector-6.1.8.tgz"
-  integrity sha512-Svm+MduCElO0Meqpj1kJAriTC6OhI41VhlT/A0UPjGoPZBhAHIaGE5EfsHlTpgdH09UVX7rcc72pSDDBeKSQQA==
-  dependencies:
-    "@babel/runtime" "^7.19.0"
-
 iconv-lite@^0.4.24, iconv-lite@0.4.24:
   version "0.4.24"
   resolved "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.4.24.tgz"
@@ -7289,11 +7221,6 @@ make-fetch-happen@^11.0.0, make-fetch-happen@^11.0.1, make-fetch-happen@^11.0.3,
     promise-retry "^2.0.1"
     socks-proxy-agent "^7.0.0"
     ssri "^10.0.0"
-
-make-plural@^7.1.0:
-  version "7.3.0"
-  resolved "https://registry.npmjs.org/make-plural/-/make-plural-7.3.0.tgz"
-  integrity sha512-/K3BC0KIsO+WK2i94LkMPv3wslMrazrQhfi5We9fMbLlLjzoOSJWr7TAdupLlDWaJcWxwoNosBkhFDejiu5VDw==
 
 markdown-table@^3.0.0:
   version "3.0.3"
@@ -10750,7 +10677,7 @@ yocto-queue@^0.1.0:
   resolved "https://registry.npmjs.org/yocto-queue/-/yocto-queue-0.1.0.tgz"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-zustand@^4.3.1, zustand@^4.3.5:
+zustand@^4.3.1:
   version "4.3.8"
   resolved "https://registry.npmjs.org/zustand/-/zustand-4.3.8.tgz"
   integrity sha512-4h28KCkHg5ii/wcFFJ5Fp+k1J3gJoasaIbppdgZFO4BPJnsNxL0mQXBSFgOgAdCdBj35aDTPvdAJReTMntFPGg==

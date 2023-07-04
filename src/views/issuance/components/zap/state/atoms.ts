@@ -4,7 +4,6 @@ import {
   entities,
   searcher,
 } from '@reserve-protocol/token-zapper'
-import { IERC20__factory } from '@reserve-protocol/token-zapper/types/contracts'
 import {
   PERMIT2_ADDRESS,
   PermitTransferFrom,
@@ -15,7 +14,6 @@ import { ethers } from 'ethers'
 import { atom, Getter } from 'jotai'
 import { loadable } from 'jotai/utils'
 import { rTokenAtom, walletAtom } from 'state/atoms'
-import { tokenBalancesStore } from 'state/TokenBalancesUpdater'
 
 import atomWithDebounce from 'utils/atoms/atomWithDebounce'
 import {
@@ -152,7 +150,7 @@ export const zapQuotePromise = loadable(
           input.signer,
           get(tradeSlippage)
         )
-      } catch (e) { }
+      } catch (e) {}
       await base.wait(1000)
       firstTime = false
     }
@@ -172,10 +170,11 @@ export const zapQuote = simplifyLoadable(zapQuotePromise)
 
 export const selectedZapTokenBalance = onlyNonNullAtom((get) => {
   const token = get(selectedZapTokenAtom)
-  const bal =
-    get(tokenBalancesStore.getBalanceAtom(token.address.address)).value ??
-    ethers.constants.Zero
-  return token.from(bal)
+  // TODO: Fix balance
+  // const bal =
+  //   get(tokenBalancesStore.getBalanceAtom(token.address.address)).value ??
+  //   ethers.constants.Zero
+  return token.from(ethers.constants.Zero)
 })
 
 export const approvalNeededAtom = loadable(
@@ -275,7 +274,8 @@ export const approvalTxFee = loadable(
   onlyNonNullAtom(async (get) => {
     const approveTx = get(resolvedApprovalNeeded)
     const universe = get(resolvedZapState)
-    const gasBalance = get(tokenBalancesStore.getGasBalanceAtom()).value
+    // const gasBalance = get(tokenBalancesStore.getGasBalanceAtom()).value
+    const gasBalance = ethers.constants.Zero // TODO: Fix gas balance
     const gasUnits =
       approveTx.approvalNeeded === true
         ? (await universe.provider.estimateGas(approveTx.tx)).toBigInt()
@@ -307,9 +307,9 @@ export const zapTransaction = loadable(
       permit2 =
         signature != null && permit != null
           ? {
-            permit: permit.permit,
-            signature,
-          }
+              permit: permit.permit,
+              signature,
+            }
           : undefined
     }
 
@@ -390,9 +390,10 @@ const totalGasTokenInput = onlyNonNullAtom((get) => {
   return gasTokenInput.add(get(zapTransactionGasEstimateFee))
 })
 
+// TODO: Fix gas balance
 const totalGasBalance = onlyNonNullAtom(
-  (get) =>
-    get(tokenBalancesStore.getGasBalanceAtom()).value ?? ethers.constants.Zero
+  (get) => ethers.constants.Zero
+  // get(tokenBalancesStore.getGasBalanceAtom()).value ?? ethers.constants.Zero
 )
 const hasSufficientGasTokenBalance = onlyNonNullAtom((get) => {
   const gasTokenBalanceBN = get(totalGasBalance)

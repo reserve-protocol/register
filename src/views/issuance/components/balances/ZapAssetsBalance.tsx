@@ -2,26 +2,28 @@ import { Trans } from '@lingui/macro'
 import TokenBalance from 'components/token-balance'
 import { formatUnits } from 'ethers/lib/utils'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
-import { tokenBalancesStore } from 'state/TokenBalancesUpdater'
 import { Box, Text } from 'theme-ui'
 import { BI_ZERO } from 'utils/constants'
 import { selectedZapTokenAtom } from '../zap/state/atoms'
 import { ui } from '../zap/state/ui-atoms'
+import { StringMap } from 'types'
 
+// TODO: Fix token balances
 const zapTokenBalancesAtom = atom((get) => {
   const tokens = get(ui.input.tokenSelector.tokenSelector) || []
 
-  return tokens.reduce((acc, token) => {
-    const value = formatUnits(
-      get(tokenBalancesStore.getBalanceAtom(token.address.address)).value ||
-        BI_ZERO,
-      token.decimals
-    )
+  return {} as StringMap
+  // return tokens.reduce((acc, token) => {
+  //   const value = formatUnits(
+  //     get(tokenBalancesStore.getBalanceAtom(token.address.address)).value ||
+  //       BI_ZERO,
+  //     token.decimals
+  //   )
 
-    acc[token.address.address] = value
+  //   acc[token.address.address] = value
 
-    return acc
-  }, {} as { [x: string]: string })
+  //   return acc
+  // }, {} as { [x: string]: string })
 })
 
 const ZapAssetsBalances = () => {
