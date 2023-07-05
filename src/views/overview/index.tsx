@@ -3,6 +3,7 @@ import useTokenStats from 'hooks/useTokenStats'
 import { useAtomValue } from 'jotai'
 import { rTokenAtom } from 'state/atoms'
 import { Divider, Grid } from 'theme-ui'
+import mixpanel from 'mixpanel-browser'
 import About from './components/About'
 import AssetOverview from './components/AssetOverview'
 import External from './components/External'
@@ -28,6 +29,10 @@ const Overview = () => {
     rToken?.address.toLowerCase() ?? '',
     rToken?.isRSV
   )
+
+  mixpanel.track('Visted RToken Overview', {
+    RToken: rToken?.address.toLowerCase() ?? '',
+  })
 
   return (
     <Container>

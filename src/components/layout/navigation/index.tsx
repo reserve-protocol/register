@@ -1,4 +1,5 @@
 import { t } from '@lingui/macro'
+import mixpanel from 'mixpanel-browser'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
 import GovernanceIcon from 'components/icons/GovernanceIcon'
 import IssuanceIcon from 'components/icons/IssuanceIcon'
@@ -72,6 +73,12 @@ const NavItem = ({
         : 'none',
       display: 'flex',
     })}
+    onClick={() =>
+      mixpanel.track('Selected RToken NavItem', {
+        RToken: rTokenAddress.toLowerCase(),
+        Target: path.slice(1),
+      })
+    }
     to={`${path}?token=${rTokenAddress}`}
     {...props}
   >
