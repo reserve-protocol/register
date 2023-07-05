@@ -1,17 +1,22 @@
+import {
+  RainbowKitProvider,
+  darkTheme,
+  getDefaultWallets,
+} from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
-import React from 'react'
-import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit'
-import { configureChains, createConfig, WagmiConfig } from 'wagmi'
-import { mainnet, optimism } from 'wagmi/chains'
-import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc'
+import { alchemyProvider } from '@wagmi/core/providers/alchemy'
 import { publicProvider } from '@wagmi/core/providers/public'
+import React from 'react'
+import { WagmiConfig, configureChains, createConfig } from 'wagmi'
+import { mainnet, optimism } from 'wagmi/chains'
+
 import AtomUpdater from './AtomUpdater'
 
 // TODO: find a way to easy switch between tenderly/mainnet
 const { chains, publicClient } = configureChains(
   [mainnet, optimism],
   [
-    // alchemyProvider({ apiKey: process.env.ALCHEMY_ID }),
+    alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY }),
     // jsonRpcProvider({
     //   rpc: (chain) => ({
     //     http: `https://rpc.tenderly.co/fork/6805d14a-cd3b-4cf0-8ae0-444a42c39539`,
@@ -23,7 +28,7 @@ const { chains, publicClient } = configureChains(
 
 const { connectors } = getDefaultWallets({
   appName: 'Register',
-  projectId: 'd28805a208cd2a52707fc6fa0d8f3dd5',
+  projectId: import.meta.env.VITE_WALLETCONNECT_ID,
   chains,
 })
 
@@ -39,7 +44,12 @@ const wagmiConfig = createConfig({
  */
 const Web3Provider = ({ children }: { children: React.ReactNode }) => (
   <WagmiConfig config={wagmiConfig}>
-    <RainbowKitProvider chains={chains}>
+    <RainbowKitProvider
+      chains={chains}
+      theme={darkTheme({
+        borderRadius: 'medium',
+      })}
+    >
       <AtomUpdater />
       {children}
     </RainbowKitProvider>

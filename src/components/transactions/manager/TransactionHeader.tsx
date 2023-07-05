@@ -1,30 +1,14 @@
 import { Trans } from '@lingui/macro'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 import Button from 'components/button'
-import CopyValue from 'components/button/CopyValue'
-import GoTo from 'components/button/GoTo'
 import WalletIcon from 'components/icons/WalletIcon'
-import { useAtomValue, useSetAtom } from 'jotai'
-import { useCallback } from 'react'
+import { useSetAtom } from 'jotai'
 import { ChevronDown, X } from 'react-feather'
-import { chainIdAtom, isWalletModalVisibleAtom, walletAtom } from 'state/atoms'
 import { Box, Flex, Text } from 'theme-ui'
-import { shortenAddress } from 'utils'
-import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { txSidebarToggleAtom } from './atoms'
 
 const TransactionHeader = () => {
   const setSidebar = useSetAtom(txSidebarToggleAtom)
-  const setWalletModal = useSetAtom(isWalletModalVisibleAtom)
-  // TODO: ENS Name
-  const account = useAtomValue(walletAtom)
-  const chainId = useAtomValue(chainIdAtom)
-
-  const ENSName = ''
-
-  const handleChangeWallet = useCallback(() => {
-    setSidebar(false)
-    setWalletModal(true)
-  }, [setSidebar, setWalletModal])
 
   return (
     <Flex
@@ -40,27 +24,25 @@ const TransactionHeader = () => {
       <Text variant="sectionTitle" sx={{ fontSize: 3 }} mr={1}>
         <Trans>Account</Trans>
       </Text>
-      <CopyValue
-        sx={{ display: ['none', 'flex'], cursor: 'pointer' }}
-        value={account || ''}
-      />
-      <GoTo
-        sx={{ display: ['none', 'flex'] }}
-        href={getExplorerLink(account || '', chainId, ExplorerDataType.ADDRESS)}
-      />
-      <Box
-        ml="auto"
-        variant="layout.verticalAlign"
-        mr={4}
-        sx={{ cursor: 'pointer' }}
-        onClick={handleChangeWallet}
-      >
-        <WalletIcon />
-        <Text ml={2} mr={2}>
-          {ENSName || shortenAddress(account ?? '')}
-        </Text>
-        <ChevronDown size={18} />
-      </Box>
+      <ConnectButton.Custom>
+        {({ account, openAccountModal }) => {
+          return (
+            <Box
+              ml="auto"
+              variant="layout.verticalAlign"
+              mr={4}
+              sx={{ cursor: 'pointer' }}
+              onClick={openAccountModal}
+            >
+              <WalletIcon />
+              <Text ml={2} mr={2}>
+                {account?.displayName}
+              </Text>
+              <ChevronDown size={18} />
+            </Box>
+          )
+        }}
+      </ConnectButton.Custom>
       <Button variant="circle" onClick={() => setSidebar(false)}>
         <X />
       </Button>

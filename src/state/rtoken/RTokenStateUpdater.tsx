@@ -1,33 +1,39 @@
-import {
-  BasketHandlerInterface,
-  CollateralInterface,
-  ERC20Interface,
-  MainInterface,
-  RTokenInterface,
-  StRSRInterface,
-  _MainInterface,
-} from 'abis'
-import { formatEther } from 'ethers/lib/utils'
+import BasketHandler from 'abis/BasketHandler'
+import CollateralAbi from 'abis/CollateralAbi'
+import ERC20 from 'abis/ERC20'
+import Main from 'abis/Main'
+import MainLegacy from 'abis/MainLegacy'
+import RToken from 'abis/RToken'
+import StRSR from 'abis/StRSR'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { useCallback, useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import {
-  basketNonceAtom,
-  blockAtom,
-  maxIssuanceAtom,
-  maxRedemptionAtom,
-  multicallAtom,
   rTokenAssetsAtom,
   rTokenCollateralStatusAtom,
-  rTokenCollaterizedAtom,
   rTokenContractsAtom,
-  rTokenStatusAtom,
-  rTokenTotalSupplyAtom,
-  rsrExchangeRateAtom,
-  stRSRSupplyAtom,
 } from 'state/atoms'
-import { ContractCall } from 'types'
 import { VERSION } from 'utils/constants'
+import { Address, formatEther } from 'viem'
+import { useContractReads } from 'wagmi'
+import { rTokenStateAtom } from './atoms/rTokenStateAtom'
+
+type StateMulticallResult = {
+  data:
+    | [
+        bigint,
+        bigint,
+        bigint,
+        bigint,
+        bigint,
+        bigint,
+        boolean,
+        boolean,
+        boolean,
+        boolean | undefined
+      ]
+    | undefined
+}
 
 /**
  * Fetchs RToken state variables that could change block by block
@@ -36,190 +42,149 @@ import { VERSION } from 'utils/constants'
  */
 const RTokenStateUpdater = () => {
   const rToken = useRToken()
-  const assets = useAtomValue(rTokenAssetsAtom)
-  const updateTokenStatus = useSetAtom(rTokenStatusAtom)
-  const setExchangeRate = useSetAtom(rsrExchangeRateAtom)
-  const setMaxIssuance = useSetAtom(maxIssuanceAtom)
-  const setMaxRedemption = useSetAtom(maxRedemptionAtom)
-  const setBasketNonce = useSetAtom(basketNonceAtom)
-  const setSupply = useSetAtom(rTokenTotalSupplyAtom)
-  const setStaked = useSetAtom(stRSRSupplyAtom)
-  const setCollateralStatus = useSetAtom(rTokenCollateralStatusAtom)
-  const setBackingCollateralStatus = useSetAtom(rTokenCollaterizedAtom)
-  const blockNumber = useAtomValue(blockAtom)
   const contracts = useAtomValue(rTokenContractsAtom)
-  const multicall = useAtomValue(multicallAtom)
+  const assets = useAtomValue(rTokenAssetsAtom)
+  // Setters
+  const setState = useSetAtom(rTokenStateAtom)
+  const setCollateralStatus = useSetAtom(rTokenCollateralStatusAtom)
 
-  // TODO: Finish
-  const getTokenStatus = useCallback(
-    async (mainAddress: string, isLegacy: boolean) => {
-      if (!multicall) {
-        return
-      }
-
-      try {
-        const call = { abi: MainInterface, address: mainAddress, args: [] }
-
-        if (!isLegacy) {
-          const [isIssuancePaused, isTradingPaused, isFrozen] = await multicall(
-            [
-              {
-                ...call,
-                method: 'issuancePaused',
-              },
-              {
-                ...call,
-                method: 'tradingPaused',
-              },
-              {
-                ...call,
-                method: 'frozen',
-              },
-            ]
-          )
-          updateTokenStatus({
-            issuancePaused: isIssuancePaused,
-            tradingPaused: isTradingPaused,
-            frozen: isFrozen,
-          })
-        } else {
-          const [isPaused, isFrozen] = await multicall([
-            {
-              ...call,
-              abi: _MainInterface,
-              method: 'paused',
-            },
-            {
-              ...call,
-              abi: _MainInterface,
-              method: 'frozen',
-            },
-          ])
-          updateTokenStatus({
-            issuancePaused: isPaused,
-            tradingPaused: isPaused,
-            frozen: isFrozen,
-          })
-        }
-      } catch (e) {
-        console.error('Error getting token status', e)
-      }
-    },
-    [multicall]
-  )
-
-  const getCollateralStatus = async () => {
-    if (
-      rToken &&
-      !rToken.isRSV &&
-      assets &&
-      multicall &&
-      contracts?.assetRegistry
-    ) {
-      try {
-        const [basketNonce, isCollaterized, ...status] = await multicall([
-          {
-            abi: BasketHandlerInterface,
-            address: contracts.basketHandler.address,
-            method: 'nonce',
-            args: [],
-          },
-          {
-            abi: BasketHandlerInterface,
-            address: contracts.basketHandler.address,
-            args: [],
-            method: 'fullyCollateralized',
-          },
-          ...rToken.collaterals.map(
-            (collateral) =>
-              ({
-                address: assets[collateral.address]?.address ?? '',
-                abi: CollateralInterface,
-                method: 'status',
-                args: [],
-              } as ContractCall)
-          ),
-        ])
-
-        const collateralStatusMap: { [x: string]: 0 | 1 | 2 } = {}
-
-        for (let i = 0; i < status.length; i++) {
-          collateralStatusMap[rToken.collaterals[i]?.address || ''] = status[i]
-        }
-
-        setCollateralStatus(collateralStatusMap)
-        setBackingCollateralStatus(isCollaterized)
-        setBasketNonce(basketNonce)
-      } catch (e) {
-        console.error('error fetching status', e)
-      }
+  // RToken state multicall
+  const calls = useMemo(() => {
+    if (!contracts) {
+      return undefined
     }
-  }
 
-  const getTokenMetrics = useCallback(
-    async (rTokenAddress: string, stRSRAddress: string) => {
-      if (!multicall) {
-        return
-      }
+    const rTokenCall = { abi: RToken, address: contracts.token.address }
+    const basketHandlerCall = {
+      abi: BasketHandler,
+      address: contracts.basketHandler.address,
+    }
+    const mainCall = { abi: Main, address: contracts.main.address }
 
-      try {
-        const [
-          tokenSupply,
-          stTokenSupply,
-          exchangeRate,
-          issuanceAvailable,
-          redemptionAvailable,
-        ] = await multicall([
-          {
-            abi: ERC20Interface,
-            method: 'totalSupply',
-            args: [],
-            address: rTokenAddress,
-          },
-          {
-            abi: ERC20Interface,
-            method: 'totalSupply',
-            args: [],
-            address: stRSRAddress,
-          },
-          {
-            abi: StRSRInterface,
-            method: 'exchangeRate',
-            args: [],
-            address: stRSRAddress,
-          },
-          {
-            abi: RTokenInterface,
-            method: 'issuanceAvailable',
-            args: [],
-            address: rTokenAddress,
-          },
-          {
-            abi: RTokenInterface,
-            method: 'redemptionAvailable',
-            args: [],
-            address: rTokenAddress,
-          },
-        ])
-        setSupply(formatEther(tokenSupply))
-        setStaked(formatEther(stTokenSupply))
-        setExchangeRate(+formatEther(exchangeRate))
-        setMaxIssuance(+formatEther(issuanceAvailable))
-        setMaxRedemption(+formatEther(redemptionAvailable))
-      } catch (e) {
-        console.error('Error fetching exchange rate', e)
-      }
-    },
-    [multicall]
-  )
+    const commonCalls: any[] = [
+      {
+        ...rTokenCall,
+        functionName: 'totalSupply', // bigint
+      },
+      {
+        abi: ERC20,
+        functionName: 'totalSupply', // bigint
+        address: contracts.stRSR.address,
+      },
+      {
+        abi: StRSR,
+        functionName: 'exchangeRate',
+        address: contracts.stRSR.address, // bigint
+      },
+      {
+        ...rTokenCall,
+        functionName: 'issuanceAvailable', // bigint
+      },
+      {
+        ...rTokenCall,
+        functionName: 'redemptionAvailable', // bigint
+      },
+      {
+        ...basketHandlerCall,
+        functionName: 'nonce', // bigint
+      },
+      {
+        ...basketHandlerCall,
+        functionName: 'fullyCollateralized', // boolean
+      },
+      {
+        ...mainCall,
+        functionName: 'frozen', // boolean
+      },
+    ]
+
+    // Legacy
+    if (contracts.main.version !== VERSION) {
+      commonCalls.push({
+        ...mainCall,
+        abi: MainLegacy,
+        functionName: 'paused', // boolean
+      })
+    } else {
+      commonCalls.push(
+        {
+          ...mainCall,
+          functionName: 'tradingPaused', // boolean
+        },
+        {
+          ...mainCall,
+          functionName: 'issuancePaused', // boolean
+        }
+      )
+    }
+
+    return commonCalls
+  }, [contracts])
+
+  // Type result manually, data inferring doesn't work with conditional calls
+  const { data: rTokenState }: StateMulticallResult = useContractReads({
+    contracts: calls,
+    watch: true,
+    allowFailure: false,
+  })
+
+  const { data: collateralStatus }: { data: (0 | 1 | 2)[] | undefined } =
+    useContractReads({
+      contracts:
+        rToken && assets
+          ? rToken.collaterals.map((c) => ({
+              address: assets[c.address].address as Address,
+              abi: CollateralAbi,
+              functionName: 'status',
+            }))
+          : [],
+      watch: true,
+      allowFailure: false,
+    })
 
   useEffect(() => {
-    if (blockNumber && contracts?.main) {
-      getTokenStatus(contracts.main.address, contracts.main.version !== VERSION)
-      getCollateralStatus()
-      getTokenMetrics(contracts.token.address, contracts.stRSR.address)
+    console.log('rtoken state', rTokenState)
+    if (rTokenState?.length) {
+      console.log('state', rTokenState)
+
+      const [
+        tokenSupply,
+        stTokenSupply,
+        exchangeRate,
+        issuanceAvailable,
+        redemptionAvailable,
+        nonce,
+        isCollaterized,
+        frozen,
+        tradingPaused,
+        issuancePaused,
+      ] = rTokenState
+
+      setState({
+        tokenSupply: +formatEther(tokenSupply),
+        stTokenSupply: +formatEther(stTokenSupply),
+        exchangeRate: +formatEther(exchangeRate),
+        issuanceAvailable: +formatEther(issuanceAvailable),
+        redemptionAvailable: +formatEther(redemptionAvailable),
+        basketNonce: Number(nonce),
+        isCollaterized,
+        tradingPaused,
+        issuancePaused:
+          issuancePaused !== undefined ? issuancePaused : tradingPaused, // if is undefined, used other pause
+        frozen,
+      })
     }
-  }, [contracts, getTokenMetrics, blockNumber])
+  }, [rTokenState])
+
+  useEffect(() => {
+    setCollateralStatus(
+      (collateralStatus || []).reduce((prev, status, index) => {
+        prev[rToken?.collaterals[index]?.address ?? ''] = status
+
+        return prev
+      }, {} as { [x: string]: 0 | 1 | 2 })
+    )
+  }, [collateralStatus])
 
   return null
 }

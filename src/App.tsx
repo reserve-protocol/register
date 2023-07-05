@@ -22,6 +22,7 @@ import { theme } from './theme'
 import { ErrorBoundary } from 'react-error-boundary'
 import React, { Suspense } from 'react'
 import IssuanceFallback from 'views/issuance/IssuanceFallback'
+import TransactionSidebar from 'components/transactions/manager/TransactionSidebar'
 
 const Issuance = React.lazy(() => import('./views/issuance'))
 
@@ -38,6 +39,7 @@ const App = () => (
         <ToastContainer />
         <Web3Provider>
           <Updater />
+          <TransactionSidebar />
           <Layout>
             <Routes>
               <Route path={ROUTES.HOME} element={<Home />} />

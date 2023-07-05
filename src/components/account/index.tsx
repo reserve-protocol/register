@@ -5,14 +5,11 @@ import MenuIcon from 'components/icons/MenuIcon'
 import WalletIcon from 'components/icons/WalletIcon'
 import { MouseoverTooltipContent } from 'components/tooltip'
 import { txSidebarToggleAtom } from 'components/transactions/manager/atoms'
-import TransactionSidebar from 'components/transactions/manager/TransactionSidebar'
-import { atom, useAtom, useAtomValue } from 'jotai'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { ReactNode } from 'react'
 import { AlertCircle, Power } from 'react-feather'
-import { isWalletModalVisibleAtom, pendingTxAtom } from 'state/atoms'
+import { pendingTxAtom } from 'state/atoms'
 import { Box, Card, Flex, Spinner, Text } from 'theme-ui'
-import { shortenAddress } from 'utils'
-import { CHAINS } from 'utils/chains'
 
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 
@@ -75,17 +72,115 @@ const ErrorWrapper = ({
  * Handles wallet interaction
  */
 const Account = () => {
-  const [isVisible, setVisible] = useAtom(txSidebarToggleAtom)
-  const [isWalletModalVisible, setWalletVisible] = useAtom(
-    isWalletModalVisibleAtom
-  )
+  const setVisible = useSetAtom(txSidebarToggleAtom)
   const isProcessing = useAtomValue(isProcessingAtom)
-  // const isInvalid = !CHAINS[chainId || 0]
 
-  return <ConnectButton />
+  return (
+    <ConnectButton.Custom>
+      {({
+        account,
+        chain,
+        openAccountModal,
+        openChainModal,
+        openConnectModal,
+        mounted,
+      }) => {
+        const ready = mounted
+        const connected = ready && account && chain
+
+        return (
+          <Box
+            {...(!ready && {
+              'aria-hidden': true,
+              sx: {
+                opacity: 0,
+                pointerEvents: 'none',
+                userSelect: 'none',
+              },
+            })}
+          >
+            {(() => {
+              if (!connected) {
+                return (
+                  <SmallButton
+                    variant="accentAction"
+                    onClick={openConnectModal}
+                  >
+                    <Text sx={{ display: ['none', 'initial'] }}>
+                      <Trans>Connect</Trans>
+                    </Text>
+                    <Box sx={{ display: ['inline', 'none'] }}>
+                      <Power size={12} />
+                    </Box>
+                  </SmallButton>
+                )
+              }
+
+              return (
+                <ErrorWrapper isValid={!chain.unsupported} chainId={chain.id}>
+                  <Container onClick={() => setVisible(true)}>
+                    {!chain.unsupported ? (
+                      <WalletIcon />
+                    ) : (
+                      <AlertCircle fill="#FF0000" color="#fff" />
+                    )}
+                    <Text
+                      sx={{ display: ['none', 'inherit', 'inherit'] }}
+                      ml={2}
+                    >
+                      {account.displayName}
+                    </Text>
+                    {isProcessing && <Spinner size={20} marginLeft={10} />}
+                    <MenuIcon style={{ marginLeft: 10 }} />
+                  </Container>
+                </ErrorWrapper>
+              )
+            })()}
+          </Box>
+        )
+      }}
+    </ConnectButton.Custom>
+  )
+
+  //   <div style={{ display: 'flex', gap: 12 }}>
+  //   <button
+  //     onClick={openChainModal}
+  //     style={{ display: 'flex', alignItems: 'center' }}
+  //     type="button"
+  //   >
+  //     {chain.hasIcon && (
+  //       <div
+  //         style={{
+  //           background: chain.iconBackground,
+  //           width: 12,
+  //           height: 12,
+  //           borderRadius: 999,
+  //           overflow: 'hidden',
+  //           marginRight: 4,
+  //         }}
+  //       >
+  //         {chain.iconUrl && (
+  //           <img
+  //             alt={chain.name ?? 'Chain icon'}
+  //             src={chain.iconUrl}
+  //             style={{ width: 12, height: 12 }}
+  //           />
+  //         )}
+  //       </div>
+  //     )}
+  //     {chain.name}
+  //   </button>
+
+  //   <button onClick={openAccountModal} type="button">
+  //     {account.displayName}
+  //     {account.displayBalance
+  //       ? ` (${account.displayBalance})`
+  //       : ''}
+  //   </button>
+  // </div>
 
   // return (
-  //   <>
+  //   <ConnectButton.Custom>
   //     {!account ? (
   //       <SmallButton
   //         variant="accentAction"
@@ -116,7 +211,7 @@ const Account = () => {
   //     )}
   //     {isVisible && <TransactionSidebar />}
   //     {isWalletModalVisible && <WalletModal />}
-  //   </>
+  //   </ConnectButton.Custom>
   // )
 }
 
