@@ -1,6 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { Interface } from '@ethersproject/abi'
 import { Contract, ContractTransaction } from '@ethersproject/contracts'
+import { Address } from 'viem'
 
 export type RoleKey =
   | 'owners'
@@ -9,9 +10,7 @@ export type RoleKey =
   | 'longFreezers'
   | 'guardians'
 
-export type Address = `0x${string}`
-
-export type AddressMap = { [chainId: number]: string }
+export type AddressMap = { [chainId: number]: Address }
 
 export interface StringMap {
   [key: string]: any
@@ -135,7 +134,7 @@ export type ContractMethodNames<T extends TypedContract> = keyof {
 
 // Generic token definition ERC20 + extra data
 export interface Token {
-  address: string
+  address: Address | string
   symbol: string
   name: string
   decimals: number

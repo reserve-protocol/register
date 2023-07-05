@@ -1,11 +1,11 @@
-import { DistributorInterface } from 'abis'
+import Distributor from 'abis/Distributor'
+import { ExternalAddressSplit } from 'components/rtoken-setup/atoms'
 import { gql } from 'graphql-request'
-import { getValidWeb3Atom, gqlClientAtom } from 'state/atoms'
-import { getContract } from 'utils'
+import { gqlClientAtom, publicClientAtom } from 'state/atoms'
 import { FURNACE_ADDRESS, ST_RSR_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
+import { getContract } from 'wagmi/actions'
 import rTokenContractsAtom from './rTokenContractsAtom'
-import { ExternalAddressSplit } from 'components/rtoken-setup/atoms'
 
 const shareToPercent = (shares: number): string => {
   return ((shares * 100) / 10000).toString()
@@ -50,46 +50,43 @@ const formatDistribution = (data: Distribution[]) => {
 
 const rTokenRevenueSplitAtom = atomWithLoadable(async (get) => {
   const contracts = get(rTokenContractsAtom)
-  const { provider } = get(getValidWeb3Atom)
   const gqlClient = get(gqlClientAtom)
 
-  if (!contracts || !provider) {
+  if (!contracts) {
     return null
   }
 
-  try {
-    const request: any = await gqlClient.request(
-      gql`
-        query getRTokenDistribution($id: String!) {
-          rtoken(id: $id) {
-            revenueDistribution {
-              id
-              rTokenDist
-              rsrDist
-              destination
-            }
+  const request: any = await gqlClient.request(
+    gql`
+      query getRTokenDistribution($id: String!) {
+        rtoken(id: $id) {
+          revenueDistribution {
+            id
+            rTokenDist
+            rsrDist
+            destination
           }
         }
-      `,
-      { id: contracts.token.address.toLowerCase() }
-    )
+      }
+    `,
+    { id: contracts.token.address.toLowerCase() }
+  )
 
-    if (!request.rtoken) {
-      throw new Error('Not found')
+  if (!request.rtoken) {
+    const client = get(publicClientAtom)
+
+    if (!client) {
+      return null
     }
+    const contract = getContract({
+      address: contracts.distributor.address,
+      abi: Distributor,
+    })
 
-    return formatDistribution(request.rtoken.revenueDistribution)
-  } catch (e) {
-    console.error('Error fetching distribution', e)
-    // If there is a theGraph error, try fetching distribution from chain events
-    const contract = getContract(
-      contracts.distributor.address,
-      DistributorInterface,
-      provider
-    )
-    const events = await contract.queryFilter(
-      'DistributionSet(address,uint16,uint16)'
-    )
+    const filter = await contract.createEventFilter.DistributionSet()
+    const events = await client.getFilterLogs({
+      filter,
+    })
 
     return formatDistribution(
       events.map(
@@ -101,6 +98,8 @@ const rTokenRevenueSplitAtom = atomWithLoadable(async (get) => {
       )
     )
   }
+
+  return formatDistribution(request.rtoken.revenueDistribution)
 })
 
 export default rTokenRevenueSplitAtom

@@ -94,3 +94,5 @@ export { default as rTokenBackingDistributionAtom } from './rtoken/atoms/rTokenB
 export { default as rTokenConfigurationAtom } from './rtoken/atoms/rTokenConfigurationAtom'
 export { default as rTokenContractsAtom } from './rtoken/atoms/rTokenContractsAtom'
 export { default as rTokenRevenueSplitAtom } from './rtoken/atoms/rTokenRevenueSplitAtom'
+export { default as rTokenBasketAtom } from './rtoken/atoms/rTokenBasketAtom'
+export { default as rTokenBackupAtom } from './rtoken/atoms/rTokenBackupAtom'

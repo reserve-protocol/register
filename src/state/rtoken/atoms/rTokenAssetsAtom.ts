@@ -1,46 +1,45 @@
-import { AssetInterface, AssetRegistryInterface } from 'abis'
-import { AssetRegistry } from 'abis/types'
+import AssetAbi from 'abis/AssetAbi'
+import AssetRegistry from 'abis/AssetRegistry'
 import { formatEther, formatUnits } from 'ethers/lib/utils'
-import { getValidWeb3Atom, multicallAtom } from 'state/atoms'
-import { ContractCall, Token } from 'types'
-import { getContract, getTokenMetaCalls } from 'utils'
+import { Token } from 'types'
+import { getTokenReadCalls } from 'utils'
 import { atomWithLoadable } from 'utils/atoms/utils'
+import { Address } from 'viem'
+import { getContract, readContracts } from 'wagmi/actions'
 import rTokenContractsAtom from './rTokenContractsAtom'
 
 const rTokenAssetsAtom = atomWithLoadable(async (get) => {
   const contracts = get(rTokenContractsAtom)
-  const { provider } = get(getValidWeb3Atom)
-  const multicall = get(multicallAtom)
 
-  if (!multicall || !provider || !contracts) {
+  if (!contracts) {
     return null
   }
 
-  const registryContract = getContract(
-    contracts.assetRegistry.address,
-    AssetRegistryInterface,
-    provider
-  ) as AssetRegistry
+  const registryContract = getContract({
+    address: contracts.assetRegistry.address as Address,
+    abi: AssetRegistry,
+  })
 
-  const [erc20s, assets] = await registryContract.getRegistry()
+  const { erc20s, assets } = await registryContract.read.getRegistry()
+
   const calls = assets.reduce((calls, asset, index) => {
-    calls.push(...getTokenMetaCalls(erc20s[index]))
+    calls.push(...getTokenReadCalls(erc20s[index]))
     calls.push({
-      address: asset,
-      abi: AssetInterface,
-      args: [],
-      method: 'price',
+      address: asset as Address,
+      abi: AssetAbi,
+      functionName: 'price',
     })
     calls.push({
-      address: asset,
-      abi: AssetInterface,
-      args: [],
-      method: 'maxTradeVolume',
+      address: asset as Address,
+      abi: AssetAbi,
+      functionName: 'maxTradeVolume',
     })
     return calls
-  }, [] as ContractCall[])
+  }, [] as any)
 
-  const result = await multicall(calls)
+  const result = await (<Promise<string[]>>(
+    readContracts({ contracts: calls, allowFailure: false })
+  ))
 
   const registeredAssets: {
     [x: string]: {
@@ -64,7 +63,7 @@ const rTokenAssetsAtom = atomWithLoadable(async (get) => {
         address: erc20s[i],
         name,
         symbol,
-        decimals,
+        decimals: Number(decimals),
       },
       maxTradeVolume: formatUnits(maxTradeVolume, decimals),
       priceUsd:

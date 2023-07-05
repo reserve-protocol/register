@@ -1,119 +1,115 @@
-import {
-  BackingManagerInterface,
-  BrokerInterface,
-  MainInterface,
-  RTokenInterface,
-  RevenueTraderInterface,
-  StRSRInterface,
-  _BrokerInterface,
-} from 'abis'
-import { formatEther } from 'ethers/lib/utils'
-import { multicallAtom } from 'state/atoms'
+import BackingManager from 'abis/BackingManager'
+import Broker from 'abis/Broker'
+import BrokerLegacy from 'abis/BrokerLegacy'
+import Main from 'abis/Main'
+import RToken from 'abis/RToken'
+import RevenueTrader from 'abis/RevenueTrader'
+import StRSR from 'abis/StRSR'
 import { StringMap } from 'types'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { VERSION } from 'utils/constants'
+import { readContracts } from 'wagmi'
 import rTokenAssetsAtom from './rTokenAssetsAtom'
 import rTokenContractsAtom from './rTokenContractsAtom'
+import { formatEther } from 'viem'
 
 const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
   const contracts = get(rTokenContractsAtom)
   const assets = get(rTokenAssetsAtom)
-  const multicall = get(multicallAtom)
 
-  if (!contracts || !multicall || !assets) {
+  if (!contracts || !assets) {
     return null
   }
 
   const rTokenCall = {
-    abi: RTokenInterface,
+    abi: RToken,
     address: contracts.token.address,
-    args: [],
   }
 
   const stRSRCall = {
-    abi: StRSRInterface,
+    abi: StRSR,
     address: contracts.stRSR.address,
-    args: [],
   }
 
   const mainCall = {
-    abi: MainInterface,
+    abi: Main,
     address: contracts.main.address,
-    args: [],
   }
 
-  const calls = [
+  const traderCall = {
+    abi: RevenueTrader,
+    address: contracts.rTokenTrader.address,
+  }
+
+  const backingManagerCall = {
+    abi: BackingManager,
+    address: contracts.backingManager.address,
+  }
+
+  const brokerCall = {
+    abi: Broker,
+    address: contracts.broker.address,
+  }
+
+  const calls: any[] = [
     {
       ...mainCall,
-      method: 'shortFreeze',
+      functionName: 'shortFreeze',
     },
     {
       ...mainCall,
-      method: 'longFreeze',
+      functionName: 'longFreeze',
     },
     {
-      abi: BackingManagerInterface,
-      address: contracts.backingManager.address,
-      args: [],
-      method: 'tradingDelay',
+      ...backingManagerCall,
+      functionName: 'tradingDelay',
     },
     {
-      abi: BackingManagerInterface,
-      address: contracts.backingManager.address,
-      args: [],
-      method: 'backingBuffer',
+      ...backingManagerCall,
+      functionName: 'backingBuffer',
     },
     {
-      abi: RevenueTraderInterface,
-      address: contracts.rTokenTrader.address,
-      args: [],
-      method: 'maxTradeSlippage',
+      ...traderCall,
+      functionName: 'maxTradeSlippage',
     },
     {
-      abi: RevenueTraderInterface,
-      address: contracts.rTokenTrader.address,
-      args: [],
-      method: 'minTradeVolume',
+      ...traderCall,
+      functionName: 'minTradeVolume',
     },
     {
       ...stRSRCall,
-      method: 'rewardRatio',
+      functionName: 'rewardRatio',
     },
     {
       ...stRSRCall,
-      method: 'unstakingDelay',
+      functionName: 'unstakingDelay',
     },
     {
       ...rTokenCall,
-      method: 'issuanceThrottleParams',
+      functionName: 'issuanceThrottleParams',
     },
     {
       ...rTokenCall,
-      method: 'redemptionThrottleParams',
+      functionName: 'redemptionThrottleParams',
     },
   ]
 
   // TODO: Legacy check
   if (contracts.broker.version !== VERSION) {
     calls.push({
-      abi: _BrokerInterface,
+      abi: BrokerLegacy,
       address: contracts.broker.address,
-      args: [],
-      method: 'auctionLength',
+      functionName: 'auctionLength',
     })
   } else {
     calls.push(
       {
-        abi: BrokerInterface,
-        address: contracts.broker.address,
-        args: [],
-        method: 'batchAuctionLength',
+        ...brokerCall,
+        functionName: 'batchAuctionLength',
       },
       {
-        abi: BrokerInterface,
-        address: contracts.broker.address,
-        args: [],
-        method: 'dutchAuctionLength',
+        ...brokerCall,
+        functionName: 'dutchAuctionLength',
       }
     )
   }
@@ -131,7 +127,24 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
     redemptionThrottle,
     batchAuctionLength,
     dutchAuctionLength,
-  ] = await multicall(calls)
+  ] = await (<
+    Promise<
+      [
+        number,
+        number,
+        number,
+        bigint,
+        bigint,
+        bigint,
+        bigint,
+        number,
+        { amtRate: bigint; pctRate: bigint },
+        { amtRate: bigint; pctRate: bigint },
+        number,
+        number | undefined
+      ]
+    >
+  >readContracts({ contracts: calls, allowFailure: false }))
 
   return {
     tradingDelay: tradingDelay.toString(),

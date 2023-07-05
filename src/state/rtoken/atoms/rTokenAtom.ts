@@ -15,37 +15,35 @@ interface RToken extends Token {
   logo: string
   collaterals: Token[]
   stToken?: Token
-  main?: string
+  main?: Address
   mandate?: string
   listed?: boolean
 }
-
-const isRSV = (address: string) => address === RSV.address
 
 // Current selected rToken address
 export const selectedRTokenAtom = atom('')
 
 const rTokenAtom: Atom<RToken | null> = atomWithLoadable(
   async (get): Promise<RToken | null> => {
-    const rTokenAddress = get(selectedRTokenAtom)
+    const rTokenAddress = get(selectedRTokenAtom) as Address
     const chainId = get(chainIdAtom)
 
     if (!rTokenAddress) {
       return null
     }
 
-    if (isRSV(rTokenAddress)) {
+    if (rTokenAddress === RSV.address) {
       return RSV as RToken
     }
 
     const facadeCallParams = {
       abi: FacadeRead,
       address: FACADE_ADDRESS[chainId] as Address,
-      args: [rTokenAddress as Address] as [Address],
+      args: [rTokenAddress],
     }
     const rTokenCallParams = {
       abi: RToken,
-      address: rTokenAddress as Address,
+      address: rTokenAddress,
       args: [],
     }
 
@@ -62,7 +60,7 @@ const rTokenAtom: Atom<RToken | null> = atomWithLoadable(
       basket,
       stTokenAddress,
     ] = await (<
-      Promise<[string, string, number, string, string, string[], string]>
+      Promise<[string, string, number, Address, string, Address[], Address]>
     >readContracts({
       contracts: [
         ...getTokenReadCalls(rTokenAddress),

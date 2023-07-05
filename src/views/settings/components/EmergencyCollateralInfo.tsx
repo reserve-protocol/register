@@ -26,7 +26,7 @@ const EmergencyCollateralInfo = (props: BoxProps) => {
           <Text variant="strong" mb={3} sx={{ display: 'block' }}>
             {unit} <Trans>Backups</Trans>
           </Text>
-          {backupBasket[unit]?.collaterals.length ? (
+          {backupBasket && backupBasket[unit]?.collaterals.length ? (
             <>
               <Flex>
                 <Flex sx={{ alignItems: 'center' }} mb={1}>

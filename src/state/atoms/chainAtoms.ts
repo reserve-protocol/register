@@ -54,8 +54,9 @@ export const web3Atom = atom((get) => {
 
 const SUBGRAPH_URL = {
   // Dev node
-  [ChainId.Mainnet]: 'http://127.0.0.1:8000/subgraphs/name/lcamargof/reserve',
-  // [ChainId.Mainnet]: 'https://api.thegraph.com/subgraphs/name/lcamargof/reserve-test',
+  // [ChainId.Mainnet]: 'http://127.0.0.1:8000/subgraphs/name/lcamargof/reserve',
+  [ChainId.Mainnet]:
+    'https://api.thegraph.com/subgraphs/name/lcamargof/reserve-test',
   [ChainId.Goerli]:
     'https://api.thegraph.com/subgraphs/name/lcamargof/reserve-goerli',
 }

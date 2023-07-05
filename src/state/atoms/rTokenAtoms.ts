@@ -61,7 +61,44 @@ export const rTokenGovernanceAtom = atomWithReset<{
 
 export const stRSRSupplyAtom = atom('')
 export const rTokenTotalSupplyAtom = atom('')
-export const rTokenBasketAtom = atomWithReset<Basket>({})
+export const rTokenBasketAtom = atom((get) => {
+  const rToken = get(rTokenAtom)
+  const distribution = get(rTokenBackingDistributionAtom)
+  let basket: Basket = {}
+
+  if (!rToken || !distribution) {
+    return basket
+  }
+
+  return rToken.collaterals.reduce((prev, { address, symbol }) => {
+    if (!distribution.collateralDistribution[address]) {
+      return prev
+    }
+
+    const { targetUnit, share } = distribution.collateralDistribution[address]
+    let targetBasket = prev[targetUnit]
+    const collateral = {
+      targetUnit,
+      address,
+      symbol,
+    }
+
+    if (!targetBasket) {
+      targetBasket = {
+        scale: '1',
+        collaterals: [collateral],
+        distribution: [share.toPrecision(6)],
+      }
+    } else {
+      targetBasket.collaterals.push(collateral)
+      targetBasket.distribution.push(share.toPrecision(6))
+    }
+
+    prev[targetUnit] = targetBasket
+    return prev
+  }, basket)
+})
+
 export const rTokenBackupAtom = atomWithReset<BackupBasket>({})
 export const rTokenCollaterizedAtom = atom(true)
 
