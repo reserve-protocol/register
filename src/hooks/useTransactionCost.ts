@@ -38,9 +38,18 @@ export const useTransactionGasFee = (
               account
             )
 
-            const estimate = await contract.estimateGas[tx.call.method](
-              ...tx.call.args
+            // NOTE:
+            // contract.estimateGas[tx.call.method]() doesn't include signer
+            // address in the RPC call
+            const data = contract.interface.encodeFunctionData(
+              tx.call.method,
+              tx.call.args
             )
+            const estimate = await contract.signer.estimateGas({
+              to: tx.call.address,
+              data,
+            })
+
             totalFee += estimate.toNumber()
             return estimate.toNumber()
           })
