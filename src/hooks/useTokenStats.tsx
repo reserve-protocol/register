@@ -79,26 +79,29 @@ const useTokenStats = (rTokenId: string, isRSV = false): TokenStats => {
         transferCount: +data?.token.transferCount,
         dailyTransferCount:
           +data?.token.dailyTokenSnapshot[0]?.dailyEventCount || 0,
-        dailyVolume: `$${formatCurrency(dailyVolume)}`,
-        stakedUsd: `$${formatCurrency(staked * rsrPrice)}`,
-        supplyUsd: `$${formatCurrency(supplyUsd)}`,
-        cumulativeVolumeUsd: `$${formatCurrency(volumeUsd)}`,
+        dailyVolume: `$${formatCurrency(dailyVolume, 0)}`,
+        stakedUsd: `$${formatCurrency(staked * rsrPrice, 0)}`,
+        supplyUsd: `$${formatCurrency(supplyUsd, 0)}`,
+        cumulativeVolumeUsd: `$${formatCurrency(volumeUsd, 0)}`,
       }
 
       if (isRSV) {
         tokenData.transferCount += RSVOverview.txCount
         tokenData.cumulativeVolumeUsd = `$${formatCurrency(
-          volumeUsd + RSVOverview.volume
+          volumeUsd + RSVOverview.volume,
+          0
         )}`
       }
 
       if (rTokenId.toLowerCase() === EUSD_ADDRESS[chainId].toLowerCase()) {
         tokenData.transferCount += rpayOverview.txCount
         tokenData.cumulativeVolumeUsd = `$${formatCurrency(
-          volumeUsd + rpayOverview.volume
+          volumeUsd + rpayOverview.volume,
+          0
         )}`
         tokenData.dailyVolume = `$${formatCurrency(
-          dailyVolume + rpayOverview.dayVolume
+          dailyVolume + rpayOverview.dayVolume,
+          0
         )}`
         tokenData.dailyTransferCount =
           tokenData.dailyTransferCount + rpayOverview.dayTxCount

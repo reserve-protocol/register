@@ -16,8 +16,8 @@ Clone this repository and run:
 
 ```
 cp .env.example .env
-yarn
-yarn start
+npm i
+npm start
 ```
 
 ## Adding an RToken to the supported list
