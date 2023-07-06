@@ -74,13 +74,6 @@ const TopVoters = (props: BoxProps) => {
   const columns = useMemo(
     () => [
       {
-        Header: t`Rank`,
-        accessor: 'id',
-        Cell: ({ row }: any) => {
-          return <Text>{row.index + 1}</Text>
-        },
-      },
-      {
         Header: t`Address`,
         Cell: ({ row }: any) => {
           const { displayAddress, address } = row.original
