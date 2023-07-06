@@ -1,41 +1,32 @@
 import { useAtomValue } from 'jotai'
-import { useCallback, useEffect, useState } from 'react'
-import { getValidWeb3Atom } from 'state/atoms'
-import { getContract } from 'utils'
+import { useMemo } from 'react'
+import { chainIdAtom } from 'state/atoms'
 import { ENS_ADDRESS } from 'utils/addresses'
-
-const ENS_ABI = [
-  'function getNames(address[] addresses) view returns (string[] r)',
-]
+import { Address, useContractRead } from 'wagmi'
 
 export const useEnsAddresses = (addresses: string[]) => {
-  const { provider, chainId } = useAtomValue(getValidWeb3Atom)
-  const [ensNames, setEnsNames] = useState<any>([])
+  const chainId = useAtomValue(chainIdAtom)
 
-  const ensReverseRecordRequest = useCallback(async () => {
-    if (!chainId || !provider) {
-      return []
-    }
+  const { data } = useContractRead({
+    abi: [
+      {
+        inputs: [
+          { internalType: 'address[]', name: 'addresses', type: 'address[]' },
+        ],
+        name: 'getNames',
+        outputs: [{ internalType: 'string[]', name: 'r', type: 'string[]' }],
+        stateMutability: 'view',
+        type: 'function',
+      },
+    ],
+    address: addresses.length ? (ENS_ADDRESS[chainId] as Address) : undefined,
+    functionName: 'getNames',
+    args: [addresses],
+  })
 
-    const ensReverseRecords = getContract(
-      ENS_ADDRESS[chainId],
-      ENS_ABI,
-      provider
-    )
-
-    const reverseRecords = await ensReverseRecords.getNames(addresses)
-
-    return addresses.map((_address, index) => reverseRecords[index])
-  }, [addresses, chainId, provider])
-
-  useEffect(() => {
-    const fetchEns = async () => {
-      const ens = await ensReverseRecordRequest()
-      setEnsNames(ens)
-    }
-
-    if (addresses?.length > 0) fetchEns()
-  }, [addresses?.toString()])
-
-  return ensNames
+  return useMemo(() => {
+    return addresses.map(
+      (_address, index) => (data as string[])[index]
+    ) as string[]
+  }, [data])
 }

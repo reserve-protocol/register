@@ -18,6 +18,7 @@ import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 const query = gql`
   query getVoters($id: String!) {
     delegates(
+      first: 10
       where: {
         governance: $id
         address_not: "0x0000000000000000000000000000000000000000"
@@ -39,22 +40,17 @@ const query = gql`
 // TODO: Proposal data casting?
 const useVoters = () => {
   const rToken = useRToken()
-  const response = useQuery(rToken?.address && !rToken.isRSV ? query : null, {
-    id: rToken?.address.toLowerCase(),
-  })
-
-  const { data, error } = response
+  const { data, error } = useQuery(
+    rToken?.address && !rToken.isRSV ? query : null,
+    {
+      id: rToken?.address.toLowerCase(),
+    }
+  )
 
   const addresses = data?.delegates?.map((delegate: any) => delegate.address)
-  const ensRes: string[] = useEnsAddresses(addresses)
+  const ensRes: string[] = useEnsAddresses(addresses || [])
 
   return useMemo(() => {
-    if (!ensRes?.length)
-      return {
-        data: [],
-        error: false,
-        loading: true,
-      }
     const delegatesWithEns = data?.delegates?.map(
       (delegate: any, idx: number) => {
         const ens = ensRes[idx]
@@ -69,12 +65,11 @@ const useVoters = () => {
       error: !!error,
       loading: !data?.delegates && !error,
     }
-  }, [JSON.stringify(response), ensRes])
+  }, [JSON.stringify(data), ensRes])
 }
 
 const TopVoters = (props: BoxProps) => {
   const { data } = useVoters()
-  const chainId = useAtomValue(chainIdAtom)
 
   const columns = useMemo(
     () => [
