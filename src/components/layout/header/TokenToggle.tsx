@@ -3,14 +3,14 @@ import RTokenSelector from 'components/rtoken-selector'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { AlertCircle } from 'react-feather'
-import { rTokenBasketStatusAtom, rTokenStatusAtom } from 'state/atoms'
+import { rTokenBasketStatusAtom, rTokenStateAtom } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
 import { COLLATERAL_STATUS } from 'utils/constants'
 
 const RTokenStatus = () => {
   const rToken = useRToken()
   const { issuancePaused, tradingPaused, frozen } =
-    useAtomValue(rTokenStatusAtom)
+    useAtomValue(rTokenStateAtom)
   const basketStatus = useAtomValue(rTokenBasketStatusAtom)
 
   if (!rToken || rToken.isRSV) {

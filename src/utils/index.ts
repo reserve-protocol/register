@@ -24,6 +24,10 @@ export function isAddress(value: string): string | false {
   }
 }
 
+export function getCurrentTime() {
+  return Math.floor(new Date().getTime() / 1000)
+}
+
 export function getTokenMetaCalls(address: string): ContractCall[] {
   return [
     {

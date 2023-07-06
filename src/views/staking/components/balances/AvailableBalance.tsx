@@ -8,7 +8,7 @@ import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import {
   rsrExchangeRateAtom,
-  rTokenCollaterizedAtom,
+  rTokenStateAtom,
   rTokenTradingAvailableAtom,
   walletAtom,
 } from 'state/atoms'
@@ -21,12 +21,12 @@ const AvailableBalance = () => {
   const rate = useAtomValue(rsrExchangeRateAtom)
   const { index, availableAmount } = useAtomValue(pendingRSRSummaryAtom)
   const account = useAtomValue(walletAtom)
-  const canWithdraw = useAtomValue(rTokenCollaterizedAtom)
+  const { isCollaterized } = useAtomValue(rTokenStateAtom)
   const isRTokenAvailable = useAtomValue(rTokenTradingAvailableAtom)
   const tx = useMemo(() => {
     if (
       !rToken?.stToken?.address ||
-      !canWithdraw ||
+      !isCollaterized ||
       !isRTokenAvailable ||
       !availableAmount
     ) {
@@ -54,7 +54,7 @@ const AvailableBalance = () => {
       </Text>
       <TokenBalance symbol="RSR" balance={availableAmount * rate} />
       <ExecuteButton small mt={3} text={t`Withdraw`} tx={tx} />
-      {!canWithdraw ||
+      {!isCollaterized ||
         (!isRTokenAvailable && (
           <Box
             mt={3}
@@ -64,7 +64,7 @@ const AvailableBalance = () => {
             <Text mr={2}>Withdrawals unavailable</Text>
             <Help
               content={
-                !canWithdraw
+                !isCollaterized
                   ? t`This RToken is currently on recollaterization, when this process is finish withdrawals will be available again.`
                   : t`RToken paused or frozen`
               }

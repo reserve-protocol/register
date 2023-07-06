@@ -4,10 +4,10 @@ import TransactionModal from 'components/transaction-modal'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useCallback, useMemo, useState } from 'react'
 import {
-  getValidWeb3Atom,
   isModuleLegacyAtom,
   rTokenAtom,
-  rTokenCollaterizedAtom,
+  rTokenStateAtom,
+  walletAtom,
 } from 'state/atoms'
 import { formatCurrency, safeParseEther } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
@@ -19,18 +19,17 @@ import {
   redeemAmountDebouncedAtom,
 } from 'views/issuance/atoms'
 import RedeemInput from './RedeemInput'
-import RedemptionQuote from './RedemptionQuote'
-import { customRedeemModalAtom, redeemNonceAtom } from './atoms'
 import RedeemNonceModal from './RedeemNonceModal'
+import RedemptionQuote from './RedemptionQuote'
+import { customRedeemModalAtom } from './atoms'
 
 const redeemTxAtom = atom((get) => {
   const rToken = get(rTokenAtom)
   const amount = get(redeemAmountDebouncedAtom)
   const isValid = get(isValidRedeemAmountAtom)
-  const nonce = get(redeemNonceAtom)
-  const isCollaterized = get(rTokenCollaterizedAtom)
+  const { isCollaterized, basketNonce: nonce } = get(rTokenStateAtom)
   const { issuance: isLegacy } = get(isModuleLegacyAtom)
-  const { account } = get(getValidWeb3Atom)
+  const account = get(walletAtom)
 
   const parsedAmount = isValid ? safeParseEther(amount) : BigNumber.from(0)
 

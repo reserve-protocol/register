@@ -7,7 +7,7 @@ import {
   addTransactionAtom,
   isModuleLegacyAtom,
   rTokenManagersAtom,
-  rTokenStatusAtom,
+  rTokenStateAtom,
 } from 'state/atoms'
 import { useTransactionState } from 'state/web3/hooks/useTransactions'
 import { Box, Flex, Text } from 'theme-ui'
@@ -30,7 +30,7 @@ const Pausing = ({
 }) => {
   const rToken = useRToken()
   const accountRole = useAtomValue(accountRoleAtom)
-  const { tradingPaused, issuancePaused } = useAtomValue(rTokenStatusAtom)
+  const { tradingPaused, issuancePaused } = useAtomValue(rTokenStateAtom)
   const addTransaction = useSetAtom(addTransactionAtom)
   const [txId, setTx] = useState('')
   const tx = useTransactionState(txId)

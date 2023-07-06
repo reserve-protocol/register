@@ -9,7 +9,7 @@ import {
   isModuleLegacyAtom,
   rTokenAssetsAtom,
   rTokenAtom,
-  rTokenCollaterizedAtom,
+  rTokenStateAtom,
 } from 'state/atoms'
 import { getContract, safeParseEther } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
@@ -35,7 +35,7 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
   const assets = get(rTokenAssetsAtom)
   const rToken = get(rTokenAtom)
   const { issuance: isLegacy } = get(isModuleLegacyAtom)
-  const isCollaterized = get(rTokenCollaterizedAtom)
+  const { isCollaterized } = get(rTokenStateAtom)
   const amount = get(redeemAmountDebouncedAtom)
   const { provider, chainId } = get(getValidWeb3Atom)
   const quotes: { [x: string]: RedeemQuote } = {}

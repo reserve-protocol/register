@@ -6,6 +6,7 @@ import rTokenContractsAtom from '../rtoken/atoms/rTokenContractsAtom'
 import rTokenBackingDistributionAtom from '../rtoken/atoms/rTokenBackingDistributionAtom'
 import rTokenAtom from '../rtoken/atoms/rTokenAtom'
 import { VERSION } from 'utils/constants'
+import { rTokenStateAtom } from 'state/rtoken/atoms/rTokenStateAtom'
 
 // TODO: Prices atoms?
 export const rsrPriceAtom = atom(0)
@@ -59,64 +60,11 @@ export const rTokenGovernanceAtom = atomWithReset<{
   governor: '',
 })
 
-export const stRSRSupplyAtom = atom('')
-export const rTokenTotalSupplyAtom = atom('')
-export const rTokenBasketAtom = atom((get) => {
-  const rToken = get(rTokenAtom)
-  const distribution = get(rTokenBackingDistributionAtom)
-  let basket: Basket = {}
-
-  if (!rToken || !distribution) {
-    return basket
-  }
-
-  return rToken.collaterals.reduce((prev, { address, symbol }) => {
-    if (!distribution.collateralDistribution[address]) {
-      return prev
-    }
-
-    const { targetUnit, share } = distribution.collateralDistribution[address]
-    let targetBasket = prev[targetUnit]
-    const collateral = {
-      targetUnit,
-      address,
-      symbol,
-    }
-
-    if (!targetBasket) {
-      targetBasket = {
-        scale: '1',
-        collaterals: [collateral],
-        distribution: [share.toPrecision(6)],
-      }
-    } else {
-      targetBasket.collaterals.push(collateral)
-      targetBasket.distribution.push(share.toPrecision(6))
-    }
-
-    prev[targetUnit] = targetBasket
-    return prev
-  }, basket)
-})
-
-export const rTokenBackupAtom = atomWithReset<BackupBasket>({})
-export const rTokenCollaterizedAtom = atom(true)
-
 // Token APY
 export const rTokenYieldAtom = atom({ tokenApy: 0, stakingApy: 0 })
 
-// Current rToken status
-// - `tradingPaused`: all interactions disabled EXCEPT ERC20 functions + RToken.issue + RToken.redeem + StRSR.stake + StRSR.payoutRewards
-// - `issuancePaused`: all interactions enabled EXCEPT RToken.issue
-// - `frozen`: all interactions disabled EXCEPT ERC20 functions + StRSR.stake
-export const rTokenStatusAtom = atomWithReset({
-  tradingPaused: false,
-  issuancePaused: false,
-  frozen: false,
-})
-
 export const rTokenTradingAvailableAtom = atom((get) => {
-  const { tradingPaused, frozen } = get(rTokenStatusAtom)
+  const { tradingPaused, frozen } = get(rTokenStateAtom)
 
   return !tradingPaused && !frozen
 })
@@ -138,30 +86,11 @@ export const rTokenManagersAtom = atom({
 // Yield
 
 // 30 day avg apy taken from https://defillama.com/yields?token=USDT&token=CUSDT&token=USDC&token=CUSDC&token=DAI&token=BUSD&token=USDP&token=WBTC&token=ETH&project=aave-v2&project=compound&chain=Ethereum
-export const collateralYieldAtom = atom<{ [x: string]: number }>({
-  sadai: 1.61,
-  sausdc: 1.94,
-  sausdt: 2.98,
-  sausdp: 3.37,
-  cdai: 2.21,
-  cusdc: 2.47,
-  cusdt: 2.51,
-  cusdp: 0.31,
-  cwbtc: 0.03,
-  ceth: 0.07,
-  fusdc: 3.46,
-  fdai: 3.76,
-  fusdt: 3.74,
-  wsteth: 5,
-  reth: 4.12,
-  wcUSDCv3: 2.1,
-  'stkcvxeusd3crv-f': 17.06,
-})
+export const collateralYieldAtom = atom<{ [x: string]: number }>({})
 
 export const estimatedApyAtom = atom((get) => {
   const rToken = get(rTokenAtom)
-  const supply = +get(rTokenTotalSupplyAtom) || 0
-  const staked = +get(stRSRSupplyAtom) || 0
+  const { tokenSupply, stTokenSupply } = get(rTokenStateAtom)
   const collateralYield = get(collateralYieldAtom)
   const distribution = get(rTokenBackingDistributionAtom)
   const revenueSplit = get(rTokenRevenueSplitAtom)
@@ -172,7 +101,7 @@ export const estimatedApyAtom = atom((get) => {
     holders: 0,
   }
 
-  if (!rToken?.main || !supply || !revenueSplit || !distribution) {
+  if (!rToken?.main || !tokenSupply || !revenueSplit || !distribution) {
     return apys
   }
 
@@ -186,8 +115,9 @@ export const estimatedApyAtom = atom((get) => {
   }
 
   apys.holders = rTokenYield * (+(revenueSplit.holders || 0) / 100)
-  apys.stakers = staked
-    ? ((rTokenYield * (supply * rTokenPrice)) / (staked * rsrPrice)) *
+  apys.stakers = stTokenSupply
+    ? ((rTokenYield * (tokenSupply * rTokenPrice)) /
+        (stTokenSupply * rsrPrice)) *
       ((+revenueSplit.stakers || 0) / 100)
     : (rTokenYield * (+revenueSplit.stakers || 0)) / 100
 

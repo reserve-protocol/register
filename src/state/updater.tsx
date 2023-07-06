@@ -1,21 +1,18 @@
-import { Web3Provider } from '@ethersproject/providers'
 import { formatEther } from '@ethersproject/units'
-import { OracleInterface } from 'abis'
-import { formatUnits } from 'ethers/lib/utils'
-import { useContractRead } from 'wagmi'
-import useRTokenPrice from 'hooks/useRTokenPrice'
+import Chainlink from 'abis/Chainlink'
+import FacadeRead from 'abis/FacadeRead'
+import StRSR from 'abis/StRSR'
+import useRToken from 'hooks/useRToken'
 import useTokensAllowance from 'hooks/useTokensAllowance'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import {
   allowanceAtom,
-  blockAtom,
+  chainIdAtom,
   collateralYieldAtom,
   ethPriceAtom,
-  gasPriceAtomBn,
-  getValidWeb3Atom,
-  multicallAtom,
+  gasFeeAtom,
   rTokenAtom,
   rTokenPriceAtom,
   rsrExchangeRateAtom,
@@ -25,16 +22,19 @@ import {
 } from 'state/atoms'
 import useSWR from 'swr'
 import { ReserveToken, StringMap } from 'types'
-import { ChainId } from 'utils/chains'
+import { FACADE_ADDRESS } from 'utils/addresses'
 import { RSR } from 'utils/constants'
 import { RSV_MANAGER } from 'utils/rsv'
-import AccountUpdater from './wallet/AccountUpdater'
+import { Address, formatUnits } from 'viem'
+import { useContractRead, useContractReads, useFeeData } from 'wagmi'
 import RpayFeed from './rpay/RpayFeed'
-import { TokenBalancesUpdater } from './wallet/TokenBalancesUpdater'
-import TokenUpdater from './rtoken/TokenUpdater'
 import RTokenUpdater from './rtoken'
-import StRSR from 'abis/StRSR'
+import TokenUpdater from './rtoken/TokenUpdater'
+import AccountUpdater from './wallet/AccountUpdater'
+import { TokenBalancesUpdater } from './wallet/TokenBalancesUpdater'
 
+// TODO: No longer see useful to pull allowances every block regarding the context
+// TODO: Consider removign this code completely
 const getTokenAllowances = (reserveToken: ReserveToken): [string, string][] => {
   const tokens: [string, string][] = [
     ...reserveToken.collaterals.map((token): [string, string] => [
@@ -86,71 +86,61 @@ const TokensAllowanceUpdater = () => {
  * GasPrice
  */
 const PricesUpdater = () => {
-  const { provider, chainId } = useAtomValue(getValidWeb3Atom)
-  const rTokenPrice = useRTokenPrice()
+  // const { provider, chainId } = useAtomValue(getValidWeb3Atom)
+  const rToken = useRToken()
+  const chainId = useAtomValue(chainIdAtom)
+
   const setRSRPrice = useSetAtom(rsrPriceAtom)
   const setEthPrice = useSetAtom(ethPriceAtom)
-  const setGasPrice = useSetAtom(gasPriceAtomBn)
+  const setGasPrice = useSetAtom(gasFeeAtom)
   const setRTokenPrice = useSetAtom(rTokenPriceAtom)
-  const blockNumber = useAtomValue(blockAtom)
-  const multicall = useAtomValue(multicallAtom)
 
-  const fetchGasPrice = useCallback(
-    async (provider: Web3Provider) => {
-      try {
-        const gasPrice = await provider.getGasPrice()
-        setGasPrice(gasPrice)
-      } catch (e) {
-        console.error('Error fetching gas price', e)
-      }
-    },
-    [provider]
-  )
+  const { data: gasQuote } = useFeeData()
 
-  const fetchTokenPrices = useCallback(async () => {
-    // Only fetch token prices in ethereum
-    // TODO: Base chain oracles? enable this
-    if (!multicall || chainId !== ChainId.Mainnet) {
-      return
-    }
-
-    try {
-      const callParams = {
-        abi: OracleInterface,
-        method: 'latestRoundData',
-      }
-
-      const [rsrPrice, wethPrice] = await multicall([
-        {
-          ...callParams,
-          // chainlink aggregator
-          address: '0x759bbc1be8f90ee6457c44abc7d443842a976d02',
-          args: [],
-        },
-        {
-          ...callParams,
-          address: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419',
-          args: [],
-        },
-      ])
-
-      setRSRPrice(+formatUnits(rsrPrice.answer, 8))
-      setEthPrice(+formatUnits(wethPrice.answer, 8))
-    } catch (e) {
-      console.error('Error fetching token prices', e)
-    }
-  }, [multicall])
+  // Price for RSR and ETH pull from chainlink
+  const multicallResult = useContractReads({
+    contracts: [
+      {
+        abi: Chainlink,
+        address: '0x759bbc1be8f90ee6457c44abc7d443842a976d02',
+        functionName: 'latestRoundData',
+      },
+      {
+        abi: Chainlink,
+        address: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419',
+        functionName: 'latestRoundData',
+      },
+    ],
+    allowFailure: false,
+  })
+  const { data: rTokenPrice } = useContractRead({
+    abi: FacadeRead,
+    address: rToken?.address ? FACADE_ADDRESS[chainId] : undefined,
+    functionName: 'price',
+    args: [rToken?.address as Address],
+  })
 
   useEffect(() => {
-    if (blockNumber && provider) {
-      fetchGasPrice(provider)
-      fetchTokenPrices()
+    if (multicallResult?.data) {
+      setRSRPrice(+formatUnits(multicallResult?.data[0][1], 8))
+      setEthPrice(+formatUnits(multicallResult?.data[0][1], 8))
     }
-  }, [blockNumber, fetchTokenPrices])
+  }, [multicallResult])
 
   useEffect(() => {
-    setRTokenPrice(rTokenPrice)
+    if (rTokenPrice) {
+      setRTokenPrice(+formatEther((rTokenPrice[0] + rTokenPrice[1]) / 2n))
+    } else {
+      // default to 1 (RSV case)
+      setRTokenPrice(1)
+    }
   }, [rTokenPrice])
+
+  useEffect(() => {
+    if (gasQuote) {
+      setGasPrice(gasQuote.gasPrice)
+    }
+  }, [gasQuote])
 
   return null
 }

@@ -143,10 +143,7 @@ const RTokenStateUpdater = () => {
     })
 
   useEffect(() => {
-    console.log('rtoken state', rTokenState)
     if (rTokenState?.length) {
-      console.log('state', rTokenState)
-
       const [
         tokenSupply,
         stTokenSupply,

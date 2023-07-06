@@ -14,7 +14,7 @@ import ConfirmIssuance from './ConfirmIssuance'
 import IssueInput from './IssueInput'
 import MaxIssuableUpdater from './MaxIssuableUpdater'
 import QuantitiesUpdater from './QuantitiesUpdater'
-import { rTokenStatusAtom } from 'state/atoms'
+import { rTokenStateAtom } from 'state/atoms'
 
 /**
  * Issuance
@@ -24,7 +24,7 @@ const Issue = () => {
   const setQuantities = useSetAtom(quantitiesAtom)
   const isValid = useAtomValue(isValidIssuableAmountAtom)
   const [issuing, setIssuing] = useState(false)
-  const { issuancePaused, frozen } = useAtomValue(rTokenStatusAtom)
+  const { issuancePaused, frozen } = useAtomValue(rTokenStateAtom)
   const missingCollateral = amount && !isValid
   const rToken = useRToken()
 

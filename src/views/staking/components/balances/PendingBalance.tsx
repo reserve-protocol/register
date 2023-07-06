@@ -7,7 +7,7 @@ import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import {
   isModuleLegacyAtom,
-  rTokenStatusAtom,
+  rTokenStateAtom,
   rsrExchangeRateAtom,
 } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
@@ -17,7 +17,7 @@ import { pendingRSRSummaryAtom } from 'views/staking/atoms'
 const PendingBalance = () => {
   const rToken = useRToken()
   const { index, pendingAmount: balance } = useAtomValue(pendingRSRSummaryAtom)
-  const { frozen } = useAtomValue(rTokenStatusAtom)
+  const { frozen } = useAtomValue(rTokenStateAtom)
   const { staking: isLegacy } = useAtomValue(isModuleLegacyAtom)
   const rate = useAtomValue(rsrExchangeRateAtom)
 

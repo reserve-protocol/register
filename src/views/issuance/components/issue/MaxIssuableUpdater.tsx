@@ -6,7 +6,7 @@ import {
   balancesAtom,
   chainIdAtom,
   rTokenAtom,
-  rTokenStatusAtom,
+  rTokenStateAtom,
   walletAtom,
 } from 'state/atoms'
 import { BI_ZERO } from 'utils/constants'
@@ -24,7 +24,7 @@ const MaxIssuableUpdater = () => {
   const account = useAtomValue(walletAtom)
   const chainId = useAtomValue(chainIdAtom)
   const facadeContract = useFacadeContract()
-  const { issuancePaused, frozen } = useAtomValue(rTokenStatusAtom)
+  const { issuancePaused, frozen } = useAtomValue(rTokenStateAtom)
 
   const updateMaxIssuable = useCallback(
     async (account: string, rTokenAddress: string, facade: Facade) => {

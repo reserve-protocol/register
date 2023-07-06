@@ -11,6 +11,7 @@ import {
 import { useSetAtom } from 'jotai'
 import {
   blockAtom,
+  blockTimestampAtom,
   chainIdAtom,
   publicClientAtom,
   walletAtom,
@@ -30,6 +31,17 @@ const AtomUpdater = () => {
   const setPublicClient = useSetAtom(publicClientAtom)
   const setBlockNumber = useSetAtom(blockAtom)
   const setChain = useSetAtom(chainIdAtom)
+  const setBlockTimestamp = useSetAtom(blockTimestampAtom)
+
+  const fetchTimestamp = async () => {
+    try {
+      if (publicClient) {
+        setBlockTimestamp(Number((await publicClient.getBlock()).timestamp))
+      }
+    } catch (e) {
+      console.error('error fetching block time', e)
+    }
+  }
 
   useEffect(() => {
     setWallet(account ?? '')
@@ -44,6 +56,7 @@ const AtomUpdater = () => {
   }, [publicClient])
 
   useEffect(() => {
+    fetchTimestamp() // update stored block timestamp
     setBlockNumber(blockNumber ? Number(blockNumber) : undefined)
   }, [blockNumber])
 

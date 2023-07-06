@@ -4,7 +4,7 @@ import { ChevronRight } from 'react-feather'
 import {
   basketNonceAtom,
   isModuleLegacyAtom,
-  rTokenCollaterizedAtom,
+  rTokenStateAtom,
 } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
 import { BigNumberMap } from 'types'
@@ -74,7 +74,7 @@ const RedemptionQuoteSelector = () => {
 }
 
 const RedemptionQuote = () => {
-  const isCollaterized = useAtomValue(rTokenCollaterizedAtom)
+  const { isCollaterized } = useAtomValue(rTokenStateAtom)
   const { issuance: isLegacy } = useAtomValue(isModuleLegacyAtom)
 
   if (isCollaterized || isLegacy) {

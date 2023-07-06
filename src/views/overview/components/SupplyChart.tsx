@@ -1,14 +1,14 @@
 import { formatEther } from '@ethersproject/units'
 import { t } from '@lingui/macro'
-import { RToken } from 'abis/types'
 import AreaChart from 'components/charts/area/AreaChart'
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
-import { useRTokenContract } from 'hooks/useContract'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
 import useTimeFrom from 'hooks/useTimeFrom'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useAtomValue } from 'jotai'
+import { useMemo, useState } from 'react'
+import { rTokenStateAtom } from 'state/atoms'
 import { BoxProps } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { TIME_RANGES } from 'utils/constants'
@@ -37,7 +37,7 @@ const dailyPriceQuery = gql`
 
 const SupplyChart = (props: BoxProps) => {
   const rToken = useRToken()
-  const [supply, setSupply] = useState(0)
+  const { tokenSupply: supply } = useAtomValue(rTokenStateAtom)
   const [current, setCurrent] = useState(TIME_RANGES.MONTH)
   const fromTime = useTimeFrom(current)
   const query = current === TIME_RANGES.DAY ? hourlyPriceQuery : dailyPriceQuery
@@ -45,19 +45,6 @@ const SupplyChart = (props: BoxProps) => {
     id: rToken?.address.toLowerCase(),
     fromTime,
   })
-  const contract = useRTokenContract(rToken?.address)
-
-  const getSupply = useCallback(async (contract: RToken) => {
-    const supply = await contract.totalSupply()
-
-    setSupply(+formatEther(supply))
-  }, [])
-
-  useEffect(() => {
-    if (contract) {
-      getSupply(contract)
-    }
-  }, [contract])
 
   const rows = useMemo(() => {
     if (data) {

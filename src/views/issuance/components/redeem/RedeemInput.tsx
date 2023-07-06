@@ -3,12 +3,12 @@ import TransactionInput, {
   TransactionInputProps,
 } from 'components/transaction-input'
 import { useAtomValue } from 'jotai'
-import { rTokenBalanceAtom, rTokenStatusAtom } from 'state/atoms'
+import { rTokenBalanceAtom, rTokenStateAtom } from 'state/atoms'
 import { redeemAmountAtom } from 'views/issuance/atoms'
 
 const RedeemInput = (props: Partial<TransactionInputProps>) => {
   const max = useAtomValue(rTokenBalanceAtom)
-  const { frozen } = useAtomValue(rTokenStatusAtom)
+  const { frozen } = useAtomValue(rTokenStateAtom)
 
   return (
     <TransactionInput

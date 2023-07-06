@@ -23,11 +23,10 @@ const gridProps = { columns: [1, 1, 1, 2], gap: [5, 5, 5, 4] }
  */
 const Overview = () => {
   const rToken = useAtomValue(rTokenAtom)
-  const isRSV = !!rToken && !rToken.main
 
   const rTokenMetrics = useTokenStats(
     rToken?.address.toLowerCase() ?? '',
-    isRSV
+    !!rToken && !rToken.main
   )
 
   return (

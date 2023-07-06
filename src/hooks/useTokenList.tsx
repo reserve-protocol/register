@@ -3,7 +3,6 @@ import { gql } from 'graphql-request'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { RSVOverview, chainIdAtom, rpayOverviewAtom } from 'state/atoms'
-import { calculateApy } from 'utils'
 import { EUSD_ADDRESS, RSV_ADDRESS } from 'utils/addresses'
 import { TIME_RANGES } from 'utils/constants'
 import tokenList from 'utils/rtokens'
@@ -90,19 +89,9 @@ const useTokenList = () => {
     if (data) {
       setList(
         data.tokens.map((token: any): ListedToken => {
+          // TODO: pool APY from theGraph
           let tokenApy = 0
           let stakingApy = 0
-
-          const recentRate = token?.rToken?.recentRate[0]
-          const lastRate = token?.rToken?.lastRate[0]
-
-          if (
-            recentRate &&
-            lastRate &&
-            recentRate.timestamp !== lastRate.timestamp
-          ) {
-            ;[tokenApy, stakingApy] = calculateApy(recentRate, lastRate)
-          }
 
           const tokenData = {
             id: getAddress(token.id),

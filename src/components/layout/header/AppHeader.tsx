@@ -5,7 +5,6 @@ import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import useIsDeployer from 'hooks/useIsDeployer'
 import { Box, Flex, Text } from 'theme-ui'
-import Caution from '../token-menu/Caution'
 import Brand from './Brand'
 import TokenToggle from './TokenToggle'
 
@@ -52,16 +51,6 @@ const AppHeader = () => {
         )}
         {!isDeployer && <TokenToggle />}
       </Box>
-      <Caution mr={3} />
-      <Box
-        mx={4}
-        sx={{
-          backgroundColor: 'inputBorder',
-          width: '1px',
-          height: '16px',
-          display: ['none', 'block'],
-        }}
-      ></Box>
       <Flex
         sx={{
           display: ['none', 'flex'],

@@ -6,7 +6,7 @@ import {
   accountRoleAtom,
   addTransactionAtom,
   rTokenManagersAtom,
-  rTokenStatusAtom,
+  rTokenStateAtom,
 } from 'state/atoms'
 import { useTransactionState } from 'state/web3/hooks/useTransactions'
 import { TRANSACTION_STATUS } from 'utils/constants'
@@ -25,7 +25,7 @@ const FreezeManager = () => {
   const tx = useTransactionState(txId)
   const rToken = useRToken()
   const accountRole = useAtomValue(accountRoleAtom)
-  const { frozen: isFrozen } = useAtomValue(rTokenStatusAtom)
+  const { frozen: isFrozen } = useAtomValue(rTokenStateAtom)
   const addTransaction = useSetAtom(addTransactionAtom)
 
   useEffect(() => {

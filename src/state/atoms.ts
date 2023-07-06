@@ -1,10 +1,10 @@
 import { BigNumber } from 'ethers'
-import { formatEther } from 'ethers/lib/utils'
 import { atom } from 'jotai'
 import { atomFamily } from 'jotai/utils'
 import { getValidWeb3Atom } from './atoms'
 import { promiseMulticall } from './web3/lib/multicall'
 import { ContractCall } from 'types'
+import { formatEther } from 'viem'
 
 /**
  * ######################
@@ -45,8 +45,10 @@ export const searchParamAtom = atomFamily(
 
 export const ethPriceAtom = atom(1)
 export const gasPriceAtomBn = atom(BigNumber.from(0))
+
+export const gasFeeAtom = atom<bigint | null>(null)
 export const gasPriceAtom = atom((get) =>
-  Number(formatEther(get(gasPriceAtomBn)))
+  Number(formatEther(get(gasFeeAtom) || 0n))
 )
 
 /**
@@ -96,3 +98,4 @@ export { default as rTokenContractsAtom } from './rtoken/atoms/rTokenContractsAt
 export { default as rTokenRevenueSplitAtom } from './rtoken/atoms/rTokenRevenueSplitAtom'
 export { default as rTokenBasketAtom } from './rtoken/atoms/rTokenBasketAtom'
 export { default as rTokenBackupAtom } from './rtoken/atoms/rTokenBackupAtom'
+export * from './rtoken/atoms/rTokenStateAtom'
