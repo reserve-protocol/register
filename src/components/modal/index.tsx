@@ -38,7 +38,7 @@ const Dialog = ({ width = '420px', sx = {}, ...props }: ModalProps) => (
       right: [0, 'auto'],
       bottom: [0, 'auto'],
       transform: ['none', 'translate(-50%, -50%)'],
-      maxWidth: ['auto', width],
+      width: ['auto', width],
       ...sx,
     }}
   />
@@ -79,7 +79,7 @@ const Modal = ({ children, ...props }: ModalProps) =>
   createPortal(
     <Overlay>
       <Dialog {...props}>
-        <Header />
+        <Header {...props} />
         {children}
       </Dialog>
     </Overlay>,

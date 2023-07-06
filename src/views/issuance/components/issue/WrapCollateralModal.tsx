@@ -23,13 +23,7 @@ import { v4 as uuid } from 'uuid'
 
 // TODO: rewrite this whole component
 // TODO: Fix precision issue with balances
-const WrapCollateralModal = ({
-  onClose,
-  unwrap = false,
-}: {
-  onClose(): void
-  unwrap?: boolean
-}) => {
+const WrapCollateralModal = ({ onClose }: { onClose(): void }) => {
   const { provider, account, chainId } = useAtomValue(getValidWeb3Atom)
   const [signing, setSigning] = useState(false)
   const [loading, setLoading] = useState(false)
