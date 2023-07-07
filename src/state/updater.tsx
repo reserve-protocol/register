@@ -54,28 +54,6 @@ const getTokenAllowances = (reserveToken: ReserveToken): [string, string][] => {
 }
 
 /**
- * Update allowances for:
- * Collaterals (n) -> RToken
- * RSR -> stRSR
- * If RSV: RSV -> RSVManager (redeem)
- */
-const TokensAllowanceUpdater = () => {
-  const account = useAtomValue(walletAtom)
-  const reserveToken = useAtomValue(rTokenAtom)
-  const updateAllowances = useSetAtom(allowanceAtom)
-  const allowances = useTokensAllowance(
-    reserveToken && account ? getTokenAllowances(reserveToken) : [],
-    account
-  )
-
-  useEffect(() => {
-    updateAllowances(allowances)
-  }, [allowances])
-
-  return null
-}
-
-/**
  * Fetch prices for:
  * ETH    -> USD
  * RSR    -> USD
@@ -126,6 +104,7 @@ const PricesUpdater = () => {
 
   useEffect(() => {
     if (rTokenPrice) {
+      console.log('rtoken price', rTokenPrice)
       setRTokenPrice(+formatEther((rTokenPrice[0] + rTokenPrice[1]) / 2n))
     } else {
       // default to 1 (RSV case)
@@ -214,7 +193,6 @@ const CollateralYieldUpdater = () => {
  */
 const Updater = () => (
   <>
-    <TokensAllowanceUpdater />
     <PricesUpdater />
     <ExchangeRateUpdater />
     <AccountUpdater />

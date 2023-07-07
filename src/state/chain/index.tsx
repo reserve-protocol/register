@@ -4,6 +4,7 @@ import {
   getDefaultWallets,
 } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
+import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc'
 import { alchemyProvider } from '@wagmi/core/providers/alchemy'
 import { publicProvider } from '@wagmi/core/providers/public'
 import React from 'react'
@@ -16,13 +17,13 @@ import AtomUpdater from './AtomUpdater'
 const { chains, publicClient } = configureChains(
   [mainnet, optimism],
   [
-    alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY }),
-    // jsonRpcProvider({
-    //   rpc: (chain) => ({
-    //     http: `https://rpc.tenderly.co/fork/6805d14a-cd3b-4cf0-8ae0-444a42c39539`,
-    //   }),
-    // }),
-    publicProvider(),
+    // alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY }),
+    jsonRpcProvider({
+      rpc: (chain) => ({
+        http: `https://rpc.tenderly.co/fork/6805d14a-cd3b-4cf0-8ae0-444a42c39539`,
+      }),
+    }),
+    // publicProvider(),
   ]
 )
 

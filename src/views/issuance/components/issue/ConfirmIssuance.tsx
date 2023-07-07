@@ -84,8 +84,6 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
     [rToken?.address]
   )
 
-  console.log('tx', transaction)
-
   return (
     <TransactionModal
       title={t`Mint ${rToken?.symbol}`}

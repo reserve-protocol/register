@@ -8,6 +8,7 @@ import {
   rTokenAssetsAtom,
   rTokenAtom,
   rTokenContractsAtom,
+  rTokenPriceAtom,
 } from 'state/atoms'
 import { Token } from 'types'
 import {
@@ -16,7 +17,7 @@ import {
   RSR_ADDRESS,
 } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
-import { formatUnits } from 'viem'
+import { Address, formatUnits, zeroAddress } from 'viem'
 import { readContracts } from 'wagmi/actions'
 
 export interface Auction {
@@ -69,13 +70,15 @@ export const auctionSessionAtom = atom(0)
 export const auctionSidebarAtom = atom(false)
 
 export const accumulatedRevenueAtom = atomWithLoadable(async (get) => {
+  get(auctionSessionAtom) // just for refresh sake
   const rToken = get(rTokenAtom)
   const assets = get(rTokenAssetsAtom)
-  const session = get(auctionSessionAtom)
   const chainId = get(chainIdAtom)
   const client = get(publicClientAtom)
+  const price = get(rTokenPriceAtom)
 
-  if (!rToken || !assets || !session || !client) {
+  if (!rToken || !assets || !client || !price) {
+    console.log('return 0', price)
     return 0
   }
 
@@ -107,13 +110,13 @@ export const accumulatedRevenueAtom = atomWithLoadable(async (get) => {
 
 export const auctionsToSettleAtom = atomWithLoadable(
   async (get): Promise<AuctionToSettle[] | null> => {
+    get(auctionSessionAtom) // just for refresh sake
     const chainId = get(chainIdAtom)
     const rToken = get(rTokenAtom)
     const assets = get(rTokenAssetsAtom)
     const contracts = get(rTokenContractsAtom)
-    const session = get(auctionSessionAtom)
 
-    if (!rToken || !assets || !contracts || !session) {
+    if (!rToken || !assets || !contracts) {
       return null
     }
 
@@ -164,24 +167,23 @@ export const auctionsToSettleAtom = atomWithLoadable(
 )
 
 // TODO: This can be executed from the global context to display the number of auctions available
-export const auctionsOverviewAtom = atom(
+export const auctionsOverviewAtom = atomWithLoadable(
   async (
     get
   ): Promise<{
     revenue: Auction[]
     recollaterization: Auction | null
   } | null> => {
+    get(auctionSessionAtom) // just for refresh sake
     const contracts = get(rTokenContractsAtom)
     const assets = get(rTokenAssetsAtom)
     const rToken = get(rTokenAtom)
-    const session = get(auctionSessionAtom)
     const client = get(publicClientAtom)
     const chainId = get(chainIdAtom)
 
-    if (!client || !contracts || !rToken || !assets || !session) {
+    if (!client || !contracts || !rToken || !assets) {
       return null
     }
-
     const call = {
       abi: FacadeAct,
       address: FACADE_ACT_ADDRESS[chainId],
@@ -190,7 +192,7 @@ export const auctionsOverviewAtom = atom(
     const [
       { result: rsrRevenueOverview },
       { result: rTokenRevenueOverview },
-      { result: recoAuction },
+      recoAuction,
     ] = await Promise.all([
       client.simulateContract({
         ...call,
@@ -202,11 +204,19 @@ export const auctionsOverviewAtom = atom(
         functionName: 'revenueOverview',
         args: [contracts.rTokenTrader.address],
       }),
-      client.simulateContract({
-        ...call,
-        functionName: 'nextRecollateralizationAuction',
-        args: [contracts.backingManager.address],
-      }),
+      (async (): Promise<[boolean, Address, Address, bigint]> => {
+        try {
+          const { result } = await client.simulateContract({
+            ...call,
+            functionName: 'nextRecollateralizationAuction',
+            args: [contracts.backingManager.address],
+          })
+
+          return result as any
+        } catch (e) {
+          return [false, zeroAddress, zeroAddress, 0n]
+        }
+      })(),
     ])
 
     const auctions = rsrRevenueOverview[0].reduce((acc, erc20, index) => {

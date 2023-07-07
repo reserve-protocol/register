@@ -47,8 +47,6 @@ const ConfirmAuction = ({ onClose }: { onClose(): void }) => {
     }
   }, [status])
 
-  console.log('tx', tx)
-
   return (
     <Box p={4} sx={{ borderTop: '1px solid', borderColor: 'darkBorder' }}>
       <LoadingButton
