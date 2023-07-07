@@ -6,7 +6,6 @@ import useRToken from 'hooks/useRToken'
 import useTokensAllowance from 'hooks/useTokensAllowance'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { useSearchParams } from 'react-router-dom'
 import {
   allowanceAtom,
   chainIdAtom,
@@ -17,7 +16,6 @@ import {
   rTokenPriceAtom,
   rsrExchangeRateAtom,
   rsrPriceAtom,
-  searchParamsAtom,
   walletAtom,
 } from 'state/atoms'
 import useSWR from 'swr'
@@ -29,7 +27,6 @@ import { Address, formatUnits } from 'viem'
 import { useContractRead, useContractReads, useFeeData } from 'wagmi'
 import RpayFeed from './rpay/RpayFeed'
 import RTokenUpdater from './rtoken'
-import TokenUpdater from './rtoken/TokenUpdater'
 import AccountUpdater from './wallet/AccountUpdater'
 import { TokenBalancesUpdater } from './wallet/TokenBalancesUpdater'
 
@@ -212,21 +209,11 @@ const CollateralYieldUpdater = () => {
   return null
 }
 
-const SearchParamsUpdater = () => {
-  const [searchParams] = useSearchParams()
-  const setSearchParams = useSetAtom(searchParamsAtom)
-  useEffect(() => {
-    setSearchParams(searchParams)
-  }, [searchParams])
-  return null
-}
 /**
  * Updater
  */
 const Updater = () => (
   <>
-    <SearchParamsUpdater />
-    <TokenUpdater />
     <TokensAllowanceUpdater />
     <PricesUpdater />
     <ExchangeRateUpdater />

@@ -2,7 +2,7 @@ import { providers } from 'ethers'
 import { GraphQLClient } from 'graphql-request'
 import { atom } from 'jotai'
 import { ChainId, supportedChains } from 'utils/chains'
-import { PublicClient, WalletClient } from 'wagmi'
+import { Address, PublicClient, WalletClient } from 'wagmi'
 
 /**
  * #########################
@@ -12,7 +12,7 @@ import { PublicClient, WalletClient } from 'wagmi'
 export const chainIdAtom = atom<number>(1)
 export const blockAtom = atom<number | undefined>(undefined)
 export const blockTimestampAtom = atom<number>(0)
-export const walletAtom = atom('')
+export const walletAtom = atom<Address | null>(null)
 export const providerAtom = atom(
   undefined as undefined | providers.Web3Provider
 )

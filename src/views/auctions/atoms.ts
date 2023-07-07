@@ -1,25 +1,20 @@
-import { BackingManager } from 'views/deploy/components/BackingManager'
-import { FacadeActInterface, FacadeInterface } from 'abis'
-import { Facade, FacadeAct } from 'abis/types'
-import { formatUnits } from 'ethers/lib/utils'
 import { atom } from 'jotai'
 import { atomWithReset, loadable } from 'jotai/utils'
 import {
   chainIdAtom,
   getValidWeb3Atom,
-  multicallAtom,
   rTokenAssetsAtom,
   rTokenAtom,
   rTokenContractsAtom,
 } from 'state/atoms'
 import { Token } from 'types'
-import { getContract } from 'utils'
 import {
   FACADE_ACT_ADDRESS,
   FACADE_ADDRESS,
   RSR_ADDRESS,
 } from 'utils/addresses'
-import { simplifyLoadable } from 'utils/atoms/utils'
+import { atomWithLoadable, simplifyLoadable } from 'utils/atoms/utils'
+import { getContract } from 'wagmi/actions'
 
 export interface Auction {
   sell: Token
@@ -67,43 +62,41 @@ export const auctionSessionAtom = atom(0)
 
 export const auctionSidebarAtom = atom(false)
 
-const accumulatedRevenue = loadable(
-  atom(async (get) => {
-    const { provider, chainId } = get(getValidWeb3Atom)
-    const rToken = get(rTokenAtom)
-    const assets = get(rTokenAssetsAtom)
-    const session = get(auctionSessionAtom)
+export const accumulatedRevenueAtom = atomWithLoadable(async (get) => {
+  const { provider, chainId } = get(getValidWeb3Atom)
+  const rToken = get(rTokenAtom)
+  const assets = get(rTokenAssetsAtom)
+  const session = get(auctionSessionAtom)
 
-    if (!provider || !rToken || !assets || !session) {
-      return 0
-    }
+  if (!provider || !rToken || !assets || !session) {
+    return 0
+  }
 
-    const contract = getContract(
-      FACADE_ADDRESS[chainId],
-      FacadeInterface,
-      provider
-    ) as Facade
+  const contract = getContract(
+    FACADE_ADDRESS[chainId],
+    FacadeInterface,
+    provider
+  ) as Facade
 
-    const { balances, balancesNeededByBackingManager, erc20s } =
-      await contract.callStatic.balancesAcrossAllTraders(rToken.address)
+  const { balances, balancesNeededByBackingManager, erc20s } =
+    await contract.callStatic.balancesAcrossAllTraders(rToken.address)
 
-    return erc20s.reduce((revenue, erc20, index) => {
-      const priceUsd = assets[erc20]?.priceUsd || 0
-      const decimals = assets[erc20]?.token.decimals || 18
+  return erc20s.reduce((revenue, erc20, index) => {
+    const priceUsd = assets[erc20]?.priceUsd || 0
+    const decimals = assets[erc20]?.token.decimals || 18
 
-      return (
-        revenue +
-        Number(
-          formatUnits(
-            balances[index].sub(balancesNeededByBackingManager[index]),
-            decimals
-          )
-        ) *
-          priceUsd
-      )
-    }, 0)
-  })
-)
+    return (
+      revenue +
+      Number(
+        formatUnits(
+          balances[index].sub(balancesNeededByBackingManager[index]),
+          decimals
+        )
+      ) *
+        priceUsd
+    )
+  }, 0)
+})
 
 const settleableAuctions = loadable(
   atom(async (get): Promise<AuctionToSettle[] | null> => {
@@ -266,7 +259,3 @@ const auctionsOverview = loadable(
     }
   )
 )
-
-export const auctionsToSettleAtom = simplifyLoadable(settleableAuctions)
-export const accumulatedRevenueAtom = simplifyLoadable(accumulatedRevenue)
-export const auctionsOverviewAtom = simplifyLoadable(auctionsOverview)

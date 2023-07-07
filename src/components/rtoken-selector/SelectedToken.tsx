@@ -16,7 +16,7 @@ const SelectedToken = () => {
   const rToken = useAtomValue(rTokenAtom)
   const tokenList = useAtomValue(availableTokensAtom)
   const { symbol, logo } = useMemo(() => {
-    if (tokenList[selectedAddress]) {
+    if (selectedAddress && tokenList[selectedAddress]) {
       return tokenList[selectedAddress]
     }
 
@@ -28,7 +28,7 @@ const SelectedToken = () => {
     }
 
     return {
-      symbol: shortenAddress(selectedAddress),
+      symbol: shortenAddress(selectedAddress ?? ''),
       logo: DEFAULT_LOGO,
     }
   }, [selectedAddress, rToken?.symbol])

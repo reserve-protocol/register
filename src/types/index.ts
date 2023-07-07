@@ -134,7 +134,7 @@ export type ContractMethodNames<T extends TypedContract> = keyof {
 
 // Generic token definition ERC20 + extra data
 export interface Token {
-  address: Address | string
+  address: Address
   symbol: string
   name: string
   decimals: number

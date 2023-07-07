@@ -1,6 +1,7 @@
 import { formatEther } from 'ethers/lib/utils'
 import { gql } from 'graphql-request'
 import { useAtom, useAtomValue } from 'jotai'
+import { useResetAtom } from 'jotai/utils'
 import { useEffect } from 'react'
 import {
   RSVOverview,
@@ -42,18 +43,15 @@ const rTokenMetricsQuery = gql`
 
 const useTokenStats = (rTokenId: string, isRSV = false): TokenStats => {
   const [stats, setStats] = useAtom(tokenMetricsAtom)
+  const resetStats = useResetAtom(tokenMetricsAtom)
   const rpayOverview = useAtomValue(rpayOverviewAtom)
   const fromTime = useTimeFrom(TIME_RANGES.DAY)
   const chainId = useAtomValue(chainIdAtom)
 
-  const { data } = useQuery(
-    rTokenMetricsQuery,
-    {
-      id: rTokenId,
-      fromTime,
-    },
-    { refreshInterval: 10000 }
-  )
+  const { data } = useQuery(rTokenMetricsQuery, {
+    id: rTokenId,
+    fromTime,
+  })
   const rsrPrice = useAtomValue(rsrPriceAtom)
   const rTokenPrice = useAtomValue(rTokenPriceAtom)
 
@@ -110,6 +108,8 @@ const useTokenStats = (rTokenId: string, isRSV = false): TokenStats => {
       setStats(tokenData)
     }
   }, [JSON.stringify(data), rTokenPrice, rpayOverview])
+
+  useEffect(() => resetStats, [rTokenId])
 
   return stats
 }

@@ -1,11 +1,8 @@
+import OverviewIcon from 'components/icons/OverviewIcon'
 import useRToken from 'hooks/useRToken'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { ChevronRight } from 'react-feather'
-import {
-  basketNonceAtom,
-  isModuleLegacyAtom,
-  rTokenStateAtom,
-} from 'state/atoms'
+import { isModuleLegacyAtom, rTokenStateAtom } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
 import { BigNumberMap } from 'types'
 import CollateralDistribution from '../issue/CollateralDistribution'
@@ -14,11 +11,10 @@ import {
   redeemNonceAtom,
   redeemQuotesAtom,
 } from './atoms'
-import OverviewIcon from 'components/icons/OverviewIcon'
 
 const quoteQuantitiesAtom = atom((get) => {
   const quote = get(redeemQuotesAtom)
-  const nonce = get(basketNonceAtom)
+  const nonce = get(rTokenStateAtom).basketNonce
 
   if (!quote || !quote[nonce]) {
     return {}
@@ -44,7 +40,7 @@ const CurrentRedemptionQuote = () => {
 }
 
 const RedemptionQuoteSelector = () => {
-  const basketNonce = useAtomValue(basketNonceAtom)
+  const { basketNonce } = useAtomValue(rTokenStateAtom)
   const selectedNonce = useAtomValue(redeemNonceAtom)
   const setNonceSelection = useSetAtom(customRedeemModalAtom)
 

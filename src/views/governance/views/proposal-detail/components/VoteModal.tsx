@@ -13,7 +13,7 @@ import {
   chainIdAtom,
   rTokenGovernanceAtom,
 } from 'state/atoms'
-import { useTransactionState } from 'state/web3/hooks/useTransactions'
+import { useTransactionState } from 'state/chain/hooks/useTransactions'
 import { Box, Checkbox, Divider, Flex, Link, Spinner, Text } from 'theme-ui'
 import {
   formatCurrency,

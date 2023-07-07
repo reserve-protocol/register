@@ -3,7 +3,7 @@ import RToken from 'abis/RToken'
 import { Atom, atom } from 'jotai'
 import { chainIdAtom } from 'state/atoms/chainAtoms'
 import { Token } from 'types'
-import { getTokenReadCalls } from 'utils'
+import { getTokenReadCalls, isAddress } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import RSV from 'utils/rsv'
@@ -19,9 +19,10 @@ interface RToken extends Token {
   mandate?: string
   listed?: boolean
 }
-
 // Current selected rToken address
-export const selectedRTokenAtom = atom('')
+export const selectedRTokenAtom = atom(
+  isAddress(new URLSearchParams(window.location.search).get('token') ?? '')
+)
 
 const rTokenAtom: Atom<RToken | null> = atomWithLoadable(
   async (get): Promise<RToken | null> => {

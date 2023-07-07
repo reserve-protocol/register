@@ -1,12 +1,11 @@
-import { BackupBasket, Basket } from 'components/rtoken-setup/atoms'
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import rTokenRevenueSplitAtom from 'state/rtoken/atoms/rTokenRevenueSplitAtom'
-import rTokenContractsAtom from '../rtoken/atoms/rTokenContractsAtom'
-import rTokenBackingDistributionAtom from '../rtoken/atoms/rTokenBackingDistributionAtom'
-import rTokenAtom from '../rtoken/atoms/rTokenAtom'
-import { VERSION } from 'utils/constants'
 import { rTokenStateAtom } from 'state/rtoken/atoms/rTokenStateAtom'
+import { VERSION } from 'utils/constants'
+import rTokenAtom from '../rtoken/atoms/rTokenAtom'
+import rTokenBackingDistributionAtom from '../rtoken/atoms/rTokenBackingDistributionAtom'
+import rTokenContractsAtom from '../rtoken/atoms/rTokenContractsAtom'
 
 // TODO: Prices atoms?
 export const rsrPriceAtom = atom(0)
@@ -40,8 +39,6 @@ export const rTokenBasketStatusAtom = atom((get) => {
 
   return Math.max(...Object.values(status))
 })
-
-export const basketNonceAtom = atom(0)
 
 export const rTokenGovernanceAtom = atomWithReset<{
   name: string

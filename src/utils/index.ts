@@ -1,4 +1,3 @@
-import { getAddress } from '@ethersproject/address'
 import { BigNumber } from '@ethersproject/bignumber'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { t } from '@lingui/macro'
@@ -8,7 +7,7 @@ import humanizeDuration from 'humanize-duration'
 import { BigNumberMap, ContractCall, TransactionState } from 'types'
 import { BI_ZERO } from './constants'
 import { ERC20Interface } from 'abis'
-import { Address } from 'viem'
+import { Address, getAddress } from 'viem'
 import ERC20 from 'abis/ERC20'
 
 export const decimalPattern = /^[0-9]*[.]?[0-9]*$/i
@@ -16,11 +15,11 @@ export const numberPattern = /^\d+$/
 export const addressPattern = /^0x[a-fA-F0-9]{40}$/
 
 // returns the checksummed address if the address is valid, otherwise returns false
-export function isAddress(value: string): string | false {
+export function isAddress(value: string) {
   try {
     return getAddress(value)
   } catch {
-    return false
+    return null
   }
 }
 
@@ -144,36 +143,6 @@ export const getTime = (seconds: number) => {
   const mDisplay = m > 0 ? m + `${m}m` : ''
   const sDisplay = s > 0 ? s + `${s}s` : ''
   return dDisplay + hDisplay + mDisplay + sDisplay
-}
-
-interface ApyRate {
-  basketRate: number
-  rsrExchangeRate: number
-  timestamp: number
-}
-
-// TODO: Uncomment when tested
-export function calculateApy(
-  recentRate: ApyRate,
-  lastRate: ApyRate
-): [number, number] {
-  let tokenApy = 0
-  let stakingApy = 0
-
-  const priceGrowth =
-    ((recentRate.basketRate - lastRate.basketRate) / lastRate.basketRate) * 100
-
-  const stGrowth =
-    ((recentRate.rsrExchangeRate - lastRate.rsrExchangeRate) /
-      lastRate.rsrExchangeRate) *
-    100
-  const range = 31536000 / (recentRate.timestamp - lastRate.timestamp)
-
-  tokenApy = priceGrowth * range
-  stakingApy = stGrowth * range
-
-  // return [tokenApy, stakingApy]
-  return [0, 0]
 }
 
 export function shortenString(str: string) {

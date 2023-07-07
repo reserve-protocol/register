@@ -3,20 +3,20 @@
  * At some point this file is expected to be divided into multiple files per atom type
  */
 import { BigNumber } from '@ethersproject/bignumber'
-import { ethers, utils } from 'ethers'
-import { formatUnits } from 'ethers/lib/utils'
-import { getTokens } from 'hooks/useTokensBalance'
-import { atom } from 'jotai'
-import { AccountPosition, AccountToken } from 'types'
-import { RSR } from 'utils/constants'
-import rTokenAtom from '../rtoken/atoms/rTokenAtom'
-import { atomWithLoadable } from 'utils/atoms/utils'
-import rTokenContractsAtom from '../rtoken/atoms/rTokenContractsAtom'
-import { getValidWeb3Atom } from './chainAtoms'
-import { getContract } from 'utils'
 import { stRSRVotesInterface } from 'abis'
 import { StRSRVotes } from 'abis/types'
+import { atom } from 'jotai'
+import { AccountPosition, AccountToken } from 'types'
+import { getContract } from 'utils'
 import { ZERO_ADDRESS } from 'utils/addresses'
+import { atomWithLoadable } from 'utils/atoms/utils'
+import { RSR } from 'utils/constants'
+import rTokenAtom from '../rtoken/atoms/rTokenAtom'
+import rTokenContractsAtom from '../rtoken/atoms/rTokenContractsAtom'
+import { getValidWeb3Atom, walletAtom } from './chainAtoms'
+import { readContracts } from 'wagmi'
+import Main from 'abis/Main'
+import { stringToHex } from 'viem'
 
 const defaultBalance = {
   value: BigNumber.from(0),
@@ -104,11 +104,51 @@ export const accountHoldingsAtom = atom(0)
 export const isWalletModalVisibleAtom = atom(false)
 
 // Tracks current account role related to the selected rToken
-export const accountRoleAtom = atom({
-  owner: false,
-  pauser: false,
-  shortFreezer: false,
-  longFreezer: false,
+export const accountRoleAtom = atomWithLoadable(async (get) => {
+  const rToken = get(rTokenAtom)
+  const account = get(walletAtom)
+
+  if (!rToken?.main || !account) {
+    return null
+  }
+
+  const call = {
+    abi: Main,
+    address: rToken.main,
+  }
+
+  const [owner, pauser, shortFreezer, longFreezer] = await readContracts({
+    contracts: [
+      {
+        ...call,
+        args: [stringToHex('OWNER', { size: 32 }), account],
+        functionName: 'hasRole',
+      },
+      {
+        ...call,
+        args: [stringToHex('PAUSER', { size: 32 }), account],
+        functionName: 'hasRole',
+      },
+      {
+        ...call,
+        args: [stringToHex('SHORT_FREEZER', { size: 32 }), account],
+        functionName: 'hasRole',
+      },
+      {
+        ...call,
+        args: [stringToHex('LONG_FREEZER', { size: 32 }), account],
+        functionName: 'hasRole',
+      },
+    ],
+    allowFailure: false,
+  })
+
+  return {
+    owner,
+    pauser,
+    shortFreezer,
+    longFreezer,
+  }
 })
 
 export const accountDelegateAtom = atomWithLoadable(async (get) => {

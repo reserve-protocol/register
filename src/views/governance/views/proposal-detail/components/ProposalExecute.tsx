@@ -9,7 +9,7 @@ import {
   getValidWeb3Atom,
   rTokenGovernanceAtom,
 } from 'state/atoms'
-import { useTransactionState } from 'state/web3/hooks/useTransactions'
+import { useTransactionState } from 'state/chain/hooks/useTransactions'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { v4 as uuid } from 'uuid'
 import { proposalDetailAtom } from '../atom'

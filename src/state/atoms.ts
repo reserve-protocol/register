@@ -1,9 +1,5 @@
 import { BigNumber } from 'ethers'
 import { atom } from 'jotai'
-import { atomFamily } from 'jotai/utils'
-import { getValidWeb3Atom } from './atoms'
-import { promiseMulticall } from './web3/lib/multicall'
-import { ContractCall } from 'types'
 import { formatEther } from 'viem'
 
 /**
@@ -20,22 +16,6 @@ if (
   localStorage.clear()
   localStorage.setItem('version', VERSION)
 }
-
-export const multicallAtom = atom((get) => {
-  const { provider, chainId } = get(getValidWeb3Atom)
-
-  if (!provider) return null
-
-  return (calls: ContractCall[]) => promiseMulticall(calls, provider, chainId)
-})
-
-export const searchParamsAtom = atom(
-  new URLSearchParams(window.location.search)
-)
-export const searchParamAtom = atomFamily(
-  (key: string) => atom((get) => get(searchParamsAtom).get(key)),
-  (l, r) => l === r
-)
 
 /**
  * ##################
@@ -93,9 +73,9 @@ export {
   selectedRTokenAtom,
 } from './rtoken/atoms/rTokenAtom'
 export { default as rTokenBackingDistributionAtom } from './rtoken/atoms/rTokenBackingDistributionAtom'
+export { default as rTokenBackupAtom } from './rtoken/atoms/rTokenBackupAtom'
+export { default as rTokenBasketAtom } from './rtoken/atoms/rTokenBasketAtom'
 export { default as rTokenConfigurationAtom } from './rtoken/atoms/rTokenConfigurationAtom'
 export { default as rTokenContractsAtom } from './rtoken/atoms/rTokenContractsAtom'
 export { default as rTokenRevenueSplitAtom } from './rtoken/atoms/rTokenRevenueSplitAtom'
-export { default as rTokenBasketAtom } from './rtoken/atoms/rTokenBasketAtom'
-export { default as rTokenBackupAtom } from './rtoken/atoms/rTokenBackupAtom'
 export * from './rtoken/atoms/rTokenStateAtom'

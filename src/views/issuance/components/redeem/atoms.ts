@@ -4,7 +4,6 @@ import { BigNumber } from 'ethers'
 import { formatUnits, getAddress, parseUnits } from 'ethers/lib/utils'
 import { atom } from 'jotai'
 import {
-  basketNonceAtom,
   getValidWeb3Atom,
   isModuleLegacyAtom,
   rTokenAssetsAtom,
@@ -27,11 +26,11 @@ export const customRedeemModalAtom = atom(false)
 
 // If custom is set return that nonce
 export const redeemNonceAtom = atom((get) => {
-  return get(customRedeemNonceAtom) || get(basketNonceAtom)
+  return get(customRedeemNonceAtom) || get(rTokenStateAtom).basketNonce
 })
 
 export const redeemQuotesAtom = atomWithLoadable(async (get) => {
-  const currentNonce = get(basketNonceAtom)
+  const currentNonce = get(rTokenStateAtom).basketNonce
   const assets = get(rTokenAssetsAtom)
   const rToken = get(rTokenAtom)
   const { issuance: isLegacy } = get(isModuleLegacyAtom)

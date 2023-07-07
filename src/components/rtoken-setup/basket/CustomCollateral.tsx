@@ -1,16 +1,17 @@
 import { t, Trans } from '@lingui/macro'
-import { CollateralInterface, ERC20Interface } from 'abis'
+import CollateralAbi from 'abis/CollateralAbi'
+import ERC20 from 'abis/ERC20'
 import { Input } from 'components'
 import { SmallButton } from 'components/button'
 import PluginsIcon from 'components/icons/PluginsIcon'
 import { ethers } from 'ethers'
-import { useAtomValue } from 'jotai'
-import { useCallback, useState } from 'react'
-import { multicallAtom } from 'state/atoms'
+import { useState } from 'react'
 import { Box, Flex, Text } from 'theme-ui'
 import { CollateralPlugin } from 'types'
 import { isAddress } from 'utils'
 import { ZERO_ADDRESS } from 'utils/addresses'
+import { Address } from 'viem'
+import { readContracts } from 'wagmi'
 
 const CustomCollateral = ({
   onAdd,
@@ -21,38 +22,37 @@ const CustomCollateral = ({
   const [isValidating, setValidating] = useState(false)
   const [address, setAddress] = useState('')
   const [error, setError] = useState('')
-  const multicall = useAtomValue(multicallAtom)
 
-  const handleAdd = useCallback(async () => {
+  const handleAdd = async () => {
     try {
-      if (!multicall) {
-        throw new Error('Invalid environment')
-      }
-
       setValidating(true)
       const callParams = {
-        abi: CollateralInterface,
-        address,
-        args: [],
+        abi: CollateralAbi,
+        address: address as Address,
       }
 
-      const [isCollateral, targetUnit, erc20, rewardERC20] = await multicall([
-        { ...callParams, method: 'isCollateral' },
-        { ...callParams, method: 'targetName' },
-        { ...callParams, method: 'erc20' },
-        { ...callParams, method: 'rewardERC20' },
-      ])
+      const [isCollateral, targetUnit, erc20, rewardERC20] =
+        await readContracts({
+          contracts: [
+            { ...callParams, functionName: 'isCollateral' },
+            { ...callParams, functionName: 'targetName' },
+            { ...callParams, functionName: 'erc20' },
+            { ...callParams, functionName: 'rewardERC20' },
+          ],
+          allowFailure: false,
+        })
 
       if (!isCollateral) {
         throw new Error('INVALID COLLATERAL')
       }
 
-      const metaCalls = [
-        { abi: ERC20Interface, args: [], address: erc20, method: 'symbol' },
-        { abi: ERC20Interface, args: [], address: erc20, method: 'decimals' },
-      ]
-
-      const [symbol, decimals] = await multicall(metaCalls)
+      const [symbol, decimals] = await readContracts({
+        contracts: [
+          { abi: ERC20, address: erc20, functionName: 'symbol' },
+          { abi: ERC20, address: erc20, functionName: 'decimals' },
+        ],
+        allowFailure: false,
+      })
 
       const collateral: CollateralPlugin = {
         symbol,
@@ -63,7 +63,7 @@ const CustomCollateral = ({
         collateralToken: symbol,
         description: '',
         collateralAddress: erc20,
-        rewardToken: rewardERC20 || ZERO_ADDRESS,
+        rewardToken: [rewardERC20] || [ZERO_ADDRESS],
         custom: true,
       }
 
@@ -75,7 +75,7 @@ const CustomCollateral = ({
       setValidating(false)
       setError(t`Invalid collateral`)
     }
-  }, [multicall, address])
+  }
 
   const handleChange = (value: string) => {
     const parsedAddress = isAddress(value)

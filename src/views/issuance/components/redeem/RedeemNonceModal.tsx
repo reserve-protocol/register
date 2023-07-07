@@ -2,7 +2,7 @@ import { t } from '@lingui/macro'
 import { Modal } from 'components'
 import { ModalProps } from 'components/modal'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { basketNonceAtom, rTokenAssetsAtom } from 'state/atoms'
+import { rTokenStateAtom, rTokenAssetsAtom } from 'state/atoms'
 import { Box, Checkbox, Divider, IconButton, Text } from 'theme-ui'
 import {
   customRedeemModalAtom,
@@ -20,7 +20,7 @@ interface Props extends Partial<ModalProps> {}
 const RedeemNonceModal = ({ onClose, ...props }: Props) => {
   const setNonce = useSetAtom(customRedeemNonceAtom)
   const nonce = useAtomValue(redeemNonceAtom)
-  const basketNonce = useAtomValue(basketNonceAtom)
+  const basketNonce = useAtomValue(rTokenStateAtom).basketNonce
   const setNonceModal = useSetAtom(customRedeemModalAtom)
   const quote = useAtomValue(redeemQuotesAtom)
   const assets = useAtomValue(rTokenAssetsAtom)

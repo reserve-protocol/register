@@ -1,7 +1,7 @@
 import { useSetAtom } from 'jotai'
 import { useCallback, useEffect, useState } from 'react'
 import { addTransactionAtom } from 'state/atoms'
-import { useTransactionState } from 'state/web3/hooks/useTransactions'
+import { useTransactionState } from 'state/chain/hooks/useTransactions'
 import { TransactionState } from 'types'
 import { getTransactionWithGasLimit } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'

@@ -15,7 +15,7 @@ import {
   multicallAtom,
 } from 'state/atoms'
 import { convexPluginsAtom } from 'state/atoms/pluginAtoms'
-import { useTransactions } from 'state/web3/hooks/useTransactions'
+import { useTransactions } from 'state/chain/hooks/useTransactions'
 import { Box, Divider, Flex, Link, Text } from 'theme-ui'
 import { BigNumberMap, TransactionState } from 'types'
 import { formatCurrency, getTransactionWithGasLimit, hasAllowance } from 'utils'

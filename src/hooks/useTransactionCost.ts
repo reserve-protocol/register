@@ -4,7 +4,7 @@ import abis from 'abis'
 import { useAtomValue } from 'jotai'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ethPriceAtom, gasPriceAtom, getValidWeb3Atom } from 'state/atoms'
-import { error } from 'state/web3/lib/notifications'
+import { error } from 'state/chain/lib/notifications'
 import { TransactionState } from 'types'
 import { getContract } from 'utils'
 
