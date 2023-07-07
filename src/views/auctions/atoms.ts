@@ -1,8 +1,10 @@
+import FacadeAct from 'abis/FacadeAct'
+import FacadeRead from 'abis/FacadeRead'
 import { atom } from 'jotai'
-import { atomWithReset, loadable } from 'jotai/utils'
+import { atomWithReset } from 'jotai/utils'
 import {
   chainIdAtom,
-  getValidWeb3Atom,
+  publicClientAtom,
   rTokenAssetsAtom,
   rTokenAtom,
   rTokenContractsAtom,
@@ -13,8 +15,9 @@ import {
   FACADE_ADDRESS,
   RSR_ADDRESS,
 } from 'utils/addresses'
-import { atomWithLoadable, simplifyLoadable } from 'utils/atoms/utils'
-import { getContract } from 'wagmi/actions'
+import { atomWithLoadable } from 'utils/atoms/utils'
+import { formatUnits } from 'viem'
+import { readContracts } from 'wagmi/actions'
 
 export interface Auction {
   sell: Token
@@ -26,8 +29,15 @@ export interface Auction {
   output: number // estimated token output
 }
 
+type AuctionType = 'Revenue' | 'Recollaterization'
+
+export const AUCTION_TYPES = {
+  REVENUE: 'Revenue' as AuctionType,
+  BACKING: 'Recollaterization' as AuctionType,
+}
+
 export interface AuctionToSettle {
-  type: 'Revenue' | 'Backing'
+  type: AuctionType
   trader: string
   sell: Token
   buy: Token | null
@@ -45,10 +55,6 @@ export interface Trade {
   startedAt: number
   worstCasePrice: number
 }
-export const AUCTION_TYPES = {
-  REVENUE: 'Revenue',
-  BACKING: 'Recollaterization',
-}
 
 export const tradesAtom = atom<{ current: Trade[]; ended: Trade[] }>({
   current: [],
@@ -63,23 +69,24 @@ export const auctionSessionAtom = atom(0)
 export const auctionSidebarAtom = atom(false)
 
 export const accumulatedRevenueAtom = atomWithLoadable(async (get) => {
-  const { provider, chainId } = get(getValidWeb3Atom)
   const rToken = get(rTokenAtom)
   const assets = get(rTokenAssetsAtom)
   const session = get(auctionSessionAtom)
+  const chainId = get(chainIdAtom)
+  const client = get(publicClientAtom)
 
-  if (!provider || !rToken || !assets || !session) {
+  if (!rToken || !assets || !session || !client) {
     return 0
   }
 
-  const contract = getContract(
-    FACADE_ADDRESS[chainId],
-    FacadeInterface,
-    provider
-  ) as Facade
-
-  const { balances, balancesNeededByBackingManager, erc20s } =
-    await contract.callStatic.balancesAcrossAllTraders(rToken.address)
+  const {
+    result: [erc20s, balances, balancesNeededByBackingManager],
+  } = await client.simulateContract({
+    address: FACADE_ADDRESS[chainId],
+    abi: FacadeRead,
+    functionName: 'balancesAcrossAllTraders',
+    args: [rToken.address],
+  })
 
   return erc20s.reduce((revenue, erc20, index) => {
     const priceUsd = assets[erc20]?.priceUsd || 0
@@ -89,7 +96,7 @@ export const accumulatedRevenueAtom = atomWithLoadable(async (get) => {
       revenue +
       Number(
         formatUnits(
-          balances[index].sub(balancesNeededByBackingManager[index]),
+          balances[index] - balancesNeededByBackingManager[index],
           decimals
         )
       ) *
@@ -98,28 +105,26 @@ export const accumulatedRevenueAtom = atomWithLoadable(async (get) => {
   }, 0)
 })
 
-const settleableAuctions = loadable(
-  atom(async (get): Promise<AuctionToSettle[] | null> => {
+export const auctionsToSettleAtom = atomWithLoadable(
+  async (get): Promise<AuctionToSettle[] | null> => {
     const chainId = get(chainIdAtom)
-    const multicall = get(multicallAtom)
     const rToken = get(rTokenAtom)
     const assets = get(rTokenAssetsAtom)
-    const { rsrTrader, rTokenTrader, backingManager } =
-      get(rTokenContractsAtom) ?? {}
+    const contracts = get(rTokenContractsAtom)
     const session = get(auctionSessionAtom)
 
-    if (!multicall || !rToken || !assets || !rsrTrader || !session) {
+    if (!rToken || !assets || !contracts || !session) {
       return null
     }
 
     const traders = [
       {
-        address: rsrTrader,
+        ...contracts.rsrTrader,
         buy: assets[RSR_ADDRESS[chainId]].token,
         type: AUCTION_TYPES.REVENUE,
       },
       {
-        address: rTokenTrader,
+        ...contracts.rTokenTrader,
         buy: {
           symbol: rToken.symbol,
           address: rToken.address,
@@ -128,17 +133,20 @@ const settleableAuctions = loadable(
         },
         type: AUCTION_TYPES.REVENUE,
       },
-      { address: backingManager, buy: null, type: AUCTION_TYPES.BACKING }, // TODO: What to show here?
+      { ...contracts.backingManager, buy: null, type: AUCTION_TYPES.BACKING }, // TODO: What to show here?
     ]
 
-    const result = await multicall(
-      traders.map(({ address }) => ({
-        abi: FacadeInterface,
-        address: FACADE_ADDRESS[chainId],
-        method: 'auctionsSettleable',
-        args: [address],
-      }))
-    )
+    const result = await (<Promise<[string[], string[], string[]]>>(
+      readContracts({
+        contracts: traders.map(({ address, version }) => ({
+          abi: FacadeRead,
+          address: FACADE_ADDRESS[chainId],
+          functionName: 'auctionsSettleable',
+          args: [address, version],
+        })),
+        allowFailure: false,
+      })
+    ))
 
     return result.reduce((auctionsToSettle, current, index) => {
       auctionsToSettle.push(
@@ -152,110 +160,121 @@ const settleableAuctions = loadable(
 
       return auctionsToSettle
     }, [] as AuctionToSettle[])
-  })
+  }
 )
 
 // TODO: This can be executed from the global context to display the number of auctions available
-const auctionsOverview = loadable(
-  atom(
-    async (
-      get
-    ): Promise<{
-      revenue: Auction[]
-      recollaterization: Auction | null
-    } | null> => {
-      const { provider, chainId } = get(getValidWeb3Atom)
-      const contracts = get(rTokenContractsAtom)
-      const assets = get(rTokenAssetsAtom)
-      const rToken = get(rTokenAtom)
-      const session = get(auctionSessionAtom)
+export const auctionsOverviewAtom = atom(
+  async (
+    get
+  ): Promise<{
+    revenue: Auction[]
+    recollaterization: Auction | null
+  } | null> => {
+    const contracts = get(rTokenContractsAtom)
+    const assets = get(rTokenAssetsAtom)
+    const rToken = get(rTokenAtom)
+    const session = get(auctionSessionAtom)
+    const client = get(publicClientAtom)
+    const chainId = get(chainIdAtom)
 
-      if (!provider || !contracts || !rToken || !assets || !session) {
-        return null
-      }
-
-      const contract = getContract(
-        FACADE_ACT_ADDRESS[chainId],
-        FacadeActInterface,
-        provider
-      ) as FacadeAct
-
-      const [rsrRevenueOverview, rTokenRevenueOverview, recoAuction] =
-        await Promise.all([
-          contract.callStatic.revenueOverview(contracts.rsrTrader.address),
-          contract.callStatic.revenueOverview(contracts.rTokenTrader.address),
-          contract.callStatic.nextRecollateralizationAuction(
-            contracts.backingManager.address
-          ),
-        ])
-
-      const auctions = rsrRevenueOverview.erc20s.reduce((acc, erc20, index) => {
-        const asset = assets[erc20]
-        const rsrTradeAmount = formatUnits(
-          rsrRevenueOverview.surpluses[index],
-          asset.token.decimals
-        )
-        const rTokenTradeAmount = formatUnits(
-          rTokenRevenueOverview.surpluses[index],
-          asset.token.decimals
-        )
-
-        if (asset.token.address !== RSR_ADDRESS[chainId]) {
-          acc[rsrRevenueOverview.canStart[index] ? 'unshift' : 'push']({
-            sell: asset.token,
-            buy: assets[RSR_ADDRESS[chainId]].token,
-            amount: rsrTradeAmount,
-            minAmount: formatUnits(
-              rsrRevenueOverview.minTradeAmounts[index],
-              asset.token.decimals
-            ),
-            trader: contracts.rsrTrader.address,
-            canStart: rsrRevenueOverview.canStart[index],
-            output:
-              +rsrTradeAmount /
-              (assets[RSR_ADDRESS[chainId]].priceUsd / asset.priceUsd),
-          })
-        }
-
-        if (asset.token.address !== rToken.address) {
-          acc[rTokenRevenueOverview.canStart[index] ? 'unshift' : 'push']({
-            sell: asset.token,
-            buy: assets[rToken.address].token,
-            amount: rTokenTradeAmount,
-            minAmount: formatUnits(
-              rTokenRevenueOverview.minTradeAmounts[index],
-              asset.token.decimals
-            ),
-            trader: contracts.rTokenTrader.address,
-            canStart: rTokenRevenueOverview.canStart[index],
-            output:
-              +rTokenTradeAmount /
-              (assets[rToken.address].priceUsd / asset.priceUsd),
-          })
-        }
-
-        return acc
-      }, [] as Auction[])
-
-      let recollaterizationAuction = null
-
-      if (recoAuction.canStart) {
-        const sell = assets[recoAuction.sell]
-        const buy = assets[recoAuction.buy]
-        const amount = formatUnits(recoAuction.sellAmount, sell.token.decimals)
-
-        recollaterizationAuction = {
-          sell: sell.token,
-          buy: buy.token,
-          amount,
-          minAmount: '0',
-          trader: contracts.backingManager.address,
-          canStart: true,
-          output: +amount / (buy.priceUsd / sell.priceUsd),
-        }
-      }
-
-      return { revenue: auctions, recollaterization: recollaterizationAuction }
+    if (!client || !contracts || !rToken || !assets || !session) {
+      return null
     }
-  )
+
+    const call = {
+      abi: FacadeAct,
+      address: FACADE_ACT_ADDRESS[chainId],
+    }
+
+    const [
+      { result: rsrRevenueOverview },
+      { result: rTokenRevenueOverview },
+      { result: recoAuction },
+    ] = await Promise.all([
+      client.simulateContract({
+        ...call,
+        functionName: 'revenueOverview',
+        args: [contracts.rsrTrader.address],
+      }),
+      client.simulateContract({
+        ...call,
+        functionName: 'revenueOverview',
+        args: [contracts.rTokenTrader.address],
+      }),
+      client.simulateContract({
+        ...call,
+        functionName: 'nextRecollateralizationAuction',
+        args: [contracts.backingManager.address],
+      }),
+    ])
+
+    const auctions = rsrRevenueOverview[0].reduce((acc, erc20, index) => {
+      const asset = assets[erc20]
+      const rsrTradeAmount = formatUnits(
+        rsrRevenueOverview[2][index],
+        asset.token.decimals
+      )
+      const rTokenTradeAmount = formatUnits(
+        rTokenRevenueOverview[2][index],
+        asset.token.decimals
+      )
+
+      if (asset.token.address !== RSR_ADDRESS[chainId]) {
+        acc[rsrRevenueOverview[1][index] ? 'unshift' : 'push']({
+          sell: asset.token,
+          buy: assets[RSR_ADDRESS[chainId]].token,
+          amount: rsrTradeAmount,
+          minAmount: formatUnits(
+            rsrRevenueOverview[3][index],
+            asset.token.decimals
+          ),
+          trader: contracts.rsrTrader.address,
+          canStart: rsrRevenueOverview[1][index],
+          output:
+            +rsrTradeAmount /
+            (assets[RSR_ADDRESS[chainId]].priceUsd / asset.priceUsd),
+        })
+      }
+
+      if (asset.token.address !== rToken.address) {
+        acc[rTokenRevenueOverview[1][index] ? 'unshift' : 'push']({
+          sell: asset.token,
+          buy: assets[rToken.address].token,
+          amount: rTokenTradeAmount,
+          minAmount: formatUnits(
+            rTokenRevenueOverview[4][index],
+            asset.token.decimals
+          ),
+          trader: contracts.rTokenTrader.address,
+          canStart: rTokenRevenueOverview[1][index],
+          output:
+            +rTokenTradeAmount /
+            (assets[rToken.address].priceUsd / asset.priceUsd),
+        })
+      }
+
+      return acc
+    }, [] as Auction[])
+
+    let recollaterizationAuction = null
+
+    if (recoAuction[0]) {
+      const sell = assets[recoAuction[1]]
+      const buy = assets[recoAuction[2]]
+      const amount = formatUnits(recoAuction[3], sell.token.decimals)
+
+      recollaterizationAuction = {
+        sell: sell.token,
+        buy: buy.token,
+        amount,
+        minAmount: '0',
+        trader: contracts.backingManager.address,
+        canStart: true,
+        output: +amount / (buy.priceUsd / sell.priceUsd),
+      }
+    }
+
+    return { revenue: auctions, recollaterization: recollaterizationAuction }
+  }
 )

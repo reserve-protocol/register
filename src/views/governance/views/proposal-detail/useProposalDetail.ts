@@ -46,6 +46,9 @@ const query = gql`
       forDelegateVotes
       abstainDelegateVotes
       againstDelegateVotes
+      governanceFramework {
+        contractAddress
+      }
     }
   }
 `
@@ -87,6 +90,7 @@ const useProposalDetail = (
             data.proposal.abstainWeightedVotes || '0'
           ),
           quorumVotes: formatEther(data.proposal.quorumVotes || '0'),
+          governor: data.governanceFramework.contractAddress,
         }
       : null
 

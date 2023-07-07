@@ -1,20 +1,16 @@
 import { Trans } from '@lingui/macro'
-import { GovernanceInterface } from 'abis'
+import Governance from 'abis/Governance'
 import { SmallButton } from 'components/button'
-import { formatEther } from 'ethers/lib/utils'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { ArrowLeft } from 'react-feather'
 import { useNavigate, useParams } from 'react-router-dom'
-import {
-  blockAtom,
-  getValidWeb3Atom,
-  multicallAtom,
-  rTokenGovernanceAtom,
-} from 'state/atoms'
+import { blockAtom, walletAtom } from 'state/atoms'
 import { Box, Grid } from 'theme-ui'
 import { PROPOSAL_STATES, ROUTES } from 'utils/constants'
+import { formatEther } from 'viem'
+import { useContractRead } from 'wagmi'
 import {
   accountVotesAtom,
   getProposalStateAtom,
@@ -32,15 +28,33 @@ import useProposalDetail from './useProposalDetail'
 const GovernanceProposalDetail = () => {
   const { proposalId } = useParams()
   const rToken = useRToken()
-  const { account } = useAtomValue(getValidWeb3Atom)
-  const multicall = useAtomValue(multicallAtom)
-  const governance = useAtomValue(rTokenGovernanceAtom)
-  const { data: proposal, loading } = useProposalDetail(proposalId ?? '')
+  const account = useAtomValue(walletAtom)
+  const { data: proposal } = useProposalDetail(proposalId ?? '')
   const setProposalDetail = useSetAtom(proposalDetailAtom)
   const setAccountVoting = useSetAtom(accountVotesAtom)
   const blockNumber = useAtomValue(blockAtom)
   const navigate = useNavigate()
   const { state } = useAtomValue(getProposalStateAtom)
+  const { data: votePower } = useContractRead({
+    address: proposal?.governor,
+    abi: Governance,
+    functionName: 'getVotes',
+    args:
+      account && proposal?.startBlock && blockNumber
+        ? [account, BigInt(Math.min(proposal.startBlock - 1, blockNumber - 1))]
+        : undefined,
+  })
+  const accountVote = useMemo(() => {
+    if (!proposal || !account) {
+      return null
+    }
+
+    const accountVote = proposal.votes.find(
+      (vote) => vote.voter.toLowerCase() === account.toLowerCase()
+    )
+
+    return accountVote?.choice ?? null
+  }, [proposal, account])
 
   const handleBack = () => {
     navigate(`${ROUTES.GOVERNANCE}?token=${rToken?.address}`)
@@ -53,58 +67,18 @@ const GovernanceProposalDetail = () => {
   }, [JSON.stringify(proposal)])
 
   useEffect(() => {
+    setAccountVoting({
+      votePower: votePower ? formatEther(votePower) : null,
+      vote: accountVote,
+    })
+  }, [votePower, accountVote])
+
+  useEffect(() => {
     return () => {
       setProposalDetail(null)
       setAccountVoting({ votePower: null, vote: null })
     }
   }, [])
-
-  // TODO: Get governor from proposal
-  const fetchAccountVotingPower = async () => {
-    if (
-      account &&
-      multicall &&
-      proposal &&
-      !!blockNumber &&
-      governance.governor
-    ) {
-      try {
-        const accountVote = proposal.votes.find(
-          (vote) => vote.voter.toLowerCase() === account.toLowerCase()
-        )
-        let votePower = '0'
-
-        if (!accountVote) {
-          const [result] = await multicall([
-            {
-              abi: GovernanceInterface,
-              method: 'getVotes',
-              address: governance.governor,
-              args: [
-                account,
-                Math.min(proposal.startBlock - 1, blockNumber - 1),
-              ],
-            },
-          ])
-
-          votePower = result ? formatEther(result) : '0'
-        } else {
-          votePower = accountVote.weight
-        }
-
-        setAccountVoting({
-          votePower,
-          vote: accountVote ? accountVote.choice : null,
-        })
-      } catch (e) {
-        console.error('Error fetching voting power', e)
-      }
-    }
-  }
-
-  useEffect(() => {
-    fetchAccountVotingPower()
-  }, [account, multicall, !!blockNumber && JSON.stringify(proposal)])
 
   return (
     <Box>

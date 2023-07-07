@@ -21,12 +21,16 @@ interface RToken extends Token {
 }
 // Current selected rToken address
 export const selectedRTokenAtom = atom(
-  isAddress(new URLSearchParams(window.location.search).get('token') ?? '')
+  isAddress(
+    new URL(window.location.href.replace('/#/', '/')).searchParams.get(
+      'token'
+    ) ?? ''
+  )
 )
 
 const rTokenAtom: Atom<RToken | null> = atomWithLoadable(
   async (get): Promise<RToken | null> => {
-    const rTokenAddress = get(selectedRTokenAtom) as Address
+    const rTokenAddress = get(selectedRTokenAtom)
     const chainId = get(chainIdAtom)
 
     if (!rTokenAddress) {
@@ -90,21 +94,21 @@ const rTokenAtom: Atom<RToken | null> = atomWithLoadable(
       allowFailure: false,
     }))
 
-    const tokens: Token[] = [
-      stTokenAddress as string,
-      ...(basket as string[]),
-    ].reduce((tokens, address) => {
-      const [name, symbol, decimals] = tokensMeta.splice(0, 3)
+    const tokens: Token[] = [stTokenAddress, ...basket].reduce(
+      (tokens, address) => {
+        const [name, symbol, decimals] = tokensMeta.splice(0, 3)
 
-      tokens.push({
-        address,
-        name,
-        symbol,
-        decimals: Number(decimals),
-      })
+        tokens.push({
+          address,
+          name,
+          symbol,
+          decimals: Number(decimals),
+        })
 
-      return tokens
-    }, [] as Token[])
+        return tokens
+      },
+      [] as Token[]
+    )
 
     return {
       address: rTokenAddress,

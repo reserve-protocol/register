@@ -3,6 +3,7 @@ import { atom } from 'jotai'
 import { blockAtom } from 'state/atoms'
 import { parseEther } from 'ethers/lib/utils'
 import { BigNumber } from 'ethers'
+import { Address } from 'viem'
 
 export interface ProposalDetail {
   id: string
@@ -29,6 +30,7 @@ export interface ProposalDetail {
     weight: string
     voter: string
   }[]
+  governor: Address
 }
 
 export const proposalDetailAtom = atom<null | ProposalDetail>(null)

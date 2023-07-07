@@ -1,19 +1,14 @@
 import { t, Trans } from '@lingui/macro'
-import { ERC20Interface } from 'abis'
+import ERC20 from 'abis/ERC20'
 import { Modal, NumericalInput } from 'components'
 import { LoadingButton } from 'components/button'
 import ApprovalTransactions from 'components/transaction-modal/ApprovalTransactions'
 import TransactionError from 'components/transaction-modal/TransactionError'
-import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import useTokensAllowance from 'hooks/useTokensAllowance'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { ArrowRight, CheckCircle, ExternalLink } from 'react-feather'
-import {
-  addTransactionAtom,
-  getValidWeb3Atom,
-  multicallAtom,
-} from 'state/atoms'
+import { addTransactionAtom, getValidWeb3Atom } from 'state/atoms'
 import { convexPluginsAtom } from 'state/atoms/pluginAtoms'
 import { useTransactions } from 'state/chain/hooks/useTransactions'
 import { Box, Divider, Flex, Link, Text } from 'theme-ui'
@@ -23,6 +18,8 @@ import { TRANSACTION_STATUS } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { FormState, isFormValid } from 'utils/wrapping'
 import { v4 as uuid } from 'uuid'
+import { formatUnits, parseUnits } from 'viem'
+import { Address, readContracts } from 'wagmi'
 
 enum ConvexMode {
   DEPOSIT = 'deposit',
@@ -37,7 +34,6 @@ const ConvexCollateralModal = ({
   unwrap?: boolean
 }) => {
   const { account, chainId } = useAtomValue(getValidWeb3Atom)
-  const multicall = useAtomValue(multicallAtom)
   const [signing, setSigning] = useState(false)
   const [loading, setLoading] = useState(false)
   const [activeMode, setActiveMode] = useState(ConvexMode.DEPOSIT)
@@ -171,31 +167,32 @@ const ConvexCollateralModal = ({
     [allowances, isValid, approvals]
   )
 
+  // TODO:? weird
   const fetchBalances = async () => {
     try {
-      if (multicall && account) {
+      if (account) {
         const callParams = {
-          abi: ERC20Interface,
-          method: 'balanceOf',
+          abi: ERC20,
+          functionName: 'balanceOf',
           args: [account],
         }
 
-        const results = await multicall(
-          convexPlugins.map((p) => ({
+        const results = await readContracts({
+          contracts: convexPlugins.map((p) => ({
             ...callParams,
-            address:
-              activeMode === ConvexMode.DEPOSIT
-                ? p.collateralAddress
-                : p.depositContract!,
-          }))
-        )
+            address: (activeMode === ConvexMode.DEPOSIT
+              ? p.collateralAddress
+              : p.depositContract!) as Address,
+          })),
+          allowFailure: false,
+        })
 
         const newState = { ...formState }
 
         let index = 0
         for (const plugin of convexPlugins) {
           const max = formatUnits(
-            results[index],
+            results[index] as bigint,
             plugin.collateralDecimals || 18
           )
           newState[plugin.address] = {
