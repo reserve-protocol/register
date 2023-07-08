@@ -4,8 +4,6 @@ import GovernanceSetup from 'components/rtoken-setup/governance/GovernanceSetup'
 import RevenueSplit from 'components/rtoken-setup/token/RevenueSplit'
 import SectionWrapper from 'components/section-navigation/SectionWrapper'
 import { Box, BoxProps } from 'theme-ui'
-import ListingInfo from 'views/settings/components/ListingInfo'
-import { useDeployTxState } from '../useDeploy'
 import BackingManager from './BackingManager'
 import Intro from './Intro'
 import OtherSetup from './OtherSetup'
@@ -17,10 +15,11 @@ interface Props extends BoxProps {
 }
 
 const DeploySection = ({ enabled = true }) => {
-  const tx = useDeployTxState()
+  const tx = null
+  // TODO: Deploy success functionality
 
   if (!enabled && tx) {
-    return <DeploySuccessDivider hash={tx.hash} />
+    return <DeploySuccessDivider hash={''} />
   }
 
   if (!enabled) {

@@ -1,14 +1,11 @@
-import { BigNumber } from '@ethersproject/bignumber'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { t } from '@lingui/macro'
+import { ERC20Interface } from 'abis'
+import ERC20 from 'abis/ERC20'
 import { Contract } from 'ethers'
-import { parseEther, parseUnits } from 'ethers/lib/utils'
 import humanizeDuration from 'humanize-duration'
 import { BigNumberMap, ContractCall, TransactionState } from 'types'
-import { BI_ZERO } from './constants'
-import { ERC20Interface } from 'abis'
-import { Address, getAddress } from 'viem'
-import ERC20 from 'abis/ERC20'
+import { Address, getAddress, parseEther, parseUnits } from 'viem'
 
 export const decimalPattern = /^[0-9]*[.]?[0-9]*$/i
 export const numberPattern = /^\d+$/
@@ -69,8 +66,8 @@ export function getTokenReadCalls(address: string) {
   ]
 }
 
-export const isAmountValid = (value: BigNumber, max: BigNumber) =>
-  value.gt(BI_ZERO) && value.lte(max)
+export const isAmountValid = (value: bigint, max: bigint) =>
+  value > 0n && value <= max
 
 // returns the same contract call with an increased gas limit (10% increase)
 export const getTransactionWithGasLimit = (
@@ -154,9 +151,7 @@ export function hasAllowance(
   requiredAllowances: BigNumberMap
 ) {
   return Object.keys(requiredAllowances).every(
-    (address) =>
-      BigNumber.isBigNumber(allowances[address]) &&
-      allowances[address].gte(requiredAllowances[address])
+    (address) => (allowances[address] || 0n) >= requiredAllowances[address]
   )
 }
 
@@ -172,7 +167,7 @@ export function addressEqual(
 }
 
 // Prevents more than 18 decimals
-export function safeParseEther(value: string, decimals = 18): BigNumber {
+export function safeParseEther(value: string, decimals = 18): bigint {
   let safeValue = ''
 
   if (value[0] === '.') {
@@ -282,7 +277,7 @@ export const stringToColor = (str: string) => {
   return color
 }
 
-export const parsePercent = (n: string): BigNumber => {
+export const parsePercent = (n: string): bigint => {
   return parseEther((Number(n) / 100).toString())
 }
 

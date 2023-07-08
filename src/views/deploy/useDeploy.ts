@@ -1,16 +1,16 @@
-import { t } from '@lingui/macro'
-import useDebounce from 'hooks/useDebounce'
-import useTransactionCost from 'hooks/useTransactionCost'
-import { useAtomValue, useSetAtom } from 'jotai'
+import FacadeWrite from 'abis/FacadeWrite'
+import { useAtomValue } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
-import { useCallback, useMemo } from 'react'
-import { useFormContext, useWatch } from 'react-hook-form'
-import { addTransactionAtom, chainIdAtom } from 'state/atoms'
-import { useTransactionState } from 'state/chain/hooks/useTransactions'
-import { getTransactionWithGasLimit } from 'utils'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useFormContext, useFormState, useWatch } from 'react-hook-form'
+import { chainIdAtom, ethPriceAtom, gasFeeAtom } from 'state/atoms'
 import { FACADE_WRITE_ADDRESS } from 'utils/addresses'
-import { TRANSACTION_STATUS } from 'utils/constants'
-import { v4 as uuid } from 'uuid'
+import { EstimateContractGasParameters, formatEther } from 'viem'
+import {
+  useContractWrite,
+  usePrepareContractWrite,
+  usePublicClient,
+} from 'wagmi'
 import {
   backupCollateralAtom,
   basketAtom,
@@ -20,97 +20,130 @@ import {
 } from '../../components/rtoken-setup/atoms'
 import { isValidExternalMapAtom } from './../../components/rtoken-setup/atoms'
 import { getDeployParameters } from './utils'
+import useDebounce from 'hooks/useDebounce'
 
 export const deployIdAtom = atomWithReset('')
 
-export const useDeployTx = () => {
-  const {
-    getValues,
-    formState: { isValid },
-  } = useFormContext()
+interface GasEstimation {
+  isLoading: boolean
+  result: bigint | null
+  estimateUsd: number | null
+}
+
+const defaultGas: GasEstimation = {
+  isLoading: false,
+  result: null,
+  estimateUsd: null,
+}
+
+export const useTxGas = (
+  call: EstimateContractGasParameters | null
+): GasEstimation => {
+  const client = usePublicClient()
+  const fee = useAtomValue(gasFeeAtom)
+  const ethPrice = useAtomValue(ethPriceAtom)
+  const [state, setState] = useState(defaultGas)
+
+  const estimateGas = async () => {
+    // The app only show gas estimation on USD, if price data is not ready -> skip
+    if (!client || !call || !fee || !ethPrice) {
+      setState(defaultGas)
+      return
+    }
+
+    setState({ ...defaultGas, isLoading: true })
+
+    try {
+      const result = await client.estimateContractGas(call)
+
+      setState({
+        isLoading: false,
+        result,
+        estimateUsd: Number(formatEther(result * fee)) * ethPrice,
+      })
+    } catch (e) {
+      setState(defaultGas)
+    }
+  }
+
+  useEffect(() => {
+    estimateGas()
+  }, [client, fee, ethPrice, call])
+
+  return state
+}
+
+export const useDeployParams = () => {
+  const { getValues } = useFormContext()
   const isBasketValid = useAtomValue(isBasketValidAtom)
   const isRevenueSplitValid = useAtomValue(isRevenueValidAtom)
   const isValidExternalMap = useAtomValue(isValidExternalMapAtom)
   const primaryBasket = useAtomValue(basketAtom)
   const backupBasket = useAtomValue(backupCollateralAtom)
   const revenueSplit = useAtomValue(revenueSplitAtom)
-  const formFields = useWatch()
-  const chainId = useAtomValue(chainIdAtom)
+  const formFields = useDebounce(useWatch(), 500)
+  const { isValid, isValidating } = useFormState()
 
   const isDeployValid =
-    isBasketValid && isRevenueSplitValid && isValidExternalMap
+    isBasketValid &&
+    isRevenueSplitValid &&
+    isValidExternalMap &&
+    isValid &&
+    !isValidating
 
   return useMemo(() => {
-    if (!isDeployValid) {
-      return null
-    }
+    if (!isDeployValid) return undefined
 
-    const params = getDeployParameters(
-      getValues(),
-      primaryBasket,
-      backupBasket,
-      revenueSplit
+    return (
+      getDeployParameters(
+        getValues(),
+        primaryBasket,
+        backupBasket,
+        revenueSplit
+      ) || undefined
     )
+  }, [primaryBasket, isDeployValid, backupBasket, revenueSplit, formFields])
+}
 
-    if (!params) {
-      return null
-    }
+export const useDeploy = () => {
+  const txData = useDeployParams()
+  const chainId = useAtomValue(chainIdAtom)
 
+  const { config, error, isSuccess } = usePrepareContractWrite({
+    address: FACADE_WRITE_ADDRESS[chainId],
+    abi: FacadeWrite,
+    functionName: 'deployRToken',
+    args: txData,
+    enabled: !!txData,
+  })
+
+  const gas = useTxGas(isSuccess ? config.request : null)
+
+  const writeConfig = useMemo(() => {
     return {
-      id: '', // Assign when running tx
-      description: t`Deploy RToken`,
-      status: TRANSACTION_STATUS.PENDING,
-      value: '0',
-      call: {
-        abi: 'facadeWrite',
-        address: FACADE_WRITE_ADDRESS[chainId],
-        method: 'deployRToken',
-        args: params as any,
+      ...config,
+      request: {
+        ...config.request,
+        gas: gas.result ? (gas.result * 150n) / 100n : undefined, // bump gas limit by 1.5
       },
     }
-  }, [
-    primaryBasket,
-    isDeployValid,
-    backupBasket,
-    revenueSplit,
-    chainId,
-    JSON.stringify(formFields),
-  ])
-}
+  }, [gas.result, config])
 
-export const useDeployTxState = () => {
-  const txId = useAtomValue(deployIdAtom)
-  const tx = useTransactionState(txId)
-
-  return tx
-}
-
-const useDeploy = () => {
-  const tx = useDeployTx()
-  const debouncedTx = useDebounce(tx, 100)
-  const setTxId = useSetAtom(deployIdAtom)
-  const addTransaction = useSetAtom(addTransactionAtom)
-  const [fee, gasError, gasLimit] = useTransactionCost(
-    debouncedTx ? [debouncedTx] : [] // use debounceTx to avoid too many requests
-  )
-  const isValid = !!tx
+  const { write } = useContractWrite(writeConfig)
 
   const handleDeploy = useCallback(() => {
-    if (tx) {
-      const id = uuid()
-      addTransaction([{ ...getTransactionWithGasLimit(tx, gasLimit), id }])
-      setTxId(id)
+    if (write && gas.result) {
     }
-  }, [tx, gasLimit, addTransaction])
+  }, [write, gas.result])
 
   return useMemo(
     () => ({
-      fee,
-      error: gasError,
-      isValid,
+      error,
+      isValid: gas.result && !!write,
       deploy: handleDeploy,
+      gas,
     }),
-    [fee, gasError, handleDeploy, isValid]
+    [gas, error, handleDeploy]
   )
 }
 

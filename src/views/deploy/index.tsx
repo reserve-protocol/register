@@ -13,7 +13,7 @@ import DeployOverview from './components/DeployOverview'
 import Governance from './components/Governance'
 import NavigationSidebar from './components/NavigationSidebar'
 import RTokenSetup from './components/RTokenSetup'
-import { deployIdAtom, useDeployTxState } from './useDeploy'
+import { deployIdAtom } from './useDeploy'
 import { governanceIdAtom } from './useGovernance'
 import { defaultValues } from './utils'
 import { Box } from 'theme-ui'
@@ -21,7 +21,7 @@ import { Box } from 'theme-ui'
 const Deploy = () => {
   const [governance, setGovernance] = useState(false)
   const rToken = useRToken()
-  const deployTx = useDeployTxState()
+  // const deployTx = useDeployTxState()
 
   const form = useForm({
     mode: 'onChange',
@@ -48,19 +48,20 @@ const Deploy = () => {
 
   // Listen for RToken change, if we have a tx and the rtoken
   // then switch to governance setup
-  useEffect(() => {
-    if (
-      deployTx?.extra?.rTokenAddress &&
-      rToken?.address === deployTx.extra.rTokenAddress
-    ) {
-      form.reset()
-      setGovernance(true)
-    }
-  }, [rToken?.address])
+  // TODO: do this after running tx
+  // useEffect(() => {
+  //   if (
+  //     deployTx?.extra?.rTokenAddress &&
+  //     rToken?.address === deployTx.extra.rTokenAddress
+  //   ) {
+  //     form.reset()
+  //     setGovernance(true)
+  //   }
+  // }, [rToken?.address])
 
-  if (governance) {
-    return <Governance />
-  }
+  // if (governance) {
+  //   return <Governance />
+  // }
 
   return (
     <FormProvider {...form}>

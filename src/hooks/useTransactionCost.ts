@@ -71,15 +71,7 @@ export const useTransactionGasFee = (
 const useTransactionCost = (
   transactions: TransactionState[]
 ): [number, string, number] => {
-  const { value: fees, error } = useTransactionGasFee(transactions)
-  const gasPrice = useAtomValue(gasPriceAtom)
-  const ethPrice = useAtomValue(ethPriceAtom)
-
-  return useMemo(() => {
-    const gasLimit = fees.reduce((acc, fee) => acc + fee, 0)
-
-    return [gasLimit * gasPrice * ethPrice, error, gasLimit]
-  }, [fees, gasPrice, ethPrice, error])
+  return [1, '', 1]
 }
 
 export default useTransactionCost

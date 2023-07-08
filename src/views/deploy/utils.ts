@@ -1,13 +1,10 @@
-import { BigNumber } from '@ethersproject/bignumber'
-import { parseEther } from '@ethersproject/units'
 import {
   BackupBasket,
   Basket,
   RevenueSplit,
 } from 'components/rtoken-setup/atoms'
-import { ethers } from 'ethers'
 import { StringMap } from 'types'
-import { ZERO_ADDRESS } from 'utils/addresses'
+import { Address, parseEther, stringToHex, zeroAddress } from 'viem'
 import { parsePercent } from './../../utils/index'
 
 export const governanceDefaultValues = {
@@ -53,13 +50,13 @@ export const defaultValues = {
 }
 
 export interface RevenueDist {
-  rTokenDist: BigNumber
-  rsrDist: BigNumber
+  rTokenDist: number
+  rsrDist: number
 }
 
 export interface IssuanceThrottle {
-  amtRate: BigNumber
-  pctRate: BigNumber
+  amtRate: bigint
+  pctRate: bigint
 }
 
 export interface RTokenConfiguration {
@@ -67,40 +64,40 @@ export interface RTokenConfiguration {
   symbol: string
   mandate: string
   params: {
-    minTradeVolume: BigNumber
-    rTokenMaxTradeVolume: BigNumber
+    minTradeVolume: bigint
+    rTokenMaxTradeVolume: bigint
     dist: RevenueDist
-    rewardRatio: BigNumber
-    unstakingDelay: BigNumber
-    withdrawalLeak: BigNumber
-    warmupPeriod: BigNumber
-    tradingDelay: BigNumber
-    batchAuctionLength: BigNumber
-    dutchAuctionLength: BigNumber
-    backingBuffer: BigNumber
-    maxTradeSlippage: BigNumber
-    shortFreeze: BigNumber
-    longFreeze: BigNumber
+    rewardRatio: bigint
+    unstakingDelay: number
+    withdrawalLeak: bigint
+    warmupPeriod: number
+    tradingDelay: number
+    batchAuctionLength: number
+    dutchAuctionLength: number
+    backingBuffer: bigint
+    maxTradeSlippage: bigint
+    shortFreeze: number
+    longFreeze: number
     issuanceThrottle: IssuanceThrottle
     redemptionThrottle: IssuanceThrottle
   }
 }
 
 export interface BackupBasketConfiguration {
-  backupUnit: string
-  diversityFactor: BigNumber
-  backupCollateral: string[]
+  backupUnit: `0x${string}`
+  diversityFactor: bigint
+  backupCollateral: Address[]
 }
 
 export interface ExternalDistribution {
-  beneficiary: string
+  beneficiary: Address
   revShare: RevenueDist
 }
 
 export interface BasketConfiguration {
-  assets: string[]
-  primaryBasket: string[]
-  weights: BigNumber[]
+  assets: Address[]
+  primaryBasket: Address[]
+  weights: bigint[]
   backups: BackupBasketConfiguration[]
   beneficiaries: ExternalDistribution[]
 }
@@ -117,23 +114,17 @@ export const getSharesFromSplit = (
 
   return [
     {
-      rTokenDist: BigNumber.from(Math.floor(+split.holders * SHARE_MULTIPLIER)),
-      rsrDist: BigNumber.from(Math.floor(+split.stakers * SHARE_MULTIPLIER)),
+      rTokenDist: Math.floor(+split.holders * SHARE_MULTIPLIER),
+      rsrDist: Math.floor(+split.stakers * SHARE_MULTIPLIER),
     },
     split.external.map((externalSplit) => {
       const totalShares = +externalSplit.total * SHARE_MULTIPLIER
-      const rTokenDist = BigNumber.from(
-        Math.floor((totalShares * +externalSplit.holders) / 100)
-      )
-      const rsrDist = BigNumber.from(
-        Math.floor((totalShares * +externalSplit.stakers) / 100)
-      )
 
       return {
-        beneficiary: externalSplit.address,
+        beneficiary: externalSplit.address as Address,
         revShare: {
-          rTokenDist,
-          rsrDist,
+          rTokenDist: Math.floor((totalShares * +externalSplit.holders) / 100),
+          rsrDist: Math.floor((totalShares * +externalSplit.stakers) / 100),
         },
       }
     }),
@@ -156,19 +147,19 @@ export const getDeployParameters = (
       mandate: tokenConfig.mandate,
       params: {
         withdrawalLeak: parsePercent(tokenConfig.withdrawalLeak),
-        warmupPeriod: BigNumber.from(tokenConfig.warmupPeriod),
-        dutchAuctionLength: BigNumber.from(tokenConfig.dutchAuctionLength),
+        warmupPeriod: Number(tokenConfig.warmupPeriod),
+        dutchAuctionLength: Number(tokenConfig.dutchAuctionLength),
         minTradeVolume: parseEther(tokenConfig.minTrade.toString()),
         rTokenMaxTradeVolume: parseEther(tokenConfig.maxTrade.toString()),
         dist,
         rewardRatio: parseEther(tokenConfig.rewardRatio),
-        unstakingDelay: BigNumber.from(tokenConfig.unstakingDelay),
-        tradingDelay: BigNumber.from(tokenConfig.tradingDelay),
-        batchAuctionLength: BigNumber.from(tokenConfig.auctionLength),
+        unstakingDelay: Number(tokenConfig.unstakingDelay),
+        tradingDelay: Number(tokenConfig.tradingDelay),
+        batchAuctionLength: Number(tokenConfig.auctionLength),
         backingBuffer: parsePercent(tokenConfig.backingBuffer),
         maxTradeSlippage: parsePercent(tokenConfig.maxTradeSlippage),
-        shortFreeze: BigNumber.from(tokenConfig.shortFreeze),
-        longFreeze: BigNumber.from(tokenConfig.longFreeze),
+        shortFreeze: Number(tokenConfig.shortFreeze),
+        longFreeze: Number(tokenConfig.longFreeze),
         issuanceThrottle: {
           amtRate: parseEther(tokenConfig.issuanceThrottleAmount),
           pctRate: parsePercent(tokenConfig.issuanceThrottleRate),
@@ -181,21 +172,23 @@ export const getDeployParameters = (
     }
 
     // Basket configuration
-    const assets: Set<string> = new Set()
-    const primaryBasket: string[] = []
-    const weights: BigNumber[] = []
+    const assets: Set<Address> = new Set()
+    const primaryBasket: Address[] = []
+    const weights: bigint[] = []
     const backups: BackupBasketConfiguration[] = []
 
     for (const targetUnit of Object.keys(basket)) {
       const { collaterals, distribution, scale } = basket[targetUnit]
 
       collaterals.forEach((collateral, index) => {
-        primaryBasket.push(collateral.address)
+        primaryBasket.push(collateral.address as Address)
         if (
           !!collateral.rewardToken?.length &&
-          collateral.rewardToken[0] !== ZERO_ADDRESS
+          collateral.rewardToken[0] !== zeroAddress
         ) {
-          collateral.rewardToken.forEach((reward) => assets.add(reward))
+          collateral.rewardToken.forEach((reward) =>
+            assets.add(reward as Address)
+          )
         }
 
         weights.push(
@@ -207,17 +200,13 @@ export const getDeployParameters = (
 
       if (backup[targetUnit] && backup[targetUnit].collaterals.length) {
         backups.push({
-          backupUnit: ethers.utils.formatBytes32String(
-            targetUnit.toUpperCase()
-          ),
-          diversityFactor: BigNumber.from(
-            backup[targetUnit].diversityFactor.toString()
-          ),
+          backupUnit: stringToHex(targetUnit.toUpperCase(), { size: 32 }),
+          diversityFactor: BigInt(backup[targetUnit].diversityFactor),
           backupCollateral: backup[targetUnit].collaterals.map((c) => {
-            if (!!c.rewardToken?.length && c.rewardToken[0] !== ZERO_ADDRESS) {
-              c.rewardToken.forEach((reward) => assets.add(reward))
+            if (!!c.rewardToken?.length && c.rewardToken[0] !== zeroAddress) {
+              c.rewardToken.forEach((reward) => assets.add(reward as Address))
             }
-            return c.address
+            return c.address as Address
           }),
         })
       }

@@ -6,11 +6,11 @@ import DeployActionIcon from 'components/icons/DeployActionIcon'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { getValidWeb3Atom, selectedRTokenAtom } from 'state/atoms'
-import { Box, BoxProps, Button, Divider, Flex, Spinner, Text } from 'theme-ui'
+import { Box, BoxProps, Button, Flex, Spinner, Text } from 'theme-ui'
 import { formatCurrency, shortenString } from 'utils'
 import { TRANSACTION_STATUS } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import useDeploy, { useDeployTxState } from '../useDeploy'
+import useDeploy from '../useDeploy'
 
 const Container = styled(Box)`
   height: fit-content;
@@ -19,8 +19,8 @@ const Container = styled(Box)`
 const DeployStatus = () => {
   const { account, chainId } = useAtomValue(getValidWeb3Atom)
   const setRToken = useSetAtom(selectedRTokenAtom)
-  const { fee, deploy, isValid } = useDeploy()
-  const tx = useDeployTxState()
+  const { gas, deploy, isValid } = useDeploy()
+  const tx: any = null
 
   useEffect(() => {
     if (tx?.extra?.rTokenAddress) {
@@ -100,7 +100,7 @@ const DeployStatus = () => {
       <Button
         onClick={deploy}
         variant="accentAction"
-        disabled={!isValid || !fee}
+        disabled={!isValid}
         mt={4}
         sx={{ width: '100%' }}
       >
@@ -109,11 +109,13 @@ const DeployStatus = () => {
       <Box mt={3} sx={{ fontSize: 1, textAlign: 'center' }}>
         <Text variant="legend" mr={1}>
           <Trans>Estimated gas cost:</Trans>
-          {!isValid && ' --'}
+          {!isValid && !gas.isLoading && ' --'}
         </Text>
-        {isValid && !fee && <Spinner color="black" size={12} />}
-        {isValid && !!fee && (
-          <Text sx={{ fontWeight: 500 }}>${formatCurrency(fee)}</Text>
+        {gas.isLoading && <Spinner color="black" size={12} />}
+        {gas.estimateUsd && (
+          <Text sx={{ fontWeight: 500 }}>
+            ${formatCurrency(gas.estimateUsd)}
+          </Text>
         )}
         {!account && (
           <Text mt={3} sx={{ display: 'block', color: 'warning' }}>

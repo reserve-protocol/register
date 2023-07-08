@@ -141,7 +141,7 @@ export interface Token {
 }
 
 export interface BigNumberMap {
-  [x: string]: BigNumber
+  [x: string | Address]: bigint
 }
 
 export interface RTokenMeta {
