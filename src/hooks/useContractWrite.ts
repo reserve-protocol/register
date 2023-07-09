@@ -28,6 +28,7 @@ const useContractWrite = (call: UsePrepareContractWriteConfig) => {
       ...contractWrite,
       gas,
       isReady: !!gas.result && !!contractWrite.write,
+      hash: !contractWrite.isError ? contractWrite.data?.hash : undefined,
     }),
     [contractWrite, gas]
   )

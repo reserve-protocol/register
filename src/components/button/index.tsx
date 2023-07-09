@@ -39,7 +39,6 @@ export const LoadingButton = ({
   text,
   onClick,
   loadingText = 'Pending, Sign in wallet',
-  small = false,
   ...props
 }: LoadingButtonProps) => (
   <Button

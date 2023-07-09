@@ -82,7 +82,7 @@ const Pausing = ({
       subtitle={t`Status:`}
       value={isPaused ? t`${pauseLabel} paused` : t`${pauseLabel} not paused`}
       action={
-        accountRole.pauser || accountRole.owner
+        accountRole?.pauser || accountRole?.owner
           ? `${isPaused ? 'Unpause' : 'Pause'} ${pauseLabel.toLowerCase()}`
           : ''
       }

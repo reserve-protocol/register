@@ -110,7 +110,7 @@ const FreezeManager = () => {
         value={isFrozen ? t`Frozen` : t`Not frozen`}
         icon="freeze"
         mb={3}
-        action={isFrozen && accountRole.owner ? t`Unfreeze` : ''}
+        action={isFrozen && accountRole?.owner ? t`Unfreeze` : ''}
         onAction={handleUnfreeze}
         actionVariant="danger"
         loading={!!tx}
@@ -136,7 +136,7 @@ const FreezeManager = () => {
             subtitle={t`Role held by:`}
             value={<RolesView roles={freezers} />}
             action={
-              !isFrozen && accountRole.shortFreezer ? t`Short Freeze` : ''
+              !isFrozen && accountRole?.shortFreezer ? t`Short Freeze` : ''
             }
             onAction={handleFreeze}
             actionVariant="danger"
@@ -148,7 +148,7 @@ const FreezeManager = () => {
             subtitle={t`Role held by:`}
             value={<RolesView roles={longFreezers} />}
             action={
-              !isFrozen && (accountRole.longFreezer || accountRole.owner)
+              !isFrozen && (accountRole?.longFreezer || accountRole?.owner)
                 ? t`Long Freeze`
                 : ''
             }
