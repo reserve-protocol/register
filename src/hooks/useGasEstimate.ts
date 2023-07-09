@@ -4,16 +4,18 @@ import { ethPriceAtom, gasFeeAtom } from 'state/atoms'
 import { EstimateContractGasParameters, formatEther } from 'viem'
 import { usePublicClient } from 'wagmi'
 
-interface GasEstimation {
+export interface GasEstimation {
   isLoading: boolean
   result: bigint | null
   estimateUsd: number | null
+  estimateEth: bigint | null
 }
 
 const defaultGas: GasEstimation = {
   isLoading: false,
   result: null,
   estimateUsd: null,
+  estimateEth: null,
 }
 
 export const useGasEstimate = (
@@ -40,6 +42,7 @@ export const useGasEstimate = (
         isLoading: false,
         result,
         estimateUsd: Number(formatEther(result * fee)) * ethPrice,
+        estimateEth: ((result * 150n) / 100n) * fee,
       })
     } catch (e) {
       setState(defaultGas)

@@ -1,15 +1,32 @@
 import useTransaction from 'hooks/useTransaction'
 import { smallButton } from 'theme'
-import { Button as ThemeButton, ButtonProps, Spinner, Text } from 'theme-ui'
+import {
+  Button as ThemeButton,
+  ButtonProps as _ButtonProps,
+  Spinner,
+  Text,
+} from 'theme-ui'
 import { TransactionState } from 'types'
 
-const Button = (props: ButtonProps) => <ThemeButton {...props} />
+export interface ButtonProps extends _ButtonProps {
+  small?: boolean
+  fullWidth?: boolean
+}
+
+const Button = ({ sx = {}, small, fullWidth, ...props }: ButtonProps) => {
+  let styles = small ? { ...sx, ...smallButton } : sx
+
+  if (fullWidth) {
+    styles = { ...styles, width: '100%' }
+  }
+
+  return <ThemeButton {...props} sx={styles} />
+}
 
 export interface LoadingButtonProps extends ButtonProps {
-  loading: boolean
+  loading?: boolean
   loadingText?: string
   text: string
-  small?: boolean
 }
 
 export interface ExecuteButtonProps
@@ -24,43 +41,37 @@ export const LoadingButton = ({
   loadingText = 'Pending, Sign in wallet',
   small = false,
   ...props
-}: LoadingButtonProps) => {
-  const ButtonComponent = small ? SmallButton : Button
-
-  return (
-    <ButtonComponent
-      variant="accentAction"
-      onClick={(e) => {
-        if (!loading && onClick) onClick(e)
-      }}
-      {...props}
-    >
-      {loading ? (
-        <Text
+}: LoadingButtonProps) => (
+  <Button
+    variant="accentAction"
+    onClick={(e) => {
+      if (!loading && onClick) onClick(e)
+    }}
+    {...props}
+  >
+    {loading ? (
+      <Text
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Spinner
           sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            color:
+              props.variant === 'primary' ? 'white' : '--theme-ui-colors-text',
           }}
-        >
-          <Spinner
-            sx={{
-              color:
-                props.variant === 'primary'
-                  ? 'white'
-                  : '--theme-ui-colors-text',
-            }}
-            size={14}
-            mr={2}
-          />{' '}
-          {loadingText}
-        </Text>
-      ) : (
-        <Text>{text}</Text>
-      )}
-    </ButtonComponent>
-  )
-}
+          size={14}
+          mr={2}
+        />{' '}
+        {loadingText}
+      </Text>
+    ) : (
+      <Text>{text}</Text>
+    )}
+  </Button>
+)
 
 export const ExecuteButton = ({
   tx,

@@ -3,6 +3,7 @@ import { t } from '@lingui/macro'
 import { atom } from 'jotai'
 import { isAddress, truncateDecimals } from 'utils'
 import { CollateralPlugin } from 'types'
+import { Address } from 'viem'
 
 export interface Collateral {
   symbol: string
@@ -259,7 +260,7 @@ export const isValidExternalMapAtom = atom((get) => {
 })
 
 export const setupRolesAtom = atomWithReset({
-  pausers: [] as string[],
-  shortFreezers: [] as string[],
-  longFreezers: [] as string[],
+  pausers: [] as Address[],
+  shortFreezers: [] as Address[],
+  longFreezers: [] as Address[],
 })
