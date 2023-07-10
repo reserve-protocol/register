@@ -1,9 +1,10 @@
 import { useMemo } from 'react'
 import {
   UsePrepareContractWriteConfig,
-  usePrepareContractWrite,
   useContractWrite as _useContractWrite,
+  usePrepareContractWrite,
 } from 'wagmi'
+import { getSafeGasLimit } from './../utils/index'
 import useGasEstimate from './useGasEstimate'
 
 // Extends wagmi to include gas estimate and gas limit multiplier
@@ -16,7 +17,7 @@ const useContractWrite = (call: UsePrepareContractWriteConfig) => {
       ...config,
       request: {
         ...config.request,
-        gas: gas.result ? (gas.result * 150n) / 100n : undefined, // bump gas limit by 1.5
+        gas: gas.result ? getSafeGasLimit(gas.result) : undefined,
       },
     }
   }, [gas.result, config])

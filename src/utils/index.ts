@@ -19,6 +19,9 @@ export function isAddress(value: string) {
     return null
   }
 }
+// multiplier 150 -> 1.5
+export const getSafeGasLimit = (gas: bigint, multiplier = 150n) =>
+  (gas * multiplier) / 100n
 
 export function getCurrentTime() {
   return Math.floor(new Date().getTime() / 1000)

@@ -44,7 +44,7 @@ const AtomUpdater = () => {
   }
 
   useEffect(() => {
-    setWallet(account ?? '')
+    setWallet(account ?? null)
   }, [account])
 
   useEffect(() => {
