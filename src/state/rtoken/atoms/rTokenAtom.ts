@@ -1,7 +1,7 @@
 import FacadeRead from 'abis/FacadeRead'
 import RToken from 'abis/RToken'
 import { Atom, atom } from 'jotai'
-import { chainIdAtom } from 'state/atoms/chainAtoms'
+import { chainIdAtom } from 'state/chain/atoms/chainAtoms'
 import { Token } from 'types'
 import { getTokenReadCalls, isAddress } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'

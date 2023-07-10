@@ -2,7 +2,7 @@ import { ethers, utils } from 'ethers'
 import { Atom, Getter, WritableAtom, atom, useAtomValue } from 'jotai'
 import { atomFamily } from 'jotai/utils'
 import { useEffect, useMemo } from 'react'
-import { web3Atom } from '../atoms'
+import { web3Atom } from '../../atoms'
 
 // TODO: Redo token balance fetcher
 

@@ -8,7 +8,7 @@ import {
   WalletTransaction,
 } from 'types'
 import { TRANSACTION_STATUS } from 'utils/constants'
-import { chainIdAtom, walletAtom } from './chainAtoms'
+import { chainIdAtom, walletAtom } from '../chain/atoms/chainAtoms'
 
 // Store multicalls, fetched on every block
 export const callsAtom = atom<RawCall[]>([])

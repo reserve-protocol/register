@@ -38,12 +38,9 @@ const RTokenGovernanceUpdater = () => {
   const setGovernance = useSetAtom(rTokenGovernanceAtom)
   const setTokenManagers = useSetAtom(rTokenManagersAtom)
 
-  const { data, error } = useQuery(
-    rToken?.address && !rToken.isRSV ? query : null,
-    {
-      id: rToken?.address.toLowerCase(),
-    }
-  )
+  const { data, error } = useQuery(rToken?.main ? query : null, {
+    id: rToken?.address.toLowerCase(),
+  })
 
   useEffect(() => {
     if (data?.rtoken) {

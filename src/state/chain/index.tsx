@@ -11,7 +11,7 @@ import React from 'react'
 import { WagmiConfig, configureChains, createConfig } from 'wagmi'
 import { mainnet, optimism } from 'wagmi/chains'
 
-import AtomUpdater from './AtomUpdater'
+import AtomUpdater from './updaters/AtomUpdater'
 
 // TODO: find a way to easy switch between tenderly/mainnet
 const { chains, publicClient } = configureChains(

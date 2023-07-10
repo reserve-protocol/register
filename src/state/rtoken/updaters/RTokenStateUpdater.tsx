@@ -16,7 +16,7 @@ import {
 import { VERSION } from 'utils/constants'
 import { Address, formatEther } from 'viem'
 import { useContractReads } from 'wagmi'
-import { rTokenStateAtom } from './atoms/rTokenStateAtom'
+import { rTokenStateAtom } from '../atoms/rTokenStateAtom'
 
 type StateMulticallResult = {
   data:

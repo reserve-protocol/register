@@ -1,7 +1,10 @@
 import { t } from '@lingui/macro'
 import { useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
-import { addTransactionAtom, updateTransactionAtom } from 'state/chain/atoms'
+import {
+  addTransactionAtom,
+  updateTransactionAtom,
+} from 'state/chain/atoms/transactionAtoms'
 import { Hex, TransactionReceipt } from 'viem'
 import { waitForTransaction } from 'wagmi/actions'
 import useIsMounted from './useIsMounted'

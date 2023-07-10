@@ -4,7 +4,10 @@ import dayjs from 'dayjs'
 import { atom, useAtomValue } from 'jotai'
 import { ArrowUpRight, Check, X } from 'react-feather'
 import { chainIdAtom } from 'state/atoms'
-import { TransactionState, currentTxHistoryAtom } from 'state/chain/atoms'
+import {
+  TransactionState,
+  currentTxHistoryAtom,
+} from 'state/chain/atoms/transactionAtoms'
 import { borderRadius } from 'theme'
 import { Box, Flex, Grid, Link, Spinner, Text } from 'theme-ui'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
