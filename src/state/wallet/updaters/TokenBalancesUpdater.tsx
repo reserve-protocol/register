@@ -1,42 +1,77 @@
-import { ethers, utils } from 'ethers'
-import { Atom, Getter, WritableAtom, atom, useAtomValue } from 'jotai'
-import { atomFamily } from 'jotai/utils'
-import { useEffect, useMemo } from 'react'
-import { web3Atom } from '../../atoms'
+import ERC20 from 'abis/ERC20'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
+import { useEffect } from 'react'
+import { RSR_ADDRESS } from 'utils/addresses'
+import { Address, formatUnits } from 'viem'
+import { useContractReads } from 'wagmi'
+import {
+  TokenBalanceMap,
+  balancesAtom,
+  chainIdAtom,
+  rTokenAtom,
+  walletAtom,
+} from '../../atoms'
 
-// TODO: Redo token balance fetcher
+// TODO: Add zapper tokens
+const balancesCallAtom = atom((get) => {
+  const wallet = get(walletAtom)
+  const rToken = get(rTokenAtom)
+  const chainId = get(chainIdAtom)
 
-export const useTokenBalance = (token: string) => {
-  // const atom = useMemo(() => tokenBalancesStore.getBalanceAtom(token), [token])
-  // return useAtomValue(atom)
-}
+  if (!rToken || !wallet) {
+    return undefined
+  }
 
-export const useTokenBalances = (tokens: string[]) => {
-  // const out = useMemo(() => {
-  //   if (tokens.length === 0) {
-  //     return atomZeroLen
-  //   }
-  //   return atom((get) =>
-  //     tokens.map((t) =>
-  //       // get(tokenBalancesStore.getBalanceAtom(utils.getAddress(t)))
-  //     )
-  //   )
-  // }, [tokens.join()])
-  // return useAtomValue(out)
-  return []
-}
+  const tokens: [Address, number][] = [
+    [rToken.address, rToken.decimals],
+    [RSR_ADDRESS[chainId], 18],
+    ...rToken.collaterals.map((token): [Address, number] => [
+      token.address,
+      token.decimals,
+    ]),
+  ]
+
+  if (rToken.stToken) {
+    tokens.push([rToken.stToken.address, rToken.stToken.decimals])
+  }
+
+  return {
+    tokens,
+    calls: tokens.map(([address]) => ({
+      address,
+      abi: ERC20,
+      functionName: 'balanceOf',
+      args: [wallet],
+    })),
+  }
+})
+
 export const TokenBalancesUpdater = () => {
-  const { account, client } = useAtomValue(web3Atom)
+  const { tokens, calls } = useAtomValue(balancesCallAtom) ?? {}
+  const setBalances = useSetAtom(balancesAtom)
 
-  // useEffect(() => {
-  //   if (account) {
-  //     tokenBalancesStore.init(client, account)
-  //   }
+  const { data }: { data: bigint[] | undefined } = useContractReads({
+    contracts: calls,
+    allowFailure: false,
+    watch: true,
+  })
 
-  //   return () => {
-  //     tokenBalancesStore.deInit()
-  //   }
-  // }, [client, tokenBalancesStore])
+  useEffect(() => {
+    if (data && tokens) {
+      setBalances(
+        data.reduce((prev, value, index) => {
+          const [address, decimals] = tokens[index]
+          prev[address] = {
+            balance: formatUnits(value, decimals),
+            value,
+            decimals,
+          }
+
+          return prev
+        }, {} as TokenBalanceMap)
+      )
+    }
+  }, [data])
 
   return null
 }

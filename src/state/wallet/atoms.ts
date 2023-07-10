@@ -8,55 +8,36 @@ import { StRSRVotes } from 'abis/types'
 import { atom } from 'jotai'
 import { AccountPosition, AccountToken } from 'types'
 import { getContract } from 'utils'
-import { ZERO_ADDRESS } from 'utils/addresses'
+import { RSR_ADDRESS, ZERO_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
-import { RSR } from 'utils/constants'
 import rTokenAtom from '../rtoken/atoms/rTokenAtom'
 import rTokenContractsAtom from '../rtoken/atoms/rTokenContractsAtom'
-import { getValidWeb3Atom, walletAtom } from '../chain/atoms/chainAtoms'
+import {
+  chainIdAtom,
+  getValidWeb3Atom,
+  walletAtom,
+} from '../chain/atoms/chainAtoms'
 import { readContracts } from 'wagmi'
 import Main from 'abis/Main'
-import { stringToHex } from 'viem'
+import { Address, stringToHex } from 'viem'
 
 const defaultBalance = {
-  value: BigNumber.from(0),
+  value: 0n,
   decimals: 18,
   balance: '0',
 }
 
-// Tracks rToken/collaterals/stRSR/RSR balances for a connected account
-// export const balancesAtom = atom((get) => {
-//   const rToken = get(rTokenAtom)
-//   if (rToken == null) {
-//     return {}
-//   }
-//   const tokens = getTokens(rToken)
-//   const balances = tokens.map((t) =>
-//     get(tokenBalancesStore.getBalanceAtom(utils.getAddress(t[0])))
-//   )
+export interface TokenBalance {
+  value: bigint
+  balance: string // formatted balance
+  decimals: number
+}
 
-//   return Object.fromEntries(
-//     balances
-//       .map((atomValue, i) => ({
-//         atomValue,
-//         decimals: tokens[i][1],
-//       }))
-//       .map((entry) => [
-//         entry.atomValue.address,
-//         {
-//           value: entry.atomValue.value ?? ethers.constants.Zero,
-//           decimals: entry.decimals,
-//           balance: formatUnits(
-//             entry.atomValue.value ?? ethers.constants.Zero,
-//             entry.decimals
-//           ),
-//         },
-//       ])
-//   )
-// })
+export interface TokenBalanceMap {
+  [x: Address]: TokenBalance
+}
 
-// TODO: Fix balances
-export const balancesAtom = atom({} as any)
+export const balancesAtom = atom<TokenBalanceMap>({})
 
 // Get balance for current rToken for the selected account
 export const rTokenBalanceAtom = atom((get) => {
@@ -80,7 +61,8 @@ export const stRsrBalanceAtom = atom((get) => {
 })
 
 export const rsrBalanceAtom = atom((get) => {
-  return get(balancesAtom)[RSR.address] || defaultBalance
+  const chainId = get(chainIdAtom)
+  return get(balancesAtom)[RSR_ADDRESS[chainId]] || defaultBalance
 })
 
 // Tracks allowance for stRSR/RSR and Collaterals/rToken

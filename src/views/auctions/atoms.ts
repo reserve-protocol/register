@@ -25,7 +25,7 @@ export interface Auction {
   buy: Token
   amount: string
   minAmount: string
-  trader: string
+  trader: Address
   canStart: boolean
   output: number // estimated token output
 }
@@ -39,7 +39,7 @@ export const AUCTION_TYPES = {
 
 export interface AuctionToSettle {
   type: AuctionType
-  trader: string
+  trader: Address
   sell: Token
   buy: Token | null
 }

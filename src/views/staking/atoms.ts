@@ -1,15 +1,13 @@
 import { BigNumber } from 'ethers'
 import { atom } from 'jotai'
 import { safeParseEther } from 'utils'
-import { BI_ZERO } from 'utils/constants'
 import {
   blockTimestampAtom,
   rsrBalanceAtom,
   stRsrBalanceAtom,
 } from './../../state/atoms'
 
-const isValid = (value: BigNumber, max: BigNumber) =>
-  value.gt(BI_ZERO) && value.lte(max)
+const isValid = (value: bigint, max: bigint) => value > 0n && value <= max
 
 export const stakeAmountAtom = atom('')
 export const unStakeAmountAtom = atom('')

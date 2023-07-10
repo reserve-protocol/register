@@ -32,6 +32,7 @@ const Pausing = ({
   const { tradingPaused, issuancePaused } = useAtomValue(rTokenStateAtom)
   let pauseLabel = legacy ? '' : 'Trading'
   let isPaused = tradingPaused // applies for legacy too
+  const hasRole = !!accountRole?.pauser || !!accountRole?.owner
 
   if (type === PAUSE_TYPES.ISSUANCE) {
     isPaused = issuancePaused
@@ -39,7 +40,7 @@ const Pausing = ({
   }
 
   const { write, hash, isLoading } = useContractWrite({
-    address: rToken?.main,
+    address: hasRole && rToken?.main ? rToken.main : undefined,
     abi: legacy ? MainLegacy : Main,
     functionName: isPaused ? `unpause${pauseLabel}` : `pause${pauseLabel}`,
   })
@@ -58,7 +59,7 @@ const Pausing = ({
       subtitle={t`Status:`}
       value={isPaused ? t`${pauseLabel} paused` : t`${pauseLabel} not paused`}
       action={
-        accountRole?.pauser || accountRole?.owner
+        hasRole
           ? `${isPaused ? 'Unpause' : 'Pause'} ${pauseLabel.toLowerCase()}`
           : ''
       }
