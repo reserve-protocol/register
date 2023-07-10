@@ -56,13 +56,13 @@ export const addTransactionAtom = atom(
 
 export const updateTransactionAtom = atom(
   null,
-  (get, set, [hash, status]: [Hex, 'success' | 'error']) => {
+  (get, set, [hash, status, block]: [Hex, 'success' | 'error', number?]) => {
     const history = get(transactionHistoryAtom)
 
     if (history[hash]) {
       set(transactionHistoryAtom, {
         ...history,
-        [hash]: { ...history[hash], status },
+        [hash]: { ...history[hash], status, block },
       })
     }
   }

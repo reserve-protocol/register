@@ -1,11 +1,11 @@
 import { t } from '@lingui/macro'
 import { useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { addTransactionAtom, updateTransactionAtom } from 'state/chain/atoms'
-import { Hex } from 'viem'
-import { useWaitForTransaction } from 'wagmi'
+import { Hex, TransactionReceipt } from 'viem'
+import { waitForTransaction } from 'wagmi/actions'
+import useIsMounted from './useIsMounted'
 import useNotification from './useNotification'
-import { getCurrentTime } from 'utils'
 
 interface WatchOptions {
   hash: Hex | undefined
@@ -14,40 +14,61 @@ interface WatchOptions {
   error?: string
 }
 
+interface WatchResult {
+  data?: TransactionReceipt
+  status: 'success' | 'error' | 'loading' | 'idle'
+}
+
 // Watch tx status, send notifications and track history
 const useWatchTransaction = ({ hash, success, error, label }: WatchOptions) => {
   const notify = useNotification()
   const addTransaction = useSetAtom(addTransactionAtom)
   const updateTransaction = useSetAtom(updateTransactionAtom)
-  const result = useWaitForTransaction({
-    hash,
-  })
+  const isMounted = useIsMounted()
+  const [result, setResult] = useState({
+    status: 'idle',
+  } as WatchResult)
+
+  // Use manual "waitForTransaction" action in order to still listen for transaction on component unmount
+  const waitForTx = async (hash: Hex) => {
+    try {
+      const data = await waitForTransaction({ hash })
+
+      updateTransaction([hash, 'success', Number(data.blockNumber)])
+      notify(
+        t`Transaction confirmed`,
+        success ?? `At block ${Number(data.blockNumber)}`,
+        'success'
+      )
+
+      if (isMounted) {
+        setResult({
+          data,
+          status: 'success',
+        })
+      }
+    } catch (e: any) {
+      console.error('[TRANSACTION REVERTED]', e)
+      notify(
+        t`Transaction reverted`,
+        error ?? e?.message ?? 'Unknown error',
+        'error'
+      )
+      updateTransaction([hash, 'error'])
+      if (isMounted) {
+        setResult({ status: 'error' })
+      }
+    }
+  }
 
   useEffect(() => {
     if (hash) {
       addTransaction([hash, label])
+      waitForTx(hash)
+    } else if (result.status !== 'idle') {
+      setResult({ status: 'idle' })
     }
   }, [hash])
-
-  useEffect(() => {
-    if (hash && (result.status === 'success' || result.status === 'error')) {
-      updateTransaction([hash, result.status])
-
-      if (result.status === 'error') {
-        notify(
-          t`Transaction failed`,
-          error ?? result.error?.message ?? 'Unknown error',
-          'error'
-        )
-      } else {
-        notify(
-          t`Transaction confirmed`,
-          success ?? `At block ${Number(result.data?.blockNumber ?? 0n)}`,
-          'success'
-        )
-      }
-    }
-  }, [result.status])
 
   return result
 }

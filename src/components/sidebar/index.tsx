@@ -4,7 +4,7 @@ import { Box } from 'theme-ui'
 
 const Sidebar = ({
   onClose,
-  width = '60vw',
+  width = '600',
   children,
 }: {
   onClose(): void
@@ -15,7 +15,7 @@ const Sidebar = ({
     <>
       <Box
         onClick={onClose}
-        sx={(theme: any) => ({
+        sx={(theme) => ({
           position: 'fixed',
           left: 0,
           top: 0,
@@ -23,11 +23,11 @@ const Sidebar = ({
           opacity: '50%',
           width: '100vw',
           height: '100%',
-          backgroundColor: theme.colors.modalOverlay,
+          backgroundColor: theme.colors?.modalOverlay,
         })}
       />
       <Box
-        sx={(theme: any) => ({
+        sx={(theme) => ({
           flexDirection: 'column',
           zIndex: 100001,
           display: 'flex',
@@ -36,7 +36,7 @@ const Sidebar = ({
           width: ['100vw', '100vw', width],
           backgroundColor: 'background',
           right: 0,
-          borderLeft: `solid 3px ${theme.colors.border}`,
+          borderLeft: `solid 3px ${theme.colors?.border}`,
           boxShadow: '-32px 0px 64px rgba(0, 0, 0, 0.15)',
           top: 0,
           height: '100%',

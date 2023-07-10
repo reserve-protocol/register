@@ -1,18 +1,17 @@
 import { Trans, t } from '@lingui/macro'
+import Main from 'abis/Main'
+import MainLegacy from 'abis/MainLegacy'
+import useContractWrite from 'hooks/useContractWrite'
 import useRToken from 'hooks/useRToken'
-import { useAtomValue, useSetAtom } from 'jotai'
-import { useEffect, useState } from 'react'
+import useWatchTransaction from 'hooks/useWatchTransaction'
+import { useAtomValue } from 'jotai'
 import {
   accountRoleAtom,
-  addTransactionAtom,
   isModuleLegacyAtom,
   rTokenManagersAtom,
   rTokenStateAtom,
 } from 'state/atoms'
-import { useTransactionState } from 'state/chain/hooks/useTransactions'
 import { Box, Flex, Text } from 'theme-ui'
-import { TRANSACTION_STATUS } from 'utils/constants'
-import { v4 as uuid } from 'uuid'
 import RolesView from './RolesView'
 import SettingItem from './SettingItem'
 
@@ -31,49 +30,26 @@ const Pausing = ({
   const rToken = useRToken()
   const accountRole = useAtomValue(accountRoleAtom)
   const { tradingPaused, issuancePaused } = useAtomValue(rTokenStateAtom)
-  const addTransaction = useSetAtom(addTransactionAtom)
-  const [txId, setTx] = useState('')
-  const tx = useTransactionState(txId)
-
-  let isPaused = tradingPaused // applies for legacy too
   let pauseLabel = legacy ? '' : 'Trading'
+  let isPaused = tradingPaused // applies for legacy too
 
   if (type === PAUSE_TYPES.ISSUANCE) {
     isPaused = issuancePaused
     pauseLabel = 'Issuance'
   }
 
-  useEffect(() => {
-    if (
-      tx?.status === TRANSACTION_STATUS.CONFIRMED ||
-      tx?.status === TRANSACTION_STATUS.REJECTED
-    ) {
-      setTx('')
-    }
-  }, [tx?.status])
+  const { write, hash, isLoading } = useContractWrite({
+    address: rToken?.main,
+    abi: legacy ? MainLegacy : Main,
+    functionName: isPaused ? `unpause${pauseLabel}` : `pause${pauseLabel}`,
+  })
 
-  const handlePause = () => {
-    if (rToken?.main) {
-      const id = uuid()
-      setTx(id)
-      addTransaction([
-        {
-          id,
-          description: `${
-            isPaused ? 'Unpause' : 'Pause'
-          } ${pauseLabel.toLowerCase()} ${rToken.symbol}`,
-          status: TRANSACTION_STATUS.PENDING,
-          value: '0',
-          call: {
-            abi: legacy ? '_main' : 'main',
-            address: rToken.main,
-            method: isPaused ? `unpause${pauseLabel}` : `pause${pauseLabel}`,
-            args: [],
-          },
-        },
-      ])
-    }
-  }
+  useWatchTransaction({
+    hash,
+    label: `${isPaused ? 'Unpause' : 'Pause'} ${pauseLabel.toLowerCase()} ${
+      rToken?.symbol
+    }`,
+  })
 
   return (
     <SettingItem
@@ -86,8 +62,8 @@ const Pausing = ({
           ? `${isPaused ? 'Unpause' : 'Pause'} ${pauseLabel.toLowerCase()}`
           : ''
       }
-      onAction={handlePause}
-      loading={!!txId}
+      onAction={write}
+      loading={isLoading}
       actionVariant="danger"
     />
   )

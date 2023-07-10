@@ -27,7 +27,7 @@ const txByDateAtom = atom((get) => {
   }, {} as { [x: string]: TransactionState[] })
 })
 
-const TransactionStatus = ({ tx }: { tx: TransactionState }) => {
+const TransactionItem = ({ tx }: { tx: TransactionState }) => {
   let Icon: any = Spinner
   let label = 'Mining'
 
@@ -40,17 +40,43 @@ const TransactionStatus = ({ tx }: { tx: TransactionState }) => {
   }
 
   return (
-    <Flex variant="layout.verticalAlign">
-      <Icon size={18} />
-      <Text ml={2} sx={{ display: ['none', 'flex'] }}>
-        {label}
-      </Text>
-    </Flex>
+    <Grid
+      columns={['0.5fr 1fr auto']}
+      gap={3}
+      mt={3}
+      p={3}
+      key={tx.hash}
+      sx={{
+        backgroundColor: 'contentBackground',
+        borderRadius: borderRadius.boxes,
+      }}
+    >
+      <Flex sx={{ overflow: 'hidden', alignItems: 'center' }}>{tx.label}</Flex>
+      <Flex variant="layout.verticalAlign">
+        <Icon size={18} />
+        <Text ml={2}>{label}</Text>
+      </Flex>{' '}
+      <Flex sx={{ alignItems: 'center' }}>
+        <Link
+          href={getExplorerLink(
+            tx.hash,
+            useAtomValue(chainIdAtom),
+            ExplorerDataType.TRANSACTION
+          )}
+          target="_blank"
+          sx={{ display: 'flex', alignItems: 'center' }}
+        >
+          <Text mr={2}>
+            <Trans>Inspect</Trans>
+          </Text>
+          <ArrowUpRight size={16} />
+        </Link>
+      </Flex>
+    </Grid>
   )
 }
 
 const TransactionList = () => {
-  const chainId = useAtomValue(chainIdAtom)
   const txs = useAtomValue(txByDateAtom)
 
   return (
@@ -61,39 +87,7 @@ const TransactionList = () => {
             {day}
           </Text>
           {txs[day].map((tx) => (
-            <Grid
-              columns={['140px 1fr 1fr', '140px 160px auto 72px']}
-              gap={3}
-              mt={3}
-              p={3}
-              key={tx.hash}
-              sx={{
-                backgroundColor: 'contentBackground',
-                borderRadius: borderRadius.boxes,
-              }}
-            >
-              <Flex sx={{ overflow: 'hidden', alignItems: 'center' }}>
-                {tx.label}
-              </Flex>
-
-              <TransactionStatus tx={tx} />
-              <Flex sx={{ alignItems: 'center' }}>
-                <Link
-                  href={getExplorerLink(
-                    tx.hash,
-                    chainId,
-                    ExplorerDataType.TRANSACTION
-                  )}
-                  target="_blank"
-                  sx={{ display: 'flex', alignItems: 'center' }}
-                >
-                  <Text mr={2}>
-                    <Trans>Inspect</Trans>
-                  </Text>
-                  <ArrowUpRight size={16} />
-                </Link>
-              </Flex>
-            </Grid>
+            <TransactionItem tx={tx} />
           ))}
         </Box>
       ))}

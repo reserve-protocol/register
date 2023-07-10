@@ -70,7 +70,10 @@ const GovernanceStatus = () => {
   const navigate = useNavigate()
   const rToken = useRToken()
   const { write, isReady, isLoading, gas, hash } = useGovernance()
-  const { status, data } = useWatchTransaction(hash)
+  const { status, data } = useWatchTransaction({
+    hash,
+    label: 'Setup Governance',
+  })
 
   useEffect(() => {
     if (status === 'success') {

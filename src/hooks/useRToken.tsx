@@ -1,8 +1,7 @@
 import { useAtomValue } from 'jotai'
 import { rTokenAtom } from 'state/atoms'
-import { ReserveToken } from 'types'
 
-const useRToken = (): ReserveToken | null => {
+const useRToken = () => {
   return useAtomValue(rTokenAtom)
 }
 

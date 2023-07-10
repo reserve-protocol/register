@@ -75,8 +75,11 @@ interface Props extends BoxProps {
 const DeployOverview = ({ onDeploy, sx = {}, ...props }: Props) => {
   const navigate = useNavigate()
   const chainId = useAtomValue(chainIdAtom)
-  const { gas, write, isReady, data: callData, reset, isLoading } = useDeploy()
-  const { data, status } = useWatchTransaction(callData?.hash)
+  const { gas, write, isReady, hash, isLoading } = useDeploy()
+  const { data, status } = useWatchTransaction({
+    hash,
+    label: 'Deploy RToken',
+  })
 
   const handleDeploySuccess = () => {
     const deployLog = data?.logs
@@ -106,10 +109,6 @@ const DeployOverview = ({ onDeploy, sx = {}, ...props }: Props) => {
   }
 
   useEffect(() => {
-    if (status === 'error') {
-      reset()
-    }
-
     if (status === 'success') {
       handleDeploySuccess()
     }
@@ -134,12 +133,12 @@ const DeployOverview = ({ onDeploy, sx = {}, ...props }: Props) => {
           <Trans>Tx1. RToken Deploy</Trans>
         </Text>
         {(() => {
-          if (isLoading && !callData?.hash) {
+          if (isLoading && !hash) {
             return <Pending />
           }
 
-          if (callData?.hash) {
-            return <Mining hash={callData.hash} />
+          if (hash) {
+            return <Mining hash={hash} />
           }
 
           return (
