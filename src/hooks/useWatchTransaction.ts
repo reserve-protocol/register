@@ -4,6 +4,12 @@ import { useWaitForTransaction } from 'wagmi'
 import { useEffect } from 'react'
 import { t } from '@lingui/macro'
 
+interface WatchOptions {
+  hash: Hex | undefined
+  successMsg?: string
+  errorMsg?: string
+}
+
 const useWatchTransaction = (
   hash: Hex | undefined,
   successMsg?: string,
