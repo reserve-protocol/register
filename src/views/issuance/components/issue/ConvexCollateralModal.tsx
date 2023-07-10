@@ -15,7 +15,7 @@ import { useTransactions } from 'state/web3/hooks/useTransactions'
 import { promiseMulticall } from 'state/web3/lib/multicall'
 import { Box, Divider, Flex, Link, Text } from 'theme-ui'
 import { BigNumberMap, TransactionState } from 'types'
-import { formatCurrency, getTransactionWithGasLimit, hasAllowance } from 'utils'
+import { formatCurrency, hasAllowance } from 'utils'
 import { CVX_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import { TRANSACTION_STATUS } from 'utils/constants'
@@ -85,27 +85,21 @@ const ConvexCollateralModal = ({
       for (const plugin of valids) {
         const amount = formState[plugin.address].value
         if (activeMode == ConvexMode.DEPOSIT) {
-          approvalTxs.push(
-            getTransactionWithGasLimit(
-              {
-                id: uuid(),
-                description: t`Approve ${plugin.symbol}`,
-                status: TRANSACTION_STATUS.PENDING,
-                value: amount,
-                call: {
-                  abi: 'erc20',
-                  address: plugin.collateralAddress,
-                  method: 'approve',
-                  args: [
-                    plugin.depositContract,
-                    parseUnits(amount, plugin.collateralDecimals || 18),
-                  ],
-                },
-              },
-              65_000,
-              0
-            )
-          )
+          approvalTxs.push({
+            id: uuid(),
+            description: t`Approve ${plugin.symbol}`,
+            status: TRANSACTION_STATUS.PENDING,
+            value: amount,
+            call: {
+              abi: 'erc20',
+              address: plugin.collateralAddress,
+              method: 'approve',
+              args: [
+                plugin.depositContract,
+                parseUnits(amount, plugin.collateralDecimals || 18),
+              ],
+            },
+          })
         }
         depositTxs.push({
           id: '',
