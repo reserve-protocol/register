@@ -20,7 +20,7 @@ export enum TradeKind {
 // TODO: Add `kind` for 3.0
 const auctionsTxAtom = atom((get): UsePrepareContractWriteConfig => {
   const { revenue = [], recollaterization } = get(auctionsOverviewAtom) || {}
-  const chainId = useAtomValue(chainIdAtom)
+  const chainId = get(chainIdAtom)
   const selectedAuctions = get(selectedAuctionsAtom)
   const auctionsToSettle = get(auctionsToSettleAtom) || []
 

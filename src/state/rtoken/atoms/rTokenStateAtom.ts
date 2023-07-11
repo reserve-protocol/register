@@ -5,6 +5,7 @@ import rTokenAtom from './rTokenAtom'
 import rTokenBackingDistributionAtom from './rTokenBackingDistributionAtom'
 import rTokenContractsAtom from './rTokenContractsAtom'
 import rTokenRevenueSplitAtom from './rTokenRevenueSplitAtom'
+import { Address } from 'viem'
 
 export const rTokenStateAtom = atomWithReset({
   tokenSupply: 0,
@@ -55,8 +56,8 @@ export const rTokenBasketStatusAtom = atom((get) => {
 
 export const rTokenGovernanceAtom = atomWithReset<{
   name: string
-  governor: string
-  timelock?: string
+  governor: Address
+  timelock?: Address
   votingDelay?: string
   votingPeriod?: string
   executionDelay?: string

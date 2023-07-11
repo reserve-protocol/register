@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { Trans, t } from '@lingui/macro'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { GasEstimation } from 'hooks/useGasEstimate'
 import { useAtomValue } from 'jotai'
@@ -10,6 +10,7 @@ import Button, { ButtonProps, LoadingButton, LoadingButtonProps } from '.'
 
 interface TransactionButtonProps extends LoadingButtonProps {
   gas?: GasEstimation
+  mining?: boolean
 }
 
 interface GasEstimateLabelProps {
@@ -41,7 +42,11 @@ const ConnectWallet = (props: ButtonProps) => {
   )
 }
 
-const TransactionButton = ({ gas, ...props }: TransactionButtonProps) => {
+const TransactionButton = ({
+  gas,
+  mining,
+  ...props
+}: TransactionButtonProps) => {
   const address = useAtomValue(walletAtom)
   const { data } = useBalance({
     address: address ?? undefined,
@@ -57,6 +62,10 @@ const TransactionButton = ({ gas, ...props }: TransactionButtonProps) => {
 
   if (!address) {
     return <ConnectWallet {...props} disabled={false} />
+  }
+
+  if (mining) {
+    props.loadingText = t`Tx in process...`
   }
 
   return (

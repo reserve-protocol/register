@@ -1,16 +1,16 @@
 import { BLOCK_DELAY, PROPOSAL_STATES } from './../../../../utils/constants'
 import { atom } from 'jotai'
-import { blockAtom } from 'state/atoms'
+import { blockAtom, rTokenGovernanceAtom } from 'state/atoms'
 import { parseEther } from 'ethers/lib/utils'
 import { BigNumber } from 'ethers'
-import { Address } from 'viem'
+import { Address, Hex, keccak256, toBytes } from 'viem'
 
 export interface ProposalDetail {
   id: string
   description: string
   creationTime: string
   state: string
-  calldatas: string[]
+  calldatas: Hex[]
   startBlock: number
   endBlock: number
   queueBlock?: number
@@ -23,8 +23,8 @@ export interface ProposalDetail {
   abstainDelegateVotes: string
   againstDelegateVotes: string
   quorumVotes: string
-  targets: string[]
-  proposer: string
+  targets: Address[]
+  proposer: Address
   votes: {
     choice: string
     weight: string
@@ -134,3 +134,26 @@ export const getProposalStateAtom = atom((get) => {
 
   return state
 })
+
+export const proposalTxArgsAtom = atom(
+  (get): [Address[], bigint[], Hex[], Hex] | undefined => {
+    const governance = get(rTokenGovernanceAtom)
+    const proposal = get(proposalDetailAtom)
+
+    if (
+      !proposal ||
+      !proposal.calldatas.length ||
+      !proposal.description ||
+      !governance.governor
+    ) {
+      return undefined
+    }
+
+    return [
+      proposal.targets,
+      new Array(proposal.targets.length).fill(0n),
+      proposal.calldatas,
+      keccak256(toBytes(proposal.description)),
+    ]
+  }
+)

@@ -1,15 +1,24 @@
 import { useMemo } from 'react'
 import {
-  UsePrepareContractWriteConfig,
   useContractWrite as _useContractWrite,
   usePrepareContractWrite,
 } from 'wagmi'
 import { getSafeGasLimit } from './../utils/index'
 import useGasEstimate from './useGasEstimate'
+import type { Abi } from 'abitype'
+import type { UsePrepareContractWriteConfig } from 'wagmi'
 
 // Extends wagmi to include gas estimate and gas limit multiplier
-const useContractWrite = (call: UsePrepareContractWriteConfig) => {
-  const { config, isSuccess } = usePrepareContractWrite(call)
+const useContractWrite = <
+  TAbi extends Abi | readonly unknown[],
+  TFunctionName extends string,
+  TChainId extends number
+>(
+  call: UsePrepareContractWriteConfig<TAbi, TFunctionName, TChainId> = {} as any
+) => {
+  const { config, isSuccess } = usePrepareContractWrite(
+    call as UsePrepareContractWriteConfig
+  )
   const gas = useGasEstimate(isSuccess ? config.request : null)
 
   const writeConfig = useMemo(() => {

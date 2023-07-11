@@ -3,10 +3,10 @@ import IconInfo from 'components/info-icon'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { Archive, Shield, ThumbsDown, ThumbsUp, XOctagon } from 'react-feather'
-import { Box, Grid, Image, Progress, Text } from 'theme-ui'
+import { blockAtom } from 'state/atoms'
+import { Box, Grid, Progress, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { accountVotesAtom, proposalDetailAtom } from '../atom'
-import { blockAtom } from 'state/atoms'
 
 const ProposalDetailStats = () => {
   const proposal = useAtomValue(proposalDetailAtom)

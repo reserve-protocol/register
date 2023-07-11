@@ -41,7 +41,7 @@ const Pausing = ({
 
   const { write, hash, isLoading } = useContractWrite({
     address: hasRole && rToken?.main ? rToken.main : undefined,
-    abi: legacy ? MainLegacy : Main,
+    abi: legacy ? (MainLegacy as any) : (Main as any), // Loose type infer because of optional abi
     functionName: isPaused ? `unpause${pauseLabel}` : `pause${pauseLabel}`,
   })
 

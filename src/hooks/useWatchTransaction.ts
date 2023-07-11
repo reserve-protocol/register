@@ -19,6 +19,7 @@ interface WatchOptions {
 
 interface WatchResult {
   data?: TransactionReceipt
+  isMining?: boolean
   status: 'success' | 'error' | 'loading' | 'idle'
 }
 
@@ -35,6 +36,11 @@ const useWatchTransaction = ({ hash, success, error, label }: WatchOptions) => {
   // Use manual "waitForTransaction" action in order to still listen for transaction on component unmount
   const waitForTx = async (hash: Hex) => {
     try {
+      setResult({
+        status: 'loading',
+        isMining: true,
+      })
+
       const data = await waitForTransaction({ hash })
 
       updateTransaction([hash, 'success', Number(data.blockNumber)])

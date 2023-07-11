@@ -43,18 +43,36 @@ export const useGovernanceTx = () => {
         return undefined
       }
 
-      const args = [
+      const args: [
+        Address,
+        boolean,
+        boolean,
+        {
+          votingDelay: bigint
+          votingPeriod: bigint
+          proposalThresholdAsMicroPercent: bigint
+          quorumPercent: bigint
+          timelockDelay: bigint
+        },
+        {
+          owner: Address
+          guardian: Address
+          pausers: Address[]
+          shortFreezers: Address[]
+          longFreezers: Address[]
+        }
+      ] = [
         rToken.address,
         !!defaultGovernance,
         unpause === '1',
         {
-          votingDelay: Number(votingDelay),
-          votingPeriod: Number(votingPeriod),
+          votingDelay: BigInt(votingDelay),
+          votingPeriod: BigInt(votingPeriod),
           proposalThresholdAsMicroPercent: BigInt(
             +proposalThresholdAsMicroPercent * 1e6
           ),
           quorumPercent: BigInt(quorumPercent),
-          timelockDelay: Number(minDelay) * 60 * 60,
+          timelockDelay: BigInt(+minDelay * 60 * 60),
         },
         {
           owner: defaultGovernance ? zeroAddress : (owner as Address),
