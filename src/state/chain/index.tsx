@@ -43,7 +43,7 @@ const wagmiConfig = createConfig({
  * Wrapper around web3ReactProvider
  * Handles basic logic as well as adds related chain providers
  */
-const Web3Provider = ({ children }: { children: React.ReactNode }) => (
+const ChainProvider = ({ children }: { children: React.ReactNode }) => (
   <WagmiConfig config={wagmiConfig}>
     <RainbowKitProvider
       chains={chains}
@@ -57,4 +57,4 @@ const Web3Provider = ({ children }: { children: React.ReactNode }) => (
   </WagmiConfig>
 )
 
-export default Web3Provider
+export default ChainProvider

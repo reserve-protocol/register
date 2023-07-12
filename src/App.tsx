@@ -2,7 +2,7 @@ import Analytics from 'components/analytics/Analytics'
 import ToastContainer from 'components/toaster-container/ToastContainer'
 import { HashRouter as Router, Route, Routes } from 'react-router-dom'
 import Updater from 'state/updater'
-import Web3Provider from 'state/chain'
+import ChainProvider from 'state/chain'
 import { ThemeProvider } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import Auctions from 'views/auctions'
@@ -37,7 +37,7 @@ const App = () => (
     <ThemeProvider theme={theme}>
       <LanguageProvider>
         <ToastContainer />
-        <Web3Provider>
+        <ChainProvider>
           <Updater />
           <TransactionSidebar />
           <Layout>
@@ -74,7 +74,7 @@ const App = () => (
               />
             </Routes>
           </Layout>
-        </Web3Provider>
+        </ChainProvider>
       </LanguageProvider>
     </ThemeProvider>
   </Router>
