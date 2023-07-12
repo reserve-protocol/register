@@ -17,7 +17,7 @@ const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
 
   const callParams = {
     abi: FacadeRead,
-    address: FACADE_ADDRESS[chainId] as Address,
+    address: FACADE_ADDRESS[chainId],
     args: [rToken.address] as [Address],
   }
 
@@ -35,6 +35,8 @@ const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
       ],
       allowFailure: false,
     })
+
+  console.log('erc20s', erc20s)
 
   return {
     backing: Math.min(100, Math.ceil(Number(formatEther(backing)) * 100)),

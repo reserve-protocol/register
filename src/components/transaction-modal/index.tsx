@@ -29,7 +29,7 @@ const Approval = ({
 }: {
   data: Allowance
 }) => {
-  const { write, isLoading, isReady, gas } = useContractWrite({
+  const { write, isLoading, hash, gas } = useContractWrite({
     address: token,
     abi: ERC20,
     functionName: 'approve',
@@ -40,9 +40,10 @@ const Approval = ({
     <>
       <Divider sx={{ borderColor: 'darkBorder' }} mx={-4} my={4} />
       <TransactionButton
-        loading={isLoading}
+        loading={isLoading || !!hash}
+        loadingText={hash ? 'Waiting for allowance...' : 'Sign in wallet...'}
         onClick={write}
-        disabled={!isReady}
+        disabled={!write}
         text={`Allow use of ${symbol}`}
         fullWidth
         gas={gas}
@@ -61,6 +62,7 @@ const useHasAllowance = (allowance: Allowance | undefined) => {
           functionName: 'allowance',
           address: allowance.token,
           args: [account, allowance.spender],
+          watch: true,
         }
       : undefined
   )
@@ -105,6 +107,8 @@ const TransactionModal = ({
     return <TransactionConfirmedModal hash={hash} onClose={onClose} />
   }
 
+  const isPreparing = hasAllowance && call && !gas.isLoading && !isReady
+
   return (
     <Modal title={title} onClose={onClose} {...props}>
       {status === 'error' && (
@@ -120,13 +124,15 @@ const TransactionModal = ({
       )}
       <Divider sx={{ borderColor: 'darkBorder' }} mx={-4} mt={4} />
       <TransactionButton
-        loading={isLoading}
+        loading={isLoading || isPreparing}
         disabled={!isReady || disabled}
-        variant={isLoading ? 'accentAction' : 'accentAction'}
+        loadingText={
+          isPreparing ? t`Preparing transaction` : t`Pending, sign in wallet`
+        }
         text={confirmLabel}
         onClick={handleConfirm}
         fullWidth
-        gas={gas}
+        gas={hasAllowance ? gas : undefined}
         mt={3}
       />
     </Modal>

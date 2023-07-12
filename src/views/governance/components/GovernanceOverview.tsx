@@ -67,7 +67,7 @@ const GovernanceOverview = () => {
     abi: Governance,
     args:
       account && blockNumber
-        ? [account as Address, BigInt(blockNumber - 1)]
+        ? [account as Address, BigInt(blockNumber - 2)]
         : undefined,
   })
 

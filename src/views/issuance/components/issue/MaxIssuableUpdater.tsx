@@ -1,5 +1,4 @@
-import { Facade } from 'abis/types'
-import { useFacadeContract } from 'hooks/useContract'
+import FacadeRead from 'abis/FacadeRead'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import {
@@ -9,9 +8,9 @@ import {
   rTokenStateAtom,
   walletAtom,
 } from 'state/atoms'
-import { BI_ZERO } from 'utils/constants'
-import { getIssuable } from 'utils/rsv'
+import { FACADE_ADDRESS, USDC_ADDRESS } from 'utils/addresses'
 import { maxIssuableAtom } from 'views/issuance/atoms'
+import { Address, usePublicClient } from 'wagmi'
 
 /**
  * View: Mint -> Issue
@@ -23,48 +22,44 @@ const MaxIssuableUpdater = () => {
   const setMaxIssuable = useSetAtom(maxIssuableAtom)
   const account = useAtomValue(walletAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const facadeContract = useFacadeContract()
+  const client = usePublicClient()
   const { issuancePaused, frozen } = useAtomValue(rTokenStateAtom)
 
   const updateMaxIssuable = useCallback(
-    async (account: string, rTokenAddress: string, facade: Facade) => {
+    async (account: Address, rTokenAddress: Address) => {
       try {
-        const maxIssuable = await facade.callStatic.maxIssuable(
-          rTokenAddress,
-          account
-        )
-        setMaxIssuable(maxIssuable ? maxIssuable : BI_ZERO)
+        const { result: maxIssuable } = await client.simulateContract({
+          abi: FacadeRead,
+          address: FACADE_ADDRESS[chainId],
+          functionName: 'maxIssuable',
+          args: [rTokenAddress, account],
+        })
+        setMaxIssuable(maxIssuable)
       } catch (e) {
-        setMaxIssuable(BI_ZERO)
+        setMaxIssuable(0n)
         console.error('Error fetching MAX_ISSUABLE', e)
       }
     },
-    []
+    [client, chainId]
   )
 
   // RSV Max issuable
   useEffect(() => {
     if (rToken && !rToken.main) {
-      setMaxIssuable(getIssuable(tokenBalances))
+      setMaxIssuable(tokenBalances[USDC_ADDRESS[chainId]].value ?? 0n)
     }
   }, [tokenBalances, rToken?.address, chainId])
 
   useEffect(() => {
-    if (
-      rToken?.main &&
-      account &&
-      facadeContract &&
-      !issuancePaused &&
-      !frozen
-    ) {
-      updateMaxIssuable(account, rToken.address, facadeContract)
+    if (rToken?.main && account && client && !issuancePaused && !frozen) {
+      updateMaxIssuable(account, rToken.address)
     } else if (rToken?.main) {
-      setMaxIssuable(BI_ZERO)
+      setMaxIssuable(0n)
     }
   }, [
     rToken?.address,
     account,
-    facadeContract,
+    updateMaxIssuable,
     issuancePaused,
     frozen,
     tokenBalances,

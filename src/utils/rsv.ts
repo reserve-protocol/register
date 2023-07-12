@@ -1,9 +1,8 @@
-import { BigNumber } from '@ethersproject/bignumber'
-import { parseUnits } from 'ethers/lib/utils'
 import { BalanceMap, ReserveToken } from 'types'
 import { RSV_ADDRESS, RSV_MANAGER_ADDRESS, USDC_ADDRESS } from './addresses'
 import { BI_ZERO } from './constants'
 import { ChainId } from './chains'
+import { Address, parseUnits } from 'viem'
 
 /**
  * RSV Token utility
@@ -22,7 +21,7 @@ export const getIssuable = (tokenBalances: BalanceMap) => {
   return BI_ZERO
 }
 
-export const quote = (amount: string): { [x: string]: BigNumber } => ({
+export const quote = (amount: string): { [x: Address]: bigint } => ({
   [USDC]: parseUnits(amount, 6),
 })
 

@@ -3,13 +3,13 @@ import GlobalMaxMintIcon from 'components/icons/GlobalMaxMintIcon'
 import GlobalMaxRedeemIcon from 'components/icons/GlobalMaxRedeemIcon'
 import IconInfo from 'components/info-icon'
 import { useAtomValue } from 'jotai'
-import { maxIssuanceAtom, maxRedemptionAtom } from 'state/atoms'
+import { rTokenStateAtom } from 'state/atoms'
 import { Box, BoxProps, Grid } from 'theme-ui'
 import { formatCurrency } from 'utils'
 
 const IssuanceInfo = (props: BoxProps) => {
-  const redeemAvailable = useAtomValue(maxRedemptionAtom)
-  const issuanceAvailable = useAtomValue(maxIssuanceAtom)
+  const { redemptionAvailable, issuanceAvailable } =
+    useAtomValue(rTokenStateAtom)
 
   return (
     <Box variant="layout.borderBox" p={0} {...props}>
@@ -19,7 +19,7 @@ const IssuanceInfo = (props: BoxProps) => {
             icon={<GlobalMaxMintIcon />}
             title={t`Global mint max`}
             help={t`Each RToken can have an issuance throttle to limit the amount of extractable value in the case of an attack. After a large isuance, the issuance limit recharges linearly to the defined maximum at a defined speed of recharge`}
-            text={formatCurrency(issuanceAvailable)}
+            text={formatCurrency(issuanceAvailable, 0)}
           />
         </Box>
         <Box p={4}>
@@ -27,7 +27,7 @@ const IssuanceInfo = (props: BoxProps) => {
             icon={<GlobalMaxRedeemIcon />}
             title={t`Global redeem max`}
             help={t`Each RToken can have a redemption throttle to limit the amount of extractable value in the case of an attack. After a large redemption, the redemption limit recharges linearly to the defined maximum at a defined speed of recharge.`}
-            text={formatCurrency(redeemAvailable)}
+            text={formatCurrency(redemptionAvailable, 0)}
           />
         </Box>
       </Grid>

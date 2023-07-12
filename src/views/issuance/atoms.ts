@@ -1,13 +1,10 @@
-import { BigNumber } from 'ethers'
 import { atom } from 'jotai'
+import { BigNumberMap } from 'types'
 import { safeParseEther } from 'utils'
-import { BI_ZERO } from 'utils/constants'
-import { rTokenBalanceAtom } from './../../state/atoms'
-import { BigNumberMap } from './../../types/index'
 import atomWithDebounce from 'utils/atoms/atomWithDebounce'
+import { rTokenBalanceAtom } from './../../state/atoms'
 
-const isValid = (value: BigNumber, max: BigNumber) =>
-  value.gt(BI_ZERO) && value.lte(max)
+const isValid = (value: bigint, max: bigint) => value > 0n && value >= max
 
 export const quantitiesAtom = atom<BigNumberMap>({})
 export const issueAmountAtom = atom('')
@@ -23,7 +20,7 @@ export const isValidRedeemAmountAtom = atom((get) => {
     get(rTokenBalanceAtom).value
   )
 })
-export const maxIssuableAtom = atom(BI_ZERO)
+export const maxIssuableAtom = atom(0n)
 
 export const isValidIssuableAmountAtom = atom((get) => {
   return isValid(

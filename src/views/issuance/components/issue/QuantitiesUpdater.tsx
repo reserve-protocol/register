@@ -1,14 +1,16 @@
 import { getAddress } from '@ethersproject/address'
 import { t } from '@lingui/macro'
-import { useFacadeContract } from 'hooks/useContract'
+import FacadeRead from 'abis/FacadeRead'
 import useDebounce from 'hooks/useDebounce'
 import { useAtomValue } from 'jotai'
 import { useCallback, useEffect } from 'react'
-import { rTokenAtom } from 'state/atoms'
+import { chainIdAtom, rTokenAtom } from 'state/atoms'
 import { error } from 'state/chain/lib/notifications'
 import { BigNumberMap } from 'types'
 import { safeParseEther } from 'utils'
+import { FACADE_ADDRESS } from 'utils/addresses'
 import { quote } from 'utils/rsv'
+import { usePublicClient } from 'wagmi'
 
 /**
  * Listen for amountAtom value change and update needed collateral quantities for issuance
@@ -22,21 +24,26 @@ const QuantitiesUpdater = ({
 }) => {
   const rToken = useAtomValue(rTokenAtom)
   const debouncedValue = useDebounce(amount, 400)
-  const facadeContract = useFacadeContract()
+  const client = usePublicClient()
+  const chainId = useAtomValue(chainIdAtom)
 
   const fetchQuantities = useCallback(
     async (value: string) => {
       try {
         onChange({})
-        if (facadeContract && rToken && Number(value) > 0) {
+        if (client && rToken && Number(value) > 0) {
           const issueAmount = safeParseEther(value)
-          const quoteResult = await facadeContract.callStatic.issue(
-            rToken.address,
-            issueAmount
-          )
+          const {
+            result: [tokens, deposits],
+          } = await client.simulateContract({
+            abi: FacadeRead,
+            address: FACADE_ADDRESS[chainId],
+            functionName: 'issue',
+            args: [rToken.address, issueAmount],
+          })
           onChange(
-            quoteResult.tokens.reduce((prev, current, currentIndex) => {
-              prev[getAddress(current)] = quoteResult.deposits[currentIndex]
+            tokens.reduce((prev, current, currentIndex) => {
+              prev[getAddress(current)] = deposits[currentIndex]
               return prev
             }, {} as BigNumberMap)
           )
@@ -48,7 +55,7 @@ const QuantitiesUpdater = ({
         console.error('failed fetching quantities', e)
       }
     },
-    [facadeContract, rToken?.address]
+    [client, rToken?.address, chainId]
   )
 
   // Fetch quantities from smart contract (rTokens)

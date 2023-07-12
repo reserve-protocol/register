@@ -45,7 +45,7 @@ const Pausing = ({
     functionName: isPaused ? `unpause${pauseLabel}` : `pause${pauseLabel}`,
   })
 
-  useWatchTransaction({
+  const { isMining } = useWatchTransaction({
     hash,
     label: `${isPaused ? 'Unpause' : 'Pause'} ${pauseLabel.toLowerCase()} ${
       rToken?.symbol
@@ -64,7 +64,7 @@ const Pausing = ({
           : ''
       }
       onAction={write}
-      loading={isLoading}
+      loading={isLoading || isMining}
       actionVariant="danger"
     />
   )

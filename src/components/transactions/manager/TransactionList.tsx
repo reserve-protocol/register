@@ -90,7 +90,7 @@ const TransactionList = () => {
             {day}
           </Text>
           {txs[day].map((tx) => (
-            <TransactionItem tx={tx} />
+            <TransactionItem key={tx.hash} tx={tx} />
           ))}
         </Box>
       ))}

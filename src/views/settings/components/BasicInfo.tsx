@@ -36,7 +36,7 @@ const BasicInfo = () => {
       />
       <InfoItem
         title={t`Owner Address`}
-        subtitle={shortenAddress(timelock ? timelock : governor)}
+        subtitle={shortenAddress(timelock ? timelock : governor ?? '')}
         address={timelock || governor}
       />
     </Card>

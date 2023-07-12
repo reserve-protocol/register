@@ -7,7 +7,7 @@ import { useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { chainIdAtom, stRsrBalanceAtom, walletAtom } from 'state/atoms'
 import { Box, Image, Text } from 'theme-ui'
-import { shortenAddress } from 'utils'
+import { formatCurrency, shortenAddress } from 'utils'
 import { ZERO_ADDRESS } from 'utils/addresses'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { Address, useContractRead } from 'wagmi'
@@ -57,7 +57,7 @@ const AccountVotes = () => {
           <Text ml={3} variant="legend" as="span">
             <Trans>Balance: </Trans>
           </Text>{' '}
-          <Text variant="legend">{stRsrBalance.balance}</Text>
+          <Text variant="legend">{formatCurrency(+stRsrBalance.balance)}</Text>
         </Box>
       ) : (
         <Box variant="layout.verticalAlign">

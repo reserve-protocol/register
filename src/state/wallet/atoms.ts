@@ -10,7 +10,7 @@ import { RSR_ADDRESS, ZERO_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { Address, stringToHex } from 'viem'
 import { readContracts } from 'wagmi'
-import { readContract } from 'wagmi/dist/actions'
+import { readContract } from 'wagmi/actions'
 import {
   chainIdAtom,
   getValidWeb3Atom,

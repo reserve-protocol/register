@@ -8,6 +8,8 @@ const rTokenBasketAtom = atom((get) => {
   const distribution = get(rTokenBackingDistributionAtom)
   let basket: Basket = {}
 
+  console.log('rToken', { rToken, distribution })
+
   if (!rToken || !distribution) {
     return basket
   }
