@@ -1,10 +1,7 @@
-import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { t } from '@lingui/macro'
-import { ERC20Interface } from 'abis'
 import ERC20 from 'abis/ERC20'
-import { Contract } from 'ethers'
 import humanizeDuration from 'humanize-duration'
-import { BigNumberMap, ContractCall, TransactionState } from 'types'
+import { BigNumberMap, TransactionState } from 'types'
 import { Address, getAddress, parseEther, parseUnits } from 'viem'
 
 export const decimalPattern = /^[0-9]*[.]?[0-9]*$/i
@@ -25,29 +22,6 @@ export const getSafeGasLimit = (gas: bigint, multiplier = 150n) =>
 
 export function getCurrentTime() {
   return Math.floor(new Date().getTime() / 1000)
-}
-
-export function getTokenMetaCalls(address: string): ContractCall[] {
-  return [
-    {
-      address,
-      abi: ERC20Interface,
-      args: [],
-      method: 'name',
-    },
-    {
-      address,
-      abi: ERC20Interface,
-      args: [],
-      method: 'symbol',
-    },
-    {
-      address,
-      abi: ERC20Interface,
-      args: [],
-      method: 'decimals',
-    },
-  ]
 }
 
 export function getTokenReadCalls(address: string) {
@@ -209,38 +183,6 @@ export function shortenAddress(address: string, chars = 4): string {
     return shortenString(address)
   }
   return `${parsed.substring(0, chars + 2)}...${parsed.substring(42 - chars)}`
-}
-
-// account is not optional
-function getSigner(library: Web3Provider, account: string): JsonRpcSigner {
-  return library.getSigner(account).connectUnchecked()
-}
-
-// account is optional
-function getProviderOrSigner(
-  library: Web3Provider,
-  account?: string
-): Web3Provider | JsonRpcSigner {
-  return account ? getSigner(library, account) : library
-}
-
-// account is optional
-export function getContract(
-  address: string,
-  ABI: any,
-  library: Web3Provider,
-  account?: string
-): Contract {
-  // TODO: Allow contract with unknown address to be instanciated to change it later with the attach method
-  // if (!isAddress(address) || address === AddressZero) {
-  //   throw Error(`Invalid 'address' parameter '${address}'.`)
-  // }
-
-  return new Contract(
-    address,
-    ABI,
-    getProviderOrSigner(library, account) as any
-  )
 }
 
 export function escapeRegExp(string: string): string {

@@ -1,12 +1,3 @@
-import {
-  BackingManagerInterface,
-  BrokerInterface,
-  FurnaceInterface,
-  MainInterface,
-  RevenueTraderInterface,
-  RTokenInterface,
-  StRSRInterface,
-} from 'abis'
 import { Interface } from 'ethers/lib/utils'
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
@@ -15,6 +6,13 @@ import { BackupChanges, CollateralChange } from './hooks/useBackupChanges'
 import { ParameterChange } from './hooks/useParametersChanges'
 import { RevenueSplitChanges } from './hooks/useRevenueSplitChanges'
 import { RoleChange } from './hooks/useRoleChanges'
+import BackingManager from 'abis/BackingManager'
+import RevenueTrader from 'abis/RevenueTrader'
+import Furnace from 'abis/Furnace'
+import StRSR from 'abis/StRSR'
+import RToken from 'abis/RToken'
+import Broker from 'abis/Broker'
+import Main from 'abis/Main'
 
 export const proposalTxIdAtom = atom('')
 
@@ -52,112 +50,123 @@ export const isProposalValidAtom = atom(false)
 export const isProposalEditingAtom = atom(true)
 export const proposalDescriptionAtom = atom('')
 
-export const parameterContractMapAtom = atom<{
-  [x: string]: { address: string; method: string; interface: Interface }[]
-}>((get) => {
+export type ParamName =
+  | 'tradingDelay'
+  | 'backingBuffer'
+  | 'maxTradeSlippage'
+  | 'minTrade'
+  | 'rewardRatio'
+  | 'unstakingDelay'
+  | 'auctionLength'
+  | 'issuanceThrottle'
+  | 'redemptionThrottle'
+  | 'shortFreeze'
+  | 'longFreeze'
+
+export const parameterContractMapAtom = atom((get) => {
   const contracts = get(rTokenContractsAtom)
 
   return {
     tradingDelay: [
       {
         address: contracts?.backingManager.address ?? '',
-        method: 'setTradingDelay', // setTradingDelay(uint48)
-        interface: BackingManagerInterface,
+        functionName: 'setTradingDelay' as const, // setTradingDelay(uint48)
+        abi: BackingManager,
       },
     ],
     backingBuffer: [
       {
         address: contracts?.backingManager.address ?? '',
-        method: 'setBackingBuffer', // setBackingBuffer(uint192)
-        interface: BackingManagerInterface,
+        functionName: 'setBackingBuffer' as const, // setBackingBuffer(uint192)
+        abi: BackingManager,
       },
     ],
     maxTradeSlippage: [
       {
         address: contracts?.backingManager.address ?? '',
-        method: 'setMaxTradeSlippage', // setMaxTradeSlippage(uint192)
-        interface: BackingManagerInterface,
+        functionName: 'setMaxTradeSlippage' as const, // setMaxTradeSlippage(uint192)
+        abi: BackingManager,
       },
       {
         address: contracts?.rTokenTrader.address ?? '',
-        method: 'setMaxTradeSlippage', // setMaxTradeSlippage(uint192)
-        interface: RevenueTraderInterface,
+        functionName: 'setMaxTradeSlippage' as const, // setMaxTradeSlippage(uint192)
+        abi: RevenueTrader,
       },
       {
         address: contracts?.rsrTrader.address ?? '',
-        method: 'setMaxTradeSlippage', // setMaxTradeSlippage(uint192)
-        interface: RevenueTraderInterface,
+        functionName: 'setMaxTradeSlippage' as const, // setMaxTradeSlippage(uint192)
+        abi: RevenueTrader,
       },
     ],
     minTrade: [
       {
         address: contracts?.backingManager.address ?? '',
-        method: 'setMinTradeVolume', // setMinTradeVolume(uint192)
-        interface: BackingManagerInterface,
+        functionName: 'setMinTradeVolume' as const, // setMinTradeVolume(uint192)
+        abi: BackingManager,
       },
       {
         address: contracts?.rTokenTrader.address ?? '',
-        method: 'setMinTradeVolume', // setMinTradeVolume(uint192)
-        interface: RevenueTraderInterface,
+        functionName: 'setMinTradeVolume' as const, // setMinTradeVolume(uint192)
+        abi: RevenueTrader,
       },
       {
         address: contracts?.rsrTrader.address ?? '',
-        method: 'setMinTradeVolume', // setMinTradeVolume(uint192)
-        interface: RevenueTraderInterface,
+        functionName: 'setMinTradeVolume' as const, // setMinTradeVolume(uint192)
+        abi: RevenueTrader,
       },
     ],
     rewardRatio: [
       {
         address: contracts?.furnace.address ?? '',
-        method: 'setRatio', // setRatio(uint192)
-        interface: FurnaceInterface,
+        functionName: 'setRatio' as const, // setRatio(uint192)
+        abi: Furnace,
       },
       {
         address: contracts?.stRSR.address ?? '',
-        method: 'setRewardRatio', // setRewardRatio(uint192)
-        interface: StRSRInterface,
+        functionName: 'setRewardRatio' as const, // setRewardRatio(uint192)
+        abi: StRSR,
       },
     ],
     unstakingDelay: [
       {
         address: contracts?.stRSR.address ?? '',
-        method: 'setUnstakingDelay', // setUnstakingDelay(uint48)
-        interface: StRSRInterface,
+        functionName: 'setUnstakingDelay' as const, // setUnstakingDelay(uint48)
+        abi: StRSR,
       },
     ],
     auctionLength: [
       {
         address: contracts?.broker.address ?? '',
-        method: 'setAuctionLength', // setAuctionLength(uint48)
-        interface: BrokerInterface,
+        functionName: 'setAuctionLength' as const, // setAuctionLength(uint48)
+        abi: Broker,
       },
     ],
     issuanceThrottle: [
       {
         address: contracts?.token.address ?? '',
-        method: 'setIssuanceThrottleParams', // setIssuanceThrottleParams((uint256,uint192))
-        interface: RTokenInterface,
+        functionName: 'setIssuanceThrottleParams' as const, // setIssuanceThrottleParams((uint256,uint192))
+        abi: RToken,
       },
     ],
     redemptionThrottle: [
       {
         address: contracts?.token.address ?? '',
-        method: 'setRedemptionThrottleParams', // setRedemptionThrottleParams((uint256,uint192))
-        interface: RTokenInterface,
+        functionName: 'setRedemptionThrottleParams' as const, // setRedemptionThrottleParams((uint256,uint192))
+        abi: RToken,
       },
     ],
     shortFreeze: [
       {
         address: contracts?.main.address ?? '',
-        method: 'setShortFreeze', // setShortFreeze(uint48)
-        interface: MainInterface,
+        functionName: 'setShortFreeze' as const, // setShortFreeze(uint48)
+        abi: Main,
       },
     ],
     longFreeze: [
       {
         address: contracts?.main.address ?? '',
-        method: 'setLongFreeze', // setLongFreeze(uint48)
-        interface: MainInterface,
+        functionName: 'setLongFreeze' as const, // setLongFreeze(uint48)
+        abi: Main,
       },
     ],
   }

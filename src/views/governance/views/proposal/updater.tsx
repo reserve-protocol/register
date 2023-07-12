@@ -78,7 +78,9 @@ export const RTokenDataUpdater = () => {
   }, [JSON.stringify(basket)])
 
   useEffect(() => {
-    setSetupBackupBasket(backup)
+    if (backup) {
+      setSetupBackupBasket(backup)
+    }
   }, [JSON.stringify(backup)])
 
   useEffect(() => {

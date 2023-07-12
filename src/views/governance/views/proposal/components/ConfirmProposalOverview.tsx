@@ -1,47 +1,47 @@
-import { Trans } from '@lingui/macro'
-import { Button } from 'components'
+import { Trans, t } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import CopyValue from 'components/button/CopyValue'
 import GoTo from 'components/button/GoTo'
+import TransactionButton from 'components/button/TransactionButton'
 import ConfirmProposalActionIcon from 'components/icons/ConfirmProposalActionIcon'
+import useContractWrite from 'hooks/useContractWrite'
+import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useTransactionState } from 'state/chain/hooks/useTransactions'
-import { Box, BoxProps, Container, Flex, Spinner, Text } from 'theme-ui'
-import { TransactionState } from 'types'
-import { formatCurrency, shortenString } from 'utils'
-import { ROUTES, TRANSACTION_STATUS } from 'utils/constants'
-import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import { isProposalEditingAtom, proposalTxIdAtom } from '../atoms'
-import useProposal from '../hooks/useProposal'
 import { chainIdAtom } from 'state/atoms'
+import { Box, BoxProps, Container, Flex, Spinner, Text } from 'theme-ui'
+import { shortenString } from 'utils'
+import { ROUTES } from 'utils/constants'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import { UsePrepareContractWriteConfig } from 'wagmi'
+import { isProposalEditingAtom } from '../atoms'
 
 interface Props extends BoxProps {
-  tx: TransactionState
+  tx: UsePrepareContractWriteConfig
 }
 
 const ProposalStatus = ({
   transactionState,
 }: {
-  transactionState: TransactionState
+  transactionState: UsePrepareContractWriteConfig | undefined
 }) => {
-  const txId = useAtomValue(proposalTxIdAtom)
   const navigate = useNavigate()
-  const { fee, propose, isValid } = useProposal(transactionState)
-  const tx = useTransactionState(txId)
+  const { gas, write, isReady, isLoading, hash } =
+    useContractWrite(transactionState)
+  const { status } = useWatchTransaction({
+    hash,
+    label: 'Create proposal',
+  })
   const chainId = useAtomValue(chainIdAtom)
 
   useEffect(() => {
-    if (tx?.status === TRANSACTION_STATUS.CONFIRMED) {
+    if (status === 'success') {
       navigate(ROUTES.GOVERNANCE)
     }
-  }, [tx?.status])
+  }, [status])
 
-  if (
-    tx?.status === TRANSACTION_STATUS.PENDING ||
-    tx?.status === TRANSACTION_STATUS.SIGNING
-  ) {
+  if (isLoading) {
     return (
       <>
         <Spinner mt={3} size={24} mb={2} />
@@ -58,10 +58,7 @@ const ProposalStatus = ({
     )
   }
 
-  if (
-    tx?.status === TRANSACTION_STATUS.MINING ||
-    tx?.status === TRANSACTION_STATUS.CONFIRMED
-  ) {
+  if (hash) {
     return (
       <>
         <Spinner size={24} mt={3} mb={2} />
@@ -79,14 +76,10 @@ const ProposalStatus = ({
           sx={{ justifyContent: 'center' }}
           mt={4}
         >
-          <Text variant="legend">{shortenString(tx?.hash ?? '')}</Text>
-          <CopyValue ml={3} mr={2} value={tx?.hash ?? ''} />
+          <Text variant="legend">{shortenString(hash)}</Text>
+          <CopyValue ml={3} mr={2} value={hash} />
           <GoTo
-            href={getExplorerLink(
-              tx?.hash ?? '',
-              chainId,
-              ExplorerDataType.TRANSACTION
-            )}
+            href={getExplorerLink(hash, chainId, ExplorerDataType.TRANSACTION)}
           />
         </Box>
       </>
@@ -94,27 +87,14 @@ const ProposalStatus = ({
   }
 
   return (
-    <>
-      <Button
-        onClick={propose}
-        variant="primary"
-        disabled={!isValid || !fee}
-        mt={4}
-        sx={{ width: '100%' }}
-      >
-        <Trans>Submit proposal on-chain</Trans>
-      </Button>
-      <Box mt={3} sx={{ fontSize: 1, textAlign: 'center' }}>
-        <Text variant="legend" mr={1}>
-          <Trans>Estimated gas cost:</Trans>
-          {!isValid && ' --'}
-        </Text>
-        {isValid && !fee && <Spinner color="black" size={12} />}
-        {isValid && !!fee && (
-          <Text sx={{ fontWeight: 500 }}>${formatCurrency(fee)}</Text>
-        )}
-      </Box>
-    </>
+    <TransactionButton
+      text={t`Submit proposal on-chain`}
+      mt={4}
+      fullWidth
+      disabled={!isReady}
+      onClick={write}
+      gas={gas}
+    />
   )
 }
 

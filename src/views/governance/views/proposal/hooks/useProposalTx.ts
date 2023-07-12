@@ -1,5 +1,5 @@
-import { t } from '@lingui/macro'
 import {
+  ParamName,
   basketChangesAtom,
   isNewBackupProposedAtom,
   proposalDescriptionAtom,
@@ -8,6 +8,7 @@ import {
 import AssetRegistry from 'abis/AssetRegistry'
 import BasketHandler from 'abis/BasketHandler'
 import Distributor from 'abis/Distributor'
+import Governance from 'abis/Governance'
 import Main from 'abis/Main'
 import Timelock from 'abis/Timelock'
 import {
@@ -15,14 +16,20 @@ import {
   basketAtom,
   revenueSplitAtom,
 } from 'components/rtoken-setup/atoms'
+import useDebounce from 'hooks/useDebounce'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { rTokenContractsAtom, rTokenGovernanceAtom } from 'state/atoms'
 import { parsePercent } from 'utils'
 import { FURNACE_ADDRESS, ST_RSR_ADDRESS, ZERO_ADDRESS } from 'utils/addresses'
-import { TRANSACTION_STATUS } from 'utils/constants'
-import { encodeFunctionData, parseEther, stringToHex, zeroAddress } from 'viem'
+import {
+  Hex,
+  encodeFunctionData,
+  parseEther,
+  stringToHex,
+  zeroAddress,
+} from 'viem'
 import { getSharesFromSplit } from 'views/deploy/utils'
 import { Address, useContractRead } from 'wagmi'
 import {
@@ -34,18 +41,18 @@ import {
   roleChangesAtom,
 } from '../atoms'
 
-const paramParse: { [x: string]: (v: string) => bigint | number } = {
-  minTradeVolume: parseEther,
-  rTokenMaxTradeVolume: parseEther,
-  rewardRatio: parseEther,
-  unstakingDelay: Number,
-  tradingDelay: Number,
-  auctionLength: Number,
-  backingBuffer: parsePercent,
-  maxTradeSlippage: parsePercent,
-  shortFreeze: Number,
-  longFreeze: Number,
-}
+// const paramParse: { [x: string]: (v: string) => bigint | number } = {
+//   minTradeVolume: parseEther,
+//   rTokenMaxTradeVolume: parseEther,
+//   rewardRatio: parseEther,
+//   unstakingDelay: Number,
+//   tradingDelay: Number,
+//   auctionLength: Number,
+//   backingBuffer: parsePercent,
+//   maxTradeSlippage: parsePercent,
+//   shortFreeze: Number,
+//   longFreeze: Number,
+// }
 
 const ROLES: { [x: string]: string } = {
   longFreezers:
@@ -79,12 +86,12 @@ const useProposalTx = () => {
     functionName: 'getRegistry',
   })
 
-  const description = useAtomValue(proposalDescriptionAtom)
+  const description = useDebounce(useAtomValue(proposalDescriptionAtom), 500)
   const { getValues } = useFormContext()
 
   return useMemo(() => {
-    if (!contracts || !governance) {
-      return null
+    if (!contracts || !governance.governor) {
+      return undefined
     }
 
     const addresses: string[] = []
@@ -142,17 +149,18 @@ const useProposalTx = () => {
         ) {
           // Skip second param if both are changed
           if (!issuanceThrottleChange) {
-            addresses.push(parameterMap.issuanceThrottle[0].address)
+            const { address, ...data } = parameterMap.issuanceThrottle[0]
+            addresses.push(address)
             calls.push(
-              parameterMap.issuanceThrottle[0].interface.encodeFunctionData(
-                parameterMap.issuanceThrottle[0].method,
-                [
+              encodeFunctionData({
+                ...data,
+                args: [
                   {
                     amtRate: parseEther(tokenConfig.issuanceThrottleAmount),
                     pctRate: parsePercent(tokenConfig.issuanceThrottleRate),
                   },
-                ]
-              )
+                ],
+              })
             )
           }
           issuanceThrottleChange = true
@@ -162,27 +170,32 @@ const useProposalTx = () => {
         ) {
           // Skip second param if both are changed
           if (!redemptionThrottleChange) {
-            addresses.push(parameterMap.redemptionThrottle[0].address)
+            const { address, ...data } = parameterMap.redemptionThrottle[0]
+
+            addresses.push(address)
             calls.push(
-              parameterMap.redemptionThrottle[0].interface.encodeFunctionData(
-                parameterMap.redemptionThrottle[0].method,
-                [
+              encodeFunctionData({
+                ...data,
+                args: [
                   {
                     amtRate: parseEther(tokenConfig.redemptionThrottleAmount),
                     pctRate: parsePercent(tokenConfig.redemptionThrottleRate),
                   },
-                ]
-              )
+                ],
+              })
             )
           }
           redemptionThrottleChange = true
         } else {
-          for (const contract of parameterMap[paramChange.field]) {
-            addresses.push(contract.address)
+          for (const contract of parameterMap[paramChange.field as ParamName]) {
+            const { address, ...data } = contract
+
+            addresses.push(address)
             calls.push(
-              contract.interface.encodeFunctionData(contract.method, [
-                paramParse[paramChange.field](paramChange.proposed),
-              ])
+              encodeFunctionData({
+                ...(data as any),
+                args: [paramChange.proposed],
+              })
             )
           }
         }
@@ -383,19 +396,20 @@ const useProposalTx = () => {
       // )
     } catch (e) {
       console.error('Error generating proposal call', e)
+      return undefined
     }
 
     return {
-      id: '',
-      description: t`New proposal`,
-      status: TRANSACTION_STATUS.PENDING,
-      value: '0',
-      call: {
-        abi: 'governance',
-        address: governance.governor,
-        method: 'propose',
-        args: [addresses, new Array(calls.length).fill(0), calls, description],
-      },
+      abi: Governance,
+      address: governance.governor,
+      method: 'propose',
+      args: [
+        addresses as Address[],
+        new Array(calls.length).fill(0n) as bigint[],
+        calls as Hex[],
+        description,
+      ] as [Address[], bigint[], Hex[], string],
+      enabled: !!description,
     }
   }, [contracts, description, JSON.stringify(registeredAssets)])
 }

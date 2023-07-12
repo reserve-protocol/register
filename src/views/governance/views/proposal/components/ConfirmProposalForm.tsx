@@ -10,7 +10,13 @@ import { useSetAtom } from 'jotai'
 import { proposalDescriptionAtom } from '../atoms'
 import { TransactionState } from 'types'
 
-const ConfirmProposalForm = ({ tx }: { tx: TransactionState }) => {
+const ConfirmProposalForm = ({
+  addresses,
+  calldatas,
+}: {
+  addresses: string[]
+  calldatas: string[]
+}) => {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState<string | undefined>('')
   const setProposalDescription = useSetAtom(proposalDescriptionAtom)
@@ -45,7 +51,7 @@ const ConfirmProposalForm = ({ tx }: { tx: TransactionState }) => {
         <MDEditor value={description} onChange={setDescription} />
       </Card>
 
-      <ProposalDetail addresses={tx.call.args[0]} calldatas={tx.call.args[2]} />
+      <ProposalDetail addresses={addresses} calldatas={calldatas} />
     </Box>
   )
 }
