@@ -7,9 +7,7 @@ import { gql } from 'graphql-request'
 import { useEnsAddresses } from 'hooks/useEnsAddresses'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
-import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { chainIdAtom } from 'state/atoms'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { formatCurrencyCell, shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
@@ -40,12 +38,9 @@ const query = gql`
 // TODO: Proposal data casting?
 const useVoters = () => {
   const rToken = useRToken()
-  const { data, error } = useQuery(
-    rToken?.address && !rToken.isRSV ? query : null,
-    {
-      id: rToken?.address.toLowerCase(),
-    }
-  )
+  const { data, error } = useQuery(rToken?.main ? query : null, {
+    id: rToken?.address.toLowerCase(),
+  })
 
   const addresses = data?.delegates?.map((delegate: any) => delegate.address)
   const ensRes: string[] = useEnsAddresses(addresses || [])

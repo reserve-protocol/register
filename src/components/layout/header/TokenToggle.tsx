@@ -13,7 +13,7 @@ const RTokenStatus = () => {
     useAtomValue(rTokenStateAtom)
   const basketStatus = useAtomValue(rTokenBasketStatusAtom)
 
-  if (!rToken || rToken.isRSV) {
+  if (!rToken?.main) {
     return null
   }
 

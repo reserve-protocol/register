@@ -21,7 +21,7 @@ const Tokens = () => {
   }
 
   useEffect(() => {
-    updateToken('')
+    updateToken(null)
   }, [])
 
   return (

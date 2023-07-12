@@ -40,7 +40,7 @@ const Home = () => {
   // Unselect rToken if on this view ("back" browser action for example)
   useEffect(() => {
     if (token) {
-      setToken('')
+      setToken(null)
     }
   }, [])
 

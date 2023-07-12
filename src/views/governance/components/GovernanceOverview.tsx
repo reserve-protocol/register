@@ -2,7 +2,6 @@ import { t, Trans } from '@lingui/macro'
 import Governance from 'abis/Governance'
 import { SmallButton } from 'components/button'
 import IconInfo from 'components/info-icon'
-import { formatEther } from 'ethers/lib/utils'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
@@ -13,7 +12,7 @@ import { blockAtom, rTokenGovernanceAtom, walletAtom } from 'state/atoms'
 import { Box, Grid, Image, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ROUTES } from 'utils/constants'
-import { formatEther as formatEtherViem } from 'viem'
+import { formatEther, formatEther as formatEtherViem } from 'viem'
 import RolesView from 'views/settings/components/RolesView'
 import SettingItem from 'views/settings/components/SettingItem'
 import { Address, useContractRead } from 'wagmi'
@@ -34,7 +33,7 @@ const query = gql`
 // TODO: Governance data casting?
 const useStats = () => {
   const rToken = useRToken()
-  const response = useQuery(rToken?.address && !rToken.isRSV ? query : null, {
+  const response = useQuery(rToken?.main ? query : null, {
     id: rToken?.address.toLowerCase(),
   })
 

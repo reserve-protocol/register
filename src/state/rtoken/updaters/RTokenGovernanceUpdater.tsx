@@ -5,6 +5,7 @@ import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { rTokenGovernanceAtom, rTokenManagersAtom } from 'state/atoms'
 import { isAddress } from 'utils'
+import { Address } from 'viem'
 
 const query = gql`
   query getRTokenOwner($id: String!) {
@@ -64,8 +65,8 @@ const RTokenGovernanceUpdater = () => {
         setGovernance({
           name,
           proposalThreshold: (+proposalThreshold / 1e6).toString(),
-          timelock: isAddress(timelockAddress) || '',
-          governor: isAddress(contractAddress) || '',
+          timelock: isAddress(timelockAddress) ?? undefined,
+          governor: isAddress(contractAddress) as Address,
           votingDelay,
           votingPeriod,
           quorumDenominator,

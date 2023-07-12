@@ -1,13 +1,13 @@
 import { t, Trans } from '@lingui/macro'
+import StRSRVotes from 'abis/StRSRVotes'
+import Input from 'components/input'
 import TransactionModal from 'components/transaction-modal'
 import useRToken from 'hooks/useRToken'
-import { useMemo, useState } from 'react'
-import { isAddress } from 'utils'
-import { TRANSACTION_STATUS } from 'utils/constants'
-import { Text } from 'theme-ui'
-import Input from 'components/input'
 import { useAtomValue } from 'jotai'
+import { useMemo, useState } from 'react'
 import { walletAtom } from 'state/atoms'
+import { Text } from 'theme-ui'
+import { isAddress } from 'utils'
 
 const DelegateModal = ({
   onClose,
@@ -20,28 +20,22 @@ const DelegateModal = ({
   const rToken = useRToken()
   const [address, setAddress] = useState(!delegated && account ? account : '')
   const validAddress = isAddress(address)
-  const transaction = useMemo(
-    () => ({
-      id: '',
-      description: t`Delegate voting`,
-      status: TRANSACTION_STATUS.PENDING,
-      value: '0',
-      call: {
-        abi: 'stRSRVotes',
-        address: rToken?.stToken?.address ?? '',
-        method: 'delegate',
-        args: [validAddress || ''],
-      },
-    }),
-    [rToken?.address, validAddress]
-  )
+  const call = useMemo(() => {
+    return rToken?.stToken && validAddress
+      ? {
+          abi: StRSRVotes,
+          address: rToken.stToken.address,
+          functionName: 'delegate',
+          args: [validAddress],
+        }
+      : undefined
+  }, [rToken?.address, validAddress])
 
   return (
     <TransactionModal
       title={t`Delegate votes`}
-      requiredAllowance={{}}
-      tx={transaction}
-      isValid={!!validAddress}
+      description="Delegate"
+      call={call}
       confirmLabel={t`Confirm delegate`}
       onClose={onClose}
     >

@@ -47,7 +47,7 @@ const BADGE_VARIANT: StringMap = {
 // TODO: Proposal data casting?
 const useProposals = () => {
   const rToken = useRToken()
-  const response = useQuery(rToken?.address && !rToken.isRSV ? query : null, {
+  const response = useQuery(rToken?.main ? query : null, {
     id: rToken?.address.toLowerCase(),
   })
 

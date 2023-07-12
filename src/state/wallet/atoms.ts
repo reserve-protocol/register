@@ -2,24 +2,22 @@
  * This file contains application level atoms
  * At some point this file is expected to be divided into multiple files per atom type
  */
-import { BigNumber } from '@ethersproject/bignumber'
-import { stRSRVotesInterface } from 'abis'
-import { StRSRVotes } from 'abis/types'
+import Main from 'abis/Main'
+import StRSRVotes from 'abis/StRSRVotes'
 import { atom } from 'jotai'
 import { AccountPosition, AccountToken } from 'types'
-import { getContract } from 'utils'
 import { RSR_ADDRESS, ZERO_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
-import rTokenAtom from '../rtoken/atoms/rTokenAtom'
-import rTokenContractsAtom from '../rtoken/atoms/rTokenContractsAtom'
+import { Address, stringToHex } from 'viem'
+import { readContracts } from 'wagmi'
+import { readContract } from 'wagmi/dist/actions'
 import {
   chainIdAtom,
   getValidWeb3Atom,
   walletAtom,
 } from '../chain/atoms/chainAtoms'
-import { readContracts } from 'wagmi'
-import Main from 'abis/Main'
-import { Address, stringToHex } from 'viem'
+import rTokenAtom from '../rtoken/atoms/rTokenAtom'
+import rTokenContractsAtom from '../rtoken/atoms/rTokenContractsAtom'
 
 const defaultBalance = {
   value: 0n,
@@ -64,9 +62,6 @@ export const rsrBalanceAtom = atom((get) => {
   const chainId = get(chainIdAtom)
   return get(balancesAtom)[RSR_ADDRESS[chainId]] || defaultBalance
 })
-
-// Tracks allowance for stRSR/RSR and Collaterals/rToken
-export const allowanceAtom = atom<{ [x: string]: BigNumber }>({})
 
 // Store account related rtokens
 export const accountRTokensAtom = atom<
@@ -141,13 +136,12 @@ export const accountDelegateAtom = atomWithLoadable(async (get) => {
     return null
   }
 
-  const contract = getContract(
-    contracts.stRSR.address,
-    stRSRVotesInterface,
-    provider
-  ) as StRSRVotes
-
-  const delegate = await contract.delegates(account)
+  const delegate = await readContract({
+    address: contracts.stRSR.address,
+    abi: StRSRVotes,
+    functionName: 'delegates',
+    args: [account],
+  })
 
   return delegate !== ZERO_ADDRESS ? delegate : null
 })

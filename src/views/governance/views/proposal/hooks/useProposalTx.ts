@@ -1,25 +1,20 @@
 import { t } from '@lingui/macro'
 import {
-  AssetRegistryInterface,
-  BasketHandlerInterface,
-  DistributorInterface,
-  MainInterface,
-  TimelockInterface,
-} from 'abis'
-import {
   basketChangesAtom,
   isNewBackupProposedAtom,
   proposalDescriptionAtom,
 } from './../atoms'
 
 import AssetRegistry from 'abis/AssetRegistry'
+import BasketHandler from 'abis/BasketHandler'
+import Distributor from 'abis/Distributor'
+import Main from 'abis/Main'
+import Timelock from 'abis/Timelock'
 import {
   backupCollateralAtom,
   basketAtom,
   revenueSplitAtom,
 } from 'components/rtoken-setup/atoms'
-import { BigNumber, ethers } from 'ethers'
-import { parseEther } from 'ethers/lib/utils'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
@@ -27,6 +22,7 @@ import { rTokenContractsAtom, rTokenGovernanceAtom } from 'state/atoms'
 import { parsePercent } from 'utils'
 import { FURNACE_ADDRESS, ST_RSR_ADDRESS, ZERO_ADDRESS } from 'utils/addresses'
 import { TRANSACTION_STATUS } from 'utils/constants'
+import { encodeFunctionData, parseEther, stringToHex, zeroAddress } from 'viem'
 import { getSharesFromSplit } from 'views/deploy/utils'
 import { Address, useContractRead } from 'wagmi'
 import {
@@ -38,17 +34,17 @@ import {
   roleChangesAtom,
 } from '../atoms'
 
-const paramParse: { [x: string]: (v: string) => BigNumber } = {
+const paramParse: { [x: string]: (v: string) => bigint | number } = {
   minTradeVolume: parseEther,
   rTokenMaxTradeVolume: parseEther,
   rewardRatio: parseEther,
-  unstakingDelay: BigNumber.from,
-  tradingDelay: BigNumber.from,
-  auctionLength: BigNumber.from,
+  unstakingDelay: Number,
+  tradingDelay: Number,
+  auctionLength: Number,
   backingBuffer: parsePercent,
   maxTradeSlippage: parsePercent,
-  shortFreeze: BigNumber.from,
-  longFreeze: BigNumber.from,
+  shortFreeze: Number,
+  longFreeze: Number,
 }
 
 const ROLES: { [x: string]: string } = {
@@ -96,28 +92,40 @@ const useProposalTx = () => {
     let redemptionThrottleChange = false
     let issuanceThrottleChange = false
     const tokenConfig = getValues()
-    const assets = new Set<string>(
+    const assets = new Set<Address>(
       registeredAssets
         ? [...registeredAssets.erc20s, ...registeredAssets.assets]
         : []
     )
-    const newAssets = new Set<string>()
+    const newAssets = new Set<Address>()
 
-    const addToRegistry = (address: string, underlyingAddress?: string) => {
+    const addToRegistry = (address: Address, underlyingAddress?: Address) => {
       if (newAssets.has(address) || assets.has(address)) return
-      addresses.push(contracts?.assetRegistry.address ?? '')
+      addresses.push(contracts.assetRegistry.address)
 
       // Underlying asset (from another plugin instance)
       // registered in past - swapRegistered
-      if (assets.has(underlyingAddress || '') && !assets.has(address)) {
+      if (
+        underlyingAddress &&
+        assets.has(underlyingAddress) &&
+        !assets.has(address)
+      ) {
         calls.push(
-          AssetRegistryInterface.encodeFunctionData('swapRegistered', [address])
+          encodeFunctionData({
+            abi: AssetRegistry,
+            functionName: 'swapRegistered',
+            args: [address],
+          })
         )
         newAssets.add(address)
         // Brand new plugin - register
       } else {
         calls.push(
-          AssetRegistryInterface.encodeFunctionData('register', [address])
+          encodeFunctionData({
+            abi: AssetRegistry,
+            functionName: 'register',
+            args: [address],
+          })
         )
         newAssets.add(address)
       }
@@ -195,10 +203,11 @@ const useProposalTx = () => {
         }
 
         calls.push(
-          (isGuardian ? TimelockInterface : MainInterface).encodeFunctionData(
-            roleChange.isNew ? 'grantRole' : 'revokeRole',
-            [ROLES[roleChange.role], roleChange.address]
-          )
+          encodeFunctionData({
+            abi: (isGuardian ? Timelock : Main) as any,
+            functionName: roleChange.isNew ? 'grantRole' : 'revokeRole',
+            args: [ROLES[roleChange.role], roleChange.address],
+          })
         )
       }
 
@@ -206,15 +215,15 @@ const useProposalTx = () => {
       ## Parse basket changes    ## 
       ############################# */
       if (newBasket) {
-        const primaryBasket: string[] = []
-        const weights: BigNumber[] = []
+        const primaryBasket: Address[] = []
+        const weights: bigint[] = []
 
         // Get call arguments
         for (const targetUnit of Object.keys(basket)) {
           const { collaterals, distribution, scale } = basket[targetUnit]
 
           collaterals.forEach((collateral, index) => {
-            primaryBasket.push(collateral.address)
+            primaryBasket.push(collateral.address as Address)
 
             weights.push(
               parseEther(
@@ -230,9 +239,9 @@ const useProposalTx = () => {
         for (const changes of basketChanges) {
           if (changes.isNew) {
             addToRegistry(
-              changes.collateral.collateralAddress ||
-                changes.collateral.address,
-              changes.collateral.address
+              (changes.collateral.collateralAddress ||
+                changes.collateral.address) as Address,
+              changes.collateral.address as Address
             )
 
             if (
@@ -240,7 +249,7 @@ const useProposalTx = () => {
               changes.collateral.rewardToken[0] != ZERO_ADDRESS
             ) {
               changes.collateral.rewardToken.forEach((reward) =>
-                addToRegistry(reward)
+                addToRegistry(reward as Address)
               )
             }
           }
@@ -249,15 +258,19 @@ const useProposalTx = () => {
         // Set primeBasket with new collaterals and weights
         addresses.push(contracts.basketHandler.address)
         calls.push(
-          BasketHandlerInterface.encodeFunctionData('setPrimeBasket', [
-            primaryBasket,
-            weights,
-          ])
+          encodeFunctionData({
+            abi: BasketHandler,
+            functionName: 'setPrimeBasket',
+            args: [primaryBasket, weights],
+          })
         )
         // Refresh basket is needed for the action to take effect
         addresses.push(contracts.basketHandler.address)
         calls.push(
-          BasketHandlerInterface.encodeFunctionData('refreshBasket', [])
+          encodeFunctionData({
+            abi: BasketHandler,
+            functionName: 'refreshBasket',
+          })
         )
       }
 
@@ -268,31 +281,33 @@ const useProposalTx = () => {
         for (const targetUnit of Object.keys(newBackup)) {
           const { collaterals, diversityFactor } = backup[targetUnit]
 
-          collaterals.forEach((collateral, index) => {
-            const backupCollaterals: string[] = []
+          const backupCollaterals: Address[] = []
 
-            for (const collateral of collaterals) {
-              addToRegistry(collateral.address)
-              if (
-                !!collateral.rewardToken?.length &&
-                collateral.rewardToken[0] != ZERO_ADDRESS
-              ) {
-                collateral.rewardToken.forEach((reward) =>
-                  addToRegistry(reward)
-                )
-              }
-              backupCollaterals.push(collateral.address)
+          for (const collateral of collaterals) {
+            addToRegistry(collateral.address as Address)
+            if (
+              !!collateral.rewardToken?.length &&
+              collateral.rewardToken[0] != zeroAddress
+            ) {
+              collateral.rewardToken.forEach((reward) =>
+                addToRegistry(reward as Address)
+              )
             }
+            backupCollaterals.push(collateral.address as Address)
+          }
 
-            addresses.push(contracts.basketHandler.address)
-            calls.push(
-              BasketHandlerInterface.encodeFunctionData('setBackupConfig', [
-                ethers.utils.formatBytes32String(targetUnit.toUpperCase()),
+          addresses.push(contracts.basketHandler.address)
+          calls.push(
+            encodeFunctionData({
+              abi: BasketHandler,
+              functionName: 'setBackupConfig',
+              args: [
+                stringToHex(targetUnit.toUpperCase(), { size: 32 }),
                 parseEther(diversityFactor.toString()),
                 backupCollaterals,
-              ])
-            )
-          })
+              ],
+            })
+          )
         }
       }
 
@@ -306,36 +321,43 @@ const useProposalTx = () => {
           if (!revChange.isNew) {
             addresses.push(contracts.distributor.address)
             calls.push(
-              DistributorInterface.encodeFunctionData('setDistribution', [
-                FURNACE_ADDRESS,
-                { rTokenDist: BigNumber.from(0), rsrDist: BigNumber.from(0) },
-              ])
+              encodeFunctionData({
+                abi: Distributor,
+                functionName: 'setDistribution',
+                args: [FURNACE_ADDRESS, { rTokenDist: 0, rsrDist: 0 }],
+              })
             )
           }
         }
 
         addresses.push(contracts.distributor.address)
         calls.push(
-          DistributorInterface.encodeFunctionData('setDistribution', [
-            FURNACE_ADDRESS,
-            { rTokenDist: dist.rTokenDist, rsrDist: BigNumber.from(0) },
-          ])
+          encodeFunctionData({
+            abi: Distributor,
+            functionName: 'setDistribution',
+            args: [
+              FURNACE_ADDRESS,
+              { rTokenDist: dist.rTokenDist, rsrDist: 0 },
+            ],
+          })
         )
         addresses.push(contracts.distributor.address)
         calls.push(
-          DistributorInterface.encodeFunctionData('setDistribution', [
-            ST_RSR_ADDRESS,
-            { rTokenDist: BigNumber.from(0), rsrDist: dist.rsrDist },
-          ])
+          encodeFunctionData({
+            abi: Distributor,
+            functionName: 'setDistribution',
+            args: [ST_RSR_ADDRESS, { rTokenDist: 0, rsrDist: dist.rsrDist }],
+          })
         )
 
         for (const external of beneficiaries) {
           addresses.push(contracts.distributor.address)
           calls.push(
-            DistributorInterface.encodeFunctionData('setDistribution', [
-              external.beneficiary,
-              external.revShare,
-            ])
+            encodeFunctionData({
+              abi: Distributor,
+              functionName: 'setDistribution',
+              args: [external.beneficiary, external.revShare],
+            })
           )
         }
       }
