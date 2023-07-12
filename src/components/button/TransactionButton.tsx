@@ -30,7 +30,7 @@ const GasEstimateLabel = ({ gas, ...props }: GasEstimateLabelProps) => (
   </Box>
 )
 
-const ConnectWallet = (props: ButtonProps) => {
+export const ConnectWalletButton = (props: ButtonProps) => {
   const { openConnectModal } = useConnectModal()
 
   return (
@@ -61,7 +61,7 @@ const TransactionButton = ({
   }
 
   if (!address) {
-    return <ConnectWallet {...props} disabled={false} />
+    return <ConnectWalletButton {...props} disabled={false} />
   }
 
   if (mining) {

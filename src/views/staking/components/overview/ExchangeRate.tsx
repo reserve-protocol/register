@@ -1,4 +1,3 @@
-import { t } from '@lingui/macro'
 import AreaChart from 'components/charts/area/AreaChart'
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'

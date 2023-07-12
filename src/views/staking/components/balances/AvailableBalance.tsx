@@ -1,11 +1,12 @@
 import { t, Trans } from '@lingui/macro'
-import { ExecuteButton } from 'components/button'
+import StRSR from 'abis/StRSR'
+import TransactionButton from 'components/button/TransactionButton'
 import Help from 'components/help'
 import TokenBalance from 'components/token-balance'
-import { BigNumber } from 'ethers'
+import useContractWrite from 'hooks/useContractWrite'
 import useRToken from 'hooks/useRToken'
+import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
-import { useMemo } from 'react'
 import {
   rsrExchangeRateAtom,
   rTokenStateAtom,
@@ -13,7 +14,6 @@ import {
   walletAtom,
 } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
-import { TRANSACTION_STATUS } from 'utils/constants'
 import { pendingRSRSummaryAtom } from 'views/staking/atoms'
 
 const AvailableBalance = () => {
@@ -23,29 +23,22 @@ const AvailableBalance = () => {
   const account = useAtomValue(walletAtom)
   const { isCollaterized } = useAtomValue(rTokenStateAtom)
   const isRTokenAvailable = useAtomValue(rTokenTradingAvailableAtom)
-  const tx = useMemo(() => {
-    if (
-      !rToken?.stToken?.address ||
-      !isCollaterized ||
-      !isRTokenAvailable ||
-      !availableAmount
-    ) {
-      return null
-    }
 
-    return {
-      id: '',
-      description: t`Withdraw RSR`,
-      status: TRANSACTION_STATUS.PENDING,
-      value: availableAmount.toString(),
-      call: {
-        abi: 'stRSR',
-        address: rToken?.stToken?.address,
-        method: 'withdraw',
-        args: [account, index.add(BigNumber.from(1))],
-      },
-    }
-  }, [rToken?.address, availableAmount, account])
+  const { write, isReady, isLoading, hash } = useContractWrite(
+    rToken?.stToken &&
+      isCollaterized &&
+      isRTokenAvailable &&
+      availableAmount &&
+      account
+      ? {
+          address: rToken.stToken.address,
+          abi: StRSR,
+          functionName: 'withdraw',
+          args: [account, index + 1n],
+        }
+      : undefined
+  )
+  const { isMining } = useWatchTransaction({ hash, label: 'Withdraw RSR' })
 
   return (
     <Box p={4}>
@@ -53,7 +46,15 @@ const AvailableBalance = () => {
         <Trans>Available</Trans>
       </Text>
       <TokenBalance symbol="RSR" balance={availableAmount * rate} />
-      <ExecuteButton small mt={3} text={t`Withdraw`} tx={tx} />
+      <TransactionButton
+        small
+        mt={3}
+        text={t`Withdraw`}
+        mining={isMining}
+        loading={isLoading || isMining}
+        onClick={write}
+        disabled={!isReady}
+      />
       {!isCollaterized ||
         (!isRTokenAvailable && (
           <Box

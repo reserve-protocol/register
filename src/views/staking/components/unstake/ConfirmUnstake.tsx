@@ -1,11 +1,11 @@
 import { t } from '@lingui/macro'
+import StRSR from 'abis/StRSR'
 import TransactionModal from 'components/transaction-modal'
+import useDebounce from 'hooks/useDebounce'
 import { useAtom, useAtomValue } from 'jotai'
 import { useMemo, useState } from 'react'
 import { rTokenAtom } from 'state/atoms'
 import { safeParseEther } from 'utils'
-import { TRANSACTION_STATUS } from 'utils/constants'
-import { v4 as uuid } from 'uuid'
 import {
   isValidUnstakeAmountAtom,
   unStakeAmountAtom,
@@ -16,23 +16,21 @@ const ConfirmUnstake = ({ onClose }: { onClose: () => void }) => {
   const [signing, setSigning] = useState(false)
   const rToken = useAtomValue(rTokenAtom)
   const [amount, setAmount] = useAtom(unStakeAmountAtom)
+  const debounceAmount = useDebounce(amount, 500)
   const isValid = useAtomValue(isValidUnstakeAmountAtom)
-  const parsedAmount = isValid ? safeParseEther(amount) : 0
-  const transaction = useMemo(
-    () => ({
-      id: uuid(),
-      description: t`Unstake ${rToken?.stToken?.symbol}`,
-      status: TRANSACTION_STATUS.PENDING,
-      value: amount,
-      call: {
-        abi: 'stRSR',
-        address: rToken?.stToken?.address ?? ' ',
-        method: 'unstake',
-        args: [parsedAmount],
-      },
-    }),
-    [rToken?.address, amount]
-  )
+
+  const call = useMemo(() => {
+    if (!rToken?.stToken || !isValid) {
+      return undefined
+    }
+
+    return {
+      abi: StRSR,
+      address: rToken.stToken.address,
+      functionName: 'unstake',
+      args: [safeParseEther(debounceAmount)],
+    }
+  }, [rToken?.address, isValid, debounceAmount])
 
   const handleClose = () => {
     onClose()
@@ -42,9 +40,8 @@ const ConfirmUnstake = ({ onClose }: { onClose: () => void }) => {
   return (
     <TransactionModal
       title={t`Unstake ${rToken?.stToken?.symbol}`}
-      tx={transaction}
-      isValid={isValid}
-      requiredAllowance={{}}
+      description={`Unstake ${rToken?.stToken?.symbol}`}
+      call={call}
       confirmLabel={t`Begin unstake cooldown`}
       onClose={handleClose}
       onChange={(signing) => setSigning(signing)}

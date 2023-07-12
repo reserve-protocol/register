@@ -1,17 +1,17 @@
 import { Trans, t } from '@lingui/macro'
-import { ExecuteButton } from 'components/button'
+import StRSR from 'abis/StRSR'
+import TransactionButton from 'components/button/TransactionButton'
 import TokenBalance from 'components/token-balance'
-import { BigNumber } from 'ethers'
+import useContractWrite from 'hooks/useContractWrite'
 import useRToken from 'hooks/useRToken'
+import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
-import { useMemo } from 'react'
 import {
   isModuleLegacyAtom,
   rTokenStateAtom,
   rsrExchangeRateAtom,
 } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
-import { TRANSACTION_STATUS } from 'utils/constants'
 import { pendingRSRSummaryAtom } from 'views/staking/atoms'
 
 const PendingBalance = () => {
@@ -21,24 +21,17 @@ const PendingBalance = () => {
   const { staking: isLegacy } = useAtomValue(isModuleLegacyAtom)
   const rate = useAtomValue(rsrExchangeRateAtom)
 
-  const tx = useMemo(() => {
-    if (!rToken?.stToken?.address || !balance || frozen) {
-      return null
-    }
-
-    return {
-      id: '',
-      description: t`Cancel unstake`,
-      status: TRANSACTION_STATUS.PENDING,
-      value: balance.toString(),
-      call: {
-        abi: 'stRSR',
-        address: rToken?.stToken?.address,
-        method: 'cancelUnstake',
-        args: [index.add(BigNumber.from(1))],
-      },
-    }
-  }, [rToken?.address, balance, index])
+  const { isLoading, write, isReady, hash } = useContractWrite(
+    rToken?.stToken && balance && !frozen
+      ? {
+          address: rToken?.stToken?.address,
+          abi: StRSR,
+          functionName: 'cancelUnstake',
+          args: [index + 1n],
+        }
+      : undefined
+  )
+  const { isMining } = useWatchTransaction({ hash, label: 'Cancel unstake' })
 
   return (
     <Box p={4}>
@@ -47,7 +40,15 @@ const PendingBalance = () => {
       </Text>
       <TokenBalance symbol={'RSR'} balance={balance * rate} />
       {!isLegacy && (
-        <ExecuteButton small mt={3} text={t`Cancel unstake`} tx={tx} />
+        <TransactionButton
+          small
+          mt={3}
+          text={t`Cancel unstake`}
+          mining={isMining}
+          loading={isLoading || isMining}
+          onClick={write}
+          disabled={!isReady}
+        />
       )}
     </Box>
   )

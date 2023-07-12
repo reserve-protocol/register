@@ -1,6 +1,5 @@
 import { Table } from 'components/table'
 import { Box, Text } from 'theme-ui'
-import { formatEther, getAddress } from 'ethers/lib/utils'
 import useQuery from 'hooks/useQuery'
 import { useEffect, useMemo, useState } from 'react'
 import { formatUsdCurrencyCell } from 'utils'
@@ -9,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { t } from '@lingui/macro'
 import TokenItem from 'components/token-item'
 import tokenList from 'utils/rtokens'
+import { formatEther, getAddress } from 'viem'
 
 const listedTokens = Object.keys(tokenList).map((address) =>
   address.toLowerCase()

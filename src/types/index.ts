@@ -24,6 +24,14 @@ export interface BalanceMap {
   }
 }
 
+export interface Allowance {
+  token: Address
+  spender: Address
+  amount: bigint
+  symbol: string
+  decimals: number
+}
+
 export interface Proposal {
   id: string
   description: string

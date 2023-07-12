@@ -1,148 +1,134 @@
 import { t } from '@lingui/macro'
-import { LoadingButton } from 'components/button'
+import ERC20 from 'abis/ERC20'
+import TransactionButton from 'components/button/TransactionButton'
 import Modal, { ModalProps } from 'components/modal'
-import useTransactionCost from 'hooks/useTransactionCost'
-import { useAtomValue, useSetAtom } from 'jotai'
-import { useEffect, useMemo, useState } from 'react'
-import { addTransactionAtom, allowanceAtom } from 'state/atoms'
-import { useTransactionState } from 'state/chain/hooks/useTransactions'
+import useContractWrite from 'hooks/useContractWrite'
+import useWatchTransaction from 'hooks/useWatchTransaction'
+import { useAtomValue } from 'jotai'
+import { walletAtom } from 'state/atoms'
 import { Divider } from 'theme-ui'
-import { BigNumberMap, TransactionState } from 'types'
-import { hasAllowance } from 'utils'
-import { TRANSACTION_STATUS } from 'utils/constants'
-import { v4 as uuid } from 'uuid'
-import ApprovalTransactions from './ApprovalTransactions'
-import EstimatedGasInfo from './EstimatedGasInfo'
+import { Allowance } from 'types'
+import { useContractRead, type UsePrepareContractWriteConfig } from 'wagmi'
 import TransactionConfirmedModal from './TransactionConfirmedModal'
 import TransactionError from './TransactionError'
 
 export interface ITransactionModal extends Omit<ModalProps, 'onChange'> {
   title: string
-  children: any
-  tx: TransactionState
-  requiredAllowance: BigNumberMap
+  description: string
+  children: React.ReactNode
+  call?: UsePrepareContractWriteConfig
+  requiredAllowance?: Allowance
   confirmLabel: string
-  approvalsLabel?: string
-  buildApprovals?: (
-    required: BigNumberMap,
-    allowances: BigNumberMap
-  ) => TransactionState[]
   onClose: () => void
-  onChange?(signing: boolean): void
-  isValid: boolean
+  onChange?(isLoading: boolean): void
+  disabled?: boolean
+}
+
+const Approval = ({
+  data: { token, spender, symbol, amount },
+}: {
+  data: Allowance
+}) => {
+  const { write, isLoading, isReady, gas } = useContractWrite({
+    address: token,
+    abi: ERC20,
+    functionName: 'approve',
+    args: [spender, amount],
+  })
+
+  return (
+    <>
+      <Divider sx={{ borderColor: 'darkBorder' }} mx={-4} my={4} />
+      <TransactionButton
+        loading={isLoading}
+        onClick={write}
+        disabled={!isReady}
+        text={`Allow use of ${symbol}`}
+        fullWidth
+        gas={gas}
+      />
+    </>
+  )
+}
+
+const useHasAllowance = (allowance: Allowance | undefined) => {
+  const account = useAtomValue(walletAtom)
+
+  const { data } = useContractRead(
+    allowance && account
+      ? {
+          abi: ERC20,
+          functionName: 'allowance',
+          address: allowance.token,
+          args: [account, allowance.spender],
+        }
+      : undefined
+  )
+
+  if (!allowance) {
+    return true
+  }
+
+  return (data ?? 0n) >= allowance.amount
 }
 
 const TransactionModal = ({
   title,
   requiredAllowance,
-  tx,
+  call,
   children,
-  isValid,
+  disabled,
+  description,
   confirmLabel,
-  approvalsLabel,
-  buildApprovals,
   onClose,
   onChange = () => {},
   ...props
 }: ITransactionModal) => {
-  const addTransaction = useSetAtom(addTransactionAtom)
-  const allowances = useAtomValue(allowanceAtom)
-  const [signing, setSigning] = useState('')
-  const [requiredApprovals, setApprovalsTx] = useState([] as TransactionState[])
-  const canSubmit = useMemo(
-    () => isValid && hasAllowance(allowances, requiredAllowance),
-    [allowances, isValid, requiredAllowance]
-  )
-
-  const txState = useTransactionState(signing)
-  const signed =
-    txState?.status === TRANSACTION_STATUS.MINING ||
-    txState?.status === TRANSACTION_STATUS.CONFIRMED
-  const [fee, gasError, gasLimit] = useTransactionCost(canSubmit ? [tx] : [])
+  const hasAllowance = useHasAllowance(requiredAllowance)
+  const { isLoading, write, hash, status, error, isReady, gas, reset } =
+    useContractWrite(hasAllowance ? call : undefined)
+  useWatchTransaction({ hash, label: description })
 
   const handleConfirm = () => {
-    const id = uuid()
-    setSigning(id)
-    onChange(true)
-    if (fee && !gasError) {
-      addTransaction([
-        {
-          ...tx,
-          call: {
-            ...tx.call,
-            args: [
-              ...tx.call.args,
-              { gasLimit: Math.floor(gasLimit + gasLimit * 0.1) },
-            ],
-          },
-          id,
-        },
-      ])
-    } else {
-      addTransaction([{ ...tx, id }])
+    if (write) {
+      onChange(true)
+      write()
     }
   }
 
   const handleRetry = () => {
-    setSigning('')
+    reset()
     onChange(false)
   }
 
-  const fetchApprovals = () => {
-    if (
-      buildApprovals &&
-      Object.keys(allowances).length &&
-      Object.keys(requiredAllowance).length
-    ) {
-      setApprovalsTx(buildApprovals(requiredAllowance, allowances))
-    } else {
-      setApprovalsTx([])
-    }
-  }
-
-  useEffect(fetchApprovals, [allowances, requiredAllowance])
-
-  if (signed) {
-    return (
-      <TransactionConfirmedModal hash={txState.hash ?? ''} onClose={onClose} />
-    )
+  if (hash) {
+    return <TransactionConfirmedModal hash={hash} onClose={onClose} />
   }
 
   return (
     <Modal title={title} onClose={onClose} {...props}>
-      {txState?.status === TRANSACTION_STATUS.REJECTED && (
+      {status === 'error' && (
         <TransactionError
           title={t`Transaction failed`}
-          subtitle={txState.description}
+          subtitle={error?.message}
           onClose={handleRetry}
         />
       )}
       {children}
-      {requiredApprovals.length > 0 && !canSubmit && isValid && (
-        <>
-          <Divider sx={{ borderColor: 'darkBorder' }} mx={-4} my={4} />
-          <ApprovalTransactions
-            onConfirm={() => onChange(true)}
-            onError={() => {
-              onChange(false)
-              fetchApprovals()
-            }}
-            title={approvalsLabel ?? 'Approve'}
-            txs={requiredApprovals}
-          />
-        </>
+      {requiredAllowance && !hasAllowance && (
+        <Approval data={requiredAllowance} />
       )}
       <Divider sx={{ borderColor: 'darkBorder' }} mx={-4} mt={4} />
-      <LoadingButton
-        loading={!!signing}
-        disabled={!canSubmit}
-        variant={!!signing ? 'accentAction' : 'accentAction'}
+      <TransactionButton
+        loading={isLoading}
+        disabled={!isReady || disabled}
+        variant={isLoading ? 'accentAction' : 'accentAction'}
         text={confirmLabel}
         onClick={handleConfirm}
-        sx={{ width: '100%' }}
+        fullWidth
+        gas={gas}
         mt={3}
       />
-      {!!canSubmit && <EstimatedGasInfo mt={3} fee={fee} />}
     </Modal>
   )
 }

@@ -16,9 +16,10 @@ const useContractWrite = <
 >(
   call: UsePrepareContractWriteConfig<TAbi, TFunctionName, TChainId> = {} as any
 ) => {
-  const { config, isSuccess } = usePrepareContractWrite(
+  const { config, isSuccess, error } = usePrepareContractWrite(
     call as UsePrepareContractWriteConfig
   )
+
   const gas = useGasEstimate(isSuccess ? config.request : null)
 
   const writeConfig = useMemo(() => {

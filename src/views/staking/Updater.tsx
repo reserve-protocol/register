@@ -1,9 +1,10 @@
-import { Facade } from 'abis/types'
-import { formatEther } from 'ethers/lib/utils'
-import { useFacadeContract } from 'hooks/useContract'
+import FacadeRead from 'abis/FacadeRead'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { useCallback, useEffect } from 'react'
-import { blockAtom, chainIdAtom, rTokenAtom, walletAtom } from 'state/atoms'
+import { useEffect } from 'react'
+import { chainIdAtom, rTokenAtom, walletAtom } from 'state/atoms'
+import { FACADE_ADDRESS } from 'utils/addresses'
+import { useContractRead } from 'wagmi'
+import { formatEther } from 'viem'
 import { pendingRSRAtom } from './atoms'
 
 /**
@@ -14,34 +15,30 @@ const PendingBalancesUpdater = () => {
   const chainId = useAtomValue(chainIdAtom)
   const rToken = useAtomValue(rTokenAtom)
   const setPendingRSR = useSetAtom(pendingRSRAtom)
-  const facadeContract = useFacadeContract()
-  const blockNumber = useAtomValue(blockAtom)
 
-  const fetchPending = useCallback(
-    async (account: string, rToken: string, facade: Facade) => {
-      try {
-        const pendingRSR = await facade.pendingUnstakings(rToken, account)
-        const pendingRSRSummary = pendingRSR.map((item) => ({
-          availableAt: item.availableAt.toNumber(),
-          index: item.index,
-          amount: parseFloat(formatEther(item.amount)),
-        }))
-        setPendingRSR(pendingRSRSummary)
-      } catch (e) {
-        // TODO: handle error case
-        console.log('error fetching pending', e)
-      }
-    },
-    []
+  const { data } = useContractRead(
+    rToken && account
+      ? {
+          abi: FacadeRead,
+          address: FACADE_ADDRESS[chainId],
+          functionName: 'pendingUnstakings',
+          args: [rToken?.address, account],
+        }
+      : undefined
   )
 
   useEffect(() => {
-    if (rToken?.main && facadeContract && blockNumber && account) {
-      fetchPending(account, rToken.address, facadeContract)
+    if (data) {
+      const pendingRSRSummary = data.map((item) => ({
+        availableAt: Number(item.availableAt),
+        index: item.index,
+        amount: parseFloat(formatEther(item.amount)),
+      }))
+      setPendingRSR(pendingRSRSummary)
     } else {
       setPendingRSR([])
     }
-  }, [rToken?.address, facadeContract, account, blockNumber, chainId])
+  }, [data])
 
   return null
 }

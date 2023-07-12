@@ -1,4 +1,3 @@
-import { BigNumber } from 'ethers'
 import { atom } from 'jotai'
 import { safeParseEther } from 'utils'
 import {
@@ -26,10 +25,12 @@ export const isValidUnstakeAmountAtom = atom((get) => {
 })
 
 // List of unstake cooldown for the selected rToken
-export const pendingRSRAtom = atom<any[]>([])
+export const pendingRSRAtom = atom<
+  { availableAt: number; index: bigint; amount: number }[]
+>([])
 export const pendingRSRSummaryAtom = atom<{
-  index: BigNumber
-  availableIndex: BigNumber
+  index: bigint
+  availableIndex: bigint
   pendingAmount: number
   availableAt: number
   availableAmount: number
@@ -42,7 +43,7 @@ export const pendingRSRSummaryAtom = atom<{
 
       if (currentTime >= unstake.availableAt) {
         acc.availableAmount += unstake.amount
-        acc.availableIndex = acc.availableAt
+        acc.availableIndex = BigInt(acc.availableAt)
       } else {
         acc.pendingAmount += unstake.amount
       }
@@ -50,8 +51,8 @@ export const pendingRSRSummaryAtom = atom<{
       return acc
     },
     {
-      index: BigNumber.from(0),
-      availableIndex: BigNumber.from(0),
+      index: 0n,
+      availableIndex: 0n,
       pendingAmount: 0,
       availableAt: 0,
       availableAmount: 0,
