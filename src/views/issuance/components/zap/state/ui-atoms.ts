@@ -1,18 +1,9 @@
 import { entities, base } from '@reserve-protocol/token-zapper'
-import { ethers } from 'ethers'
 import { atom, Getter, SetStateAction, Setter } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import { Atom } from 'jotai/vanilla'
-import {
-  addTransactionAtom,
-  ethPriceAtom,
-  isWalletModalVisibleAtom,
-  rTokenAtom,
-} from 'state/atoms'
-import { error, success } from 'state/chain/lib/notifications'
+import { ethPriceAtom, isWalletModalVisibleAtom, rTokenAtom } from 'state/atoms'
 import { onlyNonNullAtom } from 'utils/atoms/utils'
-import { TRANSACTION_STATUS } from 'utils/constants'
-import { v4 as uuid } from 'uuid'
 
 import {
   approvalNeededAtom,
@@ -44,6 +35,8 @@ import {
 } from './atoms'
 import { formatQty, FOUR_DIGITS } from './formatTokenQuantity'
 import { resolvedZapState, zappableTokens, zapperState } from './zapper'
+import { notifyError, notifySuccess } from 'hooks/useNotification'
+import { addTransactionAtom } from 'state/chain/atoms/transactionAtoms'
 
 /**
  * This file contains atoms that are used to control the UI state of the Zap component.
@@ -359,7 +352,7 @@ const getZapActionState = (get: Getter) => {
     inputToken,
     universe: { provider: p },
   } = zapInputs
-  const provider: ethers.providers.Web3Provider = p as any
+  const provider = p as any
   const signer = provider.getSigner(zapInputs.signer.address)
 
   return {
@@ -390,15 +383,18 @@ const approve: ZapperAction = async (
     await base.wait(3000)
 
     if (receipt.status === 0) {
-      error('Approval failed', 'Transaction reverted on chain')
+      notifyError('Approval failed', 'Transaction reverted on chain')
     } else {
-      success('Approval successful', `Approved ${inputToken.symbol} for Zap`)
+      notifySuccess(
+        'Approval successful',
+        `Approved ${inputToken.symbol} for Zap`
+      )
     }
   } catch (e: any) {
     if (e.code === 'ACTION_REJECTED') {
-      error('Approval failed', 'User rejected')
+      notifyError('Approval failed', 'User rejected')
     } else {
-      error('Approval failed', 'Unknown error ' + e.code)
+      notifyError('Approval failed', 'Unknown error ' + e.code)
     }
   } finally {
     set(approvalRandomId, Math.random())
@@ -454,26 +450,12 @@ const signAndSendTx: ZapperAction = async (
     set(permitSignature, null)
     set(zapTxHash, resp.hash)
     set(zapInputString, '')
-    set(addTransactionAtom, [
-      {
-        id: uuid(),
-        description: `Easy mint ${rToken.symbol}`,
-        status: TRANSACTION_STATUS.MINING,
-        value: quoteValue,
-        hash: resp.hash,
-        call: {
-          abi: 'zapper',
-          address: '',
-          method: 'zap',
-          args: [],
-        },
-      },
-    ])
+    set(addTransactionAtom, [resp.hash, `Easy mint ${rToken.symbol}`])
   } catch (e: any) {
     if (e.code === 'ACTION_REJECTED') {
-      error('Zap failed', 'User rejected signature request')
+      notifyError('Zap failed', 'User rejected signature request')
     } else {
-      error('Zap failed', 'Unknown error ' + e.code)
+      notifyError('Zap failed', 'Unknown error ' + e.code)
     }
   } finally {
     resetTxAtoms(set)
@@ -486,7 +468,6 @@ const sendTx: ZapperAction = async (
 ) => {
   const zapTx = get(resolvedZapTransaction)
   const gasLimit = get(resolvedZapTransactionGasEstimateUnits)
-  const quote = get(zapOutputValue) || '0'
 
   if (!(zapTx && gasLimit)) {
     return
@@ -507,26 +488,12 @@ const sendTx: ZapperAction = async (
     set(zapTxHash, resp.hash)
     set(permitSignature, null)
     set(zapInputString, '')
-    set(addTransactionAtom, [
-      {
-        id: uuid(),
-        description: `Easy mint ${rToken.symbol}`,
-        status: TRANSACTION_STATUS.MINING,
-        value: quote,
-        hash: resp.hash,
-        call: {
-          abi: 'zapper',
-          address: '',
-          method: 'zap',
-          args: [],
-        },
-      },
-    ])
+    set(addTransactionAtom, [resp.hash, `Easy mint ${rToken.symbol}`])
   } catch (e: any) {
     if (e.code === 'ACTION_REJECTED') {
-      error('Zap failed', 'User rejected')
+      notifyError('Zap failed', 'User rejected')
     } else {
-      error('Zap failed', 'Unknown error ' + e.code)
+      notifyError('Zap failed', 'Unknown error ' + e.code)
     }
   } finally {
     resetTxAtoms(set)

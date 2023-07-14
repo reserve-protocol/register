@@ -1,4 +1,3 @@
-import { BigNumber } from 'ethers'
 import { atom } from 'jotai'
 import { formatEther } from 'viem'
 
@@ -24,8 +23,6 @@ if (
  */
 
 export const ethPriceAtom = atom(1)
-export const gasPriceAtomBn = atom(BigNumber.from(0))
-
 export const gasFeeAtom = atom<bigint | null>(null)
 export const gasPriceAtom = atom((get) =>
   Number(formatEther(get(gasFeeAtom) || 0n))
@@ -60,7 +57,6 @@ export const RSVOverview = {
 export * from './wallet/atoms'
 export * from './chain/atoms/chainAtoms'
 export * from './rtoken/atoms/rTokenStateAtom'
-export * from './atoms/transactionAtoms'
 export { default as rTokenAssetsAtom } from './rtoken/atoms/rTokenAssetsAtom'
 export {
   default as rTokenAtom,

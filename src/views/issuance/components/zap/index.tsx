@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai'
 import { useEffect, useState } from 'react'
-import { blockAtom, gasPriceAtomBn } from 'state/atoms'
+import { blockAtom, gasFeeAtom } from 'state/atoms'
 import { Card } from 'theme-ui'
 import ConfirmZap from './components/ConfirmZap'
 import ZapButton from './components/ZapButton'
@@ -10,12 +10,12 @@ import { resolvedZapState } from './state/zapper'
 const UpdateBlockAndGas = () => {
   const zapState = useAtomValue(resolvedZapState)
   const block = useAtomValue(blockAtom)
-  const gasPriceBn = useAtomValue(gasPriceAtomBn)
+  const gasPriceBn = useAtomValue(gasFeeAtom)
   useEffect(() => {
     if (zapState == null || block == null || gasPriceBn == null) return
-    if (block === zapState.currentBlock || gasPriceBn.eq(zapState.gasPrice))
+    if (block === zapState.currentBlock || gasPriceBn === zapState.gasPrice)
       return
-    zapState.updateBlockState(block, gasPriceBn.toBigInt())
+    zapState.updateBlockState(block, gasPriceBn)
   }, [zapState, block, gasPriceBn])
   return null
 }

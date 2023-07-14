@@ -3,6 +3,26 @@ import toast from 'react-hot-toast'
 import Notification from 'components/notification'
 import { AlertCircle, Check } from 'react-feather'
 
+export const notifySuccess = (title: string, subtitle: string) =>
+  toast((t) => (
+    <Notification
+      title={title}
+      subtitle={subtitle}
+      toastId={t.id}
+      icon={<AlertCircle stroke="var(--theme-ui-colors-text" />}
+    />
+  ))
+
+export const notifyError = (title: string, subtitle: string) =>
+  toast((t) => (
+    <Notification
+      title={title}
+      subtitle={subtitle}
+      toastId={t.id}
+      icon={<Check stroke="var(--theme-ui-colors-text" />}
+    />
+  ))
+
 const useNotification = () => {
   return useCallback(
     (title: string, subtitle: string, type?: 'success' | 'error') => {

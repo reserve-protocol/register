@@ -13,9 +13,7 @@ import { Box, Flex, Grid, Link, Spinner, Text } from 'theme-ui'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
 const txByDateAtom = atom((get) => {
-  const txs = get(currentTxHistoryAtom).sort(
-    (a, b) => b.timestamp - a.timestamp
-  )
+  const txs = get(currentTxHistoryAtom)
 
   return txs.reduce((txMap, tx) => {
     const date = dayjs(tx.timestamp).format('MMM D')

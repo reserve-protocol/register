@@ -7,7 +7,6 @@ import useProposalTx from '../hooks/useProposalTx'
 import ConfirmProposalForm from './ConfirmProposalForm'
 import ConfirmProposalOverview from './ConfirmProposalOverview'
 
-// TODO: Build proposal
 const ConfirmProposal = () => {
   const tx = useProposalTx()
   const interfaceMap = useAtomValue(interfaceMapAtom)

@@ -1,4 +1,3 @@
-import { formatEther } from 'ethers/lib/utils'
 import { gql } from 'graphql-request'
 import { useAtom, useAtomValue } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
@@ -17,6 +16,7 @@ import { EUSD_ADDRESS } from 'utils/addresses'
 import { TIME_RANGES } from 'utils/constants'
 import useQuery from './useQuery'
 import useTimeFrom from './useTimeFrom'
+import { formatEther } from 'viem'
 
 const rTokenMetricsQuery = gql`
   query GetProtocolMetrics($id: String!, $fromTime: Int!) {

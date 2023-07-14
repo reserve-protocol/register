@@ -1,22 +1,21 @@
-import { FacadeInterface } from 'abis'
-import { Facade } from 'abis/types'
-import { BigNumber } from 'ethers'
-import { formatUnits, getAddress, parseUnits } from 'ethers/lib/utils'
-import { atom } from 'jotai'
+import FacadeRead from 'abis/FacadeRead'
+import { atom, useAtomValue } from 'jotai'
 import {
-  getValidWeb3Atom,
+  chainIdAtom,
   isModuleLegacyAtom,
+  publicClientAtom,
   rTokenAssetsAtom,
   rTokenAtom,
   rTokenStateAtom,
 } from 'state/atoms'
-import { getContract, safeParseEther } from 'utils'
+import { safeParseEther } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
+import { formatUnits, getAddress, parseUnits } from 'viem'
 import { redeemAmountDebouncedAtom } from 'views/issuance/atoms'
 
 interface RedeemQuote {
-  [x: string]: { amount: BigNumber; targetAmount: BigNumber; loss: number }
+  [x: string]: { amount: bigint; targetAmount: bigint; loss: number }
 }
 
 // UI element controller
@@ -36,8 +35,9 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
   const { issuance: isLegacy } = get(isModuleLegacyAtom)
   const { isCollaterized } = get(rTokenStateAtom)
   const amount = get(redeemAmountDebouncedAtom)
-  const { provider, chainId } = get(getValidWeb3Atom)
+  const chainId = useAtomValue(chainIdAtom)
   const quotes: { [x: string]: RedeemQuote } = {}
+  const client = useAtomValue(publicClientAtom)
 
   if (isNaN(+amount) || Number(amount) <= 0) {
     return { [currentNonce.toString()]: {} } // empty default to 0 on UI but no loading state
@@ -49,35 +49,35 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
       [currentNonce.toString()]: {
         [rToken.collaterals[0].address]: {
           amount: parseUnits(amount, 6),
-          targetAmount: BigNumber.from(0),
+          targetAmount: 0n,
           loss: 0,
         },
       },
     }
   }
 
-  if (!provider || !rToken || !assets) {
+  if (!rToken || !assets || !client) {
     return null
   }
 
-  const facadeReadContract = getContract(
-    FACADE_ADDRESS[chainId],
-    FacadeInterface,
-    provider
-  ) as Facade
   const parsedAmount = safeParseEther(amount)
 
   // TODO: Legacy remove after migration
   if (isLegacy) {
-    const quote = await facadeReadContract.callStatic.issue(
-      rToken.address,
-      parsedAmount
-    )
-    quotes[currentNonce.toString()] = quote.tokens.reduce(
+    const {
+      result: [tokens, deposits],
+    } = await client.simulateContract({
+      abi: FacadeRead,
+      address: FACADE_ADDRESS[chainId],
+      functionName: 'issue',
+      args: [rToken.address, parsedAmount],
+    })
+
+    quotes[currentNonce.toString()] = tokens.reduce(
       (prev, current, currentIndex) => {
         prev[getAddress(current)] = {
-          amount: quote.deposits[currentIndex],
-          targetAmount: BigNumber.from(0),
+          amount: deposits[currentIndex],
+          targetAmount: 0n,
           loss: 0,
         }
         return prev
@@ -85,20 +85,25 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
       {} as RedeemQuote
     )
   } else {
-    const quote = await facadeReadContract.callStatic.redeem(
-      rToken.address,
-      parsedAmount
-    )
-    quotes[currentNonce.toString()] = quote.tokens.reduce(
+    const {
+      result: [tokens, withdrawals, available],
+    } = await client.simulateContract({
+      abi: FacadeRead,
+      address: FACADE_ADDRESS[chainId],
+      functionName: 'redeem',
+      args: [rToken.address, parsedAmount],
+    })
+
+    quotes[currentNonce.toString()] = tokens.reduce(
       (prev, current, currentIndex) => {
         const assetAddress = getAddress(current)
-        const amount = quote.available[currentIndex]
-        const targetAmount = quote.withdrawals[currentIndex]
+        const amount = available[currentIndex]
+        const targetAmount = withdrawals[currentIndex]
         let loss = 0
 
-        if (!amount.eq(targetAmount)) {
+        if (amount !== targetAmount) {
           loss = +formatUnits(
-            targetAmount.sub(amount),
+            targetAmount - amount,
             assets[assetAddress].token.decimals
           )
         }
@@ -115,18 +120,20 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
 
     // Quote previous nonce
     if (!isCollaterized) {
-      const prevQuote = await facadeReadContract.callStatic.redeemCustom(
-        rToken.address,
-        parsedAmount,
-        [BigNumber.from(currentNonce - 1)],
-        [BigNumber.from('1')]
-      )
+      const {
+        result: [tokens, withdrawals],
+      } = await client.simulateContract({
+        abi: FacadeRead,
+        address: FACADE_ADDRESS[chainId],
+        functionName: 'redeemCustom',
+        args: [rToken.address, parsedAmount, [currentNonce - 1], [1n]],
+      })
 
-      quotes[currentNonce - 1] = prevQuote.tokens.reduce(
+      quotes[currentNonce - 1] = tokens.reduce(
         (prev, current, currentIndex) => {
           prev[getAddress(current)] = {
-            amount: prevQuote.withdrawals[currentIndex],
-            targetAmount: BigNumber.from(0),
+            amount: withdrawals[currentIndex],
+            targetAmount: 0n,
             loss: 0,
           }
           return prev

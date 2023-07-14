@@ -2,10 +2,10 @@ import { getAddress } from '@ethersproject/address'
 import { t } from '@lingui/macro'
 import FacadeRead from 'abis/FacadeRead'
 import useDebounce from 'hooks/useDebounce'
+import { notifyError } from 'hooks/useNotification'
 import { useAtomValue } from 'jotai'
 import { useCallback, useEffect } from 'react'
 import { chainIdAtom, rTokenAtom } from 'state/atoms'
-import { error } from 'state/chain/lib/notifications'
 import { BigNumberMap } from 'types'
 import { safeParseEther } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
@@ -51,7 +51,7 @@ const QuantitiesUpdater = ({
       } catch (e) {
         // TODO: Handle error case
         // TODO: this could also fail during default
-        error(t`Network Error`, t`Error fetching required collateral`)
+        notifyError(t`Network Error`, t`Error fetching required collateral`)
         console.error('failed fetching quantities', e)
       }
     },

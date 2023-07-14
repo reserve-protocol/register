@@ -1,10 +1,9 @@
 import AssetAbi from 'abis/AssetAbi'
 import AssetRegistry from 'abis/AssetRegistry'
-import { formatEther, formatUnits } from 'ethers/lib/utils'
 import { Token } from 'types'
 import { getTokenReadCalls } from 'utils'
 import { atomWithLoadable } from 'utils/atoms/utils'
-import { Address } from 'viem'
+import { Address, formatEther, formatUnits } from 'viem'
 import { getContract, readContracts } from 'wagmi/actions'
 import rTokenContractsAtom from './rTokenContractsAtom'
 
@@ -37,9 +36,7 @@ const rTokenAssetsAtom = atomWithLoadable(async (get) => {
     return calls
   }, [] as any)
 
-  const result = await (<Promise<string[]>>(
-    readContracts({ contracts: calls, allowFailure: false })
-  ))
+  const result = await readContracts({ contracts: calls, allowFailure: false })
 
   const registeredAssets: {
     [x: string]: {
@@ -55,7 +52,7 @@ const rTokenAssetsAtom = atomWithLoadable(async (get) => {
     const [name, symbol, decimals, priceRange, maxTradeVolume] = result.splice(
       0,
       5
-    )
+    ) as [string, string, number, [bigint, bigint], bigint]
 
     registeredAssets[erc20s[i]] = {
       address: assets[i],
@@ -63,7 +60,7 @@ const rTokenAssetsAtom = atomWithLoadable(async (get) => {
         address: erc20s[i],
         name,
         symbol,
-        decimals: Number(decimals),
+        decimals,
       },
       maxTradeVolume: formatUnits(maxTradeVolume, decimals),
       priceUsd:

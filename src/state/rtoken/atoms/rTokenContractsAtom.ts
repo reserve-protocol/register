@@ -12,6 +12,8 @@ import Broker from 'abis/Broker'
 import Furnace from 'abis/Furnace'
 import BasketHandler from 'abis/BasketHandler'
 
+export type ContractKey = 'token' | 'main' | 'stRSR' | 'backingManager' | 'rTokenTrader' | 'rsrTrader' | 'broker' | 'assetRegistry' | 'furnace' | 'distributor' | 'basketHandler'
+
 const rTokenContractsAtom = atomWithLoadable(async (get) => {
   const rToken = get(rTokenAtom)
 

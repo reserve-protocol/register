@@ -1,4 +1,3 @@
-import useTransaction from 'hooks/useTransaction'
 import { smallButton } from 'theme'
 import {
   Button as ThemeButton,
@@ -71,23 +70,6 @@ export const LoadingButton = ({
     )}
   </Button>
 )
-
-export const ExecuteButton = ({
-  tx,
-  disabled,
-  ...props
-}: ExecuteButtonProps) => {
-  const { execute, canExecute, isExecuting } = useTransaction(tx)
-
-  return (
-    <LoadingButton
-      loading={isExecuting}
-      disabled={!canExecute || disabled}
-      onClick={execute}
-      {...props}
-    />
-  )
-}
 
 export const SmallButton = ({ sx = {}, ...props }: ButtonProps) => (
   <Button {...props} sx={{ ...smallButton, ...sx }} />

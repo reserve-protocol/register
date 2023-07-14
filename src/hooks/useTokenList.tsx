@@ -1,4 +1,3 @@
-import { formatEther, getAddress } from 'ethers/lib/utils'
 import { gql } from 'graphql-request'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
@@ -8,6 +7,7 @@ import { TIME_RANGES } from 'utils/constants'
 import tokenList from 'utils/rtokens'
 import useQuery from './useQuery'
 import useTimeFrom from './useTimeFrom'
+import { formatEther, getAddress } from 'viem'
 
 interface ListedToken {
   id: string

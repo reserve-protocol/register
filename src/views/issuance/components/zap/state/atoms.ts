@@ -10,7 +10,6 @@ import {
   PermitTransferFromData,
   SignatureTransfer,
 } from '@uniswap/permit2-sdk'
-import { ethers } from 'ethers'
 import { atom, Getter } from 'jotai'
 import { loadable } from 'jotai/utils'
 import { rTokenAtom, walletAtom } from 'state/atoms'
@@ -27,6 +26,7 @@ import {
   supportsPermit2Signatures,
   zappableTokens,
 } from './zapper'
+import { zeroAddress } from 'viem'
 
 /**
  * I've tried to keep react effects to a minimum so most async code is triggered via some signal
@@ -86,8 +86,9 @@ export const selectedZapTokenAtom = atom(
 )
 
 export const zapSender = atom((get) => {
+  const account = get(walletAtom)
   try {
-    return base.Address.from(get(walletAtom))
+    return account ? base.Address.from(account) : null
   } catch (e) {
     return null
   }
@@ -173,8 +174,8 @@ export const selectedZapTokenBalance = onlyNonNullAtom((get) => {
   // TODO: Fix balance
   // const bal =
   //   get(tokenBalancesStore.getBalanceAtom(token.address.address)).value ??
-  //   ethers.constants.Zero
-  return token.from(ethers.constants.Zero)
+  //   zeroAddress
+  return token.from(zeroAddress)
 })
 
 export const approvalNeededAtom = loadable(
@@ -254,7 +255,7 @@ const permit2ToSign = (get: Getter) => {
     spender: inputs.universe.chainConfig.config.addresses.zapperAddress.address,
     nonce,
     // signature deadline
-    deadline: ethers.constants.MaxUint256,
+    deadline: BigInt(Number.MAX_SAFE_INTEGER),
   }
   return {
     data: SignatureTransfer.getPermitData(
@@ -275,7 +276,7 @@ export const approvalTxFee = loadable(
     const approveTx = get(resolvedApprovalNeeded)
     const universe = get(resolvedZapState)
     // const gasBalance = get(tokenBalancesStore.getGasBalanceAtom()).value
-    const gasBalance = ethers.constants.Zero // TODO: Fix gas balance
+    const gasBalance = zeroAddress // TODO: Fix gas balance
     const gasUnits =
       approveTx.approvalNeeded === true
         ? (await universe.provider.estimateGas(approveTx.tx)).toBigInt()
@@ -392,13 +393,13 @@ const totalGasTokenInput = onlyNonNullAtom((get) => {
 
 // TODO: Fix gas balance
 const totalGasBalance = onlyNonNullAtom(
-  (get) => ethers.constants.Zero
-  // get(tokenBalancesStore.getGasBalanceAtom()).value ?? ethers.constants.Zero
+  (get) => 100n
+  // get(tokenBalancesStore.getGasBalanceAtom()).value ?? zeroAddress
 )
 const hasSufficientGasTokenBalance = onlyNonNullAtom((get) => {
   const gasTokenBalanceBN = get(totalGasBalance)
   const gasTokenBalanceNeeded = get(totalGasTokenInput)
-  return gasTokenBalanceBN.toBigInt() >= gasTokenBalanceNeeded.amount
+  return gasTokenBalanceBN >= gasTokenBalanceNeeded.amount
 })
 
 const hasSufficientTokeBalance = onlyNonNullAtom((get) => {
