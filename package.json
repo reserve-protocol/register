@@ -40,8 +40,6 @@
     "recharts": "^2.1.6",
     "swr": "^1.2.2",
     "theme-ui": "^0.15.4",
-    "util": "^0.12.4",
-    "uuid": "^8.3.2",
     "viem": "^1.2.7",
     "wagmi": "^1.3.3"
   },
@@ -50,7 +48,7 @@
     "build": "tsc && vite build",
     "serve": "vite preview",
     "analyze": "vite-bundle-visualizer 'build/static/js/*.js'",
-    "test": "react-scripts test",
+    "test": "vite test",
     "translations": "lingui extract --clean && lingui compile",
     "postinstall": "npx patch-package"
   },
@@ -82,7 +80,6 @@
     "@types/react": "18.0.0",
     "@types/react-dom": "18.0.0",
     "@types/react-table": "^7.7.10",
-    "@types/uuid": "^8.3.4",
     "@vitejs/plugin-react": "^4.0.1",
     "babel-plugin-macros": "^3.1.0",
     "babel-preset-react-app": "^10.0.1",

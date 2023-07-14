@@ -2,10 +2,11 @@ import { base, configuration, Universe } from '@reserve-protocol/token-zapper'
 
 import { atom } from 'jotai'
 import { loadable } from 'jotai/utils'
-import { providerAtom } from 'state/atoms'
+import {} from 'state/atoms'
 import { onlyNonNullAtom, simplifyLoadable } from 'utils/atoms/utils'
 import { createProxiedOneInchAggregator } from './createProxiedOneInchAggregator'
 
+// TODO: Convert provider viem -> ethers
 export const connectionName = onlyNonNullAtom((get) => {
   return get(providerAtom).connection.url
 })
