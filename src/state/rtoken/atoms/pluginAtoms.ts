@@ -1,7 +1,7 @@
 import { atom } from 'jotai'
 import { CVX_ADDRESS, STAKE_AAVE_ADDRESS } from 'utils/addresses'
 import collateralPlugins from 'utils/plugins'
-import { chainIdAtom } from '../chain/atoms/chainAtoms'
+import { chainIdAtom } from '../../chain/atoms/chainAtoms'
 
 export const pluginsAtom = atom((get) => collateralPlugins[get(chainIdAtom)])
 

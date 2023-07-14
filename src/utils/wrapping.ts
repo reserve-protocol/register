@@ -1,7 +1,7 @@
 import { CollateralPlugin } from 'types'
 import { useMemo } from 'react'
 import { useAtomValue } from 'jotai'
-import { aavePluginsAtom } from 'state/atoms/pluginAtoms'
+import { aavePluginsAtom } from 'state/rtoken/atoms/pluginAtoms'
 
 export type FormState = {
   [x: string]: {

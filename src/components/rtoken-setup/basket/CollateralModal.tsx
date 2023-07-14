@@ -3,7 +3,7 @@ import { Button, Modal } from 'components'
 import { ModalProps } from 'components/modal'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useState } from 'react'
-import { pluginsAtom } from 'state/atoms/pluginAtoms'
+import { pluginsAtom } from 'state/rtoken/atoms/pluginAtoms'
 import { Box, Divider, Text } from 'theme-ui'
 import { CollateralPlugin } from 'types'
 import {

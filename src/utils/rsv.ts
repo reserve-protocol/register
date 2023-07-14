@@ -32,6 +32,14 @@ const RSV: ReserveToken = {
   ],
 }
 
+export const RSVOverview = {
+  dayVolume: 0,
+  dayTxCount: 0,
+  volume: 5784335728,
+  txCount: 12640025,
+  holders: 0,
+}
+
 export const RSV_MANAGER = RSV_MANAGER_ADDRESS[ChainId.Mainnet]
 
 export default RSV

@@ -1,13 +1,14 @@
 import { gql } from 'graphql-request'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
-import { RSVOverview, chainIdAtom, rpayOverviewAtom } from 'state/atoms'
+import { chainIdAtom, rpayOverviewAtom } from 'state/atoms'
 import { EUSD_ADDRESS, RSV_ADDRESS } from 'utils/addresses'
 import { TIME_RANGES } from 'utils/constants'
 import tokenList from 'utils/rtokens'
 import useQuery from './useQuery'
 import useTimeFrom from './useTimeFrom'
 import { formatEther, getAddress } from 'viem'
+import { RSVOverview } from 'utils/rsv'
 
 interface ListedToken {
   id: string

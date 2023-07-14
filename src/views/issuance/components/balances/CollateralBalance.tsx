@@ -17,7 +17,7 @@ const CollateralBalance = ({ token, ...props }: Props) => {
   const quantities = useAtomValue(quantitiesAtom)
   const balances = useAtomValue(balancesAtom)
 
-  if (!quantities[token.address]) {
+  if (!quantities || !quantities[token.address]) {
     return (
       <TokenBalance
         symbol={token.symbol}

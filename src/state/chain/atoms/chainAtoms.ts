@@ -1,6 +1,7 @@
 import { GraphQLClient } from 'graphql-request'
 import { atom } from 'jotai'
-import { ChainId, supportedChains } from 'utils/chains'
+import { ChainId } from 'utils/chains'
+import { formatEther } from 'viem'
 import { Address, PublicClient, WalletClient } from 'wagmi'
 
 /**
@@ -18,6 +19,18 @@ export const publicClientAtom = atom<PublicClient | undefined>(undefined)
 
 export const clientAtom = atom((get) =>
   get(walletClientAtom || get(publicClientAtom))
+)
+
+/**
+ * ##################
+ * Price related atom
+ * ##################
+ */
+
+export const ethPriceAtom = atom(1)
+export const gasFeeAtom = atom<bigint | null>(null)
+export const gasPriceAtom = atom((get) =>
+  Number(formatEther(get(gasFeeAtom) || 0n))
 )
 
 const SUBGRAPH_URL = {
