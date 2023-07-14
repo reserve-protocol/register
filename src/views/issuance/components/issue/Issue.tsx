@@ -2,18 +2,15 @@ import { t, Trans } from '@lingui/macro'
 import { Button } from 'components'
 import useRToken from 'hooks/useRToken'
 import { useAtom, useAtomValue } from 'jotai'
-import { useSetAtom } from 'jotai'
 import { useState } from 'react'
+import { rTokenStateAtom } from 'state/atoms'
 import { Card } from 'theme-ui'
 import {
   issueAmountAtom,
   isValidIssuableAmountAtom,
-  quantitiesAtom,
 } from 'views/issuance/atoms'
 import ConfirmIssuance from './ConfirmIssuance'
 import IssueInput from './IssueInput'
-import MaxIssuableUpdater from './MaxIssuableUpdater'
-import { rTokenStateAtom } from 'state/atoms'
 
 /**
  * Issuance
@@ -28,7 +25,6 @@ const Issue = () => {
 
   return (
     <>
-      <MaxIssuableUpdater />
       {issuing && (
         <ConfirmIssuance
           onClose={() => {

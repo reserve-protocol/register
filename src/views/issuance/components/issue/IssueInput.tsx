@@ -4,8 +4,8 @@ import TransactionInput, {
 } from 'components/transaction-input'
 import { useAtomValue } from 'jotai'
 import { rTokenStateAtom } from 'state/atoms'
-import { issueAmountAtom, maxIssuableAtom } from '../../atoms'
 import { formatEther } from 'viem'
+import { issueAmountAtom, maxIssuableAtom } from '../../atoms'
 
 const IssueInput = (props: Partial<TransactionInputProps>) => {
   const issuableAmount = useAtomValue(maxIssuableAtom)
@@ -15,7 +15,7 @@ const IssueInput = (props: Partial<TransactionInputProps>) => {
     <TransactionInput
       placeholder={t`Mint amount`}
       amountAtom={issueAmountAtom}
-      maxAmount={formatEther(issuableAmount)}
+      maxAmount={formatEther(issuableAmount ?? 0n)}
       disabled={issuancePaused || frozen}
       {...props}
     />

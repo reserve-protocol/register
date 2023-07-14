@@ -16,7 +16,7 @@ const RedeemFallback = () => {
     <>
       {confirming && <ConfirmRedemption onClose={() => setConfirming(false)} />}
       <Card p={4} sx={{ height: 'fit-content' }}>
-        <RedeemInput />
+        <RedeemInput compact={false} />
         <Button
           disabled={!isValid}
           sx={{ width: '100%' }}

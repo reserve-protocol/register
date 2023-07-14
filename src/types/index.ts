@@ -39,14 +39,6 @@ export interface Proposal {
   proposer: string
 }
 
-export interface WalletTransaction {
-  [x: string]: TransactionState[]
-}
-
-export interface TransactionMap {
-  [x: string]: WalletTransaction
-}
-
 export interface TransactionRecord {
   type: string
   amount?: number
@@ -66,6 +58,15 @@ export interface Token {
   symbol: string
   name: string
   decimals: number
+}
+
+export interface ReserveToken extends Token {
+  logo: string
+  collaterals: Token[]
+  stToken?: Token
+  main?: Address
+  mandate?: string
+  listed?: boolean
 }
 
 export interface BigNumberMap {

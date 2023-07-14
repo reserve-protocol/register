@@ -1,8 +1,7 @@
-import { BalanceMap, ReserveToken } from 'types'
-import { RSV_ADDRESS, RSV_MANAGER_ADDRESS, USDC_ADDRESS } from './addresses'
-import { BI_ZERO } from './constants'
-import { ChainId } from './chains'
+import { ReserveToken } from 'types'
 import { Address, parseUnits } from 'viem'
+import { RSV_ADDRESS, RSV_MANAGER_ADDRESS, USDC_ADDRESS } from './addresses'
+import { ChainId } from './chains'
 
 /**
  * RSV Token utility
@@ -12,14 +11,6 @@ import { Address, parseUnits } from 'viem'
  * * Only the Overview page and Mint/Redeem are available for this token
  */
 const USDC = USDC_ADDRESS[ChainId.Mainnet]
-
-export const getIssuable = (tokenBalances: BalanceMap) => {
-  if (tokenBalances[USDC]) {
-    return tokenBalances[USDC].value
-  }
-
-  return BI_ZERO
-}
 
 export const quote = (amount: string): { [x: Address]: bigint } => ({
   [USDC]: parseUnits(amount, 6),
