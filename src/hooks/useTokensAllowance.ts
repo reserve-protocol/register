@@ -1,4 +1,3 @@
-import { BigNumber } from '@ethersproject/bignumber'
 import ERC20 from 'abis/ERC20'
 import { useMemo } from 'react'
 import { StringMap } from 'types'
@@ -15,7 +14,7 @@ import { Address, useContractReads } from 'wagmi'
 const useTokensAllowance = (
   tokens: [string, string][],
   account: string
-): { [x: string]: BigNumber } => {
+): { [x: string]: bigint } => {
   // TODO: This maybe broken
   const calls = useMemo(
     () =>

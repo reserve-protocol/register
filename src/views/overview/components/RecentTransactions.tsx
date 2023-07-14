@@ -1,10 +1,10 @@
-import { formatEther } from '@ethersproject/units'
 import { t } from '@lingui/macro'
 import TransactionsTable from 'components/transactions/table'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
 import { useMemo } from 'react'
+import { formatEther } from 'viem'
 
 const recentTxsQuery = gql`
   query GetRecentTransactions($tokenId: String!) {

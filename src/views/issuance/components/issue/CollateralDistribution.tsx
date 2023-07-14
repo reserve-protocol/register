@@ -1,5 +1,3 @@
-import { formatUnits } from '@ethersproject/units'
-import { getAddress } from '@ethersproject/address'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp, Package } from 'react-feather'
 import { Box, BoxProps, Flex, Text, Divider, Spinner } from 'theme-ui'
@@ -8,6 +6,7 @@ import { formatCurrency } from 'utils'
 import { Trans } from '@lingui/macro'
 import TokenItem from 'components/token-item'
 import OverviewIcon from 'components/icons/OverviewIcon'
+import { formatUnits, getAddress } from 'viem'
 
 interface Props extends BoxProps {
   collaterals: Token[]

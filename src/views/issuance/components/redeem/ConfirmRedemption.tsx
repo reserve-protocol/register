@@ -1,4 +1,3 @@
-import { BigNumber } from '@ethersproject/bignumber'
 import { t } from '@lingui/macro'
 import TransactionModal from 'components/transaction-modal'
 import { atom, useAtom, useAtomValue } from 'jotai'
@@ -31,7 +30,7 @@ const redeemTxAtom = atom((get) => {
   const { issuance: isLegacy } = get(isModuleLegacyAtom)
   const account = get(walletAtom)
 
-  const parsedAmount = isValid ? safeParseEther(amount) : BigNumber.from(0)
+  const parsedAmount = isValid ? safeParseEther(amount) : 0n
 
   const txBody = {
     id: '',
@@ -60,12 +59,7 @@ const redeemTxAtom = atom((get) => {
       abi: 'rToken',
       address: rToken?.address ?? '',
       method: 'redeemCustom',
-      args: [
-        account,
-        parsedAmount,
-        [BigNumber.from(nonce)],
-        [BigNumber.from(1), [], []],
-      ],
+      args: [account, parsedAmount, [BigInt(nonce)], [1n, [], []]],
     },
   }
 })

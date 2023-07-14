@@ -11,11 +11,7 @@ import { atomWithLoadable } from 'utils/atoms/utils'
 import { Address, stringToHex } from 'viem'
 import { readContracts } from 'wagmi'
 import { readContract } from 'wagmi/actions'
-import {
-  chainIdAtom,
-  getValidWeb3Atom,
-  walletAtom,
-} from '../chain/atoms/chainAtoms'
+import { chainIdAtom, walletAtom } from '../chain/atoms/chainAtoms'
 import rTokenAtom from '../rtoken/atoms/rTokenAtom'
 import rTokenContractsAtom from '../rtoken/atoms/rTokenContractsAtom'
 
@@ -130,9 +126,9 @@ export const accountRoleAtom = atomWithLoadable(async (get) => {
 
 export const accountDelegateAtom = atomWithLoadable(async (get) => {
   const contracts = get(rTokenContractsAtom)
-  const { provider, account } = get(getValidWeb3Atom)
+  const account = get(walletAtom)
 
-  if (!contracts?.stRSR || !provider || !account) {
+  if (!contracts?.stRSR || !account) {
     return null
   }
 

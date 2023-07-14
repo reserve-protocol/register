@@ -1,8 +1,5 @@
 {
-  "cSpell.words": [
-    "usedapp",
-    "walletconnect"
-  ],
+  "cSpell.words": ["usedapp", "walletconnect"],
   "cSpell.enableFiletypes": [
     "!c",
     "!cpp",
@@ -21,7 +18,7 @@
     "**/.yarn": true,
     "**/.pnp.*": true
   },
-  "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
+  "prettier.prettierPath": "node_modules/prettier/index.js",
   "typescript.tsdk": "node_modules\\typescript\\lib",
   "typescript.enablePromptUseWorkspaceTsdk": true
 }

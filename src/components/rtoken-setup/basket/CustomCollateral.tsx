@@ -4,13 +4,12 @@ import ERC20 from 'abis/ERC20'
 import { Input } from 'components'
 import { SmallButton } from 'components/button'
 import PluginsIcon from 'components/icons/PluginsIcon'
-import { ethers } from 'ethers'
 import { useState } from 'react'
 import { Box, Flex, Text } from 'theme-ui'
 import { CollateralPlugin } from 'types'
 import { isAddress } from 'utils'
 import { ZERO_ADDRESS } from 'utils/addresses'
-import { Address } from 'viem'
+import { Address, hexToString } from 'viem'
 import { readContracts } from 'wagmi'
 
 const CustomCollateral = ({
@@ -58,7 +57,7 @@ const CustomCollateral = ({
         symbol,
         address,
         decimals,
-        targetUnit: ethers.utils.parseBytes32String(targetUnit),
+        targetUnit: hexToString(targetUnit, { size: 32 }),
         referenceUnit: symbol,
         collateralToken: symbol,
         description: '',

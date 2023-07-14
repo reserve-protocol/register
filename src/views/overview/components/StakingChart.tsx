@@ -1,4 +1,3 @@
-import { formatEther } from '@ethersproject/units'
 import { t } from '@lingui/macro'
 import AreaChart from 'components/charts/area/AreaChart'
 import dayjs from 'dayjs'
@@ -12,6 +11,7 @@ import { rsrPriceAtom } from 'state/atoms'
 import { BoxProps } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { TIME_RANGES } from 'utils/constants'
+import { formatEther } from 'viem'
 
 const hourlyPriceQuery = gql`
   query getTokenHourlyPrice($id: String!, $fromTime: Int!) {
@@ -55,7 +55,7 @@ const StakingChart = (props: BoxProps) => {
             rsrStaked,
           }: {
             timestamp: string
-            rsrStaked: string
+            rsrStaked: bigint
           }) => ({
             value: +formatEther(rsrStaked) * rsrPrice,
             label: dayjs.unix(+timestamp).format('YYYY-M-D HH:mm:ss'),

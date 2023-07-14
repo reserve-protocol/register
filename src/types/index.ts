@@ -1,6 +1,3 @@
-import { BigNumber } from '@ethersproject/bignumber'
-import { Interface } from '@ethersproject/abi'
-import { Contract, ContractTransaction } from '@ethersproject/contracts'
 import { Address } from 'viem'
 
 export type RoleKey =
@@ -18,7 +15,7 @@ export interface StringMap {
 
 export interface BalanceMap {
   [key: string]: {
-    value: BigNumber
+    value: bigint
     decimals: number
     balance: string
   }
@@ -50,33 +47,6 @@ export interface TransactionMap {
   [x: string]: WalletTransaction
 }
 
-export interface ContractCall {
-  abi: Interface
-  address: string
-  method: string
-  args: any[]
-}
-
-export interface TransactionState {
-  id: string // uuid generated
-  description: string
-  status: string
-  value: string
-  call: {
-    abi: string
-    address: string
-    method: string
-    args: any[]
-  }
-  hash?: string
-  error?: string
-  confirmedAt?: number
-  extra?: { [x: string]: string }
-  // timestamps
-  createdAt?: number // timestamp UTC
-  updatedAt?: number // timestamp UTC
-}
-
 export interface TransactionRecord {
   type: string
   amount?: number
@@ -89,56 +59,6 @@ export interface Wallet {
   address: string
   alias: string
 }
-export interface RawCall {
-  address: string
-  data: string
-}
-
-export type Awaited<T> = T extends PromiseLike<infer U> ? U : T
-
-export type Params<
-  T extends TypedContract,
-  FN extends ContractFunctionNames<T> | ContractMethodNames<T>
-> = Parameters<T['functions'][FN]>
-
-export type RawCallResult =
-  | {
-      value: string
-      success: boolean
-    }
-  | undefined
-
-export type MulticallState = {
-  [address: string]:
-    | {
-        [data: string]: RawCallResult
-      }
-    | undefined
-}
-
-export type Falsy = undefined | false | '' | null
-
-export type TypedContract = Contract & {
-  functions: Record<string, (...args: any[]) => any>
-}
-
-export type ContractFunctionNames<T extends TypedContract> = keyof {
-  [P in keyof T['functions'] as ReturnType<
-    T['functions'][P]
-  > extends Promise<ContractTransaction>
-    ? P
-    : never]: void
-} &
-  string
-
-export type ContractMethodNames<T extends TypedContract> = keyof {
-  [P in keyof T['functions'] as ReturnType<T['functions'][P]> extends Promise<
-    any[]
-  >
-    ? P
-    : never]: void
-} &
-  string
 
 // Generic token definition ERC20 + extra data
 export interface Token {
@@ -183,24 +103,6 @@ export interface RTokenMeta {
     twitter?: string
     youtube?: string
   }
-}
-
-/**
- * ReserveToken
- *
- * This interface represents a complete RToken ecosystem
- */
-export interface ReserveToken extends Token {
-  collaterals: Token[] // current basket collateral list
-  stToken?: Token // staking RSR token
-  main?: string // main contract address
-  isRSV?: boolean // only for RSV
-  logo?: string // rToken logo
-  unlisted?: boolean // Mark if the token is not listed
-  mandate?: string
-  meta?: RTokenMeta
-  redemptionAvailable?: number
-  issuanceAvailable?: number
 }
 
 export interface AccountToken {

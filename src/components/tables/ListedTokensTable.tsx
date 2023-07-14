@@ -5,7 +5,7 @@ import { getRTokenLogo } from 'hooks/useRTokenLogo'
 import useTokenList from 'hooks/useTokenList'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Text } from 'theme-ui'
+import { Box, Spinner, Text } from 'theme-ui'
 import {
   formatCurrency,
   formatCurrencyCell,
@@ -18,6 +18,7 @@ const ListedTokensTable = (
   const tokenList = useTokenList()
   const navigate = useNavigate()
 
+  // TODO: Calculate APY from basket (need theGraph)
   const columns = useMemo(
     () => [
       {
@@ -81,14 +82,21 @@ const ListedTokensTable = (
   }
 
   return (
-    <Table
-      data={tokenList}
-      columns={columns}
-      onRowClick={handleClick}
-      sorting
-      sortBy={[{ id: 'supply', desc: true }]}
-      {...props}
-    />
+    <>
+      <Table
+        data={tokenList}
+        columns={columns}
+        onRowClick={handleClick}
+        sorting
+        sortBy={[{ id: 'supply', desc: true }]}
+        {...props}
+      />
+      {!tokenList?.length && (
+        <Box sx={{ textAlign: 'center' }} mt={3}>
+          <Spinner size={22} />
+        </Box>
+      )}
+    </>
   )
 }
 

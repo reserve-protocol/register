@@ -1,9 +1,9 @@
 import SectionWrapper from 'components/section-navigation/SectionWrapper'
-import { getAddress } from 'ethers/lib/utils'
 import { useAtomValue } from 'jotai'
 import { Box, BoxProps } from 'theme-ui'
 import { ContractProposal, InterfaceMap, interfaceMapAtom } from '../atoms'
 import ContractProposalDetail from '../views/proposal-detail/components/ContractProposalDetails'
+import { Hex, decodeFunctionData, getAddress, getFunctionSelector } from 'viem'
 
 interface Props extends BoxProps {
   addresses: string[]
@@ -28,16 +28,27 @@ const parseCallDatas = (
       const contractDetail = interfaceMap[address]
 
       if (contractDetail) {
-        const functionCall = contractDetail.interface.getFunction(
+        // TODO: I think this is broken
+        const functionCall = getFunctionSelector(
           calldatas[i].slice(0, Math.min(calldatas[i].length, 10))
         )
-        const signature = `${functionCall.name}(${functionCall.inputs
-          .map((input) => `${input.name}: ${input.type}`)
-          .join(', ')})`
-        const data = contractDetail.interface.decodeFunctionData(
-          functionCall.name,
-          calldatas[i]
-        )
+        const data = decodeFunctionData({
+          abi: contractDetail.interface,
+          data: calldatas[i] as Hex, // TODO: Pretty sure this doesnt work
+        })
+        // TODO: I'm not sure about the function call
+        // TODO: Leave original way commented
+        // contractDetail.interface.getFunction(
+        //   calldatas[i].slice(0, Math.min(calldatas[i].length, 10))
+        // )
+        // const signature = `${functionCall.name}(${functionCall.inputs
+        //   .map((input) => `${input.name}: ${input.type}`)
+        //   .join(', ')})`
+
+        // const data = contractDetail.interface.decodeFunctionData(
+        //   functionCall.name,
+        //   calldatas[i]
+        // )
 
         if (!contractProposals[address]) {
           contractProposals[address] = {
@@ -47,10 +58,12 @@ const parseCallDatas = (
           }
         }
         contractProposals[address].calls.push({
-          signature,
-          parameters: functionCall.inputs.map(
-            (input) => `${input.name} (${input.type})`
-          ),
+          // signature,
+          signature: 'TODO',
+          // parameters: functionCall.inputs.map(
+          //   (input) => `${input.name} (${input.type})`
+          // ),
+          parameters: ['TODO'],
           callData: calldatas[i],
           data,
         })

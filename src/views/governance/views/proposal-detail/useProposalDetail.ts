@@ -1,8 +1,8 @@
-import { formatEther } from 'ethers/lib/utils'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import { useMemo } from 'react'
 import { ProposalDetail } from './atom'
+import { formatEther } from 'viem'
 
 export enum ProposalStatus {
   Pending,

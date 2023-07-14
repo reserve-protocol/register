@@ -1,12 +1,10 @@
-import { BigNumber } from 'ethers'
 import { Token } from 'types'
 import { RSR_ADDRESS } from './addresses'
 import { ChainId } from './chains'
 
 export const VERSION = '3.0.0'
 
-export const BI_ZERO = BigNumber.from(0)
-
+// TODO: Custom per chain
 export const BLOCK_DELAY = 12 // 12 seconds per block
 
 export const COLLATERAL_STATUS = {

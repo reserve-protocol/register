@@ -1,4 +1,3 @@
-import { formatEther } from '@ethersproject/units'
 import { t } from '@lingui/macro'
 import AreaChart from 'components/charts/area/AreaChart'
 import dayjs from 'dayjs'
@@ -12,6 +11,7 @@ import { rTokenStateAtom } from 'state/atoms'
 import { BoxProps } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { TIME_RANGES } from 'utils/constants'
+import { formatEther } from 'viem'
 
 const hourlyPriceQuery = gql`
   query getTokenHourlyPrice($id: String!, $fromTime: Int!) {
@@ -50,7 +50,7 @@ const SupplyChart = (props: BoxProps) => {
     if (data) {
       return (
         data.token?.snapshots.map(
-          ({ timestamp, supply }: { timestamp: string; supply: string }) => ({
+          ({ timestamp, supply }: { timestamp: string; supply: bigint }) => ({
             value: +formatEther(supply),
             label: dayjs.unix(+timestamp).format('YYYY-M-D HH:mm:ss'),
             display: `${formatCurrency(+formatEther(supply))} ${

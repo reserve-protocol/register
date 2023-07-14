@@ -3,7 +3,7 @@ import Main from 'abis/Main'
 import DocsLink from 'components/docs-link/DocsLink'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
-import { accountRoleAtom, getValidWeb3Atom } from 'state/atoms'
+import { accountRoleAtom, chainIdAtom } from 'state/atoms'
 import { Card, Flex, Text, Divider as _Divider } from 'theme-ui'
 import { FACADE_WRITE_ADDRESS } from 'utils/addresses'
 import { stringToHex } from 'viem'
@@ -16,7 +16,7 @@ const Divider = () => <_Divider sx={{ borderColor: 'border' }} my={4} mx={-4} />
 
 const useGovernanceSetupRequired = () => {
   const rToken = useRToken()
-  const { chainId } = useAtomValue(getValidWeb3Atom)
+  const chainId = useAtomValue(chainIdAtom)
   const accountRole = useAtomValue(accountRoleAtom)
 
   // If the main contract still has OWNER role, then governance setup is pending
@@ -26,11 +26,11 @@ const useGovernanceSetupRequired = () => {
     functionName: 'hasRole',
     args: [
       stringToHex('OWNER', { size: 32 }),
-      FACADE_WRITE_ADDRESS[chainId ?? 1] as Address,
+      FACADE_WRITE_ADDRESS[chainId] as Address,
     ],
   })
 
-  return data && accountRole.owner
+  return data && !!accountRole?.owner
 }
 
 /**

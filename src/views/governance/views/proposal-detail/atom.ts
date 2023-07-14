@@ -1,9 +1,7 @@
-import { BLOCK_DELAY, PROPOSAL_STATES } from './../../../../utils/constants'
+import { BLOCK_DELAY, PROPOSAL_STATES } from 'utils/constants'
 import { atom } from 'jotai'
 import { blockAtom, rTokenGovernanceAtom } from 'state/atoms'
-import { parseEther } from 'ethers/lib/utils'
-import { BigNumber } from 'ethers'
-import { Address, Hex, keccak256, toBytes } from 'viem'
+import { Address, Hex, keccak256, parseEther, toBytes } from 'viem'
 
 export interface ProposalDetail {
   id: string
@@ -66,13 +64,14 @@ export const getProposalStatus = (
     proposal.state === PROPOSAL_STATES.ACTIVE &&
     blockNumber > (proposal.endBlock || 0)
   ) {
-    const forVotes = BigNumber.from(proposal.forWeightedVotes)
-    const againstVotes = BigNumber.from(proposal.againstWeightedVotes)
-    const quorum = BigNumber.from(proposal.quorumVotes)
+    // TODO: not sure about this
+    const forVotes = parseEther(proposal.forWeightedVotes ?? '0')
+    const againstVotes = parseEther(proposal.againstWeightedVotes ?? '0')
+    const quorum = parseEther(proposal.quorumVotes ?? '0')
 
-    if (forVotes.lte(againstVotes)) {
+    if (forVotes <= againstVotes) {
       return PROPOSAL_STATES.DEFEATED
-    } else if (forVotes.lt(quorum)) {
+    } else if (forVotes < quorum) {
       return PROPOSAL_STATES.QUORUM_NOT_REACHED
     }
     return PROPOSAL_STATES.SUCCEEDED
@@ -119,9 +118,9 @@ export const getProposalStateAtom = atom((get) => {
         const againstVotes = parseEther(proposal.againstWeightedVotes)
         const quorum = parseEther(proposal.quorumVotes)
 
-        if (forVotes.lte(againstVotes)) {
+        if (forVotes > againstVotes) {
           state.state = PROPOSAL_STATES.DEFEATED
-        } else if (forVotes.lt(quorum)) {
+        } else if (forVotes < quorum) {
           state.state = PROPOSAL_STATES.QUORUM_NOT_REACHED
         } else {
           state.state = PROPOSAL_STATES.SUCCEEDED

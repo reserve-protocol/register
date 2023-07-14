@@ -1,4 +1,3 @@
-import { Interface } from 'ethers/lib/utils'
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import { rTokenContractsAtom } from 'state/atoms'

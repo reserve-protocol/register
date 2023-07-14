@@ -1,4 +1,3 @@
-import { formatUnits } from '@ethersproject/units'
 import { Trans } from '@lingui/macro'
 import TokenBalance from 'components/token-balance'
 import { useAtomValue } from 'jotai'
@@ -7,6 +6,7 @@ import { balancesAtom } from 'state/atoms'
 import { Box, BoxProps, Flex, Progress, Text } from 'theme-ui'
 import { Token } from 'types'
 import { formatCurrency } from 'utils'
+import { formatUnits } from 'viem'
 import { quantitiesAtom } from 'views/issuance/atoms'
 
 interface Props extends BoxProps {
@@ -30,7 +30,7 @@ const CollateralBalance = ({ token, ...props }: Props) => {
   const current = +balances[token.address]?.balance ?? 0
   const required = +formatUnits(quantities[token.address], token.decimals)
   const isValid =
-    current && balances[token.address].value.gte(quantities[token.address])
+    current && balances[token.address].value >= quantities[token.address]
 
   return (
     <Box {...props}>

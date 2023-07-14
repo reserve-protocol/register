@@ -58,7 +58,6 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
   const call = useDebounce(useAtomValue(contractCallAtom), 250)
   const [amount, setAmount] = useAtom(stakeAmountAtom)
   const rToken = useRToken()
-  const isValid = useAtomValue(isValidStakeAmountAtom)
   const account = useAtomValue(walletAtom)
   const { staking: isLegacy } = useAtomValue(isModuleLegacyAtom)
   const currentDelegate = useAtomValue(accountDelegateAtom)
