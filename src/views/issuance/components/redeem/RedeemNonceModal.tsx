@@ -1,19 +1,19 @@
 import { t } from '@lingui/macro'
 import { Modal } from 'components'
 import { ModalProps } from 'components/modal'
+import TokenItem from 'components/token-item'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { rTokenStateAtom, rTokenAssetsAtom } from 'state/atoms'
+import { ChevronLeft } from 'react-feather'
+import { rTokenAssetsAtom, rTokenStateAtom } from 'state/atoms'
 import { Box, Checkbox, Divider, IconButton, Text } from 'theme-ui'
+import { formatCurrency } from 'utils'
+import { formatUnits } from 'viem'
 import {
   customRedeemModalAtom,
   customRedeemNonceAtom,
   redeemNonceAtom,
   redeemQuotesAtom,
 } from './atoms'
-import { ChevronLeft } from 'react-feather'
-import TokenItem from 'components/token-item'
-import { formatCurrency } from 'utils'
-import { formatUnits } from 'ethers/lib/utils'
 
 interface Props extends Partial<ModalProps> {}
 

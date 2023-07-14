@@ -1,16 +1,16 @@
+import { Trans } from '@lingui/macro'
+import OverviewIcon from 'components/icons/OverviewIcon'
+import TokenItem from 'components/token-item'
 import { useState } from 'react'
-import { ChevronDown, ChevronUp, Package } from 'react-feather'
-import { Box, BoxProps, Flex, Text, Divider, Spinner } from 'theme-ui'
+import { ChevronDown, ChevronUp } from 'react-feather'
+import { Box, BoxProps, Divider, Flex, Spinner, Text } from 'theme-ui'
 import { BigNumberMap, Token } from 'types'
 import { formatCurrency } from 'utils'
-import { Trans } from '@lingui/macro'
-import TokenItem from 'components/token-item'
-import OverviewIcon from 'components/icons/OverviewIcon'
 import { formatUnits, getAddress } from 'viem'
 
 interface Props extends BoxProps {
   collaterals: Token[]
-  quantities: BigNumberMap
+  quantities: BigNumberMap | null
 }
 
 const CollateralDistribution = ({
@@ -55,7 +55,7 @@ const CollateralDistribution = ({
               <TokenItem symbol={collateral.symbol} />
               <Box mx="auto" />
               <Text sx={{ fontWeight: '500' }}>
-                {quantities[getAddress(collateral.address)] ? (
+                {quantities && quantities[getAddress(collateral.address)] ? (
                   formatCurrency(
                     Number(
                       formatUnits(

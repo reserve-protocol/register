@@ -22,6 +22,7 @@ import StakeInput from './StakeInput'
 
 const customDelegateAtom = atom('')
 
+// TODO: Use debounced input
 const contractCallAtom = atom((get) => {
   const currentDelegate = get(accountDelegateAtom)
   const amount = get(stakeAmountAtom)
