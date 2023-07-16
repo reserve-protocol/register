@@ -1,4 +1,3 @@
-import styled from '@emotion/styled'
 import useRToken from 'hooks/useRToken'
 import React from 'react'
 import { Box, BoxProps, Image } from 'theme-ui'
@@ -50,10 +49,8 @@ const TokenLogo = ({ symbol, src, width, sx = {}, ...props }: Props) => {
   if (!imgSrc) {
     if (rToken?.symbol === symbol) {
       imgSrc = rToken?.logo
-    } else {
-      imgSrc = IMGS.has(symbol?.toLowerCase() ?? '')
-        ? `/svgs/${symbol?.toLowerCase()}.svg`
-        : '/svgs/default.svg'
+    } else if (symbol && IMGS.has(symbol.toLowerCase())) {
+      imgSrc = `/svgs/${symbol.toLowerCase()}.svg`
     }
   }
 
@@ -73,7 +70,7 @@ const TokenLogo = ({ symbol, src, width, sx = {}, ...props }: Props) => {
       }}
     >
       <Image
-        src={imgSrc}
+        src={imgSrc || '/svgs/default.svg'}
         sx={{ height: '100%', width: width }}
         onError={({ currentTarget }) => {
           currentTarget.onerror = null // prevents looping

@@ -199,7 +199,7 @@ const buttonLabel = atom((get) => {
   }
   const loadedState = get(zapperInputs)
   if (loadedState == null) {
-    return 'Zap'
+    return '+ Zap'
   }
 
   switch (get(state)) {

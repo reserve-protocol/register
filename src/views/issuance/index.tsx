@@ -65,7 +65,7 @@ const Issuance = () => {
             <ZapOverview />
             <Grid columns={[1, 2]} gap={[1, 4]} mb={[1, 4]}>
               {isZapEnabled ? <Zap /> : <Issue />}
-              <Redeem />
+              <Redeem zapEnabled={isZapEnabled} />
             </Grid>
             <Balances />
           </Box>

@@ -1,17 +1,17 @@
-import { getAddress } from '@ethersproject/address'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import { AccountPosition, AccountToken } from 'types'
-
+import useTimeFrom from 'hooks/useTimeFrom'
+import { TIME_RANGES } from 'utils/constants'
 import RSV from 'utils/rsv'
+import { getAddress } from 'viem'
 import {
   accountHoldingsAtom,
   accountPositionsAtom,
   accountRTokensAtom,
   accountTokensAtom,
-  blockTimestampAtom,
   rsrPriceAtom,
   walletAtom,
 } from '../../atoms'
@@ -56,10 +56,7 @@ const accountQuery = gql`
 const AccountUpdater = () => {
   const account = useAtomValue(walletAtom)
   const rsrPrice = useAtomValue(rsrPriceAtom)
-  const timestamp = useAtomValue(blockTimestampAtom)
-  const fromTime = useMemo(() => {
-    return timestamp - 2592000
-  }, [!!timestamp])
+  const fromTime = useTimeFrom(TIME_RANGES.MONTH)
   const updateTokens = useSetAtom(accountTokensAtom)
   const updatePositions = useSetAtom(accountPositionsAtom)
   const updateHoldings = useSetAtom(accountHoldingsAtom)

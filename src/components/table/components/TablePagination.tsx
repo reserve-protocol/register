@@ -140,7 +140,7 @@ export const TablePagination: FC<
                 onClick={() => gotoPage(pageCount - 1)}
                 disabled={!canNextPage}
               >
-                {'>'}
+                {'>>'}
               </SmallButton>
             </Box>
           </Box>

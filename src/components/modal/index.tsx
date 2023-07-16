@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { X } from 'react-feather'
 import { Box, BoxProps, Button, Divider, Flex, Text } from 'theme-ui'
@@ -75,8 +76,26 @@ const Header = ({ title, onClose }: ModalProps) => {
   )
 }
 
-const Modal = ({ children, ...props }: ModalProps) =>
-  createPortal(
+const Modal = ({ children, ...props }: ModalProps) => {
+  useEffect(() => {
+    const keyDownHandler = (event: any) => {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+
+        // 👇️ your logic here
+        props.onClose?.()
+      }
+    }
+
+    document.addEventListener('keydown', keyDownHandler)
+
+    // 👇️ clean up event listener
+    return () => {
+      document.removeEventListener('keydown', keyDownHandler)
+    }
+  }, [])
+
+  return createPortal(
     <Overlay>
       <Dialog {...props}>
         <Header {...props} />
@@ -85,5 +104,6 @@ const Modal = ({ children, ...props }: ModalProps) =>
     </Overlay>,
     document.body
   )
+}
 
 export default Modal

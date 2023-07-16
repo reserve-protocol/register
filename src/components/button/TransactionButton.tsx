@@ -23,7 +23,7 @@ const GasEstimateLabel = ({ gas, ...props }: GasEstimateLabelProps) => (
       <Trans>Estimated gas cost:</Trans>
       {!gas.isLoading && !gas.estimateUsd && ' --'}
     </Text>
-    {gas.isLoading && <Spinner color="black" size={12} />}
+    {gas.isLoading && <Spinner color="--theme-ui-colors-text" size={12} />}
     {!!gas.estimateUsd && (
       <Text sx={{ fontWeight: 500 }}>${formatCurrency(gas.estimateUsd)}</Text>
     )}

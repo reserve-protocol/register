@@ -1,6 +1,5 @@
-import { t } from '@lingui/macro'
 import { LoadingButton, LoadingButtonProps } from 'components/button'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtom } from 'jotai'
 import { ui } from '../state/ui-atoms'
 
 const ZapButton = (props: Partial<LoadingButtonProps>) => {

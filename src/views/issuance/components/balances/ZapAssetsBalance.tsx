@@ -1,7 +1,7 @@
 import { Trans } from '@lingui/macro'
 import TokenBalance from 'components/token-balance'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
-import { Box, Text } from 'theme-ui'
+import { Box, Spinner, Text } from 'theme-ui'
 import { selectedZapTokenAtom } from '../zap/state/atoms'
 import { ui } from '../zap/state/ui-atoms'
 import { StringMap } from 'types'
@@ -36,6 +36,7 @@ const ZapAssetsBalances = () => {
         <Trans>Available assets</Trans>
       </Text>
       <Box sx={{ overflow: 'auto', maxHeight: 360 }} p={4} pt={0}>
+        {!tokens.length && <Spinner size={18} />}
         {tokens.map((token) => {
           const isSelected =
             selectedToken?.address.address === token.address.address
