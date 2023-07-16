@@ -40,13 +40,11 @@ export const useDeployParams = () => {
   return useMemo(() => {
     if (!isDeployValid) return undefined
 
-    return (
-      getDeployParameters(
-        getValues(),
-        primaryBasket,
-        backupBasket,
-        revenueSplit
-      ) || undefined
+    return getDeployParameters(
+      getValues(),
+      primaryBasket,
+      backupBasket,
+      revenueSplit
     )
   }, [primaryBasket, isDeployValid, backupBasket, revenueSplit, formFields])
 }

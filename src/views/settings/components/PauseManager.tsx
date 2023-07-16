@@ -8,10 +8,12 @@ import { useAtomValue } from 'jotai'
 import {
   accountRoleAtom,
   isModuleLegacyAtom,
+  rTokenContractsAtom,
   rTokenManagersAtom,
   rTokenStateAtom,
 } from 'state/atoms'
 import { Box, Flex, Text } from 'theme-ui'
+import { Abi } from 'viem'
 import RolesView from './RolesView'
 import SettingItem from './SettingItem'
 
@@ -29,6 +31,7 @@ const Pausing = ({
 }) => {
   const rToken = useRToken()
   const accountRole = useAtomValue(accountRoleAtom)
+  const contracts = useAtomValue(rTokenContractsAtom)
   const { tradingPaused, issuancePaused } = useAtomValue(rTokenStateAtom)
   let pauseLabel = legacy ? '' : 'Trading'
   let isPaused = tradingPaused // applies for legacy too
@@ -39,11 +42,17 @@ const Pausing = ({
     pauseLabel = 'Issuance'
   }
 
-  const { write, hash, isLoading } = useContractWrite({
-    address: hasRole && rToken?.main ? rToken.main : undefined,
-    abi: legacy ? (MainLegacy as any) : (Main as any), // Loose type infer because of optional abi
-    functionName: isPaused ? `unpause${pauseLabel}` : `pause${pauseLabel}`,
-  })
+  const { write, hash, isLoading } = useContractWrite(
+    accountRole && contracts && hasRole && rToken?.main
+      ? {
+          address: rToken.main,
+          abi: legacy ? (MainLegacy as Abi) : (Main as Abi), // Loose type infer because of optional abi
+          functionName: isPaused
+            ? `unpause${pauseLabel}`
+            : `pause${pauseLabel}`,
+        }
+      : undefined
+  )
 
   const { isMining } = useWatchTransaction({
     hash,

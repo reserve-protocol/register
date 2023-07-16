@@ -18,6 +18,7 @@ interface Props extends BoxProps {
   timeRange?: StringMap
   currentRange?: string
   onRangeChange?(range: string): void
+  height?: number
 }
 
 function CustomTooltip({ payload, label, active }: any) {
@@ -44,6 +45,7 @@ const AreaChart = ({
   currentRange,
   timeRange,
   onRangeChange,
+  height = 100,
   ...props
 }: Props) => {
   const gain = useMemo(() => {
@@ -79,7 +81,7 @@ const AreaChart = ({
         </Text>
       </Flex>
       {data && !!data.length && (
-        <ResponsiveContainer height={100}>
+        <ResponsiveContainer height={height}>
           <Chart data={data}>
             <Tooltip content={<CustomTooltip />} />
             <Area
@@ -92,14 +94,14 @@ const AreaChart = ({
         </ResponsiveContainer>
       )}
       {data && !data.length && (
-        <Box my={6} sx={{ textAlign: 'center', height: 60 }}>
+        <Box my={6} sx={{ textAlign: 'center', height: height - 40 }}>
           <Text variant="legend">
             <Trans>No data</Trans>
           </Text>
         </Box>
       )}
       {!data && (
-        <Box my={6} sx={{ textAlign: 'center', height: 60 }}>
+        <Box my={6} sx={{ textAlign: 'center', height: height - 40 }}>
           <Spinner size={24} />
         </Box>
       )}

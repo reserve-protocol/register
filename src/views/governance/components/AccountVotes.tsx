@@ -25,6 +25,7 @@ const AccountVotes = () => {
     abi: StRSRVotes,
     functionName: 'delegates',
     args: account ? [account as Address] : undefined,
+    watch: true,
   })
 
   const hasNoDelegates = !delegate || delegate === ZERO_ADDRESS

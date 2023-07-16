@@ -27,7 +27,7 @@ const ExchangeRate = () => {
   const { exchangeRate: rate } = useAtomValue(rTokenStateAtom)
   const [current, setCurrent] = useState(TIME_RANGES.MONTH)
   const fromTime = useTimeFrom(current)
-  const { data, error } = useQuery(rToken ? query : null, {
+  const { data } = useQuery(rToken ? query : null, {
     id: rToken?.address.toLowerCase(),
     fromTime,
   })
@@ -63,6 +63,7 @@ const ExchangeRate = () => {
   return (
     <Box variant="layout.borderBox" padding={4}>
       <AreaChart
+        height={76}
         title={
           rate
             ? `1 ${stToken} = ${formatCurrency(rate, 5)} RSR`

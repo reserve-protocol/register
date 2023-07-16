@@ -10,6 +10,7 @@ import { pendingRSRAtom } from './atoms'
 /**
  * Fetch pending issuances
  */
+// TODO: Move this to an loadable atom
 const PendingBalancesUpdater = () => {
   const account = useAtomValue(walletAtom)
   const chainId = useAtomValue(chainIdAtom)

@@ -136,7 +136,7 @@ export const getDeployParameters = (
   basket: Basket,
   backup: BackupBasket,
   revenueSplit: RevenueSplit
-): [RTokenConfiguration, BasketConfiguration] | null => {
+): [RTokenConfiguration, BasketConfiguration] | undefined => {
   try {
     const [dist, beneficiaries] = getSharesFromSplit(revenueSplit)
 
@@ -225,6 +225,6 @@ export const getDeployParameters = (
     // TODO: Handle error case here
     console.error('Error deploying rToken', e)
 
-    return null
+    return undefined
   }
 }

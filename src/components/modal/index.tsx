@@ -19,7 +19,7 @@ const Overlay = (props: BoxProps) => (
       bottom: 0,
       top: 0,
       overflow: 'auto',
-      background: '#00000054',
+      background: 'modalOverlay',
     }}
   />
 )
@@ -33,6 +33,8 @@ const Dialog = ({ width = '420px', sx = {}, ...props }: ModalProps) => (
       padding: 4,
       borderRadius: [0, '12px'],
       boxShadow: ['none', 'rgba(0, 0, 0, 0.2) 0px 24px 48px'],
+      border: '2px solid',
+      borderColor: 'darkBorder',
       position: 'absolute',
       left: [0, '50%'],
       top: [0, '50%'],
