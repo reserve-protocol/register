@@ -5,7 +5,6 @@ import { Box, BoxProps, Link, Text } from 'theme-ui'
 import MandateIcon from 'components/icons/MandateIcon'
 import rtokens from 'utils/rtokens'
 
-// TODO: Pull this info from listing
 const About = (props: BoxProps) => {
   const rToken = useAtomValue(rTokenAtom)
 

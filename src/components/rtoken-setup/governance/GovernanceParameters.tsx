@@ -4,7 +4,6 @@ import { useFormContext } from 'react-hook-form'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { decimalPattern, numberPattern, parseDuration } from 'utils'
 
-// TODO: Move block to hours
 const GovernanceParameters = (props: BoxProps) => {
   const { watch } = useFormContext()
   const [votingDelay, votingPeriod, minDelay] = watch([
@@ -31,7 +30,7 @@ const GovernanceParameters = (props: BoxProps) => {
         options={{
           required: true,
           pattern: numberPattern,
-          // min: 1,
+          min: 1,
           max: 50400, // 1 week
         }}
       />
@@ -45,7 +44,7 @@ const GovernanceParameters = (props: BoxProps) => {
         options={{
           required: true,
           pattern: numberPattern,
-          // min: 7200,
+          min: 7200,
           max: 100800, // 2 weeks
         }}
       />
@@ -59,7 +58,7 @@ const GovernanceParameters = (props: BoxProps) => {
         options={{
           required: true,
           pattern: numberPattern,
-          // min: 24,
+          min: 24,
           max: 504,
         }}
       />

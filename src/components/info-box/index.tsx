@@ -4,8 +4,7 @@ import Help from 'components/help'
 import { useAtomValue } from 'jotai'
 import React from 'react'
 import { chainIdAtom } from 'state/atoms'
-import { Flex, Text, BoxProps, Box } from 'theme-ui'
-import { shortenAddress } from 'utils'
+import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
 // TODO: Change component structure for "InfoBoxes" or something more generic

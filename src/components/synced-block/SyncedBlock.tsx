@@ -2,7 +2,6 @@ import { useAtomValue } from 'jotai'
 import { blockAtom } from 'state/atoms'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
 
-// TODO: Loading state when blockTag on multicall is different than current block?
 const SyncedBlock = (props: BoxProps) => {
   const latestBlock = useAtomValue(blockAtom)
 

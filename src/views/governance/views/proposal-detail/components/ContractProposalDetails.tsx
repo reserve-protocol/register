@@ -12,7 +12,15 @@ import {
 } from 'react-json-view-lite'
 import 'react-json-view-lite/dist/index.css'
 import { chainIdAtom } from 'state/atoms'
-import { Box, BoxProps, Card, Divider, Text, useColorMode } from 'theme-ui'
+import {
+  Box,
+  BoxProps,
+  Card,
+  Divider,
+  Spinner,
+  Text,
+  useColorMode,
+} from 'theme-ui'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { ContractProposal } from 'views/governance/atoms'
 
@@ -42,6 +50,7 @@ const CallData = ({ data }: { data: string }) => {
           <Box as="code" sx={{ overflowWrap: 'break-word' }}>
             {data}
           </Box>
+          <Box mb={3} />
         </>
       )}
     </Box>
@@ -52,6 +61,7 @@ const CallData = ({ data }: { data: string }) => {
 const ContractProposalDetails = ({ data, ...props }: Props) => {
   const chainId = useAtomValue(chainIdAtom)
   const [colorMode] = useColorMode()
+
   if (!data.calls.length) {
     return null
   }
@@ -92,7 +102,9 @@ const ContractProposalDetails = ({ data, ...props }: Props) => {
             >
               <Trans>Signature</Trans>
             </Text>
-            <Text>{call.signature}</Text>
+            <Text>
+              {call.signature}({call.parameters.join(', ')})
+            </Text>
           </Box>
 
           <Text variant="legend" sx={{ fontSize: 1, display: 'block' }} mb={2}>

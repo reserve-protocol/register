@@ -1,4 +1,3 @@
-import { formatEther } from '@ethersproject/units'
 import Chainlink from 'abis/Chainlink'
 import FacadeRead from 'abis/FacadeRead'
 import useRToken from 'hooks/useRToken'
@@ -10,9 +9,10 @@ import {
   gasFeeAtom,
   rTokenPriceAtom,
   rsrPriceAtom,
+  selectedRTokenAtom,
 } from 'state/atoms'
 import { FACADE_ADDRESS } from 'utils/addresses'
-import { Address, formatUnits } from 'viem'
+import { Address, formatEther, formatUnits } from 'viem'
 import { useContractRead, useContractReads, useFeeData } from 'wagmi'
 
 /**
@@ -23,7 +23,7 @@ import { useContractRead, useContractReads, useFeeData } from 'wagmi'
  * GasPrice
  */
 const PricesUpdater = () => {
-  const rToken = useRToken()
+  const rToken = useAtomValue(selectedRTokenAtom)
   const chainId = useAtomValue(chainIdAtom)
 
   const setRSRPrice = useSetAtom(rsrPriceAtom)
@@ -51,9 +51,10 @@ const PricesUpdater = () => {
   })
   const { data: rTokenPrice } = useContractRead({
     abi: FacadeRead,
-    address: rToken?.address ? FACADE_ADDRESS[chainId] : undefined,
+    address: rToken ? FACADE_ADDRESS[chainId] : undefined,
     functionName: 'price',
-    args: [rToken?.address as Address],
+    args: [rToken as Address],
+    enabled: !!rToken,
   })
 
   useEffect(() => {

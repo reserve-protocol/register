@@ -5,9 +5,9 @@ import TrackAsset from 'components/track-asset'
 import { useAtomValue } from 'jotai'
 import {
   rsrBalanceAtom,
-  rsrExchangeRateAtom,
   rsrPriceAtom,
   rTokenAtom,
+  rTokenStateAtom,
   stRsrBalanceAtom,
 } from 'state/atoms'
 import { Box, BoxProps, Divider, Flex, Grid, Text } from 'theme-ui'
@@ -20,7 +20,7 @@ import PendingBalance from './PendingBalance'
 const StakeBalance = () => {
   const rToken = useAtomValue(rTokenAtom)
   const balance = useAtomValue(stRsrBalanceAtom)
-  const rate = useAtomValue(rsrExchangeRateAtom)
+  const { exchangeRate: rate } = useAtomValue(rTokenStateAtom)
   const rsrPrice = useAtomValue(rsrPriceAtom)
 
   return (

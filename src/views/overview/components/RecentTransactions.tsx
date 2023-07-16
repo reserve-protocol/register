@@ -33,7 +33,6 @@ const RecentTransactions = () => {
       return []
     }
 
-    // TODO: Parse type depending on lang
     return data.entries.map((tx: any) => ({
       ...tx,
       amount: Number(formatEther(tx.amount)),

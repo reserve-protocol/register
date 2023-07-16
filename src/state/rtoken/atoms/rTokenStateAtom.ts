@@ -25,7 +25,6 @@ export const rTokenStateAtom = atomWithReset({
 export const rsrPriceAtom = atom(0)
 export const rTokenPriceAtom = atom(0)
 
-export const rsrExchangeRateAtom = atom(1)
 export const maxIssuanceAtom = atom(0)
 export const maxRedemptionAtom = atom(0)
 

@@ -19,6 +19,7 @@ import { RSR_ADDRESS } from 'utils/addresses'
 import { isValidStakeAmountAtom, stakeAmountAtom } from 'views/staking/atoms'
 import DelegateStake from './DelegateStake'
 import StakeInput from './StakeInput'
+import { Address } from 'viem'
 
 const customDelegateAtom = atom('')
 
@@ -42,7 +43,7 @@ const contractCallAtom = atom((get) => {
       abi: StRSRVotes,
       address: contracts.stRSR.address,
       functionName: 'stakeAndDelegate',
-      args: [parsedAmount, delegate],
+      args: [parsedAmount, delegate] as [bigint, Address],
     }
   }
 
@@ -50,7 +51,7 @@ const contractCallAtom = atom((get) => {
     abi: isLegacy ? stRSRLegacy : StRSR,
     address: contracts.stRSR.address,
     functionName: 'stake',
-    args: [parsedAmount],
+    args: [parsedAmount] as [bigint],
   }
 })
 
@@ -71,7 +72,7 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
     return {
       token: RSR_ADDRESS[chainId],
       spender: call.address,
-      amount: call.args[0] as bigint,
+      amount: call.args[0],
       symbol: 'RSR',
       decimals: 18,
     }

@@ -1,7 +1,7 @@
 import { Container } from 'components'
 import useTokenStats from 'hooks/useTokenStats'
 import { useAtomValue } from 'jotai'
-import { rTokenAtom } from 'state/atoms'
+import { rTokenAtom, selectedRTokenAtom } from 'state/atoms'
 import { Divider, Grid } from 'theme-ui'
 import About from './components/About'
 import AssetOverview from './components/AssetOverview'
@@ -22,10 +22,11 @@ const gridProps = { columns: [1, 1, 1, 2], gap: [5, 5, 5, 4] }
  * @returns React.Component
  */
 const Overview = () => {
+  const rTokenAddress = useAtomValue(selectedRTokenAtom)
   const rToken = useAtomValue(rTokenAtom)
 
   const rTokenMetrics = useTokenStats(
-    rToken?.address.toLowerCase() ?? '',
+    rTokenAddress?.toLowerCase() ?? '',
     !!rToken && !rToken.main
   )
 

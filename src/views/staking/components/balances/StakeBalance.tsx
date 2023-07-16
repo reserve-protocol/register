@@ -3,19 +3,18 @@ import TokenBalance from 'components/token-balance'
 import TrackAsset from 'components/track-asset'
 import { useAtomValue } from 'jotai'
 import {
-  rsrExchangeRateAtom,
   rsrPriceAtom,
   rTokenAtom,
+  rTokenStateAtom,
   stRsrBalanceAtom,
 } from 'state/atoms'
 import { Box, Flex, Text } from 'theme-ui'
 
 // TODO: Create "Claim" component
-
 const StakeBalance = () => {
   const rToken = useAtomValue(rTokenAtom)
   const balance = useAtomValue(stRsrBalanceAtom)
-  const rate = useAtomValue(rsrExchangeRateAtom)
+  const { exchangeRate: rate } = useAtomValue(rTokenStateAtom)
   const rsrPrice = useAtomValue(rsrPriceAtom)
 
   return (

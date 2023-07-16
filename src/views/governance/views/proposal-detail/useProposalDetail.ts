@@ -90,7 +90,7 @@ const useProposalDetail = (
             data.proposal.abstainWeightedVotes || '0'
           ),
           quorumVotes: formatEther(data.proposal.quorumVotes || '0'),
-          governor: data.governanceFramework.contractAddress,
+          governor: data.proposal.governanceFramework.contractAddress,
         }
       : null
 

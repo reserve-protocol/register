@@ -8,7 +8,6 @@ import useRToken from 'hooks/useRToken'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
 import {
-  rsrExchangeRateAtom,
   rTokenStateAtom,
   rTokenTradingAvailableAtom,
   walletAtom,
@@ -18,7 +17,7 @@ import { pendingRSRSummaryAtom } from 'views/staking/atoms'
 
 const AvailableBalance = () => {
   const rToken = useRToken()
-  const rate = useAtomValue(rsrExchangeRateAtom)
+  const { exchangeRate: rate } = useAtomValue(rTokenStateAtom)
   const { index, availableAmount } = useAtomValue(pendingRSRSummaryAtom)
   const account = useAtomValue(walletAtom)
   const { isCollaterized } = useAtomValue(rTokenStateAtom)

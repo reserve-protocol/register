@@ -1,7 +1,7 @@
 import { t } from '@lingui/macro'
 import ERC20 from 'abis/ERC20'
 import humanizeDuration from 'humanize-duration'
-import { BigNumberMap, TransactionState } from 'types'
+import { BigNumberMap } from 'types'
 import { Address, getAddress, parseEther, parseUnits } from 'viem'
 
 export const decimalPattern = /^[0-9]*[.]?[0-9]*$/i
@@ -45,29 +45,6 @@ export function getTokenReadCalls(address: string) {
 
 export const isAmountValid = (value: bigint, max: bigint) =>
   value > 0n && value <= max
-
-// returns the same contract call with an increased gas limit (10% increase)
-export const getTransactionWithGasLimit = (
-  tx: TransactionState,
-  gasLimit: number,
-  multiplier = 0.1 // 10%
-) => {
-  return {
-    ...tx,
-    call: {
-      ...tx.call,
-      args: [
-        ...tx.call.args,
-        {
-          gasLimit: Math.min(
-            Math.floor(gasLimit + gasLimit * multiplier),
-            20000000
-          ),
-        },
-      ],
-    },
-  }
-}
 
 const timeUnits = {
   year: 24 * 60 * 60 * 365,
@@ -132,17 +109,6 @@ export function hasAllowance(
   )
 }
 
-export function addressEqual(
-  firstAddress: string,
-  secondAddress: string
-): boolean {
-  try {
-    return getAddress(firstAddress) === getAddress(secondAddress)
-  } catch {
-    throw new TypeError("Invalid input, address can't be parsed")
-  }
-}
-
 // Prevents more than 18 decimals
 export function safeParseEther(value: string, decimals = 18): bigint {
   let safeValue = ''
@@ -187,10 +153,6 @@ export function shortenAddress(address: string, chars = 4): string {
 
 export function escapeRegExp(string: string): string {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // $& means the whole matched string
-}
-
-export function formattedFeeAmount(feeAmount: number): number {
-  return feeAmount / 10000
 }
 
 /**

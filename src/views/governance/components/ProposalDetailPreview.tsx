@@ -1,9 +1,15 @@
 import SectionWrapper from 'components/section-navigation/SectionWrapper'
 import { useAtomValue } from 'jotai'
-import { Box, BoxProps } from 'theme-ui'
+import { Box, BoxProps, Card, Spinner, Text } from 'theme-ui'
 import { ContractProposal, InterfaceMap, interfaceMapAtom } from '../atoms'
 import ContractProposalDetail from '../views/proposal-detail/components/ContractProposalDetails'
-import { Hex, decodeFunctionData, getAddress, getFunctionSelector } from 'viem'
+import {
+  Hex,
+  decodeFunctionData,
+  getAbiItem,
+  getAddress,
+  getFunctionSelector,
+} from 'viem'
 
 interface Props extends BoxProps {
   addresses: string[]
@@ -29,26 +35,10 @@ const parseCallDatas = (
 
       if (contractDetail) {
         // TODO: I think this is broken
-        const functionCall = getFunctionSelector(
-          calldatas[i].slice(0, Math.min(calldatas[i].length, 10))
-        )
-        const data = decodeFunctionData({
+        const functionCall = decodeFunctionData({
           abi: contractDetail.interface,
-          data: calldatas[i] as Hex, // TODO: Pretty sure this doesnt work
+          data: calldatas[i] as Hex,
         })
-        // TODO: I'm not sure about the function call
-        // TODO: Leave original way commented
-        // contractDetail.interface.getFunction(
-        //   calldatas[i].slice(0, Math.min(calldatas[i].length, 10))
-        // )
-        // const signature = `${functionCall.name}(${functionCall.inputs
-        //   .map((input) => `${input.name}: ${input.type}`)
-        //   .join(', ')})`
-
-        // const data = contractDetail.interface.decodeFunctionData(
-        //   functionCall.name,
-        //   calldatas[i]
-        // )
 
         if (!contractProposals[address]) {
           contractProposals[address] = {
@@ -57,15 +47,18 @@ const parseCallDatas = (
             calls: [],
           }
         }
+
+        const result = getAbiItem({
+          abi: contractDetail.interface,
+          name: functionCall.functionName,
+        })
+
         contractProposals[address].calls.push({
-          // signature,
-          signature: 'TODO',
-          // parameters: functionCall.inputs.map(
-          //   (input) => `${input.name} (${input.type})`
-          // ),
-          parameters: ['TODO'],
+          signature: functionCall.functionName,
+          parameters:
+            result.inputs.map((input) => `${input.name}: ${input.type}`) ?? [],
           callData: calldatas[i],
-          data,
+          data: functionCall.args ?? [],
         })
       } else {
         unparsed.push(calldatas[i])
@@ -81,10 +74,17 @@ const parseCallDatas = (
 const ProposalDetail = ({ addresses, calldatas, ...props }: Props) => {
   const interfaceMap = useAtomValue(interfaceMapAtom)
   const [parse] = parseCallDatas(addresses, calldatas, interfaceMap)
+  const calls = Object.keys(parse)
 
   return (
     <Box>
-      {Object.keys(parse).map((address, index) => (
+      {!calls.length && (
+        <Card p={4} mb={4} sx={{ textAlign: 'center' }}>
+          <Spinner size={18} />
+          <Text sx={{ display: 'block' }}>Loading execution details...</Text>
+        </Card>
+      )}
+      {calls.map((address, index) => (
         <SectionWrapper key={address} navigationIndex={index}>
           <ContractProposalDetail data={parse[address]} mb={4} />
         </SectionWrapper>
