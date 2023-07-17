@@ -47,11 +47,9 @@ const App = () => (
               <Route
                 path={ROUTES.ISSUANCE}
                 element={
-                  <ErrorBoundary fallback={<IssuanceFallback />}>
-                    <Suspense>
-                      <Issuance />
-                    </Suspense>
-                  </ErrorBoundary>
+                  <Suspense>
+                    <Issuance />
+                  </Suspense>
                 }
               />
               <Route path={ROUTES.STAKING} element={<Staking />} />
