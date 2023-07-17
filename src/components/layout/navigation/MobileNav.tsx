@@ -31,7 +31,7 @@ const MobileNav = () => {
   const address = useAtomValue(selectedRTokenAtom)
 
   const menuItems = useMemo(() => {
-    if (rToken?.isRSV) {
+    if (rToken && !rToken.main) {
       return [...items.slice(0, 2)]
     }
 

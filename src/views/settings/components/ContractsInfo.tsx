@@ -3,6 +3,7 @@ import { InfoItem } from 'components/info-box'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { chainIdAtom, rTokenAssetsAtom, rTokenContractsAtom } from 'state/atoms'
+import { ContractKey } from 'state/rtoken/atoms/rTokenContractsAtom'
 import { BoxProps, Card, Divider, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { RSR_ADDRESS } from 'utils/addresses'
@@ -15,7 +16,7 @@ const ContractsInfo = (props: BoxProps) => {
   const assets = useAtomValue(rTokenAssetsAtom) ?? {}
   const rToken = useRToken()
   const chainId = useAtomValue(chainIdAtom)
-  const contractList = [
+  const contractList: [string, ContractKey][] = [
     [t`Main`, 'main'],
     [t`Backing Manager`, 'backingManager'],
     [t`Basket Handler`, 'basketHandler'],

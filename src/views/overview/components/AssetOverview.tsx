@@ -77,6 +77,7 @@ const AssetOverview = () => {
 
     return []
   }, [JSON.stringify(basketDist), rToken?.address])
+  const isRSV = !!rToken && !rToken.main
 
   return (
     <Card py={5} sx={{ height: 'fit-content' }}>
@@ -99,16 +100,16 @@ const AssetOverview = () => {
             mt={2}
             data={pieData}
             logo={rToken?.logo ?? ''}
-            isRSV={rToken?.isRSV}
+            isRSV={isRSV}
             staked={distribution?.staked ?? 0}
           />
           <Text variant="legend">
             <Trans>Backing</Trans>
             <Box as="span" ml={2} sx={{ fontWeight: '500', color: 'text' }}>
-              {rToken?.isRSV ? 100 : Math.min(100, distribution?.backing ?? 0)}%{' '}
+              {isRSV ? 100 : Math.min(100, distribution?.backing ?? 0)}%{' '}
             </Box>
           </Text>
-          {!rToken?.isRSV && (
+          {!isRSV && (
             <Text variant="legend">
               <Trans>Staked RSR overcollateralization</Trans>
               <Box as="span" ml={2} sx={{ fontWeight: '500', color: 'text' }}>

@@ -11,7 +11,7 @@ const HistoricalData = (props: BoxProps) => {
     <Card {...props} p={5}>
       <PriceChart mb={5} />
       <SupplyChart />
-      {!rToken?.isRSV && <StakingChart mt={5} />}
+      {!!rToken && !rToken.main && <StakingChart mt={5} />}
     </Card>
   )
 }

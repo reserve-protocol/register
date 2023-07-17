@@ -5,11 +5,13 @@ import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import { Box } from 'theme-ui'
 import { SmallButton } from 'components/button'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import rtokens from 'utils/rtokens'
 
 const External = () => {
   const rToken = useRToken()
   const rTokenAddress = useAtomValue(selectedRTokenAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const meta = rTokenAddress ? rtokens[rTokenAddress] : undefined
 
   return (
     <Box
@@ -17,20 +19,20 @@ const External = () => {
       sx={{ display: ['none', 'flex'], flexWrap: 'wrap' }}
       ml={3}
     >
-      {rToken?.meta?.website && (
+      {meta?.website && (
         <SmallButton
           variant="transparent"
           mr={3}
-          onClick={() => window.open(rToken.meta?.website, '_blank')}
+          onClick={() => window.open(meta.website, '_blank')}
         >
           <Trans>Website</Trans>
         </SmallButton>
       )}
-      {rToken?.meta?.social?.twitter && (
+      {meta?.social?.twitter && (
         <SmallButton
           variant="transparent"
           mr={3}
-          onClick={() => window.open(rToken?.meta?.social?.twitter, '_blank')}
+          onClick={() => window.open(meta.social?.twitter, '_blank')}
         >
           <Trans>Twitter</Trans>
         </SmallButton>
