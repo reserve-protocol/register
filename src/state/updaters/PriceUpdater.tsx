@@ -1,6 +1,5 @@
 import Chainlink from 'abis/Chainlink'
 import FacadeRead from 'abis/FacadeRead'
-import useRToken from 'hooks/useRToken'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import {

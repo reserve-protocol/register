@@ -10,7 +10,6 @@ import { Box, Divider, Flex, Link, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { FormState, isFormValid } from 'utils/wrapping'
-import { v4 as uuid } from 'uuid'
 
 // TODO: rewrite this whole component
 // TODO: Fix precision issue with balances

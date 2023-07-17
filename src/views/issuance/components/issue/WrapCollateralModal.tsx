@@ -9,11 +9,9 @@ import { ArrowRight, CheckCircle, ExternalLink } from 'react-feather'
 import { aavePluginsAtom } from 'state/rtoken/atoms/pluginAtoms'
 import { Box, Divider, Flex, Link, Text } from 'theme-ui'
 import { BigNumberMap } from 'types'
-import { formatCurrency, getTransactionWithGasLimit, hasAllowance } from 'utils'
-import { TRANSACTION_STATUS } from 'utils/constants'
+import { formatCurrency, hasAllowance } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { FormState, isFormValid } from 'utils/wrapping'
-import { v4 as uuid } from 'uuid'
 
 // TODO: rewrite this whole component
 // TODO: Fix precision issue with balances

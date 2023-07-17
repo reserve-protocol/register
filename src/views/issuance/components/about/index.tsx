@@ -59,10 +59,10 @@ const About = () => {
         </Flex>
       </Box>
       {isWrapping === 1 && (
-        <WrapCollateralModal unwrap={false} onClose={() => setWrapping(0)} />
+        <WrapCollateralModal onClose={() => setWrapping(0)} />
       )}
       {isWrapping === 2 && (
-        <UnwrapCollateralModal unwrap={true} onClose={() => setWrapping(0)} />
+        <UnwrapCollateralModal onClose={() => setWrapping(0)} />
       )}
       {isConvexWrapping && (
         <ConvexCollateralModal

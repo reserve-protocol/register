@@ -8,6 +8,7 @@ import { Box, BoxProps, Flex } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import SelectedToken from './SelectedToken'
 import TokenList from './TokenList'
+import { Address } from 'viem'
 
 /**
  * Top header RToken selection
@@ -21,7 +22,7 @@ const RTokenSelector = (props: BoxProps) => {
   const handleSelect = useCallback(
     (token: string) => {
       if (token !== selected) {
-        setSelected(token)
+        setSelected(token as Address)
         navigate(
           `${selected ? location.pathname : ROUTES.OVERVIEW}?token=${token}`
         )
@@ -32,7 +33,7 @@ const RTokenSelector = (props: BoxProps) => {
   )
 
   const handleHome = useCallback(() => {
-    setSelected('')
+    setSelected(null)
     navigate('/')
     setVisible(false)
   }, [setVisible, setSelected, navigate])

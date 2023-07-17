@@ -112,7 +112,11 @@ const Navigation = () => {
   return (
     <Box sx={{ display: 'flex' }} mx={'auto'}>
       {pages.map((item) => (
-        <NavItem key={item.path} {...item} rTokenAddress={rTokenAddress} />
+        <NavItem
+          key={item.path}
+          {...item}
+          rTokenAddress={rTokenAddress ?? ''}
+        />
       ))}
     </Box>
   )

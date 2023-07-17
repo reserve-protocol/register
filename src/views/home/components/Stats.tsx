@@ -1,5 +1,3 @@
-import { formatEther } from '@ethersproject/units'
-
 import TransactionsTable from 'components/transactions/table'
 import { gql } from 'graphql-request'
 import useDebounce from 'hooks/useDebounce'
@@ -19,6 +17,7 @@ import { Box, BoxProps, Divider, Flex, Grid, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { PROTOCOL_SLUG, TIME_RANGES } from 'utils/constants'
 import Help from '../../../components/help'
+import { formatEther } from 'viem'
 
 // Here you could create a main component that holds all the logic
 const Main = () => {

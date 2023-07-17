@@ -5,7 +5,6 @@ import {
   Spinner,
   Text,
 } from 'theme-ui'
-import { TransactionState } from 'types'
 
 export interface ButtonProps extends _ButtonProps {
   small?: boolean
@@ -26,11 +25,6 @@ export interface LoadingButtonProps extends ButtonProps {
   loading?: boolean
   loadingText?: string
   text: string
-}
-
-export interface ExecuteButtonProps
-  extends Omit<LoadingButtonProps, 'loading'> {
-  tx: TransactionState | null
 }
 
 export const LoadingButton = ({

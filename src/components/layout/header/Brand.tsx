@@ -9,7 +9,7 @@ const Brand = (props: BoxProps) => {
   const updateToken = useSetAtom(selectedRTokenAtom)
 
   const handleClick = () => {
-    updateToken('')
+    updateToken(null)
     navigate('/')
   }
 

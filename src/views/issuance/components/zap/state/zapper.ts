@@ -6,6 +6,9 @@ import {} from 'state/atoms'
 import { onlyNonNullAtom, simplifyLoadable } from 'utils/atoms/utils'
 import { createProxiedOneInchAggregator } from './createProxiedOneInchAggregator'
 
+// TODO: Temporal
+const providerAtom = atom<any>(null)
+
 // TODO: Convert provider viem -> ethers
 export const connectionName = onlyNonNullAtom((get) => {
   return get(providerAtom).connection.url

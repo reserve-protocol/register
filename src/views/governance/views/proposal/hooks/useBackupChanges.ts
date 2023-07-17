@@ -60,6 +60,7 @@ const useBackupChanges = (): BackupChanges => {
 
     if (
       !isNewBackupProposed ||
+      !backup ||
       (!Object.keys(backup) && !Object.keys(proposedBackup))
     ) {
       return changes

@@ -8,7 +8,6 @@ import { t, Trans } from '@lingui/macro'
 import { Divider } from 'theme-ui'
 import { useSetAtom } from 'jotai'
 import { proposalDescriptionAtom } from '../atoms'
-import { TransactionState } from 'types'
 
 const ConfirmProposalForm = ({
   addresses,
