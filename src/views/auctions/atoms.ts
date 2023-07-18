@@ -32,6 +32,11 @@ export interface Auction {
 
 type AuctionType = 'Revenue' | 'Recollaterization'
 
+export enum AuctionPlatform {
+  Batch,
+  Dutch,
+}
+
 export const AUCTION_TYPES = {
   REVENUE: 'Revenue' as AuctionType,
   BACKING: 'Recollaterization' as AuctionType,
@@ -65,9 +70,25 @@ export const currentTradesAtom = atom((get) => get(tradesAtom).current)
 export const endedTradesAtom = atom((get) => get(tradesAtom).ended)
 
 export const selectedAuctionsAtom = atomWithReset<number[]>([])
-export const auctionSessionAtom = atom(0)
 
-export const auctionSidebarAtom = atom(false)
+export const auctionSessionAtom = atom(1)
+
+const sidebarAtom = atom(false)
+export const auctionSidebarAtom = atom(
+  (get) => get(sidebarAtom),
+  (get, set) => {
+    const current = get(sidebarAtom)
+
+    if (current) {
+      set(sidebarAtom, false)
+    } else {
+      set(auctionSessionAtom, Math.random())
+      set(sidebarAtom, true)
+    }
+  }
+)
+
+export const auctionPlatformAtom = atom<AuctionPlatform>(AuctionPlatform.Batch)
 
 export const accumulatedRevenueAtom = atomWithLoadable(async (get) => {
   get(auctionSessionAtom) // just for refresh sake
@@ -78,7 +99,6 @@ export const accumulatedRevenueAtom = atomWithLoadable(async (get) => {
   const price = get(rTokenPriceAtom)
 
   if (!rToken || !assets || !client || !price) {
-    console.log('return 0', price)
     return 0
   }
 

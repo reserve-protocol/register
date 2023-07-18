@@ -1,14 +1,18 @@
 import Analytics from 'components/analytics/Analytics'
 import ToastContainer from 'components/toaster-container/ToastContainer'
-import { HashRouter as Router, Route, Routes } from 'react-router-dom'
-import Updater from 'state/updater'
+import TransactionSidebar from 'components/transactions/manager/TransactionSidebar'
+import { useAtomValue } from 'jotai'
+import { Suspense, useEffect } from 'react'
+import { lazyWithPreload } from 'react-lazy-with-preload'
+import { Route, HashRouter as Router, Routes } from 'react-router-dom'
+import { selectedRTokenAtom } from 'state/atoms'
 import ChainProvider from 'state/chain'
-import { ThemeProvider } from 'theme-ui'
+import Updater from 'state/updater'
+import { Text, ThemeProvider } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import Auctions from 'views/auctions'
 import Deploy from 'views/deploy'
 import GovernanceSetup from 'views/deploy/components/Governance'
-import Governance from 'views/governance'
 import GovernanceProposal from 'views/governance/views/proposal'
 import GovernanceProposalDetail from 'views/governance/views/proposal-detail'
 import Home from 'views/home'
@@ -19,63 +23,80 @@ import Tokens from 'views/tokens/Tokens'
 import Layout from './components/layout'
 import LanguageProvider from './i18n'
 import { theme } from './theme'
-import { ErrorBoundary } from 'react-error-boundary'
-import React, { Suspense } from 'react'
-import IssuanceFallback from 'views/issuance/IssuanceFallback'
-import TransactionSidebar from 'components/transactions/manager/TransactionSidebar'
 
-const Issuance = React.lazy(() => import('./views/issuance'))
+const Issuance = lazyWithPreload(() => import('./views/issuance'))
+const Governance = lazyWithPreload(() => import('./views/governance'))
+
+const Fallback = () => <Text>Loading...</Text>
 
 /**
  * App Entry point - Handles views routing
  *
  * @returns {JSX.Element}
  */
-const App = () => (
-  <Router>
-    <Analytics />
-    <ThemeProvider theme={theme}>
-      <LanguageProvider>
-        <ToastContainer />
-        <ChainProvider>
-          <Updater />
-          <TransactionSidebar />
-          <Layout>
-            <Routes>
-              <Route path={ROUTES.HOME} element={<Home />} />
-              <Route path={ROUTES.OVERVIEW} element={<Overview />} />
-              <Route
-                path={ROUTES.ISSUANCE}
-                element={
-                  <Suspense>
-                    <Issuance />
-                  </Suspense>
-                }
-              />
-              <Route path={ROUTES.STAKING} element={<Staking />} />
-              <Route path={ROUTES.AUCTIONS} element={<Auctions />} />
-              <Route path={ROUTES.DEPLOY} element={<Deploy />} />
-              <Route path={ROUTES.SETTINGS} element={<Management />} />
-              <Route
-                path={ROUTES.GOVERNANCE_SETUP}
-                element={<GovernanceSetup />}
-              />
-              <Route path={ROUTES.TOKENS} element={<Tokens />} />
-              <Route path={ROUTES.GOVERNANCE} element={<Governance />} />
-              <Route
-                path={ROUTES.GOVERNANCE_PROPOSAL}
-                element={<GovernanceProposal />}
-              />
-              <Route
-                path={`${ROUTES.GOVERNANCE_PROPOSAL}/:proposalId`}
-                element={<GovernanceProposalDetail />}
-              />
-            </Routes>
-          </Layout>
-        </ChainProvider>
-      </LanguageProvider>
-    </ThemeProvider>
-  </Router>
-)
+const App = () => {
+  const rTokenSelected = !!useAtomValue(selectedRTokenAtom)
+
+  useEffect(() => {
+    if (rTokenSelected) {
+      Issuance.preload()
+      Governance.preload()
+    }
+  }, [rTokenSelected])
+
+  return (
+    <Router>
+      <Analytics />
+      <ThemeProvider theme={theme}>
+        <LanguageProvider>
+          <ToastContainer />
+          <ChainProvider>
+            <Updater />
+            <TransactionSidebar />
+            <Layout>
+              <Routes>
+                <Route path={ROUTES.HOME} element={<Home />} />
+                <Route path={ROUTES.OVERVIEW} element={<Overview />} />
+                <Route
+                  path={ROUTES.ISSUANCE}
+                  element={
+                    <Suspense fallback={<Fallback />}>
+                      <Issuance />
+                    </Suspense>
+                  }
+                />
+                <Route path={ROUTES.STAKING} element={<Staking />} />
+                <Route path={ROUTES.AUCTIONS} element={<Auctions />} />
+                <Route path={ROUTES.DEPLOY} element={<Deploy />} />
+                <Route path={ROUTES.SETTINGS} element={<Management />} />
+                <Route
+                  path={ROUTES.GOVERNANCE_SETUP}
+                  element={<GovernanceSetup />}
+                />
+                <Route path={ROUTES.TOKENS} element={<Tokens />} />
+                <Route
+                  path={ROUTES.GOVERNANCE}
+                  element={
+                    <Suspense fallback={<Fallback />}>
+                      <Governance />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path={ROUTES.GOVERNANCE_PROPOSAL}
+                  element={<GovernanceProposal />}
+                />
+                <Route
+                  path={`${ROUTES.GOVERNANCE_PROPOSAL}/:proposalId`}
+                  element={<GovernanceProposalDetail />}
+                />
+              </Routes>
+            </Layout>
+          </ChainProvider>
+        </LanguageProvider>
+      </ThemeProvider>
+    </Router>
+  )
+}
 
 export default App

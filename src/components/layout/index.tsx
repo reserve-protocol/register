@@ -1,10 +1,10 @@
 import styled from '@emotion/styled'
+import useIsSidebarVisible from 'hooks/useIsSidebarVisible'
 import { ReactNode } from 'react'
 import { Box, Flex } from 'theme-ui'
 import Header from './header'
 import MobileNav from './navigation/MobileNav'
 import TokenMenu from './token-menu'
-import useIsSidebarVisible from 'hooks/useIsSidebarVisible'
 
 const Container = styled(Flex)`
   overflow: auto;
@@ -57,5 +57,24 @@ const Layout = ({ children }: { children: ReactNode }) => (
     </Wrapper>
   </Container>
 )
+
+// export const BaseLayout = ({ children }: { children?: ReactNode }) => (
+//   <Container id="app-container">
+//     <Wrapper>
+//       <Header />
+//       <Box sx={{ overflow: 'hidden' }}>
+//         <Box
+//           sx={{
+//             height: '72px',
+//             width: '100em',
+//             overflow: 'hidden',
+//           }}
+//         />
+//       </Box>
+//       {children}
+//     </Wrapper>
+//     <Analytics />
+//   </Container>
+// )
 
 export default Layout

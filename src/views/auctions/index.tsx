@@ -1,51 +1,51 @@
-import { Trans } from '@lingui/macro'
-import { Container } from 'components'
-import { SmallButton } from 'components/button'
-import useRToken from 'hooks/useRToken'
-import { useAtom } from 'jotai'
-import { Box, Divider, Text } from 'theme-ui'
-import { auctionSidebarAtom } from './atoms'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { Box, Divider } from 'theme-ui'
+import {
+  AuctionPlatform,
+  auctionPlatformAtom,
+  auctionSidebarAtom,
+} from './atoms'
 import AuctionsSidebar from './auctions-sidebar'
 import About from './components/About'
-import FinalizedAuctions from './components/FinalizedAuctions'
-import OngoingAuctions from './components/OngoingAuctions'
-import TradesUpdater from './components/TradesUpdater'
+import BatchAuctions from './batch'
+import DutchAuctions from './dutch'
+import { Button } from 'components'
+import { Trans } from '@lingui/macro'
+
+// TODO: When tokens upgrade to 3.0, default to dutch auctions
+const Header = () => {
+  const toggleSidebar = useSetAtom(auctionSidebarAtom)
+  const [platform, setPlatform] = useAtom(auctionPlatformAtom)
+
+  return (
+    <Box variant="layout.verticalAlign">
+      <Button small onClick={() => setPlatform(AuctionPlatform.Batch)}>
+        <Trans>Batch auctions</Trans>
+      </Button>
+      <Button small onClick={() => setPlatform(AuctionPlatform.Dutch)}>
+        <Trans>Dutch auctions</Trans>
+      </Button>
+    </Box>
+  )
+}
 
 const Auctions = () => {
-  const rToken = useRToken()
-  const [sidebar, setSidebar] = useAtom(auctionSidebarAtom)
+  const platform = useAtomValue(auctionPlatformAtom)
 
   return (
     <>
-      <TradesUpdater />
-      <Container>
-        <Box
-          px={4}
-          pb={7}
-          mt={2}
-          mb={6}
-          variant="layout.verticalAlign"
-          sx={{ borderBottom: '1px dashed', borderBottomColor: 'border' }}
-        >
-          <Box>
-            <Text variant="pageTitle">
-              {rToken?.symbol || ''} related Auctions
-            </Text>
-          </Box>
-          <SmallButton
-            ml="auto"
-            variant="muted"
-            onClick={() => setSidebar(true)}
-          >
-            <Trans>Check for auctions</Trans>
-          </SmallButton>
-        </Box>
-        <OngoingAuctions mb={6} />
-        <FinalizedAuctions />
+      <Box variant="layout.container">
+        <Header />
+        <Divider my={4} />
+        {platform === AuctionPlatform.Batch ? (
+          <BatchAuctions />
+        ) : (
+          <DutchAuctions />
+        )}
         <Divider my={6} />
         <About />
-        {sidebar && <AuctionsSidebar onClose={() => setSidebar(false)} />}
-      </Container>
+      </Box>
+      <AuctionsSidebar />
     </>
   )
 }

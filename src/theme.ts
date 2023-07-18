@@ -457,6 +457,12 @@ export const theme: Theme = {
     },
   },
   layout: {
+    container: {
+      boxSizing: 'border-box',
+      flexShrink: 0,
+      paddingX: [1, 3],
+      paddingY: [1, 6],
+    },
     borderBox: {
       border: '1px solid',
       borderColor: 'border',

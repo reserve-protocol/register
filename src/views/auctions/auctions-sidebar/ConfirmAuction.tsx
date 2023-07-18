@@ -1,9 +1,10 @@
 import TransactionButton from 'components/button/TransactionButton'
 import useWatchTransaction from 'hooks/useWatchTransaction'
-import { atom, useAtomValue } from 'jotai'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { Box } from 'theme-ui'
 import {
+  auctionSidebarAtom,
   auctionsOverviewAtom,
   auctionsToSettleAtom,
   selectedAuctionsAtom,
@@ -30,15 +31,16 @@ const confirmButtonLabelAtom = atom((get) => {
   return label
 })
 
-const ConfirmAuction = ({ onClose }: { onClose(): void }) => {
+const ConfirmAuction = () => {
   const { isReady, write, hash, gas, isLoading } = useAuctions()
   const { status } = useWatchTransaction({ hash, label: 'Run auctions' })
+  const closeSidebar = useSetAtom(auctionSidebarAtom)
 
   const btnLabel = useAtomValue(confirmButtonLabelAtom)
 
   useEffect(() => {
     if (status === 'success') {
-      onClose()
+      closeSidebar()
     }
   }, [status])
 

@@ -27,8 +27,5 @@ yarn-debug.log*
 yarn-error.log*
 /.env
 
-# Local Netlify folder
-.netlify
-
 # Visual Studio Code
-.vscode
+.vscode/*

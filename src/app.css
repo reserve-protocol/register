@@ -2,6 +2,7 @@ html,
 body {
   height: 100%;
   position: relative;
+  font-display: swap;
 }
 
 #root {
