@@ -4,7 +4,6 @@ import { collateralYieldAtom } from 'state/atoms'
 import useSWR from 'swr'
 import { StringMap } from 'types'
 
-// TODO add eusdFRAXBP when live on DefiLlama
 const poolsMap: StringMap = {
   '405d8dad-5c99-4c91-90d3-82813ade1ff1': 'sadai',
   'a349fea4-d780-4e16-973e-70ca9b606db2': 'sausdc',
@@ -25,6 +24,7 @@ const poolsMap: StringMap = {
   '8a20c472-142c-4442-b724-40f2183c073e': 'stkcvxmim-3lp3crv-f',
   'ad3d7253-fb8f-402f-a6f8-821bc0a055cb': 'stkcvxcrv3crypto',
   '7394f1bc-840a-4ff0-9e87-5e0ef932943a': 'stkcvx3crv',
+  'c04005c9-7e34-41a6-91c4-295834ed8ac0': 'stkcvxeusd3crv-f',
 }
 
 const CollateralYieldUpdater = () => {
@@ -43,7 +43,10 @@ const CollateralYieldUpdater = () => {
         }
       }
 
-      setCollateralYield({ ...collateralYield, ...poolYield })
+      setCollateralYield({
+        ...collateralYield,
+        ...poolYield,
+      })
     }
   }, [data])
 

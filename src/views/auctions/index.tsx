@@ -1,5 +1,5 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { Box, Divider } from 'theme-ui'
+import { Box, Divider, Text } from 'theme-ui'
 import {
   AuctionPlatform,
   auctionPlatformAtom,
@@ -19,11 +19,16 @@ const Header = () => {
 
   return (
     <Box variant="layout.verticalAlign">
-      <Button small onClick={() => setPlatform(AuctionPlatform.Batch)}>
+      <Button small onClick={() => setPlatform(AuctionPlatform.Batch)} mx={3}>
         <Trans>Batch auctions</Trans>
       </Button>
       <Button small onClick={() => setPlatform(AuctionPlatform.Dutch)}>
         <Trans>Dutch auctions</Trans>
+      </Button>
+      <Button ml="auto" mr={3} variant="muted" small onClick={toggleSidebar}>
+        <Text>
+          <Trans>Check for auctions</Trans>
+        </Text>
       </Button>
     </Box>
   )

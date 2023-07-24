@@ -18,12 +18,12 @@ const { chains, publicClient } = configureChains(
   [mainnet, optimism],
   [
     // alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY }),
-    jsonRpcProvider({
-      rpc: (chain) => ({
-        http: `https://rpc.tenderly.co/fork/6805d14a-cd3b-4cf0-8ae0-444a42c39539`,
-      }),
-    }),
-    // publicProvider(),
+    // jsonRpcProvider({
+    //   rpc: (chain) => ({
+    //     http: `https://rpc.tenderly.co/fork/6805d14a-cd3b-4cf0-8ae0-444a42c39539`,
+    //   }),
+    // }),
+    publicProvider(),
   ]
 )
 
