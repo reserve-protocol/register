@@ -4,6 +4,7 @@ import { HashRouter as Router, Route, Routes } from 'react-router-dom'
 import Updater from 'state/updater'
 import Web3Provider from 'state/web3'
 import { ThemeProvider } from 'theme-ui'
+import mixpanel from 'mixpanel-browser'
 import { ROUTES } from 'utils/constants'
 import Auctions from 'views/auctions'
 import Deploy from 'views/deploy'
@@ -25,6 +26,10 @@ import React, { Suspense } from 'react'
 import IssuanceFallback from 'views/issuance/IssuanceFallback'
 
 const Issuance = React.lazy(() => import('./views/issuance'))
+mixpanel.init(process.env.REACT_APP_MIXPANEL_KEY || 'mixpanel_key', {
+  debug: true,
+  track_pageview: true,
+})
 
 /**
  * App Entry point - Handles views routing

@@ -1,4 +1,5 @@
 import { t } from '@lingui/macro'
+import mixpanel from 'mixpanel-browser'
 import { Table, TableProps } from 'components/table'
 import TokenItem from 'components/token-item'
 import { getRTokenLogo } from 'hooks/useRTokenLogo'
@@ -76,6 +77,10 @@ const ListedTokensTable = (
   )
 
   const handleClick = (data: any) => {
+    mixpanel.track('Selected RToken', {
+      Source: 'Comparison Table',
+      RToken: data.id,
+    })
     navigate(`/overview?token=${data.id}`)
     document.getElementById('app-container')?.scrollTo(0, 0)
   }

@@ -5,6 +5,7 @@ import { useAtom, useAtomValue } from 'jotai'
 import { useSetAtom } from 'jotai'
 import { useState } from 'react'
 import { Card } from 'theme-ui'
+import mixpanel from 'mixpanel-browser'
 import {
   issueAmountAtom,
   isValidIssuableAmountAtom,
@@ -45,7 +46,12 @@ const Issue = () => {
           disabled={!isValid || issuing}
           variant={missingCollateral ? 'error' : 'primary'}
           mt={3}
-          onClick={() => setIssuing(true)}
+          onClick={() => {
+            mixpanel.track('Clicked Mint', {
+              RToken: rToken?.address.toLowerCase() ?? '',
+            })
+            setIssuing(true)
+          }}
         >
           {missingCollateral ? (
             <Trans>Missing collateral</Trans>
