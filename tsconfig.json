@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "src",
     "target": "esnext",
-    "lib": ["dom", "dom.iterable",  "es2020", "esnext"],
+    "lib": ["dom", "dom.iterable", "es2020", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
