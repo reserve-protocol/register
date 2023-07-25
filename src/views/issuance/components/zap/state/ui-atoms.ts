@@ -241,6 +241,7 @@ const zapEnabledForRTokens = new Set<string>([
   '0xe72b141df173b999ae7c1adcbf60cc9833ce56a8',
   '0xacdf0dba4b9839b96221a8487e9ca660a48212be',
   '0xf2098092a5b9d25a3cc7ddc76a0553c9922eea9e',
+  '0x9b451beb49a03586e6995e5a93b9c745d068581e'
 ])
 
 export const zapEnabledAtom = atomWithStorage('zap-enabled', false)
