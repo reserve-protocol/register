@@ -36,6 +36,8 @@ const Approval = ({
     args: [spender, amount],
   })
 
+  const checkingAllowance = !gas.isLoading && !gas.estimateUsd
+
   return (
     <>
       <Divider sx={{ borderColor: 'darkBorder' }} mx={-4} my={4} />
@@ -43,8 +45,12 @@ const Approval = ({
         loading={isLoading || !!hash}
         loadingText={hash ? 'Waiting for allowance...' : 'Sign in wallet...'}
         onClick={write}
-        disabled={!write}
-        text={`Allow use of ${symbol}`}
+        disabled={!write || checkingAllowance}
+        text={
+          checkingAllowance
+            ? `Verifying allowance...`
+            : `Allow use of ${symbol}`
+        }
         fullWidth
         gas={gas}
       />

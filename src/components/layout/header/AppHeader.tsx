@@ -7,6 +7,8 @@ import useIsDeployer from 'hooks/useIsDeployer'
 import { Box, Flex, Text } from 'theme-ui'
 import Brand from './Brand'
 import TokenToggle from './TokenToggle'
+import { useSwitchNetwork } from 'wagmi'
+import { useEffect } from 'react'
 
 const Container = styled(Flex)`
   align-items: center;
@@ -18,11 +20,24 @@ const Container = styled(Flex)`
   height: 72px;
 `
 
+const ChainSelector = () => {}
+
 /**
  * Application header
  */
 const AppHeader = () => {
   const isDeployer = useIsDeployer()
+
+  const { chains, error, isLoading, pendingChainId, switchNetwork } =
+    useSwitchNetwork()
+
+  // useEffect(() => {
+  //   if (switchNetwork) {
+  //     switchNetwork(84531)
+  //   }
+  // }, [switchNetwork])
+
+  console.log('chains', chains)
 
   return (
     <Container

@@ -1,5 +1,5 @@
 import ModalAlert from 'components/modal/ModalAlert'
-import { Text } from 'theme-ui'
+import { Box, Text } from 'theme-ui'
 
 const TransactionError = ({
   onClose,
@@ -14,9 +14,14 @@ const TransactionError = ({
     <Text mb={2} variant="title">
       {title}
     </Text>
-    <Text mb={4} variant="legend">
-      {subtitle}
-    </Text>
+    <Box
+      sx={{ position: 'relative', fontSize: 0, wordBreak: 'break-word' }}
+      p={4}
+    >
+      <Text mb={4} as="code" variant="legend">
+        {subtitle}
+      </Text>
+    </Box>
   </ModalAlert>
 )
 
