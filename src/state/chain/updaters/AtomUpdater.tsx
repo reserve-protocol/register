@@ -52,7 +52,6 @@ const AtomUpdater = () => {
   }, [walletClient])
 
   useEffect(() => {
-    console.log('publicclient', publicClient)
     setPublicClient(publicClient ? publicClient : undefined)
   }, [publicClient])
 
