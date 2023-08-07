@@ -62,6 +62,8 @@ export interface Trade {
   worstCasePrice: number
 }
 
+export interface DutchTrade extends Trade {}
+
 export const tradesAtom = atom<{ current: Trade[]; ended: Trade[] }>({
   current: [],
   ended: [],

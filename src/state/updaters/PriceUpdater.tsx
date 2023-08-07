@@ -59,7 +59,7 @@ const PricesUpdater = () => {
   useEffect(() => {
     if (multicallResult?.data) {
       setRSRPrice(+formatUnits((multicallResult?.data as any)[0][1], 8))
-      setEthPrice(+formatUnits((multicallResult?.data as any)[0][1], 8))
+      setEthPrice(+formatUnits((multicallResult?.data as any)[1][1], 8))
     }
   }, [multicallResult])
 

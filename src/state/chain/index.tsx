@@ -7,7 +7,6 @@ import '@rainbow-me/rainbowkit/styles.css'
 import { alchemyProvider } from '@wagmi/core/providers/alchemy'
 import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc'
 import { publicProvider } from '@wagmi/core/providers/public'
-import UpdateOracles from 'dev/UpdateOracles'
 import React from 'react'
 import { WagmiConfig, configureChains, createConfig } from 'wagmi'
 import { baseGoerli, mainnet } from 'wagmi/chains'
@@ -57,10 +56,11 @@ const ChainProvider = ({ children }: { children: React.ReactNode }) => (
       })}
     >
       <AtomUpdater />
-      {isTenderlyEnv && <UpdateOracles />}
       {children}
     </RainbowKitProvider>
   </WagmiConfig>
 )
 
 export default ChainProvider
+
+// {isTenderlyEnv && <UpdateOracles />}

@@ -1,7 +1,13 @@
 import { Box } from 'theme-ui'
+import DutchAuction from './components/DutchAuction'
+import OngoingDutchAuctions from './components/OngoingDutchAuctions'
 
 const DutchAuctions = () => {
-  return <Box></Box>
+  return (
+    <Box>
+      <OngoingDutchAuctions />
+    </Box>
+  )
 }
 
 export default DutchAuctions

@@ -2,17 +2,29 @@ import { SVGProps } from 'react'
 
 const CalculatorIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
-    width={24}
-    height={24}
-    fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    width="1em"
+    height="1em"
+    fill="none"
     {...props}
   >
     <path
-      d="M16.5 3h-9A1.5 1.5 0 0 0 6 4.5v15A1.5 1.5 0 0 0 7.5 21h9a1.5 1.5 0 0 0 1.5-1.5v-15A1.5 1.5 0 0 0 16.5 3ZM9 18h.75M14.25 18H15M11.625 18h.75M9 15h.75M14.25 15H15M11.625 15h.75M9 12h.75M14.25 12H15M11.625 12h.75M6 9h12"
       stroke="currentColor"
-      strokeWidth={0.5}
       strokeMiterlimit={10}
+      strokeWidth={0.6}
+      d="M8.813.75H3.186c-.517 0-.937.392-.937.875v8.75c0 .483.42.875.938.875h5.624c.518 0 .938-.392.938-.875v-8.75c0-.483-.42-.875-.938-.875Z"
+    />
+    <path
+      stroke="currentColor"
+      strokeMiterlimit={10}
+      strokeWidth={0.703}
+      d="M4.125 9.638h.469M7.406 9.638h.469M5.766 9.638h.468M4.125 7.95h.469M7.406 7.95h.469M5.766 7.95h.468M4.125 6.263h.469M7.406 6.263h.469M5.766 6.263h.468"
+    />
+    <path
+      stroke="currentColor"
+      strokeMiterlimit={10}
+      strokeWidth={0.6}
+      d="M2.25 4.612h7.5"
     />
   </svg>
 )

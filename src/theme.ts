@@ -463,6 +463,12 @@ export const theme: Theme = {
       paddingX: [1, 3],
       paddingY: [1, 6],
     },
+    containerCompact: {
+      boxSizing: 'border-box',
+      flexShrink: 0,
+      paddingX: [1, 6, 6, 8],
+      paddingY: [1, 6],
+    },
     borderBox: {
       border: '1px solid',
       borderColor: 'border',

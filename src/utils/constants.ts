@@ -82,3 +82,7 @@ export const capitalize = (str: string) =>
 
 export const formatConstant = (str: string) =>
   capitalize(str.toLowerCase().replaceAll('_', ' '))
+
+export const blockDuration = {
+  [ChainId.Mainnet]: 12,
+}

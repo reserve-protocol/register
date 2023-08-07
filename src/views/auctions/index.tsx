@@ -39,7 +39,7 @@ const Auctions = () => {
 
   return (
     <>
-      <Box variant="layout.container">
+      <Box variant="layout.containerCompact">
         <Header />
         <Divider my={4} />
         {platform === AuctionPlatform.Batch ? (
