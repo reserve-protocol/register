@@ -5,30 +5,27 @@ import {
 } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
 import { alchemyProvider } from '@wagmi/core/providers/alchemy'
-import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc'
 import { publicProvider } from '@wagmi/core/providers/public'
 import React from 'react'
-import { WagmiConfig, configureChains, createConfig } from 'wagmi'
+import { Chain, WagmiConfig, configureChains, createConfig } from 'wagmi'
 import { baseGoerli, mainnet } from 'wagmi/chains'
 import AtomUpdater from './updaters/AtomUpdater'
 
-const isTenderlyEnv = !!(
-  import.meta.env.DEV && import.meta.env.VITE_TENDERLY_URL
-)
+// Mainnet fork
+export const tenderly = {
+  ...mainnet,
+  id: 3,
+  name: 'Tenderly',
+  network: 'tenderly',
+  rpcUrls: {
+    public: { http: [import.meta.env.VITE_TENDERLY_URL] },
+    default: { http: [import.meta.env.VITE_TENDERLY_URL] },
+  },
+} as const satisfies Chain
 
 const { chains, publicClient } = configureChains(
-  [mainnet, baseGoerli],
-  [
-    isTenderlyEnv
-      ? jsonRpcProvider({
-          rpc: (chain) => ({
-            // TODO: For multichain support we may also want tenderly fork for every chain
-            http: import.meta.env.VITE_TENDERLY_URL,
-          }),
-        })
-      : alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY }),
-    publicProvider(),
-  ]
+  [mainnet, tenderly, baseGoerli],
+  [alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY }), publicProvider()]
 )
 
 const { connectors } = getDefaultWallets({
@@ -62,5 +59,3 @@ const ChainProvider = ({ children }: { children: React.ReactNode }) => (
 )
 
 export default ChainProvider
-
-// {isTenderlyEnv && <UpdateOracles />}

@@ -83,15 +83,11 @@ const Modal = ({ children, ...props }: ModalProps) => {
     const keyDownHandler = (event: any) => {
       if (event.key === 'Escape') {
         event.preventDefault()
-
-        // 👇️ your logic here
         props.onClose?.()
       }
     }
 
     document.addEventListener('keydown', keyDownHandler)
-
-    // 👇️ clean up event listener
     return () => {
       document.removeEventListener('keydown', keyDownHandler)
     }

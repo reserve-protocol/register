@@ -37,6 +37,11 @@ export enum AuctionPlatform {
   Dutch,
 }
 
+export enum Tradekind {
+  DutchTrade,
+  BatchTrade,
+}
+
 export const AUCTION_TYPES = {
   REVENUE: 'Revenue' as AuctionType,
   BACKING: 'Recollaterization' as AuctionType,
@@ -52,7 +57,7 @@ export interface AuctionToSettle {
 export interface Trade {
   id: string
   amount: number
-  auctionId: number
+  auctionId?: number
   buying: string
   buyingTokenSymbol: string
   sellingTokenSymbol: string
