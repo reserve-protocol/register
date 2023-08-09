@@ -28,6 +28,7 @@ const tradesQuery = gql`
     }
     ended: trades(
       where: { endAt_lte: $time, rToken: $id }
+      first: 50
       orderBy: startedAt
       orderDirection: desc
     ) {

@@ -25,7 +25,7 @@ const OngoingDutchAuctions = () => {
         <Trans>Ongoing dutch auctions</Trans>
       </Text>
       {mockData.map((trade) => (
-        <DutchAuction data={trade} />
+        <DutchAuction key={trade.id} data={trade} />
       ))}
     </Box>
   )
