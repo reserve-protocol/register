@@ -1,8 +1,7 @@
 import {
-  base,
-  contracts,
-  entities,
-  searcher,
+  Address,
+  Token,
+  Searcher,
 } from '@reserve-protocol/token-zapper'
 import {
   PERMIT2_ADDRESS,
@@ -48,7 +47,7 @@ export const zapInputString = atomWithOnWrite('', (_, set, __) => {
   set(permitSignature, null)
 })
 export const tokenToZapUserSelected = atomWithOnWrite(
-  null as entities.Token | null,
+  null as Token | null,
   (_, set, prev, next) => {
     if (prev !== next) {
       set(zapInputString, '')
@@ -88,13 +87,13 @@ export const selectedZapTokenAtom = atom(
 export const zapSender = atom((get) => {
   const account = get(walletAtom)
   try {
-    return account ? base.Address.from(account) : null
+    return account ? Address.from(account) : null
   } catch (e) {
     return null
   }
 })
 
-const senderOrNullAddress = atom((get) => get(zapSender) ?? base.Address.ZERO)
+const senderOrNullAddress = atom((get) => get(zapSender) ?? Address.ZERO)
 const parsedUserInput = onlyNonNullAtom((get) =>
   get(selectedZapTokenAtom).fromDecimal(get(zapInputString))
 )
@@ -107,9 +106,9 @@ export const zapperInputs = simplifyLoadable(
       const universe = get(resolvedZapState)
       return {
         tokenToZap: selectedZapToken,
-        rToken: await universe.getToken(base.Address.from(rToken.address)),
+        rToken: await universe.getToken(Address.from(rToken.address)),
         universe: universe,
-        zapSearcher: new searcher.Searcher(universe),
+        zapSearcher: new Searcher(universe),
       }
     })
   )
@@ -152,7 +151,7 @@ export const zapQuotePromise = loadable(
           get(tradeSlippage)
         )
       } catch (e) {}
-      await base.wait(1000)
+      await new Promise((resolve) => setTimeout(resolve, 1000))
       firstTime = false
     }
     const a = input.zapSearcher.findSingleInputToRTokenZap(
@@ -187,7 +186,7 @@ export const approvalNeededAtom = loadable(
     get(approvalRandomId)
 
     let approvalNeeded = false
-    let spender = base.Address.from(universe.config.addresses.zapperAddress)
+    let spender = Address.from(universe.config.addresses.zapperAddress)
     let usingPermit2 = false
     if (token !== universe.nativeToken) {
       if (
@@ -195,21 +194,23 @@ export const approvalNeededAtom = loadable(
         !(
           (input.amount === 0n ? 2n ** 64n : input.amount) >
           (
-            await contracts.IERC20__factory.connect(
-              token.address.address,
-              universe.provider
-            ).allowance(user.address, PERMIT2_ADDRESS)
+            await universe.approvalsStore.queryAllowance(
+              token,
+              user,
+              Address.from(PERMIT2_ADDRESS)
+            )
           ).toBigInt()
         )
       ) {
-        spender = base.Address.from(PERMIT2_ADDRESS)
+        spender = Address.from(PERMIT2_ADDRESS)
         usingPermit2 = true
         approvalNeeded = false
       } else {
-        const allowance = await contracts.IERC20__factory.connect(
-          token.address.address,
-          universe.provider
-        ).allowance(user.address, spender.address)
+        const allowance = await universe.approvalsStore.queryAllowance(
+          token,
+          user,
+          Address.from(PERMIT2_ADDRESS)
+        )
         approvalNeeded =
           (input.amount === 0n ? 2n ** 64n : input.amount) >
           allowance.toBigInt()
@@ -224,10 +225,10 @@ export const approvalNeededAtom = loadable(
       universe,
       tx: {
         to: token.address.address,
-        data: erc20Iface.encodeFunctionData('approve', [
+        data: "0x"/*erc20Iface.encodeFunctionData('approve', [
           spender.address,
           user.address,
-        ]),
+        ])*/,
         from: user.address,
       },
     }
@@ -252,7 +253,7 @@ const permit2ToSign = (get: Getter) => {
       amount: qty.inputQuantity.amount,
     },
     // who can transfer the tokens
-    spender: inputs.universe.chainConfig.config.addresses.zapperAddress.address,
+    spender: inputs.universe.config.addresses.zapperAddress.address,
     nonce,
     // signature deadline
     deadline: BigInt(Number.MAX_SAFE_INTEGER),
@@ -269,7 +270,6 @@ const permit2ToSign = (get: Getter) => {
 
 export const permit2ToSignAtom = atom((get) => permit2ToSign(get))
 
-const erc20Iface = contracts.IERC20__factory.createInterface()
 
 export const approvalTxFee = loadable(
   onlyNonNullAtom(async (get) => {
@@ -356,7 +356,7 @@ export const zapTransactionGasEstimateUnits = loadable(
             return out + out / 10n
           })
       } catch (e) {
-        await base.wait(1000)
+        await new Promise((resolve) => setTimeout(resolve, 1000))
         continue
       }
     }
