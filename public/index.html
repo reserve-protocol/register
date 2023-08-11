@@ -27,11 +27,27 @@
     src="https://www.googletagmanager.com/gtag/js?id=G-DMSRQ8XLEE"
   ></script>
   <script>
-    window.dataLayer = window.dataLayer || []
-    function gtag() {
-      dataLayer.push(arguments)
+
+    if(window.location.hostname !== 'localhost') {
+      window.dataLayer = window.dataLayer || []
+      function gtag() {
+        dataLayer.push(arguments)
+      }
+      gtag('js', new Date())
+      gtag('config', 'G-DMSRQ8XLEE')
+
+      const script = document.createElement('script');
+      const apiKey = '65bee0e6cecd71738f85aee5ac2508117f750ccbf74a26986a53ed1a9ce38c13'
+      // Add any configuration parameters you'd like here
+      const config = {} 
+      script.src = 'https://unpkg.com/@arcxmoney/analytics'
+      script.onload = function () {
+        ArcxAnalyticsSdk.init(apiKey, config)
+          .then(function (sdk) {
+            window.arcx = sdk
+          })
+      }
+      document.head.appendChild(script)
     }
-    gtag('js', new Date())
-    gtag('config', 'G-DMSRQ8XLEE')
   </script>
 </html>
