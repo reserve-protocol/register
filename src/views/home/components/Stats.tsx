@@ -5,6 +5,7 @@ import { gql } from 'graphql-request'
 import useDebounce from 'hooks/useDebounce'
 import useQuery from 'hooks/useQuery'
 import { useMemo } from 'react'
+import mixpanel from 'mixpanel-browser'
 import { rpayTransactionsAtom } from 'state/atoms'
 import RSVTxListener from 'state/RSVTxListener'
 
@@ -19,6 +20,8 @@ import { formatCurrency } from 'utils'
 import { PROTOCOL_SLUG, TIME_RANGES } from 'utils/constants'
 import HomeStatsIcon from 'components/icons/HomeStatsIcon'
 import Help from '../../../components/help'
+import { SmallButton } from 'components/button'
+import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 
 // Here you could create a main component that holds all the logic
 const Main = () => {
@@ -135,55 +138,76 @@ const Main = () => {
   }, [data, rpayOverview.txCount, rsrPrice])
 
   // Main token stats in the top grid
-  const MainTokenStats = (props: BoxProps) => {
-    return (
-      <Box
-        px={3}
-        mt={[0, 4]}
-        pb={[5, 0]}
-        sx={(theme: any) => ({
-          borderBottom: ['1px solid', 'none'],
-          borderColor: theme.colors.border,
-        })}
-        {...props}
-      >
-        <HomeStatsIcon />
-        <Flex mt={3} mb={[3, 4]} variant="layout.verticalAlign">
-          <Text mr={3} variant="pageTitle">
-            <Trans>RToken Stats</Trans>
-          </Text>
-          <Help
-            content={t`These stats are across all RTokens on the Reserve Protocol listed by this dApp, including anonymized data from the Reserve Rpay app API.`}
-          />
-        </Flex>
+  const MainTokenStats = (props: BoxProps) => (
+    <Box
+      px={3}
+      mt={[0, 4]}
+      pb={[5, 0]}
+      sx={(theme: any) => ({
+        borderBottom: ['1px solid', 'none'],
+        borderColor: theme.colors.border,
+      })}
+      {...props}
+    >
+      <HomeStatsIcon />
+      <Flex mt={3} mb={[3, 4]} variant="layout.verticalAlign">
+        <Text mr={3} variant="pageTitle">
+          <Trans>RToken Stats</Trans>
+        </Text>
+        <Help
+          content={t`These stats are across all RTokens on the Reserve Protocol listed by this dApp, including anonymized data from the Reserve Rpay app API.`}
+        />
+        <SmallButton
+          ml="auto"
+          variant="muted"
+          onClick={() => {
+            mixpanel.track('Visited Flipside Dashboard', {})
+            window.open(
+              'https://flipsidecrypto.xyz/Meir/r-tokens-overall-dashboard-Wx7xtA',
+              '_blank'
+            )
+          }}
+        >
+          <Flex
+            sx={{
+              alignItems: 'center',
+              flexDirection: 'row',
+            }}
+          >
+            <Trans>View Dashboard</Trans>
+            <Box mt={2} ml={1}>
+              <ExternalArrowIcon />
+            </Box>{' '}
+          </Flex>
+        </SmallButton>
+      </Flex>
+      <Divider {...dividerProps} />
+      <Box>
+        <InfoHeading
+          title={t`Total RToken Market Cap`}
+          subtitle={metrics.totalRTokenUSD}
+          help={t`Includes market cap of all RTokens and RSV.`}
+        />
         <Divider {...dividerProps} />
-        <Box>
-          <InfoHeading
-            title={t`Total RToken Market Cap`}
-            subtitle={metrics.totalRTokenUSD}
-            help={t`Includes market cap of all RTokens and RSV.`}
-          />
-          <Divider {...dividerProps} />
-          <InfoHeading
-            title={t`TVL in Reserve`}
-            help={t`Includes RTokens, staked RSR, and RSV.`}
-            subtitle={metrics.totalValueLockedUSD}
-            {...dividerProps}
-          />
-          <Divider {...dividerProps} />
-          <InfoHeading
-            title={t`Cumulative - Staked RSR income`}
-            subtitle={metrics.cumulativeStakingRevenueUSD}
-          />
-          <Divider {...dividerProps} />
-          <InfoHeading
-            title={t`Cumulative Tx Volume`}
-            subtitle={metrics.cumulativeVolumeUSD}
-          />
-        </Box>
+        <InfoHeading
+          title={t`TVL in Reserve`}
+          help={t`Includes RTokens, staked RSR, and RSV.`}
+          subtitle={metrics.totalValueLockedUSD}
+          {...dividerProps}
+        />
+        <Divider {...dividerProps} />
+        <InfoHeading
+          title={t`Cumulative - Staked RSR income`}
+          subtitle={metrics.cumulativeStakingRevenueUSD}
+        />
+        <Divider {...dividerProps} />
+        <InfoHeading
+          title={t`Cumulative Tx Volume`}
+          subtitle={metrics.cumulativeVolumeUSD}
+        />
       </Box>
-    )
-  }
+    </Box>
+  )
   // Table of recent transactions
   const TransactionsOverview = (props: BoxProps) => {
     const { data } = useQuery(
@@ -255,7 +279,6 @@ const Main = () => {
         }}
         {...props}
       >
-        <Stat title={t`24h Tx Volume`} value={metrics.dailyVolume} />
         <Stat title={t`24h Txs`} value={metrics.dailyTransactionCount} />
         <Stat title={t`Cumulative Txs`} value={metrics.transactionCount} />
         <Stat
