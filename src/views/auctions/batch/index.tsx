@@ -1,6 +1,6 @@
-import FinalizedAuctions from '../components/FinalizedAuctions'
-import OngoingAuctions from '../components/OngoingAuctions'
-import TradesUpdater from '../components/TradesUpdater'
+import FinalizedAuctions from './components/FinalizedAuctions'
+import OngoingAuctions from './components/OngoingAuctions'
+import TradesUpdater from './TradesUpdater'
 
 const BatchAuctions = () => (
   <>

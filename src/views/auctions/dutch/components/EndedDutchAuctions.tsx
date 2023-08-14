@@ -4,6 +4,7 @@ import { useAtomValue } from 'jotai'
 import { Box, BoxProps, Text } from 'theme-ui'
 import useColumns from 'views/auctions/components/useColumns'
 import { endedDutchTradesAtom } from '../atoms'
+import EndedAuctionsSkeleton from 'views/auctions/components/EndedAuctionsSkeleton'
 
 const EndedDutchAuctions = (props: BoxProps) => {
   const columns = useColumns(true)
@@ -17,19 +18,7 @@ const EndedDutchAuctions = (props: BoxProps) => {
       {data.length ? (
         <Table columns={columns} data={data} pagination={{ pageSize: 5 }} />
       ) : (
-        <Box
-          sx={{
-            border: '1px dashed',
-            borderColor: 'border',
-            textAlign: 'center',
-            borderRadius: 16,
-          }}
-          p={6}
-        >
-          <Text variant="legend">
-            <Trans>No ended auctions</Trans>
-          </Text>
-        </Box>
+        <EndedAuctionsSkeleton />
       )}
     </Box>
   )

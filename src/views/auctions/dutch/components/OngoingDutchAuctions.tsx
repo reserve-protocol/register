@@ -3,6 +3,7 @@ import { useAtomValue } from 'jotai'
 import { Box, Text } from 'theme-ui'
 import { ongoingDutchTradesAtom } from '../atoms'
 import DutchAuction from './DutchAuction'
+import OngoingAuctionsSkeleton from 'views/auctions/components/OngoingAuctionsSkeleton'
 
 const OngoingDutchAuctions = () => {
   const trades = useAtomValue(ongoingDutchTradesAtom)
@@ -15,21 +16,7 @@ const OngoingDutchAuctions = () => {
       {trades.map((trade) => (
         <DutchAuction key={trade.id} data={trade} />
       ))}
-      {!trades.length && (
-        <Box
-          sx={{
-            border: '1px dashed',
-            borderColor: 'border',
-            textAlign: 'center',
-            borderRadius: 16,
-          }}
-          p={6}
-        >
-          <Text variant="legend">
-            <Trans>No ongoing auctions</Trans>
-          </Text>
-        </Box>
-      )}
+      {!trades.length && <OngoingAuctionsSkeleton />}
     </Box>
   )
 }

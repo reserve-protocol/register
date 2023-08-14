@@ -2,8 +2,9 @@ import { Trans } from '@lingui/macro'
 import { Table } from 'components/table'
 import { useAtomValue } from 'jotai'
 import { Box, BoxProps, Text } from 'theme-ui'
-import { endedTradesAtom } from '../atoms'
-import useColumns from './useColumns'
+import { endedTradesAtom } from '../../atoms'
+import EndedAuctionsSkeleton from '../../components/EndedAuctionsSkeleton'
+import useColumns from '../../components/useColumns'
 
 const FinalizedAuctions = (props: BoxProps) => {
   const columns = useColumns(true)
@@ -17,19 +18,7 @@ const FinalizedAuctions = (props: BoxProps) => {
       {data.length ? (
         <Table columns={columns} data={data} pagination={{ pageSize: 5 }} />
       ) : (
-        <Box
-          sx={{
-            border: '1px dashed',
-            borderColor: 'border',
-            textAlign: 'center',
-            borderRadius: 16,
-          }}
-          p={6}
-        >
-          <Text variant="legend">
-            <Trans>No ended auctions</Trans>
-          </Text>
-        </Box>
+        <EndedAuctionsSkeleton />
       )}
     </Box>
   )
