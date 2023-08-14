@@ -31,10 +31,10 @@ export const defaultValues = {
   auctionLength: '900',
   backingBuffer: '0.1', // 0.1%
   maxTradeSlippage: '0.5', // 0.5%
-  issuanceThrottleAmount: '1000000', // Anticipated redemption minimum amount for throttling
-  issuanceThrottleRate: '2.5', // 2.5% per hour
-  redemptionThrottleAmount: '2000000',
-  redemptionThrottleRate: '5',
+  issuanceThrottleAmount: '250000', // Anticipated redemption minimum amount for throttling
+  issuanceThrottleRate: '5', // 2.5% per hour
+  redemptionThrottleAmount: '500000',
+  redemptionThrottleRate: '7.5',
   // other
   rewardRatio: '0.0000032090147',
   unstakingDelay: '1209600',

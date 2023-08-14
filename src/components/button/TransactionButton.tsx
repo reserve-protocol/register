@@ -5,8 +5,11 @@ import { useAtomValue } from 'jotai'
 import { walletAtom } from 'state/atoms'
 import { Box, Spinner, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { useBalance } from 'wagmi'
+import { UsePrepareContractWriteConfig, useBalance } from 'wagmi'
 import Button, { ButtonProps, LoadingButton, LoadingButtonProps } from '.'
+import useContractWrite from 'hooks/useContractWrite'
+import useWatchTransaction from 'hooks/useWatchTransaction'
+import { useEffect } from 'react'
 
 interface TransactionButtonProps extends LoadingButtonProps {
   gas?: GasEstimation
@@ -73,6 +76,55 @@ const TransactionButton = ({
       <LoadingButton {...props} />
       {!!gas && <GasEstimateLabel gas={gas} />}
     </>
+  )
+}
+
+// Execute tx and forget type of button
+interface ExecuteButtonProps extends LoadingButtonProps {
+  call: UsePrepareContractWriteConfig | undefined
+  txLabel?: string
+  successLabel?: string
+  onSuccess?(): void
+}
+
+export const ExecuteButton = ({
+  call,
+  onSuccess,
+  txLabel,
+  successLabel,
+  disabled,
+  ...props
+}: ExecuteButtonProps) => {
+  const { write, hash, isLoading, isReady } = useContractWrite(call)
+  const { isMining, status } = useWatchTransaction({
+    hash,
+    label: txLabel || props.text,
+  })
+
+  if (isMining) {
+    props.loadingText = t`Tx in process...`
+  }
+
+  useEffect(() => {
+    if (status === 'success' && onSuccess) {
+      onSuccess()
+    }
+  }, [status])
+
+  if (status === 'success') {
+    if (!successLabel) {
+      return null
+    }
+    props.text = successLabel
+  }
+
+  return (
+    <LoadingButton
+      loading={isLoading || isMining}
+      disabled={status === 'success' || disabled || !isReady}
+      onClick={write}
+      {...props}
+    />
   )
 }
 

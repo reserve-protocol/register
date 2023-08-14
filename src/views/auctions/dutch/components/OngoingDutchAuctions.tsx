@@ -1,30 +1,18 @@
 import { Trans } from '@lingui/macro'
+import { useAtomValue } from 'jotai'
 import { Box, Text } from 'theme-ui'
-import { DutchTrade } from 'views/auctions/atoms'
+import { ongoingDutchTradesAtom } from '../atoms'
 import DutchAuction from './DutchAuction'
 
-const mockData: DutchTrade[] = [
-  {
-    id: '123',
-    amount: 123,
-    auctionId: 123, // Dont know about this, related to gnosis
-    buying: 'rsrContract',
-    buyingTokenSymbol: 'RSR',
-    sellingTokenSymbol: 'cUSDC',
-    endAt: 12345,
-    selling: 'cUSDC contract',
-    startedAt: 12,
-    worstCasePrice: 123,
-  },
-]
-
 const OngoingDutchAuctions = () => {
+  const trades = useAtomValue(ongoingDutchTradesAtom)
+
   return (
     <Box>
       <Text variant="strong" ml={4} mb={4}>
         <Trans>Ongoing dutch auctions</Trans>
       </Text>
-      {mockData.map((trade) => (
+      {trades.map((trade) => (
         <DutchAuction key={trade.id} data={trade} />
       ))}
     </Box>

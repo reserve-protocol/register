@@ -3,6 +3,7 @@ import DutchAuction from './components/DutchAuction'
 import OngoingDutchAuctions from './components/OngoingDutchAuctions'
 import { gql } from 'graphql-request'
 import { Button } from 'components'
+import useDutchTrades from './components/useDutchTrades'
 
 const tradesQuery = gql`
   query Trades($id: String!, $time: Int!) {
@@ -42,6 +43,8 @@ const tradesQuery = gql`
 `
 
 const DutchAuctions = () => {
+  useDutchTrades()
+
   return (
     <Box>
       <OngoingDutchAuctions />

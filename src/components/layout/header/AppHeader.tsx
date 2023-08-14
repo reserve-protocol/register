@@ -7,6 +7,7 @@ import useIsDeployer from 'hooks/useIsDeployer'
 import { Box, Flex, Text } from 'theme-ui'
 import Brand from './Brand'
 import TokenToggle from './TokenToggle'
+import SyncedBlock from 'components/synced-block/SyncedBlock'
 
 const Container = styled(Flex)`
   align-items: center;
@@ -51,6 +52,8 @@ const AppHeader = () => {
         )}
         {!isDeployer && <TokenToggle />}
       </Box>
+      <SyncedBlock mr={6} />
+
       <Flex
         sx={{
           display: ['none', 'flex'],

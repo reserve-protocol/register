@@ -16,6 +16,7 @@ import { ROUTES } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { Address, decodeEventLog } from 'viem'
 import useDeploy from '../useDeploy'
+import TransactionError from 'components/transaction-error/TransactionError'
 
 const Pending = () => (
   <>
@@ -75,7 +76,8 @@ interface Props extends BoxProps {
 const DeployOverview = ({ onDeploy, sx = {}, ...props }: Props) => {
   const navigate = useNavigate()
   const chainId = useAtomValue(chainIdAtom)
-  const { gas, write, isReady, hash, isLoading } = useDeploy()
+  const { gas, write, isReady, hash, validationError, error, isLoading } =
+    useDeploy()
   const { data, status } = useWatchTransaction({
     hash,
     label: 'Deploy RToken',
@@ -158,6 +160,8 @@ const DeployOverview = ({ onDeploy, sx = {}, ...props }: Props) => {
                 onClick={write}
                 gas={gas}
               />
+
+              <TransactionError mt={3} error={validationError || error} />
             </>
           )
         })()}

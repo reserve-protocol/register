@@ -56,6 +56,12 @@ const auctionsTxAtom = atom((get): UsePrepareContractWriteConfig => {
 
   const transactions = ([...traders] as Address[]).reduce(
     (auctions, trader) => {
+      console.log('trades', [
+        trader,
+        traderToSettle[trader] || [],
+        traderAuctions[trader] || [],
+        [TradeKind.DUTCH_AUCTION, TradeKind.DUTCH_AUCTION],
+      ])
       return [
         ...auctions,
         encodeFunctionData({
@@ -65,7 +71,7 @@ const auctionsTxAtom = atom((get): UsePrepareContractWriteConfig => {
             trader,
             traderToSettle[trader] || [],
             traderAuctions[trader] || [],
-            [TradeKind.BATCH_AUCTION, TradeKind.BATCH_AUCTION],
+            [TradeKind.DUTCH_AUCTION],
           ],
         }),
       ]

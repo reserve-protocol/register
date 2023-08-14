@@ -11,7 +11,7 @@ import { tradesAtom } from '../atoms'
 const tradesQuery = gql`
   query Trades($id: String!, $time: Int!) {
     current: trades(
-      where: { endAt_gt: $time, rToken: $id }
+      where: { endAt_gt: $time, rToken: $id, kind: 1 }
       orderBy: startedAt
       orderDirection: desc
     ) {
@@ -27,7 +27,7 @@ const tradesQuery = gql`
       worstCasePrice
     }
     ended: trades(
-      where: { endAt_lte: $time, rToken: $id }
+      where: { endAt_lte: $time, rToken: $id, kind: 1 }
       first: 50
       orderBy: startedAt
       orderDirection: desc
