@@ -15,6 +15,21 @@ const OngoingDutchAuctions = () => {
       {trades.map((trade) => (
         <DutchAuction key={trade.id} data={trade} />
       ))}
+      {!trades.length && (
+        <Box
+          sx={{
+            border: '1px dashed',
+            borderColor: 'border',
+            textAlign: 'center',
+            borderRadius: 16,
+          }}
+          p={6}
+        >
+          <Text variant="legend">
+            <Trans>No ongoing auctions</Trans>
+          </Text>
+        </Box>
+      )}
     </Box>
   )
 }
