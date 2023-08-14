@@ -379,6 +379,13 @@ export const theme: Theme = {
         color: 'white',
       },
     },
+    bordered: {
+      ...baseButton,
+      border: '2px solid',
+      borderColor: 'primary',
+      color: 'primary',
+      backgroundColor: 'transparent',
+    },
     transparent: {
       ...baseButton,
       backgroundColor: 'transparent',

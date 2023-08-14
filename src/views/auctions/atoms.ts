@@ -37,7 +37,7 @@ export enum AuctionPlatform {
   Dutch,
 }
 
-export enum Tradekind {
+export enum TradeKind {
   DutchTrade,
   BatchTrade,
 }
@@ -67,8 +67,6 @@ export interface Trade {
   worstCasePrice: number
 }
 
-export interface DutchTrade extends Trade {}
-
 export const tradesAtom = atom<{ current: Trade[]; ended: Trade[] }>({
   current: [],
   ended: [],
@@ -95,7 +93,7 @@ export const auctionSidebarAtom = atom(
   }
 )
 
-export const auctionPlatformAtom = atom<AuctionPlatform>(AuctionPlatform.Batch)
+export const auctionPlatformAtom = atom<TradeKind>(TradeKind.BatchTrade)
 
 export const accumulatedRevenueAtom = atomWithLoadable(async (get) => {
   get(auctionSessionAtom) // just for refresh sake
