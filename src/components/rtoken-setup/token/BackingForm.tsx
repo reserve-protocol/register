@@ -86,7 +86,7 @@ const BackingForm = (props: BoxProps) => {
       <FormField
         label={t`Issuance throttle amount`}
         placeholder={t`Issuance throttle amount`}
-        help={t`Issuance rate - allows the issuer to limit the amount of RTokens issued per hour. This matters in the event of an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued.`}
+        help={t`Issuance amount - allows the issuer to limit the amount of RTokens issued per hour. This matters in the event of an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued.`}
         mb={3}
         name="issuanceThrottleAmount"
         options={{
@@ -112,7 +112,7 @@ const BackingForm = (props: BoxProps) => {
       <FormField
         label={t`Redemption throttle amount`}
         placeholder={t`Redemption throttle amount`}
-        help={t`Redemption rate - allows the issuer to limit the amount of RTokens redeemed per hour. This matters in the event of an exploit where an attacker tries to redeem RTokens.This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be redeemed.`}
+        help={t`Redemption amount - allows the issuer to limit the amount of RTokens redeemed per hour. This matters in the event of an exploit where an attacker tries to redeem RTokens.This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be redeemed.`}
         name="redemptionThrottleAmount"
         options={{
           required: true,
