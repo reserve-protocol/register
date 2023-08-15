@@ -10,7 +10,7 @@ import {
   accountPositionsAtom,
   accountTokensAtom,
 } from 'state/atoms'
-import { Box, Flex, BoxProps, Divider, Text, Grid } from 'theme-ui'
+import { Box, BoxProps, Divider, Text } from 'theme-ui'
 import {
   formatCurrency,
   formatCurrencyCell,

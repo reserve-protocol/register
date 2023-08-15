@@ -84,6 +84,7 @@ const useTokenList = () => {
   const { data } = useQuery(tokenListQuery, {
     tokenIds: tokenKeys,
     fromTime,
+    chainId,
   })
 
   useEffect(() => {

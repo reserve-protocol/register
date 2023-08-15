@@ -3,7 +3,7 @@ import { gql } from 'graphql-request'
 import useDebounce from 'hooks/useDebounce'
 import useQuery from 'hooks/useQuery'
 import { useMemo } from 'react'
-import { rpayTransactionsAtom } from 'state/atoms'
+import { chainIdAtom, rpayTransactionsAtom } from 'state/atoms'
 import RpayTxListener from 'state/rpay/RpayTxListener'
 
 import { t, Trans } from '@lingui/macro'
@@ -81,11 +81,14 @@ const Main = () => {
       }
     }
   `
+  const chainId = useAtomValue(chainIdAtom)
   const fromTime = useTimeFrom(TIME_RANGES.DAY)
   const { data } = useQuery(protocolMetricsQuery, {
     id: PROTOCOL_SLUG,
     fromTime,
+    chainId,
   })
+
   const rpayOverview = useAtomValue(rpayOverviewAtom)
   const [metrics, setMetrics] = useAtom(rTokenMetricsAtom)
   const rsrPrice = useAtomValue(rsrPriceAtom)

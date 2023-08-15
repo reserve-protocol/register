@@ -1,14 +1,7 @@
 import '@rainbow-me/rainbowkit/styles.css'
 import { useEffect } from 'react'
 
-import {
-  useAccount,
-  useBlockNumber,
-  useNetwork,
-  usePublicClient,
-  useWalletClient,
-} from 'wagmi'
-import { useSetAtom } from 'jotai'
+import { useAtom, useSetAtom } from 'jotai'
 import {
   blockAtom,
   blockTimestampAtom,
@@ -17,12 +10,20 @@ import {
   walletAtom,
   walletClientAtom,
 } from 'state/atoms'
+import {
+  useAccount,
+  useBlockNumber,
+  useNetwork,
+  usePublicClient,
+  useWalletClient,
+} from 'wagmi'
+import { publicClient, wagmiConfig } from '..'
 
 // Keep web3 state in sync with atoms
 const AtomUpdater = () => {
   const { address: account } = useAccount()
   const { data: walletClient } = useWalletClient()
-  const publicClient = usePublicClient()
+  const client = usePublicClient()
   const { data: blockNumber } = useBlockNumber({ watch: true })
   const { chain } = useNetwork()
   // Setters
@@ -30,13 +31,13 @@ const AtomUpdater = () => {
   const setWalletClient = useSetAtom(walletClientAtom)
   const setPublicClient = useSetAtom(publicClientAtom)
   const setBlockNumber = useSetAtom(blockAtom)
-  const setChain = useSetAtom(chainIdAtom)
+  const [chainId, setChain] = useAtom(chainIdAtom)
   const setBlockTimestamp = useSetAtom(blockTimestampAtom)
 
   const fetchTimestamp = async () => {
     try {
-      if (publicClient) {
-        setBlockTimestamp(Number((await publicClient.getBlock()).timestamp))
+      if (client) {
+        setBlockTimestamp(Number((await client.getBlock()).timestamp))
       }
     } catch (e) {
       console.error('error fetching block time', e)
@@ -52,8 +53,8 @@ const AtomUpdater = () => {
   }, [walletClient])
 
   useEffect(() => {
-    setPublicClient(publicClient ? publicClient : undefined)
-  }, [publicClient])
+    setPublicClient(client ? client : undefined)
+  }, [client])
 
   useEffect(() => {
     fetchTimestamp() // update stored block timestamp
@@ -61,8 +62,10 @@ const AtomUpdater = () => {
   }, [blockNumber])
 
   useEffect(() => {
-    if (chain && !chain.unsupported) {
+    // Chain id changed from wallet, react correctly
+    if (chain && chain.id !== chainId && !chain.unsupported) {
       setChain(chain.id)
+      wagmiConfig.setPublicClient(publicClient({ chainId: chain.id }))
     }
   }, [chain])
 

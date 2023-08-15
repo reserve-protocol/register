@@ -8,6 +8,7 @@ import { Box, Flex, Text } from 'theme-ui'
 import Brand from './Brand'
 import TokenToggle from './TokenToggle'
 import SyncedBlock from 'components/synced-block/SyncedBlock'
+import ChainSelector from 'components/chain-selector/ChainSelector'
 
 const Container = styled(Flex)`
   align-items: center;
@@ -18,6 +19,18 @@ const Container = styled(Flex)`
   max-width: 95em;
   height: 72px;
 `
+
+const Divider = () => (
+  <Box
+    mx={4}
+    sx={{
+      backgroundColor: 'inputBorder',
+      width: '1px',
+      height: '16px',
+      display: ['none', 'block'],
+    }}
+  />
+)
 
 /**
  * Application header
@@ -52,8 +65,9 @@ const AppHeader = () => {
         )}
         {!isDeployer && <TokenToggle />}
       </Box>
-      <SyncedBlock mr={6} />
-
+      <SyncedBlock mr={3} />
+      <ChainSelector />
+      <Divider />
       <Flex
         sx={{
           display: ['none', 'flex'],
@@ -68,28 +82,12 @@ const AppHeader = () => {
           <ExternalArrowIcon />
         </Box>
       </Flex>
-      <Box
-        mx={4}
-        sx={{
-          backgroundColor: 'inputBorder',
-          width: '1px',
-          height: '16px',
-          display: ['none', 'block'],
-        }}
-      ></Box>
+      <Divider />
       <ThemeColorMode pt={1} mr={[3, 0]} />
       {/* <Box ml={4} sx={{ alignItems: 'center', display: 'flex' }}>
         <LanguageSelector />
       </Box> */}
-      <Box
-        mx={4}
-        sx={{
-          backgroundColor: 'inputBorder',
-          width: '1px',
-          height: '16px',
-          display: ['none', 'block'],
-        }}
-      ></Box>
+      <Divider />
       <Account />
     </Container>
   )

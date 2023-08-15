@@ -8,7 +8,7 @@ import { alchemyProvider } from '@wagmi/core/providers/alchemy'
 import { publicProvider } from '@wagmi/core/providers/public'
 import React from 'react'
 import { Chain, WagmiConfig, configureChains, createConfig } from 'wagmi'
-import { baseGoerli, mainnet } from 'wagmi/chains'
+import { baseGoerli, mainnet, base } from 'wagmi/chains'
 import AtomUpdater from './updaters/AtomUpdater'
 
 // Mainnet fork
@@ -23,8 +23,8 @@ export const tenderly = {
   },
 } as const satisfies Chain
 
-const { chains, publicClient } = configureChains(
-  [mainnet, tenderly, baseGoerli],
+export const { chains, publicClient } = configureChains(
+  [mainnet, tenderly, base],
   [alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY }), publicProvider()]
 )
 
@@ -34,7 +34,7 @@ const { connectors } = getDefaultWallets({
   chains,
 })
 
-const wagmiConfig = createConfig({
+export const wagmiConfig = createConfig({
   autoConnect: true,
   connectors,
   publicClient,
@@ -44,18 +44,20 @@ const wagmiConfig = createConfig({
  * Wrapper around web3ReactProvider
  * Handles basic logic as well as adds related chain providers
  */
-const ChainProvider = ({ children }: { children: React.ReactNode }) => (
-  <WagmiConfig config={wagmiConfig}>
-    <RainbowKitProvider
-      chains={chains}
-      theme={darkTheme({
-        borderRadius: 'medium',
-      })}
-    >
-      <AtomUpdater />
-      {children}
-    </RainbowKitProvider>
-  </WagmiConfig>
-)
+const ChainProvider = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <WagmiConfig config={wagmiConfig}>
+      <RainbowKitProvider
+        chains={chains}
+        theme={darkTheme({
+          borderRadius: 'medium',
+        })}
+      >
+        <AtomUpdater />
+        {children}
+      </RainbowKitProvider>
+    </WagmiConfig>
+  )
+}
 
 export default ChainProvider

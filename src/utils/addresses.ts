@@ -141,6 +141,7 @@ const defaultTokens = Object.keys(tokenList).filter(
 export const DEFAULT_TOKENS = {
   [ChainId.Mainnet]: defaultTokens,
   [ChainId.Tenderly]: defaultTokens,
+  [ChainId.Base]: [],
   [ChainId.Goerli]: [RSV_ADDRESS[ChainId.Goerli]],
   [ChainId.Hardhat]: [],
 }
