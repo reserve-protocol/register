@@ -1,11 +1,11 @@
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import { VERSION } from 'utils/constants'
+import { Address } from 'viem'
 import rTokenAtom from './rTokenAtom'
 import rTokenBackingDistributionAtom from './rTokenBackingDistributionAtom'
 import rTokenContractsAtom from './rTokenContractsAtom'
 import rTokenRevenueSplitAtom from './rTokenRevenueSplitAtom'
-import { Address, zeroAddress } from 'viem'
 
 export const rTokenStateAtom = atomWithReset({
   tokenSupply: 0,

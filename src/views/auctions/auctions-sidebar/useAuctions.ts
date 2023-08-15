@@ -6,6 +6,7 @@ import { chainIdAtom } from 'state/atoms'
 import { FACADE_ACT_ADDRESS } from 'utils/addresses'
 import { Address, Hex, encodeFunctionData } from 'viem'
 import {
+  auctionPlatformAtom,
   auctionsOverviewAtom,
   auctionsToSettleAtom,
   selectedAuctionsAtom,
@@ -17,12 +18,12 @@ export enum TradeKind {
   BATCH_AUCTION,
 }
 
-// TODO: Add `kind` for 3.0
 const auctionsTxAtom = atom((get): UsePrepareContractWriteConfig => {
   const { revenue = [], recollaterization } = get(auctionsOverviewAtom) || {}
   const chainId = get(chainIdAtom)
   const selectedAuctions = get(selectedAuctionsAtom)
   const auctionsToSettle = get(auctionsToSettleAtom) || []
+  const kind = get(auctionPlatformAtom)
 
   if (recollaterization) {
     return {
@@ -71,7 +72,7 @@ const auctionsTxAtom = atom((get): UsePrepareContractWriteConfig => {
             trader,
             traderToSettle[trader] || [],
             traderAuctions[trader] || [],
-            [TradeKind.DUTCH_AUCTION],
+            new Array(traderAuctions[trader]?.length ?? 0).fill(kind),
           ],
         }),
       ]
