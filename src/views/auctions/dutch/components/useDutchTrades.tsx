@@ -33,7 +33,7 @@ const ongoingTradesQuery = gql`
 
 const endedTradesQuery = gql`
   query EndedDutchTrades($id: String!, $block: Int!) {
-    trades(
+    ended: trades(
       where: { rToken: $id, kind: 0, endBlock_lte: $block }
       orderBy: startBlock
       orderDirection: desc
@@ -51,6 +51,27 @@ const endedTradesQuery = gql`
       endBlock
       isSettled
       settleTxHash
+      kind
+    }
+    settled: trades(
+      where: { rToken: $id, kind: 0, endBlock_gt: $block, isSettled: true }
+      orderBy: startBlock
+      orderDirection: desc
+    ) {
+      id
+      amount
+      buying
+      buyingTokenSymbol
+      sellingTokenSymbol
+      endAt
+      selling
+      startedAt
+      worstCasePrice
+      startBlock
+      endBlock
+      isSettled
+      settleTxHash
+      kind
     }
   }
 `
@@ -91,13 +112,13 @@ const useDutchTrades = () => {
 
   useEffect(() => {
     if (data) {
-      setOngoingTrades(data.trades ?? [])
+      setOngoingTrades(data.trades)
     }
   }, [JSON.stringify(data)])
 
   useEffect(() => {
     if (endedData) {
-      setEndedTrades(endedData.trades ?? [])
+      setEndedTrades([...endedData.settled, ...endedData.ended])
     }
   }, [endedData])
 }

@@ -25,6 +25,7 @@ const tradesQuery = gql`
       selling
       startedAt
       worstCasePrice
+      kind
     }
     ended: trades(
       where: { endAt_lte: $time, rToken: $id, kind: 1 }
@@ -42,6 +43,7 @@ const tradesQuery = gql`
       selling
       startedAt
       worstCasePrice
+      kind
     }
   }
 `

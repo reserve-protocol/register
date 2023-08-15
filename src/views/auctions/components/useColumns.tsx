@@ -6,6 +6,10 @@ import { useMemo } from 'react'
 import { ArrowUpRight } from 'react-feather'
 import { Box, Flex, Link, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
+import { auctionSidebarAtom, TradeKind } from '../atoms'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { chainIdAtom } from 'state/atoms'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
 const getGnosisAuction = (auctionId: string): string => {
   return `https://gnosis-auction.eth.link/#/auction?auctionId=${auctionId}&chainId=1`
@@ -47,20 +51,53 @@ const useColumns = (ended = false) => {
         ),
       },
       {
-        Header: () => <Box sx={{ textAlign: 'right' }}>Auction link</Box>,
-        accessor: 'auctionId',
-        Cell: (cell: any) => (
-          <Flex sx={{ justifyContent: 'right' }}>
-            <Link href={getGnosisAuction(cell.cell.value)} target="_blank">
-              <SmallButton variant="muted">
+        Header: () => null,
+        accessor: 'id',
+        Cell: (cell: any) => {
+          const setSidebar = useSetAtom(auctionSidebarAtom)
+          const chainId = useAtomValue(chainIdAtom)
+          const isDutch = cell.row.original.kind === TradeKind.DutchTrade
+          let text = 'Auction'
+
+          if (isDutch) {
+            if (cell.row.original.isSettled) {
+              text = 'View settle tx'
+            } else {
+              text = 'Settle'
+            }
+          }
+
+          const handleClick = () => {
+            if (isDutch && !cell.row.original.isSettled) {
+              setSidebar(true)
+            } else if (cell.row.original.isSettled) {
+              window.open(
+                getExplorerLink(
+                  cell.row.original.settleTxHash,
+                  chainId,
+                  ExplorerDataType.TRANSACTION
+                ),
+                '_blank'
+              )
+            } else {
+              window.open(
+                getGnosisAuction(cell.row.original.auctionId),
+                '_blank'
+              )
+            }
+          }
+
+          return (
+            <Flex sx={{ justifyContent: 'right' }}>
+              <SmallButton variant="muted" onClick={handleClick}>
                 <Box variant="layout.verticalAlign">
-                  <Trans>Auction</Trans>
+                  {text}
                   <ArrowUpRight style={{ marginLeft: 10 }} size={14} />
                 </Box>
               </SmallButton>
-            </Link>
-          </Flex>
-        ),
+            </Flex>
+          )
+        },
       },
     ],
     []

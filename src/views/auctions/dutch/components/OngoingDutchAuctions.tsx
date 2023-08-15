@@ -9,7 +9,7 @@ const OngoingDutchAuctions = () => {
   const trades = useAtomValue(ongoingDutchTradesAtom)
 
   return (
-    <Box>
+    <Box mb={6}>
       <Text variant="strong" ml={4} mb={4}>
         <Trans>Ongoing dutch auctions</Trans>
       </Text>

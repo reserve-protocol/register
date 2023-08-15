@@ -16,7 +16,7 @@ const ToggleButton = ({ selected, children, ...props }: ToggleButtonProps) => {
       sx={{
         border: '2px solid',
         backgroundColor: 'transparent',
-        color: selected ? 'primary' : 'secondaryText',
+        color: selected ? 'primary' : 'lightText',
       }}
       {...props}
     >
