@@ -36,8 +36,6 @@ const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
       allowFailure: false,
     })
 
-  console.log('erc20s', erc20s)
-
   return {
     backing: Math.min(100, Math.ceil(Number(formatEther(backing)) * 100)),
     staked: Math.ceil(Number(formatEther(overCollateralization)) * 100),
