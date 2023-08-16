@@ -150,15 +150,27 @@ const Main = () => {
       {...props}
     >
       <HomeStatsIcon />
-      <Flex mt={3} mb={[3, 4]} variant="layout.verticalAlign">
-        <Text mr={3} variant="pageTitle">
-          <Trans>RToken Stats</Trans>
-        </Text>
-        <Help
-          content={t`These stats are across all RTokens on the Reserve Protocol listed by this dApp, including anonymized data from the Reserve Rpay app API.`}
-        />
+      <Flex
+        mt={3}
+        mb={[3, 4]}
+        variant="layout.verticalAlign"
+        sx={{
+          justifyContent: 'space-between',
+          alignItems: 'start',
+          minWidth: [0, 390],
+          maxWidth: '100%',
+          flexDirection: ['column', 'row'],
+        }}
+      >
+        <Flex mb={[1, 0]} variant="layout.verticalAlign">
+          <Text mr={3} variant="pageTitle">
+            <Trans>RToken Stats</Trans>
+          </Text>
+          <Help
+            content={t`These stats are across all RTokens on the Reserve Protocol listed by this dApp, including anonymized data from the Reserve Rpay app API.`}
+          />
+        </Flex>
         <SmallButton
-          ml="auto"
           variant="muted"
           onClick={() => {
             mixpanel.track('Visited Flipside Dashboard', {})
