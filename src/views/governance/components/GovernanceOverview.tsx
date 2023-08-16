@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom'
 import {
   rTokenGovernanceAtom,
   rTokenGuardiansAtom,
+  rTokenManagersAtom,
   stRsrBalanceAtom,
 } from 'state/atoms'
 import { Box, Grid, Image, Text } from 'theme-ui'
@@ -67,6 +68,7 @@ const GovernanceOverview = () => {
   const blockNumber = useBlockNumber()
   const governance = useAtomValue(rTokenGovernanceAtom)
   const guardians = useAtomValue(rTokenGuardiansAtom)
+  const { owners } = useAtomValue(rTokenManagersAtom)
   const { value = [] } =
     useContractCall(
       account &&
@@ -139,12 +141,20 @@ const GovernanceOverview = () => {
         </Text>
         <Text variant="title">{governance ? governance.name : 'Custom'}</Text>
         {governance && (
-          <SettingItem
-            my={3}
-            title={t`Guardian`}
-            subtitle={t`Role held by:`}
-            value={<RolesView roles={guardians} />}
-          />
+          <>
+            <SettingItem
+              my={3}
+              title={t`Guardian`}
+              subtitle={t`Role held by:`}
+              value={<RolesView roles={guardians} />}
+            />
+            <SettingItem
+              my={3}
+              title={t`Owner`}
+              subtitle={t`Role held by:`}
+              value={<RolesView roles={owners} />}
+            />
+          </>
         )}
         <SmallButton
           mt={3}
