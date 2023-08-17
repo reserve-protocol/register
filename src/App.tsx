@@ -22,10 +22,10 @@ import LanguageProvider from './i18n'
 import { theme } from './theme'
 import { ErrorBoundary } from 'react-error-boundary'
 // import Issuance from './views/issuance'
-import React, { Suspense } from 'react'
+import { Suspense } from 'react'
 import IssuanceFallback from 'views/issuance/IssuanceFallback'
+import Issuance from "views/issuance"
 
-const Issuance = React.lazy(() => import('./views/issuance'))
 mixpanel.init(process.env.REACT_APP_MIXPANEL_KEY || 'mixpanel_key', {
   debug: true,
   track_pageview: true,

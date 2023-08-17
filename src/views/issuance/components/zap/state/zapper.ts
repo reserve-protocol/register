@@ -1,4 +1,5 @@
-import { base, configuration, Universe } from '@reserve-protocol/token-zapper'
+import * as zapper from '@reserve-protocol/token-zapper'
+import * as mainnetConfig from '@reserve-protocol/token-zapper/configuration/ethereum'
 
 import { atom } from 'jotai'
 import { loadable } from 'jotai/utils'
@@ -23,66 +24,58 @@ const ONE_INCH_PROXIES = [
   'https://square-morning-0921.mig2151.workers.dev/',
 ]
 
-// Here you can define rtokens via the register app.
-const rTokenDeploymentAddresses: string[] = []
 
 export const zapperState = loadable(
   atom(async (get) => {
     const provider = get(providerAtom)
+
+    // To inject register data into the zapper initialize code, it's probably best to load it all here.
+    // Makre sure that thedata does not change after this point as we don't want to trigger updates
+
     if (provider == null) {
       return null
     }
-    const universe = await Universe.createWithConfig(
-      provider,
-      {
-        config: new configuration.StaticConfig(
-          configuration.eth.default.config.nativeToken,
-          configuration.eth.default.config.addresses,
-          {
-            enable: true,
-          }
-        ),
-        initialize: configuration.eth.default.initialize,
-      },
-      await provider.getNetwork()
-    )
-
-    for (const deploymentMainContractAddress of rTokenDeploymentAddresses) {
-      await universe.defineRToken(
-        base.Address.from(deploymentMainContractAddress)
-      )
-    }
 
     try {
-      if (ONE_INCH_PROXIES.length !== 0) {
-        universe.dexAggregators.push(
-          createProxiedOneInchAggregator(universe, ONE_INCH_PROXIES)
-        )
+      const mainnetSetup = await import('@reserve-protocol/token-zapper/configs/mainnet/zapper')
+      const universe = await zapper.Universe.createWithConfig(
+        provider,
+        mainnetConfig.ethereumConfig,
+        mainnetSetup.setupEthereumZapper
+      )
+      try {
+        if (ONE_INCH_PROXIES.length !== 0) {
+          universe.dexAggregators.push(
+            createProxiedOneInchAggregator(universe, ONE_INCH_PROXIES)
+          )
+        }
+      } catch (e) {
+        console.log(e)
       }
 
-      void Promise.all([
-        provider.getGasPrice(),
-        provider.getBlockNumber(),
-      ]).then(([gasPrice, blockNumber]) => {
-        universe.updateBlockState(blockNumber, gasPrice.toBigInt())
-      })
+      return universe
     } catch (e) {
       console.log(e)
+      throw e
     }
-
-    return universe
   })
 )
+
 export const resolvedZapState = simplifyLoadable(zapperState)
 
 export const zappableTokens = atom((get) => {
   const uni = get(resolvedZapState)
+  if (uni == null) {
+    return []
+  }
   return [
-    uni?.nativeToken!, // Native ETH
-    uni?.commonTokens.USDC!,
-    uni?.commonTokens.USDT!,
-    uni?.commonTokens.DAI!,
-    uni?.commonTokens.WBTC!,
-    uni?.commonTokens.ERC20GAS!, // Wrapped ETH
+    uni.nativeToken,
+    uni.commonTokens.USDC,
+    uni.commonTokens.USDT,
+    uni.commonTokens.DAI,
+    uni.commonTokens.WBTC,
+    uni.commonTokens.WETH,
+    uni.commonTokens.MIM,
+    uni.commonTokens.FRAX,
   ].filter((tok) => tok != null)
 })

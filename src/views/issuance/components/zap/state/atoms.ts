@@ -1,21 +1,15 @@
-import {
-  base,
-  contracts,
-  entities,
-  searcher,
-} from '@reserve-protocol/token-zapper'
-import { IERC20__factory } from '@reserve-protocol/token-zapper/types/contracts'
+import { Address, Searcher } from '@reserve-protocol/token-zapper'
+import { type Token } from '@reserve-protocol/token-zapper'
+import {BigNumber} from "@ethersproject/bignumber"
 import {
   PERMIT2_ADDRESS,
   PermitTransferFrom,
   PermitTransferFromData,
   SignatureTransfer,
 } from '@uniswap/permit2-sdk'
-import { ethers } from 'ethers'
 import { atom, Getter } from 'jotai'
 import { loadable } from 'jotai/utils'
 import { rTokenAtom, walletAtom } from 'state/atoms'
-import { tokenBalancesStore } from 'state/TokenBalancesUpdater'
 
 import atomWithDebounce from 'utils/atoms/atomWithDebounce'
 import {
@@ -29,6 +23,7 @@ import {
   supportsPermit2Signatures,
   zappableTokens,
 } from './zapper'
+import { tokenBalancesStore } from 'state/TokenBalancesUpdater'
 
 /**
  * I've tried to keep react effects to a minimum so most async code is triggered via some signal
@@ -50,7 +45,7 @@ export const zapInputString = atomWithOnWrite('', (_, set, __) => {
   set(permitSignature, null)
 })
 export const tokenToZapUserSelected = atomWithOnWrite(
-  null as entities.Token | null,
+  null as Token | null,
   (_, set, prev, next) => {
     if (prev !== next) {
       set(zapInputString, '')
@@ -59,6 +54,9 @@ export const tokenToZapUserSelected = atomWithOnWrite(
   }
 )
 
+const totalGasBalance = onlyNonNullAtom(
+  (get) => get(tokenBalancesStore.getGasBalanceAtom()).value?.toBigInt() ?? 0n
+)
 // The hidden state of the UI. A lot of this could probably be refactored out via async atoms
 export const permitSignature = atom(null as null | string)
 
@@ -88,14 +86,15 @@ export const selectedZapTokenAtom = atom(
 )
 
 export const zapSender = atom((get) => {
+  const account = get(walletAtom)
   try {
-    return base.Address.from(get(walletAtom))
+    return account ? Address.from(account) : null
   } catch (e) {
     return null
   }
 })
 
-const senderOrNullAddress = atom((get) => get(zapSender) ?? base.Address.ZERO)
+const senderOrNullAddress = atom((get) => get(zapSender) ?? Address.ZERO)
 const parsedUserInput = onlyNonNullAtom((get) =>
   get(selectedZapTokenAtom).fromDecimal(get(zapInputString))
 )
@@ -108,9 +107,9 @@ export const zapperInputs = simplifyLoadable(
       const universe = get(resolvedZapState)
       return {
         tokenToZap: selectedZapToken,
-        rToken: await universe.getToken(base.Address.from(rToken.address)),
+        rToken: await universe.getToken(Address.from(rToken.address)),
         universe: universe,
-        zapSearcher: new searcher.Searcher(universe),
+        zapSearcher: new Searcher(universe),
       }
     })
   )
@@ -153,7 +152,7 @@ export const zapQuotePromise = loadable(
           get(tradeSlippage)
         )
       } catch (e) { }
-      await base.wait(1000)
+      await new Promise((resolve) => setTimeout(resolve, 1000))
       firstTime = false
     }
     const a = input.zapSearcher.findSingleInputToRTokenZap(
@@ -170,12 +169,12 @@ export const zapQuotePromise = loadable(
 
 export const zapQuote = simplifyLoadable(zapQuotePromise)
 
+const zeroAddress = "0x0000000000000000000000000000000000000000"
 export const selectedZapTokenBalance = onlyNonNullAtom((get) => {
   const token = get(selectedZapTokenAtom)
   const bal =
-    get(tokenBalancesStore.getBalanceAtom(token.address.address)).value ??
-    ethers.constants.Zero
-  return token.from(bal)
+    get(tokenBalancesStore.getBalanceAtom(token.address.address)).value
+  return token.from(bal?.toBigInt() ?? 0n)
 })
 
 export const approvalNeededAtom = loadable(
@@ -187,7 +186,7 @@ export const approvalNeededAtom = loadable(
     get(approvalRandomId)
 
     let approvalNeeded = false
-    let spender = base.Address.from(universe.config.addresses.zapperAddress)
+    let spender = Address.from(universe.config.addresses.zapperAddress)
     let usingPermit2 = false
     if (token !== universe.nativeToken) {
       if (
@@ -195,21 +194,23 @@ export const approvalNeededAtom = loadable(
         !(
           (input.amount === 0n ? 2n ** 64n : input.amount) >
           (
-            await contracts.IERC20__factory.connect(
-              token.address.address,
-              universe.provider
-            ).allowance(user.address, PERMIT2_ADDRESS)
+            await universe.approvalsStore.queryAllowance(
+              token,
+              user,
+              Address.from(PERMIT2_ADDRESS)
+            )
           ).toBigInt()
         )
       ) {
-        spender = base.Address.from(PERMIT2_ADDRESS)
+        spender = Address.from(PERMIT2_ADDRESS)
         usingPermit2 = true
         approvalNeeded = false
       } else {
-        const allowance = await contracts.IERC20__factory.connect(
-          token.address.address,
-          universe.provider
-        ).allowance(user.address, spender.address)
+        const allowance = await universe.approvalsStore.queryAllowance(
+          token,
+          user,
+          Address.from(PERMIT2_ADDRESS)
+        )
         approvalNeeded =
           (input.amount === 0n ? 2n ** 64n : input.amount) >
           allowance.toBigInt()
@@ -224,10 +225,10 @@ export const approvalNeededAtom = loadable(
       universe,
       tx: {
         to: token.address.address,
-        data: erc20Iface.encodeFunctionData('approve', [
+        data: "0x"/*erc20Iface.encodeFunctionData('approve', [
           spender.address,
           user.address,
-        ]),
+        ])*/,
         from: user.address,
       },
     }
@@ -252,10 +253,10 @@ const permit2ToSign = (get: Getter) => {
       amount: qty.inputQuantity.amount,
     },
     // who can transfer the tokens
-    spender: inputs.universe.chainConfig.config.addresses.zapperAddress.address,
+    spender: inputs.universe.config.addresses.zapperAddress.address,
     nonce,
     // signature deadline
-    deadline: ethers.constants.MaxUint256,
+    deadline: BigInt(Number.MAX_SAFE_INTEGER),
   }
   return {
     data: SignatureTransfer.getPermitData(
@@ -269,13 +270,12 @@ const permit2ToSign = (get: Getter) => {
 
 export const permit2ToSignAtom = atom((get) => permit2ToSign(get))
 
-const erc20Iface = contracts.IERC20__factory.createInterface()
 
 export const approvalTxFee = loadable(
   onlyNonNullAtom(async (get) => {
     const approveTx = get(resolvedApprovalNeeded)
     const universe = get(resolvedZapState)
-    const gasBalance = get(tokenBalancesStore.getGasBalanceAtom()).value
+    const gasBalance = get(totalGasBalance)
     const gasUnits =
       approveTx.approvalNeeded === true
         ? (await universe.provider.estimateGas(approveTx.tx)).toBigInt()
@@ -355,7 +355,7 @@ export const zapTransactionGasEstimateUnits = loadable(
             return out + out / 10n
           })
       } catch (e) {
-        await base.wait(1000)
+        await new Promise((resolve) => setTimeout(resolve, 1000))
         continue
       }
     }
@@ -370,9 +370,10 @@ export const resolvedZapTransactionGasEstimateUnits = simplifyLoadable(
 const zapTransactionGasEstimateFee = onlyNonNullAtom((get) => {
   const quote = get(zapQuote)
   const estimate = get(resolvedZapTransactionGasEstimateUnits, 0n)
-  return quote.universe.nativeToken
+  const totalNeeded =  quote.universe.nativeToken
     .from(estimate ?? 0n)
     .scalarMul(quote.universe.gasPrice)
+  return totalNeeded
 })
 
 export const noZapActive = atom(
@@ -390,14 +391,10 @@ const totalGasTokenInput = onlyNonNullAtom((get) => {
   return gasTokenInput.add(get(zapTransactionGasEstimateFee))
 })
 
-const totalGasBalance = onlyNonNullAtom(
-  (get) =>
-    get(tokenBalancesStore.getGasBalanceAtom()).value ?? ethers.constants.Zero
-)
 const hasSufficientGasTokenBalance = onlyNonNullAtom((get) => {
   const gasTokenBalanceBN = get(totalGasBalance)
   const gasTokenBalanceNeeded = get(totalGasTokenInput)
-  return gasTokenBalanceBN.toBigInt() >= gasTokenBalanceNeeded.amount
+  return gasTokenBalanceBN >= gasTokenBalanceNeeded.amount
 })
 
 const hasSufficientTokeBalance = onlyNonNullAtom((get) => {

@@ -1,4 +1,3 @@
-import { entities, base } from '@reserve-protocol/token-zapper'
 import { ethers } from 'ethers'
 import { atom, Getter, SetStateAction, Setter } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
@@ -45,6 +44,7 @@ import {
 } from './atoms'
 import { formatQty, FOUR_DIGITS } from './formatTokenQuantity'
 import { resolvedZapState, zappableTokens, zapperState } from './zapper'
+import { Token } from '@reserve-protocol/token-zapper'
 
 /**
  * This file contains atoms that are used to control the UI state of the Zap component.
@@ -77,7 +77,7 @@ const zapTransactionFeeDisplayAtom = onlyNonNullAtom((get) => {
   ) {
     return [
       'Zap tx',
-      formatQty(tx.transaction.fee, FOUR_DIGITS),
+      formatQty(nativeToken.from(tx.transaction.gasEstimate), FOUR_DIGITS),
       '(estimate)',
     ].join(' ')
   }
@@ -96,11 +96,10 @@ export const approvalTxFeeAtom = atom((get) => {
   return approval?.fee ? +approval.fee.format() * gasUsdPrice : 0
 })
 
-export const zapTxFeeAtom = atom((get) => {
+export const zapTxFeeAtom = onlyNonNullAtom((get) => {
   const tx = get(resolvedZapTransaction)
   const gasUsdPrice = get(ethPriceAtom)
-
-  return tx?.transaction?.fee ? +tx.transaction.fee.format() * gasUsdPrice : 0
+  return Number(tx.transaction.gasEstimate ?? 0) * gasUsdPrice
 })
 
 export const zapTransactionFeeDisplay = onlyNonNullAtom((get) => {
@@ -275,7 +274,7 @@ export const ui = {
       ),
       tokenSelector: atom(
         (get) => get(zappableTokens),
-        (_, set, update: entities.Token) => {
+        (_, set, update: Token) => {
           set(tokenToZapUserSelected, update)
         }
       ),
@@ -378,6 +377,7 @@ const getZapActionState = (get: Getter) => {
     approvalNeeded,
   }
 }
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 type ZapActionState = NonNullable<ReturnType<typeof getZapActionState>>
 type ZapperAction = (
   get: Getter,
@@ -393,7 +393,7 @@ const approve: ZapperAction = async (
   try {
     const resp = await signer.sendTransaction(approvalNeeded.tx)
     const receipt = await resp.wait(1)
-    await base.wait(3000)
+    await wait(3000)
 
     if (receipt.status === 0) {
       error('Approval failed', 'Transaction reverted on chain')
