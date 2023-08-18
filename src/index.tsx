@@ -1,4 +1,4 @@
-window.global ||= window
+import "./patch"
 
 import { createRoot } from 'react-dom/client'
 import App from './App'
