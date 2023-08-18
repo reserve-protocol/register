@@ -1,24 +1,27 @@
 {
   "compilerOptions": {
     "baseUrl": "src",
-    "target": "esnext",
-    "lib": ["dom", "dom.iterable", "es2020", "esnext"],
-    "allowJs": true,
+    "target": "ESNext",
+    "lib": ["ES2021", "DOM.Iterable", "DOM", "ES2021.Weakref"],
+    "allowJs": false,
     "skipLibCheck": true,
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    // "noUnusedLocals": true,
-    // "noUnusedParameters": true,
     "noEmit": true,
-    "types": ["react-spring", "jest"],
+    "noFallthroughCasesInSwitch": true,
+    "types": ["jest"],
     "jsx": "react-jsx"
   },
-  "include": ["src", "node_modules/dayjs/plugin/utc.d.ts"]
+  "include": [
+    "src",
+    "node_modules/dayjs/plugin/utc.d.ts",
+    "node_modules/@reserve-protocol/token-zapper/types/index.d.ts",
+    "node_modules/theme-ui/dist/theme-ui.cjs.d.ts"
+  ]
 }

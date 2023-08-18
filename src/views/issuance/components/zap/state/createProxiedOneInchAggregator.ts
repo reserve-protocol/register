@@ -1,5 +1,5 @@
-import { aggregators, Universe } from '@reserve-protocol/token-zapper'
-import { SwapErrorDto } from '@reserve-protocol/token-zapper/types/aggregators/oneInch/swagger/oneInchApi'
+import { Universe } from '@reserve-protocol/token-zapper'
+import { createOneInchDexAggregator, DexAggregator } from "@reserve-protocol/token-zapper/aggregators/one-inch"
 
 /**
  * Creates a 1inch aggregator that will use a list of proxies to make requests
@@ -17,14 +17,14 @@ export const createProxiedOneInchAggregator = (
 ) => {
   const aggregatorInstances = Object.freeze(
     proxies.map((proxy) =>
-      aggregators.createOneInchDexAggregator(universe, {
+      createOneInchDexAggregator(universe, {
         baseUrl: proxy,
         retryConfig: {
           maxRetries: 2,
           retryDelay: 250,
           backoff: 'CONST',
           timeout: 2000,
-          onRetry: async (e: SwapErrorDto) => {
+          onRetry: async (e: any) => {
             if (e.statusCode === 429) {
               return 'RETURN'
             }
@@ -39,12 +39,12 @@ export const createProxiedOneInchAggregator = (
     const instances = [...aggregatorInstances]
     for (let i = instances.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))
-      ;[instances[i], instances[j]] = [instances[j], instances[i]]
+        ;[instances[i], instances[j]] = [instances[j], instances[i]]
     }
     return instances
   }
 
-  return new aggregators.DexAggregator(
+  return new DexAggregator(
     'aggregator.1inch.proxied.' + universe.chainId,
     async (payerAddress, recipientDestination, input, output, slippage) => {
       const schedule = returnAggregatorsInRandomOrder()
