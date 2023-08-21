@@ -4,8 +4,15 @@ import TransactionSidebar from 'components/transactions/manager/TransactionSideb
 import { useAtomValue } from 'jotai'
 import { Suspense, useEffect } from 'react'
 import { lazyWithPreload } from 'react-lazy-with-preload'
-import { Route, HashRouter as Router, Routes } from 'react-router-dom'
-import { selectedRTokenAtom } from 'state/atoms'
+import {
+  Route,
+  HashRouter as Router,
+  Routes,
+  ScrollRestoration,
+  useLocation,
+  useSearchParams,
+} from 'react-router-dom'
+import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import ChainProvider from 'state/chain'
 import Updater from 'state/updater'
 import { Text, ThemeProvider } from 'theme-ui'
@@ -29,6 +36,22 @@ const Governance = lazyWithPreload(() => import('./views/governance'))
 
 const Fallback = () => <Text>Loading...</Text>
 
+const RouteListener = () => {
+  const location = useLocation()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const chainId = useAtomValue(chainIdAtom)
+
+  // Set chainId on url
+  useEffect(() => {
+    if (Number(searchParams.get('chainId')) !== chainId) {
+      searchParams.set('chainId', chainId.toString())
+      setSearchParams(searchParams, { replace: true })
+    }
+  }, [location.pathname, chainId])
+
+  return null
+}
+
 /**
  * App Entry point - Handles views routing
  *
@@ -46,6 +69,7 @@ const App = () => {
 
   return (
     <Router>
+      <RouteListener />
       <Analytics />
       <ThemeProvider theme={theme}>
         <LanguageProvider>

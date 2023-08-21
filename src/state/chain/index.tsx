@@ -8,8 +8,9 @@ import { alchemyProvider } from '@wagmi/core/providers/alchemy'
 import { publicProvider } from '@wagmi/core/providers/public'
 import React from 'react'
 import { Chain, WagmiConfig, configureChains, createConfig } from 'wagmi'
-import { baseGoerli, mainnet, base } from 'wagmi/chains'
+import { base, mainnet, hardhat } from 'wagmi/chains'
 import AtomUpdater from './updaters/AtomUpdater'
+import { ChainId, defaultChain } from 'utils/chains'
 
 // Mainnet fork
 export const tenderly = {
@@ -23,10 +24,21 @@ export const tenderly = {
   },
 } as const satisfies Chain
 
-export const { chains, publicClient } = configureChains(
-  [mainnet, tenderly, base],
-  [alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY }), publicProvider()]
-)
+const chainList = [mainnet, tenderly, base, hardhat]
+
+if (defaultChain !== ChainId.Mainnet) {
+  const index = chainList.findIndex((c) => c.id === defaultChain)
+
+  if (index !== -1) {
+    chainList[0] = chainList[index]
+    chainList[index] = mainnet
+  }
+}
+
+export const { chains, publicClient } = configureChains(chainList, [
+  alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY }),
+  publicProvider(),
+])
 
 const { connectors } = getDefaultWallets({
   appName: 'Register',

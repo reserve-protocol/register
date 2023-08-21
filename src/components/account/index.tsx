@@ -12,6 +12,7 @@ import { Box, Card, Flex, Spinner, Text } from 'theme-ui'
 
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { isTransactionRunning } from 'state/chain/atoms/transactionAtoms'
+import { chainIdAtom } from 'state/atoms'
 
 const Container = styled(Box)`
   display: flex;
@@ -26,10 +27,12 @@ const ErrorWrapper = ({
   chainId,
   children,
   isValid,
+  currentChain,
 }: {
   isValid: boolean
   chainId?: number
   children: ReactNode
+  currentChain: number
 }) =>
   isValid ? (
     <>{children}</>
@@ -49,7 +52,8 @@ const ErrorWrapper = ({
           </Flex>
           <Text variant="legend" sx={{ fontSize: 1 }}>
             <Trans>
-              We only support Ethereum Mainnet. Change your network in the
+              The configured network "{currentChain}" is different from the
+              wallet selected network "{chainId}"". Change your network in the
               connected wallet.
             </Trans>
           </Text>
@@ -68,17 +72,14 @@ const ErrorWrapper = ({
 const Account = () => {
   const setVisible = useSetAtom(txSidebarToggleAtom)
   const isProcessing = useAtomValue(isTransactionRunning)
+  const chainId = useAtomValue(chainIdAtom)
 
   return (
     <ConnectButton.Custom>
-      {({
-        account,
-        chain,
-        openConnectModal,
-        mounted,
-      }) => {
+      {({ account, chain, openConnectModal, mounted }) => {
         const ready = mounted
         const connected = ready && account && chain
+        const invalidChain = connected && chain.id !== chainId
 
         return (
           <Box
@@ -109,9 +110,13 @@ const Account = () => {
               }
 
               return (
-                <ErrorWrapper isValid={!chain.unsupported} chainId={chain.id}>
+                <ErrorWrapper
+                  isValid={!invalidChain}
+                  chainId={chain.id}
+                  currentChain={chainId}
+                >
                   <Container onClick={() => setVisible(true)}>
-                    {!chain.unsupported ? (
+                    {!invalidChain ? (
                       <WalletIcon />
                     ) : (
                       <AlertCircle fill="#FF0000" color="#fff" />

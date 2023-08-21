@@ -5,7 +5,8 @@ import mainnetPlugins from './mainnet'
 
 const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
   [ChainId.Mainnet]: mainnetPlugins,
-  [ChainId.Tenderly]: mainnetPlugins,
+  [ChainId.Tenderly]: mainnetPlugins, // Mainnet fork
+  [ChainId.Hardhat]: mainnetPlugins, // Mainnet fork
   [ChainId.Goerli]: goerliPlugins,
 }
 

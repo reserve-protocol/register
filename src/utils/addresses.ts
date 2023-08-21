@@ -13,28 +13,28 @@ export const DEPLOYER_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x5c46b718Cd79F2BBA6869A3BeC13401b9a4B69bB',
   [ChainId.Tenderly]: '0xDeC1B73754449166cB270AC83F4b536e738b1351',
   [ChainId.Goerli]: '0x7bdAbdA24406A293f230690Ad5305173d266B7d6',
-  [ChainId.Hardhat]: '0x5c46b718Cd79F2BBA6869A3BeC13401b9a4B69bB',
+  [ChainId.Hardhat]: '0x687bB6c57915aa2529EfC7D2a26668855e022fAE',
 }
 
 export const FACADE_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xad0BFAEE863B1102e9fD4e6330A02B08d885C715',
   [ChainId.Tenderly]: '0x4024c00bBD0C420E719527D88781bc1543e63dd5',
   [ChainId.Goerli]: '0x62bf08e255706f3855821B2C25007a731D585E59',
-  [ChainId.Hardhat]: '0xf535Cab96457558eE3eeAF1402fCA6441E832f08',
+  [ChainId.Hardhat]: '0x9d136eEa063eDE5418A6BC7bEafF009bBb6CFa70',
 }
 
 export const FACADE_ACT_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x98f292e6Bb4722664fEffb81448cCFB5B7211469',
   [ChainId.Tenderly]: '0xBE9D23040fe22E8Bd8A88BF5101061557355cA04',
   [ChainId.Goerli]: '0x7Bcb39F6d2A902aF8adFe384Ec6D84ABE66D2065',
-  [ChainId.Hardhat]: '0x933c5DBdA80f03C102C560e9ed0c29812998fA78',
+  [ChainId.Hardhat]: '0x30426D33a78afdb8788597D5BFaBdADc3Be95698',
 }
 
 export const FACADE_WRITE_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x1656D8aAd7Ee892582B9D5c2E9992d9f94ff3629',
   [ChainId.Tenderly]: '0xb3Be23A0cEFfd1814DC4F1FdcDc1200b39922bCc',
   [ChainId.Goerli]: '0x264Fb85EF99cb2026de73ef0f6f74AFd6335a006',
-  [ChainId.Hardhat]: '0xdEBe74dc2A415e00bE8B4b9d1e6e0007153D006a',
+  [ChainId.Hardhat]: '0xAe2563b4315469bF6bdD41A6ea26157dE57Ed94e',
 }
 
 /**
@@ -112,19 +112,6 @@ export const EUSD_ADDRESS: AddressMap = {
 /**
  * Other contract addresses
  */
-export const MULTICALL_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0x5ba1e12693dc8f9c48aad8770482f4739beed696',
-  [ChainId.Tenderly]: '0x5ba1e12693dc8f9c48aad8770482f4739beed696',
-  [ChainId.Goerli]: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
-  [ChainId.Hardhat]: '0x5ba1e12693dc8f9c48aad8770482f4739beed696',
-}
-
-export const ORACLE_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0x8263e161A855B644f582d9C164C66aABEe53f927',
-  [ChainId.Tenderly]: '0x8263e161A855B644f582d9C164C66aABEe53f927',
-  [ChainId.Goerli]: '0x8263e161A855B644f582d9C164C66aABEe53f927',
-  [ChainId.Hardhat]: '0x8263e161A855B644f582d9C164C66aABEe53f927',
-}
 
 export const ENS_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C',

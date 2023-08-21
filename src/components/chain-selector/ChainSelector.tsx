@@ -11,7 +11,7 @@ import { publicClient, wagmiConfig } from 'state/chain'
 import { transition } from 'theme'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
-import { usePublicClient, useSwitchNetwork } from 'wagmi'
+import { useSwitchNetwork } from 'wagmi'
 
 const ActionItem = styled(Flex)`
   transition: ${transition};
@@ -27,6 +27,7 @@ const chainIcons = {
   [ChainId.Mainnet]: Ethereum,
   [ChainId.Tenderly]: Ethereum,
   [ChainId.Base]: Base,
+  [ChainId.Hardhat]: Ethereum,
 }
 
 const CHAIN_LIST = [
@@ -36,6 +37,10 @@ const CHAIN_LIST = [
 
 if (import.meta.env.VITE_TENDERLY_URL) {
   CHAIN_LIST.push({ label: 'Tenderly', id: ChainId.Tenderly })
+}
+
+if (import.meta.env.DEV) {
+  CHAIN_LIST.push({ label: 'Hardhat', id: ChainId.Hardhat })
 }
 
 const ChainList = ({ onSelect }: { onSelect(chain: number): void }) => {

@@ -17,6 +17,7 @@ export const SUBGRAPH_URL = {
   [ChainId.Base]: 'http://127.0.0.1:8000/subgraphs/name/lcamargof/reserve',
   [ChainId.Goerli]:
     'https://api.thegraph.com/subgraphs/name/lcamargof/reserve-goerli',
+  [ChainId.Hardhat]: 'http://127.0.0.1:8000/subgraphs/name/lcamargof/reserve',
 }
 
 const _defaultChain = Number(
