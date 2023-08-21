@@ -2,53 +2,23 @@ import { t } from '@lingui/macro'
 import RToken from 'abis/RToken'
 import TextPlaceholder from 'components/placeholder/TextPlaceholder'
 import TransactionModal from 'components/transaction-modal'
+import useHasAllowance, { RequiredAllowance } from 'hooks/useHasAllowance'
 import { atom, useAtomValue } from 'jotai'
 import { useState } from 'react'
-import { rTokenAtom } from 'state/atoms'
+import { rTokenAtom, walletAtom } from 'state/atoms'
+import { BoxProps } from 'theme-ui'
+import { Token } from 'types'
 import { formatCurrency, safeParseEther } from 'utils'
+import { RSV_MANAGER } from 'utils/rsv'
+import { Hex } from 'viem'
 import {
   isValidIssuableAmountAtom,
   issueAmountAtom,
   issueAmountDebouncedAtom,
   quantitiesAtom,
 } from 'views/issuance/atoms'
-import CollateralDistribution from './CollateralDistribution'
+import CollateralApprovals from './CollateralApprovals'
 import IssueInput from './IssueInput'
-
-/**
- * Build issuance required approval transactions
- */
-// const buildApprovalTransactions = (
-//   data: ReserveToken,
-//   quantities: BigNumberMap,
-//   allowances: BigNumberMap
-// ): TransactionState[] => {
-//   const transactions = data.collaterals.reduce((txs, token) => {
-//     const tokenAmount = quantities[getAddress(token.address)].add(ONE_ETH)
-
-//     if (!allowances[getAddress(token.address)].gte(tokenAmount)) {
-//       return [
-//         ...txs,
-//         {
-//           id: uuid(),
-//           description: t`Approve ${token.symbol}`,
-//           status: TRANSACTION_STATUS.PENDING,
-//           value: formatUnits(tokenAmount, token.decimals),
-//           call: {
-//             abi: 'erc20',
-//             address: token.address,
-//             method: 'approve',
-//             args: [data.isRSV ? RSV_MANAGER : data.address, tokenAmount],
-//           },
-//         },
-//       ]
-//     }
-
-//     return txs
-//   }, [] as TransactionState[])
-
-//   return transactions
-// }
 
 const callAtom = atom((get) => {
   const rToken = get(rTokenAtom)
@@ -60,11 +30,34 @@ const callAtom = atom((get) => {
   }
 
   return {
-    address: rToken.address,
+    address: rToken.main ? rToken.address : RSV_MANAGER,
     abi: RToken, // RSV has identical function signature
     functionName: 'issue',
     args: [safeParseEther(amount)],
   }
+})
+
+interface CollateralApprovalProps extends BoxProps {
+  collateral: Token
+  amount: bigint | undefined
+  allowance: boolean
+  loading: boolean
+}
+
+const allowancesAtom = atom((get) => {
+  const quantities = get(quantitiesAtom)
+  const rToken = get(rTokenAtom)
+  const wallet = get(walletAtom)
+
+  if (!quantities || !wallet || !rToken) {
+    return undefined
+  }
+
+  return Object.keys(quantities).map((address) => ({
+    token: address,
+    spender: !rToken.main ? RSV_MANAGER : rToken.address,
+    amount: quantities[address as Hex],
+  })) as RequiredAllowance[]
 })
 
 // TODO: New approval flow
@@ -73,6 +66,9 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
   const rToken = useAtomValue(rTokenAtom)
   const amount = useAtomValue(issueAmountAtom)
   const quantities = useAtomValue(quantitiesAtom)
+  const [hasAllowance, tokensPendingAllowance] = useHasAllowance(
+    useAtomValue(allowancesAtom)
+  )
   const call = useAtomValue(callAtom)
 
   return (
@@ -80,17 +76,19 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
       title={t`Mint ${rToken?.symbol}`}
       description={`Mint ${rToken?.symbol}`}
       call={call}
-      confirmLabel={t`Begin minting ${formatCurrency(Number(amount))} ${
-        rToken?.symbol
-      }`}
+      confirmLabel={
+        hasAllowance
+          ? t`Begin minting ${formatCurrency(Number(amount))} ${rToken?.symbol}`
+          : 'Please grant collateral allowance'
+      }
       onClose={onClose}
       onChange={(signing) => setSigning(signing)}
+      disabled={!hasAllowance}
     >
       <IssueInput disabled={signing} compact />
-      <CollateralDistribution
-        mt={3}
-        collaterals={rToken?.collaterals ?? []}
-        quantities={quantities}
+      <CollateralApprovals
+        hasAllowance={hasAllowance}
+        pending={tokensPendingAllowance}
       />
       <TextPlaceholder
         sx={{

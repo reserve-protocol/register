@@ -10,7 +10,9 @@ export interface RequiredAllowance {
   amount: bigint
 }
 
-const useHasAllowance = (allowances: RequiredAllowance[] | undefined) => {
+const useHasAllowance = (
+  allowances: RequiredAllowance[] | undefined
+): [boolean, Address[]] => {
   const account = useAtomValue(walletAtom)
 
   const { data }: { data: bigint[] | undefined } = useContractReads(
@@ -29,14 +31,24 @@ const useHasAllowance = (allowances: RequiredAllowance[] | undefined) => {
   )
 
   if (!allowances) {
-    return true
+    return [true, []]
   }
 
   if (!data) {
-    return false
+    return [false, []]
   }
 
-  return data.every((value, index) => value > allowances[index].amount)
+  return data.reduce(
+    (acc, current, index) => {
+      if (allowances[index].amount > current) {
+        acc[0] = false
+        acc[1].push(allowances[index].token)
+      }
+
+      return acc
+    },
+    [true, []] as [boolean, Address[]]
+  )
 }
 
 export default useHasAllowance

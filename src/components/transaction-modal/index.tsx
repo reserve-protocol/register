@@ -93,8 +93,17 @@ const TransactionModal = ({
   ...props
 }: ITransactionModal) => {
   const hasAllowance = useHasAllowance(requiredAllowance)
-  const { isLoading, write, hash, status, error, isReady, gas, reset } =
-    useContractWrite(hasAllowance ? call : undefined)
+  const {
+    isLoading,
+    write,
+    hash,
+    status,
+    validationError,
+    error,
+    isReady,
+    gas,
+    reset,
+  } = useContractWrite(hasAllowance && !disabled ? call : undefined)
   useWatchTransaction({ hash, label: description })
 
   const handleConfirm = () => {
@@ -113,7 +122,13 @@ const TransactionModal = ({
     return <TransactionConfirmedModal hash={hash} onClose={onClose} />
   }
 
-  const isPreparing = hasAllowance && call && !gas.isLoading && !isReady
+  const isPreparing =
+    hasAllowance &&
+    call &&
+    !gas.isLoading &&
+    !isReady &&
+    !validationError &&
+    !disabled
 
   return (
     <Modal title={title} onClose={onClose} {...props}>
