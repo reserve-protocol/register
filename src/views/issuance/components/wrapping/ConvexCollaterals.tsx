@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { chainIdAtom } from 'state/atoms'
 import { Box, Text, BoxProps } from 'theme-ui'
 import collateralPlugins from 'utils/plugins'
-import CollateralItem from './CollateralItem'
+import CollateralItem, { WrapCollateralType } from './CollateralItem'
 
 export const CONVEX_COLLATERALS = new Set([
   'stkcvx3Crv',
@@ -34,7 +34,13 @@ const ConvexCollaterals = ({ wrapping, ...props }: Props) => {
     <Box {...props} px={4}>
       <Text variant="strong">Convex LP tokens</Text>
       {collateralList.map((c) => (
-        <CollateralItem mt={3} collateral={c} wrapping={wrapping} />
+        <CollateralItem
+          key={c.address}
+          mt={3}
+          collateral={c}
+          wrapping={wrapping}
+          type={WrapCollateralType.Convex}
+        />
       ))}
     </Box>
   )
