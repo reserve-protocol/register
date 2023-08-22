@@ -1,14 +1,11 @@
 import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
-import { useState } from 'react'
+import { useSetAtom } from 'jotai'
 import { Box, Flex, Text } from 'theme-ui'
-import ConvexCollateralModal from '../issue/ConvexCollateralModal'
-import UnwrapCollateralModal from '../issue/UnwrapCollateraModal'
-import WrapCollateralModal from '../issue/WrapCollateralModal'
+import { wrapSidebarAtom } from 'views/issuance/atoms'
 
 const About = () => {
-  const [isWrapping, setWrapping] = useState(0)
-  const [isConvexWrapping, setIsConvexWrapping] = useState(false)
+  const setWrapping = useSetAtom(wrapSidebarAtom)
 
   return (
     <Box sx={{ height: 'fit-content' }}>
@@ -24,52 +21,17 @@ const About = () => {
         </Text>
 
         <Text variant="strong" mt={4} mb={2}>
-          <Trans>Wrapping Aave aTokens</Trans>
+          <Trans>Wrapping collateral tokens</Trans>
         </Text>
         <Text as="p" variant="legend">
-          aTokens from Aave differ technically from other collateral tokens. To
-          ensure proper handling, they must be wrapped in a contract for
-          effective monitoring. Once wrapped, aToken collateral remains the same
-          but has a new interface for price and appreciation tracking.
+          TODO: Text for explaining wrapping
         </Text>
         <Flex mt={3}>
-          <SmallButton
-            variant="transparent"
-            mr={3}
-            onClick={() => setWrapping(1)}
-          >
-            <Trans>Wrap AAVE tokens</Trans>
-          </SmallButton>
-          <SmallButton variant="transparent" onClick={() => setWrapping(2)}>
-            <Trans>Unwrap AAVE tokens</Trans>
-          </SmallButton>
-        </Flex>
-
-        <Text variant="strong" mb={2} mt={4}>
-          <Trans>Wrapping Convex LP Tokens</Trans>
-        </Text>
-        <Flex mt={3}>
-          <SmallButton
-            variant="transparent"
-            mr={3}
-            onClick={() => setIsConvexWrapping(true)}
-          >
-            <Trans>Wrap/unwrap Convex LP tokens</Trans>
+          <SmallButton variant="muted" mr={3} onClick={() => setWrapping(1)}>
+            <Trans>Wrap/Unwrap collateral</Trans>
           </SmallButton>
         </Flex>
       </Box>
-      {isWrapping === 1 && (
-        <WrapCollateralModal onClose={() => setWrapping(0)} />
-      )}
-      {isWrapping === 2 && (
-        <UnwrapCollateralModal onClose={() => setWrapping(0)} />
-      )}
-      {isConvexWrapping && (
-        <ConvexCollateralModal
-          unwrap={false}
-          onClose={() => setIsConvexWrapping(false)}
-        />
-      )}
     </Box>
   )
 }

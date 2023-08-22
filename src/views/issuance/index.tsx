@@ -11,6 +11,7 @@ import Zap from './components/zap'
 import ZapToggle from './components/zap/components/ZapToggle'
 import ZapTokenSelector from './components/zap/components/ZapTokenSelector'
 import { ui, zapAvailableAtom } from './components/zap/state/ui-atoms'
+import WrapSidebar from './components/wrapping/WrapSidebar'
 
 const ZapOverview = () => {
   const isZapEnabled = useAtomValue(ui.zapWidgetEnabled)
@@ -59,6 +60,7 @@ const Issuance = () => {
   return (
     <>
       {isZapEnabled && <ZapWarning />}
+      <WrapSidebar />
       <Container pb={[1, 4]}>
         <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[1, 5]}>
           <Box>

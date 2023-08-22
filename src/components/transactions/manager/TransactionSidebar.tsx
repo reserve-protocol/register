@@ -21,7 +21,7 @@ const TransactionSidebar = () => {
   }
 
   return (
-    <Sidebar onClose={() => setSidebar(false)}>
+    <Sidebar onClose={() => setSidebar(false)} width="600px">
       <TransactionHeader />
       <TransactionList />
     </Sidebar>
