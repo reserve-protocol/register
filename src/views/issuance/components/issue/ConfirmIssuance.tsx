@@ -37,13 +37,6 @@ const callAtom = atom((get) => {
   }
 })
 
-interface CollateralApprovalProps extends BoxProps {
-  collateral: Token
-  amount: bigint | undefined
-  allowance: boolean
-  loading: boolean
-}
-
 const allowancesAtom = atom((get) => {
   const quantities = get(quantitiesAtom)
   const rToken = get(rTokenAtom)

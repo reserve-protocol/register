@@ -17,7 +17,7 @@ import {
   walletAtom,
 } from './../../state/atoms'
 
-const isValid = (value: bigint, max: bigint) => value > 0n && value >= max
+const isValid = (value: bigint, max: bigint) => value > 0n && value <= max
 
 export const issueAmountAtom = atom('')
 export const issueAmountDebouncedAtom = atomWithDebounce(
