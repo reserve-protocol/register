@@ -20,11 +20,6 @@ export enum WrapCollateralType {
   Convex,
 }
 
-const ABIS = {
-  [WrapCollateralType.Aave]: StaticAave,
-  [WrapCollateralType.Convex]: ConvexWrapper,
-}
-
 interface Props extends BoxProps {
   collateral: CollateralPlugin
   wrapping: boolean
@@ -151,10 +146,10 @@ const CollateralItem = ({ collateral, wrapping, type, ...props }: Props) => {
               sx={{
                 padding: '6px',
                 paddingLeft: '6px',
-                width: [140, 200],
+                width: [160, 160],
                 fontSize: 1,
               }}
-              placeholder={t`Input ${fromToken} amount`}
+              placeholder={t`${fromToken} amount`}
               value={amount}
               onChange={setAmount}
               // disabled={signing} // TODO: Disable when tx is in progress

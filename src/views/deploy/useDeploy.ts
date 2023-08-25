@@ -53,6 +53,8 @@ export const useDeploy = () => {
   const txData = useDeployParams()
   const chainId = useAtomValue(chainIdAtom)
 
+  console.log('chain', FACADE_WRITE_ADDRESS[chainId])
+
   return useContractWrite({
     address: FACADE_WRITE_ADDRESS[chainId],
     abi: FacadeWrite,

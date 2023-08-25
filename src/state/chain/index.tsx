@@ -8,7 +8,7 @@ import { alchemyProvider } from '@wagmi/core/providers/alchemy'
 import { publicProvider } from '@wagmi/core/providers/public'
 import React from 'react'
 import { Chain, WagmiConfig, configureChains, createConfig } from 'wagmi'
-import { base, mainnet, hardhat } from 'wagmi/chains'
+import { base, mainnet, hardhat, baseGoerli } from 'wagmi/chains'
 import AtomUpdater from './updaters/AtomUpdater'
 import { ChainId, defaultChain } from 'utils/chains'
 
@@ -24,7 +24,7 @@ export const tenderly = {
   },
 } as const satisfies Chain
 
-const chainList = [mainnet, tenderly, base, hardhat]
+const chainList = [mainnet, tenderly, base, baseGoerli, hardhat]
 
 if (defaultChain !== ChainId.Mainnet) {
   const index = chainList.findIndex((c) => c.id === defaultChain)

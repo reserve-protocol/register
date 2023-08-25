@@ -33,10 +33,10 @@ const TransactionItem = ({ tx }: { tx: TransactionState }) => {
   let label = 'Mining'
 
   if (tx.status === 'success') {
-    Icon = X
+    Icon = Check
     label = `Confirmed, Block ${tx.block}`
   } else if (tx.status === 'error') {
-    Icon = Check
+    Icon = X
     label = `Reverted`
   }
 

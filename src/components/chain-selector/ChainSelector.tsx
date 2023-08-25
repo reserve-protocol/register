@@ -2,9 +2,9 @@ import styled from '@emotion/styled'
 import Base from 'components/icons/logos/Base'
 import Ethereum from 'components/icons/logos/Ethereum'
 import Popup from 'components/popup'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { useState } from 'react'
-import { ChevronDown, ChevronUp } from 'react-feather'
+import { Check, ChevronDown, ChevronUp } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import { chainIdAtom } from 'state/atoms'
 import { publicClient, wagmiConfig } from 'state/chain'
@@ -26,13 +26,13 @@ const ActionItem = styled(Flex)`
 const chainIcons = {
   [ChainId.Mainnet]: Ethereum,
   [ChainId.Tenderly]: Ethereum,
-  [ChainId.Base]: Base,
+  [ChainId.BaseGoerli]: Base,
   [ChainId.Hardhat]: Ethereum,
 }
 
 const CHAIN_LIST = [
   { label: 'Ethereum', id: ChainId.Mainnet },
-  { label: 'Base', id: ChainId.Base },
+  { label: 'Base', id: ChainId.BaseGoerli },
 ]
 
 if (import.meta.env.VITE_TENDERLY_URL) {
@@ -44,6 +44,8 @@ if (import.meta.env.DEV) {
 }
 
 const ChainList = ({ onSelect }: { onSelect(chain: number): void }) => {
+  const selected = useAtomValue(chainIdAtom)
+
   return (
     <Box
       sx={{
@@ -62,6 +64,9 @@ const ChainList = ({ onSelect }: { onSelect(chain: number): void }) => {
             <Box variant="layout.verticalAlign">
               <Icon fontSize={20} />
               <Text ml={3}>{chain.label}</Text>
+              {selected === chain.id && (
+                <Check size={18} style={{ marginLeft: 10 }} color="#11BB8D" />
+              )}
             </Box>
           </ActionItem>
         )
@@ -103,7 +108,7 @@ const ChainSelector = (props: BoxProps) => {
         sx={{ alignItems: 'center', cursor: 'pointer' }}
         onClick={() => setVisible(!isVisible)}
       >
-        <ChainIcon fontSize={20} />
+        {!!ChainIcon && <ChainIcon fontSize={20} />}
         <Box mr="2" />
         {isVisible ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
       </Flex>
