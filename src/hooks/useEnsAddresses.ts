@@ -25,8 +25,12 @@ export const useEnsAddresses = (addresses: string[]) => {
   })
 
   return useMemo(() => {
-    return addresses.map(
-      (_address, index) => (data as string[])[index]
-    ) as string[]
+    if (data) {
+      return addresses.map(
+        (_address, index) => (data as string[])[index]
+      ) as string[]
+    }
+
+    return []
   }, [data])
 }
