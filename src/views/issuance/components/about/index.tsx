@@ -27,7 +27,7 @@ const About = () => {
           TODO: Text for explaining wrapping
         </Text>
         <Flex mt={3}>
-          <SmallButton variant="muted" mr={3} onClick={() => setWrapping(1)}>
+          <SmallButton variant="muted" mr={3} onClick={() => setWrapping(true)}>
             <Trans>Wrap/Unwrap collateral</Trans>
           </SmallButton>
         </Flex>

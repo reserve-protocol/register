@@ -30,6 +30,10 @@ const accountQuery = gql`
       rTokens {
         id
         stake
+        totalStaked
+        totalUnstaked
+        totalRSRStaked
+        totalRSRUnstaked
         rToken {
           id
           rsrExchangeRate
