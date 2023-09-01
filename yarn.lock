@@ -3228,10 +3228,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lc-labs/rtokens@npm:1.0.10":
-  version: 1.0.10
-  resolution: "@lc-labs/rtokens@npm:1.0.10"
-  checksum: a5306c851314a87df994e1504c4efbe94e84cf2146a8a4a7b41465430e9063fd0b994bccd00d10228ddbd11e033996d3462c6db8b14d451301dbdc22a51ab8d3
+"@lc-labs/rtokens@npm:1.0.11":
+  version: 1.0.11
+  resolution: "@lc-labs/rtokens@npm:1.0.11"
+  checksum: 6c2872517762a784148f7cc7f7714b69d6aaeaa6747b86a0138c637f9a80cec99d8888b95f7496d7ee4bebe30d281defd6e46b2e8e1bb949c8e63e19ad30b7de
   languageName: node
   linkType: hard
 
@@ -17809,7 +17809,7 @@ __metadata:
     "@emotion/styled": ^11.8.1
     "@ethersproject/providers": ^5.7.2
     "@guardianui/test": ^1.0.4
-    "@lc-labs/rtokens": 1.0.10
+    "@lc-labs/rtokens": 1.0.11
     "@lingui/cli": ^3.13.3
     "@lingui/core": ^3.13.3
     "@lingui/macro": ^3.13.3
