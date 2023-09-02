@@ -59,23 +59,27 @@ const CollateralApproval = ({
           ({formatCurrency(Number(formatUnits(amount, collateral.decimals)))})
         </Text>
       )}
-      <Box ml="auto" sx={{ fontSize: 1 }}>
-        {isLoading && !hash && (
-          <Text sx={{ color: 'warning' }}>Sign in wallet</Text>
-        )}
-        {hash && <Text variant="legend">Pending</Text>}
-        {(status === 'success' || allowance) && (
-          <Text sx={{ color: 'success' }}>Confirmed</Text>
-        )}
-        {!hash && !isLoading && (
-          <TransactionButton
-            text="Approve"
-            onClick={write}
-            disabled={!write}
-            small
-          />
-        )}
-      </Box>
+      {!!amount && (
+        <Box ml="auto" sx={{ fontSize: 1 }}>
+          {isLoading && !hash && (
+            <Text sx={{ color: 'warning' }}>Sign in wallet</Text>
+          )}
+          {hash && status !== 'success' && (
+            <Text variant="legend">Pending</Text>
+          )}
+          {(status === 'success' || allowance) && (
+            <Text sx={{ color: 'success' }}>Confirmed</Text>
+          )}
+          {!hash && !isLoading && !allowance && (
+            <TransactionButton
+              text="Approve"
+              onClick={write}
+              disabled={!write}
+              small
+            />
+          )}
+        </Box>
+      )}
     </Box>
   )
 }
@@ -88,7 +92,7 @@ const CollateralApprovals = ({
   pending: Address[]
 }) => {
   const rToken = useRToken()
-  const [isVisible, setVisible] = useState(false)
+  const [isVisible, setVisible] = useState(true)
   const quantities = useAtomValue(quantitiesAtom)
   const isFetching = !hasAllowance && !pending.length
 

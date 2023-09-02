@@ -15,7 +15,7 @@ export const SUBGRAPH_URL = {
     'https://api.thegraph.com/subgraphs/name/lcamargof/cryptoasdf', // TODO: CHange to mainnet
   [ChainId.Tenderly]: 'http://127.0.0.1:8000/subgraphs/name/lcamargof/reserve',
   [ChainId.BaseGoerli]:
-    'http://127.0.0.1:8000/subgraphs/name/lcamargof/reserve',
+    'https://api.studio.thegraph.com/query/11653/reserve-base-testnet/version/latest',
   [ChainId.Goerli]:
     'https://api.thegraph.com/subgraphs/name/lcamargof/reserve-goerli',
   [ChainId.Hardhat]: 'http://127.0.0.1:8000/subgraphs/name/lcamargof/reserve',

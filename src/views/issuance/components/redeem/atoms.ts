@@ -35,9 +35,9 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
   const { issuance: isLegacy } = get(isModuleLegacyAtom)
   const { isCollaterized } = get(rTokenStateAtom)
   const amount = get(redeemAmountDebouncedAtom)
-  const chainId = useAtomValue(chainIdAtom)
+  const chainId = get(chainIdAtom)
   const quotes: { [x: string]: RedeemQuote } = {}
-  const client = useAtomValue(publicClientAtom)
+  const client = get(publicClientAtom)
 
   if (isNaN(+amount) || Number(amount) <= 0) {
     return { [currentNonce.toString()]: {} } // empty default to 0 on UI but no loading state
@@ -85,6 +85,8 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
       {} as RedeemQuote
     )
   } else {
+    // TODO: Not working on base
+
     const {
       result: [tokens, withdrawals, available],
     } = await client.simulateContract({

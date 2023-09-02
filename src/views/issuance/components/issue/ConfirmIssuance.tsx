@@ -6,8 +6,6 @@ import useHasAllowance, { RequiredAllowance } from 'hooks/useHasAllowance'
 import { atom, useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { rTokenAtom, walletAtom } from 'state/atoms'
-import { BoxProps } from 'theme-ui'
-import { Token } from 'types'
 import { formatCurrency, safeParseEther } from 'utils'
 import { RSV_MANAGER } from 'utils/rsv'
 import { Hex } from 'viem'
@@ -82,14 +80,6 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
       <CollateralApprovals
         hasAllowance={hasAllowance}
         pending={tokensPendingAllowance}
-      />
-      <TextPlaceholder
-        sx={{
-          height: '94px',
-          display: amount && !quantities ? 'flex' : 'none',
-        }}
-        mt={3}
-        text={t`Fetching required collateral amounts`}
       />
     </TransactionModal>
   )

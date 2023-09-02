@@ -16,14 +16,15 @@ const quoteQuantitiesAtom = atom((get) => {
   const quote = get(redeemQuotesAtom)
   const nonce = get(rTokenStateAtom).basketNonce
 
-  if (!quote || !quote[nonce]) {
-    return {}
-  }
+  return {}
+  // if (!quote || !quote[nonce]) {
+  //   return {}
+  // }
 
-  return Object.keys(quote[nonce]).reduce((prev, curr) => {
-    prev[curr] = quote[nonce][curr].amount
-    return prev
-  }, {} as BigNumberMap)
+  // return Object.keys(quote[nonce]).reduce((prev, curr) => {
+  //   prev[curr] = quote[nonce][curr].amount
+  //   return prev
+  // }, {} as BigNumberMap)
 })
 
 const CurrentRedemptionQuote = () => {
