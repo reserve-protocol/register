@@ -12,19 +12,22 @@ import { base, mainnet, hardhat, baseGoerli } from 'wagmi/chains'
 import AtomUpdater from './updaters/AtomUpdater'
 import { ChainId, defaultChain } from 'utils/chains'
 
-// Mainnet fork
-export const tenderly = {
-  ...mainnet,
-  id: 3,
-  name: 'Tenderly',
-  network: 'tenderly',
-  rpcUrls: {
-    public: { http: [import.meta.env.VITE_TENDERLY_URL] },
-    default: { http: [import.meta.env.VITE_TENDERLY_URL] },
-  },
-} as const satisfies Chain
+const chainList = [mainnet, base, baseGoerli, hardhat]
 
-const chainList = [mainnet, tenderly, base, baseGoerli, hardhat]
+if (import.meta.env.VITE_TENDERLY_URL) {
+  // Mainnet fork
+  const tenderly = {
+    ...mainnet,
+    id: 3,
+    name: 'Tenderly',
+    network: 'tenderly',
+    rpcUrls: {
+      public: { http: [import.meta.env.VITE_TENDERLY_URL] },
+      default: { http: [import.meta.env.VITE_TENDERLY_URL] },
+    },
+  } as any // TODO: fix typing here
+  chainList.push(tenderly)
+}
 
 if (defaultChain !== ChainId.Mainnet) {
   const index = chainList.findIndex((c) => c.id === defaultChain)
