@@ -73,11 +73,12 @@ const App = () => {
       <Analytics />
       <ThemeProvider theme={theme}>
         <LanguageProvider>
-          <ToastContainer />
           <ChainProvider>
             <Updater />
             <TransactionSidebar />
             <Layout>
+              <ToastContainer />
+
               <Routes>
                 <Route path={ROUTES.HOME} element={<Home />} />
                 <Route path={ROUTES.OVERVIEW} element={<Overview />} />
