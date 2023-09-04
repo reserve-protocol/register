@@ -1,4 +1,6 @@
 import { Trans } from '@lingui/macro'
+import TokenLogo from 'components/icons/TokenLogo'
+import IconInfo from 'components/info-icon'
 import TokenBalance from 'components/token-balance'
 import TrackAsset from 'components/track-asset'
 import { useAtomValue } from 'jotai'
@@ -9,6 +11,20 @@ import {
   stRsrBalanceAtom,
 } from 'state/atoms'
 import { Box, Flex, Text } from 'theme-ui'
+import { formatCurrency } from 'utils'
+import { accountCurrentPositionAtom } from 'views/staking/atoms'
+
+const RewardedBalance = () => {
+  const rewards = useAtomValue(accountCurrentPositionAtom)
+
+  return (
+    <IconInfo
+      title={'RSR Reward balance'}
+      text={formatCurrency(rewards, 3)}
+      icon={<TokenLogo width={20} symbol="RSR" />}
+    />
+  )
+}
 
 // TODO: Create "Claim" component
 const StakeBalance = () => {
@@ -33,6 +49,7 @@ const StakeBalance = () => {
       </Flex>
       <Box
         ml={'9px'}
+        mb={3}
         pl={3}
         pt={4}
         mt={-3}
@@ -77,6 +94,7 @@ const StakeBalance = () => {
           />
         </Box>
       </Box>
+      <RewardedBalance />
     </Box>
   )
 }
