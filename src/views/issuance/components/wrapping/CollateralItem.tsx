@@ -28,8 +28,6 @@ interface Props extends BoxProps {
 
 const CollateralItem = ({ collateral, wrapping, type, ...props }: Props) => {
   const wallet = useAtomValue(walletAtom)
-
-  const [fromUnderlying, setFromUnderlying] = useState(true) // true = USDC -> saUSDC
   const fromToken = wrapping ? collateral.referenceUnit : collateral.symbol
   const toToken = wrapping ? collateral.symbol : collateral.referenceUnit
   const [amount, setAmount] = useState('')
@@ -67,7 +65,8 @@ const CollateralItem = ({ collateral, wrapping, type, ...props }: Props) => {
 
     return {
       abi: ERC20,
-      address: collateral.underlyingToken as Address,
+      address: (collateral.underlyingToken ||
+        collateral.collateralAddress) as Address,
       functionName: 'approve',
       args: [
         collateral.depositContract as Address,
@@ -153,7 +152,7 @@ const CollateralItem = ({ collateral, wrapping, type, ...props }: Props) => {
               value={amount}
               onChange={setAmount}
               // disabled={signing} // TODO: Disable when tx is in progress
-              variant={amount && !isValid ? 'inputError' : 'input'}
+              variant={debouncedAmount && !isValid ? 'inputError' : 'input'}
             />
             {!hasAllowance && (
               <ExecuteButton
