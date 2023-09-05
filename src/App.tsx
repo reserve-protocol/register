@@ -78,7 +78,6 @@ const App = () => {
             <TransactionSidebar />
             <Layout>
               <ToastContainer />
-
               <Routes>
                 <Route path={ROUTES.HOME} element={<Home />} />
                 <Route path={ROUTES.OVERVIEW} element={<Overview />} />

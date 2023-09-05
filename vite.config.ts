@@ -4,6 +4,7 @@ import viteTsconfigPaths from 'vite-tsconfig-paths'
 import svgrPlugin from 'vite-plugin-svgr'
 import path from 'path'
 import { lingui } from '@lingui/vite-plugin'
+import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,6 +13,14 @@ export default defineConfig({
     lingui(),
     viteTsconfigPaths(),
     svgrPlugin(),
+    viteStaticCopy({
+      targets: [
+        {
+          src: 'node_modules/@lc-labs/rtokens/images/*',
+          dest: 'svgs',
+        },
+      ],
+    }),
   ],
   build: {
     outDir: 'build',
@@ -24,7 +33,6 @@ export default defineConfig({
     },
   },
   optimizeDeps: { exclude: ['ts-node'] },
-
   server: {
     port: 3000,
   },

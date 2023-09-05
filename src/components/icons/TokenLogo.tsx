@@ -70,11 +70,11 @@ const TokenLogo = ({ symbol, src, width, sx = {}, ...props }: Props) => {
       }}
     >
       <Image
-        src={imgSrc || '/svgs/default.svg'}
+        src={imgSrc || '/svgs/defaultLogo.svg'}
         sx={{ height: '100%', width: width }}
         onError={({ currentTarget }) => {
           currentTarget.onerror = null // prevents looping
-          currentTarget.src = '/svgs/default.svg'
+          currentTarget.src = '/svgs/defaultLogo.svg'
         }}
       />
     </Box>

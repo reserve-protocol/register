@@ -411,7 +411,7 @@ export default [
             type: 'address',
           },
           {
-            internalType: 'uint256',
+          internalType: 'uint256',
             name: 'amount',
             type: 'uint256',
           },

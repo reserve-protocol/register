@@ -45,8 +45,8 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
     }
 
     const logo = rtokens[rTokenAddress]?.logo
-      ? `/node_modules/@lc-labs/rtokens/images/${rtokens[rTokenAddress].logo}`
-      : '/svgs/default.svg'
+      ? `/svgs/${rtokens[rTokenAddress].logo}`
+      : '/svgs/defaultLogo.svg'
 
     const [
       name,

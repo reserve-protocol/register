@@ -32,11 +32,6 @@ export interface Auction {
 
 type AuctionType = 'Revenue' | 'Recollaterization'
 
-export enum AuctionPlatform {
-  Batch,
-  Dutch,
-}
-
 export enum TradeKind {
   DutchTrade,
   BatchTrade,

@@ -11,7 +11,7 @@ export interface TokenDisplay {
 
 // require(`@lc-labs/rtokens/images/${token.logo}`)
 
-export const DEFAULT_LOGO = '/svgs/default.svg'
+export const DEFAULT_LOGO = '/svgs/defaultLogo.svg'
 
 const availableTokensAtom = atom((get) => {
   const chainId = get(chainIdAtom)
@@ -28,9 +28,7 @@ const availableTokensAtom = atom((get) => {
       tokenList[tokenAddress] = {
         address: tokenAddress,
         symbol: token.symbol,
-        logo: token.logo
-          ? `/node_modules/@lc-labs/rtokens/images/${token.logo}`
-          : DEFAULT_LOGO,
+        logo: token.logo ? `/svgs/${token.logo}` : DEFAULT_LOGO,
       }
     }
   }

@@ -21,7 +21,7 @@ const AuctionActions = ({
     (data.amount * (currentPrice || data.worstCasePrice)).toString()
   )
 
-  const hasAllowance = useHasAllowance([
+  const [hasAllowance] = useHasAllowance([
     {
       token: data.buying as Hex,
       spender: data.id as Hex,

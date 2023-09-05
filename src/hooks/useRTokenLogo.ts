@@ -3,10 +3,10 @@ import rtokens from 'utils/rtokens'
 
 export const getRTokenLogo = (address: string | undefined) => {
   if (address && rtokens[address]?.logo) {
-    return `/node_modules/@lc-labs/rtokens/images/${rtokens[address].logo}`
+    return `/svgs/${rtokens[address].logo}`
   }
 
-  return '/svgs/default.svg'
+  return '/svgs/defaultLogo.svg'
 }
 
 const useRTokenLogo = (address: string | undefined) =>
