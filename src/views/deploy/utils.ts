@@ -36,7 +36,7 @@ export const defaultValues = {
   redemptionThrottleAmount: '500000',
   redemptionThrottleRate: '7.5',
   // other
-  rewardRatio: '0.0000032090147',
+  rewardRatio: '0.0000064180294',
   unstakingDelay: '1209600',
   minTrade: '1000',
   maxTrade: '1000000',
