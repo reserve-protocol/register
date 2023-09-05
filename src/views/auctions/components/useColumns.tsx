@@ -6,6 +6,7 @@ import { useMemo } from 'react'
 import { ArrowUpRight } from 'react-feather'
 import { Box, Flex, Link, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
 const getGnosisAuction = (auctionId: string): string => {
   return `https://gnosis-auction.eth.link/#/auction?auctionId=${auctionId}&chainId=1`
@@ -20,12 +21,7 @@ const useColumns = (ended = false) => {
         Cell: (cell: any) => <TokenItem symbol={cell.cell.value} />,
       },
       {
-        Header: ended ? t`Bought` : t`Buying`,
-        accessor: 'buyingTokenSymbol',
-        Cell: (cell: any) => <TokenItem symbol={cell.cell.value} />,
-      },
-      {
-        Header: t`Amount`,
+        Header: t`Amount sold`,
         accessor: 'amount',
         Cell: (cell: any) => (
           <Text>
@@ -35,10 +31,40 @@ const useColumns = (ended = false) => {
         ),
       },
       {
-        Header: t`Worst price`,
-        accessor: 'worstCasePrice',
-        Cell: (cell: any) => <Text>{formatCurrency(cell.cell.value)}</Text>,
+        Header: t`Buying`,
+        accessor: 'buyingTokenSymbol',
+        Cell: (cell: any) => <TokenItem symbol={cell.cell.value} />,
       },
+      {
+        Header: ended ? t`Amount bought` : t`Worst price`,
+        accessor: ended ? 'boughtAmount' : 'worstCasePrice',
+        Cell: (cell: any) => {
+          console.log({ cell })
+
+          const statusElement = (
+            <Text>
+              {parseFloat(cell.cell.value) === 0
+                ? t`Incomplete`
+                : formatCurrency(cell.cell.value)}
+            </Text>
+          )
+          return ended ? (
+            <Link
+              href={getExplorerLink(
+                cell.row.original.settleTxHash,
+                ExplorerDataType.TRANSACTION
+              )}
+              target="_blank"
+              sx={{ textDecoration: 'underline', color: 'text' }}
+            >
+              {statusElement}
+            </Link>
+          ) : (
+            statusElement
+          )
+        },
+      },
+
       {
         Header: ended ? t`Ended at` : t`Ends at`,
         accessor: 'endAt',

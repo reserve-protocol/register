@@ -41,6 +41,8 @@ const tradesQuery = gql`
       selling
       startedAt
       worstCasePrice
+      settleTxHash
+      boughtAmount
     }
   }
 `
