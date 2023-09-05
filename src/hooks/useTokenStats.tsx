@@ -1,5 +1,5 @@
 import { gql } from 'graphql-request'
-import { useAtom, useAtomValue } from 'jotai'
+import { atom, useAtom, useAtomValue } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect } from 'react'
 import {
@@ -41,12 +41,15 @@ const rTokenMetricsQuery = gql`
   }
 `
 
+const lastFetchedStatsAtom = atom('')
+
 const useTokenStats = (rTokenId: string, isRSV = false): TokenStats => {
   const [stats, setStats] = useAtom(tokenMetricsAtom)
   const resetStats = useResetAtom(tokenMetricsAtom)
   const rpayOverview = useAtomValue(rpayOverviewAtom)
   const fromTime = useTimeFrom(TIME_RANGES.DAY)
   const chainId = useAtomValue(chainIdAtom)
+  const [lastFetched, setLastFetched] = useAtom(lastFetchedStatsAtom)
 
   const { data } = useQuery(rTokenMetricsQuery, {
     id: rTokenId,
@@ -105,11 +108,16 @@ const useTokenStats = (rTokenId: string, isRSV = false): TokenStats => {
           tokenData.dailyTransferCount + rpayOverview.dayTxCount
       }
 
+      setLastFetched(rTokenId)
       setStats(tokenData)
     }
   }, [JSON.stringify(data), rTokenPrice, rpayOverview])
 
-  useEffect(() => resetStats, [rTokenId])
+  useEffect(() => {
+    if (rTokenId !== lastFetched) {
+      resetStats()
+    }
+  }, [rTokenId])
 
   return stats
 }
