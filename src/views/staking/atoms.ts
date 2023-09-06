@@ -1,3 +1,4 @@
+import { formatEther, parseEther } from 'viem'
 import { atom } from 'jotai'
 import { safeParseEther } from 'utils'
 import {
@@ -99,14 +100,18 @@ const accountStakeHistoryAtom = atomWithLoadable(async (get) => {
   for (const record of request.accountStakeRecords as {
     exchangeRate: string
     amount: string
-    rsrAmount: string
+    rsrAmount: bigint
     isStake: string
   }[]) {
     const recordAmount = Number(record.amount)
     const recordExchangeRate = Number(record.exchangeRate)
 
     if (record.isStake) {
-      stakes.push([recordAmount, recordExchangeRate, Number(record.rsrAmount)])
+      stakes.push([
+        recordAmount,
+        recordExchangeRate,
+        Number(formatEther(record.rsrAmount)),
+      ])
     } else {
       let stakesRewarded = 0
       let unstake = recordAmount

@@ -29,7 +29,18 @@ const Intro = (props: BoxProps) => (
       </SmallButton>
       <SmallButton
         variant="transparent"
-        onClick={() => window.open('https://reserve.org/protocol/', '_blank')}
+        mr={3}
+        onClick={() =>
+          window.open('https://www.youtube.com/watch?v=hk2v0s9wXEo', '_blank')
+        }
+      >
+        <Trans>Tutorial video</Trans>
+      </SmallButton>
+      <SmallButton
+        variant="transparent"
+        onClick={() =>
+          window.open('https://reserve.org/protocol/rtokens/', '_blank')
+        }
       >
         <Trans>Protocol Docs</Trans>
       </SmallButton>
