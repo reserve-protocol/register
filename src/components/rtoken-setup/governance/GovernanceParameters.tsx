@@ -27,12 +27,12 @@ const GovernanceParameters = (props: BoxProps) => {
         help={t`Delay (in number of blocks) since the proposal is submitted until voting power is fixed and voting starts. This can be used to enforce a delay after a proposal is published for users to buy tokens, or delegate their votes.`}
         mb={3}
         name="votingDelay"
-        options={{
-          required: true,
-          pattern: numberPattern,
-          min: 1,
-          max: 50400, // 1 week
-        }}
+        // options={{
+        //   required: true,
+        //   pattern: numberPattern,
+        //   min: 1,
+        //   max: 50400, // 1 week
+        // }}
       />
       <FormField
         label={t`Voting period (blocks)`}
@@ -41,12 +41,12 @@ const GovernanceParameters = (props: BoxProps) => {
         help={t`Delay (in number of blocks) since the proposal starts until voting ends.`}
         mb={4}
         name="votingPeriod"
-        options={{
-          required: true,
-          pattern: numberPattern,
-          min: 7200,
-          max: 100800, // 2 weeks
-        }}
+        // options={{
+        //   required: true,
+        //   pattern: numberPattern,
+        //   min: 7200,
+        //   max: 100800, // 2 weeks
+        // }}
       />
       <FormField
         label={t`Proposal execution delay (hours)`}
@@ -55,12 +55,12 @@ const GovernanceParameters = (props: BoxProps) => {
         help={t`The minimum amount of time after a proposal passes before it can be executed.`}
         mb={3}
         name="minDelay"
-        options={{
-          required: true,
-          pattern: numberPattern,
-          min: 24,
-          max: 504,
-        }}
+        // options={{
+        //   required: true,
+        //   pattern: numberPattern,
+        //   min: 24,
+        //   max: 504,
+        // }}
       />
       <FormField
         label={t`Proposal Threshold (%)`}
@@ -68,12 +68,12 @@ const GovernanceParameters = (props: BoxProps) => {
         help={t`The minimum percentage of stRSR ownership on an RToken to be able to create a proposal.`}
         mb={3}
         name="proposalThresholdAsMicroPercent"
-        options={{
-          required: true,
-          pattern: decimalPattern,
-          min: 0,
-          max: 1,
-        }}
+        // options={{
+        //   required: true,
+        //   pattern: decimalPattern,
+        //   min: 0,
+        //   max: 1,
+        // }}
       />
       <FormField
         label={t`Quorum (%)`}
@@ -81,12 +81,12 @@ const GovernanceParameters = (props: BoxProps) => {
         help={t`The minimum percentage of stRSR voter participation (either For or Abstain) on a proposal before it can be passed.`}
         mb={4}
         name="quorumPercent"
-        options={{
-          required: true,
-          pattern: decimalPattern,
-          min: 0.1,
-          max: 50,
-        }}
+        // options={{
+        //   required: true,
+        //   pattern: decimalPattern,
+        //   min: 0.1,
+        //   max: 50,
+        // }}
       />
     </Box>
   )
