@@ -10,6 +10,7 @@ import Button, { ButtonProps, LoadingButton, LoadingButtonProps } from '.'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useEffect } from 'react'
+import { Check, CheckCircle } from 'react-feather'
 
 interface TransactionButtonProps extends LoadingButtonProps {
   gas?: GasEstimation
@@ -113,7 +114,9 @@ export const ExecuteButton = ({
 
   if (status === 'success') {
     if (!successLabel) {
-      return null
+      return (
+        <CheckCircle enableBackground="#75FBC3" color="#75FBC3" size={18} />
+      )
     }
     props.text = successLabel
   }

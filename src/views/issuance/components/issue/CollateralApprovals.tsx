@@ -7,7 +7,7 @@ import useRToken from 'hooks/useRToken'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
 import { useEffect, useState } from 'react'
-import { CheckSquare, ChevronDown, ChevronUp } from 'react-feather'
+import { CheckCircle, CheckSquare, ChevronDown, ChevronUp } from 'react-feather'
 import { Box, BoxProps, Divider, Flex, Spinner, Text } from 'theme-ui'
 import { Token } from 'types'
 import { formatCurrency } from 'utils'
@@ -117,8 +117,10 @@ const CollateralApprovals = ({
         <OverviewIcon />
         <Text ml={2}>Collateral approvals</Text>
         <Box ml={2}>
-          {hasAllowance && <CheckSquare size={16} />}
-          {isFetching && <Spinner size={16} />}
+          {hasAllowance && !!quantities && (
+            <CheckCircle color="#75FBC3" size={16} />
+          )}
+          {!quantities && <Spinner size={16} />}
           {!hasAllowance && pending.length && (
             <Text sx={{ color: 'warning' }}>({pending.length})</Text>
           )}

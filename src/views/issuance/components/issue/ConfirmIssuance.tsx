@@ -56,7 +56,6 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
   const [signing, setSigning] = useState(false)
   const rToken = useAtomValue(rTokenAtom)
   const amount = useAtomValue(issueAmountAtom)
-  const quantities = useAtomValue(quantitiesAtom)
   const [hasAllowance, tokensPendingAllowance] = useHasAllowance(
     useAtomValue(allowancesAtom)
   )

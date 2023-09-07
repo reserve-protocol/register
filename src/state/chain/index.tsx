@@ -4,15 +4,28 @@ import {
   getDefaultWallets,
 } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
+
 import { alchemyProvider } from '@wagmi/core/providers/alchemy'
 import { publicProvider } from '@wagmi/core/providers/public'
 import React from 'react'
-import { Chain, WagmiConfig, configureChains, createConfig } from 'wagmi'
-import { base, mainnet, hardhat, baseGoerli } from 'wagmi/chains'
-import AtomUpdater from './updaters/AtomUpdater'
 import { ChainId, defaultChain } from 'utils/chains'
+import { WagmiConfig, configureChains, createConfig } from 'wagmi'
+import { base, baseGoerli, hardhat, mainnet } from 'wagmi/chains'
+import AtomUpdater from './updaters/AtomUpdater'
 
-const chainList = [mainnet, base, baseGoerli, hardhat]
+const chainList = [mainnet, base, baseGoerli, hardhat] as any
+const providers = [
+  alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY }),
+  publicProvider(),
+] as any[]
+
+if (import.meta.env.VITE_TENDERLY_MAINNET_URL) {
+  providers.splice(0, 1)
+  chainList[0].rpcUrls = {
+    public: { http: [import.meta.env.VITE_TENDERLY_MAINNET_URL] },
+    default: { http: [import.meta.env.VITE_TENDERLY_MAINNET_URL] },
+  }
+}
 
 if (import.meta.env.VITE_TENDERLY_URL) {
   // Mainnet fork
@@ -30,7 +43,7 @@ if (import.meta.env.VITE_TENDERLY_URL) {
 }
 
 if (defaultChain !== ChainId.Mainnet) {
-  const index = chainList.findIndex((c) => c.id === defaultChain)
+  const index = chainList.findIndex((c: any) => c.id === defaultChain)
 
   if (index !== -1) {
     chainList[0] = chainList[index]
@@ -38,10 +51,7 @@ if (defaultChain !== ChainId.Mainnet) {
   }
 }
 
-export const { chains, publicClient } = configureChains(chainList, [
-  alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY }),
-  publicProvider(),
-])
+export const { chains, publicClient } = configureChains(chainList, providers)
 
 const { connectors } = getDefaultWallets({
   appName: 'Register',
