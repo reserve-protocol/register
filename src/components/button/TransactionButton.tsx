@@ -115,7 +115,7 @@ export const ExecuteButton = ({
   if (status === 'success') {
     if (!successLabel) {
       return (
-        <CheckCircle enableBackground="#75FBC3" color="#75FBC3" size={18} />
+        <CheckCircle color="#75FBC3" size={18} />
       )
     }
     props.text = successLabel

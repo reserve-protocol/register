@@ -2,7 +2,7 @@ import { t, Trans } from '@lingui/macro'
 import { InfoItem } from 'components/info-box'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
-import { rTokenConfigurationAtom } from 'state/atoms'
+import { isModuleLegacyAtom, rTokenConfigurationAtom } from 'state/atoms'
 import { Card, Text, Divider } from 'theme-ui'
 import { formatCurrency, formatPercentage, parseDuration } from 'utils'
 
@@ -12,6 +12,7 @@ import { formatCurrency, formatPercentage, parseDuration } from 'utils'
 const BackingInfo = () => {
   const rToken = useRToken()
   const params = useAtomValue(rTokenConfigurationAtom)
+  const { auctions: isLegacy } = useAtomValue(isModuleLegacyAtom)
 
   const placeholder = 'Loading...'
 
@@ -33,7 +34,7 @@ const BackingInfo = () => {
         }
         mb={3}
       />
-      {!!params?.dutchAuctionLength && (
+      {!isLegacy && (
         <InfoItem
           title={t`Dutch auction length`}
           subtitle={
