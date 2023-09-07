@@ -6,6 +6,7 @@ import { FURNACE_ADDRESS, ST_RSR_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { getContract } from 'wagmi/actions'
 import rTokenContractsAtom from './rTokenContractsAtom'
+import { parseAbiItem } from 'viem'
 
 const shareToPercent = (shares: number): string => {
   return ((shares * 100) / 10000).toString()
@@ -72,31 +73,37 @@ const rTokenRevenueSplitAtom = atomWithLoadable(async (get) => {
     { id: contracts.token.address.toLowerCase() }
   )
 
-  if (!request.rtoken) {
+  if (!request?.rtoken?.revenueDistribution?.length) {
     const client = get(publicClientAtom)
 
     if (!client) {
       return null
     }
-    const contract = getContract({
-      address: contracts.distributor.address,
-      abi: Distributor,
-    })
 
-    const filter = await contract.createEventFilter.DistributionSet()
-    const events = await client.getFilterLogs({
-      filter,
-    })
+    try {
+      // const filter = await client.createContractEventFilter({
+      //   abi: Distributor,
+      //   address: contracts.distributor.address,
+      //   eventName: 'DistributionSet',
+      // })
+      const events = (await client.getLogs({
+        address: contracts.distributor.address,
+        event: parseAbiItem('event DistributionSet(address,uint16,uint16)'),
+      })) as any
 
-    return formatDistribution(
-      events.map(
-        (event) =>
-          ({
-            ...(event?.args || {}),
-            destination: event?.args?.dest || '0',
-          } as Distribution)
+      return formatDistribution(
+        events.map(
+          (event: any) =>
+            ({
+              ...(event?.args || {}),
+              destination: event?.args?.dest || '0',
+            } as Distribution)
+        )
       )
-    )
+    } catch (e) {
+      console.error('Error pulling revenue distribution', e)
+      return null
+    }
   }
 
   return formatDistribution(request.rtoken.revenueDistribution)

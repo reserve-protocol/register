@@ -1,16 +1,61 @@
 import { t, Trans } from '@lingui/macro'
 import { Button } from 'components'
 import useRToken from 'hooks/useRToken'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useState } from 'react'
-import { rTokenStateAtom } from 'state/atoms'
+import {
+  balancesAtom,
+  chainIdAtom,
+  publicClientAtom,
+  rTokenAtom,
+  rTokenStateAtom,
+  walletAtom,
+} from 'state/atoms'
 import { Card } from 'theme-ui'
 import {
   issueAmountAtom,
   isValidIssuableAmountAtom,
+  maxIssuableAtom,
 } from 'views/issuance/atoms'
 import ConfirmIssuance from './ConfirmIssuance'
 import IssueInput from './IssueInput'
+import { FACADE_ADDRESS, USDC_ADDRESS } from 'utils/addresses'
+import FacadeRead from 'abis/FacadeRead'
+
+const useMaxIssuable = async () => {
+  const rToken = useAtomValue(rTokenAtom)
+  const account = useAtomValue(walletAtom)
+  const client = useAtomValue(publicClientAtom)
+  const chainId = useAtomValue(chainIdAtom)
+  const { issuancePaused, frozen } = useAtomValue(rTokenStateAtom)
+  const balances = useAtomValue(balancesAtom)
+  const setMaxIssuable = useSetAtom(maxIssuableAtom)
+
+  if (!rToken || !client || !account || frozen || issuancePaused) {
+    return setMaxIssuable(0n)
+  }
+
+  // RSV
+  if (!rToken.main) {
+    setMaxIssuable(balances[USDC_ADDRESS[chainId]].value ?? 0n)
+  }
+
+  try {
+    const { result } = await client.simulateContract({
+      abi: FacadeRead,
+      address: FACADE_ADDRESS[chainId],
+      functionName: 'maxIssuable',
+      args: [rToken.address, account],
+    })
+
+    setMaxIssuable(result)
+  } catch (e) {
+    console.error('Error fetching max issuable')
+    setMaxIssuable(0n)
+  }
+
+  return null
+}
 
 /**
  * Issuance
@@ -22,6 +67,7 @@ const Issue = () => {
   const { issuancePaused, frozen } = useAtomValue(rTokenStateAtom)
   const missingCollateral = amount && !isValid
   const rToken = useRToken()
+  useMaxIssuable()
 
   return (
     <>

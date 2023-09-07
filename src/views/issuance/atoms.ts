@@ -38,32 +38,8 @@ export const isValidRedeemAmountAtom = atom((get) => {
     get(rTokenBalanceAtom).value
   )
 })
-export const maxIssuableAtom = atomWithLoadable(async (get) => {
-  const rToken = get(rTokenAtom)
-  const account = get(walletAtom)
-  const client = get(publicClientAtom)
-  const chainId = get(chainIdAtom)
-  const { issuancePaused, frozen } = get(rTokenStateAtom)
-  const balances = get(balancesAtom)
 
-  if (!rToken || !client || !account || frozen || issuancePaused) {
-    return null
-  }
-
-  // RSV
-  if (!rToken.main) {
-    return balances[USDC_ADDRESS[chainId]].value ?? 0n
-  }
-
-  const { result } = await client.simulateContract({
-    abi: FacadeRead,
-    address: FACADE_ADDRESS[chainId],
-    functionName: 'maxIssuable',
-    args: [rToken.address, account],
-  })
-
-  return result
-})
+export const maxIssuableAtom = atom(0n)
 
 export const isValidIssuableAmountAtom = atom((get) => {
   return isValid(
