@@ -253,6 +253,17 @@ const plugins: CollateralPlugin[] = [
     rewardToken: [COMPOUND_ADDRESS[ChainId.Mainnet]],
   },
   {
+    symbol: 'cUSDCv3',
+    address: collateralAddresses.cUSDCv3,
+    decimals: 6,
+    targetUnit: TARGET_UNITS.USD,
+    referenceUnit: 'USDC',
+    collateralToken: 'cUSDC',
+    description: '',
+    collateralAddress: underlyingCollateralAddresses.cUSDC,
+    rewardToken: [COMPOUND_ADDRESS[ChainId.Mainnet]],
+  },
+  {
     symbol: 'cUSDT',
     address: collateralAddresses.cUSDT,
     decimals: 6,
