@@ -12,7 +12,7 @@ import { Box, BoxProps, Divider, Flex, Spinner, Text } from 'theme-ui'
 import { Token } from 'types'
 import { formatCurrency } from 'utils'
 import { RSV_MANAGER } from 'utils/rsv'
-import { Address, formatUnits } from 'viem'
+import { Address, formatUnits, parseEther } from 'viem'
 import { quantitiesAtom } from 'views/issuance/atoms'
 
 interface CollateralApprovalProps extends BoxProps {
@@ -35,7 +35,12 @@ const CollateralApproval = ({
     abi: ERC20,
     address: collateral.address,
     functionName: 'approve',
-    args: [rToken?.main ? rToken.address : RSV_MANAGER, amount ?? 0n],
+    args: [
+      rToken?.main ? rToken.address : RSV_MANAGER,
+      collateral.symbol === 'wcUSDCv3'
+        ? 115792089237316195423570985008687907853269984665640564039457584007913129639935n
+        : amount ?? 0n,
+    ],
     enabled: !loading && !!amount && !allowance,
   })
   const { status } = useWatchTransaction({

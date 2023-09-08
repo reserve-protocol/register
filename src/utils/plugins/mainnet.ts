@@ -492,7 +492,7 @@ const plugins: CollateralPlugin[] = [
     rewardToken: [ZERO_ADDRESS],
   },
   {
-    symbol: 'maUSDT',
+    symbol: 'mrp-aUSDT',
     address: collateralAddresses.maUSDT,
     decimals: 18,
     targetUnit: TARGET_UNITS.USD,
