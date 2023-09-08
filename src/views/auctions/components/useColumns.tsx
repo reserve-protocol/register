@@ -12,7 +12,7 @@ import { chainIdAtom } from 'state/atoms'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
 const getGnosisAuction = (auctionId: string): string => {
-  return `https://gnosis-auction.eth.link/#/auction?auctionId=${auctionId}&chainId=1`
+  return `https://gnosisauctiontestv1.netlify.app/#/auction?auctionId=${auctionId}&chainId=1`
 }
 
 const useColumns = (ended = false) => {
