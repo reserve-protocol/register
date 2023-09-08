@@ -104,7 +104,7 @@ const accountStakeHistoryAtom = atomWithLoadable(async (get) => {
     isStake: string
   }[]) {
     const recordAmount = Number(record.amount)
-    const recordExchangeRate = Number(record.exchangeRate)
+    const recordExchangeRate = Number(parseEther(record.exchangeRate))
 
     if (record.isStake) {
       stakes.push([recordAmount, recordExchangeRate, Number(record.rsrAmount)])
