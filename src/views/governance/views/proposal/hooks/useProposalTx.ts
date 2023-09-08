@@ -402,10 +402,10 @@ const useProposalTx = () => {
     return {
       abi: Governance,
       address: governance.governor,
-      method: 'propose',
+      functionName: 'propose',
       args: [
         addresses as Address[],
-        new Array(calls.length).fill(0n) as bigint[],
+        new Array(calls.length).fill(0) as bigint[],
         calls as Hex[],
         description,
       ] as [Address[], bigint[], Hex[], string],
