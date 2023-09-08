@@ -89,6 +89,8 @@ export const getProposalStateAtom = atom((get) => {
     deadline: null,
   }
 
+  console.log('proposal?', proposal)
+
   if (blockNumber && proposal) {
     // Proposal to be executed
     // TODO: Guardian can cancel on this state!
@@ -114,11 +116,11 @@ export const getProposalStateAtom = atom((get) => {
     } else if (proposal.state === PROPOSAL_STATES.ACTIVE) {
       // Proposal voting ended check status
       if (blockNumber > proposal.endBlock) {
-        const forVotes = parseEther(proposal.forWeightedVotes)
-        const againstVotes = parseEther(proposal.againstWeightedVotes)
-        const quorum = parseEther(proposal.quorumVotes)
+        const forVotes = +proposal.forWeightedVotes
+        const againstVotes = +proposal.againstWeightedVotes
+        const quorum = +proposal.quorumVotes
 
-        if (forVotes > againstVotes) {
+        if (againstVotes > forVotes) {
           state.state = PROPOSAL_STATES.DEFEATED
         } else if (forVotes < quorum) {
           state.state = PROPOSAL_STATES.QUORUM_NOT_REACHED
