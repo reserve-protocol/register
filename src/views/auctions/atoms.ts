@@ -159,30 +159,36 @@ export const auctionsToSettleAtom = atomWithLoadable(
       { ...contracts.backingManager, buy: null, type: AUCTION_TYPES.BACKING }, // TODO: What to show here?
     ]
 
-    const result = await (<Promise<[string[], string[], string[]]>>(
-      readContracts({
-        contracts: traders.map(({ address, version }) => ({
-          abi: FacadeRead,
-          address: FACADE_ADDRESS[chainId],
-          functionName: 'auctionsSettleable',
-          args: [address, version],
-        })),
-        allowFailure: false,
-      })
-    ))
+    try {
+      const result = await (<Promise<[string[], string[], string[]]>>(
+        readContracts({
+          contracts: traders.map(({ address, version }) => ({
+            abi: FacadeRead,
+            address: FACADE_ADDRESS[chainId],
+            functionName: 'auctionsSettleable',
+            args: [address],
+          })),
+          allowFailure: false,
+        })
+      ))
 
-    return result.reduce((auctionsToSettle, current, index) => {
-      auctionsToSettle.push(
-        ...current.map((erc20: string) => ({
-          type: traders[index].type,
-          trader: traders[index].address,
-          sell: assets[erc20].token,
-          buy: traders[index].buy,
-        }))
-      )
+      return result.reduce((auctionsToSettle, current, index) => {
+        auctionsToSettle.push(
+          ...current.map((erc20: string) => ({
+            type: traders[index].type,
+            trader: traders[index].address,
+            sell: assets[erc20].token,
+            buy: traders[index].buy,
+          }))
+        )
 
-      return auctionsToSettle
-    }, [] as AuctionToSettle[])
+        return auctionsToSettle
+      }, [] as AuctionToSettle[])
+    } catch (e) {
+      console.error('error here', e)
+    }
+
+    return null
   }
 )
 
