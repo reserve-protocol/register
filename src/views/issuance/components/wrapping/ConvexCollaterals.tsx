@@ -9,6 +9,9 @@ export const CONVEX_COLLATERALS = new Set([
   'stkcvx3Crv',
   'stkcvxeUSD3CRV-f',
   'stkcvxMIM-3LP3CRV-f',
+  'crv3Pool',
+  'crveUSDFRAXBP',
+  'crvMIM3Pool',
 ])
 
 interface Props extends BoxProps {
