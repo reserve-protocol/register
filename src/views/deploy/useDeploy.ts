@@ -31,11 +31,11 @@ export const useDeployParams = () => {
   const { isValid, isValidating } = useFormState()
 
   const isDeployValid =
-    isBasketValid &&
-    isRevenueSplitValid &&
-    isValidExternalMap &&
-    isValid &&
-    !isValidating
+    isBasketValid && isRevenueSplitValid && isValidExternalMap
+  // TODO: Uncomment to enable validation
+  // &&
+  // isValid &&
+  // !isValidating
 
   return useMemo(() => {
     if (!isDeployValid) return undefined
