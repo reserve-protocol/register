@@ -40,7 +40,7 @@ const ProposalStatus = ({
   useEffect(() => {
     if (status === 'success') {
       navigate(
-        `${ROUTES.GOVERNANCE}}?token=${rToken?.address}&chainId=${chainId}`
+        `${ROUTES.GOVERNANCE}?token=${rToken?.address}&chainId=${chainId}`
       )
     }
   }, [status])
