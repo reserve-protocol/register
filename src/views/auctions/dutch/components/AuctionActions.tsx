@@ -17,9 +17,7 @@ const AuctionActions = ({
   currentPrice: number
 }) => {
   const [bidded, setBidded] = useState(false)
-  const bidAmount = parseEther(
-    (data.amount * (currentPrice || data.worstCasePrice)).toString()
-  )
+  const bidAmount = parseEther((currentPrice || data.worstCasePrice).toString())
 
   const [hasAllowance] = useHasAllowance([
     {
