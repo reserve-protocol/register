@@ -236,7 +236,16 @@ const useProposalTx = () => {
           const { collaterals, distribution, scale } = basket[targetUnit]
 
           collaterals.forEach((collateral, index) => {
-            primaryBasket.push(collateral.address as Address)
+            // TODO: Hotfix
+            if (
+              collateral.address ===
+              '0xde0e2f0c9792617d3908d92a024caa846354cea2'
+            ) {
+              primaryBasket.push('0x83F20F44975D03b1b09e64809B757c47f942BEeA')
+            } else {
+              primaryBasket.push(collateral.address as Address)
+            }
+            console.log('address', collateral.address)
 
             weights.push(
               parseEther(
@@ -247,6 +256,8 @@ const useProposalTx = () => {
             )
           })
         }
+
+        addToRegistry('0x83F20F44975D03b1b09e64809B757c47f942BEeA')
 
         // Register missing collateral/assets on the asset registry
         for (const changes of basketChanges) {
