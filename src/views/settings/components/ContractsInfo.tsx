@@ -53,7 +53,7 @@ const ContractsInfo = (props: BoxProps) => {
             ? shortenAddress(assets[rToken.address].address)
             : 'Loading...'
         }
-        address={RSR_ADDRESS[chainId] || ''}
+        address={assets[rToken?.address ?? '']?.address || ''}
         mt={3}
       />
       <InfoItem

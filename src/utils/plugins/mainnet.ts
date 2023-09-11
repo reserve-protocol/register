@@ -83,9 +83,9 @@ const collateralAddresses = {
   maUSDT: '0xd000a79bd2a07eb6d2e02ecad73437de40e52d69',
   maUSDC: '0x2304E98cD1E2F0fd3b4E30A1Bc6E9594dE2ea9b7',
   maDAI: '0x9d38BFF9Af50738DF92a54Ceab2a2C2322BB1FAB',
-  maWBTC: '0x103BAFaB86f37C407f2C4813ee343020b66b062f',
+  maWBTC: '0x49A44d50d3B1E098DAC9402c4aF8D0C0E499F250',
   maWETH: '0x878b995bDD2D9900BEE896Bd78ADd877672e1637',
-  maStETH: '0x5574eD38ceAFB537b274E3562414DCA057d8Ff41',
+  maStETH: '0x33E840e5711549358f6d4D11F9Ab2896B36E9822',
 }
 
 const underlyingCollateralAddresses = {
@@ -501,9 +501,10 @@ const plugins: CollateralPlugin[] = [
     description: '',
     collateralAddress: underlyingCollateralAddresses.USDT,
     rewardToken: [ZERO_ADDRESS],
+    underlyingToken: underlyingCollateralAddresses.aUSDT,
   },
   {
-    symbol: 'maUSDC',
+    symbol: 'mrp-aUSDC',
     address: collateralAddresses.maUSDC,
     decimals: 18,
     targetUnit: TARGET_UNITS.USD,
@@ -512,9 +513,10 @@ const plugins: CollateralPlugin[] = [
     description: '',
     collateralAddress: underlyingCollateralAddresses.USDC,
     rewardToken: [ZERO_ADDRESS],
+    underlyingToken: underlyingCollateralAddresses.aUSDC,
   },
   {
-    symbol: 'maDAI',
+    symbol: 'mrp-aDAI',
     address: collateralAddresses.maDAI,
     decimals: 18,
     targetUnit: TARGET_UNITS.USD,
@@ -523,6 +525,7 @@ const plugins: CollateralPlugin[] = [
     description: '',
     collateralAddress: underlyingCollateralAddresses.DAI,
     rewardToken: [ZERO_ADDRESS],
+    underlyingToken: underlyingCollateralAddresses.aDAI,
   },
   {
     symbol: 'maWBTC',
@@ -534,9 +537,10 @@ const plugins: CollateralPlugin[] = [
     description: '',
     collateralAddress: underlyingCollateralAddresses.DAI,
     rewardToken: [ZERO_ADDRESS],
+    underlyingToken: underlyingCollateralAddresses.WBTC,
   },
   {
-    symbol: 'maWETH',
+    symbol: 'mrp-aWETH',
     address: collateralAddresses.maWETH,
     decimals: 18,
     targetUnit: TARGET_UNITS.ETH,
@@ -547,7 +551,7 @@ const plugins: CollateralPlugin[] = [
     rewardToken: [ZERO_ADDRESS],
   },
   {
-    symbol: 'maStETH',
+    symbol: 'mrp-aSTETH',
     address: collateralAddresses.maStETH,
     decimals: 18,
     targetUnit: TARGET_UNITS.ETH,
