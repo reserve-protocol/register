@@ -29,16 +29,16 @@ const DutchAuction = ({ data }: Props) => {
             icon={<TokenLogo width={16} symbol={data.buyingTokenSymbol} />}
             symbol={data.buyingTokenSymbol}
             forSymbol={data.sellingTokenSymbol}
-            amount={data.amount * currentPrice}
-            price={currentPrice}
+            amount={currentPrice}
+            price={currentPrice ? currentPrice / data.amount : 0}
           />
           <AuctionItem
             title="Next block bid amount"
             icon={<ArrowRight size={16} />}
             symbol={data.buyingTokenSymbol}
             forSymbol={data.sellingTokenSymbol}
-            amount={data.amount * nextPrice}
-            price={nextPrice}
+            amount={nextPrice}
+            price={nextPrice ? nextPrice / data.amount : 0}
           />
           <AuctionItem
             title="Final price"

@@ -16,6 +16,7 @@ import { ROUTES } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { UsePrepareContractWriteConfig } from 'wagmi'
 import { isProposalEditingAtom } from '../atoms'
+import useRToken from 'hooks/useRToken'
 
 interface Props extends BoxProps {
   tx: UsePrepareContractWriteConfig
@@ -34,10 +35,13 @@ const ProposalStatus = ({
     label: 'Create proposal',
   })
   const chainId = useAtomValue(chainIdAtom)
+  const rToken = useRToken()
 
   useEffect(() => {
     if (status === 'success') {
-      navigate(ROUTES.GOVERNANCE)
+      navigate(
+        `${ROUTES.GOVERNANCE}}?token=${rToken?.address}&chainId=${chainId}`
+      )
     }
   }, [status])
 

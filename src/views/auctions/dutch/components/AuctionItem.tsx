@@ -26,12 +26,12 @@ const AuctionItem = ({
         {title}
       </Text>
       <Text>
-        {formatCurrency(amount)} {symbol}
+        {formatCurrency(amount, 3)} {symbol}
       </Text>
     </Box>
     {!!price && !!forSymbol && (
       <MouseoverTooltip
-        text={`1 ${forSymbol} = ${formatCurrency(price, 5)} ${symbol}`}
+        text={`1 ${forSymbol} = ${formatCurrency(price, 3)} ${symbol}`}
       >
         <Box ml={3} variant="layout.verticalAlign" sx={{ cursor: 'pointer' }}>
           <CalculatorIcon />
