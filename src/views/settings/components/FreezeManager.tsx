@@ -84,8 +84,7 @@ const FreezeManager = () => {
   const rToken = useRToken()
   const accountRole = useAtomValue(accountRoleAtom)
   const { frozen: isFrozen } = useAtomValue(rTokenStateAtom)
-  const isAvailable =
-    isFrozen && (accountRole?.longFreezer || accountRole?.owner)
+  const isAvailable = isFrozen && accountRole?.owner
 
   const { write, hash, isLoading } = useContractWrite({
     address: isAvailable && rToken?.main ? rToken.main : undefined,
