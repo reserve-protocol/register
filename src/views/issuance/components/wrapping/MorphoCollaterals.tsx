@@ -20,11 +20,12 @@ interface Props extends BoxProps {
 
 const MorphoCollaterals = ({ wrapping, ...props }: Props) => {
   const chainId = useAtomValue(chainIdAtom)
+
   const collateralList = useMemo(
     () =>
       collateralPlugins[chainId]
         .filter((c) => MORPHO_COLLATERALS.has(c.symbol))
-        .map((c) => ({ ...c, referenceUnit: c.symbol.substring(4) })),
+        .map((c) => ({ ...c })),
     [chainId]
   )
 
@@ -35,7 +36,7 @@ const MorphoCollaterals = ({ wrapping, ...props }: Props) => {
 
   return (
     <Box {...props} px={4}>
-      <Text variant="strong">Convex LP tokens</Text>
+      <Text variant="strong">Morpho (Aave) Tokens</Text>
       {collateralList.map((c) => (
         <CollateralItem
           key={c.address}

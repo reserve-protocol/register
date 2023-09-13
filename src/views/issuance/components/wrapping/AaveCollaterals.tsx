@@ -26,14 +26,14 @@ const AaveCollaterals = ({ wrapping, ...props }: Props) => {
 
   return (
     <Box {...props} px={4}>
-      <Text variant="strong">Aave tokens</Text>
+      <Text variant="strong">Aave V2 Tokens</Text>
       {collateralList.map((c) => (
         <CollateralItem
           key={c.address}
           mt={3}
           collateral={c}
           wrapping={wrapping}
-          type={WrapCollateralType.Aave}
+          type={WrapCollateralType.AaveV2}
         />
       ))}
     </Box>

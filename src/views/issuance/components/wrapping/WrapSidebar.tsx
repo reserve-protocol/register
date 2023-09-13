@@ -7,6 +7,8 @@ import { Box, Button, Divider, Flex, Text } from 'theme-ui'
 import { wrapSidebarAtom } from 'views/issuance/atoms'
 import AaveCollaterals from './AaveCollaterals'
 import ConvexCollaterals from './ConvexCollaterals'
+import MorphoCollaterals from './MorphoCollaterals'
+import OtherCollaterals from './OtherCollaterals'
 import WrapTypeToggle from './WrapTypeToggle'
 
 const Header = () => {
@@ -23,7 +25,7 @@ const Header = () => {
         pt={3}
       >
         <Text variant="sectionTitle" mr={1}>
-          <Trans>Wrap/Unwrap tokens</Trans>
+          <Trans>Wrap/Unwrap Tokens</Trans>
         </Text>
         <Button variant="circle" ml="auto" onClick={() => close(false)}>
           <X />
@@ -49,6 +51,8 @@ const WrapSidebar = () => {
       <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
         <AaveCollaterals wrapping={wrapping} />
         <ConvexCollaterals mt={4} wrapping={wrapping} />
+        <MorphoCollaterals mt={4} wrapping={wrapping} />
+        <OtherCollaterals mt={4} wrapping={wrapping} />
       </Box>
     </Sidebar>
   )
