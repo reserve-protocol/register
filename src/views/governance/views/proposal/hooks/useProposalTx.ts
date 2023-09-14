@@ -257,7 +257,7 @@ const useProposalTx = () => {
           })
         }
 
-        addToRegistry('0x49A44d50d3B1E098DAC9402c4aF8D0C0E499F250')
+        // addToRegistry('0x49A44d50d3B1E098DAC9402c4aF8D0C0E499F250')
 
         // Register missing collateral/assets on the asset registry
         for (const changes of basketChanges) {

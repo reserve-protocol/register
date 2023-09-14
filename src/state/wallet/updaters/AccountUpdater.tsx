@@ -29,11 +29,9 @@ const accountQuery = gql`
       }
       rTokens {
         id
-        stake
-        totalStaked
-        totalUnstaked
-        totalRSRStaked
-        totalRSRUnstaked
+        governance {
+          tokenBalance
+        }
         rToken {
           id
           rsrExchangeRate
@@ -86,7 +84,9 @@ const AccountUpdater = () => {
 
       for (const rToken of data?.account?.rTokens || []) {
         const balance = Number(rToken?.balance?.amount)
-        const stake = Number(rToken?.stake)
+        const stake = rToken?.governance?.length
+          ? Number(rToken.governance[0].tokenBalance)
+          : 0
         let tokenApy = 0
         let stakingApy = 0
 
