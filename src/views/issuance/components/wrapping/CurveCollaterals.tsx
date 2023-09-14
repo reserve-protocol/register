@@ -1,24 +1,27 @@
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { chainIdAtom } from 'state/atoms'
-import { Box, BoxProps, Text } from 'theme-ui'
+import { Box, Text, BoxProps } from 'theme-ui'
 import collateralPlugins from 'utils/plugins'
 import CollateralItem, { WrapCollateralType } from './CollateralItem'
 
-export const OTHER_COLLATERALS = new Set(['sDAI'])
+export const CURVE_COLLATERALS = new Set([
+  'crv3Pool',
+  'crveUSDFRAXBP',
+  'crvMIM3Pool',
+])
 
 interface Props extends BoxProps {
   wrapping: boolean
 }
 
-const OtherCollaterals = ({ wrapping, ...props }: Props) => {
+const CurveCollaterals = ({ wrapping, ...props }: Props) => {
   const chainId = useAtomValue(chainIdAtom)
-
   const collateralList = useMemo(
     () =>
       collateralPlugins[chainId]
-        .filter((c) => OTHER_COLLATERALS.has(c.symbol))
-        .map((c) => ({ ...c })),
+        .filter((c) => CURVE_COLLATERALS.has(c.symbol))
+        .map((c) => ({ ...c, referenceUnit: c.symbol.substring(3) })),
     [chainId]
   )
 
@@ -29,18 +32,18 @@ const OtherCollaterals = ({ wrapping, ...props }: Props) => {
 
   return (
     <Box {...props} px={4}>
-      <Text variant="strong">Other Tokens</Text>
+      <Text variant="strong">Curve LP Tokens</Text>
       {collateralList.map((c) => (
         <CollateralItem
           key={c.address}
           mt={3}
           collateral={c}
           wrapping={wrapping}
-          type={WrapCollateralType.Morpho}
+          type={WrapCollateralType.Curve}
         />
       ))}
     </Box>
   )
 }
 
-export default OtherCollaterals
+export default CurveCollaterals

@@ -20,6 +20,7 @@ import { Address, useBalance, useContractReads } from 'wagmi'
 export enum WrapCollateralType {
   AaveV2,
   Convex,
+  Curve,
   Morpho,
   DaiSavingsRate,
 }
@@ -126,6 +127,14 @@ const CollateralItem = ({ collateral, wrapping, type, ...props }: Props) => {
           : [wallet, parsedAmount, true], // change 1 to 0 when going from aToken
       }
     } else if (type === WrapCollateralType.Convex) {
+      // Convex
+      return {
+        abi: ConvexWrapper,
+        address: collateral.depositContract as Address,
+        functionName: wrapping ? 'stake' : 'withdraw',
+        args: wrapping ? [parsedAmount, wallet] : [parsedAmount],
+      }
+    } else if (type === WrapCollateralType.Curve) {
       // Convex
       return {
         abi: ConvexWrapper,
