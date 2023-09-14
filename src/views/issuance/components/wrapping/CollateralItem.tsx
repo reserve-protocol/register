@@ -3,6 +3,7 @@ import ConvexWrapper from 'abis/ConvexWrapper'
 import ERC20 from 'abis/ERC20'
 import MorphoWrapper from 'abis/MorphoWrapper'
 import StaticAave from 'abis/StaticAave'
+import sDai from 'abis/sDai'
 import { NumericalInput } from 'components'
 import { ExecuteButton } from 'components/button/TransactionButton'
 import TokenLogo from 'components/icons/TokenLogo'
@@ -17,9 +18,11 @@ import { formatCurrency, safeParseEther } from 'utils'
 import { Address, useBalance, useContractReads } from 'wagmi'
 
 export enum WrapCollateralType {
-  Aave,
+  AaveV2,
   Convex,
+  Curve,
   Morpho,
+  DaiSavingsRate,
 }
 
 interface Props extends BoxProps {
@@ -29,7 +32,7 @@ interface Props extends BoxProps {
 }
 
 const ABI = {
-  [WrapCollateralType.Aave]: StaticAave,
+  [WrapCollateralType.AaveV2]: StaticAave,
   [WrapCollateralType.Convex]: ConvexWrapper,
   [WrapCollateralType.Morpho]: MorphoWrapper,
 }
@@ -113,7 +116,8 @@ const CollateralItem = ({ collateral, wrapping, type, ...props }: Props) => {
     const parsedAmount = safeParseEther(debouncedAmount, data.decimals)
 
     // Change to swithc if types are more than 3
-    if (type === WrapCollateralType.Aave) {
+    if (type === WrapCollateralType.AaveV2) {
+      // Aave v2
       return {
         abi: StaticAave,
         address: collateral.depositContract as Address,
@@ -122,13 +126,41 @@ const CollateralItem = ({ collateral, wrapping, type, ...props }: Props) => {
           ? [wallet, parsedAmount, 0, 1]
           : [wallet, parsedAmount, true], // change 1 to 0 when going from aToken
       }
-    } else {
+    } else if (type === WrapCollateralType.Convex) {
       // Convex
       return {
         abi: ConvexWrapper,
         address: collateral.depositContract as Address,
         functionName: wrapping ? 'stake' : 'withdraw',
         args: wrapping ? [parsedAmount, wallet] : [parsedAmount],
+      }
+    } else if (type === WrapCollateralType.Curve) {
+      // Convex
+      return {
+        abi: ConvexWrapper,
+        address: collateral.depositContract as Address,
+        functionName: wrapping ? 'stake' : 'withdraw',
+        args: wrapping ? [parsedAmount, wallet] : [parsedAmount],
+      }
+    } else if (type === WrapCollateralType.Morpho) {
+      // Morpho Aave
+      return {
+        abi: MorphoWrapper,
+        address: collateral.depositContract as Address,
+        functionName: wrapping ? 'deposit' : 'withdraw',
+        args: wrapping
+          ? [parsedAmount, wallet]
+          : [parsedAmount, wallet, wallet],
+      }
+    } else if (type === WrapCollateralType.DaiSavingsRate) {
+      // DSR (sDAI)
+      return {
+        abi: sDai,
+        address: collateral.depositContract as Address,
+        functionName: wrapping ? 'deposit' : 'redeem',
+        args: wrapping
+          ? [parsedAmount, wallet]
+          : [parsedAmount, wallet, wallet],
       }
     }
   }, [isValid, wrapping, hasAllowance, debouncedAmount])
@@ -168,7 +200,6 @@ const CollateralItem = ({ collateral, wrapping, type, ...props }: Props) => {
                   : 'Fetching...'}
               </Text>
             </Box>
-
             <NumericalInput
               ml="auto"
               mr={3}

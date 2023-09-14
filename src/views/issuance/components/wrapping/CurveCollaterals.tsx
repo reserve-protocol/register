@@ -5,22 +5,22 @@ import { Box, Text, BoxProps } from 'theme-ui'
 import collateralPlugins from 'utils/plugins'
 import CollateralItem, { WrapCollateralType } from './CollateralItem'
 
-export const CONVEX_COLLATERALS = new Set([
-  'stkcvx3Crv',
-  'stkcvxeUSD3CRV-f',
-  'stkcvxMIM-3LP3CRV-f',
+export const CURVE_COLLATERALS = new Set([
+  'crv3Pool',
+  'crveUSDFRAXBP',
+  'crvMIM3Pool',
 ])
 
 interface Props extends BoxProps {
   wrapping: boolean
 }
 
-const ConvexCollaterals = ({ wrapping, ...props }: Props) => {
+const CurveCollaterals = ({ wrapping, ...props }: Props) => {
   const chainId = useAtomValue(chainIdAtom)
   const collateralList = useMemo(
     () =>
       collateralPlugins[chainId]
-        .filter((c) => CONVEX_COLLATERALS.has(c.symbol))
+        .filter((c) => CURVE_COLLATERALS.has(c.symbol))
         .map((c) => ({ ...c, referenceUnit: c.symbol.substring(3) })),
     [chainId]
   )
@@ -32,18 +32,18 @@ const ConvexCollaterals = ({ wrapping, ...props }: Props) => {
 
   return (
     <Box {...props} px={4}>
-      <Text variant="strong">Curve Convex LP Tokens</Text>
+      <Text variant="strong">Curve LP Tokens</Text>
       {collateralList.map((c) => (
         <CollateralItem
           key={c.address}
           mt={3}
           collateral={c}
           wrapping={wrapping}
-          type={WrapCollateralType.Convex}
+          type={WrapCollateralType.Curve}
         />
       ))}
     </Box>
   )
 }
 
-export default ConvexCollaterals
+export default CurveCollaterals

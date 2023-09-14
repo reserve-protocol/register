@@ -22,7 +22,7 @@ export const FACADE_ADDRESS: AddressMap = {
   [ChainId.Tenderly]: '0x4024c00bBD0C420E719527D88781bc1543e63dd5',
   [ChainId.Goerli]: '0x62bf08e255706f3855821B2C25007a731D585E59',
   [ChainId.BaseGoerli]: '0x6490D66B17A1E9a460Ab54131165C8F921aCcDeB',
-  [ChainId.Hardhat]: '0x9d136eEa063eDE5418A6BC7bEafF009bBb6CFa70',
+  [ChainId.Hardhat]: '0x81b9Ae0740CcA7cDc5211b2737de735FBC4BeB3C',
 }
 
 export const FACADE_ACT_ADDRESS: AddressMap = {

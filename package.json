@@ -49,7 +49,8 @@
     "analyze": "vite-bundle-visualizer 'build/static/js/*.js'",
     "test": "vite test",
     "translations": "lingui extract --clean && lingui compile",
-    "postinstall": "npx patch-package"
+    "postinstall": "npx patch-package",
+    "forknet": "anvil --fork-url https://eth.llamarpc.com --chain-id 31337 --balance 100000000 --block-time 12"
   },
   "engines": {
     "node": ">=18.13.0"
