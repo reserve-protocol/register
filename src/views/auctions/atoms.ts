@@ -235,11 +235,12 @@ export const auctionsOverviewAtom = atomWithLoadable(
           const { result } = await client.simulateContract({
             ...call,
             functionName: 'nextRecollateralizationAuction',
-            args: [contracts.backingManager.address],
+            args: [contracts.backingManager.address, 0],
           })
 
           return result as any
         } catch (e) {
+          console.log('error reco', e)
           return [false, zeroAddress, zeroAddress, 0n]
         }
       })(),

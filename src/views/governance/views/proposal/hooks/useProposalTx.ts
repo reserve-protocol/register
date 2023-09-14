@@ -239,9 +239,9 @@ const useProposalTx = () => {
             // TODO: Hotfix
             if (
               collateral.address ===
-              '0xde0e2f0c9792617d3908d92a024caa846354cea2'
+              '0x49A44d50d3B1E098DAC9402c4aF8D0C0E499F250'
             ) {
-              primaryBasket.push('0x83F20F44975D03b1b09e64809B757c47f942BEeA')
+              primaryBasket.push('0xe0E1d3c6f09DA01399e84699722B11308607BBfC')
             } else {
               primaryBasket.push(collateral.address as Address)
             }
@@ -257,7 +257,7 @@ const useProposalTx = () => {
           })
         }
 
-        addToRegistry('0xde0e2f0c9792617d3908d92a024caa846354cea2')
+        addToRegistry('0x49A44d50d3B1E098DAC9402c4aF8D0C0E499F250')
 
         // Register missing collateral/assets on the asset registry
         for (const changes of basketChanges) {

@@ -1,6 +1,16 @@
 export default [
   {
     inputs: [],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
+  {
+    inputs: [],
+    name: 'InvalidNetwork',
+    type: 'error',
+  },
+  {
+    inputs: [],
     name: 'UIntOutOfBounds',
     type: 'error',
   },
@@ -27,13 +37,13 @@ export default [
     anonymous: false,
     inputs: [
       {
-        indexed: true,
+        indexed: false,
         internalType: 'uint192',
         name: 'oldVal',
         type: 'uint192',
       },
       {
-        indexed: true,
+        indexed: false,
         internalType: 'uint192',
         name: 'newVal',
         type: 'uint192',
@@ -72,13 +82,13 @@ export default [
     anonymous: false,
     inputs: [
       {
-        indexed: true,
+        indexed: false,
         internalType: 'uint192',
         name: 'oldVal',
         type: 'uint192',
       },
       {
-        indexed: true,
+        indexed: false,
         internalType: 'uint192',
         name: 'newVal',
         type: 'uint192',
@@ -91,13 +101,13 @@ export default [
     anonymous: false,
     inputs: [
       {
-        indexed: true,
+        indexed: false,
         internalType: 'uint192',
         name: 'oldVal',
         type: 'uint192',
       },
       {
-        indexed: true,
+        indexed: false,
         internalType: 'uint192',
         name: 'newVal',
         type: 'uint192',
@@ -116,7 +126,7 @@ export default [
         type: 'address',
       },
       {
-        indexed: true,
+        indexed: false,
         internalType: 'uint256',
         name: 'amount',
         type: 'uint256',
@@ -203,13 +213,13 @@ export default [
     anonymous: false,
     inputs: [
       {
-        indexed: true,
+        indexed: false,
         internalType: 'uint48',
         name: 'oldVal',
         type: 'uint48',
       },
       {
-        indexed: true,
+        indexed: false,
         internalType: 'uint48',
         name: 'newVal',
         type: 'uint48',
@@ -285,6 +295,19 @@ export default [
   },
   {
     inputs: [],
+    name: 'ONE_BLOCK',
+    outputs: [
+      {
+        internalType: 'uint48',
+        name: '',
+        type: 'uint48',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'backingBuffer',
     outputs: [
       {
@@ -294,6 +317,13 @@ export default [
       },
     ],
     stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'cacheComponents',
+    outputs: [],
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -312,6 +342,19 @@ export default [
       },
     ],
     name: 'claimRewardsSingle',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'contract IERC20[]',
+        name: 'erc20s',
+        type: 'address[]',
+      },
+    ],
+    name: 'forwardRevenue',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -376,32 +419,6 @@ export default [
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'contract IERC20[]',
-        name: 'erc20s',
-        type: 'address[]',
-      },
-    ],
-    name: 'manageTokens',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'contract IERC20[]',
-        name: 'erc20s',
-        type: 'address[]',
-      },
-    ],
-    name: 'manageTokensSortedOrder',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
     inputs: [],
     name: 'maxTradeSlippage',
     outputs: [
@@ -425,35 +442,6 @@ export default [
       },
     ],
     stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint192',
-        name: 'x',
-        type: 'uint192',
-      },
-      {
-        internalType: 'uint192',
-        name: 'y',
-        type: 'uint192',
-      },
-      {
-        internalType: 'uint192',
-        name: 'z',
-        type: 'uint192',
-      },
-    ],
-    name: 'mulDivCeil',
-    outputs: [
-      {
-        internalType: 'uint192',
-        name: '',
-        type: 'uint192',
-      },
-    ],
-    stateMutability: 'pure',
     type: 'function',
   },
   {
@@ -486,6 +474,19 @@ export default [
       },
     ],
     stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'enum TradeKind',
+        name: 'kind',
+        type: 'uint8',
+      },
+    ],
+    name: 'rebalance',
+    outputs: [],
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -549,7 +550,13 @@ export default [
       },
     ],
     name: 'settleTrade',
-    outputs: [],
+    outputs: [
+      {
+        internalType: 'contract ITrade',
+        name: 'trade',
+        type: 'address',
+      },
+    ],
     stateMutability: 'nonpayable',
     type: 'function',
   },
@@ -567,6 +574,19 @@ export default [
         internalType: 'contract ITrade',
         name: '',
         type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'tradesNonce',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
       },
     ],
     stateMutability: 'view',

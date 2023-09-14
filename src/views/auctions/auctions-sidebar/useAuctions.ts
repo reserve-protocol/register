@@ -30,6 +30,7 @@ const auctionsTxAtom = atom((get): UsePrepareContractWriteConfig => {
       address: recollaterization.trader,
       functionName: 'rebalance',
       abi: BackingManager,
+      args: [kind],
     }
   }
 

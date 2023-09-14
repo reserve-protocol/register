@@ -43,6 +43,11 @@ export default [
         name: 'bm',
         type: 'address',
       },
+      {
+        internalType: 'enum TradeKind',
+        name: 'kind',
+        type: 'uint8',
+      },
     ],
     name: 'nextRecollateralizationAuction',
     outputs: [
@@ -108,40 +113,6 @@ export default [
       {
         internalType: 'uint256[]',
         name: 'revTraderRewards',
-        type: 'uint256[]',
-      },
-    ],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'contract IRToken',
-        name: 'rToken',
-        type: 'address',
-      },
-    ],
-    name: 'rewardsOverview',
-    outputs: [
-      {
-        internalType: 'contract IERC20[]',
-        name: 'erc20s',
-        type: 'address[]',
-      },
-      {
-        internalType: 'uint256[]',
-        name: 'bmRewards',
-        type: 'uint256[]',
-      },
-      {
-        internalType: 'uint256[]',
-        name: 'rsrTraderRewards',
-        type: 'uint256[]',
-      },
-      {
-        internalType: 'uint256[]',
-        name: 'rTokenTraderRewards',
         type: 'uint256[]',
       },
     ],
