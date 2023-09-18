@@ -5,23 +5,16 @@ import { useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import {
+  JsonView,
   collapseAllNested,
   darkStyles,
   defaultStyles,
-  JsonView,
 } from 'react-json-view-lite'
 import 'react-json-view-lite/dist/index.css'
 import { chainIdAtom } from 'state/atoms'
-import {
-  Box,
-  BoxProps,
-  Card,
-  Divider,
-  Spinner,
-  Text,
-  useColorMode,
-} from 'theme-ui'
+import { Box, BoxProps, Card, Divider, Text, useColorMode } from 'theme-ui'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import { safeJsonFormat } from 'views/deploy/utils'
 import { ContractProposal } from 'views/governance/atoms'
 
 interface Props extends BoxProps {
@@ -119,7 +112,9 @@ const ContractProposalDetails = ({ data, ...props }: Props) => {
           ) : (
             <Text>
               {call.data && call.data[0] !== undefined
-                ? call.data[0].toString()
+                ? typeof call.data[0] === 'object'
+                  ? safeJsonFormat(call.data[0])
+                  : call.data[0].toString()
                 : 'None'}
             </Text>
           )}
