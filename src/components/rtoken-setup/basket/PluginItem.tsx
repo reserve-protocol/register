@@ -95,7 +95,8 @@ const PluginItem = ({ data, onCheck, selected, ...props }: PluginItemProps) => {
           </Box>
 
           <Text sx={{ fontSize: 1, display: 'block' }} variant="legend">
-            <Trans>Target:</Trans> {data.targetUnit} | <Trans>Est. APY:</Trans>{' '}
+            <Trans>Target:</Trans> {data.targetUnit} | Version: 3.0 |{' '}
+            <Trans>Est. APY:</Trans>{' '}
             {formatPercentage(collateralYields[data.symbol.toLowerCase()] || 0)}
           </Text>
         </Box>

@@ -39,9 +39,18 @@ const ContractsInfo = (props: BoxProps) => {
         <InfoItem
           key={label}
           title={label}
-          subtitle={shortenAddress(
-            contracts ? contracts[prop]?.address ?? '' : 'Loading...'
-          )}
+          subtitle={
+            !contracts ? (
+              'Loading...'
+            ) : (
+              <>
+                {shortenAddress(contracts[prop].address)}
+                <Text ml={2} variant="legend" sx={{ fontSize: 0 }}>
+                  v{contracts[prop].version}
+                </Text>
+              </>
+            )
+          }
           address={contracts ? contracts[prop]?.address : 'Loading...'}
           mt={index ? 3 : 0}
         />
@@ -49,9 +58,16 @@ const ContractsInfo = (props: BoxProps) => {
       <InfoItem
         title="RToken asset"
         subtitle={
-          rToken?.address && assets[rToken.address]
-            ? shortenAddress(assets[rToken.address].address)
-            : 'Loading...'
+          !rToken?.address || !assets[rToken.address] ? (
+            'Loading...'
+          ) : (
+            <>
+              {shortenAddress(assets[rToken.address].address)}
+              <Text ml={2} variant="legend" sx={{ fontSize: 0 }}>
+                v{assets[rToken.address].version}
+              </Text>
+            </>
+          )
         }
         address={assets[rToken?.address ?? '']?.address || ''}
         mt={3}

@@ -54,7 +54,7 @@ const WrapSidebar = () => {
         <CurveCollaterals mt={4} wrapping={wrapping} />
         <ConvexCollaterals mt={4} wrapping={wrapping} />
         <MorphoCollaterals mt={4} wrapping={wrapping} />
-        <OtherCollaterals mt={4} wrapping={wrapping} />
+        <OtherCollaterals mt={4} mb={4} wrapping={wrapping} />
       </Box>
     </Sidebar>
   )

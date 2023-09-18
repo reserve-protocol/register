@@ -12,6 +12,7 @@ import { readContracts } from 'wagmi'
 import rTokenAssetsAtom from './rTokenAssetsAtom'
 import rTokenContractsAtom from './rTokenContractsAtom'
 import { formatEther } from 'viem'
+import BasketHandler from 'abis/BasketHandler'
 
 const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
   const contracts = get(rTokenContractsAtom)
@@ -51,7 +52,7 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
     address: contracts.broker.address,
   }
 
-  const calls: any[] = [
+  const calls = [
     {
       ...mainCall,
       functionName: 'shortFreeze',
@@ -92,85 +93,97 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
       ...rTokenCall,
       functionName: 'redemptionThrottleParams',
     },
-  ]
-
-  // TODO: Legacy check
-  if (contracts.broker.version !== VERSION) {
-    calls.push({
+    // Legacy call - could fail
+    {
       abi: BrokerLegacy,
       address: contracts.broker.address,
       functionName: 'auctionLength',
-    })
-  } else {
-    calls.push(
-      {
-        ...brokerCall,
-        functionName: 'batchAuctionLength',
-      },
-      {
-        ...brokerCall,
-        functionName: 'dutchAuctionLength',
-      }
-    )
+    },
+    // New 3.0 calls, revert on legacy tokens
+    {
+      ...brokerCall,
+      functionName: 'batchAuctionLength',
+    },
+    {
+      ...brokerCall,
+      functionName: 'dutchAuctionLength',
+    },
+    {
+      abi: BasketHandler,
+      address: contracts.basketHandler.address,
+      functionName: 'warmupPeriod',
+    },
+    {
+      ...stRSRCall,
+      functionName: 'withdrawalLeak',
+    },
+  ]
+
+  try {
+    const [
+      shortFreeze,
+      longFreeze,
+      tradingDelay,
+      backingBuffer,
+      maxTradeSlippage,
+      minTradeVolume,
+      rewardRatio,
+      unstakingDelay,
+      issuanceThrottle,
+      redemptionThrottle,
+      legacyAuctionLength,
+      batchAuctionLength,
+      dutchAuctionLength,
+      warmupPeriod,
+      withdrawalLeak,
+    ] = await readContracts({ contracts: calls })
+
+    return {
+      tradingDelay: (tradingDelay.result as number).toString(),
+      backingBuffer: (
+        +formatEther(backingBuffer.result as bigint) * 100
+      ).toString(),
+      maxTradeSlippage: (
+        +formatEther(maxTradeSlippage.result as bigint) * 100
+      ).toString(),
+      minTrade: formatEther(minTradeVolume.result as bigint),
+      rewardRatio: formatEther(rewardRatio.result as bigint),
+      unstakingDelay: (unstakingDelay.result as number).toString(),
+      batchAuctionLength:
+        batchAuctionLength.status === 'success'
+          ? (batchAuctionLength.result as number).toString()
+          : (legacyAuctionLength.result as number).toString(),
+      dutchAuctionLength:
+        dutchAuctionLength.status === 'success'
+          ? (dutchAuctionLength.result as number).toString()
+          : '0',
+      issuanceThrottleAmount: Number(
+        formatEther((issuanceThrottle.result as any).amtRate)
+      ).toString(),
+      issuanceThrottleRate: (
+        +formatEther((issuanceThrottle.result as any).pctRate) * 100
+      ).toString(),
+      redemptionThrottleAmount: Number(
+        formatEther((redemptionThrottle.result as any).amtRate)
+      ).toString(),
+      redemptionThrottleRate: (
+        +formatEther((redemptionThrottle.result as any).pctRate) * 100
+      ).toString(),
+      maxTrade: assets[contracts.token.address]?.maxTradeVolume ?? '0',
+      longFreeze: (longFreeze.result as number).toString(),
+      shortFreeze: (shortFreeze.result as number).toString(),
+      warmupPeriod:
+        warmupPeriod.status === 'success'
+          ? (warmupPeriod.result as number).toString()
+          : '0',
+      withdrawalLeak:
+        withdrawalLeak.status === 'success'
+          ? formatEther(withdrawalLeak.result as bigint).toString()
+          : '0',
+    }
+  } catch (e) {
+    console.error('error fetching parameters', e)
   }
-
-  const [
-    shortFreeze,
-    longFreeze,
-    tradingDelay,
-    backingBuffer,
-    maxTradeSlippage,
-    minTradeVolume,
-    rewardRatio,
-    unstakingDelay,
-    issuanceThrottle,
-    redemptionThrottle,
-    batchAuctionLength,
-    dutchAuctionLength,
-  ] = await (<
-    Promise<
-      [
-        number,
-        number,
-        number,
-        bigint,
-        bigint,
-        bigint,
-        bigint,
-        number,
-        { amtRate: bigint; pctRate: bigint },
-        { amtRate: bigint; pctRate: bigint },
-        number,
-        number | undefined
-      ]
-    >
-  >readContracts({ contracts: calls, allowFailure: false }))
-
-  return {
-    tradingDelay: tradingDelay.toString(),
-    backingBuffer: (+formatEther(backingBuffer) * 100).toString(),
-    maxTradeSlippage: (+formatEther(maxTradeSlippage) * 100).toString(),
-    minTrade: formatEther(minTradeVolume),
-    rewardRatio: formatEther(rewardRatio),
-    unstakingDelay: unstakingDelay.toString(),
-    batchAuctionLength: batchAuctionLength.toString(),
-    dutchAuctionLength: dutchAuctionLength?.toString() || '0',
-    issuanceThrottleAmount: Number(
-      formatEther(issuanceThrottle.amtRate)
-    ).toString(),
-    issuanceThrottleRate: (
-      +formatEther(issuanceThrottle.pctRate) * 100
-    ).toString(),
-    redemptionThrottleAmount: Number(
-      formatEther(redemptionThrottle.amtRate)
-    ).toString(),
-    redemptionThrottleRate: (
-      +formatEther(redemptionThrottle.pctRate) * 100
-    ).toString(),
-    maxTrade: assets[contracts.token.address]?.maxTradeVolume ?? '0',
-    longFreeze: longFreeze.toString(),
-    shortFreeze: shortFreeze.toString(),
-  } as StringMap
 })
 
 export default rTokenConfigurationAtom

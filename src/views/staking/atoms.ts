@@ -1,6 +1,7 @@
-import { formatEther, parseEther } from 'viem'
+import { gql } from 'graphql-request'
 import { atom } from 'jotai'
 import { safeParseEther } from 'utils'
+import { atomWithLoadable } from 'utils/atoms/utils'
 import {
   blockTimestampAtom,
   gqlClientAtom,
@@ -10,8 +11,6 @@ import {
   stRsrBalanceAtom,
   walletAtom,
 } from './../../state/atoms'
-import { atomWithLoadable } from 'utils/atoms/utils'
-import { gql } from 'graphql-request'
 
 const isValid = (value: bigint, max: bigint) => value > 0n && value <= max
 
@@ -157,8 +156,6 @@ const exchangeRateAtom = atom((get) => get(rTokenStateAtom).exchangeRate)
 export const accountCurrentPositionAtom = atom((get) => {
   const stakeHistory = get(accountStakeHistoryAtom)
   const exchangeRate = get(exchangeRateAtom)
-
-  console.log('staking', { stakeHistory, exchangeRate })
 
   let stBalance = 0
   let rsrBalance = 0

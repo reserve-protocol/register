@@ -12,7 +12,8 @@ import { formatCurrency, formatPercentage, parseDuration } from 'utils'
 const BackingInfo = () => {
   const rToken = useRToken()
   const params = useAtomValue(rTokenConfigurationAtom)
-  const { auctions: isLegacy } = useAtomValue(isModuleLegacyAtom)
+  const { auctions: isLegacy, issuance: isIssuanceLegacy } =
+    useAtomValue(isModuleLegacyAtom)
 
   const placeholder = 'Loading...'
 
@@ -22,6 +23,24 @@ const BackingInfo = () => {
         <Trans>Backing Parameters</Trans>
       </Text>
       <Divider mx={-4} my={4} sx={{ borderColor: 'darkBorder' }} />
+      {!isIssuanceLegacy && (
+        <>
+          <InfoItem
+            title={t`Basket warmup period`}
+            subtitle={
+              params ? parseDuration(+params.warmupPeriod) : placeholder
+            }
+            mb={3}
+          />
+          <InfoItem
+            title={t`Withdrawal leak`}
+            subtitle={
+              params ? formatPercentage(+params.withdrawalLeak) : placeholder
+            }
+            mb={3}
+          />
+        </>
+      )}
       <InfoItem
         title={t`Trading delay`}
         subtitle={params ? parseDuration(+params.tradingDelay) : placeholder}

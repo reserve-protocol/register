@@ -46,6 +46,11 @@ export default [
     type: 'error',
   },
   {
+    inputs: [],
+    name: 'ZeroPrice',
+    type: 'error',
+  },
+  {
     anonymous: false,
     inputs: [
       {
@@ -55,7 +60,7 @@ export default [
         type: 'address',
       },
       {
-        indexed: true,
+        indexed: false,
         internalType: 'uint256',
         name: 'amount',
         type: 'uint256',
@@ -297,6 +302,19 @@ export default [
       },
     ],
     stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'version',
+    outputs: [
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string',
+      },
+    ],
+    stateMutability: 'pure',
     type: 'function',
   },
 ] as const

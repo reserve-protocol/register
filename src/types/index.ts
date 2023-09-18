@@ -152,4 +152,5 @@ export interface CollateralPlugin {
   custom?: boolean
   underlyingToken?: string
   collateralDecimals?: number // Decimals of exogenous collateral deposited in wrapper e.g. aUSDC
+  version?: string // by default 3.0
 }

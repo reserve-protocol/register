@@ -14,63 +14,78 @@ const rTokenAssetsAtom = atomWithLoadable(async (get) => {
     return null
   }
 
-  const registryContract = getContract({
-    address: contracts.assetRegistry.address as Address,
-    abi: AssetRegistry,
-  })
-
-  const { erc20s, assets } = await registryContract.read.getRegistry()
-
-  const calls = assets.reduce((calls, asset, index) => {
-    calls.push(...getTokenReadCalls(erc20s[index]))
-    calls.push({
-      address: asset as Address,
-      abi: AssetAbi,
-      functionName: 'price',
+  try {
+    const registryContract = getContract({
+      address: contracts.assetRegistry.address as Address,
+      abi: AssetRegistry,
     })
-    calls.push({
-      address: asset as Address,
-      abi: AssetAbi,
-      functionName: 'maxTradeVolume',
+
+    const { erc20s, assets } = await registryContract.read.getRegistry()
+
+    const calls = assets.reduce((calls, asset, index) => {
+      calls.push(...getTokenReadCalls(erc20s[index]))
+      calls.push({
+        address: asset as Address,
+        abi: AssetAbi,
+        functionName: 'price',
+      })
+      calls.push({
+        address: asset as Address,
+        abi: AssetAbi,
+        functionName: 'maxTradeVolume',
+      })
+      calls.push({
+        address: asset as Address,
+        abi: AssetAbi,
+        functionName: 'version',
+      })
+      return calls
+    }, [] as any)
+
+    const result = await readContracts({
+      contracts: calls,
     })
-    return calls
-  }, [] as any)
 
-  const result = await readContracts({ contracts: calls, allowFailure: false })
+    const registeredAssets: {
+      [x: string]: {
+        address: string
+        token: Token
+        maxTradeVolume: string
+        priceUsd: number
+        version: string
+      }
+    } = {}
 
-  const registeredAssets: {
-    [x: string]: {
-      address: string
-      token: Token
-      maxTradeVolume: string
-      priceUsd: number
+    // For each asset 5 items of the result array
+    for (let i = 0; i < assets.length; i++) {
+      const [name, symbol, decimals, priceRange, maxTradeVolume, version] =
+        result.splice(0, 6)
+
+      registeredAssets[erc20s[i]] = {
+        address: assets[i],
+        token: {
+          address: erc20s[i],
+          name: name.result as string,
+          symbol: symbol.result as string,
+          decimals: Number(decimals.result),
+        },
+        maxTradeVolume: formatUnits(
+          maxTradeVolume.result as bigint,
+          Number(decimals.result)
+        ),
+        priceUsd: priceRange.result
+          ? (Number(formatEther((priceRange.result as bigint[])[0])) +
+              Number(formatEther((priceRange.result as bigint[])[1]))) /
+            2
+          : 0,
+        version: version.result ? (version.result as string) : '2.0.0',
+      }
     }
-  } = {}
 
-  // For each asset 5 items of the result array
-  for (let i = 0; i < assets.length; i++) {
-    const [name, symbol, decimals, priceRange, maxTradeVolume] = result.splice(
-      0,
-      5
-    ) as [string, string, number, [bigint, bigint], bigint]
-
-    registeredAssets[erc20s[i]] = {
-      address: assets[i],
-      token: {
-        address: erc20s[i],
-        name,
-        symbol,
-        decimals,
-      },
-      maxTradeVolume: formatUnits(maxTradeVolume, decimals),
-      priceUsd:
-        (Number(formatEther(priceRange[0])) +
-          Number(formatEther(priceRange[1]))) /
-        2,
-    }
+    return registeredAssets
+  } catch (e) {
+    console.error('Error loading related contracts', e)
   }
-
-  return registeredAssets
 })
 
 export default rTokenAssetsAtom
