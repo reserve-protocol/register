@@ -1,4 +1,4 @@
-import { entities, base } from '@reserve-protocol/token-zapper'
+import { Token } from '@reserve-protocol/token-zapper'
 import { atom, Getter, SetStateAction, Setter } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import { Atom } from 'jotai/vanilla'
@@ -69,7 +69,7 @@ const zapTransactionFeeDisplayAtom = onlyNonNullAtom((get) => {
   ) {
     return [
       'Zap tx',
-      formatQty(tx.transaction.fee, FOUR_DIGITS),
+      formatQty(nativeToken.fromBigInt(tx.transaction.feeEstimate(gasPrice)), FOUR_DIGITS),
       '(estimate)',
     ].join(' ')
   }
@@ -92,7 +92,7 @@ export const zapTxFeeAtom = atom((get) => {
   const tx = get(resolvedZapTransaction)
   const gasUsdPrice = get(ethPriceAtom)
 
-  return tx?.transaction?.fee ? +tx.transaction.fee.format() * gasUsdPrice : 0
+  return tx?.transaction?.gasEstimate ? Number(tx.transaction.feeEstimate(BigInt(gasUsdPrice))) * gasUsdPrice : 0
 })
 
 export const zapTransactionFeeDisplay = onlyNonNullAtom((get) => {
@@ -267,7 +267,7 @@ export const ui = {
       ),
       tokenSelector: atom(
         (get) => get(zappableTokens),
-        (_, set, update: entities.Token) => {
+        (_, set, update: Token) => {
           set(tokenToZapUserSelected, update)
         }
       ),
@@ -381,7 +381,6 @@ const approve: ZapperAction = async (
   try {
     const resp = await signer.sendTransaction(approvalNeeded.tx)
     const receipt = await resp.wait(1)
-    await base.wait(3000)
 
     if (receipt.status === 0) {
       notifyError('Approval failed', 'Transaction reverted on chain')
