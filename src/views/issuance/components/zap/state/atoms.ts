@@ -26,7 +26,6 @@ import {
   supportsPermit2Signatures,
   zappableTokens,
 } from './zapper'
-import { da } from 'make-plural'
 
 /**
  * I've tried to keep react effects to a minimum so most async code is triggered via some signal
