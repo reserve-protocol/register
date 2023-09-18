@@ -65,9 +65,6 @@ const AppHeader = () => {
         )}
         {!isDeployer && <TokenToggle />}
       </Box>
-      <SyncedBlock mr={3} />
-      <ChainSelector />
-      <Divider />
       <Flex
         sx={{
           display: ['none', 'flex'],
@@ -88,6 +85,7 @@ const AppHeader = () => {
         <LanguageSelector />
       </Box> */}
       <Divider />
+      <ChainSelector mr={3} />
       <Account />
     </Container>
   )
