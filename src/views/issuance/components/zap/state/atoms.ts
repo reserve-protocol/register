@@ -9,9 +9,9 @@ import {
   PermitTransferFromData,
   SignatureTransfer,
 } from '@uniswap/permit2-sdk'
-import { atom, Getter } from 'jotai'
+import { atom, Getter, useAtomValue } from 'jotai'
 import { loadable } from 'jotai/utils'
-import { rTokenAtom, walletAtom } from 'state/atoms'
+import { balancesAtom, rTokenAtom, walletAtom } from 'state/atoms'
 
 import atomWithDebounce from 'utils/atoms/atomWithDebounce'
 import {
@@ -26,6 +26,7 @@ import {
   zappableTokens,
 } from './zapper'
 import { zeroAddress } from 'viem'
+import { quantitiesAtom } from 'views/issuance/atoms'
 
 /**
  * I've tried to keep react effects to a minimum so most async code is triggered via some signal
@@ -170,11 +171,10 @@ export const zapQuote = simplifyLoadable(zapQuotePromise)
 
 export const selectedZapTokenBalance = onlyNonNullAtom((get) => {
   const token = get(selectedZapTokenAtom)
-  // TODO: Fix balance
-  // const bal =
-  //   get(tokenBalancesStore.getBalanceAtom(token.address.address)).value ??
-  //   zeroAddress
-  return token.from(zeroAddress)
+  const quantities = get(balancesAtom) ?? {}
+  const bal =
+    quantities[token.address.address as any]?.balance ?? 0n
+  return token.from(bal)
 })
 
 export const approvalNeededAtom = loadable(

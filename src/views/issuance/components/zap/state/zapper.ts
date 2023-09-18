@@ -5,33 +5,30 @@ import { loadable } from 'jotai/utils'
 import { onlyNonNullAtom, simplifyLoadable } from 'utils/atoms/utils'
 import { createProxiedOneInchAggregator } from './createProxiedOneInchAggregator'
 import { clientAtom } from 'state/atoms'
-import { JsonRpcProvider, FallbackProvider } from "@ethersproject/providers"
-import { HttpTransport } from 'viem'
+import { Web3Provider } from "@ethersproject/providers"
+import { PublicClient } from 'viem'
 
-export function publicClientToProvider(publicClient: any) {
-  const { chain, transport } = publicClient
+export function publicClientToProvider(publicClient: PublicClient) {
+  const { chain } = publicClient
   const network = {
-    chainId: chain.id,
-    name: chain.name,
-    ensAddress: chain.contracts?.ensRegistry?.address,
+    chainId: chain!.id,
+    name: chain!.name,
+    ensAddress: chain!.contracts?.ensRegistry?.address,
   }
-
-  if (transport.type === 'fallback')
-    return new FallbackProvider(
-      (transport.transports as ReturnType<HttpTransport>[]).map(
-        ({ value }) => new JsonRpcProvider(value?.url, network),
-      ),
-    )
-
-  return new JsonRpcProvider(transport.url, network)
+  return new Web3Provider(async (method, params) => {
+    return publicClient.request({
+      method,
+      params
+    } as any)
+  }, network)
 }
-// TODO: Temporal
+
 const providerAtom = atom<any>(get => {
   const cli = get(clientAtom)
   if (cli == null) {
     return null
   }
-  return publicClientToProvider(cli)
+  return publicClientToProvider(cli as any)
 })
 
 
@@ -283,7 +280,7 @@ export const zapperState = loadable(
 
           // Set up RETH
           await setupRETH(
-            universe,
+            universe as any,
             PROTOCOL_CONFIGS.rocketPool.reth,
             PROTOCOL_CONFIGS.rocketPool.router,
           )
