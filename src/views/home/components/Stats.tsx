@@ -18,6 +18,9 @@ import { formatCurrency } from 'utils'
 import { PROTOCOL_SLUG, TIME_RANGES } from 'utils/constants'
 import Help from '../../../components/help'
 import { formatEther } from 'viem'
+import { SmallButton } from 'components/button'
+import mixpanel from 'mixpanel-browser'
+import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 
 // Here you could create a main component that holds all the logic
 const Main = () => {
@@ -157,6 +160,29 @@ const Main = () => {
           <Help
             content={t`These stats are across all RTokens on the Reserve Protocol listed by this dApp, including anonymized data from the Reserve Rpay app API.`}
           />
+          <SmallButton
+            ml="auto"
+            variant="muted"
+            onClick={() => {
+              mixpanel.track('Visited Flipside Dashboard', {})
+              window.open(
+                'https://flipsidecrypto.xyz/Meir/r-tokens-overall-dashboard-Wx7xtA',
+                '_blank'
+              )
+            }}
+          >
+            <Flex
+              sx={{
+                alignItems: 'center',
+                flexDirection: 'row',
+              }}
+            >
+              <Trans>View Dashboard</Trans>
+              <Box mt={2} ml={1}>
+                <ExternalArrowIcon />
+              </Box>{' '}
+            </Flex>
+          </SmallButton>
         </Flex>
         <Divider {...dividerProps} />
         <Box>

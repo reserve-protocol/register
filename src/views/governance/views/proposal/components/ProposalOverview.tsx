@@ -19,7 +19,6 @@ const ProposalOverview = (props: BoxProps) => {
     setProposalEditing(false)
   }
 
-  // TODO: CHECK VALIDATION
   return (
     <Container variant="layout.sticky" p={0} {...props}>
       <Box

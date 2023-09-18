@@ -156,7 +156,7 @@ export const auctionsToSettleAtom = atomWithLoadable(
         },
         type: AUCTION_TYPES.REVENUE,
       },
-      { ...contracts.backingManager, buy: null, type: AUCTION_TYPES.BACKING }, // TODO: What to show here?
+      { ...contracts.backingManager, buy: null, type: AUCTION_TYPES.BACKING },
     ]
 
     try {

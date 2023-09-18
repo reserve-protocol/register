@@ -64,7 +64,6 @@ export const getProposalStatus = (
     proposal.state === PROPOSAL_STATES.ACTIVE &&
     blockNumber > (proposal.endBlock || 0)
   ) {
-    // TODO: not sure about this
     const forVotes = parseEther(proposal.forWeightedVotes ?? '0')
     const againstVotes = parseEther(proposal.againstWeightedVotes ?? '0')
     const quorum = parseEther(proposal.quorumVotes ?? '0')

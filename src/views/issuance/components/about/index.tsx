@@ -24,7 +24,13 @@ const About = () => {
           <Trans>Wrapping collateral tokens</Trans>
         </Text>
         <Text as="p" variant="legend">
-          TODO: Text for explaining wrapping
+          <Trans>
+            Some collateral tokens from protocols like Aave and Convex differ
+            technically from other collateral tokens. To ensure proper handling,
+            they must be wrapped in a contract for effective monitoring. Once
+            wrapped, the collateral remains the same but has a new interface for
+            price and appreciation tracking.
+          </Trans>
         </Text>
         <Flex mt={3}>
           <SmallButton variant="muted" mr={3} onClick={() => setWrapping(true)}>

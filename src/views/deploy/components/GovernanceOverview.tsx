@@ -70,7 +70,7 @@ const GovernanceStatus = () => {
   const navigate = useNavigate()
   const rToken = useRToken()
   const { write, isReady, isLoading, gas, hash } = useGovernance()
-  const { status, data } = useWatchTransaction({
+  const { status } = useWatchTransaction({
     hash,
     label: 'Setup Governance',
   })

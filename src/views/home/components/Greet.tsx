@@ -70,7 +70,6 @@ const TimeLoading = ({
 
 const Greet = ({ onDismiss, ...props }: Props) => {
   const [active, setActive] = useState(0)
-  // TODO: update on trans change
   const steps = useMemo(
     () => [
       {

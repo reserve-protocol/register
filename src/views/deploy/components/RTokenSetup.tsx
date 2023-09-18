@@ -16,7 +16,6 @@ interface Props extends BoxProps {
 
 const DeploySection = ({ enabled = true }) => {
   const tx = null
-  // TODO: Deploy success functionality
 
   if (!enabled && tx) {
     return <DeploySuccessDivider hash={''} />

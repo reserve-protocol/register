@@ -44,7 +44,6 @@ const BADGE_VARIANT: StringMap = {
   [PROPOSAL_STATES.EXECUTED]: 'success',
 }
 
-// TODO: Proposal data casting?
 const useProposals = () => {
   const rToken = useRToken()
   const response = useQuery(rToken?.main ? query : null, {

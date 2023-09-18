@@ -1,15 +1,9 @@
 import SectionWrapper from 'components/section-navigation/SectionWrapper'
 import { useAtomValue } from 'jotai'
 import { Box, BoxProps, Card, Spinner, Text } from 'theme-ui'
+import { Hex, decodeFunctionData, getAbiItem, getAddress } from 'viem'
 import { ContractProposal, InterfaceMap, interfaceMapAtom } from '../atoms'
 import ContractProposalDetail from '../views/proposal-detail/components/ContractProposalDetails'
-import {
-  Hex,
-  decodeFunctionData,
-  getAbiItem,
-  getAddress,
-  getFunctionSelector,
-} from 'viem'
 
 interface Props extends BoxProps {
   addresses: string[]
@@ -34,7 +28,6 @@ const parseCallDatas = (
       const contractDetail = interfaceMap[address]
 
       if (contractDetail) {
-        // TODO: I think this is broken
         const functionCall = decodeFunctionData({
           abi: contractDetail.interface,
           data: calldatas[i] as Hex,
