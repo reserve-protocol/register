@@ -21,7 +21,7 @@ msgstr ""
 msgid "(in their Github repository)"
 msgstr ""
 
-#: src/views/issuance/components/wrapping/CollateralItem.tsx:151
+#: src/views/issuance/components/wrapping/CollateralItem.tsx:212
 msgid "{fromToken} amount"
 msgstr ""
 
@@ -58,7 +58,7 @@ msgstr ""
 msgid "% to external address"
 msgstr ""
 
-#: src/views/issuance/components/issue/Issue.tsx:48
+#: src/views/issuance/components/issue/Issue.tsx:102
 msgid "+ Mint {0}"
 msgstr ""
 
@@ -168,6 +168,10 @@ msgstr ""
 msgid "Amount"
 msgstr ""
 
+#: src/views/staking/components/balances/StakeBalance.tsx:23
+msgid "Amount calculated from exchange rate difference since stake for current staked position"
+msgstr ""
+
 #: src/views/auctions/components/About.tsx:84
 msgid "Anyone can click the button above to check and trigger an auction for any revenue that has accrued or for rebalances that need to happen. Please note that for RTokens with many collateral types in the basket, this may be an expensive transaction to execute."
 msgstr ""
@@ -188,11 +192,11 @@ msgstr ""
 msgid "Asset Registry"
 msgstr ""
 
-#: src/views/settings/components/BackingInfo.tsx:46
+#: src/views/settings/components/BackingInfo.tsx:66
 msgid "Auction length"
 msgstr ""
 
-#: src/components/layout/navigation/index.tsx:92
+#: src/components/layout/navigation/index.tsx:103
 #: src/views/auctions/auctions-sidebar/index.tsx:26
 msgid "Auctions"
 msgstr ""
@@ -233,7 +237,7 @@ msgstr ""
 msgid "Backing + Staked"
 msgstr ""
 
-#: src/views/settings/components/BackingInfo.tsx:53
+#: src/views/settings/components/BackingInfo.tsx:73
 msgid "Backing buffer"
 msgstr ""
 
@@ -256,7 +260,7 @@ msgstr ""
 msgid "Backing Manager"
 msgstr ""
 
-#: src/views/settings/components/BackingInfo.tsx:21
+#: src/views/settings/components/BackingInfo.tsx:23
 msgid "Backing Parameters"
 msgstr ""
 
@@ -307,7 +311,11 @@ msgstr ""
 msgid "Basket scale for this unit of account. This is used to initially calculate how much of each token is required for minting."
 msgstr ""
 
-#: src/views/settings/components/BackingInfo.tsx:30
+#: src/views/settings/components/BackingInfo.tsx:29
+msgid "Basket warmup period"
+msgstr ""
+
+#: src/views/settings/components/BackingInfo.tsx:50
 msgid "Batch auction length"
 msgstr ""
 
@@ -331,7 +339,7 @@ msgstr ""
 msgid "Begin governance setup"
 msgstr ""
 
-#: src/views/issuance/components/issue/ConfirmIssuance.tsx:72
+#: src/views/issuance/components/issue/ConfirmIssuance.tsx:79
 msgid "Begin minting {0} {1}"
 msgstr ""
 
@@ -339,7 +347,7 @@ msgstr ""
 msgid "Begin redemption of {0} {1}"
 msgstr ""
 
-#: src/views/staking/components/stake/ConfirmStake.tsx:99
+#: src/views/staking/components/stake/ConfirmStake.tsx:109
 msgid "Begin stake of {0} RSR"
 msgstr ""
 
@@ -450,7 +458,7 @@ msgstr ""
 msgid "Confirm & prepare proposal"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:131
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:135
 msgid "Confirm & Submit"
 msgstr ""
 
@@ -466,7 +474,7 @@ msgstr ""
 msgid "Connect"
 msgstr ""
 
-#: src/components/button/TransactionButton.tsx:42
+#: src/components/button/TransactionButton.tsx:43
 msgid "Connect Wallet"
 msgstr ""
 
@@ -533,7 +541,7 @@ msgstr ""
 msgid "Current holder"
 msgstr ""
 
-#: src/views/settings/components/FreezeManager.tsx:104
+#: src/views/settings/components/FreezeManager.tsx:103
 msgid "Current status:"
 msgstr ""
 
@@ -626,7 +634,7 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: src/components/layout/navigation/index.tsx:96
+#: src/components/layout/navigation/index.tsx:107
 msgid "Details + Roles"
 msgstr ""
 
@@ -660,7 +668,7 @@ msgstr ""
 msgid "Diversity Factor"
 msgstr ""
 
-#: src/views/governance/components/GovernanceOverview.tsx:161
+#: src/views/governance/components/GovernanceOverview.tsx:171
 msgid "Documentation"
 msgstr ""
 
@@ -674,7 +682,7 @@ msgstr ""
 msgid "Duration in Seconds"
 msgstr ""
 
-#: src/views/settings/components/BackingInfo.tsx:38
+#: src/views/settings/components/BackingInfo.tsx:58
 msgid "Dutch auction length"
 msgstr ""
 
@@ -702,7 +710,7 @@ msgstr ""
 msgid "Each type of trade can currently happen in only one way; the protocol launches a Gnosis EasyAuction. The Reserve Protocol is designed to make it easy to add other trading methods, but no other methods are currently supported."
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:127
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:131
 msgid "Edit"
 msgstr ""
 
@@ -737,7 +745,7 @@ msgstr ""
 msgid "Ends at"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/PluginItem.tsx:98
+#: src/components/rtoken-setup/basket/PluginItem.tsx:99
 msgid "Est. APY:"
 msgstr ""
 
@@ -765,7 +773,7 @@ msgstr ""
 msgid "Estimated basket APY"
 msgstr ""
 
-#: src/components/button/TransactionButton.tsx:26
+#: src/components/button/TransactionButton.tsx:27
 #: src/components/transaction-modal/EstimatedGasInfo.tsx:13
 msgid "Estimated gas cost:"
 msgstr ""
@@ -820,11 +828,11 @@ msgstr ""
 msgid "For Votes"
 msgstr ""
 
-#: src/views/settings/components/FreezeManager.tsx:103
+#: src/views/settings/components/FreezeManager.tsx:102
 msgid "Freeze State"
 msgstr ""
 
-#: src/views/settings/components/FreezeManager.tsx:105
+#: src/views/settings/components/FreezeManager.tsx:104
 msgid "Frozen"
 msgstr ""
 
@@ -844,7 +852,7 @@ msgstr ""
 msgid "Got it"
 msgstr ""
 
-#: src/components/layout/navigation/index.tsx:93
+#: src/components/layout/navigation/index.tsx:104
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:33
 #: src/views/deploy/components/NavigationSidebar.tsx:24
 #: src/views/governance/views/proposal/components/ProposalNavigation.tsx:19
@@ -881,7 +889,7 @@ msgstr ""
 msgid "Governor address"
 msgstr ""
 
-#: src/views/governance/components/GovernanceOverview.tsx:136
+#: src/views/governance/components/GovernanceOverview.tsx:145
 msgid "Guardian"
 msgstr ""
 
@@ -1046,11 +1054,11 @@ msgstr ""
 
 #: src/components/rtoken-setup/token/BackingForm.tsx:122
 #: src/components/rtoken-setup/token/BackingForm.tsx:123
-#: src/views/settings/components/BackingInfo.tsx:74
+#: src/views/settings/components/BackingInfo.tsx:94
 msgid "Issuance throttle amount"
 msgstr ""
 
-#: src/views/settings/components/BackingInfo.tsx:67
+#: src/views/settings/components/BackingInfo.tsx:87
 msgid "Issuance throttle rate"
 msgstr ""
 
@@ -1128,7 +1136,7 @@ msgstr ""
 msgid "Market cap"
 msgstr ""
 
-#: src/views/settings/components/BackingInfo.tsx:60
+#: src/views/settings/components/BackingInfo.tsx:80
 msgid "Max trade slippage"
 msgstr ""
 
@@ -1164,7 +1172,7 @@ msgstr ""
 msgid "Minimum trade size"
 msgstr ""
 
-#: src/views/settings/components/OtherInfo.tsx:41
+#: src/views/settings/components/OtherInfo.tsx:43
 msgid "Minimum trade volume"
 msgstr ""
 
@@ -1178,15 +1186,15 @@ msgstr ""
 
 #: src/components/transactions/table/index.tsx:46
 #: src/views/home/components/Greet.tsx:81
-#: src/views/issuance/components/issue/Issue.tsx:37
+#: src/views/issuance/components/issue/Issue.tsx:91
 msgid "Mint"
 msgstr ""
 
-#: src/views/issuance/components/issue/ConfirmIssuance.tsx:67
+#: src/views/issuance/components/issue/ConfirmIssuance.tsx:74
 msgid "Mint {0}"
 msgstr ""
 
-#: src/components/layout/navigation/index.tsx:90
+#: src/components/layout/navigation/index.tsx:101
 msgid "Mint + Redeem"
 msgstr ""
 
@@ -1202,11 +1210,11 @@ msgstr ""
 msgid "Minting requires a deposit of the defined collateral tokens in equal value amounts to the RToken smart contracts."
 msgstr ""
 
-#: src/views/issuance/components/issue/Issue.tsx:46
+#: src/views/issuance/components/issue/Issue.tsx:100
 msgid "Missing collateral"
 msgstr ""
 
-#: src/components/tables/ListedTokensTable.tsx:35
+#: src/components/tables/ListedTokensTable.tsx:36
 #: src/views/tokens/components/UnlistedTokensTable.tsx:96
 msgid "Mkt Cap"
 msgstr ""
@@ -1284,11 +1292,11 @@ msgstr ""
 msgid "Not available"
 msgstr ""
 
-#: src/components/button/TransactionButton.tsx:61
+#: src/components/button/TransactionButton.tsx:62
 msgid "Not enough"
 msgstr ""
 
-#: src/views/settings/components/FreezeManager.tsx:105
+#: src/views/settings/components/FreezeManager.tsx:104
 msgid "Not frozen"
 msgstr ""
 
@@ -1337,9 +1345,13 @@ msgstr ""
 msgid "Output"
 msgstr ""
 
-#: src/components/layout/navigation/index.tsx:89
+#: src/components/layout/navigation/index.tsx:100
 #: src/views/overview/components/TokenOverview.tsx:24
 msgid "Overview"
+msgstr ""
+
+#: src/views/governance/components/GovernanceOverview.tsx:139
+msgid "Owner"
 msgstr ""
 
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:67
@@ -1361,7 +1373,7 @@ msgstr ""
 #: src/components/transaction-modal/index.tsx:151
 #: src/views/deploy/components/DeployOverview.tsx:25
 #: src/views/deploy/components/GovernanceOverview.tsx:28
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:49
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:53
 msgid "Pending, sign in wallet"
 msgstr ""
 
@@ -1401,7 +1413,7 @@ msgstr ""
 msgid "Please sign the transaction in your wallet to continue with the deployment process."
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:52
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:56
 msgid "Please sign the transaction in your wallet to continue with the governance process."
 msgstr ""
 
@@ -1417,7 +1429,7 @@ msgstr ""
 msgid "Preparing transaction"
 msgstr ""
 
-#: src/components/tables/ListedTokensTable.tsx:33
+#: src/components/tables/ListedTokensTable.tsx:34
 #: src/views/home/components/Portfolio.tsx:37
 #: src/views/overview/components/PriceChart.tsx:74
 #: src/views/tokens/components/UnlistedTokensTable.tsx:91
@@ -1561,11 +1573,11 @@ msgstr ""
 
 #: src/components/rtoken-setup/token/BackingForm.tsx:148
 #: src/components/rtoken-setup/token/BackingForm.tsx:149
-#: src/views/settings/components/BackingInfo.tsx:94
+#: src/views/settings/components/BackingInfo.tsx:114
 msgid "Redemption throttle amount"
 msgstr ""
 
-#: src/views/settings/components/BackingInfo.tsx:85
+#: src/views/settings/components/BackingInfo.tsx:105
 msgid "Redemption throttle rate"
 msgstr ""
 
@@ -1662,7 +1674,7 @@ msgstr ""
 msgid "Revert"
 msgstr ""
 
-#: src/views/settings/components/OtherInfo.tsx:36
+#: src/views/settings/components/OtherInfo.tsx:38
 msgid "Reward ratio"
 msgstr ""
 
@@ -1678,7 +1690,8 @@ msgstr ""
 msgid "Risk evaluation"
 msgstr ""
 
-#: src/views/governance/components/GovernanceOverview.tsx:137
+#: src/views/governance/components/GovernanceOverview.tsx:140
+#: src/views/governance/components/GovernanceOverview.tsx:146
 #: src/views/settings/components/FreezeManager.tsx:38
 #: src/views/settings/components/FreezeManager.tsx:70
 #: src/views/settings/components/PauseManager.tsx:85
@@ -1705,6 +1718,10 @@ msgstr ""
 
 #: src/views/home/components/Portfolio.tsx:53
 msgid "RSR Rate"
+msgstr ""
+
+#: src/views/staking/components/balances/StakeBalance.tsx:22
+msgid "RSR Rewards"
 msgstr ""
 
 #: src/views/overview/components/StakingChart.tsx:77
@@ -1754,7 +1771,7 @@ msgid "RToken holders"
 msgstr ""
 
 #: src/views/issuance/components/balances/index.tsx:42
-msgid "RToken In Wallet"
+msgid "RToken in Wallet"
 msgstr ""
 
 #: src/components/layout/header/TokenToggle.tsx:37
@@ -1770,7 +1787,7 @@ msgstr ""
 msgid "RToken mandate"
 msgstr ""
 
-#: src/views/settings/components/OtherInfo.tsx:46
+#: src/views/settings/components/OtherInfo.tsx:48
 msgid "RToken Maximum trade volume"
 msgstr ""
 
@@ -1832,7 +1849,7 @@ msgstr ""
 msgid "Selling"
 msgstr ""
 
-#: src/views/governance/components/GovernanceOverview.tsx:148
+#: src/views/governance/components/GovernanceOverview.tsx:158
 msgid "Settings"
 msgstr ""
 
@@ -1899,7 +1916,7 @@ msgstr ""
 msgid "Stake"
 msgstr ""
 
-#: src/components/layout/navigation/index.tsx:91
+#: src/components/layout/navigation/index.tsx:102
 msgid "Stake + Unstake"
 msgstr ""
 
@@ -1912,8 +1929,8 @@ msgstr ""
 msgid "Stake pool USD value"
 msgstr ""
 
-#: src/views/staking/components/stake/ConfirmStake.tsx:94
-#: src/views/staking/components/stake/Stake.tsx:25
+#: src/views/staking/components/stake/ConfirmStake.tsx:104
+#: src/views/staking/components/stake/Stake.tsx:35
 msgid "Stake RSR"
 msgstr ""
 
@@ -1942,7 +1959,7 @@ msgid "Status:"
 msgstr ""
 
 #: src/views/deploy/components/GovernanceOverview.tsx:46
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:69
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:73
 msgid "Stay patient while the transaction is in progress & don’t close this window to avoid issues finding your way back here."
 msgstr ""
 
@@ -1958,7 +1975,7 @@ msgstr ""
 msgid "stRSR Token"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:91
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:95
 msgid "Submit proposal on-chain"
 msgstr ""
 
@@ -1982,7 +1999,7 @@ msgstr ""
 msgid "Target:"
 msgstr ""
 
-#: src/components/tables/ListedTokensTable.tsx:50
+#: src/components/tables/ListedTokensTable.tsx:51
 #: src/views/tokens/components/UnlistedTokensTable.tsx:110
 msgid "Target(s)"
 msgstr ""
@@ -2061,7 +2078,7 @@ msgstr ""
 msgid "There is no information about this token."
 msgstr ""
 
-#: src/views/settings/components/FreezeManager.tsx:123
+#: src/views/settings/components/FreezeManager.tsx:122
 msgid "There’s two freezing roles that put the system in the same state for different durations:"
 msgstr ""
 
@@ -2118,7 +2135,7 @@ msgstr ""
 msgid "To settle"
 msgstr ""
 
-#: src/components/tables/ListedTokensTable.tsx:25
+#: src/components/tables/ListedTokensTable.tsx:26
 #: src/views/tokens/components/UnlistedTokensTable.tsx:77
 msgid "Token"
 msgstr ""
@@ -2178,7 +2195,7 @@ msgstr ""
 msgid "Total RToken Market Cap"
 msgstr ""
 
-#: src/views/settings/components/BackingInfo.tsx:25
+#: src/views/settings/components/BackingInfo.tsx:45
 msgid "Trading delay"
 msgstr ""
 
@@ -2216,7 +2233,7 @@ msgid "Transaction signed!"
 msgstr ""
 
 #: src/views/deploy/components/GovernanceOverview.tsx:43
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:66
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:70
 msgid "Transaction submitted"
 msgstr ""
 
@@ -2233,7 +2250,7 @@ msgstr ""
 msgid "Trigger an Auction"
 msgstr ""
 
-#: src/views/issuance/components/zap/components/ZapToggle.tsx:24
+#: src/views/issuance/components/zap/components/ZapToggle.tsx:30
 msgid "Turn on Zaps to mint using 1 asset"
 msgstr ""
 
@@ -2257,8 +2274,8 @@ msgstr ""
 msgid "Tx 2"
 msgstr ""
 
-#: src/components/button/TransactionButton.tsx:71
-#: src/components/button/TransactionButton.tsx:105
+#: src/components/button/TransactionButton.tsx:72
+#: src/components/button/TransactionButton.tsx:106
 msgid "Tx in process..."
 msgstr ""
 
@@ -2270,7 +2287,7 @@ msgstr ""
 msgid "Tx2. Governance"
 msgstr ""
 
-#: src/components/tables/ListedTokensTable.tsx:40
+#: src/components/tables/ListedTokensTable.tsx:41
 #: src/views/tokens/components/UnlistedTokensTable.tsx:101
 msgid "Txs"
 msgstr ""
@@ -2283,7 +2300,7 @@ msgstr ""
 msgid "Understand why each RToken exists. What is its backing? its governing mandate?"
 msgstr ""
 
-#: src/views/settings/components/FreezeManager.tsx:108
+#: src/views/settings/components/FreezeManager.tsx:107
 msgid "Unfreeze"
 msgstr ""
 
@@ -2329,7 +2346,7 @@ msgstr ""
 msgid "Unsupported"
 msgstr ""
 
-#: src/views/issuance/components/wrapping/WrapTypeToggle.tsx:49
+#: src/views/issuance/components/wrapping/WrapTypeToggle.tsx:50
 msgid "Unwrap collaterals"
 msgstr ""
 
@@ -2382,7 +2399,7 @@ msgstr ""
 msgid "View on Etherscan"
 msgstr ""
 
-#: src/components/tables/ListedTokensTable.tsx:45
+#: src/components/tables/ListedTokensTable.tsx:46
 #: src/views/tokens/components/UnlistedTokensTable.tsx:105
 msgid "Volume"
 msgstr ""
@@ -2490,6 +2507,10 @@ msgstr ""
 msgid "Withdraw"
 msgstr ""
 
+#: src/views/settings/components/BackingInfo.tsx:36
+msgid "Withdrawal leak"
+msgstr ""
+
 #: src/components/rtoken-setup/token/OtherForm.tsx:47
 msgid "Withdrawal leak (%)"
 msgstr ""
@@ -2498,7 +2519,7 @@ msgstr ""
 msgid "Worst price"
 msgstr ""
 
-#: src/views/issuance/components/wrapping/WrapTypeToggle.tsx:36
+#: src/views/issuance/components/wrapping/WrapTypeToggle.tsx:37
 msgid "Wrap collaterals"
 msgstr ""
 
@@ -2506,8 +2527,8 @@ msgstr ""
 msgid "Wrap/Unwrap collateral"
 msgstr ""
 
-#: src/views/issuance/components/wrapping/WrapSidebar.tsx:26
-msgid "Wrap/Unwrap tokens"
+#: src/views/issuance/components/wrapping/WrapSidebar.tsx:29
+msgid "Wrap/Unwrap Tokens"
 msgstr ""
 
 #: src/views/issuance/components/about/index.tsx:24
@@ -2534,7 +2555,7 @@ msgstr ""
 msgid "Your RTokens"
 msgstr ""
 
-#: src/views/staking/components/balances/StakeBalance.tsx:39
+#: src/views/staking/components/balances/StakeBalance.tsx:40
 msgid "Your staked RSR"
 msgstr ""
 

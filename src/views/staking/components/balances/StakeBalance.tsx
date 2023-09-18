@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 import TokenLogo from 'components/icons/TokenLogo'
 import IconInfo from 'components/info-icon'
 import TokenBalance from 'components/token-balance'
@@ -19,7 +19,8 @@ const RewardedBalance = () => {
 
   return (
     <IconInfo
-      title={'RSR Reward balance'}
+      title={t`RSR Rewards`}
+      help={t`Amount calculated from exchange rate difference since stake for current staked position`}
       text={formatCurrency(rewards, 3)}
       icon={<TokenLogo width={20} symbol="RSR" />}
     />
