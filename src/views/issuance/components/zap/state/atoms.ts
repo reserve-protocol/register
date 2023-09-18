@@ -9,10 +9,13 @@ import {
   PermitTransferFromData,
   SignatureTransfer,
 } from '@uniswap/permit2-sdk'
-import { atom, Getter, useAtomValue } from 'jotai'
+import { atom, Getter } from 'jotai'
 import { loadable } from 'jotai/utils'
 import { balancesAtom, rTokenAtom, walletAtom } from 'state/atoms'
 
+import { defaultAbiCoder } from "@ethersproject/abi"
+import { id } from "@ethersproject/hash"
+import { MaxUint256 } from "@ethersproject/constants"
 import atomWithDebounce from 'utils/atoms/atomWithDebounce'
 import {
   atomWithOnWrite,
@@ -25,8 +28,8 @@ import {
   supportsPermit2Signatures,
   zappableTokens,
 } from './zapper'
+
 import { zeroAddress } from 'viem'
-import { quantitiesAtom } from 'views/issuance/atoms'
 
 /**
  * I've tried to keep react effects to a minimum so most async code is triggered via some signal
@@ -216,6 +219,18 @@ export const approvalNeededAtom = loadable(
           allowance.toBigInt()
       }
     }
+    const data = id(
+      "approve(address,uint256)",
+    ).slice(0, 10) + defaultAbiCoder.encode(
+      [
+        "address",
+        "uint256"
+      ],
+      [
+        spender.address,
+        MaxUint256
+      ]
+    ).slice(2)
     const out = {
       approvalNeeded,
       token,
@@ -225,10 +240,7 @@ export const approvalNeededAtom = loadable(
       universe,
       tx: {
         to: token.address.address,
-        data: "0x"/*erc20Iface.encodeFunctionData('approve', [
-          spender.address,
-          user.address,
-        ])*/,
+        data,
         from: user.address,
       },
     }
