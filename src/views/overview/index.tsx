@@ -11,6 +11,8 @@ import RecentTransactions from './components/RecentTransactions'
 import RevenueSplitOverview from './components/RevenueSplitOverview'
 import TokenOverview from './components/TokenOverview'
 import TokenUsage from './components/TokenUsage'
+import { useEffect } from 'react'
+import mixpanel from 'mixpanel-browser'
 
 const dividerProps = { my: [4, 8], mx: [-1, -3], sx: { borderColor: 'border' } }
 const gridProps = { columns: [1, 1, 1, 2], gap: [5, 5, 5, 4] }
@@ -29,6 +31,12 @@ const Overview = () => {
     rTokenAddress?.toLowerCase() ?? '',
     !!rToken && !rToken.main
   )
+
+  useEffect(() => {
+    mixpanel.track('Visted RToken Overview', {
+      RToken: rToken?.address.toLowerCase() ?? '',
+    })
+  }, [])
 
   return (
     <Container>

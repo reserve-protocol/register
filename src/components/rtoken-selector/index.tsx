@@ -1,14 +1,15 @@
 import Popup from 'components/popup'
 import { useAtom } from 'jotai'
+import mixpanel from 'mixpanel-browser'
 import { useCallback, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { selectedRTokenAtom } from 'state/atoms'
 import { Box, BoxProps, Flex } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
+import { Address } from 'viem'
 import SelectedToken from './SelectedToken'
 import TokenList from './TokenList'
-import { Address } from 'viem'
 
 /**
  * Top header RToken selection
@@ -22,6 +23,10 @@ const RTokenSelector = (props: BoxProps) => {
   const handleSelect = useCallback(
     (token: string) => {
       if (token !== selected) {
+        mixpanel.track('Selected RToken', {
+          Source: 'Dropdown',
+          RToken: token.toLowerCase(),
+        })
         setSelected(token as Address)
         navigate(
           `${selected ? location.pathname : ROUTES.OVERVIEW}?token=${token}`

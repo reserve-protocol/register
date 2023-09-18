@@ -128,6 +128,7 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
                     : 'inputError'
                 }
                 value={data.distribution[index]}
+                disabled={data.collaterals.length > 1 ? false : true}
                 onChange={(value) => handleDistribution(index, value)}
               />
             </Box>

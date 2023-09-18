@@ -3,6 +3,7 @@ import { Table, TableProps } from 'components/table'
 import TokenItem from 'components/token-item'
 import { getRTokenLogo } from 'hooks/useRTokenLogo'
 import useTokenList from 'hooks/useTokenList'
+import mixpanel from 'mixpanel-browser'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Box, Spinner, Text } from 'theme-ui'
@@ -79,6 +80,10 @@ const ListedTokensTable = (
   const handleClick = (data: any) => {
     navigate(`/overview?token=${data.id}`)
     document.getElementById('app-container')?.scrollTo(0, 0)
+    mixpanel.track('Selected RToken', {
+      Source: 'Comparison Table',
+      RToken: data.id,
+    })
   }
 
   return (

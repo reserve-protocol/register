@@ -5,6 +5,9 @@ import { Atom } from 'jotai/vanilla'
 import { ethPriceAtom, isWalletModalVisibleAtom, rTokenAtom } from 'state/atoms'
 import { onlyNonNullAtom } from 'utils/atoms/utils'
 
+import { notifyError, notifySuccess } from 'hooks/useNotification'
+import mixpanel from 'mixpanel-browser'
+import { addTransactionAtom } from 'state/chain/atoms/transactionAtoms'
 import {
   approvalNeededAtom,
   approvalPending,
@@ -35,8 +38,6 @@ import {
 } from './atoms'
 import { formatQty, FOUR_DIGITS } from './formatTokenQuantity'
 import { resolvedZapState, zappableTokens, zapperState } from './zapper'
-import { notifyError, notifySuccess } from 'hooks/useNotification'
-import { addTransactionAtom } from 'state/chain/atoms/transactionAtoms'
 
 /**
  * This file contains atoms that are used to control the UI state of the Zap component.
@@ -69,7 +70,10 @@ const zapTransactionFeeDisplayAtom = onlyNonNullAtom((get) => {
   ) {
     return [
       'Zap tx',
-      formatQty(nativeToken.fromBigInt(tx.transaction.feeEstimate(gasPrice)), FOUR_DIGITS),
+      formatQty(
+        nativeToken.fromBigInt(tx.transaction.feeEstimate(gasPrice)),
+        FOUR_DIGITS
+      ),
       '(estimate)',
     ].join(' ')
   }
@@ -92,7 +96,9 @@ export const zapTxFeeAtom = atom((get) => {
   const tx = get(resolvedZapTransaction)
   const gasUsdPrice = get(ethPriceAtom)
 
-  return tx?.transaction?.gasEstimate ? Number(tx.transaction.feeEstimate(BigInt(gasUsdPrice))) * gasUsdPrice : 0
+  return tx?.transaction?.gasEstimate
+    ? Number(tx.transaction.feeEstimate(BigInt(gasUsdPrice))) * gasUsdPrice
+    : 0
 })
 
 export const zapTransactionFeeDisplay = onlyNonNullAtom((get) => {
@@ -241,7 +247,7 @@ const zapEnabledForRTokens = new Set<string>([
   '0xe72b141df173b999ae7c1adcbf60cc9833ce56a8',
   '0xacdf0dba4b9839b96221a8487e9ca660a48212be',
   '0xf2098092a5b9d25a3cc7ddc76a0553c9922eea9e',
-  '0x9b451beb49a03586e6995e5a93b9c745d068581e'
+  '0x9b451beb49a03586e6995e5a93b9c745d068581e',
 ])
 
 export const zapEnabledAtom = atomWithStorage('zap-enabled', false)
@@ -329,6 +335,10 @@ export const ui = {
       if (flowState === 'approval') {
         await approve(get, set, data)
       } else if (flowState === 'send_tx') {
+        mixpanel.track('Confirmed Zap', {
+          RToken: data.rToken.address.toString().toLowerCase() ?? '',
+          inputToken: data.inputToken.symbol,
+        })
         await sendTx(get, set, data)
       } else if (flowState === 'sign_permit') {
         await signAndSendTx(get, set, data)

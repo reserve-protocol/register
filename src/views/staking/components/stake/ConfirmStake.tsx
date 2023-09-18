@@ -6,6 +6,7 @@ import TransactionModal from 'components/transaction-modal'
 import useDebounce from 'hooks/useDebounce'
 import useRToken from 'hooks/useRToken'
 import { atom, useAtom, useAtomValue } from 'jotai'
+import mixpanel from 'mixpanel-browser'
 import { useEffect, useMemo, useState } from 'react'
 import {
   accountDelegateAtom,
@@ -16,10 +17,10 @@ import {
 } from 'state/atoms'
 import { formatCurrency, safeParseEther } from 'utils'
 import { RSR_ADDRESS } from 'utils/addresses'
+import { Address } from 'viem'
 import { isValidStakeAmountAtom, stakeAmountAtom } from 'views/staking/atoms'
 import DelegateStake from './DelegateStake'
 import StakeInput from './StakeInput'
-import { Address } from 'viem'
 
 const customDelegateAtom = atom('')
 
@@ -89,6 +90,15 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
     setAmount('')
   }
 
+  const handleChange = (signing: boolean) => {
+    setSigning(signing)
+    if (signing) {
+      mixpanel.track('Confirmed Stake RSR', {
+        RToken: rToken?.address.toLowerCase() ?? '',
+      })
+    }
+  }
+
   return (
     <TransactionModal
       title={t`Stake RSR`}
@@ -98,7 +108,7 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
       requiredAllowance={requiredAllowance}
       confirmLabel={t`Begin stake of ${formatCurrency(Number(amount))} RSR`}
       onClose={handleClose}
-      onChange={(signing) => setSigning(signing)}
+      onChange={handleChange}
     >
       <StakeInput compact disabled={signing} />
       {!isLegacy && (

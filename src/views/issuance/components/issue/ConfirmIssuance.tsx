@@ -1,9 +1,9 @@
 import { t } from '@lingui/macro'
 import RToken from 'abis/RToken'
-import TextPlaceholder from 'components/placeholder/TextPlaceholder'
 import TransactionModal from 'components/transaction-modal'
 import useHasAllowance, { RequiredAllowance } from 'hooks/useHasAllowance'
 import { atom, useAtomValue } from 'jotai'
+import mixpanel from 'mixpanel-browser'
 import { useState } from 'react'
 import { rTokenAtom, walletAtom } from 'state/atoms'
 import { formatCurrency, safeParseEther } from 'utils'
@@ -51,7 +51,6 @@ const allowancesAtom = atom((get) => {
   })) as RequiredAllowance[]
 })
 
-// TODO: New approval flow
 const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
   const [signing, setSigning] = useState(false)
   const rToken = useAtomValue(rTokenAtom)
@@ -60,6 +59,15 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
     useAtomValue(allowancesAtom)
   )
   const call = useAtomValue(callAtom)
+
+  const handleChange = (signing: boolean) => {
+    setSigning(signing)
+    if (signing) {
+      mixpanel.track('Confirmed Mint', {
+        RToken: rToken?.address.toLowerCase() ?? '',
+      })
+    }
+  }
 
   return (
     <TransactionModal
@@ -72,7 +80,7 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
           : 'Please grant collateral allowance'
       }
       onClose={onClose}
-      onChange={(signing) => setSigning(signing)}
+      onChange={handleChange}
       disabled={!hasAllowance}
     >
       <IssueInput disabled={signing} compact />

@@ -21,6 +21,7 @@ import ConfirmIssuance from './ConfirmIssuance'
 import IssueInput from './IssueInput'
 import { FACADE_ADDRESS, USDC_ADDRESS } from 'utils/addresses'
 import FacadeRead from 'abis/FacadeRead'
+import mixpanel from 'mixpanel-browser'
 
 const useMaxIssuable = async () => {
   const rToken = useAtomValue(rTokenAtom)
@@ -69,6 +70,13 @@ const Issue = () => {
   const rToken = useRToken()
   useMaxIssuable()
 
+  const handleIssue = () => {
+    mixpanel.track('Clicked Mint', {
+      RToken: rToken?.address.toLowerCase() ?? '',
+    })
+    setIssuing(true)
+  }
+
   return (
     <>
       {issuing && (
@@ -86,7 +94,7 @@ const Issue = () => {
           disabled={!isValid || issuing || issuancePaused || frozen}
           variant={missingCollateral ? 'error' : 'primary'}
           mt={3}
-          onClick={() => setIssuing(true)}
+          onClick={handleIssue}
         >
           {missingCollateral ? (
             <Trans>Missing collateral</Trans>

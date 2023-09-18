@@ -2,13 +2,13 @@ import Analytics from 'components/analytics/Analytics'
 import ToastContainer from 'components/toaster-container/ToastContainer'
 import TransactionSidebar from 'components/transactions/manager/TransactionSidebar'
 import { useAtomValue } from 'jotai'
+import mixpanel from 'mixpanel-browser'
 import { Suspense, useEffect } from 'react'
 import { lazyWithPreload } from 'react-lazy-with-preload'
 import {
   Route,
   HashRouter as Router,
   Routes,
-  ScrollRestoration,
   useLocation,
   useSearchParams,
 } from 'react-router-dom'
@@ -30,6 +30,10 @@ import Tokens from 'views/tokens/Tokens'
 import Layout from './components/layout'
 import LanguageProvider from './i18n'
 import { theme } from './theme'
+
+mixpanel.init(process.env.REACT_APP_MIXPANEL_KEY || 'mixpanel_key', {
+  track_pageview: true,
+})
 
 const Issuance = lazyWithPreload(() => import('./views/issuance'))
 const Governance = lazyWithPreload(() => import('./views/governance'))

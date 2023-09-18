@@ -6,6 +6,7 @@ import ManagerIcon from 'components/icons/ManagerIcon'
 import OverviewIcon from 'components/icons/OverviewIcon'
 import StakeIcon from 'components/icons/StakeIcon'
 import { useAtomValue } from 'jotai'
+import mixpanel from 'mixpanel-browser'
 import { useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
 import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
@@ -78,6 +79,12 @@ const NavItem = ({
         display: 'flex',
       })}
       to={`${path}?token=${rTokenAddress}&chainId=${chainId}`}
+      onClick={() =>
+        mixpanel.track('Selected RToken NavItem', {
+          RToken: rTokenAddress.toLowerCase(),
+          Target: path.slice(1),
+        })
+      }
       {...props}
     >
       <MenuItem title={title} Icon={Icon} />
