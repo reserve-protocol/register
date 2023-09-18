@@ -39,7 +39,7 @@ const RTokenBalance = () => {
   return (
     <Box p={4}>
       <Text variant="subtitle" mb={3}>
-        <Trans>RToken In Wallet</Trans>
+        <Trans>RToken in Wallet</Trans>
       </Text>
       <Flex>
         <TokenBalance

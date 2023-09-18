@@ -129,14 +129,24 @@ const GovernanceOverview = () => {
         <Text variant="subtitle">
           <Trans>Governance format</Trans>
         </Text>
-        <Text variant="title">{governance ? governance.name : 'Custom'}</Text>
-        {governance && (
-          <SettingItem
-            my={3}
-            title={t`Guardian`}
-            subtitle={t`Role held by:`}
-            value={<RolesView roles={governance?.guardians ?? []} />}
-          />
+        <Text variant="title">
+          {governance ? governance.name : 'Loading...'}
+        </Text>
+        {governance && governance.governor && (
+          <>
+            <SettingItem
+              my={3}
+              title={t`Owner`}
+              subtitle={t`Role held by:`}
+              value={<RolesView roles={[governance.governor]} />}
+            />
+            <SettingItem
+              my={3}
+              title={t`Guardian`}
+              subtitle={t`Role held by:`}
+              value={<RolesView roles={governance?.guardians ?? []} />}
+            />
+          </>
         )}
         <SmallButton
           mt={3}

@@ -19,6 +19,7 @@ const WrapTypeToggle = ({
         padding: 1,
         border: '1px solid',
         borderColor: 'inputBorder',
+        flex: 'none',
       }}
       mb={5}
     >
