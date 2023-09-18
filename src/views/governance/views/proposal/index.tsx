@@ -34,6 +34,12 @@ const GovernanceProposal = () => {
     }
   }, [])
 
+  useEffect(() => {
+    if (tokenParameters?.shortFreeze) {
+      form.reset(tokenParameters)
+    }
+  }, [tokenParameters])
+
   return (
     <FormProvider {...form}>
       <Updater />

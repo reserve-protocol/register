@@ -28,7 +28,8 @@ export const defaultValues = {
   ownerAddress: '',
   // backing params
   tradingDelay: '7200',
-  auctionLength: '900',
+  batchAuctionLength: '900',
+  dutchAuctionLength: '1800',
   backingBuffer: '0.1', // 0.1%
   maxTradeSlippage: '0.5', // 0.5%
   issuanceThrottleAmount: '250000', // Anticipated redemption minimum amount for throttling
@@ -44,7 +45,6 @@ export const defaultValues = {
   longFreeze: '604800', // 1 week
   withdrawalLeak: '5', // 5%
   warmupPeriod: '900', // 15minutes
-  dutchAuctionLength: '1800',
   // governance
   ...governanceDefaultValues,
 }

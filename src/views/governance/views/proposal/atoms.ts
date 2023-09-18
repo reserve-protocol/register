@@ -1,6 +1,6 @@
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
-import { rTokenContractsAtom } from 'state/atoms'
+import { isModuleLegacyAtom, rTokenContractsAtom } from 'state/atoms'
 import { BackupChanges, CollateralChange } from './hooks/useBackupChanges'
 import { ParameterChange } from './hooks/useParametersChanges'
 import { RevenueSplitChanges } from './hooks/useRevenueSplitChanges'
@@ -12,6 +12,7 @@ import StRSR from 'abis/StRSR'
 import RToken from 'abis/RToken'
 import Broker from 'abis/Broker'
 import Main from 'abis/Main'
+import BrokerLegacy from 'abis/BrokerLegacy'
 
 export const proposalTxIdAtom = atom('')
 
@@ -51,12 +52,15 @@ export const proposalDescriptionAtom = atom('')
 
 export type ParamName =
   | 'tradingDelay'
+  | 'withdrawalLeak'
   | 'backingBuffer'
   | 'maxTradeSlippage'
   | 'minTrade'
   | 'rewardRatio'
   | 'unstakingDelay'
-  | 'auctionLength'
+  | 'batchAuctionLength'
+  | 'dutchAuctionLength'
+  | 'warmupPeriod'
   | 'issuanceThrottle'
   | 'redemptionThrottle'
   | 'shortFreeze'
@@ -64,6 +68,7 @@ export type ParamName =
 
 export const parameterContractMapAtom = atom((get) => {
   const contracts = get(rTokenContractsAtom)
+  const legacy = get(isModuleLegacyAtom)
 
   return {
     tradingDelay: [
@@ -133,10 +138,26 @@ export const parameterContractMapAtom = atom((get) => {
         abi: StRSR,
       },
     ],
-    auctionLength: [
+    withdrawalLeak: [
+      {
+        address: contracts?.stRSR.address ?? '',
+        functionName: 'setWithdrawalLeak' as const, // setUnstakingDelay(uint48)
+        abi: StRSR,
+      },
+    ],
+    batchAuctionLength: [
       {
         address: contracts?.broker.address ?? '',
-        functionName: 'setAuctionLength' as const, // setAuctionLength(uint48)
+        functionName: legacy.auctions
+          ? 'setAuctionLength'
+          : 'setBatchAuctionLength', // setAuctionLength(uint48)
+        abi: legacy.auctions ? BrokerLegacy : Broker,
+      },
+    ],
+    dutchAuctionLength: [
+      {
+        address: contracts?.broker.address ?? '',
+        functionName: 'setDutchAuctionLength',
         abi: Broker,
       },
     ],

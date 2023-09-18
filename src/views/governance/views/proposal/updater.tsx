@@ -34,7 +34,6 @@ import useRevenueSplitChanges from './hooks/useRevenueSplitChanges'
 import useRoleChanges from './hooks/useRoleChanges'
 
 export const RTokenDataUpdater = () => {
-  const { reset } = useFormContext()
   // Setup atoms
   const setSetupBasket = useSetAtom(basketAtom)
   const resetBasket = useResetAtom(basketAtom)

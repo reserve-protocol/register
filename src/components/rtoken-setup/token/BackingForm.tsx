@@ -16,7 +16,7 @@ const BackingForm = (props: BoxProps) => {
     warnupPeriodHelp,
   ]: string[] = watch([
     'tradingDelay',
-    'auctionLength',
+    'batchAuctionLength',
     'dutchAuctionLength',
     'warmupPeriod',
   ]).map((value) => parseDuration(+value || 0))
@@ -57,7 +57,7 @@ const BackingForm = (props: BoxProps) => {
         help={t`Batch Auction length - defines how long Gnosis EasyAuction auctions should be. Gnosis EasyAuction is a platform enabling fair price discovery for tokens through the use of batch auctions.`}
         mb={3}
         helper={auctionLengthHelp}
-        name="auctionLength"
+        name="batchAuctionLength"
         options={{
           required: true,
           pattern: numberPattern,
@@ -121,7 +121,7 @@ const BackingForm = (props: BoxProps) => {
       <FormField
         label={t`Issuance throttle amount`}
         placeholder={t`Issuance throttle amount`}
-        help={t`Issuance rate - allows the issuer to limit the amount of RTokens issued per hour. This matters in the event of an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued.`}
+        help={t`Issuance amount - allows the issuer to limit the amount of RTokens issued per hour. This matters in the event of an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued.`}
         mb={3}
         name="issuanceThrottleAmount"
         options={{
@@ -147,7 +147,7 @@ const BackingForm = (props: BoxProps) => {
       <FormField
         label={t`Redemption throttle amount`}
         placeholder={t`Redemption throttle amount`}
-        help={t`Redemption rate - allows the issuer to limit the amount of RTokens redeemed per hour. This matters in the event of an exploit where an attacker tries to redeem RTokens.This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be redeemed.`}
+        help={t`Redemption amount - allows the issuer to limit the amount of RTokens redeemed per hour. This matters in the event of an exploit where an attacker tries to redeem RTokens.This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be redeemed.`}
         name="redemptionThrottleAmount"
         options={{
           required: true,

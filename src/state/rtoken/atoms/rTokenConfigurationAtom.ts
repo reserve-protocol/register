@@ -1,4 +1,5 @@
 import BackingManager from 'abis/BackingManager'
+import BasketHandler from 'abis/BasketHandler'
 import Broker from 'abis/Broker'
 import BrokerLegacy from 'abis/BrokerLegacy'
 import Main from 'abis/Main'
@@ -7,12 +8,10 @@ import RevenueTrader from 'abis/RevenueTrader'
 import StRSR from 'abis/StRSR'
 import { StringMap } from 'types'
 import { atomWithLoadable } from 'utils/atoms/utils'
-import { VERSION } from 'utils/constants'
+import { formatEther } from 'viem'
 import { readContracts } from 'wagmi'
 import rTokenAssetsAtom from './rTokenAssetsAtom'
 import rTokenContractsAtom from './rTokenContractsAtom'
-import { formatEther } from 'viem'
-import BasketHandler from 'abis/BasketHandler'
 
 const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
   const contracts = get(rTokenContractsAtom)
