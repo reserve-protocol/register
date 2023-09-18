@@ -1,8 +1,8 @@
-import { entities } from '@reserve-protocol/token-zapper'
+import { TokenQuantity } from '@reserve-protocol/token-zapper'
 
 export const FOUR_DIGITS = 10n ** 4n
 
-const formatQty_ = (qty: entities.TokenQuantity, divisor: bigint) => {
+const formatQty_ = (qty: TokenQuantity, divisor: bigint) => {
   if (qty.amount === 0n) {
     return qty.formatWithSymbol()
   }
@@ -26,6 +26,6 @@ const formatQty_ = (qty: entities.TokenQuantity, divisor: bigint) => {
 // formatQty(eth.fromDecimal("1.00001"), 10n**4n) => "1.0 ETH"
 // formatQty(eth.fromDecimal("0.00001"), 10n**4n) => "<0.0001 ETH"
 */
-export const formatQty = (qty: entities.TokenQuantity, digitsScale: bigint) => {
+export const formatQty = (qty: TokenQuantity, digitsScale: bigint) => {
   return formatQty_(qty, qty.token.scale / digitsScale)
 }
