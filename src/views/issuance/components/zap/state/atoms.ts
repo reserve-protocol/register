@@ -1,15 +1,17 @@
-import { Address, Searcher } from '@reserve-protocol/token-zapper'
-import { type Token } from '@reserve-protocol/token-zapper'
-import {BigNumber} from "@ethersproject/bignumber"
+import { Address, Searcher, type Token } from '@reserve-protocol/token-zapper'
 import {
   PERMIT2_ADDRESS,
   PermitTransferFrom,
   PermitTransferFromData,
   SignatureTransfer,
 } from '@uniswap/permit2-sdk'
-import { atom, Getter } from 'jotai'
+import { Getter, atom } from 'jotai'
 import { loadable } from 'jotai/utils'
 import { rTokenAtom, walletAtom } from 'state/atoms'
+
+import { defaultAbiCoder } from "@ethersproject/abi"
+import { id } from "@ethersproject/hash"
+import { MaxUint256 } from "@ethersproject/constants"
 
 import atomWithDebounce from 'utils/atoms/atomWithDebounce'
 import {
@@ -18,12 +20,13 @@ import {
   simplifyLoadable,
 } from 'utils/atoms/utils'
 
+import { tokenBalancesStore } from 'state/TokenBalancesUpdater'
 import {
   resolvedZapState,
   supportsPermit2Signatures,
   zappableTokens,
 } from './zapper'
-import { tokenBalancesStore } from 'state/TokenBalancesUpdater'
+import { da } from 'make-plural'
 
 /**
  * I've tried to keep react effects to a minimum so most async code is triggered via some signal
@@ -216,6 +219,19 @@ export const approvalNeededAtom = loadable(
           allowance.toBigInt()
       }
     }
+    const data = id(
+      "approve(address,uint256)",
+    ).slice(0, 10) + defaultAbiCoder.encode(
+      [
+        "address",
+        "uint256"
+      ],
+      [
+        spender.address,
+        MaxUint256
+      ]
+    ).slice(2)
+    console.log(data)
     const out = {
       approvalNeeded,
       token,
@@ -225,10 +241,7 @@ export const approvalNeededAtom = loadable(
       universe,
       tx: {
         to: token.address.address,
-        data: "0x"/*erc20Iface.encodeFunctionData('approve', [
-          spender.address,
-          user.address,
-        ])*/,
+        data,
         from: user.address,
       },
     }
@@ -370,7 +383,7 @@ export const resolvedZapTransactionGasEstimateUnits = simplifyLoadable(
 const zapTransactionGasEstimateFee = onlyNonNullAtom((get) => {
   const quote = get(zapQuote)
   const estimate = get(resolvedZapTransactionGasEstimateUnits, 0n)
-  const totalNeeded =  quote.universe.nativeToken
+  const totalNeeded = quote.universe.nativeToken
     .from(estimate ?? 0n)
     .scalarMul(quote.universe.gasPrice)
   return totalNeeded
