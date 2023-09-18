@@ -19,17 +19,19 @@ const OtherInfo = () => {
       <Divider mx={-4} my={4} sx={{ borderColor: 'darkBorder' }} />
       <InfoItem
         title={t`Short freeze duration`}
-        subtitle={parseDuration(+params?.shortFreeze || 0)}
+        subtitle={params ? parseDuration(+params.shortFreeze) : 'Loading...'}
         mb={3}
       />
       <InfoItem
         title={t`Long freeze duration`}
-        subtitle={parseDuration(+params?.longFreeze || 0)}
+        subtitle={params ? parseDuration(+params.longFreeze) : 'Loading...'}
         mb={3}
       />
       <InfoItem
         title={t`Unstaking Delay`}
-        subtitle={parseDuration(+params?.unstakingDelay || 0)}
+        subtitle={
+          params ? parseDuration(+params?.unstakingDelay) : 'Loading...'
+        }
         mb={3}
       />
       <InfoItem

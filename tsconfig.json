@@ -8,8 +8,8 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "isolatedModules": true,
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
@@ -19,4 +19,3 @@
   },
   "include": ["src"]
 }
- 

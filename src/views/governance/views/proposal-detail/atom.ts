@@ -89,8 +89,6 @@ export const getProposalStateAtom = atom((get) => {
     deadline: null,
   }
 
-  console.log('proposal?', proposal)
-
   if (blockNumber && proposal) {
     // Proposal to be executed
     // TODO: Guardian can cancel on this state!

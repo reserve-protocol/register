@@ -13,6 +13,7 @@ import { readContracts } from 'wagmi'
 import { chainIdAtom, walletAtom } from '../chain/atoms/chainAtoms'
 import rTokenAtom from '../rtoken/atoms/rTokenAtom'
 import rTokenContractsAtom from '../rtoken/atoms/rTokenContractsAtom'
+import { readContract } from 'wagmi/actions'
 
 const defaultBalance = {
   value: 0n,

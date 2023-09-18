@@ -180,7 +180,7 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
         withdrawalLeak.status === 'success'
           ? formatEther(withdrawalLeak.result as bigint).toString()
           : '0',
-    }
+    } as StringMap
   } catch (e) {
     console.error('error fetching parameters', e)
   }

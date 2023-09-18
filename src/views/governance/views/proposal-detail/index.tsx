@@ -56,8 +56,6 @@ const GovernanceProposalDetail = () => {
     return accountVote?.choice ?? null
   }, [proposal, account])
 
-  console.log('state?', state)
-
   const handleBack = () => {
     navigate(`${ROUTES.GOVERNANCE}?token=${rToken?.address}`)
   }
