@@ -8,7 +8,7 @@ import StakeIcon from 'components/icons/StakeIcon'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
-import { selectedRTokenAtom } from 'state/atoms'
+import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import { transition } from 'theme'
 import { Box, NavLinkProps, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
@@ -58,28 +58,32 @@ const NavItem = ({
   Icon,
   rTokenAddress,
   ...props
-}: NavItemProps) => (
-  <NavLink
-    style={({ isActive }) => ({
-      textDecoration: 'none',
-      marginLeft: 12,
-      marginRight: 12,
-      paddingBottom: '12px',
-      paddingTop: '12px',
-      opacity: isActive ? '1' : '0.68',
-      color: 'inherit',
-      lineHeight: '32px',
-      boxShadow: isActive
-        ? 'inset 0 0px 0px var(--theme-ui-colors-background), inset 0 -2px 0px currentColor, inset 0 0px 0px var(--theme-ui-colors-background)'
-        : 'none',
-      display: 'flex',
-    })}
-    to={`${path}?token=${rTokenAddress}`}
-    {...props}
-  >
-    <MenuItem title={title} Icon={Icon} />
-  </NavLink>
-)
+}: NavItemProps) => {
+  const chainId = useAtomValue(chainIdAtom)
+
+  return (
+    <NavLink
+      style={({ isActive }) => ({
+        textDecoration: 'none',
+        marginLeft: 12,
+        marginRight: 12,
+        paddingBottom: '12px',
+        paddingTop: '12px',
+        opacity: isActive ? '1' : '0.68',
+        color: 'inherit',
+        lineHeight: '32px',
+        boxShadow: isActive
+          ? 'inset 0 0px 0px var(--theme-ui-colors-background), inset 0 -2px 0px currentColor, inset 0 0px 0px var(--theme-ui-colors-background)'
+          : 'none',
+        display: 'flex',
+      })}
+      to={`${path}?token=${rTokenAddress}&chainId=${chainId}`}
+      {...props}
+    >
+      <MenuItem title={title} Icon={Icon} />
+    </NavLink>
+  )
+}
 
 // Sidebar Navigation
 const Navigation = () => {
