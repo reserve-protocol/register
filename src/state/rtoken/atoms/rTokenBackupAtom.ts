@@ -63,6 +63,7 @@ const rTokenBackupAtom = atomWithLoadable(async (get) => {
         address,
         targetUnit: targetUnits[index],
         symbol: symbols[i],
+        collateralAddress: address,
       })),
     }
     index += 1

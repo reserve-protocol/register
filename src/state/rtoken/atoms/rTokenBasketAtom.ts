@@ -2,13 +2,15 @@ import { atom } from 'jotai'
 import rTokenAtom from './rTokenAtom'
 import rTokenBackingDistributionAtom from './rTokenBackingDistributionAtom'
 import { Basket } from 'components/rtoken-setup/atoms'
+import rTokenAssetsAtom from './rTokenAssetsAtom'
 
 const rTokenBasketAtom = atom((get) => {
   const rToken = get(rTokenAtom)
+  const assets = get(rTokenAssetsAtom)
   const distribution = get(rTokenBackingDistributionAtom)
   let basket: Basket = {}
 
-  if (!rToken || !distribution) {
+  if (!rToken || !distribution || !assets) {
     return basket
   }
 
@@ -23,6 +25,7 @@ const rTokenBasketAtom = atom((get) => {
       targetUnit,
       address,
       symbol,
+      collateralAddress: assets[address].address,
     }
 
     if (!targetBasket) {

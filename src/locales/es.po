@@ -74,11 +74,11 @@ msgstr ""
 msgid "24h Tx Vol"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:260
+#: src/views/home/components/Stats.tsx:286
 msgid "24h Tx Volume"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:261
+#: src/views/home/components/Stats.tsx:287
 #: src/views/overview/components/TokenUsage.tsx:49
 msgid "24h Txs"
 msgstr ""
@@ -421,7 +421,7 @@ msgstr ""
 msgid "Choose Redemption Basket"
 msgstr ""
 
-#: src/views/home/components/Greet.tsx:86
+#: src/views/home/components/Greet.tsx:85
 msgid "Choose your own adventure with your RSR. Find your preferred RToken to stake, govern, and backstop."
 msgstr ""
 
@@ -454,7 +454,7 @@ msgstr ""
 msgid "Configure your vote"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ProposalOverview.tsx:56
+#: src/views/governance/views/proposal/components/ProposalOverview.tsx:55
 msgid "Confirm & prepare proposal"
 msgstr ""
 
@@ -462,7 +462,7 @@ msgstr ""
 msgid "Confirm & Submit"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ProposalOverview.tsx:43
+#: src/views/governance/views/proposal/components/ProposalOverview.tsx:42
 msgid "Confirm changes made"
 msgstr ""
 
@@ -498,28 +498,28 @@ msgstr ""
 msgid "Copy to clipboard"
 msgstr ""
 
-#: src/views/governance/components/ProposalList.tsx:88
+#: src/views/governance/components/ProposalList.tsx:87
 msgid "Create proposal"
 msgstr ""
 
-#: src/views/governance/components/ProposalList.tsx:136
+#: src/views/governance/components/ProposalList.tsx:135
 msgid "Created at:"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:264
+#: src/views/home/components/Stats.tsx:290
 msgid "Cumulative - RToken holder income"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:177
+#: src/views/home/components/Stats.tsx:203
 msgid "Cumulative - Staked RSR income"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:182
+#: src/views/home/components/Stats.tsx:208
 #: src/views/overview/components/TokenUsage.tsx:31
 msgid "Cumulative Tx Volume"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:262
+#: src/views/home/components/Stats.tsx:288
 #: src/views/overview/components/TokenUsage.tsx:43
 msgid "Cumulative Txs"
 msgstr ""
@@ -642,7 +642,7 @@ msgstr ""
 msgid "Discard"
 msgstr ""
 
-#: src/views/home/components/Greet.tsx:90
+#: src/views/home/components/Greet.tsx:89
 msgid "Discover how an RToken is configured to operate in the good times and in emergencies if collateral defaults."
 msgstr ""
 
@@ -786,7 +786,7 @@ msgstr ""
 msgid "eUSD usage includes off-chain data from Rpay"
 msgstr ""
 
-#: src/views/governance/views/proposal-detail/components/ContractProposalDetails.tsx:43
+#: src/views/governance/views/proposal-detail/components/ContractProposalDetails.tsx:36
 msgid "Executable code"
 msgstr ""
 
@@ -808,7 +808,7 @@ msgstr ""
 msgid "Exit Deployer"
 msgstr ""
 
-#: src/views/home/components/Greet.tsx:89
+#: src/views/home/components/Greet.tsx:88
 msgid "Explore"
 msgstr ""
 
@@ -848,7 +848,7 @@ msgstr ""
 msgid "Global redeem max"
 msgstr ""
 
-#: src/views/home/components/Greet.tsx:133
+#: src/views/home/components/Greet.tsx:132
 msgid "Got it"
 msgstr ""
 
@@ -872,7 +872,7 @@ msgstr ""
 msgid "Governance format"
 msgstr ""
 
-#: src/views/deploy/components/RTokenSetup.tsx:74
+#: src/views/deploy/components/RTokenSetup.tsx:73
 msgid "Governance gets deployed & your RToken is now usable (if unpaused)"
 msgstr ""
 
@@ -917,11 +917,11 @@ msgstr ""
 msgid "In Cooldown"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:166
+#: src/views/home/components/Stats.tsx:192
 msgid "Includes market cap of all RTokens and RSV."
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:171
+#: src/views/home/components/Stats.tsx:197
 msgid "Includes RTokens, staked RSR, and RSV."
 msgstr ""
 
@@ -997,15 +997,15 @@ msgstr ""
 msgid "Intro"
 msgstr ""
 
-#: src/components/rtoken-setup/atoms.ts:125
+#: src/components/rtoken-setup/atoms.ts:122
 msgid "Invalid ({targetUnit}) backup diversity factor"
 msgstr ""
 
-#: src/components/rtoken-setup/atoms.ts:110
+#: src/components/rtoken-setup/atoms.ts:107
 msgid "Invalid ({targetUnit}) basket distribution"
 msgstr ""
 
-#: src/components/rtoken-setup/atoms.ts:114
+#: src/components/rtoken-setup/atoms.ts:111
 msgid "Invalid ({targetUnit}) basket scale"
 msgstr ""
 
@@ -1044,12 +1044,12 @@ msgstr ""
 msgid "Invalid value"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:111
-msgid "Issuance rate - allows the issuer to limit the amount of RTokens issued per hour based on a percentage of the current RToken market cap. This matters in the event of an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued."
+#: src/components/rtoken-setup/token/BackingForm.tsx:124
+msgid "Issuance amount - allows the issuer to limit the amount of RTokens issued per hour. This matters in the event of an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued."
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:124
-msgid "Issuance rate - allows the issuer to limit the amount of RTokens issued per hour. This matters in the event of an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued."
+#: src/components/rtoken-setup/token/BackingForm.tsx:111
+msgid "Issuance rate - allows the issuer to limit the amount of RTokens issued per hour based on a percentage of the current RToken market cap. This matters in the event of an exploit where an attacker tries to issue more RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be issued."
 msgstr ""
 
 #: src/components/rtoken-setup/token/BackingForm.tsx:122
@@ -1078,7 +1078,7 @@ msgstr ""
 msgid "LC Labs uses industry standard anonymized analytics tools to understand usage and improve the user experience. LC labs does not collect any information about users or their financial activity."
 msgstr ""
 
-#: src/views/home/components/Greet.tsx:77
+#: src/views/home/components/Greet.tsx:76
 msgid "Learn"
 msgstr ""
 
@@ -1185,7 +1185,7 @@ msgid "Minimum trade volume ($)"
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:46
-#: src/views/home/components/Greet.tsx:81
+#: src/views/home/components/Greet.tsx:80
 #: src/views/issuance/components/issue/Issue.tsx:91
 msgid "Mint"
 msgstr ""
@@ -1268,7 +1268,7 @@ msgstr ""
 msgid "No plugins available"
 msgstr ""
 
-#: src/views/governance/components/ProposalList.tsx:112
+#: src/views/governance/components/ProposalList.tsx:111
 msgid "No proposals created..."
 msgstr ""
 
@@ -1362,7 +1362,7 @@ msgstr ""
 msgid "Owner Address"
 msgstr ""
 
-#: src/views/governance/views/proposal-detail/components/ContractProposalDetails.tsx:111
+#: src/views/governance/views/proposal-detail/components/ContractProposalDetails.tsx:104
 msgid "Parameters"
 msgstr ""
 
@@ -1449,7 +1449,7 @@ msgstr ""
 msgid "Primary Basket"
 msgstr ""
 
-#: src/components/rtoken-setup/atoms.ts:101
+#: src/components/rtoken-setup/atoms.ts:98
 msgid "Primary basket not defined"
 msgstr ""
 
@@ -1540,7 +1540,7 @@ msgstr ""
 msgid "recent on-chain transactions"
 msgstr ""
 
-#: src/views/governance/components/ProposalList.tsx:80
+#: src/views/governance/components/ProposalList.tsx:79
 msgid "Recent proposals"
 msgstr ""
 
@@ -1563,12 +1563,12 @@ msgstr ""
 msgid "Redeem zaps are not yet supported"
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:137
-msgid "Redemption rate - allows the issuer to limit the amount of RTokens redeemed per hour based on a percentage of the current RToken market cap. This matters in the event of an exploit where an attacker tries to redeem RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be redeemed."
+#: src/components/rtoken-setup/token/BackingForm.tsx:150
+msgid "Redemption amount - allows the issuer to limit the amount of RTokens redeemed per hour. This matters in the event of an exploit where an attacker tries to redeem RTokens.This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be redeemed."
 msgstr ""
 
-#: src/components/rtoken-setup/token/BackingForm.tsx:150
-msgid "Redemption rate - allows the issuer to limit the amount of RTokens redeemed per hour. This matters in the event of an exploit where an attacker tries to redeem RTokens.This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be redeemed."
+#: src/components/rtoken-setup/token/BackingForm.tsx:137
+msgid "Redemption rate - allows the issuer to limit the amount of RTokens redeemed per hour based on a percentage of the current RToken market cap. This matters in the event of an exploit where an attacker tries to redeem RTokens. This buys time for users with pause or freeze permissions to reduce the amount of RTokens that can be redeemed."
 msgstr ""
 
 #: src/components/rtoken-setup/token/BackingForm.tsx:148
@@ -1605,7 +1605,7 @@ msgstr ""
 msgid "Register Listing"
 msgstr ""
 
-#: src/views/home/components/Greet.tsx:113
+#: src/views/home/components/Greet.tsx:112
 msgid "Register.app is an independent project but with tight collaboration with the core team of the Reserve project. It’s created as the first Explorer/UI to interact with RTokens in different ways."
 msgstr ""
 
@@ -1799,7 +1799,7 @@ msgstr ""
 msgid "RToken paused or frozen"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:155
+#: src/views/home/components/Stats.tsx:158
 msgid "RToken Stats"
 msgstr ""
 
@@ -1837,7 +1837,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: src/views/home/components/Greet.tsx:151
+#: src/views/home/components/Greet.tsx:150
 msgid "Select an RToken to:"
 msgstr ""
 
@@ -1878,7 +1878,7 @@ msgstr ""
 msgid "Short freezers have the responsibility of freezing an RToken if anything dangerous or suspicious is happening. This is a one-shot freeze and the role will be revoked after a single use. This field determines how long the RToken will remain frozen until the freeze expires or is extended by another actor."
 msgstr ""
 
-#: src/views/governance/views/proposal-detail/components/ContractProposalDetails.tsx:103
+#: src/views/governance/views/proposal-detail/components/ContractProposalDetails.tsx:96
 msgid "Signature"
 msgstr ""
 
@@ -1906,12 +1906,16 @@ msgstr ""
 msgid "Sold"
 msgstr ""
 
+#: src/views/issuance/components/about/index.tsx:27
+msgid "Some collateral tokens from protocols like Aave and Convex differ technically from other collateral tokens. To ensure proper handling, they must be wrapped in a contract for effective monitoring. Once wrapped, the collateral remains the same but has a new interface for price and appreciation tracking."
+msgstr ""
+
 #: src/views/deploy/components/TokenForm.tsx:40
 msgid "St Token Ticker"
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:54
-#: src/views/home/components/Greet.tsx:85
+#: src/views/home/components/Greet.tsx:84
 #: src/views/staking/components/stake/StakeInput.tsx:14
 msgid "Stake"
 msgstr ""
@@ -2056,7 +2060,7 @@ msgstr ""
 msgid "The Reserve Protocol makes a few different types of trades"
 msgstr ""
 
-#: src/views/home/components/Greet.tsx:110
+#: src/views/home/components/Greet.tsx:109
 msgid "The RToken Register"
 msgstr ""
 
@@ -2082,7 +2086,7 @@ msgstr ""
 msgid "There’s two freezing roles that put the system in the same state for different durations:"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:158
+#: src/views/home/components/Stats.tsx:161
 msgid "These stats are across all RTokens on the Reserve Protocol listed by this dApp, including anonymized data from the Reserve Rpay app API."
 msgstr ""
 
@@ -2098,7 +2102,7 @@ msgstr ""
 msgid "This field is required"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:226
+#: src/views/home/components/Stats.tsx:252
 msgid "This includes on-chain transactions for RTokens and RSV in addition to anonymized Rpay transactions to show the full story of the Reserve ecosystem."
 msgstr ""
 
@@ -2191,7 +2195,7 @@ msgstr ""
 msgid "Total RSR staked"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:164
+#: src/views/home/components/Stats.tsx:190
 msgid "Total RToken Market Cap"
 msgstr ""
 
@@ -2207,12 +2211,12 @@ msgstr ""
 msgid "Trading delay (s)"
 msgstr ""
 
-#: src/views/deploy/components/RTokenSetup.tsx:48
+#: src/views/deploy/components/RTokenSetup.tsx:47
 #: src/views/deploy/components/TransactionDivider.tsx:38
 msgid "Transaction 1"
 msgstr ""
 
-#: src/views/deploy/components/RTokenSetup.tsx:73
+#: src/views/deploy/components/RTokenSetup.tsx:72
 msgid "Transaction 2"
 msgstr ""
 
@@ -2237,7 +2241,7 @@ msgstr ""
 msgid "Transaction submitted"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:225
+#: src/views/home/components/Stats.tsx:251
 #: src/views/overview/components/RecentTransactions.tsx:50
 msgid "Transactions"
 msgstr ""
@@ -2258,7 +2262,7 @@ msgstr ""
 msgid "Tutorial video"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:170
+#: src/views/home/components/Stats.tsx:196
 msgid "TVL in Reserve"
 msgstr ""
 
@@ -2296,7 +2300,7 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: src/views/home/components/Greet.tsx:78
+#: src/views/home/components/Greet.tsx:77
 msgid "Understand why each RToken exists. What is its backing? its governing mandate?"
 msgstr ""
 
@@ -2366,7 +2370,7 @@ msgstr ""
 msgid "Use the Alexios governor format?"
 msgstr ""
 
-#: src/views/home/components/Greet.tsx:82
+#: src/views/home/components/Greet.tsx:81
 msgid "Use this dApp to transform your various collateral types into RTokens."
 msgstr ""
 
@@ -2388,6 +2392,10 @@ msgstr ""
 
 #: src/views/home/components/TokenList.tsx:28
 msgid "View All"
+msgstr ""
+
+#: src/views/home/components/Stats.tsx:180
+msgid "View Dashboard"
 msgstr ""
 
 #: src/components/transaction-modal/TransactionConfirmedModal.tsx:40
@@ -2523,7 +2531,7 @@ msgstr ""
 msgid "Wrap collaterals"
 msgstr ""
 
-#: src/views/issuance/components/about/index.tsx:31
+#: src/views/issuance/components/about/index.tsx:37
 msgid "Wrap/Unwrap collateral"
 msgstr ""
 
@@ -2543,7 +2551,7 @@ msgstr ""
 msgid "You can leave your RToken paused and come back to setting up governance later."
 msgstr ""
 
-#: src/views/deploy/components/RTokenSetup.tsx:49
+#: src/views/deploy/components/RTokenSetup.tsx:48
 msgid "You submit the transaction configuring your RToken design"
 msgstr ""
 
