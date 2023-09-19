@@ -31,7 +31,7 @@ import Layout from './components/layout'
 import LanguageProvider from './i18n'
 import { theme } from './theme'
 
-mixpanel.init(process.env.REACT_APP_MIXPANEL_KEY || 'mixpanel_key', {
+mixpanel.init(import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key', {
   track_pageview: true,
 })
 
