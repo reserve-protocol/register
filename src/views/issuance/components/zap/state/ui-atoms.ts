@@ -2,7 +2,7 @@ import { Token } from '@reserve-protocol/token-zapper'
 import { atom, Getter, SetStateAction, Setter } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import { Atom } from 'jotai/vanilla'
-import { ethPriceAtom, isWalletModalVisibleAtom, rTokenAtom } from 'state/atoms'
+import { ethPriceAtom, gasFeeAtom, gasPriceAtom, isWalletModalVisibleAtom, rTokenAtom } from 'state/atoms'
 import { onlyNonNullAtom } from 'utils/atoms/utils'
 
 import { notifyError, notifySuccess } from 'hooks/useNotification'
@@ -94,10 +94,10 @@ export const approvalTxFeeAtom = atom((get) => {
 
 export const zapTxFeeAtom = atom((get) => {
   const tx = get(resolvedZapTransaction)
+  const gasPrice = get(gasFeeAtom)
   const gasUsdPrice = get(ethPriceAtom)
-
   return tx?.transaction?.gasEstimate
-    ? Number(tx.transaction.feeEstimate(BigInt(gasUsdPrice))) * gasUsdPrice
+    ? Number(tx.result.universe.nativeToken.from(tx.transaction.feeEstimate(gasPrice??1n)).format()) * gasUsdPrice
     : 0
 })
 

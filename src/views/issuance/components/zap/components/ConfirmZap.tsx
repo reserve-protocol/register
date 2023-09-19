@@ -58,7 +58,6 @@ const ConfirmZap = ({ onClose }: { onClose: () => void }) => {
       />
     )
   }
-
   return (
     <Modal title={`Easy mint ${rToken?.symbol || ''}`} onClose={onClose}>
       <ZapInput />
