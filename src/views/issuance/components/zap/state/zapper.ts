@@ -75,6 +75,7 @@ const COMMON_TOKENS = {
   WBTC: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
   WETH: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
   ERC20GAS: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+
   MIM: "0x99D8a9C45b2ecA8864373A26D1459e3Dff1e17F3",
   FRAX: "0x853d955acef822db058eb8505911ed77f175b99e",
 
@@ -112,7 +113,9 @@ const COMMON_TOKENS = {
 
   "saUSDT": "0x21fe646D1Ed0733336F2D4d9b2FE67790a6099D9",
   "saDAI": "0xF6147b4B44aE6240F7955803B2fD5E15c77bD7ea",
-  "saUSDC": "0x60C384e226b120d93f3e0F4C502957b2B9C32B15"
+  "saUSDC": "0x60C384e226b120d93f3e0F4C502957b2B9C32B15",
+
+  "reth": "0xae78736Cd615f374D3085123A210448E74Fc6393"
 } as const;
 
 const RTOKENS = {
@@ -131,6 +134,14 @@ const RTOKENS = {
   RSD: {
     main: '0xa410AA8304CcBD53F88B4a5d05bD8fa048F42478',
     erc20: "0xF2098092a5b9D25A3cC7ddc76A0553c9922eEA9E"
+  },
+  iUSD: {
+    main: '0x555143D2E6653c80a399f77c612D33D5Bf67F331',
+    erc20: "0x9b451BEB49a03586e6995E5A93b9c745D068581e"
+  },
+  'USDC+': {
+    main: '0xeC11Cf537497141aC820615F4f399be4a1638Af6',
+    erc20: "0xFc0B1EEf20e4c68B3DCF36c4537Cfa7Ce46CA70b"
   }
 } as const;
 
@@ -216,6 +227,8 @@ export const zapperState = loadable(
           const { setupRETH } = await import('@reserve-protocol/token-zapper/protocols/rocketpool');
           const { setupChainLink: setupChainLinkRegistry } = await import('@reserve-protocol/token-zapper/protocols/chainlink');
           const { setupWrappedGasToken } = await import('@reserve-protocol/token-zapper/protocols/erc20gas');
+          const { setupCompoundV3 } = await import('@reserve-protocol/token-zapper/protocols/compoundv3');
+          const { setupERC4626 } = await import('@reserve-protocol/token-zapper/protocols/erc4626');
           const { initCurveOnEthereum } = await import('@reserve-protocol/token-zapper/protocols/curve/mainnet');
 
 
@@ -231,72 +244,113 @@ export const zapperState = loadable(
               [universe.commonTokens.WBTC, chainLinkBTC],
               [universe.commonTokens.WETH, chainLinkETH],
               [universe.nativeToken, chainLinkETH],
+            ],
+            [
+              [
+                universe.commonTokens.reth,
+                {
+                  uoaToken: universe.nativeToken,
+                  derivedTokenUnit: chainLinkETH,
+                },
+              ],
             ]
-          );
+          )
           setupWrappedGasToken(
             universe
           )
 
           // Set up compound
-          const cTokens = await convertWrapperTokenAddressesIntoWrapperTokenPairs(
+          const cTokens = await Promise.all((await convertWrapperTokenAddressesIntoWrapperTokenPairs(
             universe,
             PROTOCOL_CONFIGS.compound.markets,
             wrappedToUnderlyingMapping
+          )).map(async a => ({
+            ...a,
+            collaterals: await Promise.all((PROTOCOL_CONFIGS.compound.collaterals[a.wrappedToken.address.address] ?? []).map(a =>
+              universe.getToken(Address.from(a))
+            ))
+          })))
+
+          await setupCompoundLike(
+            universe,
+            {
+              cEth: await universe.getToken(
+                Address.from(PROTOCOL_CONFIGS.compound.cEther)
+              ),
+              comptroller: Address.from(PROTOCOL_CONFIGS.compound.comptroller),
+            },
+            cTokens
           )
-          await setupCompoundLike(universe, {
-            cEth: await universe.getToken(
-              Address.from(PROTOCOL_CONFIGS.compound.cEther)
-            ),
-            comptroller: Address.from(PROTOCOL_CONFIGS.compound.comptroller),
-          }, cTokens)
-
-
 
           // Set up flux finance
-          const fTokens = await convertWrapperTokenAddressesIntoWrapperTokenPairs(
+          const fTokens = await Promise.all(
+            (await convertWrapperTokenAddressesIntoWrapperTokenPairs(
+              universe,
+              PROTOCOL_CONFIGS.fluxFinance.markets,
+              wrappedToUnderlyingMapping
+            )).map(async a => ({
+              ...a,
+              collaterals: await Promise.all((PROTOCOL_CONFIGS.fluxFinance.collaterals[a.wrappedToken.address.address] ?? []).map(a =>
+                universe.getToken(Address.from(a))
+              ))
+            })))
+
+          await setupCompoundLike(
             universe,
-            PROTOCOL_CONFIGS.fluxFinance.markets,
-            wrappedToUnderlyingMapping
+            {
+              comptroller: Address.from(PROTOCOL_CONFIGS.fluxFinance.comptroller),
+            },
+            fTokens
           )
 
-          await setupCompoundLike(universe, {
-            comptroller: Address.from(PROTOCOL_CONFIGS.fluxFinance.comptroller),
-          }, fTokens)
+          // Load compound v3
+          const compoundV3Markets = await Promise.all(PROTOCOL_CONFIGS.compoundV3.markets.map(async a => {
+            return {
+              baseToken: await universe.getToken(Address.from(a.baseToken)),
+              receiptToken: await universe.getToken(Address.from(a.receiptToken)),
+              vaults: await Promise.all(a.vaults.map(vault => universe.getToken(Address.from(vault))))
+            }
+          }))
+
+          await setupCompoundV3(universe, compoundV3Markets)
 
           // Set up AAVEV2
           const saTokens = await convertWrapperTokenAddressesIntoWrapperTokenPairs(
             universe,
             PROTOCOL_CONFIGS.aavev2.tokenWrappers,
             wrappedToUnderlyingMapping
-          );
-          await Promise.all(saTokens.map(({ underlying, wrappedToken }) => setupSAToken(
-            universe,
-            wrappedToken,
-            underlying,
-          )))
+          )
+          await Promise.all(
+            saTokens.map(({ underlying, wrappedToken }) =>
+              setupSAToken(universe, wrappedToken, underlying)
+            )
+          )
 
           // Set up RETH
           await setupRETH(
-            universe as any,
+            universe,
             PROTOCOL_CONFIGS.rocketPool.reth,
-            PROTOCOL_CONFIGS.rocketPool.router,
+            PROTOCOL_CONFIGS.rocketPool.router
           )
 
           // Set up Lido
           await setupLido(
             universe,
             PROTOCOL_CONFIGS.lido.steth,
-            PROTOCOL_CONFIGS.lido.wsteth,
+            PROTOCOL_CONFIGS.lido.wsteth
+          )
+
+          await setupERC4626(
+            universe,
+            PROTOCOL_CONFIGS.erc4626,
+            wrappedToUnderlyingMapping
           )
 
           // Set up RTokens defined in the config
           await loadRTokens(universe)
 
-          try {
-            await initCurveOnEthereum(universe as any, PROTOCOL_CONFIGS.convex.booster)
-          } catch (e) {
-            console.log(e)
-          }
+          const curve = await initCurveOnEthereum(universe, PROTOCOL_CONFIGS.convex.booster)
+
         }
       )
       try {
