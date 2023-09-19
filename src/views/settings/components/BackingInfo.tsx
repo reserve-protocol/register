@@ -63,13 +63,6 @@ const BackingInfo = () => {
         />
       )}
       <InfoItem
-        title={t`Auction length`}
-        subtitle={
-          params ? parseDuration(+params.batchAuctionLength) : placeholder
-        }
-        mb={3}
-      />
-      <InfoItem
         title={t`Backing buffer`}
         subtitle={
           params ? formatPercentage(+params.backingBuffer) : placeholder

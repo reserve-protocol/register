@@ -54,7 +54,7 @@
     "forknet": "anvil --fork-url https://eth.llamarpc.com --chain-id 31337 --balance 100000000 --block-time 12"
   },
   "engines": {
-    "node": ">=18.13.0"
+    "node": ">=17.0.0"
   },
   "browserslist": {
     "production": [
