@@ -177,7 +177,7 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
           : '0',
       withdrawalLeak:
         withdrawalLeak.status === 'success'
-          ? formatEther(withdrawalLeak.result as bigint).toString()
+          ? (+formatEther(withdrawalLeak.result as bigint) * 100).toString()
           : '0',
     } as StringMap
   } catch (e) {
