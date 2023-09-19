@@ -155,7 +155,7 @@ export const getDeployParameters = (
         rewardRatio: parseEther(tokenConfig.rewardRatio),
         unstakingDelay: Number(tokenConfig.unstakingDelay),
         tradingDelay: Number(tokenConfig.tradingDelay),
-        batchAuctionLength: Number(tokenConfig.auctionLength),
+        batchAuctionLength: Number(tokenConfig.batchAuctionLength),
         backingBuffer: parsePercent(tokenConfig.backingBuffer),
         maxTradeSlippage: parsePercent(tokenConfig.maxTradeSlippage),
         shortFreeze: Number(tokenConfig.shortFreeze),

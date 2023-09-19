@@ -25,6 +25,13 @@ const poolsMap: StringMap = {
   'ad3d7253-fb8f-402f-a6f8-821bc0a055cb': 'stkcvxcrv3crypto',
   '7394f1bc-840a-4ff0-9e87-5e0ef932943a': 'stkcvx3crv',
   'c04005c9-7e34-41a6-91c4-295834ed8ac0': 'stkcvxeusd3crv-f',
+  '325ad2d6-70b1-48d7-a557-c2c99a036f87': 'mrp-ausdc',
+  '1343a280-7812-4bc3-8f98-d1c37e11d271': 'mrp-ausdt',
+  'b8bcdf8e-96ed-40ca-a7aa-aa048b9874e5': 'mrp-adai',
+  '7be52986-18c2-450f-b74b-d65fb1205bbf': 'mrp-aweth',
+  'ff61171d-d7b0-4989-816c-b9bf02a15f00': 'mrp-awbtc',
+  'eab8d63d-8a8f-48cb-8027-583508831d24': 'mrp-asteth',
+  '0f45d730-b279-4629-8e11-ccb5cc3038b4': 'cbeth',
 }
 
 const CollateralYieldUpdater = () => {

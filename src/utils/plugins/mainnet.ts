@@ -230,7 +230,7 @@ const plugins: CollateralPlugin[] = [
     rewardToken: [COMPOUND_ADDRESS[ChainId.Mainnet]],
   },
   {
-    symbol: 'cUSDCv3',
+    symbol: 'wcUSDCv3',
     address: collateralAddresses.cUSDCv3,
     decimals: 6,
     targetUnit: TARGET_UNITS.USD,
@@ -504,7 +504,7 @@ const plugins: CollateralPlugin[] = [
     depositContract: '0xE2b16e14dB6216e33082D5A8Be1Ef01DF7511bBb',
   },
   {
-    symbol: 'maWBTC',
+    symbol: 'mrp-aWBTC',
     address: collateralAddresses.maWBTC,
     decimals: 18,
     targetUnit: TARGET_UNITS.BTC,
