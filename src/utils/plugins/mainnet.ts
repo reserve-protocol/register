@@ -9,6 +9,7 @@ import {
 import { ChainId } from 'utils/chains'
 import { TARGET_UNITS } from 'utils/constants'
 
+// TODO: Create script that generates this automatically from collateral/underlying arrays
 // Collateral asset addresses 3.0
 const collateralAddresses = {
   DAI: '0xf7d1C6eE4C0D84C6B530D53A897daa1E9eB56833',
@@ -92,7 +93,7 @@ const underlyingCollateralAddresses = {
 }
 
 // Deposit contract for wrapped collaterals
-const depositContractAddresses = {}
+const collateralErc20Adresses = {}
 
 // MAINNET - ChainId = 1
 const plugins: CollateralPlugin[] = [

@@ -1,8 +1,8 @@
-import { atomWithReset } from 'jotai/utils'
 import { t } from '@lingui/macro'
 import { atom } from 'jotai'
-import { isAddress, truncateDecimals } from 'utils'
+import { atomWithReset } from 'jotai/utils'
 import { CollateralPlugin } from 'types'
+import { isAddress, truncateDecimals } from 'utils'
 import { Address } from 'viem'
 
 export interface Collateral {
@@ -10,7 +10,7 @@ export interface Collateral {
   address: string
   targetUnit: string
   rewardToken?: string[]
-  collateralAddress?: string
+  collateralAddress: string // asset erc20 address
   custom?: boolean
 }
 
@@ -72,18 +72,15 @@ export const getCollateralFromBasket = (basket: Basket | BackupBasket) => {
   )
 }
 
-// TODO: Confirm change
-// {
-//   symbol: collateral.symbol,
-//   address: collateral?.depositContract || collateral.collateralAddress,
-//   collateralAddress: collateral.address,
-//   targetUnit: collateral.targetUnit,
-// },
 const getCollateralByTarget = (collaterals: CollateralPlugin[]) => {
   return collaterals.reduce((acc, collateral) => {
     acc[collateral.targetUnit] = [
       ...(acc[collateral.targetUnit] ?? []),
-      collateral,
+      {
+        ...collateral,
+        collateralAddress:
+          collateral.depositContract || collateral.collateralAddress,
+      },
     ]
 
     return acc

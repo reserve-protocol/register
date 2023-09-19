@@ -17,10 +17,14 @@ import {
   revenueSplitAtom,
 } from 'components/rtoken-setup/atoms'
 import useDebounce from 'hooks/useDebounce'
-import { useAtomValue } from 'jotai'
+import { atom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { rTokenContractsAtom, rTokenGovernanceAtom } from 'state/atoms'
+import {
+  rTokenAssetsAtom,
+  rTokenContractsAtom,
+  rTokenGovernanceAtom,
+} from 'state/atoms'
 import { parsePercent } from 'utils'
 import { FURNACE_ADDRESS, ST_RSR_ADDRESS, ZERO_ADDRESS } from 'utils/addresses'
 import {
@@ -65,6 +69,22 @@ const ROLES: { [x: string]: string } = {
     '0xfd643c72710c63c0180259aba6b2d05451e3591a24e58b62239378085726f783',
 }
 
+const registeredAssetsAtom = atom((get) => {
+  const assets = get(rTokenAssetsAtom)
+
+  if (!assets) {
+    return null
+  }
+
+  const registered: Set<Address> = new Set()
+
+  return Object.keys(assets).reduce((r, address) => {
+    r.add(address as Address)
+    r.add(assets[address].address as Address)
+    return r
+  }, registered)
+})
+
 // TODO: May want to use a separate memo to calculate the calldatas
 const useProposalTx = () => {
   const backupChanges = useAtomValue(backupChangesAtom)
@@ -80,17 +100,13 @@ const useProposalTx = () => {
   const governance = useAtomValue(rTokenGovernanceAtom)
   const parameterMap = useAtomValue(parameterContractMapAtom)
   const contracts = useAtomValue(rTokenContractsAtom)
-  const { data: registeredAssets } = useContractRead({
-    address: contracts?.assetRegistry.address as Address,
-    abi: AssetRegistry,
-    functionName: 'getRegistry',
-  })
+  const assets = useAtomValue(registeredAssetsAtom)
 
   const description = useDebounce(useAtomValue(proposalDescriptionAtom), 500)
   const { getValues } = useFormContext()
 
   return useMemo(() => {
-    if (!contracts || !governance.governor) {
+    if (!contracts || !assets || !governance.governor) {
       return undefined
     }
 
@@ -99,11 +115,7 @@ const useProposalTx = () => {
     let redemptionThrottleChange = false
     let issuanceThrottleChange = false
     const tokenConfig = getValues()
-    const assets = new Set<Address>(
-      registeredAssets
-        ? [...registeredAssets.erc20s, ...registeredAssets.assets]
-        : []
-    )
+
     const newAssets = new Set<Address>()
 
     const addToRegistry = (address: Address, underlyingAddress?: Address) => {
@@ -229,43 +241,17 @@ const useProposalTx = () => {
       ############################# */
       if (newBasket) {
         const primaryBasket: Address[] = []
+        const newCollaterals: Set<Address> = new Set()
         const weights: bigint[] = []
-
-        // Get call arguments
-        for (const targetUnit of Object.keys(basket)) {
-          const { collaterals, distribution, scale } = basket[targetUnit]
-
-          collaterals.forEach((collateral, index) => {
-            // TODO: Hotfix
-            if (
-              collateral.address ===
-              '0x49A44d50d3B1E098DAC9402c4aF8D0C0E499F250'
-            ) {
-              primaryBasket.push('0xe0E1d3c6f09DA01399e84699722B11308607BBfC')
-            } else {
-              primaryBasket.push(collateral.address as Address)
-            }
-            console.log('address', collateral.address)
-
-            weights.push(
-              parseEther(
-                ((Number(distribution[index]) / 100) * Number(scale)).toFixed(
-                  18
-                )
-              )
-            )
-          })
-        }
-
-        // addToRegistry('0x49A44d50d3B1E098DAC9402c4aF8D0C0E499F250')
 
         // Register missing collateral/assets on the asset registry
         for (const changes of basketChanges) {
           if (changes.isNew) {
+            newCollaterals.add(changes.collateral.address as Address)
+
             addToRegistry(
-              (changes.collateral.collateralAddress ||
-                changes.collateral.address) as Address,
-              changes.collateral.address as Address
+              changes.collateral.address as Address,
+              changes.collateral.collateralAddress as Address
             )
 
             if (
@@ -277,6 +263,28 @@ const useProposalTx = () => {
               )
             }
           }
+        }
+
+        // Get call arguments
+        for (const targetUnit of Object.keys(basket)) {
+          const { collaterals, distribution, scale } = basket[targetUnit]
+
+          collaterals.forEach((collateral, index) => {
+            // TODO: Hotfix
+            if (newCollaterals.has(collateral.address as Address)) {
+              primaryBasket.push(collateral.collateralAddress as Address)
+            } else {
+              primaryBasket.push(collateral.address as Address)
+            }
+
+            weights.push(
+              parseEther(
+                ((Number(distribution[index]) / 100) * Number(scale)).toFixed(
+                  18
+                )
+              )
+            )
+          })
         }
 
         // Set primeBasket with new collaterals and weights
@@ -422,7 +430,7 @@ const useProposalTx = () => {
       ] as [Address[], bigint[], Hex[], string],
       enabled: !!description,
     }
-  }, [contracts, description, JSON.stringify(registeredAssets)])
+  }, [contracts, assets, description])
 }
 
 export default useProposalTx

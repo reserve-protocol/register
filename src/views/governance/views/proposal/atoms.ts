@@ -13,6 +13,7 @@ import RToken from 'abis/RToken'
 import Broker from 'abis/Broker'
 import Main from 'abis/Main'
 import BrokerLegacy from 'abis/BrokerLegacy'
+import BasketHandler from 'abis/BasketHandler'
 
 export const proposalTxIdAtom = atom('')
 
@@ -141,8 +142,15 @@ export const parameterContractMapAtom = atom((get) => {
     withdrawalLeak: [
       {
         address: contracts?.stRSR.address ?? '',
-        functionName: 'setWithdrawalLeak' as const, // setUnstakingDelay(uint48)
+        functionName: 'setWithdrawalLeak' as const,
         abi: StRSR,
+      },
+    ],
+    warmupPeriod: [
+      {
+        address: contracts?.basketHandler.address ?? '',
+        functionName: 'setWarmupPeriod',
+        abi: BasketHandler,
       },
     ],
     batchAuctionLength: [
