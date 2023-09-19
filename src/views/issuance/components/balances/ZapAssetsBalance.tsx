@@ -4,24 +4,20 @@ import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { Box, Spinner, Text } from 'theme-ui'
 import { selectedZapTokenAtom } from '../zap/state/atoms'
 import { ui } from '../zap/state/ui-atoms'
-import { StringMap } from 'types'
+import { balancesAtom } from 'state/atoms'
+import { Address } from 'viem'
 
 // TODO: Fix token balances
 const zapTokenBalancesAtom = atom((get) => {
   const tokens = get(ui.input.tokenSelector.tokenSelector) || []
+  const balances = get(balancesAtom)
 
-  return {} as StringMap
-  // return tokens.reduce((acc, token) => {
-  //   const value = formatUnits(
-  //     get(tokenBalancesStore.getBalanceAtom(token.address.address)).value ||
-  //       BI_ZERO,
-  //     token.decimals
-  //   )
+  return tokens.reduce((acc, token) => {
+    acc[token.address.address] =
+      balances[token.address.address as Address]?.balance || '0'
 
-  //   acc[token.address.address] = value
-
-  //   return acc
-  // }, {} as { [x: string]: string })
+    return acc
+  }, {} as { [x: string]: string })
 })
 
 const ZapAssetsBalances = () => {

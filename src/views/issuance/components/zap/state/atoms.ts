@@ -1,8 +1,4 @@
-import {
-  Address,
-  Token,
-  Searcher,
-} from '@reserve-protocol/token-zapper'
+import { Address, Token, Searcher } from '@reserve-protocol/token-zapper'
 import {
   PERMIT2_ADDRESS,
   PermitTransferFrom,
@@ -13,9 +9,9 @@ import { atom, Getter } from 'jotai'
 import { loadable } from 'jotai/utils'
 import { balancesAtom, rTokenAtom, walletAtom } from 'state/atoms'
 
-import { defaultAbiCoder } from "@ethersproject/abi"
-import { id } from "@ethersproject/hash"
-import { MaxUint256 } from "@ethersproject/constants"
+import { defaultAbiCoder } from '@ethersproject/abi'
+import { id } from '@ethersproject/hash'
+import { MaxUint256 } from '@ethersproject/constants'
 import atomWithDebounce from 'utils/atoms/atomWithDebounce'
 import {
   atomWithOnWrite,
@@ -175,8 +171,8 @@ export const zapQuote = simplifyLoadable(zapQuotePromise)
 export const selectedZapTokenBalance = onlyNonNullAtom((get) => {
   const token = get(selectedZapTokenAtom)
   const quantities = get(balancesAtom) ?? {}
-  const bal =
-    quantities[token.address.address as any]?.balance ?? 0n
+  const bal = quantities[token.address.address as any]?.balance ?? 0n
+
   return token.from(bal)
 })
 
@@ -219,18 +215,11 @@ export const approvalNeededAtom = loadable(
           allowance.toBigInt()
       }
     }
-    const data = id(
-      "approve(address,uint256)",
-    ).slice(0, 10) + defaultAbiCoder.encode(
-      [
-        "address",
-        "uint256"
-      ],
-      [
-        spender.address,
-        MaxUint256
-      ]
-    ).slice(2)
+    const data =
+      id('approve(address,uint256)').slice(0, 10) +
+      defaultAbiCoder
+        .encode(['address', 'uint256'], [spender.address, MaxUint256])
+        .slice(2)
     const out = {
       approvalNeeded,
       token,
@@ -282,13 +271,13 @@ const permit2ToSign = (get: Getter) => {
 
 export const permit2ToSignAtom = atom((get) => permit2ToSign(get))
 
-
 export const approvalTxFee = loadable(
   onlyNonNullAtom(async (get) => {
     const approveTx = get(resolvedApprovalNeeded)
     const universe = get(resolvedZapState)
-    // const gasBalance = get(tokenBalancesStore.getGasBalanceAtom()).value
-    const gasBalance = zeroAddress // TODO: Fix gas balance
+    const gasBalance =
+      get(balancesAtom)['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE']?.value ??
+      0n
     const gasUnits =
       approveTx.approvalNeeded === true
         ? (await universe.provider.estimateGas(approveTx.tx)).toBigInt()
@@ -405,8 +394,8 @@ const totalGasTokenInput = onlyNonNullAtom((get) => {
 
 // TODO: Fix gas balance
 const totalGasBalance = onlyNonNullAtom(
-  (get) => 100n
-  // get(tokenBalancesStore.getGasBalanceAtom()).value ?? zeroAddress
+  (get) =>
+    get(balancesAtom)['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE']?.value ?? 0n
 )
 const hasSufficientGasTokenBalance = onlyNonNullAtom((get) => {
   const gasTokenBalanceBN = get(totalGasBalance)
