@@ -166,25 +166,4 @@ const AccountUpdater = () => {
   return null
 }
 
-// TODO: zapper needs this working
-// const GasBalanceUpdater = () => {
-//   const block = useBlockNumber()
-//   const { provider, account } = useWeb3React()
-//   const updateGasBalance = useSetAtom(tokenBalancesStore.getGasBalanceAtom())
-//   useEffect(() => {
-//     if (account == null || provider == null || block == 0 || block == null) {
-//       return
-//     }
-//     provider.getBalance(account).then((balance) => {
-//       updateGasBalance(() => balance)
-//     })
-//   }, [account, block, provider])
-//   return null
-// }
-
-export default () => (
-  <>
-    {/* <GasBalanceUpdater /> */}
-    <AccountUpdater />
-  </>
-)
+export default AccountUpdater
