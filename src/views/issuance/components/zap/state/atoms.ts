@@ -209,7 +209,7 @@ export const approvalNeededAtom = loadable(
         const allowance = await universe.approvalsStore.queryAllowance(
           token,
           user,
-          Address.from(PERMIT2_ADDRESS)
+          spender
         )
         approvalNeeded =
           (input.amount === 0n ? 2n ** 64n : input.amount) >
