@@ -51,7 +51,7 @@
     "serve": "vite preview",
     "analyze": "vite-bundle-visualizer 'build/static/js/*.js'",
     "test": "vite test",
-    "test:e2e": "playwright test",
+    "test:e2e": "npx playwright test",
     "translations": "lingui extract --clean && lingui compile",
     "forknet": "anvil --fork-url https://eth.llamarpc.com --chain-id 31337 --balance 100000000 --block-time 12"
   },
