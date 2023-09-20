@@ -14,9 +14,10 @@
     "@popperjs/core": "^2.11.5",
     "@rainbow-me/rainbowkit": "^1.0.4",
     "@react-spring/web": "^9.7.1",
-    "@reserve-protocol/token-zapper": "2.1.0-rc-2",
+    "@reserve-protocol/token-zapper": "2.1.1-rc-1",
     "@uiw/react-md-editor": "^3.20.5",
     "@uniswap/permit2-sdk": "^1.2.0",
+    "@viem/anvil": "^0.0.6",
     "buffer": "^6.0.3",
     "dayjs": "^1.11.3",
     "fast-memoize": "^2.5.2",
@@ -50,6 +51,7 @@
     "serve": "vite preview",
     "analyze": "vite-bundle-visualizer 'build/static/js/*.js'",
     "test": "vite test",
+    "test:e2e": "playwright test",
     "translations": "lingui extract --clean && lingui compile",
     "forknet": "anvil --fork-url https://eth.llamarpc.com --chain-id 31337 --balance 100000000 --block-time 12"
   },
@@ -69,6 +71,7 @@
     ]
   },
   "devDependencies": {
+    "@guardianui/test": "^1.0.4",
     "@lingui/cli": "^4.2.1",
     "@lingui/vite-plugin": "^4.2.1",
     "@react-spring/types": "^9.4.5",

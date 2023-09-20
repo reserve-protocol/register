@@ -1,8 +1,8 @@
-import { Universe } from '@reserve-protocol/token-zapper'
 import {
   createOneInchDexAggregator,
   DexAggregator,
-} from '@reserve-protocol/token-zapper/aggregators/one-inch'
+  Universe
+} from '@reserve-protocol/token-zapper'
 
 /**
  * Creates a 1inch aggregator that will use a list of proxies to make requests
@@ -42,7 +42,7 @@ export const createProxiedOneInchAggregator = (
     const instances = [...aggregatorInstances]
     for (let i = instances.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))
-      ;[instances[i], instances[j]] = [instances[j], instances[i]]
+        ;[instances[i], instances[j]] = [instances[j], instances[i]]
     }
     return instances
   }
