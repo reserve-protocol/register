@@ -1,6 +1,4 @@
-import { Universe } from '@reserve-protocol/token-zapper'
-import { ethereumConfig } from '@reserve-protocol/token-zapper/configuration/ethereum'
-import { setupEthereumZapper } from '@reserve-protocol/token-zapper/configs/mainnet/zapper'
+import { setupEthereumZapper, ethereumConfig, Universe } from '@reserve-protocol/token-zapper'
 import { atom } from 'jotai'
 import { loadable } from 'jotai/utils'
 import { onlyNonNullAtom, simplifyLoadable } from 'utils/atoms/utils'
