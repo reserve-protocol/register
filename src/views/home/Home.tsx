@@ -9,6 +9,7 @@ import Greet from './components/Greet'
 import Portfolio from './components/Portfolio'
 import Stats from './components/Stats'
 import TokenList from './components/TokenList'
+import Announcement from './components/Announcement'
 
 const VISITED_KEY = 'visited'
 
@@ -48,6 +49,7 @@ const Home = () => {
 
   return (
     <Container>
+      <Announcement />
       {!account && !visited && <Greet onDismiss={handleDismiss} />}
       {!!account && <Portfolio mt={5} mb={8} />}
       <Stats />
