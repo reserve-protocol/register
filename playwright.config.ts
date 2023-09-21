@@ -75,16 +75,16 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: [
-    {
-      command: [
-        `anvil`,
-        `--fork-block-number=18180527`,
-        `--fork-url=https://eth.llamarpc.com`,
-        `--balance 100000000`,
-      ].join(' '),
-      port: 8545,
-      reuseExistingServer: !process.env.CI,
-    },
+    // {
+    //   command: [
+    //     `anvil`,
+    //     `--fork-block-number=18180527`,
+    //     `--fork-url=https://eth.llamarpc.com`,
+    //     `--balance 100000000`,
+    //   ].join(' '),
+    //   port: 8545,
+    //   reuseExistingServer: !process.env.CI,
+    // },
     {
       command: 'npm run start',
       url: 'http://localhost:3000',

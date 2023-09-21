@@ -1,5 +1,4 @@
 import { CollateralPlugin } from 'types'
-import { ZERO_ADDRESS } from 'utils/addresses'
 import { TARGET_UNITS } from 'utils/constants'
 
 const collateralAddresses = {
@@ -23,9 +22,8 @@ const plugins: CollateralPlugin[] = [
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'DAI',
     collateralToken: 'DAI',
-    description: '',
     collateralAddress: underlyingCollateralAddresses.DAI,
-    rewardToken: [ZERO_ADDRESS],
+    rewardToken: [],
   },
   {
     symbol: 'USDC',
@@ -34,9 +32,8 @@ const plugins: CollateralPlugin[] = [
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDC',
     collateralToken: 'USDC',
-    description: 'Used in RSV',
     collateralAddress: underlyingCollateralAddresses.USDC,
-    rewardToken: [ZERO_ADDRESS],
+    rewardToken: [],
   },
   {
     symbol: 'USDT',
@@ -45,9 +42,8 @@ const plugins: CollateralPlugin[] = [
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDT',
     collateralToken: 'USDT',
-    description: '',
     collateralAddress: underlyingCollateralAddresses.USDT,
-    rewardToken: [ZERO_ADDRESS],
+    rewardToken: [],
   },
 ]
 

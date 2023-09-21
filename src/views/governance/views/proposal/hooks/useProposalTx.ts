@@ -26,7 +26,7 @@ import {
   rTokenGovernanceAtom,
 } from 'state/atoms'
 import { parsePercent } from 'utils'
-import { FURNACE_ADDRESS, ST_RSR_ADDRESS, ZERO_ADDRESS } from 'utils/addresses'
+import { FURNACE_ADDRESS, ST_RSR_ADDRESS } from 'utils/addresses'
 import {
   Hex,
   encodeFunctionData,
@@ -256,7 +256,7 @@ const useProposalTx = () => {
 
             if (
               !!changes.collateral.rewardToken?.length &&
-              changes.collateral.rewardToken[0] != ZERO_ADDRESS
+              changes.collateral.rewardToken[0] != zeroAddress
             ) {
               changes.collateral.rewardToken.forEach((reward) =>
                 addToRegistry(reward as Address)

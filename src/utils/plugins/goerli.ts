@@ -1,9 +1,5 @@
 import { CollateralPlugin } from 'types'
-import {
-  COMPOUND_ADDRESS,
-  STAKE_AAVE_ADDRESS,
-  ZERO_ADDRESS,
-} from 'utils/addresses'
+import { COMPOUND_ADDRESS, STAKE_AAVE_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import { TARGET_UNITS } from 'utils/constants'
 
@@ -70,9 +66,8 @@ const plugins: CollateralPlugin[] = [
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'DAI',
     collateralToken: 'DAI',
-    description: '',
     collateralAddress: underlyingCollateralAddresses.DAI,
-    rewardToken: [ZERO_ADDRESS],
+    rewardToken: [],
   },
   {
     symbol: 'USDC',
@@ -81,9 +76,8 @@ const plugins: CollateralPlugin[] = [
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDC',
     collateralToken: 'USDC',
-    description: 'Used in RSV',
     collateralAddress: underlyingCollateralAddresses.USDC,
-    rewardToken: [ZERO_ADDRESS],
+    rewardToken: [],
   },
   {
     symbol: 'USDT',
@@ -92,9 +86,8 @@ const plugins: CollateralPlugin[] = [
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDT',
     collateralToken: 'USDT',
-    description: '',
     collateralAddress: underlyingCollateralAddresses.USDT,
-    rewardToken: [ZERO_ADDRESS],
+    rewardToken: [],
   },
   {
     symbol: 'USDP',
@@ -103,9 +96,8 @@ const plugins: CollateralPlugin[] = [
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDP',
     collateralToken: 'USDP',
-    description: 'Used in RSV',
     collateralAddress: underlyingCollateralAddresses.USDP,
-    rewardToken: [ZERO_ADDRESS],
+    rewardToken: [],
   },
   {
     symbol: 'TUSD',
@@ -114,9 +106,8 @@ const plugins: CollateralPlugin[] = [
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'TUSD',
     collateralToken: 'TUSD',
-    description: 'Used in RSV',
     collateralAddress: underlyingCollateralAddresses.TUSD,
-    rewardToken: [ZERO_ADDRESS],
+    rewardToken: [],
   },
   {
     symbol: 'BUSD',
@@ -125,9 +116,8 @@ const plugins: CollateralPlugin[] = [
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'BUSD',
     collateralToken: 'BUSD',
-    description: '',
     collateralAddress: underlyingCollateralAddresses.BUSD,
-    rewardToken: [ZERO_ADDRESS],
+    rewardToken: [],
   },
   // YIELD TOKEN COLLATERAL
   {
@@ -137,7 +127,6 @@ const plugins: CollateralPlugin[] = [
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'DAI',
     collateralToken: 'aDAI',
-    description: '',
     collateralAddress: underlyingCollateralAddresses.aDAI,
     depositContract: '0x7A14687999335289240a15CA714237ebB85EF18E',
     rewardToken: [STAKE_AAVE_ADDRESS[ChainId.Goerli]],
@@ -150,7 +139,6 @@ const plugins: CollateralPlugin[] = [
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDC',
     collateralToken: 'aUSDC',
-    description: '',
     collateralAddress: underlyingCollateralAddresses.aUSDC,
     depositContract: '0x9cCc7B600F80ed6F3d997698e01301D9016F8656',
     rewardToken: [STAKE_AAVE_ADDRESS[ChainId.Goerli]],
@@ -163,7 +151,6 @@ const plugins: CollateralPlugin[] = [
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDT',
     collateralToken: 'aUSDT',
-    description: '',
     collateralAddress: underlyingCollateralAddresses.aUSDT,
     depositContract: '0x504e15CA74Ffe0791a7fc2c069dDa486d9F1805F',
     rewardToken: [STAKE_AAVE_ADDRESS[ChainId.Goerli]],
@@ -176,7 +163,6 @@ const plugins: CollateralPlugin[] = [
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'BUSD',
     collateralToken: 'aBUSD',
-    description: '',
     collateralAddress: underlyingCollateralAddresses.aBUSD,
     depositContract: '0xE19ae8D1f3FFf987aaEaa65248BAB3A0d1FDC809',
     rewardToken: [STAKE_AAVE_ADDRESS[ChainId.Goerli]],
@@ -189,7 +175,6 @@ const plugins: CollateralPlugin[] = [
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'DAI',
     collateralToken: 'cDAI',
-    description: '',
     collateralAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
     rewardToken: [COMPOUND_ADDRESS[ChainId.Goerli]],
   },
@@ -200,7 +185,6 @@ const plugins: CollateralPlugin[] = [
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDC',
     collateralToken: 'cUSDC',
-    description: '',
     collateralAddress: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
     rewardToken: [COMPOUND_ADDRESS[ChainId.Goerli]],
   },
@@ -211,7 +195,6 @@ const plugins: CollateralPlugin[] = [
     targetUnit: TARGET_UNITS.USD,
     referenceUnit: 'USDT',
     collateralToken: 'aUSDT',
-    description: '',
     collateralAddress: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
     rewardToken: [COMPOUND_ADDRESS[ChainId.Goerli]],
   },
@@ -222,7 +205,6 @@ const plugins: CollateralPlugin[] = [
     targetUnit: TARGET_UNITS.BTC,
     referenceUnit: 'WBTC',
     collateralToken: 'cWBTC',
-    description: '',
     collateralAddress: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
     rewardToken: [COMPOUND_ADDRESS[ChainId.Goerli]],
   },
@@ -233,7 +215,6 @@ const plugins: CollateralPlugin[] = [
     targetUnit: TARGET_UNITS.ETH,
     referenceUnit: 'ETH',
     collateralToken: 'cETH',
-    description: '',
     collateralAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
     rewardToken: [COMPOUND_ADDRESS[ChainId.Goerli]],
   },
@@ -244,9 +225,8 @@ const plugins: CollateralPlugin[] = [
     targetUnit: TARGET_UNITS.BTC,
     referenceUnit: 'wBTC',
     collateralToken: 'wBTC',
-    description: '',
     collateralAddress: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
-    rewardToken: [ZERO_ADDRESS],
+    rewardToken: [],
   },
   {
     symbol: 'wETH',
@@ -255,9 +235,8 @@ const plugins: CollateralPlugin[] = [
     targetUnit: TARGET_UNITS.ETH,
     referenceUnit: 'wETH',
     collateralToken: 'wETH',
-    description: '',
     collateralAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-    rewardToken: [ZERO_ADDRESS],
+    rewardToken: [],
   },
   {
     symbol: 'EURT',
@@ -266,9 +245,8 @@ const plugins: CollateralPlugin[] = [
     targetUnit: TARGET_UNITS.EUR,
     referenceUnit: 'EURT',
     collateralToken: 'EURT',
-    description: '',
     collateralAddress: '0xC581b735A1688071A1746c968e0798D642EDE491',
-    rewardToken: [ZERO_ADDRESS],
+    rewardToken: [],
   },
   {
     symbol: 'wstETH',
@@ -277,9 +255,8 @@ const plugins: CollateralPlugin[] = [
     targetUnit: TARGET_UNITS.ETH,
     referenceUnit: 'wETH',
     collateralToken: 'wstETH',
-    description: '',
     collateralAddress: underlyingCollateralAddresses.wstETH,
-    rewardToken: [ZERO_ADDRESS],
+    rewardToken: [],
   },
   {
     symbol: 'rETH',
@@ -288,9 +265,8 @@ const plugins: CollateralPlugin[] = [
     targetUnit: TARGET_UNITS.ETH,
     referenceUnit: 'wETH',
     collateralToken: 'rETH',
-    description: '',
     collateralAddress: underlyingCollateralAddresses.rETH,
-    rewardToken: [ZERO_ADDRESS],
+    rewardToken: [],
   },
 ]
 

@@ -8,7 +8,6 @@ import { useState } from 'react'
 import { Box, Flex, Text } from 'theme-ui'
 import { CollateralPlugin } from 'types'
 import { isAddress } from 'utils'
-import { ZERO_ADDRESS } from 'utils/addresses'
 import { Address, hexToString } from 'viem'
 import { readContracts } from 'wagmi'
 
@@ -60,9 +59,8 @@ const CustomCollateral = ({
         targetUnit: hexToString(targetUnit, { size: 32 }),
         referenceUnit: symbol,
         collateralToken: symbol,
-        description: '',
         collateralAddress: erc20,
-        rewardToken: [rewardERC20] || [ZERO_ADDRESS],
+        rewardToken: [rewardERC20] || [],
         custom: true,
       }
 

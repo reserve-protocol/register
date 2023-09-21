@@ -8,10 +8,10 @@ import { useState } from 'react'
 import { chainIdAtom, stRsrBalanceAtom, walletAtom } from 'state/atoms'
 import { Box, Image, Text } from 'theme-ui'
 import { formatCurrency, shortenAddress } from 'utils'
-import { ZERO_ADDRESS } from 'utils/addresses'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { Address, useContractRead } from 'wagmi'
 import DelegateModal from './DelegateModal'
+import { zeroAddress } from 'viem'
 
 const AccountVotes = () => {
   const account = useAtomValue(walletAtom)
@@ -28,7 +28,7 @@ const AccountVotes = () => {
     watch: true,
   })
 
-  const hasNoDelegates = !delegate || delegate === ZERO_ADDRESS
+  const hasNoDelegates = !delegate || delegate === zeroAddress
   const selfDelegate = !hasNoDelegates && delegate === account
 
   if (!account) {
