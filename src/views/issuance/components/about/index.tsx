@@ -33,7 +33,12 @@ const About = () => {
           </Trans>
         </Text>
         <Flex mt={3}>
-          <SmallButton variant="muted" mr={3} onClick={() => setWrapping(true)}>
+          <SmallButton
+            data-testid="wrap-btn"
+            variant="muted"
+            mr={3}
+            onClick={() => setWrapping(true)}
+          >
             <Trans>Wrap/Unwrap collateral</Trans>
           </SmallButton>
         </Flex>
