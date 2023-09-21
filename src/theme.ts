@@ -86,6 +86,8 @@ export const colors = {
   accentAction: '#6D3210',
   accentBG: 'contentBackground',
   secondary: '#E8E8E8',
+  rBlue: '#2150A9',
+  rBlueLight: '#DBE3F1',
   border: '#efefef',
   darkBorder: '#E5E5E5',
   inputBorder: '#E5E5E5',
@@ -100,6 +102,7 @@ export const colors = {
   modes: {
     dark: {
       text: '#e4dede',
+      rBlueLight: '#0D1321',
       secondaryText: '#969696',
       invertedText: '#FFFFFF',
       lightText: '#6f6666',
@@ -381,7 +384,7 @@ export const theme: Theme = {
     },
     bordered: {
       ...baseButton,
-      border: '2px solid',
+      border: '1px solid',
       borderColor: 'primary',
       color: 'primary',
       backgroundColor: 'transparent',

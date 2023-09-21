@@ -321,7 +321,9 @@ export const zapTransaction = loadable(
     // The current code to return dust does not seem to always trigger correctly
     // this leaves a significant amount of dust in the contract, especially when zapping large quantities
     const FIFTY_K = result.universe.usd.from('50000')
-    const value = (await result.universe.fairPrice(result.userInput).catch(e => null)) ?? FIFTY_K
+    const value =
+      (await result.universe.fairPrice(result.userInput).catch((e) => null)) ??
+      FIFTY_K
     return {
       result,
       transaction: await result.toTransaction({
