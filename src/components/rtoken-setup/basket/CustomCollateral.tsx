@@ -54,13 +54,17 @@ const CustomCollateral = ({
 
       const collateral: CollateralPlugin = {
         symbol,
-        address,
+        address: address as Address,
         decimals,
-        targetUnit: hexToString(targetUnit, { size: 32 }),
-        referenceUnit: symbol,
-        collateralToken: symbol,
-        collateralAddress: erc20,
-        rewardToken: [rewardERC20] || [],
+        targetName: hexToString(targetUnit, { size: 32 }),
+        erc20,
+        rewardTokens: rewardERC20 ? [rewardERC20] : [],
+        protocol: 'GENERIC',
+        version: 'custom',
+        chainlinkFeed: '0x',
+        delayUntilDefault: '0',
+        oracleTimeout: 0,
+        maxTradeVolume: '',
         custom: true,
       }
 

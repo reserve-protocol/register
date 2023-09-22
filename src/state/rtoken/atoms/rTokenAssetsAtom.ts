@@ -48,7 +48,7 @@ const rTokenAssetsAtom = atomWithLoadable(async (get) => {
 
     const registeredAssets: {
       [x: string]: {
-        address: string
+        address: Address
         token: Token
         maxTradeVolume: string
         priceUsd: number

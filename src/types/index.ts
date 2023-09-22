@@ -7,6 +7,17 @@ export type RoleKey =
   | 'longFreezers'
   | 'guardians'
 
+export type ProtocolKey =
+  | 'AAVE'
+  | 'MORPHO'
+  | 'COMP'
+  | 'FLUX'
+  | 'COMPv3'
+  | 'CONVEX'
+  | 'CURVE'
+  | 'SDR'
+  | 'GENERIC'
+
 export type AddressMap = { [chainId: number]: Address }
 
 export interface StringMap {
@@ -140,16 +151,20 @@ export interface TokenStats {
 
 export interface CollateralPlugin {
   symbol: string // collateral symbol
-  address: string // collateral plugin address
+  address: Address // collateral plugin address
+  erc20: Address // erc20 contract address for asset
   decimals: number // 6-18
-  targetUnit: string // USD / EUR / etc
-  referenceUnit: string // Underlay ERC20 (USDC)
-  collateralToken: string // Wrapper token (usually yield token)
-  collateralAddress: string
-  depositContract?: string // Only for aave collaterals erc20() contract from collateral
-  rewardToken: string[] // yield token aave / compound wrapped Asset
-  custom?: boolean
+  targetName: string // USD / EUR / etc
+  rewardTokens: Address[] // yield token aave / compound wrapped Asset
   underlyingToken?: string
-  collateralDecimals?: number // Decimals of exogenous collateral deposited in wrapper e.g. aUSDC
-  version?: string // by default 3.0
+  underlyingAddress?: Address
+  collateralToken?: string // Yield bearing token for aave
+  collateralAddress?: Address
+  protocol: ProtocolKey
+  version: string
+  custom?: boolean
+  maxTradeVolume: string
+  oracleTimeout: number
+  chainlinkFeed: Address
+  delayUntilDefault: string
 }

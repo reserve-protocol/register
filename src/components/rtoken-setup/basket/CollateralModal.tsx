@@ -36,7 +36,7 @@ const getPlugins = (
   return plugins.reduce((acc, plugin) => {
     if (
       !collateralSet.has(plugin.address) &&
-      (!targetUnit || targetUnit === plugin.targetUnit)
+      (!targetUnit || targetUnit === plugin.targetName)
     ) {
       acc[plugin.address] = plugin
     }

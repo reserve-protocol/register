@@ -50,8 +50,8 @@ const ABI = {
 
 const CollateralItem = ({ collateral, wrapping, type, ...props }: Props) => {
   const wallet = useAtomValue(walletAtom)
-  const fromToken = wrapping ? collateral.referenceUnit : collateral.symbol
-  const toToken = wrapping ? collateral.symbol : collateral.referenceUnit
+  const fromToken = wrapping ? collateral.underlyingToken : collateral.symbol
+  const toToken = wrapping ? collateral.symbol : collateral.underlyingToken
   const [amount, setAmount] = useState('')
 
   // const { data: testData } = useContractReads({
@@ -68,8 +68,8 @@ const CollateralItem = ({ collateral, wrapping, type, ...props }: Props) => {
   const { data } = useBalance({
     address: wallet ? wallet : undefined,
     token: (wrapping
-      ? collateral.underlyingToken
-      : collateral.depositContract) as Address,
+      ? collateral.underlyingAddress
+      : collateral.erc20) as Address,
     watch: true,
   })
   const debouncedAmount = useDebounce(amount, 500)
@@ -83,8 +83,8 @@ const CollateralItem = ({ collateral, wrapping, type, ...props }: Props) => {
     wrapping && isValid
       ? [
           {
-            token: collateral.underlyingToken as Address,
-            spender: collateral.depositContract as Address,
+            token: collateral.underlyingAddress as Address,
+            spender: collateral.erc20,
             amount: safeParseEther(debouncedAmount, data.decimals),
           },
         ]
@@ -98,13 +98,9 @@ const CollateralItem = ({ collateral, wrapping, type, ...props }: Props) => {
 
     return {
       abi: ERC20,
-      address: (collateral.underlyingToken ||
-        collateral.collateralAddress) as Address,
+      address: collateral.underlyingAddress as Address,
       functionName: 'approve',
-      args: [
-        collateral.depositContract as Address,
-        safeParseEther(debouncedAmount, data.decimals),
-      ],
+      args: [collateral.erc20, safeParseEther(debouncedAmount, data.decimals)],
     }
   }, [isValid, wrapping, debouncedAmount])
 
@@ -120,7 +116,7 @@ const CollateralItem = ({ collateral, wrapping, type, ...props }: Props) => {
       // Aave v2
       return {
         abi: StaticAave,
-        address: collateral.depositContract as Address,
+        address: collateral.erc20,
         functionName: wrapping ? 'deposit' : 'withdraw',
         args: wrapping
           ? [wallet, parsedAmount, 0, 1]
@@ -130,7 +126,7 @@ const CollateralItem = ({ collateral, wrapping, type, ...props }: Props) => {
       // Convex
       return {
         abi: ConvexWrapper,
-        address: collateral.depositContract as Address,
+        address: collateral.erc20,
         functionName: wrapping ? 'stake' : 'withdraw',
         args: wrapping ? [parsedAmount, wallet] : [parsedAmount],
       }
@@ -138,7 +134,7 @@ const CollateralItem = ({ collateral, wrapping, type, ...props }: Props) => {
       // Convex
       return {
         abi: ConvexWrapper,
-        address: collateral.depositContract as Address,
+        address: collateral.erc20,
         functionName: wrapping ? 'stake' : 'withdraw',
         args: wrapping ? [parsedAmount, wallet] : [parsedAmount],
       }
@@ -146,7 +142,7 @@ const CollateralItem = ({ collateral, wrapping, type, ...props }: Props) => {
       // Morpho Aave
       return {
         abi: MorphoWrapper,
-        address: collateral.depositContract as Address,
+        address: collateral.erc20,
         functionName: wrapping ? 'deposit' : 'withdraw',
         args: wrapping
           ? [parsedAmount, wallet]
@@ -156,7 +152,7 @@ const CollateralItem = ({ collateral, wrapping, type, ...props }: Props) => {
       // DSR (sDAI)
       return {
         abi: sDai,
-        address: collateral.depositContract as Address,
+        address: collateral.erc20,
         functionName: wrapping ? 'deposit' : 'redeem',
         args: wrapping
           ? [parsedAmount, wallet]
