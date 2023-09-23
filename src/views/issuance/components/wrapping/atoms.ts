@@ -16,6 +16,7 @@ const protocolLabels: StringMap = {
 
 // Just true or false for now, if you want to display all collaterals = false
 export const pluginsDisplayModeAtom = atom(true)
+export const isWrappingAtom = atom(true)
 
 // Filter collaterals and create a map base on symbol
 const wrapableCollateralsAtom = atom((get) => {
