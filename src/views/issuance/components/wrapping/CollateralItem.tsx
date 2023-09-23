@@ -3,7 +3,6 @@ import ConvexWrapper from 'abis/ConvexWrapper'
 import ERC20 from 'abis/ERC20'
 import MorphoWrapper from 'abis/MorphoWrapper'
 import StaticAave from 'abis/StaticAave'
-import sDai from 'abis/sDai'
 import { NumericalInput } from 'components'
 import { ExecuteButton } from 'components/button/TransactionButton'
 import TokenLogo from 'components/icons/TokenLogo'
@@ -13,57 +12,20 @@ import { useAtomValue } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { walletAtom } from 'state/atoms'
 import { Box, BoxProps, Text } from 'theme-ui'
-import { CollateralPlugin } from 'types'
+import { CollateralPlugin, ProtocolKey } from 'types'
 import { formatCurrency, safeParseEther } from 'utils'
-import { Address, useBalance, useContractReads } from 'wagmi'
-
-export enum WrapCollateralType {
-  AaveV2,
-  Convex,
-  Curve,
-  Morpho,
-  DaiSavingsRate,
-}
+import { Address, useBalance } from 'wagmi'
 
 interface Props extends BoxProps {
   collateral: CollateralPlugin
   wrapping: boolean
-  type: WrapCollateralType
 }
 
-const ABI = {
-  [WrapCollateralType.AaveV2]: StaticAave,
-  [WrapCollateralType.Convex]: ConvexWrapper,
-  [WrapCollateralType.Morpho]: MorphoWrapper,
-}
-
-// {
-//   contracts: allowances.map((allowance) => ({
-//     abi: ERC20,
-//     functionName: 'allowance',
-//     address: allowance.token,
-//     args: [account, allowance.spender],
-//   })),
-//   watch: true,
-//   allowFailure: false,
-// }
-
-const CollateralItem = ({ collateral, wrapping, type, ...props }: Props) => {
+const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
   const wallet = useAtomValue(walletAtom)
   const fromToken = wrapping ? collateral.underlyingToken : collateral.symbol
   const toToken = wrapping ? collateral.symbol : collateral.underlyingToken
   const [amount, setAmount] = useState('')
-
-  // const { data: testData } = useContractReads({
-  //   contracts: [
-  //     {
-  //       abi: ABI[type],
-  //       functionName: 'asset',
-  //       address: collateral.address as Address,
-  //     },
-  //   ],
-  //   allowFailure: false,
-  // })
 
   const { data } = useBalance({
     address: wallet ? wallet : undefined,
@@ -112,7 +74,7 @@ const CollateralItem = ({ collateral, wrapping, type, ...props }: Props) => {
     const parsedAmount = safeParseEther(debouncedAmount, data.decimals)
 
     // Change to swithc if types are more than 3
-    if (type === WrapCollateralType.AaveV2) {
+    if (collateral.protocol === 'AAVE') {
       // Aave v2
       return {
         abi: StaticAave,
@@ -122,7 +84,7 @@ const CollateralItem = ({ collateral, wrapping, type, ...props }: Props) => {
           ? [wallet, parsedAmount, 0, 1]
           : [wallet, parsedAmount, true], // change 1 to 0 when going from aToken
       }
-    } else if (type === WrapCollateralType.Convex) {
+    } else if (collateral.protocol === 'CONVEX') {
       // Convex
       return {
         abi: ConvexWrapper,
@@ -130,7 +92,7 @@ const CollateralItem = ({ collateral, wrapping, type, ...props }: Props) => {
         functionName: wrapping ? 'stake' : 'withdraw',
         args: wrapping ? [parsedAmount, wallet] : [parsedAmount],
       }
-    } else if (type === WrapCollateralType.Curve) {
+    } else if (collateral.protocol === 'CURVE') {
       // Convex
       return {
         abi: ConvexWrapper,
@@ -138,20 +100,13 @@ const CollateralItem = ({ collateral, wrapping, type, ...props }: Props) => {
         functionName: wrapping ? 'stake' : 'withdraw',
         args: wrapping ? [parsedAmount, wallet] : [parsedAmount],
       }
-    } else if (type === WrapCollateralType.Morpho) {
+    } else if (
+      collateral.protocol === 'MORPHO' ||
+      collateral.protocol === 'SDR'
+    ) {
       // Morpho Aave
       return {
         abi: MorphoWrapper,
-        address: collateral.erc20,
-        functionName: wrapping ? 'deposit' : 'withdraw',
-        args: wrapping
-          ? [parsedAmount, wallet]
-          : [parsedAmount, wallet, wallet],
-      }
-    } else if (type === WrapCollateralType.DaiSavingsRate) {
-      // DSR (sDAI)
-      return {
-        abi: sDai,
         address: collateral.erc20,
         functionName: wrapping ? 'deposit' : 'redeem',
         args: wrapping

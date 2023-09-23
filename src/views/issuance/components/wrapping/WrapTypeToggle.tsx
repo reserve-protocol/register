@@ -21,7 +21,7 @@ const WrapTypeToggle = ({
         borderColor: 'inputBorder',
         flex: 'none',
       }}
-      mb={5}
+      mb={4}
     >
       <Box
         p={1}
