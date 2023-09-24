@@ -26,7 +26,7 @@ import {
   rTokenGovernanceAtom,
 } from 'state/atoms'
 import { parsePercent } from 'utils'
-import { FURNACE_ADDRESS, ST_RSR_ADDRESS, ZERO_ADDRESS } from 'utils/addresses'
+import { FURNACE_ADDRESS, ST_RSR_ADDRESS } from 'utils/addresses'
 import {
   Hex,
   encodeFunctionData,
@@ -251,14 +251,14 @@ const useProposalTx = () => {
 
             addToRegistry(
               changes.collateral.address as Address,
-              changes.collateral.collateralAddress as Address
+              changes.collateral.erc20 as Address
             )
 
             if (
-              !!changes.collateral.rewardToken?.length &&
-              changes.collateral.rewardToken[0] != ZERO_ADDRESS
+              !!changes.collateral.rewardTokens?.length &&
+              changes.collateral.rewardTokens[0] != zeroAddress
             ) {
-              changes.collateral.rewardToken.forEach((reward) =>
+              changes.collateral.rewardTokens.forEach((reward) =>
                 addToRegistry(reward as Address)
               )
             }
@@ -270,12 +270,7 @@ const useProposalTx = () => {
           const { collaterals, distribution, scale } = basket[targetUnit]
 
           collaterals.forEach((collateral, index) => {
-            // TODO: Hotfix
-            if (newCollaterals.has(collateral.address as Address)) {
-              primaryBasket.push(collateral.collateralAddress as Address)
-            } else {
-              primaryBasket.push(collateral.address as Address)
-            }
+            primaryBasket.push(collateral.erc20)
 
             weights.push(
               parseEther(
@@ -318,10 +313,10 @@ const useProposalTx = () => {
           for (const collateral of collaterals) {
             addToRegistry(collateral.address as Address)
             if (
-              !!collateral.rewardToken?.length &&
-              collateral.rewardToken[0] != zeroAddress
+              !!collateral.rewardTokens?.length &&
+              collateral.rewardTokens[0] != zeroAddress
             ) {
-              collateral.rewardToken.forEach((reward) =>
+              collateral.rewardTokens.forEach((reward) =>
                 addToRegistry(reward as Address)
               )
             }

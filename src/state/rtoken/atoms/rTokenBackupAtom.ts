@@ -61,9 +61,9 @@ const rTokenBackupAtom = atomWithLoadable(async (get) => {
       diversityFactor: Number(max),
       collaterals: erc20s.map((address, i) => ({
         address,
-        targetUnit: targetUnits[index],
+        targetName: targetUnits[index],
         symbol: symbols[i],
-        collateralAddress: address,
+        erc20: address,
       })),
     }
     index += 1

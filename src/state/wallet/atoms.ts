@@ -6,9 +6,9 @@ import Main from 'abis/Main'
 import StRSRVotes from 'abis/StRSRVotes'
 import { atom } from 'jotai'
 import { AccountPosition, AccountToken } from 'types'
-import { RSR_ADDRESS, ZERO_ADDRESS } from 'utils/addresses'
+import { RSR_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
-import { Address, stringToHex } from 'viem'
+import { Address, stringToHex, zeroAddress } from 'viem'
 import { readContracts } from 'wagmi'
 import { chainIdAtom, walletAtom } from '../chain/atoms/chainAtoms'
 import rTokenAtom from '../rtoken/atoms/rTokenAtom'
@@ -139,5 +139,5 @@ export const accountDelegateAtom = atomWithLoadable(async (get) => {
     args: [account],
   })
 
-  return delegate !== ZERO_ADDRESS ? delegate : null
+  return delegate !== zeroAddress ? delegate : null
 })
