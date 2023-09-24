@@ -1,9 +1,8 @@
 import { t, Trans } from '@lingui/macro'
 import { Button, Modal } from 'components'
 import { ModalProps } from 'components/modal'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { useState } from 'react'
-import { pluginsAtom } from 'state/rtoken/atoms/pluginAtoms'
 import { Box, Divider, Text } from 'theme-ui'
 import { CollateralPlugin } from 'types'
 import {
@@ -15,6 +14,8 @@ import {
 } from '../atoms'
 import CustomCollateral from './CustomCollateral'
 import PluginItem from './PluginItem'
+import collateralPlugins from 'utils/plugins'
+import { chainIdAtom } from 'state/atoms'
 
 interface Props extends Omit<ModalProps, 'children'> {
   targetUnit?: string // filter by target unit
@@ -24,6 +25,8 @@ interface Props extends Omit<ModalProps, 'children'> {
 interface CollateralMap {
   [x: string]: Collateral | CollateralPlugin
 }
+
+const pluginsAtom = atom((get) => collateralPlugins[get(chainIdAtom)])
 
 // Get list of collateral plugins filtered by target unit and exclude already added collateral
 const getPlugins = (

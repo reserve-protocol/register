@@ -183,10 +183,10 @@ export const getDeployParameters = (
       collaterals.forEach((collateral, index) => {
         primaryBasket.push(collateral.address as Address)
         if (
-          !!collateral.rewardToken?.length &&
-          collateral.rewardToken[0] !== zeroAddress
+          !!collateral.rewardTokens?.length &&
+          collateral.rewardTokens[0] !== zeroAddress
         ) {
-          collateral.rewardToken.forEach((reward) =>
+          collateral.rewardTokens.forEach((reward) =>
             assets.add(reward as Address)
           )
         }
@@ -203,8 +203,8 @@ export const getDeployParameters = (
           backupUnit: stringToHex(targetUnit.toUpperCase(), { size: 32 }),
           diversityFactor: BigInt(backup[targetUnit].diversityFactor),
           backupCollateral: backup[targetUnit].collaterals.map((c) => {
-            if (!!c.rewardToken?.length && c.rewardToken[0] !== zeroAddress) {
-              c.rewardToken.forEach((reward) => assets.add(reward as Address))
+            if (!!c.rewardTokens?.length && c.rewardTokens[0] !== zeroAddress) {
+              c.rewardTokens.forEach((reward) => assets.add(reward as Address))
             }
             return c.address as Address
           }),
