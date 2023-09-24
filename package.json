@@ -53,10 +53,11 @@
     "test": "vite test",
     "test:e2e": "npx playwright test",
     "translations": "lingui extract --clean && lingui compile",
-    "forknet": "anvil --fork-url https://eth.llamarpc.com --chain-id 31337 --balance 100000000 --block-time 12"
+    "forknet": "anvil --fork-url https://eth.llamarpc.com --chain-id 1 --balance 100000000 --block-time 12",
+    "parse-collaterals": "node scripts/parseCollaterals"
   },
   "engines": {
-    "node": ">=17.0.0"
+    "node": ">=18.0.0"
   },
   "browserslist": {
     "production": [
@@ -74,6 +75,7 @@
     "@guardianui/test": "^1.0.4",
     "@lingui/cli": "^4.2.1",
     "@lingui/vite-plugin": "^4.2.1",
+    "@playwright/test": "^1.38.0",
     "@react-spring/types": "^9.4.5",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.0.0",

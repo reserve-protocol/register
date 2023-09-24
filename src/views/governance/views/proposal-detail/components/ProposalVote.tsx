@@ -6,8 +6,8 @@ import { useState } from 'react'
 import { stRsrBalanceAtom, walletAtom } from 'state/atoms'
 import { Box, BoxProps, Button, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { ZERO_ADDRESS } from 'utils/addresses'
 import { PROPOSAL_STATES } from 'utils/constants'
+import { zeroAddress } from 'viem'
 import DelegateModal from 'views/governance/components/DelegateModal'
 import { Address, useContractRead } from 'wagmi'
 import { accountVotesAtom, getProposalStateAtom } from '../atom'
@@ -31,7 +31,7 @@ const ProposalVote = (props: BoxProps) => {
     args: account ? [account as Address] : undefined,
   })
 
-  const hasNoDelegates = !delegate || delegate === ZERO_ADDRESS
+  const hasNoDelegates = !delegate || delegate === zeroAddress
 
   const hasUndelegatedBalance =
     !!account &&

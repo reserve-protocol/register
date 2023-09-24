@@ -7,10 +7,10 @@ import { Address } from 'viem'
 
 export interface Collateral {
   symbol: string
-  address: string
-  targetUnit: string
-  rewardToken?: string[]
-  collateralAddress: string // asset erc20 address
+  address: Address
+  targetName: string
+  rewardTokens?: Address[]
+  erc20: Address // asset erc20 address
   custom?: boolean
 }
 
@@ -72,15 +72,12 @@ export const getCollateralFromBasket = (basket: Basket | BackupBasket) => {
   )
 }
 
+// TODO: This may not be needed?
 const getCollateralByTarget = (collaterals: CollateralPlugin[]) => {
   return collaterals.reduce((acc, collateral) => {
-    acc[collateral.targetUnit] = [
-      ...(acc[collateral.targetUnit] ?? []),
-      {
-        ...collateral,
-        collateralAddress:
-          collateral.depositContract || collateral.collateralAddress,
-      },
+    acc[collateral.targetName] = [
+      ...(acc[collateral.targetName] ?? []),
+      collateral,
     ]
 
     return acc

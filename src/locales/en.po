@@ -21,7 +21,7 @@ msgstr ""
 msgid "(in their Github repository)"
 msgstr ""
 
-#: src/views/issuance/components/wrapping/CollateralItem.tsx:212
+#: src/views/issuance/components/wrapping/CollateralItem.tsx:163
 msgid "{fromToken} amount"
 msgstr ""
 
@@ -98,7 +98,7 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: src/views/governance/views/proposal-detail/components/VoteModal.tsx:40
+#: src/views/governance/views/proposal-detail/components/VoteModal.tsx:44
 msgid "Abstain"
 msgstr ""
 
@@ -110,7 +110,7 @@ msgstr ""
 msgid "Account"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:136
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:138
 #: src/views/governance/views/proposal/components/ItemPreview.tsx:42
 #: src/views/governance/views/proposal/components/ListItemPreview.tsx:21
 #: src/views/governance/views/proposal/components/ProposedRevenueSplitPreview.tsx:127
@@ -142,7 +142,7 @@ msgstr ""
 msgid "Advanced config:"
 msgstr ""
 
-#: src/views/governance/views/proposal-detail/components/VoteModal.tsx:39
+#: src/views/governance/views/proposal-detail/components/VoteModal.tsx:43
 msgid "Against"
 msgstr ""
 
@@ -192,10 +192,6 @@ msgstr ""
 msgid "Asset Registry"
 msgstr ""
 
-#: src/views/settings/components/BackingInfo.tsx:66
-msgid "Auction length"
-msgstr ""
-
 #: src/components/layout/navigation/index.tsx:103
 #: src/views/auctions/auctions-sidebar/index.tsx:26
 msgid "Auctions"
@@ -209,7 +205,7 @@ msgstr ""
 msgid "Available after recollateralization"
 msgstr ""
 
-#: src/views/issuance/components/balances/ZapAssetsBalance.tsx:36
+#: src/views/issuance/components/balances/ZapAssetsBalance.tsx:32
 msgid "Available assets"
 msgstr ""
 
@@ -237,7 +233,7 @@ msgstr ""
 msgid "Backing + Staked"
 msgstr ""
 
-#: src/views/settings/components/BackingInfo.tsx:73
+#: src/views/settings/components/BackingInfo.tsx:66
 msgid "Backing buffer"
 msgstr ""
 
@@ -437,7 +433,7 @@ msgstr ""
 msgid "Collateral Plugins"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/PluginItem.tsx:44
+#: src/components/rtoken-setup/basket/PluginItem.tsx:38
 msgid "Collateral token"
 msgstr ""
 
@@ -553,8 +549,12 @@ msgstr ""
 msgid "Dashboard"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/PluginItem.tsx:62
+#: src/components/rtoken-setup/basket/PluginItem.tsx:56
 msgid "Decimals"
+msgstr ""
+
+#: src/components/rtoken-setup/basket/PluginItem.tsx:62
+msgid "Default delay"
 msgstr ""
 
 #: src/components/rtoken-setup/token/RevenueSplit.tsx:155
@@ -646,9 +646,13 @@ msgstr ""
 msgid "Discover how an RToken is configured to operate in the good times and in emergencies if collateral defaults."
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:110
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:112
 #: src/components/rtoken-setup/components/RolesEdit.tsx:56
 msgid "Dismiss"
+msgstr ""
+
+#: src/views/issuance/components/wrapping/DisplayMode.tsx:15
+msgid "Display only {0} related collaterals"
 msgstr ""
 
 #: src/components/rtoken-setup/token/RevenueSplit.tsx:138
@@ -745,7 +749,7 @@ msgstr ""
 msgid "Ends at"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/PluginItem.tsx:99
+#: src/components/rtoken-setup/basket/PluginItem.tsx:106
 msgid "Est. APY:"
 msgstr ""
 
@@ -820,7 +824,7 @@ msgstr ""
 msgid "Final price in:"
 msgstr ""
 
-#: src/views/governance/views/proposal-detail/components/VoteModal.tsx:38
+#: src/views/governance/views/proposal-detail/components/VoteModal.tsx:42
 msgid "For"
 msgstr ""
 
@@ -942,7 +946,7 @@ msgstr ""
 msgid "Input number of blocks"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:100
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:102
 msgid "Input plugin address (not ERC-20 address)"
 msgstr ""
 
@@ -997,25 +1001,25 @@ msgstr ""
 msgid "Intro"
 msgstr ""
 
-#: src/components/rtoken-setup/atoms.ts:122
+#: src/components/rtoken-setup/atoms.ts:119
 msgid "Invalid ({targetUnit}) backup diversity factor"
 msgstr ""
 
-#: src/components/rtoken-setup/atoms.ts:107
+#: src/components/rtoken-setup/atoms.ts:104
 msgid "Invalid ({targetUnit}) basket distribution"
 msgstr ""
 
-#: src/components/rtoken-setup/atoms.ts:111
+#: src/components/rtoken-setup/atoms.ts:108
 msgid "Invalid ({targetUnit}) basket scale"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:83
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:85
 #: src/components/rtoken-setup/components/RolesEdit.tsx:44
 #: src/views/staking/components/stake/EditDelegate.tsx:52
 msgid "Invalid address"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:75
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:77
 msgid "Invalid collateral"
 msgstr ""
 
@@ -1054,11 +1058,11 @@ msgstr ""
 
 #: src/components/rtoken-setup/token/BackingForm.tsx:122
 #: src/components/rtoken-setup/token/BackingForm.tsx:123
-#: src/views/settings/components/BackingInfo.tsx:94
+#: src/views/settings/components/BackingInfo.tsx:87
 msgid "Issuance throttle amount"
 msgstr ""
 
-#: src/views/settings/components/BackingInfo.tsx:87
+#: src/views/settings/components/BackingInfo.tsx:80
 msgid "Issuance throttle rate"
 msgstr ""
 
@@ -1103,7 +1107,7 @@ msgstr ""
 msgid "Long freeze duration (s)"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:129
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:131
 msgid "Made your own collateral?"
 msgstr ""
 
@@ -1136,7 +1140,7 @@ msgstr ""
 msgid "Market cap"
 msgstr ""
 
-#: src/views/settings/components/BackingInfo.tsx:80
+#: src/views/settings/components/BackingInfo.tsx:73
 msgid "Max trade slippage"
 msgstr ""
 
@@ -1449,7 +1453,7 @@ msgstr ""
 msgid "Primary Basket"
 msgstr ""
 
-#: src/components/rtoken-setup/atoms.ts:98
+#: src/components/rtoken-setup/atoms.ts:95
 msgid "Primary basket not defined"
 msgstr ""
 
@@ -1494,7 +1498,7 @@ msgid "Proposed"
 msgstr ""
 
 #: src/views/governance/views/proposal-detail/components/ProposalDetailContent.tsx:33
-#: src/views/governance/views/proposal-detail/components/VoteModal.tsx:83
+#: src/views/governance/views/proposal-detail/components/VoteModal.tsx:87
 msgid "Proposed by"
 msgstr ""
 
@@ -1573,11 +1577,11 @@ msgstr ""
 
 #: src/components/rtoken-setup/token/BackingForm.tsx:148
 #: src/components/rtoken-setup/token/BackingForm.tsx:149
-#: src/views/settings/components/BackingInfo.tsx:114
+#: src/views/settings/components/BackingInfo.tsx:107
 msgid "Redemption throttle amount"
 msgstr ""
 
-#: src/views/settings/components/BackingInfo.tsx:105
+#: src/views/settings/components/BackingInfo.tsx:98
 msgid "Redemption throttle rate"
 msgstr ""
 
@@ -1587,10 +1591,6 @@ msgstr ""
 
 #: src/components/rtoken-setup/token/BackingForm.tsx:135
 msgid "Redemption throttle rate (%)"
-msgstr ""
-
-#: src/components/rtoken-setup/basket/PluginItem.tsx:38
-msgid "Reference unit"
 msgstr ""
 
 #: src/views/home/components/About.tsx:63
@@ -1831,7 +1831,7 @@ msgstr ""
 msgid "RTokens in this list is not an endorsement or audited by us. It’s simply RTokens that have gone through our listing process and don’t seem like clear scams."
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:117
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:119
 #: src/components/rtoken-setup/components/RolesEdit.tsx:53
 #: src/views/staking/components/stake/EditDelegate.tsx:31
 msgid "Save"
@@ -1999,7 +1999,7 @@ msgstr ""
 msgid "Target basket of 1 {0}"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/PluginItem.tsx:98
+#: src/components/rtoken-setup/basket/PluginItem.tsx:106
 msgid "Target:"
 msgstr ""
 
@@ -2350,7 +2350,7 @@ msgstr ""
 msgid "Unsupported"
 msgstr ""
 
-#: src/views/issuance/components/wrapping/WrapTypeToggle.tsx:50
+#: src/views/issuance/components/wrapping/WrapTypeToggle.tsx:48
 msgid "Unwrap collaterals"
 msgstr ""
 
@@ -2362,7 +2362,7 @@ msgstr ""
 msgid "USD Value"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:132
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:134
 msgid "Use a custom plugin contract address"
 msgstr ""
 
@@ -2378,12 +2378,16 @@ msgstr ""
 msgid "User tracking"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:117
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:119
 msgid "Validating..."
 msgstr ""
 
 #: src/views/home/components/Portfolio.tsx:39
 msgid "Value"
+msgstr ""
+
+#: src/components/rtoken-setup/basket/PluginItem.tsx:70
+msgid "Version"
 msgstr ""
 
 #: src/views/settings/components/RolesView.tsx:63
@@ -2399,7 +2403,7 @@ msgid "View Dashboard"
 msgstr ""
 
 #: src/components/transaction-modal/TransactionConfirmedModal.tsx:40
-#: src/views/governance/views/proposal-detail/components/VoteModal.tsx:65
+#: src/views/governance/views/proposal-detail/components/VoteModal.tsx:69
 msgid "View on etherscan"
 msgstr ""
 
@@ -2412,7 +2416,7 @@ msgstr ""
 msgid "Volume"
 msgstr ""
 
-#: src/views/governance/views/proposal-detail/components/VoteModal.tsx:120
+#: src/views/governance/views/proposal-detail/components/VoteModal.tsx:124
 msgid "Vote"
 msgstr ""
 
@@ -2440,7 +2444,7 @@ msgstr ""
 msgid "Votes for"
 msgstr ""
 
-#: src/views/governance/views/proposal-detail/components/VoteModal.tsx:73
+#: src/views/governance/views/proposal-detail/components/VoteModal.tsx:77
 msgid "Voting"
 msgstr ""
 
@@ -2527,15 +2531,15 @@ msgstr ""
 msgid "Worst price"
 msgstr ""
 
-#: src/views/issuance/components/wrapping/WrapTypeToggle.tsx:37
+#: src/views/issuance/components/wrapping/WrapTypeToggle.tsx:35
 msgid "Wrap collaterals"
 msgstr ""
 
-#: src/views/issuance/components/about/index.tsx:37
+#: src/views/issuance/components/about/index.tsx:42
 msgid "Wrap/Unwrap collateral"
 msgstr ""
 
-#: src/views/issuance/components/wrapping/WrapSidebar.tsx:29
+#: src/views/issuance/components/wrapping/WrapSidebarHeader.tsx:26
 msgid "Wrap/Unwrap Tokens"
 msgstr ""
 

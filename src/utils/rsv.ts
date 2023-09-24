@@ -1,7 +1,5 @@
 import { ReserveToken } from 'types'
 import { Address, parseUnits } from 'viem'
-import { RSV_ADDRESS, RSV_MANAGER_ADDRESS, USDC_ADDRESS } from './addresses'
-import { ChainId } from './chains'
 
 /**
  * RSV Token utility
@@ -10,14 +8,14 @@ import { ChainId } from './chains'
  * * It follows different rules as other tokens, so it needs to be treated different
  * * Only the Overview page and Mint/Redeem are available for this token
  */
-const USDC = USDC_ADDRESS[ChainId.Mainnet]
+const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
 
 export const quote = (amount: string): { [x: Address]: bigint } => ({
   [USDC]: parseUnits(amount, 6),
 })
 
 const RSV: ReserveToken = {
-  address: RSV_ADDRESS[ChainId.Mainnet],
+  address: '0x196f4727526eA7FB1e17b2071B3d8eAA38486988',
   name: 'Reserve',
   symbol: 'RSV',
   decimals: 18,
@@ -40,6 +38,6 @@ export const RSVOverview = {
   holders: 0,
 }
 
-export const RSV_MANAGER = RSV_MANAGER_ADDRESS[ChainId.Mainnet]
+export const RSV_MANAGER = '0x4B481872f31bab47C6780D5488c84D309b1B8Bb6'
 
 export default RSV

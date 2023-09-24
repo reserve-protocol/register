@@ -1,13 +1,11 @@
 import { Trans } from '@lingui/macro'
 import { Box } from 'theme-ui'
+import { isWrappingAtom } from './atoms'
+import { useAtom } from 'jotai'
 
-const WrapTypeToggle = ({
-  wrapping,
-  setWrapping,
-}: {
-  wrapping: boolean
-  setWrapping(type: boolean): void
-}) => {
+const WrapTypeToggle = () => {
+  const [wrapping, setWrapping] = useAtom(isWrappingAtom)
+
   return (
     <Box
       variant="layout.verticalAlign"
@@ -21,7 +19,7 @@ const WrapTypeToggle = ({
         borderColor: 'inputBorder',
         flex: 'none',
       }}
-      mb={5}
+      mb={4}
     >
       <Box
         p={1}
