@@ -27,12 +27,16 @@ const VoteModal = (props: ModalProps) => {
   const governance = useAtomValue(rTokenGovernanceAtom)
   const isValid = governance.governor && proposal?.id && vote !== -1
 
-  const { hash, isLoading, isReady, write } = useContractWrite({
-    address: isValid ? governance.governor : undefined,
-    functionName: 'castVote',
-    abi: Governance,
-    args: isValid ? [BigInt(proposal.id.split('-')[1]), vote] : undefined,
-  })
+  const { hash, isLoading, isReady, write } = useContractWrite(
+    isValid
+      ? {
+          address: governance.governor,
+          functionName: 'castVote',
+          abi: Governance,
+          args: [BigInt(proposal.id), vote],
+        }
+      : undefined
+  )
 
   const voteOptions = [
     { label: t`For`, value: VOTE_TYPE.FOR },
