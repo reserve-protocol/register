@@ -22,8 +22,8 @@ const providers = [
 if (import.meta.env.VITE_TENDERLY_MAINNET_URL) {
   providers.splice(0, 1)
   chainList[0].rpcUrls = {
-    public: { http: [import.meta.env.VITE_TENDERLY_MAINNET_URL] },
-    default: { http: [import.meta.env.VITE_TENDERLY_MAINNET_URL] },
+    public: { http: [import.meta.env.VITE_MAINNET_RPC] },
+    default: { http: [import.meta.env.VITE_MAINNET_RPC] },
   }
 }
 

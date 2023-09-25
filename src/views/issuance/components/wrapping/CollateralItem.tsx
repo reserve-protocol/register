@@ -15,7 +15,7 @@ import { walletAtom } from 'state/atoms'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { CollateralPlugin } from 'types'
 import { formatCurrency, safeParseEther } from 'utils'
-import { Address, useBalance, useContractReads } from 'wagmi'
+import { Address, useBalance } from 'wagmi'
 
 export enum WrapCollateralType {
   AaveV2,
@@ -31,39 +31,11 @@ interface Props extends BoxProps {
   type: WrapCollateralType
 }
 
-const ABI = {
-  [WrapCollateralType.AaveV2]: StaticAave,
-  [WrapCollateralType.Convex]: ConvexWrapper,
-  [WrapCollateralType.Morpho]: MorphoWrapper,
-}
-
-// {
-//   contracts: allowances.map((allowance) => ({
-//     abi: ERC20,
-//     functionName: 'allowance',
-//     address: allowance.token,
-//     args: [account, allowance.spender],
-//   })),
-//   watch: true,
-//   allowFailure: false,
-// }
-
 const CollateralItem = ({ collateral, wrapping, type, ...props }: Props) => {
   const wallet = useAtomValue(walletAtom)
   const fromToken = wrapping ? collateral.referenceUnit : collateral.symbol
   const toToken = wrapping ? collateral.symbol : collateral.referenceUnit
   const [amount, setAmount] = useState('')
-
-  // const { data: testData } = useContractReads({
-  //   contracts: [
-  //     {
-  //       abi: ABI[type],
-  //       functionName: 'asset',
-  //       address: collateral.address as Address,
-  //     },
-  //   ],
-  //   allowFailure: false,
-  // })
 
   const { data } = useBalance({
     address: wallet ? wallet : undefined,
