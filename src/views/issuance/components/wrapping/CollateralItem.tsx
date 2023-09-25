@@ -135,60 +135,56 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
     <Box {...props}>
       <Box variant="layout.verticalAlign">
         <TokenLogo symbol={collateral.symbol} width={20} mr={3} />
-        <Box sx={{ flexGrow: 1 }}>
-          <Box variant="layout.verticalAlign">
-            <Box sx={{ maxWidth: 200 }}>
-              <Text as="label">
-                {fromToken} to {toToken}
-              </Text>
-              <Text
-                onClick={() => setAmount(data?.formatted ?? '')}
-                as="a"
-                variant="a"
-                sx={{ display: 'block', fontSize: 1 }}
-                ml={'auto'}
-                mt={1}
-                mr={2}
-              >
-                Max:{' '}
-                {data
-                  ? formatCurrency(Number(data.formatted), 5)
-                  : 'Fetching...'}
-              </Text>
-            </Box>
-            <NumericalInput
-              ml="auto"
-              mr={3}
-              sx={{
-                padding: '6px',
-                paddingLeft: '6px',
-                width: [160, 160],
-                fontSize: 1,
-              }}
-              placeholder={t`${fromToken} amount`}
-              value={amount}
-              onChange={setAmount}
-              variant={debouncedAmount && !isValid ? 'inputError' : 'input'}
-            />
-            {!hasAllowance && (
-              <ExecuteButton
-                sx={{ flexShrink: 0 }}
-                call={approveCall}
-                text="Approve"
-                small
-              />
-            )}
-            {hasAllowance && (
-              <ExecuteButton
-                call={executeCall}
-                sx={{ flexShrink: 0 }}
-                disabled={!isValid}
-                text={wrapping ? 'Wrap' : 'Unwrap'}
-                small
-                onSuccess={handleSuccess}
-              />
-            )}
+        <Box sx={{ flexGrow: 1 }} variant="layout.verticalAlign">
+          <Box sx={{ maxWidth: 200 }}>
+            <Text as="label">
+              {fromToken} to {toToken}
+            </Text>
+            <Text
+              onClick={() => setAmount(data?.formatted ?? '')}
+              as="a"
+              variant="a"
+              sx={{ display: 'block', fontSize: 1 }}
+              ml={'auto'}
+              mt={1}
+              mr={2}
+            >
+              Max:{' '}
+              {data ? formatCurrency(Number(data.formatted), 5) : 'Fetching...'}
+            </Text>
           </Box>
+          <NumericalInput
+            ml="auto"
+            mr={3}
+            sx={{
+              padding: '6px',
+              paddingLeft: '6px',
+              width: [160, 160],
+              fontSize: 1,
+            }}
+            placeholder={t`${fromToken} amount`}
+            value={amount}
+            onChange={setAmount}
+            variant={debouncedAmount && !isValid ? 'inputError' : 'input'}
+          />
+          {!hasAllowance && (
+            <ExecuteButton
+              sx={{ flexShrink: 0 }}
+              call={approveCall}
+              text="Approve"
+              small
+            />
+          )}
+          {hasAllowance && (
+            <ExecuteButton
+              call={executeCall}
+              sx={{ flexShrink: 0 }}
+              disabled={!isValid}
+              text={wrapping ? 'Wrap' : 'Unwrap'}
+              small
+              onSuccess={handleSuccess}
+            />
+          )}
         </Box>
       </Box>
     </Box>
