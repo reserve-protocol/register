@@ -22,10 +22,10 @@ const rTokenBasketAtom = atom((get) => {
     const { targetUnit, share } = distribution.collateralDistribution[address]
     let targetBasket = prev[targetUnit]
     const collateral = {
-      targetUnit,
-      address,
+      targetName: targetUnit,
+      address: assets[address].address,
       symbol,
-      collateralAddress: assets[address].address,
+      erc20: address,
     }
 
     if (!targetBasket) {

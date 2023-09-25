@@ -2,19 +2,16 @@ import FacadeRead from 'abis/FacadeRead'
 import { atom } from 'jotai'
 import { BigNumberMap } from 'types'
 import { safeParseEther } from 'utils'
-import { FACADE_ADDRESS, USDC_ADDRESS } from 'utils/addresses'
+import { FACADE_ADDRESS } from 'utils/addresses'
 import atomWithDebounce from 'utils/atoms/atomWithDebounce'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { quote } from 'utils/rsv'
 import { getAddress } from 'viem'
 import {
-  balancesAtom,
   chainIdAtom,
   publicClientAtom,
   rTokenAtom,
   rTokenBalanceAtom,
-  rTokenStateAtom,
-  walletAtom,
 } from './../../state/atoms'
 
 export const wrapSidebarAtom = atom(false)

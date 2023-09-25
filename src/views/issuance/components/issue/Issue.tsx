@@ -1,7 +1,9 @@
 import { t, Trans } from '@lingui/macro'
+import FacadeRead from 'abis/FacadeRead'
 import { Button } from 'components'
 import useRToken from 'hooks/useRToken'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import mixpanel from 'mixpanel-browser'
 import { useState } from 'react'
 import {
   balancesAtom,
@@ -12,6 +14,7 @@ import {
   walletAtom,
 } from 'state/atoms'
 import { Card } from 'theme-ui'
+import { FACADE_ADDRESS } from 'utils/addresses'
 import {
   issueAmountAtom,
   isValidIssuableAmountAtom,
@@ -19,9 +22,6 @@ import {
 } from 'views/issuance/atoms'
 import ConfirmIssuance from './ConfirmIssuance'
 import IssueInput from './IssueInput'
-import { FACADE_ADDRESS, USDC_ADDRESS } from 'utils/addresses'
-import FacadeRead from 'abis/FacadeRead'
-import mixpanel from 'mixpanel-browser'
 
 const useMaxIssuable = async () => {
   const rToken = useAtomValue(rTokenAtom)
@@ -37,8 +37,8 @@ const useMaxIssuable = async () => {
   }
 
   // RSV
-  if (!rToken.main) {
-    setMaxIssuable(balances[USDC_ADDRESS[chainId]].value ?? 0n)
+  if (rToken && !rToken.main) {
+    setMaxIssuable(balances[rToken.collaterals[0].address].value ?? 0n)
   }
 
   try {

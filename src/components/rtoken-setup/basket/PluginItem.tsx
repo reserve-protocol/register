@@ -16,7 +16,7 @@ import {
   Text,
 } from 'theme-ui'
 import { CollateralPlugin } from 'types'
-import { formatPercentage } from 'utils'
+import { formatPercentage, parseDuration } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { Collateral } from '../atoms'
 
@@ -35,18 +35,12 @@ const PluginInfo = ({ data }: { data: CollateralPlugin }) => {
       <Flex variant="layout.verticalAlign" ml={0} mt={3} sx={{ fontSize: 1 }}>
         <Box mr={4}>
           <Text variant="legend">
-            <Trans>Reference unit</Trans>
-          </Text>
-          <Text sx={{ display: 'block' }}>{data.referenceUnit}</Text>
-        </Box>
-        <Box mr={4}>
-          <Text variant="legend">
             <Trans>Collateral token</Trans>
           </Text>
           <Link
             as="a"
             href={getExplorerLink(
-              data.collateralAddress!,
+              data.collateralToken || data.underlyingToken || data.symbol,
               chainId,
               ExplorerDataType.TOKEN
             )}
@@ -54,14 +48,28 @@ const PluginInfo = ({ data }: { data: CollateralPlugin }) => {
             variant="legend"
             sx={{ color: 'text', display: 'block' }}
           >
-            {data.collateralToken}
+            {data.collateralToken || data.underlyingToken || data.symbol}
           </Link>
         </Box>
-        <Box>
+        <Box mr={4}>
           <Text variant="legend">
             <Trans>Decimals</Trans>
           </Text>
           <Text sx={{ display: 'block' }}>{data.decimals}</Text>
+        </Box>
+        <Box mr={4}>
+          <Text variant="legend">
+            <Trans>Default delay</Trans>
+          </Text>
+          <Text sx={{ display: 'block' }}>
+            {parseDuration(+data.delayUntilDefault)}
+          </Text>
+        </Box>
+        <Box>
+          <Text variant="legend">
+            <Trans>Version</Trans>
+          </Text>
+          <Text sx={{ display: 'block' }}>{data.version}</Text>
         </Box>
       </Flex>
     </>
@@ -95,8 +103,7 @@ const PluginItem = ({ data, onCheck, selected, ...props }: PluginItemProps) => {
           </Box>
 
           <Text sx={{ fontSize: 1, display: 'block' }} variant="legend">
-            <Trans>Target:</Trans> {data.targetUnit} | Version: 3.0 |{' '}
-            <Trans>Est. APY:</Trans>{' '}
+            <Trans>Target:</Trans> {data.targetName} | <Trans>Est. APY:</Trans>{' '}
             {formatPercentage(collateralYields[data.symbol.toLowerCase()] || 0)}
           </Text>
         </Box>

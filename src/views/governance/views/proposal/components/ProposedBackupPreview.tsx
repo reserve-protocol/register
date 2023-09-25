@@ -35,7 +35,7 @@ const ProposedBackupPreview = (props: BoxProps) => {
   }
 
   const handleRevertCollateral = (change: CollateralChange) => {
-    const proposedBasket = proposedBackup[change.collateral.targetUnit] || {}
+    const proposedBasket = proposedBackup[change.collateral.targetName] || {}
 
     if (change.isNew) {
       const index = proposedBasket.collaterals.findIndex(
@@ -44,7 +44,7 @@ const ProposedBackupPreview = (props: BoxProps) => {
 
       setProposedBackup({
         ...proposedBackup,
-        [change.collateral.targetUnit]: {
+        [change.collateral.targetName]: {
           diversityFactor:
             proposedBasket.diversityFactor > 0
               ? proposedBasket.diversityFactor - 1
@@ -58,9 +58,9 @@ const ProposedBackupPreview = (props: BoxProps) => {
     } else {
       setProposedBackup({
         ...proposedBackup,
-        [change.collateral.targetUnit]: {
+        [change.collateral.targetName]: {
           diversityFactor:
-            proposedBackup[change.collateral.targetUnit].diversityFactor + 1,
+            proposedBackup[change.collateral.targetName].diversityFactor + 1,
           collaterals: [...proposedBasket.collaterals, change.collateral],
         },
       })

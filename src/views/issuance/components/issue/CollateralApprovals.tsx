@@ -11,6 +11,7 @@ import { CheckCircle, CheckSquare, ChevronDown, ChevronUp } from 'react-feather'
 import { Box, BoxProps, Divider, Flex, Spinner, Text } from 'theme-ui'
 import { Token } from 'types'
 import { formatCurrency } from 'utils'
+import { BIGINT_MAX } from 'utils/constants'
 import { RSV_MANAGER } from 'utils/rsv'
 import { Address, formatUnits, parseEther } from 'viem'
 import { quantitiesAtom } from 'views/issuance/atoms'
@@ -37,9 +38,7 @@ const CollateralApproval = ({
     functionName: 'approve',
     args: [
       rToken?.main ? rToken.address : RSV_MANAGER,
-      collateral.symbol === 'wcUSDCv3'
-        ? 115792089237316195423570985008687907853269984665640564039457584007913129639935n
-        : amount ?? 0n,
+      collateral.symbol === 'wcUSDCv3' ? BIGINT_MAX : amount ?? 0n,
     ],
     enabled: !loading && !!amount && !allowance,
   })

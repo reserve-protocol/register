@@ -12,6 +12,7 @@ import { ChainId, defaultChain } from 'utils/chains'
 import { WagmiConfig, configureChains, createConfig } from 'wagmi'
 import { base, baseGoerli, hardhat, mainnet } from 'wagmi/chains'
 import AtomUpdater from './updaters/AtomUpdater'
+import { setupConfig } from './utils/mocks'
 
 const chainList = [mainnet, base, baseGoerli, hardhat] as any
 const providers = [
@@ -59,11 +60,13 @@ const { connectors } = getDefaultWallets({
   chains,
 })
 
-export const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors,
-  publicClient,
-})
+export const wagmiConfig = import.meta.env.VITE_TESTING
+  ? setupConfig()
+  : createConfig({
+      autoConnect: true,
+      connectors,
+      publicClient,
+    })
 
 /**
  * Wrapper around web3ReactProvider
