@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request'
 import { atom } from 'jotai'
-import { ChainId, defaultChain, SUBGRAPH_URL } from 'utils/chains'
+import { ChainId, defaultChain } from 'utils/chains'
 import { formatEther } from 'viem'
 import { Address, PublicClient, WalletClient } from 'wagmi'
 
@@ -33,9 +33,20 @@ export const gasPriceAtom = atom((get) =>
   Number(formatEther(get(gasFeeAtom) || 0n))
 )
 
+export const SUBGRAPH_URL = {
+  [ChainId.Mainnet]:
+    'https://api.thegraph.com/subgraphs/name/lcamargof/reserve',
+  [ChainId.BaseGoerli]:
+    'https://api.studio.thegraph.com/query/11653/reserve-base-testnet/v0.0.3',
+  [ChainId.Hardhat]:
+    'https://api.thegraph.com/subgraphs/name/lcamargof/cryptoasdf',
+}
+
 export const gqlClientAtom = atom(
   (get) =>
     new GraphQLClient(
-      SUBGRAPH_URL[get(chainIdAtom)] || SUBGRAPH_URL[ChainId.Mainnet]
+      import.meta.env.VITE_SUBGRAPH_URL ||
+        SUBGRAPH_URL[get(chainIdAtom)] ||
+        SUBGRAPH_URL[ChainId.Mainnet]
     )
 )
