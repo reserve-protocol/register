@@ -14,7 +14,8 @@ export const useGovernanceTx = () => {
   const { getValues } = useFormContext()
   const formFields = useDebounce(useWatch(), 500)
   const { isValid, isValidating } = useFormState()
-  const validForm = isValid && !isValidating
+  const validForm =
+    !!import.meta.env.VITE_DISABLE_VALIDATION || (isValid && !isValidating)
 
   const roles = useAtomValue(setupRolesAtom)
   const rToken = useRToken()
