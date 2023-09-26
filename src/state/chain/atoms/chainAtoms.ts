@@ -1,6 +1,7 @@
 import { GraphQLClient } from 'graphql-request'
 import { atom } from 'jotai'
 import { ChainId, defaultChain } from 'utils/chains'
+import { blockDuration } from 'utils/constants'
 import { formatEther } from 'viem'
 import { Address, PublicClient, WalletClient } from 'wagmi'
 
@@ -20,6 +21,12 @@ export const publicClientAtom = atom<PublicClient | undefined>(undefined)
 export const clientAtom = atom((get) =>
   get(walletClientAtom || get(publicClientAtom))
 )
+
+export const secondsPerBlockAtom = atom((get) => {
+  const chainId = get(chainIdAtom)
+
+  return blockDuration[chainId] || 12
+})
 
 /**
  * ##################

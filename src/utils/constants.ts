@@ -88,5 +88,5 @@ export const formatConstant = (str: string) =>
 
 export const blockDuration = {
   [ChainId.Mainnet]: 12,
-  [ChainId.Tenderly]: 12,
+  [ChainId.Base]: 2,
 }

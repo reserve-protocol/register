@@ -1,7 +1,7 @@
 import { t, Trans } from '@lingui/macro'
 import { InfoItem } from 'components/info-box'
 import { useAtomValue } from 'jotai'
-import { rTokenGovernanceAtom } from 'state/atoms'
+import { rTokenGovernanceAtom, secondsPerBlockAtom } from 'state/atoms'
 import { BoxProps, Card, Text, Divider } from 'theme-ui'
 import { formatPercentage, parseDuration, shortenAddress } from 'utils'
 
@@ -10,8 +10,10 @@ import { formatPercentage, parseDuration, shortenAddress } from 'utils'
  */
 const GovernanceInfo = (props: BoxProps) => {
   const governance = useAtomValue(rTokenGovernanceAtom)
-  const votingPeriod = (Number(governance.votingPeriod) || 0) * 12
-  const snapshotDelay = (Number(governance.votingDelay) || 0) * 12
+  const secondsPerBlock = useAtomValue(secondsPerBlockAtom)
+
+  const votingPeriod = (Number(governance.votingPeriod) || 0) * secondsPerBlock
+  const snapshotDelay = (Number(governance.votingDelay) || 0) * secondsPerBlock
 
   return (
     <Card p={4} {...props}>

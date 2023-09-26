@@ -2,9 +2,10 @@ import Layout from 'components/rtoken-setup/Layout'
 import {
   backupCollateralAtom,
   basketAtom,
+  rTokenDefaultValuesAtom,
   revenueSplitAtom,
 } from 'components/rtoken-setup/atoms'
-import { useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useCallback, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -15,11 +16,11 @@ import DeployOverview from './components/DeployOverview'
 import Governance from './components/Governance'
 import NavigationSidebar from './components/NavigationSidebar'
 import RTokenSetup from './components/RTokenSetup'
-import { defaultValues } from './utils'
 
 const Deploy = () => {
   const [governance, setGovernance] = useState(false)
   const setRToken = useSetAtom(selectedRTokenAtom)
+  const defaultValues = useAtomValue(rTokenDefaultValuesAtom)
 
   const form = useForm({
     mode: 'onChange',
