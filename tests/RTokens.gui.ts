@@ -61,5 +61,27 @@ for (const rtoken of Object.keys(RTokens)) {
       .filter({ hasText: 'Transaction signed!' })
       .locator('button')
       .click()
+
+
+    // Issue - Max button click
+    await page.reload()
+
+    await page.getByText('Max: ').nth(0).click({ timeout: 90_000 })
+    await page
+      .getByText('Missing collateral')
+      .waitFor({ state: 'hidden', timeout: 60_000 })
+
+    await page.getByRole('button', { name: '+ Mint' }).click()
+    await page.getByText('Collateral distribution').click()
+
+    // Redeem - Manual number input
+    await page.reload()
+
+    await page.getByPlaceholder('Redeem amount').type('100')
+    // await page
+    //   .getByText('Missing collateral')
+    //   .waitFor({ state: 'hidden', timeout: 60_000 })
+    // await page.getByRole('button', { name: '- Redeem' }).click()
+
   })
 }
