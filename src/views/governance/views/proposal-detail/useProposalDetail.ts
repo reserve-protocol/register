@@ -46,6 +46,7 @@ const query = gql`
       forDelegateVotes
       abstainDelegateVotes
       againstDelegateVotes
+      executionTxnHash
       governanceFramework {
         contractAddress
       }
@@ -89,6 +90,7 @@ const useProposalDetail = (
           abstainWeightedVotes: formatEther(
             data.proposal.abstainWeightedVotes || '0'
           ),
+          executionTxnHash: data.proposal.executionTxnHash || '',
           quorumVotes: formatEther(data.proposal.quorumVotes || '0'),
           governor: data.proposal.governanceFramework.contractAddress,
         }

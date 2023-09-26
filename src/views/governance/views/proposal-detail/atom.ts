@@ -20,6 +20,7 @@ export interface ProposalDetail {
   forDelegateVotes: string
   abstainDelegateVotes: string
   againstDelegateVotes: string
+  executionTxnHash: string
   quorumVotes: string
   targets: Address[]
   proposer: Address
