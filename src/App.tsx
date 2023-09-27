@@ -3,7 +3,7 @@ import ToastContainer from 'components/toaster-container/ToastContainer'
 import TransactionSidebar from 'components/transactions/manager/TransactionSidebar'
 import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
-import { Suspense, useEffect } from 'react'
+import { Suspense, lazy, useEffect } from 'react'
 import { lazyWithPreload } from 'react-lazy-with-preload'
 import {
   Route,
@@ -37,6 +37,7 @@ mixpanel.init(import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key', {
 
 const Issuance = lazyWithPreload(() => import('./views/issuance'))
 const Governance = lazyWithPreload(() => import('./views/governance'))
+const Bridge = lazy(() => import('./views/bridge'))
 
 const Fallback = () => <Text>Loading...</Text>
 
@@ -117,6 +118,14 @@ const App = () => {
                 <Route
                   path={`${ROUTES.GOVERNANCE_PROPOSAL}/:proposalId`}
                   element={<GovernanceProposalDetail />}
+                />
+                <Route
+                  path={ROUTES.BRIDGE}
+                  element={
+                    <Suspense fallback={<Fallback />}>
+                      <Bridge />
+                    </Suspense>
+                  }
                 />
               </Routes>
             </Layout>
