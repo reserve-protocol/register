@@ -62,6 +62,7 @@ const wrappedTokenMap = {
   cUSDP: protocols.COMP,
   cWBTC: protocols.COMP,
   cETH: protocols.COMP,
+  cUSDbCv3: protocols.COMPv3, // base
   cUSDCv3: protocols.COMPv3,
   fUSDC: protocols.FLUX,
   fUSDT: protocols.FLUX,
@@ -95,9 +96,9 @@ const chainsMap = [
     collaterals: require('./data/mainnet-collaterals.json'),
   },
   {
-    prefix: 'basegoerli',
-    chain: chains.baseGoerli,
-    collaterals: require('./data/basegoerli-collaterals.json'),
+    prefix: 'base',
+    chain: chains.base,
+    collaterals: require('./data/base-collaterals.json'),
   },
 ]
 

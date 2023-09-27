@@ -11,11 +11,11 @@ import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc'
 import React from 'react'
 import { ChainId, defaultChain } from 'utils/chains'
 import { WagmiConfig, configureChains, createConfig } from 'wagmi'
-import { base, baseGoerli, hardhat, mainnet } from 'wagmi/chains'
+import { base, hardhat, mainnet } from 'wagmi/chains'
 import AtomUpdater from './updaters/AtomUpdater'
 import { setupConfig } from './utils/mocks'
 
-const chainList = [mainnet, base, baseGoerli, hardhat] as any
+const chainList = [mainnet, base, hardhat] as any
 const providers = [
   alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY }),
   publicProvider(),
@@ -27,21 +27,6 @@ if (import.meta.env.VITE_MAINNET_URL) {
       http: import.meta.env.VITE_MAINNET_URL,
     }),
   })
-}
-
-if (import.meta.env.VITE_TENDERLY_URL) {
-  // Mainnet fork
-  const tenderly = {
-    ...mainnet,
-    id: 3,
-    name: 'Tenderly',
-    network: 'tenderly',
-    rpcUrls: {
-      public: { http: [import.meta.env.VITE_TENDERLY_URL] },
-      default: { http: [import.meta.env.VITE_TENDERLY_URL] },
-    },
-  } as any // TODO: fix typing here
-  chainList.push(tenderly)
 }
 
 if (defaultChain !== ChainId.Mainnet) {

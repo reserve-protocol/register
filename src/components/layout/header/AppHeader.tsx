@@ -85,7 +85,7 @@ const AppHeader = () => {
         <LanguageSelector />
       </Box> */}
       <Divider />
-      {/* <ChainSelector mr={3} /> */}
+      <ChainSelector mr={3} />
       <Account />
     </Container>
   )
