@@ -23,7 +23,7 @@ const ActionItem = styled(Flex)`
   }
 `
 
-const chainIcons = {
+export const chainIcons = {
   [ChainId.Mainnet]: Ethereum,
   [ChainId.Base]: Base,
   [ChainId.Hardhat]: Ethereum,

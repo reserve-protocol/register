@@ -51,11 +51,13 @@ const PricesUpdater = () => {
         abi: Chainlink,
         address: RSR_CHAINLINK_FEE_ADDRESS[chainId],
         functionName: 'latestRoundData',
+        chainId,
       },
       {
         abi: Chainlink,
         address: ETH_CHAINLINK_FEE_ADDRESS[chainId],
         functionName: 'latestRoundData',
+        chainId,
       },
     ],
     allowFailure: false,
@@ -64,6 +66,7 @@ const PricesUpdater = () => {
     abi: FacadeRead,
     address: rToken ? FACADE_ADDRESS[chainId] : undefined,
     functionName: 'price',
+    chainId,
     args: [rToken as Address],
     enabled: !!rToken,
   })

@@ -1,12 +1,16 @@
-import { Box } from 'theme-ui'
+import { Box, Grid } from 'theme-ui'
 import Bridge from './components/Bridge'
 import { Container } from 'components'
+import BridgeFaq from './components/BridgeFaq'
 
 const ChainBridge = () => {
   return (
-    <Container pb={[1, 4]}>
+    <Grid columns={[1, 1, 2]} px={[1, 4, 4, 8, 9]} py={[1, 5, 5, 8]} gap={5}>
       <Bridge />
-    </Container>
+      <Box sx={{ height: 'fit-content' }}>
+        <BridgeFaq />
+      </Box>
+    </Grid>
   )
 }
 
