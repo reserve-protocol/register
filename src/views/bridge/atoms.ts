@@ -35,15 +35,6 @@ export const bridgeAmountDebouncedAtom = atomWithDebounce(
 
 export const isValidBridgeAmountAtom = atom(false)
 
-export const btnLabelAtom = atom((get) => {
-  const token = get(selectedTokenAtom)
-  const isWrapping = get(isBridgeWrappingAtom)
-
-  return `${isWrapping ? 'Deposit' : 'Withdraw'} ${token.symbol} to ${
-    isWrapping ? 'Base' : 'Ethereum'
-  }`
-})
-
 export const bridgeTxAtom = atom((get) => {
   const isWrapping = get(isBridgeWrappingAtom)
   const token = Number(get(bridgeTokenAtom))

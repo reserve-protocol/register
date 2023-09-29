@@ -1,7 +1,21 @@
 import TransactionButton from 'components/button/TransactionButton'
 import useContractWrite from 'hooks/useContractWrite'
-import { atom, useAtomValue } from 'jotai'
-import { bridgeTxAtom, isBridgeWrappingAtom, selectedTokenAtom } from '../atoms'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
+import {
+  bridgeAmountAtom,
+  bridgeAmountDebouncedAtom,
+  bridgeTokenAtom,
+  bridgeTxAtom,
+  isBridgeWrappingAtom,
+  selectedTokenAtom,
+} from '../atoms'
+import { walletAtom } from 'state/atoms'
+import useHasAllowance from 'hooks/useHasAllowance'
+import { safeParseEther } from 'utils'
+import { Address } from 'viem'
+import ERC20 from 'abis/ERC20'
+import { useEffect } from 'react'
+import useWatchTransaction from 'hooks/useWatchTransaction'
 
 const btnLabelAtom = atom((get) => {
   const token = get(selectedTokenAtom)
@@ -12,20 +26,105 @@ const btnLabelAtom = atom((get) => {
   }`
 })
 
-const ConfirmBridge = () => {
-  const tx = useAtomValue(bridgeTxAtom)
-  const { isReady, gas, write } = useContractWrite(tx)
+const approvalAtom = atom((get) => {
+  const bridgeTransaction = get(bridgeTxAtom)
+  const bridgeToken = get(selectedTokenAtom)
+  const amount = get(bridgeAmountDebouncedAtom)
+
+  if (!bridgeTransaction || !bridgeToken.address) {
+    return undefined
+  }
+
+  return {
+    token: bridgeToken.address as Address,
+    spender: bridgeTransaction.address as Address,
+    amount: safeParseEther(amount),
+  }
+})
+
+const ApproveBtn = () => {
+  const approve = useAtomValue(approvalAtom)
+  const selectedToken = useAtomValue(selectedTokenAtom)
+  const { isLoading, gas, hash, write } = useContractWrite(
+    approve
+      ? {
+          address: approve.token,
+          abi: ERC20,
+          functionName: 'approve',
+          args: [approve.spender, approve.amount],
+        }
+      : undefined
+  )
+
+  const checkingAllowance = !gas.isLoading && !gas.estimateUsd
+
+  return (
+    <TransactionButton
+      loading={isLoading || !!hash}
+      disabled={!write || checkingAllowance}
+      loadingText={hash ? 'Waiting for allowance...' : 'Sign in wallet...'}
+      gas={gas}
+      onClick={write}
+      text={
+        checkingAllowance
+          ? `Verifying allowance...`
+          : `Allow use of ${selectedToken.symbol}`
+      }
+      fullWidth
+    />
+  )
+}
+
+const ConfirmBridgeBtn = () => {
+  const bridgeTransaction = useAtomValue(bridgeTxAtom)
+  const setAmount = useSetAtom(bridgeAmountAtom)
+  const {
+    isReady,
+    gas,
+    hash,
+    validationError,
+    status,
+    error,
+    reset,
+    isLoading,
+    write,
+  } = useContractWrite(bridgeTransaction)
+  useWatchTransaction({ hash, label: 'Bridge to base' })
+
   const confirmLabel = useAtomValue(btnLabelAtom)
+
+  useEffect(() => {
+    if (status === 'success') {
+      setAmount('')
+      reset()
+    }
+  }, [status])
 
   return (
     <TransactionButton
       disabled={!isReady}
       gas={gas}
+      loading={isLoading || !!hash}
+      loadingText={!!hash ? 'Confirming tx...' : 'Pending, sign in wallet'}
       onClick={write}
       text={confirmLabel}
-      sx={{ width: '100%' }}
+      fullWidth
+      error={validationError || error}
     />
   )
+}
+
+const ConfirmBridge = () => {
+  const approvalRequired = useAtomValue(approvalAtom)
+  const [hasAllowance] = useHasAllowance(
+    approvalRequired ? [approvalRequired] : undefined
+  )
+
+  if (!hasAllowance) {
+    return <ApproveBtn />
+  }
+
+  return <ConfirmBridgeBtn />
 }
 
 export default ConfirmBridge

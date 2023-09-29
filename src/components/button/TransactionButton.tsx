@@ -11,10 +11,12 @@ import { Box, Spinner, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { UsePrepareContractWriteConfig, useBalance } from 'wagmi'
 import Button, { ButtonProps, LoadingButton, LoadingButtonProps } from '.'
+import TransactionError from 'components/transaction-error/TransactionError'
 
 interface TransactionButtonProps extends LoadingButtonProps {
   gas?: GasEstimation
   mining?: boolean
+  error?: Error | null
 }
 
 interface GasEstimateLabelProps {
@@ -49,6 +51,7 @@ export const ConnectWalletButton = (props: ButtonProps) => {
 const TransactionButton = ({
   gas,
   mining,
+  error,
   ...props
 }: TransactionButtonProps) => {
   const address = useAtomValue(walletAtom)
@@ -76,6 +79,9 @@ const TransactionButton = ({
     <>
       <LoadingButton {...props} />
       {!!gas && <GasEstimateLabel gas={gas} />}
+      {!!error && (
+        <TransactionError sx={{ textAlign: 'center' }} mt={3} error={error} />
+      )}
     </>
   )
 }

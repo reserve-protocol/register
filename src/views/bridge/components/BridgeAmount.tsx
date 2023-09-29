@@ -5,7 +5,7 @@ import TransactionInput, {
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { chainIdAtom, walletAtom } from 'state/atoms'
-import { formatCurrency, safeParseEther } from 'utils'
+import { safeParseEther } from 'utils'
 import { ChainId } from 'utils/chains'
 import { Address, useBalance } from 'wagmi'
 import {
@@ -23,6 +23,7 @@ const BridgeAmount = (props: Partial<TransactionInputProps>) => {
   const debouncedAmount = useAtomValue(bridgeAmountDebouncedAtom)
   const { data } = useBalance({
     chainId,
+    watch: true,
     address: account || undefined,
     token: token.address
       ? ((chainId === ChainId.Mainnet
@@ -33,6 +34,7 @@ const BridgeAmount = (props: Partial<TransactionInputProps>) => {
 
   useEffect(() => {
     const parsed = safeParseEther(debouncedAmount || '0')
+
     setValid(parsed > 0n && parsed <= (data?.value ?? 0n))
   }, [debouncedAmount])
 
@@ -40,9 +42,7 @@ const BridgeAmount = (props: Partial<TransactionInputProps>) => {
     <TransactionInput
       placeholder={t`Bridge amount`}
       amountAtom={bridgeAmountAtom}
-      maxAmount={
-        data ? formatCurrency(Number(data.formatted), 5) : 'Fetching...'
-      }
+      maxAmount={data ? data.formatted : 'Fetching...'}
       {...props}
     />
   )
