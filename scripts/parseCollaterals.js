@@ -16,6 +16,11 @@ const protocols = {
     collateral: 'ATOKEN', // If the underlying is not the yield bearing asset
     rewardTokens: ['stkAAVE'],
   },
+  AAVEv3: {
+    key: 'AAVEv3',
+    underlying: 'asset',
+    collateral: 'aToken',
+  },
   COMP: {
     key: 'COMP',
     underlying: 'underlying',
@@ -81,6 +86,7 @@ const wrappedTokenMap = {
   cvxeUSDFRAXBP: protocols.CONVEX,
   cvxMIM3Pool: protocols.CONVEX,
   sDAI: protocols.SDR,
+  aBasUSDbC: protocols.AAVEv3,
 }
 
 const chainsMap = [

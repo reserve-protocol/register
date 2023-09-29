@@ -9,6 +9,7 @@ export type RoleKey =
 
 export type ProtocolKey =
   | 'AAVE'
+  | 'AAVEv3'
   | 'MORPHO'
   | 'COMP'
   | 'FLUX'

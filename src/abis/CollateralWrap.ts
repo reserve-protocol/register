@@ -162,4 +162,44 @@ export default [
     stateMutability: 'nonpayable',
     type: 'function',
   },
+  // AAVE v3
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'assets', type: 'uint256' },
+      { internalType: 'address', name: 'receiver', type: 'address' },
+      { internalType: 'uint16', name: 'referralCode', type: 'uint16' },
+      { internalType: 'bool', name: 'depositToAave', type: 'bool' },
+    ],
+    name: 'deposit',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'assets', type: 'uint256' },
+      { internalType: 'address', name: 'receiver', type: 'address' },
+      { internalType: 'uint16', name: 'referralCode', type: 'uint16' },
+      { internalType: 'bool', name: 'depositToAave', type: 'bool' },
+    ],
+    name: 'deposit',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: 'shares', type: 'uint256' },
+      { internalType: 'address', name: 'receiver', type: 'address' },
+      { internalType: 'address', name: 'owner', type: 'address' },
+      { internalType: 'bool', name: 'withdrawFromAave', type: 'bool' },
+    ],
+    name: 'redeem',
+    outputs: [
+      { internalType: 'uint256', name: '', type: 'uint256' },
+      { internalType: 'uint256', name: '', type: 'uint256' },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
 ] as const

@@ -87,6 +87,14 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
             ? [wallet, parsedAmount, 0, 1]
             : [wallet, parsedAmount, true], // change 1 to 0 when going from aToken
         }
+      case 'AAVEv3':
+        return {
+          ...call,
+          functionName: wrapping ? 'deposit' : 'redeem',
+          args: wrapping
+            ? [parsedAmount, wallet, 0, true]
+            : [parsedAmount, wallet, wallet, true], // change 1 to 0 when going from aToken
+        }
       case 'CURVE':
       case 'CONVEX':
         return {
