@@ -73,7 +73,7 @@ const BridgeFaq = () => {
         </Text>
       </Box>
       {faqs.map((faq) => (
-        <ExpandableContent {...faq} />
+        <ExpandableContent key={faq.title} {...faq} />
       ))}
     </Card>
   )

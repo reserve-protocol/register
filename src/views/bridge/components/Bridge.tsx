@@ -1,30 +1,52 @@
 import { Trans, t } from '@lingui/macro'
+import BaseBridge from 'abis/BaseBridge'
 import { Button, Card } from 'components'
-import { atom, useAtom, useAtomValue } from 'jotai'
-import { useEffect, useMemo, useState } from 'react'
-import { chainIdAtom } from 'state/atoms'
-import { Box, BoxProps, Divider, Select, Text } from 'theme-ui'
-import { ChainId } from 'utils/chains'
-import { UsePrepareContractWriteConfig, useSwitchNetwork } from 'wagmi'
-import { bridgeTokenAtom, isBridgeWrappingAtom } from '../atoms'
-import { chainIcons } from 'components/chain-selector/ChainSelector'
-import { ArrowRight } from 'react-feather'
-import { RSR_ADDRESS } from 'utils/addresses'
 import TransactionButton from 'components/button/TransactionButton'
+import { chainIcons } from 'components/chain-selector/ChainSelector'
 import useContractWrite from 'hooks/useContractWrite'
-import L1StandardBridge from 'abis/L1StandardBridge'
-import L2StandardBridge from 'abis/L2StandardBridge'
-import L2ToL1MessagePasser from 'abis/L2ToL1MessagePasser'
-import { Abi } from 'viem'
+import { atom, useAtom, useAtomValue } from 'jotai'
+import { useEffect } from 'react'
+import { ArrowRight } from 'react-feather'
+import { chainIdAtom, walletAtom } from 'state/atoms'
+import { Box, BoxProps, Divider, Select, Text } from 'theme-ui'
+import { RSR_ADDRESS } from 'utils/addresses'
+import { ChainId } from 'utils/chains'
+import {
+  Address,
+  UsePrepareContractWriteConfig,
+  useBalance,
+  useSwitchNetwork,
+} from 'wagmi'
+import {
+  bridgeAmountAtom,
+  bridgeTokenAtom,
+  isBridgeWrappingAtom,
+  isValidBridgeAmountAtom,
+} from '../atoms'
+import TransactionInput, {
+  TransactionInputProps,
+} from 'components/transaction-input'
+import { formatCurrency } from 'utils'
+import useIsWindowVisible from 'hooks/useIsWindowVisible'
+
+const BRIDGEABLE_TOKENS = [
+  { symbol: 'ETH', address: '', bridgedAddress: '' },
+  {
+    symbol: 'RSR',
+    address: RSR_ADDRESS[ChainId.Mainnet],
+    bridgedAddress: RSR_ADDRESS[ChainId.Base],
+  },
+]
 
 const Header = () => {
   const [isWrapping, setWrapping] = useAtom(isBridgeWrappingAtom)
   const { switchNetwork } = useSwitchNetwork()
+  const isWindowVisible = useIsWindowVisible()
   const chainId = useAtomValue(chainIdAtom)
 
   // Trigger wallet switch for users
   useEffect(() => {
-    if (switchNetwork) {
+    if (switchNetwork && isWindowVisible) {
       if (isWrapping && chainId !== ChainId.Mainnet) {
         switchNetwork(ChainId.Mainnet)
       }
@@ -33,7 +55,7 @@ const Header = () => {
         switchNetwork(ChainId.Base)
       }
     }
-  }, [isWrapping, switchNetwork])
+  }, [isWrapping, switchNetwork, isWindowVisible])
 
   return (
     <>
@@ -107,7 +129,6 @@ const BridgeNetworkPreview = () => {
 
 const BridgeTokenSelector = (props: BoxProps) => {
   const [selected, setToken] = useAtom(bridgeTokenAtom)
-  const chainId = useAtomValue(chainIdAtom)
 
   const handleChange = (e: any) => {
     setToken(e.target.value)
@@ -116,8 +137,11 @@ const BridgeTokenSelector = (props: BoxProps) => {
   return (
     <Box {...props}>
       <Select value={selected} onChange={handleChange}>
-        <option value="">ETH</option>
-        <option value={RSR_ADDRESS[chainId]}>RSR</option>
+        {BRIDGEABLE_TOKENS.map((token, index) => (
+          <option key={token.symbol} value={index.toString()}>
+            {token.symbol}
+          </option>
+        ))}
       </Select>
     </Box>
   )
@@ -130,14 +154,27 @@ const L2_BRIDGE_ADDRESS = '0x4200000000000000000000000000000000000010' // L2 wit
 
 const txAtom = atom((get) => {
   const isWrapping = get(isBridgeWrappingAtom)
-  const token = get(bridgeTokenAtom)
+  const token = Number(get(bridgeTokenAtom))
   const chainId = get(chainIdAtom)
-  let abi: Abi = L1StandardBridge
-  let address = ''
-  let functionName = ''
+  let address = token ? L1_BRIDGE_TOKEN_ADDRESS : L1_BRIDGE_ADDRESS
+  let functionName = token ? 'depositERC20' : 'depositETH'
+  let args: any[] = token
+    ? [
+        BRIDGEABLE_TOKENS[token].address,
+        BRIDGEABLE_TOKENS[token].bridgedAddress,
+        1000,
+        '',
+      ]
+    : [1000, '']
 
   if (!isWrapping) {
-    abi = !!token ? L2StandardBridge : L2ToL1MessagePasser
+    if (token) {
+      address = L2_BRIDGE_ADDRESS
+      functionName = 'withdraw'
+    } else {
+      address = L2_L1_MESSAGER_ADDRESS
+      functionName = 'withdraw'
+    }
   }
 
   if (
@@ -148,12 +185,45 @@ const txAtom = atom((get) => {
   }
 
   return {
-    address: '0x',
-    functionName: 'test',
-    abi,
-    enabled: false,
+    address,
+    functionName,
+    abi: BaseBridge,
+    args,
   } as UsePrepareContractWriteConfig
 })
+
+const selectedTokenAtom = atom(
+  (get) => BRIDGEABLE_TOKENS[Number(get(bridgeTokenAtom))]
+)
+
+const BridgeAmount = (props: Partial<TransactionInputProps>) => {
+  const chainId = useAtomValue(chainIdAtom)
+  const token = useAtomValue(selectedTokenAtom)
+  const account = useAtomValue(walletAtom)
+  const [isValid, setValid] = useAtom(isValidBridgeAmountAtom)
+  const { data } = useBalance({
+    chainId,
+    address: account || undefined,
+    token: token.address
+      ? ((chainId === ChainId.Mainnet
+          ? token.address
+          : token.bridgedAddress) as Address)
+      : undefined,
+  })
+
+  useEffect(() => {}, [])
+
+  return (
+    <TransactionInput
+      placeholder={t`Bridge amount`}
+      amountAtom={bridgeAmountAtom}
+      maxAmount={
+        data ? formatCurrency(Number(data.formatted), 5) : 'Fetching...'
+      }
+      {...props}
+    />
+  )
+}
 
 const Bridge = () => {
   const { isReady, gas, write } = useContractWrite(useAtomValue(txAtom))
@@ -169,6 +239,7 @@ const Bridge = () => {
       <Header />
       <BridgeNetworkPreview />
       <BridgeTokenSelector mt={3} />
+      <BridgeAmount />
       <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
       <TransactionButton
         disabled={!isReady}
