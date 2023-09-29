@@ -29,16 +29,14 @@ const CustomCollateral = ({
         address: address as Address,
       }
 
-      const [isCollateral, targetUnit, erc20, rewardERC20] =
-        await readContracts({
-          contracts: [
-            { ...callParams, functionName: 'isCollateral' },
-            { ...callParams, functionName: 'targetName' },
-            { ...callParams, functionName: 'erc20' },
-            { ...callParams, functionName: 'rewardERC20' },
-          ],
-          allowFailure: false,
-        })
+      const [isCollateral, targetUnit, erc20] = await readContracts({
+        contracts: [
+          { ...callParams, functionName: 'isCollateral' },
+          { ...callParams, functionName: 'targetName' },
+          { ...callParams, functionName: 'erc20' },
+        ],
+        allowFailure: false,
+      })
 
       if (!isCollateral) {
         throw new Error('INVALID COLLATERAL')
@@ -58,7 +56,7 @@ const CustomCollateral = ({
         decimals,
         targetName: hexToString(targetUnit, { size: 32 }),
         erc20,
-        rewardTokens: rewardERC20 ? [rewardERC20] : [],
+        rewardTokens: [], // TODO: Fethc reward token
         protocol: 'GENERIC',
         version: 'custom',
         chainlinkFeed: '0x',

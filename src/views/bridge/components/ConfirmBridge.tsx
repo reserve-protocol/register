@@ -1,21 +1,19 @@
+import ERC20 from 'abis/ERC20'
 import TransactionButton from 'components/button/TransactionButton'
 import useContractWrite from 'hooks/useContractWrite'
+import useHasAllowance from 'hooks/useHasAllowance'
+import useWatchTransaction from 'hooks/useWatchTransaction'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
+import { useEffect } from 'react'
+import { safeParseEther } from 'utils'
+import { Address } from 'viem'
 import {
   bridgeAmountAtom,
   bridgeAmountDebouncedAtom,
-  bridgeTokenAtom,
   bridgeTxAtom,
   isBridgeWrappingAtom,
   selectedTokenAtom,
 } from '../atoms'
-import { walletAtom } from 'state/atoms'
-import useHasAllowance from 'hooks/useHasAllowance'
-import { safeParseEther } from 'utils'
-import { Address } from 'viem'
-import ERC20 from 'abis/ERC20'
-import { useEffect } from 'react'
-import useWatchTransaction from 'hooks/useWatchTransaction'
 
 const btnLabelAtom = atom((get) => {
   const token = get(selectedTokenAtom)

@@ -16,7 +16,7 @@ const Bridge = () => (
   >
     <BridgeHeader />
     <BridgeNetworkPreview />
-    <BridgeTokenSelector mt={3} />
+    <BridgeTokenSelector mt={3} mb={2} />
     <BridgeAmount />
     <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
     <ConfirmBridge />

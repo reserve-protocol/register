@@ -40,9 +40,10 @@ const BridgeAmount = (props: Partial<TransactionInputProps>) => {
 
   return (
     <TransactionInput
+      title={t`Amount`}
       placeholder={t`Bridge amount`}
       amountAtom={bridgeAmountAtom}
-      maxAmount={data ? data.formatted : 'Fetching...'}
+      maxAmount={data ? data.formatted : '0'}
       {...props}
     />
   )
