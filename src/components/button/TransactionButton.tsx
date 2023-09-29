@@ -96,7 +96,7 @@ export const ExecuteButton = ({
   disabled,
   ...props
 }: ExecuteButtonProps) => {
-  const { write, hash, isLoading, isReady } = useContractWrite(call)
+  const { write, hash, isLoading, reset, isReady } = useContractWrite(call)
   const { isMining, status } = useWatchTransaction({
     hash,
     label: txLabel || props.text,
@@ -107,16 +107,18 @@ export const ExecuteButton = ({
   }
 
   useEffect(() => {
-    if (status === 'success' && onSuccess) {
-      onSuccess()
+    if (status === 'success') {
+      if (onSuccess) {
+        onSuccess()
+      }
+
+      setTimeout(reset, 3000)
     }
   }, [status])
 
   if (status === 'success') {
     if (!successLabel) {
-      return (
-        <CheckCircle color="#75FBC3" size={18} />
-      )
+      return <CheckCircle color="#75FBC3" size={18} />
     }
     props.text = successLabel
   }
