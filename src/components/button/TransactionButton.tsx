@@ -1,16 +1,16 @@
 import { Trans, t } from '@lingui/macro'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
+import useContractWrite from 'hooks/useContractWrite'
 import { GasEstimation } from 'hooks/useGasEstimate'
+import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
+import { useEffect } from 'react'
+import { CheckCircle } from 'react-feather'
 import { walletAtom } from 'state/atoms'
 import { Box, Spinner, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { UsePrepareContractWriteConfig, useBalance } from 'wagmi'
 import Button, { ButtonProps, LoadingButton, LoadingButtonProps } from '.'
-import useContractWrite from 'hooks/useContractWrite'
-import useWatchTransaction from 'hooks/useWatchTransaction'
-import { useEffect } from 'react'
-import { Check, CheckCircle } from 'react-feather'
 
 interface TransactionButtonProps extends LoadingButtonProps {
   gas?: GasEstimation

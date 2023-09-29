@@ -53,7 +53,7 @@
     "test": "vite test",
     "test:e2e": "npx playwright test",
     "translations": "lingui extract --clean && lingui compile",
-    "forknet": "anvil --fork-url https://eth.llamarpc.com --chain-id 1 --balance 100000000 --block-time 12",
+    "forknet": "anvil --fork-url https://eth.llamarpc.com --chain-id 1 --balance 10000000",
     "parse-collaterals": "node scripts/parseCollaterals"
   },
   "engines": {
