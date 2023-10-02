@@ -12,7 +12,9 @@ interface Props {
 }
 
 const DutchAuction = ({ data }: Props) => {
-  const [currentPrice, nextPrice] = useAuctionPrices(data.id as Address)
+  const [currentPrice, currentPriceRaw, nextPrice] = useAuctionPrices(
+    data.id as Address
+  )
 
   return (
     <Card p={2} sx={{ display: 'flex', alignItems: 'center' }} mb={3}>
@@ -50,7 +52,7 @@ const DutchAuction = ({ data }: Props) => {
           />
         </Grid>
         <Divider my={2} sx={{ fontSize: 1 }} />
-        <AuctionActions data={data} currentPrice={currentPrice} />
+        <AuctionActions data={data} currentPrice={currentPriceRaw} />
       </Box>
     </Card>
   )
