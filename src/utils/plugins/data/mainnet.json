@@ -346,9 +346,7 @@
     "version": "3.0.0",
     "symbol": "fUSDC",
     "decimals": 8,
-    "protocol": "FLUX",
-    "underlyingAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-    "underlyingToken": "USDC",
+    "protocol": "GENERIC",
     "rewardTokens": []
   },
   {
@@ -362,9 +360,7 @@
     "version": "3.0.0",
     "symbol": "fUSDT",
     "decimals": 8,
-    "protocol": "FLUX",
-    "underlyingAddress": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
-    "underlyingToken": "USDT",
+    "protocol": "GENERIC",
     "rewardTokens": []
   },
   {
@@ -378,9 +374,7 @@
     "version": "3.0.0",
     "symbol": "fDAI",
     "decimals": 8,
-    "protocol": "FLUX",
-    "underlyingAddress": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
-    "underlyingToken": "DAI",
+    "protocol": "GENERIC",
     "rewardTokens": []
   },
   {
@@ -394,9 +388,7 @@
     "version": "3.0.0",
     "symbol": "fFRAX",
     "decimals": 8,
-    "protocol": "FLUX",
-    "underlyingAddress": "0x853d955aCEf822Db058eb8505911ED77F175b99e",
-    "underlyingToken": "FRAX",
+    "protocol": "GENERIC",
     "rewardTokens": []
   },
   {
