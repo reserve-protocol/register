@@ -27,8 +27,6 @@ const useAuctionPrices = (
     enabled: !!currentBlock,
   })
 
-  console.log('price result', priceResult)
-
   useEffect(() => {
     if (priceResult) {
       setCurrentPrice(Number(formatEther(priceResult)))

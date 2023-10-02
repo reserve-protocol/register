@@ -59,24 +59,23 @@ const ExpandableContent = ({
   )
 }
 
-const BridgeFaq = () => {
-  return (
-    <Card
-      p={4}
-      backgroundColor="transparent"
-      sx={{ border: '1px solid', borderColor: 'darkBorder' }}
-    >
-      <Box variant="layout.verticalAlign" mb={3}>
-        <FileText size={20} />
-        <Text ml={3}>
-          <Trans>Explanations</Trans>
-        </Text>
-      </Box>
-      {faqs.map((faq) => (
-        <ExpandableContent key={faq.title} {...faq} />
-      ))}
-    </Card>
-  )
-}
+const BridgeFaq = (props: BoxProps) => (
+  <Card
+    p={4}
+    backgroundColor="transparent"
+    sx={{ border: '1px solid', borderColor: 'darkBorder' }}
+    {...props}
+  >
+    <Box variant="layout.verticalAlign" mb={3}>
+      <FileText size={20} />
+      <Text ml={3}>
+        <Trans>Explanations</Trans>
+      </Text>
+    </Box>
+    {faqs.map((faq) => (
+      <ExpandableContent key={faq.title} {...faq} />
+    ))}
+  </Card>
+)
 
 export default BridgeFaq

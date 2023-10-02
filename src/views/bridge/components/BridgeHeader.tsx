@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro'
 import { Button } from 'components'
-import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { chainIdAtom } from 'state/atoms'
@@ -12,12 +11,11 @@ import { isBridgeWrappingAtom } from '../atoms'
 const BridgeHeader = () => {
   const [isWrapping, setWrapping] = useAtom(isBridgeWrappingAtom)
   const { switchNetwork } = useSwitchNetwork()
-  const isWindowVisible = useIsWindowVisible()
   const chainId = useAtomValue(chainIdAtom)
 
   // Trigger wallet switch for users
   useEffect(() => {
-    if (switchNetwork && isWindowVisible) {
+    if (switchNetwork) {
       if (isWrapping && chainId !== ChainId.Mainnet) {
         switchNetwork(ChainId.Mainnet)
       }
@@ -26,7 +24,7 @@ const BridgeHeader = () => {
         switchNetwork(ChainId.Base)
       }
     }
-  }, [isWrapping, switchNetwork, isWindowVisible])
+  }, [isWrapping, switchNetwork])
 
   return (
     <>

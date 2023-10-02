@@ -28,8 +28,9 @@ const approvalAtom = atom((get) => {
   const bridgeTransaction = get(bridgeTxAtom)
   const bridgeToken = get(selectedTokenAtom)
   const amount = get(bridgeAmountDebouncedAtom)
+  const isWrapping = get(isBridgeWrappingAtom)
 
-  if (!bridgeTransaction || !bridgeToken.address) {
+  if (!bridgeTransaction || !bridgeToken.address || !isWrapping) {
     return undefined
   }
 

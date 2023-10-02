@@ -39,4 +39,29 @@ export default [
     stateMutability: 'payable',
     type: 'function',
   },
+  // WITHDRAW ETH
+  {
+    inputs: [
+      { internalType: 'address', name: '_target', type: 'address' },
+      { internalType: 'uint256', name: '_gasLimit', type: 'uint256' },
+      { internalType: 'bytes', name: '_data', type: 'bytes' },
+    ],
+    name: 'initiateWithdrawal',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function',
+  },
+  // WITHDRAW ERC20
+  {
+    inputs: [
+      { internalType: 'address', name: '_l2Token', type: 'address' },
+      { internalType: 'uint256', name: '_amount', type: 'uint256' },
+      { internalType: 'uint32', name: '_minGasLimit', type: 'uint32' },
+      { internalType: 'bytes', name: '_extraData', type: 'bytes' },
+    ],
+    name: 'withdraw',
+    outputs: [],
+    stateMutability: 'payable',
+    type: 'function',
+  },
 ] as const

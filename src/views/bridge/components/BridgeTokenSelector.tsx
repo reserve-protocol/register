@@ -1,6 +1,7 @@
 import { useAtom } from 'jotai'
 import { Box, BoxProps, Select } from 'theme-ui'
-import { BRIDGEABLE_TOKENS, bridgeTokenAtom } from '../atoms'
+import { bridgeTokenAtom } from '../atoms'
+import { BRIDGEABLE_TOKENS } from '../utils/constants'
 
 const BridgeTokenSelector = (props: BoxProps) => {
   const [selected, setToken] = useAtom(bridgeTokenAtom)
