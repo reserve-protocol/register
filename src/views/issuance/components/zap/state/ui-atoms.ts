@@ -1,4 +1,4 @@
-import { Token } from '@reserve-protocol/token-zapper'
+import { Token, TokenQuantity } from '@reserve-protocol/token-zapper'
 import { atom, Getter, SetStateAction, Setter } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import { Atom } from 'jotai/vanilla'
@@ -97,7 +97,7 @@ export const zapTxFeeAtom = atom((get) => {
   const gasPrice = get(gasFeeAtom)
   const gasUsdPrice = get(ethPriceAtom)
   return tx?.transaction?.gasEstimate
-    ? Number(tx.result.universe.nativeToken.from(tx.transaction.feeEstimate(gasPrice??1n)).format()) * gasUsdPrice
+    ? Number(tx.result.universe.nativeToken.from(tx.transaction.feeEstimate(gasPrice ?? 1n)).format()) * gasUsdPrice
     : 0
 })
 
@@ -113,11 +113,49 @@ export const zapTransactionFeeDisplay = onlyNonNullAtom((get) => {
 export const zapOutputAmount = onlyNonNullAtom((get) => {
   const quote = get(zapQuote)
   const rTokenOut = get(zapperInputs).rToken
+
   return formatQty(
     quote.swaps.outputs.find((r) => r.token == rTokenOut) ?? rTokenOut.zero,
     FOUR_DIGITS
   )
 }, '0.0')
+
+export const zapDust = atom((get) => {
+  const quote = get(zapQuote)
+  if (quote == null) {
+    return []
+  }
+  const tx = get(resolvedZapTransaction)
+
+  const rTokenOut = get(zapperInputs)?.rToken
+
+  const dust = (tx?.result.swaps.outputs ?? quote.swaps.outputs).filter(i => i.token !== rTokenOut && i.amount !== 0n)
+  return dust
+})
+
+export const zapDustValue = atom(async (get) => {
+  const dust = get(zapDust)
+  if (dust == null) {
+    return null
+  }
+  const quote = get(zapQuote)
+  if (quote == null) {
+    return null
+  }
+  const dustUSD = await Promise.all(dust.map(async d => ({
+    dustQuantity: d,
+    usdValueOfDust: await quote.universe.fairPrice(d)
+  })))
+
+  let total = 0n
+  for (const d of dustUSD) {
+    total += d.usdValueOfDust?.amount ?? 0n
+  }
+  return {
+    dust: dustUSD,
+    total: quote.universe.usd.from(total)
+  }
+})
 
 export const zapOutputValue = onlyNonNullAtom((get) => {
   const quote = get(zapQuote)

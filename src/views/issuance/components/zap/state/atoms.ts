@@ -189,32 +189,14 @@ export const approvalNeededAtom = loadable(
     let spender = Address.from(universe.config.addresses.zapperAddress)
     let usingPermit2 = false
     if (token !== universe.nativeToken) {
-      if (
-        get(supportsPermit2Signatures) &&
-        !(
-          (input.amount === 0n ? 2n ** 64n : input.amount) >
-          (
-            await universe.approvalsStore.queryAllowance(
-              token,
-              user,
-              Address.from(PERMIT2_ADDRESS)
-            )
-          ).toBigInt()
-        )
-      ) {
-        spender = Address.from(PERMIT2_ADDRESS)
-        usingPermit2 = true
-        approvalNeeded = false
-      } else {
-        const allowance = await universe.approvalsStore.queryAllowance(
-          token,
-          user,
-          spender
-        )
-        approvalNeeded =
-          (input.amount === 0n ? 2n ** 64n : input.amount) >
-          allowance.toBigInt()
-      }
+      const allowance = await universe.approvalsStore.queryAllowance(
+        token,
+        user,
+        spender
+      )
+      approvalNeeded =
+        (input.amount === 0n ? 2n ** 64n : input.amount) >
+        allowance.toBigInt()
     }
     const data =
       id('approve(address,uint256)').slice(0, 10) +
@@ -310,25 +292,17 @@ export const zapTransaction = loadable(
       permit2 =
         signature != null && permit != null
           ? {
-              permit: permit.permit,
-              signature,
-            }
+            permit: permit.permit,
+            signature,
+          }
           : undefined
     }
 
-    // Bit hacky:
-    // if the user is zapping more than 50k, let's explicitly return dust.
-    // The current code to return dust does not seem to always trigger correctly
-    // this leaves a significant amount of dust in the contract, especially when zapping large quantities
-    const FIFTY_K = result.universe.usd.from('50000')
-    const value =
-      (await result.universe.fairPrice(result.userInput).catch((e) => null)) ??
-      FIFTY_K
     return {
       result,
       transaction: await result.toTransaction({
         permit2,
-        returnDust: value.gte(FIFTY_K) ? true : undefined,
+        returnDust: true,
       }),
       permit2,
     }
