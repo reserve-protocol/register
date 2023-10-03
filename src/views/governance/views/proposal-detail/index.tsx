@@ -1,13 +1,13 @@
 import { Trans } from '@lingui/macro'
 import Governance from 'abis/Governance'
-import { SmallButton } from 'components/button'
+import Button, { SmallButton } from 'components/button'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { ArrowLeft } from 'react-feather'
 import { useNavigate, useParams } from 'react-router-dom'
-import { blockAtom, walletAtom } from 'state/atoms'
-import { Box, Grid } from 'theme-ui'
+import { blockAtom, chainIdAtom, walletAtom } from 'state/atoms'
+import { Box, Grid, Text } from 'theme-ui'
 import { PROPOSAL_STATES, ROUTES } from 'utils/constants'
 import { formatEther } from 'viem'
 import { useContractRead } from 'wagmi'
@@ -24,9 +24,12 @@ import ProposalQueue from './components/ProposalQueue'
 import ProposalVote from './components/ProposalVote'
 import ProposalVotes from './components/ProposalVotes'
 import useProposalDetail from './useProposalDetail'
+import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 
 const GovernanceProposalDetail = () => {
   const { proposalId } = useParams()
+  const chainId = useAtomValue(chainIdAtom)
   const rToken = useRToken()
   const account = useAtomValue(walletAtom)
   const { data: proposal } = useProposalDetail(proposalId ?? '')
@@ -98,6 +101,26 @@ const GovernanceProposalDetail = () => {
         <ProposalAlert />
         {state === PROPOSAL_STATES.SUCCEEDED && <ProposalQueue />}
         {state === PROPOSAL_STATES.QUEUED && <ProposalExecute />}
+        {!!proposal?.executionTxnHash && (
+          <Button
+            small
+            variant="muted"
+            sx={{ display: 'flex', alignItems: 'center' }}
+            onClick={() =>
+              window.open(
+                getExplorerLink(
+                  proposal.executionTxnHash,
+                  chainId,
+                  ExplorerDataType.TRANSACTION
+                ),
+                '_blank'
+              )
+            }
+          >
+            <ExternalArrowIcon />
+            <Text ml={2}>View execute tx</Text>
+          </Button>
+        )}
       </Box>
       <Grid
         columns={[1, 1, 1, '2fr 1.5fr']}

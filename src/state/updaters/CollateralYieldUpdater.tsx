@@ -1,7 +1,7 @@
 import { useAtom } from 'jotai'
 import { useEffect } from 'react'
 import { collateralYieldAtom } from 'state/atoms'
-import useSWR from 'swr'
+import useSWRImmutable from 'swr/immutable'
 import { StringMap } from 'types'
 
 const poolsMap: StringMap = {
@@ -36,7 +36,7 @@ const poolsMap: StringMap = {
 
 const CollateralYieldUpdater = () => {
   const [collateralYield, setCollateralYield] = useAtom(collateralYieldAtom)
-  const { data } = useSWR('https://yields.llama.fi/pools', (...args) =>
+  const { data } = useSWRImmutable('https://yields.llama.fi/pools', (...args) =>
     fetch(...args).then((res) => res.json())
   )
 

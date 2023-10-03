@@ -7,7 +7,7 @@ const protocolLabels: StringMap = {
   AAVE: 'Aave V2 Tokens',
   MORPHO: 'Morpho (Aave) Tokens',
   COMP: 'Compound V2 Tokens',
-  FLUX: 'FLUX Tokens',
+  // FLUX: 'FLUX Tokens',
   COMPv3: 'Compound V3 Tokens',
   CONVEX: 'Curve Convex LP Tokens',
   CURVE: 'Curve LP Tokens',

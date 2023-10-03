@@ -9,19 +9,6 @@ export const ChainId = {
 
 export const supportedChains = new Set(Object.values(ChainId))
 
-export const SUBGRAPH_URL = {
-  // Dev node
-  [ChainId.Mainnet]:
-    'https://api.thegraph.com/subgraphs/name/lcamargof/reserve',
-  [ChainId.Tenderly]: 'http://127.0.0.1:8000/subgraphs/name/lcamargof/reserve',
-  [ChainId.BaseGoerli]:
-    'https://api.studio.thegraph.com/query/11653/reserve-base-testnet/v0.0.3',
-  [ChainId.Goerli]:
-    'https://api.thegraph.com/subgraphs/name/lcamargof/reserve-goerli',
-  [ChainId.Hardhat]:
-    'https://api.thegraph.com/subgraphs/name/lcamargof/cryptoasdf',
-}
-
 const _defaultChain = Number(
   new URL(window.location.href.replace('/#/', '/')).searchParams.get('chainId')
 )

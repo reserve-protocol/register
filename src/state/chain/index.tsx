@@ -7,6 +7,7 @@ import '@rainbow-me/rainbowkit/styles.css'
 
 import { alchemyProvider } from '@wagmi/core/providers/alchemy'
 import { publicProvider } from '@wagmi/core/providers/public'
+import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc'
 import React from 'react'
 import { ChainId, defaultChain } from 'utils/chains'
 import { WagmiConfig, configureChains, createConfig } from 'wagmi'
@@ -20,12 +21,12 @@ const providers = [
   publicProvider(),
 ] as any[]
 
-if (import.meta.env.VITE_TENDERLY_MAINNET_URL) {
-  providers.splice(0, 1)
-  chainList[0].rpcUrls = {
-    public: { http: [import.meta.env.VITE_TENDERLY_MAINNET_URL] },
-    default: { http: [import.meta.env.VITE_TENDERLY_MAINNET_URL] },
-  }
+if (import.meta.env.VITE_MAINNET_URL) {
+  providers[0] = jsonRpcProvider({
+    rpc: () => ({
+      http: import.meta.env.VITE_MAINNET_URL,
+    }),
+  })
 }
 
 if (import.meta.env.VITE_TENDERLY_URL) {

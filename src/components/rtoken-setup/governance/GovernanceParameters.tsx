@@ -1,9 +1,13 @@
 import { t, Trans } from '@lingui/macro'
 import { FormField } from 'components/field'
+import { useAtomValue } from 'jotai'
 import { useFormContext } from 'react-hook-form'
+import { secondsPerBlockAtom } from 'state/atoms'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { decimalPattern, numberPattern, parseDuration } from 'utils'
+import { timeToBlocks } from '../atoms'
 
+// TODO: Ask users for time and not block count
 const GovernanceParameters = (props: BoxProps) => {
   const { watch } = useFormContext()
   const [votingDelay, votingPeriod, minDelay] = watch([
@@ -11,8 +15,13 @@ const GovernanceParameters = (props: BoxProps) => {
     'votingPeriod',
     'minDelay',
   ])
-  const votingDelayHelper = parseDuration(Number(votingDelay) * 12 || 0)
-  const votingPeriodHelper = parseDuration(Number(votingPeriod) * 12 || 0)
+  const secondsPerBlock = useAtomValue(secondsPerBlockAtom)
+  const votingDelayHelper = parseDuration(
+    Number(votingDelay) * secondsPerBlock || 0
+  )
+  const votingPeriodHelper = parseDuration(
+    Number(votingPeriod) * secondsPerBlock || 0
+  )
   const minDelayHelper = parseDuration((Number(minDelay) || 0) * 60 * 60)
 
   return (
@@ -31,7 +40,7 @@ const GovernanceParameters = (props: BoxProps) => {
           required: true,
           pattern: numberPattern,
           min: 1,
-          max: 50400, // 1 week
+          max: timeToBlocks(604800, secondsPerBlock), // 1 week
         }}
       />
       <FormField
@@ -45,7 +54,7 @@ const GovernanceParameters = (props: BoxProps) => {
           required: true,
           pattern: numberPattern,
           min: 7200,
-          max: 100800, // 2 weeks
+          max: timeToBlocks(1209600, secondsPerBlock), // 2 weeks
         }}
       />
       <FormField
