@@ -38,7 +38,7 @@ const ZapDust = () => {
           .join('\n') +
         (zapCollectDust
           ? '\n\nDust will be returned to your wallet'
-          : '\n\nDust will not ')
+          : '\n\nDust will not be returned to your wallet')
       }
     >
       ({str})
