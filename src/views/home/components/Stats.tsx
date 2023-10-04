@@ -166,7 +166,7 @@ const Main = () => {
             onClick={() => {
               mixpanel.track('Visited Flipside Dashboard', {})
               window.open(
-                'https://flipsidecrypto.xyz/Meir/r-tokens-overall-dashboard-Wx7xtA',
+                'https://dune.com/reserve-protocol/reserve-protocol-overview',
                 '_blank'
               )
             }}
