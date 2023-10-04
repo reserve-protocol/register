@@ -38,7 +38,11 @@ const CollateralApproval = ({
     functionName: 'approve',
     args: [
       rToken?.main ? rToken.address : RSV_MANAGER,
-      collateral.symbol === 'wcUSDCv3' ? BIGINT_MAX : amount ?? 0n,
+      collateral.symbol === 'wcUSDCv3'
+        ? BIGINT_MAX
+        : amount
+        ? (amount * 120n) / 100n
+        : 0n,
     ],
     enabled: !loading && !!amount && !allowance,
   })

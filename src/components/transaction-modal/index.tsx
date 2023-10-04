@@ -33,7 +33,7 @@ const Approval = ({
     address: token,
     abi: ERC20,
     functionName: 'approve',
-    args: [spender, amount],
+    args: [spender, (amount * 120n) / 100n],
   })
 
   const checkingAllowance = !gas.isLoading && !gas.estimateUsd
