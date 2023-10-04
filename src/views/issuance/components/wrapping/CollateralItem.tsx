@@ -96,7 +96,7 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
         stateMutability: 'nonpayable',
         type: 'function',
       },
-    ]
+    ] as any
     const parsedAmount = safeParseEther(debouncedAmount, data.decimals)
     const call = { abi: CollateralWrap, address: collateral.erc20 }
 
