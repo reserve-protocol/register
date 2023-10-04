@@ -17,6 +17,7 @@ import { Suspense } from 'react'
 
 const ZapDust = () => {
   const dustValue = useAtomValue(zapDustValue)
+  const zapCollectDust = useAtomValue(collectDust)
   if (dustValue == null) {
     return null
   }
@@ -33,7 +34,9 @@ const ZapDust = () => {
         dustValue.dust
           .map((i) => i.dustQuantity.formatWithSymbol())
           .join('\n') +
-        '\n\nDust will be returned to your wallet'
+        zapCollectDust
+          ? '\n\nDust will be returned to your wallet'
+          : '\n\nDust will not '
       }
     >
       ({str})
