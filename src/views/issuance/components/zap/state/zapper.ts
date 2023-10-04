@@ -59,6 +59,7 @@ export const zapperState = loadable(
     if (provider == null) {
       return null
     }
+    console.log("Init?")
 
     try {
       
@@ -86,8 +87,16 @@ export const zapperState = loadable(
 )
 
 export const resolvedZapState = simplifyLoadable(zapperState)
+export const zapperLoaded = atom(async (get) => {
+  const zapper = get(resolvedZapState)
+  if (zapper == null) {
+    return false
+  }
+  await zapper.initialized
+  return true
+})
 
-export const zappableTokens = atom((get) => {
+export const zappableTokens = atom(async(get) => {
   const uni = get(resolvedZapState)
   if (uni == null) {
     return []

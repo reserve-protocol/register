@@ -21,7 +21,6 @@ import {
 
 import {
   resolvedZapState,
-  supportsPermit2Signatures,
   zappableTokens,
 } from './zapper'
 
@@ -41,6 +40,7 @@ import {
 
 // The only actual state the user controls:
 export const tokenToZapPopupState = atom(false)
+export const collectDust = atom(true)
 export const zapInputString = atomWithOnWrite('', (_, set, __) => {
   set(permitSignature, null)
 })
@@ -79,7 +79,7 @@ export const approvalRandomId = atom(0)
 
 // All other atoms are derived from the above or from the environment
 export const selectedZapTokenAtom = atom(
-  (get) => get(tokenToZapUserSelected) ?? get(zappableTokens).at(0) ?? null
+  (get) => get(tokenToZapUserSelected) ?? get(zappableTokens).at(1) ?? null
 )
 
 export const zapSender = atom((get) => {
@@ -302,7 +302,7 @@ export const zapTransaction = loadable(
       result,
       transaction: await result.toTransaction({
         permit2,
-        returnDust: true,
+        returnDust: get(collectDust),
       }),
       permit2,
     }
