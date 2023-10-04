@@ -75,6 +75,28 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
       return undefined
     }
 
+    const COMPv2ABI = [
+      {
+        inputs: [
+          { internalType: 'uint256', name: '_amount', type: 'uint256' },
+          { internalType: 'address', name: '_to', type: 'address' },
+        ],
+        name: 'deposit',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function',
+      },
+      {
+        inputs: [
+          { internalType: 'uint256', name: '_amount', type: 'uint256' },
+          { internalType: 'address', name: '_to', type: 'address' },
+        ],
+        name: 'withdraw',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function',
+      },
+    ]
     const parsedAmount = safeParseEther(debouncedAmount, data.decimals)
     const call = { abi: CollateralWrap, address: collateral.erc20 }
 
@@ -88,6 +110,12 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
             : [wallet, parsedAmount, true], // change 1 to 0 when going from aToken
         }
       case 'CURVE':
+        return {
+          ...call,
+          abi: COMPv2ABI,
+          functionName: wrapping ? 'deposit' : 'withdraw',
+          args: [parsedAmount, wallet],
+        }
       case 'CONVEX':
         return {
           ...call,
@@ -104,9 +132,16 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
             : [parsedAmount, wallet, wallet],
         }
       case 'FLUX':
+        return {
+          ...call,
+          abi: COMPv2ABI,
+          functionName: wrapping ? 'deposit' : 'withdraw',
+          args: [parsedAmount, wallet],
+        }
       case 'COMP':
         return {
           ...call,
+          abi: COMPv2ABI,
           functionName: wrapping ? 'deposit' : 'withdraw',
           args: [parsedAmount, wallet],
         }
