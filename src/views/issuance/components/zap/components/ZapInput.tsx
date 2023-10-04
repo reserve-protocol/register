@@ -10,13 +10,15 @@ import {
   selectedZapTokenAtom,
   zapInputString,
 } from '../state/atoms'
-import { ui, zapDustValue } from '../state/ui-atoms'
-import { formatQty, TWO_DIGITS } from '../state/formatTokenQuantity'
+import { ui, zapDust, zapDustValue } from '../state/ui-atoms'
+import { formatQty, FOUR_DIGITS, TWO_DIGITS } from '../state/formatTokenQuantity'
 import { zapperLoaded } from '../state/zapper'
 import { Suspense } from 'react'
 
 const ZapDust = () => {
   const dustValue = useAtomValue(zapDustValue)
+  const dust = useAtomValue(zapDust)
+  console.log(dust)
   const zapCollectDust = useAtomValue(collectDust)
   if (dustValue == null) {
     return null
@@ -31,12 +33,12 @@ const ZapDust = () => {
     <span
       title={
         'Dust generated:\n' +
-        dustValue.dust
-          .map((i) => i.dustQuantity.formatWithSymbol())
+        dust
+          .map((i) => formatQty(i, FOUR_DIGITS))
           .join('\n') +
-        zapCollectDust
+        (zapCollectDust
           ? '\n\nDust will be returned to your wallet'
-          : '\n\nDust will not '
+          : '\n\nDust will not ')
       }
     >
       ({str})
@@ -103,7 +105,7 @@ const ZapCollectDust = () => {
       sx={{ fontSize: 1, cursor: 'pointer' }}
     >
       <Text variant="legend" mr={1}>
-        <Trans>Collect dust</Trans>:
+        Collect dust:
       </Text>
       <Checkbox
         onChange={() => {
