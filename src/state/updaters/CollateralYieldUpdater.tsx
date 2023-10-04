@@ -15,7 +15,7 @@ const poolsMap: StringMap = {
   '6c2b7a5c-6c4f-49ea-a08c-0366b772f2c2': 'cusdp',
   '1d876729-4445-4623-8b6b-c5290db5d100': 'cwbtc',
   '1e5da7c6-59bb-49bd-9f97-4f4fceeffad4': 'ceth',
-  'fa4d7ee4-0001-4133-9e8d-cf7d5d194a91': 'fusdc',
+  'fa4d7ee4-0001-4133-9e8d-cf7d5d194a91': 'fusdc-vault',
   'ed227286-abb0-4a34-ada5-39f7ebd81afb': 'fdai',
   '6600934f-6323-447d-8a7d-67fbede8529d': 'fusdt',
   '747c1d2a-c668-4682-b9f9-296708a3dd90': 'wsteth',

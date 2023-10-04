@@ -94,7 +94,7 @@ const useTokenStats = (rTokenId: string, isRSV = false): TokenStats => {
         )}`
       }
 
-      if (rTokenId.toLowerCase() === EUSD_ADDRESS[chainId].toLowerCase()) {
+      if (rTokenId.toLowerCase() === EUSD_ADDRESS[chainId]?.toLowerCase()) {
         tokenData.transferCount += rpayOverview.txCount
         tokenData.cumulativeVolumeUsd = `$${formatCurrency(
           volumeUsd + rpayOverview.volume,
