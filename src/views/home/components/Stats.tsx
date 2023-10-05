@@ -7,20 +7,20 @@ import { chainIdAtom, rpayTransactionsAtom } from 'state/atoms'
 import RpayTxListener from 'state/rpay/RpayTxListener'
 
 import { t, Trans } from '@lingui/macro'
+import { SmallButton } from 'components/button'
+import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import HomeStatsIcon from 'components/icons/HomeStatsIcon'
 import { InfoHeading } from 'components/info-box'
 import useTimeFrom from 'hooks/useTimeFrom'
 import { useAtom, useAtomValue } from 'jotai'
+import mixpanel from 'mixpanel-browser'
 import { useEffect } from 'react'
 import { rpayOverviewAtom, rsrPriceAtom, rTokenMetricsAtom } from 'state/atoms'
 import { Box, BoxProps, Divider, Flex, Grid, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { PROTOCOL_SLUG, TIME_RANGES } from 'utils/constants'
-import Help from '../../../components/help'
 import { formatEther } from 'viem'
-import { SmallButton } from 'components/button'
-import mixpanel from 'mixpanel-browser'
-import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
+import Help from '../../../components/help'
 
 // Here you could create a main component that holds all the logic
 const Main = () => {
@@ -217,7 +217,7 @@ const Main = () => {
     const { data } = useQuery(
       protocolRecentTxsQuery,
       {},
-      { refreshInterval: 10000 }
+      { refreshInterval: 60000 }
     )
     const rpayTx = useDebounce(useAtomValue(rpayTransactionsAtom), 1000)
 

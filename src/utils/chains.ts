@@ -1,9 +1,6 @@
 export const ChainId = {
   Mainnet: 1,
-  Tenderly: 3,
-  Goerli: 5,
   Base: 8453,
-  BaseGoerli: 84531,
   Hardhat: 31337,
 }
 

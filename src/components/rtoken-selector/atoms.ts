@@ -1,7 +1,5 @@
 import { atom } from 'jotai'
-import { accountRTokensAtom, chainIdAtom } from 'state/atoms'
-import { DEFAULT_TOKENS } from 'utils/addresses'
-import rtokens from 'utils/rtokens'
+import { accountRTokensAtom, rTokenListAtom } from 'state/atoms'
 
 export interface TokenDisplay {
   address: string
@@ -9,24 +7,19 @@ export interface TokenDisplay {
   logo: string
 }
 
-// require(`@lc-labs/rtokens/images/${token.logo}`)
-
 export const DEFAULT_LOGO = '/svgs/defaultLogo.svg'
 
 const availableTokensAtom = atom((get) => {
-  const chainId = get(chainIdAtom)
-  const defaultTokens = DEFAULT_TOKENS[chainId]
+  const defaultTokens = get(rTokenListAtom)
   const owned = get(accountRTokensAtom)
   const tokenList: {
     [x: string]: TokenDisplay
   } = {}
 
-  for (const tokenAddress of defaultTokens) {
-    const token = rtokens[tokenAddress]
-
+  for (const token of Object.values(defaultTokens)) {
     if (token) {
-      tokenList[tokenAddress] = {
-        address: tokenAddress,
+      tokenList[token.address] = {
+        address: token.address,
         symbol: token.symbol,
         logo: token.logo ? `/svgs/${token.logo}` : DEFAULT_LOGO,
       }

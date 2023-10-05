@@ -10,9 +10,21 @@ import {
   rsrPriceAtom,
   selectedRTokenAtom,
 } from 'state/atoms'
+import { AddressMap } from 'types'
 import { FACADE_ADDRESS } from 'utils/addresses'
+import { ChainId } from 'utils/chains'
 import { Address, formatEther, formatUnits } from 'viem'
 import { useContractRead, useContractReads, useFeeData } from 'wagmi'
+
+const RSR_CHAINLINK_FEE_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x759bbc1be8f90ee6457c44abc7d443842a976d02',
+  [ChainId.Base]: '0xAa98aE504658766Dfe11F31c5D95a0bdcABDe0b1',
+}
+
+const ETH_CHAINLINK_FEE_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419',
+  [ChainId.Base]: '0x71041dddad3595f9ced3dccfbe3d1f4b0a16bb70',
+}
 
 /**
  * Fetch prices for:
@@ -37,13 +49,15 @@ const PricesUpdater = () => {
     contracts: [
       {
         abi: Chainlink,
-        address: '0x759bbc1be8f90ee6457c44abc7d443842a976d02',
+        address: RSR_CHAINLINK_FEE_ADDRESS[chainId],
         functionName: 'latestRoundData',
+        chainId,
       },
       {
         abi: Chainlink,
-        address: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419',
+        address: ETH_CHAINLINK_FEE_ADDRESS[chainId],
         functionName: 'latestRoundData',
+        chainId,
       },
     ],
     allowFailure: false,
@@ -52,6 +66,7 @@ const PricesUpdater = () => {
     abi: FacadeRead,
     address: rToken ? FACADE_ADDRESS[chainId] : undefined,
     functionName: 'price',
+    chainId,
     args: [rToken as Address],
     enabled: !!rToken,
   })

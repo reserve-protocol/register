@@ -5,6 +5,7 @@ import collateralPlugins from 'utils/plugins'
 
 const protocolLabels: StringMap = {
   AAVE: 'Aave V2 Tokens',
+  AAVEv3: 'Aave V3 Tokens',
   MORPHO: 'Morpho (Aave) Tokens',
   COMP: 'Compound V2 Tokens',
   FLUX: 'FLUX Tokens',

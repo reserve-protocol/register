@@ -23,21 +23,16 @@ const ActionItem = styled(Flex)`
   }
 `
 
-const chainIcons = {
+export const chainIcons = {
   [ChainId.Mainnet]: Ethereum,
-  [ChainId.Tenderly]: Ethereum,
-  [ChainId.BaseGoerli]: Base,
+  [ChainId.Base]: Base,
   [ChainId.Hardhat]: Ethereum,
 }
 
 const CHAIN_LIST = [
   { label: 'Ethereum', id: ChainId.Mainnet },
-  { label: 'Base', id: ChainId.BaseGoerli },
+  { label: 'Base', id: ChainId.Base },
 ]
-
-if (import.meta.env.VITE_TENDERLY_URL) {
-  CHAIN_LIST.push({ label: 'Tenderly', id: ChainId.Tenderly })
-}
 
 if (import.meta.env.DEV) {
   CHAIN_LIST.push({ label: 'Hardhat', id: ChainId.Hardhat })

@@ -1,15 +1,14 @@
 import { CollateralPlugin } from 'types'
 import { ChainId } from 'utils/chains'
 // @ts-ignore
-import baseGoerliPlugins from './data/basegoerli.json'
+import basePlugins from './data/base.json'
 // @ts-ignore
 import mainnetPlugins from './data/mainnet.json'
 
 const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
   [ChainId.Mainnet]: mainnetPlugins,
-  [ChainId.Tenderly]: mainnetPlugins, // Mainnet fork
+  [ChainId.Base]: basePlugins,
   [ChainId.Hardhat]: mainnetPlugins, // Mainnet fork
-  [ChainId.BaseGoerli]: baseGoerliPlugins,
 }
 
 export default collateralPlugins
