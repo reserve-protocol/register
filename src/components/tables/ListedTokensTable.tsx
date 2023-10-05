@@ -1,7 +1,7 @@
 import { t } from '@lingui/macro'
 import { Table, TableProps } from 'components/table'
 import TokenItem from 'components/token-item'
-import { getRTokenLogo } from 'hooks/useRTokenLogo'
+import useRTokenLogo from 'hooks/useRTokenLogo'
 import useTokenList from 'hooks/useTokenList'
 import mixpanel from 'mixpanel-browser'
 import { useMemo } from 'react'
@@ -26,7 +26,7 @@ const ListedTokensTable = (
         Header: t`Token`,
         accessor: 'symbol',
         Cell: (data: any) => {
-          const logo = getRTokenLogo(data.row.original.id)
+          const logo = useRTokenLogo(data.row.original.id)
 
           return <TokenItem symbol={data.cell.value} logo={logo} />
         },

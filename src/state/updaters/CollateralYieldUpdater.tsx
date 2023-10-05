@@ -53,7 +53,6 @@ const CollateralYieldUpdater = () => {
       const poolYield: { [x: string]: number } = {}
 
       for (const pool of data.data) {
-        console.log('pool.pool', pool.pool)
         if (poolsMap[chainId][pool.pool]) {
           poolYield[poolsMap[chainId][pool.pool]] = pool.apyMean30d || 0
         }

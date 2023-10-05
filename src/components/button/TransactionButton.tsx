@@ -12,6 +12,7 @@ import { formatCurrency } from 'utils'
 import { UsePrepareContractWriteConfig, useBalance } from 'wagmi'
 import Button, { ButtonProps, LoadingButton, LoadingButtonProps } from '.'
 import TransactionError from 'components/transaction-error/TransactionError'
+import useNotification from 'hooks/useNotification'
 
 interface TransactionButtonProps extends LoadingButtonProps {
   gas?: GasEstimation
@@ -102,7 +103,9 @@ export const ExecuteButton = ({
   disabled,
   ...props
 }: ExecuteButtonProps) => {
-  const { write, hash, isLoading, reset, isReady } = useContractWrite(call)
+  const { write, hash, isLoading, validationError, reset, isReady } =
+    useContractWrite(call)
+  const notify = useNotification()
   const { isMining, status } = useWatchTransaction({
     hash,
     label: txLabel || props.text,
@@ -121,6 +124,12 @@ export const ExecuteButton = ({
       setTimeout(reset, 3000)
     }
   }, [status])
+
+  useEffect(() => {
+    if (validationError) {
+      notify('Transaction not valid', validationError.message, 'error')
+    }
+  }, [validationError])
 
   if (status === 'success') {
     if (!successLabel) {

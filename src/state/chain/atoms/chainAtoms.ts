@@ -4,6 +4,7 @@ import { ChainId, defaultChain } from 'utils/chains'
 import { blockDuration } from 'utils/constants'
 import { formatEther } from 'viem'
 import { Address, PublicClient, WalletClient } from 'wagmi'
+import rtokens from '@lc-labs/rtokens'
 
 /**
  * #########################
@@ -17,6 +18,12 @@ export const walletAtom = atom<Address | null>(null)
 
 export const walletClientAtom = atom<WalletClient | undefined>(undefined)
 export const publicClientAtom = atom<PublicClient | undefined>(undefined)
+
+export const rTokenListAtom = atom((get) => {
+  const chainId = get(chainIdAtom)
+
+  return rtokens[chainId] ?? {}
+})
 
 export const clientAtom = atom((get) =>
   get(walletClientAtom || get(publicClientAtom))

@@ -1,12 +1,12 @@
-import { Trans, t } from '@lingui/macro'
-import { useAtomValue } from 'jotai'
-import { rTokenAtom } from 'state/atoms'
-import { Box, BoxProps, Link, Text } from 'theme-ui'
+import { Trans } from '@lingui/macro'
 import MandateIcon from 'components/icons/MandateIcon'
-import rtokens from 'utils/rtokens'
+import { useAtomValue } from 'jotai'
+import { rTokenAtom, rTokenListAtom } from 'state/atoms'
+import { Box, BoxProps, Link, Text } from 'theme-ui'
 
 const About = (props: BoxProps) => {
   const rToken = useAtomValue(rTokenAtom)
+  const rTokenList = useAtomValue(rTokenListAtom)
 
   if (rToken && !rToken.main) {
     return (
@@ -56,7 +56,7 @@ const About = (props: BoxProps) => {
             <Trans>+ Off-chain note</Trans>
           </Text>
           <Text as="p" variant="legend">
-            {rtokens[rToken.address]?.about}
+            {rTokenList[rToken.address]?.about}
           </Text>
         </>
       )}

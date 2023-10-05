@@ -1,8 +1,6 @@
 import { AddressMap } from 'types'
 import { ChainId } from 'utils/chains'
-import tokenList from 'utils/rtokens'
 import { zeroAddress } from 'viem'
-import RSV from './rsv'
 
 export const FURNACE_ADDRESS = '0x0000000000000000000000000000000000000001'
 export const ST_RSR_ADDRESS = '0x0000000000000000000000000000000000000002'
@@ -57,15 +55,4 @@ export const ENS_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C',
   [ChainId.Base]: zeroAddress, // TODO: Pending
   [ChainId.Hardhat]: '0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C',
-}
-
-const defaultTokens = Object.keys(tokenList).filter(
-  (addr) => addr !== RSV.address
-)
-
-// Fixed tokens used in the rtoken selector screen and dashboard
-export const DEFAULT_TOKENS = {
-  [ChainId.Mainnet]: defaultTokens,
-  [ChainId.Base]: [],
-  [ChainId.Hardhat]: [],
 }
