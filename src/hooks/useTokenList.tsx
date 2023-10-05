@@ -139,7 +139,7 @@ const useTokenList = () => {
     }
   }, [data])
 
-  return list
+  return { list, isLoading: !data }
 }
 
 export default useTokenList

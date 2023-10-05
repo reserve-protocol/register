@@ -16,7 +16,7 @@ import {
 const ListedTokensTable = (
   props: Partial<TableProps<{ [key: string]: any }>>
 ) => {
-  const tokenList = useTokenList()
+  const { list, isLoading } = useTokenList()
   const navigate = useNavigate()
 
   // TODO: Calculate APY from basket (need theGraph)
@@ -89,16 +89,21 @@ const ListedTokensTable = (
   return (
     <>
       <Table
-        data={tokenList}
+        data={list}
         columns={columns}
         onRowClick={handleClick}
         sorting
         sortBy={[{ id: 'supply', desc: true }]}
         {...props}
       />
-      {!tokenList?.length && (
+      {isLoading && (
         <Box sx={{ textAlign: 'center' }} mt={3}>
           <Spinner size={22} />
+        </Box>
+      )}
+      {!isLoading && !list.length && (
+        <Box sx={{ textAlign: 'center' }} mt={4}>
+          <Text variant="legend">No RTokens listed for this chain</Text>
         </Box>
       )}
     </>
