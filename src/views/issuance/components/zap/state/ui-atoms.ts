@@ -31,6 +31,7 @@ import {
   zapQuote,
   zapQuoteInput,
   zapQuotePromise,
+  redoQuote,
   zapSender,
   zapTransaction,
   zapTransactionGasEstimateUnits,
@@ -294,7 +295,7 @@ export const zapAvailableAtom = atom((get) => {
   const rTokenAddress = get(rTokenAtom)?.address.toLowerCase()
   return rTokenAddress != null && zapEnabledForRTokens.has(rTokenAddress)
 })
-
+let errors = 0
 export const ui = {
   zapWidgetEnabled: atom((get) => get(zapEnabledAtom) && get(zapAvailableAtom)),
   zapState: atom((get) => {
@@ -371,7 +372,16 @@ export const ui = {
       if (data == null) {
         return
       }
-      if (flowState === 'approval') {
+      if (flowState === 'tx_loading') {
+        errors = 0
+      }
+      else if (flowState === 'tx_error') {
+        if (errors < 5) {
+          console.log("Requoting..")
+          set(redoQuote, Math.random())
+          errors += 1
+        }
+      } else if (flowState === 'approval') {
         await approve(get, set, data)
       } else if (flowState === 'send_tx') {
         mixpanel.track('Confirmed Zap', {
@@ -463,7 +473,6 @@ const signAndSendTx: ZapperAction = async (
   { signer, provider, rToken, quote }
 ) => {
   try {
-    const quoteValue = get(zapOutputValue) || '0'
     const permit = get(permit2ToSignAtom)
     if (permit == null) {
       return
@@ -523,7 +532,6 @@ const sendTx: ZapperAction = async (
   }
   set(zapIsPending, true)
   try {
-    
     const resp = await signer.sendTransaction({
       ...zapTx.transaction.tx,
       gasLimit,

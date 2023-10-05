@@ -7,7 +7,7 @@ import {
 } from '@uniswap/permit2-sdk'
 import { atom, Getter } from 'jotai'
 import { loadable } from 'jotai/utils'
-import { balancesAtom, rTokenAtom, walletAtom } from 'state/atoms'
+import { balancesAtom, blockAtom, rTokenAtom, walletAtom } from 'state/atoms'
 
 import { defaultAbiCoder } from '@ethersproject/abi'
 import { id } from '@ethersproject/hash'
@@ -23,7 +23,6 @@ import {
   resolvedZapState,
   zappableTokens,
 } from './zapper'
-import { set } from 'react-ga'
 
 /**
  * I've tried to keep react effects to a minimum so most async code is triggered via some signal
@@ -140,17 +139,15 @@ export const zapQuotePromise = loadable(
     if (input.inputQuantity.amount === 0n) {
       return null
     }
-
+    const blockNumber = get(blockAtom)
     const [
-      block,
       gasPrice
     ] = await Promise.all([
-      await input.universe.provider.getBlockNumber(),
       await input.universe.provider.getGasPrice()
     ])
 
     input.universe.updateBlockState(
-      block,
+      blockNumber,
       gasPrice.toBigInt()
     )
     // I suspect that the first time we call this function it's too slow because caches are being populated.
@@ -317,8 +314,8 @@ const zapTxAtom = atom(async (get) => {
     permit2,
     returnDust: get(collectDust),
   })
-  console.log("=== abstract zap transaction ===")
-  console.log(result.describe().join("\n"))
+  // console.log("=== abstract zap transaction ===")
+  // console.log(result.describe().join("\n"))
   return {
     result,
     transaction: tx,
@@ -330,20 +327,6 @@ export const zapTransaction = loadable(
   zapTxAtom
 )
 
-let errorCount = 0
-const zapTxAtomStore = atom(() => null, (get, set, update) => {
-  const a = get(zapTransaction)
-  if (a.state === 'hasData') {
-    errorCount = 0
-  }
-  if (a.state === 'hasError') {
-    if (errorCount > 5) {
-      return
-    }
-    set(redoQuote, Math.random())
-    errorCount += 1;
-  }
-})
 export const resolvedZapTransaction = simplifyLoadable(zapTransaction)
 
 export const zapTransactionGasEstimateUnits = loadable(
