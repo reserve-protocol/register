@@ -150,22 +150,6 @@ export const zapQuotePromise = loadable(
       blockNumber,
       gasPrice.toBigInt()
     )
-    // I suspect that the first time we call this function it's too slow because caches are being populated.
-    // This seems to cause the estimate to fail. So we call it once before we actually need it.
-    if (firstTime) {
-      try {
-        await input.zapSearcher.findSingleInputToRTokenZap(
-          input.inputQuantity,
-          input.rToken,
-          input.signer,
-          get(tradeSlippage)
-        )
-      } catch (e) {
-        console.log(e)
-      }
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      firstTime = false
-    }
     const a = input.zapSearcher.findSingleInputToRTokenZap(
       input.inputQuantity,
       input.rToken,
