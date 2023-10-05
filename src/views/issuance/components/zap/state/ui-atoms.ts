@@ -523,12 +523,7 @@ const sendTx: ZapperAction = async (
   }
   set(zapIsPending, true)
   try {
-    if (
-      (await signer.call({ ...zapTx.transaction.tx, gasLimit: gasLimit })) !==
-      '0x'
-    ) {
-      throw new Error('Failed')
-    }
+    
     const resp = await signer.sendTransaction({
       ...zapTx.transaction.tx,
       gasLimit,
