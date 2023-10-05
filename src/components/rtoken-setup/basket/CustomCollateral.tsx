@@ -56,11 +56,7 @@ const CustomCollateral = ({
         decimals,
         targetName: hexToString(targetUnit, { size: 32 }),
         erc20,
-<<<<<<< HEAD
-        rewardTokens: [], // TODO: Fethc reward token
-=======
         rewardTokens: [],
->>>>>>> origin/development
         protocol: 'GENERIC',
         version: 'custom',
         chainlinkFeed: '0x',
