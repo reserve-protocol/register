@@ -23,6 +23,7 @@ import {
   resolvedZapState,
   zappableTokens,
 } from './zapper'
+import { set } from 'react-ga'
 
 /**
  * I've tried to keep react effects to a minimum so most async code is triggered via some signal
@@ -59,7 +60,7 @@ export const permitSignature = atom(null as null | string)
 
 // The amount of slippage we allow when zap involves a trade:
 // This is not exposed in the UI yet, but probably should be.
-const tradeSlippage = atom(0.01)
+const tradeSlippage = atom(0.1)
 
 // We sent the zap transaction,
 // and are waiting for the user to sign off on it and for it to commit
@@ -131,8 +132,10 @@ const debouncedUserInputGenerator = atomWithDebounce(
 ).debouncedValueAtom
 
 let firstTime = true
+export const redoQuote = atom(0)
 export const zapQuotePromise = loadable(
   onlyNonNullAtom(async (get) => {
+    get(redoQuote)
     const input = get(debouncedUserInputGenerator)
     if (input.inputQuantity.amount === 0n) {
       return null
@@ -290,39 +293,57 @@ export const approvalTxFee = loadable(
 
 export const resolvedApprovalTxFee = simplifyLoadable(approvalTxFee)
 
-export const zapTransaction = loadable(
-  atom(async (get) => {
-    const result = get(zapQuote)
-    const approvalNeeded = get(resolvedApprovalNeeded)
-    if (!(approvalNeeded && result)) {
-      return null
-    }
 
-    let permit2 = undefined
-    if (approvalNeeded.usingPermit2 === true) {
-      const permit = get(permit2ToSignAtom)
-      const signature = get(permitSignature)
-      permit2 =
-        signature != null && permit != null
-          ? {
-            permit: permit.permit,
-            signature,
-          }
-          : undefined
-    }
-    const tx = await result.toTransaction({
-      permit2,
-      returnDust: get(collectDust),
-    })
-    console.log("=== abstract zap transaction ===")
-    console.log(result.describe().join("\n"))
-    return {
-      result,
-      transaction: tx,
-      permit2,
-    }
+const zapTxAtom = atom(async (get) => {
+  const result = get(zapQuote)
+  const approvalNeeded = get(resolvedApprovalNeeded)
+  if (!(approvalNeeded && result)) {
+    return null
+  }
+
+  let permit2 = undefined
+  if (approvalNeeded.usingPermit2 === true) {
+    const permit = get(permit2ToSignAtom)
+    const signature = get(permitSignature)
+    permit2 =
+      signature != null && permit != null
+        ? {
+          permit: permit.permit,
+          signature,
+        }
+        : undefined
+  }
+  const tx = await result.toTransaction({
+    permit2,
+    returnDust: get(collectDust),
   })
+  console.log("=== abstract zap transaction ===")
+  console.log(result.describe().join("\n"))
+  return {
+    result,
+    transaction: tx,
+    permit2,
+  }
+})
+
+export const zapTransaction = loadable(
+  zapTxAtom
 )
+
+let errorCount = 0
+const zapTxAtomStore = atom(() => null, (get, set, update) => {
+  const a = get(zapTransaction)
+  if (a.state === 'hasData') {
+    errorCount = 0
+  }
+  if (a.state === 'hasError') {
+    if (errorCount > 5) {
+      return
+    }
+    set(redoQuote, Math.random())
+    errorCount += 1;
+  }
+})
 export const resolvedZapTransaction = simplifyLoadable(zapTransaction)
 
 export const zapTransactionGasEstimateUnits = loadable(
