@@ -1,7 +1,7 @@
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { blockAtom, gasFeeAtom } from 'state/atoms'
 import { Card } from 'theme-ui'
 import ConfirmZap from './components/ConfirmZap'
@@ -30,7 +30,6 @@ const Zap = () => {
   const [isZapping, setZapping] = useState(false)
   const rToken = useRToken()
   const selectedToken = useAtomValue(selectedZapTokenAtom)
-
   const handleClick = () => {
     setZapping(true)
     mixpanel.track('Clicked Zap', {
@@ -41,7 +40,9 @@ const Zap = () => {
 
   return (
     <>
-      <UpdateBlockAndGas />
+      <Suspense fallback={<></>}>
+        <UpdateBlockAndGas />
+      </Suspense>
       <Card p={4}>
         <ZapInput />
         <ZapButton onClick={handleClick} />

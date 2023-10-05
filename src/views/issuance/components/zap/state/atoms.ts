@@ -7,7 +7,7 @@ import {
 } from '@uniswap/permit2-sdk'
 import { atom, Getter } from 'jotai'
 import { loadable } from 'jotai/utils'
-import { balancesAtom, rTokenAtom, walletAtom } from 'state/atoms'
+import { balancesAtom, blockAtom, rTokenAtom, walletAtom } from 'state/atoms'
 
 import { defaultAbiCoder } from '@ethersproject/abi'
 import { id } from '@ethersproject/hash'
@@ -21,7 +21,6 @@ import {
 
 import {
   resolvedZapState,
-  supportsPermit2Signatures,
   zappableTokens,
 } from './zapper'
 
@@ -41,6 +40,7 @@ import {
 
 // The only actual state the user controls:
 export const tokenToZapPopupState = atom(false)
+export const collectDust = atom(true)
 export const zapInputString = atomWithOnWrite('', (_, set, __) => {
   set(permitSignature, null)
 })
@@ -59,7 +59,7 @@ export const permitSignature = atom(null as null | string)
 
 // The amount of slippage we allow when zap involves a trade:
 // This is not exposed in the UI yet, but probably should be.
-const tradeSlippage = atom(0.01)
+const tradeSlippage = atom(0.1)
 
 // We sent the zap transaction,
 // and are waiting for the user to sign off on it and for it to commit
@@ -79,7 +79,7 @@ export const approvalRandomId = atom(0)
 
 // All other atoms are derived from the above or from the environment
 export const selectedZapTokenAtom = atom(
-  (get) => get(tokenToZapUserSelected) ?? get(zappableTokens).at(0) ?? null
+  (get) => get(tokenToZapUserSelected) ?? get(zappableTokens).at(1) ?? null
 )
 
 export const zapSender = atom((get) => {
@@ -131,28 +131,25 @@ const debouncedUserInputGenerator = atomWithDebounce(
 ).debouncedValueAtom
 
 let firstTime = true
+export const redoQuote = atom(0)
 export const zapQuotePromise = loadable(
   onlyNonNullAtom(async (get) => {
+    get(redoQuote)
     const input = get(debouncedUserInputGenerator)
     if (input.inputQuantity.amount === 0n) {
       return null
     }
-    // I suspect that the first time we call this function it's too slow because caches are being populated.
-    // This seems to cause the estimate to fail. So we call it once before we actually need it.
-    if (firstTime) {
-      try {
-        await input.zapSearcher.findSingleInputToRTokenZap(
-          input.inputQuantity,
-          input.rToken,
-          input.signer,
-          get(tradeSlippage)
-        )
-      } catch (e) {
-        console.log(e)
-      }
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      firstTime = false
-    }
+    const blockNumber = get(blockAtom)
+    const [
+      gasPrice
+    ] = await Promise.all([
+      await input.universe.provider.getGasPrice()
+    ])
+
+    input.universe.updateBlockState(
+      blockNumber,
+      gasPrice.toBigInt()
+    )
     const a = input.zapSearcher.findSingleInputToRTokenZap(
       input.inputQuantity,
       input.rToken,
@@ -189,32 +186,14 @@ export const approvalNeededAtom = loadable(
     let spender = Address.from(universe.config.addresses.zapperAddress)
     let usingPermit2 = false
     if (token !== universe.nativeToken) {
-      if (
-        get(supportsPermit2Signatures) &&
-        !(
-          (input.amount === 0n ? 2n ** 64n : input.amount) >
-          (
-            await universe.approvalsStore.queryAllowance(
-              token,
-              user,
-              Address.from(PERMIT2_ADDRESS)
-            )
-          ).toBigInt()
-        )
-      ) {
-        spender = Address.from(PERMIT2_ADDRESS)
-        usingPermit2 = true
-        approvalNeeded = false
-      } else {
-        const allowance = await universe.approvalsStore.queryAllowance(
-          token,
-          user,
-          spender
-        )
-        approvalNeeded =
-          (input.amount === 0n ? 2n ** 64n : input.amount) >
-          allowance.toBigInt()
-      }
+      const allowance = await universe.approvalsStore.queryAllowance(
+        token,
+        user,
+        spender
+      )
+      approvalNeeded =
+        (input.amount === 0n ? 2n ** 64n : input.amount) >
+        allowance.toBigInt()
     }
     const data =
       id('approve(address,uint256)').slice(0, 10) +
@@ -295,45 +274,43 @@ export const approvalTxFee = loadable(
 
 export const resolvedApprovalTxFee = simplifyLoadable(approvalTxFee)
 
-export const zapTransaction = loadable(
-  atom(async (get) => {
-    const result = get(zapQuote)
-    const approvalNeeded = get(resolvedApprovalNeeded)
-    if (!(approvalNeeded && result)) {
-      return null
-    }
 
-    let permit2 = undefined
-    if (approvalNeeded.usingPermit2 === true) {
-      const permit = get(permit2ToSignAtom)
-      const signature = get(permitSignature)
-      permit2 =
-        signature != null && permit != null
-          ? {
-              permit: permit.permit,
-              signature,
-            }
-          : undefined
-    }
+const zapTxAtom = atom(async (get) => {
+  const result = get(zapQuote)
+  const approvalNeeded = get(resolvedApprovalNeeded)
+  if (!(approvalNeeded && result)) {
+    return null
+  }
 
-    // Bit hacky:
-    // if the user is zapping more than 50k, let's explicitly return dust.
-    // The current code to return dust does not seem to always trigger correctly
-    // this leaves a significant amount of dust in the contract, especially when zapping large quantities
-    const FIFTY_K = result.universe.usd.from('50000')
-    const value =
-      (await result.universe.fairPrice(result.userInput).catch((e) => null)) ??
-      FIFTY_K
-    return {
-      result,
-      transaction: await result.toTransaction({
-        permit2,
-        returnDust: value.gte(FIFTY_K) ? true : undefined,
-      }),
-      permit2,
-    }
+  let permit2 = undefined
+  if (approvalNeeded.usingPermit2 === true) {
+    const permit = get(permit2ToSignAtom)
+    const signature = get(permitSignature)
+    permit2 =
+      signature != null && permit != null
+        ? {
+          permit: permit.permit,
+          signature,
+        }
+        : undefined
+  }
+  const tx = await result.toTransaction({
+    permit2,
+    returnDust: get(collectDust),
   })
+  // console.log("=== abstract zap transaction ===")
+  // console.log(result.describe().join("\n"))
+  return {
+    result,
+    transaction: tx,
+    permit2,
+  }
+})
+
+export const zapTransaction = loadable(
+  zapTxAtom
 )
+
 export const resolvedZapTransaction = simplifyLoadable(zapTransaction)
 
 export const zapTransactionGasEstimateUnits = loadable(

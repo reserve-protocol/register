@@ -1,4 +1,4 @@
-import { Token } from '@reserve-protocol/token-zapper'
+import { Token, TokenQuantity } from '@reserve-protocol/token-zapper'
 import { atom, Getter, SetStateAction, Setter } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import { Atom } from 'jotai/vanilla'
@@ -31,6 +31,7 @@ import {
   zapQuote,
   zapQuoteInput,
   zapQuotePromise,
+  redoQuote,
   zapSender,
   zapTransaction,
   zapTransactionGasEstimateUnits,
@@ -97,7 +98,7 @@ export const zapTxFeeAtom = atom((get) => {
   const gasPrice = get(gasFeeAtom)
   const gasUsdPrice = get(ethPriceAtom)
   return tx?.transaction?.gasEstimate
-    ? Number(tx.result.universe.nativeToken.from(tx.transaction.feeEstimate(gasPrice??1n)).format()) * gasUsdPrice
+    ? Number(tx.result.universe.nativeToken.from(tx.transaction.feeEstimate(gasPrice ?? 1n)).format()) * gasUsdPrice
     : 0
 })
 
@@ -113,11 +114,49 @@ export const zapTransactionFeeDisplay = onlyNonNullAtom((get) => {
 export const zapOutputAmount = onlyNonNullAtom((get) => {
   const quote = get(zapQuote)
   const rTokenOut = get(zapperInputs).rToken
+
   return formatQty(
     quote.swaps.outputs.find((r) => r.token == rTokenOut) ?? rTokenOut.zero,
     FOUR_DIGITS
   )
 }, '0.0')
+
+export const zapDust = atom((get) => {
+  const quote = get(zapQuote)
+  if (quote == null) {
+    return []
+  }
+  const tx = get(resolvedZapTransaction)
+
+  const rTokenOut = get(zapperInputs)?.rToken
+
+  const dust = (tx?.result.swaps.outputs ?? quote.swaps.outputs).filter(i => i.token !== rTokenOut && i.amount !== 0n)
+  return dust
+})
+
+export const zapDustValue = atom(async (get) => {
+  const dust = get(zapDust)
+  if (dust == null) {
+    return null
+  }
+  const quote = get(zapQuote)
+  if (quote == null) {
+    return null
+  }
+  const dustUSD = await Promise.all(dust.map(async d => ({
+    dustQuantity: d,
+    usdValueOfDust: await quote.universe.fairPrice(d)
+  })))
+
+  let total = 0n
+  for (const d of dustUSD) {
+    total += d.usdValueOfDust?.amount ?? 0n
+  }
+  return {
+    dust: dustUSD,
+    total: quote.universe.usd.from(total)
+  }
+})
 
 export const zapOutputValue = onlyNonNullAtom((get) => {
   const quote = get(zapQuote)
@@ -256,7 +295,7 @@ export const zapAvailableAtom = atom((get) => {
   const rTokenAddress = get(rTokenAtom)?.address.toLowerCase()
   return rTokenAddress != null && zapEnabledForRTokens.has(rTokenAddress)
 })
-
+let errors = 0
 export const ui = {
   zapWidgetEnabled: atom((get) => get(zapEnabledAtom) && get(zapAvailableAtom)),
   zapState: atom((get) => {
@@ -333,7 +372,16 @@ export const ui = {
       if (data == null) {
         return
       }
-      if (flowState === 'approval') {
+      if (flowState === 'tx_loading') {
+        errors = 0
+      }
+      else if (flowState === 'tx_error') {
+        if (errors < 5) {
+          console.log("Requoting..")
+          set(redoQuote, Math.random())
+          errors += 1
+        }
+      } else if (flowState === 'approval') {
         await approve(get, set, data)
       } else if (flowState === 'send_tx') {
         mixpanel.track('Confirmed Zap', {
@@ -425,7 +473,6 @@ const signAndSendTx: ZapperAction = async (
   { signer, provider, rToken, quote }
 ) => {
   try {
-    const quoteValue = get(zapOutputValue) || '0'
     const permit = get(permit2ToSignAtom)
     if (permit == null) {
       return
@@ -485,12 +532,6 @@ const sendTx: ZapperAction = async (
   }
   set(zapIsPending, true)
   try {
-    if (
-      (await signer.call({ ...zapTx.transaction.tx, gasLimit: gasLimit })) !==
-      '0x'
-    ) {
-      throw new Error('Failed')
-    }
     const resp = await signer.sendTransaction({
       ...zapTx.transaction.tx,
       gasLimit,
