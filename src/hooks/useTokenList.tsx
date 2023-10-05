@@ -128,7 +128,7 @@ const useTokenList = () => {
             tokenData.transactionCount += RSVOverview.txCount
             tokenData.cumulativeVolume += RSVOverview.volume
             tokenData.targetUnits = 'USD'
-          } else if (token.id === EUSD_ADDRESS[chainId].toLowerCase()) {
+          } else if (token.id === EUSD_ADDRESS[chainId]?.toLowerCase()) {
             tokenData.transactionCount += rpayOverview.txCount
             tokenData.cumulativeVolume += rpayOverview.volume
           }

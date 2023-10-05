@@ -27,7 +27,10 @@ const hourlyPriceQuery = gql`
 const dailyPriceQuery = gql`
   query getTokenDailyPrice($id: String!, $fromTime: Int!) {
     token(id: $id) {
-      snapshots: dailyTokenSnapshot(where: { timestamp_gte: $fromTime }) {
+      snapshots: dailyTokenSnapshot(
+        first: 1000
+        where: { timestamp_gte: $fromTime }
+      ) {
         timestamp
         supply: dailyTotalSupply
       }

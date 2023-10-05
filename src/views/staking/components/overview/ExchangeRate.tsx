@@ -14,7 +14,10 @@ import { TIME_RANGES } from 'utils/constants'
 const query = gql`
   query getRTokenExchangeRate($id: String!, $fromTime: Int!) {
     rtoken(id: $id) {
-      snapshots: dailySnapshots(where: { timestamp_gte: $fromTime }) {
+      snapshots: dailySnapshots(
+        first: 1000
+        where: { timestamp_gte: $fromTime }
+      ) {
         timestamp
         rsrExchangeRate
       }

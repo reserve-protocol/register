@@ -16,7 +16,7 @@ const WrapCollateralList = () => {
 
           {collateralsByProtocol[protocol].map((c) => (
             <CollateralItem
-              key={c.address}
+              key={`${wrapping ? 'wrap' : 'unwrap'}-${c.address}`}
               mt={3}
               collateral={c}
               wrapping={wrapping}

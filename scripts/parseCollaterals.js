@@ -69,10 +69,11 @@ const wrappedTokenMap = {
   cETH: protocols.COMP,
   cUSDbCv3: protocols.COMPv3, // base
   cUSDCv3: protocols.COMPv3,
-  fUSDC: protocols.FLUX,
-  fUSDT: protocols.FLUX,
-  fDAI: protocols.FLUX,
-  fFRAX: protocols.FLUX,
+  // Flux tokens are no longer wrapped
+  // fUSDC: protocols.FLUX,
+  // fUSDT: protocols.FLUX,
+  // fDAI: protocols.FLUX,
+  // fFRAX: protocols.FLUX,
   maUSDT: protocols.MORPHO,
   maUSDC: protocols.MORPHO,
   maDAI: protocols.MORPHO,
