@@ -18,7 +18,6 @@ import { Suspense } from 'react'
 const ZapDust = () => {
   const dustValue = useAtomValue(zapDustValue)
   const dust = useAtomValue(zapDust)
-  console.log(dust)
   const zapCollectDust = useAtomValue(collectDust)
   if (dustValue == null) {
     return null

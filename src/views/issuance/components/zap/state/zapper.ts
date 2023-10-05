@@ -59,7 +59,6 @@ export const zapperState = loadable(
     if (provider == null) {
       return null
     }
-    console.log("Init?")
 
     try {
       

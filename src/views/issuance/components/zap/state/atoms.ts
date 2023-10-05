@@ -137,6 +137,19 @@ export const zapQuotePromise = loadable(
     if (input.inputQuantity.amount === 0n) {
       return null
     }
+
+    const [
+      block,
+      gasPrice
+    ] = await Promise.all([
+      await input.universe.provider.getBlockNumber(),
+      await input.universe.provider.getGasPrice()
+    ])
+
+    input.universe.updateBlockState(
+      block,
+      gasPrice.toBigInt()
+    )
     // I suspect that the first time we call this function it's too slow because caches are being populated.
     // This seems to cause the estimate to fail. So we call it once before we actually need it.
     if (firstTime) {
@@ -297,13 +310,15 @@ export const zapTransaction = loadable(
           }
           : undefined
     }
-
+    const tx = await result.toTransaction({
+      permit2,
+      returnDust: get(collectDust),
+    })
+    console.log("=== abstract zap transaction ===")
+    console.log(result.describe().join("\n"))
     return {
       result,
-      transaction: await result.toTransaction({
-        permit2,
-        returnDust: get(collectDust),
-      }),
+      transaction: tx,
       permit2,
     }
   })
