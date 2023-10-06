@@ -29,6 +29,7 @@ const Announcement = () => {
       }}
       px={3}
       py={2}
+      mb={5}
     >
       <Box variant="layout.verticalAlign" mr={3} mb={[2, 2, 0]}>
         <Sparkles />
