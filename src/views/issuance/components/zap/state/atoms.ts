@@ -56,6 +56,7 @@ export const tokenToZapPopupState = atom(false)
 export const collectDust = atom(true)
 export const zapInputString = atomWithOnWrite('', (_, set, __) => {
   set(permitSignature, null)
+  set(previousZapTransaction, null)
 })
 export const tokenToZapUserSelected = atomWithOnWrite(
   null as Token | null,
