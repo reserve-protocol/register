@@ -36,6 +36,7 @@ import {
   zapTransaction,
   zapTransactionGasEstimateUnits,
   zapTxHash,
+  previousZapTransaction,
 } from './atoms'
 import { formatQty, FOUR_DIGITS } from './formatTokenQuantity'
 import { resolvedZapState, zappableTokens, zapperState } from './zapper'
@@ -111,26 +112,29 @@ export const zapTransactionFeeDisplay = onlyNonNullAtom((get) => {
   )
 })
 
-export const zapOutputAmount = onlyNonNullAtom((get) => {
-  const quote = get(zapQuote)
-  const rTokenOut = get(zapperInputs).rToken
-
+export const zapOutputAmount = atom((get) => {
+  const previous = get(previousZapTransaction)
+  const quote = get(zapQuote) ?? previous?.result
+  const rTokenOut = quote?.outputToken
+  if (quote == null||rTokenOut==null) {
+    return '0.0'
+  }
   return formatQty(
-    quote.swaps.outputs.find((r) => r.token == rTokenOut) ?? rTokenOut.zero,
+    quote.swaps.outputs.find((r) => r.token === rTokenOut) ?? rTokenOut.zero,
     FOUR_DIGITS
   )
-}, '0.0')
+})
 
 export const zapDust = atom((get) => {
-  const quote = get(zapQuote)
+  const tx = get(previousZapTransaction)
+  const quote = tx?.result ?? get(zapQuote)
   if (quote == null) {
     return []
   }
-  const tx = get(resolvedZapTransaction)
 
-  const rTokenOut = get(zapperInputs)?.rToken
+  const rTokenOut = quote.outputToken
 
-  const dust = (tx?.result.swaps.outputs ?? quote.swaps.outputs).filter(i => i.token !== rTokenOut && i.amount !== 0n)
+  const dust = quote.swaps.outputs.filter(i => i.token !== rTokenOut && i.amount !== 0n)
   return dust
 })
 
@@ -139,7 +143,8 @@ export const zapDustValue = atom(async (get) => {
   if (dust == null) {
     return null
   }
-  const quote = get(zapQuote)
+  const tx = get(previousZapTransaction)
+  const quote = tx?.result ?? get(zapQuote)
   if (quote == null) {
     return null
   }
@@ -167,9 +172,11 @@ export const zapOutputValue = onlyNonNullAtom((get) => {
   return qty.format()
 }, '0')
 
+
 const state = atom((get) => {
   const quotePromise = get(zapQuotePromise)
   const approvePromise = get(approvalNeededAtom)
+  const prev = get(previousZapTransaction)
   const tx = get(zapTransaction)
   const units = get(zapTransactionGasEstimateUnits)
   const balances = get(hasSufficientGasTokenAndERC20TokenBalance)
@@ -236,7 +243,7 @@ const loadingStates = new Set<UIState>([
   // 'approval_sent_loading',
   'signature_loading',
 ])
-const buttonEnabled = atom((get) => buttonEnabledStates.has(get(state)))
+const buttonEnabled = atom((get) => buttonEnabledStates.has(get(state)) || get(previousZapTransaction) != null)
 const buttonIsLoading = atom((get) => loadingStates.has(get(state)))
 const buttonLabel = atom((get) => {
   if (get(zapSender) == null) {
@@ -245,6 +252,10 @@ const buttonLabel = atom((get) => {
   const loadedState = get(zapperInputs)
   if (loadedState == null) {
     return '+ Zap'
+  }
+
+  if (get(previousZapTransaction) != null) {
+    return `+ Mint ${loadedState.rToken.symbol}`
   }
 
   switch (get(state)) {
@@ -340,6 +351,9 @@ export const ui = {
     textBox: atom((get) => {
       const zapPromise = get(zapQuotePromise)
       const output = get(zapOutputAmount)
+      if (get(previousZapTransaction) != null) {
+        return output ?? '0.0'
+      }
       if (zapPromise.state === 'hasData' && zapPromise.data == null) {
         return ''
       }
@@ -359,8 +373,8 @@ export const ui = {
   button: atom(
     (get) => ({
       loadingLabel: get(buttonLoadingLabel),
-      enabled: get(zapSender) == null || get(buttonEnabled),
-      loading: get(buttonIsLoading),
+      enabled: (get(zapSender) == null || get(buttonEnabled)),
+      loading: get(previousZapTransaction) == null && get(buttonIsLoading),
       label: get(buttonLabel),
     }),
     async (get, set, _) => {
@@ -369,6 +383,7 @@ export const ui = {
       }
       const flowState = get(state)
       const data = getZapActionState(get)
+      
       if (data == null) {
         return
       }

@@ -26,6 +26,8 @@ import {
 } from 'utils/atoms/utils'
 
 import { resolvedZapState, zappableTokens } from './zapper'
+import { type SearcherResult } from '@reserve-protocol/token-zapper/types/searcher/SearcherResult'
+import { type ZapTransaction } from '@reserve-protocol/token-zapper/types/searcher/ZapTransaction'
 
 /**
  * I've tried to keep react effects to a minimum so most async code is triggered via some signal
@@ -41,6 +43,14 @@ import { resolvedZapState, zappableTokens } from './zapper'
  * view/controller.
  */
 
+export const previousZapTransaction = atom<{
+  result: SearcherResult,
+  transaction: ZapTransaction,
+  permit2?: {
+    permit: PermitTransferFrom,
+    signature: string
+  }
+} | null>(null)
 // The only actual state the user controls:
 export const tokenToZapPopupState = atom(false)
 export const collectDust = atom(true)
@@ -53,6 +63,7 @@ export const tokenToZapUserSelected = atomWithOnWrite(
     if (prev !== next) {
       set(zapInputString, '')
       set(tokenToZapPopupState, false)
+      set(previousZapTransaction, null)
     }
   }
 )
