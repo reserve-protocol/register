@@ -7,11 +7,16 @@ import { rTokenStateAtom } from 'state/atoms'
 import { Box, Checkbox, Flex, Text } from 'theme-ui'
 import {
   collectDust,
+  previousZapTransaction,
   selectedZapTokenAtom,
   zapInputString,
 } from '../state/atoms'
 import { ui, zapDust, zapDustValue } from '../state/ui-atoms'
-import { formatQty, FOUR_DIGITS, TWO_DIGITS } from '../state/formatTokenQuantity'
+import {
+  formatQty,
+  FOUR_DIGITS,
+  TWO_DIGITS,
+} from '../state/formatTokenQuantity'
 import { zapperLoaded } from '../state/zapper'
 import { Suspense } from 'react'
 
@@ -23,7 +28,7 @@ const ZapDust = () => {
     return null
   }
   const total = dustValue.total
-  
+
   let str = '+ ' + formatQty(total, TWO_DIGITS) + ' in dust'
   if (total.amount < 10000n) {
     str = '*'
@@ -36,9 +41,7 @@ const ZapDust = () => {
     <span
       title={
         'Dust generated:\n' +
-        dust
-          .map((i) => formatQty(i, FOUR_DIGITS))
-          .join('\n') +
+        dust.map((i) => formatQty(i, FOUR_DIGITS)).join('\n') +
         (zapCollectDust
           ? '\n\nDust will be returned to your wallet'
           : '\n\nDust will not be returned to your wallet')
@@ -98,10 +101,12 @@ const ZapOutputLabel = () => {
 }
 const ZapCollectDust = () => {
   const [checked, setChecked] = useAtom(collectDust)
+  const [, setPrevious] = useAtom(previousZapTransaction)
   return (
     <Flex
       onClick={() => {
         setChecked(!checked)
+        setPrevious(null)
       }}
       ml={3}
       mt={2}
