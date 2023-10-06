@@ -79,7 +79,7 @@ const Issuance = () => {
                   }}
                 >
                   <Text variant="strong" mb={2} style={{ textAlign: 'center' }}>
-                    First connect your wallet
+                    First, connect your wallet
                   </Text>
                   <Text
                     as="p"
@@ -88,7 +88,7 @@ const Issuance = () => {
                     mt={3}
                   >
                     Please connect your wallet to use the Zap Minter, which
-                    allows you to mint using a single asset
+                    allows you to mint using a single asset.
                   </Text>
                   <Box sx={{ textAlign: 'center' }} mt={3}>
                     <ConnectWalletButton />
