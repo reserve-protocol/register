@@ -102,6 +102,7 @@ export const zapperInputs = simplifyLoadable(
       const selectedZapToken = get(selectedZapTokenAtom)
       const rToken = get(rTokenAtom)
       const universe = get(resolvedZapState)
+      await universe.initialized
       return {
         tokenToZap: selectedZapToken,
         rToken: await universe.getToken(Address.from(rToken.address)),
@@ -130,8 +131,9 @@ const debouncedUserInputGenerator = atomWithDebounce(
   400
 ).debouncedValueAtom
 
-let firstTime = true
+
 export const redoQuote = atom(0)
+let firstTime = true
 export const zapQuotePromise = loadable(
   onlyNonNullAtom(async (get) => {
     get(redoQuote)
@@ -150,6 +152,15 @@ export const zapQuotePromise = loadable(
       blockNumber,
       gasPrice.toBigInt()
     )
+    if (firstTime) {
+      await input.zapSearcher.findSingleInputToRTokenZap(
+        input.inputQuantity,
+        input.rToken,
+        input.signer,
+        get(tradeSlippage)
+      )
+      firstTime = false
+    }
     const a = input.zapSearcher.findSingleInputToRTokenZap(
       input.inputQuantity,
       input.rToken,
