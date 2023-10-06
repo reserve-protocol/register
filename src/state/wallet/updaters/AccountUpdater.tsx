@@ -6,15 +6,18 @@ import { AccountPosition, AccountToken } from 'types'
 import useTimeFrom from 'hooks/useTimeFrom'
 import { TIME_RANGES } from 'utils/constants'
 import RSV from 'utils/rsv'
-import { getAddress } from 'viem'
+import { getAddress, trim } from 'viem'
 import {
   accountHoldingsAtom,
   accountPositionsAtom,
   accountRTokensAtom,
   accountTokensAtom,
+  isSmartWalletAtom,
   rsrPriceAtom,
   walletAtom,
 } from '../../atoms'
+import { usePublicClient } from 'wagmi'
+import { getBytecode } from 'viem/_types/actions/public/getBytecode'
 
 // TODO: Include RSV hardcoded into the query and check for balance
 const accountQuery = gql`
@@ -59,10 +62,13 @@ const AccountUpdater = () => {
   const account = useAtomValue(walletAtom)
   const rsrPrice = useAtomValue(rsrPriceAtom)
   const fromTime = useTimeFrom(TIME_RANGES.MONTH)
+  const client = usePublicClient()
+
   const updateTokens = useSetAtom(accountTokensAtom)
   const updatePositions = useSetAtom(accountPositionsAtom)
   const updateHoldings = useSetAtom(accountHoldingsAtom)
   const updateAccountTokens = useSetAtom(accountRTokensAtom)
+  const updateIsSmartWallet = useSetAtom(isSmartWalletAtom)
 
   const { data, error } = useQuery(account ? accountQuery : null, {
     id: account?.toLowerCase(),
@@ -156,6 +162,15 @@ const AccountUpdater = () => {
       tokens.sort((a, b) => b.usdAmount - a.usdAmount)
       positions.sort((a, b) => b.usdAmount - a.usdAmount)
 
+      const checkSmartWallet = async () => {
+        const walletByteCode = await client.getBytecode({ address: account! })
+        if (!walletByteCode || trim(walletByteCode) == '0x') {
+          updateIsSmartWallet(false)
+        } else {
+          updateIsSmartWallet(true)
+        }
+      }
+      checkSmartWallet()
       updateTokens(tokens)
       updatePositions(positions)
       updateHoldings(holdings)
