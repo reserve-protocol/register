@@ -26,7 +26,11 @@ const confirmButtonLabelAtom = atom((get) => {
   }
 
   if (recollaterization) {
-    label += 'Start next recollaterization auction'
+    if (label) {
+      label = `Settle ${settleable.length} previous to start recollaterization`
+    } else {
+      label += 'Start next recollaterization auction'
+    }
   } else {
     label += `Start ${selectedAuctions.length} new auctions`
   }

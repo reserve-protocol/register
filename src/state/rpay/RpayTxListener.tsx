@@ -1,9 +1,10 @@
 import useIsWindowVisible from 'hooks/useIsWindowVisible'
-import { atom } from 'jotai'
+import { atom, useAtomValue } from 'jotai'
 import { useSetAtom } from 'jotai'
 import useWebSocket from 'react-use-websocket'
 import { dateToUnix } from 'utils'
-import { rpayTransactionsAtom, RPayTx } from '../atoms'
+import { chainIdAtom, rpayTransactionsAtom, RPayTx } from '../atoms'
+import { ChainId } from 'utils/chains'
 
 const updateTxAtom = atom(null, (get, set, txs: RPayTx[]) => {
   const currentTxs = [...get(rpayTransactionsAtom)]
@@ -15,10 +16,11 @@ const updateTxAtom = atom(null, (get, set, txs: RPayTx[]) => {
 const RpayTxListener = () => {
   const updateTx = useSetAtom(updateTxAtom)
   const isWindowOpen = useIsWindowVisible()
+  const isMainnet = useAtomValue(chainIdAtom) === ChainId.Mainnet
 
   const processMessages = (event: any) => {
     try {
-      if (isWindowOpen) {
+      if (isWindowOpen && isMainnet) {
         updateTx(
           JSON.parse(event.data).map(
             ([id, type, amountUSD, timestamp]: string[]) => ({

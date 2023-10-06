@@ -1,7 +1,7 @@
 import { t, Trans } from '@lingui/macro'
 import { Table } from 'components/table'
 import TokenItem from 'components/token-item'
-import { getRTokenLogo } from 'hooks/useRTokenLogo'
+import useRTokenLogo from 'hooks/useRTokenLogo'
 import { localeAtom } from 'i18n'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
@@ -29,7 +29,7 @@ const Portfolio = (props: BoxProps) => {
         Header: 'RToken',
         accessor: 'symbol',
         Cell: (data: any) => {
-          const logo = getRTokenLogo(data.row.original.address)
+          const logo = useRTokenLogo(data.row.original.address)
 
           return <TokenItem symbol={data.cell.value} logo={logo} />
         },

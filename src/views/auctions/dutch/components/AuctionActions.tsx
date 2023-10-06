@@ -5,7 +5,7 @@ import useHasAllowance from 'hooks/useHasAllowance'
 import { useCallback, useMemo, useState } from 'react'
 import { Box, Grid, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { Hex, formatEther, parseEther } from 'viem'
+import { Hex, formatEther } from 'viem'
 import { DutchTrade } from '../atoms'
 import AuctionTimeIndicators from './AuctionTimeIndicators'
 
@@ -14,16 +14,15 @@ const AuctionActions = ({
   currentPrice,
 }: {
   data: DutchTrade
-  currentPrice: number
+  currentPrice: bigint
 }) => {
   const [bidded, setBidded] = useState(false)
-  const bidAmount = parseEther((currentPrice || data.worstCasePrice).toString())
 
   const [hasAllowance] = useHasAllowance([
     {
       token: data.buying as Hex,
       spender: data.id as Hex,
-      amount: bidAmount,
+      amount: currentPrice,
     },
   ])
 
@@ -32,9 +31,9 @@ const AuctionActions = ({
       abi: ERC20,
       address: data.buying as Hex,
       functionName: 'approve',
-      args: [data.id as Hex, bidAmount],
+      args: [data.id as Hex, currentPrice],
     }),
-    [bidAmount, data.id]
+    [currentPrice, data.id]
   )
 
   const bidCall = useMemo(
@@ -70,7 +69,7 @@ const AuctionActions = ({
         {hasAllowance && (
           <>
             <ExecuteButton
-              text={`Bid ${formatCurrency(+formatEther(bidAmount))} ${
+              text={`Bid ${formatCurrency(+formatEther(currentPrice))} ${
                 data.buyingTokenSymbol
               }`}
               call={bidCall}
@@ -81,7 +80,8 @@ const AuctionActions = ({
               onSuccess={handleBid}
             />
             <Text variant="legend" sx={{ fontSize: 1 }} ml={2}>
-              1 {data.sellingTokenSymbol} = {formatCurrency(currentPrice, 5)}{' '}
+              1 {data.sellingTokenSymbol} ={' '}
+              {formatCurrency(Number(formatEther(currentPrice)), 5)}{' '}
               {data.buyingTokenSymbol}
             </Text>
           </>

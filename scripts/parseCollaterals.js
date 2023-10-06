@@ -16,6 +16,11 @@ const protocols = {
     collateral: 'ATOKEN', // If the underlying is not the yield bearing asset
     rewardTokens: ['stkAAVE'],
   },
+  AAVEv3: {
+    key: 'AAVEv3',
+    underlying: 'asset',
+    collateral: 'aToken',
+  },
   COMP: {
     key: 'COMP',
     underlying: 'underlying',
@@ -62,6 +67,7 @@ const wrappedTokenMap = {
   cUSDP: protocols.COMP,
   cWBTC: protocols.COMP,
   cETH: protocols.COMP,
+  cUSDbCv3: protocols.COMPv3, // base
   cUSDCv3: protocols.COMPv3,
   // Flux tokens are no longer wrapped
   // fUSDC: protocols.FLUX,
@@ -81,6 +87,7 @@ const wrappedTokenMap = {
   cvxeUSDFRAXBP: protocols.CONVEX,
   cvxMIM3Pool: protocols.CONVEX,
   sDAI: protocols.SDR,
+  aBasUSDbC: protocols.AAVEv3,
 }
 
 const chainsMap = [
@@ -96,9 +103,9 @@ const chainsMap = [
     collaterals: require('./data/mainnet-collaterals.json'),
   },
   {
-    prefix: 'basegoerli',
-    chain: chains.baseGoerli,
-    collaterals: require('./data/basegoerli-collaterals.json'),
+    prefix: 'base',
+    chain: chains.base,
+    collaterals: require('./data/base-collaterals.json'),
   },
 ]
 

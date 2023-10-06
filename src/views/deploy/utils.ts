@@ -7,48 +7,6 @@ import { StringMap } from 'types'
 import { Address, parseEther, stringToHex, zeroAddress } from 'viem'
 import { parsePercent } from './../../utils/index'
 
-export const governanceDefaultValues = {
-  defaultGovernance: true,
-  unpause: '0',
-  votingDelay: '14400', // 2 days
-  votingPeriod: '21600', // 3 days
-  proposalThresholdAsMicroPercent: '0.01', // 0.01%
-  quorumPercent: '10', // 10%
-  minDelay: '72', // 72 hours -> 86400
-  guardian: '',
-  pauser: '',
-  owner: '',
-}
-
-export const defaultValues = {
-  // token params
-  name: '',
-  symbol: '',
-  manifesto: '',
-  ownerAddress: '',
-  // backing params
-  tradingDelay: '7200',
-  batchAuctionLength: '900',
-  dutchAuctionLength: '1800',
-  backingBuffer: '0.1', // 0.1%
-  maxTradeSlippage: '0.5', // 0.5%
-  issuanceThrottleAmount: '250000', // Anticipated redemption minimum amount for throttling
-  issuanceThrottleRate: '5', // 2.5% per hour
-  redemptionThrottleAmount: '500000',
-  redemptionThrottleRate: '7.5',
-  // other
-  rewardRatio: '0.0000064180294',
-  unstakingDelay: '1209600',
-  minTrade: '1000',
-  maxTrade: '1000000',
-  shortFreeze: '259200', // 3 days
-  longFreeze: '604800', // 1 week
-  withdrawalLeak: '5', // 5%
-  warmupPeriod: '900', // 15minutes
-  // governance
-  ...governanceDefaultValues,
-}
-
 export interface RevenueDist {
   rTokenDist: number
   rsrDist: number

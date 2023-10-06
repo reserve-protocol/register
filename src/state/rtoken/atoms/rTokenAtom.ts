@@ -1,13 +1,12 @@
 import FacadeRead from 'abis/FacadeRead'
 import RToken from 'abis/RToken'
 import { Atom, atom } from 'jotai'
-import { chainIdAtom } from 'state/chain/atoms/chainAtoms'
+import { chainIdAtom, rTokenListAtom } from 'state/chain/atoms/chainAtoms'
 import { ReserveToken, Token } from 'types'
 import { getTokenReadCalls, isAddress } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import RSV from 'utils/rsv'
-import rtokens from 'utils/rtokens'
 import { Address } from 'wagmi'
 import { readContracts } from 'wagmi/actions'
 
@@ -24,6 +23,7 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
   async (get): Promise<ReserveToken | null> => {
     const rTokenAddress = get(selectedRTokenAtom)
     const chainId = get(chainIdAtom)
+    const rtokens = get(rTokenListAtom)
 
     if (!rTokenAddress) {
       return null

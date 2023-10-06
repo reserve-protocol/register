@@ -5,7 +5,9 @@ import { blockAtom } from 'state/atoms'
 import { Address, formatEther } from 'viem'
 import { useContractRead } from 'wagmi'
 
-const useAuctionPrices = (contractAddress: Address): [number, number] => {
+const useAuctionPrices = (
+  contractAddress: Address
+): [number, bigint, number] => {
   const currentBlock = useAtomValue(blockAtom)
   const [currentPrice, setCurrentPrice] = useState(0)
   const [nextPrice, setNextPrice] = useState(0)
@@ -37,7 +39,7 @@ const useAuctionPrices = (contractAddress: Address): [number, number] => {
     }
   }, [nextPriceResult])
 
-  return [currentPrice, nextPrice]
+  return [currentPrice, priceResult || 0n, nextPrice]
 }
 
 export default useAuctionPrices

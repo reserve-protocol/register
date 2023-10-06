@@ -7,11 +7,12 @@ import { gql } from 'graphql-request'
 import { useNavigate } from 'react-router-dom'
 import { t } from '@lingui/macro'
 import TokenItem from 'components/token-item'
-import tokenList from 'utils/rtokens'
 import { formatEther, getAddress } from 'viem'
+import { rTokenListAtom } from 'state/atoms'
+import { atom, useAtomValue } from 'jotai'
 
-const listedTokens = Object.keys(tokenList).map((address) =>
-  address.toLowerCase()
+const listedTokensAtom = atom((get) =>
+  Object.keys(get(rTokenListAtom)).map((address) => address.toLowerCase())
 )
 
 const query = gql`
@@ -40,7 +41,8 @@ const query = gql`
 `
 
 const useTokens = () => {
-  const { data } = useQuery(query, { listed: listedTokens })
+  const listed = useAtomValue(listedTokensAtom)
+  const { data } = useQuery(query, { listed })
   const [tokens, setTokens] = useState([])
 
   useEffect(() => {

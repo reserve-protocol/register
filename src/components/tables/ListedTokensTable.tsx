@@ -1,7 +1,7 @@
 import { t } from '@lingui/macro'
 import { Table, TableProps } from 'components/table'
 import TokenItem from 'components/token-item'
-import { getRTokenLogo } from 'hooks/useRTokenLogo'
+import useRTokenLogo from 'hooks/useRTokenLogo'
 import useTokenList from 'hooks/useTokenList'
 import mixpanel from 'mixpanel-browser'
 import { useMemo } from 'react'
@@ -16,7 +16,7 @@ import {
 const ListedTokensTable = (
   props: Partial<TableProps<{ [key: string]: any }>>
 ) => {
-  const tokenList = useTokenList()
+  const { list, isLoading } = useTokenList()
   const navigate = useNavigate()
 
   // TODO: Calculate APY from basket (need theGraph)
@@ -26,7 +26,7 @@ const ListedTokensTable = (
         Header: t`Token`,
         accessor: 'symbol',
         Cell: (data: any) => {
-          const logo = getRTokenLogo(data.row.original.id)
+          const logo = useRTokenLogo(data.row.original.id)
 
           return <TokenItem symbol={data.cell.value} logo={logo} />
         },
@@ -89,16 +89,21 @@ const ListedTokensTable = (
   return (
     <>
       <Table
-        data={tokenList}
+        data={list}
         columns={columns}
         onRowClick={handleClick}
         sorting
         sortBy={[{ id: 'supply', desc: true }]}
         {...props}
       />
-      {!tokenList?.length && (
+      {isLoading && (
         <Box sx={{ textAlign: 'center' }} mt={3}>
           <Spinner size={22} />
+        </Box>
+      )}
+      {!isLoading && !list.length && (
+        <Box sx={{ textAlign: 'center' }} mt={4}>
+          <Text variant="legend">No RTokens listed for this chain</Text>
         </Box>
       )}
     </>
