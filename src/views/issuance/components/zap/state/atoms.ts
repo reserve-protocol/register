@@ -7,7 +7,13 @@ import {
 } from '@uniswap/permit2-sdk'
 import { atom, Getter } from 'jotai'
 import { loadable } from 'jotai/utils'
-import { balancesAtom, blockAtom, rTokenAtom, walletAtom } from 'state/atoms'
+import {
+  balancesAtom,
+  blockAtom,
+  isSmartWalletAtom,
+  rTokenAtom,
+  walletAtom,
+} from 'state/atoms'
 
 import { defaultAbiCoder } from '@ethersproject/abi'
 import { id } from '@ethersproject/hash'
@@ -19,10 +25,7 @@ import {
   simplifyLoadable,
 } from 'utils/atoms/utils'
 
-import {
-  resolvedZapState,
-  zappableTokens,
-} from './zapper'
+import { resolvedZapState, zappableTokens } from './zapper'
 
 /**
  * I've tried to keep react effects to a minimum so most async code is triggered via some signal
@@ -131,7 +134,6 @@ const debouncedUserInputGenerator = atomWithDebounce(
   400
 ).debouncedValueAtom
 
-
 export const redoQuote = atom(0)
 let firstTime = true
 export const zapQuotePromise = loadable(
@@ -142,16 +144,11 @@ export const zapQuotePromise = loadable(
       return null
     }
     const blockNumber = get(blockAtom)
-    const [
-      gasPrice
-    ] = await Promise.all([
-      await input.universe.provider.getGasPrice()
+    const [gasPrice] = await Promise.all([
+      await input.universe.provider.getGasPrice(),
     ])
 
-    input.universe.updateBlockState(
-      blockNumber,
-      gasPrice.toBigInt()
-    )
+    input.universe.updateBlockState(blockNumber, gasPrice.toBigInt())
     if (firstTime) {
       await input.zapSearcher.findSingleInputToRTokenZap(
         input.inputQuantity,
@@ -203,8 +200,7 @@ export const approvalNeededAtom = loadable(
         spender
       )
       approvalNeeded =
-        (input.amount === 0n ? 2n ** 64n : input.amount) >
-        allowance.toBigInt()
+        (input.amount === 0n ? 2n ** 64n : input.amount) > allowance.toBigInt()
     }
     const data =
       id('approve(address,uint256)').slice(0, 10) +
@@ -285,7 +281,6 @@ export const approvalTxFee = loadable(
 
 export const resolvedApprovalTxFee = simplifyLoadable(approvalTxFee)
 
-
 const zapTxAtom = atom(async (get) => {
   const result = get(zapQuote)
   const approvalNeeded = get(resolvedApprovalNeeded)
@@ -300,9 +295,9 @@ const zapTxAtom = atom(async (get) => {
     permit2 =
       signature != null && permit != null
         ? {
-          permit: permit.permit,
-          signature,
-        }
+            permit: permit.permit,
+            signature,
+          }
         : undefined
   }
   const tx = await result.toTransaction({
@@ -318,9 +313,7 @@ const zapTxAtom = atom(async (get) => {
   }
 })
 
-export const zapTransaction = loadable(
-  zapTxAtom
-)
+export const zapTransaction = loadable(zapTxAtom)
 
 export const resolvedZapTransaction = simplifyLoadable(zapTransaction)
 
@@ -388,10 +381,12 @@ const totalGasBalance = onlyNonNullAtom(
   (get) =>
     get(balancesAtom)['0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE']?.value ?? 0n
 )
+
 const hasSufficientGasTokenBalance = onlyNonNullAtom((get) => {
   const gasTokenBalanceBN = get(totalGasBalance)
   const gasTokenBalanceNeeded = get(totalGasTokenInput)
-  return gasTokenBalanceBN >= gasTokenBalanceNeeded.amount
+  const isSmartWallet = get(isSmartWalletAtom) // Smart wallets don't need ETH to pay for tx
+  return isSmartWallet || gasTokenBalanceBN >= gasTokenBalanceNeeded.amount
 })
 
 const hasSufficientTokeBalance = onlyNonNullAtom((get) => {
