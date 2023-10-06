@@ -144,7 +144,7 @@ const Main = () => {
     return (
       <Box
         px={3}
-        mt={[0, 4]}
+        mt={4}
         pb={[5, 0]}
         sx={(theme: any) => ({
           borderBottom: ['1px solid', 'none'],
@@ -153,16 +153,28 @@ const Main = () => {
         {...props}
       >
         <HomeStatsIcon />
-        <Flex mt={3} mb={[3, 4]} variant="layout.verticalAlign">
-          <Text mr={3} variant="pageTitle">
-            <Trans>RToken Stats</Trans>
-          </Text>
-          <Help
-            content={t`These stats are across all RTokens on the Reserve Protocol listed by this dApp, including anonymized data from the Reserve Rpay app API.`}
-          />
+        <Flex
+          sx={{
+            display: 'flex',
+            flexDirection: ['column', 'row'],
+            justifyContent: 'space-between',
+            alignItems: 'end',
+          }}
+          mt={3}
+          mb={[3, 4]}
+        >
+          <Flex mb={[3, 0]} mr={'auto'} variant="layout.verticalAlign">
+            <Text mr={3} variant="pageTitle">
+              <Trans>RToken Stats</Trans>
+            </Text>
+            <Help
+              content={t`These stats are across all RTokens on the Reserve Protocol listed by this dApp, including anonymized data from the Reserve Rpay app API.`}
+            />
+          </Flex>
           <SmallButton
-            ml="auto"
             variant="muted"
+            sx={{ height: 'wrap' }}
+            mr={['auto', 0]}
             onClick={() => {
               mixpanel.track('Visited Flipside Dashboard', {})
               window.open(
@@ -178,9 +190,9 @@ const Main = () => {
               }}
             >
               <Trans>View Dashboard</Trans>
-              <Box mt={2} ml={1}>
+              <Flex ml={2}>
                 <ExternalArrowIcon />
-              </Box>{' '}
+              </Flex>
             </Flex>
           </SmallButton>
         </Flex>
