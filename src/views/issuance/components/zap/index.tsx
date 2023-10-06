@@ -9,6 +9,7 @@ import ZapButton from './components/ZapButton'
 import ZapInput from './components/ZapInput'
 import { selectedZapTokenAtom } from './state/atoms'
 import { resolvedZapState } from './state/zapper'
+import { useWalletClient } from 'wagmi'
 
 const UpdateBlockAndGas = () => {
   const zapState = useAtomValue(resolvedZapState)
@@ -27,6 +28,7 @@ const UpdateBlockAndGas = () => {
  * Zap widget
  */
 const Zap = () => {
+  const enableZapper = useWalletClient().data?.account != null
   const [isZapping, setZapping] = useState(false)
   const rToken = useRToken()
   const selectedToken = useAtomValue(selectedZapTokenAtom)
@@ -37,6 +39,7 @@ const Zap = () => {
       inputToken: selectedToken?.symbol,
     })
   }
+
 
   return (
     <>

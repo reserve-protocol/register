@@ -347,7 +347,7 @@ export const ui = {
         return 'Finding zap'
       }
       if (zapPromise.state === 'hasError') {
-        return 'Failed to find Zap'
+        return ''
       }
       return output ?? '0.0'
     }),

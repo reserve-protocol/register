@@ -23,9 +23,13 @@ const ZapDust = () => {
     return null
   }
   const total = dustValue.total
+  
   let str = '+ ' + formatQty(total, TWO_DIGITS) + ' in dust'
   if (total.amount < 10000n) {
     str = '*'
+  }
+  if (total.amount > 1_000_000000n) {
+    return null
   }
 
   return (
