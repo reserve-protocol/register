@@ -131,7 +131,7 @@ const TransactionsTable = ({
     <Container
       {...props}
       px={[0, 2]}
-      pt={[0, 5]}
+      pt={[3, 5]}
       sx={(theme: any) => ({
         backgroundColor: theme.colors.contentBackground,
         border: 'none',
@@ -143,7 +143,7 @@ const TransactionsTable = ({
     >
       <Flex variant="layout.verticalAlign" mb={5}>
         {!!title && (
-          <Text pl={4} variant="title" sx={{ display: 'block' }}>
+          <Text pl={[3, 4]} variant="title" sx={{ display: 'block' }}>
             {title}
           </Text>
         )}
