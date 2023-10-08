@@ -1,14 +1,8 @@
 import { Trans, t } from '@lingui/macro'
 import { Card } from 'components'
-import { useState } from 'react'
-import { FileText, Minus, Plus } from 'react-feather'
+import ExpandableContent from 'components/expandable-content'
+import { FileText } from 'react-feather'
 import { Box, BoxProps, Text } from 'theme-ui'
-
-interface ExpandableContentProps extends BoxProps {
-  title: string
-  content: React.ReactNode
-  expanded?: boolean
-}
 
 const faqs = [
   {
@@ -28,36 +22,6 @@ const faqs = [
     content: 'test',
   },
 ]
-
-const ExpandableContent = ({
-  title,
-  content,
-  expanded = false,
-  ...props
-}: ExpandableContentProps) => {
-  const [isOpen, setOpen] = useState(expanded)
-
-  return (
-    <Box>
-      <Box
-        py={2}
-        variant="layout.verticalAlign"
-        sx={{ cursor: 'pointer' }}
-        onClick={() => setOpen(!isOpen)}
-      >
-        <Text variant="strong" mr="auto">
-          {title}
-        </Text>
-        {isOpen ? <Minus size={18} /> : <Plus size={18} />}
-      </Box>
-      {isOpen && (
-        <Box py={2} sx={{ color: 'secondaryText' }}>
-          {content}
-        </Box>
-      )}
-    </Box>
-  )
-}
 
 const BridgeFaq = (props: BoxProps) => (
   <Card

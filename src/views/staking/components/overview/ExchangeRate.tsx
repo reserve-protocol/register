@@ -7,7 +7,7 @@ import useTimeFrom from 'hooks/useTimeFrom'
 import { useAtomValue } from 'jotai'
 import { useMemo, useState } from 'react'
 import { rTokenStateAtom } from 'state/atoms'
-import { Box } from 'theme-ui'
+import { Box, BoxProps } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { TIME_RANGES } from 'utils/constants'
 
@@ -25,7 +25,7 @@ const query = gql`
   }
 `
 
-const ExchangeRate = () => {
+const ExchangeRate = (props: BoxProps) => {
   const rToken = useRToken()
   const { exchangeRate: rate } = useAtomValue(rTokenStateAtom)
   const [current, setCurrent] = useState(TIME_RANGES.MONTH)
@@ -64,7 +64,7 @@ const ExchangeRate = () => {
   }
 
   return (
-    <Box variant="layout.borderBox" padding={4}>
+    <Box variant="layout.borderBox" padding={4} {...props}>
       <AreaChart
         height={76}
         title={
