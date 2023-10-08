@@ -10,16 +10,10 @@ const faqs = [
     content: t`Base Bridge enables the transfer of certain digital assets and other data back and forth between Ethereum and Base.`,
   },
   {
-    title: t`Why doesn't Register use the official bridge?`,
-    content: 'test',
-  },
-  {
-    title: t`What wallet can I use?`,
-    content: 'test',
-  },
-  {
-    title: t`What if I have a question, issue or problem?`,
-    content: 'test',
+    title: t`How withdrawals work?`,
+    content: ` After your withdrawal request is proposed onchain (within an hour) you must verify and complete the transaction in order to access your funds. You can track your progress under the transaction tab.
+    
+    Transferring from Base to Ethereum takes approximately 7 days.`,
   },
 ]
 

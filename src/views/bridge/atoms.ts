@@ -14,7 +14,7 @@ import {
 } from './utils/constants'
 
 export const isBridgeWrappingAtom = atom(true)
-export const bridgeTokenAtom = atom('0') // 0 => index for eth
+export const bridgeTokenAtom = atom('1') // 0 => index for eth
 export const selectedTokenAtom = atom(
   (get) => BRIDGEABLE_TOKENS[Number(get(bridgeTokenAtom))]
 )

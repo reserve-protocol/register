@@ -1,4 +1,4 @@
-import styled from '@emotion/styled'
+import Button from 'components/button'
 import Base from 'components/icons/logos/Base'
 import Ethereum from 'components/icons/logos/Ethereum'
 import Popup from 'components/popup'
@@ -8,20 +8,10 @@ import { Check, ChevronDown, ChevronUp } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import { chainIdAtom } from 'state/atoms'
 import { publicClient, wagmiConfig } from 'state/chain'
-import { transition } from 'theme'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
+import { ROUTES } from 'utils/constants'
 import { useSwitchNetwork } from 'wagmi'
-
-const ActionItem = styled(Flex)`
-  transition: ${transition};
-  padding: 16px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #6d3210;
-  }
-`
 
 export const chainIcons = {
   [ChainId.Mainnet]: Ethereum,
@@ -40,32 +30,51 @@ if (import.meta.env.DEV) {
 
 const ChainList = ({ onSelect }: { onSelect(chain: number): void }) => {
   const selected = useAtomValue(chainIdAtom)
+  const navigate = useNavigate()
 
   return (
     <Box
       sx={{
         maxHeight: 320,
         overflow: 'auto',
-        backgroundColor: 'black',
+        backgroundColor: 'background',
         borderRadius: '13px',
-        color: 'white',
       }}
     >
       {CHAIN_LIST.map((chain) => {
         const Icon = chainIcons[chain.id]
 
         return (
-          <ActionItem onClick={() => onSelect(chain.id)} key={chain.id}>
-            <Box variant="layout.verticalAlign">
+          <Box
+            variant="layout.verticalAlign"
+            sx={{ cursor: 'pointer', position: 'relative' }}
+            onClick={() => onSelect(chain.id)}
+            key={chain.id}
+          >
+            <Box
+              sx={{
+                backgroundColor:
+                  selected === chain.id ? 'primary' : 'background',
+                width: '3px',
+                height: '20px',
+              }}
+            />
+            <Box variant="layout.verticalAlign" p={3}>
               <Icon fontSize={20} />
               <Text ml={3}>{chain.label}</Text>
-              {selected === chain.id && (
-                <Check size={18} style={{ marginLeft: 10 }} color="#11BB8D" />
-              )}
             </Box>
-          </ActionItem>
+          </Box>
         )
       })}
+      <Button
+        m={3}
+        variant="muted"
+        mt={0}
+        onClick={() => navigate(ROUTES.BRIDGE)}
+        small
+      >
+        Bridge assets
+      </Button>
     </Box>
   )
 }
@@ -97,6 +106,9 @@ const ChainSelector = (props: BoxProps) => {
       show={isVisible}
       onDismiss={() => setVisible(false)}
       content={<ChainList onSelect={handleSelect} />}
+      containerProps={{
+        sx: { border: '2px solid', borderColor: 'primary' },
+      }}
     >
       <Flex
         {...props}
