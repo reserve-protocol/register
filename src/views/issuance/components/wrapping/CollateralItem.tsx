@@ -159,6 +159,13 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
           functionName: wrapping ? 'deposit' : 'withdraw',
           args: [parsedAmount],
         }
+      case 'STARGATE':
+        return {
+          ...call,
+          abi: COMPv2ABI,
+          functionName: wrapping ? 'deposit' : 'withdraw',
+          args: [parsedAmount],
+        }
       default:
         return undefined
     }

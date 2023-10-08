@@ -88,5 +88,21 @@
     "collateralAddress": "0x0a1d576f3eFeF75b330424287a95A366e8281D54",
     "collateralToken": "aBasUSDbC",
     "rewardTokens": []
+  },
+  {
+    "address": "0x15395aCCbF8c6b28671fe41624D599624709a2D6",
+    "erc20": "0x073F98792ef4c00bB5f11B1F64f13cB25Cde0d8D",
+    "chainlinkFeed": "0x7e860098F58bBFC8648a4311b374B1D669a2bc6B",
+    "delayUntilDefault": "86400",
+    "maxTradeVolume": "1000000",
+    "oracleTimeout": 86460,
+    "targetName": "USD",
+    "version": "3.0.0",
+    "symbol": "wsgUSDbC",
+    "decimals": 6,
+    "protocol": "STARGATE",
+    "underlyingAddress": "0x4c80E24119CFB836cdF0a6b53dc23F04F7e652CA",
+    "underlyingToken": "S*USDbC",
+    "rewardTokens": []
   }
 ]

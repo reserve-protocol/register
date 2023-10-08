@@ -13,6 +13,7 @@ const protocolLabels: StringMap = {
   CONVEX: 'Curve Convex LP Tokens',
   CURVE: 'Curve LP Tokens',
   SDR: 'Savings DAI',
+  STARGATE: 'Stargate Tokens',
 }
 
 // Just true or false for now, if you want to display all collaterals = false
