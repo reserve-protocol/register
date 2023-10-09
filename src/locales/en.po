@@ -21,7 +21,7 @@ msgstr ""
 msgid "(in their Github repository)"
 msgstr ""
 
-#: src/views/issuance/components/wrapping/CollateralItem.tsx:173
+#: src/views/issuance/components/wrapping/CollateralItem.tsx:215
 msgid "{fromToken} amount"
 msgstr ""
 
@@ -74,11 +74,11 @@ msgstr ""
 msgid "24h Tx Vol"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:286
+#: src/views/home/components/Stats.tsx:298
 msgid "24h Tx Volume"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:287
+#: src/views/home/components/Stats.tsx:299
 #: src/views/overview/components/TokenUsage.tsx:49
 msgid "24h Txs"
 msgstr ""
@@ -110,7 +110,7 @@ msgstr ""
 msgid "Account"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:138
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:136
 #: src/views/governance/views/proposal/components/ItemPreview.tsx:42
 #: src/views/governance/views/proposal/components/ListItemPreview.tsx:21
 #: src/views/governance/views/proposal/components/ProposedRevenueSplitPreview.tsx:127
@@ -164,7 +164,8 @@ msgstr ""
 
 #: src/components/transactions/table/index.tsx:78
 #: src/views/auctions/components/useColumns.tsx:39
-#: src/views/issuance/components/zap/components/ZapInput.tsx:31
+#: src/views/bridge/components/BridgeAmount.tsx:43
+#: src/views/issuance/components/zap/components/ZapInput.tsx:74
 msgid "Amount"
 msgstr ""
 
@@ -192,7 +193,7 @@ msgstr ""
 msgid "Asset Registry"
 msgstr ""
 
-#: src/components/layout/navigation/index.tsx:103
+#: src/components/layout/navigation/index.tsx:112
 #: src/views/auctions/auctions-sidebar/index.tsx:26
 msgid "Auctions"
 msgstr ""
@@ -229,7 +230,7 @@ msgstr ""
 msgid "Backing"
 msgstr ""
 
-#: src/views/staking/components/overview/index.tsx:78
+#: src/views/staking/components/overview/StakingStats.tsx:77
 msgid "Backing + Staked"
 msgstr ""
 
@@ -281,7 +282,7 @@ msgstr ""
 msgid "Balance:"
 msgstr ""
 
-#: src/views/bridge/components/BridgeFaq.tsx:16
+#: src/views/bridge/components/BridgeFaq.tsx:10
 msgid "Base Bridge enables the transfer of certain digital assets and other data back and forth between Ethereum and Base."
 msgstr ""
 
@@ -305,6 +306,10 @@ msgstr ""
 
 #: src/components/layout/header/TokenToggle.tsx:68
 msgid "Basket iffy"
+msgstr ""
+
+#: src/views/issuance/components/issue/ConfirmIssuance.tsx:82
+msgid "Basket is not ready"
 msgstr ""
 
 #: src/components/rtoken-setup/basket/UnitBasket.tsx:89
@@ -339,7 +344,7 @@ msgstr ""
 msgid "Begin governance setup"
 msgstr ""
 
-#: src/views/issuance/components/issue/ConfirmIssuance.tsx:79
+#: src/views/issuance/components/issue/ConfirmIssuance.tsx:89
 msgid "Begin minting {0} {1}"
 msgstr ""
 
@@ -359,11 +364,11 @@ msgstr ""
 msgid "Bought"
 msgstr ""
 
-#: src/views/bridge/components/BridgeAmount.tsx:43
+#: src/views/bridge/components/BridgeAmount.tsx:44
 msgid "Bridge amount"
 msgstr ""
 
-#: src/views/bridge/components/BridgeHeader.tsx:35
+#: src/views/bridge/components/BridgeHeader.tsx:33
 msgid "Bridge tokens"
 msgstr ""
 
@@ -482,7 +487,7 @@ msgstr ""
 msgid "Connect"
 msgstr ""
 
-#: src/components/button/TransactionButton.tsx:45
+#: src/components/button/TransactionButton.tsx:46
 msgid "Connect Wallet"
 msgstr ""
 
@@ -514,20 +519,20 @@ msgstr ""
 msgid "Created at:"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:290
+#: src/views/home/components/Stats.tsx:302
 msgid "Cumulative - RToken holder income"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:203
+#: src/views/home/components/Stats.tsx:215
 msgid "Cumulative - Staked RSR income"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:208
+#: src/views/home/components/Stats.tsx:220
 #: src/views/overview/components/TokenUsage.tsx:31
 msgid "Cumulative Tx Volume"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:288
+#: src/views/home/components/Stats.tsx:300
 #: src/views/overview/components/TokenUsage.tsx:43
 msgid "Cumulative Txs"
 msgstr ""
@@ -539,9 +544,9 @@ msgstr ""
 #: src/views/governance/views/proposal-detail/components/ProposalDetailStats.tsx:90
 #: src/views/governance/views/proposal-detail/components/ProposalDetailStats.tsx:114
 #: src/views/governance/views/proposal/components/ItemPreview.tsx:82
-#: src/views/staking/components/overview/index.tsx:62
-#: src/views/staking/components/overview/index.tsx:72
-#: src/views/staking/components/overview/index.tsx:82
+#: src/views/staking/components/overview/StakingStats.tsx:61
+#: src/views/staking/components/overview/StakingStats.tsx:71
+#: src/views/staking/components/overview/StakingStats.tsx:81
 msgid "Current"
 msgstr ""
 
@@ -639,7 +644,7 @@ msgid "Deploying through this UI doesn't require deep technical knowledge as lon
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:57
-#: src/views/bridge/components/BridgeHeader.tsx:44
+#: src/views/bridge/components/BridgeHeader.tsx:42
 msgid "Deposit"
 msgstr ""
 
@@ -647,7 +652,7 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: src/components/layout/navigation/index.tsx:107
+#: src/components/layout/navigation/index.tsx:116
 msgid "Details + Roles"
 msgstr ""
 
@@ -659,7 +664,7 @@ msgstr ""
 msgid "Discover how an RToken is configured to operate in the good times and in emergencies if collateral defaults."
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:112
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:110
 #: src/components/rtoken-setup/components/RolesEdit.tsx:56
 msgid "Dismiss"
 msgstr ""
@@ -770,7 +775,7 @@ msgstr ""
 msgid "Est. RToken Yield"
 msgstr ""
 
-#: src/views/staking/components/overview/index.tsx:55
+#: src/views/staking/components/overview/StakingStats.tsx:54
 msgid "Est. Staking APY"
 msgstr ""
 
@@ -790,7 +795,7 @@ msgstr ""
 msgid "Estimated basket APY"
 msgstr ""
 
-#: src/components/button/TransactionButton.tsx:29
+#: src/components/button/TransactionButton.tsx:30
 #: src/components/transaction-modal/EstimatedGasInfo.tsx:13
 msgid "Estimated gas cost:"
 msgstr ""
@@ -825,7 +830,7 @@ msgstr ""
 msgid "Exit Deployer"
 msgstr ""
 
-#: src/views/bridge/components/BridgeFaq.tsx:72
+#: src/views/bridge/components/BridgeFaq.tsx:30
 msgid "Explanations"
 msgstr ""
 
@@ -877,7 +882,7 @@ msgstr ""
 msgid "Got it"
 msgstr ""
 
-#: src/components/layout/navigation/index.tsx:104
+#: src/components/layout/navigation/index.tsx:113
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:33
 #: src/views/deploy/components/NavigationSidebar.tsx:24
 #: src/views/governance/views/proposal/components/ProposalNavigation.tsx:19
@@ -942,11 +947,11 @@ msgstr ""
 msgid "In Cooldown"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:192
+#: src/views/home/components/Stats.tsx:204
 msgid "Includes market cap of all RTokens and RSV."
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:197
+#: src/views/home/components/Stats.tsx:209
 msgid "Includes RTokens, staked RSR, and RSV."
 msgstr ""
 
@@ -967,7 +972,7 @@ msgstr ""
 msgid "Input number of blocks"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:102
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:100
 msgid "Input plugin address (not ERC-20 address)"
 msgstr ""
 
@@ -1034,13 +1039,13 @@ msgstr ""
 msgid "Invalid ({targetUnit}) basket scale"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:85
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:83
 #: src/components/rtoken-setup/components/RolesEdit.tsx:44
 #: src/views/staking/components/stake/EditDelegate.tsx:52
 msgid "Invalid address"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:77
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:75
 msgid "Invalid collateral"
 msgstr ""
 
@@ -1107,6 +1112,8 @@ msgstr ""
 msgid "Learn"
 msgstr ""
 
+#: src/views/issuance/components/zap/components/ZapInput.tsx:93
+#: src/views/issuance/components/zap/components/ZapInput.tsx:147
 #: src/views/settings/components/SettingItem.tsx:60
 msgid "Loading..."
 msgstr ""
@@ -1128,7 +1135,7 @@ msgstr ""
 msgid "Long freeze duration (s)"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:131
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:129
 msgid "Made your own collateral?"
 msgstr ""
 
@@ -1181,7 +1188,7 @@ msgstr ""
 msgid "Maximum trade volume - maximum sized trade for any trade involving RToken, in terms of the unit of account eg. USD."
 msgstr ""
 
-#: src/views/staking/components/overview/index.tsx:108
+#: src/views/staking/components/overview/About.tsx:15
 msgid "Mechanics"
 msgstr ""
 
@@ -1215,11 +1222,11 @@ msgstr ""
 msgid "Mint"
 msgstr ""
 
-#: src/views/issuance/components/issue/ConfirmIssuance.tsx:74
+#: src/views/issuance/components/issue/ConfirmIssuance.tsx:94
 msgid "Mint {0}"
 msgstr ""
 
-#: src/components/layout/navigation/index.tsx:101
+#: src/components/layout/navigation/index.tsx:110
 msgid "Mint + Redeem"
 msgstr ""
 
@@ -1227,7 +1234,7 @@ msgstr ""
 msgid "Mint amount"
 msgstr ""
 
-#: src/views/issuance/components/zap/components/ZapInput.tsx:33
+#: src/views/issuance/components/zap/components/ZapInput.tsx:76
 msgid "Mint with {zapSymbol}"
 msgstr ""
 
@@ -1240,7 +1247,7 @@ msgid "Missing collateral"
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:36
-#: src/views/tokens/components/UnlistedTokensTable.tsx:96
+#: src/views/tokens/components/UnlistedTokensTable.tsx:98
 msgid "Mkt Cap"
 msgstr ""
 
@@ -1318,7 +1325,7 @@ msgstr ""
 msgid "Not available"
 msgstr ""
 
-#: src/components/button/TransactionButton.tsx:65
+#: src/components/button/TransactionButton.tsx:66
 msgid "Not enough"
 msgstr ""
 
@@ -1367,11 +1374,11 @@ msgstr ""
 msgid "Other Parameters"
 msgstr ""
 
-#: src/views/issuance/components/zap/components/ZapInput.tsx:14
+#: src/views/issuance/components/zap/components/ZapInput.tsx:56
 msgid "Output"
 msgstr ""
 
-#: src/components/layout/navigation/index.tsx:100
+#: src/components/layout/navigation/index.tsx:109
 #: src/views/overview/components/TokenOverview.tsx:24
 msgid "Overview"
 msgstr ""
@@ -1411,8 +1418,12 @@ msgstr ""
 msgid "Platform"
 msgstr ""
 
-#: src/views/staking/components/overview/index.tsx:135
-msgid "Please carefully evaluate the RToken before choosing to stake your RSR here. If any of the various collaterals of this RToken default, then the staked RSR will be the first funds that get auctioned off to make up the difference for RToken holders."
+#: src/views/staking/components/overview/About.tsx:32
+msgid ""
+"Please carefully evaluate the RToken before choosing to stake your RSR\n"
+"here. If any of the various collaterals of this RToken default, then the\n"
+"staked RSR will be the first funds that get auctioned off to make up the\n"
+"difference for RToken holders."
 msgstr ""
 
 #: src/views/settings/components/GovernancePrompt.tsx:45
@@ -1457,8 +1468,8 @@ msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:34
 #: src/views/home/components/Portfolio.tsx:37
-#: src/views/overview/components/PriceChart.tsx:74
-#: src/views/tokens/components/UnlistedTokensTable.tsx:91
+#: src/views/overview/components/PriceChart.tsx:77
+#: src/views/tokens/components/UnlistedTokensTable.tsx:93
 msgid "Price"
 msgstr ""
 
@@ -1708,7 +1719,7 @@ msgstr ""
 msgid "Reward ratio (decimals)"
 msgstr ""
 
-#: src/views/staking/components/overview/index.tsx:132
+#: src/views/staking/components/overview/About.tsx:31
 msgid "Risk evaluation"
 msgstr ""
 
@@ -1746,7 +1757,7 @@ msgstr ""
 msgid "RSR Rewards"
 msgstr ""
 
-#: src/views/overview/components/StakingChart.tsx:77
+#: src/views/overview/components/StakingChart.tsx:80
 msgid "RSR Staked"
 msgstr ""
 
@@ -1775,7 +1786,7 @@ msgstr ""
 msgid "RToken Address"
 msgstr ""
 
-#: src/components/layout/header/AppHeader.tsx:63
+#: src/components/layout/header/AppHeader.tsx:42
 msgid "RToken Deployer"
 msgstr ""
 
@@ -1821,7 +1832,7 @@ msgstr ""
 msgid "RToken paused or frozen"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:158
+#: src/views/home/components/Stats.tsx:168
 msgid "RToken Stats"
 msgstr ""
 
@@ -1853,7 +1864,7 @@ msgstr ""
 msgid "RTokens in this list is not an endorsement or audited by us. It’s simply RTokens that have gone through our listing process and don’t seem like clear scams."
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:119
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:117
 #: src/components/rtoken-setup/components/RolesEdit.tsx:53
 #: src/views/staking/components/stake/EditDelegate.tsx:31
 msgid "Save"
@@ -1942,12 +1953,12 @@ msgstr ""
 msgid "Stake"
 msgstr ""
 
-#: src/components/layout/navigation/index.tsx:102
+#: src/components/layout/navigation/index.tsx:111
 msgid "Stake + Unstake"
 msgstr ""
 
 #: src/views/overview/components/TokenOverview.tsx:59
-#: src/views/staking/components/overview/index.tsx:43
+#: src/views/staking/components/overview/StakingStats.tsx:42
 msgid "Stake pool"
 msgstr ""
 
@@ -1960,7 +1971,7 @@ msgstr ""
 msgid "Stake RSR"
 msgstr ""
 
-#: src/views/tokens/components/UnlistedTokensTable.tsx:126
+#: src/views/tokens/components/UnlistedTokensTable.tsx:128
 msgid "Staked"
 msgstr ""
 
@@ -1968,7 +1979,7 @@ msgstr ""
 msgid "Staked RSR overcollateralization"
 msgstr ""
 
-#: src/views/staking/components/overview/index.tsx:96
+#: src/views/staking/components/overview/About.tsx:7
 msgid "Staking RSR"
 msgstr ""
 
@@ -2005,7 +2016,7 @@ msgstr ""
 msgid "Submit proposal on-chain"
 msgstr ""
 
-#: src/views/overview/components/SupplyChart.tsx:71
+#: src/views/overview/components/SupplyChart.tsx:74
 msgid "Supply"
 msgstr ""
 
@@ -2026,7 +2037,7 @@ msgid "Target:"
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:51
-#: src/views/tokens/components/UnlistedTokensTable.tsx:110
+#: src/views/tokens/components/UnlistedTokensTable.tsx:112
 msgid "Target(s)"
 msgstr ""
 
@@ -2108,7 +2119,7 @@ msgstr ""
 msgid "There’s two freezing roles that put the system in the same state for different durations:"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:161
+#: src/views/home/components/Stats.tsx:171
 msgid "These stats are across all RTokens on the Reserve Protocol listed by this dApp, including anonymized data from the Reserve Rpay app API."
 msgstr ""
 
@@ -2124,7 +2135,7 @@ msgstr ""
 msgid "This field is required"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:252
+#: src/views/home/components/Stats.tsx:264
 msgid "This includes on-chain transactions for RTokens and RSV in addition to anonymized Rpay transactions to show the full story of the Reserve ecosystem."
 msgstr ""
 
@@ -2166,7 +2177,7 @@ msgid "To settle"
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:26
-#: src/views/tokens/components/UnlistedTokensTable.tsx:77
+#: src/views/tokens/components/UnlistedTokensTable.tsx:79
 msgid "Token"
 msgstr ""
 
@@ -2217,11 +2228,11 @@ msgstr ""
 msgid "Total initial RToken scale including all targets. If your RToken only has one target unit this will be the same as the basket scale input."
 msgstr ""
 
-#: src/views/staking/components/overview/index.tsx:48
+#: src/views/staking/components/overview/StakingStats.tsx:47
 msgid "Total RSR staked"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:190
+#: src/views/home/components/Stats.tsx:202
 msgid "Total RToken Market Cap"
 msgstr ""
 
@@ -2267,7 +2278,7 @@ msgstr ""
 msgid "Transaction submitted"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:251
+#: src/views/home/components/Stats.tsx:263
 #: src/views/overview/components/RecentTransactions.tsx:50
 msgid "Transactions"
 msgstr ""
@@ -2280,7 +2291,7 @@ msgstr ""
 msgid "Trigger an Auction"
 msgstr ""
 
-#: src/views/issuance/components/zap/components/ZapToggle.tsx:30
+#: src/views/issuance/components/zap/components/ZapToggle.tsx:31
 msgid "Turn on Zaps to mint using 1 asset"
 msgstr ""
 
@@ -2288,7 +2299,7 @@ msgstr ""
 msgid "Tutorial video"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:196
+#: src/views/home/components/Stats.tsx:208
 msgid "TVL in Reserve"
 msgstr ""
 
@@ -2304,8 +2315,8 @@ msgstr ""
 msgid "Tx 2"
 msgstr ""
 
-#: src/components/button/TransactionButton.tsx:75
-#: src/components/button/TransactionButton.tsx:112
+#: src/components/button/TransactionButton.tsx:76
+#: src/components/button/TransactionButton.tsx:115
 msgid "Tx in process..."
 msgstr ""
 
@@ -2318,7 +2329,7 @@ msgid "Tx2. Governance"
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:41
-#: src/views/tokens/components/UnlistedTokensTable.tsx:101
+#: src/views/tokens/components/UnlistedTokensTable.tsx:103
 msgid "Txs"
 msgstr ""
 
@@ -2356,7 +2367,7 @@ msgid "Unstake stRSR"
 msgstr ""
 
 #: src/views/settings/components/OtherInfo.tsx:31
-#: src/views/staking/components/overview/index.tsx:68
+#: src/views/staking/components/overview/StakingStats.tsx:67
 msgid "Unstaking Delay"
 msgstr ""
 
@@ -2368,7 +2379,7 @@ msgstr ""
 msgid "Unstaking Delay (s)"
 msgstr ""
 
-#: src/views/staking/components/overview/index.tsx:121
+#: src/views/staking/components/overview/About.tsx:24
 msgid "Unstaking RSR"
 msgstr ""
 
@@ -2388,7 +2399,7 @@ msgstr ""
 msgid "USD Value"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:134
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:132
 msgid "Use a custom plugin contract address"
 msgstr ""
 
@@ -2404,7 +2415,7 @@ msgstr ""
 msgid "User tracking"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/CustomCollateral.tsx:119
+#: src/components/rtoken-setup/basket/CustomCollateral.tsx:117
 msgid "Validating..."
 msgstr ""
 
@@ -2424,7 +2435,7 @@ msgstr ""
 msgid "View All"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:180
+#: src/views/home/components/Stats.tsx:192
 msgid "View Dashboard"
 msgstr ""
 
@@ -2438,7 +2449,7 @@ msgid "View on Etherscan"
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:46
-#: src/views/tokens/components/UnlistedTokensTable.tsx:105
+#: src/views/tokens/components/UnlistedTokensTable.tsx:107
 msgid "Volume"
 msgstr ""
 
@@ -2523,11 +2534,7 @@ msgstr ""
 msgid "Website"
 msgstr ""
 
-#: src/views/bridge/components/BridgeFaq.tsx:27
-msgid "What if I have a question, issue or problem?"
-msgstr ""
-
-#: src/views/bridge/components/BridgeFaq.tsx:15
+#: src/views/bridge/components/BridgeFaq.tsx:9
 msgid "What is Base Bridge?"
 msgstr ""
 
@@ -2535,29 +2542,36 @@ msgstr ""
 msgid "What is Reserve Governor Alexios?"
 msgstr ""
 
-#: src/views/bridge/components/BridgeFaq.tsx:23
-msgid "What wallet can I use?"
+#: src/views/staking/components/overview/About.tsx:8
+msgid ""
+"When staking RSR, you are putting your RSR at risk in the case of a\n"
+"collateral default in exchange for 1) the rights to govern the RToken\n"
+"and 2) for a portion of the revenue generated by the collateral. The\n"
+"revenue sent to the staked RSR pool will be distributed amongst RSR\n"
+"stakers proportionally to their stake in the pool."
 msgstr ""
 
-#: src/views/staking/components/overview/index.tsx:99
-msgid "When staking RSR, you are putting your RSR at risk in the case of a collateral default in exchange for 1) the rights to govern the RToken and 2) for a portion of the revenue generated by the collateral. The revenue sent to the staked RSR pool will be distributed amongst RSR stakers proportionally to their stake in the pool."
+#: src/views/staking/components/overview/About.tsx:16
+msgid ""
+"When you stake your RSR, you will receive a stRSR receipt token which\n"
+"represents your ownership in the staked RSR contract. As revenue is\n"
+"distributed, the receipt token will be redeemable for an increasing\n"
+"amount of RSR. If there is a default scenario where the staked RSR is\n"
+"slashed, then the receipt token will be redeemable for a decreased\n"
+"amount of RSR."
 msgstr ""
 
-#: src/views/staking/components/overview/index.tsx:111
-msgid "When you stake your RSR, you will receive a stRSR receipt token which represents your ownership in the staked RSR contract. As revenue is distributed, the receipt token will be redeemable for an increasing amount of RSR. If there is a default scenario where the staked RSR is slashed, then the receipt token will be redeemable for a decreased amount of RSR."
-msgstr ""
-
-#: src/views/staking/components/overview/index.tsx:124
-msgid "When you unstake your stRSR, there will be a delay (defined by governance). This is to eliminate game theory scenarios that would make the backstop RSR staked pool less effective because people would continually be incentivized to unstake and restake."
-msgstr ""
-
-#: src/views/bridge/components/BridgeFaq.tsx:19
-msgid "Why doesn't Register use the official bridge?"
+#: src/views/staking/components/overview/About.tsx:25
+msgid ""
+"When you unstake your stRSR, there will be a delay (defined by\n"
+"governance). This is to eliminate game theory scenarios that would make\n"
+"the backstop RSR staked pool less effective because people would\n"
+"continually be incentivized to unstake and restake."
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:56
 #: src/components/transactions/table/index.tsx:58
-#: src/views/bridge/components/BridgeHeader.tsx:53
+#: src/views/bridge/components/BridgeHeader.tsx:51
 #: src/views/staking/components/balances/AvailableBalance.tsx:51
 msgid "Withdraw"
 msgstr ""
