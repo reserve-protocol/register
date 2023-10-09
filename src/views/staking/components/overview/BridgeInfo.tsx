@@ -20,10 +20,10 @@ const BridgeInfo = (props: BoxProps) => {
       <Base />
       <Box ml={3}>
         <Text variant="strong" sx={{ fontWeight: 500 }}>
-          <Trans>Base RSR Bridge</Trans>
+          Base RSR Bridge
         </Text>
         <Text variant="legend">
-          <Trans>Deposit RSR to the Base network</Trans>
+          Deposit RSR to the Base network
         </Text>
       </Box>
       <Button
@@ -38,7 +38,7 @@ const BridgeInfo = (props: BoxProps) => {
         onClick={() => navigate(ROUTES.BRIDGE)}
       >
         <Text mr={2}>
-          <Trans>Bridge</Trans>
+          Bridge
         </Text>
         <ExternalArrowIcon />
       </Button>
