@@ -58,12 +58,13 @@ const TokenList = memo(
             my={0}
           />
         )}
-        {Object.values(tokens).map(({ address, logo, symbol }) => (
+        {Object.values(tokens).map(({ address, logo, symbol, chainId }) => (
           <ActionItem key={address} onClick={() => onSelect(address)}>
             <TokenItem
               sx={{ color: 'invertedText' }}
               symbol={symbol}
               logo={logo}
+              chainId={chainId}
             />
           </ActionItem>
         ))}

@@ -116,7 +116,7 @@ export const zapOutputAmount = atom((get) => {
   const previous = get(previousZapTransaction)
   const quote = get(zapQuote) ?? previous?.result
   const rTokenOut = quote?.outputToken
-  if (quote == null||rTokenOut==null) {
+  if (quote == null || rTokenOut == null) {
     return '0.0'
   }
   return formatQty(
@@ -298,7 +298,8 @@ const zapEnabledForRTokens = new Set<string>([
   '0xacdf0dba4b9839b96221a8487e9ca660a48212be',
   '0xf2098092a5b9d25a3cc7ddc76a0553c9922eea9e',
   '0x9b451beb49a03586e6995e5a93b9c745d068581e',
-  '0xfc0b1eef20e4c68b3dcf36c4537cfa7ce46ca70b'
+  '0xfc0b1eef20e4c68b3dcf36c4537cfa7ce46ca70b',
+  "0x50249c768a6d3cb4b6565c0a2bfbdb62be94915c"
 ])
 
 export const zapEnabledAtom = atomWithStorage('zap-enabled', false)
@@ -383,7 +384,7 @@ export const ui = {
       }
       const flowState = get(state)
       const data = getZapActionState(get)
-      
+
       if (data == null) {
         return
       }
