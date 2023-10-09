@@ -7,7 +7,7 @@ interface Props extends BoxProps {
   symbol: string
   logo?: string
   width?: number
-  chainId: number | null
+  chainId?: number | null
 }
 
 const TokenItem = ({ symbol, logo, width = 20, chainId, ...props }: Props) => (
