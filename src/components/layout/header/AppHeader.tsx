@@ -49,7 +49,7 @@ const HeaderAction = () => {
       <Box variant="layout.verticalAlign">
         <BridgeIcon />
         <Text ml={3} sx={{ fontSize: 2 }} variant="subtitle">
-          <Trans>L2 Bridge</Trans>
+          L2 Bridge
         </Text>
       </Box>
     )
