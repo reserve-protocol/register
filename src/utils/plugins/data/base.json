@@ -103,6 +103,8 @@
     "protocol": "STARGATE",
     "underlyingAddress": "0x4c80E24119CFB836cdF0a6b53dc23F04F7e652CA",
     "underlyingToken": "S*USDbC",
+    "collateralAddress": "0x4c80E24119CFB836cdF0a6b53dc23F04F7e652CA",
+    "collateralToken": "S*USDbC",
     "rewardTokens": []
   }
 ]
