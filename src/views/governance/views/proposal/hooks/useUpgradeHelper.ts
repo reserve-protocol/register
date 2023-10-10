@@ -281,8 +281,8 @@ const useUpgradeHelper = () => {
       '0x954B4770462e8894BcD2451543482F11DC160e1e',
       '0x6E20823cA50aA026b99789c8D468a01f8aA3581C',
       '0x977cb0e300a58978f597fc65ED5a2D2784D2DCF9',
-      '0x9B85aC04A09c8C813c37de9B3d563C2D3F936162',
-      '0x9B85aC04A09c8C813c37de9B3d563C2D3F936162',
+      '0xf526f058858E4cD060cFDD775077999562b31bE0',
+      '0xf526f058858E4cD060cFDD775077999562b31bE0',
       '0xf526f058858E4cD060cFDD775077999562b31bE0',
       '0xf526f058858E4cD060cFDD775077999562b31bE0',
       '0xf526f058858E4cD060cFDD775077999562b31bE0',
@@ -302,16 +302,6 @@ const useUpgradeHelper = () => {
       encodeFunctionData({
         abi: AssetRegistry,
         functionName: 'register',
-        args: ['0x1FFA5955D64Ee32cB1BF7104167b81bb085b0c8d'],
-      }),
-      encodeFunctionData({
-        abi: AssetRegistry,
-        functionName: 'register',
-        args: ['0xE1fcCf8e23713Ed0497ED1a0E6Ae2b19ED443eCd'],
-      }),
-      encodeFunctionData({
-        abi: AssetRegistry,
-        functionName: 'register',
         args: ['0x890FAa00C16EAD6AA76F18A1A7fe9C40838F9122'],
       }),
       encodeFunctionData({
@@ -324,7 +314,11 @@ const useUpgradeHelper = () => {
         functionName: 'register',
         args: ['0xde0e2f0c9792617d3908d92a024caa846354cea2'],
       }),
-
+      encodeFunctionData({
+        abi: AssetRegistry,
+        functionName: 'swapRegistered',
+        args: ['0x3C0a9143063Fc306F7D3cBB923ff4879d70Cf1EA'],
+      }),
       encodeFunctionData({
         abi: AssetRegistry,
         functionName: 'swapRegistered',
@@ -365,16 +359,16 @@ const useUpgradeHelper = () => {
         functionName: 'setPrimeBasket',
         args: [
           [
-            '0x6D05CB2CB647B58189FA16f81784C05B4bcd4fe9',
+            '0x465a5a630482f3abD6d3b84B39B29b07214d19e5',
             '0x3BECE5EC596331033726E5C6C188c313Ff4E3fE5',
             '0xaA91d24c2F7DBb6487f61869cD8cd8aFd5c5Cab2',
             '0x83F20F44975D03b1b09e64809B757c47f942BEeA',
           ],
           [
             BigInt('135000000000000009'),
+            BigInt('135000000000000009'),
             BigInt('364999999999999991'),
-            BigInt('250000000000000000'),
-            BigInt('250000000000000000'),
+            BigInt('364999999999999991'),
           ],
         ],
       }),
@@ -446,12 +440,11 @@ const useUpgradeHelper = () => {
       '0xaCacddeE9b900b7535B13Cd8662df130265b8c78',
       '0xaCacddeE9b900b7535B13Cd8662df130265b8c78',
       '0xaCacddeE9b900b7535B13Cd8662df130265b8c78',
-      '0x9B85aC04A09c8C813c37de9B3d563C2D3F936162',
-      '0x9B85aC04A09c8C813c37de9B3d563C2D3F936162',
-      '0x9B85aC04A09c8C813c37de9B3d563C2D3F936162',
-      '0x9B85aC04A09c8C813c37de9B3d563C2D3F936162',
-      '0x9B85aC04A09c8C813c37de9B3d563C2D3F936162',
-      '0x9B85aC04A09c8C813c37de9B3d563C2D3F936162',
+      '0xaCacddeE9b900b7535B13Cd8662df130265b8c78',
+      '0xaCacddeE9b900b7535B13Cd8662df130265b8c78',
+      '0xaCacddeE9b900b7535B13Cd8662df130265b8c78',
+      '0xaCacddeE9b900b7535B13Cd8662df130265b8c78',
+      '0xaCacddeE9b900b7535B13Cd8662df130265b8c78',
       '0xaCacddeE9b900b7535B13Cd8662df130265b8c78',
       '0x9119DB28432bd97aBF4c3D81B929849e0490c7A6',
       '0x6d309297ddDFeA104A6E89a132e2f05ce3828e07',
