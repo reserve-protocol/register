@@ -1,20 +1,23 @@
 import { Trans, t } from '@lingui/macro'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
+import useContractWrite from 'hooks/useContractWrite'
 import { GasEstimation } from 'hooks/useGasEstimate'
+import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
+import { useEffect } from 'react'
+import { CheckCircle } from 'react-feather'
 import { walletAtom } from 'state/atoms'
 import { Box, Spinner, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { UsePrepareContractWriteConfig, useBalance } from 'wagmi'
 import Button, { ButtonProps, LoadingButton, LoadingButtonProps } from '.'
-import useContractWrite from 'hooks/useContractWrite'
-import useWatchTransaction from 'hooks/useWatchTransaction'
-import { useEffect } from 'react'
-import { Check, CheckCircle } from 'react-feather'
+import TransactionError from 'components/transaction-error/TransactionError'
+import useNotification from 'hooks/useNotification'
 
 interface TransactionButtonProps extends LoadingButtonProps {
   gas?: GasEstimation
   mining?: boolean
+  error?: Error | null
 }
 
 interface GasEstimateLabelProps {
@@ -49,6 +52,7 @@ export const ConnectWalletButton = (props: ButtonProps) => {
 const TransactionButton = ({
   gas,
   mining,
+  error,
   ...props
 }: TransactionButtonProps) => {
   const address = useAtomValue(walletAtom)
@@ -76,6 +80,9 @@ const TransactionButton = ({
     <>
       <LoadingButton {...props} />
       {!!gas && <GasEstimateLabel gas={gas} />}
+      {!!error && (
+        <TransactionError sx={{ textAlign: 'center' }} mt={3} error={error} />
+      )}
     </>
   )
 }
@@ -96,7 +103,9 @@ export const ExecuteButton = ({
   disabled,
   ...props
 }: ExecuteButtonProps) => {
-  const { write, hash, isLoading, isReady } = useContractWrite(call)
+  const { write, hash, isLoading, validationError, reset, isReady } =
+    useContractWrite(call)
+  const notify = useNotification()
   const { isMining, status } = useWatchTransaction({
     hash,
     label: txLabel || props.text,
@@ -107,16 +116,24 @@ export const ExecuteButton = ({
   }
 
   useEffect(() => {
-    if (status === 'success' && onSuccess) {
-      onSuccess()
+    if (status === 'success') {
+      if (onSuccess) {
+        onSuccess()
+      }
+
+      setTimeout(reset, 3000)
     }
   }, [status])
 
+  useEffect(() => {
+    if (validationError) {
+      notify('Transaction not valid', validationError.message, 'error')
+    }
+  }, [validationError])
+
   if (status === 'success') {
     if (!successLabel) {
-      return (
-        <CheckCircle color="#75FBC3" size={18} />
-      )
+      return <CheckCircle color="#75FBC3" size={18} />
     }
     props.text = successLabel
   }

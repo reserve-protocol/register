@@ -1,17 +1,17 @@
 import { Trans } from '@lingui/macro'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
-import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
+import { chainIdAtom, rTokenListAtom, selectedRTokenAtom } from 'state/atoms'
 import { Box } from 'theme-ui'
 import { SmallButton } from 'components/button'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import rtokens from 'utils/rtokens'
 
 const External = () => {
   const rToken = useRToken()
   const rTokenAddress = useAtomValue(selectedRTokenAtom)
+  const rTokenList = useAtomValue(rTokenListAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const meta = rTokenAddress ? rtokens[rTokenAddress] : undefined
+  const meta = rTokenAddress ? rTokenList[rTokenAddress] : undefined
 
   return (
     <Box

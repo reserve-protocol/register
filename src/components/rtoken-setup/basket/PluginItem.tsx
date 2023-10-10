@@ -40,7 +40,7 @@ const PluginInfo = ({ data }: { data: CollateralPlugin }) => {
           <Link
             as="a"
             href={getExplorerLink(
-              data.collateralToken || data.underlyingToken || data.symbol,
+              data.underlyingAddress || data.erc20,
               chainId,
               ExplorerDataType.TOKEN
             )}

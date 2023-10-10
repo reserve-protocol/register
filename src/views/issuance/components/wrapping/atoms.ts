@@ -5,6 +5,7 @@ import collateralPlugins from 'utils/plugins'
 
 const protocolLabels: StringMap = {
   AAVE: 'Aave V2 Tokens',
+  AAVEv3: 'Aave V3 Tokens',
   MORPHO: 'Morpho (Aave) Tokens',
   COMP: 'Compound V2 Tokens',
   FLUX: 'FLUX Tokens',
@@ -41,6 +42,26 @@ export const collateralsPerRTokenAtom = atom<CollateralPlugin[]>((get) => {
 
   if (!rToken || !assets) {
     return rTokenPlugins
+  }
+
+  // TODO: USDC+ on mainnet, remove when old flux plugins are swapped from the basket
+  if (rToken.address === '0xFc0B1EEf20e4c68B3DCF36c4537Cfa7Ce46CA70b') {
+    rTokenPlugins.push({
+      address: '0x1FFA5955D64Ee32cB1BF7104167b81bb085b0c8d',
+      erc20: '0x6D05CB2CB647B58189FA16f81784C05B4bcd4fe9',
+      chainlinkFeed: '0x',
+      delayUntilDefault: '86400',
+      maxTradeVolume: '1000000',
+      oracleTimeout: 3660,
+      targetName: 'USD',
+      version: '3.0.0',
+      symbol: 'fUSDC-VAULT',
+      decimals: 18,
+      protocol: 'FLUX',
+      underlyingAddress: '0x465a5a630482f3abD6d3b84B39B29b07214d19e5',
+      underlyingToken: 'fUSDC',
+      rewardTokens: [],
+    })
   }
 
   return rToken.collaterals.reduce((acc, collateral) => {

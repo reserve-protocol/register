@@ -1,6 +1,7 @@
 import { TokenQuantity } from '@reserve-protocol/token-zapper'
 
 export const FOUR_DIGITS = 10n ** 4n
+export const TWO_DIGITS = 10n ** 2n
 
 const formatQty_ = (qty: TokenQuantity, divisor: bigint) => {
   if (qty.amount === 0n) {

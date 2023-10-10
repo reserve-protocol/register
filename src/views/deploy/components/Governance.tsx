@@ -1,11 +1,14 @@
 import Layout from 'components/rtoken-setup/Layout'
 import { FormProvider, useForm } from 'react-hook-form'
-import { governanceDefaultValues as defaultValues } from '../utils'
 import GovernanceOverview from './GovernanceOverview'
 import NavigationSidebar from './NavigationSidebar'
 import RTokenSetup from './RTokenSetup'
+import { useAtomValue } from 'jotai'
+import { rTokenDefaultGovernanceValuesAtom } from 'components/rtoken-setup/atoms'
 
 const Governance = () => {
+  const defaultValues = useAtomValue(rTokenDefaultGovernanceValuesAtom)
+
   const form = useForm({
     mode: 'onChange',
     defaultValues,

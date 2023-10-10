@@ -1,14 +1,14 @@
 import { gql } from 'graphql-request'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
-import { chainIdAtom, rpayOverviewAtom } from 'state/atoms'
+import { chainIdAtom, rTokenListAtom, rpayOverviewAtom } from 'state/atoms'
 import { EUSD_ADDRESS } from 'utils/addresses'
 import { TIME_RANGES } from 'utils/constants'
-import tokenList from 'utils/rtokens'
 import useQuery from './useQuery'
 import useTimeFrom from './useTimeFrom'
 import { formatEther, getAddress } from 'viem'
 import RSV, { RSVOverview } from 'utils/rsv'
+import { ChainId } from 'utils/chains'
 
 interface ListedToken {
   id: string
@@ -29,7 +29,17 @@ interface ListedToken {
 // TODO: Cache only while the list is short
 const tokenListAtom = atom<ListedToken[]>([])
 
-const tokenKeys = [...Object.keys(tokenList).map((s) => s.toLowerCase())]
+const tokenKeysAtom = atom((get) => {
+  const chainId = get(chainIdAtom)
+  const list = [...Object.keys(get(rTokenListAtom)).map((s) => s.toLowerCase())]
+
+  // Add RSV to the token list
+  if (chainId === ChainId.Mainnet) {
+    list.push(RSV.address.toLowerCase())
+  }
+
+  return list
+})
 
 const tokenListQuery = gql`
   query GetTokenListOverview($tokenIds: [String]!, $fromTime: Int!) {
@@ -80,9 +90,10 @@ const useTokenList = () => {
   const rpayOverview = useAtomValue(rpayOverviewAtom)
   const fromTime = useTimeFrom(TIME_RANGES.MONTH)
   const chainId = useAtomValue(chainIdAtom)
+  const tokenIds = useAtomValue(tokenKeysAtom)
 
   const { data } = useQuery(tokenListQuery, {
-    tokenIds: tokenKeys,
+    tokenIds,
     fromTime,
     chainId,
   })
@@ -117,7 +128,7 @@ const useTokenList = () => {
             tokenData.transactionCount += RSVOverview.txCount
             tokenData.cumulativeVolume += RSVOverview.volume
             tokenData.targetUnits = 'USD'
-          } else if (token.id === EUSD_ADDRESS[chainId].toLowerCase()) {
+          } else if (token.id === EUSD_ADDRESS[chainId]?.toLowerCase()) {
             tokenData.transactionCount += rpayOverview.txCount
             tokenData.cumulativeVolume += rpayOverview.volume
           }
@@ -128,7 +139,7 @@ const useTokenList = () => {
     }
   }, [data])
 
-  return list
+  return { list, isLoading: !data }
 }
 
 export default useTokenList

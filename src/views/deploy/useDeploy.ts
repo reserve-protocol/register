@@ -29,13 +29,11 @@ export const useDeployParams = () => {
   const revenueSplit = useAtomValue(revenueSplitAtom)
   const formFields = useDebounce(useWatch(), 500)
   const { isValid, isValidating } = useFormState()
+  const isFormValid =
+    !!import.meta.env.VITE_DISABLE_VALIDATION || (isValid && !isValidating)
 
   const isDeployValid =
-    isBasketValid &&
-    isRevenueSplitValid &&
-    isValidExternalMap &&
-    isValid &&
-    !isValidating
+    isBasketValid && isRevenueSplitValid && isValidExternalMap && isFormValid
 
   return useMemo(() => {
     if (!isDeployValid) return undefined

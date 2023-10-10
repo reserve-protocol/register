@@ -31,7 +31,7 @@ const RecentTokenTransactions = (props: BoxProps) => {
     {
       tokenId: rToken?.address.toLowerCase() ?? '',
     },
-    { refreshInterval: 10000 }
+    { refreshInterval: 60000 }
   )
   const txs = useMemo(() => {
     if (!data?.entries) {

@@ -7,20 +7,20 @@ import { chainIdAtom, rpayTransactionsAtom } from 'state/atoms'
 import RpayTxListener from 'state/rpay/RpayTxListener'
 
 import { t, Trans } from '@lingui/macro'
+import { SmallButton } from 'components/button'
+import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import HomeStatsIcon from 'components/icons/HomeStatsIcon'
 import { InfoHeading } from 'components/info-box'
 import useTimeFrom from 'hooks/useTimeFrom'
 import { useAtom, useAtomValue } from 'jotai'
+import mixpanel from 'mixpanel-browser'
 import { useEffect } from 'react'
 import { rpayOverviewAtom, rsrPriceAtom, rTokenMetricsAtom } from 'state/atoms'
 import { Box, BoxProps, Divider, Flex, Grid, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { PROTOCOL_SLUG, TIME_RANGES } from 'utils/constants'
-import Help from '../../../components/help'
 import { formatEther } from 'viem'
-import { SmallButton } from 'components/button'
-import mixpanel from 'mixpanel-browser'
-import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
+import Help from '../../../components/help'
 
 // Here you could create a main component that holds all the logic
 const Main = () => {
@@ -144,7 +144,7 @@ const Main = () => {
     return (
       <Box
         px={3}
-        mt={[0, 4]}
+        mt={4}
         pb={[5, 0]}
         sx={(theme: any) => ({
           borderBottom: ['1px solid', 'none'],
@@ -153,20 +153,32 @@ const Main = () => {
         {...props}
       >
         <HomeStatsIcon />
-        <Flex mt={3} mb={[3, 4]} variant="layout.verticalAlign">
-          <Text mr={3} variant="pageTitle">
-            <Trans>RToken Stats</Trans>
-          </Text>
-          <Help
-            content={t`These stats are across all RTokens on the Reserve Protocol listed by this dApp, including anonymized data from the Reserve Rpay app API.`}
-          />
+        <Flex
+          sx={{
+            display: 'flex',
+            flexDirection: ['column', 'row'],
+            justifyContent: 'space-between',
+            alignItems: 'end',
+          }}
+          mt={3}
+          mb={[3, 4]}
+        >
+          <Flex mb={[3, 0]} mr={'auto'} variant="layout.verticalAlign">
+            <Text mr={3} variant="pageTitle">
+              <Trans>RToken Stats</Trans>
+            </Text>
+            <Help
+              content={t`These stats are across all RTokens on the Reserve Protocol listed by this dApp, including anonymized data from the Reserve Rpay app API.`}
+            />
+          </Flex>
           <SmallButton
-            ml="auto"
             variant="muted"
+            sx={{ height: 'wrap' }}
+            mr={['auto', 0]}
             onClick={() => {
               mixpanel.track('Visited Flipside Dashboard', {})
               window.open(
-                'https://flipsidecrypto.xyz/Meir/r-tokens-overall-dashboard-Wx7xtA',
+                'https://dune.com/reserve-protocol/reserve-protocol-overview',
                 '_blank'
               )
             }}
@@ -178,9 +190,9 @@ const Main = () => {
               }}
             >
               <Trans>View Dashboard</Trans>
-              <Box mt={2} ml={1}>
+              <Flex ml={2}>
                 <ExternalArrowIcon />
-              </Box>{' '}
+              </Flex>
             </Flex>
           </SmallButton>
         </Flex>
@@ -217,7 +229,7 @@ const Main = () => {
     const { data } = useQuery(
       protocolRecentTxsQuery,
       {},
-      { refreshInterval: 10000 }
+      { refreshInterval: 60000 }
     )
     const rpayTx = useDebounce(useAtomValue(rpayTransactionsAtom), 1000)
 

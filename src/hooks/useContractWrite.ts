@@ -35,7 +35,7 @@ const useContractWrite = <
       ...contractWrite,
       gas,
       validationError: error,
-      isReady: !!gas.result && !!contractWrite.write,
+      isReady: !!call?.address && !!gas.result && !!contractWrite.write,
       hash: !contractWrite.isError ? contractWrite.data?.hash : undefined,
     }),
     [contractWrite]

@@ -25,7 +25,13 @@ const auctionsTxAtom = atom((get): UsePrepareContractWriteConfig => {
   const auctionsToSettle = get(auctionsToSettleAtom) || []
   const kind = get(auctionPlatformAtom)
 
-  if (recollaterization) {
+  const traderToSettle = auctionsToSettle.reduce((acc, auction) => {
+    acc[auction.trader] = [...(acc[auction.trader] || []), auction.sell.address]
+
+    return acc
+  }, {} as { [x: Address]: Address[] })
+
+  if (recollaterization && !Object.keys(traderToSettle).length) {
     return {
       address: recollaterization.trader,
       functionName: 'rebalance',
@@ -43,12 +49,6 @@ const auctionsTxAtom = atom((get): UsePrepareContractWriteConfig => {
     }
 
     return auctions
-  }, {} as { [x: Address]: Address[] })
-
-  const traderToSettle = auctionsToSettle.reduce((acc, auction) => {
-    acc[auction.trader] = [...(acc[auction.trader] || []), auction.sell.address]
-
-    return acc
   }, {} as { [x: Address]: Address[] })
 
   const traders = new Set([

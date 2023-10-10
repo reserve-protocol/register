@@ -5,9 +5,10 @@ import IssuanceIcon from 'components/icons/IssuanceIcon'
 import ManagerIcon from 'components/icons/ManagerIcon'
 import OverviewIcon from 'components/icons/OverviewIcon'
 import StakeIcon from 'components/icons/StakeIcon'
+import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
 import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import { transition } from 'theme'
@@ -95,6 +96,14 @@ const NavItem = ({
 // Sidebar Navigation
 const Navigation = () => {
   const rTokenAddress = useAtomValue(selectedRTokenAtom)
+  const rToken = useRToken()
+
+  useEffect(() => {
+    document.title = `${
+      rToken?.symbol || `Register`
+    } - Reserve Protocol Interface`
+  }, [rToken])
+
   const PAGES = useMemo(() => {
     const items = [
       { path: ROUTES.OVERVIEW, title: t`Overview`, Icon: OverviewIcon },

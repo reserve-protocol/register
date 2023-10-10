@@ -11,8 +11,9 @@ import {
   rTokenAtom,
   walletAtom,
 } from '../../atoms'
+import { ChainId } from 'utils/chains'
 
-const zapTokens: [Address, number][] = [
+const mainnetZapTokens: [Address, number][] = [
   ['0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6], // USDC
   ['0xdAC17F958D2ee523a2206206994597C13D831ec7', 6], // USDT
   ['0x6B175474E89094C44Da98b954EedeAC495271d0F', 18], // DAI
@@ -21,6 +22,12 @@ const zapTokens: [Address, number][] = [
   ['0x99D8a9C45b2ecA8864373A26D1459e3Dff1e17F3', 18], // MIM
   ['0x853d955aCEf822Db058eb8505911ED77F175b99e', 18], // FRAX
 ]
+
+const zapTokens = {
+  [ChainId.Mainnet]: mainnetZapTokens,
+  [ChainId.Base]: [],
+  [ChainId.Hardhat]: mainnetZapTokens,
+}
 
 // TODO: Add zapper tokens
 const balancesCallAtom = atom((get) => {
@@ -39,7 +46,7 @@ const balancesCallAtom = atom((get) => {
       token.address,
       token.decimals,
     ]),
-    ...zapTokens,
+    ...zapTokens[chainId],
   ]
 
   if (rToken.stToken) {

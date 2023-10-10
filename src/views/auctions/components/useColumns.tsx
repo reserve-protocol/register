@@ -1,21 +1,28 @@
-import { t, Trans } from '@lingui/macro'
+import { t } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import TokenItem from 'components/token-item'
 import dayjs from 'dayjs'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useMemo } from 'react'
 import { ArrowUpRight } from 'react-feather'
-import { Box, Flex, Link, Text } from 'theme-ui'
-import { formatCurrency } from 'utils'
-import { auctionSidebarAtom, TradeKind } from '../atoms'
-import { useAtomValue, useSetAtom } from 'jotai'
 import { chainIdAtom } from 'state/atoms'
+import { Box, Flex, Text } from 'theme-ui'
+import { formatCurrency } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import { auctionSidebarAtom, TradeKind } from '../atoms'
+import { ChainId } from 'utils/chains'
 
-const getGnosisAuction = (auctionId: string): string => {
-  return `https://gnosisauctiontestv1.netlify.app/#/auction?auctionId=${auctionId}&chainId=1`
+const getGnosisAuction = (auctionId: string, chainId: number): string => {
+  if (chainId === ChainId.Mainnet) {
+    return `https://gnosisauctiontestv1.netlify.app/#/auction?auctionId=${auctionId}&chainId=1`
+  } else {
+    return `https://easyauction.register.app/#/auction?auctionId=${auctionId}&chainId=${chainId}`
+  }
 }
 
 const useColumns = (ended = false) => {
+  const chainId = useAtomValue(chainIdAtom)
+
   return useMemo(
     () => [
       {
@@ -81,7 +88,7 @@ const useColumns = (ended = false) => {
               )
             } else {
               window.open(
-                getGnosisAuction(cell.row.original.auctionId),
+                getGnosisAuction(cell.row.original.auctionId, chainId),
                 '_blank'
               )
             }
@@ -100,7 +107,7 @@ const useColumns = (ended = false) => {
         },
       },
     ],
-    []
+    [chainId]
   )
 }
 
