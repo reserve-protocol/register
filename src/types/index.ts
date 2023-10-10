@@ -17,6 +17,7 @@ export type ProtocolKey =
   | 'CONVEX'
   | 'CURVE'
   | 'SDR'
+  | 'STARGATE'
   | 'GENERIC'
 
 export type AddressMap = { [chainId: number]: Address }

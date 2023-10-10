@@ -3,14 +3,13 @@ import { Trans } from '@lingui/macro'
 import Account from 'components/account'
 import ChainSelector from 'components/chain-selector/ChainSelector'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
+import BridgeIcon from 'components/icons/BridgeIcon'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
-import useIsDeployer from 'hooks/useIsDeployer'
+import { useLocation } from 'react-router-dom'
 import { Box, Flex, Text } from 'theme-ui'
+import { ROUTES } from 'utils/constants'
 import Brand from './Brand'
 import TokenToggle from './TokenToggle'
-import { useLocation } from 'react-router-dom'
-import { ROUTES } from 'utils/constants'
-import BridgeIcon from 'components/icons/BridgeIcon'
 
 const Container = styled(Flex)`
   align-items: center;
@@ -50,7 +49,7 @@ const HeaderAction = () => {
       <Box variant="layout.verticalAlign">
         <BridgeIcon />
         <Text ml={3} sx={{ fontSize: 2 }} variant="subtitle">
-          <Trans>L2 Bridge</Trans>
+          L2 Bridge
         </Text>
       </Box>
     )
@@ -95,7 +94,7 @@ const AppHeader = () => (
         <LanguageSelector />
       </Box> */}
     <Divider />
-    {/* <ChainSelector mr={3} /> */}
+    <ChainSelector mr={3} />
     <Account />
   </Container>
 )

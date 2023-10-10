@@ -14,7 +14,7 @@
     "@popperjs/core": "^2.11.5",
     "@rainbow-me/rainbowkit": "1.0.11",
     "@react-spring/web": "^9.7.1",
-    "@reserve-protocol/token-zapper": "2.5.3",
+    "@reserve-protocol/token-zapper": "2.5.5",
     "@uiw/react-md-editor": "^3.20.5",
     "@uniswap/permit2-sdk": "^1.2.0",
     "@viem/anvil": "^0.0.6",
@@ -42,7 +42,7 @@
     "recharts": "^2.1.6",
     "swr": "^1.2.2",
     "theme-ui": "^0.15.4",
-    "viem": "1.15.0",
+    "viem": "1.15.4",
     "wagmi": "1.4.3"
   },
   "scripts": {

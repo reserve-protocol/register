@@ -13,7 +13,6 @@ import ZapTokenSelector from './components/zap/components/ZapTokenSelector'
 import { ui, zapAvailableAtom } from './components/zap/state/ui-atoms'
 import WrapSidebar from './components/wrapping/WrapSidebar'
 import { useWalletClient } from 'wagmi'
-import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { ConnectWalletButton } from 'components/button/TransactionButton'
 
 const ZapOverview = () => {
@@ -27,30 +26,6 @@ const ZapOverview = () => {
   )
 }
 
-const ZapWarning = () => (
-  <Flex
-    sx={{
-      textAlign: 'center',
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexWrap: 'wrap',
-      color: 'warning',
-      fontSize: 1,
-    }}
-    p={4}
-    mt={4}
-  >
-    <InfoIcon />
-    <Text variant="strong" mx={2}>
-      Warning:
-    </Text>
-    <Text sx={{ color: 'text' }}>
-      The Zap Mint feature is in beta and may result in unexpected behavior.
-      Proceed with caution.
-    </Text>
-  </Flex>
-)
-
 /**
  * Mint & Redeem view
  */
@@ -63,7 +38,6 @@ const Issuance = () => {
   if (!enableZapper && isZapEnabled) {
     return (
       <>
-        {isZapEnabled && <ZapWarning />}
         <WrapSidebar />
         <Container pb={[1, 4]}>
           <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[1, 5]}>
@@ -108,7 +82,6 @@ const Issuance = () => {
 
   return (
     <>
-      {isZapEnabled && <ZapWarning />}
       <WrapSidebar />
       <Container pb={[1, 4]}>
         <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[1, 5]}>

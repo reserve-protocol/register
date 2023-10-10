@@ -110,6 +110,8 @@ const CollateralApprovals = ({
         border: '1px solid',
         borderColor: 'inputBorder',
         borderRadius: '6px',
+        maxHeight: 280,
+        overflow: 'auto',
       }}
       px={2}
       py={3}

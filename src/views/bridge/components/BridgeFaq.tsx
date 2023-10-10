@@ -1,14 +1,8 @@
 import { Trans, t } from '@lingui/macro'
 import { Card } from 'components'
-import { useState } from 'react'
-import { FileText, Minus, Plus } from 'react-feather'
+import ExpandableContent from 'components/expandable-content'
+import { FileText } from 'react-feather'
 import { Box, BoxProps, Text } from 'theme-ui'
-
-interface ExpandableContentProps extends BoxProps {
-  title: string
-  content: React.ReactNode
-  expanded?: boolean
-}
 
 const faqs = [
   {
@@ -16,48 +10,12 @@ const faqs = [
     content: t`Base Bridge enables the transfer of certain digital assets and other data back and forth between Ethereum and Base.`,
   },
   {
-    title: t`Why doesn't Register use the official bridge?`,
-    content: 'test',
-  },
-  {
-    title: t`What wallet can I use?`,
-    content: 'test',
-  },
-  {
-    title: t`What if I have a question, issue or problem?`,
-    content: 'test',
+    title: `How withdrawals work?`,
+    content: `After your withdrawal request is proposed onchain (within an hour) you must verify and complete the transaction in order to access your funds. You can track your progress under the transaction tab.
+    
+    Transferring from Base to Ethereum takes approximately 7 days.`,
   },
 ]
-
-const ExpandableContent = ({
-  title,
-  content,
-  expanded = false,
-  ...props
-}: ExpandableContentProps) => {
-  const [isOpen, setOpen] = useState(expanded)
-
-  return (
-    <Box>
-      <Box
-        py={2}
-        variant="layout.verticalAlign"
-        sx={{ cursor: 'pointer' }}
-        onClick={() => setOpen(!isOpen)}
-      >
-        <Text variant="strong" mr="auto">
-          {title}
-        </Text>
-        {isOpen ? <Minus size={18} /> : <Plus size={18} />}
-      </Box>
-      {isOpen && (
-        <Box py={2} sx={{ color: 'secondaryText' }}>
-          {content}
-        </Box>
-      )}
-    </Box>
-  )
-}
 
 const BridgeFaq = (props: BoxProps) => (
   <Card

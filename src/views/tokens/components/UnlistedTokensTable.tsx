@@ -42,7 +42,7 @@ const query = gql`
 
 const useTokens = () => {
   const listed = useAtomValue(listedTokensAtom)
-  const { data } = useQuery(query, { listed })
+  const { data } = useQuery(query, { listed: listed.length ? listed : ['.'] })
   const [tokens, setTokens] = useState([])
 
   useEffect(() => {
