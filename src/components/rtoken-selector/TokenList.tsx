@@ -7,6 +7,9 @@ import { transition } from 'theme'
 import { Box, Divider, Flex, Text } from 'theme-ui'
 import BackHomeIcon from '../icons/BackHomeIcon'
 import availableTokensAtom from './atoms'
+import { ChainId } from 'utils/chains'
+import { chainIdAtom } from 'state/atoms'
+import { useSwitchNetwork } from 'wagmi'
 
 const ActionItem = styled(Flex)`
   transition: ${transition};
@@ -29,6 +32,8 @@ const TokenList = memo(
     onSelect(address: string): void
     onHome(): void
   }) => {
+    const { switchNetwork } = useSwitchNetwork()
+    const currentChainId = useAtomValue(chainIdAtom)
     const tokens = useAtomValue(availableTokensAtom)
 
     return (
@@ -59,7 +64,13 @@ const TokenList = memo(
           />
         )}
         {Object.values(tokens).map(({ address, logo, symbol, chainId }) => (
-          <ActionItem key={address} onClick={() => onSelect(address)}>
+          <ActionItem key={address} onClick={async () => {
+            
+            if (currentChainId !== chainId && switchNetwork) {
+              switchNetwork(chainId!)
+            }
+            onSelect(address)
+          }}>
             <TokenItem
               sx={{ color: 'invertedText' }}
               symbol={symbol}
