@@ -94,7 +94,8 @@ const AppHeader = () => (
         <LanguageSelector />
       </Box> */}
     <Divider />
-    <ChainSelector mr={3} />
+    <ChainSelector mr={[3, 0]} />
+    <Divider />
     <Account />
   </Container>
 )
