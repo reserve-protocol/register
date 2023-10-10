@@ -10,8 +10,8 @@ const Popup = ({ content, containerProps = {}, ...props }: PopoverProps) => {
           {...containerProps}
           sx={{
             backgroundCcolor: 'contentBackground',
-            border: '1px solid',
-            borderColor: 'invertedText',
+            border: '2px solid',
+            borderColor: 'darkBorder',
             borderRadius: '14px',
             boxShadow: '0px 10px 25px rgba(0, 0, 0, 0.2)',
             ...(containerProps.sx || {}),
