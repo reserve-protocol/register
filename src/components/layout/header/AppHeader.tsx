@@ -89,7 +89,13 @@ const AppHeader = () => (
       </Box>
     </Box>
     <Divider />
-    <ThemeColorMode pt={1} mr={[3, 0]} />
+    <ThemeColorMode
+      sx={{
+        display: ['none', 'flex'],
+      }}
+      pt={1}
+      mr={[3, 0]}
+    />
     {/* <Box ml={4} sx={{ alignItems: 'center', display: 'flex' }}>
         <LanguageSelector />
       </Box> */}
