@@ -173,7 +173,7 @@ const Main = () => {
             />
           </Flex>
           <SmallButton
-            variant="muted"
+            variant="transparent"
             sx={{ height: 'wrap' }}
             mr={['auto', 0]}
             onClick={() => {
