@@ -114,7 +114,7 @@ export const hyusdCalls = [
   encodeFunctionData({
     abi: Broker,
     functionName: 'setBatchTradeImplementation',
-    args: ['0xe416Db92A1B27c4e28D5560C1EEC03f7c582F630'],
+    args: ['0x4e9B97957a0d1F4c25E42Ccc69E4d2665433FEA3'],
   }),
   encodeFunctionData({
     abi: Broker,
