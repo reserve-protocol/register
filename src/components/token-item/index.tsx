@@ -1,7 +1,7 @@
 import TokenLogo from 'components/icons/TokenLogo'
 import Base from 'components/icons/logos/Base'
 import Ethereum from 'components/icons/logos/Ethereum'
-import { Text, BoxProps, Box } from 'theme-ui'
+import { Text, BoxProps, Box, Flex } from 'theme-ui'
 
 interface Props extends BoxProps {
   symbol: string
@@ -16,14 +16,14 @@ const TokenItem = ({ symbol, logo, width = 20, chainId, ...props }: Props) => (
     sx={{
       display: 'flex',
       flexDirection: 'row',
-      width: "100%",
-      justifyContent: "space-between"
+      width: '100%',
+      justifyContent: 'space-between',
     }}
   >
-    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+    <Flex variant="layout.verticalAlign">
       <TokenLogo width={24} mr={2} symbol={symbol} src={logo} />
       <Text {...props}>{symbol}</Text>
-    </Box>
+    </Flex>
     <Box>
       {chainId === 1 && <Ethereum />}
       {chainId === 8453 && <Base />}
