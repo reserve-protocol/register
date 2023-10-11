@@ -1,4 +1,4 @@
-import { RSR_ADDRESS } from 'utils/addresses'
+import { EUSD_ADDRESS, RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 
 export const L1_BRIDGE_ADDRESS = '0x49048044D57e1C92A77f79988d21Fa8fAF74E97e' // deposit eth
@@ -15,4 +15,9 @@ export const BRIDGEABLE_TOKENS = [
     address: RSR_ADDRESS[ChainId.Mainnet],
     bridgedAddress: RSR_ADDRESS[ChainId.Base],
   },
+  {
+    symbol: 'eUSD',
+    address: EUSD_ADDRESS[ChainId.Mainnet],
+    bridgedAddress: EUSD_ADDRESS[ChainId.Base],
+  }
 ]
