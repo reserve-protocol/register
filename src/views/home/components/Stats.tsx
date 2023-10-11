@@ -295,7 +295,7 @@ const Main = () => {
         px={3}
         mx={'auto'}
         sx={{
-          display: 'flex',
+          display: ['none', 'flex'],
           textAlign: 'center',
           flexDirection: ['column', 'row'],
           justifyContent: 'space-between',
@@ -327,7 +327,7 @@ const Main = () => {
           mb={6}
           mt={[0, 8]}
         />
-        <AdditionalTokenStats mb={[5, 6]} sx={{ display: ['none', 'block'] }} />
+        <AdditionalTokenStats mb={[5, 6]} />
       </Box>
     )
   }
