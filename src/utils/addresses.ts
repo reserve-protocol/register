@@ -43,7 +43,7 @@ export const RSR_ADDRESS: AddressMap = {
 
 export const EUSD_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
-  [ChainId.Base]: zeroAddress, // TODO: Pending
+  [ChainId.Base]: "0xCfA3Ef56d303AE4fAabA0592388F19d7C3399FB4",
   [ChainId.Hardhat]: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
 }
 

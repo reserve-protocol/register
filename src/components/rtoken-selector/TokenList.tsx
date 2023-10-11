@@ -7,7 +7,6 @@ import { transition } from 'theme'
 import { Box, Divider, Flex, Text } from 'theme-ui'
 import BackHomeIcon from '../icons/BackHomeIcon'
 import availableTokensAtom from './atoms'
-import { ChainId } from 'utils/chains'
 import { chainIdAtom } from 'state/atoms'
 import { useSwitchNetwork } from 'wagmi'
 
