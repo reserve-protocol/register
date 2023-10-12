@@ -9,7 +9,7 @@ export const ST_RSR_ADDRESS = '0x0000000000000000000000000000000000000002'
  * Protocol related contracts
  */
 export const DEPLOYER_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0x15480f5B5ED98A94e1d36b52Dd20e9a35453A38e',
+  [ChainId.Mainnet]: '0x43587CAA7dE69C3c2aD0fb73D4C9da67A8E35b0b',
   [ChainId.Base]: '0xf1B06c2305445E34CF0147466352249724c2EAC1',
   [ChainId.Hardhat]: '0x15480f5B5ED98A94e1d36b52Dd20e9a35453A38e',
 }
@@ -27,7 +27,7 @@ export const FACADE_ACT_ADDRESS: AddressMap = {
 }
 
 export const FACADE_WRITE_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0x41edAFFB50CA1c2FEC86C629F845b8490ced8A2c',
+  [ChainId.Mainnet]: '0x3312507BC3F22430B34D5841A472c767DC5C36e4',
   [ChainId.Base]: '0x0903048fD4E948c60451B41A48B35E0bafc0967F',
   [ChainId.Hardhat]: '0xAe2563b4315469bF6bdD41A6ea26157dE57Ed94e',
 }
