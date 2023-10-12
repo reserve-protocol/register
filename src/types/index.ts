@@ -1,4 +1,4 @@
-import { Address } from 'viem'
+import { Address, Transaction } from 'viem'
 
 export type RoleKey =
   | 'owners'
@@ -231,4 +231,36 @@ export type TenderlyPayload = {
     timestamp?: string
   }
   generate_access_list?: boolean
+}
+
+interface Simulation {
+  id: string
+  project_id: string
+  owner_id: string
+  network_id: string
+  block_number: number
+  transaction_index: number
+  from: string
+  to: string
+  input: string
+  gas: number
+  gas_price: string
+  value: string
+  method: string
+  status: boolean
+  access_list: null
+  queue_origin: string
+  created_at: Date
+}
+
+interface GeneratedAccessList {
+  address: string
+  storage_keys: string[]
+}
+
+export interface TenderlySimulation {
+  transaction: Transaction
+  simulation: any
+  contracts: any[]
+  generated_access_list: GeneratedAccessList[]
 }

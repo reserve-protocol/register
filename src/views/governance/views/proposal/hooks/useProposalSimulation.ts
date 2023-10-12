@@ -11,6 +11,7 @@ import {
   SimulationConfig,
   StorageEncodingResponse,
   TenderlyPayload,
+  TenderlySimulation,
 } from 'types'
 import { useEffect, useMemo } from 'react'
 import useProposalTx from './useProposalTx'
@@ -28,7 +29,11 @@ import {
 } from 'viem'
 import useRToken from 'hooks/useRToken'
 import Governance from 'abis/Governance'
-import { BLOCK_GAS_LIMIT, TENDERLY_ACCESS_TOKEN } from 'utils/constants'
+import {
+  BLOCK_GAS_LIMIT,
+  TENDERLY_ACCESS_TOKEN,
+  TENDERLY_SIM_URL,
+} from 'utils/constants'
 
 const DEFAULT_FROM = '0xD73a92Be73EfbFcF3854433A5FcbAbF9c1316073' // arbitrary EOA not used on-chain
 const TENDERLY_FETCH_OPTIONS = {
@@ -177,8 +182,8 @@ const simulateNew = async (config: SimulationConfig): Promise<any> => {
     generate_access_list: true, // not required, but useful as a sanity check to ensure consistency in the simulation response
     block_header: {
       // this data represents what block.number and block.timestamp should return in the EVM during the simulation
-      number: trim(simBlock.toString()),
-      timestamp: trim(simTimestamp.toString()),
+      number: trim(toHex(simBlock)),
+      timestamp: trim(toHex(simTimestamp)),
     },
     state_objects: {
       // Since gas price is zero, the sender needs no balance.
@@ -232,6 +237,55 @@ async function sendEncodeRequest(
     console.log(JSON.stringify(err, null, 2))
     console.log(JSON.stringify(payload))
     throw err
+  }
+}
+
+/**
+ * @notice Sends a transaction simulation request to the Tenderly API
+ * @dev Uses a simple exponential backoff when requests fail, with the following parameters:
+ *   - Initial delay is 1 second
+ *   - We randomize the delay duration to avoid synchronization issues if client is sending multiple requests simultaneously
+ *   - We double delay each time and throw an error if delay is over 8 seconds
+ * @param payload Transaction simulation parameters
+ * @param delay How long to wait until next simulation request after failure, in milliseconds
+ */
+async function sendSimulation(
+  payload: TenderlyPayload,
+  delay = 1000
+): Promise<TenderlySimulation> {
+  const fetchOptions = {
+    method: 'POST',
+    data: payload,
+    ...TENDERLY_FETCH_OPTIONS,
+  }
+  try {
+    // Send simulation request
+    const sim = <TenderlySimulation>(
+      (<unknown>await fetch(TENDERLY_SIM_URL, fetchOptions))
+    )
+    // Post-processing to ensure addresses we use are checksummed (since ethers returns checksummed addresses)
+    sim.transaction.addresses = sim.transaction.addresses.map(getAddress)
+    sim.contracts.forEach(
+      (contract) => (contract.address = getAddress(contract.address))
+    )
+    return sim
+  } catch (err: any) {
+    console.log('err in sendSimulation: ', JSON.stringify(err))
+    const is429 = typeof err === 'object' && err?.statusCode === 429
+    if (delay > 8000 || !is429) {
+      console.warn(
+        `Simulation request failed with the below request payload and error`
+      )
+      console.log(JSON.stringify(fetchOptions))
+      throw err
+    }
+    console.warn(err)
+    console.warn(
+      `Simulation request failed with the above error, retrying in ~${delay} milliseconds. See request payload below`
+    )
+    console.log(JSON.stringify(payload))
+    await sleep(delay + randomInt(0, 1000))
+    return await sendSimulation(payload, delay * 2)
   }
 }
 
