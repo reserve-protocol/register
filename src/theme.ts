@@ -20,8 +20,8 @@ export const baseButton = {
   color: '#fff',
   backgroundColor: 'primary',
   padding: '10px',
-  paddingLeft: 3,
-  paddingRight: 3,
+  paddingLeft: 4,
+  paddingRight: 4,
 
   '&:hover': {
     filter: 'brightness(0.85)',
