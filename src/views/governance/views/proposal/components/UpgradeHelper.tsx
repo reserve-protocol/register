@@ -50,7 +50,18 @@ const UpgradeHelper = (props: BoxProps) => {
           >
             <Text>here</Text>
           </Link>
-          ) , consider using the upgrade helper
+          ) , consider using the upgrade helper.
+          <br />
+          <br />
+          For a more in-depth explanation of what this proposal entails, see
+          this{' '}
+          <Link
+            target="_blank"
+            href="https://www.loom.com/share/8c47272036ce4e2d98b34133e67b0637"
+          >
+            <Text>video</Text>
+          </Link>
+          .
         </Text>
       </Box>
       <Box ml={[0, 0, 0, 'auto']} mt={[3, 3, 3, 3]}>

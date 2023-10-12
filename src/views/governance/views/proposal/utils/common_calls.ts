@@ -19,7 +19,7 @@ export const commonCalls = [
   encodeFunctionData({
     abi: BackingManager,
     functionName: 'upgradeTo',
-    args: ['0xCAE063f8a94cC7A3447753892b383a92C9235a75'],
+    args: ['0xBbC532A80DD141449330c1232C953Da6801Aed01'],
   }),
   encodeFunctionData({
     abi: BasketHandler,
@@ -49,12 +49,12 @@ export const commonCalls = [
   encodeFunctionData({
     abi: RevenueTrader,
     functionName: 'upgradeTo',
-    args: ['0x5CE95fAdb880B6a0BA5fFB0D76eD58D97f2A0DC0'],
+    args: ['0x5e3e13d3d2a0adfe16f8EF5E7a2992A88E9e65AF'],
   }),
   encodeFunctionData({
     abi: RevenueTrader,
     functionName: 'upgradeTo',
-    args: ['0x5CE95fAdb880B6a0BA5fFB0D76eD58D97f2A0DC0'],
+    args: ['0x5e3e13d3d2a0adfe16f8EF5E7a2992A88E9e65AF'],
   }),
   encodeFunctionData({
     abi: RToken,
