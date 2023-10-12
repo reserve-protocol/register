@@ -20,8 +20,8 @@ export const baseButton = {
   color: '#fff',
   backgroundColor: 'primary',
   padding: '10px',
-  paddingLeft: 4,
-  paddingRight: 4,
+  paddingLeft: 3,
+  paddingRight: 3,
 
   '&:hover': {
     filter: 'brightness(0.85)',
@@ -84,7 +84,7 @@ export const colors = {
   contentLightBackground: 'rgba(249, 248, 244, 0.5)',
   primary: '#000000',
   success: '#11BB8D',
-  accentAction: '#6D3210',
+  accentAction: '#973700',
   accentBG: 'contentBackground',
   secondary: '#E8E8E8',
   rBlue: '#2150A9',
@@ -113,7 +113,7 @@ export const colors = {
       primary: '#6D3210',
       secondary: '#33261f',
       disabled: '#231f1f',
-      accentAction: '#6D3210',
+      accentAction: '#973700',
       accentBG: '#1A0D05',
       border: '#1A1A1A',
       darkBorder: '#241c19',
@@ -374,10 +374,11 @@ export const theme: Theme = {
     },
     accentAction: {
       ...baseButton,
-      backgroundColor: 'accentBG',
-      color: 'accentAction',
-      border: '2px solid',
+      backgroundColor: 'transparent',
+      border: '1px solid',
       borderColor: 'accentAction',
+      color: 'accentAction',
+
       '&:hover': {
         backgroundColor: 'accentAction',
         color: 'white',
