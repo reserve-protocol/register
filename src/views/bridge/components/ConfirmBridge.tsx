@@ -4,7 +4,7 @@ import useContractWrite from 'hooks/useContractWrite'
 import useHasAllowance from 'hooks/useHasAllowance'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { safeParseEther } from 'utils'
 import { Address } from 'viem'
 import {
@@ -14,6 +14,8 @@ import {
   isBridgeWrappingAtom,
   selectedTokenAtom,
 } from '../atoms'
+import { Modal } from 'components'
+import { Box, Divider, Text } from 'theme-ui'
 
 const btnLabelAtom = atom((get) => {
   const token = get(selectedTokenAtom)
@@ -74,7 +76,7 @@ const ApproveBtn = () => {
   )
 }
 
-const ConfirmBridgeBtn = () => {
+const ConfirmBridgeBtn = ({ onSuccess }: { onSuccess(): void }) => {
   const bridgeTransaction = useAtomValue(bridgeTxAtom)
   const setAmount = useSetAtom(bridgeAmountAtom)
   const {
@@ -96,6 +98,7 @@ const ConfirmBridgeBtn = () => {
     if (status === 'success') {
       setAmount('')
       reset()
+      onSuccess()
     }
   }, [status])
 
@@ -113,17 +116,69 @@ const ConfirmBridgeBtn = () => {
   )
 }
 
+const steps = [
+  { title: 'Sending request', subtitle: 'Takes up to 1hr' },
+  { title: 'Verify', subtitle: 'Takes up to 7d' },
+  { title: 'Completes', subtitle: 'Takes up to 1hr' },
+]
+
+const WithdrawInfo = ({ onClose }: { onClose(): void }) => {
+  return (
+    <Modal title="Withdrawal in progress" onClose={onClose}>
+      {steps.map((step, index) => (
+        <Box variant="layout.verticalAlign" mb={3} key={step.title}>
+          <Box
+            sx={{
+              textAlign: 'center',
+              backgroundColor: 'darkBorder',
+              width: '20px',
+              height: '20px',
+              borderRadius: '100%',
+              fontSize: 1,
+            }}
+          >
+            {index + 1}
+          </Box>
+          <Box ml={3}>
+            <Text variant="strong">{step.title}</Text>
+            <Text variant="legend">{step.subtitle}</Text>
+          </Box>
+        </Box>
+      ))}
+      <Divider mx={-4} />
+      <Text variant="legend" as="p" sx={{ fontSize: 1 }}>
+        In order to minimize security risk, withdrawals take up to 7 days. After
+        the withdrawal request is proposed onchain (within 1hr) you must verify
+        and complete the transaction in order to access your funds.
+      </Text>
+    </Modal>
+  )
+}
+
 const ConfirmBridge = () => {
   const approvalRequired = useAtomValue(approvalAtom)
   const [hasAllowance] = useHasAllowance(
     approvalRequired ? [approvalRequired] : undefined
   )
+  const isWrapping = useAtomValue(isBridgeWrappingAtom)
+  const [showModal, setModal] = useState(false)
 
-  if (!hasAllowance) {
-    return <ApproveBtn />
-  }
+  const handleSuccess = useCallback(() => {
+    if (!isWrapping) {
+      setModal(true)
+    }
+  }, [isWrapping])
 
-  return <ConfirmBridgeBtn />
+  return (
+    <>
+      {showModal && <WithdrawInfo onClose={() => setModal(false)} />}
+      {!hasAllowance ? (
+        <ApproveBtn />
+      ) : (
+        <ConfirmBridgeBtn onSuccess={handleSuccess} />
+      )}
+    </>
+  )
 }
 
 export default ConfirmBridge

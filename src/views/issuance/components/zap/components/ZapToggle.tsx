@@ -5,6 +5,7 @@ import mixpanel from 'mixpanel-browser'
 import { Zap as ZapIcon } from 'react-feather'
 import { Box, Switch, Text } from 'theme-ui'
 import { zapEnabledAtom } from '../state/ui-atoms'
+import Help from 'components/help'
 
 const ZapToggle = () => {
   const [zapEnabled, setEnabled] = useAtom(zapEnabledAtom)
@@ -29,15 +30,27 @@ const ZapToggle = () => {
       <Text ml={2}>
         <Trans>Turn on Zaps to mint using 1 asset</Trans>
       </Text>
-      <Box ml="auto">
-        <label>
-          <Switch
-            sx={{ background: 'secondary' }}
-            defaultChecked={zapEnabled}
-            onChange={handleToggle}
-          />
-        </label>
+      <Box
+        ml="auto"
+        mr={3}
+        sx={{ color: 'warning' }}
+        variant="layout.verticalAlign"
+      >
+        Beta
+        <Help
+          ml={1}
+          content="The Zap Mint feature is in beta and may result in unexpected behavior.
+      Proceed with caution."
+        />
       </Box>
+
+      <label>
+        <Switch
+          sx={{ background: 'secondary' }}
+          defaultChecked={zapEnabled}
+          onChange={handleToggle}
+        />
+      </label>
     </Box>
   )
 }

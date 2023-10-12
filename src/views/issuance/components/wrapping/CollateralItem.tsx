@@ -99,7 +99,6 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
     ] as any
     const parsedAmount = safeParseEther(debouncedAmount, data.decimals)
     const call = { abi: CollateralWrap, address: collateral.erc20 }
-
     switch (collateral.protocol) {
       case 'AAVE':
         return {
@@ -158,6 +157,13 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
           ...call,
           functionName: wrapping ? 'deposit' : 'withdraw',
           args: [parsedAmount],
+        }
+      case 'STARGATE':
+        return {
+          ...call,
+          abi: COMPv2ABI,
+          functionName: wrapping ? 'deposit' : 'withdraw',
+          args: [parsedAmount, wallet],
         }
       default:
         return undefined

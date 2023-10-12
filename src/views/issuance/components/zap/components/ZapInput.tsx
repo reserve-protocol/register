@@ -33,9 +33,7 @@ const ZapDust = () => {
   if (total.amount < 10000n) {
     str = '*'
   }
-  if (total.amount > 1_000_000000n) {
-    return null
-  }
+  console.log(total.amount)
 
   return (
     <span
