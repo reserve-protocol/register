@@ -82,7 +82,7 @@ export interface ReserveToken extends Token {
   listed?: boolean
 }
 
-export interface BigNumberMap {
+export interface bigintMap {
   [x: string | Address]: bigint
 }
 
@@ -169,4 +169,66 @@ export interface CollateralPlugin {
   oracleTimeout: number
   chainlinkFeed: Address
   delayUntilDefault: string
+}
+
+export interface ProposalEvent {
+  id?: bigint // Bravo governor
+  proposalId?: bigint // OZ governor
+  proposer: string
+  startBlock: bigint
+  endBlock: bigint
+  description: string
+  targets: string[]
+  values: bigint[]
+  signatures: string[]
+  calldatas: string[]
+}
+export interface SimulationConfig {
+  governorAddress: string
+  targets: `0x${string}`[]
+  values: bigint[]
+  signatures: string[]
+  calldatas: `0x${string}`[]
+  description: string
+}
+
+// --- Tenderly types, Request ---
+// Response from tenderly endpoint that encodes state data
+export type StorageEncodingResponse = {
+  stateOverrides: {
+    // these keys are the contract addresses, all lower case
+    [key: string]: {
+      value: {
+        // these are the slot numbers, as 32 byte hex strings
+        [key: string]: string
+      }
+    }
+  }
+}
+
+type StateObject = {
+  balance?: string
+  code?: string
+  storage?: Record<string, string>
+}
+
+export type TenderlyPayload = {
+  network_id: '1' | '3' | '4' | '5' | '42'
+  block_number?: number
+  transaction_index?: number
+  from: string
+  to: string
+  input: string
+  gas: number
+  gas_price?: string
+  value?: string
+  simulation_type?: 'full' | 'quick'
+  save?: boolean
+  save_if_fails?: boolean
+  state_objects?: Record<string, StateObject>
+  block_header?: {
+    number?: string
+    timestamp?: string
+  }
+  generate_access_list?: boolean
 }

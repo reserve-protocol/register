@@ -91,3 +91,16 @@ export const blockDuration = {
   [ChainId.Mainnet]: 12,
   [ChainId.Base]: 2,
 }
+
+// Load environment variables.
+export const TENDERLY_ACCESS_TOKEN: string = import.meta.env
+  .TENDERLY_ACCESS_TOKEN!
+export const TENDERLY_USER: string = import.meta.env.TENDERLY_USER!
+export const TENDERLY_PROJECT_SLUG: string = import.meta.env
+  .TENDERLY_PROJECT_SLUG!
+
+// Define the constants.
+export const BLOCK_GAS_LIMIT = 30_000_000
+export const TENDERLY_BASE_URL = `https://api.tenderly.co/api/v1`
+export const TENDERLY_ENCODE_URL = `${TENDERLY_BASE_URL}/account/${TENDERLY_USER}/project/${TENDERLY_PROJECT_SLUG}/contracts/encode-states`
+export const TENDERLY_SIM_URL = `${TENDERLY_BASE_URL}/account/${TENDERLY_USER}/project/${TENDERLY_PROJECT_SLUG}/simulate`
