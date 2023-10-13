@@ -47,6 +47,7 @@ export const backupChangesAtom = atomWithReset<BackupChanges>({
 
 export const basketChangesAtom = atomWithReset<CollateralChange[]>([])
 
+export const isAssistedUpgradeAtom = atom(false)
 export const isProposalValidAtom = atom(false)
 export const isProposalEditingAtom = atom(true)
 export const proposalDescriptionAtom = atom('')
