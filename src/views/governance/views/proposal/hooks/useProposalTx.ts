@@ -1,7 +1,6 @@
 import {
   ParamName,
   basketChangesAtom,
-  isAssistedUpgradeAtom,
   isNewBackupProposedAtom,
   proposalDescriptionAtom,
 } from './../atoms'
@@ -45,7 +44,6 @@ import {
   revenueSplitChangesAtom,
   roleChangesAtom,
 } from '../atoms'
-import useUpgradeHelper from './useUpgradeHelper'
 
 // const paramParse: { [x: string]: (v: string) => bigint | number } = {
 //   minTradeVolume: parseEther,
@@ -104,25 +102,8 @@ const useProposalTx = () => {
   const contracts = useAtomValue(rTokenContractsAtom)
   const assets = useAtomValue(registeredAssetsAtom)
 
-  const isAssistedUpgrade = useAtomValue(isAssistedUpgradeAtom)
-  const { calls, addresses } = useUpgradeHelper()
-
   const description = useDebounce(useAtomValue(proposalDescriptionAtom), 500)
   const { getValues } = useFormContext()
-
-  if (isAssistedUpgrade)
-    return {
-      abi: Governance,
-      address: governance.governor,
-      functionName: 'propose',
-      args: [
-        addresses as Address[],
-        new Array(calls.length).fill(0) as bigint[],
-        calls as Hex[],
-        description,
-      ] as [Address[], bigint[], Hex[], string],
-      enabled: !!description,
-    }
 
   return useMemo(() => {
     if (!contracts || !assets || !governance.governor) {
