@@ -113,6 +113,7 @@ export const zappableTokens = atom(async(get) => {
   }
   return [
     uni.nativeToken,
+    uni.commonTokens.USDbC,
     uni.commonTokens.USDC,
     uni.commonTokens.USDT,
     uni.commonTokens.DAI,
