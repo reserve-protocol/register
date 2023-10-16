@@ -100,11 +100,11 @@ const Account = () => {
                     onClick={openConnectModal}
                   >
                     <Text sx={{ display: ['none', 'initial'] }}>
+                      <Trans>Connect Wallet</Trans>
+                    </Text>
+                    <Text sx={{ display: ['inline', 'none'] }}>
                       <Trans>Connect</Trans>
                     </Text>
-                    <Box sx={{ display: ['inline', 'none'] }}>
-                      <Power size={12} />
-                    </Box>
                   </SmallButton>
                 )
               }

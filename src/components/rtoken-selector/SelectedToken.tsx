@@ -36,9 +36,28 @@ const SelectedToken = () => {
   if (!selectedAddress) {
     return (
       <Box variant="layout.verticalAlign">
-        <BasketCubeIcon />
-        <Text ml={2}>
+        <Box
+          sx={{
+            display: ['none', 'flex'],
+          }}
+        >
+          <BasketCubeIcon />
+        </Box>
+        <Text
+          ml={2}
+          sx={{
+            display: ['none', 'flex'],
+          }}
+        >
           <Trans>Select RToken</Trans>
+        </Text>
+        <Text
+          ml={2}
+          sx={{
+            display: ['flex', 'none'],
+          }}
+        >
+          <Trans>RTokens</Trans>
         </Text>
       </Box>
     )

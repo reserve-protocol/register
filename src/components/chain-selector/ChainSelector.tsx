@@ -2,6 +2,7 @@ import Button from 'components/button'
 import Base from 'components/icons/logos/Base'
 import Ethereum from 'components/icons/logos/Ethereum'
 import Popup from 'components/popup'
+import { transition } from 'theme'
 import { useAtom, useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { Check, ChevronDown, ChevronUp } from 'react-feather'
@@ -38,7 +39,7 @@ const ChainList = ({ onSelect }: { onSelect(chain: number): void }) => {
         maxHeight: 320,
         overflow: 'auto',
         backgroundColor: 'background',
-        borderRadius: '13px',
+        borderRadius: '12px',
       }}
     >
       {CHAIN_LIST.map((chain) => {
@@ -47,34 +48,42 @@ const ChainList = ({ onSelect }: { onSelect(chain: number): void }) => {
         return (
           <Box
             variant="layout.verticalAlign"
-            sx={{ cursor: 'pointer', position: 'relative' }}
+            sx={{
+              cursor: 'pointer',
+              position: 'relative',
+              backgroundColor:
+                selected === chain.id ? 'contentBackground' : 'background',
+              transition: transition,
+              ':hover': {
+                backgroundColor: 'contentBackground',
+                borderLeft: '2px solid',
+                borderColor: 'primary',
+              },
+            }}
             onClick={() => onSelect(chain.id)}
             key={chain.id}
           >
-            <Box
-              sx={{
-                backgroundColor:
-                  selected === chain.id ? 'primary' : 'background',
-                width: '3px',
-                height: '20px',
-              }}
-            />
-            <Box variant="layout.verticalAlign" p={3}>
+            <Box variant="layout.verticalAlign" p={3} mr={'auto'}>
               <Icon fontSize={20} />
               <Text ml={3}>{chain.label}</Text>
             </Box>
+            <Flex
+              mr={3}
+              mt={2}
+              sx={{
+                display: selected === chain.id ? 'block' : 'none',
+              }}
+            >
+              <Check size={16} />
+            </Flex>
           </Box>
         )
       })}
-      <Button
-        m={3}
-        variant="muted"
-        mt={0}
-        onClick={() => navigate(ROUTES.BRIDGE)}
-        small
-      >
-        Bridge assets
-      </Button>
+      <Box p={3} sx={{ borderTop: '1px solid', borderColor: 'darkBorder' }}>
+        <Button variant="muted" onClick={() => navigate(ROUTES.BRIDGE)}>
+          Bridge assets
+        </Button>
+      </Box>
     </Box>
   )
 }
@@ -107,7 +116,7 @@ const ChainSelector = (props: BoxProps) => {
       onDismiss={() => setVisible(false)}
       content={<ChainList onSelect={handleSelect} />}
       containerProps={{
-        sx: { border: '2px solid', borderColor: 'primary' },
+        sx: { border: '2px solid', borderColor: 'darkBorder' },
       }}
     >
       <Flex

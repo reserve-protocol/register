@@ -16,7 +16,8 @@ const ActionItem = styled(Flex)`
   cursor: pointer;
 
   &:hover {
-    background-color: #6d3210;
+    background-color: var(--theme-ui-colors-contentBackground);
+    border-left: 2px solid var(--theme-ui-colors-primary);
   }
 `
 
@@ -39,10 +40,10 @@ const TokenList = memo(
       <Box
         sx={{
           maxHeight: 320,
-          minWidth: 200,
+          minWidth: 250,
           overflow: 'auto',
-          backgroundColor: 'black',
-          borderRadius: '13px',
+          backgroundColor: 'background',
+          borderRadius: '12px',
         }}
       >
         <Box>
@@ -51,27 +52,29 @@ const TokenList = memo(
             onClick={onHome}
           >
             <BackHomeIcon />
-            <Text ml={2} sx={{ color: 'invertedText' }}>
+            <Text ml={2} sx={{ color: 'text' }}>
               <Trans>Dashboard</Trans>
             </Text>
           </ActionItem>
         </Box>
         {!!Object.values(tokens).length && (
           <Divider
-            sx={{ border: '1px dashed', borderColor: 'invertedText' }}
+            sx={{ border: '1px dashed', borderColor: 'darkBorder' }}
             my={0}
           />
         )}
         {Object.values(tokens).map(({ address, logo, symbol, chainId }) => (
-          <ActionItem key={address} onClick={async () => {
-            
-            if (currentChainId !== chainId && switchNetwork) {
-              switchNetwork(chainId!)
-            }
-            onSelect(address)
-          }}>
+          <ActionItem
+            key={address}
+            onClick={async () => {
+              if (currentChainId !== chainId && switchNetwork) {
+                switchNetwork(chainId!)
+              }
+              onSelect(address)
+            }}
+          >
             <TokenItem
-              sx={{ color: 'invertedText' }}
+              sx={{ color: 'text' }}
               symbol={symbol}
               logo={logo}
               chainId={chainId}

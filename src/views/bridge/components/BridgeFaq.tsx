@@ -21,7 +21,7 @@ const BridgeFaq = (props: BoxProps) => (
   <Card
     p={4}
     backgroundColor="transparent"
-    sx={{ border: '1px solid', borderColor: 'darkBorder' }}
+    sx={{ border: '1px solid', borderColor: 'border' }}
     {...props}
   >
     <Box variant="layout.verticalAlign" mb={3}>

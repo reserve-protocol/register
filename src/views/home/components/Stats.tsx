@@ -28,7 +28,8 @@ const Main = () => {
     my: [2, 5],
     sx: {
       borderStyle: 'dashed',
-      borderColor: ['background', 'border'],
+      borderColor: 'border',
+      display: ['none', 'block'],
     },
   }
 
@@ -145,7 +146,7 @@ const Main = () => {
       <Box
         px={3}
         mt={4}
-        pb={[5, 0]}
+        pb={[3, 0]}
         sx={(theme: any) => ({
           borderBottom: ['1px solid', 'none'],
           borderColor: theme.colors.border,
@@ -172,7 +173,7 @@ const Main = () => {
             />
           </Flex>
           <SmallButton
-            variant="muted"
+            variant="transparent"
             sx={{ height: 'wrap' }}
             mr={['auto', 0]}
             onClick={() => {
@@ -197,7 +198,15 @@ const Main = () => {
           </SmallButton>
         </Flex>
         <Divider {...dividerProps} />
-        <Box>
+        <Flex
+          sx={{
+            flexDirection: ['row', 'column'],
+            justifyContent: 'start',
+            overflowX: ['auto', 'visible'],
+            whiteSpace: ['nowrap', 'normal'],
+          }}
+          pb={4}
+        >
           <InfoHeading
             title={t`Total RToken Market Cap`}
             subtitle={metrics.totalRTokenUSD}
@@ -208,7 +217,6 @@ const Main = () => {
             title={t`TVL in Reserve`}
             help={t`Includes RTokens, staked RSR, and RSV.`}
             subtitle={metrics.totalValueLockedUSD}
-            {...dividerProps}
           />
           <Divider {...dividerProps} />
           <InfoHeading
@@ -220,7 +228,7 @@ const Main = () => {
             title={t`Cumulative Tx Volume`}
             subtitle={metrics.cumulativeVolumeUSD}
           />
-        </Box>
+        </Flex>
       </Box>
     )
   }
@@ -287,7 +295,7 @@ const Main = () => {
         px={3}
         mx={'auto'}
         sx={{
-          display: 'flex',
+          display: ['none', 'flex'],
           textAlign: 'center',
           flexDirection: ['column', 'row'],
           justifyContent: 'space-between',
@@ -311,7 +319,7 @@ const Main = () => {
       <Box>
         <Grid mb={[0, 8]} mt={2} gap={[5, 8]} columns={[1, 1, 1, 2]}>
           <MainTokenStats />
-          <TransactionsOverview />
+          <TransactionsOverview sx={{ display: ['none', 'block'] }} />
         </Grid>
         <Divider
           sx={{ display: ['none', 'block'] }}
