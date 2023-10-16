@@ -25,6 +25,16 @@ export const rTokenListAtom = atom((get) => {
   return rtokens[chainId] ?? {}
 })
 
+export const allrTokenListAtom = atom((get) => {
+  const ethereumTokens = rtokens[1]
+  const baseTokens = rtokens[8453]
+
+  return Object.fromEntries([
+    ...Object.values(ethereumTokens).map(i => ([i.address, {...i, chainId: 1}])),
+    ...Object.values(baseTokens).map(i => ([i.address, {...i, chainId: 8453}]))
+  ]) as Record<string, typeof ethereumTokens[string] & {chainId: number}>
+})
+
 export const clientAtom = atom((get) =>
   get(walletClientAtom || get(publicClientAtom))
 )

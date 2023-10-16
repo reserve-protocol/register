@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { usePopper } from 'react-popper'
 import useInterval from '../../hooks/useInterval'
 import { createPortal } from 'react-dom'
+import { StringMap } from 'types'
 
 const PopoverContainer = styled.div<{ show: boolean }>`
   z-index: 100010;
@@ -71,6 +72,7 @@ export interface PopoverProps {
   placement?: Placement
   arrow?: boolean
   onDismiss?: () => void
+  containerProps?: StringMap
 }
 
 export default function Popover({

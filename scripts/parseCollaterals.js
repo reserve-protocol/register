@@ -54,6 +54,10 @@ const protocols = {
     key: 'SDR',
     underlying: 'dai',
   },
+  STARGATE: {
+    key: 'STARGATE',
+    underlying: 'underlying',
+  },
 }
 
 const wrappedTokenMap = {
@@ -88,6 +92,7 @@ const wrappedTokenMap = {
   cvxMIM3Pool: protocols.CONVEX,
   sDAI: protocols.SDR,
   aBasUSDbC: protocols.AAVEv3,
+  sgUSDC: protocols.STARGATE,
 }
 
 const chainsMap = [

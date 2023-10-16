@@ -1,4 +1,4 @@
-import { setupEthereumZapper, ethereumConfig, Universe } from '@reserve-protocol/token-zapper'
+import { setupEthereumZapper, ethereumConfig, Universe, baseConfig, setupBaseZapper } from '@reserve-protocol/token-zapper'
 import { atom } from 'jotai'
 import { loadable } from 'jotai/utils'
 import { onlyNonNullAtom, simplifyLoadable } from 'utils/atoms/utils'
@@ -61,11 +61,22 @@ export const zapperState = loadable(
     }
 
     try {
+
+      const chainIdToConfig: Record<number, {config: any, setup: (uni: Universe<any>) => Promise<any>}> = {
+        1: {
+          config: ethereumConfig,
+          setup: setupEthereumZapper
+        },
+        8453: {
+          config: baseConfig,
+          setup: setupBaseZapper
+        }
+      }
       
       const universe = await Universe.createWithConfig(
         provider,
-        ethereumConfig,
-        setupEthereumZapper as any
+        chainIdToConfig[provider.network.chainId].config,
+        chainIdToConfig[provider.network.chainId].setup
       )
       try {
         if (ONE_INCH_PROXIES.length !== 0) {

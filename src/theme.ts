@@ -74,6 +74,7 @@ export const smallButton = {
 }
 
 export const colors = {
+  base: '#2852F5',
   text: '#292929',
   invertedText: '#FFFFFF',
   secondaryText: '#666666',
@@ -181,7 +182,7 @@ export const theme: Theme = {
       fontSize: 1,
     },
     strong: {
-      fontWeight: 600,
+      fontWeight: 500,
       display: 'block',
     },
     primary: {

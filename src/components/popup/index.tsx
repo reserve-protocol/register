@@ -1,17 +1,27 @@
 import { Box } from 'theme-ui'
-import styled from '@emotion/styled'
 import Popover, { PopoverProps } from 'components/popover'
 
-const Container = styled(Box)`
-  background-color: ${({ theme }: { theme: any }) =>
-    theme.colors.contentBackground};
-  border: 1px solid var(--theme-ui-colors-invertedText);
-  border-radius: 14px;
-  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
-`
-
-const Popup = ({ content, ...props }: PopoverProps) => {
-  return <Popover {...props} content={<Container>{content}</Container>} />
+const Popup = ({ content, containerProps = {}, ...props }: PopoverProps) => {
+  return (
+    <Popover
+      {...props}
+      content={
+        <Box
+          {...containerProps}
+          sx={{
+            backgroundCcolor: 'contentBackground',
+            border: '1px solid',
+            borderColor: 'invertedText',
+            borderRadius: '14px',
+            boxShadow: '0px 10px 25px rgba(0, 0, 0, 0.2)',
+            ...(containerProps.sx || {}),
+          }}
+        >
+          {content}
+        </Box>
+      }
+    />
+  )
 }
 
 export default Popup

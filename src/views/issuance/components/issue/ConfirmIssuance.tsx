@@ -1,11 +1,12 @@
 import { t } from '@lingui/macro'
+import BasketHandler from 'abis/BasketHandler'
 import RToken from 'abis/RToken'
 import TransactionModal from 'components/transaction-modal'
 import useHasAllowance, { RequiredAllowance } from 'hooks/useHasAllowance'
 import { atom, useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
 import { useState } from 'react'
-import { rTokenAtom, walletAtom } from 'state/atoms'
+import { rTokenAtom, rTokenContractsAtom, walletAtom } from 'state/atoms'
 import { formatCurrency, safeParseEther } from 'utils'
 import { RSV_MANAGER } from 'utils/rsv'
 import { Hex } from 'viem'
@@ -15,6 +16,7 @@ import {
   issueAmountDebouncedAtom,
   quantitiesAtom,
 } from 'views/issuance/atoms'
+import { useContractRead } from 'wagmi'
 import CollateralApprovals from './CollateralApprovals'
 import IssueInput from './IssueInput'
 
@@ -54,10 +56,16 @@ const allowancesAtom = atom((get) => {
 const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
   const [signing, setSigning] = useState(false)
   const rToken = useAtomValue(rTokenAtom)
+  const rTokenContracts = useAtomValue(rTokenContractsAtom)
   const amount = useAtomValue(issueAmountAtom)
   const [hasAllowance, tokensPendingAllowance] = useHasAllowance(
     useAtomValue(allowancesAtom)
   )
+  const { data: isReady } = useContractRead({
+    abi: BasketHandler,
+    address: rTokenContracts?.basketHandler?.address,
+    functionName: 'isReady',
+  })
   const call = useAtomValue(callAtom)
 
   const handleChange = (signing: boolean) => {
@@ -69,16 +77,24 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
     }
   }
 
+  const getConfirmText = () => {
+    if (!isReady) {
+      return t`Basket is not ready`
+    }
+
+    if (!hasAllowance) {
+      return 'Please grant collateral allowance'
+    }
+
+    return t`Begin minting ${formatCurrency(Number(amount))} ${rToken?.symbol}`
+  }
+
   return (
     <TransactionModal
       title={t`Mint ${rToken?.symbol}`}
       description={`Mint ${rToken?.symbol}`}
       call={call}
-      confirmLabel={
-        hasAllowance
-          ? t`Begin minting ${formatCurrency(Number(amount))} ${rToken?.symbol}`
-          : 'Please grant collateral allowance'
-      }
+      confirmLabel={getConfirmText()}
       onClose={onClose}
       onChange={handleChange}
       disabled={!hasAllowance}
