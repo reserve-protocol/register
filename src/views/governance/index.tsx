@@ -8,7 +8,7 @@ import useRToken from 'hooks/useRToken'
 const Governance = (props: BoxProps) => {
   const rToken = useRToken()
   const upgradeableRTokens = [
-    '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
+    // '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
     '0xE72B141DF173b999AE7c1aDcbF60Cc9833Ce56a8',
     '0xaCdf0DBA4B9839b96221a8487e9ca660a48212be',
   ]
