@@ -94,10 +94,10 @@ export const blockDuration = {
 
 // Load environment variables.
 export const TENDERLY_ACCESS_TOKEN: string = import.meta.env
-  .TENDERLY_ACCESS_TOKEN!
-export const TENDERLY_USER: string = import.meta.env.TENDERLY_USER!
+  .VITE_TENDERLY_ACCESS_TOKEN!
+export const TENDERLY_USER: string = import.meta.env.VITE_TENDERLY_USER!
 export const TENDERLY_PROJECT_SLUG: string = import.meta.env
-  .TENDERLY_PROJECT_SLUG!
+  .VITE_TENDERLY_PROJECT_SLUG!
 
 // Define the constants.
 export const BLOCK_GAS_LIMIT = 30_000_000

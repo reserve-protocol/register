@@ -1,23 +1,17 @@
 import { Trans, t } from '@lingui/macro'
 import { LoadingButton, SmallButton } from 'components/button'
-import CopyValue from 'components/button/CopyValue'
-import GoTo from 'components/button/GoTo'
-import TransactionButton from 'components/button/TransactionButton'
-import ConfirmProposalActionIcon from 'components/icons/ConfirmProposalActionIcon'
-import useContractWrite from 'hooks/useContractWrite'
-import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { chainIdAtom } from 'state/atoms'
 import { Box, BoxProps, Container, Flex, Spinner, Text } from 'theme-ui'
-import { shortenString } from 'utils'
 import { ROUTES } from 'utils/constants'
-import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { UsePrepareContractWriteConfig } from 'wagmi'
 import { isProposalEditingAtom } from '../atoms'
 import useRToken from 'hooks/useRToken'
 import IssuanceIcon from 'components/icons/IssuanceIcon'
+import useProposalSimulation from '../hooks/useProposalSimulation'
+import useProposalTx from '../hooks/useProposalTx'
 
 interface Props extends BoxProps {
   tx: UsePrepareContractWriteConfig
@@ -26,16 +20,19 @@ interface Props extends BoxProps {
 const ProposalStatus = () => {
   const navigate = useNavigate()
   const [isLoading, setLoading] = useState<boolean>(false)
-  const chainId = useAtomValue(chainIdAtom)
-  const rToken = useRToken()
+  const { simulateNew } = useProposalSimulation()
 
-  useEffect(() => {
-    if (status === 'success') {
-      navigate(
-        `${ROUTES.GOVERNANCE}?token=${rToken?.address}&chainId=${chainId}`
-      )
+  const handleSimulation = async () => {
+    setLoading(true)
+    try {
+      await simulateNew() // Pass config to simulateNew function
+    } catch (error) {
+      // handle error
+      console.error(error)
+    } finally {
+      setLoading(false)
     }
-  }, [status])
+  }
 
   if (isLoading) {
     return (
@@ -47,21 +44,17 @@ const ProposalStatus = () => {
       </>
     )
   }
-
   return (
     <LoadingButton
       text={t`Simulate proposal`}
       mt={4}
       fullWidth
-      disabled={!isLoading}
-      //   onClick={write}
+      disabled={isLoading}
+      onClick={handleSimulation}
     />
   )
 }
-
 const SimulateProposal = ({ tx, ...props }: Props) => {
-  const setProposalEditing = useSetAtom(isProposalEditingAtom)
-
   return (
     <Container variant="layout.sticky" p={0} {...props}>
       <Box

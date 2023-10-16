@@ -1,19 +1,13 @@
-import { proposedRolesAtom } from './../atoms'
 import { useAtomValue } from 'jotai'
-import {
-  rTokenGovernanceAtom,
-  rTokenManagersAtom,
-  rTokenStateAtom,
-} from 'state/atoms'
+import { rTokenGovernanceAtom, rTokenStateAtom } from 'state/atoms'
 import {
   ProposalEvent,
-  RoleKey,
   SimulationConfig,
   StorageEncodingResponse,
   TenderlyPayload,
   TenderlySimulation,
 } from 'types'
-import { useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import useProposalTx from './useProposalTx'
 import { usePublicClient } from 'wagmi'
 import { getContract } from 'wagmi/actions'
@@ -26,47 +20,51 @@ import {
   toHex,
   encodeFunctionData,
   trim,
+  getAddress,
+  boolToHex,
+  parseEther,
 } from 'viem'
-import useRToken from 'hooks/useRToken'
 import Governance from 'abis/Governance'
 import {
   BLOCK_GAS_LIMIT,
   TENDERLY_ACCESS_TOKEN,
+  TENDERLY_ENCODE_URL,
   TENDERLY_SIM_URL,
 } from 'utils/constants'
+import axios from 'axios'
 
 const DEFAULT_FROM = '0xD73a92Be73EfbFcF3854433A5FcbAbF9c1316073' // arbitrary EOA not used on-chain
-const TENDERLY_FETCH_OPTIONS = {
-  type: 'json',
-  headers: { 'X-Access-Key': TENDERLY_ACCESS_TOKEN },
+
+const getFetchOptions = (payload: TenderlyPayload) => {
+  const TENDERLY_FETCH_OPTIONS = {
+    headers: {
+      'X-Access-Key': TENDERLY_ACCESS_TOKEN,
+      'Content-Type': 'application/json',
+    },
+  }
+  return {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    ...TENDERLY_FETCH_OPTIONS,
+  }
 }
 
-const simulateNew = async (config: SimulationConfig): Promise<any> => {
+const sleep = (delay: number) =>
+  new Promise((resolve) => setTimeout(resolve, delay)) // delay in milliseconds
+
+const simulateNew = async (
+  config: SimulationConfig,
+  votingTokenSupply: any, // specify the correct type
+  governance: any, // specify the correct type
+  client: any // specify the correct type
+): Promise<any> => {
   // --- Validate config ---
-  const {
-    governorAddress,
-    targets,
-    values,
-    signatures,
-    calldatas,
-    description,
-  } = config
-
-  const rToken = useRToken()
-  const { stTokenSupply: votingTokenSupply } = useAtomValue(rTokenStateAtom)
-  const governance = useAtomValue(rTokenGovernanceAtom)
-  const client = usePublicClient()
-
-  if (targets.length !== values.length)
-    throw new Error('targets and values must be the same length')
-  if (targets.length !== signatures.length)
-    throw new Error('targets and signatures must be the same length')
-  if (targets.length !== calldatas.length)
-    throw new Error('targets and calldatas must be the same length')
+  const { targets, values, calldatas, description } = config
 
   // --- Get details about the proposal we're simulating ---
 
-  const blockNumberToUse = Number((await client.getBlock()).timestamp) - 3 // subtracting a few blocks to ensure tenderly has the block
+  const blockNumberToUse = Number((await client.getBlock()).number) - 3 // subtracting a few blocks to ensure tenderly has the block
+
   const latestBlock = await client.getBlock({
     blockNumber: BigInt(blockNumberToUse),
   })
@@ -97,7 +95,6 @@ const simulateNew = async (config: SimulationConfig): Promise<any> => {
     description,
     targets,
     values: values.map((_) => BigInt(0)),
-    signatures,
     calldatas,
   }
 
@@ -113,7 +110,22 @@ const simulateNew = async (config: SimulationConfig): Promise<any> => {
   // Generate the state object needed to mark the transactions as queued in the Timelock's storage
   const timelockStorageObj: Record<string, string> = {}
 
-  timelockStorageObj[`_timestamps[${proposalId.toString()}]`] =
+  const id = BigInt(
+    keccak256(
+      encodeAbiParameters(
+        parseAbiParameters('address[], uint256[], bytes[], bytes32, bytes32'),
+        [
+          targets,
+          values,
+          calldatas,
+          '0x0000000000000000000000000000000000000000000000000000000000000000',
+          descriptionHash,
+        ]
+      )
+    )
+  )
+
+  timelockStorageObj[`_timestamps[${toHex(id, { size: 32 })}]`] =
     simTimestamp.toString()
 
   // Use the Tenderly API to get the encoded state overrides for governor storage
@@ -126,7 +138,9 @@ const simulateNew = async (config: SimulationConfig): Promise<any> => {
     [`${proposalCoreKey}.voteStart._deadline`]: (simBlock - 1n).toString(),
     [`${proposalCoreKey}.canceled`]: 'false',
     [`${proposalCoreKey}.executed`]: 'false',
-    [`${proposalVotesKey}.forVotes`]: votingTokenSupply.toString(),
+    [`${proposalVotesKey}.forVotes`]: parseEther(
+      votingTokenSupply.toString()
+    ).toString(),
     [`${proposalVotesKey}.againstVotes`]: '0',
     [`${proposalVotesKey}.abstainVotes`]: '0',
   }
@@ -145,6 +159,7 @@ const simulateNew = async (config: SimulationConfig): Promise<any> => {
 
   const storageObj = await sendEncodeRequest(stateOverrides)
 
+  console.log({ storageObj })
   // --- Simulate it ---
   // We need the following state conditions to be true to successfully simulate a proposal:
   //   - proposalCount >= proposal.id
@@ -201,14 +216,12 @@ const simulateNew = async (config: SimulationConfig): Promise<any> => {
     },
   }
   const sim = await sendSimulation(simulationPayload)
-  writeFileSync('new-response.json', JSON.stringify(sim, null, 2))
+  console.log({ sim })
+
+  const sharedSimulationUrl = `https://dashboard.tenderly.co/shared/simulation/${sim?.simulation.id}`
+
+  console.log({ sharedSimulationUrl })
   return { sim, proposal, latestBlock }
-}
-
-const useProposalSimulation = () => {
-  const tx = useProposalTx()
-
-  useEffect(() => {}, [tx])
 }
 
 /**
@@ -219,19 +232,12 @@ async function sendEncodeRequest(
   payload: any
 ): Promise<StorageEncodingResponse> {
   try {
-    const fetchOptions = {
-      method: 'POST',
-      data: payload,
-      ...TENDERLY_FETCH_OPTIONS,
-    }
-    const response = await fetchUrl(TENDERLY_ENCODE_URL, fetchOptions)
+    const response: any = await fetch(
+      TENDERLY_ENCODE_URL,
+      getFetchOptions(payload)
+    )
 
-    for (const [key, value] of Object.entries(payload.stateOverrides)) {
-      console.log({ key, value })
-    }
-    console.log({ response })
-
-    return response as StorageEncodingResponse
+    return response.json() as StorageEncodingResponse
   } catch (err) {
     console.log('logging sendEncodeRequest error')
     console.log(JSON.stringify(err, null, 2))
@@ -253,16 +259,22 @@ async function sendSimulation(
   payload: TenderlyPayload,
   delay = 1000
 ): Promise<TenderlySimulation> {
-  const fetchOptions = {
-    method: 'POST',
-    data: payload,
-    ...TENDERLY_FETCH_OPTIONS,
-  }
   try {
+    console.log('final', getFetchOptions(payload))
     // Send simulation request
-    const sim = <TenderlySimulation>(
-      (<unknown>await fetch(TENDERLY_SIM_URL, fetchOptions))
-    )
+    // const sim = <TenderlySimulation>(
+    //   (<unknown>await fetch(TENDERLY_SIM_URL, getFetchOptions(payload)))
+    // )
+
+    console.log({ payload })
+    const sim = await axios.post(TENDERLY_SIM_URL, payload, {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Access-Key': TENDERLY_ACCESS_TOKEN as string,
+      },
+    })
+
+    console.log({ sim })
     // Post-processing to ensure addresses we use are checksummed (since ethers returns checksummed addresses)
     sim.transaction.addresses = sim.transaction.addresses.map(getAddress)
     sim.contracts.forEach(
@@ -276,16 +288,42 @@ async function sendSimulation(
       console.warn(
         `Simulation request failed with the below request payload and error`
       )
-      console.log(JSON.stringify(fetchOptions))
       throw err
     }
     console.warn(err)
     console.warn(
       `Simulation request failed with the above error, retrying in ~${delay} milliseconds. See request payload below`
     )
-    console.log(JSON.stringify(payload))
-    await sleep(delay + randomInt(0, 1000))
+    await sleep(delay + 500)
     return await sendSimulation(payload, delay * 2)
+  }
+}
+
+const useProposalSimulation = () => {
+  // Call your hooks here
+  const { stTokenSupply: votingTokenSupply } = useAtomValue(rTokenStateAtom)
+  const governance = useAtomValue(rTokenGovernanceAtom)
+  const client = usePublicClient()
+  const tx = useProposalTx() // Call your hook here at the top level
+
+  const config = {
+    governorAddress: tx?.address!,
+    targets: tx?.args[0]!,
+    values: tx?.args[1]!,
+    calldatas: tx?.args[2]!,
+    description: tx?.args[3]!,
+  }
+
+  const simulateNewFunction = useCallback(
+    async () => {
+      // Pass the hook values to simulateNew
+      await simulateNew(config, votingTokenSupply, governance, client)
+    },
+    [votingTokenSupply, governance, client] // add dependencies here
+  )
+
+  return {
+    simulateNew: simulateNewFunction,
   }
 }
 

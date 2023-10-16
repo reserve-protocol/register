@@ -1,4 +1,4 @@
-import { Address, Transaction } from 'viem'
+import { Address } from 'viem'
 
 export type RoleKey =
   | 'owners'
@@ -180,14 +180,12 @@ export interface ProposalEvent {
   description: string
   targets: string[]
   values: bigint[]
-  signatures: string[]
   calldatas: string[]
 }
 export interface SimulationConfig {
   governorAddress: string
   targets: `0x${string}`[]
   values: bigint[]
-  signatures: string[]
   calldatas: `0x${string}`[]
   description: string
 }
@@ -259,7 +257,7 @@ interface GeneratedAccessList {
 }
 
 export interface TenderlySimulation {
-  transaction: Transaction
+  transaction: any
   simulation: any
   contracts: any[]
   generated_access_list: GeneratedAccessList[]
