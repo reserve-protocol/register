@@ -35,7 +35,7 @@ const BridgeHeader = () => {
         <Button
           variant="bordered"
           small
-          sx={{ borderColor: isWrapping ? 'primary' : 'muted' }}
+          sx={{ borderColor: isWrapping ? 'primary' : 'darkBorder' }}
           ml="auto"
           onClick={() => setWrapping(true)}
         >
@@ -45,7 +45,7 @@ const BridgeHeader = () => {
           variant="bordered"
           ml="3"
           small
-          sx={{ borderColor: !isWrapping ? 'primary' : 'muted' }}
+          sx={{ borderColor: !isWrapping ? 'primary' : 'darkBorder' }}
           onClick={() => setWrapping(false)}
         >
           <Trans>Withdraw</Trans>

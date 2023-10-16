@@ -102,7 +102,7 @@ const Greet = ({ onDismiss, ...props }: Props) => {
 
   return (
     <>
-      <Flex {...props} pt={0} mb={0} px={{ justifyContent: 'flex-end' }}>
+      <Flex {...props} pt={5} mb={0} px={{ justifyContent: 'flex-end' }}>
         <Box ml={3} mt={'auto'} pr={3}>
           <DeployIntroIcon />
           <Text variant="pageTitle" my={2}>
