@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { rTokenConfigurationAtom } from 'state/atoms'
 import {
+  isAssistedUpgradeAtom,
   isNewBasketProposedAtom,
   isProposalEditingAtom,
   proposalDescriptionAtom,
@@ -15,6 +16,7 @@ import Updater from './updater'
 
 const GovernanceProposal = () => {
   const tokenParameters = useAtomValue(rTokenConfigurationAtom) || {}
+  const isAssistedUpgrade = useAtomValue(isAssistedUpgradeAtom)
   const [isEditing, setEditing] = useAtom(isProposalEditingAtom)
 
   const form = useForm({
@@ -43,7 +45,7 @@ const GovernanceProposal = () => {
   return (
     <FormProvider {...form}>
       <Updater />
-      {isEditing ? <Proposal /> : <ConfirmProposal />}
+      {isEditing && !isAssistedUpgrade ? <Proposal /> : <ConfirmProposal />}
     </FormProvider>
   )
 }

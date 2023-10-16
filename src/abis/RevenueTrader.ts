@@ -1,9 +1,5 @@
 export default [
-  {
-    inputs: [],
-    name: 'UIntOutOfBounds',
-    type: 'error',
-  },
+  { inputs: [], name: 'UIntOutOfBounds', type: 'error' },
   {
     anonymous: false,
     inputs: [
@@ -39,12 +35,7 @@ export default [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: false,
-        internalType: 'uint8',
-        name: 'version',
-        type: 'uint8',
-      },
+      { indexed: false, internalType: 'uint8', name: 'version', type: 'uint8' },
     ],
     name: 'Initialized',
     type: 'event',
@@ -53,13 +44,13 @@ export default [
     anonymous: false,
     inputs: [
       {
-        indexed: true,
+        indexed: false,
         internalType: 'uint192',
         name: 'oldVal',
         type: 'uint192',
       },
       {
-        indexed: true,
+        indexed: false,
         internalType: 'uint192',
         name: 'newVal',
         type: 'uint192',
@@ -72,13 +63,13 @@ export default [
     anonymous: false,
     inputs: [
       {
-        indexed: true,
+        indexed: false,
         internalType: 'uint192',
         name: 'oldVal',
         type: 'uint192',
       },
       {
-        indexed: true,
+        indexed: false,
         internalType: 'uint192',
         name: 'newVal',
         type: 'uint192',
@@ -97,7 +88,7 @@ export default [
         type: 'address',
       },
       {
-        indexed: true,
+        indexed: false,
         internalType: 'uint256',
         name: 'amount',
         type: 'uint256',
@@ -196,27 +187,22 @@ export default [
   {
     inputs: [],
     name: 'MAX_TRADE_SLIPPAGE',
-    outputs: [
-      {
-        internalType: 'uint192',
-        name: '',
-        type: 'uint192',
-      },
-    ],
+    outputs: [{ internalType: 'uint192', name: '', type: 'uint192' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'MAX_TRADE_VOLUME',
-    outputs: [
-      {
-        internalType: 'uint192',
-        name: '',
-        type: 'uint192',
-      },
-    ],
+    outputs: [{ internalType: 'uint192', name: '', type: 'uint192' }],
     stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'cacheComponents',
+    outputs: [],
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -228,11 +214,7 @@ export default [
   },
   {
     inputs: [
-      {
-        internalType: 'contract IERC20',
-        name: 'erc20',
-        type: 'address',
-      },
+      { internalType: 'contract IERC20', name: 'erc20', type: 'address' },
     ],
     name: 'claimRewardsSingle',
     outputs: [],
@@ -240,27 +222,18 @@ export default [
     type: 'function',
   },
   {
+    inputs: [],
+    name: 'distributeTokenToBuy',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
     inputs: [
-      {
-        internalType: 'contract IMain',
-        name: 'main_',
-        type: 'address',
-      },
-      {
-        internalType: 'contract IERC20',
-        name: 'tokenToBuy_',
-        type: 'address',
-      },
-      {
-        internalType: 'uint192',
-        name: 'maxTradeSlippage_',
-        type: 'uint192',
-      },
-      {
-        internalType: 'uint192',
-        name: 'minTradeVolume_',
-        type: 'uint192',
-      },
+      { internalType: 'contract IMain', name: 'main_', type: 'address' },
+      { internalType: 'contract IERC20', name: 'tokenToBuy_', type: 'address' },
+      { internalType: 'uint192', name: 'maxTradeSlippage_', type: 'uint192' },
+      { internalType: 'uint192', name: 'minTradeVolume_', type: 'uint192' },
     ],
     name: 'init',
     outputs: [],
@@ -270,25 +243,16 @@ export default [
   {
     inputs: [],
     name: 'main',
-    outputs: [
-      {
-        internalType: 'contract IMain',
-        name: '',
-        type: 'address',
-      },
-    ],
+    outputs: [{ internalType: 'contract IMain', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'contract IERC20',
-        name: 'erc20',
-        type: 'address',
-      },
+      { internalType: 'contract IERC20[]', name: 'erc20s', type: 'address[]' },
+      { internalType: 'enum TradeKind[]', name: 'kinds', type: 'uint8[]' },
     ],
-    name: 'manageToken',
+    name: 'manageTokens',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -296,111 +260,49 @@ export default [
   {
     inputs: [],
     name: 'maxTradeSlippage',
-    outputs: [
-      {
-        internalType: 'uint192',
-        name: '',
-        type: 'uint192',
-      },
-    ],
+    outputs: [{ internalType: 'uint192', name: '', type: 'uint192' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'minTradeVolume',
-    outputs: [
-      {
-        internalType: 'uint192',
-        name: '',
-        type: 'uint192',
-      },
-    ],
+    outputs: [{ internalType: 'uint192', name: '', type: 'uint192' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'uint192',
-        name: 'x',
-        type: 'uint192',
-      },
-      {
-        internalType: 'uint192',
-        name: 'y',
-        type: 'uint192',
-      },
-      {
-        internalType: 'uint192',
-        name: 'z',
-        type: 'uint192',
-      },
-    ],
-    name: 'mulDivCeil',
-    outputs: [
-      {
-        internalType: 'uint192',
-        name: '',
-        type: 'uint192',
-      },
-    ],
-    stateMutability: 'pure',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'bytes[]',
-        name: 'data',
-        type: 'bytes[]',
-      },
-    ],
+    inputs: [{ internalType: 'bytes[]', name: 'data', type: 'bytes[]' }],
     name: 'multicall',
-    outputs: [
-      {
-        internalType: 'bytes[]',
-        name: 'results',
-        type: 'bytes[]',
-      },
-    ],
+    outputs: [{ internalType: 'bytes[]', name: 'results', type: 'bytes[]' }],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
     inputs: [],
     name: 'proxiableUUID',
-    outputs: [
-      {
-        internalType: 'bytes32',
-        name: '',
-        type: 'bytes32',
-      },
-    ],
+    outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'uint192',
-        name: 'val',
-        type: 'uint192',
-      },
+      { internalType: 'contract IERC20[]', name: 'erc20s', type: 'address[]' },
     ],
+    name: 'returnTokens',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint192', name: 'val', type: 'uint192' }],
     name: 'setMaxTradeSlippage',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'uint192',
-        name: 'val',
-        type: 'uint192',
-      },
-    ],
+    inputs: [{ internalType: 'uint192', name: 'val', type: 'uint192' }],
     name: 'setMinTradeVolume',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -408,69 +310,46 @@ export default [
   },
   {
     inputs: [
-      {
-        internalType: 'contract IERC20',
-        name: 'sell',
-        type: 'address',
-      },
+      { internalType: 'contract IERC20', name: 'sell', type: 'address' },
     ],
     name: 'settleTrade',
-    outputs: [],
+    outputs: [
+      { internalType: 'contract ITrade', name: 'trade', type: 'address' },
+    ],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
     inputs: [],
     name: 'tokenToBuy',
-    outputs: [
-      {
-        internalType: 'contract IERC20',
-        name: '',
-        type: 'address',
-      },
-    ],
+    outputs: [{ internalType: 'contract IERC20', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'contract IERC20',
-        name: '',
-        type: 'address',
-      },
-    ],
+    inputs: [{ internalType: 'contract IERC20', name: '', type: 'address' }],
     name: 'trades',
-    outputs: [
-      {
-        internalType: 'contract ITrade',
-        name: '',
-        type: 'address',
-      },
-    ],
+    outputs: [{ internalType: 'contract ITrade', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'tradesNonce',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'tradesOpen',
-    outputs: [
-      {
-        internalType: 'uint48',
-        name: '',
-        type: 'uint48',
-      },
-    ],
+    outputs: [{ internalType: 'uint48', name: '', type: 'uint48' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'newImplementation',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'newImplementation', type: 'address' },
     ],
     name: 'upgradeTo',
     outputs: [],
@@ -479,16 +358,8 @@ export default [
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'newImplementation',
-        type: 'address',
-      },
-      {
-        internalType: 'bytes',
-        name: 'data',
-        type: 'bytes',
-      },
+      { internalType: 'address', name: 'newImplementation', type: 'address' },
+      { internalType: 'bytes', name: 'data', type: 'bytes' },
     ],
     name: 'upgradeToAndCall',
     outputs: [],
@@ -498,13 +369,7 @@ export default [
   {
     inputs: [],
     name: 'version',
-    outputs: [
-      {
-        internalType: 'string',
-        name: '',
-        type: 'string',
-      },
-    ],
+    outputs: [{ internalType: 'string', name: '', type: 'string' }],
     stateMutability: 'pure',
     type: 'function',
   },
