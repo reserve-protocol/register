@@ -1,6 +1,6 @@
 import { t } from '@lingui/macro'
 import RToken from 'abis/RToken'
-import RTokenLegacy from 'abis/RTokenLegacy'
+import RSVManager from 'abis/RSVManager'
 import TransactionModal from 'components/transaction-modal'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useCallback, useMemo, useState } from 'react'
@@ -39,7 +39,7 @@ const callAtom = atom((get) => {
   // Normal case, redeem directly
   if (isCollaterized || isLegacy) {
     return {
-      abi: isLegacy ? RTokenLegacy : RToken,
+      abi: isLegacy ? RSVManager : RToken,
       address: rToken.main ? rToken.address : RSV_MANAGER,
       functionName: 'redeem',
       args: rToken?.main && isLegacy ? [parsedAmount, nonce] : [parsedAmount],

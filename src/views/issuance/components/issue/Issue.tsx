@@ -39,6 +39,7 @@ const useMaxIssuable = async () => {
   // RSV
   if (rToken && !rToken.main) {
     setMaxIssuable(balances[rToken.collaterals[0].address].value ?? 0n)
+    return
   }
 
   try {
