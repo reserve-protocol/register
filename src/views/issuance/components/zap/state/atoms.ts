@@ -28,6 +28,7 @@ import {
 import { resolvedZapState, zappableTokens } from './zapper'
 import { type SearcherResult } from '@reserve-protocol/token-zapper/types/searcher/SearcherResult'
 import { type ZapTransaction } from '@reserve-protocol/token-zapper/types/searcher/ZapTransaction'
+import mixpanel from 'mixpanel-browser'
 
 /**
  * I've tried to keep react effects to a minimum so most async code is triggered via some signal
@@ -44,10 +45,10 @@ import { type ZapTransaction } from '@reserve-protocol/token-zapper/types/search
  */
 
 export const previousZapTransaction = atom<{
-  result: SearcherResult,
-  transaction: ZapTransaction,
+  result: SearcherResult
+  transaction: ZapTransaction
   permit2?: {
-    permit: PermitTransferFrom,
+    permit: PermitTransferFrom
     signature: string
   }
 } | null>(null)
@@ -331,6 +332,8 @@ export const resolvedZapTransaction = simplifyLoadable(zapTransaction)
 
 export const zapTransactionGasEstimateUnits = loadable(
   onlyNonNullAtom(async (get) => {
+    const selectedZapToken = get(selectedZapTokenAtom)
+    const rToken = get(rTokenAtom)
     const tx = get(resolvedZapTransaction)
     const needsApproval = get(resolvedApprovalNeeded)
     if (
@@ -357,6 +360,11 @@ export const zapTransactionGasEstimateUnits = loadable(
         continue
       }
     }
+
+    mixpanel.track('Failed to estimate gas for zapping', {
+      RToken: rToken.address.toString().toLowerCase() ?? '',
+      inputToken: selectedZapToken.symbol,
+    })
     throw new Error('Failed to estimate gas')
   })
 )

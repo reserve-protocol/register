@@ -3,7 +3,7 @@ import TransactionButton from 'components/button/TransactionButton'
 import useContractWrite from 'hooks/useContractWrite'
 import useHasAllowance from 'hooks/useHasAllowance'
 import useWatchTransaction from 'hooks/useWatchTransaction'
-import { atom, useAtomValue, useSetAtom } from 'jotai'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect, useState } from 'react'
 import { safeParseEther } from 'utils'
 import { Address } from 'viem'
@@ -16,6 +16,7 @@ import {
 } from '../atoms'
 import { Modal } from 'components'
 import { Box, Divider, Text } from 'theme-ui'
+import mixpanel from 'mixpanel-browser'
 
 const btnLabelAtom = atom((get) => {
   const token = get(selectedTokenAtom)
@@ -78,7 +79,9 @@ const ApproveBtn = () => {
 
 const ConfirmBridgeBtn = ({ onSuccess }: { onSuccess(): void }) => {
   const bridgeTransaction = useAtomValue(bridgeTxAtom)
-  const setAmount = useSetAtom(bridgeAmountAtom)
+  const bridgeToken = useAtomValue(selectedTokenAtom)
+  const isWrapping = useAtomValue(isBridgeWrappingAtom)
+  const [amount, setAmount] = useAtom(bridgeAmountAtom)
   const {
     isReady,
     gas,
@@ -96,6 +99,11 @@ const ConfirmBridgeBtn = ({ onSuccess }: { onSuccess(): void }) => {
 
   useEffect(() => {
     if (status === 'success') {
+      mixpanel.track('Bridge Success', {
+        Token: bridgeToken.symbol,
+        Amount: amount,
+        Destination: isWrapping ? 'Base' : 'Ethereum',
+      })
       setAmount('')
       reset()
       onSuccess()
