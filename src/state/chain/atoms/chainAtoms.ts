@@ -5,7 +5,6 @@ import { blockDuration } from 'utils/constants'
 import { formatEther } from 'viem'
 import { Address, PublicClient, WalletClient } from 'wagmi'
 import rtokens from '@lc-labs/rtokens'
-
 /**
  * #########################
  * Chain state related atoms

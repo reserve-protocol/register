@@ -31,7 +31,7 @@ const availableTokensAtom = atom((get) => {
   }
 
   for (const token of owned) {
-    if (!tokenList[token.address]) {
+    if (tokenList[token.address] == null) {
       tokenList[token.address] = {
         address: token.address,
         symbol: token.symbol,

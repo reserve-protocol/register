@@ -11,7 +11,6 @@ const ZapButton = (props: Partial<LoadingButtonProps>) => {
   useEffect(() => {
     
     if (ttx != null) {
-      console.log("Setting previous")
       setPrevious(ttx)
     }
     

@@ -1,11 +1,11 @@
-import { Address, Token, Searcher } from '@reserve-protocol/token-zapper'
+import { Address, Searcher, Token } from '@reserve-protocol/token-zapper'
 import {
   PERMIT2_ADDRESS,
   PermitTransferFrom,
   PermitTransferFromData,
   SignatureTransfer,
 } from '@uniswap/permit2-sdk'
-import { atom, Getter } from 'jotai'
+import { Getter, atom } from 'jotai'
 import { loadable } from 'jotai/utils'
 import {
   balancesAtom,
@@ -16,8 +16,8 @@ import {
 } from 'state/atoms'
 
 import { defaultAbiCoder } from '@ethersproject/abi'
-import { id } from '@ethersproject/hash'
 import { MaxUint256 } from '@ethersproject/constants'
+import { id } from '@ethersproject/hash'
 import atomWithDebounce from 'utils/atoms/atomWithDebounce'
 import {
   atomWithOnWrite,
@@ -25,10 +25,10 @@ import {
   simplifyLoadable,
 } from 'utils/atoms/utils'
 
-import { resolvedZapState, zappableTokens } from './zapper'
 import { type SearcherResult } from '@reserve-protocol/token-zapper/types/searcher/SearcherResult'
 import { type ZapTransaction } from '@reserve-protocol/token-zapper/types/searcher/ZapTransaction'
 import mixpanel from 'mixpanel-browser'
+import { resolvedZapState, zappableTokens } from './zapper'
 
 /**
  * I've tried to keep react effects to a minimum so most async code is triggered via some signal
@@ -180,19 +180,43 @@ export const zapQuotePromise = loadable(
     a.catch((e) => console.log(e.message))
 
     const out = await a
-    console.log(out)
     return out
   })
 )
 
 export const zapQuote = simplifyLoadable(zapQuotePromise)
 
-export const selectedZapTokenBalance = onlyNonNullAtom((get) => {
-  const token = get(selectedZapTokenAtom)
-  const quantities = get(balancesAtom) ?? {}
-  const bal = quantities[token.address.address as any]?.balance ?? 0n
 
-  return token.from(bal)
+const approximateGasUsage: Record<string, bigint> = {
+  '0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f': 3_000_000n,
+  '0xe72b141df173b999ae7c1adcbf60cc9833ce56a8': 3_000_000n,
+  '0xacdf0dba4b9839b96221a8487e9ca660a48212be': 6_000_000n,
+  '0xf2098092a5b9d25a3cc7ddc76a0553c9922eea9e': 3_000_000n,
+  '0x9b451beb49a03586e6995e5a93b9c745d068581e': 3_000_000n,
+  '0xfc0b1eef20e4c68b3dcf36c4537cfa7ce46ca70b': 3_000_000n,
+  '0x50249c768a6d3cb4b6565c0a2bfbdb62be94915c': 3_000_000n,
+  '0xcc7ff230365bd730ee4b352cc2492cedac49383e': 6_000_000n
+}
+export const selectedZapTokenBalance = atom((get) => {
+  const token = get(selectedZapTokenAtom)
+  if (token == null) {
+    return null
+  }
+  const zapState = get(resolvedZapState)
+  if (zapState == null) {
+    return null
+  }
+  const rtoken = get(rTokenAtom)
+  const zapTransaction = get(resolvedZapTransaction)
+  const quantities = get(balancesAtom) ?? {}
+  const fr = quantities[token.address.address as any]?.balance ?? "0"
+  let bal = token.from(fr)
+  if (token.address.address === '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') {
+    const a = zapState.gasPrice * (zapTransaction?.transaction.gasEstimate ?? approximateGasUsage[rtoken?.address.toLowerCase() ?? ""] ?? 2_500_000n);
+    bal = bal.sub(token.from(a))
+    bal = bal.amount < 0n ? token.zero : bal
+  }
+  return bal
 })
 
 export const approvalNeededAtom = loadable(
@@ -308,9 +332,9 @@ const zapTxAtom = atom(async (get) => {
     permit2 =
       signature != null && permit != null
         ? {
-            permit: permit.permit,
-            signature,
-          }
+          permit: permit.permit,
+          signature,
+        }
         : undefined
   }
   const tx = await result.toTransaction({

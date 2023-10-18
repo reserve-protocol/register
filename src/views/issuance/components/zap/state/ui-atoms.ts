@@ -1,13 +1,12 @@
-import { Token, TokenQuantity } from '@reserve-protocol/token-zapper'
-import { atom, Getter, SetStateAction, Setter } from 'jotai'
+import { Token } from '@reserve-protocol/token-zapper'
+import { Getter, SetStateAction, Setter, atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import { Atom } from 'jotai/vanilla'
 import {
   ethPriceAtom,
   gasFeeAtom,
-  gasPriceAtom,
   isWalletModalVisibleAtom,
-  rTokenAtom,
+  rTokenAtom
 } from 'state/atoms'
 import { onlyNonNullAtom } from 'utils/atoms/utils'
 
@@ -22,6 +21,8 @@ import {
   noZapActive,
   permit2ToSignAtom,
   permitSignature,
+  previousZapTransaction,
+  redoQuote,
   resolvedApprovalNeeded,
   resolvedApprovalTxFee,
   resolvedZapTransaction,
@@ -33,18 +34,16 @@ import {
   tokenToZapUserSelected,
   zapInputString,
   zapIsPending,
-  zapperInputs,
   zapQuote,
   zapQuoteInput,
   zapQuotePromise,
-  redoQuote,
   zapSender,
   zapTransaction,
   zapTransactionGasEstimateUnits,
   zapTxHash,
-  previousZapTransaction,
+  zapperInputs,
 } from './atoms'
-import { formatQty, FOUR_DIGITS } from './formatTokenQuantity'
+import { FOUR_DIGITS, formatQty } from './formatTokenQuantity'
 import { resolvedZapState, zappableTokens, zapperState } from './zapper'
 
 /**
@@ -189,7 +188,6 @@ export const zapOutputValue = onlyNonNullAtom((get) => {
 const state = atom((get) => {
   const quotePromise = get(zapQuotePromise)
   const approvePromise = get(approvalNeededAtom)
-  const prev = get(previousZapTransaction)
   const tx = get(zapTransaction)
   const units = get(zapTransactionGasEstimateUnits)
   const balances = get(hasSufficientGasTokenAndERC20TokenBalance)
@@ -256,10 +254,14 @@ const loadingStates = new Set<UIState>([
   // 'approval_sent_loading',
   'signature_loading',
 ])
-const buttonEnabled = atom(
-  (get) =>
-    buttonEnabledStates.has(get(state)) || get(previousZapTransaction) != null
-)
+
+const buttonEnabled = atom((get) => {
+  const s = get(state);
+  if (s === 'insufficient_gas_balance' || s === 'insufficient_token_balance') {
+    return false
+  }
+  return buttonEnabledStates.has(s) || get(previousZapTransaction) != null
+})
 const buttonIsLoading = atom((get) => loadingStates.has(get(state)))
 const buttonLabel = atom((get) => {
   if (get(zapSender) == null) {
@@ -269,16 +271,18 @@ const buttonLabel = atom((get) => {
   if (loadedState == null) {
     return '+ Zap'
   }
+  const s = get(state)
 
-  if (get(previousZapTransaction) != null) {
-    return `+ Mint ${loadedState.rToken.symbol}`
-  }
-
-  switch (get(state)) {
+  switch (s) {
     case 'insufficient_gas_balance':
       return 'Insufficient ETH balance'
     case 'insufficient_token_balance':
       return `Insufficient ${loadedState.tokenToZap.symbol} balance`
+  }
+  if (get(previousZapTransaction) != null) {
+    return `+ Mint ${loadedState.rToken.symbol}`
+  }
+  switch (s) {
     case 'quote_error':
       return 'Failed to find zap'
     case 'approval_error':
