@@ -6,7 +6,7 @@ import {
   ethPriceAtom,
   gasFeeAtom,
   isWalletModalVisibleAtom,
-  rTokenAtom
+  rTokenAtom,
 } from 'state/atoms'
 import { onlyNonNullAtom } from 'utils/atoms/utils'
 
@@ -18,6 +18,7 @@ import {
   approvalPending,
   approvalRandomId,
   hasSufficientGasTokenAndERC20TokenBalance,
+  maxSelectedZapTokenBalance,
   noZapActive,
   permit2ToSignAtom,
   permitSignature,
@@ -42,10 +43,6 @@ import {
   zapTransactionGasEstimateUnits,
   zapTxHash,
   zapperInputs,
-<<<<<<< HEAD
-  maxSelectedZapTokenBalance,
-=======
->>>>>>> 249b5cc4 (prevent max amount from overshooting when selecting ETH. Prevent page from crashing on network switch)
 } from './atoms'
 import { FOUR_DIGITS, formatQty } from './formatTokenQuantity'
 import { resolvedZapState, zappableTokens, zapperState } from './zapper'
@@ -260,7 +257,7 @@ const loadingStates = new Set<UIState>([
 ])
 
 const buttonEnabled = atom((get) => {
-  const s = get(state);
+  const s = get(state)
   if (s === 'insufficient_gas_balance' || s === 'insufficient_token_balance') {
     return false
   }
