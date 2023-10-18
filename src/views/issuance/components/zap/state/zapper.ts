@@ -1,11 +1,11 @@
 import { Web3Provider } from '@ethersproject/providers'
 import {
-  createKyberswap,
-  setupEthereumZapper,
-  ethereumConfig,
   Universe,
   baseConfig,
+  createKyberswap,
+  ethereumConfig,
   setupBaseZapper,
+  setupEthereumZapper,
 } from '@reserve-protocol/token-zapper'
 import { atom } from 'jotai'
 import { loadable } from 'jotai/utils'
@@ -86,7 +86,7 @@ export const zapperState = loadable(
         chainIdToConfig[provider.network.chainId].config,
         chainIdToConfig[provider.network.chainId].setup
       )
-      universe.dexAggregators.push(createKyberswap('KyberSwap', universe, 30))
+      universe.dexAggregators.push(createKyberswap('KyberSwap', universe, 20))
       return universe
     } catch (e) {
       mixpanel.track('Failed zapper set up', {
