@@ -502,7 +502,7 @@ const resetTxAtoms = (set: Setter) => {
 const signAndSendTx: ZapperAction = async (
   get,
   set,
-  { signer, provider, rToken, quote }
+  { signer, provider, rToken, quote, inputToken }
 ) => {
   try {
     const permit = get(permit2ToSignAtom)
@@ -541,10 +541,23 @@ const signAndSendTx: ZapperAction = async (
     set(zapTxHash, resp.hash)
     set(zapInputString, '')
     set(addTransactionAtom, [resp.hash, `Easy mint ${rToken.symbol}`])
+    mixpanel.track('Zap Success', {
+      RToken: rToken.address.toString().toLowerCase() ?? '',
+      inputToken: inputToken.symbol,
+    })
   } catch (e: any) {
     if (e.code === 'ACTION_REJECTED') {
+      mixpanel.track('User Rejected Zap', {
+        RToken: rToken.address.toString().toLowerCase() ?? '',
+        inputToken: inputToken.symbol,
+      })
       notifyError('Zap failed', 'User rejected signature request')
     } else {
+      mixpanel.track('Zap Execution Error', {
+        RToken: rToken.address.toString().toLowerCase() ?? '',
+        inputToken: inputToken.symbol,
+        error: e,
+      })
       notifyError('Zap failed', 'Unknown error ' + e.code)
     }
   } finally {
@@ -586,7 +599,7 @@ const sendTx: ZapperAction = async (
       })
       notifyError('Zap failed', 'User rejected')
     } else {
-      mixpanel.track('Zapping Error', {
+      mixpanel.track('Zap Execution Error', {
         RToken: rToken.address.toString().toLowerCase() ?? '',
         inputToken: inputToken.symbol,
         error: e,

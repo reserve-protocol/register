@@ -1,8 +1,9 @@
 import {
   createOneInchDexAggregator,
   DexAggregator,
-  Universe
+  Universe,
 } from '@reserve-protocol/token-zapper'
+import mixpanel from 'mixpanel-browser'
 
 /**
  * Creates a 1inch aggregator that will use a list of proxies to make requests
@@ -42,7 +43,7 @@ export const createProxiedOneInchAggregator = (
     const instances = [...aggregatorInstances]
     for (let i = instances.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))
-        ;[instances[i], instances[j]] = [instances[j], instances[i]]
+      ;[instances[i], instances[j]] = [instances[j], instances[i]]
     }
     return instances
   }
@@ -64,6 +65,10 @@ export const createProxiedOneInchAggregator = (
           continue
         }
       }
+      mixpanel.track('All 1inch aggregators failed', {
+        RToken: output.address.toString().toLowerCase() ?? '',
+        inputToken: input.token.symbol,
+      })
       throw new Error('All aggregators failed')
     }
   )

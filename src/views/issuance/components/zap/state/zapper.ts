@@ -1,11 +1,18 @@
-import { setupEthereumZapper, ethereumConfig, Universe, baseConfig, setupBaseZapper } from '@reserve-protocol/token-zapper'
+import {
+  setupEthereumZapper,
+  ethereumConfig,
+  Universe,
+  baseConfig,
+  setupBaseZapper,
+} from '@reserve-protocol/token-zapper'
 import { atom } from 'jotai'
 import { loadable } from 'jotai/utils'
 import { onlyNonNullAtom, simplifyLoadable } from 'utils/atoms/utils'
 import { createProxiedOneInchAggregator } from './createProxiedOneInchAggregator'
 import { clientAtom } from 'state/atoms'
-import { Web3Provider } from "@ethersproject/providers"
+import { Web3Provider } from '@ethersproject/providers'
 import { PublicClient } from 'viem'
+import mixpanel from 'mixpanel-browser'
 
 export function publicClientToProvider(publicClient: PublicClient) {
   const { chain } = publicClient
@@ -17,19 +24,18 @@ export function publicClientToProvider(publicClient: PublicClient) {
   return new Web3Provider(async (method, params) => {
     return publicClient.request({
       method,
-      params
+      params,
     } as any)
   }, network)
 }
 
-const providerAtom = atom<any>(get => {
+const providerAtom = atom<any>((get) => {
   const cli = get(clientAtom)
   if (cli == null) {
     return null
   }
   return publicClientToProvider(cli as any)
 })
-
 
 // TODO: Convert provider viem -> ethers
 export const connectionName = onlyNonNullAtom((get) => {
@@ -61,18 +67,20 @@ export const zapperState = loadable(
     }
 
     try {
-
-      const chainIdToConfig: Record<number, {config: any, setup: (uni: Universe<any>) => Promise<any>}> = {
+      const chainIdToConfig: Record<
+        number,
+        { config: any; setup: (uni: Universe<any>) => Promise<any> }
+      > = {
         1: {
           config: ethereumConfig,
-          setup: setupEthereumZapper
+          setup: setupEthereumZapper,
         },
         8453: {
           config: baseConfig,
-          setup: setupBaseZapper
-        }
+          setup: setupBaseZapper,
+        },
       }
-      
+
       const universe = await Universe.createWithConfig(
         provider,
         chainIdToConfig[provider.network.chainId].config,
@@ -90,6 +98,9 @@ export const zapperState = loadable(
 
       return universe
     } catch (e) {
+      mixpanel.track('Failed zapper set up', {
+        ChainId: provider.network.chainId,
+      })
       console.log(e)
       throw e
     }
@@ -106,7 +117,7 @@ export const zapperLoaded = atom(async (get) => {
   return true
 })
 
-export const zappableTokens = atom(async(get) => {
+export const zappableTokens = atom(async (get) => {
   const uni = get(resolvedZapState)
   if (uni == null) {
     return []
