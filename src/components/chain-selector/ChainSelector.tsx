@@ -2,6 +2,7 @@ import Button from 'components/button'
 import Base from 'components/icons/logos/Base'
 import Ethereum from 'components/icons/logos/Ethereum'
 import Popup from 'components/popup'
+import mixpanel from 'mixpanel-browser'
 import { transition } from 'theme'
 import { useAtom, useAtomValue } from 'jotai'
 import { useState } from 'react'
@@ -80,7 +81,13 @@ const ChainList = ({ onSelect }: { onSelect(chain: number): void }) => {
         )
       })}
       <Box p={3} sx={{ borderTop: '1px solid', borderColor: 'darkBorder' }}>
-        <Button variant="muted" onClick={() => navigate(ROUTES.BRIDGE)}>
+        <Button
+          variant="muted"
+          onClick={() => {
+            mixpanel.track('Clicked Bridge', {})
+            navigate(ROUTES.BRIDGE)
+          }}
+        >
           Bridge assets
         </Button>
       </Box>
