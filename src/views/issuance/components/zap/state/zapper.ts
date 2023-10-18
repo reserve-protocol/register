@@ -8,6 +8,7 @@ import {
 } from '@reserve-protocol/token-zapper'
 import { atom } from 'jotai'
 import { loadable } from 'jotai/utils'
+
 import mixpanel from 'mixpanel-browser'
 import { chainIdAtom, clientAtom } from 'state/atoms'
 import { onlyNonNullAtom, simplifyLoadable } from 'utils/atoms/utils'
@@ -69,10 +70,7 @@ export const zapperState = loadable(
     provider.on('error', () => {})
 
     try {
-      const chainIdToConfig: Record<
-        number,
-        { config: any; setup: (uni: Universe<any>) => Promise<any> }
-      > = {
+      const chainIdToConfig: Record<number, { config: any, setup: (uni: Universe<any>) => Promise<any> }> = {
         1: {
           config: ethereumConfig,
           setup: setupEthereumZapper,
@@ -94,6 +92,7 @@ export const zapperState = loadable(
         )
       }
       return universe
+
     } catch (e) {
       mixpanel.track('Failed zapper set up', {
         ChainId: provider.network.chainId,
