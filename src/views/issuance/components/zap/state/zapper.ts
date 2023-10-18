@@ -86,7 +86,7 @@ export const zapperState = loadable(
         chainIdToConfig[provider.network.chainId].config,
         chainIdToConfig[provider.network.chainId].setup
       )
-      universe.dexAggregators.push(createKyberswap('KyberSwap', universe, 20))
+      universe.dexAggregators.push(createKyberswap('KyberSwap', universe, 10))
       return universe
     } catch (e) {
       mixpanel.track('Failed zapper set up', {
