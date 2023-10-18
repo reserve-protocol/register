@@ -206,6 +206,21 @@ export const selectedZapTokenBalance = atom((get) => {
   if (zapState == null) {
     return null
   }
+  const quantities = get(balancesAtom) ?? {}
+  const fr = quantities[token.address.address as any]?.balance ?? "0"
+  let bal = token.from(fr)
+  return bal
+})
+
+export const maxSelectedZapTokenBalance = atom((get) => {
+  const token = get(selectedZapTokenAtom)
+  if (token == null) {
+    return null
+  }
+  const zapState = get(resolvedZapState)
+  if (zapState == null) {
+    return null
+  }
   const rtoken = get(rTokenAtom)
   const zapTransaction = get(resolvedZapTransaction)
   const quantities = get(balancesAtom) ?? {}
