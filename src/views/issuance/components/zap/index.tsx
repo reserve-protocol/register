@@ -1,7 +1,7 @@
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
-import { Suspense, useEffect, useState } from 'react'
+import { Component, Suspense, useEffect, useState } from 'react'
 import { blockAtom, gasFeeAtom } from 'state/atoms'
 import { Card } from 'theme-ui'
 import ConfirmZap from './components/ConfirmZap'
@@ -23,6 +23,25 @@ const UpdateBlockAndGas = () => {
   return null
 }
 
+class CatchErrors extends Component<{children: any}> {
+  state = {
+    hasError: false
+  }
+  constructor(props: any) {
+    super(props)
+  }
+  componentDidCatch() {
+    this.setState({ hasError: true })
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return null
+    }
+    return <>{this.props.children}</>
+  }
+}
+
 /**
  * Zap widget
  */
@@ -40,7 +59,7 @@ const Zap = () => {
 
 
   return (
-    <>
+    <CatchErrors>
       <Suspense fallback={<></>}>
         <UpdateBlockAndGas />
       </Suspense>
@@ -49,7 +68,7 @@ const Zap = () => {
         <ZapButton onClick={handleClick} />
       </Card>
       {isZapping && <ConfirmZap onClose={() => setZapping(false)} />}
-    </>
+    </CatchErrors>
   )
 }
 

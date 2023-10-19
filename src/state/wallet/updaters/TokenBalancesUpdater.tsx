@@ -25,7 +25,6 @@ const balancesCallAtom = atom((get) => {
     return undefined
   }
 
-
   const tokens: [Address, number][] = [
     [rToken.address, rToken.decimals],
     [RSR_ADDRESS[chainId], 18],
@@ -33,7 +32,7 @@ const balancesCallAtom = atom((get) => {
       token.address,
       token.decimals,
     ]),
-    ...zapTokens.map(i => ([i.address.address as Address, i.decimals] as [Address, number]))
+    ...(zapTokens?.map(i => ([i.address.address as Address, i.decimals] as [Address, number]))??[])
   ];
 
   if (rToken.stToken) {
@@ -41,8 +40,8 @@ const balancesCallAtom = atom((get) => {
   }
 
   return {
-    tokens,
-    calls: tokens.map(([address]) => ({
+    tokens: tokens??[],
+    calls: (tokens??[]).map(([address]) => ({
       address,
       abi: ERC20,
       functionName: 'balanceOf',
@@ -50,6 +49,7 @@ const balancesCallAtom = atom((get) => {
     })),
   }
 })
+
 
 export const TokenBalancesUpdater = () => {
   const { tokens, calls } = useAtomValue(balancesCallAtom) ?? {}

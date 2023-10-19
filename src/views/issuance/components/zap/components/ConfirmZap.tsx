@@ -8,7 +8,6 @@ import { Divider } from 'theme-ui'
 import {
   approvalPending,
   selectedZapTokenAtom,
-  zapInputString,
   zapTxHash,
 } from '../state/atoms'
 import { approvalTxFeeAtom, ui, zapTxFeeAtom } from '../state/ui-atoms'

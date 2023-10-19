@@ -1,18 +1,18 @@
+import { Web3Provider } from '@ethersproject/providers'
 import {
-  setupEthereumZapper,
-  ethereumConfig,
   Universe,
   baseConfig,
+  ethereumConfig,
   setupBaseZapper,
+  setupEthereumZapper,
 } from '@reserve-protocol/token-zapper'
 import { atom } from 'jotai'
 import { loadable } from 'jotai/utils'
-import { onlyNonNullAtom, simplifyLoadable } from 'utils/atoms/utils'
-import { createProxiedOneInchAggregator } from './createProxiedOneInchAggregator'
-import { clientAtom } from 'state/atoms'
-import { Web3Provider } from '@ethersproject/providers'
-import { PublicClient } from 'viem'
 import mixpanel from 'mixpanel-browser'
+import { chainIdAtom, clientAtom } from 'state/atoms'
+import { onlyNonNullAtom, simplifyLoadable } from 'utils/atoms/utils'
+import { PublicClient } from 'viem'
+import { createProxiedOneInchAggregator } from './createProxiedOneInchAggregator'
 
 export function publicClientToProvider(publicClient: PublicClient) {
   const { chain } = publicClient
@@ -29,12 +29,12 @@ export function publicClientToProvider(publicClient: PublicClient) {
   }, network)
 }
 
-const providerAtom = atom<any>((get) => {
+const providerAtom = atom((get) => {
   const cli = get(clientAtom)
   if (cli == null) {
     return null
   }
-  return publicClientToProvider(cli as any)
+  return publicClientToProvider(cli as any) as Web3Provider
 })
 
 // TODO: Convert provider viem -> ethers
@@ -57,6 +57,7 @@ const ONE_INCH_PROXIES = [
 
 export const zapperState = loadable(
   atom(async (get) => {
+    get(chainIdAtom)
     const provider = get(providerAtom)
 
     // To inject register data into the zapper initialize code, it's probably best to load it all here.
@@ -65,6 +66,7 @@ export const zapperState = loadable(
     if (provider == null) {
       return null
     }
+    provider.on('error', () => {})
 
     try {
       const chainIdToConfig: Record<
@@ -86,23 +88,18 @@ export const zapperState = loadable(
         chainIdToConfig[provider.network.chainId].config,
         chainIdToConfig[provider.network.chainId].setup
       )
-      try {
-        if (ONE_INCH_PROXIES.length !== 0) {
-          universe.dexAggregators.push(
-            createProxiedOneInchAggregator(universe, ONE_INCH_PROXIES)
-          )
-        }
-      } catch (e) {
-        console.log(e)
+      if (ONE_INCH_PROXIES.length !== 0) {
+        universe.dexAggregators.push(
+          createProxiedOneInchAggregator(universe, ONE_INCH_PROXIES)
+        )
       }
-
       return universe
     } catch (e) {
       mixpanel.track('Failed zapper set up', {
         ChainId: provider.network.chainId,
       })
       console.log(e)
-      throw e
+      return null
     }
   })
 )
