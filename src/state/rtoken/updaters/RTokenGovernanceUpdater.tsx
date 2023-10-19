@@ -51,6 +51,7 @@ const RTokenGovernanceUpdater = () => {
       if (data.governance?.governanceFrameworks?.length) {
         // TODO: Multiple governances, currently use 1
         const {
+          id,
           name,
           proposalThreshold,
           quorumDenominator,
@@ -70,7 +71,12 @@ const RTokenGovernanceUpdater = () => {
           votingDelay,
           votingPeriod,
           quorumDenominator,
-          executionDelay,
+          // TODO: Figure out why eUSD governance config is incorrectly recorded in graphql
+          executionDelay:
+            id === '0x7e880d8bd9c9612d6a9759f96acd23df4a4650e6' &&
+            executionDelay === '0'
+              ? '259200'
+              : executionDelay,
           quorumNumerator,
           quorumVotes,
           guardians: data.governance.guardians ?? [],

@@ -21,7 +21,7 @@ msgstr ""
 msgid "(in their Github repository)"
 msgstr ""
 
-#: src/views/issuance/components/wrapping/CollateralItem.tsx:215
+#: src/views/issuance/components/wrapping/CollateralItem.tsx:214
 msgid "{fromToken} amount"
 msgstr ""
 
@@ -58,7 +58,7 @@ msgstr ""
 msgid "% to external address"
 msgstr ""
 
-#: src/views/issuance/components/issue/Issue.tsx:102
+#: src/views/issuance/components/issue/Issue.tsx:103
 msgid "+ Mint {0}"
 msgstr ""
 
@@ -74,11 +74,11 @@ msgstr ""
 msgid "24h Tx Vol"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:298
+#: src/views/home/components/Stats.tsx:306
 msgid "24h Tx Volume"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:299
+#: src/views/home/components/Stats.tsx:307
 #: src/views/overview/components/TokenUsage.tsx:49
 msgid "24h Txs"
 msgstr ""
@@ -348,7 +348,7 @@ msgstr ""
 msgid "Begin minting {0} {1}"
 msgstr ""
 
-#: src/views/issuance/components/redeem/ConfirmRedemption.tsx:96
+#: src/views/issuance/components/redeem/ConfirmRedemption.tsx:97
 msgid "Begin redemption of {0} {1}"
 msgstr ""
 
@@ -483,10 +483,11 @@ msgstr ""
 msgid "Confirm delegate"
 msgstr ""
 
-#: src/components/account/index.tsx:103
+#: src/components/account/index.tsx:106
 msgid "Connect"
 msgstr ""
 
+#: src/components/account/index.tsx:103
 #: src/components/button/TransactionButton.tsx:46
 msgid "Connect Wallet"
 msgstr ""
@@ -519,20 +520,20 @@ msgstr ""
 msgid "Created at:"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:302
+#: src/views/home/components/Stats.tsx:310
 msgid "Cumulative - RToken holder income"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:215
+#: src/views/home/components/Stats.tsx:223
 msgid "Cumulative - Staked RSR income"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:220
+#: src/views/home/components/Stats.tsx:228
 #: src/views/overview/components/TokenUsage.tsx:31
 msgid "Cumulative Tx Volume"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:300
+#: src/views/home/components/Stats.tsx:308
 #: src/views/overview/components/TokenUsage.tsx:43
 msgid "Cumulative Txs"
 msgstr ""
@@ -562,7 +563,7 @@ msgstr ""
 msgid "Customize"
 msgstr ""
 
-#: src/components/rtoken-selector/TokenList.tsx:51
+#: src/components/rtoken-selector/TokenList.tsx:56
 msgid "Dashboard"
 msgstr ""
 
@@ -767,7 +768,7 @@ msgstr ""
 msgid "Ends at"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/PluginItem.tsx:106
+#: src/components/rtoken-setup/basket/PluginItem.tsx:107
 msgid "Est. APY:"
 msgstr ""
 
@@ -947,11 +948,11 @@ msgstr ""
 msgid "In Cooldown"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:204
+#: src/views/home/components/Stats.tsx:213
 msgid "Includes market cap of all RTokens and RSV."
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:209
+#: src/views/home/components/Stats.tsx:218
 msgid "Includes RTokens, staked RSR, and RSV."
 msgstr ""
 
@@ -1218,7 +1219,7 @@ msgstr ""
 
 #: src/components/transactions/table/index.tsx:46
 #: src/views/home/components/Greet.tsx:80
-#: src/views/issuance/components/issue/Issue.tsx:91
+#: src/views/issuance/components/issue/Issue.tsx:92
 msgid "Mint"
 msgstr ""
 
@@ -1242,7 +1243,7 @@ msgstr ""
 msgid "Minting requires a deposit of the defined collateral tokens in equal value amounts to the RToken smart contracts."
 msgstr ""
 
-#: src/views/issuance/components/issue/Issue.tsx:100
+#: src/views/issuance/components/issue/Issue.tsx:101
 msgid "Missing collateral"
 msgstr ""
 
@@ -1419,11 +1420,7 @@ msgid "Platform"
 msgstr ""
 
 #: src/views/staking/components/overview/About.tsx:32
-msgid ""
-"Please carefully evaluate the RToken before choosing to stake your RSR\n"
-"here. If any of the various collaterals of this RToken default, then the\n"
-"staked RSR will be the first funds that get auctioned off to make up the\n"
-"difference for RToken holders."
+msgid "Please carefully evaluate the RToken before choosing to stake your RSR here. If any of the various collaterals of this RToken default, then the staked RSR will be the first funds that get auctioned off to make up the difference for RToken holders."
 msgstr ""
 
 #: src/views/settings/components/GovernancePrompt.tsx:45
@@ -1587,8 +1584,8 @@ msgstr ""
 msgid "Redeem"
 msgstr ""
 
-#: src/views/issuance/components/redeem/ConfirmRedemption.tsx:92
 #: src/views/issuance/components/redeem/ConfirmRedemption.tsx:93
+#: src/views/issuance/components/redeem/ConfirmRedemption.tsx:94
 msgid "Redeem {0}"
 msgstr ""
 
@@ -1832,7 +1829,7 @@ msgstr ""
 msgid "RToken paused or frozen"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:168
+#: src/views/home/components/Stats.tsx:169
 msgid "RToken Stats"
 msgstr ""
 
@@ -1856,6 +1853,10 @@ msgstr ""
 msgid "RToken will be ready to use after this TX if you choose to unpause."
 msgstr ""
 
+#: src/components/rtoken-selector/SelectedToken.tsx:60
+msgid "RTokens"
+msgstr ""
+
 #: src/views/home/components/About.tsx:26
 msgid "RTokens & Deploying your own"
 msgstr ""
@@ -1874,7 +1875,7 @@ msgstr ""
 msgid "Select an RToken to:"
 msgstr ""
 
-#: src/components/rtoken-selector/SelectedToken.tsx:41
+#: src/components/rtoken-selector/SelectedToken.tsx:52
 msgid "Select RToken"
 msgstr ""
 
@@ -2032,7 +2033,7 @@ msgstr ""
 msgid "Target basket of 1 {0}"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/PluginItem.tsx:106
+#: src/components/rtoken-setup/basket/PluginItem.tsx:107
 msgid "Target:"
 msgstr ""
 
@@ -2119,7 +2120,7 @@ msgstr ""
 msgid "There’s two freezing roles that put the system in the same state for different durations:"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:171
+#: src/views/home/components/Stats.tsx:172
 msgid "These stats are across all RTokens on the Reserve Protocol listed by this dApp, including anonymized data from the Reserve Rpay app API."
 msgstr ""
 
@@ -2135,7 +2136,7 @@ msgstr ""
 msgid "This field is required"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:264
+#: src/views/home/components/Stats.tsx:272
 msgid "This includes on-chain transactions for RTokens and RSV in addition to anonymized Rpay transactions to show the full story of the Reserve ecosystem."
 msgstr ""
 
@@ -2232,7 +2233,7 @@ msgstr ""
 msgid "Total RSR staked"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:202
+#: src/views/home/components/Stats.tsx:211
 msgid "Total RToken Market Cap"
 msgstr ""
 
@@ -2278,7 +2279,7 @@ msgstr ""
 msgid "Transaction submitted"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:263
+#: src/views/home/components/Stats.tsx:271
 #: src/views/overview/components/RecentTransactions.tsx:50
 msgid "Transactions"
 msgstr ""
@@ -2299,7 +2300,7 @@ msgstr ""
 msgid "Tutorial video"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:208
+#: src/views/home/components/Stats.tsx:217
 msgid "TVL in Reserve"
 msgstr ""
 
@@ -2435,7 +2436,7 @@ msgstr ""
 msgid "View All"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:192
+#: src/views/home/components/Stats.tsx:193
 msgid "View Dashboard"
 msgstr ""
 
@@ -2543,30 +2544,15 @@ msgid "What is Reserve Governor Alexios?"
 msgstr ""
 
 #: src/views/staking/components/overview/About.tsx:8
-msgid ""
-"When staking RSR, you are putting your RSR at risk in the case of a\n"
-"collateral default in exchange for 1) the rights to govern the RToken\n"
-"and 2) for a portion of the revenue generated by the collateral. The\n"
-"revenue sent to the staked RSR pool will be distributed amongst RSR\n"
-"stakers proportionally to their stake in the pool."
+msgid "When staking RSR, you are putting your RSR at risk in the case of a collateral default in exchange for 1) the rights to govern the RToken and 2) for a portion of the revenue generated by the collateral. The revenue sent to the staked RSR pool will be distributed amongst RSR stakers proportionally to their stake in the pool."
 msgstr ""
 
 #: src/views/staking/components/overview/About.tsx:16
-msgid ""
-"When you stake your RSR, you will receive a stRSR receipt token which\n"
-"represents your ownership in the staked RSR contract. As revenue is\n"
-"distributed, the receipt token will be redeemable for an increasing\n"
-"amount of RSR. If there is a default scenario where the staked RSR is\n"
-"slashed, then the receipt token will be redeemable for a decreased\n"
-"amount of RSR."
+msgid "When you stake your RSR, you will receive a stRSR receipt token which represents your ownership in the staked RSR contract. As revenue is distributed, the receipt token will be redeemable for an increasing amount of RSR. If there is a default scenario where the staked RSR is slashed, then the receipt token will be redeemable for a decreased amount of RSR."
 msgstr ""
 
 #: src/views/staking/components/overview/About.tsx:25
-msgid ""
-"When you unstake your stRSR, there will be a delay (defined by\n"
-"governance). This is to eliminate game theory scenarios that would make\n"
-"the backstop RSR staked pool less effective because people would\n"
-"continually be incentivized to unstake and restake."
+msgid "When you unstake your stRSR, there will be a delay (defined by governance). This is to eliminate game theory scenarios that would make the backstop RSR staked pool less effective because people would continually be incentivized to unstake and restake."
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:56
