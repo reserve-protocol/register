@@ -2,17 +2,18 @@ import { Web3Provider } from '@ethersproject/providers'
 import {
   Universe,
   baseConfig,
+  createKyberswap,
   ethereumConfig,
   setupBaseZapper,
   setupEthereumZapper,
 } from '@reserve-protocol/token-zapper'
 import { atom } from 'jotai'
 import { loadable } from 'jotai/utils'
+
 import mixpanel from 'mixpanel-browser'
 import { chainIdAtom, clientAtom } from 'state/atoms'
 import { onlyNonNullAtom, simplifyLoadable } from 'utils/atoms/utils'
 import { PublicClient } from 'viem'
-import { createProxiedOneInchAggregator } from './createProxiedOneInchAggregator'
 
 export function publicClientToProvider(publicClient: PublicClient) {
   const { chain } = publicClient
@@ -69,10 +70,7 @@ export const zapperState = loadable(
     provider.on('error', () => {})
 
     try {
-      const chainIdToConfig: Record<
-        number,
-        { config: any; setup: (uni: Universe<any>) => Promise<any> }
-      > = {
+      const chainIdToConfig: Record<number, { config: any, setup: (uni: Universe<any>) => Promise<any> }> = {
         1: {
           config: ethereumConfig,
           setup: setupEthereumZapper,
@@ -88,11 +86,7 @@ export const zapperState = loadable(
         chainIdToConfig[provider.network.chainId].config,
         chainIdToConfig[provider.network.chainId].setup
       )
-      if (ONE_INCH_PROXIES.length !== 0) {
-        universe.dexAggregators.push(
-          createProxiedOneInchAggregator(universe, ONE_INCH_PROXIES)
-        )
-      }
+      universe.dexAggregators.push(createKyberswap('KyberSwap', universe, 10))
       return universe
     } catch (e) {
       mixpanel.track('Failed zapper set up', {

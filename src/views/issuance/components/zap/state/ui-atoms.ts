@@ -18,6 +18,7 @@ import {
   approvalPending,
   approvalRandomId,
   hasSufficientGasTokenAndERC20TokenBalance,
+  maxSelectedZapTokenBalance,
   noZapActive,
   permit2ToSignAtom,
   permitSignature,
@@ -42,7 +43,6 @@ import {
   zapTransactionGasEstimateUnits,
   zapTxHash,
   zapperInputs,
-  maxSelectedZapTokenBalance,
 } from './atoms'
 import { FOUR_DIGITS, formatQty } from './formatTokenQuantity'
 import { resolvedZapState, zappableTokens, zapperState } from './zapper'
