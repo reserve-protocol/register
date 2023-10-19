@@ -542,14 +542,29 @@ const signAndSendTx: ZapperAction = async (
       ...tx.tx,
       gasLimit: limit,
     })
+
+    const receipt = await resp.wait(1)
+
+    if (receipt.status === 0) {
+      notifyError('Zap failed', 'Transaction reverted on chain')
+      mixpanel.track('Zap on-chain transaction reverted', {
+        RToken: rToken.address.toString().toLowerCase() ?? '',
+        inputToken: inputToken.symbol,
+      })
+    } else {
+      notifySuccess(
+        'Zap successful',
+        `Zapped ${inputToken.symbol} for ${rToken.symbol}`
+      )
+      mixpanel.track('Zap Success', {
+        RToken: rToken.address.toString().toLowerCase() ?? '',
+        inputToken: inputToken.symbol,
+      })
+    }
     set(permitSignature, null)
     set(zapTxHash, resp.hash)
     set(zapInputString, '')
     set(addTransactionAtom, [resp.hash, `Easy mint ${rToken.symbol}`])
-    mixpanel.track('Zap Success', {
-      RToken: rToken.address.toString().toLowerCase() ?? '',
-      inputToken: inputToken.symbol,
-    })
   } catch (e: any) {
     if (e.code === 'ACTION_REJECTED') {
       mixpanel.track('User Rejected Zap', {
@@ -587,15 +602,29 @@ const sendTx: ZapperAction = async (
       gasLimit,
     })
 
+    const receipt = await resp.wait(1)
+
+    if (receipt.status === 0) {
+      notifyError('Zap failed', 'Transaction reverted on chain')
+      mixpanel.track('Zap on-chain transaction reverted', {
+        RToken: rToken.address.toString().toLowerCase() ?? '',
+        inputToken: inputToken.symbol,
+      })
+    } else {
+      notifySuccess(
+        'Zap successful',
+        `Zapped ${inputToken.symbol} for ${rToken.symbol}`
+      )
+      mixpanel.track('Zap Success', {
+        RToken: rToken.address.toString().toLowerCase() ?? '',
+        inputToken: inputToken.symbol,
+      })
+    }
+
     set(zapTxHash, resp.hash)
     set(permitSignature, null)
     set(zapInputString, '')
     set(addTransactionAtom, [resp.hash, `Easy mint ${rToken.symbol}`])
-
-    mixpanel.track('Zap Success', {
-      RToken: rToken.address.toString().toLowerCase() ?? '',
-      inputToken: inputToken.symbol,
-    })
   } catch (e: any) {
     if (e.code === 'ACTION_REJECTED') {
       mixpanel.track('User Rejected Zap', {
