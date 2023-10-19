@@ -509,6 +509,7 @@ const signAndSendTx: ZapperAction = async (
   set,
   { signer, provider, rToken, quote, inputToken }
 ) => {
+  let resp
   try {
     const permit = get(permit2ToSignAtom)
     if (permit == null) {
@@ -538,7 +539,7 @@ const signAndSendTx: ZapperAction = async (
       from: tx.tx.from,
       value: tx.tx.value,
     })
-    const resp = await signer.sendTransaction({
+    resp = await signer.sendTransaction({
       ...tx.tx,
       gasLimit: limit,
     })
@@ -566,6 +567,12 @@ const signAndSendTx: ZapperAction = async (
       notifyError('Zap failed', 'Unknown error ' + e.code)
     }
   } finally {
+    if ((await resp.wait(1)).status === 0) {
+      mixpanel.track('Zap on-chain transaction failed', {
+        RToken: rToken.address.toString().toLowerCase() ?? '',
+        inputToken: inputToken.symbol,
+      })
+    }
     resetTxAtoms(set)
   }
 }
@@ -581,8 +588,9 @@ const sendTx: ZapperAction = async (
     return
   }
   set(zapIsPending, true)
+  let resp
   try {
-    const resp = await signer.sendTransaction({
+    resp = await signer.sendTransaction({
       ...zapTx.transaction.tx,
       gasLimit,
     })
@@ -591,11 +599,6 @@ const sendTx: ZapperAction = async (
     set(permitSignature, null)
     set(zapInputString, '')
     set(addTransactionAtom, [resp.hash, `Easy mint ${rToken.symbol}`])
-
-    mixpanel.track('Zap Success', {
-      RToken: rToken.address.toString().toLowerCase() ?? '',
-      inputToken: inputToken.symbol,
-    })
   } catch (e: any) {
     if (e.code === 'ACTION_REJECTED') {
       mixpanel.track('User Rejected Zap', {
@@ -612,6 +615,12 @@ const sendTx: ZapperAction = async (
       notifyError('Zap failed', 'Unknown error ' + e.code)
     }
   } finally {
+    if ((await resp.wait(1)).status === 0) {
+      mixpanel.track('Zap on-chain transaction failed', {
+        RToken: rToken.address.toString().toLowerCase() ?? '',
+        inputToken: inputToken.symbol,
+      })
+    }
     resetTxAtoms(set)
   }
 }
