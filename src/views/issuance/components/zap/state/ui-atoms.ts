@@ -542,7 +542,7 @@ const signAndSendTx: ZapperAction = async (
 
     limit = limit + limit / 10n
 
-    limit = tx.gasEstimate < limit ? tx.gasEstimate : limit
+    limit = tx.gasEstimate > limit ? tx.gasEstimate : limit
 
     const resp = await signer.sendTransaction({
       ...tx.tx,
