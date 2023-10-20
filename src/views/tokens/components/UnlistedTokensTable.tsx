@@ -20,6 +20,7 @@ const query = gql`
     rtokens(
       orderBy: cumulativeUniqueUsers
       orderDirection: desc
+      first: 1000
       where: { id_not_in: $listed }
     ) {
       id
