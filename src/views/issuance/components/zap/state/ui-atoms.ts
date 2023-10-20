@@ -1,18 +1,17 @@
 import { Token } from '@reserve-protocol/token-zapper'
+import { notifyError, notifySuccess } from 'hooks/useNotification'
 import { Getter, SetStateAction, Setter, atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import { Atom } from 'jotai/vanilla'
+import mixpanel from 'mixpanel-browser'
 import {
   ethPriceAtom,
   gasFeeAtom,
   isWalletModalVisibleAtom,
   rTokenAtom,
 } from 'state/atoms'
-import { onlyNonNullAtom } from 'utils/atoms/utils'
-
-import { notifyError, notifySuccess } from 'hooks/useNotification'
-import mixpanel from 'mixpanel-browser'
 import { addTransactionAtom } from 'state/chain/atoms/transactionAtoms'
+import { onlyNonNullAtom } from 'utils/atoms/utils'
 import {
   approvalNeededAtom,
   approvalPending,
@@ -532,12 +531,17 @@ const signAndSendTx: ZapperAction = async (
       },
     })
 
-    const limit = await provider.estimateGas({
-      to: tx.tx.to,
-      data: tx.tx.data,
-      from: tx.tx.from,
-      value: tx.tx.value,
-    })
+    let limit = (
+      await provider.estimateGas({
+        to: tx.tx.to,
+        data: tx.tx.data,
+        from: tx.tx.from,
+        value: tx.tx.value,
+      })
+    ).toBigInt() as bigint
+
+    limit = tx.gasEstimate < limit ? tx.gasEstimate : limit
+
     const resp = await signer.sendTransaction({
       ...tx.tx,
       gasLimit: limit,
