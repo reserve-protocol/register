@@ -540,6 +540,8 @@ const signAndSendTx: ZapperAction = async (
       })
     ).toBigInt() as bigint
 
+    limit = limit + limit / 10n
+
     limit = tx.gasEstimate < limit ? tx.gasEstimate : limit
 
     const resp = await signer.sendTransaction({
