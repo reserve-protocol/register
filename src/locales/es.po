@@ -165,7 +165,7 @@ msgstr ""
 #: src/components/transactions/table/index.tsx:78
 #: src/views/auctions/components/useColumns.tsx:39
 #: src/views/bridge/components/BridgeAmount.tsx:43
-#: src/views/issuance/components/zap/components/ZapInput.tsx:74
+#: src/views/issuance/components/zap/components/ZapInput.tsx:73
 msgid "Amount"
 msgstr ""
 
@@ -1113,8 +1113,8 @@ msgstr ""
 msgid "Learn"
 msgstr ""
 
-#: src/views/issuance/components/zap/components/ZapInput.tsx:93
-#: src/views/issuance/components/zap/components/ZapInput.tsx:147
+#: src/views/issuance/components/zap/components/ZapInput.tsx:92
+#: src/views/issuance/components/zap/components/ZapInput.tsx:146
 #: src/views/settings/components/SettingItem.tsx:60
 msgid "Loading..."
 msgstr ""
@@ -1197,6 +1197,10 @@ msgstr ""
 msgid "Meditate peacefully on the stability of a future asset backed reserve currency while your RToken deploys 🧘‍♂️"
 msgstr ""
 
+#: src/views/issuance/components/zap/components/ZapInput.tsx:55
+msgid "Min Output"
+msgstr ""
+
 #: src/components/rtoken-setup/token/OtherForm.tsx:88
 msgid "Minimum trade in USD terms"
 msgstr ""
@@ -1235,7 +1239,7 @@ msgstr ""
 msgid "Mint amount"
 msgstr ""
 
-#: src/views/issuance/components/zap/components/ZapInput.tsx:76
+#: src/views/issuance/components/zap/components/ZapInput.tsx:75
 msgid "Mint with {zapSymbol}"
 msgstr ""
 
@@ -1373,10 +1377,6 @@ msgstr ""
 
 #: src/views/settings/components/OtherInfo.tsx:17
 msgid "Other Parameters"
-msgstr ""
-
-#: src/views/issuance/components/zap/components/ZapInput.tsx:56
-msgid "Output"
 msgstr ""
 
 #: src/components/layout/navigation/index.tsx:109

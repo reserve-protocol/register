@@ -52,7 +52,7 @@ const ZapOutput = () => {
   return (
     <Flex ml={3} mt={2} sx={{ fontSize: 1 }}>
       <Text variant="legend" mr={1}>
-        <Trans>Output</Trans>:
+        <Trans>Min Output</Trans>:
       </Text>
       <Text variant="strong">
         {useAtomValue(ui.output.textBox) || 'None'} <ZapDust />
