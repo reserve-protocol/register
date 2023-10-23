@@ -45,6 +45,7 @@ const ChainList = ({ onSelect }: { onSelect(chain: number): void }) => {
     >
       {CHAIN_LIST.map((chain) => {
         const Icon = chainIcons[chain.id]
+        const isSelected = selected === chain.id
 
         return (
           <Box
@@ -52,9 +53,10 @@ const ChainList = ({ onSelect }: { onSelect(chain: number): void }) => {
             sx={{
               cursor: 'pointer',
               position: 'relative',
-              backgroundColor:
-                selected === chain.id ? 'contentBackground' : 'background',
-              transition: transition,
+              borderLeft: '2px solid',
+              borderColor: isSelected ? 'contentBackground' : 'background',
+              backgroundColor: isSelected ? 'contentBackground' : 'background',
+              // transition: transition,
               ':hover': {
                 backgroundColor: 'contentBackground',
                 borderLeft: '2px solid',

@@ -71,7 +71,7 @@ export const bridgeTxAtom = atom((get) => {
   return {
     address,
     functionName,
-    value: !isWrapping && !token ? amount : undefined,
+    value: !token ? amount : undefined,
     abi: BaseBridge,
     args,
   } as UsePrepareContractWriteConfig
