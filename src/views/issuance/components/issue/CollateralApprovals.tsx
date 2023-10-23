@@ -7,13 +7,13 @@ import useRToken from 'hooks/useRToken'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
 import { useEffect, useState } from 'react'
-import { CheckCircle, CheckSquare, ChevronDown, ChevronUp } from 'react-feather'
+import { CheckCircle, ChevronDown, ChevronUp } from 'react-feather'
 import { Box, BoxProps, Divider, Flex, Spinner, Text } from 'theme-ui'
 import { Token } from 'types'
 import { formatCurrency } from 'utils'
 import { BIGINT_MAX } from 'utils/constants'
 import { RSV_MANAGER } from 'utils/rsv'
-import { Address, formatUnits, parseEther } from 'viem'
+import { Address, formatUnits } from 'viem'
 import { quantitiesAtom } from 'views/issuance/atoms'
 
 interface CollateralApprovalProps extends BoxProps {
@@ -59,7 +59,9 @@ const CollateralApproval = ({
 
   return (
     <Box variant="layout.verticalAlign" {...props}>
-      <TokenItem symbol={collateral.symbol} />
+      <Box>
+        <TokenItem symbol={collateral.symbol} />
+      </Box>
       {!amount ? (
         <Spinner ml={2} size={14} />
       ) : (

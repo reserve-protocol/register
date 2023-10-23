@@ -11,9 +11,9 @@ import { chainIdAtom } from 'state/atoms'
 import { useSwitchNetwork } from 'wagmi'
 
 const ActionItem = styled(Flex)`
-  transition: ${transition};
   padding: 16px;
   cursor: pointer;
+  border-left: 2px solid var(--theme-ui-colors-background);
 
   &:hover {
     background-color: var(--theme-ui-colors-contentBackground);
@@ -44,6 +44,9 @@ const TokenList = memo(
           overflow: 'auto',
           backgroundColor: 'background',
           borderRadius: '12px',
+          '::-webkit-scrollbar': {
+            display: 'none',
+          },
         }}
       >
         <Box>
@@ -66,7 +69,7 @@ const TokenList = memo(
         {Object.values(tokens).map(({ address, logo, symbol, chainId }) => (
           <ActionItem
             key={address}
-            onClick={async () => {
+            onClick={() => {
               if (currentChainId !== chainId && switchNetwork) {
                 switchNetwork(chainId!)
               }
