@@ -3,6 +3,7 @@ import {
   Universe,
   baseConfig,
   createKyberswap,
+  createDefillama,
   ethereumConfig,
   setupBaseZapper,
   setupEthereumZapper,
@@ -86,7 +87,21 @@ export const zapperState = loadable(
         chainIdToConfig[provider.network.chainId].config,
         chainIdToConfig[provider.network.chainId].setup
       )
-      universe.dexAggregators.push(createKyberswap('KyberSwap', universe, 10))
+
+      universe.dexAggregators.push(createKyberswap('KyberSwap', universe, 50))
+      
+      if (provider.network.chainId === 1) {
+        universe.dexAggregators.push(
+          createDefillama('DefiLlama:0x', universe, 10, "Matcha/0x")
+        )
+        universe.dexAggregators.push(
+          createDefillama('DefiLlama:HashFlow', universe, 10, "Hashflow")
+        )
+      } else if (provider.network.chainId === 8453) {
+        universe.dexAggregators.push(
+          createDefillama('DefiLlama:0x', universe, 10, "Matcha/0x")
+        )
+      }
       return universe
     } catch (e) {
       mixpanel.track('Failed zapper set up', {
