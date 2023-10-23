@@ -20,7 +20,7 @@ const BackHomeIcon = (props: SVGProps<SVGSVGElement>) => (
         cy="5.17241"
         r="2.17241"
         fill="#878787"
-        fill-opacity="0.5"
+        fillOpacity="0.5"
       />
       <circle cx="12.0001" cy="5.17241" r="2.17241" fill="currentColor" />
       <circle
@@ -28,7 +28,7 @@ const BackHomeIcon = (props: SVGProps<SVGSVGElement>) => (
         cy="5.17241"
         r="2.17241"
         fill="#878787"
-        fill-opacity="0.5"
+        fillOpacity="0.5"
       />
       <circle cx="5.17241" cy="11.9999" r="2.17241" fill="currentColor" />
       <circle cx="12.0001" cy="11.9999" r="2.17241" fill="#E7AC3B" />
