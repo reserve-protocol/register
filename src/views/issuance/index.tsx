@@ -1,19 +1,18 @@
 import { Container } from 'components'
-import InfoIcon from 'components/icons/InfoIcon'
+import { ConnectWalletButton } from 'components/button/TransactionButton'
 import { useAtomValue } from 'jotai'
-import { Box, Grid, Text, Flex, Card } from 'theme-ui'
+import { Box, Card, Grid, Text } from 'theme-ui'
+import { useWalletClient } from 'wagmi'
 import About from './components/about'
 import Balances from './components/balances'
 import Issue from './components/issue'
 import IssuanceInfo from './components/issue/IssuanceInfo'
 import Redeem from './components/redeem'
+import WrapSidebar from './components/wrapping/WrapSidebar'
 import Zap from './components/zap'
 import ZapToggle from './components/zap/components/ZapToggle'
 import ZapTokenSelector from './components/zap/components/ZapTokenSelector'
 import { ui, zapAvailableAtom } from './components/zap/state/ui-atoms'
-import WrapSidebar from './components/wrapping/WrapSidebar'
-import { useWalletClient } from 'wagmi'
-import { ConnectWalletButton } from 'components/button/TransactionButton'
 
 const ZapOverview = () => {
   const isZapEnabled = useAtomValue(ui.zapWidgetEnabled)

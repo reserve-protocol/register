@@ -2,23 +2,22 @@ import { t, Trans } from '@lingui/macro'
 import TransactionInput, {
   TransactionInputProps,
 } from 'components/transaction-input'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtomValue } from 'jotai'
+import { Suspense } from 'react'
 import { rTokenStateAtom } from 'state/atoms'
-import { Box, Checkbox, Flex, Text } from 'theme-ui'
+import { Box, Flex, Text } from 'theme-ui'
 import {
   collectDust,
-  previousZapTransaction,
   selectedZapTokenAtom,
-  zapInputString,
+  zapInputString
 } from '../state/atoms'
-import { ui, zapDust, zapDustValue } from '../state/ui-atoms'
 import {
   formatQty,
   FOUR_DIGITS,
   TWO_DIGITS,
 } from '../state/formatTokenQuantity'
+import { ui, zapDust, zapDustValue } from '../state/ui-atoms'
 import { zapperLoaded } from '../state/zapper'
-import { Suspense } from 'react'
 
 const ZapDust = () => {
   const dustValue = useAtomValue(zapDustValue)
@@ -96,31 +95,6 @@ const ZapOutputLabel = () => {
     <ZapOutput />
   )
 }
-const ZapCollectDust = () => {
-  const [checked, setChecked] = useAtom(collectDust)
-  const [, setPrevious] = useAtom(previousZapTransaction)
-  return (
-    <Flex
-      onClick={() => {
-        setChecked(!checked)
-        setPrevious(null)
-      }}
-      ml={3}
-      mt={2}
-      sx={{ fontSize: 1, cursor: 'pointer' }}
-    >
-      <Text variant="legend" mr={1}>
-        Collect dust:
-      </Text>
-      <Checkbox
-        onChange={() => {
-          setChecked(!checked)
-        }}
-        checked={checked}
-      />
-    </Flex>
-  )
-}
 const ZapInput = (props: Partial<TransactionInputProps>) => {
   return (
     <>
@@ -150,7 +124,6 @@ const ZapInput = (props: Partial<TransactionInputProps>) => {
       >
         <ZapOutputLabel />
       </Suspense>
-      <ZapCollectDust />
     </>
   )
 }

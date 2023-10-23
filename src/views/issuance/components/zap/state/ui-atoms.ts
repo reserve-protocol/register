@@ -330,6 +330,7 @@ export const zapAvailableAtom = atom((get) => {
 })
 let errors = 0
 export const ui = {
+  zapSettingsOpen: atom(false),
   zapWidgetEnabled: atom((get) => get(zapEnabledAtom) && get(zapAvailableAtom)),
   zapState: atom((get) => {
     const zapState = get(zapperState)
