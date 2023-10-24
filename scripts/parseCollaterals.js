@@ -65,6 +65,7 @@ const wrappedTokenMap = {
   aUSDC: protocols.AAVE,
   aUSDT: protocols.AAVE,
   aBUSD: protocols.AAVE,
+  aUSDP: protocols.AAVE,
   cDAI: protocols.COMP,
   cUSDC: protocols.COMP,
   cUSDT: protocols.COMP,
