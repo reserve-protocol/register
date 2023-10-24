@@ -3,7 +3,7 @@ import { useAtom, useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
 import { Component, Suspense, useEffect, useState } from 'react'
 import { blockAtom, gasFeeAtom } from 'state/atoms'
-import { Box, Text, Card, Flex, MenuIcon, Checkbox, Label } from 'theme-ui'
+import { Box, Text, Card, Flex, Checkbox, Label } from 'theme-ui'
 import ConfirmZap from './components/ConfirmZap'
 import ZapButton from './components/ZapButton'
 import ZapInput from './components/ZapInput'
@@ -18,6 +18,7 @@ import Help from 'components/help'
 import { GearIcon } from 'components/icons/GearIcon'
 import Popover from 'components/popover'
 import { ui } from './state/ui-atoms'
+import { ToggleButton } from 'components/ToggleButton'
 
 const UpdateBlockAndGas = () => {
   const zapState = useAtomValue(resolvedZapState)
@@ -55,39 +56,27 @@ const ZapToggle = ({ slippage }: { slippage: bigint }) => {
   const label = `${((1 / Number(slippage)) * 10000).toFixed(2)} bps`
   const [selectedSlippage, setSlippage] = useAtom(zapOutputSlippage)
   return (
-    <Box
+    <ToggleButton
+      mr={3}
       onClick={() => setSlippage(slippage)}
-      sx={{
-        backgroundColor:
-          slippage === selectedSlippage
-            ? 'accentAction'
-            : 'contentLightBackground',
-        borderRadius: 15,
-        cursor: 'pointer',
-      }}
-      p={1}
-      mr={2}
+      selected={selectedSlippage === slippage}
     >
-      <Text variant="strong">{label}</Text>
-    </Box>
+      {label}
+    </ToggleButton>
   )
 }
 const slippageOptions = [100000n, 250000n, 500000n]
 const ZapCustomSetting = () => {
   const [selectedSlippage, setSlippage] = useAtom(zapOutputSlippage)
   const label = `${((1 / Number(selectedSlippage)) * 10000).toFixed(2)}`
+  const selected= !slippageOptions.includes(selectedSlippage)
   return (
-    <Box
-      sx={{
-        backgroundColor: slippageOptions.includes(selectedSlippage)
-          ? 'contentLightBackground'
-          : 'accentAction',
-        borderRadius: 15,
-        cursor: 'pointer',
-      }}
-      p={1}
-      mr={2}
-    >
+    <Box px={2} sx={{
+        border: '2px solid',
+        borderRadius: 6,
+        backgroundColor: 'transparent',
+        color: selected ? 'primary' : 'lightText',
+    }}>
       <input
         style={{
           width: 40,
@@ -100,7 +89,9 @@ const ZapCustomSetting = () => {
           if (isNaN(parsed)) {
             return
           }
-          const slippage = BigInt(Math.floor(parseFloat(e.target.value) * 1000000))
+          const slippage = BigInt(
+            Math.floor(parseFloat(e.target.value) * 1000000)
+          )
           setSlippage(slippage)
         }}
         defaultValue={label}
@@ -168,7 +159,10 @@ const ZapCollectDust = () => {
 }
 const ZapSettingsDisplay = () => {
   return (
-    <Card p={3} sx={{borderColor: 'border', borderWidth: 1, borderStyle: "solid"}}>
+    <Card
+      p={3}
+      sx={{ borderColor: 'border', borderWidth: 1, borderStyle: 'solid' }}
+    >
       <ZapCollectDust />
       <ZapSlippageSettings />
     </Card>

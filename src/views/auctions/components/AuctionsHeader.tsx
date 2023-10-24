@@ -2,37 +2,10 @@ import { Trans } from '@lingui/macro'
 import { Button } from 'components'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { isModuleLegacyAtom } from 'state/atoms'
-import { Box, ButtonProps, Text } from 'theme-ui'
+import { Box, Text } from 'theme-ui'
 import { TradeKind, auctionPlatformAtom, auctionSidebarAtom } from '../atoms'
 import { useEffect } from 'react'
-
-interface ToggleButtonProps extends ButtonProps {
-  selected: boolean
-}
-
-const ToggleButton = ({ selected, children, ...props }: ToggleButtonProps) => {
-  return (
-    <Button
-      small
-      sx={{
-        border: '2px solid',
-        backgroundColor: 'transparent',
-        color: selected ? 'primary' : 'lightText',
-      }}
-      {...props}
-    >
-      <Box variant="layout.verticalAlign">
-        {selected && (
-          <Box
-            sx={{ height: '6px', width: '6px', backgroundColor: 'primary' }}
-            mr={2}
-          />
-        )}
-        {children}
-      </Box>
-    </Button>
-  )
-}
+import { ToggleButton } from '../../../components/ToggleButton'
 
 // TODO: When tokens upgrade to 3.0, default to dutch auctions
 const AuctionsHeader = () => {
