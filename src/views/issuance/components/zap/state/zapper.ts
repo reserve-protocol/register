@@ -2,6 +2,7 @@ import { Web3Provider } from '@ethersproject/providers'
 import {
   Universe,
   baseConfig,
+  createDefillama,
   createKyberswap,
   ethereumConfig,
   setupBaseZapper,
@@ -13,6 +14,7 @@ import { loadable } from 'jotai/utils'
 import mixpanel from 'mixpanel-browser'
 import { chainIdAtom, clientAtom } from 'state/atoms'
 import { onlyNonNullAtom, simplifyLoadable } from 'utils/atoms/utils'
+import { ChainId } from 'utils/chains'
 import { PublicClient } from 'viem'
 
 export function publicClientToProvider(publicClient: PublicClient) {
@@ -70,12 +72,15 @@ export const zapperState = loadable(
     provider.on('error', () => {})
 
     try {
-      const chainIdToConfig: Record<number, { config: any, setup: (uni: Universe<any>) => Promise<any> }> = {
-        1: {
+      const chainIdToConfig: Record<
+        number,
+        { config: any; setup: (uni: Universe<any>) => Promise<any> }
+      > = {
+        [ChainId.Mainnet]: {
           config: ethereumConfig,
           setup: setupEthereumZapper,
         },
-        8453: {
+        [ChainId.Base]: {
           config: baseConfig,
           setup: setupBaseZapper,
         },
@@ -86,7 +91,21 @@ export const zapperState = loadable(
         chainIdToConfig[provider.network.chainId].config,
         chainIdToConfig[provider.network.chainId].setup
       )
-      universe.dexAggregators.push(createKyberswap('KyberSwap', universe, 10))
+
+      universe.dexAggregators.push(createKyberswap('KyberSwap', universe, 50))
+
+      if (provider.network.chainId === ChainId.Mainnet) {
+        universe.dexAggregators.push(
+          createDefillama('DefiLlama:0x', universe, 10, 'Matcha/0x')
+        )
+        universe.dexAggregators.push(
+          createDefillama('DefiLlama:HashFlow', universe, 10, 'Hashflow')
+        )
+      } else if (provider.network.chainId === ChainId.Base) {
+        universe.dexAggregators.push(
+          createDefillama('DefiLlama:0x', universe, 10, 'Matcha/0x')
+        )
+      }
       return universe
     } catch (e) {
       mixpanel.track('Failed zapper set up', {
