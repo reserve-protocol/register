@@ -1,20 +1,22 @@
-import { Trans, t } from '@lingui/macro';
-import { ToggleButton } from 'components/ToggleButton';
-import Help from 'components/help';
-import { GearIcon } from 'components/icons/GearIcon';
-import Popover from 'components/popover';
-import { useAtom, useAtomValue } from 'jotai';
-import { useState } from 'react';
-import { Box, Card, Checkbox, Flex, Input, Label, Text } from 'theme-ui';
+import { Trans, t } from '@lingui/macro'
+import { ToggleButton } from 'components/ToggleButton'
+import Help from 'components/help'
+import { GearIcon } from 'components/icons/GearIcon'
+import Popover from 'components/popover'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useState } from 'react'
+import { Box, Card, Checkbox, Flex, Label, Text } from 'theme-ui'
 import {
   collectDust,
-  previousZapTransaction, zapOutputSlippage
-} from '../state/atoms';
-import { ui } from '../state/ui-atoms';
+  previousZapTransaction,
+  zapOutputSlippage,
+} from '../state/atoms'
+import { ui } from '../state/ui-atoms'
+import { Button, NumericalInput } from 'components'
 
-const ZapToggle = ({ slippage }: { slippage: bigint; }) => {
-  const label = formatNumber((1 / Number(slippage)) * 10000);
-  const [selectedSlippage, setSlippage] = useAtom(zapOutputSlippage);
+const ZapToggle = ({ slippage }: { slippage: bigint }) => {
+  const label = formatNumber((1 / Number(slippage)) * 10000)
+  const [selectedSlippage, setSlippage] = useAtom(zapOutputSlippage)
   return (
     <ToggleButton
       onClick={() => setSlippage(slippage)}
@@ -22,64 +24,82 @@ const ZapToggle = ({ slippage }: { slippage: bigint; }) => {
     >
       {label} <Trans>bps</Trans>
     </ToggleButton>
-  );
-};
+  )
+}
 const formatNumber = (num: number) => {
   return num.toLocaleString(undefined, {
     minimumFractionDigits: 0,
     maximumFractionDigits: 4,
-  });
-};
-const slippageOptions = [100000n, 250000n, 500000n];
-const ZapCustomSetting = ({ onBlur }: { onBlur: () => void; }) => {
-  const [selectedSlippage, setSlippage] = useAtom(zapOutputSlippage);
-  const label = `${formatNumber((1 / Number(selectedSlippage)) * 10000)}`;
-  const selected = !slippageOptions.includes(selectedSlippage);
+  })
+}
+const slippageOptions = [100000n, 250000n, 500000n]
+const ZapCustomSetting = ({ onBlur }: { onBlur: () => void }) => {
+  const [selectedSlippage, setSlippage] = useAtom(zapOutputSlippage)
+  const [currentSlippage, setCurrentSlippage] = useState(selectedSlippage)
+  const label = `${formatNumber((1 / Number(selectedSlippage)) * 10000)}`
+  const selected = !slippageOptions.includes(selectedSlippage)
   return (
-    <Box
-      px={2}
+    <Flex
       sx={{
         display: 'flex',
         flexDirection: 'row',
-        border: '2px solid',
-        borderRadius: 6,
         width: '100%',
         alignItems: 'center',
-        backgroundColor: 'transparent',
-        color: selected ? 'primary' : 'lightText',
       }}
     >
-      <Input
-        style={{
+      <Box
+        pr={3}
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          border: '2px solid',
+          borderRadius: 6,
           width: '100%',
-          borderWidth: 0,
-          height: 30,
-          color: 'var(--rp-black)',
-          background: 'none',
+          alignItems: 'center',
+          backgroundColor: 'transparent',
+          color: selected ? 'primary' : 'lightText',
         }}
-        autoFocus={true}
-        onBlur={(e) => {
-          onBlur();
-          const parsed = parseFloat(e.target.value);
-          if (isNaN(parsed)) {
-            return;
-          }
-          const slippage = BigInt(
-            Math.floor((1 / parseFloat(e.target.value)) * 10000)
-          );
-          setSlippage(slippage);
+      >
+        <NumericalInput
+          style={{
+            width: '100%',
+            borderWidth: 0,
+            height: 30,
+            color: 'var(--rp-black)',
+            background: 'none',
+          }}
+          autoFocus={true}
+          onChange={(value) => {
+            const parsed = parseFloat(value)
+            if (isNaN(parsed)) {
+              return
+            }
+            const slippage = BigInt(Math.floor((1 / parsed) * 10000))
+            setCurrentSlippage(slippage)
+          }}
+          defaultValue={label}
+        />
+        <Text>
+          <Trans>bps</Trans>
+        </Text>
+      </Box>
+      <Button
+        small
+        ml={2}
+        onClick={() => {
+          setSlippage(currentSlippage)
+          onBlur()
         }}
-        defaultValue={label} />
-      <Text>
-        <Trans>bps</Trans>
-      </Text>
-    </Box>
-  );
-};
+      >
+        <Trans>Save</Trans>
+      </Button>
+    </Flex>
+  )
+}
 const ZapSlippageSettings = () => {
-  const slippage = useAtomValue(zapOutputSlippage);
-  const label = `${formatNumber((1 / Number(slippage)) * 10000)}`;
-  const [customSlippage, setCustomSlippage] = useState(false);
+  const slippage = useAtomValue(zapOutputSlippage)
+  const label = `${formatNumber((1 / Number(slippage)) * 10000)}`
+  const [customSlippage, setCustomSlippage] = useState(false)
 
   return (
     <Box ml={3} mt={3}>
@@ -91,9 +111,10 @@ const ZapSlippageSettings = () => {
           <Trans>Mint slippage:</Trans>
         </Text>
         <Help
-          content={t`The maximum amount of slippage you are willing to accept when minting. Higher slippage settings will make the transaction more likely to succeed, but may result in fewer tokens minted.`} />
+          content={t`The maximum amount of slippage you are willing to accept when minting. Higher slippage settings will make the transaction more likely to succeed, but may result in fewer tokens minted.`}
+        />
       </Flex>
-      <Flex mt={2} sx={{ width: 410, justifyContent: 'space-between' }}>
+      <Flex mt={2} sx={{ width: 415, justifyContent: 'space-between' }}>
         {customSlippage ? (
           <ZapCustomSetting onBlur={() => setCustomSlippage(false)} />
         ) : (
@@ -118,11 +139,11 @@ const ZapSlippageSettings = () => {
         )}
       </Flex>
     </Box>
-  );
-};
+  )
+}
 const ZapCollectDust = () => {
-  const [checked, setChecked] = useAtom(collectDust);
-  const [, setPrevious] = useAtom(previousZapTransaction);
+  const [checked, setChecked] = useAtom(collectDust)
+  const setPrevious = useSetAtom(previousZapTransaction)
   return (
     <Box ml={3} mt={3}>
       <Flex
@@ -134,23 +155,25 @@ const ZapCollectDust = () => {
         </Text>
 
         <Help
-          content={t`Dust is the leftover amount of tokens that cannot be exchanged. If you choose to collect dust, it will be sent back to your wallet. Sending dust back to the wallet will increase transaction fee.`} />
+          content={t`Dust is the leftover amount of tokens that cannot be exchanged. If you choose to collect dust, it will be sent back to your wallet. Sending dust back to the wallet will increase transaction fee.`}
+        />
       </Flex>
       <Flex mt={2} sx={{ alignItems: 'center' }}>
         <Label>
           <Checkbox
             title="Collect dust"
             onChange={() => {
-              setChecked(!checked);
-              setPrevious(null);
+              setChecked(!checked)
+              setPrevious(null)
             }}
-            checked={checked} />{' '}
+            checked={checked}
+          />{' '}
           <Trans>Send dust back to wallet</Trans>
         </Label>
       </Flex>
     </Box>
-  );
-};
+  )
+}
 const ZapSettingsDisplay = () => {
   return (
     <Card
@@ -160,10 +183,10 @@ const ZapSettingsDisplay = () => {
       <ZapCollectDust />
       <ZapSlippageSettings />
     </Card>
-  );
-};
+  )
+}
 export const ZapSettings = () => {
-  const [open, setOpen] = useAtom(ui.zapSettingsOpen);
+  const [open, setOpen] = useAtom(ui.zapSettingsOpen)
   return (
     <Box>
       <Flex
@@ -180,7 +203,8 @@ export const ZapSettings = () => {
         >
           <GearIcon
             onClick={() => setOpen(!open)}
-            style={{ cursor: 'pointer' }} />
+            style={{ cursor: 'pointer' }}
+          />
         </Popover>
 
         <Text mb={2} mr={2}>
@@ -188,5 +212,5 @@ export const ZapSettings = () => {
         </Text>
       </Flex>
     </Box>
-  );
-};
+  )
+}
