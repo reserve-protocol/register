@@ -11,10 +11,19 @@ interface Props extends BoxProps {
   metrics: TokenStats
 }
 
+const specialCases: Record<string, string> = {
+  '0x073f98792ef4c00bb5f11b1f64f13cb25cde0d8d': 'Estimated Yield includes the STG token, which is not tradeable by the protocol yet because there is no chainlink oracle for STG. Once there is a chainlink oracle, and governance adds to the collateral plugins, this yield will be distributed.'
+}
+
 const TokenOverview = ({ metrics, ...props }: Props) => {
   const rToken = useAtomValue(rTokenAtom)
+
   const { holders, stakers } = useAtomValue(estimatedApyAtom)
   const isRSV = !!rToken && !rToken.main
+
+  const additionalHelp = [
+    ...new Set(rToken?.collaterals.map(i => specialCases[i.address.toLowerCase()]).filter(i => i != null))
+  ]
 
   return (
     <Box {...props}>
@@ -70,13 +79,13 @@ const TokenOverview = ({ metrics, ...props }: Props) => {
               <InfoHeading
                 title={t`Est. RToken Yield`}
                 subtitle={`${formatPercentage(holders || 0)}`}
-                help={t`Estimated APY calculated base on the RToken basket averaged yield with regards of the total RToken market cap and revenue distribution to holders.`}
+                help={t`Estimated APY calculated base on the RToken basket averaged yield with regards of the total RToken market cap and revenue distribution to holders.` + '\n\n' + additionalHelp}
                 mb={[3, 4]}
               />
               <InfoHeading
                 title={t`Est. stRSR Yield`}
                 subtitle={`${formatPercentage(stakers || 0)}`}
-                help={t`Estimated APY, calculated base on the RToken basket averaged yield with regards of the total RToken market cap and revenue distribution to stakers. Calculation = [avgCollateralYield * rTokenMarketCap / rsrStaked]`}
+                help={t`Estimated APY, calculated base on the RToken basket averaged yield with regards of the total RToken market cap and revenue distribution to stakers. Calculation = [avgCollateralYield * rTokenMarketCap / rsrStaked]` + '\n\n' +  additionalHelp}
                 mb={[3, 4]}
               />
             </Box>
