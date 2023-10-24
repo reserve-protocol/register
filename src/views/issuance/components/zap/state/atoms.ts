@@ -364,8 +364,8 @@ const zapTxAtom = atom(async (get) => {
         : undefined
   }
   const tx = await result.toTransaction({
-    outputSlippage: get(zapOutputSlippage),
     permit2,
+    outputSlippage: get(zapOutputSlippage),
     maxIssueance: useMaxIssueance[chainId] ?? false,
     returnDust: get(collectDust),
   })
