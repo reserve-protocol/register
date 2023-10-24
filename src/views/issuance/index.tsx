@@ -1,30 +1,17 @@
 import { Container } from 'components'
-import InfoIcon from 'components/icons/InfoIcon'
 import { useAtomValue } from 'jotai'
-import { Box, Grid, Text, Flex, Card } from 'theme-ui'
+import { Box, Grid } from 'theme-ui'
+import { useWalletClient } from 'wagmi'
 import About from './components/about'
 import Balances from './components/balances'
 import Issue from './components/issue'
 import IssuanceInfo from './components/issue/IssuanceInfo'
 import Redeem from './components/redeem'
-import Zap from './components/zap'
-import ZapToggle from './components/zap/components/ZapToggle'
-import ZapTokenSelector from './components/zap/components/ZapTokenSelector'
-import { ui, zapAvailableAtom } from './components/zap/state/ui-atoms'
 import WrapSidebar from './components/wrapping/WrapSidebar'
-import { useWalletClient } from 'wagmi'
-import { ConnectWalletButton } from 'components/button/TransactionButton'
-
-const ZapOverview = () => {
-  const isZapEnabled = useAtomValue(ui.zapWidgetEnabled)
-  const isZapAvailable = useAtomValue(zapAvailableAtom)
-  return (
-    <>
-      {isZapAvailable && <ZapToggle />}
-      {isZapEnabled && <ZapTokenSelector />}
-    </>
-  )
-}
+import Zap from './components/zap'
+import { ui } from './components/zap/state/ui-atoms'
+import { ZapUnavailable } from './components/zap/components/ZapUnavailable'
+import { ZapOverview } from './components/zap/components/ZapOverview'
 
 /**
  * Mint & Redeem view
@@ -36,48 +23,7 @@ const Issuance = () => {
   const isZapEnabled = useAtomValue(ui.zapWidgetEnabled)
 
   if (!enableZapper && isZapEnabled) {
-    return (
-      <>
-        <WrapSidebar />
-        <Container pb={[1, 4]}>
-          <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[1, 5]}>
-            <Box>
-              <ZapOverview />
-              <Card p={4}>
-                <Box
-                  p={4}
-                  sx={{
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Text variant="strong" mb={2} style={{ textAlign: 'center' }}>
-                    First, connect your wallet
-                  </Text>
-                  <Text
-                    as="p"
-                    variant="legend"
-                    style={{ textAlign: 'center' }}
-                    mt={3}
-                  >
-                    Please connect your wallet to use the Zap Minter, which
-                    allows you to mint using a single asset.
-                  </Text>
-                  <Box sx={{ textAlign: 'center' }} mt={3}>
-                    <ConnectWalletButton />
-                  </Box>
-                </Box>
-              </Card>
-            </Box>
-            <Box>
-              <IssuanceInfo mb={[1, 4]} />
-              <About />
-            </Box>
-          </Grid>
-        </Container>
-      </>
-    )
+    return <ZapUnavailable />
   }
 
   return (

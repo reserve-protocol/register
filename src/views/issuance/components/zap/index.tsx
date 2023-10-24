@@ -7,6 +7,7 @@ import { Card } from 'theme-ui'
 import ConfirmZap from './components/ConfirmZap'
 import ZapButton from './components/ZapButton'
 import ZapInput from './components/ZapInput'
+import { ZapSettings } from './components/ZapSettings'
 import { selectedZapTokenAtom } from './state/atoms'
 import { resolvedZapState } from './state/zapper'
 
@@ -23,9 +24,9 @@ const UpdateBlockAndGas = () => {
   return null
 }
 
-class CatchErrors extends Component<{children: any}> {
+class CatchErrors extends Component<{ children: any }> {
   state = {
-    hasError: false
+    hasError: false,
   }
   constructor(props: any) {
     super(props)
@@ -57,13 +58,13 @@ const Zap = () => {
     })
   }
 
-
   return (
     <CatchErrors>
       <Suspense fallback={<></>}>
         <UpdateBlockAndGas />
       </Suspense>
       <Card p={4}>
+        <ZapSettings />
         <ZapInput />
         <ZapButton onClick={handleClick} />
       </Card>

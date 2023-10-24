@@ -67,6 +67,7 @@ const Arrow = styled.div`
 
 export interface PopoverProps {
   content: React.ReactNode
+  zIndex?: number
   show: boolean
   children: React.ReactNode
   placement?: Placement
@@ -76,6 +77,7 @@ export interface PopoverProps {
 }
 
 export default function Popover({
+  zIndex = 100010,
   content,
   show,
   children,
@@ -140,8 +142,9 @@ export default function Popover({
         <PopoverContainer
           show={show}
           ref={popperElement}
-          style={styles.popper}
+          style={{...styles.popper, zIndex}}
           {...attributes.popper}
+          
         >
           {content}
           {arrow && (

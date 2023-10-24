@@ -1,19 +1,17 @@
 import { LoadingButton, LoadingButtonProps } from 'components/button'
-import { useAtom, useAtomValue } from 'jotai'
-import { ui } from '../state/ui-atoms'
-import { previousZapTransaction, zapTransaction } from '../state/atoms'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
+import { previousZapTransaction, zapTransaction } from '../state/atoms'
+import { ui } from '../state/ui-atoms'
 
 const ZapButton = (props: Partial<LoadingButtonProps>) => {
   const tx = useAtomValue(zapTransaction)
-  const [, setPrevious] = useAtom(previousZapTransaction)
-  const ttx = tx.state === "hasData" ? tx.data : null
+  const setPrevious = useSetAtom(previousZapTransaction)
+  const ttx = tx.state === 'hasData' ? tx.data : null
   useEffect(() => {
-    
     if (ttx != null) {
       setPrevious(ttx)
     }
-    
   }, [ttx])
 
   const [{ loading, enabled, label, loadingLabel }, onClick] = useAtom(

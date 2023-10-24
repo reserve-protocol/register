@@ -31,6 +31,8 @@ import { type ZapTransaction } from '@reserve-protocol/token-zapper/types/search
 import mixpanel from 'mixpanel-browser'
 import { resolvedZapState, zappableTokens } from './zapper'
 
+export const zapOutputSlippage = atom(100000n)
+
 /**
  * I've tried to keep react effects to a minimum so most async code is triggered via some signal
  * either from a user interaction, or if a value changes.
@@ -363,6 +365,7 @@ const zapTxAtom = atom(async (get) => {
   }
   const tx = await result.toTransaction({
     permit2,
+    outputSlippage: get(zapOutputSlippage),
     maxIssueance: useMaxIssueance[chainId] ?? false,
     returnDust: get(collectDust),
   })
