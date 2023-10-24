@@ -19,6 +19,7 @@ import { GearIcon } from 'components/icons/GearIcon'
 import Popover from 'components/popover'
 import { ui } from './state/ui-atoms'
 import { ToggleButton } from 'components/ToggleButton'
+import { Trans, t } from '@lingui/macro'
 
 const UpdateBlockAndGas = () => {
   const zapState = useAtomValue(resolvedZapState)
@@ -99,7 +100,9 @@ const ZapCustomSetting = () => {
         }}
         defaultValue={label}
       />
-      <Text style={{ fontWeight: 500 }}>bps</Text>
+      <Text style={{ fontWeight: 500 }}>
+        <Trans>bps</Trans>
+      </Text>
     </Box>
   )
 }
@@ -110,11 +113,11 @@ const ZapSlippageSettings = () => {
         mb={2}
         sx={{ alignItems: 'center', justifyContent: 'space-between' }}
       >
-        <Text variant="strong">Mint slippage:</Text>
+        <Text variant="strong">
+          <Trans>Mint slippage:</Trans>
+        </Text>
         <Help
-          content={
-            'The maximum amount of slippage you are willing to accept when minting. Higher slippage settings will make the transaction more likely to succeed, but may result in fewer tokens minted.'
-          }
+          content={t`The maximum amount of slippage you are willing to accept when minting. Higher slippage settings will make the transaction more likely to succeed, but may result in fewer tokens minted.`}
         />
       </Flex>
       <Flex mt={2}>
@@ -136,11 +139,13 @@ const ZapCollectDust = () => {
         mb={2}
         sx={{ alignItems: 'center', justifyContent: 'space-between' }}
       >
-        <Text variant="strong">Dust:</Text>
+        <Text variant="strong">
+          <Trans>Dust:</Trans>
+        </Text>
 
         <Help
           content={
-            'Dust is the leftover amount of tokens that cannot be exchanged. If you choose to collect dust, it will be sent back to your wallet. Sending dust back to the wallet will increase transaction fee.'
+            t`Dust is the leftover amount of tokens that cannot be exchanged. If you choose to collect dust, it will be sent back to your wallet. Sending dust back to the wallet will increase transaction fee.`
           }
         />
       </Flex>
@@ -154,7 +159,9 @@ const ZapCollectDust = () => {
             }}
             checked={checked}
           />{' '}
-          Send dust back to wallet
+          <Trans>
+            Send dust back to wallet
+          </Trans>
         </Label>
       </Flex>
     </Box>
@@ -174,20 +181,30 @@ const ZapSettingsDisplay = () => {
 const ZapSettings = () => {
   const [open, setOpen] = useAtom(ui.zapSettingsOpen)
   return (
-    <Flex mr={2} mb={1} sx={{ flexDirection: 'row-reverse' }}>
-      <Popover
-        zIndex={100009}
-        placement="bottom"
-        onDismiss={() => setOpen(false)}
-        content={<ZapSettingsDisplay />}
-        show={open}
+    <Box>
+      <Flex
+        mr={2}
+        mb={1}
+        sx={{ flexDirection: 'row-reverse', alignItems: 'center' }}
       >
-        <GearIcon
-          onClick={() => setOpen(!open)}
-          style={{ cursor: 'pointer' }}
-        />
-      </Popover>
-    </Flex>
+        <Popover
+          zIndex={100009}
+          placement="bottom"
+          onDismiss={() => setOpen(false)}
+          content={<ZapSettingsDisplay />}
+          show={open}
+        >
+          <GearIcon
+            onClick={() => setOpen(!open)}
+            style={{ cursor: 'pointer' }}
+          />
+        </Popover>
+
+        <Text mb={2} mr={2}>
+          <Trans>Settings</Trans>
+        </Text>
+      </Flex>
+    </Box>
   )
 }
 /**
