@@ -69,14 +69,17 @@ const slippageOptions = [100000n, 250000n, 500000n]
 const ZapCustomSetting = () => {
   const [selectedSlippage, setSlippage] = useAtom(zapOutputSlippage)
   const label = `${((1 / Number(selectedSlippage)) * 10000).toFixed(2)}`
-  const selected= !slippageOptions.includes(selectedSlippage)
+  const selected = !slippageOptions.includes(selectedSlippage)
   return (
-    <Box px={2} sx={{
+    <Box
+      px={2}
+      sx={{
         border: '2px solid',
         borderRadius: 6,
         backgroundColor: 'transparent',
         color: selected ? 'primary' : 'lightText',
-    }}>
+      }}
+    >
       <input
         style={{
           width: 40,
@@ -115,9 +118,9 @@ const ZapSlippageSettings = () => {
         />
       </Flex>
       <Flex mt={2}>
-        <ZapToggle slippage={100000n} />
-        <ZapToggle slippage={250000n} />
-        <ZapToggle slippage={500000n} />
+        {slippageOptions.map((slippage) => (
+          <ZapToggle key={slippage.toString()} slippage={slippage} />
+        ))}
         <ZapCustomSetting />
       </Flex>
     </Box>
