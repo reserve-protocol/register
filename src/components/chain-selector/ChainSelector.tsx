@@ -2,18 +2,16 @@ import Button from 'components/button'
 import Base from 'components/icons/logos/Base'
 import Ethereum from 'components/icons/logos/Ethereum'
 import Popup from 'components/popup'
+import useSwitchChain from 'hooks/useSwitchChain'
+import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
-import { transition } from 'theme'
-import { useAtom, useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { Check, ChevronDown, ChevronUp } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import { chainIdAtom } from 'state/atoms'
-import { publicClient, wagmiConfig } from 'state/chain'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
 import { ROUTES } from 'utils/constants'
-import { useSwitchNetwork } from 'wagmi'
 
 export const chainIcons = {
   [ChainId.Mainnet]: Ethereum,
@@ -98,19 +96,14 @@ const ChainList = ({ onSelect }: { onSelect(chain: number): void }) => {
 }
 
 const ChainSelector = (props: BoxProps) => {
-  const [chainId, setChainId] = useAtom(chainIdAtom)
+  const chainId = useAtomValue(chainIdAtom)
   const [isVisible, setVisible] = useState(false)
-  const { switchNetwork } = useSwitchNetwork()
+  const switchChain = useSwitchChain()
   const navigate = useNavigate()
 
   const handleSelect = (chain: number) => {
+    switchChain(chain)
     if (chain !== chainId) {
-      // Switch network if supported by wallet
-      wagmiConfig.setPublicClient(publicClient({ chainId: chain }))
-      setChainId(chain)
-      if (switchNetwork) {
-        switchNetwork(chain)
-      }
       navigate('/')
     }
 

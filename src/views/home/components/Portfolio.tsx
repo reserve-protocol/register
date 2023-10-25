@@ -4,10 +4,8 @@ import TokenLogo from 'components/icons/TokenLogo'
 import Base from 'components/icons/logos/Base'
 import Ethereum from 'components/icons/logos/Ethereum'
 import useRTokenLogo from 'hooks/useRTokenLogo'
-import { localeAtom } from 'i18n'
 import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
-import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { accountHoldingsAtom, accountTokensAtom } from 'state/atoms'
 import { AccountRTokenPosition } from 'state/wallet/updaters/AccountUpdater'
@@ -26,7 +24,7 @@ const PortfolioToken = ({ position }: { position: AccountRTokenPosition }) => {
   const navigate = useNavigate()
 
   const handleClick = () => {
-    navigate(`/overview?token=${position.address}`)
+    navigate(`/overview?token=${position.address}&chainId=${position.chain}`)
     document.getElementById('app-container')?.scrollTo(0, 0)
     mixpanel.track('Selected RToken', {
       Source: 'Portfolio Table',
@@ -88,92 +86,11 @@ const PortfolioToken = ({ position }: { position: AccountRTokenPosition }) => {
 }
 
 const Portfolio = (props: BoxProps) => {
-  const lang = useAtomValue(localeAtom)
   const rTokens = useAtomValue(accountTokensAtom)
   const holdings = useAtomValue(accountHoldingsAtom)
-  const navigate = useNavigate()
-
-  const rTokenColumns = useMemo(
-    () => [
-      {
-        accessor: 'symbol',
-        maxWidth: 250,
-        Cell: (data: any) => {
-          const logo = useRTokenLogo(data.row.original.address)
-
-          return (
-            <Box variant="layout.verticalAlign">
-              <TokenLogo width={24} mr={2} src={logo} />
-              <Text ml={1} variant="strong">
-                {formatCurrency(+data.row.original.balance)}{' '}
-                {data.row.original.symbol}
-              </Text>
-            </Box>
-          )
-        },
-      },
-      {
-        accessor: 'usdAmount',
-        Cell: (data: any) => {
-          return (
-            <Box
-              variant="layout.verticalAlign"
-              sx={{ display: ['none', 'flex'] }}
-            >
-              <Text mr="2" variant="strong">
-                =
-              </Text>
-              <Text variant="legend">${formatCurrency(+data.cell.value)}</Text>
-            </Box>
-          )
-        },
-      },
-      {
-        accessor: 'stakedRSR',
-        Cell: (data: any) => {
-          return (
-            <Box sx={{ flexWrap: 'wrap' }} variant="layout.verticalAlign">
-              <Box variant="layout.verticalAlign">
-                <PositionIcon />
-                <Text sx={{ whiteSpace: 'nowrap' }} ml="2">
-                  {formatCurrency(data.cell.value)} RSR
-                </Text>
-              </Box>
-
-              <Text ml="2" variant="legend">
-                (${formatCurrency(+data.row.original.stakedRSRUsd)})
-              </Text>
-            </Box>
-          )
-        },
-      },
-      {
-        accessor: 'chain',
-        Cell: ({ cell }: { cell: any }) => {
-          const Logo = chainIcons[cell.value]
-
-          return (
-            <Box sx={{ textAlign: 'right' }}>
-              <Logo />
-            </Box>
-          )
-        },
-      },
-    ],
-    [lang]
-  )
 
   if (!holdings) {
     return null
-  }
-
-  const handleClick = (data: any) => {
-    navigate(`/overview?token=${data.address}`)
-    document.getElementById('app-container')?.scrollTo(0, 0)
-    mixpanel.track('Selected RToken', {
-      Source: 'Portfolio Table',
-      RToken: data.address,
-    })
   }
 
   return (
@@ -205,7 +122,7 @@ const Portfolio = (props: BoxProps) => {
               </Text>
               <Box sx={{ maxHeight: 500, overflow: 'auto' }}>
                 {rTokens.map((position) => (
-                  <PortfolioToken position={position} />
+                  <PortfolioToken key={position.address} position={position} />
                 ))}
               </Box>
             </Box>

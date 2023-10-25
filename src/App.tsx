@@ -30,6 +30,8 @@ import Tokens from 'views/tokens/Tokens'
 import Layout from './components/layout'
 import LanguageProvider from './i18n'
 import { theme } from './theme'
+import useSwitchChain from 'hooks/useSwitchChain'
+import { supportedChains } from 'utils/chains'
 
 mixpanel.init(import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key', {
   track_pageview: true,
@@ -45,14 +47,17 @@ const RouteListener = () => {
   const location = useLocation()
   const [searchParams, setSearchParams] = useSearchParams()
   const chainId = useAtomValue(chainIdAtom)
+  const switchChain = useSwitchChain()
+  const currentUrlChain = Number(searchParams.get('chainId') || 0)
 
   // Set chainId on url
   useEffect(() => {
-    if (Number(searchParams.get('chainId')) !== chainId) {
-      searchParams.set('chainId', chainId.toString())
+    if (!currentUrlChain || !supportedChains.has(currentUrlChain)) {
       setSearchParams(searchParams, { replace: true })
+    } else if (currentUrlChain !== chainId) {
+      switchChain(Number(searchParams.get('chainId')))
     }
-  }, [location.pathname, chainId])
+  }, [currentUrlChain, chainId])
 
   return null
 }
@@ -74,11 +79,11 @@ const App = () => {
 
   return (
     <Router>
-      <RouteListener />
       <Analytics />
       <ThemeProvider theme={theme}>
         <LanguageProvider>
           <ChainProvider>
+            <RouteListener />
             <Updater />
             <TransactionSidebar />
             <Layout>
