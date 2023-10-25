@@ -27,6 +27,8 @@ const Overview = () => {
   const rTokenAddress = useAtomValue(selectedRTokenAtom)
   const rToken = useAtomValue(rTokenAtom)
 
+  console.log('rtoken', rTokenAddress)
+
   const rTokenMetrics = useTokenStats(
     rTokenAddress?.toLowerCase() ?? '',
     !!rToken && !rToken.main

@@ -15,9 +15,6 @@ export const blockAtom = atom<number | undefined>(undefined)
 export const blockTimestampAtom = atom<number>(0)
 export const walletAtom = atom<Address | null>(null)
 
-export const walletClientAtom = atom<WalletClient | undefined>(undefined)
-export const publicClientAtom = atom<PublicClient | undefined>(undefined)
-
 export const rTokenListAtom = atom((get) => {
   const chainId = get(chainIdAtom)
 
@@ -39,10 +36,6 @@ export const allrTokenListAtom = atom((get) => {
     ]),
   ]) as Record<string, (typeof ethereumTokens)[string] & { chainId: number }>
 })
-
-export const clientAtom = atom((get) =>
-  get(walletClientAtom || get(publicClientAtom))
-)
 
 export const secondsPerBlockAtom = atom((get) => {
   const chainId = get(chainIdAtom)

@@ -9,7 +9,6 @@ import { alchemyProvider } from '@wagmi/core/providers/alchemy'
 import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc'
 import { publicProvider } from '@wagmi/core/providers/public'
 import React from 'react'
-import { ChainId, defaultChain } from 'utils/chains'
 import { WagmiConfig, configureChains, createConfig } from 'wagmi'
 import { base, hardhat, mainnet } from 'wagmi/chains'
 import { infuraProvider } from 'wagmi/providers/infura'
@@ -22,7 +21,7 @@ const providers = [
   infuraProvider({ apiKey: '9aa3d95b3bc440fa88ea12eaa4456161' }),
   alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY }),
   publicProvider(),
-] as any[]
+] as any
 
 if (import.meta.env.VITE_MAINNET_URL) {
   providers[0] = jsonRpcProvider({
@@ -30,15 +29,6 @@ if (import.meta.env.VITE_MAINNET_URL) {
       http: import.meta.env.VITE_MAINNET_URL,
     }),
   })
-}
-
-if (defaultChain !== ChainId.Mainnet) {
-  const index = chainList.findIndex((c: any) => c.id === defaultChain)
-
-  if (index !== -1) {
-    chainList[0] = chainList[index]
-    chainList[index] = mainnet
-  }
 }
 
 export const { chains, publicClient } = configureChains(chainList, providers)

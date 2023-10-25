@@ -3,11 +3,11 @@ import { atom, useAtomValue } from 'jotai'
 import {
   chainIdAtom,
   isModuleLegacyAtom,
-  publicClientAtom,
   rTokenAssetsAtom,
   rTokenAtom,
   rTokenStateAtom,
 } from 'state/atoms'
+import { publicClient } from 'state/chain'
 import { safeParseEther } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
@@ -37,7 +37,7 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
   const amount = get(redeemAmountDebouncedAtom)
   const chainId = get(chainIdAtom)
   const quotes: { [x: string]: RedeemQuote } = {}
-  const client = get(publicClientAtom)
+  const client = publicClient({ chainId })
 
   if (isNaN(+amount) || Number(amount) <= 0) {
     return { [currentNonce.toString()]: {} } // empty default to 0 on UI but no loading state

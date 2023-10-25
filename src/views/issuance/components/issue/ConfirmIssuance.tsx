@@ -6,7 +6,12 @@ import useHasAllowance, { RequiredAllowance } from 'hooks/useHasAllowance'
 import { atom, useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
 import { useState } from 'react'
-import { rTokenAtom, rTokenContractsAtom, walletAtom } from 'state/atoms'
+import {
+  chainIdAtom,
+  rTokenAtom,
+  rTokenContractsAtom,
+  walletAtom,
+} from 'state/atoms'
 import { formatCurrency, safeParseEther } from 'utils'
 import { RSV_MANAGER } from 'utils/rsv'
 import { Hex } from 'viem'
@@ -61,6 +66,7 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
   const [hasAllowance, tokensPendingAllowance] = useHasAllowance(
     useAtomValue(allowancesAtom)
   )
+  const chainId = useAtomValue(chainIdAtom)
   const { data: isReady } = useContractRead({
     abi: BasketHandler,
     address: rTokenContracts?.basketHandler?.address,

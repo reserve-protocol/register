@@ -8,6 +8,7 @@ import {
   accountHoldingsAtom,
   accountRTokensAtom,
   accountTokensAtom,
+  chainIdAtom,
   isSmartWalletAtom,
   rsrPriceAtom,
   walletAtom,
@@ -91,7 +92,8 @@ export interface AccountRTokenPosition {
 const AccountUpdater = () => {
   const account = useAtomValue(walletAtom)
   const rsrPrice = useAtomValue(rsrPriceAtom)
-  const client = usePublicClient()
+  const chainId = useAtomValue(chainIdAtom)
+  const client = usePublicClient({ chainId })
 
   const updateTokens = useSetAtom(accountTokensAtom)
   const updateHoldings = useSetAtom(accountHoldingsAtom)

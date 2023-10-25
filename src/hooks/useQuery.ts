@@ -1,13 +1,8 @@
-import { GraphQLClient, RequestDocument, request } from 'graphql-request'
+import { RequestDocument } from 'graphql-request'
 import { useAtomValue } from 'jotai'
-import { useMemo } from 'react'
-import { GRAPH_CLIENTS, SUBGRAPH_URL, gqlClientAtom } from 'state/atoms'
+import { GRAPH_CLIENTS, gqlClientAtom } from 'state/atoms'
 import useSWR from 'swr'
 import { ChainId } from 'utils/chains'
-
-const fetcher =
-  (client: GraphQLClient) => (query: RequestDocument, variables: any) =>
-    client.request(query, variables)
 
 const multichainFetcher = async (query: RequestDocument, variables: any) => ({
   [ChainId.Mainnet]: await GRAPH_CLIENTS[ChainId.Mainnet].request(
@@ -24,7 +19,10 @@ const useQuery = (
 ) => {
   const client = useAtomValue(gqlClientAtom)
 
-  return useSWR<any>(query ? [query, variables] : null, fetcher(client), config)
+  const fetcher = (query: RequestDocument, variables: any) =>
+    client.request(query, variables)
+
+  return useSWR<any>(query ? [query, variables] : null, fetcher, config)
 }
 
 export const useMultichainQuery = (

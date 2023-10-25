@@ -1,6 +1,7 @@
 import Analytics from 'components/analytics/Analytics'
 import ToastContainer from 'components/toaster-container/ToastContainer'
 import TransactionSidebar from 'components/transactions/manager/TransactionSidebar'
+import useSwitchChain from 'hooks/useSwitchChain'
 import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
 import { Suspense, lazy, useEffect } from 'react'
@@ -9,13 +10,13 @@ import {
   Route,
   HashRouter as Router,
   Routes,
-  useLocation,
   useSearchParams,
 } from 'react-router-dom'
 import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import ChainProvider from 'state/chain'
 import Updater from 'state/updater'
 import { Text, ThemeProvider } from 'theme-ui'
+import { supportedChains } from 'utils/chains'
 import { ROUTES } from 'utils/constants'
 import Auctions from 'views/auctions'
 import Deploy from 'views/deploy'
@@ -30,8 +31,6 @@ import Tokens from 'views/tokens/Tokens'
 import Layout from './components/layout'
 import LanguageProvider from './i18n'
 import { theme } from './theme'
-import useSwitchChain from 'hooks/useSwitchChain'
-import { supportedChains } from 'utils/chains'
 
 mixpanel.init(import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key', {
   track_pageview: true,
@@ -44,7 +43,6 @@ const Bridge = lazy(() => import('./views/bridge'))
 const Fallback = () => <Text>Loading...</Text>
 
 const RouteListener = () => {
-  const location = useLocation()
   const [searchParams, setSearchParams] = useSearchParams()
   const chainId = useAtomValue(chainIdAtom)
   const switchChain = useSwitchChain()
@@ -53,6 +51,7 @@ const RouteListener = () => {
   // Set chainId on url
   useEffect(() => {
     if (!currentUrlChain || !supportedChains.has(currentUrlChain)) {
+      searchParams.set('chainId', chainId.toString())
       setSearchParams(searchParams, { replace: true })
     } else if (currentUrlChain !== chainId) {
       switchChain(Number(searchParams.get('chainId')))

@@ -42,6 +42,7 @@ const GovernanceProposalDetail = () => {
     address: proposal?.governor,
     abi: Governance,
     functionName: 'getVotes',
+    chainId,
     args:
       account && proposal?.startBlock && blockNumber
         ? [account, BigInt(Math.min(proposal.startBlock - 1, blockNumber - 1))]

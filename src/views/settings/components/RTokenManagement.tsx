@@ -24,6 +24,7 @@ const useGovernanceSetupRequired = () => {
     address: rToken?.main as Address,
     abi: Main,
     functionName: 'hasRole',
+    chainId,
     args: [
       stringToHex('OWNER', { size: 32 }),
       FACADE_WRITE_ADDRESS[chainId] as Address,

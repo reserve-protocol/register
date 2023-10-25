@@ -12,7 +12,8 @@ import { atom } from 'jotai'
 import { loadable } from 'jotai/utils'
 
 import mixpanel from 'mixpanel-browser'
-import { chainIdAtom, clientAtom } from 'state/atoms'
+import { chainIdAtom } from 'state/atoms'
+import { publicClient } from 'state/chain'
 import { onlyNonNullAtom, simplifyLoadable } from 'utils/atoms/utils'
 import { ChainId } from 'utils/chains'
 import { PublicClient } from 'viem'
@@ -33,11 +34,10 @@ export function publicClientToProvider(publicClient: PublicClient) {
 }
 
 const providerAtom = atom((get) => {
-  const cli = get(clientAtom)
-  if (cli == null) {
-    return null
-  }
-  return publicClientToProvider(cli as any) as Web3Provider
+  const chainId = get(chainIdAtom)
+  const cli = publicClient({ chainId })
+
+  return publicClientToProvider(cli) as Web3Provider
 })
 
 // TODO: Convert provider viem -> ethers
@@ -51,16 +51,9 @@ export const supportsPermit2Signatures = onlyNonNullAtom((get) => {
   return PERMIT2_SUPPORTED_CONNECTIONS.has(get(connectionName))
 })
 
-const ONE_INCH_PROXIES = [
-  'https://cold-mouse-7d43.mig2151.workers.dev/',
-  'https://blue-cake-3548.mig2151.workers.dev/',
-  'https://bitter-tree-ed5a.mig2151.workers.dev/',
-  'https://square-morning-0921.mig2151.workers.dev/',
-]
-
 export const zapperState = loadable(
   atom(async (get) => {
-    get(chainIdAtom)
+    const chainId = get(chainIdAtom)
     const provider = get(providerAtom)
 
     // To inject register data into the zapper initialize code, it's probably best to load it all here.
@@ -88,30 +81,30 @@ export const zapperState = loadable(
 
       const universe = await Universe.createWithConfig(
         provider,
-        chainIdToConfig[provider.network.chainId].config,
-        chainIdToConfig[provider.network.chainId].setup
+        chainIdToConfig[chainId].config,
+        chainIdToConfig[chainId].setup
       )
 
       universe.dexAggregators.push(createKyberswap('KyberSwap', universe, 50))
 
-      if (provider.network.chainId === ChainId.Mainnet) {
+      if (chainId === ChainId.Mainnet) {
         universe.dexAggregators.push(
           createDefillama('DefiLlama:0x', universe, 10, 'Matcha/0x')
         )
         universe.dexAggregators.push(
           createDefillama('DefiLlama:HashFlow', universe, 10, 'Hashflow')
         )
-      } else if (provider.network.chainId === ChainId.Base) {
+      } else if (chainId === ChainId.Base) {
         universe.dexAggregators.push(
           createDefillama('DefiLlama:0x', universe, 10, 'Matcha/0x')
         )
       }
       return universe
     } catch (e) {
+      console.log('Zap init error', e)
       mixpanel.track('Failed zapper set up', {
         ChainId: provider.network.chainId,
       })
-      console.log(e)
       return null
     }
   })
@@ -129,6 +122,7 @@ export const zapperLoaded = atom(async (get) => {
 
 export const zappableTokens = atom(async (get) => {
   const uni = get(resolvedZapState)
+
   if (uni == null) {
     return []
   }

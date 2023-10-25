@@ -1,7 +1,7 @@
 import { Container } from 'components'
 import { useAtomValue } from 'jotai'
+import { walletAtom } from 'state/atoms'
 import { Box, Grid } from 'theme-ui'
-import { useWalletClient } from 'wagmi'
 import About from './components/about'
 import Balances from './components/balances'
 import Issue from './components/issue'
@@ -9,15 +9,15 @@ import IssuanceInfo from './components/issue/IssuanceInfo'
 import Redeem from './components/redeem'
 import WrapSidebar from './components/wrapping/WrapSidebar'
 import Zap from './components/zap'
-import { ui } from './components/zap/state/ui-atoms'
-import { ZapUnavailable } from './components/zap/components/ZapUnavailable'
 import { ZapOverview } from './components/zap/components/ZapOverview'
+import { ZapUnavailable } from './components/zap/components/ZapUnavailable'
+import { ui } from './components/zap/state/ui-atoms'
 
 /**
  * Mint & Redeem view
  */
 const Issuance = () => {
-  const enableZapper = useWalletClient().data?.account != null
+  const enableZapper = !!useAtomValue(walletAtom)
   // TODO: Temporal until zaps is available for redeem
   // Keep old redeem component while hiding the issuance and tweaking the layout
   const isZapEnabled = useAtomValue(ui.zapWidgetEnabled)

@@ -9,6 +9,7 @@ import useRToken from 'hooks/useRToken'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import {
+  chainIdAtom,
   rTokenAssetsAtom,
   rTokenCollateralStatusAtom,
   rTokenContractsAtom,
@@ -47,6 +48,7 @@ const RTokenStateUpdater = () => {
   const rToken = useRToken()
   const contracts = useAtomValue(rTokenContractsAtom)
   const assets = useAtomValue(rTokenAssetsAtom)
+  const chainId = useAtomValue(chainIdAtom)
   // Setters
   const setState = useSetAtom(rTokenStateAtom)
   const setCollateralStatus = useSetAtom(rTokenCollateralStatusAtom)
@@ -123,8 +125,8 @@ const RTokenStateUpdater = () => {
       )
     }
 
-    return commonCalls
-  }, [contracts])
+    return commonCalls.map((call) => ({ ...call, chainId }))
+  }, [contracts, chainId])
 
   // Type result manually, data inferring doesn't work with conditional calls
   const { data: rTokenState }: StateMulticallResult = useContractReads({
@@ -141,6 +143,7 @@ const RTokenStateUpdater = () => {
               address: assets[c.address].address as Address,
               abi: CollateralAbi,
               functionName: 'status',
+              chainId,
             }))
           : [],
       watch: true,
@@ -188,7 +191,9 @@ const RTokenStateUpdater = () => {
     )
   }, [collateralStatus])
 
+  console.log('current token???', searchParams.get('token'))
   useEffect(() => {
+    console.log('token?', searchParams.get('token'))
     const token = isAddress(searchParams.get('token') || '')
 
     if (token !== rToken?.address) {
