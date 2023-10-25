@@ -111,6 +111,7 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
           <IconInfo
             icon={<TokenLogo width={18} symbol={collateral.symbol} />}
             title={unit}
+            help={`Collateral Address: ${collateral.address}`}
             text={
               readOnly
                 ? collateral.symbol
