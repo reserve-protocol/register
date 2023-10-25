@@ -1,5 +1,8 @@
 import { Web3Provider } from '@ethersproject/providers'
 import {
+  Address,
+  Config,
+  Token,
   Universe,
   baseConfig,
   createDefillama,
@@ -12,7 +15,7 @@ import { atom } from 'jotai'
 import { loadable } from 'jotai/utils'
 
 import mixpanel from 'mixpanel-browser'
-import { chainIdAtom, clientAtom } from 'state/atoms'
+import { chainIdAtom, clientAtom, rTokenAtom } from 'state/atoms'
 import { onlyNonNullAtom, simplifyLoadable } from 'utils/atoms/utils'
 import { ChainId } from 'utils/chains'
 import { PublicClient } from 'viem'
@@ -51,16 +54,13 @@ export const supportsPermit2Signatures = onlyNonNullAtom((get) => {
   return PERMIT2_SUPPORTED_CONNECTIONS.has(get(connectionName))
 })
 
-const ONE_INCH_PROXIES = [
-  'https://cold-mouse-7d43.mig2151.workers.dev/',
-  'https://blue-cake-3548.mig2151.workers.dev/',
-  'https://bitter-tree-ed5a.mig2151.workers.dev/',
-  'https://square-morning-0921.mig2151.workers.dev/',
-]
-
 export const zapperState = loadable(
   atom(async (get) => {
     get(chainIdAtom)
+    const rtoken = get(rTokenAtom)
+    if (rtoken == null) {
+      return null
+    }
     const provider = get(providerAtom)
 
     // To inject register data into the zapper initialize code, it's probably best to load it all here.
@@ -74,7 +74,7 @@ export const zapperState = loadable(
     try {
       const chainIdToConfig: Record<
         number,
-        { config: any; setup: (uni: Universe<any>) => Promise<any> }
+        { config: Config; setup: (uni: Universe<any>) => Promise<any> }
       > = {
         [ChainId.Mainnet]: {
           config: ethereumConfig,
@@ -86,9 +86,18 @@ export const zapperState = loadable(
         },
       }
 
+      const conf = chainIdToConfig[provider.network.chainId].config
+      conf.addresses.rTokens[
+        rtoken.symbol
+      ] = Address.from(rtoken.address)
+
+      conf.addresses.rTokenDeployments[
+        rtoken.symbol
+      ] = Address.from(rtoken.main!)
+
       const universe = await Universe.createWithConfig(
         provider,
-        chainIdToConfig[provider.network.chainId].config,
+        conf,
         chainIdToConfig[provider.network.chainId].setup
       )
 
@@ -132,15 +141,16 @@ export const zappableTokens = atom(async (get) => {
   if (uni == null) {
     return []
   }
+  const commonTokens = uni.commonTokens as Record<string, Token>
   return [
     uni.nativeToken,
-    uni.commonTokens.USDbC,
-    uni.commonTokens.USDC,
-    uni.commonTokens.USDT,
-    uni.commonTokens.DAI,
-    uni.commonTokens.WBTC,
-    uni.commonTokens.WETH,
-    uni.commonTokens.MIM,
-    uni.commonTokens.FRAX,
+    commonTokens.USDbC,
+    commonTokens.USDC,
+    commonTokens.USDT,
+    commonTokens.DAI,
+    commonTokens.WBTC,
+    commonTokens.WETH,
+    commonTokens.MIM,
+    commonTokens.FRAX,
   ].filter((tok) => tok != null)
 })
