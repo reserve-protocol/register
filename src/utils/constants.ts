@@ -104,3 +104,5 @@ export const BLOCK_GAS_LIMIT = 30_000_000
 export const TENDERLY_BASE_URL = `https://api.tenderly.co/api/v1`
 export const TENDERLY_ENCODE_URL = `${TENDERLY_BASE_URL}/account/${TENDERLY_USER}/project/${TENDERLY_PROJECT_SLUG}/contracts/encode-states`
 export const TENDERLY_SIM_URL = `${TENDERLY_BASE_URL}/account/${TENDERLY_USER}/project/${TENDERLY_PROJECT_SLUG}/simulate`
+export const TENDERLY_SHARE_URL = (id: string) =>
+  `https://api.tenderly.co/api/v1/account/${TENDERLY_USER}/project/${TENDERLY_PROJECT_SLUG}/simulations/${id}/share`

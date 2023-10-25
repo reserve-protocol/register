@@ -7,7 +7,7 @@ import {
   TenderlyPayload,
   TenderlySimulation,
 } from 'types'
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback } from 'react'
 import useProposalTx from './useProposalTx'
 import { usePublicClient } from 'wagmi'
 import { getContract } from 'wagmi/actions'
@@ -19,9 +19,6 @@ import {
   parseAbiParameters,
   toHex,
   encodeFunctionData,
-  trim,
-  getAddress,
-  boolToHex,
   parseEther,
 } from 'viem'
 import Governance from 'abis/Governance'
@@ -29,9 +26,9 @@ import {
   BLOCK_GAS_LIMIT,
   TENDERLY_ACCESS_TOKEN,
   TENDERLY_ENCODE_URL,
+  TENDERLY_SHARE_URL,
   TENDERLY_SIM_URL,
 } from 'utils/constants'
-import axios from 'axios'
 
 const DEFAULT_FROM = '0xD73a92Be73EfbFcF3854433A5FcbAbF9c1316073' // arbitrary EOA not used on-chain
 
@@ -63,7 +60,7 @@ const simulateNew = async (
 
   // --- Get details about the proposal we're simulating ---
 
-  const blockNumberToUse = Number((await client.getBlock()).number) - 3 // subtracting a few blocks to ensure tenderly has the block
+  const blockNumberToUse = Number((await client.getBlock()).number) - 20 // ensure tenderly has the block
 
   const latestBlock = await client.getBlock({
     blockNumber: BigInt(blockNumberToUse),
@@ -105,7 +102,6 @@ const simulateNew = async (
   const simBlock = proposal.endBlock! + 100n
 
   const simTimestamp = latestBlock.timestamp + 1n
-  const eta = simTimestamp // set proposal eta to be equal to the timestamp we simulate at
 
   // Generate the state object needed to mark the transactions as queued in the Timelock's storage
   const timelockStorageObj: Record<string, string> = {}
@@ -158,20 +154,6 @@ const simulateNew = async (
   }
 
   const storageObj = await sendEncodeRequest(stateOverrides)
-
-  console.log({ storageObj })
-  // --- Simulate it ---
-  // We need the following state conditions to be true to successfully simulate a proposal:
-  //   - proposalCount >= proposal.id
-  //   - proposal.canceled == false
-  //   - proposal.executed == false
-  //   - block.number > proposal.endBlock
-  //   - proposal.forVotes > proposal.againstVotes
-  //   - proposal.forVotes > quorumVotes
-  //   - proposal.eta !== 0
-  //   - block.timestamp >= proposal.eta
-  //   - block.timestamp <  proposal.eta + timelock.GRACE_PERIOD()
-  //   - queuedTransactions[txHash] = true for each action in the proposal
   const executeInputs: [
     readonly `0x${string}`[],
     readonly bigint[],
@@ -197,8 +179,8 @@ const simulateNew = async (
     generate_access_list: true, // not required, but useful as a sanity check to ensure consistency in the simulation response
     block_header: {
       // this data represents what block.number and block.timestamp should return in the EVM during the simulation
-      number: trim(toHex(simBlock)),
-      timestamp: trim(toHex(simTimestamp)),
+      number: toHex(simBlock),
+      timestamp: toHex(simTimestamp),
     },
     state_objects: {
       // Since gas price is zero, the sender needs no balance.
@@ -216,12 +198,16 @@ const simulateNew = async (
     },
   }
   const sim = await sendSimulation(simulationPayload)
-  console.log({ sim })
-
+  if (sim?.simulation?.id) {
+    await fetch(
+      TENDERLY_SHARE_URL(sim?.simulation?.id),
+      getFetchOptions({} as TenderlyPayload)
+    )
+  }
   const sharedSimulationUrl = `https://dashboard.tenderly.co/shared/simulation/${sim?.simulation.id}`
 
   console.log({ sharedSimulationUrl })
-  return { sim, proposal, latestBlock }
+  return { sim, sharedSimulationUrl }
 }
 
 /**
@@ -260,27 +246,9 @@ async function sendSimulation(
   delay = 1000
 ): Promise<TenderlySimulation> {
   try {
-    console.log('final', getFetchOptions(payload))
     // Send simulation request
-    // const sim = <TenderlySimulation>(
-    //   (<unknown>await fetch(TENDERLY_SIM_URL, getFetchOptions(payload)))
-    // )
-
-    console.log({ payload })
-    const sim = await axios.post(TENDERLY_SIM_URL, payload, {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Access-Key': TENDERLY_ACCESS_TOKEN as string,
-      },
-    })
-
-    console.log({ sim })
-    // Post-processing to ensure addresses we use are checksummed (since ethers returns checksummed addresses)
-    sim.transaction.addresses = sim.transaction.addresses.map(getAddress)
-    sim.contracts.forEach(
-      (contract) => (contract.address = getAddress(contract.address))
-    )
-    return sim
+    const sim: any = await fetch(TENDERLY_SIM_URL, getFetchOptions(payload))
+    return await sim.json()
   } catch (err: any) {
     console.log('err in sendSimulation: ', JSON.stringify(err))
     const is429 = typeof err === 'object' && err?.statusCode === 429
