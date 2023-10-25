@@ -101,6 +101,7 @@ export const TENDERLY_PROJECT_SLUG: string = import.meta.env
 
 // Tenderly simulation
 export const BLOCK_GAS_LIMIT = 30_000_000
+export const DEFAULT_FROM = '0xD73a92Be73EfbFcF3854433A5FcbAbF9c1316073' // arbitrary EOA not used on-chain
 export const TENDERLY_BASE_URL = `https://api.tenderly.co/api/v1`
 export const TENDERLY_ENCODE_URL = `${TENDERLY_BASE_URL}/account/${TENDERLY_USER}/project/${TENDERLY_PROJECT_SLUG}/contracts/encode-states`
 export const TENDERLY_SIM_URL = `${TENDERLY_BASE_URL}/account/${TENDERLY_USER}/project/${TENDERLY_PROJECT_SLUG}/simulate`

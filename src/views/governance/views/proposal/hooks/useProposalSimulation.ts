@@ -1,4 +1,4 @@
-import { useAtomValue } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { rTokenGovernanceAtom, rTokenStateAtom } from 'state/atoms'
 import {
   ProposalEvent,
@@ -7,7 +7,7 @@ import {
   TenderlyPayload,
   TenderlySimulation,
 } from 'types'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import useProposalTx from './useProposalTx'
 import { usePublicClient } from 'wagmi'
 import { getContract } from 'wagmi/actions'
@@ -24,13 +24,61 @@ import {
 import Governance from 'abis/Governance'
 import {
   BLOCK_GAS_LIMIT,
+  DEFAULT_FROM,
   TENDERLY_ACCESS_TOKEN,
   TENDERLY_ENCODE_URL,
   TENDERLY_SHARE_URL,
   TENDERLY_SIM_URL,
 } from 'utils/constants'
+import { simulationStateAtom } from '../../proposal-detail/atom'
 
-const DEFAULT_FROM = '0xD73a92Be73EfbFcF3854433A5FcbAbF9c1316073' // arbitrary EOA not used on-chain
+/**
+ * @notice Encode state overrides
+ * @param payload State overrides to send
+ */
+const sendEncodeRequest = async (
+  payload: any
+): Promise<StorageEncodingResponse> => {
+  try {
+    const response: any = await fetch(
+      TENDERLY_ENCODE_URL,
+      getFetchOptions(payload)
+    )
+
+    return response.json() as StorageEncodingResponse
+  } catch (err) {
+    console.log('sendEncodeRequest error:', JSON.stringify(err, null, 2))
+    console.log(JSON.stringify(payload))
+    throw err
+  }
+}
+
+/**
+ * @notice Sends a transaction simulation request to the Tenderly API
+ * @dev Uses a simple exponential backoff when requests fail, with the following parameters:
+ *   - Initial delay is 1 second
+ *   - We randomize the delay duration to avoid synchronization issues if client is sending multiple requests simultaneously
+ *   - We double delay each time and throw an error if delay is over 8 seconds
+ * @param payload Transaction simulation parameters
+ * @param delay How long to wait until next simulation request after failure, in milliseconds
+ */
+const sendSimulation = async (
+  payload: TenderlyPayload,
+  delay = 1000
+): Promise<TenderlySimulation> => {
+  try {
+    // Send simulation request
+    const sim: any = await fetch(TENDERLY_SIM_URL, getFetchOptions(payload))
+    return await sim.json()
+  } catch (err) {
+    console.log('err in sendSimulation: ', JSON.stringify(err))
+    console.warn(
+      `Simulation request failed with the above error, retrying in ~${delay} milliseconds. See request payload below`
+    )
+    await sleep(delay + 500)
+    return await sendSimulation(payload, delay * 2)
+  }
+}
 
 const getFetchOptions = (payload: TenderlyPayload) => {
   const TENDERLY_FETCH_OPTIONS = {
@@ -51,15 +99,14 @@ const sleep = (delay: number) =>
 
 const simulateNew = async (
   config: SimulationConfig,
-  votingTokenSupply: any, // specify the correct type
-  governance: any, // specify the correct type
+  votingTokenSupply: number,
+  governance: any,
   client: any // specify the correct type
 ): Promise<TenderlySimulation> => {
   // --- Validate config ---
   const { targets, values, calldatas, description } = config
 
   // --- Get details about the proposal we're simulating ---
-
   const blockNumberToUse = Number((await client.getBlock()).number) - 20 // ensure tenderly has the block
 
   const latestBlock = await client.getBlock({
@@ -81,25 +128,6 @@ const simulateNew = async (
       )
     )
   )
-
-  const startBlock = BigInt(blockNumberToUse - 100) // arbitrarily subtract 100
-  const proposal: ProposalEvent = {
-    id: proposalId, // Bravo governor
-    proposalId, // OZ governor (for simplicity we just include both ID formats)
-    proposer: DEFAULT_FROM,
-    startBlock,
-    endBlock: startBlock + 1n,
-    description,
-    targets,
-    values: values.map((_) => BigInt(0)),
-    calldatas,
-  }
-
-  // Set `from` arbitrarily.
-  const from = DEFAULT_FROM
-
-  // Run simulation at the block right after the proposal ends.
-  const simBlock = proposal.endBlock! + 100n
 
   const simTimestamp = latestBlock.timestamp + 1n
 
@@ -130,8 +158,12 @@ const simulateNew = async (
   const proposalCoreKey = `_proposals[${proposalId.toString()}]`
   const proposalVotesKey = `_proposalVotes[${proposalId.toString()}]`
   governorStateOverrides = {
-    [`${proposalCoreKey}.voteEnd._deadline`]: (simBlock - 1n).toString(),
-    [`${proposalCoreKey}.voteStart._deadline`]: (simBlock - 1n).toString(),
+    [`${proposalCoreKey}.voteEnd._deadline`]: (
+      BigInt(blockNumberToUse) - 1n
+    ).toString(),
+    [`${proposalCoreKey}.voteStart._deadline`]: (
+      BigInt(blockNumberToUse) - 1n
+    ).toString(),
     [`${proposalCoreKey}.canceled`]: 'false',
     [`${proposalCoreKey}.executed`]: 'false',
     [`${proposalVotesKey}.forVotes`]: parseEther(
@@ -154,6 +186,7 @@ const simulateNew = async (
   }
 
   const storageObj = await sendEncodeRequest(stateOverrides)
+
   const executeInputs: [
     readonly `0x${string}`[],
     readonly bigint[],
@@ -162,7 +195,6 @@ const simulateNew = async (
   ] = [targets, values, calldatas, descriptionHash]
   const simulationPayload: TenderlyPayload = {
     network_id: '1',
-    // this field represents the block state to simulate against, so we use the latest block number
     block_number: Number(latestBlock.number),
     from: DEFAULT_FROM,
     to: governor.address,
@@ -173,19 +205,16 @@ const simulateNew = async (
     }),
     gas: BLOCK_GAS_LIMIT,
     gas_price: '0',
-    value: '0', // TODO Support sending ETH in local simulations like we do below in `simulateProposed`.
-    save_if_fails: true, // Set to true to save the simulation to your Tenderly dashboard if it fails.
-    save: true, // Set to true to save the simulation to your Tenderly dashboard if it succeeds.
-    generate_access_list: true, // not required, but useful as a sanity check to ensure consistency in the simulation response
+    value: '0',
+    save_if_fails: true,
+    save: true,
+    generate_access_list: true,
     block_header: {
-      // this data represents what block.number and block.timestamp should return in the EVM during the simulation
-      number: toHex(simBlock),
+      number: toHex(blockNumberToUse),
       timestamp: toHex(simTimestamp),
     },
     state_objects: {
-      // Since gas price is zero, the sender needs no balance.
-      // TODO Support sending ETH in local simulations like we do below in `simulateProposed`.
-      [from]: { balance: '0' },
+      [DEFAULT_FROM]: { balance: '0' },
       // Ensure transactions are queued in the timelock
       [timelockAddr]: {
         storage: storageObj.stateOverrides[timelockAddr.toLowerCase()].value,
@@ -210,91 +239,42 @@ const simulateNew = async (
   }
 }
 
-/**
- * @notice Encode state overrides
- * @param payload State overrides to send
- */
-async function sendEncodeRequest(
-  payload: any
-): Promise<StorageEncodingResponse> {
-  try {
-    const response: any = await fetch(
-      TENDERLY_ENCODE_URL,
-      getFetchOptions(payload)
-    )
-
-    return response.json() as StorageEncodingResponse
-  } catch (err) {
-    console.log('logging sendEncodeRequest error')
-    console.log(JSON.stringify(err, null, 2))
-    console.log(JSON.stringify(payload))
-    throw err
-  }
-}
-
-/**
- * @notice Sends a transaction simulation request to the Tenderly API
- * @dev Uses a simple exponential backoff when requests fail, with the following parameters:
- *   - Initial delay is 1 second
- *   - We randomize the delay duration to avoid synchronization issues if client is sending multiple requests simultaneously
- *   - We double delay each time and throw an error if delay is over 8 seconds
- * @param payload Transaction simulation parameters
- * @param delay How long to wait until next simulation request after failure, in milliseconds
- */
-async function sendSimulation(
-  payload: TenderlyPayload,
-  delay = 1000
-): Promise<TenderlySimulation> {
-  try {
-    // Send simulation request
-    const sim: any = await fetch(TENDERLY_SIM_URL, getFetchOptions(payload))
-    return await sim.json()
-  } catch (err: any) {
-    console.log('err in sendSimulation: ', JSON.stringify(err))
-    const is429 = typeof err === 'object' && err?.statusCode === 429
-    if (delay > 8000 || !is429) {
-      console.warn(
-        `Simulation request failed with the below request payload and error`
-      )
-      throw err
-    }
-    console.warn(err)
-    console.warn(
-      `Simulation request failed with the above error, retrying in ~${delay} milliseconds. See request payload below`
-    )
-    await sleep(delay + 500)
-    return await sendSimulation(payload, delay * 2)
-  }
-}
-
 const useProposalSimulation = () => {
   const { stTokenSupply: votingTokenSupply } = useAtomValue(rTokenStateAtom)
   const governance = useAtomValue(rTokenGovernanceAtom)
+  const [simState, setSimState] = useAtom(simulationStateAtom)
   const client = usePublicClient()
   const tx = useProposalTx()
 
-  const { address: governorAddress, args } = tx || {}
-
-  const [targets, values, calldatas, description] = args!
-
-  if (!governorAddress) throw new Error('Governor address is not defined.')
+  const [targets, values, calldatas, description] = tx?.args!
 
   const config: SimulationConfig = {
-    governorAddress,
     targets,
     values,
     calldatas,
     description,
   }
 
-  const simulateNewFunction = useCallback(async () => {
-    if (config && votingTokenSupply && governance && client) {
-      return await simulateNew(config, votingTokenSupply, governance, client)
+  const handleSimulation = useCallback(async () => {
+    setSimState((prev) => ({ ...prev, loading: true }))
+    try {
+      const result = await simulateNew(
+        config,
+        votingTokenSupply,
+        governance,
+        client
+      )
+      setSimState({ data: result, loading: false, error: null })
+    } catch (err: any) {
+      setSimState({ data: null, loading: false, error: err })
     }
   }, [config, votingTokenSupply, governance, client])
 
   return {
-    simulateNew: simulateNewFunction,
+    sim: simState.data,
+    isLoading: simState.loading,
+    error: simState.error,
+    handleSimulation,
   }
 }
 

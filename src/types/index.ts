@@ -172,8 +172,8 @@ export interface CollateralPlugin {
 }
 
 export interface ProposalEvent {
-  id?: bigint // Bravo governor
-  proposalId?: bigint // OZ governor
+  id?: bigint
+  proposalId?: bigint
   proposer: string
   startBlock: bigint
   endBlock: bigint
@@ -183,7 +183,6 @@ export interface ProposalEvent {
   calldatas: string[]
 }
 export interface SimulationConfig {
-  governorAddress: string
   targets: `0x${string}`[]
   values: bigint[]
   calldatas: `0x${string}`[]
@@ -229,26 +228,6 @@ export type TenderlyPayload = {
     timestamp?: string
   }
   generate_access_list?: boolean
-}
-
-interface Simulation {
-  id: string
-  project_id: string
-  owner_id: string
-  network_id: string
-  block_number: number
-  transaction_index: number
-  from: string
-  to: string
-  input: string
-  gas: number
-  gas_price: string
-  value: string
-  method: string
-  status: boolean
-  access_list: null
-  queue_origin: string
-  created_at: Date
 }
 
 interface GeneratedAccessList {
