@@ -165,7 +165,7 @@ msgstr ""
 #: src/components/transactions/table/index.tsx:78
 #: src/views/auctions/components/useColumns.tsx:39
 #: src/views/bridge/components/BridgeAmount.tsx:43
-#: src/views/issuance/components/zap/components/ZapInput.tsx:73
+#: src/views/issuance/components/zap/components/ZapInput.tsx:72
 msgid "Amount"
 msgstr ""
 
@@ -332,7 +332,7 @@ msgstr ""
 msgid "Batch Auction length (s)"
 msgstr ""
 
-#: src/views/auctions/components/AuctionsHeader.tsx:59
+#: src/views/auctions/components/AuctionsHeader.tsx:32
 msgid "Batch auctions"
 msgstr ""
 
@@ -362,6 +362,12 @@ msgstr ""
 
 #: src/views/auctions/components/useColumns.tsx:34
 msgid "Bought"
+msgstr ""
+
+#: src/views/issuance/components/zap/components/ZapSettings.tsx:25
+#: src/views/issuance/components/zap/components/ZapSettings.tsx:83
+#: src/views/issuance/components/zap/components/ZapSettings.tsx:134
+msgid "bps"
 msgstr ""
 
 #: src/views/bridge/components/BridgeAmount.tsx:44
@@ -422,7 +428,7 @@ msgstr ""
 msgid "Change primary basket"
 msgstr ""
 
-#: src/views/auctions/components/AuctionsHeader.tsx:73
+#: src/views/auctions/components/AuctionsHeader.tsx:46
 msgid "Check for auctions"
 msgstr ""
 
@@ -559,11 +565,15 @@ msgstr ""
 msgid "Current status:"
 msgstr ""
 
+#: src/views/issuance/components/zap/components/ZapSettings.tsx:131
+msgid "Custom"
+msgstr ""
+
 #: src/components/rtoken-setup/token/TokenConfiguration.tsx:43
 msgid "Customize"
 msgstr ""
 
-#: src/components/rtoken-selector/TokenList.tsx:56
+#: src/components/rtoken-selector/TokenList.tsx:59
 msgid "Dashboard"
 msgstr ""
 
@@ -705,6 +715,14 @@ msgstr ""
 msgid "Duration in Seconds"
 msgstr ""
 
+#: src/views/issuance/components/zap/components/ZapSettings.tsx:158
+msgid "Dust is the leftover amount of tokens that cannot be exchanged. If you choose to collect dust, it will be sent back to your wallet. Sending dust back to the wallet will increase transaction fee."
+msgstr ""
+
+#: src/views/issuance/components/zap/components/ZapSettings.tsx:154
+msgid "Dust:"
+msgstr ""
+
 #: src/views/settings/components/BackingInfo.tsx:58
 msgid "Dutch auction length"
 msgstr ""
@@ -713,7 +731,7 @@ msgstr ""
 msgid "Dutch Auction length (s)"
 msgstr ""
 
-#: src/views/auctions/components/AuctionsHeader.tsx:66
+#: src/views/auctions/components/AuctionsHeader.tsx:39
 msgid "Dutch auctions"
 msgstr ""
 
@@ -772,7 +790,7 @@ msgstr ""
 msgid "Est. APY:"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:71
+#: src/views/overview/components/TokenOverview.tsx:80
 msgid "Est. RToken Yield"
 msgstr ""
 
@@ -780,15 +798,15 @@ msgstr ""
 msgid "Est. Staking APY"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:77
+#: src/views/overview/components/TokenOverview.tsx:86
 msgid "Est. stRSR Yield"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:73
+#: src/views/overview/components/TokenOverview.tsx:82
 msgid "Estimated APY calculated base on the RToken basket averaged yield with regards of the total RToken market cap and revenue distribution to holders."
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:79
+#: src/views/overview/components/TokenOverview.tsx:88
 msgid "Estimated APY, calculated base on the RToken basket averaged yield with regards of the total RToken market cap and revenue distribution to stakers. Calculation = [avgCollateralYield * rTokenMarketCap / rsrStaked]"
 msgstr ""
 
@@ -845,6 +863,10 @@ msgstr ""
 
 #: src/views/auctions/dutch/components/AuctionTimeIndicators.tsx:38
 msgid "Final price in:"
+msgstr ""
+
+#: src/views/issuance/components/zap/components/ZapUnavailable.tsx:28
+msgid "First, connect your wallet"
 msgstr ""
 
 #: src/views/governance/views/proposal-detail/components/VoteModal.tsx:42
@@ -932,7 +954,7 @@ msgstr ""
 msgid "Hash"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:25
+#: src/views/overview/components/TokenOverview.tsx:34
 msgid "Here you can find usage data about RSV, which is used to mostly be used in the Rpay app. Usage data includes off-chain data from before the migration on March 22, 2023 that as been anonymized to protect user privacy. This page will likely be removed from Register in the future."
 msgstr ""
 
@@ -1113,8 +1135,8 @@ msgstr ""
 msgid "Learn"
 msgstr ""
 
-#: src/views/issuance/components/zap/components/ZapInput.tsx:92
-#: src/views/issuance/components/zap/components/ZapInput.tsx:146
+#: src/views/issuance/components/zap/components/ZapInput.tsx:91
+#: src/views/issuance/components/zap/components/ZapInput.tsx:120
 #: src/views/settings/components/SettingItem.tsx:60
 msgid "Loading..."
 msgstr ""
@@ -1165,7 +1187,7 @@ msgstr ""
 msgid "Mandate is required"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:44
+#: src/views/overview/components/TokenOverview.tsx:53
 msgid "Market cap"
 msgstr ""
 
@@ -1197,7 +1219,7 @@ msgstr ""
 msgid "Meditate peacefully on the stability of a future asset backed reserve currency while your RToken deploys 🧘‍♂️"
 msgstr ""
 
-#: src/views/issuance/components/zap/components/ZapInput.tsx:55
+#: src/views/issuance/components/zap/components/ZapInput.tsx:54
 msgid "Min Output"
 msgstr ""
 
@@ -1239,7 +1261,11 @@ msgstr ""
 msgid "Mint amount"
 msgstr ""
 
-#: src/views/issuance/components/zap/components/ZapInput.tsx:75
+#: src/views/issuance/components/zap/components/ZapSettings.tsx:111
+msgid "Mint slippage:"
+msgstr ""
+
+#: src/views/issuance/components/zap/components/ZapInput.tsx:74
 msgid "Mint with {zapSymbol}"
 msgstr ""
 
@@ -1252,7 +1278,7 @@ msgid "Missing collateral"
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:36
-#: src/views/tokens/components/UnlistedTokensTable.tsx:98
+#: src/views/tokens/components/UnlistedTokensTable.tsx:99
 msgid "Mkt Cap"
 msgstr ""
 
@@ -1380,7 +1406,7 @@ msgid "Other Parameters"
 msgstr ""
 
 #: src/components/layout/navigation/index.tsx:109
-#: src/views/overview/components/TokenOverview.tsx:24
+#: src/views/overview/components/TokenOverview.tsx:33
 msgid "Overview"
 msgstr ""
 
@@ -1431,6 +1457,10 @@ msgstr ""
 msgid "Please connect your wallet"
 msgstr ""
 
+#: src/views/issuance/components/zap/components/ZapUnavailable.tsx:36
+msgid "Please connect your wallet to use the Zap Minter, which allows you to mint using a single asset."
+msgstr ""
+
 #: src/views/deploy/components/DeployOverview.tsx:52
 msgid "Please don't close this window to avoid issues finding your way back here."
 msgstr ""
@@ -1466,7 +1496,7 @@ msgstr ""
 #: src/components/tables/ListedTokensTable.tsx:34
 #: src/views/home/components/Portfolio.tsx:37
 #: src/views/overview/components/PriceChart.tsx:77
-#: src/views/tokens/components/UnlistedTokensTable.tsx:93
+#: src/views/tokens/components/UnlistedTokensTable.tsx:94
 msgid "Price"
 msgstr ""
 
@@ -1867,6 +1897,7 @@ msgstr ""
 
 #: src/components/rtoken-setup/basket/CustomCollateral.tsx:117
 #: src/components/rtoken-setup/components/RolesEdit.tsx:53
+#: src/views/issuance/components/zap/components/ZapSettings.tsx:94
 #: src/views/staking/components/stake/EditDelegate.tsx:31
 msgid "Save"
 msgstr ""
@@ -1883,7 +1914,12 @@ msgstr ""
 msgid "Selling"
 msgstr ""
 
+#: src/views/issuance/components/zap/components/ZapSettings.tsx:171
+msgid "Send dust back to wallet"
+msgstr ""
+
 #: src/views/governance/components/GovernanceOverview.tsx:158
+#: src/views/issuance/components/zap/components/ZapSettings.tsx:211
 msgid "Settings"
 msgstr ""
 
@@ -1958,12 +1994,12 @@ msgstr ""
 msgid "Stake + Unstake"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:59
+#: src/views/overview/components/TokenOverview.tsx:68
 #: src/views/staking/components/overview/StakingStats.tsx:42
 msgid "Stake pool"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:64
+#: src/views/overview/components/TokenOverview.tsx:73
 msgid "Stake pool USD value"
 msgstr ""
 
@@ -1972,7 +2008,7 @@ msgstr ""
 msgid "Stake RSR"
 msgstr ""
 
-#: src/views/tokens/components/UnlistedTokensTable.tsx:128
+#: src/views/tokens/components/UnlistedTokensTable.tsx:129
 msgid "Staked"
 msgstr ""
 
@@ -2038,7 +2074,7 @@ msgid "Target:"
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:51
-#: src/views/tokens/components/UnlistedTokensTable.tsx:112
+#: src/views/tokens/components/UnlistedTokensTable.tsx:113
 msgid "Target(s)"
 msgstr ""
 
@@ -2068,6 +2104,10 @@ msgstr ""
 
 #: src/views/deploy/components/TokenForm.tsx:47
 msgid "The mandate describes what goals its governors should try to achieve. By briefly explaining the RToken’s purpose and what the RToken is intended to do, it provides common ground for the governors to decide upon priorities and how to weigh tradeoffs."
+msgstr ""
+
+#: src/views/issuance/components/zap/components/ZapSettings.tsx:114
+msgid "The maximum amount of slippage you are willing to accept when minting. Higher slippage settings will make the transaction more likely to succeed, but may result in fewer tokens minted."
 msgstr ""
 
 #: src/components/rtoken-setup/governance/GovernanceParameters.tsx:64
@@ -2178,7 +2218,7 @@ msgid "To settle"
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:26
-#: src/views/tokens/components/UnlistedTokensTable.tsx:79
+#: src/views/tokens/components/UnlistedTokensTable.tsx:80
 msgid "Token"
 msgstr ""
 
@@ -2330,7 +2370,7 @@ msgid "Tx2. Governance"
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:41
-#: src/views/tokens/components/UnlistedTokensTable.tsx:103
+#: src/views/tokens/components/UnlistedTokensTable.tsx:104
 msgid "Txs"
 msgstr ""
 
@@ -2450,7 +2490,7 @@ msgid "View on Etherscan"
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:46
-#: src/views/tokens/components/UnlistedTokensTable.tsx:107
+#: src/views/tokens/components/UnlistedTokensTable.tsx:108
 msgid "Volume"
 msgstr ""
 
