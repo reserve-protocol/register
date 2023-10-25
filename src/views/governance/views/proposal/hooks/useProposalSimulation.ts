@@ -54,7 +54,7 @@ const simulateNew = async (
   votingTokenSupply: any, // specify the correct type
   governance: any, // specify the correct type
   client: any // specify the correct type
-): Promise<any> => {
+): Promise<TenderlySimulation> => {
   // --- Validate config ---
   const { targets, values, calldatas, description } = config
 
@@ -199,15 +199,15 @@ const simulateNew = async (
   }
   const sim = await sendSimulation(simulationPayload)
   if (sim?.simulation?.id) {
+    // Share simulation first
     await fetch(
       TENDERLY_SHARE_URL(sim?.simulation?.id),
       getFetchOptions({} as TenderlyPayload)
     )
+    return sim
+  } else {
+    throw new Error('Failed to generate simulation')
   }
-  const sharedSimulationUrl = `https://dashboard.tenderly.co/shared/simulation/${sim?.simulation.id}`
-
-  console.log({ sharedSimulationUrl })
-  return { sim, sharedSimulationUrl }
 }
 
 /**
@@ -268,27 +268,30 @@ async function sendSimulation(
 }
 
 const useProposalSimulation = () => {
-  // Call your hooks here
   const { stTokenSupply: votingTokenSupply } = useAtomValue(rTokenStateAtom)
   const governance = useAtomValue(rTokenGovernanceAtom)
   const client = usePublicClient()
-  const tx = useProposalTx() // Call your hook here at the top level
+  const tx = useProposalTx()
 
-  const config = {
-    governorAddress: tx?.address!,
-    targets: tx?.args[0]!,
-    values: tx?.args[1]!,
-    calldatas: tx?.args[2]!,
-    description: tx?.args[3]!,
+  const { address: governorAddress, args } = tx || {}
+
+  const [targets, values, calldatas, description] = args!
+
+  if (!governorAddress) throw new Error('Governor address is not defined.')
+
+  const config: SimulationConfig = {
+    governorAddress,
+    targets,
+    values,
+    calldatas,
+    description,
   }
 
-  const simulateNewFunction = useCallback(
-    async () => {
-      // Pass the hook values to simulateNew
-      await simulateNew(config, votingTokenSupply, governance, client)
-    },
-    [votingTokenSupply, governance, client] // add dependencies here
-  )
+  const simulateNewFunction = useCallback(async () => {
+    if (config && votingTokenSupply && governance && client) {
+      return await simulateNew(config, votingTokenSupply, governance, client)
+    }
+  }, [config, votingTokenSupply, governance, client])
 
   return {
     simulateNew: simulateNewFunction,
