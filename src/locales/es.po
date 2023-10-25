@@ -563,7 +563,7 @@ msgstr ""
 msgid "Customize"
 msgstr ""
 
-#: src/components/rtoken-selector/TokenList.tsx:56
+#: src/components/rtoken-selector/TokenList.tsx:59
 msgid "Dashboard"
 msgstr ""
 
@@ -1252,7 +1252,7 @@ msgid "Missing collateral"
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:36
-#: src/views/tokens/components/UnlistedTokensTable.tsx:98
+#: src/views/tokens/components/UnlistedTokensTable.tsx:99
 msgid "Mkt Cap"
 msgstr ""
 
@@ -1466,7 +1466,7 @@ msgstr ""
 #: src/components/tables/ListedTokensTable.tsx:34
 #: src/views/home/components/Portfolio.tsx:37
 #: src/views/overview/components/PriceChart.tsx:77
-#: src/views/tokens/components/UnlistedTokensTable.tsx:93
+#: src/views/tokens/components/UnlistedTokensTable.tsx:94
 msgid "Price"
 msgstr ""
 
@@ -1972,7 +1972,7 @@ msgstr ""
 msgid "Stake RSR"
 msgstr ""
 
-#: src/views/tokens/components/UnlistedTokensTable.tsx:128
+#: src/views/tokens/components/UnlistedTokensTable.tsx:129
 msgid "Staked"
 msgstr ""
 
@@ -2038,7 +2038,7 @@ msgid "Target:"
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:51
-#: src/views/tokens/components/UnlistedTokensTable.tsx:112
+#: src/views/tokens/components/UnlistedTokensTable.tsx:113
 msgid "Target(s)"
 msgstr ""
 
@@ -2178,7 +2178,7 @@ msgid "To settle"
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:26
-#: src/views/tokens/components/UnlistedTokensTable.tsx:79
+#: src/views/tokens/components/UnlistedTokensTable.tsx:80
 msgid "Token"
 msgstr ""
 
@@ -2330,7 +2330,7 @@ msgid "Tx2. Governance"
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:41
-#: src/views/tokens/components/UnlistedTokensTable.tsx:103
+#: src/views/tokens/components/UnlistedTokensTable.tsx:104
 msgid "Txs"
 msgstr ""
 
@@ -2450,7 +2450,7 @@ msgid "View on Etherscan"
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:46
-#: src/views/tokens/components/UnlistedTokensTable.tsx:107
+#: src/views/tokens/components/UnlistedTokensTable.tsx:108
 msgid "Volume"
 msgstr ""
 

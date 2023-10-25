@@ -29,9 +29,15 @@ export const allrTokenListAtom = atom((get) => {
   const baseTokens = rtokens[8453]
 
   return Object.fromEntries([
-    ...Object.values(ethereumTokens).map(i => ([i.address, {...i, chainId: 1}])),
-    ...Object.values(baseTokens).map(i => ([i.address, {...i, chainId: 8453}]))
-  ]) as Record<string, typeof ethereumTokens[string] & {chainId: number}>
+    ...Object.values(ethereumTokens).map((i) => [
+      i.address,
+      { ...i, chainId: 1 },
+    ]),
+    ...Object.values(baseTokens).map((i) => [
+      i.address,
+      { ...i, chainId: 8453 },
+    ]),
+  ]) as Record<string, (typeof ethereumTokens)[string] & { chainId: number }>
 })
 
 export const clientAtom = atom((get) =>
@@ -65,11 +71,14 @@ export const SUBGRAPH_URL = {
     'https://api.thegraph.com/subgraphs/name/lcamargof/reserve-test',
 }
 
+// TODO: Multi fork network graph
+export const GRAPH_CLIENTS = {
+  [ChainId.Mainnet]: new GraphQLClient(
+    import.meta.env.VITE_SUBGRAPH_URL || SUBGRAPH_URL[ChainId.Mainnet]
+  ),
+  [ChainId.Base]: new GraphQLClient(SUBGRAPH_URL[ChainId.Base]),
+}
+
 export const gqlClientAtom = atom(
-  (get) =>
-    new GraphQLClient(
-      import.meta.env.VITE_SUBGRAPH_URL ||
-        SUBGRAPH_URL[get(chainIdAtom)] ||
-        SUBGRAPH_URL[ChainId.Mainnet]
-    )
+  (get) => GRAPH_CLIENTS[get(chainIdAtom)] || GRAPH_CLIENTS[ChainId.Mainnet]
 )

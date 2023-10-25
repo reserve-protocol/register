@@ -126,17 +126,17 @@ export interface AccountToken {
   usdPrice: number
   balance: number
   usdAmount: number
-  apy: number
+  chain: number
 }
 
 export interface AccountPosition {
   name: string
   symbol: string
   balance: number
-  apy: number
   exchangeRate: number
   rsrAmount: number
   usdAmount: number
+  chain: number
 }
 
 export interface TokenStats {

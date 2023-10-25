@@ -14,6 +14,7 @@ import { chainIdAtom, walletAtom } from '../chain/atoms/chainAtoms'
 import rTokenAtom from '../rtoken/atoms/rTokenAtom'
 import rTokenContractsAtom from '../rtoken/atoms/rTokenContractsAtom'
 import { readContract } from 'wagmi/actions'
+import { AccountRTokenPosition } from './updaters/AccountUpdater'
 
 const defaultBalance = {
   value: 0n,
@@ -65,7 +66,7 @@ export const accountRTokensAtom = atom<
 >([])
 
 // Store current rToken holdings for an account
-export const accountTokensAtom = atom<AccountToken[]>([])
+export const accountTokensAtom = atom<AccountRTokenPosition[]>([])
 
 // Store current stToken holdings (stake) for an account
 export const accountPositionsAtom = atom<AccountPosition[]>([])
