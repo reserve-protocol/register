@@ -2277,7 +2277,7 @@ const Base = (props: SVGProps<SVGSVGElement>) => (
             fillRule: 'evenodd',
             clipRule: 'evenodd',
             fill: '#0656ff',
-          }}
+        }}
         />
         <path
           id="_249"

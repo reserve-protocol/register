@@ -8,7 +8,7 @@ import mixpanel from 'mixpanel-browser'
 import { useState } from 'react'
 import { Check, ChevronDown, ChevronUp } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
-import { chainIdAtom } from 'state/atoms'
+import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
 import { ROUTES } from 'utils/constants'
@@ -97,13 +97,14 @@ const ChainList = ({ onSelect }: { onSelect(chain: number): void }) => {
 
 const ChainSelector = (props: BoxProps) => {
   const chainId = useAtomValue(chainIdAtom)
+  const selectedRToken = useAtomValue(selectedRTokenAtom)
   const [isVisible, setVisible] = useState(false)
   const switchChain = useSwitchChain()
   const navigate = useNavigate()
 
   const handleSelect = (chain: number) => {
     switchChain(chain)
-    if (chain !== chainId) {
+    if (chain !== chainId && selectedRToken) {
       navigate('/')
     }
 
