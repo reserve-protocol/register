@@ -9,39 +9,29 @@ import { alchemyProvider } from '@wagmi/core/providers/alchemy'
 import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc'
 import { publicProvider } from '@wagmi/core/providers/public'
 import React from 'react'
-import { ChainId, defaultChain } from 'utils/chains'
 import { WagmiConfig, configureChains, createConfig } from 'wagmi'
 import { base, hardhat, mainnet } from 'wagmi/chains'
 import { infuraProvider } from 'wagmi/providers/infura'
 import AtomUpdater from './updaters/AtomUpdater'
 import { setupConfig } from './utils/mocks'
 
-const chainList = [mainnet, base, hardhat] as any
-const providers = [
-  infuraProvider({ apiKey: 'b6bf7d3508c941499b10025c0776eaf8' }),
-  infuraProvider({ apiKey: '9aa3d95b3bc440fa88ea12eaa4456161' }),
-  alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY }),
-  publicProvider(),
-] as any[]
-
-if (import.meta.env.VITE_MAINNET_URL) {
-  providers[0] = jsonRpcProvider({
-    rpc: () => ({
-      http: import.meta.env.VITE_MAINNET_URL,
-    }),
-  })
-}
-
-if (defaultChain !== ChainId.Mainnet) {
-  const index = chainList.findIndex((c: any) => c.id === defaultChain)
-
-  if (index !== -1) {
-    chainList[0] = chainList[index]
-    chainList[index] = mainnet
-  }
-}
-
-export const { chains, publicClient } = configureChains(chainList, providers)
+export const { chains, publicClient } = configureChains(
+  [mainnet, base, hardhat],
+  import.meta.env.VITE_MAINNET_URL
+    ? [
+        jsonRpcProvider({
+          rpc: () => ({
+            http: import.meta.env.VITE_MAINNET_URL,
+          }),
+        }),
+      ]
+    : [
+        infuraProvider({ apiKey: 'b6bf7d3508c941499b10025c0776eaf8' }),
+        infuraProvider({ apiKey: '9aa3d95b3bc440fa88ea12eaa4456161' }),
+        alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY }),
+        publicProvider(),
+      ]
+)
 
 const { connectors } = getDefaultWallets({
   appName: 'Register',

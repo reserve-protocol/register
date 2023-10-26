@@ -1,7 +1,7 @@
 import { ChainId } from './chains'
 
 const ETHERSCAN_PREFIXES: { [chainId: number]: string } = {
-  [ChainId.Mainnet]: 'etherscan.io',
+  [ChainId.Mainnet]: import.meta.env.VITE_MAINNET_EXPLORER ?? 'etherscan.io',
   [ChainId.Base]: 'basescan.org',
 }
 
