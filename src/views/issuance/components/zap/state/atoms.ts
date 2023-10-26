@@ -1,4 +1,9 @@
-import { Address, Searcher, Token } from '@reserve-protocol/token-zapper'
+import {
+  Address,
+  Searcher,
+  Token,
+  Universe
+} from '@reserve-protocol/token-zapper'
 import {
   PERMIT2_ADDRESS,
   PermitTransferFrom,
@@ -26,6 +31,7 @@ import {
   simplifyLoadable,
 } from 'utils/atoms/utils'
 
+import { EthereumConfigType } from '@reserve-protocol/token-zapper/types/configuration/ethereum'
 import { type SearcherResult } from '@reserve-protocol/token-zapper/types/searcher/SearcherResult'
 import { type ZapTransaction } from '@reserve-protocol/token-zapper/types/searcher/ZapTransaction'
 import mixpanel from 'mixpanel-browser'
@@ -126,7 +132,7 @@ export const zapperInputs = simplifyLoadable(
         tokenToZap: selectedZapToken,
         rToken: await universe.getToken(Address.from(rToken.address)),
         universe: universe,
-        zapSearcher: new Searcher(universe),
+        zapSearcher: new Searcher(universe as Universe<EthereumConfigType>),
       }
     })
   )

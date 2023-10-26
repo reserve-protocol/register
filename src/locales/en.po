@@ -790,7 +790,7 @@ msgstr ""
 msgid "Est. APY:"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:80
+#: src/views/overview/components/TokenOverview.tsx:85
 msgid "Est. RToken Yield"
 msgstr ""
 
@@ -798,15 +798,15 @@ msgstr ""
 msgid "Est. Staking APY"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:86
+#: src/views/overview/components/TokenOverview.tsx:95
 msgid "Est. stRSR Yield"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:82
+#: src/views/overview/components/TokenOverview.tsx:88
 msgid "Estimated APY calculated base on the RToken basket averaged yield with regards of the total RToken market cap and revenue distribution to holders."
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:88
+#: src/views/overview/components/TokenOverview.tsx:98
 msgid "Estimated APY, calculated base on the RToken basket averaged yield with regards of the total RToken market cap and revenue distribution to stakers. Calculation = [avgCollateralYield * rTokenMarketCap / rsrStaked]"
 msgstr ""
 
@@ -954,7 +954,7 @@ msgstr ""
 msgid "Hash"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:34
+#: src/views/overview/components/TokenOverview.tsx:39
 msgid "Here you can find usage data about RSV, which is used to mostly be used in the Rpay app. Usage data includes off-chain data from before the migration on March 22, 2023 that as been anonymized to protect user privacy. This page will likely be removed from Register in the future."
 msgstr ""
 
@@ -1187,7 +1187,7 @@ msgstr ""
 msgid "Mandate is required"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:53
+#: src/views/overview/components/TokenOverview.tsx:58
 msgid "Market cap"
 msgstr ""
 
@@ -1406,7 +1406,7 @@ msgid "Other Parameters"
 msgstr ""
 
 #: src/components/layout/navigation/index.tsx:109
-#: src/views/overview/components/TokenOverview.tsx:33
+#: src/views/overview/components/TokenOverview.tsx:38
 msgid "Overview"
 msgstr ""
 
@@ -1994,12 +1994,12 @@ msgstr ""
 msgid "Stake + Unstake"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:68
+#: src/views/overview/components/TokenOverview.tsx:73
 #: src/views/staking/components/overview/StakingStats.tsx:42
 msgid "Stake pool"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:73
+#: src/views/overview/components/TokenOverview.tsx:78
 msgid "Stake pool USD value"
 msgstr ""
 
@@ -2150,6 +2150,14 @@ msgstr ""
 
 #: src/components/rtoken-setup/token/BackingForm.tsx:43
 msgid "The warmup period is how many seconds should pass after the basket regained the SOUND status before an RToken can be issued and/or a trade can be opened."
+msgstr ""
+
+#: src/views/issuance/components/zap/index.tsx:95
+msgid "The zapper does not currently work with this RToken. This is usually because the basket contains collateral that is not yet supported. Additional collateral types are being expanded over time."
+msgstr ""
+
+#: src/views/issuance/components/zap/index.tsx:119
+msgid "The zapper is opensourced and anyone can add new collateral/request support here:"
 msgstr ""
 
 #: src/views/overview/components/About.tsx:69
@@ -2428,6 +2436,10 @@ msgstr ""
 msgid "Unsupported"
 msgstr ""
 
+#: src/views/issuance/components/zap/index.tsx:102
+msgid "Unsupported collaterals:"
+msgstr ""
+
 #: src/views/issuance/components/wrapping/WrapTypeToggle.tsx:48
 msgid "Unwrap collaterals"
 msgstr ""
@@ -2664,4 +2676,8 @@ msgstr ""
 
 #: src/views/governance/views/proposal-detail/components/ProposalVote.tsx:46
 msgid "Your voting power"
+msgstr ""
+
+#: src/views/issuance/components/zap/index.tsx:92
+msgid "Zaps not available for token"
 msgstr ""
