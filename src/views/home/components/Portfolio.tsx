@@ -8,13 +8,19 @@ import useRTokenLogo from 'hooks/useRTokenLogo'
 import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
 import { useNavigate } from 'react-router-dom'
-import { accountHoldingsAtom, accountTokensAtom, walletAtom } from 'state/atoms'
+import {
+  accountHoldingsAtom,
+  accountTokensAtom,
+  rsrPriceAtom,
+  walletAtom,
+} from 'state/atoms'
 import { AccountRTokenPosition } from 'state/wallet/updaters/AccountUpdater'
 import { Box, BoxProps, Divider, Grid, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
-import { useContractRead } from 'wagmi'
+import { supportedChainList } from 'utils/constants'
+import { useBalance, useContractRead } from 'wagmi'
 
 export const chainIcons = {
   [ChainId.Mainnet]: Ethereum,
@@ -88,41 +94,27 @@ const PortfolioToken = ({ position }: { position: AccountRTokenPosition }) => {
   )
 }
 
-const AccountRSR = () => {
+const AccountRSR = ({ chain }: { chain: number }) => {
   const wallet = useAtomValue(walletAtom) || '0x'
-  console.log('wallet?', wallet)
-  // const holdings = useAtomValue(AccountRSRHoldingsAtom)
+  const rsrPrice = useAtomValue(rsrPriceAtom)
 
-  const balance = useContractRead({
-    abi: ERC20,
-    address: RSR_ADDRESS[ChainId.Mainnet],
-    functionName: 'balanceOf',
-    args: [wallet],
-    chainId: ChainId.Mainnet,
+  const { data } = useBalance({
+    token: RSR_ADDRESS[chain],
+    address: wallet,
+    chainId: chain,
   })
-  const balanceBase = useContractRead({
-    abi: ERC20,
-    address: RSR_ADDRESS[ChainId.Base],
-    functionName: 'balanceOf',
-    args: [wallet],
-    chainId: ChainId.Base,
-  })
-
-  console.log('balance', balance)
-  console.log('balance base', balanceBase)
 
   return (
     <Box variant="layout.verticalAlign">
       <Box sx={{ position: 'relative' }}>
-        <TokenLogo width={24} symbol="rsr" bordered chain={1} />
-        {/* <Box sx={{ position: 'absolute', right: '-3px', bottom: '-10px' }}>
-          <Base width={10} height={10} />
-        </Box> */}
+        <TokenLogo width={24} symbol="rsr" bordered chain={chain} />
       </Box>
       <Box ml={3}>
-        <Text variant="strong">1 RSR</Text>
+        <Text variant="strong">
+          {formatCurrency(Number(data?.formatted ?? 0))} RSR
+        </Text>
         <Text sx={{ fontSize: 1 }} variant="legend">
-          $4
+          ${formatCurrency(Number(data?.formatted ?? 0) * rsrPrice)}
         </Text>
       </Box>
     </Box>
@@ -154,9 +146,15 @@ const Portfolio = (props: BoxProps) => {
           >
             ${formatCurrency(holdings)}
           </Text>
-          <Box variant="layout.verticalAlign">
-            <Text>+</Text>
-            <AccountRSR />
+          <Box mt={2} variant="layout.verticalAlign">
+            {supportedChainList.map((chain) => (
+              <Box variant="layout.verticalAlign" mr={3}>
+                <Text mr={3} sx={{ fontSize: 4 }}>
+                  +
+                </Text>
+                <AccountRSR chain={chain} />
+              </Box>
+            ))}
           </Box>
         </Box>
 
