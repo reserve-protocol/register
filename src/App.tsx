@@ -1,8 +1,7 @@
 import Analytics from 'components/analytics/Analytics'
 import ToastContainer from 'components/toaster-container/ToastContainer'
 import TransactionSidebar from 'components/transactions/manager/TransactionSidebar'
-import useSwitchChain from 'hooks/useSwitchChain'
-import { useAtomValue } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
 import { Suspense, lazy, useEffect } from 'react'
 import { lazyWithPreload } from 'react-lazy-with-preload'
@@ -16,7 +15,7 @@ import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import ChainProvider from 'state/chain'
 import Updater from 'state/updater'
 import { Text, ThemeProvider } from 'theme-ui'
-import { supportedChains } from 'utils/chains'
+import { ChainId, supportedChains } from 'utils/chains'
 import { ROUTES } from 'utils/constants'
 import Auctions from 'views/auctions'
 import Deploy from 'views/deploy'
@@ -44,19 +43,25 @@ const Fallback = () => <Text>Loading...</Text>
 
 const RouteListener = () => {
   const [searchParams, setSearchParams] = useSearchParams()
-  const chainId = useAtomValue(chainIdAtom)
-  const switchChain = useSwitchChain()
+  const [chainId, setChainId] = useAtom(chainIdAtom)
   const currentUrlChain = Number(searchParams.get('chainId') || 0)
 
   // Set chainId on url
   useEffect(() => {
     if (!currentUrlChain || !supportedChains.has(currentUrlChain)) {
-      searchParams.set('chainId', chainId.toString())
+      searchParams.set('chainId', ChainId.Mainnet.toString())
       setSearchParams(searchParams, { replace: true })
-    } else if (currentUrlChain !== chainId) {
-      switchChain(Number(searchParams.get('chainId')))
+      setChainId(ChainId.Mainnet)
     }
-  }, [currentUrlChain, chainId])
+
+    if (
+      currentUrlChain &&
+      supportedChains.has(currentUrlChain) &&
+      chainId !== currentUrlChain
+    ) {
+      setChainId(currentUrlChain)
+    }
+  }, [currentUrlChain])
 
   return null
 }

@@ -1,7 +1,7 @@
 import '@rainbow-me/rainbowkit/styles.css'
 import { useEffect } from 'react'
 
-import { useAtom, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import {
   blockAtom,
   blockTimestampAtom,
@@ -17,7 +17,7 @@ const AtomUpdater = () => {
   // Setters
   const setWallet = useSetAtom(walletAtom)
   const setBlockNumber = useSetAtom(blockAtom)
-  const [chainId, setChain] = useAtom(chainIdAtom)
+  const chainId = useAtomValue(chainIdAtom)
   const { data: blockNumber } = useBlockNumber({ watch: true, chainId })
   const client = usePublicClient({ chainId })
   const setBlockTimestamp = useSetAtom(blockTimestampAtom)
@@ -40,13 +40,6 @@ const AtomUpdater = () => {
     fetchTimestamp() // update stored block timestamp
     setBlockNumber(blockNumber ? Number(blockNumber) : undefined)
   }, [blockNumber])
-
-  useEffect(() => {
-    // Chain id changed from wallet, react correctly
-    if (chain && chain.id !== chainId && !chain.unsupported) {
-      setChain(chain.id)
-    }
-  }, [chain])
 
   return null
 }

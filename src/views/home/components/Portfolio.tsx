@@ -1,5 +1,4 @@
 import { Trans } from '@lingui/macro'
-import ERC20 from 'abis/ERC20'
 import PositionIcon from 'components/icons/PositionIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import Base from 'components/icons/logos/Base'
@@ -20,7 +19,7 @@ import { formatCurrency } from 'utils'
 import { RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import { supportedChainList } from 'utils/constants'
-import { useBalance, useContractRead } from 'wagmi'
+import { useBalance } from 'wagmi'
 
 export const chainIcons = {
   [ChainId.Mainnet]: Ethereum,
@@ -148,7 +147,7 @@ const Portfolio = (props: BoxProps) => {
           </Text>
           <Box mt={2} variant="layout.verticalAlign">
             {supportedChainList.map((chain) => (
-              <Box variant="layout.verticalAlign" mr={3}>
+              <Box key={chain} variant="layout.verticalAlign" mr={3}>
                 <Text mr={3} sx={{ fontSize: 4 }}>
                   +
                 </Text>

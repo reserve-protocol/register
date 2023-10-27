@@ -1,12 +1,10 @@
 import { Trans } from '@lingui/macro'
 import { Button } from 'components'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtom } from 'jotai'
 import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { chainIdAtom } from 'state/atoms'
 import { Box, Divider, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
-import { useSwitchNetwork } from 'wagmi'
 import { isBridgeWrappingAtom } from '../atoms'
 
 const BridgeHeader = () => {
