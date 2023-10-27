@@ -81,6 +81,7 @@ export const isWalletModalVisibleAtom = atom(false)
 export const accountRoleAtom = atomWithLoadable(async (get) => {
   const rToken = get(rTokenAtom)
   const account = get(walletAtom)
+  const chainId = get(chainIdAtom)
 
   if (!rToken?.main || !account) {
     return null
@@ -97,21 +98,25 @@ export const accountRoleAtom = atomWithLoadable(async (get) => {
         ...call,
         args: [stringToHex('OWNER', { size: 32 }), account],
         functionName: 'hasRole',
+        chainId,
       },
       {
         ...call,
         args: [stringToHex('PAUSER', { size: 32 }), account],
         functionName: 'hasRole',
+        chainId,
       },
       {
         ...call,
         args: [stringToHex('SHORT_FREEZER', { size: 32 }), account],
         functionName: 'hasRole',
+        chainId,
       },
       {
         ...call,
         args: [stringToHex('LONG_FREEZER', { size: 32 }), account],
         functionName: 'hasRole',
+        chainId,
       },
     ],
     allowFailure: false,

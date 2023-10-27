@@ -4,7 +4,9 @@ import ERC20 from 'abis/ERC20'
 import { Input } from 'components'
 import { SmallButton } from 'components/button'
 import PluginsIcon from 'components/icons/PluginsIcon'
+import { useAtomValue } from 'jotai'
 import { useState } from 'react'
+import { chainIdAtom } from 'state/atoms'
 import { Box, Flex, Text } from 'theme-ui'
 import { CollateralPlugin } from 'types'
 import { isAddress } from 'utils'
@@ -20,6 +22,7 @@ const CustomCollateral = ({
   const [isValidating, setValidating] = useState(false)
   const [address, setAddress] = useState('')
   const [error, setError] = useState('')
+  const chainId = useAtomValue(chainIdAtom)
 
   const handleAdd = async () => {
     try {
@@ -31,9 +34,9 @@ const CustomCollateral = ({
 
       const [isCollateral, targetUnit, erc20] = await readContracts({
         contracts: [
-          { ...callParams, functionName: 'isCollateral' },
-          { ...callParams, functionName: 'targetName' },
-          { ...callParams, functionName: 'erc20' },
+          { ...callParams, functionName: 'isCollateral', chainId },
+          { ...callParams, functionName: 'targetName', chainId },
+          { ...callParams, functionName: 'erc20', chainId },
         ],
         allowFailure: false,
       })
@@ -44,8 +47,8 @@ const CustomCollateral = ({
 
       const [symbol, decimals] = await readContracts({
         contracts: [
-          { abi: ERC20, address: erc20, functionName: 'symbol' },
-          { abi: ERC20, address: erc20, functionName: 'decimals' },
+          { abi: ERC20, address: erc20, functionName: 'symbol', chainId },
+          { abi: ERC20, address: erc20, functionName: 'decimals', chainId },
         ],
         allowFailure: false,
       })

@@ -167,6 +167,7 @@ export const auctionsToSettleAtom = atomWithLoadable(
             address: FACADE_ADDRESS[chainId],
             functionName: 'auctionsSettleable',
             args: [address],
+            chainId,
           })),
           allowFailure: false,
         })

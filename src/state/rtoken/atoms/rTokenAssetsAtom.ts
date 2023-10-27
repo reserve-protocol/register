@@ -6,9 +6,11 @@ import { atomWithLoadable } from 'utils/atoms/utils'
 import { Address, formatEther, formatUnits } from 'viem'
 import { getContract, readContracts } from 'wagmi/actions'
 import rTokenContractsAtom from './rTokenContractsAtom'
+import { chainIdAtom } from 'state/atoms'
 
 const rTokenAssetsAtom = atomWithLoadable(async (get) => {
   const contracts = get(rTokenContractsAtom)
+  const chainId = get(chainIdAtom)
 
   if (!contracts) {
     return null
@@ -22,25 +24,27 @@ const rTokenAssetsAtom = atomWithLoadable(async (get) => {
 
     const { erc20s, assets } = await registryContract.read.getRegistry()
 
-    const calls = assets.reduce((calls, asset, index) => {
-      calls.push(...getTokenReadCalls(erc20s[index]))
-      calls.push({
-        address: asset as Address,
-        abi: AssetAbi,
-        functionName: 'price',
-      })
-      calls.push({
-        address: asset as Address,
-        abi: AssetAbi,
-        functionName: 'maxTradeVolume',
-      })
-      calls.push({
-        address: asset as Address,
-        abi: AssetAbi,
-        functionName: 'version',
-      })
-      return calls
-    }, [] as any)
+    const calls = assets
+      .reduce((calls, asset, index) => {
+        calls.push(...getTokenReadCalls(erc20s[index]))
+        calls.push({
+          address: asset as Address,
+          abi: AssetAbi,
+          functionName: 'price',
+        })
+        calls.push({
+          address: asset as Address,
+          abi: AssetAbi,
+          functionName: 'maxTradeVolume',
+        })
+        calls.push({
+          address: asset as Address,
+          abi: AssetAbi,
+          functionName: 'version',
+        })
+        return calls
+      }, [] as any)
+      .map((call: any) => ({ ...call, chainId }))
 
     const result = await readContracts({
       contracts: calls,
