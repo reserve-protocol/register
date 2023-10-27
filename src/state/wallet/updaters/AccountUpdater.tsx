@@ -118,7 +118,7 @@ const AccountUpdater = () => {
       for (const chainId of Object.keys(data)) {
         const chainResult = data[Number(chainId)] as AccountQueryResult
 
-        for (const rToken of chainResult.account.rTokens) {
+        for (const rToken of chainResult.account?.rTokens ?? []) {
           const balance = Number(rToken.balance.amount)
           const stake = Number(rToken.governance[0]?.tokenBalance ?? 0)
 
