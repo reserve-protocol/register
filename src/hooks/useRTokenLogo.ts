@@ -1,12 +1,13 @@
-import { useAtomValue } from 'jotai'
-import { rTokenListAtom } from 'state/atoms'
+import rtokens from '@lc-labs/rtokens'
+import { ChainId } from 'utils/chains'
 import RSV from 'utils/rsv'
 
-const useRTokenLogo = (address: string | undefined): string => {
-  const rTokenList = useAtomValue(rTokenListAtom)
-
-  if (address && rTokenList[address]?.logo) {
-    return `/svgs/${rTokenList[address].logo}`
+const useRTokenLogo = (
+  address: string | undefined,
+  chain = ChainId.Mainnet
+): string => {
+  if (address && rtokens[chain][address]?.logo) {
+    return `/svgs/${rtokens[chain][address].logo}`
   }
 
   if (address?.toLowerCase() === RSV.address.toLowerCase()) {

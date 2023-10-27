@@ -194,8 +194,6 @@ const TransactionsOverview = (props: BoxProps) => {
   )
   const rpayTx = useDebounce(useAtomValue(rpayTransactionsAtom), 1000)
 
-  console.log('rpay', rpayTx)
-
   const txs = useMemo(() => {
     if (!data) {
       return []

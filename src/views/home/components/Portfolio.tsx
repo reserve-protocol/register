@@ -5,18 +5,16 @@ import TokenLogo from 'components/icons/TokenLogo'
 import Base from 'components/icons/logos/Base'
 import Ethereum from 'components/icons/logos/Ethereum'
 import useRTokenLogo from 'hooks/useRTokenLogo'
-import { atom, useAtomValue } from 'jotai'
+import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
 import { useNavigate } from 'react-router-dom'
 import { accountHoldingsAtom, accountTokensAtom, walletAtom } from 'state/atoms'
-import { publicClient } from 'state/chain'
 import { AccountRTokenPosition } from 'state/wallet/updaters/AccountUpdater'
 import { Box, BoxProps, Divider, Grid, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { RSR_ADDRESS } from 'utils/addresses'
-import { atomWithLoadable } from 'utils/atoms/utils'
 import { ChainId } from 'utils/chains'
-import { useBalance, useContractRead } from 'wagmi'
+import { useContractRead } from 'wagmi'
 
 export const chainIcons = {
   [ChainId.Mainnet]: Ethereum,
@@ -24,7 +22,7 @@ export const chainIcons = {
 }
 
 const PortfolioToken = ({ position }: { position: AccountRTokenPosition }) => {
-  const logo = useRTokenLogo(position.address)
+  const logo = useRTokenLogo(position.address, position.chain)
   const Logo = chainIcons[position.chain]
   const navigate = useNavigate()
 
@@ -90,30 +88,10 @@ const PortfolioToken = ({ position }: { position: AccountRTokenPosition }) => {
   )
 }
 
-const multichainRead = async (data: any) => {
-  const mainnetClient = publicClient({ chainId: ChainId.Mainnet })
-  const baseClient = publicClient({ chainId: ChainId.Base })
-}
-
-const AccountRSRHoldingsAtom = atomWithLoadable((get) => {
-  const wallet = get(walletAtom)
-
-  if (!wallet) {
-    return null
-  }
-
-  const mainnetClient = publicClient({ chainId: 1 })
-  const baseClient = publicClient({ chainId: 1 })
-
-  // console.log('client', client)
-
-  return {}
-})
-
 const AccountRSR = () => {
   const wallet = useAtomValue(walletAtom) || '0x'
   console.log('wallet?', wallet)
-  const holdings = useAtomValue(AccountRSRHoldingsAtom)
+  // const holdings = useAtomValue(AccountRSRHoldingsAtom)
 
   const balance = useContractRead({
     abi: ERC20,

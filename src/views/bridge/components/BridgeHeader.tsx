@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro'
 import { Button } from 'components'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { chainIdAtom } from 'state/atoms'
 import { Box, Divider, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
@@ -9,22 +10,18 @@ import { useSwitchNetwork } from 'wagmi'
 import { isBridgeWrappingAtom } from '../atoms'
 
 const BridgeHeader = () => {
+  const [searchParams, setSearchParams] = useSearchParams()
   const [isWrapping, setWrapping] = useAtom(isBridgeWrappingAtom)
-  const { switchNetwork } = useSwitchNetwork()
-  const chainId = useAtomValue(chainIdAtom)
 
   // Trigger wallet switch for users
   useEffect(() => {
-    if (switchNetwork) {
-      if (isWrapping && chainId !== ChainId.Mainnet) {
-        switchNetwork(ChainId.Mainnet)
-      }
-
-      if (!isWrapping && chainId === ChainId.Mainnet) {
-        switchNetwork(ChainId.Base)
-      }
+    if (isWrapping) {
+      searchParams.set('chainId', ChainId.Mainnet.toString())
+    } else {
+      searchParams.set('chainId', ChainId.Base.toString())
     }
-  }, [isWrapping, switchNetwork])
+    setSearchParams(searchParams, { replace: true })
+  }, [isWrapping])
 
   return (
     <>

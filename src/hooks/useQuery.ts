@@ -8,11 +8,15 @@ const multichainFetcher = async (
   query: RequestDocument,
   variables: any
 ): Promise<{ [x: number]: any }> => {
+  // Hacky way to parse variables, check if variables[1] exists
   const mainnetResult = await GRAPH_CLIENTS[ChainId.Mainnet].request(
     query,
-    variables
+    variables[ChainId.Mainnet] || variables
   )
-  const baseResult = await GRAPH_CLIENTS[ChainId.Base].request(query, variables)
+  const baseResult = await GRAPH_CLIENTS[ChainId.Base].request(
+    query,
+    variables[ChainId.Base] || variables
+  )
 
   return {
     [ChainId.Mainnet]: mainnetResult,

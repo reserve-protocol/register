@@ -2,12 +2,11 @@ import Button from 'components/button'
 import Base from 'components/icons/logos/Base'
 import Ethereum from 'components/icons/logos/Ethereum'
 import Popup from 'components/popup'
-import useSwitchChain from 'hooks/useSwitchChain'
 import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
 import { useState } from 'react'
 import { Check, ChevronDown, ChevronUp } from 'react-feather'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
@@ -96,18 +95,18 @@ const ChainList = ({ onSelect }: { onSelect(chain: number): void }) => {
 }
 
 const ChainSelector = (props: BoxProps) => {
+  const [searchParams, setSearchParams] = useSearchParams()
   const chainId = useAtomValue(chainIdAtom)
   const selectedRToken = useAtomValue(selectedRTokenAtom)
   const [isVisible, setVisible] = useState(false)
-  const switchChain = useSwitchChain()
   const navigate = useNavigate()
 
   const handleSelect = (chain: number) => {
-    switchChain(chain)
     if (chain !== chainId && selectedRToken) {
       navigate('/')
     }
-
+    searchParams.set('chainId', chain.toString())
+    setSearchParams(searchParams)
     setVisible(false)
   }
 

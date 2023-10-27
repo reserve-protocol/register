@@ -1,10 +1,10 @@
+import rtokens from '@lc-labs/rtokens'
 import { GraphQLClient } from 'graphql-request'
 import { atom } from 'jotai'
 import { ChainId, defaultChain } from 'utils/chains'
 import { blockDuration } from 'utils/constants'
 import { formatEther } from 'viem'
-import { Address, PublicClient, WalletClient } from 'wagmi'
-import rtokens from '@lc-labs/rtokens'
+import { Address } from 'wagmi'
 /**
  * #########################
  * Chain state related atoms
