@@ -1,16 +1,9 @@
-import { atom, useAtomValue } from 'jotai'
-import { useSetAtom } from 'jotai'
+import { atom, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import useSWR from 'swr'
 import { StringMap } from 'types'
 import { dateToUnix } from 'utils'
-import {
-  chainIdAtom,
-  rpayOverviewAtom,
-  rpayTransactionsAtom,
-  RPayTx,
-} from '../atoms'
-import { ChainId } from 'utils/chains'
+import { RPayTx, rpayOverviewAtom, rpayTransactionsAtom } from '../atoms'
 
 const OVERVIEW_URL = `https:${import.meta.env.VITE_RPAY_FEED}/aggregate`
 const TXS_URL = `https:${import.meta.env.VITE_RPAY_FEED}/transactions`
@@ -29,12 +22,8 @@ const updateTxAtom = atom(null, (get, set, txs: RPayTx[]) => {
 const RpayFeed = () => {
   const updateTx = useSetAtom(updateTxAtom)
   const updateOverview = useSetAtom(rpayOverviewAtom)
-  const isMainnet = useAtomValue(chainIdAtom) === ChainId.Mainnet
-  const { data: overviewData } = useSWR(
-    isMainnet ? OVERVIEW_URL : undefined,
-    fetcher
-  )
-  const { data: txData } = useSWR(isMainnet ? TXS_URL : undefined, fetcher)
+  const { data: overviewData } = useSWR(OVERVIEW_URL, fetcher)
+  const { data: txData } = useSWR(TXS_URL, fetcher)
 
   useEffect(() => {
     if (overviewData) {
@@ -61,18 +50,6 @@ const RpayFeed = () => {
       )
     }
   }, [txData])
-
-  useEffect(() => {
-    if (!isMainnet) {
-      updateOverview({
-        volume: 0,
-        txCount: 0,
-        holders: 0,
-        dayVolume: 0,
-        dayTxCount: 0,
-      })
-    }
-  }, [isMainnet])
 
   return null
 }

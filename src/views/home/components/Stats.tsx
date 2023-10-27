@@ -1,7 +1,7 @@
 import TransactionsTable from 'components/transactions/table'
 import { gql } from 'graphql-request'
 import useDebounce from 'hooks/useDebounce'
-import useQuery from 'hooks/useQuery'
+import useQuery, { useMultichainQuery } from 'hooks/useQuery'
 import { useMemo } from 'react'
 import { rpayTransactionsAtom } from 'state/atoms'
 import RpayTxListener from 'state/rpay/RpayTxListener'
@@ -19,6 +19,22 @@ import { formatEther } from 'viem'
 import Help from '../../../components/help'
 import { aggregatedProtocolMetricsAtom } from '../atoms/metricsAtom'
 import useProtocolStats from '../hooks/useProtocolStats'
+import { supportedChainList } from 'utils/constants'
+
+const protocolRecentTxsQuery = gql`
+  query GetProtocolRecentTransactions {
+    entries(orderBy: timestamp, orderDirection: desc, first: 25) {
+      type
+      amount
+      amountUSD
+      hash
+      timestamp
+      token {
+        symbol
+      }
+    }
+  }
+`
 
 const dividerProps = {
   my: [2, 5],
@@ -37,21 +53,6 @@ const Stat = ({ title, value }: { title: string; value: string }) => (
     <Text sx={{ color: 'text' }}>{value}</Text>
   </Box>
 )
-
-const protocolRecentTxsQuery = gql`
-  query GetProtocolRecentTransactions {
-    entries(orderBy: timestamp, orderDirection: desc, first: 25) {
-      type
-      amount
-      amountUSD
-      hash
-      timestamp
-      token {
-        symbol
-      }
-    }
-  }
-`
 
 const MainTokenStats = (props: BoxProps) => {
   const metrics = useAtomValue(aggregatedProtocolMetricsAtom)
@@ -186,37 +187,43 @@ const AdditionalTokenStats = (props: BoxProps) => {
 
 // Table of recent transactions
 const TransactionsOverview = (props: BoxProps) => {
-  const { data } = useQuery(
+  const { data } = useMultichainQuery(
     protocolRecentTxsQuery,
     {},
     { refreshInterval: 60000 }
   )
   const rpayTx = useDebounce(useAtomValue(rpayTransactionsAtom), 1000)
 
+  console.log('rpay', rpayTx)
+
   const txs = useMemo(() => {
-    if (!data?.entries) {
+    if (!data) {
       return []
     }
 
     const txs = [...rpayTx]
 
-    // TODO: Parse type depending on lang
-    txs.push(
-      ...data.entries.map((tx: any) => ({
-        ...tx,
-        amount: Number(formatEther(tx.amount)),
-        symbol: tx?.token?.symbol ?? '',
-      }))
-    )
+    for (const chain of supportedChainList) {
+      txs.push(
+        ...data[chain].entries.map((tx: any) => ({
+          ...tx,
+          amount: Number(formatEther(tx.amount)),
+          symbol: tx?.token?.symbol ?? '',
+          chain,
+        }))
+      )
+    }
+
     txs.sort((a, b) => Number(b.timestamp) - Number(a.timestamp))
 
-    return txs.slice(0, 20)
+    return txs.slice(0, 50)
   }, [data, rpayTx])
 
   return (
     <>
       <RpayTxListener />
       <TransactionsTable
+        multichain
         compact
         bordered
         maxHeight={440}
