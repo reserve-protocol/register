@@ -20,6 +20,7 @@ const rTokenAssetsAtom = atomWithLoadable(async (get) => {
     const registryContract = getContract({
       address: contracts.assetRegistry.address as Address,
       abi: AssetRegistry,
+      chainId,
     })
 
     const { erc20s, assets } = await registryContract.read.getRegistry()
