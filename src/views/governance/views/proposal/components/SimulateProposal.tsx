@@ -1,23 +1,13 @@
 import { Trans, t } from '@lingui/macro'
 import { LoadingButton } from 'components/button'
-import {
-  Box,
-  BoxProps,
-  Container,
-  Flex,
-  Image,
-  Link,
-  Spinner,
-  Text,
-  useColorMode,
-} from 'theme-ui'
-import { ROUTES, TENDERLY_SHARING_URL } from 'utils/constants'
+import { Box, BoxProps, Container, Flex, Link, Spinner, Text } from 'theme-ui'
+import { TENDERLY_SHARING_URL } from 'utils/constants'
 import { UsePrepareContractWriteConfig } from 'wagmi'
 import IssuanceIcon from 'components/icons/IssuanceIcon'
 import useProposalSimulation from '../hooks/useProposalSimulation'
-import { MODES } from 'components/dark-mode-toggle'
 import { TenderlySimulation } from 'types'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
+import Tenderly from 'components/icons/logos/Tenderly'
 
 interface Props extends BoxProps {
   tx: UsePrepareContractWriteConfig
@@ -91,16 +81,14 @@ const ProposalStatus = () => {
   )
 }
 const SimulateProposal = ({ tx, ...props }: Props) => {
-  const [colorMode] = useColorMode()
-
   return (
-    <Container variant="" p={0} {...props}>
+    <Container style={{ paddingTop: 0 }} {...props}>
       <Box
         sx={{
           maxHeight: 'calc(100vh - 124px)',
           display: 'flex',
           flexDirection: 'column',
-          overflow: 'auto',
+          overflow: 'hidden',
         }}
       >
         <Flex
@@ -128,16 +116,7 @@ const SimulateProposal = ({ tx, ...props }: Props) => {
             }}
           >
             <Text>Powered by </Text>
-            <Image
-              src={
-                colorMode === MODES.LIGHT
-                  ? 'tenderly-light.svg'
-                  : 'tenderly-dark.svg'
-              }
-              alt="Tenderly"
-              height={100}
-              width={100}
-            />
+            <Tenderly height={30} width={100} />
           </Flex>
           <ProposalStatus />
         </Flex>

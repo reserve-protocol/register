@@ -82,7 +82,7 @@ export interface ReserveToken extends Token {
   listed?: boolean
 }
 
-export interface bigintMap {
+export interface BigNumberMap {
   [x: string | Address]: bigint
 }
 
@@ -183,9 +183,9 @@ export interface ProposalEvent {
   calldatas: string[]
 }
 export interface SimulationConfig {
-  targets: `0x${string}`[]
+  targets: Address[]
   values: bigint[]
-  calldatas: `0x${string}`[]
+  calldatas: string[]
   description: string
 }
 
