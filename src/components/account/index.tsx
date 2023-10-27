@@ -7,13 +7,12 @@ import { MouseoverTooltipContent } from 'components/tooltip'
 import { txSidebarToggleAtom } from 'components/transactions/manager/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { ReactNode } from 'react'
-import { AlertCircle, Power } from 'react-feather'
+import { AlertCircle } from 'react-feather'
 import { Box, Card, Flex, Spinner, Text } from 'theme-ui'
 
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { isTransactionRunning } from 'state/chain/atoms/transactionAtoms'
 import { chainIdAtom } from 'state/atoms'
-import { useSwitchNetwork } from 'wagmi'
+import { isTransactionRunning } from 'state/chain/atoms/transactionAtoms'
 
 const Container = styled(Box)`
   display: flex;
@@ -74,7 +73,6 @@ const Account = () => {
   const setVisible = useSetAtom(txSidebarToggleAtom)
   const isProcessing = useAtomValue(isTransactionRunning)
   const chainId = useAtomValue(chainIdAtom)
-  const { switchNetwork } = useSwitchNetwork()
 
   return (
     <ConnectButton.Custom>
@@ -106,19 +104,6 @@ const Account = () => {
                     </Text>
                     <Text sx={{ display: ['inline', 'none'] }}>
                       <Trans>Connect</Trans>
-                    </Text>
-                  </SmallButton>
-                )
-              }
-
-              if (invalidChain && switchNetwork) {
-                return (
-                  <SmallButton
-                    variant="accentAction"
-                    onClick={() => switchNetwork(chainId)}
-                  >
-                    <Text>
-                      <Trans>Switch network</Trans>
                     </Text>
                   </SmallButton>
                 )
