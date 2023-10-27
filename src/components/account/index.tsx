@@ -13,6 +13,7 @@ import { Box, Card, Flex, Spinner, Text } from 'theme-ui'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { isTransactionRunning } from 'state/chain/atoms/transactionAtoms'
 import { chainIdAtom } from 'state/atoms'
+import { useSwitchNetwork } from 'wagmi'
 
 const Container = styled(Box)`
   display: flex;
@@ -73,6 +74,7 @@ const Account = () => {
   const setVisible = useSetAtom(txSidebarToggleAtom)
   const isProcessing = useAtomValue(isTransactionRunning)
   const chainId = useAtomValue(chainIdAtom)
+  const { switchNetwork } = useSwitchNetwork()
 
   return (
     <ConnectButton.Custom>
@@ -104,6 +106,19 @@ const Account = () => {
                     </Text>
                     <Text sx={{ display: ['inline', 'none'] }}>
                       <Trans>Connect</Trans>
+                    </Text>
+                  </SmallButton>
+                )
+              }
+
+              if (invalidChain && switchNetwork) {
+                return (
+                  <SmallButton
+                    variant="accentAction"
+                    onClick={() => switchNetwork(chainId)}
+                  >
+                    <Text>
+                      <Trans>Switch network</Trans>
                     </Text>
                   </SmallButton>
                 )

@@ -103,10 +103,12 @@ const ChainSelector = (props: BoxProps) => {
 
   const handleSelect = (chain: number) => {
     if (chain !== chainId && selectedRToken) {
-      navigate('/')
+      navigate(`/?chainId=${chain}`)
+    } else {
+      searchParams.set('chainId', chain.toString())
+      setSearchParams(searchParams)
     }
-    searchParams.set('chainId', chain.toString())
-    setSearchParams(searchParams)
+
     setVisible(false)
   }
 
