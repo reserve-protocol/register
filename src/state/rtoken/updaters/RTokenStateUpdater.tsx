@@ -191,9 +191,7 @@ const RTokenStateUpdater = () => {
     )
   }, [collateralStatus])
 
-  console.log('current token???', searchParams.get('token'))
   useEffect(() => {
-    console.log('token?', searchParams.get('token'))
     const token = isAddress(searchParams.get('token') || '')
 
     if (token !== rToken?.address) {
