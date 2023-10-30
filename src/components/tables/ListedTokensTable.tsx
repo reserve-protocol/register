@@ -1,4 +1,5 @@
 import { t } from '@lingui/macro'
+import ChainLogo from 'components/icons/ChainLogo'
 import { Table, TableProps } from 'components/table'
 import TokenItem from 'components/token-item'
 import useRTokenLogo from 'hooks/useRTokenLogo'
@@ -26,8 +27,10 @@ const ListedTokensTable = (
         Header: t`Token`,
         accessor: 'symbol',
         Cell: (data: any) => {
-          const logo = useRTokenLogo(data.row.original.id)
-
+          const logo = useRTokenLogo(
+            data.row.original.id,
+            data.row.original.chain
+          )
           return <TokenItem symbol={data.cell.value} logo={logo} />
         },
       },
@@ -63,22 +66,19 @@ const ListedTokensTable = (
           )
         },
       },
-      // {
-      //   Header: t`APY`,
-      //   accessor: 'tokenApy',
-      //   Cell: (cell: any) => <Text>{cell.value}%</Text>,
-      // },
-      // {
-      //   Header: t`St APY`,
-      //   accessor: 'stakingApy',
-      //   Cell: (cell: any) => <Text>{cell.value}%</Text>,
-      // },
+      {
+        Header: t`Network`,
+        accessor: 'chain',
+        Cell: (cell: any) => {
+          return <ChainLogo chain={cell.value} />
+        },
+      },
     ],
     []
   )
 
   const handleClick = (data: any) => {
-    navigate(`/overview?token=${data.id}`)
+    navigate(`/overview?token=${data.id}&chainId=${data.chain}`)
     document.getElementById('app-container')?.scrollTo(0, 0)
     mixpanel.track('Selected RToken', {
       Source: 'Comparison Table',

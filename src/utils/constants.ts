@@ -91,3 +91,5 @@ export const blockDuration = {
   [ChainId.Mainnet]: 12,
   [ChainId.Base]: 2,
 }
+
+export const supportedChainList = [ChainId.Mainnet, ChainId.Base]

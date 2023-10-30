@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import { t, Trans } from '@lingui/macro'
 import GoTo from 'components/button/GoTo'
 import Help from 'components/help'
+import ChainLogo from 'components/icons/ChainLogo'
 import { Table } from 'components/table'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
@@ -25,6 +26,7 @@ interface Props extends BoxProps {
   bordered?: boolean
   maxHeight?: number | string
   external?: boolean
+  multichain?: boolean
 }
 
 const TransactionsTable = ({
@@ -35,6 +37,7 @@ const TransactionsTable = ({
   maxHeight,
   bordered,
   compact,
+  multichain = false,
   external = true,
   sx = {},
   ...props
@@ -96,9 +99,15 @@ const TransactionsTable = ({
         Header: external ? t`Platform` : t`Hash`,
         id: 'id',
         accessor: 'hash',
-        Cell: ({ cell }: { cell: any }) =>
+        Cell: ({ cell, row }: { cell: any; row: any }) =>
           cell.value ? (
-            <>
+            <Box variant="layout.verticalAlign">
+              {multichain && row.original.chain && (
+                <ChainLogo
+                  style={{ marginRight: 10 }}
+                  chain={row.original.chain}
+                />
+              )}
               <Link
                 href={getExplorerLink(
                   cell.value,
@@ -110,15 +119,7 @@ const TransactionsTable = ({
               >
                 {shortenString(cell.value)}
               </Link>
-              <GoTo
-                href={getExplorerLink(
-                  cell.value,
-                  chainId,
-                  ExplorerDataType.TRANSACTION
-                )}
-                sx={{ display: ['block', 'none'] }}
-              />
-            </>
+            </Box>
           ) : (
             'Rpay'
           ),

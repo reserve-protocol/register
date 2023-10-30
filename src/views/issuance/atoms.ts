@@ -1,5 +1,6 @@
 import FacadeRead from 'abis/FacadeRead'
 import { atom } from 'jotai'
+import { publicClient } from 'state/chain'
 import { BigNumberMap } from 'types'
 import { safeParseEther } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
@@ -7,12 +8,7 @@ import atomWithDebounce from 'utils/atoms/atomWithDebounce'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { quote } from 'utils/rsv'
 import { getAddress } from 'viem'
-import {
-  chainIdAtom,
-  publicClientAtom,
-  rTokenAtom,
-  rTokenBalanceAtom,
-} from './../../state/atoms'
+import { chainIdAtom, rTokenAtom, rTokenBalanceAtom } from './../../state/atoms'
 
 export const wrapSidebarAtom = atom(false)
 
@@ -48,8 +44,8 @@ export const isValidIssuableAmountAtom = atom((get) => {
 export const quantitiesAtom = atomWithLoadable(async (get) => {
   const rToken = get(rTokenAtom)
   const amount = get(issueAmountDebouncedAtom)
-  const client = get(publicClientAtom)
   const chainId = get(chainIdAtom)
+  const client = publicClient({ chainId })
 
   if (!rToken || !(Number(amount) > 0) || !client) {
     return null

@@ -43,7 +43,7 @@
     "swr": "^1.2.2",
     "theme-ui": "^0.15.4",
     "viem": "1.15.4",
-    "wagmi": "1.4.3"
+    "wagmi": "1.4.5"
   },
   "scripts": {
     "start": "vite",

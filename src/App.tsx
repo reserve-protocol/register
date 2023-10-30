@@ -1,7 +1,8 @@
 import Analytics from 'components/analytics/Analytics'
 import ToastContainer from 'components/toaster-container/ToastContainer'
 import TransactionSidebar from 'components/transactions/manager/TransactionSidebar'
-import { useAtomValue } from 'jotai'
+import useIsWindowVisible from 'hooks/useIsWindowVisible'
+import { useAtom, useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
 import { Suspense, lazy, useEffect } from 'react'
 import { lazyWithPreload } from 'react-lazy-with-preload'
@@ -9,13 +10,13 @@ import {
   Route,
   HashRouter as Router,
   Routes,
-  useLocation,
   useSearchParams,
 } from 'react-router-dom'
 import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import ChainProvider from 'state/chain'
 import Updater from 'state/updater'
 import { Text, ThemeProvider } from 'theme-ui'
+import { supportedChains } from 'utils/chains'
 import { ROUTES } from 'utils/constants'
 import Auctions from 'views/auctions'
 import Deploy from 'views/deploy'
@@ -27,6 +28,7 @@ import Overview from 'views/overview'
 import Management from 'views/settings'
 import Staking from 'views/staking'
 import Tokens from 'views/tokens/Tokens'
+import { useSwitchNetwork } from 'wagmi'
 import Layout from './components/layout'
 import LanguageProvider from './i18n'
 import { theme } from './theme'
@@ -42,17 +44,31 @@ const Bridge = lazy(() => import('./views/bridge'))
 const Fallback = () => <Text>Loading...</Text>
 
 const RouteListener = () => {
-  const location = useLocation()
   const [searchParams, setSearchParams] = useSearchParams()
-  const chainId = useAtomValue(chainIdAtom)
+  const [chainId, setChainId] = useAtom(chainIdAtom)
+  const currentUrlChain = Number(searchParams.get('chainId') || 0)
+  const { switchNetwork } = useSwitchNetwork()
+  const isWindowOpen = useIsWindowVisible()
 
   // Set chainId on url
   useEffect(() => {
-    if (Number(searchParams.get('chainId')) !== chainId) {
+    if (!currentUrlChain || !supportedChains.has(currentUrlChain)) {
       searchParams.set('chainId', chainId.toString())
       setSearchParams(searchParams, { replace: true })
     }
-  }, [location.pathname, chainId])
+
+    if (
+      currentUrlChain &&
+      supportedChains.has(currentUrlChain) &&
+      chainId !== currentUrlChain
+    ) {
+      setChainId(currentUrlChain)
+
+      if (switchNetwork && isWindowOpen) {
+        switchNetwork(currentUrlChain)
+      }
+    }
+  }, [currentUrlChain])
 
   return null
 }
@@ -74,11 +90,11 @@ const App = () => {
 
   return (
     <Router>
-      <RouteListener />
       <Analytics />
       <ThemeProvider theme={theme}>
         <LanguageProvider>
           <ChainProvider>
+            <RouteListener />
             <Updater />
             <TransactionSidebar />
             <Layout>

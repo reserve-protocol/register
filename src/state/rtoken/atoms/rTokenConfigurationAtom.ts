@@ -6,6 +6,7 @@ import Main from 'abis/Main'
 import RToken from 'abis/RToken'
 import RevenueTrader from 'abis/RevenueTrader'
 import StRSR from 'abis/StRSR'
+import { chainIdAtom } from 'state/atoms'
 import { StringMap } from 'types'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { formatEther } from 'viem'
@@ -16,6 +17,7 @@ import rTokenContractsAtom from './rTokenContractsAtom'
 const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
   const contracts = get(rTokenContractsAtom)
   const assets = get(rTokenAssetsAtom)
+  const chainId = get(chainIdAtom)
 
   if (!contracts || !assets) {
     return null
@@ -116,7 +118,7 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
       ...stRSRCall,
       functionName: 'withdrawalLeak',
     },
-  ]
+  ].map((call) => ({ ...call, chainId }))
 
   try {
     const [

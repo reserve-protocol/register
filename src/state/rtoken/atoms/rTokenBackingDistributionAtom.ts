@@ -27,10 +27,12 @@ const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
         {
           ...callParams,
           functionName: 'basketBreakdown',
+          chainId,
         },
         {
           ...callParams,
           functionName: 'backingOverview',
+          chainId,
         },
       ],
       allowFailure: false,

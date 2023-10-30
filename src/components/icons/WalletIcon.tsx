@@ -8,7 +8,7 @@ const WalletIcon = (props: SVGProps<SVGSVGElement>) => (
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
-    <g clipPath="url(#a)">
+    <g clipPath="url(#connectA)">
       <rect
         x={0.5}
         y={0.5}
@@ -16,7 +16,7 @@ const WalletIcon = (props: SVGProps<SVGSVGElement>) => (
         height={15}
         rx={7.5}
         fill="#00FFBF"
-        stroke="url(#b)"
+        stroke="url(#connectB)"
       />
       <rect
         x={5}
@@ -32,7 +32,7 @@ const WalletIcon = (props: SVGProps<SVGSVGElement>) => (
     </g>
     <defs>
       <linearGradient
-        id="b"
+        id="connectB"
         x1={8}
         y1={0}
         x2={8}
@@ -42,7 +42,7 @@ const WalletIcon = (props: SVGProps<SVGSVGElement>) => (
         <stop offset={0.865} stopColor="#00FF7F" />
         <stop offset={1} stopColor="#01E271" />
       </linearGradient>
-      <clipPath id="a">
+      <clipPath id="connectA">
         <rect width={16} height={16} rx={8} fill="#fff" />
       </clipPath>
     </defs>

@@ -22,6 +22,7 @@ export const useEnsAddresses = (addresses: string[]) => {
     address: addresses.length ? (ENS_ADDRESS[chainId] as Address) : undefined,
     functionName: 'getNames',
     args: [addresses],
+    chainId,
   })
 
   return useMemo(() => {

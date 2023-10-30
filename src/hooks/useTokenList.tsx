@@ -1,14 +1,15 @@
+import rtokens from '@lc-labs/rtokens'
 import { gql } from 'graphql-request'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
-import { chainIdAtom, rTokenListAtom, rpayOverviewAtom } from 'state/atoms'
+import { chainIdAtom, rpayOverviewAtom } from 'state/atoms'
 import { EUSD_ADDRESS } from 'utils/addresses'
-import { TIME_RANGES } from 'utils/constants'
-import useQuery from './useQuery'
-import useTimeFrom from './useTimeFrom'
-import { formatEther, getAddress } from 'viem'
-import RSV, { RSVOverview } from 'utils/rsv'
 import { ChainId } from 'utils/chains'
+import { TIME_RANGES, supportedChainList } from 'utils/constants'
+import RSV, { RSVOverview } from 'utils/rsv'
+import { formatEther, getAddress } from 'viem'
+import { useMultichainQuery } from './useQuery'
+import useTimeFrom from './useTimeFrom'
 
 interface ListedToken {
   id: string
@@ -24,22 +25,21 @@ interface ListedToken {
   backing: number
   staked: number
   stakingApy: number
+  chain: number
 }
 
 // TODO: Cache only while the list is short
 const tokenListAtom = atom<ListedToken[]>([])
 
-const tokenKeysAtom = atom((get) => {
-  const chainId = get(chainIdAtom)
-  const list = [...Object.keys(get(rTokenListAtom)).map((s) => s.toLowerCase())]
+const tokenKeys: { [x: number]: string[] } = {}
 
-  // Add RSV to the token list
-  if (chainId === ChainId.Mainnet) {
-    list.push(RSV.address.toLowerCase())
-  }
+for (const chain of supportedChainList) {
+  tokenKeys[chain] = [
+    ...Object.keys(rtokens[chain]).map((s) => s.toLowerCase()),
+  ]
+}
 
-  return list
-})
+tokenKeys[ChainId.Mainnet].push(RSV.address.toLowerCase())
 
 const tokenListQuery = gql`
   query GetTokenListOverview($tokenIds: [String]!, $fromTime: Int!) {
@@ -90,52 +90,63 @@ const useTokenList = () => {
   const rpayOverview = useAtomValue(rpayOverviewAtom)
   const fromTime = useTimeFrom(TIME_RANGES.MONTH)
   const chainId = useAtomValue(chainIdAtom)
-  const tokenIds = useAtomValue(tokenKeysAtom)
 
-  const { data } = useQuery(tokenListQuery, {
-    tokenIds,
-    fromTime,
-    chainId,
+  const { data } = useMultichainQuery(tokenListQuery, {
+    [ChainId.Mainnet]: {
+      tokenIds: tokenKeys[ChainId.Mainnet],
+      fromTime,
+    },
+    [ChainId.Base]: {
+      tokenIds: tokenKeys[ChainId.Base],
+      fromTime,
+    },
   })
 
   useEffect(() => {
     if (data) {
-      setList(
-        data.tokens.map((token: any): ListedToken => {
-          // TODO: pool APY from theGraph
-          let tokenApy = 0
-          let stakingApy = 0
+      const tokens: ListedToken[] = []
 
-          const tokenData = {
-            id: getAddress(token.id),
-            name: token.name,
-            symbol: token.symbol,
-            supply: +formatEther(token.totalSupply) * +token.lastPriceUSD,
-            holders: Number(token.holderCount),
-            price: token.lastPriceUSD,
-            transactionCount: Number(token.transferCount),
-            cumulativeVolume:
-              +formatEther(token.cumulativeVolume) * +token.lastPriceUSD,
-            targetUnits: token?.rToken?.targetUnits,
-            tokenApy: +tokenApy.toFixed(2),
-            backing: token?.rToken?.backing || 100,
-            staked: token?.rToken?.backingRSR || 0,
-            stakingApy: +stakingApy.toFixed(2),
-          }
+      for (const chain of supportedChainList) {
+        tokens.push(
+          ...data[chain].tokens.map((token: any): ListedToken => {
+            // TODO: pool APY from theGraph
+            let tokenApy = 0
+            let stakingApy = 0
 
-          // RSV Data
-          if (token.id === RSV.address.toLowerCase()) {
-            tokenData.transactionCount += RSVOverview.txCount
-            tokenData.cumulativeVolume += RSVOverview.volume
-            tokenData.targetUnits = 'USD'
-          } else if (token.id === EUSD_ADDRESS[chainId]?.toLowerCase()) {
-            tokenData.transactionCount += rpayOverview.txCount
-            tokenData.cumulativeVolume += rpayOverview.volume
-          }
+            const tokenData = {
+              id: getAddress(token.id),
+              name: token.name,
+              symbol: token.symbol,
+              supply: +formatEther(token.totalSupply) * +token.lastPriceUSD,
+              holders: Number(token.holderCount),
+              price: token.lastPriceUSD,
+              transactionCount: Number(token.transferCount),
+              cumulativeVolume:
+                +formatEther(token.cumulativeVolume) * +token.lastPriceUSD,
+              targetUnits: token?.rToken?.targetUnits,
+              tokenApy: +tokenApy.toFixed(2),
+              backing: token?.rToken?.backing || 100,
+              staked: token?.rToken?.backingRSR || 0,
+              stakingApy: +stakingApy.toFixed(2),
+              chain,
+            }
 
-          return tokenData
-        })
-      )
+            // RSV Data
+            if (token.id === RSV.address.toLowerCase()) {
+              tokenData.transactionCount += RSVOverview.txCount
+              tokenData.cumulativeVolume += RSVOverview.volume
+              tokenData.targetUnits = 'USD'
+            } else if (token.id === EUSD_ADDRESS[chainId]?.toLowerCase()) {
+              tokenData.transactionCount += rpayOverview.txCount
+              tokenData.cumulativeVolume += rpayOverview.volume
+            }
+
+            return tokenData
+          })
+        )
+      }
+
+      setList(tokens)
     }
   }, [data])
 

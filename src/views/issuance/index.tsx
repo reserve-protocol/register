@@ -1,5 +1,6 @@
+import { Token } from '@reserve-protocol/token-zapper'
 import { Container } from 'components'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtomValue } from 'jotai'
 import { Box, Grid } from 'theme-ui'
 import { useWalletClient } from 'wagmi'
 import About from './components/about'
@@ -9,10 +10,9 @@ import IssuanceInfo from './components/issue/IssuanceInfo'
 import Redeem from './components/redeem'
 import WrapSidebar from './components/wrapping/WrapSidebar'
 import Zap from './components/zap'
-import { ui, zapEnabledAtom } from './components/zap/state/ui-atoms'
-import { ZapUnavailable } from './components/zap/components/ZapUnavailable'
 import { ZapOverview } from './components/zap/components/ZapOverview'
-import { Token } from '@reserve-protocol/token-zapper'
+import { ZapUnavailable } from './components/zap/components/ZapUnavailable'
+import { ui, zapEnabledAtom } from './components/zap/state/ui-atoms'
 
 /**
  * Mint & Redeem view
@@ -24,8 +24,8 @@ const Issuance = () => {
   if (
     zapsEnabled === true &&
     ((client.status === 'idle' &&
-        client.data?.account == null &&
-        isZapEnabled.state !== 'disabled') ||
+      client.data?.account == null &&
+      isZapEnabled.state !== 'disabled') ||
       (isZapEnabled.state !== 'loading' &&
         isZapEnabled.state !== 'disabled' &&
         client.data?.account == null))

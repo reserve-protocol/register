@@ -1,7 +1,7 @@
 import DutchTradeAbi from 'abis/DutchTrade'
 import { useAtomValue } from 'jotai'
 import { useEffect, useState } from 'react'
-import { blockAtom } from 'state/atoms'
+import { blockAtom, chainIdAtom } from 'state/atoms'
 import { Address, formatEther } from 'viem'
 import { useContractRead } from 'wagmi'
 
@@ -11,6 +11,7 @@ const useAuctionPrices = (
   const currentBlock = useAtomValue(blockAtom)
   const [currentPrice, setCurrentPrice] = useState(0)
   const [nextPrice, setNextPrice] = useState(0)
+  const chainId = useAtomValue(chainIdAtom)
 
   const { data: priceResult } = useContractRead({
     abi: DutchTradeAbi,
@@ -18,6 +19,7 @@ const useAuctionPrices = (
     functionName: 'bidAmount',
     args: [BigInt(currentBlock ?? 0)],
     enabled: !!currentBlock,
+    chainId,
   })
   const { data: nextPriceResult } = useContractRead({
     abi: DutchTradeAbi,
@@ -25,6 +27,7 @@ const useAuctionPrices = (
     functionName: 'bidAmount',
     args: [BigInt((currentBlock ?? 0) + 1)],
     enabled: !!currentBlock,
+    chainId,
   })
 
   useEffect(() => {

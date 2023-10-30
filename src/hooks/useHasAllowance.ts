@@ -1,6 +1,6 @@
 import ERC20 from 'abis/ERC20'
 import { useAtomValue } from 'jotai'
-import { walletAtom } from 'state/atoms'
+import { chainIdAtom, walletAtom } from 'state/atoms'
 import { Address } from 'viem'
 import { useContractReads } from 'wagmi'
 
@@ -14,6 +14,7 @@ const useHasAllowance = (
   allowances: RequiredAllowance[] | undefined
 ): [boolean, Address[]] => {
   const account = useAtomValue(walletAtom)
+  const chainId = useAtomValue(chainIdAtom)
 
   const { data }: { data: bigint[] | undefined } = useContractReads(
     allowances && account
@@ -23,6 +24,7 @@ const useHasAllowance = (
             functionName: 'allowance',
             address: allowance.token,
             args: [account, allowance.spender],
+            chainId,
           })),
           watch: true,
           allowFailure: false,

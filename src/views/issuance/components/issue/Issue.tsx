@@ -8,7 +8,6 @@ import { useState } from 'react'
 import {
   balancesAtom,
   chainIdAtom,
-  publicClientAtom,
   rTokenAtom,
   rTokenStateAtom,
   walletAtom,
@@ -20,14 +19,15 @@ import {
   isValidIssuableAmountAtom,
   maxIssuableAtom,
 } from 'views/issuance/atoms'
+import { usePublicClient } from 'wagmi'
 import ConfirmIssuance from './ConfirmIssuance'
 import IssueInput from './IssueInput'
 
 const useMaxIssuable = async () => {
   const rToken = useAtomValue(rTokenAtom)
   const account = useAtomValue(walletAtom)
-  const client = useAtomValue(publicClientAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const client = usePublicClient({ chainId })
   const { issuancePaused, frozen } = useAtomValue(rTokenStateAtom)
   const balances = useAtomValue(balancesAtom)
   const setMaxIssuable = useSetAtom(maxIssuableAtom)

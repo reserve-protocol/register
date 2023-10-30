@@ -48,6 +48,20 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       ? `/svgs/${rtokens[rTokenAddress].logo}`
       : '/svgs/defaultLogo.svg'
 
+    const rTokenMetaCalls = [
+      ...getTokenReadCalls(rTokenAddress),
+      { ...rTokenCallParams, functionName: 'main' },
+      { ...rTokenCallParams, functionName: 'mandate' },
+      {
+        ...facadeCallParams,
+        functionName: 'basketTokens',
+      },
+      {
+        ...facadeCallParams,
+        functionName: 'stToken',
+      },
+    ].map((call) => ({ ...call, chainId }))
+
     const [
       name,
       symbol,
@@ -59,30 +73,20 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
     ] = await (<
       Promise<[string, string, number, Address, string, Address[], Address]>
     >readContracts({
-      contracts: [
-        ...getTokenReadCalls(rTokenAddress),
-        { ...rTokenCallParams, functionName: 'main' },
-        { ...rTokenCallParams, functionName: 'mandate' },
-        {
-          ...facadeCallParams,
-          functionName: 'basketTokens',
-        },
-        {
-          ...facadeCallParams,
-          functionName: 'stToken',
-        },
-      ],
+      contracts: rTokenMetaCalls,
       allowFailure: false,
     }))
 
+    const tokensMetaCall = [
+      ...getTokenReadCalls(stTokenAddress),
+      ...basket.reduce(
+        (calls, collateral) => [...calls, ...getTokenReadCalls(collateral)],
+        [] as any[]
+      ),
+    ].map((call) => ({ ...call, chainId }))
+
     const tokensMeta = await (<Promise<string[]>>readContracts({
-      contracts: [
-        ...getTokenReadCalls(stTokenAddress),
-        ...basket.reduce(
-          (calls, collateral) => [...calls, ...getTokenReadCalls(collateral)],
-          [] as any[]
-        ),
-      ],
+      contracts: tokensMetaCall,
       allowFailure: false,
     }))
 

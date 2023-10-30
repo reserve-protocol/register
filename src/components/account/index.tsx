@@ -7,12 +7,12 @@ import { MouseoverTooltipContent } from 'components/tooltip'
 import { txSidebarToggleAtom } from 'components/transactions/manager/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { ReactNode } from 'react'
-import { AlertCircle, Power } from 'react-feather'
+import { AlertCircle } from 'react-feather'
 import { Box, Card, Flex, Spinner, Text } from 'theme-ui'
 
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { isTransactionRunning } from 'state/chain/atoms/transactionAtoms'
 import { chainIdAtom } from 'state/atoms'
+import { isTransactionRunning } from 'state/chain/atoms/transactionAtoms'
 
 const Container = styled(Box)`
   display: flex;

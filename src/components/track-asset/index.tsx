@@ -1,12 +1,11 @@
 import { MouseoverTooltip } from 'components/tooltip'
-import { useAtomValue } from 'jotai'
 import { Bookmark } from 'react-feather'
-import { walletClientAtom } from 'state/atoms'
 import { IconButton } from 'theme-ui'
 import { Token } from 'types'
+import { useWalletClient } from 'wagmi'
 
 const TrackAsset = ({ token }: { token: Token }) => {
-  const client = useAtomValue(walletClientAtom)
+  const { data: client } = useWalletClient()
 
   const handleWatch = async () => {
     try {
