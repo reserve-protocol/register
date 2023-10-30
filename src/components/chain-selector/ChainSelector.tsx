@@ -53,8 +53,6 @@ const ChainList = ({ onSelect }: { onSelect(chain: number): void }) => {
             sx={{
               cursor: 'pointer',
               position: 'relative',
-              borderLeft: '2px solid',
-              borderColor: isSelected ? 'contentBackground' : 'background',
               backgroundColor: isSelected ? 'contentBackground' : 'background',
               // transition: transition,
               ':hover': {
