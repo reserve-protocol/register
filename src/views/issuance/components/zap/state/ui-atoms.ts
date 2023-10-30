@@ -47,6 +47,9 @@ import {
 } from './atoms'
 import { FOUR_DIGITS, formatQty } from './formatTokenQuantity'
 import { resolvedZapState, zappableTokens, zapperState } from './zapper'
+import { WalletClient } from 'viem'
+import { Web3Provider } from '@ethersproject/providers'
+import { GetWalletClientResult } from 'wagmi/dist/actions'
 
 /**
  * This file contains atoms that are used to control the UI state of the Zap component.
@@ -107,10 +110,10 @@ export const zapTxFeeAtom = atom((get) => {
   const gasUsdPrice = get(ethPriceAtom)
   return tx?.transaction?.gasEstimate
     ? Number(
-        tx.result.universe.nativeToken
-          .from(tx.transaction.feeEstimate(gasPrice ?? 1n))
-          .format()
-      ) * gasUsdPrice
+      tx.result.universe.nativeToken
+        .from(tx.transaction.feeEstimate(gasPrice ?? 1n))
+        .format()
+    ) * gasUsdPrice
     : 0
 })
 
@@ -314,7 +317,7 @@ const buttonLoadingLabel = atom((get) => {
   }
 })
 
-export const zapEnabledAtom = atomWithStorage('zap-enabled', false) 
+export const zapEnabledAtom = atomWithStorage('zap-enabled', false)
 export const zapAvailableAtom = loadable(
   atom(async (get) => {
     const state = get(resolvedZapState)
@@ -327,14 +330,14 @@ export const zapAvailableAtom = loadable(
       return { canZap: true, tokensMissings: [] }
     }
     const token = await state.getToken(Address.from(rtoken.address))
-    
+
     for (let i = 0; i < 2; i++) {
       try {
         const o = await state.canZapIntoRToken(token)
         if (o != null) {
           return o
         }
-      } catch (e) {}
+      } catch (e) { }
     }
     return null
   })
@@ -349,7 +352,7 @@ export const ui = {
       return { state: 'disabled' as const, missingTokens: [] }
     }
     const available = get(zapAvailableAtom)
-    
+
     if (available.state === 'loading') {
       return { state: 'loading' as const, missingTokens: [] }
     }
@@ -440,21 +443,23 @@ export const ui = {
       loading: get(previousZapTransaction) == null && get(buttonIsLoading),
       label: get(buttonLabel),
     }),
-    async (get, set, _) => {
+    async (get, set, client: GetWalletClientResult) => {
       if (get(zapSender) == null) {
         set(isWalletModalVisibleAtom, true)
       }
       const flowState = get(state)
       const data = getZapActionState(get)
 
+
       if (data == null) {
         return
       }
+
+      data.signer = client as any
       if (flowState === 'tx_loading') {
         errors = 0
       } else if (flowState === 'tx_error') {
         if (errors < 5) {
-          console.log('Requoting..')
           set(redoQuote, Math.random())
           errors += 1
         }
