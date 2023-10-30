@@ -17,6 +17,7 @@ import {
   approvalNeededAtom,
   approvalPending,
   approvalRandomId,
+  approximateGasUsage,
   hasSufficientGasTokenAndERC20TokenBalance,
   maxSelectedZapTokenBalance,
   noZapActive,
@@ -322,7 +323,11 @@ export const zapAvailableAtom = loadable(
       return null
     }
     await state.initialized
+    if (approximateGasUsage[rtoken.address.toLowerCase()]) {
+      return { canZap: true, tokensMissings: [] }
+    }
     const token = await state.getToken(Address.from(rtoken.address))
+    
     for (let i = 0; i < 2; i++) {
       try {
         const o = await state.canZapIntoRToken(token)

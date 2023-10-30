@@ -195,7 +195,7 @@ export const zapQuotePromise = loadable(
 
 export const zapQuote = simplifyLoadable(zapQuotePromise)
 
-const approximateGasUsage: Record<string, bigint> = {
+export const approximateGasUsage: Record<string, bigint> = {
   '0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f': 3_000_000n,
   '0xe72b141df173b999ae7c1adcbf60cc9833ce56a8': 3_000_000n,
   '0xacdf0dba4b9839b96221a8487e9ca660a48212be': 6_000_000n,
