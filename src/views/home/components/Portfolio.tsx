@@ -156,17 +156,29 @@ const Portfolio = (props: BoxProps) => {
             ))}
           </Box>
         </Box>
-
         {rTokens?.length > 0 && (
           <Box mt={[4, 5]}>
             <Text
               pl={3}
+              mb={[3, 0]}
               variant="title"
               sx={{ color: 'secondaryText', fontWeight: '400' }}
             >
               <Trans>Your RTokens</Trans>
             </Text>
-            <Box sx={{ maxHeight: 500, overflow: 'auto' }}>
+            <Grid
+              columns="1fr 1fr 1fr 1fr"
+              p={4}
+              sx={{ display: ['none', 'grid'] }}
+            >
+              <Text variant="strong">Token</Text>
+              <Text variant="legend">USD value</Text>
+              <Text variant="legend">
+                <Trans>Your staked RSR</Trans>
+              </Text>
+              <Box></Box>
+            </Grid>
+            <Box mt={-3} sx={{ maxHeight: 500, overflow: 'auto' }}>
               {rTokens.map((position) => (
                 <PortfolioToken key={position.address} position={position} />
               ))}
