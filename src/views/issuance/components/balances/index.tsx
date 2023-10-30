@@ -4,7 +4,7 @@ import TokenBalance from 'components/token-balance'
 import TrackAsset from 'components/track-asset'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
-import { clientAtom, rTokenBalanceAtom } from 'state/atoms'
+import { rTokenBalanceAtom } from 'state/atoms'
 import { Box, Flex, Grid, Spinner, Text } from 'theme-ui'
 import { ui, zapEnabledAtom } from '../zap/state/ui-atoms'
 import CollateralBalance from './CollateralBalance'
@@ -57,13 +57,12 @@ const RTokenBalance = () => {
  * Display collateral tokens balances
  */
 const Balances = () => {
-  const client = useAtomValue(clientAtom)
   const isZapEnabled = useAtomValue(zapEnabledAtom)
 
   return (
     <Card p={0}>
       <Grid columns={[1, 2]} gap={0}>
-        {client!= null && isZapEnabled ? <ZapAssetsBalances /> : <CollateralBalances />}
+        {isZapEnabled ? <ZapAssetsBalances /> : <CollateralBalances />}
         <Box
           sx={(theme: any) => ({
             borderLeft: ['none', `1px solid ${theme.colors.darkBorder}`],
