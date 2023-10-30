@@ -20,6 +20,7 @@ import Help from '../../../components/help'
 import { aggregatedProtocolMetricsAtom } from '../atoms/metricsAtom'
 import useProtocolStats from '../hooks/useProtocolStats'
 import { supportedChainList } from 'utils/constants'
+import { RSVOverview } from 'utils/rsv'
 
 const protocolRecentTxsQuery = gql`
   query GetProtocolRecentTransactions {
@@ -141,7 +142,10 @@ const MainTokenStats = (props: BoxProps) => {
         <Divider {...dividerProps} />
         <InfoHeading
           title={t`Cumulative Tx Volume`}
-          subtitle={`$${formatCurrency(metrics.volume, 0)}`}
+          subtitle={`$${formatCurrency(
+            metrics.volume + RSVOverview.volume,
+            0
+          )}`}
         />
       </Flex>
     </Box>
@@ -175,7 +179,10 @@ const AdditionalTokenStats = (props: BoxProps) => {
       />
       <Stat
         title={t`Cumulative Txs`}
-        value={metrics.transactionCount.toString()}
+        value={formatCurrency(
+          metrics.transactionCount + RSVOverview.txCount,
+          0
+        )}
       />
       <Stat
         title={t`Cumulative - RToken holder income`}
