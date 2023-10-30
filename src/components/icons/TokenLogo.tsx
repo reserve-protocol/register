@@ -44,6 +44,14 @@ const IMGS = new Set([
   'stkcvxcrv3crypto',
   'stkcvxeusd3crv-f',
   'stkcvxmim-3lp3crv-f',
+  'sdai',
+  'mrp-ausdt',
+  'mrp-ausdc',
+  'mrp-adai',
+  'mrp-awbtc',
+  'mrp-aweth',
+  'mrp-awteth',
+  'mrp-asteth',
 ])
 
 const TokenLogo = ({

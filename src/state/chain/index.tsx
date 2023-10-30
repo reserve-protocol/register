@@ -15,23 +15,23 @@ import { infuraProvider } from 'wagmi/providers/infura'
 import AtomUpdater from './updaters/AtomUpdater'
 import { setupConfig } from './utils/mocks'
 
-const chainList = [mainnet, base, hardhat] as any
-const providers = [
-  infuraProvider({ apiKey: 'b6bf7d3508c941499b10025c0776eaf8' }),
-  infuraProvider({ apiKey: '9aa3d95b3bc440fa88ea12eaa4456161' }),
-  alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY }),
-  publicProvider(),
-] as any
-
-if (import.meta.env.VITE_MAINNET_URL) {
-  providers[0] = jsonRpcProvider({
-    rpc: () => ({
-      http: import.meta.env.VITE_MAINNET_URL,
-    }),
-  })
-}
-
-export const { chains, publicClient } = configureChains(chainList, providers)
+export const { chains, publicClient } = configureChains(
+  [mainnet, base, hardhat],
+  import.meta.env.VITE_MAINNET_URL
+    ? [
+        jsonRpcProvider({
+          rpc: () => ({
+            http: import.meta.env.VITE_MAINNET_URL,
+          }),
+        }),
+      ]
+    : [
+        infuraProvider({ apiKey: 'b6bf7d3508c941499b10025c0776eaf8' }),
+        infuraProvider({ apiKey: '9aa3d95b3bc440fa88ea12eaa4456161' }),
+        alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY }),
+        publicProvider(),
+      ]
+)
 
 const { connectors } = getDefaultWallets({
   appName: 'Register',
