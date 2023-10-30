@@ -36,6 +36,7 @@ import { type SearcherResult } from '@reserve-protocol/token-zapper/types/search
 import { type ZapTransaction } from '@reserve-protocol/token-zapper/types/searcher/ZapTransaction'
 import mixpanel from 'mixpanel-browser'
 import { resolvedZapState, zappableTokens } from './zapper'
+import { ChainId } from 'utils/chains'
 
 export const zapOutputSlippage = atom(100000n)
 
@@ -346,8 +347,8 @@ export const approvalTxFee = loadable(
 export const resolvedApprovalTxFee = simplifyLoadable(approvalTxFee)
 
 const useMaxIssueance: Record<number, boolean> = {
-  1: false,
-  8453: true,
+  [ChainId.Mainnet]: false,
+  [ChainId.Base]: true,
 }
 const zapTxAtom = atom(async (get) => {
   const result = get(zapQuote)

@@ -15,14 +15,16 @@ import { atom } from 'jotai'
 import { loadable } from 'jotai/utils'
 
 import mixpanel from 'mixpanel-browser'
-import { publicClient } from 'state/chain'
+import { publicClient, wagmiConfig } from 'state/chain'
 import { chainIdAtom, rTokenAtom } from 'state/atoms'
 import { onlyNonNullAtom, simplifyLoadable } from 'utils/atoms/utils'
 import { ChainId } from 'utils/chains'
 import { PublicClient } from 'viem'
+import { useWalletClient } from 'wagmi'
 
-export function publicClientToProvider(publicClient: PublicClient) {
+export async function publicClientToProvider(publicClient: PublicClient) {
   const { chain } = publicClient
+  
   const network = {
     chainId: chain!.id,
     name: chain!.name,
@@ -36,22 +38,15 @@ export function publicClientToProvider(publicClient: PublicClient) {
   }, network)
 }
 
-const providerAtom = atom((get) => {
+const providerAtom = atom(async (get) => {
   const chainId = get(chainIdAtom)
   const cli = publicClient({ chainId })
 
-  return publicClientToProvider(cli) as Web3Provider
+  return await publicClientToProvider(cli) as Web3Provider
 })
-
-// TODO: Convert provider viem -> ethers
-export const connectionName = onlyNonNullAtom((get) => {
-  return get(providerAtom).connection.url
-})
-
-const PERMIT2_SUPPORTED_CONNECTIONS = new Set(['metamask'])
 
 export const supportsPermit2Signatures = onlyNonNullAtom((get) => {
-  return PERMIT2_SUPPORTED_CONNECTIONS.has(get(connectionName))
+  return false
 })
 
 export const zapperState = loadable(
