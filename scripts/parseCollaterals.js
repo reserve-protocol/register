@@ -100,17 +100,17 @@ const wrappedTokenMap = {
 
 // Default: run all collateral chains - you can comment which chain you want to run
 const chainsMap = [
-  // {
-  //   prefix: 'mainnet',
-  //   chain: {
-  //     ...chains.mainnet,
-  //     rpcUrls: {
-  //       public: { http: ['https://eth.llamarpc.com'] },
-  //       default: { http: ['https://eth.llamarpc.com'] },
-  //     },
-  //   },
-  //   collaterals: require('./data/mainnet-collaterals.json'),
-  // },
+  {
+    prefix: 'mainnet',
+    chain: {
+      ...chains.mainnet,
+      rpcUrls: {
+        public: { http: ['https://eth.llamarpc.com'] },
+        default: { http: ['https://eth.llamarpc.com'] },
+      },
+    },
+    collaterals: require('./data/mainnet-collaterals.json'),
+  },
   {
     prefix: 'base',
     chain: chains.base,
