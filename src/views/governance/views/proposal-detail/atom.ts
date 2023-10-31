@@ -3,6 +3,7 @@ import { atom } from 'jotai'
 import { blockAtom, rTokenGovernanceAtom } from 'state/atoms'
 import { Address, Hex, keccak256, parseEther, toBytes } from 'viem'
 import { TenderlySimulation } from 'types'
+import { atomWithReset } from 'jotai/utils'
 
 export interface ProposalDetail {
   id: string
@@ -164,7 +165,7 @@ export const proposalTxArgsAtom = atom(
   }
 )
 
-export const simulationStateAtom = atom<SimulationState>({
+export const simulationStateAtom = atomWithReset<SimulationState>({
   data: null,
   loading: false,
   error: null,

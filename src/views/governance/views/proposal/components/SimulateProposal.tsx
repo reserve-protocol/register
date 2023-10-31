@@ -8,6 +8,9 @@ import useProposalSimulation from '../hooks/useProposalSimulation'
 import { TenderlySimulation } from 'types'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import Tenderly from 'components/icons/logos/Tenderly'
+import { useEffect } from 'react'
+import { useResetAtom } from 'jotai/utils'
+import { simulationStateAtom } from '../../proposal-detail/atom'
 
 interface Props extends BoxProps {
   tx: UsePrepareContractWriteConfig
@@ -22,13 +25,18 @@ const getButtonStyles = (sim: TenderlySimulation | null) => {
     }) !important`,
   }
 }
+
 const ProposalStatus = () => {
   const { sim, isLoading, error, handleSimulation } = useProposalSimulation()
+  const resetSimulation = useResetAtom(simulationStateAtom)
 
   const simResult = sim?.simulation?.status
     ? t`Simulation successful ✓`
     : t`Simulation unsuccessful ✘`
 
+  useEffect(() => {
+    return () => resetSimulation()
+  }, [])
   if (isLoading) {
     return (
       <>

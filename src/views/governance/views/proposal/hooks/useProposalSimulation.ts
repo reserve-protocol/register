@@ -9,7 +9,7 @@ import {
 } from 'types'
 import { useCallback, useState } from 'react'
 import useProposalTx from './useProposalTx'
-import { usePublicClient } from 'wagmi'
+import { PublicClient, usePublicClient } from 'wagmi'
 import { getContract } from 'wagmi/actions'
 
 import {
@@ -80,7 +80,7 @@ const sendSimulation = async (
   }
 }
 
-const getFetchOptions = (payload: TenderlyPayload) => {
+const getFetchOptions = (payload: any) => {
   const TENDERLY_FETCH_OPTIONS = {
     headers: {
       'X-Access-Key': TENDERLY_ACCESS_TOKEN,
@@ -101,12 +101,10 @@ const simulateNew = async (
   config: SimulationConfig,
   votingTokenSupply: number,
   governance: any,
-  client: any // specify the correct type
+  client: PublicClient
 ): Promise<TenderlySimulation> => {
-  // --- Validate config ---
   const { targets, values, calldatas, description } = config
 
-  // --- Get details about the proposal we're simulating ---
   const blockNumberToUse = Number((await client.getBlock()).number) - 20 // ensure tenderly has the block
 
   const latestBlock = await client.getBlock({
@@ -174,7 +172,7 @@ const simulateNew = async (
   }
 
   const stateOverrides = {
-    networkID: '1',
+    networkID: client.chain.id.toString(),
     stateOverrides: {
       [timelockAddr]: {
         value: timelockStorageObj,
@@ -194,7 +192,7 @@ const simulateNew = async (
     `0x${string}`
   ] = [targets, values, calldatas, descriptionHash]
   const simulationPayload: TenderlyPayload = {
-    network_id: '1',
+    network_id: client.chain.id,
     block_number: Number(latestBlock.number),
     from: DEFAULT_FROM,
     to: governor.address,
@@ -229,10 +227,7 @@ const simulateNew = async (
   const sim = await sendSimulation(simulationPayload)
   if (sim?.simulation?.id) {
     // Share simulation first
-    await fetch(
-      TENDERLY_SHARE_URL(sim?.simulation?.id),
-      getFetchOptions({} as TenderlyPayload)
-    )
+    await fetch(TENDERLY_SHARE_URL(sim?.simulation?.id), getFetchOptions({}))
     return sim
   } else {
     throw new Error('Failed to generate simulation')
