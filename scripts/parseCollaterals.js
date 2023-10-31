@@ -57,6 +57,7 @@ const protocols = {
   STARGATE: {
     key: 'STARGATE',
     underlying: 'underlying',
+    rewardTokens: ['STG'],
   },
 }
 
@@ -94,20 +95,22 @@ const wrappedTokenMap = {
   sDAI: protocols.SDR,
   aBasUSDbC: protocols.AAVEv3,
   sgUSDC: protocols.STARGATE,
+  wsgUSDbC: protocols.STARGATE, // base
 }
 
+// Default: run all collateral chains - you can comment which chain you want to run
 const chainsMap = [
-  {
-    prefix: 'mainnet',
-    chain: {
-      ...chains.mainnet,
-      rpcUrls: {
-        public: { http: ['https://eth.llamarpc.com'] },
-        default: { http: ['https://eth.llamarpc.com'] },
-      },
-    },
-    collaterals: require('./data/mainnet-collaterals.json'),
-  },
+  // {
+  //   prefix: 'mainnet',
+  //   chain: {
+  //     ...chains.mainnet,
+  //     rpcUrls: {
+  //       public: { http: ['https://eth.llamarpc.com'] },
+  //       default: { http: ['https://eth.llamarpc.com'] },
+  //     },
+  //   },
+  //   collaterals: require('./data/mainnet-collaterals.json'),
+  // },
   {
     prefix: 'base',
     chain: chains.base,
@@ -129,6 +132,8 @@ const chainsMap = [
     for (const collateral of Object.keys(data.collaterals.collateral)) {
       const plugin = {
         address: data.collaterals.collateral[collateral],
+        rewardTokens: [],
+        protocol: 'GENERIC',
       }
 
       // Fetch data from collateral ASSET contract
@@ -209,12 +214,13 @@ const chainsMap = [
             functionName: 'symbol',
           })
         }
-        plugin.rewardTokens = meta.rewardTokens
-          ? meta.rewardTokens.map((key) => data.collaterals.assets[key])
-          : []
-      } else {
-        plugin.protocol = 'GENERIC' // TODO: Maybe in the future I want more info about the protocol?
-        plugin.rewardTokens = []
+
+        // Map reward tokens if exists
+        for (const key of meta.rewardTokens ?? []) {
+          if (data.collaterals.assets[key]) {
+            plugin.rewardTokens.push(data.collaterals.assets[key])
+          }
+        }
       }
 
       console.log(`${collateral} parsed...`)

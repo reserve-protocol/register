@@ -34,11 +34,12 @@ const poolsMap: StringMap = {
     'ff61171d-d7b0-4989-816c-b9bf02a15f00': 'mrp-awbtc',
     'eab8d63d-8a8f-48cb-8027-583508831d24': 'mrp-asteth',
     '0f45d730-b279-4629-8e11-ccb5cc3038b4': 'cbeth',
+    'c8a24fee-ec00-4f38-86c0-9f6daebc4225': 'sdai',
   },
   [ChainId.Base]: {
-    "df65c4f4-e33a-481c-bac8-0c2252867c93": "wcusdcv3",
-    "9d09b0be-f6c2-463a-ad2c-4552b3e12bd9": "wsgusdbc",
-    "0f45d730-b279-4629-8e11-ccb5cc3038b4": 'cbeth',
+    'df65c4f4-e33a-481c-bac8-0c2252867c93': 'wcusdcv3',
+    '9d09b0be-f6c2-463a-ad2c-4552b3e12bd9': 'wsgusdbc',
+    '0f45d730-b279-4629-8e11-ccb5cc3038b4': 'cbeth',
   },
 }
 // 'fa4d7ee4-0001-4133-9e8d-cf7d5d194a91': 'fudsc-vault',
