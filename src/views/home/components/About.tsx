@@ -1,8 +1,9 @@
-import { Trans } from '@lingui/macro'
+import { Trans, t } from '@lingui/macro'
 import { SmallButton } from 'components/button'
-import { useNavigate } from 'react-router-dom'
-import { t } from '@lingui/macro'
+import DiscordIcon from 'components/icons/DiscordIcon'
+import GithubIcon from 'components/icons/GithubIcon'
 import { ContentHead } from 'components/info-box'
+import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { Box, BoxProps, Grid, Link, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 
@@ -57,26 +58,6 @@ const About = (props: BoxProps) => {
             </Link>
           </Text>
           <Text mb={3} variant="strong">
-            <Trans>This app</Trans>
-          </Text>
-          <Text variant="legend" as="p" mb={4}>
-            <Trans>
-              Register is developed and maintained by LC Labs as the first dApp
-              to interact with the Reserve Protocol and various RTokens deployed
-              with the platform.
-            </Trans>
-          </Text>
-          <Text variant="legend" as="p" mb={6}>
-            <Trans>
-              If an RToken is listed on Register, it doesn't mean that Reserve
-              or LC Labs endorses the safety or risk levels of the RToken. LC
-              Labs requires Github requests with additional information beyond
-              what is available on the blockchain to give users relevant data to
-              make informed decisions. As a user, please evaluate any new RToken
-              carefully before holding or staking your RSR on them.
-            </Trans>
-          </Text>
-          <Text mb={2} variant="strong">
             <Trans>User tracking</Trans>
           </Text>
           <Text variant="legend" as="p" mb={2}>
@@ -88,10 +69,47 @@ const About = (props: BoxProps) => {
           </Text>
           <Text variant="legend" as="p" mb={[1, 3]}>
             <Trans>
-              Please keep in mind that interactions with the Ethereum blockchain
-              are pseudonymous and publicly available.
+              Please keep in mind that interactions on the blockchain are
+              pseudonymous and publicly available.
             </Trans>
           </Text>
+          <Text mb={3} variant="strong">
+            <Trans>This app</Trans>
+          </Text>
+          <Text variant="legend" as="p" mb={4}>
+            <Trans>
+              Register is an open source project developed and maintained by LC
+              Labs as the first dApp to interact with the Reserve Protocol and
+              various RTokens deployed with the platform.
+            </Trans>
+          </Text>
+          <Text variant="legend" as="p" mb={3}>
+            <Trans>
+              If an RToken is listed on Register, it doesn't mean that Reserve
+              or LC Labs endorses the safety or risk levels of the RToken. LC
+              Labs requires Github requests with additional information beyond
+              what is available on the blockchain to give users relevant data to
+              make informed decisions. As a user, please evaluate any new RToken
+              carefully before holding or staking your RSR on them.
+            </Trans>
+          </Text>
+
+          <Box variant="layout.verticalAlign" sx={{ fontSize: 5 }}>
+            <RouterLink
+              to="https://github.com/lc-labs"
+              target="_blank"
+              style={{ all: 'unset', cursor: 'pointer' }}
+            >
+              <GithubIcon style={{ marginRight: 20 }} />
+            </RouterLink>
+            <RouterLink
+              to="'https://discord.gg/hQ2VJbjjg7'"
+              style={{ all: 'unset', cursor: 'pointer' }}
+              target="_blank"
+            >
+              <DiscordIcon />
+            </RouterLink>
+          </Box>
         </Box>
         <Box></Box>
       </Grid>
