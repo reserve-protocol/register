@@ -9,15 +9,12 @@ import { useForm } from 'react-hook-form'
 import DocsLink from 'components/docs-link/DocsLink'
 import { Box, BoxProps, Card, Divider, Flex, Text, Link } from 'theme-ui'
 import {
-  basketAtom,
   ExternalAddressSplit,
   isRevenueValidAtom,
   isValidExternalMapAtom,
   revenueSplitAtom,
-  rtokenAllActiveCollateralsAtom,
 } from '../atoms'
 import ExternalRevenueSpit from './ExternalRevenueSplit'
-import { rTokenAssetsAtom } from 'state/atoms'
 
 const updateExternalShareAtom = atom(
   null,
@@ -46,15 +43,7 @@ const RevenueSplit = (props: BoxProps) => {
   const updateExternalShare = useSetAtom(updateExternalShareAtom)
   const isValid = useAtomValue(isRevenueValidAtom)
   const isValidExternals = useAtomValue(isValidExternalMapAtom)
-  const registeredErc20s = useAtomValue(rTokenAssetsAtom)
-  const registeredAssets = Object.values(registeredErc20s || {}).map(
-    (asset) => asset.address
-  )
-  const usedAssets = useAtomValue(rtokenAllActiveCollateralsAtom)
 
-  const difference = registeredAssets.filter((x) => !usedAssets.includes(x))
-
-  console.log({ usedAssets, registeredAssets, difference })
   const {
     register,
     watch,

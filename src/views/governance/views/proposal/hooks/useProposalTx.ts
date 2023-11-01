@@ -4,6 +4,7 @@ import {
   isAssistedUpgradeAtom,
   isNewBackupProposedAtom,
   proposalDescriptionAtom,
+  unregisterAssetsAtom,
 } from './../atoms'
 
 import AssetRegistry from 'abis/AssetRegistry'
@@ -94,6 +95,7 @@ const useProposalTx = () => {
   const revenueChanges = useAtomValue(revenueSplitChangesAtom)
   const parameterChanges = useAtomValue(parametersChangesAtom)
   const roleChanges = useAtomValue(roleChangesAtom)
+  const assetsToUnregister = useAtomValue(unregisterAssetsAtom)
   const newBackup = useAtomValue(isNewBackupProposedAtom)
   const newBasket = useAtomValue(isNewBasketProposedAtom)
   const basket = useAtomValue(basketAtom)
@@ -251,6 +253,17 @@ const useProposalTx = () => {
             abi: (isGuardian ? Timelock : Main) as any,
             functionName: roleChange.isNew ? 'grantRole' : 'revokeRole',
             args: [ROLES[roleChange.role], roleChange.address],
+          })
+        )
+      }
+
+      for (const asset of assetsToUnregister) {
+        addresses.push(contracts.assetRegistry.address)
+        calls.push(
+          encodeFunctionData({
+            abi: AssetRegistry,
+            functionName: 'unregister',
+            args: [asset as `0x${string}`],
           })
         )
       }

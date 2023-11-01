@@ -38,6 +38,8 @@ export const parametersChangesAtom = atomWithReset<ParameterChange[]>([])
 
 export const roleChangesAtom = atomWithReset<RoleChange[]>([])
 
+export const unregisterAssetsAtom = atomWithReset<string[]>([])
+
 export const backupChangesAtom = atomWithReset<BackupChanges>({
   collateralChanges: [],
   priorityChanges: [],

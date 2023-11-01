@@ -151,7 +151,6 @@ export const rtokenAllActiveCollateralsAtom = atom((get) => {
   const basketCollaterals = [
     ...primaryBasketCollaterals,
     ...backupBasketCollaterals,
-    ...['0x890FAa00C16EAD6AA76F18A1A7fe9C40838F9122'],
   ]
 
   const systemAssets: string[] = []

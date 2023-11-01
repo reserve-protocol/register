@@ -26,6 +26,7 @@ import {
   parametersChangesAtom,
   revenueSplitChangesAtom,
   roleChangesAtom,
+  unregisterAssetsAtom,
 } from './atoms'
 import useBackupChanges from './hooks/useBackupChanges'
 import useBasketChanges from './hooks/useBasketChanges'
@@ -102,6 +103,7 @@ export const ChangesUpdater = () => {
   const roleChanges = useRoleChanges()
   const isNewBasket = useAtomValue(isNewBasketProposedAtom)
   const isNewBackup = useAtomValue(isNewBackupProposedAtom)
+  const assetsToUnregister = useAtomValue(unregisterAssetsAtom)
   // Valid listeners
   const isBasketValid = useAtomValue(isBasketValidAtom)
   const isRevenueSplitValid = useAtomValue(isRevenueValidAtom)
@@ -144,6 +146,7 @@ export const ChangesUpdater = () => {
       !revenueChanges.count &&
       !parameterChanges.length &&
       !roleChanges.length &&
+      !assetsToUnregister.length &&
       !isNewBasket
     ) {
       setValidState(false)
@@ -161,6 +164,7 @@ export const ChangesUpdater = () => {
     revenueChanges,
     parameterChanges,
     roleChanges,
+    assetsToUnregister,
     isValid,
   ])
 
