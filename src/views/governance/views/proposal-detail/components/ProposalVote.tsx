@@ -3,7 +3,7 @@ import StRSRVotes from 'abis/StRSRVotes'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useState } from 'react'
-import { stRsrBalanceAtom, walletAtom } from 'state/atoms'
+import { chainIdAtom, stRsrBalanceAtom, walletAtom } from 'state/atoms'
 import { Box, BoxProps, Button, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { PROPOSAL_STATES } from 'utils/constants'
@@ -17,6 +17,7 @@ import VoteModal from './VoteModal'
 const ProposalVote = (props: BoxProps) => {
   const account = useAtomValue(walletAtom)
   const rToken = useRToken()
+  const chainId = useAtomValue(chainIdAtom)
 
   const [isVoteVisible, setVoteVisible] = useState(false)
   const [isDelegateVisible, setDelegateVisible] = useState(false)
@@ -28,6 +29,7 @@ const ProposalVote = (props: BoxProps) => {
     address: account ? (rToken?.stToken?.address as Address) : undefined,
     abi: StRSRVotes,
     functionName: 'delegates',
+    chainId,
     args: account ? [account as Address] : undefined,
   })
 

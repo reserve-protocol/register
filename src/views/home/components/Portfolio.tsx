@@ -1,79 +1,131 @@
-import { t, Trans } from '@lingui/macro'
-import { Table } from 'components/table'
-import TokenItem from 'components/token-item'
+import { Trans } from '@lingui/macro'
+import PositionIcon from 'components/icons/PositionIcon'
+import TokenLogo from 'components/icons/TokenLogo'
+import Base from 'components/icons/logos/Base'
+import Ethereum from 'components/icons/logos/Ethereum'
 import useRTokenLogo from 'hooks/useRTokenLogo'
-import { localeAtom } from 'i18n'
 import { useAtomValue } from 'jotai'
-import { useMemo } from 'react'
+import mixpanel from 'mixpanel-browser'
+import { useNavigate } from 'react-router-dom'
 import {
   accountHoldingsAtom,
-  accountPositionsAtom,
   accountTokensAtom,
+  rsrPriceAtom,
+  walletAtom,
 } from 'state/atoms'
-import { Box, BoxProps, Divider, Text } from 'theme-ui'
-import {
-  formatCurrency,
-  formatCurrencyCell,
-  formatUsdCurrencyCell,
-} from 'utils'
+import { AccountRTokenPosition } from 'state/wallet/updaters/AccountUpdater'
+import { Box, BoxProps, Divider, Grid, Text } from 'theme-ui'
+import { formatCurrency } from 'utils'
+import { RSR_ADDRESS } from 'utils/addresses'
+import { ChainId } from 'utils/chains'
+import { supportedChainList } from 'utils/constants'
+import { useBalance } from 'wagmi'
+
+export const chainIcons = {
+  [ChainId.Mainnet]: Ethereum,
+  [ChainId.Base]: Base,
+}
+
+const PortfolioToken = ({ position }: { position: AccountRTokenPosition }) => {
+  const logo = useRTokenLogo(position.address, position.chain)
+  const Logo = chainIcons[position.chain]
+  const navigate = useNavigate()
+
+  const handleClick = () => {
+    navigate(`/overview?token=${position.address}&chainId=${position.chain}`)
+    document.getElementById('app-container')?.scrollTo(0, 0)
+    mixpanel.track('Selected RToken', {
+      Source: 'Portfolio Table',
+      RToken: position.address,
+    })
+  }
+
+  return (
+    <Grid
+      columns={['1fr', '1fr 1fr 1fr 1fr']}
+      sx={{
+        backgroundColor: 'contentBackground',
+        position: 'relative',
+        borderRadius: 20,
+        cursor: 'pointer',
+      }}
+      onClick={handleClick}
+      mt={3}
+      p={4}
+    >
+      <Box variant="layout.verticalAlign">
+        <TokenLogo width={24} mr={2} src={logo} />
+        <Text ml={1} variant="strong">
+          {formatCurrency(+position.balance)} {position.symbol}
+        </Text>
+      </Box>
+
+      <Box variant="layout.verticalAlign" sx={{ display: ['none', 'flex'] }}>
+        <Text mr="2" variant="strong">
+          =
+        </Text>
+        <Text variant="legend">${formatCurrency(+position.usdAmount)}</Text>
+      </Box>
+
+      <Box sx={{ flexWrap: 'wrap' }} ml={[5, 0]} variant="layout.verticalAlign">
+        <Box variant="layout.verticalAlign">
+          <PositionIcon />
+          <Text sx={{ whiteSpace: 'nowrap' }} ml="2">
+            {formatCurrency(position.stakedRSR)} RSR
+          </Text>
+        </Box>
+
+        <Text ml="2" variant="legend">
+          (${formatCurrency(+position.stakedRSRUsd)})
+        </Text>
+      </Box>
+      <Box
+        sx={{
+          textAlign: 'right',
+          position: ['absolute', 'relative'],
+          right: 20,
+          top: 'calc(50% - 10px)',
+        }}
+      >
+        <Logo />
+      </Box>
+    </Grid>
+  )
+}
+
+const AccountRSR = ({ chain }: { chain: number }) => {
+  const wallet = useAtomValue(walletAtom) || '0x'
+  const rsrPrice = useAtomValue(rsrPriceAtom)
+
+  const { data } = useBalance({
+    token: RSR_ADDRESS[chain],
+    address: wallet,
+    chainId: chain,
+  })
+
+  return (
+    <Box variant="layout.verticalAlign">
+      <Box sx={{ position: 'relative' }}>
+        <TokenLogo width={24} symbol="rsr" bordered chain={chain} />
+      </Box>
+      <Box ml={3}>
+        <Text variant="strong">
+          {formatCurrency(Number(data?.formatted ?? 0))} RSR
+        </Text>
+        <Text sx={{ fontSize: 1 }} variant="legend">
+          ${formatCurrency(Number(data?.formatted ?? 0) * rsrPrice)}
+        </Text>
+      </Box>
+    </Box>
+  )
+}
 
 const Portfolio = (props: BoxProps) => {
-  const lang = useAtomValue(localeAtom)
   const rTokens = useAtomValue(accountTokensAtom)
-  const stTokens = useAtomValue(accountPositionsAtom)
+  const wallet = useAtomValue(walletAtom)
   const holdings = useAtomValue(accountHoldingsAtom)
 
-  const rTokenColumns = useMemo(
-    () => [
-      {
-        Header: 'RToken',
-        accessor: 'symbol',
-        Cell: (data: any) => {
-          const logo = useRTokenLogo(data.row.original.address)
-
-          return <TokenItem symbol={data.cell.value} logo={logo} />
-        },
-      },
-      { Header: t`Price`, accessor: 'usdPrice', Cell: formatUsdCurrencyCell },
-      { Header: t`Balance`, accessor: 'balance', Cell: formatCurrencyCell },
-      { Header: t`Value`, accessor: 'usdAmount', Cell: formatUsdCurrencyCell },
-    ],
-    [lang]
-  )
-  const stTokenColumns = useMemo(
-    () => [
-      {
-        Header: 'IP Token',
-        accessor: 'symbol',
-        Cell: (data: any) => {
-          return <TokenItem symbol={data.cell.value} logo="/svgs/strsr.svg" />
-        },
-      },
-      {
-        Header: t`RSR Rate`,
-        accessor: 'exchangeRate',
-        Cell: formatCurrencyCell,
-      },
-      {
-        Header: t`Balance`,
-        accessor: 'balance',
-        Cell: formatCurrencyCell,
-      },
-      {
-        Header: t`RSR Value`,
-        accessor: 'rsrAmount',
-        Cell: formatCurrencyCell,
-      },
-      {
-        Header: t`USD Value`,
-        accessor: 'usdAmount',
-        Cell: formatUsdCurrencyCell,
-      },
-    ],
-    [lang]
-  )
-
-  if (!holdings) {
+  if (!wallet) {
     return null
   }
 
@@ -93,43 +145,46 @@ const Portfolio = (props: BoxProps) => {
           >
             ${formatCurrency(holdings)}
           </Text>
+          <Box mt={2} variant="layout.verticalAlign">
+            {supportedChainList.map((chain) => (
+              <Box key={chain} variant="layout.verticalAlign" mr={3}>
+                <Text mr={3} sx={{ fontSize: 4 }}>
+                  +
+                </Text>
+                <AccountRSR chain={chain} />
+              </Box>
+            ))}
+          </Box>
         </Box>
-        <Box>
-          {rTokens?.length > 0 && (
-            <Box mt={[4, 5]}>
-              <Text
-                pl={3}
-                variant="title"
-                sx={{ color: 'secondaryText', fontWeight: '400' }}
-              >
-                <Trans>Your RTokens</Trans>
+        {rTokens?.length > 0 && (
+          <Box mt={[4, 5]}>
+            <Text
+              pl={3}
+              mb={[3, 0]}
+              variant="title"
+              sx={{ color: 'secondaryText', fontWeight: '400' }}
+            >
+              <Trans>Your RTokens</Trans>
+            </Text>
+            <Grid
+              columns="1fr 1fr 1fr 1fr"
+              p={4}
+              sx={{ display: ['none', 'grid'] }}
+            >
+              <Text variant="strong">Token</Text>
+              <Text variant="legend">USD value</Text>
+              <Text variant="legend">
+                <Trans>Your staked RSR</Trans>
               </Text>
-              <Table
-                mt={3}
-                maxHeight={220}
-                columns={rTokenColumns}
-                data={rTokens}
-              />
+              <Box></Box>
+            </Grid>
+            <Box mt={-3} sx={{ maxHeight: 500, overflow: 'auto' }}>
+              {rTokens.map((position) => (
+                <PortfolioToken key={position.address} position={position} />
+              ))}
             </Box>
-          )}
-          {stTokens?.length > 0 && (
-            <Box mt={[4, 5]}>
-              <Text
-                pl={3}
-                variant="title"
-                sx={{ color: 'secondaryText', fontWeight: '400' }}
-              >
-                <Trans>Your staked RSR positions</Trans>
-              </Text>
-              <Table
-                mt={[0, 3]}
-                maxHeight={220}
-                columns={stTokenColumns}
-                data={stTokens}
-              />
-            </Box>
-          )}
-        </Box>
+          </Box>
+        )}
       </Box>
       <Divider mx={[-1, 0]} my={[5, 8]} />
     </Box>

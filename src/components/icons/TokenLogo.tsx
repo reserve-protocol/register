@@ -1,11 +1,15 @@
 import useRToken from 'hooks/useRToken'
 import React from 'react'
 import { Box, BoxProps, Image } from 'theme-ui'
+import Base from './logos/Base'
+import ChainLogo from './ChainLogo'
 
 interface Props extends BoxProps {
   symbol?: string
   width?: number | string
   src?: string
+  chain?: number
+  bordered?: boolean
 }
 
 const IMGS = new Set([
@@ -40,9 +44,25 @@ const IMGS = new Set([
   'stkcvxcrv3crypto',
   'stkcvxeusd3crv-f',
   'stkcvxmim-3lp3crv-f',
+  'sdai',
+  'mrp-ausdt',
+  'mrp-ausdc',
+  'mrp-adai',
+  'mrp-awbtc',
+  'mrp-aweth',
+  'mrp-awteth',
+  'mrp-asteth',
 ])
 
-const TokenLogo = ({ symbol, src, width, sx = {}, ...props }: Props) => {
+const TokenLogo = ({
+  symbol,
+  src,
+  chain,
+  width = 20,
+  bordered = false,
+  sx = {},
+  ...props
+}: Props) => {
   let imgSrc = src
   const rToken = useRToken()
 
@@ -65,7 +85,8 @@ const TokenLogo = ({ symbol, src, width, sx = {}, ...props }: Props) => {
         flexShrink: 0,
         width: width,
         justifyContent: 'center',
-        border: '1px solid 0 0 1px 0px white',
+        borderColor: 'text',
+        border: bordered ? '0.5px solid' : 'none',
         ...sx,
       }}
     >
@@ -77,6 +98,23 @@ const TokenLogo = ({ symbol, src, width, sx = {}, ...props }: Props) => {
           currentTarget.src = '/svgs/defaultLogo.svg'
         }}
       />
+      {!!chain && (
+        <Box
+          sx={{
+            position: 'absolute',
+            right: '-3px',
+            flexShrink: 0,
+            width: Number(width) / 2,
+            bottom: '-10px',
+          }}
+        >
+          <ChainLogo
+            chain={chain}
+            width={Number(width) / 2}
+            height={Number(width) / 2}
+          />
+        </Box>
+      )}
     </Box>
   )
 }

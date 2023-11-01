@@ -24,6 +24,7 @@ const rTokenBackupAtom = atomWithLoadable(async (get) => {
       ({
         address: FACADE_ADDRESS[chainId],
         abi: FacadeRead,
+        chainId,
         functionName: 'backupConfig',
         args: [
           rToken.address as Address,
@@ -49,6 +50,7 @@ const rTokenBackupAtom = atomWithLoadable(async (get) => {
           address,
           abi: ERC20,
           functionName: 'symbol',
+          chainId,
         } as const)
     )
 

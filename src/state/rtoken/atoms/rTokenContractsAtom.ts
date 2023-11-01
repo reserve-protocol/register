@@ -11,17 +11,30 @@ import AssetRegistry from 'abis/AssetRegistry'
 import Broker from 'abis/Broker'
 import Furnace from 'abis/Furnace'
 import BasketHandler from 'abis/BasketHandler'
+import { chainIdAtom } from 'state/atoms'
 
-export type ContractKey = 'token' | 'main' | 'stRSR' | 'backingManager' | 'rTokenTrader' | 'rsrTrader' | 'broker' | 'assetRegistry' | 'furnace' | 'distributor' | 'basketHandler'
+export type ContractKey =
+  | 'token'
+  | 'main'
+  | 'stRSR'
+  | 'backingManager'
+  | 'rTokenTrader'
+  | 'rsrTrader'
+  | 'broker'
+  | 'assetRegistry'
+  | 'furnace'
+  | 'distributor'
+  | 'basketHandler'
 
 const rTokenContractsAtom = atomWithLoadable(async (get) => {
   const rToken = get(rTokenAtom)
+  const chainId = get(chainIdAtom)
 
   if (!rToken?.main || !rToken?.stToken) {
     return null
   }
 
-  const mainCall = { abi: Main, address: rToken.main as Address }
+  const mainCall = { abi: Main, chainId, address: rToken.main as Address }
 
   const [
     distributor,
@@ -65,51 +78,61 @@ const rTokenContractsAtom = atomWithLoadable(async (get) => {
         abi: RToken,
         address: rToken.address as Address,
         functionName: 'version',
+        chainId,
       },
       {
         abi: StRSR,
         address: rToken.stToken.address as Address,
         functionName: 'version',
+        chainId,
       },
       {
         abi: Distributor,
         address: distributor,
         functionName: 'version',
+        chainId,
       },
       {
         abi: BackingManager,
         address: backingManager,
         functionName: 'version',
+        chainId,
       },
       {
         abi: RevenueTrader,
         address: rTokenTrader,
         functionName: 'version',
+        chainId,
       },
       {
         abi: RevenueTrader,
         address: rsrTrader,
         functionName: 'version',
+        chainId,
       },
       {
         abi: Furnace,
         address: furnace,
         functionName: 'version',
+        chainId,
       },
       {
         abi: Broker,
         address: broker,
         functionName: 'version',
+        chainId,
       },
       {
         abi: AssetRegistry,
         address: assetRegistry,
         functionName: 'version',
+        chainId,
       },
       {
         abi: BasketHandler,
         address: basketHandler,
         functionName: 'version',
+        chainId,
       },
     ],
     allowFailure: false,

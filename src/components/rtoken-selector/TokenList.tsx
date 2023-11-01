@@ -3,12 +3,9 @@ import { Trans } from '@lingui/macro'
 import TokenItem from 'components/token-item'
 import { useAtomValue } from 'jotai'
 import { memo } from 'react'
-import { transition } from 'theme'
 import { Box, Divider, Flex, Text } from 'theme-ui'
 import BackHomeIcon from '../icons/BackHomeIcon'
 import availableTokensAtom from './atoms'
-import { chainIdAtom } from 'state/atoms'
-import { useSwitchNetwork } from 'wagmi'
 
 const ActionItem = styled(Flex)`
   padding: 16px;
@@ -29,11 +26,9 @@ const TokenList = memo(
     onSelect,
     onHome,
   }: {
-    onSelect(address: string): void
+    onSelect(address: string, chainId: number): void
     onHome(): void
   }) => {
-    const { switchNetwork } = useSwitchNetwork()
-    const currentChainId = useAtomValue(chainIdAtom)
     const tokens = useAtomValue(availableTokensAtom)
 
     return (
@@ -70,10 +65,7 @@ const TokenList = memo(
           <ActionItem
             key={address}
             onClick={() => {
-              if (currentChainId !== chainId && switchNetwork) {
-                switchNetwork(chainId!)
-              }
-              onSelect(address)
+              onSelect(address, chainId as number)
             }}
           >
             <TokenItem

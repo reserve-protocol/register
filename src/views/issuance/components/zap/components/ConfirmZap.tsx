@@ -13,12 +13,14 @@ import {
 import { approvalTxFeeAtom, ui, zapTxFeeAtom } from '../state/ui-atoms'
 import ZapButton from './ZapButton'
 import ZapInput from './ZapInput'
+import { useWalletClient } from 'wagmi'
 
 const ApproveZap = () => {
   const isApproving = useAtomValue(approvalPending)
   const approvalTxFee = useAtomValue(approvalTxFeeAtom)
   const state = useAtomValue(ui.state)
   const handleApprove = useSetAtom(ui.button)
+  const client = useWalletClient()
   const selectedToken = useAtomValue(selectedZapTokenAtom)
 
   if (!(state === 'approval' || isApproving)) {
@@ -29,9 +31,9 @@ const ApproveZap = () => {
     <>
       <LoadingButton
         mt={3}
-        loading={isApproving}
+        loading={isApproving || client.isLoading}
         text={`Approve ${selectedToken?.symbol ?? ''} for Zap`}
-        onClick={handleApprove}
+        onClick={() => handleApprove(client.data!)}
         sx={{ width: '100%' }}
       />
       <EstimatedGasInfo mt={3} fee={approvalTxFee} />

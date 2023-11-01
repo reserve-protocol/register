@@ -6,7 +6,7 @@ import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { rTokenBalanceAtom } from 'state/atoms'
 import { Box, Flex, Grid, Spinner, Text } from 'theme-ui'
-import { ui } from '../zap/state/ui-atoms'
+import { ui, zapEnabledAtom } from '../zap/state/ui-atoms'
 import CollateralBalance from './CollateralBalance'
 import ZapAssetsBalances from './ZapAssetsBalance'
 
@@ -57,7 +57,7 @@ const RTokenBalance = () => {
  * Display collateral tokens balances
  */
 const Balances = () => {
-  const isZapEnabled = useAtomValue(ui.zapWidgetEnabled)
+  const isZapEnabled = useAtomValue(zapEnabledAtom)
 
   return (
     <Card p={0}>

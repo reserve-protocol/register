@@ -2,18 +2,15 @@ import Button from 'components/button'
 import Base from 'components/icons/logos/Base'
 import Ethereum from 'components/icons/logos/Ethereum'
 import Popup from 'components/popup'
+import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
-import { transition } from 'theme'
-import { useAtom, useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { Check, ChevronDown, ChevronUp } from 'react-feather'
-import { useNavigate } from 'react-router-dom'
-import { chainIdAtom } from 'state/atoms'
-import { publicClient, wagmiConfig } from 'state/chain'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
 import { ROUTES } from 'utils/constants'
-import { useSwitchNetwork } from 'wagmi'
 
 export const chainIcons = {
   [ChainId.Mainnet]: Ethereum,
@@ -53,8 +50,6 @@ const ChainList = ({ onSelect }: { onSelect(chain: number): void }) => {
             sx={{
               cursor: 'pointer',
               position: 'relative',
-              borderLeft: '2px solid',
-              borderColor: isSelected ? 'contentBackground' : 'background',
               backgroundColor: isSelected ? 'contentBackground' : 'background',
               // transition: transition,
               ':hover': {
@@ -98,20 +93,18 @@ const ChainList = ({ onSelect }: { onSelect(chain: number): void }) => {
 }
 
 const ChainSelector = (props: BoxProps) => {
-  const [chainId, setChainId] = useAtom(chainIdAtom)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const chainId = useAtomValue(chainIdAtom)
+  const selectedRToken = useAtomValue(selectedRTokenAtom)
   const [isVisible, setVisible] = useState(false)
-  const { switchNetwork } = useSwitchNetwork()
   const navigate = useNavigate()
 
   const handleSelect = (chain: number) => {
-    if (chain !== chainId) {
-      // Switch network if supported by wallet
-      wagmiConfig.setPublicClient(publicClient({ chainId: chain }))
-      setChainId(chain)
-      if (switchNetwork) {
-        switchNetwork(chain)
-      }
-      navigate('/')
+    if (chain !== chainId && selectedRToken) {
+      navigate(`/?chainId=${chain}`)
+    } else {
+      searchParams.set('chainId', chain.toString())
+      setSearchParams(searchParams)
     }
 
     setVisible(false)

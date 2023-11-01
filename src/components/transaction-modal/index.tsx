@@ -5,7 +5,7 @@ import Modal, { ModalProps } from 'components/modal'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
-import { walletAtom } from 'state/atoms'
+import { chainIdAtom, walletAtom } from 'state/atoms'
 import { Divider } from 'theme-ui'
 import { Allowance } from 'types'
 import { useContractRead, type UsePrepareContractWriteConfig } from 'wagmi'
@@ -60,6 +60,7 @@ const Approval = ({
 
 const useHasAllowance = (allowance: Allowance | undefined) => {
   const account = useAtomValue(walletAtom)
+  const chainId = useAtomValue(chainIdAtom)
 
   const { data } = useContractRead(
     allowance && account
@@ -69,6 +70,7 @@ const useHasAllowance = (allowance: Allowance | undefined) => {
           address: allowance.token,
           args: [account, allowance.spender],
           watch: true,
+          chainId,
         }
       : undefined
   )

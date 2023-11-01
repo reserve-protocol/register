@@ -8,7 +8,12 @@ import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { blockAtom, rTokenGovernanceAtom, walletAtom } from 'state/atoms'
+import {
+  blockAtom,
+  chainIdAtom,
+  rTokenGovernanceAtom,
+  walletAtom,
+} from 'state/atoms'
 import { Box, Grid, Image, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ROUTES } from 'utils/constants'
@@ -60,11 +65,13 @@ const GovernanceOverview = () => {
   const rToken = useRToken()
   const blockNumber = useAtomValue(blockAtom)
   const governance = useAtomValue(rTokenGovernanceAtom)
+  const chainId = useAtomValue(chainIdAtom)
 
   const { data: votes } = useContractRead({
     address: account ? (governance.governor as Address) : undefined,
     functionName: 'getVotes',
     abi: Governance,
+    chainId,
     args:
       account && blockNumber
         ? [account as Address, BigInt(blockNumber - 2)]

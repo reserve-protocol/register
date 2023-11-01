@@ -1,5 +1,7 @@
 import ERC20 from 'abis/ERC20'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
+import { chainIdAtom } from 'state/atoms'
 import { StringMap } from 'types'
 import { Address, useContractReads } from 'wagmi'
 
@@ -14,6 +16,7 @@ const useTokensAllowance = (
   account: string
 ): { [x: string]: bigint } => {
   // TODO: This maybe broken
+  const chainId = useAtomValue(chainIdAtom)
   const calls = useMemo(
     () =>
       tokens.map(([address, spender]) => ({
@@ -21,8 +24,9 @@ const useTokensAllowance = (
         address: address as Address,
         functionName: 'allowance',
         args: [account as Address, spender as Address],
+        chainId,
       })),
-    [tokens.toString(), account]
+    [tokens.toString(), account, chainId]
   )
 
   const { data } = useContractReads({ contracts: calls, watch: true })

@@ -1,4 +1,9 @@
-import { Address, Searcher, Token } from '@reserve-protocol/token-zapper'
+import {
+  Address,
+  Searcher,
+  Token,
+  Universe
+} from '@reserve-protocol/token-zapper'
 import {
   PERMIT2_ADDRESS,
   PermitTransferFrom,
@@ -26,10 +31,12 @@ import {
   simplifyLoadable,
 } from 'utils/atoms/utils'
 
+import { EthereumConfigType } from '@reserve-protocol/token-zapper/types/configuration/ethereum'
 import { type SearcherResult } from '@reserve-protocol/token-zapper/types/searcher/SearcherResult'
 import { type ZapTransaction } from '@reserve-protocol/token-zapper/types/searcher/ZapTransaction'
 import mixpanel from 'mixpanel-browser'
 import { resolvedZapState, zappableTokens } from './zapper'
+import { ChainId } from 'utils/chains'
 
 export const zapOutputSlippage = atom(100000n)
 
@@ -126,7 +133,7 @@ export const zapperInputs = simplifyLoadable(
         tokenToZap: selectedZapToken,
         rToken: await universe.getToken(Address.from(rToken.address)),
         universe: universe,
-        zapSearcher: new Searcher(universe),
+        zapSearcher: new Searcher(universe as Universe<EthereumConfigType>),
       }
     })
   )
@@ -189,7 +196,7 @@ export const zapQuotePromise = loadable(
 
 export const zapQuote = simplifyLoadable(zapQuotePromise)
 
-const approximateGasUsage: Record<string, bigint> = {
+export const approximateGasUsage: Record<string, bigint> = {
   '0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f': 3_000_000n,
   '0xe72b141df173b999ae7c1adcbf60cc9833ce56a8': 3_000_000n,
   '0xacdf0dba4b9839b96221a8487e9ca660a48212be': 6_000_000n,
@@ -340,8 +347,8 @@ export const approvalTxFee = loadable(
 export const resolvedApprovalTxFee = simplifyLoadable(approvalTxFee)
 
 const useMaxIssueance: Record<number, boolean> = {
-  1: false,
-  8453: true,
+  [ChainId.Mainnet]: false,
+  [ChainId.Base]: true,
 }
 const zapTxAtom = atom(async (get) => {
   const result = get(zapQuote)

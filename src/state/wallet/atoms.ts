@@ -14,6 +14,7 @@ import { chainIdAtom, walletAtom } from '../chain/atoms/chainAtoms'
 import rTokenAtom from '../rtoken/atoms/rTokenAtom'
 import rTokenContractsAtom from '../rtoken/atoms/rTokenContractsAtom'
 import { readContract } from 'wagmi/actions'
+import { AccountRTokenPosition } from './updaters/AccountUpdater'
 
 const defaultBalance = {
   value: 0n,
@@ -65,7 +66,7 @@ export const accountRTokensAtom = atom<
 >([])
 
 // Store current rToken holdings for an account
-export const accountTokensAtom = atom<AccountToken[]>([])
+export const accountTokensAtom = atom<AccountRTokenPosition[]>([])
 
 // Store current stToken holdings (stake) for an account
 export const accountPositionsAtom = atom<AccountPosition[]>([])
@@ -80,6 +81,7 @@ export const isWalletModalVisibleAtom = atom(false)
 export const accountRoleAtom = atomWithLoadable(async (get) => {
   const rToken = get(rTokenAtom)
   const account = get(walletAtom)
+  const chainId = get(chainIdAtom)
 
   if (!rToken?.main || !account) {
     return null
@@ -96,21 +98,25 @@ export const accountRoleAtom = atomWithLoadable(async (get) => {
         ...call,
         args: [stringToHex('OWNER', { size: 32 }), account],
         functionName: 'hasRole',
+        chainId,
       },
       {
         ...call,
         args: [stringToHex('PAUSER', { size: 32 }), account],
         functionName: 'hasRole',
+        chainId,
       },
       {
         ...call,
         args: [stringToHex('SHORT_FREEZER', { size: 32 }), account],
         functionName: 'hasRole',
+        chainId,
       },
       {
         ...call,
         args: [stringToHex('LONG_FREEZER', { size: 32 }), account],
         functionName: 'hasRole',
+        chainId,
       },
     ],
     allowFailure: false,

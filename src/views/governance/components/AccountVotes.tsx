@@ -26,6 +26,7 @@ const AccountVotes = () => {
     functionName: 'delegates',
     args: account ? [account as Address] : undefined,
     watch: true,
+    chainId,
   })
 
   const hasNoDelegates = !delegate || delegate === zeroAddress

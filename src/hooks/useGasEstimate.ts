@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai'
 import { useEffect, useState } from 'react'
-import { ethPriceAtom, gasFeeAtom } from 'state/atoms'
+import { chainIdAtom, ethPriceAtom, gasFeeAtom } from 'state/atoms'
 import { EstimateContractGasParameters, formatEther } from 'viem'
 import { usePublicClient } from 'wagmi'
 
@@ -21,7 +21,8 @@ const defaultGas: GasEstimation = {
 export const useGasEstimate = (
   call: EstimateContractGasParameters | null
 ): GasEstimation => {
-  const client = usePublicClient()
+  const chainId = useAtomValue(chainIdAtom)
+  const client = usePublicClient({ chainId })
   const fee = useAtomValue(gasFeeAtom)
   const ethPrice = useAtomValue(ethPriceAtom)
   const [state, setState] = useState(defaultGas)

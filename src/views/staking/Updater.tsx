@@ -24,6 +24,7 @@ const PendingBalancesUpdater = () => {
           address: FACADE_ADDRESS[chainId],
           functionName: 'pendingUnstakings',
           args: [rToken?.address, account],
+          chainId,
         }
       : undefined
   )

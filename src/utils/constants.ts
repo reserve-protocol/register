@@ -91,6 +91,7 @@ export const blockDuration = {
   [ChainId.Mainnet]: 12,
   [ChainId.Base]: 2,
 }
+export const supportedChainList = [ChainId.Mainnet, ChainId.Base]
 
 // Load environment variables.
 export const TENDERLY_ACCESS_TOKEN: string = import.meta.env

@@ -21,7 +21,7 @@ const RTokenSelector = (props: BoxProps) => {
   const location = useLocation()
 
   const handleSelect = useCallback(
-    (token: string) => {
+    (token: string, chain: number) => {
       if (token !== selected) {
         mixpanel.track('Selected RToken', {
           Source: 'Dropdown',
@@ -29,7 +29,9 @@ const RTokenSelector = (props: BoxProps) => {
         })
         setSelected(token as Address)
         navigate(
-          `${selected ? location.pathname : ROUTES.OVERVIEW}?token=${token}`
+          `${
+            selected ? location.pathname : ROUTES.OVERVIEW
+          }?token=${token}&chainId=${chain}`
         )
         setVisible(false)
       }

@@ -4,12 +4,12 @@ import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import {
   chainIdAtom,
-  publicClientAtom,
   rTokenAssetsAtom,
   rTokenAtom,
   rTokenContractsAtom,
   rTokenPriceAtom,
 } from 'state/atoms'
+import { publicClient } from 'state/chain'
 import { Token } from 'types'
 import {
   FACADE_ACT_ADDRESS,
@@ -95,7 +95,7 @@ export const accumulatedRevenueAtom = atomWithLoadable(async (get) => {
   const rToken = get(rTokenAtom)
   const assets = get(rTokenAssetsAtom)
   const chainId = get(chainIdAtom)
-  const client = get(publicClientAtom)
+  const client = publicClient({ chainId })
   const price = get(rTokenPriceAtom)
 
   if (!rToken || !assets || !client || !price) {
@@ -167,6 +167,7 @@ export const auctionsToSettleAtom = atomWithLoadable(
             address: FACADE_ADDRESS[chainId],
             functionName: 'auctionsSettleable',
             args: [address],
+            chainId,
           })),
           allowFailure: false,
         })
@@ -204,8 +205,8 @@ export const auctionsOverviewAtom = atomWithLoadable(
     const contracts = get(rTokenContractsAtom)
     const assets = get(rTokenAssetsAtom)
     const rToken = get(rTokenAtom)
-    const client = get(publicClientAtom)
     const chainId = get(chainIdAtom)
+    const client = publicClient({ chainId })
 
     if (!client || !contracts || !rToken || !assets) {
       return null

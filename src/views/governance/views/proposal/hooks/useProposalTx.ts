@@ -36,7 +36,7 @@ import {
   zeroAddress,
 } from 'viem'
 import { getSharesFromSplit } from 'views/deploy/utils'
-import { Address, useContractRead } from 'wagmi'
+import { Address } from 'wagmi'
 import {
   backupChangesAtom,
   isNewBasketProposedAtom,

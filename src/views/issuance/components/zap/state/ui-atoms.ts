@@ -1,10 +1,11 @@
-import { Token } from '@reserve-protocol/token-zapper'
+import { Address, Token } from '@reserve-protocol/token-zapper'
 import { notifyError, notifySuccess } from 'hooks/useNotification'
 import { Getter, SetStateAction, Setter, atom } from 'jotai'
-import { atomWithStorage } from 'jotai/utils'
+import { atomWithStorage, loadable } from 'jotai/utils'
 import { Atom } from 'jotai/vanilla'
 import mixpanel from 'mixpanel-browser'
 import {
+  chainIdAtom,
   ethPriceAtom,
   gasFeeAtom,
   isWalletModalVisibleAtom,
@@ -16,6 +17,7 @@ import {
   approvalNeededAtom,
   approvalPending,
   approvalRandomId,
+  approximateGasUsage,
   hasSufficientGasTokenAndERC20TokenBalance,
   maxSelectedZapTokenBalance,
   noZapActive,
@@ -45,6 +47,9 @@ import {
 } from './atoms'
 import { FOUR_DIGITS, formatQty } from './formatTokenQuantity'
 import { resolvedZapState, zappableTokens, zapperState } from './zapper'
+import { WalletClient } from 'viem'
+import { Web3Provider } from '@ethersproject/providers'
+import { GetWalletClientResult } from 'wagmi/dist/actions'
 
 /**
  * This file contains atoms that are used to control the UI state of the Zap component.
@@ -105,10 +110,10 @@ export const zapTxFeeAtom = atom((get) => {
   const gasUsdPrice = get(ethPriceAtom)
   return tx?.transaction?.gasEstimate
     ? Number(
-        tx.result.universe.nativeToken
-          .from(tx.transaction.feeEstimate(gasPrice ?? 1n))
-          .format()
-      ) * gasUsdPrice
+      tx.result.universe.nativeToken
+        .from(tx.transaction.feeEstimate(gasPrice ?? 1n))
+        .format()
+    ) * gasUsdPrice
     : 0
 })
 
@@ -312,26 +317,64 @@ const buttonLoadingLabel = atom((get) => {
   }
 })
 
-const zapEnabledForRTokens = new Set<string>([
-  '0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f',
-  '0xe72b141df173b999ae7c1adcbf60cc9833ce56a8',
-  '0xacdf0dba4b9839b96221a8487e9ca660a48212be',
-  '0xf2098092a5b9d25a3cc7ddc76a0553c9922eea9e',
-  '0x9b451beb49a03586e6995e5a93b9c745d068581e',
-  '0xfc0b1eef20e4c68b3dcf36c4537cfa7ce46ca70b',
-  '0x50249c768a6d3cb4b6565c0a2bfbdb62be94915c',
-  '0xcc7ff230365bd730ee4b352cc2492cedac49383e',
-])
-
 export const zapEnabledAtom = atomWithStorage('zap-enabled', false)
-export const zapAvailableAtom = atom((get) => {
-  const rTokenAddress = get(rTokenAtom)?.address.toLowerCase()
-  return rTokenAddress != null && zapEnabledForRTokens.has(rTokenAddress)
-})
+export const zapAvailableAtom = loadable(
+  atom(async (get) => {
+    const state = get(resolvedZapState)
+    const rtoken = get(rTokenAtom)
+    if (state == null || rtoken == null) {
+      return null
+    }
+    await state.initialized
+    if (approximateGasUsage[rtoken.address.toLowerCase()]) {
+      return { canZap: true, tokensMissings: [] }
+    }
+    const token = await state.getToken(Address.from(rtoken.address))
+
+    for (let i = 0; i < 2; i++) {
+      try {
+        const o = await state.canZapIntoRToken(token)
+        if (o != null) {
+          return o
+        }
+      } catch (e) { }
+    }
+    return null
+  })
+)
 let errors = 0
 export const ui = {
   zapSettingsOpen: atom(false),
-  zapWidgetEnabled: atom((get) => get(zapEnabledAtom) && get(zapAvailableAtom)),
+  zapWidgetEnabled: atom((get) => {
+    const rtoken = get(rTokenAtom)
+    const chainId = get(chainIdAtom)
+    if (!get(zapEnabledAtom)) {
+      return { state: 'disabled' as const, missingTokens: [] }
+    }
+    const available = get(zapAvailableAtom)
+
+    if (available.state === 'loading') {
+      return { state: 'loading' as const, missingTokens: [] }
+    }
+    if (available.state === 'hasError') {
+      return { state: 'loading' as const, missingTokens: [] }
+    }
+    if (available.data == null) {
+      return { state: 'loading' as const, missingTokens: [] }
+    }
+    if (available.data.canZap === true) {
+      return { state: 'enabled' as const, missingTokens: [] }
+    }
+    mixpanel.track('Unsuported RToken', {
+      chainId: chainId,
+      RToken: [rtoken?.symbol, rtoken?.address].join(":"),
+      missingCollterals: available.data.tokensMissings.map(t => [t.symbol, t.address].join(":")).join(", "),
+    })
+    return {
+      state: 'not-supported' as const,
+      missingTokens: available.data.tokensMissings,
+    }
+  }),
   zapState: atom((get) => {
     const zapState = get(zapperState)
 
@@ -400,21 +443,23 @@ export const ui = {
       loading: get(previousZapTransaction) == null && get(buttonIsLoading),
       label: get(buttonLabel),
     }),
-    async (get, set, _) => {
+    async (get, set, client: GetWalletClientResult) => {
       if (get(zapSender) == null) {
         set(isWalletModalVisibleAtom, true)
       }
       const flowState = get(state)
       const data = getZapActionState(get)
 
+
       if (data == null) {
         return
       }
+
+      data.signer = client as any
       if (flowState === 'tx_loading') {
         errors = 0
       } else if (flowState === 'tx_error') {
         if (errors < 5) {
-          console.log('Requoting..')
           set(redoQuote, Math.random())
           errors += 1
         }
