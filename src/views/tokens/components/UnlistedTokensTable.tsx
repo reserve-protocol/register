@@ -182,6 +182,7 @@ const UnlistedTokensTable = () => {
       <Table
         // pagination={{ pageSize: 10 }}
         onRowClick={handleClick}
+        sorting
         columns={columns}
         data={data}
       />

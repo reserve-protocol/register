@@ -11,28 +11,6 @@ import { borderRadius } from 'theme'
 import { Box, BoxProps, Flex } from 'theme-ui'
 import { StringMap } from 'types'
 
-// export type { Column, Cell, Row, UseExpandedRowProps }
-// export type SelectedRowIds = Record<number, boolean>
-// interface TableOwnProps<D extends { [key: string]: any }> {
-//   columns: any[]
-//   data?: D[]
-//   header?: boolean
-//   sorting?: boolean
-//   compact?: boolean
-//   maxHeight?: string | number
-//   hiddenColumns?: string[]
-//   skipPageReset?: boolean
-//   renderRowSubComponent?: (props: { row: Row }) => ReactNode
-//   sortBy?: Array<SortingRule<any>>
-//   pagination?: TablePaginationProps | boolean
-//   onRowClick?(data: any): void
-// }
-
-// export type TableProps<D extends { [key: string]: any }> = TableOwnProps<D> &
-//   BoxProps
-
-// columns: ColumnDef<TData>[]
-
 interface Props extends BoxProps {
   columns: any[] // figure out proper type
   data: StringMap[]
@@ -56,8 +34,6 @@ export function Table({
   ...props
 }: Props) {
   const [sortingState, setSorting] = React.useState<SortingState>(sortBy)
-
-  console.log('sorting state', sortingState)
 
   const table = useReactTable({
     columns,
@@ -91,7 +67,16 @@ export function Table({
                   as="th"
                   variant="styles.th"
                   key={header.id}
-                  onClick={header.column.getToggleSortingHandler()}
+                  sx={
+                    sorting
+                      ? { cursor: 'pointer', userSelect: 'none' }
+                      : undefined
+                  }
+                  onClick={
+                    sorting
+                      ? header.column.getToggleSortingHandler()
+                      : undefined
+                  }
                 >
                   <Flex pb={compact ? 2 : 0} variant="layout.verticalAlign">
                     <Box sx={{ mr: 1, flex: 1 }}>
