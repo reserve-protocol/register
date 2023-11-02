@@ -88,7 +88,7 @@ const ListedTokensTable = (
 
   return (
     <>
-      <Table
+      {/* <Table
         data={list}
         columns={columns}
         onRowClick={handleClick}
@@ -105,7 +105,7 @@ const ListedTokensTable = (
         <Box sx={{ textAlign: 'center' }} mt={4}>
           <Text variant="legend">No RTokens listed for this chain</Text>
         </Box>
-      )}
+      )} */}
     </>
   )
 }

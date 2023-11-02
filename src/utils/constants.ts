@@ -1,6 +1,8 @@
 import { Token } from 'types'
 import { RSR_ADDRESS } from './addresses'
 import { ChainId } from './chains'
+import rtokens from '@lc-labs/rtokens'
+import RSV from './rsv'
 
 export const VERSION = '3.0.0'
 
@@ -93,3 +95,13 @@ export const blockDuration = {
 }
 
 export const supportedChainList = [ChainId.Mainnet, ChainId.Base]
+
+export const LISTED_RTOKEN_ADDRESSES: { [x: number]: string[] } = {
+  [ChainId.Mainnet]: [RSV.address.toLowerCase()],
+}
+
+for (const chain of supportedChainList) {
+  LISTED_RTOKEN_ADDRESSES[chain] = [
+    ...Object.keys(rtokens[chain]).map((s) => s.toLowerCase()),
+  ]
+}

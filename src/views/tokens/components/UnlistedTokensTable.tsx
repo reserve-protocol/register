@@ -7,20 +7,23 @@ import { gql } from 'graphql-request'
 import { useNavigate } from 'react-router-dom'
 import { t } from '@lingui/macro'
 import TokenItem from 'components/token-item'
-import { formatEther, getAddress } from 'viem'
+import { Address, formatEther, getAddress } from 'viem'
 import { rTokenListAtom } from 'state/atoms'
-import { atom, useAtomValue } from 'jotai'
+import { atom, useAtom, useAtomValue } from 'jotai'
+import { Input } from 'components'
+import { createColumnHelper } from '@tanstack/react-table'
 
 const listedTokensAtom = atom((get) =>
   Object.keys(get(rTokenListAtom)).map((address) => address.toLowerCase())
 )
 
 const query = gql`
-  query GetTokenListOverview($listed: [String]!) {
+  query GetTokenListOverview($listed: [String]!, $skip: Int!) {
     rtokens(
       orderBy: cumulativeUniqueUsers
       orderDirection: desc
-      first: 1000
+      first: 10
+      skip: $skip
       where: { id_not_in: $listed }
     ) {
       id
@@ -41,10 +44,48 @@ const query = gql`
   }
 `
 
+interface RTokenRow {
+  id: Address
+  targetUnits: string
+  name: string
+  symbol: string
+  price: number
+  transactionCount: number
+  cumulativeVolume: number
+  staked: number
+  marketCap: number
+}
+
+const searchInputAtom = atom('')
+
+const TokenSearchInput = () => {
+  const [value, setValue] = useAtom(searchInputAtom)
+
+  return (
+    <Box mb={5} ml={3}>
+      <Text ml={2} variant="legend">
+        Search
+      </Text>
+      <Input
+        mt={1}
+        variant="smallInput"
+        onChange={setValue}
+        value={value}
+        placeholder={t`Name, symbol or target`}
+      />
+    </Box>
+  )
+}
+
 const useTokens = () => {
   const listed = useAtomValue(listedTokensAtom)
-  const { data } = useQuery(query, { listed: listed.length ? listed : ['.'] })
-  const [tokens, setTokens] = useState([])
+  const { data, error } = useQuery(query, {
+    listed: listed.length ? listed : ['.'],
+    skip: 0,
+  })
+
+  console.log('error', error)
+  const [tokens, setTokens] = useState<RTokenRow[]>([])
 
   useEffect(() => {
     if (data?.rtokens) {
@@ -73,46 +114,41 @@ const useTokens = () => {
 const UnlistedTokensTable = () => {
   const navigate = useNavigate()
   const data = useTokens()
+  const columnHelper = createColumnHelper<RTokenRow>()
 
   const columns = useMemo(
     () => [
-      {
-        Header: t`Token`,
-        accessor: 'symbol',
-        Cell: (data: any) => {
+      columnHelper.accessor('symbol', {
+        header: t`Token`,
+        cell: (data) => {
           return (
             <Box sx={{ minWidth: 150 }}>
               <TokenItem
-                symbol={data.cell.value}
+                symbol={data.getValue()}
                 logo={'/svgs/defaultLogo.svg'}
               />
             </Box>
           )
         },
-      },
-      {
-        Header: t`Price`,
-        accessor: 'price',
-        Cell: formatUsdCurrencyCell,
-      },
-      {
-        Header: t`Mkt Cap`,
-        accessor: 'marketCap',
-        Cell: formatUsdCurrencyCell,
-      },
-      {
-        Header: t`Txs`,
-        accessor: 'transactionCount',
-      },
-      {
-        Header: t`Volume`,
-        accessor: 'cumulativeVolume',
-        Cell: formatUsdCurrencyCell,
-      },
-      {
-        Header: t`Target(s)`,
-        accessor: 'targetUnits',
-        Cell: (cell: any) => {
+      }),
+      columnHelper.accessor('price', {
+        header: t`Price`,
+        cell: formatUsdCurrencyCell,
+      }),
+      columnHelper.accessor('marketCap', {
+        header: t`Mkt Cap`,
+        cell: formatUsdCurrencyCell,
+      }),
+      columnHelper.accessor('transactionCount', {
+        header: t`Txs`,
+      }),
+      columnHelper.accessor('cumulativeVolume', {
+        header: t`Volume`,
+        cell: formatUsdCurrencyCell,
+      }),
+      columnHelper.accessor('targetUnits', {
+        header: t`Target(s)`,
+        cell: (data) => {
           return (
             <Text
               sx={{
@@ -120,16 +156,15 @@ const UnlistedTokensTable = () => {
                 display: 'block',
               }}
             >
-              {cell.value}
+              {data.getValue()}
             </Text>
           )
         },
-      },
-      {
-        Header: t`Staked`,
-        accessor: 'staked',
-        Cell: formatUsdCurrencyCell,
-      },
+      }),
+      columnHelper.accessor('staked', {
+        header: t`Staked`,
+        cell: formatUsdCurrencyCell,
+      }),
     ],
     []
   )
@@ -140,12 +175,17 @@ const UnlistedTokensTable = () => {
   }
 
   return (
-    <Table
-      pagination={{ pageSize: 10 }}
-      onRowClick={handleClick}
-      columns={columns}
-      data={data}
-    />
+    <>
+      <Box variant="layout.verticalAlign">
+        <TokenSearchInput />
+      </Box>
+      <Table
+        // pagination={{ pageSize: 10 }}
+        onRowClick={handleClick}
+        columns={columns}
+        data={data}
+      />
+    </>
   )
 }
 

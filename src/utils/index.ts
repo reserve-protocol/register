@@ -1,4 +1,5 @@
 import { t } from '@lingui/macro'
+import { CellContext } from '@tanstack/react-table'
 import ERC20 from 'abis/ERC20'
 import humanizeDuration from 'humanize-duration'
 import { BigNumberMap } from 'types'
@@ -136,11 +137,11 @@ export const formatPercentage = (value: number, decimals = 2): string =>
   })
 
 // Utils for rable parsing
-export const formatCurrencyCell = ({ cell }: { cell: any }) =>
-  formatCurrency(+cell.value)
+export const formatCurrencyCell = (data: CellContext<any, number>) =>
+  formatCurrency(+data.getValue())
 
-export const formatUsdCurrencyCell = ({ cell }: { cell: any }) =>
-  `$${formatCurrency(+cell.value)}`
+export const formatUsdCurrencyCell = (data: CellContext<any, number>) =>
+  `$${formatCurrency(+data.getValue())}`
 
 // shorten the checksummed version of the input address to have 0x + 4 characters at start and end
 export function shortenAddress(address: string, chars = 4): string {
