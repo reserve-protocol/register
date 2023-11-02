@@ -14,7 +14,7 @@ import { formatEther, getAddress } from 'viem'
 import { useMultichainQuery } from './useQuery'
 import useTimeFrom from './useTimeFrom'
 
-interface ListedToken {
+export interface ListedToken {
   id: string
   name: string
   symbol: string

@@ -1,9 +1,10 @@
 import { t } from '@lingui/macro'
+import { createColumnHelper } from '@tanstack/react-table'
 import ChainLogo from 'components/icons/ChainLogo'
 import { Table, TableProps } from 'components/table'
 import TokenItem from 'components/token-item'
 import useRTokenLogo from 'hooks/useRTokenLogo'
-import useTokenList from 'hooks/useTokenList'
+import useTokenList, { ListedToken } from 'hooks/useTokenList'
 import mixpanel from 'mixpanel-browser'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -14,46 +15,42 @@ import {
   formatUsdCurrencyCell,
 } from 'utils'
 
-const ListedTokensTable = (
-  props: Partial<TableProps<{ [key: string]: any }>>
-) => {
+const ListedTokensTable = (props: Partial<TableProps>) => {
   const { list, isLoading } = useTokenList()
+  const columnHelper = createColumnHelper<ListedToken>()
   const navigate = useNavigate()
 
-  // TODO: Calculate APY from basket (need theGraph)
   const columns = useMemo(
     () => [
-      {
-        Header: t`Token`,
-        accessor: 'symbol',
-        Cell: (data: any) => {
+      columnHelper.accessor('symbol', {
+        header: t`Token`,
+        cell: (data) => {
           const logo = useRTokenLogo(
             data.row.original.id,
             data.row.original.chain
           )
-          return <TokenItem symbol={data.cell.value} logo={logo} />
+          return <TokenItem symbol={data.getValue()} logo={logo} />
         },
-      },
-      { Header: t`Price`, accessor: 'price', Cell: formatUsdCurrencyCell },
-      {
-        Header: t`Mkt Cap`,
-        accessor: 'supply',
-        Cell: ({ cell }: { cell: any }) => `$${formatCurrency(+cell.value, 0)}`,
-      },
-      {
-        Header: t`Txs`,
-        accessor: 'transactionCount',
-        Cell: formatCurrencyCell,
-      },
-      {
-        Header: t`Volume`,
-        accessor: 'cumulativeVolume',
-        Cell: ({ cell }: { cell: any }) => `$${formatCurrency(+cell.value, 0)}`,
-      },
-      {
-        Header: t`Target(s)`,
-        accessor: 'targetUnits',
-        Cell: (cell: any) => {
+      }),
+      columnHelper.accessor('price', {
+        header: t`Price`,
+        cell: formatUsdCurrencyCell,
+      }),
+      columnHelper.accessor('supply', {
+        header: t`Mkt Cap`,
+        cell: (data) => `$${formatCurrency(data.getValue(), 0)}`,
+      }),
+      columnHelper.accessor('transactionCount', {
+        header: t`Txs`,
+        cell: formatCurrencyCell,
+      }),
+      columnHelper.accessor('cumulativeVolume', {
+        header: t`Volume`,
+        cell: (data) => `$${formatCurrency(data.getValue(), 0)}`,
+      }),
+      columnHelper.accessor('targetUnits', {
+        header: t`Target(s)`,
+        cell: (data) => {
           return (
             <Text
               sx={{
@@ -61,18 +58,17 @@ const ListedTokensTable = (
                 display: 'block',
               }}
             >
-              {cell.value}
+              {data.getValue()}
             </Text>
           )
         },
-      },
-      {
-        Header: t`Network`,
-        accessor: 'chain',
-        Cell: (cell: any) => {
-          return <ChainLogo chain={cell.value} />
+      }),
+      columnHelper.accessor('chain', {
+        header: t`Network`,
+        cell: (cell: any) => {
+          return <ChainLogo chain={cell.getValue()} />
         },
-      },
+      }),
     ],
     []
   )
@@ -88,7 +84,7 @@ const ListedTokensTable = (
 
   return (
     <>
-      {/* <Table
+      <Table
         data={list}
         columns={columns}
         onRowClick={handleClick}
@@ -105,7 +101,7 @@ const ListedTokensTable = (
         <Box sx={{ textAlign: 'center' }} mt={4}>
           <Text variant="legend">No RTokens listed for this chain</Text>
         </Box>
-      )} */}
+      )}
     </>
   )
 }

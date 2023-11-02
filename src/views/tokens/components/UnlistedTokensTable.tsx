@@ -84,7 +84,6 @@ const useTokens = () => {
     skip: 0,
   })
 
-  console.log('error', error)
   const [tokens, setTokens] = useState<RTokenRow[]>([])
 
   useEffect(() => {

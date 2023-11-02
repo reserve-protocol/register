@@ -5,6 +5,12 @@ body {
   font-display: swap;
 }
 
+@media (prefers-color-scheme: dark) {
+  html {
+    background-color: #090707;
+  }
+}
+
 #root {
   height: 100%;
   position: relative;

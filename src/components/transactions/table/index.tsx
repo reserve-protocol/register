@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import { t, Trans } from '@lingui/macro'
+import { createColumnHelper } from '@tanstack/react-table'
 import GoTo from 'components/button/GoTo'
 import Help from 'components/help'
 import ChainLogo from 'components/icons/ChainLogo'
@@ -62,68 +63,67 @@ const TransactionsTable = ({
     }),
     []
   )
+  const columnHelper = createColumnHelper<TransactionRecord>()
 
   const columns = useMemo(
     () => [
-      {
-        Header: t`Type`,
-        accessor: 'type',
-        Cell: ({ cell }: { cell: any }) => (
+      columnHelper.accessor('type', {
+        header: t`Type`,
+        cell: (data) => (
           <Text>
             <span style={{ textTransform: 'capitalize' }}>
-              {transactionTypes[cell.value] || cell.value}
+              {transactionTypes[data.getValue()] || data.getValue()}
             </span>{' '}
-            {external && cell.row.original.symbol}
+            {external && data.row.original.symbol}
           </Text>
         ),
-      },
-      {
-        Header: t`Amount`,
-        id: 'test',
-        accessor: 'amountUSD',
-        Cell: (cell: any) => {
-          if (isNaN(cell.cell.value)) {
-            return `$${cell.cell.value}`
+      }),
+      columnHelper.accessor('amountUSD', {
+        header: t`Amount`,
+        cell: (data) => {
+          if (isNaN(+data.getValue())) {
+            return `$${data.getValue()}`
           }
 
-          return formatUsdCurrencyCell(cell)
+          return formatUsdCurrencyCell(data as any)
         },
-      },
-      {
-        Header: t`Time`,
-        accessor: 'timestamp',
-        Cell: ({ cell }: { cell: any }) =>
-          relativeTime(cell.value, currentTime),
-      },
-      {
-        Header: external ? t`Platform` : t`Hash`,
-        id: 'id',
-        accessor: 'hash',
-        Cell: ({ cell, row }: { cell: any; row: any }) =>
-          cell.value ? (
+      }),
+      columnHelper.accessor('timestamp', {
+        header: t`Time`,
+        cell: (data) => relativeTime(data.getValue(), currentTime),
+      }),
+      columnHelper.accessor('hash', {
+        header: external ? t`Platform` : t`Hash`,
+        cell: (data) => {
+          const value = data.getValue()
+
+          if (!value) {
+            return 'Rpay'
+          }
+
+          return (
             <Box variant="layout.verticalAlign">
-              {multichain && row.original.chain && (
+              {multichain && data.row.original.chain && (
                 <ChainLogo
                   style={{ marginRight: 10 }}
-                  chain={row.original.chain}
+                  chain={data.row.original.chain}
                 />
               )}
               <Link
                 href={getExplorerLink(
-                  cell.value,
+                  value,
                   chainId,
                   ExplorerDataType.TRANSACTION
                 )}
                 target="_blank"
                 sx={{ display: ['none', 'inherit'] }}
               >
-                {shortenString(cell.value)}
+                {shortenString(value)}
               </Link>
             </Box>
-          ) : (
-            'Rpay'
-          ),
-      },
+          )
+        },
+      }),
     ],
     [currentTime, chainId]
   )

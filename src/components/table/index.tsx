@@ -11,7 +11,7 @@ import { borderRadius } from 'theme'
 import { Box, BoxProps, Flex } from 'theme-ui'
 import { StringMap } from 'types'
 
-interface Props extends BoxProps {
+export interface TableProps extends BoxProps {
   columns: any[] // figure out proper type
   data: StringMap[]
   compact?: boolean
@@ -32,7 +32,7 @@ export function Table({
   // pagination,
   onRowClick,
   ...props
-}: Props) {
+}: TableProps) {
   const [sortingState, setSorting] = React.useState<SortingState>(sortBy)
 
   const table = useReactTable({
