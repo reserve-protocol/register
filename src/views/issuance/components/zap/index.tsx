@@ -26,7 +26,6 @@ const UpdateBlockAndGas = () => {
       return
     }
     let timeout = setTimeout(() => {
-      console.log("redoing")
       redo(Math.random())
     }, 12000)
     return () => {
