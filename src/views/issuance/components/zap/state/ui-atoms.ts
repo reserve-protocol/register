@@ -47,8 +47,6 @@ import {
 } from './atoms'
 import { FOUR_DIGITS, formatQty } from './formatTokenQuantity'
 import { resolvedZapState, zappableTokens, zapperState } from './zapper'
-import { WalletClient } from 'viem'
-import { Web3Provider } from '@ethersproject/providers'
 import { GetWalletClientResult } from 'wagmi/dist/actions'
 
 /**
@@ -73,7 +71,7 @@ const zapTransactionFeeDisplayAtom = onlyNonNullAtom((get) => {
     return ['Approval tx', formatQty(approval.fee, FOUR_DIGITS)].join(' ')
   }
 
-  const tx = get(resolvedZapTransaction)
+  const tx = get(previousZapTransaction) ?? get(resolvedZapTransaction)
 
   if (
     get(zapTransactionGasEstimateUnits).state === 'loading' ||
@@ -110,10 +108,10 @@ export const zapTxFeeAtom = atom((get) => {
   const gasUsdPrice = get(ethPriceAtom)
   return tx?.transaction?.gasEstimate
     ? Number(
-      tx.result.universe.nativeToken
-        .from(tx.transaction.feeEstimate(gasPrice ?? 1n))
-        .format()
-    ) * gasUsdPrice
+        tx.result.universe.nativeToken
+          .from(tx.transaction.feeEstimate(gasPrice ?? 1n))
+          .format()
+      ) * gasUsdPrice
     : 0
 })
 
@@ -337,12 +335,13 @@ export const zapAvailableAtom = loadable(
         if (o != null) {
           return o
         }
-      } catch (e) { }
+      } catch (e) {}
     }
     return null
   })
 )
 let errors = 0
+let redoTimeout: any = null
 export const ui = {
   zapSettingsOpen: atom(false),
   zapWidgetEnabled: atom((get) => {
@@ -367,8 +366,10 @@ export const ui = {
     }
     mixpanel.track('Unsuported RToken', {
       chainId: chainId,
-      RToken: [rtoken?.symbol, rtoken?.address].join(":"),
-      missingCollterals: available.data.tokensMissings.map(t => [t.symbol, t.address].join(":")).join(", "),
+      RToken: [rtoken?.symbol, rtoken?.address].join(':'),
+      missingCollterals: available.data.tokensMissings
+        .map((t) => [t.symbol, t.address].join(':'))
+        .join(', '),
     })
     return {
       state: 'not-supported' as const,
@@ -450,7 +451,6 @@ export const ui = {
       const flowState = get(state)
       const data = getZapActionState(get)
 
-
       if (data == null) {
         return
       }
@@ -470,6 +470,7 @@ export const ui = {
           RToken: data.rToken.address.toString().toLowerCase() ?? '',
           inputToken: data.inputToken.symbol,
         })
+    
         await sendTx(get, set, data)
       } else if (flowState === 'sign_permit') {
         await signAndSendTx(get, set, data)

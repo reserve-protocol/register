@@ -16,6 +16,7 @@ import {
   balancesAtom,
   blockAtom,
   chainIdAtom,
+  gasFeeAtom,
   isSmartWalletAtom,
   rTokenAtom,
   walletAtom,
@@ -32,7 +33,7 @@ import {
 } from 'utils/atoms/utils'
 
 import { EthereumConfigType } from '@reserve-protocol/token-zapper/types/configuration/ethereum'
-import { type SearcherResult } from '@reserve-protocol/token-zapper/types/searcher/SearcherResult'
+import { type BaseSearcherResult } from '@reserve-protocol/token-zapper/types/searcher/SearcherResult'
 import { type ZapTransaction } from '@reserve-protocol/token-zapper/types/searcher/ZapTransaction'
 import mixpanel from 'mixpanel-browser'
 import { resolvedZapState, zappableTokens } from './zapper'
@@ -55,7 +56,7 @@ export const zapOutputSlippage = atom(100000n)
  */
 
 export const previousZapTransaction = atom<{
-  result: SearcherResult
+  result: BaseSearcherResult
   transaction: ZapTransaction
   permit2?: {
     permit: PermitTransferFrom
@@ -166,12 +167,6 @@ export const zapQuotePromise = loadable(
     if (input.inputQuantity.amount === 0n) {
       return null
     }
-    const blockNumber = get(blockAtom)
-    const [gasPrice] = await Promise.all([
-      await input.universe.provider.getGasPrice(),
-    ])
-
-    input.universe.updateBlockState(blockNumber, gasPrice.toBigInt())
     if (firstTime) {
       await input.zapSearcher.findSingleInputToRTokenZap(
         input.inputQuantity,

@@ -1,5 +1,5 @@
 import useRToken from 'hooks/useRToken'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import mixpanel from 'mixpanel-browser'
 import { Component, Suspense, useEffect, useState } from 'react'
 import { blockAtom, gasFeeAtom } from 'state/atoms'
@@ -8,20 +8,35 @@ import ConfirmZap from './components/ConfirmZap'
 import ZapButton from './components/ZapButton'
 import ZapInput from './components/ZapInput'
 import { ZapSettings } from './components/ZapSettings'
-import { selectedZapTokenAtom } from './state/atoms'
+import { redoQuote, selectedZapTokenAtom, zapTransaction } from './state/atoms'
 import { resolvedZapState } from './state/zapper'
 import { Trans, t } from '@lingui/macro'
 import Help from 'components/help'
 import { Token } from '@reserve-protocol/token-zapper'
 
 const UpdateBlockAndGas = () => {
+  const redo = useSetAtom(redoQuote)
   const zapState = useAtomValue(resolvedZapState)
   const block = useAtomValue(blockAtom)
   const gasPriceBn = useAtomValue(gasFeeAtom)
+  const tx = useAtomValue(zapTransaction)
+  const trigger = tx.state === 'hasData' ? tx.data : null
   useEffect(() => {
-    if (zapState == null || block == null || gasPriceBn == null) return
-    if (block === zapState.currentBlock || gasPriceBn === zapState.gasPrice)
+    if (trigger == null) {
       return
+    }
+    let timeout = setTimeout(() => {
+      console.log("redoing")
+      redo(Math.random())
+    }, 12000)
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [trigger])
+  useEffect(() => {
+    if (zapState == null || block == null || gasPriceBn == null) {
+      return
+    }
     zapState.updateBlockState(block, gasPriceBn)
   }, [zapState, block, gasPriceBn])
   return null
