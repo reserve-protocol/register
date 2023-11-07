@@ -15,12 +15,11 @@ import { atom } from 'jotai'
 import { loadable } from 'jotai/utils'
 
 import mixpanel from 'mixpanel-browser'
-import { publicClient, wagmiConfig } from 'state/chain'
 import { chainIdAtom, rTokenAtom } from 'state/atoms'
+import { publicClient } from 'state/chain'
 import { onlyNonNullAtom, simplifyLoadable } from 'utils/atoms/utils'
 import { ChainId } from 'utils/chains'
 import { PublicClient } from 'viem'
-import { useWalletClient } from 'wagmi'
 
 export async function publicClientToProvider(publicClient: PublicClient) {
   const { chain } = publicClient

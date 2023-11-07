@@ -1,69 +1,24 @@
+import { Trans } from '@lingui/macro'
+import { type Token } from '@reserve-protocol/token-zapper'
 import useRToken from 'hooks/useRToken'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
-import { Component, Suspense, useEffect, useState } from 'react'
-import { blockAtom, gasFeeAtom } from 'state/atoms'
-import { Box, Card, Flex, Link, Text } from 'theme-ui'
+import { useState } from 'react'
+import { Card, Text } from 'theme-ui'
 import ConfirmZap from './components/ConfirmZap'
+import { UnsupportedZap } from './components/UnsupportedZap'
 import ZapButton from './components/ZapButton'
 import ZapInput from './components/ZapInput'
+import RedeemZapInput from './components/ZapRedeemInput'
 import { ZapSettings } from './components/ZapSettings'
-import { redoQuote, selectedZapTokenAtom, zapTransaction } from './state/atoms'
-import { resolvedZapState } from './state/zapper'
-import { Trans, t } from '@lingui/macro'
-import Help from 'components/help'
-import { Token } from '@reserve-protocol/token-zapper'
-
-const UpdateBlockAndGas = () => {
-  const redo = useSetAtom(redoQuote)
-  const zapState = useAtomValue(resolvedZapState)
-  const block = useAtomValue(blockAtom)
-  const gasPriceBn = useAtomValue(gasFeeAtom)
-  const tx = useAtomValue(zapTransaction)
-  const trigger = tx.state === 'hasData' ? tx.data : null
-  useEffect(() => {
-    if (trigger == null) {
-      return
-    }
-    let timeout = setTimeout(() => {
-      redo(Math.random())
-    }, 12000)
-    return () => {
-      clearTimeout(timeout)
-    }
-  }, [trigger])
-  useEffect(() => {
-    if (zapState == null || block == null || gasPriceBn == null) {
-      return
-    }
-    zapState.updateBlockState(block, gasPriceBn)
-  }, [zapState, block, gasPriceBn])
-  return null
-}
-
-class CatchErrors extends Component<{ children: any }> {
-  state = {
-    hasError: false,
-  }
-  constructor(props: any) {
-    super(props)
-  }
-  componentDidCatch() {
-    this.setState({ hasError: true })
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return null
-    }
-    return <>{this.props.children}</>
-  }
-}
+import { selectedZapTokenAtom } from './state/atoms'
+import { ui } from './state/ui-atoms'
+import RedeemZapButton from './components/RedeemZapButton'
 
 /**
  * Zap widget
  */
-const Zap = ({
+export const ZapWidget = ({
   isZapEnabled,
   missingTokenSupport,
 }: {
@@ -80,20 +35,19 @@ const Zap = ({
       inputToken: selectedToken?.symbol,
     })
   }
-  const unsuppoed =
+  const unsupported =
     isZapEnabled === 'failed' || isZapEnabled === 'not-supported'
   const checkingIfZapEnabled = isZapEnabled === 'loading'
 
+  const [open, setOpen] = useAtom(ui.zapSettingsOpen)
+
   return (
-    <CatchErrors>
-      <Suspense fallback={<></>}>
-        <UpdateBlockAndGas />
-      </Suspense>
+    <>
       <Card p={4}>
-        <ZapSettings />
-        <ZapInput disabled={unsuppoed || checkingIfZapEnabled} />
+        <ZapSettings open={open} setOpen={setOpen} />
+        <ZapInput disabled={unsupported || checkingIfZapEnabled} />
         <ZapButton
-          disabled={unsuppoed || checkingIfZapEnabled}
+          disabled={unsupported || checkingIfZapEnabled}
           onClick={handleClick}
         />
         {checkingIfZapEnabled && (
@@ -101,62 +55,25 @@ const Zap = ({
             <Trans>Checking if token is supported...</Trans>
           </Text>
         )}
-        {unsuppoed && (
-          <>
-            <Flex
-              sx={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
-              mt={3}
-              mx={3}
-            >
-              <Text variant="strong">
-                <Trans>Zaps not available for token</Trans>
-              </Text>
-              <Help
-                content={t`The zapper does not currently work with this RToken. This is usually because the basket contains collateral that is not yet supported. Additional collateral types are being expanded over time.`}
-              />
-            </Flex>
-            {missingTokenSupport.length !== 0 && (
-              <>
-                <Box mx={3} mt={3}>
-                  <Text>
-                    <Trans>Unsupported collaterals:</Trans>
-                  </Text>
-                </Box>
-                {missingTokenSupport.map((token) => (
-                  <Box ml={4} key={token.address.address} mr={3}>
-                    <Text>&#x2022; {token.symbol}</Text>
-                  </Box>
-                ))}
-              </>
-            )}
-            <Text
-              mx={3}
-              mt={2}
-              variant="strong"
-              sx={{ fontSize: 12 }}
-              color="error"
-            >
-              <Trans>
-                The zapper is opensourced and anyone can add new
-                collateral/request support here:{' '}
-              </Trans>{' '}
-              <Link
-                target="_blank"
-                href={'https://github.com/reserve-protocol/token-zapper/issues'}
-              >
-                Zapper repository
-              </Link>
-            </Text>
-          </>
+        {unsupported && (
+          <UnsupportedZap missingTokenSupport={missingTokenSupport} />
         )}
       </Card>
       {isZapping && <ConfirmZap onClose={() => setZapping(false)} />}
-    </CatchErrors>
+    </>
   )
 }
 
-export default Zap
+export const ZapRedeemWidget = () => {
+  const [open, setOpen] = useAtom(ui.zapRedeemSettingsOpen)
+
+  return (
+    <>
+      <Card p={4}>
+        <ZapSettings open={open} setOpen={setOpen} />
+        <RedeemZapInput />
+        <RedeemZapButton/>
+      </Card>
+    </>
+  )
+}

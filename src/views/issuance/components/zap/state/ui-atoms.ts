@@ -10,11 +10,13 @@ import {
   gasFeeAtom,
   isWalletModalVisibleAtom,
   rTokenAtom,
+  rTokenBalanceAtom,
 } from 'state/atoms'
 import { addTransactionAtom } from 'state/chain/atoms/transactionAtoms'
 import { onlyNonNullAtom } from 'utils/atoms/utils'
 import {
   approvalNeededAtom,
+  approvalNeededForRedeemAtom,
   approvalPending,
   approvalRandomId,
   approximateGasUsage,
@@ -23,10 +25,17 @@ import {
   noZapActive,
   permit2ToSignAtom,
   permitSignature,
+  previousRedeemZapTransaction,
   previousZapTransaction,
-  redoQuote,
+  redeemZapQuote,
+  redeemZapQuoteInput,
+  redeemZapQuotePromise,
+  redeemZapTransaction,
+  redoZapQuote,
   resolvedApprovalNeeded,
   resolvedApprovalTxFee,
+  resolvedRedeemApprovalNeeded,
+  resolvedRedeemZapTransaction,
   resolvedZapTransaction,
   resolvedZapTransactionGasEstimateUnits,
   selectedZapTokenAtom,
@@ -39,15 +48,19 @@ import {
   zapQuote,
   zapQuoteInput,
   zapQuotePromise,
+  zapRedeemInputString,
   zapSender,
   zapTransaction,
-  zapTransactionGasEstimateUnits,
   zapTxHash,
   zapperInputs,
 } from './atoms'
 import { FOUR_DIGITS, formatQty } from './formatTokenQuantity'
 import { resolvedZapState, zappableTokens, zapperState } from './zapper'
 import { GetWalletClientResult } from 'wagmi/dist/actions'
+import { Transaction } from 'ethers'
+import { JsonRpcProvider, JsonRpcSigner, Provider, Web3Provider } from '@ethersproject/providers'
+import { BaseSearcherResult } from '@reserve-protocol/token-zapper/types/searcher/SearcherResult'
+import { TransactionRequest } from 'viem'
 
 /**
  * This file contains atoms that are used to control the UI state of the Zap component.
@@ -73,21 +86,6 @@ const zapTransactionFeeDisplayAtom = onlyNonNullAtom((get) => {
 
   const tx = get(previousZapTransaction) ?? get(resolvedZapTransaction)
 
-  if (
-    get(zapTransactionGasEstimateUnits).state === 'loading' ||
-    get(zapTransactionGasEstimateUnits).state === 'hasError' ||
-    (approval.approvalNeeded.usingPermit2 === true && tx.permit2 == null)
-  ) {
-    return [
-      'Zap tx',
-      formatQty(
-        nativeToken.fromBigInt(tx.transaction.feeEstimate(gasPrice)),
-        FOUR_DIGITS
-      ),
-      '(estimate)',
-    ].join(' ')
-  }
-
   const zapTxUnits = get(resolvedZapTransactionGasEstimateUnits, 0n)
   return [
     'Zap tx',
@@ -108,10 +106,10 @@ export const zapTxFeeAtom = atom((get) => {
   const gasUsdPrice = get(ethPriceAtom)
   return tx?.transaction?.gasEstimate
     ? Number(
-        tx.result.universe.nativeToken
-          .from(tx.transaction.feeEstimate(gasPrice ?? 1n))
-          .format()
-      ) * gasUsdPrice
+      tx.result.universe.nativeToken
+        .from(tx.transaction.feeEstimate(gasPrice ?? 1n))
+        .format()
+    ) * gasUsdPrice
     : 0
 })
 
@@ -179,70 +177,133 @@ export const zapDustValue = atom(async (get) => {
   }
 })
 
-export const zapOutputValue = onlyNonNullAtom((get) => {
-  const quote = get(zapQuote)
-  const rTokenOut = get(zapperInputs).rToken
-  const qty =
-    quote.swaps.outputs.find((r) => r.token == rTokenOut) ?? rTokenOut.zero
-
-  return qty.format()
-}, '0')
-
-const state = atom((get) => {
-  const quotePromise = get(zapQuotePromise)
-  const approvePromise = get(approvalNeededAtom)
-  const tx = get(zapTransaction)
-  const units = get(zapTransactionGasEstimateUnits)
-  const balances = get(hasSufficientGasTokenAndERC20TokenBalance)
-
-  if (balances?.gas.hasSufficient === false) {
-    return 'insufficient_gas_balance'
+export const redeemZapOutputAmount = atom((get) => {
+  const previous = get(previousRedeemZapTransaction)
+  const quote = get(redeemZapQuote) ?? previous?.result
+  const outputToken = quote?.outputToken
+  if (quote == null || outputToken == null) {
+    return '0.0'
   }
-  if (balances?.tokens.hasSufficient === false) {
-    return 'insufficient_token_balance'
-  }
-
-  if (get(zapIsPending)) {
-    return 'tx_sent_loading'
-  }
-  if (get(approvalPending)) {
-    return 'approval_sent_loading'
-  }
-  if (get(signatureRequestPending)) {
-    return 'signature_loading'
-  }
-
-  if (quotePromise.state === 'loading') return 'quote_loading'
-  if (quotePromise.state === 'hasError') return 'quote_error'
-  if (quotePromise.data == null) {
-    return 'initial'
-  }
-  if (approvePromise.state === 'loading') return 'approval_loading'
-  if (approvePromise.state === 'hasError') return 'approval_error'
-  if (approvePromise.data == null) {
-    return 'approval_loading'
-  }
-
-  if (approvePromise.data.approvalNeeded === true) {
-    return 'approval'
-  }
-
-  if (tx.state === 'loading') return 'tx_loading'
-  if (tx.state === 'hasError') return 'tx_error'
-  if (tx.data == null) {
-    return 'tx_loading'
-  }
-  if (approvePromise.data.usingPermit2 === true && tx.data.permit2 == null) {
-    return 'sign_permit'
-  }
-
-  if (units.state === 'loading') return 'tx_estimate_loading'
-  if (units.state === 'hasError') return 'tx_estimate_error'
-  if (units.data == null) return 'tx_estimate_error'
-
-  return 'send_tx'
+  return formatQty(
+    quote.swaps.outputs.find((r) => r.token === outputToken) ??
+    outputToken.zero,
+    FOUR_DIGITS
+  )
 })
-type UIState = typeof state extends Atom<infer T> ? T : never
+
+export const redeemZapDust = atom((get) => {
+  const tx = get(previousRedeemZapTransaction)
+  const quote = tx?.result ?? get(redeemZapQuote)
+  if (quote == null) {
+    return []
+  }
+
+  const rTokenOut = quote.outputToken
+
+  const dust = quote.swaps.outputs.filter(
+    (i) => i.token !== rTokenOut && i.amount !== 0n
+  )
+  return dust
+})
+
+export const redeemZapDustValue = atom(async (get) => {
+  const dust = get(redeemZapDust)
+  if (dust == null) {
+    return null
+  }
+  const tx = get(previousRedeemZapTransaction)
+  const quote = tx?.result ?? get(redeemZapQuote)
+  if (quote == null) {
+    return null
+  }
+  const dustUSD = await Promise.all(
+    dust.map(async (d) => ({
+      dustQuantity: d,
+      usdValueOfDust: await quote.universe.fairPrice(d),
+    }))
+  )
+
+  let total = 0n
+  for (const d of dustUSD) {
+    total += d.usdValueOfDust?.amount ?? 0n
+  }
+  return {
+    dust: dustUSD,
+    total: quote.universe.usd.from(total),
+  }
+})
+
+const mkZapState = (
+  zapPromise: typeof zapQuotePromise,
+  approvalPromise: typeof approvalNeededAtom,
+  zapTx: typeof zapTransaction,
+  hasSufficient: typeof hasSufficientGasTokenAndERC20TokenBalance
+) => {
+  return atom((get) => {
+    const quotePromise = get(zapPromise)
+    const approvePromise = get(approvalPromise)
+    const tx = get(zapTx)
+    const balances = get(hasSufficient)
+
+    if (balances?.gas.hasSufficient === false) {
+      return 'insufficient_gas_balance'
+    }
+    if (balances?.tokens.hasSufficient === false) {
+      return 'insufficient_token_balance'
+    }
+
+    if (get(zapIsPending)) {
+      return 'tx_sent_loading'
+    }
+    if (get(approvalPending)) {
+      return 'approval_sent_loading'
+    }
+    if (get(signatureRequestPending)) {
+      return 'signature_loading'
+    }
+
+    if (quotePromise.state === 'loading') return 'quote_loading'
+    if (quotePromise.state === 'hasError') return 'quote_error'
+    if (quotePromise.data == null) {
+      return 'initial'
+    }
+    if (approvePromise.state === 'loading') return 'approval_loading'
+    if (approvePromise.state === 'hasError') return 'approval_error'
+    if (approvePromise.data == null) {
+      return 'approval_loading'
+    }
+
+    if (approvePromise.data.approvalNeeded === true) {
+      return 'approval'
+    }
+
+    if (tx.state === 'loading') return 'tx_loading'
+    if (tx.state === 'hasError') return 'tx_error'
+    if (tx.data == null) {
+      return 'tx_loading'
+    }
+    if (approvePromise.data.usingPermit2 === true && tx.data.permit2 == null) {
+      return 'sign_permit'
+    }
+
+    return 'send_tx'
+  })
+}
+const zapState = mkZapState(
+  zapQuotePromise,
+  approvalNeededAtom,
+  zapTransaction,
+  hasSufficientGasTokenAndERC20TokenBalance
+)
+
+const redeemZapState = mkZapState(
+  redeemZapQuotePromise,
+  approvalNeededForRedeemAtom,
+  redeemZapTransaction as any,
+  hasSufficientGasTokenAndERC20TokenBalance
+)
+
+type UIState = typeof zapState extends Atom<infer T> ? T : never
 const buttonEnabledStates = new Set<UIState>([
   'approval',
   'sign_permit',
@@ -251,69 +312,11 @@ const buttonEnabledStates = new Set<UIState>([
 const loadingStates = new Set<UIState>([
   'quote_loading',
   // 'approval_loading',
-  'tx_estimate_loading',
   'tx_loading',
   'tx_sent_loading',
   // 'approval_sent_loading',
   'signature_loading',
 ])
-
-const buttonEnabled = atom((get) => {
-  const s = get(state)
-  if (s === 'insufficient_gas_balance' || s === 'insufficient_token_balance') {
-    return false
-  }
-  return buttonEnabledStates.has(s) || get(previousZapTransaction) != null
-})
-const buttonIsLoading = atom((get) => loadingStates.has(get(state)))
-const buttonLabel = atom((get) => {
-  if (get(zapSender) == null) {
-    return 'Connect Wallet'
-  }
-  const loadedState = get(zapperInputs)
-  if (loadedState == null) {
-    return '+ Zap'
-  }
-  const s = get(state)
-
-  switch (s) {
-    case 'insufficient_gas_balance':
-      return 'Insufficient ETH balance'
-    case 'insufficient_token_balance':
-      return `Insufficient ${loadedState.tokenToZap.symbol} balance`
-  }
-  if (get(previousZapTransaction) != null) {
-    return `+ Mint ${loadedState.rToken.symbol}`
-  }
-  switch (s) {
-    case 'quote_error':
-      return 'Failed to find zap'
-    case 'approval_error':
-      return 'Approval failed'
-    case 'tx_error':
-      return 'Failed to construct zap'
-    case 'tx_estimate_error':
-      return 'Failed to estimate gas - try with different input'
-    case 'sign_permit':
-      return `Sign & Zap ${loadedState.tokenToZap.symbol} for ${loadedState.rToken.symbol}`
-    default:
-      return `+ Mint ${loadedState.rToken.symbol}`
-  }
-})
-const buttonLoadingLabel = atom((get) => {
-  switch (get(state)) {
-    case 'tx_estimate_loading':
-      return 'Estimating gas'
-    case 'quote_loading':
-      return `Finding zap`
-    case 'tx_loading':
-      return `Creating transaction`
-    case 'tx_sent_loading':
-      return `Waiting for zap`
-    default:
-      return `Loading..`
-  }
-})
 
 export const zapEnabledAtom = atomWithStorage('zap-enabled', false)
 export const zapAvailableAtom = loadable(
@@ -335,15 +338,318 @@ export const zapAvailableAtom = loadable(
         if (o != null) {
           return o
         }
-      } catch (e) {}
+      } catch (e) { }
     }
     return null
   })
 )
-let errors = 0
-let redoTimeout: any = null
+
+
+const mkButton = (
+  previousTxAtom: typeof previousZapTransaction,
+  txAtom: typeof resolvedZapTransaction,
+  state: typeof zapState,
+  zQuote: typeof zapQuote,
+  zInput: typeof zapQuoteInput,
+  approvalNeeded: typeof resolvedApprovalNeeded
+) => {
+  let errors = 0
+
+  const zapStateAtom = atom(get => {
+    const quote = get(zQuote)
+    const approval = get(approvalNeeded)
+    const zapInputs = get(zInput)
+    if (!(quote && approval && zapInputs)) {
+      return null
+    }
+    const {
+      inputQuantity,
+      rToken,
+      inputToken,
+      universe: { provider: p },
+    } = zapInputs
+    const provider = p as any
+    const signer = provider.getSigner(zapInputs.signer.address)
+
+    return {
+      signer,
+      inputQuantity,
+      rToken,
+      provider,
+      inputToken,
+      quote,
+      approvalNeeded: approval,
+    }
+  })
+  const buttonEnabled = atom((get) => {
+    const inp = get(zInput)
+    if (inp == null || inp.signer == null || inp.inputQuantity == null || inp.inputQuantity.amount == 0n) {
+      return false
+    }
+    const s = get(state)
+    if (
+      s === 'insufficient_gas_balance' ||
+      s === 'insufficient_token_balance'
+    ) {
+      return false
+    }
+    return buttonEnabledStates.has(s) || get(previousTxAtom) != null
+  })
+  const buttonIsLoading = atom((get) => loadingStates.has(get(state)))
+  const buttonLabel = atom((get) => {
+    if (get(zapSender) == null) {
+      return 'Connect Wallet'
+    }
+    const loadedState = get(zapperInputs)
+    if (loadedState == null) {
+      return '+ Zap'
+    }
+    const s = get(state)
+
+    switch (s) {
+      case 'insufficient_gas_balance':
+        return 'Insufficient ETH balance'
+      case 'insufficient_token_balance':
+        return `Insufficient ${loadedState.tokenToZap.symbol} balance`
+    }
+    if (get(previousTxAtom) != null) {
+      return `+ Mint ${loadedState.rToken.symbol}`
+    }
+    switch (s) {
+      case 'quote_error':
+        return 'Failed to find zap'
+      case 'approval_error':
+        return 'Approval failed'
+      case 'tx_error':
+        return 'Failed to construct zap'
+      case 'sign_permit':
+        return `Sign & Zap ${loadedState.tokenToZap.symbol} for ${loadedState.rToken.symbol}`
+      default:
+        return `+ Mint ${loadedState.rToken.symbol}`
+    }
+  })
+  const redeemButtonLabel = atom((get) => {
+    if (get(zapSender) == null) {
+      return 'Connect Wallet'
+    }
+    const loadedState = get(zapperInputs)
+    if (loadedState == null) {
+      return '+ Redeem'
+    }
+    const s = get(state)
+
+    switch (s) {
+      case 'insufficient_gas_balance':
+        return 'Insufficient ETH balance'
+      case 'insufficient_token_balance':
+        return `Insufficient ${loadedState.rToken.symbol} balance`
+    }
+    if (get(previousTxAtom) != null) {
+      return `Redeem for ${loadedState.tokenToZap.symbol}`
+    }
+    switch (s) {
+      case 'quote_error':
+        return 'Failed to find zap'
+      case 'approval_error':
+        return 'Approval failed'
+      case 'tx_error':
+        return 'Failed to construct zap'
+      case 'sign_permit':
+        return `Sign & Zap ${loadedState.tokenToZap.symbol} for ${loadedState.rToken.symbol}`
+      case 'approval':
+        return 'Approve'
+      case 'approval_sent_loading':
+        return 'Approving..'
+      default:
+        return `Redeem for ${loadedState.tokenToZap.symbol}`
+    }
+  })
+  const buttonLoadingLabel = atom((get) => {
+    switch (get(state)) {
+      case 'quote_loading':
+        return `Finding zap`
+      case 'tx_loading':
+        return `Creating transaction`
+      case 'tx_sent_loading':
+        return `Waiting for zap`
+      default:
+        return `Loading..`
+    }
+  })
+
+  //// ACTIONS
+  type ZapperAction = (
+    get: Getter,
+    set: Setter,
+    state: {
+      approvalNeeded: { tx: any },
+      inputToken: Token,
+      signer: any,
+      provider: Provider,
+      rToken: Token,
+      quote: BaseSearcherResult
+    }
+  ) => Promise<void>
+
+  const approve: ZapperAction = async (
+    _,
+    set,
+    { approvalNeeded, inputToken, signer }
+  ) => {
+    set(approvalPending, true)
+    try {
+      const resp = await (signer as Provider).sendTransaction(approvalNeeded.tx)
+      const receipt = await resp.wait(1)
+
+      if (receipt.status === 0) {
+        notifyError('Approval failed', 'Transaction reverted on chain')
+      } else {
+        notifySuccess(
+          'Approval successful',
+          `Approved ${inputToken.symbol} for Zap`
+        )
+      }
+    } catch (e: any) {
+      console.log(e)
+      if (e.code === 'ACTION_REJECTED') {
+        notifyError('Approval failed', 'User rejected')
+      } else {
+        notifyError('Approval failed', 'Unknown error ' + e.code)
+      }
+    } finally {
+      set(approvalRandomId, Math.random())
+      set(approvalPending, false)
+    }
+  }
+
+  const resetTxAtoms = (set: Setter) => {
+    set(approvalRandomId, Math.random())
+    set(zapIsPending, false)
+    set(signatureRequestPending, false)
+  }
+
+
+  const sendTx: ZapperAction = async (
+    get,
+    set,
+    { inputToken, rToken, signer }
+  ) => {
+    const zapTx = get(txAtom)
+
+    if (zapTx == null) {
+      return
+    }
+    set(zapIsPending, true)
+    try {
+      const resp = (await signer.sendTransaction({
+        value: '0x0',
+        ...zapTx.transaction.tx,
+        gasLimit: zapTx.transaction.gasEstimate,
+      }))
+      const receipt = await resp.wait(1)
+      if (receipt.status === 0) {
+        notifyError('Zap failed', 'Transaction reverted on chain')
+        mixpanel.track('Zap on-chain transaction reverted', {
+          RToken: rToken.address.toString().toLowerCase() ?? '',
+          inputToken: inputToken.symbol,
+        })
+      } else {
+        notifySuccess(
+          'Zap successful',
+          `Zapped ${inputToken.symbol} for ${rToken.symbol}`
+        )
+        mixpanel.track('Zap Success', {
+          RToken: rToken.address.toString().toLowerCase() ?? '',
+          inputToken: inputToken.symbol,
+        })
+      }
+
+      set(zapTxHash, resp.hash)
+      set(permitSignature, null)
+      set(zapInputString, '')
+      set(zapRedeemInputString, '')
+      set(addTransactionAtom, [resp.hash, `Easy mint ${rToken.symbol}`])
+    } catch (e: any) {
+      console.log(e)
+      if (e.code === 'ACTION_REJECTED') {
+        mixpanel.track('User Rejected Zap', {
+          RToken: rToken.address.toString().toLowerCase() ?? '',
+          inputToken: inputToken.symbol,
+        })
+        notifyError('Zap failed', 'User rejected')
+      } else {
+        mixpanel.track('Zap Execution Error', {
+          RToken: rToken.address.toString().toLowerCase() ?? '',
+          inputToken: inputToken.symbol,
+          error: e,
+        })
+        notifyError('Zap failed', 'Unknown error ' + e.code)
+      }
+    } finally {
+      resetTxAtoms(set)
+    }
+  }
+
+
+  return atom(
+    (get) => ({
+      loadingLabel: get(buttonLoadingLabel),
+      enabled: get(buttonEnabled),
+      loading: get(previousTxAtom) == null && get(buttonIsLoading),
+      label: get(buttonLabel),
+      redeemButtonLabel: get(redeemButtonLabel)
+    }),
+    async (get, set, client: GetWalletClientResult) => {
+      if (get(zapSender) == null) {
+        set(isWalletModalVisibleAtom, true)
+      }
+      const flowState = get(state)
+      const data = get(zapStateAtom)
+
+      if (data == null) {
+        return
+      }
+
+      
+      const provider: Web3Provider = new Web3Provider(async (method, params) => {
+        const out = await client!.request({ method, params } as any)
+        return out
+      })
+      
+      data.signer = {
+        ...provider,
+        sendTransaction: async (tx: TransactionRequest) => {
+          const hash = await client?.sendTransaction(tx)
+          return await provider.getTransaction(hash!)
+        }
+      }
+      if (flowState === 'tx_loading') {
+        errors = 0
+      } else if (flowState === 'tx_error') {
+        if (errors < 5) {
+          set(redoZapQuote, Math.random())
+          errors += 1
+        }
+      } else if (flowState === 'approval') {
+        await approve(get, set, data)
+      } else if (flowState === 'send_tx') {
+        // mixpanel.track('Confirmed Zap', {
+        //   RToken: (data.rToken??(data as any).output).address.toString().toLowerCase() ?? '',
+        //   inputToken: data.inputToken.symbol,
+        // })
+
+        await sendTx(get, set, data)
+      } else if (flowState === 'sign_permit') {
+        // await signAndSendTx(get, set, data)
+      } else {
+        console.log('Invalid state', flowState)
+      }
+    }
+  )
+}
 export const ui = {
   zapSettingsOpen: atom(false),
+  zapRedeemSettingsOpen: atom(false),
   zapWidgetEnabled: atom((get) => {
     const rtoken = get(rTokenAtom)
     const chainId = get(chainIdAtom)
@@ -378,7 +684,6 @@ export const ui = {
   }),
   zapState: atom((get) => {
     const zapState = get(zapperState)
-
     return [zapState.state === 'loading', zapState.state === 'hasError']
   }),
   input: {
@@ -413,8 +718,43 @@ export const ui = {
         set(zapInputString, currentBalance.format())
       }
     ),
+    maxRedeemAmount: atom(
+      (get) => {
+        const currentBalance = get(rTokenBalanceAtom)
+        if (currentBalance == null) {
+          return '0'
+        }
+        return currentBalance.balance
+      },
+      (get, set, _) => {
+        const currentBalance = get(rTokenBalanceAtom)
+        if (currentBalance == null) {
+          return
+        }
+        set(zapRedeemInputString, currentBalance.balance)
+      }
+    ),
   },
-  output: {
+  zapRedeemOutput: {
+    textBox: atom((get) => {
+      const zapPromise = get(redeemZapQuotePromise)
+      const output = get(redeemZapOutputAmount)
+      if (get(previousRedeemZapTransaction) != null) {
+        return output ?? '0.0'
+      }
+      if (zapPromise.state === 'hasData' && zapPromise.data == null) {
+        return ''
+      }
+      if (zapPromise.state === 'loading') {
+        return 'Finding zap'
+      }
+      if (zapPromise.state === 'hasError') {
+        return ''
+      }
+      return output ?? '0.0'
+    }),
+  },
+  zapOutput: {
     textBox: atom((get) => {
       const zapPromise = get(zapQuotePromise)
       const output = get(zapOutputAmount)
@@ -436,264 +776,23 @@ export const ui = {
       get(zapSender) == null ? '' : get(zapTransactionFeeDisplay) ?? ''
     ),
   },
-  state,
-  button: atom(
-    (get) => ({
-      loadingLabel: get(buttonLoadingLabel),
-      enabled: get(zapSender) == null || get(buttonEnabled),
-      loading: get(previousZapTransaction) == null && get(buttonIsLoading),
-      label: get(buttonLabel),
-    }),
-    async (get, set, client: GetWalletClientResult) => {
-      if (get(zapSender) == null) {
-        set(isWalletModalVisibleAtom, true)
-      }
-      const flowState = get(state)
-      const data = getZapActionState(get)
-
-      if (data == null) {
-        return
-      }
-
-      data.signer = client as any
-      if (flowState === 'tx_loading') {
-        errors = 0
-      } else if (flowState === 'tx_error') {
-        if (errors < 5) {
-          set(redoQuote, Math.random())
-          errors += 1
-        }
-      } else if (flowState === 'approval') {
-        await approve(get, set, data)
-      } else if (flowState === 'send_tx') {
-        mixpanel.track('Confirmed Zap', {
-          RToken: data.rToken.address.toString().toLowerCase() ?? '',
-          inputToken: data.inputToken.symbol,
-        })
-    
-        await sendTx(get, set, data)
-      } else if (flowState === 'sign_permit') {
-        await signAndSendTx(get, set, data)
-      } else {
-        console.log('Invalid state', flowState)
-      }
-    }
+  zapTxState: zapState,
+  zapButton: mkButton(
+    previousZapTransaction,
+    resolvedZapTransaction,
+    zapState,
+    zapQuote,
+    zapQuoteInput,
+    resolvedApprovalNeeded
   ),
-}
 
-//// ACTIONS
-const getZapActionState = (get: Getter) => {
-  const quote = get(zapQuote)
-  const approvalNeeded = get(resolvedApprovalNeeded)
-  const zapInputs = get(zapQuoteInput)
-  if (!(quote && approvalNeeded && zapInputs)) {
-    return null
-  }
-  const {
-    inputQuantity,
-    rToken,
-    inputToken,
-    universe: { provider: p },
-  } = zapInputs
-  const provider = p as any
-  const signer = provider.getSigner(zapInputs.signer.address)
-
-  return {
-    signer,
-    inputQuantity,
-    rToken,
-    provider,
-    inputToken,
-    quote,
-    approvalNeeded,
-  }
-}
-type ZapActionState = NonNullable<ReturnType<typeof getZapActionState>>
-type ZapperAction = (
-  get: Getter,
-  set: Setter,
-  state: ZapActionState
-) => Promise<void>
-const approve: ZapperAction = async (
-  _,
-  set,
-  { approvalNeeded, inputToken, signer }
-) => {
-  set(approvalPending, true)
-  try {
-    const resp = await signer.sendTransaction(approvalNeeded.tx)
-    const receipt = await resp.wait(1)
-
-    if (receipt.status === 0) {
-      notifyError('Approval failed', 'Transaction reverted on chain')
-    } else {
-      notifySuccess(
-        'Approval successful',
-        `Approved ${inputToken.symbol} for Zap`
-      )
-    }
-  } catch (e: any) {
-    if (e.code === 'ACTION_REJECTED') {
-      notifyError('Approval failed', 'User rejected')
-    } else {
-      notifyError('Approval failed', 'Unknown error ' + e.code)
-    }
-  } finally {
-    set(approvalRandomId, Math.random())
-    set(approvalPending, false)
-  }
-}
-
-const resetTxAtoms = (set: Setter) => {
-  set(approvalRandomId, Math.random())
-  set(zapIsPending, false)
-  set(signatureRequestPending, false)
-}
-
-const signAndSendTx: ZapperAction = async (
-  get,
-  set,
-  { signer, provider, rToken, quote, inputToken }
-) => {
-  try {
-    const permit = get(permit2ToSignAtom)
-    if (permit == null) {
-      return
-    }
-    set(signatureRequestPending, true)
-    const signature = await signer._signTypedData(
-      permit.data.domain,
-      permit.data.types,
-      permit.data.values
-    )
-    set(permitSignature, signature)
-    set(signatureRequestPending, false)
-
-    set(zapIsPending, true)
-    const tx = await quote.toTransaction({
-      returnDust: false,
-      permit2: {
-        permit: permit.permit,
-        signature,
-      },
-    })
-
-    let limit = (
-      await provider.estimateGas({
-        to: tx.tx.to,
-        data: tx.tx.data,
-        from: tx.tx.from,
-        value: tx.tx.value,
-      })
-    ).toBigInt() as bigint
-
-    limit = limit + limit / 10n
-
-    limit = tx.gasEstimate > limit ? tx.gasEstimate : limit
-
-    const resp = await signer.sendTransaction({
-      ...tx.tx,
-      gasLimit: limit,
-    })
-
-    const receipt = await resp.wait(1)
-
-    if (receipt.status === 0) {
-      notifyError('Zap failed', 'Transaction reverted on chain')
-      mixpanel.track('Zap on-chain transaction reverted', {
-        RToken: rToken.address.toString().toLowerCase() ?? '',
-        inputToken: inputToken.symbol,
-      })
-    } else {
-      notifySuccess(
-        'Zap successful',
-        `Zapped ${inputToken.symbol} for ${rToken.symbol}`
-      )
-      mixpanel.track('Zap Success', {
-        RToken: rToken.address.toString().toLowerCase() ?? '',
-        inputToken: inputToken.symbol,
-      })
-    }
-    set(permitSignature, null)
-    set(zapTxHash, resp.hash)
-    set(zapInputString, '')
-    set(addTransactionAtom, [resp.hash, `Easy mint ${rToken.symbol}`])
-  } catch (e: any) {
-    if (e.code === 'ACTION_REJECTED') {
-      mixpanel.track('User Rejected Zap', {
-        RToken: rToken.address.toString().toLowerCase() ?? '',
-        inputToken: inputToken.symbol,
-      })
-      notifyError('Zap failed', 'User rejected signature request')
-    } else {
-      mixpanel.track('Zap Execution Error', {
-        RToken: rToken.address.toString().toLowerCase() ?? '',
-        inputToken: inputToken.symbol,
-        error: e,
-      })
-      notifyError('Zap failed', 'Unknown error ' + e.code)
-    }
-  } finally {
-    resetTxAtoms(set)
-  }
-}
-const sendTx: ZapperAction = async (
-  get,
-  set,
-  { inputToken, rToken, signer }
-) => {
-  const zapTx = get(resolvedZapTransaction)
-  const gasLimit = get(resolvedZapTransactionGasEstimateUnits)
-
-  if (!(zapTx && gasLimit)) {
-    return
-  }
-  set(zapIsPending, true)
-  try {
-    const resp = await signer.sendTransaction({
-      ...zapTx.transaction.tx,
-      gasLimit,
-    })
-
-    const receipt = await resp.wait(1)
-
-    if (receipt.status === 0) {
-      notifyError('Zap failed', 'Transaction reverted on chain')
-      mixpanel.track('Zap on-chain transaction reverted', {
-        RToken: rToken.address.toString().toLowerCase() ?? '',
-        inputToken: inputToken.symbol,
-      })
-    } else {
-      notifySuccess(
-        'Zap successful',
-        `Zapped ${inputToken.symbol} for ${rToken.symbol}`
-      )
-      mixpanel.track('Zap Success', {
-        RToken: rToken.address.toString().toLowerCase() ?? '',
-        inputToken: inputToken.symbol,
-      })
-    }
-
-    set(zapTxHash, resp.hash)
-    set(permitSignature, null)
-    set(zapInputString, '')
-    set(addTransactionAtom, [resp.hash, `Easy mint ${rToken.symbol}`])
-  } catch (e: any) {
-    if (e.code === 'ACTION_REJECTED') {
-      mixpanel.track('User Rejected Zap', {
-        RToken: rToken.address.toString().toLowerCase() ?? '',
-        inputToken: inputToken.symbol,
-      })
-      notifyError('Zap failed', 'User rejected')
-    } else {
-      mixpanel.track('Zap Execution Error', {
-        RToken: rToken.address.toString().toLowerCase() ?? '',
-        inputToken: inputToken.symbol,
-        error: e,
-      })
-      notifyError('Zap failed', 'Unknown error ' + e.code)
-    }
-  } finally {
-    resetTxAtoms(set)
-  }
+  redeemZapTxState: zapState,
+  redeemZapButton: mkButton(
+    previousRedeemZapTransaction,
+    resolvedRedeemZapTransaction as any,
+    redeemZapState,
+    redeemZapQuote,
+    redeemZapQuoteInput as any,
+    resolvedRedeemApprovalNeeded
+  ),
 }

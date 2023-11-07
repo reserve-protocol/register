@@ -1,13 +1,13 @@
 import { LoadingButton, LoadingButtonProps } from 'components/button'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { previousZapTransaction, zapTransaction } from '../state/atoms'
-import { ui } from '../state/ui-atoms'
 import { useWalletClient } from 'wagmi'
+import { previousRedeemZapTransaction, redeemZapTransaction } from '../state/atoms'
+import { ui } from '../state/ui-atoms'
 
-const ZapButton = (props: Partial<LoadingButtonProps>) => {
-  const tx = useAtomValue(zapTransaction)
-  const setPrevious = useSetAtom(previousZapTransaction)
+const RedeemZapButton = (props: Partial<LoadingButtonProps>) => {
+  const tx = useAtomValue(redeemZapTransaction)
+  const setPrevious = useSetAtom(previousRedeemZapTransaction)
   const ttx = tx.state === 'hasData' ? tx.data : null
   useEffect(() => {
     if (ttx != null) {
@@ -17,24 +17,23 @@ const ZapButton = (props: Partial<LoadingButtonProps>) => {
 
   const walletClient = useWalletClient()
 
-  const [{ loading, enabled, label, loadingLabel }, onClick] = useAtom(
-    ui.zapButton
+  const [{ loading, enabled, redeemButtonLabel, loadingLabel }, onClick] = useAtom(
+    ui.redeemZapButton
   )
 
-  const l = loading || walletClient.isLoading
   return (
     <LoadingButton
-      loading={l}
-      text={label}
+      loading={loading || walletClient.isLoading}
+      disabled={!enabled}
+      text={redeemButtonLabel}
       variant="primary"
       loadingText={loadingLabel}
       mt={3}
       sx={{ width: '100%' }}
       onClick={() => onClick(walletClient.data!)}
       {...props}
-      disabled={!enabled || props.disabled}
     />
   )
 }
 
-export default ZapButton
+export default RedeemZapButton

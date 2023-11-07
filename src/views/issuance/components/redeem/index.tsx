@@ -8,7 +8,7 @@ import { isValidRedeemAmountAtom } from 'views/issuance/atoms'
 import ConfirmRedemption from './ConfirmRedemption'
 import RedeemInput from './RedeemInput'
 
-const Redeem = ({ zapEnabled }: { zapEnabled?: boolean }) => {
+const Redeem = () => {
   const rToken = useRToken()
   const [confirming, setConfirming] = useState(false)
   const isValid = useAtomValue(isValidRedeemAmountAtom)
@@ -17,17 +17,7 @@ const Redeem = ({ zapEnabled }: { zapEnabled?: boolean }) => {
     <>
       {confirming && <ConfirmRedemption onClose={() => setConfirming(false)} />}
       <Card p={4} sx={{ height: 'fit-content', position: 'relative' }}>
-        <RedeemInput compact={zapEnabled} />
-        {zapEnabled && (
-          <Text
-            mt={2}
-            variant="legend"
-            ml={3}
-            sx={{ fontSize: 1, display: 'block' }}
-          >
-            <Trans>Redeem zaps are not yet supported</Trans>
-          </Text>
-        )}
+        <RedeemInput compact={false} />
         <Button
           disabled={!isValid}
           sx={{ width: '100%' }}
