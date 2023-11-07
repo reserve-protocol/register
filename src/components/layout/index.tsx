@@ -53,7 +53,7 @@ export const issues: Record<string, IssueInfo> = {
     content: (
       <Trans>
         Aave has temporarily paused certain markets, so the collateral plugin
-        for Morpho Aave does not work with the Zap temporarily. The Zap will
+        for Morpho Aave does not work with the Zap temporarily. The Zapper will
         resume working once Aave has reenabled the paused markets.
       </Trans>
     ),
@@ -64,7 +64,7 @@ export const issues: Record<string, IssueInfo> = {
     content: (
       <Trans>
         Aave has temporarily paused certain markets, so the collateral plugin
-        for Morpho Aave does not work with the Zap temporarily. The Zap will
+        for Morpho Aave does not work with the Zap temporarily. The Zapper will
         resume working once Aave has reenabled the paused markets.
       </Trans>
     ),
