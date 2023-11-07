@@ -82,7 +82,17 @@ const Banner = () => {
   }
 
   return (
-    <Card p={3} m={3}>
+    <Card
+      sx={{
+        backgroundColor: 'rBlueLight',
+        border: '1px solid',
+        borderColor: 'rBlue',
+        borderRadius: '8px',
+        flexWrap: 'wrap',
+      }}
+      p={3}
+      m={3}
+    >
       <Flex>
         <div>
           <Text variant="strong" mb={1}>
