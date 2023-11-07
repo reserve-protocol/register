@@ -70,6 +70,17 @@ export const issues: Record<string, IssueInfo> = {
     ),
     link: 'https://governance.aave.com/t/aave-v2-v3-security-incident-04-11-2023/15335',
   },
+  '0xFc0B1EEf20e4c68B3DCF36c4537Cfa7Ce46CA70b': {
+    title: <Trans>Temporary zapper issue</Trans>,
+    content: (
+      <Trans>
+        Aave has temporarily paused certain markets, so the zapper can
+        temporarily not zap into USDC+. The Zapper will resume working once Aave
+        has reenabled the paused markets.
+      </Trans>
+    ),
+    link: 'https://governance.aave.com/t/aave-v2-v3-security-incident-04-11-2023/15335',
+  }
 }
 const Banner = () => {
   const rtoken = useRToken()

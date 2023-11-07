@@ -99,6 +99,10 @@ msgstr ""
 msgid "Aave has temporarily paused certain markets, so the zapper can temporarily not zap into hyUSD. The Zapper will resume working once Aave has reenabled the paused markets."
 msgstr ""
 
+#: src/components/layout/index.tsx:76
+msgid "Aave has temporarily paused certain markets, so the zapper can temporarily not zap into USDC+. The Zapper will resume working once Aave has reenabled the paused markets."
+msgstr ""
+
 #: src/views/auctions/components/About.tsx:10
 #: src/views/home/components/About.tsx:23
 #: src/views/overview/components/About.tsx:15
@@ -1595,7 +1599,7 @@ msgstr ""
 msgid "Quorum (%)"
 msgstr ""
 
-#: src/components/layout/index.tsx:105
+#: src/components/layout/index.tsx:116
 msgid "Read more"
 msgstr ""
 
@@ -2083,6 +2087,7 @@ msgstr ""
 
 #: src/components/layout/index.tsx:52
 #: src/components/layout/index.tsx:63
+#: src/components/layout/index.tsx:74
 msgid "Temporary zapper issue"
 msgstr ""
 
