@@ -92,8 +92,11 @@ msgid "A year ago"
 msgstr ""
 
 #: src/components/layout/index.tsx:54
+msgid "Aave has temporarily paused certain markets, so the zapper can temporarily not zap into eUSD. The Zapper will resume working once Aave has reenabled the paused markets."
+msgstr ""
+
 #: src/components/layout/index.tsx:65
-msgid "Aave has temporarily paused certain markets, so the collateral plugin for Morpho Aave does not work with the Zap temporarily. The Zapper will resume working once Aave has reenabled the paused markets."
+msgid "Aave has temporarily paused certain markets, so the zapper can temporarily not zap into hyUSD. The Zapper will resume working once Aave has reenabled the paused markets."
 msgstr ""
 
 #: src/views/auctions/components/About.tsx:10

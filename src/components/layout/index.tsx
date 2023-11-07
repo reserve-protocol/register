@@ -52,9 +52,9 @@ export const issues: Record<string, IssueInfo> = {
     title: <Trans>Temporary zapper issue</Trans>,
     content: (
       <Trans>
-        Aave has temporarily paused certain markets, so the collateral plugin
-        for Morpho Aave does not work with the Zap temporarily. The Zapper will
-        resume working once Aave has reenabled the paused markets.
+        Aave has temporarily paused certain markets, so the zapper can
+        temporarily not zap into eUSD. The Zapper will resume working once Aave
+        has reenabled the paused markets.
       </Trans>
     ),
     link: 'https://governance.aave.com/t/aave-v2-v3-security-incident-04-11-2023/15335',
@@ -63,9 +63,9 @@ export const issues: Record<string, IssueInfo> = {
     title: <Trans>Temporary zapper issue</Trans>,
     content: (
       <Trans>
-        Aave has temporarily paused certain markets, so the collateral plugin
-        for Morpho Aave does not work with the Zap temporarily. The Zapper will
-        resume working once Aave has reenabled the paused markets.
+        Aave has temporarily paused certain markets, so the zapper can
+        temporarily not zap into hyUSD. The Zapper will resume working once Aave
+        has reenabled the paused markets.
       </Trans>
     ),
     link: 'https://governance.aave.com/t/aave-v2-v3-security-incident-04-11-2023/15335',
