@@ -1,32 +1,26 @@
-import { Table } from 'components/table'
-import { Box, Flex, Select, Text } from 'theme-ui'
-import useQuery, { useMultichainQuery } from 'hooks/useQuery'
-import {
-  ChangeEvent,
-  ChangeEventHandler,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
-import { formatCurrency, formatUsdCurrencyCell } from 'utils'
-import { gql } from 'graphql-request'
-import { useNavigate } from 'react-router-dom'
 import { Trans, t } from '@lingui/macro'
-import TokenItem from 'components/token-item'
-import { Address, formatEther, getAddress } from 'viem'
-import { rTokenListAtom } from 'state/atoms'
-import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { Input } from 'components'
 import { createColumnHelper } from '@tanstack/react-table'
+import { Input } from 'components'
+import Help from 'components/help'
+import ChainLogo from 'components/icons/ChainLogo'
+import { Table } from 'components/table'
+import TokenItem from 'components/token-item'
+import { gql } from 'graphql-request'
+import { useMultichainQuery } from 'hooks/useQuery'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { rTokenListAtom } from 'state/atoms'
+import { Box, Flex, Select, Text } from 'theme-ui'
+import { StringMap } from 'types'
+import { formatCurrency, formatUsdCurrencyCell } from 'utils'
+import { _atomWithDebounce } from 'utils/atoms/atomWithDebounce'
 import {
   CHAIN_TAGS,
   LISTED_RTOKEN_ADDRESSES,
   supportedChainList,
 } from 'utils/constants'
-import ChainLogo from 'components/icons/ChainLogo'
-import Help from 'components/help'
-import { _atomWithDebounce } from 'utils/atoms/atomWithDebounce'
+import { Address, formatEther, getAddress } from 'viem'
 
 const listedTokensAtom = atom((get) =>
   Object.keys(get(rTokenListAtom)).map((address) => address.toLowerCase())
@@ -93,27 +87,39 @@ interface RTokenRow {
   chain: number
 }
 
+const sortKeyMap: StringMap = {
+  symbol: 'token__symbol',
+  price: 'token__lastPriceUSD',
+  marketCap: 'token__totalSupply',
+  transactionCount: 'token__transactionCount',
+  cumulativeVolume: 'token__cumulativeVolume',
+  targetUnits: 'token__targetUnits',
+  staked: 'token__staked',
+}
+
+const defaultSort = {
+  id: 'token__totalSupply',
+  desc: true,
+}
 const debouncedSearchInputAtom = _atomWithDebounce('')
 const chainFilterAtom = atom(0)
 const recordLimitAtom = atom(50)
-const sortByAtom = atom<{ id: string; desc: boolean } | null>({
-  id: 'token__totalSupply',
-  desc: true,
-})
+const sortByAtom = atom<{ id: string; desc: boolean } | null>(defaultSort)
 
 const tokenFilterAtom = atom((get) => {
   const listed = get(listedTokensAtom)
   const search = get(debouncedSearchInputAtom.debouncedValueAtom)
   const limit = get(recordLimitAtom)
   const chain = get(chainFilterAtom)
+  const { id, desc } = get(sortByAtom) ?? defaultSort
 
   return {
     search,
     listed: listed.length ? listed : ['.'],
     limit,
     _chain: chain,
-    by: 'token__totalSupply',
-    direction: 'desc',
+    by: id,
+    direction: desc ? 'desc' : 'asc',
   }
 })
 
@@ -280,7 +286,7 @@ const UnlistedTokensTable = () => {
   const data = useTokens()
   const rTokenCount = useRTokenCount()
   const columnHelper = createColumnHelper<RTokenRow>()
-  const sortBy = useAtomValue(sortByAtom)
+  const setSorting = useSetAtom(sortByAtom)
 
   const columns = useMemo(
     () => [
@@ -352,7 +358,9 @@ const UnlistedTokensTable = () => {
   const handleSort = useCallback((getSortState: any) => {
     const [sorting] = getSortState()
 
-    console.log('sorting', sorting)
+    if (sortKeyMap[sorting?.id]) {
+      setSorting({ id: sortKeyMap[sorting?.id], desc: sorting.desc })
+    }
   }, [])
 
   return (
