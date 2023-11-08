@@ -4,6 +4,7 @@ import useQuery, { useMultichainQuery } from 'hooks/useQuery'
 import {
   ChangeEvent,
   ChangeEventHandler,
+  useCallback,
   useEffect,
   useMemo,
   useState,
@@ -15,7 +16,7 @@ import { Trans, t } from '@lingui/macro'
 import TokenItem from 'components/token-item'
 import { Address, formatEther, getAddress } from 'viem'
 import { rTokenListAtom } from 'state/atoms'
-import { atom, useAtom, useAtomValue } from 'jotai'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { Input } from 'components'
 import { createColumnHelper } from '@tanstack/react-table'
 import {
@@ -25,21 +26,40 @@ import {
 } from 'utils/constants'
 import ChainLogo from 'components/icons/ChainLogo'
 import Help from 'components/help'
-import atomWithDebounce from 'utils/atoms/atomWithDebounce'
+import { _atomWithDebounce } from 'utils/atoms/atomWithDebounce'
 
 const listedTokensAtom = atom((get) =>
   Object.keys(get(rTokenListAtom)).map((address) => address.toLowerCase())
 )
 
+const rTokenCountQuery = gql`
+  query GetRTokenCount {
+    protocol(id: "reserveprotocol-v1") {
+      rTokenCount
+    }
+  }
+`
+
 const query = gql`
-  query GetTokenListOverview($listed: [String]!, $limit: Int!) {
+  query GetTokenListOverview(
+    $listed: [String]!
+    $limit: Int!
+    $search: String!
+    $by: String!
+    $direction: OrderDirection!
+  ) {
     rtokens(
-      orderBy: cumulativeUniqueUsers
-      orderDirection: desc
+      orderBy: $by
+      orderDirection: $direction
       first: $limit
       where: {
         id_not_in: $listed
-        token_: { name_contains_nocase: "", symbol_contains_nocase: "" }
+        token_: {
+          or: [
+            { name_contains_nocase: $search }
+            { symbol_contains_nocase: $search }
+          ]
+        }
       }
     ) {
       id
@@ -60,14 +80,6 @@ const query = gql`
   }
 `
 
-const rTokenCountQuery = gql`
-  query GetRTokenCount {
-    protocol(id: "reserveprotocol-v1") {
-      rTokenCount
-    }
-  }
-`
-
 interface RTokenRow {
   id: Address
   targetUnits: string
@@ -81,29 +93,33 @@ interface RTokenRow {
   chain: number
 }
 
-const searchInputAtom = atom('')
-const debouncedSearchInputAtom = atomWithDebounce(
-  searchInputAtom,
-  500
-).debouncedValueAtom
+const debouncedSearchInputAtom = _atomWithDebounce('')
 const chainFilterAtom = atom(0)
-const recordLimitAtom = atom(100)
-const sortByAtom = atom([{ id: 'marketCap', desc: true }])
+const recordLimitAtom = atom(50)
+const sortByAtom = atom<{ id: string; desc: boolean } | null>({
+  id: 'token__totalSupply',
+  desc: true,
+})
 
 const tokenFilterAtom = atom((get) => {
   const listed = get(listedTokensAtom)
-  const search = get(debouncedSearchInputAtom)
-  const chain = get(chainFilterAtom)
+  const search = get(debouncedSearchInputAtom.debouncedValueAtom)
   const limit = get(recordLimitAtom)
+  const chain = get(chainFilterAtom)
 
   return {
+    search,
     listed: listed.length ? listed : ['.'],
     limit,
+    _chain: chain,
+    by: 'token__totalSupply',
+    direction: 'desc',
   }
 })
 
 const TokenSearchInput = () => {
-  const [value, setValue] = useAtom(searchInputAtom)
+  const value = useAtomValue(debouncedSearchInputAtom.currentValueAtom)
+  const setValue = useSetAtom(debouncedSearchInputAtom.debouncedValueAtom)
 
   return (
     <Box ml={3} sx={{ width: 300 }}>
@@ -135,6 +151,7 @@ const ChainSelectFilter = () => {
       <Select
         mt={1}
         onChange={handleChange}
+        sx={{ width: 120 }}
         value={value}
         placeholder={t`Name, symbol or target`}
       >
@@ -169,8 +186,11 @@ const RecordLimitSelect = () => {
         mt={1}
         onChange={handleChange}
         value={value}
+        sx={{ width: 120 }}
         placeholder={t`Name, symbol or target`}
       >
+        <option>10</option>
+        <option>50</option>
         <option>100</option>
         <option>200</option>
         <option>500</option>
@@ -191,24 +211,26 @@ const useTokens = (limit = 50) => {
       const tokens: RTokenRow[] = []
 
       for (const chain of supportedChainList) {
-        tokens.push(
-          ...data[chain].rtokens.map((rtoken: any) => ({
-            id: getAddress(rtoken.id),
-            targetUnits: rtoken.targetUnits,
-            chain,
-            name: rtoken.token.name,
-            symbol: rtoken.token.symbol,
-            price: rtoken.token.lastPriceUSD,
-            transactionCount: rtoken.token.transferCount,
-            cumulativeVolume:
-              +formatEther(rtoken.token.cumulativeVolume) *
-              +rtoken.token.lastPriceUSD,
-            staked: +formatEther(rtoken.rsrStaked) * rtoken.rsrPriceUSD,
-            marketCap:
-              +formatEther(rtoken.token.totalSupply) *
-              rtoken.token.lastPriceUSD,
-          }))
-        )
+        if (data[chain]) {
+          tokens.push(
+            ...data[chain].rtokens.map((rtoken: any) => ({
+              id: getAddress(rtoken.id),
+              targetUnits: rtoken.targetUnits,
+              chain,
+              name: rtoken.token.name,
+              symbol: rtoken.token.symbol,
+              price: rtoken.token.lastPriceUSD,
+              transactionCount: rtoken.token.transferCount,
+              cumulativeVolume:
+                +formatEther(rtoken.token.cumulativeVolume) *
+                +rtoken.token.lastPriceUSD,
+              staked: +formatEther(rtoken.rsrStaked) * rtoken.rsrPriceUSD,
+              marketCap:
+                +formatEther(rtoken.token.totalSupply) *
+                rtoken.token.lastPriceUSD,
+            }))
+          )
+        }
       }
 
       setTokens(tokens)
@@ -319,10 +341,19 @@ const UnlistedTokensTable = () => {
     []
   )
 
-  const handleClick = (data: any) => {
-    navigate(`/overview?token=${data.id}`)
-    document.getElementById('app-container')?.scrollTo(0, 0)
-  }
+  const handleClick = useCallback(
+    (data: any) => {
+      navigate(`/overview?token=${data.id}`)
+      document.getElementById('app-container')?.scrollTo(0, 0)
+    },
+    [navigate]
+  )
+
+  const handleSort = useCallback((getSortState: any) => {
+    const [sorting] = getSortState()
+
+    console.log('sorting', sorting)
+  }, [])
 
   return (
     <>
@@ -331,7 +362,8 @@ const UnlistedTokensTable = () => {
         pagination
         onRowClick={handleClick}
         sorting
-        sortBy={sortBy}
+        sortBy={[{ id: 'marketCap', desc: true }]}
+        onSort={handleSort}
         columns={columns}
         data={data}
       />

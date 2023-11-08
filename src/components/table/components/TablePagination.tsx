@@ -85,8 +85,7 @@ const TablePagination = ({ table, totalCount }: TablePaginationProps) => {
           variant="layout.verticalAlign"
           sx={{ fontSize: 1, justifyContent: 'center', color: 'lightText' }}
         >
-          <Text mr={2}>Total: {totalCount} records</Text>
-          <Help content={t`Records are limited to top 100 results by chain`} />
+          <Text mr={2}>{totalCount} records</Text>
         </Box>
       </Box>
     </Box>

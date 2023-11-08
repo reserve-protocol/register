@@ -57,7 +57,7 @@ export const gasPriceAtom = atom((get) =>
 
 export const SUBGRAPH_URL = {
   [ChainId.Mainnet]:
-    'https://api.thegraph.com/subgraphs/name/lcamargof/reserve-test',
+    'https://api.thegraph.com/subgraphs/name/lcamargof/reserve',
   [ChainId.Base]:
     'https://graph-base.register.app/subgraphs/name/lcamargof/reserve',
   [ChainId.Hardhat]:

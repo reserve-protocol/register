@@ -53,6 +53,8 @@ export function Table({
     [onSort, setSorting]
   )
 
+  console.log('sorting state', sortingState)
+
   const table = useReactTable({
     columns,
     data,
