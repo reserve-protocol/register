@@ -95,6 +95,10 @@ export const blockDuration = {
 }
 
 export const supportedChainList = [ChainId.Mainnet, ChainId.Base]
+export const CHAIN_TAGS = {
+  [ChainId.Mainnet]: 'Ethereum',
+  [ChainId.Base]: 'Base',
+}
 
 export const LISTED_RTOKEN_ADDRESSES: { [x: number]: string[] } = {
   [ChainId.Mainnet]: [RSV.address.toLowerCase()],

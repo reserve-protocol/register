@@ -2,20 +2,24 @@ import {
   SortingState,
   flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import React from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { ArrowDown, ArrowUp } from 'react-feather'
-import { borderRadius } from 'theme'
 import { Box, BoxProps, Flex } from 'theme-ui'
 import { StringMap } from 'types'
+import TablePagination from './components/TablePagination'
 
 export interface TableProps extends BoxProps {
   columns: any[] // figure out proper type
   data: StringMap[]
   compact?: boolean
   sorting?: boolean
+  pagination?: boolean | { pageSize: number }
+  onSort?(state: SortingState): void
+  defaultPageSize?: number
   onRowClick?(data: any): void
   sortBy?: SortingState
   maxHeight?: string | number
@@ -26,25 +30,43 @@ export function Table({
   data = [],
   sorting = false,
   compact = false,
+  pagination,
+  defaultPageSize = 10,
   maxHeight = 'auto',
   sx = {},
   sortBy = [],
-  // pagination,
   onRowClick,
+  onSort,
   ...props
 }: TableProps) {
-  const [sortingState, setSorting] = React.useState<SortingState>(sortBy)
+  const [sortingState, setSorting] = useState<SortingState>(sortBy)
+  const paginationState = useMemo(
+    () => ({ pageSize: defaultPageSize, pageIndex: 0 }),
+    [defaultPageSize]
+  )
+
+  const handleSort = useCallback(
+    (state: any) => {
+      setSorting(state)
+      onSort?.(state)
+    },
+    [onSort, setSorting]
+  )
 
   const table = useReactTable({
     columns,
     data,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    enableSorting: true,
+    getPaginationRowModel: !!pagination ? getPaginationRowModel() : undefined,
+    enableSorting: sorting,
+    initialState: {
+      pagination: paginationState,
+    },
     state: {
       sorting: sortingState,
     },
-    onSortingChange: setSorting,
+    onSortingChange: handleSort,
   })
 
   return (
@@ -95,9 +117,6 @@ export function Table({
             </Box>
           ))}
           {table.getRowModel().rows.map((row, index) => {
-            const last = index === table.getRowModel().rows.length - 1
-            const cellCount = row.getVisibleCells().length - 1
-
             return (
               <Box
                 key={row.id}
@@ -108,31 +127,8 @@ export function Table({
                 }
                 sx={{ cursor: !!onRowClick ? 'pointer' : 'inherit' }}
               >
-                {row.getVisibleCells().map((cell, cellIndex) => (
-                  <Box
-                    as="td"
-                    key={cell.id}
-                    sx={{
-                      borderRadius: compact ? '0 !important' : undefined,
-                      borderTopLeftRadius:
-                        compact && !index && !cellIndex
-                          ? `${borderRadius.boxes}px !important`
-                          : undefined,
-                      borderTopRightRadius:
-                        compact && !index && cellIndex === cellCount
-                          ? `${borderRadius.boxes}px !important`
-                          : undefined,
-                      borderBottomLeftRadius:
-                        compact && last && !cellIndex
-                          ? `${borderRadius.boxes}px !important`
-                          : undefined,
-                      borderBottomRightRadius:
-                        compact && last && cellIndex === cellCount
-                          ? `${borderRadius.boxes}px !important`
-                          : undefined,
-                    }}
-                    variant="styles.td"
-                  >
+                {row.getVisibleCells().map((cell) => (
+                  <Box as="td" key={cell.id} variant="styles.td">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </Box>
                 ))}
@@ -141,14 +137,7 @@ export function Table({
           })}
         </Box>
       </Box>
-      {/* {pagination && (
-        <TablePagination
-          // {...pagination}
-          pageIndex={statePageIndex}
-          pageSize={statePageSize}
-          {...tableOptions}
-        />
-      )} */}
+      {pagination && <TablePagination table={table} totalCount={data.length} />}
     </React.Fragment>
   )
 }
