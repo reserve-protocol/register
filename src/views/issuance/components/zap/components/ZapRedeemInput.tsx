@@ -4,29 +4,32 @@ import TransactionInput, {
 } from 'components/transaction-input'
 import { useAtomValue } from 'jotai'
 import { Suspense } from 'react'
-import { rTokenStateAtom } from 'state/atoms'
+import { rTokenAtom, rTokenStateAtom } from 'state/atoms'
 import { Box, Flex, Text } from 'theme-ui'
 import {
   collectDust,
   selectedZapTokenAtom,
-  zapInputString
+  zapRedeemInputString,
 } from '../state/atoms'
 import {
   formatQty,
   FOUR_DIGITS,
   TWO_DIGITS,
 } from '../state/formatTokenQuantity'
-import { ui, zapDust, zapDustValue } from '../state/ui-atoms'
+import { redeemZapDust, redeemZapDustValue, ui } from '../state/ui-atoms'
 import { zapperLoaded } from '../state/zapper'
 
 const ZapDust = () => {
-  const dustValue = useAtomValue(zapDustValue)
-  const dust = useAtomValue(zapDust)
+  const dustValue = useAtomValue(redeemZapDustValue)
+  const dust = useAtomValue(redeemZapDust)
   const zapCollectDust = useAtomValue(collectDust)
   if (dustValue == null) {
     return null
   }
   const total = dustValue.total
+  if (total.amount == 0n) {
+    return null
+  }
 
   let str = '+ ' + formatQty(total, TWO_DIGITS) + ' in dust'
   if (total.amount < 10000n) {
@@ -54,24 +57,25 @@ const ZapOutput = () => {
         <Trans>Min Output</Trans>:
       </Text>
       <Text variant="strong">
-        {useAtomValue(ui.zapOutput.textBox) || 'None'} <ZapDust />
+        {useAtomValue(ui.zapRedeemOutput.textBox) || 'None'} <ZapDust />
       </Text>
     </Flex>
   )
 }
 
 const ZapTxInput = (props: Partial<TransactionInputProps>) => {
-  const token = useAtomValue(selectedZapTokenAtom)
+  const token = useAtomValue(rTokenAtom)
+  const selectedZapToken = useAtomValue(selectedZapTokenAtom)
   const { issuancePaused, frozen } = useAtomValue(rTokenStateAtom)
   const zapSymbol = token?.symbol ?? 'ETH'
-  const maxAmountString = useAtomValue(ui.input.maxAmount)
+  const maxAmountString = useAtomValue(ui.input.maxRedeemAmount)
   const [loading, hasError] = useAtomValue(ui.zapState)
 
   return (
     <TransactionInput
       placeholder={`${zapSymbol} ${t`Amount`}`}
-      amountAtom={zapInputString}
-      title={t`Mint with ${zapSymbol}`}
+      amountAtom={zapRedeemInputString}
+      title={t`Redeem into ${selectedZapToken?.symbol ?? 'ETH'}`}
       maxAmount={maxAmountString || '0'}
       disabled={issuancePaused || frozen || loading || hasError}
       {...props}
@@ -79,9 +83,8 @@ const ZapTxInput = (props: Partial<TransactionInputProps>) => {
   )
 }
 const ZapSymbol = () => {
-  const token = useAtomValue(selectedZapTokenAtom)
-  const zapSymbol = token?.symbol ?? 'ETH'
-  return <>{zapSymbol}</>
+  const rToken = useAtomValue(rTokenAtom)
+  return <>{rToken?.symbol}</>
 }
 const ZapOutputLabel = () => {
   const s = useAtomValue(zapperLoaded)
@@ -95,7 +98,7 @@ const ZapOutputLabel = () => {
     <ZapOutput />
   )
 }
-const ZapInput = (props: Partial<TransactionInputProps>) => {
+const ZapRedeemInput = (props: Partial<TransactionInputProps>) => {
   return (
     <>
       <Box sx={{ position: 'relative' }}>
@@ -128,4 +131,4 @@ const ZapInput = (props: Partial<TransactionInputProps>) => {
   )
 }
 
-export default ZapInput
+export default ZapRedeemInput

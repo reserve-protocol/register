@@ -18,8 +18,8 @@ import { useWalletClient } from 'wagmi'
 const ApproveZap = () => {
   const isApproving = useAtomValue(approvalPending)
   const approvalTxFee = useAtomValue(approvalTxFeeAtom)
-  const state = useAtomValue(ui.state)
-  const handleApprove = useSetAtom(ui.button)
+  const state = useAtomValue(ui.zapTxState)
+  const handleApprove = useSetAtom(ui.zapButton)
   const client = useWalletClient()
   const selectedToken = useAtomValue(selectedZapTokenAtom)
 
@@ -44,9 +44,9 @@ const ApproveZap = () => {
 const ConfirmZap = ({ onClose }: { onClose: () => void }) => {
   const rToken = useRToken()
   const [zapHash, setHash] = useAtom(zapTxHash)
-  const state = useAtomValue(ui.state)
+  const state = useAtomValue(ui.zapTxState)
   const zapTxFee = useAtomValue(zapTxFeeAtom)
-  const { enabled } = useAtomValue(ui.button)
+  const { enabled } = useAtomValue(ui.zapButton)
 
   if (zapHash) {
     return (
