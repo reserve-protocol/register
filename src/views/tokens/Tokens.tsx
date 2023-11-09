@@ -34,7 +34,7 @@ const Tokens = () => {
         mt={5}
       />
       <ListedTokensTable />
-      <Divider my={8} mx={-5} />
+      <Divider my={8} />
       <ContentHead
         title={t`All unlisted RTokens`}
         subtitle={t`Be aware that anyone can create an RToken that ends up on this list. We don't apply any standards beyond what can be done with the Reserve Protocol.`}

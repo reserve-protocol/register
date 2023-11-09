@@ -1,7 +1,8 @@
 import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
-import { Text, BoxProps, Box, Card, Flex } from 'theme-ui'
 import DeployIntroIcon from 'components/icons/DeployIntroIcon'
+import { Box, BoxProps, Card, Flex, Text } from 'theme-ui'
+import { DISCORD_INVITE } from 'utils/constants'
 
 const Intro = (props: BoxProps) => (
   <Card p={4} pt={4} {...props} sx={{ position: 'relative' }}>
@@ -23,7 +24,7 @@ const Intro = (props: BoxProps) => (
       <SmallButton
         variant="transparent"
         mr={3}
-        onClick={() => window.open('https://discord.gg/hQ2VJbjjg7', '_blank')}
+        onClick={() => window.open(DISCORD_INVITE, '_blank')}
       >
         <Trans>Community Discord</Trans>
       </SmallButton>

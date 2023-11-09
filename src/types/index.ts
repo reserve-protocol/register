@@ -57,6 +57,7 @@ export interface TransactionRecord {
   amount?: number
   amountUSD: number | string
   timestamp: number
+  symbol?: string
   hash?: string
   chain?: number
 }

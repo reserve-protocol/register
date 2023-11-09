@@ -1,17 +1,20 @@
-import rtokens from '@lc-labs/rtokens'
 import { gql } from 'graphql-request'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { chainIdAtom, rpayOverviewAtom } from 'state/atoms'
 import { EUSD_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
-import { TIME_RANGES, supportedChainList } from 'utils/constants'
+import {
+  LISTED_RTOKEN_ADDRESSES,
+  TIME_RANGES,
+  supportedChainList,
+} from 'utils/constants'
 import RSV, { RSVOverview } from 'utils/rsv'
 import { formatEther, getAddress } from 'viem'
 import { useMultichainQuery } from './useQuery'
 import useTimeFrom from './useTimeFrom'
 
-interface ListedToken {
+export interface ListedToken {
   id: string
   name: string
   symbol: string
@@ -30,16 +33,6 @@ interface ListedToken {
 
 // TODO: Cache only while the list is short
 const tokenListAtom = atom<ListedToken[]>([])
-
-const tokenKeys: { [x: number]: string[] } = {}
-
-for (const chain of supportedChainList) {
-  tokenKeys[chain] = [
-    ...Object.keys(rtokens[chain]).map((s) => s.toLowerCase()),
-  ]
-}
-
-tokenKeys[ChainId.Mainnet].push(RSV.address.toLowerCase())
 
 const tokenListQuery = gql`
   query GetTokenListOverview($tokenIds: [String]!, $fromTime: Int!) {
@@ -93,11 +86,11 @@ const useTokenList = () => {
 
   const { data } = useMultichainQuery(tokenListQuery, {
     [ChainId.Mainnet]: {
-      tokenIds: tokenKeys[ChainId.Mainnet],
+      tokenIds: LISTED_RTOKEN_ADDRESSES[ChainId.Mainnet],
       fromTime,
     },
     [ChainId.Base]: {
-      tokenIds: tokenKeys[ChainId.Base],
+      tokenIds: LISTED_RTOKEN_ADDRESSES[ChainId.Base],
       fromTime,
     },
   })

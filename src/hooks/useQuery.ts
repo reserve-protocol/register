@@ -3,25 +3,34 @@ import { useAtomValue } from 'jotai'
 import { GRAPH_CLIENTS, gqlClientAtom } from 'state/atoms'
 import useSWR from 'swr'
 import { ChainId } from 'utils/chains'
+import { supportedChainList } from 'utils/constants'
 
 const multichainFetcher = async (
   query: RequestDocument,
   variables: any
 ): Promise<{ [x: number]: any }> => {
-  // Hacky way to parse variables, check if variables[1] exists
-  const mainnetResult = await GRAPH_CLIENTS[ChainId.Mainnet].request(
-    query,
-    variables[ChainId.Mainnet] || variables
+  // Filter out chain if _chain exists
+  const chains: Set<number> = new Set(
+    variables._chain ? [variables._chain] : supportedChainList
   )
-  const baseResult = await GRAPH_CLIENTS[ChainId.Base].request(
-    query,
-    variables[ChainId.Base] || variables
-  )
+  const calls: any[] = []
 
-  return {
-    [ChainId.Mainnet]: mainnetResult,
-    [ChainId.Base]: baseResult,
+  for (const chain of supportedChainList) {
+    if (chains.has(chain)) {
+      calls.push(
+        GRAPH_CLIENTS[chain].request(query, variables[chain] || variables)
+      )
+    } else {
+      calls.push(null)
+    }
   }
+
+  const results = await Promise.all(calls)
+
+  return supportedChainList.reduce((acc, current, index) => {
+    acc[current] = results[index]
+    return acc
+  }, {} as { [x: number]: any })
 }
 
 const useQuery = (
