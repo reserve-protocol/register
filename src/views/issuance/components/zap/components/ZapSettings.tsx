@@ -185,8 +185,13 @@ const ZapSettingsDisplay = () => {
     </Card>
   )
 }
-export const ZapSettings = () => {
-  const [open, setOpen] = useAtom(ui.zapSettingsOpen)
+export const ZapSettings = ({
+  open,
+  setOpen
+}: {
+  open: boolean,
+  setOpen: (open: boolean) => void
+}) => {
   return (
     <Box>
       <Flex

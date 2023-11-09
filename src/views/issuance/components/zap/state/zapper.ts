@@ -15,16 +15,15 @@ import { atom } from 'jotai'
 import { loadable } from 'jotai/utils'
 
 import mixpanel from 'mixpanel-browser'
-import { publicClient, wagmiConfig } from 'state/chain'
 import { chainIdAtom, rTokenAtom } from 'state/atoms'
+import { publicClient } from 'state/chain'
 import { onlyNonNullAtom, simplifyLoadable } from 'utils/atoms/utils'
 import { ChainId } from 'utils/chains'
 import { PublicClient } from 'viem'
-import { useWalletClient } from 'wagmi'
 
 export async function publicClientToProvider(publicClient: PublicClient) {
   const { chain } = publicClient
-  
+
   const network = {
     chainId: chain!.id,
     name: chain!.name,
@@ -49,6 +48,7 @@ export const supportsPermit2Signatures = onlyNonNullAtom((get) => {
   return false
 })
 
+let unsub = () => { }
 export const zapperState = loadable(
   atom(async (get) => {
     const chainId = get(chainIdAtom)
@@ -64,7 +64,7 @@ export const zapperState = loadable(
     if (provider == null) {
       return null
     }
-    provider.on('error', () => {})
+    provider.on('error', () => { })
 
     try {
       const chainIdToConfig: Record<
@@ -93,6 +93,10 @@ export const zapperState = loadable(
         conf,
         chainIdToConfig[provider.network.chainId].setup
       )
+      unsub()
+      unsub = universe.onEvent(({ type, chainId, params }) => {
+        mixpanel.track('zapper:' + type, params)
+      })
 
       universe.dexAggregators.push(createKyberswap('KyberSwap', universe, 50))
 
