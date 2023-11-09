@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/views/issuance/components/redeem/index.tsx:37
+#: src/views/issuance/components/redeem/index.tsx:27
 msgid "- Redeem {0}"
 msgstr ""
 
@@ -178,6 +178,7 @@ msgstr ""
 #: src/views/auctions/components/useColumns.tsx:39
 #: src/views/bridge/components/BridgeAmount.tsx:43
 #: src/views/issuance/components/zap/components/ZapInput.tsx:72
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:76
 msgid "Amount"
 msgstr ""
 
@@ -439,7 +440,7 @@ msgstr ""
 msgid "Check for auctions"
 msgstr ""
 
-#: src/views/issuance/components/zap/index.tsx:87
+#: src/views/issuance/components/zap/index.tsx:55
 msgid "Checking if token is supported..."
 msgstr ""
 
@@ -1148,6 +1149,8 @@ msgstr ""
 
 #: src/views/issuance/components/zap/components/ZapInput.tsx:91
 #: src/views/issuance/components/zap/components/ZapInput.tsx:120
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:94
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:123
 #: src/views/settings/components/SettingItem.tsx:60
 msgid "Loading..."
 msgstr ""
@@ -1231,6 +1234,7 @@ msgid "Meditate peacefully on the stability of a future asset backed reserve cur
 msgstr ""
 
 #: src/views/issuance/components/zap/components/ZapInput.tsx:54
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:57
 msgid "Min Output"
 msgstr ""
 
@@ -1638,8 +1642,8 @@ msgstr ""
 msgid "Redeem amount"
 msgstr ""
 
-#: src/views/issuance/components/redeem/index.tsx:28
-msgid "Redeem zaps are not yet supported"
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:78
+msgid "Redeem into {0}"
 msgstr ""
 
 #: src/components/rtoken-setup/token/BackingForm.tsx:150
@@ -1926,7 +1930,7 @@ msgid "Send dust back to wallet"
 msgstr ""
 
 #: src/views/governance/components/GovernanceOverview.tsx:165
-#: src/views/issuance/components/zap/components/ZapSettings.tsx:211
+#: src/views/issuance/components/zap/components/ZapSettings.tsx:216
 msgid "Settings"
 msgstr ""
 
@@ -2165,11 +2169,11 @@ msgstr ""
 msgid "The warmup period is how many seconds should pass after the basket regained the SOUND status before an RToken can be issued and/or a trade can be opened."
 msgstr ""
 
-#: src/views/issuance/components/zap/index.tsx:105
+#: src/views/issuance/components/zap/components/UnsupportedZap.tsx:26
 msgid "The zapper does not currently work with this RToken. This is usually because the basket contains collateral that is not yet supported. Additional collateral types are being expanded over time."
 msgstr ""
 
-#: src/views/issuance/components/zap/index.tsx:129
+#: src/views/issuance/components/zap/components/UnsupportedZap.tsx:43
 msgid "The zapper is opensourced and anyone can add new collateral/request support here:"
 msgstr ""
 
@@ -2449,7 +2453,7 @@ msgstr ""
 msgid "Unsupported"
 msgstr ""
 
-#: src/views/issuance/components/zap/index.tsx:112
+#: src/views/issuance/components/zap/components/UnsupportedZap.tsx:32
 msgid "Unsupported collaterals:"
 msgstr ""
 
@@ -2680,6 +2684,6 @@ msgstr ""
 msgid "Your voting power"
 msgstr ""
 
-#: src/views/issuance/components/zap/index.tsx:102
+#: src/views/issuance/components/zap/components/UnsupportedZap.tsx:23
 msgid "Zaps not available for token"
 msgstr ""
