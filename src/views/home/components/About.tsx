@@ -5,7 +5,7 @@ import GithubIcon from 'components/icons/GithubIcon'
 import { ContentHead } from 'components/info-box'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { Box, BoxProps, Grid, Link, Text } from 'theme-ui'
-import { ROUTES } from 'utils/constants'
+import { DISCORD_INVITE, ROUTES } from 'utils/constants'
 
 /**
  * Section: Home > About footer
@@ -103,7 +103,7 @@ const About = (props: BoxProps) => {
               <GithubIcon style={{ marginRight: 20 }} />
             </RouterLink>
             <RouterLink
-              to="'https://discord.gg/hQ2VJbjjg7'"
+              to={DISCORD_INVITE}
               style={{ all: 'unset', cursor: 'pointer' }}
               target="_blank"
             >

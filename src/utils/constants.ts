@@ -6,6 +6,8 @@ import RSV from './rsv'
 
 export const VERSION = '3.0.0'
 
+export const DISCORD_INVITE = 'https://discord.gg/xhR4uD8mcK'
+
 export const BIGINT_MAX =
   115792089237316195423570985008687907853269984665640564039457584007913129639935n
 
