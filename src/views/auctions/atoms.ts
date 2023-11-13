@@ -111,6 +111,8 @@ export const accumulatedRevenueAtom = atomWithLoadable(async (get) => {
     args: [rToken.address],
   })
 
+  console.log('balancessdsadsdsdsd', [erc20s, balances])
+
   return erc20s.reduce((revenue, erc20, index) => {
     const priceUsd = assets[erc20]?.priceUsd || 0
     const decimals = assets[erc20]?.token.decimals || 18
@@ -246,6 +248,77 @@ export const auctionsOverviewAtom = atomWithLoadable(
         }
       })(),
     ])
+
+    const availableAuctions: Auction[] = []
+    const unavailableAuctions: Auction[] = []
+    let availableAuctionRevenue = 0
+    let unavailableAuctionRevenue = 0
+
+    for (let i = 0; i < rsrRevenueOverview[0].length; i++) {
+      const erc20 = rsrRevenueOverview[0][i]
+      const asset = assets[erc20]
+      const rsrTradeAmount = formatUnits(
+        rsrRevenueOverview[2][i],
+        asset.token.decimals
+      )
+      const rTokenTradeAmount = formatUnits(
+        rTokenRevenueOverview[2][i],
+        asset.token.decimals
+      )
+
+      let auction
+
+      if (asset.token.address !== RSR_ADDRESS[chainId]) {
+        auction = {
+          sell: asset.token,
+          buy: assets[RSR_ADDRESS[chainId]].token,
+          amount: rsrTradeAmount,
+          minAmount: formatUnits(
+            rsrRevenueOverview[3][i],
+            asset.token.decimals
+          ),
+          trader: contracts.rsrTrader.address,
+          canStart: rsrRevenueOverview[1][i],
+          output:
+            +rsrTradeAmount /
+            (assets[RSR_ADDRESS[chainId]].priceUsd / asset.priceUsd),
+        }
+      }
+
+      if (asset.token.address !== rToken.address) {
+        auction = {
+          sell: asset.token,
+          buy: assets[rToken.address].token,
+          amount: rTokenTradeAmount,
+          minAmount: formatUnits(
+            rTokenRevenueOverview[4][i],
+            asset.token.decimals
+          ),
+          trader: contracts.rTokenTrader.address,
+          canStart: rTokenRevenueOverview[1][i],
+          output:
+            +rTokenTradeAmount /
+            (assets[rToken.address].priceUsd / asset.priceUsd),
+        }
+      }
+
+      if (auction) {
+        if (auction.canStart) {
+          availableAuctions.push(auction)
+          availableAuctionRevenue += Number(auction.amount) * asset.priceUsd
+        } else {
+          unavailableAuctions.push(auction)
+          unavailableAuctionRevenue += Number(auction.amount) * asset.priceUsd
+        }
+      }
+    }
+
+    console.log('availableAuctions', {
+      availableAuctions,
+      unavailableAuctions,
+      availableAuctionRevenue,
+      unavailableAuctionRevenue,
+    })
 
     const auctions = rsrRevenueOverview[0].reduce((acc, erc20, index) => {
       const asset = assets[erc20]

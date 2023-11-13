@@ -1,14 +1,17 @@
 import { Trans } from '@lingui/macro'
 import Sidebar from 'components/sidebar'
-import { useAtom, useSetAtom } from 'jotai'
-import { X } from 'react-feather'
-import { Box, Button, Divider, Flex, Text } from 'theme-ui'
-import { auctionSidebarAtom } from '../atoms'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { ChevronDown, ChevronUp, X } from 'react-feather'
+import { Box, BoxProps, Card, Divider, Flex, Text } from 'theme-ui'
+import { auctionSidebarAtom, auctionsOverviewAtom } from '../atoms'
 import ConfirmAuction from './ConfirmAuction'
 import RecollaterizationAlert from './RecollaterizationAlert'
 import RevenueAuctionList from './RevenueAuctionList'
 import RevenueOverview from './RevenueOverview'
 import SettleableAuctions from './SettleableAuctions'
+import { Button } from 'components'
+import { useState } from 'react'
+import MeltIcon from 'components/icons/MeltIcon'
 
 const Header = () => {
   const close = useSetAtom(auctionSidebarAtom)
@@ -32,6 +35,85 @@ const Header = () => {
   )
 }
 
+interface RevenueContainer extends BoxProps {
+  icon: React.ReactNode
+  title: string
+  subtitle: string
+  btnLabel: string
+  muted?: boolean
+  defaultOpen?: boolean
+}
+
+const RevenueContainer = ({
+  icon,
+  title,
+  subtitle,
+  btnLabel,
+  muted,
+  children,
+  defaultOpen,
+  ...props
+}: RevenueContainer) => {
+  const [expanded, setExpanded] = useState(!!defaultOpen)
+
+  return (
+    <Card
+      p={0}
+      sx={{ border: '1px dashed', backgroundColor: 'white' }}
+      {...props}
+    >
+      <Box p={3} variant="layout.verticalAlign">
+        <Box mr={3} sx={{ color: !muted ? 'text' : 'muted' }}>
+          {icon}
+        </Box>
+        <Box>
+          <Box variant="layout.verticalAlign">
+            <Text variant="title">{title}</Text>
+          </Box>
+          <Text>{subtitle}</Text>
+        </Box>
+        <Button
+          ml="auto"
+          small
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            backgroundColor: !muted ? 'primary' : 'muted',
+            color: !muted ? 'white' : 'text',
+          }}
+          onClick={() => setExpanded(!expanded)}
+        >
+          <Text mr={2}>{btnLabel}</Text>
+          {expanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+        </Button>
+      </Box>
+      {expanded && (
+        <>
+          <Divider sx={{ borderColor: 'darkBorder' }} m={0} />
+          <Box p={3}>{children}</Box>
+        </>
+      )}
+    </Card>
+  )
+}
+
+const Revenue = () => {
+  const data = useAtomValue(auctionsOverviewAtom)
+
+  return (
+    <Box p={4}>
+      <RevenueContainer
+        title="Melting"
+        icon={<MeltIcon />}
+        subtitle="other"
+        btnLabel="expand"
+      >
+        tadasdasdasdasodnasd
+      </RevenueContainer>
+    </Box>
+  )
+}
+
 const AuctionsSidebar = () => {
   const [isOpen, toggleSidebar] = useAtom(auctionSidebarAtom)
 
@@ -40,16 +122,21 @@ const AuctionsSidebar = () => {
   }
 
   return (
-    <Sidebar onClose={toggleSidebar} width="600px">
+    <Sidebar
+      onClose={toggleSidebar}
+      width="600px"
+      sx={{ backgroundColor: 'contentBackground' }}
+    >
       <Header />
       <RevenueOverview />
-      <Divider my={4} />
-      <RecollaterizationAlert />
-      <Box px={4} sx={{ flexGrow: 1, overflow: 'auto' }}>
+      <Revenue />
+      {/* <Divider my={4} /> */}
+      {/* <RecollaterizationAlert /> */}
+      {/* <Box px={4} sx={{ flexGrow: 1, overflow: 'auto' }}>
         <SettleableAuctions />
         <RevenueAuctionList />
       </Box>
-      <ConfirmAuction />
+      <ConfirmAuction /> */}
     </Sidebar>
   )
 }
