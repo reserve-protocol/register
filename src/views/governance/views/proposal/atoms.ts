@@ -14,6 +14,7 @@ import Broker from 'abis/Broker'
 import Main from 'abis/Main'
 import BrokerLegacy from 'abis/BrokerLegacy'
 import BasketHandler from 'abis/BasketHandler'
+import { RegisterAsset } from './hooks/useRegisterAssets'
 
 export const proposalTxIdAtom = atom('')
 
@@ -39,7 +40,9 @@ export const parametersChangesAtom = atomWithReset<ParameterChange[]>([])
 export const roleChangesAtom = atomWithReset<RoleChange[]>([])
 
 export const unregisterAssetsAtom = atomWithReset<string[]>([])
-export const registerAssetsAtom = atomWithReset<string[]>([])
+
+export const registerAssetsAtom = atomWithReset<RegisterAsset[]>([])
+export const registerAssetsProposedAtom = atomWithReset<string[]>([])
 
 export const backupChangesAtom = atomWithReset<BackupChanges>({
   collateralChanges: [],

@@ -1,13 +1,17 @@
 import { Trans } from '@lingui/macro'
-import { Box, BoxProps, Card, Divider, Text } from 'theme-ui'
+import { Box, BoxProps, Card, Divider, Link, Text } from 'theme-ui'
 import { useAtom, useAtomValue } from 'jotai'
 import { rTokenAssetsAtom } from 'state/atoms'
-import { registerAssetsAtom } from '../atoms'
+import { registerAssetsProposedAtom } from '../atoms'
 import useRToken from 'hooks/useRToken'
 import RegisterEdit from './RegisterEdit'
 
 const RegisterProposal = (props: BoxProps) => {
-  const [assetsToRegister, setAssetsToRegister] = useAtom(registerAssetsAtom)
+  const rToken = useRToken()
+
+  const [proposedAssetsToRegister, setProposedAssetsToRegister] = useAtom(
+    registerAssetsProposedAtom
+  )
 
   const registeredErc20s = useAtomValue(rTokenAssetsAtom)
 
@@ -16,7 +20,7 @@ const RegisterProposal = (props: BoxProps) => {
   )
 
   const handleAssetRegister = (asset: string) => {
-    setAssetsToRegister(assetsToRegister.concat(asset))
+    setProposedAssetsToRegister(proposedAssetsToRegister.concat(asset))
   }
 
   return (
@@ -27,8 +31,18 @@ const RegisterProposal = (props: BoxProps) => {
       <Divider my={4} mx={-4} />
       <RegisterEdit
         onChange={handleAssetRegister}
-        addresses={[...assetsToRegister, ...registeredAssets]}
+        addresses={[...proposedAssetsToRegister, ...registeredAssets]}
       />
+      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+
+      <Text variant="legend" as="p" sx={{ fontSize: 1 }} mb={1} mr={2}>
+        <Trans>
+          Registration of an asset plugin enables the RToken to price an
+          underlying ERC20 token. Where an asset plugin for the underlying token
+          already exists, the existing asset plugin is replaced with the new
+          one.
+        </Trans>
+      </Text>
     </Card>
   )
 }

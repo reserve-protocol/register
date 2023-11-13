@@ -265,20 +265,13 @@ const useProposalTx = () => {
           encodeFunctionData({
             abi: AssetRegistry,
             functionName: 'unregister',
-            args: [asset as `0x${string}`],
+            args: [asset as Address],
           })
         )
       }
 
       for (const asset of assetsToRegister) {
-        addresses.push(contracts.assetRegistry.address)
-        calls.push(
-          encodeFunctionData({
-            abi: AssetRegistry,
-            functionName: 'register',
-            args: [asset as `0x${string}`],
-          })
-        )
+        addToRegistry(asset.asset, asset.erc20)
       }
 
       /* ########################## 
