@@ -4,6 +4,7 @@ import {
   isAssistedUpgradeAtom,
   isNewBackupProposedAtom,
   proposalDescriptionAtom,
+  registerAssetsAtom,
   unregisterAssetsAtom,
 } from './../atoms'
 
@@ -96,6 +97,7 @@ const useProposalTx = () => {
   const parameterChanges = useAtomValue(parametersChangesAtom)
   const roleChanges = useAtomValue(roleChangesAtom)
   const assetsToUnregister = useAtomValue(unregisterAssetsAtom)
+  const assetsToRegister = useAtomValue(registerAssetsAtom)
   const newBackup = useAtomValue(isNewBackupProposedAtom)
   const newBasket = useAtomValue(isNewBasketProposedAtom)
   const basket = useAtomValue(basketAtom)
@@ -263,6 +265,17 @@ const useProposalTx = () => {
           encodeFunctionData({
             abi: AssetRegistry,
             functionName: 'unregister',
+            args: [asset as `0x${string}`],
+          })
+        )
+      }
+
+      for (const asset of assetsToRegister) {
+        addresses.push(contracts.assetRegistry.address)
+        calls.push(
+          encodeFunctionData({
+            abi: AssetRegistry,
+            functionName: 'register',
             args: [asset as `0x${string}`],
           })
         )

@@ -24,6 +24,7 @@ import {
   isNewBasketProposedAtom,
   isProposalValidAtom,
   parametersChangesAtom,
+  registerAssetsAtom,
   revenueSplitChangesAtom,
   roleChangesAtom,
   unregisterAssetsAtom,
@@ -104,6 +105,7 @@ export const ChangesUpdater = () => {
   const isNewBasket = useAtomValue(isNewBasketProposedAtom)
   const isNewBackup = useAtomValue(isNewBackupProposedAtom)
   const assetsToUnregister = useAtomValue(unregisterAssetsAtom)
+  const assetsToRegister = useAtomValue(registerAssetsAtom)
   // Valid listeners
   const isBasketValid = useAtomValue(isBasketValidAtom)
   const isRevenueSplitValid = useAtomValue(isRevenueValidAtom)
@@ -147,6 +149,7 @@ export const ChangesUpdater = () => {
       !parameterChanges.length &&
       !roleChanges.length &&
       !assetsToUnregister.length &&
+      !assetsToRegister.length &&
       !isNewBasket
     ) {
       setValidState(false)
@@ -165,6 +168,7 @@ export const ChangesUpdater = () => {
     parameterChanges,
     roleChanges,
     assetsToUnregister,
+    assetsToRegister,
     isValid,
   ])
 

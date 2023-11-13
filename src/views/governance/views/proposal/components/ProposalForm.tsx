@@ -7,6 +7,7 @@ import Intro from './Intro'
 import ProposalBasketSetup from './ProposalBasketSetup'
 import RolesProposal from './RolesProposal'
 import UnregisterProposal from './UnregisterProposal'
+import RegisterProposal from './RegisterProposal'
 
 const sections = [
   Intro,
@@ -15,6 +16,7 @@ const sections = [
   RolesProposal,
   RevenueSplit,
   UnregisterProposal,
+  RegisterProposal,
 ]
 
 const ProposalForm = () => (
