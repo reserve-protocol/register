@@ -22,7 +22,7 @@ const UnregisterProposal = (props: BoxProps) => {
     (x) => !usedAssets.includes(x) && !assetsToUnregister.includes(x)
   )
 
-  if (!unusedAssets.length) return
+  if (!unusedAssets.length) return null
   const handleAssetRemoval = (asset: string) => {
     setAssetsToUnregister(assetsToUnregister.concat(asset))
   }
