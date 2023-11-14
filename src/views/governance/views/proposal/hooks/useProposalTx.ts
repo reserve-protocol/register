@@ -4,6 +4,8 @@ import {
   isAssistedUpgradeAtom,
   isNewBackupProposedAtom,
   proposalDescriptionAtom,
+  registerAssetsAtom,
+  unregisterAssetsAtom,
 } from './../atoms'
 
 import AssetRegistry from 'abis/AssetRegistry'
@@ -94,6 +96,8 @@ const useProposalTx = () => {
   const revenueChanges = useAtomValue(revenueSplitChangesAtom)
   const parameterChanges = useAtomValue(parametersChangesAtom)
   const roleChanges = useAtomValue(roleChangesAtom)
+  const assetsToUnregister = useAtomValue(unregisterAssetsAtom)
+  const assetsToRegister = useAtomValue(registerAssetsAtom)
   const newBackup = useAtomValue(isNewBackupProposedAtom)
   const newBasket = useAtomValue(isNewBasketProposedAtom)
   const basket = useAtomValue(basketAtom)
@@ -253,6 +257,21 @@ const useProposalTx = () => {
             args: [ROLES[roleChange.role], roleChange.address],
           })
         )
+      }
+
+      for (const asset of assetsToUnregister) {
+        addresses.push(contracts.assetRegistry.address)
+        calls.push(
+          encodeFunctionData({
+            abi: AssetRegistry,
+            functionName: 'unregister',
+            args: [asset as Address],
+          })
+        )
+      }
+
+      for (const asset of assetsToRegister) {
+        addToRegistry(asset.asset, asset.erc20)
       }
 
       /* ########################## 

@@ -24,14 +24,17 @@ import {
   isNewBasketProposedAtom,
   isProposalValidAtom,
   parametersChangesAtom,
+  registerAssetsAtom,
   revenueSplitChangesAtom,
   roleChangesAtom,
+  unregisterAssetsAtom,
 } from './atoms'
 import useBackupChanges from './hooks/useBackupChanges'
 import useBasketChanges from './hooks/useBasketChanges'
 import useParametersChanges from './hooks/useParametersChanges'
 import useRevenueSplitChanges from './hooks/useRevenueSplitChanges'
 import useRoleChanges from './hooks/useRoleChanges'
+import useRegisterAssets from './hooks/useRegisterAssets'
 
 export const RTokenDataUpdater = () => {
   // Setup atoms
@@ -100,8 +103,11 @@ export const ChangesUpdater = () => {
   const revenueChanges = useRevenueSplitChanges()
   const parameterChanges = useParametersChanges()
   const roleChanges = useRoleChanges()
+  const assetsToRegister = useRegisterAssets()
   const isNewBasket = useAtomValue(isNewBasketProposedAtom)
   const isNewBackup = useAtomValue(isNewBackupProposedAtom)
+  const assetsToUnregister = useAtomValue(unregisterAssetsAtom)
+
   // Valid listeners
   const isBasketValid = useAtomValue(isBasketValidAtom)
   const isRevenueSplitValid = useAtomValue(isRevenueValidAtom)
@@ -116,6 +122,7 @@ export const ChangesUpdater = () => {
   const setRoleChanges = useSetAtom(roleChangesAtom)
   const setValidState = useSetAtom(isProposalValidAtom)
   const setBasketChanges = useSetAtom(basketChangesAtom)
+  const setRegisterAssets = useSetAtom(registerAssetsAtom)
 
   useEffect(() => {
     setBasketChanges(basketChanges)
@@ -138,12 +145,18 @@ export const ChangesUpdater = () => {
   }, [roleChanges])
 
   useEffect(() => {
+    setRegisterAssets(assetsToRegister)
+  }, [assetsToRegister])
+
+  useEffect(() => {
     // Check if there is any change to be proposed to mark it as valid
     if (
       !isNewBackup &&
       !revenueChanges.count &&
       !parameterChanges.length &&
       !roleChanges.length &&
+      !assetsToUnregister.length &&
+      !assetsToRegister.length &&
       !isNewBasket
     ) {
       setValidState(false)
@@ -161,6 +174,8 @@ export const ChangesUpdater = () => {
     revenueChanges,
     parameterChanges,
     roleChanges,
+    assetsToUnregister,
+    assetsToRegister,
     isValid,
   ])
 

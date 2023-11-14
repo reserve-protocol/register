@@ -43,6 +43,7 @@ const RevenueSplit = (props: BoxProps) => {
   const updateExternalShare = useSetAtom(updateExternalShareAtom)
   const isValid = useAtomValue(isRevenueValidAtom)
   const isValidExternals = useAtomValue(isValidExternalMapAtom)
+
   const {
     register,
     watch,

@@ -1,9 +1,17 @@
 import { t } from '@lingui/macro'
-import { atom } from 'jotai'
+import { atom, useAtomValue } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
-import { secondsPerBlockAtom } from 'state/atoms'
+import {
+  chainIdAtom,
+  rTokenAssetsAtom,
+  rTokenAtom,
+  secondsPerBlockAtom,
+  selectedRTokenAtom,
+} from 'state/atoms'
 import { CollateralPlugin } from 'types'
 import { isAddress, truncateDecimals } from 'utils'
+import { RSR_ADDRESS } from 'utils/addresses'
+import collateralPlugins from 'utils/plugins'
 import { Address } from 'viem'
 
 export interface Collateral {
@@ -72,7 +80,6 @@ export const getCollateralFromBasket = (basket: Basket | BackupBasket) => {
     [] as string[]
   )
 }
-
 // TODO: This may not be needed?
 const getCollateralByTarget = (collaterals: CollateralPlugin[]) => {
   return collaterals.reduce((acc, collateral) => {
@@ -131,6 +138,40 @@ export const primaryBasketCollateralAtom = atom((get) => {
 
 export const backupBasketCollateralAtom = atom((get) => {
   return getCollateralFromBasket(get(backupCollateralAtom))
+})
+
+export const rtokenAllActiveCollateralsAtom = atom((get) => {
+  const primaryBasketCollaterals = get(primaryBasketCollateralAtom)
+  const backupBasketCollaterals = get(backupBasketCollateralAtom)
+  const rToken = get(selectedRTokenAtom)
+  const allAssets = get(rTokenAssetsAtom)
+
+  const plugins = collateralPlugins[get(chainIdAtom)]
+
+  const basketCollaterals = [
+    ...primaryBasketCollaterals,
+    ...backupBasketCollaterals,
+  ]
+
+  const systemAssets: string[] = []
+  Object.entries(allAssets || {}).forEach(([erc20, asset]) => {
+    if (
+      erc20.toLowerCase() === RSR_ADDRESS[get(chainIdAtom)].toLowerCase() ||
+      erc20.toLowerCase() === rToken?.toLowerCase()
+    )
+      systemAssets.push(asset.address)
+  })
+  const rewardTokenCollaterals = basketCollaterals.reduce(
+    (acc, collAddr: string) => [
+      ...acc,
+      ...(plugins.find(
+        (p) => p.address.toLowerCase() === collAddr.toLowerCase()
+      )?.rewardTokens || []),
+    ],
+    [] as string[]
+  )
+
+  return [...basketCollaterals, ...rewardTokenCollaterals, ...systemAssets]
 })
 
 export const addBackupCollateralAtom = atom(

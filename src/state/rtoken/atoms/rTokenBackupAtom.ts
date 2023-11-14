@@ -1,7 +1,7 @@
 import ERC20 from 'abis/ERC20'
 import FacadeRead from 'abis/FacadeRead'
 import { BackupBasket } from 'components/rtoken-setup/atoms'
-import { chainIdAtom } from 'state/atoms'
+import { chainIdAtom, rTokenAssetsAtom } from 'state/atoms'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { stringToHex } from 'viem'
@@ -12,10 +12,11 @@ import rTokenBasketAtom from './rTokenBasketAtom'
 const rTokenBackupAtom = atomWithLoadable(async (get) => {
   const rToken = get(rTokenAtom)
   const rTokenBasket = get(rTokenBasketAtom)
+  const assets = get(rTokenAssetsAtom)
   const targetUnits = Object.keys(rTokenBasket)
   const chainId = get(chainIdAtom)
 
-  if (!rToken?.main || !rTokenBasketAtom) {
+  if (!rToken?.main || !rTokenBasketAtom || !assets) {
     return null
   }
 
@@ -62,7 +63,7 @@ const rTokenBackupAtom = atomWithLoadable(async (get) => {
     backupBasket[targetUnits[index]] = {
       diversityFactor: Number(max),
       collaterals: erc20s.map((address, i) => ({
-        address,
+        address: assets[address].address,
         targetName: targetUnits[index],
         symbol: symbols[i],
         erc20: address,
