@@ -1,17 +1,44 @@
-import { Trans } from '@lingui/macro'
+import { Trans, t } from '@lingui/macro'
+import { Button } from 'components'
+import MeltIcon from 'components/icons/MeltIcon'
 import Sidebar from 'components/sidebar'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { ChevronDown, ChevronUp, X } from 'react-feather'
+import { useState } from 'react'
+import { ChevronDown, ChevronUp, Circle, X } from 'react-feather'
 import { Box, BoxProps, Card, Divider, Flex, Text } from 'theme-ui'
 import { auctionSidebarAtom, auctionsOverviewAtom } from '../atoms'
-import ConfirmAuction from './ConfirmAuction'
-import RecollaterizationAlert from './RecollaterizationAlert'
-import RevenueAuctionList from './RevenueAuctionList'
-import RevenueOverview from './RevenueOverview'
-import SettleableAuctions from './SettleableAuctions'
-import { Button } from 'components'
-import { useState } from 'react'
-import MeltIcon from 'components/icons/MeltIcon'
+import { formatCurrency } from 'utils'
+import Help from 'components/help'
+
+interface RevenueOverviewHeader extends BoxProps {
+  text: string
+  help: string
+  amount: number
+  muted?: boolean
+}
+
+const RevenueOverviewHeader = ({
+  text,
+  amount,
+  help,
+  muted,
+  ...props
+}: RevenueOverviewHeader) => {
+  return (
+    <Box variant="layout.verticalAlign" mx={3} mb={3} {...props}>
+      <Circle
+        size={8}
+        fill={!muted ? '#11BB8D' : '#FF0000'}
+        stroke={undefined}
+      />
+      <Text ml="2">{text}</Text>
+      <Text variant="strong" ml="auto" mr="2">
+        ${formatCurrency(amount)}
+      </Text>
+      <Help content={help} />
+    </Box>
+  )
+}
 
 const Header = () => {
   const close = useSetAtom(auctionSidebarAtom)
@@ -102,6 +129,11 @@ const Revenue = () => {
 
   return (
     <Box p={4}>
+      <RevenueOverviewHeader
+        text={t`Actionable accumulated revenue`}
+        amount={0}
+        help="text"
+      />
       <RevenueContainer
         title="Melting"
         icon={<MeltIcon />}
@@ -128,7 +160,6 @@ const AuctionsSidebar = () => {
       sx={{ backgroundColor: 'contentBackground' }}
     >
       <Header />
-      <RevenueOverview />
       <Revenue />
       {/* <Divider my={4} /> */}
       {/* <RecollaterizationAlert /> */}

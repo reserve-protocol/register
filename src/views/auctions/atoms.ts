@@ -90,46 +90,6 @@ export const auctionSidebarAtom = atom(
 
 export const auctionPlatformAtom = atom<TradeKind>(TradeKind.BatchTrade)
 
-export const accumulatedRevenueAtom = atomWithLoadable(async (get) => {
-  get(auctionSessionAtom) // just for refresh sake
-  const rToken = get(rTokenAtom)
-  const assets = get(rTokenAssetsAtom)
-  const chainId = get(chainIdAtom)
-  const client = publicClient({ chainId })
-  const price = get(rTokenPriceAtom)
-
-  if (!rToken || !assets || !client || !price) {
-    return 0
-  }
-
-  const {
-    result: [erc20s, balances, balancesNeededByBackingManager],
-  } = await client.simulateContract({
-    address: FACADE_ADDRESS[chainId],
-    abi: FacadeRead,
-    functionName: 'balancesAcrossAllTraders',
-    args: [rToken.address],
-  })
-
-  console.log('balancessdsadsdsdsd', [erc20s, balances])
-
-  return erc20s.reduce((revenue, erc20, index) => {
-    const priceUsd = assets[erc20]?.priceUsd || 0
-    const decimals = assets[erc20]?.token.decimals || 18
-
-    return (
-      revenue +
-      Number(
-        formatUnits(
-          balances[index] - balancesNeededByBackingManager[index],
-          decimals
-        )
-      ) *
-        priceUsd
-    )
-  }, 0)
-})
-
 export const auctionsToSettleAtom = atomWithLoadable(
   async (get): Promise<AuctionToSettle[] | null> => {
     get(auctionSessionAtom) // just for refresh sake
@@ -200,7 +160,10 @@ export const auctionsOverviewAtom = atomWithLoadable(
   async (
     get
   ): Promise<{
-    revenue: Auction[]
+    availableAuctionRevenue: number
+    unavailableAuctionRevenue: number
+    availableAuctions: Auction[]
+    unavailableAuctions: Auction[]
     recollaterization: Auction | null
   } | null> => {
     get(auctionSessionAtom) // just for refresh sake
@@ -303,12 +266,14 @@ export const auctionsOverviewAtom = atomWithLoadable(
       }
 
       if (auction) {
+        const amount = Number(auction.amount) * asset.priceUsd
+
         if (auction.canStart) {
           availableAuctions.push(auction)
-          availableAuctionRevenue += Number(auction.amount) * asset.priceUsd
+          availableAuctionRevenue += amount
         } else {
           unavailableAuctions.push(auction)
-          unavailableAuctionRevenue += Number(auction.amount) * asset.priceUsd
+          unavailableAuctionRevenue += amount
         }
       }
     }
@@ -319,54 +284,6 @@ export const auctionsOverviewAtom = atomWithLoadable(
       availableAuctionRevenue,
       unavailableAuctionRevenue,
     })
-
-    const auctions = rsrRevenueOverview[0].reduce((acc, erc20, index) => {
-      const asset = assets[erc20]
-      const rsrTradeAmount = formatUnits(
-        rsrRevenueOverview[2][index],
-        asset.token.decimals
-      )
-      const rTokenTradeAmount = formatUnits(
-        rTokenRevenueOverview[2][index],
-        asset.token.decimals
-      )
-
-      if (asset.token.address !== RSR_ADDRESS[chainId]) {
-        acc[rsrRevenueOverview[1][index] ? 'unshift' : 'push']({
-          sell: asset.token,
-          buy: assets[RSR_ADDRESS[chainId]].token,
-          amount: rsrTradeAmount,
-          minAmount: formatUnits(
-            rsrRevenueOverview[3][index],
-            asset.token.decimals
-          ),
-          trader: contracts.rsrTrader.address,
-          canStart: rsrRevenueOverview[1][index],
-          output:
-            +rsrTradeAmount /
-            (assets[RSR_ADDRESS[chainId]].priceUsd / asset.priceUsd),
-        })
-      }
-
-      if (asset.token.address !== rToken.address) {
-        acc[rTokenRevenueOverview[1][index] ? 'unshift' : 'push']({
-          sell: asset.token,
-          buy: assets[rToken.address].token,
-          amount: rTokenTradeAmount,
-          minAmount: formatUnits(
-            rTokenRevenueOverview[4][index],
-            asset.token.decimals
-          ),
-          trader: contracts.rTokenTrader.address,
-          canStart: rTokenRevenueOverview[1][index],
-          output:
-            +rTokenTradeAmount /
-            (assets[rToken.address].priceUsd / asset.priceUsd),
-        })
-      }
-
-      return acc
-    }, [] as Auction[])
 
     let recollaterizationAuction = null
 
@@ -386,6 +303,12 @@ export const auctionsOverviewAtom = atomWithLoadable(
       }
     }
 
-    return { revenue: auctions, recollaterization: recollaterizationAuction }
+    return {
+      availableAuctions,
+      unavailableAuctions,
+      availableAuctionRevenue,
+      unavailableAuctionRevenue,
+      recollaterization: recollaterizationAuction,
+    }
   }
 )
