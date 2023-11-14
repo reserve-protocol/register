@@ -43,6 +43,8 @@ const useRegisterAssets = () => {
 
     if (proposedAssetsToRegister.length > 0) {
       fetchAllERC20s()
+    } else {
+      setRegisterAssets([])
     }
   }, [proposedAssetsToRegister, chainId])
 
