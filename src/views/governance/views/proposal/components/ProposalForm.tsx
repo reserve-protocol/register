@@ -6,6 +6,8 @@ import OtherSetup from 'views/deploy/components/OtherSetup'
 import Intro from './Intro'
 import ProposalBasketSetup from './ProposalBasketSetup'
 import RolesProposal from './RolesProposal'
+import UnregisterProposal from './UnregisterProposal'
+import RegisterProposal from './RegisterProposal'
 
 const sections = [
   Intro,
@@ -13,6 +15,8 @@ const sections = [
   OtherSetup,
   RolesProposal,
   RevenueSplit,
+  UnregisterProposal,
+  RegisterProposal,
 ]
 
 const ProposalForm = () => (
