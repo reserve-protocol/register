@@ -1,7 +1,7 @@
 import { Button } from 'components'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
-import { Box, BoxProps, Card, Divider, Text } from 'theme-ui'
+import { Box, BoxProps, Card, Divider, Spinner, Text } from 'theme-ui'
 
 interface RevenueBoxContainer extends BoxProps {
   icon: React.ReactNode
@@ -10,6 +10,7 @@ interface RevenueBoxContainer extends BoxProps {
   btnLabel: string
   muted?: boolean
   defaultOpen?: boolean
+  loading?: boolean
 }
 
 const RevenueBoxContainer = ({
@@ -20,6 +21,7 @@ const RevenueBoxContainer = ({
   muted,
   children,
   defaultOpen,
+  loading = false,
   ...props
 }: RevenueBoxContainer) => {
   const [expanded, setExpanded] = useState(!!defaultOpen)
@@ -38,7 +40,7 @@ const RevenueBoxContainer = ({
           <Box variant="layout.verticalAlign">
             <Text variant="title">{title}</Text>
           </Box>
-          <Text>{subtitle}</Text>
+          {loading ? <Spinner size={16} /> : <Text>{subtitle}</Text>}
         </Box>
         <Button
           ml="auto"
@@ -49,6 +51,7 @@ const RevenueBoxContainer = ({
             backgroundColor: !muted ? 'primary' : 'muted',
             color: !muted ? 'white' : 'text',
           }}
+          disabled={!!loading}
           onClick={() => setExpanded(!expanded)}
         >
           <Text mr={2}>{btnLabel}</Text>

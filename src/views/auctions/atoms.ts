@@ -17,7 +17,7 @@ import {
   RSR_ADDRESS,
 } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
-import { Address, formatUnits, zeroAddress } from 'viem'
+import { Address, formatEther, formatUnits, zeroAddress } from 'viem'
 import { readContracts } from 'wagmi/actions'
 
 export interface Auction {
@@ -162,6 +162,7 @@ export const auctionsOverviewAtom = atomWithLoadable(
   ): Promise<{
     availableAuctionRevenue: number
     unavailableAuctionRevenue: number
+    pendingToMelt: number
     availableAuctions: Auction[]
     unavailableAuctions: Auction[]
     recollaterization: Auction | null
@@ -216,6 +217,7 @@ export const auctionsOverviewAtom = atomWithLoadable(
     const unavailableAuctions: Auction[] = []
     let availableAuctionRevenue = 0
     let unavailableAuctionRevenue = 0
+    const pendingToMelt = Number(formatEther(rTokenRevenueOverview[2][0]))
 
     for (let i = 0; i < rsrRevenueOverview[0].length; i++) {
       const erc20 = rsrRevenueOverview[0][i]
@@ -278,13 +280,6 @@ export const auctionsOverviewAtom = atomWithLoadable(
       }
     }
 
-    console.log('availableAuctions', {
-      availableAuctions,
-      unavailableAuctions,
-      availableAuctionRevenue,
-      unavailableAuctionRevenue,
-    })
-
     let recollaterizationAuction = null
 
     if (recoAuction[0]) {
@@ -308,6 +303,7 @@ export const auctionsOverviewAtom = atomWithLoadable(
       unavailableAuctions,
       availableAuctionRevenue,
       unavailableAuctionRevenue,
+      pendingToMelt,
       recollaterization: recollaterizationAuction,
     }
   }

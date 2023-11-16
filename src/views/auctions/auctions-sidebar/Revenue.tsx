@@ -2,11 +2,14 @@ import { t } from '@lingui/macro'
 import Help from 'components/help'
 import MeltIcon from 'components/icons/MeltIcon'
 import { useAtomValue } from 'jotai'
-import { Circle } from 'react-feather'
+import { Check, Circle } from 'react-feather'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { auctionsOverviewAtom } from '../atoms'
 import RevenueBoxContainer from './RevenueBoxContainer'
+import { CheckmarkIcon } from 'react-hot-toast'
+import AuctionsIcon from 'components/icons/AuctionsIcon'
+import useRToken from 'hooks/useRToken'
 
 interface RevenueOverviewHeader {
   text: string
@@ -22,7 +25,12 @@ const RevenueOverviewHeader = ({
   muted,
 }: RevenueOverviewHeader) => {
   return (
-    <Box variant="layout.verticalAlign" mx={3} mb={3} sx={{}}>
+    <Box
+      variant="layout.verticalAlign"
+      mx={3}
+      mb={3}
+      sx={{ color: 'secondaryText' }}
+    >
       <Circle
         size={8}
         fill={!muted ? '#11BB8D' : '#666666'}
@@ -38,20 +46,71 @@ const RevenueOverviewHeader = ({
 }
 
 const Revenue = () => {
-  const data = useAtomValue(auctionsOverviewAtom)
+  const rToken = useRToken()
+  const revenueData = useAtomValue(auctionsOverviewAtom)
 
   return (
-    <Box p={4}>
+    <Box p={4} sx={{ overflow: 'auto' }}>
       <RevenueOverviewHeader
         text={t`Actionable accumulated revenue`}
-        amount={0}
+        amount={
+          revenueData
+            ? revenueData.availableAuctionRevenue + revenueData.pendingToMelt
+            : 0
+        }
         help="text"
       />
       <RevenueBoxContainer
-        title="Melting"
+        title={t`Melting`}
         icon={<MeltIcon />}
+        loading={!revenueData}
+        subtitle={t`${formatCurrency(revenueData?.pendingToMelt ?? 0)} of ${
+          rToken?.symbol ?? 'rToken'
+        }`}
+        btnLabel="expand"
+        mb={3}
+      >
+        tadasdasdasdasodnasd
+      </RevenueBoxContainer>
+      <RevenueBoxContainer
+        title={t`Settleable auctions`}
+        icon={<Check />}
         subtitle="other"
         btnLabel="expand"
+        mb={3}
+      >
+        tadasdasdasdasodnasd
+      </RevenueBoxContainer>
+      <RevenueBoxContainer
+        title={t`Auctionable revenue`}
+        icon={<AuctionsIcon />}
+        subtitle="other"
+        btnLabel="expand"
+        mb={3}
+      >
+        tadasdasdasdasodnasd
+      </RevenueBoxContainer>
+      <RevenueBoxContainer
+        title={t`Claimable emissions`}
+        icon={<AuctionsIcon />}
+        subtitle="other"
+        btnLabel="expand"
+        mb={4}
+      >
+        tadasdasdasdasodnasd
+      </RevenueBoxContainer>
+      <RevenueOverviewHeader
+        text={t`Unactionable revenue/revenue sources`}
+        amount={0}
+        muted
+        help="text"
+      />
+      <RevenueBoxContainer
+        title={t`Revenue below min trade size`}
+        icon={<AuctionsIcon />}
+        subtitle="other"
+        btnLabel="expand"
+        mb={4}
       >
         tadasdasdasdasodnasd
       </RevenueBoxContainer>
