@@ -9,8 +9,7 @@ const useAuctionPrices = (
   contractAddress: Address
 ): [number, bigint, number] => {
   const currentBlock = useAtomValue(blockAtom)
-  const [currentPrice, setCurrentPrice] = useState(0)
-  const [nextPrice, setNextPrice] = useState(0)
+  const [fee, setFee] = useState([0, 0n, 0] as [number, bigint, number])
   const chainId = useAtomValue(chainIdAtom)
 
   const { data: priceResult } = useContractRead({
@@ -31,18 +30,16 @@ const useAuctionPrices = (
   })
 
   useEffect(() => {
-    if (priceResult) {
-      setCurrentPrice(Number(formatEther(priceResult)))
+    if (priceResult && nextPriceResult) {
+      setFee([
+        Number(formatEther(priceResult)),
+        priceResult,
+        Number(formatEther(nextPriceResult)),
+      ])
     }
-  }, [priceResult])
+  }, [priceResult, nextPriceResult])
 
-  useEffect(() => {
-    if (nextPriceResult) {
-      setNextPrice(Number(formatEther(nextPriceResult)))
-    }
-  }, [nextPriceResult])
-
-  return [currentPrice, priceResult || 0n, nextPrice]
+  return fee
 }
 
 export default useAuctionPrices
