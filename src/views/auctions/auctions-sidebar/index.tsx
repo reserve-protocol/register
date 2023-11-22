@@ -3,7 +3,7 @@ import { Button } from 'components'
 import Sidebar from 'components/sidebar'
 import { useAtom, useSetAtom } from 'jotai'
 import { X } from 'react-feather'
-import { Flex, Text } from 'theme-ui'
+import { Divider, Flex, Text } from 'theme-ui'
 import { auctionSidebarAtom } from '../atoms'
 import Revenue from './Revenue'
 
@@ -43,6 +43,7 @@ const AuctionsSidebar = () => {
       sx={{ backgroundColor: 'contentBackground' }}
     >
       <Header />
+      <Divider mt={3} mb={0} mx={-4} />
       <Revenue />
     </Sidebar>
   )

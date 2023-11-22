@@ -1,21 +1,24 @@
-import { t } from '@lingui/macro'
+import { Trans, t } from '@lingui/macro'
 import Help from 'components/help'
-import MeltIcon from 'components/icons/MeltIcon'
-import { useAtomValue } from 'jotai'
-import { Check, Circle } from 'react-feather'
-import { Box, BoxProps, Text } from 'theme-ui'
+import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
+import { atom, useAtomValue } from 'jotai'
+import { JSXElementConstructor } from 'react'
+import { Circle } from 'react-feather'
+import Skeleton from 'react-loading-skeleton'
+import { Box, BoxProps, Flex, Spinner, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { auctionsOverviewAtom } from '../atoms'
-import RevenueBoxContainer from './RevenueBoxContainer'
-import { CheckmarkIcon } from 'react-hot-toast'
-import AuctionsIcon from 'components/icons/AuctionsIcon'
-import useRToken from 'hooks/useRToken'
+import { auctionsOverviewAtom, auctionsToSettleAtom } from '../atoms'
+import AvailableRevenueAuctions from './AvailableRevenueAuctions'
+import MeltingBox from './MeltingBox'
+import SettleableAuctions from './SettleableAuctions'
+import UnavailableRevenueAuctions from './UnavailableRevenueAuctions'
 
-interface RevenueOverviewHeader {
+interface RevenueOverviewHeader extends BoxProps {
   text: string
   help: string
   amount: number
   muted?: boolean
+  loading?: boolean
 }
 
 const RevenueOverviewHeader = ({
@@ -23,6 +26,8 @@ const RevenueOverviewHeader = ({
   amount,
   help,
   muted,
+  loading = false,
+  ...props
 }: RevenueOverviewHeader) => {
   return (
     <Box
@@ -30,6 +35,7 @@ const RevenueOverviewHeader = ({
       mx={3}
       mb={3}
       sx={{ color: 'secondaryText' }}
+      {...props}
     >
       <Circle
         size={8}
@@ -37,85 +43,139 @@ const RevenueOverviewHeader = ({
         stroke={undefined}
       />
       <Text ml="2">{text}</Text>
-      <Text variant="strong" ml="auto" mr="2">
-        ${formatCurrency(amount)}
-      </Text>
-      <Help content={help} />
+      {loading ? (
+        <Spinner ml="auto" size={16} />
+      ) : (
+        <>
+          <Text variant="strong" sx={{ color: 'text' }} ml="auto" mr="2">
+            ${formatCurrency(amount)}
+          </Text>
+          <Help content={help} />
+        </>
+      )}
     </Box>
   )
 }
 
-const Revenue = () => {
-  const rToken = useRToken()
-  const revenueData = useAtomValue(auctionsOverviewAtom)
+const Placeholder = () => (
+  <Skeleton
+    height={80}
+    style={{ marginBottom: 20 }}
+    count={2}
+    borderRadius={20}
+  />
+)
+
+const NoAvailableAuctions = () => (
+  <Flex my={5} sx={{ alignItems: 'center', flexDirection: 'column' }}>
+    <EmptyBoxIcon />
+    <Text mt={2} sx={{ display: 'block' }} variant="legend">
+      <Trans>No actionable revenue available</Trans>
+    </Text>
+  </Flex>
+)
+
+const RevenueOverviewAtom = atom((get) => {
+  const revenueData = get(auctionsOverviewAtom)
+  const settleable = get(auctionsToSettleAtom)
+  const state: {
+    available: JSXElementConstructor<any>[]
+    unavailable: JSXElementConstructor<any>[]
+    availableAmount: number
+    unavailableAmount: number
+    isLoading: boolean
+  } = {
+    available: [],
+    unavailable: [],
+    availableAmount: 0,
+    unavailableAmount: 0,
+    isLoading: true,
+  }
+
+  if (revenueData && settleable) {
+    const {
+      pendingToMelt,
+      availableAuctionRevenue,
+      unavailableAuctionRevenue,
+      availableAuctions,
+      unavailableAuctions,
+    } = revenueData
+
+    state.isLoading = false
+    state.availableAmount = availableAuctionRevenue + pendingToMelt
+    state.unavailableAmount = unavailableAuctionRevenue
+
+    if (settleable.length) {
+      state.available.push(SettleableAuctions)
+    }
+
+    if (availableAuctions.length) {
+      state.available.push(AvailableRevenueAuctions)
+    }
+
+    if (unavailableAuctions.length) {
+      state.unavailable.push(UnavailableRevenueAuctions)
+    }
+
+    if (pendingToMelt > 0.1) {
+      state.available.push(MeltingBox)
+    } else {
+      state.unavailable.push(MeltingBox)
+    }
+  }
+
+  return state
+})
+
+const ActionableRevenue = () => {
+  const { isLoading, available, availableAmount } =
+    useAtomValue(RevenueOverviewAtom)
 
   return (
-    <Box p={4} sx={{ overflow: 'auto' }}>
+    <>
       <RevenueOverviewHeader
         text={t`Actionable accumulated revenue`}
-        amount={
-          revenueData
-            ? revenueData.availableAuctionRevenue + revenueData.pendingToMelt
-            : 0
-        }
+        amount={availableAmount}
         help="text"
+        mt={4}
+        loading={isLoading}
       />
-      <RevenueBoxContainer
-        title={t`Melting`}
-        icon={<MeltIcon />}
-        loading={!revenueData}
-        subtitle={t`${formatCurrency(revenueData?.pendingToMelt ?? 0)} of ${
-          rToken?.symbol ?? 'rToken'
-        }`}
-        btnLabel="expand"
-        mb={3}
-      >
-        tadasdasdasdasodnasd
-      </RevenueBoxContainer>
-      <RevenueBoxContainer
-        title={t`Settleable auctions`}
-        icon={<Check />}
-        subtitle="other"
-        btnLabel="expand"
-        mb={3}
-      >
-        tadasdasdasdasodnasd
-      </RevenueBoxContainer>
-      <RevenueBoxContainer
-        title={t`Auctionable revenue`}
-        icon={<AuctionsIcon />}
-        subtitle="other"
-        btnLabel="expand"
-        mb={3}
-      >
-        tadasdasdasdasodnasd
-      </RevenueBoxContainer>
-      <RevenueBoxContainer
-        title={t`Claimable emissions`}
-        icon={<AuctionsIcon />}
-        subtitle="other"
-        btnLabel="expand"
-        mb={4}
-      >
-        tadasdasdasdasodnasd
-      </RevenueBoxContainer>
-      <RevenueOverviewHeader
-        text={t`Unactionable revenue/revenue sources`}
-        amount={0}
-        muted
-        help="text"
-      />
-      <RevenueBoxContainer
-        title={t`Revenue below min trade size`}
-        icon={<AuctionsIcon />}
-        subtitle="other"
-        btnLabel="expand"
-        mb={4}
-      >
-        tadasdasdasdasodnasd
-      </RevenueBoxContainer>
-    </Box>
+      {isLoading && <Placeholder />}
+      {!isLoading &&
+        !!available.length &&
+        available.map((Component, i) => <Component key={i} />)}
+      {!isLoading && !available.length && <NoAvailableAuctions />}
+    </>
   )
 }
+
+const UnavailableRevenue = () => {
+  const { isLoading, unavailable, unavailableAmount } =
+    useAtomValue(RevenueOverviewAtom)
+
+  return (
+    <>
+      <RevenueOverviewHeader
+        text={t`Unactionable revenue/revenue sources`}
+        amount={unavailableAmount}
+        muted
+        help="text"
+        mt={4}
+        loading={isLoading}
+      />
+      {isLoading && <Placeholder />}
+      {!isLoading &&
+        !!unavailable.length &&
+        unavailable.map((Component, i) => <Component key={i} />)}
+    </>
+  )
+}
+
+const Revenue = () => (
+  <Box px={4} sx={{ overflow: 'auto' }}>
+    <ActionableRevenue />
+    <UnavailableRevenue />
+  </Box>
+)
 
 export default Revenue

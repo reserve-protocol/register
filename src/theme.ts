@@ -1,4 +1,5 @@
 import type { Theme } from 'theme-ui'
+import 'react-loading-skeleton/dist/skeleton.css'
 import './app.css'
 
 export const boxShadow = '0px 4px 34px rgba(0, 0, 0, 0.05)'

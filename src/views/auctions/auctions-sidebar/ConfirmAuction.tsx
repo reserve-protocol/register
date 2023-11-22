@@ -58,16 +58,22 @@ const ConfirmAuction = () => {
   }
 
   return (
-    <Box p={4} sx={{ borderTop: '1px solid', borderColor: 'darkBorder' }}>
+    <Box>
       {!isLegacy && (
-        <Box mb={3}>
-          <Text as="label" ml={3}>
-            Auction type:
+        <Box mb={3} variant="layout.verticalAlign">
+          <Text as="label" ml={3} mr={4}>
+            Run auctions as:
           </Text>
-          <Select value={tradeKind} onChange={handleChangeKind} mt={2}>
-            <option value={TradeKind.BatchTrade}>Batch auction</option>
-            <option value={TradeKind.DutchTrade}>Dutch auction</option>
-          </Select>
+          <Box sx={{ flexGrow: 1 }}>
+            <Select
+              variant="smallInput"
+              value={tradeKind}
+              onChange={handleChangeKind}
+            >
+              <option value={TradeKind.BatchTrade}>Batch auction</option>
+              <option value={TradeKind.DutchTrade}>Dutch auction</option>
+            </Select>
+          </Box>
         </Box>
       )}
       <TransactionButton
@@ -75,9 +81,9 @@ const ConfirmAuction = () => {
         text={btnLabel}
         variant={isLoading ? 'accentAction' : 'primary'}
         disabled={!isReady}
+        gas={gas}
         loading={isLoading || status === 'loading'}
         onClick={write}
-        gas={gas}
       />
     </Box>
   )
