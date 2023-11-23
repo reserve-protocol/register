@@ -44,7 +44,10 @@ const AvailableRevenueAuctions = () => {
           {!!index && (
             <Divider mx={-4} mt={3} sx={{ borderColor: 'darkBorder' }} />
           )}
-          <RevenueAuctionItem onSelect={() => null} data={auction} />
+          <RevenueAuctionItem
+            onSelect={() => setSelectedAuctions(index)}
+            data={auction}
+          />
         </Box>
       ))}
       <Divider my={4} mx={-4} />

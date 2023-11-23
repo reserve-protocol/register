@@ -24,6 +24,7 @@ export interface Auction {
   sell: Token
   buy: Token
   amount: string
+  amountUsd?: number
   minAmount: string
   trader: Address
   canStart: boolean
@@ -88,7 +89,7 @@ export const auctionSidebarAtom = atom(
   }
 )
 
-export const auctionPlatformAtom = atom<TradeKind>(TradeKind.BatchTrade)
+export const auctionPlatformAtom = atom<TradeKind>(TradeKind.DutchTrade)
 
 export const auctionsToSettleAtom = atomWithLoadable(
   async (get): Promise<AuctionToSettle[] | null> => {
@@ -231,13 +232,12 @@ export const auctionsOverviewAtom = atomWithLoadable(
         asset.token.decimals
       )
 
-      let auction
-
       if (asset.token.address !== RSR_ADDRESS[chainId]) {
-        auction = {
+        const auction = {
           sell: asset.token,
           buy: assets[RSR_ADDRESS[chainId]].token,
           amount: rsrTradeAmount,
+          amountUsd: Number(rsrTradeAmount) * asset.priceUsd,
           minAmount: formatUnits(
             rsrRevenueOverview[3][i],
             asset.token.decimals
@@ -248,13 +248,22 @@ export const auctionsOverviewAtom = atomWithLoadable(
             +rsrTradeAmount /
             (assets[RSR_ADDRESS[chainId]].priceUsd / asset.priceUsd),
         }
+
+        if (auction.canStart) {
+          availableAuctions.push(auction)
+          availableAuctionRevenue += auction.amountUsd
+        } else {
+          unavailableAuctions.push(auction)
+          unavailableAuctionRevenue += auction.amountUsd
+        }
       }
 
       if (asset.token.address !== rToken.address) {
-        auction = {
+        const auction = {
           sell: asset.token,
           buy: assets[rToken.address].token,
           amount: rTokenTradeAmount,
+          amountUsd: Number(rTokenTradeAmount) * asset.priceUsd,
           minAmount: formatUnits(
             rTokenRevenueOverview[4][i],
             asset.token.decimals
@@ -265,20 +274,21 @@ export const auctionsOverviewAtom = atomWithLoadable(
             +rTokenTradeAmount /
             (assets[rToken.address].priceUsd / asset.priceUsd),
         }
-      }
-
-      if (auction) {
-        const amount = Number(auction.amount) * asset.priceUsd
 
         if (auction.canStart) {
           availableAuctions.push(auction)
-          availableAuctionRevenue += amount
+          availableAuctionRevenue += auction.amountUsd
         } else {
           unavailableAuctions.push(auction)
-          unavailableAuctionRevenue += amount
+          unavailableAuctionRevenue += auction.amountUsd
         }
       }
     }
+
+    const sort = (a: Auction, b: Auction) =>
+      (b.amountUsd ?? 0) - (a.amountUsd ?? 0)
+    availableAuctions.sort(sort)
+    unavailableAuctions.sort(sort)
 
     let recollaterizationAuction = null
 

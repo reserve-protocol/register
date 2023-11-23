@@ -17,7 +17,7 @@ const MeltingBox = () => {
   const contracts = useAtomValue(rTokenContractsAtom)
   const chainId = useAtomValue(chainIdAtom)
   const call = useMemo(() => {
-    if (contracts) {
+    if (contracts && revenueData && revenueData.pendingToMelt > 0.1) {
       return {
         abi: FacadeAct,
         functionName: 'runRevenueAuctions',
@@ -26,13 +26,13 @@ const MeltingBox = () => {
           contracts.rTokenTrader.address,
           [],
           [contracts.token.address],
-          0,
+          [0],
         ],
       }
     }
 
     return undefined
-  }, [contracts])
+  }, [contracts, revenueData])
 
   return (
     <RevenueBoxContainer

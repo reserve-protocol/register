@@ -1,61 +1,15 @@
 import { Trans, t } from '@lingui/macro'
-import Help from 'components/help'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { atom, useAtomValue } from 'jotai'
 import { JSXElementConstructor } from 'react'
-import { Circle } from 'react-feather'
 import Skeleton from 'react-loading-skeleton'
-import { Box, BoxProps, Flex, Spinner, Text } from 'theme-ui'
-import { formatCurrency } from 'utils'
+import { Box, Flex, Text } from 'theme-ui'
 import { auctionsOverviewAtom, auctionsToSettleAtom } from '../atoms'
 import AvailableRevenueAuctions from './AvailableRevenueAuctions'
 import MeltingBox from './MeltingBox'
+import RevenueOverviewHeader from './RevenueOverviewHeader'
 import SettleableAuctions from './SettleableAuctions'
 import UnavailableRevenueAuctions from './UnavailableRevenueAuctions'
-
-interface RevenueOverviewHeader extends BoxProps {
-  text: string
-  help: string
-  amount: number
-  muted?: boolean
-  loading?: boolean
-}
-
-const RevenueOverviewHeader = ({
-  text,
-  amount,
-  help,
-  muted,
-  loading = false,
-  ...props
-}: RevenueOverviewHeader) => {
-  return (
-    <Box
-      variant="layout.verticalAlign"
-      mx={3}
-      mb={3}
-      sx={{ color: 'secondaryText' }}
-      {...props}
-    >
-      <Circle
-        size={8}
-        fill={!muted ? '#11BB8D' : '#666666'}
-        stroke={undefined}
-      />
-      <Text ml="2">{text}</Text>
-      {loading ? (
-        <Spinner ml="auto" size={16} />
-      ) : (
-        <>
-          <Text variant="strong" sx={{ color: 'text' }} ml="auto" mr="2">
-            ${formatCurrency(amount)}
-          </Text>
-          <Help content={help} />
-        </>
-      )}
-    </Box>
-  )
-}
 
 const Placeholder = () => (
   <Skeleton
@@ -75,6 +29,7 @@ const NoAvailableAuctions = () => (
   </Flex>
 )
 
+// Distribute components between Available/Unavailable and aggregate amounts
 const RevenueOverviewAtom = atom((get) => {
   const revenueData = get(auctionsOverviewAtom)
   const settleable = get(auctionsToSettleAtom)
