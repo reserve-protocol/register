@@ -214,6 +214,24 @@ export const auctionsOverviewAtom = atomWithLoadable(
       })(),
     ])
 
+    let recollaterizationAuction = null
+
+    if (recoAuction[0]) {
+      const sell = assets[recoAuction[1]]
+      const buy = assets[recoAuction[2]]
+      const amount = formatUnits(recoAuction[3], sell.token.decimals)
+
+      recollaterizationAuction = {
+        sell: sell.token,
+        buy: buy.token,
+        amount,
+        minAmount: '0',
+        trader: contracts.backingManager.address,
+        canStart: true,
+        output: +amount / (buy.priceUsd / sell.priceUsd),
+      }
+    }
+
     const availableAuctions: Auction[] = []
     const unavailableAuctions: Auction[] = []
     let availableAuctionRevenue = 0
@@ -243,7 +261,7 @@ export const auctionsOverviewAtom = atomWithLoadable(
             asset.token.decimals
           ),
           trader: contracts.rsrTrader.address,
-          canStart: rsrRevenueOverview[1][i],
+          canStart: !recollaterizationAuction && rsrRevenueOverview[1][i],
           output:
             +rsrTradeAmount /
             (assets[RSR_ADDRESS[chainId]].priceUsd / asset.priceUsd),
@@ -269,7 +287,7 @@ export const auctionsOverviewAtom = atomWithLoadable(
             asset.token.decimals
           ),
           trader: contracts.rTokenTrader.address,
-          canStart: rTokenRevenueOverview[1][i],
+          canStart: !recollaterizationAuction && rTokenRevenueOverview[1][i],
           output:
             +rTokenTradeAmount /
             (assets[rToken.address].priceUsd / asset.priceUsd),
@@ -289,24 +307,6 @@ export const auctionsOverviewAtom = atomWithLoadable(
       (b.amountUsd ?? 0) - (a.amountUsd ?? 0)
     availableAuctions.sort(sort)
     unavailableAuctions.sort(sort)
-
-    let recollaterizationAuction = null
-
-    if (recoAuction[0]) {
-      const sell = assets[recoAuction[1]]
-      const buy = assets[recoAuction[2]]
-      const amount = formatUnits(recoAuction[3], sell.token.decimals)
-
-      recollaterizationAuction = {
-        sell: sell.token,
-        buy: buy.token,
-        amount,
-        minAmount: '0',
-        trader: contracts.backingManager.address,
-        canStart: true,
-        output: +amount / (buy.priceUsd / sell.priceUsd),
-      }
-    }
 
     return {
       availableAuctions,

@@ -10,6 +10,7 @@ import MeltingBox from './MeltingBox'
 import RevenueOverviewHeader from './RevenueOverviewHeader'
 import SettleableAuctions from './SettleableAuctions'
 import UnavailableRevenueAuctions from './UnavailableRevenueAuctions'
+import RecollaterizationAlert from './RecollaterizationAlert'
 
 const Placeholder = () => (
   <Skeleton
@@ -50,6 +51,7 @@ const RevenueOverviewAtom = atom((get) => {
   if (revenueData && settleable) {
     const {
       pendingToMelt,
+      recollaterization,
       availableAuctionRevenue,
       unavailableAuctionRevenue,
       availableAuctions,
@@ -57,10 +59,11 @@ const RevenueOverviewAtom = atom((get) => {
     } = revenueData
 
     state.isLoading = false
+
     state.availableAmount = availableAuctionRevenue + pendingToMelt
     state.unavailableAmount = unavailableAuctionRevenue
 
-    if (settleable.length) {
+    if (!recollaterization && settleable.length) {
       state.available.push(SettleableAuctions)
     }
 
@@ -72,7 +75,7 @@ const RevenueOverviewAtom = atom((get) => {
       state.unavailable.push(UnavailableRevenueAuctions)
     }
 
-    if (pendingToMelt > 0.1) {
+    if (!recollaterization && pendingToMelt > 0.1) {
       state.available.push(MeltingBox)
     } else {
       state.unavailable.push(MeltingBox)
@@ -128,6 +131,7 @@ const UnavailableRevenue = () => {
 
 const Revenue = () => (
   <Box px={4} sx={{ overflow: 'auto' }}>
+    <RecollaterizationAlert />
     <ActionableRevenue />
     <UnavailableRevenue />
   </Box>
