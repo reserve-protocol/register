@@ -57,7 +57,7 @@ const RevenueBoxContainer = ({
             sx={{
               display: 'flex',
               alignItems: 'center',
-              backgroundColor: !muted ? 'primary' : 'muted',
+              backgroundColor: !muted ? 'primary' : 'secondary',
               color: !muted ? 'white' : 'text',
             }}
             disabled={!!loading}
