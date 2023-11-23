@@ -11,9 +11,6 @@ export const DISCORD_INVITE = 'https://discord.gg/xhR4uD8mcK'
 export const BIGINT_MAX =
   115792089237316195423570985008687907853269984665640564039457584007913129639935n
 
-// TODO: Custom per chain
-export const BLOCK_DELAY = 12 // 12 seconds per block
-
 export const COLLATERAL_STATUS = {
   SOUND: 0,
   IFFY: 1,

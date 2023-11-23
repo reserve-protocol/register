@@ -5,9 +5,12 @@ import useHasAllowance from 'hooks/useHasAllowance'
 import { useCallback, useMemo, useState } from 'react'
 import { Box, Grid, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { Hex, formatEther } from 'viem'
+import { Address, Hex, formatEther } from 'viem'
 import { DutchTrade } from '../atoms'
 import AuctionTimeIndicators from './AuctionTimeIndicators'
+import { useBalance } from 'wagmi'
+import { useAtomValue } from 'jotai'
+import { chainIdAtom, walletAtom } from 'state/atoms'
 
 const AuctionActions = ({
   data,
@@ -16,7 +19,17 @@ const AuctionActions = ({
   data: DutchTrade
   currentPrice: bigint
 }) => {
+  const chainId = useAtomValue(chainIdAtom)
+  const wallet = useAtomValue(walletAtom)
   const [bidded, setBidded] = useState(false)
+  const bidBalance = useBalance({
+    address: wallet ?? undefined,
+    token: data.buying as Address,
+    chainId,
+  })
+
+  const hasBalance = (bidBalance?.data?.value ?? 0n) >= currentPrice
+
   const [hasAllowance] = useHasAllowance([
     {
       token: data.buying as Hex,
@@ -32,7 +45,7 @@ const AuctionActions = ({
       functionName: 'approve',
       args: [data.id as Hex, currentPrice],
     }),
-    [currentPrice, data.id]
+    [currentPrice !== 0n, data.id]
   )
 
   const bidCall = useMemo(
@@ -59,28 +72,34 @@ const AuctionActions = ({
               variant="accentAction"
               successLabel="Waiting allowance..."
               small
+              ml={3}
             />
             <Text variant="legend" sx={{ fontSize: 1 }} ml={2}>
               Prepare for bidding by approving {data.buyingTokenSymbol}
             </Text>
           </>
         )}
-        {hasAllowance && currentPrice > 0n && (
+        {hasAllowance && currentPrice !== 0n && (
           <>
             <ExecuteButton
               text={`Bid ${formatCurrency(+formatEther(currentPrice))} ${
                 data.buyingTokenSymbol
               }`}
-              call={bidCall}
+              ml={3}
+              call={hasBalance ? bidCall : undefined}
               variant="accentAction"
               successLabel="Auction bidded"
-              txLabel="Auction bid"
+              txLabel={hasBalance ? 'Auction bid' : 'Not enough balance to bid'}
+              disabled={!hasBalance}
               small
               onSuccess={handleBid}
             />
             <Text variant="legend" sx={{ fontSize: 1 }} ml={2}>
               1 {data.sellingTokenSymbol} ={' '}
-              {formatCurrency(Number(formatEther(currentPrice)), 5)}{' '}
+              {formatCurrency(
+                Number(formatEther(currentPrice)) / data.amount,
+                5
+              )}{' '}
               {data.buyingTokenSymbol}
             </Text>
           </>

@@ -19,7 +19,7 @@ const AuctionTimeIndicators = ({
   // Calculations
   const blocksLeft = end - currentBlock
   const auctionLength = end - start
-  const bufferBlocks = Math.round(auctionLength * 0.2)
+  const bufferBlocks = Math.round(auctionLength * 0.05)
   const finalPriceBlock = start + (auctionLength - bufferBlocks)
   const isEnding = currentBlock >= finalPriceBlock
 

@@ -1,6 +1,6 @@
-import { BLOCK_DELAY, PROPOSAL_STATES } from 'utils/constants'
+import { PROPOSAL_STATES, blockDuration } from 'utils/constants'
 import { atom } from 'jotai'
-import { blockAtom, rTokenGovernanceAtom } from 'state/atoms'
+import { blockAtom, chainIdAtom, rTokenGovernanceAtom } from 'state/atoms'
 import { Address, Hex, keccak256, parseEther, toBytes } from 'viem'
 
 export interface ProposalDetail {
@@ -83,6 +83,8 @@ export const getProposalStatus = (
 export const getProposalStateAtom = atom((get) => {
   const blockNumber = get(blockAtom)
   const proposal = get(proposalDetailAtom)
+  const chainId = get(chainIdAtom)
+  const BLOCK_DURATION = blockDuration[chainId]
 
   const state: { state: string; deadline: null | number } = {
     state: proposal?.state ?? '',
@@ -98,16 +100,16 @@ export const getProposalStateAtom = atom((get) => {
       proposal.executionStartBlock > blockNumber
     ) {
       state.deadline =
-        (proposal.executionStartBlock - blockNumber) * BLOCK_DELAY
+        (proposal.executionStartBlock - blockNumber) * BLOCK_DURATION
     } else if (proposal.state === PROPOSAL_STATES.PENDING) {
       if (
         blockNumber > proposal.startBlock &&
         blockNumber < proposal.endBlock
       ) {
         state.state = PROPOSAL_STATES.ACTIVE
-        state.deadline = (proposal.endBlock - blockNumber) * BLOCK_DELAY
+        state.deadline = (proposal.endBlock - blockNumber) * BLOCK_DURATION
       } else if (blockNumber < proposal.startBlock) {
-        state.deadline = (proposal.startBlock - blockNumber) * BLOCK_DELAY
+        state.deadline = (proposal.startBlock - blockNumber) * BLOCK_DURATION
       } else {
         state.state = PROPOSAL_STATES.EXPIRED
       }
@@ -126,7 +128,7 @@ export const getProposalStateAtom = atom((get) => {
           state.state = PROPOSAL_STATES.SUCCEEDED
         }
       } else {
-        state.deadline = (proposal.endBlock - blockNumber) * BLOCK_DELAY
+        state.deadline = (proposal.endBlock - blockNumber) * BLOCK_DURATION
       }
     }
   }
