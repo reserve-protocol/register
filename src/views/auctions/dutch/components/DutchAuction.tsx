@@ -17,7 +17,7 @@ const DutchAuction = ({ data }: Props) => {
   )
 
   return (
-    <Card p={2} sx={{ display: 'flex', alignItems: 'center' }} mb={3}>
+    <Card p={3} sx={{ display: 'flex', alignItems: 'center' }} mb={3}>
       <Box sx={{ flexGrow: 1 }}>
         <Grid sx={{ flexGrow: 1 }} columns={[2, 4]}>
           <AuctionItem
@@ -51,7 +51,7 @@ const DutchAuction = ({ data }: Props) => {
             price={data.worstCasePrice}
           />
         </Grid>
-        <Divider my={2} sx={{ fontSize: 1 }} />
+        <Divider my={3} sx={{ fontSize: 1 }} />
         <AuctionActions data={data} currentPrice={currentPriceRaw} />
       </Box>
     </Card>
