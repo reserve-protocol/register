@@ -41,14 +41,14 @@ const providerAtom = atom(async (get) => {
   const chainId = get(chainIdAtom)
   const cli = publicClient({ chainId })
 
-  return await publicClientToProvider(cli) as Web3Provider
+  return (await publicClientToProvider(cli)) as Web3Provider
 })
 
 export const supportsPermit2Signatures = onlyNonNullAtom((get) => {
   return false
 })
 
-let unsub = () => { }
+let unsub = () => {}
 export const zapperState = loadable(
   atom(async (get) => {
     const chainId = get(chainIdAtom)
@@ -64,7 +64,7 @@ export const zapperState = loadable(
     if (provider == null) {
       return null
     }
-    provider.on('error', () => { })
+    provider.on('error', () => {})
 
     try {
       const chainIdToConfig: Record<
@@ -98,7 +98,7 @@ export const zapperState = loadable(
         mixpanel.track('zapper:' + type, params)
       })
 
-      universe.dexAggregators.push(createKyberswap('KyberSwap', universe, 50))
+      // universe.dexAggregators.push(createKyberswap('KyberSwap', universe, 50))
 
       if (chainId === ChainId.Mainnet) {
         universe.dexAggregators.push(
