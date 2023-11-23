@@ -91,7 +91,8 @@ const Issuance = () => {
           <Box>
             <ZapOverview />
             <Grid columns={[1, 2]} gap={[1, 4]} mb={[1, 4]}>
-              {zapsEnabled === false ? (
+              {zapsEnabled === false ||
+              import.meta.env.VITE_ZAP_MAINTENANCE === 'true' ? (
                 <>
                   <Issue />
                   <Redeem />
