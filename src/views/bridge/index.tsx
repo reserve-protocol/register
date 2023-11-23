@@ -5,6 +5,7 @@ import BridgeBoxIcon from 'components/icons/BridgeBoxIcon'
 import TransactionsIcon from 'components/icons/TransactionsIcon'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import BridgeTransactions from './components/BridgeTransactions'
+import BridgeWithdrawals from './components/BridgeWithdrawals'
 
 enum BridgeMenuKeys {
   Bridge,
@@ -96,6 +97,7 @@ const ChainBridge = () => {
       ) : (
         <TransactionsContainer />
       )}
+      <BridgeWithdrawals />
     </>
   )
 }

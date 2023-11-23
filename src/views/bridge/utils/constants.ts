@@ -19,5 +19,5 @@ export const BRIDGEABLE_TOKENS = [
     symbol: 'eUSD',
     address: EUSD_ADDRESS[ChainId.Mainnet],
     bridgedAddress: EUSD_ADDRESS[ChainId.Base],
-  }
+  },
 ]
