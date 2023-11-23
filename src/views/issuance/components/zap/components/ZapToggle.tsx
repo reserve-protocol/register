@@ -1,14 +1,15 @@
 import { Trans } from '@lingui/macro'
 import Help from 'components/help'
 import useRToken from 'hooks/useRToken'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import mixpanel from 'mixpanel-browser'
 import { Zap as ZapIcon } from 'react-feather'
 import { Box, Switch, Text } from 'theme-ui'
-import { zapEnabledAtom } from '../state/ui-atoms'
+import { _zapEnabledAtom, zapEnabledAtom } from '../state/ui-atoms'
 
 const ZapToggle = () => {
-  const [zapEnabled, setEnabled] = useAtom(zapEnabledAtom)
+  const zapEnabled = useAtomValue(zapEnabledAtom)
+  const setEnabled = useSetAtom(_zapEnabledAtom)
   const rToken = useRToken()
 
   const handleToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
