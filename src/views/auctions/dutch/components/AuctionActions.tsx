@@ -17,7 +17,6 @@ const AuctionActions = ({
   currentPrice: bigint
 }) => {
   const [bidded, setBidded] = useState(false)
-
   const [hasAllowance] = useHasAllowance([
     {
       token: data.buying as Hex,
@@ -66,7 +65,7 @@ const AuctionActions = ({
             </Text>
           </>
         )}
-        {hasAllowance && (
+        {hasAllowance && currentPrice > 0n && (
           <>
             <ExecuteButton
               text={`Bid ${formatCurrency(+formatEther(currentPrice))} ${

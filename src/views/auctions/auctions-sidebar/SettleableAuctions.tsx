@@ -1,43 +1,83 @@
-import { atom, useAtomValue } from 'jotai'
-import { Box, Text, Image, Spinner } from 'theme-ui'
-import { auctionsToSettleAtom, currentTradesAtom } from '../atoms'
-import { Trans, t } from '@lingui/macro'
-import { Info } from 'components/info-box'
+import { t } from '@lingui/macro'
+import FacadeAct from 'abis/FacadeAct'
+import { ExecuteButton } from 'components/button/TransactionButton'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
+import { Check } from 'react-feather'
+import { chainIdAtom } from 'state/atoms'
+import { FACADE_ACT_ADDRESS } from 'utils/addresses'
+import { Address, Hex, encodeFunctionData } from 'viem'
+import { auctionSessionAtom, auctionsToSettleAtom } from '../atoms'
+import RevenueBoxContainer from './RevenueBoxContainer'
 
-const ongoingAtom = atom((get) => get(currentTradesAtom)?.length || 0)
+const settleTxAtom = atom((get) => {
+  const auctionsToSettle = get(auctionsToSettleAtom)
+  const chainId = get(chainIdAtom)
+
+  if (!auctionsToSettle?.length) {
+    return undefined
+  }
+
+  const traderToSettle = auctionsToSettle.reduce((acc, auction) => {
+    acc[auction.trader] = [...(acc[auction.trader] || []), auction.sell.address]
+
+    return acc
+  }, {} as { [x: Address]: Address[] })
+
+  const transactions = (Object.keys(traderToSettle) as Address[]).reduce(
+    (auctions, trader) => {
+      return [
+        ...auctions,
+        encodeFunctionData({
+          abi: FacadeAct,
+          functionName: 'runRevenueAuctions',
+          args: [
+            trader,
+            traderToSettle[trader],
+            [],
+            new Array(traderToSettle[trader].length ?? 0).fill(0),
+          ],
+        }),
+      ]
+    },
+    [] as Hex[]
+  )
+
+  return {
+    abi: FacadeAct,
+    address: FACADE_ACT_ADDRESS[chainId],
+    args: [transactions],
+    functionName: 'multicall',
+    enabled: !!transactions.length,
+  }
+})
 
 const SettleableAuctions = () => {
-  const ongoing = useAtomValue(ongoingAtom)
   const settleable = useAtomValue(auctionsToSettleAtom)
+  const call = useAtomValue(settleTxAtom)
+  const setSession = useSetAtom(auctionSessionAtom)
 
-  if (!settleable?.length) {
-    return null
+  const handleSuccess = () => {
+    setSession(Math.random())
   }
 
   return (
-    <Box
-      variant="layout.borderBox"
-      p={4}
-      sx={{ backgroundColor: 'contentBackground' }}
-      mb={4}
-    >
-      <Text variant="subtitle" mb={4}>
-        <Trans>To settle</Trans>
-      </Text>
-      {!!ongoing && (
-        <Info
-          icon={<Spinner size={14} />}
-          title={t`Ongoing`}
-          subtitle={`${ongoing} auctions still ongoing`}
-          mb={3}
+    <RevenueBoxContainer
+      title={t`Settleable auctions`}
+      icon={<Check size={24} />}
+      loading={!settleable}
+      subtitle={t`${settleable?.length ?? 0} auctions`}
+      mb={3}
+      right={
+        <ExecuteButton
+          text={t`Settle all`}
+          small
+          ml="auto"
+          successLabel="Success!"
+          call={call}
+          onSuccess={handleSuccess}
         />
-      )}
-      <Info
-        icon={<Image src="/svgs/asterisk.svg" />}
-        title={t`Settle`}
-        subtitle={`${settleable?.length ?? 0} auctions`}
-      />
-    </Box>
+      }
+    />
   )
 }
 

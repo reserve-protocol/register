@@ -11,6 +11,7 @@ const useAuctionPrices = (
   const currentBlock = useAtomValue(blockAtom)
   const [currentPrice, setCurrentPrice] = useState(0)
   const [nextPrice, setNextPrice] = useState(0)
+  const [cachePriceResult, setCachePriceResult] = useState(0n)
   const chainId = useAtomValue(chainIdAtom)
 
   const { data: priceResult } = useContractRead({
@@ -42,7 +43,13 @@ const useAuctionPrices = (
     }
   }, [nextPriceResult])
 
-  return [currentPrice, priceResult || 0n, nextPrice]
+  useEffect(() => {
+    if (priceResult) {
+      setCachePriceResult(priceResult)
+    }
+  }, [priceResult])
+
+  return [currentPrice, cachePriceResult, nextPrice]
 }
 
 export default useAuctionPrices
