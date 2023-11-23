@@ -58,7 +58,12 @@ import { FOUR_DIGITS, formatQty } from './formatTokenQuantity'
 import { resolvedZapState, zappableTokens, zapperState } from './zapper'
 import { GetWalletClientResult } from 'wagmi/dist/actions'
 import { Transaction } from 'ethers'
-import { JsonRpcProvider, JsonRpcSigner, Provider, Web3Provider } from '@ethersproject/providers'
+import {
+  JsonRpcProvider,
+  JsonRpcSigner,
+  Provider,
+  Web3Provider,
+} from '@ethersproject/providers'
 import { BaseSearcherResult } from '@reserve-protocol/token-zapper/types/searcher/SearcherResult'
 import { TransactionRequest } from 'viem'
 
@@ -106,10 +111,10 @@ export const zapTxFeeAtom = atom((get) => {
   const gasUsdPrice = get(ethPriceAtom)
   return tx?.transaction?.gasEstimate
     ? Number(
-      tx.result.universe.nativeToken
-        .from(tx.transaction.feeEstimate(gasPrice ?? 1n))
-        .format()
-    ) * gasUsdPrice
+        tx.result.universe.nativeToken
+          .from(tx.transaction.feeEstimate(gasPrice ?? 1n))
+          .format()
+      ) * gasUsdPrice
     : 0
 })
 
@@ -186,7 +191,7 @@ export const redeemZapOutputAmount = atom((get) => {
   }
   return formatQty(
     quote.swaps.outputs.find((r) => r.token === outputToken) ??
-    outputToken.zero,
+      outputToken.zero,
     FOUR_DIGITS
   )
 })
@@ -318,7 +323,12 @@ const loadingStates = new Set<UIState>([
   'signature_loading',
 ])
 
-export const zapEnabledAtom = atomWithStorage('zap-enabled', false)
+export const _zapEnabledAtom = atomWithStorage('zap-enabled', false)
+export const zapEnabledAtom = atom(
+  (get) =>
+    get(_zapEnabledAtom) && import.meta.env.VITE_ZAP_MAINTENANCE !== 'true'
+)
+
 export const zapAvailableAtom = loadable(
   atom(async (get) => {
     const state = get(resolvedZapState)
@@ -338,12 +348,11 @@ export const zapAvailableAtom = loadable(
         if (o != null) {
           return o
         }
-      } catch (e) { }
+      } catch (e) {}
     }
     return null
   })
 )
-
 
 const mkButton = (
   previousTxAtom: typeof previousZapTransaction,
@@ -355,7 +364,7 @@ const mkButton = (
 ) => {
   let errors = 0
 
-  const zapStateAtom = atom(get => {
+  const zapStateAtom = atom((get) => {
     const quote = get(zQuote)
     const approval = get(approvalNeeded)
     const zapInputs = get(zInput)
@@ -383,7 +392,12 @@ const mkButton = (
   })
   const buttonEnabled = atom((get) => {
     const inp = get(zInput)
-    if (inp == null || inp.signer == null || inp.inputQuantity == null || inp.inputQuantity.amount == 0n) {
+    if (
+      inp == null ||
+      inp.signer == null ||
+      inp.inputQuantity == null ||
+      inp.inputQuantity.amount == 0n
+    ) {
       return false
     }
     const s = get(state)
@@ -482,11 +496,11 @@ const mkButton = (
     get: Getter,
     set: Setter,
     state: {
-      approvalNeeded: { tx: any },
-      inputToken: Token,
-      signer: any,
-      provider: Provider,
-      rToken: Token,
+      approvalNeeded: { tx: any }
+      inputToken: Token
+      signer: any
+      provider: Provider
+      rToken: Token
       quote: BaseSearcherResult
     }
   ) => Promise<void>
@@ -528,7 +542,6 @@ const mkButton = (
     set(signatureRequestPending, false)
   }
 
-
   const sendTx: ZapperAction = async (
     get,
     set,
@@ -541,11 +554,11 @@ const mkButton = (
     }
     set(zapIsPending, true)
     try {
-      const resp = (await signer.sendTransaction({
+      const resp = await signer.sendTransaction({
         value: '0x0',
         ...zapTx.transaction.tx,
         gasLimit: zapTx.transaction.gasEstimate,
-      }))
+      })
       const receipt = await resp.wait(1)
       if (receipt.status === 0) {
         notifyError('Zap failed', 'Transaction reverted on chain')
@@ -590,14 +603,13 @@ const mkButton = (
     }
   }
 
-
   return atom(
     (get) => ({
       loadingLabel: get(buttonLoadingLabel),
       enabled: get(buttonEnabled),
       loading: get(previousTxAtom) == null && get(buttonIsLoading),
       label: get(buttonLabel),
-      redeemButtonLabel: get(redeemButtonLabel)
+      redeemButtonLabel: get(redeemButtonLabel),
     }),
     async (get, set, client: GetWalletClientResult) => {
       if (get(zapSender) == null) {
@@ -610,18 +622,19 @@ const mkButton = (
         return
       }
 
-      
-      const provider: Web3Provider = new Web3Provider(async (method, params) => {
-        const out = await client!.request({ method, params } as any)
-        return out
-      })
-      
+      const provider: Web3Provider = new Web3Provider(
+        async (method, params) => {
+          const out = await client!.request({ method, params } as any)
+          return out
+        }
+      )
+
       data.signer = {
         ...provider,
         sendTransaction: async (tx: TransactionRequest) => {
           const hash = await client?.sendTransaction(tx)
           return await provider.getTransaction(hash!)
-        }
+        },
       }
       if (flowState === 'tx_loading') {
         errors = 0
