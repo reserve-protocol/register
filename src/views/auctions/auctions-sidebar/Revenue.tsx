@@ -3,7 +3,7 @@ import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { atom, useAtomValue } from 'jotai'
 import { JSXElementConstructor } from 'react'
 import Skeleton from 'react-loading-skeleton'
-import { Box, Flex, Text } from 'theme-ui'
+import { Box, Flex, Text, useColorMode } from 'theme-ui'
 import { auctionsOverviewAtom, auctionsToSettleAtom } from '../atoms'
 import AvailableRevenueAuctions from './AvailableRevenueAuctions'
 import MeltingBox from './MeltingBox'
@@ -12,14 +12,21 @@ import SettleableAuctions from './SettleableAuctions'
 import UnavailableRevenueAuctions from './UnavailableRevenueAuctions'
 import RecollaterizationAlert from './RecollaterizationAlert'
 
-const Placeholder = () => (
-  <Skeleton
-    height={80}
-    style={{ marginBottom: 20 }}
-    count={2}
-    borderRadius={20}
-  />
-)
+const Placeholder = () => {
+  const [colorMode] = useColorMode()
+  const isDarkMode = colorMode === 'dark'
+
+  return (
+    <Skeleton
+      baseColor={isDarkMode ? '#090707' : undefined}
+      highlightColor={isDarkMode ? '#171311' : undefined}
+      height={80}
+      style={{ marginBottom: 20 }}
+      count={2}
+      borderRadius={20}
+    />
+  )
+}
 
 const NoAvailableAuctions = () => (
   <Flex my={5} sx={{ alignItems: 'center', flexDirection: 'column' }}>
@@ -94,7 +101,7 @@ const ActionableRevenue = () => {
       <RevenueOverviewHeader
         text={t`Actionable accumulated revenue`}
         amount={availableAmount}
-        help="text"
+        help="Run and settle auctions."
         mt={4}
         loading={isLoading}
       />
@@ -117,7 +124,7 @@ const UnavailableRevenue = () => {
         text={t`Unactionable revenue/revenue sources`}
         amount={unavailableAmount}
         muted
-        help="text"
+        help="Revenue auctions that are below the minimum trade or unavailable."
         mt={4}
         loading={isLoading}
       />
