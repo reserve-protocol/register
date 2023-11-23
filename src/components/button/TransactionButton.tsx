@@ -53,6 +53,7 @@ const TransactionButton = ({
   gas,
   mining,
   error,
+  loading,
   ...props
 }: TransactionButtonProps) => {
   const address = useAtomValue(walletAtom)
@@ -78,7 +79,7 @@ const TransactionButton = ({
 
   return (
     <>
-      <LoadingButton {...props} />
+      <LoadingButton loading={loading} {...props} />
       {!!gas && <GasEstimateLabel gas={gas} />}
       {!!error && (
         <TransactionError sx={{ textAlign: 'center' }} mt={3} error={error} />

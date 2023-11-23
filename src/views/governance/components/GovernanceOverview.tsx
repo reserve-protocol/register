@@ -67,14 +67,16 @@ const GovernanceOverview = () => {
   const governance = useAtomValue(rTokenGovernanceAtom)
   const chainId = useAtomValue(chainIdAtom)
 
+  const cacheBlock = useMemo(() => blockNumber, [!!blockNumber])
+
   const { data: votes } = useContractRead({
     address: account ? (governance.governor as Address) : undefined,
     functionName: 'getVotes',
     abi: Governance,
     chainId,
     args:
-      account && blockNumber
-        ? [account as Address, BigInt(blockNumber - 2)]
+      account && cacheBlock
+        ? [account as Address, BigInt(cacheBlock - 2)]
         : undefined,
   })
 

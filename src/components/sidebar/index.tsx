@@ -1,16 +1,19 @@
 import { ReactNode } from 'react'
 import { createPortal } from 'react-dom'
-import { Box } from 'theme-ui'
+import { Box, BoxProps } from 'theme-ui'
+
+interface Props extends BoxProps {
+  onClose(): void
+  width?: string
+}
 
 const Sidebar = ({
   onClose,
   width = '600',
   children,
-}: {
-  onClose(): void
-  children: ReactNode
-  width?: string
-}) =>
+  sx = {},
+  ...props
+}: Props) =>
   createPortal(
     <>
       <Box
@@ -25,6 +28,7 @@ const Sidebar = ({
           height: '100%',
           backgroundColor: theme.colors?.modalOverlay,
         })}
+        {...props}
       />
       <Box
         sx={(theme) => ({
@@ -41,6 +45,7 @@ const Sidebar = ({
           top: 0,
           height: '100%',
           overflow: 'hidden',
+          ...sx,
         })}
       >
         {children}

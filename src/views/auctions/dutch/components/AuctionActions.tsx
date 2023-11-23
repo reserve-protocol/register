@@ -61,12 +61,6 @@ const AuctionActions = ({
     setBidded(true)
   }, [])
 
-  // {!hasBalance || currentPrice === 0n ? (
-  //   <Text ml={3} variant="legend">
-  //     No enough balance to bid
-  //   </Text>
-  // ) :
-
   return (
     <Grid columns={[1, 1, 1, 'auto auto']}>
       <Box variant="layout.verticalAlign" sx={{ flexWrap: 'wrap' }}>

@@ -19,7 +19,8 @@ export enum TradeKind {
 }
 
 const auctionsTxAtom = atom((get): UsePrepareContractWriteConfig => {
-  const { revenue = [], recollaterization } = get(auctionsOverviewAtom) || {}
+  const { availableAuctions: revenue = [], recollaterization } =
+    get(auctionsOverviewAtom) || {}
   const chainId = get(chainIdAtom)
   const selectedAuctions = get(selectedAuctionsAtom)
   const auctionsToSettle = get(auctionsToSettleAtom) || []
