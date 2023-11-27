@@ -1,11 +1,40 @@
-import { Trans } from '@lingui/macro'
+import { Trans, t } from '@lingui/macro'
 import { Button } from 'components'
 import { useAtom } from 'jotai'
 import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { Box, Divider, Text } from 'theme-ui'
+import { Box, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
 import { isBridgeWrappingAtom } from '../atoms'
+
+const Tab = ({
+  title,
+  onClick,
+  selected,
+}: {
+  title: string
+  onClick(): void
+  selected: boolean
+}) => (
+  <Box
+    role="button"
+    px={3}
+    sx={{
+      color: selected ? 'text' : 'secondaryText',
+      cursor: 'pointer',
+      height: '80px',
+      display: 'flex',
+      boxSizing: 'border-box',
+      alignItems: 'center',
+      borderBottom: '1px solid',
+      borderColor: selected ? 'text' : 'contentBackground',
+      fontSize: 3,
+    }}
+    onClick={onClick}
+  >
+    <Text>{title}</Text>
+  </Box>
+)
 
 const BridgeHeader = () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -23,30 +52,29 @@ const BridgeHeader = () => {
 
   return (
     <>
-      <Box variant="layout.verticalAlign">
-        <Text as="h2" sx={{ fontSize: 3, fontWeight: 500 }}>
-          <Trans>Bridge tokens</Trans>
-        </Text>
-        <Button
-          variant="bordered"
-          small
-          sx={{ borderColor: isWrapping ? 'primary' : 'darkBorder' }}
-          ml="auto"
+      <Box
+        variant="layout.verticalAlign"
+        px={4}
+        sx={{
+          position: 'relative',
+          borderBottom: '1px solid',
+          borderColor: 'darkBorder',
+        }}
+      >
+        <Tab
+          title={t`Deposit`}
+          selected={isWrapping}
           onClick={() => setWrapping(true)}
-        >
-          <Trans>Deposit</Trans>
-        </Button>
-        <Button
-          variant="bordered"
-          ml="3"
-          small
-          sx={{ borderColor: !isWrapping ? 'primary' : 'darkBorder' }}
+        />
+        <Tab
+          title={t`Withdraw`}
+          selected={!isWrapping}
           onClick={() => setWrapping(false)}
-        >
-          <Trans>Withdraw</Trans>
+        />
+        <Button ml="auto" variant="muted" small>
+          <Trans>Need help?</Trans>
         </Button>
       </Box>
-      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
     </>
   )
 }

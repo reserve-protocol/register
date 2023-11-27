@@ -7,59 +7,6 @@ import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import BridgeTransactions from './components/BridgeTransactions'
 import BridgeWithdrawals from './components/BridgeWithdrawals'
 
-enum BridgeMenuKeys {
-  Bridge,
-  Transactions,
-}
-
-const bridgeMenuIndexAtom = atom(BridgeMenuKeys.Bridge)
-
-const MenuItem = ({ index }: { index: BridgeMenuKeys }) => {
-  const [current, setMenuIndex] = useAtom(bridgeMenuIndexAtom)
-
-  return (
-    <Box
-      onClick={() => setMenuIndex(index)}
-      sx={{
-        width: 160,
-        height: '100%',
-        justifyContent: 'center',
-        borderBottom: '2px solid',
-        cursor: 'pointer',
-        borderColor: current === index ? 'text' : 'transparent',
-      }}
-      variant="layout.verticalAlign"
-    >
-      {index === BridgeMenuKeys.Bridge ? (
-        <>
-          <BridgeBoxIcon />
-          <Text ml={2}>Bridge</Text>
-        </>
-      ) : (
-        <>
-          <TransactionsIcon />
-          <Text ml={2}>Transactions</Text>
-        </>
-      )}
-    </Box>
-  )
-}
-
-const BridgeMenu = () => (
-  <Box
-    variant="layout.verticalAlign"
-    sx={{
-      justifyContent: 'center',
-      borderBottom: '1px solid',
-      borderColor: 'border',
-      height: 62,
-    }}
-  >
-    <MenuItem index={BridgeMenuKeys.Bridge} />
-    <MenuItem index={BridgeMenuKeys.Transactions} />
-  </Box>
-)
-
 const BridgeContainer = () => {
   return (
     <Grid
@@ -87,16 +34,9 @@ const TransactionsContainer = () => {
 }
 
 const ChainBridge = () => {
-  const menuIndex = useAtomValue(bridgeMenuIndexAtom)
-
   return (
     <>
-      <BridgeMenu />
-      {menuIndex === BridgeMenuKeys.Bridge ? (
-        <BridgeContainer />
-      ) : (
-        <TransactionsContainer />
-      )}
+      <BridgeContainer />
       <BridgeWithdrawals />
     </>
   )

@@ -8,7 +8,7 @@ import ConfirmBridge from './ConfirmBridge'
 
 const Bridge = () => (
   <Card
-    p={4}
+    p={0}
     sx={{
       backgroundColor: 'contentBackground',
       height: 'fit-content',
