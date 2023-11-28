@@ -8,7 +8,7 @@
 //       const list = res?.status === "1" ? res?.result : [];
 
 import { useEffect } from 'react'
-import { Box } from 'theme-ui'
+import { Box, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
 
 //       const now = Date.now();
@@ -177,7 +177,11 @@ const BridgeWithdrawals = () => {
     fetchOPWithdrawals('0x8e0507C16435Caca6CB71a7Fb0e0636fd3891df4')
   }, [])
 
-  return <Box>Withdrawals</Box>
+  return (
+    <Box>
+      <Text variant="title">Withdrawal Transactions</Text>
+    </Box>
+  )
 }
 
 export default BridgeWithdrawals

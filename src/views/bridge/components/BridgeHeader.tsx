@@ -1,11 +1,11 @@
 import { Trans, t } from '@lingui/macro'
 import { Button } from 'components'
-import { useAtom } from 'jotai'
+import { useAtom, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { Box, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
-import { isBridgeWrappingAtom } from '../atoms'
+import { bridgeAmountAtom, isBridgeWrappingAtom } from '../atoms'
 
 const Tab = ({
   title,
@@ -37,6 +37,7 @@ const Tab = ({
 )
 
 const BridgeHeader = () => {
+  const setAmount = useSetAtom(bridgeAmountAtom)
   const [searchParams, setSearchParams] = useSearchParams()
   const [isWrapping, setWrapping] = useAtom(isBridgeWrappingAtom)
 
@@ -48,6 +49,7 @@ const BridgeHeader = () => {
       searchParams.set('chainId', ChainId.Base.toString())
     }
     setSearchParams(searchParams, { replace: true })
+    setAmount('')
   }, [isWrapping])
 
   return (

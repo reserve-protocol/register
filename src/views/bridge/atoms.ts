@@ -12,6 +12,10 @@ import {
   L2_BRIDGE_ADDRESS,
   L2_L1_MESSAGER_ADDRESS,
 } from './utils/constants'
+import BRIDGE_ASSETS, { BridgeAsset } from './utils/assets'
+
+export const bridgeTokensAtom = atom(BRIDGE_ASSETS)
+export const selectedBridgeToken = atom<BridgeAsset>(BRIDGE_ASSETS[1]) // empty = ETH
 
 export const isBridgeWrappingAtom = atom(true)
 export const bridgeTokenAtom = atom('1') // 0 => index for eth

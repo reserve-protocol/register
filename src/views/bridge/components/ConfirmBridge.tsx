@@ -12,6 +12,7 @@ import {
   bridgeAmountDebouncedAtom,
   bridgeTxAtom,
   isBridgeWrappingAtom,
+  selectedBridgeToken,
   selectedTokenAtom,
 } from '../atoms'
 import { Modal } from 'components'
@@ -19,12 +20,12 @@ import { Box, Divider, Text } from 'theme-ui'
 import mixpanel from 'mixpanel-browser'
 
 const btnLabelAtom = atom((get) => {
-  const token = get(selectedTokenAtom)
+  const token = get(selectedBridgeToken)
   const isWrapping = get(isBridgeWrappingAtom)
 
-  return `${isWrapping ? 'Deposit' : 'Withdraw'} ${token.symbol} to ${
-    isWrapping ? 'Base' : 'Ethereum'
-  }`
+  return `${isWrapping ? 'Deposit' : 'Withdraw'} ${
+    isWrapping ? token.L1symbol : token.L2symbol
+  } to ${isWrapping ? 'Base' : 'Ethereum'}`
 })
 
 const approvalAtom = atom((get) => {
@@ -178,14 +179,14 @@ const ConfirmBridge = () => {
   }, [isWrapping])
 
   return (
-    <>
+    <Box p={4}>
       {showModal && <WithdrawInfo onClose={() => setModal(false)} />}
       {!hasAllowance ? (
         <ApproveBtn />
       ) : (
         <ConfirmBridgeBtn onSuccess={handleSuccess} />
       )}
-    </>
+    </Box>
   )
 }
 
