@@ -29,15 +29,23 @@ export const bridgeAmountDebouncedAtom = atomWithDebounce(
   500
 ).debouncedValueAtom
 
-export const isValidBridgeAmountAtom = atom(false)
+export const maxBridgeAmountAtom = atom(0n)
+export const isValidBridgeAmountAtom = atom((get) => {
+  const max = get(maxBridgeAmountAtom)
+  const amount = safeParseEther(get(bridgeAmountDebouncedAtom) || '0')
+
+  return amount > 0n && amount <= max
+})
 
 export const bridgeTxAtom = atom((get) => {
   const isWrapping = get(isBridgeWrappingAtom)
-  const token = Number(get(bridgeTokenAtom))
+  const token = get(selectedBridgeToken)
   const chainId = get(chainIdAtom)
   const wallet = get(walletAtom)
   const amount = safeParseEther(get(bridgeAmountDebouncedAtom) || '0')
   const isValid = get(isValidBridgeAmountAtom)
+
+  console.log('tx')
 
   if (
     (isWrapping && chainId !== ChainId.Mainnet) ||
@@ -48,22 +56,18 @@ export const bridgeTxAtom = atom((get) => {
     return undefined
   }
 
-  let address = token ? L1_BRIDGE_TOKEN_ADDRESS : L1_BRIDGE_ADDRESS
-  let functionName = token ? 'depositERC20' : 'depositTransaction'
-  let args: unknown[] = token
-    ? [
-        BRIDGEABLE_TOKENS[token].address,
-        BRIDGEABLE_TOKENS[token].bridgedAddress,
-        amount,
-        1000n,
-        '0x01',
-      ]
+  console.log('continuetx')
+
+  let address = token.L1contract ? L1_BRIDGE_TOKEN_ADDRESS : L1_BRIDGE_ADDRESS
+  let functionName = token.L1contract ? 'depositERC20' : 'depositTransaction'
+  let args: unknown[] = token.L1contract
+    ? [token.L1contract, token.L2contract, amount, 1000n, '0x01']
     : [wallet, amount, 100000n, false, '0x01']
 
   if (!isWrapping) {
-    if (token) {
+    if (token.L2contract) {
       address = L2_BRIDGE_ADDRESS
-      args = [BRIDGEABLE_TOKENS[token].bridgedAddress, amount, 1000n, '0x01']
+      args = [token.L2contract, amount, 1000n, '0x01']
       functionName = 'withdraw'
     } else {
       address = L2_L1_MESSAGER_ADDRESS
@@ -75,7 +79,7 @@ export const bridgeTxAtom = atom((get) => {
   return {
     address,
     functionName,
-    value: !token ? amount : undefined,
+    value: !token.L1contract ? amount : undefined,
     abi: BaseBridge,
     args,
   } as UsePrepareContractWriteConfig

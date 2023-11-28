@@ -3,10 +3,11 @@ import { Button, NumericalInput } from 'components'
 import ChainLogo from 'components/icons/ChainLogo'
 import TokenLogo from 'components/icons/TokenLogo'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useEffect } from 'react'
 import { ChevronDown } from 'react-feather'
 import { walletAtom } from 'state/atoms'
 import { borderRadius } from 'theme'
-import { Box, BoxProps, Flex, Text } from 'theme-ui'
+import { Box, Flex, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
 import { CHAIN_TAGS } from 'utils/constants'
@@ -14,6 +15,7 @@ import { useBalance } from 'wagmi'
 import {
   bridgeAmountAtom,
   isBridgeWrappingAtom,
+  maxBridgeAmountAtom,
   selectedBridgeToken,
 } from '../atoms'
 
@@ -27,12 +29,21 @@ const BridgeTokenBalance = () => {
   const selected = useAtomValue(selectedBridgeToken)
   const chain = useAtomValue(chainContextAtom)
   const setAmount = useSetAtom(bridgeAmountAtom)
+  const setMax = useSetAtom(maxBridgeAmountAtom)
 
   const balance = useBalance({
     address: wallet ?? undefined,
     token: isWrapping ? selected.L1contract : selected.L2contract,
     chainId: chain,
   })
+
+  useEffect(() => {
+    if (balance.data?.value) {
+      setMax(balance.data.value)
+    } else {
+      setMax(0n)
+    }
+  }, [balance.data?.value])
 
   return (
     <Box variant="layout.verticalAlign" ml="auto">

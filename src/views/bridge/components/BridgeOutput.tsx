@@ -83,12 +83,7 @@ const BridgeOutputToken = () => {
   const selected = useAtomValue(selectedBridgeToken)
 
   return (
-    <Box
-      ml="auto"
-      role="button"
-      sx={{ cursor: 'pointer', flexShrink: 0 }}
-      variant="layout.verticalAlign"
-    >
+    <Box ml="auto" sx={{ flexShrink: 0 }} variant="layout.verticalAlign">
       <TokenLogo src={isWrapping ? selected.L1icon : selected.L2icon} />
       <Text mx="2">{isWrapping ? selected.L1symbol : selected.L2symbol}</Text>
     </Box>
