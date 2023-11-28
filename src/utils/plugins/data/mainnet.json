@@ -298,20 +298,6 @@
     "rewardTokens": []
   },
   {
-    "address": "0xEBD07CE38e2f46031c982136012472A4D24AE070",
-    "erc20": "0xC581b735A1688071A1746c968e0798D642EDE491",
-    "chainlinkFeed": "0x01D391A48f4F7339aC64CA2c83a07C22F95F587a",
-    "delayUntilDefault": "86400",
-    "maxTradeVolume": "1000000",
-    "oracleTimeout": 86460,
-    "targetName": "EUR",
-    "version": "3.0.0",
-    "symbol": "EURT",
-    "decimals": 6,
-    "protocol": "GENERIC",
-    "rewardTokens": []
-  },
-  {
     "address": "0x29F2EB4A0D3dC211BB488E9aBe12740cafBCc49C",
     "erc20": "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
     "chainlinkFeed": "0xCfE54B5cD566aB89272946F602D76Ea879CAb4a8",
