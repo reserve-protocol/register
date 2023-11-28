@@ -3,7 +3,7 @@ import { Button, NumericalInput } from 'components'
 import ChainLogo from 'components/icons/ChainLogo'
 import TokenLogo from 'components/icons/TokenLogo'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { ChevronDown } from 'react-feather'
 import { walletAtom } from 'state/atoms'
 import { borderRadius } from 'theme'
@@ -14,10 +14,12 @@ import { CHAIN_TAGS } from 'utils/constants'
 import { useBalance } from 'wagmi'
 import {
   bridgeAmountAtom,
+  bridgeTokensSortedAtom,
   isBridgeWrappingAtom,
   maxBridgeAmountAtom,
   selectedBridgeToken,
 } from '../atoms'
+import BridgeTokenModal from './BridgeTokenModal'
 
 const chainContextAtom = atom((get) =>
   get(isBridgeWrappingAtom) ? ChainId.Mainnet : ChainId.Base
@@ -100,20 +102,25 @@ const BridgeAmount = () => {
 const BridgeTokenSelector = () => {
   const isWrapping = useAtomValue(isBridgeWrappingAtom)
   const selected = useAtomValue(selectedBridgeToken)
+  const [isSelecting, setSelecting] = useState(true)
 
   return (
-    <Box
-      ml="auto"
-      role="button"
-      sx={{ cursor: 'pointer', flexShrink: 0 }}
-      variant="layout.verticalAlign"
-      p={3}
-      pr={4}
-    >
-      <TokenLogo src={isWrapping ? selected.L1icon : selected.L2icon} />
-      <Text mx="2">{isWrapping ? selected.L1symbol : selected.L2symbol}</Text>
-      <ChevronDown size={16} />
-    </Box>
+    <>
+      {isSelecting && <BridgeTokenModal onClose={() => setSelecting(false)} />}
+      <Box
+        ml="auto"
+        role="button"
+        sx={{ cursor: 'pointer', flexShrink: 0 }}
+        variant="layout.verticalAlign"
+        onClick={() => setSelecting(true)}
+        p={3}
+        pr={4}
+      >
+        <TokenLogo src={isWrapping ? selected.L1icon : selected.L2icon} />
+        <Text mx="2">{isWrapping ? selected.L1symbol : selected.L2symbol}</Text>
+        <ChevronDown size={16} />
+      </Box>
+    </>
   )
 }
 

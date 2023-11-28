@@ -1,10 +1,10 @@
 import BaseBridge from 'abis/BaseBridge'
 import { atom } from 'jotai'
 import { chainIdAtom, walletAtom } from 'state/atoms'
-import { safeParseEther } from 'utils'
+import { formatCurrency, safeParseEther } from 'utils'
 import atomWithDebounce from 'utils/atoms/atomWithDebounce'
 import { ChainId } from 'utils/chains'
-import { UsePrepareContractWriteConfig } from 'wagmi'
+import { UsePrepareContractWriteConfig, erc20ABI } from 'wagmi'
 import {
   BRIDGEABLE_TOKENS,
   L1_BRIDGE_ADDRESS,
@@ -13,6 +13,10 @@ import {
   L2_L1_MESSAGER_ADDRESS,
 } from './utils/constants'
 import BRIDGE_ASSETS, { BridgeAsset } from './utils/assets'
+import { atomWithLoadable } from 'utils/atoms/utils'
+import { isWrappingAtom } from 'views/issuance/components/wrapping/atoms'
+import { publicClient } from 'state/chain'
+import { ContractFunctionConfig, formatEther, formatUnits } from 'viem'
 
 export const bridgeTokensAtom = atom(BRIDGE_ASSETS)
 export const selectedBridgeToken = atom<BridgeAsset>(BRIDGE_ASSETS[1]) // empty = ETH
@@ -22,6 +26,85 @@ export const bridgeTokenAtom = atom('1') // 0 => index for eth
 export const selectedTokenAtom = atom(
   (get) => BRIDGEABLE_TOKENS[Number(get(bridgeTokenAtom))]
 )
+
+export interface BridgeTokenDisplay {
+  symbol: string
+  name: string
+  balance?: number
+  formatted?: string
+  logo: string
+  asset: BridgeAsset
+}
+
+function mapAssets(
+  assets: BridgeAsset[],
+  isWrapping: boolean
+): BridgeTokenDisplay[] {
+  return assets.map((asset) => ({
+    symbol: isWrapping ? asset.L1symbol : asset.L2symbol,
+    name: '',
+    logo: isWrapping ? asset.L1icon : asset.L2icon,
+    asset,
+  }))
+}
+
+export const bridgeTokensSortedAtom = atomWithLoadable(async (get) => {
+  const list = get(bridgeTokensAtom)
+  const wallet = get(walletAtom)
+  const isWrapping = get(isWrappingAtom)
+  const chain = isWrapping ? ChainId.Mainnet : ChainId.Base
+  const client = publicClient({ chainId: chain })
+
+  if (wallet) {
+    try {
+      const contracts: ContractFunctionConfig[] = []
+
+      for (const asset of list) {
+        if (asset.L1contract && asset.L2contract) {
+          contracts.push({
+            address: isWrapping ? asset.L1contract : asset.L2contract,
+            abi: erc20ABI,
+            args: [wallet],
+            functionName: 'balanceOf',
+          })
+        }
+      }
+
+      const result = await client.multicall({
+        contracts,
+      })
+      const ethBalance = await client.getBalance({ address: wallet })
+
+      // TODO: This is not a good sort because balances are not in the same units
+      // TODO: Use oracles to get usd values? is it worth it?
+      return list
+        .map((asset, index) => {
+          const balance = Number(
+            index
+              ? formatUnits(result[index - 1].result as bigint, asset.decimals)
+              : formatEther(ethBalance)
+          )
+
+          return {
+            symbol: isWrapping ? asset.L1symbol : asset.L2symbol,
+            name: '',
+            logo: isWrapping ? asset.L1icon : asset.L2icon,
+            balance,
+            formatted: formatCurrency(balance, 5),
+            asset,
+          }
+        })
+        .sort(
+          (a, b) => Number(b.balance) - Number(a.balance)
+        ) as BridgeTokenDisplay[]
+    } catch (e) {
+      console.error('Error getting asset balances', e)
+      return mapAssets(list, isWrapping)
+    }
+  }
+
+  return mapAssets(list, isWrapping)
+})
 
 export const bridgeAmountAtom = atom('')
 export const bridgeAmountDebouncedAtom = atomWithDebounce(
