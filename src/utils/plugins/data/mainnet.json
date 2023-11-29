@@ -382,22 +382,6 @@
     "rewardTokens": []
   },
   {
-    "address": "0x85b256e9051B781A0BC0A987857AD6166C94040a",
-    "erc20": "0x7e1e077b289c0153b5ceAD9F264d66215341c9Ab",
-    "chainlinkFeed": "0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6",
-    "delayUntilDefault": "86400",
-    "maxTradeVolume": "1000000",
-    "oracleTimeout": 86460,
-    "targetName": "USD",
-    "version": "3.0.0",
-    "symbol": "wcUSDCv3",
-    "decimals": 6,
-    "protocol": "COMPv3",
-    "underlyingAddress": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
-    "underlyingToken": "cUSDCv3",
-    "rewardTokens": ["0xCFA67f42A0fDe4F0Fb612ea5e66170B0465B84c1"]
-  },
-  {
     "address": "0x62C394620f674e85768a7618a6C202baE7fB8Dd1",
     "erc20": "0xaBd7E7a5C846eD497681a590feBED99e7157B6a3",
     "chainlinkFeed": "0x0000000000000000000000000000000000000001",

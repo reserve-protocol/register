@@ -99,7 +99,7 @@ export const collateralYieldAtom = atom<{ [x: string]: number }>({})
 
 export const estimatedApyAtom = atom((get) => {
   const rToken = get(rTokenAtom)
-  const { tokenSupply, stTokenSupply } = get(rTokenStateAtom)
+  const { tokenSupply, stTokenSupply, exchangeRate } = get(rTokenStateAtom)
   const collateralYield = get(collateralYieldAtom)
   const distribution = get(rTokenBackingDistributionAtom)
   const revenueSplit = get(rTokenRevenueSplitAtom)
@@ -122,13 +122,15 @@ export const estimatedApyAtom = atom((get) => {
       (distribution.collateralDistribution[collateral.address]?.share / 100 ||
         0)
   }
+  const supplyUsd = tokenSupply * rTokenPrice
+  const stakeUsd = stTokenSupply * exchangeRate * rsrPrice
+  const holdersShare = +(revenueSplit.holders || 0) / 100
+  const stakersShare = +(revenueSplit.stakers || 0) / 100
 
-  apys.holders = rTokenYield * (+(revenueSplit.holders || 0) / 100)
+  apys.holders = rTokenYield * holdersShare
   apys.stakers = stTokenSupply
-    ? ((rTokenYield * (tokenSupply * rTokenPrice)) /
-        (stTokenSupply * rsrPrice)) *
-      ((+revenueSplit.stakers || 0) / 100)
-    : (rTokenYield * (+revenueSplit.stakers || 0)) / 100
+    ? ((rTokenYield * supplyUsd) / stakeUsd) * stakersShare
+    : rTokenYield * stakersShare
 
   return apys
 })
