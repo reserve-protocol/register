@@ -14,7 +14,6 @@ import { CHAIN_TAGS } from 'utils/constants'
 import { useBalance } from 'wagmi'
 import {
   bridgeAmountAtom,
-  bridgeTokensSortedAtom,
   isBridgeWrappingAtom,
   maxBridgeAmountAtom,
   selectedBridgeToken,
@@ -102,7 +101,7 @@ const BridgeAmount = () => {
 const BridgeTokenSelector = () => {
   const isWrapping = useAtomValue(isBridgeWrappingAtom)
   const selected = useAtomValue(selectedBridgeToken)
-  const [isSelecting, setSelecting] = useState(true)
+  const [isSelecting, setSelecting] = useState(false)
 
   return (
     <>
