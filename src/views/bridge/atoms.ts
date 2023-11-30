@@ -19,7 +19,7 @@ import { publicClient } from 'state/chain'
 import { ContractFunctionConfig, formatEther, formatUnits } from 'viem'
 
 export const bridgeTokensAtom = atom(BRIDGE_ASSETS)
-export const selectedBridgeToken = atom<BridgeAsset>(BRIDGE_ASSETS[1]) // empty = ETH
+export const selectedBridgeToken = atom<BridgeAsset>(BRIDGE_ASSETS[0]) // default RSR
 
 export const isBridgeWrappingAtom = atom(true)
 export const bridgeTokenAtom = atom('1') // 0 => index for eth
@@ -42,7 +42,7 @@ function mapAssets(
 ): BridgeTokenDisplay[] {
   return assets.map((asset) => ({
     symbol: isWrapping ? asset.L1symbol : asset.L2symbol,
-    name: '',
+    name: isWrapping ? asset.L1name : asset.L2name,
     logo: isWrapping ? asset.L1icon : asset.L2icon,
     asset,
   }))
@@ -87,7 +87,7 @@ export const bridgeTokensSortedAtom = atomWithLoadable(async (get) => {
 
           return {
             symbol: isWrapping ? asset.L1symbol : asset.L2symbol,
-            name: '',
+            name: isWrapping ? asset.L1name : asset.L2name,
             logo: isWrapping ? asset.L1icon : asset.L2icon,
             balance,
             formatted: formatCurrency(balance, 5),

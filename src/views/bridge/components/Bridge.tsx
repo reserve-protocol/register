@@ -16,7 +16,7 @@ const Bridge = () => (
     }}
   >
     <BridgeHeader />
-    <Box p={4}>
+    <Box p={4} sx={{ borderBottom: '1px solid', borderColor: 'darkBorder' }}>
       <BridgeInput />
       <Box variant="layout.verticalAlign">
         <Divider sx={{ flexGrow: 1, borderColor: 'darkBorder' }} />
@@ -27,7 +27,6 @@ const Bridge = () => (
       </Box>
       <BridgeOutput />
     </Box>
-    <Divider my={0} sx={{ borderColor: 'darkBorder' }} />
     <ConfirmBridge />
   </Card>
 )

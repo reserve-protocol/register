@@ -40,6 +40,7 @@ const Dialog = ({ width = '420px', sx = {}, ...props }: ModalProps) => (
       top: [0, '50%'],
       right: [0, 'auto'],
       bottom: [0, 'auto'],
+      overflow: 'hidden',
       transform: ['none', 'translate(-50%, -50%)'],
       width: ['auto', width],
       ...sx,
