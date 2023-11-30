@@ -6,16 +6,24 @@ import {
   blockAtom,
   blockTimestampAtom,
   chainIdAtom,
+  isWalletInvalidAtom,
   walletAtom,
+  walletChainAtom,
 } from 'state/atoms'
-import { useAccount, useBlockNumber, useNetwork, usePublicClient } from 'wagmi'
+import {
+  useAccount,
+  useBlockNumber,
+  useNetwork,
+  usePublicClient,
+  useWalletClient,
+} from 'wagmi'
 
 // Keep web3 state in sync with atoms
 const AtomUpdater = () => {
-  const { address: account } = useAccount()
-  const { chain } = useNetwork()
+  const account = useWalletClient()
   // Setters
   const setWallet = useSetAtom(walletAtom)
+  const setWalletChain = useSetAtom(walletChainAtom)
   const setBlockNumber = useSetAtom(blockAtom)
   const chainId = useAtomValue(chainIdAtom)
   const { data: blockNumber } = useBlockNumber({ watch: true, chainId })
@@ -33,8 +41,14 @@ const AtomUpdater = () => {
   }
 
   useEffect(() => {
-    setWallet(account ?? null)
-  }, [account])
+    if (account.data) {
+      setWallet(account.data.account.address)
+      setWalletChain(account.data.chain.id)
+    } else {
+      setWallet(null)
+      setWalletChain(undefined)
+    }
+  }, [account.data?.account.address, account.data?.chain.id])
 
   useEffect(() => {
     fetchTimestamp() // update stored block timestamp

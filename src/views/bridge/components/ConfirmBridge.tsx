@@ -1,10 +1,13 @@
 import ERC20 from 'abis/ERC20'
+import { Modal } from 'components'
 import TransactionButton from 'components/button/TransactionButton'
 import useContractWrite from 'hooks/useContractWrite'
 import useHasAllowance from 'hooks/useHasAllowance'
 import useWatchTransaction from 'hooks/useWatchTransaction'
-import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { atom, useAtom, useAtomValue } from 'jotai'
+import mixpanel from 'mixpanel-browser'
 import { useCallback, useEffect, useState } from 'react'
+import { Box, Divider, Text } from 'theme-ui'
 import { safeParseEther } from 'utils'
 import { Address } from 'viem'
 import {
@@ -14,9 +17,6 @@ import {
   isBridgeWrappingAtom,
   selectedBridgeToken,
 } from '../atoms'
-import { Modal } from 'components'
-import { Box, Divider, Text } from 'theme-ui'
-import mixpanel from 'mixpanel-browser'
 
 const btnLabelAtom = atom((get) => {
   const token = get(selectedBridgeToken)

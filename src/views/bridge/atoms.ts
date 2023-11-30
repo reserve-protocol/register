@@ -123,8 +123,6 @@ export const bridgeTxAtom = atom((get) => {
   const amount = safeParseEther(get(bridgeAmountDebouncedAtom) || '0')
   const isValid = get(isValidBridgeAmountAtom)
 
-  console.log('tx')
-
   if (
     (isWrapping && chainId !== ChainId.Mainnet) ||
     (!isWrapping && chainId !== ChainId.Base) ||
@@ -133,8 +131,6 @@ export const bridgeTxAtom = atom((get) => {
   ) {
     return undefined
   }
-
-  console.log('continuetx')
 
   let address = token.L1contract ? L1_BRIDGE_TOKEN_ADDRESS : L1_BRIDGE_ADDRESS
   let functionName = token.L1contract ? 'depositERC20' : 'depositTransaction'
