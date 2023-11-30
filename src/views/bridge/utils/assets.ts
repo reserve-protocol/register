@@ -20,6 +20,18 @@ export interface BridgeAsset {
 
 const BRIDGE_ASSETS: BridgeAsset[] = [
   {
+    L1symbol: 'ETH',
+    L2symbol: 'ETH',
+    L1chainId: ChainId.Mainnet,
+    L2chainId: ChainId.Base,
+    L1icon: '/svgs/eth.svg',
+    L2icon: '/svgs/eth.svg',
+    decimals: 18,
+    L1name: 'Ether',
+    L2name: 'Ether',
+    protocol: 'OP',
+  },
+  {
     L1symbol: 'RSR',
     L2symbol: 'RSR',
     L1chainId: ChainId.Mainnet,
@@ -49,18 +61,6 @@ const BRIDGE_ASSETS: BridgeAsset[] = [
     L1name: 'Electronic Dollar',
     L2name: 'Electronic Dollar',
     decimals: 18,
-    protocol: 'OP',
-  },
-  {
-    L1symbol: 'ETH',
-    L2symbol: 'ETH',
-    L1chainId: ChainId.Mainnet,
-    L2chainId: ChainId.Base,
-    L1icon: '/svgs/eth.svg',
-    L2icon: '/svgs/eth.svg',
-    decimals: 18,
-    L1name: 'Ether',
-    L2name: 'Ether',
     protocol: 'OP',
   },
   {

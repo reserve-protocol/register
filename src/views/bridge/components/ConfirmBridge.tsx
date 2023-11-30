@@ -13,7 +13,6 @@ import {
   bridgeTxAtom,
   isBridgeWrappingAtom,
   selectedBridgeToken,
-  selectedTokenAtom,
 } from '../atoms'
 import { Modal } from 'components'
 import { Box, Divider, Text } from 'theme-ui'
@@ -30,16 +29,18 @@ const btnLabelAtom = atom((get) => {
 
 const approvalAtom = atom((get) => {
   const bridgeTransaction = get(bridgeTxAtom)
-  const bridgeToken = get(selectedTokenAtom)
+  const bridgeToken = get(selectedBridgeToken)
   const amount = get(bridgeAmountDebouncedAtom)
   const isWrapping = get(isBridgeWrappingAtom)
 
-  if (!bridgeTransaction || !bridgeToken.address || !isWrapping) {
+  if (!bridgeTransaction || !bridgeToken.L1contract || !isWrapping) {
     return undefined
   }
 
   return {
-    token: bridgeToken.address as Address,
+    token: isWrapping
+      ? bridgeToken.L1contract
+      : (bridgeToken.L2contract as Address),
     spender: bridgeTransaction.address as Address,
     amount: safeParseEther(amount),
   }
@@ -47,7 +48,7 @@ const approvalAtom = atom((get) => {
 
 const ApproveBtn = () => {
   const approve = useAtomValue(approvalAtom)
-  const selectedToken = useAtomValue(selectedTokenAtom)
+  const selectedToken = useAtomValue(selectedBridgeToken)
   const { isLoading, gas, hash, write } = useContractWrite(
     approve
       ? {
@@ -71,7 +72,7 @@ const ApproveBtn = () => {
       text={
         checkingAllowance
           ? `Verifying allowance...`
-          : `Allow use of ${selectedToken.symbol}`
+          : `Allow use of ${selectedToken.L1symbol}`
       }
       fullWidth
     />
@@ -80,7 +81,7 @@ const ApproveBtn = () => {
 
 const ConfirmBridgeBtn = ({ onSuccess }: { onSuccess(): void }) => {
   const bridgeTransaction = useAtomValue(bridgeTxAtom)
-  const bridgeToken = useAtomValue(selectedTokenAtom)
+  const bridgeToken = useAtomValue(selectedBridgeToken)
   const isWrapping = useAtomValue(isBridgeWrappingAtom)
   const [amount, setAmount] = useAtom(bridgeAmountAtom)
   const {
@@ -101,7 +102,7 @@ const ConfirmBridgeBtn = ({ onSuccess }: { onSuccess(): void }) => {
   useEffect(() => {
     if (status === 'success') {
       mixpanel.track('Bridge Success', {
-        Token: bridgeToken.symbol,
+        Token: isWrapping ? bridgeToken.L1symbol : bridgeToken.L2symbol,
         Amount: amount,
         Destination: isWrapping ? 'Base' : 'Ethereum',
       })

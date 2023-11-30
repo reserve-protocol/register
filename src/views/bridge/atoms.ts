@@ -6,7 +6,6 @@ import atomWithDebounce from 'utils/atoms/atomWithDebounce'
 import { ChainId } from 'utils/chains'
 import { UsePrepareContractWriteConfig, erc20ABI } from 'wagmi'
 import {
-  BRIDGEABLE_TOKENS,
   L1_BRIDGE_ADDRESS,
   L1_BRIDGE_TOKEN_ADDRESS,
   L2_BRIDGE_ADDRESS,
@@ -19,13 +18,9 @@ import { publicClient } from 'state/chain'
 import { ContractFunctionConfig, formatEther, formatUnits } from 'viem'
 
 export const bridgeTokensAtom = atom(BRIDGE_ASSETS)
-export const selectedBridgeToken = atom<BridgeAsset>(BRIDGE_ASSETS[0]) // default RSR
+export const selectedBridgeToken = atom<BridgeAsset>(BRIDGE_ASSETS[1]) // default RSR
 
 export const isBridgeWrappingAtom = atom(true)
-export const bridgeTokenAtom = atom('1') // 0 => index for eth
-export const selectedTokenAtom = atom(
-  (get) => BRIDGEABLE_TOKENS[Number(get(bridgeTokenAtom))]
-)
 
 export interface BridgeTokenDisplay {
   symbol: string
