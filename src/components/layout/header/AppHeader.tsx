@@ -81,12 +81,23 @@ const AppHeader = () => (
         display: ['none', 'flex'],
         cursor: 'pointer',
       }}
+      onClick={() =>
+        window.open('https://reserve.canny.io/register-app', '_blank')
+      }
+    >
+      <Text>Feedback</Text>
+    </Box>
+    <Divider />
+
+    <Box
+      variant="layout.verticalAlign"
+      sx={{
+        display: ['none', 'flex'],
+        cursor: 'pointer',
+      }}
       onClick={() => window.open('https://reserve.org/protocol/', '_blank')}
     >
-      <Text mr={1}>Docs</Text>
-      <Box mt={2}>
-        <ExternalArrowIcon />
-      </Box>
+      <Text>Docs</Text>
     </Box>
     <Divider />
     <ThemeColorMode
