@@ -2,7 +2,7 @@ import type { Theme } from 'theme-ui'
 import 'react-loading-skeleton/dist/skeleton.css'
 import './app.css'
 
-export const boxShadow = '0px 4px 34px rgba(0, 0, 0, 0.05)'
+export const boxShadow = '0px 10px 20px var(--theme-ui-colors-shadow)'
 export const transition = 'all .2s ease'
 export const centeredContent = {
   display: 'flex',
@@ -77,6 +77,7 @@ export const smallButton = {
 export const colors = {
   base: '#2852F5',
   text: '#292929',
+  shadow: 'rgba(0, 0, 0, 0.05)',
   invertedText: '#FFFFFF',
   secondaryText: '#666666',
   lightText: '#808080',
@@ -105,6 +106,7 @@ export const colors = {
   modes: {
     dark: {
       text: '#e4dede',
+      shadow: 'rgba(0, 0, 0, 0.2)',
       rBlueLight: '#0D1321',
       secondaryText: '#969696',
       invertedText: '#FFFFFF',
