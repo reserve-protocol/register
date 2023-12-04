@@ -11,7 +11,7 @@ const ChainBridge = () => {
           backgroundColor: 'contentBackground',
           justifyContent: 'center',
           borderBottom: '1px solid',
-          borderColor: 'text',
+          borderColor: 'darkBorder',
         }}
       >
         <Bridge />
