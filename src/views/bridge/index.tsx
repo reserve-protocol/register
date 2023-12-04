@@ -5,10 +5,17 @@ import BridgeWithdrawals from './components/BridgeWithdrawals'
 const ChainBridge = () => {
   return (
     <>
-      <Flex mt={[1, 5]} sx={{ justifyContent: 'center' }}>
+      <Flex
+        py={[, 8]}
+        sx={{
+          backgroundColor: 'contentBackground',
+          justifyContent: 'center',
+          borderBottom: '1px solid',
+          borderColor: 'text',
+        }}
+      >
         <Bridge />
       </Flex>
-      <Divider my={[3, 6]} />
       <BridgeWithdrawals />
     </>
   )

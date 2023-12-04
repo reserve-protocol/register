@@ -5,6 +5,7 @@ import BridgeHeader from './BridgeHeader'
 import BridgeInput from './BridgeInput'
 import BridgeOutput from './BridgeOutput'
 import ConfirmBridge from './ConfirmBridge'
+import { boxShadow } from 'theme'
 
 const Bridge = () => (
   <Card
@@ -12,7 +13,10 @@ const Bridge = () => (
     sx={{
       backgroundColor: 'contentBackground',
       height: 'fit-content',
-      width: 525,
+      width: ['100vw', 525],
+      boxShadow: ['none', boxShadow],
+      border: ['none', '1px solid'],
+      borderColor: ['outlineBorder'],
     }}
   >
     <BridgeHeader />
