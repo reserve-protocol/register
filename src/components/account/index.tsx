@@ -99,10 +99,7 @@ const Account = () => {
                     variant="accentAction"
                     onClick={openConnectModal}
                   >
-                    <Text sx={{ display: ['none', 'initial'] }}>
-                      <Trans>Connect Wallet</Trans>
-                    </Text>
-                    <Text sx={{ display: ['inline', 'none'] }}>
+                    <Text>
                       <Trans>Connect</Trans>
                     </Text>
                   </SmallButton>
