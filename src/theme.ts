@@ -93,7 +93,6 @@ export const colors = {
   rBlueLight: '#DBE3F1',
   border: '#efefef',
   darkBorder: '#E5E5E5',
-  outlineBorder: '#ccc',
   inputBorder: '#E5E5E5',
   info: '#20678E',
   infoBG: 'rgba(32, 103, 142, 0.15)',
@@ -130,7 +129,6 @@ export const colors = {
       muted: '#D9D9D9',
       warning: '#FF7A00',
       modalOverlay: 'rgba(20, 20, 20, 0.6)',
-      outlineBorder: '#241c19',
     },
   },
 }
