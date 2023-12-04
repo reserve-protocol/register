@@ -1,14 +1,12 @@
 import { Trans, t } from '@lingui/macro'
-import { createColumnHelper } from '@tanstack/react-table'
 import GoTo from 'components/button/GoTo'
-import { useMemo } from 'react'
+import TablePlaceholder from 'components/table/components/TablePlaceholder'
+import Skeleton from 'react-loading-skeleton'
 import { Box, Grid, Text } from 'theme-ui'
 import { shortenString } from 'utils'
 import { ChainId } from 'utils/chains'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import useWithdrawals, { BridgeWithdraw } from '../hooks/useWithdrawals'
-import TablePlaceholder from 'components/table/components/TablePlaceholder'
-import Skeleton from 'react-loading-skeleton'
 
 const WithdrawalRow = ({ data }: { data: BridgeWithdraw }) => {
   return (
@@ -58,11 +56,21 @@ const TableHeader = () => (
     px={4}
     sx={{ display: ['none', 'grid'], color: 'secondaryText' }}
   >
-    <Text>Time</Text>
-    <Text>Type</Text>
-    <Text>Amount</Text>
-    <Text>Phase</Text>
-    <Text sx={{ textAlign: 'right' }}>Status</Text>
+    <Text>
+      <Trans>Time</Trans>
+    </Text>
+    <Text>
+      <Trans>Type</Trans>
+    </Text>
+    <Text>
+      <Trans>Amount</Trans>
+    </Text>
+    <Text>
+      <Trans>Phase</Trans>
+    </Text>
+    <Text sx={{ textAlign: 'right' }}>
+      <Trans>Status</Trans>
+    </Text>
   </Grid>
 )
 
@@ -70,7 +78,7 @@ const BridgeWithdrawals = () => {
   const { data, isLoading } = useWithdrawals()
 
   return (
-    <Box p={4}>
+    <Box p={4} mt={7}>
       <Text ml={4} variant="sectionTitle" mb={6}>
         <Trans>Withdrawal Transactions</Trans>
       </Text>

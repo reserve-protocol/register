@@ -92,6 +92,7 @@ export const colors = {
   rBlueLight: '#DBE3F1',
   border: '#efefef',
   darkBorder: '#E5E5E5',
+  outlineBorder: '#ccc',
   inputBorder: '#E5E5E5',
   info: '#20678E',
   infoBG: 'rgba(32, 103, 142, 0.15)',
