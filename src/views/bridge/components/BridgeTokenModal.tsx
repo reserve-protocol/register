@@ -47,14 +47,17 @@ const TokenItem = ({
       sx={{
         cursor: 'pointer',
         ':hover': { backgroundColor: 'background' },
+        backgroundColor: 'contentBackground',
         display: 'flex',
         alignItems: 'center',
+        borderRadius: '6px',
       }}
-      p={[2, 3]}
+      px={[2, 3]}
+      py={2}
     >
       <TokenLogo width={24} src={token.logo} />
       <Box mr="auto">
-        <Text ml={3} variant="title">
+        <Text ml={3} mb={-1} variant="title">
           {token.symbol}
         </Text>
         <Text ml={3} sx={{ fontSize: 1 }} variant="legend">
@@ -63,9 +66,11 @@ const TokenItem = ({
       </Box>
 
       {!!token.formatted && <Text variant="legend">{token.formatted}</Text>}
-      <Box ml="1" sx={{ width: '20px' }}>
-        {isSelected && <Check size={18} />}
-      </Box>
+      {isSelected && (
+        <Box ml="1" mt={2} sx={{ width: '20px' }}>
+          <Check size={18} />
+        </Box>
+      )}
     </Card>
   )
 }
@@ -80,14 +85,14 @@ const ShortHandTokens = ({
   const tokens = useAtomValue(favoriteTokensAtom)
 
   return (
-    <Box variant="layout.verticalAlign" mb={3} mr={[3, 4]} ml={[4, 5]}>
+    <Box variant="layout.verticalAlign" mb={3} mr={[3, 3]} ml={3}>
       {tokens.map((token) => (
         <Button
           onClick={() => onSelect(token)}
           variant="transparent"
-          sx={{ borderRadius: '32px', borderColor: 'darkBorder' }}
           small
-          mr={3}
+          mr={'10px'}
+          sx={{ borderColor: 'border', backgroundColor: 'background' }}
         >
           <Box variant="layout.verticalAlign">
             <TokenLogo width={16} src={token.L1icon} />
@@ -105,9 +110,13 @@ const TokenList = ({ onSelect }: { onSelect(token: BridgeAsset): void }) => {
 
   return (
     <Box
-      sx={{ overflow: 'auto', height: ['auto', '360px'] }}
+      sx={{
+        overflow: 'auto',
+        height: ['auto', '360px'],
+      }}
       className="hidden-scrollbar"
-      px={[3, 4]}
+      px={[3, 2]}
+      py={2}
     >
       {!search && !records && (
         <Skeleton height={30} style={{ marginBottom: 20 }} count={6} />
@@ -144,7 +153,11 @@ const BridgeTokenModal = ({ onClose }: { onClose(): void }) => {
   )
 
   return (
-    <Modal p={0} width={500}>
+    <Modal
+      p={0}
+      width={525}
+      sx={{ border: '2px solid', borderColor: 'darkBorder' }}
+    >
       <Box
         sx={{
           display: 'flex',
@@ -154,15 +167,28 @@ const BridgeTokenModal = ({ onClose }: { onClose(): void }) => {
           background: 'contentBackground',
         }}
       >
-        <Box variant="layout.verticalAlign" p={4} pb={0}>
-          <Text variant="sectionTitle">
+        <Box variant="layout.verticalAlign" pt={4} pl={5} pr={4} pb={[3, 0]}>
+          <Text
+            variant="sectionTitle"
+            sx={
+              {
+                // position: 'absolute',
+                // left: '50%',
+                // transform: 'translateX(-50%)',
+              }
+            }
+          >
             <Trans>Select token</Trans>
           </Text>
-          <Button ml="auto" variant="circle" onClick={onClose}>
+          <Button
+            variant="circle"
+            onClick={onClose}
+            sx={{ marginLeft: 'auto', backgroundColor: 'transparent' }}
+          >
             <X />
           </Button>
         </Box>
-        <Box p={[3, 4]} pt={0}>
+        <Box p={[3, 3]} pt={0}>
           <Input
             placeholder={t`Search by token symbol`}
             value={search}
