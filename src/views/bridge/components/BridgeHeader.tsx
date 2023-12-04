@@ -18,7 +18,8 @@ const Tab = ({
 }) => (
   <Box
     role="button"
-    px={3}
+    px={0}
+    mr={3}
     sx={{
       color: selected ? 'text' : 'secondaryText',
       cursor: 'pointer',
@@ -26,9 +27,10 @@ const Tab = ({
       display: 'flex',
       boxSizing: 'border-box',
       alignItems: 'center',
-      borderBottom: '1px solid',
+      borderBottom: '2px solid',
       borderColor: selected ? 'text' : 'contentBackground',
       fontSize: 3,
+      fontWeight: selected ? 500 : 400,
     }}
     onClick={onClick}
   >
@@ -73,7 +75,7 @@ const BridgeHeader = () => {
           selected={!isWrapping}
           onClick={() => setWrapping(false)}
         />
-        <Button ml="auto" variant="muted" small>
+        <Button ml="auto" variant="transparent" small>
           <Trans>Need help?</Trans>
         </Button>
       </Box>
