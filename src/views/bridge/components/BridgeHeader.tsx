@@ -75,7 +75,12 @@ const BridgeHeader = () => {
           selected={!isWrapping}
           onClick={() => setWrapping(false)}
         />
-        <Button ml="auto" variant="transparent" small>
+        <Button
+          ml="auto"
+          variant="transparent"
+          sx={{ borderColor: 'darkBorder' }}
+          small
+        >
           <Trans>Need help?</Trans>
         </Button>
       </Box>
