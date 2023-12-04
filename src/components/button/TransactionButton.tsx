@@ -46,7 +46,7 @@ export const ConnectWalletButton = (props: ButtonProps) => {
   const { openConnectModal } = useConnectModal()
 
   return (
-    <Button {...props} onClick={openConnectModal}>
+    <Button {...props} onClick={openConnectModal} variant="accentAction">
       <Text>
         <Trans>Connect Wallet</Trans>
       </Text>
