@@ -6,7 +6,7 @@ const ChainBridge = () => {
   return (
     <>
       <Flex
-        py={8}
+        py={[, 8]}
         sx={{
           backgroundColor: 'contentBackground',
           justifyContent: 'center',

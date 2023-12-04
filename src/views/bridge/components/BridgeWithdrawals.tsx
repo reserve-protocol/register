@@ -1,54 +1,9 @@
 import { Trans, t } from '@lingui/macro'
-import GoTo from 'components/button/GoTo'
 import TablePlaceholder from 'components/table/components/TablePlaceholder'
 import Skeleton from 'react-loading-skeleton'
 import { Box, Grid, Text } from 'theme-ui'
-import { shortenString } from 'utils'
-import { ChainId } from 'utils/chains'
-import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import useWithdrawals, { BridgeWithdraw } from '../hooks/useWithdrawals'
-
-const WithdrawalRow = ({ data }: { data: BridgeWithdraw }) => {
-  return (
-    <Grid
-      columns={['1fr', '1fr 1fr 1fr 1fr 1fr']}
-      sx={{
-        backgroundColor: 'contentBackground',
-        position: 'relative',
-        borderRadius: 20,
-        alignItems: 'center',
-      }}
-      mt={3}
-      p={4}
-    >
-      <Box>
-        <Text sx={{ display: 'block', fontSize: 2 }} mb={2}>
-          {data.date}
-        </Text>
-        <Text sx={{ fontSize: 1 }} variant="legend">
-          {data.time}
-        </Text>
-      </Box>
-      <Box variant="layout.verticalAlign">
-        <Text mr={2}>{shortenString(data.hash)}</Text>
-        <GoTo
-          href={getExplorerLink(
-            data.hash,
-            ChainId.Base,
-            ExplorerDataType.TRANSACTION
-          )}
-        />
-      </Box>
-      <Box>
-        <Text>
-          {data.formattedAmount} {data.symbol}
-        </Text>
-      </Box>
-      <Box>Phase</Box>
-      <Box sx={{ textAlign: 'right' }}>Status</Box>
-    </Grid>
-  )
-}
+import useWithdrawals from '../hooks/useWithdrawals'
+import WithdrawalRow from './WithdrawalRow'
 
 const TableHeader = () => (
   <Grid
@@ -83,12 +38,14 @@ const BridgeWithdrawals = () => {
         <Trans>Withdrawal Transactions</Trans>
       </Text>
       <TableHeader />
+      <Box sx={{ maxHeight: 1024, overflow: 'auto' }}>
+        {!!data?.length &&
+          !isLoading &&
+          data.map((withdrawal) => (
+            <WithdrawalRow data={withdrawal} key={withdrawal.hash} />
+          ))}
+      </Box>
 
-      {!!data?.length &&
-        !isLoading &&
-        data.map((withdrawal) => (
-          <WithdrawalRow data={withdrawal} key={withdrawal.hash} />
-        ))}
       {!data?.length && !isLoading && (
         <TablePlaceholder
           text={t`No withdrawals found for connected wallet.`}

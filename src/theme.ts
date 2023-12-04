@@ -128,6 +128,7 @@ export const colors = {
       muted: '#D9D9D9',
       warning: '#FF7A00',
       modalOverlay: 'rgba(20, 20, 20, 0.6)',
+      outlineBorder: '#241c19',
     },
   },
 }

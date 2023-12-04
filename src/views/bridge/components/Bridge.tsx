@@ -13,10 +13,10 @@ const Bridge = () => (
     sx={{
       backgroundColor: 'contentBackground',
       height: 'fit-content',
-      width: 525,
-      boxShadow,
-      border: '1px solid',
-      borderColor: 'outlineBorder',
+      width: ['100vw', 525],
+      boxShadow: ['none', boxShadow],
+      border: ['none', '1px solid'],
+      borderColor: ['outlineBorder'],
     }}
   >
     <BridgeHeader />
