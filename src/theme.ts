@@ -88,6 +88,7 @@ export const colors = {
   success: '#11BB8D',
   accentAction: '#106D46',
   accentBG: '#DBE9E4',
+  accentText: '#00814B',
   secondary: '#E8E8E8',
   rBlue: '#2150A9',
   rBlueLight: '#DBE3F1',
@@ -380,7 +381,7 @@ export const theme: Theme = {
       backgroundColor: 'accentBG',
       border: '1px solid',
       borderColor: 'accentAction',
-      color: 'accentAction',
+      color: 'accentText',
       fontWeight: 500,
       // boxShadow: '0px 3px 12px var(--theme-ui-colors-cardShadow)',
       '&:hover': {
