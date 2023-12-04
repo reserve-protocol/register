@@ -19,7 +19,7 @@ export interface BridgeAsset {
 }
 
 const BRIDGE_ASSETS: BridgeAsset[] = [
-  {
+    {
     L1symbol: 'ETH',
     L2symbol: 'ETH',
     L1chainId: ChainId.Mainnet,

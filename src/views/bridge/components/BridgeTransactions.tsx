@@ -2,7 +2,7 @@ import { useAtomValue } from 'jotai'
 import { walletAtom } from 'state/atoms'
 import useSWR from 'swr'
 import { Box, Link, Text } from 'theme-ui'
-import useBridgeTransactions from '../hooks/useBridgeTransactions'
+import useBridgeTransactions from '../hooks/useWithdrawals'
 
 const Transactions = () => {
   // const account = useAtomValue(walletAtom)
