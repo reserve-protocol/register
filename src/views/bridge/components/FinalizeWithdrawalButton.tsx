@@ -35,6 +35,7 @@ export const FinalizeWithdrawalButton = memo(function FinalizeWithdrawalButton({
     <TransactionButton
       loading={isLoading || isMining}
       mining={isMining}
+      variant="primary"
       small
       text={t`Complete`}
       onClick={finalizeWithdrawal}
