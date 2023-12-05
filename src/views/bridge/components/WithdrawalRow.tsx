@@ -1,4 +1,5 @@
 import GoTo from 'components/button/GoTo'
+import dayjs from 'dayjs'
 import { useState } from 'react'
 import { Box, Grid, Text } from 'theme-ui'
 import { parseDuration, shortenString } from 'utils'
@@ -6,20 +7,9 @@ import { ChainId } from 'utils/chains'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import useWithdrawalStatus from '../hooks/useWithdrawStatus'
 import { BridgeWithdraw } from '../hooks/useWithdrawals'
-import dayjs from 'dayjs'
+import { FinalizeWithdrawalButton } from './FinalizeWithdrawalButton'
+import PhaseStatus from './PhaseStatus'
 import { ProveWithdrawalButton } from './ProveWithdrawalButton'
-
-const withdrawalPhaseText = {
-  PROPOSING_ON_CHAIN: 'Proposing onchain',
-  PROVE: 'Ready to verify',
-  PROVE_TX_PENDING: 'Ready to verify',
-  PROVE_TX_FAILURE: 'Ready to verify',
-  CHALLENGE_WINDOW: 'Verifying',
-  FINALIZE: 'Ready to complete',
-  FINALIZE_TX_PENDING: 'Processing',
-  FINALIZE_TX_FAILURE: 'Processing',
-  FUNDS_WITHDRAWN: 'Funds moved',
-}
 
 const withdrawalPhaseStatusText = {
   PROPOSING_ON_CHAIN: 'Wait up to 1 hr',
@@ -75,14 +65,12 @@ const WithdrawalRow = ({
     CHALLENGE_WINDOW: withdrawalPhaseStatusText.CHALLENGE_WINDOW(
       Number(challengeWindowEndTime)
     ),
-    FINALIZE: 'Finalize btn',
-    // <FinalizeWithdrawalButton
-    //   txHash={transaction.hash}
-    //   onOpenFinalizeWithdrawalModal={onOpenFinalizeWithdrawalModal}
-    //   onCloseFinalizeWithdrawalModal={onCloseFinalizeWithdrawalModal}
-    //   setFinalizeTxHash={setFinalizeTxHash}
-    //   setModalFinalizeTxHash={setModalFinalizeTxHash}
-    // />
+    FINALIZE: (
+      <FinalizeWithdrawalButton
+        txHash={data.hash}
+        setFinalizeTxHash={setFinalizeTxHash}
+      />
+    ),
     FINALIZE_TX_PENDING: 'Pending btn',
     FINALIZE_TX_FAILURE: withdrawalPhaseStatusText.FINALIZE_TX_FAILURE,
     FUNDS_WITHDRAWN: withdrawalPhaseStatusText.FUNDS_WITHDRAWN,
@@ -122,7 +110,7 @@ const WithdrawalRow = ({
           {data.formattedAmount} {data.symbol}
         </Text>
       </Box>
-      <Box>Phase</Box>
+      <PhaseStatus phase={withdrawalStatus} />
       <Box sx={{ textAlign: 'right' }}>{PHASE_TO_STATUS[withdrawalStatus]}</Box>
     </Grid>
   )
