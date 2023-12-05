@@ -383,10 +383,11 @@ export const theme: Theme = {
       borderColor: 'accentAction',
       color: 'accentText',
       fontWeight: 500,
-      // boxShadow: '0px 3px 12px var(--theme-ui-colors-cardShadow)',
+
       '&:hover': {
         color: 'text',
         borderColor: 'text',
+        boxShadow: '0px 3px 10px rgba(0, 0, 0, 0.05)',
       },
     },
     bordered: {
