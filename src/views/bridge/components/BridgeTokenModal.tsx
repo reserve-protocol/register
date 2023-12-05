@@ -13,6 +13,7 @@ import {
   selectedBridgeToken,
 } from '../atoms'
 import { BridgeAsset } from '../utils/assets'
+import { SearchInput } from 'components/input'
 
 const searchAtom = atom('')
 const recordsAtom = atom((get) => {
@@ -87,6 +88,7 @@ const ShortHandTokens = ({
     <Box variant="layout.verticalAlign" mb={3} mr={[3, 3]} ml={3}>
       {tokens.map((token) => (
         <Button
+          key={token.L1symbol}
           onClick={() => onSelect(token)}
           variant="transparent"
           small
@@ -179,7 +181,7 @@ const BridgeTokenModal = ({ onClose }: { onClose(): void }) => {
           </Button>
         </Box>
         <Box p={[3, 3]} pt={0}>
-          <Input
+          <SearchInput
             placeholder={t`Search by token symbol`}
             value={search}
             autoFocus

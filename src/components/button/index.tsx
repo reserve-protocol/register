@@ -52,7 +52,9 @@ export const LoadingButton = ({
         <Spinner
           sx={{
             color:
-              props.variant === 'primary' ? 'white' : '--theme-ui-colors-text',
+              props.variant === undefined || props.variant === 'primary'
+                ? 'white'
+                : '--theme-ui-colors-text',
           }}
           size={14}
           mr={2}
