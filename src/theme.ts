@@ -101,7 +101,7 @@ export const colors = {
   danger: '#FF0000',
   dangerBG: 'rgba(255, 0, 0, 0.15)',
   muted: '#D9D9D9',
-  warning: '#FF7A00',
+  warning: '#FF8A00',
   modalOverlay: 'rgba(0, 0, 0, 0.2)',
   modes: {
     dark: {
@@ -191,6 +191,9 @@ export const theme: Theme = {
     },
     primary: {
       color: 'text',
+    },
+    warning: {
+      color: 'warning',
     },
     error: {
       color: 'danger',

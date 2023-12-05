@@ -7,7 +7,7 @@ import useWatchTransaction from 'hooks/useWatchTransaction'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
 import { useCallback, useEffect, useState } from 'react'
-import { Box, Divider, Text } from 'theme-ui'
+import { Box, Divider, Spinner, Text } from 'theme-ui'
 import { safeParseEther } from 'utils'
 import { Address } from 'viem'
 import {
@@ -17,6 +17,9 @@ import {
   isBridgeWrappingAtom,
   selectedBridgeToken,
 } from '../atoms'
+import ChainLogo from 'components/icons/ChainLogo'
+import { ChainId } from 'utils/chains'
+import { Trans } from '@lingui/macro'
 
 const btnLabelAtom = atom((get) => {
   const token = get(selectedBridgeToken)
@@ -127,14 +130,23 @@ const ConfirmBridgeBtn = ({ onSuccess }: { onSuccess(): void }) => {
 }
 
 const steps = [
-  { title: 'Sending request', subtitle: 'Takes up to 1hr' },
-  { title: 'Verify', subtitle: 'Takes up to 7d' },
-  { title: 'Completes', subtitle: 'Takes up to 1hr' },
+  { title: 'Sending request', subtitle: 'Takes up to 1hr', disclaimer: false },
+  { title: 'Verify', subtitle: 'Takes up to 7d', disclaimer: true },
+  { title: 'Completes', subtitle: 'Takes up to 1hr', disclaimer: true },
 ]
 
 const WithdrawInfo = ({ onClose }: { onClose(): void }) => {
   return (
-    <Modal title="Withdrawal in progress" onClose={onClose}>
+    <Modal onClose={onClose}>
+      <Box>
+        <Box variant="layout.verticalAlign" mb={3}>
+          <ChainLogo width={24} height={24} chain={ChainId.Base} />
+          <Spinner size={14} mx={2} />
+          <ChainLogo width={24} height={24} chain={ChainId.Mainnet} />
+        </Box>
+        <Text variant="sectionTitle">Withdrawal in progress</Text>
+      </Box>
+      <Divider my={4} mx={-4} />
       {steps.map((step, index) => (
         <Box variant="layout.verticalAlign" mb={3} key={step.title}>
           <Box
@@ -153,6 +165,11 @@ const WithdrawInfo = ({ onClose }: { onClose(): void }) => {
             <Text variant="strong">{step.title}</Text>
             <Text variant="legend">{step.subtitle}</Text>
           </Box>
+          {step.disclaimer && (
+            <Text sx={{ fontSize: 0 }} variant="warning" ml="auto">
+              <Trans>Requires tx on Ethereum</Trans>
+            </Text>
+          )}
         </Box>
       ))}
       <Divider mx={-4} />

@@ -1,3 +1,4 @@
+import { X } from 'react-feather'
 import { smallButton } from 'theme'
 import {
   Button as ThemeButton,
@@ -69,6 +70,12 @@ export const LoadingButton = ({
 
 export const SmallButton = ({ sx = {}, ...props }: ButtonProps) => (
   <Button {...props} sx={{ ...smallButton, ...sx }} />
+)
+
+export const Closebutton = (props: ButtonProps) => (
+  <Button variant="circle">
+    <X />
+  </Button>
 )
 
 export default Button
