@@ -58,6 +58,7 @@ const BridgeTokenBalance = () => {
       </Text>
       <Button
         small
+        variant="muted"
         ml={3}
         onClick={() => setAmount(balance.data?.formatted ?? '0')}
       >
@@ -72,7 +73,7 @@ const BridgeChain = () => {
 
   return (
     <Box variant="layout.verticalAlign" mr={3}>
-      <Text mr={3}>
+      <Text mr={2}>
         <Trans>From:</Trans>
       </Text>
 

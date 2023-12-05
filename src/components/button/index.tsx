@@ -35,7 +35,7 @@ export const LoadingButton = ({
   ...props
 }: LoadingButtonProps) => (
   <Button
-    variant="accentAction"
+    variant="primary"
     onClick={(e) => {
       if (!loading && onClick) onClick(e)
     }}

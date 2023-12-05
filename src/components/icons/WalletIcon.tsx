@@ -15,7 +15,7 @@ const WalletIcon = (props: SVGProps<SVGSVGElement>) => (
         width={15}
         height={15}
         rx={7.5}
-        fill="#00FFBF"
+        fill="#106D46"
         stroke="url(#connectB)"
       />
       <rect
@@ -39,8 +39,8 @@ const WalletIcon = (props: SVGProps<SVGSVGElement>) => (
         y2={16}
         gradientUnits="userSpaceOnUse"
       >
-        <stop offset={0.865} stopColor="#00FF7F" />
-        <stop offset={1} stopColor="#01E271" />
+        <stop offset={0.865} stopColor="#07C575" />
+        <stop offset={1} stopColor="#7FF2C1" />
       </linearGradient>
       <clipPath id="connectA">
         <rect width={16} height={16} rx={8} fill="#fff" />

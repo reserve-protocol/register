@@ -23,7 +23,7 @@ const BridgeChain = () => {
 
   return (
     <Box variant="layout.verticalAlign">
-      <Text mr={3}>
+      <Text mr={2}>
         <Trans>To:</Trans>
       </Text>
 
