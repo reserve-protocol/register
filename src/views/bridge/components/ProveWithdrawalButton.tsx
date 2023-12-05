@@ -4,6 +4,7 @@ import useWatchTransaction from 'hooks/useWatchTransaction'
 import { Dispatch, memo, SetStateAction, useEffect } from 'react'
 import { useContractWrite } from 'wagmi'
 import { usePrepareProveWithdrawal } from '../hooks/usePrepareProveWithdrawal'
+import { ChainId } from 'utils/chains'
 
 type ProveWithdrawalButtonProps = {
   txHash: `0x${string}`
@@ -41,6 +42,7 @@ export const ProveWithdrawalButton = memo(function ProveWithdrawalButton({
     <TransactionButton
       loading={isLoading || isMining}
       mining={isMining}
+      chain={ChainId.Mainnet}
       small
       text={t`Verify`}
       onClick={submitProof}
