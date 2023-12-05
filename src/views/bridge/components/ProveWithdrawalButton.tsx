@@ -1,8 +1,8 @@
-import { Button } from 'components'
-import useSwitchChain from 'hooks/useSwitchChain'
-import { Dispatch, memo, SetStateAction, useCallback } from 'react'
-import { ChainId } from 'utils/chains'
-import { useContractWrite, useNetwork } from 'wagmi'
+import { t } from '@lingui/macro'
+import TransactionButton from 'components/button/TransactionButton'
+import useWatchTransaction from 'hooks/useWatchTransaction'
+import { Dispatch, memo, SetStateAction, useEffect } from 'react'
+import { useContractWrite } from 'wagmi'
 import { usePrepareProveWithdrawal } from '../hooks/usePrepareProveWithdrawal'
 
 type ProveWithdrawalButtonProps = {
@@ -20,35 +20,30 @@ export const ProveWithdrawalButton = memo(function ProveWithdrawalButton({
     txHash,
     blockNumberOfLatestL2OutputProposal
   )
-  const { writeAsync: submitProof } = useContractWrite(proveWithdrawalConfig)
-  const switchChain = useSwitchChain()
+  const {
+    write: submitProof,
+    isLoading,
+    data,
+  } = useContractWrite(proveWithdrawalConfig)
 
-  const { chain } = useNetwork()
+  const { isMining, status } = useWatchTransaction({
+    hash: data?.hash,
+    label: 'Finalize base withdraw',
+  })
 
-  const handleSwitchToL1 = useCallback(() => {
-    switchChain(ChainId.Mainnet)
-  }, [switchChain])
-
-  const handleProveWithdrawal = useCallback(() => {
-    void (async () => {
-      try {
-        const proveResult = await submitProof?.()
-        if (proveResult?.hash) {
-          const proveTxHash = proveResult.hash
-          setProveTxHash(proveTxHash)
-        }
-      } catch {}
-    })()
-  }, [setProveTxHash, submitProof])
-
-  const isConnectedToL1 = chain?.id === ChainId.Mainnet
+  useEffect(() => {
+    if (status === 'success') {
+      setProveTxHash(data?.hash)
+    }
+  }, [status])
 
   return (
-    <Button
-      onClick={isConnectedToL1 ? handleProveWithdrawal : handleSwitchToL1}
+    <TransactionButton
+      loading={isLoading || isMining}
+      mining={isMining}
       small
-    >
-      {isConnectedToL1 ? 'Verify' : 'Switch to L1'}
-    </Button>
+      text={t`Verify`}
+      onClick={submitProof}
+    />
   )
 })

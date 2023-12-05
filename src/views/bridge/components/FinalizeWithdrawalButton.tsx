@@ -1,9 +1,9 @@
-import useSwitchChain from 'hooks/useSwitchChain'
-import { Dispatch, memo, SetStateAction, useCallback } from 'react'
-import { ChainId } from 'utils/chains'
-import { useContractWrite, useNetwork } from 'wagmi'
+import { t } from '@lingui/macro'
+import TransactionButton from 'components/button/TransactionButton'
+import useWatchTransaction from 'hooks/useWatchTransaction'
+import { Dispatch, memo, SetStateAction, useEffect } from 'react'
+import { useContractWrite } from 'wagmi'
 import { usePrepareFinalizeWithdrawal } from '../hooks/usePrepareFinalizeWithdrawal'
-import { Button } from 'components'
 
 type FinalizeWithdrawalButtonProps = {
   txHash: `0x${string}`
@@ -15,36 +15,29 @@ export const FinalizeWithdrawalButton = memo(function FinalizeWithdrawalButton({
   setFinalizeTxHash,
 }: FinalizeWithdrawalButtonProps) {
   const proveWithdrawalConfig = usePrepareFinalizeWithdrawal(txHash)
-  const { writeAsync: finalizeWithdrawal } = useContractWrite(
-    proveWithdrawalConfig
-  )
-  const switchChain = useSwitchChain()
-  const { chain } = useNetwork()
+  const {
+    write: finalizeWithdrawal,
+    isLoading,
+    data,
+  } = useContractWrite(proveWithdrawalConfig)
+  const { isMining, status } = useWatchTransaction({
+    hash: data?.hash,
+    label: 'Finalize base withdraw',
+  })
 
-  const handleSwitchToL1 = useCallback(() => {
-    switchChain(ChainId.Mainnet)
-  }, [switchChain])
-
-  const handleProveWithdrawal = useCallback(() => {
-    void (async () => {
-      try {
-        const finalizeResult = await finalizeWithdrawal?.()
-        if (finalizeResult?.hash) {
-          const finalizeTxHash = finalizeResult.hash
-          setFinalizeTxHash(finalizeTxHash)
-        }
-      } catch {}
-    })()
-  }, [finalizeWithdrawal, setFinalizeTxHash])
-
-  const isConnectedToL1 = chain?.id === ChainId.Mainnet
+  useEffect(() => {
+    if (status === 'success') {
+      setFinalizeTxHash(data?.hash)
+    }
+  }, [status])
 
   return (
-    <Button
+    <TransactionButton
+      loading={isLoading || isMining}
+      mining={isMining}
       small
-      onClick={isConnectedToL1 ? handleProveWithdrawal : handleSwitchToL1}
-    >
-      {isConnectedToL1 ? 'Complete' : 'Switch to L1'}
-    </Button>
+      text={t`Complete`}
+      onClick={finalizeWithdrawal}
+    />
   )
 })
