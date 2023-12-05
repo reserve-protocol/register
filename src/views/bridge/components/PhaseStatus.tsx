@@ -4,24 +4,16 @@ import { WithdrawalPhase } from '../utils/types'
 const PHASE_MAP: Record<WithdrawalPhase, number> = {
   PROPOSING_ON_CHAIN: 0,
   PROVE: 1,
-  PROVE_TX_PENDING: 1,
-  PROVE_TX_FAILURE: 1,
   CHALLENGE_WINDOW: 1,
   FINALIZE: 2,
-  FINALIZE_TX_PENDING: 2,
-  FINALIZE_TX_FAILURE: 2,
   FUNDS_WITHDRAWN: 3,
 }
 
 const withdrawalPhaseText = {
   PROPOSING_ON_CHAIN: 'Proposing onchain',
   PROVE: 'Ready to verify',
-  PROVE_TX_PENDING: 'Ready to verify',
-  PROVE_TX_FAILURE: 'Ready to verify',
   CHALLENGE_WINDOW: 'Verifying',
   FINALIZE: 'Ready to complete',
-  FINALIZE_TX_PENDING: 'Processing',
-  FINALIZE_TX_FAILURE: 'Processing',
   FUNDS_WITHDRAWN: 'Funds moved',
 }
 

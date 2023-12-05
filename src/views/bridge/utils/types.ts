@@ -10,10 +10,6 @@ export type WithdrawalMessage = {
 export type WithdrawalPhase =
   | 'PROPOSING_ON_CHAIN'
   | 'PROVE'
-  | 'PROVE_TX_PENDING'
-  | 'PROVE_TX_FAILURE'
   | 'CHALLENGE_WINDOW'
   | 'FINALIZE'
-  | 'FINALIZE_TX_PENDING'
-  | 'FINALIZE_TX_FAILURE'
   | 'FUNDS_WITHDRAWN'

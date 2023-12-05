@@ -1,6 +1,5 @@
 import GoTo from 'components/button/GoTo'
 import dayjs from 'dayjs'
-import { useState } from 'react'
 import { Box, Grid, Text } from 'theme-ui'
 import { parseDuration, shortenString } from 'utils'
 import { ChainId } from 'utils/chains'
@@ -14,8 +13,6 @@ import { ProveWithdrawalButton } from './ProveWithdrawalButton'
 const withdrawalPhaseStatusText = {
   PROPOSING_ON_CHAIN: 'Wait up to 1 hr',
   PROVE: '',
-  PROVE_TX_PENDING: '',
-  PROVE_TX_FAILURE: 'Failed',
   CHALLENGE_WINDOW: (challengeWindowEndTime?: number) =>
     challengeWindowEndTime &&
     `Wait ${parseDuration(challengeWindowEndTime - dayjs().unix(), {
@@ -23,8 +20,6 @@ const withdrawalPhaseStatusText = {
       round: true,
     })}`,
   FINALIZE: '',
-  FINALIZE_TX_PENDING: '',
-  FINALIZE_TX_FAILURE: 'Failed',
   FUNDS_WITHDRAWN: 'Complete',
 }
 
@@ -35,18 +30,10 @@ const WithdrawalRow = ({
   data: BridgeWithdraw
   blockNumberOfLatestL2OutputProposal?: bigint
 }) => {
-  const [proveTxHash, setProveTxHash] = useState<`0x${string}` | undefined>(
-    undefined
-  )
-  const [finalizeTxHash, setFinalizeTxHash] = useState<
-    `0x${string}` | undefined
-  >(undefined)
   const { status: withdrawalStatus, challengeWindowEndTime } =
     useWithdrawalStatus({
       initializeTxHash: data.hash,
       blockNumberOfLatestL2OutputProposal,
-      proveTxHash,
-      finalizeTxHash,
     })
 
   const PHASE_TO_STATUS = {
@@ -54,25 +41,15 @@ const WithdrawalRow = ({
     PROVE: (
       <ProveWithdrawalButton
         txHash={data.hash}
-        setProveTxHash={setProveTxHash}
         blockNumberOfLatestL2OutputProposal={
           blockNumberOfLatestL2OutputProposal
         }
       />
     ),
-    PROVE_TX_PENDING: 'Pending btn',
-    PROVE_TX_FAILURE: withdrawalPhaseStatusText.PROVE_TX_FAILURE,
     CHALLENGE_WINDOW: withdrawalPhaseStatusText.CHALLENGE_WINDOW(
       Number(challengeWindowEndTime)
     ),
-    FINALIZE: (
-      <FinalizeWithdrawalButton
-        txHash={data.hash}
-        setFinalizeTxHash={setFinalizeTxHash}
-      />
-    ),
-    FINALIZE_TX_PENDING: 'Pending btn',
-    FINALIZE_TX_FAILURE: withdrawalPhaseStatusText.FINALIZE_TX_FAILURE,
+    FINALIZE: <FinalizeWithdrawalButton txHash={data.hash} />,
     FUNDS_WITHDRAWN: withdrawalPhaseStatusText.FUNDS_WITHDRAWN,
   }
   return (
@@ -87,13 +64,15 @@ const WithdrawalRow = ({
       mt={3}
       p={4}
     >
-      <Box>
-        <Text sx={{ display: 'block', fontSize: 2 }} mb={2}>
-          {data.date}
-        </Text>
-        <Text sx={{ fontSize: 1 }} variant="legend">
-          {data.time}
-        </Text>
+      <Box variant="layout.verticalAlign">
+        <Box>
+          <Text sx={{ display: 'block', fontSize: 2 }} mb={2}>
+            {data.date}
+          </Text>
+          <Text sx={{ fontSize: 1 }} variant="legend">
+            {data.time}
+          </Text>
+        </Box>
       </Box>
       <Box variant="layout.verticalAlign">
         <Text mr={2}>{shortenString(data.hash)}</Text>

@@ -1,20 +1,19 @@
-import { t } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 import TransactionButton from 'components/button/TransactionButton'
 import useWatchTransaction from 'hooks/useWatchTransaction'
-import { Dispatch, memo, SetStateAction, useEffect } from 'react'
+import { memo } from 'react'
+import { Text } from 'theme-ui'
+import { ChainId } from 'utils/chains'
 import { useContractWrite } from 'wagmi'
 import { usePrepareProveWithdrawal } from '../hooks/usePrepareProveWithdrawal'
-import { ChainId } from 'utils/chains'
 
 type ProveWithdrawalButtonProps = {
   txHash: `0x${string}`
-  setProveTxHash: Dispatch<SetStateAction<`0x${string}` | undefined>>
   blockNumberOfLatestL2OutputProposal?: bigint
 }
 
 export const ProveWithdrawalButton = memo(function ProveWithdrawalButton({
   txHash,
-  setProveTxHash,
   blockNumberOfLatestL2OutputProposal,
 }: ProveWithdrawalButtonProps) {
   const proveWithdrawalConfig = usePrepareProveWithdrawal(
@@ -29,14 +28,16 @@ export const ProveWithdrawalButton = memo(function ProveWithdrawalButton({
 
   const { isMining, status } = useWatchTransaction({
     hash: data?.hash,
-    label: 'Finalize base withdraw',
+    label: 'Verify base withdraw',
   })
 
-  useEffect(() => {
-    if (status === 'success') {
-      setProveTxHash(data?.hash)
-    }
-  }, [status])
+  if (status === 'success') {
+    return (
+      <Text>
+        <Trans>Verifying</Trans>
+      </Text>
+    )
+  }
 
   return (
     <TransactionButton

@@ -3,10 +3,10 @@ import OptimismPortal from 'abis/OptimismPortal'
 import { useEffect, useMemo, useState } from 'react'
 import { ChainId } from 'utils/chains'
 import { useContractRead, useWaitForTransaction } from 'wagmi'
-import { getWithdrawalMessage } from '../utils/getWithdrawalMessage'
 import { L2_OUTPUT_ORACLE_PROXY_ADDRESS, OP_PORTAL } from '../utils/constants'
-import { WithdrawalPhase } from '../utils/types'
+import { getWithdrawalMessage } from '../utils/getWithdrawalMessage'
 import { hashWithdrawal } from '../utils/hashWithdrawal'
+import { WithdrawalPhase } from '../utils/types'
 import { useL2OutputProposal } from './useL2OutputProposal'
 
 export function useBlockNumberOfLatestL2OutputProposal() {
@@ -83,14 +83,10 @@ export function useIsFinalizationPeriodElapsed(timestamp: bigint | undefined) {
 type UseWithdrawalStateProps = {
   initializeTxHash: `0x${string}`
   blockNumberOfLatestL2OutputProposal?: bigint
-  proveTxHash?: `0x${string}`
-  finalizeTxHash?: `0x${string}`
 }
 function useWithdrawalStatus({
   initializeTxHash,
   blockNumberOfLatestL2OutputProposal,
-  proveTxHash,
-  finalizeTxHash,
 }: UseWithdrawalStateProps): {
   status: WithdrawalPhase
   challengeWindowEndTime?: bigint
@@ -112,16 +108,6 @@ function useWithdrawalStatus({
   const l2OutputProposal = useL2OutputProposal(provenWithdrawal?.[2])
   const finalizationPeriodHasElapsedForL2OutputProposal =
     useIsFinalizationPeriodElapsed(l2OutputProposal?.timestamp)
-  const {
-    isLoading: isProofSubmissionLoading,
-    isError: isProofSubmissionError,
-  } = useWaitForTransaction({
-    hash: proveTxHash,
-  })
-  const { isLoading: isFinalizationLoading, isError: isFinalizationError } =
-    useWaitForTransaction({
-      hash: finalizeTxHash,
-    })
 
   const isWithdrawalReadyToProve = useMemo(
     () =>
@@ -139,11 +125,7 @@ function useWithdrawalStatus({
     }
   }, [withdrawalReceipt])
 
-  // suppress eslint consistent-return error
   let status: WithdrawalPhase = 'PROPOSING_ON_CHAIN'
-
-  if (proveTxHash && isProofSubmissionLoading) status = 'PROVE_TX_PENDING'
-  if (finalizeTxHash && isFinalizationLoading) status = 'FINALIZE_TX_PENDING'
 
   if (!isWithdrawalReadyToProve) status = 'PROPOSING_ON_CHAIN'
   if (!withdrawalHasBeenProven && isWithdrawalReadyToProve) status = 'PROVE'
@@ -156,8 +138,6 @@ function useWithdrawalStatus({
   }
 
   if (withdrawalHasBeenFinalized) status = 'FUNDS_WITHDRAWN'
-  if (finalizeTxHash && isFinalizationError) status = 'FINALIZE_TX_FAILURE'
-  if (proveTxHash && isProofSubmissionError) status = 'PROVE_TX_FAILURE'
 
   if (status === 'CHALLENGE_WINDOW') {
     return {
