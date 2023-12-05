@@ -1,4 +1,7 @@
 import GoTo from 'components/button/GoTo'
+import AlertIcon from 'components/icons/AlertIcon'
+import CheckCircleIcon from 'components/icons/CheckCircleIcon'
+import ClockIcon from 'components/icons/ClockIcon'
 import dayjs from 'dayjs'
 import { Box, Grid, Text } from 'theme-ui'
 import { parseDuration, shortenString } from 'utils'
@@ -6,9 +9,18 @@ import { ChainId } from 'utils/chains'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import useWithdrawalStatus from '../hooks/useWithdrawStatus'
 import { BridgeWithdraw } from '../hooks/useWithdrawals'
+import { WithdrawalPhase } from '../utils/types'
 import { FinalizeWithdrawalButton } from './FinalizeWithdrawalButton'
 import PhaseStatus from './PhaseStatus'
 import { ProveWithdrawalButton } from './ProveWithdrawalButton'
+
+const PHASE_ICON: Record<WithdrawalPhase, React.FunctionComponent> = {
+  PROPOSING_ON_CHAIN: ClockIcon,
+  PROVE: AlertIcon,
+  CHALLENGE_WINDOW: ClockIcon,
+  FINALIZE: AlertIcon,
+  FUNDS_WITHDRAWN: CheckCircleIcon,
+}
 
 const withdrawalPhaseStatusText = {
   PROPOSING_ON_CHAIN: 'Wait up to 1 hr',
@@ -52,6 +64,24 @@ const WithdrawalRow = ({
     FINALIZE: <FinalizeWithdrawalButton txHash={data.hash} />,
     FUNDS_WITHDRAWN: withdrawalPhaseStatusText.FUNDS_WITHDRAWN,
   }
+
+  const PHASE_TO_STATUS_ICON = {
+    PROPOSING_ON_CHAIN: withdrawalPhaseStatusText.PROPOSING_ON_CHAIN,
+    PROVE: (
+      <ProveWithdrawalButton
+        txHash={data.hash}
+        blockNumberOfLatestL2OutputProposal={
+          blockNumberOfLatestL2OutputProposal
+        }
+      />
+    ),
+    CHALLENGE_WINDOW: withdrawalPhaseStatusText.CHALLENGE_WINDOW(
+      Number(challengeWindowEndTime)
+    ),
+    FINALIZE: <FinalizeWithdrawalButton txHash={data.hash} />,
+    FUNDS_WITHDRAWN: withdrawalPhaseStatusText.FUNDS_WITHDRAWN,
+  }
+
   return (
     <Grid
       columns={['1fr', '1fr 1fr 1fr 1fr 1fr']}
@@ -65,10 +95,12 @@ const WithdrawalRow = ({
       p={4}
     >
       <Box variant="layout.verticalAlign">
-        <Box>
-          <Text sx={{ display: 'block', fontSize: 2 }} mb={2}>
-            {data.date}
-          </Text>
+        {(() => {
+          const Icon = PHASE_ICON[withdrawalStatus]
+          return <Icon />
+        })()}
+        <Box ml="3">
+          <Text sx={{ display: 'block', fontSize: 2 }}>{data.date}</Text>
           <Text sx={{ fontSize: 1 }} variant="legend">
             {data.time}
           </Text>
