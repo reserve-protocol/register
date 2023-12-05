@@ -133,7 +133,7 @@ const TransactionModal = ({
     !disabled
 
   return (
-    <Modal title={title} onClose={onClose} {...props} sx={{ width: '500px' }}>
+    <Modal title={title} onClose={onClose} {...props}>
       {status === 'error' && (
         <TransactionError
           title={t`Transaction failed`}
