@@ -6,7 +6,6 @@ import { useCallback, useMemo } from 'react'
 import { Check, X } from 'react-feather'
 import Skeleton from 'react-loading-skeleton'
 import { Box, Card, Flex, Text } from 'theme-ui'
-import { shortenAddress } from 'utils'
 import {
   BridgeTokenDisplay,
   bridgeTokensAtom,
@@ -167,17 +166,8 @@ const BridgeTokenModal = ({ onClose }: { onClose(): void }) => {
           background: 'contentBackground',
         }}
       >
-        <Box variant="layout.verticalAlign" pt={4} pl={5} pr={4} pb={[3, 0]}>
-          <Text
-            variant="sectionTitle"
-            sx={
-              {
-                // position: 'absolute',
-                // left: '50%',
-                // transform: 'translateX(-50%)',
-              }
-            }
-          >
+        <Box variant="layout.verticalAlign" p={4} mb={[3, 0]} pb={0}>
+          <Text variant="sectionTitle">
             <Trans>Select token</Trans>
           </Text>
           <Button

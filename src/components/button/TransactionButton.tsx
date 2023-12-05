@@ -8,7 +8,12 @@ import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { CheckCircle } from 'react-feather'
-import { chainIdAtom, isWalletInvalidAtom, walletAtom } from 'state/atoms'
+import {
+  chainIdAtom,
+  isWalletInvalidAtom,
+  walletAtom,
+  walletChainAtom,
+} from 'state/atoms'
 import { Box, Spinner, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import {
@@ -18,11 +23,13 @@ import {
 } from 'wagmi'
 import Button, { ButtonProps, LoadingButton, LoadingButtonProps } from '.'
 import { CHAIN_TAGS } from 'utils/constants'
+import useSwitchChain from 'hooks/useSwitchChain'
 
 interface TransactionButtonProps extends LoadingButtonProps {
   gas?: GasEstimation
   mining?: boolean
   error?: Error | null
+  chain?: number
 }
 
 interface GasEstimateLabelProps {
@@ -59,13 +66,18 @@ const TransactionButton = ({
   mining,
   error,
   loading,
+  chain,
   loadingText,
   ...props
 }: TransactionButtonProps) => {
   const address = useAtomValue(walletAtom)
-  const isInvalidWallet = useAtomValue(isWalletInvalidAtom)
   const { switchNetwork } = useSwitchNetwork()
+  const walletChain = useAtomValue(walletChainAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const switchChain = useSwitchChain()
+  const isInvalidWallet = chain
+    ? chain !== chainId || walletChain !== chain
+    : walletChain !== chainId
 
   const { data } = useBalance({
     address: address ?? undefined,
@@ -85,8 +97,17 @@ const TransactionButton = ({
 
   if (isInvalidWallet && switchNetwork) {
     return (
-      <Button sx={{ width: '100%' }} onClick={() => switchNetwork(chainId)}>
-        <Text>Switch chain to {CHAIN_TAGS[chainId]}</Text>
+      <Button
+        {...props}
+        onClick={() => {
+          if (chain && chain !== chainId) {
+            switchChain(chain)
+          }
+
+          switchNetwork(chainId)
+        }}
+      >
+        <Text>Switch to {CHAIN_TAGS[chain || chainId]}</Text>
       </Button>
     )
   }
