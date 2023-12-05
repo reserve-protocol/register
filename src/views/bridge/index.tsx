@@ -10,8 +10,7 @@ const ChainBridge = () => {
         sx={{
           backgroundColor: 'contentBackground',
           justifyContent: 'center',
-          borderBottom: '1px solid',
-          borderColor: 'darkBorder',
+          borderRadius: '0 0 20px 20px',
         }}
       >
         <Bridge />
