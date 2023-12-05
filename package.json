@@ -22,7 +22,7 @@
     "buffer": "^6.0.3",
     "dayjs": "^1.11.3",
     "graphql": "^16.6.0",
-    "graphql-request": "^5.1.0",
+    "graphql-request": "5.1.0",
     "humanize-duration": "^3.28.0",
     "jotai": "^1.12.0",
     "mixpanel-browser": "^2.47.0",

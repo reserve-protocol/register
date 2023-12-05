@@ -11,7 +11,7 @@ const Auctions = () => {
   const platform = useAtomValue(auctionPlatformAtom)
 
   return (
-    <>
+    <Box variant="layout.wrapper">
       <Box variant="layout.containerCompact">
         <AuctionsHeader />
         <Divider my={4} />
@@ -24,7 +24,7 @@ const Auctions = () => {
         <About />
       </Box>
       <AuctionsSidebar />
-    </>
+    </Box>
   )
 }
 

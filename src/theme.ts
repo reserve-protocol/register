@@ -472,6 +472,11 @@ export const theme: Theme = {
     },
   },
   layout: {
+    wrapper: {
+      maxWidth: '95em',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
     container: {
       boxSizing: 'border-box',
       flexShrink: 0,

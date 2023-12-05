@@ -55,6 +55,7 @@ const useTokenStats = (rTokenId: string, isRSV = false): TokenStats => {
     id: rTokenId,
     fromTime,
   })
+
   const rsrPrice = useAtomValue(rsrPriceAtom)
   const rTokenPrice = useAtomValue(rTokenPriceAtom)
 
