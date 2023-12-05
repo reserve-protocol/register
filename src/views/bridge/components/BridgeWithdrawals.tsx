@@ -4,6 +4,21 @@ import Skeleton from 'react-loading-skeleton'
 import { Box, Grid, Text } from 'theme-ui'
 import useWithdrawals from '../hooks/useWithdrawals'
 import WithdrawalRow from './WithdrawalRow'
+import { L2_OUTPUT_ORACLE_PROXY_ADDRESS } from '../utils/constants'
+import L2OutputOracle from 'abis/L2OutputOracle'
+import { ChainId } from 'utils/chains'
+import { useContractRead } from 'wagmi'
+
+function useBlockNumberOfLatestL2OutputProposal() {
+  const { data: blockNumberOfLatestL2OutputProposal } = useContractRead({
+    address: L2_OUTPUT_ORACLE_PROXY_ADDRESS,
+    abi: L2OutputOracle,
+    functionName: 'latestBlockNumber',
+    chainId: ChainId.Mainnet,
+  })
+
+  return blockNumberOfLatestL2OutputProposal
+}
 
 const TableHeader = () => (
   <Grid
@@ -31,6 +46,8 @@ const TableHeader = () => (
 
 const BridgeWithdrawals = () => {
   const { data, isLoading } = useWithdrawals()
+  const blockNumberOfLatestL2OutputProposal =
+    useBlockNumberOfLatestL2OutputProposal()
 
   return (
     <Box p={4} mt={7}>
@@ -38,11 +55,17 @@ const BridgeWithdrawals = () => {
         <Trans>Withdrawal Transactions</Trans>
       </Text>
       <TableHeader />
-      <Box sx={{ maxHeight: 1024, overflow: 'auto' }}>
+      <Box sx={{ maxHeight: 1524, overflow: 'auto' }}>
         {!!data?.length &&
           !isLoading &&
           data.map((withdrawal) => (
-            <WithdrawalRow data={withdrawal} key={withdrawal.hash} />
+            <WithdrawalRow
+              data={withdrawal}
+              key={withdrawal.hash}
+              blockNumberOfLatestL2OutputProposal={
+                blockNumberOfLatestL2OutputProposal
+              }
+            />
           ))}
       </Box>
 
