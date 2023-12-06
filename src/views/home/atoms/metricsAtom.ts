@@ -2,6 +2,7 @@ import { atom } from 'jotai'
 import { rpayOverviewAtom } from 'state/atoms'
 import { supportedChainList } from 'utils/constants'
 
+// TODO: Remove @deprecated
 export interface ProtocolMetrics {
   totalRTokenMarketUsd: number
   tvl: number

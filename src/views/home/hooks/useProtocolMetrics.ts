@@ -1,11 +1,12 @@
 import { gql } from 'graphql-request'
+import useExternalStats from 'hooks/useExternalStats'
 import { useMultichainQuery } from 'hooks/useQuery'
-import { atom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect } from 'react'
-import { rpayOverviewAtom } from 'state/atoms'
+import { useAtom } from 'jotai'
+import { useEffect, useMemo } from 'react'
 import { ChainId } from 'utils/chains'
 import { PROTOCOL_SLUG, supportedChainList } from 'utils/constants'
 import { formatEther } from 'viem'
+import { homeMetricsAtom } from '../atoms'
 
 interface ProtocolMetricsResponse {
   tokens: {
@@ -49,24 +50,9 @@ const protocolMetricsQuery = gql`
   }
 `
 
-const statsAtom = atom({
-  volume: 0,
-  marketCap: 0,
-  stakeRevenue: 0,
-})
-
-const aggregatedStatsAtom = atom((get) => {
-  const stats = get(statsAtom)
-  const thirdParty = get(rpayOverviewAtom)
-
-  if (stats.volume) stats.volume += thirdParty.volume
-
-  return stats
-})
-
 const useProtocolMetrics = () => {
-  const setStats = useSetAtom(statsAtom)
-  const stats = useAtomValue(aggregatedStatsAtom)
+  const [stats, setStats] = useAtom(homeMetricsAtom)
+  const { data: externalData } = useExternalStats()
   const { data, isLoading } = useMultichainQuery(protocolMetricsQuery, {
     id: PROTOCOL_SLUG,
   })
@@ -100,7 +86,12 @@ const useProtocolMetrics = () => {
     }
   }, [data])
 
-  return { data: stats, isLoading }
+  return useMemo(() => {
+    const data = { ...stats }
+    data.volume += externalData?.volume ?? 0
+
+    return { data, isLoading }
+  }, [stats, externalData])
 }
 
 export default useProtocolMetrics
