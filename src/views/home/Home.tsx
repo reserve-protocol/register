@@ -5,6 +5,7 @@ import { selectedRTokenAtom } from 'state/atoms'
 import About from './components/About'
 import Hero from './components/Hero'
 import TokenList from './components/TokenList'
+import CompareTokens from './components/CompareTokens'
 
 /**
  * Main home screen
@@ -23,7 +24,7 @@ const Home = () => {
   return (
     <>
       <Hero />
-      <TokenList />
+      <CompareTokens />
       <About />
     </>
   )

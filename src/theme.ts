@@ -141,6 +141,7 @@ export const theme: Theme = {
     body: 'Satoshi, sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,  "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
     heading: 'inherit',
     monospace: 'Menlo, monospace',
+    fontDisplay: 'swap',
   },
   fontSizes: [12, 14, 16, 20, 24, 32, 48, 56, 96],
   fontWeights: {
