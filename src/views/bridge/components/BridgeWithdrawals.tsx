@@ -50,8 +50,8 @@ const BridgeWithdrawals = () => {
     useBlockNumberOfLatestL2OutputProposal()
 
   return (
-    <Box variant="layout.wrapper" p={4} mt={7}>
-      <Text ml={4} variant="sectionTitle" mb={6}>
+    <Box variant="layout.wrapper" p={4} mt={[2, 7]}>
+      <Text ml={4} variant="sectionTitle" mb={[2, 6]}>
         <Trans>Withdrawal Transactions</Trans>
       </Text>
       <TableHeader />

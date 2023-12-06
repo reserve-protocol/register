@@ -3,7 +3,7 @@ import AlertIcon from 'components/icons/AlertIcon'
 import CheckCircleIcon from 'components/icons/CheckCircleIcon'
 import ClockIcon from 'components/icons/ClockIcon'
 import dayjs from 'dayjs'
-import { Box, Grid, Text } from 'theme-ui'
+import { Box, Flex, Grid, Text } from 'theme-ui'
 import { parseDuration, shortenString } from 'utils'
 import { ChainId } from 'utils/chains'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
@@ -34,6 +34,15 @@ const withdrawalPhaseStatusText = {
   FINALIZE: '',
   FUNDS_WITHDRAWN: 'Complete',
 }
+
+const TxHash = ({ hash }: { hash: string }) => (
+  <Box variant="layout.verticalAlign">
+    <Text mr={2}>{shortenString(hash)}</Text>
+    <GoTo
+      href={getExplorerLink(hash, ChainId.Base, ExplorerDataType.TRANSACTION)}
+    />
+  </Box>
+)
 
 const WithdrawalRow = ({
   data,
@@ -94,32 +103,42 @@ const WithdrawalRow = ({
       mt={3}
       p={4}
     >
-      <Box variant="layout.verticalAlign">
+      <Box
+        variant="layout.verticalAlign"
+        pb={[3, 0]}
+        sx={{ borderBottom: ['1px solid', 'none'], borderColor: 'darkBorder' }}
+      >
         {(() => {
           const Icon = PHASE_ICON[withdrawalStatus]
           return <Icon />
         })()}
-        <Box ml="3">
+        <Flex
+          ml="3"
+          sx={{
+            flexDirection: ['row', 'column'],
+            flexGrow: 1,
+          }}
+        >
           <Text sx={{ display: 'block', fontSize: 2 }}>{data.date}</Text>
-          <Text sx={{ fontSize: 1 }} variant="legend">
+          <Text
+            ml={['auto', 0]}
+            sx={{ fontSize: [2, 1], display: 'block' }}
+            variant="legend"
+          >
             {data.time}
           </Text>
-        </Box>
+        </Flex>
       </Box>
-      <Box variant="layout.verticalAlign">
-        <Text mr={2}>{shortenString(data.hash)}</Text>
-        <GoTo
-          href={getExplorerLink(
-            data.hash,
-            ChainId.Base,
-            ExplorerDataType.TRANSACTION
-          )}
-        />
+      <Box sx={{ display: ['none', 'block'] }}>
+        <TxHash hash={data.hash} />
       </Box>
-      <Box>
+      <Box variant="layout.verticalAlign" mb={[2, 0]}>
         <Text>
           {data.formattedAmount} {data.symbol}
         </Text>
+        <Box sx={{ display: ['block', 'none'] }} ml="auto">
+          <TxHash hash={data.hash} />
+        </Box>
       </Box>
       <PhaseStatus phase={withdrawalStatus} />
       <Box sx={{ textAlign: 'right' }}>{PHASE_TO_STATUS[withdrawalStatus]}</Box>

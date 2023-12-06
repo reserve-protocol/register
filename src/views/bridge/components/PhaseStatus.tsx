@@ -23,7 +23,7 @@ const PhaseStatus = ({ phase }: { phase: WithdrawalPhase }) => {
   const selected = PHASE_MAP[phase]
 
   return (
-    <Box>
+    <Box sx={{ textAlign: ['center', 'left'] }}>
       <Box variant="layout.verticalAlign" mb={2}>
         {items.map((_, index) => (
           <Box

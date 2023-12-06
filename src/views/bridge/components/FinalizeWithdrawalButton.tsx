@@ -40,6 +40,7 @@ export const FinalizeWithdrawalButton = memo(function FinalizeWithdrawalButton({
       variant="primary"
       chain={ChainId.Mainnet}
       small
+      sx={{ width: ['100%', 'auto'] }}
       text={t`Complete`}
       onClick={finalizeWithdrawal}
     />
