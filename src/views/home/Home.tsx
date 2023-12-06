@@ -3,13 +3,14 @@ import { useAtom, useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
 import { useEffect, useState } from 'react'
 import { selectedRTokenAtom, walletAtom } from 'state/atoms'
-import { Divider } from 'theme-ui'
+import { Box, Divider } from 'theme-ui'
 import About from './components/About'
 import Greet from './components/Greet'
 import Portfolio from './components/Portfolio'
 import Stats from './components/Stats'
 import TokenList from './components/TokenList'
 import Announcement from './components/Announcement'
+import Hero from './components/Hero'
 
 const VISITED_KEY = 'visited'
 
@@ -48,16 +49,11 @@ const Home = () => {
   }, [])
 
   return (
-    <Container>
-      <Announcement />
-      {!account && !visited && <Greet onDismiss={handleDismiss} />}
-      {!!account && <Portfolio mt={5} mb={8} />}
-      <Stats />
-      <Divider mt={[0, 6]} mb={[5, 8]} />
+    <Box>
+      <Hero />
       <TokenList />
-      <Divider {...dividerProps} />
       <About />
-    </Container>
+    </Box>
   )
 }
 

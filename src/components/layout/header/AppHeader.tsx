@@ -51,7 +51,7 @@ const HeaderAction = () => {
 const useHeaderColor = () => {
   const { pathname } = useLocation()
 
-  if (pathname.indexOf(ROUTES.BRIDGE) !== -1) {
+  if (pathname.indexOf(ROUTES.BRIDGE) !== -1 || pathname === '/') {
     return 'contentBackground'
   }
 
