@@ -53,26 +53,6 @@ const tokenListQuery = gql`
         backing
         backingRSR
         targetUnits
-        recentRate: hourlySnapshots(
-          first: 1
-          orderBy: timestamp
-          where: { timestamp_gte: $fromTime }
-          orderDirection: desc
-        ) {
-          rsrExchangeRate
-          basketRate
-          timestamp
-        }
-        lastRate: hourlySnapshots(
-          first: 1
-          orderBy: timestamp
-          where: { timestamp_gte: $fromTime }
-          orderDirection: asc
-        ) {
-          rsrExchangeRate
-          basketRate
-          timestamp
-        }
       }
     }
   }
@@ -138,6 +118,8 @@ const useTokenList = () => {
           })
         )
       }
+
+      tokens.sort((a, b) => b.supply - a.supply)
 
       setList(tokens)
     }
