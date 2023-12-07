@@ -29,3 +29,7 @@ body {
 .hidden-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+.react-loading-skeleton {
+  z-index: 0;
+}
