@@ -15,7 +15,7 @@ import {
 import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import ChainProvider from 'state/chain'
 import Updater from 'state/updater'
-import { Text, ThemeProvider } from 'theme-ui'
+import { Box, Flex, Spinner, Text, ThemeProvider } from 'theme-ui'
 import { supportedChains } from 'utils/chains'
 import { ROUTES } from 'utils/constants'
 import Auctions from 'views/auctions'
@@ -41,7 +41,11 @@ const Issuance = lazyWithPreload(() => import('./views/issuance'))
 const Governance = lazyWithPreload(() => import('./views/governance'))
 const Bridge = lazy(() => import('./views/bridge'))
 
-const Fallback = () => <Text>Loading...</Text>
+const Fallback = () => (
+  <Flex sx={{ justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+    <Spinner size={24} />
+  </Flex>
+)
 
 const RouteListener = () => {
   const [searchParams, setSearchParams] = useSearchParams()
