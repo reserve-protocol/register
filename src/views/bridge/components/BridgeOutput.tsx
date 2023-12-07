@@ -1,18 +1,18 @@
+import { Trans } from '@lingui/macro'
+import ChainLogo from 'components/icons/ChainLogo'
+import TokenLogo from 'components/icons/TokenLogo'
 import { atom, useAtomValue } from 'jotai'
+import { walletAtom } from 'state/atoms'
 import { Box, Card, Text } from 'theme-ui'
+import { formatCurrency } from 'utils'
+import { ChainId } from 'utils/chains'
+import { CHAIN_TAGS } from 'utils/constants'
+import { useBalance } from 'wagmi'
 import {
   bridgeAmountAtom,
   isBridgeWrappingAtom,
   selectedBridgeToken,
 } from '../atoms'
-import { ChainId } from 'utils/chains'
-import { Trans } from '@lingui/macro'
-import ChainLogo from 'components/icons/ChainLogo'
-import { CHAIN_TAGS } from 'utils/constants'
-import { walletAtom } from 'state/atoms'
-import { formatCurrency } from 'utils'
-import { useBalance } from 'wagmi'
-import TokenLogo from 'components/icons/TokenLogo'
 
 const chainContextAtom = atom((get) =>
   get(isBridgeWrappingAtom) ? ChainId.Base : ChainId.Mainnet

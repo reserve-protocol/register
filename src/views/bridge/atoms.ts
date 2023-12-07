@@ -15,7 +15,7 @@ import BRIDGE_ASSETS, { BridgeAsset } from './utils/assets'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { isWrappingAtom } from 'views/issuance/components/wrapping/atoms'
 import { publicClient } from 'state/chain'
-import { ContractFunctionConfig, formatEther, formatUnits } from 'viem'
+import { Address, ContractFunctionConfig, formatEther, formatUnits } from 'viem'
 
 export const bridgeTokensAtom = atom(BRIDGE_ASSETS)
 export const selectedBridgeToken = atom<BridgeAsset>(BRIDGE_ASSETS[1]) // default RSR
@@ -113,6 +113,25 @@ export const isValidBridgeAmountAtom = atom((get) => {
   const amount = safeParseEther(get(bridgeAmountDebouncedAtom) || '0')
 
   return amount > 0n && amount <= max
+})
+
+export const bridgeApprovalAtom = atom((get) => {
+  const bridgeTransaction = get(bridgeTxAtom)
+  const bridgeToken = get(selectedBridgeToken)
+  const amount = get(bridgeAmountDebouncedAtom)
+  const isWrapping = get(isBridgeWrappingAtom)
+
+  if (!bridgeTransaction || !bridgeToken.L1contract || !isWrapping) {
+    return undefined
+  }
+
+  return {
+    token: isWrapping
+      ? bridgeToken.L1contract
+      : (bridgeToken.L2contract as Address),
+    spender: bridgeTransaction.address as Address,
+    amount: safeParseEther(amount),
+  }
 })
 
 export const bridgeTxAtom = atom((get) => {

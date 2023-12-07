@@ -74,23 +74,6 @@ const WithdrawalRow = ({
     FUNDS_WITHDRAWN: withdrawalPhaseStatusText.FUNDS_WITHDRAWN,
   }
 
-  const PHASE_TO_STATUS_ICON = {
-    PROPOSING_ON_CHAIN: withdrawalPhaseStatusText.PROPOSING_ON_CHAIN,
-    PROVE: (
-      <ProveWithdrawalButton
-        txHash={data.hash}
-        blockNumberOfLatestL2OutputProposal={
-          blockNumberOfLatestL2OutputProposal
-        }
-      />
-    ),
-    CHALLENGE_WINDOW: withdrawalPhaseStatusText.CHALLENGE_WINDOW(
-      Number(challengeWindowEndTime)
-    ),
-    FINALIZE: <FinalizeWithdrawalButton txHash={data.hash} />,
-    FUNDS_WITHDRAWN: withdrawalPhaseStatusText.FUNDS_WITHDRAWN,
-  }
-
   return (
     <Grid
       columns={['1fr', '1fr 1fr 1fr 1fr 1fr']}
