@@ -19,5 +19,13 @@ export const BRIDGEABLE_TOKENS = [
     symbol: 'eUSD',
     address: EUSD_ADDRESS[ChainId.Mainnet],
     bridgedAddress: EUSD_ADDRESS[ChainId.Base],
-  }
+  },
 ]
+
+export const L2_OUTPUT_ORACLE_PROXY_ADDRESS =
+  '0x56315b90c40730925ec5485cf004d835058518A0'
+
+export const L2_L1_MESSAGE_PASSER_ADDRESS =
+  '0x4200000000000000000000000000000000000016'
+
+export const OP_PORTAL = '0x49048044D57e1C92A77f79988d21Fa8fAF74E97e'

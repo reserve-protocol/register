@@ -109,6 +109,7 @@ const ConfirmStake = ({ onClose }: { onClose: () => void }) => {
       confirmLabel={t`Begin stake of ${formatCurrency(Number(amount))} RSR`}
       onClose={handleClose}
       onChange={handleChange}
+      width="500px"
     >
       <StakeInput compact disabled={signing} />
       {!isLegacy && (

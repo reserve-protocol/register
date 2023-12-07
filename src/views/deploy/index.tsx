@@ -55,15 +55,17 @@ const Deploy = () => {
   }
 
   return (
-    <Layout>
-      <FormProvider {...form}>
-        <NavigationSidebar />
-        <RTokenSetup governance={governance} />
-        <Box variant="layout.stickyNoHeader">
-          <DeployOverview onDeploy={handleDeploy} />
-        </Box>
-      </FormProvider>
-    </Layout>
+    <Box variant="layout.wrapper">
+      <Layout>
+        <FormProvider {...form}>
+          <NavigationSidebar />
+          <RTokenSetup governance={governance} />
+          <Box variant="layout.stickyNoHeader">
+            <DeployOverview onDeploy={handleDeploy} />
+          </Box>
+        </FormProvider>
+      </Layout>
+    </Box>
   )
 }
 

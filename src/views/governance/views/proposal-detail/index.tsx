@@ -85,7 +85,7 @@ const GovernanceProposalDetail = () => {
   }, [])
 
   return (
-    <Box>
+    <Box variant="layout.wrapper">
       <Box
         variant="layout.verticalAlign"
         sx={{ justifyContent: 'space-between' }}

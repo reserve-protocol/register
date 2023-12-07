@@ -1,4 +1,3 @@
-import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
 import Account from 'components/account'
 import ChainSelector from 'components/chain-selector/ChainSelector'
@@ -10,16 +9,6 @@ import { Box, Flex, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import Brand from './Brand'
 import TokenToggle from './TokenToggle'
-
-const Container = styled(Flex)`
-  align-items: center;
-  flex-shrink: 0;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  max-width: 95em;
-  height: 72px;
-`
 
 const Divider = () => (
   <Box
@@ -48,7 +37,7 @@ const HeaderAction = () => {
     return (
       <Box variant="layout.verticalAlign">
         <BridgeIcon />
-        <Text ml={3} sx={{ fontSize: 2 }} variant="subtitle">
+        <Text ml={3} sx={{ fontSize: 2 }} variant="title">
           L2 Bridge
         </Text>
       </Box>
@@ -58,63 +47,85 @@ const HeaderAction = () => {
   return <TokenToggle />
 }
 
+// TODO: Currently only for bridging, but expected for other views
+const useHeaderColor = () => {
+  const { pathname } = useLocation()
+
+  if (pathname.indexOf(ROUTES.BRIDGE) !== -1) {
+    return 'contentBackground'
+  }
+
+  return 'background'
+}
+
 /**
  * Application header
  */
-const AppHeader = () => (
-  <Container
-    px={[3, 5]}
-    sx={{
-      borderBottom: '1px solid',
-      borderColor: 'border',
-      backgroundColor: 'background',
-    }}
-  >
-    <Box mr="auto" variant="layout.verticalAlign">
-      <Brand />
-      <Divider />
-      <HeaderAction />
-    </Box>
-    <Box
-      variant="layout.verticalAlign"
-      sx={{
-        display: ['none', 'flex'],
-        cursor: 'pointer',
-      }}
-      onClick={() =>
-        window.open('https://reserve.canny.io/register-app', '_blank')
-      }
-    >
-      <Text>Feedback</Text>
-    </Box>
-    <Divider />
+const AppHeader = () => {
+  const backgroundColor = useHeaderColor()
 
+  return (
     <Box
-      variant="layout.verticalAlign"
       sx={{
-        display: ['none', 'flex'],
-        cursor: 'pointer',
+        borderBottom: '1px solid',
+        borderColor: 'border',
+        position: 'fixed',
+        top: 0,
+        backgroundColor,
+        width: '100%',
       }}
-      onClick={() => window.open('https://reserve.org/protocol/', '_blank')}
     >
-      <Text>Docs</Text>
-    </Box>
-    <Divider />
-    <ThemeColorMode
-      sx={{
-        display: ['none', 'flex'],
-      }}
-      pt={1}
-      mr={[3, 0]}
-    />
-    {/* <Box ml={4} sx={{ alignItems: 'center', display: 'flex' }}>
-        <LanguageSelector />
-      </Box> */}
-    <Divider />
-    <ChainSelector mr={[3, 0]} />
-    <Divider />
-    <Account />
-  </Container>
-)
+      <Flex
+        px={[3, 5]}
+        variant="layout.wrapper"
+        sx={{ alignItems: 'center', height: '72px' }}
+      >
+        <Box mr="auto" variant="layout.verticalAlign">
+          <Brand />
+          <Divider />
+          <HeaderAction />
+        </Box>
+        <Box
+          variant="layout.verticalAlign"
+          sx={{
+            display: ['none', 'flex'],
+            cursor: 'pointer',
+          }}
+          onClick={() =>
+            window.open('https://reserve.canny.io/register-app', '_blank')
+          }
+        >
+          <Text>Feedback</Text>
+        </Box>
+        <Divider />
 
+        <Box
+          variant="layout.verticalAlign"
+          sx={{
+            display: ['none', 'flex'],
+            cursor: 'pointer',
+          }}
+          onClick={() => window.open('https://reserve.org/protocol/', '_blank')}
+        >
+          <Text>Docs</Text>
+        </Box>
+        <Divider />
+        <ThemeColorMode
+          sx={{
+            display: ['none', 'flex'],
+          }}
+          pt={1}
+          mr={[3, 0]}
+        />
+        {/* <Box ml={4} sx={{ alignItems: 'center', display: 'flex' }}>
+            <LanguageSelector />
+          </Box> */}
+        <Divider />
+        <ChainSelector mr={[3, 0]} />
+        <Divider />
+        <Account />
+      </Flex>
+    </Box>
+  )
+}
 export default AppHeader

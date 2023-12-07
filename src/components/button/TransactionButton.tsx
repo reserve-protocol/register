@@ -1,23 +1,35 @@
 import { Trans, t } from '@lingui/macro'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
+import TransactionError from 'components/transaction-error/TransactionError'
 import useContractWrite from 'hooks/useContractWrite'
 import { GasEstimation } from 'hooks/useGasEstimate'
+import useNotification from 'hooks/useNotification'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { CheckCircle } from 'react-feather'
-import { walletAtom } from 'state/atoms'
+import {
+  chainIdAtom,
+  isWalletInvalidAtom,
+  walletAtom,
+  walletChainAtom,
+} from 'state/atoms'
 import { Box, Spinner, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { UsePrepareContractWriteConfig, useBalance } from 'wagmi'
+import {
+  UsePrepareContractWriteConfig,
+  useBalance,
+  useSwitchNetwork,
+} from 'wagmi'
 import Button, { ButtonProps, LoadingButton, LoadingButtonProps } from '.'
-import TransactionError from 'components/transaction-error/TransactionError'
-import useNotification from 'hooks/useNotification'
+import { CHAIN_TAGS } from 'utils/constants'
+import useSwitchChain from 'hooks/useSwitchChain'
 
 interface TransactionButtonProps extends LoadingButtonProps {
   gas?: GasEstimation
   mining?: boolean
   error?: Error | null
+  chain?: number
 }
 
 interface GasEstimateLabelProps {
@@ -41,7 +53,7 @@ export const ConnectWalletButton = (props: ButtonProps) => {
   const { openConnectModal } = useConnectModal()
 
   return (
-    <Button {...props} onClick={openConnectModal}>
+    <Button {...props} onClick={openConnectModal} variant="accentAction">
       <Text>
         <Trans>Connect Wallet</Trans>
       </Text>
@@ -54,9 +66,19 @@ const TransactionButton = ({
   mining,
   error,
   loading,
+  chain,
+  loadingText,
   ...props
 }: TransactionButtonProps) => {
   const address = useAtomValue(walletAtom)
+  const { switchNetwork } = useSwitchNetwork()
+  const walletChain = useAtomValue(walletChainAtom)
+  const chainId = useAtomValue(chainIdAtom)
+  const switchChain = useSwitchChain()
+  const isInvalidWallet = chain
+    ? chain !== chainId || walletChain !== chain
+    : walletChain !== chainId
+
   const { data } = useBalance({
     address: address ?? undefined,
   })
@@ -73,8 +95,25 @@ const TransactionButton = ({
     return <ConnectWalletButton {...props} disabled={false} />
   }
 
+  if (isInvalidWallet && switchNetwork) {
+    return (
+      <Button
+        {...props}
+        onClick={() => {
+          if (chain && chain !== chainId) {
+            switchChain(chain)
+          }
+
+          switchNetwork(chainId)
+        }}
+      >
+        <Text>Switch to {CHAIN_TAGS[chain || chainId]}</Text>
+      </Button>
+    )
+  }
+
   if (mining) {
-    props.loadingText = t`Tx in process...`
+    loadingText = t`Tx in process...`
   }
 
   return (
@@ -102,6 +141,7 @@ export const ExecuteButton = ({
   txLabel,
   successLabel,
   disabled,
+  loadingText,
   ...props
 }: ExecuteButtonProps) => {
   const { write, hash, isLoading, validationError, reset, isReady } =
@@ -113,7 +153,7 @@ export const ExecuteButton = ({
   })
 
   if (isMining) {
-    props.loadingText = t`Tx in process...`
+    loadingText = t`Tx in process...`
   }
 
   useEffect(() => {

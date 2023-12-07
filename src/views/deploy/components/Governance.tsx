@@ -5,6 +5,7 @@ import NavigationSidebar from './NavigationSidebar'
 import RTokenSetup from './RTokenSetup'
 import { useAtomValue } from 'jotai'
 import { rTokenDefaultGovernanceValuesAtom } from 'components/rtoken-setup/atoms'
+import { Box } from 'theme-ui'
 
 const Governance = () => {
   const defaultValues = useAtomValue(rTokenDefaultGovernanceValuesAtom)
@@ -15,13 +16,15 @@ const Governance = () => {
   })
 
   return (
-    <Layout>
-      <FormProvider {...form}>
-        <NavigationSidebar governance />
-        <RTokenSetup governance />
-        <GovernanceOverview variant="layout.stickyNoHeader" />
-      </FormProvider>
-    </Layout>
+    <Box variant="layout.wrapper">
+      <Layout>
+        <FormProvider {...form}>
+          <NavigationSidebar governance />
+          <RTokenSetup governance />
+          <GovernanceOverview variant="layout.stickyNoHeader" />
+        </FormProvider>
+      </Layout>
+    </Box>
   )
 }
 

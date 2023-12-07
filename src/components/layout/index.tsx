@@ -8,12 +8,12 @@ import TokenMenu from './token-menu'
 import useRToken from 'hooks/useRToken'
 import { Trans } from '@lingui/macro'
 
-const Container = styled(Flex)`
+const Container = styled(Box)`
   overflow: auto;
   height: 100%;
 `
 
-const Wrapper = styled(Box)`
+export const Wrapper = styled(Box)`
   max-width: 95em;
   margin-left: auto;
   margin-right: auto;
@@ -99,17 +99,15 @@ const Banner = () => {
  */
 const Layout = ({ children }: { children: ReactNode }) => (
   <Container id="app-container">
-    <Wrapper>
-      <TopSpacer />
-      <Box>
-        <Banner />
-        {children}
-      </Box>
-      <BottomSpacer />
-      <MobileNav />
-      <Header />
-      <TokenMenu />
-    </Wrapper>
+    <TopSpacer />
+    <Box>
+      <Banner />
+      {children}
+    </Box>
+    <BottomSpacer />
+    <MobileNav />
+    <TokenMenu />
+    <Header />
   </Container>
 )
 

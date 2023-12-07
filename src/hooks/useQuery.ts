@@ -5,10 +5,12 @@ import useSWR from 'swr'
 import { ChainId } from 'utils/chains'
 import { supportedChainList } from 'utils/constants'
 
+type FetcherArgs = [RequestDocument, Record<string, any>]
+
 const multichainFetcher = async (
-  query: RequestDocument,
-  variables: any
+  props: FetcherArgs
 ): Promise<{ [x: number]: any }> => {
+  const [query, variables] = props
   // Filter out chain if _chain exists
   const chains: Set<number> = new Set(
     variables._chain ? [variables._chain] : supportedChainList
@@ -40,8 +42,7 @@ const useQuery = (
 ) => {
   const client = useAtomValue(gqlClientAtom)
 
-  const fetcher = (query: RequestDocument, variables: any) =>
-    client.request(query, variables)
+  const fetcher = (props: FetcherArgs) => client.request(...props)
 
   return useSWR<any>(query ? [query, variables] : null, fetcher, config)
 }

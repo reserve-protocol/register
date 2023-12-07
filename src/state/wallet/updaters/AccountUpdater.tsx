@@ -168,11 +168,15 @@ const AccountUpdater = () => {
       updateIsSmartWallet(false)
     }
 
-    const walletByteCode = await client.getBytecode({ address: account! })
-    if (!walletByteCode || trim(walletByteCode) == '0x') {
+    try {
+      const walletByteCode = await client.getBytecode({ address: account! })
+      if (!walletByteCode || trim(walletByteCode) == '0x') {
+        updateIsSmartWallet(false)
+      } else {
+        updateIsSmartWallet(true)
+      }
+    } catch (e) {
       updateIsSmartWallet(false)
-    } else {
-      updateIsSmartWallet(true)
     }
   }
 

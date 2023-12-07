@@ -1,3 +1,4 @@
+import { X } from 'react-feather'
 import { smallButton } from 'theme'
 import {
   Button as ThemeButton,
@@ -35,7 +36,7 @@ export const LoadingButton = ({
   ...props
 }: LoadingButtonProps) => (
   <Button
-    variant="accentAction"
+    variant="primary"
     onClick={(e) => {
       if (!loading && onClick) onClick(e)
     }}
@@ -52,7 +53,9 @@ export const LoadingButton = ({
         <Spinner
           sx={{
             color:
-              props.variant === 'primary' ? 'white' : '--theme-ui-colors-text',
+              props.variant === undefined || props.variant === 'primary'
+                ? 'white'
+                : '--theme-ui-colors-text',
           }}
           size={14}
           mr={2}
@@ -67,6 +70,12 @@ export const LoadingButton = ({
 
 export const SmallButton = ({ sx = {}, ...props }: ButtonProps) => (
   <Button {...props} sx={{ ...smallButton, ...sx }} />
+)
+
+export const Closebutton = (props: ButtonProps) => (
+  <Button variant="circle">
+    <X />
+  </Button>
 )
 
 export default Button

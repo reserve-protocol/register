@@ -1,15 +1,49 @@
-import { Trans } from '@lingui/macro'
+import { Trans, t } from '@lingui/macro'
 import { Button } from 'components'
-import { useAtom } from 'jotai'
+import { useAtom, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { Box, Divider, Text } from 'theme-ui'
+import { Box, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
-import { isBridgeWrappingAtom } from '../atoms'
+import { bridgeAmountAtom, isBridgeWrappingAtom } from '../atoms'
+import useScrollTo from 'hooks/useScrollTo'
+
+const Tab = ({
+  title,
+  onClick,
+  selected,
+}: {
+  title: string
+  onClick(): void
+  selected: boolean
+}) => (
+  <Box
+    role="button"
+    px={0}
+    mr={3}
+    sx={{
+      color: selected ? 'text' : 'secondaryText',
+      cursor: 'pointer',
+      height: '80px',
+      display: 'flex',
+      boxSizing: 'border-box',
+      alignItems: 'center',
+      borderBottom: '2px solid',
+      borderColor: selected ? 'text' : 'contentBackground',
+      fontSize: 3,
+      fontWeight: selected ? 500 : 400,
+    }}
+    onClick={onClick}
+  >
+    <Text>{title}</Text>
+  </Box>
+)
 
 const BridgeHeader = () => {
+  const setAmount = useSetAtom(bridgeAmountAtom)
   const [searchParams, setSearchParams] = useSearchParams()
   const [isWrapping, setWrapping] = useAtom(isBridgeWrappingAtom)
+  const scroll = useScrollTo('bridge-faq')
 
   // Trigger wallet switch for users
   useEffect(() => {
@@ -19,34 +53,40 @@ const BridgeHeader = () => {
       searchParams.set('chainId', ChainId.Base.toString())
     }
     setSearchParams(searchParams, { replace: true })
+    setAmount('')
   }, [isWrapping])
 
   return (
     <>
-      <Box variant="layout.verticalAlign">
-        <Text as="h2" sx={{ fontSize: 3, fontWeight: 500 }}>
-          <Trans>Bridge tokens</Trans>
-        </Text>
-        <Button
-          variant="bordered"
-          small
-          sx={{ borderColor: isWrapping ? 'primary' : 'darkBorder' }}
-          ml="auto"
+      <Box
+        variant="layout.verticalAlign"
+        px={4}
+        sx={{
+          position: 'relative',
+          borderBottom: '1px solid',
+          borderColor: 'darkBorder',
+        }}
+      >
+        <Tab
+          title={t`Deposit`}
+          selected={isWrapping}
           onClick={() => setWrapping(true)}
-        >
-          <Trans>Deposit</Trans>
-        </Button>
-        <Button
-          variant="bordered"
-          ml="3"
-          small
-          sx={{ borderColor: !isWrapping ? 'primary' : 'darkBorder' }}
+        />
+        <Tab
+          title={t`Withdraw`}
+          selected={!isWrapping}
           onClick={() => setWrapping(false)}
+        />
+        <Button
+          ml="auto"
+          variant="transparent"
+          sx={{ borderColor: 'darkBorder' }}
+          small
+          onClick={scroll}
         >
-          <Trans>Withdraw</Trans>
+          <Trans>Need help?</Trans>
         </Button>
       </Box>
-      <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
     </>
   )
 }
