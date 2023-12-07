@@ -1,5 +1,6 @@
 import { Trans, t } from '@lingui/macro'
-import { Box, BoxProps, Grid, Text } from 'theme-ui'
+import { Box, BoxProps, Grid, Link, Text } from 'theme-ui'
+import { DISCORD_INVITE } from 'utils/constants'
 
 interface Props extends BoxProps {
   title: string
@@ -59,9 +60,16 @@ const BridgeFaq = () => (
           </Trans>
         </Question>
         <Question title={t`What if I have a question, issue or problem?`}>
+          <Link
+            href={DISCORD_INVITE}
+            target="_blank"
+            sx={{ textDecoration: 'underline' }}
+          >
+            The Reserve Discord
+          </Link>{' '}
           <Trans>
-            The Reserve Discord community is available around the clock for
-            general questions, assistance and support!
+            community is available around the clock for general questions,
+            assistance and support!
           </Trans>
         </Question>
       </Box>
@@ -83,8 +91,6 @@ const BridgeFaq = () => (
               security measure built into the OP Stack.
             </Trans>
           </Text>
-
-          <br />
           <Text sx={{ display: 'block' }} mt={2}>
             <Trans>
               If you prefer not to wait, instead of making a withdrawal using
