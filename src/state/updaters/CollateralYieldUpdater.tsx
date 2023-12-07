@@ -67,7 +67,7 @@ const CollateralYieldUpdater = () => {
         ...poolYield,
       })
     }
-  }, [data])
+  }, [data, chainId])
 
   return null
 }
