@@ -6,6 +6,7 @@ import { useSearchParams } from 'react-router-dom'
 import { Box, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
 import { bridgeAmountAtom, isBridgeWrappingAtom } from '../atoms'
+import useScrollTo from 'hooks/useScrollTo'
 
 const Tab = ({
   title,
@@ -42,6 +43,7 @@ const BridgeHeader = () => {
   const setAmount = useSetAtom(bridgeAmountAtom)
   const [searchParams, setSearchParams] = useSearchParams()
   const [isWrapping, setWrapping] = useAtom(isBridgeWrappingAtom)
+  const scroll = useScrollTo('bridge-faq')
 
   // Trigger wallet switch for users
   useEffect(() => {
@@ -80,6 +82,7 @@ const BridgeHeader = () => {
           variant="transparent"
           sx={{ borderColor: 'darkBorder' }}
           small
+          onClick={scroll}
         >
           <Trans>Need help?</Trans>
         </Button>

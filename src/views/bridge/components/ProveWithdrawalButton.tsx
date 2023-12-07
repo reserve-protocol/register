@@ -44,6 +44,7 @@ export const ProveWithdrawalButton = memo(function ProveWithdrawalButton({
       loading={isLoading || isMining}
       mining={isMining}
       chain={ChainId.Mainnet}
+      sx={{ width: ['100%', 'auto'] }}
       small
       text={t`Verify`}
       onClick={submitProof}
