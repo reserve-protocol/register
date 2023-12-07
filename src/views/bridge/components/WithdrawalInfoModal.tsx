@@ -1,8 +1,8 @@
-import { Trans } from '@lingui/macro'
+import { Trans, t } from '@lingui/macro'
 import { Modal } from 'components'
 import ChainLogo from 'components/icons/ChainLogo'
-import { ArrowRight } from 'react-feather'
-import { Box, Divider, Text } from 'theme-ui'
+import { ArrowRight, Check, Clock } from 'react-feather'
+import { Badge, Box, BoxProps, Divider, Flex, Spinner, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
 
 const steps = [
@@ -10,6 +10,33 @@ const steps = [
   { title: 'Verify', subtitle: 'Takes up to 7d', disclaimer: true },
   { title: 'Completes', subtitle: 'Takes up to 1hr', disclaimer: true },
 ]
+
+interface StepProps extends BoxProps {
+  n: number
+  title: string
+  selected?: boolean
+}
+
+const Step = ({ n, title, selected = false, ...props }: StepProps) => (
+  <Box variant="layout.verticalAlign" {...props}>
+    <Flex
+      sx={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: selected ? 'infoBG' : 'darkBorder',
+        color: selected ? 'info' : 'text',
+        width: '24px',
+        borderRadius: '8px',
+        fontSize: 1,
+        fontWeight: 500,
+      }}
+    >
+      {n}
+    </Flex>
+    <Text ml={3}>{title}</Text>
+    {selected && <Check style={{ marginLeft: 'auto' }} size={18} />}
+  </Box>
+)
 
 const WithdrawalInfoModal = ({ onClose }: { onClose(): void }) => {
   return (
@@ -25,31 +52,21 @@ const WithdrawalInfoModal = ({ onClose }: { onClose(): void }) => {
         <Text variant="sectionTitle">Withdrawal in progress</Text>
       </Box>
       <Divider my={4} mx={-4} />
-      {steps.map((step, index) => (
-        <Box variant="layout.verticalAlign" mb={3} key={step.title}>
-          <Box
-            sx={{
-              textAlign: 'center',
-              backgroundColor: 'darkBorder',
-              width: '20px',
-              height: '20px',
-              borderRadius: '100%',
-              fontSize: 1,
-            }}
-          >
-            {index + 1}
-          </Box>
-          <Box ml={3}>
-            <Text variant="strong">{step.title}</Text>
-            <Text variant="legend">{step.subtitle}</Text>
-          </Box>
-          {step.disclaimer && (
-            <Text sx={{ fontSize: 0 }} variant="warning" ml="auto">
-              <Trans>Requires tx on Ethereum</Trans>
-            </Text>
-          )}
-        </Box>
-      ))}
+      <Step title={t`Request sent`} selected n={1} />
+      <Box variant="layout.verticalAlign" my={3} pl="1">
+        <Spinner size={16} color="warning" />
+        <Text ml="20px" variant="warning">
+          <Trans>Wait 1 hour</Trans>
+        </Text>
+      </Box>
+      <Step title={t`Send verify tx on Mainnet`} n={2} />
+      <Box variant="layout.verticalAlign" my={3} pl="1">
+        <Clock size={18} />
+        <Text ml="18px" variant="legend">
+          <Trans>Wait 7 days</Trans>
+        </Text>
+      </Box>
+      <Step title={t`Complete withdrawal on Mainnet`} n={3} mb={4} />
       <Divider mx={-4} />
       <Text variant="legend" as="p" sx={{ fontSize: 1 }}>
         In order to minimize security risk, withdrawals take up to 7 days. After

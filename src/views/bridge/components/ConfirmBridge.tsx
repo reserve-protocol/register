@@ -13,7 +13,7 @@ const ConfirmBridge = () => {
     approvalRequired ? [approvalRequired] : undefined
   )
   const isWrapping = useAtomValue(isBridgeWrappingAtom)
-  const [showModal, setModal] = useState(true)
+  const [showModal, setModal] = useState(false)
 
   const handleSuccess = useCallback(() => {
     if (!isWrapping) {
