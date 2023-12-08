@@ -1,80 +1,20 @@
+import { Trans } from '@lingui/macro'
+import { Button } from 'components'
+import ChainLogo from 'components/icons/ChainLogo'
+import CollaterizationIcon from 'components/icons/CollaterizationIcon'
+import TokenLogo from 'components/icons/TokenLogo'
 import { ListedToken } from 'hooks/useTokenList'
 import { memo } from 'react'
-import { Box, BoxProps, Card, Text } from 'theme-ui'
-import FacadeRead from 'abis/FacadeRead'
-import { formatCurrency, truncateDecimals } from 'utils'
-import { FACADE_ADDRESS } from 'utils/addresses'
-import { Address, formatEther, hexToString } from 'viem'
-import { useContractReads } from 'wagmi'
-import Skeleton from 'react-loading-skeleton'
-import TokenLogo from 'components/icons/TokenLogo'
-import { Button } from 'components'
 import { ArrowRight } from 'react-feather'
-import { Trans } from '@lingui/macro'
-import ChainLogo from 'components/icons/ChainLogo'
-import { CHAIN_TAGS } from 'utils/constants'
+import Skeleton from 'react-loading-skeleton'
+import { useNavigate } from 'react-router-dom'
 import { borderRadius } from 'theme'
-import CollaterizationIcon from 'components/icons/CollaterizationIcon'
+import { Box, BoxProps, Card, Text } from 'theme-ui'
+import { formatCurrency } from 'utils'
+import { CHAIN_TAGS, ROUTES } from 'utils/constants'
 
 interface Props extends BoxProps {
   token: ListedToken
-}
-
-const useBasketAPY = (
-  marketCap: number,
-  staked: number,
-  basket: { id: string; symbol: string }[],
-  distribution: Record<string, number>
-) => {}
-
-const useRTokenDistribution = (token: Address, chainId: number) => {
-  return useContractReads({
-    contracts: [
-      {
-        abi: FacadeRead,
-        address: FACADE_ADDRESS[chainId],
-        functionName: 'basketBreakdown',
-        args: [token],
-        chainId,
-      },
-      {
-        abi: FacadeRead,
-        address: FACADE_ADDRESS[chainId],
-        functionName: 'backingOverview',
-        args: [token],
-        chainId,
-      },
-    ],
-    allowFailure: false,
-    select: (data) => {
-      const [[erc20s, uoaShares, targets], [backing, overCollateralization]] =
-        data
-
-      const backingPercent = Math.min(
-        100,
-        Math.ceil(Number(formatEther(backing)) * 100)
-      )
-      const stakedPercent = Math.ceil(
-        Number(formatEther(overCollateralization)) * 100
-      )
-
-      return {
-        backing: backingPercent,
-        staked: stakedPercent,
-        collaterization: backingPercent + stakedPercent,
-        collateralDistribution: erc20s.reduce(
-          (acc: any, current: any, index: any) => ({
-            ...acc,
-            [current]: {
-              share: truncateDecimals(+formatEther(uoaShares[index]) * 100, 4),
-              targetUnit: hexToString(targets[index], { size: 32 }),
-            },
-          }),
-          {}
-        ),
-      }
-    },
-  })
 }
 
 const ChainBadge = ({ chain }: { chain: number }) => (
@@ -97,7 +37,12 @@ const ChainBadge = ({ chain }: { chain: number }) => (
 )
 
 const RTokenCard = ({ token, ...props }: Props) => {
-  const distribution = useRTokenDistribution(token.id as Address, token.chain)
+  const navigate = useNavigate()
+
+  const handleNavigate = (route: string) => {
+    navigate(`${route}?token=${token.id}&chainId=${token.chain}`)
+    document.getElementById('app-container')?.scrollTo(0, 0)
+  }
 
   return (
     <Card sx={{ backgroundColor: 'contentBackground' }} p={4} {...props}>
@@ -132,7 +77,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
               <Trans>Backing + Overcollaterization:</Trans>
             </Text>
             <Text ml="2" variant="strong">
-              {distribution.data?.collaterization ?? 0}%
+              {(token.backing + token.overcollaterization).toFixed(0)}%
             </Text>
           </Box>
           <Box pl="2" variant="layout.verticalAlign">
@@ -147,17 +92,32 @@ const RTokenCard = ({ token, ...props }: Props) => {
             </Text>
           </Box>
           <Box variant="layout.verticalAlign" sx={{ flexWrap: 'wrap' }}>
-            <Button mt={3} mr={3} medium>
-              Stake RSR - 123% Est. APY
+            <Button
+              onClick={() => handleNavigate(ROUTES.STAKING)}
+              mt={3}
+              mr={3}
+              medium
+            >
+              Stake RSR - {token.stakingApy.toFixed(1)}% Est. APY
             </Button>
-            <Button mt={3} mr={3} medium variant="muted">
-              Mint - 0% Est. APY
+            <Button
+              onClick={() => handleNavigate(ROUTES.ISSUANCE)}
+              mt={3}
+              mr={3}
+              medium
+              variant="muted"
+            >
+              Mint - {token.tokenApy.toFixed(1)}% Est. APY
             </Button>
             <Button mt={3} mr={3} medium variant="transparent">
-              Explore <ArrowRight size={16} />
+              <Box variant="layout.verticalAlign">
+                <Text mr={3}>Explore</Text> <ArrowRight size={16} />
+              </Box>
             </Button>
             <Button mt={3} medium variant="transparent">
-              Earn <ArrowRight size={16} />
+              <Box variant="layout.verticalAlign">
+                <Text mr={3}>Earn</Text> <ArrowRight size={16} />
+              </Box>
             </Button>
           </Box>
         </Box>

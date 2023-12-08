@@ -66,9 +66,9 @@ const useProtocolMetrics = () => {
       for (const chain of supportedChainList) {
         const metrics = data[chain] as ProtocolMetricsResponse
 
-        volume += +metrics.protocol.cumulativeVolumeUSD
-        marketCap += +metrics.protocol.totalRTokenUSD
-        stakeRevenue += +metrics.protocol.cumulativeRSRRevenueUSD
+        volume += +metrics.protocol?.cumulativeVolumeUSD ?? 0
+        marketCap += +metrics.protocol?.totalRTokenUSD ?? 0
+        stakeRevenue += +metrics.protocol?.cumulativeRSRRevenueUSD ?? 0
       }
 
       // Aggregate RSV
