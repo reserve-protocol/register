@@ -74,6 +74,12 @@ export const smallButton = {
   borderRadius: 6,
 }
 
+export const mediumButton = {
+  padding: ['4px 10px 4px 10px', '12px 16px 12px 16px'],
+  fontSize: [1, 2],
+  borderRadius: borderRadius.inputs,
+}
+
 export const colors = {
   base: '#2852F5',
   text: '#292929',
@@ -405,7 +411,7 @@ export const theme: Theme = {
       ...baseButton,
       backgroundColor: 'transparent',
       border: '1px solid',
-      borderColor: 'border',
+      borderColor: 'darkBorder',
       color: 'text',
       '&:hover': {
         borderColor: 'text',

@@ -13,6 +13,7 @@ import RSV, { RSVOverview } from 'utils/rsv'
 import { formatEther, getAddress } from 'viem'
 import { useMultichainQuery } from './useQuery'
 import useTimeFrom from './useTimeFrom'
+import rtokens from '@lc-labs/rtokens'
 
 export interface ListedToken {
   id: string
@@ -29,6 +30,7 @@ export interface ListedToken {
   staked: number
   stakingApy: number
   chain: number
+  logo: string
 }
 
 // TODO: Cache only while the list is short
@@ -102,6 +104,7 @@ const useTokenList = () => {
               staked: token?.rToken?.backingRSR || 0,
               stakingApy: +stakingApy.toFixed(2),
               chain,
+              logo: `/svgs/${rtokens[chain][getAddress(token.id)].logo}`,
             }
 
             // RSV Data

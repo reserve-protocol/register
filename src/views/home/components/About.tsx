@@ -19,7 +19,7 @@ const About = (props: BoxProps) => {
   }
 
   return (
-    <Box px={[3, 4]} {...props}>
+    <Box px={[3, 4]} variant="layout.wrapper" {...props}>
       <ContentHead title={t`About`} />
       <Grid columns={[1, 1, 2]} mt={7} gap={[4, 4, 7]}>
         <Box mb={[0, 7]}>

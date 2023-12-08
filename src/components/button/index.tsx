@@ -1,5 +1,5 @@
 import { X } from 'react-feather'
-import { smallButton } from 'theme'
+import { mediumButton, smallButton } from 'theme'
 import {
   Button as ThemeButton,
   ButtonProps as _ButtonProps,
@@ -9,11 +9,24 @@ import {
 
 export interface ButtonProps extends _ButtonProps {
   small?: boolean
+  medium?: boolean
   fullWidth?: boolean
 }
 
-const Button = ({ sx = {}, small, fullWidth, ...props }: ButtonProps) => {
-  let styles = small ? { ...sx, ...smallButton } : sx
+const Button = ({
+  sx = {},
+  small,
+  medium,
+  fullWidth,
+  ...props
+}: ButtonProps) => {
+  let styles = sx
+
+  if (small) {
+    styles = { ...sx, ...smallButton }
+  } else if (medium) {
+    styles = { ...sx, ...mediumButton }
+  }
 
   if (fullWidth) {
     styles = { ...styles, width: '100%' }

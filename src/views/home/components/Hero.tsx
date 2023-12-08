@@ -83,10 +83,13 @@ const About = () => (
       </Text>
     </Box>
     <Box sx={{ maxWidth: 612, textAlign: 'center' }} mt={3}>
-      <Text variant="title" sx={{ fontSize: 6, lineHeight: '56px' }}>
+      <Text
+        variant="title"
+        sx={{ fontSize: [5, 6], lineHeight: ['42px', '56px'] }}
+      >
         <Trans>A new path to better money, already set in motion</Trans>
       </Text>
-      <Text as="p" variant="legend" mt={4}>
+      <Text as="p" variant="legend" px={[4, 0]} mt={4}>
         Reserve's RToken Factory Contracts: A platform for creating tokens
         backed by a diverse array of ERC20 collateral. With Register.app, engage
         in minting, staking, and governance of RTokens. Learn more in-depth
