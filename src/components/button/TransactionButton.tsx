@@ -104,7 +104,7 @@ const TransactionButton = ({
             switchChain(chain)
           }
 
-          switchNetwork(chainId)
+          switchNetwork(chain || chainId)
         }}
       >
         <Text>Switch to {CHAIN_TAGS[chain || chainId]}</Text>
