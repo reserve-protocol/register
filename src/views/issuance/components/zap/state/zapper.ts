@@ -98,20 +98,20 @@ export const zapperState = loadable(
         mixpanel.track('zapper:' + type, params)
       })
 
-      // universe.dexAggregators.push(createKyberswap('KyberSwap', universe, 50))
+      universe.dexAggregators.push(createKyberswap('KyberSwap', universe, 50))
 
-      if (chainId === ChainId.Mainnet) {
-        universe.dexAggregators.push(
-          createDefillama('DefiLlama:0x', universe, 10, 'Matcha/0x')
-        )
-        universe.dexAggregators.push(
-          createDefillama('DefiLlama:HashFlow', universe, 10, 'Hashflow')
-        )
-      } else if (chainId === ChainId.Base) {
-        universe.dexAggregators.push(
-          createDefillama('DefiLlama:0x', universe, 10, 'Matcha/0x')
-        )
-      }
+      // if (chainId === ChainId.Mainnet) {
+      //   universe.dexAggregators.push(
+      //     createDefillama('DefiLlama:0x', universe, 10, 'Matcha/0x')
+      //   )
+      //   universe.dexAggregators.push(
+      //     createDefillama('DefiLlama:HashFlow', universe, 10, 'Hashflow')
+      //   )
+      // } else if (chainId === ChainId.Base) {
+      //   universe.dexAggregators.push(
+      //     createDefillama('DefiLlama:0x', universe, 10, 'Matcha/0x')
+      //   )
+      // }
       return universe
     } catch (e) {
       console.log('Zap init error', e)

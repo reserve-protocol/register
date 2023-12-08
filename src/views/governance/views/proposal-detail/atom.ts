@@ -96,11 +96,14 @@ export const getProposalStateAtom = atom((get) => {
     // TODO: Guardian can cancel on this state!
     if (
       proposal.state === PROPOSAL_STATES.QUEUED &&
-      proposal.executionStartBlock &&
-      proposal.executionStartBlock > blockNumber
+      proposal.executionStartBlock
     ) {
-      state.deadline =
-        (proposal.executionStartBlock - blockNumber) * BLOCK_DURATION
+      if (proposal.executionStartBlock > blockNumber) {
+        state.deadline =
+          (proposal.executionStartBlock - blockNumber) * BLOCK_DURATION
+      } else {
+        state.deadline = proposal.executionETA! - Date.now() / 1000
+      }
     } else if (proposal.state === PROPOSAL_STATES.PENDING) {
       if (
         blockNumber > proposal.startBlock &&

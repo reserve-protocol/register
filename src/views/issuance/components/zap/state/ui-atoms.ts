@@ -12,7 +12,10 @@ import {
   rTokenAtom,
   rTokenBalanceAtom,
 } from 'state/atoms'
-import { addTransactionAtom } from 'state/chain/atoms/transactionAtoms'
+import {
+  addTransactionAtom,
+  updateTransactionAtom,
+} from 'state/chain/atoms/transactionAtoms'
 import { onlyNonNullAtom } from 'utils/atoms/utils'
 import {
   approvalNeededAtom,
@@ -57,7 +60,7 @@ import {
 import { FOUR_DIGITS, formatQty } from './formatTokenQuantity'
 import { resolvedZapState, zappableTokens, zapperState } from './zapper'
 import { GetWalletClientResult } from 'wagmi/dist/actions'
-import { Transaction } from 'ethers'
+import { waitForTransaction } from 'wagmi/actions'
 import {
   JsonRpcProvider,
   JsonRpcSigner,
@@ -582,6 +585,12 @@ const mkButton = (
       set(zapInputString, '')
       set(zapRedeemInputString, '')
       set(addTransactionAtom, [resp.hash, `Easy mint ${rToken.symbol}`])
+      const data = await waitForTransaction({ hash: resp.hash })
+      set(updateTransactionAtom, [
+        resp.hash,
+        'success',
+        Number(data.blockNumber),
+      ])
     } catch (e: any) {
       console.log(e)
       if (e.code === 'ACTION_REJECTED') {

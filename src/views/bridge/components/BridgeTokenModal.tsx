@@ -1,6 +1,7 @@
 import { Trans, t } from '@lingui/macro'
-import { Button, Input, Modal } from 'components'
+import { Button, Modal } from 'components'
 import TokenLogo from 'components/icons/TokenLogo'
+import { SearchInput } from 'components/input'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useMemo } from 'react'
 import { Check, X } from 'react-feather'
@@ -13,7 +14,6 @@ import {
   selectedBridgeToken,
 } from '../atoms'
 import { BridgeAsset } from '../utils/assets'
-import { SearchInput } from 'components/input'
 
 const searchAtom = atom('')
 const recordsAtom = atom((get) => {

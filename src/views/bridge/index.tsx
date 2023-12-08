@@ -1,7 +1,7 @@
-import { Box, Divider, Flex } from 'theme-ui'
+import { Flex } from 'theme-ui'
 import Bridge from './components/Bridge'
-import BridgeWithdrawals from './components/BridgeWithdrawals'
 import BridgeFaq from './components/BridgeFaq'
+import BridgeWithdrawals from './components/BridgeWithdrawals'
 
 const ChainBridge = () => (
   <>

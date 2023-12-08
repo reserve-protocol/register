@@ -8,7 +8,7 @@ import { getProposalStateAtom } from '../atom'
 const ProposalAlert = () => {
   const state = useAtomValue(getProposalStateAtom)
 
-  if (!state.deadline) {
+  if (!state.deadline || state.deadline < 0) {
     return null
   }
 

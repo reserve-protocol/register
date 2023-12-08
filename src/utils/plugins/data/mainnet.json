@@ -1,6 +1,8 @@
 [
   {
     "address": "0xf7d1C6eE4C0D84C6B530D53A897daa1E9eB56833",
+    "rewardTokens": [],
+    "protocol": "GENERIC",
     "erc20": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
     "chainlinkFeed": "0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9",
     "delayUntilDefault": "86400",
@@ -9,12 +11,12 @@
     "targetName": "USD",
     "version": "3.0.0",
     "symbol": "DAI",
-    "decimals": 18,
-    "protocol": "GENERIC",
-    "rewardTokens": []
+    "decimals": 18
   },
   {
     "address": "0xBE9D23040fe22E8Bd8A88BF5101061557355cA04",
+    "rewardTokens": [],
+    "protocol": "GENERIC",
     "erc20": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
     "chainlinkFeed": "0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6",
     "delayUntilDefault": "86400",
@@ -23,12 +25,12 @@
     "targetName": "USD",
     "version": "3.0.0",
     "symbol": "USDC",
-    "decimals": 6,
-    "protocol": "GENERIC",
-    "rewardTokens": []
+    "decimals": 6
   },
   {
     "address": "0x58D7bF13D3572b08dE5d96373b8097d94B1325ad",
+    "rewardTokens": [],
+    "protocol": "GENERIC",
     "erc20": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
     "chainlinkFeed": "0x3E7d1eAB13ad0104d2750B8863b489D65364e32D",
     "delayUntilDefault": "86400",
@@ -37,12 +39,12 @@
     "targetName": "USD",
     "version": "3.0.0",
     "symbol": "USDT",
-    "decimals": 6,
-    "protocol": "GENERIC",
-    "rewardTokens": []
+    "decimals": 6
   },
   {
     "address": "0x2f98bA77a8ca1c630255c4517b1b3878f6e60C89",
+    "rewardTokens": [],
+    "protocol": "GENERIC",
     "erc20": "0x8E870D67F660D95d5be530380D0eC0bd388289E1",
     "chainlinkFeed": "0x09023c0DA49Aaf8fc3fA3ADF34C6A7016D38D5e3",
     "delayUntilDefault": "86400",
@@ -51,12 +53,12 @@
     "targetName": "USD",
     "version": "3.0.0",
     "symbol": "USDP",
-    "decimals": 18,
-    "protocol": "GENERIC",
-    "rewardTokens": []
+    "decimals": 18
   },
   {
     "address": "0x7F9999B2C9D310a5f48dfD070eb5129e1e8565E2",
+    "rewardTokens": [],
+    "protocol": "GENERIC",
     "erc20": "0x0000000000085d4780B73119b644AE5ecd22b376",
     "chainlinkFeed": "0xec746eCF986E2927Abd291a2A1716c940100f8Ba",
     "delayUntilDefault": "86400",
@@ -65,12 +67,12 @@
     "targetName": "USD",
     "version": "3.0.0",
     "symbol": "TUSD",
-    "decimals": 18,
-    "protocol": "GENERIC",
-    "rewardTokens": []
+    "decimals": 18
   },
   {
     "address": "0xCBcd605088D5A5Da9ceEb3618bc01BFB87387423",
+    "rewardTokens": [],
+    "protocol": "GENERIC",
     "erc20": "0x4Fabb145d64652a948d72533023f6E7A623C7C53",
     "chainlinkFeed": "0x833D8Eb16D306ed1FbB5D7A2E019e106B960965A",
     "delayUntilDefault": "86400",
@@ -79,12 +81,12 @@
     "targetName": "USD",
     "version": "3.0.0",
     "symbol": "BUSD",
-    "decimals": 18,
-    "protocol": "GENERIC",
-    "rewardTokens": []
+    "decimals": 18
   },
   {
     "address": "0x256b89658bD831CC40283F42e85B1fa8973Db0c9",
+    "rewardTokens": ["0x6647c880Eb8F57948AF50aB45fca8FE86C154D24"],
+    "protocol": "AAVE",
     "erc20": "0xafd16aFdE22D42038223A6FfDF00ee49c8fDa985",
     "chainlinkFeed": "0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9",
     "delayUntilDefault": "86400",
@@ -94,15 +96,15 @@
     "version": "3.0.0",
     "symbol": "saDAI",
     "decimals": 18,
-    "protocol": "AAVE",
     "underlyingAddress": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
     "underlyingToken": "DAI",
     "collateralAddress": "0x028171bCA77440897B824Ca71D1c56caC55b68A3",
-    "collateralToken": "aDAI",
-    "rewardTokens": ["0x6647c880Eb8F57948AF50aB45fca8FE86C154D24"]
+    "collateralToken": "aDAI"
   },
   {
     "address": "0x7cd9ca6401f743b38b3b16ea314bbab8e9c1ac51",
+    "rewardTokens": ["0x6647c880Eb8F57948AF50aB45fca8FE86C154D24"],
+    "protocol": "AAVE",
     "erc20": "0x60C384e226b120d93f3e0F4C502957b2B9C32B15",
     "chainlinkFeed": "0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6",
     "delayUntilDefault": "86400",
@@ -112,15 +114,15 @@
     "version": "3.0.0",
     "symbol": "saUSDC",
     "decimals": 6,
-    "protocol": "AAVE",
     "underlyingAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
     "underlyingToken": "USDC",
     "collateralAddress": "0xBcca60bB61934080951369a648Fb03DF4F96263C",
-    "collateralToken": "aUSDC",
-    "rewardTokens": ["0x6647c880Eb8F57948AF50aB45fca8FE86C154D24"]
+    "collateralToken": "aUSDC"
   },
   {
     "address": "0xe39188ddd4eb27d1d25f5f58cc6a5fd9228eedef",
+    "rewardTokens": ["0x6647c880Eb8F57948AF50aB45fca8FE86C154D24"],
+    "protocol": "AAVE",
     "erc20": "0x21fe646D1Ed0733336F2D4d9b2FE67790a6099D9",
     "chainlinkFeed": "0x3E7d1eAB13ad0104d2750B8863b489D65364e32D",
     "delayUntilDefault": "86400",
@@ -130,15 +132,15 @@
     "version": "3.0.0",
     "symbol": "saUSDT",
     "decimals": 6,
-    "protocol": "AAVE",
     "underlyingAddress": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
     "underlyingToken": "USDT",
     "collateralAddress": "0x3Ed3B47Dd13EC9a98b44e6204A523E766B225811",
-    "collateralToken": "aUSDT",
-    "rewardTokens": ["0x6647c880Eb8F57948AF50aB45fca8FE86C154D24"]
+    "collateralToken": "aUSDT"
   },
   {
     "address": "0xeB1A036E83aD95f0a28d0c8E2F20bf7f1B299F05",
+    "rewardTokens": ["0x6647c880Eb8F57948AF50aB45fca8FE86C154D24"],
+    "protocol": "AAVE",
     "erc20": "0xe639d53Aa860757D7fe9cD4ebF9C8b92b8DedE7D",
     "chainlinkFeed": "0x833D8Eb16D306ed1FbB5D7A2E019e106B960965A",
     "delayUntilDefault": "86400",
@@ -148,15 +150,15 @@
     "version": "3.0.0",
     "symbol": "saBUSD",
     "decimals": 18,
-    "protocol": "AAVE",
     "underlyingAddress": "0x4Fabb145d64652a948d72533023f6E7A623C7C53",
     "underlyingToken": "BUSD",
     "collateralAddress": "0xA361718326c15715591c299427c62086F69923D9",
-    "collateralToken": "aBUSD",
-    "rewardTokens": ["0x6647c880Eb8F57948AF50aB45fca8FE86C154D24"]
+    "collateralToken": "aBUSD"
   },
   {
     "address": "0x0d61Ce1801A460eB683b5ed1b6C7965d31b769Fd",
+    "rewardTokens": ["0x6647c880Eb8F57948AF50aB45fca8FE86C154D24"],
+    "protocol": "AAVE",
     "erc20": "0x80A574cC2B369dc496af6655f57a16a4f180BfAF",
     "chainlinkFeed": "0x09023c0DA49Aaf8fc3fA3ADF34C6A7016D38D5e3",
     "delayUntilDefault": "86400",
@@ -166,15 +168,15 @@
     "version": "3.0.0",
     "symbol": "saUSDP",
     "decimals": 18,
-    "protocol": "AAVE",
     "underlyingAddress": "0x8E870D67F660D95d5be530380D0eC0bd388289E1",
     "underlyingToken": "USDP",
     "collateralAddress": "0x2e8F4bdbE3d47d7d7DE490437AeA9915D930F1A3",
-    "collateralToken": "aUSDP",
-    "rewardTokens": ["0x6647c880Eb8F57948AF50aB45fca8FE86C154D24"]
+    "collateralToken": "aUSDP"
   },
   {
     "address": "0x440A634DdcFb890BCF8b0Bf07Ef2AaBB37dd5F8C",
+    "rewardTokens": ["0xCFA67f42A0fDe4F0Fb612ea5e66170B0465B84c1"],
+    "protocol": "COMP",
     "erc20": "0x3043be171e846c33D5f06864Cc045d9Fc799aF52",
     "chainlinkFeed": "0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9",
     "delayUntilDefault": "86400",
@@ -184,13 +186,13 @@
     "version": "3.0.0",
     "symbol": "cDAI-VAULT",
     "decimals": 8,
-    "protocol": "COMP",
     "underlyingAddress": "0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643",
-    "underlyingToken": "cDAI",
-    "rewardTokens": ["0xCFA67f42A0fDe4F0Fb612ea5e66170B0465B84c1"]
+    "underlyingToken": "cDAI"
   },
   {
     "address": "0x50a9d529EA175CdE72525Eaa809f5C3c47dAA1bB",
+    "rewardTokens": ["0xCFA67f42A0fDe4F0Fb612ea5e66170B0465B84c1"],
+    "protocol": "COMP",
     "erc20": "0xf579F9885f1AEa0d3F8bE0F18AfED28c92a43022",
     "chainlinkFeed": "0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6",
     "delayUntilDefault": "86400",
@@ -200,13 +202,13 @@
     "version": "3.0.0",
     "symbol": "cUSDC-VAULT",
     "decimals": 8,
-    "protocol": "COMP",
     "underlyingAddress": "0x39AA39c021dfbaE8faC545936693aC917d5E7563",
-    "underlyingToken": "cUSDC",
-    "rewardTokens": ["0xCFA67f42A0fDe4F0Fb612ea5e66170B0465B84c1"]
+    "underlyingToken": "cUSDC"
   },
   {
     "address": "0x5757fF814da66a2B4f9D11d48570d742e246CfD9",
+    "rewardTokens": ["0xCFA67f42A0fDe4F0Fb612ea5e66170B0465B84c1"],
+    "protocol": "COMP",
     "erc20": "0x4Be33630F92661afD646081BC29079A38b879aA0",
     "chainlinkFeed": "0x3E7d1eAB13ad0104d2750B8863b489D65364e32D",
     "delayUntilDefault": "86400",
@@ -216,13 +218,13 @@
     "version": "3.0.0",
     "symbol": "cUSDT-VAULT",
     "decimals": 8,
-    "protocol": "COMP",
     "underlyingAddress": "0xf650C3d88D12dB855b8bf7D11Be6C55A4e07dCC9",
-    "underlyingToken": "cUSDT",
-    "rewardTokens": ["0xCFA67f42A0fDe4F0Fb612ea5e66170B0465B84c1"]
+    "underlyingToken": "cUSDT"
   },
   {
     "address": "0x99bD63BF7e2a69822cD73A82d42cF4b5501e5E50",
+    "rewardTokens": ["0xCFA67f42A0fDe4F0Fb612ea5e66170B0465B84c1"],
+    "protocol": "COMP",
     "erc20": "0xF69c995129CC16d0F577C303091a400cC1879fFa",
     "chainlinkFeed": "0x09023c0DA49Aaf8fc3fA3ADF34C6A7016D38D5e3",
     "delayUntilDefault": "86400",
@@ -232,13 +234,13 @@
     "version": "3.0.0",
     "symbol": "cUSDP-VAULT",
     "decimals": 8,
-    "protocol": "COMP",
     "underlyingAddress": "0x041171993284df560249B57358F931D9eB7b925D",
-    "underlyingToken": "cUSDP",
-    "rewardTokens": ["0xCFA67f42A0fDe4F0Fb612ea5e66170B0465B84c1"]
+    "underlyingToken": "cUSDP"
   },
   {
     "address": "0x688c95461d611Ecfc423A8c87caCE163C6B40384",
+    "rewardTokens": ["0xCFA67f42A0fDe4F0Fb612ea5e66170B0465B84c1"],
+    "protocol": "COMP",
     "erc20": "0xF2A309bc36A504c772B416a4950d5d0021219745",
     "chainlinkFeed": "0xfdFD9C85aD200c506Cf9e21F1FD8dd01932FBB23",
     "delayUntilDefault": "86400",
@@ -248,13 +250,13 @@
     "version": "3.0.0",
     "symbol": "cWBTC-VAULT",
     "decimals": 8,
-    "protocol": "COMP",
     "underlyingAddress": "0xccF4429DB6322D5C611ee964527D42E5d685DD6a",
-    "underlyingToken": "cWBTC",
-    "rewardTokens": ["0xCFA67f42A0fDe4F0Fb612ea5e66170B0465B84c1"]
+    "underlyingToken": "cWBTC"
   },
   {
     "address": "0x357d4dB0c2179886334cC33B8528048F7E1D3Fe3",
+    "rewardTokens": ["0xCFA67f42A0fDe4F0Fb612ea5e66170B0465B84c1"],
+    "protocol": "COMP",
     "erc20": "0xbF6E8F64547Bdec55bc3FBb0664722465FCC2F0F",
     "chainlinkFeed": "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
     "delayUntilDefault": "0",
@@ -264,13 +266,13 @@
     "version": "3.0.0",
     "symbol": "cETH-VAULT",
     "decimals": 8,
-    "protocol": "COMP",
     "underlyingAddress": "0x4Ddc2D193948926D02f9B1fE9e1daa0718270ED5",
-    "underlyingToken": "cETH",
-    "rewardTokens": ["0xCFA67f42A0fDe4F0Fb612ea5e66170B0465B84c1"]
+    "underlyingToken": "cETH"
   },
   {
     "address": "0x87A959e0377C68A50b08a91ae5ab3aFA7F41ACA4",
+    "rewardTokens": [],
+    "protocol": "GENERIC",
     "erc20": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
     "chainlinkFeed": "0xfdFD9C85aD200c506Cf9e21F1FD8dd01932FBB23",
     "delayUntilDefault": "86400",
@@ -279,12 +281,12 @@
     "targetName": "BTC",
     "version": "3.0.0",
     "symbol": "WBTC",
-    "decimals": 8,
-    "protocol": "GENERIC",
-    "rewardTokens": []
+    "decimals": 8
   },
   {
     "address": "0x6B87142C7e6cA80aa3E6ead0351673C45c8990e3",
+    "rewardTokens": [],
+    "protocol": "GENERIC",
     "erc20": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
     "chainlinkFeed": "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
     "delayUntilDefault": "0",
@@ -293,12 +295,12 @@
     "targetName": "ETH",
     "version": "3.0.0",
     "symbol": "WETH",
-    "decimals": 18,
-    "protocol": "GENERIC",
-    "rewardTokens": []
+    "decimals": 18
   },
   {
     "address": "0xEBD07CE38e2f46031c982136012472A4D24AE070",
+    "rewardTokens": [],
+    "protocol": "GENERIC",
     "erc20": "0xC581b735A1688071A1746c968e0798D642EDE491",
     "chainlinkFeed": "0x01D391A48f4F7339aC64CA2c83a07C22F95F587a",
     "delayUntilDefault": "86400",
@@ -307,12 +309,12 @@
     "targetName": "EUR",
     "version": "3.0.0",
     "symbol": "EURT",
-    "decimals": 6,
-    "protocol": "GENERIC",
-    "rewardTokens": []
+    "decimals": 6
   },
   {
     "address": "0x29F2EB4A0D3dC211BB488E9aBe12740cafBCc49C",
+    "rewardTokens": [],
+    "protocol": "GENERIC",
     "erc20": "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
     "chainlinkFeed": "0xCfE54B5cD566aB89272946F602D76Ea879CAb4a8",
     "delayUntilDefault": "86400",
@@ -321,12 +323,12 @@
     "targetName": "ETH",
     "version": "3.0.0",
     "symbol": "wstETH",
-    "decimals": 18,
-    "protocol": "GENERIC",
-    "rewardTokens": []
+    "decimals": 18
   },
   {
     "address": "0x1103851D1FCDD3f88096fbed812c8FF01949cF9d",
+    "rewardTokens": [],
+    "protocol": "GENERIC",
     "erc20": "0xae78736Cd615f374D3085123A210448E74Fc6393",
     "chainlinkFeed": "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
     "delayUntilDefault": "86400",
@@ -335,12 +337,12 @@
     "targetName": "ETH",
     "version": "3.0.0",
     "symbol": "rETH",
-    "decimals": 18,
-    "protocol": "GENERIC",
-    "rewardTokens": []
+    "decimals": 18
   },
   {
     "address": "0x3C0a9143063Fc306F7D3cBB923ff4879d70Cf1EA",
+    "rewardTokens": [],
+    "protocol": "GENERIC",
     "erc20": "0x465a5a630482f3abD6d3b84B39B29b07214d19e5",
     "chainlinkFeed": "0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6",
     "delayUntilDefault": "86400",
@@ -349,12 +351,12 @@
     "targetName": "USD",
     "version": "3.0.0",
     "symbol": "fUSDC",
-    "decimals": 8,
-    "protocol": "GENERIC",
-    "rewardTokens": []
+    "decimals": 8
   },
   {
     "address": "0xbe6Fb2b2908D85179e34ee0D996e32fa2BF4410A",
+    "rewardTokens": [],
+    "protocol": "GENERIC",
     "erc20": "0x81994b9607e06ab3d5cF3AffF9a67374f05F27d7",
     "chainlinkFeed": "0x3E7d1eAB13ad0104d2750B8863b489D65364e32D",
     "delayUntilDefault": "86400",
@@ -363,12 +365,12 @@
     "targetName": "USD",
     "version": "3.0.0",
     "symbol": "fUSDT",
-    "decimals": 8,
-    "protocol": "GENERIC",
-    "rewardTokens": []
+    "decimals": 8
   },
   {
     "address": "0x33C1665Eb1b3673213Daa5f068ae1026fC8D5875",
+    "rewardTokens": [],
+    "protocol": "GENERIC",
     "erc20": "0xe2bA8693cE7474900A045757fe0efCa900F6530b",
     "chainlinkFeed": "0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9",
     "delayUntilDefault": "86400",
@@ -377,12 +379,12 @@
     "targetName": "USD",
     "version": "3.0.0",
     "symbol": "fDAI",
-    "decimals": 8,
-    "protocol": "GENERIC",
-    "rewardTokens": []
+    "decimals": 8
   },
   {
     "address": "0xaAeF84f6FfDE4D0390E14DA9c527d1a1ABf28B92",
+    "rewardTokens": [],
+    "protocol": "GENERIC",
     "erc20": "0x1C9A2d6b33B4826757273D47ebEe0e2DddcD978B",
     "chainlinkFeed": "0xB9E1E3A9feFf48998E45Fa90847ed4D467E8BcfD",
     "delayUntilDefault": "86400",
@@ -391,28 +393,31 @@
     "targetName": "USD",
     "version": "3.0.0",
     "symbol": "fFRAX",
-    "decimals": 8,
-    "protocol": "GENERIC",
-    "rewardTokens": []
+    "decimals": 8
   },
   {
-    "address": "0x85b256e9051B781A0BC0A987857AD6166C94040a",
-    "erc20": "0x7e1e077b289c0153b5ceAD9F264d66215341c9Ab",
+    "address": "0x7Dee4DbeF75f93cCA06823Ac915Df990be3F1538",
+    "rewardTokens": ["0xCFA67f42A0fDe4F0Fb612ea5e66170B0465B84c1"],
+    "protocol": "COMPv3",
+    "erc20": "0x093c07787920eB34A0A0c7a09823510725Aee4Af",
     "chainlinkFeed": "0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6",
     "delayUntilDefault": "86400",
     "maxTradeVolume": "1000000",
     "oracleTimeout": 86460,
     "targetName": "USD",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "symbol": "wcUSDCv3",
     "decimals": 6,
-    "protocol": "COMPv3",
     "underlyingAddress": "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
-    "underlyingToken": "cUSDCv3",
-    "rewardTokens": ["0xCFA67f42A0fDe4F0Fb612ea5e66170B0465B84c1"]
+    "underlyingToken": "cUSDCv3"
   },
   {
     "address": "0x62C394620f674e85768a7618a6C202baE7fB8Dd1",
+    "rewardTokens": [
+      "0x45B950AF443281c5F67c2c7A1d9bBc325ECb8eEA",
+      "0x4024c00bBD0C420E719527D88781bc1543e63dd5"
+    ],
+    "protocol": "CONVEX",
     "erc20": "0xaBd7E7a5C846eD497681a590feBED99e7157B6a3",
     "chainlinkFeed": "0x0000000000000000000000000000000000000001",
     "delayUntilDefault": "86400",
@@ -422,16 +427,16 @@
     "version": "3.0.0",
     "symbol": "stkcvx3Crv",
     "decimals": 18,
-    "protocol": "CONVEX",
     "underlyingAddress": "0x30D9410ED1D5DA1F6C8391af5338C93ab8d4035C",
-    "underlyingToken": "cvx3Crv",
-    "rewardTokens": [
-      "0x45B950AF443281c5F67c2c7A1d9bBc325ECb8eEA",
-      "0x4024c00bBD0C420E719527D88781bc1543e63dd5"
-    ]
+    "underlyingToken": "cvx3Crv"
   },
   {
     "address": "0x890FAa00C16EAD6AA76F18A1A7fe9C40838F9122",
+    "rewardTokens": [
+      "0x45B950AF443281c5F67c2c7A1d9bBc325ECb8eEA",
+      "0x4024c00bBD0C420E719527D88781bc1543e63dd5"
+    ],
+    "protocol": "CONVEX",
     "erc20": "0x3BECE5EC596331033726E5C6C188c313Ff4E3fE5",
     "chainlinkFeed": "0x0000000000000000000000000000000000000001",
     "delayUntilDefault": "259200",
@@ -441,16 +446,16 @@
     "version": "3.0.0",
     "symbol": "stkcvxeUSD3CRV-f",
     "decimals": 18,
-    "protocol": "CONVEX",
     "underlyingAddress": "0x8e074d44aaBC1b3b4406fE03Da7ceF787ea85938",
-    "underlyingToken": "cvxeUSD3CRV-f",
-    "rewardTokens": [
-      "0x45B950AF443281c5F67c2c7A1d9bBc325ECb8eEA",
-      "0x4024c00bBD0C420E719527D88781bc1543e63dd5"
-    ]
+    "underlyingToken": "cvxeUSD3CRV-f"
   },
   {
     "address": "0xCBE084C44e7A2223F76362Dcc4EbDacA5Fb1cbA7",
+    "rewardTokens": [
+      "0x45B950AF443281c5F67c2c7A1d9bBc325ECb8eEA",
+      "0x4024c00bBD0C420E719527D88781bc1543e63dd5"
+    ],
+    "protocol": "CONVEX",
     "erc20": "0x9FF9c353136e86EFe02ADD177E7c9769f8a5A77F",
     "chainlinkFeed": "0x7A364e8770418566e3eb2001A96116E6138Eb32F",
     "delayUntilDefault": "86400",
@@ -460,16 +465,13 @@
     "version": "3.0.0",
     "symbol": "stkcvxMIM-3LP3CRV-f",
     "decimals": 18,
-    "protocol": "CONVEX",
     "underlyingAddress": "0xabB54222c2b77158CC975a2b715a3d703c256F05",
-    "underlyingToken": "cvxMIM-3LP3CRV-f",
-    "rewardTokens": [
-      "0x45B950AF443281c5F67c2c7A1d9bBc325ECb8eEA",
-      "0x4024c00bBD0C420E719527D88781bc1543e63dd5"
-    ]
+    "underlyingToken": "cvxMIM-3LP3CRV-f"
   },
   {
     "address": "0x8Af118a89c5023Bb2B03C70f70c8B396aE71963D",
+    "rewardTokens": ["0x45B950AF443281c5F67c2c7A1d9bBc325ECb8eEA"],
+    "protocol": "CURVE",
     "erc20": "0xC9c37FC53682207844B058026024853A9C0b8c7B",
     "chainlinkFeed": "0x0000000000000000000000000000000000000001",
     "delayUntilDefault": "86400",
@@ -479,13 +481,13 @@
     "version": "3.0.0",
     "symbol": "ws3Crv",
     "decimals": 18,
-    "protocol": "CURVE",
     "underlyingAddress": "0x6c3F90f043a72FA612cbac8115EE7e52BDe6E490",
-    "underlyingToken": "3Crv",
-    "rewardTokens": ["0x45B950AF443281c5F67c2c7A1d9bBc325ECb8eEA"]
+    "underlyingToken": "3Crv"
   },
   {
     "address": "0xC87CDFFD680D57BF50De4C364BF4277B8A90098E",
+    "rewardTokens": ["0x45B950AF443281c5F67c2c7A1d9bBc325ECb8eEA"],
+    "protocol": "CURVE",
     "erc20": "0x27F672aAf061cb0b2640a4DFCCBd799cD1a7309A",
     "chainlinkFeed": "0x0000000000000000000000000000000000000001",
     "delayUntilDefault": "259200",
@@ -495,13 +497,13 @@
     "version": "3.0.0",
     "symbol": "weUSDFRAXBP",
     "decimals": 18,
-    "protocol": "CURVE",
     "underlyingAddress": "0xAEda92e6A3B1028edc139A4ae56Ec881f3064D4F",
-    "underlyingToken": "eUSD3CRV-f",
-    "rewardTokens": ["0x45B950AF443281c5F67c2c7A1d9bBc325ECb8eEA"]
+    "underlyingToken": "eUSD3CRV-f"
   },
   {
     "address": "0x14c443d8BdbE9A65F3a23FA4e199d8741D5B38Fa",
+    "rewardTokens": ["0x45B950AF443281c5F67c2c7A1d9bBc325ECb8eEA"],
+    "protocol": "CURVE",
     "erc20": "0xe8461dB45A7430AA7aB40346E68821284980FdFD",
     "chainlinkFeed": "0x7A364e8770418566e3eb2001A96116E6138Eb32F",
     "delayUntilDefault": "86400",
@@ -511,13 +513,13 @@
     "version": "3.0.0",
     "symbol": "wMIM3CRV",
     "decimals": 18,
-    "protocol": "CURVE",
     "underlyingAddress": "0x5a6A4D54456819380173272A5E8E9B9904BdF41B",
-    "underlyingToken": "MIM-3LP3CRV-f",
-    "rewardTokens": ["0x45B950AF443281c5F67c2c7A1d9bBc325ECb8eEA"]
+    "underlyingToken": "MIM-3LP3CRV-f"
   },
   {
     "address": "0xde0e2f0c9792617d3908d92a024caa846354cea2",
+    "rewardTokens": [],
+    "protocol": "SDR",
     "erc20": "0x83F20F44975D03b1b09e64809B757c47f942BEeA",
     "chainlinkFeed": "0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9",
     "delayUntilDefault": "86400",
@@ -527,13 +529,13 @@
     "version": "3.0.0",
     "symbol": "sDAI",
     "decimals": 18,
-    "protocol": "SDR",
     "underlyingAddress": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
-    "underlyingToken": "DAI",
-    "rewardTokens": []
+    "underlyingToken": "DAI"
   },
   {
     "address": "0x3962695aCce0Efce11cFf997890f3D1D7467ec40",
+    "rewardTokens": [],
+    "protocol": "GENERIC",
     "erc20": "0xBe9895146f7AF43049ca1c1AE358B0541Ea49704",
     "chainlinkFeed": "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
     "delayUntilDefault": "86400",
@@ -542,12 +544,12 @@
     "targetName": "ETH",
     "version": "3.0.0",
     "symbol": "cbETH",
-    "decimals": 18,
-    "protocol": "GENERIC",
-    "rewardTokens": []
+    "decimals": 18
   },
   {
     "address": "0xd000a79bd2a07eb6d2e02ecad73437de40e52d69",
+    "rewardTokens": [],
+    "protocol": "MORPHO",
     "erc20": "0xaA91d24c2F7DBb6487f61869cD8cd8aFd5c5Cab2",
     "chainlinkFeed": "0x3E7d1eAB13ad0104d2750B8863b489D65364e32D",
     "delayUntilDefault": "86400",
@@ -557,15 +559,15 @@
     "version": "3.0.0",
     "symbol": "mrp-aUSDT",
     "decimals": 15,
-    "protocol": "MORPHO",
     "underlyingAddress": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
     "underlyingToken": "USDT",
     "collateralAddress": "0x3Ed3B47Dd13EC9a98b44e6204A523E766B225811",
-    "collateralToken": "aUSDT",
-    "rewardTokens": []
+    "collateralToken": "aUSDT"
   },
   {
     "address": "0x2304E98cD1E2F0fd3b4E30A1Bc6E9594dE2ea9b7",
+    "rewardTokens": [],
+    "protocol": "MORPHO",
     "erc20": "0x7f7B77e49d5b30445f222764a794AFE14af062eB",
     "chainlinkFeed": "0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6",
     "delayUntilDefault": "86400",
@@ -575,15 +577,15 @@
     "version": "3.0.0",
     "symbol": "mrp-aUSDC",
     "decimals": 15,
-    "protocol": "MORPHO",
     "underlyingAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
     "underlyingToken": "USDC",
     "collateralAddress": "0xBcca60bB61934080951369a648Fb03DF4F96263C",
-    "collateralToken": "aUSDC",
-    "rewardTokens": []
+    "collateralToken": "aUSDC"
   },
   {
     "address": "0x9d38BFF9Af50738DF92a54Ceab2a2C2322BB1FAB",
+    "rewardTokens": [],
+    "protocol": "MORPHO",
     "erc20": "0xE2b16e14dB6216e33082D5A8Be1Ef01DF7511bBb",
     "chainlinkFeed": "0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9",
     "delayUntilDefault": "86400",
@@ -593,15 +595,15 @@
     "version": "3.0.0",
     "symbol": "mrp-aDAI",
     "decimals": 27,
-    "protocol": "MORPHO",
     "underlyingAddress": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
     "underlyingToken": "DAI",
     "collateralAddress": "0x028171bCA77440897B824Ca71D1c56caC55b68A3",
-    "collateralToken": "aDAI",
-    "rewardTokens": []
+    "collateralToken": "aDAI"
   },
   {
     "address": "0x49A44d50d3B1E098DAC9402c4aF8D0C0E499F250",
+    "rewardTokens": [],
+    "protocol": "MORPHO",
     "erc20": "0xe0E1d3c6f09DA01399e84699722B11308607BBfC",
     "chainlinkFeed": "0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c",
     "delayUntilDefault": "86400",
@@ -611,15 +613,15 @@
     "version": "3.0.0",
     "symbol": "mrp-aWBTC",
     "decimals": 17,
-    "protocol": "MORPHO",
     "underlyingAddress": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
     "underlyingToken": "WBTC",
     "collateralAddress": "0x9ff58f4fFB29fA2266Ab25e75e2A8b3503311656",
-    "collateralToken": "aWBTC",
-    "rewardTokens": []
+    "collateralToken": "aWBTC"
   },
   {
     "address": "0x878b995bDD2D9900BEE896Bd78ADd877672e1637",
+    "rewardTokens": [],
+    "protocol": "MORPHO",
     "erc20": "0x291ed25eB61fcc074156eE79c5Da87e5DA94198F",
     "chainlinkFeed": "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
     "delayUntilDefault": "86400",
@@ -629,15 +631,15 @@
     "version": "3.0.0",
     "symbol": "mrp-aWETH",
     "decimals": 27,
-    "protocol": "MORPHO",
     "underlyingAddress": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
     "underlyingToken": "WETH",
     "collateralAddress": "0x030bA81f1c18d280636F32af80b9AAd02Cf0854e",
-    "collateralToken": "aWETH",
-    "rewardTokens": []
+    "collateralToken": "aWETH"
   },
   {
     "address": "0x33E840e5711549358f6d4D11F9Ab2896B36E9822",
+    "rewardTokens": [],
+    "protocol": "MORPHO",
     "erc20": "0x97F9d5ed17A0C99B279887caD5254d15fb1B619B",
     "chainlinkFeed": "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
     "delayUntilDefault": "86400",
@@ -647,11 +649,9 @@
     "version": "3.0.0",
     "symbol": "mrp-aSTETH",
     "decimals": 27,
-    "protocol": "MORPHO",
     "underlyingAddress": "0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84",
     "underlyingToken": "stETH",
     "collateralAddress": "0x1982b2F5814301d4e9a8b0201555376e62F82428",
-    "collateralToken": "aSTETH",
-    "rewardTokens": []
+    "collateralToken": "aSTETH"
   }
 ]
