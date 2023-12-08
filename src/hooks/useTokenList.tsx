@@ -14,6 +14,11 @@ import { formatEther, getAddress } from 'viem'
 import { useMultichainQuery } from './useQuery'
 import useTimeFrom from './useTimeFrom'
 import rtokens from '@lc-labs/rtokens'
+import {
+  Distribution,
+  formatDistribution,
+} from 'state/rtoken/atoms/rTokenRevenueSplitAtom'
+import { RevenueSplit } from 'components/rtoken-setup/atoms'
 
 export interface ListedToken {
   id: string
@@ -31,6 +36,8 @@ export interface ListedToken {
   stakingApy: number
   chain: number
   logo: string
+  distribution: RevenueSplit
+  collaterals: { id: string; symbol: string }[]
 }
 
 // TODO: Cache only while the list is short
@@ -55,6 +62,13 @@ const tokenListQuery = gql`
         backing
         backingRSR
         targetUnits
+        collaterals
+        revenueDistribution {
+          id
+          rTokenDist
+          rsrDist
+          destination
+        }
       }
     }
   }
@@ -105,6 +119,10 @@ const useTokenList = () => {
               stakingApy: +stakingApy.toFixed(2),
               chain,
               logo: `/svgs/${rtokens[chain][getAddress(token.id)].logo}`,
+              distribution: formatDistribution(
+                token?.rToken?.revenueDistribution
+              ),
+              collaterals: token?.rtoken?.collaterals,
             }
 
             // RSV Data

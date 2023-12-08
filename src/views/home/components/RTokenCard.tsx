@@ -14,10 +14,18 @@ import { Trans } from '@lingui/macro'
 import ChainLogo from 'components/icons/ChainLogo'
 import { CHAIN_TAGS } from 'utils/constants'
 import { borderRadius } from 'theme'
+import CollaterizationIcon from 'components/icons/CollaterizationIcon'
 
 interface Props extends BoxProps {
   token: ListedToken
 }
+
+const useBasketAPY = (
+  marketCap: number,
+  staked: number,
+  basket: { id: string; symbol: string }[],
+  distribution: Record<string, number>
+) => {}
 
 const useRTokenDistribution = (token: Address, chainId: number) => {
   return useContractReads({
@@ -119,7 +127,8 @@ const RTokenCard = ({ token, ...props }: Props) => {
             </Box>
           </Box>
           <Box mb={1} pl={2} variant="layout.verticalAlign">
-            <Text variant="legend">
+            <CollaterizationIcon />
+            <Text ml="2" variant="legend">
               <Trans>Backing + Overcollaterization:</Trans>
             </Text>
             <Text ml="2" variant="strong">
@@ -127,7 +136,10 @@ const RTokenCard = ({ token, ...props }: Props) => {
             </Text>
           </Box>
           <Box pl="2" variant="layout.verticalAlign">
-            <Text variant="legend">
+            <Text variant="strong" pl="1" sx={{ width: '16px' }}>
+              $
+            </Text>
+            <Text ml="2" variant="legend">
               <Trans>Market cap:</Trans>
             </Text>
             <Text ml="2" variant="strong">
