@@ -4,7 +4,6 @@ import { useEffect } from 'react'
 import { selectedRTokenAtom } from 'state/atoms'
 import About from './components/About'
 import Hero from './components/Hero'
-import TokenList from './components/TokenList'
 import CompareTokens from './components/CompareTokens'
 
 /**

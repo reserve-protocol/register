@@ -4,14 +4,15 @@ import ChainLogo from 'components/icons/ChainLogo'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import { ListedToken } from 'hooks/useTokenList'
-import { memo } from 'react'
+import { memo, useMemo } from 'react'
 import { ArrowRight } from 'react-feather'
 import Skeleton from 'react-loading-skeleton'
 import { useNavigate } from 'react-router-dom'
 import { borderRadius } from 'theme'
 import { Box, BoxProps, Card, Text } from 'theme-ui'
-import { formatCurrency } from 'utils'
+import { formatCurrency, stringToColor } from 'utils'
 import { CHAIN_TAGS, ROUTES } from 'utils/constants'
+import CollateralPieChart from 'views/overview/components/CollateralPieChart'
 
 interface Props extends BoxProps {
   token: ListedToken
@@ -36,8 +37,32 @@ const ChainBadge = ({ chain }: { chain: number }) => (
   </Box>
 )
 
+const colors = [
+  '#B87333', // Copper
+  '#8B4513', // SaddleBrown
+  '#F4A460', // SandyBrown
+  '#D2B48C', // Tan
+  '#CD853F', // Peru
+  '#556B2F', // DarkOliveGreen
+  '#708090', // SlateGray
+  '#8B008B', // DarkMagenta
+  '#DA8A67', // Earth Yellow
+  '#FFD700', // Gold
+  '#B8860B', // DarkGoldenRod
+  '#DEB887', // BurlyWood
+]
+
 const RTokenCard = ({ token, ...props }: Props) => {
   const navigate = useNavigate()
+  const chartData = useMemo(
+    () =>
+      token.collaterals.map((c, i) => ({
+        name: c.symbol,
+        value: +token.collateralDistribution[c.id.toLowerCase()]?.dist ?? 0,
+        color: colors[i] || stringToColor(c.id),
+      })),
+    []
+  )
 
   const handleNavigate = (route: string) => {
     navigate(`${route}?token=${token.id}&chainId=${token.chain}`)
@@ -56,10 +81,19 @@ const RTokenCard = ({ token, ...props }: Props) => {
             flexShrink: 0,
             display: ['none', 'block'],
             borderRight: '1px solid',
+            width: 240,
+            // width: 175,
+            // height: 193,
             borderColor: 'darkBorder',
           }}
         >
-          <Skeleton height={193} width={175} />
+          {/* <Skeleton height={193} width={175} /> */}
+          <CollateralPieChart
+            mt={-3}
+            data={chartData}
+            logo={token.logo}
+            staked={token.overcollaterization}
+          />
         </Box>
         <Box>
           <Box variant="layout.verticalAlign" mb={3}>
@@ -109,16 +143,22 @@ const RTokenCard = ({ token, ...props }: Props) => {
             >
               Mint - {token.tokenApy.toFixed(1)}% Est. APY
             </Button>
-            <Button mt={3} mr={3} medium variant="transparent">
+            <Button
+              onClick={() => handleNavigate(ROUTES.OVERVIEW)}
+              mt={3}
+              mr={3}
+              medium
+              variant="transparent"
+            >
               <Box variant="layout.verticalAlign">
                 <Text mr={3}>Explore</Text> <ArrowRight size={16} />
               </Box>
             </Button>
-            <Button mt={3} medium variant="transparent">
+            {/* <Button mt={3} medium variant="transparent">
               <Box variant="layout.verticalAlign">
                 <Text mr={3}>Earn</Text> <ArrowRight size={16} />
               </Box>
-            </Button>
+            </Button> */}
           </Box>
         </Box>
       </Box>
