@@ -58,7 +58,8 @@ const RTokenCard = ({ token, ...props }: Props) => {
     () =>
       token.collaterals.map((c, i) => ({
         name: c.symbol,
-        value: +token.collateralDistribution[c.id.toLowerCase()]?.dist ?? 0,
+        value:
+          +token.collateralDistribution[c.id.toLowerCase()]?.dist * 100 ?? 0,
         color: colors[i] || stringToColor(c.id),
       })),
     []
@@ -92,7 +93,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
             mt={-3}
             data={chartData}
             logo={token.logo}
-            staked={token.overcollaterization}
+            staked={+token.overcollaterization.toFixed(2).toString()}
           />
         </Box>
         <Box>
