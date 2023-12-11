@@ -53,15 +53,20 @@ const protocolMetricsQuery = gql`
 const useProtocolMetrics = () => {
   const [stats, setStats] = useAtom(homeMetricsAtom)
   const { data: externalData } = useExternalStats()
-  const { data, isLoading } = useMultichainQuery(protocolMetricsQuery, {
-    id: PROTOCOL_SLUG,
-  })
+  const { data, isLoading } = useMultichainQuery(
+    protocolMetricsQuery,
+    {
+      id: PROTOCOL_SLUG,
+    },
+    { keepPreviousData: true }
+  )
 
   useEffect(() => {
     if (data) {
       let volume = 0
       let marketCap = 0
       let stakeRevenue = 0
+      let tvl = 0
 
       for (const chain of supportedChainList) {
         const metrics = data[chain] as ProtocolMetricsResponse
@@ -69,6 +74,7 @@ const useProtocolMetrics = () => {
         volume += +metrics.protocol?.cumulativeVolumeUSD ?? 0
         marketCap += +metrics.protocol?.totalRTokenUSD ?? 0
         stakeRevenue += +metrics.protocol?.cumulativeRSRRevenueUSD ?? 0
+        tvl += +metrics.protocol?.totalValueLockedUSD
       }
 
       // Aggregate RSV
@@ -82,7 +88,7 @@ const useProtocolMetrics = () => {
         Number(rsvMetrics.lastPriceUSD)
 
       // Set atom for cache
-      setStats({ volume, marketCap, stakeRevenue })
+      setStats({ volume, marketCap, stakeRevenue, tvl })
     }
   }, [data])
 

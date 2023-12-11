@@ -100,10 +100,8 @@ const Banner = () => {
 const Layout = ({ children }: { children: ReactNode }) => (
   <Container id="app-container">
     <TopSpacer />
-    <Box>
-      <Banner />
-      {children}
-    </Box>
+    <Banner />
+    {children}
     <BottomSpacer />
     <MobileNav />
     <TokenMenu />

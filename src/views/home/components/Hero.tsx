@@ -11,20 +11,20 @@ import Skeleton from 'react-loading-skeleton'
 
 const ProtocolStats = () => {
   const {
-    data: { volume, marketCap, stakeRevenue },
+    data: { tvl, marketCap, stakeRevenue },
     isLoading,
   } = useProtocolMetrics()
 
   const statInfo = [
     {
-      icon: <RootIcon />,
-      value: formatCurrency(volume),
-      title: t`Cumulative Tx Volume`,
-    },
-    {
       icon: <TreeIcon />,
       value: formatCurrency(marketCap),
       title: t`Cumulative Total RToken Mkcap`,
+    },
+    {
+      icon: <RootIcon />,
+      value: formatCurrency(tvl),
+      title: t`TVL in Reserve`,
     },
     {
       icon: <LeafIcon />,
