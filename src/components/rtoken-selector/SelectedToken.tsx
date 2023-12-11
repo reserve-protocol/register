@@ -1,12 +1,12 @@
 import { Trans } from '@lingui/macro'
-import TokenItem from 'components/token-item'
+import TokenLogo from 'components/icons/TokenLogo'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { rTokenAtom, selectedRTokenAtom } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
-import availableTokensAtom, { DEFAULT_LOGO } from './atoms'
 import BasketCubeIcon from '../icons/BasketCubeIcon'
+import availableTokensAtom, { DEFAULT_LOGO } from './atoms'
 
 /**
  * Top header token display
@@ -64,11 +64,13 @@ const SelectedToken = () => {
   }
 
   return (
-    <TokenItem
+    <Box
+      variant="layout.verticalAlign"
       sx={{ overflow: 'hidden', width: [60, 'auto'], textOverflow: 'ellipsis' }}
-      logo={logo}
-      symbol={symbol}
-    />
+    >
+      <TokenLogo width={16} mr={2} symbol={symbol} src={logo} />
+      <Text>{symbol}</Text>
+    </Box>
   )
 }
 

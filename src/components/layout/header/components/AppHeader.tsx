@@ -9,6 +9,7 @@ import { Box, Flex, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import Brand from './Brand'
 import TokenToggle from './TokenToggle'
+import HeaderMenu from './HeaderMenu'
 
 const Divider = () => (
   <Box
@@ -81,9 +82,9 @@ const AppHeader = () => {
         sx={{ alignItems: 'center', height: '72px' }}
       >
         <Box mr="auto" variant="layout.verticalAlign">
-          <Brand />
-          <Divider />
-          <HeaderAction />
+          <Brand mr={4} />
+          <HeaderMenu />
+          {/* <HeaderAction /> */}
         </Box>
         <Box
           variant="layout.verticalAlign"

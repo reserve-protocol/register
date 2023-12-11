@@ -71,6 +71,8 @@ export const ROUTES = Object.freeze({
   GOVERNANCE_PROPOSAL: '/governance/proposal',
   ZAP: '/zap',
   BRIDGE: '/bridge',
+  PORTFOLIO: '/portfolio',
+  EARN: '/earn',
 })
 
 export const RSR: Token = {
