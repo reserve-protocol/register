@@ -1,6 +1,5 @@
 import { t } from '@lingui/macro'
-import BasketCubeIcon from 'components/icons/BasketCubeIcon'
-import BridgeIcon from 'components/icons/BridgeIcon'
+import AsteriskIcon from 'components/icons/AsteriskIcon'
 import BridgeNavIcon from 'components/icons/BridgeNavIcon'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
@@ -10,7 +9,6 @@ import { borderRadius } from 'theme'
 import { Box, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import TokenToggle from './TokenToggle'
-import AsteriskIcon from 'components/icons/AsteriskIcon'
 
 const HeaderMenu = () => {
   const chainId = useAtomValue(chainIdAtom)
@@ -67,7 +65,9 @@ const HeaderMenu = () => {
         p={2}
         ml={2}
         sx={{
-          backgroundColor: !!selectedRToken ? 'background' : 'transparent',
+          backgroundColor: !!selectedRToken
+            ? 'contentBackground'
+            : 'transparent',
           borderRadius: borderRadius.boxes,
         }}
       >

@@ -125,9 +125,10 @@ export function safeParseEther(value: string, decimals = 18): bigint {
 }
 
 export function formatCurrency(value: number, decimals = 2): string {
-  return Intl.NumberFormat('en-US', { maximumFractionDigits: decimals }).format(
-    value
-  )
+  return Intl.NumberFormat('en-US', {
+    maximumFractionDigits: decimals,
+    minimumFractionDigits: Math.min(2, decimals),
+  }).format(value)
 }
 
 export const formatPercentage = (value: number, decimals = 2): string =>

@@ -118,13 +118,12 @@ const AppHeader = () => {
           sx={{
             display: ['none', 'flex'],
           }}
-          mr={[3, 0]}
         />
         {/* <Box ml={4} sx={{ alignItems: 'center', display: 'flex' }}>
             <LanguageSelector />
           </Box> */}
         <Divider />
-        <Box mr={[3, 0]} sx={{ display: ['none', 'block'] }}>
+        <Box sx={{ display: ['none', 'block'] }}>
           <ChainSelector />
         </Box>
         <Divider />

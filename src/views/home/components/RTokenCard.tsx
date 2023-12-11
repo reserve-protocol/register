@@ -101,7 +101,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
             <Box ml="3">
               <Text variant="sectionTitle">{token.symbol}</Text>
               <Text variant="legend" sx={{ fontSize: 1 }}>
-                ${formatCurrency(token.price, 5)}
+                ${formatCurrency(token.price, 2)}
               </Text>
             </Box>
           </Box>
