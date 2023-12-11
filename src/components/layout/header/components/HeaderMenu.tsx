@@ -10,28 +10,17 @@ import { borderRadius } from 'theme'
 import { Box, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import TokenToggle from './TokenToggle'
+import AsteriskIcon from 'components/icons/AsteriskIcon'
 
 const HeaderMenu = () => {
   const chainId = useAtomValue(chainIdAtom)
   const selectedRToken = useAtomValue(selectedRTokenAtom)
   const menuItems = useMemo(
     () => [
-      { label: t`Compare`, icon: <BasketCubeIcon />, to: ROUTES.HOME },
+      // { label: t`Compare`, icon: <BasketCubeIcon />, to: ROUTES.HOME },
       {
         label: t`Portfolio`,
-        icon: (
-          <Text
-            variant="strong"
-            sx={{
-              fontSize: 4,
-              lineHeight: '10px',
-              position: 'relative',
-              top: '5px',
-            }}
-          >
-            *
-          </Text>
-        ),
+        icon: <AsteriskIcon />,
         to: ROUTES.PORTFOLIO,
       },
       {
@@ -67,13 +56,16 @@ const HeaderMenu = () => {
           })}
         >
           <Box variant="layout.verticalAlign" p={2} ml={index ? 2 : 0}>
-            {menuItem.icon} <Text ml="2">{menuItem.label}</Text>
+            {menuItem.icon}{' '}
+            <Text ml="2" sx={{ display: ['none', 'none', 'block'] }}>
+              {menuItem.label}
+            </Text>
           </Box>
         </NavLink>
       ))}
       <Box
-        ml="2"
         p={2}
+        ml={2}
         sx={{
           backgroundColor: !!selectedRToken ? 'background' : 'transparent',
           borderRadius: borderRadius.boxes,

@@ -7,6 +7,7 @@ import { Box, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import BasketCubeIcon from '../icons/BasketCubeIcon'
 import availableTokensAtom, { DEFAULT_LOGO } from './atoms'
+import CirclesIcon from 'components/icons/CirclesIcon'
 
 /**
  * Top header token display
@@ -36,25 +37,23 @@ const SelectedToken = () => {
   if (!selectedAddress) {
     return (
       <Box variant="layout.verticalAlign">
-        <Box
-          sx={{
-            display: ['none', 'flex'],
-          }}
-        >
-          <BasketCubeIcon />
+        <Box>
+          <CirclesIcon />
         </Box>
-        <Text
+        {/* <Text
           ml={2}
           sx={{
-            display: ['none', 'flex'],
+            display: ['none', 'none', 'flex'],
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
           }}
         >
           <Trans>Select RToken</Trans>
-        </Text>
+        </Text> */}
         <Text
           ml={2}
           sx={{
-            display: ['flex', 'none'],
+            display: ['none', 'flex'],
           }}
         >
           <Trans>RTokens</Trans>
@@ -66,10 +65,10 @@ const SelectedToken = () => {
   return (
     <Box
       variant="layout.verticalAlign"
-      sx={{ overflow: 'hidden', width: [60, 'auto'], textOverflow: 'ellipsis' }}
+      sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
     >
       <TokenLogo width={16} mr={2} symbol={symbol} src={logo} />
-      <Text>{symbol}</Text>
+      <Text sx={{ display: ['none', 'block'] }}>{symbol}</Text>
     </Box>
   )
 }

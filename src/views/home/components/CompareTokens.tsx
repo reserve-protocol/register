@@ -18,7 +18,7 @@ const CompareTokens = () => {
   }
 
   return (
-    <Box variant="layout.wrapper" p={4} pt={0}>
+    <Box variant="layout.wrapper" p={[1, 4]} pt={0}>
       <Box
         sx={{
           textAlign: 'center',

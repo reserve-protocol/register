@@ -2,18 +2,18 @@ import { Trans } from '@lingui/macro'
 import Account from 'components/account'
 import ChainSelector from 'components/chain-selector/ChainSelector'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
-import BridgeIcon from 'components/icons/BridgeIcon'
-import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import { useLocation } from 'react-router-dom'
 import { Box, Flex, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import Brand from './Brand'
-import TokenToggle from './TokenToggle'
 import HeaderMenu from './HeaderMenu'
+import { HelpCircle } from 'react-feather'
+import AsteriskIcon from 'components/icons/AsteriskIcon'
+import Button from 'components/button'
 
 const Divider = () => (
   <Box
-    mx={4}
+    mx={3}
     sx={{
       backgroundColor: 'inputBorder',
       width: '1px',
@@ -34,18 +34,7 @@ const HeaderAction = () => {
     )
   }
 
-  if (pathname.indexOf(ROUTES.BRIDGE) !== -1) {
-    return (
-      <Box variant="layout.verticalAlign">
-        <BridgeIcon />
-        <Text ml={3} sx={{ fontSize: 2 }} variant="title">
-          L2 Bridge
-        </Text>
-      </Box>
-    )
-  }
-
-  return <TokenToggle />
+  return <HeaderMenu />
 }
 
 // TODO: Currently only for bridging, but expected for other views
@@ -57,6 +46,44 @@ const useHeaderColor = () => {
   }
 
   return 'background'
+}
+
+{
+  /* <Box
+variant="layout.verticalAlign"
+sx={{
+  display: ['none', 'flex'],
+  cursor: 'pointer',
+}}
+onClick={() =>
+  window.open('https://reserve.canny.io/register-app', '_blank')
+}
+>
+<Text>Feedback</Text>
+</Box>
+<Divider />
+
+<Box
+variant="layout.verticalAlign"
+sx={{
+  display: ['none', 'flex'],
+  cursor: 'pointer',
+}}
+onClick={() => window.open('https://reserve.org/protocol/', '_blank')}
+>
+<Text>Docs</Text>
+</Box> */
+}
+
+const RegisterHelp = () => {
+  return (
+    <Button variant="hover" small>
+      <Box variant="layout.verticalAlign">
+        <HelpCircle size={16} style={{ marginRight: 8 }} />
+        <AsteriskIcon />
+      </Box>
+    </Button>
+  )
 }
 
 /**
@@ -82,47 +109,24 @@ const AppHeader = () => {
         sx={{ alignItems: 'center', height: '72px' }}
       >
         <Box mr="auto" variant="layout.verticalAlign">
-          <Brand mr={4} />
-          <HeaderMenu />
-          {/* <HeaderAction /> */}
+          <Brand mr={[2, 4]} />
+          <HeaderAction />
         </Box>
-        <Box
-          variant="layout.verticalAlign"
-          sx={{
-            display: ['none', 'flex'],
-            cursor: 'pointer',
-          }}
-          onClick={() =>
-            window.open('https://reserve.canny.io/register-app', '_blank')
-          }
-        >
-          <Text>Feedback</Text>
-        </Box>
-        <Divider />
-
-        <Box
-          variant="layout.verticalAlign"
-          sx={{
-            display: ['none', 'flex'],
-            cursor: 'pointer',
-          }}
-          onClick={() => window.open('https://reserve.org/protocol/', '_blank')}
-        >
-          <Text>Docs</Text>
-        </Box>
+        <RegisterHelp />
         <Divider />
         <ThemeColorMode
           sx={{
             display: ['none', 'flex'],
           }}
-          pt={1}
           mr={[3, 0]}
         />
         {/* <Box ml={4} sx={{ alignItems: 'center', display: 'flex' }}>
             <LanguageSelector />
           </Box> */}
         <Divider />
-        <ChainSelector mr={[3, 0]} />
+        <Box mr={[3, 0]} sx={{ display: ['none', 'block'] }}>
+          <ChainSelector />
+        </Box>
         <Divider />
         <Account />
       </Flex>

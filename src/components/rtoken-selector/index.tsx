@@ -57,12 +57,12 @@ const RTokenSelector = (props: BoxProps) => {
         sx={{
           cursor: 'pointer',
           fontSize: 1,
-          minWidth: 100,
+          // minWidth: 100,
         }}
         onClick={() => setVisible(!isVisible)}
       >
         <SelectedToken />
-        <Box mr="auto" pl="2" />
+        <Box mr="auto" pl={[1, 2]} />
         {isVisible ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
       </Box>
     </Popup>
