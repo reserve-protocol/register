@@ -167,4 +167,4 @@ const RTokenCard = ({ token, ...props }: Props) => {
   )
 }
 
-export default RTokenCard
+export default memo(RTokenCard)
