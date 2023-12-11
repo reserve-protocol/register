@@ -49,16 +49,24 @@ const HeaderMenu = () => {
           style={({ isActive }) => ({
             textDecoration: 'none',
             color: 'inherit',
-            backgroundColor: isActive ? 'background' : 'transparent',
-            borderRadius: borderRadius.boxes,
           })}
         >
-          <Box variant="layout.verticalAlign" p={2} ml={index ? 2 : 0}>
-            {menuItem.icon}{' '}
-            <Text ml="2" sx={{ display: ['none', 'none', 'block'] }}>
-              {menuItem.label}
-            </Text>
-          </Box>
+          {({ isActive }: { isActive: boolean }) => (
+            <Box
+              variant="layout.verticalAlign"
+              sx={{
+                backgroundColor: isActive ? 'contentBackground' : 'transparent',
+                borderRadius: borderRadius.boxes,
+              }}
+              p={2}
+              ml={index ? 2 : 0}
+            >
+              {menuItem.icon}{' '}
+              <Text ml="2" sx={{ display: ['none', 'none', 'block'] }}>
+                {menuItem.label}
+              </Text>
+            </Box>
+          )}
         </NavLink>
       ))}
       <Box
