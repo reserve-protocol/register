@@ -92,16 +92,20 @@ const useTokenList = () => {
   const collateralYield = useAtomValue(collateralYieldAtom)
   const currentRsrPrice = useAtomValue(rsrPriceAtom)
 
-  const { data } = useMultichainQuery(tokenListQuery, {
-    [ChainId.Mainnet]: {
-      tokenIds: LISTED_RTOKEN_ADDRESSES[ChainId.Mainnet],
-      fromTime,
+  const { data, isLoading } = useMultichainQuery(
+    tokenListQuery,
+    {
+      [ChainId.Mainnet]: {
+        tokenIds: LISTED_RTOKEN_ADDRESSES[ChainId.Mainnet],
+        fromTime,
+      },
+      [ChainId.Base]: {
+        tokenIds: LISTED_RTOKEN_ADDRESSES[ChainId.Base],
+        fromTime,
+      },
     },
-    [ChainId.Base]: {
-      tokenIds: LISTED_RTOKEN_ADDRESSES[ChainId.Base],
-      fromTime,
-    },
-  })
+    { keepPreviousData: true }
+  )
 
   useEffect(() => {
     if (data) {
@@ -137,6 +141,7 @@ const useTokenList = () => {
                 (collateralYield[collateral.symbol.toLowerCase()] || 0) *
                 (Number(distribution[collateral.id.toLowerCase()]?.dist) || 0)
             }
+
             const stakeUsd =
               +formatEther(token?.rToken?.rsrStaked ?? '0') * rsrPrice
             const holdersShare = +(revenueSplit.holders || 0) / 100
@@ -191,7 +196,7 @@ const useTokenList = () => {
     }
   }, [data, collateralYield, currentRsrPrice])
 
-  return { list, isLoading: !data }
+  return { list, isLoading }
 }
 
 export default useTokenList
