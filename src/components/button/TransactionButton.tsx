@@ -4,26 +4,21 @@ import TransactionError from 'components/transaction-error/TransactionError'
 import useContractWrite from 'hooks/useContractWrite'
 import { GasEstimation } from 'hooks/useGasEstimate'
 import useNotification from 'hooks/useNotification'
+import useSwitchChain from 'hooks/useSwitchChain'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { CheckCircle } from 'react-feather'
-import {
-  chainIdAtom,
-  isWalletInvalidAtom,
-  walletAtom,
-  walletChainAtom,
-} from 'state/atoms'
+import { chainIdAtom, walletAtom, walletChainAtom } from 'state/atoms'
 import { Box, Spinner, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
+import { CHAIN_TAGS } from 'utils/constants'
 import {
   UsePrepareContractWriteConfig,
   useBalance,
   useSwitchNetwork,
 } from 'wagmi'
 import Button, { ButtonProps, LoadingButton, LoadingButtonProps } from '.'
-import { CHAIN_TAGS } from 'utils/constants'
-import useSwitchChain from 'hooks/useSwitchChain'
 
 interface TransactionButtonProps extends LoadingButtonProps {
   gas?: GasEstimation
