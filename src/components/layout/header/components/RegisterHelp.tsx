@@ -81,25 +81,26 @@ const HelpContent = ({ onClose }: { onClose(): void }) => {
 
   return (
     <Box
-      p={2}
-      sx={{
-        overflow: 'auto',
-        backgroundColor: 'background',
-        borderRadius: borderRadius.boxes,
-        '>div': {
-          marginBottom: 2,
-        },
-        '>div:last-child': {
-          marginBottom: 0,
-        },
-      }}
+      sx={{ backgroundColor: 'background', borderRadius: borderRadius.boxes }}
     >
-      {items.map((item) => (
-        <HelpItem key={item.href} onClose={onClose} {...item} />
-      ))}
+      <Box
+        p={2}
+        sx={{
+          '>div': {
+            marginBottom: 2,
+          },
+          'div:last-child': {
+            marginBottom: 0,
+          },
+        }}
+      >
+        {items.map((item, i) => (
+          <HelpItem key={item.href} onClose={onClose} {...item} />
+        ))}
+      </Box>
       <Box sx={{ display: ['block', 'none'] }}>
-        <Divider mt={3} mx={-2} />
-        <Box p={2} variant="layout.verticalAlign">
+        <Divider mt={3} mb={0} />
+        <Box p={3} variant="layout.verticalAlign">
           <ChainSelector />
           <ThemeColorMode ml="auto" />
         </Box>

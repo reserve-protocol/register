@@ -7,10 +7,7 @@ import { Box, Flex, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import Brand from './Brand'
 import HeaderMenu from './HeaderMenu'
-import { HelpCircle } from 'react-feather'
-import AsteriskIcon from 'components/icons/AsteriskIcon'
-import Button from 'components/button'
-import RegisterHelp from './HelpPopup'
+import RegisterHelp from './RegisterHelp'
 
 const Divider = () => (
   <Box

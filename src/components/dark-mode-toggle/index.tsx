@@ -1,4 +1,4 @@
-import { useSpring, animated } from '@react-spring/web'
+import { animated, useSpring } from '@react-spring/web'
 import { useEffect } from 'react'
 
 export const MODES = {
@@ -76,7 +76,7 @@ const DarkModeToggle = ({
         ...svgContainerProps,
       }}
     >
-      <mask id="myMask2">
+      <mask id="themeMode">
         <rect x="0" y="0" width="100%" height="100%" fill="white" />
         <animated.circle style={maskedCircleProps as any} r="10" fill="black" />
       </mask>
@@ -86,7 +86,7 @@ const DarkModeToggle = ({
         cy="12"
         style={centerCircleProps as any}
         fill="currentColor"
-        mask="url(#myMask2)"
+        mask="url(#themeMode)"
       />
       <animated.g stroke="currentColor" style={linesProps}>
         <line x1="12" y1="1" x2="12" y2="3" />

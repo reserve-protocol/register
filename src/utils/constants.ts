@@ -10,6 +10,21 @@ export const DISCORD_INVITE = 'https://discord.com/invite/M4BafXtTNz'
 export const PROTOCOL_DOCS = 'https://reserve.org/protocol/'
 export const REGISTER_FEEDBACK = 'https://reserve.canny.io/register-app'
 
+export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
+  'curve-dex': {
+    name: 'Curve',
+    site: 'https://curve.fi/#/ethereum/pools',
+  },
+  'convex-finance': {
+    name: 'Convex',
+    site: 'https://www.convexfinance.com/stake',
+  },
+  'yearn-finance': {
+    name: 'Yearn',
+    site: 'https://yearn.fi/vaults',
+  },
+}
+
 export const BIGINT_MAX =
   115792089237316195423570985008687907853269984665640564039457584007913129639935n
 
