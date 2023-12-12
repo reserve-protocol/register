@@ -23,6 +23,7 @@ const listedRTokens = Object.values(rtokens).reduce((acc, curr) => {
   return { ...acc, ...curr }
 }, {} as StringMap)
 
+// TODO: May use a central Updater component for defillama data, currently being traversed twice for APYs and this
 const useRTokenPools = () => {
   const { data, isLoading } = useSWRImmutable('https://yields.llama.fi/pools')
 

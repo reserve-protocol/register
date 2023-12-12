@@ -10,6 +10,7 @@ import HeaderMenu from './HeaderMenu'
 import { HelpCircle } from 'react-feather'
 import AsteriskIcon from 'components/icons/AsteriskIcon'
 import Button from 'components/button'
+import RegisterHelp from './HelpPopup'
 
 const Divider = () => (
   <Box
@@ -46,44 +47,6 @@ const useHeaderColor = () => {
   }
 
   return 'background'
-}
-
-{
-  /* <Box
-variant="layout.verticalAlign"
-sx={{
-  display: ['none', 'flex'],
-  cursor: 'pointer',
-}}
-onClick={() =>
-  window.open('https://reserve.canny.io/register-app', '_blank')
-}
->
-<Text>Feedback</Text>
-</Box>
-<Divider />
-
-<Box
-variant="layout.verticalAlign"
-sx={{
-  display: ['none', 'flex'],
-  cursor: 'pointer',
-}}
-onClick={() => window.open('https://reserve.org/protocol/', '_blank')}
->
-<Text>Docs</Text>
-</Box> */
-}
-
-const RegisterHelp = () => {
-  return (
-    <Button variant="hover" small>
-      <Box variant="layout.verticalAlign">
-        <HelpCircle size={16} style={{ marginRight: 8 }} />
-        <AsteriskIcon />
-      </Box>
-    </Button>
-  )
 }
 
 /**

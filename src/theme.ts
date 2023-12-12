@@ -13,6 +13,7 @@ export const centeredContent = {
 export const borderRadius = {
   inputs: 6,
   boxes: 14,
+  inner: '10px',
 }
 export const baseButton = {
   borderRadius: 50,
@@ -142,7 +143,7 @@ export const colors = {
 
 export const theme: Theme = {
   breakpoints: ['52em', '64em', '72em', '100em'],
-  space: [0, 4, 8, 16, 24, 32, 40, 48, 80, 256],
+  space: [0, 4, 8, 16, 24, 32, 40, 48, 80, 256], // 0-9
   fonts: {
     body: 'Satoshi, sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,  "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
     heading: 'inherit',
