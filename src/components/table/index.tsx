@@ -11,6 +11,7 @@ import { ArrowDown, ArrowUp } from 'react-feather'
 import { Box, BoxProps, Flex } from 'theme-ui'
 import { StringMap } from 'types'
 import TablePagination from './components/TablePagination'
+import Skeleton from 'react-loading-skeleton'
 
 export interface TableProps extends BoxProps {
   columns: any[] // figure out proper type
@@ -23,6 +24,7 @@ export interface TableProps extends BoxProps {
   onRowClick?(data: any): void
   sortBy?: SortingState
   maxHeight?: string | number
+  isLoading?: boolean
 }
 
 export function Table({
@@ -31,6 +33,7 @@ export function Table({
   sorting = false,
   compact = false,
   pagination,
+  isLoading = false,
   defaultPageSize = 10,
   maxHeight = 'auto',
   sx = {},
@@ -137,6 +140,9 @@ export function Table({
           })}
         </Box>
       </Box>
+      {isLoading && (
+        <Skeleton count={5} height={40} style={{ marginTop: 10 }} />
+      )}
       {pagination && <TablePagination table={table} totalCount={data.length} />}
     </React.Fragment>
   )

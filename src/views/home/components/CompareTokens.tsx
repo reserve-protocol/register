@@ -52,40 +52,4 @@ const CompareTokens = () => {
   )
 }
 
-// return rToken.collaterals.map((c, index) => ({
-//   name: c.name,
-//   value: basketDist[c.address]?.share ?? 0,
-//   color: colors[index] || stringToColor(c.address),
-// }))
-
-// const basketDistAtom = atom((get) => {
-//   const rToken = get(rTokenAtom)
-
-//   if (rToken && !rToken.main) {
-//     return RSV.collaterals.reduce(
-//       (acc, current) => ({
-//         ...acc,
-//         [current.address]: {
-//           share: 100,
-//           targetUnit: 'USD',
-//         },
-//       }),
-//       {} as { [x: string]: { share: number; targetUnit: string } }
-//     )
-//   }
-
-//   return get(rTokenBackingDistributionAtom)?.collateralDistribution || {}
-// })
-
-{
-  /* <CollateralPieChart
-mb={4}
-mt={2}
-data={pieData}
-logo={rToken?.logo ?? ''}
-isRSV={isRSV}
-staked={distribution?.staked ?? 0}
-/> */
-}
-
 export default CompareTokens

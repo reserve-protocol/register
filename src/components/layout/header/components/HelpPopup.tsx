@@ -1,6 +1,5 @@
 import { t } from '@lingui/macro'
 import Button from 'components/button'
-import GoTo from 'components/button/GoTo'
 import ChainSelector from 'components/chain-selector/ChainSelector'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
 import AsteriskIcon from 'components/icons/AsteriskIcon'
@@ -55,7 +54,7 @@ const HelpItem = ({
       </Text>
       <ExternalArrowIcon />
     </Box>
-    <Text variant="legend" sx={{ fontSize: 1 }}>
+    <Text variant="legend" as="p" sx={{ fontSize: 1 }}>
       {subtitle}
     </Text>
   </Box>
@@ -98,10 +97,12 @@ const HelpContent = ({ onClose }: { onClose(): void }) => {
       {items.map((item) => (
         <HelpItem key={item.href} onClose={onClose} {...item} />
       ))}
-      <Divider mx={-2} />
-      <Box p={2} variant="layout.verticalAlign">
-        <ChainSelector />
-        <ThemeColorMode ml="auto" />
+      <Box sx={{ display: ['block', 'none'] }}>
+        <Divider mt={3} mx={-2} />
+        <Box p={2} variant="layout.verticalAlign">
+          <ChainSelector />
+          <ThemeColorMode ml="auto" />
+        </Box>
       </Box>
     </Box>
   )
