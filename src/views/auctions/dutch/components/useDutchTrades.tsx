@@ -1,7 +1,7 @@
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
-import { atom, useAtomValue, useSetAtom } from 'jotai'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { blockAtom } from 'state/atoms'
 import atomWithDebounce from 'utils/atoms/atomWithDebounce'
@@ -93,7 +93,7 @@ const useDutchTrades = () => {
   const rToken = useRToken()
   const blockNumber = useAtomValue(currentBlockAtom)
   const setOngoingTrades = useSetAtom(ongoingDutchTradesAtom)
-  const setEndedTrades = useSetAtom(endedDutchTradesAtom)
+  const [currentEndedTrades, setEndedTrades] = useAtom(endedDutchTradesAtom)
 
   const { data, error } = useQuery(
     rToken && blockNumber ? ongoingTradesQuery : null,
@@ -117,7 +117,13 @@ const useDutchTrades = () => {
   }, [JSON.stringify(data)])
 
   useEffect(() => {
-    if (endedData) {
+    // Only update if 1) current obj is empty, or 2) length is updated
+    if (
+      endedData &&
+      (!currentEndedTrades.length ||
+        currentEndedTrades.length !=
+          endedData.settled.length + endedData.ended.length)
+    ) {
       setEndedTrades([...endedData.settled, ...endedData.ended])
     }
   }, [endedData])
