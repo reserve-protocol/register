@@ -14,12 +14,14 @@ const Earn = () => {
   return (
     <Box variant="layout.wrapper" p={[1, 4]} py={[1, 7]}>
       <Box variant="layout.verticalAlign" mb={7}>
-        <YieldIcon fontSize={60} />
+        <Box variant="layout.verticalAlign">
+          <YieldIcon fontSize={60} />
+        </Box>
         <Box ml="2">
-          <Text mb={1} variant="sectionTitle">
+          <Text mb={[0, 1]} sx={{ fontSize: [3, 4] }} variant="strong">
             RToken yield opportunities
           </Text>
-          <Text variant="legend">
+          <Text variant="legend" sx={{ fontSize: [1, 2] }}>
             DeFi yield opportunities for RTokens in Convex, Curve, Yearn & Beefy
           </Text>
         </Box>

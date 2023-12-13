@@ -99,6 +99,7 @@ const TransactionModal = ({
     isLoading,
     write,
     hash,
+    isIdle,
     status,
     validationError,
     error,
@@ -130,6 +131,7 @@ const TransactionModal = ({
     !gas.isLoading &&
     !isReady &&
     !validationError &&
+    !isIdle &&
     !disabled
 
   return (
