@@ -22,6 +22,7 @@ import { formatCurrency } from 'utils'
 import { RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import { supportedChainList } from 'utils/constants'
+import RegisterAbout from 'views/home/components/RegisterAbout'
 import { useBalance } from 'wagmi'
 
 export const chainIcons = {
@@ -212,7 +213,6 @@ const Portfolio = (props: BoxProps) => {
           </Box>
         )}
       </Box>
-      <Divider mx={[-1, 0]} my={[5, 8]} />
     </Box>
   )
 }

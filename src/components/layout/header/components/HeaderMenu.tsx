@@ -29,8 +29,6 @@ const HeaderMenu = () => {
             variant="strong"
             sx={{
               width: 20,
-              height: 20,
-              lineHeight: '20px',
               textAlign: 'center',
             }}
           >
@@ -76,7 +74,7 @@ const HeaderMenu = () => {
               p={2}
               ml={index ? 2 : 0}
             >
-              {menuItem.icon}{' '}
+              {menuItem.icon}
               <Text ml="2" sx={{ display: ['none', 'none', 'block'] }}>
                 {menuItem.label}
               </Text>

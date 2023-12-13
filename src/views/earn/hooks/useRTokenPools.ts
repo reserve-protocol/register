@@ -1,13 +1,17 @@
-import { useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import useSWRImmutable from 'swr/immutable'
 import { StringMap } from 'types'
 import rtokens from '@lc-labs/rtokens'
 import { EUSD_ADDRESS, RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import { RSR } from 'utils/constants'
+import { atom, useAtom } from 'jotai'
+import { Pool, poolsAtom } from 'state/pools/atoms'
 
-export interface Pool {
+// Only map what I care about the response...
+interface DefillamaPool {
   symbol: string
+  pool: string
   apy: number
   apyBase: number
   apyReward: number
@@ -15,9 +19,8 @@ export interface Pool {
   project: string
   chain: string
   tvlUsd: number
-  underlyingTokens: { address: string; symbol: string; logo: string }[]
+  underlyingTokens: string[]
   rewardTokens: string[]
-  url: string
 }
 
 const listedRTokens = Object.values(rtokens).reduce((acc, curr) => {
@@ -80,6 +83,8 @@ const POOL_URL: Record<string, string> = {
     'https://curve.fi/#/base/pools/factory-crypto-14/deposit',
   '4af07af7-4b66-4772-bfcc-395dfb5ef10e':
     'https://curve.fi/#/ethereum/pools/factory-crypto-136/deposit',
+  'da53450c-14b1-47e3-bca5-7856f27bb928':
+    'https://curve.fi/#/base/pools/factory-v2-12/deposit',
   // Convex
   'c04005c9-7e34-41a6-91c4-295834ed8ac0':
     'https://www.convexfinance.com/stake/ethereum/156',
@@ -101,15 +106,17 @@ const POOL_URL: Record<string, string> = {
     'https://yearn.fi/vaults/1/0x5383C1Ab5beac04d6A6E6872Cc6a422f2Dc25576',
 }
 
+const DEFILLAMA_ENDPOINT = 'https://yields.llama.fi/poolsEnriched?pool='
+
 // TODO: May use a central Updater component for defillama data, currently being traversed twice for APYs and this
 const useRTokenPools = () => {
   const { data, isLoading } = useSWRImmutable('https://yields.llama.fi/pools')
+  const [poolsCache, setPools] = useAtom(poolsAtom)
 
-  return useMemo(() => {
-    const pools: Pool[] = []
-
-    if (data) {
-      for (const pool of data.data) {
+  const mapPools = useCallback(
+    async (data: DefillamaPool[]) => {
+      const pools: Pool[] = []
+      for (const pool of data) {
         const rToken = pool.underlyingTokens?.find(
           (token: string) => !!listedRTokens[token]
         )
@@ -155,16 +162,28 @@ const useRTokenPools = () => {
 
           pools.push({
             ...pool,
+            id: pool.pool,
             symbol: poolSymbol,
             underlyingTokens,
             url: POOL_URL[pool.pool] || '',
           })
         }
       }
-    }
+      setPools(pools)
+    },
+    [setPools]
+  )
 
-    return { data: pools, isLoading }
-  }, [data, isLoading])
+  useEffect(() => {
+    if (data) {
+      mapPools(data.data as DefillamaPool[])
+    }
+  }, [data])
+
+  return {
+    data: poolsCache,
+    isLoading,
+  }
 }
 
 export default useRTokenPools

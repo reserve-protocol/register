@@ -2,9 +2,9 @@ import { useAtom } from 'jotai'
 import mixpanel from 'mixpanel-browser'
 import { useEffect } from 'react'
 import { selectedRTokenAtom } from 'state/atoms'
-import About from './components/About'
 import Hero from './components/Hero'
 import CompareTokens from './components/CompareTokens'
+import RegisterAbout from './components/RegisterAbout'
 
 /**
  * Main home screen
@@ -24,7 +24,7 @@ const Home = () => {
     <>
       <Hero />
       <CompareTokens />
-      <About />
+      <RegisterAbout />
     </>
   )
 }

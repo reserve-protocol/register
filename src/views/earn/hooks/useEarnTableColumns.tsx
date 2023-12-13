@@ -1,6 +1,5 @@
 import { t } from '@lingui/macro'
 import { createColumnHelper } from '@tanstack/react-table'
-import { Button } from 'components'
 import Help from 'components/help'
 import ChainLogo from 'components/icons/ChainLogo'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
@@ -9,11 +8,11 @@ import Curve from 'components/icons/logos/Curve'
 import Yearn from 'components/icons/logos/Yearn'
 import StackTokenLogo from 'components/token-logo/StackTokenLogo'
 import React, { useMemo } from 'react'
+import { Pool } from 'state/pools/atoms'
 import { Box, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
 import { LP_PROJECTS } from 'utils/constants'
-import { Pool } from '../hooks/useRTokenPools'
 
 const chainMap: Record<string, number> = {
   Ethereum: ChainId.Mainnet,
@@ -29,19 +28,6 @@ export const columnVisibility = [
   ['none', 'table-cell'],
   ['none', 'table-cell'],
 ]
-
-{
-  /* <Button
-small
-variant="muted"
-onClick={() => window.open(data.getValue(), '_blank')}
->
-<Box variant="layout.verticalAlign">
-  <Text mr="1">Pool</Text>
-  <ExternalArrowIcon />
-</Box>
-</Button> */
-}
 
 const useEarnTableColumns = () => {
   const columnHelper = createColumnHelper<Pool>()
@@ -119,15 +105,15 @@ const useEarnTableColumns = () => {
         },
         cell: (data) => `${formatCurrency(data.getValue(), 1)}%`,
       }),
+      columnHelper.accessor('tvlUsd', {
+        header: t`TVL`,
+        cell: (data) => `$${formatCurrency(data.getValue(), 0)}`,
+      }),
       columnHelper.accessor('chain', {
         header: t`Chain`,
         cell: (data) => {
           return <ChainLogo chain={+chainMap[data.getValue()]} />
         },
-      }),
-      columnHelper.accessor('tvlUsd', {
-        header: t`TVL`,
-        cell: (data) => `$${formatCurrency(data.getValue(), 0)}`,
       }),
     ]
   }, [])

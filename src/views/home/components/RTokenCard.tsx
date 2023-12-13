@@ -7,7 +7,6 @@ import { ListedToken } from 'hooks/useTokenList'
 import { memo, useMemo } from 'react'
 import { ArrowRight } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
-import { borderRadius } from 'theme'
 import { Box, BoxProps, Card, Text } from 'theme-ui'
 import { formatCurrency, stringToColor } from 'utils'
 import { CHAIN_TAGS, ROUTES } from 'utils/constants'
@@ -81,12 +80,9 @@ const RTokenCard = ({ token, ...props }: Props) => {
             display: ['none', 'block'],
             borderRight: '1px solid',
             width: 240,
-            // width: 175,
-            // height: 193,
             borderColor: 'darkBorder',
           }}
         >
-          {/* <Skeleton height={193} width={175} /> */}
           <CollateralPieChart
             mt={-3}
             data={chartData}

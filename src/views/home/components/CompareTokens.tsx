@@ -7,6 +7,7 @@ import { Box, Flex, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import RTokenCard from './RTokenCard'
 import { ArrowRight } from 'react-feather'
+import DeployHero from './DeployHero'
 
 const CompareTokens = () => {
   const navigate = useNavigate()
@@ -23,7 +24,8 @@ const CompareTokens = () => {
         sx={{
           textAlign: 'center',
         }}
-        my={6}
+        mb={6}
+        mt={3}
       >
         <Text variant="sectionTitle" mb={2}>
           <Trans>Browse RToken Currencies</Trans>
@@ -40,7 +42,7 @@ const CompareTokens = () => {
       {list.map((token) => (
         <RTokenCard key={token.id} token={token} mb={4} />
       ))}
-      <Flex mt={7} sx={{ justifyContent: 'center' }}>
+      <Flex my={7} sx={{ justifyContent: 'center' }}>
         <Button medium variant="transparent" onClick={handleViewAll}>
           <Box variant="layout.verticalAlign">
             <Trans>View All, including unlisted</Trans>
@@ -48,6 +50,7 @@ const CompareTokens = () => {
           </Box>
         </Button>
       </Flex>
+      <DeployHero />
     </Box>
   )
 }

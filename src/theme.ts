@@ -383,6 +383,10 @@ export const theme: Theme = {
   },
   buttons: {
     primary: baseButton,
+    blue: {
+      ...baseButton,
+      backgroundColor: 'rBlue',
+    },
     accent: {
       ...baseButton,
       backgroundColor: 'accentBG',

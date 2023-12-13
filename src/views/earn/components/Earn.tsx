@@ -6,6 +6,8 @@ import useEarnTableColumns, {
 } from '../hooks/useEarnTableColumns'
 import useRTokenPools from '../hooks/useRTokenPools'
 import TableFilters from './TableFilters'
+import { useAtomValue } from 'jotai'
+// import { poolsUrlsAtom } from 'state/pools/atoms'
 
 const Earn = () => {
   const { data, isLoading } = useRTokenPools()

@@ -41,7 +41,7 @@ const ProtocolStats = () => {
         mx={[1, 3]}
         p={5}
         sx={{
-          backgroundColor: 'background',
+          backgroundColor: 'contentBackground',
           flexGrow: 1,
         }}
       >
@@ -128,9 +128,11 @@ const About = () => (
 const Hero = () => (
   <Flex
     sx={{
-      backgroundColor: 'contentBackground',
+      backgroundColor: 'background',
       flexDirection: 'column',
       alignItems: 'center',
+      borderBottom: '1px solid',
+      borderColor: 'border',
     }}
     py={7}
     px={[3]}

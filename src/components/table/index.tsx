@@ -141,6 +141,18 @@ export function Table({
                       display: columnVisibility?.[index]
                         ? columnVisibility[index]
                         : 'table-cell',
+                      ...(compact
+                        ? {
+                            '&:first-of-type': {
+                              borderTopLeftRadius: 0,
+                              borderBottomLeftRadius: 0,
+                            },
+                            '&:last-of-type': {
+                              borderTopRightRadius: 0,
+                              borderBottomRightRadius: 0,
+                            },
+                          }
+                        : {}),
                     }}
                     as="td"
                     key={cell.id}
