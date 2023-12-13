@@ -24,12 +24,11 @@ const ChainBadge = ({ chain }: { chain: number }) => (
       position: 'absolute',
       right: 0,
       top: 0,
-      border: '2px dashed',
+      border: '1px solid',
       borderColor: 'darkBorder',
-      backgroundColor: 'background',
-      borderRadius: borderRadius.boxes,
+      borderRadius: '6px',
+      padding: '4px 8px',
     }}
-    p={2}
   >
     <ChainLogo chain={chain} />
     <Text ml="2">{CHAIN_TAGS[chain]}</Text>

@@ -9,6 +9,7 @@ import { ChainId } from 'utils/chains'
 import useProtocolMetrics from '../hooks/useProtocolMetrics'
 import Skeleton from 'react-loading-skeleton'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
+import YieldIcon from 'components/icons/YieldIcon'
 
 const ProtocolStats = () => {
   const {
@@ -44,19 +45,36 @@ const ProtocolStats = () => {
           flexGrow: 1,
         }}
       >
-        <Grid columns={['1fr', '1fr 1fr 1fr']} gap={4}>
+        <Grid columns={['1fr', '1fr 1fr 1fr']} gap={[4, 0]}>
           {statInfo.map((info, index) => (
-            <Box sx={{ textAlign: 'center' }} key={info.title}>
-              {info.icon}
-              <Box my={2}>
-                {!isLoading ? (
-                  <Text variant="sectionTitle">${info.value}</Text>
-                ) : (
-                  <Skeleton height={32} width={200} />
-                )}
-              </Box>
+            <Box key={info.title} sx={{ position: 'relative' }}>
+              <Box sx={{ textAlign: 'center' }}>
+                {info.icon}
+                <Box my={2}>
+                  {!isLoading ? (
+                    <Text variant="sectionTitle">${info.value}</Text>
+                  ) : (
+                    <Skeleton height={32} width={200} />
+                  )}
+                </Box>
 
-              <Text variant="legend">{info.title}</Text>
+                <Text variant="legend">{info.title}</Text>
+              </Box>
+              {!!index && (
+                <Box
+                  // mx={3}
+                  sx={{
+                    display: ['none', 'block'],
+                    fontSize: 4,
+                    color: 'secondaryText',
+                    position: 'absolute',
+                    left: '-12px',
+                    top: 'calc(50% - 10px)',
+                  }}
+                >
+                  <YieldIcon />
+                </Box>
+              )}
             </Box>
           ))}
         </Grid>

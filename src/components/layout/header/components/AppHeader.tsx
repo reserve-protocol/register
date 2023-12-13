@@ -8,6 +8,8 @@ import { ROUTES } from 'utils/constants'
 import Brand from './Brand'
 import HeaderMenu from './HeaderMenu'
 import RegisterHelp from './RegisterHelp'
+import { useAtomValue } from 'jotai'
+import { selectedRTokenAtom } from 'state/atoms'
 
 const Divider = () => (
   <Box
@@ -51,12 +53,13 @@ const useHeaderColor = () => {
  */
 const AppHeader = () => {
   const backgroundColor = useHeaderColor()
+  const isRTokenSelected = !!useAtomValue(selectedRTokenAtom)
 
   return (
     <Box
       sx={{
         borderBottom: '1px solid',
-        borderColor: 'border',
+        borderColor: isRTokenSelected ? 'border' : 'transparent',
         position: 'fixed',
         top: 0,
         backgroundColor,
