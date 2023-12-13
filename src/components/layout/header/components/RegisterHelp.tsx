@@ -128,8 +128,13 @@ const RegisterHelp = () => {
         onClick={() => setVisible(!isVisible)}
       >
         <Box variant="layout.verticalAlign">
-          <HelpCircle size={16} style={{ marginRight: 8 }} />
-          <AsteriskIcon />
+          <HelpCircle size={16} />
+          <Box
+            variant="layout.verticalAlign"
+            sx={{ display: ['none', 'flex'], marginRight: [0, '8px'] }}
+          >
+            <AsteriskIcon />
+          </Box>
         </Box>
       </Button>
     </Popup>

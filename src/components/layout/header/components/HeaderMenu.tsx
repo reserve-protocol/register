@@ -68,7 +68,7 @@ const HeaderMenu = () => {
                 borderColor: isActive ? 'primary' : 'transparent',
                 borderRadius: borderRadius.inner,
                 justifyContent: 'center',
-                minWidth: '40px',
+                width: [40, 'auto'],
                 height: '40px',
               }}
               p={2}

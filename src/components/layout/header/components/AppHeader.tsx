@@ -67,7 +67,7 @@ const AppHeader = () => {
       }}
     >
       <Flex
-        px={[3, 5]}
+        px={[2, 5]}
         variant="layout.wrapper"
         sx={{ alignItems: 'center', height: '72px' }}
       >
