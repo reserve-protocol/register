@@ -15,11 +15,57 @@ import Yearn from 'components/icons/logos/Yearn'
 import { LP_PROJECTS } from 'utils/constants'
 import ChainLogo from 'components/icons/ChainLogo'
 import { ChainId } from 'utils/chains'
+import TokenLogo from 'components/icons/TokenLogo'
+import React from 'react'
 
 const chainMap: Record<string, number> = {
   Ethereum: ChainId.Mainnet,
   Base: ChainId.Base,
 }
+
+const PoolIcon = React.memo(
+  ({
+    tokens,
+  }: {
+    tokens: { symbol: string; logo: string; address: string }[]
+  }) => {
+    return (
+      <Box variant="layout.verticalAlign" sx={{ position: 'relative' }}>
+        {tokens.map((token, index) => {
+          if (token.symbol === 'FRAXBP') {
+            return (
+              <Box variant="layout.verticalAlign" key={token.address}>
+                <TokenLogo
+                  sx={{
+                    position: 'relative',
+                    left: index ? `${-6 * index}px` : 0,
+                  }}
+                  symbol={'frax'}
+                />
+                <TokenLogo
+                  sx={{
+                    position: 'relative',
+                    left: index ? `${-6 * (index + 1)}px` : 0,
+                  }}
+                  symbol={'usdc'}
+                />
+              </Box>
+            )
+          }
+
+          return (
+            <TokenLogo
+              key={token.address}
+              sx={{ position: 'relative', left: index ? `${-6 * index}px` : 0 }}
+              symbol={token.symbol}
+              src={token.logo}
+            />
+          )
+        })}
+      </Box>
+    )
+  }
+)
 
 const Earn = () => {
   const { data, isLoading } = useRTokenPools()
@@ -33,7 +79,17 @@ const Earn = () => {
     }
 
     return [
-      columnHelper.accessor('symbol', { header: t`Symbol` }),
+      columnHelper.accessor('symbol', {
+        header: t`Pool`,
+        cell: (data) => {
+          return (
+            <Box variant="layout.verticalAlign">
+              <PoolIcon tokens={data.row.original.underlyingTokens} />
+              <Text ml="1">{data.getValue()}</Text>
+            </Box>
+          )
+        },
+      }),
       columnHelper.accessor('project', {
         header: t`Project`,
         cell: (data) => (
@@ -106,8 +162,6 @@ const Earn = () => {
     ]
   }, [])
 
-  // hy
-  // c8815168-ba35-4e7c-b7b1-a0b33b6c73bc
   return (
     <Box variant="layout.wrapper" p={[1, 4]} py={[1, 7]}>
       <Box variant="layout.verticalAlign" mb={7}>
@@ -120,6 +174,7 @@ const Earn = () => {
             DeFi yield opportunities for RTokens in Convex, Curve, Yearn & Beefy
           </Text>
         </Box>
+        <Box variant="layout.verticalAlign" marginLeft="auto"></Box>
       </Box>
 
       <Table

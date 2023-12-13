@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import useSWRImmutable from 'swr/immutable'
 import { StringMap } from 'types'
 import rtokens from '@lc-labs/rtokens'
-import { RSR_ADDRESS } from 'utils/addresses'
+import { EUSD_ADDRESS, RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import { RSR } from 'utils/constants'
 
@@ -15,7 +15,8 @@ export interface Pool {
   project: string
   chain: string
   tvlUsd: number
-  underlyingTokens: string[]
+  underlyingTokens: { address: string; symbol: string; logo: string }[]
+  rewardTokens: string[]
   url: string
 }
 
@@ -26,14 +27,44 @@ const listedRTokens = Object.values(rtokens).reduce((acc, curr) => {
 listedRTokens[RSR_ADDRESS[ChainId.Mainnet]] = RSR
 listedRTokens[RSR_ADDRESS[ChainId.Base]] = RSR
 
-const OTHER_POOL_TOKENS = {
-  '0x3175Df0976dFA876431C2E9eE6Bc45b65d3473CC': 'crvFRAX',
-  '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48': 'USDC',
-  '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2': 'WETH',
-  '0x853d955acef822db058eb8505911ed77f175b99e': 'FRAX',
+// Bridged RTokens
+listedRTokens['0xCfA3Ef56d303AE4fAabA0592388F19d7C3399FB4'] =
+  listedRTokens[EUSD_ADDRESS[ChainId.Mainnet]]
+
+const OTHER_POOL_TOKENS: Record<
+  string,
+  { address: string; symbol: string; logo: string }
+> = {
+  '0x3175Df0976dFA876431C2E9eE6Bc45b65d3473CC': {
+    address: '0x3175Df0976dFA876431C2E9eE6Bc45b65d3473CC',
+    symbol: 'FRAXBP',
+    logo: '',
+  },
+  '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48': {
+    symbol: 'USDC',
+    address: '0x3175Df0976dFA876431C2E9eE6Bc45b65d3473CC',
+    logo: '',
+  },
+  '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2': {
+    symbol: 'WETH',
+    address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+    logo: '',
+  },
+  '0x853d955acef822db058eb8505911ed77f175b99e': {
+    symbol: 'FRAX',
+    address: '0x853d955acef822db058eb8505911ed77f175b99e',
+    logo: '',
+  },
+  '0x417Ac0e078398C154EdFadD9Ef675d30Be60Af93': {
+    symbol: 'crvUSD',
+    address: '0x417Ac0e078398C154EdFadD9Ef675d30Be60Af93',
+    logo: '',
+  },
 }
 
-const POOL_URL: StringMap = {
+const REWARD_TOKENS: Record<string, string> = {}
+
+const POOL_URL: Record<string, string> = {
   // Curve
   '28c0ad15-ecaf-4b14-8ad6-06ded47566b1':
     'https://curve.fi/#/ethereum/pools/factory-tricrypto-21/deposit',
@@ -77,8 +108,6 @@ const useRTokenPools = () => {
   return useMemo(() => {
     const pools: Pool[] = []
 
-    const curve: string[] = []
-
     if (data) {
       for (const pool of data.data) {
         const rToken = pool.underlyingTokens?.find(
@@ -86,6 +115,29 @@ const useRTokenPools = () => {
         )
 
         if (rToken && pool.project !== 'reserve') {
+          const underlyingTokens = pool.underlyingTokens.map(
+            (token: string) => {
+              if (
+                listedRTokens[token] &&
+                listedRTokens[token].symbol !== 'RSR'
+              ) {
+                return {
+                  ...listedRTokens[token],
+                  logo: `/svgs/${listedRTokens[token].logo}`,
+                }
+              }
+
+              return (
+                listedRTokens[token] ||
+                OTHER_POOL_TOKENS[token] || {
+                  address: token,
+                  symbol: 'Unknown',
+                  logo: '',
+                }
+              )
+            }
+          )
+
           let poolSymbol: string = pool.symbol
 
           if (poolSymbol[poolSymbol.length - 1] === '-') {
@@ -104,12 +156,11 @@ const useRTokenPools = () => {
           pools.push({
             ...pool,
             symbol: poolSymbol,
+            underlyingTokens,
             url: POOL_URL[pool.pool] || '',
           })
         }
       }
-
-      console.log('curve', curve)
     }
 
     return { data: pools, isLoading }
