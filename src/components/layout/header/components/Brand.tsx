@@ -16,11 +16,15 @@ const Brand = (props: BoxProps) => {
   return (
     <Flex
       onClick={handleClick}
-      sx={{ cursor: 'pointer', alignItems: 'center' }}
+      sx={{
+        cursor: 'pointer',
+        alignItems: 'center',
+        display: ['none', 'flex'],
+      }}
     >
       <Box
         sx={{
-          display: ['none', 'none', 'flex'],
+          display: ['none', 'none', 'none', 'flex'],
           alignItems: 'center',
         }}
         {...props}
@@ -30,7 +34,7 @@ const Brand = (props: BoxProps) => {
       <Box
         mr={2}
         sx={{
-          display: ['flex', 'flex', 'none'],
+          display: ['flex', 'flex', 'flex', 'none'],
           alignItems: 'center',
           justifyContent: 'center',
         }}

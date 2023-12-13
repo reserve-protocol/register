@@ -9,13 +9,14 @@ import { borderRadius } from 'theme'
 import { Box, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import TokenToggle from './TokenToggle'
+import BasketCubeIcon from 'components/icons/BasketCubeIcon'
 
 const HeaderMenu = () => {
   const chainId = useAtomValue(chainIdAtom)
   const selectedRToken = useAtomValue(selectedRTokenAtom)
   const menuItems = useMemo(
     () => [
-      // { label: t`Compare`, icon: <BasketCubeIcon />, to: ROUTES.HOME },
+      { label: t`Compare`, icon: <BasketCubeIcon />, to: ROUTES.HOME },
       {
         label: t`Portfolio`,
         icon: <AsteriskIcon />,
@@ -55,7 +56,9 @@ const HeaderMenu = () => {
             <Box
               variant="layout.verticalAlign"
               sx={{
-                backgroundColor: isActive ? 'contentBackground' : 'transparent',
+                backgroundColor: isActive ? 'background' : 'transparent',
+                border: '1px solid',
+                borderColor: isActive ? 'primary' : 'transparent',
                 borderRadius: borderRadius.boxes,
               }}
               p={2}
@@ -73,9 +76,9 @@ const HeaderMenu = () => {
         p={2}
         ml={2}
         sx={{
-          backgroundColor: !!selectedRToken
-            ? 'contentBackground'
-            : 'transparent',
+          backgroundColor: !!selectedRToken ? 'background' : 'transparent',
+          border: '1px solid',
+          borderColor: !!selectedRToken ? 'primary' : 'transparent',
           borderRadius: borderRadius.boxes,
         }}
       >
