@@ -25,6 +25,7 @@ export interface TableProps extends BoxProps {
   sortBy?: SortingState
   maxHeight?: string | number
   isLoading?: boolean
+  columnVisibility?: (string | string[])[]
 }
 
 export function Table({
@@ -37,6 +38,7 @@ export function Table({
   defaultPageSize = 10,
   maxHeight = 'auto',
   sx = {},
+  columnVisibility,
   sortBy = [],
   onRowClick,
   onSort,
@@ -87,16 +89,19 @@ export function Table({
         <Box as="tbody" variant="styles.tbody">
           {table.getHeaderGroups().map((headerGroup) => (
             <Box as="tr" key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
+              {headerGroup.headers.map((header, index) => (
                 <Box
                   as="th"
                   variant="styles.th"
                   key={header.id}
-                  sx={
-                    sorting
+                  sx={{
+                    ...(sorting
                       ? { cursor: 'pointer', userSelect: 'none' }
-                      : undefined
-                  }
+                      : {}),
+                    display: columnVisibility?.[index]
+                      ? columnVisibility[index]
+                      : 'table-cell',
+                  }}
                   onClick={
                     sorting
                       ? header.column.getToggleSortingHandler()
@@ -119,7 +124,7 @@ export function Table({
               ))}
             </Box>
           ))}
-          {table.getRowModel().rows.map((row, index) => {
+          {table.getRowModel().rows.map((row) => {
             return (
               <Box
                 key={row.id}
@@ -130,8 +135,17 @@ export function Table({
                 }
                 sx={{ cursor: !!onRowClick ? 'pointer' : 'inherit' }}
               >
-                {row.getVisibleCells().map((cell) => (
-                  <Box as="td" key={cell.id} variant="styles.td">
+                {row.getVisibleCells().map((cell, index) => (
+                  <Box
+                    sx={{
+                      display: columnVisibility?.[index]
+                        ? columnVisibility[index]
+                        : 'table-cell',
+                    }}
+                    as="td"
+                    key={cell.id}
+                    variant="styles.td"
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </Box>
                 ))}
