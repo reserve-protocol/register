@@ -12,8 +12,8 @@ const Earn = () => {
   const columns = useEarnTableColumns()
 
   return (
-    <Box variant="layout.wrapper" p={[1, 4]} py={[1, 7]}>
-      <Box variant="layout.verticalAlign" mb={7}>
+    <Box variant="layout.wrapper" p={[1, 4]} py={[4, 7]}>
+      <Box variant="layout.verticalAlign" mb={[5, 7]}>
         <Box variant="layout.verticalAlign">
           <YieldIcon fontSize={60} />
         </Box>
@@ -22,7 +22,7 @@ const Earn = () => {
             RToken yield opportunities
           </Text>
           <Text variant="legend" sx={{ fontSize: [1, 2] }}>
-            DeFi yield opportunities for RTokens in Convex, Curve, Yearn & Beefy
+            DeFi yield opportunities for RTokens in Convex, Curve & Yearn.
           </Text>
         </Box>
         <TableFilters />

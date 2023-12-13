@@ -3,11 +3,12 @@ import ChainLogo from 'components/icons/ChainLogo'
 import LeafIcon from 'components/icons/LeafIcon'
 import RootIcon from 'components/icons/RootIcon'
 import TreeIcon from 'components/icons/TreeIcon'
-import { Box, Card, Flex, Grid, Text } from 'theme-ui'
+import { Box, Card, Flex, Grid, Link, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
 import useProtocolMetrics from '../hooks/useProtocolMetrics'
 import Skeleton from 'react-loading-skeleton'
+import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 
 const ProtocolStats = () => {
   const {
@@ -93,7 +94,14 @@ const About = () => (
         Reserve's RToken Factory Contracts: A platform for creating tokens
         backed by a diverse array of ERC20 collateral. With Register.app, engage
         in minting, staking, and governance of RTokens. Learn more in-depth
-        about the project at reserve.org
+        about the project at{' '}
+        <Link
+          sx={{ textDecoration: 'underline' }}
+          href="https://reserve.org/"
+          target="_blank"
+        >
+          reserve.org
+        </Link>
       </Text>
     </Box>
   </>
@@ -111,6 +119,17 @@ const Hero = () => (
   >
     <About />
     <ProtocolStats />
+    <Link
+      mt={4}
+      sx={{ ':hover': { textDecoration: 'underline' } }}
+      href="https://dune.com/reserve-protocol/reserve-protocol-overview"
+      target="_blank"
+    >
+      <Trans>More metrics on Reserve Dune Dashboard</Trans>
+      <ExternalArrowIcon
+        style={{ position: 'relative', top: '3px', marginLeft: '8px' }}
+      />
+    </Link>
   </Flex>
 )
 

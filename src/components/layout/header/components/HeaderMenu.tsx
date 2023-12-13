@@ -24,7 +24,19 @@ const HeaderMenu = () => {
       },
       {
         label: t`Earn`,
-        icon: <Text variant="strong">$</Text>,
+        icon: (
+          <Text
+            variant="strong"
+            sx={{
+              width: 20,
+              height: 20,
+              lineHeight: '20px',
+              textAlign: 'center',
+            }}
+          >
+            $
+          </Text>
+        ),
         to: ROUTES.EARN,
       },
       { label: t`Bridge`, icon: <BridgeNavIcon />, to: ROUTES.BRIDGE },
@@ -47,10 +59,7 @@ const HeaderMenu = () => {
         <NavLink
           key={menuItem.to}
           to={`${menuItem.to}?chainId=${chainId}`}
-          style={({ isActive }) => ({
-            textDecoration: 'none',
-            color: 'inherit',
-          })}
+          style={{ textDecoration: 'none', color: 'inherit' }}
         >
           {({ isActive }: { isActive: boolean }) => (
             <Box
@@ -59,7 +68,10 @@ const HeaderMenu = () => {
                 backgroundColor: isActive ? 'background' : 'transparent',
                 border: '1px solid',
                 borderColor: isActive ? 'primary' : 'transparent',
-                borderRadius: borderRadius.boxes,
+                borderRadius: borderRadius.inner,
+                justifyContent: 'center',
+                minWidth: '40px',
+                height: '40px',
               }}
               p={2}
               ml={index ? 2 : 0}

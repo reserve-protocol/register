@@ -127,21 +127,21 @@ const RTokenCard = ({ token, ...props }: Props) => {
           </Box>
           <Box variant="layout.verticalAlign" sx={{ flexWrap: 'wrap' }}>
             <Button
-              onClick={() => handleNavigate(ROUTES.STAKING)}
+              onClick={() => handleNavigate(ROUTES.ISSUANCE)}
               mt={3}
               mr={3}
               medium
             >
-              Stake RSR - {token.stakingApy.toFixed(1)}% Est. APY
+              {token.tokenApy.toFixed(1)}% APY
             </Button>
             <Button
-              onClick={() => handleNavigate(ROUTES.ISSUANCE)}
+              onClick={() => handleNavigate(ROUTES.STAKING)}
               mt={3}
               mr={3}
               medium
               variant="muted"
             >
-              Mint - {token.tokenApy.toFixed(1)}% Est. APY
+              Stake RSR - {token.stakingApy.toFixed(1)}% APY
             </Button>
             <Button
               onClick={() => handleNavigate(ROUTES.OVERVIEW)}

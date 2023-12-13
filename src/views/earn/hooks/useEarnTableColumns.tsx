@@ -28,8 +28,20 @@ export const columnVisibility = [
   ['none', 'none', 'table-cell'],
   ['none', 'table-cell'],
   ['none', 'table-cell'],
-  '',
 ]
+
+{
+  /* <Button
+small
+variant="muted"
+onClick={() => window.open(data.getValue(), '_blank')}
+>
+<Box variant="layout.verticalAlign">
+  <Text mr="1">Pool</Text>
+  <ExternalArrowIcon />
+</Box>
+</Button> */
+}
 
 const useEarnTableColumns = () => {
   const columnHelper = createColumnHelper<Pool>()
@@ -45,9 +57,20 @@ const useEarnTableColumns = () => {
         header: t`Pool`,
         cell: (data) => {
           return (
-            <Box variant="layout.verticalAlign">
+            <Box
+              variant="layout.verticalAlign"
+              sx={{
+                cursor: 'pointer',
+                color: 'secondaryText',
+                ':hover': { color: 'text' },
+              }}
+              onClick={() => window.open(data.row.original.url, '_blank')}
+            >
               <StackTokenLogo tokens={data.row.original.underlyingTokens} />
-              <Text ml="1">{data.getValue()}</Text>
+              <Text mx="1" sx={{ textDecoration: 'underline' }}>
+                {data.getValue()}
+              </Text>
+              <ExternalArrowIcon />
             </Box>
           )
         },
@@ -105,21 +128,6 @@ const useEarnTableColumns = () => {
       columnHelper.accessor('tvlUsd', {
         header: t`TVL`,
         cell: (data) => `$${formatCurrency(data.getValue(), 0)}`,
-      }),
-      columnHelper.accessor('url', {
-        header: t`Link`,
-        cell: (data) => (
-          <Button
-            small
-            variant="muted"
-            onClick={() => window.open(data.getValue(), '_blank')}
-          >
-            <Box variant="layout.verticalAlign">
-              <Text mr="1">Pool</Text>
-              <ExternalArrowIcon />
-            </Box>
-          </Button>
-        ),
       }),
     ]
   }, [])
