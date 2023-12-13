@@ -131,7 +131,11 @@ const RegisterHelp = () => {
           <HelpCircle size={16} />
           <Box
             variant="layout.verticalAlign"
-            sx={{ display: ['none', 'flex'], marginRight: [0, '8px'] }}
+            sx={{
+              display: ['none', 'flex'],
+              flexShrink: 0,
+              marginLeft: [0, '8px'],
+            }}
           >
             <AsteriskIcon />
           </Box>
