@@ -9,7 +9,7 @@ import { DISCORD_INVITE, PROTOCOL_DOCS } from 'utils/constants'
 const SocialLinks = () => (
   <Box variant="layout.verticalAlign" mt={4} sx={{ fontSize: 5 }}>
     <RouterLink
-      to="https://github.com/lc-labs"
+      to="https://github.com/lc-labs/register"
       target="_blank"
       style={{ all: 'unset', cursor: 'pointer' }}
     >
