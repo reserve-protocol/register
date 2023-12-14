@@ -22,10 +22,10 @@ const chainMap: Record<string, number> = {
 export const columnVisibility = [
   '',
   '',
+  ['none', 'table-cell'],
   '',
   ['none', 'none', 'table-cell'],
   ['none', 'none', 'table-cell'],
-  ['none', 'table-cell'],
   ['none', 'table-cell'],
 ]
 
@@ -72,6 +72,16 @@ const useEarnTableColumns = () => {
           </Box>
         ),
       }),
+      columnHelper.accessor('chain', {
+        header: t`Chain`,
+        cell: (data) => {
+          return (
+            <Box pl="10px">
+              <ChainLogo fontSize={16} chain={+chainMap[data.getValue()]} />
+            </Box>
+          )
+        },
+      }),
       columnHelper.accessor('apy', {
         header: () => {
           return (
@@ -108,12 +118,6 @@ const useEarnTableColumns = () => {
       columnHelper.accessor('tvlUsd', {
         header: t`TVL`,
         cell: (data) => `$${formatCurrency(data.getValue(), 0)}`,
-      }),
-      columnHelper.accessor('chain', {
-        header: t`Chain`,
-        cell: (data) => {
-          return <ChainLogo chain={+chainMap[data.getValue()]} />
-        },
       }),
     ]
   }, [])
