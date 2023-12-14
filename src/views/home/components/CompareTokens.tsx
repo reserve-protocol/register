@@ -8,6 +8,7 @@ import { ROUTES } from 'utils/constants'
 import RTokenCard from './RTokenCard'
 import { ArrowRight } from 'react-feather'
 import DeployHero from './DeployHero'
+import CompareTokensTitle from './CompareTokensTitle'
 
 const CompareTokens = () => {
   const navigate = useNavigate()
@@ -20,22 +21,7 @@ const CompareTokens = () => {
 
   return (
     <Box variant="layout.wrapper" p={[1, 4]} pt={0}>
-      <Box
-        sx={{
-          textAlign: 'center',
-        }}
-        mb={6}
-        mt={3}
-      >
-        <Text variant="sectionTitle" mb={2}>
-          <Trans>Browse RToken Currencies</Trans>
-        </Text>
-        <Text variant="legend">
-          <Trans>
-            Inspect collateral backing, mint, stake & explore deeper
-          </Trans>
-        </Text>
-      </Box>
+      <CompareTokensTitle />
       {isLoading && (
         <Skeleton count={3} height={320} style={{ marginBottom: 20 }} />
       )}
