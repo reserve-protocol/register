@@ -163,7 +163,11 @@ const DashedDivider = () => (
  * Section: Home > About footer
  */
 const RegisterAbout = () => (
-  <Box mt={[3, 7]} sx={{ borderTop: '1px solid', borderColor: 'border' }}>
+  <Box
+    mt={[3, 7]}
+    px={[1, 4]}
+    sx={{ borderTop: '1px solid', borderColor: 'border' }}
+  >
     <Box variant="layout.wrapper" my={[3, 7]} px={4}>
       <Text variant="strong" mb={7} sx={{ fontSize: [4, 5] }}>
         <Trans>Not sure what you’re looking at?</Trans>
