@@ -1,5 +1,5 @@
 import FacadeRead from 'abis/FacadeRead'
-import { atom, useAtomValue } from 'jotai'
+import { atom } from 'jotai'
 import {
   chainIdAtom,
   isModuleLegacyAtom,
@@ -11,7 +11,7 @@ import { publicClient } from 'state/chain'
 import { safeParseEther } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
-import { formatUnits, getAddress, parseUnits } from 'viem'
+import { formatUnits, getAddress, parseEther, parseUnits } from 'viem'
 import { redeemAmountDebouncedAtom } from 'views/issuance/atoms'
 
 interface RedeemQuote {
@@ -85,8 +85,6 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
       {} as RedeemQuote
     )
   } else {
-    // TODO: Not working on base
-
     const {
       result: [tokens, withdrawals, available],
     } = await client.simulateContract({
@@ -128,7 +126,12 @@ export const redeemQuotesAtom = atomWithLoadable(async (get) => {
         abi: FacadeRead,
         address: FACADE_ADDRESS[chainId],
         functionName: 'redeemCustom',
-        args: [rToken.address, parsedAmount, [currentNonce - 1], [1n]],
+        args: [
+          rToken.address,
+          parsedAmount,
+          [currentNonce - 1],
+          [parseEther('1')],
+        ],
       })
 
       quotes[currentNonce - 1] = tokens.reduce(

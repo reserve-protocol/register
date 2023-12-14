@@ -7,17 +7,17 @@ import { atomWithLoadable } from 'utils/atoms/utils'
 import { parseAbiItem } from 'viem'
 import rTokenContractsAtom from './rTokenContractsAtom'
 
-const shareToPercent = (shares: number): string => {
+export const shareToPercent = (shares: number): string => {
   return ((shares * 100) / 10000).toString()
 }
 
-interface Distribution {
+export interface Distribution {
   destination: string
   rTokenDist: number
   rsrDist: number
 }
 
-const formatDistribution = (data: Distribution[]) => {
+export const formatDistribution = (data: Distribution[]) => {
   let holders = '0'
   let stakers = '0'
   const external: { [x: string]: ExternalAddressSplit } = {}

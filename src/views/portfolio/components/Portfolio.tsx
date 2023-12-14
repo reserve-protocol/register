@@ -1,11 +1,14 @@
 import { Trans } from '@lingui/macro'
+import { useConnectModal } from '@rainbow-me/rainbowkit'
 import PositionIcon from 'components/icons/PositionIcon'
 import TokenLogo from 'components/icons/TokenLogo'
+import WalletIcon from 'components/icons/WalletIcon'
 import Base from 'components/icons/logos/Base'
 import Ethereum from 'components/icons/logos/Ethereum'
 import useRTokenLogo from 'hooks/useRTokenLogo'
 import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
+import { LogIn } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import {
   accountHoldingsAtom,
@@ -14,11 +17,12 @@ import {
   walletAtom,
 } from 'state/atoms'
 import { AccountRTokenPosition } from 'state/wallet/updaters/AccountUpdater'
-import { Box, BoxProps, Divider, Grid, Text } from 'theme-ui'
+import { Box, BoxProps, Card, Divider, Grid, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import { supportedChainList } from 'utils/constants'
+import RegisterAbout from 'views/home/components/RegisterAbout'
 import { useBalance } from 'wagmi'
 
 export const chainIcons = {
@@ -124,9 +128,32 @@ const Portfolio = (props: BoxProps) => {
   const rTokens = useAtomValue(accountTokensAtom)
   const wallet = useAtomValue(walletAtom)
   const holdings = useAtomValue(accountHoldingsAtom)
+  const { openConnectModal } = useConnectModal()
 
   if (!wallet) {
-    return null
+    return (
+      <Box mx={[1, 4]}>
+        <Text ml={5} mb={4} variant="sectionTitle">
+          <Trans>Portfolio</Trans>
+        </Text>
+        <Card
+          onClick={openConnectModal}
+          py={6}
+          sx={{
+            border: '2px dashed',
+            borderColor: 'darkBorder',
+            textAlign: 'center',
+            cursor: 'pointer',
+          }}
+        >
+          <LogIn size={32} />
+
+          <Text mt={3} sx={{ display: 'block' }}>
+            <Trans>Please connect your wallet</Trans>
+          </Text>
+        </Card>
+      </Box>
+    )
   }
 
   return (
@@ -186,7 +213,6 @@ const Portfolio = (props: BoxProps) => {
           </Box>
         )}
       </Box>
-      <Divider mx={[-1, 0]} my={[5, 8]} />
     </Box>
   )
 }

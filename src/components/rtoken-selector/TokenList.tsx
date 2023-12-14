@@ -44,17 +44,17 @@ const TokenList = memo(
           },
         }}
       >
-        <Box>
+        {/* <Box>
           <ActionItem
             sx={{ display: 'flex', alignItems: 'center' }}
             onClick={onHome}
           >
             <BackHomeIcon />
             <Text ml={2} sx={{ color: 'text' }}>
-              <Trans>Dashboard</Trans>
+              <Trans>Compare</Trans>
             </Text>
           </ActionItem>
-        </Box>
+        </Box> */}
         {!!Object.values(tokens).length && (
           <Divider
             sx={{ border: '1px dashed', borderColor: 'darkBorder' }}

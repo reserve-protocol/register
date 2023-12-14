@@ -1,12 +1,12 @@
 import { Trans } from '@lingui/macro'
-import TokenItem from 'components/token-item'
+import CirclesIcon from 'components/icons/CirclesIcon'
+import TokenLogo from 'components/icons/TokenLogo'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { rTokenAtom, selectedRTokenAtom } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import availableTokensAtom, { DEFAULT_LOGO } from './atoms'
-import BasketCubeIcon from '../icons/BasketCubeIcon'
 
 /**
  * Top header token display
@@ -36,25 +36,11 @@ const SelectedToken = () => {
   if (!selectedAddress) {
     return (
       <Box variant="layout.verticalAlign">
-        <Box
-          sx={{
-            display: ['none', 'flex'],
-          }}
-        >
-          <BasketCubeIcon />
-        </Box>
+        <CirclesIcon />
         <Text
           ml={2}
           sx={{
             display: ['none', 'flex'],
-          }}
-        >
-          <Trans>Select RToken</Trans>
-        </Text>
-        <Text
-          ml={2}
-          sx={{
-            display: ['flex', 'none'],
           }}
         >
           <Trans>RTokens</Trans>
@@ -64,11 +50,13 @@ const SelectedToken = () => {
   }
 
   return (
-    <TokenItem
-      sx={{ overflow: 'hidden', width: [60, 'auto'], textOverflow: 'ellipsis' }}
-      logo={logo}
-      symbol={symbol}
-    />
+    <Box
+      variant="layout.verticalAlign"
+      sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+    >
+      <TokenLogo width={16} mr={2} symbol={symbol} src={logo} />
+      <Text sx={{ display: ['none', 'block'] }}>{symbol}</Text>
+    </Box>
   )
 }
 

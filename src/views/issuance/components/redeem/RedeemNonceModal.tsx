@@ -5,7 +5,7 @@ import TokenItem from 'components/token-item'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { ChevronLeft } from 'react-feather'
 import { rTokenAssetsAtom, rTokenStateAtom } from 'state/atoms'
-import { Box, Checkbox, Divider, IconButton, Text } from 'theme-ui'
+import { Box, Checkbox, Divider, IconButton, Spinner, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { formatUnits } from 'viem'
 import {
@@ -55,6 +55,7 @@ const RedeemNonceModal = ({ onClose, ...props }: Props) => {
             <Box
               variant="layout.borderBox"
               p={3}
+              key={quoteNonce}
               mt={index ? 3 : 0}
               sx={{ backgroundColor: 'background' }}
             >
@@ -63,16 +64,16 @@ const RedeemNonceModal = ({ onClose, ...props }: Props) => {
                 sx={{ cursor: 'pointer' }}
                 onClick={() => handleSelection(Number(quoteNonce))}
               >
-                <Checkbox checked={Number(quoteNonce) === nonce} />
+                <Checkbox defaultChecked={Number(quoteNonce) === nonce} />
                 <Text ml="1">
                   {basketNonce === Number(quoteNonce) ? 'Current' : 'Previous'}{' '}
                   basket
                 </Text>
               </Box>
-              <Divider my={3} sx={{ borderStyle: 'dashed' }} />
+              <Divider mt={3} sx={{ borderStyle: 'dashed' }} />
               <Box>
                 {Object.keys(quote[quoteNonce]).map((erc20) => (
-                  <Box variant="layout.verticalAlign">
+                  <Box variant="layout.verticalAlign" key={erc20} mt={3}>
                     <TokenItem symbol={assets[erc20].token.symbol} />
                     <Text ml="auto">
                       {formatCurrency(
@@ -83,8 +84,16 @@ const RedeemNonceModal = ({ onClose, ...props }: Props) => {
                       )}
                     </Text>
                     {!!quote[quoteNonce][erc20].loss && (
-                      <Text ml="1" sx={{ color: 'danger' }}>
-                        (-{formatCurrency(quote[quoteNonce][erc20].loss)})
+                      <Text
+                        ml="3"
+                        sx={{
+                          display: 'block',
+                          flexShrink: 0,
+                          fontSize: 1,
+                          color: 'danger',
+                        }}
+                      >
+                        ({formatCurrency(quote[quoteNonce][erc20].loss)})
                       </Text>
                     )}
                   </Box>

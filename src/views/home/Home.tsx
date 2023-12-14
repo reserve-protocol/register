@@ -1,43 +1,16 @@
-import { Container } from 'components'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtom } from 'jotai'
 import mixpanel from 'mixpanel-browser'
-import { useEffect, useState } from 'react'
-import { selectedRTokenAtom, walletAtom } from 'state/atoms'
-import { Divider } from 'theme-ui'
-import About from './components/About'
-import Greet from './components/Greet'
-import Portfolio from './components/Portfolio'
-import Stats from './components/Stats'
-import TokenList from './components/TokenList'
-import Announcement from './components/Announcement'
-
-const VISITED_KEY = 'visited'
-
-const dividerProps = {
-  mx: [-1, -3],
-  my: [5, 8],
-}
+import { useEffect } from 'react'
+import { selectedRTokenAtom } from 'state/atoms'
+import Hero from './components/Hero'
+import CompareTokens from './components/CompareTokens'
+import RegisterAbout from './components/RegisterAbout'
 
 /**
  * Main home screen
  */
 const Home = () => {
-  const account = useAtomValue(walletAtom)
-  const [visited, setVisited] = useState(
-    !!account || !!localStorage.getItem(VISITED_KEY)
-  )
   const [token, setToken] = useAtom(selectedRTokenAtom)
-
-  const handleDismiss = () => {
-    setVisited(true)
-    localStorage.setItem(VISITED_KEY, 'true')
-  }
-
-  useEffect(() => {
-    if (account && !visited) {
-      handleDismiss()
-    }
-  }, [account])
 
   // Unselect rToken if on this view ("back" browser action for example)
   useEffect(() => {
@@ -48,16 +21,11 @@ const Home = () => {
   }, [])
 
   return (
-    <Container>
-      <Announcement />
-      {!account && !visited && <Greet onDismiss={handleDismiss} />}
-      {!!account && <Portfolio mt={5} mb={8} />}
-      <Stats />
-      <Divider mt={[0, 6]} mb={[5, 8]} />
-      <TokenList />
-      <Divider {...dividerProps} />
-      <About />
-    </Container>
+    <>
+      <Hero />
+      <CompareTokens />
+      <RegisterAbout />
+    </>
   )
 }
 
