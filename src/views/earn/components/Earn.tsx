@@ -8,7 +8,6 @@ import useRTokenPools from '../hooks/useRTokenPools'
 import TableFilters from './TableFilters'
 import { useAtomValue } from 'jotai'
 import { filteredPoolsAtom } from '../atoms'
-// import { poolsUrlsAtom } from 'state/pools/atoms'
 
 const Earn = () => {
   const { isLoading } = useRTokenPools()

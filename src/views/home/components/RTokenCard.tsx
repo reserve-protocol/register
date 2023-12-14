@@ -127,7 +127,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
               mr={3}
               medium
             >
-              {token.tokenApy.toFixed(1)}% APY
+              {token.tokenApy ? `${token.tokenApy.toFixed(1)}% APY` : 'Mint'}
             </Button>
             <Button
               onClick={() => handleNavigate(ROUTES.STAKING)}
@@ -136,7 +136,8 @@ const RTokenCard = ({ token, ...props }: Props) => {
               medium
               variant="muted"
             >
-              Stake RSR - {token.stakingApy.toFixed(1)}% APY
+              Stake RSR{' '}
+              {!!token.stakingApy && `- ${token.stakingApy.toFixed(1)}% APY`}
             </Button>
             <Button
               onClick={() => handleNavigate(ROUTES.OVERVIEW)}
