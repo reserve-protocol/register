@@ -1,25 +1,27 @@
 import YieldIcon from 'components/icons/YieldIcon'
 import { Table } from 'components/table'
-import { Box, Text } from 'theme-ui'
+import { Box, Grid, Text } from 'theme-ui'
 import useEarnTableColumns, {
   columnVisibility,
 } from '../hooks/useEarnTableColumns'
 import useRTokenPools from '../hooks/useRTokenPools'
 import TableFilters from './TableFilters'
 import { useAtomValue } from 'jotai'
+import { filteredPoolsAtom } from '../atoms'
 // import { poolsUrlsAtom } from 'state/pools/atoms'
 
 const Earn = () => {
-  const { data, isLoading } = useRTokenPools()
+  const { isLoading } = useRTokenPools()
+  const data = useAtomValue(filteredPoolsAtom)
   const columns = useEarnTableColumns()
 
   return (
     <Box variant="layout.wrapper" p={[1, 4]} py={[4, 7]}>
-      <Box variant="layout.verticalAlign" mb={[5, 7]}>
-        <Box variant="layout.verticalAlign">
+      <Grid columns={[1, '40px 1fr', 'auto 1fr 1fr']} mb={[5, 7]}>
+        <Box variant="layout.verticalAlign" sx={{ display: ['none', 'flex'] }}>
           <YieldIcon fontSize={60} />
         </Box>
-        <Box ml="2">
+        <Box ml={[3, 3, 0]}>
           <Text mb={[0, 1]} sx={{ fontSize: [3, 4] }} variant="strong">
             RToken yield opportunities
           </Text>
@@ -28,7 +30,7 @@ const Earn = () => {
           </Text>
         </Box>
         <TableFilters />
-      </Box>
+      </Grid>
 
       <Table
         sorting

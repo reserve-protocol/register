@@ -41,7 +41,7 @@ const DeployHero = () => {
         <Text mb={1} sx={{ fontSize: 4 }} variant="strong">
           <Trans>Deploy your own RToken</Trans>
         </Text>
-        <Text as="p" variant="legend">
+        <Text as="p" variant="legend" sx={{ maxWidth: 920 }}>
           <Trans>
             The creation of new RToken designs is permissionless. If you are the
             inventive type and have ideas for what assets should be in the
