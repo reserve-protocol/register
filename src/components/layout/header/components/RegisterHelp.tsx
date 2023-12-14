@@ -125,6 +125,7 @@ const RegisterHelp = () => {
         variant="hover"
         small
         py={2}
+        mr={[1, 0]}
         onClick={() => setVisible(!isVisible)}
       >
         <Box variant="layout.verticalAlign">

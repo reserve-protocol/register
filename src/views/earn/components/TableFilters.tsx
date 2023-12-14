@@ -5,10 +5,10 @@ import { SearchInput } from 'components/input'
 import { useAtom, useSetAtom } from 'jotai'
 import { useMemo, useState } from 'react'
 import { borderRadius } from 'theme'
-import { Box, BoxProps, Text } from 'theme-ui'
-import { poolFilterAtom, poolSearchFilterAtom } from '../atoms'
+import { Box, Text } from 'theme-ui'
 import { RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
+import { poolFilterAtom, poolSearchFilterAtom } from '../atoms'
 
 // Includes Eth+
 const ETH_ADDRESSES = [
@@ -34,7 +34,6 @@ const FilterOptions = () => {
         icon: (
           <Box
             sx={{
-              backgroundColor: 'white',
               borderRadius: '50%',
             }}
           >
@@ -103,7 +102,7 @@ const TableFilters = () => {
   return (
     <Box
       variant="layout.verticalAlign"
-      sx={{ flexShrink: 0, minWidth: 200 }}
+      sx={{ flexShrink: 0, minWidth: [200, 680, 'auto'] }}
       marginLeft={[0, 0, 'auto']}
     >
       <SearchInput

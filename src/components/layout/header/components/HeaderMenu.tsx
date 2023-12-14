@@ -10,6 +10,7 @@ import { Box, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import TokenToggle from './TokenToggle'
 import BasketCubeIcon from 'components/icons/BasketCubeIcon'
+import WalletOutlineIcon from 'components/icons/WalletOutlineIcon'
 
 const HeaderMenu = () => {
   const chainId = useAtomValue(chainIdAtom)
@@ -19,7 +20,7 @@ const HeaderMenu = () => {
       { label: t`Compare`, icon: <BasketCubeIcon />, to: ROUTES.HOME },
       {
         label: t`Portfolio`,
-        icon: <AsteriskIcon />,
+        icon: <WalletOutlineIcon fontSize={20} />,
         to: ROUTES.PORTFOLIO,
       },
       {

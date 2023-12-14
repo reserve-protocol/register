@@ -3,8 +3,9 @@ import { SVGProps } from 'react'
 const CirclesIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={13}
-    height={12}
+    width="1em"
+    viewBox="0 0 13 12"
+    height="1em"
     fill="none"
     {...props}
   >

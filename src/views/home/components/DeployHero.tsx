@@ -35,7 +35,7 @@ const DeployHero = () => {
         variant="layout.verticalAlign"
         pr={4}
       >
-        <Image src={DeployerImg} />
+        <Image width={175} height={175} src={DeployerImg} />
       </Box>
       <Box ml={[0, 4]}>
         <Text mb={1} sx={{ fontSize: 4 }} variant="strong">
@@ -56,7 +56,15 @@ const DeployHero = () => {
             <Trans>Go to the RToken Deployer</Trans>
           </Button>
           <Button medium variant="muted" mr={2}>
-            <Box variant="layout.verticalAlign">
+            <Box
+              variant="layout.verticalAlign"
+              onClick={() =>
+                window.open(
+                  'https://www.youtube.com/watch?v=hk2v0s9wXEo',
+                  '_blank'
+                )
+              }
+            >
               <Text mr={2}>
                 <Trans>Learn more</Trans>
               </Text>
