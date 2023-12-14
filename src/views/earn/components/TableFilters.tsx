@@ -17,26 +17,23 @@ const ETH_ADDRESSES = [
 ]
 const RSR_ADDRESSES = [RSR_ADDRESS[ChainId.Mainnet], RSR_ADDRESS[ChainId.Base]]
 
-const filterOptions = [
-  { stables: false, tokens: [] },
-  { stables: true, tokens: [] },
-  { stables: false, tokens: ETH_ADDRESSES },
-  { stables: false, tokens: RSR_ADDRESSES },
-]
-
 const FilterOptions = () => {
   const [selected, onSelect] = useState(0)
   const setFilters = useSetAtom(poolFilterAtom)
 
   const options = useMemo(
     () => [
-      { text: 'All', icon: <CirclesIcon /> },
+      {
+        text: 'All',
+        icon: <CirclesIcon />,
+        filter: { stables: false, tokens: [] },
+      },
       {
         text: 'Stables',
+        filter: { stables: true, tokens: [] },
         icon: (
           <Box
             sx={{
-              // padding: '4px',
               backgroundColor: 'white',
               borderRadius: '50%',
             }}
@@ -48,10 +45,12 @@ const FilterOptions = () => {
       {
         text: 'ETH',
         icon: <Ethereum />,
+        filter: { stables: false, tokens: ETH_ADDRESSES },
       },
       {
         text: 'RSR',
         icon: <TokenLogo symbol="rsr" />,
+        filter: { stables: false, tokens: RSR_ADDRESSES },
       },
     ],
     []
@@ -59,7 +58,7 @@ const FilterOptions = () => {
 
   const handleSelect = (option: number) => {
     onSelect(option)
-    setFilters(filterOptions[option])
+    setFilters(options[option]?.filter ?? 0)
   }
 
   return (

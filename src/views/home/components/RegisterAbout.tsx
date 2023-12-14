@@ -176,7 +176,6 @@ const RegisterAbout = () => (
       <DashedDivider />
       <About />
       <SocialLinks />
-
       <DashedDivider />
       <Box sx={{ textAlign: 'center' }}>
         <Logo />
