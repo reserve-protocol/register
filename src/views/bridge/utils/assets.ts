@@ -19,7 +19,7 @@ export interface BridgeAsset {
 }
 
 const BRIDGE_ASSETS: BridgeAsset[] = [
-    {
+  {
     L1symbol: 'ETH',
     L2symbol: 'ETH',
     L1chainId: ChainId.Mainnet,
@@ -60,6 +60,20 @@ const BRIDGE_ASSETS: BridgeAsset[] = [
     }`,
     L1name: 'Electronic Dollar',
     L2name: 'Electronic Dollar',
+    decimals: 18,
+    protocol: 'OP',
+  },
+  {
+    L1symbol: 'crvUSD',
+    L2symbol: 'crvUSD',
+    L1chainId: ChainId.Mainnet,
+    L2chainId: ChainId.Base,
+    L1contract: '0xf939E0A03FB07F59A73314E73794Be0E57ac1b4E',
+    L2contract: '0x417Ac0e078398C154EdFadD9Ef675d30Be60Af93',
+    L1icon: '/svgs/crvusd.svg',
+    L2icon: '/svgs/crvusd.svg',
+    L1name: 'Curve.Fi USD Stablecoin',
+    L2name: 'Curve.Fi USD Stablecoin',
     decimals: 18,
     protocol: 'OP',
   },
