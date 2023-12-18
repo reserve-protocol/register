@@ -3,10 +3,10 @@ import Button from 'components/button'
 import ChainSelector from 'components/chain-selector/ChainSelector'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
 import AsteriskIcon from 'components/icons/AsteriskIcon'
+import CustomHelpIcon from 'components/icons/CustomHelpIcon'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import Popup from 'components/popup'
 import { useState } from 'react'
-import { HelpCircle } from 'react-feather'
 import { borderRadius } from 'theme'
 import { Box, BoxProps, Divider, Text } from 'theme-ui'
 import {
@@ -40,7 +40,7 @@ const HelpItem = ({
       cursor: 'pointer',
       userSelect: 'none',
       ':hover': {
-        borderColor: 'primary',
+        borderColor: 'text',
       },
     }}
     onClick={() => {
@@ -118,7 +118,7 @@ const RegisterHelp = () => {
       onDismiss={() => setVisible(false)}
       content={<HelpContent onClose={() => setVisible(false)} />}
       containerProps={{
-        sx: { border: '2px solid', maxWidth: 270, borderColor: 'darkBorder' },
+        sx: { border: '2px solid', maxWidth: 270, borderColor: 'border' },
       }}
     >
       <Button
@@ -127,15 +127,16 @@ const RegisterHelp = () => {
         py={2}
         mr={[1, 0]}
         onClick={() => setVisible(!isVisible)}
+        px={{ borderRadius: borderRadius.inner }}
       >
         <Box variant="layout.verticalAlign">
-          <HelpCircle size={16} />
+          <CustomHelpIcon />
           <Box
             variant="layout.verticalAlign"
             sx={{
               display: ['none', 'flex'],
               flexShrink: 0,
-              marginLeft: [0, '8px'],
+              marginLeft: [0, '2px'],
             }}
           >
             <AsteriskIcon />
