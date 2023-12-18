@@ -38,7 +38,7 @@ const ProtocolStats = () => {
   return (
     <Box variant="layout.wrapper" sx={{ width: '100%' }} mt={7}>
       <Card
-        mx={[1, 3]}
+        mx={[1, 4]}
         p={6}
         sx={{
           backgroundColor: 'contentBackground',

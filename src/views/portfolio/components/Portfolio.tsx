@@ -132,7 +132,7 @@ const Portfolio = (props: BoxProps) => {
 
   if (!wallet) {
     return (
-      <Box mx={[1, 4]}>
+      <Box mx={[1, 0]}>
         <Text ml={5} mb={4} variant="sectionTitle">
           <Trans>Portfolio</Trans>
         </Text>
