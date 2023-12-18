@@ -36,7 +36,7 @@ const ProtocolStats = () => {
   ]
 
   return (
-    <Box variant="layout.wrapper" sx={{ width: '100%' }} mt={7}>
+    <Box variant="layout.wrapper" sx={{ width: '100%' }} mt={[5, 7]}>
       <Card
         mx={[1, 4]}
         p={6}
@@ -101,14 +101,14 @@ const About = () => (
         <Trans>On Ethereum & Base</Trans>
       </Text>
     </Box>
-    <Box sx={{ maxWidth: 840, textAlign: 'center' }} mt={4}>
+    <Box sx={{ maxWidth: 840, textAlign: 'center' }} mt={[2, 4]}>
       <Text
         variant="title"
         sx={{ fontSize: [5, 7], lineHeight: ['42px', '56px'] }}
       >
         <Trans>A new path to better money, already set in motion</Trans>
       </Text>
-      <Text as="p" variant="legend" px={[4, 0]} mt={4}>
+      <Text as="p" variant="legend" px={[4, 0]} mt={[3, 4]}>
         Reserve Protocol’s RToken Factory Contracts: A platform for creating
         currencies backed by an array of ERC20 collateral. Use Register.app to
         mint, stake and govern RTokens. Learn more at{' '}
