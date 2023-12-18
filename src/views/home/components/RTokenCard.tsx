@@ -30,7 +30,7 @@ const ChainBadge = ({ chain }: { chain: number }) => (
     }}
   >
     <ChainLogo chain={chain} />
-    <Text ml="2">{CHAIN_TAGS[chain]}</Text>
+    <Text ml="1">{CHAIN_TAGS[chain]}</Text>
   </Box>
 )
 

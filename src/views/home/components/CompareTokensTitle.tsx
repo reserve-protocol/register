@@ -72,18 +72,22 @@ const CompareTokensTitle = () => {
       variant="layout.verticalAlign"
       sx={{ justifyContent: 'center' }}
       mb={6}
-      mt={3}
+      mt={6}
     >
       <Box
         mr={5}
         variant="layout.verticalAlign"
-        sx={{ svg: { marginRight: 2 }, display: ['none', 'flex'] }}
+        sx={{
+          svg: { marginRight: 2 },
+          display: ['none', 'flex'],
+          opacity: 0.4,
+        }}
       >
         {[...boxes]}
       </Box>
 
       <Box sx={{ textAlign: 'center' }}>
-        <Text variant="sectionTitle" mb={2}>
+        <Text variant="sectionTitle" mb={1}>
           <Trans>Browse RToken Currencies</Trans>
         </Text>
         <Text variant="legend">
@@ -96,7 +100,11 @@ const CompareTokensTitle = () => {
       <Box
         ml={5}
         variant="layout.verticalAlign"
-        sx={{ svg: { marginRight: 2 }, display: ['none', 'flex'] }}
+        sx={{
+          svg: { marginRight: 2 },
+          display: ['none', 'flex'],
+          opacity: 0.4,
+        }}
       >
         {boxes.slice().reverse()}
       </Box>

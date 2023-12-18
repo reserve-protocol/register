@@ -156,7 +156,7 @@ const About = () => (
 )
 
 const DashedDivider = () => (
-  <Divider sx={{ border: '1px dashed', borderColor: 'text' }} my={[7, 8]} />
+  <Divider sx={{ border: '0.5px dashed', borderColor: 'text' }} my={[7, 8]} />
 )
 
 /**
@@ -168,8 +168,8 @@ const RegisterAbout = () => (
     px={[1, 4]}
     sx={{ borderTop: '1px solid', borderColor: 'border' }}
   >
-    <Box variant="layout.wrapper" my={[3, 7]} px={4}>
-      <Text variant="strong" mb={7} sx={{ fontSize: [4, 5] }}>
+    <Box variant="layout.wrapper" my={[7, 8]} px={[4, 7]}>
+      <Text variant="strong" mb={[6, 8]} sx={{ fontSize: [5, 5] }}>
         <Trans>Not sure what you’re looking at?</Trans>
       </Text>
       <Intro />
