@@ -39,6 +39,7 @@ const Earn = () => {
         columns={columns}
         data={data}
         columnVisibility={columnVisibility}
+        sx={{ borderRadius: '0 0 20px 20px', overflow: 'hidden' }}
       />
     </Box>
   )
