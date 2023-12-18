@@ -1,5 +1,6 @@
 import CirclesIcon from 'components/icons/CirclesIcon'
 import TokenLogo from 'components/icons/TokenLogo'
+import EarnNavIcon from 'components/icons/EarnNavIcon'
 import Ethereum from 'components/icons/logos/Ethereum'
 import { SearchInput } from 'components/input'
 import { useAtom, useSetAtom } from 'jotai'
@@ -31,15 +32,7 @@ const FilterOptions = () => {
       {
         text: 'Stables',
         filter: { stables: true, tokens: [] },
-        icon: (
-          <Box
-            sx={{
-              borderRadius: '50%',
-            }}
-          >
-            <Text variant="strong">$</Text>
-          </Box>
-        ),
+        icon: <EarnNavIcon />,
       },
       {
         text: 'ETH',
@@ -48,7 +41,7 @@ const FilterOptions = () => {
       },
       {
         text: 'RSR',
-        icon: <TokenLogo symbol="rsr" />,
+        icon: <TokenLogo symbol="rsr" width="16px" />,
         filter: { stables: false, tokens: RSR_ADDRESSES },
       },
     ],
@@ -62,9 +55,9 @@ const FilterOptions = () => {
 
   return (
     <Box
-      sx={{ borderRadius: borderRadius.boxes, background: 'contentBackground' }}
+      sx={{ borderRadius: borderRadius.boxes, background: 'border' }}
       variant="layout.verticalAlign"
-      ml={3}
+      mx={3}
       p={1}
     >
       {options.map(({ text, icon }, index) => (
@@ -74,8 +67,8 @@ const FilterOptions = () => {
           sx={{
             cursor: 'pointer',
             backgroundColor: index === selected ? 'background' : 'transparent',
-            border: '1px solid',
-            borderColor: index === selected ? 'primary' : 'transparent',
+            // border: '1px solid',
+            // borderColor: index === selected ? 'primary' : 'transparent',
             width: ['40px', 'auto'],
             height: '32px',
             borderRadius: borderRadius.inner,
@@ -87,7 +80,7 @@ const FilterOptions = () => {
           onClick={() => handleSelect(index)}
         >
           {icon}{' '}
-          <Text variant="strong" ml="2" sx={{ display: ['none', 'block'] }}>
+          <Text ml="2" sx={{ display: ['none', 'block'] }}>
             {text}
           </Text>
         </Box>
@@ -110,7 +103,7 @@ const TableFilters = () => {
         p={2}
         value={search}
         onChange={setSearch}
-        sx={{ maxWidth: ['auto', 200, 160] }}
+        sx={{ maxWidth: ['auto', 200, 160], borderRadius: borderRadius.boxes }}
       />
       <FilterOptions />
     </Box>

@@ -2,14 +2,15 @@ import { SVGProps } from 'react'
 const AsteriskIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={16}
-    height={16}
+    width={21}
+    height={20}
     fill="none"
     {...props}
   >
     <path
       stroke="currentColor"
-      d="m8 8 5.04-5.04M8 8 2.96 2.96M8 8l-5.04 5.04M8 8l5.04 5.04M8 8h6.3M8 8V1.7M8 8H1.7M8 8v6.3"
+      strokeWidth={1.25}
+      d="m10.5 10 6.3-6.3M10.5 10 4.2 3.7m6.3 6.3-6.3 6.3m6.3-6.3 6.3 6.3M10.5 10h7.875M10.5 10V2.125m0 7.875H2.625m7.875 0v7.875"
     />
   </svg>
 )

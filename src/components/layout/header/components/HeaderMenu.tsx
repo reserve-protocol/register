@@ -11,6 +11,7 @@ import { ROUTES } from 'utils/constants'
 import TokenToggle from './TokenToggle'
 import BasketCubeIcon from 'components/icons/BasketCubeIcon'
 import WalletOutlineIcon from 'components/icons/WalletOutlineIcon'
+import EarnNavIcon from 'components/icons/EarnNavIcon'
 
 const HeaderMenu = () => {
   const chainId = useAtomValue(chainIdAtom)
@@ -25,17 +26,7 @@ const HeaderMenu = () => {
       },
       {
         label: t`Earn`,
-        icon: (
-          <Text
-            variant="strong"
-            sx={{
-              width: 20,
-              textAlign: 'center',
-            }}
-          >
-            $
-          </Text>
-        ),
+        icon: <EarnNavIcon fontSize={20} />,
         to: ROUTES.EARN,
       },
       { label: t`Bridge`, icon: <BridgeNavIcon />, to: ROUTES.BRIDGE },
@@ -49,7 +40,7 @@ const HeaderMenu = () => {
       p={1}
       sx={{
         border: '1px solid',
-        borderColor: 'darkBorder',
+        borderColor: 'border',
         fontSize: 1,
         borderRadius: borderRadius.boxes,
       }}
@@ -71,9 +62,12 @@ const HeaderMenu = () => {
                 justifyContent: 'center',
                 width: [40, 'auto'],
                 height: '40px',
+                ':hover': {
+                  backgroundColor: isActive ? 'background' : 'border',
+                },
               }}
               p={2}
-              ml={index ? 2 : 0}
+              ml={index ? 1 : 0}
             >
               {menuItem.icon}
               <Text ml="2" sx={{ display: ['none', 'none', 'block'] }}>
@@ -90,7 +84,10 @@ const HeaderMenu = () => {
           backgroundColor: !!selectedRToken ? 'background' : 'transparent',
           border: '1px solid',
           borderColor: !!selectedRToken ? 'primary' : 'transparent',
-          borderRadius: borderRadius.boxes,
+          borderRadius: borderRadius.inner,
+          ':hover': {
+            backgroundColor: !!selectedRToken ? 'background' : 'border',
+          },
         }}
       >
         <TokenToggle />

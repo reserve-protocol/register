@@ -36,10 +36,10 @@ const ProtocolStats = () => {
   ]
 
   return (
-    <Box variant="layout.wrapper" sx={{ width: '100%' }} mt={7}>
+    <Box variant="layout.wrapper" sx={{ width: '100%' }} mt={[5, 7]}>
       <Card
-        mx={[1, 3]}
-        p={5}
+        mx={[1, 4]}
+        p={6}
         sx={{
           backgroundColor: 'contentBackground',
           flexGrow: 1,
@@ -65,11 +65,11 @@ const ProtocolStats = () => {
                   // mx={3}
                   sx={{
                     display: ['none', 'block'],
-                    fontSize: 4,
+                    fontSize: 5,
                     color: 'secondaryText',
                     position: 'absolute',
                     left: '-12px',
-                    top: 'calc(50% - 10px)',
+                    top: 'calc(50% - 20px)',
                   }}
                 >
                   <YieldIcon />
@@ -101,18 +101,17 @@ const About = () => (
         <Trans>On Ethereum & Base</Trans>
       </Text>
     </Box>
-    <Box sx={{ maxWidth: 612, textAlign: 'center' }} mt={3}>
+    <Box sx={{ maxWidth: 840, textAlign: 'center' }} mt={[2, 4]}>
       <Text
         variant="title"
-        sx={{ fontSize: [5, 6], lineHeight: ['42px', '56px'] }}
+        sx={{ fontSize: [5, 7], lineHeight: ['42px', '56px'] }}
       >
         <Trans>A new path to better money, already set in motion</Trans>
       </Text>
-      <Text as="p" variant="legend" px={[4, 0]} mt={4}>
-        Reserve's RToken Factory Contracts: A platform for creating tokens
-        backed by a diverse array of ERC20 collateral. With Register.app, engage
-        in minting, staking, and governance of RTokens. Learn more in-depth
-        about the project at{' '}
+      <Text as="p" variant="legend" px={[4, 0]} mt={[3, 4]}>
+        Reserve Protocol’s RToken Factory Contracts: A platform for creating
+        currencies backed by an array of ERC20 collateral. Use Register.app to
+        mint, stake and govern RTokens. Learn more at{' '}
         <Link
           sx={{ textDecoration: 'underline' }}
           href="https://reserve.org/"
@@ -134,7 +133,7 @@ const Hero = () => (
       borderBottom: '1px solid',
       borderColor: 'border',
     }}
-    py={7}
+    py={[5, 8]}
     px={[3]}
   >
     <About />

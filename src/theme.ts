@@ -427,9 +427,10 @@ export const theme: Theme = {
       backgroundColor: 'transparent',
       border: '1px solid',
       borderColor: 'transparent',
+
       color: 'text',
       '&:hover': {
-        borderColor: 'text',
+        backgroundColor: 'border',
       },
     },
     muted: {

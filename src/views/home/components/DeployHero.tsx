@@ -28,17 +28,17 @@ const DeployHero = () => {
       <Box
         sx={{
           borderRight: '1px solid',
-          borderColor: 'darkBorder',
+          borderColor: 'border',
           flexShrink: 0,
           display: ['none', 'block'],
         }}
         variant="layout.verticalAlign"
         pr={4}
       >
-        <Image width={175} height={175} src={DeployerImg} />
+        <Image width={205} height={205} src={DeployerImg} />
       </Box>
       <Box ml={[0, 4]}>
-        <Text mb={1} sx={{ fontSize: 4 }} variant="strong">
+        <Text mb={2} sx={{ fontSize: 4 }} variant="strong">
           <Trans>Deploy your own RToken</Trans>
         </Text>
         <Text as="p" variant="legend" sx={{ maxWidth: 920 }}>
@@ -51,11 +51,11 @@ const DeployHero = () => {
             community.
           </Trans>
         </Text>
-        <Flex mt={3}>
+        <Flex mt={4}>
           <Button onClick={handleDeploy} medium variant="blue" mr={3}>
             <Trans>Go to the RToken Deployer</Trans>
           </Button>
-          <Button medium variant="muted" mr={2}>
+          <Button medium variant="transparent" mr={2}>
             <Box
               variant="layout.verticalAlign"
               onClick={() =>
@@ -66,7 +66,7 @@ const DeployHero = () => {
               }
             >
               <Text mr={2}>
-                <Trans>Learn more</Trans>
+                <Trans>Watch an intro to RTokens</Trans>
               </Text>
               <ExternalArrowIcon />
             </Box>
