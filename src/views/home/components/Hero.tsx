@@ -101,7 +101,7 @@ const About = () => (
         <Trans>On Ethereum & Base</Trans>
       </Text>
     </Box>
-    <Box sx={{ maxWidth: 720, textAlign: 'center' }} mt={4}>
+    <Box sx={{ maxWidth: 840, textAlign: 'center' }} mt={4}>
       <Text
         variant="title"
         sx={{ fontSize: [5, 7], lineHeight: ['42px', '56px'] }}
@@ -109,10 +109,9 @@ const About = () => (
         <Trans>A new path to better money, already set in motion</Trans>
       </Text>
       <Text as="p" variant="legend" px={[4, 0]} mt={4}>
-        Reserve's RToken Factory Contracts: A platform for creating tokens
-        backed by a diverse array of ERC20 collateral. With Register.app, engage
-        in minting, staking, and governance of RTokens. Learn more in-depth
-        about the project at{' '}
+        Reserve Protocol’s RToken Factory Contracts: A platform for creating
+        currencies backed by an array of ERC20 collateral. Use Register.app to
+        mint, stake and govern RTokens. Learn more at{' '}
         <Link
           sx={{ textDecoration: 'underline' }}
           href="https://reserve.org/"
