@@ -1,12 +1,12 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import rtokens from '@lc-labs/rtokens'
+import { useAtom } from 'jotai'
+import { useCallback, useEffect } from 'react'
+import { Pool, poolsAtom } from 'state/pools/atoms'
 import useSWRImmutable from 'swr/immutable'
 import { StringMap } from 'types'
-import rtokens from '@lc-labs/rtokens'
 import { EUSD_ADDRESS, RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import { RSR } from 'utils/constants'
-import { atom, useAtom } from 'jotai'
-import { Pool, poolsAtom } from 'state/pools/atoms'
 
 // Only map what I care about the response...
 interface DefillamaPool {
@@ -65,8 +65,6 @@ const OTHER_POOL_TOKENS: Record<
   },
 }
 
-const REWARD_TOKENS: Record<string, string> = {}
-
 const POOL_URL: Record<string, string> = {
   // Curve
   '28c0ad15-ecaf-4b14-8ad6-06ded47566b1':
@@ -96,7 +94,6 @@ const POOL_URL: Record<string, string> = {
     'https://www.convexfinance.com/stake/ethereum/238',
   '19131596-dddf-4a6c-af71-31f75cee6e6e':
     'https://www.convexfinance.com/stake/ethereum/125',
-
   // Yearn
   'f8eff410-1a99-49be-b3e1-23966a94b57b':
     'https://yearn.fi/vaults/1/0x6a7A0481e476827857704B87bdeE7922D058cbE4',
@@ -105,8 +102,6 @@ const POOL_URL: Record<string, string> = {
   '313de697-1863-4c81-bf57-6fe40976823b':
     'https://yearn.fi/vaults/1/0x5383C1Ab5beac04d6A6E6872Cc6a422f2Dc25576',
 }
-
-const DEFILLAMA_ENDPOINT = 'https://yields.llama.fi/poolsEnriched?pool='
 
 // TODO: May use a central Updater component for defillama data, currently being traversed twice for APYs and this
 const useRTokenPools = () => {

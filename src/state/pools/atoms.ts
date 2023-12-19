@@ -1,5 +1,5 @@
 import { atom } from 'jotai'
-import { atomWithLoadable } from 'utils/atoms/utils'
+import { BRIDGE_RTOKEN_MAP, LISTED_RTOKEN_ADDRESSES } from 'utils/constants'
 
 export interface Pool {
   id: string
@@ -16,23 +16,58 @@ export interface Pool {
   url: string
 }
 
-type PoolMap = Record<string, string>
+export interface RTokenPoolsMap {
+  [x: string]: {
+    minApy: number
+    maxApy: number
+    pools: Pool[]
+  }
+}
+
+export const ALL_LISTED_RTOKEN_ADDRESSES = new Set(
+  Object.values(LISTED_RTOKEN_ADDRESSES).reduce((acc, curr) => [
+    ...acc,
+    ...curr,
+  ])
+)
 
 export const poolsAtom = atom<Pool[]>([])
 
-const DEFILLAMA_ENDPOINT = 'https://yields.llama.fi/poolsEnriched?pool='
+export const rTokenPoolsAtom = atom<RTokenPoolsMap>((get) => {
+  const pools = get(poolsAtom)
 
-// export const poolsUrlsAtom = atomWithLoadable(async (get) => {
-//   const pools = get(poolsAtom)
-//   const mapping: PoolMap = {}
+  if (!pools.length) {
+    return {}
+  }
 
-//   const results = await Promise.all(
-//     pools.map((pool) =>
-//       fetch(`${DEFILLAMA_ENDPOINT}${pool.id}`).then((res) => res.json())
-//     )
-//   )
+  return pools.reduce((rTokenPools, pool) => {
+    for (const token of pool.underlyingTokens) {
+      if (
+        ALL_LISTED_RTOKEN_ADDRESSES.has(token.address.toLowerCase()) ||
+        BRIDGE_RTOKEN_MAP[token.address]
+      ) {
+        const address = BRIDGE_RTOKEN_MAP[token.address] || token.address
 
-//   console.log('results', results)
+        if (rTokenPools[address]) {
+          rTokenPools[address].pools.push(pool)
+          rTokenPools[address].minApy = Math.min(
+            rTokenPools[address].minApy,
+            pool.apy
+          )
+          rTokenPools[address].maxApy = Math.max(
+            rTokenPools[address].maxApy,
+            pool.apy
+          )
+        } else {
+          rTokenPools[address] = {
+            minApy: pool.apy,
+            maxApy: pool.apy,
+            pools: [pool],
+          }
+        }
+      }
+    }
 
-//   return mapping
-// })
+    return rTokenPools
+  }, {} as RTokenPoolsMap)
+})
