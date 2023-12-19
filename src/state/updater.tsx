@@ -1,5 +1,3 @@
-import { Component } from 'react'
-import RpayFeed from './rpay/RpayFeed'
 import RTokenUpdater from './rtoken/updater'
 import CollateralYieldUpdater from './updaters/CollateralYieldUpdater'
 import PricesUpdater from './updaters/PriceUpdater'
@@ -14,7 +12,6 @@ const Updater = () => {
     <>
       <PricesUpdater />
       <AccountUpdater />
-      <RpayFeed />
       <RTokenUpdater />
       <CollateralYieldUpdater />
       <TokenBalancesUpdater />

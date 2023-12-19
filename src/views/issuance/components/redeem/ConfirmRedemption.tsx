@@ -1,6 +1,6 @@
 import { t } from '@lingui/macro'
-import RToken from 'abis/RToken'
 import RSVManager from 'abis/RSVManager'
+import RToken from 'abis/RToken'
 import RTokenLegacy from 'abis/RTokenLegacy'
 import TransactionModal from 'components/transaction-modal'
 import { atom, useAtom, useAtomValue } from 'jotai'
@@ -13,6 +13,7 @@ import {
 } from 'state/atoms'
 import { formatCurrency, safeParseEther } from 'utils'
 import { RSV_MANAGER } from 'utils/rsv'
+import { parseEther } from 'viem'
 import {
   isValidRedeemAmountAtom,
   redeemAmountAtom,
@@ -51,8 +52,8 @@ const callAtom = atom((get) => {
   return {
     abi: RToken,
     address: rToken.address,
-    method: 'redeemCustom',
-    args: [account, parsedAmount, [BigInt(nonce)], [1n, [], []]],
+    functionName: 'redeemCustom',
+    args: [account, parsedAmount, [BigInt(nonce)], [parseEther('1')], [], []],
   }
 })
 

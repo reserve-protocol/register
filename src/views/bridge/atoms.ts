@@ -1,24 +1,33 @@
 import BaseBridge from 'abis/BaseBridge'
 import { atom } from 'jotai'
 import { chainIdAtom, walletAtom } from 'state/atoms'
+import { publicClient } from 'state/chain'
 import { formatCurrency, safeParseEther } from 'utils'
 import atomWithDebounce from 'utils/atoms/atomWithDebounce'
+import { atomWithLoadable } from 'utils/atoms/utils'
 import { ChainId } from 'utils/chains'
+import { Address, ContractFunctionConfig, formatEther, formatUnits } from 'viem'
+import { isWrappingAtom } from 'views/issuance/components/wrapping/atoms'
 import { UsePrepareContractWriteConfig, erc20ABI } from 'wagmi'
+import BRIDGE_ASSETS, { BridgeAsset } from './utils/assets'
 import {
   L1_BRIDGE_ADDRESS,
   L1_BRIDGE_TOKEN_ADDRESS,
   L2_BRIDGE_ADDRESS,
   L2_L1_MESSAGER_ADDRESS,
 } from './utils/constants'
-import BRIDGE_ASSETS, { BridgeAsset } from './utils/assets'
-import { atomWithLoadable } from 'utils/atoms/utils'
-import { isWrappingAtom } from 'views/issuance/components/wrapping/atoms'
-import { publicClient } from 'state/chain'
-import { Address, ContractFunctionConfig, formatEther, formatUnits } from 'viem'
+
+const defaultBridgeAsset =
+  new URL(window.location.href.replace('/#/', '/')).searchParams.get('asset') ??
+  'rsr'
+
+const defaultToken =
+  BRIDGE_ASSETS.find(
+    (asset) => asset.L1symbol.toLowerCase() === defaultBridgeAsset.toLowerCase()
+  ) || BRIDGE_ASSETS[1]
 
 export const bridgeTokensAtom = atom(BRIDGE_ASSETS)
-export const selectedBridgeToken = atom<BridgeAsset>(BRIDGE_ASSETS[1]) // default RSR
+export const selectedBridgeToken = atom<BridgeAsset>(defaultToken) // default RSR
 
 export const isBridgeWrappingAtom = atom(true)
 

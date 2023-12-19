@@ -1,5 +1,5 @@
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
-import { Link, LinkProps } from 'theme-ui'
+import { Link, LinkProps, Text } from 'theme-ui'
 
 const GoTo = (props: LinkProps) => {
   return (
@@ -9,7 +9,9 @@ const GoTo = (props: LinkProps) => {
       sx={{ cursor: 'pointer' }}
       {...props}
     >
-      <ExternalArrowIcon />
+      <Text variant="legend" sx={{ ':hover': { color: 'text' } }}>
+        <ExternalArrowIcon />
+      </Text>
     </Link>
   )
 }

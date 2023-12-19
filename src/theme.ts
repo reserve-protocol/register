@@ -13,6 +13,7 @@ export const centeredContent = {
 export const borderRadius = {
   inputs: 6,
   boxes: 14,
+  inner: '10px',
 }
 export const baseButton = {
   borderRadius: 50,
@@ -72,6 +73,12 @@ export const smallButton = {
   paddingLeft: '10px',
   paddingRight: '10px',
   borderRadius: 6,
+}
+
+export const mediumButton = {
+  padding: ['4px 10px 4px 10px', '12px 16px 12px 16px'],
+  fontSize: [1, 2],
+  borderRadius: borderRadius.inputs,
 }
 
 export const colors = {
@@ -136,11 +143,12 @@ export const colors = {
 
 export const theme: Theme = {
   breakpoints: ['52em', '64em', '72em', '100em'],
-  space: [0, 4, 8, 16, 24, 32, 40, 48, 80, 256],
+  space: [0, 4, 8, 16, 24, 32, 40, 48, 80, 256], // 0-9
   fonts: {
     body: 'Satoshi, sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,  "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
     heading: 'inherit',
     monospace: 'Menlo, monospace',
+    fontDisplay: 'swap',
   },
   fontSizes: [12, 14, 16, 20, 24, 32, 48, 56, 96],
   fontWeights: {
@@ -375,6 +383,10 @@ export const theme: Theme = {
   },
   buttons: {
     primary: baseButton,
+    blue: {
+      ...baseButton,
+      backgroundColor: 'rBlue',
+    },
     accent: {
       ...baseButton,
       backgroundColor: 'accentBG',
@@ -404,10 +416,21 @@ export const theme: Theme = {
       ...baseButton,
       backgroundColor: 'transparent',
       border: '1px solid',
-      borderColor: 'border',
+      borderColor: 'darkBorder',
       color: 'text',
       '&:hover': {
         borderColor: 'text',
+      },
+    },
+    hover: {
+      ...baseButton,
+      backgroundColor: 'transparent',
+      border: '1px solid',
+      borderColor: 'transparent',
+
+      color: 'text',
+      '&:hover': {
+        backgroundColor: 'border',
       },
     },
     muted: {

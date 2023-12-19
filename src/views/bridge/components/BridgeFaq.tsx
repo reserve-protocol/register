@@ -75,7 +75,10 @@ const BridgeFaq = () => (
       </Box>
       <Box>
         <Question title={t`Are there any fees involved in using Base Bridge?`}>
-          <Trans>Are there any fees involved in using Base Bridge?</Trans>
+          <Trans>
+            There are network fees involved which are used to pay for the gas
+            costs on Ethereum and Base. There are no additional fees.
+          </Trans>
         </Question>
         <Question title={t`Can I cancel a withdrawal?`}>
           <Trans>

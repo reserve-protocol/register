@@ -78,7 +78,7 @@ const RTokenStatus = () => {
 const TokenToggle = () => (
   <>
     <RTokenSelector />
-    <RTokenStatus />
+    {/* <RTokenStatus /> */}
   </>
 )
 

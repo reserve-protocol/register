@@ -44,23 +44,6 @@ const TokenList = memo(
           },
         }}
       >
-        <Box>
-          <ActionItem
-            sx={{ display: 'flex', alignItems: 'center' }}
-            onClick={onHome}
-          >
-            <BackHomeIcon />
-            <Text ml={2} sx={{ color: 'text' }}>
-              <Trans>Dashboard</Trans>
-            </Text>
-          </ActionItem>
-        </Box>
-        {!!Object.values(tokens).length && (
-          <Divider
-            sx={{ border: '1px dashed', borderColor: 'darkBorder' }}
-            my={0}
-          />
-        )}
         {Object.values(tokens).map(({ address, logo, symbol, chainId }) => (
           <ActionItem
             key={address}

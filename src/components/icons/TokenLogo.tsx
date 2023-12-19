@@ -52,6 +52,8 @@ const IMGS = new Set([
   'mrp-aweth',
   'mrp-awteth',
   'mrp-asteth',
+  'frax',
+  'crvusd',
 ])
 
 const TokenLogo = ({

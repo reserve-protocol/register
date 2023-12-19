@@ -14,6 +14,7 @@ import {
   selectedBridgeToken,
 } from '../atoms'
 import { BridgeAsset } from '../utils/assets'
+import { useSearchParams } from 'react-router-dom'
 
 const searchAtom = atom('')
 const recordsAtom = atom((get) => {
@@ -144,10 +145,13 @@ const TokenList = ({ onSelect }: { onSelect(token: BridgeAsset): void }) => {
 const BridgeTokenModal = ({ onClose }: { onClose(): void }) => {
   const [search, setSearch] = useAtom(searchAtom)
   const setToken = useSetAtom(selectedBridgeToken)
+  const [searchParams, setSearchParams] = useSearchParams()
 
   const handleSelect = useCallback(
     (token: BridgeAsset) => {
       setToken(token)
+      searchParams.set('asset', token.L1symbol)
+      setSearchParams(searchParams)
       onClose()
     },
     [setToken]

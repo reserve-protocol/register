@@ -32,6 +32,8 @@ import { useSwitchNetwork } from 'wagmi'
 import Layout from './components/layout'
 import LanguageProvider from './i18n'
 import { theme } from './theme'
+import PortfolioWrapper from 'views/portfolio'
+import EarnWrapper from 'views/earn'
 
 mixpanel.init(import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key', {
   track_pageview: true,
@@ -147,6 +149,8 @@ const App = () => {
                     </Suspense>
                   }
                 />
+                <Route path={ROUTES.PORTFOLIO} element={<PortfolioWrapper />} />
+                <Route path={ROUTES.EARN} element={<EarnWrapper />} />
               </Routes>
             </Layout>
           </ChainProvider>

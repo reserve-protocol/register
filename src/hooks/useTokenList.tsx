@@ -1,7 +1,15 @@
+import rtokens from '@lc-labs/rtokens'
+import { RevenueSplit } from 'components/rtoken-setup/atoms'
 import { gql } from 'graphql-request'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
-import { chainIdAtom, rpayOverviewAtom } from 'state/atoms'
+import {
+  chainIdAtom,
+  collateralYieldAtom,
+  rpayOverviewAtom,
+  rsrPriceAtom,
+} from 'state/atoms'
+import { formatDistribution } from 'state/rtoken/atoms/rTokenRevenueSplitAtom'
 import { EUSD_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import {
@@ -26,9 +34,14 @@ export interface ListedToken {
   targetUnits: string
   tokenApy: number
   backing: number
-  staked: number
+  overcollaterization: number
   stakingApy: number
+  basketApy: number
   chain: number
+  logo: string
+  distribution: RevenueSplit
+  collaterals: { id: string; symbol: string }[]
+  collateralDistribution: Record<string, { dist: string; target: string }>
 }
 
 // TODO: Cache only while the list is short
@@ -53,25 +66,18 @@ const tokenListQuery = gql`
         backing
         backingRSR
         targetUnits
-        recentRate: hourlySnapshots(
-          first: 1
-          orderBy: timestamp
-          where: { timestamp_gte: $fromTime }
-          orderDirection: desc
-        ) {
-          rsrExchangeRate
-          basketRate
-          timestamp
+        rsrStaked
+        rsrPriceUSD
+        collaterals {
+          id
+          symbol
         }
-        lastRate: hourlySnapshots(
-          first: 1
-          orderBy: timestamp
-          where: { timestamp_gte: $fromTime }
-          orderDirection: asc
-        ) {
-          rsrExchangeRate
-          basketRate
-          timestamp
+        collateralDistribution
+        revenueDistribution {
+          id
+          rTokenDist
+          rsrDist
+          destination
         }
       }
     }
@@ -83,17 +89,23 @@ const useTokenList = () => {
   const rpayOverview = useAtomValue(rpayOverviewAtom)
   const fromTime = useTimeFrom(TIME_RANGES.MONTH)
   const chainId = useAtomValue(chainIdAtom)
+  const collateralYield = useAtomValue(collateralYieldAtom)
+  const currentRsrPrice = useAtomValue(rsrPriceAtom)
 
-  const { data } = useMultichainQuery(tokenListQuery, {
-    [ChainId.Mainnet]: {
-      tokenIds: LISTED_RTOKEN_ADDRESSES[ChainId.Mainnet],
-      fromTime,
+  const { data, isLoading } = useMultichainQuery(
+    tokenListQuery,
+    {
+      [ChainId.Mainnet]: {
+        tokenIds: LISTED_RTOKEN_ADDRESSES[ChainId.Mainnet],
+        fromTime,
+      },
+      [ChainId.Base]: {
+        tokenIds: LISTED_RTOKEN_ADDRESSES[ChainId.Base],
+        fromTime,
+      },
     },
-    [ChainId.Base]: {
-      tokenIds: LISTED_RTOKEN_ADDRESSES[ChainId.Base],
-      fromTime,
-    },
-  })
+    { keepPreviousData: true }
+  )
 
   useEffect(() => {
     if (data) {
@@ -102,26 +114,65 @@ const useTokenList = () => {
       for (const chain of supportedChainList) {
         tokens.push(
           ...data[chain].tokens.map((token: any): ListedToken => {
+            let distribution: Record<string, { dist: string; target: string }> =
+              {}
             // TODO: pool APY from theGraph
+            try {
+              const raw = JSON.parse(token?.rToken.collateralDistribution)
+              distribution = Object.keys(raw).reduce((acc, curr) => {
+                acc[curr.toString().toLowerCase()] = raw[curr]
+                return acc
+              }, distribution)
+            } catch {}
+
             let tokenApy = 0
             let stakingApy = 0
+            let basketApy = 0
+            const rsrPrice = currentRsrPrice || +token?.rToken?.rsrPriceUSD || 0
+            const supply: number =
+              +formatEther(token.totalSupply) * +token.lastPriceUSD
+            const collaterals = token?.rToken?.collaterals ?? []
+            const revenueSplit = formatDistribution(
+              token?.rToken?.revenueDistribution
+            )
+
+            for (const collateral of collaterals) {
+              basketApy +=
+                (collateralYield[collateral.symbol.toLowerCase()] || 0) *
+                (Number(distribution[collateral.id.toLowerCase()]?.dist) || 0)
+            }
+
+            const stakeUsd =
+              +formatEther(token?.rToken?.rsrStaked ?? '0') * rsrPrice
+            const holdersShare = +(revenueSplit.holders || 0) / 100
+            const stakersShare = +(revenueSplit.stakers || 0) / 100
+
+            tokenApy = basketApy * holdersShare
+            stakingApy = stakeUsd
+              ? ((basketApy * supply) / stakeUsd) * stakersShare
+              : basketApy * stakersShare
 
             const tokenData = {
               id: getAddress(token.id),
               name: token.name,
               symbol: token.symbol,
-              supply: +formatEther(token.totalSupply) * +token.lastPriceUSD,
+              supply,
               holders: Number(token.holderCount),
               price: token.lastPriceUSD,
               transactionCount: Number(token.transferCount),
               cumulativeVolume:
                 +formatEther(token.cumulativeVolume) * +token.lastPriceUSD,
               targetUnits: token?.rToken?.targetUnits,
-              tokenApy: +tokenApy.toFixed(2),
-              backing: token?.rToken?.backing || 100,
-              staked: token?.rToken?.backingRSR || 0,
-              stakingApy: +stakingApy.toFixed(2),
+              tokenApy,
+              basketApy,
+              backing: Number(formatEther(token?.rToken?.backing ?? '1')) * 100,
+              overcollaterization: supply ? (stakeUsd / supply) * 100 : 0,
+              stakingApy,
               chain,
+              logo: `/svgs/${rtokens[chain][getAddress(token.id)].logo}`,
+              distribution: revenueSplit,
+              collaterals,
+              collateralDistribution: distribution,
             }
 
             // RSV Data
@@ -139,11 +190,13 @@ const useTokenList = () => {
         )
       }
 
+      tokens.sort((a, b) => b.supply - a.supply)
+
       setList(tokens)
     }
-  }, [data])
+  }, [data, collateralYield, currentRsrPrice])
 
-  return { list, isLoading: !data }
+  return { list, isLoading }
 }
 
 export default useTokenList

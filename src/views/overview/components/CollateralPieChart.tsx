@@ -54,7 +54,7 @@ const CollateralChart = ({
         {!isRSV && (
           <Pie
             dataKey="value"
-            data={[{ value: staked, name: 'staked' }]}
+            data={[{ value: staked, name: 'Overcollaterization' }]}
             cx="50%"
             cy="50%"
             innerRadius={90}

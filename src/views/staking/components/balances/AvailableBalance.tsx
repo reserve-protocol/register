@@ -41,9 +41,14 @@ const AvailableBalance = () => {
 
   return (
     <Box p={4}>
-      <Text variant="subtitle" mb={3}>
-        <Trans>Available</Trans>
-      </Text>
+      <Box variant="layout.verticalAlign" mb={3}>
+        <Text variant="subtitle" mr={2}>
+          <Trans>Available for withdrawal</Trans>
+        </Text>
+        <Help
+          content={t`Unstaked RSR that is now available to be withdraw to your wallet`}
+        />
+      </Box>
       <TokenBalance symbol="RSR" balance={availableAmount * rate} />
       <TransactionButton
         small
