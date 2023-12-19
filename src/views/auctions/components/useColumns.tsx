@@ -47,7 +47,7 @@ const useColumns = (ended = false) => {
       }),
       columnHelper.accessor('worstCasePrice', {
         header: t`Worst price`,
-        cell: (data) => formatCurrencyCell(data, 3),
+        cell: formatCurrencyCell,
       }),
       columnHelper.accessor('endAt', {
         header: ended ? t`Ended at` : t`Ends at`,
