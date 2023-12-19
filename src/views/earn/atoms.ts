@@ -12,6 +12,8 @@ export const poolFilterAtom = atomWithReset<{
   tokens: [],
 })
 
+export const filterOptionAtom = atom(0)
+
 export const filteredPoolsAtom = atom((get) => {
   const pools = get(poolsAtom)
   const search = get(poolSearchFilterAtom).trim().toLowerCase()
