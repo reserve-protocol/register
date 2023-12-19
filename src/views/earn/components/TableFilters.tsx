@@ -9,7 +9,11 @@ import { borderRadius } from 'theme'
 import { Box, Text } from 'theme-ui'
 import { RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
-import { poolFilterAtom, poolSearchFilterAtom } from '../atoms'
+import {
+  filterOptionAtom,
+  poolFilterAtom,
+  poolSearchFilterAtom,
+} from '../atoms'
 
 // Includes Eth+
 const ETH_ADDRESSES = [
@@ -19,7 +23,7 @@ const ETH_ADDRESSES = [
 const RSR_ADDRESSES = [RSR_ADDRESS[ChainId.Mainnet], RSR_ADDRESS[ChainId.Base]]
 
 const FilterOptions = () => {
-  const [selected, onSelect] = useState(0)
+  const [selected, onSelect] = useAtom(filterOptionAtom)
   const setFilters = useSetAtom(poolFilterAtom)
 
   const options = useMemo(

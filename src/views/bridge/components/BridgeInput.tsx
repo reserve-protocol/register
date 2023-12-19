@@ -94,7 +94,6 @@ const BridgeAmount = () => {
       placeholder={`${isWrapping ? 'Deposit' : 'Withdraw'} amount`}
       value={amount}
       onChange={setAmount}
-      autoFocus
     />
   )
 }
