@@ -138,8 +138,10 @@ export const formatPercentage = (value: number, decimals = 2): string =>
   })
 
 // Utils for rable parsing
-export const formatCurrencyCell = (data: CellContext<any, number>) =>
-  formatCurrency(+data.getValue())
+export const formatCurrencyCell = (
+  data: CellContext<any, number>,
+  decimals = 2
+) => formatCurrency(+data.getValue(), decimals)
 
 export const formatUsdCurrencyCell = (data: CellContext<any, number>) =>
   `$${formatCurrency(+data.getValue())}`
