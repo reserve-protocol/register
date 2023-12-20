@@ -1,248 +1,175 @@
-import memoize from 'fast-memoize'
-import React, { ReactElement, ReactNode } from 'react'
 import {
-  Cell,
-  Column,
-  PluginHook,
-  Row,
-  SortingRule,
-  TableOptions,
-  TableState,
-  UseExpandedRowProps,
-  UseGroupByCellProps,
-  UseGroupByRowProps,
-  usePagination,
-  UsePaginationOptions,
-  UsePaginationState,
-  UseRowSelectState,
-  UseRowStateOptions,
-  useSortBy,
-  UseSortByOptions,
-  UseSortByState,
-  useTable,
-} from 'react-table'
-import { borderRadius } from 'theme'
-import { Box, BoxProps, Flex } from 'theme-ui'
-import {
-  TablePagination,
-  TablePaginationProps,
-} from './components/TablePagination'
-import { useTableLayout } from './useTableLayout'
+  SortingState,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table'
+import React, { useCallback, useMemo, useState } from 'react'
 import { ArrowDown, ArrowUp } from 'react-feather'
+import { Box, BoxProps, Flex } from 'theme-ui'
+import { StringMap } from 'types'
+import TablePagination from './components/TablePagination'
+import Skeleton from 'react-loading-skeleton'
 
-const defaultColumn = memoize(() => ({
-  subRows: undefined,
-  accessor: '',
-}))
-
-export type { Column, Cell, Row, UseExpandedRowProps }
-export type SelectedRowIds = Record<number, boolean>
-interface TableOwnProps<D extends { [key: string]: any }> {
-  columns: any[]
-  data?: D[]
-  header?: boolean
-  sorting?: boolean
+export interface TableProps extends BoxProps {
+  columns: any[] // figure out proper type
+  data: StringMap[]
   compact?: boolean
-  maxHeight?: string | number
-  hiddenColumns?: string[]
-  skipPageReset?: boolean
-  renderRowSubComponent?: (props: { row: Row }) => ReactNode
-  sortBy?: Array<SortingRule<any>>
-  pagination?: TablePaginationProps | boolean
+  sorting?: boolean
+  pagination?: boolean | { pageSize: number }
+  onSort?(state: SortingState): void
+  defaultPageSize?: number
   onRowClick?(data: any): void
+  sortBy?: SortingState
+  maxHeight?: string | number
+  isLoading?: boolean
+  columnVisibility?: (string | string[])[]
 }
 
-export type TableProps<D extends { [key: string]: any }> = TableOwnProps<D> &
-  BoxProps
-
-export function Table<D extends { [key: string]: any }>({
+export function Table({
   columns,
   data = [],
-  header = true,
   sorting = false,
   compact = false,
+  pagination,
+  isLoading = false,
+  defaultPageSize = 10,
   maxHeight = 'auto',
   sx = {},
-  hiddenColumns,
-  skipPageReset,
-  renderRowSubComponent,
-  sortBy,
-  pagination,
+  columnVisibility,
+  sortBy = [],
   onRowClick,
-  ...rest
-}: TableProps<D>): ReactElement<any, any> | null {
-  const plugins: PluginHook<D>[] = [useTableLayout, useSortBy]
-  const initialState: Partial<TableState<D>> &
-    Partial<UsePaginationState<D>> &
-    Partial<UseSortByState<D>> &
-    Partial<UseRowSelectState<Record<number, boolean>>> = {}
+  onSort,
+  ...props
+}: TableProps) {
+  const [sortingState, setSorting] = useState<SortingState>(sortBy)
+  const paginationState = useMemo(
+    () => ({ pageSize: defaultPageSize, pageIndex: 0 }),
+    [defaultPageSize]
+  )
 
-  if (hiddenColumns !== undefined) {
-    initialState.hiddenColumns = hiddenColumns
-  }
-  if (Array.isArray(sortBy)) {
-    initialState.sortBy = sortBy
-  }
+  const handleSort = useCallback(
+    (state: any) => {
+      setSorting(state)
+      onSort?.(state)
+    },
+    [onSort, setSorting]
+  )
 
-  if (pagination) {
-    plugins.push(usePagination)
-    if (typeof pagination === 'object') {
-      if (typeof pagination.pageIndex === 'number') {
-        initialState.pageIndex = pagination.pageIndex
-      }
-      if (typeof pagination.pageSize === 'number') {
-        initialState.pageSize = pagination.pageSize
-      }
-    }
-  }
-
-  const options: TableOptions<D> &
-    UsePaginationOptions<D> &
-    UseSortByOptions<D> &
-    UseRowStateOptions<D> = {
+  const table = useReactTable({
     columns,
     data,
-    defaultColumn: defaultColumn() as Column<D>,
-    initialState,
-    autoResetPage: !skipPageReset,
-    autoResetSortBy: !skipPageReset,
-    autoResetRowState: !skipPageReset,
-  }
-
-  const tableOptions = useTable<D>(options, ...plugins) as any
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    prepareRow,
-    visibleColumns,
-    rows,
-    page, // Instead of using 'rows', when using pagination
-    state: { pageIndex: statePageIndex, pageSize: statePageSize },
-  } = tableOptions
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: !!pagination ? getPaginationRowModel() : undefined,
+    enableSorting: sorting,
+    initialState: {
+      pagination: paginationState,
+    },
+    state: {
+      sorting: sortingState,
+    },
+    onSortingChange: handleSort,
+  })
 
   return (
     <React.Fragment>
       <Box
         as="table"
         variant="styles.table"
-        {...getTableProps()}
-        {...rest}
+        {...props}
         sx={{
           ...sx,
           maxHeight: ['none', maxHeight],
           borderSpacing: compact ? 0 : undefined,
         }}
       >
-        <Box as="tbody" variant="styles.tbody" {...getTableBodyProps()}>
-          {headerGroups.map((headerGroup: any) => (
-            <Box as="tr" {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column: any) => (
+        <Box as="tbody" variant="styles.tbody">
+          {table.getHeaderGroups().map((headerGroup) => (
+            <Box as="tr" key={headerGroup.id}>
+              {headerGroup.headers.map((header, index) => (
                 <Box
                   as="th"
                   variant="styles.th"
-                  {...column.getHeaderProps(
-                    sorting ? column.getSortByToggleProps() : undefined
-                  )}
+                  key={header.id}
+                  sx={{
+                    ...(sorting
+                      ? { cursor: 'pointer', userSelect: 'none' }
+                      : {}),
+                    display: columnVisibility?.[index]
+                      ? columnVisibility[index]
+                      : 'table-cell',
+                  }}
+                  onClick={
+                    sorting
+                      ? header.column.getToggleSortingHandler()
+                      : undefined
+                  }
                 >
                   <Flex pb={compact ? 2 : 0} variant="layout.verticalAlign">
-                    <Box sx={{ mr: 1, flex: 1 }}>{column.render('Header')}</Box>
-                    {sorting &&
-                      column.isSorted &&
-                      (column.isSortedDesc ? (
-                        <ArrowDown size={14} />
-                      ) : (
-                        <ArrowUp size={14} />
-                      ))}
+                    <Box sx={{ mr: 1, flex: 1 }}>
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                    </Box>
+                    {{
+                      asc: <ArrowUp size={14} />,
+                      desc: <ArrowDown size={14} />,
+                    }[header.column.getIsSorted() as string] ?? null}
                   </Flex>
                 </Box>
               ))}
             </Box>
           ))}
-          {(page || rows).map(
-            (
-              row: Row &
-                UseGroupByRowProps<D> & {
-                  isExpanded?: boolean
-                },
-              index: number
-            ) => {
-              prepareRow(row)
-              const { key, ...rowProps } = row.getRowProps()
-              const last = index === (page || rows).length - 1
-
-              return (
-                <React.Fragment key={key}>
+          {table.getRowModel().rows.map((row) => {
+            return (
+              <Box
+                key={row.id}
+                variant="styles.tr"
+                as="tr"
+                onClick={
+                  !!onRowClick ? () => onRowClick(row.original) : undefined
+                }
+                sx={{ cursor: !!onRowClick ? 'pointer' : 'inherit' }}
+              >
+                {row.getVisibleCells().map((cell, index) => (
                   <Box
-                    variant="styles.tr"
-                    as="tr"
-                    onClick={
-                      !!onRowClick ? () => onRowClick(row.original) : undefined
-                    }
-                    sx={{ cursor: !!onRowClick ? 'pointer' : 'inherit' }}
-                    {...rowProps}
+                    sx={{
+                      display: columnVisibility?.[index]
+                        ? columnVisibility[index]
+                        : 'table-cell',
+                      ...(compact
+                        ? {
+                            '&:first-of-type': {
+                              borderTopLeftRadius: 0,
+                              borderBottomLeftRadius: 0,
+                            },
+                            '&:last-of-type': {
+                              borderTopRightRadius: 0,
+                              borderBottomRightRadius: 0,
+                            },
+                          }
+                        : {}),
+                    }}
+                    as="td"
+                    key={cell.id}
+                    variant="styles.td"
                   >
-                    {row.cells.map(
-                      (
-                        cell: Cell & Partial<UseGroupByCellProps<D>>,
-                        cellIndex: number
-                      ) => (
-                        <Box
-                          as="td"
-                          sx={{
-                            borderRadius: compact ? '0 !important' : undefined,
-                            borderTopLeftRadius:
-                              compact && !index && !cellIndex
-                                ? `${borderRadius.boxes}px !important`
-                                : undefined,
-                            borderTopRightRadius:
-                              compact &&
-                              !index &&
-                              cellIndex === row.cells.length - 1
-                                ? `${borderRadius.boxes}px !important`
-                                : undefined,
-                            borderBottomLeftRadius:
-                              compact && last && !cellIndex
-                                ? `${borderRadius.boxes}px !important`
-                                : undefined,
-                            borderBottomRightRadius:
-                              compact &&
-                              last &&
-                              cellIndex === row.cells.length - 1
-                                ? `${borderRadius.boxes}px !important`
-                                : undefined,
-                          }}
-                          variant="styles.td"
-                          {...cell.getCellProps()}
-                        >
-                          {cell.render('Cell') as any}
-                        </Box>
-                      )
-                    )}
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </Box>
-                  {row.isExpanded && row.original && (
-                    <tr>
-                      <td colSpan={visibleColumns.length}>
-                        {renderRowSubComponent
-                          ? renderRowSubComponent({ row })
-                          : null}
-                      </td>
-                    </tr>
-                  )}
-                </React.Fragment>
-              )
-            }
-          )}
+                ))}
+              </Box>
+            )
+          })}
         </Box>
       </Box>
-      {pagination && (
-        <TablePagination
-          // {...pagination}
-          pageIndex={statePageIndex}
-          pageSize={statePageSize}
-          {...tableOptions}
-        />
+      {isLoading && (
+        <Skeleton count={5} height={40} style={{ marginTop: 10 }} />
       )}
+      {pagination && <TablePagination table={table} totalCount={data.length} />}
     </React.Fragment>
   )
 }

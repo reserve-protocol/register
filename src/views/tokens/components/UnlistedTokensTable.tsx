@@ -1,118 +1,100 @@
-import { Table } from 'components/table'
-import { Box, Text } from 'theme-ui'
-import useQuery from 'hooks/useQuery'
-import { useEffect, useMemo, useState } from 'react'
-import { formatUsdCurrencyCell } from 'utils'
-import { gql } from 'graphql-request'
-import { useNavigate } from 'react-router-dom'
 import { t } from '@lingui/macro'
+import { createColumnHelper } from '@tanstack/react-table'
+import ChainLogo from 'components/icons/ChainLogo'
+import { Table } from 'components/table'
 import TokenItem from 'components/token-item'
-import { formatEther, getAddress } from 'viem'
-import { rTokenListAtom } from 'state/atoms'
-import { atom, useAtomValue } from 'jotai'
+import { gql } from 'graphql-request'
+import { useMultichainQuery } from 'hooks/useQuery'
+import { useSetAtom } from 'jotai'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Box, Flex, Text } from 'theme-ui'
+import { StringMap } from 'types'
+import { formatCurrency, formatUsdCurrencyCell } from 'utils'
+import { LISTED_RTOKEN_ADDRESSES, supportedChainList } from 'utils/constants'
+import useUnlistedTokens, { RTokenRow } from '../useUnlistedTokens'
+import { sortByAtom } from '../atoms'
+import RTokenFilters from './TableFilters'
 
-const listedTokensAtom = atom((get) =>
-  Object.keys(get(rTokenListAtom)).map((address) => address.toLowerCase())
-)
-
-const query = gql`
-  query GetTokenListOverview($listed: [String]!) {
-    rtokens(
-      orderBy: cumulativeUniqueUsers
-      orderDirection: desc
-      first: 1000
-      where: { id_not_in: $listed }
-    ) {
-      id
-      cumulativeUniqueUsers
-      targetUnits
-      rsrStaked
-      rsrPriceUSD
-      token {
-        name
-        symbol
-        lastPriceUSD
-        holderCount
-        transferCount
-        totalSupply
-        cumulativeVolume
-      }
+const rTokenCountQuery = gql`
+  query GetRTokenCount {
+    protocol(id: "reserveprotocol-v1") {
+      rTokenCount
     }
   }
 `
 
-const useTokens = () => {
-  const listed = useAtomValue(listedTokensAtom)
-  const { data } = useQuery(query, { listed: listed.length ? listed : ['.'] })
-  const [tokens, setTokens] = useState([])
+const sortKeyMap: StringMap = {
+  symbol: 'token__symbol',
+  price: 'token__lastPriceUSD',
+  marketCap: 'token__totalSupply',
+  transactionCount: 'token__transactionCount',
+  cumulativeVolume: 'token__cumulativeVolume',
+  targetUnits: 'token__targetUnits',
+  staked: 'token__staked',
+}
+
+const useRTokenCount = () => {
+  const { data } = useMultichainQuery(rTokenCountQuery)
+  const [count, setCount] = useState(0)
 
   useEffect(() => {
-    if (data?.rtokens) {
-      setTokens(
-        data.rtokens.map((rtoken: any) => ({
-          id: getAddress(rtoken.id),
-          targetUnits: rtoken.targetUnits,
-          name: rtoken.token.name,
-          symbol: rtoken.token.symbol,
-          price: rtoken.token.lastPriceUSD,
-          transactionCount: rtoken.token.transferCount,
-          cumulativeVolume:
-            +formatEther(rtoken.token.cumulativeVolume) *
-            +rtoken.token.lastPriceUSD,
-          staked: +formatEther(rtoken.rsrStaked) * rtoken.rsrPriceUSD,
-          marketCap:
-            +formatEther(rtoken.token.totalSupply) * rtoken.token.lastPriceUSD,
-        }))
-      )
+    if (data) {
+      let total = 0
+
+      for (const chain of supportedChainList) {
+        total +=
+          Number(data[chain].protocol.rTokenCount) -
+          LISTED_RTOKEN_ADDRESSES[chain].length
+      }
+
+      setCount(total)
     }
   }, [data])
 
-  return tokens
+  return count
 }
 
 const UnlistedTokensTable = () => {
   const navigate = useNavigate()
-  const data = useTokens()
+  const data = useUnlistedTokens()
+  const rTokenCount = useRTokenCount()
+  const columnHelper = createColumnHelper<RTokenRow>()
+  const setSorting = useSetAtom(sortByAtom)
 
   const columns = useMemo(
     () => [
-      {
-        Header: t`Token`,
-        accessor: 'symbol',
-        Cell: (data: any) => {
+      columnHelper.accessor('symbol', {
+        header: t`Token`,
+        cell: (data) => {
           return (
             <Box sx={{ minWidth: 150 }}>
               <TokenItem
-                symbol={data.cell.value}
+                symbol={data.getValue()}
                 logo={'/svgs/defaultLogo.svg'}
               />
             </Box>
           )
         },
-      },
-      {
-        Header: t`Price`,
-        accessor: 'price',
-        Cell: formatUsdCurrencyCell,
-      },
-      {
-        Header: t`Mkt Cap`,
-        accessor: 'marketCap',
-        Cell: formatUsdCurrencyCell,
-      },
-      {
-        Header: t`Txs`,
-        accessor: 'transactionCount',
-      },
-      {
-        Header: t`Volume`,
-        accessor: 'cumulativeVolume',
-        Cell: formatUsdCurrencyCell,
-      },
-      {
-        Header: t`Target(s)`,
-        accessor: 'targetUnits',
-        Cell: (cell: any) => {
+      }),
+      columnHelper.accessor('price', {
+        header: t`Price`,
+        cell: formatUsdCurrencyCell,
+      }),
+      columnHelper.accessor('marketCap', {
+        header: t`Mkt Cap`,
+        cell: formatUsdCurrencyCell,
+      }),
+      columnHelper.accessor('transactionCount', {
+        header: t`Txs`,
+      }),
+      columnHelper.accessor('cumulativeVolume', {
+        header: t`Volume`,
+        cell: formatUsdCurrencyCell,
+      }),
+      columnHelper.accessor('targetUnits', {
+        header: t`Target(s)`,
+        cell: (data) => {
           return (
             <Text
               sx={{
@@ -120,32 +102,60 @@ const UnlistedTokensTable = () => {
                 display: 'block',
               }}
             >
-              {cell.value}
+              {data.getValue()}
             </Text>
           )
         },
-      },
-      {
-        Header: t`Staked`,
-        accessor: 'staked',
-        Cell: formatUsdCurrencyCell,
-      },
+      }),
+      columnHelper.accessor('staked', {
+        header: t`Staked`,
+        cell: formatUsdCurrencyCell,
+      }),
+      columnHelper.accessor('chain', {
+        header: t`Network`,
+        cell: (data) => {
+          return <ChainLogo chain={data.getValue()} />
+        },
+      }),
     ],
     []
   )
 
-  const handleClick = (data: any) => {
-    navigate(`/overview?token=${data.id}`)
-    document.getElementById('app-container')?.scrollTo(0, 0)
-  }
+  const handleClick = useCallback(
+    (data: any) => {
+      navigate(`/overview?token=${data.id}`)
+      document.getElementById('app-container')?.scrollTo(0, 0)
+    },
+    [navigate]
+  )
+
+  const handleSort = useCallback((getSortState: any) => {
+    const [sorting] = getSortState()
+
+    if (sortKeyMap[sorting?.id]) {
+      setSorting({ id: sortKeyMap[sorting?.id], desc: sorting.desc })
+    }
+  }, [])
 
   return (
-    <Table
-      pagination={{ pageSize: 10 }}
-      onRowClick={handleClick}
-      columns={columns}
-      data={data}
-    />
+    <>
+      <RTokenFilters />
+      <Table
+        pagination
+        onRowClick={handleClick}
+        sorting
+        sortBy={[{ id: 'marketCap', desc: true }]}
+        onSort={handleSort}
+        columns={columns}
+        data={data}
+      />
+      <Flex mt={3} sx={{ justifyContent: 'center' }}>
+        <Text variant="legend">Total RTokens unlisted: </Text>
+        <Text ml={2} variant="strong">
+          {formatCurrency(rTokenCount, 0)}
+        </Text>
+      </Flex>
+    </>
   )
 }
 

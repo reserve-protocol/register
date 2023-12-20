@@ -15,7 +15,7 @@ import {
 import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import ChainProvider from 'state/chain'
 import Updater from 'state/updater'
-import { Text, ThemeProvider } from 'theme-ui'
+import { Box, Flex, Spinner, Text, ThemeProvider } from 'theme-ui'
 import { supportedChains } from 'utils/chains'
 import { ROUTES } from 'utils/constants'
 import Auctions from 'views/auctions'
@@ -32,6 +32,8 @@ import { useSwitchNetwork } from 'wagmi'
 import Layout from './components/layout'
 import LanguageProvider from './i18n'
 import { theme } from './theme'
+import PortfolioWrapper from 'views/portfolio'
+import EarnWrapper from 'views/earn'
 
 mixpanel.init(import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key', {
   track_pageview: true,
@@ -41,7 +43,11 @@ const Issuance = lazyWithPreload(() => import('./views/issuance'))
 const Governance = lazyWithPreload(() => import('./views/governance'))
 const Bridge = lazy(() => import('./views/bridge'))
 
-const Fallback = () => <Text>Loading...</Text>
+const Fallback = () => (
+  <Flex sx={{ justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+    <Spinner size={24} />
+  </Flex>
+)
 
 const RouteListener = () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -143,6 +149,8 @@ const App = () => {
                     </Suspense>
                   }
                 />
+                <Route path={ROUTES.PORTFOLIO} element={<PortfolioWrapper />} />
+                <Route path={ROUTES.EARN} element={<EarnWrapper />} />
               </Routes>
             </Layout>
           </ChainProvider>

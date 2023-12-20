@@ -4,6 +4,8 @@ import {
   isAssistedUpgradeAtom,
   isNewBackupProposedAtom,
   proposalDescriptionAtom,
+  registerAssetsAtom,
+  unregisterAssetsAtom,
 } from './../atoms'
 
 import AssetRegistry from 'abis/AssetRegistry'
@@ -32,6 +34,7 @@ import {
   Hex,
   encodeFunctionData,
   parseEther,
+  parseUnits,
   stringToHex,
   zeroAddress,
 } from 'viem'
@@ -47,18 +50,20 @@ import {
 } from '../atoms'
 import useUpgradeHelper from './useUpgradeHelper'
 
-// const paramParse: { [x: string]: (v: string) => bigint | number } = {
-//   minTradeVolume: parseEther,
-//   rTokenMaxTradeVolume: parseEther,
-//   rewardRatio: parseEther,
-//   unstakingDelay: Number,
-//   tradingDelay: Number,
-//   auctionLength: Number,
-//   backingBuffer: parsePercent,
-//   maxTradeSlippage: parsePercent,
-//   shortFreeze: Number,
-//   longFreeze: Number,
-// }
+const paramParse: { [x: string]: (v: string) => bigint | number } = {
+  minTradeVolume: parseEther,
+  rTokenMaxTradeVolume: parseEther,
+  rewardRatio: parseEther,
+  withdrawalLeak: (v) => parseUnits(v, 16),
+  unstakingDelay: Number,
+  tradingDelay: Number,
+  auctionLength: Number,
+  backingBuffer: parsePercent,
+  maxTradeSlippage: parsePercent,
+  shortFreeze: Number,
+  longFreeze: Number,
+  warmupPeriod: Number,
+}
 
 const ROLES: { [x: string]: string } = {
   longFreezers:
@@ -94,6 +99,8 @@ const useProposalTx = () => {
   const revenueChanges = useAtomValue(revenueSplitChangesAtom)
   const parameterChanges = useAtomValue(parametersChangesAtom)
   const roleChanges = useAtomValue(roleChangesAtom)
+  const assetsToUnregister = useAtomValue(unregisterAssetsAtom)
+  const assetsToRegister = useAtomValue(registerAssetsAtom)
   const newBackup = useAtomValue(isNewBackupProposedAtom)
   const newBasket = useAtomValue(isNewBasketProposedAtom)
   const basket = useAtomValue(basketAtom)
@@ -221,11 +228,14 @@ const useProposalTx = () => {
           for (const contract of parameterMap[paramChange.field as ParamName]) {
             const { address, ...data } = contract
 
+            const proposedParam = paramParse[paramChange.field]
+              ? paramParse[paramChange.field](paramChange.proposed)
+              : paramChange.proposed
             addresses.push(address)
             calls.push(
               encodeFunctionData({
                 ...(data as any),
-                args: [paramChange.proposed],
+                args: [proposedParam],
               })
             )
           }
@@ -253,6 +263,21 @@ const useProposalTx = () => {
             args: [ROLES[roleChange.role], roleChange.address],
           })
         )
+      }
+
+      for (const asset of assetsToUnregister) {
+        addresses.push(contracts.assetRegistry.address)
+        calls.push(
+          encodeFunctionData({
+            abi: AssetRegistry,
+            functionName: 'unregister',
+            args: [asset as Address],
+          })
+        )
+      }
+
+      for (const asset of assetsToRegister) {
+        addToRegistry(asset.asset, asset.erc20)
       }
 
       /* ########################## 

@@ -34,7 +34,8 @@ const BasketInfo = (props: BoxProps) => {
               <TokenItem width={16} symbol={collateral.symbol} />
               <Text ml="auto">{+basket[unit].distribution[index]}%</Text>
               <GoTo
-                ml={2}
+                ml={3}
+                sx={{ flexShrink: 0 }}
                 href={getExplorerLink(
                   collateral.address,
                   chainId,

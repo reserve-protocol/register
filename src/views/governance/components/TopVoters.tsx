@@ -1,4 +1,5 @@
 import { t, Trans } from '@lingui/macro'
+import { createColumnHelper } from '@tanstack/react-table'
 import GoTo from 'components/button/GoTo'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { Table } from 'components/table'
@@ -6,7 +7,9 @@ import { gql } from 'graphql-request'
 import { useEnsAddresses } from 'hooks/useEnsAddresses'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
+import { chainIdAtom } from 'state/atoms'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { formatCurrencyCell, shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
@@ -35,6 +38,17 @@ const query = gql`
   }
 `
 
+interface Voter {
+  id: string
+  address: string
+  numberVotes: number
+  delegatedVotes: number
+  governance: {
+    totalTokenSupply: bigint
+  }
+  displayAddress: string
+}
+
 // TODO: Proposal data casting?
 const useVoters = () => {
   const rToken = useRToken()
@@ -42,12 +56,12 @@ const useVoters = () => {
     id: rToken?.address.toLowerCase(),
   })
 
-  const addresses = data?.delegates?.map((delegate: any) => delegate.address)
+  const addresses = data?.delegates?.map((delegate: Voter) => delegate.address)
   const ensRes: string[] = useEnsAddresses(addresses || [])
 
   return useMemo(() => {
     const delegatesWithEns = data?.delegates?.map(
-      (delegate: any, idx: number) => {
+      (delegate: Voter, idx: number) => {
         const ens = ensRes[idx]
         return {
           ...delegate,
@@ -56,7 +70,7 @@ const useVoters = () => {
       }
     )
     return {
-      data: delegatesWithEns ?? [],
+      data: (delegatesWithEns ?? []) as Voter[],
       error: !!error,
       loading: !data?.delegates && !error,
     }
@@ -65,35 +79,40 @@ const useVoters = () => {
 
 const TopVoters = (props: BoxProps) => {
   const { data } = useVoters()
+  const chainId = useAtomValue(chainIdAtom)
+  const columnHelper = createColumnHelper<Voter>()
 
   const columns = useMemo(
     () => [
-      {
-        Header: t`Address`,
-        Cell: ({ row }: any) => {
-          const { displayAddress, address } = row.original
+      columnHelper.accessor('address', {
+        header: t`Address`,
+        cell: (data) => {
+          const { displayAddress, address } = data.row.original
           return (
             <Box variant="layout.verticalAlign">
               <Text>{displayAddress}</Text>
               <GoTo
-                href={getExplorerLink(address, 1, ExplorerDataType.ADDRESS)}
+                href={getExplorerLink(
+                  address,
+                  chainId,
+                  ExplorerDataType.ADDRESS
+                )}
               />
             </Box>
           )
         },
-      },
-      {
-        Header: t`Votes`,
-        accessor: 'delegatedVotes',
-        Cell: formatCurrencyCell,
-      },
-      {
-        Header: t`Vote weight`,
-        Cell: ({ row }: any) => {
+      }),
+      columnHelper.accessor('delegatedVotes', {
+        header: t`Votes`,
+        cell: formatCurrencyCell,
+      }),
+      columnHelper.accessor('id', {
+        header: t`Vote weight`,
+        cell: (data) => {
           const {
             delegatedVotes,
             governance: { totalTokenSupply },
-          } = row.original
+          } = data.row.original
 
           return (
             <Text>
@@ -105,13 +124,12 @@ const TopVoters = (props: BoxProps) => {
             </Text>
           )
         },
-      },
-      {
-        Header: t`Proposals voted`,
-        accessor: 'numberVotes',
-      },
+      }),
+      columnHelper.accessor('numberVotes', {
+        header: t`Proposals voted`,
+      }),
     ],
-    [data]
+    [chainId]
   )
 
   return (

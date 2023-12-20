@@ -13,6 +13,7 @@ import {
 import ConfirmProposal from './components/ConfirmProposal'
 import Proposal from './components/Proposal'
 import Updater from './updater'
+import { Box } from 'theme-ui'
 
 const GovernanceProposal = () => {
   const tokenParameters = useAtomValue(rTokenConfigurationAtom) || {}
@@ -43,10 +44,12 @@ const GovernanceProposal = () => {
   }, [tokenParameters])
 
   return (
-    <FormProvider {...form}>
-      <Updater />
-      {isEditing && !isAssistedUpgrade ? <Proposal /> : <ConfirmProposal />}
-    </FormProvider>
+    <Box variant="layout.wrapper">
+      <FormProvider {...form}>
+        <Updater />
+        {isEditing && !isAssistedUpgrade ? <Proposal /> : <ConfirmProposal />}
+      </FormProvider>
+    </Box>
   )
 }
 

@@ -51,15 +51,20 @@ const RTokenSelector = (props: BoxProps) => {
       onDismiss={() => setVisible(false)}
       content={<TokenList onSelect={handleSelect} onHome={handleHome} />}
     >
-      <Flex
+      <Box
         {...props}
-        sx={{ alignItems: 'center', cursor: 'pointer', minWidth: 100 }}
+        variant="layout.verticalAlign"
+        sx={{
+          cursor: 'pointer',
+          fontSize: 1,
+          // minWidth: 100,
+        }}
         onClick={() => setVisible(!isVisible)}
       >
         <SelectedToken />
-        <Box mr="2" />
-        {isVisible ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-      </Flex>
+        <Box mr="auto" pl={[1, 2]} />
+        {isVisible ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+      </Box>
     </Popup>
   )
 }

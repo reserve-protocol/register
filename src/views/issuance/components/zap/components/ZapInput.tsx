@@ -54,7 +54,7 @@ const ZapOutput = () => {
         <Trans>Min Output</Trans>:
       </Text>
       <Text variant="strong">
-        {useAtomValue(ui.output.textBox) || 'None'} <ZapDust />
+        {useAtomValue(ui.zapOutput.textBox) || 'None'} <ZapDust />
       </Text>
     </Flex>
   )

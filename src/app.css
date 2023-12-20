@@ -5,6 +5,12 @@ body {
   font-display: swap;
 }
 
+@media (prefers-color-scheme: dark) {
+  html {
+    background-color: #090707;
+  }
+}
+
 #root {
   height: 100%;
   position: relative;
@@ -13,4 +19,17 @@ body {
 /* Rainbowkit wrapper add an empty div, cascade height to make sticky elements to work */
 #root > div {
   height: 100%;
+}
+
+.hidden-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+}
+
+.hidden-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.react-loading-skeleton {
+  z-index: 0;
 }

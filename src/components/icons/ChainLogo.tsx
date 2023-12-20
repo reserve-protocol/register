@@ -16,7 +16,7 @@ interface Props extends SVGProps<SVGSVGElement> {
 const ChainLogo = ({ chain, ...props }: Props) => {
   const Icon = chainIcons[chain]
 
-  return <Icon {...props} />
+  return Icon ? <Icon {...props} /> : <></>
 }
 
 export default React.memo(ChainLogo)

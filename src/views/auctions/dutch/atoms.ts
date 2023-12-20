@@ -7,6 +7,7 @@ export interface DutchTrade extends Trade {
   endBlock: number
   settleTxHash?: string
   isSettled?: boolean
+  kind?: number
 }
 
 export const ongoingDutchTradesAtom = atom<DutchTrade[]>([])

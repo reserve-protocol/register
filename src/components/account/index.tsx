@@ -7,7 +7,7 @@ import { MouseoverTooltipContent } from 'components/tooltip'
 import { txSidebarToggleAtom } from 'components/transactions/manager/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { ReactNode } from 'react'
-import { AlertCircle } from 'react-feather'
+import { AlertCircle, Power } from 'react-feather'
 import { Box, Card, Flex, Spinner, Text } from 'theme-ui'
 
 import { ConnectButton } from '@rainbow-me/rainbowkit'
@@ -99,10 +99,14 @@ const Account = () => {
                     variant="accentAction"
                     onClick={openConnectModal}
                   >
-                    <Text sx={{ display: ['none', 'initial'] }}>
-                      <Trans>Connect Wallet</Trans>
-                    </Text>
-                    <Text sx={{ display: ['inline', 'none'] }}>
+                    <Box
+                      sx={{ display: ['flex', 'none'] }}
+                      variant="layout.verticalAlign"
+                      py={1}
+                    >
+                      <Power size={16} />
+                    </Box>
+                    <Text sx={{ display: ['none', 'block'] }}>
                       <Trans>Connect</Trans>
                     </Text>
                   </SmallButton>

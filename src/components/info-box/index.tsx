@@ -66,9 +66,16 @@ export const InfoHeading = ({ title, subtitle, help, ...props }: Props) => (
       <Text variant="legend" sx={{ color: 'secondaryText' }}>
         {title}
       </Text>
-      {!!help && <Help ml={2} size={14} mt="1px" content={help.split("\n").map(i => {
-        return <p key={i}>{i}</p>
-      })} />}
+      {!!help && (
+        <Help
+          ml={2}
+          size={14}
+          mt="1px"
+          content={help.split('\n').map((i, index) => {
+            return <p key={`${i}-${index}`}>{i}</p>
+          })}
+        />
+      )}
     </Flex>
     {!!subtitle && <Text>{subtitle}</Text>}
   </Flex>

@@ -15,16 +15,15 @@ import { atom } from 'jotai'
 import { loadable } from 'jotai/utils'
 
 import mixpanel from 'mixpanel-browser'
-import { publicClient, wagmiConfig } from 'state/chain'
 import { chainIdAtom, rTokenAtom } from 'state/atoms'
+import { publicClient } from 'state/chain'
 import { onlyNonNullAtom, simplifyLoadable } from 'utils/atoms/utils'
 import { ChainId } from 'utils/chains'
 import { PublicClient } from 'viem'
-import { useWalletClient } from 'wagmi'
 
 export async function publicClientToProvider(publicClient: PublicClient) {
   const { chain } = publicClient
-  
+
   const network = {
     chainId: chain!.id,
     name: chain!.name,
@@ -42,13 +41,14 @@ const providerAtom = atom(async (get) => {
   const chainId = get(chainIdAtom)
   const cli = publicClient({ chainId })
 
-  return await publicClientToProvider(cli) as Web3Provider
+  return (await publicClientToProvider(cli)) as Web3Provider
 })
 
 export const supportsPermit2Signatures = onlyNonNullAtom((get) => {
   return false
 })
 
+let unsub = () => {}
 export const zapperState = loadable(
   atom(async (get) => {
     const chainId = get(chainIdAtom)
@@ -93,21 +93,25 @@ export const zapperState = loadable(
         conf,
         chainIdToConfig[provider.network.chainId].setup
       )
+      unsub()
+      unsub = universe.onEvent(({ type, chainId, params }) => {
+        mixpanel.track('zapper:' + type, params)
+      })
 
       universe.dexAggregators.push(createKyberswap('KyberSwap', universe, 50))
 
-      if (chainId === ChainId.Mainnet) {
-        universe.dexAggregators.push(
-          createDefillama('DefiLlama:0x', universe, 10, 'Matcha/0x')
-        )
-        universe.dexAggregators.push(
-          createDefillama('DefiLlama:HashFlow', universe, 10, 'Hashflow')
-        )
-      } else if (chainId === ChainId.Base) {
-        universe.dexAggregators.push(
-          createDefillama('DefiLlama:0x', universe, 10, 'Matcha/0x')
-        )
-      }
+      // if (chainId === ChainId.Mainnet) {
+      //   universe.dexAggregators.push(
+      //     createDefillama('DefiLlama:0x', universe, 10, 'Matcha/0x')
+      //   )
+      //   universe.dexAggregators.push(
+      //     createDefillama('DefiLlama:HashFlow', universe, 10, 'Hashflow')
+      //   )
+      // } else if (chainId === ChainId.Base) {
+      //   universe.dexAggregators.push(
+      //     createDefillama('DefiLlama:0x', universe, 10, 'Matcha/0x')
+      //   )
+      // }
       return universe
     } catch (e) {
       console.log('Zap init error', e)

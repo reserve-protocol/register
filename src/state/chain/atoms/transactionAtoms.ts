@@ -26,11 +26,9 @@ export const currentTxHistoryAtom = atom((get) => {
   const account = get(walletAtom)
   const chainId = get(chainIdAtom)
 
-  return Object.values(history).filter(
-    (tx) => tx.chainId === chainId && tx.account === account
-  ).sort(
-    (a, b) => b.timestamp - a.timestamp
-  )
+  return Object.values(history)
+    .filter((tx) => tx.chainId === chainId && tx.account === account)
+    .sort((a, b) => b.timestamp - a.timestamp)
 })
 
 export const addTransactionAtom = atom(

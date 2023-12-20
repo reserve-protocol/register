@@ -1,14 +1,32 @@
 import { Token } from 'types'
-import { RSR_ADDRESS } from './addresses'
+import { EUSD_ADDRESS, RSR_ADDRESS } from './addresses'
 import { ChainId } from './chains'
+import rtokens from '@lc-labs/rtokens'
+import RSV from './rsv'
 
 export const VERSION = '3.0.0'
 
+export const DISCORD_INVITE = 'https://discord.com/invite/M4BafXtTNz'
+export const PROTOCOL_DOCS = 'https://reserve.org/protocol/'
+export const REGISTER_FEEDBACK = 'https://reserve.canny.io/register-app'
+
+export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
+  'curve-dex': {
+    name: 'Curve',
+    site: 'https://curve.fi/#/ethereum/pools',
+  },
+  'convex-finance': {
+    name: 'Convex',
+    site: 'https://www.convexfinance.com/stake',
+  },
+  'yearn-finance': {
+    name: 'Yearn',
+    site: 'https://yearn.fi/vaults',
+  },
+}
+
 export const BIGINT_MAX =
   115792089237316195423570985008687907853269984665640564039457584007913129639935n
-
-// TODO: Custom per chain
-export const BLOCK_DELAY = 12 // 12 seconds per block
 
 export const COLLATERAL_STATUS = {
   SOUND: 0,
@@ -70,6 +88,8 @@ export const ROUTES = Object.freeze({
   GOVERNANCE_PROPOSAL: '/governance/proposal',
   ZAP: '/zap',
   BRIDGE: '/bridge',
+  PORTFOLIO: '/portfolio',
+  EARN: '/earn',
 })
 
 export const RSR: Token = {
@@ -110,3 +130,38 @@ export const TENDERLY_SHARE_URL = (id: string) =>
   `https://api.tenderly.co/api/v1/account/${TENDERLY_USER}/project/${TENDERLY_PROJECT_SLUG}/simulations/${id}/share`
 export const TENDERLY_SHARING_URL = (id: string) =>
   `https://dashboard.tenderly.co/shared/simulation/${id}`
+export const CHAIN_TAGS = {
+  [ChainId.Mainnet]: 'Ethereum',
+  [ChainId.Base]: 'Base',
+}
+
+export const LISTED_RTOKEN_ADDRESSES: { [x: number]: string[] } = {
+  [ChainId.Mainnet]: [RSV.address.toLowerCase()],
+}
+
+export const BRIDGED_RTOKENS = {
+  [ChainId.Mainnet]: {
+    [EUSD_ADDRESS[ChainId.Mainnet]]: [
+      {
+        address: '0xCfA3Ef56d303AE4fAabA0592388F19d7C3399FB4',
+        chain: ChainId.Base,
+      },
+    ],
+  },
+}
+
+export const BRIDGE_RTOKEN_MAP = Object.entries(
+  BRIDGED_RTOKENS[ChainId.Mainnet]
+).reduce((acc, [key, tokens]) => {
+  for (const token of tokens) {
+    acc[token.address] = key
+  }
+
+  return acc
+}, {} as Record<string, string>)
+
+for (const chain of supportedChainList) {
+  LISTED_RTOKEN_ADDRESSES[chain] = [
+    ...Object.keys(rtokens[chain]).map((s) => s.toLowerCase()),
+  ]
+}

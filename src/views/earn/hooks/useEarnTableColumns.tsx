@@ -1,0 +1,133 @@
+import { t } from '@lingui/macro'
+import { createColumnHelper } from '@tanstack/react-table'
+import Help from 'components/help'
+import ChainLogo from 'components/icons/ChainLogo'
+import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
+import Convex from 'components/icons/logos/Convex'
+import Curve from 'components/icons/logos/Curve'
+import Yearn from 'components/icons/logos/Yearn'
+import StackTokenLogo from 'components/token-logo/StackTokenLogo'
+import React, { useMemo } from 'react'
+import { Pool } from 'state/pools/atoms'
+import { Box, Text } from 'theme-ui'
+import { formatCurrency } from 'utils'
+import { ChainId } from 'utils/chains'
+import { LP_PROJECTS } from 'utils/constants'
+import mixpanel from 'mixpanel-browser'
+
+const chainMap: Record<string, number> = {
+  Ethereum: ChainId.Mainnet,
+  Base: ChainId.Base,
+}
+
+export const columnVisibility = [
+  '',
+  '',
+  ['none', 'table-cell'],
+  '',
+  ['none', 'none', 'table-cell'],
+  ['none', 'none', 'table-cell'],
+  ['none', 'table-cell'],
+]
+
+const useEarnTableColumns = () => {
+  const columnHelper = createColumnHelper<Pool>()
+  return useMemo(() => {
+    const PROJECT_ICONS: Record<string, React.ReactElement> = {
+      'yearn-finance': <Yearn />,
+      'convex-finance': <Convex />,
+      'curve-dex': <Curve />,
+    }
+
+    return [
+      columnHelper.accessor('symbol', {
+        header: t`Pool`,
+        cell: (data) => {
+          return (
+            <Box
+              variant="layout.verticalAlign"
+              sx={{
+                cursor: 'pointer',
+                color: 'secondaryText',
+                ':hover': { color: 'text' },
+              }}
+              onClick={() => {
+                window.open(data.row.original.url, '_blank')
+                mixpanel.track('Viewed External Earn Link', {
+                  Pool: data.row.original.symbol,
+                  Protocol: data.row.original.project,
+                })
+              }}
+            >
+              <StackTokenLogo tokens={data.row.original.underlyingTokens} />
+              <Text mx="1" sx={{ textDecoration: 'underline' }}>
+                {data.getValue()}
+              </Text>
+              <ExternalArrowIcon />
+            </Box>
+          )
+        },
+      }),
+      columnHelper.accessor('project', {
+        header: t`Project`,
+        cell: (data) => (
+          <Box variant="layout.verticalAlign">
+            {PROJECT_ICONS[data.getValue()] ?? ''}
+            <Text ml="2">
+              {LP_PROJECTS[data.getValue()]?.name ?? 'Unknown'}
+            </Text>
+          </Box>
+        ),
+      }),
+      columnHelper.accessor('chain', {
+        header: t`Chain`,
+        cell: (data) => {
+          return (
+            <Box pl="10px">
+              <ChainLogo fontSize={16} chain={+chainMap[data.getValue()]} />
+            </Box>
+          )
+        },
+      }),
+      columnHelper.accessor('apy', {
+        header: () => {
+          return (
+            <Box variant="layout.verticalAlign">
+              <Text mr={1}>APY</Text>
+              <Help content="APY = Base APY + Reward APY. For non-autocompounding pools reinvesting is not accounted, in which case APY = APR." />
+            </Box>
+          )
+        },
+        cell: (data) => `${formatCurrency(data.getValue(), 1)}%`,
+      }),
+      columnHelper.accessor('apyBase', {
+        header: () => {
+          return (
+            <Box variant="layout.verticalAlign">
+              <Text mr={1}>Base APY</Text>
+              <Help content="Annualised percentage yield from trading fees/supplying. For dexes 24h fees are used and scaled those to a year." />
+            </Box>
+          )
+        },
+        cell: (data) => `${formatCurrency(data.getValue(), 1)}%`,
+      }),
+      columnHelper.accessor('apyReward', {
+        header: () => {
+          return (
+            <Box variant="layout.verticalAlign">
+              <Text mr={1}>Reward APY</Text>
+              <Help content="Annualised percentage yield from incentives" />
+            </Box>
+          )
+        },
+        cell: (data) => `${formatCurrency(data.getValue(), 1)}%`,
+      }),
+      columnHelper.accessor('tvlUsd', {
+        header: t`TVL`,
+        cell: (data) => `$${formatCurrency(data.getValue(), 0)}`,
+      }),
+    ]
+  }, [])
+}
+
+export default useEarnTableColumns

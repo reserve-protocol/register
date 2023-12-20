@@ -2,7 +2,7 @@ import {
   Address,
   Searcher,
   Token,
-  Universe
+  Universe,
 } from '@reserve-protocol/token-zapper'
 import {
   PERMIT2_ADDRESS,
@@ -14,11 +14,10 @@ import { Getter, atom } from 'jotai'
 import { loadable } from 'jotai/utils'
 import {
   balancesAtom,
-  blockAtom,
   chainIdAtom,
   isSmartWalletAtom,
   rTokenAtom,
-  walletAtom,
+  walletAtom
 } from 'state/atoms'
 
 import { defaultAbiCoder } from '@ethersproject/abi'
@@ -32,11 +31,10 @@ import {
 } from 'utils/atoms/utils'
 
 import { EthereumConfigType } from '@reserve-protocol/token-zapper/types/configuration/ethereum'
-import { type SearcherResult } from '@reserve-protocol/token-zapper/types/searcher/SearcherResult'
+import { type BaseSearcherResult } from '@reserve-protocol/token-zapper/types/searcher/SearcherResult'
 import { type ZapTransaction } from '@reserve-protocol/token-zapper/types/searcher/ZapTransaction'
-import mixpanel from 'mixpanel-browser'
-import { resolvedZapState, zappableTokens } from './zapper'
 import { ChainId } from 'utils/chains'
+import { resolvedZapState, zappableTokens } from './zapper'
 
 export const zapOutputSlippage = atom(100000n)
 
@@ -55,7 +53,16 @@ export const zapOutputSlippage = atom(100000n)
  */
 
 export const previousZapTransaction = atom<{
-  result: SearcherResult
+  result: BaseSearcherResult
+  transaction: ZapTransaction
+  permit2?: {
+    permit: PermitTransferFrom
+    signature: string
+  }
+} | null>(null)
+
+export const previousRedeemZapTransaction = atom<{
+  result: BaseSearcherResult
   transaction: ZapTransaction
   permit2?: {
     permit: PermitTransferFrom
@@ -69,13 +76,20 @@ export const zapInputString = atomWithOnWrite('', (_, set, __) => {
   set(permitSignature, null)
   set(previousZapTransaction, null)
 })
+
+export const zapRedeemInputString = atomWithOnWrite('', (_, set, __) => {
+  set(permitSignature, null)
+  set(previousRedeemZapTransaction, null)
+})
 export const tokenToZapUserSelected = atomWithOnWrite(
   null as Token | null,
   (_, set, prev, next) => {
     if (prev !== next) {
+      set(zapRedeemInputString, '')
       set(zapInputString, '')
       set(tokenToZapPopupState, false)
       set(previousZapTransaction, null)
+      set(previousRedeemZapTransaction, null)
     }
   }
 )
@@ -138,6 +152,23 @@ export const zapperInputs = simplifyLoadable(
     })
   )
 )
+
+const parsedRedeemUserInput = onlyNonNullAtom((get) =>
+  get(zapperInputs).rToken.from(get(zapRedeemInputString))
+)
+export const redeemZapQuoteInput = onlyNonNullAtom((get) => {
+  const signer = get(senderOrNullAddress)
+  const { rToken, tokenToZap, universe, zapSearcher } = get(zapperInputs)
+  const inputQuantity = get(parsedRedeemUserInput, tokenToZap.zero)
+  return {
+    signer,
+    inputQuantity,
+    inputToken: rToken,
+    output: tokenToZap,
+    universe,
+    zapSearcher,
+  }
+})
 export const zapQuoteInput = onlyNonNullAtom((get) => {
   const signer = get(senderOrNullAddress)
   const { rToken, tokenToZap, universe, zapSearcher } = get(zapperInputs)
@@ -157,29 +188,18 @@ const debouncedUserInputGenerator = atomWithDebounce(
   400
 ).debouncedValueAtom
 
-export const redoQuote = atom(0)
-let firstTime = true
+const debouncedRedeemZapUserInputGenerator = atomWithDebounce(
+  atom((get) => get(redeemZapQuoteInput)),
+  400
+).debouncedValueAtom
+
+export const redoZapQuote = atom(0)
 export const zapQuotePromise = loadable(
   onlyNonNullAtom(async (get) => {
-    get(redoQuote)
+    get(redoZapQuote)
     const input = get(debouncedUserInputGenerator)
     if (input.inputQuantity.amount === 0n) {
       return null
-    }
-    const blockNumber = get(blockAtom)
-    const [gasPrice] = await Promise.all([
-      await input.universe.provider.getGasPrice(),
-    ])
-
-    input.universe.updateBlockState(blockNumber, gasPrice.toBigInt())
-    if (firstTime) {
-      await input.zapSearcher.findSingleInputToRTokenZap(
-        input.inputQuantity,
-        input.rToken,
-        input.signer,
-        get(tradeSlippage)
-      )
-      firstTime = false
     }
     const a = input.zapSearcher.findSingleInputToRTokenZap(
       input.inputQuantity,
@@ -193,8 +213,29 @@ export const zapQuotePromise = loadable(
     return out
   })
 )
-
 export const zapQuote = simplifyLoadable(zapQuotePromise)
+
+export const redoRedeemZapQuote = atom(0)
+export const redeemZapQuotePromise = loadable(
+  onlyNonNullAtom(async (get) => {
+    get(redoZapQuote)
+    const input = get(debouncedRedeemZapUserInputGenerator)
+    if (input.inputQuantity.amount === 0n) {
+      return null
+    }
+    const a = input.zapSearcher.findRTokenIntoSingleTokenZap(
+      input.inputQuantity,
+      input.output,
+      input.signer,
+      get(tradeSlippage)
+    )
+    a.catch((e) => console.log(e.message))
+
+    const out = await a
+    return out
+  })
+)
+export const redeemZapQuote = simplifyLoadable(redeemZapQuotePromise)
 
 export const approximateGasUsage: Record<string, bigint> = {
   '0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f': 3_000_000n,
@@ -246,6 +287,51 @@ export const maxSelectedZapTokenBalance = atom((get) => {
   }
   return bal
 })
+
+export const approvalNeededForRedeemAtom = loadable(
+  onlyNonNullAtom(async (get) => {
+    const zapInput = get(redeemZapQuoteInput)
+    const universe = zapInput.universe
+    const token = zapInput.inputToken
+    const user = zapInput.signer
+    const input = zapInput.inputQuantity
+    get(approvalRandomId)
+
+    let approvalNeeded = false
+    let spender = Address.from(universe.config.addresses.zapperAddress)
+    if (token !== universe.nativeToken) {
+      const allowance = await universe.approvalsStore.queryAllowance(
+        token,
+        user,
+        spender
+      )
+      approvalNeeded =
+        (input.amount === 0n ? 2n ** 64n : input.amount) > allowance.toBigInt()
+    }
+    const data =
+      id('approve(address,uint256)').slice(0, 10) +
+      defaultAbiCoder
+        .encode(['address', 'uint256'], [spender.address, MaxUint256])
+        .slice(2)
+    const out = {
+      approvalNeeded,
+      token,
+      user,
+      usingPermit2: false,
+      spender,
+      universe,
+      tx: {
+        to: token.address.address,
+        data,
+        from: user.address,
+      },
+    }
+    return out
+  })
+)
+export const resolvedRedeemApprovalNeeded = simplifyLoadable(
+  approvalNeededForRedeemAtom
+)
 
 export const approvalNeededAtom = loadable(
   onlyNonNullAtom(async (get) => {
@@ -350,6 +436,33 @@ const useMaxIssueance: Record<number, boolean> = {
   [ChainId.Mainnet]: false,
   [ChainId.Base]: true,
 }
+
+const redeemZapTxAtom = atom(async (get) => {
+  const result = get(redeemZapQuote)
+  const chainId = get(chainIdAtom)
+  const approvalNeeded = get(resolvedRedeemApprovalNeeded)
+  if (!(approvalNeeded && result)) {
+    return null
+  }
+  const txp = result.toTransaction({
+    outputSlippage: get(zapOutputSlippage),
+    maxIssueance: useMaxIssueance[chainId] ?? false,
+    returnDust: get(collectDust),
+  })
+  txp.catch((e) => console.log(e.message))
+  const tx = await txp
+  console.log(tx.describe().join('\n'))
+  // console.log("=== abstract zap transaction ===")
+  // console.log(result.describe().join("\n"))
+  return {
+    result,
+    transaction: tx,
+  }
+})
+
+export const redeemZapTransaction = loadable(redeemZapTxAtom)
+export const resolvedRedeemZapTransaction = simplifyLoadable(redeemZapTransaction)
+
 const zapTxAtom = atom(async (get) => {
   const result = get(zapQuote)
   const chainId = get(chainIdAtom)
@@ -376,8 +489,6 @@ const zapTxAtom = atom(async (get) => {
     maxIssueance: useMaxIssueance[chainId] ?? false,
     returnDust: get(collectDust),
   })
-  // console.log("=== abstract zap transaction ===")
-  // console.log(result.describe().join("\n"))
   return {
     result,
     transaction: tx,
@@ -386,57 +497,24 @@ const zapTxAtom = atom(async (get) => {
 })
 
 export const zapTransaction = loadable(zapTxAtom)
-
 export const resolvedZapTransaction = simplifyLoadable(zapTransaction)
 
-export const zapTransactionGasEstimateUnits = loadable(
-  onlyNonNullAtom(async (get) => {
-    const selectedZapToken = get(selectedZapTokenAtom)
-    const rToken = get(rTokenAtom)
+export const resolvedZapTransactionGasEstimateUnits = onlyNonNullAtom(
+  (get) => {
     const tx = get(resolvedZapTransaction)
     const needsApproval = get(resolvedApprovalNeeded)
-    if (
-      needsApproval.approvalNeeded ||
-      (needsApproval.usingPermit2 === true && tx.permit2 == null)
-    ) {
-      return null
+    if (needsApproval.approvalNeeded) {
+      return 100000n
     }
-    for (let i = 0; i < 3; i++) {
-      try {
-        return await tx.result.universe.provider
-          .estimateGas({
-            to: tx.transaction.tx.to,
-            data: tx.transaction.tx.data,
-            value: tx.transaction.tx.value,
-            from: tx.transaction.tx.from,
-          })
-          .then((bn) => {
-            const out = bn.toBigInt()
-            return out + out / 10n
-          })
-      } catch (e) {
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        continue
-      }
-    }
-
-    mixpanel.track('Failed to estimate gas for zapping', {
-      RToken: rToken.address.toString().toLowerCase() ?? '',
-      inputToken: selectedZapToken.symbol,
-    })
-    throw new Error('Failed to estimate gas')
-  })
-)
-
-export const resolvedZapTransactionGasEstimateUnits = simplifyLoadable(
-  zapTransactionGasEstimateUnits
+    return tx.transaction.gasEstimate
+  }
 )
 
 const zapTransactionGasEstimateFee = onlyNonNullAtom((get) => {
   const quote = get(zapQuote)
-  const estimate = get(resolvedZapTransactionGasEstimateUnits, 0n)
+  const estimate = get(resolvedZapTransactionGasEstimateUnits)
   return quote.universe.nativeToken
-    .from(estimate ?? 0n)
+    .from(estimate)
     .scalarMul(quote.universe.gasPrice)
 })
 

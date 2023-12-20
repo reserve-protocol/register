@@ -1,7 +1,8 @@
 import type { Theme } from 'theme-ui'
+import 'react-loading-skeleton/dist/skeleton.css'
 import './app.css'
 
-export const boxShadow = '0px 4px 34px rgba(0, 0, 0, 0.05)'
+export const boxShadow = '0px 10px 20px var(--theme-ui-colors-shadow)'
 export const transition = 'all .2s ease'
 export const centeredContent = {
   display: 'flex',
@@ -12,6 +13,7 @@ export const centeredContent = {
 export const borderRadius = {
   inputs: 6,
   boxes: 14,
+  inner: '10px',
 }
 export const baseButton = {
   borderRadius: 50,
@@ -19,7 +21,7 @@ export const baseButton = {
   cursor: 'pointer',
   color: '#fff',
   backgroundColor: 'primary',
-  padding: '10px',
+  padding: '14px',
   paddingLeft: 4,
   paddingRight: 4,
 
@@ -73,9 +75,16 @@ export const smallButton = {
   borderRadius: 6,
 }
 
+export const mediumButton = {
+  padding: ['4px 10px 4px 10px', '12px 16px 12px 16px'],
+  fontSize: [1, 2],
+  borderRadius: borderRadius.inputs,
+}
+
 export const colors = {
   base: '#2852F5',
   text: '#292929',
+  shadow: 'rgba(0, 0, 0, 0.05)',
   invertedText: '#FFFFFF',
   secondaryText: '#666666',
   lightText: '#808080',
@@ -84,8 +93,9 @@ export const colors = {
   contentLightBackground: 'rgba(249, 248, 244, 0.5)',
   primary: '#000000',
   success: '#11BB8D',
-  accentAction: '#973700',
-  accentBG: 'contentBackground',
+  accentAction: '#106D46',
+  accentBG: '#DBE9E4',
+  accentText: '#00814B',
   secondary: '#E8E8E8',
   rBlue: '#2150A9',
   rBlueLight: '#DBE3F1',
@@ -98,11 +108,12 @@ export const colors = {
   danger: '#FF0000',
   dangerBG: 'rgba(255, 0, 0, 0.15)',
   muted: '#D9D9D9',
-  warning: '#FF7A00',
+  warning: '#FF8A00',
   modalOverlay: 'rgba(0, 0, 0, 0.2)',
   modes: {
     dark: {
       text: '#e4dede',
+      shadow: 'rgba(0, 0, 0, 0.2)',
       rBlueLight: '#0D1321',
       secondaryText: '#969696',
       invertedText: '#FFFFFF',
@@ -113,8 +124,8 @@ export const colors = {
       primary: '#6D3210',
       secondary: '#33261f',
       disabled: '#231f1f',
-      accentAction: '#973700',
-      accentBG: '#1A0D05',
+      accentAction: '#106D46',
+      accentBG: '#041B11',
       border: '#1A1A1A',
       darkBorder: '#241c19',
       inputBorder: '#2c2521',
@@ -132,11 +143,12 @@ export const colors = {
 
 export const theme: Theme = {
   breakpoints: ['52em', '64em', '72em', '100em'],
-  space: [0, 4, 8, 16, 24, 32, 40, 48, 80, 256],
+  space: [0, 4, 8, 16, 24, 32, 40, 48, 80, 256], // 0-9
   fonts: {
     body: 'Satoshi, sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,  "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
     heading: 'inherit',
     monospace: 'Menlo, monospace',
+    fontDisplay: 'swap',
   },
   fontSizes: [12, 14, 16, 20, 24, 32, 48, 56, 96],
   fontWeights: {
@@ -187,6 +199,9 @@ export const theme: Theme = {
     },
     primary: {
       color: 'text',
+    },
+    warning: {
+      color: 'warning',
     },
     error: {
       color: 'danger',
@@ -368,20 +383,26 @@ export const theme: Theme = {
   },
   buttons: {
     primary: baseButton,
+    blue: {
+      ...baseButton,
+      backgroundColor: 'rBlue',
+    },
     accent: {
       ...baseButton,
       backgroundColor: 'accentBG',
     },
     accentAction: {
       ...baseButton,
-      backgroundColor: 'transparent',
+      backgroundColor: 'accentBG',
       border: '1px solid',
       borderColor: 'accentAction',
-      color: 'accentAction',
+      color: 'accentText',
+      fontWeight: 500,
 
       '&:hover': {
-        backgroundColor: 'accentAction',
-        color: 'white',
+        color: 'text',
+        borderColor: 'text',
+        boxShadow: '0px 3px 10px rgba(0, 0, 0, 0.05)',
       },
     },
     bordered: {
@@ -395,10 +416,21 @@ export const theme: Theme = {
       ...baseButton,
       backgroundColor: 'transparent',
       border: '1px solid',
-      borderColor: 'border',
+      borderColor: 'darkBorder',
       color: 'text',
       '&:hover': {
         borderColor: 'text',
+      },
+    },
+    hover: {
+      ...baseButton,
+      backgroundColor: 'transparent',
+      border: '1px solid',
+      borderColor: 'transparent',
+
+      color: 'text',
+      '&:hover': {
+        backgroundColor: 'border',
       },
     },
     muted: {
@@ -469,6 +501,11 @@ export const theme: Theme = {
     },
   },
   layout: {
+    wrapper: {
+      maxWidth: '95em',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
     container: {
       boxSizing: 'border-box',
       flexShrink: 0,

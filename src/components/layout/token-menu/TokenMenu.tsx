@@ -10,7 +10,6 @@ const Container = styled(Box)`
   position: fixed;
   top: 72px;
   width: 100%;
-  max-width: 95em;
   height: 72px;
 `
 

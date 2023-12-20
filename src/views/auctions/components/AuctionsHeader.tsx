@@ -1,24 +1,25 @@
 import { Trans } from '@lingui/macro'
 import { Button } from 'components'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { isModuleLegacyAtom } from 'state/atoms'
-import { Box, Text } from 'theme-ui'
-import { TradeKind, auctionPlatformAtom, auctionSidebarAtom } from '../atoms'
 import { useEffect } from 'react'
+import { isModuleLegacyAtom, rTokenContractsAtom } from 'state/atoms'
+import { Box, Text } from 'theme-ui'
 import { ToggleButton } from '../../../components/ToggleButton'
+import { TradeKind, auctionPlatformAtom, auctionSidebarAtom } from '../atoms'
 
 // TODO: When tokens upgrade to 3.0, default to dutch auctions
 const AuctionsHeader = () => {
   const toggleSidebar = useSetAtom(auctionSidebarAtom)
+  const contracts = useAtomValue(rTokenContractsAtom)
   const [platform, setPlatform] = useAtom(auctionPlatformAtom)
   const { auctions: isLegacy } = useAtomValue(isModuleLegacyAtom)
 
   // Make sure platform = batch auctions for legacy tokens
   useEffect(() => {
-    if (platform === TradeKind.DutchTrade && isLegacy) {
+    if (contracts && platform === TradeKind.DutchTrade && isLegacy) {
       setPlatform(TradeKind.BatchTrade)
     }
-  }, [platform, isLegacy])
+  }, [platform, isLegacy, contracts])
 
   return (
     <Box variant="layout.verticalAlign">

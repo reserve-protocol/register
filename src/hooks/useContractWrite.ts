@@ -7,6 +7,8 @@ import { getSafeGasLimit } from './../utils/index'
 import useGasEstimate from './useGasEstimate'
 import type { Abi } from 'abitype'
 import type { UsePrepareContractWriteConfig } from 'wagmi'
+import { useAtomValue } from 'jotai'
+import { isWalletInvalidAtom } from 'state/atoms'
 
 // Extends wagmi to include gas estimate and gas limit multiplier
 const useContractWrite = <
@@ -16,8 +18,9 @@ const useContractWrite = <
 >(
   call: UsePrepareContractWriteConfig<TAbi, TFunctionName, TChainId> = {} as any
 ) => {
+  const isWalletInvalid = useAtomValue(isWalletInvalidAtom)
   const { config, isSuccess, error } = usePrepareContractWrite(
-    call as UsePrepareContractWriteConfig
+    !isWalletInvalid ? (call as UsePrepareContractWriteConfig) : undefined
   )
 
   const gas = useGasEstimate(isSuccess ? config.request : null)

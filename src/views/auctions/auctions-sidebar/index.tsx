@@ -1,14 +1,11 @@
 import { Trans } from '@lingui/macro'
+import { Button } from 'components'
 import Sidebar from 'components/sidebar'
 import { useAtom, useSetAtom } from 'jotai'
 import { X } from 'react-feather'
-import { Box, Button, Divider, Flex, Text } from 'theme-ui'
+import { Divider, Flex, Text } from 'theme-ui'
 import { auctionSidebarAtom } from '../atoms'
-import ConfirmAuction from './ConfirmAuction'
-import RecollaterizationAlert from './RecollaterizationAlert'
-import RevenueAuctionList from './RevenueAuctionList'
-import RevenueOverview from './RevenueOverview'
-import SettleableAuctions from './SettleableAuctions'
+import Revenue from './Revenue'
 
 const Header = () => {
   const close = useSetAtom(auctionSidebarAtom)
@@ -40,16 +37,14 @@ const AuctionsSidebar = () => {
   }
 
   return (
-    <Sidebar onClose={toggleSidebar} width="600px">
+    <Sidebar
+      onClose={toggleSidebar}
+      width="600px"
+      sx={{ backgroundColor: 'contentBackground' }}
+    >
       <Header />
-      <RevenueOverview />
-      <Divider my={4} />
-      <RecollaterizationAlert />
-      <Box px={4} sx={{ flexGrow: 1, overflow: 'auto' }}>
-        <SettleableAuctions />
-        <RevenueAuctionList />
-      </Box>
-      <ConfirmAuction />
+      <Divider mt={3} mb={0} mx={-4} />
+      <Revenue />
     </Sidebar>
   )
 }

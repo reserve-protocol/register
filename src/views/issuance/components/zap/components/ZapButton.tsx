@@ -17,15 +17,14 @@ const ZapButton = (props: Partial<LoadingButtonProps>) => {
 
   const walletClient = useWalletClient()
 
-
   const [{ loading, enabled, label, loadingLabel }, onClick] = useAtom(
-    ui.button
+    ui.zapButton
   )
 
+  const l = loading || walletClient.isLoading
   return (
     <LoadingButton
-      loading={loading || walletClient.isLoading}
-      disabled={!enabled}
+      loading={l}
       text={label}
       variant="primary"
       loadingText={loadingLabel}
@@ -33,6 +32,7 @@ const ZapButton = (props: Partial<LoadingButtonProps>) => {
       sx={{ width: '100%' }}
       onClick={() => onClick(walletClient.data!)}
       {...props}
+      disabled={!enabled || props.disabled}
     />
   )
 }

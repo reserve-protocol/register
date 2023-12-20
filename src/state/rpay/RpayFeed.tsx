@@ -5,6 +5,7 @@ import { StringMap } from 'types'
 import { dateToUnix } from 'utils'
 import { RPayTx, rpayOverviewAtom, rpayTransactionsAtom } from '../atoms'
 
+// TODO: Deprecated, may join tx for eUSD?
 const OVERVIEW_URL = `https:${import.meta.env.VITE_RPAY_FEED}/aggregate`
 const TXS_URL = `https:${import.meta.env.VITE_RPAY_FEED}/transactions`
 

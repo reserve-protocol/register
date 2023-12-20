@@ -1,24 +1,36 @@
 import { Card } from 'components'
-import { Divider } from 'theme-ui'
-import BridgeAmount from './BridgeAmount'
+import { ArrowDown } from 'react-feather'
+import { Box, Divider } from 'theme-ui'
 import BridgeHeader from './BridgeHeader'
-import BridgeNetworkPreview from './BridgeNetworkPreview'
-import BridgeTokenSelector from './BridgeTokenSelector'
+import BridgeInput from './BridgeInput'
+import BridgeOutput from './BridgeOutput'
 import ConfirmBridge from './ConfirmBridge'
+import { boxShadow } from 'theme'
 
 const Bridge = () => (
   <Card
-    p={4}
+    p={0}
     sx={{
       backgroundColor: 'contentBackground',
       height: 'fit-content',
+      width: ['100vw', 525],
+      boxShadow: ['none', boxShadow],
+      border: ['none', '2px solid'],
+      borderColor: ['none', 'darkBorder'],
     }}
   >
     <BridgeHeader />
-    <BridgeNetworkPreview />
-    <BridgeTokenSelector mt={3} mb={2} />
-    <BridgeAmount mt={3} />
-    <Divider my={4} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+    <Box p={4} sx={{ borderBottom: '1px solid', borderColor: 'darkBorder' }}>
+      <BridgeInput />
+      <Box variant="layout.verticalAlign">
+        <Divider sx={{ flexGrow: 1, borderColor: 'darkBorder' }} />
+        <Box mx={4} my={3}>
+          <ArrowDown size={24} color="#666666" />
+        </Box>
+        <Divider sx={{ flexGrow: 1 }} />
+      </Box>
+      <BridgeOutput />
+    </Box>
     <ConfirmBridge />
   </Card>
 )

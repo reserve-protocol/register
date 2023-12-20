@@ -40,6 +40,7 @@ const Dialog = ({ width = '420px', sx = {}, ...props }: ModalProps) => (
       top: [0, '50%'],
       right: [0, 'auto'],
       bottom: [0, 'auto'],
+      overflow: 'hidden',
       transform: ['none', 'translate(-50%, -50%)'],
       width: ['auto', width],
       ...sx,
@@ -55,7 +56,7 @@ const Header = ({ title, onClose }: ModalProps) => {
   return (
     <>
       <Flex
-        mb={4}
+        mb={!!title ? 4 : 0}
         sx={{
           alignItems: 'center',
           justifyContent: 'center',
@@ -65,7 +66,7 @@ const Header = ({ title, onClose }: ModalProps) => {
         <Text variant="title">{title && title}</Text>
         {!!onClose && (
           <Button
-            sx={{ position: 'absolute', right: 0 }}
+            sx={{ position: 'absolute', right: 0, top: 0 }}
             variant="circle"
             onClick={onClose}
           >

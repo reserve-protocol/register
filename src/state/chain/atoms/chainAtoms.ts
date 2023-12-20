@@ -14,6 +14,17 @@ export const chainIdAtom = atom<number>(defaultChain)
 export const blockAtom = atom<number | undefined>(undefined)
 export const blockTimestampAtom = atom<number>(0)
 export const walletAtom = atom<Address | null>(null)
+export const walletChainAtom = atom<number | undefined>(undefined)
+export const isWalletInvalidAtom = atom((get) => {
+  const chainId = get(chainIdAtom)
+  const walletChain = get(walletChainAtom)
+
+  if (!walletChain) {
+    return false
+  }
+
+  return chainId !== walletChain
+})
 
 export const rTokenListAtom = atom((get) => {
   const chainId = get(chainIdAtom)
