@@ -1,5 +1,4 @@
 import { useAtom } from 'jotai'
-import mixpanel from 'mixpanel-browser'
 import { useEffect } from 'react'
 import { selectedRTokenAtom } from 'state/atoms'
 import Hero from './components/Hero'
@@ -14,7 +13,6 @@ const Home = () => {
 
   // Unselect rToken if on this view ("back" browser action for example)
   useEffect(() => {
-    mixpanel.track('Land on Home Page', {})
     if (token) {
       setToken(null)
     }

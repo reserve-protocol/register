@@ -13,6 +13,7 @@ import { Box, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
 import { LP_PROJECTS } from 'utils/constants'
+import mixpanel from 'mixpanel-browser'
 
 const chainMap: Record<string, number> = {
   Ethereum: ChainId.Mainnet,
@@ -50,7 +51,13 @@ const useEarnTableColumns = () => {
                 color: 'secondaryText',
                 ':hover': { color: 'text' },
               }}
-              onClick={() => window.open(data.row.original.url, '_blank')}
+              onClick={() => {
+                window.open(data.row.original.url, '_blank')
+                mixpanel.track('Viewed External Earn Link', {
+                  Pool: data.row.original.symbol,
+                  Protocol: data.row.original.project,
+                })
+              }}
             >
               <StackTokenLogo tokens={data.row.original.underlyingTokens} />
               <Text mx="1" sx={{ textDecoration: 'underline' }}>

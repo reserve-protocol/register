@@ -7,12 +7,13 @@ import ChainLogo from 'components/icons/ChainLogo'
 import { Table } from 'components/table'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { blockTimestampAtom, chainIdAtom } from 'state/atoms'
+import { blockTimestampAtom, chainIdAtom, rTokenAtom } from 'state/atoms'
 import { borderRadius } from 'theme'
 import { Box, BoxProps, Flex, Link, Text } from 'theme-ui'
 import { StringMap, TransactionRecord } from 'types'
 import { formatUsdCurrencyCell, relativeTime, shortenString } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import mixpanel from 'mixpanel-browser'
 
 const Container = styled(Box)`
   overflow: auto;
@@ -45,6 +46,7 @@ const TransactionsTable = ({
 }: Props) => {
   const currentTime = useAtomValue(blockTimestampAtom)
   const chainId = useAtomValue(chainIdAtom)
+  const rToken = useAtomValue(rTokenAtom)
   const transactionTypes: StringMap = useMemo(
     () => ({
       MINT: t`Mint`,
@@ -117,6 +119,12 @@ const TransactionsTable = ({
                 )}
                 target="_blank"
                 sx={{ display: ['none', 'inherit'] }}
+                onClick={() => {
+                  mixpanel.track('Clicked Transaction Viewer', {
+                    RToken: rToken?.address.toLowerCase() ?? '',
+                    Type: data.row.original.type,
+                  })
+                }}
               >
                 {shortenString(value)}
               </Link>
