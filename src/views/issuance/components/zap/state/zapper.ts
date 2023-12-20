@@ -5,7 +5,6 @@ import {
   Token,
   Universe,
   baseConfig,
-  createDefillama,
   createKyberswap,
   ethereumConfig,
   setupBaseZapper,
