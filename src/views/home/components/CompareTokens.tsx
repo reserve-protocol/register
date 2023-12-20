@@ -9,10 +9,13 @@ import RTokenCard from './RTokenCard'
 import { ArrowRight } from 'react-feather'
 import DeployHero from './DeployHero'
 import CompareTokensTitle from './CompareTokensTitle'
+import useRTokenPools from 'views/earn/hooks/useRTokenPools'
 
 const CompareTokens = () => {
   const navigate = useNavigate()
   const { list, isLoading } = useTokenList()
+  // Load pools to get rtoken earn info
+  useRTokenPools()
 
   const handleViewAll = () => {
     navigate(ROUTES.TOKENS)

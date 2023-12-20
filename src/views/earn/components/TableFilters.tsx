@@ -1,10 +1,11 @@
 import CirclesIcon from 'components/icons/CirclesIcon'
-import TokenLogo from 'components/icons/TokenLogo'
 import EarnNavIcon from 'components/icons/EarnNavIcon'
+import TokenLogo from 'components/icons/TokenLogo'
 import Ethereum from 'components/icons/logos/Ethereum'
 import { SearchInput } from 'components/input'
-import { useAtom, useSetAtom } from 'jotai'
-import { useMemo, useState } from 'react'
+import { atom, useAtom, useSetAtom } from 'jotai'
+import { useEffect, useMemo } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { borderRadius } from 'theme'
 import { Box, Text } from 'theme-ui'
 import { RSR_ADDRESS } from 'utils/addresses'
@@ -71,8 +72,6 @@ const FilterOptions = () => {
           sx={{
             cursor: 'pointer',
             backgroundColor: index === selected ? 'background' : 'transparent',
-            // border: '1px solid',
-            // borderColor: index === selected ? 'primary' : 'transparent',
             width: ['40px', 'auto'],
             height: '32px',
             borderRadius: borderRadius.inner,
@@ -93,8 +92,23 @@ const FilterOptions = () => {
   )
 }
 
+const setPageSearchAtom = atom(null, (get, set, search: string) => {
+  set(filterOptionAtom, 0)
+  set(poolFilterAtom, { stables: false, tokens: [] })
+  set(poolSearchFilterAtom, search)
+})
+
 const TableFilters = () => {
   const [search, setSearch] = useAtom(poolSearchFilterAtom)
+  const setPageFilter = useSetAtom(setPageSearchAtom)
+  const [searchParams] = useSearchParams()
+
+  // Get default token to filter if any
+  useEffect(() => {
+    if (searchParams.get('underlying')) {
+      setPageFilter((searchParams.get('underlying') || '').trim())
+    }
+  }, [])
 
   return (
     <Box

@@ -1,5 +1,5 @@
 import { Token } from 'types'
-import { RSR_ADDRESS } from './addresses'
+import { EUSD_ADDRESS, RSR_ADDRESS } from './addresses'
 import { ChainId } from './chains'
 import rtokens from '@lc-labs/rtokens'
 import RSV from './rsv'
@@ -121,6 +121,27 @@ export const CHAIN_TAGS = {
 export const LISTED_RTOKEN_ADDRESSES: { [x: number]: string[] } = {
   [ChainId.Mainnet]: [RSV.address.toLowerCase()],
 }
+
+export const BRIDGED_RTOKENS = {
+  [ChainId.Mainnet]: {
+    [EUSD_ADDRESS[ChainId.Mainnet]]: [
+      {
+        address: '0xCfA3Ef56d303AE4fAabA0592388F19d7C3399FB4',
+        chain: ChainId.Base,
+      },
+    ],
+  },
+}
+
+export const BRIDGE_RTOKEN_MAP = Object.entries(
+  BRIDGED_RTOKENS[ChainId.Mainnet]
+).reduce((acc, [key, tokens]) => {
+  for (const token of tokens) {
+    acc[token.address] = key
+  }
+
+  return acc
+}, {} as Record<string, string>)
 
 for (const chain of supportedChainList) {
   LISTED_RTOKEN_ADDRESSES[chain] = [

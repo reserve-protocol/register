@@ -2,14 +2,18 @@ import { Trans } from '@lingui/macro'
 import { Button } from 'components'
 import ChainLogo from 'components/icons/ChainLogo'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'
+import EarnNavIcon from 'components/icons/EarnNavIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import { ListedToken } from 'hooks/useTokenList'
+import { useAtomValue } from 'jotai'
 import { memo, useMemo } from 'react'
 import { ArrowRight } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
+import { rTokenPoolsAtom } from 'state/pools/atoms'
 import { Box, BoxProps, Card, Text } from 'theme-ui'
 import { formatCurrency, stringToColor } from 'utils'
 import { CHAIN_TAGS, ROUTES } from 'utils/constants'
+import { getAddress } from 'viem'
 import CollateralPieChart from 'views/overview/components/CollateralPieChart'
 
 interface Props extends BoxProps {
@@ -51,6 +55,8 @@ const colors = [
 
 const RTokenCard = ({ token, ...props }: Props) => {
   const navigate = useNavigate()
+  const pools = useAtomValue(rTokenPoolsAtom)
+  const earnData = pools[getAddress(token.id)]
   const chartData = useMemo(
     () =>
       token.collaterals.map((c, i) => ({
@@ -64,6 +70,11 @@ const RTokenCard = ({ token, ...props }: Props) => {
 
   const handleNavigate = (route: string) => {
     navigate(`${route}?token=${token.id}&chainId=${token.chain}`)
+    document.getElementById('app-container')?.scrollTo(0, 0)
+  }
+
+  const handleEarn = () => {
+    navigate(`${ROUTES.EARN}?underlying=${token.symbol}&chainId=${token.chain}`)
     document.getElementById('app-container')?.scrollTo(0, 0)
   }
 
@@ -139,6 +150,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
               Stake RSR{' '}
               {!!token.stakingApy && `- ${token.stakingApy.toFixed(1)}% APY`}
             </Button>
+
             <Button
               onClick={() => handleNavigate(ROUTES.OVERVIEW)}
               mt={3}
@@ -150,11 +162,30 @@ const RTokenCard = ({ token, ...props }: Props) => {
                 <Text mr={3}>Explore</Text> <ArrowRight size={16} />
               </Box>
             </Button>
-            {/* <Button mt={3} medium variant="transparent">
-              <Box variant="layout.verticalAlign">
-                <Text mr={3}>Earn</Text> <ArrowRight size={16} />
-              </Box>
-            </Button> */}
+            {!!earnData && (
+              <Button onClick={handleEarn} mt={3} mr={3} medium variant="hover">
+                <Box variant="layout.verticalAlign">
+                  <Box
+                    variant="layout.verticalAlign"
+                    p="1"
+                    mr={2}
+                    sx={{
+                      backgroundColor: 'rBlue',
+                      borderRadius: 6,
+                      color: 'white',
+                    }}
+                  >
+                    <EarnNavIcon fontSize={20} />
+                  </Box>
+                  <Text>Earn - </Text>
+                  <Text ml="1" mr={3} variant="strong" sx={{ color: 'rBlue' }}>
+                    {earnData.minApy.toFixed(0)}-{earnData.maxApy.toFixed(0)}%
+                    APY
+                  </Text>
+                  <ArrowRight size={16} />
+                </Box>
+              </Button>
+            )}
           </Box>
         </Box>
       </Box>
