@@ -162,30 +162,6 @@ const RTokenCard = ({ token, ...props }: Props) => {
                 <Text mr={3}>Explore</Text> <ArrowRight size={16} />
               </Box>
             </Button>
-            {!!earnData && (
-              <Button onClick={handleEarn} mt={3} mr={3} medium variant="hover">
-                <Box variant="layout.verticalAlign">
-                  <Box
-                    variant="layout.verticalAlign"
-                    p="1"
-                    mr={2}
-                    sx={{
-                      backgroundColor: 'rBlue',
-                      borderRadius: 6,
-                      color: 'white',
-                    }}
-                  >
-                    <EarnNavIcon fontSize={20} />
-                  </Box>
-                  <Text>Earn - </Text>
-                  <Text ml="1" mr={3} variant="strong" sx={{ color: 'rBlue' }}>
-                    {earnData.minApy.toFixed(0)}-{earnData.maxApy.toFixed(0)}%
-                    APY
-                  </Text>
-                  <ArrowRight size={16} />
-                </Box>
-              </Button>
-            )}
           </Box>
         </Box>
       </Box>
@@ -194,3 +170,29 @@ const RTokenCard = ({ token, ...props }: Props) => {
 }
 
 export default memo(RTokenCard)
+
+// TODO: Commented until fixed
+// {!!earnData && (
+//   <Button onClick={handleEarn} mt={3} mr={3} medium variant="hover">
+//     <Box variant="layout.verticalAlign">
+//       <Box
+//         variant="layout.verticalAlign"
+//         p="1"
+//         mr={2}
+//         sx={{
+//           backgroundColor: 'rBlue',
+//           borderRadius: 6,
+//           color: 'white',
+//         }}
+//       >
+//         <EarnNavIcon fontSize={20} />
+//       </Box>
+//       <Text>Earn - </Text>
+//       <Text ml="1" mr={3} variant="strong" sx={{ color: 'rBlue' }}>
+//         {earnData.minApy.toFixed(0)}-{earnData.maxApy.toFixed(0)}%
+//         APY
+//       </Text>
+//       <ArrowRight size={16} />
+//     </Box>
+//   </Button>
+// )}
