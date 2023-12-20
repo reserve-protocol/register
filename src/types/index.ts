@@ -172,3 +172,74 @@ export interface CollateralPlugin {
   chainlinkFeed: Address
   delayUntilDefault: string
 }
+
+export interface ProposalEvent {
+  id?: bigint
+  proposalId?: bigint
+  proposer: string
+  startBlock: bigint
+  endBlock: bigint
+  description: string
+  targets: string[]
+  values: bigint[]
+  calldatas: string[]
+}
+export interface SimulationConfig {
+  targets: Address[]
+  values: bigint[]
+  calldatas: `0x${string}`[]
+  description: string
+}
+
+// --- Tenderly types, Request ---
+// Response from tenderly endpoint that encodes state data
+export type StorageEncodingResponse = {
+  stateOverrides: {
+    // these keys are the contract addresses, all lower case
+    [key: string]: {
+      value: {
+        // these are the slot numbers, as 32 byte hex strings
+        [key: string]: string
+      }
+    }
+  }
+}
+
+type StateObject = {
+  balance?: string
+  code?: string
+  storage?: Record<string, string>
+}
+
+export type TenderlyPayload = {
+  network_id: number
+  block_number?: number
+  transaction_index?: number
+  from: string
+  to: string
+  input: string
+  gas: number
+  gas_price?: string
+  value?: string
+  simulation_type?: 'full' | 'quick'
+  save?: boolean
+  save_if_fails?: boolean
+  state_objects?: Record<string, StateObject>
+  block_header?: {
+    number?: string
+    timestamp?: string
+  }
+  generate_access_list?: boolean
+}
+
+interface GeneratedAccessList {
+  address: string
+  storage_keys: string[]
+}
+
+export interface TenderlySimulation {
+  transaction: any
+  simulation: any
+  contracts: any[]
+  generated_access_list: GeneratedAccessList[]
+}

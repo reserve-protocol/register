@@ -2,6 +2,8 @@ import { PROPOSAL_STATES, blockDuration } from 'utils/constants'
 import { atom } from 'jotai'
 import { blockAtom, chainIdAtom, rTokenGovernanceAtom } from 'state/atoms'
 import { Address, Hex, keccak256, parseEther, toBytes } from 'viem'
+import { TenderlySimulation } from 'types'
+import { atomWithReset } from 'jotai/utils'
 
 export interface ProposalDetail {
   id: string
@@ -30,6 +32,12 @@ export interface ProposalDetail {
     voter: string
   }[]
   governor: Address
+}
+
+export type SimulationState = {
+  data: TenderlySimulation | null
+  loading: boolean
+  error: Error | null
 }
 
 export const proposalDetailAtom = atom<null | ProposalDetail>(null)
@@ -161,3 +169,9 @@ export const proposalTxArgsAtom = atom(
     ]
   }
 )
+
+export const simulationStateAtom = atomWithReset<SimulationState>({
+  data: null,
+  loading: false,
+  error: null,
+})

@@ -111,8 +111,25 @@ export const blockDuration = {
   [ChainId.Mainnet]: 12,
   [ChainId.Base]: 2,
 }
-
 export const supportedChainList = [ChainId.Mainnet, ChainId.Base]
+
+// Load environment variables.
+export const TENDERLY_ACCESS_TOKEN: string = import.meta.env
+  .VITE_TENDERLY_ACCESS_TOKEN!
+export const TENDERLY_USER: string = import.meta.env.VITE_TENDERLY_USER!
+export const TENDERLY_PROJECT_SLUG: string = import.meta.env
+  .VITE_TENDERLY_PROJECT_SLUG!
+
+// Tenderly simulation
+export const BLOCK_GAS_LIMIT = 30_000_000
+export const DEFAULT_FROM = '0xD73a92Be73EfbFcF3854433A5FcbAbF9c1316073' // arbitrary EOA not used on-chain
+export const TENDERLY_BASE_URL = `https://api.tenderly.co/api/v1`
+export const TENDERLY_ENCODE_URL = `${TENDERLY_BASE_URL}/account/${TENDERLY_USER}/project/${TENDERLY_PROJECT_SLUG}/contracts/encode-states`
+export const TENDERLY_SIM_URL = `${TENDERLY_BASE_URL}/account/${TENDERLY_USER}/project/${TENDERLY_PROJECT_SLUG}/simulate`
+export const TENDERLY_SHARE_URL = (id: string) =>
+  `https://api.tenderly.co/api/v1/account/${TENDERLY_USER}/project/${TENDERLY_PROJECT_SLUG}/simulations/${id}/share`
+export const TENDERLY_SHARING_URL = (id: string) =>
+  `https://dashboard.tenderly.co/shared/simulation/${id}`
 export const CHAIN_TAGS = {
   [ChainId.Mainnet]: 'Ethereum',
   [ChainId.Base]: 'Base',

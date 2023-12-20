@@ -6,6 +6,8 @@ import ProposalDetailNavigation from '../../proposal-detail/components/ProposalD
 import useProposalTx from '../hooks/useProposalTx'
 import ConfirmProposalForm from './ConfirmProposalForm'
 import ConfirmProposalOverview from './ConfirmProposalOverview'
+import SimulateProposal from './SimulateProposal'
+import { Container } from 'theme-ui'
 
 const ConfirmProposal = () => {
   const tx = useProposalTx()
@@ -32,7 +34,10 @@ const ConfirmProposal = () => {
     <Layout>
       <ProposalDetailNavigation sections={navigationSections} />
       <ConfirmProposalForm addresses={tx.args[0]} calldatas={tx.args[2]} />
-      <ConfirmProposalOverview tx={tx} />
+      <Container variant="layout.sticky">
+        <ConfirmProposalOverview tx={tx} />
+        <SimulateProposal tx={tx} />
+      </Container>
     </Layout>
   )
 }
