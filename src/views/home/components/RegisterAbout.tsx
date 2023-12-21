@@ -9,7 +9,7 @@ import { DISCORD_INVITE, PROTOCOL_DOCS } from 'utils/constants'
 const SocialLinks = () => (
   <Box variant="layout.verticalAlign" mt={4} sx={{ fontSize: 5 }}>
     <RouterLink
-      to="https://github.com/lc-labs/register"
+      to="https://github.com/reserve-protocol/register"
       target="_blank"
       style={{ all: 'unset', cursor: 'pointer' }}
     >
@@ -100,10 +100,10 @@ const About = () => (
       </Text>
       <Text mt={3} as="p" variant="legend">
         <Trans>
-          Reserve aims to help people around the world maintain their spending
-          power by allowing anyone to create asset-backed currencies with
-          tokenized assets on the Ethereum blockchain in customizable and novel
-          ways.
+          The Reserve Protocol aims to help people around the world maintain
+          their spending power by allowing anyone to create asset-backed
+          currencies with tokenized assets on the Ethereum blockchain in
+          customizable and novel ways.
         </Trans>{' '}
         <Link
           sx={{ textDecoration: 'underline' }}
@@ -118,18 +118,18 @@ const About = () => (
       </Text>
       <Text mt={2} as="p" variant="legend">
         <Trans>
-          Register is an open source project developed and maintained by LC Labs
-          as the first dApp to interact with the Reserve Protocol and various
-          RTokens deployed with the platform.
+          Register is an open source project developed and maintained by The
+          Reserve Protocol as the first dApp to interact with the Reserve
+          Protocol and RTokens deployed with the platform.
         </Trans>
       </Text>
       <Text mt={2} as="p" variant="legend">
         <Trans>
-          If an RToken is listed on Register, it doesn't mean that Reserve or LC
-          Labs endorses the safety or risk levels of the RToken. LC Labs
-          requires Github requests with additional information beyond what is
-          available on the blockchain to give users relevant data to make
-          informed decisions. As a user, please evaluate any new RToken
+          If an RToken is listed on Register, it doesn't mean that Reserve
+          Protocol endorses the safety or risk levels of the RToken. The Reserve
+          Protocol requires Github requests with additional information beyond
+          what is available on the blockchain to give users relevant data to
+          make informed decisions. As a user, please evaluate any new RToken
           carefully before holding or staking your RSR on them.
         </Trans>
       </Text>
@@ -140,9 +140,10 @@ const About = () => (
       </Text>
       <Text mt={2} as="p" variant="legend">
         <Trans>
-          LC Labs uses industry standard anonymized analytics tools to
-          understand usage and improve the user experience. LC labs does not
-          collect any information about users or their financial activity.
+          The Reserve Protocol uses industry standard anonymized analytics tools
+          to understand usage and improve the user experience. Reserve Protocol
+          does not collect any information about users or their financial
+          activity.
         </Trans>
       </Text>
       <Text mt={2} as="p" variant="legend">
@@ -179,13 +180,6 @@ const RegisterAbout = () => (
       <DashedDivider />
       <Box sx={{ textAlign: 'center' }}>
         <Logo />
-        <Link
-          sx={{ display: 'block', fontSize: 1 }}
-          target="_blank"
-          href="https://github.com/lc-labs"
-        >
-          <Text>Made by LC Labs</Text>
-        </Link>
       </Box>
     </Box>
   </Box>

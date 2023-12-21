@@ -2,21 +2,15 @@ import { gql } from 'graphql-request'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect } from 'react'
-import {
-  chainIdAtom,
-  rTokenPriceAtom,
-  rpayOverviewAtom,
-  rsrPriceAtom,
-} from 'state/atoms'
+import { rTokenPriceAtom, rsrPriceAtom } from 'state/atoms'
 import { tokenMetricsAtom } from 'state/metrics/atoms'
 import { TokenStats } from 'types'
 import { formatCurrency } from 'utils'
-import { EUSD_ADDRESS } from 'utils/addresses'
 import { TIME_RANGES } from 'utils/constants'
+import { RSVOverview } from 'utils/rsv'
+import { formatEther } from 'viem'
 import useQuery from './useQuery'
 import useTimeFrom from './useTimeFrom'
-import { formatEther } from 'viem'
-import { RSVOverview } from 'utils/rsv'
 
 const rTokenMetricsQuery = gql`
   query GetProtocolMetrics($id: String!, $fromTime: Int!) {
@@ -46,9 +40,7 @@ const lastFetchedStatsAtom = atom('')
 const useTokenStats = (rTokenId: string, isRSV = false): TokenStats => {
   const [stats, setStats] = useAtom(tokenMetricsAtom)
   const resetStats = useResetAtom(tokenMetricsAtom)
-  const rpayOverview = useAtomValue(rpayOverviewAtom)
   const fromTime = useTimeFrom(TIME_RANGES.DAY)
-  const chainId = useAtomValue(chainIdAtom)
   const [lastFetched, setLastFetched] = useAtom(lastFetchedStatsAtom)
 
   const { data } = useQuery(rTokenMetricsQuery, {
@@ -95,24 +87,10 @@ const useTokenStats = (rTokenId: string, isRSV = false): TokenStats => {
         )}`
       }
 
-      if (rTokenId.toLowerCase() === EUSD_ADDRESS[chainId]?.toLowerCase()) {
-        tokenData.transferCount += rpayOverview.txCount
-        tokenData.cumulativeVolumeUsd = `$${formatCurrency(
-          volumeUsd + rpayOverview.volume,
-          0
-        )}`
-        tokenData.dailyVolume = `$${formatCurrency(
-          dailyVolume + rpayOverview.dayVolume,
-          0
-        )}`
-        tokenData.dailyTransferCount =
-          tokenData.dailyTransferCount + rpayOverview.dayTxCount
-      }
-
       setLastFetched(rTokenId)
       setStats(tokenData)
     }
-  }, [JSON.stringify(data), rTokenPrice, rpayOverview])
+  }, [JSON.stringify(data), rTokenPrice])
 
   useEffect(() => {
     if (rTokenId !== lastFetched) {

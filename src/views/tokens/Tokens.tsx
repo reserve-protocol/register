@@ -50,7 +50,10 @@ const Tokens = () => {
             mr={3}
             variant="muted"
             onClick={() =>
-              window.open('https://github.com/lc-labs/rtokens', '_blank')
+              window.open(
+                'https://github.com/reserve-protocol/rtokens',
+                '_blank'
+              )
             }
           >
             <Trans>Apply for listing</Trans>
