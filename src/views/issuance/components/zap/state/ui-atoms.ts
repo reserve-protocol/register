@@ -66,6 +66,7 @@ import {
 } from './atoms'
 import { FOUR_DIGITS, formatQty } from './formatTokenQuantity'
 import { resolvedZapState, zappableTokens, zapperState } from './zapper'
+import ZapInput from '../components/ZapInput'
 
 /**
  * This file contains atoms that are used to control the UI state of the Zap component.
@@ -89,7 +90,6 @@ const zapTransactionFeeDisplayAtom = onlyNonNullAtom((get) => {
     return ['Approval tx', formatQty(approval.fee, FOUR_DIGITS)].join(' ')
   }
 
-  const tx = get(previousZapTransaction) ?? get(resolvedZapTransaction)
 
   const zapTxUnits = get(resolvedZapTransactionGasEstimateUnits, 0n)
   return [
