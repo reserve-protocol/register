@@ -12,8 +12,11 @@ import { Pool } from 'state/pools/atoms'
 import { Box, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
-import { LP_PROJECTS } from 'utils/constants'
+import { CHAIN_TAGS, LP_PROJECTS } from 'utils/constants'
 import mixpanel from 'mixpanel-browser'
+import Stakedao from 'components/icons/logos/Stakedao'
+import Uniswap from 'components/icons/logos/Uniswap'
+import Balancer from 'components/icons/logos/Balancer'
 
 const chainMap: Record<string, number> = {
   Ethereum: ChainId.Mainnet,
@@ -34,9 +37,12 @@ const useEarnTableColumns = () => {
   const columnHelper = createColumnHelper<Pool>()
   return useMemo(() => {
     const PROJECT_ICONS: Record<string, React.ReactElement> = {
-      'yearn-finance': <Yearn />,
-      'convex-finance': <Convex />,
+      'yearn-finance': <Yearn fontSize={16} />,
+      'convex-finance': <Convex fontSize={16} />,
       'curve-dex': <Curve />,
+      stakedao: <Stakedao fontSize={16} />,
+      'uniswap-v3': <Uniswap fontSize={16} />,
+      'balancer-v2': <Balancer fontSize={16} />,
     }
 
     return [
@@ -74,7 +80,7 @@ const useEarnTableColumns = () => {
           <Box variant="layout.verticalAlign">
             {PROJECT_ICONS[data.getValue()] ?? ''}
             <Text ml="2">
-              {LP_PROJECTS[data.getValue()]?.name ?? 'Unknown'}
+              {LP_PROJECTS[data.getValue()]?.name ?? data.getValue()}
             </Text>
           </Box>
         ),
@@ -83,8 +89,11 @@ const useEarnTableColumns = () => {
         header: t`Chain`,
         cell: (data) => {
           return (
-            <Box pl="10px">
+            <Box pl="10px" variant="layout.verticalAlign">
               <ChainLogo fontSize={16} chain={+chainMap[data.getValue()]} />
+              <Text ml="2" sx={{ display: ['block', 'none', 'block'] }}>
+                {CHAIN_TAGS[+chainMap[data.getValue()]]}
+              </Text>
             </Box>
           )
         },

@@ -93,9 +93,9 @@ const FilterOptions = () => {
 }
 
 const setPageSearchAtom = atom(null, (get, set, search: string) => {
-  set(filterOptionAtom, 0)
-  set(poolFilterAtom, { stables: false, tokens: [] })
-  set(poolSearchFilterAtom, search)
+  set(filterOptionAtom, -1)
+  set(poolFilterAtom, { stables: false, tokens: search.split(',') })
+  set(poolSearchFilterAtom, '')
 })
 
 const TableFilters = () => {

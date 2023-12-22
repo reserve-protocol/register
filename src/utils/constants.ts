@@ -23,6 +23,18 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'Yearn',
     site: 'https://yearn.fi/vaults',
   },
+  stakedao: {
+    name: 'StakeDAO',
+    site: 'https://www.stakedao.org/yield',
+  },
+  'uniswap-v3': {
+    name: 'Uniswap',
+    site: 'https://app.uniswap.org/',
+  },
+  'balancer-v2': {
+    name: 'Balancer',
+    site: 'https://app.balancer.fi/',
+  },
 }
 
 export const BIGINT_MAX =
