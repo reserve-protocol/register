@@ -26,6 +26,10 @@ const ZapDust = () => {
   if (dustValue == null) {
     return null
   }
+
+  if (dust.length === 0) {
+    return null
+  }
   const total = dustValue.total
 
   let str = '+ ' + formatQty(total, TWO_DIGITS) + ' in dust'
