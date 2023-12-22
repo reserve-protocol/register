@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom'
 import { rTokenPoolsAtom } from 'state/pools/atoms'
 import { Box, BoxProps, Card, Text } from 'theme-ui'
 import { formatCurrency, stringToColor } from 'utils'
-import { CHAIN_TAGS, ROUTES } from 'utils/constants'
+import { BRIDGED_RTOKENS, CHAIN_TAGS, ROUTES } from 'utils/constants'
 import { getAddress } from 'viem'
 import CollateralPieChart from 'views/overview/components/CollateralPieChart'
 
@@ -74,7 +74,17 @@ const RTokenCard = ({ token, ...props }: Props) => {
   }
 
   const handleEarn = () => {
-    navigate(`${ROUTES.EARN}?underlying=${token.symbol}&chainId=${token.chain}`)
+    const addresses = [token.id]
+
+    if (BRIDGED_RTOKENS[token.chain]?.[token.id]) {
+      for (const bridgeToken of BRIDGED_RTOKENS[token.chain]?.[token.id]) {
+        addresses.push(bridgeToken.address)
+      }
+    }
+
+    navigate(
+      `${ROUTES.EARN}?underlying=${addresses.join(',')}&chainId=${token.chain}`
+    )
     document.getElementById('app-container')?.scrollTo(0, 0)
   }
 
@@ -162,6 +172,30 @@ const RTokenCard = ({ token, ...props }: Props) => {
                 <Text mr={3}>Explore</Text> <ArrowRight size={16} />
               </Box>
             </Button>
+
+            {!!earnData && (
+              <Button onClick={handleEarn} mt={3} mr={3} medium variant="hover">
+                <Box variant="layout.verticalAlign">
+                  <Box
+                    variant="layout.verticalAlign"
+                    p="1"
+                    mr={2}
+                    sx={{
+                      backgroundColor: 'rBlue',
+                      borderRadius: 6,
+                      color: 'white',
+                    }}
+                  >
+                    <EarnNavIcon fontSize={20} />
+                  </Box>
+                  <Text>Earn - </Text>
+                  <Text ml="1" mr={3} variant="strong" sx={{ color: 'rBlue' }}>
+                    {earnData.maxApy.toFixed(0)}% APY
+                  </Text>
+                  <ArrowRight size={16} />
+                </Box>
+              </Button>
+            )}
           </Box>
         </Box>
       </Box>
@@ -170,29 +204,3 @@ const RTokenCard = ({ token, ...props }: Props) => {
 }
 
 export default memo(RTokenCard)
-
-// TODO: Commented until fixed
-// {!!earnData && (
-//   <Button onClick={handleEarn} mt={3} mr={3} medium variant="hover">
-//     <Box variant="layout.verticalAlign">
-//       <Box
-//         variant="layout.verticalAlign"
-//         p="1"
-//         mr={2}
-//         sx={{
-//           backgroundColor: 'rBlue',
-//           borderRadius: 6,
-//           color: 'white',
-//         }}
-//       >
-//         <EarnNavIcon fontSize={20} />
-//       </Box>
-//       <Text>Earn - </Text>
-//       <Text ml="1" mr={3} variant="strong" sx={{ color: 'rBlue' }}>
-//         {earnData.minApy.toFixed(0)}-{earnData.maxApy.toFixed(0)}%
-//         APY
-//       </Text>
-//       <ArrowRight size={16} />
-//     </Box>
-//   </Button>
-// )}
