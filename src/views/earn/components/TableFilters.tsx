@@ -94,7 +94,10 @@ const FilterOptions = () => {
 
 const setPageSearchAtom = atom(null, (get, set, search: string) => {
   set(filterOptionAtom, -1)
-  set(poolFilterAtom, { stables: false, tokens: search.split(',') })
+  set(poolFilterAtom, {
+    stables: false,
+    tokens: search ? search.split(',') : [],
+  })
   set(poolSearchFilterAtom, '')
 })
 
@@ -107,6 +110,12 @@ const TableFilters = () => {
   useEffect(() => {
     if (searchParams.get('underlying')) {
       setPageFilter((searchParams.get('underlying') || '').trim())
+    }
+
+    return () => {
+      if (searchParams.get('underlying')) {
+        setPageFilter('')
+      }
     }
   }, [])
 
