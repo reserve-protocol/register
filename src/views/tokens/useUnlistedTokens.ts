@@ -5,6 +5,7 @@ import { useMultichainQuery } from 'hooks/useQuery'
 import { useEffect, useState } from 'react'
 import { supportedChainList } from 'utils/constants'
 import { Address, formatEther, getAddress } from 'viem'
+import { rsrPriceAtom } from 'state/atoms'
 
 const query = gql`
   query GetTokenListOverview(
@@ -32,7 +33,6 @@ const query = gql`
       cumulativeUniqueUsers
       targetUnits
       rsrStaked
-      rsrPriceUSD
       token {
         name
         symbol
@@ -59,9 +59,11 @@ export interface RTokenRow {
   chain: number
 }
 
+// TODO: Use global RSR price not subgraph
 const useUnlistedTokens = () => {
   const filters = useAtomValue(tokenFilterAtom)
   const { data, error } = useMultichainQuery(query, filters)
+  const currentRsrPrice = useAtomValue(rsrPriceAtom)
 
   const [tokens, setTokens] = useState<RTokenRow[]>([])
 
@@ -83,7 +85,7 @@ const useUnlistedTokens = () => {
               cumulativeVolume:
                 +formatEther(rtoken.token.cumulativeVolume) *
                 +rtoken.token.lastPriceUSD,
-              staked: +formatEther(rtoken.rsrStaked) * rtoken.rsrPriceUSD,
+              staked: +formatEther(rtoken.rsrStaked) * currentRsrPrice,
               marketCap:
                 +formatEther(rtoken.token.totalSupply) *
                 rtoken.token.lastPriceUSD,
@@ -94,7 +96,7 @@ const useUnlistedTokens = () => {
 
       setTokens(tokens)
     }
-  }, [data])
+  }, [data, currentRsrPrice])
 
   return tokens
 }

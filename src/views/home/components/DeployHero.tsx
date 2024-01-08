@@ -2,12 +2,12 @@ import { Trans } from '@lingui/macro'
 import Button from 'components/button'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import { borderRadius } from 'theme'
-import { Box, Flex, Image, Text } from 'theme-ui'
+import { Box, BoxProps, Flex, Image, Text } from 'theme-ui'
 import DeployerImg from '../assets/deployer_img.png'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from 'utils/constants'
 
-const DeployHero = () => {
+const DeployHero = (props: BoxProps) => {
   const navigate = useNavigate()
 
   const handleDeploy = () => {
@@ -17,6 +17,7 @@ const DeployHero = () => {
 
   return (
     <Box
+      {...props}
       p={4}
       variant="layout.verticalAlign"
       sx={{

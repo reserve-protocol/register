@@ -39,6 +39,8 @@ const RecentTransactions = () => {
     }))
   }, [data])
 
+  console.log('data?', txs)
+
   return (
     <TransactionsTable
       bordered
