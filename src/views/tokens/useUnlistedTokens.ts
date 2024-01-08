@@ -59,10 +59,9 @@ export interface RTokenRow {
   chain: number
 }
 
-// TODO: Use global RSR price not subgraph
 const useUnlistedTokens = () => {
   const filters = useAtomValue(tokenFilterAtom)
-  const { data, error } = useMultichainQuery(query, filters)
+  const { data } = useMultichainQuery(query, filters)
   const currentRsrPrice = useAtomValue(rsrPriceAtom)
 
   const [tokens, setTokens] = useState<RTokenRow[]>([])
