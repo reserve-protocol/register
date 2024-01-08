@@ -50,7 +50,7 @@ const Intro = () => (
         </Text>
         <Text mt={2} as="p" variant="legend">
           <Trans>
-            RTokens live on a blockchain, either Ethereum or Base, wich means
+            RTokens live on a blockchain, either Ethereum or Base, which means
             that they can be transacted worldwide within seconds. They're also
             100% backed by other assets living on that same blockchain. The
             users of the currency can - at any time - redeem their RTokens for
