@@ -1,17 +1,16 @@
-import { t, Trans } from '@lingui/macro'
+import { t } from '@lingui/macro'
 import { Container } from 'components'
-import { SmallButton } from 'components/button'
 import { ContentHead } from 'components/info-box'
 import ListedTokensTable from 'components/tables/ListedTokensTable'
 import { useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { selectedRTokenAtom } from 'state/atoms'
-import { Flex, Divider } from 'theme-ui'
+import { Divider } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
-import UnlistedTokensTable from './components/UnlistedTokensTable'
 import DeployHero from 'views/home/components/DeployHero'
 import RegisterAbout from 'views/home/components/RegisterAbout'
+import UnlistedTokensTable from './components/UnlistedTokensTable'
 
 const Tokens = () => {
   const navigate = useNavigate()
@@ -45,21 +44,7 @@ const Tokens = () => {
           ml={4}
         />
         <UnlistedTokensTable />
-        <Flex mt={6} mb={8} sx={{ justifyContent: 'center' }}>
-          <SmallButton
-            mr={3}
-            variant="muted"
-            onClick={() =>
-              window.open('https://github.com/lc-labs/rtokens', '_blank')
-            }
-          >
-            <Trans>Apply for listing</Trans>
-          </SmallButton>
-          <SmallButton onClick={handleDeploy}>
-            <Trans>Deploy RToken</Trans>
-          </SmallButton>
-        </Flex>
-        <DeployHero />
+        <DeployHero mt={8} />
       </Container>
       <RegisterAbout />
     </>

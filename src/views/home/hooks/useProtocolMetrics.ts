@@ -1,5 +1,4 @@
 import { gql } from 'graphql-request'
-import useExternalStats from 'hooks/useExternalStats'
 import { useMultichainQuery } from 'hooks/useQuery'
 import { useAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
@@ -52,7 +51,6 @@ const protocolMetricsQuery = gql`
 
 const useProtocolMetrics = () => {
   const [stats, setStats] = useAtom(homeMetricsAtom)
-  const { data: externalData } = useExternalStats()
   const { data, isLoading } = useMultichainQuery(
     protocolMetricsQuery,
     {
@@ -96,10 +94,9 @@ const useProtocolMetrics = () => {
 
   return useMemo(() => {
     const data = { ...stats }
-    data.volume += externalData?.volume ?? 0
 
     return { data, isLoading }
-  }, [stats, externalData])
+  }, [stats])
 }
 
 export default useProtocolMetrics

@@ -67,7 +67,6 @@ const tokenListQuery = gql`
         backingRSR
         targetUnits
         rsrStaked
-        rsrPriceUSD
         collaterals {
           id
           symbol
@@ -128,7 +127,7 @@ const useTokenList = () => {
             let tokenApy = 0
             let stakingApy = 0
             let basketApy = 0
-            const rsrPrice = currentRsrPrice || +token?.rToken?.rsrPriceUSD || 0
+            const rsrPrice = currentRsrPrice || 0
             const supply: number =
               +formatEther(token.totalSupply) * +token.lastPriceUSD
             const collaterals = token?.rToken?.collaterals ?? []
