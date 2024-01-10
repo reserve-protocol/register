@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import {
   chainIdAtom,
   rTokenPriceAtom,
+  rTokenStateAtom,
   rpayOverviewAtom,
   rsrPriceAtom,
 } from 'state/atoms'
@@ -50,6 +51,7 @@ const useTokenStats = (rTokenId: string, isRSV = false): TokenStats => {
   const fromTime = useTimeFrom(TIME_RANGES.DAY)
   const chainId = useAtomValue(chainIdAtom)
   const [lastFetched, setLastFetched] = useAtom(lastFetchedStatsAtom)
+  const { stTokenSupply, exchangeRate } = useAtomValue(rTokenStateAtom)
 
   const { data } = useQuery(rTokenMetricsQuery, {
     id: rTokenId,
@@ -61,7 +63,7 @@ const useTokenStats = (rTokenId: string, isRSV = false): TokenStats => {
 
   useEffect(() => {
     if (data?.rtoken || data?.token) {
-      const staked = +formatEther(data?.rtoken?.rsrStaked ?? '0')
+      const staked = stTokenSupply * exchangeRate ?? '0'
       const supply = +formatEther(data?.token.totalSupply)
       const cumulativeVolume = +formatEther(data?.token.cumulativeVolume)
       const dailyVolume = +formatEther(
