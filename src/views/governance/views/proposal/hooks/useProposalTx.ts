@@ -349,7 +349,7 @@ const useProposalTx = () => {
       ## Parse backup            ## 
       ############################# */
       if (newBackup && backupChanges.count) {
-        for (const targetUnit of Object.keys(newBackup)) {
+        for (const targetUnit of Object.keys(backup)) {
           const { collaterals, diversityFactor } = backup[targetUnit]
 
           const backupCollaterals: Address[] = []
