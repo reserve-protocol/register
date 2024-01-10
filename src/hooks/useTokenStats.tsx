@@ -62,7 +62,7 @@ const useTokenStats = (rTokenId: string, isRSV = false): TokenStats => {
   const rTokenPrice = useAtomValue(rTokenPriceAtom)
 
   useEffect(() => {
-    if (data?.rtoken || data?.token) {
+    if ((data?.rtoken || data?.token) && stTokenSupply && exchangeRate) {
       const staked = stTokenSupply * exchangeRate ?? '0'
       const supply = +formatEther(data?.token.totalSupply)
       const cumulativeVolume = +formatEther(data?.token.cumulativeVolume)
@@ -114,7 +114,13 @@ const useTokenStats = (rTokenId: string, isRSV = false): TokenStats => {
       setLastFetched(rTokenId)
       setStats(tokenData)
     }
-  }, [JSON.stringify(data), rTokenPrice, rpayOverview])
+  }, [
+    JSON.stringify(data),
+    rTokenPrice,
+    rpayOverview,
+    stTokenSupply,
+    exchangeRate,
+  ])
 
   useEffect(() => {
     if (rTokenId !== lastFetched) {
