@@ -17,7 +17,7 @@ import {
   chainIdAtom,
   isSmartWalletAtom,
   rTokenAtom,
-  walletAtom
+  walletAtom,
 } from 'state/atoms'
 
 import { defaultAbiCoder } from '@ethersproject/abi'
@@ -305,8 +305,8 @@ export const approvalNeededForRedeemAtom = loadable(
         user,
         spender
       )
-      approvalNeeded =
-        (input.amount === 0n ? 2n ** 64n : input.amount) > allowance.toBigInt()
+      const needed = input.amount === 0n ? 2n ** 64n : input.amount
+      approvalNeeded = needed > allowance.toBigInt()
     }
     const data =
       id('approve(address,uint256)').slice(0, 10) +
@@ -350,10 +350,17 @@ export const approvalNeededAtom = loadable(
         user,
         spender
       )
-      const needed = (input.amount === 0n ? 2n ** 64n : input.amount)
-      approvalNeeded = allowance.toBigInt() === 0n ||
-        needed > allowance.toBigInt()
+      const needed = input.amount === 0n ? 2n ** 64n : input.amount
+      approvalNeeded =
+        allowance.toBigInt() === 0n || needed > allowance.toBigInt()
+      // console.log('allowance', allowance.toBigInt())
+      // console.log('allowance.toBigInt() === 0n', allowance.toBigInt() === 0n)
+      // console.log(
+      //   'needed > allowance.toBigInt()',
+      //   needed > allowance.toBigInt()
+      // )
     }
+
     const data =
       id('approve(address,uint256)').slice(0, 10) +
       defaultAbiCoder
@@ -462,7 +469,8 @@ const redeemZapTxAtom = atom(async (get) => {
 })
 
 export const redeemZapTransaction = loadable(redeemZapTxAtom)
-export const resolvedRedeemZapTransaction = simplifyLoadable(redeemZapTransaction)
+export const resolvedRedeemZapTransaction =
+  simplifyLoadable(redeemZapTransaction)
 
 const zapTxAtom = atom(async (get) => {
   const result = get(zapQuote)
@@ -500,16 +508,14 @@ const zapTxAtom = atom(async (get) => {
 export const zapTransaction = loadable(zapTxAtom)
 export const resolvedZapTransaction = simplifyLoadable(zapTransaction)
 
-export const resolvedZapTransactionGasEstimateUnits = onlyNonNullAtom(
-  (get) => {
-    const tx = get(resolvedZapTransaction)
-    const needsApproval = get(resolvedApprovalNeeded)
-    if (needsApproval.approvalNeeded) {
-      return 100000n
-    }
-    return tx.transaction.gasEstimate
+export const resolvedZapTransactionGasEstimateUnits = onlyNonNullAtom((get) => {
+  const tx = get(resolvedZapTransaction)
+  const needsApproval = get(resolvedApprovalNeeded)
+  if (needsApproval.approvalNeeded) {
+    return 100000n
   }
-)
+  return tx.transaction.gasEstimate
+})
 
 const zapTransactionGasEstimateFee = onlyNonNullAtom((get) => {
   const quote = get(zapQuote)
