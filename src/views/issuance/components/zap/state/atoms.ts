@@ -350,8 +350,9 @@ export const approvalNeededAtom = loadable(
         user,
         spender
       )
-      approvalNeeded =
-        (input.amount === 0n ? 2n ** 64n : input.amount) > allowance.toBigInt()
+      const needed = (input.amount === 0n ? 2n ** 64n : input.amount)
+      approvalNeeded = allowance.toBigInt() === 0n ||
+        needed > allowance.toBigInt()
     }
     const data =
       id('approve(address,uint256)').slice(0, 10) +

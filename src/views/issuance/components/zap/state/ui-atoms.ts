@@ -549,7 +549,7 @@ const mkButton = (
       const resp = await signer.sendTransaction({
         value: '0x0',
         ...zapTx.transaction.tx,
-        gasLimit: zapTx.transaction.gasEstimate,
+        gasLimit: zapTx.transaction.gasEstimate + zapTx.transaction.gasEstimate / 8n
       })
       const receipt = await resp.wait(1)
       if (receipt.status === 0) {
