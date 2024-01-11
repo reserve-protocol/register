@@ -62,7 +62,7 @@ export const rsrBalanceAtom = atom((get) => {
 
 // Store account related rtokens
 export const accountRTokensAtom = atom<
-  { address: string; name: string; symbol: string }[]
+  { address: string; name: string; symbol: string, chainId: number }[]
 >([])
 
 // Store current rToken holdings for an account
