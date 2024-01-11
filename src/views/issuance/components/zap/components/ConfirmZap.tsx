@@ -23,9 +23,12 @@ const ApproveZap = () => {
   const client = useWalletClient()
   const selectedToken = useAtomValue(selectedZapTokenAtom)
 
+  
   if (!(state === 'approval' || isApproving)) {
     return null
   }
+
+  
 
   return (
     <>

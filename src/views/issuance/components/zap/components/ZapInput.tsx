@@ -23,6 +23,10 @@ const ZapDust = () => {
   const dustValue = useAtomValue(zapDustValue)
   const dust = useAtomValue(zapDust)
   const zapCollectDust = useAtomValue(collectDust)
+
+  if (dust.length === 0) {
+    return null
+  }
   if (dustValue == null) {
     return null
   }

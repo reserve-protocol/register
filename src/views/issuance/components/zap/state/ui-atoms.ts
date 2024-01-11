@@ -1,4 +1,9 @@
+import {
+  Provider,
+  Web3Provider
+} from '@ethersproject/providers'
 import { Address, Token } from '@reserve-protocol/token-zapper'
+import { BaseSearcherResult } from '@reserve-protocol/token-zapper/types/searcher/SearcherResult'
 import { notifyError, notifySuccess } from 'hooks/useNotification'
 import { Getter, SetStateAction, Setter, atom } from 'jotai'
 import { atomWithStorage, loadable } from 'jotai/utils'
@@ -17,6 +22,9 @@ import {
   updateTransactionAtom,
 } from 'state/chain/atoms/transactionAtoms'
 import { onlyNonNullAtom } from 'utils/atoms/utils'
+import { TransactionRequest } from 'viem'
+import { waitForTransaction } from 'wagmi/actions'
+import { GetWalletClientResult } from 'wagmi/dist/actions'
 import {
   approvalNeededAtom,
   approvalNeededForRedeemAtom,
@@ -26,7 +34,6 @@ import {
   hasSufficientGasTokenAndERC20TokenBalance,
   maxSelectedZapTokenBalance,
   noZapActive,
-  permit2ToSignAtom,
   permitSignature,
   previousRedeemZapTransaction,
   previousZapTransaction,
@@ -55,20 +62,11 @@ import {
   zapSender,
   zapTransaction,
   zapTxHash,
-  zapperInputs,
+  zapperInputs
 } from './atoms'
 import { FOUR_DIGITS, formatQty } from './formatTokenQuantity'
 import { resolvedZapState, zappableTokens, zapperState } from './zapper'
-import { GetWalletClientResult } from 'wagmi/dist/actions'
-import { waitForTransaction } from 'wagmi/actions'
-import {
-  JsonRpcProvider,
-  JsonRpcSigner,
-  Provider,
-  Web3Provider,
-} from '@ethersproject/providers'
-import { BaseSearcherResult } from '@reserve-protocol/token-zapper/types/searcher/SearcherResult'
-import { TransactionRequest } from 'viem'
+import ZapInput from '../components/ZapInput'
 
 /**
  * This file contains atoms that are used to control the UI state of the Zap component.
@@ -92,7 +90,6 @@ const zapTransactionFeeDisplayAtom = onlyNonNullAtom((get) => {
     return ['Approval tx', formatQty(approval.fee, FOUR_DIGITS)].join(' ')
   }
 
-  const tx = get(previousZapTransaction) ?? get(resolvedZapTransaction)
 
   const zapTxUnits = get(resolvedZapTransactionGasEstimateUnits, 0n)
   return [
@@ -552,7 +549,7 @@ const mkButton = (
       const resp = await signer.sendTransaction({
         value: '0x0',
         ...zapTx.transaction.tx,
-        gasLimit: zapTx.transaction.gasEstimate,
+        gasLimit: zapTx.transaction.gasEstimate + zapTx.transaction.gasEstimate / 8n
       })
       const receipt = await resp.wait(1)
       if (receipt.status === 0) {
