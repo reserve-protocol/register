@@ -90,7 +90,7 @@ const ExternalRevenueSpit = ({
           </Field>
           <Field label={t`As RToken`}>
             <FieldInput
-              {...register('holders', { ...inputValidation, min: 10 })}
+              {...register('holders', { ...inputValidation, min: 0 })}
               error={!!errors['holders']}
               sx={{
                 borderRadius: '0',
@@ -100,7 +100,7 @@ const ExternalRevenueSpit = ({
           </Field>
           <Field label={t`As RSR`}>
             <FieldInput
-              {...register('stakers', { ...inputValidation, min: 10 })}
+              {...register('stakers', { ...inputValidation, min: 0 })}
               error={!!errors['stakers']}
               sx={{
                 borderRadius: '0 6px 0 0',
