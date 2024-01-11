@@ -1,12 +1,10 @@
 import { atom } from 'jotai'
 import { accountRTokensAtom, allrTokenListAtom } from 'state/atoms'
-
-type ChainId = 1 | 8453 | null
 export interface TokenDisplay {
   address: string
   symbol: string
   logo: string
-  chainId: ChainId
+  chainId: number
 }
 
 export const DEFAULT_LOGO = '/svgs/defaultLogo.svg'
@@ -24,7 +22,7 @@ const availableTokensAtom = atom((get) => {
         address: token.address,
         symbol: token.symbol,
         logo: token.logo ? `/svgs/${token.logo}` : DEFAULT_LOGO,
-        chainId: token.chainId as ChainId
+        chainId: token.chainId
       }
     }
   }
@@ -35,7 +33,7 @@ const availableTokensAtom = atom((get) => {
         address: token.address,
         symbol: token.symbol,
         logo: DEFAULT_LOGO,
-        chainId: token.chainId as ChainId
+        chainId: token.chainId
       }
     }
   }
