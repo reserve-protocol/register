@@ -32,6 +32,12 @@ export const FACADE_WRITE_ADDRESS: AddressMap = {
   [ChainId.Hardhat]: '0xAe2563b4315469bF6bdD41A6ea26157dE57Ed94e',
 }
 
+export const MULTICALL_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0xcA11bde05977b3631167028862bE2a173976CA11',
+  [ChainId.Base]: '0xcA11bde05977b3631167028862bE2a173976CA11',
+  [ChainId.Hardhat]: '0xcA11bde05977b3631167028862bE2a173976CA11',
+}
+
 /**
  * ERC20 token addresses
  */
@@ -43,7 +49,7 @@ export const RSR_ADDRESS: AddressMap = {
 
 export const EUSD_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
-  [ChainId.Base]: "0xCfA3Ef56d303AE4fAabA0592388F19d7C3399FB4",
+  [ChainId.Base]: '0xCfA3Ef56d303AE4fAabA0592388F19d7C3399FB4',
   [ChainId.Hardhat]: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
 }
 

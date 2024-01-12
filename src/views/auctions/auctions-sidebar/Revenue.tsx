@@ -11,6 +11,7 @@ import RevenueOverviewHeader from './RevenueOverviewHeader'
 import SettleableAuctions from './SettleableAuctions'
 import UnavailableRevenueAuctions from './UnavailableRevenueAuctions'
 import RecollaterizationAlert from './RecollaterizationAlert'
+import ClaimRewards from './ClaimRewards'
 
 const Placeholder = () => {
   const [colorMode] = useColorMode()
@@ -47,12 +48,14 @@ const RevenueOverviewAtom = atom((get) => {
     availableAmount: number
     unavailableAmount: number
     isLoading: boolean
+    emissions: number
   } = {
     available: [],
     unavailable: [],
     availableAmount: 0,
     unavailableAmount: 0,
     isLoading: true,
+    emissions: revenueData?.pendingEmissions ?? 0,
   }
 
   if (revenueData && settleable) {
@@ -93,14 +96,14 @@ const RevenueOverviewAtom = atom((get) => {
 })
 
 const ActionableRevenue = () => {
-  const { isLoading, available, availableAmount } =
+  const { isLoading, available, availableAmount, emissions } =
     useAtomValue(RevenueOverviewAtom)
 
   return (
     <>
       <RevenueOverviewHeader
         text={t`Actionable accumulated revenue`}
-        amount={availableAmount}
+        amount={availableAmount + emissions}
         help="Run and settle auctions."
         mt={4}
         loading={isLoading}
@@ -109,7 +112,8 @@ const ActionableRevenue = () => {
       {!isLoading &&
         !!available.length &&
         available.map((Component, i) => <Component key={i} />)}
-      {!isLoading && !available.length && <NoAvailableAuctions />}
+      {!isLoading && !available.length && !emissions && <NoAvailableAuctions />}
+      <ClaimRewards />
     </>
   )
 }
