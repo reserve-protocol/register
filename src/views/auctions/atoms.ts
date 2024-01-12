@@ -72,6 +72,12 @@ export interface Trade {
   worstCasePrice: number
 }
 
+export interface ClaimEmissionMap {
+  rsrTrader: boolean
+  backingManager: boolean
+  rTokenTrader: boolean
+}
+
 export const tradesAtom = atom<{ current: Trade[]; ended: Trade[] }>({
   current: [],
   ended: [],
@@ -80,6 +86,10 @@ export const currentTradesAtom = atom((get) => get(tradesAtom).current)
 export const endedTradesAtom = atom((get) => get(tradesAtom).ended)
 
 export const selectedAuctionsAtom = atomWithReset<number[]>([])
+
+export const selectedEmissionsAtom = atomWithReset<
+  Record<string, ClaimEmissionMap>
+>({})
 
 export const auctionSessionAtom = atom(1)
 
