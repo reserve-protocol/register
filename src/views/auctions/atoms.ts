@@ -179,6 +179,7 @@ export const auctionsOverviewAtom = atomWithLoadable(
     availableAuctionRevenue: number
     unavailableAuctionRevenue: number
     pendingToMelt: number
+    pendingToMeltUsd: number
     pendingEmissions: number
     availableAuctions: Auction[]
     unavailableAuctions: Auction[]
@@ -256,6 +257,7 @@ export const auctionsOverviewAtom = atomWithLoadable(
     let unavailableAuctionRevenue = 0
     let pendingEmissions = 0
     const pendingToMelt = Number(formatEther(rTokenRevenueOverview[2][0]))
+    const pendingToMeltUsd = pendingToMelt * assets[rToken.address].priceUsd
     // for easy use
     const bmRewards = rsrRevenueOverview[4]
     const rsrTraderRewards = rsrRevenueOverview[5]
@@ -363,6 +365,7 @@ export const auctionsOverviewAtom = atomWithLoadable(
       availableAuctionRevenue,
       unavailableAuctionRevenue,
       pendingToMelt,
+      pendingToMeltUsd,
       pendingEmissions,
       claimableEmissions,
       recollaterization: recollaterizationAuction,

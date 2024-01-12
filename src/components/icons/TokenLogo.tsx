@@ -56,6 +56,7 @@ const IMGS = new Set([
   'crvusd',
   'crv',
   'cvx',
+  'comp',
 ])
 
 const TokenLogo = ({
