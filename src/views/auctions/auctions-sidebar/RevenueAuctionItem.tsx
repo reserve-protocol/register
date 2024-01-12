@@ -5,11 +5,24 @@ import GaugeIcon from 'components/icons/GaugeIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import { Info } from 'components/info-box'
 import useRToken from 'hooks/useRToken'
-import { useState } from 'react'
-import { Box, Text } from 'theme-ui'
+import { Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { Auction } from '../atoms'
 import SwapIcon from './SwapIcon'
+
+const UnavailablePlaceholder = ({
+  isBelowMinTrade,
+}: {
+  isBelowMinTrade: boolean
+}) => (
+  <Text sx={{ fontSize: 0, color: 'text' }} mr={2}>
+    {isBelowMinTrade ? (
+      <Trans>Surplus below minimum trade</Trans>
+    ) : (
+      <Trans>Not available</Trans>
+    )}
+  </Text>
+)
 
 const RevenueAuctionItem = ({
   data,
@@ -18,7 +31,6 @@ const RevenueAuctionItem = ({
   data: Auction
   onSelect(): void
 }) => {
-  const [isOpen, toggle] = useState(false)
   const isBelowMinTrade = +data.minAmount > +data.amount
   const rToken = useRToken()
 
@@ -26,33 +38,21 @@ const RevenueAuctionItem = ({
     <CollapsableBox
       mt={3}
       header={
-        <Box
-          variant="layout.verticalAlign"
-          sx={{ cursor: 'pointer' }}
-          onClick={() => toggle(!isOpen)}
+        <SelectableBox
+          unavailable={!data.canStart}
+          onSelect={onSelect}
+          unavailableComponent={
+            <UnavailablePlaceholder isBelowMinTrade={isBelowMinTrade} />
+          }
         >
-          <SelectableBox
-            unavailable={!data.canStart}
-            onSelect={onSelect}
-            unavailableComponent={
-              <Text sx={{ fontSize: 0, color: 'text' }} mr={2}>
-                {isBelowMinTrade ? (
-                  <Trans>Surplus below minimum trade</Trans>
-                ) : (
-                  <Trans>Not available</Trans>
-                )}
-              </Text>
-            }
-          >
-            <Info
-              title="Surplus"
-              icon={<SwapIcon buy={data.buy.symbol} sell={data.sell.symbol} />}
-              subtitle={`${formatCurrency(+data.amount)} ${
-                data.sell.symbol
-              } for ${data.buy.symbol}`}
-            />
-          </SelectableBox>
-        </Box>
+          <Info
+            title="Surplus"
+            icon={<SwapIcon buy={data.buy.symbol} sell={data.sell.symbol} />}
+            subtitle={`${formatCurrency(+data.amount)} ${
+              data.sell.symbol
+            } for ${data.buy.symbol}`}
+          />
+        </SelectableBox>
       }
     >
       {data.canStart && (

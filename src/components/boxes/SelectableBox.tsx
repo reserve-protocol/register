@@ -2,13 +2,13 @@ import { Box, BoxProps, Checkbox } from 'theme-ui'
 
 interface Props extends BoxProps {
   onSelect(): void
-  unavailable: boolean
-  unavailableComponent: React.ReactNode
+  unavailable?: boolean
+  unavailableComponent?: React.ReactNode
 }
 
 const SelectableBox = ({
   onSelect,
-  unavailable,
+  unavailable = false,
   unavailableComponent,
   children,
   ...props
