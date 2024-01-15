@@ -1,6 +1,6 @@
 import { RequestDocument } from 'graphql-request'
 import { useAtomValue } from 'jotai'
-import { GRAPH_CLIENTS, gqlClientAtom } from 'state/atoms'
+import { GRAPH_CLIENTS, contentfulClientAtom, gqlClientAtom } from 'state/atoms'
 import useSWR from 'swr'
 import { ChainId } from 'utils/chains'
 import { supportedChainList } from 'utils/constants'
@@ -52,5 +52,17 @@ export const useMultichainQuery = (
   variables: any = {},
   config: any = {}
 ) => useSWR(query ? [query, variables] : null, multichainFetcher, config)
+
+export const useContentfulQuery = (
+  query: RequestDocument | null = null,
+  variables: any = {},
+  config: any = {}
+) => {
+  const client = useAtomValue(contentfulClientAtom)
+
+  const fetcher = (props: FetcherArgs) => client.request(...props)
+
+  return useSWR<any>(query ? [query, variables] : null, fetcher, config)
+}
 
 export default useQuery
