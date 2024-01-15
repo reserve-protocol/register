@@ -61,23 +61,25 @@ const useBasketChanges = () => {
         )
         const currentBasketCollateralMap = parseBasket(basket[target], true)
 
-        const collateralSymbols = new Set([
-          ...Object.keys(proposedBasketCollateralMap),
-          ...Object.keys(currentBasketCollateralMap),
+        const collateralAddresses = new Set([
+          ...Object.values(proposedBasketCollateralMap).map(({ collateral }) => collateral.address),
+          ...Object.values(currentBasketCollateralMap).map(({ collateral }) => collateral.address),
         ])
 
-        for (const collateralSymbol of Array.from(collateralSymbols)) {
-          const proposedCollateral =
-            proposedBasketCollateralMap[collateralSymbol]
-          const currentCollateral = currentBasketCollateralMap[collateralSymbol]
+        for (const collateralAddress of Array.from(collateralAddresses)) {
+          const proposedCollateral = Object.values(proposedBasketCollateralMap)
+            .map(({ collateral }) => collateral)
+            .find(({ address }) => address === collateralAddress)
+          const currentCollateral = Object.values(currentBasketCollateralMap)
+            .map(({ collateral }) => collateral)
+            .find(({ address }) => address === collateralAddress)
 
           if (
             (!currentCollateral && proposedCollateral) ||
             (currentCollateral && !proposedCollateral)
           ) {
             changes.push({
-              collateral:
-                proposedCollateral?.collateral || currentCollateral?.collateral,
+              collateral: (proposedCollateral || currentCollateral) as Collateral,
               isNew: !!proposedCollateral,
             })
           }
