@@ -8,8 +8,6 @@ import ClaimFromTraderButton from './ClaimFromTraderButton'
 const ConfirmClaimRewards = () => {
   const traderCalls = useAtomValue(claimsByTraderAtom)
 
-  console.log('trader calls', traderCalls)
-
   if (!Object.keys(traderCalls).length) {
     return <ClaimAllRewardsButton />
   }
