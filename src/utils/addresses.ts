@@ -32,12 +32,6 @@ export const FACADE_WRITE_ADDRESS: AddressMap = {
   [ChainId.Hardhat]: '0xAe2563b4315469bF6bdD41A6ea26157dE57Ed94e',
 }
 
-export const MULTICALL_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0xcA11bde05977b3631167028862bE2a173976CA11',
-  [ChainId.Base]: '0xcA11bde05977b3631167028862bE2a173976CA11',
-  [ChainId.Hardhat]: '0xcA11bde05977b3631167028862bE2a173976CA11',
-}
-
 /**
  * ERC20 token addresses
  */
