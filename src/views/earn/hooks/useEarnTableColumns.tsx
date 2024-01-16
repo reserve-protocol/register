@@ -17,6 +17,8 @@ import mixpanel from 'mixpanel-browser'
 import Stakedao from 'components/icons/logos/Stakedao'
 import Uniswap from 'components/icons/logos/Uniswap'
 import Balancer from 'components/icons/logos/Balancer'
+import Aerodrome from 'components/icons/logos/Aerodrome'
+import Extra from 'components/icons/logos/Extra'
 
 const chainMap: Record<string, number> = {
   Ethereum: ChainId.Mainnet,
@@ -41,8 +43,10 @@ const useEarnTableColumns = () => {
       'convex-finance': <Convex fontSize={16} />,
       'curve-dex': <Curve />,
       stakedao: <Stakedao fontSize={16} />,
+      aerodrome: <Aerodrome fontSize={16} />,
       'uniswap-v3': <Uniswap fontSize={16} />,
       'balancer-v2': <Balancer fontSize={16} />,
+      'extra-finance': <Extra fontSize={16} />,
     }
 
     return [
