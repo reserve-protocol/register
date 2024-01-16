@@ -9,7 +9,7 @@ import Yearn from 'components/icons/logos/Yearn'
 import StackTokenLogo from 'components/token-logo/StackTokenLogo'
 import React, { useMemo } from 'react'
 import { Pool } from 'state/pools/atoms'
-import { Box, Text } from 'theme-ui'
+import { Box, Text, Image } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
 import { CHAIN_TAGS } from 'utils/constants'
@@ -82,15 +82,19 @@ const useEarnTableColumns = () => {
       }),
       columnHelper.accessor('project', {
         header: t`Project`,
-        cell: (data) => (
-          <Box variant="layout.verticalAlign">
-            {PROJECT_ICONS[data.getValue()] ?? ''}
-            <Text ml="2">
-              {protocolsData.find((item: any) => item.slug === data.getValue())
-                ?.name ?? data.getValue()}
-            </Text>
-          </Box>
-        ),
+        cell: (data) => {
+          const protocolData = protocolsData.find(
+            (item: any) => item.slug === data.getValue()
+          )
+          return (
+            <Box variant="layout.verticalAlign">
+              {PROJECT_ICONS[data.getValue()] ?? (
+                <Image width={16} src={protocolData?.logo} />
+              )}
+              <Text ml="2">{protocolData?.name ?? data.getValue()}</Text>
+            </Box>
+          )
+        },
       }),
       columnHelper.accessor('chain', {
         header: t`Chain`,
