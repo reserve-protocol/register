@@ -52,7 +52,7 @@ export const claimsByTraderAtom = atom((get) => {
             args: [erc20 as Address],
           })
         )
-        claims[trader].total += data[erc20]?.amountUsd ?? 0
+        claims[trader].total += data[erc20]?.[trader as Trader] ?? 0
       }
     }
   }
