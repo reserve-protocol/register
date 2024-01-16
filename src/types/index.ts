@@ -243,3 +243,5 @@ export interface TenderlySimulation {
   contracts: any[]
   generated_access_list: GeneratedAccessList[]
 }
+
+export type Trader = 'backingManager' | 'rsrTrader' | 'rTokenTrader'

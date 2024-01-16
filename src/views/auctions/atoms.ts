@@ -19,6 +19,7 @@ import {
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { Address, formatEther, formatUnits, zeroAddress } from 'viem'
 import { readContracts } from 'wagmi/actions'
+import { Claimable } from './auctions-sidebar/claim-rewards/types'
 
 export interface Auction {
   sell: Token
@@ -50,15 +51,6 @@ export interface AuctionToSettle {
   buy: Token | null
 }
 
-export interface Claimable {
-  asset: RTokenAsset
-  amount: number
-  amountUsd: number
-  rsrTrader: number
-  rTokenTrader: number
-  backingManager: number
-}
-
 export interface Trade {
   id: string
   amount: number
@@ -72,12 +64,6 @@ export interface Trade {
   worstCasePrice: number
 }
 
-export interface ClaimEmissionMap {
-  rsrTrader: boolean
-  backingManager: boolean
-  rTokenTrader: boolean
-}
-
 export const tradesAtom = atom<{ current: Trade[]; ended: Trade[] }>({
   current: [],
   ended: [],
@@ -86,10 +72,6 @@ export const currentTradesAtom = atom((get) => get(tradesAtom).current)
 export const endedTradesAtom = atom((get) => get(tradesAtom).ended)
 
 export const selectedAuctionsAtom = atomWithReset<number[]>([])
-
-export const selectedEmissionsAtom = atomWithReset<
-  Record<string, ClaimEmissionMap>
->({})
 
 export const auctionSessionAtom = atom(1)
 

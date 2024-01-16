@@ -11,7 +11,7 @@ import RevenueOverviewHeader from './RevenueOverviewHeader'
 import SettleableAuctions from './SettleableAuctions'
 import UnavailableRevenueAuctions from './UnavailableRevenueAuctions'
 import RecollaterizationAlert from './RecollaterizationAlert'
-import ClaimRewards from './ClaimRewards'
+import ClaimRewards from './claim-rewards'
 
 const Placeholder = () => {
   const [colorMode] = useColorMode()

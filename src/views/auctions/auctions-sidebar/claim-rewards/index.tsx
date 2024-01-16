@@ -1,15 +1,22 @@
 import { t } from '@lingui/macro'
 import EmissionsIcon from 'components/icons/EmissionsIcon'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { useEffect } from 'react'
 import { Box, Divider } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { auctionsOverviewAtom } from '../atoms'
-import ClaimEmissionsButton from './ClaimEmissionsButton'
-import ClaimItem from './ClaimItem'
-import RevenueBoxContainer from './RevenueBoxContainer'
+import { auctionsOverviewAtom } from '../../atoms'
+import ConfirmClaimRewards from './components/ConfirmClaimRewards'
+import ClaimItem from './components/ClaimItem'
+import RevenueBoxContainer from '../RevenueBoxContainer'
+import { selectedEmissionsAtom } from './atoms'
 
 const ClaimRewards = () => {
   const data = useAtomValue(auctionsOverviewAtom)
+  const setSelected = useSetAtom(selectedEmissionsAtom)
+
+  useEffect(() => {
+    return () => setSelected({})
+  }, [])
 
   if (!data || !data.pendingEmissions) {
     return null
@@ -30,7 +37,7 @@ const ClaimRewards = () => {
         </Box>
       ))}
       <Divider my={4} mx={-4} />
-      <ClaimEmissionsButton />
+      <ConfirmClaimRewards />
     </RevenueBoxContainer>
   )
 }

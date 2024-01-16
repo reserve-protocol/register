@@ -2,21 +2,17 @@ import CollapsableBox from 'components/boxes/CollapsableBox'
 import SelectableBox from 'components/boxes/SelectableBox'
 import TokenLogo from 'components/icons/TokenLogo'
 import { Info } from 'components/info-box'
-import { Box, BoxProps, Text } from 'theme-ui'
-import { formatCurrency } from 'utils'
-import { ClaimEmissionMap, Claimable, selectedEmissionsAtom } from '../atoms'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
-import { Address } from 'viem'
 import { useCallback } from 'react'
+import { Box, BoxProps, Text } from 'theme-ui'
+import { Trader } from 'types'
+import { formatCurrency } from 'utils'
+import { TRADERS, TraderLabels } from 'utils/constants'
+import { Address } from 'viem'
+import { selectedEmissionsAtom } from '../atoms'
+import { ClaimEmissionMap, Claimable } from '../types'
 
 const MIN_DOLLAR_VALUE = 10
-type Trader = 'backingManager' | 'rsrTrader' | 'rTokenTrader'
-const TRADERS: Trader[] = ['backingManager', 'rsrTrader', 'rTokenTrader']
-const TraderLabels: Record<Trader, string> = {
-  backingManager: 'Backing Manager',
-  rsrTrader: 'RSR Trader',
-  rTokenTrader: 'RToken Trader',
-}
 
 interface ClaimProps extends BoxProps {
   data: Claimable
@@ -32,8 +28,6 @@ const updateClaimEmissionAtom = atom(
       rTokenTrader: false,
     }
     const newState = { ...availableTraders, ...traders }
-
-    console.log('traders', traders)
 
     // Unselected
     if (
@@ -59,7 +53,7 @@ const ClaimItem = ({ data, ...props }: ClaimProps) => {
     (state: boolean) => {
       // Select asset and traders that are over minDollarValue
       updateClaimEmissions([
-        data.asset.address,
+        data.asset.token.address,
         TRADERS.reduce((acc, trader) => {
           acc[trader] = state
             ? data[trader] * data.asset.priceUsd > MIN_DOLLAR_VALUE
@@ -75,7 +69,7 @@ const ClaimItem = ({ data, ...props }: ClaimProps) => {
     (trader: Trader, state: boolean) => {
       // Select asset and traders that are over minDollarValue
       updateClaimEmissions([
-        data.asset.address,
+        data.asset.token.address,
         {
           [trader]: state,
         },
@@ -88,8 +82,10 @@ const ClaimItem = ({ data, ...props }: ClaimProps) => {
     <CollapsableBox
       header={
         <SelectableBox
-          selected={!!selected[data.asset.address]}
-          onSelect={() => handleTokenSelect(!selected[data.asset.address])}
+          selected={!!selected[data.asset.token.address]}
+          onSelect={() =>
+            handleTokenSelect(!selected[data.asset.token.address])
+          }
         >
           <Info
             title="Rewards"
@@ -110,21 +106,26 @@ const ClaimItem = ({ data, ...props }: ClaimProps) => {
       mt={3}
       {...props}
     >
-      <Box ml="5" mr="20px">
-        {TRADERS.map((trader) => {
+      <Box ml="36px" mr="20px">
+        {TRADERS.map((trader, index) => {
           if (data[trader] * data.asset.priceUsd < 0.1) {
             return null
           }
 
           return (
             <SelectableBox
-              mb={2}
+              pt={index ? 2 : 0}
+              mt={index ? 2 : 0}
               key={trader}
-              selected={!!selected[data.asset.address]?.[trader]}
+              sx={{
+                borderTop: index ? '1px solid' : 'none',
+                borderColor: 'border',
+              }}
+              selected={!!selected[data.asset.token.address]?.[trader]}
               onSelect={() =>
                 handleTokenTraderSelect(
                   trader,
-                  !selected[data.asset.address]?.[trader]
+                  !selected[data.asset.token.address]?.[trader]
                 )
               }
             >
