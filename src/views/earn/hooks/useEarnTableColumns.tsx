@@ -12,11 +12,12 @@ import { Pool } from 'state/pools/atoms'
 import { Box, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
-import { CHAIN_TAGS, LP_PROJECTS } from 'utils/constants'
+import { CHAIN_TAGS } from 'utils/constants'
 import mixpanel from 'mixpanel-browser'
 import Stakedao from 'components/icons/logos/Stakedao'
 import Uniswap from 'components/icons/logos/Uniswap'
 import Balancer from 'components/icons/logos/Balancer'
+import useSWRImmutable from 'swr/immutable'
 
 const chainMap: Record<string, number> = {
   Ethereum: ChainId.Mainnet,
@@ -34,6 +35,10 @@ export const columnVisibility = [
 ]
 
 const useEarnTableColumns = () => {
+  const { data: protocolsData } = useSWRImmutable(
+    'https://api.llama.fi/protocols',
+    (...args) => fetch(...args).then((res) => res.json())
+  )
   const columnHelper = createColumnHelper<Pool>()
   return useMemo(() => {
     const PROJECT_ICONS: Record<string, React.ReactElement> = {
@@ -45,6 +50,7 @@ const useEarnTableColumns = () => {
       'balancer-v2': <Balancer fontSize={16} />,
     }
 
+    if (!protocolsData) return []
     return [
       columnHelper.accessor('symbol', {
         header: t`Pool`,
@@ -80,7 +86,8 @@ const useEarnTableColumns = () => {
           <Box variant="layout.verticalAlign">
             {PROJECT_ICONS[data.getValue()] ?? ''}
             <Text ml="2">
-              {LP_PROJECTS[data.getValue()]?.name ?? data.getValue()}
+              {protocolsData.find((item: any) => item.slug === data.getValue())
+                ?.name ?? data.getValue()}
             </Text>
           </Box>
         ),
@@ -136,7 +143,7 @@ const useEarnTableColumns = () => {
         cell: (data) => `$${formatCurrency(data.getValue(), 0)}`,
       }),
     ]
-  }, [])
+  }, [protocolsData])
 }
 
 export default useEarnTableColumns

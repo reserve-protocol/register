@@ -8,8 +8,7 @@ import useSWRImmutable from 'swr/immutable'
 import { StringMap } from 'types'
 import { EUSD_ADDRESS, RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
-import { LP_PROJECTS, RSR } from 'utils/constants'
-import { getAddress } from 'viem'
+import { RSR } from 'utils/constants'
 
 // Only map what I care about the response...
 interface DefillamaPool {
@@ -93,12 +92,20 @@ const earnPoolQuery = gql`
 // TODO: May use a central Updater component for defillama data, currently being traversed twice for APYs and this
 const useRTokenPools = () => {
   const { data, isLoading } = useSWRImmutable('https://yields.llama.fi/pools')
+  const { data: protocolsData } = useSWRImmutable(
+    'https://api.llama.fi/protocols',
+    (...args) => fetch(...args).then((res) => res.json())
+  )
   const { data: earnPools } = useCMSQuery(earnPoolQuery)
 
   const [poolsCache, setPools] = useAtom(poolsAtom)
 
   const mapPools = useCallback(
-    async (data: DefillamaPool[], earnPools: EarnPool[]) => {
+    async (
+      data: DefillamaPool[],
+      earnPools: EarnPool[],
+      protocolsData: any
+    ) => {
       const pools: Pool[] = []
 
       for (const pool of data) {
@@ -149,7 +156,8 @@ const useRTokenPools = () => {
 
           const url =
             earnPools.find((item: any) => item.llamaId === pool.pool)?.url ||
-            LP_PROJECTS[pool.project]?.site ||
+            protocolsData.find((item: any) => item.slug === pool.project)
+              ?.url ||
             `https://defillama.com/yields/pool/${pool.pool}`
 
           pools.push({
@@ -167,13 +175,14 @@ const useRTokenPools = () => {
   )
 
   useEffect(() => {
-    if (data && earnPools?.earnPoolsCollection?.items) {
+    if (data && earnPools?.earnPoolsCollection?.items && protocolsData) {
       mapPools(
         data.data as DefillamaPool[],
-        earnPools.earnPoolsCollection.items
+        earnPools.earnPoolsCollection.items,
+        protocolsData
       )
     }
-  }, [data])
+  }, [data, earnPools, protocolsData])
 
   return {
     data: poolsCache,
