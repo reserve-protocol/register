@@ -1,5 +1,5 @@
 import { gql } from 'graphql-request'
-import useQuery, { useContentfulQuery } from 'hooks/useQuery'
+import useQuery, { useCMSQuery } from 'hooks/useQuery'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { chainIdAtom, collateralYieldAtom } from 'state/atoms'
@@ -62,7 +62,7 @@ const CollateralYieldUpdater = () => {
     fetch(...args).then((res) => res.json())
   )
 
-  const { data: rTokenCollateral } = useContentfulQuery(rTokenCollateralQuery)
+  const { data: rTokenCollateral } = useCMSQuery(rTokenCollateralQuery)
 
   useEffect(() => {
     if (
