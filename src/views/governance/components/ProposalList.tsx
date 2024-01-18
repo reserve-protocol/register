@@ -42,6 +42,7 @@ const BADGE_VARIANT: StringMap = {
   [PROPOSAL_STATES.QUORUM_NOT_REACHED]: 'danger',
   [PROPOSAL_STATES.ACTIVE]: 'info',
   [PROPOSAL_STATES.EXECUTED]: 'success',
+  [PROPOSAL_STATES.CANCELED]: 'danger',
 }
 
 const useProposals = () => {
