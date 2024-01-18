@@ -191,51 +191,56 @@ export const pendingRSRManualAtom = atomWithLoadable(
       return []
     }
 
-    // Reads draft era from storage slot 265
-    const draftEra: string =
-      (await client.getStorageAt({
+    try {
+      // Reads draft era from storage slot 265
+      const draftEra: string =
+        (await client.getStorageAt({
+          address: rToken.stToken?.address!,
+          slot: '0x0000000000000000000000000000000000000000000000000000000000000109',
+        })) || ''
+
+      const callParams = {
+        abi: StRSR,
         address: rToken.stToken?.address!,
-        slot: '0x0000000000000000000000000000000000000000000000000000000000000109',
-      })) || ''
+      }
 
-    const callParams = {
-      abi: StRSR,
-      address: rToken.stToken?.address!,
-    }
-
-    const data = []
-    const firstRemainingDraft = await readContract({
-      ...callParams,
-      functionName: 'firstRemainingDraft',
-      args: [BigInt(draftEra), account],
-    })
-
-    const draftQueueLength = await readContract({
-      ...callParams,
-      functionName: 'draftQueueLen',
-      args: [BigInt(draftEra), account],
-    })
-
-    for (
-      let i = 0;
-      i < Number(draftQueueLength) - Number(firstRemainingDraft);
-      i++
-    ) {
-      const draft = await readContract({
+      const data = []
+      const firstRemainingDraft = await readContract({
         ...callParams,
-        functionName: 'draftQueues',
-        args: [BigInt(draftEra), account, BigInt(i)],
+        functionName: 'firstRemainingDraft',
+        args: [BigInt(draftEra), account],
       })
 
-      if (draft) {
-        data.push({
-          availableAt: draft[1],
-          index: BigInt(i),
-          amount: draft[0],
-        })
-      }
-    }
+      const draftQueueLength = await readContract({
+        ...callParams,
+        functionName: 'draftQueueLen',
+        args: [BigInt(draftEra), account],
+      })
 
-    return data
+      for (
+        let i = 0;
+        i < Number(draftQueueLength) - Number(firstRemainingDraft);
+        i++
+      ) {
+        const draft = await readContract({
+          ...callParams,
+          functionName: 'draftQueues',
+          args: [BigInt(draftEra), account, BigInt(i)],
+        })
+
+        if (draft) {
+          data.push({
+            availableAt: draft[1],
+            index: BigInt(i),
+            amount: draft[0],
+          })
+        }
+      }
+
+      return data
+    } catch (e) {
+      console.error('error pulling storage slot', e)
+      return []
+    }
   }
 )
