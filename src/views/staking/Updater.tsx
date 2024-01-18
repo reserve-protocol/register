@@ -12,32 +12,28 @@ import { pendingRSRAtom, pendingRSRManualAtom } from './atoms'
  */
 // TODO: Move this to an loadable atom
 
-// TODO: Revert manual overrides once 3.2.0 released
+// TODO: Remove pendingRSRManualAtom (and use FacadeRead) once 3.2.0 released
 const PendingBalancesUpdater = () => {
   const account = useAtomValue(walletAtom)
   const chainId = useAtomValue(chainIdAtom)
   const rToken = useAtomValue(rTokenAtom)
+
   const pendingRSRManual = useAtomValue(pendingRSRManualAtom)
   const setPendingRSR = useSetAtom(pendingRSRAtom)
 
-  let { data } = useContractRead(
-    rToken && account
-      ? {
-          abi: FacadeRead,
-          address: FACADE_ADDRESS[chainId],
-          functionName: 'pendingUnstakings',
-          args: [rToken?.address, account],
-          chainId,
-        }
-      : undefined
-  )
+  // let { data } = useContractRead(
+  //   rToken && account
+  //     ? {
+  //         abi: FacadeRead,
+  //         address: FACADE_ADDRESS[chainId],
+  //         functionName: 'pendingUnstakings',
+  //         args: [rToken?.address, account],
+  //         chainId,
+  //       }
+  //     : undefined
+  // )
 
-  if (
-    rToken?.address.toLowerCase() ===
-    '0xcc7ff230365bd730ee4b352cc2492cedac49383e'
-  ) {
-    data = pendingRSRManual
-  }
+  const data = pendingRSRManual
 
   useEffect(() => {
     if (data) {

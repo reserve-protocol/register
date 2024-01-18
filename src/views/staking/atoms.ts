@@ -4,6 +4,7 @@ import { safeParseEther } from 'utils'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import {
   blockTimestampAtom,
+  chainIdAtom,
   gqlClientAtom,
   rTokenAtom,
   rTokenStateAtom,
@@ -13,7 +14,8 @@ import {
 } from './../../state/atoms'
 import StRSR from 'abis/StRSR'
 import { readContract } from 'wagmi/actions'
-import { formatEther } from 'viem'
+import { Hex, formatEther, toHex } from 'viem'
+import { publicClient } from 'state/chain'
 
 const isValid = (value: bigint, max: bigint) => value > 0n && value <= max
 
@@ -177,30 +179,41 @@ export const accountCurrentPositionAtom = atom((get) => {
 
 // TODO: Delete with release of 3.2.0
 export const pendingRSRManualAtom = atomWithLoadable(
-  async (get): Promise<any> => {
+  async (
+    get
+  ): Promise<Array<{ availableAt: bigint; index: bigint; amount: bigint }>> => {
     const rToken = get(rTokenAtom)
     const account = get(walletAtom)
+    const chainId = get(chainIdAtom)
+    const client = publicClient({ chainId })
 
     if (!rToken || !account) {
-      return null
+      return []
     }
+
+    // Reads draft era from storage slot 265
+    const draftEra: string =
+      (await client.getStorageAt({
+        address: rToken.stToken?.address!,
+        slot: '0x0000000000000000000000000000000000000000000000000000000000000109',
+      })) || ''
+
     const callParams = {
       abi: StRSR,
       address: rToken.stToken?.address!,
     }
 
     const data = []
-    const era = BigInt(2)
     const firstRemainingDraft = await readContract({
       ...callParams,
       functionName: 'firstRemainingDraft',
-      args: [era, account],
+      args: [BigInt(draftEra), account],
     })
 
     const draftQueueLength = await readContract({
       ...callParams,
       functionName: 'draftQueueLen',
-      args: [era, account],
+      args: [BigInt(draftEra), account],
     })
 
     for (
@@ -211,8 +224,9 @@ export const pendingRSRManualAtom = atomWithLoadable(
       const draft = await readContract({
         ...callParams,
         functionName: 'draftQueues',
-        args: [era, account, BigInt(i)],
+        args: [BigInt(draftEra), account, BigInt(i)],
       })
+
       if (draft) {
         data.push({
           availableAt: draft[1],
