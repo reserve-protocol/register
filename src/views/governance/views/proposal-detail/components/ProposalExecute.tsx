@@ -34,7 +34,6 @@ const ProposalExecute = () => {
       small
       loading={isMining || isLoading}
       mining={isMining}
-      ml="auto"
       disabled={!isReady}
       onClick={write}
       text={t`Execute proposal`}

@@ -5,14 +5,13 @@ import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
 import { rTokenGovernanceAtom, walletAtom } from 'state/atoms'
-import { canExecuteAtom, timelockIdAtom } from '../atom'
+import { timelockIdAtom } from '../atom'
 import { useContractRead } from 'wagmi'
 import { keccak256, toBytes } from 'viem'
 
 const ProposalCancel = () => {
   const governance = useAtomValue(rTokenGovernanceAtom)
   const timelockId = useAtomValue(timelockIdAtom);
-  const canExecute = useAtomValue(canExecuteAtom);
   const account = useAtomValue(walletAtom)
 
   const { data: canCancel } = useContractRead({
@@ -43,10 +42,10 @@ const ProposalCancel = () => {
 
   return (
     <TransactionButton
+      variant='danger'
       small
       loading={isMining || isLoading}
       mining={isMining}
-      ml={canExecute ? 1 : 'auto'}
       disabled={!isReady}
       onClick={write}
       text={t`Cancel proposal`}

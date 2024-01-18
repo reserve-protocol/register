@@ -102,8 +102,19 @@ const GovernanceProposalDetail = () => {
         </SmallButton>
         <ProposalAlert />
         {state === PROPOSAL_STATES.SUCCEEDED && <ProposalQueue />}
-        {state === PROPOSAL_STATES.QUEUED && <ProposalExecute />}
-        {state === PROPOSAL_STATES.QUEUED && <ProposalCancel />}
+        {state === PROPOSAL_STATES.QUEUED && (
+          <Box
+            variant="layout.verticalAlign"
+            sx={{
+              ml: 'auto',
+              gap: 3,
+              ":not(:has(> *))": { ml: 0 }
+            }}
+          >
+            <ProposalCancel />
+            <ProposalExecute />
+          </Box>
+        )}
         {!!proposal?.executionTxnHash && (
           <Button
             small
