@@ -185,6 +185,17 @@ export const timelockIdAtom = atom((get) => {
   return encodedParams ? keccak256(encodedParams) : undefined;
 })
 
+export const canExecuteAtom = atom((get) => {
+  const proposal = get(proposalDetailAtom)
+  const blockNumber = get(blockAtom)
+
+  return (
+    blockNumber &&
+    proposal?.executionStartBlock &&
+    proposal?.executionStartBlock <= blockNumber
+  )
+})
+
 export const simulationStateAtom = atomWithReset<SimulationState>({
   data: null,
   loading: false,

@@ -4,17 +4,12 @@ import TransactionButton from 'components/button/TransactionButton'
 import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
-import { blockAtom, rTokenGovernanceAtom } from 'state/atoms'
-import { proposalDetailAtom, proposalTxArgsAtom } from '../atom'
+import { rTokenGovernanceAtom } from 'state/atoms'
+import { canExecuteAtom, proposalTxArgsAtom } from '../atom'
 
 const ProposalExecute = () => {
-  const blockNumber = useAtomValue(blockAtom)
   const governance = useAtomValue(rTokenGovernanceAtom)
-  const proposal = useAtomValue(proposalDetailAtom)
-  const canExecute =
-    blockNumber &&
-    proposal?.executionStartBlock &&
-    proposal?.executionStartBlock <= blockNumber
+  const canExecute = useAtomValue(canExecuteAtom)
 
   const { write, isLoading, hash, isReady } = useContractWrite({
     abi: Governance,
