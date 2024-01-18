@@ -26,6 +26,7 @@ import ProposalVotes from './components/ProposalVotes'
 import useProposalDetail from './useProposalDetail'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import ProposalCancel from './components/ProposalCancel'
 
 const GovernanceProposalDetail = () => {
   const { proposalId } = useParams()
@@ -102,6 +103,7 @@ const GovernanceProposalDetail = () => {
         <ProposalAlert />
         {state === PROPOSAL_STATES.SUCCEEDED && <ProposalQueue />}
         {state === PROPOSAL_STATES.QUEUED && <ProposalExecute />}
+        {state === PROPOSAL_STATES.QUEUED && <ProposalCancel />}
         {!!proposal?.executionTxnHash && (
           <Button
             small

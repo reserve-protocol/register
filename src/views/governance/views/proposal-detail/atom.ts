@@ -1,7 +1,7 @@
 import { PROPOSAL_STATES, blockDuration } from 'utils/constants'
 import { atom } from 'jotai'
 import { blockAtom, chainIdAtom, rTokenGovernanceAtom } from 'state/atoms'
-import { Address, Hex, keccak256, parseEther, toBytes } from 'viem'
+import { Address, Hex, encodeAbiParameters, keccak256, parseAbiParameters, parseEther, toBytes } from 'viem'
 import { TenderlySimulation } from 'types'
 import { atomWithReset } from 'jotai/utils'
 
@@ -169,6 +169,21 @@ export const proposalTxArgsAtom = atom(
     ]
   }
 )
+
+export const timelockIdAtom = atom((get) => {
+  const proposal = get(proposalDetailAtom)
+
+  const encodedParams = proposal ?
+    encodeAbiParameters(parseAbiParameters('address[], uint256[], bytes[], bytes32, bytes32'), [
+      proposal.targets,
+      [0n],
+      proposal.calldatas,
+      '0x0000000000000000000000000000000000000000000000000000000000000000',
+      keccak256(toBytes(proposal.description)),
+    ]) : undefined
+
+  return encodedParams ? keccak256(encodedParams) : undefined;
+})
 
 export const simulationStateAtom = atomWithReset<SimulationState>({
   data: null,
