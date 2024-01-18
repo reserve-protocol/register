@@ -1,23 +1,26 @@
 import FacadeRead from 'abis/FacadeRead'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { chainIdAtom, rTokenAtom, walletAtom } from 'state/atoms'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { useContractRead } from 'wagmi'
 import { formatEther } from 'viem'
-import { pendingRSRAtom } from './atoms'
+import { pendingRSRAtom, pendingRSRManualAtom } from './atoms'
 
 /**
  * Fetch pending issuances
  */
 // TODO: Move this to an loadable atom
+
+// TODO: Revert manual overrides once 3.2.0 released
 const PendingBalancesUpdater = () => {
   const account = useAtomValue(walletAtom)
   const chainId = useAtomValue(chainIdAtom)
   const rToken = useAtomValue(rTokenAtom)
+  const pendingRSRManual = useAtomValue(pendingRSRManualAtom)
   const setPendingRSR = useSetAtom(pendingRSRAtom)
 
-  const { data } = useContractRead(
+  let { data } = useContractRead(
     rToken && account
       ? {
           abi: FacadeRead,
@@ -28,6 +31,13 @@ const PendingBalancesUpdater = () => {
         }
       : undefined
   )
+
+  if (
+    rToken?.address.toLowerCase() ===
+    '0xcc7ff230365bd730ee4b352cc2492cedac49383e'
+  ) {
+    data = pendingRSRManual
+  }
 
   useEffect(() => {
     if (data) {

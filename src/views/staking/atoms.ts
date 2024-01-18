@@ -11,6 +11,9 @@ import {
   stRsrBalanceAtom,
   walletAtom,
 } from './../../state/atoms'
+import StRSR from 'abis/StRSR'
+import { readContract } from 'wagmi/actions'
+import { formatEther } from 'viem'
 
 const isValid = (value: bigint, max: bigint) => value > 0n && value <= max
 
@@ -171,3 +174,54 @@ export const accountCurrentPositionAtom = atom((get) => {
 
   return stBalance * exchangeRate - rsrBalance
 })
+
+// TODO: Delete with release of 3.2.0
+export const pendingRSRManualAtom = atomWithLoadable(
+  async (get): Promise<any> => {
+    const rToken = get(rTokenAtom)
+    const account = get(walletAtom)
+
+    if (!rToken || !account) {
+      return null
+    }
+    const callParams = {
+      abi: StRSR,
+      address: rToken.stToken?.address!,
+    }
+
+    const data = []
+    const era = BigInt(2)
+    const firstRemainingDraft = await readContract({
+      ...callParams,
+      functionName: 'firstRemainingDraft',
+      args: [era, account],
+    })
+
+    const draftQueueLength = await readContract({
+      ...callParams,
+      functionName: 'draftQueueLen',
+      args: [era, account],
+    })
+
+    for (
+      let i = 0;
+      i < Number(draftQueueLength) - Number(firstRemainingDraft);
+      i++
+    ) {
+      const draft = await readContract({
+        ...callParams,
+        functionName: 'draftQueues',
+        args: [era, account, BigInt(i)],
+      })
+      if (draft) {
+        data.push({
+          availableAt: draft[1],
+          index: BigInt(i),
+          amount: draft[0],
+        })
+      }
+    }
+
+    return data
+  }
+)
