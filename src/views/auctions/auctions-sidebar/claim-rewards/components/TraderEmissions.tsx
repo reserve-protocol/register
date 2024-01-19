@@ -89,7 +89,7 @@ const TraderEmissions = ({ trader, ...props }: Props) => {
   const availableRewards = useAtomValue(traderRewardsAtom)
   const [selected, setSelected] = useState<Address[]>([])
   const [isOpen, setOpen] = useState(false)
-  const noBalance = availableRewards[trader].total < 1
+  const noBalance = availableRewards[trader].total < 0.01
 
   const handleSelect = (address: Address) => {
     const index = selected.indexOf(address)
