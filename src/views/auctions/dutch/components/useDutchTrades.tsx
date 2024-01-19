@@ -5,7 +5,11 @@ import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { blockAtom } from 'state/atoms'
 import atomWithDebounce from 'utils/atoms/atomWithDebounce'
-import { endedDutchTradesAtom, ongoingDutchTradesAtom } from '../atoms'
+import {
+  endedDutchTradesAtom,
+  ongoingDutchTradesAtom,
+  pendingDutchTradesAtom,
+} from '../atoms'
 
 const ongoingTradesQuery = gql`
   query OngoingDutchTrades($id: String!, $block: Int!) {
@@ -34,7 +38,7 @@ const ongoingTradesQuery = gql`
 const endedTradesQuery = gql`
   query EndedDutchTrades($id: String!, $block: Int!) {
     ended: trades(
-      where: { rToken: $id, kind: 0, endBlock_lte: $block }
+      where: { rToken: $id, kind: 0, endBlock_lte: $block, isSettled: false }
       orderBy: startBlock
       orderDirection: desc
     ) {
@@ -54,7 +58,7 @@ const endedTradesQuery = gql`
       kind
     }
     settled: trades(
-      where: { rToken: $id, kind: 0, endBlock_gt: $block, isSettled: true }
+      where: { rToken: $id, kind: 0, endBlock_lte: $block, isSettled: true }
       orderBy: startBlock
       orderDirection: desc
     ) {
@@ -65,11 +69,11 @@ const endedTradesQuery = gql`
       sellingTokenSymbol
       endAt
       selling
+      isSettled
       startedAt
       worstCasePrice
       startBlock
       endBlock
-      isSettled
       settleTxHash
       kind
     }
@@ -93,6 +97,7 @@ const useDutchTrades = () => {
   const rToken = useRToken()
   const blockNumber = useAtomValue(currentBlockAtom)
   const setOngoingTrades = useSetAtom(ongoingDutchTradesAtom)
+  const setPendingTrades = useSetAtom(pendingDutchTradesAtom)
   const [currentEndedTrades, setEndedTrades] = useAtom(endedDutchTradesAtom)
 
   const { data, error } = useQuery(
@@ -124,7 +129,9 @@ const useDutchTrades = () => {
         currentEndedTrades.length !=
           endedData.settled.length + endedData.ended.length)
     ) {
-      setEndedTrades([...endedData.settled, ...endedData.ended])
+      console.log('test', endedData)
+      setPendingTrades(endedData.ended)
+      setEndedTrades(endedData.settled)
     }
   }, [endedData])
 }

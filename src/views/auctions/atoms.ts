@@ -9,7 +9,7 @@ import {
   rTokenContractsAtom,
 } from 'state/atoms'
 import { publicClient } from 'state/chain'
-import { Token, Trader } from 'types'
+import { Token } from 'types'
 import {
   FACADE_ACT_ADDRESS,
   FACADE_ADDRESS,
@@ -18,10 +18,7 @@ import {
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { Address, formatEther, formatUnits, zeroAddress } from 'viem'
 import { readContracts } from 'wagmi/actions'
-import {
-  Claimable,
-  TraderEmissions,
-} from './auctions-sidebar/claim-rewards/types'
+import { Claimable } from './auctions-sidebar/claim-rewards/types'
 
 export interface Auction {
   sell: Token
@@ -66,7 +63,10 @@ export interface Trade {
   worstCasePrice: number
 }
 
-export const tradesAtom = atom<{ current: Trade[]; ended: Trade[] }>({
+export const tradesAtom = atom<{
+  current: Trade[]
+  ended: Trade[]
+}>({
   current: [],
   ended: [],
 })
