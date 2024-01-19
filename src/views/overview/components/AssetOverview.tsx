@@ -15,6 +15,7 @@ import { formatCurrency, stringToColor } from 'utils'
 import { COLLATERAL_STATUS } from 'utils/constants'
 import RSV from 'utils/rsv'
 import CollateralPieChart from './CollateralPieChart'
+import cms from 'utils/cms';
 
 const colors = [
   '#B87333', // Copper
@@ -68,11 +69,17 @@ const AssetOverview = () => {
   const collateralStatus = useAtomValue(rTokenCollateralStatusAtom)
   const pieData = useMemo(() => {
     if (rToken?.address && basketDist && Object.keys(basketDist)) {
-      return rToken.collaterals.map((c, index) => ({
-        name: c.name,
-        value: basketDist[c.address]?.share ?? 0,
-        color: colors[index] || stringToColor(c.address),
-      }))
+      return rToken.collaterals.map((c) => {
+        const cmsCollateral = cms.collaterals.find((collateral) => collateral.chain === rToken.chainId && collateral.symbol === c.symbol)
+        const cmsProject = cms.projects.find((project) => project.name === cmsCollateral?.project)
+        return ({
+          name: c.name,
+          value: basketDist[c.address]?.share ?? 0,
+          color: cmsCollateral?.color || stringToColor(c.address),
+          project: cmsProject?.label || "GENERIC",
+          projectColor: cmsProject?.color || 'gray',
+        })
+      })
     }
 
     return []
@@ -95,14 +102,16 @@ const AssetOverview = () => {
           <Text sx={{ overflow: 'hidden' }} variant="legend">
             ${formatCurrency(price ?? 0, 5)}
           </Text>
-          <CollateralPieChart
-            mb={4}
-            mt={2}
-            data={pieData}
-            logo={rToken?.logo ?? ''}
-            isRSV={isRSV}
-            staked={distribution?.staked ?? 0}
-          />
+          <Box sx={{ mx: 'auto' }}>
+            <CollateralPieChart
+              mb={4}
+              mt={2}
+              data={pieData}
+              logo={rToken?.logo ?? ''}
+              isRSV={isRSV}
+              staked={distribution?.staked ?? 0}
+            />
+          </Box>
           <Text variant="legend">
             <Trans>Backing</Trans>
             <Box as="span" ml={2} sx={{ fontWeight: '500', color: 'text' }}>

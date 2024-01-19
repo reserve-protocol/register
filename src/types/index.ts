@@ -82,6 +82,7 @@ export interface ReserveToken extends Token {
   main?: Address
   mandate?: string
   listed?: boolean
+  chainId?: number
 }
 
 export interface BigNumberMap {

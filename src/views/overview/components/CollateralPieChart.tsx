@@ -1,10 +1,11 @@
 import TokenLogo from 'components/icons/TokenLogo'
+import React from 'react'
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 import { Box, BoxProps } from 'theme-ui'
 import { formatPercentage } from 'utils'
 
 interface ChartProps extends BoxProps {
-  data: { name: string; value: number; color: string }[]
+  data: { name: string; value: number; color: string; project: string; projectColor: string; }[]
   staked: number
   isRSV?: boolean
   logo: string
@@ -12,8 +13,8 @@ interface ChartProps extends BoxProps {
 
 // Value % between 0-100
 const getAngles = (value: number) => {
-  const radius = Math.floor((value * 360) / 100) / 2
-  return { startAngle: 270 + radius, endAngle: 270 - radius }
+  const radius = Math.floor((value * 360) / 100)
+  return { startAngle: 270, endAngle: 270 - radius }
 }
 
 const CollateralChart = ({
@@ -26,25 +27,44 @@ const CollateralChart = ({
   <Box {...props} sx={{ position: 'relative' }}>
     <Box
       sx={{
-        top: 'calc(50% - 16px)',
-        left: 'calc(50% - 16px)',
+        top: '50%',
+        left: '50%',
         position: 'absolute',
+        transform: 'translate(-50%, -50%)',
       }}
     >
       <TokenLogo width={32} src={logo} />
     </Box>
-    <ResponsiveContainer height={200}>
+    <ResponsiveContainer height={220} width={220}>
       <PieChart>
         <Pie
           data={data}
           dataKey="value"
           cx="50%"
           cy="50%"
-          innerRadius={70}
+          innerRadius={64}
           outerRadius={80}
+          paddingAngle={2}
+          startAngle={91}
+          endAngle={451}
         >
           {data.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={entry.color} stroke={'none'} />
+          ))}
+        </Pie>
+        <Pie
+          data={data.map(({ project, value }) => ({ name: project, value }))}
+          dataKey="value"
+          cx="50%"
+          cy="50%"
+          innerRadius={79}
+          outerRadius={85}
+          paddingAngle={2}
+          startAngle={91}
+          endAngle={451}
+        >
+          {data.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={entry.projectColor} stroke={'none'} />
           ))}
         </Pie>
         <Tooltip
@@ -57,7 +77,7 @@ const CollateralChart = ({
             data={[{ value: staked, name: 'Overcollaterization' }]}
             cx="50%"
             cy="50%"
-            innerRadius={90}
+            innerRadius={95}
             outerRadius={100}
             fill="currentColor"
             stroke="none"
@@ -66,7 +86,7 @@ const CollateralChart = ({
         )}
       </PieChart>
     </ResponsiveContainer>
-  </Box>
+  </Box >
 )
 
-export default CollateralChart
+export default React.memo(CollateralChart)

@@ -15,7 +15,7 @@ import { formatCurrency, stringToColor } from 'utils'
 import { BRIDGED_RTOKENS, CHAIN_TAGS, ROUTES } from 'utils/constants'
 import { getAddress } from 'viem'
 import CollateralPieChart from 'views/overview/components/CollateralPieChart'
-
+import cms from 'utils/cms';
 interface Props extends BoxProps {
   token: ListedToken
 }
@@ -38,33 +38,24 @@ const ChainBadge = ({ chain }: { chain: number }) => (
   </Box>
 )
 
-const colors = [
-  '#B87333', // Copper
-  '#8B4513', // SaddleBrown
-  '#F4A460', // SandyBrown
-  '#D2B48C', // Tan
-  '#CD853F', // Peru
-  '#556B2F', // DarkOliveGreen
-  '#708090', // SlateGray
-  '#8B008B', // DarkMagenta
-  '#DA8A67', // Earth Yellow
-  '#FFD700', // Gold
-  '#B8860B', // DarkGoldenRod
-  '#DEB887', // BurlyWood
-]
-
 const RTokenCard = ({ token, ...props }: Props) => {
   const navigate = useNavigate()
   const pools = useAtomValue(rTokenPoolsAtom)
   const earnData = pools[getAddress(token.id)]
   const chartData = useMemo(
     () =>
-      token.collaterals.map((c, i) => ({
-        name: c.symbol,
-        value:
-          +token.collateralDistribution[c.id.toLowerCase()]?.dist * 100 ?? 0,
-        color: colors[i] || stringToColor(c.id),
-      })),
+      token.collaterals.map((c) => {
+        const cmsCollateral = cms.collaterals.find((collateral) => collateral.chain === token.chain && collateral.symbol === c.symbol)
+        const cmsProject = cms.projects.find((project) => project.name === cmsCollateral?.project)
+        return ({
+          name: c.symbol,
+          value:
+            +token.collateralDistribution[c.id.toLowerCase()]?.dist * 100 ?? 0,
+          color: cmsCollateral?.color || stringToColor(c.id),
+          project: cmsProject?.label || "GENERIC",
+          projectColor: cmsProject?.color || 'gray',
+        })
+      }),
     []
   )
 
@@ -101,7 +92,6 @@ const RTokenCard = ({ token, ...props }: Props) => {
             display: ['none', 'block'],
             borderRight: '1px solid',
             borderColor: 'darkBorder',
-            width: 230,
           }}
         >
           <CollateralPieChart

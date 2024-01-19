@@ -72,10 +72,10 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       stTokenAddress,
     ] = await (<
       Promise<[string, string, number, Address, string, Address[], Address]>
-    >readContracts({
-      contracts: rTokenMetaCalls,
-      allowFailure: false,
-    }))
+      >readContracts({
+        contracts: rTokenMetaCalls,
+        allowFailure: false,
+      }))
 
     const tokensMetaCall = [
       ...getTokenReadCalls(stTokenAddress),
@@ -117,6 +117,7 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       stToken: tokens.shift() as Token,
       collaterals: tokens,
       listed: !!rtokens[rTokenAddress],
+      chainId,
     }
   }
 )
