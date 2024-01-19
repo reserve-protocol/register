@@ -9,8 +9,7 @@ import {
   rTokenContractsAtom,
 } from 'state/atoms'
 import { publicClient } from 'state/chain'
-import { RTokenAsset } from 'state/rtoken/atoms/rTokenAssetsAtom'
-import { Token } from 'types'
+import { Token, Trader } from 'types'
 import {
   FACADE_ACT_ADDRESS,
   FACADE_ADDRESS,
@@ -19,7 +18,10 @@ import {
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { Address, formatEther, formatUnits, zeroAddress } from 'viem'
 import { readContracts } from 'wagmi/actions'
-import { Claimable } from './auctions-sidebar/claim-rewards/types'
+import {
+  Claimable,
+  TraderEmissions,
+} from './auctions-sidebar/claim-rewards/types'
 
 export interface Auction {
   sell: Token
@@ -250,6 +252,7 @@ export const auctionsOverviewAtom = atomWithLoadable(
     let pendingEmissions = 0
     const pendingToMelt = Number(formatEther(rTokenRevenueOverview[2][0]))
     const pendingToMeltUsd = pendingToMelt * assets[rToken.address].priceUsd
+
     // for easy use
     const bmRewards = rsrRevenueOverview[4]
     const rsrTraderRewards = rsrRevenueOverview[5]

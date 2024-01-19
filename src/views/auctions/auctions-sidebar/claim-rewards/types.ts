@@ -1,4 +1,5 @@
 import { RTokenAsset } from 'state/rtoken/atoms/rTokenAssetsAtom'
+import { Address } from 'viem'
 
 export interface Claimable {
   asset: RTokenAsset
@@ -7,6 +8,15 @@ export interface Claimable {
   rsrTrader: number
   rTokenTrader: number
   backingManager: number
+}
+
+export interface TraderEmissions {
+  total: number
+  tokens: {
+    amount: number
+    symbol: string
+    address: Address
+  }[]
 }
 
 export interface ClaimEmissionMap {
