@@ -1,45 +1,81 @@
-import { t } from '@lingui/macro'
+import { Trans, t } from '@lingui/macro'
 import RevenueTrader from 'abis/RevenueTrader'
 import { ExecuteButton } from 'components/button/TransactionButton'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useMemo } from 'react'
-import { Box, BoxProps, Text } from 'theme-ui'
+import { rTokenContractsAtom, walletAtom } from 'state/atoms'
+import { Box, Text } from 'theme-ui'
 import { Trader } from 'types'
-import { TraderLabels } from 'utils/constants'
-import { claimsByTraderAtom } from '../atoms'
 import { formatCurrency } from 'utils'
+import { Address, encodeFunctionData } from 'viem'
+import { auctionSessionAtom } from 'views/auctions/atoms'
+import { traderRewardsAtom } from '../atoms'
 
-interface Props extends BoxProps {
+const ClaimFromTraderButton = ({
+  trader,
+  erc20s,
+}: {
   trader: Trader
-}
+  erc20s: Address[]
+}) => {
+  const rTokenContracts = useAtomValue(rTokenContractsAtom)
+  const availableRewards = useAtomValue(traderRewardsAtom)
+  const wallet = useAtomValue(walletAtom)
+  const setSession = useSetAtom(auctionSessionAtom)
 
-const ClaimFromTraderButton = ({ trader, ...props }: Props) => {
-  const data = useAtomValue(claimsByTraderAtom)
-  const call = useMemo(() => {
-    if (!data[trader]) {
+  const claimAmount = useMemo(() => {
+    // this is usually just a 2 item array
+    return availableRewards[trader].tokens.reduce((amount, asset) => {
+      if (erc20s.includes(asset.address)) {
+        amount += asset.amount
+      }
+
+      return amount
+    }, 0)
+  }, [erc20s, availableRewards])
+
+  const transaction = useMemo(() => {
+    if (!erc20s.length || !rTokenContracts) {
       return undefined
     }
 
     return {
       abi: RevenueTrader,
       functionName: 'multicall',
-      address: data[trader].address,
-      args: [data[trader].callDatas],
+      address: rTokenContracts[trader].address,
+      args: [
+        erc20s.map((erc20) =>
+          encodeFunctionData({
+            abi: RevenueTrader,
+            functionName: 'claimRewardsSingle',
+            args: [erc20],
+          })
+        ),
+      ],
     }
-  }, [data])
+  }, [erc20s, rTokenContracts])
+
+  // Fetch refresh state after claiming
+  const handleSuccess = () => {
+    setSession(Math.random())
+  }
 
   return (
-    <Box variant="layout.verticalAlign" {...props}>
-      <Text variant="strong">
-        Claim ${formatCurrency(data[trader]?.total ?? 0)} from{' '}
-        {TraderLabels[trader]}
+    <Box variant="layout.verticalAlign" mt={3} mb={4}>
+      <Text variant="legend" sx={{ fontSize: 1 }}>
+        {!erc20s.length && <Trans>Please select an asset to claim</Trans>}
+        {!!erc20s.length && !wallet && (
+          <Trans>Please connect your wallet</Trans>
+        )}
       </Text>
       <ExecuteButton
-        text={t`Execute`}
+        text={t`Claim $${formatCurrency(claimAmount)}`}
         small
         ml="auto"
+        txLabel="Claim rewards"
+        onSuccess={handleSuccess}
         successLabel="Success!"
-        call={call}
+        call={transaction}
       />
     </Box>
   )

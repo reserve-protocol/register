@@ -1,20 +1,17 @@
-import { Trans, t } from '@lingui/macro'
-import RevenueTrader from 'abis/RevenueTrader'
+import { t } from '@lingui/macro'
 import CollapsableBox from 'components/boxes/CollapsableBox'
 import SelectableBox from 'components/boxes/SelectableBox'
-import { ExecuteButton } from 'components/button/TransactionButton'
 import Help from 'components/help'
 import TokenLogo from 'components/icons/TokenLogo'
-import { useAtomValue, useSetAtom } from 'jotai'
-import { useMemo, useState } from 'react'
-import { rTokenContractsAtom, walletAtom } from 'state/atoms'
+import { useAtomValue } from 'jotai'
+import { useState } from 'react'
 import { Box, BoxProps, Divider, Text } from 'theme-ui'
 import { Trader } from 'types'
 import { formatCurrency } from 'utils'
 import { TRADERS, TraderLabels } from 'utils/constants'
-import { Address, encodeFunctionData } from 'viem'
-import { auctionSessionAtom } from 'views/auctions/atoms'
+import { Address } from 'viem'
 import { traderRewardsAtom } from '../atoms'
+import ClaimFromTraderButton from './ClaimFromTraderButton'
 
 const MIN_DOLLAR_VALUE = 10
 
@@ -87,76 +84,6 @@ const TraderHeading = ({
     </Box>
   </SelectableBox>
 )
-
-const ConfirmClaim = ({
-  trader,
-  erc20s,
-}: {
-  trader: Trader
-  erc20s: Address[]
-}) => {
-  const rTokenContracts = useAtomValue(rTokenContractsAtom)
-  const availableRewards = useAtomValue(traderRewardsAtom)
-  const wallet = useAtomValue(walletAtom)
-  const setSession = useSetAtom(auctionSessionAtom)
-
-  const claimAmount = useMemo(() => {
-    // this is usually just a 2 item array
-    return availableRewards[trader].tokens.reduce((amount, asset) => {
-      if (erc20s.includes(asset.address)) {
-        amount += asset.amount
-      }
-
-      return amount
-    }, 0)
-  }, [erc20s, availableRewards])
-
-  const transaction = useMemo(() => {
-    if (!erc20s.length || !rTokenContracts) {
-      return undefined
-    }
-
-    return {
-      abi: RevenueTrader,
-      functionName: 'multicall',
-      address: rTokenContracts[trader].address,
-      args: [
-        erc20s.map((erc20) =>
-          encodeFunctionData({
-            abi: RevenueTrader,
-            functionName: 'claimRewardsSingle',
-            args: [erc20],
-          })
-        ),
-      ],
-    }
-  }, [erc20s, rTokenContracts])
-
-  // Fetch refresh state after claiming
-  const handleSuccess = () => {
-    setSession(Math.random())
-  }
-
-  return (
-    <Box variant="layout.verticalAlign" mt={3} mb={4}>
-      <Text variant="legend" sx={{ fontSize: 1 }}>
-        {!erc20s.length && <Trans>Please select an asset to claim</Trans>}
-        {!!erc20s.length && !wallet && (
-          <Trans>Please connect your wallet</Trans>
-        )}
-      </Text>
-      <ExecuteButton
-        text={t`Claim $${formatCurrency(claimAmount)}`}
-        small
-        ml="auto"
-        txLabel="Claim rewards"
-        onSuccess={handleSuccess}
-        successLabel="Success!"
-        call={transaction}
-      />
-    </Box>
-  )
-}
 
 const TraderEmissions = ({ trader, ...props }: Props) => {
   const availableRewards = useAtomValue(traderRewardsAtom)
@@ -260,71 +187,10 @@ const TraderEmissions = ({ trader, ...props }: Props) => {
           </SelectableBox>
         )
       })}
-      <ConfirmClaim trader={trader} erc20s={selected} />
+      <ClaimFromTraderButton trader={trader} erc20s={selected} />
       <Divider mx={-4} />
     </CollapsableBox>
   )
-  // return (
-  //   <CollapsableBox
-  //     header={
-  //       <SelectableBox
-  //         selected={selected.includes(true)}
-  //         onSelect={handleSelectAll}
-  //       >
-  //         <Info
-  //           title="Rewards"
-  //           icon={<TokenLogo symbol={data.asset.token.symbol} />}
-  //           subtitle={
-  //             <Box variant="layout.verticalAlign">
-  //               <Text>
-  //                 {formatCurrency(data.amount)} {data.asset.token.symbol}
-  //               </Text>
-  //               <Text ml={2} sx={{ fontSize: 0 }}>
-  //                 (${formatCurrency(data.amountUsd)})
-  //               </Text>
-  //             </Box>
-  //           }
-  //         />
-  //       </SelectableBox>
-  //     }
-  //     mt={3}
-  //     {...props}
-  //   >
-  //     <Box ml="36px" mr="20px">
-  //       {TRADERS.map((trader, index) => {
-  //         if (data[trader] * data.asset.priceUsd < 0.1) {
-  //           return null
-  //         }
-
-  //         return (
-  //           <SelectableBox
-  //             pt={index ? 2 : 0}
-  //             mt={index ? 2 : 0}
-  //             key={trader}
-  //             sx={{
-  //               borderTop: index ? '1px solid' : 'none',
-  //               borderColor: 'border',
-  //             }}
-  //             selected={!!selected[data.asset.token.address]?.[trader]}
-  //             onSelect={() =>
-  //               handleTokenTraderSelect(
-  //                 trader,
-  //                 !selected[data.asset.token.address]?.[trader]
-  //               )
-  //             }
-  //           >
-  //             <Box sx={{ width: '100%' }} mr={3} variant="layout.verticalAlign">
-  //               <Text>{TraderLabels[trader]}</Text>
-  //               <Text ml="auto" variant="strong" sx={{ fontSize: 1 }}>
-  //                 ${formatCurrency(data[trader] * data.asset.priceUsd)}
-  //               </Text>
-  //             </Box>
-  //           </SelectableBox>
-  //         )
-  //       })}
-  //     </Box>
-  //   </CollapsableBox>
-  // )
 }
 
 export default TraderEmissions
