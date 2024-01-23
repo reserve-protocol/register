@@ -45,7 +45,7 @@ listedRTokens[RSR_ADDRESS[ChainId.Base].toLowerCase()] = RSR
 
 // Bridged RTokens
 listedRTokens['0xcfa3ef56d303ae4faaba0592388f19d7c3399fb4'] =
-  listedRTokens[EUSD_ADDRESS[ChainId.Mainnet]]
+  listedRTokens[EUSD_ADDRESS[ChainId.Mainnet].toLowerCase()]
 
 const OTHER_POOL_TOKENS: Record<
   string,

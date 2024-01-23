@@ -112,6 +112,7 @@ const AccountUpdater = () => {
         address: string
         name: string
         symbol: string
+        chainId: number
       }[] = []
       let holdings = 0
 
@@ -127,6 +128,7 @@ const AccountUpdater = () => {
               address: getAddress(rToken.rToken.id),
               name: rToken.balance.token.name,
               symbol: rToken.balance.token.symbol,
+              chainId: Number(chainId),
             })
           }
 
