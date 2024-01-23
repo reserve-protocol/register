@@ -21,7 +21,7 @@ export const traderRewardsAtom = atom((get) => {
       traderRewards[trader].total += erc20[trader] * erc20.asset.priceUsd
       traderRewards[trader].tokens.push({
         symbol: erc20.asset.token.symbol,
-        address: erc20.asset.token.address,
+        address: erc20.asset.address,
         amount: erc20[trader] * erc20.asset.priceUsd,
       })
     }
