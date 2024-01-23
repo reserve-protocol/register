@@ -17,6 +17,7 @@ interface ChartProps extends BoxProps {
   logo: string
   topInformation?: ReactNode
   bottomInformation?: ReactNode
+  showTooltip?: boolean
 }
 
 // Value % between 0-100
@@ -32,6 +33,7 @@ const CollateralChart: FC<ChartProps> = ({
   staked,
   topInformation,
   bottomInformation,
+  showTooltip = false,
   ...props
 }) => (
   <Box {...props} variant="layout.centered" sx={{ gap: 2 }}>
@@ -48,7 +50,7 @@ const CollateralChart: FC<ChartProps> = ({
         <TokenLogo width={20} src={logo} />
       </Box>
       <ResponsiveContainer height={180} width={180}>
-        <PieChart>
+        <PieChart style={{ cursor: 'pointer' }}>
           <Pie
             data={data}
             dataKey="value"
@@ -83,10 +85,12 @@ const CollateralChart: FC<ChartProps> = ({
               />
             ))}
           </Pie>
-          <Tooltip
-            wrapperStyle={{ zIndex: 10 }}
-            formatter={(value) => formatPercentage(Number(value), 4)}
-          />
+          {showTooltip && (
+            <Tooltip
+              wrapperStyle={{ zIndex: 10 }}
+              formatter={(value) => formatPercentage(Number(value), 4)}
+            />
+          )}
           {!isRSV && (
             <Pie
               dataKey="value"

@@ -26,7 +26,11 @@ const CompareTokens = () => {
     <Box variant="layout.wrapper" p={[1, 4]} pt={0}>
       <CompareTokensTitle />
       {isLoading && (
-        <Skeleton count={3} height={320} style={{ marginBottom: 20 }} />
+        <Skeleton
+          count={3}
+          height={316}
+          style={{ marginBottom: 20, borderRadius: '20px' }}
+        />
       )}
       {list.map((token) => (
         <RTokenCard key={token.id} token={token} mb={4} />

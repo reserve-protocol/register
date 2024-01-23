@@ -3,6 +3,7 @@ import { Button } from 'components'
 import ChainLogo from 'components/icons/ChainLogo'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'
 import EarnNavIcon from 'components/icons/EarnNavIcon'
+import MoneyIcon from 'components/icons/MoneyIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import { ListedToken } from 'hooks/useTokenList'
 import { useAtomValue } from 'jotai'
@@ -23,17 +24,16 @@ const ChainBadge = ({ chain }: { chain: number }) => (
   <Box
     variant="layout.verticalAlign"
     sx={{
-      position: 'absolute',
-      right: 0,
-      top: 0,
+      backgroundColor: 'rgba(0, 82, 255, 0.12)',
       border: '1px solid',
-      borderColor: 'darkBorder',
-      borderRadius: '6px',
+      borderColor: 'rgba(0, 82, 255, 0.20)',
+      borderRadius: '50px',
       padding: '4px 8px',
+      gap: 1,
     }}
   >
-    <ChainLogo chain={chain} />
-    <Text ml="1">{CHAIN_TAGS[chain]}</Text>
+    <ChainLogo chain={chain} fontSize={12} />
+    <Text sx={{ fontSize: 12 }}>{CHAIN_TAGS[chain]}</Text>
   </Box>
 )
 
@@ -70,15 +70,14 @@ const RTokenCard = ({ token, ...props }: Props) => {
         borderBottom: '2px solid',
         borderColor: 'transparent',
         '&:hover': {
-          borderColor: 'rBlue',
+          borderColor: 'primary',
         },
+        height: '316px',
       }}
       p={3}
       {...props}
     >
-      <Box variant="layout.verticalAlign" sx={{ position: 'relative' }}>
-        <ChainBadge chain={token.chain} />
-
+      <Box variant="layout.verticalAlign" sx={{ height: '100%' }}>
         <Box
           sx={{
             pr: 3,
@@ -91,91 +90,118 @@ const RTokenCard = ({ token, ...props }: Props) => {
           <CollateralPieChartWrapper token={token} />
         </Box>
 
-        <Box ml={4}>
-          <Box variant="layout.verticalAlign" mb={3}>
-            <TokenLogo width="42px" src={token.logo} />
-            <Box ml="3">
-              <Text variant="sectionTitle">{token.symbol}</Text>
-              <Text variant="legend" sx={{ fontSize: 1 }}>
-                ${formatCurrency(token.price, 2)}
-              </Text>
-            </Box>
+        <Box
+          variant="layout.centered"
+          px={5}
+          py={3}
+          sx={{
+            flexGrow: 1,
+            alignItems: 'start',
+            justifyContent: 'space-between',
+            gap: 2,
+            height: '100%',
+          }}
+        >
+          <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+            <ChainBadge chain={token.chain} />
           </Box>
-          <Box mb={1} pl={2} variant="layout.verticalAlign">
-            <CollaterizationIcon />
-            <Text ml="2" variant="legend">
-              <Trans>Backing + Overcollaterization:</Trans>
-            </Text>
-            <Text ml="2" variant="strong">
-              {(token.backing + token.overcollaterization).toFixed(0)}%
-            </Text>
-          </Box>
-          <Box pl="2" variant="layout.verticalAlign">
-            <Text variant="strong" pl="1" sx={{ width: '16px' }}>
-              $
-            </Text>
-            <Text ml="2" variant="legend">
-              <Trans>Market cap:</Trans>
-            </Text>
-            <Text ml="2" variant="strong">
-              ${formatCurrency(token.supply, 0)}
-            </Text>
-          </Box>
-          <Box variant="layout.verticalAlign" sx={{ flexWrap: 'wrap' }}>
-            <Button
-              onClick={() => handleNavigate(ROUTES.ISSUANCE)}
-              mt={3}
-              mr={3}
-              medium
-            >
-              {token.tokenApy ? `${token.tokenApy.toFixed(1)}% APY` : 'Mint'}
-            </Button>
-            <Button
-              onClick={() => handleNavigate(ROUTES.STAKING)}
-              mt={3}
-              mr={3}
-              medium
-              variant="muted"
-            >
-              Stake RSR{' '}
-              {!!token.stakingApy && `- ${token.stakingApy.toFixed(1)}% APY`}
-            </Button>
 
-            <Button
-              onClick={() => handleNavigate(ROUTES.OVERVIEW)}
-              mt={3}
-              mr={3}
-              medium
-              variant="transparent"
-            >
-              <Box variant="layout.verticalAlign">
-                <Text mr={3}>Explore</Text> <ArrowRight size={16} />
+          <Box variant="layout.centered" sx={{ alignItems: 'start', gap: 4 }}>
+            <Box variant="layout.verticalAlign" sx={{ gap: '12px' }}>
+              <TokenLogo width={50} src={token.logo} />
+              <Box variant="layout.centered" sx={{ alignItems: 'start' }}>
+                <Text
+                  sx={{ fontSize: 26, fontWeight: 700, lineHeight: '26px' }}
+                >
+                  {token.symbol}
+                </Text>
+                <Text variant="legend" sx={{ fontSize: 16 }}>
+                  ${formatCurrency(token.price, 2)}
+                </Text>
               </Box>
-            </Button>
+            </Box>
 
-            {!!earnData && (
-              <Button onClick={handleEarn} mt={3} mr={3} medium variant="hover">
-                <Box variant="layout.verticalAlign">
-                  <Box
-                    variant="layout.verticalAlign"
-                    p="1"
-                    mr={2}
-                    sx={{
-                      backgroundColor: 'rBlue',
-                      borderRadius: 6,
-                      color: 'white',
-                    }}
-                  >
-                    <EarnNavIcon fontSize={20} />
-                  </Box>
-                  <Text>Earn - </Text>
-                  <Text ml="1" mr={3} variant="strong" sx={{ color: 'rBlue' }}>
-                    {earnData.maxApy.toFixed(0)}% APY
+            <Box variant="layout.verticalAlign" sx={{ gap: 3 }}>
+              <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+                <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+                  <MoneyIcon />
+                  <Text variant="legend">
+                    <Trans>Market cap:</Trans>
                   </Text>
+                </Box>
+                <Text variant="strong">${formatCurrency(token.supply, 0)}</Text>
+              </Box>
+              <Box
+                sx={{
+                  height: '12px',
+                  border: 'none',
+                  borderRight: '1px solid',
+                  borderColor: '#CCCCCC',
+                  borderStyle: 'dashed',
+                }}
+              />
+              <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+                <CollaterizationIcon />
+                <Text variant="legend">
+                  <Trans>Backing + Overcollaterization:</Trans>
+                </Text>
+                <Text variant="strong" color="#333333">
+                  {(token.backing + token.overcollaterization).toFixed(0)}%
+                </Text>
+              </Box>
+            </Box>
+            <Box
+              variant="layout.verticalAlign"
+              sx={{ flexWrap: 'wrap', gap: '12px' }}
+            >
+              <Button onClick={() => handleNavigate(ROUTES.ISSUANCE)} medium>
+                {token.tokenApy
+                  ? `${token.tokenApy.toFixed(1)}% Est. APY`
+                  : 'Mint'}
+              </Button>
+              <Button
+                onClick={() => handleNavigate(ROUTES.STAKING)}
+                medium
+                variant="muted"
+              >
+                Stake RSR{' '}
+                {!!token.stakingApy && `- ${token.stakingApy.toFixed(1)}% APY`}
+              </Button>
+
+              <Button
+                onClick={() => handleNavigate(ROUTES.OVERVIEW)}
+                medium
+                variant="transparent"
+              >
+                <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+                  <Text>Explore</Text>
                   <ArrowRight size={16} />
                 </Box>
               </Button>
-            )}
+
+              {!!earnData && (
+                <Button onClick={handleEarn} medium variant="hover">
+                  <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+                    <Box
+                      variant="layout.verticalAlign"
+                      p="1"
+                      sx={{
+                        backgroundColor: 'rBlue',
+                        borderRadius: 6,
+                        color: 'white',
+                      }}
+                    >
+                      <EarnNavIcon fontSize={20} />
+                    </Box>
+                    <Text>Earn - </Text>
+                    <Text ml="1" variant="strong" sx={{ color: 'rBlue' }}>
+                      {earnData.maxApy.toFixed(0)}% APY
+                    </Text>
+                    <ArrowRight size={16} />
+                  </Box>
+                </Button>
+              )}
+            </Box>
           </Box>
         </Box>
       </Box>

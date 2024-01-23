@@ -1,8 +1,6 @@
 import { t } from '@lingui/macro'
-import Help from 'components/help'
 import ChevronRight from 'components/icons/ChevronRight'
 import CircleIcon from 'components/icons/CircleIcon'
-import StakedIcon from 'components/icons/StakedIcon'
 import { MouseoverTooltipContent } from 'components/tooltip'
 import { ListedToken } from 'hooks/useTokenList'
 import { FC, memo, useMemo, useState } from 'react'
@@ -11,6 +9,8 @@ import { stringToColor } from 'utils'
 import cms from 'utils/cms'
 import CollateralPieChart from 'views/overview/components/CollateralPieChart'
 import CollateralPieChartTooltip from './CollateralPieChartTooltip'
+import HelpIcon from 'components/icons/HelpIcon'
+import CollaterizationIcon from 'components/icons/CollaterizationIcon'
 
 type Props = {
   token: ListedToken
@@ -50,6 +50,7 @@ const CollateralPieChartWrapper: FC<Props> = ({ token }) => {
           '&:hover': {
             borderRadius: '10px',
             backgroundColor: 'rgba(33, 80, 169, 0.08)',
+            cursor: 'pointer',
           },
         }}
         onMouseEnter={() => setIsHovered(true)}
@@ -113,17 +114,14 @@ const CollateralPieChartWrapper: FC<Props> = ({ token }) => {
               sx={{ justifyContent: 'space-between', width: '100%' }}
             >
               <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-                <StakedIcon />
+                <CollaterizationIcon />
                 <Text sx={{ fontSize: 14 }}>{t`Stacked RSR`}</Text>
               </Box>
               <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
                 <Text sx={{ fontSize: 14, fontWeight: 700 }}>
                   {token.overcollaterization.toFixed(0)}%
                 </Text>
-                <Help
-                  content={t`Staked RSR overcollateralization`}
-                  color="#999999"
-                />
+                <HelpIcon color="#999999" />
               </Box>
             </Box>
           }
