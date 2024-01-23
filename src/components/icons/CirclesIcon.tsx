@@ -15,7 +15,7 @@ const CirclesIcon = (props: SVGProps<SVGSVGElement>) => (
         height={4.301}
         x={0.967}
         y={0.546}
-        stroke="#0052FF"
+        stroke={props.color || '#0052FF'}
         rx={2.151}
       />
       <rect
@@ -23,7 +23,7 @@ const CirclesIcon = (props: SVGProps<SVGSVGElement>) => (
         height={4.301}
         x={0.967}
         y={7.153}
-        stroke="#83C7FF"
+        stroke={props.color || '#83C7FF'}
         rx={2.151}
       />
       <rect
@@ -31,7 +31,7 @@ const CirclesIcon = (props: SVGProps<SVGSVGElement>) => (
         height={4.301}
         x={7.573}
         y={0.546}
-        stroke="#F2A900"
+        stroke={props.color || '#F2A900'}
         rx={2.151}
       />
       <rect
@@ -39,7 +39,7 @@ const CirclesIcon = (props: SVGProps<SVGSVGElement>) => (
         height={4.301}
         x={7.573}
         y={7.153}
-        stroke="currentColor"
+        stroke={props.color || 'currentColor'}
         rx={2.151}
       />
     </g>

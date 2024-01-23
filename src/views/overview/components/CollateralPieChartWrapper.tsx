@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { t } from '@lingui/macro'
 import Help from 'components/help'
 import ChevronRight from 'components/icons/ChevronRight'
 import CircleIcon from 'components/icons/CircleIcon'
@@ -6,10 +6,11 @@ import StakedIcon from 'components/icons/StakedIcon'
 import { MouseoverTooltipContent } from 'components/tooltip'
 import { ListedToken } from 'hooks/useTokenList'
 import { FC, memo, useMemo, useState } from 'react'
-import { Box, Button, Card, Text } from 'theme-ui'
+import { Box, Button, Text } from 'theme-ui'
 import { stringToColor } from 'utils'
 import cms from 'utils/cms'
 import CollateralPieChart from 'views/overview/components/CollateralPieChart'
+import CollateralPieChartTooltip from './CollateralPieChartTooltip'
 
 type Props = {
   token: ListedToken
@@ -41,19 +42,7 @@ const CollateralPieChartWrapper: FC<Props> = ({ token }) => {
 
   return (
     <MouseoverTooltipContent
-      content={
-        <Card sx={{ width: 320, border: '1px solid black' }}>
-          <Text sx={{ fontWeight: 400 }} variant="legend">
-            <Trans>Network</Trans>
-          </Text>
-          <Text variant="legend" sx={{ fontSize: 1 }}>
-            <Trans>
-              The configured network is different from the wallet selected
-              network. Change your network in the connected wallet.
-            </Trans>
-          </Text>
-        </Card>
-      }
+      content={<CollateralPieChartTooltip token={token} />}
     >
       <Box
         p={2}
