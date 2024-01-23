@@ -3,16 +3,17 @@ import useTokenStats from 'hooks/useTokenStats'
 import { useAtomValue } from 'jotai'
 import { rTokenAtom, selectedRTokenAtom } from 'state/atoms'
 import { Divider, Grid } from 'theme-ui'
-import About from './components/About'
-import AssetOverview from './components/AssetOverview'
-import External from './components/External'
-import HistoricalData from './components/HistoricalData'
-import RecentTransactions from './components/RecentTransactions'
-import RevenueSplitOverview from './components/RevenueSplitOverview'
-import TokenOverview from './components/TokenOverview'
-import TokenUsage from './components/TokenUsage'
+import About from './_components/About'
+import AssetOverview from './_components/AssetOverview'
+import External from './_components/External'
+import HistoricalData from './_components/HistoricalData'
+import RecentTransactions from './_components/RecentTransactions'
+import RevenueSplitOverview from './_components/RevenueSplitOverview'
+import TokenOverview from './_components/TokenOverview'
+import TokenUsage from './_components/TokenUsage'
 import { useEffect } from 'react'
 import mixpanel from 'mixpanel-browser'
+import Hero from './components/Hero'
 
 const dividerProps = { my: [4, 8], mx: [-1, -3], sx: { borderColor: 'border' } }
 const gridProps = { columns: [1, 1, 1, 2], gap: [5, 5, 5, 4] }
@@ -40,7 +41,8 @@ const Overview = () => {
 
   return (
     <Container>
-      <TokenOverview mt={[3, 6]} ml={3} metrics={rTokenMetrics} />
+      <Hero />
+      {/* <TokenOverview mt={[3, 6]} ml={3} metrics={rTokenMetrics} />
       <Divider {...dividerProps} />
       <TokenUsage ml={3} metrics={rTokenMetrics} />
       <Divider {...dividerProps} />
@@ -56,7 +58,7 @@ const Overview = () => {
       <Grid {...gridProps}>
         <HistoricalData />
         <RecentTransactions />
-      </Grid>
+      </Grid> */}
     </Container>
   )
 }

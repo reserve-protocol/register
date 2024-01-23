@@ -14,7 +14,7 @@ import { Box, BoxProps, Card, Text } from 'theme-ui'
 import { formatCurrency, stringToColor } from 'utils'
 import { BRIDGED_RTOKENS, CHAIN_TAGS, ROUTES } from 'utils/constants'
 import { getAddress } from 'viem'
-import CollateralPieChart from 'views/overview/components/CollateralPieChart'
+import CollateralPieChart from 'views/overview/_components/CollateralPieChart'
 
 interface Props extends BoxProps {
   token: ListedToken

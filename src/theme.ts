@@ -16,14 +16,12 @@ export const borderRadius = {
   inner: '10px',
 }
 export const baseButton = {
-  borderRadius: 50,
+  borderRadius: borderRadius.inputs,
   fontWeight: 500,
   cursor: 'pointer',
   color: '#fff',
   backgroundColor: 'primary',
-  padding: '14px',
-  paddingLeft: 4,
-  paddingRight: 4,
+  padding: '12px 16px',
 
   '&:hover': {
     filter: 'brightness(0.85)',
@@ -97,7 +95,8 @@ export const colors = {
   accentBG: '#DBE9E4',
   accentText: '#00814B',
   secondary: '#E8E8E8',
-  rBlue: '#2150A9',
+  rBlue: '#2150A9', // TODO: Remove in favor for accent
+  accent: '#2150A9',
   rBlueLight: '#DBE3F1',
   border: '#efefef',
   darkBorder: '#E5E5E5',
@@ -208,6 +207,9 @@ export const theme: Theme = {
     },
     legend: {
       color: 'secondaryText',
+    },
+    accent: {
+      color: 'accent',
     },
     muted: {
       color: 'muted',
@@ -389,7 +391,7 @@ export const theme: Theme = {
     },
     accent: {
       ...baseButton,
-      backgroundColor: 'accentBG',
+      backgroundColor: 'accent',
     },
     accentAction: {
       ...baseButton,
