@@ -45,17 +45,17 @@ const CollateralChart: FC<ChartProps> = ({
           transform: 'translate(-50%, -50%)',
         }}
       >
-        <TokenLogo width={32} src={logo} />
+        <TokenLogo width={20} src={logo} />
       </Box>
-      <ResponsiveContainer height={220} width={220}>
+      <ResponsiveContainer height={180} width={180}>
         <PieChart>
           <Pie
             data={data}
             dataKey="value"
             cx="50%"
             cy="50%"
-            innerRadius={64}
-            outerRadius={80}
+            innerRadius={46}
+            outerRadius={60}
             paddingAngle={2}
             startAngle={91}
             endAngle={451}
@@ -69,8 +69,8 @@ const CollateralChart: FC<ChartProps> = ({
             dataKey="value"
             cx="50%"
             cy="50%"
-            innerRadius={79}
-            outerRadius={85}
+            innerRadius={59}
+            outerRadius={65}
             paddingAngle={2}
             startAngle={91}
             endAngle={451}
@@ -93,8 +93,8 @@ const CollateralChart: FC<ChartProps> = ({
               data={[{ value: staked, name: 'Overcollaterization' }]}
               cx="50%"
               cy="50%"
-              innerRadius={95}
-              outerRadius={100}
+              innerRadius={75}
+              outerRadius={80}
               fill="currentColor"
               stroke="none"
               {...getAngles(staked)}
