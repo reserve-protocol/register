@@ -1,4 +1,4 @@
-import { t, Trans } from '@lingui/macro'
+import { Trans } from '@lingui/macro'
 import { Button } from 'components'
 import ChainLogo from 'components/icons/ChainLogo'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'
@@ -6,20 +6,15 @@ import EarnNavIcon from 'components/icons/EarnNavIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import { ListedToken } from 'hooks/useTokenList'
 import { useAtomValue } from 'jotai'
-import { memo, useMemo } from 'react'
+import { memo } from 'react'
 import { ArrowRight } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import { rTokenPoolsAtom } from 'state/pools/atoms'
-import { Box, BoxProps, Card, Divider, Text } from 'theme-ui'
-import { formatCurrency, stringToColor } from 'utils'
+import { Box, BoxProps, Card, Text } from 'theme-ui'
+import { formatCurrency } from 'utils'
 import { BRIDGED_RTOKENS, CHAIN_TAGS, ROUTES } from 'utils/constants'
 import { getAddress } from 'viem'
-import CollateralPieChart from 'views/overview/components/CollateralPieChart'
-import cms from 'utils/cms'
-import { MouseoverTooltipContent } from 'components/tooltip'
-import CircleIcon from 'components/icons/CircleIcon'
-import StakedIcon from 'components/icons/StakedIcon'
-import Help from 'components/help'
+import CollateralPieChartWrapper from 'views/overview/components/CollateralPieChartWrapper'
 interface Props extends BoxProps {
   token: ListedToken
 }
@@ -46,27 +41,6 @@ const RTokenCard = ({ token, ...props }: Props) => {
   const navigate = useNavigate()
   const pools = useAtomValue(rTokenPoolsAtom)
   const earnData = pools[getAddress(token.id)]
-  const chartData = useMemo(
-    () =>
-      token.collaterals.map((c) => {
-        const cmsCollateral = cms.collaterals.find(
-          (collateral) =>
-            collateral.chain === token.chain && collateral.symbol === c.symbol
-        )
-        const cmsProject = cms.projects.find(
-          (project) => project.name === cmsCollateral?.project
-        )
-        return {
-          name: c.symbol,
-          value:
-            +token.collateralDistribution[c.id.toLowerCase()]?.dist * 100 ?? 0,
-          color: cmsCollateral?.color || stringToColor(c.id),
-          project: cmsProject?.label || 'GENERIC',
-          projectColor: cmsProject?.color || 'gray',
-        }
-      }),
-    []
-  )
 
   const handleNavigate = (route: string) => {
     navigate(`${route}?token=${token.id}&chainId=${token.chain}`)
@@ -90,7 +64,15 @@ const RTokenCard = ({ token, ...props }: Props) => {
 
   return (
     <Card
-      sx={{ backgroundColor: 'contentBackground', borderRadius: '20px' }}
+      sx={{
+        backgroundColor: 'contentBackground',
+        borderRadius: '20px',
+        borderBottom: '2px solid',
+        borderColor: 'transparent',
+        '&:hover': {
+          borderColor: 'rBlue',
+        },
+      }}
       p={3}
       {...props}
     >
@@ -106,60 +88,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
             borderColor: 'darkBorder',
           }}
         >
-          <MouseoverTooltipContent
-            content={
-              <Card sx={{ width: 320, border: '1px solid black' }}>
-                <Text sx={{ fontWeight: 400 }} variant="legend">
-                  <Trans>Network</Trans>
-                </Text>
-                <Text variant="legend" sx={{ fontSize: 1 }}>
-                  <Trans>
-                    The configured network is different from the wallet selected
-                    network. Change your network in the connected wallet.
-                  </Trans>
-                </Text>
-              </Card>
-            }
-          >
-            <Box p={2}>
-              <CollateralPieChart
-                data={chartData}
-                logo={token.logo}
-                staked={+token.overcollaterization.toFixed(2).toString()}
-                topInformation={
-                  <Box
-                    p={2}
-                    variant="layout.verticalAlign"
-                    sx={{ justifyContent: 'space-between', width: '100%' }}
-                  >
-                    <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-                      <CircleIcon />
-                      <Text sx={{ fontSize: 14 }}>{t`Backing`}</Text>
-                    </Box>
-                    <Box>
-                      <Text sx={{ fontSize: 14, fontWeight: 700 }}>100%</Text>
-                    </Box>
-                  </Box>
-                }
-                bottomInformation={
-                  <Box
-                    p={2}
-                    variant="layout.verticalAlign"
-                    sx={{ justifyContent: 'space-between', width: '100%' }}
-                  >
-                    <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-                      <StakedIcon />
-                      <Text sx={{ fontSize: 14 }}>{t`Stacked RSR`}</Text>
-                    </Box>
-                    <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-                      <Text sx={{ fontSize: 14, fontWeight: 700 }}>50%</Text>
-                      <Help content={t`Staked RSR overcollateralization`} />
-                    </Box>
-                  </Box>
-                }
-              />
-            </Box>
-          </MouseoverTooltipContent>
+          <CollateralPieChartWrapper token={token} />
         </Box>
 
         <Box ml={4}>

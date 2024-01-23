@@ -34,7 +34,7 @@ const CollateralChart: FC<ChartProps> = ({
   bottomInformation,
   ...props
 }) => (
-  <Box {...props} variant="layout.centered" sx={{ gap: 3 }}>
+  <Box {...props} variant="layout.centered" sx={{ gap: 2 }}>
     {topInformation}
     <Box sx={{ position: 'relative' }}>
       <Box
