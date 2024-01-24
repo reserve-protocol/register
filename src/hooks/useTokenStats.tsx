@@ -57,7 +57,7 @@ const useTokenStats = (rTokenId: string, isRSV = false): TokenStats => {
   })
 
   const rsrPrice = useAtomValue(rsrPriceAtom)
-  const rTokenPrice = useAtomValue(rTokenPriceAtom)
+  const rTokenPrice  = useAtomValue(rTokenPriceAtom)
 
   useEffect(() => {
     if (data?.rtoken || data?.token) {

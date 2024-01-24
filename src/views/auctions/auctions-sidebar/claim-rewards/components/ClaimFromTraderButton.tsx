@@ -10,13 +10,14 @@ import { formatCurrency } from 'utils'
 import { Address, encodeFunctionData } from 'viem'
 import { auctionSessionAtom } from 'views/auctions/atoms'
 import { traderRewardsAtom } from '../atoms'
+import { RewardTokenWithCollaterals } from '../types'
 
 const ClaimFromTraderButton = ({
   trader,
   erc20s,
 }: {
   trader: Trader
-  erc20s: Address[]
+  erc20s: RewardTokenWithCollaterals[]
 }) => {
   const rTokenContracts = useAtomValue(rTokenContractsAtom)
   const availableRewards = useAtomValue(traderRewardsAtom)
@@ -26,7 +27,7 @@ const ClaimFromTraderButton = ({
   const claimAmount = useMemo(() => {
     // this is usually just a 2 item array
     return availableRewards[trader].tokens.reduce((amount, asset) => {
-      if (erc20s.includes(asset.address)) {
+      if (erc20s.find((t) => t.address === asset.address)) {
         amount += asset.amount
       }
 
@@ -39,16 +40,22 @@ const ClaimFromTraderButton = ({
       return undefined
     }
 
+    const collateralsToClaim: Set<Address> = new Set()
+
+    for (const reward of erc20s) {
+      reward.collaterals.forEach((c) => collateralsToClaim.add(c))
+    }
+
     return {
       abi: RevenueTrader,
       functionName: 'multicall',
       address: rTokenContracts[trader].address,
       args: [
-        erc20s.map((erc20) =>
+        Array.from(collateralsToClaim).map((collateral) =>
           encodeFunctionData({
             abi: RevenueTrader,
             functionName: 'claimRewardsSingle',
-            args: [erc20],
+            args: [collateral],
           })
         ),
       ],

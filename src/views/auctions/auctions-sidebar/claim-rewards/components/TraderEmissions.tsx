@@ -9,8 +9,8 @@ import { Box, BoxProps, Divider, Text } from 'theme-ui'
 import { Trader } from 'types'
 import { formatCurrency } from 'utils'
 import { TRADERS, TraderLabels } from 'utils/constants'
-import { Address } from 'viem'
 import { traderRewardsAtom } from '../atoms'
+import { RewardTokenWithCollaterals } from '../types'
 import ClaimFromTraderButton from './ClaimFromTraderButton'
 
 const MIN_DOLLAR_VALUE = 10
@@ -87,17 +87,17 @@ const TraderHeading = ({
 
 const TraderEmissions = ({ trader, ...props }: Props) => {
   const availableRewards = useAtomValue(traderRewardsAtom)
-  const [selected, setSelected] = useState<Address[]>([])
+  const [selected, setSelected] = useState<RewardTokenWithCollaterals[]>([])
   const [isOpen, setOpen] = useState(false)
   const noBalance = availableRewards[trader].total < 0.01
 
-  const handleSelect = (address: Address) => {
-    const index = selected.indexOf(address)
+  const handleSelect = (erc20: RewardTokenWithCollaterals) => {
+    const index = selected.findIndex((t) => t.address === erc20.address)
 
     if (index !== -1) {
       setSelected([...selected.slice(0, index), ...selected.slice(index + 1)])
     } else {
-      setSelected([...selected, address])
+      setSelected([...selected, erc20])
     }
   }
 
@@ -108,11 +108,11 @@ const TraderEmissions = ({ trader, ...props }: Props) => {
       setSelected([])
     } else {
       setOpen(true)
-      const tokens: Address[] = []
+      const tokens: RewardTokenWithCollaterals[] = []
 
       for (const erc20 of availableRewards?.[trader].tokens ?? []) {
         if (erc20.amount > MIN_DOLLAR_VALUE) {
-          tokens.push(erc20.address)
+          tokens.push(erc20)
         }
       }
 
@@ -120,9 +120,7 @@ const TraderEmissions = ({ trader, ...props }: Props) => {
         setSelected(tokens)
       } else {
         // In case there are no rewards over
-        setSelected([
-          ...(availableRewards?.[trader].tokens ?? []).map((t) => t.address),
-        ])
+        setSelected([...(availableRewards?.[trader].tokens ?? [])])
       }
     }
   }
@@ -143,7 +141,7 @@ const TraderEmissions = ({ trader, ...props }: Props) => {
       }
     >
       {availableRewards[trader].tokens.map((erc20) => {
-        const isSelected = selected.includes(erc20.address)
+        const isSelected = !!selected.find((t) => t.address === erc20.address)
         const isBelowMin = erc20.amount < MIN_DOLLAR_VALUE
 
         const amountColor = isBelowMin
@@ -157,7 +155,7 @@ const TraderEmissions = ({ trader, ...props }: Props) => {
             key={`${trader}-${erc20.symbol}`}
             unavailable={noBalance || erc20.amount < 1}
             selected={isSelected}
-            onSelect={() => handleSelect(erc20.address)}
+            onSelect={() => handleSelect(erc20)}
           >
             <Box
               variant="layout.verticalAlign"

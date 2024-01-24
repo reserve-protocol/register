@@ -75,13 +75,18 @@ export interface Token {
   decimals: number
 }
 
+export interface Collateral extends Token {
+  protocol: ProtocolKey
+}
+
 export interface ReserveToken extends Token {
   logo: string
-  collaterals: Token[]
+  collaterals: Collateral[]
   stToken?: Token
   main?: Address
   mandate?: string
   listed?: boolean
+  chainId: number
 }
 
 export interface BigNumberMap {

@@ -129,7 +129,6 @@ const useDutchTrades = () => {
         currentEndedTrades.length !=
           endedData.settled.length + endedData.ended.length)
     ) {
-      console.log('test', endedData)
       setPendingTrades(endedData.ended)
       setEndedTrades(endedData.settled)
     }

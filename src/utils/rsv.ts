@@ -20,12 +20,14 @@ const RSV: ReserveToken = {
   symbol: 'RSV',
   decimals: 18,
   logo: '/svgs/rsv.svg',
+  chainId: 1,
   collaterals: [
     {
       address: USDC,
       name: 'USD Coin',
       symbol: 'USDC',
       decimals: 6,
+      protocol: 'GENERIC',
     },
   ],
 }

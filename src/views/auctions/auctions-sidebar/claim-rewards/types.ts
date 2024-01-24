@@ -10,13 +10,16 @@ export interface Claimable {
   backingManager: number
 }
 
+export interface RewardTokenWithCollaterals {
+  amount: number
+  symbol: string
+  address: Address
+  collaterals: Address[]
+}
+
 export interface TraderEmissions {
   total: number
-  tokens: {
-    amount: number
-    symbol: string
-    address: Address
-  }[]
+  tokens: RewardTokenWithCollaterals[]
 }
 
 export interface ClaimEmissionMap {

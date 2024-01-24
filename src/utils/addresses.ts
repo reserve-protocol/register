@@ -50,9 +50,32 @@ export const EUSD_ADDRESS: AddressMap = {
 /**
  * Other contract addresses
  */
-
 export const ENS_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C',
   [ChainId.Base]: zeroAddress, // TODO: Pending
   [ChainId.Hardhat]: '0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C',
+}
+
+/**
+ * Rewards addresses
+ */
+export const STAKE_AAVE_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x4da27a545c0c5B758a6BA100e3a049001de870f5',
+}
+
+export const COMP_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0xc00e94Cb662C3520282E6f5717214004A7f26888',
+  [ChainId.Base]: '0x9e1028F5F1D5eDE59748FFceE5532509976840E0',
+}
+
+export const CRV_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0xD533a949740bb3306d119CC777fa900bA034cd52',
+}
+
+export const CVX_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x4e3FBD56CD56c3e72c1403e103b45Db9da5B9D2B',
+}
+
+export const STG_ADDRESS: AddressMap = {
+  [ChainId.Base]: '0xE3B53AF74a4BF62Ae5511055290838050bf764Df',
 }
