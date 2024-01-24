@@ -1,12 +1,21 @@
 import { Trans } from '@lingui/macro'
 import { Button } from 'components'
+import MandateIcon from 'components/icons/MandateIcon'
 import StakedIcon from 'components/icons/StakedIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import useRToken from 'hooks/useRToken'
-import { useAtomValue } from 'jotai'
+import { atom, useAtomValue } from 'jotai'
 import { MoreHorizontal } from 'react-feather'
-import { estimatedApyAtom } from 'state/atoms'
-import { Box, Text } from 'theme-ui'
+import Skeleton from 'react-loading-skeleton'
+import {
+  estimatedApyAtom,
+  rTokenListAtom,
+  rTokenPriceAtom,
+  rTokenStateAtom,
+  rsrPriceAtom,
+} from 'state/atoms'
+import { Box, Grid, Text } from 'theme-ui'
+import { formatCurrency } from 'utils'
 
 const Mandate = () => {}
 
@@ -28,19 +37,35 @@ const Actions = () => {
   )
 }
 
-const Hero = () => {
+// TODO: Move this to a more re-usable place?
+const rTokenOverviewAtom = atom((get) => {
+  const state = get(rTokenStateAtom)
+  const rTokenPrice = get(rTokenPriceAtom)
+  const rsrPrice = get(rsrPriceAtom)
+
+  if (!rTokenPrice || !rsrPrice) {
+    return null
+  }
+
+  return {
+    supply: state.tokenSupply * rTokenPrice,
+    staked: state.stTokenSupply * rsrPrice,
+  }
+})
+
+const TokenStats = () => {
   const rToken = useRToken()
-  // TODO: replace stats for a single hook that pool everything from theGraph
-  const { holders, stakers } = useAtomValue(estimatedApyAtom)
+  const data = useAtomValue(rTokenOverviewAtom)
 
   return (
     <Box>
       <TokenLogo mb={3} symbol={rToken?.symbol} width={40} />
-      <Text>
+      <Text sx={{ display: 'block' }}>
         <Trans>Total Market Cap</Trans>
       </Text>
+
       <Text variant="accent" as="h1" sx={{ fontSize: 6 }}>
-        $28,823,662
+        ${formatCurrency(data?.supply ?? 0)}
       </Text>
       <Box variant="layout.verticalAlign">
         <StakedIcon />
@@ -48,11 +73,61 @@ const Hero = () => {
           <Trans>Stake pool USD value:</Trans>
         </Text>
         <Text ml="1" variant="strong">
-          $8,340,030
+          ${formatCurrency(data?.staked ?? 0)}
         </Text>
       </Box>
       <Actions />
     </Box>
+  )
+}
+
+const TokenMandate = () => {
+  const rToken = useRToken()
+  const rTokenList = useAtomValue(rTokenListAtom)
+
+  return (
+    <Box sx={{ maxWidth: 500 }}>
+      {rToken?.mandate && (
+        <>
+          <MandateIcon />
+          <Text sx={{ fontSize: 3 }} variant="strong" mb={2} mt={3}>
+            <Trans>Mandate</Trans>
+          </Text>
+          <Text as="p" variant="legend">
+            {rToken?.mandate}
+          </Text>
+        </>
+      )}
+      {rToken?.listed && (
+        <>
+          <Text mt={4} mb={2} variant="strong">
+            <Trans>+ Off-chain note</Trans>
+          </Text>
+          <Text as="p" variant="legend">
+            {rTokenList[rToken.address]?.about}
+          </Text>
+        </>
+      )}
+      {!rToken?.listed && !rToken?.mandate && (
+        <>
+          <Text mb={3} variant="title">
+            <Trans>About</Trans>
+          </Text>
+          <Text as="p" variant="legend">
+            <Trans>There is no information about this token.</Trans>
+          </Text>
+        </>
+      )}
+    </Box>
+  )
+}
+
+const Hero = () => {
+  return (
+    <Grid p={[1, 6]} columns={[1, 1, 2]}>
+      <TokenStats />
+      <TokenMandate />
+    </Grid>
   )
 }
 

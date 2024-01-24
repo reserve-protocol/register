@@ -1,18 +1,8 @@
-import { Container } from 'components'
-import useTokenStats from 'hooks/useTokenStats'
 import { useAtomValue } from 'jotai'
-import { rTokenAtom, selectedRTokenAtom } from 'state/atoms'
-import { Divider, Grid } from 'theme-ui'
-import About from './_components/About'
-import AssetOverview from './_components/AssetOverview'
-import External from './_components/External'
-import HistoricalData from './_components/HistoricalData'
-import RecentTransactions from './_components/RecentTransactions'
-import RevenueSplitOverview from './_components/RevenueSplitOverview'
-import TokenOverview from './_components/TokenOverview'
-import TokenUsage from './_components/TokenUsage'
-import { useEffect } from 'react'
 import mixpanel from 'mixpanel-browser'
+import { useEffect } from 'react'
+import { rTokenAtom, selectedRTokenAtom } from 'state/atoms'
+import { Box } from 'theme-ui'
 import Hero from './components/Hero'
 
 const dividerProps = { my: [4, 8], mx: [-1, -3], sx: { borderColor: 'border' } }
@@ -28,11 +18,6 @@ const Overview = () => {
   const rTokenAddress = useAtomValue(selectedRTokenAtom)
   const rToken = useAtomValue(rTokenAtom)
 
-  const rTokenMetrics = useTokenStats(
-    rTokenAddress?.toLowerCase() ?? '',
-    !!rToken && !rToken.main
-  )
-
   useEffect(() => {
     mixpanel.track('Visted RToken Overview', {
       RToken: rToken?.address.toLowerCase() ?? '',
@@ -40,7 +25,7 @@ const Overview = () => {
   }, [])
 
   return (
-    <Container>
+    <Box>
       <Hero />
       {/* <TokenOverview mt={[3, 6]} ml={3} metrics={rTokenMetrics} />
       <Divider {...dividerProps} />
@@ -59,7 +44,7 @@ const Overview = () => {
         <HistoricalData />
         <RecentTransactions />
       </Grid> */}
-    </Container>
+    </Box>
   )
 }
 

@@ -7,7 +7,9 @@ import RToken from 'abis/RToken'
 import StRSR from 'abis/StRSR'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue, useSetAtom } from 'jotai'
+import { useResetAtom } from 'jotai/utils'
 import { useEffect, useMemo } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import {
   chainIdAtom,
   rTokenAssetsAtom,
@@ -15,12 +17,11 @@ import {
   rTokenContractsAtom,
   selectedRTokenAtom,
 } from 'state/atoms'
+import { isAddress } from 'utils'
 import { VERSION } from 'utils/constants'
 import { Address, formatEther } from 'viem'
 import { useContractReads } from 'wagmi'
 import { rTokenStateAtom } from '../atoms/rTokenStateAtom'
-import { useSearchParams } from 'react-router-dom'
-import { isAddress } from 'utils'
 
 type StateMulticallResult = {
   data:
@@ -46,11 +47,13 @@ type StateMulticallResult = {
  */
 const RTokenStateUpdater = () => {
   const rToken = useRToken()
+  const rTokenAddress = useAtomValue(selectedRTokenAtom)
   const contracts = useAtomValue(rTokenContractsAtom)
   const assets = useAtomValue(rTokenAssetsAtom)
   const chainId = useAtomValue(chainIdAtom)
   // Setters
   const setState = useSetAtom(rTokenStateAtom)
+  const resetState = useResetAtom(rTokenStateAtom)
   const setCollateralStatus = useSetAtom(rTokenCollateralStatusAtom)
   const setRToken = useSetAtom(selectedRTokenAtom)
   const [searchParams] = useSearchParams()
@@ -198,6 +201,10 @@ const RTokenStateUpdater = () => {
       setRToken(token)
     }
   }, [searchParams.get('token')])
+
+  useEffect(() => {
+    resetState()
+  }, [rTokenAddress])
 
   return null
 }
