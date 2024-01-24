@@ -33,7 +33,7 @@ const CompareTokens = () => {
         />
       )}
       {list.map((token) => (
-        <RTokenCard key={token.id} token={token} mb={4} />
+        <RTokenCard key={token.id} token={token} mb={['10px', 4]} />
       ))}
       <Flex my={7} sx={{ justifyContent: 'center' }}>
         <Button medium variant="transparent" onClick={handleViewAll}>

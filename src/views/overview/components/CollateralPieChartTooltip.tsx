@@ -23,7 +23,7 @@ const Item: FC<ItemProps> = ({ logo, name, value }) => {
   return (
     <Box
       sx={{
-        backgroundColor: '#F2F2F2',
+        backgroundColor: ['inputBorder', '#F2F2F2'],
         color: '#333333',
         px: 2,
         py: '6px',
@@ -118,13 +118,13 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
     <Card
       variant="layout.centered"
       sx={{
-        width: 350,
-        p: 3,
+        width: ['100%', 350],
+        p: [0, 3],
         gap: 3,
         borderRadius: '14px',
-        backgroundColor: 'background',
+        backgroundColor: ['contentBackground', 'background'],
         alignItems: 'start',
-        boxShadow: '0px 10px 45px 6px rgba(0, 0, 0, 0.10)',
+        boxShadow: ['none', '0px 10px 45px 6px rgba(0, 0, 0, 0.10)'],
       }}
     >
       <Box
