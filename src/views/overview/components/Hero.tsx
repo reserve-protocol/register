@@ -86,37 +86,30 @@ const TokenMandate = () => {
   const rTokenList = useAtomValue(rTokenListAtom)
 
   return (
-    <Box sx={{ maxWidth: 500 }}>
-      {rToken?.mandate && (
-        <>
-          <MandateIcon />
-          <Text sx={{ fontSize: 3 }} variant="strong" mb={2} mt={3}>
-            <Trans>Mandate</Trans>
-          </Text>
-          <Text as="p" variant="legend">
-            {rToken?.mandate}
-          </Text>
-        </>
-      )}
+    <Box
+      sx={{
+        maxWidth: 500,
+        borderLeft: '1px solid',
+        borderColor: ['transparent', 'transparent', 'border'],
+        paddingLeft: [0, 0, 7],
+      }}
+    >
+      <MandateIcon />
+      <Text sx={{ fontSize: 3 }} variant="strong" mb={2} mt={3}>
+        <Trans>Mandate</Trans>
+      </Text>
+      <Text as="p" variant="legend">
+        {rToken?.mandate ? rToken.mandate : <Skeleton count={4} />}
+      </Text>
       {rToken?.listed && (
-        <>
-          <Text mt={4} mb={2} variant="strong">
+        <Box mt={4}>
+          <Text mb={2} variant="strong">
             <Trans>+ Off-chain note</Trans>
           </Text>
           <Text as="p" variant="legend">
             {rTokenList[rToken.address]?.about}
           </Text>
-        </>
-      )}
-      {!rToken?.listed && !rToken?.mandate && (
-        <>
-          <Text mb={3} variant="title">
-            <Trans>About</Trans>
-          </Text>
-          <Text as="p" variant="legend">
-            <Trans>There is no information about this token.</Trans>
-          </Text>
-        </>
+        </Box>
       )}
     </Box>
   )
@@ -124,7 +117,7 @@ const TokenMandate = () => {
 
 const Hero = () => {
   return (
-    <Grid p={[1, 6]} columns={[1, 1, 2]}>
+    <Grid p={[1, 6]} gap={6} columns={[1, 1, 2]}>
       <TokenStats />
       <TokenMandate />
     </Grid>
