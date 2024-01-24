@@ -225,6 +225,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
         },
         height: ['100%', '316px'],
         cursor: 'pointer',
+        mx: [2, 0],
       }}
       p={[0, 3]}
       onClick={(e) => {
