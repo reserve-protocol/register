@@ -1,9 +1,12 @@
-import { Trans } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 import { Button } from 'components'
 import ChainLogo from 'components/icons/ChainLogo'
+import ChevronRight from 'components/icons/ChevronRight'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'
+import EarnIcon from 'components/icons/EarnIcon'
 import EarnNavIcon from 'components/icons/EarnNavIcon'
 import MoneyIcon from 'components/icons/MoneyIcon'
+import PegIcon from 'components/icons/PegIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import { ListedToken } from 'hooks/useTokenList'
 import { useAtomValue } from 'jotai'
@@ -73,8 +76,13 @@ const RTokenCard = ({ token, ...props }: Props) => {
           borderColor: 'primary',
         },
         height: '316px',
+        cursor: 'pointer',
       }}
       p={3}
+      onClick={(e) => {
+        e.stopPropagation()
+        handleNavigate(ROUTES.OVERVIEW)
+      }}
       {...props}
     >
       <Box variant="layout.verticalAlign" sx={{ height: '100%' }}>
@@ -141,6 +149,22 @@ const RTokenCard = ({ token, ...props }: Props) => {
                 }}
               />
               <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+                <PegIcon />
+                <Text variant="legend">
+                  <Trans>Peg:</Trans>
+                </Text>
+                <Text variant="strong">{token.targetUnits}</Text>
+              </Box>
+              <Box
+                sx={{
+                  height: '12px',
+                  border: 'none',
+                  borderRight: '1px solid',
+                  borderColor: '#CCCCCC',
+                  borderStyle: 'dashed',
+                }}
+              />
+              <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
                 <CollaterizationIcon />
                 <Text variant="legend">
                   <Trans>Backing + Overcollaterization:</Trans>
@@ -153,51 +177,59 @@ const RTokenCard = ({ token, ...props }: Props) => {
             <Box
               variant="layout.verticalAlign"
               sx={{ flexWrap: 'wrap', gap: '12px' }}
+              mt={2}
             >
-              <Button onClick={() => handleNavigate(ROUTES.ISSUANCE)} medium>
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleNavigate(ROUTES.ISSUANCE)
+                }}
+                medium
+              >
                 {token.tokenApy
                   ? `${token.tokenApy.toFixed(1)}% Est. APY`
                   : 'Mint'}
               </Button>
               <Button
-                onClick={() => handleNavigate(ROUTES.STAKING)}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleNavigate(ROUTES.STAKING)
+                }}
                 medium
                 variant="muted"
               >
-                Stake RSR{' '}
-                {!!token.stakingApy && `- ${token.stakingApy.toFixed(1)}% APY`}
-              </Button>
-
-              <Button
-                onClick={() => handleNavigate(ROUTES.OVERVIEW)}
-                medium
-                variant="transparent"
-              >
-                <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
-                  <Text>Explore</Text>
-                  <ArrowRight size={16} />
+                <Box
+                  variant="layout.verticalAlign"
+                  sx={{ gap: 2, fontWeight: 700 }}
+                >
+                  <Text>
+                    Stake RSR{' '}
+                    {!!token.stakingApy && `- ${token.stakingApy.toFixed(1)}%`}
+                  </Text>
+                  <Text color="lightText">{t`Est. APY`}</Text>
                 </Box>
               </Button>
 
               {!!earnData && (
-                <Button onClick={handleEarn} medium variant="hover">
-                  <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
-                    <Box
-                      variant="layout.verticalAlign"
-                      p="1"
-                      sx={{
-                        backgroundColor: 'rBlue',
-                        borderRadius: 6,
-                        color: 'white',
-                      }}
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleEarn()
+                  }}
+                  medium
+                  variant="hover"
+                >
+                  <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+                    <EarnIcon />
+                    <Text>Earn: </Text>
+                    <Text
+                      ml="1"
+                      variant="strong"
+                      sx={{ color: 'rBlue', fontWeight: 700 }}
                     >
-                      <EarnNavIcon fontSize={20} />
-                    </Box>
-                    <Text>Earn - </Text>
-                    <Text ml="1" variant="strong" sx={{ color: 'rBlue' }}>
                       {earnData.maxApy.toFixed(0)}% APY
                     </Text>
-                    <ArrowRight size={16} />
+                    <ChevronRight color="#2150A9" />
                   </Box>
                 </Button>
               )}
