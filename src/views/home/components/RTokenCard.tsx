@@ -11,14 +11,18 @@ import TokenLogo from 'components/icons/TokenLogo'
 import { ListedToken } from 'hooks/useTokenList'
 import { useAtomValue } from 'jotai'
 import { memo } from 'react'
-import { ArrowRight } from 'react-feather'
+import { ArrowUpRight } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import { rTokenPoolsAtom } from 'state/pools/atoms'
-import { Box, BoxProps, Card, Text } from 'theme-ui'
-import { formatCurrency } from 'utils'
+import { Box, BoxProps, Card, Link, Text } from 'theme-ui'
+import { formatCurrency, shortenString } from 'utils'
 import { BRIDGED_RTOKENS, CHAIN_TAGS, ROUTES } from 'utils/constants'
 import { getAddress } from 'viem'
 import CollateralPieChartWrapper from 'views/overview/components/CollateralPieChartWrapper'
+import CopyIcon from 'components/icons/CopyIcon'
+import CopyValue from 'components/button/CopyValue'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+
 interface Props extends BoxProps {
   token: ListedToken
 }
@@ -100,7 +104,8 @@ const RTokenCard = ({ token, ...props }: Props) => {
 
         <Box
           variant="layout.centered"
-          px={5}
+          pl={5}
+          pr={3}
           py={3}
           sx={{
             flexGrow: 1,
@@ -110,8 +115,33 @@ const RTokenCard = ({ token, ...props }: Props) => {
             height: '100%',
           }}
         >
-          <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
-            <ChainBadge chain={token.chain} />
+          <Box
+            variant="layout.verticalAlign"
+            sx={{ gap: 2, justifyContent: 'space-between', width: '100%' }}
+          >
+            <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+              <ChainBadge chain={token.chain} />
+            </Box>
+            <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+              <Text sx={{ fontSize: 14 }} color="#666666">
+                {shortenString(token.id)}
+              </Text>
+              <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+                <CopyValue color="#666666" value={token.id} size={14} />
+                <Link
+                  href={getExplorerLink(
+                    token.id,
+                    token.chain,
+                    ExplorerDataType.TOKEN
+                  )}
+                  target="_blank"
+                  sx={{ display: 'flex', alignItems: 'center' }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <ArrowUpRight color="#666666" size={14} />
+                </Link>
+              </Box>
+            </Box>
           </Box>
 
           <Box variant="layout.centered" sx={{ alignItems: 'start', gap: 4 }}>
