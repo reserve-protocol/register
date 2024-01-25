@@ -35,7 +35,7 @@ export default {
     {
       "symbol": "wstETH",
       "chain": 1,
-      "project": "GENERIC",
+      "project": "LDO",
       "color": "#627EEA",
       "logo": "svgs/wsteth.svg",
       "token": "ETH"
@@ -43,7 +43,7 @@ export default {
     {
       "symbol": "rETH",
       "chain": 1,
-      "project": "GENERIC",
+      "project": "RPL",
       "color": "#627EEA",
       "logo": "svgs/reth.svg",
       "token": "ETH"
@@ -76,7 +76,7 @@ export default {
     {
       "symbol": "fUSDC",
       "chain": 1,
-      "project": "GENERIC",
+      "project": "FLUX",
       "color": "#2775CA",
       "logo": "svgs/fusdc.svg",
       "token": "USDC"
@@ -169,6 +169,21 @@ export default {
       "label": "Stargate",
       "color": "#666666",
       "logo": "svgs/stargate.svg"
+    },
+    {
+      "name": "LDO",
+      "label": "Lido",
+      "color": "#00A3FF"
+    },
+    {
+      "name": "RPL",
+      "label": "Rocket Pool",
+      "color": "#FFD27E"
+    },
+    {
+      "name": "FLUX",
+      "label": "Flux",
+      "color": "#000000"
     }
   ]
 }
