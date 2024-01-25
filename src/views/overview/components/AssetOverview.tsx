@@ -15,7 +15,7 @@ import { formatCurrency, stringToColor } from 'utils'
 import { COLLATERAL_STATUS } from 'utils/constants'
 import RSV from 'utils/rsv'
 import CollateralPieChart from './CollateralPieChart'
-import cms from 'utils/cms';
+import cms from 'utils/cms'
 
 const colors = [
   '#B87333', // Copper
@@ -70,15 +70,21 @@ const AssetOverview = () => {
   const pieData = useMemo(() => {
     if (rToken?.address && basketDist && Object.keys(basketDist)) {
       return rToken.collaterals.map((c) => {
-        const cmsCollateral = cms.collaterals.find((collateral) => collateral.chain === rToken.chainId && collateral.symbol === c.symbol)
-        const cmsProject = cms.projects.find((project) => project.name === cmsCollateral?.project)
-        return ({
+        const cmsCollateral = cms.collaterals.find(
+          (collateral) =>
+            collateral.chain === rToken.chainId &&
+            collateral.symbol === c.symbol
+        )
+        const cmsProject = cms.projects.find(
+          (project) => project.name === cmsCollateral?.project
+        )
+        return {
           name: c.name,
           value: basketDist[c.address]?.share ?? 0,
           color: cmsCollateral?.color || stringToColor(c.address),
-          project: cmsProject?.label || "GENERIC",
+          project: cmsProject?.label || 'GENERIC',
           projectColor: cmsProject?.color || 'gray',
-        })
+        }
       })
     }
 
