@@ -3,26 +3,22 @@ import { Button } from 'components'
 import CopyValue from 'components/button/CopyValue'
 import ChainLogo from 'components/icons/ChainLogo'
 import ChevronRight from 'components/icons/ChevronRight'
-import CircleIcon from 'components/icons/CircleIcon'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'
-import EarnIcon from 'components/icons/EarnIcon'
 import MoneyIcon from 'components/icons/MoneyIcon'
 import PegIcon from 'components/icons/PegIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import { ListedToken } from 'hooks/useTokenList'
-import { useAtomValue } from 'jotai'
-import { FC, memo, useState } from 'react'
-import { ArrowUpRight, ChevronDown, ChevronUp } from 'react-feather'
+import { memo } from 'react'
+import { ArrowUpRight } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
-import { rTokenPoolsAtom } from 'state/pools/atoms'
-import { mediumButton } from 'theme'
-import { Box, BoxProps, Card, Divider, Link, Text } from 'theme-ui'
+import { Box, BoxProps, Card, Link, Text } from 'theme-ui'
 import { formatCurrency, shortenString } from 'utils'
-import { BRIDGED_RTOKENS, CHAIN_TAGS, ROUTES } from 'utils/constants'
+import { CHAIN_TAGS, ROUTES } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import { getAddress } from 'viem'
-import CollateralPieChartTooltip from 'views/overview/components/CollateralPieChartTooltip'
 import CollateralPieChartWrapper from 'views/overview/components/CollateralPieChartWrapper'
+import EarnButton from './EarnButton'
+import MobileCollateralInfo from './MobileCollateralInfo'
+import VerticalDivider from './VerticalDivider'
 
 interface Props extends BoxProps {
   token: ListedToken
@@ -45,171 +41,6 @@ const ChainBadge = ({ chain }: { chain: number }) => (
     <Text sx={{ fontSize: 12 }}>{CHAIN_TAGS[chain]}</Text>
   </Box>
 )
-
-const VerticalDivider: FC<BoxProps> = ({ sx, ...props }) => (
-  <Box
-    sx={{
-      height: '12px',
-      border: 'none',
-      borderRight: '1px solid',
-      borderColor: '#4C4C4C',
-      borderStyle: 'dashed',
-      ...sx,
-    }}
-    {...props}
-  />
-)
-
-const EarnButton = ({ token, sx, ...props }: Props) => {
-  const navigate = useNavigate()
-  const pools = useAtomValue(rTokenPoolsAtom)
-  const earnData = pools[getAddress(token.id)]
-
-  const handleEarn = () => {
-    const addresses = [token.id]
-
-    if (BRIDGED_RTOKENS[token.chain]?.[token.id]) {
-      for (const bridgeToken of BRIDGED_RTOKENS[token.chain]?.[token.id]) {
-        addresses.push(bridgeToken.address)
-      }
-    }
-
-    navigate(
-      `${ROUTES.EARN}?underlying=${addresses.join(',')}&chainId=${token.chain}`
-    )
-    document.getElementById('app-container')?.scrollTo(0, 0)
-  }
-
-  if (!earnData) return null
-
-  return (
-    <Box variant="layout.verticalAlign" sx={{ gap: 1, ...sx }} {...props}>
-      <VerticalDivider sx={{ display: ['block', 'none'] }} />
-      <Button
-        onClick={(e) => {
-          e.stopPropagation()
-          handleEarn()
-        }}
-        variant="hover"
-        sx={{
-          width: ['100%', 'fit-content'],
-          ...mediumButton,
-          pr: [0, 3],
-        }}
-      >
-        <Box
-          variant="layout.verticalAlign"
-          sx={{ gap: [1, 2], justifyContent: ['space-between', 'start'] }}
-        >
-          <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-            <EarnIcon />
-            <Text>Earn: </Text>
-            <Text
-              ml="1"
-              variant="strong"
-              sx={{ color: 'rBlue', fontWeight: 700 }}
-            >
-              {earnData.maxApy.toFixed(0)}% APY
-            </Text>
-          </Box>
-          <Box sx={{ display: ['none', 'block'] }}>
-            <ChevronRight color="#2150A9" />
-          </Box>
-          <Box sx={{ display: ['block', 'none'] }}>
-            <ChevronRight color="#2150A9" width={16} height={16} />
-          </Box>
-        </Box>
-      </Button>
-    </Box>
-  )
-}
-
-const MobileCollateralInfo = ({ token }: Props) => {
-  const [collapsed, setCollapsed] = useState(true)
-  const navigate = useNavigate()
-
-  const handleNavigate = (route: string) => {
-    navigate(`${route}?token=${token.id}&chainId=${token.chain}`)
-    document.getElementById('app-container')?.scrollTo(0, 0)
-  }
-
-  return (
-    <Box
-      variant="layout.centered"
-      sx={{
-        gap: 2,
-        alignItems: 'start',
-        justifyContent: 'start',
-        display: ['block', 'none'],
-        width: '100%',
-      }}
-    >
-      <Divider sx={{ width: '100%' }} />
-      <Box
-        variant="layout.verticalAlign"
-        sx={{
-          gap: 2,
-          display: ['flex', 'none'],
-          justifyContent: 'space-between',
-          width: '100%',
-        }}
-        onClick={(e) => {
-          e.stopPropagation()
-          setCollapsed((c) => !c)
-        }}
-      >
-        <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
-          <CollaterizationIcon />
-          <Text variant="legend">
-            <Trans>Backing + Overcollaterization:</Trans>
-          </Text>
-        </Box>
-        <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-          <Text variant="strong" color="#333333">
-            {(token.backing + token.overcollaterization).toFixed(0)}%
-          </Text>
-          {collapsed ? (
-            <ChevronDown fontSize={16} color="#808080" />
-          ) : (
-            <ChevronUp fontSize={16} color="#808080" />
-          )}
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          overflow: 'hidden',
-          maxHeight: collapsed ? '0px' : '1000px',
-          transition: 'max-height 0.4s ease-in-out',
-        }}
-      >
-        <Box
-          variant="layout.centered"
-          sx={{ gap: 2, width: '100%', display: ['flex', 'none'] }}
-        >
-          <Divider sx={{ width: '100%' }} />
-          <CollateralPieChartTooltip token={token} />
-          <Button
-            medium
-            onClick={() => handleNavigate(ROUTES.OVERVIEW)}
-            variant="transparent"
-            fullWidth
-            px={3}
-            py={2}
-          >
-            <Box
-              variant="layout.verticalAlign"
-              sx={{ gap: 2, justifyContent: 'center' }}
-            >
-              <CollaterizationIcon />
-              <Text sx={{ fontWeight: 700 }}>{t`Full exposure view`}</Text>
-              <ChevronRight />
-            </Box>
-          </Button>
-        </Box>
-      </Box>
-    </Box>
-  )
-}
 
 const RTokenCard = ({ token, ...props }: Props) => {
   const navigate = useNavigate()
