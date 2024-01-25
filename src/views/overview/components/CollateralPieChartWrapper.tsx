@@ -47,9 +47,10 @@ const CollateralPieChartWrapper: FC<Props> = ({ token }) => {
       <Box
         p={2}
         sx={{
+          transition: 'background-color 0.3s ease, border-radius 0.3s ease',
           '&:hover': {
             borderRadius: '10px',
-            backgroundColor: 'rgba(33, 80, 169, 0.08)',
+            backgroundColor: 'border',
             cursor: 'pointer',
           },
         }}
@@ -61,38 +62,67 @@ const CollateralPieChartWrapper: FC<Props> = ({ token }) => {
           logo={token.logo}
           staked={+token.overcollaterization.toFixed(2).toString()}
           topInformation={
-            isHovered ? (
+            <Box
+              sx={{
+                position: 'relative',
+                width: '100%',
+              }}
+            >
+              {/* To preserve space */}
+              <Box
+                sx={{
+                  visibility: 'hidden',
+                  height: '32px',
+                }}
+              />
               <Button
-                backgroundColor="rgba(33, 80, 169, 0.08)"
+                backgroundColor="inputBorder"
                 sx={{
                   borderRadius: '6px',
                   width: '100%',
                   py: 2,
                   px: 2,
                   '&:hover': {
-                    backgroundColor: 'rgba(33, 80, 169, 0.16)',
+                    backgroundColor: '#F9F9F9',
                   },
+                  opacity: isHovered ? 1 : 0,
+                  transition: 'opacity 0.3s ease',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  zIndex: 1,
                 }}
               >
                 <Box
                   variant="layout.verticalAlign"
-                  color="rBlue"
-                  sx={{ justifyContent: 'space-between' }}
+                  color="text"
+                  sx={{
+                    justifyContent: 'space-between',
+                  }}
                 >
                   <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-                    <CircleIcon color="#2150A9" />
-                    <Text sx={{ fontSize: 14, lineHeight: '16px' }}>
+                    <CircleIcon />
+                    <Text
+                      sx={{ fontSize: 14, lineHeight: '16px', fontWeight: 700 }}
+                    >
                       {t`Full exposure view`}
                     </Text>
                   </Box>
-                  <ChevronRight color="#2150A9" />
+                  <ChevronRight />
                 </Box>
               </Button>
-            ) : (
               <Box
                 p={2}
                 variant="layout.verticalAlign"
-                sx={{ justifyContent: 'space-between', width: '100%' }}
+                sx={{
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  position: 'absolute',
+                  opacity: isHovered ? 0 : 1,
+                  transition: 'opacity 0.3s ease',
+                  top: 0,
+                  left: 0,
+                }}
               >
                 <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
                   <CircleIcon />
@@ -105,7 +135,7 @@ const CollateralPieChartWrapper: FC<Props> = ({ token }) => {
                   <ChevronRight />
                 </Box>
               </Box>
-            )
+            </Box>
           }
           bottomInformation={
             <Box
