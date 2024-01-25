@@ -125,12 +125,12 @@ const About = () => (
       </Text>
       <Text mt={2} as="p" variant="legend">
         <Trans>
-          If an RToken is listed on Register, it doesn't mean that Reserve or LC
-          Labs endorses the safety or risk levels of the RToken. ABC Labs
-          requires Github requests with additional information beyond what is
-          available on the blockchain to give users relevant data to make
-          informed decisions. As a user, please evaluate any new RToken
-          carefully before holding or staking your RSR on them.
+          If an RToken is listed on Register, it doesn't mean that ABC Labs
+          endorses the safety or risk levels of the RToken. ABC Labs requires
+          Github requests with additional information beyond what is available
+          on the blockchain to give users relevant data to make informed
+          decisions. As a user, please evaluate any new RToken carefully before
+          holding or staking your RSR on them.
         </Trans>
       </Text>
     </Box>
