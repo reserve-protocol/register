@@ -105,7 +105,16 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
           logo: projectLogo,
           value,
         }))
-        .filter((v, i, a) => a.findIndex((v2) => v2.name === v.name) === i),
+        .reduce((acc, current) => {
+          const existing = acc.find(
+            (item) => (item as ItemProps).name === current.name
+          )
+          if (existing) {
+            existing.value += current.value
+            return acc
+          }
+          return acc.concat(current as ItemProps)
+        }, [] as ItemProps[]),
     [chartData]
   )
 

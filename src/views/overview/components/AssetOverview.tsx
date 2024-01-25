@@ -17,21 +17,6 @@ import RSV from 'utils/rsv'
 import CollateralPieChart from './CollateralPieChart'
 import cms from 'utils/cms'
 
-const colors = [
-  '#B87333', // Copper
-  '#8B4513', // SaddleBrown
-  '#F4A460', // SandyBrown
-  '#D2B48C', // Tan
-  '#CD853F', // Peru
-  '#556B2F', // DarkOliveGreen
-  '#708090', // SlateGray
-  '#8B008B', // DarkMagenta
-  '#DA8A67', // Earth Yellow
-  '#FFD700', // Gold
-  '#B8860B', // DarkGoldenRod
-  '#DEB887', // BurlyWood
-]
-
 const basketDistAtom = atom((get) => {
   const rToken = get(rTokenAtom)
 
