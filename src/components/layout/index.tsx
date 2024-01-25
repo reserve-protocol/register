@@ -108,24 +108,4 @@ const Layout = ({ children }: { children: ReactNode }) => (
     <Header />
   </Container>
 )
-
-// export const BaseLayout = ({ children }: { children?: ReactNode }) => (
-//   <Container id="app-container">
-//     <Wrapper>
-//       <Header />
-//       <Box sx={{ overflow: 'hidden' }}>
-//         <Box
-//           sx={{
-//             height: '72px',
-//             width: '100em',
-//             overflow: 'hidden',
-//           }}
-//         />
-//       </Box>
-//       {children}
-//     </Wrapper>
-//     <Analytics />
-//   </Container>
-// )
-
 export default Layout
