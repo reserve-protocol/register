@@ -146,6 +146,7 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
       sx={{
         width: '100%',
         maxWidth: ['100%', 480],
+        minWidth: ['100%', 350],
         p: [0, 3],
         gap: 3,
         borderRadius: '14px',
