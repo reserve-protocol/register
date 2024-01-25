@@ -1,5 +1,4 @@
 import { t } from '@lingui/macro'
-import { Button } from 'components'
 import BasketCubeIcon from 'components/icons/BasketCubeIcon'
 import CirclesIcon from 'components/icons/CirclesIcon'
 import PlatformExposureIcon from 'components/icons/PlatformExposureIcon'
@@ -13,9 +12,9 @@ import { formatCurrency } from 'utils'
 import cms from 'utils/cms'
 
 type ItemProps = {
-  logo: string
   name: string
   value: number
+  logo?: string
 }
 
 type CollateralPieChartTooltipProps = {
@@ -25,18 +24,23 @@ type CollateralPieChartTooltipProps = {
 const Item: FC<ItemProps> = ({ logo, name, value }) => {
   return (
     <Box
+      variant="layout.verticalAlign"
       sx={{
         backgroundColor: ['inputBorder', '#F2F2F2'],
         color: '#333333',
         px: 2,
         py: '6px',
         borderRadius: '6px',
-        width: '100%',
+        flexGrow: 1,
       }}
     >
       <Box
         variant="layout.verticalAlign"
-        sx={{ justifyContent: 'space-between', gap: 2, width: '100%' }}
+        sx={{
+          justifyContent: 'space-between',
+          gap: 2,
+          flexGrow: 1,
+        }}
       >
         <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
           <TokenLogo width={16} src={logo} />
@@ -58,78 +62,81 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
     [rsrPrice, token]
   )
 
-  // const chartData = useMemo(
-  //   () =>
-  //     token.collaterals.map((c) => {
-  //       const cmsCollateral = cms.collaterals.find(
-  //         (collateral) =>
-  //           collateral.chain === token.chain && collateral.symbol === c.symbol
-  //       )
-  //       const cmsProject = cms.projects.find(
-  //         (project) => project.name === cmsCollateral?.project
-  //       )
-  //       return {
-  //         name: c.symbol,
-  //         value:
-  //           +token.collateralDistribution[c.id.toLowerCase()]?.dist * 100 ?? 0,
-  //         project: cmsProject?.label || 'GENERIC',
-  //       }
-  //     }),
-  //   []
-  // )
+  const chartData = useMemo(
+    () =>
+      token.collaterals.map((c) => {
+        const cmsCollateral = cms.collaterals.find(
+          (collateral) =>
+            collateral.chain === token.chain && collateral.symbol === c.symbol
+        )
+        const cmsProject = cms.projects.find(
+          (project) => project.name === cmsCollateral?.project
+        )
+        return {
+          name: c.symbol,
+          value:
+            +token.collateralDistribution[c.id.toLowerCase()]?.dist * 100 ?? 0,
+          logo: cmsCollateral?.logo,
+          project: cmsProject?.label || 'GENERIC',
+          projectLogo: cmsProject?.logo,
+          token: cmsCollateral?.token,
+        }
+      }),
+    []
+  )
 
-  const collateralItems = [
-    {
-      name: 'aUSDC',
-      logo: '/svgs/saUSDC.svg',
-      value: 25,
-    },
-    {
-      name: 'aUSDT',
-      logo: '/svgs/saUSDT.svg',
-      value: 25,
-    },
-    {
-      name: 'cUSDC',
-      logo: '/svgs/cUSDC.svg',
-      value: 25,
-    },
-    {
-      name: 'cUSDT',
-      logo: '/svgs/cUSDT.svg',
-      value: 25,
-    },
-  ]
-  const tokenItems = [
-    {
-      name: 'USDC',
-      logo: '/svgs/USDC.svg',
-      value: 50,
-    },
-    {
-      name: 'USDT',
-      logo: '/svgs/USDT.svg',
-      value: 50,
-    },
-  ]
-  const platformItems = [
-    {
-      name: 'Compund',
-      logo: '/svgs/compound.svg',
-      value: 50,
-    },
-    {
-      name: 'AAVE',
-      logo: '/svgs/aave.svg',
-      value: 50,
-    },
-  ]
+  const collateralItems = useMemo(
+    () =>
+      chartData.map(({ name, value, logo }) => ({
+        key: name,
+        name,
+        logo,
+        value,
+      })),
+    [chartData]
+  )
+
+  const platformItems = useMemo(
+    () =>
+      chartData
+        .map(({ name, value, project, projectLogo }) => ({
+          key: name,
+          name: project,
+          logo: projectLogo,
+          value,
+        }))
+        .filter((v, i, a) => a.findIndex((v2) => v2.name === v.name) === i),
+    [chartData]
+  )
+
+  const tokenItems = useMemo(
+    () =>
+      chartData
+        .map(({ name, token, value }) => ({
+          key: name,
+          name: token,
+          value,
+          logo: `svgs/${token?.toLowerCase()}.svg`,
+        }))
+        .reduce((acc, current) => {
+          const existing = acc.find(
+            (item) => (item as ItemProps).name === current.name
+          )
+          if (existing) {
+            existing.value += current.value
+            return acc
+          }
+          return acc.concat(current as ItemProps)
+        }, [] as ItemProps[]),
+    [chartData]
+  )
 
   return (
     <Card
       variant="layout.centered"
       sx={{
-        width: ['100%', 350],
+        width: '100%',
+        maxWidth: ['100%', 480],
         p: [0, 3],
         gap: 3,
         borderRadius: '14px',
@@ -148,7 +155,7 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
         </Box>
         <Grid columns={2} gap={2} sx={{ width: '100%' }}>
           {collateralItems.map((item) => (
-            <Item key={item.name} {...item} />
+            <Item {...item} />
           ))}
         </Grid>
       </Box>
@@ -167,7 +174,7 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
         </Box>
         <Grid columns={2} gap={2} sx={{ width: '100%' }}>
           {tokenItems.map((item) => (
-            <Item key={item.name} {...item} />
+            <Item {...item} />
           ))}
         </Grid>
       </Box>
@@ -181,7 +188,7 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
         </Box>
         <Grid columns={2} gap={2} sx={{ width: '100%' }}>
           {platformItems.map((item) => (
-            <Item key={item.name} {...item} />
+            <Item {...item} />
           ))}
         </Grid>
       </Box>
