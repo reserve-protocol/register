@@ -175,7 +175,13 @@ const MobileCollateralInfo = ({ token }: Props) => {
           )}
         </Box>
       </Box>
-      {!collapsed && (
+      <Box
+        sx={{
+          overflow: 'hidden',
+          maxHeight: collapsed ? '0px' : '1000px',
+          transition: 'max-height 0.4s ease-in-out',
+        }}
+      >
         <Box
           variant="layout.centered"
           sx={{ gap: 2, width: '100%', display: ['flex', 'none'] }}
@@ -200,7 +206,7 @@ const MobileCollateralInfo = ({ token }: Props) => {
             </Box>
           </Button>
         </Box>
-      )}
+      </Box>
     </Box>
   )
 }
