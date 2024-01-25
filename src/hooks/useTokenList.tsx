@@ -42,6 +42,7 @@ export interface ListedToken {
   distribution: RevenueSplit
   collaterals: { id: string; symbol: string }[]
   collateralDistribution: Record<string, { dist: string; target: string }>
+  rsrStaked: number
 }
 
 // TODO: Cache only while the list is short
@@ -172,6 +173,7 @@ const useTokenList = () => {
               distribution: revenueSplit,
               collaterals,
               collateralDistribution: distribution,
+              rsrStaked: Number(formatEther(token?.rToken?.rsrStaked ?? '0')),
             }
 
             // RSV Data

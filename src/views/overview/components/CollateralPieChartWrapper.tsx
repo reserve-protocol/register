@@ -145,7 +145,7 @@ const CollateralPieChartWrapper: FC<Props> = ({ token }) => {
             >
               <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
                 <CollaterizationIcon />
-                <Text sx={{ fontSize: 14 }}>{t`Stacked RSR`}</Text>
+                <Text sx={{ fontSize: 14 }}>{t`Staked RSR`}</Text>
               </Box>
               <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
                 <Text sx={{ fontSize: 14, fontWeight: 700 }}>

@@ -5,8 +5,11 @@ import CirclesIcon from 'components/icons/CirclesIcon'
 import PlatformExposureIcon from 'components/icons/PlatformExposureIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import { ListedToken } from 'hooks/useTokenList'
+import { useAtomValue } from 'jotai'
 import { FC, memo, useMemo } from 'react'
+import { rsrPriceAtom } from 'state/atoms'
 import { Box, Card, Divider, Grid, Text } from 'theme-ui'
+import { formatCurrency } from 'utils'
 import cms from 'utils/cms'
 
 type ItemProps = {
@@ -48,6 +51,13 @@ const Item: FC<ItemProps> = ({ logo, name, value }) => {
 const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
   token,
 }) => {
+  const rsrPrice = useAtomValue(rsrPriceAtom)
+
+  const rsrUSD = useMemo(
+    () => formatCurrency(token.rsrStaked * rsrPrice, 0),
+    [rsrPrice, token]
+  )
+
   // const chartData = useMemo(
   //   () =>
   //     token.collaterals.map((c) => {
@@ -67,6 +77,7 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
   //     }),
   //   []
   // )
+
   const collateralItems = [
     {
       name: 'aUSDC',
@@ -190,7 +201,7 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
             </Text>
           </Box>
         </Box>
-        <Text sx={{ fontSize: 14, color: '#666666' }}>{'$8,558,305'}</Text>
+        <Text sx={{ fontSize: 14, color: '#666666' }}>${rsrUSD}</Text>
       </Box>
     </Card>
   )
