@@ -5,7 +5,7 @@ const Footer = (props: BoxProps) => (
   <Box px={6} mb={8} mt={6} {...props}>
     <Flex sx={{ alignItems: 'center' }}>
       <Link target="_blank" href="https://github.com/lc-labs">
-        <Text variant="smallLabel">Made by LC Labs</Text>
+        <Text variant="smallLabel">Made by ABC Labs</Text>
       </Link>
       <Box mx="auto" />
       <SyncedBlock />

@@ -99,10 +99,6 @@ const TransactionsTable = ({
         cell: (data) => {
           const value = data.getValue()
 
-          if (!value) {
-            return 'Rpay'
-          }
-
           return (
             <Box variant="layout.verticalAlign">
               {multichain && data.row.original.chain && (
