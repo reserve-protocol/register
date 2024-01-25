@@ -27,13 +27,13 @@ export default {
     {
       "symbol": "wstETH",
       "chain": 1,
-      "project": "GENERIC",
+      "project": "LDO",
       "color": "#627EEA"
     },
     {
       "symbol": "rETH",
       "chain": 1,
-      "project": "GENERIC",
+      "project": "RPL",
       "color": "#627EEA"
     },
     {
@@ -57,7 +57,7 @@ export default {
     {
       "symbol": "fUSDC",
       "chain": 1,
-      "project": "GENERIC",
+      "project": "FLUX",
       "color": "#2775CA"
     },
     {
@@ -131,6 +131,21 @@ export default {
       "name": "STARGATE",
       "label": "Stargate Tokens",
       "color": "#666666"
+    },
+    {
+      "name": "LDO",
+      "label": "Lido",
+      "color": "#00A3FF"
+    },
+    {
+      "name": "RPL",
+      "label": "Rocket Pool",
+      "color": "#FFD27E"
+    },
+    {
+      "name": "FLUX",
+      "label": "Flux",
+      "color": "#000000"
     }
   ]
 }
