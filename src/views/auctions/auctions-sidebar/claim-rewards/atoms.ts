@@ -21,6 +21,7 @@ export const traderRewardsAtom = atom((get) => {
 
   for (const erc20 of data.claimableEmissions) {
     const relatedProtocols = rewardsByProtocol[erc20.asset.token.address]
+
     const relatedCollaterals = rToken.collaterals
       .filter((collateral) => relatedProtocols.includes(collateral.protocol))
       .map((c) => c.address)

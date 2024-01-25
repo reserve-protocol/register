@@ -54,7 +54,7 @@ export const collateralsProtocolMap: {
     collateralToProtocol,
     {}
   ),
-  [ChainId.Base]: collateralPlugins[ChainId.Mainnet].reduce(
+  [ChainId.Base]: collateralPlugins[ChainId.Base].reduce(
     collateralToProtocol,
     {}
   ),
