@@ -85,7 +85,7 @@ export const GRAPH_CLIENTS = {
     `https://graphql.contentful.com/content/v1/spaces/9pqtywannd90/environments/master`,
     {
       headers: {
-        authorization: `Bearer xyXOpKn3d21kQfTNCmxb0eGTNU1eLnEVkGuPRCDkiQI`,
+        authorization: `Bearer ${import.meta.env.VITE_CONTENTFUL_BEARER_TOKEN}`,
       },
     }
   ),

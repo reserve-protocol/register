@@ -32,7 +32,7 @@ const CollateralYieldUpdater = () => {
       data?.data &&
       rTokenCollateral?.rTokenAssetDocumentationCollection?.items
     ) {
-      const idMap: { [x: string]: string } = {}
+      const idMap: Record<string, string> = {}
       for (const item of rTokenCollateral.rTokenAssetDocumentationCollection
         .items) {
         idMap[item.llamaId] = item.id
