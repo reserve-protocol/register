@@ -173,17 +173,20 @@ export default {
     {
       "name": "LDO",
       "label": "Lido",
-      "color": "#00A3FF"
+      "color": "#00A3FF",
+      "logo": "svgs/lido.svg"
     },
     {
       "name": "RPL",
       "label": "Rocket Pool",
-      "color": "#FFD27E"
+      "color": "#FFD27E",
+      "logo": "svgs/rpl.svg"
     },
     {
       "name": "FLUX",
       "label": "Flux",
-      "color": "#000000"
+      "color": "#000000",
+      "logo": "svgs/flux.svg"
     }
   ]
 }
