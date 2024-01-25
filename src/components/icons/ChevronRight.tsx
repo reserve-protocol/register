@@ -12,7 +12,7 @@ const ChevronRight = (props: SVGProps<SVGSVGElement>) => (
       id="Caret Down"
       d="M0.999023 8.99951L4.99902 4.99951L0.999023 0.999512"
       stroke={props.color || '#808080'}
-      stroke-linecap="square"
+      strokeLinecap="square"
     />
   </svg>
 )

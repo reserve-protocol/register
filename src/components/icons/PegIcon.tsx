@@ -16,8 +16,8 @@ const PegIcon = (props: SVGProps<SVGSVGElement>) => (
       height="13.4167"
       rx="6.70833"
       stroke="black"
-      stroke-width="0.583333"
-      stroke-dasharray="1.17 1.17"
+      strokeWidth="0.583333"
+      strokeDasharray="1.17 1.17"
     />
     <rect x="6" y="5.99902" width="4" height="4" rx="2" fill="black" />
   </svg>
