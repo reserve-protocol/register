@@ -19,6 +19,7 @@ import CollateralPieChartWrapper from 'views/overview/components/CollateralPieCh
 import EarnButton from './EarnButton'
 import MobileCollateralInfo from './MobileCollateralInfo'
 import VerticalDivider from './VerticalDivider'
+import { ChainId } from 'utils/chains'
 
 interface Props extends BoxProps {
   token: ListedToken
@@ -38,7 +39,9 @@ const ChainBadge = ({ chain }: { chain: number }) => (
     }}
   >
     <ChainLogo chain={chain} fontSize={12} />
-    <Text sx={{ fontSize: 12 }}>{CHAIN_TAGS[chain]}</Text>
+    <Text sx={{ fontSize: 12 }} color="#627EEA">
+      {CHAIN_TAGS[chain] + ' Native'}
+    </Text>
   </Box>
 )
 
