@@ -13,11 +13,13 @@ const usePriceInToken = (token: ListedToken) => {
               address: getAddress(token.id),
               abi: RToken,
               functionName: 'basketsNeeded',
+              chainId: token.chain
             },
             {
               address: getAddress(token.id),
               abi: RToken,
               functionName: 'totalSupply',
+              chainId: token.chain
             },
           ]
         : []),
