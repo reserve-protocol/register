@@ -44,7 +44,7 @@ const Item: FC<ItemProps> = ({ logo, name, value }) => {
       >
         <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
           <TokenLogo width={16} src={logo} />
-          <Text sx={{ fontSize: 14, fontWeight: 600 }}>{name}</Text>
+          <Text sx={{ fontSize: 14, fontWeight: 500 }}>{name}</Text>
         </Box>
         <Text sx={{ fontSize: 14 }}>{value.toFixed(0)}%</Text>
       </Box>

@@ -32,7 +32,7 @@ const ChainBadge = ({ chain }: { chain: number }) => (
     variant="layout.verticalAlign"
     sx={{
       display: ['none', 'flex'],
-      backgroundColor: 'rgba(0, 82, 255, 0.12)',
+      backgroundColor: 'rgba(0, 82, 255, 0.06)',
       border: '1px solid',
       borderColor: 'rgba(0, 82, 255, 0.20)',
       borderRadius: '50px',
