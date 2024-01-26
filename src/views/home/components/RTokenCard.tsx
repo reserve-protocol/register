@@ -8,7 +8,7 @@ import MoneyIcon from 'components/icons/MoneyIcon'
 import PegIcon from 'components/icons/PegIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import { ListedToken } from 'hooks/useTokenList'
-import { memo, useMemo } from 'react'
+import { memo } from 'react'
 import { ArrowUpRight } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import { Box, BoxProps, Card, Link, Text } from 'theme-ui'
@@ -16,12 +16,10 @@ import { formatCurrency, shortenString } from 'utils'
 import { CHAIN_TAGS, ROUTES } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import CollateralPieChartWrapper from 'views/overview/components/CollateralPieChartWrapper'
+import usePriceInToken from '../hooks/usePriceInToken'
 import EarnButton from './EarnButton'
 import MobileCollateralInfo from './MobileCollateralInfo'
 import VerticalDivider from './VerticalDivider'
-import { useContractReads } from 'wagmi'
-import RToken from 'abis/RToken'
-import { getAddress } from 'viem'
 
 interface Props extends BoxProps {
   token: ListedToken
@@ -49,43 +47,12 @@ const ChainBadge = ({ chain }: { chain: number }) => (
 
 const RTokenCard = ({ token, ...props }: Props) => {
   const navigate = useNavigate()
+  const { priceInToken, supplyInToken } = usePriceInToken(token)
 
   const handleNavigate = (route: string) => {
     navigate(`${route}?token=${token.id}&chainId=${token.chain}`)
     document.getElementById('app-container')?.scrollTo(0, 0)
   }
-
-  const { data } = useContractReads({
-    contracts:
-      token.targetUnits === 'ETH'
-        ? [
-            {
-              address: getAddress(token.id),
-              abi: RToken,
-              functionName: 'basketsNeeded',
-            },
-            {
-              address: getAddress(token.id),
-              abi: RToken,
-              functionName: 'totalSupply',
-            },
-          ]
-        : [],
-  })
-
-  const priceInToken = useMemo(() => {
-    const basketsNeeded = data?.[0]?.result
-    const totalSupply = data?.[1]?.result
-
-    if (!basketsNeeded || !totalSupply) return undefined
-
-    return Number((basketsNeeded * 100n) / totalSupply) / 100
-  }, [data])
-
-  const supplyInToken = useMemo(() => {
-    if (!priceInToken) return undefined
-    return (token.supply / token.price) * priceInToken
-  }, [priceInToken, token.supply])
 
   return (
     <Card
