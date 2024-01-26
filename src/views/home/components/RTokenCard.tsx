@@ -8,7 +8,7 @@ import MoneyIcon from 'components/icons/MoneyIcon'
 import PegIcon from 'components/icons/PegIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import { ListedToken } from 'hooks/useTokenList'
-import { memo } from 'react'
+import { memo, useMemo } from 'react'
 import { ArrowUpRight } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import { Box, BoxProps, Card, Link, Text } from 'theme-ui'
@@ -19,7 +19,9 @@ import CollateralPieChartWrapper from 'views/overview/components/CollateralPieCh
 import EarnButton from './EarnButton'
 import MobileCollateralInfo from './MobileCollateralInfo'
 import VerticalDivider from './VerticalDivider'
-import { ChainId } from 'utils/chains'
+import { useContractReads } from 'wagmi'
+import RToken from 'abis/RToken'
+import { getAddress } from 'viem'
 
 interface Props extends BoxProps {
   token: ListedToken
@@ -52,6 +54,38 @@ const RTokenCard = ({ token, ...props }: Props) => {
     navigate(`${route}?token=${token.id}&chainId=${token.chain}`)
     document.getElementById('app-container')?.scrollTo(0, 0)
   }
+
+  const { data } = useContractReads({
+    contracts:
+      token.targetUnits === 'ETH'
+        ? [
+            {
+              address: getAddress(token.id),
+              abi: RToken,
+              functionName: 'basketsNeeded',
+            },
+            {
+              address: getAddress(token.id),
+              abi: RToken,
+              functionName: 'totalSupply',
+            },
+          ]
+        : [],
+  })
+
+  const priceInToken = useMemo(() => {
+    const basketsNeeded = data?.[0]?.result
+    const totalSupply = data?.[1]?.result
+
+    if (!basketsNeeded || !totalSupply) return undefined
+
+    return Number((basketsNeeded * 100n) / totalSupply) / 100
+  }, [data])
+
+  const supplyInToken = useMemo(() => {
+    if (!priceInToken) return undefined
+    return (token.supply / token.price) * priceInToken
+  }, [priceInToken, token.supply])
 
   return (
     <Card
@@ -163,7 +197,12 @@ const RTokenCard = ({ token, ...props }: Props) => {
                   {token.symbol}
                 </Text>
                 <Text variant="legend" sx={{ fontSize: 16 }}>
-                  ${formatCurrency(token.price, 2)}
+                  {priceInToken
+                    ? `${priceInToken} ${token.targetUnits} ($${formatCurrency(
+                        token.price,
+                        2
+                      )})`
+                    : `$${formatCurrency(token.price, 2)}`}
                 </Text>
               </Box>
               <Box sx={{ display: ['block', 'none'] }}>
@@ -202,6 +241,13 @@ const RTokenCard = ({ token, ...props }: Props) => {
                   <Text variant="strong">
                     ${formatCurrency(token.supply, 0)}
                   </Text>
+                  {supplyInToken && (
+                    <Text>
+                      {`(${formatCurrency(supplyInToken, 0)} ${
+                        token.targetUnits
+                      })`}
+                    </Text>
+                  )}
                 </Box>
                 <VerticalDivider sx={{ display: ['none', 'block'] }} />
                 <Box
