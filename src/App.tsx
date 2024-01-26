@@ -34,6 +34,7 @@ import { useSwitchNetwork } from 'wagmi'
 import Layout from './components/layout'
 import LanguageProvider from './i18n'
 import { theme } from './theme'
+import AppRoutes from 'AppRoutes'
 
 mixpanel.init(import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key', {
   track_pageview: true,
@@ -49,35 +50,42 @@ const Fallback = () => (
   </Flex>
 )
 
-const RouteListener = () => {
-  const [searchParams, setSearchParams] = useSearchParams()
-  const [chainId, setChainId] = useAtom(chainIdAtom)
-  const currentUrlChain = Number(searchParams.get('chainId') || 0)
-  const { switchNetwork } = useSwitchNetwork()
-  const isWindowOpen = useIsWindowVisible()
+// /token/base/tokenAddress -> overview
+// /token/base/tokenAddress/mint
 
-  // Set chainId on url
-  useEffect(() => {
-    if (!currentUrlChain || !supportedChains.has(currentUrlChain)) {
-      searchParams.set('chainId', chainId.toString())
-      setSearchParams(searchParams, { replace: true })
-    }
+// Home
+// Deploy => delploy/ethereum // deploy/base
+//
 
-    if (
-      currentUrlChain &&
-      supportedChains.has(currentUrlChain) &&
-      chainId !== currentUrlChain
-    ) {
-      setChainId(currentUrlChain)
+// const RouteListener = () => {
+//   const [searchParams, setSearchParams] = useSearchParams()
+//   const [chainId, setChainId] = useAtom(chainIdAtom)
+//   const currentUrlChain = Number(searchParams.get('chainId') || 0)
+//   const { switchNetwork } = useSwitchNetwork()
+//   const isWindowOpen = useIsWindowVisible()
 
-      if (switchNetwork && isWindowOpen) {
-        switchNetwork(currentUrlChain)
-      }
-    }
-  }, [currentUrlChain])
+//   // Set chainId on url
+//   useEffect(() => {
+//     if (!currentUrlChain || !supportedChains.has(currentUrlChain)) {
+//       searchParams.set('chainId', chainId.toString())
+//       setSearchParams(searchParams, { replace: true })
+//     }
 
-  return null
-}
+//     if (
+//       currentUrlChain &&
+//       supportedChains.has(currentUrlChain) &&
+//       chainId !== currentUrlChain
+//     ) {
+//       setChainId(currentUrlChain)
+
+//       if (switchNetwork && isWindowOpen) {
+//         switchNetwork(currentUrlChain)
+//       }
+//     }
+//   }, [currentUrlChain])
+
+//   return null
+// }
 
 /**
  * App Entry point - Handles views routing
@@ -85,73 +93,17 @@ const RouteListener = () => {
  * @returns {JSX.Element}
  */
 const App = () => {
-  const rTokenSelected = !!useAtomValue(selectedRTokenAtom)
-
-  useEffect(() => {
-    if (rTokenSelected) {
-      Issuance.preload()
-      Governance.preload()
-    }
-  }, [rTokenSelected])
-
   return (
     <Router>
       <Analytics />
       <ThemeProvider theme={theme}>
         <LanguageProvider>
           <ChainProvider>
-            <RouteListener />
             <Updater />
             <TransactionSidebar />
             <Layout>
               <ToastContainer />
-              <Routes>
-                <Route path={ROUTES.HOME} element={<Home />} />
-                <Route path={ROUTES.OVERVIEW} element={<Overview />} />
-                <Route
-                  path={ROUTES.ISSUANCE}
-                  element={
-                    <Suspense fallback={<Fallback />}>
-                      <Issuance />
-                    </Suspense>
-                  }
-                />
-                <Route path={ROUTES.STAKING} element={<Staking />} />
-                <Route path={ROUTES.AUCTIONS} element={<Auctions />} />
-                <Route path={ROUTES.DEPLOY} element={<Deploy />} />
-                <Route path={ROUTES.SETTINGS} element={<Management />} />
-                <Route
-                  path={ROUTES.GOVERNANCE_SETUP}
-                  element={<GovernanceSetup />}
-                />
-                <Route path={ROUTES.TOKENS} element={<Tokens />} />
-                <Route
-                  path={ROUTES.GOVERNANCE}
-                  element={
-                    <Suspense fallback={<Fallback />}>
-                      <Governance />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path={ROUTES.GOVERNANCE_PROPOSAL}
-                  element={<GovernanceProposal />}
-                />
-                <Route
-                  path={`${ROUTES.GOVERNANCE_PROPOSAL}/:proposalId`}
-                  element={<GovernanceProposalDetail />}
-                />
-                <Route
-                  path={ROUTES.BRIDGE}
-                  element={
-                    <Suspense fallback={<Fallback />}>
-                      <Bridge />
-                    </Suspense>
-                  }
-                />
-                <Route path={ROUTES.PORTFOLIO} element={<PortfolioWrapper />} />
-                <Route path={ROUTES.EARN} element={<EarnWrapper />} />
-              </Routes>
+              <AppRoutes />
             </Layout>
           </ChainProvider>
         </LanguageProvider>

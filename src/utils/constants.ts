@@ -10,6 +10,12 @@ export const DISCORD_INVITE = 'https://discord.com/invite/M4BafXtTNz'
 export const PROTOCOL_DOCS = 'https://reserve.org/protocol/'
 export const REGISTER_FEEDBACK = 'https://reserve.canny.io/register-app'
 
+// List of supported networks with label
+export const NETWORKS: Record<string, number> = {
+  mainnet: ChainId.Mainnet,
+  base: ChainId.Base,
+}
+
 export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
   'curve-dex': {
     name: 'Curve',
