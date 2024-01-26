@@ -47,7 +47,7 @@ const useWatchTransaction = ({ hash, success, error, label }: WatchOptions) => {
       // Give more time for base as blocks are faster
       const data = await waitForTransaction({
         hash,
-        confirmations: chainId === ChainId.Mainnet ? 1 : 5,
+        confirmations: chainId === ChainId.Mainnet ? 1 : 3,
       })
 
       updateTransaction([hash, 'success', Number(data.blockNumber)])
