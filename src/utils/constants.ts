@@ -16,6 +16,14 @@ export const NETWORKS: Record<string, number> = {
   base: ChainId.Base,
 }
 
+export const CHAIN_TO_NETWORK = Object.entries(NETWORKS).reduce(
+  (acc, [network, chainId]) => {
+    acc[chainId] = network
+    return acc
+  },
+  {} as Record<number, string>
+)
+
 export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
   'curve-dex': {
     name: 'Curve',

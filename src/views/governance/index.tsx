@@ -1,9 +1,9 @@
-import { Box, BoxProps, Divider, Grid } from 'theme-ui'
+import { Box, Grid } from 'theme-ui'
 import GovernanceActions from './components/GovernanceOverview'
 import ProposalList from './components/ProposalList'
 import TopVoters from './components/TopVoters'
 
-const Governance = (props: BoxProps) => (
+const Governance = () => (
   <Box variant="layout.wrapper">
     <Grid
       columns={[1, 1, '2fr 1.5fr']}
@@ -15,7 +15,6 @@ const Governance = (props: BoxProps) => (
         alignContent: 'flex-start',
         alignItems: 'flex-start',
       }}
-      {...props}
     >
       <Box>
         <ProposalList />

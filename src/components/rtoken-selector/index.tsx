@@ -1,13 +1,12 @@
 import Popup from 'components/popup'
-import { useAtom } from 'jotai'
+import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
 import { useCallback, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { selectedRTokenAtom } from 'state/atoms'
-import { Box, BoxProps, Flex } from 'theme-ui'
-import { ROUTES } from 'utils/constants'
-import { Address } from 'viem'
+import { Box, BoxProps } from 'theme-ui'
+import { CHAIN_TO_NETWORK } from 'utils/constants'
 import SelectedToken from './SelectedToken'
 import TokenList from './TokenList'
 
@@ -17,7 +16,7 @@ import TokenList from './TokenList'
 const RTokenSelector = (props: BoxProps) => {
   const navigate = useNavigate()
   const [isVisible, setVisible] = useState(false)
-  const [selected, setSelected] = useAtom(selectedRTokenAtom)
+  const selected = useAtomValue(selectedRTokenAtom)
   const location = useLocation()
 
   const handleSelect = useCallback(
@@ -27,23 +26,23 @@ const RTokenSelector = (props: BoxProps) => {
           Source: 'Dropdown',
           RToken: token.toLowerCase(),
         })
-        setSelected(token as Address)
-        navigate(
-          `${
-            selected ? location.pathname : ROUTES.OVERVIEW
-          }?token=${token}&chainId=${chain}`
-        )
+        // TODO: Not sure if people want to get this functionality
+        // navigate(
+        //   `${
+        //     selected ? location.pathname : ROUTES.OVERVIEW
+        //   }?token=${token}&chainId=${chain}`
+        // )
+        navigate(`/${CHAIN_TO_NETWORK[chain]}/token/${token}`)
         setVisible(false)
       }
     },
-    [setSelected, selected, location.pathname]
+    [selected, location.pathname]
   )
 
   const handleHome = useCallback(() => {
-    setSelected(null)
     navigate('/')
     setVisible(false)
-  }, [setVisible, setSelected, navigate])
+  }, [setVisible, navigate])
 
   return (
     <Popup
