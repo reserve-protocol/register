@@ -109,9 +109,11 @@ const About = () => (
         <Trans>A new path to better money, already set in motion</Trans>
       </Text>
       <Text as="p" variant="legend" px={[4, 0]} mt={[3, 4]}>
-        Reserve Protocol’s RToken Factory Contracts: A platform for creating
-        currencies backed by an array of ERC20 collateral. Use Register.app to
-        mint, stake and govern RTokens. Learn more at{' '}
+        <Trans>
+          Reserve Protocol’s RToken Factory Contracts: A platform for creating
+          currencies backed by an array of ERC20 collateral. Use Register.app to
+          mint, stake and govern RTokens. Learn more at
+        </Trans>{' '}
         <Link
           sx={{ textDecoration: 'underline' }}
           href="https://reserve.org/"
