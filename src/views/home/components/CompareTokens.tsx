@@ -1,21 +1,18 @@
 import { Trans } from '@lingui/macro'
 import { Button } from 'components'
-import useTokenList from 'hooks/useTokenList'
-import Skeleton from 'react-loading-skeleton'
-import { useNavigate } from 'react-router-dom'
-import { Box, Flex, Text } from 'theme-ui'
-import { ROUTES } from 'utils/constants'
-import RTokenCard from './RTokenCard'
 import { ArrowRight } from 'react-feather'
-import DeployHero from './DeployHero'
+import { useNavigate } from 'react-router-dom'
+import { Box, Flex } from 'theme-ui'
+import { ROUTES } from 'utils/constants'
 import CompareTokensTitle from './CompareTokensTitle'
-import useRTokenPools from 'views/earn/hooks/useRTokenPools'
+import DeployHero from './DeployHero'
+import React, { Suspense, lazy } from 'react'
+import CompareSkeleton from './CompareSkeleton'
+
+const RTokenList = lazy(() => import('./RTokenList'))
 
 const CompareTokens = () => {
   const navigate = useNavigate()
-  const { list, isLoading } = useTokenList()
-  // Load pools to get rtoken earn info
-  useRTokenPools()
 
   const handleViewAll = () => {
     navigate(ROUTES.TOKENS)
@@ -25,12 +22,9 @@ const CompareTokens = () => {
   return (
     <Box variant="layout.wrapper" p={[1, 4]} pt={0}>
       <CompareTokensTitle />
-      {isLoading && (
-        <Skeleton count={3} height={320} style={{ marginBottom: 20 }} />
-      )}
-      {list.map((token) => (
-        <RTokenCard key={token.id} token={token} mb={4} />
-      ))}
+      <Suspense fallback={<CompareSkeleton />}>
+        <RTokenList />
+      </Suspense>
       <Flex my={7} sx={{ justifyContent: 'center' }}>
         <Button medium variant="transparent" onClick={handleViewAll}>
           <Box variant="layout.verticalAlign">
