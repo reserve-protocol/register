@@ -1,10 +1,8 @@
 import styled from '@emotion/styled'
-import { Trans } from '@lingui/macro'
 import TokenItem from 'components/token-item'
 import { useAtomValue } from 'jotai'
 import { memo } from 'react'
-import { Box, Divider, Flex, Text } from 'theme-ui'
-import BackHomeIcon from '../icons/BackHomeIcon'
+import { Box, Flex } from 'theme-ui'
 import availableTokensAtom from './atoms'
 
 const ActionItem = styled(Flex)`
@@ -44,21 +42,23 @@ const TokenList = memo(
           },
         }}
       >
-        {Object.values(tokens).map(({ address, logo, symbol, chainId }) => (
-          <ActionItem
-            key={address}
-            onClick={() => {
-              onSelect(address, chainId as number)
-            }}
-          >
-            <TokenItem
-              sx={{ color: 'text' }}
-              symbol={symbol}
-              logo={logo}
-              chainId={chainId}
-            />
-          </ActionItem>
-        ))}
+        {Object.values(tokens).map(
+          ({ address, logo, symbol, chainId, listed }) => (
+            <ActionItem
+              key={address}
+              onClick={() => {
+                onSelect(listed ? symbol : address, chainId as number)
+              }}
+            >
+              <TokenItem
+                sx={{ color: 'text' }}
+                symbol={symbol}
+                logo={logo}
+                chainId={chainId}
+              />
+            </ActionItem>
+          )
+        )}
       </Box>
     )
   }

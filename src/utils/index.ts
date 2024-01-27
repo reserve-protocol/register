@@ -4,6 +4,7 @@ import ERC20 from 'abis/ERC20'
 import humanizeDuration from 'humanize-duration'
 import { BigNumberMap } from 'types'
 import { Address, getAddress, parseEther, parseUnits } from 'viem'
+import { CHAIN_TO_NETWORK } from './constants'
 
 export const decimalPattern = /^[0-9]*[.]?[0-9]*$/i
 export const numberPattern = /^\d+$/
@@ -17,6 +18,10 @@ export function isAddress(value: string) {
     return null
   }
 }
+
+export const getTokenRoute = (token: string, chainId: number, route = '') =>
+  `/${CHAIN_TO_NETWORK[chainId]}/token/${token}/${route}`
+
 // multiplier 150 -> 1.5
 export const getSafeGasLimit = (gas: bigint, multiplier = 150n) =>
   (gas * multiplier) / 100n

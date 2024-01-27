@@ -11,7 +11,7 @@ import { ArrowRight } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import { rTokenPoolsAtom } from 'state/pools/atoms'
 import { Box, BoxProps, Card, Text } from 'theme-ui'
-import { formatCurrency, stringToColor } from 'utils'
+import { formatCurrency, getTokenRoute, stringToColor } from 'utils'
 import { BRIDGED_RTOKENS, CHAIN_TAGS, ROUTES } from 'utils/constants'
 import { getAddress } from 'viem'
 import CollateralPieChart from 'views/overview/_components/CollateralPieChart'
@@ -69,7 +69,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
   )
 
   const handleNavigate = (route: string) => {
-    navigate(`${route}?token=${token.id}&chainId=${token.chain}`)
+    navigate(route)
     document.getElementById('app-container')?.scrollTo(0, 0)
   }
 
@@ -143,7 +143,11 @@ const RTokenCard = ({ token, ...props }: Props) => {
           </Box>
           <Box variant="layout.verticalAlign" sx={{ flexWrap: 'wrap' }}>
             <Button
-              onClick={() => handleNavigate(ROUTES.ISSUANCE)}
+              onClick={() =>
+                handleNavigate(
+                  getTokenRoute(token.symbol, token.chain, ROUTES.ISSUANCE)
+                )
+              }
               mt={3}
               mr={3}
               medium
@@ -151,7 +155,11 @@ const RTokenCard = ({ token, ...props }: Props) => {
               {token.tokenApy ? `${token.tokenApy.toFixed(1)}% APY` : 'Mint'}
             </Button>
             <Button
-              onClick={() => handleNavigate(ROUTES.STAKING)}
+              onClick={() =>
+                handleNavigate(
+                  getTokenRoute(token.symbol, token.chain, ROUTES.STAKING)
+                )
+              }
               mt={3}
               mr={3}
               medium
@@ -162,7 +170,9 @@ const RTokenCard = ({ token, ...props }: Props) => {
             </Button>
 
             <Button
-              onClick={() => handleNavigate(ROUTES.OVERVIEW)}
+              onClick={() =>
+                handleNavigate(getTokenRoute(token.symbol, token.chain))
+              }
               mt={3}
               mr={3}
               medium

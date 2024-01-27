@@ -12,7 +12,7 @@ export const REGISTER_FEEDBACK = 'https://reserve.canny.io/register-app'
 
 // List of supported networks with label
 export const NETWORKS: Record<string, number> = {
-  mainnet: ChainId.Mainnet,
+  ethereum: ChainId.Mainnet,
   base: ChainId.Base,
 }
 
@@ -105,21 +105,20 @@ export const TIME_RANGE_VALUE: { [x: string]: number } = {
 }
 
 export const ROUTES = Object.freeze({
-  OVERVIEW: '/overview',
-  STAKING: '/staking',
-  ISSUANCE: '/issuance',
-  STAKING_CALCULATOR: '/staking-calculator',
-  AUCTIONS: '/auctions',
-  DEPLOY: '/deploy',
-  SETTINGS: '/settings',
-  GOVERNANCE_SETUP: '/management/governance',
-  GOVERNANCE_INFO: '/governance-info',
-  LIST: '/list',
+  OVERVIEW: 'overview',
+  STAKING: 'staking',
+  ISSUANCE: 'issuance',
+  AUCTIONS: 'auctions',
+  DEPLOY: 'deploy',
+  SETTINGS: 'settings',
+  GOVERNANCE_SETUP: 'management/governance',
+  GOVERNANCE_INFO: 'governance-info',
+  LIST: 'list',
   HOME: '/',
   WALLET: '/wallet',
   TOKENS: '/tokens',
-  GOVERNANCE: '/governance',
-  GOVERNANCE_PROPOSAL: '/governance/proposal',
+  GOVERNANCE: 'governance',
+  GOVERNANCE_PROPOSAL: 'governance/proposal',
   ZAP: '/zap',
   BRIDGE: '/bridge',
   PORTFOLIO: '/portfolio',

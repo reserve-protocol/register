@@ -1,20 +1,18 @@
 import { t } from '@lingui/macro'
-import AsteriskIcon from 'components/icons/AsteriskIcon'
+import BasketCubeIcon from 'components/icons/BasketCubeIcon'
 import BridgeNavIcon from 'components/icons/BridgeNavIcon'
+import EarnNavIcon from 'components/icons/EarnNavIcon'
+import WalletOutlineIcon from 'components/icons/WalletOutlineIcon'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
-import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
+import { selectedRTokenAtom } from 'state/atoms'
 import { borderRadius } from 'theme'
 import { Box, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import TokenToggle from './TokenToggle'
-import BasketCubeIcon from 'components/icons/BasketCubeIcon'
-import WalletOutlineIcon from 'components/icons/WalletOutlineIcon'
-import EarnNavIcon from 'components/icons/EarnNavIcon'
 
 const HeaderMenu = () => {
-  const chainId = useAtomValue(chainIdAtom)
   const selectedRToken = useAtomValue(selectedRTokenAtom)
   const menuItems = useMemo(
     () => [
@@ -48,7 +46,7 @@ const HeaderMenu = () => {
       {menuItems.map((menuItem, index) => (
         <NavLink
           key={menuItem.to}
-          to={`${menuItem.to}?chainId=${chainId}`}
+          to={`${menuItem.to}`}
           style={{ textDecoration: 'none', color: 'inherit' }}
         >
           {({ isActive }: { isActive: boolean }) => (
