@@ -143,7 +143,7 @@ export const backupBasketCollateralAtom = atom((get) => {
 export const rtokenAllActiveCollateralsAtom = atom((get) => {
   const primaryBasketCollaterals = get(primaryBasketCollateralAtom)
   const backupBasketCollaterals = get(backupBasketCollateralAtom)
-  const rToken = get(selectedRTokenAtom)
+  const rToken = get()
   const allAssets = get(rTokenAssetsAtom)
 
   const plugins = collateralPlugins[get(chainIdAtom)]

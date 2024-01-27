@@ -3,21 +3,14 @@ import RToken from 'abis/RToken'
 import { Atom, atom } from 'jotai'
 import { chainIdAtom, rTokenListAtom } from 'state/chain/atoms/chainAtoms'
 import { ReserveToken, Token } from 'types'
-import { getTokenReadCalls, isAddress } from 'utils'
+import { getTokenReadCalls } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
-import RSV from 'utils/rsv'
 import { Address } from 'wagmi'
 import { readContracts } from 'wagmi/actions'
 
 // Current selected rToken address
-export const selectedRTokenAtom = atom(
-  isAddress(
-    new URL(window.location.href.replace('/#/', '/')).searchParams.get(
-      'token'
-    ) ?? ''
-  )
-)
+export const selectedRTokenAtom = atom<Address | null>(null)
 
 const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
   async (get): Promise<ReserveToken | null> => {
@@ -27,10 +20,6 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
 
     if (!rTokenAddress) {
       return null
-    }
-
-    if (rTokenAddress === RSV.address) {
-      return RSV
     }
 
     const facadeCallParams = {

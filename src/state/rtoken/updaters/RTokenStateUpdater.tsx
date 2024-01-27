@@ -9,7 +9,6 @@ import useRToken from 'hooks/useRToken'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect, useMemo } from 'react'
-import { useSearchParams } from 'react-router-dom'
 import {
   chainIdAtom,
   rTokenAssetsAtom,
@@ -17,7 +16,6 @@ import {
   rTokenContractsAtom,
   selectedRTokenAtom,
 } from 'state/atoms'
-import { isAddress } from 'utils'
 import { VERSION } from 'utils/constants'
 import { Address, formatEther } from 'viem'
 import { useContractReads } from 'wagmi'
@@ -55,8 +53,6 @@ const RTokenStateUpdater = () => {
   const setState = useSetAtom(rTokenStateAtom)
   const resetState = useResetAtom(rTokenStateAtom)
   const setCollateralStatus = useSetAtom(rTokenCollateralStatusAtom)
-  const setRToken = useSetAtom(selectedRTokenAtom)
-  const [searchParams] = useSearchParams()
 
   // RToken state multicall
   const calls = useMemo(() => {
@@ -193,14 +189,6 @@ const RTokenStateUpdater = () => {
       }, {} as { [x: string]: 0 | 1 | 2 })
     )
   }, [collateralStatus])
-
-  useEffect(() => {
-    const token = isAddress(searchParams.get('token') || '')
-
-    if (token !== rToken?.address) {
-      setRToken(token)
-    }
-  }, [searchParams.get('token')])
 
   useEffect(() => {
     resetState()

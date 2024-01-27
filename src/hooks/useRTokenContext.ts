@@ -37,8 +37,13 @@ const useRTokenContext = () => {
       // TODO: Home or "wrong rtoken selected" route
       navigate('/')
     }
-    setRToken(rTokenAddress)
-    setChain(NETWORKS[chain as string])
+
+    // TODO: Move rtoken updated to RTokenContainer could solve this problem
+    // Make the state to reflect correctly when you access directly to an RToken route
+    setTimeout(() => {
+      setRToken(rTokenAddress)
+      setChain(NETWORKS[chain as string])
+    }, 0)
   }, [chain, tokenId])
 
   // Cleanup RToken

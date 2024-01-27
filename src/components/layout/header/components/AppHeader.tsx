@@ -86,10 +86,6 @@ const AppHeader = () => {
             <LanguageSelector />
           </Box> */}
         <Divider />
-        <Box sx={{ display: ['none', 'block'] }}>
-          <ChainSelector />
-        </Box>
-        <Divider />
         <Account />
       </Flex>
     </Box>

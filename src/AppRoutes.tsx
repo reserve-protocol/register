@@ -1,8 +1,8 @@
 import PreloadComponent, { LazyComponent } from 'components/lazy-component'
-import useRTokenContext from 'hooks/useRTokenContext'
 import { lazy } from 'react'
 import { lazyWithPreload } from 'react-lazy-with-preload'
-import { Outlet, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
+import RTokenContainer from 'state/rtoken/RTokenContainer'
 import { Box } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import EarnWrapper from 'views/earn'
@@ -31,23 +31,6 @@ const Settings = lazyWithPreload(() => import('./views/settings'))
 const Bridge = lazy(() => import('./views/bridge'))
 const AllTokenList = lazy(() => import('./views/tokens/Tokens'))
 const Deploy = lazy(() => import('./views/deploy'))
-
-const RTokenStateManager = () => {
-  // Set RToken atoms or redirect if routed RToken is invalid
-  useRTokenContext()
-
-  // Updaters goes here
-  return null
-}
-
-const RTokenContainer = () => {
-  return (
-    <Box>
-      <RTokenStateManager />
-      <Outlet />
-    </Box>
-  )
-}
 
 // TODO: Not sure if its worth to lazy load main routes
 const AppRoutes = () => (
