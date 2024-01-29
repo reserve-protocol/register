@@ -87,7 +87,9 @@ export const colors = {
   secondaryText: '#666666',
   lightText: '#808080',
   background: '#FFFFFF',
-  contentBackground: '#F9F8F4',
+  // contentBackground: '#F9F8F4',
+  lightGrey: '#f2f2f2',
+  contentBackground: '#F9EDDD',
   contentLightBackground: 'rgba(249, 248, 244, 0.5)',
   primary: '#000000',
   success: '#11BB8D',
@@ -98,7 +100,7 @@ export const colors = {
   rBlue: '#2150A9', // TODO: Remove in favor for accent
   accent: '#2150A9',
   rBlueLight: '#DBE3F1',
-  border: '#efefef',
+  border: '#f2f2f2',
   darkBorder: '#E5E5E5',
   inputBorder: '#E5E5E5',
   info: '#20678E',
@@ -144,7 +146,7 @@ export const theme: Theme = {
   breakpoints: ['52em', '64em', '72em', '100em'],
   space: [0, 4, 8, 16, 24, 32, 40, 48, 80, 256], // 0-9
   fonts: {
-    body: 'Satoshi, sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,  "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+    body: 'Satoshi, sans-serif, -apple-system, BlinkMacSystemFont',
     heading: 'inherit',
     monospace: 'Menlo, monospace',
     fontDisplay: 'swap',

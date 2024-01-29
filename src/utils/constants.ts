@@ -111,7 +111,7 @@ export const ROUTES = Object.freeze({
   AUCTIONS: 'auctions',
   DEPLOY: 'deploy',
   SETTINGS: 'settings',
-  GOVERNANCE_SETUP: 'management/governance',
+  GOVERNANCE_SETUP: 'governance/setup',
   GOVERNANCE_INFO: 'governance-info',
   LIST: 'list',
   HOME: '/',

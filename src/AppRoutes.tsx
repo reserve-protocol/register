@@ -1,7 +1,7 @@
 import PreloadComponent, { LazyComponent } from 'components/lazy-component'
 import { lazy } from 'react'
 import { lazyWithPreload } from 'react-lazy-with-preload'
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import RTokenContainer from 'state/rtoken/RTokenContainer'
 import { Box } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
@@ -45,34 +45,38 @@ const AppRoutes = () => (
       element={<LazyComponent element={AllTokenList} />}
     />
     <Route path={`/:chain/token/:tokenId`} element={<RTokenContainer />}>
-      <Route index element={<Overview />} />
+      <Route index element={<Navigate replace to={ROUTES.OVERVIEW} />} />
+      <Route path={ROUTES.OVERVIEW} element={<Overview />} />
       <Route
-        path="issuance"
+        path={ROUTES.ISSUANCE}
         element={<PreloadComponent element={Issuance} />}
       />
-      <Route path="staking" element={<PreloadComponent element={Staking} />} />
       <Route
-        path="auctions"
+        path={ROUTES.STAKING}
+        element={<PreloadComponent element={Staking} />}
+      />
+      <Route
+        path={ROUTES.AUCTIONS}
         element={<PreloadComponent element={Auctions} />}
       />
       <Route
-        path="governance"
+        path={ROUTES.GOVERNANCE}
         element={<PreloadComponent element={Governance} />}
       />
       <Route
-        path="governance/proposal"
+        path={ROUTES.GOVERNANCE_PROPOSAL}
         element={<PreloadComponent element={GovernanceProposal} />}
       />
       <Route
-        path="governance/proposal/:proposalId"
+        path={`${ROUTES.GOVERNANCE_PROPOSAL}/:proposalId`}
         element={<PreloadComponent element={GovernanceProposalDetail} />}
       />
       <Route
-        path="governance/setup"
+        path={ROUTES.GOVERNANCE_SETUP}
         element={<PreloadComponent element={GovernanceSetup} />}
       />
       <Route
-        path="settings"
+        path={ROUTES.SETTINGS}
         element={<PreloadComponent element={Settings} />}
       />
     </Route>

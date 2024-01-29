@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { Box } from 'theme-ui'
+import { Box, Flex } from 'theme-ui'
 import Header from './header'
 
 /**
@@ -9,12 +9,24 @@ import Header from './header'
  * @returns {JSX.Element}
  */
 const Layout = ({ children }: { children: ReactNode }) => (
-  <Box
-    sx={{ height: '100%', paddingTop: '72px', overflow: 'auto' }}
-    id="app-container"
+  <Flex
+    sx={{
+      flexDirection: 'column',
+      height: '100%',
+      position: 'relative',
+    }}
   >
-    {children}
     <Header />
-  </Box>
+    <Box
+      id="app-container"
+      sx={{
+        overflow: 'auto',
+        background: 'background',
+        flexGrow: 1,
+      }}
+    >
+      {children}
+    </Box>
+  </Flex>
 )
 export default Layout

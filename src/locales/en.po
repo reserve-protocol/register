@@ -1,17 +1,11 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2023-06-27 10:33-0600\n"
+"POT-Creation-Date: 2024-01-29 14:54-0600\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: en\n"
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Plural-Forms: \n"
 
 #: src/views/issuance/components/redeem/index.tsx:27
 msgid "- Redeem {0}"
@@ -91,7 +85,6 @@ msgstr ""
 msgid "A Brief RToken Introduction"
 msgstr ""
 
-<<<<<<< HEAD
 #: src/views/auctions/components/About.tsx:67
 msgid "A good explainer for how Gnosis auctions work can be found"
 msgstr ""
@@ -111,27 +104,6 @@ msgstr ""
 #: src/views/auctions/components/About.tsx:10
 #: src/views/overview/_components/About.tsx:15
 #: src/views/overview/_components/About.tsx:66
-=======
-#: src/views/home/components/RegisterAbout.tsx:31
-msgid "A Brief RToken Introduction"
-msgstr ""
-
-#: src/views/auctions/components/About.tsx:67
-msgid "A good explainer for how Gnosis auctions work can be found"
-msgstr ""
-
-#: src/views/home/components/Hero.tsx:109
-msgid "A new path to better money, already set in motion"
-msgstr ""
-
-#: src/utils/index.ts:67
-msgid "A year ago"
-msgstr ""
-
-#: src/views/auctions/components/About.tsx:10
-#: src/views/overview/components/About.tsx:15
-#: src/views/overview/components/About.tsx:66
->>>>>>> origin/master
 msgid "About"
 msgstr ""
 
@@ -147,11 +119,7 @@ msgstr ""
 msgid "Account"
 msgstr ""
 
-<<<<<<< HEAD
-#: src/views/auctions/auctions-sidebar/Revenue.tsx:102
-=======
 #: src/views/auctions/auctions-sidebar/Revenue.tsx:106
->>>>>>> origin/master
 msgid "Actionable accumulated revenue"
 msgstr ""
 
@@ -207,11 +175,7 @@ msgstr ""
 msgid "All time"
 msgstr ""
 
-<<<<<<< HEAD
 #: src/views/tokens/Tokens.tsx:34
-=======
-#: src/views/tokens/Tokens.tsx:40
->>>>>>> origin/master
 msgid "All unlisted RTokens"
 msgstr ""
 
@@ -272,11 +236,7 @@ msgstr ""
 msgid "Available for withdrawal"
 msgstr ""
 
-<<<<<<< HEAD
 #: src/views/governance/views/proposal-detail/index.tsx:100
-=======
-#: src/views/governance/views/proposal-detail/index.tsx:99
->>>>>>> origin/master
 msgid "Back to governance"
 msgstr ""
 
@@ -389,15 +349,11 @@ msgstr ""
 msgid "Batch Auction length (s)"
 msgstr ""
 
-#: src/views/auctions/components/AuctionsHeader.tsx:33
+#: src/views/auctions/components/AuctionsHeader.tsx:32
 msgid "Batch auctions"
 msgstr ""
 
-<<<<<<< HEAD
 #: src/views/tokens/Tokens.tsx:35
-=======
-#: src/views/tokens/Tokens.tsx:41
->>>>>>> origin/master
 msgid "Be aware that anyone can create an RToken that ends up on this list. We don't apply any standards beyond what can be done with the Reserve Protocol."
 msgstr ""
 
@@ -431,11 +387,7 @@ msgstr ""
 msgid "bps"
 msgstr ""
 
-<<<<<<< HEAD
 #: src/components/layout/header/components/HeaderMenu.tsx:30
-=======
-#: src/components/layout/header/components/HeaderMenu.tsx:32
->>>>>>> origin/master
 msgid "Bridge"
 msgstr ""
 
@@ -479,11 +431,7 @@ msgstr ""
 msgid "Caution"
 msgstr ""
 
-<<<<<<< HEAD
 #: src/views/earn/hooks/useEarnTableColumns.tsx:93
-=======
-#: src/views/earn/hooks/useEarnTableColumns.tsx:89
->>>>>>> origin/master
 msgid "Chain"
 msgstr ""
 
@@ -513,7 +461,7 @@ msgstr ""
 msgid "Change primary basket"
 msgstr ""
 
-#: src/views/auctions/components/AuctionsHeader.tsx:47
+#: src/views/auctions/components/AuctionsHeader.tsx:46
 msgid "Check for auctions"
 msgstr ""
 
@@ -529,18 +477,11 @@ msgstr ""
 msgid "Choose Redemption Basket"
 msgstr ""
 
-<<<<<<< HEAD
-=======
-#: src/views/home/components/Greet.tsx:85
-msgid "Choose your own adventure with your RSR. Find your preferred RToken to stake, govern, and backstop."
-msgstr ""
-
->>>>>>> origin/master
 #: src/components/transactions/table/index.tsx:58
 msgid "Claim"
 msgstr ""
 
-#: src/views/auctions/auctions-sidebar/claim-rewards/components/ClaimFromTraderButton.tsx:72
+#: src/views/auctions/auctions-sidebar/claim-rewards/components/ClaimFromTraderButton.tsx:79
 msgid "Claim ${0}"
 msgstr ""
 
@@ -573,11 +514,7 @@ msgstr ""
 msgid "community is available around the clock for general questions, assistance and support!"
 msgstr ""
 
-<<<<<<< HEAD
 #: src/components/layout/header/components/HeaderMenu.tsx:19
-=======
-#: src/components/layout/header/components/HeaderMenu.tsx:21
->>>>>>> origin/master
 msgid "Compare"
 msgstr ""
 
@@ -657,20 +594,7 @@ msgstr ""
 msgid "Cumulative Total RToken Mkcap"
 msgstr ""
 
-<<<<<<< HEAD
 #: src/views/overview/_components/TokenUsage.tsx:18
-=======
-#: src/views/home/components/Hero.tsx:34
-msgid "Cumulative Staked RSR income"
-msgstr ""
-
-#: src/views/home/components/Hero.tsx:24
-msgid "Cumulative Total RToken Mkcap"
-msgstr ""
-
-#: src/views/home/components/Stats.tsx:144
-#: src/views/overview/components/TokenUsage.tsx:31
->>>>>>> origin/master
 msgid "Cumulative Tx Volume"
 msgstr ""
 
@@ -864,7 +788,7 @@ msgstr ""
 msgid "Dutch Auction length (s)"
 msgstr ""
 
-#: src/views/auctions/components/AuctionsHeader.tsx:40
+#: src/views/auctions/components/AuctionsHeader.tsx:39
 msgid "Dutch auctions"
 msgstr ""
 
@@ -884,11 +808,7 @@ msgstr ""
 msgid "Each type of trade can currently happen in only one way; the protocol launches a Gnosis EasyAuction. The Reserve Protocol is designed to make it easy to add other trading methods, but no other methods are currently supported."
 msgstr ""
 
-<<<<<<< HEAD
 #: src/components/layout/header/components/HeaderMenu.tsx:26
-=======
-#: src/components/layout/header/components/HeaderMenu.tsx:28
->>>>>>> origin/master
 msgid "Earn"
 msgstr ""
 
@@ -990,13 +910,6 @@ msgstr ""
 msgid "Exit Deployer"
 msgstr ""
 
-<<<<<<< HEAD
-=======
-#: src/views/home/components/Greet.tsx:88
-msgid "Explore"
-msgstr ""
-
->>>>>>> origin/master
 #: src/components/rtoken-setup/token/BackingForm.tsx:84
 msgid "Extra collateral to keep"
 msgstr ""
@@ -1051,13 +964,6 @@ msgstr ""
 
 #: src/views/home/components/DeployHero.tsx:57
 msgid "Go to the RToken Deployer"
-<<<<<<< HEAD
-=======
-msgstr ""
-
-#: src/views/home/components/Greet.tsx:132
-msgid "Got it"
->>>>>>> origin/master
 msgstr ""
 
 #: src/components/layout/navigation/index.tsx:113
@@ -1113,37 +1019,12 @@ msgstr ""
 msgid "How do I verify my withdrawal transaction?"
 msgstr ""
 
-<<<<<<< HEAD
 #: src/views/bridge/components/BridgeFaq.tsx:39
 msgid "How do withdrawals work?"
 msgstr ""
 
 #: src/views/bridge/components/BridgeFaq.tsx:33
 msgid "How fast will my tokens arrive?"
-=======
-#: src/views/bridge/components/BridgeFaq.tsx:105
-msgid "How do I verify my withdrawal transaction?"
-msgstr ""
-
-#: src/views/bridge/components/BridgeFaq.tsx:39
-msgid "How do withdrawals work?"
-msgstr ""
-
-#: src/views/bridge/components/BridgeFaq.tsx:33
-msgid "How fast will my tokens arrive?"
-msgstr ""
-
-#: src/views/home/components/RegisterAbout.tsx:127
-msgid "If an RToken is listed on Register, it doesn't mean that Reserve or LC Labs endorses the safety or risk levels of the RToken. LC Labs requires Github requests with additional information beyond what is available on the blockchain to give users relevant data to make informed decisions. As a user, please evaluate any new RToken carefully before holding or staking your RSR on them."
-msgstr ""
-
-#: src/views/bridge/components/BridgeFaq.tsx:98
-msgid "If you prefer not to wait, instead of making a withdrawal using Register L2 Bridge, you also have the option to utilize a third-party bridge for quicker withdrawals."
-msgstr ""
-
-#: src/views/settings/components/ListingInfo.tsx:31
-msgid "If your token is paused and you have the correct role, you can unpause it here."
->>>>>>> origin/master
 msgstr ""
 
 #: src/views/home/components/RegisterAbout.tsx:127
@@ -1323,17 +1204,6 @@ msgstr ""
 msgid "Issue"
 msgstr ""
 
-<<<<<<< HEAD
-=======
-#: src/views/home/components/RegisterAbout.tsx:142
-msgid "LC Labs uses industry standard anonymized analytics tools to understand usage and improve the user experience. LC labs does not collect any information about users or their financial activity."
-msgstr ""
-
-#: src/views/home/components/Greet.tsx:76
-msgid "Learn"
-msgstr ""
-
->>>>>>> origin/master
 #: src/views/issuance/components/zap/components/ZapInput.tsx:99
 #: src/views/issuance/components/zap/components/ZapInput.tsx:128
 #: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:94
@@ -1455,10 +1325,6 @@ msgid "Minimum trade volume ($)"
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:52
-<<<<<<< HEAD
-=======
-#: src/views/home/components/Greet.tsx:80
->>>>>>> origin/master
 #: src/views/issuance/components/issue/Issue.tsx:92
 msgid "Mint"
 msgstr ""
@@ -1496,19 +1362,11 @@ msgstr ""
 msgid "Mkt Cap"
 msgstr ""
 
-<<<<<<< HEAD
 #: src/views/home/components/Hero.tsx:149
 msgid "More metrics on Reserve Dune Dashboard"
 msgstr ""
 
 #: src/utils/index.ts:74
-=======
-#: src/views/home/components/Hero.tsx:147
-msgid "More metrics on Reserve Dune Dashboard"
-msgstr ""
-
-#: src/utils/index.ts:69
->>>>>>> origin/master
 msgid "mth"
 msgstr ""
 
@@ -1553,11 +1411,7 @@ msgstr ""
 msgid "Next steps"
 msgstr ""
 
-<<<<<<< HEAD
-#: src/views/auctions/auctions-sidebar/Revenue.tsx:35
-=======
 #: src/views/auctions/auctions-sidebar/Revenue.tsx:36
->>>>>>> origin/master
 msgid "No actionable revenue available"
 msgstr ""
 
@@ -1593,11 +1447,7 @@ msgstr ""
 msgid "No proposals created..."
 msgstr ""
 
-<<<<<<< HEAD
 #: src/components/transactions/table/index.tsx:167
-=======
-#: src/components/transactions/table/index.tsx:171
->>>>>>> origin/master
 msgid "No transactions"
 msgstr ""
 
@@ -1621,11 +1471,7 @@ msgstr ""
 msgid "No, if a withdrawal has already been initiated on the Withdraw page it is not possible to cancel it. Once withdrawn, the process needs to be completed."
 msgstr ""
 
-<<<<<<< HEAD
-#: src/views/auctions/auctions-sidebar/RevenueAuctionItem.tsx:51
-=======
 #: src/views/auctions/auctions-sidebar/RevenueAuctionItem.tsx:22
->>>>>>> origin/master
 msgid "Not available"
 msgstr ""
 
@@ -1641,11 +1487,7 @@ msgstr ""
 msgid "Not ready to set up governance?"
 msgstr ""
 
-<<<<<<< HEAD
 #: src/views/home/components/RegisterAbout.tsx:174
-=======
-#: src/views/home/components/RegisterAbout.tsx:173
->>>>>>> origin/master
 msgid "Not sure what you’re looking at?"
 msgstr ""
 
@@ -1706,13 +1548,10 @@ msgstr ""
 msgid "Pause status"
 msgstr ""
 
-<<<<<<< HEAD
-=======
 #: src/views/auctions/dutch/components/PendingToSettleAuctions.tsx:19
 msgid "Pending auctions to settle"
 msgstr ""
 
->>>>>>> origin/master
 #: src/components/transaction-modal/index.tsx:155
 #: src/views/deploy/components/DeployOverview.tsx:25
 #: src/views/deploy/components/GovernanceOverview.tsx:28
@@ -1740,7 +1579,7 @@ msgstr ""
 msgid "Please complete the required governance configuration to complete deployment."
 msgstr ""
 
-#: src/views/auctions/auctions-sidebar/claim-rewards/components/ClaimFromTraderButton.tsx:68
+#: src/views/auctions/auctions-sidebar/claim-rewards/components/ClaimFromTraderButton.tsx:75
 #: src/views/governance/views/proposal-detail/components/ProposalVote.tsx:75
 #: src/views/portfolio/components/Portfolio.tsx:152
 msgid "Please connect your wallet"
@@ -1754,20 +1593,15 @@ msgstr ""
 msgid "Please don't close this window to avoid issues finding your way back here."
 msgstr ""
 
-<<<<<<< HEAD
 #: src/views/home/components/RegisterAbout.tsx:150
 msgid "Please keep in mind that interactions with the Ethereum or Base blockchains are pseudonymous and publicly available."
-=======
-#: src/views/home/components/RegisterAbout.tsx:149
-msgid "Please keep in mind that interactions with the Ethereum blockchain are pseudonymous and publicly available."
->>>>>>> origin/master
 msgstr ""
 
 #: src/views/settings/components/ListingInfo.tsx:10
 msgid "Please read more about how Register manage tokens on our repository"
 msgstr ""
 
-#: src/views/auctions/auctions-sidebar/claim-rewards/components/ClaimFromTraderButton.tsx:66
+#: src/views/auctions/auctions-sidebar/claim-rewards/components/ClaimFromTraderButton.tsx:73
 msgid "Please select an asset to claim"
 msgstr ""
 
@@ -1787,19 +1621,11 @@ msgstr ""
 msgid "Please wait while the simulation executes"
 msgstr ""
 
-<<<<<<< HEAD
 #: src/views/earn/hooks/useEarnTableColumns.tsx:54
 msgid "Pool"
 msgstr ""
 
 #: src/components/layout/header/components/HeaderMenu.tsx:21
-=======
-#: src/views/earn/hooks/useEarnTableColumns.tsx:50
-msgid "Pool"
-msgstr ""
-
-#: src/components/layout/header/components/HeaderMenu.tsx:23
->>>>>>> origin/master
 #: src/views/portfolio/components/Portfolio.tsx:137
 msgid "Portfolio"
 msgstr ""
@@ -1813,11 +1639,7 @@ msgid "Preparing transaction"
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:36
-<<<<<<< HEAD
 #: src/views/overview/_components/PriceChart.tsx:77
-=======
-#: src/views/overview/components/PriceChart.tsx:77
->>>>>>> origin/master
 #: src/views/tokens/components/UnlistedTokensTable.tsx:81
 msgid "Price"
 msgstr ""
@@ -1839,11 +1661,7 @@ msgstr ""
 msgid "Primary basket not defined"
 msgstr ""
 
-<<<<<<< HEAD
 #: src/views/earn/hooks/useEarnTableColumns.tsx:82
-=======
-#: src/views/earn/hooks/useEarnTableColumns.tsx:78
->>>>>>> origin/master
 msgid "Project"
 msgstr ""
 
@@ -1919,13 +1737,6 @@ msgstr ""
 msgid "Quorum (%)"
 msgstr ""
 
-<<<<<<< HEAD
-=======
-#: src/components/layout/index.tsx:83
-msgid "Read more"
-msgstr ""
-
->>>>>>> origin/master
 #: src/components/rtoken-setup/token/RevenueSplit.tsx:169
 msgid "Read more about revenue distribution"
 msgstr ""
@@ -2001,43 +1812,22 @@ msgstr ""
 
 #: src/components/layout/header/components/RegisterHelp.tsx:66
 msgid "Register Feedback"
-<<<<<<< HEAD
 msgstr ""
 
 #: src/views/home/components/RegisterAbout.tsx:120
 msgid "Register is an open source project developed and maintained by ABC Labs as the first dApp to interact with the Reserve Protocol and various RTokens deployed with the platform."
 msgstr ""
 
-=======
-msgstr ""
-
-#: src/views/home/components/RegisterAbout.tsx:120
-msgid "Register is an open source project developed and maintained by LC Labs as the first dApp to interact with the Reserve Protocol and various RTokens deployed with the platform."
-msgstr ""
-
->>>>>>> origin/master
 #: src/views/bridge/components/BridgeFaq.tsx:28
 msgid "Register L2 Bridge enables the transfer of certain digital assets and other data back and forth between Ethereum and Base."
 msgstr ""
 
-<<<<<<< HEAD
 #: src/views/tokens/Tokens.tsx:26
-=======
-#: src/views/tokens/Tokens.tsx:32
->>>>>>> origin/master
 msgid "Register listed RTokens"
 msgstr ""
 
 #: src/views/settings/components/ListingInfo.tsx:9
 msgid "Register Listing"
-msgstr ""
-
-#: src/views/governance/views/proposal/components/ProposedRegisterPreview.tsx:28
-msgid "Registering assets"
-msgstr ""
-
-#: src/views/governance/views/proposal/components/RegisterProposal.tsx:39
-msgid "Registration of an asset plugin enables the RToken to price an underlying ERC20 token. Where an asset plugin for the underlying token already exists, the existing asset plugin is replaced with the new one."
 msgstr ""
 
 #: src/views/governance/views/proposal/components/ProposedRegisterPreview.tsx:28
@@ -2081,13 +1871,10 @@ msgstr ""
 
 #: src/components/layout/header/components/RegisterHelp.tsx:76
 msgid "Reserve Discord"
-<<<<<<< HEAD
 msgstr ""
 
 #: src/views/home/components/Hero.tsx:112
 msgid "Reserve Protocol’s RToken Factory Contracts: A platform for creating currencies backed by an array of ERC20 collateral. Use Register.app to mint, stake and govern RTokens. Learn more at"
-=======
->>>>>>> origin/master
 msgstr ""
 
 #: src/views/deploy/components/NavigationSidebar.tsx:18
@@ -2261,11 +2048,7 @@ msgstr ""
 msgid "RTokens"
 msgstr ""
 
-<<<<<<< HEAD
 #: src/views/tokens/Tokens.tsx:27
-=======
-#: src/views/tokens/Tokens.tsx:33
->>>>>>> origin/master
 msgid "RTokens in this list is not an endorsement or audited by us. It’s simply RTokens that have gone through our listing process and don’t seem like clear scams."
 msgstr ""
 
@@ -2283,7 +2066,6 @@ msgstr ""
 
 #: src/views/tokens/components/TableFilters.tsx:20
 msgid "Search"
-<<<<<<< HEAD
 msgstr ""
 
 #: src/views/bridge/components/BridgeTokenModal.tsx:189
@@ -2294,22 +2076,6 @@ msgstr ""
 msgid "Select token"
 msgstr ""
 
-=======
-msgstr ""
-
-#: src/views/bridge/components/BridgeTokenModal.tsx:189
-msgid "Search by token symbol"
-msgstr ""
-
-#: src/views/home/components/Greet.tsx:150
-msgid "Select an RToken to:"
-msgstr ""
-
-#: src/views/bridge/components/BridgeTokenModal.tsx:177
-msgid "Select token"
-msgstr ""
-
->>>>>>> origin/master
 #: src/views/auctions/components/useColumns.tsx:32
 msgid "Selling"
 msgstr ""
@@ -2409,10 +2175,6 @@ msgid "St Token Ticker"
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:60
-<<<<<<< HEAD
-=======
-#: src/views/home/components/Greet.tsx:84
->>>>>>> origin/master
 #: src/views/staking/components/stake/StakeInput.tsx:14
 msgid "Stake"
 msgstr ""
@@ -2517,13 +2279,10 @@ msgstr ""
 msgid "Target(s)"
 msgstr ""
 
-<<<<<<< HEAD
-=======
-#: src/views/auctions/auctions-sidebar/claim-rewards/components/TraderEmissions.tsx:174
+#: src/views/auctions/auctions-sidebar/claim-rewards/components/TraderEmissions.tsx:172
 msgid "The amount of assets selected affects the gas price, this asset may not be worth claiming yet."
 msgstr ""
 
->>>>>>> origin/master
 #: src/components/account/index.tsx:54
 msgid "The configured network \"{currentChain}\" is different from the wallet selected network \"{chainId}\"\". Change your network in the connected wallet."
 msgstr ""
@@ -2606,11 +2365,7 @@ msgstr ""
 msgid "There are network fees involved which are used to pay for the gas costs on Ethereum and Base. There are no additional fees."
 msgstr ""
 
-<<<<<<< HEAD
 #: src/views/overview/_components/About.tsx:69
-=======
-#: src/views/overview/components/About.tsx:69
->>>>>>> origin/master
 msgid "There is no information about this token."
 msgstr ""
 
@@ -2624,13 +2379,6 @@ msgstr ""
 
 #: src/views/home/components/RegisterAbout.tsx:117
 msgid "This App"
-<<<<<<< HEAD
-=======
-msgstr ""
-
-#: src/views/governance/views/proposal/components/RegisterEdit.tsx:42
-msgid "This asset is already (being) registered"
->>>>>>> origin/master
 msgstr ""
 
 #: src/views/governance/views/proposal/components/RegisterEdit.tsx:42
@@ -2760,7 +2508,7 @@ msgstr ""
 msgid "Transaction 2"
 msgstr ""
 
-#: src/hooks/useWatchTransaction.ts:48
+#: src/hooks/useWatchTransaction.ts:55
 msgid "Transaction confirmed"
 msgstr ""
 
@@ -2768,7 +2516,7 @@ msgstr ""
 msgid "Transaction failed"
 msgstr ""
 
-#: src/hooks/useWatchTransaction.ts:62
+#: src/hooks/useWatchTransaction.ts:69
 msgid "Transaction reverted"
 msgstr ""
 
@@ -2809,19 +2557,11 @@ msgstr ""
 msgid "Tutorial video"
 msgstr ""
 
-<<<<<<< HEAD
 #: src/views/earn/hooks/useEarnTableColumns.tsx:139
-=======
-#: src/views/earn/hooks/useEarnTableColumns.tsx:135
->>>>>>> origin/master
 msgid "TVL"
 msgstr ""
 
 #: src/views/home/components/Hero.tsx:29
-<<<<<<< HEAD
-=======
-#: src/views/home/components/Stats.tsx:133
->>>>>>> origin/master
 msgid "TVL in Reserve"
 msgstr ""
 
@@ -2860,11 +2600,7 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-<<<<<<< HEAD
-#: src/views/auctions/auctions-sidebar/Revenue.tsx:124
-=======
 #: src/views/auctions/auctions-sidebar/Revenue.tsx:129
->>>>>>> origin/master
 msgid "Unactionable revenue/revenue sources"
 msgstr ""
 
@@ -2874,13 +2610,6 @@ msgstr ""
 
 #: src/components/layout/header/components/RegisterHelp.tsx:72
 msgid "Understand the Reserve Protocol."
-<<<<<<< HEAD
-=======
-msgstr ""
-
-#: src/views/home/components/Greet.tsx:77
-msgid "Understand why each RToken exists. What is its backing? its governing mandate?"
->>>>>>> origin/master
 msgstr ""
 
 #: src/views/settings/components/FreezeManager.tsx:107
@@ -2965,15 +2694,7 @@ msgstr ""
 msgid "Use the Alexios governor format?"
 msgstr ""
 
-<<<<<<< HEAD
 #: src/views/home/components/RegisterAbout.tsx:140
-=======
-#: src/views/home/components/Greet.tsx:81
-msgid "Use this dApp to transform your various collateral types into RTokens."
-msgstr ""
-
-#: src/views/home/components/RegisterAbout.tsx:139
->>>>>>> origin/master
 msgid "User Tracking"
 msgstr ""
 
@@ -3001,17 +2722,8 @@ msgstr ""
 msgid "View All"
 msgstr ""
 
-<<<<<<< HEAD
 #: src/views/home/components/CompareTokens.tsx:31
 msgid "View All, including unlisted"
-=======
-#: src/views/home/components/CompareTokens.tsx:37
-msgid "View All, including unlisted"
-msgstr ""
-
-#: src/views/home/components/Stats.tsx:109
-msgid "View Dashboard"
->>>>>>> origin/master
 msgstr ""
 
 #: src/components/transaction-modal/TransactionConfirmedModal.tsx:40
@@ -3117,11 +2829,7 @@ msgstr ""
 msgid "Watch an intro to RTokens"
 msgstr ""
 
-<<<<<<< HEAD
 #: src/views/overview/_components/External.tsx:28
-=======
-#: src/views/overview/components/External.tsx:28
->>>>>>> origin/master
 msgid "Website"
 msgstr ""
 
