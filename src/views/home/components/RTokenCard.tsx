@@ -269,10 +269,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
                   medium
                   variant="muted"
                 >
-                  <Box
-                    variant="layout.verticalAlign"
-                    sx={{ gap: 2, fontWeight: 700 }}
-                  >
+                  <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
                     <Text>
                       Stake RSR{' '}
                       {!!token.stakingApy &&
