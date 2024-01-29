@@ -8,6 +8,14 @@ import { getContract, readContracts } from 'wagmi/actions'
 import rTokenContractsAtom from './rTokenContractsAtom'
 import { chainIdAtom } from 'state/atoms'
 
+export interface RTokenAsset {
+  address: Address
+  token: Token
+  maxTradeVolume: string
+  priceUsd: number
+  version: string
+}
+
 const rTokenAssetsAtom = atomWithLoadable(async (get) => {
   const contracts = get(rTokenContractsAtom)
   const chainId = get(chainIdAtom)
@@ -52,13 +60,7 @@ const rTokenAssetsAtom = atomWithLoadable(async (get) => {
     })
 
     const registeredAssets: {
-      [x: string]: {
-        address: Address
-        token: Token
-        maxTradeVolume: string
-        priceUsd: number
-        version: string
-      }
+      [x: string]: RTokenAsset
     } = {}
 
     // For each asset 5 items of the result array

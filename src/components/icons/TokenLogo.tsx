@@ -55,6 +55,9 @@ const IMGS = new Set([
   'mrp-asteth',
   'frax',
   'crvusd',
+  'crv',
+  'cvx',
+  'comp',
   'mkusd',
 ])
 
