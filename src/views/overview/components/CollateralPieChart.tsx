@@ -39,7 +39,10 @@ const CollateralChart: FC<ChartProps> = ({
   ...props
 }) => {
   const filteredData = useMemo(
-    () => data.filter((d) => d.value >= MIN_VALUE),
+    () =>
+      data
+        .filter((d) => d.value >= MIN_VALUE)
+        .sort((a, b) => b.value - a.value),
     [data]
   )
   return (
@@ -66,8 +69,8 @@ const CollateralChart: FC<ChartProps> = ({
               innerRadius={46}
               outerRadius={60}
               paddingAngle={2}
-              startAngle={91}
-              endAngle={451}
+              startAngle={269}
+              endAngle={-91}
             >
               {filteredData.map((entry, index) => (
                 <Cell
@@ -88,8 +91,8 @@ const CollateralChart: FC<ChartProps> = ({
               innerRadius={59}
               outerRadius={65}
               paddingAngle={2}
-              startAngle={91}
-              endAngle={451}
+              startAngle={269}
+              endAngle={-91}
             >
               {filteredData.map((entry, index) => (
                 <Cell

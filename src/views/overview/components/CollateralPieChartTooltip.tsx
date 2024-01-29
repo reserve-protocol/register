@@ -132,7 +132,7 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
           }))
         )
         .map(({ name, token, value }) => ({
-          key: name,
+          key: name + token,
           name: token,
           value,
           logo: `svgs/${token?.toLowerCase()}.svg`,
