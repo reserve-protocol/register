@@ -21,7 +21,7 @@ const availableTokensAtom = atom((get) => {
       tokenList[token.address] = {
         address: token.address,
         symbol: token.symbol,
-        logo: token.logo ? `/svgs/${token.logo}` : DEFAULT_LOGO,
+        logo: token.logo ? `/svgs/${token.logo.toLowerCase()}` : DEFAULT_LOGO,
         chainId: token.chainId
       }
     }

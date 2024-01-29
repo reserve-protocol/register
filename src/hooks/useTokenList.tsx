@@ -169,7 +169,9 @@ const useTokenList = () => {
               overcollaterization: supply ? (stakeUsd / supply) * 100 : 0,
               stakingApy,
               chain,
-              logo: `/svgs/${rtokens[chain][getAddress(token.id)].logo}`,
+              logo: `/svgs/${rtokens[chain][
+                getAddress(token.id)
+              ].logo?.toLowerCase()}`,
               distribution: revenueSplit,
               collaterals,
               collateralDistribution: distribution,

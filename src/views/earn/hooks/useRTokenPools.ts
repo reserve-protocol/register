@@ -23,7 +23,7 @@ interface DefillamaPool {
   underlyingTokens: string[]
   rewardTokens: string[]
 }
-
+console.log(rtokens)
 const listedRTokens = Object.values(rtokens).reduce((acc, curr) => {
   // Defillama has some addresses on lowercase... better to transform to lowercase than to an Address format
   const lowercaseAddresses = Object.keys(curr).reduce((tokens, key) => {
@@ -142,10 +142,10 @@ const useRTokenPools = () => {
               ) {
                 return {
                   ...listedRTokens[lowercasedAddress],
-                  logo: `/svgs/${listedRTokens[lowercasedAddress].logo}`,
+                  logo: `/svgs/${listedRTokens[lowercasedAddress].logo.toLowerCase()}`,
                 }
               }
-
+              //"0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca"
               return (
                 listedRTokens[lowercasedAddress] ||
                 OTHER_POOL_TOKENS[lowercasedAddress] || {
