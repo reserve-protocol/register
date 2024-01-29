@@ -170,7 +170,7 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
         variant="layout.centered"
         sx={{ gap: 2, alignItems: 'start', width: '100%' }}
       >
-        <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+        <Box variant="layout.verticalAlign" ml={2} sx={{ gap: 1 }}>
           <BasketCubeIcon width={17} height={17} />
           <Text sx={{ fontSize: 14 }}>{t`Collateral(s)`}</Text>
         </Box>
@@ -184,12 +184,12 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
         variant="layout.centered"
         sx={{ gap: 2, alignItems: 'start', width: '100%' }}
       >
-        <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+        <Box variant="layout.verticalAlign" ml={2} sx={{ gap: 1 }}>
           <CirclesIcon
             color="#333333"
             width={13}
             height={13}
-            style={{ marginLeft: '3px' }}
+            style={{ marginLeft: '1px' }}
           />
           <Text sx={{ fontSize: 14 }}>{t`Token exposure`}</Text>
         </Box>
@@ -203,7 +203,7 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
         variant="layout.centered"
         sx={{ gap: 2, alignItems: 'start', width: '100%' }}
       >
-        <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+        <Box variant="layout.verticalAlign" ml={2} sx={{ gap: 1 }}>
           <PlatformExposureIcon />
           <Text sx={{ fontSize: 14 }}>{t`Platform exposure`}</Text>
         </Box>
