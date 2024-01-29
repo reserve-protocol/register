@@ -35,6 +35,14 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'Balancer',
     site: 'https://app.balancer.fi/',
   },
+  'extra-finance': {
+    name: 'Extra Finance',
+    site: 'https://app.extrafi.io/lend',
+  },
+  aerodrome: {
+    name: 'Aerodrome',
+    site: 'https://aerodrome.finance/',
+  },
 }
 
 export const BIGINT_MAX =

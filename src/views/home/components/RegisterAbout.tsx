@@ -9,7 +9,7 @@ import { DISCORD_INVITE, PROTOCOL_DOCS } from 'utils/constants'
 const SocialLinks = () => (
   <Box variant="layout.verticalAlign" mt={4} sx={{ fontSize: 5 }}>
     <RouterLink
-      to="https://github.com/lc-labs/register"
+      to="https://github.com/reserve-protocol/register"
       target="_blank"
       style={{ all: 'unset', cursor: 'pointer' }}
     >
@@ -118,18 +118,19 @@ const About = () => (
       </Text>
       <Text mt={2} as="p" variant="legend">
         <Trans>
-          Register is an open source project developed and maintained by LC Labs
-          as the first dApp to interact with the Reserve Protocol and various
-          RTokens deployed with the platform.
+          Register is an open source project developed and maintained by ABC
+          Labs as the first dApp to interact with the Reserve Protocol and
+          various RTokens deployed with the platform.
         </Trans>
       </Text>
       <Text mt={2} as="p" variant="legend">
         <Trans>
-          If an RToken is listed on Register, it doesn't mean that Reserve or LC
-          Labs endorses the safety or risk levels of the RToken. LC Labs
-          requires Github requests with additional information beyond what is
-          available on the blockchain to give users relevant data to make
-          informed decisions. As a user, please evaluate any new RToken
+          If an RToken is listed on Register, it doesn't mean that ABC Labs
+          endorses the safety or risk levels of the RToken or that ABC Labs was
+          involved in the creation of or is in anyway responsible for the
+          RToken. ABC Labs requires Github requests with additional information
+          beyond what is available on the blockchain to give users relevant data
+          to make informed decisions. As a user, please evaluate any new RToken
           carefully before holding or staking your RSR on them.
         </Trans>
       </Text>
@@ -140,15 +141,15 @@ const About = () => (
       </Text>
       <Text mt={2} as="p" variant="legend">
         <Trans>
-          LC Labs uses industry standard anonymized analytics tools to
-          understand usage and improve the user experience. LC labs does not
+          ABC Labs uses industry standard anonymized analytics tools to
+          understand usage and improve the user experience. ABC Labs does not
           collect any information about users or their financial activity.
         </Trans>
       </Text>
       <Text mt={2} as="p" variant="legend">
         <Trans>
-          Please keep in mind that interactions with the Ethereum blockchain are
-          pseudonymous and publicly available.
+          Please keep in mind that interactions with the Ethereum or Base
+          blockchains are pseudonymous and publicly available.
         </Trans>
       </Text>
     </Box>
@@ -182,9 +183,9 @@ const RegisterAbout = () => (
         <Link
           sx={{ display: 'block', fontSize: 1 }}
           target="_blank"
-          href="https://github.com/lc-labs"
+          href="https://www.abclabs.co/"
         >
-          <Text>Made by LC Labs</Text>
+          <Text>Made by ABC Labs</Text>
         </Link>
       </Box>
     </Box>

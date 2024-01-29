@@ -23,6 +23,7 @@ const IMGS = new Set([
   'cusdt',
   'usdc',
   'cusdc',
+  'usdbc',
   'usdp',
   'wbtc',
   'cwbtc',
@@ -57,6 +58,7 @@ const IMGS = new Set([
   'crv',
   'cvx',
   'comp',
+  'mkusd',
 ])
 
 const TokenLogo = ({
