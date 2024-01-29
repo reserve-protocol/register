@@ -1,4 +1,4 @@
-import { Token } from 'types'
+import { Token, Trader } from 'types'
 import { EUSD_ADDRESS, RSR_ADDRESS } from './addresses'
 import { ChainId } from './chains'
 import rtokens from '@lc-labs/rtokens'
@@ -197,4 +197,12 @@ for (const chain of supportedChainList) {
   LISTED_RTOKEN_ADDRESSES[chain] = [
     ...Object.keys(rtokens[chain]).map((s) => s.toLowerCase()),
   ]
+}
+
+export const TRADERS: Trader[] = ['backingManager', 'rsrTrader', 'rTokenTrader']
+
+export const TraderLabels: Record<Trader, string> = {
+  backingManager: 'Backing Manager',
+  rsrTrader: 'RSR Trader',
+  rTokenTrader: 'RToken Trader',
 }

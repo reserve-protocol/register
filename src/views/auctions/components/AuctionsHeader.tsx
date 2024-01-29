@@ -7,7 +7,6 @@ import { Box, Text } from 'theme-ui'
 import { ToggleButton } from '../../../components/ToggleButton'
 import { TradeKind, auctionPlatformAtom, auctionSidebarAtom } from '../atoms'
 
-// TODO: When tokens upgrade to 3.0, default to dutch auctions
 const AuctionsHeader = () => {
   const toggleSidebar = useSetAtom(auctionSidebarAtom)
   const contracts = useAtomValue(rTokenContractsAtom)
@@ -42,7 +41,7 @@ const AuctionsHeader = () => {
         </>
       )}
 
-      <Button ml="auto" mr={3} variant="muted" small onClick={toggleSidebar}>
+      <Button ml="auto" mr={3} small onClick={toggleSidebar}>
         <Text>
           <Trans>Check for auctions</Trans>
         </Text>

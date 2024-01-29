@@ -7,7 +7,6 @@ import {
   rTokenAssetsAtom,
   rTokenAtom,
   rTokenContractsAtom,
-  rTokenPriceAtom,
 } from 'state/atoms'
 import { publicClient } from 'state/chain'
 import { Token } from 'types'
@@ -19,6 +18,7 @@ import {
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { Address, formatEther, formatUnits, zeroAddress } from 'viem'
 import { readContracts } from 'wagmi/actions'
+import { Claimable } from './auctions-sidebar/claim-rewards/types'
 
 export interface Auction {
   sell: Token
@@ -63,7 +63,10 @@ export interface Trade {
   worstCasePrice: number
 }
 
-export const tradesAtom = atom<{ current: Trade[]; ended: Trade[] }>({
+export const tradesAtom = atom<{
+  current: Trade[]
+  ended: Trade[]
+}>({
   current: [],
   ended: [],
 })
@@ -156,6 +159,12 @@ export const auctionsToSettleAtom = atomWithLoadable(
   }
 )
 
+// Sort for auctions
+const sort = (
+  a: Partial<{ amountUsd: number }>,
+  b: Partial<{ amountUsd: number }>
+) => (b.amountUsd ?? 0) - (a.amountUsd ?? 0)
+
 // TODO: This can be executed from the global context to display the number of auctions available
 export const auctionsOverviewAtom = atomWithLoadable(
   async (
@@ -164,9 +173,12 @@ export const auctionsOverviewAtom = atomWithLoadable(
     availableAuctionRevenue: number
     unavailableAuctionRevenue: number
     pendingToMelt: number
+    pendingToMeltUsd: number
+    pendingEmissions: number
     availableAuctions: Auction[]
     unavailableAuctions: Auction[]
     recollaterization: Auction | null
+    claimableEmissions: Claimable[]
   } | null> => {
     get(auctionSessionAtom) // just for refresh sake
     const contracts = get(rTokenContractsAtom)
@@ -234,9 +246,17 @@ export const auctionsOverviewAtom = atomWithLoadable(
 
     const availableAuctions: Auction[] = []
     const unavailableAuctions: Auction[] = []
+    const claimableEmissions: Claimable[] = []
     let availableAuctionRevenue = 0
     let unavailableAuctionRevenue = 0
+    let pendingEmissions = 0
     const pendingToMelt = Number(formatEther(rTokenRevenueOverview[2][0]))
+    const pendingToMeltUsd = pendingToMelt * assets[rToken.address].priceUsd
+
+    // for easy use
+    const bmRewards = rsrRevenueOverview[4]
+    const rsrTraderRewards = rsrRevenueOverview[5]
+    const rTokenTraderRewards = rTokenRevenueOverview[5]
 
     for (let i = 0; i < rsrRevenueOverview[0].length; i++) {
       const erc20 = rsrRevenueOverview[0][i]
@@ -249,6 +269,32 @@ export const auctionsOverviewAtom = atomWithLoadable(
         rTokenRevenueOverview[2][i],
         asset.token.decimals
       )
+
+      if (bmRewards[i] || rsrTraderRewards[i] || rTokenTraderRewards[i]) {
+        const backingManager = Number(
+          formatUnits(bmRewards[i], asset.token.decimals)
+        )
+        const rsrTrader = Number(
+          formatUnits(rsrTraderRewards[i], asset.token.decimals)
+        )
+        const rTokenTrader = Number(
+          formatUnits(rTokenTraderRewards[i], asset.token.decimals)
+        )
+        const amount = backingManager + rsrTrader + rTokenTrader
+        const amountUsd = amount * asset.priceUsd
+
+        // add to total
+        pendingEmissions += amountUsd
+
+        claimableEmissions.push({
+          asset,
+          backingManager,
+          rsrTrader,
+          rTokenTrader,
+          amount,
+          amountUsd,
+        })
+      }
 
       if (asset.token.address !== RSR_ADDRESS[chainId]) {
         const auction = {
@@ -303,10 +349,10 @@ export const auctionsOverviewAtom = atomWithLoadable(
       }
     }
 
-    const sort = (a: Auction, b: Auction) =>
-      (b.amountUsd ?? 0) - (a.amountUsd ?? 0)
+    // Sort arrays
     availableAuctions.sort(sort)
     unavailableAuctions.sort(sort)
+    claimableEmissions.sort(sort)
 
     return {
       availableAuctions,
@@ -314,6 +360,9 @@ export const auctionsOverviewAtom = atomWithLoadable(
       availableAuctionRevenue,
       unavailableAuctionRevenue,
       pendingToMelt,
+      pendingToMeltUsd,
+      pendingEmissions,
+      claimableEmissions,
       recollaterization: recollaterizationAuction,
     }
   }
