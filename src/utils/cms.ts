@@ -52,7 +52,7 @@ export default {
       symbol: "stkcvxeUSD3CRV-f",
       chain: 1,
       project: "CONVEX",
-      color: "#7f7f7f",
+      color: `url(#stkcvxeusd3crv-f)`,
       logo: "svgs/stkcvxeusd3crv-f.svg",
       tokenDistribution: [
         {
@@ -87,7 +87,7 @@ export default {
       symbol: "fUSDC",
       chain: 1,
       project: "FLUX",
-      color: "#2775CA",
+      color: "#2C2C2C",
       logo: "svgs/fusdc.svg",
       tokenDistribution: [{ token: "USDC", distribution: 1 }]
     },
@@ -119,7 +119,7 @@ export default {
       symbol: "wsgUSDbC",
       chain: 8453,
       project: "STARGATE",
-      color: "#2775CA",
+      color: "#999999",
       logo: "svgs/usdc.svg",
       tokenDistribution: [{ token: "USDC", distribution: 1 }]
     },
@@ -154,7 +154,7 @@ export default {
     {
       name: "CONVEX",
       label: "Curve Convex LP",
-      color: "#373737",
+      color: "#16280B",
       logo: "svgs/convex.svg"
     },
     {

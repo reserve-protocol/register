@@ -61,6 +61,19 @@ const CollateralChart: FC<ChartProps> = ({
         </Box>
         <ResponsiveContainer height={180} width={180}>
           <PieChart style={{ cursor: 'pointer' }}>
+            <defs>
+              <linearGradient
+                id="stkcvxeusd3crv-f"
+                x1="10%"
+                y1="0%"
+                x2="100%"
+                y2="100%"
+              >
+                <stop offset="0%" stopColor="#3E73C4" />
+                <stop offset="50%" stopColor="#000000" />
+                <stop offset="100%" stopColor="#000000" />
+              </linearGradient>
+            </defs>
             <Pie
               data={filteredData}
               dataKey="value"
