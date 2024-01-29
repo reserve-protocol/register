@@ -79,7 +79,7 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
           logo: cmsCollateral?.logo,
           project: cmsProject?.label || 'GENERIC',
           projectLogo: cmsProject?.logo,
-          token: cmsCollateral?.token,
+          tokenDistribution: cmsCollateral?.tokenDistribution || [],
         }
       }),
     []
@@ -87,12 +87,14 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
 
   const collateralItems = useMemo(
     () =>
-      chartData.map(({ name, value, logo }) => ({
-        key: name,
-        name,
-        logo,
-        value,
-      })),
+      chartData
+        .map(({ name, value, logo }) => ({
+          key: name,
+          name,
+          logo,
+          value,
+        }))
+        .sort((a, b) => b.value - a.value),
     [chartData]
   )
 
@@ -114,13 +116,21 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
             return acc
           }
           return acc.concat(current as ItemProps)
-        }, [] as ItemProps[]),
+        }, [] as ItemProps[])
+        .sort((a, b) => b.value - a.value),
     [chartData]
   )
 
   const tokenItems = useMemo(
     () =>
       chartData
+        .flatMap(({ name, tokenDistribution, value }) =>
+          tokenDistribution.map(({ token, distribution }) => ({
+            name,
+            token,
+            value: distribution * value,
+          }))
+        )
         .map(({ name, token, value }) => ({
           key: name,
           name: token,
@@ -136,7 +146,8 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
             return acc
           }
           return acc.concat(current as ItemProps)
-        }, [] as ItemProps[]),
+        }, [] as ItemProps[])
+        .sort((a, b) => b.value - a.value),
     [chartData]
   )
 
