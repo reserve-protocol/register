@@ -1,5 +1,4 @@
 import { atom } from 'jotai'
-import { rpayOverviewAtom } from 'state/atoms'
 import { supportedChainList } from 'utils/constants'
 
 // TODO: Remove @deprecated
@@ -22,7 +21,6 @@ export const protocolMetricsAtom = atom<ProtocolMetricsOverview | null>(null)
 
 export const aggregatedProtocolMetricsAtom = atom((get) => {
   const protocolMetrics = get(protocolMetricsAtom)
-  const rpay = get(rpayOverviewAtom)
   const aggregatedMetrics = {
     totalRTokenMarketUsd: 0,
     tvl: 0,
@@ -52,12 +50,6 @@ export const aggregatedProtocolMetricsAtom = atom((get) => {
     aggregatedMetrics.dailyTransactionCount +=
       protocolMetrics[chain].dailyTransactionCount
   }
-
-  // Aggregate rpay metrics
-  aggregatedMetrics.volume += rpay.volume
-  aggregatedMetrics.transactionCount += rpay.txCount
-  aggregatedMetrics.dailyTransactionCount += rpay.dayTxCount
-  aggregatedMetrics.dailyVolume += rpay.dayVolume
 
   return aggregatedMetrics
 })

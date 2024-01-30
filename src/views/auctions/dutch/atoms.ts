@@ -11,4 +11,5 @@ export interface DutchTrade extends Trade {
 }
 
 export const ongoingDutchTradesAtom = atom<DutchTrade[]>([])
+export const pendingDutchTradesAtom = atom<DutchTrade[]>([])
 export const endedDutchTradesAtom = atom<DutchTrade[]>([])

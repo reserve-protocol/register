@@ -56,6 +56,7 @@ const useColumns = (ended = false) => {
         ),
       }),
       columnHelper.accessor('id', {
+        header: '',
         cell: (data) => {
           const setSidebar = useSetAtom(auctionSidebarAtom)
           const chainId = useAtomValue(chainIdAtom)

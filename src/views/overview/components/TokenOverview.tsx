@@ -41,14 +41,6 @@ const TokenOverview = ({ metrics, ...props }: Props) => {
 
   return (
     <Box {...props}>
-      {isRSV ? (
-        <ContentHead
-          mb={[3, 6]}
-          title={t`Overview`}
-          subtitle={t`Here you can find usage data about RSV, which is used to mostly be used in the Rpay app. Usage data includes off-chain data from before the migration on March 22, 2023 that as been anonymized to protect user privacy. This page will likely be removed from Register in the future.`}
-        />
-      ) : undefined}
-
       <Flex sx={{ flexDirection: 'column' }}>
         <Flex
           sx={{

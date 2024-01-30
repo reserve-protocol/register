@@ -1,13 +1,10 @@
-import { t, Trans } from '@lingui/macro'
-import { Button } from 'components'
-import ChevronRight from 'components/icons/ChevronRight'
+import { Trans } from '@lingui/macro'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'
 import { ListedToken } from 'hooks/useTokenList'
 import { memo, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import { Box, BoxProps, Divider, Text } from 'theme-ui'
-import { ROUTES } from 'utils/constants'
 import CollateralPieChartTooltip from 'views/overview/components/CollateralPieChartTooltip'
 
 interface Props extends BoxProps {
@@ -55,7 +52,7 @@ const MobileCollateralInfo = ({ token }: Props) => {
           </Text>
         </Box>
         <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-          <Text variant="strong" color="#333333">
+          <Text variant="strong" color="text">
             {(token.backing + token.overcollaterization).toFixed(0)}%
           </Text>
           {collapsed ? (
