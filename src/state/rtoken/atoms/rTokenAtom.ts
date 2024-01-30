@@ -45,7 +45,7 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
     }
 
     const logo = rtokens[rTokenAddress]?.logo
-      ? `/svgs/${rtokens[rTokenAddress].logo}`
+      ? `/svgs/${rtokens[rTokenAddress].logo?.toLowerCase()}`
       : '/svgs/defaultLogo.svg'
 
     const rTokenMetaCalls = [
