@@ -1,7 +1,7 @@
 import PreloadComponent, { LazyComponent } from 'components/lazy-component'
 import { lazy } from 'react'
 import { lazyWithPreload } from 'react-lazy-with-preload'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes, ScrollRestoration } from 'react-router-dom'
 import RTokenContainer from 'state/rtoken/RTokenContainer'
 import { Box } from 'theme-ui'
 import { ROUTES } from 'utils/constants'

@@ -5,7 +5,14 @@ import { selectedRTokenAtom } from 'state/atoms'
 import { Flex, Spinner } from 'theme-ui'
 
 const Fallback = () => (
-  <Flex sx={{ justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+  <Flex
+    sx={{
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      height: '80vh',
+    }}
+  >
     <Spinner size={24} />
   </Flex>
 )

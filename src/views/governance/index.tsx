@@ -6,7 +6,7 @@ import TopVoters from './components/TopVoters'
 const Governance = () => (
   <Box variant="layout.wrapper">
     <Grid
-      columns={[1, 1, '2fr 1.5fr']}
+      columns={[1, 1, 1, '2fr 1.5fr']}
       gap={[3, 5]}
       padding={[1, 5]}
       sx={{

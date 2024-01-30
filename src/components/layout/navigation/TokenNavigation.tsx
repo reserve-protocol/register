@@ -6,12 +6,9 @@ import ManagerIcon from 'components/icons/ManagerIcon'
 import StakeIcon from 'components/icons/StakeIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import useRToken from 'hooks/useRToken'
-import { useAtomValue } from 'jotai'
-import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import { NavLink } from 'react-router-dom'
 import { Box, Flex, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
-import { getTokenRoute } from 'utils'
 
 interface NavigationItem {
   icon: any
@@ -62,56 +59,71 @@ const navigation: NavigationItem[] = [
 const NavItem = ({ icon, label, route }: NavigationItem) => {
   return (
     <NavLink
-      style={({ isActive }) => ({
+      style={{
         marginBottom: '4px',
         textDecoration: 'none',
-        backgroundColor: isActive ? 'red' : 'white',
-        color: isActive ? '#2150A9' : 'inherit',
-      })}
+        display: 'block',
+      }}
       to={route}
-      // sx={{
-      //   cursor: 'pointer',
-      //   borderRadius: '8px',
-      //   ':hover': { backgroundColor: 'border' },
-      // }}
     >
-      <Box variant="layout.verticalAlign" p="2">
-        <Flex
+      {({ isActive }) => (
+        <Box
+          variant="layout.verticalAlign"
+          p={[3, 2]}
           sx={{
-            width: '20px',
-            fontSize: 3,
-            justifyContent: 'center',
-            color: 'text',
+            textDecoration: 'none',
+            backgroundColor: isActive ? 'contentBackground' : 'background',
+            borderRadius: '8px',
+            color: isActive ? 'accent' : 'text',
           }}
         >
-          {icon}
-        </Flex>
-        <Text sx={{ fontWeight: 700 }} ml="2">
-          {label}
-        </Text>
-      </Box>
+          <Flex
+            sx={{
+              width: '20px',
+              fontSize: 3,
+              justifyContent: 'center',
+              color: 'text',
+            }}
+          >
+            {icon}
+          </Flex>
+          <Text sx={{ fontWeight: 700, display: ['none', 'block'] }} ml="2">
+            {label}
+          </Text>
+        </Box>
+      )}
     </NavLink>
   )
 }
 
-const TokenNavigation = () => {
-  return (
+const TokenNavigation = () => (
+  <Box
+    sx={{
+      width: ['100%', '200px'],
+      borderRight: ['none', '1px solid'],
+      borderTop: ['1px solid', 'none'],
+      borderColor: ['border', 'border'],
+      position: ['fixed', 'relative'],
+      bottom: [0, undefined],
+      flexShrink: 0,
+      zIndex: 1,
+      backgroundColor: ['background', 'none'],
+    }}
+  >
     <Box
       sx={{
-        width: '200px',
-        borderRight: '1px solid',
-        borderColor: 'border',
-        position: 'relative',
-        flexShrink: 0,
+        position: 'sticky',
+        top: 0,
+        display: ['flex', 'block'],
+        justifyContent: ['space-evenly', 'none'],
       }}
+      padding={[2, 3]}
     >
-      <Box sx={{ position: 'sticky', top: 0 }} padding={[16]}>
-        {navigation.map((props) => (
-          <NavItem key={props.route} {...props} />
-        ))}
-      </Box>
+      {navigation.map((props) => (
+        <NavItem key={props.route} {...props} />
+      ))}
     </Box>
-  )
-}
+  </Box>
+)
 
 export default TokenNavigation
