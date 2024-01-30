@@ -29,7 +29,7 @@ const InfoBox = ({ title, subtitle, light, ...props }: Props) => (
     </Text>
     <Text
       variant={light ? 'primary' : 'legend'}
-      as="p"
+      // as={typeof subtitle === 'string' ? 'p' : 'span'}
       sx={{ fontSize: light ? 2 : 1 }}
     >
       {subtitle}
@@ -133,7 +133,7 @@ export const Info = ({ title, subtitle, icon = null, ...props }: InfoProps) => (
       <Text variant="subtitle" sx={{ fontSize: 1, display: 'block' }} mb={1}>
         {title}
       </Text>
-      <Text as="p">{subtitle}</Text>
+      <Text as={typeof subtitle === 'string' ? 'p' : 'span'}>{subtitle}</Text>
     </Box>
   </Box>
 )

@@ -31,7 +31,7 @@ interface GasEstimateLabelProps {
   gas: GasEstimation
 }
 
-const GasEstimateLabel = ({ gas, ...props }: GasEstimateLabelProps) => (
+export const GasEstimateLabel = ({ gas, ...props }: GasEstimateLabelProps) => (
   <Box mt={3} sx={{ fontSize: 1, textAlign: 'center' }}>
     <Text variant="legend" mr={1}>
       <Trans>Estimated gas cost:</Trans>

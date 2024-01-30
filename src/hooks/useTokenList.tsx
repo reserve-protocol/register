@@ -3,14 +3,8 @@ import { RevenueSplit } from 'components/rtoken-setup/atoms'
 import { gql } from 'graphql-request'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
-import {
-  chainIdAtom,
-  collateralYieldAtom,
-  rpayOverviewAtom,
-  rsrPriceAtom,
-} from 'state/atoms'
+import { chainIdAtom, collateralYieldAtom, rsrPriceAtom } from 'state/atoms'
 import { formatDistribution } from 'state/rtoken/atoms/rTokenRevenueSplitAtom'
-import { EUSD_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import {
   LISTED_RTOKEN_ADDRESSES,
@@ -86,7 +80,6 @@ const tokenListQuery = gql`
 
 const useTokenList = () => {
   const [list, setList] = useAtom(tokenListAtom)
-  const rpayOverview = useAtomValue(rpayOverviewAtom)
   const fromTime = useTimeFrom(TIME_RANGES.MONTH)
   const chainId = useAtomValue(chainIdAtom)
   const collateralYield = useAtomValue(collateralYieldAtom)
@@ -183,9 +176,6 @@ const useTokenList = () => {
               tokenData.transactionCount += RSVOverview.txCount
               tokenData.cumulativeVolume += RSVOverview.volume
               tokenData.targetUnits = 'USD'
-            } else if (token.id === EUSD_ADDRESS[chainId]?.toLowerCase()) {
-              tokenData.transactionCount += rpayOverview.txCount
-              tokenData.cumulativeVolume += rpayOverview.volume
             }
 
             return tokenData
