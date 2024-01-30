@@ -11,7 +11,7 @@ import { rTokenPriceAtom } from 'state/atoms'
 import { Badge, Box, BoxProps, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { TIME_RANGES } from 'utils/constants'
-import usePriceInToken from 'views/home/hooks/usePriceInToken'
+import usePriceETH from 'views/home/hooks/usePriceETH'
 
 const hourlyPriceQuery = gql`
   query getTokenHourlyPrice($id: String!, $fromTime: Int!) {
@@ -45,7 +45,7 @@ const PriceChart = (props: BoxProps) => {
   const [current, setCurrent] = useState(TIME_RANGES.MONTH)
   const [currentPrice, setCurrentPrice] = useState<'ETH' | 'USD'>('USD')
   const price = useAtomValue(rTokenPriceAtom)
-  const { priceInToken } = usePriceInToken({
+  const { priceETHTerms } = usePriceETH({
     id: rToken?.address,
     chain: rToken?.chainId,
     supply: rToken?.supply,
@@ -90,12 +90,12 @@ const PriceChart = (props: BoxProps) => {
   const priceTitle = useMemo(() => {
     if (rToken?.targetUnits === 'ETH') {
       if (currentPrice === 'USD') {
-        return `$${formatCurrency(price, 3)} (${priceInToken} ETH)`
+        return `$${formatCurrency(price, 3)} (${priceETHTerms} ETH)`
       }
-      return `${priceInToken} ETH ($${formatCurrency(price, 3)})`
+      return `${priceETHTerms} ETH ($${formatCurrency(price, 3)})`
     }
     return `$${formatCurrency(price, 3)}`
-  }, [currentPrice, priceInToken, price])
+  }, [currentPrice, priceETHTerms, price])
 
   const handleChange = (range: string) => {
     setCurrent(range)

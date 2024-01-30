@@ -4,7 +4,7 @@ import { useMemo } from "react"
 import { getAddress } from "viem"
 import { useContractReads } from "wagmi"
 
-const usePriceInToken = ({
+const usePriceETH = ({
   id,
   chain,
   price,
@@ -33,21 +33,21 @@ const usePriceInToken = ({
     allowFailure: false,
   })
 
-  const priceInToken = useMemo(() => {
+  const priceETHTerms = useMemo(() => {
     const basketsNeeded = (data as bigint[])?.[0]
     const totalSupply = (data as bigint[])?.[1]
 
     if (!basketsNeeded || !totalSupply) return undefined
 
-    return Number((basketsNeeded * 100n) / totalSupply) / 100
+    return Number((basketsNeeded * 1000n) / totalSupply) / 1000
   }, [data])
 
-  const supplyInToken = useMemo(() => {
-    if (!priceInToken || !supply || !price) return undefined
-    return (supply / price) * priceInToken
-  }, [priceInToken, supply])
+  const supplyETHTerms = useMemo(() => {
+    if (!priceETHTerms || !supply || !price) return undefined
+    return (supply / price) * priceETHTerms
+  }, [priceETHTerms, supply])
 
-  return { priceInToken, supplyInToken }
+  return { priceETHTerms, supplyETHTerms }
 }
 
-export default usePriceInToken
+export default usePriceETH
