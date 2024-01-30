@@ -51,6 +51,7 @@ const PriceChart = (props: BoxProps) => {
     supply: rToken?.supply,
     price,
     targetUnits: rToken?.targetUnits,
+    basketsNeeded: rToken?.basketsNeeded,
   })
   const fromTime = useTimeFrom(current)
   const query = current === TIME_RANGES.DAY ? hourlyPriceQuery : dailyPriceQuery

@@ -58,6 +58,7 @@ const AssetOverview = () => {
     supply: rToken?.supply,
     price,
     targetUnits: rToken?.targetUnits,
+    basketsNeeded: rToken?.basketsNeeded,
   })
   const collateralStatus = useAtomValue(rTokenCollateralStatusAtom)
   const pieData = useMemo(() => {

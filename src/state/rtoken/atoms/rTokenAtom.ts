@@ -54,6 +54,7 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       { ...rTokenCallParams, functionName: 'main' },
       { ...rTokenCallParams, functionName: 'mandate' },
       { ...rTokenCallParams, functionName: 'totalSupply' },
+      { ...rTokenCallParams, functionName: 'basketsNeeded' },
       {
         ...facadeCallParams,
         functionName: 'basketTokens',
@@ -75,11 +76,12 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       mainAddress,
       mandate,
       totalSupply,
+      basketsNeededRaw,
       basket,
       stTokenAddress,
-      [erc20s, uoaShares, targets],
+      [,, targets],
     ] = await (<
-      Promise<[string, string, number, Address, string, string, Address[], Address, Address[][]]>
+      Promise<[string, string, number, Address, string, string, bigint, Address[], Address, Address[][]]>
       >readContracts({
         contracts: rTokenMetaCalls,
         allowFailure: false,
@@ -115,6 +117,7 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
     )
 
     const supply = Number(formatEther(BigInt(totalSupply)))
+    const basketsNeeded = Number(formatEther(BigInt(basketsNeededRaw)))
     const targetUnits = [...new Set(targets.map((t) => hexToString(t, { size: 32 })))].join('')
 
     return {
@@ -130,6 +133,7 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       listed: !!rtokens[rTokenAddress],
       chainId,
       supply,
+      basketsNeeded,
       targetUnits
     }
   }
