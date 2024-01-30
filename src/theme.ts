@@ -554,5 +554,9 @@ export const theme: Theme = {
       width: '4px',
       backgroundColor: 'lightText',
     },
+    tokenView: {
+      width: '100%',
+      p: [1, 6],
+    },
   },
 }

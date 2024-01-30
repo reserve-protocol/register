@@ -1,5 +1,4 @@
 import { Grid } from 'theme-ui'
-import NavigationSidebar from './components/NavigationSidebar'
 import RTokenOverview from './components/RTokenOverview'
 
 const Settings = () => {
@@ -7,8 +6,7 @@ const Settings = () => {
     <Grid
       columns={['1fr']}
       gap={5}
-      px={[2, 4, 7]}
-      pt={[2, 4, 6]}
+      p={[1, 6]}
       sx={{
         position: 'relative',
         justifyContent: 'center',

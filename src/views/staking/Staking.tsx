@@ -7,7 +7,7 @@ import Unstake from './components/unstake'
 import Updater from './Updater'
 
 const Staking = () => (
-  <Box sx={{ width: '100%' }} p={4}>
+  <Box variant="layout.tokenView">
     <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[3, 5]}>
       <Box>
         <Grid columns={[1, 2]} gap={[1, 4]} mb={[1, 4]}>
