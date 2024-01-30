@@ -7,6 +7,7 @@ import { getTokenReadCalls, isAddress } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import RSV from 'utils/rsv'
+import { formatEther, hexToString } from 'viem'
 import { Address } from 'wagmi'
 import { readContracts } from 'wagmi/actions'
 
@@ -52,6 +53,7 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       ...getTokenReadCalls(rTokenAddress),
       { ...rTokenCallParams, functionName: 'main' },
       { ...rTokenCallParams, functionName: 'mandate' },
+      { ...rTokenCallParams, functionName: 'totalSupply' },
       {
         ...facadeCallParams,
         functionName: 'basketTokens',
@@ -59,6 +61,10 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       {
         ...facadeCallParams,
         functionName: 'stToken',
+      },
+      {
+        ...facadeCallParams,
+        functionName: 'basketBreakdown',
       },
     ].map((call) => ({ ...call, chainId }))
 
@@ -68,10 +74,12 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       decimals,
       mainAddress,
       mandate,
+      totalSupply,
       basket,
       stTokenAddress,
+      [erc20s, uoaShares, targets],
     ] = await (<
-      Promise<[string, string, number, Address, string, Address[], Address]>
+      Promise<[string, string, number, Address, string, string, Address[], Address, Address[][]]>
       >readContracts({
         contracts: rTokenMetaCalls,
         allowFailure: false,
@@ -106,6 +114,9 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       [] as Token[]
     )
 
+    const supply = Number(formatEther(BigInt(totalSupply)))
+    const targetUnits = [...new Set(targets.map((t) => hexToString(t, { size: 32 })))].join('')
+
     return {
       address: rTokenAddress,
       name,
@@ -118,6 +129,8 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       collaterals: tokens,
       listed: !!rtokens[rTokenAddress],
       chainId,
+      supply,
+      targetUnits
     }
   }
 )

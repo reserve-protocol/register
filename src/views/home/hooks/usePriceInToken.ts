@@ -4,22 +4,28 @@ import { useMemo } from "react"
 import { getAddress } from "viem"
 import { useContractReads } from "wagmi"
 
-const usePriceInToken = (token: ListedToken) => {
+const usePriceInToken = ({
+  id,
+  chain,
+  price,
+  supply,
+  targetUnits
+}: Partial<Pick<ListedToken,  "id" | "chain" | "price" | "supply" | 'targetUnits'>>) => {
   const { data } = useContractReads({
     contracts: [
-      ...(token.targetUnits === 'ETH'
+      ...(targetUnits === 'ETH' && id && chain
         ? [
             {
-              address: getAddress(token.id),
+              address: getAddress(id),
               abi: RToken,
               functionName: 'basketsNeeded',
-              chainId: token.chain
+              chainId: chain
             },
             {
-              address: getAddress(token.id),
+              address: getAddress(id),
               abi: RToken,
               functionName: 'totalSupply',
-              chainId: token.chain
+              chainId: chain
             },
           ]
         : []),
@@ -37,9 +43,9 @@ const usePriceInToken = (token: ListedToken) => {
   }, [data])
 
   const supplyInToken = useMemo(() => {
-    if (!priceInToken) return undefined
-    return (token.supply / token.price) * priceInToken
-  }, [priceInToken, token.supply])
+    if (!priceInToken || !supply || !price) return undefined
+    return (supply / price) * priceInToken
+  }, [priceInToken, supply])
 
   return { priceInToken, supplyInToken }
 }
