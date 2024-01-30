@@ -78,7 +78,7 @@ const MobileCollateralInfo = ({ token }: Props) => {
         >
           <Divider sx={{ width: '100%' }} />
           <CollateralPieChartTooltip token={token} />
-          <Button
+          {/* <Button
             medium
             onClick={() => handleNavigate(ROUTES.OVERVIEW)}
             variant="transparent"
@@ -94,7 +94,7 @@ const MobileCollateralInfo = ({ token }: Props) => {
               <Text sx={{ fontWeight: 700 }}>{t`Full exposure view`}</Text>
               <ChevronRight />
             </Box>
-          </Button>
+          </Button> */}
         </Box>
       </Box>
     </Box>
