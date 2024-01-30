@@ -57,16 +57,25 @@ const EarnButton = ({ token, sx, ...props }: Props) => {
           variant="layout.verticalAlign"
           sx={{ gap: [1, 2], justifyContent: ['space-between', 'start'] }}
         >
-          <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+          <Box variant="layout.verticalAlign" sx={{ gap: [2, 1] }}>
             <EarnIcon color="currentColor" />
-            <Text>Earn: </Text>
-            <Text
-              ml="1"
-              variant="strong"
-              sx={{ color: 'text', fontWeight: 700 }}
+            <Box
+              variant="layout.verticalAlign"
+              sx={{
+                gap: 1,
+                flexDirection: ['column', 'row'],
+                alignItems: ['start', 'center'],
+              }}
             >
-              {earnData.maxApy.toFixed(0)}% APY
-            </Text>
+              <Text>Earn: </Text>
+              <Text
+                ml={[0, 1]}
+                variant="strong"
+                sx={{ color: 'text', fontWeight: 700 }}
+              >
+                {earnData.maxApy.toFixed(0)}% APY
+              </Text>
+            </Box>
           </Box>
           <Box sx={{ display: ['none', 'block'] }}>
             <ChevronRight color="currentColor" />
