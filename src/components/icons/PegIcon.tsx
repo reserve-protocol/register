@@ -15,11 +15,11 @@ const PegIcon = (props: SVGProps<SVGSVGElement>) => (
       width="13.4167"
       height="13.4167"
       rx="6.70833"
-      stroke="black"
+      stroke="currentColor"
       strokeWidth="0.583333"
       strokeDasharray="1.17 1.17"
     />
-    <rect x="6" y="5.99902" width="4" height="4" rx="2" fill="black" />
+    <rect x="6" y="5.99902" width="4" height="4" rx="2" fill="currentColor" />
   </svg>
 )
 

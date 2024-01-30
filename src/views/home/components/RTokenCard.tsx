@@ -236,7 +236,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
                   <Text variant="legend">
                     <Trans>Backing + Overcollaterization:</Trans>
                   </Text>
-                  <Text variant="strong" color="#333333">
+                  <Text variant="strong" color="text">
                     {(token.backing + token.overcollaterization).toFixed(0)}%
                   </Text>
                 </Box>
