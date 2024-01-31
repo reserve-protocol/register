@@ -6,7 +6,7 @@ import { ChevronDown, ChevronUp } from 'react-feather'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { selectedRTokenAtom } from 'state/atoms'
 import { Box, BoxProps } from 'theme-ui'
-import { CHAIN_TO_NETWORK } from 'utils/constants'
+import { CHAIN_TO_NETWORK, ROUTES } from 'utils/constants'
 import SelectedToken from './SelectedToken'
 import TokenList from './TokenList'
 
@@ -32,7 +32,9 @@ const RTokenSelector = (props: BoxProps) => {
         //     selected ? location.pathname : ROUTES.OVERVIEW
         //   }?token=${token}&chainId=${chain}`
         // )
-        navigate(`/${CHAIN_TO_NETWORK[chain]}/token/${token}`)
+        navigate(
+          `/${CHAIN_TO_NETWORK[chain]}/token/${token}/${ROUTES.OVERVIEW}`
+        )
         setVisible(false)
       }
     },

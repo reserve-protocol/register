@@ -117,7 +117,7 @@ const TokenMandate = () => {
 
 const Hero = () => {
   return (
-    <Grid p={[1, 6]} gap={6} columns={[1, 1, 2]}>
+    <Grid gap={6} columns={[1, 1, 2]}>
       <TokenStats />
       <TokenMandate />
     </Grid>

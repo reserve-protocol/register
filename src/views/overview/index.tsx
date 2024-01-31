@@ -25,7 +25,7 @@ const Overview = () => {
   }, [])
 
   return (
-    <Box>
+    <Box variant="layout.tokenView">
       <Hero />
       {/* <TokenOverview mt={[3, 6]} ml={3} metrics={rTokenMetrics} />
       <Divider {...dividerProps} />

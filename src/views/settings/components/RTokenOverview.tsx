@@ -1,5 +1,5 @@
+import SectionContainer from 'components/section-navigation/SectionContainer'
 import SectionWrapper from 'components/section-navigation/SectionWrapper'
-import { Box } from 'theme-ui'
 import BackingInfo from './BackingInfo'
 import BasicInfo from './BasicInfo'
 import BasketInfo from './BasketInfo'
@@ -7,11 +7,11 @@ import ContractsInfo from './ContractsInfo'
 import EmergencyCollateralInfo from './EmergencyCollateralInfo'
 import GovernanceInfo from './GovernanceInfo'
 import OtherInfo from './OtherInfo'
-import RevenueSplitInfo from './RevenueSplitInfo'
 import RTokenManagement from './RTokenManagement'
+import RevenueSplitInfo from './RevenueSplitInfo'
 
 const RTokenOverview = () => (
-  <Box>
+  <SectionContainer>
     <SectionWrapper navigationIndex={0}>
       <RTokenManagement />
     </SectionWrapper>
@@ -39,7 +39,7 @@ const RTokenOverview = () => (
     <SectionWrapper navigationIndex={8} mt={4} mb={[0, 7]}>
       <ContractsInfo />
     </SectionWrapper>
-  </Box>
+  </SectionContainer>
 )
 
 export default RTokenOverview

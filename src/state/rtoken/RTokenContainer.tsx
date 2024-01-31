@@ -1,6 +1,6 @@
 import TokenNavigation from 'components/layout/navigation/TokenNavigation'
 import useRTokenContext from 'hooks/useRTokenContext'
-import { Outlet, ScrollRestoration } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import { Box } from 'theme-ui'
 
 const RTokenContainer = () => {
