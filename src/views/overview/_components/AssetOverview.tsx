@@ -14,7 +14,7 @@ import { Box, Card, Flex, Grid, Text } from 'theme-ui'
 import { formatCurrency, stringToColor } from 'utils'
 import { COLLATERAL_STATUS } from 'utils/constants'
 import RSV from 'utils/rsv'
-import CollateralPieChart from './CollateralPieChart'
+import CollateralPieChart from '../components/CollateralPieChart'
 import cms from 'utils/cms'
 import usePriceETH from 'views/home/hooks/usePriceETH'
 
