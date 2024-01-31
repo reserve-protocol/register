@@ -36,6 +36,7 @@ export interface ListedToken {
   distribution: RevenueSplit
   collaterals: { id: string; symbol: string }[]
   collateralDistribution: Record<string, { dist: string; target: string }>
+  rsrStaked: number
 }
 
 // TODO: Cache only while the list is short
@@ -161,10 +162,13 @@ const useTokenList = () => {
               overcollaterization: supply ? (stakeUsd / supply) * 100 : 0,
               stakingApy,
               chain,
-              logo: `/svgs/${rtokens[chain][getAddress(token.id)].logo}`,
+              logo: `/svgs/${rtokens[chain][
+                getAddress(token.id)
+              ].logo?.toLowerCase()}`,
               distribution: revenueSplit,
               collaterals,
               collateralDistribution: distribution,
+              rsrStaked: Number(formatEther(token?.rToken?.rsrStaked ?? '0')),
             }
 
             // RSV Data

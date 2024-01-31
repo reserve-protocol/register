@@ -6,8 +6,8 @@ const useRTokenLogo = (
   address: string | undefined,
   chain = ChainId.Mainnet
 ): string => {
-  if (address && rtokens[chain][address]?.logo) {
-    return `/svgs/${rtokens[chain][address].logo}`
+  if (address && rtokens[chain][address]?.logo?.toLowerCase()) {
+    return `/svgs/${rtokens[chain][address].logo?.toLowerCase()}`
   }
 
   if (address?.toLowerCase() === RSV.address.toLowerCase()) {

@@ -46,7 +46,7 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
     }
 
     const logo = rtokens[rTokenAddress]?.logo
-      ? `/svgs/${rtokens[rTokenAddress].logo}`
+      ? `/svgs/${rtokens[rTokenAddress].logo?.toLowerCase()}`
       : '/svgs/defaultLogo.svg'
 
     const rTokenMetaCalls = [
@@ -73,10 +73,10 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       stTokenAddress,
     ] = await (<
       Promise<[string, string, number, Address, string, Address[], Address]>
-    >readContracts({
-      contracts: rTokenMetaCalls,
-      allowFailure: false,
-    }))
+      >readContracts({
+        contracts: rTokenMetaCalls,
+        allowFailure: false,
+      }))
 
     const tokensMetaCall = [
       ...getTokenReadCalls(stTokenAddress),
