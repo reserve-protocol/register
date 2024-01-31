@@ -7,7 +7,7 @@ import StakingStats from './StakingStats'
 const Overview = (props: BoxProps) => (
   <Box {...props}>
     <BridgeInfo />
-    <ExchangeRate mt={[3, 4]} />
+    <ExchangeRate />
     <StakingStats mt={[3, 4]} />
     <About mt={[3, 4]} />
   </Box>
