@@ -19,6 +19,7 @@ interface Props extends BoxProps {
   currentRange?: string
   onRangeChange?(range: string): void
   height?: number
+  moreActions?: React.ReactNode
 }
 
 function CustomTooltip({ payload, label, active }: any) {
@@ -46,6 +47,7 @@ const AreaChart = ({
   timeRange,
   onRangeChange,
   height = 100,
+  moreActions,
   ...props
 }: Props) => {
   const gain = useMemo(() => {
@@ -105,25 +107,32 @@ const AreaChart = ({
           <Spinner size={24} />
         </Box>
       )}
-      {!!timeRange && onRangeChange && (
-        <Flex mt={3} sx={{ alignItems: 'center' }}>
-          {Object.values(timeRange).map((range) =>
-            currentRange === range ? (
-              <Badge sx={{ width: '48px', textAlign: 'center' }} key={range}>
-                {range}
-              </Badge>
-            ) : (
-              <Box
-                key={range}
-                sx={{ cursor: 'pointer', width: '48px', textAlign: 'center' }}
-                onClick={() => onRangeChange(range)}
-              >
-                <Text>{range}</Text>
-              </Box>
-            )
-          )}
-        </Flex>
-      )}
+      <Box
+        variant="layout.verticalAlign"
+        mt={3}
+        sx={{ justifyContent: 'space-between' }}
+      >
+        {!!timeRange && onRangeChange && (
+          <Flex sx={{ alignItems: 'center' }}>
+            {Object.values(timeRange).map((range) =>
+              currentRange === range ? (
+                <Badge sx={{ width: '48px', textAlign: 'center' }} key={range}>
+                  {range}
+                </Badge>
+              ) : (
+                <Box
+                  key={range}
+                  sx={{ cursor: 'pointer', width: '48px', textAlign: 'center' }}
+                  onClick={() => onRangeChange(range)}
+                >
+                  <Text>{range}</Text>
+                </Box>
+              )
+            )}
+          </Flex>
+        )}
+        {moreActions}
+      </Box>
     </Box>
   )
 }

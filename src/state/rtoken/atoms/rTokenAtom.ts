@@ -8,6 +8,7 @@ import { FACADE_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { collateralsProtocolMap } from 'utils/plugins'
 import RSV from 'utils/rsv'
+import { formatEther, hexToString } from 'viem'
 import { Address } from 'wagmi'
 import { readContracts } from 'wagmi/actions'
 
@@ -53,6 +54,8 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       ...getTokenReadCalls(rTokenAddress),
       { ...rTokenCallParams, functionName: 'main' },
       { ...rTokenCallParams, functionName: 'mandate' },
+      { ...rTokenCallParams, functionName: 'totalSupply' },
+      { ...rTokenCallParams, functionName: 'basketsNeeded' },
       {
         ...facadeCallParams,
         functionName: 'basketTokens',
@@ -60,6 +63,10 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       {
         ...facadeCallParams,
         functionName: 'stToken',
+      },
+      {
+        ...facadeCallParams,
+        functionName: 'basketBreakdown',
       },
     ].map((call) => ({ ...call, chainId }))
 
@@ -69,10 +76,13 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       decimals,
       mainAddress,
       mandate,
+      totalSupply,
+      basketsNeededRaw,
       basket,
       stTokenAddress,
+      [,, targets],
     ] = await (<
-      Promise<[string, string, number, Address, string, Address[], Address]>
+      Promise<[string, string, number, Address, string, string, bigint, Address[], Address, Address[][]]>
       >readContracts({
         contracts: rTokenMetaCalls,
         allowFailure: false,
@@ -107,6 +117,10 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       [] as Token[]
     )
 
+    const supply = Number(formatEther(BigInt(totalSupply)))
+    const basketsNeeded = Number(formatEther(BigInt(basketsNeededRaw)))
+    const targetUnits = [...new Set(targets.map((t) => hexToString(t, { size: 32 })))].join('')
+
     return {
       address: rTokenAddress,
       name,
@@ -122,6 +136,9 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       })),
       listed: !!rtokens[rTokenAddress],
       chainId,
+      supply,
+      basketsNeeded,
+      targetUnits
     }
   }
 )

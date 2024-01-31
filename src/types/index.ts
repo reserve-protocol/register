@@ -86,6 +86,9 @@ export interface ReserveToken extends Token {
   main?: Address
   mandate?: string
   listed?: boolean
+  supply?: number
+  basketsNeeded?: number
+  targetUnits?: string
   chainId: number
 }
 

@@ -16,6 +16,7 @@ import { COLLATERAL_STATUS } from 'utils/constants'
 import RSV from 'utils/rsv'
 import CollateralPieChart from './CollateralPieChart'
 import cms from 'utils/cms'
+import usePriceETH from 'views/home/hooks/usePriceETH'
 
 const basketDistAtom = atom((get) => {
   const rToken = get(rTokenAtom)
@@ -51,6 +52,14 @@ const AssetOverview = () => {
   const basketDist = useAtomValue(basketDistAtom)
   const distribution = useAtomValue(rTokenBackingDistributionAtom)
   const price = useAtomValue(rTokenPriceAtom)
+  const { priceETHTerms } = usePriceETH({
+    id: rToken?.address,
+    chain: rToken?.chainId,
+    supply: rToken?.supply,
+    price,
+    targetUnits: rToken?.targetUnits,
+    basketsNeeded: rToken?.basketsNeeded,
+  })
   const collateralStatus = useAtomValue(rTokenCollateralStatusAtom)
   const pieData = useMemo(() => {
     if (rToken?.address && basketDist && Object.keys(basketDist)) {
@@ -91,7 +100,9 @@ const AssetOverview = () => {
             <Trans>Target basket of 1 {rToken?.symbol}</Trans>
           </Text>
           <Text sx={{ overflow: 'hidden' }} variant="legend">
-            ${formatCurrency(price ?? 0, 5)}
+            {priceETHTerms
+              ? `${priceETHTerms} ETH ($${formatCurrency(price ?? 0, 5)})`
+              : `$${formatCurrency(price ?? 0, 5)}`}
           </Text>
           <Box sx={{ mx: 'auto' }}>
             <CollateralPieChart

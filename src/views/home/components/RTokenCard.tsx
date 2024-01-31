@@ -16,7 +16,7 @@ import { formatCurrency, shortenString } from 'utils'
 import { CHAIN_TAGS, ROUTES } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import CollateralPieChartWrapper from 'views/overview/components/CollateralPieChartWrapper'
-import usePriceInToken from '../hooks/usePriceInToken'
+import usePriceETH from '../hooks/usePriceETH'
 import EarnButton from './EarnButton'
 import MobileCollateralInfo from './MobileCollateralInfo'
 import VerticalDivider from './VerticalDivider'
@@ -47,7 +47,7 @@ const ChainBadge = ({ chain }: { chain: number }) => (
 
 const RTokenCard = ({ token, ...props }: Props) => {
   const navigate = useNavigate()
-  const { priceInToken, supplyInToken } = usePriceInToken(token)
+  const { priceETHTerms, supplyETHTerms } = usePriceETH(token)
 
   const handleNavigate = (route: string) => {
     navigate(`${route}?token=${token.id}&chainId=${token.chain}`)
@@ -164,8 +164,8 @@ const RTokenCard = ({ token, ...props }: Props) => {
                   {token.symbol}
                 </Text>
                 <Text variant="legend" sx={{ fontSize: 16 }}>
-                  {priceInToken
-                    ? `${priceInToken} ${token.targetUnits} ($${formatCurrency(
+                  {priceETHTerms
+                    ? `${priceETHTerms} ${token.targetUnits} ($${formatCurrency(
                         token.price,
                         2
                       )})`
@@ -208,9 +208,9 @@ const RTokenCard = ({ token, ...props }: Props) => {
                   <Text variant="strong">
                     ${formatCurrency(token.supply, 0)}
                   </Text>
-                  {supplyInToken && (
+                  {supplyETHTerms && (
                     <Text>
-                      {`(${formatCurrency(supplyInToken, 0)} ${
+                      {`(${formatCurrency(supplyETHTerms, 0)} ${
                         token.targetUnits
                       })`}
                     </Text>
