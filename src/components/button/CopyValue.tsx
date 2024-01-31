@@ -30,7 +30,10 @@ const CopyValue = ({ text, value, size = 16, ...props }: Props) => {
         p={0}
         variant="layout.verticalAlign"
         sx={{ cursor: 'pointer', width: 'auto', height: 'auto' }}
-        onClick={handleCopy}
+        onClick={(e) => {
+          e.stopPropagation()
+          handleCopy()
+        }}
         {...props}
       >
         <CopyIcon />

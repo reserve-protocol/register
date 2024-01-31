@@ -5,7 +5,7 @@ import {
   Token,
   Universe,
   baseConfig,
-  createKyberswap,
+  createEnso,
   ethereumConfig,
   setupBaseZapper,
   setupEthereumZapper,
@@ -97,7 +97,7 @@ export const zapperState = loadable(
         mixpanel.track('zapper:' + type, params)
       })
 
-      universe.dexAggregators.push(createKyberswap('KyberSwap', universe, 50))
+      universe.dexAggregators.push(createEnso('enso', universe, 300))
 
       // if (chainId === ChainId.Mainnet) {
       //   universe.dexAggregators.push(

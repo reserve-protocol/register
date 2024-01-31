@@ -18,7 +18,8 @@ const DeployHero = (props: BoxProps) => {
   return (
     <Box
       {...props}
-      p={4}
+      px={4}
+      py={2}
       variant="layout.verticalAlign"
       sx={{
         border: '1px dashed',
@@ -31,14 +32,40 @@ const DeployHero = (props: BoxProps) => {
           borderRight: '1px solid',
           borderColor: 'border',
           flexShrink: 0,
-          display: ['none', 'block'],
+          display: ['none', 'flex'],
+          height: '200px',
         }}
-        variant="layout.verticalAlign"
-        pr={4}
+        variant="layout.centered"
+        pl={3}
+        pr={6}
       >
-        <Image width={205} height={205} src={DeployerImg} />
+        <Box
+          sx={{
+            width: 155,
+            height: 155,
+            borderRadius: '50%',
+            border: '1px dashed #2775CA',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Box
+            sx={{
+              width: 145,
+              height: 145,
+              borderRadius: '50%',
+              border: '1px dashed #2775CA',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Image width={100} height={100} src={DeployerImg} />
+          </Box>
+        </Box>
       </Box>
-      <Box ml={[0, 4]}>
+      <Box ml={[0, 6]} py={[3, 4]}>
         <Text mb={2} sx={{ fontSize: 4 }} variant="strong">
           <Trans>Deploy your own RToken</Trans>
         </Text>

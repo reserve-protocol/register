@@ -1,20 +1,25 @@
-import { Trans } from '@lingui/macro'
+import { t, Trans } from '@lingui/macro'
 import { Button } from 'components'
+import CopyValue from 'components/button/CopyValue'
 import ChainLogo from 'components/icons/ChainLogo'
+import ChevronRight from 'components/icons/ChevronRight'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'
-import EarnNavIcon from 'components/icons/EarnNavIcon'
+import MoneyIcon from 'components/icons/MoneyIcon'
+import PegIcon from 'components/icons/PegIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import { ListedToken } from 'hooks/useTokenList'
-import { useAtomValue } from 'jotai'
-import { memo, useMemo } from 'react'
-import { ArrowRight } from 'react-feather'
+import { memo } from 'react'
+import { ArrowUpRight } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
-import { rTokenPoolsAtom } from 'state/pools/atoms'
-import { Box, BoxProps, Card, Text } from 'theme-ui'
-import { formatCurrency, getTokenRoute, stringToColor } from 'utils'
-import { BRIDGED_RTOKENS, CHAIN_TAGS, ROUTES } from 'utils/constants'
-import { getAddress } from 'viem'
-import CollateralPieChart from 'views/overview/_components/CollateralPieChart'
+import { Box, BoxProps, Card, Link, Text } from 'theme-ui'
+import { formatCurrency, shortenString } from 'utils'
+import { CHAIN_TAGS, ROUTES } from 'utils/constants'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import CollateralPieChartWrapper from 'views/overview/components/CollateralPieChartWrapper'
+import usePriceETH from '../hooks/usePriceETH'
+import EarnButton from './EarnButton'
+import MobileCollateralInfo from './MobileCollateralInfo'
+import VerticalDivider from './VerticalDivider'
 
 interface Props extends BoxProps {
   token: ListedToken
@@ -24,189 +29,261 @@ const ChainBadge = ({ chain }: { chain: number }) => (
   <Box
     variant="layout.verticalAlign"
     sx={{
-      position: 'absolute',
-      right: 0,
-      top: 0,
+      display: ['none', 'flex'],
+      backgroundColor: 'rgba(0, 82, 255, 0.06)',
       border: '1px solid',
-      borderColor: 'darkBorder',
-      borderRadius: '6px',
+      borderColor: 'rgba(0, 82, 255, 0.20)',
+      borderRadius: '50px',
       padding: '4px 8px',
+      gap: 1,
     }}
   >
-    <ChainLogo chain={chain} />
-    <Text ml="1">{CHAIN_TAGS[chain]}</Text>
+    <ChainLogo chain={chain} fontSize={12} />
+    <Text sx={{ fontSize: 12 }} color="#627EEA">
+      {CHAIN_TAGS[chain] + ' Native'}
+    </Text>
   </Box>
 )
 
-const colors = [
-  '#B87333', // Copper
-  '#8B4513', // SaddleBrown
-  '#F4A460', // SandyBrown
-  '#D2B48C', // Tan
-  '#CD853F', // Peru
-  '#556B2F', // DarkOliveGreen
-  '#708090', // SlateGray
-  '#8B008B', // DarkMagenta
-  '#DA8A67', // Earth Yellow
-  '#FFD700', // Gold
-  '#B8860B', // DarkGoldenRod
-  '#DEB887', // BurlyWood
-]
-
 const RTokenCard = ({ token, ...props }: Props) => {
   const navigate = useNavigate()
-  const pools = useAtomValue(rTokenPoolsAtom)
-  const earnData = pools[getAddress(token.id)]
-  const chartData = useMemo(
-    () =>
-      token.collaterals.map((c, i) => ({
-        name: c.symbol,
-        value:
-          +token.collateralDistribution[c.id.toLowerCase()]?.dist * 100 ?? 0,
-        color: colors[i] || stringToColor(c.id),
-      })),
-    []
-  )
+  const { priceETHTerms, supplyETHTerms } = usePriceETH(token)
 
   const handleNavigate = (route: string) => {
     navigate(route)
     document.getElementById('app-container')?.scrollTo(0, 0)
   }
 
-  const handleEarn = () => {
-    const addresses = [token.id]
-
-    if (BRIDGED_RTOKENS[token.chain]?.[token.id]) {
-      for (const bridgeToken of BRIDGED_RTOKENS[token.chain]?.[token.id]) {
-        addresses.push(bridgeToken.address)
-      }
-    }
-
-    navigate(
-      `${ROUTES.EARN}?underlying=${addresses.join(',')}&chainId=${token.chain}`
-    )
-    document.getElementById('app-container')?.scrollTo(0, 0)
-  }
-
   return (
-    <Card sx={{ backgroundColor: 'contentBackground' }} p={4} {...props}>
-      <Box variant="layout.verticalAlign" sx={{ position: 'relative' }}>
-        <ChainBadge chain={token.chain} />
-
+    <Card
+      sx={{
+        backgroundColor: 'contentBackground',
+        borderRadius: ['10px', '20px'],
+        borderBottom: '2px solid',
+        borderColor: 'transparent',
+        '&:hover': {
+          borderColor: ['transparent', 'primary'],
+        },
+        height: ['100%', '316px'],
+        cursor: 'pointer',
+        mx: [2, 0],
+        transition: 'border-color 0.3s ease',
+      }}
+      p={[0, 3]}
+      onClick={(e) => {
+        e.stopPropagation()
+        handleNavigate(ROUTES.OVERVIEW)
+      }}
+      {...props}
+    >
+      <Box variant="layout.verticalAlign" sx={{ height: '100%' }}>
         <Box
-          pr={4}
-          mr={4}
           sx={{
+            pr: 3,
             flexShrink: 0,
             display: ['none', 'block'],
             borderRight: '1px solid',
             borderColor: 'darkBorder',
-            width: 230,
           }}
         >
-          <CollateralPieChart
-            mt={-3}
-            data={chartData}
-            logo={token.logo}
-            staked={+token.overcollaterization.toFixed(2).toString()}
-          />
+          <CollateralPieChartWrapper token={token} />
         </Box>
-        <Box>
-          <Box variant="layout.verticalAlign" mb={3}>
-            <TokenLogo width="42px" src={token.logo} />
-            <Box ml="3">
-              <Text variant="sectionTitle">{token.symbol}</Text>
-              <Text variant="legend" sx={{ fontSize: 1 }}>
-                ${formatCurrency(token.price, 2)}
+
+        <Box
+          variant="layout.centered"
+          pl={[3, 5]}
+          pr={3}
+          py={3}
+          sx={{
+            flexGrow: 1,
+            alignItems: 'start',
+            justifyContent: ['start', 'space-between'],
+            gap: 2,
+            height: '100%',
+          }}
+        >
+          <Box
+            variant="layout.verticalAlign"
+            sx={{ gap: 2, justifyContent: 'space-between', width: '100%' }}
+          >
+            <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+              <TokenLogo
+                width={32}
+                src={token.logo}
+                sx={{ display: ['block', 'none'], height: '32px' }}
+              />
+              <ChainBadge chain={token.chain} />
+              <Box sx={{ display: ['block', 'none'] }}>
+                <ChainLogo chain={token.chain} fontSize={12} />
+              </Box>
+            </Box>
+            <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+              <Text sx={{ fontSize: 14 }} color="#666666">
+                {shortenString(token.id)}
               </Text>
+              <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+                <CopyValue color="#666666" value={token.id} size={14} />
+                <Link
+                  href={getExplorerLink(
+                    token.id,
+                    token.chain,
+                    ExplorerDataType.TOKEN
+                  )}
+                  target="_blank"
+                  sx={{ display: 'flex', alignItems: 'center' }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <ArrowUpRight color="#666666" size={14} />
+                </Link>
+              </Box>
             </Box>
           </Box>
-          <Box mb={1} pl={2} variant="layout.verticalAlign">
-            <CollaterizationIcon />
-            <Text ml="2" variant="legend">
-              <Trans>Backing + Overcollaterization:</Trans>
-            </Text>
-            <Text ml="2" variant="strong">
-              {(token.backing + token.overcollaterization).toFixed(0)}%
-            </Text>
-          </Box>
-          <Box pl="2" variant="layout.verticalAlign">
-            <Text variant="strong" pl="1" sx={{ width: '16px' }}>
-              $
-            </Text>
-            <Text ml="2" variant="legend">
-              <Trans>Market cap:</Trans>
-            </Text>
-            <Text ml="2" variant="strong">
-              ${formatCurrency(token.supply, 0)}
-            </Text>
-          </Box>
-          <Box variant="layout.verticalAlign" sx={{ flexWrap: 'wrap' }}>
-            <Button
-              onClick={() =>
-                handleNavigate(
-                  getTokenRoute(token.symbol, token.chain, ROUTES.ISSUANCE)
-                )
-              }
-              mt={3}
-              mr={3}
-              medium
-            >
-              {token.tokenApy ? `${token.tokenApy.toFixed(1)}% APY` : 'Mint'}
-            </Button>
-            <Button
-              onClick={() =>
-                handleNavigate(
-                  getTokenRoute(token.symbol, token.chain, ROUTES.STAKING)
-                )
-              }
-              mt={3}
-              mr={3}
-              medium
-              variant="muted"
-            >
-              Stake RSR{' '}
-              {!!token.stakingApy && `- ${token.stakingApy.toFixed(1)}% APY`}
-            </Button>
 
-            <Button
-              onClick={() =>
-                handleNavigate(getTokenRoute(token.symbol, token.chain))
-              }
-              mt={3}
-              mr={3}
-              medium
-              variant="transparent"
+          <Box
+            variant="layout.centered"
+            sx={{ alignItems: 'start', gap: [2, 4], width: '100%' }}
+          >
+            <Box
+              variant="layout.verticalAlign"
+              sx={{
+                gap: '12px',
+                justifyContent: ['space-between', 'start'],
+                flexGrow: 1,
+                width: '100%',
+              }}
             >
-              <Box variant="layout.verticalAlign">
-                <Text mr={3}>Explore</Text> <ArrowRight size={16} />
+              <TokenLogo
+                width={50}
+                src={token.logo}
+                sx={{ display: ['none', 'block'] }}
+              />
+              <Box variant="layout.centered" sx={{ alignItems: 'start' }}>
+                <Text
+                  sx={{ fontSize: 26, fontWeight: 700, lineHeight: '26px' }}
+                >
+                  {token.symbol}
+                </Text>
+                <Text variant="legend" sx={{ fontSize: 16 }}>
+                  {priceETHTerms
+                    ? `${priceETHTerms} ${token.targetUnits} ($${formatCurrency(
+                        token.price,
+                        2
+                      )})`
+                    : `$${formatCurrency(token.price, 2)}`}
+                </Text>
               </Box>
-            </Button>
+              <Box sx={{ display: ['block', 'none'] }}>
+                <ChevronRight width={16} height={16} />
+              </Box>
+            </Box>
 
-            {!!earnData && (
-              <Button onClick={handleEarn} mt={3} mr={3} medium variant="hover">
-                <Box variant="layout.verticalAlign">
-                  <Box
-                    variant="layout.verticalAlign"
-                    p="1"
-                    mr={2}
-                    sx={{
-                      backgroundColor: 'rBlue',
-                      borderRadius: 6,
-                      color: 'white',
-                    }}
-                  >
-                    <EarnNavIcon fontSize={20} />
-                  </Box>
-                  <Text>Earn - </Text>
-                  <Text ml="1" mr={3} variant="strong" sx={{ color: 'rBlue' }}>
-                    {earnData.maxApy.toFixed(0)}% APY
-                  </Text>
-                  <ArrowRight size={16} />
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: ['column-reverse', 'column'],
+                gap: [3, 4],
+                width: '100%',
+              }}
+            >
+              <Box
+                variant="layout.verticalAlign"
+                sx={{ gap: [2, 3], width: '100%' }}
+              >
+                <Box sx={{ display: ['flex', 'none'] }}>
+                  <MoneyIcon />
                 </Box>
-              </Button>
-            )}
+                <Box
+                  variant="layout.verticalAlign"
+                  sx={{ gap: [0, 2], flexDirection: ['column', 'row'] }}
+                  mr={[2, 0]}
+                >
+                  <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+                    <Box sx={{ display: ['none', 'flex'] }}>
+                      <MoneyIcon />
+                    </Box>
+                    <Text variant="legend" sx={{ whiteSpace: 'nowrap' }}>
+                      <Trans>Market cap:</Trans>
+                    </Text>
+                  </Box>
+                  <Text variant="strong">
+                    ${formatCurrency(token.supply, 0)}
+                  </Text>
+                  {supplyETHTerms && (
+                    <Text>
+                      {`(${formatCurrency(supplyETHTerms, 0)} ${
+                        token.targetUnits
+                      })`}
+                    </Text>
+                  )}
+                </Box>
+                <VerticalDivider sx={{ display: ['none', 'block'] }} />
+                <Box
+                  variant="layout.verticalAlign"
+                  sx={{ gap: 2, display: ['none', 'flex'] }}
+                >
+                  <PegIcon />
+                  <Text variant="legend">
+                    <Trans>Peg:</Trans>
+                  </Text>
+                  <Text variant="strong">{token.targetUnits}</Text>
+                </Box>
+                <VerticalDivider sx={{ display: ['none', 'block'] }} />
+                <Box
+                  variant="layout.verticalAlign"
+                  sx={{ gap: 2, display: ['none', 'flex'] }}
+                >
+                  <CollaterizationIcon />
+                  <Text variant="legend">
+                    <Trans>Backing + Overcollaterization:</Trans>
+                  </Text>
+                  <Text variant="strong" color="text">
+                    {(token.backing + token.overcollaterization).toFixed(0)}%
+                  </Text>
+                </Box>
+                <EarnButton
+                  token={token}
+                  sx={{ display: ['flex', 'none'], flexGrow: 1 }}
+                />
+              </Box>
+              <Box
+                variant="layout.verticalAlign"
+                sx={{ flexWrap: 'wrap', gap: [2, '12px'] }}
+                mt={[0, 2]}
+              >
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleNavigate(ROUTES.ISSUANCE)
+                  }}
+                  medium
+                >
+                  {token.tokenApy
+                    ? `${token.tokenApy.toFixed(1)}% Est. APY`
+                    : 'Mint'}
+                </Button>
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleNavigate(ROUTES.STAKING)
+                  }}
+                  medium
+                  variant="muted"
+                >
+                  <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+                    <Text>
+                      Stake RSR{' '}
+                      {!!token.stakingApy &&
+                        `- ${token.stakingApy.toFixed(1)}%`}
+                    </Text>
+                    <Text color="lightText">{t`Est. APY`}</Text>
+                  </Box>
+                </Button>
+
+                <EarnButton token={token} sx={{ display: ['none', 'block'] }} />
+              </Box>
+            </Box>
           </Box>
+          <MobileCollateralInfo token={token} />
         </Box>
       </Box>
     </Card>

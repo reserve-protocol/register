@@ -53,10 +53,10 @@ const BRIDGE_ASSETS: BridgeAsset[] = [
     L1contract: EUSD_ADDRESS[ChainId.Mainnet],
     L2contract: EUSD_ADDRESS[ChainId.Base],
     L1icon: `/svgs/${
-      rtokens[ChainId.Mainnet][EUSD_ADDRESS[ChainId.Mainnet]].logo
+      rtokens[ChainId.Mainnet][EUSD_ADDRESS[ChainId.Mainnet]].logo?.toLowerCase()
     }`,
     L2icon: `/svgs/${
-      rtokens[ChainId.Mainnet][EUSD_ADDRESS[ChainId.Mainnet]].logo
+      rtokens[ChainId.Mainnet][EUSD_ADDRESS[ChainId.Mainnet]].logo?.toLowerCase()
     }`,
     L1name: 'Electronic Dollar',
     L2name: 'Electronic Dollar',
