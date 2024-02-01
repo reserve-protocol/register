@@ -2,10 +2,7 @@ import { Trans } from '@lingui/macro'
 import { Button } from 'components'
 import MandateIcon from 'components/icons/MandateIcon'
 import StakedIcon from 'components/icons/StakedIcon'
-import TokenLogo, {
-  CurrentRTokenLogo,
-  RTokenLogo,
-} from 'components/icons/TokenLogo'
+import { CurrentRTokenLogo } from 'components/icons/TokenLogo'
 import useRToken from 'hooks/useRToken'
 import { atom, useAtomValue } from 'jotai'
 import { MoreHorizontal } from 'react-feather'
@@ -16,7 +13,6 @@ import {
   rTokenStateAtom,
   rsrPriceAtom,
 } from 'state/atoms'
-import { rTokenMetaAtom } from 'state/rtoken/atoms/rTokenAtom'
 import { Box, Grid, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 
