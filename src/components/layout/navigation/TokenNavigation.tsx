@@ -4,12 +4,11 @@ import GovernanceIcon from 'components/icons/GovernanceIcon'
 import IssuanceIcon from 'components/icons/IssuanceIcon'
 import ManagerIcon from 'components/icons/ManagerIcon'
 import StakeIcon from 'components/icons/StakeIcon'
-import TokenLogo, { CurrentRTokenLogo } from 'components/icons/TokenLogo'
+import { CurrentRTokenLogo } from 'components/icons/TokenLogo'
 import { navigationIndexAtom } from 'components/section-navigation/atoms'
 import useSectionNavigate from 'components/section-navigation/useSectionNavigate'
-import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { ChevronDown, ChevronRight } from 'react-feather'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { Box, Flex, Text } from 'theme-ui'
@@ -30,57 +29,6 @@ interface NavigationItem {
 interface NavContentProps extends NavigationItem {
   isActive: boolean
 }
-
-const navigation: NavigationItem[] = [
-  {
-    icon: <CurrentRTokenLogo />,
-    label: t`Overview`,
-    route: ROUTES.OVERVIEW,
-    subnav: [
-      { label: t`Intro`, id: 'intro' },
-      { label: t`Backing & Risk`, id: 'backing' },
-      { label: t`Earn`, id: 'earn' },
-      { label: t`Revenue & Usage`, id: 'revenue' },
-      { label: t`Transactions`, id: 'transactions' },
-    ],
-  },
-  {
-    icon: <IssuanceIcon />,
-    label: t`Issuance`,
-    route: ROUTES.ISSUANCE,
-  },
-  {
-    icon: <StakeIcon />,
-    label: t`Staking`,
-    route: ROUTES.STAKING,
-  },
-  {
-    icon: <AuctionsIcon />,
-    label: t`Auctions`,
-    route: ROUTES.AUCTIONS,
-  },
-  {
-    icon: <GovernanceIcon />,
-    label: t`Governance`,
-    route: ROUTES.GOVERNANCE,
-  },
-  {
-    icon: <ManagerIcon />,
-    label: t`Details + Roles`,
-    route: ROUTES.SETTINGS,
-    subnav: [
-      { label: t`Roles & Controls`, id: 'intro' },
-      { label: t`Token details`, id: 'backing' },
-      { label: t`Primary basket`, id: 'earn' },
-      { label: t`Emergency basket`, id: 'revenue' },
-      { label: t`Revenue share`, id: 'transactions' },
-      { label: t`Backing config`, id: 'backingConfig' },
-      { label: t`Other config`, id: 'other' },
-      { label: t`Governance`, id: 'governance' },
-      { label: t`Contract Addresses`, id: 'contracts' },
-    ],
-  },
-]
 
 const SubNavigation = ({
   items,
@@ -209,34 +157,89 @@ const NavItem = (props: NavigationItem) => (
   </NavLink>
 )
 
-const TokenNavigation = () => (
-  <Box
-    sx={{
-      width: ['100%', '220px'],
-      borderRight: ['none', '1px solid'],
-      borderTop: ['1px solid', 'none'],
-      borderColor: ['border', 'border'],
-      position: ['fixed', 'relative'],
-      bottom: [0, undefined],
-      flexShrink: 0,
-      zIndex: 1,
-      backgroundColor: ['background', 'none'],
-    }}
-  >
+const TokenNavigation = () => {
+  const navigation: NavigationItem[] = useMemo(
+    () => [
+      {
+        icon: <CurrentRTokenLogo />,
+        label: t`Overview`,
+        route: ROUTES.OVERVIEW,
+        subnav: [
+          { label: t`Intro`, id: 'intro' },
+          { label: t`Backing & Risk`, id: 'backing' },
+          { label: t`Earn`, id: 'earn' },
+          { label: t`Revenue & Usage`, id: 'revenue' },
+          { label: t`Transactions`, id: 'transactions' },
+        ],
+      },
+      {
+        icon: <IssuanceIcon />,
+        label: t`Issuance`,
+        route: ROUTES.ISSUANCE,
+      },
+      {
+        icon: <StakeIcon />,
+        label: t`Staking`,
+        route: ROUTES.STAKING,
+      },
+      {
+        icon: <AuctionsIcon />,
+        label: t`Auctions`,
+        route: ROUTES.AUCTIONS,
+      },
+      {
+        icon: <GovernanceIcon />,
+        label: t`Governance`,
+        route: ROUTES.GOVERNANCE,
+      },
+      {
+        icon: <ManagerIcon />,
+        label: t`Details + Roles`,
+        route: ROUTES.SETTINGS,
+        subnav: [
+          { label: t`Roles & Controls`, id: 'intro' },
+          { label: t`Token details`, id: 'backing' },
+          { label: t`Primary basket`, id: 'earn' },
+          { label: t`Emergency basket`, id: 'revenue' },
+          { label: t`Revenue share`, id: 'transactions' },
+          { label: t`Backing config`, id: 'backingConfig' },
+          { label: t`Other config`, id: 'other' },
+          { label: t`Governance`, id: 'governance' },
+          { label: t`Contract Addresses`, id: 'contracts' },
+        ],
+      },
+    ],
+    []
+  )
+
+  return (
     <Box
       sx={{
-        position: 'sticky',
-        top: 0,
-        display: ['flex', 'block'],
-        justifyContent: ['space-evenly', 'none'],
+        width: ['100%', '220px'],
+        borderRight: ['none', '1px solid'],
+        borderTop: ['1px solid', 'none'],
+        borderColor: ['border', 'border'],
+        position: ['fixed', 'relative'],
+        bottom: [0, undefined],
+        flexShrink: 0,
+        zIndex: 1,
+        backgroundColor: ['background', 'none'],
       }}
-      padding={[2, 3]}
     >
-      {navigation.map((props) => (
-        <NavItem key={props.route} {...props} />
-      ))}
+      <Box
+        sx={{
+          position: 'sticky',
+          top: 0,
+          display: ['flex', 'block'],
+          justifyContent: ['space-evenly', 'none'],
+        }}
+        padding={[2, 3]}
+      >
+        {navigation.map((props) => (
+          <NavItem key={props.route} {...props} />
+        ))}
+      </Box>
     </Box>
-  </Box>
-)
-
+  )
+}
 export default React.memo(TokenNavigation)
