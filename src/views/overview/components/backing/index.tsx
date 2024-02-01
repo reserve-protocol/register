@@ -1,6 +1,25 @@
 import { Trans } from '@lingui/macro'
 import BasketCubeIcon from 'components/icons/BasketCubeIcon'
+import useRToken from 'hooks/useRToken'
+import { useAtomValue } from 'jotai'
+import { rTokenAssetsAtom } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
+
+const BackingResume = () => {
+  const rToken = useRToken()
+  const assets = useAtomValue(rTokenAssetsAtom)
+
+  return (
+    <Text
+      mt="2"
+      as="h2"
+      variant="heading"
+      sx={{ color: 'accent', fontWeight: 'bold' }}
+    >
+      eUSD has 4 Collaterals pegged to USD
+    </Text>
+  )
+}
 
 const Backing = () => {
   return (
@@ -17,6 +36,7 @@ const Backing = () => {
           tokens...
         </Trans>
       </Text>
+      <BackingResume />
     </Box>
   )
 }

@@ -4,7 +4,7 @@ import GovernanceIcon from 'components/icons/GovernanceIcon'
 import IssuanceIcon from 'components/icons/IssuanceIcon'
 import ManagerIcon from 'components/icons/ManagerIcon'
 import StakeIcon from 'components/icons/StakeIcon'
-import TokenLogo from 'components/icons/TokenLogo'
+import TokenLogo, { CurrentRTokenLogo } from 'components/icons/TokenLogo'
 import { navigationIndexAtom } from 'components/section-navigation/atoms'
 import useSectionNavigate from 'components/section-navigation/useSectionNavigate'
 import useRToken from 'hooks/useRToken'
@@ -31,15 +31,9 @@ interface NavContentProps extends NavigationItem {
   isActive: boolean
 }
 
-const RTokenIcon = () => {
-  const token = useRToken()
-
-  return <TokenLogo symbol={token?.symbol} />
-}
-
 const navigation: NavigationItem[] = [
   {
-    icon: <RTokenIcon />,
+    icon: <CurrentRTokenLogo />,
     label: t`Overview`,
     route: ROUTES.OVERVIEW,
     subnav: [

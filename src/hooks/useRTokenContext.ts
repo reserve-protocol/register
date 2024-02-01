@@ -1,50 +1,98 @@
 import rtokens from '@lc-labs/rtokens'
+import RToken from 'abis/RToken'
 import { useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
-import { isAddress } from 'utils'
-import { NETWORKS } from 'utils/constants'
-import { Address } from 'viem'
+import { chainIdAtom } from 'state/atoms'
+import { rTokenMetaAtom } from 'state/rtoken/atoms/rTokenAtom'
+import { NETWORKS, ROUTES } from 'utils/constants'
+import { Address, getAddress } from 'viem'
+import { useContractReads } from 'wagmi'
 
-const getRTokenAddress = (tokenId?: string, network?: string) => {
-  if (!tokenId || !network || !NETWORKS[network]) {
-    return null
+const getListedRToken = (tokenId: string, chainId: number) => {
+  if (!tokenId || !rtokens[chainId]) {
+    return undefined
   }
 
-  let rTokenAddress = isAddress(tokenId)
-
-  // Look for listed tokens
-  if (!rTokenAddress && rtokens[NETWORKS[network]]) {
-    rTokenAddress = (Object.values(rtokens[NETWORKS[network]]).find(
-      (rToken) => rToken.symbol.toLowerCase() === tokenId.toLowerCase()
-    )?.address ?? null) as Address | null
-  }
-
-  return rTokenAddress
+  return Object.values(rtokens[chainId]).find(
+    (token) =>
+      token.symbol.toLowerCase() === tokenId.toLowerCase() ||
+      token.address.toLowerCase() === tokenId.toLowerCase()
+  )
 }
 
 const useRTokenContext = () => {
   const navigate = useNavigate()
   const { chain, tokenId } = useParams()
+  const chainId = NETWORKS[chain ?? '']
+  const rToken = useMemo(() => {
+    const listedToken = getListedRToken(tokenId as string, chainId)
+
+    return listedToken
+  }, [chain, tokenId])
+
   const setChain = useSetAtom(chainIdAtom)
-  const setRToken = useSetAtom(selectedRTokenAtom)
+  const setRToken = useSetAtom(rTokenMetaAtom)
+
+  const unlistedToken = useContractReads({
+    allowFailure: false,
+    enabled: !rToken,
+    contracts: [
+      {
+        address: tokenId as Address,
+        abi: RToken,
+        functionName: 'symbol',
+        chainId,
+      },
+      {
+        address: tokenId as Address,
+        abi: RToken,
+        functionName: 'name',
+        chainId,
+      },
+      {
+        address: tokenId as Address,
+        abi: RToken,
+        functionName: 'mandate',
+        chainId,
+      },
+    ],
+  })
+
+  // Listed
+  useEffect(() => {
+    if (rToken) {
+      setRToken({
+        symbol: rToken.symbol,
+        name: rToken.name,
+        decimals: rToken.decimals,
+        address: rToken.address as Address,
+        chain: chainId,
+        logo: `/svgs/${(rToken?.logo ?? 'default.svg').toLowerCase()}`,
+      })
+      setChain(chainId)
+    }
+  }, [rToken?.address])
 
   useEffect(() => {
-    const rTokenAddress = getRTokenAddress(tokenId, chain)
+    if (unlistedToken.isFetched) {
+      // Valid token set atom
+      if (unlistedToken.data && tokenId) {
+        const [symbol, name] = unlistedToken.data
 
-    if (!rTokenAddress) {
-      // TODO: Home or "wrong rtoken selected" route
-      navigate('/')
+        setRToken({
+          symbol: symbol,
+          name: name,
+          decimals: 18,
+          address: getAddress(tokenId),
+          chain: chainId,
+        })
+        setChain(chainId)
+      } else {
+        navigate(ROUTES.NOT_FOUND)
+      }
     }
-
-    // TODO: Move rtoken updated to RTokenContainer could solve this problem
-    // Make the state to reflect correctly when you access directly to an RToken route
-    setTimeout(() => {
-      setRToken(rTokenAddress)
-      setChain(NETWORKS[chain as string])
-    }, 0)
-  }, [chain, tokenId])
+  }, [unlistedToken.status])
 
   // Cleanup RToken
   useEffect(() => {

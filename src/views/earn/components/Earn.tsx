@@ -13,7 +13,7 @@ const Earn = () => {
   const { isLoading } = useRTokenPools()
   const data = useAtomValue(filteredPoolsAtom)
   const columns = useEarnTableColumns()
-
+  console.log('data', data)
   return (
     <Box variant="layout.wrapper" p={[1, 4]} py={[4, 7]}>
       <Grid columns={[1, '40px 1fr', 'auto 1fr 1fr']} mb={[5, 7]}>

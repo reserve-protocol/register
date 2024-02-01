@@ -2,18 +2,21 @@ import { Trans } from '@lingui/macro'
 import { Button } from 'components'
 import MandateIcon from 'components/icons/MandateIcon'
 import StakedIcon from 'components/icons/StakedIcon'
-import TokenLogo from 'components/icons/TokenLogo'
+import TokenLogo, {
+  CurrentRTokenLogo,
+  RTokenLogo,
+} from 'components/icons/TokenLogo'
 import useRToken from 'hooks/useRToken'
 import { atom, useAtomValue } from 'jotai'
 import { MoreHorizontal } from 'react-feather'
 import Skeleton from 'react-loading-skeleton'
 import {
-  estimatedApyAtom,
   rTokenListAtom,
   rTokenPriceAtom,
   rTokenStateAtom,
   rsrPriceAtom,
 } from 'state/atoms'
+import { rTokenMetaAtom } from 'state/rtoken/atoms/rTokenAtom'
 import { Box, Grid, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 
@@ -53,13 +56,11 @@ const rTokenOverviewAtom = atom((get) => {
   }
 })
 
-const TokenStats = () => {
-  const rToken = useRToken()
+const TokenMetrics = () => {
   const data = useAtomValue(rTokenOverviewAtom)
 
   return (
-    <Box>
-      <TokenLogo mb={3} symbol={rToken?.symbol} width={40} />
+    <>
       <Text sx={{ display: 'block' }}>
         <Trans>Total Market Cap</Trans>
       </Text>
@@ -76,6 +77,15 @@ const TokenStats = () => {
           ${formatCurrency(data?.staked ?? 0)}
         </Text>
       </Box>
+    </>
+  )
+}
+
+const TokenStats = () => {
+  return (
+    <Box>
+      <CurrentRTokenLogo mb={3} width={40} />
+      <TokenMetrics />
       <Actions />
     </Box>
   )

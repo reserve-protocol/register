@@ -123,6 +123,7 @@ export const ROUTES = Object.freeze({
   BRIDGE: '/bridge',
   PORTFOLIO: '/portfolio',
   EARN: '/earn',
+  NOT_FOUND: '/404',
 })
 
 export const RSR: Token = {

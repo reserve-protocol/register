@@ -2,23 +2,12 @@ import { t } from '@lingui/macro'
 import { Container } from 'components'
 import { ContentHead } from 'components/info-box'
 import ListedTokensTable from 'components/tables/ListedTokensTable'
-import { useSetAtom } from 'jotai'
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { selectedRTokenAtom } from 'state/atoms'
 import { Divider } from 'theme-ui'
 import DeployHero from 'views/home/components/DeployHero'
 import RegisterAbout from 'views/home/components/RegisterAbout'
 import UnlistedTokensTable from './components/UnlistedTokensTable'
 
 const Tokens = () => {
-  const navigate = useNavigate()
-  const updateToken = useSetAtom(selectedRTokenAtom)
-
-  useEffect(() => {
-    updateToken(null)
-  }, [])
-
   return (
     <>
       <Container>

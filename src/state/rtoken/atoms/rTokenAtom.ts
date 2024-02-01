@@ -11,8 +11,19 @@ import { formatEther, hexToString } from 'viem'
 import { Address } from 'wagmi'
 import { readContracts } from 'wagmi/actions'
 
+// RToken meta, pulled directly from the listed list or validated for unlisted tokens
+// Tokens without "logo" are unlisted
+export interface RTokenMeta extends Token {
+  chain: number // source of truth for token context current chain
+  logo?: string
+}
+
+export const rTokenMetaAtom = atom<RTokenMeta | null>(null)
+
 // Current selected rToken address
-export const selectedRTokenAtom = atom<Address | null>(null)
+export const selectedRTokenAtom = atom<Address | null>((get) => {
+  return get(rTokenMetaAtom)?.address ?? null
+})
 
 const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
   async (get): Promise<ReserveToken | null> => {
