@@ -16,7 +16,11 @@ const HeaderMenu = () => {
   const selectedRToken = useAtomValue(selectedRTokenAtom)
   const menuItems = useMemo(
     () => [
-      { label: t`Compare`, icon: <BasketCubeIcon />, to: ROUTES.HOME },
+      {
+        label: t`Compare`,
+        icon: <BasketCubeIcon fontSize={20} />,
+        to: ROUTES.HOME,
+      },
       {
         label: t`Portfolio`,
         icon: <WalletOutlineIcon fontSize={20} />,

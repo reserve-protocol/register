@@ -14,6 +14,7 @@ export interface Pool {
   underlyingTokens: { address: string; symbol: string; logo: string }[]
   rewardTokens: string[]
   url: string
+  defillamaId?: string
 }
 
 export interface RTokenPoolsMap {

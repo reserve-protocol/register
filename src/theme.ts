@@ -149,7 +149,7 @@ export const theme: Theme = {
   space: [0, 4, 8, 16, 24, 32, 40, 48, 80, 256], // 0-9
   fonts: {
     body: 'Satoshi, sans-serif, -apple-system, BlinkMacSystemFont',
-    heading: 'inherit',
+    // heading: 'inherit',
     monospace: 'Menlo, monospace',
     fontDisplay: 'swap',
   },
@@ -166,7 +166,7 @@ export const theme: Theme = {
   colors,
   text: {
     heading: {
-      fontFamily: 'heading',
+      // fontFamily: 'heading',
       lineHeight: 'heading',
       fontWeight: 'heading',
     },
@@ -253,6 +253,8 @@ export const theme: Theme = {
     },
     h2: {
       variant: 'text.heading',
+      fontWeight: 500,
+      color: 'red',
       fontSize: 4,
     },
     h3: {
@@ -559,6 +561,11 @@ export const theme: Theme = {
     tokenView: {
       width: '100%',
       p: [1, 6],
+    },
+    sectionDivider: {
+      mx: [-1, -6],
+      my: [1, 6],
+      borderColor: 'border',
     },
   },
 }
