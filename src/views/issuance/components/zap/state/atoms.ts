@@ -213,6 +213,28 @@ export const zapQuotePromise = loadable(
     return out
   })
 )
+
+export const zapInputValuePromise = loadable(
+  onlyNonNullAtom(async (get) => {
+    const input = get(debouncedUserInputGenerator)
+    if (input.inputQuantity.amount === 0n) {
+      return null
+    }
+    return input.universe.fairPrice(input.inputQuantity)
+  })
+)
+export const zapInputValue = simplifyLoadable(zapInputValuePromise)
+
+export const redeemInputValuePromise = loadable(
+  onlyNonNullAtom(async (get) => {
+    const input = get(debouncedRedeemZapUserInputGenerator)
+    if (input.inputQuantity.amount === 0n) {
+      return null
+    }
+    return input.universe.fairPrice(input.inputQuantity)
+  })
+)
+export const redeemInputValue = simplifyLoadable(redeemInputValuePromise)
 export const zapQuote = simplifyLoadable(zapQuotePromise)
 
 export const redoRedeemZapQuote = atom(0)

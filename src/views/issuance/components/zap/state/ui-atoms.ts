@@ -1,7 +1,4 @@
-import {
-  Provider,
-  Web3Provider
-} from '@ethersproject/providers'
+import { Provider, Web3Provider } from '@ethersproject/providers'
 import { Address, Token } from '@reserve-protocol/token-zapper'
 import { BaseSearcherResult } from '@reserve-protocol/token-zapper/types/searcher/SearcherResult'
 import { notifyError, notifySuccess } from 'hooks/useNotification'
@@ -37,6 +34,7 @@ import {
   permitSignature,
   previousRedeemZapTransaction,
   previousZapTransaction,
+  redeemInputValue,
   redeemZapQuote,
   redeemZapQuoteInput,
   redeemZapQuotePromise,
@@ -54,6 +52,7 @@ import {
   tokenToZapPopupState,
   tokenToZapUserSelected,
   zapInputString,
+  zapInputValue,
   zapIsPending,
   zapQuote,
   zapQuoteInput,
@@ -62,7 +61,7 @@ import {
   zapSender,
   zapTransaction,
   zapTxHash,
-  zapperInputs
+  zapperInputs,
 } from './atoms'
 import { FOUR_DIGITS, formatQty } from './formatTokenQuantity'
 import { resolvedZapState, zappableTokens, zapperState } from './zapper'
@@ -89,7 +88,6 @@ const zapTransactionFeeDisplayAtom = onlyNonNullAtom((get) => {
   if (approval.approvalNeeded.approvalNeeded === true) {
     return ['Approval tx', formatQty(approval.fee, FOUR_DIGITS)].join(' ')
   }
-
 
   const zapTxUnits = get(resolvedZapTransactionGasEstimateUnits, 0n)
   return [
@@ -141,9 +139,10 @@ export const zapOutputAmount = atom((get) => {
 })
 
 export const zapDust = atom((get) => {
-  const tx = get(resolvedZapTransaction)?.result ?? get(previousZapTransaction)?.result
+  const tx =
+    get(resolvedZapTransaction)?.result ?? get(previousZapTransaction)?.result
   const inp = get(zapperInputs)
-  const dust = tx?.swaps.outputs.filter(i => i.token !== inp?.rToken) ?? []
+  const dust = tx?.swaps.outputs.filter((i) => i.token !== inp?.rToken) ?? []
   return dust
 })
 
@@ -549,7 +548,8 @@ const mkButton = (
       const resp = await signer.sendTransaction({
         value: '0x0',
         ...zapTx.transaction.tx,
-        gasLimit: zapTx.transaction.gasEstimate + zapTx.transaction.gasEstimate / 8n
+        gasLimit:
+          zapTx.transaction.gasEstimate + zapTx.transaction.gasEstimate / 8n,
       })
       const receipt = await resp.wait(1)
       if (receipt.status === 0) {
@@ -747,6 +747,24 @@ export const ui = {
     ),
   },
   zapRedeemOutput: {
+    slippage: atom(get => {
+      const zapInputUSDValue = get(redeemInputValue)
+      const previous = get(previousRedeemZapTransaction)
+      const quote = get(redeemZapQuote) ?? previous?.result
+      const outValue = quote?.swaps.outputValue
+      
+      if (
+        zapInputUSDValue != null &&
+        outValue != null &&
+        zapInputUSDValue.gt(outValue)
+      ) {
+        const relation = outValue.div(zapInputUSDValue)
+        return parseFloat(
+          relation.token.one.sub(relation).format()
+        ) * 100
+      }
+      return 0
+    }),
     textBox: atom((get) => {
       const zapPromise = get(redeemZapQuotePromise)
       const output = get(redeemZapOutputAmount)
@@ -766,9 +784,28 @@ export const ui = {
     }),
   },
   zapOutput: {
+    slippage: atom(get => {
+      const zapInputUSDValue = get(zapInputValue)
+      const previous = get(previousZapTransaction)
+      const quote = get(zapQuote) ?? previous?.result
+      const outValue = quote?.swaps.outputValue
+      
+      if (
+        zapInputUSDValue != null &&
+        outValue != null &&
+        zapInputUSDValue.gt(outValue)
+      ) {
+        const relation = outValue.div(zapInputUSDValue)
+        return parseFloat(
+          relation.token.one.sub(relation).format()
+        ) * 100
+      }
+      return 0
+    }),
     textBox: atom((get) => {
       const zapPromise = get(zapQuotePromise)
-      const output = get(zapOutputAmount)
+      let output = get(zapOutputAmount)
+      
       if (get(previousZapTransaction) != null) {
         return output ?? '0.0'
       }
@@ -781,7 +818,8 @@ export const ui = {
       if (zapPromise.state === 'hasError') {
         return ''
       }
-      return output ?? '0.0'
+      
+      return output
     }),
     txFee: atom((get) =>
       get(zapSender) == null ? '' : get(zapTransactionFeeDisplay) ?? ''

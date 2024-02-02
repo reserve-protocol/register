@@ -23,15 +23,19 @@ const ZapDust = () => {
   const dustValue = useAtomValue(redeemZapDustValue)
   const dust = useAtomValue(redeemZapDust)
   const zapCollectDust = useAtomValue(collectDust)
-  if (dustValue == null) {
-    return null
+  if (dust.length === 0) {
+    return <>None</>
   }
-  const total = dustValue.total
-  if (total.amount == 0n) {
-    return null
+  if (dustValue == null) {
+    return <>None</>
   }
 
-  let str = '+ ' + formatQty(total, TWO_DIGITS) + ' in dust'
+  if (dust.length === 0) {
+    return <>None</>
+  }
+  const total = dustValue.total
+
+  let str = formatQty(total, TWO_DIGITS) + ' in dust'
   if (total.amount < 10000n) {
     str = '*'
   }
@@ -46,7 +50,7 @@ const ZapDust = () => {
           : '\n\nDust will not be returned to your wallet')
       }
     >
-      ({str})
+      {str}
     </span>
   )
 }
@@ -57,7 +61,37 @@ const ZapOutput = () => {
         <Trans>Min Output</Trans>:
       </Text>
       <Text variant="strong">
-        {useAtomValue(ui.zapRedeemOutput.textBox) || 'None'} <ZapDust />
+        {useAtomValue(ui.zapRedeemOutput.textBox) || 'None'}
+      </Text>
+    </Flex>
+  )
+}
+
+
+const ZapSlippage = () => {
+  const slippage = useAtomValue(ui.zapRedeemOutput.slippage)
+  
+  return (
+    <Flex ml={3} mt={2} sx={{ fontSize: 1 }}>
+      <Text variant="legend" mr={1}>
+        <Trans>Output slippage</Trans>:
+      </Text>
+      <Text variant="strong">
+        {slippage.toFixed(2)}%
+      </Text>
+    </Flex>
+  )
+}
+
+
+const ZapDustRow = () => {
+  return (
+    <Flex ml={3} mt={2} sx={{ fontSize: 1 }}>
+      <Text variant="legend" mr={1}>
+        <Trans>Dust</Trans>:
+      </Text>
+      <Text variant="strong">
+        <ZapDust />
       </Text>
     </Flex>
   )
@@ -126,6 +160,8 @@ const ZapRedeemInput = (props: Partial<TransactionInputProps>) => {
         }
       >
         <ZapOutputLabel />
+        <ZapSlippage />
+        <ZapDustRow />
       </Suspense>
     </>
   )
