@@ -60,7 +60,12 @@ const SubNavigation = ({
   const active = Math.min(...current)
 
   return (
-    <Box pt={3} pl={6} as="ul" sx={{ listStyleType: 'none' }}>
+    <Box
+      pt={3}
+      pl={6}
+      as="ul"
+      sx={{ listStyleType: 'none', display: ['none', 'inherit'] }}
+    >
       {items.map(({ label, id }, currentIndex) => {
         const isActive = active === currentIndex
 
@@ -132,7 +137,12 @@ const NavContent = ({
           {label}
         </Text>
         {!!subnav && (
-          <Box ml="auto" variant="layout.verticalAlign" onClick={handleExpand}>
+          <Box
+            sx={{ display: ['none', 'flex'] }}
+            ml="auto"
+            variant="layout.verticalAlign"
+            onClick={handleExpand}
+          >
             {expanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
           </Box>
         )}
