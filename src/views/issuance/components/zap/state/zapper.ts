@@ -97,7 +97,7 @@ export const zapperState = loadable(
         mixpanel.track('zapper:' + type, params)
       })
 
-      universe.dexAggregators.push(createEnso('enso', universe, 30))
+      universe.dexAggregators.push(createEnso('enso', universe, 10))
 
       // if (chainId === ChainId.Mainnet) {
       //   universe.dexAggregators.push(

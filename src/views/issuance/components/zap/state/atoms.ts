@@ -36,7 +36,7 @@ import { type ZapTransaction } from '@reserve-protocol/token-zapper/types/search
 import { ChainId } from 'utils/chains'
 import { resolvedZapState, zappableTokens } from './zapper'
 
-export const zapOutputSlippage = atom(100000n)
+export const zapOutputSlippage = atom(1000000000n)
 
 /**
  * I've tried to keep react effects to a minimum so most async code is triggered via some signal
@@ -463,7 +463,7 @@ export const approvalTxFee = loadable(
 export const resolvedApprovalTxFee = simplifyLoadable(approvalTxFee)
 
 const useMaxIssueance: Record<number, boolean> = {
-  [ChainId.Mainnet]: false,
+  [ChainId.Mainnet]: true,
   [ChainId.Base]: true,
 }
 
@@ -481,7 +481,7 @@ const redeemZapTxAtom = atom(async (get) => {
   })
   txp.catch((e) => console.log(e.message))
   const tx = await txp
-  console.log(tx.describe().join('\n'))
+
   // console.log("=== abstract zap transaction ===")
   // console.log(result.describe().join("\n"))
   return {
@@ -515,11 +515,11 @@ const zapTxAtom = atom(async (get) => {
         : undefined
   }
   const tx = await result.toTransaction({
-    permit2,
     outputSlippage: get(zapOutputSlippage),
     maxIssueance: useMaxIssueance[chainId] ?? false,
     returnDust: get(collectDust),
   })
+  console.log(tx.describe().join('\n'))
   return {
     result,
     transaction: tx,

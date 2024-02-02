@@ -23,7 +23,6 @@ const ZapDust = () => {
   const dustValue = useAtomValue(zapDustValue)
   const dust = useAtomValue(zapDust)
   const zapCollectDust = useAtomValue(collectDust)
-
   if (dust.length === 0) {
     return <>None</>
   }
@@ -77,7 +76,7 @@ const ZapSlippage = () => {
         <Trans>Output slippage</Trans>:
       </Text>
       <Text variant="strong">
-        {slippage.toFixed(2)}%
+        {slippage.toFixed(4)}%
       </Text>
     </Flex>
   )

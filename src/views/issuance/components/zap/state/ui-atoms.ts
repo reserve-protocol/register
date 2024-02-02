@@ -140,9 +140,9 @@ export const zapOutputAmount = atom((get) => {
 
 export const zapDust = atom((get) => {
   const tx =
-    get(resolvedZapTransaction)?.result ?? get(previousZapTransaction)?.result
+    get(resolvedZapTransaction)?.transaction ?? get(previousZapTransaction)?.transaction
   const inp = get(zapperInputs)
-  const dust = tx?.swaps.outputs.filter((i) => i.token !== inp?.rToken) ?? []
+  const dust = tx?.output.filter((i) => i.token !== inp?.rToken) ?? []
   return dust
 })
 
