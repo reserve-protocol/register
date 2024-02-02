@@ -78,16 +78,11 @@ msgstr ""
 msgid "15 params"
 msgstr ""
 
-#: src/views/overview/components/TokenUsage.tsx:37
+#: src/views/overview/components/TokenUsage.tsx:24
 msgid "24h Tx Vol"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:173
-msgid "24h Tx Volume"
-msgstr ""
-
-#: src/views/home/components/Stats.tsx:177
-#: src/views/overview/components/TokenUsage.tsx:49
+#: src/views/overview/components/TokenUsage.tsx:36
 msgid "24h Txs"
 msgstr ""
 
@@ -105,6 +100,10 @@ msgstr ""
 
 #: src/utils/index.ts:67
 msgid "A year ago"
+msgstr ""
+
+#: src/views/home/components/RegisterAbout.tsx:143
+msgid "ABC Labs uses industry standard anonymized analytics tools to understand usage and improve the user experience. ABC Labs does not collect any information about users or their financial activity."
 msgstr ""
 
 #: src/views/auctions/components/About.tsx:10
@@ -181,15 +180,15 @@ msgstr ""
 msgid "All time"
 msgstr ""
 
-#: src/views/tokens/Tokens.tsx:40
+#: src/views/tokens/Tokens.tsx:34
 msgid "All unlisted RTokens"
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:84
 #: src/views/auctions/components/useColumns.tsx:40
 #: src/views/bridge/components/BridgeWithdrawals.tsx:22
-#: src/views/issuance/components/zap/components/ZapInput.tsx:80
-#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:76
+#: src/views/issuance/components/zap/components/ZapInput.tsx:110
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:110
 msgid "Amount"
 msgstr ""
 
@@ -242,7 +241,7 @@ msgstr ""
 msgid "Available for withdrawal"
 msgstr ""
 
-#: src/views/governance/views/proposal-detail/index.tsx:99
+#: src/views/governance/views/proposal-detail/index.tsx:100
 msgid "Back to governance"
 msgstr ""
 
@@ -254,11 +253,13 @@ msgstr ""
 msgid "Back to settings"
 msgstr ""
 
-#: src/views/overview/components/AssetOverview.tsx:107
+#: src/views/overview/components/AssetOverview.tsx:119
+#: src/views/overview/components/CollateralPieChartWrapper.tsx:131
 msgid "Backing"
 msgstr ""
 
-#: src/views/home/components/RTokenCard.tsx:127
+#: src/views/home/components/MobileCollateralInfo.tsx:51
+#: src/views/home/components/RTokenCard.tsx:237
 msgid "Backing + Overcollaterization:"
 msgstr ""
 
@@ -359,7 +360,7 @@ msgstr ""
 msgid "Batch auctions"
 msgstr ""
 
-#: src/views/tokens/Tokens.tsx:41
+#: src/views/tokens/Tokens.tsx:35
 msgid "Be aware that anyone can create an RToken that ends up on this list. We don't apply any standards beyond what can be done with the Reserve Protocol."
 msgstr ""
 
@@ -425,6 +426,10 @@ msgstr ""
 msgid "Cancel Issue"
 msgstr ""
 
+#: src/views/governance/views/proposal-detail/components/ProposalCancel.tsx:51
+msgid "Cancel proposal"
+msgstr ""
+
 #: src/views/staking/components/balances/PendingBalance.tsx:42
 msgid "Cancel unstake"
 msgstr ""
@@ -433,7 +438,7 @@ msgstr ""
 msgid "Caution"
 msgstr ""
 
-#: src/views/earn/hooks/useEarnTableColumns.tsx:89
+#: src/views/earn/hooks/useEarnTableColumns.tsx:93
 msgid "Chain"
 msgstr ""
 
@@ -479,15 +484,11 @@ msgstr ""
 msgid "Choose Redemption Basket"
 msgstr ""
 
-#: src/views/home/components/Greet.tsx:85
-msgid "Choose your own adventure with your RSR. Find your preferred RToken to stake, govern, and backstop."
-msgstr ""
-
 #: src/components/transactions/table/index.tsx:58
 msgid "Claim"
 msgstr ""
 
-#: src/views/auctions/auctions-sidebar/claim-rewards/components/ClaimFromTraderButton.tsx:72
+#: src/views/auctions/auctions-sidebar/claim-rewards/components/ClaimFromTraderButton.tsx:79
 msgid "Claim ${0}"
 msgstr ""
 
@@ -509,6 +510,10 @@ msgstr ""
 
 #: src/components/rtoken-setup/basket/PluginItem.tsx:38
 msgid "Collateral token"
+msgstr ""
+
+#: src/views/overview/components/CollateralPieChartTooltip.tsx:177
+msgid "Collateral(s)"
 msgstr ""
 
 #: src/views/deploy/components/Intro.tsx:29
@@ -584,20 +589,12 @@ msgstr ""
 msgid "Copy to clipboard"
 msgstr ""
 
-#: src/views/governance/components/ProposalList.tsx:87
+#: src/views/governance/components/ProposalList.tsx:88
 msgid "Create proposal"
 msgstr ""
 
-#: src/views/governance/components/ProposalList.tsx:135
+#: src/views/governance/components/ProposalList.tsx:136
 msgid "Created at:"
-msgstr ""
-
-#: src/views/home/components/Stats.tsx:188
-msgid "Cumulative - RToken holder income"
-msgstr ""
-
-#: src/views/home/components/Stats.tsx:139
-msgid "Cumulative - Staked RSR income"
 msgstr ""
 
 #: src/views/home/components/Hero.tsx:34
@@ -608,13 +605,11 @@ msgstr ""
 msgid "Cumulative Total RToken Mkcap"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:144
-#: src/views/overview/components/TokenUsage.tsx:31
+#: src/views/overview/components/TokenUsage.tsx:18
 msgid "Cumulative Tx Volume"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:181
-#: src/views/overview/components/TokenUsage.tsx:43
+#: src/views/overview/components/TokenUsage.tsx:30
 msgid "Cumulative Txs"
 msgstr ""
 
@@ -719,7 +714,7 @@ msgstr ""
 msgid "Deploy transaction submitted"
 msgstr ""
 
-#: src/views/home/components/DeployHero.tsx:43
+#: src/views/home/components/DeployHero.tsx:70
 msgid "Deploy your own RToken"
 msgstr ""
 
@@ -746,10 +741,6 @@ msgstr ""
 
 #: src/views/governance/views/proposal/components/ItemPreview.tsx:70
 msgid "Discard"
-msgstr ""
-
-#: src/views/home/components/Greet.tsx:89
-msgid "Discover how an RToken is configured to operate in the good times and in emergencies if collateral defaults."
 msgstr ""
 
 #: src/components/rtoken-setup/basket/CustomCollateral.tsx:113
@@ -790,6 +781,11 @@ msgstr ""
 #: src/components/rtoken-setup/token/BackingForm.tsx:56
 #: src/components/rtoken-setup/token/BackingForm.tsx:70
 msgid "Duration in Seconds"
+msgstr ""
+
+#: src/views/issuance/components/zap/components/ZapInput.tsx:91
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:91
+msgid "Dust"
 msgstr ""
 
 #: src/views/issuance/components/zap/components/ZapSettings.tsx:158
@@ -871,11 +867,15 @@ msgstr ""
 msgid "Ensure that the asset(s) you are unregistering do not have pending revenue that can be"
 msgstr ""
 
+#: src/views/home/components/RTokenCard.tsx:278
+msgid "Est. APY"
+msgstr ""
+
 #: src/components/rtoken-setup/basket/PluginItem.tsx:107
 msgid "Est. APY:"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:85
+#: src/views/overview/components/TokenOverview.tsx:90
 msgid "Est. RToken Yield"
 msgstr ""
 
@@ -883,15 +883,15 @@ msgstr ""
 msgid "Est. Staking APY"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:95
+#: src/views/overview/components/TokenOverview.tsx:100
 msgid "Est. stRSR Yield"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:88
+#: src/views/overview/components/TokenOverview.tsx:93
 msgid "Estimated APY calculated base on the RToken basket averaged yield with regards of the total RToken market cap and revenue distribution to holders."
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:98
+#: src/views/overview/components/TokenOverview.tsx:103
 msgid "Estimated APY, calculated base on the RToken basket averaged yield with regards of the total RToken market cap and revenue distribution to stakers. Calculation = [avgCollateralYield * rTokenMarketCap / rsrStaked]"
 msgstr ""
 
@@ -908,16 +908,12 @@ msgstr ""
 msgid "Eth address"
 msgstr ""
 
-#: src/views/overview/components/TokenUsage.tsx:24
-msgid "eUSD usage includes off-chain data from Rpay"
-msgstr ""
-
 #: src/views/governance/views/proposal-detail/components/ContractProposalDetails.tsx:36
 msgid "Executable code"
 msgstr ""
 
-#: src/views/governance/views/proposal-detail/components/ProposalExecute.tsx:30
-#: src/views/governance/views/proposal-detail/components/ProposalExecute.tsx:45
+#: src/views/governance/views/proposal-detail/components/ProposalExecute.tsx:25
+#: src/views/governance/views/proposal-detail/components/ProposalExecute.tsx:39
 msgid "Execute proposal"
 msgstr ""
 
@@ -932,10 +928,6 @@ msgstr ""
 #: src/components/rtoken-setup/components/BackButton.tsx:26
 #: src/views/deploy/components/NavigationSidebar.tsx:41
 msgid "Exit Deployer"
-msgstr ""
-
-#: src/views/home/components/Greet.tsx:88
-msgid "Explore"
 msgstr ""
 
 #: src/components/rtoken-setup/token/BackingForm.tsx:84
@@ -974,6 +966,10 @@ msgstr ""
 msgid "Frozen"
 msgstr ""
 
+#: src/views/overview/components/CollateralPieChartWrapper.tsx:109
+msgid "Full exposure view"
+msgstr ""
+
 #: src/views/bridge/components/FinalizeWithdrawalButton.tsx:31
 msgid "Funds moved"
 msgstr ""
@@ -990,12 +986,8 @@ msgstr ""
 msgid "Global redeem max"
 msgstr ""
 
-#: src/views/home/components/DeployHero.tsx:57
+#: src/views/home/components/DeployHero.tsx:84
 msgid "Go to the RToken Deployer"
-msgstr ""
-
-#: src/views/home/components/Greet.tsx:132
-msgid "Got it"
 msgstr ""
 
 #: src/components/layout/navigation/index.tsx:113
@@ -1047,10 +1039,6 @@ msgstr ""
 msgid "Hash"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:39
-msgid "Here you can find usage data about RSV, which is used to mostly be used in the Rpay app. Usage data includes off-chain data from before the migration on March 22, 2023 that as been anonymized to protect user privacy. This page will likely be removed from Register in the future."
-msgstr ""
-
 #: src/views/bridge/components/BridgeFaq.tsx:105
 msgid "How do I verify my withdrawal transaction?"
 msgstr ""
@@ -1064,7 +1052,7 @@ msgid "How fast will my tokens arrive?"
 msgstr ""
 
 #: src/views/home/components/RegisterAbout.tsx:127
-msgid "If an RToken is listed on Register, it doesn't mean that Reserve or LC Labs endorses the safety or risk levels of the RToken. LC Labs requires Github requests with additional information beyond what is available on the blockchain to give users relevant data to make informed decisions. As a user, please evaluate any new RToken carefully before holding or staking your RSR on them."
+msgid "If an RToken is listed on Register, it doesn't mean that ABC Labs endorses the safety or risk levels of the RToken or that ABC Labs was involved in the creation of or is in anyway responsible for the RToken. ABC Labs requires Github requests with additional information beyond what is available on the blockchain to give users relevant data to make informed decisions. As a user, please evaluate any new RToken carefully before holding or staking your RSR on them."
 msgstr ""
 
 #: src/views/bridge/components/BridgeFaq.tsx:98
@@ -1077,14 +1065,6 @@ msgstr ""
 
 #: src/views/staking/components/balances/PendingBalance.tsx:35
 msgid "In Cooldown"
-msgstr ""
-
-#: src/views/home/components/Stats.tsx:129
-msgid "Includes market cap of all RTokens and RSV."
-msgstr ""
-
-#: src/views/home/components/Stats.tsx:134
-msgid "Includes RTokens, staked RSR, and RSV."
 msgstr ""
 
 #: src/views/home/components/TokenList.tsx:23
@@ -1248,18 +1228,10 @@ msgstr ""
 msgid "Issue"
 msgstr ""
 
-#: src/views/home/components/RegisterAbout.tsx:142
-msgid "LC Labs uses industry standard anonymized analytics tools to understand usage and improve the user experience. LC labs does not collect any information about users or their financial activity."
-msgstr ""
-
-#: src/views/home/components/Greet.tsx:76
-msgid "Learn"
-msgstr ""
-
-#: src/views/issuance/components/zap/components/ZapInput.tsx:99
-#: src/views/issuance/components/zap/components/ZapInput.tsx:128
-#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:94
-#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:123
+#: src/views/issuance/components/zap/components/ZapInput.tsx:129
+#: src/views/issuance/components/zap/components/ZapInput.tsx:158
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:128
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:157
 #: src/views/settings/components/SettingItem.tsx:60
 msgid "Loading..."
 msgstr ""
@@ -1310,11 +1282,11 @@ msgstr ""
 msgid "Mandate is required"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:58
+#: src/views/overview/components/TokenOverview.tsx:59
 msgid "Market cap"
 msgstr ""
 
-#: src/views/home/components/RTokenCard.tsx:138
+#: src/views/home/components/RTokenCard.tsx:205
 msgid "Market cap:"
 msgstr ""
 
@@ -1351,7 +1323,7 @@ msgid "Melting"
 msgstr ""
 
 #: src/views/issuance/components/zap/components/ZapInput.tsx:62
-#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:57
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:61
 msgid "Min Output"
 msgstr ""
 
@@ -1376,7 +1348,6 @@ msgid "Minimum trade volume ($)"
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:52
-#: src/views/home/components/Greet.tsx:80
 #: src/views/issuance/components/issue/Issue.tsx:92
 msgid "Mint"
 msgstr ""
@@ -1397,7 +1368,7 @@ msgstr ""
 msgid "Mint slippage:"
 msgstr ""
 
-#: src/views/issuance/components/zap/components/ZapInput.tsx:82
+#: src/views/issuance/components/zap/components/ZapInput.tsx:112
 msgid "Mint with {zapSymbol}"
 msgstr ""
 
@@ -1471,7 +1442,7 @@ msgstr ""
 msgid "No assets to unregister..."
 msgstr ""
 
-#: src/components/charts/area/AreaChart.tsx:99
+#: src/components/charts/area/AreaChart.tsx:101
 msgid "No data"
 msgstr ""
 
@@ -1495,11 +1466,11 @@ msgstr ""
 msgid "No plugins available"
 msgstr ""
 
-#: src/views/governance/components/ProposalList.tsx:111
+#: src/views/governance/components/ProposalList.tsx:112
 msgid "No proposals created..."
 msgstr ""
 
-#: src/components/transactions/table/index.tsx:171
+#: src/components/transactions/table/index.tsx:167
 msgid "No transactions"
 msgstr ""
 
@@ -1539,7 +1510,7 @@ msgstr ""
 msgid "Not ready to set up governance?"
 msgstr ""
 
-#: src/views/home/components/RegisterAbout.tsx:173
+#: src/views/home/components/RegisterAbout.tsx:174
 msgid "Not sure what you’re looking at?"
 msgstr ""
 
@@ -1576,8 +1547,12 @@ msgstr ""
 msgid "Other Parameters"
 msgstr ""
 
+#: src/views/issuance/components/zap/components/ZapInput.tsx:77
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:77
+msgid "Output slippage"
+msgstr ""
+
 #: src/components/layout/navigation/index.tsx:109
-#: src/views/overview/components/TokenOverview.tsx:38
 msgid "Overview"
 msgstr ""
 
@@ -1599,6 +1574,10 @@ msgstr ""
 
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:116
 msgid "Pause status"
+msgstr ""
+
+#: src/views/home/components/RTokenCard.tsx:226
+msgid "Peg:"
 msgstr ""
 
 #: src/views/auctions/dutch/components/PendingToSettleAuctions.tsx:19
@@ -1624,6 +1603,10 @@ msgstr ""
 msgid "Platform"
 msgstr ""
 
+#: src/views/overview/components/CollateralPieChartTooltip.tsx:210
+msgid "Platform exposure"
+msgstr ""
+
 #: src/views/staking/components/overview/About.tsx:32
 msgid "Please carefully evaluate the RToken before choosing to stake your RSR here. If any of the various collaterals of this RToken default, then the staked RSR will be the first funds that get auctioned off to make up the difference for RToken holders."
 msgstr ""
@@ -1632,7 +1615,7 @@ msgstr ""
 msgid "Please complete the required governance configuration to complete deployment."
 msgstr ""
 
-#: src/views/auctions/auctions-sidebar/claim-rewards/components/ClaimFromTraderButton.tsx:68
+#: src/views/auctions/auctions-sidebar/claim-rewards/components/ClaimFromTraderButton.tsx:75
 #: src/views/governance/views/proposal-detail/components/ProposalVote.tsx:75
 #: src/views/portfolio/components/Portfolio.tsx:152
 msgid "Please connect your wallet"
@@ -1646,15 +1629,15 @@ msgstr ""
 msgid "Please don't close this window to avoid issues finding your way back here."
 msgstr ""
 
-#: src/views/home/components/RegisterAbout.tsx:149
-msgid "Please keep in mind that interactions with the Ethereum blockchain are pseudonymous and publicly available."
+#: src/views/home/components/RegisterAbout.tsx:150
+msgid "Please keep in mind that interactions with the Ethereum or Base blockchains are pseudonymous and publicly available."
 msgstr ""
 
 #: src/views/settings/components/ListingInfo.tsx:10
 msgid "Please read more about how Register manage tokens on our repository"
 msgstr ""
 
-#: src/views/auctions/auctions-sidebar/claim-rewards/components/ClaimFromTraderButton.tsx:66
+#: src/views/auctions/auctions-sidebar/claim-rewards/components/ClaimFromTraderButton.tsx:73
 msgid "Please select an asset to claim"
 msgstr ""
 
@@ -1674,7 +1657,7 @@ msgstr ""
 msgid "Please wait while the simulation executes"
 msgstr ""
 
-#: src/views/earn/hooks/useEarnTableColumns.tsx:50
+#: src/views/earn/hooks/useEarnTableColumns.tsx:54
 msgid "Pool"
 msgstr ""
 
@@ -1692,7 +1675,7 @@ msgid "Preparing transaction"
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:36
-#: src/views/overview/components/PriceChart.tsx:77
+#: src/views/overview/components/PriceChart.tsx:107
 #: src/views/tokens/components/UnlistedTokensTable.tsx:81
 msgid "Price"
 msgstr ""
@@ -1705,7 +1688,7 @@ msgid "Primary basket"
 msgstr ""
 
 #: src/components/rtoken-setup/basket/PrimaryBasket.tsx:85
-#: src/views/overview/components/AssetOverview.tsx:123
+#: src/views/overview/components/AssetOverview.tsx:135
 #: src/views/settings/components/BasketInfo.tsx:20
 msgid "Primary Basket"
 msgstr ""
@@ -1714,7 +1697,7 @@ msgstr ""
 msgid "Primary basket not defined"
 msgstr ""
 
-#: src/views/earn/hooks/useEarnTableColumns.tsx:78
+#: src/views/earn/hooks/useEarnTableColumns.tsx:82
 msgid "Project"
 msgstr ""
 
@@ -1810,7 +1793,7 @@ msgstr ""
 msgid "recent on-chain transactions"
 msgstr ""
 
-#: src/views/governance/components/ProposalList.tsx:79
+#: src/views/governance/components/ProposalList.tsx:80
 msgid "Recent proposals"
 msgstr ""
 
@@ -1833,7 +1816,7 @@ msgstr ""
 msgid "Redeem amount"
 msgstr ""
 
-#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:78
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:112
 msgid "Redeem into {0}"
 msgstr ""
 
@@ -1872,23 +1855,19 @@ msgid "Register Feedback"
 msgstr ""
 
 #: src/views/home/components/RegisterAbout.tsx:120
-msgid "Register is an open source project developed and maintained by LC Labs as the first dApp to interact with the Reserve Protocol and various RTokens deployed with the platform."
+msgid "Register is an open source project developed and maintained by ABC Labs as the first dApp to interact with the Reserve Protocol and various RTokens deployed with the platform."
 msgstr ""
 
 #: src/views/bridge/components/BridgeFaq.tsx:28
 msgid "Register L2 Bridge enables the transfer of certain digital assets and other data back and forth between Ethereum and Base."
 msgstr ""
 
-#: src/views/tokens/Tokens.tsx:32
+#: src/views/tokens/Tokens.tsx:26
 msgid "Register listed RTokens"
 msgstr ""
 
 #: src/views/settings/components/ListingInfo.tsx:9
 msgid "Register Listing"
-msgstr ""
-
-#: src/views/home/components/Greet.tsx:112
-msgid "Register.app is an independent project but with tight collaboration with the core team of the Reserve project. It’s created as the first Explorer/UI to interact with RTokens in different ways."
 msgstr ""
 
 #: src/views/governance/views/proposal/components/ProposedRegisterPreview.tsx:28
@@ -2081,10 +2060,6 @@ msgstr ""
 msgid "RToken paused or frozen"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:85
-msgid "RToken Stats"
-msgstr ""
-
 #: src/views/settings/components/ContractsInfo.tsx:23
 msgid "RToken Trader"
 msgstr ""
@@ -2109,7 +2084,7 @@ msgstr ""
 msgid "RTokens"
 msgstr ""
 
-#: src/views/tokens/Tokens.tsx:33
+#: src/views/tokens/Tokens.tsx:27
 msgid "RTokens in this list is not an endorsement or audited by us. It’s simply RTokens that have gone through our listing process and don’t seem like clear scams."
 msgstr ""
 
@@ -2131,10 +2106,6 @@ msgstr ""
 
 #: src/views/bridge/components/BridgeTokenModal.tsx:189
 msgid "Search by token symbol"
-msgstr ""
-
-#: src/views/home/components/Greet.tsx:150
-msgid "Select an RToken to:"
 msgstr ""
 
 #: src/views/bridge/components/BridgeTokenModal.tsx:177
@@ -2240,7 +2211,6 @@ msgid "St Token Ticker"
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:60
-#: src/views/home/components/Greet.tsx:84
 #: src/views/staking/components/stake/StakeInput.tsx:14
 msgid "Stake"
 msgstr ""
@@ -2249,12 +2219,12 @@ msgstr ""
 msgid "Stake + Unstake"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:73
+#: src/views/overview/components/TokenOverview.tsx:78
 #: src/views/staking/components/overview/StakingStats.tsx:42
 msgid "Stake pool"
 msgstr ""
 
-#: src/views/overview/components/TokenOverview.tsx:78
+#: src/views/overview/components/TokenOverview.tsx:83
 msgid "Stake pool USD value"
 msgstr ""
 
@@ -2267,7 +2237,15 @@ msgstr ""
 msgid "Staked"
 msgstr ""
 
-#: src/views/overview/components/AssetOverview.tsx:114
+#: src/views/overview/components/CollateralPieChartWrapper.tsx:150
+msgid "Staked RSR"
+msgstr ""
+
+#: src/views/overview/components/CollateralPieChartTooltip.tsx:227
+msgid "Staked RSR Overcollateralisation"
+msgstr ""
+
+#: src/views/overview/components/AssetOverview.tsx:126
 msgid "Staked RSR overcollateralization"
 msgstr ""
 
@@ -2328,7 +2306,7 @@ msgstr ""
 msgid "Symbol"
 msgstr ""
 
-#: src/views/overview/components/AssetOverview.tsx:93
+#: src/views/overview/components/AssetOverview.tsx:100
 msgid "Target basket of 1 {0}"
 msgstr ""
 
@@ -2341,7 +2319,7 @@ msgstr ""
 msgid "Target(s)"
 msgstr ""
 
-#: src/views/auctions/auctions-sidebar/claim-rewards/components/TraderEmissions.tsx:174
+#: src/views/auctions/auctions-sidebar/claim-rewards/components/TraderEmissions.tsx:172
 msgid "The amount of assets selected affects the gas price, this asset may not be worth claiming yet."
 msgstr ""
 
@@ -2349,7 +2327,7 @@ msgstr ""
 msgid "The configured network \"{currentChain}\" is different from the wallet selected network \"{chainId}\"\". Change your network in the connected wallet."
 msgstr ""
 
-#: src/views/home/components/DeployHero.tsx:46
+#: src/views/home/components/DeployHero.tsx:73
 msgid "The creation of new RToken designs is permissionless. If you are the inventive type and have ideas for what assets should be in the basket, what a good governance looks like, or anything novel that could work within the realms of the protocol, please consider putting those ideas into practice or sharing them with the community."
 msgstr ""
 
@@ -2401,10 +2379,6 @@ msgstr ""
 msgid "The Reserve Protocol makes a few different types of trades"
 msgstr ""
 
-#: src/views/home/components/Greet.tsx:109
-msgid "The RToken Register"
-msgstr ""
-
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:69
 msgid ""
 "The top level decision maker, typically a decentralized governance smart contract, responsible for setting or updating all RToken parameter values, RToken baskets, etc. - The RToken OWNER has the power to:\n"
@@ -2439,10 +2413,6 @@ msgstr ""
 msgid "There’s two freezing roles that put the system in the same state for different durations:"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:88
-msgid "These stats are across all RTokens on the Reserve Protocol listed by this dApp, including anonymized data from the Reserve Rpay app API."
-msgstr ""
-
 #: src/components/rtoken-setup/components/RolesEdit.tsx:42
 msgid "This address already holds this role"
 msgstr ""
@@ -2457,10 +2427,6 @@ msgstr ""
 
 #: src/components/field/index.tsx:25
 msgid "This field is required"
-msgstr ""
-
-#: src/views/home/components/Stats.tsx:236
-msgid "This includes on-chain transactions for RTokens and RSV in addition to anonymized Rpay transactions to show the full story of the Reserve ecosystem."
 msgstr ""
 
 #: src/components/rtoken-setup/basket/PrimaryBasket.tsx:43
@@ -2518,6 +2484,10 @@ msgstr ""
 msgid "Token Details"
 msgstr ""
 
+#: src/views/overview/components/CollateralPieChartTooltip.tsx:196
+msgid "Token exposure"
+msgstr ""
+
 #: src/components/rtoken-setup/token/TokenForm.tsx:18
 #: src/views/deploy/components/TokenForm.tsx:16
 msgid "Token name"
@@ -2557,10 +2527,6 @@ msgstr ""
 msgid "Total RSR staked"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:127
-msgid "Total RToken Market Cap"
-msgstr ""
-
 #: src/views/settings/components/BackingInfo.tsx:45
 msgid "Trading delay"
 msgstr ""
@@ -2582,7 +2548,7 @@ msgstr ""
 msgid "Transaction 2"
 msgstr ""
 
-#: src/hooks/useWatchTransaction.ts:48
+#: src/hooks/useWatchTransaction.ts:55
 msgid "Transaction confirmed"
 msgstr ""
 
@@ -2590,7 +2556,7 @@ msgstr ""
 msgid "Transaction failed"
 msgstr ""
 
-#: src/hooks/useWatchTransaction.ts:62
+#: src/hooks/useWatchTransaction.ts:69
 msgid "Transaction reverted"
 msgstr ""
 
@@ -2603,7 +2569,6 @@ msgstr ""
 msgid "Transaction submitted"
 msgstr ""
 
-#: src/views/home/components/Stats.tsx:235
 #: src/views/overview/components/RecentTransactions.tsx:50
 msgid "Transactions"
 msgstr ""
@@ -2632,12 +2597,11 @@ msgstr ""
 msgid "Tutorial video"
 msgstr ""
 
-#: src/views/earn/hooks/useEarnTableColumns.tsx:135
+#: src/views/earn/hooks/useEarnTableColumns.tsx:139
 msgid "TVL"
 msgstr ""
 
 #: src/views/home/components/Hero.tsx:29
-#: src/views/home/components/Stats.tsx:133
 msgid "TVL in Reserve"
 msgstr ""
 
@@ -2686,10 +2650,6 @@ msgstr ""
 
 #: src/components/layout/header/components/RegisterHelp.tsx:72
 msgid "Understand the Reserve Protocol."
-msgstr ""
-
-#: src/views/home/components/Greet.tsx:77
-msgid "Understand why each RToken exists. What is its backing? its governing mandate?"
 msgstr ""
 
 #: src/views/settings/components/FreezeManager.tsx:107
@@ -2762,7 +2722,7 @@ msgstr ""
 msgid "Unwrap collaterals"
 msgstr ""
 
-#: src/views/overview/components/TokenUsage.tsx:21
+#: src/views/overview/components/TokenUsage.tsx:13
 msgid "Usage Stats"
 msgstr ""
 
@@ -2774,11 +2734,7 @@ msgstr ""
 msgid "Use the Alexios governor format?"
 msgstr ""
 
-#: src/views/home/components/Greet.tsx:81
-msgid "Use this dApp to transform your various collateral types into RTokens."
-msgstr ""
-
-#: src/views/home/components/RegisterAbout.tsx:139
+#: src/views/home/components/RegisterAbout.tsx:140
 msgid "User Tracking"
 msgstr ""
 
@@ -2806,12 +2762,8 @@ msgstr ""
 msgid "View All"
 msgstr ""
 
-#: src/views/home/components/CompareTokens.tsx:37
+#: src/views/home/components/CompareTokens.tsx:41
 msgid "View All, including unlisted"
-msgstr ""
-
-#: src/views/home/components/Stats.tsx:109
-msgid "View Dashboard"
 msgstr ""
 
 #: src/components/transaction-modal/TransactionConfirmedModal.tsx:40
@@ -2913,7 +2865,7 @@ msgstr ""
 msgid "Warmup period (s)"
 msgstr ""
 
-#: src/views/home/components/DeployHero.tsx:70
+#: src/views/home/components/DeployHero.tsx:97
 msgid "Watch an intro to RTokens"
 msgstr ""
 
