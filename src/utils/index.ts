@@ -23,7 +23,7 @@ export const getTokenRoute = (
   token: string,
   chainId: number,
   route: string = ROUTES.OVERVIEW
-) => `/${CHAIN_TO_NETWORK[chainId]}/token/${token}/${route}`
+) => `/${CHAIN_TO_NETWORK[chainId]}/token/${token.toLowerCase()}/${route}`
 
 // multiplier 150 -> 1.5
 export const getSafeGasLimit = (gas: bigint, multiplier = 150n) =>

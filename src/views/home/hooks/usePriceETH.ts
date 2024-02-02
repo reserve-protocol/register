@@ -17,6 +17,9 @@ const usePriceETH = ({
   }
 >) => {
   const { data } = useContractReads({
+    select: (data) => {
+      return (data as bigint[]).map((value) => Number(formatEther(value)))
+    },
     contracts: [
       ...(targetUnits === 'ETH' && id && chain && (!basketsNeeded || !supply)
         ? [
@@ -38,27 +41,24 @@ const usePriceETH = ({
     allowFailure: false,
   })
 
-  const basketNeededValue = useMemo(() => {
-    const value = (data as bigint[])?.[0]
-    return value ? Number(formatEther(value)) : basketsNeeded
-  }, [data, basketsNeeded])
+  // return  { priceETHTerms, supplyETHTerms }
+  return useMemo(() => {
+    const [basketNeededValue, totalSupplyValue] = data || [
+      basketsNeeded,
+      supply,
+    ]
 
-  const totalSupplyValue = useMemo(() => {
-    const value = (data as bigint[])?.[1]
-    return value ? Number(formatEther(value)) : supply
-  }, [data, supply])
+    let priceETHTerms: number | undefined = undefined
+    let supplyETHTerms: number | undefined = undefined
 
-  const priceETHTerms = useMemo(() => {
-    if (!basketNeededValue || !totalSupplyValue || targetUnits !== 'ETH') return undefined
-    return Math.trunc(basketNeededValue / totalSupplyValue * 10000) / 10000
-  }, [basketNeededValue, totalSupplyValue])
+    if (basketNeededValue && totalSupplyValue && supply && price) {
+      priceETHTerms =
+        Math.trunc((basketNeededValue / totalSupplyValue) * 10000) / 10000
+      supplyETHTerms = (supply / price) * priceETHTerms
+    }
 
-  const supplyETHTerms = useMemo(() => {
-    if (!priceETHTerms || !supply || !price) return undefined
-    return (supply / price) * priceETHTerms
-  }, [priceETHTerms, supply, price])
-
-  return { priceETHTerms, supplyETHTerms }
+    return { priceETHTerms, supplyETHTerms }
+  }, [data, basketsNeeded, supply, price, targetUnits])
 }
 
 export default usePriceETH

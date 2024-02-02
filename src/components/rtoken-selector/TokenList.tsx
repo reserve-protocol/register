@@ -42,23 +42,21 @@ const TokenList = memo(
           },
         }}
       >
-        {Object.values(tokens).map(
-          ({ address, logo, symbol, chainId, listed }) => (
-            <ActionItem
-              key={address}
-              onClick={() => {
-                onSelect(listed ? symbol : address, chainId as number)
-              }}
-            >
-              <TokenItem
-                sx={{ color: 'text' }}
-                symbol={symbol}
-                logo={logo}
-                chainId={chainId}
-              />
-            </ActionItem>
-          )
-        )}
+        {Object.values(tokens).map(({ address, logo, symbol, chainId }) => (
+          <ActionItem
+            key={address}
+            onClick={() => {
+              onSelect(address, chainId as number)
+            }}
+          >
+            <TokenItem
+              sx={{ color: 'text' }}
+              symbol={symbol}
+              logo={logo}
+              chainId={chainId}
+            />
+          </ActionItem>
+        ))}
       </Box>
     )
   }

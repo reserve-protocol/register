@@ -105,9 +105,9 @@ const TokenMandate = () => {
         <Trans>Mandate</Trans>
       </Text>
       <Text as="p" variant="legend">
-        {rToken?.mandate ? rToken.mandate : <Skeleton count={4} />}
+        {rToken?.mandate ? rToken.mandate : <Skeleton count={6} />}
       </Text>
-      {rToken?.listed && (
+      {/* {rToken?.listed && (
         <Box mt={4}>
           <Text mb={2} variant="strong">
             <Trans>+ Off-chain note</Trans>
@@ -116,7 +116,7 @@ const TokenMandate = () => {
             {rTokenList[rToken.address]?.about}
           </Text>
         </Box>
-      )}
+      )} */}
     </Box>
   )
 }

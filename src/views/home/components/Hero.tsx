@@ -1,15 +1,14 @@
 import { Trans, t } from '@lingui/macro'
-import ChainLogo from 'components/icons/ChainLogo'
+import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import LeafIcon from 'components/icons/LeafIcon'
 import RootIcon from 'components/icons/RootIcon'
+import StackedChainLogo from 'components/icons/StackedChainLogo'
 import TreeIcon from 'components/icons/TreeIcon'
+import YieldIcon from 'components/icons/YieldIcon'
+import Skeleton from 'react-loading-skeleton'
 import { Box, Card, Flex, Grid, Link, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { ChainId } from 'utils/chains'
 import useProtocolMetrics from '../hooks/useProtocolMetrics'
-import Skeleton from 'react-loading-skeleton'
-import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
-import YieldIcon from 'components/icons/YieldIcon'
 
 const ProtocolStats = () => {
   const {
@@ -86,17 +85,7 @@ const ProtocolStats = () => {
 const About = () => (
   <>
     <Box variant="layout.verticalAlign">
-      <Box
-        sx={{ position: 'relative', height: 20, width: 24 }}
-        pt={'2px'}
-        ml={3}
-      >
-        <ChainLogo chain={ChainId.Base} style={{ position: 'absolute' }} />
-        <ChainLogo
-          chain={ChainId.Mainnet}
-          style={{ position: 'absolute', left: -10 }}
-        />
-      </Box>
+      <StackedChainLogo />
       <Text>
         <Trans>On Ethereum & Base</Trans>
       </Text>

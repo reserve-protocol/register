@@ -6,9 +6,16 @@ import { ChevronDown, ChevronUp } from 'react-feather'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { selectedRTokenAtom } from 'state/atoms'
 import { Box, BoxProps } from 'theme-ui'
-import { CHAIN_TO_NETWORK, ROUTES } from 'utils/constants'
+import { getTokenRoute } from 'utils'
 import SelectedToken from './SelectedToken'
 import TokenList from './TokenList'
+
+const trackToken = (token: string) => {
+  mixpanel.track('Selected RToken', {
+    Source: 'Dropdown',
+    RToken: token.toLowerCase(),
+  })
+}
 
 /**
  * Top header RToken selection
@@ -22,19 +29,8 @@ const RTokenSelector = (props: BoxProps) => {
   const handleSelect = useCallback(
     (token: string, chain: number) => {
       if (token !== selected) {
-        mixpanel.track('Selected RToken', {
-          Source: 'Dropdown',
-          RToken: token.toLowerCase(),
-        })
-        // TODO: Not sure if people want to get this functionality
-        // navigate(
-        //   `${
-        //     selected ? location.pathname : ROUTES.OVERVIEW
-        //   }?token=${token}&chainId=${chain}`
-        // )
-        navigate(
-          `/${CHAIN_TO_NETWORK[chain]}/token/${token}/${ROUTES.OVERVIEW}`
-        )
+        trackToken(token)
+        navigate(getTokenRoute(token, chain))
         setVisible(false)
       }
     },
