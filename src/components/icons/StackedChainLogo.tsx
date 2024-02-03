@@ -1,16 +1,25 @@
-import { ChainId } from 'utils/chains'
+import { Box, BoxProps } from 'theme-ui'
 import ChainLogo from './ChainLogo'
-import { Box } from 'theme-ui'
+
+interface Props extends BoxProps {
+  chains: number[]
+}
 
 // Shows ethereum/base stacked logos to indicate multichain
-// TODO: When adding an extra L2 this icon should have props
-const StackedChainLogo = () => (
-  <Box sx={{ position: 'relative', height: 20, width: 24 }} pt={'2px'}>
-    <ChainLogo chain={ChainId.Base} style={{ position: 'absolute' }} />
-    <ChainLogo
-      chain={ChainId.Mainnet}
-      style={{ position: 'absolute', left: -10 }}
-    />
+const StackedChainLogo = ({ chains, ...props }: Props) => (
+  <Box
+    sx={{ position: 'relative', height: 20, width: 24 }}
+    pt={'2px'}
+    ml={`${(chains.length - 1) * 10}px`}
+    {...props}
+  >
+    {[...chains].reverse().map((chain, index) => (
+      <ChainLogo
+        key={chain}
+        chain={chain}
+        style={{ position: 'absolute', left: -(index * 10) }}
+      />
+    ))}
   </Box>
 )
 

@@ -9,6 +9,7 @@ import Skeleton from 'react-loading-skeleton'
 import { Box, Card, Flex, Grid, Link, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import useProtocolMetrics from '../hooks/useProtocolMetrics'
+import { ChainId } from 'utils/chains'
 
 const ProtocolStats = () => {
   const {
@@ -85,7 +86,7 @@ const ProtocolStats = () => {
 const About = () => (
   <>
     <Box variant="layout.verticalAlign">
-      <StackedChainLogo />
+      <StackedChainLogo chains={[ChainId.Mainnet, ChainId.Base]} />
       <Text>
         <Trans>On Ethereum & Base</Trans>
       </Text>

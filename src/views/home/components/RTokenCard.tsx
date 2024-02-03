@@ -45,6 +45,7 @@ const ChainBadge = ({ chain }: { chain: number }) => (
   </Box>
 )
 
+// TODO: Component should be splitted
 const RTokenCard = ({ token, ...props }: Props) => {
   const navigate = useNavigate()
   const { priceETHTerms, supplyETHTerms } = usePriceETH(token)
