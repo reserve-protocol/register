@@ -32,8 +32,6 @@ import {
   maxSelectedZapTokenBalance,
   noZapActive,
   permitSignature,
-  previousRedeemZapTransaction,
-  previousZapTransaction,
   redeemInputValue,
   redeemZapQuote,
   redeemZapQuoteInput,
@@ -65,7 +63,6 @@ import {
 } from './atoms'
 import { FOUR_DIGITS, formatQty } from './formatTokenQuantity'
 import { resolvedZapState, zappableTokens, zapperState } from './zapper'
-import ZapInput from '../components/ZapInput'
 
 /**
  * This file contains atoms that are used to control the UI state of the Zap component.
@@ -109,10 +106,10 @@ export const zapTxFeeAtom = atom((get) => {
   const gasUsdPrice = get(ethPriceAtom)
   return tx?.transaction?.gasEstimate
     ? Number(
-        tx.result.universe.nativeToken
-          .from(tx.transaction.feeEstimate(gasPrice ?? 1n))
-          .format()
-      ) * gasUsdPrice
+      tx.result.universe.nativeToken
+        .from(tx.transaction.feeEstimate(gasPrice ?? 1n))
+        .format()
+    ) * gasUsdPrice
     : 0
 })
 
@@ -126,8 +123,8 @@ export const zapTransactionFeeDisplay = onlyNonNullAtom((get) => {
 })
 
 export const zapOutputAmount = atom((get) => {
-  const previous = get(previousZapTransaction)
-  const quote = get(zapQuote) ?? previous?.result
+  const zapTx = get(resolvedZapTransaction)
+  const quote = zapTx?.result ?? get(zapQuote)
   const rTokenOut = quote?.outputToken
   if (quote == null || rTokenOut == null) {
     return '0.0'
@@ -139,8 +136,7 @@ export const zapOutputAmount = atom((get) => {
 })
 
 export const zapDust = atom((get) => {
-  const tx =
-    get(resolvedZapTransaction)?.transaction ?? get(previousZapTransaction)?.transaction
+  const tx = get(resolvedZapTransaction)?.transaction
   const inp = get(zapperInputs)
   const dust = tx?.output.filter((i) => i.token !== inp?.rToken) ?? []
   return dust
@@ -151,7 +147,7 @@ export const zapDustValue = atom(async (get) => {
   if (dust == null) {
     return null
   }
-  const tx = get(previousZapTransaction)
+  const tx = get(resolvedZapTransaction)
   const quote = tx?.result ?? get(zapQuote)
   if (quote == null) {
     return null
@@ -174,22 +170,20 @@ export const zapDustValue = atom(async (get) => {
 })
 
 export const redeemZapOutputAmount = atom((get) => {
-  const previous = get(previousRedeemZapTransaction)
-  const quote = get(redeemZapQuote) ?? previous?.result
+  const quote = get(resolvedRedeemZapTransaction)?.result ?? get(redeemZapQuote)
   const outputToken = quote?.outputToken
   if (quote == null || outputToken == null) {
     return '0.0'
   }
   return formatQty(
     quote.swaps.outputs.find((r) => r.token === outputToken) ??
-      outputToken.zero,
+    outputToken.zero,
     FOUR_DIGITS
   )
 })
 
 export const redeemZapDust = atom((get) => {
-  const tx = get(previousRedeemZapTransaction)
-  const quote = tx?.result ?? get(redeemZapQuote)
+  const quote = get(resolvedRedeemZapTransaction)?.result ?? get(redeemZapQuote)
   if (quote == null) {
     return []
   }
@@ -207,8 +201,7 @@ export const redeemZapDustValue = atom(async (get) => {
   if (dust == null) {
     return null
   }
-  const tx = get(previousRedeemZapTransaction)
-  const quote = tx?.result ?? get(redeemZapQuote)
+  const quote = get(resolvedRedeemZapTransaction)?.result ?? get(redeemZapQuote)
   if (quote == null) {
     return null
   }
@@ -339,14 +332,13 @@ export const zapAvailableAtom = loadable(
         if (o != null) {
           return o
         }
-      } catch (e) {}
+      } catch (e) { }
     }
     return null
   })
 )
 
 const mkButton = (
-  previousTxAtom: typeof previousZapTransaction,
   txAtom: typeof resolvedZapTransaction,
   state: typeof zapState,
   zQuote: typeof zapQuote,
@@ -398,7 +390,7 @@ const mkButton = (
     ) {
       return false
     }
-    return buttonEnabledStates.has(s) || get(previousTxAtom) != null
+    return buttonEnabledStates.has(s) || get(txAtom) != null
   })
   const buttonIsLoading = atom((get) => loadingStates.has(get(state)))
   const buttonLabel = atom((get) => {
@@ -417,7 +409,7 @@ const mkButton = (
       case 'insufficient_token_balance':
         return `Insufficient ${loadedState.tokenToZap.symbol} balance`
     }
-    if (get(previousTxAtom) != null) {
+    if (get(txAtom) != null) {
       return `+ Mint ${loadedState.rToken.symbol}`
     }
     switch (s) {
@@ -449,7 +441,7 @@ const mkButton = (
       case 'insufficient_token_balance':
         return `Insufficient ${loadedState.rToken.symbol} balance`
     }
-    if (get(previousTxAtom) != null) {
+    if (get(txAtom) != null) {
       return `Redeem for ${loadedState.tokenToZap.symbol}`
     }
     switch (s) {
@@ -605,7 +597,7 @@ const mkButton = (
     (get) => ({
       loadingLabel: get(buttonLoadingLabel),
       enabled: get(buttonEnabled),
-      loading: get(previousTxAtom) == null && get(buttonIsLoading),
+      loading: get(txAtom) == null && get(buttonIsLoading),
       label: get(buttonLabel),
       redeemButtonLabel: get(redeemButtonLabel),
     }),
@@ -637,7 +629,7 @@ const mkButton = (
       if (flowState === 'tx_loading') {
         errors = 0
       } else if (flowState === 'tx_error') {
-        if (errors < 5) {
+        if (errors < 20) {
           set(redoZapQuote, Math.random())
           errors += 1
         }
@@ -749,10 +741,9 @@ export const ui = {
   zapRedeemOutput: {
     slippage: atom(get => {
       const zapInputUSDValue = get(redeemInputValue)
-      const previous = get(previousRedeemZapTransaction)
-      const quote = get(redeemZapQuote) ?? previous?.result
+      const quote = get(resolvedRedeemZapTransaction)?.result ?? get(redeemZapQuote)
       const outValue = quote?.swaps.outputValue
-      
+
       if (
         zapInputUSDValue != null &&
         outValue != null &&
@@ -763,12 +754,12 @@ export const ui = {
           relation.token.one.sub(relation).format()
         ) * 100
       }
-      return 0
+      return null
     }),
     textBox: atom((get) => {
       const zapPromise = get(redeemZapQuotePromise)
       const output = get(redeemZapOutputAmount)
-      if (get(previousRedeemZapTransaction) != null) {
+      if (get(resolvedRedeemZapTransaction) != null) {
         return output ?? '0.0'
       }
       if (zapPromise.state === 'hasData' && zapPromise.data == null) {
@@ -786,10 +777,9 @@ export const ui = {
   zapOutput: {
     slippage: atom(get => {
       const zapInputUSDValue = get(zapInputValue)
-      const previous = get(previousZapTransaction)
-      const quote = get(zapQuote) ?? previous?.result
+      const quote = get(resolvedZapTransaction)?.result ?? get(zapQuote)
       const outValue = quote?.swaps.outputValue
-      
+
       if (
         zapInputUSDValue != null &&
         outValue != null &&
@@ -800,13 +790,13 @@ export const ui = {
           relation.token.one.sub(relation).format()
         ) * 100
       }
-      return 0
+      return null
     }),
     textBox: atom((get) => {
       const zapPromise = get(zapQuotePromise)
       let output = get(zapOutputAmount)
-      
-      if (get(previousZapTransaction) != null) {
+
+      if (get(resolvedZapTransaction) != null) {
         return output ?? '0.0'
       }
       if (zapPromise.state === 'hasData' && zapPromise.data == null) {
@@ -818,7 +808,7 @@ export const ui = {
       if (zapPromise.state === 'hasError') {
         return ''
       }
-      
+
       return output
     }),
     txFee: atom((get) =>
@@ -827,7 +817,6 @@ export const ui = {
   },
   zapTxState: zapState,
   zapButton: mkButton(
-    previousZapTransaction,
     resolvedZapTransaction,
     zapState,
     zapQuote,
@@ -837,7 +826,6 @@ export const ui = {
 
   redeemZapTxState: zapState,
   redeemZapButton: mkButton(
-    previousRedeemZapTransaction,
     resolvedRedeemZapTransaction as any,
     redeemZapState,
     redeemZapQuote,

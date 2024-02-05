@@ -13,6 +13,7 @@ import {
 } from '../state/atoms'
 import {
   formatQty,
+  formatQtyNoLessThan0,
   FOUR_DIGITS,
   TWO_DIGITS,
 } from '../state/formatTokenQuantity'
@@ -23,25 +24,25 @@ const ZapDust = () => {
   const dustValue = useAtomValue(redeemZapDustValue)
   const dust = useAtomValue(redeemZapDust)
   const zapCollectDust = useAtomValue(collectDust)
-  if (dust.length === 0) {
-    return <>None</>
+  
+  if (
+    dust.length === 0 ||
+    dustValue == null ||
+    dustValue.total.amount < 10000n
+  ) {
+    return <Trans>None</Trans>
   }
-  if (dustValue == null) {
-    return <>None</>
-  }
+  const amts = dust.map((i) => formatQtyNoLessThan0(i)).filter((i) => i != null)
 
-  if (dust.length === 0) {
-    return <>None</>
-  }
-  const total = dustValue.total
+  let str: any = amts.join(', ') + ' ~' + formatQty(dustValue.total)
 
-  let str = formatQty(total, TWO_DIGITS) + ' in dust'
-  if (total.amount < 10000n) {
-    str = '*'
+  if (str.length > 30) {
+    str = <>{amts.length} <Trans>dust tokens worth </Trans> ~{formatQty(dustValue.total)}</>
   }
 
   return (
-    <span
+    <Text
+      sx={{ fontSize: 1 }}
       title={
         'Dust generated:\n' +
         dust.map((i) => formatQty(i, FOUR_DIGITS)).join('\n') +
@@ -51,7 +52,7 @@ const ZapDust = () => {
       }
     >
       {str}
-    </span>
+    </Text>
   )
 }
 const ZapOutput = () => {
@@ -67,22 +68,27 @@ const ZapOutput = () => {
   )
 }
 
-
 const ZapSlippage = () => {
   const slippage = useAtomValue(ui.zapRedeemOutput.slippage)
-  
+
   return (
     <Flex ml={3} mt={2} sx={{ fontSize: 1 }}>
       <Text variant="legend" mr={1}>
         <Trans>Price impact</Trans>:
       </Text>
       <Text variant="strong">
-        {slippage < 0.01 ? "< 0.01%" : slippage.toFixed(2)}%
+        {slippage == null ? (
+          <Trans>None</Trans>
+        ) : slippage < 0.01 ? (
+          '< 0.01%'
+        ) : (
+          slippage.toFixed(2) + "%"
+        )}
+        
       </Text>
     </Flex>
   )
 }
-
 
 const ZapDustRow = () => {
   return (
