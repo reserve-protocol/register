@@ -44,10 +44,10 @@ export const pendingRSRSummaryAtom = atom<{
   const currentTime = get(blockTimestampAtom)
   return get(pendingRSRAtom).reduce(
     (acc, unstake) => {
-      acc.index = unstake.index
       acc.availableAt = unstake.availableAt
 
       if (currentTime >= unstake.availableAt) {
+        acc.index = unstake.index
         acc.availableAmount += unstake.amount
         acc.availableIndex = BigInt(acc.availableAt)
       } else {
