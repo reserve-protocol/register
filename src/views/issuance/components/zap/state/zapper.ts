@@ -47,10 +47,10 @@ export const supportsPermit2Signatures = onlyNonNullAtom((get) => {
   return false
 })
 
-let unsub = () => {}
+let unsub = () => { }
 export const zapperState = loadable(
   atom(async (get) => {
-    const chainId = get(chainIdAtom)
+    get(chainIdAtom)
     const rtoken = get(rTokenAtom)
     if (rtoken == null) {
       return null
@@ -63,7 +63,7 @@ export const zapperState = loadable(
     if (provider == null) {
       return null
     }
-    provider.on('error', () => {})
+    provider.on('error', () => { })
 
     try {
       const chainIdToConfig: Record<
@@ -93,24 +93,11 @@ export const zapperState = loadable(
         chainIdToConfig[provider.network.chainId].setup
       )
       unsub()
-      unsub = universe.onEvent(({ type, chainId, params }) => {
+      unsub = universe.onEvent(({ type, params }) => {
         mixpanel.track('zapper:' + type, params)
       })
 
-      universe.dexAggregators.push(createEnso('enso', universe, 300))
-
-      // if (chainId === ChainId.Mainnet) {
-      //   universe.dexAggregators.push(
-      //     createDefillama('DefiLlama:0x', universe, 10, 'Matcha/0x')
-      //   )
-      //   universe.dexAggregators.push(
-      //     createDefillama('DefiLlama:HashFlow', universe, 10, 'Hashflow')
-      //   )
-      // } else if (chainId === ChainId.Base) {
-      //   universe.dexAggregators.push(
-      //     createDefillama('DefiLlama:0x', universe, 10, 'Matcha/0x')
-      //   )
-      // }
+      universe.dexAggregators.push(createEnso('enso', universe, 10))
       return universe
     } catch (e) {
       console.log('Zap init error', e)
@@ -141,6 +128,7 @@ export const zappableTokens = atom(async (get) => {
   const commonTokens = uni.commonTokens as Record<string, Token>
   return [
     uni.nativeToken,
+    
     commonTokens.USDbC,
     commonTokens.USDC,
     commonTokens.USDT,

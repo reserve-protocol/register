@@ -87,7 +87,7 @@ export const onlyNonNullAtom = <T>(
 
 export const atomWithOnWrite = <T>(
   initialValue: T,
-  onWrite: (get: Getter, set: Setter, prev: T, next: T) => void
+  onWrite: (get: Getter, set: Setter, prev: T, next: T, backing: Atom<T>) => void
 ) => {
   const backing = atom(initialValue)
   type BackingType = typeof backing
@@ -100,7 +100,7 @@ export const atomWithOnWrite = <T>(
         typeof arg === 'function' ? (arg as (prev: T) => T)(prev) : arg
 
       set(backing, next)
-      onWrite(get, set, prev, next)
+      onWrite(get, set, prev, next, backing)
     }
   ) as BackingType
 }
