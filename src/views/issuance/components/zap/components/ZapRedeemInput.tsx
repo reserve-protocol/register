@@ -74,10 +74,10 @@ const ZapSlippage = () => {
   return (
     <Flex ml={3} mt={2} sx={{ fontSize: 1 }}>
       <Text variant="legend" mr={1}>
-        <Trans>Output slippage</Trans>:
+        <Trans>Price impact</Trans>:
       </Text>
       <Text variant="strong">
-        {slippage.toFixed(2)}%
+        {slippage < 0.01 ? "< 0.01%" : slippage.toFixed(2)}%
       </Text>
     </Flex>
   )

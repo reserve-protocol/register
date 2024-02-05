@@ -187,7 +187,7 @@ msgstr ""
 #: src/components/transactions/table/index.tsx:84
 #: src/views/auctions/components/useColumns.tsx:40
 #: src/views/bridge/components/BridgeWithdrawals.tsx:22
-#: src/views/issuance/components/zap/components/ZapInput.tsx:110
+#: src/views/issuance/components/zap/components/ZapInput.tsx:109
 #: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:110
 msgid "Amount"
 msgstr ""
@@ -783,7 +783,7 @@ msgstr ""
 msgid "Duration in Seconds"
 msgstr ""
 
-#: src/views/issuance/components/zap/components/ZapInput.tsx:91
+#: src/views/issuance/components/zap/components/ZapInput.tsx:90
 #: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:91
 msgid "Dust"
 msgstr ""
@@ -1228,8 +1228,8 @@ msgstr ""
 msgid "Issue"
 msgstr ""
 
-#: src/views/issuance/components/zap/components/ZapInput.tsx:129
-#: src/views/issuance/components/zap/components/ZapInput.tsx:158
+#: src/views/issuance/components/zap/components/ZapInput.tsx:128
+#: src/views/issuance/components/zap/components/ZapInput.tsx:157
 #: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:128
 #: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:157
 #: src/views/settings/components/SettingItem.tsx:60
@@ -1322,7 +1322,7 @@ msgstr ""
 msgid "Melting"
 msgstr ""
 
-#: src/views/issuance/components/zap/components/ZapInput.tsx:62
+#: src/views/issuance/components/zap/components/ZapInput.tsx:61
 #: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:61
 msgid "Min Output"
 msgstr ""
@@ -1368,7 +1368,7 @@ msgstr ""
 msgid "Mint slippage:"
 msgstr ""
 
-#: src/views/issuance/components/zap/components/ZapInput.tsx:112
+#: src/views/issuance/components/zap/components/ZapInput.tsx:111
 msgid "Mint with {zapSymbol}"
 msgstr ""
 
@@ -1547,11 +1547,6 @@ msgstr ""
 msgid "Other Parameters"
 msgstr ""
 
-#: src/views/issuance/components/zap/components/ZapInput.tsx:77
-#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:77
-msgid "Output slippage"
-msgstr ""
-
 #: src/components/layout/navigation/index.tsx:109
 msgid "Overview"
 msgstr ""
@@ -1678,6 +1673,11 @@ msgstr ""
 #: src/views/overview/components/PriceChart.tsx:107
 #: src/views/tokens/components/UnlistedTokensTable.tsx:81
 msgid "Price"
+msgstr ""
+
+#: src/views/issuance/components/zap/components/ZapInput.tsx:76
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:77
+msgid "Price impact"
 msgstr ""
 
 #: src/views/deploy/components/NavigationSidebar.tsx:16
