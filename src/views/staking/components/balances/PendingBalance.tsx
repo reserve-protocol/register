@@ -34,7 +34,7 @@ const PendingBalance = () => {
       <Text variant="subtitle" mb={3}>
         <Trans>In Cooldown</Trans>
       </Text>
-      <TokenBalance symbol={'RSR'} balance={balance * rate} />
+      <TokenBalance symbol={'RSR'} balance={balance} />
       {!isLegacy && (
         <TransactionButton
           small
