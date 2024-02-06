@@ -76,25 +76,25 @@ export const previousRedeemZapTransaction = atom<{
 export const tokenToZapPopupState = atom(false)
 export const collectDust = atom(true)
 
-export const zapInputString = atomWithOnWrite('' as string, (get, set, prev, newVal, backing) => {
-  get(zapperState)
-  set(permitSignature, null)
-  set(previousZapTransaction, null)
+export const zapInputString = atomWithOnWrite(
+  '' as string,
+  (get, set, prev, newVal, backing) => {
+    get(zapperState)
+    set(permitSignature, null)
+    set(previousZapTransaction, null)
 
-  const max = get(maxZapInputSize)
-  if (max == null||prev===newVal) {
-    return
-  }
-  try {
-    const currentValue = max.token.fromDecimal(newVal)
-    if (currentValue.gt(max)) {
-      set(backing as any, max.format())
+    const max = get(maxZapInputSize)
+    if (max == null || prev === newVal) {
+      return
     }
-  } catch(e) {
-
+    try {
+      const currentValue = max.token.fromDecimal(newVal)
+      if (currentValue.gt(max)) {
+        set(backing as any, max.format())
+      }
+    } catch (e) {}
   }
-
-})
+)
 
 export const zapRedeemInputString = atomWithOnWrite('', (get, set, __) => {
   get(zapperState)
@@ -154,8 +154,6 @@ export const zapSender = atom((get) => {
 
 const senderOrNullAddress = atom((get) => get(zapSender) ?? Address.ZERO)
 
-
-
 export const zapperInputs = simplifyLoadable(
   loadable(
     onlyNonNullAtom(async (get) => {
@@ -173,21 +171,30 @@ export const zapperInputs = simplifyLoadable(
   )
 )
 
-export const maxZapInputSize = simplifyLoadable(loadable(onlyNonNullAtom(async (get) => {
-  const { issuanceAvailable } =
-    get(rTokenStateAtom)
-  const inputs = get(zapperInputs)
-  const maxOut = inputs.rToken.fromDecimal(issuanceAvailable)
-  const maxOutValue = await inputs.universe.fairPrice(maxOut)
-  const valueOfInputToken = await inputs.universe.fairPrice(inputs.tokenToZap.one)
-  if (maxOutValue == null || valueOfInputToken == null) {
-    return null
-  }
-  const size = maxOutValue.div(valueOfInputToken).into(inputs.tokenToZap)
-  const out =  size.token.from(size.amount)
-  console.log('maxZapInputSize', out.format())
-  return out
-})))
+export const maxZapInputSize = simplifyLoadable(
+  loadable(
+    onlyNonNullAtom(async (get) => {
+      const { issuanceAvailable } = get(rTokenStateAtom)
+      const inputs = get(zapperInputs)
+      await inputs.universe.initialized
+
+      const maxOut = inputs.rToken.fromDecimal(issuanceAvailable)
+      const maxOutValue = await inputs.universe.fairPrice(maxOut)
+
+      const valueOfInputToken = await inputs.universe.fairPrice(
+        inputs.tokenToZap.one
+      )
+
+      if (maxOutValue == null || valueOfInputToken == null) {
+        return inputs.tokenToZap.fromDecimal(10000000);
+      }
+
+      const size = maxOutValue.div(valueOfInputToken).into(inputs.tokenToZap)
+      const out = size.token.from(size.amount)
+      return out
+    })
+  )
+)
 
 const parsedUserInput = onlyNonNullAtom((get) => {
   const out = get(selectedZapTokenAtom).fromDecimal(get(zapInputString))
@@ -223,14 +230,15 @@ export const zapQuoteInput = onlyNonNullAtom((get) => {
   const inputQuantity = get(debouncedUserInputGenerator, tokenToZap.zero)
   return {
     signer,
-    inputQuantity: maxInputSize.gte(inputQuantity) ? inputQuantity : maxInputSize,
+    inputQuantity: maxInputSize.gte(inputQuantity)
+      ? inputQuantity
+      : maxInputSize,
     inputToken: tokenToZap,
     rToken: rToken,
     universe,
     zapSearcher,
   }
 })
-
 
 const debouncedRedeemZapUserInputGenerator = atomWithDebounce(
   atom((get) => get(redeemZapQuoteInput)),
@@ -252,7 +260,7 @@ export const zapQuotePromise = loadable(
       input.signer,
       get(tradeSlippage)
     )
-    a.catch((e) => { })
+    a.catch((e) => {})
 
     const out = await a
     return out
@@ -262,9 +270,12 @@ export const zapQuotePromise = loadable(
 export const zapInputValuePromise = loadable(
   onlyNonNullAtom(async (get) => {
     const input = get(zapQuoteInput)
+    await input.universe.initialized
+
     if (input.inputQuantity.amount === 0n) {
       return null
     }
+
     return input.universe.fairPrice(input.inputQuantity)
   })
 )
@@ -273,6 +284,7 @@ export const zapInputValue = simplifyLoadable(zapInputValuePromise)
 export const redeemInputValuePromise = loadable(
   onlyNonNullAtom(async (get) => {
     const input = get(debouncedRedeemZapUserInputGenerator)
+    await input.universe.initialized
     if (input.inputQuantity.amount === 0n) {
       return null
     }
@@ -555,9 +567,9 @@ const zapTxAtom = atom(async (get) => {
     permit2 =
       signature != null && permit != null
         ? {
-          permit: permit.permit,
-          signature,
-        }
+            permit: permit.permit,
+            signature,
+          }
         : undefined
   }
   const tx = await result.toTransaction({
@@ -576,7 +588,7 @@ const zapTxAtom = atom(async (get) => {
 export const zapTransaction = loadable(zapTxAtom)
 const resolvedZapTransaction_ = simplifyLoadable(zapTransaction)
 
-export const resolvedZapTransaction = atom(get => {
+export const resolvedZapTransaction = atom((get) => {
   const state = get(resolvedZapState)
   const current = get(resolvedZapTransaction_)
   if (current != null) {
@@ -591,7 +603,6 @@ export const resolvedZapTransaction = atom(get => {
   }
   return null
 })
-
 
 export const resolvedZapTransactionGasEstimateUnits = onlyNonNullAtom((get) => {
   const tx = get(resolvedZapTransaction)
