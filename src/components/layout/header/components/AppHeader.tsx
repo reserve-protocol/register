@@ -10,6 +10,7 @@ import HeaderMenu from './HeaderMenu'
 import RegisterHelp from './RegisterHelp'
 import { useAtomValue } from 'jotai'
 import { selectedRTokenAtom } from 'state/atoms'
+import CoinbaseSubscribe from 'components/cb-subscribe/CoinbaseSubscribe'
 
 const Divider = () => (
   <Box
@@ -75,6 +76,8 @@ const AppHeader = () => {
           <Brand mr={[2, 4]} />
           <HeaderAction />
         </Box>
+        <CoinbaseSubscribe />
+        <Divider />
         <RegisterHelp />
         <Divider />
         <ThemeColorMode
