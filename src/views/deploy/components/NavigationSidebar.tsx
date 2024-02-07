@@ -1,13 +1,18 @@
 import { t, Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import Navigation from 'components/section-navigation/Navigation'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
+import { getTokenRoute } from 'utils'
 import { ROUTES } from 'utils/constants'
 
 const NavigationSidebar = ({ governance = false }) => {
   // TODO: Listen for lang
+  const rToken = useAtomValue(selectedRTokenAtom)
+  const chainId = useAtomValue(chainIdAtom)
   const navigate = useNavigate()
   const sections = useMemo(
     () => [
@@ -24,8 +29,8 @@ const NavigationSidebar = ({ governance = false }) => {
   const step2Navigation = useMemo(() => [t`Governance`, t`Next steps`], [])
 
   const handleBack = () => {
-    if (governance) {
-      navigate(ROUTES.SETTINGS)
+    if (governance && rToken) {
+      navigate(getTokenRoute(rToken, chainId, ROUTES.SETTINGS))
     } else {
       navigate('/')
     }

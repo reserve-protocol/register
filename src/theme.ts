@@ -546,7 +546,7 @@ export const theme: Theme = {
     },
     sticky: {
       position: 'sticky',
-      top: ['72px', '168px', '184px'],
+      top: 0,
     },
     stickyNoHeader: {
       position: 'sticky',
