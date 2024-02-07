@@ -1,8 +1,6 @@
-import Layout from 'components/rtoken-setup/Layout'
-import ProposalForm from './ProposalForm'
-import ProposalNavigation from './ProposalNavigation'
-import ProposalOverview from './ProposalOverview'
 import { Grid } from 'theme-ui'
+import ProposalForm from './ProposalForm'
+import ProposalOverview from './ProposalOverview'
 
 const Proposal = () => (
   <Grid

@@ -388,6 +388,12 @@ export const theme: Theme = {
       padding: 3,
       backgroundColor: 'contentBackground',
     },
+    inner: {
+      borderRadius: borderRadius.boxes,
+      padding: 0,
+      width: '100%',
+      backgroundColor: 'background',
+    },
   },
   buttons: {
     primary: baseButton,

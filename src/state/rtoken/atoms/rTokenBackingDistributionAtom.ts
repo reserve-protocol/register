@@ -42,14 +42,14 @@ const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
     backing: Math.min(100, Math.ceil(Number(formatEther(backing)) * 100)),
     staked: Math.ceil(Number(formatEther(overCollateralization)) * 100),
     collateralDistribution: erc20s.reduce(
-      (acc: any, current: any, index: any) => ({
+      (acc, current, index) => ({
         ...acc,
         [current]: {
           share: truncateDecimals(+formatEther(uoaShares[index]) * 100, 4),
           targetUnit: hexToString(targets[index], { size: 32 }),
         },
       }),
-      {}
+      {} as { [x: Address]: { share: number; targetUnit: string } }
     ),
   }
 })

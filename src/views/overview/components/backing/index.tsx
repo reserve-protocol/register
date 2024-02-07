@@ -4,6 +4,7 @@ import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { rTokenAssetsAtom } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
+import AssetBreakdown from './AssetBreakdown'
 
 const BackingResume = () => {
   const rToken = useRToken()
@@ -12,6 +13,7 @@ const BackingResume = () => {
   return (
     <Text
       mt="2"
+      mb={5}
       as="h2"
       variant="heading"
       sx={{ color: 'accent', fontWeight: 'bold' }}
@@ -24,7 +26,11 @@ const BackingResume = () => {
 const Backing = () => {
   return (
     <Box>
-      <Box variant="layout.verticalAlign" mb={5} sx={{ color: 'accent' }}>
+      <Box
+        variant="layout.verticalAlign"
+        mb={5}
+        sx={{ color: 'accent', display: ['none', 'none', 'flex'] }}
+      >
         <BasketCubeIcon fontSize={24} />
         <Text ml="3" as="h2" variant="heading">
           <Trans>Backing & Risk</Trans>
@@ -37,6 +43,7 @@ const Backing = () => {
         </Trans>
       </Text>
       <BackingResume />
+      <AssetBreakdown />
     </Box>
   )
 }

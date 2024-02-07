@@ -1,13 +1,13 @@
 import { Trans } from '@lingui/macro'
 import { Button } from 'components'
+import { Suspense, lazy } from 'react'
 import { ArrowRight } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import { Box, Flex } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
+import CompareSkeleton from './CompareSkeleton'
 import CompareTokensTitle from './CompareTokensTitle'
 import DeployHero from './DeployHero'
-import React, { Suspense, lazy } from 'react'
-import CompareSkeleton from './CompareSkeleton'
 
 const RTokenList = lazy(() => import('./RTokenList'))
 
