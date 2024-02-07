@@ -6,7 +6,7 @@ import RSV from './rsv'
 
 export const VERSION = '3.0.0'
 
-export const DISCORD_INVITE = 'https://discord.com/invite/M4BafXtTNz'
+export const DISCORD_INVITE = 'https://discord.gg/reserveprotocol'
 export const PROTOCOL_DOCS = 'https://reserve.org/protocol/'
 export const REGISTER_FEEDBACK = 'https://reserve.canny.io/register-app'
 
