@@ -106,10 +106,10 @@ export const zapTxFeeAtom = atom((get) => {
   const gasUsdPrice = get(ethPriceAtom)
   return tx?.transaction?.gasEstimate
     ? Number(
-      tx.result.universe.nativeToken
-        .from(tx.transaction.feeEstimate(gasPrice ?? 1n))
-        .format()
-    ) * gasUsdPrice
+        tx.result.universe.nativeToken
+          .from(tx.transaction.feeEstimate(gasPrice ?? 1n))
+          .format()
+      ) * gasUsdPrice
     : 0
 })
 
@@ -177,7 +177,7 @@ export const redeemZapOutputAmount = atom((get) => {
   }
   return formatQty(
     quote.swaps.outputs.find((r) => r.token === outputToken) ??
-    outputToken.zero,
+      outputToken.zero,
     FOUR_DIGITS
   )
 })
@@ -226,13 +226,19 @@ const mkZapState = (
   zapPromise: typeof zapQuotePromise,
   approvalPromise: typeof approvalNeededAtom,
   zapTx: typeof zapTransaction,
-  hasSufficient: typeof hasSufficientGasTokenAndERC20TokenBalance
+  hasSufficient: typeof hasSufficientGasTokenAndERC20TokenBalance,
+  userInput: typeof zapQuoteInput
 ) => {
   return atom((get) => {
     const quotePromise = get(zapPromise)
     const approvePromise = get(approvalPromise)
     const tx = get(zapTx)
     const balances = get(hasSufficient)
+    const inp = get(userInput)
+
+    if (inp == null || inp.inputQuantity.amount === 0n) {
+      return 'send_tx'
+    }
 
     if (balances?.gas.hasSufficient === false) {
       return 'insufficient_gas_balance'
@@ -282,14 +288,16 @@ const zapState = mkZapState(
   zapQuotePromise,
   approvalNeededAtom,
   zapTransaction,
-  hasSufficientGasTokenAndERC20TokenBalance
+  hasSufficientGasTokenAndERC20TokenBalance,
+  zapQuoteInput
 )
 
 const redeemZapState = mkZapState(
   redeemZapQuotePromise,
   approvalNeededForRedeemAtom,
   redeemZapTransaction as any,
-  hasSufficientGasTokenAndERC20TokenBalance
+  hasSufficientGasTokenAndERC20TokenBalance,
+  redeemZapQuoteInput as any
 )
 
 type UIState = typeof zapState extends Atom<infer T> ? T : never
@@ -332,7 +340,7 @@ export const zapAvailableAtom = loadable(
         if (o != null) {
           return o
         }
-      } catch (e) { }
+      } catch (e) {}
     }
     return null
   })
@@ -739,9 +747,10 @@ export const ui = {
     ),
   },
   zapRedeemOutput: {
-    slippage: atom(get => {
+    slippage: atom((get) => {
       const zapInputUSDValue = get(redeemInputValue)
-      const quote = get(resolvedRedeemZapTransaction)?.result ?? get(redeemZapQuote)
+      const quote =
+        get(resolvedRedeemZapTransaction)?.result ?? get(redeemZapQuote)
       const outValue = quote?.swaps.outputValue
 
       if (
@@ -750,9 +759,7 @@ export const ui = {
         zapInputUSDValue.gt(outValue)
       ) {
         const relation = outValue.div(zapInputUSDValue)
-        return parseFloat(
-          relation.token.one.sub(relation).format()
-        ) * 100
+        return parseFloat(relation.token.one.sub(relation).format()) * 100
       }
       return null
     }),
@@ -775,7 +782,7 @@ export const ui = {
     }),
   },
   zapOutput: {
-    slippage: atom(get => {
+    slippage: atom((get) => {
       const zapInputUSDValue = get(zapInputValue)
       const quote = get(resolvedZapTransaction)?.result ?? get(zapQuote)
       const outValue = quote?.swaps.outputValue
@@ -786,9 +793,7 @@ export const ui = {
         zapInputUSDValue.gt(outValue)
       ) {
         const relation = outValue.div(zapInputUSDValue)
-        return parseFloat(
-          relation.token.one.sub(relation).format()
-        ) * 100
+        return parseFloat(relation.token.one.sub(relation).format()) * 100
       }
       return null
     }),

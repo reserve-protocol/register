@@ -47,7 +47,7 @@ export const supportsPermit2Signatures = onlyNonNullAtom((get) => {
   return false
 })
 
-let unsub = () => { }
+let unsub = () => {}
 export const zapperState = loadable(
   atom(async (get) => {
     get(chainIdAtom)
@@ -63,7 +63,7 @@ export const zapperState = loadable(
     if (provider == null) {
       return null
     }
-    provider.on('error', () => { })
+    provider.on('error', () => {})
 
     try {
       const chainIdToConfig: Record<
@@ -128,7 +128,7 @@ export const zappableTokens = atom(async (get) => {
   const commonTokens = uni.commonTokens as Record<string, Token>
   return [
     uni.nativeToken,
-    
+
     commonTokens.USDbC,
     commonTokens.USDC,
     commonTokens.USDT,
