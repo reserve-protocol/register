@@ -1,14 +1,44 @@
 import { Trans } from '@lingui/macro'
 import BasketCubeIcon from 'components/icons/BasketCubeIcon'
-import useRToken from 'hooks/useRToken'
-import { useAtomValue } from 'jotai'
-import { rTokenAssetsAtom } from 'state/atoms'
+import { atom, useAtomValue } from 'jotai'
+import Skeleton from 'react-loading-skeleton'
+import { rTokenAtom, rTokenBackingDistributionAtom } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
 import AssetBreakdown from './AssetBreakdown'
 
+const pegsAtom = atom((get) => {
+  const rToken = get(rTokenAtom)
+  const distribution = get(
+    rTokenBackingDistributionAtom
+  )?.collateralDistribution
+
+  if (!rToken || !distribution) {
+    return null
+  }
+
+  const unitCount = rToken.collaterals.reduce((acc, collateral) => {
+    acc[distribution[collateral.address].targetUnit] =
+      acc[distribution[collateral.address].targetUnit] + 1 || 1
+    return acc
+  }, {} as { [x: string]: number })
+
+  const totalUnits = Object.keys(unitCount).length
+
+  return Object.entries(unitCount).reduce((acc, [unit, count], index) => {
+    if (index && index === totalUnits - 1) {
+      acc += ' and '
+    } else if (index) {
+      acc += ', '
+    }
+
+    acc += `${count} Collateral${count > 1 ? 's' : ''} pegged to ${unit}`
+
+    return acc
+  }, `${rToken.symbol} has `)
+})
+
 const BackingResume = () => {
-  const rToken = useRToken()
-  const assets = useAtomValue(rTokenAssetsAtom)
+  const legend = useAtomValue(pegsAtom)
 
   return (
     <Text
@@ -18,7 +48,7 @@ const BackingResume = () => {
       variant="heading"
       sx={{ color: 'accent', fontWeight: 'bold' }}
     >
-      eUSD has 4 Collaterals pegged to USD
+      {legend ? legend : <Skeleton />}
     </Text>
   )
 }
@@ -26,11 +56,7 @@ const BackingResume = () => {
 const Backing = () => {
   return (
     <Box>
-      <Box
-        variant="layout.verticalAlign"
-        mb={5}
-        sx={{ color: 'accent', display: ['none', 'none', 'flex'] }}
-      >
+      <Box variant="layout.verticalAlign" mb={5} sx={{ color: 'accent' }}>
         <BasketCubeIcon fontSize={24} />
         <Text ml="3" as="h2" variant="heading">
           <Trans>Backing & Risk</Trans>

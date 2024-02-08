@@ -92,12 +92,17 @@ const TokenLogo = ({
 }: Props) => {
   let imgSrc = src
   const rToken = useRToken()
+  let tokenSymbol = symbol
+
+  if (tokenSymbol?.endsWith('-VAULT')) {
+    tokenSymbol = tokenSymbol.replace('-VAULT', '')
+  }
 
   if (!imgSrc) {
     if (rToken?.symbol === symbol) {
       imgSrc = rToken?.logo
-    } else if (symbol && IMGS.has(symbol.toLowerCase())) {
-      imgSrc = `/svgs/${symbol.toLowerCase()}.svg`
+    } else if (tokenSymbol && IMGS.has(tokenSymbol.toLowerCase())) {
+      imgSrc = `/svgs/${tokenSymbol.toLowerCase()}.svg`
     }
   }
 

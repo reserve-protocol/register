@@ -8,64 +8,37 @@ import { useMemo } from 'react'
 import { ChevronDown } from 'react-feather'
 import Skeleton from 'react-loading-skeleton'
 import {
-  collateralYieldAtom,
-  rTokenAtom,
-  rTokenBackingDistributionAtom,
-  rTokenPriceAtom,
-  rTokenStateAtom,
-} from 'state/atoms'
+  CollateralDetail,
+  rTokenCollateralDetailedAtom,
+} from 'state/rtoken/atoms/rTokenBackingDistributionAtom'
 import { Box, Card, Grid, Text } from 'theme-ui'
-import { Token } from 'types'
-import { formatCurrency, truncateDecimals } from 'utils'
-
-interface CollateralDetail extends Token {
-  yield: string
-  value: number
-  distribution: string
-}
+import { formatCurrency } from 'utils'
 
 const backingTypeAtom = atom('total')
-
-const collateralsAtom = atom((get) => {
-  const rToken = get(rTokenAtom)
-  const backingType = get(backingTypeAtom)
-  const supply = get(rTokenStateAtom)?.tokenSupply
-  const price = get(rTokenPriceAtom)
-  const distribution = get(
-    rTokenBackingDistributionAtom
-  )?.collateralDistribution
-  const yields = get(collateralYieldAtom)
-
-  if (!rToken || !distribution || !supply || !Object.keys(yields).length) {
-    return null
-  }
-
-  const valueCalc = backingType === 'total' ? (supply ? supply * price : 0) : 1
-
-  return rToken.collaterals.map((collateral) => {
-    return {
-      ...collateral,
-      yield: (yields[collateral.symbol.toLowerCase()] || 0).toFixed(2),
-      value: (valueCalc * distribution[collateral.address].share) / 100,
-      distribution: distribution[collateral.address].share.toFixed(2),
-    }
-  }) as CollateralDetail[]
-})
 
 const CollateralDetails = ({
   collateral,
 }: {
   collateral: CollateralDetail
 }) => {
+  const backingType = useAtomValue(backingTypeAtom)
+
   return (
     <Grid columns="2fr 1fr 1fr 1fr" py={4} px={4}>
       <Box variant="layout.verticalAlign" sx={{ fontWeight: 700 }}>
         <TokenLogo symbol={collateral.symbol} />
-        <Text ml={2}>{collateral.distribution}%</Text>
+        <Text ml={2} variant="accent">
+          {collateral.distribution.toFixed(2)}%
+        </Text>
         <Text ml="2">{collateral.symbol}</Text>
       </Box>
-      <Text>{collateral.yield}%</Text>
-      <Text>${formatCurrency(collateral.value)}</Text>
+      <Text>{collateral.yield.toFixed(2)}%</Text>
+      <Text>
+        $
+        {formatCurrency(
+          backingType === 'total' ? collateral.value : collateral.valueSingle
+        )}
+      </Text>
       <Box sx={{ textAlign: 'right' }}>
         <ChevronDown size={16} />
       </Box>
@@ -74,11 +47,11 @@ const CollateralDetails = ({
 }
 
 const CollateralList = () => {
-  const collaterals = useAtomValue(collateralsAtom)
+  const collaterals = useAtomValue(rTokenCollateralDetailedAtom)
 
   if (!collaterals) {
     return (
-      <Box px={4}>
+      <Box px={4} mb={3}>
         <Skeleton count={3} height={66} />
       </Box>
     )
