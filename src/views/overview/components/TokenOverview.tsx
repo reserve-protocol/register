@@ -2,10 +2,11 @@ import { t, Trans } from '@lingui/macro'
 import TokenLogo from 'components/icons/TokenLogo'
 import { ContentHead, InfoHeading } from 'components/info-box'
 import { useAtomValue } from 'jotai'
-import { estimatedApyAtom, rTokenAtom } from 'state/atoms'
+import { estimatedApyAtom, rTokenAtom, rTokenPriceAtom } from 'state/atoms'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { TokenStats } from 'types'
 import { formatCurrency, formatPercentage } from 'utils'
+import usePriceETH from 'views/home/hooks/usePriceETH'
 
 interface Props extends BoxProps {
   metrics: TokenStats
@@ -18,9 +19,17 @@ const specialCases: Record<string, string> = {
 
 const TokenOverview = ({ metrics, ...props }: Props) => {
   const rToken = useAtomValue(rTokenAtom)
-
   const { holders, stakers } = useAtomValue(estimatedApyAtom)
   const isRSV = !!rToken && !rToken.main
+  const price = useAtomValue(rTokenPriceAtom)
+  const { priceETHTerms } = usePriceETH({
+    id: rToken?.address,
+    chain: rToken?.chainId,
+    supply: rToken?.supply,
+    price,
+    targetUnits: rToken?.targetUnits,
+    basketsNeeded: rToken?.basketsNeeded,
+  })
 
   const additionalHelp = [
     ...new Set(
@@ -32,14 +41,6 @@ const TokenOverview = ({ metrics, ...props }: Props) => {
 
   return (
     <Box {...props}>
-      {isRSV ? (
-        <ContentHead
-          mb={[3, 6]}
-          title={t`Overview`}
-          subtitle={t`Here you can find usage data about RSV, which is used to mostly be used in the Rpay app. Usage data includes off-chain data from before the migration on March 22, 2023 that as been anonymized to protect user privacy. This page will likely be removed from Register in the future.`}
-        />
-      ) : undefined}
-
       <Flex sx={{ flexDirection: 'column' }}>
         <Flex
           sx={{
@@ -58,7 +59,11 @@ const TokenOverview = ({ metrics, ...props }: Props) => {
               <Trans>Market cap</Trans>
             </Text>{' '}
             <Text sx={{ fontWeight: 'medium', fontSize: 6 }}>
-              {metrics.supplyUsd}
+              {priceETHTerms
+                ? `${formatCurrency(metrics.supply * priceETHTerms, 0)} ETH (${
+                    metrics.supplyUsd
+                  })`
+                : metrics.supplyUsd}
             </Text>
           </Flex>
         </Flex>

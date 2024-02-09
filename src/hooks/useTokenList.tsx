@@ -3,14 +3,8 @@ import { RevenueSplit } from 'components/rtoken-setup/atoms'
 import { gql } from 'graphql-request'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
-import {
-  chainIdAtom,
-  collateralYieldAtom,
-  rpayOverviewAtom,
-  rsrPriceAtom,
-} from 'state/atoms'
+import { chainIdAtom, collateralYieldAtom, rsrPriceAtom } from 'state/atoms'
 import { formatDistribution } from 'state/rtoken/atoms/rTokenRevenueSplitAtom'
-import { EUSD_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import {
   LISTED_RTOKEN_ADDRESSES,
@@ -42,6 +36,7 @@ export interface ListedToken {
   distribution: RevenueSplit
   collaterals: { id: string; symbol: string }[]
   collateralDistribution: Record<string, { dist: string; target: string }>
+  rsrStaked: number
 }
 
 // TODO: Cache only while the list is short
@@ -85,7 +80,6 @@ const tokenListQuery = gql`
 
 const useTokenList = () => {
   const [list, setList] = useAtom(tokenListAtom)
-  const rpayOverview = useAtomValue(rpayOverviewAtom)
   const fromTime = useTimeFrom(TIME_RANGES.MONTH)
   const chainId = useAtomValue(chainIdAtom)
   const collateralYield = useAtomValue(collateralYieldAtom)
@@ -168,10 +162,13 @@ const useTokenList = () => {
               overcollaterization: supply ? (stakeUsd / supply) * 100 : 0,
               stakingApy,
               chain,
-              logo: `/svgs/${rtokens[chain][getAddress(token.id)].logo}`,
+              logo: `/svgs/${rtokens[chain][
+                getAddress(token.id)
+              ].logo?.toLowerCase()}`,
               distribution: revenueSplit,
               collaterals,
               collateralDistribution: distribution,
+              rsrStaked: Number(formatEther(token?.rToken?.rsrStaked ?? '0')),
             }
 
             // RSV Data
@@ -179,9 +176,6 @@ const useTokenList = () => {
               tokenData.transactionCount += RSVOverview.txCount
               tokenData.cumulativeVolume += RSVOverview.volume
               tokenData.targetUnits = 'USD'
-            } else if (token.id === EUSD_ADDRESS[chainId]?.toLowerCase()) {
-              tokenData.transactionCount += rpayOverview.txCount
-              tokenData.cumulativeVolume += rpayOverview.volume
             }
 
             return tokenData

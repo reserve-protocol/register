@@ -9,10 +9,11 @@ import { Box, Flex, Text } from 'theme-ui'
 import {
   collectDust,
   selectedZapTokenAtom,
-  zapInputString
+  zapInputString,
 } from '../state/atoms'
 import {
   formatQty,
+  formatQtyNoLessThan0,
   FOUR_DIGITS,
   TWO_DIGITS,
 } from '../state/formatTokenQuantity'
@@ -24,25 +25,24 @@ const ZapDust = () => {
   const dust = useAtomValue(zapDust)
   const zapCollectDust = useAtomValue(collectDust)
 
-  if (dust.length === 0) {
-    return null
+  if (
+    dust.length === 0 ||
+    dustValue == null ||
+    dustValue.total.amount < 10000n
+  ) {
+    return <Trans>None</Trans>
   }
-  if (dustValue == null) {
-    return null
-  }
+  const amts = dust.map((i) => formatQtyNoLessThan0(i)).filter((i) => i != null)
 
-  if (dust.length === 0) {
-    return null
-  }
-  const total = dustValue.total
+  let str: any = amts.join(', ') + ' ~' + formatQty(dustValue.total)
 
-  let str = '+ ' + formatQty(total, TWO_DIGITS) + ' in dust'
-  if (total.amount < 10000n) {
-    str = '*'
+  if (str.length > 30) {
+    str = <>{amts.length} <Trans>dust tokens worth </Trans> ~{formatQty(dustValue.total)}</>
   }
 
   return (
-    <span
+    <Text
+      sx={{ fontSize: 1 }}
       title={
         'Dust generated:\n' +
         dust.map((i) => formatQty(i, FOUR_DIGITS)).join('\n') +
@@ -51,8 +51,8 @@ const ZapDust = () => {
           : '\n\nDust will not be returned to your wallet')
       }
     >
-      ({str})
-    </span>
+      {str}
+    </Text>
   )
 }
 const ZapOutput = () => {
@@ -62,7 +62,41 @@ const ZapOutput = () => {
         <Trans>Min Output</Trans>:
       </Text>
       <Text variant="strong">
-        {useAtomValue(ui.zapOutput.textBox) || 'None'} <ZapDust />
+        {useAtomValue(ui.zapOutput.textBox) || 'None'}
+      </Text>
+    </Flex>
+  )
+}
+
+const ZapSlippage = () => {
+  const slippage = useAtomValue(ui.zapOutput.slippage)
+
+  return (
+    <Flex ml={3} mt={2} sx={{ fontSize: 1 }}>
+      <Text variant="legend" mr={1}>
+        <Trans>Price impact</Trans>:
+      </Text>
+      <Text variant="strong">
+        {slippage == null ? (
+          <Trans>None</Trans>
+        ) : slippage < 0.01 ? (
+          '< 0.01%'
+        ) : (
+          slippage.toFixed(2) + '%'
+        )}
+      </Text>
+    </Flex>
+  )
+}
+
+const ZapDustRow = () => {
+  return (
+    <Flex ml={3} mt={2} sx={{ fontSize: 1 }}>
+      <Text variant="legend" mr={1}>
+        <Trans>Dust</Trans>:
+      </Text>
+      <Text variant="strong">
+        <ZapDust />
       </Text>
     </Flex>
   )
@@ -72,7 +106,7 @@ const ZapTxInput = (props: Partial<TransactionInputProps>) => {
   const token = useAtomValue(selectedZapTokenAtom)
   const { issuancePaused, frozen } = useAtomValue(rTokenStateAtom)
   const zapSymbol = token?.symbol ?? 'ETH'
-  const maxAmountString = useAtomValue(ui.input.maxAmount)
+  let maxAmountString = useAtomValue(ui.input.maxAmount)
   const [loading, hasError] = useAtomValue(ui.zapState)
 
   return (
@@ -131,6 +165,8 @@ const ZapInput = (props: Partial<TransactionInputProps>) => {
         }
       >
         <ZapOutputLabel />
+        <ZapSlippage />
+        <ZapDustRow />
       </Suspense>
     </>
   )

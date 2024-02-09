@@ -1,5 +1,5 @@
 import { t } from '@lingui/macro'
-import { useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useState } from 'react'
 import {
   addTransactionAtom,
@@ -9,6 +9,8 @@ import { Hex, TransactionReceipt } from 'viem'
 import { waitForTransaction } from 'wagmi/actions'
 import useIsMounted from './useIsMounted'
 import useNotification from './useNotification'
+import { chainIdAtom } from 'state/atoms'
+import { ChainId } from 'utils/chains'
 
 interface WatchOptions {
   hash: Hex | undefined
@@ -28,6 +30,7 @@ const useWatchTransaction = ({ hash, success, error, label }: WatchOptions) => {
   const notify = useNotification()
   const addTransaction = useSetAtom(addTransactionAtom)
   const updateTransaction = useSetAtom(updateTransactionAtom)
+  const chainId = useAtomValue(chainIdAtom)
   const isMounted = useIsMounted()
   const [result, setResult] = useState({
     status: 'idle',
@@ -41,7 +44,11 @@ const useWatchTransaction = ({ hash, success, error, label }: WatchOptions) => {
         isMining: true,
       })
 
-      const data = await waitForTransaction({ hash })
+      // Give more time for base as blocks are faster
+      const data = await waitForTransaction({
+        hash,
+        confirmations: chainId === ChainId.Mainnet ? 1 : 3,
+      })
 
       updateTransaction([hash, 'success', Number(data.blockNumber)])
       notify(

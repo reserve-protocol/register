@@ -1,4 +1,3 @@
-export * from './rpay/atoms'
 export * from './wallet/atoms'
 export * from './chain/atoms/chainAtoms'
 export * from './rtoken/atoms/rTokenStateAtom'

@@ -71,9 +71,31 @@ const OTHER_POOL_TOKENS: Record<
     address: '0x853d955acef822db058eb8505911ed77f175b99e',
     logo: '',
   },
+  // Base
   '0x417ac0e078398c154edfadd9ef675d30be60af93': {
     symbol: 'crvUSD',
     address: '0x417Ac0e078398C154EdFadD9Ef675d30Be60Af93',
+    logo: '',
+  },
+  // Mainnet
+  '0xf939e0a03fb07f59a73314e73794be0e57ac1b4e': {
+    symbol: 'crvUSD',
+    address: '0xf939E0A03FB07F59A73314E73794Be0E57ac1b4E',
+    logo: '',
+  },
+  '0x4591dbff62656e7859afe5e45f6f47d3669fbb28': {
+    symbol: 'mkUSD',
+    address: '0x4591DBfF62656E7859Afe5e45f6f47D3669fBB28',
+    logo: '',
+  },
+  '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913': {
+    symbol: 'USDC',
+    address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
+    logo: '',
+  },
+  '0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca': {
+    symbol: 'USDBC',
+    address: '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA',
     logo: '',
   },
 }
@@ -124,7 +146,7 @@ const useRTokenPools = () => {
               ) {
                 return {
                   ...listedRTokens[lowercasedAddress],
-                  logo: `/svgs/${listedRTokens[lowercasedAddress].logo}`,
+                  logo: `/svgs/${listedRTokens[lowercasedAddress].logo.toLowerCase()}`,
                 }
               }
 

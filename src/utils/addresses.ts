@@ -15,9 +15,9 @@ export const DEPLOYER_ADDRESS: AddressMap = {
 }
 
 export const FACADE_ADDRESS: AddressMap = {
-  [ChainId.Mainnet]: '0x81b9Ae0740CcA7cDc5211b2737de735FBC4BeB3C',
-  [ChainId.Base]: '0xe1aa15DA8b993c6312BAeD91E0b470AE405F91BF',
-  [ChainId.Hardhat]: '0x81b9Ae0740CcA7cDc5211b2737de735FBC4BeB3C',
+  [ChainId.Mainnet]: '0x2815c24F49D5c5316Ffd0952dB0EFe68b0d5F132',
+  [ChainId.Base]: '0xDf99ccA98349DeF0eaB8eC37C1a0B270de38E682',
+  [ChainId.Hardhat]: '0x2815c24F49D5c5316Ffd0952dB0EFe68b0d5F132',
 }
 
 export const FACADE_ACT_ADDRESS: AddressMap = {
@@ -43,16 +43,39 @@ export const RSR_ADDRESS: AddressMap = {
 
 export const EUSD_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
-  [ChainId.Base]: "0xCfA3Ef56d303AE4fAabA0592388F19d7C3399FB4",
+  [ChainId.Base]: '0xCfA3Ef56d303AE4fAabA0592388F19d7C3399FB4',
   [ChainId.Hardhat]: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
 }
 
 /**
  * Other contract addresses
  */
-
 export const ENS_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C',
   [ChainId.Base]: zeroAddress, // TODO: Pending
   [ChainId.Hardhat]: '0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C',
+}
+
+/**
+ * Rewards addresses
+ */
+export const STAKE_AAVE_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x4da27a545c0c5B758a6BA100e3a049001de870f5',
+}
+
+export const COMP_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0xc00e94Cb662C3520282E6f5717214004A7f26888',
+  [ChainId.Base]: '0x9e1028F5F1D5eDE59748FFceE5532509976840E0',
+}
+
+export const CRV_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0xD533a949740bb3306d119CC777fa900bA034cd52',
+}
+
+export const CVX_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x4e3FBD56CD56c3e72c1403e103b45Db9da5B9D2B',
+}
+
+export const STG_ADDRESS: AddressMap = {
+  [ChainId.Base]: '0xE3B53AF74a4BF62Ae5511055290838050bf764Df',
 }

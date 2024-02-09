@@ -4,16 +4,13 @@ const Extra = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 375.21 375.21"
-    style={{
-      width: '1em',
-      height: '1em',
-      fill: 'currentColor',
-    }}
+    width="1em"
+    height="1em"
     {...props}
   >
     <defs>
       <linearGradient
-        id="\u672A\u547D\u540D\u7684\u6E10\u53D8_616"
+        id="extraCircle"
         x1={190.39}
         x2={184.29}
         y1={-29.48}
@@ -32,7 +29,7 @@ const Extra = (props: SVGProps<SVGSVGElement>) => (
           cy={187.6}
           r={187.6}
           style={{
-            fill: 'url(#\u672A\u547D\u540D\u7684\u6E10\u53D8_616)',
+            fill: 'url(#extraCircle)',
           }}
         />
         <path

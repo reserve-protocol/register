@@ -7,7 +7,6 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { selectedRTokenAtom } from 'state/atoms'
 import { Divider } from 'theme-ui'
-import { ROUTES } from 'utils/constants'
 import DeployHero from 'views/home/components/DeployHero'
 import RegisterAbout from 'views/home/components/RegisterAbout'
 import UnlistedTokensTable from './components/UnlistedTokensTable'
@@ -15,11 +14,6 @@ import UnlistedTokensTable from './components/UnlistedTokensTable'
 const Tokens = () => {
   const navigate = useNavigate()
   const updateToken = useSetAtom(selectedRTokenAtom)
-
-  const handleDeploy = () => {
-    navigate(ROUTES.DEPLOY)
-    document.getElementById('app-container')?.scrollTo(0, 0)
-  }
 
   useEffect(() => {
     updateToken(null)

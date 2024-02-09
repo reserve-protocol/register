@@ -93,9 +93,7 @@ const useProtocolMetrics = () => {
   }, [data])
 
   return useMemo(() => {
-    const data = { ...stats }
-
-    return { data, isLoading }
+    return { data: stats, isLoading }
   }, [stats])
 }
 

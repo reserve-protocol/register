@@ -15,21 +15,8 @@ import { formatCurrency, stringToColor } from 'utils'
 import { COLLATERAL_STATUS } from 'utils/constants'
 import RSV from 'utils/rsv'
 import CollateralPieChart from './CollateralPieChart'
-
-const colors = [
-  '#B87333', // Copper
-  '#8B4513', // SaddleBrown
-  '#F4A460', // SandyBrown
-  '#D2B48C', // Tan
-  '#CD853F', // Peru
-  '#556B2F', // DarkOliveGreen
-  '#708090', // SlateGray
-  '#8B008B', // DarkMagenta
-  '#DA8A67', // Earth Yellow
-  '#FFD700', // Gold
-  '#B8860B', // DarkGoldenRod
-  '#DEB887', // BurlyWood
-]
+import cms from 'utils/cms'
+import usePriceETH from 'views/home/hooks/usePriceETH'
 
 const basketDistAtom = atom((get) => {
   const rToken = get(rTokenAtom)
@@ -65,14 +52,34 @@ const AssetOverview = () => {
   const basketDist = useAtomValue(basketDistAtom)
   const distribution = useAtomValue(rTokenBackingDistributionAtom)
   const price = useAtomValue(rTokenPriceAtom)
+  const { priceETHTerms } = usePriceETH({
+    id: rToken?.address,
+    chain: rToken?.chainId,
+    supply: rToken?.supply,
+    price,
+    targetUnits: rToken?.targetUnits,
+    basketsNeeded: rToken?.basketsNeeded,
+  })
   const collateralStatus = useAtomValue(rTokenCollateralStatusAtom)
   const pieData = useMemo(() => {
     if (rToken?.address && basketDist && Object.keys(basketDist)) {
-      return rToken.collaterals.map((c, index) => ({
-        name: c.name,
-        value: basketDist[c.address]?.share ?? 0,
-        color: colors[index] || stringToColor(c.address),
-      }))
+      return rToken.collaterals.map((c) => {
+        const cmsCollateral = cms.collaterals.find(
+          (collateral) =>
+            collateral.chain === rToken.chainId &&
+            collateral.symbol === c.symbol
+        )
+        const cmsProject = cms.projects.find(
+          (project) => project.name === cmsCollateral?.project
+        )
+        return {
+          name: c.name,
+          value: basketDist[c.address]?.share ?? 0,
+          color: cmsCollateral?.color || stringToColor(c.address),
+          project: cmsProject?.label || 'GENERIC',
+          projectColor: cmsProject?.color || 'gray',
+        }
+      })
     }
 
     return []
@@ -93,16 +100,21 @@ const AssetOverview = () => {
             <Trans>Target basket of 1 {rToken?.symbol}</Trans>
           </Text>
           <Text sx={{ overflow: 'hidden' }} variant="legend">
-            ${formatCurrency(price ?? 0, 5)}
+            {priceETHTerms
+              ? `${priceETHTerms} ETH ($${formatCurrency(price ?? 0, 5)})`
+              : `$${formatCurrency(price ?? 0, 5)}`}
           </Text>
-          <CollateralPieChart
-            mb={4}
-            mt={2}
-            data={pieData}
-            logo={rToken?.logo ?? ''}
-            isRSV={isRSV}
-            staked={distribution?.staked ?? 0}
-          />
+          <Box sx={{ mx: 'auto' }}>
+            <CollateralPieChart
+              mb={4}
+              mt={2}
+              data={pieData}
+              logo={rToken?.logo ?? ''}
+              isRSV={isRSV}
+              staked={distribution?.staked ?? 0}
+              showTooltip
+            />
+          </Box>
           <Text variant="legend">
             <Trans>Backing</Trans>
             <Box as="span" ml={2} sx={{ fontWeight: '500', color: 'text' }}>

@@ -58,7 +58,7 @@ export interface TransactionRecord {
   amountUSD: number | string
   timestamp: number
   symbol?: string
-  hash?: string
+  hash: string
   chain?: number
 }
 
@@ -75,13 +75,21 @@ export interface Token {
   decimals: number
 }
 
+export interface Collateral extends Token {
+  protocol: ProtocolKey
+}
+
 export interface ReserveToken extends Token {
   logo: string
-  collaterals: Token[]
+  collaterals: Collateral[]
   stToken?: Token
   main?: Address
   mandate?: string
   listed?: boolean
+  supply?: number
+  basketsNeeded?: number
+  targetUnits?: string
+  chainId: number
 }
 
 export interface BigNumberMap {
@@ -243,3 +251,5 @@ export interface TenderlySimulation {
   contracts: any[]
   generated_access_list: GeneratedAccessList[]
 }
+
+export type Trader = 'backingManager' | 'rsrTrader' | 'rTokenTrader'

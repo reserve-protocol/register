@@ -53,10 +53,10 @@ const BRIDGE_ASSETS: BridgeAsset[] = [
     L1contract: EUSD_ADDRESS[ChainId.Mainnet],
     L2contract: EUSD_ADDRESS[ChainId.Base],
     L1icon: `/svgs/${
-      rtokens[ChainId.Mainnet][EUSD_ADDRESS[ChainId.Mainnet]].logo
+      rtokens[ChainId.Mainnet][EUSD_ADDRESS[ChainId.Mainnet]].logo?.toLowerCase()
     }`,
     L2icon: `/svgs/${
-      rtokens[ChainId.Mainnet][EUSD_ADDRESS[ChainId.Mainnet]].logo
+      rtokens[ChainId.Mainnet][EUSD_ADDRESS[ChainId.Mainnet]].logo?.toLowerCase()
     }`,
     L1name: 'Electronic Dollar',
     L2name: 'Electronic Dollar',
@@ -239,8 +239,8 @@ const BRIDGE_ASSETS: BridgeAsset[] = [
     L2chainId: ChainId.Base,
     L1contract: '0xD533a949740bb3306d119CC777fa900bA034cd52',
     L2contract: '0x8Ee73c484A26e0A5df2Ee2a4960B789967dd0415',
-    L1icon: '/svgs/curve.svg',
-    L2icon: '/svgs/curve.svg',
+    L1icon: '/svgs/crv.svg',
+    L2icon: '/svgs/crv.svg',
     L1name: 'Curve DAO Token',
     L2name: 'Curve DAO Token',
     decimals: 18,
