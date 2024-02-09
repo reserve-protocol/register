@@ -110,7 +110,6 @@ const AssetOverview = () => {
               mt={2}
               data={pieData}
               logo={rToken?.logo ?? ''}
-              isRSV={isRSV}
               staked={distribution?.staked ?? 0}
               showTooltip
             />

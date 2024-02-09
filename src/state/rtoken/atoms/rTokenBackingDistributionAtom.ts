@@ -1,18 +1,20 @@
 import FacadeRead from 'abis/FacadeRead'
+import { atom } from 'jotai'
 import {
   chainIdAtom,
   collateralYieldAtom,
+  ethPriceAtom,
   rTokenPriceAtom,
   rTokenStateAtom,
 } from 'state/atoms'
+import { Collateral } from 'types'
 import { truncateDecimals } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
+import { TARGET_UNITS } from 'utils/constants'
 import { Address, formatEther, hexToString } from 'viem'
 import { readContracts } from 'wagmi/actions'
 import rTokenAtom from './rTokenAtom'
-import { atom } from 'jotai'
-import { Collateral, Token } from 'types'
 
 const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
   const rToken = get(rTokenAtom)
@@ -63,8 +65,10 @@ const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
 
 export interface CollateralDetail extends Collateral {
   yield: number
-  value: number
-  valueSingle: number
+  valueTarget?: number // Only for ETH/BTC
+  valueSingleTarget?: number // Only for ETH/BTC
+  valueUsd: number
+  valueSingleUsd: number
   distribution: number
   targetUnit: string
 }
@@ -74,6 +78,7 @@ export const rTokenCollateralDetailedAtom = atom((get) => {
   const rToken = get(rTokenAtom)
   const supply = get(rTokenStateAtom)?.tokenSupply
   const price = get(rTokenPriceAtom)
+  const ethPrice = get(ethPriceAtom)
   const distribution = get(
     rTokenBackingDistributionAtom
   )?.collateralDistribution
@@ -92,20 +97,25 @@ export const rTokenCollateralDetailedAtom = atom((get) => {
   // TODO: ETH/BTC distribution? no tokens peg to BTC yet
   const supplyUsd = supply ? supply * price : 0
 
-  // const valueCalc = backingType === 'total' ? (supply ? supply * price : 0) : 1
-
   return rToken.collaterals.map((collateral) => {
-    return {
+    const data: CollateralDetail = {
       ...collateral,
       yield: yields[collateral.symbol.toLowerCase()] || 0,
-      // value: (valueCalc * distribution[collateral.address].share) / 100,
-      value: supplyUsd
+      valueUsd: supplyUsd
         ? (supplyUsd * distribution[collateral.address].share) / 100
         : 0,
-      valueSingle: (price * distribution[collateral.address].share) / 100,
+      valueSingleUsd: (price * distribution[collateral.address].share) / 100,
       distribution: distribution[collateral.address].share,
       targetUnit: distribution[collateral.address].targetUnit,
     }
+
+    // TODO: Only ETH case is supported rn, BTC/EUR future problem!
+    if (data.targetUnit === TARGET_UNITS.ETH) {
+      data.valueTarget = data.valueUsd ? data.valueUsd / ethPrice : 0
+      data.valueSingleTarget = data.valueSingleUsd / ethPrice
+    }
+
+    return data
   }) as CollateralDetail[]
 })
 

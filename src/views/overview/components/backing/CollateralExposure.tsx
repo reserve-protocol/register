@@ -11,8 +11,9 @@ import {
   CollateralDetail,
   rTokenCollateralDetailedAtom,
 } from 'state/rtoken/atoms/rTokenBackingDistributionAtom'
-import { Box, Card, Grid, Text } from 'theme-ui'
+import { Box, Card, Flex, Grid, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
+import { TARGET_UNITS } from 'utils/constants'
 
 const backingTypeAtom = atom('total')
 
@@ -22,10 +23,21 @@ const CollateralDetails = ({
   collateral: CollateralDetail
 }) => {
   const backingType = useAtomValue(backingTypeAtom)
+  const usdValueLabelProps = collateral.valueTarget
+    ? {
+        variant: 'legend',
+        sx: { fontWeight: 400 },
+      }
+    : {}
 
   return (
-    <Grid columns="2fr 1fr 1fr 1fr" py={4} px={4}>
-      <Box variant="layout.verticalAlign" sx={{ fontWeight: 700 }}>
+    <Grid
+      columns="2fr 1fr 1fr 1fr"
+      py={4}
+      px={4}
+      sx={{ fontWeight: 700, alignItems: 'center' }}
+    >
+      <Box variant="layout.verticalAlign">
         <TokenLogo symbol={collateral.symbol} />
         <Text ml={2} variant="accent">
           {collateral.distribution.toFixed(2)}%
@@ -33,12 +45,29 @@ const CollateralDetails = ({
         <Text ml="2">{collateral.symbol}</Text>
       </Box>
       <Text>{collateral.yield.toFixed(2)}%</Text>
-      <Text>
-        $
-        {formatCurrency(
-          backingType === 'total' ? collateral.value : collateral.valueSingle
+
+      <Flex sx={{ flexWrap: 'wrap' }}>
+        {!!collateral.valueTarget && !!collateral.valueSingleTarget && (
+          <Text mr="2" sx={{ whiteSpace: 'nowrap' }}>
+            {formatCurrency(
+              backingType === 'total'
+                ? collateral.valueTarget
+                : collateral.valueSingleTarget
+            )}{' '}
+            {collateral.targetUnit}
+          </Text>
         )}
-      </Text>
+        <Text {...usdValueLabelProps}>
+          {!!collateral.valueTarget && '('}$
+          {formatCurrency(
+            backingType === 'total'
+              ? collateral.valueUsd
+              : collateral.valueSingleUsd
+          )}
+          {!!collateral.valueTarget && ')'}
+        </Text>
+      </Flex>
+
       <Box sx={{ textAlign: 'right' }}>
         <ChevronDown size={16} />
       </Box>
@@ -109,7 +138,7 @@ const Header = () => {
 
 const CollateralExposure = () => {
   return (
-    <Card variant="inner">
+    <Card variant="inner" sx={{ height: 'fit-content' }}>
       <Header />
       <Grid
         columns="2fr 1fr 1fr 1fr"

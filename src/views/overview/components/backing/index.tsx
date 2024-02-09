@@ -6,6 +6,7 @@ import { rTokenAtom, rTokenBackingDistributionAtom } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
 import AssetBreakdown from './AssetBreakdown'
 
+// TODO: Localization?
 const pegsAtom = atom((get) => {
   const rToken = get(rTokenAtom)
   const distribution = get(
