@@ -15,9 +15,14 @@ interface Props extends BoxProps {
   active: string
   small?: boolean
   background?: string
+  collapse?: boolean
 }
 
-const defaultStyles = (background: string, small: boolean) => ({
+const defaultStyles = (
+  background: string,
+  small: boolean,
+  collapse: boolean
+) => ({
   border: '1px solid',
   borderColor: 'darkBorder',
   fontSize: small ? 0 : 1,
@@ -37,7 +42,7 @@ const defaultStyles = (background: string, small: boolean) => ({
     borderColor: 'transparent',
     borderRadius: borderRadius.inner,
     justifyContent: 'center',
-    width: [40, 'auto'],
+    width: collapse ? [40, 'auto'] : 'auto',
     marginLeft: 1,
     ':first-of-type': {
       marginLeft: 0,
@@ -59,10 +64,12 @@ const MenuItem = ({
   item,
   onClick,
   isActive,
+  collapse,
 }: {
   item: Item
   onClick(key: string): void
   isActive: boolean
+  collapse: boolean
 }) => {
   return (
     <div
@@ -73,7 +80,7 @@ const MenuItem = ({
       {item.icon}
       <Text
         ml={!!item.icon ? 2 : 0}
-        sx={{ display: ['none', 'none', 'block'] }}
+        sx={{ display: collapse ? ['none', 'none', 'block'] : 'block' }}
       >
         {item.label}
       </Text>
@@ -87,6 +94,7 @@ const TabMenu = ({
   items,
   onMenuChange,
   small = false,
+  collapse = false,
   background = 'transparent',
   active,
   sx,
@@ -95,7 +103,7 @@ const TabMenu = ({
   // TODO: Styles got a typing error, for some reason userSelect: 'none' is not valid?
   const styles: any = useMemo(() => {
     return {
-      ...defaultStyles(background, small),
+      ...defaultStyles(background, small, collapse),
       ...(sx ?? {}),
     }
   }, [sx])
@@ -115,6 +123,7 @@ const TabMenu = ({
           onClick={handleSelect}
           isActive={item.key === active}
           key={item.key}
+          collapse={collapse}
         />
       ))}
     </Box>

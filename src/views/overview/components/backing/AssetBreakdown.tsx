@@ -21,6 +21,7 @@ import { formatCurrency } from 'utils'
 import { Trans } from '@lingui/macro'
 import CircleIcon from 'components/icons/CircleIcon'
 import EarnIcon from 'components/icons/EarnIcon'
+import RiskIcon from 'components/icons/RiskIcon'
 
 const tabComponents = {
   collaterals: CollateralExposure,
@@ -56,7 +57,7 @@ const Menu = ({
         icon: <CirclesIcon color="currentColor" />,
       },
       { key: 'platforms', label: 'Platforms', icon: <LayersIcon /> },
-      { key: 'risks', label: 'Other Risks', icon: <CollaterizationIcon /> },
+      { key: 'risks', label: 'Other Risks', icon: <RiskIcon /> },
     ],
     []
   )

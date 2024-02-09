@@ -42,13 +42,7 @@ const BackingResume = () => {
   const legend = useAtomValue(pegsAtom)
 
   return (
-    <Text
-      mt="2"
-      mb={5}
-      as="h2"
-      variant="heading"
-      sx={{ color: 'accent', fontWeight: 'bold' }}
-    >
+    <Text mt="2" mb={5} as="h2" variant="heading" sx={{ fontWeight: 'bold' }}>
       {legend ? legend : <Skeleton />}
     </Text>
   )

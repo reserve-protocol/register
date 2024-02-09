@@ -4,7 +4,7 @@ import TokenLogo from 'components/icons/TokenLogo'
 import TabMenu from 'components/tab-menu'
 import useRToken from 'hooks/useRToken'
 import { atom, useAtom, useAtomValue } from 'jotai'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { ChevronDown } from 'react-feather'
 import Skeleton from 'react-loading-skeleton'
 import {
@@ -22,6 +22,7 @@ const CollateralDetails = ({
 }: {
   collateral: CollateralDetail
 }) => {
+  const [expanded, setExpanded] = useState(false)
   const backingType = useAtomValue(backingTypeAtom)
   const usdValueLabelProps = collateral.valueTarget
     ? {
@@ -31,47 +32,57 @@ const CollateralDetails = ({
     : {}
 
   return (
-    <Grid
-      columns="2fr 1fr 1fr 1fr"
-      py={4}
-      px={4}
-      sx={{ fontWeight: 700, alignItems: 'center' }}
-    >
-      <Box variant="layout.verticalAlign">
-        <TokenLogo symbol={collateral.symbol} />
-        <Text ml={2} variant="accent">
-          {collateral.distribution.toFixed(2)}%
-        </Text>
-        <Text ml="2">{collateral.symbol}</Text>
-      </Box>
-      <Text>{collateral.yield.toFixed(2)}%</Text>
+    <>
+      <Grid
+        columns="2fr 1fr 1fr 1fr"
+        py={4}
+        px={4}
+        sx={{
+          fontWeight: 700,
+          cursor: 'pointer',
+          alignItems: 'center',
+          backgroundColor: expanded ? 'border' : '',
+          '&:hover': { backgroundColor: 'border' },
+        }}
+        onClick={() => setExpanded(!expanded)}
+      >
+        <Box variant="layout.verticalAlign">
+          <TokenLogo symbol={collateral.symbol} />
+          <Text ml={2} variant="accent">
+            {collateral.distribution.toFixed(2)}%
+          </Text>
+          <Text ml="2">{collateral.symbol}</Text>
+        </Box>
+        <Text>{collateral.yield.toFixed(2)}%</Text>
 
-      <Flex sx={{ flexWrap: 'wrap' }}>
-        {!!collateral.valueTarget && !!collateral.valueSingleTarget && (
-          <Text mr="2" sx={{ whiteSpace: 'nowrap' }}>
+        <Flex sx={{ flexWrap: 'wrap' }}>
+          {!!collateral.valueTarget && !!collateral.valueSingleTarget && (
+            <Text mr="2" sx={{ whiteSpace: 'nowrap' }}>
+              {formatCurrency(
+                backingType === 'total'
+                  ? collateral.valueTarget
+                  : collateral.valueSingleTarget
+              )}{' '}
+              {collateral.targetUnit}
+            </Text>
+          )}
+          <Text {...usdValueLabelProps}>
+            {!!collateral.valueTarget && '('}$
             {formatCurrency(
               backingType === 'total'
-                ? collateral.valueTarget
-                : collateral.valueSingleTarget
-            )}{' '}
-            {collateral.targetUnit}
+                ? collateral.valueUsd
+                : collateral.valueSingleUsd
+            )}
+            {!!collateral.valueTarget && ')'}
           </Text>
-        )}
-        <Text {...usdValueLabelProps}>
-          {!!collateral.valueTarget && '('}$
-          {formatCurrency(
-            backingType === 'total'
-              ? collateral.valueUsd
-              : collateral.valueSingleUsd
-          )}
-          {!!collateral.valueTarget && ')'}
-        </Text>
-      </Flex>
+        </Flex>
 
-      <Box sx={{ textAlign: 'right' }}>
-        <ChevronDown size={16} />
-      </Box>
-    </Grid>
+        <Box sx={{ textAlign: 'right' }}>
+          <ChevronDown size={16} />
+        </Box>
+        {!!expanded && <Box sx={{ fontWeight: 400 }}>expanded</Box>}
+      </Grid>
+    </>
   )
 }
 
