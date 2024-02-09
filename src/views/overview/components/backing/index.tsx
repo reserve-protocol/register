@@ -57,7 +57,7 @@ const Backing = () => {
           <Trans>Backing & Risk</Trans>
         </Text>
       </Box>
-      <Text sx={{ fontSize: 26, maxWidth: 720 }}>
+      <Text sx={{ fontSize: 3, maxWidth: 720 }}>
         <Trans>
           RTokens are 100% backed by a diversified set of underlying collateral
           tokens...

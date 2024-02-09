@@ -34,7 +34,7 @@ export const columnVisibility = [
   ['none', 'table-cell'],
 ]
 
-const useEarnTableColumns = () => {
+const useEarnTableColumns = (compact: boolean) => {
   const columnHelper = createColumnHelper<Pool>()
   return useMemo(() => {
     const PROJECT_ICONS: Record<string, React.ReactElement> = {
@@ -93,9 +93,11 @@ const useEarnTableColumns = () => {
           return (
             <Box pl="10px" variant="layout.verticalAlign">
               <ChainLogo fontSize={16} chain={+chainMap[data.getValue()]} />
-              <Text ml="2" sx={{ display: ['block', 'none', 'block'] }}>
-                {CHAIN_TAGS[+chainMap[data.getValue()]]}
-              </Text>
+              {!compact && (
+                <Text ml="2" sx={{ display: ['block', 'none', 'block'] }}>
+                  {CHAIN_TAGS[+chainMap[data.getValue()]]}
+                </Text>
+              )}
             </Box>
           )
         },
