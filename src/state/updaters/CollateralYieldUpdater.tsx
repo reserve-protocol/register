@@ -58,6 +58,8 @@ const CollateralYieldUpdater = () => {
 
       // TODO: Temporal until pool exists
       poolYield['sabasusdbc'] = 1.44
+      poolYield['cusdc-vault'] = poolYield['cusdc']
+      poolYield['cusdt-vault'] = poolYield['cusdt']
 
       setCollateralYield({
         ...collateralYield,
