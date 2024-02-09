@@ -245,13 +245,13 @@ const TokenMandate = () => {
 
 const Hero = () => {
   return (
-    <>
+    <Box ml="4">
       <TokenAddresses />
       <Grid gap={6} columns={[1, 1, 1, 2]}>
         <TokenStats />
         <TokenMandate />
       </Grid>
-    </>
+    </Box>
   )
 }
 

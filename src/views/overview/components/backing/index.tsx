@@ -42,7 +42,14 @@ const BackingResume = () => {
   const legend = useAtomValue(pegsAtom)
 
   return (
-    <Text mt="2" mb={5} as="h2" variant="heading" sx={{ fontWeight: 'bold' }}>
+    <Text
+      ml="4"
+      mt="2"
+      mb={5}
+      as="h2"
+      variant="heading"
+      sx={{ fontWeight: 'bold' }}
+    >
       {legend ? legend : <Skeleton />}
     </Text>
   )
@@ -51,13 +58,18 @@ const BackingResume = () => {
 const Backing = () => {
   return (
     <Box>
-      <Box variant="layout.verticalAlign" mb={5} sx={{ color: 'accent' }}>
+      <Box
+        variant="layout.verticalAlign"
+        ml="4"
+        mb={5}
+        sx={{ color: 'accent' }}
+      >
         <BasketCubeIcon fontSize={24} />
         <Text ml="3" as="h2" variant="heading">
           <Trans>Backing & Risk</Trans>
         </Text>
       </Box>
-      <Text sx={{ fontSize: 3, maxWidth: 720 }}>
+      <Text ml="4" sx={{ fontSize: 3, maxWidth: 720 }}>
         <Trans>
           RTokens are 100% backed by a diversified set of underlying collateral
           tokens...

@@ -34,6 +34,16 @@ export const columnVisibility = [
   ['none', 'table-cell'],
 ]
 
+export const compactColumnVisibility = [
+  '',
+  '',
+  ['none', 'table-cell'],
+  '',
+  ['none', 'none', 'none', 'table-cell'],
+  ['none', 'none', 'none', 'table-cell'],
+  ['none', 'table-cell'],
+]
+
 const useEarnTableColumns = (compact: boolean) => {
   const columnHelper = createColumnHelper<Pool>()
   return useMemo(() => {

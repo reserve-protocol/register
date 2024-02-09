@@ -18,7 +18,7 @@ const StackTokenLogo = React.memo(({ tokens, sx = {}, ...props }: Props) => {
           return (
             <Box
               variant="layout.verticalAlign"
-              sx={{ width: '24px' }}
+              sx={{ width: '28px' }}
               key={token.address}
             >
               <TokenLogo
@@ -41,17 +41,14 @@ const StackTokenLogo = React.memo(({ tokens, sx = {}, ...props }: Props) => {
 
         return (
           <Box
+            key={token.address}
             sx={{
               position: 'relative',
               left: index ? `${-6}px` : 0,
               marginRight: index ? `${-6}px` : 0,
             }}
           >
-            <TokenLogo
-              key={token.address}
-              symbol={token.symbol}
-              src={token.logo}
-            />
+            <TokenLogo symbol={token.symbol} src={token.logo} />
           </Box>
         )
       })}

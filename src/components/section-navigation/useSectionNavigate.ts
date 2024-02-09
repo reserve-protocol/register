@@ -6,7 +6,7 @@ const useSectionNavigate = () => {
     const wrapper = document.getElementById('app-container')
 
     if (target && wrapper) {
-      const count = target.offsetTop - wrapper.scrollTop - 20 // xx = any extra distance from top ex. 60
+      const count = target.offsetTop - wrapper.scrollTop - 80 // xx = any extra distance from top ex. 60
       wrapper.scrollBy({ top: count, left: 0, behavior: 'smooth' })
     }
   }, [])

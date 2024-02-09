@@ -2,9 +2,11 @@ import { Table, TableProps } from 'components/table'
 import { Pool } from 'state/pools/atoms'
 import useEarnTableColumns, {
   columnVisibility,
+  compactColumnVisibility,
 } from '../hooks/useEarnTableColumns'
 import useRTokenPools from '../hooks/useRTokenPools'
 import { Box, Text } from 'theme-ui'
+import { useMemo } from 'react'
 
 interface Props extends Partial<TableProps> {
   data: Pool[]
@@ -14,6 +16,10 @@ interface Props extends Partial<TableProps> {
 const PoolsTable = ({ data, compact = false, ...props }: Props) => {
   const columns = useEarnTableColumns(compact)
   const { isLoading } = useRTokenPools()
+  const visibility = useMemo(
+    () => (compact ? compactColumnVisibility : columnVisibility),
+    [compact]
+  )
 
   return (
     <>
@@ -24,7 +30,7 @@ const PoolsTable = ({ data, compact = false, ...props }: Props) => {
         compact
         columns={columns}
         data={data}
-        columnVisibility={columnVisibility}
+        columnVisibility={visibility}
         sx={{ borderRadius: '0 0 20px 20px', overflow: 'hidden' }}
         {...props}
       />
