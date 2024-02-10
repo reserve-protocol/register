@@ -131,12 +131,16 @@ const Actions = () => {
 
   return (
     <Box variant="layout.verticalAlign" mt={4}>
-      <Button mr={3} variant="accent" onClick={() => navigate(ROUTES.ISSUANCE)}>
+      <Button
+        mr={3}
+        variant="accent"
+        onClick={() => navigate(`../${ROUTES.ISSUANCE}`)}
+      >
         <Trans>
           {!!holders ? `${formatCurrency(holders, 1)}% Est. APY` : 'Mint'}
         </Trans>
       </Button>
-      <Button mr={3} onClick={() => navigate(ROUTES.STAKING)}>
+      <Button mr={3} onClick={() => navigate(`../${ROUTES.STAKING}`)}>
         Stake RSR {!!stakers && `- ${formatCurrency(stakers, 1)}% Est. APY`}
       </Button>
       <Button variant="bordered">
