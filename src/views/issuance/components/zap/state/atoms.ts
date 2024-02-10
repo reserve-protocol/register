@@ -39,7 +39,7 @@ import { ChainId } from 'utils/chains'
 import { resolvedZapState, zappableTokens, zapperState } from './zapper'
 import { maxIssuableAtom } from 'views/issuance/atoms'
 
-export const zapOutputSlippage = atom(1000000000n)
+export const zapOutputSlippage = atom(100000n)
 
 /**
  * I've tried to keep react effects to a minimum so most async code is triggered via some signal
@@ -186,7 +186,7 @@ export const maxZapInputSize = simplifyLoadable(
       )
 
       if (maxOutValue == null || valueOfInputToken == null) {
-        return inputs.tokenToZap.fromDecimal(10000000);
+        return inputs.tokenToZap.fromDecimal(10000000)
       }
 
       const size = maxOutValue.div(valueOfInputToken).into(inputs.tokenToZap)
