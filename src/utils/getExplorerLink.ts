@@ -2,7 +2,7 @@ import { ChainId } from './chains'
 
 const ETHERSCAN_PREFIXES: { [chainId: number]: string } = {
   [ChainId.Mainnet]: import.meta.env.VITE_MAINNET_EXPLORER ?? 'etherscan.io',
-  [ChainId.Base]: 'basescan.org',
+  [ChainId.Base]: import.meta.env.VITE_BASE_EXPLORER ?? 'basescan.org',
 }
 
 export enum ExplorerDataType {

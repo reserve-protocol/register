@@ -10,19 +10,29 @@ import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc'
 import { publicProvider } from '@wagmi/core/providers/public'
 import React from 'react'
 import { WagmiConfig, configureChains, createConfig } from 'wagmi'
-import { base, hardhat, mainnet } from 'wagmi/chains'
+import { base, mainnet } from 'wagmi/chains'
 import { infuraProvider } from 'wagmi/providers/infura'
 import AtomUpdater from './updaters/AtomUpdater'
 import { setupConfig } from './utils/mocks'
 
 export const { chains, publicClient } = configureChains(
-  [mainnet, base, hardhat],
-  import.meta.env.VITE_MAINNET_URL
+  [mainnet, base],
+  import.meta.env.VITE_NETWORK_OVERRIDE
     ? [
         jsonRpcProvider({
-          rpc: () => ({
-            http: import.meta.env.VITE_MAINNET_URL,
-          }),
+          rpc: (chain) => {
+            if (chain.id === 1) {
+              return {
+                http: import.meta.env.VITE_MAINNET_URL,
+              }
+            }
+            if (chain.id === 8453) {
+              return {
+                http: import.meta.env.VITE_BASE_URL,
+              }
+            }
+            throw Error('Chain not supported')
+          },
         }),
       ]
     : [

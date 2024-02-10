@@ -78,9 +78,11 @@ export const SUBGRAPH_URL = {
 // TODO: Multi fork network graph
 export const GRAPH_CLIENTS = {
   [ChainId.Mainnet]: new GraphQLClient(
-    import.meta.env.VITE_SUBGRAPH_URL || SUBGRAPH_URL[ChainId.Mainnet]
+    import.meta.env.VITE_MAINNET_SUBGRAPH_URL || SUBGRAPH_URL[ChainId.Mainnet]
   ),
-  [ChainId.Base]: new GraphQLClient(SUBGRAPH_URL[ChainId.Base]),
+  [ChainId.Base]: new GraphQLClient(
+    import.meta.env.VITE_BASE_SUBGRAPH_URL || SUBGRAPH_URL[ChainId.Base]
+  ),
 }
 
 export const gqlClientAtom = atom(
