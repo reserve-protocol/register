@@ -299,7 +299,7 @@ export const theme: Theme = {
       // '&::-webkit-scrollbar': {
       //   display: 'none',
       // },
-      scrollbarWidth: 'none',
+      // scrollbarWidth: 'none',
 
       p: {
         m: 0,

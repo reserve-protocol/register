@@ -64,7 +64,7 @@ const SubNavigation = ({
       pt={3}
       pl={6}
       as="ul"
-      sx={{ listStyleType: 'none', display: ['none', 'inherit'] }}
+      sx={{ listStyleType: 'none', display: ['none', 'none', 'inherit'] }}
     >
       {items.map(({ label, id }, currentIndex) => {
         const isActive = active === currentIndex
@@ -115,7 +115,7 @@ const NavContent = ({
     <>
       <Box
         variant="layout.verticalAlign"
-        p={[3, 2]}
+        p={[3, 3, 2]}
         sx={{
           textDecoration: 'none',
           backgroundColor: isActive ? 'contentBackground' : 'background',
@@ -133,12 +133,15 @@ const NavContent = ({
         >
           {icon}
         </Flex>
-        <Text sx={{ fontWeight: 700, display: ['none', 'block'] }} ml="2">
+        <Text
+          sx={{ fontWeight: 700, display: ['none', 'none', 'block'] }}
+          ml="2"
+        >
           {label}
         </Text>
         {!!subnav && (
           <Box
-            sx={{ display: ['none', 'flex'] }}
+            sx={{ display: ['none', 'none', 'flex'] }}
             ml="auto"
             variant="layout.verticalAlign"
             onClick={handleExpand}
@@ -225,23 +228,23 @@ const TokenNavigation = () => {
   return (
     <Box
       sx={{
-        width: ['100%', '220px'],
-        borderRight: ['none', '1px solid'],
-        borderTop: ['1px solid', 'none'],
-        borderColor: ['border', 'border'],
-        position: ['fixed', 'relative'],
-        bottom: [0, undefined],
+        width: ['100%', '100%', '220px'],
+        borderRight: ['none', 'none', '1px solid'],
+        borderTop: ['1px solid', '1px solid', 'none'],
+        borderColor: ['border', 'border', 'border'],
+        position: ['fixed', 'fixed', 'relative'],
+        bottom: [0, 0, undefined],
         flexShrink: 0,
         zIndex: 1,
-        backgroundColor: ['background', 'none'],
+        backgroundColor: ['background', 'background', 'none'],
       }}
     >
       <Box
         sx={{
           position: 'sticky',
           top: 0,
-          display: ['flex', 'block'],
-          justifyContent: ['space-evenly', 'none'],
+          display: ['flex', 'flex', 'block'],
+          justifyContent: ['space-evenly', 'space-evenly', 'none'],
         }}
         padding={[2, 3]}
       >
