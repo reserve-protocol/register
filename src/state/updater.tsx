@@ -1,3 +1,4 @@
+import CMSUpdater from './cms'
 import RTokenUpdater from './rtoken/updater'
 import CollateralYieldUpdater from './updaters/CollateralYieldUpdater'
 import PricesUpdater from './updaters/PriceUpdater'
@@ -10,6 +11,7 @@ import { TokenBalancesUpdater } from './wallet/updaters/TokenBalancesUpdater'
 const Updater = () => {
   return (
     <>
+      <CMSUpdater />
       <PricesUpdater />
       <AccountUpdater />
       <RTokenUpdater />

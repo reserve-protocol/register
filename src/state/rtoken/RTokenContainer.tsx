@@ -16,7 +16,9 @@ const RTokenContainer = () => {
       }}
     >
       <TokenNavigation />
-      <Outlet />
+      <Box sx={{ flexGrow: 1 }}>
+        <Outlet />
+      </Box>
     </Box>
   )
 }

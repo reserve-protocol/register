@@ -146,7 +146,9 @@ const useRTokenPools = () => {
               ) {
                 return {
                   ...listedRTokens[lowercasedAddress],
-                  logo: `/svgs/${listedRTokens[lowercasedAddress].logo.toLowerCase()}`,
+                  logo: `/svgs/${listedRTokens[
+                    lowercasedAddress
+                  ].logo.toLowerCase()}`,
                 }
               }
 

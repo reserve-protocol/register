@@ -10,7 +10,7 @@ const RTokenList = () => {
 
   return (
     <>
-      {isLoading && <CompareSkeleton />}
+      {isLoading && !list.length && <CompareSkeleton />}
       {list.map((token) => (
         <RTokenCard key={token.id} token={token} mb={4} />
       ))}

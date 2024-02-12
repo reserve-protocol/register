@@ -25,6 +25,16 @@ const chainMap: Record<string, number> = {
   Base: ChainId.Base,
 }
 
+export const columnVisibility = [
+  '',
+  '',
+  ['none', 'table-cell'],
+  '',
+  ['none', 'none', 'table-cell'],
+  ['none', 'none', 'table-cell'],
+  ['none', 'table-cell'],
+]
+
 export const compactColumnVisibility = [
   '',
   '',
