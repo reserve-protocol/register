@@ -8,7 +8,7 @@ import useSWRImmutable from 'swr/immutable'
 import { StringMap } from 'types'
 import { EUSD_ADDRESS, RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
-import { RSR } from 'utils/constants'
+import { LP_PROJECTS, RSR } from 'utils/constants'
 
 // Only map what I care about the response...
 interface DefillamaPool {
@@ -114,20 +114,12 @@ const earnPoolQuery = gql`
 // TODO: May use a central Updater component for defillama data, currently being traversed twice for APYs and this
 const useRTokenPools = () => {
   const { data, isLoading } = useSWRImmutable('https://yields.llama.fi/pools')
-  const { data: protocolsData } = useSWRImmutable(
-    'https://api.llama.fi/protocols',
-    (...args) => fetch(...args).then((res) => res.json())
-  )
   const { data: earnPools } = useCMSQuery(earnPoolQuery)
 
   const [poolsCache, setPools] = useAtom(poolsAtom)
 
   const mapPools = useCallback(
-    async (
-      data: DefillamaPool[],
-      earnPools: EarnPool[],
-      protocolsData: any
-    ) => {
+    async (data: DefillamaPool[], earnPools: EarnPool[]) => {
       const pools: Pool[] = []
 
       for (const pool of data) {
@@ -180,8 +172,7 @@ const useRTokenPools = () => {
 
           const url =
             earnPools.find((item: any) => item.llamaId === pool.pool)?.url ||
-            protocolsData.find((item: any) => item.slug === pool.project)
-              ?.url ||
+            LP_PROJECTS[pool.project]?.site ||
             `https://defillama.com/yields/pool/${pool.pool}`
 
           pools.push({
@@ -199,14 +190,13 @@ const useRTokenPools = () => {
   )
 
   useEffect(() => {
-    if (data && earnPools?.earnPoolsCollection?.items && protocolsData) {
+    if (data && earnPools?.earnPoolsCollection?.items) {
       mapPools(
         data.data as DefillamaPool[],
-        earnPools.earnPoolsCollection.items,
-        protocolsData
+        earnPools.earnPoolsCollection.items
       )
     }
-  }, [data, earnPools, protocolsData])
+  }, [data, earnPools])
 
   return {
     data: poolsCache,

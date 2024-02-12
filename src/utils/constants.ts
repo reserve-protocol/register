@@ -10,6 +10,41 @@ export const DISCORD_INVITE = 'https://discord.gg/reserveprotocol'
 export const PROTOCOL_DOCS = 'https://reserve.org/protocol/'
 export const REGISTER_FEEDBACK = 'https://reserve.canny.io/register-app'
 
+export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
+  'curve-dex': {
+    name: 'Curve',
+    site: 'https://curve.fi/#/ethereum/pools',
+  },
+  'convex-finance': {
+    name: 'Convex',
+    site: 'https://www.convexfinance.com/stake',
+  },
+  'yearn-finance': {
+    name: 'Yearn',
+    site: 'https://yearn.fi/vaults',
+  },
+  stakedao: {
+    name: 'StakeDAO',
+    site: 'https://www.stakedao.org/yield',
+  },
+  'uniswap-v3': {
+    name: 'Uniswap',
+    site: 'https://app.uniswap.org/',
+  },
+  'balancer-v2': {
+    name: 'Balancer',
+    site: 'https://app.balancer.fi/',
+  },
+  'extra-finance': {
+    name: 'Extra Finance',
+    site: 'https://app.extrafi.io/lend',
+  },
+  aerodrome: {
+    name: 'Aerodrome',
+    site: 'https://aerodrome.finance/',
+  },
+}
+
 // List of supported networks with label
 export const NETWORKS: Record<string, number> = {
   ethereum: ChainId.Mainnet,
