@@ -14,23 +14,16 @@ import StackTokenLogo from 'components/token-logo/StackTokenLogo'
 import mixpanel from 'mixpanel-browser'
 import React, { useMemo } from 'react'
 import { Pool } from 'state/pools/atoms'
-import { Box, Text, Image } from 'theme-ui'
+import useSWRImmutable from 'swr/immutable'
+import { Box, Image, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
 import { CHAIN_TAGS } from 'utils/constants'
-import mixpanel from 'mixpanel-browser'
-import Stakedao from 'components/icons/logos/Stakedao'
-import Uniswap from 'components/icons/logos/Uniswap'
-import Balancer from 'components/icons/logos/Balancer'
-import useSWRImmutable from 'swr/immutable'
-import Aerodrome from 'components/icons/logos/Aerodrome'
-import Extra from 'components/icons/logos/Extra'
 
 const chainMap: Record<string, number> = {
   Ethereum: ChainId.Mainnet,
   Base: ChainId.Base,
 }
-
 
 export const compactColumnVisibility = [
   '',

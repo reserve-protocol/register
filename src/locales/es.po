@@ -21,6 +21,10 @@ msgstr ""
 msgid "(in their Github repository)"
 msgstr ""
 
+#: src/views/overview/components/Hero.tsx:139
+msgid "{0}"
+msgstr ""
+
 #: src/views/auctions/auctions-sidebar/SettleableAuctions.tsx:68
 msgid "{0} auctions"
 msgstr ""
@@ -71,7 +75,7 @@ msgid "+ Mint {0}"
 msgstr ""
 
 #: src/views/overview/_components/About.tsx:56
-#: src/views/overview/components/Hero.tsx:113
+#: src/views/overview/components/Hero.tsx:217
 msgid "+ Off-chain note"
 msgstr ""
 
@@ -95,7 +99,7 @@ msgstr ""
 msgid "A good explainer for how Gnosis auctions work can be found"
 msgstr ""
 
-#: src/views/home/components/Hero.tsx:109
+#: src/views/home/components/Hero.tsx:99
 msgid "A new path to better money, already set in motion"
 msgstr ""
 
@@ -181,7 +185,6 @@ msgstr ""
 msgid "All time"
 msgstr ""
 
-
 #: src/views/tokens/Tokens.tsx:23
 msgid "All unlisted RTokens"
 msgstr ""
@@ -189,8 +192,9 @@ msgstr ""
 #: src/components/transactions/table/index.tsx:84
 #: src/views/auctions/components/useColumns.tsx:40
 #: src/views/bridge/components/BridgeWithdrawals.tsx:22
-#: src/views/issuance/components/zap/components/ZapInput.tsx:109
-#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:110
+#: src/views/issuance/components/zap/components/ZapInput.tsx:114
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:116
+#: src/views/overview/components/RTokenTransactions.tsx:83
 msgid "Amount"
 msgstr ""
 
@@ -227,7 +231,7 @@ msgid "auctioned"
 msgstr ""
 
 #: src/components/layout/navigation/index.tsx:112
-#: src/components/layout/navigation/TokenNavigation.tsx:59
+#: src/components/layout/navigation/TokenNavigation.tsx:200
 #: src/views/auctions/auctions-sidebar/index.tsx:23
 msgid "Auctions"
 msgstr ""
@@ -252,24 +256,23 @@ msgstr ""
 msgid "Back to Governance"
 msgstr ""
 
-#: src/views/deploy/components/NavigationSidebar.tsx:39
+#: src/views/deploy/components/NavigationSidebar.tsx:44
 msgid "Back to settings"
 msgstr ""
 
-
-#: src/views/overview/_components/AssetOverview.tsx:119
+#: src/views/overview/_components/AssetOverview.tsx:118
+#: src/views/overview/components/backing/AssetBreakdown.tsx:112
 #: src/views/overview/components/CollateralPieChartWrapper.tsx:131
 msgid "Backing"
 msgstr ""
 
-
-#: src/components/layout/navigation/TokenNavigation.tsx:41
-#: src/views/overview/components/backing/index.tsx:30
+#: src/components/layout/navigation/TokenNavigation.tsx:182
+#: src/views/overview/components/backing/index.tsx:69
 msgid "Backing & Risk"
 msgstr ""
 
 #: src/views/home/components/MobileCollateralInfo.tsx:51
-#: src/views/home/components/RTokenCard.tsx:237
+#: src/views/home/components/RTokenCard.tsx:238
 msgid "Backing + Overcollaterization:"
 msgstr ""
 
@@ -289,14 +292,14 @@ msgstr ""
 msgid "Backing buffer (%)"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:77
+#: src/components/layout/navigation/TokenNavigation.tsx:218
 #: src/views/governance/views/proposal/components/ProposalNavigation.tsx:17
 #: src/views/settings/components/NavigationSidebar.tsx:15
 msgid "Backing config"
 msgstr ""
 
 #: src/views/deploy/components/BackingManager.tsx:9
-#: src/views/deploy/components/NavigationSidebar.tsx:19
+#: src/views/deploy/components/NavigationSidebar.tsx:24
 #: src/views/settings/components/ContractsInfo.tsx:21
 msgid "Backing Manager"
 msgstr ""
@@ -321,7 +324,7 @@ msgstr ""
 msgid "Balance:"
 msgstr ""
 
-#: src/views/deploy/components/NavigationSidebar.tsx:15
+#: src/views/deploy/components/NavigationSidebar.tsx:20
 #: src/views/deploy/components/TokenParameters.tsx:12
 msgid "Basics"
 msgstr ""
@@ -370,7 +373,6 @@ msgstr ""
 #: src/views/auctions/components/AuctionsHeader.tsx:32
 msgid "Batch auctions"
 msgstr ""
-
 
 #: src/views/tokens/Tokens.tsx:24
 msgid "Be aware that anyone can create an RToken that ends up on this list. We don't apply any standards beyond what can be done with the Reserve Protocol."
@@ -435,6 +437,7 @@ msgid "Cancel"
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:59
+#: src/views/overview/components/RTokenTransactions.tsx:64
 msgid "Cancel Issue"
 msgstr ""
 
@@ -450,7 +453,7 @@ msgstr ""
 msgid "Caution"
 msgstr ""
 
-#: src/views/earn/hooks/useEarnTableColumns.tsx:93
+#: src/views/earn/hooks/useEarnTableColumns.tsx:102
 msgid "Chain"
 msgstr ""
 
@@ -497,6 +500,7 @@ msgid "Choose Redemption Basket"
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:58
+#: src/views/overview/components/RTokenTransactions.tsx:63
 msgid "Claim"
 msgstr ""
 
@@ -514,6 +518,10 @@ msgstr ""
 
 #: src/views/issuance/components/issue/CollateralDistribution.tsx:45
 msgid "Collateral distribution"
+msgstr ""
+
+#: src/views/overview/components/backing/CollateralExposure.tsx:137
+msgid "Collateral Exposure"
 msgstr ""
 
 #: src/components/rtoken-setup/basket/CollateralModal.tsx:105
@@ -561,7 +569,7 @@ msgstr ""
 msgid "Confirm & prepare proposal"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:135
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:133
 msgid "Confirm & Submit"
 msgstr ""
 
@@ -585,7 +593,7 @@ msgstr ""
 msgid "Connect your wallet..."
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:80
+#: src/components/layout/navigation/TokenNavigation.tsx:221
 #: src/views/settings/components/NavigationSidebar.tsx:18
 msgid "Contract Addresses"
 msgstr ""
@@ -602,11 +610,11 @@ msgstr ""
 msgid "Copy to clipboard"
 msgstr ""
 
-#: src/views/governance/components/ProposalList.tsx:88
+#: src/views/governance/components/ProposalList.tsx:80
 msgid "Create proposal"
 msgstr ""
 
-#: src/views/governance/components/ProposalList.tsx:136
+#: src/views/governance/components/ProposalList.tsx:124
 msgid "Created at:"
 msgstr ""
 
@@ -617,7 +625,6 @@ msgstr ""
 #: src/views/home/components/Hero.tsx:24
 msgid "Cumulative Total RToken Mkcap"
 msgstr ""
-
 
 #: src/views/overview/_components/TokenUsage.tsx:18
 msgid "Cumulative Tx Volume"
@@ -716,7 +723,7 @@ msgstr ""
 msgid "Deploy an RToken"
 msgstr ""
 
-#: src/views/deploy/components/GovernanceOverview.tsx:101
+#: src/views/deploy/components/GovernanceOverview.tsx:102
 msgid "Deploy Governance"
 msgstr ""
 
@@ -738,6 +745,7 @@ msgstr ""
 
 #: src/components/transactions/table/index.tsx:63
 #: src/views/bridge/components/BridgeHeader.tsx:71
+#: src/views/overview/components/RTokenTransactions.tsx:68
 msgid "Deposit"
 msgstr ""
 
@@ -750,7 +758,7 @@ msgid "Description"
 msgstr ""
 
 #: src/components/layout/navigation/index.tsx:116
-#: src/components/layout/navigation/TokenNavigation.tsx:69
+#: src/components/layout/navigation/TokenNavigation.tsx:210
 msgid "Details + Roles"
 msgstr ""
 
@@ -784,7 +792,7 @@ msgstr ""
 msgid "Diversity Factor"
 msgstr ""
 
-#: src/views/governance/components/GovernanceOverview.tsx:180
+#: src/views/governance/components/GovernanceOverview.tsx:184
 msgid "Documentation"
 msgstr ""
 
@@ -798,13 +806,18 @@ msgstr ""
 msgid "Duration in Seconds"
 msgstr ""
 
-#: src/views/issuance/components/zap/components/ZapInput.tsx:90
-#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:91
+#: src/views/issuance/components/zap/components/ZapInput.tsx:96
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:97
 msgid "Dust"
 msgstr ""
 
 #: src/views/issuance/components/zap/components/ZapSettings.tsx:158
 msgid "Dust is the leftover amount of tokens that cannot be exchanged. If you choose to collect dust, it will be sent back to your wallet. Sending dust back to the wallet will increase transaction fee."
+msgstr ""
+
+#: src/views/issuance/components/zap/components/ZapInput.tsx:40
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:40
+msgid "dust tokens worth"
 msgstr ""
 
 #: src/views/issuance/components/zap/components/ZapSettings.tsx:154
@@ -840,16 +853,17 @@ msgid "Each type of trade can currently happen in only one way; the protocol lau
 msgstr ""
 
 #: src/components/layout/header/components/HeaderMenu.tsx:30
-#: src/components/layout/navigation/TokenNavigation.tsx:42
+#: src/components/layout/navigation/TokenNavigation.tsx:183
+#: src/views/overview/components/RTokenEarn.tsx:45
 msgid "Earn"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:131
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:129
 msgid "Edit"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:75
-#: src/views/deploy/components/NavigationSidebar.tsx:17
+#: src/components/layout/navigation/TokenNavigation.tsx:216
+#: src/views/deploy/components/NavigationSidebar.tsx:22
 #: src/views/governance/views/proposal/components/ProposalNavigation.tsx:22
 #: src/views/settings/components/NavigationSidebar.tsx:13
 msgid "Emergency basket"
@@ -884,14 +898,13 @@ msgstr ""
 msgid "Ensure that the asset(s) you are unregistering do not have pending revenue that can be"
 msgstr ""
 
-#: src/views/home/components/RTokenCard.tsx:278
+#: src/views/home/components/RTokenCard.tsx:279
 msgid "Est. APY"
 msgstr ""
 
 #: src/components/rtoken-setup/basket/PluginItem.tsx:107
 msgid "Est. APY:"
 msgstr ""
-
 
 #: src/views/overview/_components/TokenOverview.tsx:90
 msgid "Est. RToken Yield"
@@ -900,7 +913,6 @@ msgstr ""
 #: src/views/staking/components/overview/StakingStats.tsx:54
 msgid "Est. Staking APY"
 msgstr ""
-
 
 #: src/views/overview/_components/TokenOverview.tsx:100
 msgid "Est. stRSR Yield"
@@ -944,9 +956,13 @@ msgstr ""
 msgid "Execution delay ends in:"
 msgstr ""
 
-#: src/components/rtoken-setup/components/BackButton.tsx:26
-#: src/views/deploy/components/NavigationSidebar.tsx:41
+#: src/components/rtoken-setup/components/BackButton.tsx:29
+#: src/views/deploy/components/NavigationSidebar.tsx:46
 msgid "Exit Deployer"
+msgstr ""
+
+#: src/views/overview/components/RTokenEarn.tsx:49
+msgid "Explore yield opportunities for {0}"
 msgstr ""
 
 #: src/components/rtoken-setup/token/BackingForm.tsx:84
@@ -975,6 +991,10 @@ msgstr ""
 
 #: src/views/settings/components/FreezeManager.tsx:102
 msgid "Freeze State"
+msgstr ""
+
+#: src/views/overview/components/RTokenTransactions.tsx:111
+msgid "From"
 msgstr ""
 
 #: src/views/bridge/components/BridgeInput.tsx:77
@@ -1010,10 +1030,10 @@ msgid "Go to the RToken Deployer"
 msgstr ""
 
 #: src/components/layout/navigation/index.tsx:113
-#: src/components/layout/navigation/TokenNavigation.tsx:64
-#: src/components/layout/navigation/TokenNavigation.tsx:79
+#: src/components/layout/navigation/TokenNavigation.tsx:205
+#: src/components/layout/navigation/TokenNavigation.tsx:220
 #: src/components/rtoken-setup/governance/GovernanceSetup.tsx:33
-#: src/views/deploy/components/NavigationSidebar.tsx:24
+#: src/views/deploy/components/NavigationSidebar.tsx:29
 #: src/views/governance/views/proposal/components/ProposalNavigation.tsx:19
 #: src/views/settings/components/NavigationSidebar.tsx:17
 msgid "Governance"
@@ -1163,8 +1183,8 @@ msgstr ""
 msgid "Inspect collateral backing, mint, stake & explore deeper"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:40
-#: src/views/deploy/components/NavigationSidebar.tsx:14
+#: src/components/layout/navigation/TokenNavigation.tsx:181
+#: src/views/deploy/components/NavigationSidebar.tsx:19
 #: src/views/governance/views/proposal/components/ProposalNavigation.tsx:16
 msgid "Intro"
 msgstr ""
@@ -1220,7 +1240,7 @@ msgstr ""
 msgid "Invalid value"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:49
+#: src/components/layout/navigation/TokenNavigation.tsx:190
 msgid "Issuance"
 msgstr ""
 
@@ -1251,13 +1271,14 @@ msgid "Issuance throttle rate (%)"
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:56
+#: src/views/overview/components/RTokenTransactions.tsx:61
 msgid "Issue"
 msgstr ""
 
-#: src/views/issuance/components/zap/components/ZapInput.tsx:128
-#: src/views/issuance/components/zap/components/ZapInput.tsx:157
-#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:128
-#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:157
+#: src/views/issuance/components/zap/components/ZapInput.tsx:133
+#: src/views/issuance/components/zap/components/ZapInput.tsx:162
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:134
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:163
 #: src/views/settings/components/SettingItem.tsx:60
 msgid "Loading..."
 msgstr ""
@@ -1294,7 +1315,7 @@ msgstr ""
 #: src/components/rtoken-setup/token/TokenForm.tsx:36
 #: src/views/deploy/components/TokenForm.tsx:45
 #: src/views/overview/_components/About.tsx:46
-#: src/views/overview/components/Hero.tsx:105
+#: src/views/overview/components/Hero.tsx:240
 #: src/views/settings/components/BasicInfo.tsx:24
 msgid "Mandate"
 msgstr ""
@@ -1309,12 +1330,11 @@ msgstr ""
 msgid "Mandate is required"
 msgstr ""
 
-
 #: src/views/overview/_components/TokenOverview.tsx:59
 msgid "Market cap"
 msgstr ""
 
-#: src/views/home/components/RTokenCard.tsx:205
+#: src/views/home/components/RTokenCard.tsx:206
 msgid "Market cap:"
 msgstr ""
 
@@ -1350,8 +1370,8 @@ msgstr ""
 msgid "Melting"
 msgstr ""
 
-#: src/views/issuance/components/zap/components/ZapInput.tsx:61
-#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:61
+#: src/views/issuance/components/zap/components/ZapInput.tsx:62
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:62
 msgid "Min Output"
 msgstr ""
 
@@ -1377,6 +1397,7 @@ msgstr ""
 
 #: src/components/transactions/table/index.tsx:52
 #: src/views/issuance/components/issue/Issue.tsx:92
+#: src/views/overview/components/RTokenTransactions.tsx:57
 msgid "Mint"
 msgstr ""
 
@@ -1396,7 +1417,7 @@ msgstr ""
 msgid "Mint slippage:"
 msgstr ""
 
-#: src/views/issuance/components/zap/components/ZapInput.tsx:111
+#: src/views/issuance/components/zap/components/ZapInput.tsx:116
 msgid "Mint with {zapSymbol}"
 msgstr ""
 
@@ -1408,12 +1429,12 @@ msgstr ""
 msgid "Missing collateral"
 msgstr ""
 
-#: src/components/tables/ListedTokensTable.tsx:40
+#: src/components/tables/ListedTokensTable.tsx:41
 #: src/views/tokens/components/UnlistedTokensTable.tsx:85
 msgid "Mkt Cap"
 msgstr ""
 
-#: src/views/home/components/Hero.tsx:149
+#: src/views/home/components/Hero.tsx:139
 msgid "More metrics on Reserve Dune Dashboard"
 msgstr ""
 
@@ -1444,7 +1465,7 @@ msgid "Need help?"
 msgstr ""
 
 #: src/components/account/index.tsx:44
-#: src/components/tables/ListedTokensTable.tsx:67
+#: src/components/tables/ListedTokensTable.tsx:68
 #: src/views/tokens/components/TableFilters.tsx:42
 #: src/views/tokens/components/UnlistedTokensTable.tsx:115
 msgid "Network"
@@ -1458,7 +1479,7 @@ msgstr ""
 msgid "New primary basket"
 msgstr ""
 
-#: src/views/deploy/components/NavigationSidebar.tsx:24
+#: src/views/deploy/components/NavigationSidebar.tsx:29
 msgid "Next steps"
 msgstr ""
 
@@ -1494,7 +1515,7 @@ msgstr ""
 msgid "No plugins available"
 msgstr ""
 
-#: src/views/governance/components/ProposalList.tsx:112
+#: src/views/governance/components/ProposalList.tsx:104
 msgid "No proposals created..."
 msgstr ""
 
@@ -1522,6 +1543,13 @@ msgstr ""
 msgid "No, if a withdrawal has already been initiated on the Withdraw page it is not possible to cancel it. Once withdrawn, the process needs to be completed."
 msgstr ""
 
+#: src/views/issuance/components/zap/components/ZapInput.tsx:33
+#: src/views/issuance/components/zap/components/ZapInput.tsx:81
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:33
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:81
+msgid "None"
+msgstr ""
+
 #: src/views/auctions/auctions-sidebar/RevenueAuctionItem.tsx:22
 msgid "Not available"
 msgstr ""
@@ -1534,7 +1562,7 @@ msgstr ""
 msgid "Not frozen"
 msgstr ""
 
-#: src/views/deploy/components/GovernanceOverview.tsx:131
+#: src/views/deploy/components/GovernanceOverview.tsx:132
 msgid "Not ready to set up governance?"
 msgstr ""
 
@@ -1542,7 +1570,7 @@ msgstr ""
 msgid "Not sure what you’re looking at?"
 msgstr ""
 
-#: src/views/home/components/Hero.tsx:101
+#: src/views/home/components/Hero.tsx:91
 msgid "On Ethereum & Base"
 msgstr ""
 
@@ -1558,11 +1586,11 @@ msgstr ""
 msgid "Only the guardian address or governance will be able to unpause"
 msgstr ""
 
-#: src/views/deploy/components/NavigationSidebar.tsx:20
+#: src/views/deploy/components/NavigationSidebar.tsx:25
 msgid "Other"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:78
+#: src/components/layout/navigation/TokenNavigation.tsx:219
 #: src/views/governance/views/proposal/components/ProposalNavigation.tsx:18
 #: src/views/settings/components/NavigationSidebar.tsx:16
 msgid "Other config"
@@ -1577,8 +1605,7 @@ msgid "Other Parameters"
 msgstr ""
 
 #: src/components/layout/navigation/index.tsx:109
-
-#: src/components/layout/navigation/TokenNavigation.tsx:37
+#: src/components/layout/navigation/TokenNavigation.tsx:178
 msgid "Overview"
 msgstr ""
 
@@ -1602,7 +1629,7 @@ msgstr ""
 msgid "Pause status"
 msgstr ""
 
-#: src/views/home/components/RTokenCard.tsx:226
+#: src/views/home/components/RTokenCard.tsx:227
 msgid "Peg:"
 msgstr ""
 
@@ -1613,7 +1640,7 @@ msgstr ""
 #: src/components/transaction-modal/index.tsx:155
 #: src/views/deploy/components/DeployOverview.tsx:25
 #: src/views/deploy/components/GovernanceOverview.tsx:28
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:53
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:51
 msgid "Pending, sign in wallet"
 msgstr ""
 
@@ -1671,7 +1698,7 @@ msgstr ""
 msgid "Please sign the transaction in your wallet to continue with the deployment process."
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:56
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:54
 msgid "Please sign the transaction in your wallet to continue with the governance process."
 msgstr ""
 
@@ -1683,7 +1710,7 @@ msgstr ""
 msgid "Please wait while the simulation executes"
 msgstr ""
 
-#: src/views/earn/hooks/useEarnTableColumns.tsx:54
+#: src/views/earn/hooks/useEarnTableColumns.tsx:59
 msgid "Pool"
 msgstr ""
 
@@ -1700,16 +1727,19 @@ msgstr ""
 msgid "Preparing transaction"
 msgstr ""
 
-#: src/components/tables/ListedTokensTable.tsx:36
-
+#: src/components/tables/ListedTokensTable.tsx:37
 #: src/views/overview/_components/PriceChart.tsx:107
 #: src/views/tokens/components/UnlistedTokensTable.tsx:81
 msgid "Price"
 msgstr ""
 
+#: src/views/issuance/components/zap/components/ZapInput.tsx:77
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:77
+msgid "Price impact"
+msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:74
-#: src/views/deploy/components/NavigationSidebar.tsx:16
+#: src/components/layout/navigation/TokenNavigation.tsx:215
+#: src/views/deploy/components/NavigationSidebar.tsx:21
 #: src/views/governance/views/proposal/components/ProposalNavigation.tsx:21
 #: src/views/governance/views/proposal/components/ProposedBasketPreview.tsx:40
 #: src/views/settings/components/NavigationSidebar.tsx:12
@@ -1717,7 +1747,7 @@ msgid "Primary basket"
 msgstr ""
 
 #: src/components/rtoken-setup/basket/PrimaryBasket.tsx:85
-#: src/views/overview/_components/AssetOverview.tsx:135
+#: src/views/overview/_components/AssetOverview.tsx:134
 #: src/views/settings/components/BasketInfo.tsx:20
 msgid "Primary Basket"
 msgstr ""
@@ -1726,7 +1756,7 @@ msgstr ""
 msgid "Primary basket not defined"
 msgstr ""
 
-#: src/views/earn/hooks/useEarnTableColumns.tsx:82
+#: src/views/earn/hooks/useEarnTableColumns.tsx:86
 msgid "Project"
 msgstr ""
 
@@ -1818,7 +1848,7 @@ msgstr ""
 msgid "recent on-chain transactions"
 msgstr ""
 
-#: src/views/governance/components/ProposalList.tsx:80
+#: src/views/governance/components/ProposalList.tsx:77
 msgid "Recent proposals"
 msgstr ""
 
@@ -1829,6 +1859,8 @@ msgstr ""
 #: src/components/transactions/table/index.tsx:53
 #: src/components/transactions/table/index.tsx:55
 #: src/views/issuance/components/redeem/RedeemInput.tsx:15
+#: src/views/overview/components/RTokenTransactions.tsx:58
+#: src/views/overview/components/RTokenTransactions.tsx:60
 msgid "Redeem"
 msgstr ""
 
@@ -1841,7 +1873,7 @@ msgstr ""
 msgid "Redeem amount"
 msgstr ""
 
-#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:112
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:118
 msgid "Redeem into {0}"
 msgstr ""
 
@@ -1886,7 +1918,6 @@ msgstr ""
 #: src/views/bridge/components/BridgeFaq.tsx:28
 msgid "Register L2 Bridge enables the transfer of certain digital assets and other data back and forth between Ethereum and Base."
 msgstr ""
-
 
 #: src/views/tokens/Tokens.tsx:15
 msgid "Register listed RTokens"
@@ -1939,15 +1970,11 @@ msgstr ""
 msgid "Reserve Discord"
 msgstr ""
 
-#: src/views/home/components/Hero.tsx:112
+#: src/views/home/components/Hero.tsx:102
 msgid "Reserve Protocol’s RToken Factory Contracts: A platform for creating currencies backed by an array of ERC20 collateral. Use Register.app to mint, stake and govern RTokens. Learn more at"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:43
-msgid "Revenue & Usage"
-msgstr ""
-
-#: src/views/deploy/components/NavigationSidebar.tsx:18
+#: src/views/deploy/components/NavigationSidebar.tsx:23
 msgid "Revenue distribution"
 msgstr ""
 
@@ -1956,7 +1983,7 @@ msgstr ""
 msgid "Revenue Distribution"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:76
+#: src/components/layout/navigation/TokenNavigation.tsx:217
 #: src/views/governance/views/proposal/components/ProposalNavigation.tsx:20
 #: src/views/settings/components/NavigationSidebar.tsx:14
 msgid "Revenue share"
@@ -2007,7 +2034,7 @@ msgstr ""
 msgid "Roles"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:72
+#: src/components/layout/navigation/TokenNavigation.tsx:213
 #: src/views/settings/components/NavigationSidebar.tsx:10
 #: src/views/settings/components/RTokenManagement.tsx:52
 msgid "Roles & Controls"
@@ -2112,7 +2139,7 @@ msgstr ""
 msgid "RToken will be left in pause state"
 msgstr ""
 
-#: src/views/deploy/components/GovernanceOverview.tsx:95
+#: src/views/deploy/components/GovernanceOverview.tsx:96
 msgid "RToken will be ready to use after this TX if you choose to unpause."
 msgstr ""
 
@@ -2120,8 +2147,7 @@ msgstr ""
 msgid "RTokens"
 msgstr ""
 
-
-#: src/views/overview/components/backing/index.tsx:34
+#: src/views/overview/components/backing/index.tsx:73
 msgid "RTokens are 100% backed by a diversified set of underlying collateral tokens..."
 msgstr ""
 
@@ -2165,7 +2191,7 @@ msgstr ""
 msgid "Send verify tx on Mainnet"
 msgstr ""
 
-#: src/views/governance/components/GovernanceOverview.tsx:167
+#: src/views/governance/components/GovernanceOverview.tsx:171
 #: src/views/issuance/components/zap/components/ZapSettings.tsx:216
 msgid "Settings"
 msgstr ""
@@ -2203,11 +2229,11 @@ msgstr ""
 msgid "Signature"
 msgstr ""
 
-#: src/views/deploy/components/NavigationSidebar.tsx:47
+#: src/views/deploy/components/NavigationSidebar.tsx:52
 msgid "Signing Tx 1"
 msgstr ""
 
-#: src/views/deploy/components/NavigationSidebar.tsx:51
+#: src/views/deploy/components/NavigationSidebar.tsx:56
 msgid "Signing Tx 2"
 msgstr ""
 
@@ -2252,6 +2278,7 @@ msgid "St Token Ticker"
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:60
+#: src/views/overview/components/RTokenTransactions.tsx:65
 #: src/views/staking/components/stake/StakeInput.tsx:14
 msgid "Stake"
 msgstr ""
@@ -2265,12 +2292,11 @@ msgstr ""
 msgid "Stake pool"
 msgstr ""
 
-
 #: src/views/overview/_components/TokenOverview.tsx:83
 msgid "Stake pool USD value"
 msgstr ""
 
-#: src/views/overview/components/Hero.tsx:70
+#: src/views/overview/components/Hero.tsx:186
 msgid "Stake pool USD value:"
 msgstr ""
 
@@ -2291,11 +2317,11 @@ msgstr ""
 msgid "Staked RSR Overcollateralisation"
 msgstr ""
 
-#: src/views/overview/_components/AssetOverview.tsx:126
+#: src/views/overview/_components/AssetOverview.tsx:125
 msgid "Staked RSR overcollateralization"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:54
+#: src/components/layout/navigation/TokenNavigation.tsx:195
 msgid "Staking"
 msgstr ""
 
@@ -2308,6 +2334,7 @@ msgid "Staking token"
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:57
+#: src/views/overview/components/RTokenTransactions.tsx:62
 msgid "Start Issue"
 msgstr ""
 
@@ -2320,7 +2347,7 @@ msgid "Status:"
 msgstr ""
 
 #: src/views/deploy/components/GovernanceOverview.tsx:46
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:73
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:71
 msgid "Stay patient while the transaction is in progress & don’t close this window to avoid issues finding your way back here."
 msgstr ""
 
@@ -2340,7 +2367,7 @@ msgstr ""
 msgid "stRSR Token"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:95
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:93
 msgid "Submit proposal on-chain"
 msgstr ""
 
@@ -2364,7 +2391,7 @@ msgstr ""
 msgid "Target:"
 msgstr ""
 
-#: src/components/tables/ListedTokensTable.tsx:52
+#: src/components/tables/ListedTokensTable.tsx:53
 #: src/views/tokens/components/UnlistedTokensTable.tsx:96
 msgid "Target(s)"
 msgstr ""
@@ -2517,7 +2544,7 @@ msgstr ""
 msgid "To:"
 msgstr ""
 
-#: src/components/tables/ListedTokensTable.tsx:26
+#: src/components/tables/ListedTokensTable.tsx:27
 #: src/views/tokens/components/UnlistedTokensTable.tsx:68
 msgid "Token"
 msgstr ""
@@ -2526,7 +2553,7 @@ msgstr ""
 msgid "Token contract"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:73
+#: src/components/layout/navigation/TokenNavigation.tsx:214
 #: src/views/settings/components/NavigationSidebar.tsx:11
 msgid "Token details"
 msgstr ""
@@ -2574,10 +2601,13 @@ msgstr ""
 msgid "Total initial RToken scale including all targets. If your RToken only has one target unit this will be the same as the basket scale input."
 msgstr ""
 
-#: src/views/overview/components/Hero.tsx:61
+#: src/views/overview/components/Hero.tsx:177
 msgid "Total Market Cap"
 msgstr ""
 
+#: src/views/staking/components/overview/StakingStats.tsx:47
+msgid "Total RSR staked"
+msgstr ""
 
 #: src/views/settings/components/BackingInfo.tsx:45
 msgid "Trading delay"
@@ -2617,15 +2647,18 @@ msgid "Transaction signed!"
 msgstr ""
 
 #: src/views/deploy/components/GovernanceOverview.tsx:43
-#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:70
+#: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:68
 msgid "Transaction submitted"
 msgstr ""
 
-
+#: src/components/layout/navigation/TokenNavigation.tsx:185
+#: src/views/overview/_components/RecentTransactions.tsx:50
+#: src/views/overview/components/RTokenTransactions.tsx:151
 msgid "Transactions"
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:54
+#: src/views/overview/components/RTokenTransactions.tsx:59
 msgid "Transfer"
 msgstr ""
 
@@ -2649,7 +2682,7 @@ msgstr ""
 msgid "Tutorial video"
 msgstr ""
 
-#: src/views/earn/hooks/useEarnTableColumns.tsx:139
+#: src/views/earn/hooks/useEarnTableColumns.tsx:150
 msgid "TVL"
 msgstr ""
 
@@ -2661,12 +2694,16 @@ msgstr ""
 msgid "Twitter"
 msgstr ""
 
-#: src/views/deploy/components/NavigationSidebar.tsx:45
+#: src/views/deploy/components/NavigationSidebar.tsx:50
 msgid "Tx 1"
 msgstr ""
 
-#: src/views/deploy/components/NavigationSidebar.tsx:49
+#: src/views/deploy/components/NavigationSidebar.tsx:54
 msgid "Tx 2"
+msgstr ""
+
+#: src/views/overview/components/RTokenTransactions.tsx:115
+msgid "Tx Hash"
 msgstr ""
 
 #: src/components/button/TransactionButton.tsx:111
@@ -2678,17 +2715,18 @@ msgstr ""
 msgid "Tx1. RToken Deploy"
 msgstr ""
 
-#: src/views/deploy/components/GovernanceOverview.tsx:124
+#: src/views/deploy/components/GovernanceOverview.tsx:125
 msgid "Tx2. Governance"
 msgstr ""
 
-#: src/components/tables/ListedTokensTable.tsx:44
+#: src/components/tables/ListedTokensTable.tsx:45
 #: src/views/tokens/components/UnlistedTokensTable.tsx:89
 msgid "Txs"
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:73
 #: src/views/bridge/components/BridgeWithdrawals.tsx:19
+#: src/views/overview/components/RTokenTransactions.tsx:77
 msgid "Type"
 msgstr ""
 
@@ -2729,6 +2767,7 @@ msgid "Unregistering assets"
 msgstr ""
 
 #: src/components/transactions/table/index.tsx:61
+#: src/views/overview/components/RTokenTransactions.tsx:66
 #: src/views/staking/components/unstake/UnstakeInput.tsx:15
 msgid "Unstake"
 msgstr ""
@@ -2774,8 +2813,12 @@ msgstr ""
 msgid "Unwrap collaterals"
 msgstr ""
 
-
+#: src/views/overview/_components/TokenUsage.tsx:13
 msgid "Usage Stats"
+msgstr ""
+
+#: src/views/overview/components/RTokenTransactions.tsx:101
+msgid "USD Value"
 msgstr ""
 
 #: src/components/rtoken-setup/basket/CustomCollateral.tsx:135
@@ -2814,7 +2857,7 @@ msgstr ""
 msgid "View All"
 msgstr ""
 
-
+#: src/views/home/components/CompareTokens.tsx:31
 msgid "View All, including unlisted"
 msgstr ""
 
@@ -2827,7 +2870,7 @@ msgstr ""
 msgid "View on Etherscan"
 msgstr ""
 
-#: src/components/tables/ListedTokensTable.tsx:48
+#: src/components/tables/ListedTokensTable.tsx:49
 #: src/views/tokens/components/UnlistedTokensTable.tsx:92
 msgid "Volume"
 msgstr ""
@@ -2972,6 +3015,8 @@ msgstr ""
 #: src/components/transactions/table/index.tsx:62
 #: src/components/transactions/table/index.tsx:64
 #: src/views/bridge/components/BridgeHeader.tsx:76
+#: src/views/overview/components/RTokenTransactions.tsx:67
+#: src/views/overview/components/RTokenTransactions.tsx:69
 #: src/views/staking/components/balances/AvailableBalance.tsx:56
 msgid "Withdraw"
 msgstr ""
@@ -3012,7 +3057,7 @@ msgstr ""
 msgid "X"
 msgstr ""
 
-#: src/views/deploy/components/GovernanceOverview.tsx:134
+#: src/views/deploy/components/GovernanceOverview.tsx:135
 msgid "You can leave your RToken paused and come back to setting up governance later."
 msgstr ""
 
