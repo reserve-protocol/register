@@ -1,10 +1,8 @@
 import styled from '@emotion/styled'
-import { Trans } from '@lingui/macro'
 import TokenItem from 'components/token-item'
 import { useAtomValue } from 'jotai'
 import { memo } from 'react'
-import { Box, Divider, Flex, Text } from 'theme-ui'
-import BackHomeIcon from '../icons/BackHomeIcon'
+import { Box, Flex } from 'theme-ui'
 import availableTokensAtom from './atoms'
 
 const ActionItem = styled(Flex)`

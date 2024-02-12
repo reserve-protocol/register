@@ -1,7 +1,8 @@
 import useRToken from 'hooks/useRToken'
+import { useAtomValue } from 'jotai'
 import React from 'react'
+import { rTokenMetaAtom } from 'state/rtoken/atoms/rTokenAtom'
 import { Box, BoxProps, Image } from 'theme-ui'
-import Base from './logos/Base'
 import ChainLogo from './ChainLogo'
 
 interface Props extends BoxProps {
@@ -55,11 +56,30 @@ const IMGS = new Set([
   'mrp-asteth',
   'frax',
   'crvusd',
-  'crv',
-  'cvx',
-  'comp',
   'mkusd',
 ])
+
+// Memoized token image
+const TokenImage = React.memo(
+  ({
+    src = '/svgs/defaultLogo.svg',
+    width = 20,
+  }: {
+    src?: string
+    width?: number | string
+  }) => {
+    return (
+      <Image
+        src={src}
+        sx={{ height: 'auto', width: width }}
+        onError={({ currentTarget }) => {
+          currentTarget.onerror = null // prevents looping
+          currentTarget.src = '/svgs/defaultLogo.svg'
+        }}
+      />
+    )
+  }
+)
 
 const TokenLogo = ({
   symbol,
@@ -72,12 +92,17 @@ const TokenLogo = ({
 }: Props) => {
   let imgSrc = src
   const rToken = useRToken()
+  let tokenSymbol = symbol
+
+  if (tokenSymbol?.endsWith('-VAULT')) {
+    tokenSymbol = tokenSymbol.replace('-VAULT', '')
+  }
 
   if (!imgSrc) {
     if (rToken?.symbol === symbol) {
       imgSrc = rToken?.logo
-    } else if (symbol && IMGS.has(symbol.toLowerCase())) {
-      imgSrc = `/svgs/${symbol.toLowerCase()}.svg`
+    } else if (tokenSymbol && IMGS.has(tokenSymbol.toLowerCase())) {
+      imgSrc = `/svgs/${tokenSymbol.toLowerCase()}.svg`
     }
   }
 
@@ -97,14 +122,8 @@ const TokenLogo = ({
         ...sx,
       }}
     >
-      <Image
-        src={imgSrc || '/svgs/defaultLogo.svg'}
-        sx={{ height: '100%', width: width }}
-        onError={({ currentTarget }) => {
-          currentTarget.onerror = null // prevents looping
-          currentTarget.src = '/svgs/defaultLogo.svg'
-        }}
-      />
+      <TokenImage src={imgSrc} width={width} />
+
       {!!chain && (
         <Box
           sx={{
@@ -126,4 +145,21 @@ const TokenLogo = ({
   )
 }
 
-export default React.memo(TokenLogo)
+interface TCurrentRTokenLogo extends BoxProps {
+  width?: number
+}
+
+export const CurrentRTokenLogo = ({
+  width = 20,
+  ...props
+}: TCurrentRTokenLogo) => {
+  const rToken = useAtomValue(rTokenMetaAtom)
+
+  return (
+    <Box variant="layout.verticalAlign" {...props}>
+      <TokenImage src={rToken?.logo} width={width} />
+    </Box>
+  )
+}
+
+export default TokenLogo

@@ -52,18 +52,19 @@ const useHeaderColor = () => {
  * Application header
  */
 const AppHeader = () => {
-  const backgroundColor = useHeaderColor()
   const isRTokenSelected = !!useAtomValue(selectedRTokenAtom)
 
   return (
     <Box
       sx={{
-        borderBottom: '1px solid',
-        borderColor: isRTokenSelected ? 'border' : 'transparent',
-        position: 'fixed',
-        top: 0,
-        backgroundColor,
         width: '100%',
+        ...(isRTokenSelected
+          ? {
+              backgroundColor: 'contentBackground',
+              borderBottom: '1px solid',
+              borderColor: 'accent',
+            }
+          : {}),
       }}
     >
       <Flex
@@ -85,10 +86,6 @@ const AppHeader = () => {
         {/* <Box ml={4} sx={{ alignItems: 'center', display: 'flex' }}>
             <LanguageSelector />
           </Box> */}
-        <Divider />
-        <Box sx={{ display: ['none', 'block'] }}>
-          <ChainSelector />
-        </Box>
         <Divider />
         <Account />
       </Flex>

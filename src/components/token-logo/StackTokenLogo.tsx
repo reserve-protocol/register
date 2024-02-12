@@ -16,7 +16,11 @@ const StackTokenLogo = React.memo(({ tokens, sx = {}, ...props }: Props) => {
       {tokens.map((token, index) => {
         if (token.symbol === 'FRAXBP') {
           return (
-            <Box variant="layout.verticalAlign" key={token.address}>
+            <Box
+              variant="layout.verticalAlign"
+              sx={{ width: '28px' }}
+              key={token.address}
+            >
               <TokenLogo
                 sx={{
                   position: 'relative',
@@ -36,12 +40,16 @@ const StackTokenLogo = React.memo(({ tokens, sx = {}, ...props }: Props) => {
         }
 
         return (
-          <TokenLogo
+          <Box
             key={token.address}
-            sx={{ position: 'relative', left: index ? `${-6 * index}px` : 0 }}
-            symbol={token.symbol}
-            src={token.logo}
-          />
+            sx={{
+              position: 'relative',
+              left: index ? `${-6}px` : 0,
+              marginRight: index ? `${-6}px` : 0,
+            }}
+          >
+            <TokenLogo symbol={token.symbol} src={token.logo} />
+          </Box>
         )
       })}
     </Box>

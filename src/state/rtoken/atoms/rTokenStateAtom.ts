@@ -108,6 +108,7 @@ export const estimatedApyAtom = atom((get) => {
   const apys = {
     stakers: 0,
     holders: 0,
+    basket: 0,
   }
 
   if (!rToken?.main || !tokenSupply || !revenueSplit || !distribution) {
@@ -131,6 +132,7 @@ export const estimatedApyAtom = atom((get) => {
   apys.stakers = stTokenSupply
     ? ((rTokenYield * supplyUsd) / stakeUsd) * stakersShare
     : rTokenYield * stakersShare
+  apys.basket = rTokenYield
 
   return apys
 })

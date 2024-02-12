@@ -11,7 +11,7 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { chainIdAtom } from 'state/atoms'
 import { Box, BoxProps, Container, Flex, Spinner, Text } from 'theme-ui'
-import { shortenString } from 'utils'
+import { getTokenRoute, shortenString } from 'utils'
 import { ROUTES } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { UsePrepareContractWriteConfig } from 'wagmi'
@@ -39,9 +39,7 @@ const ProposalStatus = ({
 
   useEffect(() => {
     if (status === 'success') {
-      navigate(
-        `${ROUTES.GOVERNANCE}?token=${rToken?.address}&chainId=${chainId}`
-      )
+      navigate(getTokenRoute(rToken?.address ?? '', chainId))
     }
   }, [status])
 

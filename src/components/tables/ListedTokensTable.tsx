@@ -13,6 +13,7 @@ import {
   formatCurrency,
   formatCurrencyCell,
   formatUsdCurrencyCell,
+  getTokenRoute,
 } from 'utils'
 
 const ListedTokensTable = (props: Partial<TableProps>) => {
@@ -74,7 +75,7 @@ const ListedTokensTable = (props: Partial<TableProps>) => {
   )
 
   const handleClick = (data: any) => {
-    navigate(`/overview?token=${data.id}&chainId=${data.chain}`)
+    navigate(getTokenRoute(data.id, data.chain))
     document.getElementById('app-container')?.scrollTo(0, 0)
     mixpanel.track('Selected RToken', {
       Source: 'Comparison Table',

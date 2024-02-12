@@ -5,6 +5,7 @@ export interface TokenDisplay {
   symbol: string
   logo: string
   chainId: number
+  listed: boolean
 }
 
 export const DEFAULT_LOGO = '/svgs/defaultLogo.svg'
@@ -22,7 +23,8 @@ const availableTokensAtom = atom((get) => {
         address: token.address,
         symbol: token.symbol,
         logo: token.logo ? `/svgs/${token.logo.toLowerCase()}` : DEFAULT_LOGO,
-        chainId: token.chainId
+        chainId: token.chainId,
+        listed: true,
       }
     }
   }
@@ -33,7 +35,8 @@ const availableTokensAtom = atom((get) => {
         address: token.address,
         symbol: token.symbol,
         logo: DEFAULT_LOGO,
-        chainId: token.chainId
+        chainId: token.chainId,
+        listed: false,
       }
     }
   }

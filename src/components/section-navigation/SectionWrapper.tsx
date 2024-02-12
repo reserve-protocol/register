@@ -25,9 +25,10 @@ const updateSectionAtom = atom(null, (get, set, section: [boolean, number]) => {
   }
 })
 
+// TODO: Store ref on atom? this would allow to use it directly rather than use js for the scrolling
 const SectionWrapper = ({
   navigationIndex,
-  threshold = 0.5,
+  threshold = 0.6,
   ...props
 }: Props) => {
   const { ref, inView } = useInView({ threshold })

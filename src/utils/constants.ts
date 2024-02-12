@@ -10,6 +10,20 @@ export const DISCORD_INVITE = 'https://discord.gg/reserveprotocol'
 export const PROTOCOL_DOCS = 'https://reserve.org/protocol/'
 export const REGISTER_FEEDBACK = 'https://reserve.canny.io/register-app'
 
+// List of supported networks with label
+export const NETWORKS: Record<string, number> = {
+  ethereum: ChainId.Mainnet,
+  base: ChainId.Base,
+}
+
+export const CHAIN_TO_NETWORK = Object.entries(NETWORKS).reduce(
+  (acc, [network, chainId]) => {
+    acc[chainId] = network
+    return acc
+  },
+  {} as Record<number, string>
+)
+
 export const BIGINT_MAX =
   115792089237316195423570985008687907853269984665640564039457584007913129639935n
 
@@ -56,25 +70,25 @@ export const TIME_RANGE_VALUE: { [x: string]: number } = {
 }
 
 export const ROUTES = Object.freeze({
-  OVERVIEW: '/overview',
-  STAKING: '/staking',
-  ISSUANCE: '/issuance',
-  STAKING_CALCULATOR: '/staking-calculator',
-  AUCTIONS: '/auctions',
-  DEPLOY: '/deploy',
-  SETTINGS: '/settings',
-  GOVERNANCE_SETUP: '/management/governance',
-  GOVERNANCE_INFO: '/governance-info',
-  LIST: '/list',
+  OVERVIEW: 'overview',
+  STAKING: 'staking',
+  ISSUANCE: 'issuance',
+  AUCTIONS: 'auctions',
+  DEPLOY: 'deploy',
+  SETTINGS: 'settings',
+  GOVERNANCE_SETUP: 'governance/setup',
+  GOVERNANCE_INFO: 'governance-info',
+  LIST: 'list',
   HOME: '/',
   WALLET: '/wallet',
   TOKENS: '/tokens',
-  GOVERNANCE: '/governance',
-  GOVERNANCE_PROPOSAL: '/governance/proposal',
+  GOVERNANCE: 'governance',
+  GOVERNANCE_PROPOSAL: 'governance/proposal',
   ZAP: '/zap',
   BRIDGE: '/bridge',
   PORTFOLIO: '/portfolio',
   EARN: '/earn',
+  NOT_FOUND: '/404',
 })
 
 export const RSR: Token = {

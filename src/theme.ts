@@ -16,14 +16,12 @@ export const borderRadius = {
   inner: '10px',
 }
 export const baseButton = {
-  borderRadius: 50,
+  borderRadius: borderRadius.inputs,
   fontWeight: 500,
   cursor: 'pointer',
   color: '#fff',
   backgroundColor: 'primary',
-  padding: '14px',
-  paddingLeft: 4,
-  paddingRight: 4,
+  padding: '12px 16px',
 
   '&:hover': {
     filter: 'brightness(0.85)',
@@ -89,8 +87,10 @@ export const colors = {
   secondaryText: '#666666',
   lightText: '#808080',
   background: '#FFFFFF',
+  // contentBackground: '#F9F8F4',
+  lightGrey: '#f2f2f2',
+  contentBackground: '#F9EDDD',
   reserveBackground: '#F9EDDD',
-  contentBackground: '#F9F8F4',
   contentLightBackground: 'rgba(249, 248, 244, 0.5)',
   primary: '#000000',
   success: '#11BB8D',
@@ -98,9 +98,10 @@ export const colors = {
   accentBG: '#DBE9E4',
   accentText: '#00814B',
   secondary: '#E8E8E8',
-  rBlue: '#2150A9',
+  rBlue: '#2150A9', // TODO: Remove in favor for accent
+  accent: '#2150A9',
   rBlueLight: '#DBE3F1',
-  border: '#efefef',
+  border: '#f2f2f2',
   darkBorder: '#E5E5E5',
   inputBorder: '#E5E5E5',
   info: '#20678E',
@@ -147,8 +148,8 @@ export const theme: Theme = {
   breakpoints: ['52em', '64em', '72em', '100em'],
   space: [0, 4, 8, 16, 24, 32, 40, 48, 80, 256], // 0-9
   fonts: {
-    body: 'Satoshi, sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,  "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
-    heading: 'inherit',
+    body: 'Satoshi, sans-serif, -apple-system, BlinkMacSystemFont',
+    // heading: 'inherit',
     monospace: 'Menlo, monospace',
     fontDisplay: 'swap',
   },
@@ -165,7 +166,7 @@ export const theme: Theme = {
   colors,
   text: {
     heading: {
-      fontFamily: 'heading',
+      // fontFamily: 'heading',
       lineHeight: 'heading',
       fontWeight: 'heading',
     },
@@ -211,6 +212,9 @@ export const theme: Theme = {
     legend: {
       color: 'secondaryText',
     },
+    accent: {
+      color: 'accent',
+    },
     muted: {
       color: 'muted',
     },
@@ -249,6 +253,8 @@ export const theme: Theme = {
     },
     h2: {
       variant: 'text.heading',
+      fontWeight: 500,
+      color: 'red',
       fontSize: 4,
     },
     h3: {
@@ -293,7 +299,7 @@ export const theme: Theme = {
       // '&::-webkit-scrollbar': {
       //   display: 'none',
       // },
-      scrollbarWidth: 'none',
+      // scrollbarWidth: 'none',
 
       p: {
         m: 0,
@@ -382,6 +388,12 @@ export const theme: Theme = {
       padding: 3,
       backgroundColor: 'contentBackground',
     },
+    inner: {
+      borderRadius: borderRadius.boxes,
+      padding: 0,
+      width: '100%',
+      backgroundColor: 'background',
+    },
   },
   buttons: {
     primary: baseButton,
@@ -391,7 +403,7 @@ export const theme: Theme = {
     },
     accent: {
       ...baseButton,
-      backgroundColor: 'accentBG',
+      backgroundColor: 'accent',
     },
     accentAction: {
       ...baseButton,
@@ -540,7 +552,7 @@ export const theme: Theme = {
     },
     sticky: {
       position: 'sticky',
-      top: ['72px', '168px', '184px'],
+      top: 0,
     },
     stickyNoHeader: {
       position: 'sticky',
@@ -551,6 +563,15 @@ export const theme: Theme = {
       height: '4px',
       width: '4px',
       backgroundColor: 'lightText',
+    },
+    tokenView: {
+      width: '100%',
+      p: [1, 6],
+    },
+    sectionDivider: {
+      mx: [-1, -6],
+      my: [1, 6],
+      borderColor: 'border',
     },
   },
 }

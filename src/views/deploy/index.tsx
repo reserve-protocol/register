@@ -9,23 +9,26 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useCallback, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { selectedRTokenAtom } from 'state/atoms'
+import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import { Box } from 'theme-ui'
 import { Address } from 'viem'
 import DeployOverview from './components/DeployOverview'
 import Governance from './components/Governance'
 import NavigationSidebar from './components/NavigationSidebar'
 import RTokenSetup from './components/RTokenSetup'
+import { rTokenMetaAtom } from 'state/rtoken/atoms/rTokenAtom'
 
+// TODO: Totally broken needs to redirect instead of setting token
 const Deploy = () => {
   const [governance, setGovernance] = useState(false)
-  const setRToken = useSetAtom(selectedRTokenAtom)
   const defaultValues = useAtomValue(rTokenDefaultValuesAtom)
+  const chainId = useAtomValue(chainIdAtom)
 
   const form = useForm({
     mode: 'onChange',
     defaultValues,
   })
+  const setRToken = useSetAtom(rTokenMetaAtom)
   const resetBasket = useResetAtom(basketAtom)
   const resetBackup = useResetAtom(backupCollateralAtom)
   const resetRevenueSplit = useResetAtom(revenueSplitAtom)
@@ -43,11 +46,17 @@ const Deploy = () => {
   // Move to governance state
   const handleDeploy = useCallback(
     (address: Address) => {
+      setRToken({
+        symbol: '',
+        address,
+        name: '',
+        decimals: 18,
+        chain: chainId,
+      })
       form.reset()
-      setRToken(address)
       setGovernance(true)
     },
-    [setGovernance, form.reset, setRToken]
+    [setGovernance, form.reset, chainId, setRToken]
   )
 
   if (governance) {

@@ -1,23 +1,26 @@
 import { Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import useRToken from 'hooks/useRToken'
+import { useAtomValue } from 'jotai'
 import { useCallback } from 'react'
 import { ArrowLeft } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
+import { chainIdAtom } from 'state/atoms'
 import { Box } from 'theme-ui'
-import { ROUTES } from 'utils/constants'
+import { getTokenRoute } from 'utils'
 
 const BackButton = () => {
   const navigate = useNavigate()
   const rToken = useRToken()
+  const chainId = useAtomValue(chainIdAtom)
 
   const handleBack = useCallback(() => {
     if (rToken) {
-      navigate(`${ROUTES.OVERVIEW}?token=${rToken.address}`)
+      navigate(getTokenRoute(rToken.address, chainId))
     } else {
       navigate('/')
     }
-  }, [rToken?.address, navigate])
+  }, [rToken?.address, navigate, chainId])
 
   return (
     <SmallButton variant="transparent" onClick={handleBack}>

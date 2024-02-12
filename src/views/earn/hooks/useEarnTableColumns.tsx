@@ -2,11 +2,16 @@ import { t } from '@lingui/macro'
 import { createColumnHelper } from '@tanstack/react-table'
 import Help from 'components/help'
 import ChainLogo from 'components/icons/ChainLogo'
-import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
+import Aerodrome from 'components/icons/logos/Aerodrome'
+import Balancer from 'components/icons/logos/Balancer'
 import Convex from 'components/icons/logos/Convex'
 import Curve from 'components/icons/logos/Curve'
+import Extra from 'components/icons/logos/Extra'
+import Stakedao from 'components/icons/logos/Stakedao'
+import Uniswap from 'components/icons/logos/Uniswap'
 import Yearn from 'components/icons/logos/Yearn'
 import StackTokenLogo from 'components/token-logo/StackTokenLogo'
+import mixpanel from 'mixpanel-browser'
 import React, { useMemo } from 'react'
 import { Pool } from 'state/pools/atoms'
 import { Box, Text, Image } from 'theme-ui'
@@ -26,17 +31,18 @@ const chainMap: Record<string, number> = {
   Base: ChainId.Base,
 }
 
-export const columnVisibility = [
+
+export const compactColumnVisibility = [
   '',
   '',
   ['none', 'table-cell'],
   '',
-  ['none', 'none', 'table-cell'],
-  ['none', 'none', 'table-cell'],
+  ['none', 'none', 'none', 'table-cell'],
+  ['none', 'none', 'none', 'table-cell'],
   ['none', 'table-cell'],
 ]
 
-const useEarnTableColumns = () => {
+const useEarnTableColumns = (compact: boolean) => {
   const { data: protocolsData } = useSWRImmutable(
     'https://api.llama.fi/protocols',
     (...args) => fetch(...args).then((res) => res.json())
@@ -76,10 +82,9 @@ const useEarnTableColumns = () => {
               }}
             >
               <StackTokenLogo tokens={data.row.original.underlyingTokens} />
-              <Text mx="1" sx={{ textDecoration: 'underline' }}>
+              <Text ml="2" sx={{ textDecoration: 'underline' }}>
                 {data.getValue()}
               </Text>
-              <ExternalArrowIcon />
             </Box>
           )
         },
@@ -106,9 +111,11 @@ const useEarnTableColumns = () => {
           return (
             <Box pl="10px" variant="layout.verticalAlign">
               <ChainLogo fontSize={16} chain={+chainMap[data.getValue()]} />
-              <Text ml="2" sx={{ display: ['block', 'none', 'block'] }}>
-                {CHAIN_TAGS[+chainMap[data.getValue()]]}
-              </Text>
+              {!compact && (
+                <Text ml="2" sx={{ display: ['block', 'none', 'block'] }}>
+                  {CHAIN_TAGS[+chainMap[data.getValue()]]}
+                </Text>
+              )}
             </Box>
           )
         },

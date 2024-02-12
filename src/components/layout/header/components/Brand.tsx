@@ -6,10 +6,8 @@ import { Box, BoxProps, Flex } from 'theme-ui'
 
 const Brand = (props: BoxProps) => {
   const navigate = useNavigate()
-  const updateToken = useSetAtom(selectedRTokenAtom)
 
   const handleClick = () => {
-    updateToken(null)
     navigate('/')
   }
 

@@ -3,23 +3,27 @@ import RToken from 'abis/RToken'
 import { Atom, atom } from 'jotai'
 import { chainIdAtom, rTokenListAtom } from 'state/chain/atoms/chainAtoms'
 import { ReserveToken, Token } from 'types'
-import { getTokenReadCalls, isAddress } from 'utils'
+import { getTokenReadCalls } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { collateralsProtocolMap } from 'utils/plugins'
-import RSV from 'utils/rsv'
 import { formatEther, hexToString } from 'viem'
 import { Address } from 'wagmi'
 import { readContracts } from 'wagmi/actions'
 
+// RToken meta, pulled directly from the listed list or validated for unlisted tokens
+// Tokens without "logo" are unlisted
+export interface RTokenMeta extends Token {
+  chain: number // source of truth for token context current chain
+  logo?: string
+}
+
+export const rTokenMetaAtom = atom<RTokenMeta | null>(null)
+
 // Current selected rToken address
-export const selectedRTokenAtom = atom(
-  isAddress(
-    new URL(window.location.href.replace('/#/', '/')).searchParams.get(
-      'token'
-    ) ?? ''
-  )
-)
+export const selectedRTokenAtom = atom<Address | null>((get) => {
+  return get(rTokenMetaAtom)?.address ?? null
+})
 
 const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
   async (get): Promise<ReserveToken | null> => {
@@ -29,10 +33,6 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
 
     if (!rTokenAddress) {
       return null
-    }
-
-    if (rTokenAddress === RSV.address) {
-      return RSV
     }
 
     const facadeCallParams = {
@@ -80,13 +80,26 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       basketsNeededRaw,
       basket,
       stTokenAddress,
-      [,, targets],
+      [, , targets],
     ] = await (<
-      Promise<[string, string, number, Address, string, string, bigint, Address[], Address, Address[][]]>
-      >readContracts({
-        contracts: rTokenMetaCalls,
-        allowFailure: false,
-      }))
+      Promise<
+        [
+          string,
+          string,
+          number,
+          Address,
+          string,
+          string,
+          bigint,
+          Address[],
+          Address,
+          Address[][]
+        ]
+      >
+    >readContracts({
+      contracts: rTokenMetaCalls,
+      allowFailure: false,
+    }))
 
     const tokensMetaCall = [
       ...getTokenReadCalls(stTokenAddress),
@@ -117,9 +130,12 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       [] as Token[]
     )
 
+    // TODO: Refactor
     const supply = Number(formatEther(BigInt(totalSupply)))
     const basketsNeeded = Number(formatEther(BigInt(basketsNeededRaw)))
-    const targetUnits = [...new Set(targets.map((t) => hexToString(t, { size: 32 })))].join('')
+    const targetUnits = [
+      ...new Set(targets.map((t) => hexToString(t, { size: 32 }))),
+    ].join('')
 
     return {
       address: rTokenAddress,
@@ -138,7 +154,7 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       chainId,
       supply,
       basketsNeeded,
-      targetUnits
+      targetUnits,
     }
   }
 )
