@@ -206,6 +206,7 @@ const TokenStats = () => {
 const OffChainNote = () => {
   const rToken = useRToken()
   const rTokenList = useAtomValue(rTokenListAtom)
+  const [expanded, setExpanded] = useState(false)
 
   if (!rToken?.listed) {
     return null
@@ -213,12 +214,20 @@ const OffChainNote = () => {
 
   return (
     <Box mt={4}>
-      <Text mb={2} variant="strong">
-        <Trans>+ Off-chain note</Trans>
+      <Text
+        mb={2}
+        variant="strong"
+        role="button"
+        sx={{ cursor: 'pointer' }}
+        onClick={() => setExpanded(!expanded)}
+      >
+        <Trans>{expanded ? '-' : '+'} Off-chain note</Trans>
       </Text>
-      <Text as="p" variant="legend">
-        {rTokenList[rToken.address]?.about}
-      </Text>
+      {expanded && (
+        <Text as="p" variant="legend">
+          {rTokenList[rToken.address]?.about}
+        </Text>
+      )}
     </Box>
   )
 }
