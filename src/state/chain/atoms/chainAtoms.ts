@@ -81,8 +81,18 @@ export const GRAPH_CLIENTS = {
     import.meta.env.VITE_SUBGRAPH_URL || SUBGRAPH_URL[ChainId.Mainnet]
   ),
   [ChainId.Base]: new GraphQLClient(SUBGRAPH_URL[ChainId.Base]),
+  CONTENTFUL: new GraphQLClient(
+    `https://graphql.contentful.com/content/v1/spaces/9pqtywannd90/environments/master`,
+    {
+      headers: {
+        authorization: `Bearer ${import.meta.env.VITE_CONTENTFUL_BEARER_TOKEN}`,
+      },
+    }
+  ),
 }
 
 export const gqlClientAtom = atom(
   (get) => GRAPH_CLIENTS[get(chainIdAtom)] || GRAPH_CLIENTS[ChainId.Mainnet]
 )
+
+export const contentfulClientAtom = atom(() => GRAPH_CLIENTS['CONTENTFUL'])

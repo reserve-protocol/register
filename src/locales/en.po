@@ -79,6 +79,7 @@ msgstr ""
 msgid "15 params"
 msgstr ""
 
+
 #: src/views/overview/_components/TokenUsage.tsx:24
 msgid "24h Tx Vol"
 msgstr ""
@@ -181,6 +182,7 @@ msgstr ""
 msgid "All time"
 msgstr ""
 
+
 #: src/views/tokens/Tokens.tsx:23
 msgid "All unlisted RTokens"
 msgstr ""
@@ -188,8 +190,8 @@ msgstr ""
 #: src/components/transactions/table/index.tsx:84
 #: src/views/auctions/components/useColumns.tsx:40
 #: src/views/bridge/components/BridgeWithdrawals.tsx:22
-#: src/views/issuance/components/zap/components/ZapInput.tsx:80
-#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:76
+#: src/views/issuance/components/zap/components/ZapInput.tsx:109
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:110
 msgid "Amount"
 msgstr ""
 
@@ -255,14 +257,10 @@ msgstr ""
 msgid "Back to settings"
 msgstr ""
 
+
 #: src/views/overview/_components/AssetOverview.tsx:119
 #: src/views/overview/components/CollateralPieChartWrapper.tsx:131
 msgid "Backing"
-msgstr ""
-
-#: src/components/layout/navigation/TokenNavigation.tsx:41
-#: src/views/overview/components/backing/index.tsx:30
-msgid "Backing & Risk"
 msgstr ""
 
 #: src/views/home/components/MobileCollateralInfo.tsx:51
@@ -367,6 +365,7 @@ msgstr ""
 #: src/views/auctions/components/AuctionsHeader.tsx:32
 msgid "Batch auctions"
 msgstr ""
+
 
 #: src/views/tokens/Tokens.tsx:24
 msgid "Be aware that anyone can create an RToken that ends up on this list. We don't apply any standards beyond what can be done with the Reserve Protocol."
@@ -614,6 +613,7 @@ msgstr ""
 msgid "Cumulative Total RToken Mkcap"
 msgstr ""
 
+
 #: src/views/overview/_components/TokenUsage.tsx:18
 msgid "Cumulative Tx Volume"
 msgstr ""
@@ -793,6 +793,11 @@ msgstr ""
 msgid "Duration in Seconds"
 msgstr ""
 
+#: src/views/issuance/components/zap/components/ZapInput.tsx:90
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:91
+msgid "Dust"
+msgstr ""
+
 #: src/views/issuance/components/zap/components/ZapSettings.tsx:158
 msgid "Dust is the leftover amount of tokens that cannot be exchanged. If you choose to collect dust, it will be sent back to your wallet. Sending dust back to the wallet will increase transaction fee."
 msgstr ""
@@ -881,6 +886,7 @@ msgstr ""
 #: src/components/rtoken-setup/basket/PluginItem.tsx:107
 msgid "Est. APY:"
 msgstr ""
+
 
 #: src/views/overview/_components/TokenOverview.tsx:90
 msgid "Est. RToken Yield"
@@ -1244,8 +1250,9 @@ msgstr ""
 
 #: src/views/issuance/components/zap/components/ZapInput.tsx:99
 #: src/views/issuance/components/zap/components/ZapInput.tsx:128
-#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:94
-#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:123
+#: src/views/issuance/components/zap/components/ZapInput.tsx:157
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:128
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:157
 #: src/views/settings/components/SettingItem.tsx:60
 msgid "Loading..."
 msgstr ""
@@ -1297,6 +1304,7 @@ msgstr ""
 msgid "Mandate is required"
 msgstr ""
 
+
 #: src/views/overview/_components/TokenOverview.tsx:59
 msgid "Market cap"
 msgstr ""
@@ -1337,8 +1345,8 @@ msgstr ""
 msgid "Melting"
 msgstr ""
 
-#: src/views/issuance/components/zap/components/ZapInput.tsx:62
-#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:57
+#: src/views/issuance/components/zap/components/ZapInput.tsx:61
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:61
 msgid "Min Output"
 msgstr ""
 
@@ -1383,7 +1391,7 @@ msgstr ""
 msgid "Mint slippage:"
 msgstr ""
 
-#: src/views/issuance/components/zap/components/ZapInput.tsx:82
+#: src/views/issuance/components/zap/components/ZapInput.tsx:111
 msgid "Mint with {zapSymbol}"
 msgstr ""
 
@@ -1564,6 +1572,7 @@ msgid "Other Parameters"
 msgstr ""
 
 #: src/components/layout/navigation/index.tsx:109
+
 #: src/components/layout/navigation/TokenNavigation.tsx:37
 msgid "Overview"
 msgstr ""
@@ -1687,12 +1696,17 @@ msgid "Preparing transaction"
 msgstr ""
 
 #: src/components/tables/ListedTokensTable.tsx:36
+
 #: src/views/overview/_components/PriceChart.tsx:107
 #: src/views/tokens/components/UnlistedTokensTable.tsx:81
 msgid "Price"
 msgstr ""
 
-#: src/components/layout/navigation/TokenNavigation.tsx:74
+#: src/views/issuance/components/zap/components/ZapInput.tsx:76
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:77
+msgid "Price impact"
+msgstr ""
+
 #: src/views/deploy/components/NavigationSidebar.tsx:16
 #: src/views/governance/views/proposal/components/ProposalNavigation.tsx:21
 #: src/views/governance/views/proposal/components/ProposedBasketPreview.tsx:40
@@ -1825,7 +1839,7 @@ msgstr ""
 msgid "Redeem amount"
 msgstr ""
 
-#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:78
+#: src/views/issuance/components/zap/components/ZapRedeemInput.tsx:112
 msgid "Redeem into {0}"
 msgstr ""
 
@@ -1870,6 +1884,7 @@ msgstr ""
 #: src/views/bridge/components/BridgeFaq.tsx:28
 msgid "Register L2 Bridge enables the transfer of certain digital assets and other data back and forth between Ethereum and Base."
 msgstr ""
+
 
 #: src/views/tokens/Tokens.tsx:15
 msgid "Register listed RTokens"
@@ -2103,6 +2118,7 @@ msgstr ""
 msgid "RTokens"
 msgstr ""
 
+
 #: src/views/overview/components/backing/index.tsx:34
 msgid "RTokens are 100% backed by a diversified set of underlying collateral tokens..."
 msgstr ""
@@ -2242,7 +2258,7 @@ msgstr ""
 msgid "Stake + Unstake"
 msgstr ""
 
-#: src/views/overview/_components/TokenOverview.tsx:78
+#: src/views/overview/components/TokenOverview.tsx:78
 #: src/views/staking/components/overview/StakingStats.tsx:42
 msgid "Stake pool"
 msgstr ""
@@ -2271,6 +2287,7 @@ msgstr ""
 #: src/views/overview/components/CollateralPieChartTooltip.tsx:227
 msgid "Staked RSR Overcollateralisation"
 msgstr ""
+
 
 #: src/views/overview/_components/AssetOverview.tsx:126
 msgid "Staked RSR overcollateralization"
@@ -2559,6 +2576,7 @@ msgstr ""
 msgid "Total Market Cap"
 msgstr ""
 
+
 #: src/views/staking/components/overview/StakingStats.tsx:47
 msgid "Total RSR staked"
 msgstr ""
@@ -2604,6 +2622,7 @@ msgstr ""
 #: src/views/governance/views/proposal/components/ConfirmProposalOverview.tsx:70
 msgid "Transaction submitted"
 msgstr ""
+
 
 #: src/components/layout/navigation/TokenNavigation.tsx:44
 #: src/views/overview/_components/RecentTransactions.tsx:50
@@ -2759,6 +2778,7 @@ msgstr ""
 msgid "Unwrap collaterals"
 msgstr ""
 
+
 #: src/views/overview/_components/TokenUsage.tsx:13
 msgid "Usage Stats"
 msgstr ""
@@ -2798,6 +2818,7 @@ msgstr ""
 #: src/views/home/components/TokenList.tsx:28
 msgid "View All"
 msgstr ""
+
 
 #: src/views/home/components/CompareTokens.tsx:31
 msgid "View All, including unlisted"

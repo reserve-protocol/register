@@ -6,7 +6,7 @@ import RSV from './rsv'
 
 export const VERSION = '3.0.0'
 
-export const DISCORD_INVITE = 'https://discord.com/invite/M4BafXtTNz'
+export const DISCORD_INVITE = 'https://discord.gg/reserveprotocol'
 export const PROTOCOL_DOCS = 'https://reserve.org/protocol/'
 export const REGISTER_FEEDBACK = 'https://reserve.canny.io/register-app'
 
@@ -23,41 +23,6 @@ export const CHAIN_TO_NETWORK = Object.entries(NETWORKS).reduce(
   },
   {} as Record<number, string>
 )
-
-export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
-  'curve-dex': {
-    name: 'Curve',
-    site: 'https://curve.fi/#/ethereum/pools',
-  },
-  'convex-finance': {
-    name: 'Convex',
-    site: 'https://www.convexfinance.com/stake',
-  },
-  'yearn-finance': {
-    name: 'Yearn',
-    site: 'https://yearn.fi/vaults',
-  },
-  stakedao: {
-    name: 'StakeDAO',
-    site: 'https://www.stakedao.org/yield',
-  },
-  'uniswap-v3': {
-    name: 'Uniswap',
-    site: 'https://app.uniswap.org/',
-  },
-  'balancer-v2': {
-    name: 'Balancer',
-    site: 'https://app.balancer.fi/',
-  },
-  'extra-finance': {
-    name: 'Extra Finance',
-    site: 'https://app.extrafi.io/lend',
-  },
-  aerodrome: {
-    name: 'Aerodrome',
-    site: 'https://aerodrome.finance/',
-  },
-}
 
 export const BIGINT_MAX =
   115792089237316195423570985008687907853269984665640564039457584007913129639935n

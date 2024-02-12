@@ -1,41 +1,58 @@
 import FacadeRead from 'abis/FacadeRead'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { useEffect, useState } from 'react'
 import { chainIdAtom, rTokenAtom, walletAtom } from 'state/atoms'
 import { FACADE_ADDRESS } from 'utils/addresses'
-import { useContractRead } from 'wagmi'
 import { formatEther } from 'viem'
-import { pendingRSRAtom, pendingRSRManualAtom } from './atoms'
+import { useContractRead } from 'wagmi'
+import { pendingRSRAtom } from './atoms'
+import { publicClient } from 'state/chain'
 
 /**
  * Fetch pending issuances
  */
 // TODO: Move this to an loadable atom
-
-// TODO: Remove pendingRSRManualAtom (and use FacadeRead) once 3.2.0 released
 const PendingBalancesUpdater = () => {
   const account = useAtomValue(walletAtom)
   const chainId = useAtomValue(chainIdAtom)
   const rToken = useAtomValue(rTokenAtom)
 
-  const pendingRSRManual = useAtomValue(pendingRSRManualAtom)
   const setPendingRSR = useSetAtom(pendingRSRAtom)
+  const [draftEra, setDraftEra] = useState(0)
 
-  // let { data } = useContractRead(
-  //   rToken && account
-  //     ? {
-  //         abi: FacadeRead,
-  //         address: FACADE_ADDRESS[chainId],
-  //         functionName: 'pendingUnstakings',
-  //         args: [rToken?.address, account],
-  //         chainId,
-  //       }
-  //     : undefined
-  // )
-
-  const data = pendingRSRManual
+  const { data } = useContractRead(
+    rToken && account
+      ? {
+          abi: FacadeRead,
+          address: FACADE_ADDRESS[chainId],
+          functionName: 'pendingUnstakings',
+          args: [rToken?.address, BigInt(draftEra), account],
+          chainId,
+        }
+      : undefined
+  )
 
   useEffect(() => {
+    const fetchDraftEra = async () => {
+      if (!rToken || !account) {
+        return
+      }
+
+      try {
+        const client = publicClient({ chainId })
+        const draftEra: string =
+          (await client.getStorageAt({
+            address: rToken.stToken?.address!,
+            slot: '0x0000000000000000000000000000000000000000000000000000000000000109',
+          })) || '0'
+
+        setDraftEra(+draftEra || 0)
+      } catch (e) {
+        console.error('error pulling storage slot', e)
+      }
+    }
+
+    fetchDraftEra()
     if (data) {
       const pendingRSRSummary = data.map((item) => ({
         availableAt: Number(item.availableAt),
@@ -46,7 +63,7 @@ const PendingBalancesUpdater = () => {
     } else {
       setPendingRSR([])
     }
-  }, [data])
+  }, [data, account, rToken, draftEra])
 
   return null
 }

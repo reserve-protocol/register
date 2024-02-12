@@ -14,25 +14,23 @@ import StackTokenLogo from 'components/token-logo/StackTokenLogo'
 import mixpanel from 'mixpanel-browser'
 import React, { useMemo } from 'react'
 import { Pool } from 'state/pools/atoms'
-import { Box, Text } from 'theme-ui'
+import { Box, Text, Image } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
-import { CHAIN_TAGS, LP_PROJECTS } from 'utils/constants'
+import { CHAIN_TAGS } from 'utils/constants'
+import mixpanel from 'mixpanel-browser'
+import Stakedao from 'components/icons/logos/Stakedao'
+import Uniswap from 'components/icons/logos/Uniswap'
+import Balancer from 'components/icons/logos/Balancer'
+import useSWRImmutable from 'swr/immutable'
+import Aerodrome from 'components/icons/logos/Aerodrome'
+import Extra from 'components/icons/logos/Extra'
 
 const chainMap: Record<string, number> = {
   Ethereum: ChainId.Mainnet,
   Base: ChainId.Base,
 }
 
-export const columnVisibility = [
-  '',
-  '',
-  ['none', 'table-cell'],
-  '',
-  ['none', 'none', 'table-cell'],
-  ['none', 'none', 'table-cell'],
-  ['none', 'table-cell'],
-]
 
 export const compactColumnVisibility = [
   '',
@@ -45,6 +43,10 @@ export const compactColumnVisibility = [
 ]
 
 const useEarnTableColumns = (compact: boolean) => {
+  const { data: protocolsData } = useSWRImmutable(
+    'https://api.llama.fi/protocols',
+    (...args) => fetch(...args).then((res) => res.json())
+  )
   const columnHelper = createColumnHelper<Pool>()
   return useMemo(() => {
     const PROJECT_ICONS: Record<string, React.ReactElement> = {
@@ -58,6 +60,7 @@ const useEarnTableColumns = (compact: boolean) => {
       'extra-finance': <Extra fontSize={16} />,
     }
 
+    if (!protocolsData) return []
     return [
       columnHelper.accessor('symbol', {
         header: t`Pool`,
@@ -88,14 +91,19 @@ const useEarnTableColumns = (compact: boolean) => {
       }),
       columnHelper.accessor('project', {
         header: t`Project`,
-        cell: (data) => (
-          <Box variant="layout.verticalAlign">
-            {PROJECT_ICONS[data.getValue()] ?? ''}
-            <Text ml="2">
-              {LP_PROJECTS[data.getValue()]?.name ?? data.getValue()}
-            </Text>
-          </Box>
-        ),
+        cell: (data) => {
+          const protocolData = protocolsData.find(
+            (item: any) => item.slug === data.getValue()
+          )
+          return (
+            <Box variant="layout.verticalAlign">
+              {PROJECT_ICONS[data.getValue()] ?? (
+                <Image width={16} src={protocolData?.logo} />
+              )}
+              <Text ml="2">{protocolData?.name ?? data.getValue()}</Text>
+            </Box>
+          )
+        },
       }),
       columnHelper.accessor('chain', {
         header: t`Chain`,
@@ -150,7 +158,7 @@ const useEarnTableColumns = (compact: boolean) => {
         cell: (data) => `$${formatCurrency(data.getValue(), 0)}`,
       }),
     ]
-  }, [])
+  }, [protocolsData])
 }
 
 export default useEarnTableColumns
