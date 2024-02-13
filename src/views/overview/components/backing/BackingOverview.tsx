@@ -56,6 +56,16 @@ const BackingOverview = ({ current }: { current: string }) => {
         </Text>
       </Box>
       <Box mt="2" variant="layout.verticalAlign">
+        <EarnIcon color="currentColor" />
+        <Text ml="2">Blended Yield</Text>
+        <Text ml="auto" variant="strong">
+          {data.yield.toFixed(2)}%
+        </Text>
+      </Box>
+      <Box sx={{ display: ['none', 'none', 'none', 'block'] }}>
+        <CollateralsChart />
+      </Box>
+      <Box mt={[2, 2, 2, 0]} variant="layout.verticalAlign">
         <CircleIcon color="currentColor" />
         <Text ml="2">
           <Trans>Backing</Trans>
@@ -64,21 +74,11 @@ const BackingOverview = ({ current }: { current: string }) => {
           {data.backing.toFixed(0)}%
         </Text>
       </Box>
-      <Box sx={{ display: ['none', 'none', 'none', 'block'] }}>
-        <CollateralsChart />
-      </Box>
-      <Box mt={[2, 2, 2, 0]} variant="layout.verticalAlign">
+      <Box mt="2" variant="layout.verticalAlign">
         <CollaterizationIcon fontSize={16} />
         <Text ml="2">Staked RSR</Text>
         <Text ml="auto" variant="strong">
           {data.staked.toFixed(0)}%
-        </Text>
-      </Box>
-      <Box mt="2" variant="layout.verticalAlign">
-        <EarnIcon color="currentColor" />
-        <Text ml="2">Blended Yield</Text>
-        <Text ml="auto" variant="strong">
-          {data.yield.toFixed(2)}%
         </Text>
       </Box>
     </Card>
