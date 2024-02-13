@@ -55,30 +55,23 @@ const BackingResume = () => {
   )
 }
 
-const Backing = () => {
-  return (
-    <Box>
-      <Box
-        variant="layout.verticalAlign"
-        ml="4"
-        mb={5}
-        sx={{ color: 'accent' }}
-      >
-        <BasketCubeIcon fontSize={24} />
-        <Text ml="3" as="h2" variant="heading">
-          <Trans>Backing & Risk</Trans>
-        </Text>
-      </Box>
-      <Text ml="4" sx={{ fontSize: 3, maxWidth: 720 }}>
-        <Trans>
-          RTokens are 100% backed by a diversified set of underlying collateral
-          tokens...
-        </Trans>
+const Backing = () => (
+  <Box>
+    <Box variant="layout.verticalAlign" ml="4" mb={5} sx={{ color: 'accent' }}>
+      <BasketCubeIcon fontSize={24} />
+      <Text ml="3" as="h2" variant="heading">
+        <Trans>Backing & Risk</Trans>
       </Text>
-      <BackingResume />
-      <AssetBreakdown />
     </Box>
-  )
-}
+    <Text ml="4" sx={{ fontSize: 3, maxWidth: 720 }}>
+      <Trans>
+        RTokens are 100% backed by a diversified set of underlying collateral
+        tokens...
+      </Trans>
+    </Text>
+    <BackingResume />
+    <AssetBreakdown />
+  </Box>
+)
 
 export default Backing

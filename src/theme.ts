@@ -404,7 +404,7 @@ export const theme: Theme = {
       padding: 4,
       width: '100%',
       background: 'background',
-      '%:hover': {
+      ':hover': {
         background: 'border',
       },
     },

@@ -37,7 +37,6 @@ const BridgeTokenList = () => {
         >
           <ChainLogo chain={token.chain} />
           <Text mx={2}>{shortenAddress(token.address)}</Text>
-
           <CopyValue mr={1} ml="auto" value={token.address} />
           <GoTo
             style={{ position: 'relative', top: '2px' }}
