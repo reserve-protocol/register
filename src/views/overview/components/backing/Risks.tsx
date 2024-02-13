@@ -11,6 +11,8 @@ const Brand = (props: BoxProps) => {
       sx={{
         width: 20,
         height: 20,
+        fontSize: 0,
+        color: '#fff',
         backgroundColor: 'accent',
         justifyContent: 'center',
         alignItems: 'center',

@@ -26,6 +26,7 @@ const tokenSocialsAtom = atom((get) => {
 
   const socials: Socials[] = []
 
+  // TODO: Currently only doing X/Website as those are the only applicable for current listed rtokens
   if (tokenList[token.address].social?.twitter) {
     socials.push({
       label: 'X',
@@ -33,6 +34,7 @@ const tokenSocialsAtom = atom((get) => {
     })
   }
 
+  // Some RTokens list register as their website, self-reference is not a great idea
   if (
     tokenList[token.address].website &&
     !tokenList[token.address]?.website?.includes('register')
@@ -52,29 +54,27 @@ const SocialList = ({
 }: {
   socials: Socials[]
   onClick(): void
-}) => {
-  return (
-    <Card p={0}>
-      {socials.map((social) => (
-        <Link
-          px={4}
-          py={3}
-          onClick={onClick}
-          target="_blank"
-          href={social.href}
-          sx={{
-            ':hover': { background: 'border' },
-            color: 'text',
-            display: 'block',
-            cursor: 'pointer',
-          }}
-        >
-          {social.label}
-        </Link>
-      ))}
-    </Card>
-  )
-}
+}) => (
+  <Card p={0}>
+    {socials.map((social) => (
+      <Link
+        px={4}
+        py={3}
+        onClick={onClick}
+        target="_blank"
+        href={social.href}
+        sx={{
+          ':hover': { background: 'border' },
+          color: 'text',
+          display: 'block',
+          cursor: 'pointer',
+        }}
+      >
+        {social.label}
+      </Link>
+    ))}
+  </Card>
+)
 
 const TokenSocials = () => {
   const socials = useAtomValue(tokenSocialsAtom)
@@ -92,9 +92,6 @@ const TokenSocials = () => {
       content={
         <SocialList socials={socials} onClick={() => setVisible(false)} />
       }
-      // containerProps={{
-      //   sx: { border: '2px solid', borderColor: 'darkBorder' },
-      // }}
     >
       <Button variant="bordered" onClick={() => setVisible(true)}>
         <Box sx={{ height: 22 }}>
