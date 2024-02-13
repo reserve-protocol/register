@@ -200,6 +200,10 @@ export const theme: Theme = {
       fontWeight: 500,
       display: 'block',
     },
+    bold: {
+      fontWeight: 700,
+      display: 'block',
+    },
     primary: {
       color: 'text',
     },
@@ -392,7 +396,17 @@ export const theme: Theme = {
       borderRadius: borderRadius.boxes,
       padding: 0,
       width: '100%',
+      height: 'fit-content',
       backgroundColor: 'background',
+    },
+    section: {
+      borderRadius: 0,
+      padding: 4,
+      width: '100%',
+      background: 'background',
+      '%:hover': {
+        background: 'border',
+      },
     },
   },
   buttons: {

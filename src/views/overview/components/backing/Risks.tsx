@@ -32,7 +32,7 @@ const Section = ({
   <Box p={4} sx={{ borderBottom: '1px solid', borderColor: 'border' }}>
     <Box variant="layout.verticalAlign" mb={3}>
       <Brand />
-      <Text ml="2" sx={{ fontWeight: 700 }}>
+      <Text ml="2" variant="bold">
         {title}
       </Text>
     </Box>
@@ -91,7 +91,7 @@ const Risks = () => {
               target="_blank"
             >
               undesirable governance outcomes
-            </Link>
+            </Link>{' '}
             are possible, the protocol’s design ensures that there is sufficient
             incentivisation for responsible, balanced governance decisions.
             Built-in delays throughout the governance cycle also provide
@@ -105,14 +105,14 @@ const Risks = () => {
   )
 
   return (
-    <Card variant="inner" sx={{ height: 'fit-content' }}>
+    <Card variant="inner">
       <Box
         variant="layout.verticalAlign"
         p={4}
         sx={{ borderBottom: '1px solid', borderColor: 'border' }}
       >
         <RiskIcon />
-        <Text ml="2" mr="auto" sx={{ fontSize: 3, fontWeight: 700 }}>
+        <Text ml="2" mr="auto" variant="bold" sx={{ fontSize: 3 }}>
           <Trans>Other Risks</Trans>
         </Text>
       </Box>
