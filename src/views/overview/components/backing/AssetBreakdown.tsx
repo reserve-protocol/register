@@ -1,12 +1,10 @@
-import AsteriskIcon from 'components/icons/AsteriskIcon'
 import CirclesIcon from 'components/icons/CirclesIcon'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'
 import LayersIcon from 'components/icons/LayersIcon'
 import RiskIcon from 'components/icons/RiskIcon'
 import TabMenu from 'components/tab-menu'
 import { useCallback, useMemo, useState } from 'react'
-import { ChevronDown } from 'react-feather'
-import { Box, Card, Flex, Text } from 'theme-ui'
+import { Box, Card, Flex } from 'theme-ui'
 import BackingOverview from './BackingOverview'
 import CollateralExposure from './CollateralExposure'
 import PlatformExposure from './PlatformExposure'
@@ -64,11 +62,11 @@ const AssetBreakdown = () => {
     <Card>
       <Box variant="layout.verticalAlign">
         <Menu current={current} onChange={handleChange} />
-        <Box variant="layout.verticalAlign" ml="auto">
+        {/* <Box variant="layout.verticalAlign" ml="auto">
           <AsteriskIcon />
           <Text mx="2">What if there’s a de-peg?</Text>
           <ChevronDown size={16} />
-        </Box>
+        </Box> */}
       </Box>
       <Flex
         mt={3}
