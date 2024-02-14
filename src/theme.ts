@@ -584,7 +584,7 @@ export const theme: Theme = {
     },
     sectionDivider: {
       mx: [-1, -6],
-      my: [1, 6],
+      my: [3, 6],
       borderColor: 'border',
     },
   },

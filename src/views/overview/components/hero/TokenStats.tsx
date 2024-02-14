@@ -32,7 +32,7 @@ const TokenMetrics = () => {
       </Text>
 
       <Text variant="accent" as="h1" sx={{ fontSize: 6 }}>
-        ${formatCurrency(data?.supply ?? 0)}
+        ${formatCurrency(data?.supply ?? 0, 0)}
       </Text>
       <Box variant="layout.verticalAlign">
         <StakedIcon />
@@ -40,7 +40,7 @@ const TokenMetrics = () => {
           <Trans>Stake pool USD value:</Trans>
         </Text>
         <Text ml="1" variant="strong">
-          ${formatCurrency(data?.staked ?? 0)}
+          ${formatCurrency(data?.staked ?? 0, 0)}
         </Text>
       </Box>
     </>

@@ -34,12 +34,13 @@ const CollateralDetails = ({
   return (
     <>
       <Grid
-        columns="2fr 1fr 1fr 1fr"
+        columns={['1fr', '2fr 1fr 1fr 1fr']}
         py={4}
         px={4}
         sx={{
           fontWeight: 700,
           cursor: 'pointer',
+          position: 'relative',
           alignItems: 'center',
           backgroundColor: expanded ? 'border' : '',
           '&:hover': { backgroundColor: 'border' },
@@ -53,9 +54,17 @@ const CollateralDetails = ({
           </Text>
           <Text ml="2">{collateral.symbol}</Text>
         </Box>
-        <Text>{collateral.yield.toFixed(2)}%</Text>
+        <Box>
+          <Text variant="strong" sx={{ display: ['inline', 'none'] }}>
+            Yield:{' '}
+          </Text>
+          <Text>{collateral.yield.toFixed(2)}%</Text>
+        </Box>
 
         <Flex sx={{ flexWrap: 'wrap' }}>
+          <Text mr="1" variant="strong" sx={{ display: ['inline', 'none'] }}>
+            Value:
+          </Text>
           {!!collateral.valueTarget && !!collateral.valueSingleTarget && (
             <Text mr="2" sx={{ whiteSpace: 'nowrap' }}>
               {formatCurrency(
@@ -77,7 +86,14 @@ const CollateralDetails = ({
           </Text>
         </Flex>
 
-        <Box sx={{ textAlign: 'right' }}>
+        <Box
+          sx={{
+            textAlign: 'right',
+            position: ['absolute', 'relative'],
+            top: [68, 0],
+            right: [20, 0],
+          }}
+        >
           <ChevronDown size={16} />
         </Box>
         {!!expanded && <Box sx={{ fontWeight: 400 }}>expanded</Box>}
@@ -130,7 +146,11 @@ const Header = () => {
     <Box
       variant="layout.verticalAlign"
       p={4}
-      sx={{ borderBottom: '1px solid', borderColor: 'border' }}
+      sx={{
+        borderBottom: '1px solid',
+        borderColor: 'border',
+        flexWrap: 'wrap',
+      }}
     >
       <CollaterizationIcon width={20} height={20} />
       <Text ml="2" mr="auto" sx={{ fontSize: 3, fontWeight: 700 }}>
@@ -152,7 +172,7 @@ const CollateralExposure = () => {
     <Card variant="inner" sx={{ height: 'fit-content' }}>
       <Header />
       <Grid
-        columns="2fr 1fr 1fr 1fr"
+        columns={'2fr 1fr 1fr 1fr'}
         py="10px"
         px={4}
         sx={{ display: ['none', 'grid'], color: 'secondaryText', fontSize: 1 }}

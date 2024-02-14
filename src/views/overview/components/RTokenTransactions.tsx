@@ -1,17 +1,26 @@
 import { Trans, t } from '@lingui/macro'
 import { createColumnHelper } from '@tanstack/react-table'
+import ChainLogo from 'components/icons/ChainLogo'
+import DebankIcon from 'components/icons/DebankIcon'
 import TransactionsIcon from 'components/icons/TransactionsIcon'
 import { Table } from 'components/table'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { selectedRTokenAtom } from 'state/atoms'
-import { Box, Text } from 'theme-ui'
-import { formatCurrency, formatUsdCurrencyCell, shortenString } from 'utils'
+import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
+import { Box, Link, Text } from 'theme-ui'
+import {
+  formatCurrency,
+  formatUsdCurrencyCell,
+  shortenAddress,
+  shortenString,
+} from 'utils'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { formatEther } from 'viem'
 
 export interface TransactionRecord {
+  id: string
   type: string
   amount: bigint
   amountUSD: number | string
@@ -35,6 +44,7 @@ const rTokenTransactionsQuery = gql`
       orderDirection: desc
       first: 200
     ) {
+      id
       type
       amount
       amountUSD
@@ -51,6 +61,7 @@ const rTokenTransactionsQuery = gql`
 `
 
 const useTransactionColumns = () => {
+  const chainId = useAtomValue(chainIdAtom)
   const columnHelper = createColumnHelper<TransactionRecord>()
   const transactionTypes: Record<string, string> = useMemo(
     () => ({
@@ -76,7 +87,9 @@ const useTransactionColumns = () => {
       columnHelper.accessor('type', {
         header: t`Type`,
         cell: (data) => (
-          <Text>{transactionTypes[data.getValue()] || data.getValue()}</Text>
+          <Text variant="bold">
+            {transactionTypes[data.getValue()] || data.getValue()}
+          </Text>
         ),
       }),
       columnHelper.accessor('amount', {
@@ -107,16 +120,42 @@ const useTransactionColumns = () => {
           return formatUsdCurrencyCell(data as any)
         },
       }),
+      columnHelper.accessor('id', {
+        header: t`Chain`,
+        cell: () => <ChainLogo chain={chainId} />,
+      }),
       columnHelper.accessor('from.id', {
-        header: t`From`,
-        cell: (data) => <Text>{shortenString(data.getValue())}</Text>,
+        header: t`From + Debank`,
+        cell: (data) => (
+          <Box variant="layout.verticalAlign">
+            <Link
+              href={`https://debank.com/profile/${data.getValue()}`}
+              target="_blank"
+              mr="2"
+            >
+              {shortenAddress(data.getValue())}
+            </Link>
+            <DebankIcon />
+          </Box>
+        ),
       }),
       columnHelper.accessor('hash', {
         header: t`Tx Hash`,
-        cell: (data) => <Text>{shortenString(data.getValue())}</Text>,
+        cell: (data) => (
+          <Link
+            href={getExplorerLink(
+              data.getValue(),
+              chainId,
+              ExplorerDataType.TRANSACTION
+            )}
+            target="_blank"
+          >
+            {shortenString(data.getValue())}
+          </Link>
+        ),
       }),
     ]
-  }, [])
+  }, [chainId])
 }
 
 const TransactionsTable = () => {

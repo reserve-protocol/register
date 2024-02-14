@@ -43,7 +43,9 @@ const Menu = ({
     []
   )
 
-  return <TabMenu active={current} items={items} onMenuChange={onChange} />
+  return (
+    <TabMenu active={current} items={items} collapse onMenuChange={onChange} />
+  )
 }
 
 const AssetBreakdown = () => {
