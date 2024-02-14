@@ -169,6 +169,7 @@ const TransactionsTable = () => {
     <Table
       compact
       pagination
+      sorting
       columns={columns}
       sx={{ borderRadius: '0 0 20px 20px' }}
       data={data?.entries || []}
