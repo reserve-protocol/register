@@ -35,6 +35,9 @@ type QueryReponse = {
         protocolDescription: string
         website?: string
         docs?: string
+        logo?: {
+          url: string
+        }
       }
     }[]
   }
@@ -68,6 +71,9 @@ const collateralsMetaQuery = gql`
           protocolDescription
           website
           docs
+          logo {
+            url
+          }
         }
       }
     }
@@ -107,6 +113,7 @@ const setCollateralsMetadataAtom = atom(
           description: item.protocol?.protocolDescription ?? '',
           website: item.protocol?.website ?? '',
           docs: item.protocol?.docs ?? '',
+          logo: item.protocol?.logo?.url ?? '/svgs/defaultLogo.svg',
         },
       }
     }

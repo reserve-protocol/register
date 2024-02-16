@@ -1,34 +1,57 @@
 import { Trans } from '@lingui/macro'
 import { Button } from 'components'
-import CopyValue from 'components/button/CopyValue'
-import GoTo from 'components/button/GoTo'
-import BluechipLogo from 'components/icons/BluechipIcon'
-import CirclesIcon from 'components/icons/CirclesIcon'
 import HiperlinkIcon from 'components/icons/HiperlinkIcon'
 import LayersIcon from 'components/icons/LayersIcon'
-import StackIcon from 'components/icons/StackIcon'
 import TokenLogo from 'components/icons/TokenLogo'
-import { Box, Card, Text } from 'theme-ui'
-import { shortenAddress } from 'utils'
-import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import VerticalDivider from 'views/home/components/VerticalDivider'
+import { atom, useAtomValue } from 'jotai'
+import Skeleton from 'react-loading-skeleton'
+import { collateralsMetadataAtom } from 'state/cms/atoms'
+import { rTokenCollateralDetailedAtom } from 'state/rtoken/atoms/rTokenBackingDistributionAtom'
+import { Box, Card, Image, Text } from 'theme-ui'
 
-const mockData = [
-  {
-    name: 'Compound',
-    distribution: 50,
-    website: 'https://example.com',
-    description: 'eUSD is a stablecoin pegged to the US dollar',
-  },
-  {
-    name: 'AAVE',
-    distribution: 50,
-    website: 'https://example.com',
-    description: 'FRAX is a stablecoin pegged to the US dollar',
-  },
-]
+interface PlatformDetails {
+  name: string
+  distribution: number
+  website?: string
+  description: string
+  logo?: string
+}
+
+const dataAtom = atom((get) => {
+  const metadata = get(collateralsMetadataAtom)
+  const collaterals = get(rTokenCollateralDetailedAtom)
+
+  if (!collaterals || !metadata) {
+    return null
+  }
+
+  const platformDetails: Record<string, PlatformDetails> = {}
+
+  for (const collateral of collaterals) {
+    const meta = metadata[collateral.symbol.toLowerCase().replace('-vault', '')]
+
+    if (meta.protocol) {
+      if (platformDetails[meta.protocol.name]) {
+        platformDetails[meta.protocol.name].distribution +=
+          collateral.distribution
+      } else {
+        platformDetails[meta.protocol.name] = {
+          name: meta.protocol.name,
+          distribution: collateral.distribution,
+          website: meta.protocol.website,
+          description: meta.protocol.description,
+          logo: meta.protocol.logo,
+        }
+      }
+    }
+  }
+
+  return Object.values(platformDetails)
+})
 
 const PlatformExposure = () => {
+  const exposure = useAtomValue(dataAtom)
+
   return (
     <Card variant="inner">
       <Box
@@ -41,12 +64,13 @@ const PlatformExposure = () => {
           <Trans>Underlying Platform Exposure</Trans>
         </Text>
       </Box>
-      {mockData.map((data) => (
+      {!exposure && <Skeleton count={3} height={80} />}
+      {exposure?.map((data) => (
         <Card key={data.name} variant="section">
           <Box variant="layout.verticalAlign">
-            <TokenLogo symbol={'test'} width={24} />
+            <Image src={data.logo} width="24px" height="auto" />
             <Text ml="2" sx={{ color: 'accent' }} variant="bold">
-              {data.distribution}%
+              {data.distribution.toFixed(2)}%
             </Text>
             <Text ml="1" variant="bold">
               {data.name}

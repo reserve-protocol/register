@@ -57,6 +57,7 @@ const IMGS = new Set([
   'frax',
   'crvusd',
   'mkusd',
+  'eusd',
 ])
 
 // Memoized token image
