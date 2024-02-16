@@ -6,43 +6,84 @@ import BluechipLogo from 'components/icons/BluechipIcon'
 import CirclesIcon from 'components/icons/CirclesIcon'
 import HiperlinkIcon from 'components/icons/HiperlinkIcon'
 import TokenLogo from 'components/icons/TokenLogo'
-import chain from 'state/chain'
+import { atom, useAtomValue } from 'jotai'
+import Skeleton from 'react-loading-skeleton'
+import { chainIdAtom } from 'state/atoms'
+import { collateralsMetadataAtom } from 'state/cms/atoms'
+import { rTokenCollateralDetailedAtom } from 'state/rtoken/atoms/rTokenBackingDistributionAtom'
 import { Box, Card, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import VerticalDivider from 'views/home/components/VerticalDivider'
 
-const mockData = [
-  {
-    symbol: 'eUSD',
-    distribution: 50,
-    rating: 'A',
-    address: '0x12345',
-    chain: 1,
-    website: 'https://example.com',
-    description: 'eUSD is a stablecoin pegged to the US dollar',
-  },
-  {
-    symbol: 'FRAX',
-    distribution: 25,
-    rating: 'F',
-    address: '0x12346',
-    chain: 1,
-    website: 'https://example.com',
-    description: 'FRAX is a stablecoin pegged to the US dollar',
-  },
-  {
-    symbol: 'USDC',
-    distribution: 25,
-    rating: 'B',
-    address: '0x12347',
-    chain: 1,
-    website: 'https://example.com',
-    description: 'USDC is a stablecoin pegged to the US dollar',
-  },
-]
+interface TokenExposure {
+  symbol: string
+  distribution: number
+  rating?: string
+  address: string
+  chain: number
+  website?: string
+  description: string
+}
+
+const dataAtom = atom((get) => {
+  const metadata = get(collateralsMetadataAtom)
+  const chainId = get(chainIdAtom)
+  const collaterals = get(rTokenCollateralDetailedAtom)
+
+  if (!collaterals || !metadata) {
+    return null
+  }
+
+  const tokenDetails: Record<string, TokenExposure> = {}
+
+  for (const collateral of collaterals) {
+    const meta = metadata[collateral.symbol.toLowerCase().replace('-vault', '')]
+    const tokens = meta?.underlying
+    const distribution = meta?.tokenDistribution ?? []
+
+    // token distribution
+    if (distribution.length) {
+      for (const dist of distribution) {
+        const token = tokens[dist.token]
+
+        if (token) {
+          if (tokenDetails[token.symbol]) {
+            tokenDetails[token.symbol].distribution +=
+              dist.distribution * collateral.distribution
+          } else {
+            tokenDetails[token.symbol] = {
+              symbol: token.symbol,
+              distribution: dist.distribution * collateral.distribution,
+              rating: token.rating,
+              address: token.addresses[chainId],
+              chain: chainId,
+              website: token.website,
+              description: token.description,
+            }
+          }
+        }
+      }
+    } else if (tokens && Object.keys(tokens).length) {
+      const token = tokens[Object.keys(tokens)[0]]
+      tokenDetails[token.symbol] = {
+        symbol: token.symbol,
+        distribution: collateral.distribution * 100,
+        rating: token.rating,
+        address: token.addresses[chainId],
+        chain: chainId,
+        website: token.website,
+        description: token.description,
+      }
+    }
+  }
+
+  return Object.values(tokenDetails)
+})
 
 const TokenExposure = () => {
+  const data = useAtomValue(dataAtom)
+
   return (
     <Card variant="inner">
       <Box
@@ -55,12 +96,13 @@ const TokenExposure = () => {
           <Trans>Underlying Token Exposure</Trans>
         </Text>
       </Box>
-      {mockData.map((data) => (
-        <Card key={data.address} variant="section">
+      {!data && <Skeleton count={3} height={80} />}
+      {data?.map((data) => (
+        <Card key={data.symbol} variant="section">
           <Box variant="layout.verticalAlign">
             <TokenLogo symbol={data.symbol} width={24} />
             <Text ml="2" sx={{ color: 'accent' }} variant="bold">
-              {data.distribution}%
+              {data.distribution.toFixed(2)}%
             </Text>
             <Text ml="1" variant="bold">
               {data.symbol}
@@ -104,7 +146,7 @@ const TokenExposure = () => {
               sx={{ flexBasis: ['100%', 'auto'], mt: [3, 0] }}
             >
               <Text mr={2} variant="legend">
-                {shortenAddress(data.address)}
+                {!!data.address && shortenAddress(data.address)}
               </Text>
               <CopyValue mr={1} ml="auto" value={data.address} />
               <GoTo

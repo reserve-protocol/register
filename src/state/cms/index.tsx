@@ -80,15 +80,19 @@ const setCollateralsMetadataAtom = atom(
     const collateralData: Record<string, CollateralMetadata> = {}
 
     for (const item of data.rTokenAssetDocumentationCollection.items) {
-      const underlying: UnderlyingMetadata[] | undefined =
-        item.tokensCollection?.items.map((token) => ({
-          symbol: token.tokenTicker ?? '',
-          addresses: token.addresses ?? {},
-          color: token.color ?? stringToHex(token.tokenTicker ?? 'notoken'),
-          description: token.description ?? 'No token data',
-          rating: token.rating,
-          website: token.website,
-        }))
+      const underlying =
+        item.tokensCollection?.items.reduce((acc, token) => {
+          acc[token.tokenTicker] = {
+            symbol: token.tokenTicker ?? '',
+            addresses: token.addresses ?? {},
+            color: token.color ?? stringToHex(token.tokenTicker ?? 'notoken'),
+            description: token.description ?? 'No token data',
+            rating: token.rating,
+            website: token.website,
+          }
+
+          return acc
+        }, {} as Record<string, UnderlyingMetadata>) ?? {}
 
       collateralData[item.id] = {
         id: item.id,
@@ -97,7 +101,7 @@ const setCollateralsMetadataAtom = atom(
         llamaId: item.llamaId,
         color: item.color ?? stringToHex(item.id),
         tokenDistribution: item.tokenDistribution,
-        underlying: underlying ?? [],
+        underlying,
         protocol: {
           name: item.protocol?.protocolName ?? 'Unknown',
           description: item.protocol?.protocolDescription ?? '',

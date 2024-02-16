@@ -25,7 +25,7 @@ export interface CollateralMetadata {
   llamaId?: string
   color: string
   tokenDistribution?: { token: string; distribution: number }[]
-  underlying: UnderlyingMetadata[]
+  underlying: Record<string, UnderlyingMetadata>
   protocol: ProjectMetadata
 }
 
