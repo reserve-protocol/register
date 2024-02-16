@@ -62,6 +62,7 @@ const tokenListQuery = gql`
         backingRSR
         targetUnits
         rsrStaked
+        rsrLocked
         collaterals {
           id
           symbol
@@ -136,7 +137,7 @@ const useTokenList = () => {
             }
 
             const stakeUsd =
-              +formatEther(token?.rToken?.rsrStaked ?? '0') * rsrPrice
+              +formatEther(token?.rToken?.rsrLocked ?? '0') * rsrPrice
             const holdersShare = +(revenueSplit.holders || 0) / 100
             const stakersShare = +(revenueSplit.stakers || 0) / 100
 
