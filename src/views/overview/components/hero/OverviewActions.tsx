@@ -58,6 +58,7 @@ const SocialList = ({
   <Card p={0}>
     {socials.map((social) => (
       <Link
+        key={social.label}
         px={4}
         py={3}
         onClick={onClick}

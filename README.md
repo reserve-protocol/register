@@ -6,7 +6,7 @@ Enabling users to:
 
 - Create new RTokens
 - View/use existing RTokens and related metrics
-- Mint/Issue RTokens (RSV included)
+- Mint/Issue RTokens
 - Stake/Unstake to get yield with an RToken
 - Govern and manage RTokens
 

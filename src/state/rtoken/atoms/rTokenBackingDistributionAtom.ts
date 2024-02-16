@@ -71,6 +71,7 @@ export interface CollateralDetail extends Collateral {
   valueSingleUsd: number
   distribution: number
   targetUnit: string
+  displayName: string
 }
 
 // Derived atom with detailed RToken basket breakdown used on multiple views
@@ -107,6 +108,7 @@ export const rTokenCollateralDetailedAtom = atom((get) => {
       valueSingleUsd: (price * distribution[collateral.address].share) / 100,
       distribution: distribution[collateral.address].share,
       targetUnit: distribution[collateral.address].targetUnit,
+      displayName: collateral.displayName ?? collateral.name,
     }
 
     // TODO: Only ETH case is supported rn, BTC/EUR future problem!

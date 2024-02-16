@@ -1,5 +1,9 @@
 import { Trans } from '@lingui/macro'
+import { Button } from 'components'
+import CopyValue from 'components/button/CopyValue'
+import GoTo from 'components/button/GoTo'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'
+import HiperlinkIcon from 'components/icons/HiperlinkIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import TabMenu from 'components/tab-menu'
 import useRToken from 'hooks/useRToken'
@@ -7,21 +11,57 @@ import { atom, useAtom, useAtomValue } from 'jotai'
 import { useMemo, useState } from 'react'
 import { ChevronDown } from 'react-feather'
 import Skeleton from 'react-loading-skeleton'
+import { chainIdAtom } from 'state/atoms'
+import { collateralsMetadataAtom } from 'state/cms/atoms'
 import {
   CollateralDetail,
   rTokenCollateralDetailedAtom,
 } from 'state/rtoken/atoms/rTokenBackingDistributionAtom'
 import { Box, Card, Flex, Grid, Text } from 'theme-ui'
-import { formatCurrency } from 'utils'
-import { TARGET_UNITS } from 'utils/constants'
+import { formatCurrency, shortenAddress } from 'utils'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+
+interface DetailedCollateralWithMeta extends CollateralDetail {
+  website?: string
+  description: string
+  addresses: { label: string; address: string }[]
+}
 
 const backingTypeAtom = atom('total')
+const backingDetailAtom = atom((get) => {
+  const collaterals = get(rTokenCollateralDetailedAtom)
+  const metadata = get(collateralsMetadataAtom)
+  const chainId = get(chainIdAtom)
+
+  if (!collaterals) {
+    return null
+  }
+
+  return collaterals.map((c) => {
+    const meta = metadata?.[c.symbol.toLowerCase().replace('-vault', '')]
+    // TODO: Define multitoken case
+    const token = meta?.underlying?.[0]
+    const addresses = [{ label: 'Collateral', address: c.address }]
+
+    if (token && token.addresses[chainId]) {
+      addresses.push({ label: 'Token', address: token.addresses[chainId] })
+    }
+
+    return {
+      ...c,
+      website: token?.website,
+      description: token?.description ?? 'No description available',
+      addresses,
+    }
+  }) as DetailedCollateralWithMeta[]
+})
 
 const CollateralDetails = ({
   collateral,
 }: {
-  collateral: CollateralDetail
+  collateral: DetailedCollateralWithMeta
 }) => {
+  const chainId = useAtomValue(chainIdAtom)
   const [expanded, setExpanded] = useState(false)
   const backingType = useAtomValue(backingTypeAtom)
   const usdValueLabelProps = collateral.valueTarget
@@ -32,27 +72,26 @@ const CollateralDetails = ({
     : {}
 
   return (
-    <>
-      <Grid
-        columns={['1fr', '2fr 1fr 1fr 1fr']}
-        py={4}
-        px={4}
-        sx={{
-          fontWeight: 700,
-          cursor: 'pointer',
-          position: 'relative',
-          alignItems: 'center',
-          backgroundColor: expanded ? 'border' : '',
-          '&:hover': { backgroundColor: 'border' },
-        }}
-        onClick={() => setExpanded(!expanded)}
-      >
+    <Box
+      py={4}
+      px={4}
+      sx={{
+        fontWeight: 700,
+        cursor: 'pointer',
+        position: 'relative',
+        alignItems: 'center',
+        backgroundColor: expanded ? 'border' : '',
+        '&:hover': { backgroundColor: 'border' },
+      }}
+      onClick={() => setExpanded(!expanded)}
+    >
+      <Grid columns={['1fr', '2fr 1fr 1fr 1fr']}>
         <Box variant="layout.verticalAlign">
           <TokenLogo symbol={collateral.symbol} />
           <Text ml={2} variant="accent">
             {collateral.distribution.toFixed(2)}%
           </Text>
-          <Text ml="2">{collateral.symbol}</Text>
+          <Text ml="2">{collateral.displayName}</Text>
         </Box>
         <Box>
           <Text variant="strong" sx={{ display: ['inline', 'none'] }}>
@@ -96,14 +135,49 @@ const CollateralDetails = ({
         >
           <ChevronDown size={16} />
         </Box>
-        {!!expanded && <Box sx={{ fontWeight: 400 }}>expanded</Box>}
       </Grid>
-    </>
+      {!!expanded && (
+        <Box mt={3} sx={{ fontWeight: 400 }}>
+          <Text as="p">{collateral.description}</Text>
+          <Box mt="3">
+            {!!collateral.website && (
+              <Button
+                small
+                variant="bordered"
+                onClick={() => window.open(collateral.website, '_blank')}
+              >
+                <Box variant="layout.verticalAlign">
+                  <HiperlinkIcon />
+                  <Text ml="2">Website</Text>
+                </Box>
+              </Button>
+            )}
+            <Box
+              variant="layout.verticalAlign"
+              sx={{ flexBasis: ['100%', 'auto'], mt: [3, 0] }}
+            >
+              <Text mr={2} variant="legend">
+                {shortenAddress(collateral.address)}
+              </Text>
+              <CopyValue mr={1} ml="auto" value={collateral.address} />
+              <GoTo
+                style={{ position: 'relative', top: '2px' }}
+                href={getExplorerLink(
+                  collateral.address,
+                  chainId,
+                  ExplorerDataType.TOKEN
+                )}
+              />
+            </Box>
+          </Box>
+        </Box>
+      )}
+    </Box>
   )
 }
 
 const CollateralList = () => {
-  const collaterals = useAtomValue(rTokenCollateralDetailedAtom)
+  const collaterals = useAtomValue(backingDetailAtom)
 
   if (!collaterals) {
     return (

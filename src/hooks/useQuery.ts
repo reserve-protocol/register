@@ -60,14 +60,9 @@ export const useCMSQuery = (
   config: any = {}
 ) => {
   const client = useAtomValue(contentfulClientAtom)
-
   const fetcher = (props: FetcherArgs) => client.request(...props)
 
-  return useSWRImmutable<any>(
-    query ? [query, variables] : null,
-    fetcher,
-    config
-  )
+  return useSWRImmutable(query ? [query, variables] : null, fetcher, config)
 }
 
 export default useQuery

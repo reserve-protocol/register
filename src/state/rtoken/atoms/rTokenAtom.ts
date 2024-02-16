@@ -6,6 +6,7 @@ import { ReserveToken, Token } from 'types'
 import { getTokenReadCalls } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
+import { collateralDisplay } from 'utils/constants'
 import { collateralsProtocolMap } from 'utils/plugins'
 import { formatEther, hexToString } from 'viem'
 import { Address } from 'wagmi'
@@ -149,6 +150,9 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       collaterals: tokens.map((t) => ({
         ...t,
         protocol: collateralsProtocolMap[chainId]?.[t.symbol] || 'GENERIC',
+        displayName:
+          collateralDisplay[t.symbol.toLowerCase().replace('-vault', '')] ||
+          t.symbol,
       })),
       listed: !!rtokens[rTokenAddress],
       chainId,

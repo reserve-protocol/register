@@ -77,6 +77,7 @@ export interface Token {
 
 export interface Collateral extends Token {
   protocol: ProtocolKey
+  displayName?: string
 }
 
 export interface ReserveToken extends Token {
