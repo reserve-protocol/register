@@ -18,17 +18,17 @@ const HeaderMenu = () => {
     () => [
       {
         label: t`Compare`,
-        icon: <BasketCubeIcon fontSize={20} />,
+        icon: <BasketCubeIcon fontSize={16} />,
         to: ROUTES.HOME,
       },
       {
         label: t`Portfolio`,
-        icon: <WalletOutlineIcon fontSize={20} />,
+        icon: <WalletOutlineIcon fontSize={16} />,
         to: ROUTES.PORTFOLIO,
       },
       {
         label: t`Earn`,
-        icon: <EarnNavIcon fontSize={20} />,
+        icon: <EarnNavIcon fontSize={16} />,
         to: ROUTES.EARN,
       },
       { label: t`Bridge`, icon: <BridgeNavIcon />, to: ROUTES.BRIDGE },
@@ -39,10 +39,14 @@ const HeaderMenu = () => {
   return (
     <Box
       variant="layout.verticalAlign"
+      mx="auto"
       p={1}
       sx={{
         border: '1px solid',
-        borderColor: 'border',
+        borderColor: !selectedRToken ? 'border' : 'borderSecondary',
+        backgroundColor: !selectedRToken
+          ? 'secondaryBackground'
+          : 'transparent',
         fontSize: 1,
         borderRadius: borderRadius.boxes,
       }}
@@ -59,16 +63,19 @@ const HeaderMenu = () => {
               sx={{
                 backgroundColor: isActive ? 'background' : 'transparent',
                 border: '1px solid',
+                color: isActive ? 'primary' : 'text',
                 borderColor: isActive ? 'primary' : 'transparent',
                 borderRadius: borderRadius.inner,
                 justifyContent: 'center',
+                fontWeight: 500,
                 width: [40, 'auto'],
-                height: '40px',
+                // height: '40px',
                 ':hover': {
-                  backgroundColor: isActive ? 'background' : 'border',
+                  backgroundColor: 'background',
                 },
               }}
-              p={2}
+              px={2}
+              py={1}
               ml={index ? 1 : 0}
             >
               {menuItem.icon}

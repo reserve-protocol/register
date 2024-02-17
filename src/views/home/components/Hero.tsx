@@ -48,7 +48,7 @@ const ProtocolStats = () => {
         <Grid columns={['1fr', '1fr 1fr 1fr']} gap={[4, 0]}>
           {statInfo.map((info, index) => (
             <Box key={info.title} sx={{ position: 'relative' }}>
-              <Box sx={{ textAlign: 'center' }}>
+              <Box sx={{ textAlign: 'center', color: 'accentInverted' }}>
                 {info.icon}
                 <Box my={2}>
                   {!isLoading ? (
@@ -66,7 +66,7 @@ const ProtocolStats = () => {
                   sx={{
                     display: ['none', 'block'],
                     fontSize: 5,
-                    color: 'secondaryText',
+                    color: 'accentInverted',
                     position: 'absolute',
                     left: '-12px',
                     top: 'calc(50% - 20px)',
@@ -94,7 +94,11 @@ const About = () => (
     <Box sx={{ maxWidth: 840, textAlign: 'center' }} mt={[2, 4]}>
       <Text
         variant="title"
-        sx={{ fontSize: [5, 7], lineHeight: ['42px', '56px'] }}
+        sx={{
+          fontSize: [5, 7],
+          color: 'accentInverted',
+          lineHeight: ['42px', '56px'],
+        }}
       >
         <Trans>A new path to better money, already set in motion</Trans>
       </Text>
@@ -105,7 +109,7 @@ const About = () => (
           mint, stake and govern RTokens. Learn more at
         </Trans>{' '}
         <Link
-          sx={{ textDecoration: 'underline' }}
+          sx={{ textDecoration: 'underline', color: 'accent' }}
           href="https://reserve.org/"
           target="_blank"
         >

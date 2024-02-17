@@ -51,7 +51,7 @@ const RTokenSelector = (props: BoxProps) => {
       <Box
         {...props}
         variant="layout.verticalAlign"
-        p={2}
+        p={1}
         sx={{
           cursor: 'pointer',
           fontSize: 1,

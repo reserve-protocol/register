@@ -11,12 +11,12 @@ const Bridge = () => (
   <Card
     p={0}
     sx={{
-      backgroundColor: 'contentBackground',
+      backgroundColor: 'background',
       height: 'fit-content',
       width: ['100vw', 525],
       boxShadow: ['none', boxShadow],
       border: ['none', '2px solid'],
-      borderColor: ['none', 'darkBorder'],
+      borderColor: ['none', 'borderFocused'],
     }}
   >
     <BridgeHeader />

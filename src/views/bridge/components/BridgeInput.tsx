@@ -90,7 +90,14 @@ const BridgeAmount = () => {
   return (
     <NumericalInput
       p={3}
-      sx={{ border: 'none', borderRadius: borderRadius.boxes }}
+      sx={{
+        border: 'none',
+        backgroundColor: 'invertedText',
+        borderRadius: borderRadius.boxes,
+        '&:focus': {
+          backgroundColor: 'invertedText',
+        },
+      }}
       placeholder={`${isWrapping ? 'Deposit' : 'Withdraw'} amount`}
       value={amount}
       onChange={setAmount}
@@ -127,9 +134,9 @@ const BridgeInput = () => (
   <Box
     sx={{
       borderRadius: borderRadius.boxes,
-      border: '1px solid',
-      borderColor: 'primary',
-      backgroundColor: 'background',
+      border: '2px solid',
+      borderColor: 'borderFocused',
+      backgroundColor: 'invertedText',
       flexShrink: 0,
     }}
   >

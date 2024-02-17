@@ -3,8 +3,9 @@ import { SVGProps } from 'react'
 const BridgeNavIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={17}
-    height={16}
+    width="1em"
+    height="1em"
+    viewBox={'0 0 17 16'}
     fill="none"
     {...props}
   >

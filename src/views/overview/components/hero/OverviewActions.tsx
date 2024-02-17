@@ -119,7 +119,11 @@ const OverviewActions = () => {
           {!!holders ? `${formatCurrency(holders, 1)}% Est. APY` : 'Mint'}
         </Trans>
       </Button>
-      <Button mr={3} onClick={() => navigate(`../${ROUTES.STAKING}`)}>
+      <Button
+        mr={3}
+        variant="bordered"
+        onClick={() => navigate(`../${ROUTES.STAKING}`)}
+      >
         Stake RSR {!!stakers && `- ${formatCurrency(stakers, 1)}% Est. APY`}
       </Button>
       <TokenSocials />

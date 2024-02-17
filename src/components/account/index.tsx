@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
-import { SmallButton } from 'components/button'
+import Button, { SmallButton } from 'components/button'
 import MenuIcon from 'components/icons/MenuIcon'
 import WalletIcon from 'components/icons/WalletIcon'
 import { MouseoverTooltipContent } from 'components/tooltip'
@@ -13,6 +13,7 @@ import { Box, Card, Flex, Spinner, Text } from 'theme-ui'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { chainIdAtom } from 'state/atoms'
 import { isTransactionRunning } from 'state/chain/atoms/transactionAtoms'
+import ChainLogo from 'components/icons/ChainLogo'
 
 const Container = styled(Box)`
   display: flex;
@@ -95,7 +96,8 @@ const Account = () => {
             {(() => {
               if (!connected) {
                 return (
-                  <SmallButton
+                  <Button
+                    small
                     variant="accentAction"
                     onClick={openConnectModal}
                   >
@@ -109,7 +111,7 @@ const Account = () => {
                     <Text sx={{ display: ['none', 'block'] }}>
                       <Trans>Connect</Trans>
                     </Text>
-                  </SmallButton>
+                  </Button>
                 )
               }
 
@@ -121,7 +123,7 @@ const Account = () => {
                 >
                   <Container onClick={() => setVisible(true)}>
                     {!invalidChain ? (
-                      <WalletIcon />
+                      <ChainLogo chain={chain.id} />
                     ) : (
                       <AlertCircle fill="#FF0000" color="#fff" />
                     )}

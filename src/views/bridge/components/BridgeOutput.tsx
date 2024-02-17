@@ -92,7 +92,14 @@ const BridgeOutputToken = () => {
 
 const BridgeOutput = () => {
   return (
-    <Card p={0} sx={{ border: '1px solid', borderColor: 'darkBorder' }}>
+    <Card
+      p={0}
+      sx={{
+        border: '1px solid',
+        backgroundColor: 'transparent',
+        borderColor: 'darkBorder',
+      }}
+    >
       <Box
         variant="layout.verticalAlign"
         p={3}

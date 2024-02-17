@@ -256,7 +256,6 @@ const RTokenCard = ({ token, ...props }: Props) => {
                     e.stopPropagation()
                     handleNavigate(ROUTES.ISSUANCE)
                   }}
-                  medium
                 >
                   {token.tokenApy
                     ? `${token.tokenApy.toFixed(1)}% Est. APY`
@@ -267,8 +266,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
                     e.stopPropagation()
                     handleNavigate(ROUTES.STAKING)
                   }}
-                  medium
-                  variant="muted"
+                  variant="bordered"
                 >
                   <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
                     <Text>
@@ -276,7 +274,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
                       {!!token.stakingApy &&
                         `- ${token.stakingApy.toFixed(1)}%`}
                     </Text>
-                    <Text color="lightText">{t`Est. APY`}</Text>
+                    <Text>{t`Est. APY`}</Text>
                   </Box>
                 </Button>
 

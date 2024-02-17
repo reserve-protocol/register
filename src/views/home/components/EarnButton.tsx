@@ -53,7 +53,11 @@ const EarnButton = ({ token, sx, ...props }: Props) => {
       >
         <Box
           variant="layout.verticalAlign"
-          sx={{ gap: [1, 2], justifyContent: ['space-between', 'start'] }}
+          sx={{
+            gap: [1, 2],
+            color: 'accentInverted',
+            justifyContent: ['space-between', 'start'],
+          }}
         >
           <Box variant="layout.verticalAlign" sx={{ gap: [2, 1] }}>
             <EarnIcon color="currentColor" />
@@ -66,11 +70,7 @@ const EarnButton = ({ token, sx, ...props }: Props) => {
               }}
             >
               <Text>Earn: </Text>
-              <Text
-                ml={[0, 1]}
-                variant="strong"
-                sx={{ color: 'text', fontWeight: 700 }}
-              >
+              <Text ml={[0, 1]} variant="bold">
                 {earnData.maxApy.toFixed(0)}% APY
               </Text>
             </Box>

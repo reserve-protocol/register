@@ -10,18 +10,7 @@ import HeaderMenu from './HeaderMenu'
 import RegisterHelp from './RegisterHelp'
 import { useAtomValue } from 'jotai'
 import { selectedRTokenAtom } from 'state/atoms'
-
-const Divider = () => (
-  <Box
-    mx={3}
-    sx={{
-      backgroundColor: 'inputBorder',
-      width: '1px',
-      height: '16px',
-      display: ['none', 'block'],
-    }}
-  />
-)
+import VerticalDivider from 'views/home/components/VerticalDivider'
 
 const HeaderAction = () => {
   const { pathname } = useLocation()
@@ -72,21 +61,25 @@ const AppHeader = () => {
         variant="layout.wrapper"
         sx={{ alignItems: 'center', height: '72px' }}
       >
-        <Box mr="auto" variant="layout.verticalAlign">
-          <Brand mr={[2, 4]} />
-          <HeaderAction />
-        </Box>
-        <RegisterHelp />
-        <Divider />
+        <Brand mr={[2, 4]} />
+        <VerticalDivider sx={{ display: ['none', 'block'] }} />
         <ThemeColorMode
+          ml="4"
           sx={{
             display: ['none', 'flex'],
           }}
         />
+        {/* 
+        <Box mr="auto" variant="layout.verticalAlign">
+          <Brand mr={[2, 4]} />
+          <HeaderAction />
+        </Box> */}
+        <HeaderMenu />
+        <RegisterHelp />
         {/* <Box ml={4} sx={{ alignItems: 'center', display: 'flex' }}>
             <LanguageSelector />
           </Box> */}
-        <Divider />
+        <VerticalDivider sx={{ display: ['none', 'block'] }} mx="4" />
         <Account />
       </Flex>
     </Box>

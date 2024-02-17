@@ -8,7 +8,7 @@ const ChainBridge = () => (
     <Flex
       py={[1, 8]}
       sx={{
-        backgroundColor: 'contentBackground',
+        // backgroundColor: '#ECf1fe',
         justifyContent: 'center',
         borderRadius: '0 0 20px 20px',
       }}
