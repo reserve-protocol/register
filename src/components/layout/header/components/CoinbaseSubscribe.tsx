@@ -24,7 +24,6 @@ const CoinbaseSubscribe = () => {
       window.CBWSubscribe &&
       !window.CBWSubscribe.subscriptionHandler
     ) {
-      console.log('entered')
       window.CBWSubscribe.createSubscriptionUI({
         // Address user will be subscribing to.
         partnerAddress: RESERVE_ADDRESS,

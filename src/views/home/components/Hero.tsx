@@ -133,7 +133,7 @@ const About = () => (
       <Text as="p" px={[4, 0]} mt={[3, 4]}>
         <Trans>
           Reserve Protocol’s RToken Factory Contracts: A platform for creating
-          currencies backed by an array of ERC20 collateral. Use Register.app to
+          currencies backed by an array of ERC20 collateral. Use Register to
           mint, stake and govern RTokens. Learn more at
         </Trans>{' '}
         <Link
