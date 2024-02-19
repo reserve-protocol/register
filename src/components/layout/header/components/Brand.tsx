@@ -1,4 +1,4 @@
-import Logo, { SmallLogo } from 'components/icons/Logo'
+import Logo from 'components/icons/Logo'
 import RBrand from 'components/icons/RBrand'
 import { useNavigate } from 'react-router-dom'
 import { Box, BoxProps, Flex } from 'theme-ui'
