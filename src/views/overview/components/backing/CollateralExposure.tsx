@@ -50,7 +50,7 @@ const backingDetailAtom = atom((get) => {
     return {
       ...c,
       website: token?.website,
-      description: token?.description ?? 'No description available',
+      description: token?.description ?? '',
       addresses,
     }
   }) as DetailedCollateralWithMeta[]

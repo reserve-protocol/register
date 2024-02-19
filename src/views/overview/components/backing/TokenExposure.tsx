@@ -141,23 +141,25 @@ const TokenExposure = () => {
               </Button>
             )}
             <VerticalDivider mx="3" sx={{ display: ['none', 'block'] }} />
-            <Box
-              variant="layout.verticalAlign"
-              sx={{ flexBasis: ['100%', 'auto'], mt: [3, 0] }}
-            >
-              <Text mr={2} variant="legend">
-                {!!data.address && shortenAddress(data.address)}
-              </Text>
-              <CopyValue mr={1} ml="auto" value={data.address} />
-              <GoTo
-                style={{ position: 'relative', top: '2px' }}
-                href={getExplorerLink(
-                  data.address,
-                  data.chain,
-                  ExplorerDataType.TOKEN
-                )}
-              />
-            </Box>
+            {!!data.address && (
+              <Box
+                variant="layout.verticalAlign"
+                sx={{ flexBasis: ['100%', 'auto'], mt: [3, 0] }}
+              >
+                <Text mr={2} variant="legend">
+                  {!!data.address && shortenAddress(data.address)}
+                </Text>
+                <CopyValue mr={1} ml="auto" value={data.address} />
+                <GoTo
+                  style={{ position: 'relative', top: '2px' }}
+                  href={getExplorerLink(
+                    data.address,
+                    data.chain,
+                    ExplorerDataType.TOKEN
+                  )}
+                />
+              </Box>
+            )}
           </Box>
         </Card>
       ))}

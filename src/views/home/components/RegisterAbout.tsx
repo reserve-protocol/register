@@ -179,7 +179,9 @@ const RegisterAbout = () => (
       <SocialLinks />
       <DashedDivider />
       <Box sx={{ textAlign: 'center' }}>
-        <Logo />
+        <Box sx={{ color: 'accent' }}>
+          <Logo />
+        </Box>
         <Link
           sx={{ display: 'block', fontSize: 1 }}
           target="_blank"
