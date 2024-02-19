@@ -121,32 +121,32 @@ const About = () => (
 )
 
 const Hero = () => (
-  <Flex
-    sx={{
-      // background: 'url(/imgs/hero_bg.webp) no-repeat',
-      backgroundSize: 'cover',
-      flexDirection: 'column',
-      alignItems: 'center',
-      position: 'relative',
-    }}
-    pt={[5, 8]}
-    pb={0}
-    px={[3]}
-  >
-    <About />
-    <ProtocolStats />
-    <Link
-      mt={4}
-      sx={{ ':hover': { textDecoration: 'underline' } }}
-      href="https://dune.com/reserve-protocol/reserve-protocol-overview"
-      target="_blank"
+  <Box sx={{ position: 'relative' }}>
+    <Flex
+      sx={{
+        flexDirection: 'column',
+        alignItems: 'center',
+        position: 'relative',
+      }}
+      pt={[5, 8]}
+      pb={0}
+      px={[3]}
     >
-      <Trans>More metrics on Reserve Dune Dashboard</Trans>
-      <ExternalArrowIcon
-        style={{ position: 'relative', top: '3px', marginLeft: '8px' }}
-      />
-    </Link>
-  </Flex>
+      <About />
+      <ProtocolStats />
+      <Link
+        mt={4}
+        sx={{ ':hover': { textDecoration: 'underline' } }}
+        href="https://dune.com/reserve-protocol/reserve-protocol-overview"
+        target="_blank"
+      >
+        <Trans>More metrics on Reserve Dune Dashboard</Trans>
+        <ExternalArrowIcon
+          style={{ position: 'relative', top: '3px', marginLeft: '8px' }}
+        />
+      </Link>
+    </Flex>
+  </Box>
 )
 
 export default Hero

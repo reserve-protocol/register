@@ -235,7 +235,7 @@ const TokenNavigation = () => {
         position: ['fixed', 'fixed', 'relative'],
         bottom: [0, 0, undefined],
         flexShrink: 0,
-        zIndex: 1,
+        // zIndex: 1,
         backgroundColor: ['background', 'background', 'none'],
       }}
     >

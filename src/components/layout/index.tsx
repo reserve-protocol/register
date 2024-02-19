@@ -21,7 +21,7 @@ const Layout = ({ children }: { children: ReactNode }) => (
       id="app-container"
       sx={{
         overflow: 'auto',
-        background: 'background',
+        // background: 'background',
         flexGrow: 1,
       }}
     >
