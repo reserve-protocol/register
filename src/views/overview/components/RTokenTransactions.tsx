@@ -40,7 +40,7 @@ const rTokenTransactionsQuery = gql`
   query GetRecentTransactions($tokenId: String!) {
     entries(
       orderBy: timestamp
-      where: { token: $tokenId }
+      where: { token: $tokenId, type_not: "TRANSFER" }
       orderDirection: desc
       first: 200
     ) {
@@ -78,6 +78,7 @@ const useTransactionColumns = () => {
       WITHDRAW: t`Withdraw`,
       DEPOSIT: t`Deposit`,
       WITHDRAWAL: t`Withdraw`,
+      UNSTAKE_CANCELLED: t`Unstake Cancelled`,
     }),
     []
   )
