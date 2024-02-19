@@ -1,7 +1,6 @@
 import { Trans } from '@lingui/macro'
-import GovernanceActionIcon from 'components/icons/GovernanceActionIcon'
-import { AlertCircle } from 'react-feather'
 import useRToken from 'hooks/useRToken'
+import { AlertCircle } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import { Box, Button, Flex, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
@@ -13,7 +12,6 @@ import { ROUTES } from 'utils/constants'
  */
 const GovernancePrompt = () => {
   const navigate = useNavigate()
-  const rToken = useRToken()
 
   return (
     <Box variant="layout.sticky">
@@ -48,9 +46,7 @@ const GovernancePrompt = () => {
             </Trans>
           </Text>
           <Button
-            onClick={() =>
-              navigate(ROUTES.GOVERNANCE_SETUP + `?token=${rToken?.address}`)
-            }
+            onClick={() => navigate(ROUTES.GOVERNANCE_SETUP)}
             mt={4}
             sx={{ width: '100%' }}
           >

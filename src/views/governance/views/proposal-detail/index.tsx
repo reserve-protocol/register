@@ -62,7 +62,7 @@ const GovernanceProposalDetail = () => {
   }, [proposal, account])
 
   const handleBack = () => {
-    navigate(`${ROUTES.GOVERNANCE}?token=${rToken?.address}`)
+    navigate(`../${ROUTES.GOVERNANCE}`)
   }
 
   useEffect(() => {
@@ -108,7 +108,7 @@ const GovernanceProposalDetail = () => {
             sx={{
               ml: 'auto',
               gap: 3,
-              ":not(:has(> *))": { ml: 0 }
+              ':not(:has(> *))': { ml: 0 },
             }}
           >
             <ProposalCancel />

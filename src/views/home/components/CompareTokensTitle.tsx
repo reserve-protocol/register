@@ -71,8 +71,7 @@ const CompareTokensTitle = () => {
     <Box
       variant="layout.verticalAlign"
       sx={{ justifyContent: 'center' }}
-      mb={6}
-      mt={6}
+      my={7}
     >
       <Box
         mr={5}
@@ -87,7 +86,7 @@ const CompareTokensTitle = () => {
       </Box>
 
       <Box sx={{ textAlign: 'center' }}>
-        <Text variant="sectionTitle" mb={1}>
+        <Text variant="sectionTitle" sx={{ fontWeight: '700' }} mb={1}>
           <Trans>Browse RToken Currencies</Trans>
         </Text>
         <Text variant="legend">

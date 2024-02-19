@@ -59,28 +59,44 @@ const AppHeader = () => {
       <Flex
         px={[2, 5]}
         variant="layout.wrapper"
-        sx={{ alignItems: 'center', height: '72px' }}
+        sx={{
+          alignItems: 'center',
+          height: '72px',
+          justifyContent: 'center',
+          position: 'relative',
+        }}
       >
-        <Brand mr={[2, 4]} />
-        <VerticalDivider sx={{ display: ['none', 'block'] }} />
-        <ThemeColorMode
-          ml="4"
-          sx={{
-            display: ['none', 'flex'],
-          }}
-        />
+        <Box
+          variant="layout.verticalAlign"
+          sx={{ position: 'absolute', left: 20 }}
+        >
+          <Brand mr={[2, 4]} />
+          <VerticalDivider sx={{ display: ['none', 'block'] }} />
+          <ThemeColorMode
+            ml="4"
+            sx={{
+              display: ['none', 'flex'],
+            }}
+          />
+        </Box>
+
         {/* 
         <Box mr="auto" variant="layout.verticalAlign">
           <Brand mr={[2, 4]} />
           <HeaderAction />
         </Box> */}
         <HeaderMenu />
-        <RegisterHelp />
-        {/* <Box ml={4} sx={{ alignItems: 'center', display: 'flex' }}>
+        <Box
+          variant="layout.verticalAlign"
+          sx={{ position: 'absolute', right: 20 }}
+        >
+          <RegisterHelp />
+          {/* <Box ml={4} sx={{ alignItems: 'center', display: 'flex' }}>
             <LanguageSelector />
           </Box> */}
-        <VerticalDivider sx={{ display: ['none', 'block'] }} mx="4" />
-        <Account />
+          <VerticalDivider sx={{ display: ['none', 'block'] }} mx="4" />
+          <Account />
+        </Box>
       </Flex>
     </Box>
   )

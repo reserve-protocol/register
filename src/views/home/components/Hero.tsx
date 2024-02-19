@@ -123,13 +123,14 @@ const About = () => (
 const Hero = () => (
   <Flex
     sx={{
-      backgroundColor: 'background',
+      // background: 'url(/imgs/hero_bg.webp) no-repeat',
+      backgroundSize: 'cover',
       flexDirection: 'column',
       alignItems: 'center',
-      borderBottom: '1px solid',
-      borderColor: 'border',
+      position: 'relative',
     }}
-    py={[5, 8]}
+    pt={[5, 8]}
+    pb={0}
     px={[3]}
   >
     <About />
