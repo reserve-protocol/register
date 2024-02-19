@@ -86,7 +86,7 @@ const ProtocolStats = () => {
                   )}
                 </Box>
 
-                <Text variant="legend">{info.title}</Text>
+                <Text sx={{ color: 'text' }}>{info.title}</Text>
               </Box>
               {!!index && (
                 <Box

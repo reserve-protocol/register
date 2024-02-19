@@ -4,7 +4,7 @@ import Hero from './components/Hero'
 import RegisterAbout from './components/RegisterAbout'
 
 const HeroBackground = () => {
-  const [colorMode, setColorMode] = useColorMode()
+  const [colorMode] = useColorMode()
   const url =
     colorMode === 'dark'
       ? '/imgs/bg-compare-dark.webp'

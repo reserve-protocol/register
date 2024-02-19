@@ -8,7 +8,6 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { ReactNode } from 'react'
 import { AlertCircle, Power } from 'react-feather'
 import { Box, Card, Flex, Spinner, Text } from 'theme-ui'
-
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import ChainLogo from 'components/icons/ChainLogo'
 import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'

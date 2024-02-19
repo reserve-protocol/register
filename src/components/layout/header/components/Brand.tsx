@@ -1,7 +1,6 @@
 import Logo, { SmallLogo } from 'components/icons/Logo'
-import { useSetAtom } from 'jotai'
+import RBrand from 'components/icons/RBrand'
 import { useNavigate } from 'react-router-dom'
-import { selectedRTokenAtom } from 'state/atoms'
 import { Box, BoxProps, Flex } from 'theme-ui'
 
 const Brand = (props: BoxProps) => {
@@ -17,10 +16,12 @@ const Brand = (props: BoxProps) => {
       sx={{
         cursor: 'pointer',
         alignItems: 'center',
+        color: 'accent',
         display: ['none', 'flex'],
       }}
     >
       <Box
+        pt="1"
         sx={{
           display: ['none', 'none', 'none', 'flex'],
           alignItems: 'center',
@@ -35,10 +36,11 @@ const Brand = (props: BoxProps) => {
           display: ['flex', 'flex', 'flex', 'none'],
           alignItems: 'center',
           justifyContent: 'center',
+          fontSize: 4,
         }}
         {...props}
       >
-        <SmallLogo />
+        <RBrand />
       </Box>
     </Flex>
   )

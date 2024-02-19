@@ -12,31 +12,6 @@ import { useAtomValue } from 'jotai'
 import { selectedRTokenAtom } from 'state/atoms'
 import VerticalDivider from 'views/home/components/VerticalDivider'
 
-const HeaderAction = () => {
-  const { pathname } = useLocation()
-
-  if (pathname.indexOf(ROUTES.DEPLOY) !== -1) {
-    return (
-      <Text sx={{ fontSize: 2 }} variant="subtitle">
-        <Trans>RToken Deployer</Trans>
-      </Text>
-    )
-  }
-
-  return <HeaderMenu />
-}
-
-// TODO: Currently only for bridging, but expected for other views
-const useHeaderColor = () => {
-  const { pathname } = useLocation()
-
-  if (pathname.indexOf(ROUTES.BRIDGE) !== -1) {
-    return 'contentBackground'
-  }
-
-  return 'background'
-}
-
 /**
  * Application header
  */
@@ -78,21 +53,12 @@ const AppHeader = () => {
             }}
           />
         </Box>
-
-        {/* 
-        <Box mr="auto" variant="layout.verticalAlign">
-          <Brand mr={[2, 4]} />
-          <HeaderAction />
-        </Box> */}
         <HeaderMenu />
         <Box
           variant="layout.verticalAlign"
           sx={{ position: 'absolute', right: 20 }}
         >
           <RegisterHelp />
-          {/* <Box ml={4} sx={{ alignItems: 'center', display: 'flex' }}>
-            <LanguageSelector />
-          </Box> */}
           <VerticalDivider sx={{ display: ['none', 'block'] }} mx="4" />
           <Account />
         </Box>
