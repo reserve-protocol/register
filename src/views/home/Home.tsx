@@ -14,7 +14,7 @@ const HeroBackground = () => {
     <Box
       sx={{
         width: '100vw',
-        height: '460px',
+        height: '476px',
         top: 0,
         zIndex: -1,
         position: 'absolute',

@@ -36,7 +36,35 @@ const ProtocolStats = () => {
   ]
 
   return (
-    <Box variant="layout.wrapper" sx={{ width: '100%' }} mt={[5, 7]}>
+    <Box variant="layout.wrapper" sx={{ width: '100%' }} mt={[4, 5]}>
+      <Link
+        sx={{
+          ':hover': { textDecoration: 'underline' },
+          position: 'relative',
+          display: 'flex',
+          fontSize: 1,
+          justifyContent: 'center',
+          textAlign: 'center',
+          bottom: '-15px',
+        }}
+        href="https://dune.com/reserve-protocol/reserve-protocol-overview"
+        target="_blank"
+      >
+        <Box
+          px="2"
+          py="1"
+          sx={{
+            backgroundColor: 'background',
+            borderRadius: 12,
+            width: 'fit-content',
+          }}
+        >
+          <Trans>More metrics on Reserve Dune Dashboard</Trans>
+          <ExternalArrowIcon
+            style={{ position: 'relative', top: '3px', marginLeft: '8px' }}
+          />
+        </Box>
+      </Link>
       <Card
         mx={[1, 4]}
         p={6}
@@ -102,7 +130,7 @@ const About = () => (
       >
         <Trans>A new path to better money, already set in motion</Trans>
       </Text>
-      <Text as="p" variant="legend" px={[4, 0]} mt={[3, 4]}>
+      <Text as="p" px={[4, 0]} mt={[3, 4]}>
         <Trans>
           Reserve Protocol’s RToken Factory Contracts: A platform for creating
           currencies backed by an array of ERC20 collateral. Use Register.app to
@@ -134,17 +162,6 @@ const Hero = () => (
     >
       <About />
       <ProtocolStats />
-      <Link
-        mt={4}
-        sx={{ ':hover': { textDecoration: 'underline' } }}
-        href="https://dune.com/reserve-protocol/reserve-protocol-overview"
-        target="_blank"
-      >
-        <Trans>More metrics on Reserve Dune Dashboard</Trans>
-        <ExternalArrowIcon
-          style={{ position: 'relative', top: '3px', marginLeft: '8px' }}
-        />
-      </Link>
     </Flex>
   </Box>
 )

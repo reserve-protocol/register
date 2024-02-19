@@ -49,9 +49,8 @@ const AppHeader = () => {
         width: '100%',
         ...(isRTokenSelected
           ? {
-              backgroundColor: 'contentBackground',
               borderBottom: '1px solid',
-              borderColor: 'accent',
+              borderColor: 'border',
             }
           : {}),
       }}
@@ -62,7 +61,7 @@ const AppHeader = () => {
         sx={{
           alignItems: 'center',
           height: '72px',
-          justifyContent: 'center',
+          justifyContent: ['left', 'center'],
           position: 'relative',
         }}
       >

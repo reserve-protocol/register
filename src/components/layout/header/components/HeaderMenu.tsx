@@ -12,8 +12,28 @@ import { Box, Text } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
 import TokenToggle from './TokenToggle'
 
-const HeaderMenu = () => {
+const TokenSelector = () => {
   const selectedRToken = useAtomValue(selectedRTokenAtom)
+
+  return (
+    <Box
+      ml={2}
+      sx={{
+        backgroundColor: !!selectedRToken ? 'background' : 'transparent',
+        border: '1px solid',
+        borderColor: !!selectedRToken ? 'primary' : 'transparent',
+        borderRadius: borderRadius.inner,
+        ':hover': {
+          backgroundColor: !!selectedRToken ? 'background' : 'border',
+        },
+      }}
+    >
+      <TokenToggle />
+    </Box>
+  )
+}
+
+const HeaderMenu = () => {
   const menuItems = useMemo(
     () => [
       {
@@ -39,14 +59,11 @@ const HeaderMenu = () => {
   return (
     <Box
       variant="layout.verticalAlign"
-      mx="auto"
       p={1}
       sx={{
         border: '1px solid',
-        borderColor: !selectedRToken ? 'border' : 'borderSecondary',
-        backgroundColor: !selectedRToken
-          ? 'secondaryBackground'
-          : 'transparent',
+        borderColor: 'border',
+        backgroundColor: 'secondaryBackground',
         fontSize: 1,
         borderRadius: borderRadius.boxes,
       }}
@@ -69,7 +86,6 @@ const HeaderMenu = () => {
                 justifyContent: 'center',
                 fontWeight: 500,
                 width: [40, 'auto'],
-                // height: '40px',
                 ':hover': {
                   backgroundColor: 'background',
                 },
@@ -86,21 +102,7 @@ const HeaderMenu = () => {
           )}
         </NavLink>
       ))}
-      <Box
-        // p={2}
-        ml={2}
-        sx={{
-          backgroundColor: !!selectedRToken ? 'background' : 'transparent',
-          border: '1px solid',
-          borderColor: !!selectedRToken ? 'primary' : 'transparent',
-          borderRadius: borderRadius.inner,
-          ':hover': {
-            backgroundColor: !!selectedRToken ? 'background' : 'border',
-          },
-        }}
-      >
-        <TokenToggle />
-      </Box>
+      <TokenSelector />
     </Box>
   )
 }
