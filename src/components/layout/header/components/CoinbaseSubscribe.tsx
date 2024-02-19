@@ -1,4 +1,3 @@
-import Button from 'components/button'
 import { CoinbaseIcon } from 'components/icons/logos'
 import { useAtomValue } from 'jotai'
 import { useEffect, useState } from 'react'
