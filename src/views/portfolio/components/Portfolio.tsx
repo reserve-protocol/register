@@ -2,7 +2,6 @@ import { Trans } from '@lingui/macro'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import PositionIcon from 'components/icons/PositionIcon'
 import TokenLogo from 'components/icons/TokenLogo'
-import WalletIcon from 'components/icons/WalletIcon'
 import Base from 'components/icons/logos/Base'
 import Ethereum from 'components/icons/logos/Ethereum'
 import useRTokenLogo from 'hooks/useRTokenLogo'
@@ -17,12 +16,11 @@ import {
   walletAtom,
 } from 'state/atoms'
 import { AccountRTokenPosition } from 'state/wallet/updaters/AccountUpdater'
-import { Box, BoxProps, Card, Divider, Grid, Text } from 'theme-ui'
-import { formatCurrency } from 'utils'
+import { Box, BoxProps, Card, Grid, Text } from 'theme-ui'
+import { formatCurrency, getTokenRoute } from 'utils'
 import { RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import { supportedChainList } from 'utils/constants'
-import RegisterAbout from 'views/home/components/RegisterAbout'
 import { useBalance } from 'wagmi'
 
 export const chainIcons = {
@@ -36,7 +34,7 @@ const PortfolioToken = ({ position }: { position: AccountRTokenPosition }) => {
   const navigate = useNavigate()
 
   const handleClick = () => {
-    navigate(`/overview?token=${position.address}&chainId=${position.chain}`)
+    navigate(getTokenRoute(position.address, position.chain))
     document.getElementById('app-container')?.scrollTo(0, 0)
     mixpanel.track('Selected RToken', {
       Source: 'Portfolio Table',
