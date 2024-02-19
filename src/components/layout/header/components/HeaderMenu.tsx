@@ -95,7 +95,7 @@ const HeaderMenu = () => {
               ml={index ? 1 : 0}
             >
               {menuItem.icon}
-              <Text ml="2" sx={{ display: ['none', 'none', 'block'] }}>
+              <Text ml="2" sx={{ display: ['none', 'none', 'none', 'block'] }}>
                 {menuItem.label}
               </Text>
             </Box>

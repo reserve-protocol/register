@@ -11,6 +11,7 @@ import RegisterHelp from './RegisterHelp'
 import { useAtomValue } from 'jotai'
 import { selectedRTokenAtom } from 'state/atoms'
 import VerticalDivider from 'views/home/components/VerticalDivider'
+import CoinbaseSubscribe from './CoinbaseSubscribe'
 
 /**
  * Application header
@@ -60,6 +61,7 @@ const AppHeader = () => {
         >
           <RegisterHelp />
           <VerticalDivider sx={{ display: ['none', 'block'] }} mx="4" />
+          <CoinbaseSubscribe />
           <Account />
         </Box>
       </Flex>
