@@ -36,7 +36,7 @@ const ProtocolStats = () => {
   ]
 
   return (
-    <Box variant="layout.wrapper" sx={{ width: '100%' }} mt={[4, 5]}>
+    <Box variant="layout.wrapper" sx={{ width: '100%' }} mt={[4, 6]}>
       <Link
         sx={{
           ':hover': { textDecoration: 'underline' },
