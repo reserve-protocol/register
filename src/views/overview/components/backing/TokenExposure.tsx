@@ -98,7 +98,11 @@ const TokenExposure = () => {
       </Box>
       {!data && <Skeleton count={3} height={80} />}
       {data?.map((data) => (
-        <Card key={data.symbol} variant="section">
+        <Card
+          key={data.symbol}
+          variant="section"
+          sx={{ backgroundColor: 'backgroundNested' }}
+        >
           <Box variant="layout.verticalAlign">
             <TokenLogo symbol={data.symbol} width={24} />
             <Text ml="2" sx={{ color: 'accent' }} variant="bold">

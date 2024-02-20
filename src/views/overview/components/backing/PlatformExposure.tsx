@@ -66,7 +66,11 @@ const PlatformExposure = () => {
       </Box>
       {!exposure && <Skeleton count={3} height={80} />}
       {exposure?.map((data) => (
-        <Card key={data.name} variant="section">
+        <Card
+          key={data.name}
+          variant="section"
+          sx={{ backgroundColor: 'backgroundNested' }}
+        >
           <Box variant="layout.verticalAlign">
             <Image src={data.logo} width="24px" height="auto" />
             <Text ml="2" sx={{ color: 'accent' }} variant="bold">
