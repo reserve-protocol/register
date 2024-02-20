@@ -25,7 +25,7 @@ const OffChainNote = () => {
         sx={{ cursor: 'pointer' }}
         onClick={() => setExpanded(!expanded)}
       >
-        <Trans>{expanded ? '-' : '+'} Off-chain note</Trans>
+        <Trans>{expanded ? '-' : '+'} Description</Trans>
       </Text>
       {expanded && (
         <Text as="p" variant="legend">
@@ -50,7 +50,7 @@ const TokenMandate = () => {
     >
       <MandateIcon />
       <Text sx={{ fontSize: 3 }} variant="strong" mb={2} mt={3}>
-        <Trans>Mandate</Trans>
+        <Trans>Governor Mandate</Trans>
       </Text>
       <Text as="p" variant="legend">
         {rToken?.mandate ? rToken.mandate : <Skeleton count={6} />}

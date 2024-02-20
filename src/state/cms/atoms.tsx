@@ -22,6 +22,7 @@ export interface CollateralMetadata {
   id: string
   name: string
   displaySymbol: string
+  description?: string
   llamaId?: string
   color: string
   tokenDistribution?: { token: string; distribution: number }[]

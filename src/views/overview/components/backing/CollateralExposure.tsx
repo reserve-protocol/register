@@ -20,6 +20,7 @@ import {
 import { Box, Card, Flex, Grid, Text } from 'theme-ui'
 import { formatCurrency, shortenAddress } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import VerticalDivider from 'views/home/components/VerticalDivider'
 
 interface DetailedCollateralWithMeta extends CollateralDetail {
   website?: string
@@ -50,7 +51,7 @@ const backingDetailAtom = atom((get) => {
     return {
       ...c,
       website: token?.website,
-      description: token?.description ?? '',
+      description: meta?.description ?? '',
       addresses,
     }
   }) as DetailedCollateralWithMeta[]
@@ -139,9 +140,26 @@ const CollateralDetails = ({
       {!!expanded && (
         <Box mt={3} sx={{ fontWeight: 400 }}>
           <Text as="p">{collateral.description}</Text>
-          <Box mt="3">
+          <Box mt="3" variant="layout.verticalAlign" sx={{ flexWrap: 'wrap' }}>
+            <Button
+              mr="3"
+              small
+              variant="bordered"
+              onClick={() =>
+                window.open(
+                  'https://reserve.org/protocol/introduction/',
+                  '_blank'
+                )
+              }
+            >
+              <Box variant="layout.verticalAlign">
+                <HiperlinkIcon />
+                <Text ml="2">Docs</Text>
+              </Box>
+            </Button>
             {!!collateral.website && (
               <Button
+                mr="3"
                 small
                 variant="bordered"
                 onClick={() => window.open(collateral.website, '_blank')}
@@ -152,6 +170,7 @@ const CollateralDetails = ({
                 </Box>
               </Button>
             )}
+            <VerticalDivider mr="3" sx={{ display: ['none', 'block'] }} />
             <Box
               variant="layout.verticalAlign"
               sx={{ flexBasis: ['100%', 'auto'], mt: [3, 0] }}

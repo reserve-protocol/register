@@ -7,8 +7,8 @@ const HeroBackground = () => {
   const [colorMode] = useColorMode()
   const url =
     colorMode === 'dark'
-      ? '/imgs/bg-compare-dark.webp'
-      : '/imgs/bg-compare-light.webp'
+      ? '/imgs/bg-compare-dark.png'
+      : '/imgs/bg-compare-light.png'
 
   return (
     <Box

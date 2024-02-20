@@ -17,6 +17,7 @@ type QueryReponse = {
       id: string
       llamaId?: string
       name: string
+      description?: string
       color?: string
       tokenDistribution?: { token: string; distribution: number }[]
       tokensCollection?: {
@@ -54,6 +55,7 @@ const collateralsMetaQuery = gql`
         llamaId
         tokenDistribution
         color
+        description
         displaySymbol
         tokensCollection {
           items {
@@ -105,6 +107,7 @@ const setCollateralsMetadataAtom = atom(
         name: item.name,
         displaySymbol: item.displaySymbol,
         llamaId: item.llamaId,
+        description: item.description,
         color: item.color ?? stringToHex(item.id),
         tokenDistribution: item.tokenDistribution,
         underlying,
@@ -117,6 +120,7 @@ const setCollateralsMetadataAtom = atom(
         },
       }
     }
+    console.log('data', collateralData)
     set(collateralsMetadataAtom, collateralData)
   }
 )
