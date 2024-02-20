@@ -50,7 +50,7 @@ const ProtocolStats = () => {
           fontSize: 1,
           justifyContent: 'center',
           textAlign: 'center',
-          bottom: '-15px',
+          bottom: '-6px',
         }}
         href="https://dune.com/reserve-protocol/reserve-protocol-overview"
         target="_blank"
@@ -59,10 +59,9 @@ const ProtocolStats = () => {
           px="2"
           py="1"
           sx={{
-            backgroundColor: 'background',
+            backgroundColor: 'contentBackground',
             borderRadius: 8,
-            border: '2px solid',
-            borderColor: 'borderFocused',
+
             width: 'fit-content',
           }}
         >
