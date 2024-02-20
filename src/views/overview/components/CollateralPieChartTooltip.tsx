@@ -26,7 +26,9 @@ const Item: FC<ItemProps> = ({ logo, name, value }) => {
     <Box
       variant="layout.verticalAlign"
       sx={{
-        backgroundColor: 'border',
+        backgroundColor: 'focusedBackground',
+        border: '1px solid',
+        borderColor: 'darkBorder',
         color: 'text',
         px: 2,
         py: '6px',
@@ -161,10 +163,10 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
         p: [0, 3],
         gap: 3,
         borderRadius: '14px',
-        backgroundColor: ['contentBackground', 'background'],
+        backgroundColor: ['contentBackground', 'backgroundNested'],
         alignItems: 'start',
-        border: ['none', '2px solid'],
-        borderColor: ['transparent', 'border'],
+        border: ['none', '3px solid'],
+        borderColor: ['transparent', 'borderFocused'],
         boxShadow: ['none', '0px 10px 45px 6px rgba(0, 0, 0, 0.10)'],
       }}
     >
@@ -176,7 +178,7 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
           <BasketCubeIcon width={17} height={17} />
           <Text sx={{ fontSize: 14 }}>{t`Collateral(s)`}</Text>
         </Box>
-        <Grid columns={2} gap={2} sx={{ width: '100%' }}>
+        <Grid columns={[1, 2]} gap={2} sx={{ width: '100%' }}>
           {collateralItems.map((item) => (
             <Item {...item} />
           ))}
@@ -195,7 +197,7 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
           />
           <Text sx={{ fontSize: 14 }}>{t`Token exposure`}</Text>
         </Box>
-        <Grid columns={2} gap={2} sx={{ width: '100%' }}>
+        <Grid columns={[1, 2]} gap={2} sx={{ width: '100%' }}>
           {tokenItems.map((item) => (
             <Item {...item} />
           ))}
@@ -209,7 +211,7 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
           <PlatformExposureIcon />
           <Text sx={{ fontSize: 14 }}>{t`Platform exposure`}</Text>
         </Box>
-        <Grid columns={2} gap={2} sx={{ width: '100%' }}>
+        <Grid columns={[1, 2]} gap={2} sx={{ width: '100%' }}>
           {platformItems.map((item) => (
             <Item {...item} />
           ))}

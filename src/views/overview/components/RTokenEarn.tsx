@@ -37,7 +37,8 @@ const RTokenEarn = () => {
       <Box
         variant="layout.verticalAlign"
         ml="4"
-        mb={5}
+        mb={3}
+        mt={6}
         sx={{ color: 'accent' }}
       >
         <EarnIcon fontSize={24} />

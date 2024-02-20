@@ -36,14 +36,14 @@ const AppHeader = () => {
         variant="layout.wrapper"
         sx={{
           alignItems: 'center',
-          height: '72px',
+          height: ['52px', '72px'],
           justifyContent: ['left', 'center'],
           position: 'relative',
         }}
       >
         <Box
           variant="layout.verticalAlign"
-          sx={{ position: 'absolute', left: 20 }}
+          sx={{ position: 'absolute', left: ['8px', '24px'] }}
         >
           <Brand mr={[2, 4]} />
           <VerticalDivider sx={{ display: ['none', 'block'] }} />
@@ -57,7 +57,7 @@ const AppHeader = () => {
         <HeaderMenu />
         <Box
           variant="layout.verticalAlign"
-          sx={{ position: 'absolute', right: 20 }}
+          sx={{ position: 'absolute', right: ['8px', '24px'] }}
         >
           <RegisterHelp />
           <VerticalDivider sx={{ display: ['none', 'block'] }} mx="4" />

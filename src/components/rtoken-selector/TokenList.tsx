@@ -8,11 +8,9 @@ import availableTokensAtom from './atoms'
 const ActionItem = styled(Flex)`
   padding: 16px;
   cursor: pointer;
-  border-left: 2px solid var(--theme-ui-colors-background);
 
   &:hover {
-    background-color: var(--theme-ui-colors-contentBackground);
-    border-left: 2px solid var(--theme-ui-colors-primary);
+    background-color: var(--theme-ui-colors-secondary);
   }
 `
 

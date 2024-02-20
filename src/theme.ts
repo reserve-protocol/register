@@ -13,7 +13,7 @@ export const centeredContent = {
 export const borderRadius = {
   inputs: 6,
   boxes: 14,
-  inner: '10px',
+  inner: '4px',
 }
 export const baseButton = {
   borderRadius: borderRadius.inputs,
@@ -88,6 +88,8 @@ export const colors = {
   lightText: '#808080',
   background: '#FEFBF8',
   backgroundNested: '#FEFBF8',
+  focusedBackground: '#FFFFFF',
+  inputBackground: '#E5E5E5',
   // contentBackground: '#F9F8F4',
   lightGrey: '#f2f2f2',
   contentBackground: '#F9EDDD',
@@ -108,7 +110,7 @@ export const colors = {
   borderFocused: '#F8EDDA',
   borderSecondary: '#E0D5C7',
   darkBorder: '#E5E5E5',
-  inputBorder: '#E5E5E5',
+  inputBorder: '#D5D5D5',
   info: '#20678E',
   infoBG: 'rgba(32, 103, 142, 0.15)',
   disabled: '#D9D9D9',
@@ -126,19 +128,21 @@ export const colors = {
       secondaryText: '#969696',
       invertedText: '#171515',
       lightText: '#6F6666',
-      background: '#0F0E0D',
+      background: '#0C0C0B',
       reserveBackground: '#171311',
-      contentBackground: '#1D1B19',
-      secondaryBackground: '#000',
+      contentBackground: '#11100F',
+      secondaryBackground: '#262321',
       contentLightBackground: 'rgba(15, 14, 13, 0.5)',
       primary: '#2150A9',
       secondary: '#262321',
-      backgroundNested: '#262321',
+      backgroundNested: '#181715',
+      focusedBackground: '#262321',
+      inputBackground: '#000000',
       disabled: '#242424',
       accentAction: '#106D46',
       accentBG: '#041B11',
       border: '#272625',
-      borderFocused: '#403C39',
+      borderFocused: '#2B2723',
       darkBorder: '#343230',
       inputBorder: '#403C39',
       success: '#75FBC3',
@@ -402,7 +406,7 @@ export const theme: Theme = {
       backgroundColor: 'contentBackground',
     },
     inner: {
-      borderRadius: borderRadius.boxes,
+      borderRadius: borderRadius.inputs,
       padding: 0,
       width: '100%',
       height: 'fit-content',
@@ -430,8 +434,8 @@ export const theme: Theme = {
     },
     accentAction: {
       ...baseButton,
-      backgroundColor: '#D5DBE7',
-      color: 'primary',
+      backgroundColor: 'accent',
+      color: '#fff',
       fontWeight: 700,
 
       '&:hover': {
@@ -445,7 +449,7 @@ export const theme: Theme = {
       color: 'accentInverted',
       backgroundColor: 'transparent',
       '&:hover': {
-        outlineWidth: '2px',
+        backgroundColor: 'focusedBackground',
       },
     },
     transparent: {
@@ -588,11 +592,11 @@ export const theme: Theme = {
     },
     tokenView: {
       width: '100%',
-      p: [1, 6],
+      p: [1, 4],
     },
     sectionDivider: {
       mx: [-1, -6],
-      my: [3, 6],
+      my: [3, 5],
       borderColor: 'border',
     },
   },

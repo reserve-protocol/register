@@ -92,10 +92,10 @@ const BridgeAmount = () => {
       p={3}
       sx={{
         border: 'none',
-        backgroundColor: 'invertedText',
-        borderRadius: borderRadius.boxes,
+        backgroundColor: 'inputBackground',
+        borderRadius: borderRadius.inputs,
         '&:focus': {
-          backgroundColor: 'invertedText',
+          backgroundColor: 'inputBackground',
         },
       }}
       placeholder={`${isWrapping ? 'Deposit' : 'Withdraw'} amount`}
@@ -133,10 +133,10 @@ const BridgeTokenSelector = () => {
 const BridgeInput = () => (
   <Box
     sx={{
-      borderRadius: borderRadius.boxes,
-      border: '2px solid',
-      borderColor: 'borderFocused',
-      backgroundColor: 'invertedText',
+      borderRadius: borderRadius.inputs,
+      border: '1px solid',
+      borderColor: 'darkBorder',
+      backgroundColor: 'inputBackground',
       flexShrink: 0,
     }}
   >
@@ -144,7 +144,7 @@ const BridgeInput = () => (
       sx={{
         borderBottom: '1px solid',
         flexWrap: 'wrap',
-        borderColor: 'border',
+        borderColor: 'inputBorder',
       }}
       p={3}
     >

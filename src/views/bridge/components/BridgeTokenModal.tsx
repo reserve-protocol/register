@@ -47,14 +47,16 @@ const TokenItem = ({
       role="button"
       sx={{
         cursor: 'pointer',
-        ':hover': { backgroundColor: 'background' },
-        backgroundColor: 'contentBackground',
+        ':hover': { backgroundColor: 'border' },
+        backgroundColor: 'background',
+        border: '1px solid',
+        borderColor: 'darkBorder',
         display: 'flex',
         alignItems: 'center',
-        borderRadius: '6px',
       }}
       px={[2, 3]}
       py={2}
+      mb={2}
     >
       <TokenLogo width={24} src={token.logo} />
       <Box mr="auto">
@@ -94,7 +96,10 @@ const ShortHandTokens = ({
           variant="transparent"
           small
           mr={'10px'}
-          sx={{ borderColor: 'border', backgroundColor: 'background' }}
+          sx={{
+            borderColor: 'inputBorder',
+            backgroundColor: 'backgroundNested',
+          }}
         >
           <Box variant="layout.verticalAlign">
             <TokenLogo width={16} src={token.L1icon} />
@@ -115,10 +120,13 @@ const TokenList = ({ onSelect }: { onSelect(token: BridgeAsset): void }) => {
       sx={{
         overflow: 'auto',
         height: ['auto', '360px'],
+        borderTop: '1px solid',
+        borderColor: 'darkBorder',
+        background: 'backgroundNexted',
       }}
       className="hidden-scrollbar"
-      px={[3, 2]}
-      py={2}
+      px={[3, 3]}
+      py={3}
     >
       {!search && !records && (
         <Skeleton height={30} style={{ marginBottom: 20 }} count={6} />
@@ -161,7 +169,7 @@ const BridgeTokenModal = ({ onClose }: { onClose(): void }) => {
     <Modal
       p={0}
       width={525}
-      sx={{ border: '2px solid', borderColor: 'darkBorder' }}
+      sx={{ border: '3px solid', borderColor: 'borderFocused' }}
     >
       <Box
         sx={{
@@ -169,7 +177,7 @@ const BridgeTokenModal = ({ onClose }: { onClose(): void }) => {
           flexDirection: 'column',
           overflow: 'hidden',
           height: '100%',
-          background: 'contentBackground',
+          backgroundColor: 'background',
         }}
       >
         <Box variant="layout.verticalAlign" p={4} mb={[3, 0]} pb={0}>

@@ -13,6 +13,7 @@ import {
   isBridgeWrappingAtom,
   selectedBridgeToken,
 } from '../atoms'
+import { borderRadius } from 'theme'
 
 const chainContextAtom = atom((get) =>
   get(isBridgeWrappingAtom) ? ChainId.Base : ChainId.Mainnet
@@ -98,6 +99,7 @@ const BridgeOutput = () => {
         border: '1px solid',
         backgroundColor: 'transparent',
         borderColor: 'darkBorder',
+        borderRadius: borderRadius.inputs,
       }}
     >
       <Box

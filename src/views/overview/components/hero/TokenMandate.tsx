@@ -46,6 +46,7 @@ const TokenMandate = () => {
         borderLeft: '1px solid',
         borderColor: ['transparent', 'transparent', 'transparent', 'border'],
         paddingLeft: [0, 0, 0, 7],
+        marginTop: 'auto',
       }}
     >
       <MandateIcon />

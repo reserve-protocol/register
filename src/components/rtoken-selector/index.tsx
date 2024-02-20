@@ -51,10 +51,13 @@ const RTokenSelector = (props: BoxProps) => {
       <Box
         {...props}
         variant="layout.verticalAlign"
-        p={1}
+        px={2}
+        py={1}
         sx={{
           cursor: 'pointer',
           fontSize: 1,
+          fontWeight: 500,
+
           // minWidth: 100,
         }}
         onClick={() => setVisible(!isVisible)}

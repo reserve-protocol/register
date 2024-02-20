@@ -79,7 +79,6 @@ const TokenAddresses = () => {
       placement="auto-start"
     >
       <Box
-        mb={[3, 7]}
         variant="layout.verticalAlign"
         sx={{
           cursor: isBridged ? 'pointer' : 'cursor',

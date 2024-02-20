@@ -37,11 +37,11 @@ const HelpItem = ({
     sx={{
       border: '1px solid',
       borderColor: 'border',
-      borderRadius: borderRadius.inner,
+      borderRadius: borderRadius.inputs,
       cursor: 'pointer',
       userSelect: 'none',
       ':hover': {
-        borderColor: 'text',
+        backgroundColor: 'inputBackground',
       },
     }}
     onClick={() => {
@@ -81,9 +81,7 @@ const HelpContent = ({ onClose }: { onClose(): void }) => {
   ]
 
   return (
-    <Box
-      sx={{ backgroundColor: 'background', borderRadius: borderRadius.boxes }}
-    >
+    <Box sx={{}}>
       <Box
         p={2}
         sx={{
@@ -119,7 +117,12 @@ const RegisterHelp = () => {
       onDismiss={() => setVisible(false)}
       content={<HelpContent onClose={() => setVisible(false)} />}
       containerProps={{
-        sx: { border: '2px solid', maxWidth: 270, borderColor: 'border' },
+        sx: {
+          border: '3px solid',
+          borderColor: 'borderFocused',
+          maxWidth: 270,
+          backgroundColor: 'backgroundNested',
+        },
       }}
     >
       <Button
