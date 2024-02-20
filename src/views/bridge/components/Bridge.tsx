@@ -11,7 +11,7 @@ const Bridge = () => (
   <Card
     p={0}
     sx={{
-      backgroundColor: 'background',
+      backgroundColor: 'backgroundNested',
       position: 'relative',
       height: 'fit-content',
       width: ['100vw', 525],
