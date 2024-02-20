@@ -19,7 +19,7 @@ const TokenSelector = () => {
     <Box
       ml={1}
       sx={{
-        backgroundColor: !!selectedRToken ? 'background' : 'transparent',
+        backgroundColor: !!selectedRToken ? 'backgroundNested' : 'transparent',
         borderColor: !!selectedRToken ? 'primary' : 'transparent',
         borderRadius: borderRadius.inner,
         ':hover': {
@@ -60,8 +60,8 @@ const HeaderMenu = () => {
       variant="layout.verticalAlign"
       p={1}
       sx={{
-        // border: '1px solid',
-        // borderColor: 'border',
+        border: '1px solid',
+        borderColor: 'darkBorder',
         backgroundColor: 'secondaryBackground',
         fontSize: 1,
         borderRadius: borderRadius.boxes,
