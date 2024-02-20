@@ -44,7 +44,7 @@ const BackingResume = () => {
   return (
     <Text
       ml="4"
-      mt="2"
+      mt="3"
       mb={5}
       as="h2"
       variant="heading"
@@ -63,7 +63,7 @@ const Backing = () => (
         <Trans>Backing & Risk</Trans>
       </Text>
     </Box>
-    <Text as="p" ml="4" sx={{ fontSize: 3, maxWidth: 720 }}>
+    <Text as="p" ml="4" sx={{ fontSize: 4, maxWidth: 720 }}>
       <Trans>
         RTokens are 100% backed by a diversified set of underlying collateral
         tokens...
