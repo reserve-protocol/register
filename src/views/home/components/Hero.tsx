@@ -86,7 +86,9 @@ const ProtocolStats = () => {
                 {info.icon}
                 <Box my={2}>
                   {!isLoading ? (
-                    <Text variant="sectionTitle">${info.value}</Text>
+                    <Text variant="sectionTitle" sx={{ fontWeight: '700' }}>
+                      ${info.value}
+                    </Text>
                   ) : (
                     <Skeleton height={32} width={200} />
                   )}
