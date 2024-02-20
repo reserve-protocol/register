@@ -20,6 +20,9 @@ const TokenSelector = () => {
       ml={1}
       sx={{
         backgroundColor: !!selectedRToken ? 'backgroundNested' : 'transparent',
+        boxShadow: !!selectedRToken
+          ? '0px 0px 5px 2px rgba(0, 0, 0, 0.05)'
+          : 'none',
         // borderColor: !!selectedRToken ? 'primary' : 'transparent',
         borderRadius: borderRadius.inner,
         ':hover': {
