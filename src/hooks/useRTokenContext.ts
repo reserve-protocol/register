@@ -1,13 +1,16 @@
 import rtokens from '@lc-labs/rtokens'
 import RToken from 'abis/RToken'
-import { useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { chainIdAtom } from 'state/atoms'
-import { rTokenMetaAtom } from 'state/rtoken/atoms/rTokenAtom'
+import { chainIdAtom, walletChainAtom } from 'state/atoms'
+import {
+  rTokenMetaAtom,
+  selectedRTokenAtom,
+} from 'state/rtoken/atoms/rTokenAtom'
 import { NETWORKS, ROUTES } from 'utils/constants'
 import { Address, getAddress } from 'viem'
-import { useContractReads } from 'wagmi'
+import { useContractReads, useSwitchNetwork } from 'wagmi'
 
 const getListedRToken = (tokenId: string, chainId: number) => {
   if (!tokenId || !rtokens[chainId]) {
@@ -23,6 +26,8 @@ const getListedRToken = (tokenId: string, chainId: number) => {
 
 const useRTokenContext = () => {
   const navigate = useNavigate()
+  const { switchNetwork } = useSwitchNetwork()
+  const walletChain = useAtomValue(walletChainAtom)
   const { chain, tokenId } = useParams()
   const chainId = NETWORKS[chain ?? '']
   const rToken = useMemo(() => {
@@ -33,6 +38,7 @@ const useRTokenContext = () => {
 
   const setChain = useSetAtom(chainIdAtom)
   const setRToken = useSetAtom(rTokenMetaAtom)
+  const selected = useAtomValue(selectedRTokenAtom)
 
   const unlistedToken = useContractReads({
     allowFailure: false,
@@ -93,6 +99,12 @@ const useRTokenContext = () => {
       }
     }
   }, [unlistedToken.status])
+
+  useEffect(() => {
+    if (switchNetwork && chainId && selected && chainId !== walletChain) {
+      switchNetwork(chainId)
+    }
+  }, [chainId, selected])
 
   // Cleanup RToken
   useEffect(() => {
