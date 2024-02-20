@@ -60,7 +60,7 @@ const FilterOptions = () => {
 
   return (
     <Box
-      sx={{ borderRadius: borderRadius.inputs, background: 'border' }}
+      sx={{ borderRadius: borderRadius.inputs, background: 'inputBackground' }}
       variant="layout.verticalAlign"
       ml={2}
       mr={1}
@@ -72,7 +72,8 @@ const FilterOptions = () => {
           role="button"
           sx={{
             cursor: 'pointer',
-            backgroundColor: index === selected ? 'background' : 'transparent',
+            backgroundColor:
+              index === selected ? 'backgroundNested' : 'transparent',
             width: ['40px', 'auto'],
             height: '32px',
             borderRadius: borderRadius.inner,

@@ -89,7 +89,7 @@ export const colors = {
   background: '#FEFBF8',
   backgroundNested: '#FEFBF8',
   focusedBackground: '#FFFFFF',
-  inputBackground: '#F2F2F2',
+  inputBackground: '#E5E5E5',
   // contentBackground: '#F9F8F4',
   lightGrey: '#f2f2f2',
   contentBackground: '#F9EDDD',
