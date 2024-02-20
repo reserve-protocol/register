@@ -26,9 +26,9 @@ const Item: FC<ItemProps> = ({ logo, name, value }) => {
     <Box
       variant="layout.verticalAlign"
       sx={{
-        backgroundColor: 'backgroundNested',
+        backgroundColor: 'focusedBackground',
         border: '1px solid',
-        borderColor: 'border',
+        borderColor: 'darkBorder',
         color: 'text',
         px: 2,
         py: '6px',
@@ -163,7 +163,7 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
         p: [0, 3],
         gap: 3,
         borderRadius: '14px',
-        backgroundColor: ['contentBackground', 'background'],
+        backgroundColor: ['contentBackground', 'backgroundNested'],
         alignItems: 'start',
         border: ['none', '3px solid'],
         borderColor: ['transparent', 'borderFocused'],
