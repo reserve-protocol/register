@@ -1,10 +1,10 @@
-import { Box, Card, Text } from 'theme-ui'
-import PriceChart from './charts/PriceChart'
-import SupplyChart from './charts/SupplyChart'
-import StakingChart from './charts/StakingChart'
-import EarnIcon from 'components/icons/EarnIcon'
 import { Trans } from '@lingui/macro'
+import { Suspense, lazy } from 'react'
 import { TrendingUp } from 'react-feather'
+import Skeleton from 'react-loading-skeleton'
+import { Box, Card, Text } from 'theme-ui'
+
+const Charts = lazy(() => import('./charts'))
 
 const HistoricalMetrics = () => {
   return (
@@ -22,9 +22,9 @@ const HistoricalMetrics = () => {
         </Text>
       </Box>
       <Card mt="5">
-        <PriceChart />
-        <SupplyChart mt="5" />
-        <StakingChart mt="5" />
+        <Suspense fallback={<Skeleton count={3} height={160} />}>
+          <Charts />
+        </Suspense>
       </Card>
     </Box>
   )
