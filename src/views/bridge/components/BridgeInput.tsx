@@ -144,7 +144,7 @@ const BridgeInput = () => (
       sx={{
         borderBottom: '1px solid',
         flexWrap: 'wrap',
-        borderColor: 'darkBorder',
+        borderColor: 'inputBorder',
       }}
       p={3}
     >

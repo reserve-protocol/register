@@ -110,7 +110,7 @@ export const colors = {
   borderFocused: '#F8EDDA',
   borderSecondary: '#E0D5C7',
   darkBorder: '#E5E5E5',
-  inputBorder: '#E5E5E5',
+  inputBorder: '#D5D5D5',
   info: '#20678E',
   infoBG: 'rgba(32, 103, 142, 0.15)',
   disabled: '#D9D9D9',
