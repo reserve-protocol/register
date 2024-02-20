@@ -95,7 +95,7 @@ const HeaderMenu = () => {
               }}
               px={2}
               py={1}
-              ml={index ? 1 : 0}
+              ml={index ? '2px' : 0}
             >
               {menuItem.icon}
               <Text ml="1" sx={{ display: ['none', 'none', 'none', 'block'] }}>

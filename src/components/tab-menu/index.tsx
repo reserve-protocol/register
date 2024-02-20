@@ -42,7 +42,7 @@ const defaultStyles = (
     borderRadius: borderRadius.inner,
     justifyContent: 'center',
     width: collapse ? [40, 'auto'] : 'auto',
-    marginLeft: 1,
+    marginLeft: '2px',
     ':first-of-type': {
       marginLeft: 0,
     },
