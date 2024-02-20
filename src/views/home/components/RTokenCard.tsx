@@ -252,6 +252,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
                 mt={[0, 2]}
               >
                 <Button
+                  medium
                   onClick={(e) => {
                     e.stopPropagation()
                     handleNavigate(ROUTES.ISSUANCE)
@@ -262,6 +263,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
                     : 'Mint'}
                 </Button>
                 <Button
+                  medium
                   onClick={(e) => {
                     e.stopPropagation()
                     handleNavigate(ROUTES.STAKING)
