@@ -159,7 +159,7 @@ const Portfolio = (props: BoxProps) => {
       {...props} /* sx={{border: '1px dashed',  borderColor: 'primary', borderRadius: 12}}*/
     >
       <Box>
-        <Box ml={3}>
+        <Box ml={4}>
           <Text mb={1} variant="title" sx={{ color: 'secondaryText' }}>
             <Trans>Wallet staked RSR + RToken Value</Trans>
           </Text>
@@ -184,7 +184,7 @@ const Portfolio = (props: BoxProps) => {
         {rTokens?.length > 0 && (
           <Box mt={[4, 5]}>
             <Text
-              pl={3}
+              pl={4}
               mb={[3, 0]}
               variant="title"
               sx={{ color: 'secondaryText', fontWeight: '400' }}
