@@ -30,7 +30,7 @@ const Redirects = () => {
     if (token && chain) {
       navigate(getTokenRoute(token, +chain))
     }
-  }, [navigate])
+  }, [])
 
   return null
 }

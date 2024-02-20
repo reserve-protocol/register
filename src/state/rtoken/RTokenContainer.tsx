@@ -12,7 +12,7 @@ const RTokenContainer = () => {
       sx={{
         display: 'flex',
         flexDirection: ['column-reverse', 'row'],
-        marginBottom: [72, 0],
+        marginBottom: [72, 72, 0],
       }}
     >
       <TokenNavigation />

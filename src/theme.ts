@@ -595,7 +595,7 @@ export const theme: Theme = {
       p: [1, 4],
     },
     sectionDivider: {
-      mx: [-1, -6],
+      mx: [-1, -3, -3, -3, -6],
       my: [3, 5],
       borderColor: 'border',
     },

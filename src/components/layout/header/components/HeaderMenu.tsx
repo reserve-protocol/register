@@ -61,7 +61,7 @@ const HeaderMenu = () => {
   return (
     <Box
       variant="layout.verticalAlign"
-      p={'2px'}
+      p="4px"
       sx={{
         backgroundColor: 'inputBackground',
         fontSize: 1,
@@ -95,7 +95,7 @@ const HeaderMenu = () => {
               }}
               px={2}
               py={1}
-              ml={index ? '2px' : 0}
+              ml={index ? [1, 1, 1, '2px'] : 0}
             >
               {menuItem.icon}
               <Text ml="1" sx={{ display: ['none', 'none', 'none', 'block'] }}>
