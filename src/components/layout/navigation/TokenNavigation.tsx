@@ -183,7 +183,7 @@ const TokenNavigation = () => {
           { label: t`Intro`, id: 'intro' },
           { label: t`Backing & Risk`, id: 'backing' },
           { label: t`Earn`, id: 'earn' },
-          // { label: t`Revenue & Usage`, id: 'revenue' },
+          { label: t`Historical metrics`, id: 'historic' },
           { label: t`Transactions`, id: 'transactions' },
         ],
       },

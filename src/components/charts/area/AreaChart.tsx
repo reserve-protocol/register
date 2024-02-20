@@ -72,13 +72,13 @@ const AreaChart = ({
   return (
     <Box {...props}>
       {heading && (
-        <Flex variant="layout.verticalAlign" mb={4}>
-          <Text sx={{ fontSize: 3 }}>{heading}</Text>
+        <Flex variant="layout.verticalAlign" mb="1" ml="2">
+          <Text sx={{ fontSize: 3, fontWeight: 700 }}>{heading}</Text>
         </Flex>
       )}
-      <Flex sx={{ fontSize: 3 }} mb={4}>
+      <Flex sx={{ fontSize: 3 }} ml="2" mb={3}>
         <Text sx={{ overflow: 'hidden' }}>{title}</Text>
-        <Text ml="auto" sx={{ color: gainColor }}>
+        <Text ml="auto" sx={{ color: gainColor, fontWeight: 500 }}>
           {gain}%
         </Text>
       </Flex>
@@ -89,7 +89,7 @@ const AreaChart = ({
             <Area
               type="monotone"
               dataKey="value"
-              stroke="var(--theme-ui-colors-text)"
+              stroke="var(--theme-ui-colors-accent)"
               fill="var(--theme-ui-colors-darkBorder)"
             />
           </Chart>
@@ -113,11 +113,11 @@ const AreaChart = ({
         sx={{ justifyContent: 'space-between' }}
       >
         {!!timeRange && onRangeChange && (
-          <Flex sx={{ alignItems: 'center' }}>
+          <Flex sx={{ alignItems: 'center', fontWeight: 500 }}>
             {Object.values(timeRange).map((range) =>
               currentRange === range ? (
                 <Badge sx={{ width: '48px', textAlign: 'center' }} key={range}>
-                  {range}
+                  <Text sx={{ fontWeight: 700 }}>{range}</Text>
                 </Badge>
               ) : (
                 <Box

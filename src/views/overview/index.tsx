@@ -9,6 +9,7 @@ import Hero from './components/hero'
 import RTokenEarn from './components/RTokenEarn'
 import RTokenTransactions from './components/RTokenTransactions'
 import Backing from './components/backing'
+import HistoricalMetrics from './components/HistoricalMetrics'
 
 // Move state management of tracking on an separate component to avoid re-renders
 const Tracking = () => {
@@ -43,6 +44,10 @@ const Overview = () => (
     </SectionWrapper>
     <Divider variant="layout.sectionDivider" />
     <SectionWrapper navigationIndex={3}>
+      <HistoricalMetrics />
+    </SectionWrapper>
+    <Divider variant="layout.sectionDivider" />
+    <SectionWrapper navigationIndex={4}>
       <RTokenTransactions />
     </SectionWrapper>
     <Tracking />

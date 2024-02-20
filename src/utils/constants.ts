@@ -229,7 +229,7 @@ export const collateralDisplay: Record<string, string> = {
   ffrax: 'Flux FRAX',
   wcusdcv3: 'Compound USDC V3',
   stkcvx3crv: 'Convex DAI/USDC/USDT',
-  'stkcvxeusd3crv-f': 'Convex eUSD/3CRV',
+  'stkcvxeusd3crv-f': 'Convex eUSD/FRAXBP',
   'stkcvxmim-3lp3crv-f': 'Convex MIM/3CRV',
   ws3crv: 'Curve DAI/USDC/USDT',
   weusdfraxbp: 'Curve eUSD/FRAXBP',
