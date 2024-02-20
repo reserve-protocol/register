@@ -60,10 +60,11 @@ const FilterOptions = () => {
 
   return (
     <Box
-      sx={{ borderRadius: borderRadius.boxes, background: 'border' }}
+      sx={{ borderRadius: borderRadius.inputs, background: 'border' }}
       variant="layout.verticalAlign"
-      mx={3}
-      p={1}
+      ml={2}
+      mr={1}
+      p={'2px'}
     >
       {options.map(({ text, icon }, index) => (
         <Box
@@ -127,10 +128,10 @@ const TableFilters = () => {
     >
       <SearchInput
         placeholder="Search pool"
-        p={2}
+        p={1}
         value={search}
         onChange={setSearch}
-        sx={{ maxWidth: ['auto', 200, 160], borderRadius: borderRadius.boxes }}
+        sx={{ maxWidth: ['auto', 200, 160], borderRadius: borderRadius.inputs }}
       />
       <FilterOptions />
     </Box>

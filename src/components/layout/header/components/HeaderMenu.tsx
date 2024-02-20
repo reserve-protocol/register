@@ -20,10 +20,10 @@ const TokenSelector = () => {
       ml={1}
       sx={{
         backgroundColor: !!selectedRToken ? 'backgroundNested' : 'transparent',
-        borderColor: !!selectedRToken ? 'primary' : 'transparent',
+        // borderColor: !!selectedRToken ? 'primary' : 'transparent',
         borderRadius: borderRadius.inner,
         ':hover': {
-          backgroundColor: !!selectedRToken ? 'background' : 'border',
+          backgroundColor: !!selectedRToken ? 'background' : 'backgroundNested',
         },
       }}
     >
@@ -58,13 +58,11 @@ const HeaderMenu = () => {
   return (
     <Box
       variant="layout.verticalAlign"
-      p={1}
+      p={'2px'}
       sx={{
-        border: '1px solid',
-        borderColor: 'darkBorder',
-        backgroundColor: 'secondaryBackground',
+        backgroundColor: 'inputBackground',
         fontSize: 1,
-        borderRadius: borderRadius.boxes,
+        borderRadius: borderRadius.inputs,
       }}
     >
       {menuItems.map((menuItem, index) => (

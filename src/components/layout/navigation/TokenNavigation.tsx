@@ -119,6 +119,8 @@ const NavContent = ({
         sx={{
           textDecoration: 'none',
           backgroundColor: isActive ? 'contentBackground' : 'background',
+          border: '1px solid',
+          borderColor: isActive ? 'borderFocused' : 'background',
           borderRadius: '8px',
           color: isActive ? 'accent' : 'text',
         }}

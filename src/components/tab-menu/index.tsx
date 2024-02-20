@@ -23,13 +23,13 @@ const defaultStyles = (
   small: boolean,
   collapse: boolean
 ) => ({
-  border: '1px solid',
-  borderColor: 'darkBorder',
+  // border: '1px solid',
+  // borderColor: 'border',
   color: 'secondaryText',
   fontSize: small ? 0 : 1,
   fontWeight: small ? 500 : 400,
-  borderRadius: borderRadius.boxes,
-  background: 'secondaryBackground',
+  borderRadius: borderRadius.inputs,
+  background: 'inputBackground',
   width: 'fit-content',
   '>div': {
     padding: small ? '6px' : '6px 8px 6px 8px',
@@ -47,7 +47,7 @@ const defaultStyles = (
       marginLeft: 0,
     },
     ':hover': {
-      backgroundColor: 'border',
+      backgroundColor: 'backgroundNested',
     },
     '&.active': {
       backgroundColor: 'backgroundNested',
@@ -115,7 +115,7 @@ const TabMenu = ({
   )
 
   return (
-    <Box variant="layout.verticalAlign" p={1} sx={styles} {...props}>
+    <Box variant="layout.verticalAlign" p={'2px'} sx={styles} {...props}>
       {items.map((item) => (
         <MenuItem
           item={item}
