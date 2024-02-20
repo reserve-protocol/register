@@ -229,14 +229,11 @@ export const collateralDisplay: Record<string, string> = {
   ffrax: 'Flux FRAX',
   wcusdcv3: 'Compound USDC V3',
   stkcvx3crv: 'Convex DAI/USDC/USDT',
-  // TODO
-  // 'stkcvxeusd3crv-f': 'TODO', : 'stkcvxF' },
-  // TODO
-  // 'stkcvxmim-3lp3crv-f': 'TODO', : 's3LP3Crv-F' },
+  'stkcvxeusd3crv-f': 'Convex eUSD/3CRV',
+  'stkcvxmim-3lp3crv-f': 'Convex MIM/3CRV',
   ws3crv: 'Curve DAI/USDC/USDT',
-  // TODO
-  // 'weusdfraxbp': 'eUSDFRAXBP', : 'eU },
-  wmim3crv: 'Curve 3pool MIM',
+  weusdfraxbp: 'Curve eUSD/FRAXBP',
+  wmim3crv: 'Curve MIM/3CRV',
   sdai: 'Savings DAI',
   cbeth: 'Coinbase ETH',
   'mrp-ausdt': 'Morpho AAVE USDT',
