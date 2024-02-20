@@ -10,7 +10,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Box, Flex, Text } from 'theme-ui'
 import { StringMap } from 'types'
-import { formatCurrency, formatUsdCurrencyCell } from 'utils'
+import { formatCurrency, formatUsdCurrencyCell, getTokenRoute } from 'utils'
 import { LISTED_RTOKEN_ADDRESSES, supportedChainList } from 'utils/constants'
 import useUnlistedTokens, { RTokenRow } from '../useUnlistedTokens'
 import { sortByAtom } from '../atoms'
@@ -123,7 +123,7 @@ const UnlistedTokensTable = () => {
 
   const handleClick = useCallback(
     (data: any) => {
-      navigate(`/overview?token=${data.id}`)
+      navigate(getTokenRoute(data.id, data.chain))
       document.getElementById('app-container')?.scrollTo(0, 0)
     },
     [navigate]
