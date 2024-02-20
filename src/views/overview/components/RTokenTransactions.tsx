@@ -126,7 +126,7 @@ const useTransactionColumns = () => {
         cell: () => <ChainLogo chain={chainId} />,
       }),
       columnHelper.accessor('from.id', {
-        header: t`From + Debank`,
+        header: t`From`,
         cell: (data) => (
           <Box variant="layout.verticalAlign">
             <Link
