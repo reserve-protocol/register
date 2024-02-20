@@ -26,7 +26,9 @@ const Item: FC<ItemProps> = ({ logo, name, value }) => {
     <Box
       variant="layout.verticalAlign"
       sx={{
-        backgroundColor: 'border',
+        backgroundColor: 'backgroundNested',
+        border: '1px solid',
+        borderColor: 'border',
         color: 'text',
         px: 2,
         py: '6px',
