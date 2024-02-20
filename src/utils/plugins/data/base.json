@@ -104,5 +104,19 @@
     "decimals": 6,
     "underlyingAddress": "0x4c80E24119CFB836cdF0a6b53dc23F04F7e652CA",
     "underlyingToken": "S*USDbC"
+  },
+  {
+    "address": "0x02Ee6862cF431D7CEaa78112D635D2Be7DdFC178",
+    "rewardTokens": [],
+    "protocol": "GENERIC",
+    "erc20": "0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452",
+    "chainlinkFeed": "0xf586d0728a47229e747d824a939000Cf21dEF5A0",
+    "delayUntilDefault": "86400",
+    "maxTradeVolume": "500000",
+    "oracleTimeout": 86400,
+    "targetName": "ETH",
+    "version": "3.2.0",
+    "symbol": "wstETH",
+    "decimals": 18
   }
 ]
