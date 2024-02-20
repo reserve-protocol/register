@@ -35,6 +35,8 @@ const ChainBridge = () => (
         position: 'relative',
         justifyContent: 'center',
         borderRadius: '0 0 20px 20px',
+        borderTop: '1px solid',
+        borderColor: 'border',
       }}
     >
       <HeroBackground />

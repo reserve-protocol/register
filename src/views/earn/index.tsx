@@ -11,7 +11,10 @@ const EarnWrapper = () => {
 
   return (
     <>
-      <Box variant="layout.wrapper">
+      <Box
+        variant="layout.wrapper"
+        sx={{ borderTop: '1px solid', borderColor: 'border' }}
+      >
         <Earn />
       </Box>
       <RegisterAbout />
