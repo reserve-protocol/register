@@ -176,7 +176,7 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
           <BasketCubeIcon width={17} height={17} />
           <Text sx={{ fontSize: 14 }}>{t`Collateral(s)`}</Text>
         </Box>
-        <Grid columns={2} gap={2} sx={{ width: '100%' }}>
+        <Grid columns={[1, 2]} gap={2} sx={{ width: '100%' }}>
           {collateralItems.map((item) => (
             <Item {...item} />
           ))}
@@ -195,7 +195,7 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
           />
           <Text sx={{ fontSize: 14 }}>{t`Token exposure`}</Text>
         </Box>
-        <Grid columns={2} gap={2} sx={{ width: '100%' }}>
+        <Grid columns={[1, 2]} gap={2} sx={{ width: '100%' }}>
           {tokenItems.map((item) => (
             <Item {...item} />
           ))}
@@ -209,7 +209,7 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
           <PlatformExposureIcon />
           <Text sx={{ fontSize: 14 }}>{t`Platform exposure`}</Text>
         </Box>
-        <Grid columns={2} gap={2} sx={{ width: '100%' }}>
+        <Grid columns={[1, 2]} gap={2} sx={{ width: '100%' }}>
           {platformItems.map((item) => (
             <Item {...item} />
           ))}
