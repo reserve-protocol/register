@@ -57,7 +57,13 @@ const BackingResume = () => {
 
 const Backing = () => (
   <Box>
-    <Box variant="layout.verticalAlign" ml="4" mb={5} sx={{ color: 'accent' }}>
+    <Box
+      variant="layout.verticalAlign"
+      ml="4"
+      mb={3}
+      mt={6}
+      sx={{ color: 'accent' }}
+    >
       <BasketCubeIcon fontSize={24} />
       <Text ml="3" as="h2" variant="heading">
         <Trans>Backing & Risk</Trans>

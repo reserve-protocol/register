@@ -449,7 +449,7 @@ export const theme: Theme = {
       color: 'accentInverted',
       backgroundColor: 'transparent',
       '&:hover': {
-        outlineWidth: '2px',
+        backgroundColor: 'focusedBackground',
       },
     },
     transparent: {
@@ -592,11 +592,11 @@ export const theme: Theme = {
     },
     tokenView: {
       width: '100%',
-      p: [1, 6],
+      p: [1, 4],
     },
     sectionDivider: {
       mx: [-1, -6],
-      my: [3, 7],
+      my: [3, 5],
       borderColor: 'border',
     },
   },

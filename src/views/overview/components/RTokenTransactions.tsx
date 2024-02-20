@@ -185,6 +185,7 @@ const RTokenTransactions = () => {
         variant="layout.verticalAlign"
         ml="4"
         mb={5}
+        mt={6}
         sx={{ color: 'accent' }}
       >
         <TransactionsIcon fontSize={24} />
