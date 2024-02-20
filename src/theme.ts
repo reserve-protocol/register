@@ -434,8 +434,8 @@ export const theme: Theme = {
     },
     accentAction: {
       ...baseButton,
-      backgroundColor: '#D5DBE7',
-      color: 'primary',
+      backgroundColor: 'accent',
+      color: '#fff',
       fontWeight: 700,
 
       '&:hover': {

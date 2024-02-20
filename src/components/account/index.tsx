@@ -97,9 +97,10 @@ const Account = () => {
               if (!connected) {
                 return (
                   <Button
-                    small
                     variant="accentAction"
                     onClick={openConnectModal}
+                    px={2}
+                    py={1}
                   >
                     <Box
                       sx={{ display: ['flex', 'none'] }}
