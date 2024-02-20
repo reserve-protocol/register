@@ -17,10 +17,9 @@ const TokenSelector = () => {
 
   return (
     <Box
-      ml={2}
+      ml={1}
       sx={{
         backgroundColor: !!selectedRToken ? 'background' : 'transparent',
-        border: '1px solid',
         borderColor: !!selectedRToken ? 'primary' : 'transparent',
         borderRadius: borderRadius.inner,
         ':hover': {
@@ -61,8 +60,8 @@ const HeaderMenu = () => {
       variant="layout.verticalAlign"
       p={1}
       sx={{
-        border: '1px solid',
-        borderColor: 'border',
+        // border: '1px solid',
+        // borderColor: 'border',
         backgroundColor: 'secondaryBackground',
         fontSize: 1,
         borderRadius: borderRadius.boxes,
@@ -78,16 +77,19 @@ const HeaderMenu = () => {
             <Box
               variant="layout.verticalAlign"
               sx={{
-                backgroundColor: isActive ? 'background' : 'transparent',
-                border: '1px solid',
-                color: isActive ? 'primary' : 'text',
-                borderColor: isActive ? 'primary' : 'transparent',
+                backgroundColor: isActive ? 'backgroundNested' : 'transparent',
+                // border: '1px solid',
+                color: isActive ? 'text' : 'secondaryText',
+                // borderColor: isActive ? 'primary' : 'transparent',
                 borderRadius: borderRadius.inner,
                 justifyContent: 'center',
                 fontWeight: 500,
+                boxShadow: isActive
+                  ? '0px 0px 5px 2px rgba(0, 0, 0, 0.05)'
+                  : 'none',
                 width: [40, 'auto'],
                 ':hover': {
-                  backgroundColor: 'background',
+                  backgroundColor: 'backgroundNested',
                 },
               }}
               px={2}
@@ -95,7 +97,7 @@ const HeaderMenu = () => {
               ml={index ? 1 : 0}
             >
               {menuItem.icon}
-              <Text ml="2" sx={{ display: ['none', 'none', 'none', 'block'] }}>
+              <Text ml="1" sx={{ display: ['none', 'none', 'none', 'block'] }}>
                 {menuItem.label}
               </Text>
             </Box>
