@@ -36,7 +36,12 @@ const ProtocolStats = () => {
   ]
 
   return (
-    <Box variant="layout.wrapper" sx={{ width: '100%' }} mt={[4, 6]}>
+    <Box
+      variant="layout.wrapper"
+      sx={{ width: '100%' }}
+      mt={[4, 7]}
+      pt={[0, 3]}
+    >
       <Link
         sx={{
           ':hover': { textDecoration: 'underline' },
@@ -55,7 +60,9 @@ const ProtocolStats = () => {
           py="1"
           sx={{
             backgroundColor: 'background',
-            borderRadius: 12,
+            borderRadius: 8,
+            border: '2px solid',
+            borderColor: 'borderFocused',
             width: 'fit-content',
           }}
         >
@@ -66,7 +73,7 @@ const ProtocolStats = () => {
         </Box>
       </Link>
       <Card
-        mx={[1, 4]}
+        mx={[0, 2]}
         p={6}
         sx={{
           backgroundColor: 'contentBackground',
@@ -123,14 +130,15 @@ const About = () => (
       <Text
         variant="title"
         sx={{
-          fontSize: [5, 7],
+          fontSize: [4, 7],
+          fontWeight: 'bold',
           color: 'accentInverted',
-          lineHeight: ['42px', '56px'],
+          lineHeight: ['32px', '56px'],
         }}
       >
         <Trans>A new path to better money, already set in motion</Trans>
       </Text>
-      <Text as="p" px={[4, 0]} mt={[3, 4]}>
+      <Text as="p" px={[2, 0]} mt={[2, 4]}>
         <Trans>
           Reserve Protocol’s RToken Factory Contracts: A platform for creating
           currencies backed by an array of ERC20 collateral. Use Register to
@@ -151,14 +159,17 @@ const About = () => (
 const Hero = () => (
   <Box sx={{ position: 'relative' }}>
     <Flex
+      mx="auto"
       sx={{
         flexDirection: 'column',
         alignItems: 'center',
         position: 'relative',
+        maxWidth: '95em',
       }}
-      pt={[5, 8]}
+      pt={[5, 7]}
+      mt={[0, 4]}
       pb={0}
-      px={[3]}
+      px={[2, 3]}
     >
       <About />
       <ProtocolStats />

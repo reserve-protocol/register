@@ -20,7 +20,7 @@ const CompareTokens = () => {
   }
 
   return (
-    <Box variant="layout.wrapper" px={[1, 4]} pt={[0]}>
+    <Box variant="layout.wrapper" px={[2, 4]} pt={[0]}>
       <CompareTokensTitle />
       <Suspense fallback={<CompareSkeleton />}>
         <RTokenList />
