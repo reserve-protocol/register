@@ -163,8 +163,8 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
         borderRadius: '14px',
         backgroundColor: ['contentBackground', 'background'],
         alignItems: 'start',
-        border: ['none', '2px solid'],
-        borderColor: ['transparent', 'border'],
+        border: ['none', '3px solid'],
+        borderColor: ['transparent', 'borderFocused'],
         boxShadow: ['none', '0px 10px 45px 6px rgba(0, 0, 0, 0.10)'],
       }}
     >
