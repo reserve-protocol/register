@@ -87,7 +87,7 @@ export const colors = {
   secondaryText: '#666666',
   lightText: '#808080',
   background: '#FEFBF8',
-  backgroundNested: '#FEFBF8',
+  backgroundNested: '#fff',
   // contentBackground: '#F9F8F4',
   lightGrey: '#f2f2f2',
   contentBackground: '#F9EDDD',
@@ -592,7 +592,7 @@ export const theme: Theme = {
     },
     sectionDivider: {
       mx: [-1, -6],
-      my: [3, 6],
+      my: [3, 7],
       borderColor: 'border',
     },
   },
