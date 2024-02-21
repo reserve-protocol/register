@@ -40,7 +40,6 @@ const IMGS = new Set([
   'fdai',
   'wcUSDCv3',
   'wsteth',
-  'cbeth',
   'reth',
   'stkcvx3crv',
   'stkcvxcrv3crypto',
