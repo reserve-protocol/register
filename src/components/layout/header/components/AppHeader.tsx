@@ -10,87 +10,60 @@ import HeaderMenu from './HeaderMenu'
 import RegisterHelp from './RegisterHelp'
 import { useAtomValue } from 'jotai'
 import { selectedRTokenAtom } from 'state/atoms'
-
-const Divider = () => (
-  <Box
-    mx={3}
-    sx={{
-      backgroundColor: 'inputBorder',
-      width: '1px',
-      height: '16px',
-      display: ['none', 'block'],
-    }}
-  />
-)
-
-const HeaderAction = () => {
-  const { pathname } = useLocation()
-
-  if (pathname.indexOf(ROUTES.DEPLOY) !== -1) {
-    return (
-      <Text sx={{ fontSize: 2 }} variant="subtitle">
-        <Trans>RToken Deployer</Trans>
-      </Text>
-    )
-  }
-
-  return <HeaderMenu />
-}
-
-// TODO: Currently only for bridging, but expected for other views
-const useHeaderColor = () => {
-  const { pathname } = useLocation()
-
-  if (pathname.indexOf(ROUTES.BRIDGE) !== -1) {
-    return 'contentBackground'
-  }
-
-  return 'background'
-}
+import VerticalDivider from 'views/home/components/VerticalDivider'
+import CoinbaseSubscribe from './CoinbaseSubscribe'
 
 /**
  * Application header
  */
 const AppHeader = () => {
-  const backgroundColor = useHeaderColor()
   const isRTokenSelected = !!useAtomValue(selectedRTokenAtom)
 
   return (
     <Box
       sx={{
-        borderBottom: '1px solid',
-        borderColor: isRTokenSelected ? 'border' : 'transparent',
-        position: 'fixed',
-        top: 0,
-        backgroundColor,
         width: '100%',
+        ...(isRTokenSelected
+          ? {
+              borderBottom: '1px solid',
+              borderColor: 'border',
+            }
+          : {}),
       }}
     >
       <Flex
         px={[2, 5]}
         variant="layout.wrapper"
-        sx={{ alignItems: 'center', height: '72px' }}
+        sx={{
+          alignItems: 'center',
+          height: ['52px', '72px'],
+          justifyContent: ['left', 'center'],
+          position: 'relative',
+        }}
       >
-        <Box mr="auto" variant="layout.verticalAlign">
+        <Box
+          variant="layout.verticalAlign"
+          sx={{ position: 'absolute', left: ['8px', '24px'] }}
+        >
           <Brand mr={[2, 4]} />
-          <HeaderAction />
+          <VerticalDivider sx={{ display: ['none', 'block'] }} />
+          <ThemeColorMode
+            ml="4"
+            sx={{
+              display: ['none', 'flex'],
+            }}
+          />
         </Box>
-        <RegisterHelp />
-        <Divider />
-        <ThemeColorMode
-          sx={{
-            display: ['none', 'flex'],
-          }}
-        />
-        {/* <Box ml={4} sx={{ alignItems: 'center', display: 'flex' }}>
-            <LanguageSelector />
-          </Box> */}
-        <Divider />
-        <Box sx={{ display: ['none', 'block'] }}>
-          <ChainSelector />
+        <HeaderMenu />
+        <Box
+          variant="layout.verticalAlign"
+          sx={{ position: 'absolute', right: ['8px', '24px'] }}
+        >
+          <RegisterHelp />
+          <VerticalDivider sx={{ display: ['none', 'block'] }} mx="4" />
+          <CoinbaseSubscribe />
+          <Account />
         </Box>
-        <Divider />
-        <Account />
       </Flex>
     </Box>
   )

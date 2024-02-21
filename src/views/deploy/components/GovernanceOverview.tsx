@@ -11,7 +11,7 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { chainIdAtom } from 'state/atoms'
 import { Box, BoxProps, Divider, Flex, Spinner, Text } from 'theme-ui'
-import { shortenString } from 'utils'
+import { getTokenRoute, shortenString } from 'utils'
 import { ROUTES } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { Hex } from 'viem'
@@ -69,6 +69,7 @@ const Mining = ({ hash }: { hash: Hex }) => (
 const GovernanceStatus = () => {
   const navigate = useNavigate()
   const rToken = useRToken()
+  const chainId = useAtomValue(chainIdAtom)
   const { write, isReady, isLoading, gas, hash } = useGovernance()
   const { status } = useWatchTransaction({
     hash,
@@ -76,8 +77,8 @@ const GovernanceStatus = () => {
   })
 
   useEffect(() => {
-    if (status === 'success') {
-      navigate(`${ROUTES.SETTINGS}?token=${rToken?.address}`)
+    if (status === 'success' && rToken?.address) {
+      navigate(getTokenRoute(rToken.address, chainId, ROUTES.SETTINGS))
     }
   }, [status])
 

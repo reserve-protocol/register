@@ -3,18 +3,16 @@ import { SmallButton } from 'components/button'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
-import useDebounce from 'hooks/useDebounce'
 import useQuery from 'hooks/useQuery'
-import useRToken from 'hooks/useRToken'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { blockAtom, selectedRTokenAtom } from 'state/atoms'
 import { Badge, Box, Text } from 'theme-ui'
 import { StringMap } from 'types'
 import { getProposalTitle } from 'utils'
-import { formatConstant, PROPOSAL_STATES, ROUTES } from 'utils/constants'
+import { PROPOSAL_STATES, formatConstant } from 'utils/constants'
 import { getProposalStatus } from '../views/proposal-detail/atom'
-import { useAtomValue } from 'jotai'
-import { blockAtom } from 'state/atoms'
 
 const query = gql`
   query getProposals($id: String!) {
@@ -46,9 +44,9 @@ const BADGE_VARIANT: StringMap = {
 }
 
 const useProposals = () => {
-  const rToken = useRToken()
-  const response = useQuery(rToken?.main ? query : null, {
-    id: rToken?.address.toLowerCase(),
+  const rToken = useAtomValue(selectedRTokenAtom)
+  const response = useQuery(rToken ? query : null, {
+    id: (rToken ?? '').toLowerCase(),
   })
 
   return useMemo(() => {
@@ -63,7 +61,6 @@ const useProposals = () => {
 }
 
 const ProposalList = () => {
-  const rToken = useRToken()
   const navigate = useNavigate()
   const { data } = useProposals()
   const block = useAtomValue(blockAtom)
@@ -79,12 +76,7 @@ const ProposalList = () => {
         <Text variant="title">
           <Trans>Recent proposals</Trans>
         </Text>
-        <SmallButton
-          ml="auto"
-          onClick={() =>
-            navigate(`${ROUTES.GOVERNANCE_PROPOSAL}?token=${rToken?.address}`)
-          }
-        >
+        <SmallButton ml="auto" onClick={() => navigate('proposal')}>
           <Trans>Create proposal</Trans>
         </SmallButton>
       </Box>
@@ -122,11 +114,7 @@ const ProposalList = () => {
               key={proposal.id}
               sx={{ cursor: 'pointer' }}
               variant="layout.verticalAlign"
-              onClick={() =>
-                navigate(
-                  `${ROUTES.GOVERNANCE_PROPOSAL}/${proposal.id}?token=${rToken?.address}`
-                )
-              }
+              onClick={() => navigate(`proposal/${proposal.id}`)}
             >
               <Box mr={3}>
                 <Text variant="strong">

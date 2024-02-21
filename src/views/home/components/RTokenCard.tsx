@@ -12,7 +12,7 @@ import { memo } from 'react'
 import { ArrowUpRight } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import { Box, BoxProps, Card, Link, Text } from 'theme-ui'
-import { formatCurrency, shortenString } from 'utils'
+import { formatCurrency, getTokenRoute, shortenString } from 'utils'
 import { CHAIN_TAGS, ROUTES } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import CollateralPieChartWrapper from 'views/overview/components/CollateralPieChartWrapper'
@@ -45,12 +45,13 @@ const ChainBadge = ({ chain }: { chain: number }) => (
   </Box>
 )
 
+// TODO: Component should be splitted
 const RTokenCard = ({ token, ...props }: Props) => {
   const navigate = useNavigate()
   const { priceETHTerms, supplyETHTerms } = usePriceETH(token)
 
   const handleNavigate = (route: string) => {
-    navigate(`${route}?token=${token.id}&chainId=${token.chain}`)
+    navigate(getTokenRoute(token.id, token.chain, route))
     document.getElementById('app-container')?.scrollTo(0, 0)
   }
 
@@ -66,7 +67,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
         },
         height: ['100%', '316px'],
         cursor: 'pointer',
-        mx: [2, 0],
+
         transition: 'border-color 0.3s ease',
       }}
       p={[0, 3]}
@@ -251,23 +252,23 @@ const RTokenCard = ({ token, ...props }: Props) => {
                 mt={[0, 2]}
               >
                 <Button
+                  medium
                   onClick={(e) => {
                     e.stopPropagation()
                     handleNavigate(ROUTES.ISSUANCE)
                   }}
-                  medium
                 >
                   {token.tokenApy
                     ? `${token.tokenApy.toFixed(1)}% Est. APY`
                     : 'Mint'}
                 </Button>
                 <Button
+                  medium
                   onClick={(e) => {
                     e.stopPropagation()
                     handleNavigate(ROUTES.STAKING)
                   }}
-                  medium
-                  variant="muted"
+                  variant="bordered"
                 >
                   <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
                     <Text>
@@ -275,7 +276,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
                       {!!token.stakingApy &&
                         `- ${token.stakingApy.toFixed(1)}%`}
                     </Text>
-                    <Text color="lightText">{t`Est. APY`}</Text>
+                    <Text>{t`Est. APY`}</Text>
                   </Box>
                 </Button>
 

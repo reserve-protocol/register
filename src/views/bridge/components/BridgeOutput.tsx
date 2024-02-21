@@ -13,6 +13,7 @@ import {
   isBridgeWrappingAtom,
   selectedBridgeToken,
 } from '../atoms'
+import { borderRadius } from 'theme'
 
 const chainContextAtom = atom((get) =>
   get(isBridgeWrappingAtom) ? ChainId.Base : ChainId.Mainnet
@@ -92,7 +93,15 @@ const BridgeOutputToken = () => {
 
 const BridgeOutput = () => {
   return (
-    <Card p={0} sx={{ border: '1px solid', borderColor: 'darkBorder' }}>
+    <Card
+      p={0}
+      sx={{
+        border: '1px solid',
+        backgroundColor: 'transparent',
+        borderColor: 'darkBorder',
+        borderRadius: borderRadius.inputs,
+      }}
+    >
       <Box
         variant="layout.verticalAlign"
         p={3}

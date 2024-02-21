@@ -45,6 +45,20 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
   },
 }
 
+// List of supported networks with label
+export const NETWORKS: Record<string, number> = {
+  ethereum: ChainId.Mainnet,
+  base: ChainId.Base,
+}
+
+export const CHAIN_TO_NETWORK = Object.entries(NETWORKS).reduce(
+  (acc, [network, chainId]) => {
+    acc[chainId] = network
+    return acc
+  },
+  {} as Record<number, string>
+)
+
 export const BIGINT_MAX =
   115792089237316195423570985008687907853269984665640564039457584007913129639935n
 
@@ -91,25 +105,25 @@ export const TIME_RANGE_VALUE: { [x: string]: number } = {
 }
 
 export const ROUTES = Object.freeze({
-  OVERVIEW: '/overview',
-  STAKING: '/staking',
-  ISSUANCE: '/issuance',
-  STAKING_CALCULATOR: '/staking-calculator',
-  AUCTIONS: '/auctions',
-  DEPLOY: '/deploy',
-  SETTINGS: '/settings',
-  GOVERNANCE_SETUP: '/management/governance',
-  GOVERNANCE_INFO: '/governance-info',
-  LIST: '/list',
+  OVERVIEW: 'overview',
+  STAKING: 'staking',
+  ISSUANCE: 'issuance',
+  AUCTIONS: 'auctions',
+  DEPLOY: 'deploy',
+  SETTINGS: 'settings',
+  GOVERNANCE_SETUP: 'governance/setup',
+  GOVERNANCE_INFO: 'governance-info',
+  LIST: 'list',
   HOME: '/',
   WALLET: '/wallet',
   TOKENS: '/tokens',
-  GOVERNANCE: '/governance',
-  GOVERNANCE_PROPOSAL: '/governance/proposal',
+  GOVERNANCE: 'governance',
+  GOVERNANCE_PROPOSAL: 'governance/proposal',
   ZAP: '/zap',
   BRIDGE: '/bridge',
   PORTFOLIO: '/portfolio',
   EARN: '/earn',
+  NOT_FOUND: '/404',
 })
 
 export const RSR: Token = {
@@ -192,4 +206,42 @@ export const TraderLabels: Record<Trader, string> = {
   backingManager: 'Backing Manager',
   rsrTrader: 'RSR Trader',
   rTokenTrader: 'RToken Trader',
+}
+
+export const collateralDisplay: Record<string, string> = {
+  sadai: 'AAVE DAI',
+  sausdc: 'AAVE USDC',
+  sausdt: 'AAVE USDT',
+  sabusd: 'AAVE BUSD',
+  sausdp: 'AAVE USDP',
+  cdai: 'Compound DAI',
+  cusdc: 'Compound USDC',
+  cusdt: 'Compound USDT',
+  cusdp: 'Compound USDP',
+  cwbtc: 'Compound WBTC',
+  ceth: 'Compound ETH',
+  reth: 'Rocket Pool ETH',
+  weth: 'Wrapped ETH',
+  wsteth: 'Wrapped Staked ETH',
+  fusdc: 'Flux USDC',
+  fusdt: 'Flux USDT',
+  fdai: 'Flux DAI',
+  ffrax: 'Flux FRAX',
+  wcusdcv3: 'Compound USDC V3',
+  stkcvx3crv: 'Convex DAI/USDC/USDT',
+  'stkcvxeusd3crv-f': 'Convex eUSD/FRAXBP',
+  'stkcvxmim-3lp3crv-f': 'Convex MIM/3CRV',
+  ws3crv: 'Curve DAI/USDC/USDT',
+  weusdfraxbp: 'Curve eUSD/FRAXBP',
+  wmim3crv: 'Curve MIM/3CRV',
+  sdai: 'Savings DAI',
+  cbeth: 'Coinbase ETH',
+  'mrp-ausdt': 'Morpho AAVE USDT',
+  'mrp-ausdc': 'Morpho AAVE USDC',
+  'mrp-adai': 'Morpho AAVE DAI',
+  'mrp-awbtc': 'Morpho AAVE WBTC',
+  'mrp-aweth': 'Morpho AAVE WETH',
+  'mrp-asteth': 'Morpho AAVE Staked ETH',
+  sabasusdbc: 'AAVE Base USDC',
+  wsgusdbc: 'Stargate Base USDC',
 }

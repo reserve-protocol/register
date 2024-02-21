@@ -40,6 +40,7 @@ export interface ListedToken {
 }
 
 // TODO: Cache only while the list is short
+// TODO: Use this as cache and use it as soon as a listed token is selected, 99% of the use cases
 const tokenListAtom = atom<ListedToken[]>([])
 
 const tokenListQuery = gql`

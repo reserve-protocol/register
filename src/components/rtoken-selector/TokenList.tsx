@@ -1,20 +1,16 @@
 import styled from '@emotion/styled'
-import { Trans } from '@lingui/macro'
 import TokenItem from 'components/token-item'
 import { useAtomValue } from 'jotai'
 import { memo } from 'react'
-import { Box, Divider, Flex, Text } from 'theme-ui'
-import BackHomeIcon from '../icons/BackHomeIcon'
+import { Box, Flex } from 'theme-ui'
 import availableTokensAtom from './atoms'
 
 const ActionItem = styled(Flex)`
   padding: 16px;
   cursor: pointer;
-  border-left: 2px solid var(--theme-ui-colors-background);
 
   &:hover {
-    background-color: var(--theme-ui-colors-contentBackground);
-    border-left: 2px solid var(--theme-ui-colors-primary);
+    background-color: var(--theme-ui-colors-secondary);
   }
 `
 

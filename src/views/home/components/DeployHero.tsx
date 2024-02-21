@@ -23,6 +23,7 @@ const DeployHero = (props: BoxProps) => {
       variant="layout.verticalAlign"
       sx={{
         border: '1px dashed',
+        background: 'background',
         borderRadius: borderRadius.boxes,
         borderColor: 'rBlue',
       }}

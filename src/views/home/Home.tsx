@@ -1,30 +1,42 @@
-import { useAtom } from 'jotai'
-import { useEffect } from 'react'
-import { selectedRTokenAtom } from 'state/atoms'
-import Hero from './components/Hero'
+import { Box, useColorMode } from 'theme-ui'
 import CompareTokens from './components/CompareTokens'
+import Hero from './components/Hero'
 import RegisterAbout from './components/RegisterAbout'
+
+const HeroBackground = () => {
+  const [colorMode] = useColorMode()
+  const url =
+    colorMode === 'dark'
+      ? '/imgs/bg-compare-dark.png'
+      : '/imgs/bg-compare-light.png'
+
+  return (
+    <Box
+      sx={{
+        width: '100%',
+        height: '476px',
+        top: 0,
+        zIndex: -1,
+        position: 'absolute',
+        background: `url(${url}) no-repeat`,
+        backgroundSize: 'cover',
+        borderBottom: '3px solid',
+        borderColor: 'borderFocused',
+      }}
+    />
+  )
+}
 
 /**
  * Main home screen
  */
-const Home = () => {
-  const [token, setToken] = useAtom(selectedRTokenAtom)
-
-  // Unselect rToken if on this view ("back" browser action for example)
-  useEffect(() => {
-    if (token) {
-      setToken(null)
-    }
-  }, [])
-
-  return (
-    <>
-      <Hero />
-      <CompareTokens />
-      <RegisterAbout />
-    </>
-  )
-}
+const Home = () => (
+  <Box sx={{ position: 'relative' }}>
+    <HeroBackground />
+    <Hero />
+    <CompareTokens />
+    <RegisterAbout />
+  </Box>
+)
 
 export default Home

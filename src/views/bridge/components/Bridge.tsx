@@ -1,22 +1,23 @@
 import { Card } from 'components'
 import { ArrowDown } from 'react-feather'
+import { boxShadow } from 'theme'
 import { Box, Divider } from 'theme-ui'
 import BridgeHeader from './BridgeHeader'
 import BridgeInput from './BridgeInput'
 import BridgeOutput from './BridgeOutput'
 import ConfirmBridge from './ConfirmBridge'
-import { boxShadow } from 'theme'
 
 const Bridge = () => (
   <Card
     p={0}
     sx={{
-      backgroundColor: 'contentBackground',
+      backgroundColor: 'backgroundNested',
+      position: 'relative',
       height: 'fit-content',
       width: ['100vw', 525],
       boxShadow: ['none', boxShadow],
-      border: ['none', '2px solid'],
-      borderColor: ['none', 'darkBorder'],
+      border: ['none', '3px solid'],
+      borderColor: ['none', 'borderFocused'],
     }}
   >
     <BridgeHeader />

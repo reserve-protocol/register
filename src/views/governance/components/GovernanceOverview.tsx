@@ -15,7 +15,7 @@ import {
   walletAtom,
 } from 'state/atoms'
 import { Box, Grid, Image, Text } from 'theme-ui'
-import { formatCurrency } from 'utils'
+import { formatCurrency, getTokenRoute } from 'utils'
 import { ROUTES } from 'utils/constants'
 import { formatEther, formatEther as formatEtherViem } from 'viem'
 import RolesView from 'views/settings/components/RolesView'
@@ -99,7 +99,7 @@ const GovernanceOverview = () => {
             <IconInfo
               icon={<Image src="/svgs/proposals.svg" />}
               title={t`All time`}
-              text={formatCurrency(stats.proposals)}
+              text={formatCurrency(stats.proposals, 0)}
             />
           </Box>
           <Box p={4} sx={{ borderBottom: '1px solid', borderColor: 'border' }}>
@@ -109,7 +109,7 @@ const GovernanceOverview = () => {
             <IconInfo
               icon={<Image src="/svgs/vote-supply.svg" />}
               title={t`Current`}
-              text={formatCurrency(stats.totalTokenSupply)}
+              text={formatCurrency(stats.totalTokenSupply, 0)}
             />
           </Box>
           <Box p={4} sx={{ borderRight: '1px solid', borderColor: 'border' }}>
@@ -119,7 +119,7 @@ const GovernanceOverview = () => {
             <IconInfo
               icon={<Image src="/svgs/voting-addresses.svg" />}
               title={t`Current`}
-              text={formatCurrency(stats.totalDelegates)}
+              text={formatCurrency(stats.totalDelegates, 0)}
             />
           </Box>
           <Box p={4} sx={{ borderBottom: '1px solid', borderColor: 'border' }}>
@@ -160,11 +160,9 @@ const GovernanceOverview = () => {
         <SmallButton
           mt={3}
           variant="muted"
-          onClick={() =>
-            navigate(`${ROUTES.SETTINGS}?token=${rToken?.address}`)
-          }
+          onClick={() => window.open('https://forum.reserve.org/', '_blank')}
         >
-          <Trans>Settings</Trans>
+          <Trans>Governance forum</Trans>
         </SmallButton>
         <SmallButton
           mt={3}

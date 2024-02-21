@@ -50,7 +50,7 @@ const CollateralPieChartWrapper: FC<Props> = ({ token }) => {
           transition: 'background-color 0.3s ease, border-radius 0.3s ease',
           '&:hover': {
             borderRadius: '10px',
-            backgroundColor: 'border',
+            backgroundColor: 'backgroundNested',
             cursor: 'pointer',
           },
         }}

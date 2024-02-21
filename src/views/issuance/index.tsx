@@ -86,7 +86,7 @@ const Issuance = () => {
   return (
     <>
       <WrapSidebar />
-      <Container pb={[1, 4]}>
+      <Box variant="layout.tokenView">
         <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[1, 5]}>
           <Box>
             <ZapOverview />
@@ -120,7 +120,7 @@ const Issuance = () => {
             <About />
           </Box>
         </Grid>
-      </Container>
+      </Box>
     </>
   )
 }

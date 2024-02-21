@@ -11,18 +11,16 @@ const Auctions = () => {
   const platform = useAtomValue(auctionPlatformAtom)
 
   return (
-    <Box variant="layout.wrapper">
-      <Box variant="layout.containerCompact">
-        <AuctionsHeader />
-        <Divider my={4} />
-        {platform === TradeKind.BatchTrade ? (
-          <BatchAuctions />
-        ) : (
-          <DutchAuctions />
-        )}
-        <Divider my={6} />
-        <About />
-      </Box>
+    <Box variant="layout.tokenView">
+      <AuctionsHeader />
+      <Divider my={4} />
+      {platform === TradeKind.BatchTrade ? (
+        <BatchAuctions />
+      ) : (
+        <DutchAuctions />
+      )}
+      <Divider my={6} />
+      <About />
       <AuctionsSidebar />
     </Box>
   )

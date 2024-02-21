@@ -60,10 +60,11 @@ const FilterOptions = () => {
 
   return (
     <Box
-      sx={{ borderRadius: borderRadius.boxes, background: 'border' }}
+      sx={{ borderRadius: borderRadius.inputs, background: 'inputBackground' }}
       variant="layout.verticalAlign"
-      mx={3}
-      p={1}
+      ml={2}
+      mr={1}
+      p={'2px'}
     >
       {options.map(({ text, icon }, index) => (
         <Box
@@ -71,7 +72,8 @@ const FilterOptions = () => {
           role="button"
           sx={{
             cursor: 'pointer',
-            backgroundColor: index === selected ? 'background' : 'transparent',
+            backgroundColor:
+              index === selected ? 'backgroundNested' : 'transparent',
             width: ['40px', 'auto'],
             height: '32px',
             borderRadius: borderRadius.inner,
@@ -127,10 +129,10 @@ const TableFilters = () => {
     >
       <SearchInput
         placeholder="Search pool"
-        p={2}
+        p={1}
         value={search}
         onChange={setSearch}
-        sx={{ maxWidth: ['auto', 200, 160], borderRadius: borderRadius.boxes }}
+        sx={{ maxWidth: ['auto', 200, 160], borderRadius: borderRadius.inputs }}
       />
       <FilterOptions />
     </Box>

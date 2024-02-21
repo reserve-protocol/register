@@ -1,17 +1,16 @@
 import styled from '@emotion/styled'
 import { Trans } from '@lingui/macro'
-import { SmallButton } from 'components/button'
+import Button from 'components/button'
 import MenuIcon from 'components/icons/MenuIcon'
-import WalletIcon from 'components/icons/WalletIcon'
 import { MouseoverTooltipContent } from 'components/tooltip'
 import { txSidebarToggleAtom } from 'components/transactions/manager/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { ReactNode } from 'react'
 import { AlertCircle, Power } from 'react-feather'
 import { Box, Card, Flex, Spinner, Text } from 'theme-ui'
-
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { chainIdAtom } from 'state/atoms'
+import ChainLogo from 'components/icons/ChainLogo'
+import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
 import { isTransactionRunning } from 'state/chain/atoms/transactionAtoms'
 
 const Container = styled(Box)`
@@ -73,13 +72,15 @@ const Account = () => {
   const setVisible = useSetAtom(txSidebarToggleAtom)
   const isProcessing = useAtomValue(isTransactionRunning)
   const chainId = useAtomValue(chainIdAtom)
+  const isTokenSelected = !!useAtomValue(selectedRTokenAtom)
 
   return (
     <ConnectButton.Custom>
       {({ account, chain, openConnectModal, mounted }) => {
         const ready = mounted
         const connected = ready && account && chain
-        const invalidChain = connected && chain.id !== chainId
+        const invalidChain =
+          isTokenSelected && connected && chain.id !== chainId
 
         return (
           <Box
@@ -95,9 +96,11 @@ const Account = () => {
             {(() => {
               if (!connected) {
                 return (
-                  <SmallButton
+                  <Button
                     variant="accentAction"
                     onClick={openConnectModal}
+                    px={2}
+                    py={1}
                   >
                     <Box
                       sx={{ display: ['flex', 'none'] }}
@@ -109,7 +112,7 @@ const Account = () => {
                     <Text sx={{ display: ['none', 'block'] }}>
                       <Trans>Connect</Trans>
                     </Text>
-                  </SmallButton>
+                  </Button>
                 )
               }
 
@@ -121,7 +124,7 @@ const Account = () => {
                 >
                   <Container onClick={() => setVisible(true)}>
                     {!invalidChain ? (
-                      <WalletIcon />
+                      <ChainLogo chain={chain.id} />
                     ) : (
                       <AlertCircle fill="#FF0000" color="#fff" />
                     )}

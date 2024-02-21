@@ -1,4 +1,4 @@
-# Register
+# Reserve Register
 
 An open source interface for the [Reserve Protocol](https://github.com/reserve-protocol/protocol)
 
@@ -6,7 +6,7 @@ Enabling users to:
 
 - Create new RTokens
 - View/use existing RTokens and related metrics
-- Mint/Issue RTokens (RSV included)
+- Mint/Issue RTokens
 - Stake/Unstake to get yield with an RToken
 - Govern and manage RTokens
 
@@ -24,35 +24,19 @@ npm start
 
 Please go to [this repository](https://github.com/reserve-protocol/rtokens) and create a pull request with the token you want to add following the instructions of the README.
 
-## Run end-to-end test
+## Forknet setup
 
-You need to install [Anvil](https://github.com/foundry-rs/foundry/blob/master/anvil/README.md).
-
-Setup `playwright` headless browsers using the following command:
+Add and fill the following environment variables with your mainnet forknet environment
 
 ```
-yarn playwright install --with-deps
+VITE_MAINNET_URL=
+
+// Optional but required for full feature support
+VITE_SUBGRAPH_URL=
 ```
 
-Then run the test:
-
-```
-# Generate the RToken data (collaterals, balance slot & allowance slot)
-yarn tsx tests/getRTokens.ts > tests/RTokens.json
-# Run e2e for AAVE Wrapper
-yarn playwright test tests/AAVEWrapper.gui.ts --trace on
-# Run e2e for Convex Staking Wrapper
-yarn playwright test tests/ConvexStakingWrapper.gui.ts --trace on
-# Run the test for all RToken
-yarn playwright test tests/RToken.gui.ts --trace on
-```
-
-Use the following command to view the test trace:
-
-```
-yarn playwright show-trace test-results/RToken.gui.ts-Mint-RToken-0xE72B141DF173b999AE7c1aDcbF60Cc9833Ce56a8-chromium/trace.zip
-```
+Related subgraph [here](https://github.com/reserve-protocol/reserve-subgraph)
 
 ## Contributing
 
-Fork this repository and create a pull request against the `development` branch
+Fork this repository and create a pull request against the `master` branch

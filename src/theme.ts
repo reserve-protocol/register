@@ -13,17 +13,15 @@ export const centeredContent = {
 export const borderRadius = {
   inputs: 6,
   boxes: 14,
-  inner: '10px',
+  inner: '4px',
 }
 export const baseButton = {
-  borderRadius: 50,
+  borderRadius: borderRadius.inputs,
   fontWeight: 500,
   cursor: 'pointer',
   color: '#fff',
   backgroundColor: 'primary',
-  padding: '14px',
-  paddingLeft: 4,
-  paddingRight: 4,
+  padding: '12px 16px',
 
   '&:hover': {
     filter: 'brightness(0.85)',
@@ -88,21 +86,31 @@ export const colors = {
   invertedText: '#FFFFFF',
   secondaryText: '#666666',
   lightText: '#808080',
-  background: '#FFFFFF',
+  background: '#FEFBF8',
+  backgroundNested: '#FEFBF8',
+  focusedBackground: '#FFFFFF',
+  inputBackground: '#E5E5E5',
+  // contentBackground: '#F9F8F4',
+  lightGrey: '#f2f2f2',
+  contentBackground: '#F9EDDD',
   reserveBackground: '#F9EDDD',
-  contentBackground: '#F9F8F4',
   contentLightBackground: 'rgba(249, 248, 244, 0.5)',
-  primary: '#000000',
+  primary: '#2150A9',
   success: '#11BB8D',
   accentAction: '#106D46',
   accentBG: '#DBE9E4',
   accentText: '#00814B',
   secondary: '#E8E8E8',
-  rBlue: '#2150A9',
+  secondaryBackground: '#E5E5E5',
+  rBlue: '#2150A9', // TODO: Remove in favor for accent
+  accent: '#2150A9',
+  accentInverted: '#2150A9', // Change to white on darkmode
   rBlueLight: '#DBE3F1',
-  border: '#efefef',
+  border: '#f2f2f2',
+  borderFocused: '#F8EDDA',
+  borderSecondary: '#E0D5C7',
   darkBorder: '#E5E5E5',
-  inputBorder: '#E5E5E5',
+  inputBorder: '#D5D5D5',
   info: '#20678E',
   infoBG: 'rgba(32, 103, 142, 0.15)',
   disabled: '#D9D9D9',
@@ -113,24 +121,30 @@ export const colors = {
   modalOverlay: 'rgba(0, 0, 0, 0.2)',
   modes: {
     dark: {
-      text: '#e4dede',
+      accentInverted: '#fff',
+      text: '#E4DEDE',
       shadow: 'rgba(0, 0, 0, 0.2)',
       rBlueLight: '#0D1321',
       secondaryText: '#969696',
-      invertedText: '#FFFFFF',
-      lightText: '#6f6666',
-      background: '#090707',
+      invertedText: '#171515',
+      lightText: '#6F6666',
+      background: '#0C0C0B',
       reserveBackground: '#171311',
-      contentBackground: '#171311',
+      contentBackground: '#11100F',
+      secondaryBackground: '#262321',
       contentLightBackground: 'rgba(15, 14, 13, 0.5)',
-      primary: '#6D3210',
-      secondary: '#33261f',
-      disabled: '#231f1f',
+      primary: '#2150A9',
+      secondary: '#262321',
+      backgroundNested: '#181715',
+      focusedBackground: '#262321',
+      inputBackground: '#000000',
+      disabled: '#242424',
       accentAction: '#106D46',
       accentBG: '#041B11',
-      border: '#1A1A1A',
-      darkBorder: '#241c19',
-      inputBorder: '#2c2521',
+      border: '#272625',
+      borderFocused: '#2B2723',
+      darkBorder: '#343230',
+      inputBorder: '#403C39',
       success: '#75FBC3',
       info: '#20678E',
       infoBG: 'rgba(32, 103, 142, 0.4)',
@@ -147,8 +161,8 @@ export const theme: Theme = {
   breakpoints: ['52em', '64em', '72em', '100em'],
   space: [0, 4, 8, 16, 24, 32, 40, 48, 80, 256], // 0-9
   fonts: {
-    body: 'Satoshi, sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,  "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
-    heading: 'inherit',
+    body: 'Satoshi, sans-serif, -apple-system, BlinkMacSystemFont',
+    // heading: 'inherit',
     monospace: 'Menlo, monospace',
     fontDisplay: 'swap',
   },
@@ -165,7 +179,7 @@ export const theme: Theme = {
   colors,
   text: {
     heading: {
-      fontFamily: 'heading',
+      // fontFamily: 'heading',
       lineHeight: 'heading',
       fontWeight: 'heading',
     },
@@ -199,6 +213,10 @@ export const theme: Theme = {
       fontWeight: 500,
       display: 'block',
     },
+    bold: {
+      fontWeight: 700,
+      display: 'block',
+    },
     primary: {
       color: 'text',
     },
@@ -210,6 +228,9 @@ export const theme: Theme = {
     },
     legend: {
       color: 'secondaryText',
+    },
+    accent: {
+      color: 'accent',
     },
     muted: {
       color: 'muted',
@@ -249,6 +270,8 @@ export const theme: Theme = {
     },
     h2: {
       variant: 'text.heading',
+      fontWeight: 500,
+      color: 'red',
       fontSize: 4,
     },
     h3: {
@@ -293,7 +316,7 @@ export const theme: Theme = {
       // '&::-webkit-scrollbar': {
       //   display: 'none',
       // },
-      scrollbarWidth: 'none',
+      // scrollbarWidth: 'none',
 
       p: {
         m: 0,
@@ -382,6 +405,22 @@ export const theme: Theme = {
       padding: 3,
       backgroundColor: 'contentBackground',
     },
+    inner: {
+      borderRadius: borderRadius.inputs,
+      padding: 0,
+      width: '100%',
+      height: 'fit-content',
+      backgroundColor: 'backgroundNested',
+    },
+    section: {
+      borderRadius: 0,
+      padding: 4,
+      width: '100%',
+      background: 'background',
+      ':hover': {
+        background: 'border',
+      },
+    },
   },
   buttons: {
     primary: baseButton,
@@ -391,28 +430,27 @@ export const theme: Theme = {
     },
     accent: {
       ...baseButton,
-      backgroundColor: 'accentBG',
+      backgroundColor: 'accent',
     },
     accentAction: {
       ...baseButton,
-      backgroundColor: 'accentBG',
-      border: '1px solid',
-      borderColor: 'accentAction',
-      color: 'accentText',
-      fontWeight: 500,
+      backgroundColor: 'accent',
+      color: '#fff',
+      fontWeight: 700,
 
       '&:hover': {
-        color: 'text',
-        borderColor: 'text',
-        boxShadow: '0px 3px 10px rgba(0, 0, 0, 0.05)',
+        fontWeight: 700,
       },
     },
     bordered: {
       ...baseButton,
-      border: '1px solid',
+      outline: '1px solid',
       borderColor: 'primary',
-      color: 'primary',
+      color: 'accentInverted',
       backgroundColor: 'transparent',
+      '&:hover': {
+        backgroundColor: 'focusedBackground',
+      },
     },
     transparent: {
       ...baseButton,
@@ -540,7 +578,7 @@ export const theme: Theme = {
     },
     sticky: {
       position: 'sticky',
-      top: ['72px', '168px', '184px'],
+      top: 0,
     },
     stickyNoHeader: {
       position: 'sticky',
@@ -551,6 +589,15 @@ export const theme: Theme = {
       height: '4px',
       width: '4px',
       backgroundColor: 'lightText',
+    },
+    tokenView: {
+      width: '100%',
+      p: [1, 4],
+    },
+    sectionDivider: {
+      mx: [-1, -3, -3, -3, -6],
+      my: [3, 5],
+      borderColor: 'border',
     },
   },
 }

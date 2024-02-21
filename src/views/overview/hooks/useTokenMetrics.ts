@@ -28,7 +28,7 @@ const useTokenMetrics = (rTokenAddress: Address) => {
 
   return useMemo(() => {
     return {}
-  }, [rTokenPrice, rsrPrice, JSON.stringify(data)])
+  }, [rTokenPrice, rsrPrice, data])
 }
 
 export default useTokenMetrics

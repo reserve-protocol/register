@@ -38,9 +38,10 @@ const SelectedToken = () => {
       <Box variant="layout.verticalAlign">
         <CirclesIcon />
         <Text
-          ml={2}
+          ml={1}
           sx={{
             display: ['none', 'flex'],
+            color: 'secondaryText',
           }}
         >
           <Trans>RTokens</Trans>

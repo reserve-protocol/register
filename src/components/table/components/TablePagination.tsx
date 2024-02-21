@@ -38,7 +38,7 @@ const TablePagination = ({ table, totalCount }: TablePaginationProps) => {
             </Box>
             <Box variant="table.pagination.navigation.button" mr={2}>
               <SmallButton
-                variant="primary"
+                variant="accent"
                 onClick={() => table.previousPage()}
                 disabled={!canPreviousPage}
               >
@@ -47,7 +47,7 @@ const TablePagination = ({ table, totalCount }: TablePaginationProps) => {
             </Box>
             <Box variant="table.pagination.navigation.button" mr={2}>
               <SmallButton
-                variant="primary"
+                variant="accent"
                 onClick={() => table.nextPage()}
                 disabled={!canNextPage}
               >

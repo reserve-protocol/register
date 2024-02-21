@@ -18,6 +18,7 @@ const Overlay = (props: BoxProps) => (
       left: 0,
       bottom: 0,
       top: 0,
+      zIndex: 1,
       overflow: 'auto',
       background: 'modalOverlay',
     }}

@@ -1,12 +1,14 @@
 import { Trans, t } from '@lingui/macro'
 import { Button } from 'components'
-import { useAtom, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { Box, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
 import { bridgeAmountAtom, isBridgeWrappingAtom } from '../atoms'
 import useScrollTo from 'hooks/useScrollTo'
+import { walletChainAtom } from 'state/atoms'
+import { useSwitchNetwork } from 'wagmi'
 
 const Tab = ({
   title,
@@ -40,19 +42,24 @@ const Tab = ({
 )
 
 const BridgeHeader = () => {
+  const { switchNetwork } = useSwitchNetwork()
+  const walletChain = useAtomValue(walletChainAtom)
   const setAmount = useSetAtom(bridgeAmountAtom)
-  const [searchParams, setSearchParams] = useSearchParams()
   const [isWrapping, setWrapping] = useAtom(isBridgeWrappingAtom)
   const scroll = useScrollTo('bridge-faq')
 
   // Trigger wallet switch for users
   useEffect(() => {
-    if (isWrapping) {
-      searchParams.set('chainId', ChainId.Mainnet.toString())
-    } else {
-      searchParams.set('chainId', ChainId.Base.toString())
+    if (switchNetwork) {
+      if (isWrapping && walletChain !== ChainId.Mainnet) {
+        switchNetwork(ChainId.Mainnet)
+      }
+
+      if (!isWrapping && walletChain !== ChainId.Base) {
+        switchNetwork(ChainId.Base)
+      }
     }
-    setSearchParams(searchParams, { replace: true })
+
     setAmount('')
   }, [isWrapping])
 

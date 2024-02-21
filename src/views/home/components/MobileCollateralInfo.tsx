@@ -31,7 +31,7 @@ const MobileCollateralInfo = ({ token }: Props) => {
         width: '100%',
       }}
     >
-      <Divider sx={{ width: '100%' }} />
+      <Divider my={3} sx={{ borderColor: 'darkBorder', width: '100%' }} />
       <Box
         variant="layout.verticalAlign"
         sx={{
@@ -73,7 +73,7 @@ const MobileCollateralInfo = ({ token }: Props) => {
           variant="layout.centered"
           sx={{ gap: 2, width: '100%', display: ['flex', 'none'] }}
         >
-          <Divider sx={{ width: '100%' }} />
+          <Divider sx={{ borderColor: 'darkBorder', width: '100%' }} />
           <CollateralPieChartTooltip token={token} />
           {/* <Button
             medium

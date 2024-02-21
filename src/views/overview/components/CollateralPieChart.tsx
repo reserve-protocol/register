@@ -13,7 +13,6 @@ interface ChartProps extends BoxProps {
     projectColor: string
   }[]
   staked: number
-  isRSV?: boolean
   logo: string
   topInformation?: ReactNode
   bottomInformation?: ReactNode
@@ -31,7 +30,6 @@ const MIN_VALUE = 0.1
 const CollateralChart: FC<ChartProps> = ({
   data,
   logo,
-  isRSV,
   staked,
   topInformation,
   bottomInformation,
@@ -118,22 +116,21 @@ const CollateralChart: FC<ChartProps> = ({
             {showTooltip && (
               <Tooltip
                 wrapperStyle={{ zIndex: 10 }}
-                formatter={(value) => formatPercentage(Number(value), 4)}
+                formatter={(value) => formatPercentage(Number(value), 2)}
               />
             )}
-            {!isRSV && (
-              <Pie
-                dataKey="value"
-                data={[{ value: staked, name: 'Overcollaterization' }]}
-                cx="50%"
-                cy="50%"
-                innerRadius={75}
-                outerRadius={80}
-                fill="currentColor"
-                stroke="none"
-                {...getAngles(staked)}
-              />
-            )}
+
+            <Pie
+              dataKey="value"
+              data={[{ value: staked, name: 'Overcollaterization' }]}
+              cx="50%"
+              cy="50%"
+              innerRadius={75}
+              outerRadius={80}
+              fill="currentColor"
+              stroke="none"
+              {...getAngles(staked)}
+            />
           </PieChart>
         </ResponsiveContainer>
       </Box>
