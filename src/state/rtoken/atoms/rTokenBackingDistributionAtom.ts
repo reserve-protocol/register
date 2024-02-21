@@ -88,7 +88,7 @@ export const rTokenCollateralDetailedAtom = atom((get) => {
   if (
     !rToken ||
     !distribution ||
-    !supply ||
+    supply === undefined ||
     !price ||
     !Object.keys(yields).length
   ) {
