@@ -160,15 +160,9 @@ const GovernanceOverview = () => {
         <SmallButton
           mt={3}
           variant="muted"
-          onClick={() =>
-            navigate(
-              rToken
-                ? getTokenRoute(rToken.address, chainId, ROUTES.SETTINGS)
-                : '/'
-            )
-          }
+          onClick={() => window.open('https://forum.reserve.org/', '_blank')}
         >
-          <Trans>Settings</Trans>
+          <Trans>Governance forum</Trans>
         </SmallButton>
         <SmallButton
           mt={3}
