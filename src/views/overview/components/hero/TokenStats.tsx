@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro'
 import StakedIcon from 'components/icons/StakedIcon'
-import { CurrentRTokenLogo } from 'components/icons/TokenLogo'
 import { atom, useAtomValue } from 'jotai'
 import { rTokenPriceAtom, rTokenStateAtom, rsrPriceAtom } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
@@ -49,7 +48,6 @@ const TokenMetrics = () => {
 
 const TokenStats = () => (
   <Box>
-    <CurrentRTokenLogo mb={3} width={40} />
     <TokenMetrics />
     <OverviewActions />
   </Box>
