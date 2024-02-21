@@ -1948,7 +1948,7 @@ msgid "Reward ratio"
 msgstr ""
 
 #: src/components/rtoken-setup/token/OtherForm.tsx:76
-msgid "Reward ratio - amount of the current reward amount that should be handed out in a single block. The default corresponds to a half life of approximately 30 blocks."
+msgid "Reward ratio - amount of the current reward amount that should be handed out in a single block. The default corresponds to a half life of approximately 15 days."
 msgstr ""
 
 #: src/components/rtoken-setup/token/OtherForm.tsx:74
