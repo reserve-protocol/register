@@ -119,25 +119,42 @@ export const zapperLoaded = atom(async (get) => {
   return true
 })
 
+const ethFirst = new Set([
+  '0xcb327b99ff831bf8223cced12b1338ff3aa322ff',
+  '0xe72b141df173b999ae7c1adcbf60cc9833ce56a8',
+])
+
 export const zappableTokens = atom(async (get) => {
   const uni = get(resolvedZapState)
+  const rToken = get(rTokenAtom)
 
-  if (uni == null) {
+  if (uni == null || rToken == null) {
     return []
   }
-  const commonTokens = uni.commonTokens as Record<string, Token>
-  return [
-    uni.nativeToken,
 
+  const commonTokens = uni.commonTokens as Record<string, Token>
+  if (ethFirst.has(rToken.address.toLowerCase())) {
+    return [
+      uni.nativeToken,
+      commonTokens.cbETH,
+      commonTokens.wstETH,
+      commonTokens.USDbC,
+      commonTokens.USDC,
+      commonTokens.USDT,
+      commonTokens.DAI,
+      commonTokens.WBTC,
+      commonTokens.FRAX,
+    ].filter((tok) => tok != null)
+  }
+  return [
     commonTokens.USDbC,
     commonTokens.USDC,
     commonTokens.USDT,
     commonTokens.DAI,
+    commonTokens.FRAX,
+    uni.nativeToken,
     commonTokens.WBTC,
-    commonTokens.WETH,
-    commonTokens.MIM,
     commonTokens.cbETH,
     commonTokens.wstETH,
-    commonTokens.FRAX,
   ].filter((tok) => tok != null)
 })
