@@ -7,6 +7,7 @@ import { useAtomValue } from 'jotai'
 import { useMemo, useState } from 'react'
 import { ChevronDown } from 'react-feather'
 import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
+import { rTokenMetaAtom } from 'state/rtoken/atoms/rTokenAtom'
 import { Box, Text } from 'theme-ui'
 import { shortenAddress } from 'utils'
 import { BRIDGED_RTOKENS } from 'utils/constants'
@@ -54,11 +55,11 @@ const BridgeTokenList = () => {
 
 const TokenAddresses = () => {
   const [isVisible, setVisible] = useState(false)
-  const current = useAtomValue(selectedRTokenAtom)
+  const rToken = useAtomValue(rTokenMetaAtom)
   const chainId = useAtomValue(chainIdAtom)
   const availableChains = useMemo(() => {
     const chains = [chainId]
-    const bridged = BRIDGED_RTOKENS[chainId]?.[current ?? '']
+    const bridged = BRIDGED_RTOKENS[chainId]?.[rToken?.address ?? '']
 
     if (bridged) {
       for (const token of bridged) {
@@ -67,7 +68,7 @@ const TokenAddresses = () => {
     }
 
     return chains
-  }, [current, chainId])
+  }, [rToken?.address, chainId])
   const isBridged = availableChains.length > 1
 
   return (
@@ -89,15 +90,19 @@ const TokenAddresses = () => {
       >
         <StackedChainLogo chains={availableChains} />
         <Text mr={2} variant="legend">
-          {!!current && shortenAddress(current)}
+          {!!rToken && shortenAddress(rToken.address)}
         </Text>
         {isBridged && <ChevronDown size={16} />}
-        {!isBridged && current && (
+        {!isBridged && rToken && (
           <>
-            <CopyValue mr={1} ml="auto" value={current} />
+            <CopyValue mr={1} ml="auto" value={rToken.address} />
             <GoTo
               style={{ position: 'relative', top: '2px' }}
-              href={getExplorerLink(current, chainId, ExplorerDataType.TOKEN)}
+              href={getExplorerLink(
+                rToken.address,
+                chainId,
+                ExplorerDataType.TOKEN
+              )}
             />
           </>
         )}

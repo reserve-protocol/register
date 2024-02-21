@@ -189,12 +189,12 @@ const TokenNavigation = () => {
       },
       {
         icon: <IssuanceIcon />,
-        label: t`Issuance`,
+        label: t`Mint`,
         route: ROUTES.ISSUANCE,
       },
       {
         icon: <StakeIcon />,
-        label: t`Staking`,
+        label: t`Stake`,
         route: ROUTES.STAKING,
       },
       {
