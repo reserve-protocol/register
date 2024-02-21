@@ -136,6 +136,8 @@ export const zappableTokens = atom(async (get) => {
     commonTokens.WBTC,
     commonTokens.WETH,
     commonTokens.MIM,
+    commonTokens.cbETH,
+    commonTokens.wstETH,
     commonTokens.FRAX,
   ].filter((tok) => tok != null)
 })
