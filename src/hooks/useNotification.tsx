@@ -9,7 +9,7 @@ export const notifySuccess = (title: string, subtitle: string) =>
       title={title}
       subtitle={subtitle}
       toastId={t.id}
-      icon={<AlertCircle stroke="var(--theme-ui-colors-text" />}
+      icon={<Check stroke="var(--theme-ui-colors-text" />}
     />
   ))
 
@@ -19,7 +19,7 @@ export const notifyError = (title: string, subtitle: string) =>
       title={title}
       subtitle={subtitle}
       toastId={t.id}
-      icon={<Check stroke="var(--theme-ui-colors-text" />}
+      icon={<AlertCircle stroke="var(--theme-ui-colors-text" />}
     />
   ))
 
