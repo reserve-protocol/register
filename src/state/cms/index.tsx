@@ -120,7 +120,6 @@ const setCollateralsMetadataAtom = atom(
         },
       }
     }
-    console.log('data', collateralData)
     set(collateralsMetadataAtom, collateralData)
   }
 )

@@ -4,7 +4,7 @@ const Logo = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={120}
-    height="auto"
+    height={33}
     viewBox="0 0 98 27"
     fill="none"
     {...props}

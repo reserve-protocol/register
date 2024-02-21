@@ -30,7 +30,7 @@ const dataAtom = atom((get) => {
   for (const collateral of collaterals) {
     const meta = metadata[collateral.symbol.toLowerCase().replace('-vault', '')]
 
-    if (meta.protocol) {
+    if (meta?.protocol) {
       if (platformDetails[meta.protocol.name]) {
         platformDetails[meta.protocol.name].distribution +=
           collateral.distribution
