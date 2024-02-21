@@ -130,7 +130,24 @@ export default {
       color: "#2775CA",
       logo: "svgs/sausdc.svg",
       tokenDistribution: [{ token: "USDC", distribution: 1 }]
-    }
+    },
+
+    {
+      symbol: 'wstETH',
+      chain: 8453,
+      project: 'LDO',
+      color: '#627EEA',
+      logo: 'svgs/wsteth.svg',
+      tokenDistribution: [{ token: 'ETH', distribution: 1 }],
+    },
+    {
+      symbol: 'cbETH',
+      chain: 8453,
+      project: 'COINBASE',
+      color: '#0052ff',
+      logo: 'svgs/cbeth.svg',
+      tokenDistribution: [{ token: 'ETH', distribution: 1 }],
+    },
   ],
   projects: [
     {
