@@ -30,6 +30,9 @@ export interface TransactionRecord {
   from: {
     id: string
   }
+  to: {
+    id: string
+  }
   token: {
     symbol: string
   }
@@ -50,6 +53,9 @@ const rTokenTransactionsQuery = gql`
       amountUSD
       hash
       from {
+        id
+      }
+      to {
         id
       }
       token {
@@ -134,7 +140,12 @@ const useTransactionColumns = () => {
               target="_blank"
               mr="2"
             >
-              {shortenAddress(data.getValue())}
+              {shortenAddress(
+                data.row.original.type === 'MINT' ||
+                  data.row.original.type === 'ISSUE'
+                  ? data.row.original.to.id
+                  : data.getValue()
+              )}
             </Link>
             <DebankIcon />
           </Box>
