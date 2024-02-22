@@ -40,6 +40,7 @@ const useRTokenContext = () => {
   const setRToken = useSetAtom(rTokenMetaAtom)
   const selected = useAtomValue(selectedRTokenAtom)
 
+  // TODO: This hook triggers unexpected re-renders, fixed on wagmiv2
   const unlistedToken = useContractReads({
     allowFailure: false,
     enabled: !rToken,
@@ -81,9 +82,11 @@ const useRTokenContext = () => {
   }, [rToken?.address])
 
   useEffect(() => {
-    if (unlistedToken.isFetched) {
+    if (unlistedToken.isFetched && !rToken) {
       // Valid token set atom
       if (unlistedToken.data && tokenId) {
+        console.log('unlisted?', unlistedToken.data)
+
         const [symbol, name] = unlistedToken.data
 
         setRToken({
