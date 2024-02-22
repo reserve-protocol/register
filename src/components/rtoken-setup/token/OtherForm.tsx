@@ -73,7 +73,7 @@ const OtherForm = (props: BoxProps) => {
       <FormField
         label={t`Reward ratio (decimals)`}
         placeholder={t`stRSR payout fraction 0.0`}
-        help={t`Reward ratio - amount of the current reward amount that should be handed out in a single block. The default corresponds to a half life of approximately 30 blocks.`}
+        help={t`Reward ratio - amount of the current reward amount that should be handed out in a single block. The default corresponds to a half life of approximately 15 days.`}
         mb={3}
         name="rewardRatio"
         options={{
