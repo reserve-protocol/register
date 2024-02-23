@@ -5,7 +5,7 @@ import mixpanel from 'mixpanel-browser'
 import { BrowserRouter as Router, useNavigate } from 'react-router-dom'
 import ChainProvider from 'state/chain'
 import Updater from 'state/updater'
-import { ThemeProvider } from 'theme-ui'
+import { ThemeUIProvider } from 'theme-ui'
 import AppRoutes from './AppRoutes'
 import Layout from './components/layout'
 import LanguageProvider from './i18n'
@@ -45,7 +45,7 @@ const App = () => {
     <Router>
       <Analytics />
       <Redirects />
-      <ThemeProvider theme={theme}>
+      <ThemeUIProvider theme={theme}>
         <LanguageProvider>
           <ChainProvider>
             <Updater />
@@ -56,7 +56,7 @@ const App = () => {
             </Layout>
           </ChainProvider>
         </LanguageProvider>
-      </ThemeProvider>
+      </ThemeUIProvider>
     </Router>
   )
 }
