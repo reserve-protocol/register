@@ -40,25 +40,23 @@ const Redirects = () => {
  *
  * @returns {JSX.Element}
  */
-const App = () => {
-  return (
-    <Router>
-      <Analytics />
-      <Redirects />
-      <ThemeUIProvider theme={theme}>
-        <LanguageProvider>
-          <ChainProvider>
-            <Updater />
-            <TransactionSidebar />
-            <Layout>
-              <ToastContainer />
-              <AppRoutes />
-            </Layout>
-          </ChainProvider>
-        </LanguageProvider>
-      </ThemeUIProvider>
-    </Router>
-  )
-}
+const App = () => (
+  <Router>
+    <Analytics />
+    <Redirects />
+    <ThemeUIProvider theme={theme}>
+      <LanguageProvider>
+        <ChainProvider>
+          <Updater />
+          <TransactionSidebar />
+          <Layout>
+            <ToastContainer />
+            <AppRoutes />
+          </Layout>
+        </ChainProvider>
+      </LanguageProvider>
+    </ThemeUIProvider>
+  </Router>
+)
 
 export default App

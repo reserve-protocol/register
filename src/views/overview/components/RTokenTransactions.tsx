@@ -133,23 +133,26 @@ const useTransactionColumns = () => {
       }),
       columnHelper.accessor('from.id', {
         header: t`From`,
-        cell: (data) => (
-          <Box variant="layout.verticalAlign">
-            <Link
-              href={`https://debank.com/profile/${data.getValue()}`}
-              target="_blank"
-              mr="2"
-            >
-              {shortenAddress(
-                data.row.original.type === 'MINT' ||
-                  data.row.original.type === 'ISSUE'
-                  ? data.row.original.to.id
-                  : data.getValue()
-              )}
-            </Link>
-            <DebankIcon />
-          </Box>
-        ),
+        cell: (data) => {
+          const address =
+            data.row.original.type === 'MINT' ||
+            data.row.original.type === 'ISSUE'
+              ? data.row.original.to.id
+              : data.getValue()
+
+          return (
+            <Box variant="layout.verticalAlign">
+              <Link
+                href={`https://debank.com/profile/${address}`}
+                target="_blank"
+                mr="2"
+              >
+                {shortenAddress(address)}
+              </Link>
+              <DebankIcon />
+            </Box>
+          )
+        },
       }),
       columnHelper.accessor('hash', {
         header: t`Tx Hash`,
