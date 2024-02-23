@@ -5,6 +5,7 @@ import Skeleton from 'react-loading-skeleton'
 import { rTokenAtom, rTokenBackingDistributionAtom } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
 import AssetBreakdown from './AssetBreakdown'
+import RevenueSplitOverview from './RevenueSplitOverview'
 
 // TODO: Localization?
 const pegsAtom = atom((get) => {
@@ -77,6 +78,7 @@ const Backing = () => (
     </Text>
     <BackingResume />
     <AssetBreakdown />
+    <RevenueSplitOverview mt="4" />
   </Box>
 )
 
