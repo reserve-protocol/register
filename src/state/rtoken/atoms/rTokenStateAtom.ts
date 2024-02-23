@@ -9,6 +9,7 @@ import rTokenRevenueSplitAtom from './rTokenRevenueSplitAtom'
 
 export const rTokenStateAtom = atomWithReset({
   tokenSupply: 0,
+  basketsNeeded: 0,
   stTokenSupply: 0,
   exchangeRate: 0,
   issuanceAvailable: 0,

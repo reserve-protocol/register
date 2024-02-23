@@ -30,6 +30,7 @@ type StateMulticallResult = {
         bigint,
         bigint,
         bigint,
+        bigint,
         boolean,
         boolean,
         boolean,
@@ -71,6 +72,10 @@ const RTokenStateUpdater = () => {
       {
         ...rTokenCall,
         functionName: 'totalSupply', // bigint
+      },
+      {
+        ...rTokenCall,
+        functionName: 'basketsNeeded', // bigint
       },
       {
         abi: ERC20,
@@ -153,6 +158,7 @@ const RTokenStateUpdater = () => {
     if (rTokenState?.length) {
       const [
         tokenSupply,
+        basketsNeeded,
         stTokenSupply,
         exchangeRate,
         issuanceAvailable,
@@ -166,6 +172,7 @@ const RTokenStateUpdater = () => {
 
       setState({
         tokenSupply: +formatEther(tokenSupply),
+        basketsNeeded: +formatEther(basketsNeeded),
         stTokenSupply: +formatEther(stTokenSupply),
         exchangeRate: +formatEther(exchangeRate),
         issuanceAvailable: +formatEther(issuanceAvailable),

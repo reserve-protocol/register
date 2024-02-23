@@ -5,7 +5,7 @@ import mixpanel from 'mixpanel-browser'
 import { BrowserRouter as Router, useNavigate } from 'react-router-dom'
 import ChainProvider from 'state/chain'
 import Updater from 'state/updater'
-import { ThemeProvider } from 'theme-ui'
+import { ThemeUIProvider } from 'theme-ui'
 import AppRoutes from './AppRoutes'
 import Layout from './components/layout'
 import LanguageProvider from './i18n'
@@ -40,25 +40,23 @@ const Redirects = () => {
  *
  * @returns {JSX.Element}
  */
-const App = () => {
-  return (
-    <Router>
-      <Analytics />
-      <Redirects />
-      <ThemeProvider theme={theme}>
-        <LanguageProvider>
-          <ChainProvider>
-            <Updater />
-            <TransactionSidebar />
-            <Layout>
-              <ToastContainer />
-              <AppRoutes />
-            </Layout>
-          </ChainProvider>
-        </LanguageProvider>
-      </ThemeProvider>
-    </Router>
-  )
-}
+const App = () => (
+  <Router>
+    <Analytics />
+    <Redirects />
+    <ThemeUIProvider theme={theme}>
+      <LanguageProvider>
+        <ChainProvider>
+          <Updater />
+          <TransactionSidebar />
+          <Layout>
+            <ToastContainer />
+            <AppRoutes />
+          </Layout>
+        </ChainProvider>
+      </LanguageProvider>
+    </ThemeUIProvider>
+  </Router>
+)
 
 export default App
