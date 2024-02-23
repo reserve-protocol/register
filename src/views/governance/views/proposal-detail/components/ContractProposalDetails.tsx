@@ -105,7 +105,7 @@ const ContractProposalDetails = ({ data, ...props }: Props) => {
           </Text>
           {call.data.length > 1 ? (
             <JsonView
-              shouldInitiallyExpand={collapseAllNested}
+              shouldExpandNode={collapseAllNested}
               style={colorMode === MODES.LIGHT ? defaultStyles : darkStyles}
               data={call.data}
             />
