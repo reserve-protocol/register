@@ -7,7 +7,7 @@ import { Box, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
 import { bridgeAmountAtom, isBridgeWrappingAtom } from '../atoms'
 import useScrollTo from 'hooks/useScrollTo'
-import { walletChainAtom } from 'state/atoms'
+import { chainIdAtom, walletChainAtom } from 'state/atoms'
 import { useSwitchNetwork } from 'wagmi'
 
 const Tab = ({
@@ -47,6 +47,7 @@ const BridgeHeader = () => {
   const setAmount = useSetAtom(bridgeAmountAtom)
   const [isWrapping, setWrapping] = useAtom(isBridgeWrappingAtom)
   const scroll = useScrollTo('bridge-faq')
+  const setChain = useSetAtom(chainIdAtom)
 
   // Trigger wallet switch for users
   useEffect(() => {
@@ -58,6 +59,12 @@ const BridgeHeader = () => {
       if (!isWrapping && walletChain !== ChainId.Base) {
         switchNetwork(ChainId.Base)
       }
+    }
+
+    if (isWrapping) {
+      setChain(ChainId.Mainnet)
+    } else {
+      setChain(ChainId.Base)
     }
 
     setAmount('')
