@@ -28,7 +28,7 @@ const RevenueBox = ({ type, distribution, address, ...props }: IRevenueBox) => {
       return [<Trans>Shared with RToken Holders</Trans>, <CurrentRTokenLogo />]
     } else if (type === 'stakers') {
       return [
-        <Trans>Shared with RToken Holders</Trans>,
+        <Trans>Shared with RSR Stakers</Trans>,
         <TokenLogo symbol="rsr" />,
       ]
     }
