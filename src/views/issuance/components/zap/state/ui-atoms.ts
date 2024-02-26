@@ -258,7 +258,7 @@ const mkZapState = (
     }
 
     if (quotePromise.state === 'loading') return 'quote_loading'
-    if (quotePromise.state === 'hasError') return 'quote_error'
+    if (quotePromise.state === 'hasError') return 'tx_error'
     if (quotePromise.data == null) {
       return 'initial'
     }
@@ -423,22 +423,26 @@ const mkButton = (
     }
     const tx = get(txAtom)
     if (tx.state === 'hasError' && tx.error != null) {
-      if ((tx.error as any).message.includes('Stargate')) {
-
-        notifyError('Zap failed', 'Waiting for Stargate to refill staking reward contract')
+      const msg = (tx.error as any).message
+      if (msg?.includes('Stargate')) {
+        notifyError(
+          'Temporarily unavailable',
+          'Waiting for Stargate to refill staking reward contract'
+        )
         return 'Temporarily unavailable'
+      } else if (msg) {
+        notifyError('Unknown error', msg)
+        return 'Failed to find zap'
       }
     }
     if (tx.state === 'hasData') {
       return `+ Mint ${loadedState.rToken.symbol}`
     }
     switch (s) {
-      case 'quote_error':
-        return 'Failed to find zap'
       case 'approval_error':
         return 'Approval failed'
       case 'tx_error':
-        return 'Failed to construct zap'
+        return 'Failed to find zap'
       case 'sign_permit':
         return `Sign & Zap ${loadedState.tokenToZap.symbol} for ${loadedState.rToken.symbol}`
       default:
@@ -465,8 +469,6 @@ const mkButton = (
       return `Redeem for ${loadedState.tokenToZap.symbol}`
     }
     switch (s) {
-      case 'quote_error':
-        return 'Failed to find zap'
       case 'approval_error':
         return 'Approval failed'
       case 'tx_error':
@@ -651,12 +653,8 @@ const mkButton = (
         },
       }
       if (flowState === 'tx_loading') {
-        errors = 0
       } else if (flowState === 'tx_error') {
-        if (errors < 20) {
-          set(redoZapQuote, Math.random())
-          errors += 1
-        }
+        set(redoZapQuote, Math.random())
       } else if (flowState === 'approval') {
         await approve(get, set, data)
       } else if (flowState === 'send_tx') {
