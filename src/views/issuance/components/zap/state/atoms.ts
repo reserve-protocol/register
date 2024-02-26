@@ -532,16 +532,12 @@ const redeemZapTxAtom = atom(async (get) => {
   if (!(approvalNeeded && result)) {
     return null
   }
-  const txp = result.toTransactionWithRetry({
+  const tx = await result.toTransactionWithRetry({
     outputSlippage: get(zapOutputSlippage),
     maxIssueance: useMaxIssueance[chainId] ?? false,
     returnDust: get(collectDust),
   })
-  txp.catch((e) => console.log(e.message))
-  const tx = await txp
 
-  // console.log("=== abstract zap transaction ===")
-  // console.log(result.describe().join("\n"))
   return {
     result,
     transaction: tx,
@@ -578,7 +574,7 @@ const zapTxAtom = atom(async (get) => {
     maxIssueance: useMaxIssueance[chainId] ?? false,
     returnDust: get(collectDust),
   })
-  console.log(tx.describe().join('\n'))
+
   return {
     result,
     transaction: tx,

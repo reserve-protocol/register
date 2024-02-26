@@ -301,11 +301,7 @@ const redeemZapState = mkZapState(
 )
 
 type UIState = typeof zapState extends Atom<infer T> ? T : never
-const buttonEnabledStates = new Set<UIState>([
-  'approval',
-  'sign_permit',
-  'send_tx',
-])
+const buttonEnabledStates = new Set<UIState>(['approval', 'send_tx'])
 const loadingStates = new Set<UIState>([
   'quote_loading',
   // 'approval_loading',
@@ -347,7 +343,7 @@ export const zapAvailableAtom = loadable(
 )
 
 const mkButton = (
-  txAtom: typeof resolvedZapTransaction,
+  txAtom: typeof zapTransaction,
   state: typeof zapState,
   zQuote: typeof zapQuote,
   zInput: typeof zapQuoteInput,
@@ -398,9 +394,17 @@ const mkButton = (
     ) {
       return false
     }
-    return buttonEnabledStates.has(s) || get(txAtom) != null
+    const d = get(txAtom)
+    return buttonEnabledStates.has(s) || (d.state === 'hasData' && d != null)
   })
-  const buttonIsLoading = atom((get) => loadingStates.has(get(state)))
+  const buttonIsLoading = atom((get) => {
+    const t = get(txAtom)
+    if (t.state === 'hasData' && t.data != null) {
+      return false
+    }
+    const s = get(state)
+    return loadingStates.has(s)
+  })
   const buttonLabel = atom((get) => {
     if (get(zapSender) == null) {
       return 'Connect Wallet'
@@ -417,7 +421,15 @@ const mkButton = (
       case 'insufficient_token_balance':
         return `Insufficient ${loadedState.tokenToZap.symbol} balance`
     }
-    if (get(txAtom) != null) {
+    const tx = get(txAtom)
+    if (tx.state === 'hasError' && tx.error != null) {
+      if ((tx.error as any).message.includes('Stargate')) {
+
+        notifyError('Zap failed', 'Waiting for Stargate to refill staking reward contract')
+        return 'Temporarily unavailable'
+      }
+    }
+    if (tx.state === 'hasData') {
       return `+ Mint ${loadedState.rToken.symbol}`
     }
     switch (s) {
@@ -538,11 +550,15 @@ const mkButton = (
     set,
     { inputToken, rToken, signer }
   ) => {
-    const zapTx = get(txAtom)
-
+    const zapTxPromise = get(txAtom)
+    if (zapTxPromise.state !== 'hasData') {
+      return
+    }
+    const zapTx = zapTxPromise.data
     if (zapTx == null) {
       return
     }
+
     set(zapIsPending, true)
     try {
       const resp = await signer.sendTransaction({
@@ -605,7 +621,7 @@ const mkButton = (
     (get) => ({
       loadingLabel: get(buttonLoadingLabel),
       enabled: get(buttonEnabled),
-      loading: get(txAtom) == null && get(buttonIsLoading),
+      loading: get(buttonIsLoading),
       label: get(buttonLabel),
       redeemButtonLabel: get(redeemButtonLabel),
     }),
@@ -822,7 +838,7 @@ export const ui = {
   },
   zapTxState: zapState,
   zapButton: mkButton(
-    resolvedZapTransaction,
+    zapTransaction,
     zapState,
     zapQuote,
     zapQuoteInput,
@@ -831,7 +847,7 @@ export const ui = {
 
   redeemZapTxState: zapState,
   redeemZapButton: mkButton(
-    resolvedRedeemZapTransaction as any,
+    redeemZapTransaction as any,
     redeemZapState,
     redeemZapQuote,
     redeemZapQuoteInput as any,
