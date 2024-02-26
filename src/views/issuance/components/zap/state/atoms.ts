@@ -325,7 +325,7 @@ export const approximateGasUsage: Record<string, bigint> = {
   '0xfc0b1eef20e4c68b3dcf36c4537cfa7ce46ca70b': 3_000_000n,
   '0x50249c768a6d3cb4b6565c0a2bfbdb62be94915c': 3_000_000n,
   '0xcc7ff230365bd730ee4b352cc2492cedac49383e': 6_000_000n,
-  "0xcb327b99ff831bf8223cced12b1338ff3aa322ff": 3_000_000n,
+  '0xcb327b99ff831bf8223cced12b1338ff3aa322ff': 3_000_000n,
 }
 export const selectedZapTokenBalance = atom((get) => {
   const token = get(selectedZapTokenAtom)
@@ -532,7 +532,7 @@ const redeemZapTxAtom = atom(async (get) => {
   if (!(approvalNeeded && result)) {
     return null
   }
-  const txp = result.toTransaction({
+  const txp = result.toTransactionWithRetry({
     outputSlippage: get(zapOutputSlippage),
     maxIssueance: useMaxIssueance[chainId] ?? false,
     returnDust: get(collectDust),
@@ -573,7 +573,7 @@ const zapTxAtom = atom(async (get) => {
           }
         : undefined
   }
-  const tx = await result.toTransaction({
+  const tx = await result.toTransactionWithRetry({
     outputSlippage: get(zapOutputSlippage),
     maxIssueance: useMaxIssueance[chainId] ?? false,
     returnDust: get(collectDust),
