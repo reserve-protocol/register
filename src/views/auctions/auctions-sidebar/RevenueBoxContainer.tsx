@@ -44,9 +44,15 @@ const RevenueBoxContainer = ({
         </Box>
         <Box>
           <Box variant="layout.verticalAlign">
-            <Text variant="title">{title}</Text>
+            <Text variant="title" sx={{ fontSize: [2, 3] }}>
+              {title}
+            </Text>
           </Box>
-          {loading ? <Spinner size={16} /> : <Text>{subtitle}</Text>}
+          {loading ? (
+            <Spinner size={16} />
+          ) : (
+            <Text sx={{ fontSize: [1, 2] }}>{subtitle}</Text>
+          )}
         </Box>
         {right ? (
           right
@@ -56,6 +62,7 @@ const RevenueBoxContainer = ({
             small
             sx={{
               display: 'flex',
+              flexShrink: 0,
               alignItems: 'center',
               backgroundColor: !muted ? 'primary' : 'secondary',
               color: !muted ? 'white' : 'text',
@@ -63,8 +70,10 @@ const RevenueBoxContainer = ({
             disabled={!!loading}
             onClick={() => setExpanded(!expanded)}
           >
-            <Text mr={2}>{btnLabel}</Text>
-            {expanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+            <Text sx={{ fontSize: [0, 1] }} mr={2}>
+              {btnLabel}
+            </Text>
+            {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </Button>
         )}
       </Box>

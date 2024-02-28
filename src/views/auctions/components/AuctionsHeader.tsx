@@ -1,11 +1,17 @@
 import { Trans } from '@lingui/macro'
 import { Button } from 'components'
+import TabMenu from 'components/tab-menu'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { isModuleLegacyAtom, rTokenContractsAtom } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
-import { ToggleButton } from '../../../components/ToggleButton'
 import { TradeKind, auctionPlatformAtom, auctionSidebarAtom } from '../atoms'
+import AuctionsIcon from 'components/icons/AuctionsIcon'
+
+const platformOptions = [
+  { label: 'Batch auctions', key: TradeKind.BatchTrade },
+  { label: 'Dutch auctions', key: TradeKind.DutchTrade },
+]
 
 const AuctionsHeader = () => {
   const toggleSidebar = useSetAtom(auctionSidebarAtom)
@@ -21,30 +27,27 @@ const AuctionsHeader = () => {
   }, [platform, isLegacy, contracts])
 
   return (
-    <Box variant="layout.verticalAlign">
+    <Box variant="layout.verticalAlign" mt={[3, 0]}>
       {!isLegacy && (
-        <>
-          <ToggleButton
-            selected={TradeKind.BatchTrade === platform}
-            onClick={() => setPlatform(TradeKind.BatchTrade)}
-            mx={3}
-          >
-            <Trans>Batch auctions</Trans>
-          </ToggleButton>
-          <ToggleButton
-            selected={TradeKind.DutchTrade === platform}
-            variant="bordered"
-            onClick={() => setPlatform(TradeKind.DutchTrade)}
-          >
-            <Trans>Dutch auctions</Trans>
-          </ToggleButton>
-        </>
+        <TabMenu
+          active={platform}
+          items={platformOptions}
+          background="border"
+          onMenuChange={(kind: number) => setPlatform(kind as TradeKind)}
+        />
       )}
 
       <Button ml="auto" mr={3} small onClick={toggleSidebar}>
-        <Text>
+        <Text sx={{ display: ['none', 'block'] }}>
           <Trans>Check for auctions</Trans>
         </Text>
+        <Box
+          py={1}
+          variant="layout.verticalAlign"
+          sx={{ display: ['flex', 'none'] }}
+        >
+          <AuctionsIcon />
+        </Box>
       </Button>
     </Box>
   )

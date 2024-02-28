@@ -130,10 +130,19 @@ export const Info = ({ title, subtitle, icon = null, ...props }: InfoProps) => (
   <Box variant="layout.verticalAlign" {...props}>
     {icon}
     <Box ml={icon ? 3 : 0}>
-      <Text variant="subtitle" sx={{ fontSize: 1, display: 'block' }} mb={1}>
+      <Text
+        variant="subtitle"
+        sx={{ fontSize: [0, 1], display: 'block' }}
+        mb={1}
+      >
         {title}
       </Text>
-      <Text as={typeof subtitle === 'string' ? 'p' : 'span'}>{subtitle}</Text>
+      <Text
+        as={typeof subtitle === 'string' ? 'p' : 'span'}
+        sx={{ fontSize: [1, 2] }}
+      >
+        {subtitle}
+      </Text>
     </Box>
   </Box>
 )
