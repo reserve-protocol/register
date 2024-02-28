@@ -13,6 +13,8 @@ import { Box, Link, Text } from 'theme-ui'
 import {
   formatCurrency,
   formatUsdCurrencyCell,
+  getCurrentTime,
+  relativeTime,
   shortenAddress,
   shortenString,
 } from 'utils'
@@ -130,6 +132,10 @@ const useTransactionColumns = () => {
       columnHelper.accessor('id', {
         header: t`Chain`,
         cell: () => <ChainLogo chain={chainId} />,
+      }),
+      columnHelper.accessor('timestamp', {
+        header: t`Time`,
+        cell: (data) => relativeTime(data.getValue(), getCurrentTime()),
       }),
       columnHelper.accessor('from.id', {
         header: t`From`,
