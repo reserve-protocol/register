@@ -22,7 +22,7 @@ const RevenueOverviewHeader = ({
   return (
     <Box
       variant="layout.verticalAlign"
-      mx={3}
+      mx={[1, 3]}
       mb={3}
       sx={{ color: 'secondaryText' }}
       {...props}
@@ -32,16 +32,16 @@ const RevenueOverviewHeader = ({
         fill={!muted ? '#11BB8D' : '#666666'}
         stroke={undefined}
       />
-      <Text ml="2">{text}</Text>
+      <Text mx="2">{text}</Text>
       {loading ? (
         <Spinner ml="auto" size={16} />
       ) : (
-        <>
-          <Text variant="strong" sx={{ color: 'text' }} ml="auto" mr="2">
+        <Box variant="layout.verticalAlign" ml="auto" sx={{ flexShrink: 0 }}>
+          <Text variant="strong" sx={{ color: 'text' }} mr="2">
             ${formatCurrency(amount)}
           </Text>
           <Help content={help} />
-        </>
+        </Box>
       )}
     </Box>
   )

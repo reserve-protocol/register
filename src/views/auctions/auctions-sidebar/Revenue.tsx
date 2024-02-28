@@ -126,7 +126,7 @@ const UnavailableRevenue = () => {
   return (
     <>
       <RevenueOverviewHeader
-        text={t`Unactionable revenue/revenue sources`}
+        text={t`Unactionable revenue`}
         amount={unavailableAmount}
         muted
         help="Revenue auctions that are below the minimum trade or unavailable."
@@ -142,7 +142,7 @@ const UnavailableRevenue = () => {
 }
 
 const Revenue = () => (
-  <Box px={4} sx={{ overflow: 'auto' }}>
+  <Box px={[2, 4]} sx={{ overflow: 'auto' }}>
     <RecollaterizationAlert />
     <ActionableRevenue />
     <UnavailableRevenue />

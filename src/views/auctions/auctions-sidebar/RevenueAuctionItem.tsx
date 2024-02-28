@@ -15,7 +15,7 @@ const UnavailablePlaceholder = ({
 }: {
   isBelowMinTrade: boolean
 }) => (
-  <Text sx={{ fontSize: 0, color: 'text' }} mr={2}>
+  <Text sx={{ fontSize: 0, color: 'text', display: ['none', 'block'] }} mr={2}>
     {isBelowMinTrade ? (
       <Trans>Surplus below minimum trade</Trans>
     ) : (

@@ -4,7 +4,7 @@ import { borderRadius } from 'theme'
 import { Box, BoxProps, Text } from 'theme-ui'
 
 interface Item {
-  key: string
+  key: string | number
   label: string
   icon?: JSX.Element
 }
@@ -12,7 +12,7 @@ interface Item {
 interface Props extends BoxProps {
   items: Item[]
   onMenuChange(key: string): void
-  active: string
+  active: string | number
   small?: boolean
   background?: string
   collapse?: boolean
@@ -63,7 +63,7 @@ const MenuItem = ({
   collapse,
 }: {
   item: Item
-  onClick(key: string): void
+  onClick(key: string | number): void
   isActive: boolean
   collapse: boolean
 }) => {
