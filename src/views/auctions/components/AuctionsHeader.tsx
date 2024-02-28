@@ -33,7 +33,9 @@ const AuctionsHeader = () => {
           active={platform}
           items={platformOptions}
           background="border"
-          onMenuChange={(kind: number) => setPlatform(kind as TradeKind)}
+          onMenuChange={(kind: string) =>
+            setPlatform(Number(kind) as TradeKind)
+          }
         />
       )}
 

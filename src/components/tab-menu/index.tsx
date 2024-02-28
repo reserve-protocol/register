@@ -11,7 +11,7 @@ interface Item {
 
 interface Props extends BoxProps {
   items: Item[]
-  onMenuChange(key: string | number): void
+  onMenuChange(key: string): void
   active: string | number
   small?: boolean
   background?: string
