@@ -119,10 +119,12 @@ const NavContent = ({
         sx={{
           textDecoration: 'none',
           backgroundColor: isActive ? 'contentBackground' : 'background',
-          border: '1px solid',
-          borderColor: isActive ? 'borderFocused' : 'background',
           borderRadius: '8px',
-          color: isActive ? 'accent' : 'text',
+          color: isActive ? 'text' : 'secondaryText',
+          ':hover': {
+            backgroundColor: isActive ? '' : 'border',
+            color: 'text',
+          },
         }}
       >
         <Flex
@@ -136,7 +138,10 @@ const NavContent = ({
           {icon}
         </Flex>
         <Text
-          sx={{ fontWeight: 700, display: ['none', 'none', 'block'] }}
+          sx={{
+            fontWeight: isActive ? 700 : 500,
+            display: ['none', 'none', 'block'],
+          }}
           ml="2"
         >
           {label}

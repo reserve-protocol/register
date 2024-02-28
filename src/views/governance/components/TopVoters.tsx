@@ -136,14 +136,18 @@ const TopVoters = (props: BoxProps) => {
     <Box
       variant="layout.card"
       p={2}
-      sx={{ backgroundColor: 'contentBackground' }}
+      sx={{
+        backgroundColor: 'background',
+        border: '3px solid',
+        borderColor: 'borderFocused',
+      }}
       {...props}
     >
-      <Text variant="title" p={3}>
+      <Text variant="sectionTitle" p={3}>
         <Trans>Top voting addresses</Trans>
       </Text>
       <Table
-        mt={4}
+        mt={2}
         p={0}
         maxHeight={420}
         compact

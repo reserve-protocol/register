@@ -28,7 +28,7 @@ const Item: FC<ItemProps> = ({ logo, name, value }) => {
       sx={{
         backgroundColor: 'focusedBackground',
         border: '1px solid',
-        borderColor: 'darkBorder',
+        borderColor: 'border',
         color: 'text',
         px: 2,
         py: '6px',

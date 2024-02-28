@@ -47,14 +47,11 @@ const defaultStyles = (
       marginLeft: 0,
     },
     ':hover': {
-      backgroundColor: 'backgroundNested',
+      backgroundColor: 'inputBorder',
     },
     '&.active': {
       backgroundColor: 'backgroundNested',
       color: 'text',
-      ':hover': {
-        backgroundColor: 'border',
-      },
     },
   },
 })

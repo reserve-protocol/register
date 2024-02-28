@@ -40,7 +40,7 @@ const AuctionsSidebar = () => {
     <Sidebar
       onClose={toggleSidebar}
       width="600px"
-      sx={{ backgroundColor: 'contentBackground' }}
+      sx={{ backgroundColor: 'background' }}
     >
       <Header />
       <Divider mt={3} mb={0} mx={-4} />

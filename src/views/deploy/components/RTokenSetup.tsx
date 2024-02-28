@@ -77,7 +77,7 @@ const GovernanceSection = ({ enabled = true }) => (
 
 const RTokenSetup = ({ governance = false, ...props }: Props) => {
   return (
-    <Box {...props}>
+    <Box mt={[2, 4, 6]} {...props}>
       <DeploySection enabled={!governance} />
       <GovernanceSection enabled={governance} />
     </Box>

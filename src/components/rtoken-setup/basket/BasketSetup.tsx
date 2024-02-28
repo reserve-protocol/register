@@ -14,12 +14,17 @@ const BasketSetup = ({ startIndex = 2 }) => {
   return (
     <>
       <SectionWrapper navigationIndex={startIndex}>
-        <Card p={4}>
+        <Card p={4} variant="cards.form">
           <PrimaryBasket onAdd={setCollateralModal} />
         </Card>
       </SectionWrapper>
       <SectionWrapper navigationIndex={startIndex + 1}>
-        <Card mt={4} p={4}>
+        <Card
+          mt={4}
+          p={4}
+          variant="cards.form"
+          sx={{ border: '3px solid', borderColor: 'borderFocused' }}
+        >
           <BackupBasket onAdd={setCollateralModal} />
         </Card>
       </SectionWrapper>

@@ -98,14 +98,14 @@ const BridgeOutput = () => {
       sx={{
         border: '1px solid',
         backgroundColor: 'transparent',
-        borderColor: 'darkBorder',
+        borderColor: 'border',
         borderRadius: borderRadius.inputs,
       }}
     >
       <Box
         variant="layout.verticalAlign"
         p={3}
-        sx={{ borderBottom: '1px solid', borderColor: 'darkBorder' }}
+        sx={{ borderBottom: '1px solid', borderColor: 'border' }}
       >
         <BridgeChain />
         <BridgeTokenBalance />

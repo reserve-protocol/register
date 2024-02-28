@@ -4,9 +4,9 @@ import TokenMandate from './TokenMandate'
 import TokenStats from './TokenStats'
 
 const Hero = () => (
-  <Box ml="4" py={3}>
+  <Box mx="4" py={3}>
     <TokenInfo />
-    <Grid mt={[3, 8]} gap={6} columns={[1, 1, 1, 2]} sx={{ alignItems: 'end' }}>
+    <Grid mt={[5, 8]} gap={6} columns={[1, 1, 1, 2]} sx={{ alignItems: 'end' }}>
       <TokenStats />
       <TokenMandate />
     </Grid>

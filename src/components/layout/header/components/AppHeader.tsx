@@ -46,9 +46,7 @@ const AppHeader = () => {
           sx={{ position: 'absolute', left: ['8px', '24px'] }}
         >
           <Brand mr={[2, 4]} />
-          <VerticalDivider sx={{ display: ['none', 'block'] }} />
           <ThemeColorMode
-            ml="4"
             sx={{
               display: ['none', 'flex'],
             }}
@@ -60,7 +58,6 @@ const AppHeader = () => {
           sx={{ position: 'absolute', right: ['8px', '24px'] }}
         >
           <RegisterHelp />
-          <VerticalDivider sx={{ display: ['none', 'block'] }} mx="4" />
           <CoinbaseSubscribe />
           <Account />
         </Box>

@@ -42,10 +42,9 @@ const BackingOverview = ({ current }: { current: string }) => {
       sx={{
         flexDirection: 'column',
         width: ['100%', '100%', '100%', 256],
-        height: ['fit-content', 'fit-content', 'fit-content', 360],
+        height: 'fit-content',
         flexShrink: '0',
-        fontSize: [1, 2, 2, 1],
-        // justifyContent: 'center',
+        fontSize: [1, 2],
       }}
     >
       <Box variant="layout.verticalAlign">

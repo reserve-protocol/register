@@ -166,7 +166,7 @@ const GovernanceOverview = () => {
         </SmallButton>
         <SmallButton
           mt={3}
-          ml={3}
+          ml={2}
           variant="transparent"
           onClick={() =>
             window.open(

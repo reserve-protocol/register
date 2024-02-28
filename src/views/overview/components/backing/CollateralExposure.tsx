@@ -81,8 +81,11 @@ const CollateralDetails = ({
         cursor: 'pointer',
         position: 'relative',
         alignItems: 'center',
-        backgroundColor: expanded ? 'border' : '',
-        '&:hover': { backgroundColor: 'border' },
+        backgroundColor: expanded ? 'inputBackground' : '',
+        borderBottom: '1px solid',
+        borderColor: expanded ? 'inputBorder' : 'border',
+        ':last-of-type': { borderBottom: 'none' },
+        '&:hover': { backgroundColor: 'inputBackground' },
       }}
       onClick={() => setExpanded(!expanded)}
     >
@@ -144,7 +147,7 @@ const CollateralDetails = ({
             <Button
               mr="3"
               small
-              variant="bordered"
+              variant="transparent"
               onClick={() =>
                 window.open(
                   'https://reserve.org/protocol/introduction/',
@@ -207,15 +210,7 @@ const CollateralList = () => {
   }
 
   return (
-    <Box
-      sx={{
-        '>div': {
-          borderBottom: '1px solid',
-          borderColor: 'border',
-          ':last-of-type': { borderBottom: 'none' },
-        },
-      }}
-    >
+    <Box>
       {collaterals.map((collateral) => (
         <CollateralDetails key={collateral.address} collateral={collateral} />
       ))}
@@ -239,6 +234,7 @@ const Header = () => {
     <Box
       variant="layout.verticalAlign"
       p={4}
+      mb={[3, 0]}
       sx={{
         borderBottom: '1px solid',
         borderColor: 'border',
@@ -250,6 +246,7 @@ const Header = () => {
         <Trans>Collateral Exposure</Trans>
       </Text>
       <TabMenu
+        mt={[3, 0]}
         active={backingType}
         items={backingOptions}
         small

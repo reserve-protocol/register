@@ -17,7 +17,7 @@ const TokenSelector = () => {
 
   return (
     <Box
-      ml={1}
+      ml="4px"
       sx={{
         backgroundColor: !!selectedRToken ? 'backgroundNested' : 'transparent',
         boxShadow: !!selectedRToken
@@ -26,7 +26,9 @@ const TokenSelector = () => {
         // borderColor: !!selectedRToken ? 'primary' : 'transparent',
         borderRadius: borderRadius.inner,
         ':hover': {
-          backgroundColor: !!selectedRToken ? 'background' : 'backgroundNested',
+          backgroundColor: !!selectedRToken
+            ? 'backgroundNested'
+            : 'inputBorder',
         },
       }}
     >
@@ -79,9 +81,7 @@ const HeaderMenu = () => {
               variant="layout.verticalAlign"
               sx={{
                 backgroundColor: isActive ? 'backgroundNested' : 'transparent',
-                // border: '1px solid',
                 color: isActive ? 'text' : 'secondaryText',
-                // borderColor: isActive ? 'primary' : 'transparent',
                 borderRadius: borderRadius.inner,
                 justifyContent: 'center',
                 fontWeight: 500,
@@ -90,12 +90,14 @@ const HeaderMenu = () => {
                   : 'none',
                 width: [40, 'auto'],
                 ':hover': {
-                  backgroundColor: 'backgroundNested',
+                  backgroundColor: isActive
+                    ? 'backgroundNested'
+                    : 'inputBorder',
                 },
               }}
               px={2}
               py={1}
-              ml={index ? [1, 1, 1, '2px'] : 0}
+              ml={index ? [1, 1, 1, '4px'] : 0}
             >
               {menuItem.icon}
               <Text ml="1" sx={{ display: ['none', 'none', 'none', 'block'] }}>

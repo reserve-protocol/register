@@ -4,7 +4,7 @@ import { BoxProps, Card, Divider, Text } from 'theme-ui'
 
 const BackingManager = (props: BoxProps) => {
   return (
-    <Card p={4} {...props}>
+    <Card p={4} variant="cards.form" {...props}>
       <Text variant="title">
         <Trans>Backing Manager</Trans>
       </Text>

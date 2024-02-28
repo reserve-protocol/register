@@ -50,7 +50,7 @@ const TokenItem = ({
         ':hover': { backgroundColor: 'border' },
         backgroundColor: 'background',
         border: '1px solid',
-        borderColor: 'darkBorder',
+        borderColor: 'border',
         display: 'flex',
         alignItems: 'center',
       }}
@@ -121,7 +121,7 @@ const TokenList = ({ onSelect }: { onSelect(token: BridgeAsset): void }) => {
         overflow: 'auto',
         height: ['auto', '360px'],
         borderTop: '1px solid',
-        borderColor: 'darkBorder',
+        borderColor: 'border',
         background: 'backgroundNexted',
       }}
       className="hidden-scrollbar"
@@ -168,7 +168,7 @@ const BridgeTokenModal = ({ onClose }: { onClose(): void }) => {
   return (
     <Modal
       p={0}
-      width={525}
+      width={514}
       sx={{ border: '3px solid', borderColor: 'borderFocused' }}
     >
       <Box
@@ -177,11 +177,11 @@ const BridgeTokenModal = ({ onClose }: { onClose(): void }) => {
           flexDirection: 'column',
           overflow: 'hidden',
           height: '100%',
-          backgroundColor: 'background',
+          backgroundColor: 'backgroundNested',
         }}
       >
         <Box variant="layout.verticalAlign" p={4} mb={[3, 0]} pb={0}>
-          <Text variant="sectionTitle">
+          <Text variant="title">
             <Trans>Select token</Trans>
           </Text>
           <Button

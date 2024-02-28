@@ -69,7 +69,7 @@ const Deploy = () => {
         <FormProvider {...form}>
           <NavigationSidebar />
           <RTokenSetup governance={governance} />
-          <Box variant="layout.stickyNoHeader">
+          <Box variant="layout.sticky">
             <DeployOverview onDeploy={handleDeploy} />
           </Box>
         </FormProvider>

@@ -94,7 +94,11 @@ const TokenSocials = () => {
         <SocialList socials={socials} onClick={() => setVisible(false)} />
       }
     >
-      <Button variant="bordered" onClick={() => setVisible(true)}>
+      <Button
+        sx={{ width: ['100%', ''] }}
+        variant="bordered"
+        onClick={() => setVisible(true)}
+      >
         <Box sx={{ height: 22 }}>
           <MoreHorizontal />
         </Box>
@@ -109,9 +113,18 @@ const OverviewActions = () => {
   const { holders, stakers } = useAtomValue(estimatedApyAtom)
 
   return (
-    <Box variant="layout.verticalAlign" mt={4}>
+    <Box
+      mt={4}
+      mr={[4, 0]}
+      sx={{
+        display: 'flex',
+        flexDirection: ['column', 'row'],
+        alignItems: 'left',
+      }}
+    >
       <Button
-        mr={3}
+        mr={[0, 3]}
+        mb={[2, 0]}
         variant="accent"
         onClick={() => navigate(`../${ROUTES.ISSUANCE}`)}
       >
@@ -120,7 +133,8 @@ const OverviewActions = () => {
         </Trans>
       </Button>
       <Button
-        mr={3}
+        mr={[0, 3]}
+        mb={[2, 0]}
         variant="bordered"
         onClick={() => navigate(`../${ROUTES.STAKING}`)}
       >

@@ -203,7 +203,7 @@ const RTokenTransactions = () => {
         sx={{ color: 'accent' }}
       >
         <TransactionsIcon fontSize={24} />
-        <Text ml="3" as="h2" variant="heading">
+        <Text ml="2" as="h2" variant="title" sx={{ fontWeight: 400 }}>
           <Trans>Transactions</Trans>
         </Text>
       </Box>

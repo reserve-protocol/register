@@ -50,7 +50,7 @@ const TokenMetrics = () => {
         </Text>
       )}
 
-      <Box variant="layout.verticalAlign">
+      <Box mb={3} mt={2} variant="layout.verticalAlign">
         <StakedIcon />
         <Text ml={2}>
           <Trans>Stake pool USD value:</Trans>

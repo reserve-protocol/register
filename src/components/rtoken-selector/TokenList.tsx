@@ -8,6 +8,7 @@ import availableTokensAtom from './atoms'
 const ActionItem = styled(Flex)`
   padding: 16px;
   cursor: pointer;
+  border-radius: 6px;
 
   &:hover {
     background-color: var(--theme-ui-colors-secondary);
@@ -33,7 +34,7 @@ const TokenList = memo(
           maxHeight: 320,
           minWidth: 250,
           overflow: 'auto',
-          backgroundColor: 'background',
+          backgroundColor: 'backgroundNested',
           borderRadius: '12px',
           '::-webkit-scrollbar': {
             display: 'none',

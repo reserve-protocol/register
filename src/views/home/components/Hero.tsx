@@ -39,8 +39,8 @@ const ProtocolStats = () => {
     <Box
       variant="layout.wrapper"
       sx={{ width: '100%' }}
-      mt={[4, 7]}
-      pt={[0, 3]}
+      mt={[4, 5]}
+      pt={[0, 5]}
     >
       <Link
         sx={{
@@ -50,7 +50,7 @@ const ProtocolStats = () => {
           fontSize: 1,
           justifyContent: 'center',
           textAlign: 'center',
-          bottom: '-6px',
+          bottom: '-12px',
         }}
         href="https://dune.com/reserve-protocol/reserve-protocol-overview"
         target="_blank"
@@ -61,11 +61,12 @@ const ProtocolStats = () => {
           sx={{
             backgroundColor: 'contentBackground',
             borderRadius: 8,
-
+            border: '2px solid',
+            borderColor: 'background',
             width: 'fit-content',
           }}
         >
-          <Trans>More metrics on Reserve Dune Dashboard</Trans>
+          <Trans>More metrics on Dune</Trans>
           <ExternalArrowIcon
             style={{ position: 'relative', top: '3px', marginLeft: '8px' }}
           />
@@ -123,23 +124,23 @@ const About = () => (
   <>
     <Box variant="layout.verticalAlign">
       <StackedChainLogo chains={[ChainId.Mainnet, ChainId.Base]} />
-      <Text>
+      <Text sx={{ fontSize: [2, 3] }}>
         <Trans>On Ethereum & Base</Trans>
       </Text>
     </Box>
-    <Box sx={{ maxWidth: 840, textAlign: 'center' }} mt={[2, 4]}>
+    <Box sx={{ maxWidth: 900, textAlign: 'center' }} mt={[2, 4]}>
       <Text
         variant="title"
         sx={{
-          fontSize: [4, 7],
+          fontSize: [5, 7],
           fontWeight: 'bold',
           color: 'accentInverted',
-          lineHeight: ['32px', '56px'],
+          lineHeight: ['36px', '62px'],
         }}
       >
         <Trans>A new path to better money, already set in motion</Trans>
       </Text>
-      <Text as="p" px={[2, 0]} mt={[2, 4]}>
+      <Text as="p" px={[2, 0]} sx={{ fontSize: [2, 3] }} mt={[3, 4]}>
         <Trans>
           Reserve Protocol’s RToken Factory Contracts: A platform for creating
           currencies backed by an array of ERC20 collateral. Use Register to
@@ -167,8 +168,8 @@ const Hero = () => (
         position: 'relative',
         maxWidth: '95em',
       }}
-      pt={[5, 7]}
-      mt={[0, 4]}
+      pt={[5, 4]}
+      mt={[0, 5]}
       pb={0}
       px={[2, 3]}
     >

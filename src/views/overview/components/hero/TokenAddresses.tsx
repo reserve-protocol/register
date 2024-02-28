@@ -81,6 +81,8 @@ const TokenAddresses = () => {
     >
       <Box
         variant="layout.verticalAlign"
+        ml={[1, 0]}
+        mb={[2, 0]}
         sx={{
           cursor: isBridged ? 'pointer' : 'cursor',
           flexGrow: 0,

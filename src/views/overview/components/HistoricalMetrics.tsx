@@ -17,7 +17,7 @@ const HistoricalMetrics = () => {
         sx={{ color: 'accent' }}
       >
         <TrendingUp />
-        <Text ml="3" as="h2" variant="heading">
+        <Text ml="3" as="h2" variant="title" sx={{ fontWeight: '400' }}>
           <Trans>Historical metrics</Trans>
         </Text>
       </Box>
