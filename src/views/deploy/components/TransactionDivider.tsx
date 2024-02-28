@@ -15,7 +15,7 @@ const Spacer = () => (
 const TransactionDivider = (props: { title: string; subtitle: string }) => (
   <Box>
     <Spacer />
-    <Card>
+    <Card variant="cards.form">
       <Box variant="layout.verticalAlign" px={2}>
         <Image src="/svgs/up-arrow.svg" mr={3} />
         <InfoBox light {...props} />
@@ -30,7 +30,7 @@ export const DeploySuccessDivider = ({ hash = '' }) => {
 
   return (
     <Box>
-      <Card>
+      <Card variant="cards.form">
         <Box variant="layout.verticalAlign">
           <Image src="/svgs/up-arrow.svg" mr={3} ml={2} />
           <InfoBox

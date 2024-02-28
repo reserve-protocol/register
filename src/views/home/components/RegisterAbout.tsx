@@ -165,12 +165,17 @@ const DashedDivider = () => (
  */
 const RegisterAbout = () => (
   <Box
-    mt={[3, 7]}
-    px={[1, 8]}
+    variant="layout.wrapper"
+    mt={[3, 8]}
+    px={[1, 3]}
     sx={{ borderTop: '1px solid', borderColor: 'border' }}
   >
-    <Box variant="layout.wrapper" my={[7, 8]} px={[4, 4]}>
-      <Text variant="strong" mb={[6, 8]} sx={{ fontSize: [5, 5] }}>
+    <Box my={[7, 8]} px={[4, 2]}>
+      <Text
+        variant="bold"
+        mb={[6, 8]}
+        sx={{ fontWeight: 700, fontSize: [5, 5] }}
+      >
         <Trans>Not sure what you’re looking at?</Trans>
       </Text>
       <Intro />

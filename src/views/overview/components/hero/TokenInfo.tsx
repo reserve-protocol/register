@@ -27,7 +27,7 @@ const TokenName = () => {
 
 const TokenInfo = () => {
   return (
-    <Box variant="layout.verticalAlign" sx={{ flexWrap: 'wrap' }}>
+    <Box variant="layout.verticalAlign" sx={{ flexWrap: 'wrap-reverse' }}>
       <TokenName />
       <TokenAddresses />
     </Box>

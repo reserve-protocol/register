@@ -6,7 +6,7 @@ const Layout = ({ children, ...props }: BoxProps) => (
     columns={['1fr', '1fr 1fr', '1.5fr 1fr', '200px 1fr 440px']}
     gap={5}
     px={[2, 4, 5]}
-    pt={[2, 4, 6]}
+    // pt={[2, 4, 6]}
     sx={{
       height: '100%',
       position: 'relative',

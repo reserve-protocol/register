@@ -120,6 +120,8 @@ const DeployOverview = ({ onDeploy, sx = {}, ...props }: Props) => {
     <Box
       variant="layout.borderBox"
       sx={{ ...sx, height: 'fit-content' }}
+      mt={[0, 4, 6]}
+      mb={4}
       {...props}
     >
       <Flex

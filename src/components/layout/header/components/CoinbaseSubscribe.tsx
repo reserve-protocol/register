@@ -47,10 +47,11 @@ const CoinbaseSubscribe = () => {
         p="1"
         sx={{
           cursor: 'pointer',
-          width: '40px',
-          height: '24px',
+          width: '52px',
+          height: '32px',
           border: '1px solid',
-          borderColor: 'darkBorder',
+          borderColor: 'border',
+          borderRadius: '6px',
           ':hover': { backgroundColor: 'border' },
         }}
         onClick={handleSubscribe}

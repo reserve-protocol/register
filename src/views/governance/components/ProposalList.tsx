@@ -8,11 +8,12 @@ import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { blockAtom, selectedRTokenAtom } from 'state/atoms'
-import { Badge, Box, Text } from 'theme-ui'
+import { Badge, Box, Text, Card } from 'theme-ui'
 import { StringMap } from 'types'
 import { getProposalTitle } from 'utils'
 import { PROPOSAL_STATES, formatConstant } from 'utils/constants'
 import { getProposalStatus } from '../views/proposal-detail/atom'
+import { borderRadius } from 'theme'
 
 const query = gql`
   query getProposals($id: String!) {
@@ -69,23 +70,27 @@ const ProposalList = () => {
   return (
     <Box
       variant="layout.card"
-      p={4}
-      sx={{ backgroundColor: 'contentBackground' }}
+      p={2}
+      sx={{
+        backgroundColor: 'contentBackground',
+        border: '3px solid',
+        borderColor: 'borderFocused',
+      }}
     >
-      <Box variant="layout.verticalAlign">
-        <Text variant="title">
+      <Box px={3} py={3} variant="layout.verticalAlign">
+        <Text variant="sectionTitle">
           <Trans>Recent proposals</Trans>
         </Text>
         <SmallButton ml="auto" onClick={() => navigate('proposal')}>
           <Trans>Create proposal</Trans>
         </SmallButton>
       </Box>
-
       <Box
-        mt={3}
+        mt={2}
         sx={{
           maxHeight: 540,
           overflow: 'scroll',
+          borderRadius: '6px',
           '::-webkit-scrollbar': { display: 'none' },
           msOverflowStyle: 'none',
           scrollbarWidth: 'none',
@@ -110,9 +115,18 @@ const ProposalList = () => {
 
           return (
             <Box
-              mt={4}
+              p={3}
               key={proposal.id}
-              sx={{ cursor: 'pointer' }}
+              sx={{
+                backgroundColor: 'backgroundNested',
+                borderBottom: '1px solid',
+                borderColor: 'border',
+                cursor: 'pointer',
+                ':hover': {
+                  borderColor: 'backgroundNested',
+                  backgroundColor: 'border',
+                },
+              }}
               variant="layout.verticalAlign"
               onClick={() => navigate(`proposal/${proposal.id}`)}
             >

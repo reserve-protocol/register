@@ -34,12 +34,12 @@ const RevenueBoxContainer = ({
       sx={{
         border: '1px solid',
         borderColor: 'darkBorder',
-        backgroundColor: 'background',
+        backgroundColor: 'backgroundNested',
       }}
       {...props}
     >
       <Box p={3} variant="layout.verticalAlign">
-        <Box mr={3} sx={{ color: !muted ? 'text' : 'muted', width: 22 }}>
+        <Box mx={2} sx={{ color: !muted ? 'text' : 'muted', width: 22 }}>
           {icon}
         </Box>
         <Box>

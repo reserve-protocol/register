@@ -5,7 +5,13 @@ import { Box, BoxProps, Card, Flex, Text } from 'theme-ui'
 import { DISCORD_INVITE } from 'utils/constants'
 
 const Intro = (props: BoxProps) => (
-  <Card p={4} pt={4} {...props} sx={{ position: 'relative' }}>
+  <Card
+    variant="cards.form"
+    p={4}
+    pt={4}
+    {...props}
+    sx={{ position: 'relative' }}
+  >
     <Box ml={'2px'}>
       <DeployIntroIcon />
     </Box>

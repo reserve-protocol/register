@@ -42,11 +42,11 @@ const RTokenEarn = () => {
         sx={{ color: 'accent' }}
       >
         <EarnIcon fontSize={24} />
-        <Text ml="3" as="h2" variant="heading">
+        <Text ml="2" as="h2" variant="title" sx={{ fontWeight: '400' }}>
           <Trans>Earn</Trans>
         </Text>
       </Box>
-      <Text ml="4" sx={{ fontSize: 3, maxWidth: 720 }}>
+      <Text ml="4" sx={{ fontSize: 3, maxWidth: 560 }}>
         <Trans>Explore yield opportunities for {rToken?.symbol ?? ''}</Trans>
       </Text>
       <PoolsTable mt={6} compact data={data} />

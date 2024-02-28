@@ -27,7 +27,7 @@ const GovernanceSetup = ({ disabled = false, ...props }: Props) => {
   const unfreeze = watch('unfreeze')
 
   return (
-    <Card p={4} {...props}>
+    <Card p={4} variant="cards.form" {...props}>
       <Box variant="layout.verticalAlign">
         <Text variant="title">
           <Trans>Governance</Trans>

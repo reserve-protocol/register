@@ -60,7 +60,9 @@ export const secondsPerBlockAtom = atom((get) => {
  * ##################
  */
 
+// TODO: ETH initial null state
 export const ethPriceAtom = atom(1)
+export const btcPriceAtom = atom<number | null>(null)
 export const gasFeeAtom = atom<bigint | null>(null)
 export const gasPriceAtom = atom((get) =>
   Number(formatEther(get(gasFeeAtom) || 0n))

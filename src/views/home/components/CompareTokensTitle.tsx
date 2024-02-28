@@ -71,8 +71,8 @@ const CompareTokensTitle = () => {
     <Box
       variant="layout.verticalAlign"
       sx={{ justifyContent: 'center' }}
-      mt={8}
-      mb={7}
+      mt={[5, 8]}
+      mb={[3, 7]}
     >
       <Box
         mr={5}

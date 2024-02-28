@@ -2,8 +2,6 @@ import { t } from '@lingui/macro'
 import Button from 'components/button'
 import ChainSelector from 'components/chain-selector/ChainSelector'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
-import AsteriskIcon from 'components/icons/AsteriskIcon'
-import CustomHelpIcon from 'components/icons/CustomHelpIcon'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import Popup from 'components/popup'
 import { useState } from 'react'
@@ -128,8 +126,8 @@ const RegisterHelp = () => {
       <Button
         variant="hover"
         small
-        py={2}
-        mr={[1, 0]}
+        py={1}
+        mr={[1, 2]}
         onClick={() => setVisible(!isVisible)}
         px={{ borderRadius: borderRadius.inner }}
       >

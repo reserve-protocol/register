@@ -40,7 +40,7 @@ const Sidebar = ({
           width: ['100vw', '100vw', width],
           backgroundColor: 'background',
           right: 0,
-          borderLeft: `solid 3px ${theme.colors?.border}`,
+          borderLeft: `solid 1px ${theme.colors?.borderFocused}`,
           boxShadow: '-32px 0px 64px rgba(0, 0, 0, 0.15)',
           top: 0,
           height: '100%',

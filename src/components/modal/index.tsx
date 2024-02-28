@@ -30,12 +30,12 @@ const Dialog = ({ width = '420px', sx = {}, ...props }: ModalProps) => (
     {...props}
     aria-label="Modal"
     sx={{
-      backgroundColor: 'background',
+      backgroundColor: 'backgroundNested',
       padding: 4,
       borderRadius: [0, '12px'],
       boxShadow: ['none', 'rgba(0, 0, 0, 0.2) 0px 24px 48px'],
-      border: '2px solid',
-      borderColor: 'darkBorder',
+      border: '3px solid',
+      borderColor: 'borderFocused',
       position: 'absolute',
       left: [0, '50%'],
       top: [0, '50%'],
@@ -75,7 +75,7 @@ const Header = ({ title, onClose }: ModalProps) => {
           </Button>
         )}
       </Flex>
-      {!!title && <Divider mx={-4} mb={4} sx={{ borderColor: 'darkBorder' }} />}
+      {!!title && <Divider mx={-4} mb={4} sx={{ borderColor: 'border' }} />}
     </>
   )
 }
