@@ -1,6 +1,5 @@
 import { t } from '@lingui/macro'
 import Button from 'components/button'
-import ChainSelector from 'components/chain-selector/ChainSelector'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import Popup from 'components/popup'
@@ -13,6 +12,7 @@ import {
   PROTOCOL_DOCS,
   REGISTER_FEEDBACK,
 } from 'utils/constants'
+import CoinbaseSubscribe from './CoinbaseSubscribe'
 
 interface HelpItemProps extends BoxProps {
   title: string
@@ -98,7 +98,7 @@ const HelpContent = ({ onClose }: { onClose(): void }) => {
       <Box sx={{ display: ['block', 'none'] }}>
         <Divider mt={3} mb={0} />
         <Box p={3} variant="layout.verticalAlign">
-          <ChainSelector />
+          <CoinbaseSubscribe />
           <ThemeColorMode ml="auto" />
         </Box>
       </Box>

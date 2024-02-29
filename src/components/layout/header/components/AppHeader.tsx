@@ -1,17 +1,12 @@
-import { Trans } from '@lingui/macro'
 import Account from 'components/account'
-import ChainSelector from 'components/chain-selector/ChainSelector'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
-import { useLocation } from 'react-router-dom'
-import { Box, Flex, Text } from 'theme-ui'
-import { ROUTES } from 'utils/constants'
-import Brand from './Brand'
-import HeaderMenu from './HeaderMenu'
-import RegisterHelp from './RegisterHelp'
 import { useAtomValue } from 'jotai'
 import { selectedRTokenAtom } from 'state/atoms'
-import VerticalDivider from 'views/home/components/VerticalDivider'
+import { Box, Flex } from 'theme-ui'
+import Brand from './Brand'
 import CoinbaseSubscribe from './CoinbaseSubscribe'
+import HeaderMenu from './HeaderMenu'
+import RegisterHelp from './RegisterHelp'
 
 /**
  * Application header
@@ -58,7 +53,10 @@ const AppHeader = () => {
           sx={{ position: 'absolute', right: ['8px', '24px'] }}
         >
           <RegisterHelp />
-          <CoinbaseSubscribe />
+          <CoinbaseSubscribe
+            mr="2"
+            sx={{ display: ['none', 'none', 'block'] }}
+          />
           <Account />
         </Box>
       </Flex>
