@@ -16,7 +16,6 @@ const CompareTokens = () => {
 
   const handleViewAll = () => {
     navigate(ROUTES.TOKENS)
-    document.getElementById('app-container')?.scrollTo(0, 0)
   }
 
   return (

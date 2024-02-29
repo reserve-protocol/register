@@ -31,7 +31,6 @@ const EarnButton = ({ token, sx, ...props }: Props) => {
     }
 
     navigate(`${ROUTES.EARN}?underlying=${addresses.join(',')}`)
-    document.getElementById('app-container')?.scrollTo(0, 0)
   }
 
   if (!earnData) return null

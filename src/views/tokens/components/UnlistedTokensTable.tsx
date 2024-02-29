@@ -124,7 +124,6 @@ const UnlistedTokensTable = () => {
   const handleClick = useCallback(
     (data: any) => {
       navigate(getTokenRoute(data.id, data.chain))
-      document.getElementById('app-container')?.scrollTo(0, 0)
     },
     [navigate]
   )

@@ -35,7 +35,6 @@ const PortfolioToken = ({ position }: { position: AccountRTokenPosition }) => {
 
   const handleClick = () => {
     navigate(getTokenRoute(position.address, position.chain))
-    document.getElementById('app-container')?.scrollTo(0, 0)
     mixpanel.track('Selected RToken', {
       Source: 'Portfolio Table',
       RToken: position.address,

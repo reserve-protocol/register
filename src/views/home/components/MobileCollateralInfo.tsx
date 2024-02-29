@@ -15,11 +15,6 @@ const MobileCollateralInfo = ({ token }: Props) => {
   const [collapsed, setCollapsed] = useState(true)
   const navigate = useNavigate()
 
-  const handleNavigate = (route: string) => {
-    navigate(`${route}?token=${token.id}&chainId=${token.chain}`)
-    document.getElementById('app-container')?.scrollTo(0, 0)
-  }
-
   return (
     <Box
       variant="layout.centered"

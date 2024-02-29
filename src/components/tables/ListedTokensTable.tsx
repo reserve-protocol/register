@@ -76,7 +76,6 @@ const ListedTokensTable = (props: Partial<TableProps>) => {
 
   const handleClick = (data: any) => {
     navigate(getTokenRoute(data.id, data.chain))
-    document.getElementById('app-container')?.scrollTo(0, 0)
     mixpanel.track('Selected RToken', {
       Source: 'Comparison Table',
       RToken: data.id,
