@@ -3,17 +3,18 @@ import { useAtomValue } from 'jotai'
 import { useEffect, useState } from 'react'
 import { Bell, BellOff } from 'react-feather'
 import { walletAtom } from 'state/atoms'
-import { Box, IconButton } from 'theme-ui'
+import { Box, BoxProps, IconButton } from 'theme-ui'
 
 const RESERVE_ADDRESS = '0x5587ecB103EA317F08e1d334b0F2556e6223F45f'
 
-const CoinbaseSubscribe = () => {
+const CoinbaseSubscribe = (props: BoxProps) => {
   const [isSubscribed, setISubscribed] = useState<boolean>(false)
-  const [isLoading, setIsLoading] = useState<boolean>(true)
   const account = useAtomValue(walletAtom)
 
   const handleSubscribe = () => {
-    window.CBWSubscribe.toggleSubscription()
+    if (window.CBWSubscribe?.toggleSubscription) {
+      window.CBWSubscribe.toggleSubscription()
+    }
   }
 
   useEffect(() => {
@@ -32,17 +33,12 @@ const CoinbaseSubscribe = () => {
         // Description title for the subscribe modal. See pictures below.
         modalBody: `Subscribe to Coinbase Wallet notifications and never miss out on new RTokens, DeFi yield updates, Governance alerts and more!`,
         onSubscriptionChange: setISubscribed,
-        onLoading: setIsLoading,
       })
     }
   }, [window.CBWSubscribe, account])
 
-  if (isLoading) {
-    return null
-  }
-
   return (
-    <Box mr="2" sx={{ display: ['none', 'none', 'block'] }}>
+    <Box {...props}>
       <IconButton
         p="1"
         sx={{
