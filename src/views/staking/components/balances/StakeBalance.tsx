@@ -16,14 +16,45 @@ import { accountCurrentPositionAtom } from 'views/staking/atoms'
 
 const RewardedBalance = () => {
   const rewards = useAtomValue(accountCurrentPositionAtom)
+  const price = useAtomValue(rsrPriceAtom)
 
   return (
-    <IconInfo
-      title={t`RSR Rewards`}
-      help={t`Amount calculated from exchange rate difference since stake for current staked position`}
-      text={formatCurrency(rewards, 3)}
-      icon={<TokenLogo width={20} symbol="RSR" />}
-    />
+    <>
+      <IconInfo
+        title={t`RSR Rewards`}
+        help={t`Amount calculated from exchange rate difference since stake for current staked position`}
+        text={formatCurrency(rewards, 3)}
+        icon={<TokenLogo width={20} symbol="RSR" />}
+      />
+      <Box
+        ml={'9px'}
+        mb={3}
+        pl={3}
+        pt={4}
+        mt={-3}
+        sx={{ borderLeft: 'solid 1px', borderColor: 'darkBorder' }}
+      >
+        <Box variant="layout.verticalAlign">
+          {/* Line connecting to vertical line connecting to stRSR */}
+          <Box
+            mt={'8px'}
+            ml={-3}
+            sx={{
+              width: '16px',
+              borderTop: 'solid 1px',
+              borderColor: 'darkBorder',
+            }}
+          ></Box>
+          <TokenBalance
+            symbol="USD Value"
+            logoSrc="/svgs/equals.svg"
+            usd
+            balance={rewards * price}
+            mt={2}
+          />
+        </Box>
+      </Box>
+    </>
   )
 }
 
