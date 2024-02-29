@@ -15,6 +15,7 @@ const Bridge = () => (
       position: 'relative',
       height: 'fit-content',
       width: ['100vw', 514],
+      minHeight: 566,
       boxShadow: ['none', boxShadow],
       border: ['none', '3px solid'],
       borderColor: ['none', 'borderFocused'],

@@ -65,7 +65,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
         '&:hover': {
           borderColor: ['transparent', 'primary'],
         },
-        height: ['100%', '316px'],
+        minHeight: ['100%', '316px'],
         cursor: 'pointer',
 
         transition: 'border-color 0.3s ease',
@@ -195,10 +195,14 @@ const RTokenCard = ({ token, ...props }: Props) => {
                 </Box>
                 <Box
                   variant="layout.verticalAlign"
-                  sx={{ gap: [0, 2], flexDirection: ['column', 'row'] }}
+                  sx={{
+                    gap: [0, 2],
+                    flexDirection: ['column', 'row'],
+                    flexWrap: 'wrap',
+                  }}
                   mr={[2, 0]}
                 >
-                  <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+                  <Box variant="layout.verticalAlign">
                     <Box sx={{ display: ['none', 'flex'] }}>
                       <MoneyIcon />
                     </Box>
@@ -206,21 +210,23 @@ const RTokenCard = ({ token, ...props }: Props) => {
                       <Trans>Market cap:</Trans>
                     </Text>
                   </Box>
-                  <Text variant="strong">
-                    ${formatCurrency(token.supply, 0)}
-                  </Text>
-                  {supplyETHTerms && (
-                    <Text>
-                      {`(${formatCurrency(supplyETHTerms, 0)} ${
-                        token.targetUnits
-                      })`}
+                  <Box ml="1" variant="layout.verticalAlign">
+                    <Text variant="strong">
+                      ${formatCurrency(token.supply, 0)}
                     </Text>
-                  )}
+                    {supplyETHTerms && (
+                      <Text ml="1">
+                        {`(${formatCurrency(supplyETHTerms, 0)} ${
+                          token.targetUnits
+                        })`}
+                      </Text>
+                    )}
+                  </Box>
                 </Box>
                 <VerticalDivider sx={{ display: ['none', 'block'] }} />
                 <Box
                   variant="layout.verticalAlign"
-                  sx={{ gap: 2, display: ['none', 'flex'] }}
+                  sx={{ gap: 2, display: ['none', 'flex'], flexWrap: 'wrap' }}
                 >
                   <PegIcon />
                   <Text variant="legend">
@@ -231,7 +237,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
                 <VerticalDivider sx={{ display: ['none', 'block'] }} />
                 <Box
                   variant="layout.verticalAlign"
-                  sx={{ gap: 2, display: ['none', 'flex'] }}
+                  sx={{ gap: 2, display: ['none', 'flex'], flexWrap: 'wrap' }}
                 >
                   <CollaterizationIcon />
                   <Text variant="legend">

@@ -89,8 +89,8 @@ const AreaChart = ({
             <Area
               type="monotone"
               dataKey="value"
-              stroke="var(--theme-ui-colors-accent)"
-              fill="var(--theme-ui-colors-darkBorder)"
+              stroke="#2150A9"
+              fill="#E4EAF5"
             />
           </Chart>
         </ResponsiveContainer>
