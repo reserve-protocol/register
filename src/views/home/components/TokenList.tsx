@@ -11,7 +11,6 @@ const TokenList = (props: BoxProps) => {
 
   const handleViewAll = () => {
     navigate(ROUTES.TOKENS)
-    document.getElementById('app-container')?.scrollTo(0, 0)
   }
 
   return (

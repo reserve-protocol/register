@@ -12,7 +12,6 @@ const DeployHero = (props: BoxProps) => {
 
   const handleDeploy = () => {
     navigate(ROUTES.DEPLOY)
-    document.getElementById('app-container')?.scrollTo(0, 0)
   }
 
   return (

@@ -52,7 +52,6 @@ const RTokenCard = ({ token, ...props }: Props) => {
 
   const handleNavigate = (route: string) => {
     navigate(getTokenRoute(token.id, token.chain, route))
-    document.getElementById('app-container')?.scrollTo(0, 0)
   }
 
   return (

@@ -2,16 +2,20 @@ import Analytics from 'components/analytics/Analytics'
 import ToastContainer from 'components/toaster-container/ToastContainer'
 import TransactionSidebar from 'components/transactions/manager/TransactionSidebar'
 import mixpanel from 'mixpanel-browser'
-import { BrowserRouter as Router, useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import {
+  BrowserRouter as Router,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom'
 import ChainProvider from 'state/chain'
 import Updater from 'state/updater'
 import { ThemeUIProvider } from 'theme-ui'
+import { getTokenRoute } from 'utils'
 import AppRoutes from './AppRoutes'
 import Layout from './components/layout'
 import LanguageProvider from './i18n'
 import { theme } from './theme'
-import { useEffect } from 'react'
-import { getTokenRoute } from 'utils'
 
 mixpanel.init(import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key', {
   track_pageview: true,
@@ -35,6 +39,16 @@ const Redirects = () => {
   return null
 }
 
+const ScrollToTop = () => {
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    document.getElementById('app-container')?.scrollTo(0, 0)
+  }, [pathname])
+
+  return null
+}
+
 /**
  * App Entry point
  *
@@ -44,6 +58,7 @@ const App = () => (
   <Router>
     <Analytics />
     <Redirects />
+    <ScrollToTop />
     <ThemeUIProvider theme={theme}>
       <LanguageProvider>
         <ChainProvider>

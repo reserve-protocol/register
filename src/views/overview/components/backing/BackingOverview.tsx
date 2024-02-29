@@ -10,9 +10,10 @@ import {
   rTokenBackingDistributionAtom,
   rTokenPriceAtom,
 } from 'state/atoms'
-import { Box, Card, Text } from 'theme-ui'
+import { Box, Card, Flex, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import CollateralsChart from './CollateralsChart'
+import { rTokenTargetPriceAtom } from 'views/overview/atoms'
 
 // TODO: TARGET PEG PRICE (ETH+)
 const backingOverviewAtom = atom((get) => {
@@ -20,6 +21,7 @@ const backingOverviewAtom = atom((get) => {
   const distribution = get(rTokenBackingDistributionAtom)
   const price = get(rTokenPriceAtom)
   const apys = get(estimatedApyAtom)
+  const pegData = get(rTokenTargetPriceAtom)
 
   return {
     symbol: rToken?.symbol ?? '',
@@ -27,6 +29,7 @@ const backingOverviewAtom = atom((get) => {
     staked: distribution?.staked ?? 0,
     yield: apys.basket,
     price: price,
+    pegData,
   }
 })
 
@@ -47,13 +50,27 @@ const BackingOverview = ({ current }: { current: string }) => {
         fontSize: [1, 2],
       }}
     >
-      <Box variant="layout.verticalAlign">
-        <EarnNavIcon fontSize={16} />
-        <Text ml="2">1 {data.symbol}</Text>
-        <Text ml="auto" variant="strong">
-          ${formatCurrency(data?.price)}
-        </Text>
-      </Box>
+      <Flex sx={{ alignItems: 'flex-start' }}>
+        <Box variant="layout.verticalAlign">
+          <EarnNavIcon fontSize={16} />
+          <Text ml="2">1 {data.symbol}</Text>
+        </Box>
+
+        <Box ml="auto" sx={{ textAlign: 'right' }}>
+          {!!data.pegData ? (
+            <>
+              <Text variant="strong">
+                {formatCurrency(data.pegData.price)} {data.pegData.unit}
+              </Text>
+              <Text variant="legend" sx={{ fontSize: 0 }}>
+                ${formatCurrency(data?.price)}
+              </Text>
+            </>
+          ) : (
+            <Text variant="strong">${formatCurrency(data?.price)}</Text>
+          )}
+        </Box>
+      </Flex>
       <Box mt="2" variant="layout.verticalAlign">
         <EarnIcon color="currentColor" />
         <Text ml="2">Blended Yield</Text>
