@@ -1,6 +1,5 @@
 import { t, Trans } from '@lingui/macro'
 import { Button } from 'components'
-import CopyValue from 'components/button/CopyValue'
 import ChainLogo from 'components/icons/ChainLogo'
 import ChevronRight from 'components/icons/ChevronRight'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'
@@ -9,13 +8,12 @@ import PegIcon from 'components/icons/PegIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import { ListedToken } from 'hooks/useTokenList'
 import { memo } from 'react'
-import { ArrowUpRight } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
-import { Box, BoxProps, Card, Link, Text } from 'theme-ui'
-import { formatCurrency, getTokenRoute, shortenString } from 'utils'
+import { Box, BoxProps, Card, Text } from 'theme-ui'
+import { formatCurrency, getTokenRoute } from 'utils'
 import { CHAIN_TAGS, ROUTES } from 'utils/constants'
-import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import CollateralPieChartWrapper from 'views/overview/components/CollateralPieChartWrapper'
+import RTokenAddresses from 'views/overview/components/RTokenAddresses'
 import usePriceETH from '../hooks/usePriceETH'
 import EarnButton from './EarnButton'
 import MobileCollateralInfo from './MobileCollateralInfo'
@@ -117,26 +115,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
                 <ChainLogo chain={token.chain} fontSize={12} />
               </Box>
             </Box>
-            <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
-              <Text sx={{ fontSize: 14 }} color="#666666">
-                {shortenString(token.id)}
-              </Text>
-              <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-                <CopyValue color="#666666" value={token.id} size={14} />
-                <Link
-                  href={getExplorerLink(
-                    token.id,
-                    token.chain,
-                    ExplorerDataType.TOKEN
-                  )}
-                  target="_blank"
-                  sx={{ display: 'flex', alignItems: 'center' }}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <ArrowUpRight color="#666666" size={14} />
-                </Link>
-              </Box>
-            </Box>
+            <RTokenAddresses token={token} />
           </Box>
 
           <Box
