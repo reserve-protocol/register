@@ -7,7 +7,7 @@ const ClockIcon = (props: SVGProps<SVGSVGElement>) => (
     fill="none"
     {...props}
   >
-    <g clipPath="url(#a)">
+    <g clipPath="url(#clock-icon)">
       <rect width={21.6} height={21.6} y={0.2} fill="#CCC" rx={10.8} />
       <path
         fill="#4C4C4C"
@@ -19,7 +19,7 @@ const ClockIcon = (props: SVGProps<SVGSVGElement>) => (
       />
     </g>
     <defs>
-      <clipPath id="a">
+      <clipPath id="clock-icon">
         <path fill="#fff" d="M0 .2h21.6v21.6H0z" />
       </clipPath>
     </defs>

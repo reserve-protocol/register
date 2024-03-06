@@ -7,7 +7,7 @@ const AlertIcon = (props: SVGProps<SVGSVGElement>) => (
     fill="none"
     {...props}
   >
-    <g clipPath="url(#a)">
+    <g clipPath="url(#alert-icon)">
       <rect
         width={20.4}
         height={20.4}
@@ -24,7 +24,7 @@ const AlertIcon = (props: SVGProps<SVGSVGElement>) => (
       />
     </g>
     <defs>
-      <clipPath id="a">
+      <clipPath id="alert-icon">
         <path fill="#fff" d="M0 .2h21.6v21.6H0z" />
       </clipPath>
     </defs>

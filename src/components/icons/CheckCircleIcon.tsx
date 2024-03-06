@@ -7,7 +7,7 @@ const CheckCircleIcon = (props: SVGProps<SVGSVGElement>) => (
     fill="none"
     {...props}
   >
-    <g strokeWidth={1.2} clipPath="url(#a)">
+    <g strokeWidth={1.2} clipPath="url(#check-circle-icon)">
       <rect
         width={20.4}
         height={20.4}
@@ -20,7 +20,7 @@ const CheckCircleIcon = (props: SVGProps<SVGSVGElement>) => (
       <path stroke="#fff" d="m4.725 11 4.05 4.05 8.1-8.1" />
     </g>
     <defs>
-      <clipPath id="a">
+      <clipPath id="check-circle-icon">
         <path fill="#fff" d="M0 .2h21.6v21.6H0z" />
       </clipPath>
     </defs>
