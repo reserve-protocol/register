@@ -17,6 +17,8 @@ import { useEffect, Component, Suspense } from 'react'
 import { blockAtom, gasFeeAtom } from 'state/atoms'
 import { redoZapQuote, zapTransaction } from './components/zap/state/atoms'
 import { resolvedZapState } from './components/zap/state/zapper'
+import RTokenIssuance from './components/zapV2/RTokenIssuance'
+import useRToken from 'hooks/useRToken'
 
 const UpdateBlockAndGas = () => {
   const redo = useSetAtom(redoZapQuote)
@@ -68,6 +70,7 @@ class CatchErrors extends Component<{ children: any }> {
  * Mint & Redeem view
  */
 const Issuance = () => {
+  const rToken = useRToken()
   const client = useWalletClient()
   const isZapEnabled = useAtomValue(ui.zapWidgetEnabled)
   const zapsEnabled = useAtomValue(zapEnabledAtom)
@@ -114,6 +117,7 @@ const Issuance = () => {
               )}
             </Grid>
             <Balances />
+            {rToken?.address && <RTokenIssuance rToken={rToken} />}
           </Box>
           <Box>
             <IssuanceInfo mb={[1, 4]} />
