@@ -7,6 +7,7 @@ export interface ProjectMetadata {
   docs: string
   website: string
   logo?: string
+  color?: string
 }
 
 export interface UnderlyingMetadata {

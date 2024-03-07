@@ -39,6 +39,7 @@ type QueryReponse = {
         logo?: {
           url: string
         }
+        color?: string
       }
     }[]
   }
@@ -76,6 +77,7 @@ const collateralsMetaQuery = gql`
           logo {
             url
           }
+          color
         }
       }
     }
@@ -117,6 +119,7 @@ const setCollateralsMetadataAtom = atom(
           website: item.protocol?.website ?? '',
           docs: item.protocol?.docs ?? '',
           logo: item.protocol?.logo?.url ?? '/svgs/defaultLogo.svg',
+          color: item.protocol?.color ?? 'grey',
         },
       }
     }
