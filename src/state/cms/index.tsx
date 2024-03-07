@@ -39,6 +39,7 @@ type QueryReponse = {
         logo?: {
           url: string
         }
+        color?: string
       }
     }[]
   }
