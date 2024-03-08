@@ -10,7 +10,7 @@ import { useAtomValue } from 'jotai'
 import { useEffect } from 'react'
 import { CheckCircle } from 'react-feather'
 import { chainIdAtom, walletAtom, walletChainAtom } from 'state/atoms'
-import { Box, Spinner, Text } from 'theme-ui'
+import { Box, BoxProps, Spinner, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { CHAIN_TAGS } from 'utils/constants'
 import {
@@ -54,6 +54,37 @@ export const ConnectWalletButton = (props: ButtonProps) => {
       </Text>
     </Button>
   )
+}
+
+export const TransactionButtonContainer = ({
+  children,
+  ...props
+}: BoxProps) => {
+  const wallet = useAtomValue(walletAtom)
+  const { switchNetwork } = useSwitchNetwork()
+  const walletChain = useAtomValue(walletChainAtom)
+  const chainId = useAtomValue(chainIdAtom)
+  const isInvalidWallet = walletChain !== chainId
+
+  let Component = children
+
+  if (!wallet) {
+    Component = <ConnectWalletButton fullWidth />
+  } else if (isInvalidWallet && switchNetwork) {
+    Component = (
+      <Button
+        variant="accentAction"
+        fullWidth
+        onClick={() => {
+          switchNetwork(chainId)
+        }}
+      >
+        <Text>Switch to {CHAIN_TAGS[chainId]}</Text>
+      </Button>
+    )
+  }
+
+  return <Box {...props}>{Component}</Box>
 }
 
 const TransactionButton = ({

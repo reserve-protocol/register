@@ -1,6 +1,9 @@
+import { Trans } from '@lingui/macro'
 import { Button, NumericalInput } from 'components'
+import { TransactionButtonContainer } from 'components/button/TransactionButton'
 import TokenLogo from 'components/icons/TokenLogo'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useEffect } from 'react'
 import { ArrowDown } from 'react-feather'
 import {
   rTokenAtom,
@@ -12,7 +15,7 @@ import {
 import { borderRadius } from 'theme'
 import { Box, Divider, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { stakeAmountAtom } from 'views/staking/atoms'
+import { isValidStakeAmountAtom, stakeAmountAtom } from 'views/staking/atoms'
 
 const rateAtom = atom((get) => {
   const { exchangeRate } = get(rTokenStateAtom)
@@ -26,15 +29,33 @@ const stRsrTickerAtom = atom((get) => {
   return rToken?.stToken?.symbol ?? 'stRSR'
 })
 
+const StartStake = () => {
+  const isValid = useAtomValue(isValidStakeAmountAtom)
+
+  return (
+    <TransactionButtonContainer>
+      <Button fullWidth disabled={!isValid}>
+        <Trans>Stake RSR</Trans>
+      </Button>
+    </TransactionButtonContainer>
+  )
+}
+
 const StakeInput = () => {
   const [amount, setAmount] = useAtom(stakeAmountAtom)
+
+  useEffect(() => {
+    return () => {
+      setAmount('')
+    }
+  }, [])
 
   return (
     <Box sx={{ position: 'relative', zIndex: 0 }}>
       <NumericalInput
         variant="transparent"
         placeholder="0 RSR"
-        value={amount as string}
+        value={amount}
         onChange={setAmount}
       />
       {!!amount && (
@@ -100,26 +121,24 @@ const StakeBalance = () => {
   )
 }
 
-const StakeInputContainer = () => {
-  return (
-    <Box
-      sx={{
-        overflow: 'hidden',
-        backgroundColor: 'lightGrey',
-        borderRadius: borderRadius.boxes,
-      }}
-      p={3}
-    >
-      <Text>You stake:</Text>
-      <StakeInput />
+const StakeInputContainer = () => (
+  <Box
+    sx={{
+      overflow: 'hidden',
+      backgroundColor: 'lightGrey',
+      borderRadius: borderRadius.boxes,
+    }}
+    p={3}
+  >
+    <Text>You stake:</Text>
+    <StakeInput />
 
-      <Box variant="layout.verticalAlign">
-        <StakeUsdAmount />
-        <StakeBalance />
-      </Box>
+    <Box variant="layout.verticalAlign">
+      <StakeUsdAmount />
+      <StakeBalance />
     </Box>
-  )
-}
+  </Box>
+)
 
 const StRsrBalance = () => {
   const balance = useAtomValue(stRsrBalanceAtom)
@@ -179,30 +198,43 @@ const StakeOutputContainer = () => {
   )
 }
 
-const Stake = () => {
+const StakeExchangeRate = () => {
+  const ticker = useAtomValue(stRsrTickerAtom)
+  const rate = useAtomValue(rateAtom)
+
   return (
-    <Box p={4}>
-      <StakeInputContainer />
-      <Box variant="layout.verticalAlign">
-        <Divider sx={{ flexGrow: 1, borderColor: 'border' }} />
-        <Box
-          mx={4}
-          my={2}
-          p="1"
-          pb="0"
-          sx={{
-            border: '1px solid',
-            borderColor: 'border',
-            borderRadius: borderRadius.inputs,
-          }}
-        >
-          <ArrowDown size={24} color="#666666" />
-        </Box>
-        <Divider sx={{ flexGrow: 1 }} />
-      </Box>
-      <StakeOutputContainer />
+    <Box mt={4} mb={3}>
+      <Text>
+        1 {ticker} = {formatCurrency(rate, 5)} RSR
+      </Text>
     </Box>
   )
 }
+
+const Stake = () => (
+  <Box p={4}>
+    <StakeInputContainer />
+    <Box variant="layout.verticalAlign">
+      <Divider sx={{ flexGrow: 1, borderColor: 'border' }} />
+      <Box
+        mx={4}
+        my={2}
+        p="1"
+        pb="0"
+        sx={{
+          border: '1px solid',
+          borderColor: 'border',
+          borderRadius: borderRadius.inputs,
+        }}
+      >
+        <ArrowDown size={24} color="#666666" />
+      </Box>
+      <Divider sx={{ flexGrow: 1 }} />
+    </Box>
+    <StakeOutputContainer />
+    <StakeExchangeRate />
+    <StartStake />
+  </Box>
+)
 
 export default Stake
