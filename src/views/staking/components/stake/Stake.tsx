@@ -1,17 +1,18 @@
-import TokenLogo from 'components/icons/TokenLogo'
-import { borderRadius } from 'theme'
-import { Box, Divider, Text } from 'theme-ui'
-import { atom, useAtom, useAtomValue } from 'jotai'
-import { stakeAmountAtom } from 'views/staking/atoms'
 import { Button, NumericalInput } from 'components'
+import TokenLogo from 'components/icons/TokenLogo'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { ArrowDown } from 'react-feather'
 import {
   rTokenAtom,
   rTokenStateAtom,
   rsrBalanceAtom,
   rsrPriceAtom,
+  stRsrBalanceAtom,
 } from 'state/atoms'
+import { borderRadius } from 'theme'
+import { Box, Divider, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { ArrowDown } from 'react-feather'
+import { stakeAmountAtom } from 'views/staking/atoms'
 
 const rateAtom = atom((get) => {
   const { exchangeRate } = get(rTokenStateAtom)
@@ -29,12 +30,31 @@ const StakeInput = () => {
   const [amount, setAmount] = useAtom(stakeAmountAtom)
 
   return (
-    <NumericalInput
-      variant="transparent"
-      placeholder="0 RSR"
-      value={amount as string}
-      onChange={setAmount}
-    />
+    <Box sx={{ position: 'relative', zIndex: 0 }}>
+      <NumericalInput
+        variant="transparent"
+        placeholder="0 RSR"
+        value={amount as string}
+        onChange={setAmount}
+      />
+      {!!amount && (
+        <Box
+          sx={{
+            fontSize: 4,
+            fontWeight: 'bold',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            zIndex: -1,
+          }}
+        >
+          <Text sx={{ visibility: 'hidden' }}>{amount}</Text>
+          <Text sx={{ userSelect: 'none' }} ml="2" variant="legend">
+            RSR
+          </Text>
+        </Box>
+      )}
+    </Box>
   )
 }
 
@@ -47,15 +67,22 @@ const StakeUsdAmount = () => {
   }
 
   return (
-    <Text variant="legend">${formatCurrency(price * Number(amount), 2)}</Text>
+    <Text
+      mr="3"
+      sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+      variant="legend"
+    >
+      ${formatCurrency(price * Number(amount), 2)}
+    </Text>
   )
 }
 
 const StakeBalance = () => {
   const balance = useAtomValue(rsrBalanceAtom)
+  const setAmount = useSetAtom(stakeAmountAtom)
 
   return (
-    <Box ml="auto" variant="layout.verticalAlign">
+    <Box ml="auto" variant="layout.verticalAlign" sx={{ flexShrink: 0 }}>
       <TokenLogo width={16} symbol={'rsr'} />
       <Text ml="2" variant="legend">
         Balance
@@ -66,7 +93,7 @@ const StakeBalance = () => {
           compactDisplay: 'short',
         })}
       </Text>
-      <Button small variant="muted">
+      <Button small variant="muted" onClick={() => setAmount(balance.balance)}>
         Max
       </Button>
     </Box>
@@ -76,7 +103,11 @@ const StakeBalance = () => {
 const StakeInputContainer = () => {
   return (
     <Box
-      sx={{ backgroundColor: 'lightGrey', borderRadius: borderRadius.boxes }}
+      sx={{
+        overflow: 'hidden',
+        backgroundColor: 'lightGrey',
+        borderRadius: borderRadius.boxes,
+      }}
       p={3}
     >
       <Text>You stake:</Text>
@@ -90,10 +121,30 @@ const StakeInputContainer = () => {
   )
 }
 
+const StRsrBalance = () => {
+  const balance = useAtomValue(stRsrBalanceAtom)
+
+  return (
+    <Box ml="auto" variant="layout.verticalAlign" sx={{ flexShrink: 0 }}>
+      <TokenLogo width={16} src="/svgs/strsr.svg" />
+      <Text ml="2" variant="legend">
+        Balance
+      </Text>
+      <Text variant="strong" mx="1">
+        {formatCurrency(+balance.balance, 2, {
+          notation: 'compact',
+          compactDisplay: 'short',
+        })}
+      </Text>
+    </Box>
+  )
+}
+
 const StakeOutputContainer = () => {
   const amount = useAtomValue(stakeAmountAtom)
   const rate = useAtomValue(rateAtom)
   const ticker = useAtomValue(stRsrTickerAtom)
+  const price = useAtomValue(rsrPriceAtom)
 
   return (
     <Box
@@ -102,14 +153,27 @@ const StakeOutputContainer = () => {
         border: '1px solid',
         borderColor: 'border',
         borderRadius: borderRadius.boxes,
+        overflow: 'hidden',
       }}
     >
       <Text sx={{ display: 'block' }}>You receive:</Text>
-      <Box variant="layout.verticalAlign" sx={{ fontSize: 4, fontWeight: 500 }}>
+      <Box
+        variant="layout.verticalAlign"
+        sx={{ fontSize: 4, fontWeight: 700, overflow: 'hidden' }}
+      >
         <Text>{amount ? formatCurrency(Number(amount) * rate) : '0'}</Text>
         <Text variant="legend" ml="2">
           {ticker}
         </Text>
+      </Box>
+      <Box variant="layout.verticalAlign">
+        <Text
+          variant="legend"
+          sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+        >
+          ${formatCurrency(price * Number(amount), 2)}
+        </Text>
+        <StRsrBalance />
       </Box>
     </Box>
   )
