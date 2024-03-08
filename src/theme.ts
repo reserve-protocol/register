@@ -43,6 +43,7 @@ const baseBadge = {
 }
 
 export const baseInput = {
+  fontFamily: 'body',
   borderColor: 'inputBorder',
   backgroundColor: 'background',
   outline: 'none',
@@ -397,6 +398,17 @@ export const theme: Theme = {
       ...baseInput,
       fontFamily: 'inherit',
       fontSize: 'inherit',
+    },
+    transparent: {
+      fontFamily: 'body',
+      padding: 0,
+      outline: 'none',
+      border: 'none',
+      backgroundColor: 'transparent',
+      mozAppearance: 'none',
+      webkitAppearance: 'none',
+      fontWeight: 700,
+      fontSize: 4,
     },
   },
   cards: {
