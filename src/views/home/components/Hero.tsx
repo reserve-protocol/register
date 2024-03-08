@@ -138,7 +138,7 @@ const About = () => (
           lineHeight: ['36px', '62px'],
         }}
       >
-        <Trans>A new path to better money, already set in motion</Trans>
+        <Trans>A new path to better money, already in motion</Trans>
       </Text>
       <Text as="p" px={[2, 0]} sx={{ fontSize: [2, 3] }} mt={[3, 4]}>
         <Trans>
