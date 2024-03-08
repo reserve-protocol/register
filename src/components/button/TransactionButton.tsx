@@ -56,15 +56,20 @@ export const ConnectWalletButton = (props: ButtonProps) => {
   )
 }
 
+interface ITransactionButtonContainer extends BoxProps {
+  chain?: number
+}
+
 export const TransactionButtonContainer = ({
   children,
+  chain,
   ...props
-}: BoxProps) => {
+}: ITransactionButtonContainer) => {
   const wallet = useAtomValue(walletAtom)
   const { switchNetwork } = useSwitchNetwork()
   const walletChain = useAtomValue(walletChainAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const isInvalidWallet = walletChain !== chainId
+  const isInvalidWallet = walletChain !== (chain || chainId)
 
   let Component = children
 
@@ -76,10 +81,10 @@ export const TransactionButtonContainer = ({
         variant="accentAction"
         fullWidth
         onClick={() => {
-          switchNetwork(chainId)
+          switchNetwork(chain || chainId)
         }}
       >
-        <Text>Switch to {CHAIN_TAGS[chainId]}</Text>
+        <Text>Switch to {CHAIN_TAGS[chain || chainId]}</Text>
       </Button>
     )
   }
