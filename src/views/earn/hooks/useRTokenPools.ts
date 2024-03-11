@@ -124,7 +124,7 @@ const useRTokenPools = () => {
 
       for (const pool of data) {
         const rToken = pool.underlyingTokens?.find(
-          (token: string) => !!listedRTokens[token.toLowerCase()]
+          (token: string) => !!listedRTokens[token?.toLowerCase()]
         )
 
         if (rToken && pool.project !== 'reserve') {
