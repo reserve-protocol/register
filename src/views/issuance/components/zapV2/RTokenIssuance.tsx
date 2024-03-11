@@ -1,16 +1,25 @@
-import { NumericalInput } from 'components'
+import { Button, NumericalInput } from 'components'
 import TabMenu from 'components/tab-menu'
-import { FC, useState } from 'react'
-import { ArrowDown, Minus, Plus, Settings } from 'react-feather'
-import { Box, Button, Divider, IconButton, Text } from 'theme-ui'
-import { ReserveToken } from 'types'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import React, { FC, useCallback, useMemo, useState } from 'react'
+import {
+  ArrowDown,
+  ChevronDown,
+  ChevronUp,
+  Minus,
+  Plus,
+  Settings,
+} from 'react-feather'
+import { Box, Divider, IconButton, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
+import { ui } from '../zap/state/ui-atoms'
+import TokenItem from 'components/token-item'
+import Popup from 'components/popup'
+import { zapInputString } from '../zap/state/atoms'
+import useRToken from 'hooks/useRToken'
+import { rTokenStateAtom } from 'state/atoms'
 
-type ZapTabsProps = {
-  symbol: string
-}
-
-const ZapTabs: FC<ZapTabsProps> = ({ symbol }) => {
+const ZapTabs = () => {
   const [issuanceOperation, setZapOperation] = useState<string>('mint')
   const backingOptions = [
     { key: 'mint', label: 'Mint', icon: <Plus size={16} /> },
@@ -46,13 +55,123 @@ const ZapTabs: FC<ZapTabsProps> = ({ symbol }) => {
   )
 }
 
+const ZapTokenSelected = () => {
+  const zapToken = useAtomValue(ui.input.tokenSelector.selectedToken)
+
+  return (
+    <TokenItem
+      sx={{
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+      }}
+      symbol={zapToken?.symbol ?? 'ETH'}
+      width={16}
+    />
+  )
+}
+
+const ZapTokenList = () => {
+  const [tokens, setZapToken] = useAtom(ui.input.tokenSelector.tokenSelector)
+  const entries = useMemo(
+    () =>
+      tokens.map((token) => ({
+        token,
+        selectToken: () => setZapToken(token),
+      })),
+    [setZapToken, tokens]
+  )
+
+  return (
+    <Box
+      sx={{
+        background: 'background',
+        display: 'flex',
+        flexDirection: 'column',
+        minWidth: '140px',
+        overflow: 'auto',
+        borderRadius: '10px',
+        gap: 2,
+      }}
+    >
+      {entries.map(({ token, selectToken }) => (
+        <Box
+          p={2}
+          key={token.symbol}
+          sx={{
+            cursor: 'pointer',
+            ':hover': {
+              backgroundColor: 'secondary',
+            },
+          }}
+          onClick={selectToken}
+        >
+          <TokenItem symbol={token.symbol} />
+        </Box>
+      ))}
+    </Box>
+  )
+}
+
+const ZapTokenSelector = () => {
+  const [isVisible, setVisible] = useAtom(ui.input.tokenSelector.popup)
+
+  const onClickSelected = useCallback(
+    (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      e.stopPropagation()
+      setVisible((v) => !v)
+    },
+    [setVisible]
+  )
+
+  return (
+    <Popup
+      show={isVisible}
+      onDismiss={() => setVisible(false)}
+      placement="bottom"
+      zIndex={0}
+      content={<ZapTokenList />}
+    >
+      <Box
+        variant="layout.verticalAlign"
+        sx={{
+          cursor: 'pointer',
+          gap: 1,
+        }}
+        onMouseDown={onClickSelected}
+      >
+        <Box
+          variant="layout.verticalAlign"
+          sx={{
+            px: 2,
+            py: 1,
+            borderRadius: '4px',
+            border: '1px solid',
+            borderColor: 'border',
+            backgroundColor: 'background',
+            boxShadow: '0px 1px 8px 2px rgba(0, 0, 0, 0.05)',
+          }}
+        >
+          <ZapTokenSelected />
+          {isVisible ? (
+            <ChevronUp size={20} strokeWidth={1.8} />
+          ) : (
+            <ChevronDown size={20} strokeWidth={1.8} />
+          )}
+        </Box>
+      </Box>
+    </Popup>
+  )
+}
+
 type ZapInputProps = {
-  symbol: string
   amount: string
   setAmount: (amount: string) => void
 }
 
-const ZapInput: FC<ZapInputProps> = ({ symbol, amount, setAmount }) => {
+const ZapInput: FC<ZapInputProps> = ({ amount, setAmount }) => {
+  const zapToken = useAtomValue(ui.input.tokenSelector.selectedToken)
+  const symbol = useMemo(() => zapToken?.symbol ?? '', [zapToken])
+
   return (
     <Box sx={{ position: 'relative', zIndex: 0, width: '100%' }}>
       <NumericalInput
@@ -74,7 +193,7 @@ const ZapInput: FC<ZapInputProps> = ({ symbol, amount, setAmount }) => {
         >
           <Text sx={{ visibility: 'hidden' }}>{amount}</Text>
           <Text sx={{ userSelect: 'none' }} ml="2" variant="legend">
-            RSR
+            {symbol}
           </Text>
         </Box>
       )}
@@ -82,21 +201,37 @@ const ZapInput: FC<ZapInputProps> = ({ symbol, amount, setAmount }) => {
   )
 }
 
-type ZapInputContainerProps = {
-  symbol: string
-  amount: string
-  setAmount: (amount: string) => void
+const ZapMaxInputButton = () => {
+  const setAmount = useSetAtom(zapInputString)
+  const maxAmount = useAtomValue(ui.input.maxAmount)
+
+  return (
+    <Box variant="layout.verticalAlign" sx={{ gap: '12px' }}>
+      <Box>
+        <Text>Balance </Text>
+        <Text sx={{ fontWeight: 'bold' }}>{formatCurrency(+maxAmount, 5)}</Text>
+      </Box>
+      <Button
+        small
+        backgroundColor="#CCCCCC"
+        color="#000000"
+        style={{ borderRadius: 4 }}
+        onClick={() => setAmount(maxAmount)}
+      >
+        Max
+      </Button>
+    </Box>
+  )
 }
 
-const ZapInputContainer: FC<ZapInputContainerProps> = ({
-  symbol,
-  amount,
-  setAmount,
-}) => {
+const ZapInputContainer = () => {
+  const [amount, setAmount] = useAtom(zapInputString)
+
   return (
     <Box
-      variant="layout.centered"
+      variant="layout.verticalAlign"
       sx={{
+        position: 'relative',
         overflow: 'hidden',
         backgroundColor: 'lightGrey',
         borderRadius: '8px',
@@ -105,30 +240,45 @@ const ZapInputContainer: FC<ZapInputContainerProps> = ({
       }}
       p={3}
     >
-      <Text>You use:</Text>
-      <ZapInput symbol={symbol} amount={amount} setAmount={setAmount} />
+      <Box
+        variant="layout.centered"
+        sx={{
+          overflow: 'hidden',
+          gap: '8px',
+          alignItems: 'start',
+          flexGrow: 1,
+        }}
+      >
+        <Text>You use:</Text>
+        <ZapInput amount={amount} setAmount={setAmount} />
+        <Text>$1000000</Text>
+      </Box>
 
-      <Box variant="layout.verticalAlign">
-        {/* <StakeUsdAmount /> */}
-        {/* <StakeBalance /> */}
+      <Box
+        sx={{
+          position: 'absolute',
+          height: '100%',
+          top: 0,
+          right: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'end',
+          justifyContent: 'space-between',
+        }}
+        p={3}
+      >
+        <ZapTokenSelector />
+        <ZapMaxInputButton />
       </Box>
     </Box>
   )
 }
 
-type ZapOutputContainerProps = {
-  inputSymbol: string
-  outputSymbol: string
-  amount: string
-}
-
-const ZapOutputContainer: FC<ZapOutputContainerProps> = ({
-  inputSymbol,
-  outputSymbol,
-  amount,
-}) => {
+const ZapOutputContainer = () => {
+  const rToken = useRToken()
+  const amount = useAtomValue(zapInputString)
   const rate = 1
-  const price = 1
+  const { exchangeRate: price } = useAtomValue(rTokenStateAtom)
 
   return (
     <Box
@@ -150,7 +300,7 @@ const ZapOutputContainer: FC<ZapOutputContainerProps> = ({
       >
         <Text>{amount ? formatCurrency(Number(amount) * rate) : '0'}</Text>
         <Text variant="legend" ml="2">
-          {outputSymbol}
+          {rToken?.symbol || ''}
         </Text>
       </Box>
       <Box variant="layout.verticalAlign">
@@ -169,13 +319,7 @@ const ZapOperationDetails: FC = () => {
   return <Box></Box>
 }
 
-type RTokenIssuanceProps = {
-  rToken: ReserveToken
-}
-
-const RTokenIssuance: FC<RTokenIssuanceProps> = ({ rToken }) => {
-  const [amount, setAmount] = useState<string>('')
-
+const RTokenIssuance = () => {
   return (
     <Box
       sx={{
@@ -189,7 +333,7 @@ const RTokenIssuance: FC<RTokenIssuanceProps> = ({ rToken }) => {
       }}
     >
       <Box p="24px">
-        <ZapTabs symbol={rToken.symbol} />
+        <ZapTabs />
       </Box>
       <Divider m={0} />
       <Box
@@ -197,11 +341,7 @@ const RTokenIssuance: FC<RTokenIssuanceProps> = ({ rToken }) => {
         sx={{ display: 'flex', flexDirection: 'column', gap: '24px' }}
       >
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <ZapInputContainer
-            symbol={'USDC'}
-            amount={amount}
-            setAmount={setAmount}
-          />
+          <ZapInputContainer />
           <Box variant="layout.verticalAlign" sx={{ gap: '12px', px: 3 }}>
             <Divider sx={{ flexGrow: 1 }} />
             <Box
@@ -218,11 +358,7 @@ const RTokenIssuance: FC<RTokenIssuanceProps> = ({ rToken }) => {
             </Box>
             <Divider sx={{ flexGrow: 1 }} />
           </Box>
-          <ZapOutputContainer
-            inputSymbol={'USDC'}
-            outputSymbol={rToken.symbol}
-            amount={amount}
-          />
+          <ZapOutputContainer />
         </Box>
         <ZapOperationDetails />
         <Button sx={{ width: '100%' }}>Zap mint</Button>
