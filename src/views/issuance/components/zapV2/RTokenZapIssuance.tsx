@@ -21,6 +21,7 @@ import { formatCurrency } from 'utils'
 import { zapInputString, zapQuotePromise } from '../zap/state/atoms'
 import { formatQty } from '../zap/state/formatTokenQuantity'
 import { ui, zapDustValue, zapOutputAmount } from '../zap/state/ui-atoms'
+import ZapButton from '../zap/components/ZapButton'
 
 const ZapTabs = () => {
   const [issuanceOperation, setZapOperation] = useState<string>('mint')
@@ -456,7 +457,7 @@ const RTokenZapIssuance = () => {
           <ZapOutputContainer />
         </Box>
         <ZapOperationDetails />
-        <Button sx={{ width: '100%' }}>Zap mint</Button>
+        <ZapButton />
       </Box>
     </Box>
   )

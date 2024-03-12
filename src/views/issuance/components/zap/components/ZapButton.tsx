@@ -28,7 +28,6 @@ const ZapButton = (props: Partial<LoadingButtonProps>) => {
       text={label}
       variant="primary"
       loadingText={loadingLabel}
-      mt={3}
       sx={{ width: '100%' }}
       onClick={() => onClick(walletClient.data!)}
       {...props}

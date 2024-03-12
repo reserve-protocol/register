@@ -4,7 +4,7 @@ import useRToken from 'hooks/useRToken'
 import { useAtom, useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
 import { useState } from 'react'
-import { Card, Text } from 'theme-ui'
+import { Box, Card, Text } from 'theme-ui'
 import ConfirmZap from './components/ConfirmZap'
 import { UnsupportedZap } from './components/UnsupportedZap'
 import ZapButton from './components/ZapButton'
@@ -46,10 +46,12 @@ export const ZapWidget = ({
       <Card p={4}>
         <ZapSettings open={open} setOpen={setOpen} />
         <ZapInput disabled={unsupported || checkingIfZapEnabled} />
-        <ZapButton
-          disabled={unsupported || checkingIfZapEnabled}
-          onClick={handleClick}
-        />
+        <Box mt={3}>
+          <ZapButton
+            disabled={unsupported || checkingIfZapEnabled}
+            onClick={handleClick}
+          />
+        </Box>
         {checkingIfZapEnabled && (
           <Text mx={3} mt={3} variant="strong">
             <Trans>Checking if token is supported...</Trans>
@@ -72,7 +74,7 @@ export const ZapRedeemWidget = () => {
       <Card p={4}>
         <ZapSettings open={open} setOpen={setOpen} />
         <RedeemZapInput />
-        <RedeemZapButton/>
+        <RedeemZapButton />
       </Card>
     </>
   )

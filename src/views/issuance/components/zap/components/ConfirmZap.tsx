@@ -23,12 +23,9 @@ const ApproveZap = () => {
   const client = useWalletClient()
   const selectedToken = useAtomValue(selectedZapTokenAtom)
 
-  
   if (!(state === 'approval' || isApproving)) {
     return null
   }
-
-  
 
   return (
     <>
@@ -66,7 +63,7 @@ const ConfirmZap = ({ onClose }: { onClose: () => void }) => {
     <Modal title={`Easy mint ${rToken?.symbol || ''}`} onClose={onClose}>
       <ZapInput />
       <ApproveZap />
-      <Divider mb={2} mt={3} />
+      <Divider mb={5} mt={3} />
       <ZapButton disabled={!enabled || state === 'approval'} />
       {(state === 'send_tx' || state === 'sign_permit') && (
         <EstimatedGasInfo mt={3} fee={zapTxFee} />
