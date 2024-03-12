@@ -21,15 +21,16 @@ const formatWithSymbol = (amount: TokenQuantity) => {
   }
   return amount.formatWithSymbol()
 }
-const formatQty_ = (qty: TokenQuantity, divisor: bigint) => {
+const formatQty_ = (qty: TokenQuantity, divisor: bigint, withSymbol: boolean = true) => {
+  const func = withSymbol ? formatWithSymbol : (amount: TokenQuantity) => amount.format()
   if (qty.amount === 0n) {
-    return formatWithSymbol(qty)
+    return func(qty)
   }
   const withScaleDecimals = (qty.amount / divisor) * divisor
   if (withScaleDecimals === 0n) {
-    return '<' + formatWithSymbol(qty.token.from(divisor))
+    return '<' + func(qty.token.from(divisor))
   }
-  return formatWithSymbol(qty.token.from(withScaleDecimals))
+  return func(qty.token.from(withScaleDecimals))
 }
 
 /** Formats a token quantity into string rounding the number of digits to 
@@ -45,8 +46,8 @@ const formatQty_ = (qty: TokenQuantity, divisor: bigint) => {
 // formatQty(eth.fromDecimal("1.00001"), 10n**4n) => "1.0 ETH"
 // formatQty(eth.fromDecimal("0.00001"), 10n**4n) => "<0.0001 ETH"
 */
-export const formatQty = (qty: TokenQuantity, digitsScale?: bigint) => {
-  return formatQty_(qty, qty.token.scale / (digitsScale ?? getApproximateScale(qty)))
+export const formatQty = (qty: TokenQuantity, digitsScale?: bigint, withSymbol?: boolean) => {
+  return formatQty_(qty, qty.token.scale / (digitsScale ?? getApproximateScale(qty)), withSymbol)
 }
 
 export const formatQtyNoLessThan0 = (qty: TokenQuantity, digitsScale?: bigint) => {

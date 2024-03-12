@@ -131,7 +131,8 @@ export const zapOutputAmount = atom((get) => {
   }
   return formatQty(
     quote.swaps.outputs.find((r) => r.token === rTokenOut) ?? rTokenOut.zero,
-    FOUR_DIGITS
+    FOUR_DIGITS,
+    false
   )
 })
 

@@ -16,7 +16,7 @@ import { useEffect, Component, Suspense } from 'react'
 import { blockAtom, gasFeeAtom } from 'state/atoms'
 import { redoZapQuote, zapTransaction } from './components/zap/state/atoms'
 import { resolvedZapState } from './components/zap/state/zapper'
-import RTokenIssuance from './components/zapV2/RTokenIssuance'
+import RTokenZapIssuance from './components/zapV2/RTokenZapIssuance'
 
 const UpdateBlockAndGas = () => {
   const redo = useSetAtom(redoZapQuote)
@@ -114,7 +114,7 @@ const Issuance = () => {
               )}
             </Grid>
             <Balances />
-            <RTokenIssuance />
+            <RTokenZapIssuance />
           </Box>
           <Box>
             <IssuanceInfo mb={[1, 4]} />

@@ -1,5 +1,9 @@
 import { Button, NumericalInput } from 'components'
+import TokenLogo from 'components/icons/TokenLogo'
+import Popup from 'components/popup'
 import TabMenu from 'components/tab-menu'
+import TokenItem from 'components/token-item'
+import useRToken from 'hooks/useRToken'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import React, { FC, useCallback, useMemo, useState } from 'react'
 import {
@@ -10,14 +14,13 @@ import {
   Plus,
   Settings,
 } from 'react-feather'
+import Skeleton from 'react-loading-skeleton'
+import { rTokenPriceAtom } from 'state/atoms'
 import { Box, Divider, IconButton, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { ui } from '../zap/state/ui-atoms'
-import TokenItem from 'components/token-item'
-import Popup from 'components/popup'
-import { zapInputString } from '../zap/state/atoms'
-import useRToken from 'hooks/useRToken'
-import { rTokenStateAtom } from 'state/atoms'
+import { zapInputString, zapQuotePromise } from '../zap/state/atoms'
+import { formatQty } from '../zap/state/formatTokenQuantity'
+import { ui, zapDustValue, zapOutputAmount } from '../zap/state/ui-atoms'
 
 const ZapTabs = () => {
   const [issuanceOperation, setZapOperation] = useState<string>('mint')
@@ -274,16 +277,88 @@ const ZapInputContainer = () => {
   )
 }
 
+const ZapOutput = () => {
+  const zapPromise = useAtomValue(zapQuotePromise)
+  const output = useAtomValue(zapOutputAmount)
+
+  const loading = useMemo(() => zapPromise.state === 'loading', [zapPromise])
+
+  // if (zapPromise.state === 'hasData' && zapPromise.data == null) {
+  //   return ''
+  // }
+
+  // if (zapPromise.state === 'hasError') {
+  //   return ''
+  // }
+
+  if (loading) {
+    return <Skeleton height={30} width={38} />
+  }
+
+  return <Text variant="strong">{output}</Text>
+}
+
+const ZapOutputUSD = () => {
+  const price = useAtomValue(rTokenPriceAtom)
+  const output = useAtomValue(zapOutputAmount)
+  const zapPromise = useAtomValue(zapQuotePromise)
+  const loading = useMemo(() => zapPromise.state === 'loading', [zapPromise])
+  const dustValue = useAtomValue(zapDustValue)
+
+  const dust =
+    dustValue == null || dustValue.total.amount < 10000n
+      ? ''
+      : formatQty(dustValue.total)
+
+  if (loading) {
+    return <Skeleton height={18} width={48} />
+  }
+
+  return (
+    <Box>
+      <Text
+        variant="legend"
+        sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+      >
+        ${formatCurrency(price * Number(output), 2)}
+      </Text>
+      {dust && (
+        <Text>
+          {' '}
+          +{' '}
+          <Text variant="legend" color="black">
+            {dust}
+          </Text>{' '}
+          in dust
+        </Text>
+      )}
+    </Box>
+  )
+}
+
+const ZapOutputBalance = () => {
+  const rToken = useRToken()
+  const balance = useAtomValue(ui.input.maxRedeemAmount)
+
+  return (
+    <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+      {rToken?.symbol && <TokenLogo symbol={rToken.symbol} />}
+      <Box>
+        <Text>Balance </Text>
+        <Text sx={{ fontWeight: 'bold' }}>{formatCurrency(+balance, 5)}</Text>
+      </Box>
+    </Box>
+  )
+}
+
 const ZapOutputContainer = () => {
   const rToken = useRToken()
-  const amount = useAtomValue(zapInputString)
-  const rate = 1
-  const { exchangeRate: price } = useAtomValue(rTokenStateAtom)
 
   return (
     <Box
       variant="layout.centered"
       sx={{
+        position: 'relative',
         border: '1px solid',
         borderColor: 'border',
         borderRadius: '8px',
@@ -298,28 +373,49 @@ const ZapOutputContainer = () => {
         variant="layout.verticalAlign"
         sx={{ fontSize: 4, fontWeight: 700, overflow: 'hidden' }}
       >
-        <Text>{amount ? formatCurrency(Number(amount) * rate) : '0'}</Text>
+        <ZapOutput />
         <Text variant="legend" ml="2">
           {rToken?.symbol || ''}
         </Text>
       </Box>
       <Box variant="layout.verticalAlign">
-        <Text
-          variant="legend"
-          sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
-        >
-          ${formatCurrency(price * Number(amount), 2)}
-        </Text>
+        <ZapOutputUSD />
+      </Box>
+      <Box
+        sx={{
+          position: 'absolute',
+          height: '100%',
+          top: 0,
+          right: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'end',
+          justifyContent: 'end',
+        }}
+        p={3}
+      >
+        <ZapOutputBalance />
       </Box>
     </Box>
   )
 }
 
 const ZapOperationDetails: FC = () => {
-  return <Box></Box>
+  const rToken = useRToken()
+  const price = useAtomValue(rTokenPriceAtom)
+
+  return (
+    <Box>
+      {rToken?.symbol && (
+        <Text>
+          1 {rToken.symbol} = {formatCurrency(+price, 2)} USD
+        </Text>
+      )}
+    </Box>
+  )
 }
 
-const RTokenIssuance = () => {
+const RTokenZapIssuance = () => {
   return (
     <Box
       sx={{
@@ -328,8 +424,7 @@ const RTokenIssuance = () => {
         alignSelf: 'stretch',
         borderRadius: '14px',
         bg: 'background',
-        border: '1px solid',
-        borderColor: 'border',
+        boxShadow: '0px 10px 38px 6px rgba(0, 0, 0, 0.05)',
       }}
     >
       <Box p="24px">
@@ -367,4 +462,4 @@ const RTokenIssuance = () => {
   )
 }
 
-export default RTokenIssuance
+export default RTokenZapIssuance
