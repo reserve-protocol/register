@@ -1,9 +1,9 @@
-import { Trans } from '@lingui/macro'
-import { Button, NumericalInput } from 'components'
+import { Trans, t } from '@lingui/macro'
+import { Button, Modal, NumericalInput } from 'components'
 import { TransactionButtonContainer } from 'components/button/TransactionButton'
 import TokenLogo from 'components/icons/TokenLogo'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { ArrowDown } from 'react-feather'
 import {
   rTokenAtom,
@@ -13,7 +13,7 @@ import {
   stRsrBalanceAtom,
 } from 'state/atoms'
 import { borderRadius } from 'theme'
-import { Box, Divider, Text } from 'theme-ui'
+import { Box, BoxProps, Divider, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { isValidStakeAmountAtom, stakeAmountAtom } from 'views/staking/atoms'
 
@@ -29,15 +29,70 @@ const stRsrTickerAtom = atom((get) => {
   return rToken?.stToken?.symbol ?? 'stRSR'
 })
 
+interface IAmountPreview extends BoxProps {
+  title: string
+  amount: number
+  usdAmount: number
+  symbol: string
+}
+
+const AmountPreview = ({
+  title,
+  amount,
+  usdAmount,
+  symbol,
+  ...props
+}: IAmountPreview) => (
+  <Box variant="layout.verticalAlign" {...props}>
+    <TokenLogo symbol={symbol} width={24} />
+    <Box ml="3">
+      <Text variant="legend">{title}</Text>
+      <Text variant="sectionTitle">
+        {formatCurrency(amount, 5)} {symbol}
+      </Text>
+      <Text variant="legend">${formatCurrency(usdAmount, 2)}</Text>
+    </Box>
+  </Box>
+)
+
+const StakeModal = ({ onClose }: { onClose(): void }) => {
+  return (
+    <Modal title={t`Review stake`} onClose={onClose}>
+      <AmountPreview
+        title={t`You use:`}
+        amount={123}
+        usdAmount={123}
+        symbol="RSR"
+      />
+      <AmountPreview
+        title={t`You use:`}
+        amount={123}
+        usdAmount={123}
+        symbol="RSR"
+        mt="4"
+      />
+      <Button mt="4" fullWidth>
+        Stake
+      </Button>
+    </Modal>
+  )
+}
+
 const StartStake = () => {
+  const [isOpen, setOpen] = useState(false)
   const isValid = useAtomValue(isValidStakeAmountAtom)
 
+  const handleClose = useCallback(() => setOpen(false), [setOpen])
+
   return (
-    <TransactionButtonContainer>
-      <Button fullWidth disabled={!isValid}>
-        <Trans>Stake RSR</Trans>
-      </Button>
-    </TransactionButtonContainer>
+    <>
+      <TransactionButtonContainer>
+        <Button fullWidth disabled={!isValid} onClick={() => setOpen(!isOpen)}>
+          <Trans>Stake RSR</Trans>
+        </Button>
+      </TransactionButtonContainer>
+      {isOpen && <StakeModal onClose={handleClose} />}
+    </>
   )
 }
 
@@ -211,26 +266,30 @@ const StakeExchangeRate = () => {
   )
 }
 
+const InputOutputSeparator = () => (
+  <Box variant="layout.verticalAlign">
+    <Divider sx={{ flexGrow: 1, borderColor: 'border' }} />
+    <Box
+      mx={4}
+      my={2}
+      p="1"
+      pb="0"
+      sx={{
+        border: '1px solid',
+        borderColor: 'border',
+        borderRadius: borderRadius.inputs,
+      }}
+    >
+      <ArrowDown size={24} color="#666666" />
+    </Box>
+    <Divider sx={{ flexGrow: 1 }} />
+  </Box>
+)
+
 const Stake = () => (
   <Box p={4}>
     <StakeInputContainer />
-    <Box variant="layout.verticalAlign">
-      <Divider sx={{ flexGrow: 1, borderColor: 'border' }} />
-      <Box
-        mx={4}
-        my={2}
-        p="1"
-        pb="0"
-        sx={{
-          border: '1px solid',
-          borderColor: 'border',
-          borderRadius: borderRadius.inputs,
-        }}
-      >
-        <ArrowDown size={24} color="#666666" />
-      </Box>
-      <Divider sx={{ flexGrow: 1 }} />
-    </Box>
+    <InputOutputSeparator />
     <StakeOutputContainer />
     <StakeExchangeRate />
     <StartStake />
