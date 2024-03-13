@@ -25,7 +25,6 @@ const NewAssetAddress = ({
     <Box>
       <Input
         my={3}
-        autoFocus
         value={address}
         placeholder="Input address"
         onChange={setAddress}

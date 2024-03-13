@@ -1,14 +1,12 @@
 import { Trans } from '@lingui/macro'
-import { Box, BoxProps, Card, Divider, Link, Text } from 'theme-ui'
+import useRToken from 'hooks/useRToken'
 import { useAtom, useAtomValue } from 'jotai'
 import { rTokenAssetsAtom } from 'state/atoms'
+import { BoxProps, Card, Divider, Text } from 'theme-ui'
 import { registerAssetsProposedAtom } from '../atoms'
-import useRToken from 'hooks/useRToken'
 import RegisterEdit from './RegisterEdit'
 
 const RegisterProposal = (props: BoxProps) => {
-  const rToken = useRToken()
-
   const [proposedAssetsToRegister, setProposedAssetsToRegister] = useAtom(
     registerAssetsProposedAtom
   )
