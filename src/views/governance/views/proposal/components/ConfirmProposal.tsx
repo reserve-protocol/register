@@ -11,19 +11,19 @@ import { Container, Grid } from 'theme-ui'
 
 const ConfirmProposal = () => {
   const tx = useProposalTx()
-  const interfaceMap = useAtomValue(interfaceMapAtom)
+  // const interfaceMap = useAtomValue(interfaceMapAtom)
 
-  const navigationSections = useMemo(() => {
-    const contractMap: { [x: string]: string } = {}
+  // const navigationSections = useMemo(() => {
+  //   const contractMap: { [x: string]: string } = {}
 
-    if (tx?.args[0]) {
-      for (const address of tx.args[0]) {
-        contractMap[address] = interfaceMap[address]?.label ?? 'Unknown'
-      }
-    }
+  //   if (tx?.args[0]) {
+  //     for (const address of tx.args[0]) {
+  //       contractMap[address] = interfaceMap[address]?.label ?? 'Unknown'
+  //     }
+  //   }
 
-    return Object.values(contractMap)
-  }, [tx])
+  //   return Object.values(contractMap)
+  // }, [tx])
 
   // TODO: Loading state
   if (!tx) {

@@ -8,11 +8,13 @@ import ProposalBasketSetup from './ProposalBasketSetup'
 import RolesProposal from './RolesProposal'
 import UnregisterProposal from './UnregisterProposal'
 import RegisterProposal from './RegisterProposal'
+import TraderImplementationProposal from './TraderImplementationProposal'
 
 const sections = [
   Intro,
   BackingManager,
   OtherSetup,
+  TraderImplementationProposal,
   RolesProposal,
   RevenueSplit,
   UnregisterProposal,

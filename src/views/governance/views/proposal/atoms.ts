@@ -73,6 +73,8 @@ export type ParamName =
   | 'redemptionThrottle'
   | 'shortFreeze'
   | 'longFreeze'
+  | 'batchTradeImplementation'
+  | 'dutchTradeImplementation'
 
 export const parameterContractMapAtom = atom((get) => {
   const contracts = get(rTokenContractsAtom)
@@ -173,6 +175,20 @@ export const parameterContractMapAtom = atom((get) => {
       {
         address: contracts?.broker.address ?? '',
         functionName: 'setDutchAuctionLength',
+        abi: Broker,
+      },
+    ],
+    batchTradeImplementation: [
+      {
+        address: contracts?.broker.address ?? '',
+        functionName: 'setBatchTradeImplementation',
+        abi: Broker,
+      },
+    ],
+    dutchTradeImplementation: [
+      {
+        address: contracts?.broker.address ?? '',
+        functionName: 'setDutchTradeImplementation',
         abi: Broker,
       },
     ],

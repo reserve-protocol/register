@@ -2,7 +2,6 @@ import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { rTokenConfigurationAtom } from 'state/atoms'
-import { StringMap } from 'types'
 
 export interface ParameterChange {
   field: string
