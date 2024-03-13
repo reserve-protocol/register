@@ -2,7 +2,7 @@ import TabMenu from 'components/tab-menu'
 import { useState } from 'react'
 import { Minus, Plus } from 'react-feather'
 import { Box, Card } from 'theme-ui'
-import Stake from './stake/Stake'
+import Stake from './stake'
 import Unstake from './unstake'
 
 const MenuOptions = [

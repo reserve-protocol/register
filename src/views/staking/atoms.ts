@@ -171,3 +171,15 @@ export const accountCurrentPositionAtom = atom((get) => {
 
   return stBalance * exchangeRate - rsrBalance
 })
+
+export const rateAtom = atom((get) => {
+  const { exchangeRate } = get(rTokenStateAtom)
+
+  return exchangeRate
+})
+
+export const stRsrTickerAtom = atom((get) => {
+  const rToken = get(rTokenAtom)
+
+  return rToken?.stToken?.symbol ?? 'stRSR'
+})

@@ -20,7 +20,7 @@ import { RSR_ADDRESS } from 'utils/addresses'
 import { Address } from 'viem'
 import { isValidStakeAmountAtom, stakeAmountAtom } from 'views/staking/atoms'
 import DelegateStake from './DelegateStake'
-import StakeInput from './StakeInput'
+import StakeInput from './_StakeInput'
 
 const customDelegateAtom = atom('')
 

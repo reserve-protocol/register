@@ -5,6 +5,7 @@ import { Box, BoxProps, Divider, Flex } from 'theme-ui'
 interface Props extends BoxProps {
   defaultOpen?: boolean
   open?: boolean
+  divider?: boolean
   onToggle?(state: boolean): void
   header: React.ReactNode
 }
@@ -14,6 +15,7 @@ const CollapsableBox = ({
   open,
   onToggle,
   children,
+  divider = true,
   header,
   ...props
 }: Props) => {
@@ -38,7 +40,7 @@ const CollapsableBox = ({
       </Flex>
       {(open || isOpen) && (
         <>
-          <Divider my={3} mx={-4} sx={{ borderColor: 'darkBorder' }} />
+          {divider && <Divider my={3} mx={-4} sx={{ borderColor: 'border' }} />}
           {children}
         </>
       )}

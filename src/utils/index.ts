@@ -208,6 +208,9 @@ export const getProposalTitle = (description: string) => {
   return description.split(/\r?\n/)[0].replaceAll('#', '').trim()
 }
 
-export const parseDuration = (duration: number, options?: any) => {
+export const parseDuration = (
+  duration: number,
+  options?: humanizeDuration.Options
+) => {
   return humanizeDuration(duration * 1000, options)
 }

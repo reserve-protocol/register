@@ -45,9 +45,7 @@ const ConfirmUnstake = ({ onClose }: { onClose: () => void }) => {
       confirmLabel={t`Begin unstake cooldown`}
       onClose={handleClose}
       onChange={(signing) => setSigning(signing)}
-    >
-      <UnstakeInput compact disabled={signing} />
-    </TransactionModal>
+    ></TransactionModal>
   )
 }
 
