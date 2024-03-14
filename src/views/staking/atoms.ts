@@ -11,18 +11,24 @@ import {
   stRsrBalanceAtom,
   walletAtom,
 } from './../../state/atoms'
+import atomWithDebounce from 'utils/atoms/atomWithDebounce'
 
 const isValid = (value: bigint, max: bigint) => value > 0n && value <= max
 
 export const stakeAmountAtom = atom('')
-export const unStakeAmountAtom = atom('')
+export const stakeAmountDebouncedAtom = atomWithDebounce(
+  atom((get) => get(stakeAmountAtom)),
+  500
+).debouncedValueAtom
+
 export const isValidStakeAmountAtom = atom((get) => {
   return isValid(
-    safeParseEther(get(stakeAmountAtom) || '0'),
+    safeParseEther(get(stakeAmountDebouncedAtom) || '0'),
     get(rsrBalanceAtom).value
   )
 })
 
+export const unStakeAmountAtom = atom('')
 export const isValidUnstakeAmountAtom = atom((get) => {
   return isValid(
     safeParseEther(get(unStakeAmountAtom) || '0'),
