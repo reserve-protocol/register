@@ -1,11 +1,14 @@
 import { Button, Modal, NumericalInput } from 'components'
+import ButtonGroup from 'components/button/ButtonGroup'
+import Help from 'components/help'
 import TokenLogo from 'components/icons/TokenLogo'
 import Popup from 'components/popup'
 import TabMenu from 'components/tab-menu'
 import TokenItem from 'components/token-item'
+import { useChainlinkPrice } from 'hooks/useChainlinkPrice'
 import useRToken from 'hooks/useRToken'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
+import React, { FC, useCallback, useMemo, useState } from 'react'
 import {
   ArrowDown,
   ChevronDown,
@@ -16,9 +19,10 @@ import {
   X,
 } from 'react-feather'
 import Skeleton from 'react-loading-skeleton'
-import { rTokenPriceAtom } from 'state/atoms'
+import { chainIdAtom, rTokenPriceAtom } from 'state/atoms'
 import { Box, Checkbox, Divider, IconButton, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
+import collateralPlugins from 'utils/plugins'
 import ZapButton from '../zap/components/ZapButton'
 import {
   collectDust,
@@ -29,8 +33,8 @@ import {
 } from '../zap/state/atoms'
 import { formatQty } from '../zap/state/formatTokenQuantity'
 import { ui, zapDustValue, zapOutputAmount } from '../zap/state/ui-atoms'
-import Help from 'components/help'
-import ButtonGroup from 'components/button/ButtonGroup'
+import { ChainId } from 'utils/chains'
+import { Address } from 'viem'
 
 const ZapCollectDust = () => {
   const [checked, setChecked] = useAtom(collectDust)
@@ -448,6 +452,21 @@ const ZapMaxInputButton = () => {
   )
 }
 
+const ZapInputAmountUSD = () => {
+  const [amount] = useAtom(zapInputString)
+  const zapToken = useAtomValue(ui.input.tokenSelector.selectedToken)
+  const price = useChainlinkPrice(zapToken?.address as Address | undefined)
+
+  const amountUSD = useMemo(() => {
+    if (!price) return undefined
+    return formatCurrency(Number(amount) * price, 2)
+  }, [price, amount])
+
+  if (!amountUSD) return <Skeleton width={100} height={20} />
+
+  return <Text>${amountUSD}</Text>
+}
+
 const ZapInputContainer = () => {
   const [amount, setAmount] = useAtom(zapInputString)
 
@@ -475,7 +494,7 @@ const ZapInputContainer = () => {
       >
         <Text>You use:</Text>
         <ZapInput amount={amount} setAmount={setAmount} />
-        <Text>$1000000</Text>
+        <ZapInputAmountUSD />
       </Box>
 
       <Box
