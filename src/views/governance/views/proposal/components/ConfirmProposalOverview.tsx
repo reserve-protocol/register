@@ -5,6 +5,7 @@ import GoTo from 'components/button/GoTo'
 import TransactionButton from 'components/button/TransactionButton'
 import ConfirmProposalActionIcon from 'components/icons/ConfirmProposalActionIcon'
 import useContractWrite from 'hooks/useContractWrite'
+import useRToken from 'hooks/useRToken'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
@@ -12,11 +13,9 @@ import { useNavigate } from 'react-router-dom'
 import { chainIdAtom } from 'state/atoms'
 import { Box, BoxProps, Container, Flex, Spinner, Text } from 'theme-ui'
 import { getTokenRoute, shortenString } from 'utils'
-import { ROUTES } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { UsePrepareContractWriteConfig } from 'wagmi'
 import { isProposalEditingAtom } from '../atoms'
-import useRToken from 'hooks/useRToken'
 
 interface Props extends BoxProps {
   tx: UsePrepareContractWriteConfig
@@ -104,7 +103,7 @@ const ConfirmProposalOverview = ({ tx, ...props }: Props) => {
   const setProposalEditing = useSetAtom(isProposalEditingAtom)
 
   return (
-    <Container style={{ paddingBottom: 0 }} {...props}>
+    <Box {...props}>
       <Box
         sx={{
           maxHeight: 'calc(100vh - 124px)',
@@ -139,7 +138,7 @@ const ConfirmProposalOverview = ({ tx, ...props }: Props) => {
           <ProposalStatus transactionState={tx} />
         </Flex>
       </Box>
-    </Container>
+    </Box>
   )
 }
 

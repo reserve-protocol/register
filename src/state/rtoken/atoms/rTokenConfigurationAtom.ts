@@ -9,7 +9,7 @@ import StRSR from 'abis/StRSR'
 import { chainIdAtom } from 'state/atoms'
 import { StringMap } from 'types'
 import { atomWithLoadable } from 'utils/atoms/utils'
-import { formatEther } from 'viem'
+import { Address, formatEther } from 'viem'
 import { readContracts } from 'wagmi'
 import rTokenAssetsAtom from './rTokenAssetsAtom'
 import rTokenContractsAtom from './rTokenContractsAtom'
@@ -110,6 +110,14 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
       functionName: 'dutchAuctionLength',
     },
     {
+      ...brokerCall,
+      functionName: 'batchTradeImplementation',
+    },
+    {
+      ...brokerCall,
+      functionName: 'dutchTradeImplementation',
+    },
+    {
       abi: BasketHandler,
       address: contracts.basketHandler.address,
       functionName: 'warmupPeriod',
@@ -135,6 +143,8 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
       legacyAuctionLength,
       batchAuctionLength,
       dutchAuctionLength,
+      batchTradeImplementation,
+      dutchTradeImplementation,
       warmupPeriod,
       withdrawalLeak,
     ] = await readContracts({ contracts: calls })
@@ -158,6 +168,8 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
         dutchAuctionLength.status === 'success'
           ? (dutchAuctionLength.result as number).toString()
           : '0',
+      batchTradeImplementation: batchTradeImplementation.result as Address,
+      dutchTradeImplementation: dutchTradeImplementation.result as Address,
       issuanceThrottleAmount: Number(
         formatEther((issuanceThrottle.result as any).amtRate)
       ).toString(),

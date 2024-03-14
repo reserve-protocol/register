@@ -1,6 +1,7 @@
 import {
   ParamName,
   basketChangesAtom,
+  contractUpgradesAtom,
   isAssistedUpgradeAtom,
   isNewBackupProposedAtom,
   proposalDescriptionAtom,
@@ -49,6 +50,7 @@ import {
   roleChangesAtom,
 } from '../atoms'
 import useUpgradeHelper from './useUpgradeHelper'
+import { ContractKey } from 'state/rtoken/atoms/rTokenContractsAtom'
 
 const paramParse: { [x: string]: (v: string) => bigint | number } = {
   minTradeVolume: parseEther,
@@ -110,6 +112,7 @@ const useProposalTx = () => {
   const parameterMap = useAtomValue(parameterContractMapAtom)
   const contracts = useAtomValue(rTokenContractsAtom)
   const assets = useAtomValue(registeredAssetsAtom)
+  const upgrades = useAtomValue(contractUpgradesAtom)
 
   const isAssistedUpgrade = useAtomValue(isAssistedUpgradeAtom)
   const { calls, addresses } = useUpgradeHelper()
@@ -143,6 +146,24 @@ const useProposalTx = () => {
     const tokenConfig = getValues()
 
     const newAssets = new Set<Address>()
+
+    /* ########################## 
+      ## Contract upgrades ## 
+      ############################# */
+    const contractUpgrades = Object.keys(upgrades)
+
+    if (contractUpgrades.length) {
+      for (const contract of contractUpgrades) {
+        addresses.push(contracts[contract as ContractKey].address)
+        calls.push(
+          encodeFunctionData({
+            abi: AssetRegistry,
+            functionName: 'upgradeTo',
+            args: [upgrades[contract]],
+          })
+        )
+      }
+    }
 
     const addToRegistry = (address: Address, underlyingAddress?: Address) => {
       if (newAssets.has(address) || assets.has(address)) return
