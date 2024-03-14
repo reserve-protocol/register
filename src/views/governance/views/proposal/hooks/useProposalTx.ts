@@ -1,5 +1,7 @@
 import {
   ParamName,
+  autoRegisterBackupAssetsAtom,
+  autoRegisterBasketAssetsAtom,
   basketChangesAtom,
   contractUpgradesAtom,
   isAssistedUpgradeAtom,
@@ -113,6 +115,8 @@ const useProposalTx = () => {
   const contracts = useAtomValue(rTokenContractsAtom)
   const assets = useAtomValue(registeredAssetsAtom)
   const upgrades = useAtomValue(contractUpgradesAtom)
+  const autoRegisterBasketAssets = useAtomValue(autoRegisterBasketAssetsAtom)
+  const autoRegisterBackupAssets = useAtomValue(autoRegisterBackupAssetsAtom)
 
   const isAssistedUpgrade = useAtomValue(isAssistedUpgradeAtom)
   const { calls, addresses } = useUpgradeHelper()
@@ -314,18 +318,20 @@ const useProposalTx = () => {
           if (changes.isNew) {
             newCollaterals.add(changes.collateral.address as Address)
 
-            addToRegistry(
-              changes.collateral.address as Address,
-              changes.collateral.erc20 as Address
-            )
-
-            if (
-              !!changes.collateral.rewardTokens?.length &&
-              changes.collateral.rewardTokens[0] != zeroAddress
-            ) {
-              changes.collateral.rewardTokens.forEach((reward) =>
-                addToRegistry(reward as Address)
+            if (autoRegisterBasketAssets) {
+              addToRegistry(
+                changes.collateral.address as Address,
+                changes.collateral.erc20 as Address
               )
+
+              if (
+                !!changes.collateral.rewardTokens?.length &&
+                changes.collateral.rewardTokens[0] != zeroAddress
+              ) {
+                changes.collateral.rewardTokens.forEach((reward) =>
+                  addToRegistry(reward as Address)
+                )
+              }
             }
           }
         }
@@ -376,15 +382,18 @@ const useProposalTx = () => {
           const backupCollaterals: Address[] = []
 
           for (const collateral of collaterals) {
-            addToRegistry(collateral.address as Address)
-            if (
-              !!collateral.rewardTokens?.length &&
-              collateral.rewardTokens[0] != zeroAddress
-            ) {
-              collateral.rewardTokens.forEach((reward) =>
-                addToRegistry(reward as Address)
-              )
+            if (autoRegisterBackupAssets) {
+              addToRegistry(collateral.address as Address)
+              if (
+                !!collateral.rewardTokens?.length &&
+                collateral.rewardTokens[0] != zeroAddress
+              ) {
+                collateral.rewardTokens.forEach((reward) =>
+                  addToRegistry(reward as Address)
+                )
+              }
             }
+
             backupCollaterals.push(collateral.address as Address)
           }
 

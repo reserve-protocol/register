@@ -1,13 +1,8 @@
-import Layout from 'components/rtoken-setup/Layout'
-import { useAtomValue } from 'jotai'
-import { useMemo } from 'react'
-import { interfaceMapAtom } from 'views/governance/atoms'
-import ProposalDetailNavigation from '../../proposal-detail/components/ProposalDetailNavigation'
+import { Container, Grid } from 'theme-ui'
 import useProposalTx from '../hooks/useProposalTx'
 import ConfirmProposalForm from './ConfirmProposalForm'
 import ConfirmProposalOverview from './ConfirmProposalOverview'
 import SimulateProposal from './SimulateProposal'
-import { Container, Grid } from 'theme-ui'
 
 const ConfirmProposal = () => {
   const tx = useProposalTx()

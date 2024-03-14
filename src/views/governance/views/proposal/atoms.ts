@@ -20,7 +20,9 @@ import { Address } from 'viem'
 export const proposalTxIdAtom = atom('')
 
 export const isNewBasketProposedAtom = atom(false)
+export const autoRegisterBasketAssetsAtom = atom(true)
 export const isNewBackupProposedAtom = atom(false)
+export const autoRegisterBackupAssetsAtom = atom(true)
 
 export const proposedRolesAtom = atomWithReset({
   owners: [] as string[],

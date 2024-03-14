@@ -1,8 +1,12 @@
 import { t, Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import { useAtom, useAtomValue } from 'jotai'
-import { Box, BoxProps, Text } from 'theme-ui'
-import { basketChangesAtom, isNewBasketProposedAtom } from '../atoms'
+import { Box, BoxProps, Checkbox, Text } from 'theme-ui'
+import {
+  autoRegisterBasketAssetsAtom,
+  basketChangesAtom,
+  isNewBasketProposedAtom,
+} from '../atoms'
 import ListItemPreview from './ListItemPreview'
 import PreviewBox from './PreviewBox'
 
@@ -10,6 +14,7 @@ const ProposedBasketPreview = (props: BoxProps) => {
   const [isNewBasketProposed, setProposeNewBasket] = useAtom(
     isNewBasketProposedAtom
   )
+  const [autoRegister, setAutoRegister] = useAtom(autoRegisterBasketAssetsAtom)
   const basketChanges = useAtomValue(basketChangesAtom)
 
   if (!isNewBasketProposed) {
@@ -31,6 +36,15 @@ const ProposedBasketPreview = (props: BoxProps) => {
             <Trans>Revert</Trans>
           </SmallButton>
         </Box>
+        <label>
+          <Box variant="layout.verticalAlign" mt={2}>
+            <Checkbox
+              checked={autoRegister}
+              onChange={() => setAutoRegister(!autoRegister)}
+            />
+            <Text variant="strong">Generate Asset Registry calls</Text>
+          </Box>
+        </label>
       </Box>
       {!!basketChanges.length && (
         <PreviewBox
