@@ -149,8 +149,6 @@ const rTokenConfigurationAtom = atomWithLoadable(async (get) => {
       withdrawalLeak,
     ] = await readContracts({ contracts: calls })
 
-    console.log('batchtrade', batchTradeImplementation)
-
     return {
       tradingDelay: (tradingDelay.result as number).toString(),
       backingBuffer: (

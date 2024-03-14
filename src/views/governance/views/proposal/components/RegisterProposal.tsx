@@ -1,5 +1,4 @@
 import { Trans } from '@lingui/macro'
-import useRToken from 'hooks/useRToken'
 import { useAtom, useAtomValue } from 'jotai'
 import { rTokenAssetsAtom } from 'state/atoms'
 import { BoxProps, Card, Divider, Text } from 'theme-ui'

@@ -15,6 +15,7 @@ import Main from 'abis/Main'
 import BrokerLegacy from 'abis/BrokerLegacy'
 import BasketHandler from 'abis/BasketHandler'
 import { RegisterAsset } from './hooks/useRegisterAssets'
+import { Address } from 'viem'
 
 export const proposalTxIdAtom = atom('')
 
@@ -38,6 +39,8 @@ export const revenueSplitChangesAtom = atomWithReset<RevenueSplitChanges>({
 export const parametersChangesAtom = atomWithReset<ParameterChange[]>([])
 
 export const roleChangesAtom = atomWithReset<RoleChange[]>([])
+
+export const contractUpgradesAtom = atomWithReset<Record<string, Address>>({})
 
 export const unregisterAssetsAtom = atomWithReset<string[]>([])
 

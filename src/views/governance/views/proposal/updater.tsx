@@ -20,6 +20,7 @@ import { truncateDecimals } from 'utils'
 import {
   backupChangesAtom,
   basketChangesAtom,
+  contractUpgradesAtom,
   isNewBackupProposedAtom,
   isNewBasketProposedAtom,
   isProposalValidAtom,
@@ -107,6 +108,7 @@ export const ChangesUpdater = () => {
   const isNewBasket = useAtomValue(isNewBasketProposedAtom)
   const isNewBackup = useAtomValue(isNewBackupProposedAtom)
   const assetsToUnregister = useAtomValue(unregisterAssetsAtom)
+  const hasUpgrades = !!Object.keys(useAtomValue(contractUpgradesAtom)).length
 
   // Valid listeners
   const isBasketValid = useAtomValue(isBasketValidAtom)
@@ -157,7 +159,8 @@ export const ChangesUpdater = () => {
       !roleChanges.length &&
       !assetsToUnregister.length &&
       !assetsToRegister.length &&
-      !isNewBasket
+      !isNewBasket &&
+      !hasUpgrades
     ) {
       setValidState(false)
     } else {
@@ -176,6 +179,7 @@ export const ChangesUpdater = () => {
     roleChanges,
     assetsToUnregister,
     assetsToRegister,
+    hasUpgrades,
     isValid,
   ])
 
