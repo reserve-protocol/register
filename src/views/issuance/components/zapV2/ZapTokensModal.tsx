@@ -30,6 +30,7 @@ const ZapTokenList = ({ onSelect }: { onSelect: () => void }) => {
   return (
     <Box
       sx={{
+        height: ['auto', '360px'],
         background: 'background',
         display: 'flex',
         flexDirection: 'column',
