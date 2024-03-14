@@ -1,11 +1,11 @@
-import { Button, NumericalInput } from 'components'
+import { Button, Modal, NumericalInput } from 'components'
 import TokenLogo from 'components/icons/TokenLogo'
 import Popup from 'components/popup'
 import TabMenu from 'components/tab-menu'
 import TokenItem from 'components/token-item'
 import useRToken from 'hooks/useRToken'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import React, { FC, useCallback, useMemo, useState } from 'react'
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import {
   ArrowDown,
   ChevronDown,
@@ -13,15 +13,246 @@ import {
   Minus,
   Plus,
   Settings,
+  X,
 } from 'react-feather'
 import Skeleton from 'react-loading-skeleton'
 import { rTokenPriceAtom } from 'state/atoms'
-import { Box, Divider, IconButton, Text } from 'theme-ui'
+import { Box, Checkbox, Divider, IconButton, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { zapInputString, zapQuotePromise } from '../zap/state/atoms'
+import ZapButton from '../zap/components/ZapButton'
+import {
+  collectDust,
+  previousZapTransaction,
+  zapInputString,
+  zapOutputSlippage,
+  zapQuotePromise,
+} from '../zap/state/atoms'
 import { formatQty } from '../zap/state/formatTokenQuantity'
 import { ui, zapDustValue, zapOutputAmount } from '../zap/state/ui-atoms'
-import ZapButton from '../zap/components/ZapButton'
+import Help from 'components/help'
+import ButtonGroup from 'components/button/ButtonGroup'
+
+const ZapCollectDust = () => {
+  const [checked, setChecked] = useAtom(collectDust)
+  const setPrevious = useSetAtom(previousZapTransaction)
+  return (
+    <Box
+      sx={{
+        borderRadius: '8px',
+        border: '1px solid',
+        borderColor: 'borderFocused',
+        backgroundColor: 'focusedBackground',
+      }}
+    >
+      <label
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          padding: '12px',
+          cursor: 'pointer',
+        }}
+      >
+        <Box variant="layout.verticalAlign" sx={{ gap: '6px' }}>
+          <Text>Send dust back to wallet</Text>
+        </Box>
+        <Checkbox
+          title="Collect dust"
+          onChange={() => {
+            setChecked((c) => !c)
+            setPrevious(null)
+          }}
+          checked={checked}
+        />
+      </label>
+    </Box>
+  )
+}
+
+const SLIPPAGE_OPTIONS = [100000n, 250000n, 500000n]
+const formatNumber = (num: number) => {
+  return num.toLocaleString(undefined, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 4,
+  })
+}
+
+const ZapCustomInputSlippage = ({
+  showCustomSlippage,
+  setShowCustomSlippage,
+}: {
+  showCustomSlippage: boolean
+  setShowCustomSlippage: (show: boolean) => void
+}) => {
+  const [slippage, setSlippage] = useAtom(zapOutputSlippage)
+  const [input, setInput] = useState(
+    formatNumber((1 / Number(slippage)) * 10000)
+  )
+
+  return !showCustomSlippage ? (
+    <Button
+      variant="transparent"
+      onClick={() => setShowCustomSlippage(true)}
+      sx={{
+        borderRadius: 8,
+        px: '12px',
+        py: 2,
+      }}
+    >
+      Custom
+    </Button>
+  ) : (
+    <Box
+      sx={{
+        borderRadius: '8px',
+        border: '1px solid',
+        borderColor: 'darkBorder',
+      }}
+    >
+      <NumericalInput
+        style={{
+          maxWidth: '79px',
+          fontSize: 16,
+          padding: '8px 12px',
+        }}
+        variant="transparent"
+        value={input}
+        autoFocus={true}
+        onChange={(value) => {
+          setInput(value)
+          const parsed = parseFloat(value)
+          if (isNaN(parsed)) return
+          const slippage =
+            parsed === 0 ? 0n : BigInt(Math.floor((1 / parsed) * 10000))
+          setSlippage(slippage)
+        }}
+      />
+    </Box>
+  )
+}
+
+const ZapSlippageSettings = () => {
+  const [selectedSlippage, setSlippage] = useAtom(zapOutputSlippage)
+  const [showCustomSlippage, setShowCustomSlippage] = useState(
+    !SLIPPAGE_OPTIONS.includes(selectedSlippage)
+  )
+
+  const buttons = useMemo(
+    () =>
+      SLIPPAGE_OPTIONS.map((bps) => ({
+        label: `${formatNumber((1 / Number(bps)) * 10000)} bps`,
+        onClick: () => {
+          setShowCustomSlippage(false)
+          setSlippage(bps)
+        },
+      })),
+    [setSlippage]
+  )
+
+  const active = useMemo(
+    () => SLIPPAGE_OPTIONS.findIndex((bps) => bps === selectedSlippage),
+    [selectedSlippage]
+  )
+
+  return (
+    <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+      <ButtonGroup buttons={buttons} startActive={active} />
+      <ZapCustomInputSlippage
+        showCustomSlippage={showCustomSlippage}
+        setShowCustomSlippage={setShowCustomSlippage}
+      />
+    </Box>
+  )
+}
+
+const ZapSettingsModal = ({ onClose }: { onClose: () => void }) => {
+  return (
+    <Modal
+      p={0}
+      width={360}
+      sx={{ border: '3px solid', borderColor: 'borderFocused' }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          height: '100%',
+          backgroundColor: 'backgroundNested',
+        }}
+      >
+        <Box variant="layout.verticalAlign" p={4} mb={[3, 0]} pb={0}>
+          <Text variant="sectionTitle">Zap Settings</Text>
+          <Button
+            variant="circle"
+            onClick={onClose}
+            sx={{ marginLeft: 'auto', backgroundColor: 'transparent' }}
+          >
+            <X />
+          </Button>
+        </Box>
+        <Box
+          p={['12px', '12px']}
+          pt={0}
+          sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+        >
+          <Box>
+            <Box
+              variant="layout.verticalAlign"
+              pl={'12px'}
+              pr={4}
+              py={2}
+              sx={{ justifyContent: 'space-between' }}
+            >
+              <Text variant="legend">Collect dust?</Text>
+              <Help
+                content={`Dust is the leftover amount of tokens that cannot be exchanged. If you choose to collect dust, it will be sent back to your wallet. Sending dust back to the wallet will increase transaction fee.`}
+              />
+            </Box>
+            <ZapCollectDust />
+          </Box>
+          <Box>
+            <Box
+              variant="layout.verticalAlign"
+              pl={'12px'}
+              pr={4}
+              py={2}
+              sx={{ justifyContent: 'space-between' }}
+            >
+              <Text variant="legend">Max. mint slippage</Text>
+              <Help
+                content={`The maximum amount of slippage you are willing to accept when minting. Higher slippage settings will make the transaction more likely to succeed, but may result in fewer tokens minted.`}
+              />
+            </Box>
+            <ZapSlippageSettings />
+          </Box>
+        </Box>
+      </Box>
+    </Modal>
+  )
+}
+
+const ZapSettings = () => {
+  const [open, setOpen] = useState<boolean>(false)
+
+  return (
+    <>
+      {open && <ZapSettingsModal onClose={() => setOpen(false)} />}
+      <IconButton
+        sx={{
+          cursor: 'pointer',
+          width: '34px',
+          border: '1px solid',
+          borderColor: 'border',
+          borderRadius: '6px',
+          ':hover': { backgroundColor: 'border' },
+        }}
+        onClick={() => setOpen(true)}
+      >
+        <Settings size={16} />
+      </IconButton>
+    </>
+  )
+}
 
 const ZapTabs = () => {
   const [issuanceOperation, setZapOperation] = useState<string>('mint')
@@ -43,18 +274,7 @@ const ZapTabs = () => {
         background="border"
         onMenuChange={setZapOperation}
       />
-      <IconButton
-        sx={{
-          cursor: 'pointer',
-          width: '34px',
-          border: '1px solid',
-          borderColor: 'border',
-          borderRadius: '6px',
-          ':hover': { backgroundColor: 'border' },
-        }}
-      >
-        <Settings size={16} />
-      </IconButton>
+      <ZapSettings />
     </Box>
   )
 }
