@@ -2,7 +2,6 @@ import { Button, Modal, NumericalInput } from 'components'
 import ButtonGroup from 'components/button/ButtonGroup'
 import Help from 'components/help'
 import TokenLogo from 'components/icons/TokenLogo'
-import Popup from 'components/popup'
 import TabMenu from 'components/tab-menu'
 import TokenItem from 'components/token-item'
 import { useChainlinkPrice } from 'hooks/useChainlinkPrice'
@@ -19,10 +18,10 @@ import {
   X,
 } from 'react-feather'
 import Skeleton from 'react-loading-skeleton'
-import { chainIdAtom, rTokenPriceAtom } from 'state/atoms'
+import { rTokenPriceAtom } from 'state/atoms'
 import { Box, Checkbox, Divider, IconButton, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import collateralPlugins from 'utils/plugins'
+import { Address } from 'viem'
 import ZapButton from '../zap/components/ZapButton'
 import {
   collectDust,
@@ -33,8 +32,7 @@ import {
 } from '../zap/state/atoms'
 import { formatQty } from '../zap/state/formatTokenQuantity'
 import { ui, zapDustValue, zapOutputAmount } from '../zap/state/ui-atoms'
-import { ChainId } from 'utils/chains'
-import { Address } from 'viem'
+import ZapTokensModal from './ZapTokensModal'
 
 const ZapCollectDust = () => {
   const [checked, setChecked] = useAtom(collectDust)
@@ -184,7 +182,7 @@ const ZapSettingsModal = ({ onClose }: { onClose: () => void }) => {
           backgroundColor: 'backgroundNested',
         }}
       >
-        <Box variant="layout.verticalAlign" p={4} mb={[3, 0]} pb={0}>
+        <Box variant="layout.verticalAlign" p={4} mb={[3, 0]} pt={3} pb={0}>
           <Text variant="sectionTitle">Zap Settings</Text>
           <Button
             variant="circle"
@@ -298,74 +296,19 @@ const ZapTokenSelected = () => {
   )
 }
 
-const ZapTokenList = () => {
-  const [tokens, setZapToken] = useAtom(ui.input.tokenSelector.tokenSelector)
-  const entries = useMemo(
-    () =>
-      tokens.map((token) => ({
-        token,
-        selectToken: () => setZapToken(token),
-      })),
-    [setZapToken, tokens]
-  )
-
-  return (
-    <Box
-      sx={{
-        background: 'background',
-        display: 'flex',
-        flexDirection: 'column',
-        minWidth: '140px',
-        overflow: 'auto',
-        borderRadius: '10px',
-        gap: 2,
-      }}
-    >
-      {entries.map(({ token, selectToken }) => (
-        <Box
-          p={2}
-          key={token.symbol}
-          sx={{
-            cursor: 'pointer',
-            ':hover': {
-              backgroundColor: 'secondary',
-            },
-          }}
-          onClick={selectToken}
-        >
-          <TokenItem symbol={token.symbol} />
-        </Box>
-      ))}
-    </Box>
-  )
-}
-
 const ZapTokenSelector = () => {
-  const [isVisible, setVisible] = useAtom(ui.input.tokenSelector.popup)
-
-  const onClickSelected = useCallback(
-    (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      e.stopPropagation()
-      setVisible((v) => !v)
-    },
-    [setVisible]
-  )
+  const [isVisible, setVisible] = useState(false)
 
   return (
-    <Popup
-      show={isVisible}
-      onDismiss={() => setVisible(false)}
-      placement="bottom"
-      zIndex={0}
-      content={<ZapTokenList />}
-    >
+    <>
+      {isVisible && <ZapTokensModal onClose={() => setVisible(false)} />}
       <Box
         variant="layout.verticalAlign"
         sx={{
           cursor: 'pointer',
           gap: 1,
         }}
-        onMouseDown={onClickSelected}
+        onClick={() => setVisible(true)}
       >
         <Box
           variant="layout.verticalAlign"
@@ -380,14 +323,10 @@ const ZapTokenSelector = () => {
           }}
         >
           <ZapTokenSelected />
-          {isVisible ? (
-            <ChevronUp size={20} strokeWidth={1.8} />
-          ) : (
-            <ChevronDown size={20} strokeWidth={1.8} />
-          )}
+          <ChevronDown size={20} strokeWidth={1.8} />
         </Box>
       </Box>
-    </Popup>
+    </>
   )
 }
 
