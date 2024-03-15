@@ -1,13 +1,11 @@
 import { Trans, t } from '@lingui/macro'
-import ERC20 from 'abis/ERC20'
 import StRSR from 'abis/StRSR'
 import StRSRVotes from 'abis/StRSRVotes'
 import { Button, Modal } from 'components'
 import { TransactionButtonContainer } from 'components/button/TransactionButton'
 import TokenLogo from 'components/icons/TokenLogo'
 import TransactionsIcon from 'components/icons/TransactionsIcon'
-import useContractWrite from 'hooks/useContractWrite'
-import useWatchTransaction from 'hooks/useWatchTransaction'
+import useApproveAndExecute from 'hooks/useApproveAndExecute'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useEffect, useState } from 'react'
 import { Check } from 'react-feather'
@@ -25,11 +23,7 @@ import { RSR_ADDRESS } from 'utils/addresses'
 import { capitalize } from 'utils/constants'
 import { Address, Hex } from 'viem'
 import { isValidStakeAmountAtom, stakeAmountAtom } from 'views/staking/atoms'
-import {
-  UsePrepareContractWriteConfig,
-  useContractRead,
-  useWaitForTransaction,
-} from 'wagmi'
+import { UsePrepareContractWriteConfig } from 'wagmi'
 import AmountPreview from '../AmountPreview'
 import DelegateStake from './DelegateStake'
 
@@ -68,29 +62,6 @@ const txAtom = atom((get) => {
   }
 })
 
-const useHasAllowance = (allowance: Allowance | undefined) => {
-  const account = useAtomValue(walletAtom)
-  const chainId = useAtomValue(chainIdAtom)
-
-  const { data, isLoading } = useContractRead(
-    allowance && account
-      ? {
-          abi: ERC20,
-          functionName: 'allowance',
-          address: allowance.token,
-          args: [account, allowance.spender],
-          chainId,
-        }
-      : undefined
-  )
-
-  if (!allowance) {
-    return [true, false]
-  }
-
-  return [(data ?? 0n) >= allowance.amount, isLoading]
-}
-
 interface IApprovalStatus {
   allowance: Allowance
   hash: Hex | undefined
@@ -126,86 +97,37 @@ const ApprovalStatus = ({ allowance, hash, success }: IApprovalStatus) => {
 
 interface IModalTransactionButton extends BoxProps {
   action: string
-  description?: string
   allowance?: Allowance
   call?: UsePrepareContractWriteConfig
 }
 
 const ModalTransactionButton = ({
   action,
-  description,
   allowance,
   call,
   ...props
 }: IModalTransactionButton) => {
-  const [hasAllowance, isFetchingAllowance] = useHasAllowance(allowance)
-  const [isLoading, setLoading] = useState(false)
-  const [errorMsg, setError] = useState<string | undefined>(undefined)
-
   const {
-    write: approve,
-    hash: approvalHash,
-    error: approvalError,
-  } = useContractWrite(
-    allowance && !hasAllowance
-      ? {
-          address: allowance.token,
-          abi: ERC20,
-          functionName: 'approve',
-          args: [allowance.spender, allowance.amount],
-        }
-      : undefined
-  )
+    execute,
+    isReady,
+    validatingAllowance,
+    hasAllowance,
+    isLoading,
+    isApproved,
+    error,
+    approvalHash,
+    executeHash,
+  } = useApproveAndExecute(call, allowance, capitalize(action))
 
-  console.log('approval error', approvalError)
-  const { status: approvalStatus } = useWaitForTransaction({
-    hash: approvalHash,
-  })
+  const errorMsg = error ? (
+    <Box mt={2} sx={{ textAlign: 'center' }}>
+      <Text variant="error" mt={2}>
+        {error}
+      </Text>
+    </Box>
+  ) : null
 
-  const { write, error, validationError, hash } = useContractWrite(
-    hasAllowance || approvalStatus === 'success' ? call : undefined
-  )
-  const { status } = useWatchTransaction({
-    hash,
-    label: description || `${capitalize(action)}`,
-  })
-
-  useEffect(() => {
-    if (approvalStatus === 'success' && write) {
-      write()
-    }
-
-    if (
-      approvalStatus === 'error' ||
-      error ||
-      validationError ||
-      approvalError
-    ) {
-      const errorExposed = approvalError || error || validationError
-      console.log('Error', errorExposed)
-
-      let errorText = 'Execution failed'
-
-      if (errorExposed?.message.includes('User rejected the request')) {
-        errorText = 'Transaction rejected'
-      }
-
-      setLoading(false)
-      setError(errorText)
-    }
-  }, [approvalStatus, approvalError, write, error, validationError])
-
-  const handleApprove = () => {
-    setLoading(true)
-    approve?.()
-  }
-
-  const handleSubmit = () => {
-    setLoading(true)
-    write?.()
-  }
-
-  if (isFetchingAllowance) {
+  if (validatingAllowance) {
     return (
       <Box
         variant="layout.verticalAlign"
@@ -220,29 +142,25 @@ const ModalTransactionButton = ({
     )
   }
 
-  if (allowance && !hasAllowance && !isLoading && !approvalHash) {
+  if (!hasAllowance && !isLoading && !isApproved) {
     return (
       <TransactionButtonContainer {...props}>
-        <Button fullWidth onClick={handleApprove}>
-          Approve use of {allowance.symbol}
+        <Button fullWidth onClick={execute} disabled={!isReady}>
+          Approve use of RSR
         </Button>
-        {errorMsg && (
-          <Text variant="danger" mt={2} sx={{ textAlign: 'center' }}>
-            {errorMsg}
-          </Text>
-        )}
+        {errorMsg}
       </TransactionButtonContainer>
     )
   }
 
   if (isLoading) {
     const getStatusText = () => {
-      if ((!hasAllowance && approvalStatus === 'success') || hasAllowance) {
-        if (!write) {
+      if ((!hasAllowance && isApproved) || hasAllowance) {
+        if (!isReady) {
           return t`Verifying transaction...`
         }
 
-        if (!hash) {
+        if (!executeHash) {
           return t`Proceed in wallet`
         }
 
@@ -260,7 +178,7 @@ const ModalTransactionButton = ({
           <ApprovalStatus
             allowance={allowance}
             hash={approvalHash}
-            success={approvalStatus === 'success'}
+            success={isApproved}
           />
         )}
         <Box variant="layout.verticalAlign">
@@ -280,20 +198,10 @@ const ModalTransactionButton = ({
   return (
     <Box {...props}>
       <TransactionButtonContainer>
-        <Button
-          disabled={!write || !!validationError}
-          onClick={handleSubmit}
-          fullWidth
-        >
+        <Button disabled={!isReady} onClick={execute} fullWidth>
           Confirm {capitalize(action)}
         </Button>
-        {errorMsg && (
-          <Box mt={2} sx={{ textAlign: 'center' }}>
-            <Text variant="error" mt={2}>
-              {errorMsg}
-            </Text>
-          </Box>
-        )}
+        {errorMsg}
       </TransactionButtonContainer>
     </Box>
   )

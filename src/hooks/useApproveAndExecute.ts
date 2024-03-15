@@ -1,6 +1,6 @@
 import ERC20 from 'abis/ERC20'
 import { useAtomValue } from 'jotai'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { chainIdAtom, walletAtom } from 'state/atoms'
 import { Allowance } from 'types'
 import {
@@ -11,7 +11,7 @@ import {
 import useContractWrite from './useContractWrite'
 import useWatchTransaction from './useWatchTransaction'
 
-export const useApproval = (allowance: Allowance) => {
+export const useApproval = (allowance: Allowance | undefined) => {
   const account = useAtomValue(walletAtom)
   const chainId = useAtomValue(chainIdAtom)
 
@@ -20,7 +20,7 @@ export const useApproval = (allowance: Allowance) => {
     isLoading: validatingAllowance,
     error: allowanceError,
   } = useContractRead(
-    account
+    allowance && account
       ? {
           abi: ERC20,
           functionName: 'allowance',
@@ -31,7 +31,8 @@ export const useApproval = (allowance: Allowance) => {
       : undefined
   )
 
-  const hasAllowance = account ? (data ?? 0n) >= allowance.amount : false
+  const hasAllowance =
+    account && allowance ? (data ?? 0n) >= allowance.amount : false
 
   const {
     write: approve,
@@ -83,8 +84,8 @@ export const useApproval = (allowance: Allowance) => {
 }
 
 const useApproveAndExecute = (
-  call: UsePrepareContractWriteConfig,
-  allowance: Allowance,
+  call: UsePrepareContractWriteConfig | undefined,
+  allowance: Allowance | undefined,
   label: string
 ) => {
   const {
@@ -113,17 +114,25 @@ const useApproveAndExecute = (
   })
 
   const processError = error || validationError || executeError
-  const isLoading = approvalLoading || executing || isMining
+  const isLoading =
+    approvalLoading || executing || isMining || (isSuccess && !processError)
   const isReady = approvalReady || executeReady
   const isConfirmed = status === 'success'
 
-  const execute = useCallback(() => {
+  const execute = useCallback((): void => {
     if (!hasAllowance && !isSuccess) {
       approve?.()
     } else {
       write?.()
     }
   }, [hasAllowance, isSuccess, approve, write])
+
+  // Trigger next transaction after approval
+  useEffect(() => {
+    if (!hasAllowance && isSuccess && executeReady) {
+      write?.()
+    }
+  }, [hasAllowance, isSuccess, executeReady])
 
   return useMemo(() => {
     let errorText = processError ? 'Execution failed' : null
