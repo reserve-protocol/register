@@ -1,7 +1,6 @@
 import { t } from '@lingui/macro'
 import StRSR from 'abis/StRSR'
 import StRSRVotes from 'abis/StRSRVotes'
-import stRSRLegacy from 'abis/stRSRLegacy'
 import TransactionModal from 'components/transaction-modal'
 import useDebounce from 'hooks/useDebounce'
 import useRToken from 'hooks/useRToken'
@@ -49,7 +48,7 @@ const contractCallAtom = atom((get) => {
   }
 
   return {
-    abi: isLegacy ? stRSRLegacy : StRSR,
+    abi: StRSR,
     address: contracts.stRSR.address,
     functionName: 'stake',
     args: [parsedAmount] as [bigint],

@@ -1,7 +1,16 @@
 import { Trans, t } from '@lingui/macro'
+import ERC20 from 'abis/ERC20'
+import StRSR from 'abis/StRSR'
+import StRSRVotes from 'abis/StRSRVotes'
 import { Button, Modal } from 'components'
-import AmountPreview from '../AmountPreview'
+import { TransactionButtonContainer } from 'components/button/TransactionButton'
+import TokenLogo from 'components/icons/TokenLogo'
+import TransactionsIcon from 'components/icons/TransactionsIcon'
+import useContractWrite from 'hooks/useContractWrite'
+import useWatchTransaction from 'hooks/useWatchTransaction'
 import { atom, useAtom, useAtomValue } from 'jotai'
+import { useEffect, useState } from 'react'
+import { Check } from 'react-feather'
 import {
   accountDelegateAtom,
   chainIdAtom,
@@ -9,30 +18,22 @@ import {
   rTokenContractsAtom,
   walletAtom,
 } from 'state/atoms'
-import { isValidStakeAmountAtom, stakeAmountAtom } from 'views/staking/atoms'
-import { safeParseEther } from 'utils'
-import StRSRVotes from 'abis/StRSRVotes'
-import stRSRLegacy from 'abis/stRSRLegacy'
-import StRSR from 'abis/StRSR'
-import { Address, Hex } from 'viem'
 import { Box, BoxProps, Spinner, Text } from 'theme-ui'
-import { capitalize } from 'utils/constants'
 import { Allowance } from 'types'
+import { safeParseEther } from 'utils'
+import { RSR_ADDRESS } from 'utils/addresses'
+import { capitalize } from 'utils/constants'
+import { Address, Hex } from 'viem'
+import { isValidStakeAmountAtom, stakeAmountAtom } from 'views/staking/atoms'
 import {
   UsePrepareContractWriteConfig,
   useContractRead,
   useWaitForTransaction,
 } from 'wagmi'
-import ERC20 from 'abis/ERC20'
-import { TransactionButtonContainer } from 'components/button/TransactionButton'
-import useContractWrite from 'hooks/useContractWrite'
-import { useEffect, useState } from 'react'
-import useWatchTransaction from 'hooks/useWatchTransaction'
-import { Check } from 'react-feather'
-import TokenLogo from 'components/icons/TokenLogo'
-import TransactionsIcon from 'components/icons/TransactionsIcon'
-import { RSR_ADDRESS } from 'utils/addresses'
+import AmountPreview from '../AmountPreview'
 import DelegateStake from './DelegateStake'
+
+const ShowMore = () => {}
 
 const customDelegateAtom = atom('')
 
@@ -60,7 +61,7 @@ const txAtom = atom((get) => {
   }
 
   return {
-    abi: isLegacy ? stRSRLegacy : StRSR,
+    abi: StRSR,
     address: contracts.stRSR.address,
     functionName: 'stake',
     args: [parsedAmount] as [bigint],
