@@ -4,6 +4,7 @@ import {
   FC,
   PropsWithChildren,
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -12,6 +13,8 @@ import {
 import {
   balancesAtom,
   chainIdAtom,
+  ethPriceAtom,
+  gasFeeAtom,
   rTokenAtom,
   rTokenBalanceAtom,
   rTokenPriceAtom,
@@ -20,8 +23,10 @@ import {
 import { zappableTokens } from '../../zap/state/zapper'
 import zapper, { ZapResponse, fetcher } from '../api'
 import useSWR from 'swr'
-import { Address, zeroAddress } from 'viem'
+import { Address, formatEther, parseUnits, zeroAddress } from 'viem'
 import useDebounce from 'hooks/useDebounce'
+import { useWalletClient } from 'wagmi'
+import { useChainlinkPrice } from 'hooks/useChainlinkPrice'
 
 export type IssuanceOperation = 'mint' | 'redeem'
 
@@ -41,14 +46,17 @@ type ZapContextType = {
   selectedToken?: Token
   setSelectedToken: (token: Token) => void
   maxAmountIn: string
-  amountOut: string
-  zapDustUSD: string
   loadingZap: boolean
   chainId: number
   tokens: Token[]
+  onSubmit: () => void
+  amountOut?: string
+  zapDustUSD?: string
   rTokenSymbol?: string
   rTokenBalance?: string
   rTokenPrice?: number
+  gasCost?: number
+  tokenInPrice?: number
 }
 
 export const SLIPPAGE_OPTIONS = [100000n, 250000n, 500000n]
@@ -68,11 +76,10 @@ const ZapContext = createContext<ZapContextType>({
   setAmountIn: () => {},
   setSelectedToken: () => {},
   maxAmountIn: '0',
-  amountOut: '0',
-  zapDustUSD: '0',
   loadingZap: false,
   chainId: 0,
   tokens: [],
+  onSubmit: () => {},
 })
 
 export const useZap = () => {
@@ -95,8 +102,17 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const balances = useAtomValue(balancesAtom)
   const tokens = useAtomValue(zappableTokens)
   const wallet = useAtomValue(walletAtom)
+  const fee = useAtomValue(gasFeeAtom)
+  const ethPrice = useAtomValue(ethPriceAtom)
 
-  useEffect(() => setSelectedToken(tokens[0]), [tokens])
+  const { data: client } = useWalletClient()
+  const tokenInPrice = useChainlinkPrice(
+    selectedToken?.address as Address | undefined
+  )
+
+  useEffect(() => {
+    if (!selectedToken) setSelectedToken(tokens[0])
+  }, [tokens])
 
   const endpoint = useDebounce(
     useMemo(() => {
@@ -117,7 +133,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         selectedToken?.symbol === 'ETH'
           ? zeroAddress
           : (selectedToken?.address.address as Address),
-        amountIn,
+        parseUnits(amountIn, selectedToken?.decimals).toString(),
         rToken?.address as Address,
         Number(slippage)
       )
@@ -126,8 +142,6 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   )
 
   const { data, isLoading, error } = useSWR<ZapResponse>(endpoint, fetcher)
-
-  // console.log(triggerZap, data, isLoading, error)
 
   const maxAmountIn = useMemo(() => {
     const tokenAddress = selectedToken?.address?.toString()
@@ -138,17 +152,25 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     return selectedToken.from(fr).format()
   }, [selectedToken, balances])
 
-  const amountOut = useMemo(() => {
-    return '0'
-  }, [])
+  const [amountOut, zapDustUSD, gasCost] = useMemo(() => {
+    if (!data || !data.result) {
+      return ['0', '0', 0]
+    }
+    const amountOut = formatEther(BigInt(data.result.amountOut))
+    const estimatedGasCost = fee
+      ? Number(formatEther(BigInt(data.result.gas) * fee)) * ethPrice
+      : 0
+    return [amountOut, undefined, estimatedGasCost]
+  }, [data])
 
-  const zapDustUSD = useMemo(() => {
-    return '0'
-  }, [])
-
-  const loadingZap = useMemo(() => {
-    return false
-  }, [])
+  const onSubmit = useCallback(() => {
+    if (!data || !data.result || !client) return
+    client.sendTransaction({
+      data: data?.result?.tx.data as Address,
+      gas: BigInt(data?.result?.gas),
+      to: data?.result?.tx.to as Address,
+    })
+  }, [data])
 
   return (
     <ZapContext.Provider
@@ -168,14 +190,17 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         selectedToken,
         setSelectedToken,
         maxAmountIn,
-        amountOut,
-        zapDustUSD,
-        loadingZap,
+        loadingZap: isLoading,
         chainId,
         tokens,
+        onSubmit,
+        amountOut,
+        zapDustUSD,
         rTokenSymbol: rToken?.symbol,
         rTokenBalance: rTokenBalance?.balance,
         rTokenPrice,
+        gasCost,
+        tokenInPrice,
       }}
     >
       {children}
