@@ -17,11 +17,6 @@ const DelegateStake = ({
   onChange(value: string): void
 }) => (
   <>
-    <Divider
-      mx={-4}
-      my={4}
-      sx={{ borderStyle: 'dashed', borderColor: 'darkBorder' }}
-    />
     {editing ? (
       <EditDelegate
         current={value}
