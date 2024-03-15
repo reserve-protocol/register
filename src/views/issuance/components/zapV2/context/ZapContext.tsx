@@ -15,8 +15,13 @@ import {
   rTokenAtom,
   rTokenBalanceAtom,
   rTokenPriceAtom,
+  walletAtom,
 } from 'state/atoms'
 import { zappableTokens } from '../../zap/state/zapper'
+import zapper, { ZapResponse, fetcher } from '../api'
+import useSWR from 'swr'
+import { Address, zeroAddress } from 'viem'
+import useDebounce from 'hooks/useDebounce'
 
 export type IssuanceOperation = 'mint' | 'redeem'
 
@@ -89,8 +94,40 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const rTokenBalance = useAtomValue(rTokenBalanceAtom)
   const balances = useAtomValue(balancesAtom)
   const tokens = useAtomValue(zappableTokens)
+  const wallet = useAtomValue(walletAtom)
 
   useEffect(() => setSelectedToken(tokens[0]), [tokens])
+
+  const endpoint = useDebounce(
+    useMemo(() => {
+      if (
+        !wallet ||
+        !selectedToken?.address?.address ||
+        !rToken?.address ||
+        isNaN(Number(amountIn)) ||
+        amountIn === '' ||
+        Number(amountIn) === 0
+      ) {
+        return null
+      }
+
+      return zapper.zap(
+        chainId,
+        wallet as Address,
+        selectedToken?.symbol === 'ETH'
+          ? zeroAddress
+          : (selectedToken?.address.address as Address),
+        amountIn,
+        rToken?.address as Address,
+        Number(slippage)
+      )
+    }, [chainId, wallet, selectedToken, amountIn, rToken, slippage]),
+    1000
+  )
+
+  const { data, isLoading, error } = useSWR<ZapResponse>(endpoint, fetcher)
+
+  // console.log(triggerZap, data, isLoading, error)
 
   const maxAmountIn = useMemo(() => {
     const tokenAddress = selectedToken?.address?.toString()
