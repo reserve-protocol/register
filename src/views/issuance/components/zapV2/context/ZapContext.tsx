@@ -5,10 +5,18 @@ import {
   PropsWithChildren,
   createContext,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react'
-import { chainIdAtom, rTokenAtom } from 'state/atoms'
+import {
+  balancesAtom,
+  chainIdAtom,
+  rTokenAtom,
+  rTokenBalanceAtom,
+  rTokenPriceAtom,
+} from 'state/atoms'
+import { zappableTokens } from '../../zap/state/zapper'
 
 export type IssuanceOperation = 'mint' | 'redeem'
 
@@ -35,7 +43,7 @@ type ZapContextType = {
   tokens: Token[]
   rTokenSymbol?: string
   rTokenBalance?: string
-  rTokenPrice?: string
+  rTokenPrice?: number
 }
 
 export const SLIPPAGE_OPTIONS = [100000n, 250000n, 500000n]
@@ -77,10 +85,21 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
   const chainId = useAtomValue(chainIdAtom)
   const rToken = useAtomValue(rTokenAtom)
+  const rTokenPrice = useAtomValue(rTokenPriceAtom)
+  const rTokenBalance = useAtomValue(rTokenBalanceAtom)
+  const balances = useAtomValue(balancesAtom)
+  const tokens = useAtomValue(zappableTokens)
+
+  useEffect(() => setSelectedToken(tokens[0]), [tokens])
 
   const maxAmountIn = useMemo(() => {
-    return '10'
-  }, [])
+    const tokenAddress = selectedToken?.address?.toString()
+    if (!selectedToken || !tokenAddress) {
+      return '0'
+    }
+    const fr = balances[tokenAddress as any]?.balance ?? '0'
+    return selectedToken.from(fr).format()
+  }, [selectedToken, balances])
 
   const amountOut = useMemo(() => {
     return '0'
@@ -92,14 +111,6 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
   const loadingZap = useMemo(() => {
     return false
-  }, [])
-
-  const [rTokenSymbol, rTokenBalance, rTokenPrice] = useMemo(() => {
-    return [rToken?.symbol, '0', '1']
-  }, [])
-
-  const tokens = useMemo(() => {
-    return []
   }, [])
 
   return (
@@ -125,8 +136,8 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         loadingZap,
         chainId,
         tokens,
-        rTokenSymbol,
-        rTokenBalance,
+        rTokenSymbol: rToken?.symbol,
+        rTokenBalance: rTokenBalance?.balance,
         rTokenPrice,
       }}
     >
