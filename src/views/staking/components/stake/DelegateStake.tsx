@@ -44,7 +44,7 @@ const DelegateStake = ({
           </Box>
         ) : (
           <Text ml="auto" variant="legend">
-            <Trans>Connect your wallet...</Trans>
+            <Trans>Connect your wallet</Trans>
           </Text>
         )}
       </Box>

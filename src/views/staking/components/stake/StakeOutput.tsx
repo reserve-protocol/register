@@ -46,7 +46,7 @@ const StakeOutput = () => {
         variant="layout.verticalAlign"
         sx={{ fontSize: 4, fontWeight: 700, overflow: 'hidden' }}
       >
-        <Text>{amount ? formatCurrency(Number(amount) * rate) : '0'}</Text>
+        <Text>{amount ? formatCurrency(Number(amount) / rate) : '0'}</Text>
         <Text variant="legend" ml="2">
           {ticker}
         </Text>
