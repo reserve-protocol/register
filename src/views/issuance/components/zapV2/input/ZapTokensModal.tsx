@@ -1,30 +1,27 @@
 import { Modal } from 'components'
 import TokenLogo from 'components/icons/TokenLogo'
 import { SearchInput } from 'components/input'
-import { useAtom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { ArrowUpRight, X } from 'react-feather'
-import { chainIdAtom } from 'state/atoms'
 import { colors } from 'theme'
 import { Box, Button, Divider, Link, Text } from 'theme-ui'
 import { shortenString } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import { ui } from '../zap/state/ui-atoms'
+import { useZap } from '../context/ZapContext'
 
 const ZapTokenList = ({ onSelect }: { onSelect: () => void }) => {
-  const chainId = useAtomValue(chainIdAtom)
-  const [tokens, setZapToken] = useAtom(ui.input.tokenSelector.tokenSelector)
+  const { chainId, tokens, setSelectedToken } = useZap()
   const entries = useMemo(
     () =>
       tokens.map((token) => ({
         token,
         selectToken: () => {
-          setZapToken(token)
+          setSelectedToken(token)
           onSelect()
         },
         balance: '0.00', //TODO: Fix token balances
       })),
-    [setZapToken, tokens]
+    [setSelectedToken, tokens]
   )
 
   return (
@@ -86,7 +83,9 @@ const ZapTokenList = ({ onSelect }: { onSelect: () => void }) => {
   )
 }
 
-const ZapTokensModal = ({ onClose }: { onClose: () => void }) => {
+const ZapTokensModal = () => {
+  const { setOpenTokenSelector } = useZap()
+
   return (
     <Modal
       p={0}
@@ -106,7 +105,7 @@ const ZapTokensModal = ({ onClose }: { onClose: () => void }) => {
           <Text variant="sectionTitle">Mint using</Text>
           <Button
             variant="circle"
-            onClick={onClose}
+            onClick={() => setOpenTokenSelector(false)}
             sx={{ marginLeft: 'auto', backgroundColor: 'transparent' }}
           >
             <X />
@@ -133,7 +132,7 @@ const ZapTokensModal = ({ onClose }: { onClose: () => void }) => {
             }}
           />
           <Divider sx={{ mx: '-12px', my: 0 }} />
-          <ZapTokenList onSelect={onClose} />
+          <ZapTokenList onSelect={() => setOpenTokenSelector(false)} />
         </Box>
       </Box>
     </Modal>

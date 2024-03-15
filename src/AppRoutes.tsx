@@ -8,6 +8,7 @@ import { ROUTES } from 'utils/constants'
 import EarnWrapper from 'views/earn'
 
 import Home from 'views/home'
+import { ZapProvider } from 'views/issuance/components/zapV2/context/ZapContext'
 import Overview from 'views/overview'
 import PortfolioWrapper from 'views/portfolio'
 
@@ -49,7 +50,11 @@ const AppRoutes = () => (
       <Route path={ROUTES.OVERVIEW} element={<Overview />} />
       <Route
         path={ROUTES.ISSUANCE}
-        element={<PreloadComponent element={Issuance} />}
+        element={
+          <ZapProvider>
+            <PreloadComponent element={Issuance} />
+          </ZapProvider>
+        }
       />
       <Route
         path={ROUTES.STAKING}
