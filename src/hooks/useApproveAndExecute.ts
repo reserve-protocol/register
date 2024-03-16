@@ -54,6 +54,7 @@ export const useApproval = (allowance: Allowance | undefined) => {
   const { status: approvalStatus, isLoading: validatingApproval } =
     useWaitForTransaction({
       hash,
+      confirmations: 2,
     })
 
   const isLoading = approving || validatingApproval

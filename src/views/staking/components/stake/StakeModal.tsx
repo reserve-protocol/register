@@ -1,8 +1,8 @@
 import { t } from '@lingui/macro'
 import { Modal } from 'components'
 import ShowMore from 'components/transaction-modal/ShowMore'
-import { useAtom, useAtomValue } from 'jotai'
-import { useEffect, useState } from 'react'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useCallback, useEffect, useState } from 'react'
 import {
   accountDelegateAtom,
   isModuleLegacyAtom,
@@ -75,12 +75,20 @@ const StakeExtra = () => {
   )
 }
 
-const StakeModal = ({ onClose }: { onClose(): void }) => (
-  <Modal title={t`Review stake`} onClose={onClose}>
-    <AmountsPreview />
-    <StakeExtra />
-    <ConfirmStakeButton />
-  </Modal>
-)
+const StakeModal = ({ onClose }: { onClose(): void }) => {
+  const setAmount = useSetAtom(stakeAmountAtom)
+  const handleClose = useCallback(() => {
+    setAmount('')
+    onClose()
+  }, [setAmount])
+
+  return (
+    <Modal title={t`Review stake`} onClose={handleClose} width={440}>
+      <AmountsPreview />
+      <StakeExtra />
+      <ConfirmStakeButton />
+    </Modal>
+  )
+}
 
 export default StakeModal

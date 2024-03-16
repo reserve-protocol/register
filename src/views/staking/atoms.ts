@@ -34,7 +34,7 @@ export const stakeOutputAtom = atom((get) => {
   const amount = get(stakeAmountAtom)
   const rate = get(rateAtom)
 
-  return amount ? Number(amount) / rate : 0
+  return amount && rate ? Number(amount) / rate : 0
 })
 
 export const isValidStakeAmountAtom = atom((get) => {

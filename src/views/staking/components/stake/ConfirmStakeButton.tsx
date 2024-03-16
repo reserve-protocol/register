@@ -3,22 +3,22 @@ import StRSR from 'abis/StRSR'
 import StRSRVotes from 'abis/StRSRVotes'
 import { Button } from 'components'
 import { TransactionButtonContainer } from 'components/button/TransactionButton'
-import TokenLogo from 'components/icons/TokenLogo'
+import CheckCircleIcon from 'components/icons/CheckCircleIcon'
 import TransactionsIcon from 'components/icons/TransactionsIcon'
+import ApprovalStatus from 'components/transaction-modal/ApprovalStatus'
 import useApproveAndExecute from 'hooks/useApproveAndExecute'
 import { atom, useAtomValue } from 'jotai'
-import { Check } from 'react-feather'
 import {
   accountDelegateAtom,
   chainIdAtom,
   isModuleLegacyAtom,
   rTokenContractsAtom,
 } from 'state/atoms'
-import { Box, Spinner, Text } from 'theme-ui'
-import { Allowance } from 'types'
+import { Box, Link, Spinner, Text } from 'theme-ui'
 import { safeParseEther } from 'utils'
 import { RSR_ADDRESS } from 'utils/addresses'
-import { Address, Hex } from 'viem'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
+import { Address } from 'viem'
 import {
   customDelegateAtom,
   isValidStakeAmountAtom,
@@ -73,44 +73,10 @@ const allowanceAtom = atom((get) => {
   }
 })
 
-const ShowMore = () => {}
-
-interface IApprovalStatus {
-  allowance: Allowance
-  hash: Hex | undefined
-  success: boolean
-}
-
-const ApprovalStatus = ({ allowance, hash, success }: IApprovalStatus) => {
-  if (success) {
-    return (
-      <Box variant="layout.verticalAlign" sx={{ color: 'muted' }} mb={3}>
-        <Check size={16} />
-        <Text ml="2">{allowance.symbol} Approved</Text>
-      </Box>
-    )
-  }
-
-  return (
-    <Box variant="layout.verticalAlign" mb={3}>
-      <TokenLogo width={24} symbol={allowance.symbol} />
-      <Box ml="3">
-        <Text variant="bold" sx={{ display: 'block' }}>
-          <Trans>Approve in wallet</Trans>
-        </Text>
-        <Text variant="legend">
-          {!hash && 'Proceed in wallet'}
-          {hash && 'Confirming transaction'}
-        </Text>
-      </Box>
-      <Spinner ml="auto" size={16} />
-    </Box>
-  )
-}
-
 const ConfirmStakeButton = () => {
   const call = useAtomValue(txAtom)
   const allowance = useAtomValue(allowanceAtom)
+  const chain = useAtomValue(chainIdAtom)
 
   const {
     execute,
@@ -122,6 +88,7 @@ const ConfirmStakeButton = () => {
     error,
     approvalHash,
     executeHash,
+    isConfirmed,
   } = useApproveAndExecute(call, allowance, 'Stake')
 
   const errorMsg = error ? (
@@ -147,14 +114,14 @@ const ConfirmStakeButton = () => {
     return (
       <TransactionButtonContainer>
         <Button fullWidth onClick={execute} disabled={!isReady}>
-          Approve use of RSR
+          {!isReady ? 'Preparing approval' : 'Approve use of RSR'}
         </Button>
         {errorMsg}
       </TransactionButtonContainer>
     )
   }
 
-  if (isLoading) {
+  if (isLoading || executeHash) {
     const getStatusText = () => {
       if ((!hasAllowance && isApproved) || hasAllowance) {
         if (!isReady) {
@@ -175,7 +142,7 @@ const ConfirmStakeButton = () => {
 
     return (
       <Box mt="4">
-        {allowance && !hasAllowance && (
+        {allowance && (isApproved || !hasAllowance) && (
           <ApprovalStatus
             allowance={allowance}
             hash={approvalHash}
@@ -184,27 +151,39 @@ const ConfirmStakeButton = () => {
         )}
         <Box variant="layout.verticalAlign">
           <TransactionsIcon />
-          <Box ml="2">
+          <Box ml="2" mr="auto">
             <Text variant="bold" sx={{ display: 'block' }}>
-              Confirm Stake
+              {!executeHash ? 'Confirm Stake' : 'Transaction submitted'}
             </Text>
-            <Text>{statusText}</Text>
+            {executeHash ? (
+              <Link
+                target="_blank"
+                href={getExplorerLink(
+                  executeHash,
+                  chain,
+                  ExplorerDataType.TRANSACTION
+                )}
+              >
+                <Trans>View in explorer</Trans>
+              </Link>
+            ) : (
+              <Text>{statusText}</Text>
+            )}
           </Box>
-          {!!statusText && <Spinner ml="auto" size={16} />}
+          {!!statusText && !isConfirmed && <Spinner size={16} />}
+          {isConfirmed && <CheckCircleIcon />}
         </Box>
       </Box>
     )
   }
 
   return (
-    <Box>
-      <TransactionButtonContainer>
-        <Button disabled={!isReady} onClick={execute} fullWidth>
-          Confirm Stake
-        </Button>
-        {errorMsg}
-      </TransactionButtonContainer>
-    </Box>
+    <TransactionButtonContainer>
+      <Button disabled={!isReady} onClick={execute} fullWidth>
+        {!isReady ? 'Preparing transaction' : 'Confirm Stake'}
+      </Button>
+      {errorMsg}
+    </TransactionButtonContainer>
   )
 }
 export default ConfirmStakeButton
