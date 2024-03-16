@@ -135,13 +135,17 @@ const useApproveAndExecute = (
   }, [hasAllowance, isSuccess, executeReady])
 
   return useMemo(() => {
-    let errorText = processError ? 'Execution failed' : null
+    let errorText = null
 
-    if (processError?.message.includes('User rejected the request')) {
-      errorText = 'Transaction rejected'
+    if (processError) {
+      errorText = processError ? 'Execution failed' : null
+
+      if (processError?.message.includes('User rejected the request')) {
+        errorText = 'Transaction rejected'
+      }
+
+      console.error('[TRANSACTION_ERROR]', processError)
     }
-
-    console.error('[TRANSACTION_ERROR]', processError)
 
     return {
       execute,

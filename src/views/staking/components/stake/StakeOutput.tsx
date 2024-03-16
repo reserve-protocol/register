@@ -1,10 +1,14 @@
 import TokenLogo from 'components/icons/TokenLogo'
 import { useAtomValue } from 'jotai'
-import { rsrPriceAtom, stRsrBalanceAtom } from 'state/atoms'
+import { stRsrBalanceAtom } from 'state/atoms'
 import { borderRadius } from 'theme'
 import { Box, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { rateAtom, stRsrTickerAtom, stakeAmountAtom } from 'views/staking/atoms'
+import {
+  stRsrTickerAtom,
+  stakeAmountUsdAtom,
+  stakeOutputAtom,
+} from 'views/staking/atoms'
 
 const StRsrBalance = () => {
   const balance = useAtomValue(stRsrBalanceAtom)
@@ -26,10 +30,9 @@ const StRsrBalance = () => {
 }
 
 const StakeOutput = () => {
-  const amount = useAtomValue(stakeAmountAtom)
-  const rate = useAtomValue(rateAtom)
   const ticker = useAtomValue(stRsrTickerAtom)
-  const price = useAtomValue(rsrPriceAtom)
+  const stAmount = useAtomValue(stakeOutputAtom)
+  const usdAmount = useAtomValue(stakeAmountUsdAtom)
 
   return (
     <Box
@@ -46,7 +49,7 @@ const StakeOutput = () => {
         variant="layout.verticalAlign"
         sx={{ fontSize: 4, fontWeight: 700, overflow: 'hidden' }}
       >
-        <Text>{amount ? formatCurrency(Number(amount) / rate) : '0'}</Text>
+        <Text>{formatCurrency(stAmount)}</Text>
         <Text variant="legend" ml="2">
           {ticker}
         </Text>
@@ -56,7 +59,7 @@ const StakeOutput = () => {
           variant="legend"
           sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
         >
-          ${formatCurrency(price * Number(amount), 2)}
+          ${formatCurrency(usdAmount, 2)}
         </Text>
         <StRsrBalance />
       </Box>
