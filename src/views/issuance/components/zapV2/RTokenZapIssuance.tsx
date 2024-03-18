@@ -1,10 +1,10 @@
 import { ArrowDown } from 'react-feather'
 import { Box, Divider } from 'theme-ui'
 import ZapOperationDetails from './ZapOperationDetails'
-import ZapSubmitButton from './ZapSubmitButton'
 import ZapTabs from './ZapTabs'
 import ZapInputContainer from './input/ZapInputContainer'
 import ZapOutputContainer from './output/ZapOutputContainer'
+import ZapSubmit from './submit/ZapSubmit'
 
 const RTokenZapIssuance = () => {
   return (
@@ -47,7 +47,7 @@ const RTokenZapIssuance = () => {
           <ZapOutputContainer />
         </Box>
         <ZapOperationDetails />
-        <ZapSubmitButton />
+        <ZapSubmit />
       </Box>
     </Box>
   )

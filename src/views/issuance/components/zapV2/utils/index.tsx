@@ -4,3 +4,7 @@ export const formatNumber = (num: number) => {
     maximumFractionDigits: 4,
   })
 }
+
+export const formatSlippage = (bps: bigint) => {
+  return `${formatNumber((1 / Number(bps)) * 10000)} bps`
+}

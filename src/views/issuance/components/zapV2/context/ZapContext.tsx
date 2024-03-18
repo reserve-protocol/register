@@ -37,6 +37,8 @@ type ZapContextType = {
   setOpenSettings: (open: boolean) => void
   openTokenSelector: boolean
   setOpenTokenSelector: (open: boolean) => void
+  openSubmitModal: boolean
+  setOpenSubmitModal: (open: boolean) => void
   collectDust: boolean
   setCollectDust: (collect: boolean) => void
   slippage: bigint
@@ -57,6 +59,7 @@ type ZapContextType = {
   rTokenPrice?: number
   gasCost?: number
   tokenInPrice?: number
+  priceImpact?: number
 }
 
 export const SLIPPAGE_OPTIONS = [100000n, 250000n, 500000n]
@@ -68,6 +71,8 @@ const ZapContext = createContext<ZapContextType>({
   setOpenSettings: () => {},
   openTokenSelector: false,
   setOpenTokenSelector: () => {},
+  openSubmitModal: false,
+  setOpenSubmitModal: () => {},
   collectDust: true,
   setCollectDust: () => {},
   slippage: SLIPPAGE_OPTIONS[0],
@@ -90,6 +95,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const [operation, setOperation] = useState<IssuanceOperation>('mint')
   const [openSettings, setOpenSettings] = useState<boolean>(false)
   const [openTokenSelector, setOpenTokenSelector] = useState<boolean>(false)
+  const [openSubmitModal, setOpenSubmitModal] = useState<boolean>(false)
   const [collectDust, setCollectDust] = useState<boolean>(true)
   const [slippage, setSlippage] = useState<bigint>(SLIPPAGE_OPTIONS[0])
   const [amountIn, setAmountIn] = useState<string>('')
@@ -117,6 +123,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const endpoint = useDebounce(
     useMemo(() => {
       if (
+        openSubmitModal ||
         !wallet ||
         !selectedToken?.address?.address ||
         !rToken?.address ||
@@ -152,15 +159,15 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     return selectedToken.from(fr).format()
   }, [selectedToken, balances])
 
-  const [amountOut, zapDustUSD, gasCost] = useMemo(() => {
+  const [amountOut, zapDustUSD, gasCost, priceImpact] = useMemo(() => {
     if (!data || !data.result) {
-      return ['0', '0', 0]
+      return ['0', '0', 0, 0]
     }
     const amountOut = formatEther(BigInt(data.result.amountOut))
     const estimatedGasCost = fee
       ? Number(formatEther(BigInt(data.result.gas) * fee)) * ethPrice
       : 0
-    return [amountOut, undefined, estimatedGasCost]
+    return [amountOut, undefined, estimatedGasCost, data.result.priceImpact]
   }, [data])
 
   const onSubmit = useCallback(() => {
@@ -181,6 +188,8 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         setOpenSettings,
         openTokenSelector,
         setOpenTokenSelector,
+        openSubmitModal,
+        setOpenSubmitModal,
         collectDust,
         setCollectDust,
         slippage,
@@ -201,6 +210,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         rTokenPrice,
         gasCost,
         tokenInPrice,
+        priceImpact,
       }}
     >
       {children}
