@@ -21,9 +21,15 @@ import {
   walletAtom,
 } from 'state/atoms'
 import { zappableTokens } from '../../zap/state/zapper'
-import zapper, { ZapResponse, fetcher } from '../api'
+import zapper, { ZapResponse, ZapResult, fetcher } from '../api'
 import useSWR from 'swr'
-import { Address, formatEther, parseUnits, zeroAddress } from 'viem'
+import {
+  Address,
+  SendTransactionReturnType,
+  formatEther,
+  parseUnits,
+  zeroAddress,
+} from 'viem'
 import useDebounce from 'hooks/useDebounce'
 import { useWalletClient } from 'wagmi'
 import { useChainlinkPrice } from 'hooks/useChainlinkPrice'
@@ -51,7 +57,7 @@ type ZapContextType = {
   loadingZap: boolean
   chainId: number
   tokens: Token[]
-  onSubmit: () => void
+  onExecuteTx?: () => Promise<SendTransactionReturnType> | undefined
   amountOut?: string
   zapDustUSD?: string
   rTokenSymbol?: string
@@ -60,6 +66,8 @@ type ZapContextType = {
   gasCost?: number
   tokenInPrice?: number
   priceImpact?: number
+  spender?: Address
+  zapResult?: ZapResult
 }
 
 export const SLIPPAGE_OPTIONS = [100000n, 250000n, 500000n]
@@ -84,7 +92,6 @@ const ZapContext = createContext<ZapContextType>({
   loadingZap: false,
   chainId: 0,
   tokens: [],
-  onSubmit: () => {},
 })
 
 export const useZap = () => {
@@ -159,23 +166,31 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     return selectedToken.from(fr).format()
   }, [selectedToken, balances])
 
-  const [amountOut, zapDustUSD, gasCost, priceImpact] = useMemo(() => {
+  const [amountOut, zapDustUSD, gasCost, priceImpact, spender] = useMemo(() => {
     if (!data || !data.result) {
-      return ['0', '0', 0, 0]
+      return ['0', '0', 0, 0, undefined]
     }
     const amountOut = formatEther(BigInt(data.result.amountOut))
     const estimatedGasCost = fee
       ? Number(formatEther(BigInt(data.result.gas) * fee)) * ethPrice
       : 0
-    return [amountOut, undefined, estimatedGasCost, data.result.priceImpact]
+    return [
+      amountOut,
+      undefined,
+      estimatedGasCost,
+      data.result.priceImpact,
+      data.result.tx.to,
+    ]
   }, [data])
 
-  const onSubmit = useCallback(() => {
+  const onExecuteTx = useCallback(() => {
     if (!data || !data.result || !client) return
-    client.sendTransaction({
+
+    return client.sendTransaction({
       data: data?.result?.tx.data as Address,
       gas: BigInt(data?.result?.gas),
       to: data?.result?.tx.to as Address,
+      value: BigInt(data?.result?.tx.value),
     })
   }, [data])
 
@@ -202,7 +217,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         loadingZap: isLoading,
         chainId,
         tokens,
-        onSubmit,
+        onExecuteTx,
         amountOut,
         zapDustUSD,
         rTokenSymbol: rToken?.symbol,
@@ -211,6 +226,8 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         gasCost,
         tokenInPrice,
         priceImpact,
+        spender,
+        zapResult: data?.result,
       }}
     >
       {children}

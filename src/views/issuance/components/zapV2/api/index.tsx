@@ -3,7 +3,7 @@ import { Address } from 'viem'
 const BASE_ZAP_API_URL =
   'https://worker-summer-silence-5553.mig2151.workers.dev'
 
-type ZapResult = {
+export type ZapResult = {
   amountIn: string
   tokenIn: string
 
@@ -19,7 +19,7 @@ type ZapResult = {
   priceImpact: number // 0.0% => no impact | 10 => 10% impact
   tx: {
     data: string
-    to: string
+    to: Address
     value: string
   }
 }

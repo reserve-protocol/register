@@ -89,7 +89,7 @@ const Issuance = () => {
       <Box variant="layout.tokenView">
         <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[1, 5]}>
           <Box>
-            <ZapOverview />
+            {/* <ZapOverview />
             <Grid columns={[1, 2]} gap={[1, 4]} mb={[1, 4]}>
               {zapsEnabled === false ? (
                 <>
@@ -113,7 +113,7 @@ const Issuance = () => {
                 </>
               )}
             </Grid>
-            <Balances />
+            <Balances /> */}
             <RTokenZapIssuance />
           </Box>
           <Box>

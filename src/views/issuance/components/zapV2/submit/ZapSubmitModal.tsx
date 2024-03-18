@@ -6,6 +6,8 @@ import TokenLogo from 'components/icons/TokenLogo'
 import ZapInputUSD from '../input/ZapInputUSD'
 import ZapOutputUSD from '../output/ZapOutputUSD'
 import ZapDetails from '../overview/ZapDetails'
+import ZapConfirmButton from './ZapConfirmButton'
+import ZapConfirm from './ZapConfirm'
 
 const ZapOverview = () => {
   const { selectedToken, amountIn, rTokenSymbol, amountOut } = useZap()
@@ -41,6 +43,7 @@ const ZapOverview = () => {
       </Box>
       <Divider sx={{ m: 0 }} />
       <ZapDetails />
+      <ZapConfirm />
     </Box>
   )
 }

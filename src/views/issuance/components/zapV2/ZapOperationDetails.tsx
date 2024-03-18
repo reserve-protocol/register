@@ -41,7 +41,9 @@ const ZapOperationDetails = () => {
         sx={{
           overflow: 'hidden',
           maxHeight: collapsed ? '0px' : '1000px',
-          transition: 'max-height 0.4s ease-in-out',
+          transition: collapsed
+            ? 'max-height 0.1s ease-in-out'
+            : 'max-height 0.4s ease-in-out',
         }}
       >
         <ZapDetails mt={3} />
