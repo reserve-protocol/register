@@ -1,3 +1,5 @@
+import { LoadingButton } from 'components/button'
+import { useEffect } from 'react'
 import {
   Address,
   usePrepareSendTransaction,
@@ -5,11 +7,9 @@ import {
   useWaitForTransaction,
 } from 'wagmi'
 import { useZap } from '../context/ZapContext'
-import { LoadingButton } from 'components/button'
-import { useEffect } from 'react'
 
 const ZapConfirmButton = () => {
-  const { zapResult, setOpenSubmitModal, chainId, onExecuteTx } = useZap()
+  const { zapResult, setOpenSubmitModal, chainId } = useZap()
 
   const { config } = usePrepareSendTransaction(
     zapResult

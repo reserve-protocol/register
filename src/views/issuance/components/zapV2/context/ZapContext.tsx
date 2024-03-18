@@ -1,10 +1,11 @@
 import { Token } from '@reserve-protocol/token-zapper'
+import { useChainlinkPrice } from 'hooks/useChainlinkPrice'
+import useDebounce from 'hooks/useDebounce'
 import { useAtomValue } from 'jotai'
 import {
   FC,
   PropsWithChildren,
   createContext,
-  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -20,19 +21,11 @@ import {
   rTokenPriceAtom,
   walletAtom,
 } from 'state/atoms'
+import useSWR from 'swr'
+import { Address, formatEther, parseUnits, zeroAddress } from 'viem'
+import { useWalletClient } from 'wagmi'
 import { zappableTokens } from '../../zap/state/zapper'
 import zapper, { ZapResponse, ZapResult, fetcher } from '../api'
-import useSWR from 'swr'
-import {
-  Address,
-  SendTransactionReturnType,
-  formatEther,
-  parseUnits,
-  zeroAddress,
-} from 'viem'
-import useDebounce from 'hooks/useDebounce'
-import { useWalletClient } from 'wagmi'
-import { useChainlinkPrice } from 'hooks/useChainlinkPrice'
 
 export type IssuanceOperation = 'mint' | 'redeem'
 
@@ -57,7 +50,6 @@ type ZapContextType = {
   loadingZap: boolean
   chainId: number
   tokens: Token[]
-  onExecuteTx?: () => Promise<SendTransactionReturnType> | undefined
   amountOut?: string
   zapDustUSD?: string
   rTokenSymbol?: string
@@ -183,17 +175,6 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     ]
   }, [data])
 
-  const onExecuteTx = useCallback(() => {
-    if (!data || !data.result || !client) return
-
-    return client.sendTransaction({
-      data: data?.result?.tx.data as Address,
-      gas: BigInt(data?.result?.gas),
-      to: data?.result?.tx.to as Address,
-      value: BigInt(data?.result?.tx.value),
-    })
-  }, [data])
-
   return (
     <ZapContext.Provider
       value={{
@@ -217,7 +198,6 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         loadingZap: isLoading,
         chainId,
         tokens,
-        onExecuteTx,
         amountOut,
         zapDustUSD,
         rTokenSymbol: rToken?.symbol,
