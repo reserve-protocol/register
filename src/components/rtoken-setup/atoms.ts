@@ -1,12 +1,11 @@
 import { t } from '@lingui/macro'
-import { atom, useAtomValue } from 'jotai'
+import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import {
   chainIdAtom,
   rTokenAssetsAtom,
-  rTokenAtom,
   secondsPerBlockAtom,
-  selectedRTokenAtom,
+  selectedRTokenAtom
 } from 'state/atoms'
 import { CollateralPlugin } from 'types'
 import { isAddress, truncateDecimals } from 'utils'
