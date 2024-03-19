@@ -1,42 +1,15 @@
 import { Trans, t } from '@lingui/macro'
-import { Button, Modal } from 'components'
+import { Modal } from 'components'
+import ShowMore from 'components/transaction-modal/ShowMore'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { useCallback } from 'react'
 import { Box, Text } from 'theme-ui'
+import { rateAtom, stRsrTickerAtom } from 'views/staking/atoms'
 import AmountPreview from '../AmountPreview'
-import { atom, useAtomValue } from 'jotai'
-import {
-  isValidUnstakeAmountAtom,
-  rateAtom,
-  stRsrTickerAtom,
-  unStakeAmountAtom,
-} from 'views/staking/atoms'
-import { rTokenAtom, rTokenConfigurationAtom, rsrPriceAtom } from 'state/atoms'
-import StRSR from 'abis/StRSR'
-import { parseDuration, safeParseEther } from 'utils'
-import CollapsableBox from 'components/boxes/CollapsableBox'
-import { ArrowRight } from 'react-feather'
-
-const unstakeDelayAtom = atom((get) => {
-  const params = get(rTokenConfigurationAtom)
-
-  return parseDuration(+params?.unstakingDelay || 0, { units: ['d', 'h', 's'] })
-})
-
-const unstakeTxAtom = atom((get) => {
-  const isValid = get(isValidUnstakeAmountAtom)
-  const amount = get(unStakeAmountAtom)
-  const rToken = get(rTokenAtom)
-
-  if (!rToken?.stToken || !isValid) {
-    return undefined
-  }
-
-  return {
-    abi: StRSR,
-    address: rToken.stToken.address,
-    functionName: 'unstake',
-    args: [safeParseEther(amount)],
-  }
-})
+import UnstakeDelay from '../UnstakeDelay'
+import ConfirmUnstakeButton from './ConfirmUnstakeButton'
+import { unStakeAmountAtom } from './atoms'
+import { rsrPriceAtom } from 'state/atoms'
 
 const UnstakePreview = () => {
   const amount = useAtomValue(unStakeAmountAtom)
@@ -66,83 +39,32 @@ const UnstakePreview = () => {
   )
 }
 
-const UnstakeFlow = () => {
-  const delay = useAtomValue(unstakeDelayAtom)
-
-  return (
-    <Box
-      mt={3}
-      variant="layout.verticalAlign"
-      sx={{ fontSize: 1, justifyContent: 'space-between' }}
-    >
-      <Box>
-        <Box
-          mb="1"
-          sx={{ height: '4px', width: '12px', backgroundColor: 'text' }}
-        />
-        <Text variant="bold" sx={{ display: 'block' }}>
-          <Trans>Trigger Unstake</Trans>
-        </Text>
-        <Text>1 Transaction</Text>
-      </Box>
-      <ArrowRight size={16} />
-      <Box>
-        <Box
-          mb="1"
-          sx={{ height: '4px', width: '100%', backgroundColor: 'warning' }}
-        />
-        <Text variant="bold" sx={{ display: 'block', color: 'warning' }}>
-          {delay} Delay
-        </Text>
-        <Text>Wait entire period</Text>
-      </Box>
-      <ArrowRight size={16} />
-      <Box>
-        <Box
-          ml="auto"
-          mb="1"
-          sx={{ height: '4px', width: '12px', backgroundColor: 'text' }}
-        />
-        <Text variant="bold" sx={{ display: 'block' }}>
-          <Trans>Withdraw RSR</Trans>
-        </Text>
-        <Text>1 Transaction</Text>
-      </Box>
+const UnstakeExtra = () => (
+  <ShowMore my="3">
+    <UnstakeDelay />
+    <Box variant="layout.verticalAlign" mt={2} mb={3}>
+      <Text>
+        <Trans>Staking yield share ends</Trans>:
+      </Text>
+      <Text ml="auto" variant="bold">
+        <Trans>Immediate</Trans>
+      </Text>
     </Box>
-  )
-}
-
-const UnstakeDelay = () => {
-  const delay = useAtomValue(unstakeDelayAtom)
-
-  return (
-    <CollapsableBox
-      divider={false}
-      mt={3}
-      header={
-        <Box variant="layout.verticalAlign">
-          <Text>
-            <Trans>Unstaking delay:</Trans>
-          </Text>
-          <Text mr="3" ml="auto" variant="strong">
-            {delay}
-          </Text>
-        </Box>
-      }
-    >
-      <UnstakeFlow />
-    </CollapsableBox>
-  )
-}
+  </ShowMore>
+)
 
 const UnstakeModal = ({ onClose }: { onClose(): void }) => {
+  const setAmount = useSetAtom(unStakeAmountAtom)
+  const handleClose = useCallback(() => {
+    setAmount('')
+    onClose()
+  }, [setAmount])
+
   return (
-    <Modal title={t`Review stake`} onClose={onClose} width={440}>
+    <Modal title={t`Review stake`} onClose={handleClose} width={440}>
       <UnstakePreview />
-      <UnstakeDelay />
-      <Button mt="4" fullWidth>
-        <Trans>Begin unstaking process</Trans>
-      </Button>
+      <UnstakeExtra />
+      <ConfirmUnstakeButton />
     </Modal>
   )
 }

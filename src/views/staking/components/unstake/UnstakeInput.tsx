@@ -6,12 +6,9 @@ import { rsrPriceAtom, stRsrBalanceAtom } from 'state/atoms'
 import { borderRadius } from 'theme'
 import { Box, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import {
-  rateAtom,
-  stRsrTickerAtom,
-  unStakeAmountAtom,
-} from 'views/staking/atoms'
+import { rateAtom, stRsrTickerAtom } from 'views/staking/atoms'
 import InputPostfix from '../InputPostfix'
+import { unStakeAmountAtom } from './atoms'
 
 const UnstakeInputField = () => {
   const [amount, setAmount] = useAtom(unStakeAmountAtom)

@@ -57,7 +57,6 @@ const UnstakeDelay = (props: BoxProps) => {
   return (
     <CollapsableBox
       divider={false}
-      mt={3}
       header={
         <Box variant="layout.verticalAlign">
           <Text>

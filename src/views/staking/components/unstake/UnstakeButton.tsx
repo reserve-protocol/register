@@ -5,8 +5,8 @@ import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
 import { useCallback, useState } from 'react'
 import { rTokenTradingAvailableAtom, selectedRTokenAtom } from 'state/atoms'
-import { isValidUnstakeAmountAtom } from 'views/staking/atoms'
 import UnstakeModal from './UnstakeModal'
+import { isValidUnstakeAmountAtom } from './atoms'
 
 const UnstakeButton = () => {
   const [isOpen, setOpen] = useState(false)
