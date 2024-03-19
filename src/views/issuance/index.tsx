@@ -12,11 +12,12 @@ import { ZapWidget, ZapRedeemWidget } from './components/zap'
 import { ZapOverview } from './components/zap/components/ZapOverview'
 import { ZapUnavailable } from './components/zap/components/ZapUnavailable'
 import { ui, zapEnabledAtom } from './components/zap/state/ui-atoms'
-import { useEffect, Component, Suspense } from 'react'
+import { useEffect, Component } from 'react'
 import { blockAtom, gasFeeAtom } from 'state/atoms'
 import { redoZapQuote, zapTransaction } from './components/zap/state/atoms'
 import { resolvedZapState } from './components/zap/state/zapper'
 import RTokenZapIssuance from './components/zapV2/RTokenZapIssuance'
+import { ZapProvider } from './components/zapV2/context/ZapContext'
 
 const UpdateBlockAndGas = () => {
   const redo = useSetAtom(redoZapQuote)
@@ -84,7 +85,7 @@ const Issuance = () => {
   }
 
   return (
-    <>
+    <ZapProvider>
       <WrapSidebar />
       <Box variant="layout.tokenView">
         <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[1, 5]}>
@@ -122,7 +123,7 @@ const Issuance = () => {
           </Box>
         </Grid>
       </Box>
-    </>
+    </ZapProvider>
   )
 }
 
