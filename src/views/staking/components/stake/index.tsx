@@ -1,6 +1,6 @@
 import { Box } from 'theme-ui'
-import ExchangeRate from '../ExchangeRate'
 import InputOutputSeparator from '../InputOutputSeparator'
+import ActionOverview from './ActionOverview'
 import StakeButton from './StakeButton'
 import StakeInput from './StakeInput'
 import StakeOutput from './StakeOutput'
@@ -10,7 +10,7 @@ const Stake = () => (
     <StakeInput />
     <InputOutputSeparator />
     <StakeOutput />
-    <ExchangeRate />
+    <ActionOverview />
     <StakeButton />
   </Box>
 )

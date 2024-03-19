@@ -25,14 +25,13 @@ const DelegateStake = ({
       />
     ) : (
       <Box variant="layout.verticalAlign">
-        <VoteIcon />
-        <Text ml={3}>
+        <Text>
           <Trans>Voting power delegation</Trans>:
         </Text>
 
         {value ? (
           <Box variant="layout.verticalAlign" ml="auto">
-            <Text>{shortenAddress(value)}</Text>
+            <Text variant="strong">{shortenAddress(value)}</Text>
             <IconButton sx={{ cursor: 'pointer' }} onClick={() => onEdit(true)}>
               <Edit2 size={14} />
             </IconButton>

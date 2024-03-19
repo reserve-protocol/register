@@ -2,14 +2,41 @@ import { Trans, t } from '@lingui/macro'
 import { Button } from 'components'
 import { TransactionButtonContainer } from 'components/button/TransactionButton'
 import CheckCircleIcon from 'components/icons/CheckCircleIcon'
+import GasIcon from 'components/icons/GasIcon'
 import TransactionsIcon from 'components/icons/TransactionsIcon'
 import ApprovalStatus from 'components/transaction-modal/ApprovalStatus'
 import useApproveAndExecute from 'hooks/useApproveAndExecute'
+import { useStaticGasEstimate } from 'hooks/useGasEstimate'
 import { useAtomValue } from 'jotai'
 import { chainIdAtom } from 'state/atoms'
 import { Box, Link, Spinner, Text } from 'theme-ui'
+import { formatCurrency } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { stakeAllowanceAtom, stakeTransactionAtom } from './atoms'
+
+const APPROVE_GAS_ESTIMATE = 400000
+const STAKE_AND_DELEGATE_GAS_ESTIMATE = 350000
+const STAKE_GAS_ESTIMATE = 300000
+
+const GasEstimate = ({ gasLimit }: { gasLimit: number }) => {
+  const [total] = useStaticGasEstimate([gasLimit])
+
+  return (
+    <Box variant="layout.verticalAlign" mt={2}>
+      <Text>Estimated gas cost:</Text>
+      <Box ml="auto" variant="layout.verticalAlign">
+        <GasIcon />
+        {total ? (
+          <Text variant="bold" ml="1">
+            ${formatCurrency(total, 3)}
+          </Text>
+        ) : (
+          <Spinner size={16} />
+        )}
+      </Box>
+    </Box>
+  )
+}
 
 const ConfirmStakeButton = () => {
   const call = useAtomValue(stakeTransactionAtom)
@@ -55,6 +82,7 @@ const ConfirmStakeButton = () => {
           {!isReady ? 'Preparing approval' : 'Approve use of RSR'}
         </Button>
         {errorMsg}
+        <GasEstimate gasLimit={APPROVE_GAS_ESTIMATE} />
       </TransactionButtonContainer>
     )
   }
@@ -121,6 +149,13 @@ const ConfirmStakeButton = () => {
         {!isReady ? 'Preparing transaction' : 'Confirm Stake'}
       </Button>
       {errorMsg}
+      <GasEstimate
+        gasLimit={
+          call?.functionName === 'stakeAndDelegate'
+            ? STAKE_AND_DELEGATE_GAS_ESTIMATE
+            : STAKE_GAS_ESTIMATE
+        }
+      />
     </TransactionButtonContainer>
   )
 }

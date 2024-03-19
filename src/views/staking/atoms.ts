@@ -1,17 +1,24 @@
 import { gql } from 'graphql-request'
 import { atom } from 'jotai'
-import { safeParseEther } from 'utils'
+import { parseDuration, safeParseEther } from 'utils'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import {
   blockTimestampAtom,
   gqlClientAtom,
   rTokenAtom,
+  rTokenConfigurationAtom,
   rTokenStateAtom,
   stRsrBalanceAtom,
   walletAtom,
 } from './../../state/atoms'
 
 const isValid = (value: bigint, max: bigint) => value > 0n && value <= max
+
+export const unstakeDelayAtom = atom((get) => {
+  const params = get(rTokenConfigurationAtom)
+
+  return parseDuration(+params?.unstakingDelay || 0, { units: ['d', 'h', 's'] })
+})
 
 export const unStakeAmountAtom = atom('')
 export const isValidUnstakeAmountAtom = atom((get) => {
