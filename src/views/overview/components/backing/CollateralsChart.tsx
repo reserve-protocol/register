@@ -3,9 +3,9 @@ import { atom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { rTokenBackingDistributionAtom } from 'state/atoms'
 import { stringToColor } from 'utils'
-import cms from 'utils/cms'
 import { COLLATERAL_STATUS } from 'utils/constants'
 import CollateralPieChart from '../CollateralPieChart'
+import { collateralsMetadataAtom } from 'state/cms/atoms'
 
 const basketDistAtom = atom((get) => {
   return get(rTokenBackingDistributionAtom)?.collateralDistribution || {}
@@ -25,24 +25,19 @@ const CollateralsChart = () => {
   const rToken = useRToken()
   const basketDist = useAtomValue(basketDistAtom)
   const distribution = useAtomValue(rTokenBackingDistributionAtom)
+  const metadata = useAtomValue(collateralsMetadataAtom)
 
   const pieData = useMemo(() => {
     if (rToken?.address && basketDist && Object.keys(basketDist)) {
       return rToken.collaterals.map((c) => {
-        const cmsCollateral = cms.collaterals.find(
-          (collateral) =>
-            collateral.chain === rToken.chainId &&
-            collateral.symbol === c.symbol
-        )
-        const cmsProject = cms.projects.find(
-          (project) => project.name === cmsCollateral?.project
-        )
+        const cmsCollateral =
+          metadata?.[c.symbol.toLowerCase().replace('-vault', '')]
         return {
           name: c.name,
           value: basketDist[c.address]?.share ?? 0,
           color: cmsCollateral?.color || stringToColor(c.address),
-          project: cmsProject?.label || 'GENERIC',
-          projectColor: cmsProject?.color || 'gray',
+          project: cmsCollateral?.protocol?.name || 'GENERIC',
+          projectColor: cmsCollateral?.protocol?.color || 'gray',
         }
       })
     }

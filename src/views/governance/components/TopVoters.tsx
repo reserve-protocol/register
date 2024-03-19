@@ -146,14 +146,7 @@ const TopVoters = (props: BoxProps) => {
       <Text variant="sectionTitle" p={3}>
         <Trans>Top voting addresses</Trans>
       </Text>
-      <Table
-        mt={2}
-        p={0}
-        maxHeight={420}
-        compact
-        columns={columns}
-        data={data}
-      />
+      <Table mt={2} p={0} compact columns={columns} data={data} />
       {!data.length && (
         <Box py={4} mt={3} sx={{ textAlign: 'center' }}>
           <EmptyBoxIcon />

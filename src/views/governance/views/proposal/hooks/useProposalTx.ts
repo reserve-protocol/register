@@ -1,6 +1,9 @@
 import {
   ParamName,
+  autoRegisterBackupAssetsAtom,
+  autoRegisterBasketAssetsAtom,
   basketChangesAtom,
+  contractUpgradesAtom,
   isAssistedUpgradeAtom,
   isNewBackupProposedAtom,
   proposalDescriptionAtom,
@@ -28,6 +31,8 @@ import {
   rTokenContractsAtom,
   rTokenGovernanceAtom,
 } from 'state/atoms'
+import { rTokenCollateralDetailedAtom } from 'state/rtoken/atoms/rTokenBackingDistributionAtom'
+import { ContractKey } from 'state/rtoken/atoms/rTokenContractsAtom'
 import { parsePercent } from 'utils'
 import { FURNACE_ADDRESS, ST_RSR_ADDRESS } from 'utils/addresses'
 import {
@@ -92,6 +97,24 @@ const registeredAssetsAtom = atom((get) => {
   }, registered)
 })
 
+// Ensures the weights sum to the total
+// If the sum is greater, the last weight is increased by the difference
+// If the sum is less, the last weight is decreased by the difference
+const adjustWeightsIfNeeded = (weights: bigint[], sum?: bigint) => {
+  if (!sum) return weights
+
+  const total = weights.reduce((a, b) => a + b, 0n)
+  if (total === sum) return weights
+
+  if (total > sum) {
+    weights[weights.length - 1] -= total - sum
+  } else {
+    weights[weights.length - 1] += sum - total
+  }
+
+  return weights
+}
+
 // TODO: May want to use a separate memo to calculate the calldatas
 const useProposalTx = () => {
   const backupChanges = useAtomValue(backupChangesAtom)
@@ -110,6 +133,10 @@ const useProposalTx = () => {
   const parameterMap = useAtomValue(parameterContractMapAtom)
   const contracts = useAtomValue(rTokenContractsAtom)
   const assets = useAtomValue(registeredAssetsAtom)
+  const upgrades = useAtomValue(contractUpgradesAtom)
+  const autoRegisterBasketAssets = useAtomValue(autoRegisterBasketAssetsAtom)
+  const autoRegisterBackupAssets = useAtomValue(autoRegisterBackupAssetsAtom)
+  const weightsSum = useAtomValue(rTokenCollateralDetailedAtom)?.map((c) => c.distributionRaw).reduce((a, b) => a + parseEther(b) / 100n, 0n)
 
   const isAssistedUpgrade = useAtomValue(isAssistedUpgradeAtom)
   const { calls, addresses } = useUpgradeHelper()
@@ -143,6 +170,24 @@ const useProposalTx = () => {
     const tokenConfig = getValues()
 
     const newAssets = new Set<Address>()
+
+    /* ########################## 
+      ## Contract upgrades ## 
+      ############################# */
+    const contractUpgrades = Object.keys(upgrades)
+
+    if (contractUpgrades.length) {
+      for (const contract of contractUpgrades) {
+        addresses.push(contracts[contract as ContractKey].address)
+        calls.push(
+          encodeFunctionData({
+            abi: AssetRegistry,
+            functionName: 'upgradeTo',
+            args: [upgrades[contract]],
+          })
+        )
+      }
+    }
 
     const addToRegistry = (address: Address, underlyingAddress?: Address) => {
       if (newAssets.has(address) || assets.has(address)) return
@@ -293,18 +338,20 @@ const useProposalTx = () => {
           if (changes.isNew) {
             newCollaterals.add(changes.collateral.address as Address)
 
-            addToRegistry(
-              changes.collateral.address as Address,
-              changes.collateral.erc20 as Address
-            )
-
-            if (
-              !!changes.collateral.rewardTokens?.length &&
-              changes.collateral.rewardTokens[0] != zeroAddress
-            ) {
-              changes.collateral.rewardTokens.forEach((reward) =>
-                addToRegistry(reward as Address)
+            if (autoRegisterBasketAssets) {
+              addToRegistry(
+                changes.collateral.address as Address,
+                changes.collateral.erc20 as Address
               )
+
+              if (
+                !!changes.collateral.rewardTokens?.length &&
+                changes.collateral.rewardTokens[0] != zeroAddress
+              ) {
+                changes.collateral.rewardTokens.forEach((reward) =>
+                  addToRegistry(reward as Address)
+                )
+              }
             }
           }
         }
@@ -318,13 +365,13 @@ const useProposalTx = () => {
 
             weights.push(
               parseEther(
-                ((Number(distribution[index]) / 100) * Number(scale)).toFixed(
-                  18
-                )
+                ((Number(distribution[index]) / 100) * Number(scale)).toString()
               )
             )
           })
         }
+
+        const adjustedWeights = adjustWeightsIfNeeded(weights, weightsSum)
 
         // Set primeBasket with new collaterals and weights
         addresses.push(contracts.basketHandler.address)
@@ -332,7 +379,7 @@ const useProposalTx = () => {
           encodeFunctionData({
             abi: BasketHandler,
             functionName: 'setPrimeBasket',
-            args: [primaryBasket, weights],
+            args: [primaryBasket, adjustedWeights],
           })
         )
         // Refresh basket is needed for the action to take effect
@@ -355,15 +402,18 @@ const useProposalTx = () => {
           const backupCollaterals: Address[] = []
 
           for (const collateral of collaterals) {
-            addToRegistry(collateral.address as Address)
-            if (
-              !!collateral.rewardTokens?.length &&
-              collateral.rewardTokens[0] != zeroAddress
-            ) {
-              collateral.rewardTokens.forEach((reward) =>
-                addToRegistry(reward as Address)
-              )
+            if (autoRegisterBackupAssets) {
+              addToRegistry(collateral.address as Address)
+              if (
+                !!collateral.rewardTokens?.length &&
+                collateral.rewardTokens[0] != zeroAddress
+              ) {
+                collateral.rewardTokens.forEach((reward) =>
+                  addToRegistry(reward as Address)
+                )
+              }
             }
+
             backupCollaterals.push(collateral.address as Address)
           }
 

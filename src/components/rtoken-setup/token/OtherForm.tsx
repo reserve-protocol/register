@@ -101,6 +101,7 @@ const OtherForm = (props: BoxProps) => {
         placeholder={t`Maximum trade for RToken`}
         help={t`Maximum trade volume - maximum sized trade for any trade involving RToken, in terms of the unit of account eg. USD.`}
         name="maxTrade"
+        mb={3}
         options={{
           required: true,
           pattern: decimalPattern,

@@ -90,7 +90,7 @@ const ProposalStatus = () => {
 }
 const SimulateProposal = ({ tx, ...props }: Props) => {
   return (
-    <Container style={{ paddingTop: 0 }} {...props}>
+    <Box {...props}>
       <Box
         sx={{
           maxHeight: 'calc(100vh - 124px)',
@@ -129,7 +129,7 @@ const SimulateProposal = ({ tx, ...props }: Props) => {
           <ProposalStatus />
         </Flex>
       </Box>
-    </Container>
+    </Box>
   )
 }
 

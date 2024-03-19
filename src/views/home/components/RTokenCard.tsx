@@ -98,6 +98,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
             justifyContent: ['start', 'space-between'],
             gap: 2,
             height: '100%',
+            minHeight: '284px',
           }}
         >
           <Box
@@ -233,7 +234,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
               <Box
                 variant="layout.verticalAlign"
                 sx={{ flexWrap: 'wrap', gap: [2, '12px'] }}
-                mt={[0, 2]}
+                mt={[0, 1]}
               >
                 <Button
                   medium

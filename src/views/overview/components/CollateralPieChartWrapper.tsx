@@ -6,11 +6,12 @@ import { ListedToken } from 'hooks/useTokenList'
 import { FC, memo, useMemo, useState } from 'react'
 import { Box, Button, Text } from 'theme-ui'
 import { stringToColor } from 'utils'
-import cms from 'utils/cms'
 import CollateralPieChart from 'views/overview/components/CollateralPieChart'
 import CollateralPieChartTooltip from './CollateralPieChartTooltip'
 import HelpIcon from 'components/icons/HelpIcon'
 import CollaterizationIcon from 'components/icons/CollaterizationIcon'
+import { useAtomValue } from 'jotai'
+import { collateralsMetadataAtom } from 'state/cms/atoms'
 
 type Props = {
   token: ListedToken
@@ -18,23 +19,20 @@ type Props = {
 
 const CollateralPieChartWrapper: FC<Props> = ({ token }) => {
   const [isHovered, setIsHovered] = useState(false)
+  const metadata = useAtomValue(collateralsMetadataAtom)
+
   const chartData = useMemo(
     () =>
       token.collaterals.map((c) => {
-        const cmsCollateral = cms.collaterals.find(
-          (collateral) =>
-            collateral.chain === token.chain && collateral.symbol === c.symbol
-        )
-        const cmsProject = cms.projects.find(
-          (project) => project.name === cmsCollateral?.project
-        )
+        const cmsCollateral =
+          metadata?.[c.symbol.toLowerCase().replace('-vault', '')]
         return {
           name: c.symbol,
           value:
             +token.collateralDistribution[c.id.toLowerCase()]?.dist * 100 ?? 0,
           color: cmsCollateral?.color || stringToColor(c.id),
-          project: cmsProject?.label || 'GENERIC',
-          projectColor: cmsProject?.color || 'gray',
+          project: cmsCollateral?.protocol?.name || 'GENERIC',
+          projectColor: cmsCollateral?.protocol?.color || 'gray',
         }
       }),
     []

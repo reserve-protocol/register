@@ -7,9 +7,9 @@ import { ListedToken } from 'hooks/useTokenList'
 import { useAtomValue } from 'jotai'
 import { FC, memo, useMemo } from 'react'
 import { rsrPriceAtom } from 'state/atoms'
+import { collateralsMetadataAtom } from 'state/cms/atoms'
 import { Box, Card, Divider, Grid, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import cms from 'utils/cms'
 
 type ItemProps = {
   name: string
@@ -58,6 +58,7 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
   token,
 }) => {
   const rsrPrice = useAtomValue(rsrPriceAtom)
+  const metadata = useAtomValue(collateralsMetadataAtom)
 
   const rsrUSD = useMemo(
     () => formatCurrency(token.rsrStaked * rsrPrice, 0),
@@ -67,20 +68,15 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
   const chartData = useMemo(
     () =>
       token.collaterals.map((c) => {
-        const cmsCollateral = cms.collaterals.find(
-          (collateral) =>
-            collateral.chain === token.chain && collateral.symbol === c.symbol
-        )
-        const cmsProject = cms.projects.find(
-          (project) => project.name === cmsCollateral?.project
-        )
+        const symbol = c.symbol.toLowerCase().replace('-vault', '')
+        const cmsCollateral = metadata?.[symbol]
         return {
           name: c.symbol,
           value:
             +token.collateralDistribution[c.id.toLowerCase()]?.dist * 100 ?? 0,
-          logo: cmsCollateral?.logo,
-          project: cmsProject?.label || 'GENERIC',
-          projectLogo: cmsProject?.logo,
+          logo: `svgs/${symbol}.svg`,
+          project: cmsCollateral?.protocol?.name || 'GENERIC',
+          projectLogo: cmsCollateral?.protocol?.logo,
           tokenDistribution: cmsCollateral?.tokenDistribution || [],
         }
       }),

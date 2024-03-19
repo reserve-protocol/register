@@ -8,15 +8,19 @@ import ProposalBasketSetup from './ProposalBasketSetup'
 import RolesProposal from './RolesProposal'
 import UnregisterProposal from './UnregisterProposal'
 import RegisterProposal from './RegisterProposal'
+import TraderImplementationProposal from './TraderImplementationProposal'
+import ContractUpgrades from './ContractUpgrades'
 
 const sections = [
   Intro,
   BackingManager,
   OtherSetup,
+  TraderImplementationProposal,
   RolesProposal,
   RevenueSplit,
   UnregisterProposal,
   RegisterProposal,
+  ContractUpgrades,
 ]
 
 const ProposalForm = () => (
