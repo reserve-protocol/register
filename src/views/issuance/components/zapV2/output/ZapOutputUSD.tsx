@@ -26,7 +26,7 @@ const ZapOutputUSD = () => {
           {' '}
           +{' '}
           <Text variant="legend" color="black">
-            {zapDustUSD}
+            ${zapDustUSD}
           </Text>{' '}
           in dust
         </Text>

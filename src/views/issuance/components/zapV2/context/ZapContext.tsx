@@ -169,7 +169,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       : 0
     return [
       amountOut,
-      undefined,
+      data.result.dustValue,
       estimatedGasCost,
       data.result.priceImpact,
       data.result.tx.to,

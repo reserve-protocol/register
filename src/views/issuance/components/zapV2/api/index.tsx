@@ -4,16 +4,19 @@ const BASE_ZAP_API_URL =
   'https://worker-summer-silence-5553.mig2151.workers.dev'
 
 export type ZapResult = {
-  amountIn: string
   tokenIn: string
+  amountIn: string
+  amountInValue: number
 
   tokenOut: string
   amountOut: string
+  amountOutValue: number
 
   dust: {
     token: string
     amount: string
   }[]
+  dustValue: number
 
   gas: string
   priceImpact: number // 0.0% => no impact | 10 => 10% impact
