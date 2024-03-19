@@ -1,15 +1,11 @@
 import TokenLogo from 'components/icons/TokenLogo'
 import { useAtomValue } from 'jotai'
-import { rsrBalanceAtom, rsrPriceAtom, stRsrBalanceAtom } from 'state/atoms'
+import { rsrBalanceAtom, rsrPriceAtom } from 'state/atoms'
 import { borderRadius } from 'theme'
 import { Box, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import {
-  rateAtom,
-  stRsrTickerAtom,
-  stakeAmountAtom,
-  unStakeAmountAtom,
-} from 'views/staking/atoms'
+import { rateAtom } from 'views/staking/atoms'
+import { unStakeAmountAtom } from './atoms'
 
 const RsrBalance = () => {
   const balance = useAtomValue(rsrBalanceAtom)

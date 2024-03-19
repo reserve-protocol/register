@@ -19,6 +19,7 @@ export const useApproval = (allowance: Allowance | undefined) => {
     data,
     isLoading: validatingAllowance,
     error: allowanceError,
+    
   } = useContractRead(
     allowance && account
       ? {

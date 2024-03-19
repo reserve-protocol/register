@@ -12,20 +12,10 @@ import {
   walletAtom,
 } from './../../state/atoms'
 
-const isValid = (value: bigint, max: bigint) => value > 0n && value <= max
-
 export const unstakeDelayAtom = atom((get) => {
   const params = get(rTokenConfigurationAtom)
 
   return parseDuration(+params?.unstakingDelay || 0, { units: ['d', 'h', 's'] })
-})
-
-export const unStakeAmountAtom = atom('')
-export const isValidUnstakeAmountAtom = atom((get) => {
-  return isValid(
-    safeParseEther(get(unStakeAmountAtom) || '0'),
-    get(stRsrBalanceAtom).value
-  )
 })
 
 // List of unstake cooldown for the selected rToken
