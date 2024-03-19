@@ -1720,7 +1720,7 @@ msgid "Portfolio"
 msgstr ""
 
 #: src/views/governance/views/proposal/components/ProposalBasketSetup.tsx:55
-msgid "Define how you would like to propose the basket should be distributed going forward."
+msgid "Propose how the basket should be distributed going forward."
 msgstr ""
 
 #: src/components/transaction-modal/index.tsx:155
