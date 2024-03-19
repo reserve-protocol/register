@@ -16,7 +16,7 @@ import {
   rTokenBasketAtom,
   rTokenRevenueSplitAtom,
 } from 'state/atoms'
-import { truncateDecimals } from 'utils'
+import { rTokenCollateralDetailedAtom } from 'state/rtoken/atoms/rTokenBackingDistributionAtom'
 import {
   backupChangesAtom,
   basketChangesAtom,
@@ -33,9 +33,9 @@ import {
 import useBackupChanges from './hooks/useBackupChanges'
 import useBasketChanges from './hooks/useBasketChanges'
 import useParametersChanges from './hooks/useParametersChanges'
+import useRegisterAssets from './hooks/useRegisterAssets'
 import useRevenueSplitChanges from './hooks/useRevenueSplitChanges'
 import useRoleChanges from './hooks/useRoleChanges'
-import useRegisterAssets from './hooks/useRegisterAssets'
 
 export const RTokenDataUpdater = () => {
   // Setup atoms
@@ -49,6 +49,7 @@ export const RTokenDataUpdater = () => {
   const basket = useAtomValue(rTokenBasketAtom)
   const backup = useAtomValue(rTokenBackupAtom)
   const revenueSplit = useAtomValue(rTokenRevenueSplitAtom)
+  const collateralDetail = useAtomValue(rTokenCollateralDetailedAtom)
 
   useEffect(() => {
     return () => {
@@ -62,13 +63,10 @@ export const RTokenDataUpdater = () => {
     const setupBasket: Basket = {}
 
     for (const targetUnit of Object.keys(basket)) {
-      const basketLength = basket[targetUnit].collaterals.length
-
-      const distribution = new Array(basketLength - 1).fill(
-        truncateDecimals(100 / basketLength)
-      )
-      const sum = distribution.reduce((a, b) => a + b, 0)
-      distribution.push(100 - sum)
+      const distribution =
+        collateralDetail
+          ?.filter((c) => c?.targetUnit === targetUnit)
+          .map((c) => c?.distributionRaw.toString()) || []
 
       setupBasket[targetUnit] = {
         collaterals: basket[targetUnit].collaterals,

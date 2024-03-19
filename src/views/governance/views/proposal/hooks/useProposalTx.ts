@@ -31,6 +31,8 @@ import {
   rTokenContractsAtom,
   rTokenGovernanceAtom,
 } from 'state/atoms'
+import { rTokenCollateralDetailedAtom } from 'state/rtoken/atoms/rTokenBackingDistributionAtom'
+import { ContractKey } from 'state/rtoken/atoms/rTokenContractsAtom'
 import { parsePercent } from 'utils'
 import { FURNACE_ADDRESS, ST_RSR_ADDRESS } from 'utils/addresses'
 import {
@@ -52,7 +54,6 @@ import {
   roleChangesAtom,
 } from '../atoms'
 import useUpgradeHelper from './useUpgradeHelper'
-import { ContractKey } from 'state/rtoken/atoms/rTokenContractsAtom'
 
 const paramParse: { [x: string]: (v: string) => bigint | number } = {
   minTradeVolume: parseEther,
@@ -96,6 +97,24 @@ const registeredAssetsAtom = atom((get) => {
   }, registered)
 })
 
+// Ensures the weights sum to the total
+// If the sum is greater, the last weight is increased by the difference
+// If the sum is less, the last weight is decreased by the difference
+const adjustWeightsIfNeeded = (weights: bigint[], sum?: bigint) => {
+  if (!sum) return weights
+
+  const total = weights.reduce((a, b) => a + b, 0n)
+  if (total === sum) return weights
+
+  if (total > sum) {
+    weights[weights.length - 1] -= total - sum
+  } else {
+    weights[weights.length - 1] += sum - total
+  }
+
+  return weights
+}
+
 // TODO: May want to use a separate memo to calculate the calldatas
 const useProposalTx = () => {
   const backupChanges = useAtomValue(backupChangesAtom)
@@ -117,6 +136,7 @@ const useProposalTx = () => {
   const upgrades = useAtomValue(contractUpgradesAtom)
   const autoRegisterBasketAssets = useAtomValue(autoRegisterBasketAssetsAtom)
   const autoRegisterBackupAssets = useAtomValue(autoRegisterBackupAssetsAtom)
+  const weightsSum = useAtomValue(rTokenCollateralDetailedAtom)?.map((c) => c.distributionRaw).reduce((a, b) => a + parseEther(b) / 100n, 0n)
 
   const isAssistedUpgrade = useAtomValue(isAssistedUpgradeAtom)
   const { calls, addresses } = useUpgradeHelper()
@@ -345,13 +365,13 @@ const useProposalTx = () => {
 
             weights.push(
               parseEther(
-                ((Number(distribution[index]) / 100) * Number(scale)).toFixed(
-                  18
-                )
+                ((Number(distribution[index]) / 100) * Number(scale)).toString()
               )
             )
           })
         }
+
+        const adjustedWeights = adjustWeightsIfNeeded(weights, weightsSum)
 
         // Set primeBasket with new collaterals and weights
         addresses.push(contracts.basketHandler.address)
@@ -359,7 +379,7 @@ const useProposalTx = () => {
           encodeFunctionData({
             abi: BasketHandler,
             functionName: 'setPrimeBasket',
-            args: [primaryBasket, weights],
+            args: [primaryBasket, adjustedWeights],
           })
         )
         // Refresh basket is needed for the action to take effect
