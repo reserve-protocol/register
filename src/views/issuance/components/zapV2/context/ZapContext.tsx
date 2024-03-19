@@ -12,6 +12,7 @@ import {
   useState,
 } from 'react'
 import {
+  TokenBalanceMap,
   balancesAtom,
   chainIdAtom,
   ethPriceAtom,
@@ -23,7 +24,6 @@ import {
 } from 'state/atoms'
 import useSWR from 'swr'
 import { Address, formatEther, parseUnits, zeroAddress } from 'viem'
-import { useWalletClient } from 'wagmi'
 import { zappableTokens } from '../../zap/state/zapper'
 import zapper, { ZapResponse, ZapResult, fetcher } from '../api'
 
@@ -50,6 +50,7 @@ type ZapContextType = {
   loadingZap: boolean
   chainId: number
   tokens: Token[]
+  balances: TokenBalanceMap
   amountOut?: string
   zapDustUSD?: string
   rTokenSymbol?: string
@@ -84,6 +85,7 @@ const ZapContext = createContext<ZapContextType>({
   loadingZap: false,
   chainId: 0,
   tokens: [],
+  balances: {},
 })
 
 export const useZap = () => {
@@ -110,7 +112,6 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const fee = useAtomValue(gasFeeAtom)
   const ethPrice = useAtomValue(ethPriceAtom)
 
-  const { data: client } = useWalletClient()
   const tokenInPrice = useChainlinkPrice(
     selectedToken?.address as Address | undefined
   )
@@ -198,6 +199,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         loadingZap: isLoading,
         chainId,
         tokens,
+        balances,
         amountOut,
         zapDustUSD,
         rTokenSymbol: rToken?.symbol,

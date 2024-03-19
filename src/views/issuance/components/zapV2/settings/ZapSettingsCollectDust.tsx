@@ -30,6 +30,7 @@ const ZapSettingsCollectDust = () => {
             setCollectDust(!collectDust)
             // setPrevious(null)
           }}
+          disabled // We will always send dust back to wallet
           checked={collectDust}
         />
       </label>

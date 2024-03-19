@@ -79,7 +79,8 @@ const ZapTokenList = ({
 }
 
 const ZapTokensModal = () => {
-  const { chainId, tokens, setSelectedToken, setOpenTokenSelector } = useZap()
+  const { chainId, tokens, balances, setSelectedToken, setOpenTokenSelector } =
+    useZap()
   const [search, setSearch] = useState<string>('')
 
   const entries = useMemo(
@@ -97,7 +98,7 @@ const ZapTokensModal = () => {
             chainId,
             ExplorerDataType.TOKEN
           ),
-          balance: '0.00', //TODO: Fix token balances
+          balance: balances[token.address.address as Address]?.balance ?? '0',
         }))
         .filter(
           (entry) =>
