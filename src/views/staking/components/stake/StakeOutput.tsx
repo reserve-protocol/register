@@ -4,11 +4,8 @@ import { stRsrBalanceAtom } from 'state/atoms'
 import { borderRadius } from 'theme'
 import { Box, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import {
-  stRsrTickerAtom,
-  stakeAmountUsdAtom,
-  stakeOutputAtom,
-} from 'views/staking/atoms'
+import { stRsrTickerAtom } from 'views/staking/atoms'
+import { stakeAmountUsdAtom, stakeOutputAtom } from './atoms'
 
 const StRsrBalance = () => {
   const balance = useAtomValue(stRsrBalanceAtom)

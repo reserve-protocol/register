@@ -1,48 +1,17 @@
 import { gql } from 'graphql-request'
 import { atom } from 'jotai'
-import { formatCurrency, safeParseEther } from 'utils'
+import { safeParseEther } from 'utils'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import {
   blockTimestampAtom,
   gqlClientAtom,
   rTokenAtom,
   rTokenStateAtom,
-  rsrBalanceAtom,
-  rsrPriceAtom,
   stRsrBalanceAtom,
   walletAtom,
 } from './../../state/atoms'
-import atomWithDebounce from 'utils/atoms/atomWithDebounce'
 
 const isValid = (value: bigint, max: bigint) => value > 0n && value <= max
-
-export const customDelegateAtom = atom('')
-
-export const stakeAmountAtom = atom('')
-export const stakeAmountDebouncedAtom = atomWithDebounce(
-  atom((get) => get(stakeAmountAtom)),
-  500
-).debouncedValueAtom
-
-export const stakeAmountUsdAtom = atom((get) => {
-  const amount = get(stakeAmountAtom)
-  const price = get(rsrPriceAtom)
-
-  return amount ? price * Number(amount) : 0
-})
-export const stakeOutputAtom = atom((get) => {
-  const amount = get(stakeAmountAtom)
-  const rate = get(rateAtom)
-
-  return amount && rate ? Number(amount) / rate : 0
-})
-
-export const isValidStakeAmountAtom = atom((get) => {
-  return isValid(
-    safeParseEther(get(stakeAmountDebouncedAtom) || '0'),
-    get(rsrBalanceAtom).value
-  )
-})
 
 export const unStakeAmountAtom = atom('')
 export const isValidUnstakeAmountAtom = atom((get) => {

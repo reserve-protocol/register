@@ -5,7 +5,7 @@ import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
 import { useCallback, useState } from 'react'
 import { selectedRTokenAtom } from 'state/atoms'
-import { isValidStakeAmountAtom } from 'views/staking/atoms'
+import { isValidStakeAmountAtom } from './atoms'
 import StakeModal from './StakeModal'
 
 const StakeButton = () => {

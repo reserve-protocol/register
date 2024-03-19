@@ -10,14 +10,14 @@ import {
 } from 'state/atoms'
 import {
   customDelegateAtom,
-  stRsrTickerAtom,
   stakeAmountAtom,
   stakeAmountUsdAtom,
   stakeOutputAtom,
-} from 'views/staking/atoms'
+} from './atoms'
 import AmountPreview from '../AmountPreview'
 import ConfirmStakeButton from './ConfirmStakeButton'
 import DelegateStake from './DelegateStake'
+import { stRsrTickerAtom } from 'views/staking/atoms'
 
 const AmountsPreview = () => {
   const amount = useAtomValue(stakeAmountAtom)

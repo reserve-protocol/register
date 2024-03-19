@@ -6,7 +6,7 @@ import { rsrBalanceAtom, rsrPriceAtom } from 'state/atoms'
 import { borderRadius } from 'theme'
 import { Box, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { stakeAmountAtom } from 'views/staking/atoms'
+import { stakeAmountAtom } from './atoms'
 import InputPostfix from '../InputPostfix'
 
 const StakeInputField = () => {
