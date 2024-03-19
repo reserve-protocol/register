@@ -77,15 +77,18 @@ const useProtocolMetrics = () => {
         }
       }
 
-      // Aggregate RSV
-      const rsvMetrics = data[ChainId.Mainnet].tokens[0]
-      const rsvMarketCapUsd =
-        +formatEther(rsvMetrics.totalSupply) * +rsvMetrics.lastPriceUSD
+      // TODO: remove entire rsv thing
+      if (data[ChainId.Mainnet].tokens[0]) {
+        // Aggregate RSV
+        const rsvMetrics = data[ChainId.Mainnet].tokens[0]
+        const rsvMarketCapUsd =
+          +formatEther(rsvMetrics.totalSupply) * +rsvMetrics.lastPriceUSD
 
-      marketCap += rsvMarketCapUsd
-      volume +=
-        +formatEther(rsvMetrics.cumulativeVolume) *
-        Number(rsvMetrics.lastPriceUSD)
+        marketCap += rsvMarketCapUsd
+        volume +=
+          +formatEther(rsvMetrics.cumulativeVolume) *
+          Number(rsvMetrics.lastPriceUSD)
+      }
 
       // Set atom for cache
       setStats({ volume, marketCap, stakeRevenue, tvl })
