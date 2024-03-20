@@ -49,6 +49,8 @@ type Error = {
 }
 
 type ZapContextType = {
+  zapEnabled: boolean
+  setZapEnabled: (enabled: boolean) => void
   operation: IssuanceOperation
   setOperation: (operation: IssuanceOperation) => void
   openSettings: boolean
@@ -84,6 +86,8 @@ type ZapContextType = {
 }
 
 const ZapContext = createContext<ZapContextType>({
+  zapEnabled: true,
+  setZapEnabled: () => {},
   operation: 'mint',
   setOperation: () => {},
   openSettings: false,
@@ -112,6 +116,7 @@ export const useZap = () => {
 }
 
 export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
+  const [zapEnabled, setZapEnabled] = useState(true)
   const [operation, setOperation] = useState<IssuanceOperation>('mint')
   const [openSettings, setOpenSettings] = useState<boolean>(false)
   const [openTokenSelector, setOpenTokenSelector] = useState<boolean>(false)
@@ -139,7 +144,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         ...token,
         balance: balances[token.address as Address]?.balance ?? '0',
       })),
-    [chainId]
+    [chainId, balances]
   )
   const tokenPrice = useChainlinkPrice(
     chainId,
@@ -160,7 +165,8 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
   useEffect(() => {
     setAmountIn('')
-  }, [setAmountIn, selectedToken, operation])
+    setOpenTokenSelector(false)
+  }, [setAmountIn, selectedToken, operation, zapEnabled])
 
   const rToken: ZapToken = useMemo(
     () => ({
@@ -183,9 +189,9 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       decimals: selectedToken?.decimals as number,
       targetUnit: selectedToken?.targetUnit as string,
       price: tokenPrice,
-      balance: selectedToken?.balance,
+      balance: balances[selectedToken?.address as Address]?.balance ?? '0',
     }),
-    [selectedToken, tokenPrice]
+    [selectedToken, tokenPrice, balances]
   )
 
   const [tokenIn, tokenOut] = useMemo(
@@ -307,6 +313,8 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   return (
     <ZapContext.Provider
       value={{
+        zapEnabled,
+        setZapEnabled,
         operation,
         setOperation,
         openSettings,

@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { useZap } from '../context/ZapContext'
 import { LoadingButton } from 'components/button'
+import { TransactionButtonContainer } from 'components/button/TransactionButton'
 
 const ZapSubmitButton = () => {
   const { setOpenSubmitModal, loadingZap, amountOut, operation, error } =
@@ -12,14 +13,17 @@ const ZapSubmitButton = () => {
   }, [error, operation])
 
   return (
-    <LoadingButton
-      onClick={() => setOpenSubmitModal(true)}
-      loading={loadingZap}
-      text={title}
-      backgroundColor={error?.color || 'primary'}
-      disabled={!amountOut || Number(amountOut) === 0}
-      fullWidth
-    />
+    <TransactionButtonContainer sx={{ width: '100%' }}>
+      <LoadingButton
+        onClick={() => setOpenSubmitModal(true)}
+        loading={loadingZap}
+        text={title}
+        backgroundColor={error?.color || 'primary'}
+        disabled={!amountOut || Number(amountOut) === 0}
+        loadingText="Finding route..."
+        fullWidth
+      />
+    </TransactionButtonContainer>
   )
 }
 

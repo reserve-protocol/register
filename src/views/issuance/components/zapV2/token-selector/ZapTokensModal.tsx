@@ -9,6 +9,7 @@ import { shortenString } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { Address } from 'viem'
 import { useZap } from '../context/ZapContext'
+import ZapManualMint from './ZapManualMint'
 
 const ZapTokenList = ({
   entries,
@@ -154,6 +155,8 @@ const ZapTokensModal = () => {
           />
           <Divider sx={{ mx: '-12px', my: 0 }} />
           <ZapTokenList entries={entries} />
+          <Divider sx={{ mx: '-12px', my: 0 }} />
+          <ZapManualMint />
         </Box>
       </Box>
     </Modal>
