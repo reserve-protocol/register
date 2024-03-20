@@ -253,7 +253,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const {
     data,
     isLoading,
-    error: _error,
+    error: apiError,
   } = useSWR<ZapResponse>(endpoint, fetcher, {
     isPaused: () => !endpoint || openSubmitModal,
   })
@@ -289,6 +289,20 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       })
     }
   }, [priceImpact, operation])
+
+  useEffect(() => {
+    if (apiError || (data && data.error)) {
+      setError({
+        title: 'Failed to find a route',
+        message:
+          (apiError?.message || data?.error || 'An unknown error occurred') +
+          '. Please try again. If the problem persists, please contact support.',
+        color: 'danger',
+        secondaryColor: 'rgba(255, 0, 0, 0.20)',
+        submitButtonTitle: 'Error occurred, try again',
+      })
+    }
+  }, [apiError, data])
 
   return (
     <ZapContext.Provider
