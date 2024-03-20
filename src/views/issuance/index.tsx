@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Box, Grid } from 'theme-ui'
 import About from './components/about'
 import Balances from './components/balances'
@@ -13,19 +12,25 @@ import { ZapProvider, useZap } from './components/zapV2/context/ZapContext'
 const IssuanceMethods = () => {
   const { zapEnabled, setZapEnabled } = useZap()
 
-  if (zapEnabled) {
-    return <RTokenZapIssuance />
-  }
-
   return (
-    <Box>
-      <ZapToggle zapEnabled={zapEnabled} setZapEnabled={setZapEnabled} />
-      <Grid columns={[1, 2]} gap={[1, 4]} mb={[1, 4]}>
-        <Issue />
-        <Redeem />
-      </Grid>
-      <Balances />
-    </Box>
+    <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[1, 5]}>
+      {zapEnabled ? (
+        <RTokenZapIssuance />
+      ) : (
+        <Box>
+          <ZapToggle zapEnabled={zapEnabled} setZapEnabled={setZapEnabled} />
+          <Grid columns={[1, 2]} gap={[1, 4]} mb={[1, 4]}>
+            <Issue />
+            <Redeem />
+          </Grid>
+          <Balances />
+        </Box>
+      )}
+      <Box>
+        <IssuanceInfo mb={[1, 4]} />
+        {!zapEnabled && <About />}
+      </Box>
+    </Grid>
   )
 }
 
@@ -37,13 +42,7 @@ const Issuance = () => {
     <ZapProvider>
       <WrapSidebar />
       <Box variant="layout.tokenView">
-        <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[1, 5]}>
-          <IssuanceMethods />
-          <Box>
-            <IssuanceInfo mb={[1, 4]} />
-            <About />
-          </Box>
-        </Grid>
+        <IssuanceMethods />
       </Box>
     </ZapProvider>
   )
