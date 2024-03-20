@@ -5,7 +5,7 @@ import { chainIdAtom, rTokenAtom, walletAtom } from 'state/atoms'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { formatEther } from 'viem'
 import { useContractRead } from 'wagmi'
-import { pendingRSRAtom } from './atoms'
+import { pendingRSRAtom } from '../../atoms'
 import { publicClient } from 'state/chain'
 
 /**
