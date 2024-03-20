@@ -15,27 +15,38 @@ const ZapOperationDetails = () => {
     <Box>
       <Box
         variant="layout.verticalAlign"
-        sx={{ justifyContent: 'space-between', cursor: 'pointer' }}
+        sx={{ cursor: 'pointer', gap: 1 }}
         onClick={(e) => {
           e.stopPropagation()
           setCollapsed((c) => !c)
         }}
       >
-        <ZapRate />
-        <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-          <GasIcon />
-          <Text>
-            Estimated gas cost:{' '}
-            <Text sx={{ fontWeight: 700 }}>
-              ${gasCost ? formatCurrency(+gasCost, 2) : 0}
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: ['column', 'row'],
+            alignItems: ['flex-start', 'center'],
+            flexGrow: 1,
+            justifyContent: 'space-between',
+            gap: 2,
+          }}
+        >
+          <ZapRate />
+          <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+            <GasIcon />
+            <Text>
+              Estimated gas cost:{' '}
+              <Text sx={{ fontWeight: 700 }}>
+                ${gasCost ? formatCurrency(+gasCost, 2) : 0}
+              </Text>
             </Text>
-          </Text>
-          {collapsed ? (
-            <ChevronDown fontSize={16} strokeWidth={1.2} />
-          ) : (
-            <ChevronUp fontSize={16} strokeWidth={1.2} />
-          )}
+          </Box>
         </Box>
+        {collapsed ? (
+          <ChevronDown fontSize={16} strokeWidth={1.2} />
+        ) : (
+          <ChevronUp fontSize={16} strokeWidth={1.2} />
+        )}
       </Box>
       <Box
         sx={{

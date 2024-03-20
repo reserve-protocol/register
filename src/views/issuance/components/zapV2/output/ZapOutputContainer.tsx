@@ -45,7 +45,8 @@ const ZapOutputContainer = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'end',
-          justifyContent: operation === 'redeem' ? 'space-between' : 'end',
+          justifyContent:
+            operation === 'redeem' ? 'space-between' : ['start', 'end'],
         }}
         p={3}
       >

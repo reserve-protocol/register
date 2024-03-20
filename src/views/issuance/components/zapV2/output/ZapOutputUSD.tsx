@@ -25,7 +25,7 @@ const ZapOutputUSD = () => {
         <Text>
           {' '}
           +{' '}
-          <Text variant="legend" color="black">
+          <Text variant="legend" sx={{ fontWeight: 'strong' }}>
             ${zapDustUSD}
           </Text>{' '}
           in dust

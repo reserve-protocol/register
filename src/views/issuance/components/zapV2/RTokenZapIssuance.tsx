@@ -15,7 +15,7 @@ const RTokenZapIssuance = () => {
         alignSelf: 'stretch',
         borderRadius: '14px',
         bg: 'background',
-        boxShadow: '0px 10px 38px 6px rgba(0, 0, 0, 0.05)',
+        boxShadow: '0px 10px 38px 6px rgba(125, 125, 125, 0.1)',
       }}
     >
       <Box p="24px">
@@ -37,7 +37,7 @@ const RTokenZapIssuance = () => {
                 border: '1px solid',
                 borderColor: 'border',
                 borderRadius: '6px',
-                backgroundColor: 'lightGrey',
+                backgroundColor: 'inputAlternativeBackground',
               }}
             >
               <ArrowDown size={24} strokeWidth={1.2} color="#666666" />

@@ -14,7 +14,7 @@ const ZapInputContainer = () => {
       sx={{
         position: 'relative',
         overflow: 'hidden',
-        backgroundColor: 'lightGrey',
+        backgroundColor: 'inputAlternativeBackground',
         borderRadius: '8px',
         gap: '8px',
         alignItems: 'start',
