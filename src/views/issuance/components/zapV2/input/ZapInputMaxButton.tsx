@@ -5,7 +5,7 @@ import { useZap } from '../context/ZapContext'
 import TokenLogo from 'components/icons/TokenLogo'
 
 const ZapInputMaxButton = () => {
-  const { setAmountIn, maxAmountIn, tokenIn, operation } = useZap()
+  const { operation, tokenIn, onClickMax } = useZap()
 
   return (
     <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
@@ -14,7 +14,7 @@ const ZapInputMaxButton = () => {
         <Box>
           <Text>Balance </Text>
           <Text sx={{ fontWeight: 'bold' }}>
-            {formatCurrency(+maxAmountIn, 5)}
+            {formatCurrency(+(tokenIn?.balance ?? '0'), 5)}
           </Text>
         </Box>
         <Button
@@ -22,7 +22,7 @@ const ZapInputMaxButton = () => {
           backgroundColor="#CCCCCC"
           color="#000000"
           style={{ borderRadius: 4 }}
-          onClick={() => setAmountIn(maxAmountIn)}
+          onClick={onClickMax}
         >
           Max
         </Button>

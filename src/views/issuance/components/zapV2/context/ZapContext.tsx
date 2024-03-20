@@ -5,6 +5,7 @@ import {
   FC,
   PropsWithChildren,
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -18,6 +19,7 @@ import {
   rTokenAtom,
   rTokenBalanceAtom,
   rTokenPriceAtom,
+  rTokenStateAtom,
   walletAtom,
 } from 'state/atoms'
 import useSWR from 'swr'
@@ -59,7 +61,7 @@ type ZapContextType = {
   tokens: ZapToken[]
   chainId: number
   account?: Address
-  maxAmountIn: string
+  onClickMax: () => void
   loadingZap: boolean
   tokenIn: ZapToken
   tokenOut: ZapToken
@@ -88,7 +90,7 @@ const ZapContext = createContext<ZapContextType>({
   amountIn: '',
   setAmountIn: () => {},
   setSelectedToken: () => {},
-  maxAmountIn: '0',
+  onClickMax: () => {},
   loadingZap: false,
   chainId: 0,
   tokens: [],
@@ -118,6 +120,8 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const rTokenPrice = useAtomValue(rTokenPriceAtom)
   const rTokenBalance = useAtomValue(rTokenBalanceAtom)
   const balances = useAtomValue(balancesAtom)
+  const { issuanceAvailable, redemptionAvailable } =
+    useAtomValue(rTokenStateAtom)
 
   const tokens: ZapToken[] = useMemo(
     () =>
@@ -171,7 +175,18 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     [rToken, token, operation]
   )
 
-  const maxAmountIn = useMemo(() => tokenIn.balance ?? '0', [tokenIn.balance])
+  const onClickMax = useCallback(() => {
+    let maxTokenIn = +(tokenIn.balance ?? '0')
+
+    if (operation === 'mint') {
+      const maxAmount = (tokenOut.price || 0) * (issuanceAvailable || 0)
+      maxTokenIn = maxAmount / (tokenIn.price || 1) || maxTokenIn
+    } else {
+      maxTokenIn = redemptionAvailable || maxTokenIn
+    }
+
+    setAmountIn(Math.min(maxTokenIn, +(tokenIn.balance ?? '0')).toString())
+  }, [tokenIn.balance])
 
   const endpoint = useDebounce(
     useMemo(() => {
@@ -198,7 +213,11 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     1000
   )
 
-  const { data, isLoading, error } = useSWR<ZapResponse>(endpoint, fetcher, {
+  const {
+    data,
+    isLoading,
+    error: _error,
+  } = useSWR<ZapResponse>(endpoint, fetcher, {
     isPaused: () => !endpoint || openSubmitModal,
   })
 
@@ -241,7 +260,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         chainId,
         account,
         tokens,
-        maxAmountIn,
+        onClickMax,
         loadingZap: isLoading,
         tokenIn,
         tokenOut,
