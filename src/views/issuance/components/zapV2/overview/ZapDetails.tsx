@@ -15,7 +15,15 @@ const ZapDetails = (props: BoxProps) => {
         sx={{ justifyContent: 'space-between' }}
       >
         <Text sx={{ fontSize: 14 }}>Price Imapct</Text>
-        <Text sx={{ fontSize: 14, fontWeight: 500 }}>{priceImpact || 0}%</Text>
+        <Text
+          sx={{
+            fontSize: 14,
+            fontWeight: 500,
+            color: (priceImpact || 0) > 0 ? 'danger' : 'text',
+          }}
+        >
+          {priceImpact || 0}%
+        </Text>
       </Box>
       <Box
         variant="layout.verticalAlign"
@@ -38,7 +46,7 @@ const ZapDetails = (props: BoxProps) => {
         sx={{ justifyContent: 'space-between' }}
       >
         <Text sx={{ fontSize: 14 }}>Estimated gas cost</Text>
-        <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+        <Box variant="layout.verticalAlign" sx={{ gap: 1, color: 'primary' }}>
           <GasIcon />
           <Text sx={{ fontSize: 14, fontWeight: 500 }}>
             ${gasCost ? formatCurrency(+gasCost, 2) : 0}

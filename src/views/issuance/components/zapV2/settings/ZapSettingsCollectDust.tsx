@@ -26,12 +26,12 @@ const ZapSettingsCollectDust = () => {
         </Box>
         <Checkbox
           title="Collect dust"
-          onChange={() => {
-            setCollectDust(!collectDust)
-            // setPrevious(null)
-          }}
-          disabled // We will always send dust back to wallet
+          onChange={() => setCollectDust(!collectDust)}
           checked={collectDust}
+          disabled // We will always send dust back to wallet
+          sx={{
+            fill: 'muted',
+          }}
         />
       </label>
     </Box>
