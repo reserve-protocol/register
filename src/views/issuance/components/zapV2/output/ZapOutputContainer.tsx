@@ -7,7 +7,7 @@ import { useZap } from '../context/ZapContext'
 import ZapTokenSelector from '../token-selector/ZapTokenSelector'
 
 const ZapOutputContainer = () => {
-  const { tokenOut, operation } = useZap()
+  const { tokenOut, operation, loadingZap } = useZap()
 
   return (
     <Box
@@ -29,9 +29,11 @@ const ZapOutputContainer = () => {
         sx={{ fontSize: 4, fontWeight: 700, overflow: 'hidden' }}
       >
         <ZapOutput />
-        <Text variant="legend" ml="2">
-          {tokenOut.symbol}
-        </Text>
+        {!loadingZap && (
+          <Text variant="legend" ml="2">
+            {tokenOut.symbol}
+          </Text>
+        )}
       </Box>
       <Box variant="layout.verticalAlign">
         <ZapOutputUSD />

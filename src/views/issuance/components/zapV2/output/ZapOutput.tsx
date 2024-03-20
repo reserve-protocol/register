@@ -6,7 +6,7 @@ const ZapOutput = () => {
   const { amountOut, loadingZap } = useZap()
 
   if (loadingZap) {
-    return <Skeleton height={30} width={38} />
+    return <Skeleton height={30} width={320} />
   }
 
   return <Text variant="strong">{amountOut}</Text>

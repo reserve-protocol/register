@@ -5,7 +5,7 @@ import { useMemo, useState } from 'react'
 import { ArrowUpRight, X } from 'react-feather'
 import { colors } from 'theme'
 import { Box, Button, Divider, Link, Text } from 'theme-ui'
-import { shortenString } from 'utils'
+import { formatCurrency, shortenString } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { Address } from 'viem'
 import { useZap } from '../context/ZapContext'
@@ -70,7 +70,7 @@ const ZapTokenList = ({
               </Box>
             </Box>
             <Box sx={{ ml: 'auto' }}>
-              <Text>{balance}</Text>
+              <Text>{formatCurrency(+balance, 5)}</Text>
             </Box>
           </Box>
         )

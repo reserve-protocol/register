@@ -15,7 +15,6 @@ import {
   balancesAtom,
   chainIdAtom,
   ethPriceAtom,
-  gasFeeAtom,
   rTokenAtom,
   rTokenBalanceAtom,
   rTokenPriceAtom,
@@ -23,8 +22,10 @@ import {
   walletAtom,
 } from 'state/atoms'
 import useSWR from 'swr'
+import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
 import { Address, formatEther, parseUnits, zeroAddress } from 'viem'
+import { useFeeData } from 'wagmi'
 import zapper, { ZapResponse, ZapResult, fetcher } from '../api'
 import { SLIPPAGE_OPTIONS, zappableTokens } from '../constants'
 
@@ -129,7 +130,6 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
   const chainId = useAtomValue(chainIdAtom)
   const account = useAtomValue(walletAtom) || undefined
-  const fee = useAtomValue(gasFeeAtom)
   const ethPrice = useAtomValue(ethPriceAtom)
   const rTokenData = useAtomValue(rTokenAtom)
   const rTokenPrice = useAtomValue(rTokenPriceAtom)
@@ -137,6 +137,8 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const balances = useAtomValue(balancesAtom)
   const { issuanceAvailable, redemptionAvailable } =
     useAtomValue(rTokenStateAtom)
+
+  const { data: gas } = useFeeData()
 
   const tokens: ZapToken[] = useMemo(
     () =>
@@ -216,7 +218,11 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       const max = operation === 'mint' ? issuanceAvailable : redemptionAvailable
       setError({
         title: `${op} amount above Global Max ${op}`,
-        message: `Sorry, your request exceeds the Global Max ${op} limit. The Global Max ${op} is set at ${max} ${rToken?.symbol}. You can only zap a maximum of ${maxTokenIn} ${tokenIn.symbol}.`,
+        message: `Sorry, your request exceeds the Global Max ${op} limit. The Global Max ${op} is set at ${max} ${
+          rToken?.symbol
+        }. You can only zap a maximum of ${formatCurrency(maxTokenIn, 5)} ${
+          tokenIn.symbol
+        }.`,
         color: 'warning',
         secondaryColor: 'rgba(255, 138, 0, 0.20)',
       })
@@ -253,7 +259,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         slippage: Number(slippage),
       })
     }, [chainId, account, tokenIn, tokenOut, amountIn, slippage]),
-    1000
+    500
   )
 
   const {
@@ -261,7 +267,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     isLoading,
     error: apiError,
   } = useSWR<ZapResponse>(endpoint, fetcher, {
-    isPaused: () => !endpoint || openSubmitModal,
+    isPaused: () => openSubmitModal,
   })
 
   const [amountOut, zapDustUSD, gasCost, priceImpact, spender] = useMemo(() => {
@@ -269,9 +275,11 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       return ['0', 0, 0, 0, undefined]
     }
     const amountOut = formatEther(BigInt(data.result.amountOut))
-    const estimatedGasCost = fee
-      ? Number(formatEther(BigInt(data.result.gas) * fee)) * ethPrice
+
+    const estimatedGasCost = gas?.formatted?.gasPrice
+      ? (+data.result.gas * +gas?.formatted?.gasPrice * ethPrice) / 1e9
       : 0
+
     return [
       amountOut,
       data.result.dustValue,

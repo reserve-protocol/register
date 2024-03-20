@@ -14,7 +14,10 @@ const ZapInputMaxButton = () => {
         <Box>
           <Text>Balance </Text>
           <Text sx={{ fontWeight: 'bold' }}>
-            {formatCurrency(+(tokenIn?.balance ?? '0'), 5)}
+            {formatCurrency(+(tokenIn?.balance ?? '0'), 2, {
+              notation: 'compact',
+              compactDisplay: 'short',
+            })}
           </Text>
         </Box>
         <Button

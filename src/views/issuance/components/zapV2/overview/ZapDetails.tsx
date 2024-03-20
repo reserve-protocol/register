@@ -1,6 +1,6 @@
 import { Box, BoxProps, Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'
-import { formatSlippage } from '../utils'
+import { formatNumber, formatSlippage } from '../utils'
 import ZapRate from './ZapRate'
 import { formatCurrency } from 'utils'
 import GasIcon from 'components/icons/GasIcon'
@@ -22,7 +22,7 @@ const ZapDetails = (props: BoxProps) => {
             color: (priceImpact || 0) > 0 ? 'danger' : 'text',
           }}
         >
-          {priceImpact || 0}%
+          {formatNumber(priceImpact || 0)}%
         </Text>
       </Box>
       <Box

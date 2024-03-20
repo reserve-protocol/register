@@ -4,8 +4,14 @@ import { LoadingButton } from 'components/button'
 import { TransactionButtonContainer } from 'components/button/TransactionButton'
 
 const ZapSubmitButton = () => {
-  const { setOpenSubmitModal, loadingZap, amountOut, operation, error } =
-    useZap()
+  const {
+    setOpenSubmitModal,
+    loadingZap,
+    amountIn,
+    amountOut,
+    operation,
+    error,
+  } = useZap()
 
   const title = useMemo(() => {
     if (error && error.submitButtonTitle) return error.submitButtonTitle
@@ -15,11 +21,13 @@ const ZapSubmitButton = () => {
   return (
     <TransactionButtonContainer sx={{ width: '100%' }}>
       <LoadingButton
-        onClick={() => setOpenSubmitModal(true)}
+        onClick={() =>
+          amountOut && Number(amountOut) !== 0 && setOpenSubmitModal(true)
+        }
         loading={loadingZap}
         text={title}
         backgroundColor={error?.color || 'primary'}
-        disabled={!amountOut || Number(amountOut) === 0}
+        disabled={!amountIn || Number(amountIn) === 0}
         loadingText="Finding route..."
         fullWidth
       />

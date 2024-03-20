@@ -8,11 +8,11 @@ import { ROUTES } from 'utils/constants'
 import EarnWrapper from 'views/earn'
 
 import Home from 'views/home'
+import Issuance from 'views/issuance'
 import Overview from 'views/overview'
 import PortfolioWrapper from 'views/portfolio'
 
 // Preloadable components
-const Issuance = lazyWithPreload(() => import('./views/issuance'))
 const Staking = lazyWithPreload(() => import('./views/staking'))
 const Auctions = lazyWithPreload(() => import('./views/auctions'))
 const Governance = lazyWithPreload(() => import('./views/governance'))
@@ -47,10 +47,7 @@ const AppRoutes = () => (
     <Route path={`/:chain/token/:tokenId`} element={<RTokenContainer />}>
       <Route index element={<Navigate replace to={ROUTES.OVERVIEW} />} />
       <Route path={ROUTES.OVERVIEW} element={<Overview />} />
-      <Route
-        path={ROUTES.ISSUANCE}
-        element={<PreloadComponent element={Issuance} />}
-      />
+      <Route path={ROUTES.ISSUANCE} element={<Issuance />} />
       <Route
         path={ROUTES.STAKING}
         element={<PreloadComponent element={Staking} />}

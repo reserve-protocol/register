@@ -1,16 +1,13 @@
-import { useAtomValue } from 'jotai'
 import Skeleton from 'react-loading-skeleton'
-import { rTokenPriceAtom } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { useZap } from '../context/ZapContext'
 
 const ZapOutputUSD = () => {
-  const { amountOut, zapDustUSD, loadingZap } = useZap()
-  const price = useAtomValue(rTokenPriceAtom)
+  const { tokenOut, amountOut, zapDustUSD, loadingZap } = useZap()
 
   if (loadingZap) {
-    return <Skeleton height={18} width={48} />
+    return <Skeleton height={18} width={240} />
   }
 
   return (
@@ -19,14 +16,14 @@ const ZapOutputUSD = () => {
         variant="legend"
         sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
       >
-        ${formatCurrency(price * Number(amountOut), 2)}
+        ${formatCurrency((tokenOut?.price || 0) * Number(amountOut), 2)}
       </Text>
-      {zapDustUSD && (
+      {zapDustUSD !== undefined && (
         <Text>
           {' '}
           +{' '}
           <Text variant="legend" sx={{ fontWeight: 'strong' }}>
-            ${zapDustUSD}
+            ${formatCurrency(+zapDustUSD, 2)}
           </Text>{' '}
           in dust
         </Text>

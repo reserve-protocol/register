@@ -132,10 +132,15 @@ export function safeParseEther(value: string, decimals = 18): bigint {
   return parseUnits(safeValue, decimals)
 }
 
-export function formatCurrency(value: number, decimals = 2): string {
+export function formatCurrency(
+  value: number,
+  decimals = 2,
+  options: Intl.NumberFormatOptions = {}
+): string {
   return Intl.NumberFormat('en-US', {
     maximumFractionDigits: decimals,
     minimumFractionDigits: Math.min(2, decimals),
+    ...options,
   }).format(value)
 }
 
