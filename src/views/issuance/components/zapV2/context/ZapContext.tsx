@@ -40,6 +40,14 @@ export type ZapToken = {
   balance?: string
 }
 
+type Error = {
+  title: string
+  message: string
+  color: string
+  secondaryColor: string
+  submitButtonTitle?: string
+}
+
 type ZapContextType = {
   operation: IssuanceOperation
   setOperation: (operation: IssuanceOperation) => void
@@ -63,6 +71,7 @@ type ZapContextType = {
   account?: Address
   onClickMax: () => void
   loadingZap: boolean
+  error?: Error
   tokenIn: ZapToken
   tokenOut: ZapToken
 
@@ -109,8 +118,9 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const [openSubmitModal, setOpenSubmitModal] = useState<boolean>(false)
   const [collectDust, setCollectDust] = useState<boolean>(true)
   const [slippage, setSlippage] = useState<bigint>(SLIPPAGE_OPTIONS[0])
-  const [amountIn, setAmountIn] = useState<string>('')
+  const [amountIn, _setAmountIn] = useState<string>('')
   const [selectedToken, setSelectedToken] = useState<ZapToken>()
+  const [error, setError] = useState<Error>()
 
   const chainId = useAtomValue(chainIdAtom)
   const account = useAtomValue(walletAtom) || undefined
@@ -134,6 +144,14 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const tokenPrice = useChainlinkPrice(
     chainId,
     selectedToken?.address as Address
+  )
+
+  const setAmountIn = useCallback(
+    (amount: string) => {
+      setError(undefined)
+      _setAmountIn(amount)
+    },
+    [_setAmountIn]
   )
 
   useEffect(() => {
@@ -186,7 +204,26 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     }
 
     setAmountIn(Math.min(maxTokenIn, +(tokenIn.balance ?? '0')).toString())
-  }, [tokenIn.balance])
+
+    if (+(tokenIn.balance ?? '0') > maxTokenIn) {
+      const op = operation === 'mint' ? 'Mint' : 'Redeem'
+      const max = operation === 'mint' ? issuanceAvailable : redemptionAvailable
+      setError({
+        title: `${op} amount above Global Max ${op}`,
+        message: `Sorry, your request exceeds the Global Max ${op} limit. The Global Max ${op} is set at ${max} ${rToken?.symbol}. You can only zap a maximum of ${maxTokenIn} ${tokenIn.symbol}.`,
+        color: 'warning',
+        secondaryColor: 'rgba(255, 138, 0, 0.20)',
+      })
+    }
+  }, [
+    tokenIn.balance,
+    tokenOut.price,
+    tokenIn.price,
+    operation,
+    issuanceAvailable,
+    redemptionAvailable,
+    setError,
+  ])
 
   const endpoint = useDebounce(
     useMemo(() => {
@@ -238,6 +275,21 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     ]
   }, [data])
 
+  useEffect(() => {
+    if (priceImpact >= 1) {
+      setError({
+        title: 'Warning: High price impact',
+        message:
+          'The price impact of this transaction is too high. Please consider using a smaller amount or a different token.',
+        color: 'danger',
+        secondaryColor: 'rgba(255, 0, 0, 0.20)',
+        submitButtonTitle: `Zap ${
+          operation === 'mint' ? 'Mint' : 'Redeem'
+        } Anyway`,
+      })
+    }
+  }, [priceImpact, operation])
+
   return (
     <ZapContext.Provider
       value={{
@@ -264,6 +316,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         loadingZap: isLoading,
         tokenIn,
         tokenOut,
+        error,
         amountOut,
         zapDustUSD,
         gasCost,
