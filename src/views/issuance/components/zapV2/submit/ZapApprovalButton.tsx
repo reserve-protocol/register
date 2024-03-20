@@ -8,13 +8,13 @@ const ZapApprovalButton = ({
   approve?: () => void
   isLoading: boolean
 }) => {
-  const { loadingZap, selectedToken } = useZap()
+  const { loadingZap, tokenIn } = useZap()
 
   return (
     <LoadingButton
       onClick={approve}
       loading={loadingZap}
-      text={`Approve use of ${selectedToken?.symbol}`}
+      text={`Approve use of ${tokenIn.symbol}`}
       fullWidth
     />
   )

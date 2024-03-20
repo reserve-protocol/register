@@ -4,9 +4,10 @@ import ZapOutputBalance from './ZapOutputBalance'
 import ZapOutput from './ZapOutput'
 import ZapOutputUSD from './ZapOutputUSD'
 import { useZap } from '../context/ZapContext'
+import ZapTokenSelector from '../token-selector/ZapTokenSelector'
 
 const ZapOutputContainer = () => {
-  const { rTokenSymbol } = useZap()
+  const { tokenOut, operation } = useZap()
 
   return (
     <Box
@@ -29,7 +30,7 @@ const ZapOutputContainer = () => {
       >
         <ZapOutput />
         <Text variant="legend" ml="2">
-          {rTokenSymbol || ''}
+          {tokenOut.symbol}
         </Text>
       </Box>
       <Box variant="layout.verticalAlign">
@@ -44,10 +45,11 @@ const ZapOutputContainer = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'end',
-          justifyContent: 'end',
+          justifyContent: operation === 'redeem' ? 'space-between' : 'end',
         }}
         p={3}
       >
+        {operation === 'redeem' && <ZapTokenSelector />}
         <ZapOutputBalance />
       </Box>
     </Box>

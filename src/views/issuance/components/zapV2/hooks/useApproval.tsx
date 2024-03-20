@@ -1,19 +1,19 @@
 import ERC20 from 'abis/ERC20'
-import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { chainIdAtom, walletAtom } from 'state/atoms'
 import { Allowance } from 'types'
 import {
+  Address,
   useContractRead,
   useContractWrite,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from 'wagmi'
 
-export const useApproval = (allowance?: Allowance | undefined) => {
-  const account = useAtomValue(walletAtom)
-  const chainId = useAtomValue(chainIdAtom)
-
+export const useApproval = (
+  chainId: number,
+  account?: Address,
+  allowance?: Allowance | undefined
+) => {
   if (allowance?.symbol === 'ETH') {
     return {
       validatingAllowance: false,

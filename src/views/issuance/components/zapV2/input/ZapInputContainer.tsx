@@ -1,10 +1,13 @@
 import { Box, Text } from 'theme-ui'
 import ZapInput from './ZapInput'
-import ZapTokenSelector from './ZapTokenSelector'
+import ZapTokenSelector from '../token-selector/ZapTokenSelector'
 import ZapInputMaxButton from './ZapInputMaxButton'
 import ZapInputUSD from './ZapInputUSD'
+import { useZap } from '../context/ZapContext'
 
 const ZapInputContainer = () => {
+  const { operation } = useZap()
+
   return (
     <Box
       variant="layout.verticalAlign"
@@ -41,11 +44,11 @@ const ZapInputContainer = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'end',
-          justifyContent: 'space-between',
+          justifyContent: operation === 'mint' ? 'space-between' : 'end',
         }}
         p={3}
       >
-        <ZapTokenSelector />
+        {operation === 'mint' && <ZapTokenSelector />}
         <ZapInputMaxButton />
       </Box>
     </Box>

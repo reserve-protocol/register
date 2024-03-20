@@ -1,7 +1,5 @@
 import Chainlink from 'abis/Chainlink'
-import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { chainIdAtom } from 'state/atoms'
 import { ChainId } from 'utils/chains'
 import collateralPlugins from 'utils/plugins'
 import { formatUnits } from 'viem'
@@ -47,8 +45,7 @@ const CHAINLINK_FEED: Record<number, Record<string, Address>> = {
   },
 }
 
-export const useChainlinkPrice = (tokenAddress?: Address) => {
-  const chainId = useAtomValue(chainIdAtom)
+export const useChainlinkPrice = (chainId: number, tokenAddress?: Address) => {
   const plugins = collateralPlugins[chainId]
 
   const chainlinkAddress =

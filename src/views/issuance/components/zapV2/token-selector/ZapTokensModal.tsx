@@ -79,26 +79,25 @@ const ZapTokenList = ({
 }
 
 const ZapTokensModal = () => {
-  const { chainId, tokens, balances, setSelectedToken, setOpenTokenSelector } =
-    useZap()
+  const { chainId, tokens, setSelectedToken, setOpenTokenSelector } = useZap()
   const [search, setSearch] = useState<string>('')
 
   const entries = useMemo(
     () =>
       tokens
         .map((token) => ({
-          address: token.address.address as Address,
+          address: token.address as Address,
           symbol: token.symbol,
           selectToken: () => {
             setSelectedToken(token)
             setOpenTokenSelector(false)
           },
           explorerLink: getExplorerLink(
-            token.address.address,
+            token.address,
             chainId,
             ExplorerDataType.TOKEN
           ),
-          balance: balances[token.address.address as Address]?.balance ?? '0',
+          balance: token.balance ?? '0',
         }))
         .filter(
           (entry) =>

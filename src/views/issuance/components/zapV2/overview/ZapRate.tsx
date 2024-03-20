@@ -4,23 +4,17 @@ import { formatCurrency } from 'utils'
 import { useZap } from '../context/ZapContext'
 
 const ZapRate = (props: TextProps) => {
-  const { rTokenSymbol, rTokenPrice, selectedToken, tokenInPrice } = useZap()
+  const { tokenIn, tokenOut } = useZap()
 
   const rate = useMemo(
-    () => (rTokenPrice && tokenInPrice ? rTokenPrice / tokenInPrice : 0),
-    [rTokenPrice, tokenInPrice]
+    () =>
+      tokenIn.price && tokenOut.price ? tokenIn.price / tokenOut.price : 0,
+    [tokenIn.price, tokenOut.price]
   )
-
-  const empty = useMemo(
-    () => !selectedToken?.symbol || !rTokenSymbol,
-    [selectedToken?.symbol, rTokenSymbol, rate]
-  )
-
-  if (empty) return null
 
   return (
     <Text {...props}>
-      1 {selectedToken?.symbol} = {formatCurrency(+rate, 5)} {rTokenSymbol}
+      1 {tokenIn.symbol} = {formatCurrency(rate, 5)} {tokenOut.symbol}
     </Text>
   )
 }

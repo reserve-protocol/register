@@ -9,7 +9,7 @@ import {
 import { useZap } from '../context/ZapContext'
 
 const ZapConfirmButton = () => {
-  const { zapResult, setOpenSubmitModal, chainId } = useZap()
+  const { zapResult, setOpenSubmitModal, chainId, operation } = useZap()
 
   const { config } = usePrepareSendTransaction(
     zapResult
@@ -37,7 +37,7 @@ const ZapConfirmButton = () => {
     <LoadingButton
       onClick={() => sendTransaction?.()}
       loading={!zapResult || isLoading}
-      text="Confirm Mint"
+      text={operation === 'mint' ? 'Confirm Mint' : 'Confirm Redeem'}
       fullWidth
     />
   )

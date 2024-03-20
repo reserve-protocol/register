@@ -36,14 +36,21 @@ export type ZapResponse = {
 export const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
 const zapper = {
-  zap: (
-    chainId: number,
-    signer: Address,
-    tokenIn: Address,
-    amountIn: string,
-    tokenOut: Address,
+  zap: ({
+    chainId,
+    signer,
+    tokenIn,
+    amountIn,
+    tokenOut,
+    slippage,
+  }: {
+    chainId: number
+    signer: Address
+    tokenIn: Address
+    amountIn: string
+    tokenOut: Address
     slippage: number
-  ) =>
+  }) =>
     `${BASE_ZAP_API_URL}/?chainId=${chainId}&signer=${signer}&tokenIn=${tokenIn}&amountIn=${amountIn}&tokenOut=${tokenOut}&slippage=${slippage}`,
 }
 

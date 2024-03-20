@@ -2,8 +2,9 @@ import ButtonGroup from 'components/button/ButtonGroup'
 import { useMemo, useState } from 'react'
 import { Box } from 'theme-ui'
 import { formatNumber } from '../utils'
-import { SLIPPAGE_OPTIONS, useZap } from '../context/ZapContext'
+import { useZap } from '../context/ZapContext'
 import ZapSettingsCustomSlippage from './ZapSettingsCustomSlippage'
+import { SLIPPAGE_OPTIONS } from '../constants'
 
 const ZapSettingsSlippage = () => {
   const { slippage, setSlippage } = useZap()

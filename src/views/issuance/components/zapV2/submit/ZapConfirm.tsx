@@ -7,16 +7,16 @@ import { useMemo } from 'react'
 import { Allowance } from 'types'
 
 const ZapConfirm = () => {
-  const { selectedToken, spender, amountIn } = useZap()
+  const { chainId, account, tokenIn, spender, amountIn } = useZap()
 
   const allowance: Allowance | undefined = useMemo(() => {
-    if (!selectedToken || !spender) return undefined
+    if (!tokenIn.address || !spender) return undefined
     return {
-      token: selectedToken.address.toString() as Address,
+      token: tokenIn.address.toString() as Address,
       spender: spender as Address,
-      amount: parseUnits(amountIn, selectedToken?.decimals),
-      symbol: selectedToken?.symbol,
-      decimals: selectedToken?.decimals,
+      amount: parseUnits(amountIn, tokenIn.decimals),
+      symbol: tokenIn.symbol,
+      decimals: tokenIn.decimals,
     }
   }, [])
 
@@ -27,7 +27,7 @@ const ZapConfirm = () => {
     isLoading,
     isSuccess,
     approve,
-  } = useApproval(allowance)
+  } = useApproval(chainId, account, allowance)
 
   if (!hasAllowance)
     return <ZapApprovalButton approve={approve} isLoading={isLoading} />

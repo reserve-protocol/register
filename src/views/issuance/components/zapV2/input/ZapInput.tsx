@@ -4,8 +4,8 @@ import { Box, Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'
 
 const ZapInput = () => {
-  const { amountIn, setAmountIn, selectedToken, setSelectedToken } = useZap()
-  const symbol = useMemo(() => selectedToken?.symbol ?? '', [selectedToken])
+  const { amountIn, setAmountIn, tokenIn } = useZap()
+  const symbol = useMemo(() => tokenIn?.symbol ?? '', [tokenIn])
 
   return (
     <Box sx={{ position: 'relative', zIndex: 0, width: '100%' }}>
