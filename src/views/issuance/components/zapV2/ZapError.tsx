@@ -1,5 +1,12 @@
 import { Box, Text } from 'theme-ui'
-import { ZapErrorType } from './context/ZapContext'
+
+export type ZapErrorType = {
+  title: string
+  message: string
+  color: string
+  secondaryColor: string
+  submitButtonTitle?: string
+}
 
 const ZapError = ({ error }: { error?: ZapErrorType }) => {
   if (!error) return null

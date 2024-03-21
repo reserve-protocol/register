@@ -28,6 +28,7 @@ import { Address, formatEther, parseUnits, zeroAddress } from 'viem'
 import { useFeeData } from 'wagmi'
 import zapper, { ZapResponse, ZapResult, fetcher } from '../api'
 import { SLIPPAGE_OPTIONS, zappableTokens } from '../constants'
+import { ZapErrorType } from '../ZapError'
 
 export type IssuanceOperation = 'mint' | 'redeem'
 
@@ -39,14 +40,6 @@ export type ZapToken = {
   targetUnit: string
   price?: number
   balance?: string
-}
-
-export type ZapErrorType = {
-  title: string
-  message: string
-  color: string
-  secondaryColor: string
-  submitButtonTitle?: string
 }
 
 type ZapContextType = {

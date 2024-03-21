@@ -1,29 +1,22 @@
-import { Box, Spinner, Text } from 'theme-ui'
-import { ZapErrorType, useZap } from '../context/ZapContext'
 import { LoadingButton } from 'components/button'
 import TokenLogo from 'components/icons/TokenLogo'
 import { Check } from 'react-feather'
+import { Box, Spinner, Text } from 'theme-ui'
+import { useZap } from '../context/ZapContext'
+import { useZapTx } from '../context/ZapTxContext'
 
-type ZapApprovalButtonProps = {
-  hasAllowance: boolean
-  approve?: () => void
-  isLoading: boolean
-  validatingApproval: boolean
-  isSuccess?: boolean
-  error?: ZapErrorType
-}
-
-const ZapApprovalButton = ({
-  hasAllowance,
-  approve,
-  isLoading,
-  validatingApproval,
-  isSuccess,
-  error,
-}: ZapApprovalButtonProps) => {
+const ZapApprovalButton = () => {
   const { tokenIn } = useZap()
+  const {
+    hasAllowance,
+    loadingApproval,
+    validatingApproval,
+    approve,
+    approvalSuccess,
+    error,
+  } = useZapTx()
 
-  if (isLoading) {
+  if (loadingApproval) {
     return (
       <Box variant="layout.verticalAlign" mb={3}>
         <TokenLogo width={24} symbol={tokenIn.symbol} />
@@ -41,7 +34,7 @@ const ZapApprovalButton = ({
     )
   }
 
-  if (isSuccess && !error) {
+  if (approvalSuccess && !error) {
     return (
       <Box variant="layout.verticalAlign" sx={{ gap: 3 }} mb={3}>
         <Check size={24} />
@@ -57,7 +50,7 @@ const ZapApprovalButton = ({
   return (
     <LoadingButton
       onClick={approve}
-      loading={isLoading}
+      loading={loadingApproval}
       text={`Approve use of ${tokenIn.symbol}`}
       fullWidth
     />

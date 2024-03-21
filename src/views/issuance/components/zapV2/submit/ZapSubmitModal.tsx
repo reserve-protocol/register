@@ -9,6 +9,7 @@ import ZapInputUSD from '../input/ZapInputUSD'
 import ZapOutputUSD from '../output/ZapOutputUSD'
 import ZapDetails from '../overview/ZapDetails'
 import ZapConfirm from './ZapConfirm'
+import { ZapTxProvider } from '../context/ZapTxContext'
 
 const ZapOverview = () => {
   const [collapsed, setCollapsed] = useState(true)
@@ -80,7 +81,9 @@ const ZapOverview = () => {
           <ZapDetails hideGasCost />
         </Box>
       </Box>
-      <ZapConfirm />
+      <ZapTxProvider>
+        <ZapConfirm />
+      </ZapTxProvider>
     </Box>
   )
 }
