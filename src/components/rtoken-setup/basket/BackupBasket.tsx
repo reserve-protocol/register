@@ -73,7 +73,7 @@ const BackupBasket = ({
     <Box {...props}>
       <Flex variant="layout.verticalAlign">
         <Text variant="title">Emergency Collateral</Text>
-        <DocsLink link="https://reserve.org/protocol/monetary_units_baskets/#baskets" />
+        <DocsLink link="https://reserve.org/protocol/rtoken-deployment-guide/#step-4-configure-backup-basket" />
       </Flex>
       {targetUnits.map((targetUnit) =>
         readOnly && !backupBasket[targetUnit]?.collaterals.length ? (

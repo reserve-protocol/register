@@ -84,7 +84,7 @@ const PrimaryBasket = ({
         <Text variant="title">
           <Trans>Primary Basket</Trans>
         </Text>
-        <DocsLink link="https://reserve.org/protocol/monetary_units_baskets/#baskets" />
+        <DocsLink link="https://reserve.org/protocol/rtoken-deployment-guide/#step-3-configure-rtoken-basket" />
         {!readOnly && (
           <SmallButton
             onClick={() => onAdd({ basket: 'primary' })}
