@@ -105,8 +105,9 @@ const CollateralModal = ({
   const filteredCollaterals = useMemo(() => {
     return Object.values<Collateral | CollateralPlugin>(collaterals).filter(
       (plugin) =>
-        plugin.targetName.toLowerCase().includes(search.toLowerCase()) ||
-        plugin.symbol.toLowerCase().includes(search.toLowerCase())
+        `${plugin.targetName}${plugin.symbol}`
+          .toLowerCase()
+          .includes(search.toLowerCase())
     )
   }, [collaterals, search])
 
