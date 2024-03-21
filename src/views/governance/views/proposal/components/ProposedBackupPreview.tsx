@@ -2,8 +2,12 @@ import { t, Trans } from '@lingui/macro'
 import { SmallButton } from 'components/button'
 import { backupCollateralAtom } from 'components/rtoken-setup/atoms'
 import { useAtom, useAtomValue } from 'jotai'
-import { Box, BoxProps, Text } from 'theme-ui'
-import { backupChangesAtom, isNewBackupProposedAtom } from '../atoms'
+import { Box, BoxProps, Checkbox, Text } from 'theme-ui'
+import {
+  autoRegisterBackupAssetsAtom,
+  backupChangesAtom,
+  isNewBackupProposedAtom,
+} from '../atoms'
 import {
   CollateralChange,
   DiversityFactorChange,
@@ -19,6 +23,7 @@ const ProposedBackupPreview = (props: BoxProps) => {
   const { count, diversityFactor, collateralChanges, priorityChanges } =
     useAtomValue(backupChangesAtom)
   const [proposedBackup, setProposedBackup] = useAtom(backupCollateralAtom)
+  const [autoRegister, setAutoRegister] = useAtom(autoRegisterBackupAssetsAtom)
 
   if (!isNewBackupProposed) {
     return null
@@ -82,6 +87,15 @@ const ProposedBackupPreview = (props: BoxProps) => {
             <Trans>Revert</Trans>
           </SmallButton>
         </Box>
+        <label>
+          <Box variant="layout.verticalAlign" mt={2}>
+            <Checkbox
+              checked={autoRegister}
+              onChange={() => setAutoRegister(!autoRegister)}
+            />
+            <Text variant="strong">Generate Asset Registry calls</Text>
+          </Box>
+        </label>
       </Box>
       {!!count && (
         <PreviewBox

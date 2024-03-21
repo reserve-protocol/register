@@ -30,7 +30,7 @@ const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
     args: [rToken.address] as [Address],
   }
 
-  const [[erc20s, uoaShares, targets], [backing, overCollateralization]] =
+  const [[erc20s, uoaShares, targets], [backing, overCollateralization], [_, __, targetAmts]] =
     await readContracts({
       contracts: [
         {
@@ -41,6 +41,11 @@ const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
         {
           ...callParams,
           functionName: 'backingOverview',
+          chainId,
+        },
+        {
+          ...callParams,
+          functionName: 'primeBasket',
           chainId,
         },
       ],
@@ -55,10 +60,11 @@ const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
         ...acc,
         [current]: {
           share: truncateDecimals(+formatEther(uoaShares[index]) * 100, 4),
+          targetAmts: formatEther(targetAmts[index] * 100n),
           targetUnit: hexToString(targets[index], { size: 32 }),
         },
       }),
-      {} as { [x: Address]: { share: number; targetUnit: string } }
+      {} as { [x: Address]: { share: number; targetAmts: string, targetUnit: string } }
     ),
   }
 })
@@ -70,6 +76,7 @@ export interface CollateralDetail extends Collateral {
   valueUsd: number
   valueSingleUsd: number
   distribution: number
+  distributionRaw: string
   targetUnit: string
   displayName: string
 }
@@ -107,6 +114,7 @@ export const rTokenCollateralDetailedAtom = atom((get) => {
         : 0,
       valueSingleUsd: (price * distribution[collateral.address].share) / 100,
       distribution: distribution[collateral.address].share,
+      distributionRaw: distribution[collateral.address].targetAmts,
       targetUnit: distribution[collateral.address].targetUnit,
       displayName: collateral.displayName ?? collateral.name,
     }
