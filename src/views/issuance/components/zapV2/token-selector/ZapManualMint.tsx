@@ -4,7 +4,7 @@ import { useZap } from '../context/ZapContext'
 import { Button } from 'components'
 
 const ZapManualMint = () => {
-  const { setZapEnabled } = useZap()
+  const { operation, setZapEnabled } = useZap()
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 3 }}>
@@ -19,7 +19,7 @@ const ZapManualMint = () => {
           onClick={() => setZapEnabled(false)}
           small
         >
-          Manual Mint
+          Manual {operation === 'mint' ? 'Mint' : 'Redeem'}
         </Button>
       </Box>
     </Box>
