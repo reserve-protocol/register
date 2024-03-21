@@ -20,7 +20,6 @@ import {
 
 type ZapTxContextType = {
   error?: ZapErrorType
-  setError: (error?: ZapErrorType) => void
 
   hasAllowance: boolean
   loadingApproval: boolean
@@ -35,7 +34,6 @@ type ZapTxContextType = {
 }
 
 const ZapTxContext = createContext<ZapTxContextType>({
-  setError: () => {},
   hasAllowance: false,
   loadingApproval: false,
   validatingApproval: false,
@@ -137,7 +135,6 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     <ZapTxContext.Provider
       value={{
         error,
-        setError,
         hasAllowance,
         loadingApproval,
         validatingApproval,

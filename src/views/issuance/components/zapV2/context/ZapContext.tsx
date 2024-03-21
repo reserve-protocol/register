@@ -26,9 +26,9 @@ import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
 import { Address, formatEther, parseUnits, zeroAddress } from 'viem'
 import { useFeeData } from 'wagmi'
+import { ZapErrorType } from '../ZapError'
 import zapper, { ZapResponse, ZapResult, fetcher } from '../api'
 import { SLIPPAGE_OPTIONS, zappableTokens } from '../constants'
-import { ZapErrorType } from '../ZapError'
 
 export type IssuanceOperation = 'mint' | 'redeem'
 
@@ -68,7 +68,6 @@ type ZapContextType = {
   onClickMax: () => void
   loadingZap: boolean
   error?: ZapErrorType
-  setError: (error?: ZapErrorType) => void
   tokenIn: ZapToken
   tokenOut: ZapToken
 
@@ -99,7 +98,6 @@ const ZapContext = createContext<ZapContextType>({
   setAmountIn: () => {},
   setSelectedToken: () => {},
   onClickMax: () => {},
-  setError: () => {},
   loadingZap: false,
   chainId: 0,
   tokens: [],
@@ -342,7 +340,6 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         tokenIn,
         tokenOut,
         error,
-        setError,
         amountOut,
         zapDustUSD,
         gasCost,
