@@ -2,7 +2,7 @@ import { t, Trans } from '@lingui/macro'
 import { Button, Modal } from 'components'
 import { ModalProps } from 'components/modal'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Box, Divider, Text } from 'theme-ui'
 import { CollateralPlugin } from 'types'
 import {
@@ -16,6 +16,7 @@ import CustomCollateral from './CustomCollateral'
 import PluginItem from './PluginItem'
 import collateralPlugins from 'utils/plugins'
 import { chainIdAtom } from 'state/atoms'
+import { SearchInput } from 'components/input'
 
 interface Props extends Omit<ModalProps, 'children'> {
   targetUnit?: string // filter by target unit
@@ -69,6 +70,7 @@ const CollateralModal = ({
   const plugins = useAtomValue(pluginsAtom)
 
   const [selected, setSelected] = useState<string[]>([])
+  const [search, setSearch] = useState<string>('')
   const [collaterals, setCollaterals] = useState(
     getPlugins(plugins, addedCollaterals, targetUnit)
   )
@@ -100,6 +102,14 @@ const CollateralModal = ({
     onClose()
   }
 
+  const filteredCollaterals = useMemo(() => {
+    return Object.values<Collateral | CollateralPlugin>(collaterals).filter(
+      (plugin) =>
+        plugin.targetName.toLowerCase().includes(search.toLowerCase()) ||
+        plugin.symbol.toLowerCase().includes(search.toLowerCase())
+    )
+  }, [collaterals, search])
+
   return (
     <Modal
       title={t`Collateral Plugins`}
@@ -107,6 +117,22 @@ const CollateralModal = ({
       onClose={onClose}
       {...props}
     >
+      <SearchInput
+        placeholder="Search by collateral symbol or target name"
+        autoFocus
+        value={search}
+        onChange={setSearch}
+        backgroundColor="focusedBackground"
+        sx={{
+          '&:focus': {
+            backgroundColor: 'focusedBackground',
+          },
+          '&:hover': {
+            backgroundColor: 'focusedBackground',
+          },
+        }}
+      />
+      <Divider mx={-4} mt={4} sx={{ borderColor: 'border' }} />
       <Box
         sx={{
           maxHeight: ['calc(100% - 128px)', 370],
@@ -122,19 +148,17 @@ const CollateralModal = ({
           <CustomCollateral onAdd={handleAddCustom} />
         </Box>
         <Divider my={4} sx={{ borderColor: 'border' }} />
-        {Object.values<Collateral | CollateralPlugin>(collaterals).map(
-          (plugin) => (
-            <Box key={plugin.address}>
-              <PluginItem
-                px={4}
-                data={plugin}
-                selected={plugin.custom}
-                onCheck={handleToggle}
-              />
-              <Divider my={3} sx={{ borderColor: 'border' }} />
-            </Box>
-          )
-        )}
+        {filteredCollaterals.map((plugin) => (
+          <Box key={plugin.address}>
+            <PluginItem
+              px={4}
+              data={plugin}
+              selected={plugin.custom}
+              onCheck={handleToggle}
+            />
+            <Divider my={3} sx={{ borderColor: 'border' }} />
+          </Box>
+        ))}
         {!Object.keys(collaterals).length && (
           <Box sx={{ textAlign: 'center' }} mb={5} mt={3}>
             <Text variant="legend">
