@@ -5,12 +5,12 @@ import { useZap } from '../context/ZapContext'
 import ZapError from '../ZapError'
 
 const ZapSubmit = () => {
-  const { openSubmitModal } = useZap()
+  const { openSubmitModal, error } = useZap()
 
   return (
     <Box variant="layout.centered" sx={{ gap: 3 }}>
       {openSubmitModal && <ZapSubmitModal />}
-      <ZapError />
+      <ZapError error={error} />
       <ZapSubmitButton />
     </Box>
   )

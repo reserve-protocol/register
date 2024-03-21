@@ -6,10 +6,25 @@ import {
   useSendTransaction,
   useWaitForTransaction,
 } from 'wagmi'
-import { useZap } from '../context/ZapContext'
+import { ZapErrorType, useZap } from '../context/ZapContext'
+import TransactionsIcon from 'components/icons/TransactionsIcon'
+import { Box, Spinner, Text } from 'theme-ui'
+import ZapGasCost from '../overview/ZapGasCost'
 
-const ZapConfirmButton = () => {
-  const { zapResult, setOpenSubmitModal, chainId, operation } = useZap()
+type ZapConfirmButtonProps = {
+  hasAllowance: boolean
+  loadingApproval: boolean
+  approvalSuccess: boolean
+  setError: (error?: ZapErrorType) => void
+}
+
+const ZapConfirmButton = ({
+  hasAllowance,
+  loadingApproval,
+  approvalSuccess,
+  setError,
+}: ZapConfirmButtonProps) => {
+  const { zapResult, chainId, operation } = useZap()
 
   const { config } = usePrepareSendTransaction(
     zapResult
@@ -22,24 +37,83 @@ const ZapConfirmButton = () => {
       : undefined
   )
 
-  const { data, isLoading, sendTransaction } = useSendTransaction(config)
+  const {
+    data,
+    isLoading: loadingTx,
+    sendTransaction,
+    error: sendError,
+  } = useSendTransaction(config)
 
-  const { data: receipt } = useWaitForTransaction({
+  const {
+    data: receipt,
+    isLoading: validatingTx,
+    error: validatingTxError,
+  } = useWaitForTransaction({
     hash: data?.hash,
     chainId,
   })
 
   useEffect(() => {
-    if (receipt) setOpenSubmitModal(false) // TODO: show success modal
-  }, [receipt, setOpenSubmitModal])
+    if (approvalSuccess && sendTransaction) {
+      sendTransaction()
+    }
+  }, [approvalSuccess, sendTransaction])
+
+  useEffect(() => {
+    if (sendError || validatingTxError) {
+      setError({
+        title: 'Transaction rejected',
+        message: 'Please try again',
+        color: 'danger',
+        secondaryColor: 'rgba(255, 0, 0, 0.20)',
+      })
+    } else {
+      setError(undefined)
+    }
+  }, [sendError, validatingTxError, setError])
+
+  if (
+    (loadingApproval ||
+      approvalSuccess ||
+      loadingTx ||
+      validatingTx ||
+      receipt) &&
+    !sendError &&
+    !validatingTxError
+  ) {
+    return (
+      <Box variant="layout.verticalAlign">
+        <Box variant="layout.verticalAlign" sx={{ gap: 3 }}>
+          <TransactionsIcon />
+          <Box>
+            <Text variant="bold" sx={{ display: 'block' }}>
+              {!receipt ? 'Confirm Stake' : 'Transaction submitted'}
+            </Text>
+            {(loadingTx || validatingTx) && (
+              <Text variant="legend">
+                {loadingTx && 'Proceed in wallet'}
+                {validatingTx && 'Confirming transaction'}
+              </Text>
+            )}
+          </Box>
+        </Box>
+        {(loadingTx || validatingTx) && <Spinner ml="auto" size={16} />}
+      </Box>
+    )
+  }
 
   return (
-    <LoadingButton
-      onClick={() => sendTransaction?.()}
-      loading={!zapResult || isLoading}
-      text={operation === 'mint' ? 'Confirm Mint' : 'Confirm Redeem'}
-      fullWidth
-    />
+    <Box>
+      {hasAllowance && (
+        <LoadingButton
+          onClick={() => sendTransaction?.()}
+          loading={!zapResult}
+          text={operation === 'mint' ? 'Confirm Mint' : 'Confirm Redeem'}
+          fullWidth
+        />
+      )}
+      <ZapGasCost mt={2} />
+    </Box>
   )
 }
 

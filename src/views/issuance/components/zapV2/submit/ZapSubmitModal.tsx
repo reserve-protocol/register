@@ -1,7 +1,9 @@
-import { Modal } from 'components'
+import { Button, Modal } from 'components'
+import AsteriskIcon from 'components/icons/AsteriskIcon'
 import TokenLogo from 'components/icons/TokenLogo'
+import { useState } from 'react'
 import { X } from 'react-feather'
-import { Box, Button, Divider, Text } from 'theme-ui'
+import { Box, Divider, Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'
 import ZapInputUSD from '../input/ZapInputUSD'
 import ZapOutputUSD from '../output/ZapOutputUSD'
@@ -9,6 +11,7 @@ import ZapDetails from '../overview/ZapDetails'
 import ZapConfirm from './ZapConfirm'
 
 const ZapOverview = () => {
+  const [collapsed, setCollapsed] = useState(true)
   const { tokenIn, tokenOut, amountIn, amountOut } = useZap()
 
   return (
@@ -40,8 +43,43 @@ const ZapOverview = () => {
           </Box>
         </Box>
       </Box>
-      <Divider sx={{ m: 0 }} />
-      <ZapDetails />
+      <Box>
+        <Box variant="layout.verticalAlign">
+          <Divider
+            sx={{
+              flexGrow: 1,
+              borderStyle: 'dashed',
+              borderColor: 'darkBorder',
+              m: 0,
+            }}
+          />
+          <Button small variant="hover" onClick={() => setCollapsed((c) => !c)}>
+            <Box variant="layout.verticalAlign" sx={{ color: 'secondaryText' }}>
+              <Text mr="2">Show more</Text>
+              <AsteriskIcon />
+            </Box>
+          </Button>
+          <Divider
+            sx={{
+              flexGrow: 1,
+              borderStyle: 'dashed',
+              borderColor: 'darkBorder',
+              m: 0,
+            }}
+          />
+        </Box>
+        <Box
+          sx={{
+            overflow: 'hidden',
+            maxHeight: collapsed ? '0px' : '1000px',
+            transition: collapsed
+              ? 'max-height 0.1s ease-in-out'
+              : 'max-height 0.4s ease-in-out',
+          }}
+        >
+          <ZapDetails hideGasCost />
+        </Box>
+      </Box>
       <ZapConfirm />
     </Box>
   )
@@ -53,7 +91,7 @@ const ZapSubmitModal = () => {
   return (
     <Modal
       p={0}
-      sx={{ border: '3px solid', borderColor: 'borderFocused', minWidth: 420 }}
+      sx={{ border: '3px solid', borderColor: 'borderFocused', minWidth: 440 }}
     >
       <Box
         sx={{
@@ -65,8 +103,8 @@ const ZapSubmitModal = () => {
         }}
       >
         <Box variant="layout.verticalAlign" p={4} mb={[3, 0]} pt={4} pb={0}>
-          <Text variant="sectionTitle">
-            {operation === 'mint' ? 'Review Mint' : 'Review Redeem'}
+          <Text variant="title" sx={{ fontWeight: 'bold' }}>
+            {`Review ${operation}`}
           </Text>
           <Button
             variant="circle"

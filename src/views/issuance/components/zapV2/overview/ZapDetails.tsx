@@ -1,12 +1,15 @@
 import { Box, BoxProps, Text } from 'theme-ui'
 import { useZap } from '../context/ZapContext'
 import { formatNumber, formatSlippage } from '../utils'
+import ZapGasCost from './ZapGasCost'
 import ZapRate from './ZapRate'
-import { formatCurrency } from 'utils'
-import GasIcon from 'components/icons/GasIcon'
 
-const ZapDetails = (props: BoxProps) => {
-  const { priceImpact, slippage, gasCost } = useZap()
+interface Props extends BoxProps {
+  hideGasCost?: boolean
+}
+
+const ZapDetails = ({ hideGasCost, ...props }: Props) => {
+  const { priceImpact, slippage } = useZap()
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }} {...props}>
@@ -41,18 +44,7 @@ const ZapDetails = (props: BoxProps) => {
         <Text sx={{ fontSize: 14 }}>Rate</Text>
         <ZapRate sx={{ fontSize: 14, fontWeight: 500 }} />
       </Box>
-      <Box
-        variant="layout.verticalAlign"
-        sx={{ justifyContent: 'space-between' }}
-      >
-        <Text sx={{ fontSize: 14 }}>Estimated gas cost</Text>
-        <Box variant="layout.verticalAlign" sx={{ gap: 1, color: 'primary' }}>
-          <GasIcon />
-          <Text sx={{ fontSize: 14, fontWeight: 500 }}>
-            ${gasCost ? formatCurrency(+gasCost, 2) : 0}
-          </Text>
-        </Box>
-      </Box>
+      {!hideGasCost && <ZapGasCost />}
     </Box>
   )
 }

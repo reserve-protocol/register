@@ -20,8 +20,9 @@ export const useApproval = (
       hasAllowance: true,
       error: undefined,
       isLoading: false,
-      isSuccess: true,
+      isSuccess: false,
       approve: () => {},
+      validatingApproval: false,
     }
   }
 
@@ -64,7 +65,6 @@ export const useApproval = (
   const { status: approvalStatus, isLoading: validatingApproval } =
     useWaitForTransaction({
       hash: writeData?.hash,
-      confirmations: 2,
     })
 
   const isLoading = approving || validatingApproval
@@ -74,11 +74,20 @@ export const useApproval = (
   return useMemo(() => {
     return {
       validatingAllowance,
-      hasAllowance,
+      validatingApproval,
+      hasAllowance: hasAllowance || isSuccess,
       error,
       isLoading,
       isSuccess,
       approve,
     }
-  }, [hasAllowance, validatingAllowance, error, isLoading, isSuccess, approve])
+  }, [
+    validatingAllowance,
+    validatingApproval,
+    hasAllowance,
+    error,
+    isLoading,
+    isSuccess,
+    approve,
+  ])
 }

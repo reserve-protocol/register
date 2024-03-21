@@ -41,7 +41,7 @@ export type ZapToken = {
   balance?: string
 }
 
-type Error = {
+export type ZapErrorType = {
   title: string
   message: string
   color: string
@@ -74,7 +74,8 @@ type ZapContextType = {
   account?: Address
   onClickMax: () => void
   loadingZap: boolean
-  error?: Error
+  error?: ZapErrorType
+  setError: (error?: ZapErrorType) => void
   tokenIn: ZapToken
   tokenOut: ZapToken
 
@@ -105,6 +106,7 @@ const ZapContext = createContext<ZapContextType>({
   setAmountIn: () => {},
   setSelectedToken: () => {},
   onClickMax: () => {},
+  setError: () => {},
   loadingZap: false,
   chainId: 0,
   tokens: [],
@@ -126,7 +128,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const [slippage, setSlippage] = useState<bigint>(SLIPPAGE_OPTIONS[0])
   const [amountIn, _setAmountIn] = useState<string>('')
   const [selectedToken, setSelectedToken] = useState<ZapToken>()
-  const [error, setError] = useState<Error>()
+  const [error, setError] = useState<ZapErrorType>()
 
   const chainId = useAtomValue(chainIdAtom)
   const account = useAtomValue(walletAtom) || undefined
@@ -347,6 +349,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         tokenIn,
         tokenOut,
         error,
+        setError,
         amountOut,
         zapDustUSD,
         gasCost,

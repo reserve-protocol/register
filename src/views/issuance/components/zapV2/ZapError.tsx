@@ -1,9 +1,7 @@
 import { Box, Text } from 'theme-ui'
-import { useZap } from './context/ZapContext'
+import { ZapErrorType } from './context/ZapContext'
 
-const ZapError = () => {
-  const { error } = useZap()
-
+const ZapError = ({ error }: { error?: ZapErrorType }) => {
   if (!error) return null
 
   return (
@@ -19,10 +17,10 @@ const ZapError = () => {
         p: 3,
       }}
     >
-      <Text variant="title" color={error.color} sx={{ fontWeight: 700 }}>
+      <Text color={error.color} sx={{ fontWeight: 700 }}>
         {error.title}
       </Text>
-      <Text>{error.message}</Text>
+      <Text sx={{ fontSize: 14 }}>{error.message}</Text>
     </Box>
   )
 }
