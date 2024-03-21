@@ -11,6 +11,7 @@ import AuctionTimeIndicators from './AuctionTimeIndicators'
 import { useBalance } from 'wagmi'
 import { useAtomValue } from 'jotai'
 import { chainIdAtom, walletAtom } from 'state/atoms'
+import { BIGINT_MAX } from 'utils/constants'
 
 const AuctionActions = ({
   data,
@@ -38,15 +39,20 @@ const AuctionActions = ({
     },
   ])
 
-  const approveCall = useMemo(
-    () => ({
+  const approveCall = useMemo(() => {
+    let amount = currentPrice
+
+    if (data?.buyingTokenSymbol.toLowerCase() === 'wcusdcv3') {
+      amount = BIGINT_MAX
+    }
+
+    return {
       abi: ERC20,
       address: data.buying as Hex,
       functionName: 'approve',
-      args: [data.id as Hex, currentPrice],
-    }),
-    [currentPrice !== 0n, data.id]
-  )
+      args: [data.id as Hex, amount],
+    }
+  }, [currentPrice !== 0n, data.id])
 
   const bidCall = useMemo(
     () => ({
