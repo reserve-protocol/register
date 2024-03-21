@@ -6,14 +6,23 @@ import { DutchTrade } from '../atoms'
 import useAuctionPrices from '../hooks/useAuctionPrices'
 import AuctionActions from './AuctionActions'
 import AuctionItem from './AuctionItem'
+import { useAtomValue } from 'jotai'
+import { rTokenAssetsAtom } from 'state/atoms'
+import { isAddress } from 'utils'
 
 interface Props {
   data: DutchTrade
 }
 
 const DutchAuction = ({ data }: Props) => {
+  // TODO: Should get the decimals directly from theGraph instead of using the assetRegistry
+  const buyingDecimals =
+    useAtomValue(rTokenAssetsAtom)?.[isAddress(data.buying) ?? '']?.token
+      .decimals ?? 18
+
   const [currentPrice, currentPriceRaw, nextPrice] = useAuctionPrices(
-    data.id as Address
+    data.id as Address,
+    buyingDecimals
   )
 
   return (

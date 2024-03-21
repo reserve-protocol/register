@@ -2,15 +2,16 @@ import DutchTradeAbi from 'abis/DutchTrade'
 import ERC20 from 'abis/ERC20'
 import { ExecuteButton } from 'components/button/TransactionButton'
 import useHasAllowance from 'hooks/useHasAllowance'
+import { useAtomValue } from 'jotai'
 import { useCallback, useMemo, useState } from 'react'
+import { chainIdAtom, rTokenAssetsAtom, walletAtom } from 'state/atoms'
 import { Box, Grid, Text } from 'theme-ui'
-import { formatCurrency } from 'utils'
-import { Address, Hex, formatEther } from 'viem'
+import { formatCurrency, isAddress } from 'utils'
+import { BIGINT_MAX } from 'utils/constants'
+import { Address, Hex, formatUnits } from 'viem'
+import { useBalance } from 'wagmi'
 import { DutchTrade } from '../atoms'
 import AuctionTimeIndicators from './AuctionTimeIndicators'
-import { useBalance } from 'wagmi'
-import { useAtomValue } from 'jotai'
-import { chainIdAtom, walletAtom } from 'state/atoms'
 
 const AuctionActions = ({
   data,
@@ -19,6 +20,10 @@ const AuctionActions = ({
   data: DutchTrade
   currentPrice: bigint
 }) => {
+  // TODO: Should get the decimals directly from theGraph instead of using the assetRegistry
+  const buyingDecimals =
+    useAtomValue(rTokenAssetsAtom)?.[isAddress(data.buying) ?? '']?.token
+      .decimals ?? 18
   const chainId = useAtomValue(chainIdAtom)
   const wallet = useAtomValue(walletAtom)
   const [bidded, setBidded] = useState(false)
@@ -38,15 +43,20 @@ const AuctionActions = ({
     },
   ])
 
-  const approveCall = useMemo(
-    () => ({
+  const approveCall = useMemo(() => {
+    let amount = currentPrice
+
+    if (data?.buyingTokenSymbol.toLowerCase() === 'wcusdcv3') {
+      amount = BIGINT_MAX
+    }
+
+    return {
       abi: ERC20,
       address: data.buying as Hex,
       functionName: 'approve',
-      args: [data.id as Hex, currentPrice],
-    }),
-    [currentPrice !== 0n, data.id]
-  )
+      args: [data.id as Hex, amount],
+    }
+  }, [currentPrice !== 0n, data.id])
 
   const bidCall = useMemo(
     () => ({
@@ -82,9 +92,9 @@ const AuctionActions = ({
         {hasAllowance && currentPrice !== 0n && (
           <>
             <ExecuteButton
-              text={`Bid ${formatCurrency(+formatEther(currentPrice))} ${
-                data.buyingTokenSymbol
-              }`}
+              text={`Bid ${formatCurrency(
+                +formatUnits(currentPrice, buyingDecimals)
+              )} ${data.buyingTokenSymbol}`}
               ml={3}
               call={hasBalance ? bidCall : undefined}
               variant="accentAction"
@@ -97,7 +107,7 @@ const AuctionActions = ({
             <Text variant="legend" sx={{ fontSize: 1 }} ml={2}>
               1 {data.sellingTokenSymbol} ={' '}
               {formatCurrency(
-                Number(formatEther(currentPrice)) / data.amount,
+                Number(formatUnits(currentPrice, buyingDecimals)) / data.amount,
                 5
               )}{' '}
               {data.buyingTokenSymbol}
