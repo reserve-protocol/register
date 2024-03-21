@@ -64,7 +64,10 @@ const PriceChart = (props: BoxProps) => {
           priceUSD: string
           basketRate: string
         }) => {
-          const value = currentPrice === 'USD' ? +priceUSD : +basketRate
+          let value = currentPrice === 'USD' ? +priceUSD : +basketRate
+          // Temporal fix for USDC+ historical price data
+          value =
+            timestamp === '1703193935' && rToken?.symbol === 'USDC+' ? 1 : value
           const display =
             currentPrice === 'USD'
               ? `$${formatCurrency(+priceUSD)}`
