@@ -114,6 +114,9 @@ const ZapTokensModal = () => {
       p={0}
       width={420}
       sx={{ border: '3px solid', borderColor: 'borderFocused' }}
+      onClose={() => setOpenTokenSelector(false)}
+      closeOnClickAway
+      hideCloseButton
     >
       <Box
         sx={{

@@ -211,11 +211,13 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       const max = operation === 'mint' ? issuanceAvailable : redemptionAvailable
       setError({
         title: `${op} amount above Global Max ${op}`,
-        message: `Sorry, your request exceeds the Global Max ${op} limit. The Global Max ${op} is set at ${max} ${
-          rToken?.symbol
-        }. You can only zap a maximum of ${formatCurrency(maxTokenIn, 5)} ${
-          tokenIn.symbol
-        }.`,
+        message: `Sorry, your request exceeds the Global Max ${op} limit. The Global Max ${op} is set at ${formatCurrency(
+          max,
+          5
+        )} ${rToken?.symbol}. You can only zap a maximum of ${formatCurrency(
+          maxTokenIn,
+          5
+        )} ${tokenIn.symbol}.`,
         color: 'warning',
         secondaryColor: 'rgba(255, 138, 0, 0.20)',
       })

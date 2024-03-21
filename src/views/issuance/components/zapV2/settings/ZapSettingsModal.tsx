@@ -14,6 +14,9 @@ const ZapSettingsModal = () => {
       p={0}
       width={360}
       sx={{ border: '3px solid', borderColor: 'borderFocused' }}
+      onClose={() => setOpenSettings(false)}
+      closeOnClickAway
+      hideCloseButton
     >
       <Box
         sx={{
