@@ -80,7 +80,8 @@ const ZapTokenList = ({
 }
 
 const ZapTokensModal = () => {
-  const { chainId, tokens, setSelectedToken, setOpenTokenSelector } = useZap()
+  const { operation, chainId, tokens, setSelectedToken, setOpenTokenSelector } =
+    useZap()
   const [search, setSearch] = useState<string>('')
 
   const entries = useMemo(
@@ -124,7 +125,9 @@ const ZapTokensModal = () => {
         }}
       >
         <Box variant="layout.verticalAlign" p={4} mb={[3, 0]} pt={3} pb={0}>
-          <Text variant="sectionTitle">Mint using</Text>
+          <Text variant="sectionTitle">
+            {operation === 'mint' ? 'Mint' : 'Redeem'} using
+          </Text>
           <Button
             variant="circle"
             onClick={() => setOpenTokenSelector(false)}
