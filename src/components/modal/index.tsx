@@ -88,7 +88,7 @@ const Header = ({ title, onClose, hideCloseButton }: ModalProps) => {
 const Modal = ({
   children,
   closeOnClickAway = false,
-  hideCloseButton,
+  hideCloseButton = false,
   ...props
 }: ModalProps) => {
   const dialogRef = useRef<HTMLDivElement>(null)
