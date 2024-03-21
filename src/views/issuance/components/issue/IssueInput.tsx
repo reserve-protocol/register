@@ -15,7 +15,7 @@ const IssueInput = (props: Partial<TransactionInputProps>) => {
     <TransactionInput
       placeholder={t`Mint amount`}
       amountAtom={issueAmountAtom}
-      maxAmount={formatEther(issuableAmount ?? 0n)}
+      maxAmount={formatEther((issuableAmount * 9999n) / 10000n ?? 0n)}
       disabled={issuancePaused || frozen}
       {...props}
     />

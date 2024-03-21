@@ -5,13 +5,8 @@ import TransactionModal from 'components/transaction-modal'
 import useHasAllowance, { RequiredAllowance } from 'hooks/useHasAllowance'
 import { atom, useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
-import { useState } from 'react'
-import {
-  chainIdAtom,
-  rTokenAtom,
-  rTokenContractsAtom,
-  walletAtom,
-} from 'state/atoms'
+import { useMemo, useState } from 'react'
+import { rTokenAtom, rTokenContractsAtom, walletAtom } from 'state/atoms'
 import { formatCurrency, safeParseEther } from 'utils'
 import { RSV_MANAGER } from 'utils/rsv'
 import { Hex } from 'viem'
@@ -66,7 +61,7 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
   const [hasAllowance, tokensPendingAllowance] = useHasAllowance(
     useAtomValue(allowancesAtom)
   )
-  const chainId = useAtomValue(chainIdAtom)
+
   const { data: isReady } = useContractRead({
     abi: BasketHandler,
     address: rTokenContracts?.basketHandler?.address,
@@ -83,7 +78,7 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
     }
   }
 
-  const getConfirmText = () => {
+  const confirmText = useMemo(() => {
     if (!isReady) {
       return t`Basket is not ready`
     }
@@ -93,14 +88,14 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
     }
 
     return t`Begin minting ${formatCurrency(Number(amount))} ${rToken?.symbol}`
-  }
+  }, [amount, hasAllowance, isReady, rToken?.symbol])
 
   return (
     <TransactionModal
       title={t`Mint ${rToken?.symbol}`}
       description={`Mint ${rToken?.symbol}`}
       call={call}
-      confirmLabel={getConfirmText()}
+      confirmLabel={confirmText}
       onClose={onClose}
       onChange={handleChange}
       disabled={!hasAllowance}
