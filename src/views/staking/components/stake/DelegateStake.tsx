@@ -17,11 +17,6 @@ const DelegateStake = ({
   onChange(value: string): void
 }) => (
   <>
-    <Divider
-      mx={-4}
-      my={4}
-      sx={{ borderStyle: 'dashed', borderColor: 'darkBorder' }}
-    />
     {editing ? (
       <EditDelegate
         current={value}
@@ -30,21 +25,20 @@ const DelegateStake = ({
       />
     ) : (
       <Box variant="layout.verticalAlign">
-        <VoteIcon />
-        <Text ml={3}>
+        <Text>
           <Trans>Voting power delegation</Trans>:
         </Text>
 
         {value ? (
           <Box variant="layout.verticalAlign" ml="auto">
-            <Text>{shortenAddress(value)}</Text>
+            <Text variant="strong">{shortenAddress(value)}</Text>
             <IconButton sx={{ cursor: 'pointer' }} onClick={() => onEdit(true)}>
               <Edit2 size={14} />
             </IconButton>
           </Box>
         ) : (
           <Text ml="auto" variant="legend">
-            <Trans>Connect your wallet...</Trans>
+            <Trans>Connect your wallet</Trans>
           </Text>
         )}
       </Box>

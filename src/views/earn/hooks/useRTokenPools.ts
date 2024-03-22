@@ -130,7 +130,7 @@ const useRTokenPools = () => {
         if (rToken && pool.project !== 'reserve') {
           const underlyingTokens = pool.underlyingTokens.map(
             (token: string) => {
-              const lowercasedAddress = token.toLowerCase()
+              const lowercasedAddress = token?.toLowerCase() ?? ''
 
               if (
                 listedRTokens[lowercasedAddress] &&

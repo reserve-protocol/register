@@ -1,33 +1,21 @@
 import { gql } from 'graphql-request'
 import { atom } from 'jotai'
-import { safeParseEther } from 'utils'
+import { parseDuration, safeParseEther } from 'utils'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import {
   blockTimestampAtom,
   gqlClientAtom,
   rTokenAtom,
+  rTokenConfigurationAtom,
   rTokenStateAtom,
-  rsrBalanceAtom,
   stRsrBalanceAtom,
   walletAtom,
 } from './../../state/atoms'
 
-const isValid = (value: bigint, max: bigint) => value > 0n && value <= max
+export const unstakeDelayAtom = atom((get) => {
+  const params = get(rTokenConfigurationAtom)
 
-export const stakeAmountAtom = atom('')
-export const unStakeAmountAtom = atom('')
-export const isValidStakeAmountAtom = atom((get) => {
-  return isValid(
-    safeParseEther(get(stakeAmountAtom) || '0'),
-    get(rsrBalanceAtom).value
-  )
-})
-
-export const isValidUnstakeAmountAtom = atom((get) => {
-  return isValid(
-    safeParseEther(get(unStakeAmountAtom) || '0'),
-    get(stRsrBalanceAtom).value
-  )
+  return parseDuration(+params?.unstakingDelay || 0, { units: ['d', 'h', 's'] })
 })
 
 // List of unstake cooldown for the selected rToken
@@ -170,4 +158,16 @@ export const accountCurrentPositionAtom = atom((get) => {
   }
 
   return stBalance * exchangeRate - rsrBalance
+})
+
+export const rateAtom = atom((get) => {
+  const { exchangeRate } = get(rTokenStateAtom)
+
+  return exchangeRate
+})
+
+export const stRsrTickerAtom = atom((get) => {
+  const rToken = get(rTokenAtom)
+
+  return rToken?.stToken?.symbol ?? 'stRSR'
 })

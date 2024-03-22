@@ -43,6 +43,7 @@ const baseBadge = {
 }
 
 export const baseInput = {
+  fontFamily: 'body',
   borderColor: 'inputBorder',
   backgroundColor: 'background',
   outline: 'none',
@@ -92,6 +93,7 @@ export const colors = {
   inputBackground: '#E5E5E5',
   // contentBackground: '#F9F8F4',
   lightGrey: '#f2f2f2',
+  focusBox: '#f2f2f2',
   contentBackground: '#F9EDDD',
   reserveBackground: '#F9EDDD',
   contentLightBackground: 'rgba(249, 248, 244, 0.5)',
@@ -108,7 +110,7 @@ export const colors = {
   rBlueLight: '#DBE3F1',
   border: '#E5E5E5',
   borderFocused: '#F8EDDA',
-  borderSecondary: '#E0D5C7',
+  borderSecondary: '#E5E5E5',
   darkBorder: '#E0D5C7',
   inputBorder: '#D5D5D5',
   info: '#20678E',
@@ -119,6 +121,7 @@ export const colors = {
   muted: '#D9D9D9',
   warning: '#FF8A00',
   modalOverlay: 'rgba(0, 0, 0, 0.2)',
+  cardAlternative: '#fff',
   modes: {
     dark: {
       accentInverted: '#fff',
@@ -137,12 +140,14 @@ export const colors = {
       secondary: '#262321',
       backgroundNested: '#181715',
       focusedBackground: '#262321',
+      focusBox: '#191816',
       inputBackground: '#000000',
       disabled: '#242424',
       accentAction: '#106D46',
       accentBG: '#08142A',
       border: '#272625',
       borderFocused: '#2B2723',
+      borderSecondary: '#322F2C',
       darkBorder: '#343230',
       inputBorder: '#403C39',
       success: '#75FBC3',
@@ -150,9 +155,10 @@ export const colors = {
       infoBG: 'rgba(32, 103, 142, 0.4)',
       danger: '#FF0000',
       dangerBG: 'rgba(255, 0, 0, 0.4)',
-      muted: '#D9D9D9',
+      muted: '#3E3B37',
       warning: '#FF7A00',
       modalOverlay: 'rgba(20, 20, 20, 0.6)',
+      cardAlternative: '#252421',
     },
   },
 }
@@ -397,6 +403,17 @@ export const theme: Theme = {
       ...baseInput,
       fontFamily: 'inherit',
       fontSize: 'inherit',
+    },
+    transparent: {
+      fontFamily: 'body',
+      padding: 0,
+      outline: 'none',
+      border: 'none',
+      backgroundColor: 'transparent',
+      mozAppearance: 'none',
+      webkitAppearance: 'none',
+      fontWeight: 700,
+      fontSize: 4,
     },
   },
   cards: {

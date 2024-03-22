@@ -60,11 +60,12 @@ const Header = ({ title, onClose }: ModalProps) => {
         mb={!!title ? 4 : 0}
         sx={{
           alignItems: 'center',
-          justifyContent: 'center',
           position: 'relative',
         }}
       >
-        <Text variant="title">{title && title}</Text>
+        <Text variant="title" sx={{ fontWeight: 700 }}>
+          {title && title}
+        </Text>
         {!!onClose && (
           <Button
             sx={{ position: 'absolute', right: 0, top: 0 }}
@@ -75,7 +76,6 @@ const Header = ({ title, onClose }: ModalProps) => {
           </Button>
         )}
       </Flex>
-      {!!title && <Divider mx={-4} mb={4} sx={{ borderColor: 'border' }} />}
     </>
   )
 }

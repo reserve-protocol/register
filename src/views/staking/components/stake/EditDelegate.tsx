@@ -30,12 +30,13 @@ const EditDelegate = ({
         >
           <Trans>Save</Trans>
         </SmallButton>
-        <SmallButton onClick={() => onDismiss()} variant="muted" ml={3}>
+        <SmallButton onClick={() => onDismiss()} variant="muted" ml={2}>
           <Trans>Cancel</Trans>
         </SmallButton>
       </Box>
       <Input
-        my={3}
+        mt="2"
+        mb={3}
         autoFocus
         value={address}
         placeholder="Input address"
