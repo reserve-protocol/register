@@ -5,8 +5,14 @@ import Withdraw from './components/withdraw'
 
 const Staking = () => (
   <Box variant="layout.tokenView">
-    <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[3, 5]}>
-      <Box>
+    <Grid columns={[1, 1, 1, '1.4fr 1fr', '1fr 480px']} gap={[0, 0, 0, 4, 5]}>
+      <Box
+        pr={[0, 0, 0, 4]}
+        sx={{
+          borderRight: ['none', 'none', 'none', '1px solid'],
+          borderColor: ['border', 'border', 'border', 'border'],
+        }}
+      >
         <StakeContainer />
         <Withdraw mt={5} mb={4} />
       </Box>

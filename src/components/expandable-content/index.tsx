@@ -24,7 +24,7 @@ const ExpandableContent = ({
         sx={{ cursor: 'pointer' }}
         onClick={() => setOpen(!isOpen)}
       >
-        <Text variant="strong" mr="auto">
+        <Text variant="bold" mr="auto">
           {title}
         </Text>
         {isOpen ? <Minus size={18} /> : <Plus size={18} />}

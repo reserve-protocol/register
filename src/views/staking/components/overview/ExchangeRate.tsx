@@ -7,15 +7,16 @@ import useTimeFrom from 'hooks/useTimeFrom'
 import { useAtomValue } from 'jotai'
 import { useMemo, useState } from 'react'
 import { rTokenStateAtom } from 'state/atoms'
-import { Box, BoxProps } from 'theme-ui'
+import { Box, BoxProps, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { TIME_RANGES } from 'utils/constants'
+import { stRsrTickerAtom } from 'views/staking/atoms'
 
 const query = gql`
   query getRTokenExchangeRate($id: String!, $fromTime: Int!) {
     rtoken(id: $id) {
       snapshots: dailySnapshots(
-        first: 1000
+        first: 365
         where: { timestamp_gte: $fromTime }
       ) {
         timestamp
@@ -34,7 +35,7 @@ const ExchangeRate = (props: BoxProps) => {
     id: rToken?.address.toLowerCase(),
     fromTime,
   })
-  const stToken = rToken?.stToken?.symbol ?? 'stRSR'
+  const stToken = useAtomValue(stRsrTickerAtom)
 
   const rows = useMemo(() => {
     if (data) {
@@ -64,20 +65,26 @@ const ExchangeRate = (props: BoxProps) => {
   }
 
   return (
-    <Box variant="layout.borderBox" padding={4} {...props}>
-      <AreaChart
-        height={76}
-        title={
-          rate
-            ? `1 ${stToken} = ${formatCurrency(rate, 5)} RSR`
-            : 'Loading exchange rate...'
-        }
-        data={rows}
-        timeRange={TIME_RANGES}
-        currentRange={current}
-        onRangeChange={handleChange}
-      />
-    </Box>
+    <AreaChart
+      height={76}
+      title={
+        !rate ? (
+          <Text variant="legend">Loading history...</Text>
+        ) : (
+          <>
+            <Text variant="bold">1 {stToken} =</Text>{' '}
+            <Text ml="1" color="primary" variant="bold">
+              {formatCurrency(rate, 5)} RSR
+            </Text>
+          </>
+        )
+      }
+      data={rows}
+      timeRange={TIME_RANGES}
+      currentRange={current}
+      domain={['auto', 'auto']}
+      onRangeChange={handleChange}
+    />
   )
 }
 
