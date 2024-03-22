@@ -36,7 +36,7 @@ const UnstakeOutput = () => {
       p={3}
       sx={{
         border: '1px solid',
-        borderColor: 'border',
+        borderColor: 'borderSecondary',
         borderRadius: borderRadius.boxes,
         overflow: 'hidden',
       }}

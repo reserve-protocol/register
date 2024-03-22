@@ -1,5 +1,4 @@
 import { Box, Grid } from 'theme-ui'
-import Updater from './components/withdraw/Updater'
 import StakeContainer from './components/StakeContainer'
 import Overview from './components/overview'
 import Withdraw from './components/withdraw'
@@ -13,7 +12,6 @@ const Staking = () => (
       </Box>
       <Overview />
     </Grid>
-    <Updater />
   </Box>
 )
 

@@ -80,7 +80,7 @@ const UnstakeInput = () => (
   <Box
     sx={{
       overflow: 'hidden',
-      backgroundColor: 'lightGrey',
+      backgroundColor: 'focusBox',
       borderRadius: borderRadius.boxes,
     }}
     p={3}

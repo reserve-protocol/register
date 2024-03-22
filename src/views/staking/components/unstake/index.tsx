@@ -1,9 +1,9 @@
 import { Box } from 'theme-ui'
-import UnstakeInput from './UnstakeInput'
 import InputOutputSeparator from '../InputOutputSeparator'
-import UnstakeOutput from './UnstakeOutput'
+import ActionOverview from './ActionOverview'
 import UnstakeButton from './UnstakeButton'
-import ExchangeRate from '../ExchangeRate'
+import UnstakeInput from './UnstakeInput'
+import UnstakeOutput from './UnstakeOutput'
 
 const Unstake = () => {
   return (
@@ -11,7 +11,7 @@ const Unstake = () => {
       <UnstakeInput />
       <InputOutputSeparator />
       <UnstakeOutput />
-      <ExchangeRate />
+      <ActionOverview />
       <UnstakeButton />
     </Box>
   )

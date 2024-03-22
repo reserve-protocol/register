@@ -4,6 +4,7 @@ import { Minus, Plus } from 'react-feather'
 import { Box, Card } from 'theme-ui'
 import Stake from './stake'
 import Unstake from './unstake'
+import { boxShadow } from 'theme'
 
 const MenuOptions = [
   { key: 1, label: 'Stake', icon: <Plus size={16} /> },
@@ -20,7 +21,7 @@ const Header = ({
   return (
     <Box
       variant="layout.verticalAlign"
-      sx={{ borderBottom: '1px solid', borderColor: 'border' }}
+      sx={{ borderBottom: '1px solid', borderColor: 'borderSecondary' }}
       p={4}
     >
       <TabMenu
@@ -36,7 +37,7 @@ const StakeContainer = () => {
   const [isStaking, setIsStaking] = useState(true)
 
   return (
-    <Card p="0" sx={{ backgroundColor: 'focusedBackground' }}>
+    <Card p="0" sx={{ backgroundColor: 'cardAlternative', boxShadow }}>
       <Header isStaking={isStaking} onChange={setIsStaking} />
       {isStaking ? <Stake /> : <Unstake />}
     </Card>

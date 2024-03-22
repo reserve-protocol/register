@@ -4,7 +4,7 @@ import { Box, Divider } from 'theme-ui'
 
 const InputOutputSeparator = () => (
   <Box variant="layout.verticalAlign">
-    <Divider sx={{ flexGrow: 1, borderColor: 'border' }} />
+    <Divider sx={{ flexGrow: 1, borderColor: 'borderSecondary' }} />
     <Box
       mx={4}
       my={2}
@@ -12,13 +12,13 @@ const InputOutputSeparator = () => (
       pb="0"
       sx={{
         border: '1px solid',
-        borderColor: 'border',
+        borderColor: 'borderSecondary',
         borderRadius: borderRadius.inputs,
       }}
     >
       <ArrowDown size={24} color="#666666" />
     </Box>
-    <Divider sx={{ flexGrow: 1 }} />
+    <Divider sx={{ flexGrow: 1, borderColor: 'borderSecondary' }} />
   </Box>
 )
 
