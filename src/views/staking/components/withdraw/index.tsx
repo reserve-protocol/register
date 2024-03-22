@@ -11,8 +11,8 @@ const Withdraw = (props: BoxProps) => {
         <Text ml="4" variant="bold" sx={{ fontSize: 4 }}>
           <Trans>In Withdraw Process</Trans>
         </Text>
-        <AvailableUnstake mt={4} />
-        <CooldownUnstake mt={4} />
+        <AvailableUnstake mt={3} />
+        <CooldownUnstake mt={3} />
       </Box>
       <Updater />
     </>

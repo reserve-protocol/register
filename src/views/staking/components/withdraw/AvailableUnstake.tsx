@@ -85,17 +85,13 @@ const ConfirmWithdraw = () => {
 
 const AvailableUnstake = (props: BoxProps) => {
   return (
-    <Card
-      {...props}
-      sx={{ backgroundColor: 'focusedBackground', boxShadow: boxShadow }}
-      p={4}
-    >
+    <Box variant="layout.borderBox" {...props}>
       <Header />
       <Box variant="layout.verticalAlign">
         <AvailableBalance />
         <ConfirmWithdraw />
       </Box>
-    </Card>
+    </Box>
   )
 }
 

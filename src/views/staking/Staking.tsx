@@ -2,6 +2,7 @@ import { Box, Grid } from 'theme-ui'
 import StakeContainer from './components/StakeContainer'
 import Overview from './components/overview'
 import Withdraw from './components/withdraw'
+import StakePosition from './components/StakePosition'
 
 const Staking = () => (
   <Box variant="layout.tokenView">
@@ -14,7 +15,8 @@ const Staking = () => (
         }}
       >
         <StakeContainer />
-        <Withdraw mt={5} mb={4} />
+        <StakePosition mt={5} />
+        <Withdraw my={4} />
       </Box>
       <Overview />
     </Grid>
