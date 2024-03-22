@@ -4,24 +4,33 @@ import { useMemo, useState } from 'react'
 import { Box } from 'theme-ui'
 import { stRsrTickerAtom } from 'views/staking/atoms'
 import ExchangeRate from './ExchangeRate'
+import StakeHistory from './StakeHistory'
+import StakeRewardsHistory from './StakeRewardsHistory'
+import StakeApy from './StakeApy'
 
 enum StakeMetricType {
+  Apy,
   Exchange,
   Staked,
   Income,
 }
 
 const Views = {
+  [StakeMetricType.Apy]: StakeApy,
   [StakeMetricType.Exchange]: ExchangeRate,
-  [StakeMetricType.Staked]: () => <div>Staked</div>,
-  [StakeMetricType.Income]: () => <div>Income</div>,
+  [StakeMetricType.Staked]: StakeHistory,
+  [StakeMetricType.Income]: StakeRewardsHistory,
 }
 
 const StakingMetrics = () => {
-  const [current, setCurrent] = useState(StakeMetricType.Exchange)
+  const [current, setCurrent] = useState(StakeMetricType.Apy)
   const ticker = useAtomValue(stRsrTickerAtom)
   const options = useMemo(
     () => [
+      {
+        key: StakeMetricType.Apy,
+        label: 'APY',
+      },
       {
         key: StakeMetricType.Exchange,
         label: `${ticker}/RSR`,
@@ -30,10 +39,10 @@ const StakingMetrics = () => {
         key: StakeMetricType.Staked,
         label: 'Staked RSR',
       },
-      {
-        key: StakeMetricType.Income,
-        label: 'Income',
-      },
+      // {
+      //   key: StakeMetricType.Income,
+      //   label: 'Income',
+      // },
     ],
     [ticker]
   )

@@ -53,7 +53,7 @@ const faqs = [
 ]
 
 const About = (props: BoxProps) => (
-  <Box p={4} {...props}>
+  <Box variant="layout.borderBox" p={4} {...props}>
     {faqs.map((faq, i) => (
       <ExpandableContent key={`About.${i}`} {...faq} />
     ))}

@@ -59,7 +59,7 @@ const Gain = ({ data }: { data: ChartData }) => {
 
   if (gain >= 0.01) {
     gainColor = 'primary'
-  } else if (gain <= 0) {
+  } else if (gain < 0) {
     gainColor = 'danger'
   }
 
@@ -121,6 +121,7 @@ const AreaChart = ({
               type="monotone"
               dataKey="value"
               stroke="#2150A9"
+              strokeWidth={2}
               fill="#E4EAF5"
             />
           </Chart>
