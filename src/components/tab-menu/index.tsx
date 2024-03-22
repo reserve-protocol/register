@@ -50,8 +50,9 @@ const defaultStyles = (
       backgroundColor: 'inputBorder',
     },
     '&.active': {
-      backgroundColor: 'backgroundNested',
-      color: 'text',
+      backgroundColor: 'focusedBackground',
+      color: 'accentInverted',
+      fontWeight: 500,
     },
   },
 })

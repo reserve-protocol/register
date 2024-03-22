@@ -4,38 +4,45 @@ import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
 import useTimeFrom from 'hooks/useTimeFrom'
-import { useAtomValue } from 'jotai'
 import { useMemo, useState } from 'react'
-import { rTokenStateAtom } from 'state/atoms'
-import { Box, BoxProps, Text } from 'theme-ui'
+import { BoxProps, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { TIME_RANGES } from 'utils/constants'
-import { stRsrTickerAtom } from 'views/staking/atoms'
+import { formatEther } from 'viem'
 
-const query = gql`
-  query getRTokenExchangeRate($id: String!, $fromTime: Int!) {
+const hourlyQuery = gql`
+  query getStakingHourly($id: String!, $fromTime: Int!) {
+    rtoken(id: $id) {
+      snapshots: hourlySnapshots(where: { timestamp_gte: $fromTime }) {
+        timestamp
+        rsrStaked
+      }
+    }
+  }
+`
+
+const dailyQuery = gql`
+  query getStakingDaily($id: String!, $fromTime: Int!) {
     rtoken(id: $id) {
       snapshots: dailySnapshots(
         first: 365
         where: { timestamp_gte: $fromTime }
       ) {
         timestamp
-        rsrExchangeRate
+        rsrStaked
       }
     }
   }
 `
-
-const ExchangeRate = (props: BoxProps) => {
+const StakeHistory = (props: BoxProps) => {
   const rToken = useRToken()
-  const { exchangeRate: rate } = useAtomValue(rTokenStateAtom)
   const [current, setCurrent] = useState(TIME_RANGES.MONTH)
   const fromTime = useTimeFrom(current)
+  const query = current === TIME_RANGES.DAY ? hourlyQuery : dailyQuery
   const { data } = useQuery(rToken ? query : null, {
     id: rToken?.address.toLowerCase(),
     fromTime,
   })
-  const stToken = useAtomValue(stRsrTickerAtom)
 
   const rows = useMemo(() => {
     if (data) {
@@ -43,22 +50,21 @@ const ExchangeRate = (props: BoxProps) => {
         data.rtoken?.snapshots.map(
           ({
             timestamp,
-            rsrExchangeRate,
+            rsrStaked,
           }: {
             timestamp: string
-            rsrExchangeRate: string
+            rsrStaked: bigint
           }) => ({
-            value: +rsrExchangeRate,
+            value: +formatEther(rsrStaked),
             label: dayjs.unix(+timestamp).format('YYYY-M-D HH:mm:ss'),
-            display: `1 ${stToken} = ${formatCurrency(
-              +rsrExchangeRate,
-              5
-            )} RSR`,
+            display: `${formatCurrency(+formatEther(rsrStaked))}`,
           })
         ) || []
       )
     }
   }, [data])
+
+  const currentValue = rows && rows.length ? rows[rows.length - 1].value : 0
 
   const handleChange = (range: string) => {
     setCurrent(range)
@@ -68,13 +74,17 @@ const ExchangeRate = (props: BoxProps) => {
     <AreaChart
       height={160}
       title={
-        !rate ? (
+        !currentValue ? (
           <Text variant="legend">Loading history...</Text>
         ) : (
           <>
-            <Text variant="bold">1 {stToken} =</Text>{' '}
+            <Text variant="bold">Total staked:</Text>{' '}
             <Text ml="1" color="primary" variant="bold">
-              {formatCurrency(rate, 5)} RSR
+              {formatCurrency(currentValue, 2, {
+                notation: 'compact',
+                compactDisplay: 'short',
+              })}{' '}
+              RSR
             </Text>
           </>
         )
@@ -88,4 +98,4 @@ const ExchangeRate = (props: BoxProps) => {
   )
 }
 
-export default ExchangeRate
+export default StakeHistory
