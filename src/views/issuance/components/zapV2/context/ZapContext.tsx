@@ -24,7 +24,13 @@ import {
 import useSWR from 'swr'
 import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
-import { Address, formatEther, parseUnits, zeroAddress } from 'viem'
+import {
+  Address,
+  formatEther,
+  formatUnits,
+  parseUnits,
+  zeroAddress,
+} from 'viem'
 import { useFeeData } from 'wagmi'
 import { ZapErrorType } from '../ZapError'
 import zapper, { ZapResponse, ZapResult, fetcher } from '../api'
@@ -269,7 +275,10 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     if (!data || !data.result) {
       return ['0', 0, 0, 0, undefined]
     }
-    const amountOut = formatEther(BigInt(data.result.amountOut))
+    const amountOut = formatUnits(
+      BigInt(data.result.amountOut),
+      tokenOut.decimals
+    )
 
     const estimatedGasCost = gas?.formatted?.gasPrice
       ? (+data.result.gas * +gas?.formatted?.gasPrice * ethPrice) / 1e9
@@ -282,7 +291,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       data.result.priceImpact,
       data.result.tx.to,
     ]
-  }, [data])
+  }, [data, tokenOut, gas, ethPrice])
 
   useEffect(() => {
     if (priceImpact >= 1) {
