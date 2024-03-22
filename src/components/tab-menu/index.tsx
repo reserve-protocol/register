@@ -75,7 +75,7 @@ const MenuItem = ({
     >
       {item.icon}
       <Text
-        ml={!!item.icon ? 2 : 0}
+        ml={!!item.icon ? '6px' : 0}
         sx={{ display: collapse ? ['none', 'none', 'block'] : 'block' }}
       >
         {item.label}

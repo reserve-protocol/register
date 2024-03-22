@@ -10,7 +10,7 @@ interface Props extends BoxProps {
   chainId?: number | null
 }
 
-const TokenItem = ({ symbol, logo, width = 20, chainId, ...props }: Props) => (
+const TokenItem = ({ symbol, logo, width = 24, chainId, ...props }: Props) => (
   <Box
     variant="layout.verticalAlign"
     sx={{
@@ -21,7 +21,7 @@ const TokenItem = ({ symbol, logo, width = 20, chainId, ...props }: Props) => (
     }}
   >
     <Flex variant="layout.verticalAlign">
-      <TokenLogo width={24} mr={2} symbol={symbol} src={logo} />
+      <TokenLogo width={width} mr="6px" symbol={symbol} src={logo} />
       <Text {...props}>{symbol}</Text>
     </Flex>
     <Box>
