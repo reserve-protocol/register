@@ -13,6 +13,7 @@ import {
   rsrPriceAtom,
   walletAtom,
 } from 'state/atoms'
+import { boxShadow } from 'theme'
 import { Box, BoxProps, Card, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { pendingRSRSummaryAtom } from 'views/staking/atoms'
@@ -20,10 +21,10 @@ import { pendingRSRSummaryAtom } from 'views/staking/atoms'
 const Header = () => (
   <Box
     variant="layout.verticalAlign"
-    sx={{ borderBottom: '1px solid', borderColor: 'border' }}
+    sx={{ borderBottom: '1px solid', borderColor: 'borderSecondary' }}
     pb={3}
   >
-    <Check size={16} />
+    <Check size={20} strokeWidth={1.2} />
     <Text ml="2" variant="bold">
       <Trans>RSR available to withdraw</Trans>
     </Text>
@@ -84,7 +85,11 @@ const ConfirmWithdraw = () => {
 
 const AvailableUnstake = (props: BoxProps) => {
   return (
-    <Card {...props} p={4}>
+    <Card
+      {...props}
+      sx={{ backgroundColor: 'focusedBackground', boxShadow: boxShadow }}
+      p={4}
+    >
       <Header />
       <Box variant="layout.verticalAlign">
         <AvailableBalance />

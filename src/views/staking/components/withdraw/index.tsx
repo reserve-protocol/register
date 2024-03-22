@@ -8,7 +8,7 @@ const Withdraw = (props: BoxProps) => {
   return (
     <>
       <Box {...props}>
-        <Text variant="bold" sx={{ fontSize: 4 }}>
+        <Text ml="4" variant="bold" sx={{ fontSize: 4 }}>
           <Trans>In Withdraw Process</Trans>
         </Text>
         <AvailableUnstake mt={4} />
