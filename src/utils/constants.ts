@@ -244,4 +244,5 @@ export const collateralDisplay: Record<string, string> = {
   'mrp-asteth': 'Morpho AAVE Staked ETH',
   sabasusdbc: 'AAVE Base USDC',
   wsgusdbc: 'Stargate Base USDC',
+  saethusdc: 'AAVE USDC V3',
 }

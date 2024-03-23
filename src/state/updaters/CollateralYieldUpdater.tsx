@@ -34,6 +34,7 @@ const poolsMap: StringMap = {
   'eab8d63d-8a8f-48cb-8027-583508831d24': 'mrp-asteth',
   '0f45d730-b279-4629-8e11-ccb5cc3038b4': 'cbeth',
   'c8a24fee-ec00-4f38-86c0-9f6daebc4225': 'sdai',
+  'aa70268e-4b52-42bf-a116-608b370f9501': 'saethusdc',
   // ----------------
   // Base collaterals
   // ----------------
