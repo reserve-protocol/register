@@ -18,7 +18,7 @@ const ZapOutputUSD = () => {
       >
         ${formatCurrency((tokenOut?.price || 0) * Number(amountOut), 2)}
       </Text>
-      {zapDustUSD !== undefined && (
+      {zapDustUSD !== undefined && zapDustUSD !== 0 && (
         <Text>
           {' '}
           +{' '}

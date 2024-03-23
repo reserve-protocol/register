@@ -12,6 +12,7 @@ import {
   useState,
 } from 'react'
 import {
+  TokenBalance,
   balancesAtom,
   chainIdAtom,
   ethPriceAtom,
@@ -24,13 +25,7 @@ import {
 import useSWR from 'swr'
 import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
-import {
-  Address,
-  formatEther,
-  formatUnits,
-  parseUnits,
-  zeroAddress,
-} from 'viem'
+import { Address, formatUnits, parseUnits, zeroAddress } from 'viem'
 import { useFeeData } from 'wagmi'
 import { ZapErrorType } from '../ZapError'
 import zapper, { ZapResponse, ZapResult, fetcher } from '../api'
@@ -210,7 +205,12 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       maxTokenIn = redemptionAvailable || maxTokenIn
     }
 
-    setAmountIn(Math.min(maxTokenIn, +(tokenIn.balance ?? '0')).toString())
+    const newAmount =
+      maxTokenIn > +(tokenIn.balance ?? '0')
+        ? tokenIn.balance ?? '0'
+        : maxTokenIn.toString()
+
+    setAmountIn(newAmount)
 
     if (+(tokenIn.balance ?? '0') > maxTokenIn) {
       const op = operation === 'mint' ? 'Mint' : 'Redeem'
@@ -253,11 +253,11 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
       return zapper.zap({
         chainId,
-        signer: account as Address,
         tokenIn: tokenIn.symbol === 'ETH' ? zeroAddress : tokenIn.address,
+        tokenOut: tokenOut.symbol === 'ETH' ? zeroAddress : tokenOut.address,
         amountIn: parseUnits(amountIn, tokenIn?.decimals).toString(),
-        tokenOut: tokenOut.address,
         slippage: Number(slippage),
+        signer: account as Address,
       })
     }, [chainId, account, tokenIn, tokenOut, amountIn, slippage]),
     500
@@ -271,7 +271,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     isPaused: () => openSubmitModal,
   })
 
-  const [amountOut, zapDustUSD, gasCost, priceImpact, spender] = useMemo(() => {
+  const [amountOut, priceImpact, zapDustUSD, gasCost, spender] = useMemo(() => {
     if (!data || !data.result) {
       return ['0', 0, 0, 0, undefined]
     }
@@ -281,32 +281,17 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     )
 
     const estimatedGasCost = gas?.formatted?.gasPrice
-      ? (+data.result.gas * +gas?.formatted?.gasPrice * ethPrice) / 1e9
+      ? (+(data.result.gas ?? 0) * +gas?.formatted?.gasPrice * ethPrice) / 1e9
       : 0
 
     return [
       amountOut,
-      data.result.dustValue,
-      estimatedGasCost,
       data.result.priceImpact,
-      data.result.tx.to,
+      data.result.dustValue ?? 0,
+      estimatedGasCost,
+      data.result.tx?.to,
     ]
   }, [data, tokenOut, gas, ethPrice])
-
-  useEffect(() => {
-    if (priceImpact >= 1) {
-      setError({
-        title: 'Warning: High price impact',
-        message:
-          'The price impact of this transaction is too high. Please consider using a smaller amount or a different token.',
-        color: 'danger',
-        secondaryColor: 'rgba(255, 0, 0, 0.20)',
-        submitButtonTitle: `Zap ${
-          operation === 'mint' ? 'Mint' : 'Redeem'
-        } Anyway`,
-      })
-    }
-  }, [priceImpact, operation])
 
   useEffect(() => {
     if (apiError || (data && data.error)) {
@@ -318,9 +303,30 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         color: 'danger',
         secondaryColor: 'rgba(255, 0, 0, 0.20)',
         submitButtonTitle: 'Error occurred, try again',
+        disableSubmit: true,
+      })
+    } else if (data?.result && data.result.insuficientFunds) {
+      setError({
+        title: 'Insufficient funds',
+        message:
+          'You do not have enough funds to complete this transaction. Please try again with a smaller amount.',
+        color: 'danger',
+        secondaryColor: 'rgba(255, 0, 0, 0.20)',
+        disableSubmit: true,
+      })
+    } else if (data?.result && data.result.priceImpact >= 1) {
+      setError({
+        title: 'Warning: High price impact',
+        message:
+          'The price impact of this transaction is too high. Please consider using a smaller amount or a different token.',
+        color: 'danger',
+        secondaryColor: 'rgba(255, 0, 0, 0.20)',
+        submitButtonTitle: `Zap ${
+          operation === 'mint' ? 'Mint' : 'Redeem'
+        } Anyway`,
       })
     }
-  }, [apiError, data])
+  }, [apiError, data, operation, setError])
 
   return (
     <ZapContext.Provider
