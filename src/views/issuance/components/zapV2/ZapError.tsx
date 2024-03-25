@@ -6,6 +6,7 @@ export type ZapErrorType = {
   color: string
   secondaryColor: string
   submitButtonTitle?: string
+  disableSubmit?: boolean
 }
 
 const ZapError = ({ error }: { error?: ZapErrorType }) => {

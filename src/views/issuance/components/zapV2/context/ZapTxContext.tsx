@@ -48,7 +48,8 @@ export const useZapTx = () => {
 
 export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const [error, setError] = useState<ZapErrorType>()
-  const { chainId, account, tokenIn, spender, amountIn, zapResult } = useZap()
+  const { chainId, account, tokenIn, spender, amountIn, zapResult, refetch } =
+    useZap()
 
   // Approval
   const allowance: Allowance | undefined = useMemo(() => {
@@ -86,10 +87,10 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
   // Transaction
   const { config } = usePrepareSendTransaction(
-    zapResult
+    zapResult && zapResult.tx
       ? {
           data: zapResult.tx.data as Address,
-          gas: BigInt(zapResult.gas),
+          gas: BigInt(zapResult.gas ?? 0),
           to: zapResult.tx.to as Address,
           value: BigInt(zapResult.tx.value),
         }
@@ -113,10 +114,15 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   })
 
   useEffect(() => {
-    if (approvalSuccess && sendTransaction) {
+    if (!approvalSuccess) return
+    if (!zapResult?.tx && refetch) {
+      refetch()
+      return
+    }
+    if (sendTransaction) {
       sendTransaction()
     }
-  }, [approvalSuccess, sendTransaction])
+  }, [approvalSuccess, sendTransaction, zapResult?.tx, refetch])
 
   useEffect(() => {
     if (sendError || validatingTxError) {

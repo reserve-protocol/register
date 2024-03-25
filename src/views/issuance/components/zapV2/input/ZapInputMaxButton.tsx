@@ -3,9 +3,15 @@ import { Box, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { useZap } from '../context/ZapContext'
 import TokenLogo from 'components/icons/TokenLogo'
+import { useMemo } from 'react'
 
 const ZapInputMaxButton = () => {
   const { operation, tokenIn, onClickMax } = useZap()
+
+  const decimalsFormat = useMemo(() => {
+    const balance = +(tokenIn.balance ?? 0)
+    return balance > 0 && balance < 1 ? 4 : 2
+  }, [tokenIn.balance])
 
   return (
     <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
@@ -14,7 +20,7 @@ const ZapInputMaxButton = () => {
         <Box>
           <Text>Balance </Text>
           <Text sx={{ fontWeight: 'bold' }}>
-            {formatCurrency(+(tokenIn?.balance ?? '0'), 2, {
+            {formatCurrency(+(tokenIn.balance ?? '0'), decimalsFormat, {
               notation: 'compact',
               compactDisplay: 'short',
             })}

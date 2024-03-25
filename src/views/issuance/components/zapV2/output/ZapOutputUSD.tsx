@@ -4,9 +4,16 @@ import { formatCurrency } from 'utils'
 import { useZap } from '../context/ZapContext'
 
 const ZapOutputUSD = () => {
-  const { tokenOut, amountOut, zapDustUSD, loadingZap } = useZap()
+  const {
+    tokenOut,
+    amountOut,
+    zapDustUSD,
+    loadingZap,
+    validatingZap,
+    zapResult,
+  } = useZap()
 
-  if (loadingZap) {
+  if ((!zapResult?.tx && validatingZap) || loadingZap) {
     return <Skeleton height={18} width={240} />
   }
 
@@ -18,7 +25,7 @@ const ZapOutputUSD = () => {
       >
         ${formatCurrency((tokenOut?.price || 0) * Number(amountOut), 2)}
       </Text>
-      {zapDustUSD !== undefined && (
+      {zapDustUSD !== undefined && zapDustUSD !== 0 && (
         <Text>
           {' '}
           +{' '}

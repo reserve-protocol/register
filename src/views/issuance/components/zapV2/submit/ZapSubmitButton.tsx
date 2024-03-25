@@ -18,16 +18,24 @@ const ZapSubmitButton = () => {
     return operation === 'mint' ? 'Zap Mint' : 'Zap Redeem'
   }, [error, operation])
 
+  const disabled = useMemo(
+    () =>
+      !amountIn ||
+      Number(amountIn) === 0 ||
+      error?.disableSubmit ||
+      !amountOut ||
+      Number(amountOut) === 0,
+    [error, amountIn, amountOut]
+  )
+
   return (
     <TransactionButtonContainer sx={{ width: '100%' }}>
       <LoadingButton
-        onClick={() =>
-          amountOut && Number(amountOut) !== 0 && setOpenSubmitModal(true)
-        }
+        onClick={() => setOpenSubmitModal(true)}
         loading={loadingZap}
         text={title}
         backgroundColor={error?.color || 'primary'}
-        disabled={!amountIn || Number(amountIn) === 0}
+        disabled={disabled}
         loadingText="Finding route..."
         fullWidth
       />
