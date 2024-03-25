@@ -23,14 +23,14 @@ const Views = {
 }
 
 const StakingMetrics = () => {
-  const [current, setCurrent] = useState(StakeMetricType.Apy)
+  const [current, setCurrent] = useState(StakeMetricType.Exchange)
   const ticker = useAtomValue(stRsrTickerAtom)
   const options = useMemo(
     () => [
-      {
-        key: StakeMetricType.Apy,
-        label: 'APY',
-      },
+      // {
+      //   key: StakeMetricType.Apy,
+      //   label: 'APY',
+      // },
       {
         key: StakeMetricType.Exchange,
         label: `${ticker}/RSR`,
