@@ -21,6 +21,7 @@ export type ZapResult = {
   amountOut: string
   amountOutValue: number | null
 
+  approvalAddress: Address
   approvalNeeded: boolean
   insuficientFunds: boolean
 

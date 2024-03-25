@@ -10,10 +10,19 @@ import ZapOutputUSD from '../output/ZapOutputUSD'
 import ZapDetails from '../overview/ZapDetails'
 import ZapConfirm from './ZapConfirm'
 import { ZapTxProvider } from '../context/ZapTxContext'
+import Skeleton from 'react-loading-skeleton'
 
 const ZapOverview = () => {
   const [collapsed, setCollapsed] = useState(true)
-  const { tokenIn, tokenOut, amountIn, amountOut } = useZap()
+  const {
+    tokenIn,
+    tokenOut,
+    amountIn,
+    amountOut,
+    loadingZap,
+    validatingZap,
+    zapResult,
+  } = useZap()
 
   return (
     <Box
@@ -37,9 +46,14 @@ const ZapOverview = () => {
           <TokenLogo symbol={tokenOut.symbol} width={24} />
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Text>You receive:</Text>
-            <Text sx={{ fontSize: 26, fontWeight: 700 }}>
-              {amountOut} {tokenOut.symbol}
-            </Text>
+            {(!zapResult?.tx && validatingZap) || loadingZap ? (
+              <Skeleton width={300} height={35} />
+            ) : (
+              <Text sx={{ fontSize: 26, fontWeight: 700 }}>
+                {amountOut} {tokenOut.symbol}
+              </Text>
+            )}
+
             <ZapOutputUSD />
           </Box>
         </Box>

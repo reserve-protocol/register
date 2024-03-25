@@ -25,7 +25,7 @@ const ZapSubmitButton = () => {
       error?.disableSubmit ||
       !amountOut ||
       Number(amountOut) === 0,
-    [error, amountIn]
+    [error, amountIn, amountOut]
   )
 
   return (

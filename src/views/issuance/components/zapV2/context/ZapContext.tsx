@@ -22,7 +22,7 @@ import {
   rTokenStateAtom,
   walletAtom,
 } from 'state/atoms'
-import useSWR from 'swr'
+import useSWR, { KeyedMutator } from 'swr'
 import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
 import { Address, formatUnits, parseUnits, zeroAddress } from 'viem'
@@ -62,12 +62,14 @@ type ZapContextType = {
   setAmountIn: (amount: string) => void
   selectedToken?: ZapToken
   setSelectedToken: (token: ZapToken) => void
+  refetch?: KeyedMutator<ZapResponse>
 
   tokens: ZapToken[]
   chainId: number
   account?: Address
   onClickMax: () => void
   loadingZap: boolean
+  validatingZap: boolean
   error?: ZapErrorType
   tokenIn: ZapToken
   tokenOut: ZapToken
@@ -100,6 +102,7 @@ const ZapContext = createContext<ZapContextType>({
   setSelectedToken: () => {},
   onClickMax: () => {},
   loadingZap: false,
+  validatingZap: false,
   chainId: 0,
   tokens: [],
   tokenIn: zappableTokens[ChainId.Mainnet][0],
@@ -266,10 +269,10 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const {
     data,
     isLoading,
+    isValidating,
     error: apiError,
-  } = useSWR<ZapResponse>(endpoint, fetcher, {
-    isPaused: () => openSubmitModal,
-  })
+    mutate: refetch,
+  } = useSWR<ZapResponse>(endpoint, fetcher)
 
   const [amountOut, priceImpact, zapDustUSD, gasCost, spender] = useMemo(() => {
     if (!data || !data.result) {
@@ -289,7 +292,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       data.result.priceImpact,
       data.result.dustValue ?? 0,
       estimatedGasCost,
-      data.result.tx?.to,
+      data.result.approvalAddress,
     ]
   }, [data, tokenOut, gas, ethPrice])
 
@@ -305,6 +308,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         submitButtonTitle: 'Error occurred, try again',
         disableSubmit: true,
       })
+      setOpenSubmitModal(false)
     } else if (data?.result && data.result.insuficientFunds) {
       setError({
         title: 'Insufficient funds',
@@ -349,11 +353,13 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         setAmountIn,
         selectedToken,
         setSelectedToken,
+        refetch,
         chainId,
         account,
         tokens,
         onClickMax,
         loadingZap: isLoading,
+        validatingZap: isValidating,
         tokenIn,
         tokenOut,
         error,
