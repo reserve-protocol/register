@@ -62,7 +62,7 @@ const StakeExtra = () => {
   }, [currentDelegate])
 
   return (
-    <ShowMore my="3">
+    <ShowMore mt="3" mb={2}>
       <UnstakeDelay mb={!isLegacy ? 2 : 0} />
       {!isLegacy && (
         <DelegateStake
