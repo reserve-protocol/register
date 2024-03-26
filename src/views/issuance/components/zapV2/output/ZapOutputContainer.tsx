@@ -15,7 +15,7 @@ const ZapOutputContainer = () => {
       sx={{
         position: 'relative',
         border: '1px solid',
-        borderColor: 'border',
+        borderColor: 'borderSecondary',
         borderRadius: '8px',
         overflow: 'hidden',
         gap: '8px',

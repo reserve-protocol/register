@@ -25,7 +25,7 @@ const ZapTokenSelector = () => {
             py: 1,
             borderRadius: '4px',
             border: '1px solid',
-            borderColor: 'border',
+            borderColor: 'borderSecondary',
             backgroundColor: 'background',
             boxShadow: '0px 1px 8px 2px rgba(0, 0, 0, 0.05)',
           }}

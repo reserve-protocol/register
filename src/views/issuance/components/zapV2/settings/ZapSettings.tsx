@@ -14,7 +14,7 @@ const ZapSettings = () => {
           cursor: 'pointer',
           width: '34px',
           border: '1px solid',
-          borderColor: 'border',
+          borderColor: 'borderSecondary',
           borderRadius: '6px',
           ':hover': { backgroundColor: 'border' },
         }}
