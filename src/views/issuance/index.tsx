@@ -17,7 +17,7 @@ const IssuanceMethods = () => {
       {zapEnabled ? (
         <RTokenZapIssuance />
       ) : (
-        <Box>
+        <Box mt={4} ml={4} mr={[4, 4, 4, 0]}>
           <ZapToggle zapEnabled={zapEnabled} setZapEnabled={setZapEnabled} />
           <Grid columns={[1, 2]} gap={[1, 4]} mb={[1, 4]}>
             <Issue />
@@ -27,7 +27,7 @@ const IssuanceMethods = () => {
         </Box>
       )}
       <Box>
-        <IssuanceInfo mb={[1, 4]} />
+        <IssuanceInfo mb={[1, 0]} />
         {!zapEnabled && <About />}
       </Box>
     </Grid>
@@ -41,7 +41,7 @@ const Issuance = () => {
   return (
     <ZapProvider>
       <WrapSidebar />
-      <Box variant="layout.tokenView">
+      <Box sx={{ width: '100', p: [1, 0] }}>
         <IssuanceMethods />
       </Box>
     </ZapProvider>

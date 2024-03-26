@@ -26,7 +26,7 @@ const ZapTokenList = ({
     <Box
       sx={{
         height: ['auto', '360px'],
-        background: 'background',
+        background: 'backgroundNested',
         display: 'flex',
         flexDirection: 'column',
         minWidth: '140px',
@@ -45,7 +45,7 @@ const ZapTokenList = ({
               cursor: 'pointer',
               borderRadius: '10px',
               ':hover': {
-                backgroundColor: 'lightGrey',
+                backgroundColor: 'contentBackground',
               },
             }}
             onClick={selectToken}

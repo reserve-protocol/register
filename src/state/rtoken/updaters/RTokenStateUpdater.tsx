@@ -29,7 +29,9 @@ type StateMulticallResult = {
         bigint,
         bigint,
         bigint,
+        { amtRate: bigint; pctRate: bigint },
         bigint,
+        { amtRate: bigint; pctRate: bigint },
         bigint,
         boolean,
         boolean,
@@ -93,7 +95,15 @@ const RTokenStateUpdater = () => {
       },
       {
         ...rTokenCall,
+        functionName: 'issuanceThrottleParams',
+      },
+      {
+        ...rTokenCall,
         functionName: 'redemptionAvailable', // bigint
+      },
+      {
+        ...rTokenCall,
+        functionName: 'redemptionThrottleParams',
       },
       {
         ...basketHandlerCall,
@@ -162,7 +172,9 @@ const RTokenStateUpdater = () => {
         stTokenSupply,
         exchangeRate,
         issuanceAvailable,
+        issuanceThrottleParams,
         redemptionAvailable,
+        redemptionThrottleParams,
         nonce,
         isCollaterized,
         frozen,
@@ -176,7 +188,15 @@ const RTokenStateUpdater = () => {
         stTokenSupply: +formatEther(stTokenSupply),
         exchangeRate: +formatEther(exchangeRate),
         issuanceAvailable: +formatEther(issuanceAvailable),
+        issuanceThrottleAmount: Number(
+          formatEther(issuanceThrottleParams.amtRate)
+        ),
+        issuanceThrottleRate: +formatEther(issuanceThrottleParams.pctRate),
         redemptionAvailable: +formatEther(redemptionAvailable),
+        redemptionThrottleAmount: Number(
+          formatEther(redemptionThrottleParams.amtRate)
+        ),
+        redemptionThrottleRate: +formatEther(redemptionThrottleParams.pctRate),
         basketNonce: Number(nonce),
         isCollaterized,
         tradingPaused,

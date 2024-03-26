@@ -1,4 +1,4 @@
-import ERC20 from 'abis/ERC20'
+import { erc20ABI } from 'wagmi'
 import { useMemo } from 'react'
 import { Allowance } from 'types'
 import {
@@ -33,7 +33,7 @@ export const useApproval = (
   } = useContractRead(
     allowance && account
       ? {
-          abi: ERC20,
+          abi: erc20ABI,
           functionName: 'allowance',
           address: allowance.token,
           args: [account, allowance.spender],
@@ -49,7 +49,7 @@ export const useApproval = (
     allowance && !hasAllowance
       ? {
           address: allowance.token,
-          abi: ERC20,
+          abi: erc20ABI,
           functionName: 'approve',
           args: [allowance.spender, allowance.amount],
         }
