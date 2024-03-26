@@ -20,6 +20,8 @@ const ZapOperationDetails = () => {
           e.stopPropagation()
           setCollapsed((c) => !c)
         }}
+        pl={3}
+        pr="12px"
       >
         <Box
           sx={{
@@ -57,7 +59,7 @@ const ZapOperationDetails = () => {
             : 'max-height 0.4s ease-in-out',
         }}
       >
-        <ZapDetails mt={3} />
+        <ZapDetails mt={3} px={3} />
       </Box>
     </Box>
   )
