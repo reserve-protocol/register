@@ -244,6 +244,7 @@ const TokenNavigation = () => {
         flexShrink: 0,
         zIndex: 1,
         backgroundColor: ['background', 'background', 'none'],
+        minHeight: ['auto', 'auto', 'calc(100vh - 72px)'],
       }}
     >
       <Box
