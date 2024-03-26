@@ -17,7 +17,7 @@ const IssuanceMethods = () => {
       {zapEnabled ? (
         <RTokenZapIssuance />
       ) : (
-        <Box>
+        <Box mt={4} ml={4} mr={[4, 4, 4, 0]}>
           <ZapToggle zapEnabled={zapEnabled} setZapEnabled={setZapEnabled} />
           <Grid columns={[1, 2]} gap={[1, 4]} mb={[1, 4]}>
             <Issue />
