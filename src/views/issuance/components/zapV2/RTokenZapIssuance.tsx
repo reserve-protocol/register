@@ -10,12 +10,16 @@ const RTokenZapIssuance = () => {
   return (
     <Box
       sx={{
+        mt: 4,
+        ml: 4,
+        mr: [4, 4, 4, 0],
         display: 'flex',
         flexDirection: 'column',
         alignSelf: 'stretch',
         borderRadius: '14px',
         bg: 'cardAlternative',
         boxShadow: '0px 10px 38px 6px rgba(0, 0, 0, 0.05)',
+        height: 'fit-content',
       }}
     >
       <Box p="24px">
