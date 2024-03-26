@@ -228,6 +228,7 @@ export const collateralDisplay: Record<string, string> = {
   fdai: 'Flux DAI',
   ffrax: 'Flux FRAX',
   wcusdcv3: 'Compound USDC V3',
+  wcusdbcv3: 'Compound USDbC V3',
   stkcvx3crv: 'Convex DAI/USDC/USDT',
   'stkcvxeusd3crv-f': 'Convex eUSD/FRAXBP',
   'stkcvxmim-3lp3crv-f': 'Convex MIM/3CRV',
@@ -242,7 +243,7 @@ export const collateralDisplay: Record<string, string> = {
   'mrp-awbtc': 'Morpho AAVE WBTC',
   'mrp-aweth': 'Morpho AAVE WETH',
   'mrp-asteth': 'Morpho AAVE Staked ETH',
-  sabasusdbc: 'AAVE Base USDC',
-  wsgusdbc: 'Stargate Base USDC',
+  sabasusdbc: 'AAVE Base USDbC',
+  wsgusdbc: 'Stargate Base USDbC',
   saethusdc: 'AAVE USDC V3',
 }

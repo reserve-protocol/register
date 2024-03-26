@@ -83,7 +83,6 @@ const tokenListQuery = gql`
 const useTokenList = () => {
   const [list, setList] = useAtom(tokenListAtom)
   const fromTime = useTimeFrom(TIME_RANGES.MONTH)
-  const chainId = useAtomValue(chainIdAtom)
   const collateralYield = useAtomValue(collateralYieldAtom)
   const currentRsrPrice = useAtomValue(rsrPriceAtom)
 
@@ -126,7 +125,20 @@ const useTokenList = () => {
             const rsrPrice = currentRsrPrice || 0
             const supply: number =
               +formatEther(token.totalSupply) * +token.lastPriceUSD
-            const collaterals = token?.rToken?.collaterals ?? []
+            const collaterals = (token?.rToken?.collaterals ?? []).map(
+              (t: any) => {
+                let symbol = t.symbol
+
+                if (
+                  t.symbol.toLowerCase() === 'wcusdcv3' &&
+                  chain === ChainId.Base
+                ) {
+                  symbol = 'wcusdbcv3'
+                }
+
+                return { ...t, symbol }
+              }
+            )
             const revenueSplit = formatDistribution(
               token?.rToken?.revenueDistribution
             )

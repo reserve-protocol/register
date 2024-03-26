@@ -6,6 +6,7 @@ import { ReserveToken, Token } from 'types'
 import { getTokenReadCalls } from 'utils'
 import { FACADE_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
+import { ChainId } from 'utils/chains'
 import { collateralDisplay } from 'utils/constants'
 import { collateralsProtocolMap } from 'utils/plugins'
 import { formatEther, hexToString } from 'viem'
@@ -147,13 +148,24 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       main: mainAddress,
       mandate,
       stToken: tokens.shift() as Token,
-      collaterals: tokens.map((t) => ({
-        ...t,
-        protocol: collateralsProtocolMap[chainId]?.[t.symbol] || 'GENERIC',
-        displayName:
-          collateralDisplay[t.symbol.toLowerCase().replace('-vault', '')] ||
-          t.symbol,
-      })),
+      collaterals: tokens.map((t) => {
+        let symbol = t.symbol
+
+        if (t.symbol.toLowerCase() === 'wcusdcv3' && chainId === ChainId.Base) {
+          symbol = 'wcusdbcv3'
+        }
+
+        const displayName =
+          collateralDisplay[symbol.toLowerCase().replace('-vault', '')] ||
+          symbol
+
+        return {
+          ...t,
+          protocol: collateralsProtocolMap[chainId]?.[t.symbol] || 'GENERIC',
+          symbol,
+          displayName,
+        }
+      }),
       listed: !!rtokens[rTokenAddress],
       chainId,
       supply,
