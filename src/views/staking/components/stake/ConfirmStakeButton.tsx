@@ -22,7 +22,7 @@ const GasEstimate = ({ gasLimit }: { gasLimit: number }) => {
   const [total] = useStaticGasEstimate([gasLimit])
 
   return (
-    <Box variant="layout.verticalAlign" mt={2}>
+    <Box variant="layout.verticalAlign" mb={2}>
       <Text>Estimated gas cost:</Text>
       <Box ml="auto" variant="layout.verticalAlign">
         <GasIcon />
@@ -78,11 +78,11 @@ const ConfirmStakeButton = () => {
   if (!hasAllowance && !isLoading && !isApproved) {
     return (
       <TransactionButtonContainer>
+        <GasEstimate gasLimit={APPROVE_GAS_ESTIMATE} />
         <Button fullWidth onClick={execute} disabled={!isReady}>
           {!isReady ? 'Preparing approval' : 'Approve use of RSR'}
         </Button>
         {errorMsg}
-        <GasEstimate gasLimit={APPROVE_GAS_ESTIMATE} />
       </TransactionButtonContainer>
     )
   }
@@ -145,10 +145,6 @@ const ConfirmStakeButton = () => {
 
   return (
     <TransactionButtonContainer>
-      <Button disabled={!isReady} onClick={execute} fullWidth>
-        {!isReady ? 'Preparing transaction' : 'Confirm Stake'}
-      </Button>
-      {errorMsg}
       <GasEstimate
         gasLimit={
           call?.functionName === 'stakeAndDelegate'
@@ -156,6 +152,10 @@ const ConfirmStakeButton = () => {
             : STAKE_GAS_ESTIMATE
         }
       />
+      <Button disabled={!isReady} onClick={execute} fullWidth>
+        {!isReady ? 'Preparing transaction' : 'Confirm Stake'}
+      </Button>
+      {errorMsg}
     </TransactionButtonContainer>
   )
 }

@@ -40,9 +40,9 @@ const UnstakePreview = () => {
 }
 
 const UnstakeExtra = () => (
-  <ShowMore my="3">
+  <ShowMore mt="3" mb="2">
     <UnstakeDelay />
-    <Box variant="layout.verticalAlign" mt={2} mb={3}>
+    <Box variant="layout.verticalAlign" mt={2}>
       <Text>
         <Trans>Staking yield share ends</Trans>:
       </Text>

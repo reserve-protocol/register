@@ -21,13 +21,13 @@ const ExpandableContent = ({
       <Box
         py={2}
         variant="layout.verticalAlign"
-        sx={{ cursor: 'pointer' }}
+        sx={{ cursor: 'pointer', fontSize: 3 }}
         onClick={() => setOpen(!isOpen)}
       >
         <Text variant="bold" mr="auto">
           {title}
         </Text>
-        {isOpen ? <Minus size={18} /> : <Plus size={18} />}
+        {isOpen ? <Minus /> : <Plus />}
       </Box>
       {isOpen && (
         <Box py={2} sx={{ color: 'secondaryText' }}>

@@ -7,7 +7,7 @@ const StakeApy = () => {
   const { stakers } = useAtomValue(estimatedApyAtom)
 
   return (
-    <Box ml="2">
+    <Box variant="layout.borderBox" my="4">
       <Box
         variant="layout.verticalAlign"
         sx={{ fontWeight: 700, fontSize: 3 }}

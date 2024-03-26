@@ -20,7 +20,7 @@ const GasEstimate = () => {
   const estimate = useAtomValue(unstakeGasEstimateAtom)
 
   return (
-    <Box variant="layout.verticalAlign" mt={2}>
+    <Box variant="layout.verticalAlign" mb={2}>
       <Text>Estimated gas cost:</Text>
       <Box ml="auto" variant="layout.verticalAlign">
         <GasIcon />
@@ -90,6 +90,7 @@ const ConfirmUnstakeButton = () => {
 
   return (
     <TransactionButtonContainer>
+      <GasEstimate />
       <Button disabled={!isReady} onClick={write} fullWidth>
         {!isReady ? 'Preparing transaction' : 'Begin unstaking process'}
       </Button>
@@ -100,7 +101,6 @@ const ConfirmUnstakeButton = () => {
           </Text>
         </Box>
       )}
-      <GasEstimate />
     </TransactionButtonContainer>
   )
 }

@@ -29,7 +29,7 @@ const query = gql`
 const ExchangeRate = (props: BoxProps) => {
   const rToken = useRToken()
   const { exchangeRate: rate } = useAtomValue(rTokenStateAtom)
-  const [current, setCurrent] = useState(TIME_RANGES.MONTH)
+  const [current, setCurrent] = useState(TIME_RANGES.YEAR)
   const fromTime = useTimeFrom(current)
   const { data } = useQuery(rToken ? query : null, {
     id: rToken?.address.toLowerCase(),
