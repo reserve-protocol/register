@@ -1,5 +1,19 @@
 [
   {
+    "address": "0x8b906361048D277452506d3f791020A1cA798aF3",
+    "rewardTokens": [],
+    "protocol": "GENERIC",
+    "erc20": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "chainlinkFeed": "0x7e860098F58bBFC8648a4311b374B1D669a2bc6B",
+    "delayUntilDefault": "86400",
+    "maxTradeVolume": "1000000",
+    "oracleTimeout": 86400,
+    "targetName": "USD",
+    "version": "3.3.0",
+    "symbol": "USDC",
+    "decimals": 6
+  },
+  {
     "address": "0x5EBE8927e5495e0A7731888C81AF463cD63602fb",
     "rewardTokens": [],
     "protocol": "GENERIC",
@@ -56,22 +70,6 @@
     "decimals": 18
   },
   {
-    "address": "0xd3025304C6487FC5c39010bEA0B46cc0690ab229",
-    "rewardTokens": ["0x277FD5f51fE53a9B3707a0383bF930B149C74ABf"],
-    "protocol": "COMPv3",
-    "erc20": "0xa8d818C719c1034E731Feba2088F4F011D44ACB3",
-    "chainlinkFeed": "0x7e860098F58bBFC8648a4311b374B1D669a2bc6B",
-    "delayUntilDefault": "86400",
-    "maxTradeVolume": "1000000",
-    "oracleTimeout": 86460,
-    "targetName": "USD",
-    "version": "3.0.1",
-    "symbol": "wcUSDCv3",
-    "decimals": 6,
-    "underlyingAddress": "0x9c4ec768c28520B50860ea7a15bd7213a9fF58bf",
-    "underlyingToken": "cUSDbCv3"
-  },
-  {
     "address": "0x1DdB7dfdC5D26FE1f2aD02d9972f12481346Ae9b",
     "rewardTokens": [],
     "protocol": "AAVEv3",
@@ -118,5 +116,39 @@
     "version": "3.2.0",
     "symbol": "wstETH",
     "decimals": 18
+  },
+  {
+    "address": "0xAe9795115c7E5Bee7d2017b92c41DECa66d81dcf",
+    "rewardTokens": [],
+    "protocol": "AAVEv3",
+    "erc20": "0x6AfFDe0bA2D1f8fde8da8f296e7EfC991D807515",
+    "chainlinkFeed": "0x7e860098F58bBFC8648a4311b374B1D669a2bc6B",
+    "delayUntilDefault": "86400",
+    "maxTradeVolume": "500000",
+    "oracleTimeout": 86400,
+    "targetName": "USD",
+    "version": "3.3.0",
+    "symbol": "saBasUSDC",
+    "decimals": 6,
+    "underlyingAddress": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "underlyingToken": "USDC",
+    "collateralAddress": "0x4e65fE4DbA92790696d040ac24Aa414708F5c0AB",
+    "collateralToken": "aBasUSDC"
+  },
+  {
+    "address": "0x36A43E13f0c8d8612AE3978A8E7A58BB58000923",
+    "rewardTokens": ["0x277FD5f51fE53a9B3707a0383bF930B149C74ABf"],
+    "protocol": "COMPv3",
+    "erc20": "0xA694f7177C6c839C951C74C797283B35D0A486c8",
+    "chainlinkFeed": "0x7e860098F58bBFC8648a4311b374B1D669a2bc6B",
+    "delayUntilDefault": "86400",
+    "maxTradeVolume": "1000000",
+    "oracleTimeout": 86400,
+    "targetName": "USD",
+    "version": "3.3.0",
+    "symbol": "wcUSDCv3",
+    "decimals": 6,
+    "underlyingAddress": "0xb125E6687d4313864e53df431d5425969c15Eb2F",
+    "underlyingToken": "cUSDCv3"
   }
 ]

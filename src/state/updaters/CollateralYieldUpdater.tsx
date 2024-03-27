@@ -42,7 +42,9 @@ const poolsMap: StringMap = {
   // Base collaterals
   // ----------------
   'df65c4f4-e33a-481c-bac8-0c2252867c93': 'wcusdbcv3',
+  '0c8567f8-ba5b-41ad-80de-00a71895eb19': 'wcusdcv3',
   '9d09b0be-f6c2-463a-ad2c-4552b3e12bd9': 'wsgusdbc',
+  '7e0661bf-8cf3-45e6-9424-31916d4c7b84': 'sabasusdc',
 }
 // 'fa4d7ee4-0001-4133-9e8d-cf7d5d194a91': 'fudsc-vault',
 
