@@ -1,7 +1,8 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useZap } from '../context/ZapContext'
 import { LoadingButton } from 'components/button'
 import { TransactionButtonContainer } from 'components/button/TransactionButton'
+import mixpanel from 'mixpanel-browser'
 
 const ZapSubmitButton = () => {
   const {
@@ -11,6 +12,7 @@ const ZapSubmitButton = () => {
     amountOut,
     operation,
     error,
+    endpoint,
   } = useZap()
 
   const title = useMemo(() => {
@@ -28,10 +30,19 @@ const ZapSubmitButton = () => {
     [error, amountIn, amountOut]
   )
 
+  const onSubmit = useCallback(() => {
+    setOpenSubmitModal(true)
+
+    mixpanel.track('Zap Submit Clicked', {
+      Operation: operation,
+      Endpoint: endpoint,
+    })
+  }, [setOpenSubmitModal, operation, endpoint])
+
   return (
     <TransactionButtonContainer sx={{ width: '100%' }}>
       <LoadingButton
-        onClick={() => setOpenSubmitModal(true)}
+        onClick={onSubmit}
         loading={loadingZap}
         text={title}
         backgroundColor={error?.color || 'primary'}
