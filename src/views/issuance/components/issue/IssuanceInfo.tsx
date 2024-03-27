@@ -119,7 +119,7 @@ const IssuanceInfo = (props: BoxProps) => {
       sx={{
         borderLeft: ['none', 'none', '1px solid'],
         borderColor: ['border', 'border', 'border'],
-        minHeight: ['auto', 'auto', 'calc(100vh - 72px)'],
+        minHeight: ['auto', 'auto', 'calc(100vh - 73px)'],
       }}
     >
       <IssuanceInfoStat
