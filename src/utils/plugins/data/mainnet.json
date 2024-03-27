@@ -427,8 +427,8 @@
     "version": "3.0.0",
     "symbol": "stkcvx3Crv",
     "decimals": 18,
-    "underlyingAddress": "0x30D9410ED1D5DA1F6C8391af5338C93ab8d4035C",
-    "underlyingToken": "cvx3Crv"
+    "underlyingAddress": "0x6c3F90f043a72FA612cbac8115EE7e52BDe6E490",
+    "underlyingToken": "3Crv"
   },
   {
     "address": "0x890FAa00C16EAD6AA76F18A1A7fe9C40838F9122",
@@ -446,8 +446,8 @@
     "version": "3.0.0",
     "symbol": "stkcvxeUSD3CRV-f",
     "decimals": 18,
-    "underlyingAddress": "0x8e074d44aaBC1b3b4406fE03Da7ceF787ea85938",
-    "underlyingToken": "cvxeUSD3CRV-f"
+    "underlyingAddress": "0xAEda92e6A3B1028edc139A4ae56Ec881f3064D4F",
+    "underlyingToken": "eUSD3CRV-f"
   },
   {
     "address": "0xCBE084C44e7A2223F76362Dcc4EbDacA5Fb1cbA7",
@@ -465,8 +465,8 @@
     "version": "3.0.0",
     "symbol": "stkcvxMIM-3LP3CRV-f",
     "decimals": 18,
-    "underlyingAddress": "0xabB54222c2b77158CC975a2b715a3d703c256F05",
-    "underlyingToken": "cvxMIM-3LP3CRV-f"
+    "underlyingAddress": "0x5a6A4D54456819380173272A5E8E9B9904BdF41B",
+    "underlyingToken": "MIM-3LP3CRV-f"
   },
   {
     "address": "0x8Af118a89c5023Bb2B03C70f70c8B396aE71963D",
@@ -653,5 +653,60 @@
     "underlyingToken": "stETH",
     "collateralAddress": "0x1982b2F5814301d4e9a8b0201555376e62F82428",
     "collateralToken": "aSTETH"
+  },
+  {
+    "address": "0xe176A5ebFB873D5b3cf1909d0EdaE4FE095F5bc7",
+    "rewardTokens": [],
+    "protocol": "AAVEv3",
+    "erc20": "0x8d6E0402A3E3aD1b43575b05905F9468447013cF",
+    "chainlinkFeed": "0x8f1dF6D7F2db73eECE86a18b4381F4707b918FB1",
+    "delayUntilDefault": "86400",
+    "maxTradeVolume": "500000",
+    "oracleTimeout": 86400,
+    "targetName": "USD",
+    "version": "3.3.0",
+    "symbol": "saEthPyUSD",
+    "decimals": 6,
+    "underlyingAddress": "0x6c3ea9036406852006290770BEdFcAbA0e23A0e8",
+    "underlyingToken": "PYUSD",
+    "collateralAddress": "0x0C0d01AbF3e6aDfcA0989eBbA9d6e85dD58EaB1E",
+    "collateralToken": "aEthPYUSD"
+  },
+  {
+    "address": "0x426Ad39C7ccF2f3872aBB16c0291Eb40c0F44D23",
+    "rewardTokens": [
+      "0x45B950AF443281c5F67c2c7A1d9bBc325ECb8eEA",
+      "0x4024c00bBD0C420E719527D88781bc1543e63dd5"
+    ],
+    "protocol": "CONVEX",
+    "erc20": "0x6Cd8b88Dd65B004A82C33276C7AD3Fd4F569e254",
+    "chainlinkFeed": "0x0000000000000000000000000000000000000001",
+    "delayUntilDefault": "86400",
+    "maxTradeVolume": "1000000",
+    "oracleTimeout": 86400,
+    "targetName": "USD",
+    "version": "3.3.0",
+    "symbol": "stkcvxPYUSDUSDC",
+    "decimals": 18,
+    "underlyingAddress": "0x383E6b4437b59fff47B619CBA855CA29342A8559",
+    "underlyingToken": "PYUSDUSDC"
+  },
+  {
+    "address": "0x05beee046A5C28844804E679aD5587046dBffbc0",
+    "rewardTokens": [],
+    "protocol": "AAVEv3",
+    "erc20": "0x093cB4f405924a0C468b43209d5E466F1dd0aC7d",
+    "chainlinkFeed": "0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6",
+    "delayUntilDefault": "86400",
+    "maxTradeVolume": "1000000",
+    "oracleTimeout": 86400,
+    "targetName": "USD",
+    "version": "3.3.0",
+    "symbol": "saEthUSDC",
+    "decimals": 6,
+    "underlyingAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+    "underlyingToken": "USDC",
+    "collateralAddress": "0x98C23E9d8f34FEFb1B7BD6a91B7FF122F4e16F5c",
+    "collateralToken": "aEthUSDC"
   }
 ]

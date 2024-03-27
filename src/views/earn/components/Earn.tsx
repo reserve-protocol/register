@@ -15,7 +15,7 @@ const EarnHeader = () => (
         RToken yield opportunities
       </Text>
       <Text variant="legend" sx={{ fontSize: [1, 2] }}>
-        DeFi yield opportunities for RTokens in Convex, Curve & Yearn.
+        Yield opportunities for RTokens across the DeFi landscape.
       </Text>
     </Box>
     <TableFilters />

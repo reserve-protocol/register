@@ -9,6 +9,12 @@ const TransactionError = ({ error, ...props }: Props) => {
     return null
   }
 
+  const messageSplit = error.message.split('\n')
+  const message =
+    messageSplit.length > 1
+      ? messageSplit[0] + ' ' + messageSplit[1]
+      : messageSplit[0] ?? ''
+
   return (
     <Box {...props}>
       <Text
@@ -17,7 +23,7 @@ const TransactionError = ({ error, ...props }: Props) => {
       >
         {error.name}:
         <br />
-        {error.message.split('\n')[0]}
+        {message}
       </Text>
     </Box>
   )

@@ -139,7 +139,7 @@ export const ExecuteButton = ({
   loadingText,
   ...props
 }: ExecuteButtonProps) => {
-  const { write, hash, isLoading, validationError, reset, isReady } =
+  const { write, hash, isLoading, error, validationError, reset, isReady } =
     useContractWrite(call)
   const notify = useNotification()
   const { isMining, status } = useWatchTransaction({
