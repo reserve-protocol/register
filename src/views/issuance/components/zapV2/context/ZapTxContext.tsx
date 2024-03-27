@@ -119,7 +119,7 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       refetch()
       return
     }
-    if (sendTransaction) {
+    if (!error && sendTransaction) {
       sendTransaction()
     }
   }, [approvalSuccess, sendTransaction, zapResult?.tx, refetch])

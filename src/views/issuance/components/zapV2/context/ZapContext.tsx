@@ -30,6 +30,7 @@ import { useFeeData } from 'wagmi'
 import { ZapErrorType } from '../ZapError'
 import zapper, { ZapResponse, ZapResult, fetcher } from '../api'
 import { SLIPPAGE_OPTIONS, zappableTokens } from '../constants'
+import mixpanel from 'mixpanel-browser'
 
 export type IssuanceOperation = 'mint' | 'redeem'
 
@@ -63,6 +64,7 @@ type ZapContextType = {
   selectedToken?: ZapToken
   setSelectedToken: (token: ZapToken) => void
   refetch?: KeyedMutator<ZapResponse>
+  endpoint?: string | null
 
   tokens: ZapToken[]
   chainId: number
@@ -308,7 +310,13 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         submitButtonTitle: 'Error occurred, try again',
         disableSubmit: true,
       })
+
       setOpenSubmitModal(false)
+
+      mixpanel.track('Zap API Failed', {
+        Endpoint: endpoint,
+        Error: apiError?.message || data?.error,
+      })
     } else if (data?.result && data.result.insuficientFunds) {
       setError({
         title: 'Insufficient funds',
@@ -332,11 +340,22 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     }
   }, [apiError, data, operation, setError])
 
+  const _setZapEnabled = useCallback(
+    (value: boolean) => {
+      setZapEnabled(value)
+      mixpanel.track('Toggled Zap', {
+        RToken: rToken?.address.toLowerCase() ?? '',
+        Enabled: value,
+      })
+    },
+    [setZapEnabled, rToken]
+  )
+
   return (
     <ZapContext.Provider
       value={{
         zapEnabled,
-        setZapEnabled,
+        setZapEnabled: _setZapEnabled,
         operation,
         setOperation,
         openSettings,
@@ -369,6 +388,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         priceImpact,
         spender,
         zapResult: data?.result,
+        endpoint,
       }}
     >
       {children}

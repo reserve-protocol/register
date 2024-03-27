@@ -6,7 +6,7 @@ import { useZapTx } from '../context/ZapTxContext'
 import ZapGasCost from '../overview/ZapGasCost'
 
 const ZapConfirmButton = () => {
-  const { operation, zapResult } = useZap()
+  const { operation, zapResult, validatingZap } = useZap()
   const {
     hasAllowance,
     loadingApproval,
@@ -34,15 +34,23 @@ const ZapConfirmButton = () => {
             <Text variant="bold" sx={{ display: 'block' }}>
               {!receipt ? 'Confirm Stake' : 'Transaction submitted'}
             </Text>
-            {(loadingTx || validatingTx) && (
+            {(loadingTx ||
+              validatingTx ||
+              (approvalSuccess && validatingZap)) && (
               <Text variant="legend">
+                {!validatingTx &&
+                  !loadingTx &&
+                  validatingZap &&
+                  'Validating transaction'}
                 {loadingTx && 'Proceed in wallet'}
                 {validatingTx && 'Confirming transaction'}
               </Text>
             )}
           </Box>
         </Box>
-        {(loadingTx || validatingTx) && <Spinner ml="auto" size={16} />}
+        {(loadingTx || validatingTx || (approvalSuccess && validatingZap)) && (
+          <Spinner ml="auto" size={16} />
+        )}
       </Box>
     )
   }
