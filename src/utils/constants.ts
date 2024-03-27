@@ -37,7 +37,7 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
   },
   'extra-finance': {
     name: 'Extra Finance',
-    site: 'https://app.extrafi.io/lend',
+    site: 'https://app.extrafi.io/farm',
   },
   aerodrome: {
     name: 'Aerodrome',
@@ -228,6 +228,7 @@ export const collateralDisplay: Record<string, string> = {
   fdai: 'Flux DAI',
   ffrax: 'Flux FRAX',
   wcusdcv3: 'Compound USDC V3',
+  wcusdbcv3: 'Compound USDbC V3',
   stkcvx3crv: 'Convex DAI/USDC/USDT',
   'stkcvxeusd3crv-f': 'Convex eUSD/FRAXBP',
   'stkcvxmim-3lp3crv-f': 'Convex MIM/3CRV',
@@ -242,6 +243,14 @@ export const collateralDisplay: Record<string, string> = {
   'mrp-awbtc': 'Morpho AAVE WBTC',
   'mrp-aweth': 'Morpho AAVE WETH',
   'mrp-asteth': 'Morpho AAVE Staked ETH',
-  sabasusdbc: 'AAVE Base USDC',
-  wsgusdbc: 'Stargate Base USDC',
+  sabasusdbc: 'AAVE Base USDbC',
+  wsgusdbc: 'Stargate Base USDbC',
+  saethusdc: 'AAVE USDC V3',
+  stkcvxpyusdusdc: 'Convex PYUSD/USDC',
+  saethpyusd: 'AAVE PYUSD V3',
 }
+
+export const EXTRA_UNDERLYING_TOKENS_POOLS = [
+  '0x5bfb340fa9305abb164fb0248d0d82fc3d82c3bb',
+  '0xb5e331615fdba7df49e05cdeaceb14acdd5091c3',
+]

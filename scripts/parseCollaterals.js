@@ -47,7 +47,7 @@ const protocols = {
   },
   CONVEX: {
     key: 'CONVEX',
-    underlying: 'convexToken',
+    underlying: 'curveToken',
     rewardTokens: ['CRV', 'CVX'],
   },
   SDR: {
@@ -96,6 +96,10 @@ const wrappedTokenMap = {
   aBasUSDbC: protocols.AAVEv3,
   sgUSDC: protocols.STARGATE,
   wsgUSDbC: protocols.STARGATE, // base
+  saEthPyUSD: protocols.AAVEv3,
+  saEthUSDC: protocols.AAVEv3,
+  cvxPayPool: protocols.CONVEX,
+  saBasUSDC: protocols.AAVEv3,
 }
 
 // Default: run all collateral chains - you can comment which chain you want to run
