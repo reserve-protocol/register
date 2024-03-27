@@ -1,4 +1,4 @@
-import { Box, Grid } from 'theme-ui'
+import { Box, Divider, Grid } from 'theme-ui'
 import About from './components/about'
 import Balances from './components/balances'
 import Issue from './components/issue'
@@ -30,9 +30,20 @@ const IssuanceMethods = () => {
           <Balances />
         </Box>
       )}
-      <Box>
+      <Box
+        sx={{
+          borderLeft: ['none', 'none', '1px solid'],
+          borderColor: ['border', 'border', 'border'],
+          minHeight: ['auto', 'auto', 'calc(100vh - 73px)'],
+        }}
+      >
         <IssuanceInfo mb={[1, 0]} />
-        {!zapEnabled && <About />}
+        {!zapEnabled && (
+          <>
+            <Divider mx={4} my={0} sx={{ borderColor: 'borderSecondary' }} />
+            <About />
+          </>
+        )}
       </Box>
     </Grid>
   )

@@ -48,8 +48,9 @@ const IssuanceInfoStat = ({
         >
           <Text>Time until fully charged</Text>
           {timeUntilCharged > 0 ? (
-            <Text>
-              {timeUntilCharged} minute{timeUntilCharged > 1 ? 's' : ''}
+            <Text sx={{ fontWeight: 'bold' }}>
+              {timeUntilCharged.toFixed(0)} minute
+              {timeUntilCharged > 1 ? 's' : ''}
             </Text>
           ) : (
             <Text sx={{ fontWeight: 'bold' }}>Fully Charged</Text>
@@ -113,15 +114,7 @@ const IssuanceInfo = (props: BoxProps) => {
   ])
 
   return (
-    <Box
-      p={4}
-      {...props}
-      sx={{
-        borderLeft: ['none', 'none', '1px solid'],
-        borderColor: ['border', 'border', 'border'],
-        minHeight: ['auto', 'auto', 'calc(100vh - 73px)'],
-      }}
-    >
+    <Box p={4} {...props}>
       <IssuanceInfoStat
         icon={<GlobalMaxMintIcon />}
         title={t`Mint - Global Max`}
