@@ -97,7 +97,7 @@ const PluginItem = ({ data, onCheck, selected, ...props }: PluginItemProps) => {
         <TokenLogo width={24} symbol={data.symbol} />
         <Box ml={3}>
           <Box variant="layout.verticalAlign">
-            <Text>{displayName} plugin</Text>
+            <Text>{displayName}</Text>
             <GoTo
               ml={1}
               href={getExplorerLink(
