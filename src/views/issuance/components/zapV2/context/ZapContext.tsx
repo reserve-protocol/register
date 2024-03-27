@@ -29,7 +29,11 @@ import { Address, formatUnits, parseUnits, zeroAddress } from 'viem'
 import { useFeeData } from 'wagmi'
 import { ZapErrorType } from '../ZapError'
 import zapper, { ZapResponse, ZapResult, fetcher } from '../api'
-import { SLIPPAGE_OPTIONS, zappableTokens } from '../constants'
+import {
+  PRICE_IMPACT_THRESHOLD,
+  SLIPPAGE_OPTIONS,
+  zappableTokens,
+} from '../constants'
 import mixpanel from 'mixpanel-browser'
 
 export type IssuanceOperation = 'mint' | 'redeem'
@@ -280,6 +284,12 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     if (!data || !data.result) {
       return ['0', 0, 0, 0, undefined]
     }
+
+    const _amountIn = formatUnits(
+      BigInt(data.result.amountIn),
+      tokenIn.decimals
+    )
+
     const _amountOut = formatUnits(
       BigInt(data.result.amountOut),
       tokenOut.decimals
@@ -289,7 +299,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       ? (+(data.result.gas ?? 0) * +gas?.formatted?.gasPrice * ethPrice) / 1e9
       : 0
 
-    const inputPriceValue = (tokenIn?.price || 0) * Number(amountIn) || 1
+    const inputPriceValue = (tokenIn?.price || 0) * Number(_amountIn) || 1
     const outputPriceValue = (tokenOut?.price || 0) * Number(_amountOut)
     const _priceImpact =
       ((inputPriceValue - outputPriceValue) / inputPriceValue) * 100
@@ -322,7 +332,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         Endpoint: endpoint,
         Error: apiError?.message || data?.error,
       })
-    } else if (data?.result && data.result.insuficientFunds) {
+    } else if (data?.result && data.result.insufficientFunds) {
       setError({
         title: 'Insufficient funds',
         message:
@@ -331,7 +341,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         secondaryColor: 'rgba(255, 0, 0, 0.20)',
         disableSubmit: true,
       })
-    } else if (priceImpact >= 1) {
+    } else if (priceImpact >= PRICE_IMPACT_THRESHOLD) {
       setError({
         title: 'Warning: High price impact',
         message:

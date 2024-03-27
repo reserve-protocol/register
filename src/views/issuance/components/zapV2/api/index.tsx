@@ -23,7 +23,7 @@ export type ZapResult = {
 
   approvalAddress: Address
   approvalNeeded: boolean
-  insuficientFunds: boolean
+  insufficientFunds: boolean
 
   dust: {
     token: string
