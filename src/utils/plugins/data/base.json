@@ -1,5 +1,19 @@
 [
   {
+    "address": "0x8b906361048D277452506d3f791020A1cA798aF3",
+    "rewardTokens": [],
+    "protocol": "GENERIC",
+    "erc20": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "chainlinkFeed": "0x7e860098F58bBFC8648a4311b374B1D669a2bc6B",
+    "delayUntilDefault": "86400",
+    "maxTradeVolume": "1000000",
+    "oracleTimeout": 86400,
+    "targetName": "USD",
+    "version": "3.3.0",
+    "symbol": "USDC",
+    "decimals": 6
+  },
+  {
     "address": "0x5EBE8927e5495e0A7731888C81AF463cD63602fb",
     "rewardTokens": [],
     "protocol": "GENERIC",
