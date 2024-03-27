@@ -7,6 +7,7 @@ import Redeem from './components/redeem'
 import WrapSidebar from './components/wrapping/WrapSidebar'
 import RTokenZapIssuance from './components/zapV2/RTokenZapIssuance'
 import ZapToggle from './components/zapV2/ZapToggle'
+import ZapToggleBottom from './components/zapV2/ZapToggleBottom'
 import { ZapProvider, useZap } from './components/zapV2/context/ZapContext'
 
 const IssuanceMethods = () => {
@@ -15,7 +16,10 @@ const IssuanceMethods = () => {
   return (
     <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[1, 4]}>
       {zapEnabled ? (
-        <RTokenZapIssuance />
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+          <RTokenZapIssuance />
+          <ZapToggleBottom setZapEnabled={setZapEnabled} />
+        </Box>
       ) : (
         <Box mt={4} ml={4} mr={[4, 4, 4, 0]}>
           <ZapToggle zapEnabled={zapEnabled} setZapEnabled={setZapEnabled} />

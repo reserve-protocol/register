@@ -15,7 +15,7 @@ const ZapManualMint = () => {
       <Box mt={2}>
         <Button
           backgroundColor="muted"
-          color="black"
+          color="text"
           onClick={() => setZapEnabled(false)}
           small
         >
