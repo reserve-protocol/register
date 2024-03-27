@@ -93,10 +93,16 @@ const IssuanceInfo = (props: BoxProps) => {
 
   const [maxRedeem, timeUntilFullyChargedRedeem] = useMemo(() => {
     const limitByPctRate = tokenSupply * redemptionThrottleRate
-    const maxRedemptionLimit = Math.max(
-      redemptionThrottleAmount,
-      limitByPctRate
-    )
+
+    let maxRedemptionLimit
+    if (redemptionThrottleAmount > limitByPctRate) {
+      maxRedemptionLimit =
+        tokenSupply < redemptionThrottleAmount
+          ? tokenSupply
+          : redemptionThrottleAmount
+    } else {
+      maxRedemptionLimit = limitByPctRate
+    }
 
     const difference = maxRedemptionLimit - redemptionAvailable
     const timeUntilCharged =
