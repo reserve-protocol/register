@@ -8,7 +8,7 @@ import useSWRImmutable from 'swr/immutable'
 import { StringMap } from 'types'
 import { EUSD_ADDRESS, RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
-import { LP_PROJECTS, RSR } from 'utils/constants'
+import { EXTRA_UNDERLYING_TOKENS_POOLS, LP_PROJECTS, RSR } from 'utils/constants'
 
 // Only map what I care about the response...
 interface DefillamaPool {
@@ -124,7 +124,9 @@ const useRTokenPools = () => {
 
       for (const pool of data) {
         const rToken = pool.underlyingTokens?.find(
-          (token: string) => !!listedRTokens[token?.toLowerCase()]
+          (token: string) =>
+            !!listedRTokens[token?.toLowerCase()] ||
+            EXTRA_UNDERLYING_TOKENS_POOLS.includes(token?.toLowerCase())
         )
 
         if (rToken && pool.project !== 'reserve') {

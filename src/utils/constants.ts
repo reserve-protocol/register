@@ -247,3 +247,8 @@ export const collateralDisplay: Record<string, string> = {
   wsgusdbc: 'Stargate Base USDbC',
   saethusdc: 'AAVE USDC V3',
 }
+
+export const EXTRA_UNDERLYING_TOKENS_POOLS = [
+  '0x5bfb340fa9305abb164fb0248d0d82fc3d82c3bb',
+  '0xb5e331615fdba7df49e05cdeaceb14acdd5091c3',
+]
