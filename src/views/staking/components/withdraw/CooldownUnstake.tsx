@@ -66,6 +66,7 @@ const ConfirmWithdraw = () => {
     <TransactionButton
       small
       mt={3}
+      variant="danger"
       text={t`Cancel unstake`}
       mining={isMining}
       loading={isLoading || isMining}

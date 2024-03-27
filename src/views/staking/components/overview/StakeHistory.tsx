@@ -92,7 +92,6 @@ const StakeHistory = (props: BoxProps) => {
       data={rows}
       timeRange={TIME_RANGES}
       currentRange={current}
-      domain={['auto', 'auto']}
       onRangeChange={handleChange}
     />
   )
