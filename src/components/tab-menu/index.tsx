@@ -50,8 +50,9 @@ const defaultStyles = (
       backgroundColor: 'inputBorder',
     },
     '&.active': {
-      backgroundColor: 'backgroundNested',
-      color: 'text',
+      backgroundColor: 'focusedBackground',
+      color: 'accentInverted',
+      fontWeight: 500,
     },
   },
 })
@@ -75,7 +76,7 @@ const MenuItem = ({
     >
       {item.icon}
       <Text
-        ml={!!item.icon ? 2 : 0}
+        ml={!!item.icon ? '6px' : 0}
         sx={{ display: collapse ? ['none', 'none', 'block'] : 'block' }}
       >
         {item.label}

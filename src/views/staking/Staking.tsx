@@ -1,24 +1,25 @@
-import { Container } from 'components'
 import { Box, Grid } from 'theme-ui'
-import Balances from './components/balances'
+import StakeContainer from './components/StakeContainer'
 import Overview from './components/overview'
-import Stake from './components/stake'
-import Unstake from './components/unstake'
-import Updater from './Updater'
+import Withdraw from './components/withdraw'
+import StakePosition from './components/StakePosition'
 
 const Staking = () => (
   <Box variant="layout.tokenView">
-    <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[3, 5]}>
-      <Box>
-        <Grid columns={[1, 2]} gap={[1, 4]} mb={[1, 4]}>
-          <Stake />
-          <Unstake />
-        </Grid>
-        <Balances />
+    <Grid columns={[1, 1, 1, '1.2fr 1fr', '1fr 480px']} gap={[0, 0, 0, 4, 5]}>
+      <Box
+        pr={[0, 0, 0, 4]}
+        sx={{
+          borderRight: ['none', 'none', 'none', '1px solid'],
+          borderColor: ['border', 'border', 'border', 'border'],
+        }}
+      >
+        <StakeContainer />
+        <StakePosition mt={5} />
+        <Withdraw my={4} />
       </Box>
       <Overview />
     </Grid>
-    <Updater />
   </Box>
 )
 

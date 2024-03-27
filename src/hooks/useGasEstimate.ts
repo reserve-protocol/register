@@ -1,7 +1,8 @@
+import { gasPriceAtom } from './../state/chain/atoms/chainAtoms'
 import { useAtomValue } from 'jotai'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { chainIdAtom, ethPriceAtom, gasFeeAtom } from 'state/atoms'
-import { EstimateContractGasParameters, formatEther } from 'viem'
+import { EstimateContractGasParameters, formatEther, formatUnits } from 'viem'
 import { usePublicClient } from 'wagmi'
 
 export interface GasEstimation {
@@ -16,6 +17,27 @@ const defaultGas: GasEstimation = {
   result: null,
   estimateUsd: null,
   estimateEth: null,
+}
+
+export const useStaticGasEstimate = (
+  gasLimit: number[]
+): [number, number[]] => {
+  const gasPrice = useAtomValue(gasPriceAtom)
+
+  return useMemo(() => {
+    if (!gasPrice) {
+      return [0, []] // loading state
+    }
+
+    let total = 0
+    const breakdown = gasLimit.map((limit) => {
+      const amount = limit * gasPrice
+      total += amount
+      return amount
+    })
+
+    return [total, breakdown]
+  }, [gasPrice])
 }
 
 export const useGasEstimate = (

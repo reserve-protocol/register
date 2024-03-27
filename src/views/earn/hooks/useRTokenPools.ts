@@ -121,7 +121,6 @@ const useRTokenPools = () => {
   const mapPools = useCallback(
     async (data: DefillamaPool[], earnPools: EarnPool[]) => {
       const pools: Pool[] = []
-
       for (const pool of data) {
         const rToken = pool.underlyingTokens?.find(
           (token: string) =>
@@ -132,7 +131,7 @@ const useRTokenPools = () => {
         if (rToken && pool.project !== 'reserve') {
           const underlyingTokens = pool.underlyingTokens.map(
             (token: string) => {
-              const lowercasedAddress = token.toLowerCase()
+              const lowercasedAddress = token?.toLowerCase() ?? ''
 
               if (
                 listedRTokens[lowercasedAddress] &&
