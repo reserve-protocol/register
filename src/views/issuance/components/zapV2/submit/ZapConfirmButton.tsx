@@ -32,7 +32,7 @@ const ZapConfirmButton = () => {
           <TransactionsIcon />
           <Box>
             <Text variant="bold" sx={{ display: 'block' }}>
-              {!receipt ? 'Confirm Stake' : 'Transaction submitted'}
+              {!receipt ? `Confirm ${operation}` : 'Transaction submitted'}
             </Text>
             {(loadingTx ||
               validatingTx ||
