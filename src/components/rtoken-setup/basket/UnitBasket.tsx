@@ -9,6 +9,7 @@ import { X } from 'react-feather'
 import { Box, CardProps, Divider, Flex, IconButton, Text } from 'theme-ui'
 import { truncateDecimals } from 'utils'
 import { PrimaryUnitBasket, updateBasketUnitAtom } from '../atoms'
+import { collateralDisplay } from 'utils/constants'
 
 interface UnitBasketProps extends CardProps {
   data: PrimaryUnitBasket
@@ -114,8 +115,12 @@ const UnitBasket = ({ data, readOnly, unit, ...props }: UnitBasketProps) => {
             help={`Collateral Address: ${collateral.address}`}
             text={
               readOnly
-                ? collateral.symbol
-                : `${getCollateralDist(index)} in ${collateral.symbol}`
+                ? collateralDisplay[collateral.symbol.toLowerCase()] ||
+                  collateral.symbol
+                : `${getCollateralDist(index)} in ${
+                    collateralDisplay[collateral.symbol.toLowerCase()] ||
+                    collateral.symbol
+                  }`
             }
           />
           {!readOnly ? (
