@@ -37,7 +37,7 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
   },
   'extra-finance': {
     name: 'Extra Finance',
-    site: 'https://app.extrafi.io/lend',
+    site: 'https://app.extrafi.io/farm',
   },
   aerodrome: {
     name: 'Aerodrome',
@@ -246,4 +246,6 @@ export const collateralDisplay: Record<string, string> = {
   sabasusdbc: 'AAVE Base USDbC',
   wsgusdbc: 'Stargate Base USDbC',
   saethusdc: 'AAVE USDC V3',
+  cvxPayPool: 'Convex PYUSD/USDC',
+  saethpyusd: 'AAVE PYUSD V3',
 }

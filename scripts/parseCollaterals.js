@@ -96,6 +96,9 @@ const wrappedTokenMap = {
   aBasUSDbC: protocols.AAVEv3,
   sgUSDC: protocols.STARGATE,
   wsgUSDbC: protocols.STARGATE, // base
+  saEthPyUSD: protocols.AAVEv3,
+  saEthUSDC: protocols.AAVEv3,
+  cvxPayPool: protocols.CONVEX,
 }
 
 // Default: run all collateral chains - you can comment which chain you want to run
@@ -111,11 +114,11 @@ const chainsMap = [
     },
     collaterals: require('./data/mainnet-collaterals.json'),
   },
-  {
-    prefix: 'base',
-    chain: chains.base,
-    collaterals: require('./data/base-collaterals.json'),
-  },
+  // {
+  //   prefix: 'base',
+  //   chain: chains.base,
+  //   collaterals: require('./data/base-collaterals.json'),
+  // },
 ]
 
 ;(async () => {
