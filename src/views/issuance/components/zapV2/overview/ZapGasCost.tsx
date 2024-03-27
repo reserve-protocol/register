@@ -5,7 +5,7 @@ import { useZap } from '../context/ZapContext'
 import Skeleton from 'react-loading-skeleton'
 
 const ZapGasCost = (props: BoxProps) => {
-  const { gasCost, loadingZap, validatingZap, zapResult } = useZap()
+  const { gasCost, loadingZap } = useZap()
 
   return (
     <Box
@@ -16,7 +16,7 @@ const ZapGasCost = (props: BoxProps) => {
       <Text sx={{ fontSize: 14 }}>Estimated gas cost</Text>
       <Box variant="layout.verticalAlign" sx={{ gap: 1, color: 'primary' }}>
         <GasIcon />
-        {(!zapResult?.tx && validatingZap) || loadingZap ? (
+        {loadingZap ? (
           <Skeleton height={10} width={60} />
         ) : (
           <Text sx={{ fontSize: 14, fontWeight: 500 }}>

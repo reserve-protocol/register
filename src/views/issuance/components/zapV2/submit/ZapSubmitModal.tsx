@@ -14,15 +14,7 @@ import Skeleton from 'react-loading-skeleton'
 
 const ZapOverview = () => {
   const [collapsed, setCollapsed] = useState(true)
-  const {
-    tokenIn,
-    tokenOut,
-    amountIn,
-    amountOut,
-    loadingZap,
-    validatingZap,
-    zapResult,
-  } = useZap()
+  const { tokenIn, tokenOut, amountIn, amountOut, loadingZap } = useZap()
 
   return (
     <Box
@@ -46,7 +38,7 @@ const ZapOverview = () => {
           <TokenLogo symbol={tokenOut.symbol} width={24} />
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Text>You receive:</Text>
-            {(!zapResult?.tx && validatingZap) || loadingZap ? (
+            {loadingZap ? (
               <Skeleton width={300} height={35} />
             ) : (
               <Text sx={{ fontSize: 26, fontWeight: 700 }}>
