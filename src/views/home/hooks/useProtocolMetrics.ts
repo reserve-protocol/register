@@ -1,11 +1,12 @@
 import { gql } from 'graphql-request'
 import { useMultichainQuery } from 'hooks/useQuery'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { ChainId } from 'utils/chains'
 import { PROTOCOL_SLUG, supportedChainList } from 'utils/constants'
 import { formatEther } from 'viem'
 import { homeMetricsAtom } from '../atoms'
+import { rsrPriceAtom } from 'state/atoms'
 
 interface ProtocolMetricsResponse {
   tokens: {
@@ -51,6 +52,7 @@ const protocolMetricsQuery = gql`
 
 const useProtocolMetrics = () => {
   const [stats, setStats] = useAtom(homeMetricsAtom)
+  const rsrPrice = useAtomValue(rsrPriceAtom)
   const { data, isLoading } = useMultichainQuery(
     protocolMetricsQuery,
     {
@@ -73,8 +75,9 @@ const useProtocolMetrics = () => {
           volume += +metrics.protocol.cumulativeVolumeUSD
           marketCap += +metrics.protocol.totalRTokenUSD
           stakeRevenue += +metrics.protocol.cumulativeRSRRevenueUSD
-          tvl += +metrics.protocol.totalValueLockedUSD
         }
+
+        tvl += +formatEther(metrics.protocol.rsrStaked as any) * rsrPrice
       }
 
       // Aggregate RSV
@@ -86,11 +89,12 @@ const useProtocolMetrics = () => {
       volume +=
         +formatEther(rsvMetrics.cumulativeVolume) *
         Number(rsvMetrics.lastPriceUSD)
+      tvl += marketCap
 
       // Set atom for cache
       setStats({ volume, marketCap, stakeRevenue, tvl })
     }
-  }, [data])
+  }, [data, rsrPrice])
 
   return useMemo(() => {
     return { data: stats, isLoading }
