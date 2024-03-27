@@ -126,7 +126,32 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
       case 'CONVEX':
         return {
           ...call,
-          functionName: wrapping ? 'stake' : 'withdraw',
+          abi: [
+            {
+              inputs: [
+                { internalType: 'uint256', name: '_amount', type: 'uint256' },
+                { internalType: 'address', name: '_to', type: 'address' },
+              ],
+              name: 'deposit',
+              outputs: [],
+              stateMutability: 'nonpayable',
+              type: 'function',
+            },
+            {
+              inputs: [
+                {
+                  internalType: 'uint256',
+                  name: '_amount',
+                  type: 'uint256',
+                },
+              ],
+              name: 'withdrawAndUnwrap',
+              outputs: [],
+              stateMutability: 'nonpayable',
+              type: 'function',
+            },
+          ],
+          functionName: wrapping ? 'deposit' : 'withdrawAndUnwrap',
           args: wrapping ? [parsedAmount, wallet] : [parsedAmount],
         }
       case 'MORPHO':

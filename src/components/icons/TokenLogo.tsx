@@ -65,6 +65,8 @@ const IMGS = new Set([
   'eusd',
   'cbeth',
   'saethusdc',
+  'saethpyusd',
+  'pyusd',
 ])
 
 // Memoized token image

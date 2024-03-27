@@ -35,10 +35,13 @@ const poolsMap: StringMap = {
   '0f45d730-b279-4629-8e11-ccb5cc3038b4': 'cbeth',
   'c8a24fee-ec00-4f38-86c0-9f6daebc4225': 'sdai',
   'aa70268e-4b52-42bf-a116-608b370f9501': 'saethusdc',
+  '01146cce-9140-4e03-9a2e-82c99ccc42f1': 'saethpyusd',
+  'd118f505-e75f-4152-bad3-49a2dc7482bf': 'stkcvxpyusdusdc',
+
   // ----------------
   // Base collaterals
   // ----------------
-  'df65c4f4-e33a-481c-bac8-0c2252867c93': 'wcusdcv3',
+  'df65c4f4-e33a-481c-bac8-0c2252867c93': 'wcusdbcv3',
   '9d09b0be-f6c2-463a-ad2c-4552b3e12bd9': 'wsgusdbc',
 }
 // 'fa4d7ee4-0001-4133-9e8d-cf7d5d194a91': 'fudsc-vault',
