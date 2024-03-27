@@ -1,7 +1,7 @@
-export const formatNumber = (num: number) => {
+export const formatNumber = (num: number, digits = 4) => {
   return num.toLocaleString(undefined, {
     minimumFractionDigits: 0,
-    maximumFractionDigits: 4,
+    maximumFractionDigits: digits,
   })
 }
 

@@ -22,10 +22,10 @@ const ZapDetails = ({ hideGasCost, ...props }: Props) => {
           sx={{
             fontSize: 14,
             fontWeight: 500,
-            color: (priceImpact || 0) > 0 ? 'danger' : 'text',
+            color: (priceImpact || 0) > 1 ? 'danger' : 'text',
           }}
         >
-          {formatNumber(priceImpact || 0)}%
+          {formatNumber(priceImpact || 0, 2)}%
         </Text>
       </Box>
       <Box

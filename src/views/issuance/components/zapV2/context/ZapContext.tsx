@@ -280,7 +280,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     if (!data || !data.result) {
       return ['0', 0, 0, 0, undefined]
     }
-    const amountOut = formatUnits(
+    const _amountOut = formatUnits(
       BigInt(data.result.amountOut),
       tokenOut.decimals
     )
@@ -289,14 +289,19 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       ? (+(data.result.gas ?? 0) * +gas?.formatted?.gasPrice * ethPrice) / 1e9
       : 0
 
+    const inputPriceValue = (tokenIn?.price || 0) * Number(amountIn) || 1
+    const outputPriceValue = (tokenOut?.price || 0) * Number(_amountOut)
+    const _priceImpact =
+      ((inputPriceValue - outputPriceValue) / inputPriceValue) * 100
+
     return [
-      amountOut,
-      data.result.priceImpact,
+      _amountOut,
+      Math.max(0, _priceImpact),
       data.result.dustValue ?? 0,
       estimatedGasCost,
       data.result.approvalAddress,
     ]
-  }, [data, tokenOut, gas, ethPrice])
+  }, [data, tokenOut, gas, ethPrice, tokenIn?.price, amountIn, tokenOut?.price])
 
   useEffect(() => {
     if (apiError || (data && data.error)) {
@@ -326,7 +331,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         secondaryColor: 'rgba(255, 0, 0, 0.20)',
         disableSubmit: true,
       })
-    } else if (data?.result && data.result.priceImpact >= 1) {
+    } else if (priceImpact >= 1) {
       setError({
         title: 'Warning: High price impact',
         message:
@@ -338,7 +343,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         } Anyway`,
       })
     }
-  }, [apiError, data, operation, setError])
+  }, [apiError, data, operation, setError, priceImpact])
 
   const _setZapEnabled = useCallback(
     (value: boolean) => {
