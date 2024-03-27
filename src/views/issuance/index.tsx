@@ -13,7 +13,7 @@ const IssuanceMethods = () => {
   const { zapEnabled, setZapEnabled } = useZap()
 
   return (
-    <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[1, 5]}>
+    <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[1, 4]}>
       {zapEnabled ? (
         <RTokenZapIssuance />
       ) : (
