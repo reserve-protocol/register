@@ -32,9 +32,9 @@ const IssuanceMethods = () => {
       )}
       <Box
         sx={{
-          borderLeft: ['none', 'none', '1px solid'],
-          borderColor: ['border', 'border', 'border'],
-          minHeight: ['auto', 'auto', 'calc(100vh - 73px)'],
+          borderLeft: ['none', 'none', 'none', '1px solid'],
+          borderColor: ['border', 'border', 'border', 'border'],
+          minHeight: ['auto', 'auto', 'auto', 'calc(100vh - 73px)'],
         }}
       >
         <IssuanceInfo mb={[1, 0]} />
