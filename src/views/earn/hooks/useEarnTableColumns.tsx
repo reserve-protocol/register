@@ -1,7 +1,9 @@
 import { t } from '@lingui/macro'
 import { createColumnHelper } from '@tanstack/react-table'
 import Help from 'components/help'
+import Beefy from 'components/icons/Beefy'
 import ChainLogo from 'components/icons/ChainLogo'
+import Concentrator from 'components/icons/Concentrator'
 import Aerodrome from 'components/icons/logos/Aerodrome'
 import Balancer from 'components/icons/logos/Balancer'
 import Convex from 'components/icons/logos/Convex'
@@ -56,6 +58,8 @@ const useEarnTableColumns = (compact: boolean) => {
       'uniswap-v3': <Uniswap fontSize={16} />,
       'balancer-v2': <Balancer fontSize={16} />,
       'extra-finance': <Extra fontSize={16} />,
+      beefy: <Beefy />,
+      concentrator: <Concentrator />,
     }
 
     return [
