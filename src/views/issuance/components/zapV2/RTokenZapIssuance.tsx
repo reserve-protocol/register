@@ -10,9 +10,9 @@ const RTokenZapIssuance = () => {
   return (
     <Box
       sx={{
-        mt: 4,
-        ml: 4,
-        mr: [4, 4, 4, 0],
+        mt: [0, 4],
+        ml: [0, 4],
+        mr: [0, 4, 4, 0],
         display: 'flex',
         flexDirection: 'column',
         alignSelf: 'stretch',
