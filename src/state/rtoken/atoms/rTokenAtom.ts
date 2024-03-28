@@ -151,7 +151,7 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       collaterals: tokens.map((t) => {
         let symbol = t.symbol
 
-        if (t.symbol.toLowerCase() === 'wcusdcv3' && chainId === ChainId.Base) {
+        if (t.address === '0xa8d818C719c1034E731Feba2088F4F011D44ACB3') {
           symbol = 'wcusdbcv3'
         }
 
