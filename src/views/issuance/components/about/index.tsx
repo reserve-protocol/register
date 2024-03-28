@@ -9,7 +9,7 @@ const About = () => {
 
   return (
     <Box sx={{ height: 'fit-content' }}>
-      <Box variant="layout.borderBox" p={4}>
+      <Box p={7}>
         <Text variant="strong" mb={2}>
           <Trans>Regular minting </Trans>
         </Text>

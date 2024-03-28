@@ -1,25 +1,31 @@
 import { Trans } from '@lingui/macro'
 import InfoBox from 'components/info-box'
+import TabMenu from 'components/tab-menu'
 import { useMemo } from 'react'
+import { ArrowDown, ArrowUp } from 'react-feather'
 import {
   Area,
   AreaChart as Chart,
   ResponsiveContainer,
   Tooltip,
+  YAxis,
 } from 'recharts'
 import { Badge, Box, BoxProps, Card, Flex, Spinner, Text } from 'theme-ui'
 import { StringMap } from 'types'
 import { formatCurrency } from 'utils'
 
-interface Props extends BoxProps {
-  data: { value: number; label?: string; display?: string }[]
-  title: string
+type ChartData = { value: number; label?: string; display?: string }[]
+
+interface Props extends Omit<BoxProps, 'title'> {
+  data: ChartData
+  title: React.ReactNode
   heading?: string
   timeRange?: StringMap
   currentRange?: string
   onRangeChange?(range: string): void
   height?: number
   moreActions?: React.ReactNode
+  domain?: [number | string, number | string]
 }
 
 function CustomTooltip({ payload, label, active }: any) {
@@ -37,6 +43,38 @@ function CustomTooltip({ payload, label, active }: any) {
   return null
 }
 
+const Gain = ({ data }: { data: ChartData }) => {
+  const gain = useMemo(() => {
+    if (data && data.length > 1) {
+      return (
+        ((data[data.length - 1].value - data[0].value) / (data[0].value || 1)) *
+        100
+      )
+    }
+
+    return 0
+  }, [data])
+
+  let gainColor = 'lightText'
+
+  if (gain >= 0.01) {
+    gainColor = 'primary'
+  } else if (gain < 0) {
+    gainColor = 'danger'
+  }
+
+  return (
+    <Box ml="auto" sx={{ color: gainColor }} variant="layout.verticalAlign">
+      {gain >= 0.01 && <ArrowUp strokeWidth={1.2} />}
+      {gain < 0 && <ArrowDown strokeWidth={1.2} />}
+      <Text ml="2" variant="bold">
+        {gain >= 0.01 && '+'}
+        {formatCurrency(gain)}%
+      </Text>
+    </Box>
+  )
+}
+
 // TODO: Dark mode colors
 // TODO: Use dataset to calculate +- value between range
 const AreaChart = ({
@@ -48,26 +86,19 @@ const AreaChart = ({
   onRangeChange,
   height = 100,
   moreActions,
+  domain,
   ...props
 }: Props) => {
-  const gain = useMemo(() => {
-    if (data && data.length > 1) {
-      return formatCurrency(
-        ((data[data.length - 1].value - data[0].value) / (data[0].value || 1)) *
-          100
-      )
+  const options = useMemo(() => {
+    if (!timeRange) {
+      return null
     }
 
-    return 0
-  }, [data])
-
-  let gainColor = 'lightText'
-
-  if (+gain > 0) {
-    gainColor = 'success'
-  } else if (+gain < 0) {
-    gainColor = 'danger'
-  }
+    return Object.values(timeRange).map((key) => ({
+      key,
+      label: key,
+    }))
+  }, [JSON.stringify(timeRange)])
 
   return (
     <Box {...props}>
@@ -77,19 +108,20 @@ const AreaChart = ({
         </Flex>
       )}
       <Flex sx={{ fontSize: 3 }} ml="2" mb={3}>
-        <Text sx={{ overflow: 'hidden' }}>{title}</Text>
-        <Text ml="auto" sx={{ color: gainColor, fontWeight: 500 }}>
-          {gain}%
-        </Text>
+        {title}
+        <Gain data={data} />
       </Flex>
       {data && !!data.length && (
         <ResponsiveContainer height={height}>
           <Chart data={data}>
+            <YAxis hide visibility="0" domain={domain} />
+
             <Tooltip content={<CustomTooltip />} />
             <Area
               type="monotone"
               dataKey="value"
               stroke="#2150A9"
+              strokeWidth={2}
               fill="#E4EAF5"
             />
           </Chart>
@@ -112,24 +144,12 @@ const AreaChart = ({
         mt={3}
         sx={{ justifyContent: 'space-between' }}
       >
-        {!!timeRange && onRangeChange && (
-          <Flex sx={{ alignItems: 'center', fontWeight: 500 }}>
-            {Object.values(timeRange).map((range) =>
-              currentRange === range ? (
-                <Badge sx={{ width: '48px', textAlign: 'center' }} key={range}>
-                  <Text sx={{ fontWeight: 700 }}>{range}</Text>
-                </Badge>
-              ) : (
-                <Box
-                  key={range}
-                  sx={{ cursor: 'pointer', width: '48px', textAlign: 'center' }}
-                  onClick={() => onRangeChange(range)}
-                >
-                  <Text>{range}</Text>
-                </Box>
-              )
-            )}
-          </Flex>
+        {!!options && currentRange && onRangeChange && (
+          <TabMenu
+            items={options}
+            active={currentRange}
+            onMenuChange={onRangeChange}
+          />
         )}
         {moreActions}
       </Box>
@@ -138,3 +158,25 @@ const AreaChart = ({
 }
 
 export default AreaChart
+
+// {
+//   !!timeRange && onRangeChange && (
+//     <Flex sx={{ alignItems: 'center', fontWeight: 500 }}>
+//       {Object.values(timeRange).map((range) =>
+//         currentRange === range ? (
+//           <Badge sx={{ width: '48px', textAlign: 'center' }} key={range}>
+//             <Text sx={{ fontWeight: 700 }}>{range}</Text>
+//           </Badge>
+//         ) : (
+//           <Box
+//             key={range}
+//             sx={{ cursor: 'pointer', width: '48px', textAlign: 'center' }}
+//             onClick={() => onRangeChange(range)}
+//           >
+//             <Text>{range}</Text>
+//           </Box>
+//         )
+//       )}
+//     </Flex>
+//   )
+// }

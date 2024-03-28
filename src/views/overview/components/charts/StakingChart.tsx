@@ -28,7 +28,7 @@ const dailyPriceQuery = gql`
   query getTokenDailyPrice($id: String!, $fromTime: Int!) {
     rtoken(id: $id) {
       snapshots: dailySnapshots(
-        first: 1000
+        first: 365
         where: { timestamp_gte: $fromTime }
       ) {
         timestamp

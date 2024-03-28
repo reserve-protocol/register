@@ -43,6 +43,14 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'Aerodrome',
     site: 'https://aerodrome.finance/',
   },
+  beefy: {
+    name: 'Beefy',
+    site: 'https://app.beefy.finance/',
+  },
+  concentrator: {
+    name: 'Concentrator',
+    site: 'https://concentrator.aladdin.club/',
+  },
 }
 
 // List of supported networks with label

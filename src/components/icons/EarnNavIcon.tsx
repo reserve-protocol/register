@@ -1,6 +1,6 @@
 import { SVGProps } from 'react'
 
-const WalletOutlineIcon = (props: SVGProps<SVGSVGElement>) => (
+const EarnNavIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={16}
@@ -14,4 +14,4 @@ const WalletOutlineIcon = (props: SVGProps<SVGSVGElement>) => (
     />
   </svg>
 )
-export default WalletOutlineIcon
+export default EarnNavIcon
