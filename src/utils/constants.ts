@@ -43,6 +43,14 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'Aerodrome',
     site: 'https://aerodrome.finance/',
   },
+  beefy: {
+    name: 'Beefy',
+    site: 'https://app.beefy.finance/',
+  },
+  concentrator: {
+    name: 'Concentrator',
+    site: 'https://concentrator.aladdin.club/',
+  },
 }
 
 // List of supported networks with label
@@ -249,8 +257,3 @@ export const collateralDisplay: Record<string, string> = {
   stkcvxpyusdusdc: 'Convex PYUSD/USDC',
   saethpyusd: 'AAVE PYUSD V3',
 }
-
-export const EXTRA_UNDERLYING_TOKENS_POOLS = [
-  '0x5bfb340fa9305abb164fb0248d0d82fc3d82c3bb',
-  '0xb5e331615fdba7df49e05cdeaceb14acdd5091c3',
-]
