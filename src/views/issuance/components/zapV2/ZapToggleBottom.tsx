@@ -14,11 +14,11 @@ const ZapToggleBottom = ({
       sx={{
         gap: 3,
         justifyContent: 'space-between',
-        flexDirection: ['column', 'row'],
-        alignItems: ['flex-start', 'center'],
+        flexDirection: ['column', 'row', 'row', 'row'],
+        alignItems: ['flex-start', 'center', 'center', 'center'],
       }}
-      ml={7}
-      mr={4}
+      ml={[4, 7, 7, 7]}
+      mr={[0, 7, 7, 4]}
     >
       <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
         <AsteriskIcon />

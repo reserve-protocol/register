@@ -35,7 +35,7 @@ const IssuanceInfoStat = ({
             Available
             <Text variant="legend"> / Max Charge</Text>
           </Text>
-          <Text sx={{ fontWeight: 'bold' }}>
+          <Text sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>
             {formatCurrency(available, 0)}{' '}
             <Text variant="legend" sx={{ fontWeight: 'normal' }}>
               / {formatCurrency(max, 0)}
@@ -120,7 +120,7 @@ const IssuanceInfo = (props: BoxProps) => {
   ])
 
   return (
-    <Box p={4} {...props}>
+    <Box p={[0, 4]} pt={4} {...props}>
       <IssuanceInfoStat
         icon={<GlobalMaxMintIcon />}
         title={t`Mint - Global Max`}
