@@ -64,30 +64,20 @@ const earnPoolQuery = gql`
   }
 `
 
-const getPoolsByUnderlying = (data: DefillamaPool[]): DefillamaPool[] => {
-  return data.filter((pool) =>
-    (pool.underlyingTokens || []).some(
+const filterPools = (
+  data: DefillamaPool[],
+  ids?: string[]
+): DefillamaPool[] => {
+  return data.filter((pool) => {
+    const isUnderlyingTokenValid = (pool.underlyingTokens || []).some(
       (underlyingToken) =>
         !!listedRTokens[underlyingToken?.toLowerCase()] ||
         EXTRA_POOLS_BY_UNDERLYING_TOKEN.includes(underlyingToken?.toLowerCase())
-    )
-  )
-}
-
-const getPoolsById = (
-  data: DefillamaPool[],
-  ids: string[]
-): DefillamaPool[] => {
-  return data.filter((pool) => ids.includes(pool.pool))
-}
-
-const removeDuplicates = (pools: DefillamaPool[]): DefillamaPool[] => {
-  const poolMap = pools.reduce((acc, pool) => {
-    acc[pool.pool] = pool
-    return acc
-  }, {} as Record<string, DefillamaPool>)
-  return Object.values(poolMap)
-}
+    );
+    const includedId = ids ? ids.includes(pool.pool) : true;
+    return isUnderlyingTokenValid || includedId;
+  });
+};
 
 const filterByChains = (
   pools: DefillamaPool[],
@@ -173,18 +163,13 @@ const addPoolURL = (
 }
 
 const mapPools = (data: DefillamaPool[], earnPools: EarnPool[]) => {
-  const poolsByUnderlying = getPoolsByUnderlying(data)
   const ids = earnPools.map((pool) => pool.llamaId)
-  const poolsById = getPoolsById(data, ids)
+  const filteredPools = filterPools(data, ids)
 
-  const allPools = removeDuplicates([
-    ...poolsByUnderlying,
-    ...poolsById,
-  ])
+  const filteredPoolsByChains = filterByChains(filteredPools, [mainnet.name, base.name])
+  const filteredPoolsByProject = removeByProject(filteredPoolsByChains, 'reserve')
 
-  const filteredPoolsByChains = filterByChains(allPools, [mainnet.name, base.name])
-  const filteredPools = removeByProject(filteredPoolsByChains, 'reserve')
-  const enrichedPools = enrichPoolUnderlyingAndId(filteredPools)
+  const enrichedPools = enrichPoolUnderlyingAndId(filteredPoolsByProject)
   const parsedPools = parsePoolSymbol(enrichedPools)
   const pools = addPoolURL(parsedPools, earnPools)
 
