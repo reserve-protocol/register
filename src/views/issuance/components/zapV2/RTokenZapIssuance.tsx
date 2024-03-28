@@ -22,14 +22,11 @@ const RTokenZapIssuance = () => {
         height: 'fit-content',
       }}
     >
-      <Box p="24px">
+      <Box p={4}>
         <ZapTabs />
       </Box>
       <Divider m={0} sx={{ borderColor: 'borderSecondary' }} />
-      <Box
-        p="24px"
-        sx={{ display: 'flex', flexDirection: 'column', gap: '24px' }}
-      >
+      <Box p={4} sx={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <ZapInputContainer />
           <Box variant="layout.verticalAlign" sx={{ gap: '12px', px: 3 }}>
