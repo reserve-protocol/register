@@ -1,21 +1,26 @@
 import { Trans } from '@lingui/macro'
 import OverviewIcon from 'components/icons/OverviewIcon'
 import TokenItem from 'components/token-item'
+import { useChainlinkPrices } from 'hooks/useChainlinkPrices'
+import { useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
+import { chainIdAtom } from 'state/atoms'
 import { Box, BoxProps, Divider, Flex, Spinner, Text } from 'theme-ui'
 import { BigNumberMap, Token } from 'types'
-import { formatCurrency } from 'utils'
-import { formatUnits, getAddress } from 'viem'
+import { getAddress } from 'viem'
+import CollateralValue from './CollateralValue'
 
 interface Props extends BoxProps {
   collaterals: Token[]
   quantities: BigNumberMap | null
+  prices?: (number | undefined)[]
 }
 
 const CollateralDistribution = ({
   collaterals,
   quantities,
+  prices,
   sx = {},
   ...props
 }: Props) => {
@@ -50,25 +55,26 @@ const CollateralDistribution = ({
       {isVisible && (
         <Box>
           <Divider mx={-2} />
-          {collaterals.map((collateral) => (
-            <Flex mt={2} key={collateral.address}>
-              <TokenItem symbol={collateral.symbol} />
-              <Box mx="auto" />
-              <Text sx={{ fontWeight: '500' }}>
-                {quantities && quantities[getAddress(collateral.address)] ? (
-                  formatCurrency(
-                    Number(
-                      formatUnits(
-                        quantities[getAddress(collateral.address)],
-                        collateral.decimals
-                      )
-                    )
-                  )
-                ) : (
-                  <Spinner color="black" size={14} />
-                )}
-              </Text>
-            </Flex>
+          {collaterals.map((collateral, i) => (
+            <Box
+              key={collateral.address}
+              variant="layout.verticalAlign"
+              mt={2}
+              sx={{ justifyContent: 'space-between' }}
+            >
+              <Box>
+                <TokenItem symbol={collateral.symbol} />
+              </Box>
+              {quantities && quantities[getAddress(collateral.address)] ? (
+                <CollateralValue
+                  quantity={quantities[getAddress(collateral.address)]}
+                  decimals={collateral.decimals}
+                  price={prices?.[i]}
+                />
+              ) : (
+                <Spinner color="black" size={14} />
+              )}
+            </Box>
           ))}
         </Box>
       )}
