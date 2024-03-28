@@ -117,7 +117,7 @@ export const ROUTES = Object.freeze({
   STAKING: 'staking',
   ISSUANCE: 'issuance',
   AUCTIONS: 'auctions',
-  DEPLOY: 'deploy',
+  DEPLOY: '/deploy',
   SETTINGS: 'settings',
   GOVERNANCE_SETUP: 'governance/setup',
   GOVERNANCE_INFO: 'governance-info',
@@ -256,4 +256,5 @@ export const collateralDisplay: Record<string, string> = {
   saethusdc: 'AAVE USDC V3',
   stkcvxpyusdusdc: 'Convex PYUSD/USDC',
   saethpyusd: 'AAVE PYUSD V3',
+  sabasusdc: 'AAVE USDC V3',
 }

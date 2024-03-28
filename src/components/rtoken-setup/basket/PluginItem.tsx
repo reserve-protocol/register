@@ -19,6 +19,7 @@ import { CollateralPlugin } from 'types'
 import { formatPercentage, parseDuration } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { Collateral } from '../atoms'
+import { collateralDisplay } from 'utils/constants'
 
 interface PluginItemProps extends BoxProps {
   data: CollateralPlugin | Collateral
@@ -84,7 +85,11 @@ const PluginItem = ({ data, onCheck, selected, ...props }: PluginItemProps) => {
   const [isVisible, setVisible] = useState(false)
   const chainId = useAtomValue(chainIdAtom)
   const collateralYields = useAtomValue(collateralYieldAtom)
-  const symbol = data.symbol||(data as any).underlyingToken
+  const symbol = (data.symbol || (data as any).underlyingToken).replace(
+    '-VAULT',
+    ''
+  )
+  const displayName = collateralDisplay[symbol.toLowerCase()] ?? symbol
 
   return (
     <Box {...props}>
@@ -92,7 +97,7 @@ const PluginItem = ({ data, onCheck, selected, ...props }: PluginItemProps) => {
         <TokenLogo width={24} symbol={data.symbol} />
         <Box ml={3}>
           <Box variant="layout.verticalAlign">
-            <Text>{data.symbol} plugin</Text>
+            <Text>{displayName}</Text>
             <GoTo
               ml={1}
               href={getExplorerLink(

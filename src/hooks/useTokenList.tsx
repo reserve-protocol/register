@@ -130,8 +130,8 @@ const useTokenList = () => {
                 let symbol = t.symbol
 
                 if (
-                  t.symbol.toLowerCase() === 'wcusdcv3' &&
-                  chain === ChainId.Base
+                  t.id ===
+                  '0xa8d818C719c1034E731Feba2088F4F011D44ACB3'.toLowerCase()
                 ) {
                   symbol = 'wcusdbcv3'
                 }
