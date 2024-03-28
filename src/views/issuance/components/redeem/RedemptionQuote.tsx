@@ -2,7 +2,7 @@ import OverviewIcon from 'components/icons/OverviewIcon'
 import useRToken from 'hooks/useRToken'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { ChevronRight } from 'react-feather'
-import { isModuleLegacyAtom, rTokenStateAtom } from 'state/atoms'
+import { chainIdAtom, isModuleLegacyAtom, rTokenStateAtom } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
 import { BigNumberMap } from 'types'
 import CollateralDistribution from '../issue/CollateralDistribution'
@@ -11,6 +11,7 @@ import {
   redeemNonceAtom,
   redeemQuotesAtom,
 } from './atoms'
+import { useChainlinkPrices } from 'hooks/useChainlinkPrices'
 
 const quoteQuantitiesAtom = atom((get) => {
   const quote = get(redeemQuotesAtom)
@@ -27,14 +28,20 @@ const quoteQuantitiesAtom = atom((get) => {
 })
 
 const CurrentRedemptionQuote = () => {
+  const chainId = useAtomValue(chainIdAtom)
   const rToken = useRToken()
   const quote = useAtomValue(quoteQuantitiesAtom)
+  const prices = useChainlinkPrices(
+    chainId,
+    (rToken?.collaterals ?? []).map((c) => c.address)
+  )
 
   return (
     <CollateralDistribution
       mt={3}
       collaterals={rToken?.collaterals ?? []}
       quantities={quote}
+      prices={prices}
     />
   )
 }
