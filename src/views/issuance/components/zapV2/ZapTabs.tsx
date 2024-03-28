@@ -17,7 +17,6 @@ const ZapTabs = () => {
       sx={{ justifyContent: 'space-between' }}
     >
       <TabMenu
-        mt={[3, 0]}
         active={operation}
         items={backingOptions}
         small
