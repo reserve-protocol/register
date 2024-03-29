@@ -66,12 +66,16 @@ export const collateralsPerRTokenAtom = atom<CollateralPlugin[]>((get) => {
   }
 
   return rToken.collaterals.reduce((acc, collateral) => {
+    // TODO: Temporal until usdbc plugin is removed
+    const symbol =
+      collateral.symbol === 'wcusdbcv3' ? 'wcUSDCv3' : collateral.symbol
+
     // check if rToken is on the plugin list
-    if (plugins[collateral.symbol]) {
+    if (plugins[symbol]) {
       // Extend the plugin info
       // Only addresses for asset/erc20 could be different and are taken from the collateral
       acc.push({
-        ...plugins[collateral.symbol],
+        ...plugins[symbol],
         address: assets[collateral.address].address,
         erc20: collateral.address,
       })
