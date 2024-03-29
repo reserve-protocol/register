@@ -128,10 +128,12 @@ const useTokenList = () => {
             const collaterals = (token?.rToken?.collaterals ?? []).map(
               (t: any) => {
                 let symbol = t.symbol
-
+                // TODO: Temporal until usdbc plugin is removed
                 if (
                   t.id ===
-                  '0xa8d818C719c1034E731Feba2088F4F011D44ACB3'.toLowerCase()
+                    '0xa8d818C719c1034E731Feba2088F4F011D44ACB3'.toLowerCase() ||
+                  t.id ===
+                    '0xbC0033679AEf41Fb9FeB553Fdf55a8Bb2fC5B29e'.toLowerCase()
                 ) {
                   symbol = 'wcusdbcv3'
                 }

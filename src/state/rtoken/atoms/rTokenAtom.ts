@@ -151,7 +151,11 @@ const rTokenAtom: Atom<ReserveToken | null> = atomWithLoadable(
       collaterals: tokens.map((t) => {
         let symbol = t.symbol
 
-        if (t.address === '0xa8d818C719c1034E731Feba2088F4F011D44ACB3') {
+        // TODO: Temporal until usdbc plugin is removed
+        if (
+          t.address === '0xa8d818C719c1034E731Feba2088F4F011D44ACB3' ||
+          t.address === '0xbC0033679AEf41Fb9FeB553Fdf55a8Bb2fC5B29e'
+        ) {
           symbol = 'wcusdbcv3'
         }
 
