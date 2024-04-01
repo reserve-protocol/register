@@ -8,6 +8,7 @@ import { StringMap } from 'types'
 interface FieldProps extends InputProps {
   label?: string
   help?: string
+  required?: boolean
 }
 
 interface FormFieldProps extends FieldProps {
@@ -37,15 +38,19 @@ export const getErrorMessage = (error: StringMap): string => {
 export const Field = ({
   label,
   help,
+  required,
   children,
   sx = {},
   ...props
 }: FieldProps) => (
   <Box sx={{ ...sx, position: 'relative' }} {...props}>
     <Flex mb={2} sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-      <Text variant="subtitle" ml={3} sx={{ fontSize: 1 }}>
-        {label}
-      </Text>
+      <Box variant="layout.verticalAlign" sx={{ gap: 1 }} ml={3}>
+        <Text variant="subtitle" sx={{ fontSize: 1 }}>
+          {label}
+        </Text>
+        {required && <Text color="red">*</Text>}
+      </Box>
       {!!help && <Help mx={2} content={help} />}
     </Flex>
     {children}
