@@ -1,12 +1,13 @@
-import { Box, Card, Text } from 'theme-ui'
-import ProposalDetail from 'views/governance/components/ProposalDetailPreview'
+import { Trans, t } from '@lingui/macro'
 import MDEditor from '@uiw/react-md-editor'
-import { useEffect, useState } from 'react'
 import { Input } from 'components'
 import Field from 'components/field'
-import { t, Trans } from '@lingui/macro'
-import { Divider } from 'theme-ui'
+import useRToken from 'hooks/useRToken'
 import { useSetAtom } from 'jotai'
+import { useEffect, useMemo, useState } from 'react'
+import { Box, Card, Divider, Text } from 'theme-ui'
+import { LISTED_RTOKEN_ADDRESSES } from 'utils/constants'
+import ProposalDetail from 'views/governance/components/ProposalDetailPreview'
 import { proposalDescriptionAtom } from '../atoms'
 
 const ConfirmProposalForm = ({
@@ -17,16 +18,28 @@ const ConfirmProposalForm = ({
   calldatas: string[]
 }) => {
   const [title, setTitle] = useState('')
+  const [rfc, setRFC] = useState('')
   const [description, setDescription] = useState<string | undefined>('')
   const setProposalDescription = useSetAtom(proposalDescriptionAtom)
+  const rToken = useRToken()
+
+  const showRFC = useMemo(
+    () =>
+      LISTED_RTOKEN_ADDRESSES[rToken?.chainId || -1]?.includes(
+        rToken?.address?.toLowerCase() || ''
+      ),
+    [rToken?.chainId, rToken?.address]
+  )
 
   useEffect(() => {
-    if (!title) {
+    if (!title || (showRFC && !rfc)) {
       setProposalDescription('')
     } else {
-      setProposalDescription(`# ${title} \n ${description || ''}`)
+      setProposalDescription(
+        `# ${title} \n [${rfc}](${rfc}) \n ${description || ''}`
+      )
     }
-  }, [title, description])
+  }, [title, description, rfc, showRFC, setProposalDescription])
 
   return (
     <Box>
@@ -43,6 +56,15 @@ const ConfirmProposalForm = ({
             placeholder={t`Input proposal title`}
           />
         </Field>
+        {showRFC && (
+          <Field label={t`RFC`} mb={3}>
+            <Input
+              value={rfc}
+              onChange={setRFC}
+              placeholder={t`Input RFC link`}
+            />
+          </Field>
+        )}
 
         <Text variant="subtitle" ml={3} sx={{ fontSize: 1 }} mb={2}>
           <Trans>Description</Trans>
