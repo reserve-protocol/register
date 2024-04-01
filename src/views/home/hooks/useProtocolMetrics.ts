@@ -8,13 +8,16 @@ import { formatEther } from 'viem'
 import { homeMetricsAtom } from '../atoms'
 import { rsrPriceAtom } from 'state/atoms'
 
-interface ProtocolMetricsResponse {
-  tokens: {
-    lastPriceUSD: string
-    totalSupply: bigint
-    cumulativeVolume: bigint
-    transferCount: string
-  }[]
+type TokenMetrics = {
+  id: string
+  lastPriceUSD: string
+  totalSupply: bigint
+  cumulativeVolume: bigint
+  transferCount: string
+}
+
+type ProtocolMetricsResponse = {
+  tokens: TokenMetrics[]
   protocol: {
     totalValueLockedUSD: string
     totalRTokenUSD: string
@@ -28,16 +31,10 @@ interface ProtocolMetricsResponse {
   }
 }
 
-type TokenMetrics = {
-  tokens: {
-    lastPriceUSD: string
-    totalSupply: bigint
-  }[]
-}
-
 const protocolMetricsQuery = gql`
   query GetProtocolMetrics($id: String!) {
-    tokens(where: { id: "0x196f4727526ea7fb1e17b2071b3d8eaa38486988" }) {
+    tokens(where: { totalSupply_gt: 0, lastPriceUSD_gt: 0 }, first: 1000) {
+      id
       lastPriceUSD
       totalSupply
       cumulativeVolume
@@ -57,15 +54,6 @@ const protocolMetricsQuery = gql`
   }
 `
 
-const tokensQuery = gql`
-  query GetTokens {
-    tokens(where: { totalSupply_gt: 0, lastPriceUSD_gt: 0 }, first: 1000) {
-      totalSupply
-      lastPriceUSD
-    }
-  }
-`
-
 const useProtocolMetrics = () => {
   const [stats, setStats] = useAtom(homeMetricsAtom)
   const rsrPrice = useAtomValue(rsrPriceAtom)
@@ -77,14 +65,8 @@ const useProtocolMetrics = () => {
     { keepPreviousData: true }
   )
 
-  const { data: tokens, isLoading: isLoadingTokens } = useMultichainQuery(
-    tokensQuery,
-    {},
-    { keepPreviousData: true }
-  )
-
   useEffect(() => {
-    if (data && tokens) {
+    if (data) {
       let volume = 0
       let marketCap = 0
       let stakeRevenue = 0
@@ -92,8 +74,8 @@ const useProtocolMetrics = () => {
 
       for (const chain of supportedChainList) {
         const metrics = data[chain] as ProtocolMetricsResponse
-        const _tokens = tokens[chain] as TokenMetrics
-        const tokensMarketCap = _tokens.tokens.reduce(
+        const tokens = data[chain].tokens as TokenMetrics[]
+        const tokensMarketCap = tokens.reduce(
           (acc, token) =>
             acc + +formatEther(token.totalSupply) * +token.lastPriceUSD,
           0
@@ -108,10 +90,13 @@ const useProtocolMetrics = () => {
         tvl += +formatEther(metrics.protocol.rsrStaked as any) * rsrPrice
       }
 
+      const rsvMetrics = (data[ChainId.Mainnet].tokens as TokenMetrics[]).find(
+        (t) => t.id === '0x196f4727526ea7fb1e17b2071b3d8eaa38486988'
+      )
+
       // TODO: remove entire rsv thing
-      if (data[ChainId.Mainnet].tokens[0]) {
+      if (rsvMetrics) {
         // Aggregate RSV
-        const rsvMetrics = data[ChainId.Mainnet].tokens[0]
         const rsvMarketCapUsd =
           +formatEther(rsvMetrics.totalSupply) * +rsvMetrics.lastPriceUSD
 
@@ -125,11 +110,11 @@ const useProtocolMetrics = () => {
       // Set atom for cache
       setStats({ volume, marketCap, stakeRevenue, tvl })
     }
-  }, [data, rsrPrice, tokens])
+  }, [data, rsrPrice])
 
   return useMemo(() => {
-    return { data: stats, isLoading: isLoading || isLoadingTokens }
-  }, [stats, isLoading, isLoadingTokens])
+    return { data: stats, isLoading }
+  }, [stats, isLoading])
 }
 
 export default useProtocolMetrics
