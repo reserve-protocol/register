@@ -2,11 +2,10 @@ import { gql } from 'graphql-request'
 import { useMultichainQuery } from 'hooks/useQuery'
 import { useAtom, useAtomValue } from 'jotai'
 import { useEffect, useMemo } from 'react'
-import { ChainId } from 'utils/chains'
+import { rsrPriceAtom } from 'state/atoms'
 import { PROTOCOL_SLUG, supportedChainList } from 'utils/constants'
 import { formatEther } from 'viem'
 import { homeMetricsAtom } from '../atoms'
-import { rsrPriceAtom } from 'state/atoms'
 
 type TokenMetrics = {
   id: string
@@ -90,21 +89,6 @@ const useProtocolMetrics = () => {
         tvl += +formatEther(metrics.protocol.rsrStaked as any) * rsrPrice
       }
 
-      const rsvMetrics = (data[ChainId.Mainnet].tokens as TokenMetrics[]).find(
-        (t) => t.id === '0x196f4727526ea7fb1e17b2071b3d8eaa38486988'
-      )
-
-      // TODO: remove entire rsv thing
-      if (rsvMetrics) {
-        // Aggregate RSV
-        const rsvMarketCapUsd =
-          +formatEther(rsvMetrics.totalSupply) * +rsvMetrics.lastPriceUSD
-
-        marketCap += rsvMarketCapUsd
-        volume +=
-          +formatEther(rsvMetrics.cumulativeVolume) *
-          Number(rsvMetrics.lastPriceUSD)
-      }
       tvl += marketCap
 
       // Set atom for cache
