@@ -48,7 +48,7 @@ const ConfirmProposalForm = ({
           <Trans>Proposal description</Trans>
         </Text>
         <Divider my={4} mx={-4} />
-        <Field label={t`Title`} mb={3}>
+        <Field label={t`Title`} mb={3} required>
           <Input
             value={title}
             onChange={setTitle}
@@ -57,7 +57,7 @@ const ConfirmProposalForm = ({
           />
         </Field>
         {showRFC && (
-          <Field label={t`RFC`} mb={3}>
+          <Field label={t`RFC`} mb={3} required>
             <Input
               value={rfc}
               onChange={setRFC}
