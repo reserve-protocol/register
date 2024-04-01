@@ -136,7 +136,9 @@ const useProposalTx = () => {
   const upgrades = useAtomValue(contractUpgradesAtom)
   const autoRegisterBasketAssets = useAtomValue(autoRegisterBasketAssetsAtom)
   const autoRegisterBackupAssets = useAtomValue(autoRegisterBackupAssetsAtom)
-  const weightsSum = useAtomValue(rTokenCollateralDetailedAtom)?.map((c) => c.distributionRaw).reduce((a, b) => a + parseEther(b) / 100n, 0n)
+  const weightsSum = useAtomValue(rTokenCollateralDetailedAtom)
+    ?.map((c) => c.distributionRaw)
+    .reduce((a, b) => a + parseEther(b) / 100n, 0n)
 
   const isAssistedUpgrade = useAtomValue(isAssistedUpgradeAtom)
   const { calls, addresses } = useUpgradeHelper()
@@ -403,7 +405,7 @@ const useProposalTx = () => {
 
           for (const collateral of collaterals) {
             if (autoRegisterBackupAssets) {
-              addToRegistry(collateral.address as Address)
+              addToRegistry(collateral.address, collateral.erc20)
               if (
                 !!collateral.rewardTokens?.length &&
                 collateral.rewardTokens[0] != zeroAddress
@@ -414,7 +416,7 @@ const useProposalTx = () => {
               }
             }
 
-            backupCollaterals.push(collateral.address as Address)
+            backupCollaterals.push(collateral.erc20)
           }
 
           addresses.push(contracts.basketHandler.address)
