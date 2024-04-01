@@ -73,7 +73,8 @@ const useProtocolMetrics = () => {
 
         if (metrics.protocol) {
           volume += +metrics.protocol.cumulativeVolumeUSD
-          marketCap += +metrics.protocol.totalRTokenUSD
+          // TODO: Wrong marketcap returned from mainnet, investigating
+          marketCap += chain === 1 ? 46301866 : +metrics.protocol.totalRTokenUSD
           stakeRevenue += +metrics.protocol.cumulativeRSRRevenueUSD
         }
 
