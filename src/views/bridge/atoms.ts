@@ -22,17 +22,28 @@ const defaultBridgeAsset =
   new URL(window.location.href).searchParams.get('asset') ?? 'rsr'
 const defaultL2 = new URL(window.location.href).searchParams.get('l2') ?? null
 
-const defaultToken =
-  BRIDGE_ASSETS.find(
-    (asset) => asset.L1symbol.toLowerCase() === defaultBridgeAsset.toLowerCase()
-  ) || BRIDGE_ASSETS[1]
 const defaultChain =
   defaultL2 && supportedChainList.find((chain) => chain === Number(defaultL2))
     ? Number(defaultL2)
     : null
+// Default to RSR Base (it will change as soon as they select a network)
+const defaultToken = defaultChain
+  ? BRIDGE_ASSETS[defaultChain].find(
+      (asset) =>
+        asset.L1symbol.toLowerCase() === defaultBridgeAsset.toLowerCase()
+    ) || BRIDGE_ASSETS[ChainId.Base][1]
+  : BRIDGE_ASSETS[ChainId.Base][1]
 
 export const bridgeL2Atom = atom<number | null>(defaultChain)
-export const bridgeTokensAtom = atom(BRIDGE_ASSETS)
+export const bridgeTokensAtom = atom((get) => {
+  const chain = get(bridgeL2Atom)
+
+  if (!chain) {
+    return BRIDGE_ASSETS[ChainId.Base].slice(0, 2)
+  }
+
+  return BRIDGE_ASSETS[chain]
+})
 export const selectedBridgeToken = atom<BridgeAsset>(defaultToken) // default RSR
 
 export const isBridgeWrappingAtom = atom(true)
