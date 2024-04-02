@@ -16,16 +16,22 @@ import {
   L2_BRIDGE_ADDRESS,
   L2_L1_MESSAGER_ADDRESS,
 } from './utils/constants'
+import { supportedChainList } from 'utils/constants'
 
 const defaultBridgeAsset =
-  new URL(window.location.href.replace('/#/', '/')).searchParams.get('asset') ??
-  'rsr'
+  new URL(window.location.href).searchParams.get('asset') ?? 'rsr'
+const defaultL2 = new URL(window.location.href).searchParams.get('l2') ?? null
 
 const defaultToken =
   BRIDGE_ASSETS.find(
     (asset) => asset.L1symbol.toLowerCase() === defaultBridgeAsset.toLowerCase()
   ) || BRIDGE_ASSETS[1]
+const defaultChain =
+  defaultL2 && supportedChainList.find((chain) => chain === Number(defaultL2))
+    ? Number(defaultL2)
+    : null
 
+export const bridgeL2Atom = atom<number | null>(defaultChain)
 export const bridgeTokensAtom = atom(BRIDGE_ASSETS)
 export const selectedBridgeToken = atom<BridgeAsset>(defaultToken) // default RSR
 

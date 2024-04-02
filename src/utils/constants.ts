@@ -172,9 +172,11 @@ export const TENDERLY_SHARE_URL = (id: string) =>
   `https://api.tenderly.co/api/v1/account/${TENDERLY_USER}/project/${TENDERLY_PROJECT_SLUG}/simulations/${id}/share`
 export const TENDERLY_SHARING_URL = (id: string) =>
   `https://dashboard.tenderly.co/shared/simulation/${id}`
+
 export const CHAIN_TAGS = {
   [ChainId.Mainnet]: 'Ethereum',
   [ChainId.Base]: 'Base',
+  [ChainId.Arbitrum]: 'Arbitrum',
 }
 
 export const LISTED_RTOKEN_ADDRESSES: { [x: number]: string[] } = {

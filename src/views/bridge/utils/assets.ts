@@ -52,12 +52,12 @@ const BRIDGE_ASSETS: BridgeAsset[] = [
     L2chainId: ChainId.Base,
     L1contract: EUSD_ADDRESS[ChainId.Mainnet],
     L2contract: EUSD_ADDRESS[ChainId.Base],
-    L1icon: `/svgs/${
-      rtokens[ChainId.Mainnet][EUSD_ADDRESS[ChainId.Mainnet]].logo?.toLowerCase()
-    }`,
-    L2icon: `/svgs/${
-      rtokens[ChainId.Mainnet][EUSD_ADDRESS[ChainId.Mainnet]].logo?.toLowerCase()
-    }`,
+    L1icon: `/svgs/${rtokens[ChainId.Mainnet][
+      EUSD_ADDRESS[ChainId.Mainnet]
+    ].logo?.toLowerCase()}`,
+    L2icon: `/svgs/${rtokens[ChainId.Mainnet][
+      EUSD_ADDRESS[ChainId.Mainnet]
+    ].logo?.toLowerCase()}`,
     L1name: 'Electronic Dollar',
     L2name: 'Electronic Dollar',
     decimals: 18,
@@ -118,20 +118,6 @@ const BRIDGE_ASSETS: BridgeAsset[] = [
     L1name: 'Dai Stablecoin',
     L2name: 'Dai Stablecoin',
     decimals: 18,
-    protocol: 'OP',
-  },
-  {
-    L1symbol: 'USDC',
-    L2symbol: 'USDbC',
-    L1chainId: ChainId.Mainnet,
-    L2chainId: ChainId.Base,
-    L1contract: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-    L2contract: '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA',
-    L1icon: '/svgs/usdc.svg',
-    L2icon: '/svgs/usdbc.svg',
-    L1name: 'USDC',
-    L2name: 'USD Base Coin',
-    decimals: 6,
     protocol: 'OP',
   },
   {

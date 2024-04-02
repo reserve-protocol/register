@@ -2,6 +2,7 @@
   "name": "register",
   "version": "1.0.0",
   "dependencies": {
+    "@arbitrum/sdk": "^3.3.3",
     "@dnd-kit/core": "^6.0.5",
     "@dnd-kit/sortable": "^7.0.1",
     "@dnd-kit/utilities": "^3.2.0",
