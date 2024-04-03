@@ -3,14 +3,15 @@ import CirclesIcon from 'components/icons/CirclesIcon'
 import Base from 'components/icons/logos/Base'
 import Ethereum from 'components/icons/logos/Ethereum'
 import Popup from 'components/popup'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useState } from 'react'
 import { Check, ChevronDown, ChevronUp } from 'react-feather'
 import { useSearchParams } from 'react-router-dom'
 import { Box, BoxProps, Flex, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
 import { CHAIN_TAGS } from 'utils/constants'
-import { bridgeL2Atom } from '../atoms'
+import { bridgeL2Atom, selectedBridgeToken } from '../atoms'
+import BRIDGE_ASSETS from '../utils/assets'
 
 export const chainIcons = {
   [ChainId.Base]: Base,
@@ -89,13 +90,16 @@ const ChainList = ({ onSelect }: { onSelect(chain: number): void }) => {
 const BridgeChainSelector = (props: BoxProps) => {
   const [searchParams, setSearchParams] = useSearchParams()
   const [l2, setL2] = useAtom(bridgeL2Atom)
+  const setToken = useSetAtom(selectedBridgeToken)
   const [isVisible, setVisible] = useState(false)
 
   const handleSelect = useCallback(
     (chain: number) => {
       if (chain !== l2) {
         setL2(chain)
+        setToken(BRIDGE_ASSETS[chain][1])
         searchParams.set('l2', chain.toString())
+        searchParams.set('asset', 'RSR')
         setSearchParams(searchParams)
       }
 

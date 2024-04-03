@@ -190,6 +190,10 @@ export const BRIDGED_RTOKENS = {
         address: '0xCfA3Ef56d303AE4fAabA0592388F19d7C3399FB4',
         chain: ChainId.Base,
       },
+      {
+        address: '0x12275DCB9048680c4Be40942eA4D92c74C63b844',
+        chain: ChainId.Arbitrum,
+      },
     ],
   },
 }

@@ -7,7 +7,7 @@ import ApproveBridgeBtn from './ApproveBridgeBtn'
 import ConfirmBridgeBtn from './ConfirmBridgeBtn'
 import WithdrawalInfoModal from './WithdrawalInfoModal'
 
-const ConfirmBridge = () => {
+const ConfirmBaseBridge = () => {
   const approvalRequired = useAtomValue(bridgeApprovalAtom)
   const [hasAllowance] = useHasAllowance(
     approvalRequired ? [approvalRequired] : undefined
@@ -33,4 +33,4 @@ const ConfirmBridge = () => {
   )
 }
 
-export default ConfirmBridge
+export default ConfirmBaseBridge

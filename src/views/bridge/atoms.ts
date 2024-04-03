@@ -7,7 +7,6 @@ import atomWithDebounce from 'utils/atoms/atomWithDebounce'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { ChainId } from 'utils/chains'
 import { Address, ContractFunctionConfig, formatEther, formatUnits } from 'viem'
-import { isWrappingAtom } from 'views/issuance/components/wrapping/atoms'
 import { UsePrepareContractWriteConfig, erc20ABI } from 'wagmi'
 import BRIDGE_ASSETS, { BridgeAsset } from './utils/assets'
 import {
@@ -72,11 +71,12 @@ function mapAssets(
 export const bridgeTokensSortedAtom = atomWithLoadable(async (get) => {
   const list = get(bridgeTokensAtom)
   const wallet = get(walletAtom)
-  const isWrapping = get(isWrappingAtom)
-  const chain = isWrapping ? ChainId.Mainnet : ChainId.Base
-  const client = publicClient({ chainId: chain })
+  const isWrapping = get(isBridgeWrappingAtom)
+  const l2Chain = get(bridgeL2Atom)
+  const chain = isWrapping ? ChainId.Mainnet : l2Chain
+  const client = chain ? publicClient({ chainId: chain }) : null
 
-  if (wallet) {
+  if (client && wallet) {
     try {
       const contracts: ContractFunctionConfig[] = []
 

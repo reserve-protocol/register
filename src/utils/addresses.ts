@@ -38,7 +38,7 @@ export const FACADE_WRITE_ADDRESS: AddressMap = {
 export const RSR_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x320623b8E4fF03373931769A31Fc52A4E78B5d70',
   [ChainId.Base]: '0xaB36452DbAC151bE02b16Ca17d8919826072f64a',
-  [ChainId.Arbitrum]: '0xaB36452DbAC151bE02b16Ca17d8919826072f64a',
+  [ChainId.Arbitrum]: '0xCa5Ca9083702c56b481D1eec86F1776FDbd2e594',
   [ChainId.Hardhat]: '0x320623b8e4ff03373931769a31fc52a4e78b5d70',
 }
 
