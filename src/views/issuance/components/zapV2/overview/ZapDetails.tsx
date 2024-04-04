@@ -19,7 +19,7 @@ const ZapDetails = ({ hideGasCost, ...props }: Props) => {
         variant="layout.verticalAlign"
         sx={{ justifyContent: 'space-between' }}
       >
-        <Text sx={{ fontSize: 14 }}>Price Imapct</Text>
+        <Text sx={{ fontSize: 14 }}>Price Impact</Text>
         {loadingZap ? (
           <Skeleton width={36} height={10} />
         ) : (
