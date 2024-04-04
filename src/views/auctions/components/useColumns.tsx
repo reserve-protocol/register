@@ -16,7 +16,7 @@ import { DutchTrade } from '../dutch/atoms'
 
 const getGnosisAuction = (auctionId: string, chainId: number): string => {
   if (chainId === ChainId.Mainnet) {
-    return `https://gnosisauctiontestv1.netlify.app/#/auction?auctionId=${auctionId}&chainId=1`
+    return `https://gnosis-auction.eth.link/#/auction?auctionId=${auctionId}&chainId=1`
   } else {
     return `https://easyauction.register.app/#/auction?auctionId=${auctionId}&chainId=${chainId}`
   }
