@@ -1,9 +1,8 @@
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtom } from 'jotai'
 import { useEffect } from 'react'
-import { chainIdAtom, collateralYieldAtom } from 'state/atoms'
+import { collateralYieldAtom } from 'state/atoms'
 import useSWRImmutable from 'swr/immutable'
 import { StringMap } from 'types'
-import { ChainId } from 'utils/chains'
 
 const poolsMap: StringMap = {
   '405d8dad-5c99-4c91-90d3-82813ade1ff1': 'sadai',
@@ -37,7 +36,13 @@ const poolsMap: StringMap = {
   'aa70268e-4b52-42bf-a116-608b370f9501': 'saethusdc',
   '01146cce-9140-4e03-9a2e-82c99ccc42f1': 'saethpyusd',
   'd118f505-e75f-4152-bad3-49a2dc7482bf': 'stkcvxpyusdusdc',
-
+  '77020688-e1f9-443c-9388-e51ace15cc32': 'sfrxeth',
+  '2ebf1030-f200-4318-ac72-08668265b0f0': 're7weth',
+  'a3ffd3fe-b21c-44eb-94d5-22c80057a600': 'stkcvxcrvusdusdt-f',
+  '755fcec6-f4fd-4150-9184-60f099206694': 'stkcvxcrvusdusdc-f',
+  '9c492ad8-ed45-4d8a-a033-0fa44506bf16': 'steakpyusd',
+  'd387cc7a-7d48-49f3-a244-9a263fca26c0': 'bbusdt',
+  '94f9e0b3-2102-4297-babc-aa608bd8bb77': 'steakusdc',
   // ----------------
   // Base collaterals
   // ----------------
