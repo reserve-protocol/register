@@ -8,7 +8,7 @@
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@ethersproject/providers": "^5.7.2",
-    "@lc-labs/rtokens": "1.1.14",
+    "@lc-labs/rtokens": "1.1.15",
     "@lingui/macro": "^4.2.1",
     "@lingui/react": "^4.2.1",
     "@popperjs/core": "^2.11.5",

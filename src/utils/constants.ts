@@ -257,4 +257,11 @@ export const collateralDisplay: Record<string, string> = {
   stkcvxpyusdusdc: 'Convex PYUSD/USDC',
   saethpyusd: 'AAVE PYUSD V3',
   sabasusdc: 'AAVE USDC V3',
+  sfrxeth: 'Staked Frax ETH',
+  re7weth: 'Morpho Blue ETH',
+  'stkcvxcrvusdusdt-f': ' Convex crvUSD/USDT',
+  'stkcvxcrvusdusdc-f': 'Convex crvUSD/USDC',
+  steakpyusd: 'Morpho Blue pyUSD',
+  bbusdt: 'Morpho Blue USDT',
+  steakusdc: 'Morpho Blue USDC',
 }
