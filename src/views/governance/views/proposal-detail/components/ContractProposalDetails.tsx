@@ -110,7 +110,7 @@ const ContractProposalDetails = ({ data, ...props }: Props) => {
               data={call.data}
             />
           ) : (
-            <Text>
+            <Text sx={{ wordBreak: 'break-all' }}>
               {call.data && call.data[0] !== undefined
                 ? typeof call.data[0] === 'object'
                   ? safeJsonFormat(call.data[0])
