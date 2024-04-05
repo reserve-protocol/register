@@ -28,6 +28,7 @@ import { useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
 import {
   rTokenAssetsAtom,
+  rTokenConfigurationAtom,
   rTokenContractsAtom,
   rTokenGovernanceAtom,
 } from 'state/atoms'
@@ -134,6 +135,7 @@ const useProposalTx = () => {
   const contracts = useAtomValue(rTokenContractsAtom)
   const assets = useAtomValue(registeredAssetsAtom)
   const upgrades = useAtomValue(contractUpgradesAtom)
+  const rTokenConfig = useAtomValue(rTokenConfigurationAtom)
   const autoRegisterBasketAssets = useAtomValue(autoRegisterBasketAssetsAtom)
   const autoRegisterBackupAssets = useAtomValue(autoRegisterBackupAssetsAtom)
   const weightsSum = useAtomValue(rTokenCollateralDetailedAtom)
@@ -269,6 +271,23 @@ const useProposalTx = () => {
                 ],
               })
             )
+
+            // Issuance change is always before redemption change by default BUT:
+            //! -> if new issuance throttle > old redemption throttle: redemption should go first
+            //! -> if new redemption throttle < old issuance throttle: issuance should go first
+            // TODO: This doesn't cover all the cases but is good enough for now
+            if (
+              issuanceThrottleChange &&
+              (+tokenConfig.issuanceThrottleAmount >
+                +rTokenConfig?.redemptionThrottleAmount ||
+                +tokenConfig.issuanceThrottleRate >
+                  +rTokenConfig?.redemptionThrottleRate)
+            ) {
+              const newIndex = addresses.length - 2
+              const issuanceCall = calls[newIndex]
+              calls[newIndex] = calls[newIndex + 1]
+              calls[newIndex + 1] = issuanceCall
+            }
           }
           redemptionThrottleChange = true
         } else {
