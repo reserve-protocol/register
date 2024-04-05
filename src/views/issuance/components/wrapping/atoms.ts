@@ -66,16 +66,31 @@ export const collateralsPerRTokenAtom = atom<CollateralPlugin[]>((get) => {
   }
 
   return rToken.collaterals.reduce((acc, collateral) => {
-    // TODO: Temporal until usdbc plugin is removed
-    const symbol =
-      collateral.symbol === 'wcusdbcv3' ? 'wcUSDCv3' : collateral.symbol
+    if (collateral.symbol === 'wcusdbcv3') {
+      acc.push({
+        address: '0xd3025304C6487FC5c39010bEA0B46cc0690ab229',
+        rewardTokens: ['0x277FD5f51fE53a9B3707a0383bF930B149C74ABf'],
+        protocol: 'COMPv3',
+        erc20: '0xa8d818C719c1034E731Feba2088F4F011D44ACB3',
+        chainlinkFeed: '0x7e860098F58bBFC8648a4311b374B1D669a2bc6B',
+        delayUntilDefault: '86400',
+        maxTradeVolume: '1000000',
+        oracleTimeout: 86460,
+        targetName: 'USD',
+        version: '3.0.1',
+        symbol: 'wcUSDbCv3',
+        decimals: 6,
+        underlyingAddress: '0x9c4ec768c28520B50860ea7a15bd7213a9fF58bf',
+        underlyingToken: 'cUSDbCv3',
+      })
+    }
 
     // check if rToken is on the plugin list
-    if (plugins[symbol]) {
+    if (plugins[collateral.symbol]) {
       // Extend the plugin info
       // Only addresses for asset/erc20 could be different and are taken from the collateral
       acc.push({
-        ...plugins[symbol],
+        ...plugins[collateral.symbol],
         address: assets[collateral.address].address,
         erc20: collateral.address,
       })
