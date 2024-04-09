@@ -24,6 +24,7 @@ interface DefillamaPool {
   apyBase: number
   apyReward: number
   stablecoin: boolean
+  poolMeta: string | null
   project: string
   chain: string
   tvlUsd: number
@@ -99,6 +100,7 @@ const enrichPoolUnderlyingAndId = (
   return pools.map((pool) => ({
     ...pool,
     id: pool.pool,
+    symbol: `${pool.symbol}${pool.poolMeta?.toLowerCase()?.includes("lending") ? ' (Lending Pool)' : ''}`,
     underlyingTokens: (pool.underlyingTokens || []).map((token: string) => {
       const address = token?.toLowerCase() ?? ''
 
