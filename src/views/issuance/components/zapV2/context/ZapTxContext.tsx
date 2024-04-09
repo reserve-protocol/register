@@ -17,6 +17,7 @@ import {
   useSendTransaction,
   useWaitForTransaction,
 } from 'wagmi'
+import mixpanel from 'mixpanel-browser'
 
 type ZapTxContextType = {
   error?: ZapErrorType
@@ -48,8 +49,17 @@ export const useZapTx = () => {
 
 export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const [error, setError] = useState<ZapErrorType>()
-  const { chainId, account, tokenIn, spender, amountIn, zapResult, refetch } =
-    useZap()
+  const {
+    chainId,
+    account,
+    tokenIn,
+    spender,
+    amountIn,
+    zapResult,
+    refetch,
+    endpoint,
+    operation,
+  } = useZap()
 
   // Approval
   const allowance: Allowance | undefined = useMemo(() => {
@@ -147,10 +157,39 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         color: 'danger',
         secondaryColor: 'rgba(255, 0, 0, 0.20)',
       })
+      mixpanel.track('User Rejected Zap', {
+        Operation: operation,
+        Endpoint: endpoint,
+      })
     } else {
       setError(undefined)
     }
-  }, [sendError, validatingTxError, setError, loadingTx, validatingTx, receipt])
+  }, [
+    sendError,
+    validatingTxError,
+    setError,
+    loadingTx,
+    validatingTx,
+    receipt,
+    operation,
+    endpoint,
+  ])
+
+  useEffect(() => {
+    if (!receipt) return
+    if (receipt.status === 'success') {
+      mixpanel.track('Zap Success', {
+        Operation: operation,
+        Endpoint: endpoint,
+      })
+    } else {
+      mixpanel.track('Zap on-chain transaction reverted', {
+        Operation: operation,
+        Endpoint: endpoint,
+        Error: `Transaction reverted: ${receipt.transactionHash}`,
+      })
+    }
+  }, [receipt, operation, endpoint])
 
   return (
     <ZapTxContext.Provider

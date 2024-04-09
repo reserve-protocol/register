@@ -32,7 +32,11 @@ const ZapConfirmButton = () => {
           <TransactionsIcon />
           <Box>
             <Text variant="bold" sx={{ display: 'block' }}>
-              {!receipt ? `Confirm ${operation}` : 'Transaction submitted'}
+              {!receipt
+                ? `Confirm ${operation}`
+                : receipt.status === 'success'
+                ? 'Transaction Submitted'
+                : 'Transaction Failed'}
             </Text>
             {(loadingTx ||
               validatingTx ||

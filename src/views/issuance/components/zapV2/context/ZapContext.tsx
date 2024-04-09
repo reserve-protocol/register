@@ -310,6 +310,11 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     const _priceImpact =
       ((inputPriceValue - outputPriceValue) / inputPriceValue) * 100
 
+    mixpanel.track('zapper:', {
+      Operation: operation,
+      Endpoint: endpoint,
+    })
+
     return [
       _amountOut,
       Math.max(0, _priceImpact),
@@ -342,7 +347,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
       setOpenSubmitModal(false)
 
-      mixpanel.track('Zap API Failed', {
+      mixpanel.track('Zap Execution Error', {
         Endpoint: endpoint,
         Error: apiError?.message || data?.error,
       })
@@ -372,7 +377,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const _setZapEnabled = useCallback(
     (value: boolean) => {
       setZapEnabled(value)
-      mixpanel.track('Toggled Zap', {
+      mixpanel.track('Toggled Zaps', {
         RToken: rToken?.address.toLowerCase() ?? '',
         Enabled: value,
       })
