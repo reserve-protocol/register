@@ -1,6 +1,7 @@
 import { useChainlinkPrice } from 'hooks/useChainlinkPrice'
 import useDebounce from 'hooks/useDebounce'
 import { useAtomValue } from 'jotai'
+import mixpanel from 'mixpanel-browser'
 import {
   FC,
   PropsWithChildren,
@@ -12,7 +13,6 @@ import {
   useState,
 } from 'react'
 import {
-  TokenBalance,
   balancesAtom,
   chainIdAtom,
   ethPriceAtom,
@@ -34,7 +34,6 @@ import {
   SLIPPAGE_OPTIONS,
   zappableTokens,
 } from '../constants'
-import mixpanel from 'mixpanel-browser'
 
 export type IssuanceOperation = 'mint' | 'redeem'
 
@@ -145,11 +144,13 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
   const tokens: ZapToken[] = useMemo(
     () =>
-      zappableTokens[chainId].map((token) => ({
-        ...token,
-        balance: balances[token.address as Address]?.balance ?? '0',
-      })),
-    [chainId, balances]
+      zappableTokens[chainId]
+        .map((token) => ({
+          ...token,
+          balance: balances[token.address as Address]?.balance ?? '0',
+        }))
+        .filter((token) => operation === 'mint' || token.symbol !== 'ETH'),
+    [chainId, balances, operation]
   )
   const tokenPrice = useChainlinkPrice(
     chainId,
@@ -166,7 +167,10 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
   useEffect(() => {
     if (!selectedToken) setSelectedToken(tokens[0])
-  }, [tokens])
+    if (operation === 'redeem' && selectedToken?.symbol === 'ETH') {
+      setSelectedToken(tokens[0])
+    }
+  }, [operation, selectedToken, tokens])
 
   useEffect(() => {
     setAmountIn('')
@@ -239,12 +243,14 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     }
   }, [
     tokenIn.balance,
-    tokenOut.price,
     tokenIn.price,
+    tokenIn.symbol,
     operation,
+    setAmountIn,
+    tokenOut.price,
     issuanceAvailable,
     redemptionAvailable,
-    setError,
+    rToken?.symbol,
   ])
 
   const endpoint = useDebounce(
@@ -311,7 +317,15 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       estimatedGasCost,
       data.result.approvalAddress,
     ]
-  }, [data, tokenOut, gas, ethPrice, tokenIn?.price, amountIn, tokenOut?.price])
+  }, [
+    data,
+    tokenIn.decimals,
+    tokenIn?.price,
+    tokenOut.decimals,
+    tokenOut?.price,
+    gas?.formatted?.gasPrice,
+    ethPrice,
+  ])
 
   useEffect(() => {
     if (apiError || (data && data.error)) {
@@ -353,7 +367,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         } Anyway`,
       })
     }
-  }, [apiError, data, operation, setError, priceImpact])
+  }, [apiError, data, operation, setError, priceImpact, endpoint])
 
   const _setZapEnabled = useCallback(
     (value: boolean) => {

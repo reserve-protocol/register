@@ -14,17 +14,7 @@ export const useApproval = (
   account?: Address,
   allowance?: Allowance | undefined
 ) => {
-  if (allowance?.symbol === 'ETH') {
-    return {
-      validatingAllowance: false,
-      hasAllowance: true,
-      error: undefined,
-      isLoading: false,
-      isSuccess: false,
-      approve: () => {},
-      validatingApproval: false,
-    }
-  }
+  const disable = allowance?.symbol === 'ETH'
 
   const {
     data,
@@ -38,12 +28,13 @@ export const useApproval = (
           address: allowance.token,
           args: [account, allowance.spender],
           chainId,
+          enabled: !disable,
         }
       : undefined
   )
 
   const hasAllowance =
-    account && allowance ? (data ?? 0n) >= allowance.amount : false
+    account && allowance && !disable ? (data ?? 0n) >= allowance.amount : false
 
   const { config } = usePrepareContractWrite(
     allowance && !hasAllowance
@@ -52,6 +43,7 @@ export const useApproval = (
           abi: erc20ABI,
           functionName: 'approve',
           args: [allowance.spender, allowance.amount],
+          enabled: !disable,
         }
       : undefined
   )
@@ -65,6 +57,7 @@ export const useApproval = (
   const { status: approvalStatus, isLoading: validatingApproval } =
     useWaitForTransaction({
       hash: writeData?.hash,
+      enabled: !disable && !!writeData?.hash,
     })
 
   const isLoading = approving || validatingApproval
@@ -72,6 +65,17 @@ export const useApproval = (
   const error = allowanceError || approvalError
 
   return useMemo(() => {
+    if (disable) {
+      return {
+        validatingAllowance: false,
+        hasAllowance: true,
+        error: undefined,
+        isLoading: false,
+        isSuccess: false,
+        approve: () => {},
+        validatingApproval: false,
+      }
+    }
     return {
       validatingAllowance,
       validatingApproval,
@@ -82,12 +86,13 @@ export const useApproval = (
       approve,
     }
   }, [
+    disable,
     validatingAllowance,
     validatingApproval,
     hasAllowance,
+    isSuccess,
     error,
     isLoading,
-    isSuccess,
     approve,
   ])
 }

@@ -1,10 +1,9 @@
-import useRToken from 'hooks/useRToken'
 import { Box, Text } from 'theme-ui'
-import ZapOutputBalance from './ZapOutputBalance'
-import ZapOutput from './ZapOutput'
-import ZapOutputUSD from './ZapOutputUSD'
 import { useZap } from '../context/ZapContext'
 import ZapTokenSelector from '../token-selector/ZapTokenSelector'
+import ZapOutput from './ZapOutput'
+import ZapOutputBalance from './ZapOutputBalance'
+import ZapOutputUSD from './ZapOutputUSD'
 
 const ZapOutputContainer = () => {
   const { tokenOut, operation, loadingZap } = useZap()

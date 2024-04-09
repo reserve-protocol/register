@@ -73,7 +73,10 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   } = useApproval(chainId, account, allowance)
 
   useEffect(() => {
-    if (allowanceError) {
+    if (
+      allowanceError &&
+      !(loadingApproval || validatingApproval || approvalSuccess)
+    ) {
       setError({
         title: 'Transaction rejected',
         message: 'Please try again',
@@ -83,7 +86,7 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     } else {
       setError(undefined)
     }
-  }, [allowanceError])
+  }, [allowanceError, approvalSuccess, loadingApproval, validatingApproval])
 
   // Transaction
   const { config } = usePrepareSendTransaction(
@@ -119,13 +122,25 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       refetch()
       return
     }
-    if (!error && sendTransaction) {
+    if (!error && sendTransaction && !(loadingTx || validatingTx || receipt)) {
       sendTransaction()
     }
-  }, [approvalSuccess, sendTransaction, zapResult?.tx, refetch])
+  }, [
+    approvalSuccess,
+    sendTransaction,
+    zapResult?.tx,
+    refetch,
+    error,
+    loadingTx,
+    validatingTx,
+    receipt,
+  ])
 
   useEffect(() => {
-    if (sendError || validatingTxError) {
+    if (
+      (sendError || validatingTxError) &&
+      !(loadingTx || validatingTx || receipt)
+    ) {
       setError({
         title: 'Transaction rejected',
         message: 'Please try again',
@@ -135,7 +150,7 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     } else {
       setError(undefined)
     }
-  }, [sendError, validatingTxError, setError])
+  }, [sendError, validatingTxError, setError, loadingTx, validatingTx, receipt])
 
   return (
     <ZapTxContext.Provider
