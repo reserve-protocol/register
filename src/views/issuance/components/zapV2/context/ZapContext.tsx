@@ -181,7 +181,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
   useEffect(() => {
     resetZap()
-  }, [resetZap])
+  }, [resetZap, selectedToken, operation, zapEnabled])
 
   const rToken: ZapToken = useMemo(
     () => ({
