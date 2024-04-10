@@ -17,6 +17,8 @@ import {
   useSendTransaction,
   useWaitForTransaction,
 } from 'wagmi'
+import mixpanel from 'mixpanel-browser'
+import useWatchTransaction from 'hooks/useWatchTransaction'
 
 type ZapTxContextType = {
   error?: ZapErrorType
@@ -48,8 +50,20 @@ export const useZapTx = () => {
 
 export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const [error, setError] = useState<ZapErrorType>()
-  const { chainId, account, tokenIn, spender, amountIn, zapResult, refetch } =
-    useZap()
+  const {
+    chainId,
+    account,
+    tokenIn,
+    tokenOut,
+    spender,
+    amountIn,
+    zapResult,
+    refetch,
+    endpoint,
+    operation,
+    setOpenSubmitModal,
+    resetZap,
+  } = useZap()
 
   // Approval
   const allowance: Allowance | undefined = useMemo(() => {
@@ -73,7 +87,10 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   } = useApproval(chainId, account, allowance)
 
   useEffect(() => {
-    if (allowanceError) {
+    if (
+      allowanceError &&
+      !(loadingApproval || validatingApproval || approvalSuccess)
+    ) {
       setError({
         title: 'Transaction rejected',
         message: 'Please try again',
@@ -83,7 +100,7 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     } else {
       setError(undefined)
     }
-  }, [allowanceError])
+  }, [allowanceError, approvalSuccess, loadingApproval, validatingApproval])
 
   // Transaction
   const { config } = usePrepareSendTransaction(
@@ -113,29 +130,80 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     chainId,
   })
 
+  useWatchTransaction({
+    hash: data?.hash,
+    label:
+      operation === 'mint'
+        ? `Mint ${tokenOut.symbol}`
+        : `Redeem ${tokenIn.symbol}`,
+  })
+
   useEffect(() => {
     if (!approvalSuccess) return
     if (!zapResult?.tx && refetch) {
       refetch()
       return
     }
-    if (!error && sendTransaction) {
+    if (!error && sendTransaction && !(loadingTx || validatingTx || receipt)) {
       sendTransaction()
     }
-  }, [approvalSuccess, sendTransaction, zapResult?.tx, refetch])
+  }, [
+    approvalSuccess,
+    sendTransaction,
+    zapResult?.tx,
+    refetch,
+    error,
+    loadingTx,
+    validatingTx,
+    receipt,
+  ])
 
   useEffect(() => {
-    if (sendError || validatingTxError) {
+    if (
+      (sendError || validatingTxError) &&
+      !(loadingTx || validatingTx || receipt)
+    ) {
       setError({
         title: 'Transaction rejected',
         message: 'Please try again',
         color: 'danger',
         secondaryColor: 'rgba(255, 0, 0, 0.20)',
       })
+      mixpanel.track('User Rejected Zap', {
+        Operation: operation,
+        Endpoint: endpoint,
+      })
     } else {
       setError(undefined)
     }
-  }, [sendError, validatingTxError, setError])
+  }, [
+    sendError,
+    validatingTxError,
+    setError,
+    loadingTx,
+    validatingTx,
+    receipt,
+    operation,
+    endpoint,
+  ])
+
+  useEffect(() => {
+    if (!receipt) return
+    if (receipt.status === 'success') {
+      mixpanel.track('Zap Success', {
+        Operation: operation,
+        Endpoint: endpoint,
+      })
+    } else {
+      mixpanel.track('Zap on-chain transaction reverted', {
+        Operation: operation,
+        Endpoint: endpoint,
+        Error: `Transaction reverted: ${receipt.transactionHash}`,
+      })
+    }
+    setOpenSubmitModal(false)
+    resetZap()
+  }, [receipt, operation, endpoint, setOpenSubmitModal, resetZap])
 
   return (
     <ZapTxContext.Provider

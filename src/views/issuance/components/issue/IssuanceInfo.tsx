@@ -10,36 +10,47 @@ import { formatCurrency } from 'utils'
 const IssuanceInfoStat = ({
   icon,
   title,
+  subtitle,
   available,
   max,
   timeUntilCharged,
 }: {
   icon: ReactNode
   title: string
+  subtitle: string
   available: number
   max: number
   timeUntilCharged: number
 }) => {
   return (
-    <Box p={4} sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+    <Box p={4} sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
       <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
         {icon}
-        <Text variant="sectionTitle">{title}</Text>
+        <Text variant="h3" sx={{ fontSize: 20, fontWeight: 'bold' }}>
+          {title}
+        </Text>
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 1,
+          fontSize: 14,
+        }}
+      >
         <Box
           variant="layout.verticalAlign"
-          sx={{ justifyContent: 'space-between' }}
+          sx={{ justifyContent: 'space-between', fontSize: 16 }}
+          mb={2}
         >
-          <Text>
-            Available
-            <Text variant="legend"> / Max Charge</Text>
-          </Text>
           <Text sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>
-            {formatCurrency(available, 0)}{' '}
-            <Text variant="legend" sx={{ fontWeight: 'normal' }}>
-              / {formatCurrency(max, 0)}
-            </Text>
+            {subtitle}
+          </Text>
+          <Text
+            sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}
+            color="primary"
+          >
+            {formatCurrency(available, 0)}
           </Text>
         </Box>
         <Box
@@ -55,6 +66,20 @@ const IssuanceInfoStat = ({
           ) : (
             <Text sx={{ fontWeight: 'bold' }}>Fully Charged</Text>
           )}
+        </Box>
+        <Box
+          variant="layout.verticalAlign"
+          sx={{ justifyContent: 'space-between' }}
+        >
+          <Text>0-100% Recharge time</Text>
+          <Text sx={{ fontWeight: 'bold' }}>1h</Text>
+        </Box>
+        <Box
+          variant="layout.verticalAlign"
+          sx={{ justifyContent: 'space-between' }}
+        >
+          <Text>Current max charge</Text>
+          <Text sx={{ fontWeight: 'bold' }}>{formatCurrency(max, 0)}</Text>
         </Box>
       </Box>
     </Box>
@@ -123,7 +148,8 @@ const IssuanceInfo = (props: BoxProps) => {
     <Box p={[0, 4]} pt={4} {...props}>
       <IssuanceInfoStat
         icon={<GlobalMaxMintIcon />}
-        title={t`Mint - Global Max`}
+        title={t`Mint - Global throttle`}
+        subtitle={t`Mintable now`}
         available={issuanceAvailable}
         max={maxMint}
         timeUntilCharged={timeUntilFullyChargedMint}
@@ -131,7 +157,8 @@ const IssuanceInfo = (props: BoxProps) => {
       <Divider my={3} sx={{ borderColor: 'borderSecondary' }} />
       <IssuanceInfoStat
         icon={<GlobalMaxRedeemIcon />}
-        title={t`Redeem - Global Max`}
+        title={t`Redeem - Global throttle`}
+        subtitle={t`Redeemable now`}
         available={redemptionAvailable}
         max={maxRedeem}
         timeUntilCharged={timeUntilFullyChargedRedeem}

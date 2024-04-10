@@ -71,16 +71,6 @@ const ZapSettingsModal = () => {
               />
             </Box>
             <ZapSettingsSlippage />
-            <Box
-              variant="layout.verticalAlign"
-              sx={{ justifyContent: 'start' }}
-              mx="12px"
-              mt={1}
-            >
-              <Text variant="legend" sx={{ fontSize: 12 }}>
-                1 bps = 0.01%
-              </Text>
-            </Box>
           </Box>
         </Box>
       </Box>
