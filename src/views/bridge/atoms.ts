@@ -15,7 +15,7 @@ import {
   L2_BRIDGE_ADDRESS,
   L2_L1_MESSAGER_ADDRESS,
 } from './utils/constants'
-import { supportedChainList } from 'utils/constants'
+import { CHAIN_TAGS, supportedChainList } from 'utils/constants'
 
 const defaultBridgeAsset =
   new URL(window.location.href).searchParams.get('asset') ?? 'rsr'
@@ -24,7 +24,7 @@ const defaultL2 = new URL(window.location.href).searchParams.get('l2') ?? null
 const defaultChain =
   defaultL2 && supportedChainList.find((chain) => chain === Number(defaultL2))
     ? Number(defaultL2)
-    : null
+    : ChainId.Base
 // Default to RSR Base (it will change as soon as they select a network)
 const defaultToken = defaultChain
   ? BRIDGE_ASSETS[defaultChain].find(
@@ -33,7 +33,7 @@ const defaultToken = defaultChain
     ) || BRIDGE_ASSETS[ChainId.Base][1]
   : BRIDGE_ASSETS[ChainId.Base][1]
 
-export const bridgeL2Atom = atom<number | null>(defaultChain)
+export const bridgeL2Atom = atom<number>(defaultChain)
 export const bridgeTokensAtom = atom((get) => {
   const chain = get(bridgeL2Atom)
 
@@ -46,6 +46,16 @@ export const bridgeTokensAtom = atom((get) => {
 export const selectedBridgeToken = atom<BridgeAsset>(defaultToken) // default RSR
 
 export const isBridgeWrappingAtom = atom(true)
+
+export const btnLabelAtom = atom((get) => {
+  const token = get(selectedBridgeToken)
+  const l2 = get(bridgeL2Atom)
+  const isWrapping = get(isBridgeWrappingAtom)
+
+  return `${isWrapping ? 'Deposit' : 'Withdraw'} ${
+    isWrapping ? token.L1symbol : token.L2symbol
+  } to ${isWrapping ? CHAIN_TAGS[l2] : 'Ethereum'}`
+})
 
 export interface BridgeTokenDisplay {
   symbol: string

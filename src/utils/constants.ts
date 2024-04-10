@@ -176,7 +176,7 @@ export const TENDERLY_SHARING_URL = (id: string) =>
 export const CHAIN_TAGS = {
   [ChainId.Mainnet]: 'Ethereum',
   [ChainId.Base]: 'Base',
-  [ChainId.Arbitrum]: 'Arbitrum',
+  [ChainId.Arbitrum]: 'Arbitrum One',
 }
 
 export const LISTED_RTOKEN_ADDRESSES: { [x: number]: string[] } = {
