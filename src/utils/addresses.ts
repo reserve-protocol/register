@@ -49,6 +49,11 @@ export const EUSD_ADDRESS: AddressMap = {
   [ChainId.Hardhat]: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
 }
 
+export const RGUSD_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x78da5799CF427Fee11e9996982F4150eCe7a99A7',
+  [ChainId.Arbitrum]: '0x96a993f06951b01430523d0d5590192d650ebf3e',
+}
+
 /**
  * Other contract addresses
  */
