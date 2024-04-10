@@ -21,8 +21,6 @@ mixpanel.init(import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key', {
   track_pageview: true,
 })
 
-const queryClient = new QueryClient()
-
 // Support for old routes redirects
 const Redirects = () => {
   const navigate = useNavigate()
