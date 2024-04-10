@@ -18,6 +18,7 @@ import {
   useWaitForTransaction,
 } from 'wagmi'
 import mixpanel from 'mixpanel-browser'
+import useWatchTransaction from 'hooks/useWatchTransaction'
 
 type ZapTxContextType = {
   error?: ZapErrorType
@@ -53,12 +54,15 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     chainId,
     account,
     tokenIn,
+    tokenOut,
     spender,
     amountIn,
     zapResult,
     refetch,
     endpoint,
     operation,
+    setOpenSubmitModal,
+    resetZap,
   } = useZap()
 
   // Approval
@@ -126,6 +130,14 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     chainId,
   })
 
+  useWatchTransaction({
+    hash: data?.hash,
+    label:
+      operation === 'mint'
+        ? `Mint ${tokenOut.symbol}`
+        : `Redeem ${tokenIn.symbol}`,
+  })
+
   useEffect(() => {
     if (!approvalSuccess) return
     if (!zapResult?.tx && refetch) {
@@ -189,7 +201,9 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         Error: `Transaction reverted: ${receipt.transactionHash}`,
       })
     }
-  }, [receipt, operation, endpoint])
+    setOpenSubmitModal(false)
+    resetZap()
+  }, [receipt, operation, endpoint, setOpenSubmitModal, resetZap])
 
   return (
     <ZapTxContext.Provider

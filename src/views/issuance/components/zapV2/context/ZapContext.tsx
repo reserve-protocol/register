@@ -68,6 +68,7 @@ type ZapContextType = {
   setSelectedToken: (token: ZapToken) => void
   refetch?: KeyedMutator<ZapResponse>
   endpoint?: string | null
+  resetZap: () => void
 
   tokens: ZapToken[]
   chainId: number
@@ -112,6 +113,7 @@ const ZapContext = createContext<ZapContextType>({
   tokens: [],
   tokenIn: zappableTokens[ChainId.Mainnet][0],
   tokenOut: zappableTokens[ChainId.Mainnet][0],
+  resetZap: () => {},
 })
 
 export const useZap = () => {
@@ -172,10 +174,14 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     }
   }, [operation, selectedToken, tokens])
 
-  useEffect(() => {
+  const resetZap = useCallback(() => {
     setAmountIn('')
     setOpenTokenSelector(false)
-  }, [setAmountIn, selectedToken, operation, zapEnabled])
+  }, [setAmountIn, setOpenTokenSelector])
+
+  useEffect(() => {
+    resetZap()
+  }, [resetZap])
 
   const rToken: ZapToken = useMemo(
     () => ({
@@ -423,6 +429,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         spender,
         zapResult: data?.result,
         endpoint,
+        resetZap,
       }}
     >
       {children}
