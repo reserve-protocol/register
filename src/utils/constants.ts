@@ -187,11 +187,11 @@ export const BRIDGED_RTOKENS = {
   [ChainId.Mainnet]: {
     [EUSD_ADDRESS[ChainId.Mainnet]]: [
       {
-        address: '0xCfA3Ef56d303AE4fAabA0592388F19d7C3399FB4',
+        address: EUSD_ADDRESS[ChainId.Base],
         chain: ChainId.Base,
       },
       {
-        address: '0x12275DCB9048680c4Be40942eA4D92c74C63b844',
+        address: EUSD_ADDRESS[ChainId.Arbitrum],
         chain: ChainId.Arbitrum,
       },
     ],
