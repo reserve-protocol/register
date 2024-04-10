@@ -16,7 +16,6 @@ import AppRoutes from './AppRoutes'
 import Layout from './components/layout'
 import LanguageProvider from './i18n'
 import { theme } from './theme'
-import { QueryClient, QueryClientProvider } from 'react-query'
 
 mixpanel.init(import.meta.env.VITE_MIXPANEL_KEY || 'mixpanel_key', {
   track_pageview: true,
@@ -64,16 +63,14 @@ const App = () => (
     <ScrollToTop />
     <ThemeUIProvider theme={theme}>
       <LanguageProvider>
-        <QueryClientProvider client={queryClient}>
-          <ChainProvider>
-            <Updater />
-            <TransactionSidebar />
-            <Layout>
-              <ToastContainer />
-              <AppRoutes />
-            </Layout>
-          </ChainProvider>
-        </QueryClientProvider>
+        <ChainProvider>
+          <Updater />
+          <TransactionSidebar />
+          <Layout>
+            <ToastContainer />
+            <AppRoutes />
+          </Layout>
+        </ChainProvider>
       </LanguageProvider>
     </ThemeUIProvider>
   </Router>
