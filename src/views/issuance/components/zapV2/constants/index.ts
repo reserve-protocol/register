@@ -110,6 +110,6 @@ export const zappableTokens = {
   [ChainId.Base]: baseTokens,
 }
 
-export const SLIPPAGE_OPTIONS = [100000n, 250000n, 500000n]
+export const SLIPPAGE_OPTIONS = [100000n, 10000n, 1000n]
 
 export const PRICE_IMPACT_THRESHOLD = 3
