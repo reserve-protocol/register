@@ -5,6 +5,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import RTokenContainer from 'state/rtoken/RTokenContainer'
 import { Box } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
+import Collaterals from 'views/collaterals'
 import EarnWrapper from 'views/earn'
 
 import Home from 'views/home'
@@ -77,6 +78,7 @@ const AppRoutes = () => (
         element={<PreloadComponent element={Settings} />}
       />
     </Route>
+    <Route path={ROUTES.COLLATERALS} element={<Collaterals />} />
     <Route path="*" element={<Box>Not found</Box>} />
   </Routes>
 )

@@ -92,6 +92,8 @@ const wrappedTokenMap = {
   cvx3Pool: protocols.CONVEX,
   cvxeUSDFRAXBP: protocols.CONVEX,
   cvxMIM3Pool: protocols.CONVEX,
+  cvxCrvUSDUSDC: protocols.CONVEX,
+  cvxCrvUSDUSDT: protocols.CONVEX,
   sDAI: protocols.SDR,
   aBasUSDbC: protocols.AAVEv3,
   sgUSDC: protocols.STARGATE,

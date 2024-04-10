@@ -5,10 +5,11 @@ import BackupBasket from 'components/rtoken-setup/basket/BackupBasket'
 import CollateralModal from 'components/rtoken-setup/basket/CollateralModal'
 import PrimaryBasket from 'components/rtoken-setup/basket/PrimaryBasket'
 import SectionWrapper from 'components/section-navigation/SectionWrapper'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { Box, BoxProps, Card, Text } from 'theme-ui'
 import { isNewBackupProposedAtom, isNewBasketProposedAtom } from '../atoms'
+import { rTokenAtom, rTokenConfigurationAtom } from 'state/atoms'
 
 const Overlay = ({ children, ...props }: BoxProps) => (
   <Box
@@ -45,22 +46,42 @@ const Overlay = ({ children, ...props }: BoxProps) => (
   </Box>
 )
 
-const PrimaryBasketWarning = ({ onPropose }: { onPropose(): void }) => (
-  <Box sx={{ maxWidth: 340, textAlign: 'center' }}>
-    <OverviewIcon />
-    <Text variant="title" mb={2}>
-      <Trans>Change primary basket</Trans>
-    </Text>
-    <Text as="p" variant="legend">
-      <Trans>
-        Propose how the basket should be distributed going forward.{' '}
-      </Trans>
-    </Text>
-    <SmallButton mt={3} onClick={onPropose}>
-      <Trans>Propose new basket</Trans>
-    </SmallButton>
-  </Box>
-)
+const PrimaryBasketWarning = ({ onPropose }: { onPropose(): void }) => {
+  const rToken = useAtomValue(rTokenAtom)
+  const config = useAtomValue(rTokenConfigurationAtom)
+  const warning =
+    rToken?.supply && config?.minTrade
+      ? config.minTrade * 100 > rToken.supply
+      : false
+
+  return (
+    <Box sx={{ maxWidth: 340, textAlign: 'center' }}>
+      <OverviewIcon />
+      <Text variant="title" mb={2} color={warning ? 'danger' : 'text'}>
+        <Trans>Change primary basket</Trans>
+      </Text>
+      <Text as="p" variant={warning ? 'strong' : 'legend'}>
+        {warning ? (
+          <Trans>
+            The token supply is not enough for changing the primary basket
+            safely, contact the Reserve team for recommendations.
+          </Trans>
+        ) : (
+          <Trans>
+            Propose how the basket should be distributed going forward.{' '}
+          </Trans>
+        )}
+      </Text>
+      <SmallButton
+        mt={3}
+        onClick={onPropose}
+        variant={warning ? 'danger' : 'primary'}
+      >
+        <Trans>Propose new basket</Trans>
+      </SmallButton>
+    </Box>
+  )
+}
 
 const BackupBasketWarning = ({ onPropose }: { onPropose(): void }) => (
   <Box sx={{ maxWidth: 340, textAlign: 'center' }}>
