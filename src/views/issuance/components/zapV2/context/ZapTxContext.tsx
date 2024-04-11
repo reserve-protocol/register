@@ -87,6 +87,15 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   } = useApproval(chainId, account, allowance)
 
   useEffect(() => {
+    if (approvalSuccess) {
+      mixpanel.track('Zap approval success', {
+        Operation: operation,
+        Endpoint: endpoint,
+      })
+    }
+  }, [approvalSuccess, operation, endpoint])
+
+  useEffect(() => {
     if (
       allowanceError &&
       !(loadingApproval || validatingApproval || approvalSuccess)
