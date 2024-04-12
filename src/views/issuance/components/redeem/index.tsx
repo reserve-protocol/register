@@ -1,17 +1,27 @@
 import { Trans } from '@lingui/macro'
 import { Button, Card } from 'components'
 import useRToken from 'hooks/useRToken'
-import { useAtomValue } from 'jotai'
-import { useState } from 'react'
-import { Text } from 'theme-ui'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { useEffect, useState } from 'react'
 import { isValidRedeemAmountAtom } from 'views/issuance/atoms'
 import ConfirmRedemption from './ConfirmRedemption'
 import RedeemInput from './RedeemInput'
+import { rTokenStateAtom } from 'state/atoms'
+import { customRedeemNonceAtom, redeemNonceAtom } from './atoms'
 
 const Redeem = () => {
   const rToken = useRToken()
   const [confirming, setConfirming] = useState(false)
   const isValid = useAtomValue(isValidRedeemAmountAtom)
+  const { basketNonce, isCollaterized } = useAtomValue(rTokenStateAtom)
+  const selectedNonce = useAtomValue(redeemNonceAtom)
+  const setSelectedNonce = useSetAtom(customRedeemNonceAtom)
+
+  useEffect(() => {
+    if (!isCollaterized && basketNonce > 0 && basketNonce === selectedNonce) {
+      setSelectedNonce(basketNonce - 1)
+    }
+  }, [basketNonce, isCollaterized])
 
   return (
     <>
