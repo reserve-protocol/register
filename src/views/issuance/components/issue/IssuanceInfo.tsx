@@ -60,8 +60,8 @@ const IssuanceInfoStat = ({
           <Text>Time until fully charged</Text>
           {timeUntilCharged > 0 ? (
             <Text sx={{ fontWeight: 'bold' }}>
-              {timeUntilCharged.toFixed(0)} minute
-              {timeUntilCharged > 1 ? 's' : ''}
+              {timeUntilCharged < 1 ? '<1' : timeUntilCharged.toFixed(0)} minute
+              {timeUntilCharged >= 1.5 ? 's' : ''}
             </Text>
           ) : (
             <Text sx={{ fontWeight: 'bold' }}>Fully Charged</Text>
@@ -107,7 +107,7 @@ const IssuanceInfo = (props: BoxProps) => {
         ? (difference / maxIssuanceLimit) * 60
         : 0
 
-    const roundedTimeUntilCharged = timeUntilCharged < 1 ? 0 : timeUntilCharged
+    const roundedTimeUntilCharged = timeUntilCharged < 0 ? 0 : timeUntilCharged
     return [maxIssuanceLimit, roundedTimeUntilCharged]
   }, [
     tokenSupply,
@@ -135,7 +135,7 @@ const IssuanceInfo = (props: BoxProps) => {
         ? (difference / maxRedemptionLimit) * 60
         : 0
 
-    const roundedTimeUntilCharged = timeUntilCharged < 1 ? 0 : timeUntilCharged
+    const roundedTimeUntilCharged = timeUntilCharged < 0 ? 0 : timeUntilCharged
     return [maxRedemptionLimit, roundedTimeUntilCharged]
   }, [
     tokenSupply,
