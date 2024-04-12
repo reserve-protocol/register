@@ -145,11 +145,6 @@ const TransactionModal = ({
     return null
   }, [validationError?.message])
 
-  console.log(
-    'validation error',
-    validationError?.message.indexOf('empty redemption')
-  )
-
   return (
     <Modal title={title} onClose={onClose} {...props}>
       {status === 'error' && (
