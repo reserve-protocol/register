@@ -13,7 +13,7 @@ import { useAtomValue } from 'jotai'
 import { rTokenStateAtom } from 'state/atoms'
 import AlertIcon from 'components/icons/AlertIcon'
 
-const CollaterizationBanner = (props: BoxProps) => {
+const CollateralizationBanner = (props: BoxProps) => {
   const { isCollaterized } = useAtomValue(rTokenStateAtom)
 
   if (isCollaterized) return null
@@ -24,7 +24,7 @@ const CollaterizationBanner = (props: BoxProps) => {
         <AlertIcon width={32} height={32} />
         <Box ml="3">
           <Text sx={{ fontWeight: 'bold' }} variant="warning">
-            RToken basket is under re-collaterization, this process can take a
+            RToken basket is under re-collateralization, this process can take a
             few hours.
           </Text>
           <br />
@@ -40,18 +40,19 @@ const CollaterizationBanner = (props: BoxProps) => {
 
 const IssuanceMethods = () => {
   const { zapEnabled, setZapEnabled } = useZap()
+  const { isCollaterized } = useAtomValue(rTokenStateAtom)
 
   return (
     <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[1, 4]}>
       {zapEnabled ? (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-          <CollaterizationBanner ml="4" mb="-4" mt="4" />
-          <RTokenZapIssuance />
+          <CollateralizationBanner ml="4" mb="-4" mt="4" />
+          <RTokenZapIssuance disableRedeem={!isCollaterized} />
           <ZapToggleBottom setZapEnabled={setZapEnabled} />
         </Box>
       ) : (
         <Box mt={4} ml={4} mr={[4, 4, 4, 0]}>
-          <CollaterizationBanner mb="3" />
+          <CollateralizationBanner mb="3" />
           <ZapToggle zapEnabled={zapEnabled} setZapEnabled={setZapEnabled} />
           <Grid columns={[1, 2]} gap={[1, 4]} mb={[1, 4]}>
             <Issue />
