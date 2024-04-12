@@ -8,6 +8,7 @@ export interface ModalProps extends BoxProps {
   onClose?(): void // unclosable modal if this is not defined
   width?: string | number
   closeOnClickAway?: boolean
+  titleProps?: any
   hideCloseButton?: boolean
 }
 
@@ -54,7 +55,12 @@ const Dialog = forwardRef<HTMLDivElement, ModalProps>(
   )
 )
 
-const Header = ({ title, onClose, hideCloseButton }: ModalProps) => {
+const Header = ({
+  title,
+  onClose,
+  titleProps = {},
+  hideCloseButton,
+}: ModalProps) => {
   if ((!title && !onClose) || hideCloseButton) {
     return null
   }
@@ -68,7 +74,7 @@ const Header = ({ title, onClose, hideCloseButton }: ModalProps) => {
           position: 'relative',
         }}
       >
-        <Text variant="title" sx={{ fontWeight: 700 }}>
+        <Text variant="title" sx={{ fontWeight: 700 }} {...titleProps}>
           {title && title}
         </Text>
         {!!onClose && (

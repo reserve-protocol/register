@@ -6,11 +6,12 @@ import useContractWrite from 'hooks/useContractWrite'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue } from 'jotai'
 import { chainIdAtom, walletAtom } from 'state/atoms'
-import { Divider } from 'theme-ui'
+import { Divider, Text, Box } from 'theme-ui'
 import { Allowance } from 'types'
 import { useContractRead, type UsePrepareContractWriteConfig } from 'wagmi'
 import TransactionConfirmedModal from './TransactionConfirmedModal'
 import TransactionError from './TransactionError'
+import { useMemo } from 'react'
 
 export interface ITransactionModal extends Omit<ModalProps, 'onChange'> {
   title: string
@@ -134,6 +135,16 @@ const TransactionModal = ({
     !isIdle &&
     !disabled
 
+  const validationMessage = useMemo(() => {
+    if (validationError) {
+      if (validationError.message.indexOf('empty redemption') !== -1) {
+        return 'Current basket not capitalized, please try to redeem with a previous basket.'
+      }
+    }
+
+    return null
+  }, [validationError?.message])
+
   return (
     <Modal title={title} onClose={onClose} {...props}>
       {status === 'error' && (
@@ -160,6 +171,11 @@ const TransactionModal = ({
         gas={hasAllowance ? gas : undefined}
         mt={3}
       />
+      {!!validationMessage && (
+        <Box sx={{ textAlign: 'center', fontSize: 1 }} mt={3}>
+          <Text variant="error">{validationMessage}</Text>
+        </Box>
+      )}
     </Modal>
   )
 }
