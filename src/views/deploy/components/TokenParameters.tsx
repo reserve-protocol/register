@@ -30,6 +30,7 @@ const ChainSelector = () => {
       <Select value={chainId} onChange={handleChainChange}>
         <option value={ChainId.Mainnet}>Ethereum</option>
         <option value={ChainId.Base}>Base</option>
+        <option value={ChainId.Arbitrum}>Arbitrum One</option>
       </Select>
     </Box>
   )
