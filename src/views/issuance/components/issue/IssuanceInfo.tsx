@@ -128,8 +128,8 @@ const IssuanceInfo = (props: BoxProps) => {
       difference > 0 && maxIssuanceLimit > 0
         ? (difference / maxIssuanceLimit) * 60
         : 0
-
-    const roundedTimeUntilCharged = timeUntilCharged < 0 ? 0 : timeUntilCharged
+    const roundedTimeUntilCharged =
+      timeUntilCharged < 0.001 ? 0 : timeUntilCharged
     return [maxIssuanceLimit, roundedTimeUntilCharged]
   }, [
     tokenSupply,
@@ -157,7 +157,8 @@ const IssuanceInfo = (props: BoxProps) => {
         ? (difference / maxRedemptionLimit) * 60
         : 0
 
-    const roundedTimeUntilCharged = timeUntilCharged < 0 ? 0 : timeUntilCharged
+    const roundedTimeUntilCharged =
+      timeUntilCharged < 0.001 ? 0 : timeUntilCharged
     return [maxRedemptionLimit, roundedTimeUntilCharged]
   }, [
     tokenSupply,
