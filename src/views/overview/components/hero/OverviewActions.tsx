@@ -129,7 +129,7 @@ const OverviewActions = () => {
         onClick={() => navigate(`../${ROUTES.ISSUANCE}`)}
       >
         <Trans>
-          {!!holders ? `${formatCurrency(holders, 1)}% Est. APY` : 'Mint'}
+          {!!holders ? `Mint ${formatCurrency(holders, 1)}% Est. APY` : 'Mint'}
         </Trans>
       </Button>
       <Button

@@ -46,14 +46,14 @@ const HeaderMenu = () => {
         to: ROUTES.HOME,
       },
       {
-        label: t`Portfolio`,
-        icon: <WalletOutlineIcon fontSize={16} />,
-        to: ROUTES.PORTFOLIO,
-      },
-      {
         label: t`Earn`,
         icon: <EarnNavIcon fontSize={16} />,
         to: ROUTES.EARN,
+      },
+      {
+        label: t`Portfolio`,
+        icon: <WalletOutlineIcon fontSize={16} />,
+        to: ROUTES.PORTFOLIO,
       },
       { label: t`Bridge`, icon: <BridgeNavIcon />, to: ROUTES.BRIDGE },
     ],
