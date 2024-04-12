@@ -1,6 +1,8 @@
 import { t } from '@lingui/macro'
+import Help from 'components/help'
 import GlobalMaxMintIcon from 'components/icons/GlobalMaxMintIcon'
 import GlobalMaxRedeemIcon from 'components/icons/GlobalMaxRedeemIcon'
+import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { ReactNode, useMemo } from 'react'
 import { rTokenStateAtom } from 'state/atoms'
@@ -14,6 +16,7 @@ const IssuanceInfoStat = ({
   available,
   max,
   timeUntilCharged,
+  tooltipContent,
 }: {
   icon: ReactNode
   title: string
@@ -21,12 +24,15 @@ const IssuanceInfoStat = ({
   available: number
   max: number
   timeUntilCharged: number
+  tooltipContent: ReactNode
 }) => {
+  const rToken = useRToken()
+
   return (
     <Box p={4} sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
       <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
         {icon}
-        <Text variant="h3" sx={{ fontSize: 20, fontWeight: 'bold' }}>
+        <Text variant="h3" sx={{ fontSize: 18, fontWeight: 'bold' }}>
           {title}
         </Text>
       </Box>
@@ -46,12 +52,15 @@ const IssuanceInfoStat = ({
           <Text sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>
             {subtitle}
           </Text>
-          <Text
-            sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}
-            color="primary"
-          >
-            {formatCurrency(available, 0)}
-          </Text>
+          <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+            <Text
+              sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}
+              color="primary"
+            >
+              {formatCurrency(available, 0)}
+            </Text>
+            <Text sx={{ fontSize: 14 }}>{rToken?.symbol}</Text>
+          </Box>
         </Box>
         <Box
           variant="layout.verticalAlign"
@@ -60,8 +69,8 @@ const IssuanceInfoStat = ({
           <Text>Time until fully charged</Text>
           {timeUntilCharged > 0 ? (
             <Text sx={{ fontWeight: 'bold' }}>
-              {timeUntilCharged.toFixed(0)} minute
-              {timeUntilCharged > 1 ? 's' : ''}
+              {timeUntilCharged < 1 ? '<1' : timeUntilCharged.toFixed(0)} minute
+              {timeUntilCharged >= 1.5 ? 's' : ''}
             </Text>
           ) : (
             <Text sx={{ fontWeight: 'bold' }}>Fully Charged</Text>
@@ -78,8 +87,20 @@ const IssuanceInfoStat = ({
           variant="layout.verticalAlign"
           sx={{ justifyContent: 'space-between' }}
         >
-          <Text>Current max charge</Text>
-          <Text sx={{ fontWeight: 'bold' }}>{formatCurrency(max, 0)}</Text>
+          <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+            <Text>Current max charge</Text>
+            <Help
+              content={tooltipContent}
+              placement="bottom"
+              sx={{ mt: '2px' }}
+            />
+          </Box>
+          <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+            <Text sx={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>
+              {formatCurrency(max, 0)}
+            </Text>
+            <Text sx={{ fontSize: 14 }}>{rToken?.symbol}</Text>
+          </Box>
         </Box>
       </Box>
     </Box>
@@ -87,6 +108,7 @@ const IssuanceInfoStat = ({
 }
 
 const IssuanceInfo = (props: BoxProps) => {
+  const rToken = useRToken()
   const {
     tokenSupply,
     issuanceAvailable,
@@ -106,8 +128,8 @@ const IssuanceInfo = (props: BoxProps) => {
       difference > 0 && maxIssuanceLimit > 0
         ? (difference / maxIssuanceLimit) * 60
         : 0
-
-    const roundedTimeUntilCharged = timeUntilCharged < 1 ? 0 : timeUntilCharged
+    const roundedTimeUntilCharged =
+      timeUntilCharged < 0.001 ? 0 : timeUntilCharged
     return [maxIssuanceLimit, roundedTimeUntilCharged]
   }, [
     tokenSupply,
@@ -135,7 +157,8 @@ const IssuanceInfo = (props: BoxProps) => {
         ? (difference / maxRedemptionLimit) * 60
         : 0
 
-    const roundedTimeUntilCharged = timeUntilCharged < 1 ? 0 : timeUntilCharged
+    const roundedTimeUntilCharged =
+      timeUntilCharged < 0.001 ? 0 : timeUntilCharged
     return [maxRedemptionLimit, roundedTimeUntilCharged]
   }, [
     tokenSupply,
@@ -147,21 +170,45 @@ const IssuanceInfo = (props: BoxProps) => {
   return (
     <Box p={[0, 4]} pt={4} {...props}>
       <IssuanceInfoStat
-        icon={<GlobalMaxMintIcon />}
+        icon={<GlobalMaxMintIcon width={20} height={20} />}
         title={t`Mint - Global throttle`}
         subtitle={t`Mintable now`}
         available={issuanceAvailable}
         max={maxMint}
         timeUntilCharged={timeUntilFullyChargedMint}
+        tooltipContent={
+          <Text sx={{ fontSize: 14 }}>
+            The mint max charge is either{' '}
+            {(issuanceThrottleRate * 100).toFixed(1)}% of {rToken?.symbol}{' '}
+            supply or a lower bound of{' '}
+            <Text sx={{ fontWeight: 'bold' }}>
+              {formatCurrency(issuanceThrottleAmount, 0)}
+            </Text>{' '}
+            {rToken?.symbol}, whichever is the higher amount.
+          </Text>
+        }
       />
       <Divider my={3} sx={{ borderColor: 'borderSecondary' }} />
       <IssuanceInfoStat
-        icon={<GlobalMaxRedeemIcon />}
+        icon={<GlobalMaxRedeemIcon width={20} height={20} />}
         title={t`Redeem - Global throttle`}
         subtitle={t`Redeemable now`}
         available={redemptionAvailable}
         max={maxRedeem}
         timeUntilCharged={timeUntilFullyChargedRedeem}
+        tooltipContent={
+          <Text sx={{ fontSize: 14 }}>
+            The redeem max charge is either{' '}
+            {(redemptionThrottleRate * 100).toFixed(1)}% of {rToken?.symbol}{' '}
+            supply or a lower bound of{' '}
+            <Text sx={{ fontWeight: 'bold' }}>
+              {formatCurrency(redemptionThrottleAmount, 0)}
+            </Text>{' '}
+            {rToken?.symbol}, whichever is the higher amount. If that exceeds
+            the total supply, the limit is set to the total supply of{' '}
+            {rToken?.symbol}.
+          </Text>
+        }
       />
     </Box>
   )
