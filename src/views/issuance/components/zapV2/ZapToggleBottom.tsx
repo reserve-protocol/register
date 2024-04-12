@@ -17,6 +17,7 @@ const ZapToggleBottom = ({
         flexDirection: ['column', 'row', 'row', 'row'],
         alignItems: ['flex-start', 'center', 'center', 'center'],
       }}
+      mb="4"
       ml={[4, 7, 7, 7]}
       mr={[0, 7, 7, 4]}
     >
