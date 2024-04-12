@@ -101,7 +101,7 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       !(loadingApproval || validatingApproval || approvalSuccess)
     ) {
       setError({
-        title: 'Transaction rejected',
+        title: 'Transaction rejected: Approval failed',
         message: 'Please try again',
         color: 'danger',
         secondaryColor: 'rgba(255, 0, 0, 0.20)',
@@ -126,20 +126,12 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const {
     data,
     isLoading: loadingTx,
+    isIdle: isIdleTx,
     sendTransaction,
     error: sendError,
   } = useSendTransaction(config)
 
-  const {
-    data: receipt,
-    isLoading: validatingTx,
-    error: validatingTxError,
-  } = useWaitForTransaction({
-    hash: data?.hash,
-    chainId,
-  })
-
-  useWatchTransaction({
+  const { data: receipt, isMining: validatingTx } = useWatchTransaction({
     hash: data?.hash,
     label:
       operation === 'mint'
@@ -153,7 +145,12 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       refetch()
       return
     }
-    if (!error && sendTransaction && !(loadingTx || validatingTx || receipt)) {
+    if (
+      !error &&
+      sendTransaction &&
+      isIdleTx &&
+      !(loadingTx || validatingTx || receipt)
+    ) {
       sendTransaction()
     }
   }, [
@@ -165,13 +162,11 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     loadingTx,
     validatingTx,
     receipt,
+    isIdleTx,
   ])
 
   useEffect(() => {
-    if (
-      (sendError || validatingTxError) &&
-      !(loadingTx || validatingTx || receipt)
-    ) {
+    if (sendError && !(loadingTx || validatingTx || receipt)) {
       setError({
         title: 'Transaction rejected',
         message: 'Please try again',
@@ -187,7 +182,6 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     }
   }, [
     sendError,
-    validatingTxError,
     setError,
     loadingTx,
     validatingTx,
@@ -224,7 +218,7 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         approvalSuccess,
         approve,
         loadingTx,
-        validatingTx,
+        validatingTx: Boolean(validatingTx),
         sendTransaction,
         receipt,
       }}
