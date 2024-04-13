@@ -1,12 +1,14 @@
 import { useEffect } from 'react'
-import { Box, Flex, Text } from 'theme-ui'
+import { Box, Flex, Text, useColorMode } from 'theme-ui'
 import Earn from './components/Earn'
 import RegisterAbout from 'views/home/components/RegisterAbout'
 import mixpanel from 'mixpanel-browser'
 import { Trans } from '@lingui/macro'
 
 const HeroBackground = () => {
-  const url = '/imgs/bg-earn.png'
+  const [colorMode] = useColorMode()
+  const url =
+    colorMode === 'dark' ? '/imgs/bg-earn-dark.png' : '/imgs/bg-earn-light.png'
 
   return (
     <Box
