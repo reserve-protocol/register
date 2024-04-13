@@ -46,22 +46,22 @@ export const compactColumnVisibility = [
   ['none', 'table-cell'],
 ]
 
+export const PROJECT_ICONS: Record<string, React.ReactElement> = {
+  'yearn-finance': <Yearn fontSize={16} />,
+  'convex-finance': <Convex fontSize={16} />,
+  'curve-dex': <Curve />,
+  aerodrome: <Aerodrome />,
+  stakedao: <Stakedao fontSize={16} />,
+  'uniswap-v3': <Uniswap fontSize={16} />,
+  'balancer-v2': <Balancer fontSize={16} />,
+  'extra-finance': <Extra fontSize={16} />,
+  beefy: <Beefy />,
+  concentrator: <Concentrator />,
+}
+
 const useEarnTableColumns = (compact: boolean) => {
   const columnHelper = createColumnHelper<Pool>()
   return useMemo(() => {
-    const PROJECT_ICONS: Record<string, React.ReactElement> = {
-      'yearn-finance': <Yearn fontSize={16} />,
-      'convex-finance': <Convex fontSize={16} />,
-      'curve-dex': <Curve />,
-      aerodrome: <Aerodrome />,
-      stakedao: <Stakedao fontSize={16} />,
-      'uniswap-v3': <Uniswap fontSize={16} />,
-      'balancer-v2': <Balancer fontSize={16} />,
-      'extra-finance': <Extra fontSize={16} />,
-      beefy: <Beefy />,
-      concentrator: <Concentrator />,
-    }
-
     return [
       columnHelper.accessor('symbol', {
         header: t`Pool`,
