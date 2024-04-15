@@ -19,7 +19,7 @@ const FeaturedPools = () => {
         justifyContent: 'center',
         background: 'cardAlternative',
         px: [2, 5],
-        py: [2, 4],
+        py: [5, 4],
         borderRadius: '14px',
         border: '3px solid',
         borderColor: 'contentBackground',
@@ -28,11 +28,13 @@ const FeaturedPools = () => {
       mx={[0, 4]}
     >
       <Box
-        variant="layout.verticalAlign"
         sx={{
-          justifyContent: 'space-between',
+          display: 'flex',
+          flexDirection: ['column', 'row'],
+          justifyContent: ['start', 'space-between'],
           width: '100%',
           px: [1, 5],
+          gap: 4,
         }}
       >
         {top3Pools.map((pool) => (

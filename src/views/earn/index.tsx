@@ -42,7 +42,7 @@ const Hero = () => (
         maxWidth: '95em',
       }}
       pt={[5, 5]}
-      mt={[0, 5]}
+      mt={[2, 5]}
       pb={0}
       px={[2, 3]}
     >
@@ -72,7 +72,7 @@ const Hero = () => (
 
 const Info = () => {
   return (
-    <Box variant="layout.centered" mt={[2, 4]} mb={[2, 7]} pb={[0, 2]}>
+    <Box variant="layout.centered" mt={4} mb={7} pb={[0, 2]}>
       <Box
         variant="layout.verticalAlign"
         sx={{
