@@ -13,33 +13,35 @@ const FeaturedPools = () => {
   )
 
   return (
-    <Box
-      variant="layout.centered"
-      sx={{
-        justifyContent: 'center',
-        background: 'cardAlternative',
-        px: [2, 5],
-        py: [5, 4],
-        borderRadius: '14px',
-        border: '3px solid',
-        borderColor: 'contentBackground',
-      }}
-      mt={[1, 7]}
-      mx={[0, 4]}
-    >
+    <Box variant="layout.wrapper">
       <Box
+        variant="layout.centered"
         sx={{
-          display: 'flex',
-          flexDirection: ['column', 'row'],
-          justifyContent: ['start', 'space-between'],
-          width: '100%',
-          px: [1, 5],
-          gap: 4,
+          justifyContent: 'center',
+          background: 'cardAlternative',
+          px: [2, 5],
+          py: [5, 4],
+          borderRadius: '14px',
+          border: '3px solid',
+          borderColor: 'contentBackground',
         }}
+        mt={[1, 7]}
+        mx={[0, 2]}
       >
-        {top3Pools.map((pool) => (
-          <FeaturedPoolItem key={pool.id} pool={pool} />
-        ))}
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: ['column', 'row'],
+            justifyContent: ['start', 'space-between'],
+            width: '100%',
+            px: [1, 5],
+            gap: 4,
+          }}
+        >
+          {top3Pools.map((pool) => (
+            <FeaturedPoolItem key={pool.id} pool={pool} />
+          ))}
+        </Box>
       </Box>
     </Box>
   )
