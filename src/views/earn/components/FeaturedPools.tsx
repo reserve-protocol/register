@@ -19,14 +19,15 @@ const FeaturedPools = () => {
         sx={{
           justifyContent: 'center',
           background: 'cardAlternative',
-          px: [2, 5],
+          pl: 2,
+          pr: 4,
           py: [5, 4],
           borderRadius: '14px',
           border: '3px solid',
           borderColor: 'contentBackground',
         }}
         mt={[1, 7]}
-        mx={[0, 2]}
+        mx={[0, 3]}
       >
         <Box
           sx={{
@@ -34,7 +35,6 @@ const FeaturedPools = () => {
             flexDirection: ['column', 'row'],
             justifyContent: ['start', 'space-between'],
             width: '100%',
-            px: [1, 5],
             gap: 4,
           }}
         >
