@@ -130,6 +130,7 @@ const TransactionButton = ({
     return (
       <Button
         {...props}
+        disabled={false}
         onClick={() => {
           if (chain && chain !== chainId) {
             switchChain(chain)

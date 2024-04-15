@@ -10,13 +10,13 @@ import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc'
 import { publicProvider } from '@wagmi/core/providers/public'
 import React from 'react'
 import { WagmiConfig, configureChains, createConfig } from 'wagmi'
-import { base, hardhat, mainnet } from 'wagmi/chains'
+import { arbitrum, base, mainnet } from 'wagmi/chains'
 import { infuraProvider } from 'wagmi/providers/infura'
 import AtomUpdater from './updaters/AtomUpdater'
 import { setupConfig } from './utils/mocks'
 
 export const { chains, publicClient } = configureChains(
-  [mainnet, base, hardhat],
+  [mainnet, base, arbitrum],
   import.meta.env.VITE_MAINNET_URL
     ? [
         jsonRpcProvider({

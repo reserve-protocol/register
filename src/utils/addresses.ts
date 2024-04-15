@@ -38,13 +38,20 @@ export const FACADE_WRITE_ADDRESS: AddressMap = {
 export const RSR_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x320623b8E4fF03373931769A31Fc52A4E78B5d70',
   [ChainId.Base]: '0xaB36452DbAC151bE02b16Ca17d8919826072f64a',
+  [ChainId.Arbitrum]: '0xCa5Ca9083702c56b481D1eec86F1776FDbd2e594',
   [ChainId.Hardhat]: '0x320623b8e4ff03373931769a31fc52a4e78b5d70',
 }
 
 export const EUSD_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
   [ChainId.Base]: '0xCfA3Ef56d303AE4fAabA0592388F19d7C3399FB4',
+  [ChainId.Arbitrum]: '0x12275DCB9048680c4Be40942eA4D92c74C63b844',
   [ChainId.Hardhat]: '0xA0d69E286B938e21CBf7E51D71F6A4c8918f482F',
+}
+
+export const RGUSD_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x78da5799CF427Fee11e9996982F4150eCe7a99A7',
+  [ChainId.Arbitrum]: '0x96a993f06951b01430523d0d5590192d650ebf3e',
 }
 
 /**

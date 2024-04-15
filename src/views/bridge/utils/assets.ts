@@ -1,5 +1,5 @@
 import rtokens from '@lc-labs/rtokens'
-import { EUSD_ADDRESS, RSR_ADDRESS } from 'utils/addresses'
+import { EUSD_ADDRESS, RGUSD_ADDRESS, RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import { Address } from 'viem'
 
@@ -18,7 +18,72 @@ export interface BridgeAsset {
   L2contract?: Address
 }
 
-const BRIDGE_ASSETS: BridgeAsset[] = [
+const EUSD_LOGO = `/svgs/${
+  rtokens[ChainId.Mainnet][EUSD_ADDRESS[ChainId.Mainnet]].logo
+}`
+
+const RGUSD_LOGO = `/svgs/${
+  rtokens[ChainId.Mainnet][RGUSD_ADDRESS[ChainId.Mainnet]].logo
+}`
+
+const ARBITRUM_ASSETS: BridgeAsset[] = [
+  {
+    L1symbol: 'ETH',
+    L2symbol: 'ETH',
+    L1chainId: ChainId.Mainnet,
+    L2chainId: ChainId.Arbitrum,
+    L1icon: '/svgs/eth.svg',
+    L2icon: '/svgs/eth.svg',
+    decimals: 18,
+    L1name: 'Ether',
+    L2name: 'Ether',
+    protocol: 'OP',
+  },
+  {
+    L1symbol: 'RSR',
+    L2symbol: 'RSR',
+    L1chainId: ChainId.Mainnet,
+    L2chainId: ChainId.Arbitrum,
+    L1contract: RSR_ADDRESS[ChainId.Mainnet],
+    L2contract: RSR_ADDRESS[ChainId.Arbitrum],
+    L1icon: '/svgs/rsr.svg',
+    L2icon: '/svgs/rsr.svg',
+    L1name: 'Reserve Rights',
+    L2name: 'Reserve Rights',
+    decimals: 18,
+    protocol: 'OP',
+  },
+  {
+    L1symbol: 'eUSD',
+    L2symbol: 'eUSD',
+    L1chainId: ChainId.Mainnet,
+    L2chainId: ChainId.Arbitrum,
+    L1contract: EUSD_ADDRESS[ChainId.Mainnet],
+    L2contract: EUSD_ADDRESS[ChainId.Arbitrum],
+    L1icon: EUSD_LOGO,
+    L2icon: EUSD_LOGO,
+    L1name: 'Electronic Dollar',
+    L2name: 'Electronic Dollar',
+    decimals: 18,
+    protocol: 'OP',
+  },
+  {
+    L1symbol: 'rgUSD',
+    L2symbol: 'rgUSD',
+    L1chainId: ChainId.Mainnet,
+    L2chainId: ChainId.Arbitrum,
+    L1contract: RGUSD_ADDRESS[ChainId.Mainnet],
+    L2contract: RGUSD_ADDRESS[ChainId.Arbitrum],
+    L1icon: RGUSD_LOGO,
+    L2icon: RGUSD_LOGO,
+    L1name: 'Revenue Generating USD',
+    L2name: 'Revenue Generating USD',
+    decimals: 18,
+    protocol: 'OP',
+  },
+]
+
+const BASE_ASSETS: BridgeAsset[] = [
   {
     L1symbol: 'ETH',
     L2symbol: 'ETH',
@@ -52,12 +117,8 @@ const BRIDGE_ASSETS: BridgeAsset[] = [
     L2chainId: ChainId.Base,
     L1contract: EUSD_ADDRESS[ChainId.Mainnet],
     L2contract: EUSD_ADDRESS[ChainId.Base],
-    L1icon: `/svgs/${
-      rtokens[ChainId.Mainnet][EUSD_ADDRESS[ChainId.Mainnet]].logo?.toLowerCase()
-    }`,
-    L2icon: `/svgs/${
-      rtokens[ChainId.Mainnet][EUSD_ADDRESS[ChainId.Mainnet]].logo?.toLowerCase()
-    }`,
+    L1icon: EUSD_LOGO,
+    L2icon: EUSD_LOGO,
     L1name: 'Electronic Dollar',
     L2name: 'Electronic Dollar',
     decimals: 18,
@@ -303,5 +364,10 @@ const BRIDGE_ASSETS: BridgeAsset[] = [
     protocol: 'OP',
   },
 ]
+
+const BRIDGE_ASSETS = {
+  [ChainId.Base]: BASE_ASSETS,
+  [ChainId.Arbitrum]: ARBITRUM_ASSETS,
+}
 
 export default BRIDGE_ASSETS

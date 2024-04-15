@@ -1,6 +1,7 @@
 export const ChainId = {
   Mainnet: 1,
   Base: 8453,
+  Arbitrum: 42161,
   Hardhat: 31337,
 }
 

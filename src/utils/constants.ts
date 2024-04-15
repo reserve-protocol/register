@@ -1,5 +1,5 @@
 import { Token, Trader } from 'types'
-import { EUSD_ADDRESS, RSR_ADDRESS } from './addresses'
+import { EUSD_ADDRESS, RGUSD_ADDRESS, RSR_ADDRESS } from './addresses'
 import { ChainId } from './chains'
 import rtokens from '@lc-labs/rtokens'
 import RSV from './rsv'
@@ -173,9 +173,11 @@ export const TENDERLY_SHARE_URL = (id: string) =>
   `https://api.tenderly.co/api/v1/account/${TENDERLY_USER}/project/${TENDERLY_PROJECT_SLUG}/simulations/${id}/share`
 export const TENDERLY_SHARING_URL = (id: string) =>
   `https://dashboard.tenderly.co/shared/simulation/${id}`
+
 export const CHAIN_TAGS = {
   [ChainId.Mainnet]: 'Ethereum',
   [ChainId.Base]: 'Base',
+  [ChainId.Arbitrum]: 'Arbitrum One',
 }
 
 export const LISTED_RTOKEN_ADDRESSES: { [x: number]: string[] } = {
@@ -186,8 +188,18 @@ export const BRIDGED_RTOKENS = {
   [ChainId.Mainnet]: {
     [EUSD_ADDRESS[ChainId.Mainnet]]: [
       {
-        address: '0xCfA3Ef56d303AE4fAabA0592388F19d7C3399FB4',
+        address: EUSD_ADDRESS[ChainId.Base],
         chain: ChainId.Base,
+      },
+      {
+        address: EUSD_ADDRESS[ChainId.Arbitrum],
+        chain: ChainId.Arbitrum,
+      },
+    ],
+    [RGUSD_ADDRESS[ChainId.Mainnet]]: [
+      {
+        address: RGUSD_ADDRESS[ChainId.Arbitrum],
+        chain: ChainId.Arbitrum,
       },
     ],
   },

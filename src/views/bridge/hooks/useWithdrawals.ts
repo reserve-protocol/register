@@ -38,15 +38,12 @@ interface WithdrawalItem {
   asset?: BridgeAsset
 }
 
-const ETH_WITHDRAWAL_ADDRESS =
-  '0x4200000000000000000000000000000000000016'.toLowerCase()
-
-const ERC20_WITHDRAWAL_ADDRESS =
-  '0x4200000000000000000000000000000000000010'.toLowerCase()
+const ETH_WITHDRAWAL_ADDRESS = '0x4200000000000000000000000000000000000016'
+const ERC20_WITHDRAWAL_ADDRESS = '0x4200000000000000000000000000000000000010'
 
 const ETH_TOKEN_ADDRESS = '0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000'
 
-const bridgeAssetMap = BRIDGE_ASSETS.reduce((prev, curr) => {
+const bridgeAssetMap = BRIDGE_ASSETS[ChainId.Base].reduce((prev, curr) => {
   if (!curr.L1contract) {
     prev[ETH_TOKEN_ADDRESS.toLowerCase()] = curr
   } else {
