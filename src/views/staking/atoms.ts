@@ -30,6 +30,7 @@ export const pendingRSRSummaryAtom = atom<{
   availableAmount: number
 }>((get) => {
   const currentTime = get(blockTimestampAtom)
+
   return get(pendingRSRAtom).reduce(
     (acc, unstake) => {
       acc.availableAt = unstake.availableAt
