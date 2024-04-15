@@ -1,23 +1,28 @@
 import { Button } from 'components'
 import StackTokenLogo from 'components/token-logo/StackTokenLogo'
 import { Pool } from 'state/pools/atoms'
-import { Box, Text } from 'theme-ui'
+import { Box, Link, Text } from 'theme-ui'
 import { PROJECT_ICONS } from '../hooks/useEarnTableColumns'
 import ChainLogo from 'components/icons/ChainLogo'
+import { useMemo } from 'react'
 
-const FeaturedPool = ({ pool }: { pool: Pool }) => {
+const FeaturedPoolItem = ({ pool }: { pool: Pool }) => {
+  const underlyingTokens = useMemo(
+    () =>
+      (pool?.underlyingTokens || [])
+        .filter((u) => u.symbol !== 'Unknown')
+        .map((u, i) => ({ ...u, left: i + 10 })),
+    [pool?.underlyingTokens]
+  )
+
   if (!pool) return null
-
-  const underlyingTokens = pool.underlyingTokens
-    .filter((u) => u.symbol !== 'Unknown')
-    .map((u, i) => ({ ...u, left: i + 10 }))
 
   return (
     <Box variant="layout.verticalAlign">
       <Box
         sx={{
           position: 'relative',
-          background: 'black',
+          background: 'contentBackground',
           borderRadius: '6px',
           width: 104,
           height: 128,
@@ -78,9 +83,16 @@ const FeaturedPool = ({ pool }: { pool: Pool }) => {
           </Text>
         </Box>
         <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
-          <Button small sx={{ width: 'max-content' }}>
-            View
-          </Button>
+          <Link
+            target="_blank"
+            variant="layout.verticalAlign"
+            sx={{ cursor: 'pointer' }}
+            href={pool.url}
+          >
+            <Button small sx={{ width: 'max-content' }}>
+              View
+            </Button>
+          </Link>
           <ChainLogo chain={pool.chain} fontSize={12} />
         </Box>
       </Box>
@@ -88,4 +100,4 @@ const FeaturedPool = ({ pool }: { pool: Pool }) => {
   )
 }
 
-export default FeaturedPool
+export default FeaturedPoolItem

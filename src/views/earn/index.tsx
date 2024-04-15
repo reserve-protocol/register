@@ -4,6 +4,10 @@ import Earn from './components/Earn'
 import RegisterAbout from 'views/home/components/RegisterAbout'
 import mixpanel from 'mixpanel-browser'
 import { Trans } from '@lingui/macro'
+import FeaturedPools from './components/FeaturedPools'
+import HelpIcon from 'components/icons/HelpIcon'
+import { Zap } from 'react-feather'
+import { colors } from 'theme'
 
 const HeroBackground = () => {
   const [colorMode] = useColorMode()
@@ -37,12 +41,12 @@ const Hero = () => (
         position: 'relative',
         maxWidth: '95em',
       }}
-      pt={[5, 4]}
+      pt={[5, 5]}
       mt={[0, 5]}
       pb={0}
       px={[2, 3]}
     >
-      <Box sx={{ maxWidth: 900, textAlign: 'center' }} mt={[2, 4]}>
+      <Box sx={{ maxWidth: 900, textAlign: 'center' }} mt={[2, 7]}>
         <Text
           variant="title"
           sx={{
@@ -66,6 +70,32 @@ const Hero = () => (
   </Box>
 )
 
+const Info = () => {
+  return (
+    <Box variant="layout.centered" mt={[2, 4]} mb={[2, 7]} pb={[0, 2]}>
+      <Box
+        variant="layout.verticalAlign"
+        sx={{
+          gap: 2,
+          borderRadius: '50px',
+          border: '3px solid',
+          borderColor: 'border',
+          width: 'fit-content',
+        }}
+        backgroundColor="cardAlternative"
+        py={2}
+        px={3}
+      >
+        <Zap strokeWidth={1.5} size={18} color={colors.primary} />
+        <Text sx={{ fontWeight: 'bold' }} color="primary">
+          How are APY's so high?
+        </Text>
+        <HelpIcon />
+      </Box>
+    </Box>
+  )
+}
+
 const EarnWrapper = () => {
   useEffect(() => {
     mixpanel.track('Visted Earn Page', {})
@@ -76,6 +106,8 @@ const EarnWrapper = () => {
       <Box sx={{ position: 'relative' }}>
         <HeroBackground />
         <Hero />
+        <Info />
+        <FeaturedPools />
       </Box>
       <Box variant="layout.wrapper">
         <Earn />
