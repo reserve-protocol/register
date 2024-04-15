@@ -16,7 +16,12 @@ const FeaturedPoolItem = ({ pool }: { pool?: Pool }) => {
     [pool?.underlyingTokens]
   )
 
-  if (!pool) return <Skeleton height={124} width={320} />
+  if (!pool)
+    return (
+      <Box mx={3}>
+        <Skeleton height={124} width={320} />
+      </Box>
+    )
 
   return (
     <Box variant="layout.verticalAlign">
