@@ -5,8 +5,9 @@ import { Box, Link, Text } from 'theme-ui'
 import { PROJECT_ICONS } from '../hooks/useEarnTableColumns'
 import ChainLogo from 'components/icons/ChainLogo'
 import { useMemo } from 'react'
+import Skeleton from 'react-loading-skeleton'
 
-const FeaturedPoolItem = ({ pool }: { pool: Pool }) => {
+const FeaturedPoolItem = ({ pool }: { pool?: Pool }) => {
   const underlyingTokens = useMemo(
     () =>
       (pool?.underlyingTokens || [])
@@ -15,7 +16,7 @@ const FeaturedPoolItem = ({ pool }: { pool: Pool }) => {
     [pool?.underlyingTokens]
   )
 
-  if (!pool) return null
+  if (!pool) return <Skeleton height={124} width={320} />
 
   return (
     <Box variant="layout.verticalAlign">

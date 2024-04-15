@@ -7,10 +7,10 @@ import { useMemo } from 'react'
 const FeaturedPools = () => {
   const pools = useAtomValue(poolsAtom)
 
-  const top3Pools = useMemo(
-    () => pools.sort((a, b) => b.apy - a.apy).slice(0, 3),
-    [pools]
-  )
+  const top3Pools = useMemo(() => {
+    const topPools = pools.sort((a, b) => b.apy - a.apy).slice(0, 3)
+    return topPools.length === 3 ? topPools : [undefined, undefined, undefined]
+  }, [pools])
 
   return (
     <Box variant="layout.wrapper">
@@ -38,8 +38,8 @@ const FeaturedPools = () => {
             gap: 4,
           }}
         >
-          {top3Pools.map((pool) => (
-            <FeaturedPoolItem key={pool.id} pool={pool} />
+          {top3Pools.map((pool, index) => (
+            <FeaturedPoolItem key={`${pool?.id} ${index}`} pool={pool} />
           ))}
         </Box>
       </Box>
