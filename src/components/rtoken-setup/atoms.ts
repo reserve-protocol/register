@@ -331,7 +331,7 @@ export const rTokenDefaultValuesAtom = atom((get) => {
     symbol: '',
     manifesto: '',
     ownerAddress: '',
-    reweightable: true,
+    reweightable: false,
     // backing params
     tradingDelay: '7200',
     batchAuctionLength: '900',
