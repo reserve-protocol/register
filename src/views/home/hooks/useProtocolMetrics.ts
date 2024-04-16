@@ -73,20 +73,23 @@ const useProtocolMetrics = () => {
 
       for (const chain of supportedChainList) {
         const metrics = data[chain] as ProtocolMetricsResponse
-        const tokens = data[chain].tokens as TokenMetrics[]
-        const tokensMarketCap = tokens.reduce(
-          (acc, token) =>
-            acc + +formatEther(token.totalSupply) * +token.lastPriceUSD,
-          0
-        )
 
-        if (metrics.protocol) {
-          volume += +metrics.protocol.cumulativeVolumeUSD
-          marketCap += tokensMarketCap
-          stakeRevenue += +metrics.protocol.cumulativeRSRRevenueUSD
+        if (metrics?.protocol && metrics?.tokens) {
+          const tokens = metrics.tokens as TokenMetrics[]
+          const tokensMarketCap = tokens.reduce(
+            (acc, token) =>
+              acc + +formatEther(token.totalSupply) * +token.lastPriceUSD,
+            0
+          )
+
+          if (metrics.protocol) {
+            volume += +metrics.protocol.cumulativeVolumeUSD
+            marketCap += tokensMarketCap
+            stakeRevenue += +metrics.protocol.cumulativeRSRRevenueUSD
+          }
+
+          tvl += +formatEther(metrics.protocol.rsrStaked as any) * rsrPrice
         }
-
-        tvl += +formatEther(metrics.protocol.rsrStaked as any) * rsrPrice
       }
 
       tvl += marketCap

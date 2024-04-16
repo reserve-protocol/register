@@ -122,6 +122,11 @@ const chainsMap = [
     chain: chains.base,
     collaterals: require('./data/base-collaterals.json'),
   },
+  {
+    prefix: 'arbitrum',
+    chain: chains.arbitrum,
+    collaterals: require('./data/arbitrum-collaterals.json'),
+  },
 ]
 
 ;(async () => {

@@ -1,14 +1,14 @@
 import { t, Trans } from '@lingui/macro'
 import { FormField } from 'components/field'
 import { useFormContext } from 'react-hook-form'
-import { Box, BoxProps, Text, Divider } from 'theme-ui'
+import { Box, BoxProps, Text, Divider, Switch } from 'theme-ui'
 
 /**
  * View: Deploy -> Token setup
  */
 const TokenForm = (props: BoxProps) => {
-  const { watch } = useFormContext()
-  const [tickerValue] = watch(['ticker'])
+  const { watch, register } = useFormContext()
+  const [tickerValue, reweightable] = watch(['ticker', 'reweightable'])
 
   return (
     <Box {...props}>
@@ -55,6 +55,13 @@ const TokenForm = (props: BoxProps) => {
           },
         }}
       />
+      <Box mt={3} ml={3}>
+        <Text variant="bold">Allow RToken basket to change weights</Text>
+        <Text mb="2" as="p" variant="legend">
+          TODO: Explanatory text
+        </Text>
+        <Switch defaultChecked={reweightable} {...register('reweightable')} />
+      </Box>
     </Box>
   )
 }

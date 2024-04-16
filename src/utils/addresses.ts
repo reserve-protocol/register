@@ -11,24 +11,28 @@ export const ST_RSR_ADDRESS = '0x0000000000000000000000000000000000000002'
 export const DEPLOYER_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x43587CAA7dE69C3c2aD0fb73D4C9da67A8E35b0b',
   [ChainId.Base]: '0x9C75314AFD011F22648ca9C655b61674e27bA4AC',
+  [ChainId.Arbitrum]: '0xFD18bA9B2f9241Ce40CDE14079c1cDA1502A8D0A',
   [ChainId.Hardhat]: '0x15480f5B5ED98A94e1d36b52Dd20e9a35453A38e',
 }
 
 export const FACADE_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x2815c24F49D5c5316Ffd0952dB0EFe68b0d5F132',
   [ChainId.Base]: '0xDf99ccA98349DeF0eaB8eC37C1a0B270de38E682',
+  [ChainId.Arbitrum]: '0x5Af543D6F95a98200Dd770f39A902Fe793BAeB27',
   [ChainId.Hardhat]: '0x2815c24F49D5c5316Ffd0952dB0EFe68b0d5F132',
 }
 
 export const FACADE_ACT_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x801fF27bacc7C00fBef17FC901504c79D59E845C',
   [ChainId.Base]: '0x3d6D679c863858E89e35c925F937F5814ca687F3',
+  [ChainId.Arbitrum]: '0xe7187Cc63C72fe0920668b547852bDd0517c4e86',
   [ChainId.Hardhat]: '0x30426D33a78afdb8788597D5BFaBdADc3Be95698',
 }
 
 export const FACADE_WRITE_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x3312507BC3F22430B34D5841A472c767DC5C36e4',
   [ChainId.Base]: '0x46c600CB3Fb7Bf386F8f53952D64aC028e289AFb',
+  [ChainId.Arbitrum]: '0x43E205A805c4be5A62C71d49de68dF60200548A0',
   [ChainId.Hardhat]: '0xAe2563b4315469bF6bdD41A6ea26157dE57Ed94e',
 }
 
@@ -60,6 +64,7 @@ export const RGUSD_ADDRESS: AddressMap = {
 export const ENS_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C',
   [ChainId.Base]: zeroAddress, // TODO: Pending
+  [ChainId.Arbitrum]: zeroAddress, // TODO: Pending
   [ChainId.Hardhat]: '0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C',
 }
 

@@ -5,7 +5,7 @@ import {
   chainIdAtom,
   rTokenAssetsAtom,
   secondsPerBlockAtom,
-  selectedRTokenAtom
+  selectedRTokenAtom,
 } from 'state/atoms'
 import { CollateralPlugin } from 'types'
 import { isAddress, truncateDecimals } from 'utils'
@@ -331,6 +331,7 @@ export const rTokenDefaultValuesAtom = atom((get) => {
     symbol: '',
     manifesto: '',
     ownerAddress: '',
+    reweightable: true,
     // backing params
     tradingDelay: '7200',
     batchAuctionLength: '900',

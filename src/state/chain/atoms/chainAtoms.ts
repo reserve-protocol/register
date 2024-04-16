@@ -11,6 +11,7 @@ import { Address } from 'wagmi'
  * #########################
  */
 export const chainIdAtom = atom<number>(defaultChain)
+export const reweightableAtom = atom(true)
 export const blockAtom = atom<number | undefined>(undefined)
 export const blockTimestampAtom = atom<number>(0)
 export const walletAtom = atom<Address | null>(null)
@@ -73,6 +74,9 @@ export const SUBGRAPH_URL = {
     'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/reserve-mainnet/api',
   [ChainId.Base]:
     'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/reserve-base/api',
+  // TODO: Change
+  [ChainId.Arbitrum]:
+    'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/reserve-arbitrum/api',
   [ChainId.Hardhat]:
     'https://api.thegraph.com/subgraphs/name/lcamargof/reserve-test',
 }
@@ -83,6 +87,7 @@ export const GRAPH_CLIENTS = {
     import.meta.env.VITE_SUBGRAPH_URL || SUBGRAPH_URL[ChainId.Mainnet]
   ),
   [ChainId.Base]: new GraphQLClient(SUBGRAPH_URL[ChainId.Base]),
+  [ChainId.Arbitrum]: new GraphQLClient(SUBGRAPH_URL[ChainId.Arbitrum]),
   CONTENTFUL: new GraphQLClient(
     `https://graphql.contentful.com/content/v1/spaces/9pqtywannd90/environments/master`,
     {

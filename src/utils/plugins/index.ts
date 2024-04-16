@@ -3,6 +3,8 @@ import { ChainId } from 'utils/chains'
 // @ts-ignore
 import basePlugins from './data/base.json'
 // @ts-ignore
+import arbitrumPlugins from './data/arbitrum.json'
+// @ts-ignore
 import mainnetPlugins from './data/mainnet.json'
 import { Address } from 'viem'
 import {
@@ -16,20 +18,9 @@ import {
 const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
   [ChainId.Mainnet]: mainnetPlugins,
   [ChainId.Base]: basePlugins,
+  [ChainId.Arbitrum]: arbitrumPlugins,
   [ChainId.Hardhat]: mainnetPlugins, // Mainnet fork
 }
-
-// TODO: Enhance the collaterals script to generate this mapping as well
-// Do we need this?
-// export const protocolRewards: Partial<Record<ProtocolKey, string[]>> = {
-//   AAVE: [STAKE_AAVE_ADDRESS[ChainId.Mainnet]],
-//   AAVEv3: [STAKE_AAVE_ADDRESS[ChainId.Mainnet]],
-//   COMP: [COMP_ADDRESSES[ChainId.Mainnet], COMP_ADDRESSES[ChainId.Base]],
-//   COMPv3: [COMP_ADDRESSES[ChainId.Mainnet], COMP_ADDRESSES[ChainId.Base]],
-//   CURVE: [CRV_ADDRESSES[ChainId.Mainnet]],
-//   CONVEX: [CRV_ADDRESSES[ChainId.Mainnet], CVX_ADDRESSES[ChainId.Mainnet]],
-//   STARGATE: [STG_ADDRESSES[ChainId.Base]],
-// }
 
 export const rewardsByProtocol: { [x: Address]: ProtocolKey[] } = {
   [STAKE_AAVE_ADDRESS[ChainId.Mainnet]]: ['AAVE', 'AAVEv3'],
@@ -55,6 +46,10 @@ export const collateralsProtocolMap: {
     {}
   ),
   [ChainId.Base]: collateralPlugins[ChainId.Base].reduce(
+    collateralToProtocol,
+    {}
+  ),
+  [ChainId.Arbitrum]: collateralPlugins[ChainId.Arbitrum].reduce(
     collateralToProtocol,
     {}
   ),

@@ -22,6 +22,7 @@ export const unstakeDelayAtom = atom((get) => {
 export const pendingRSRAtom = atom<
   { availableAt: number; index: bigint; amount: number }[]
 >([])
+
 export const pendingRSRSummaryAtom = atom<{
   index: bigint
   availableIndex: bigint
