@@ -855,18 +855,7 @@ export default [
       },
     ],
     name: 'redeemCustom',
-    outputs: [
-      {
-        internalType: 'address[]',
-        name: 'erc20sOut',
-        type: 'address[]',
-      },
-      {
-        internalType: 'uint256[]',
-        name: 'amountsOut',
-        type: 'uint256[]',
-      },
-    ],
+    outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },

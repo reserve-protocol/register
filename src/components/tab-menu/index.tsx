@@ -103,7 +103,7 @@ const TabMenu = ({
       ...defaultStyles(background, small, collapse),
       ...(sx ?? {}),
     }
-  }, [sx])
+  }, [background, collapse, small, sx])
 
   const handleSelect = useCallback(
     (key: string) => {

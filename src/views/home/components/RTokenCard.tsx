@@ -244,7 +244,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
                   }}
                 >
                   {token.tokenApy
-                    ? `${token.tokenApy.toFixed(1)}% Est. APY`
+                    ? `Mint ${token.tokenApy.toFixed(1)}% Est. APY`
                     : 'Mint'}
                 </Button>
                 <Button

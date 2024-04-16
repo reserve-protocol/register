@@ -1,4 +1,4 @@
-import { Box, Divider, Grid } from 'theme-ui'
+import { Box, BoxProps, Divider, Grid, Text } from 'theme-ui'
 import About from './components/about'
 import Balances from './components/balances'
 import Issue from './components/issue'
@@ -9,19 +9,50 @@ import RTokenZapIssuance from './components/zapV2/RTokenZapIssuance'
 import ZapToggle from './components/zapV2/ZapToggle'
 import ZapToggleBottom from './components/zapV2/ZapToggleBottom'
 import { ZapProvider, useZap } from './components/zapV2/context/ZapContext'
+import { useAtomValue } from 'jotai'
+import { rTokenStateAtom } from 'state/atoms'
+import AlertIcon from 'components/icons/AlertIcon'
+
+const CollateralizationBanner = (props: BoxProps) => {
+  const { isCollaterized } = useAtomValue(rTokenStateAtom)
+
+  if (isCollaterized) return null
+
+  return (
+    <Box {...props} variant="layout.borderBox" p="3">
+      <Box variant="layout.verticalAlign">
+        <AlertIcon width={32} height={32} />
+        <Box ml="3">
+          <Text sx={{ fontWeight: 'bold' }} variant="warning">
+            RToken basket is under re-collateralization, this process can take a
+            few hours.
+          </Text>
+          <br />
+          <Text mt="1" sx={{ display: 'block' }} variant="warning">
+            For redemptions, please wait until the process is complete or
+            manually redeem using the previous basket.
+          </Text>
+        </Box>
+      </Box>
+    </Box>
+  )
+}
 
 const IssuanceMethods = () => {
   const { zapEnabled, setZapEnabled } = useZap()
+  const { isCollaterized } = useAtomValue(rTokenStateAtom)
 
   return (
     <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[1, 4]}>
       {zapEnabled ? (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-          <RTokenZapIssuance />
+          <CollateralizationBanner ml="4" mb="-4" mt="4" />
+          <RTokenZapIssuance disableRedeem={!isCollaterized} />
           <ZapToggleBottom setZapEnabled={setZapEnabled} />
         </Box>
       ) : (
         <Box mt={4} ml={4} mr={[4, 4, 4, 0]}>
+          <CollateralizationBanner mb="3" />
           <ZapToggle zapEnabled={zapEnabled} setZapEnabled={setZapEnabled} />
           <Grid columns={[1, 2]} gap={[1, 4]} mb={[1, 4]}>
             <Issue />

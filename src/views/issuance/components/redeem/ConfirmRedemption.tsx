@@ -22,13 +22,14 @@ import {
 import RedeemInput from './RedeemInput'
 import RedeemNonceModal from './RedeemNonceModal'
 import RedemptionQuote from './RedemptionQuote'
-import { customRedeemModalAtom } from './atoms'
+import { customRedeemModalAtom, redeemNonceAtom } from './atoms'
 
 const callAtom = atom((get) => {
   const rToken = get(rTokenAtom)
   const amount = get(redeemAmountDebouncedAtom)
   const isValid = get(isValidRedeemAmountAtom)
-  const { isCollaterized, basketNonce: nonce } = get(rTokenStateAtom)
+  const { isCollaterized } = get(rTokenStateAtom)
+  const nonce = get(redeemNonceAtom)
   const { issuance: isLegacy } = get(isModuleLegacyAtom)
   const account = get(walletAtom)
 

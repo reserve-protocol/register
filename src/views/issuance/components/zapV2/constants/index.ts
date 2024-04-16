@@ -10,6 +10,13 @@ const mainnetTokens = [
     targetUnit: 'ETH',
   },
   {
+    address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' as Address,
+    symbol: 'WETH',
+    name: 'Wrapped Ether',
+    decimals: 18,
+    targetUnit: 'ETH',
+  },
+  {
     address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48' as Address,
     symbol: 'USDC',
     name: 'USDC',
@@ -55,6 +62,13 @@ const baseTokens = [
     targetUnit: 'ETH',
   },
   {
+    address: '0x4200000000000000000000000000000000000006' as Address,
+    symbol: 'WETH',
+    name: 'Wrapped Ether',
+    decimals: 18,
+    targetUnit: 'ETH',
+  },
+  {
     address: '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA' as Address,
     symbol: 'USDbC',
     name: 'USDbC',
@@ -96,6 +110,6 @@ export const zappableTokens = {
   [ChainId.Base]: baseTokens,
 }
 
-export const SLIPPAGE_OPTIONS = [100000n, 250000n, 500000n]
+export const SLIPPAGE_OPTIONS = [100000n, 10000n, 1000n]
 
 export const PRICE_IMPACT_THRESHOLD = 3

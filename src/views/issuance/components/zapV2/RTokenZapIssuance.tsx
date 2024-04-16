@@ -1,12 +1,13 @@
 import { ArrowDown } from 'react-feather'
 import { Box, Divider } from 'theme-ui'
 import ZapOperationDetails from './ZapOperationDetails'
+import ZapRedeemDisabled from './ZapRedeemDisabled'
 import ZapTabs from './ZapTabs'
 import ZapInputContainer from './input/ZapInputContainer'
 import ZapOutputContainer from './output/ZapOutputContainer'
 import ZapSubmit from './submit/ZapSubmit'
 
-const RTokenZapIssuance = () => {
+const RTokenZapIssuance = ({ disableRedeem }: { disableRedeem: boolean }) => {
   return (
     <Box
       sx={{
@@ -26,7 +27,16 @@ const RTokenZapIssuance = () => {
         <ZapTabs />
       </Box>
       <Divider m={0} sx={{ borderColor: 'borderSecondary' }} />
-      <Box p={4} sx={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <Box
+        p={4}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '24px',
+          position: 'relative',
+        }}
+      >
+        <ZapRedeemDisabled disableRedeem={disableRedeem} />
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <ZapInputContainer />
           <Box variant="layout.verticalAlign" sx={{ gap: '12px', px: 3 }}>

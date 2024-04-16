@@ -41,8 +41,7 @@ const ZapToggle = ({
         Beta
         <Help
           ml={1}
-          content="The Zap Mint feature is in beta and may result in unexpected behavior.
-      Proceed with caution."
+          content="Zap Mint is currently in beta. After approval, you might encounter non-executable routes, especially with Base assets. This will not affect your funds, but may require a retry. We're working to enhance route discovery for a smoother experience."
         />
       </Box>
 

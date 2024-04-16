@@ -1,6 +1,7 @@
 import { useChainlinkPrice } from 'hooks/useChainlinkPrice'
 import useDebounce from 'hooks/useDebounce'
 import { useAtomValue } from 'jotai'
+import mixpanel from 'mixpanel-browser'
 import {
   FC,
   PropsWithChildren,
@@ -12,7 +13,6 @@ import {
   useState,
 } from 'react'
 import {
-  TokenBalance,
   balancesAtom,
   chainIdAtom,
   ethPriceAtom,
@@ -34,7 +34,6 @@ import {
   SLIPPAGE_OPTIONS,
   zappableTokens,
 } from '../constants'
-import mixpanel from 'mixpanel-browser'
 
 export type IssuanceOperation = 'mint' | 'redeem'
 
@@ -69,6 +68,7 @@ type ZapContextType = {
   setSelectedToken: (token: ZapToken) => void
   refetch?: KeyedMutator<ZapResponse>
   endpoint?: string | null
+  resetZap: () => void
 
   tokens: ZapToken[]
   chainId: number
@@ -113,6 +113,7 @@ const ZapContext = createContext<ZapContextType>({
   tokens: [],
   tokenIn: zappableTokens[ChainId.Mainnet][0],
   tokenOut: zappableTokens[ChainId.Mainnet][0],
+  resetZap: () => {},
 })
 
 export const useZap = () => {
@@ -145,11 +146,13 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
   const tokens: ZapToken[] = useMemo(
     () =>
-      zappableTokens[chainId].map((token) => ({
-        ...token,
-        balance: balances[token.address as Address]?.balance ?? '0',
-      })),
-    [chainId, balances]
+      zappableTokens[chainId]
+        .map((token) => ({
+          ...token,
+          balance: balances[token.address as Address]?.balance ?? '0',
+        }))
+        .filter((token) => operation === 'mint' || token.symbol !== 'ETH'),
+    [chainId, balances, operation]
   )
   const tokenPrice = useChainlinkPrice(
     chainId,
@@ -166,12 +169,19 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
   useEffect(() => {
     if (!selectedToken) setSelectedToken(tokens[0])
-  }, [tokens])
+    if (operation === 'redeem' && selectedToken?.symbol === 'ETH') {
+      setSelectedToken(tokens[0])
+    }
+  }, [operation, selectedToken, tokens])
 
-  useEffect(() => {
+  const resetZap = useCallback(() => {
     setAmountIn('')
     setOpenTokenSelector(false)
-  }, [setAmountIn, selectedToken, operation, zapEnabled])
+  }, [setAmountIn, setOpenTokenSelector])
+
+  useEffect(() => {
+    resetZap()
+  }, [resetZap, selectedToken, operation, zapEnabled])
 
   const rToken: ZapToken = useMemo(
     () => ({
@@ -239,12 +249,14 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     }
   }, [
     tokenIn.balance,
-    tokenOut.price,
     tokenIn.price,
+    tokenIn.symbol,
     operation,
+    setAmountIn,
+    tokenOut.price,
     issuanceAvailable,
     redemptionAvailable,
-    setError,
+    rToken?.symbol,
   ])
 
   const endpoint = useDebounce(
@@ -304,6 +316,11 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     const _priceImpact =
       ((inputPriceValue - outputPriceValue) / inputPriceValue) * 100
 
+    mixpanel.track('zapper:', {
+      Operation: operation,
+      Endpoint: endpoint,
+    })
+
     return [
       _amountOut,
       Math.max(0, _priceImpact),
@@ -311,7 +328,15 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       estimatedGasCost,
       data.result.approvalAddress,
     ]
-  }, [data, tokenOut, gas, ethPrice, tokenIn?.price, amountIn, tokenOut?.price])
+  }, [
+    data,
+    tokenIn.decimals,
+    tokenIn?.price,
+    tokenOut.decimals,
+    tokenOut?.price,
+    gas?.formatted?.gasPrice,
+    ethPrice,
+  ])
 
   useEffect(() => {
     if (apiError || (data && data.error)) {
@@ -328,7 +353,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
       setOpenSubmitModal(false)
 
-      mixpanel.track('Zap API Failed', {
+      mixpanel.track('Zap Execution Error', {
         Endpoint: endpoint,
         Error: apiError?.message || data?.error,
       })
@@ -353,12 +378,12 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         } Anyway`,
       })
     }
-  }, [apiError, data, operation, setError, priceImpact])
+  }, [apiError, data, operation, setError, priceImpact, endpoint])
 
   const _setZapEnabled = useCallback(
     (value: boolean) => {
       setZapEnabled(value)
-      mixpanel.track('Toggled Zap', {
+      mixpanel.track('Toggled Zaps', {
         RToken: rToken?.address.toLowerCase() ?? '',
         Enabled: value,
       })
@@ -404,6 +429,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         spender,
         zapResult: data?.result,
         endpoint,
+        resetZap,
       }}
     >
       {children}

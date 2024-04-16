@@ -15,7 +15,7 @@ const ZapSettingsSlippage = () => {
   const buttons = useMemo(
     () =>
       SLIPPAGE_OPTIONS.map((bps) => ({
-        label: `${formatNumber((1 / Number(bps)) * 10000)} bps`,
+        label: `${formatNumber((1 / Number(bps)) * 100)}%`,
         onClick: () => {
           setShowCustomSlippage(false)
           setSlippage(bps)

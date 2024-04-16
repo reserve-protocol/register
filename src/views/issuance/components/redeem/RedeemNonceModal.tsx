@@ -38,6 +38,7 @@ const RedeemNonceModal = ({ onClose, ...props }: Props) => {
   return (
     <Modal
       title={t`Choose Redemption Basket`}
+      titleProps={{ ml: 5 }}
       sx={{ backgroundColor: '#F9F8F4' }}
       onClose={handleClose}
       {...props}

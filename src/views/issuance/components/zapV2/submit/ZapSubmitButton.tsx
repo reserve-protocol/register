@@ -33,7 +33,7 @@ const ZapSubmitButton = () => {
   const onSubmit = useCallback(() => {
     setOpenSubmitModal(true)
 
-    mixpanel.track('Zap Submit Clicked', {
+    mixpanel.track('Clicked Zap', {
       Operation: operation,
       Endpoint: endpoint,
     })

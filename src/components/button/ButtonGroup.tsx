@@ -43,6 +43,7 @@ const ButtonGroup: FC<ButtonGroupProps> = ({ buttons, startActive = 0 }) => {
             cursor: 'pointer',
             padding: '8px 12px',
             fontSize: 14,
+            whiteSpace: 'nowrap',
             '&:hover': {
               filter: 'brightness(1)',
               backgroundColor: 'background',
