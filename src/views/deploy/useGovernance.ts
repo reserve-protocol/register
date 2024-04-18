@@ -67,8 +67,8 @@ export const useGovernanceTx = () => {
         !!defaultGovernance,
         unpause === '1',
         {
-          votingDelay: BigInt(votingDelay),
-          votingPeriod: BigInt(votingPeriod),
+          votingDelay: BigInt(+votingDelay * 60 * 60),
+          votingPeriod: BigInt(+votingPeriod * 60 * 60),
           proposalThresholdAsMicroPercent: BigInt(
             +proposalThresholdAsMicroPercent * 1e6
           ),

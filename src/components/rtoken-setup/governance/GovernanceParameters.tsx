@@ -1,11 +1,8 @@
 import { t, Trans } from '@lingui/macro'
 import { FormField } from 'components/field'
-import { useAtomValue } from 'jotai'
 import { useFormContext } from 'react-hook-form'
-import { secondsPerBlockAtom } from 'state/atoms'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { decimalPattern, numberPattern, parseDuration } from 'utils'
-import { timeToBlocks } from '../atoms'
 
 // TODO: Ask users for time and not block count
 const GovernanceParameters = (props: BoxProps) => {
@@ -15,12 +12,9 @@ const GovernanceParameters = (props: BoxProps) => {
     'votingPeriod',
     'minDelay',
   ])
-  const secondsPerBlock = useAtomValue(secondsPerBlockAtom)
-  const votingDelayHelper = parseDuration(
-    Number(votingDelay) * secondsPerBlock || 0
-  )
+  const votingDelayHelper = parseDuration((Number(votingDelay) || 0) * 60 * 60)
   const votingPeriodHelper = parseDuration(
-    Number(votingPeriod) * secondsPerBlock || 0
+    (Number(votingPeriod) || 0) * 60 * 60
   )
   const minDelayHelper = parseDuration((Number(minDelay) || 0) * 60 * 60)
 
@@ -30,31 +24,31 @@ const GovernanceParameters = (props: BoxProps) => {
         <Trans>Governance parameters</Trans>
       </Text>
       <FormField
-        label={t`Snapshot delay (blocks)`}
-        placeholder={t`Input number of blocks`}
+        label={t`Snapshot delay (hours)`}
+        placeholder={t`Input delay in hours`}
         helper={votingDelayHelper}
-        help={t`Delay (in number of blocks) since the proposal is submitted until voting power is fixed and voting starts. This can be used to enforce a delay after a proposal is published for users to buy tokens, or delegate their votes.`}
+        help={t`Delay (in number of hiyrs) since the proposal is submitted until voting power is fixed and voting starts. This can be used to enforce a delay after a proposal is published for users to buy tokens, or delegate their votes.`}
         mb={3}
         name="votingDelay"
         options={{
           required: true,
           pattern: numberPattern,
-          min: 1,
-          max: timeToBlocks(604800, secondsPerBlock), // 1 week
+          min: 0,
+          max: 168, // 1 week
         }}
       />
       <FormField
-        label={t`Voting period (blocks)`}
-        placeholder={t`Input number of blocks`}
+        label={t`Voting period (hours)`}
+        placeholder={t`Input voting period in hours`}
         helper={votingPeriodHelper}
-        help={t`Delay (in number of blocks) since the proposal starts until voting ends.`}
+        help={t`Delay (in number of hours) since the proposal starts until voting ends.`}
         mb={4}
         name="votingPeriod"
         options={{
           required: true,
           pattern: numberPattern,
-          min: 7200,
-          max: timeToBlocks(1209600, secondsPerBlock), // 2 weeks
+          min: 1,
+          max: 336, // 2 weeks
         }}
       />
       <FormField
@@ -67,7 +61,7 @@ const GovernanceParameters = (props: BoxProps) => {
         options={{
           required: true,
           pattern: numberPattern,
-          min: 24,
+          min: 1,
           max: 504,
         }}
       />

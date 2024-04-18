@@ -16,6 +16,7 @@ import { ROUTES } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { Hex } from 'viem'
 import useGovernance from '../useGovernance'
+import TransactionError from 'components/transaction-error/TransactionError'
 
 const Container = styled(Box)`
   height: fit-content;
@@ -70,7 +71,8 @@ const GovernanceStatus = () => {
   const navigate = useNavigate()
   const rToken = useRToken()
   const chainId = useAtomValue(chainIdAtom)
-  const { write, isReady, isLoading, gas, hash } = useGovernance()
+  const { write, isReady, isLoading, gas, hash, validationError, error } =
+    useGovernance()
   const { status } = useWatchTransaction({
     hash,
     label: 'Setup Governance',
@@ -106,6 +108,8 @@ const GovernanceStatus = () => {
         onClick={write}
         gas={gas}
       />
+
+      <TransactionError mt={3} error={validationError || error} />
     </>
   )
 }

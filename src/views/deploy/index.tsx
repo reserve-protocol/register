@@ -2,31 +2,30 @@ import Layout from 'components/rtoken-setup/Layout'
 import {
   backupCollateralAtom,
   basketAtom,
-  rTokenDefaultValuesAtom,
+  rTokenDefaultValues,
   revenueSplitAtom,
 } from 'components/rtoken-setup/atoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useCallback, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { chainIdAtom, selectedRTokenAtom } from 'state/atoms'
+import { chainIdAtom } from 'state/atoms'
+import { rTokenMetaAtom } from 'state/rtoken/atoms/rTokenAtom'
 import { Box } from 'theme-ui'
 import { Address } from 'viem'
 import DeployOverview from './components/DeployOverview'
 import Governance from './components/Governance'
 import NavigationSidebar from './components/NavigationSidebar'
 import RTokenSetup from './components/RTokenSetup'
-import { rTokenMetaAtom } from 'state/rtoken/atoms/rTokenAtom'
 
 // TODO: Totally broken needs to redirect instead of setting token
 const Deploy = () => {
   const [governance, setGovernance] = useState(false)
-  const defaultValues = useAtomValue(rTokenDefaultValuesAtom)
   const chainId = useAtomValue(chainIdAtom)
 
   const form = useForm({
     mode: 'onChange',
-    defaultValues,
+    defaultValues: rTokenDefaultValues,
   })
   const setRToken = useSetAtom(rTokenMetaAtom)
   const resetBasket = useResetAtom(basketAtom)
