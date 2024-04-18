@@ -7,7 +7,6 @@ import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
 import {
   blockAtom,
   chainIdAtom,
@@ -15,8 +14,7 @@ import {
   walletAtom,
 } from 'state/atoms'
 import { Box, Grid, Image, Text } from 'theme-ui'
-import { formatCurrency, getTokenRoute } from 'utils'
-import { ROUTES } from 'utils/constants'
+import { formatCurrency } from 'utils'
 import { formatEther, formatEther as formatEtherViem } from 'viem'
 import RolesView from 'views/settings/components/RolesView'
 import SettingItem from 'views/settings/components/SettingItem'
@@ -61,8 +59,6 @@ const useStats = () => {
 const GovernanceOverview = () => {
   const stats = useStats()
   const account = useAtomValue(walletAtom)
-  const navigate = useNavigate()
-  const rToken = useRToken()
   const blockNumber = useAtomValue(blockAtom)
   const governance = useAtomValue(rTokenGovernanceAtom)
   const chainId = useAtomValue(chainIdAtom)
@@ -138,9 +134,17 @@ const GovernanceOverview = () => {
         <Text variant="subtitle">
           <Trans>Governance format</Trans>
         </Text>
-        <Text variant="title">
-          {governance ? governance.name : 'Loading...'}
-        </Text>
+        <Box variant="layout.verticalAlign">
+          <Text variant="title">
+            {governance ? governance.name : 'Loading...'}
+          </Text>
+          {!!governance.version && (
+            <Text ml="2" sx={{ fontSize: 1 }} variant="legend">
+              (v{governance.version})
+            </Text>
+          )}
+        </Box>
+
         {governance && governance.governor && (
           <>
             <SettingItem

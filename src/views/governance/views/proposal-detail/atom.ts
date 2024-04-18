@@ -1,9 +1,19 @@
 import { PROPOSAL_STATES, blockDuration } from 'utils/constants'
 import { atom } from 'jotai'
 import { blockAtom, chainIdAtom, rTokenGovernanceAtom } from 'state/atoms'
-import { Address, Hex, encodeAbiParameters, keccak256, parseAbiParameters, parseEther, toBytes } from 'viem'
+import {
+  Address,
+  Hex,
+  encodeAbiParameters,
+  keccak256,
+  parseAbiParameters,
+  parseEther,
+  toBytes,
+} from 'viem'
 import { TenderlySimulation } from 'types'
 import { atomWithReset } from 'jotai/utils'
+import { getCurrentTime } from 'utils'
+import { isTimeunitGovernance } from 'views/governance/utils'
 
 export interface ProposalDetail {
   id: string
@@ -24,6 +34,7 @@ export interface ProposalDetail {
   againstDelegateVotes: string
   executionTxnHash: string
   quorumVotes: string
+  version: string
   targets: Address[]
   proposer: Address
   votes: {
@@ -54,24 +65,27 @@ export const getProposalStatus = (
   blockNumber: number
 ): string => {
   let status: string = proposal.state || PROPOSAL_STATES.PENDING
+  const timeunit = isTimeunitGovernance(proposal.version ?? '1')
+    ? getCurrentTime()
+    : blockNumber
 
-  if (!blockNumber) {
+  if (!blockNumber || !proposal) {
     return status
   }
 
   if (proposal.state === PROPOSAL_STATES.PENDING) {
-    if (blockNumber > (proposal.endBlock || 0)) {
+    if (timeunit > (proposal.endBlock || 0)) {
       return PROPOSAL_STATES.EXPIRED
     }
 
-    if (blockNumber > (proposal.startBlock || 0)) {
+    if (timeunit > (proposal.startBlock || 0)) {
       return PROPOSAL_STATES.ACTIVE
     }
   }
 
   if (
     proposal.state === PROPOSAL_STATES.ACTIVE &&
-    blockNumber > (proposal.endBlock || 0)
+    timeunit > (proposal.endBlock || 0)
   ) {
     const forVotes = parseEther(proposal.forWeightedVotes ?? '0')
     const againstVotes = parseEther(proposal.againstWeightedVotes ?? '0')
@@ -90,8 +104,10 @@ export const getProposalStatus = (
 
 export const getProposalStateAtom = atom((get) => {
   const blockNumber = get(blockAtom)
+  const timestamp = getCurrentTime()
   const proposal = get(proposalDetailAtom)
   const chainId = get(chainIdAtom)
+
   const BLOCK_DURATION = blockDuration[chainId]
 
   const state: { state: string; deadline: null | number } = {
@@ -100,33 +116,38 @@ export const getProposalStateAtom = atom((get) => {
   }
 
   if (blockNumber && proposal) {
+    const isTimeunit = isTimeunitGovernance(proposal.version)
+    const timeunit = isTimeunit ? timestamp : blockNumber
+
     // Proposal to be executed
     // TODO: Guardian can cancel on this state!
     if (
       proposal.state === PROPOSAL_STATES.QUEUED &&
       proposal.executionStartBlock
     ) {
-      if (proposal.executionStartBlock > blockNumber) {
-        state.deadline =
-          (proposal.executionStartBlock - blockNumber) * BLOCK_DURATION
+      if (proposal.executionStartBlock > timeunit) {
+        state.deadline = isTimeunit
+          ? proposal.executionStartBlock - timestamp
+          : (proposal.executionStartBlock - blockNumber) * BLOCK_DURATION
       } else {
-        state.deadline = proposal.executionETA! - Date.now() / 1000
+        state.deadline = proposal.executionETA! - timestamp
       }
     } else if (proposal.state === PROPOSAL_STATES.PENDING) {
-      if (
-        blockNumber > proposal.startBlock &&
-        blockNumber < proposal.endBlock
-      ) {
+      if (timeunit > proposal.startBlock && timeunit < proposal.endBlock) {
         state.state = PROPOSAL_STATES.ACTIVE
-        state.deadline = (proposal.endBlock - blockNumber) * BLOCK_DURATION
-      } else if (blockNumber < proposal.startBlock) {
-        state.deadline = (proposal.startBlock - blockNumber) * BLOCK_DURATION
+        state.deadline = isTimeunit
+          ? proposal.endBlock - timestamp
+          : (proposal.endBlock - blockNumber) * BLOCK_DURATION
+      } else if (timeunit < proposal.startBlock) {
+        state.deadline = isTimeunit
+          ? proposal.startBlock - timestamp
+          : (proposal.startBlock - blockNumber) * BLOCK_DURATION
       } else {
         state.state = PROPOSAL_STATES.EXPIRED
       }
     } else if (proposal.state === PROPOSAL_STATES.ACTIVE) {
       // Proposal voting ended check status
-      if (blockNumber > proposal.endBlock) {
+      if (timeunit > proposal.endBlock) {
         const forVotes = +proposal.forWeightedVotes
         const againstVotes = +proposal.againstWeightedVotes
         const quorum = +proposal.quorumVotes
@@ -139,7 +160,9 @@ export const getProposalStateAtom = atom((get) => {
           state.state = PROPOSAL_STATES.SUCCEEDED
         }
       } else {
-        state.deadline = (proposal.endBlock - blockNumber) * BLOCK_DURATION
+        state.deadline = isTimeunit
+          ? proposal.endBlock - timestamp
+          : (proposal.endBlock - blockNumber) * BLOCK_DURATION
       }
     }
   }
@@ -173,16 +196,20 @@ export const proposalTxArgsAtom = atom(
 export const timelockIdAtom = atom((get) => {
   const proposal = get(proposalDetailAtom)
 
-  const encodedParams = proposal ?
-    encodeAbiParameters(parseAbiParameters('address[], uint256[], bytes[], bytes32, bytes32'), [
-      proposal.targets,
-      [0n],
-      proposal.calldatas,
-      '0x0000000000000000000000000000000000000000000000000000000000000000',
-      keccak256(toBytes(proposal.description)),
-    ]) : undefined
+  const encodedParams = proposal
+    ? encodeAbiParameters(
+        parseAbiParameters('address[], uint256[], bytes[], bytes32, bytes32'),
+        [
+          proposal.targets,
+          [0n],
+          proposal.calldatas,
+          '0x0000000000000000000000000000000000000000000000000000000000000000',
+          keccak256(toBytes(proposal.description)),
+        ]
+      )
+    : undefined
 
-  return encodedParams ? keccak256(encodedParams) : undefined;
+  return encodedParams ? keccak256(encodedParams) : undefined
 })
 
 export const canExecuteAtom = atom((get) => {

@@ -27,16 +27,18 @@ import useProposalDetail from './useProposalDetail'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import ProposalCancel from './components/ProposalCancel'
+import { isTimeunitGovernance } from 'views/governance/utils'
+import { getCurrentTime } from 'utils'
+import { useBlockMemo } from 'hooks/utils'
 
 const GovernanceProposalDetail = () => {
   const { proposalId } = useParams()
   const chainId = useAtomValue(chainIdAtom)
-  const rToken = useRToken()
   const account = useAtomValue(walletAtom)
   const { data: proposal } = useProposalDetail(proposalId ?? '')
   const setProposalDetail = useSetAtom(proposalDetailAtom)
   const setAccountVoting = useSetAtom(accountVotesAtom)
-  const blockNumber = useAtomValue(blockAtom)
+  const blockNumber = useBlockMemo()
   const navigate = useNavigate()
   const { state } = useAtomValue(getProposalStateAtom)
   const { data: votePower } = useContractRead({
@@ -46,7 +48,17 @@ const GovernanceProposalDetail = () => {
     chainId,
     args:
       account && proposal?.startBlock && blockNumber
-        ? [account, BigInt(Math.min(proposal.startBlock - 1, blockNumber - 1))]
+        ? [
+            account,
+            BigInt(
+              Math.min(
+                proposal.startBlock - 1,
+                isTimeunitGovernance(proposal.version)
+                  ? getCurrentTime()
+                  : blockNumber - 1
+              )
+            ),
+          ]
         : undefined,
   })
   const accountVote = useMemo(() => {

@@ -4,16 +4,16 @@ import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
+import { useBlockMemo } from 'hooks/utils'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { blockAtom, selectedRTokenAtom } from 'state/atoms'
-import { Badge, Box, Text, Card } from 'theme-ui'
+import { selectedRTokenAtom } from 'state/atoms'
+import { Badge, Box, Text } from 'theme-ui'
 import { StringMap } from 'types'
 import { getProposalTitle } from 'utils'
 import { PROPOSAL_STATES, formatConstant } from 'utils/constants'
 import { getProposalStatus } from '../views/proposal-detail/atom'
-import { borderRadius } from 'theme'
 
 const query = gql`
   query getProposals($id: String!) {
@@ -32,6 +32,9 @@ const query = gql`
       quorumVotes
       startBlock
       endBlock
+      governanceFramework {
+        version
+      }
     }
   }
 `
@@ -61,11 +64,49 @@ const useProposals = () => {
   }, [JSON.stringify(response)])
 }
 
+const ProposalItem = ({ proposal }: { proposal: StringMap }) => {
+  const navigate = useNavigate()
+  const blockNumber = useBlockMemo()
+  const status = getProposalStatus(proposal, blockNumber || 0)
+
+  return (
+    <Box
+      p={3}
+      key={proposal.id}
+      sx={{
+        backgroundColor: 'backgroundNested',
+        borderBottom: '1px solid',
+        borderColor: 'border',
+        cursor: 'pointer',
+        ':hover': {
+          borderColor: 'backgroundNested',
+          backgroundColor: 'border',
+        },
+      }}
+      variant="layout.verticalAlign"
+      onClick={() => navigate(`proposal/${proposal.id}`)}
+    >
+      <Box mr={3}>
+        <Text variant="strong">{getProposalTitle(proposal.description)}</Text>
+        <Text variant="legend" sx={{ fontSize: 1 }}>
+          <Trans>Created at:</Trans>{' '}
+          {dayjs.unix(+proposal.creationTime).format('YYYY-M-D')}
+        </Text>
+      </Box>
+      <Badge
+        ml="auto"
+        sx={{ flexShrink: 0 }}
+        variant={BADGE_VARIANT[status] || 'muted'}
+      >
+        {formatConstant(status)}
+      </Badge>
+    </Box>
+  )
+}
+
 const ProposalList = () => {
   const navigate = useNavigate()
   const { data } = useProposals()
-  const block = useAtomValue(blockAtom)
-  const blockNumber = useMemo(() => block, [!!block])
 
   return (
     <Box
@@ -110,45 +151,9 @@ const ProposalList = () => {
             </Text>
           </Box>
         )}
-        {data.map((proposal: StringMap) => {
-          const status = getProposalStatus(proposal, blockNumber || 0)
-
-          return (
-            <Box
-              p={3}
-              key={proposal.id}
-              sx={{
-                backgroundColor: 'backgroundNested',
-                borderBottom: '1px solid',
-                borderColor: 'border',
-                cursor: 'pointer',
-                ':hover': {
-                  borderColor: 'backgroundNested',
-                  backgroundColor: 'border',
-                },
-              }}
-              variant="layout.verticalAlign"
-              onClick={() => navigate(`proposal/${proposal.id}`)}
-            >
-              <Box mr={3}>
-                <Text variant="strong">
-                  {getProposalTitle(proposal.description)}
-                </Text>
-                <Text variant="legend" sx={{ fontSize: 1 }}>
-                  <Trans>Created at:</Trans>{' '}
-                  {dayjs.unix(+proposal.creationTime).format('YYYY-M-D')}
-                </Text>
-              </Box>
-              <Badge
-                ml="auto"
-                sx={{ flexShrink: 0 }}
-                variant={BADGE_VARIANT[status] || 'muted'}
-              >
-                {formatConstant(status)}
-              </Badge>
-            </Box>
-          )
-        })}
+        {data.map((proposal: StringMap) => (
+          <ProposalItem key={proposal.id} proposal={proposal} />
+        ))}
       </Box>
     </Box>
   )

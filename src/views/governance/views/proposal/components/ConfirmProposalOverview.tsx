@@ -5,14 +5,13 @@ import GoTo from 'components/button/GoTo'
 import TransactionButton from 'components/button/TransactionButton'
 import ConfirmProposalActionIcon from 'components/icons/ConfirmProposalActionIcon'
 import useContractWrite from 'hooks/useContractWrite'
-import useRToken from 'hooks/useRToken'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { chainIdAtom } from 'state/atoms'
-import { Box, BoxProps, Container, Flex, Spinner, Text } from 'theme-ui'
-import { getTokenRoute, shortenString } from 'utils'
+import { Box, BoxProps, Flex, Spinner, Text } from 'theme-ui'
+import { shortenString } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { UsePrepareContractWriteConfig } from 'wagmi'
 import { isProposalEditingAtom } from '../atoms'
@@ -34,11 +33,10 @@ const ProposalStatus = ({
     label: 'Create proposal',
   })
   const chainId = useAtomValue(chainIdAtom)
-  const rToken = useRToken()
 
   useEffect(() => {
     if (status === 'success') {
-      navigate(getTokenRoute(rToken?.address ?? '', chainId))
+      navigate('../')
     }
   }, [status])
 

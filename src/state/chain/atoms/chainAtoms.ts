@@ -11,7 +11,6 @@ import { Address } from 'wagmi'
  * #########################
  */
 export const chainIdAtom = atom<number>(defaultChain)
-export const reweightableAtom = atom(true)
 export const blockAtom = atom<number | undefined>(undefined)
 export const blockTimestampAtom = atom<number>(0)
 export const walletAtom = atom<Address | null>(null)

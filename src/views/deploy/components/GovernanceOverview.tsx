@@ -80,6 +80,7 @@ const GovernanceStatus = () => {
 
   useEffect(() => {
     if (status === 'success' && rToken?.address) {
+      // TODO: Get addresses from logs and manually update governance and dont wait for theGraph to catch up
       navigate(getTokenRoute(rToken.address, chainId, ROUTES.SETTINGS))
     }
   }, [status])
