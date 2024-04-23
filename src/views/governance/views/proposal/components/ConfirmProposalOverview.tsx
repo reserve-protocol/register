@@ -11,10 +11,12 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { chainIdAtom } from 'state/atoms'
 import { Box, BoxProps, Flex, Spinner, Text } from 'theme-ui'
-import { shortenString } from 'utils'
+import { getTokenRoute, shortenString } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { UsePrepareContractWriteConfig } from 'wagmi'
 import { isProposalEditingAtom } from '../atoms'
+import useRToken from 'hooks/useRToken'
+import { ROUTES } from 'utils/constants'
 
 interface Props extends BoxProps {
   tx: UsePrepareContractWriteConfig
@@ -32,11 +34,16 @@ const ProposalStatus = ({
     hash,
     label: 'Create proposal',
   })
+  const token = useRToken()
   const chainId = useAtomValue(chainIdAtom)
 
   useEffect(() => {
     if (status === 'success') {
-      navigate('../')
+      navigate(
+        token
+          ? getTokenRoute(token.address, token.chainId, ROUTES.GOVERNANCE)
+          : '../'
+      )
     }
   }, [status])
 
