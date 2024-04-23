@@ -1,36 +1,29 @@
 import TabMenu from 'components/tab-menu'
 import { useAtomValue } from 'jotai'
-import { useMemo, useState } from 'react'
-import { Box } from 'theme-ui'
-import { stRsrTickerAtom } from 'views/staking/atoms'
-import ExchangeRate from './ExchangeRate'
-import StakeHistory from './StakeHistory'
-import StakeRewardsHistory from './StakeRewardsHistory'
-import StakeApy from './StakeApy'
+import { Suspense, lazy, useMemo, useState } from 'react'
+import { Box, Spinner } from 'theme-ui'
+import { StakeMetricType, stRsrTickerAtom } from 'views/staking/atoms'
 
-enum StakeMetricType {
-  Apy,
-  Exchange,
-  Staked,
-  Income,
-}
+const StakingMetricCharts = lazy(() => import('./StakingMetricCharts'))
 
-const Views = {
-  [StakeMetricType.Apy]: StakeApy,
-  [StakeMetricType.Exchange]: ExchangeRate,
-  [StakeMetricType.Staked]: StakeHistory,
-  [StakeMetricType.Income]: StakeRewardsHistory,
-}
+const Skeleton = () => (
+  <Box
+    sx={{
+      height: 254,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}
+  >
+    <Spinner size={24} />
+  </Box>
+)
 
 const StakingMetrics = () => {
   const [current, setCurrent] = useState(StakeMetricType.Exchange)
   const ticker = useAtomValue(stRsrTickerAtom)
   const options = useMemo(
     () => [
-      // {
-      //   key: StakeMetricType.Apy,
-      //   label: 'APY',
-      // },
       {
         key: StakeMetricType.Exchange,
         label: `${ticker}/RSR`,
@@ -39,15 +32,9 @@ const StakingMetrics = () => {
         key: StakeMetricType.Staked,
         label: 'Staked RSR',
       },
-      // {
-      //   key: StakeMetricType.Income,
-      //   label: 'Income',
-      // },
     ],
     [ticker]
   )
-
-  const Component = Views[current]
 
   return (
     <Box variant="layout.borderBox">
@@ -57,7 +44,9 @@ const StakingMetrics = () => {
         onMenuChange={(key) => setCurrent(+key)}
         mb={3}
       />
-      <Component />
+      <Suspense fallback={<Skeleton />}>
+        <StakingMetricCharts current={current} />
+      </Suspense>
     </Box>
   )
 }

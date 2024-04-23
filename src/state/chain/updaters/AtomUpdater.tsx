@@ -33,10 +33,13 @@ const AtomUpdater = () => {
         const blockTimestamp = Number((await client.getBlock()).timestamp)
         setBlockTimestamp(blockTimestamp)
 
-        // TODO: set to a reallistic value?
+        // TODO: set to a realistic value?
         // TODO: going to use this atom for all values that are updated live~
         if (blockTimestamp - timestamp > 50) {
           setTimestamp(blockTimestamp)
+        }
+
+        if (blockTimestamp - timestamp > 20) {
           setDebouncedBlock(Number(blockNumber))
         }
       }

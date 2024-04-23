@@ -1,6 +1,6 @@
 import { gql } from 'graphql-request'
 import { atom } from 'jotai'
-import { parseDuration, safeParseEther } from 'utils'
+import { parseDuration } from 'utils'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import {
   blockTimestampAtom,
@@ -8,7 +8,6 @@ import {
   rTokenAtom,
   rTokenConfigurationAtom,
   rTokenStateAtom,
-  stRsrBalanceAtom,
   walletAtom,
 } from './../../state/atoms'
 
@@ -173,3 +172,8 @@ export const stRsrTickerAtom = atom((get) => {
 
   return rToken?.stToken?.symbol ?? 'stRSR'
 })
+
+export enum StakeMetricType {
+  Exchange,
+  Staked,
+}
