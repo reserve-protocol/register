@@ -42,6 +42,9 @@ export const isModuleLegacyAtom = atom((get) => {
     issuance: contracts?.token?.version[0] !== VERSION[0],
     staking: contracts?.stRSR?.version[0] !== VERSION[0],
     auctions: contracts?.rTokenTrader?.version[0] !== VERSION[0],
+    trading:
+      // Assumes no .1x> versions
+      Number(contracts?.rTokenTrader?.version.replaceAll('.', '')) <= 340,
   }
 })
 

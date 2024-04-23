@@ -56,7 +56,9 @@ export interface Trade {
   auctionId?: number
   buying: string
   buyingTokenSymbol: string
+  buyingTokenDecimals: number
   sellingTokenSymbol: string
+  sellingTokenDecimals: number
   endAt: number
   selling: string
   startedAt: number

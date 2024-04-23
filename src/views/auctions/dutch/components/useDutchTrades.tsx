@@ -1,138 +1,104 @@
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
-import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { blockAtom } from 'state/atoms'
-import atomWithDebounce from 'utils/atoms/atomWithDebounce'
+import { timestampAtom } from 'state/atoms'
 import {
   endedDutchTradesAtom,
   ongoingDutchTradesAtom,
   pendingDutchTradesAtom,
 } from '../atoms'
 
-const ongoingTradesQuery = gql`
-  query OngoingDutchTrades($id: String!, $block: Int!) {
-    trades(
-      where: { endBlock_gt: $block, rToken: $id, kind: 0, isSettled: false }
-      orderBy: startBlock
+const endedTradesQuery = gql`
+  query DutchTrades($id: String!, $timestamp: Int!) {
+    ongoing: trades(
+      where: { endAt_gt: $timestamp, rToken: $id, kind: 0, isSettled: false }
+      orderBy: startedAt
       orderDirection: desc
     ) {
       id
       amount
       buying
       buyingTokenSymbol
+      buyingTokenDecimals
       sellingTokenSymbol
+      sellingTokenDecimals
       endAt
       selling
       startedAt
       worstCasePrice
-      startBlock
-      endBlock
       isSettled
       settleTxHash
     }
-  }
-`
-
-const endedTradesQuery = gql`
-  query EndedDutchTrades($id: String!, $block: Int!) {
     ended: trades(
-      where: { rToken: $id, kind: 0, endBlock_lte: $block, isSettled: false }
-      orderBy: startBlock
+      where: { rToken: $id, kind: 0, endAt_lte: $timestamp, isSettled: false }
+      orderBy: startedAt
       orderDirection: desc
     ) {
       id
       amount
       buying
       buyingTokenSymbol
+      buyingTokenDecimals
       sellingTokenSymbol
+      sellingTokenDecimals
       endAt
       selling
       startedAt
       worstCasePrice
-      startBlock
-      endBlock
       isSettled
       settleTxHash
       kind
     }
     settled: trades(
-      where: { rToken: $id, kind: 0, endBlock_lte: $block, isSettled: true }
-      orderBy: startBlock
+      where: { rToken: $id, kind: 0, endAt_lte: $timestamp, isSettled: true }
+      orderBy: startedAt
       orderDirection: desc
     ) {
       id
       amount
       buying
       buyingTokenSymbol
+      buyingTokenDecimals
       sellingTokenSymbol
+      sellingTokenDecimals
       endAt
       selling
       isSettled
       startedAt
       worstCasePrice
-      startBlock
-      endBlock
       settleTxHash
       kind
     }
   }
 `
 
-const debouncedBlock = atomWithDebounce(
-  atom((get) => get(blockAtom)),
-  60000
-).debouncedValueAtom
-
-// Use debounce value if exist over current block
-const currentBlockAtom = atom((get) => {
-  const block = get(blockAtom)
-  const debounced = get(debouncedBlock)
-
-  return debounced || block
-})
-
 const useDutchTrades = () => {
   const rToken = useRToken()
-  const blockNumber = useAtomValue(currentBlockAtom)
   const setOngoingTrades = useSetAtom(ongoingDutchTradesAtom)
   const setPendingTrades = useSetAtom(pendingDutchTradesAtom)
   const [currentEndedTrades, setEndedTrades] = useAtom(endedDutchTradesAtom)
+  const timestamp = useAtomValue(timestampAtom)
 
-  const { data, error } = useQuery(
-    rToken && blockNumber ? ongoingTradesQuery : null,
-    {
-      id: rToken?.address.toLowerCase(),
-      block: blockNumber,
-    }
-  )
-  const { data: endedData, error: endedError } = useQuery(
-    rToken && blockNumber ? endedTradesQuery : null,
-    {
-      id: rToken?.address.toLowerCase(),
-      block: blockNumber,
-    }
-  )
+  const { data } = useQuery(rToken ? endedTradesQuery : null, {
+    id: rToken?.address.toLowerCase(),
+    timestamp,
+  })
 
   useEffect(() => {
     if (data) {
-      setOngoingTrades(data.trades)
+      setOngoingTrades(data.ongoing)
+
+      if (
+        !currentEndedTrades.length ||
+        currentEndedTrades.length != data.settled.length + data.ended.length
+      ) {
+        setPendingTrades(data.ended)
+        setEndedTrades(data.settled)
+      }
     }
   }, [JSON.stringify(data)])
-
-  useEffect(() => {
-    // Only update if 1) current obj is empty, or 2) length is updated
-    if (
-      endedData &&
-      (!currentEndedTrades.length ||
-        currentEndedTrades.length !=
-          endedData.settled.length + endedData.ended.length)
-    ) {
-      setPendingTrades(endedData.ended)
-      setEndedTrades(endedData.settled)
-    }
-  }, [endedData])
 }
 
 export default useDutchTrades

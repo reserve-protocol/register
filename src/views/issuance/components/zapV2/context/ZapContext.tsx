@@ -146,7 +146,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
   const tokens: ZapToken[] = useMemo(
     () =>
-      zappableTokens[chainId]
+      (zappableTokens[chainId] || [])
         .map((token) => ({
           ...token,
           balance: balances[token.address as Address]?.balance ?? '0',

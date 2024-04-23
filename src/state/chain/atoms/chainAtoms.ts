@@ -1,6 +1,7 @@
 import rtokens from '@lc-labs/rtokens'
 import { GraphQLClient } from 'graphql-request'
 import { atom } from 'jotai'
+import { getCurrentTime } from 'utils'
 import { ChainId, defaultChain } from 'utils/chains'
 import { blockDuration } from 'utils/constants'
 import { formatEther } from 'viem'
@@ -12,7 +13,11 @@ import { Address } from 'wagmi'
  */
 export const chainIdAtom = atom<number>(defaultChain)
 export const blockAtom = atom<number | undefined>(undefined)
-export const blockTimestampAtom = atom<number>(0)
+export const blockTimestampAtom = atom<number>(getCurrentTime())
+// Acts as an application timer, basically it gets updated every minute which is a good debounce metric
+export const timestampAtom = atom<number>(getCurrentTime())
+export const debouncedBlockAtom = atom<number | undefined>(undefined)
+
 export const walletAtom = atom<Address | null>(null)
 export const walletChainAtom = atom<number | undefined>(undefined)
 export const isWalletInvalidAtom = atom((get) => {
