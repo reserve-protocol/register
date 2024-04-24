@@ -54,6 +54,11 @@ export const RGUSD_ADDRESS: AddressMap = {
   [ChainId.Arbitrum]: '0x96a993f06951b01430523d0d5590192d650ebf3e',
 }
 
+export const ETHPLUS_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0xE72B141DF173b999AE7c1aDcbF60Cc9833Ce56a8',
+  [ChainId.Arbitrum]: '0x18c14c2d707b2212e17d1579789fc06010cfca23',
+}
+
 /**
  * Other contract addresses
  */
