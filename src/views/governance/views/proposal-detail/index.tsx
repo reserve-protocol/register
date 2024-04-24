@@ -1,15 +1,19 @@
 import { Trans } from '@lingui/macro'
 import Governance from 'abis/Governance'
 import Button, { SmallButton } from 'components/button'
-import useRToken from 'hooks/useRToken'
+import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
+import { useBlockMemo } from 'hooks/utils'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { ArrowLeft } from 'react-feather'
 import { useNavigate, useParams } from 'react-router-dom'
-import { blockAtom, chainIdAtom, walletAtom } from 'state/atoms'
+import { chainIdAtom, walletAtom } from 'state/atoms'
 import { Box, Grid, Text } from 'theme-ui'
+import { getCurrentTime } from 'utils'
 import { PROPOSAL_STATES, ROUTES } from 'utils/constants'
+import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import { formatEther } from 'viem'
+import { isTimeunitGovernance } from 'views/governance/utils'
 import { useContractRead } from 'wagmi'
 import {
   accountVotesAtom,
@@ -17,6 +21,7 @@ import {
   proposalDetailAtom,
 } from './atom'
 import ProposalAlert from './components/ProposalAlert'
+import ProposalCancel from './components/ProposalCancel'
 import ProposalDetailContent from './components/ProposalDetailContent'
 import ProposalDetailStats from './components/ProposalDetailStats'
 import ProposalExecute from './components/ProposalExecute'
@@ -24,12 +29,6 @@ import ProposalQueue from './components/ProposalQueue'
 import ProposalVote from './components/ProposalVote'
 import ProposalVotes from './components/ProposalVotes'
 import useProposalDetail from './useProposalDetail'
-import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
-import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import ProposalCancel from './components/ProposalCancel'
-import { isTimeunitGovernance } from 'views/governance/utils'
-import { getCurrentTime } from 'utils'
-import { useBlockMemo } from 'hooks/utils'
 
 const GovernanceProposalDetail = () => {
   const { proposalId } = useParams()
@@ -150,7 +149,7 @@ const GovernanceProposalDetail = () => {
       </Box>
       <Grid
         columns={[1, 1, 1, '2fr 1.5fr']}
-        gap={[3, 5]}
+        gap={[0, 0, 0, 5]}
         px={[1, 5]}
         sx={{
           height: '100%',
@@ -160,12 +159,10 @@ const GovernanceProposalDetail = () => {
           overflowY: 'auto',
         }}
       >
-        <Box>
-          <ProposalDetailContent />
-        </Box>
+        <ProposalDetailContent />
         <Box>
           {(state === PROPOSAL_STATES.PENDING ||
-            state === PROPOSAL_STATES.ACTIVE) && <ProposalVote />}
+            state === PROPOSAL_STATES.ACTIVE) && <ProposalVote mb="4" />}
           <ProposalDetailStats />
           <ProposalVotes />
         </Box>
