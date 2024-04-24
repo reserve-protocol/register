@@ -466,7 +466,10 @@ const useProposalTx = () => {
               encodeFunctionData({
                 abi: Distributor,
                 functionName: 'setDistribution',
-                args: [FURNACE_ADDRESS, { rTokenDist: 0, rsrDist: 0 }],
+                args: [
+                  revChange.split.address as Address,
+                  { rTokenDist: 0, rsrDist: 0 },
+                ],
               })
             )
           }
@@ -503,26 +506,6 @@ const useProposalTx = () => {
           )
         }
       }
-
-      // TODO: REMOVE THIS!!!!
-      // addresses.push(governance.governor)
-      // calls.push(
-      //   GovernanceInterface.encodeFunctionData('setVotingDelay', [
-      //     BigNumber.from('14400'),
-      //   ])
-      // )
-      // addresses.push(governance.governor)
-      // calls.push(
-      //   GovernanceInterface.encodeFunctionData('setVotingPeriod', [
-      //     BigNumber.from('21600'),
-      //   ])
-      // )
-      // addresses.push(governance.timelock || '')
-      // calls.push(
-      //   TimelockInterface.encodeFunctionData('updateDelay', [
-      //     BigNumber.from('259200'),
-      //   ])
-      // )
     } catch (e) {
       console.error('Error generating proposal call', e)
       return undefined

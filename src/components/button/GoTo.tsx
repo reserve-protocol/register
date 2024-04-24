@@ -9,7 +9,10 @@ const GoTo = (props: LinkProps) => {
       sx={{ cursor: 'pointer' }}
       {...props}
     >
-      <Text variant="legend" sx={{ ':hover': { color: 'text' } }}>
+      <Text
+        variant="layout.verticalAlign"
+        sx={{ color: 'secondaryText', ':hover': { color: 'text' } }}
+      >
         <ExternalArrowIcon />
       </Text>
     </Link>
