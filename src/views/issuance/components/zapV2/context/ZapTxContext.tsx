@@ -12,11 +12,7 @@ import { useZap } from './ZapContext'
 import { Allowance } from 'types'
 import { Address, TransactionReceipt, parseUnits } from 'viem'
 import { useApproval } from '../hooks/useApproval'
-import {
-  usePrepareSendTransaction,
-  useSendTransaction,
-  useWaitForTransaction,
-} from 'wagmi'
+import { usePrepareSendTransaction, useSendTransaction } from 'wagmi'
 import mixpanel from 'mixpanel-browser'
 import useWatchTransaction from 'hooks/useWatchTransaction'
 
@@ -58,7 +54,6 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     spender,
     amountIn,
     zapResult,
-    refetch,
     endpoint,
     operation,
     setOpenSubmitModal,
@@ -141,10 +136,6 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
   useEffect(() => {
     if (!approvalSuccess) return
-    if (!zapResult?.tx && refetch) {
-      refetch()
-      return
-    }
     if (
       !error &&
       sendTransaction &&
@@ -157,7 +148,6 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     approvalSuccess,
     sendTransaction,
     zapResult?.tx,
-    refetch,
     error,
     loadingTx,
     validatingTx,
