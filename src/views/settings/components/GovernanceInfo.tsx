@@ -29,8 +29,6 @@ const GovernanceInfo = (props: BoxProps) => {
   const secondsPerBlock = useAtomValue(secondsPerBlockAtom)
   const isTimeunit = isTimeunitGovernance(governance.name)
 
-  console.log('gov', governance.executionDelay)
-
   return (
     <Card p={4} {...props}>
       <Text variant="title">
