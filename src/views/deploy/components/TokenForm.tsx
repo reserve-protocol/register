@@ -57,8 +57,15 @@ const TokenForm = (props: BoxProps) => {
       />
       <Box mt={3} ml={3}>
         <Text variant="bold">Allow RToken basket to change weights</Text>
-        <Text mb="2" as="p" variant="legend">
-          TODO: Explanatory text
+        <Text mb="2" as="p" sx={{ fontSize: 1 }} variant="legend">
+          A re-weightable RToken can have its basket changed in terms of its
+          target units (USD/ETH/BTC/etc…). This flexibility allows for the
+          addition, removal, and update of target units in the basket via
+          governance actions, and could result in drastic shifts in the $USD
+          value of an RToken. RToken holders of re-weightable RTokens have fewer
+          guarantees than holders of non-re-weightable RTokens. This option
+          should only be used if an RToken must be re-weightable in order to
+          accomplish its core goals.
         </Text>
         <Switch defaultChecked={reweightable} {...register('reweightable')} />
       </Box>
