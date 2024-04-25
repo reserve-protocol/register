@@ -73,7 +73,7 @@ const VotingPower = () => {
       chainId,
       args: [
         account as Address,
-        BigInt(isTimeunit ? getCurrentTime() - 12 : blockNumber - 2),
+        BigInt(isTimeunit ? getCurrentTime() - 12 : blockNumber - 5),
       ] as [Address, bigint],
     }
   }, [!!blockNumber, !!account, governance?.governor, chainId])

@@ -33,7 +33,7 @@ const query = gql`
       startBlock
       endBlock
       governanceFramework {
-        version
+        name
       }
     }
   }
