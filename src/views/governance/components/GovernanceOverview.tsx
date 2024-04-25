@@ -155,11 +155,6 @@ const GovernanceFormat = () => {
         <Text variant="title">
           {governance ? governance.name : 'Loading...'}
         </Text>
-        {!!governance.version && (
-          <Text ml="2" sx={{ fontSize: 1 }} variant="legend">
-            (v{governance.version})
-          </Text>
-        )}
       </Box>
 
       {governance && governance.governor && (

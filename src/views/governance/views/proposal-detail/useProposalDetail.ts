@@ -89,7 +89,7 @@ const useProposalDetail = (
             data.proposal.againstWeightedVotes || '0'
           ),
           abstainWeightedVotes: formatEther(
-            data.proposal.abstainWeightedVotes || '0'
+          data.proposal.abstainWeightedVotes || '0'
           ),
           executionTxnHash: data.proposal.executionTxnHash || '',
           quorumVotes: formatEther(data.proposal.quorumVotes || '0'),
