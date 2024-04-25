@@ -1,4 +1,3 @@
-export function isTimeunitGovernance(version: string) {
-  // return Number(version) > 1
-  return true
+export function isTimeunitGovernance(name: string) {
+  return name === 'Governor Anastasius'
 }

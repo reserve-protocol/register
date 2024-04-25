@@ -356,6 +356,8 @@ export const auctionsOverviewAtom = atomWithLoadable(
     unavailableAuctions.sort(sort)
     claimableEmissions.sort(sort)
 
+    console.log('unavailable', unavailableAuctions)
+
     return {
       availableAuctions,
       unavailableAuctions,

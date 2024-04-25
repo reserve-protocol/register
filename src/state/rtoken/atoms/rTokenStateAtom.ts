@@ -44,7 +44,7 @@ export const isModuleLegacyAtom = atom((get) => {
     auctions: contracts?.rTokenTrader?.version[0] !== VERSION[0],
     trading:
       // Assumes no .1x> versions
-      Number(contracts?.rTokenTrader?.version.replaceAll('.', '')) <= 340,
+      Number(contracts?.rTokenTrader?.version.replaceAll('.', '')) < 340,
   }
 })
 
@@ -73,7 +73,6 @@ export const rTokenGovernanceAtom = atomWithReset<{
   quorumNumerator?: string
   quorumVotes?: string
   guardians?: string[]
-  version?: string
 }>({
   name: 'Custom',
 })

@@ -29,7 +29,6 @@ const query = gql`
         timelockAddress
         votingDelay
         votingPeriod
-        version
       }
     }
   }
@@ -82,7 +81,6 @@ const RTokenGovernanceUpdater = () => {
           quorumNumerator,
           quorumVotes,
           guardians: data.governance.guardians ?? [],
-          version,
         })
       }
     }

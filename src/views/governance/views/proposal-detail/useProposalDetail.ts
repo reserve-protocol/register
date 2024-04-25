@@ -94,7 +94,7 @@ const useProposalDetail = (
           executionTxnHash: data.proposal.executionTxnHash || '',
           quorumVotes: formatEther(data.proposal.quorumVotes || '0'),
           governor: data.proposal.governanceFramework.contractAddress,
-          version: data.proposal.governanceFramework.version,
+          version: data.proposal.governanceFramework.name,
         }
       : null
 

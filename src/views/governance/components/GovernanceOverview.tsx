@@ -60,7 +60,7 @@ const VotingPower = () => {
   const account = useAtomValue(walletAtom)
   const blockNumber = useAtomValue(debouncedBlockAtom)
   const governance = useAtomValue(rTokenGovernanceAtom)
-  const isTimeunit = isTimeunitGovernance(governance?.version ?? '1')
+  const isTimeunit = isTimeunitGovernance(governance?.name ?? '')
   const chainId = useAtomValue(chainIdAtom)
 
   const snapshot = useMemo(() => {
