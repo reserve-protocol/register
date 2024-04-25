@@ -13,7 +13,6 @@ import { StringMap } from 'types'
 import { getProposalTitle } from 'utils'
 import { PROPOSAL_STATES, formatConstant } from 'utils/constants'
 import { getProposalStatus } from '../views/proposal-detail/atom'
-import { borderRadius } from 'theme'
 
 const query = gql`
   query getProposals($id: String!) {

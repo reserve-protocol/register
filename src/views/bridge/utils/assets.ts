@@ -1,5 +1,11 @@
 import rtokens from '@lc-labs/rtokens'
-import { EUSD_ADDRESS, RGUSD_ADDRESS, RSR_ADDRESS } from 'utils/addresses'
+import {
+  ETHPLUS_ADDRESS,
+  EUSD_ADDRESS,
+  RGUSD_ADDRESS,
+  RSR_ADDRESS,
+  USD3_ADDRESS,
+} from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import { Address } from 'viem'
 
@@ -20,6 +26,14 @@ export interface BridgeAsset {
 
 const EUSD_LOGO = `/svgs/${
   rtokens[ChainId.Mainnet][EUSD_ADDRESS[ChainId.Mainnet]].logo
+}`
+
+const USD3_LOGO = `/svgs/${
+  rtokens[ChainId.Mainnet][USD3_ADDRESS[ChainId.Mainnet]].logo
+}`
+
+const ETHPLUS_LOGO = `/svgs/${
+  rtokens[ChainId.Mainnet][ETHPLUS_ADDRESS[ChainId.Mainnet]].logo
 }`
 
 const RGUSD_LOGO = `/svgs/${
@@ -64,6 +78,20 @@ const ARBITRUM_ASSETS: BridgeAsset[] = [
     L2icon: EUSD_LOGO,
     L1name: 'Electronic Dollar',
     L2name: 'Electronic Dollar',
+    decimals: 18,
+    protocol: 'OP',
+  },
+  {
+    L1symbol: 'ETH+',
+    L2symbol: 'ETH+',
+    L1chainId: ChainId.Mainnet,
+    L2chainId: ChainId.Arbitrum,
+    L1contract: ETHPLUS_ADDRESS[ChainId.Mainnet],
+    L2contract: ETHPLUS_ADDRESS[ChainId.Arbitrum],
+    L1icon: ETHPLUS_LOGO,
+    L2icon: ETHPLUS_LOGO,
+    L1name: 'EthPlus',
+    L2name: 'EthPlus',
     decimals: 18,
     protocol: 'OP',
   },
@@ -121,6 +149,34 @@ const BASE_ASSETS: BridgeAsset[] = [
     L2icon: EUSD_LOGO,
     L1name: 'Electronic Dollar',
     L2name: 'Electronic Dollar',
+    decimals: 18,
+    protocol: 'OP',
+  },
+  {
+    L1symbol: 'USD3',
+    L2symbol: 'USD3',
+    L1chainId: ChainId.Mainnet,
+    L2chainId: ChainId.Base,
+    L1contract: USD3_ADDRESS[ChainId.Mainnet],
+    L2contract: USD3_ADDRESS[ChainId.Base],
+    L1icon: USD3_LOGO,
+    L2icon: USD3_LOGO,
+    L1name: 'Web 3 Dollar',
+    L2name: 'Web 3 Dollar',
+    decimals: 18,
+    protocol: 'OP',
+  },
+  {
+    L1symbol: 'rgUSD',
+    L2symbol: 'rgUSD',
+    L1chainId: ChainId.Mainnet,
+    L2chainId: ChainId.Base,
+    L1contract: RGUSD_ADDRESS[ChainId.Mainnet],
+    L2contract: RGUSD_ADDRESS[ChainId.Base],
+    L1icon: RGUSD_LOGO,
+    L2icon: RGUSD_LOGO,
+    L1name: 'Revenue Generating USD',
+    L2name: 'Revenue Generating USD',
     decimals: 18,
     protocol: 'OP',
   },
