@@ -1,5 +1,10 @@
 import { Token, Trader } from 'types'
-import { EUSD_ADDRESS, RGUSD_ADDRESS, RSR_ADDRESS } from './addresses'
+import {
+  ETHPLUS_ADDRESS,
+  EUSD_ADDRESS,
+  RGUSD_ADDRESS,
+  RSR_ADDRESS,
+} from './addresses'
 import { ChainId } from './chains'
 import rtokens from '@lc-labs/rtokens'
 import RSV from './rsv'
@@ -199,6 +204,12 @@ export const BRIDGED_RTOKENS = {
       },
       {
         address: EUSD_ADDRESS[ChainId.Arbitrum],
+        chain: ChainId.Arbitrum,
+      },
+    ],
+    [ETHPLUS_ADDRESS[ChainId.Mainnet]]: [
+      {
+        address: ETHPLUS_ADDRESS[ChainId.Arbitrum],
         chain: ChainId.Arbitrum,
       },
     ],

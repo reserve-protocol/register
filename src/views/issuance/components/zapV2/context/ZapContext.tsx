@@ -22,7 +22,7 @@ import {
   rTokenStateAtom,
   walletAtom,
 } from 'state/atoms'
-import useSWR, { KeyedMutator } from 'swr'
+import useSWR from 'swr'
 import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
 import { Address, formatUnits, parseUnits, zeroAddress } from 'viem'
@@ -66,7 +66,6 @@ type ZapContextType = {
   setAmountIn: (amount: string) => void
   selectedToken?: ZapToken
   setSelectedToken: (token: ZapToken) => void
-  refetch?: KeyedMutator<ZapResponse>
   endpoint?: string | null
   resetZap: () => void
 
@@ -131,6 +130,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const [amountIn, _setAmountIn] = useState<string>('')
   const [selectedToken, setSelectedToken] = useState<ZapToken>()
   const [error, setError] = useState<ZapErrorType>()
+  const [retries, setRetries] = useState(0)
 
   const chainId = useAtomValue(chainIdAtom)
   const account = useAtomValue(walletAtom) || undefined
@@ -290,7 +290,9 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     isValidating,
     error: apiError,
     mutate: refetch,
-  } = useSWR<ZapResponse>(endpoint, fetcher)
+  } = useSWR<ZapResponse>(endpoint, fetcher, {
+    isPaused: () => openSubmitModal,
+  })
 
   const [amountOut, priceImpact, zapDustUSD, gasCost, spender] = useMemo(() => {
     if (!data || !data.result) {
@@ -314,7 +316,9 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     const inputPriceValue = (tokenIn?.price || 0) * Number(_amountIn) || 1
     const outputPriceValue = (tokenOut?.price || 0) * Number(_amountOut)
     const _priceImpact =
-      ((inputPriceValue - outputPriceValue) / inputPriceValue) * 100
+      !tokenIn?.price || !tokenOut?.price
+        ? ((inputPriceValue - outputPriceValue) / inputPriceValue) * 100
+        : 0
 
     mixpanel.track('zapper:', {
       Operation: operation,
@@ -339,6 +343,12 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   ])
 
   useEffect(() => {
+    if (!apiError && data && data.result) {
+      setRetries(0)
+    }
+  }, [apiError, data, setRetries])
+
+  useEffect(() => {
     if (apiError || (data && data.error)) {
       setError({
         title: 'Failed to find a route',
@@ -352,6 +362,11 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       })
 
       setOpenSubmitModal(false)
+
+      if (retries < 3) {
+        refetch()
+        setRetries((r) => r + 1)
+      }
 
       mixpanel.track('Zap Execution Error', {
         Endpoint: endpoint,
@@ -378,7 +393,16 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         } Anyway`,
       })
     }
-  }, [apiError, data, operation, setError, priceImpact, endpoint])
+  }, [
+    apiError,
+    data,
+    operation,
+    setError,
+    priceImpact,
+    endpoint,
+    refetch,
+    retries,
+  ])
 
   const _setZapEnabled = useCallback(
     (value: boolean) => {
@@ -412,7 +436,6 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         setAmountIn,
         selectedToken,
         setSelectedToken,
-        refetch,
         chainId,
         account,
         tokens,

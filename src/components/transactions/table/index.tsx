@@ -52,7 +52,7 @@ const TransactionsTable = ({
       MINT: t`Mint`,
       REDEEM: t`Redeem`,
       TRANSFER: t`Transfer`,
-      BURN: t`Redeem`,
+      BURN: t`Melt`,
       ISSUE: t`Issue`,
       ISSUE_START: t`Start Issue`,
       CLAIM: t`Claim`,
