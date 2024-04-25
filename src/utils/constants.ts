@@ -4,6 +4,7 @@ import {
   EUSD_ADDRESS,
   RGUSD_ADDRESS,
   RSR_ADDRESS,
+  USD3_ADDRESS,
 } from './addresses'
 import { ChainId } from './chains'
 import rtokens from '@lc-labs/rtokens'
@@ -209,8 +210,18 @@ export const BRIDGED_RTOKENS = {
     ],
     [RGUSD_ADDRESS[ChainId.Mainnet]]: [
       {
+        address: RGUSD_ADDRESS[ChainId.Base],
+        chain: ChainId.Base,
+      },
+      {
         address: RGUSD_ADDRESS[ChainId.Arbitrum],
         chain: ChainId.Arbitrum,
+      },
+    ],
+    [USD3_ADDRESS[ChainId.Mainnet]]: [
+      {
+        address: USD3_ADDRESS[ChainId.Base],
+        chain: ChainId.Base,
       },
     ],
   },
