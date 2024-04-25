@@ -62,7 +62,6 @@ export interface RTokenRow {
 const useUnlistedTokens = () => {
   const filters = useAtomValue(tokenFilterAtom)
   const { data } = useMultichainQuery(query, filters)
-  console.log('data', data)
   const currentRsrPrice = useAtomValue(rsrPriceAtom)
 
   const [tokens, setTokens] = useState<RTokenRow[]>([])
