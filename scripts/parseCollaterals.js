@@ -21,6 +21,12 @@ const protocols = {
     underlying: 'asset',
     collateral: 'aToken',
   },
+  AAVEv3Arbitrum: {
+    key: 'AAVEv3',
+    underlying: 'asset',
+    collateral: 'aToken', // If the underlying is not the yield bearing asset
+    rewardTokens: ['ARB'],
+  },
   COMP: {
     key: 'COMP',
     underlying: 'underlying',
@@ -102,6 +108,8 @@ const wrappedTokenMap = {
   saEthUSDC: protocols.AAVEv3,
   cvxPayPool: protocols.CONVEX,
   saBasUSDC: protocols.AAVEv3,
+  saArbUSDCn: protocols.AAVEv3Arbitrum,
+  saArbUSDT: protocols.AAVEv3Arbitrum,
 }
 
 // Default: run all collateral chains - you can comment which chain you want to run

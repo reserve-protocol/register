@@ -43,8 +43,8 @@
   },
   {
     "address": "0x7be9Bc50734820516693A376238Cc6Bf029BA682",
-    "rewardTokens": [],
-    "protocol": "GENERIC",
+    "rewardTokens": ["0x21fBa52dA03e1F964fa521532f8B8951fC212055"],
+    "protocol": "AAVEv3",
     "erc20": "0x030cDeCBDcA6A34e8De3f49d1798d5f70E3a3414",
     "chainlinkFeed": "0x50834F3163758fcC1Df9973b6e91f0F0F0434aD3",
     "delayUntilDefault": "86400",
@@ -53,12 +53,16 @@
     "targetName": "USD",
     "version": "3.4.0",
     "symbol": "saArbUSDCn",
-    "decimals": 6
+    "decimals": 6,
+    "underlyingAddress": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+    "underlyingToken": "USDC",
+    "collateralAddress": "0x724dc807b04555b71ed48a6896b6F41593b8C637",
+    "collateralToken": "aArbUSDCn"
   },
   {
     "address": "0x529D7e23Ce63efdcE41dA2a41296Fd7399157F5b",
-    "rewardTokens": [],
-    "protocol": "GENERIC",
+    "rewardTokens": ["0x21fBa52dA03e1F964fa521532f8B8951fC212055"],
+    "protocol": "AAVEv3",
     "erc20": "0xffef97179f58a582dEf73e6d2e4BcD2BDC8ca128",
     "chainlinkFeed": "0x3f3f5dF88dC9F13eac63DF89EC16ef6e7E25DdE7",
     "delayUntilDefault": "86400",
@@ -67,7 +71,11 @@
     "targetName": "USD",
     "version": "3.4.0",
     "symbol": "saArbUSDT",
-    "decimals": 6
+    "decimals": 6,
+    "underlyingAddress": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+    "underlyingToken": "USDT",
+    "collateralAddress": "0x6ab707Aca953eDAeFBc4fD23bA73294241490620",
+    "collateralToken": "aArbUSDT"
   },
   {
     "address": "0x8a5DfEa5cdA35AB374ac558951A3dF1437A6FcA6",
