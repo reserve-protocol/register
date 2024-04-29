@@ -138,7 +138,10 @@ export const ROUTES = Object.freeze({
   PORTFOLIO: '/portfolio',
   EARN: '/earn',
   NOT_FOUND: '/404',
-  COLLATERALS: '/collaterals',
+  EXPLORER: '/explorer',
+  EXPLORER_TOKENS: '/explorer/tokens',
+  EXPLORER_COLLATERALS: 'collaterals',
+  EXPLORER_TRANSACTIONS: 'transactions',
 })
 
 export const RSR: Token = {
