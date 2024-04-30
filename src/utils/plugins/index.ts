@@ -19,18 +19,6 @@ const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
   [ChainId.Hardhat]: mainnetPlugins, // Mainnet fork
 }
 
-// TODO: Enhance the collaterals script to generate this mapping as well
-// Do we need this?
-// export const protocolRewards: Partial<Record<ProtocolKey, string[]>> = {
-//   AAVE: [STAKE_AAVE_ADDRESS[ChainId.Mainnet]],
-//   AAVEv3: [STAKE_AAVE_ADDRESS[ChainId.Mainnet]],
-//   COMP: [COMP_ADDRESSES[ChainId.Mainnet], COMP_ADDRESSES[ChainId.Base]],
-//   COMPv3: [COMP_ADDRESSES[ChainId.Mainnet], COMP_ADDRESSES[ChainId.Base]],
-//   CURVE: [CRV_ADDRESSES[ChainId.Mainnet]],
-//   CONVEX: [CRV_ADDRESSES[ChainId.Mainnet], CVX_ADDRESSES[ChainId.Mainnet]],
-//   STARGATE: [STG_ADDRESSES[ChainId.Base]],
-// }
-
 export const rewardsByProtocol: { [x: Address]: ProtocolKey[] } = {
   [STAKE_AAVE_ADDRESS[ChainId.Mainnet]]: ['AAVE', 'AAVEv3'],
   [COMP_ADDRESS[ChainId.Mainnet]]: ['COMP', 'COMPv3'],

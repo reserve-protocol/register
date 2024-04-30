@@ -10,6 +10,7 @@ import EarnWrapper from 'views/earn'
 import Explorer from 'views/explorer'
 import Collaterals from 'views/explorer/components/collaterals'
 import ExploreTokens from 'views/explorer/components/tokens'
+import ExploreTransactions from 'views/explorer/components/transactions'
 import Home from 'views/home'
 import Issuance from 'views/issuance'
 import Overview from 'views/overview'
@@ -87,6 +88,10 @@ const AppRoutes = () => (
       />
       <Route path={ROUTES.EXPLORER_COLLATERALS} element={<Collaterals />} />
       <Route path={ROUTES.EXPLORER_TOKENS} element={<ExploreTokens />} />
+      <Route
+        path={ROUTES.EXPLORER_TRANSACTIONS}
+        element={<ExploreTransactions />}
+      />
     </Route>
     <Route path="*" element={<Box>Not found</Box>} />
   </Routes>
