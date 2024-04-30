@@ -305,4 +305,6 @@ export const collateralDisplay: Record<string, string> = {
   steakpyusd: 'Morpho Blue pyUSD',
   bbusdt: 'Morpho Blue USDT',
   steakusdc: 'Morpho Blue USDC',
+  saarbusdcn: 'AAVE USDC V3',
+  saarbusdt: 'AAVE USDT V3',
 }
