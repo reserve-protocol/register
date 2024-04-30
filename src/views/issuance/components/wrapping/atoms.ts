@@ -85,6 +85,27 @@ export const collateralsPerRTokenAtom = atom<CollateralPlugin[]>((get) => {
       })
     }
 
+    if (collateral.symbol === 'mrp-aUSDC') {
+      acc.push({
+        address: '0x2304E98cD1E2F0fd3b4E30A1Bc6E9594dE2ea9b7',
+        rewardTokens: [],
+        protocol: 'MORPHO',
+        erc20: '0x7f7B77e49d5b30445f222764a794AFE14af062eB',
+        chainlinkFeed: '0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6',
+        delayUntilDefault: '86400',
+        maxTradeVolume: '1000000',
+        oracleTimeout: 86460,
+        targetName: 'USD',
+        version: '3.0.0',
+        symbol: 'mrp-aUSDC',
+        decimals: 15,
+        underlyingAddress: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+        underlyingToken: 'USDC',
+        collateralAddress: '0xBcca60bB61934080951369a648Fb03DF4F96263C',
+        collateralToken: 'aUSDC',
+      })
+    }
+
     // check if rToken is on the plugin list
     if (plugins[collateral.symbol]) {
       // Extend the plugin info
