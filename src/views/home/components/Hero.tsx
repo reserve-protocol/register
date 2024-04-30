@@ -123,9 +123,11 @@ const ProtocolStats = () => {
 const About = () => (
   <>
     <Box variant="layout.verticalAlign">
-      <StackedChainLogo chains={[ChainId.Mainnet, ChainId.Base]} />
+      <StackedChainLogo
+        chains={[ChainId.Mainnet, ChainId.Base, ChainId.Arbitrum]}
+      />
       <Text sx={{ fontSize: [2, 3] }}>
-        <Trans>On Ethereum & Base</Trans>
+        <Trans>On Ethereum & Base & Arbitrum</Trans>
       </Text>
     </Box>
     <Box sx={{ maxWidth: 900, textAlign: 'center' }} mt={[2, 4]}>

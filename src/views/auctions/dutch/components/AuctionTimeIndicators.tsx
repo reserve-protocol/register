@@ -1,10 +1,9 @@
 import { Trans } from '@lingui/macro'
 import AuctionsIcon from 'components/icons/AuctionsIcon'
 import { useAtomValue } from 'jotai'
-import { blockAtom, chainIdAtom } from 'state/atoms'
+import { blockTimestampAtom } from 'state/atoms'
 import { Box, Spinner, Text } from 'theme-ui'
 import { parseDuration } from 'utils'
-import { blockDuration } from 'utils/constants'
 
 const AuctionTimeIndicators = ({
   start,
@@ -13,15 +12,13 @@ const AuctionTimeIndicators = ({
   start: number
   end: number
 }) => {
-  const currentBlock = useAtomValue(blockAtom) ?? 0
-  const chainId = useAtomValue(chainIdAtom)
-
   // Calculations
-  const blocksLeft = end - currentBlock
+  const currentTime = useAtomValue(blockTimestampAtom)
+  const timeLeft = Math.max(0, end - currentTime)
   const auctionLength = end - start
-  const bufferBlocks = Math.round(auctionLength * 0.05)
-  const finalPriceBlock = start + (auctionLength - bufferBlocks)
-  const isEnding = currentBlock >= finalPriceBlock
+  const bufferTime = Math.round(auctionLength * 0.05)
+  const finalPriceTime = start + (auctionLength - bufferTime)
+  const isEnding = currentTime >= finalPriceTime
 
   return (
     <Box
@@ -38,7 +35,10 @@ const AuctionTimeIndicators = ({
             <Trans>Final price in:</Trans>
           </Text>
           <Text variant="strong" mr={3}>
-            {finalPriceBlock - currentBlock} blocks
+            {parseDuration(finalPriceTime - currentTime, {
+              units: ['m'],
+              round: true,
+            })}
           </Text>
         </>
       )}
@@ -46,12 +46,9 @@ const AuctionTimeIndicators = ({
       <Text ml={2} mr={1}>
         Auction ends in:
       </Text>
-      <Text variant="strong" sx={{ color: isEnding ? 'warning' : 'text' }}>
-        {Math.max(blocksLeft, 0)} blocks
-      </Text>
-      <Text ml={1} sx={{ display: ['none', 'block'] }}>
+      <Text sx={{ display: ['none', 'block'] }}>
         (
-        {parseDuration(blocksLeft * (blockDuration[chainId] ?? 12), {
+        {parseDuration(timeLeft, {
           units: ['m'],
           round: true,
         })}

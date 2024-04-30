@@ -12,7 +12,6 @@ import { Box, BoxProps, Divider, Flex, Spinner, Text } from 'theme-ui'
 import { Token } from 'types'
 import { formatCurrency } from 'utils'
 import { BIGINT_MAX } from 'utils/constants'
-import { RSV_MANAGER } from 'utils/rsv'
 import { Address, formatUnits } from 'viem'
 import { quantitiesAtom } from 'views/issuance/atoms'
 
@@ -31,20 +30,19 @@ const CollateralApproval = ({
   ...props
 }: CollateralApprovalProps) => {
   const rToken = useRToken()
-
   const { write, hash, isLoading, reset } = useContractWrite({
     abi: ERC20,
     address: collateral.address,
     functionName: 'approve',
     args: [
-      rToken?.main ? rToken.address : RSV_MANAGER,
+      rToken?.address || '0x',
       collateral.symbol === 'wcUSDCv3' || collateral.symbol === 'wcUSDbCv3'
         ? BIGINT_MAX
         : amount
         ? (amount * 120n) / 100n
         : 0n,
     ],
-    enabled: !loading && !!amount && !allowance,
+    enabled: !!rToken && !loading && !!amount && !allowance,
   })
   const { status } = useWatchTransaction({
     hash,

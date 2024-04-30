@@ -6,9 +6,13 @@ import useHasAllowance, { RequiredAllowance } from 'hooks/useHasAllowance'
 import { atom, useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
 import { useState } from 'react'
-import { rTokenAtom, rTokenContractsAtom, walletAtom } from 'state/atoms'
+import {
+  chainIdAtom,
+  rTokenAtom,
+  rTokenContractsAtom,
+  walletAtom,
+} from 'state/atoms'
 import { formatCurrency, safeParseEther } from 'utils'
-import { RSV_MANAGER } from 'utils/rsv'
 import { Hex } from 'viem'
 import {
   isValidIssuableAmountAtom,
@@ -30,8 +34,8 @@ const callAtom = atom((get) => {
   }
 
   return {
-    address: rToken.main ? rToken.address : RSV_MANAGER,
-    abi: RToken, // RSV has identical function signature
+    address: rToken.address,
+    abi: RToken,
     functionName: 'issue',
     args: [safeParseEther(amount)],
   }
@@ -48,7 +52,7 @@ const allowancesAtom = atom((get) => {
 
   return Object.keys(quantities).map((address) => ({
     token: address,
-    spender: !rToken.main ? RSV_MANAGER : rToken.address,
+    spender: rToken.address,
     amount: quantities[address as Hex],
   })) as RequiredAllowance[]
 })
@@ -61,13 +65,15 @@ const ConfirmIssuance = ({ onClose }: { onClose: () => void }) => {
   const [hasAllowance, tokensPendingAllowance] = useHasAllowance(
     useAtomValue(allowancesAtom)
   )
+  const chain = useAtomValue(chainIdAtom)
+  const call = useAtomValue(callAtom)
 
   const { data: isReady } = useContractRead({
     abi: BasketHandler,
     address: rTokenContracts?.basketHandler?.address,
     functionName: 'isReady',
+    chainId: chain,
   })
-  const call = useAtomValue(callAtom)
 
   const handleChange = (signing: boolean) => {
     setSigning(signing)

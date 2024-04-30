@@ -3,6 +3,8 @@ import { ChainId } from 'utils/chains'
 // @ts-ignore
 import basePlugins from './data/base.json'
 // @ts-ignore
+import arbitrumPlugins from './data/arbitrum.json'
+// @ts-ignore
 import mainnetPlugins from './data/mainnet.json'
 import { Address } from 'viem'
 import {
@@ -16,6 +18,7 @@ import {
 const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
   [ChainId.Mainnet]: mainnetPlugins,
   [ChainId.Base]: basePlugins,
+  [ChainId.Arbitrum]: arbitrumPlugins,
   [ChainId.Hardhat]: mainnetPlugins, // Mainnet fork
 }
 
@@ -43,6 +46,10 @@ export const collateralsProtocolMap: {
     {}
   ),
   [ChainId.Base]: collateralPlugins[ChainId.Base].reduce(
+    collateralToProtocol,
+    {}
+  ),
+  [ChainId.Arbitrum]: collateralPlugins[ChainId.Arbitrum].reduce(
     collateralToProtocol,
     {}
   ),

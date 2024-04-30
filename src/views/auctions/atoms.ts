@@ -56,7 +56,9 @@ export interface Trade {
   auctionId?: number
   buying: string
   buyingTokenSymbol: string
+  buyingTokenDecimals: number
   sellingTokenSymbol: string
+  sellingTokenDecimals: number
   endAt: number
   selling: string
   startedAt: number
@@ -353,6 +355,8 @@ export const auctionsOverviewAtom = atomWithLoadable(
     availableAuctions.sort(sort)
     unavailableAuctions.sort(sort)
     claimableEmissions.sort(sort)
+
+    console.log('unavailable', unavailableAuctions)
 
     return {
       availableAuctions,

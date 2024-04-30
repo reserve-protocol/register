@@ -3,7 +3,6 @@ import { useAtomValue } from 'jotai'
 import { GRAPH_CLIENTS, contentfulClientAtom, gqlClientAtom } from 'state/atoms'
 import useSWR from 'swr'
 import useSWRImmutable from 'swr/immutable'
-import { ChainId } from 'utils/chains'
 import { supportedChainList } from 'utils/constants'
 
 type FetcherArgs = [RequestDocument, Record<string, any>]

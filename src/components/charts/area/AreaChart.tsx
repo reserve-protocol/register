@@ -10,7 +10,7 @@ import {
   Tooltip,
   YAxis,
 } from 'recharts'
-import { Badge, Box, BoxProps, Card, Flex, Spinner, Text } from 'theme-ui'
+import { Box, BoxProps, Card, Flex, Spinner, Text } from 'theme-ui'
 import { StringMap } from 'types'
 import { formatCurrency } from 'utils'
 
@@ -101,7 +101,7 @@ const AreaChart = ({
   }, [JSON.stringify(timeRange)])
 
   return (
-    <Box {...props}>
+    <Box sx={{ position: 'relative' }} {...props}>
       {heading && (
         <Flex variant="layout.verticalAlign" mb="1" ml="2">
           <Text sx={{ fontSize: 3, fontWeight: 700 }}>{heading}</Text>
@@ -135,7 +135,15 @@ const AreaChart = ({
         </Box>
       )}
       {!data && (
-        <Box my={6} sx={{ textAlign: 'center', height: height - 40 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            height,
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
           <Spinner size={24} />
         </Box>
       )}

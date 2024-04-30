@@ -6,17 +6,12 @@ import {
   blockAtom,
   blockTimestampAtom,
   chainIdAtom,
-  isWalletInvalidAtom,
+  debouncedBlockAtom,
+  timestampAtom,
   walletAtom,
   walletChainAtom,
 } from 'state/atoms'
-import {
-  useAccount,
-  useBlockNumber,
-  useNetwork,
-  usePublicClient,
-  useWalletClient,
-} from 'wagmi'
+import { useBlockNumber, usePublicClient, useWalletClient } from 'wagmi'
 
 // Keep web3 state in sync with atoms
 const AtomUpdater = () => {
@@ -29,11 +24,24 @@ const AtomUpdater = () => {
   const { data: blockNumber } = useBlockNumber({ watch: true, chainId })
   const client = usePublicClient({ chainId })
   const setBlockTimestamp = useSetAtom(blockTimestampAtom)
+  const [timestamp, setTimestamp] = useAtom(timestampAtom)
+  const [debouncedBlock, setDebouncedBlock] = useAtom(debouncedBlockAtom)
 
   const fetchTimestamp = async () => {
     try {
       if (client) {
-        setBlockTimestamp(Number((await client.getBlock()).timestamp))
+        const blockTimestamp = Number((await client.getBlock()).timestamp)
+        setBlockTimestamp(blockTimestamp)
+
+        // TODO: set to a realistic value?
+        // TODO: going to use this atom for all values that are updated live~
+        if (blockTimestamp - timestamp > 50) {
+          setTimestamp(blockTimestamp)
+        }
+
+        if (blockTimestamp - timestamp > 20) {
+          setDebouncedBlock(Number(blockNumber))
+        }
       }
     } catch (e) {
       console.error('error fetching block time', e)
@@ -53,6 +61,9 @@ const AtomUpdater = () => {
   useEffect(() => {
     fetchTimestamp() // update stored block timestamp
     setBlockNumber(blockNumber ? Number(blockNumber) : undefined)
+    if (!debouncedBlock && blockNumber) {
+      setDebouncedBlock(Number(blockNumber))
+    }
   }, [blockNumber])
 
   return null
