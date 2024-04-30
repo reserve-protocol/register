@@ -78,7 +78,6 @@ const wrappedTokenMap = {
   cUSDT: protocols.COMP,
   cUSDP: protocols.COMP,
   cWBTC: protocols.COMP,
-  cETH: protocols.COMP,
   cUSDbCv3: protocols.COMPv3, // base
   cUSDCv3: protocols.COMPv3,
   // Flux tokens are no longer wrapped
@@ -100,6 +99,7 @@ const wrappedTokenMap = {
   cvxMIM3Pool: protocols.CONVEX,
   cvxCrvUSDUSDC: protocols.CONVEX,
   cvxCrvUSDUSDT: protocols.CONVEX,
+  cvxETHPlusETH: protocols.CONVEX,
   sDAI: protocols.SDR,
   aBasUSDbC: protocols.AAVEv3,
   sgUSDC: protocols.STARGATE,
