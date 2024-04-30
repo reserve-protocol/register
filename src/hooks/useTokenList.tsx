@@ -3,7 +3,7 @@ import { RevenueSplit } from 'components/rtoken-setup/atoms'
 import { gql } from 'graphql-request'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useEffect } from 'react'
-import { chainIdAtom, collateralYieldAtom, rsrPriceAtom } from 'state/atoms'
+import { collateralYieldAtom, rsrPriceAtom } from 'state/atoms'
 import { formatDistribution } from 'state/rtoken/atoms/rTokenRevenueSplitAtom'
 import { ChainId } from 'utils/chains'
 import {
@@ -11,7 +11,6 @@ import {
   TIME_RANGES,
   supportedChainList,
 } from 'utils/constants'
-import RSV, { RSVOverview } from 'utils/rsv'
 import { formatEther, getAddress } from 'viem'
 import { useMultichainQuery } from './useQuery'
 import useTimeFrom from './useTimeFrom'
@@ -37,6 +36,7 @@ export interface ListedToken {
   collaterals: { id: string; symbol: string }[]
   collateralDistribution: Record<string, { dist: string; target: string }>
   rsrStaked: number
+  stakeUsd: number
 }
 
 // TODO: Cache only while the list is short
@@ -189,6 +189,7 @@ const useTokenList = () => {
               collaterals,
               collateralDistribution: distribution,
               rsrStaked: Number(formatEther(token?.rToken?.rsrStaked ?? '0')),
+              stakeUsd,
             }
 
             return tokenData

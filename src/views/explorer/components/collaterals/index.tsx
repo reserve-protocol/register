@@ -188,6 +188,8 @@ const PluginList = () => {
     <Table
       sorting
       sortBy={[{ id: 'apy', desc: true }]}
+      sx={{ borderRadius: '0 0 20px 20px' }}
+      compact
       data={data}
       columns={columns}
     />

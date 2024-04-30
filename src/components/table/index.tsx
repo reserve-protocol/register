@@ -2,11 +2,12 @@ import {
   SortingState,
   flexRender,
   getCoreRowModel,
+  getExpandedRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { Fragment, useCallback, useMemo, useState } from 'react'
 import { ArrowDown, ArrowUp } from 'react-feather'
 import { Box, BoxProps, Flex } from 'theme-ui'
 import { StringMap } from 'types'
@@ -26,6 +27,7 @@ export interface TableProps extends BoxProps {
   maxHeight?: string | number
   isLoading?: boolean
   columnVisibility?: (string | string[])[]
+  renderSubComponent?: (props: { row: Row<TData> }) => React.ReactElement
 }
 
 export function Table({
@@ -39,6 +41,7 @@ export function Table({
   maxHeight = 'auto',
   sx = {},
   columnVisibility,
+  renderSubComponent,
   sortBy = [],
   onRowClick,
   onSort,
@@ -63,6 +66,7 @@ export function Table({
     data,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
     getPaginationRowModel: !!pagination ? getPaginationRowModel() : undefined,
     enableSorting: sorting,
     initialState: {
@@ -126,42 +130,54 @@ export function Table({
           ))}
           {table.getRowModel().rows.map((row) => {
             return (
-              <Box
-                key={row.id}
-                variant="styles.tr"
-                as="tr"
-                onClick={
-                  !!onRowClick ? () => onRowClick(row.original) : undefined
-                }
-                sx={{ cursor: !!onRowClick ? 'pointer' : 'inherit' }}
-              >
-                {row.getVisibleCells().map((cell, index) => (
-                  <Box
-                    sx={{
-                      display: columnVisibility?.[index]
-                        ? columnVisibility[index]
-                        : 'table-cell',
-                      ...(compact
-                        ? {
-                            '&:first-of-type': {
-                              borderTopLeftRadius: 0,
-                              borderBottomLeftRadius: 0,
-                            },
-                            '&:last-of-type': {
-                              borderTopRightRadius: 0,
-                              borderBottomRightRadius: 0,
-                            },
-                          }
-                        : {}),
-                    }}
-                    as="td"
-                    key={cell.id}
-                    variant="styles.td"
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </Box>
-                ))}
-              </Box>
+              <Fragment key={row.id}>
+                <Box
+                  variant="styles.tr"
+                  as="tr"
+                  onClick={
+                    !!onRowClick ? () => onRowClick(row.original) : undefined
+                  }
+                  sx={{ cursor: !!onRowClick ? 'pointer' : 'inherit' }}
+                >
+                  {row.getVisibleCells().map((cell, index) => (
+                    <Box
+                      sx={{
+                        display: columnVisibility?.[index]
+                          ? columnVisibility[index]
+                          : 'table-cell',
+                        ...(compact
+                          ? {
+                              '&:first-of-type': {
+                                borderTopLeftRadius: 0,
+                                borderBottomLeftRadius: 0,
+                              },
+                              '&:last-of-type': {
+                                borderTopRightRadius: 0,
+                                borderBottomRightRadius: 0,
+                              },
+                            }
+                          : {}),
+                      }}
+                      as="td"
+                      key={cell.id}
+                      variant="styles.td"
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </Box>
+                  ))}
+                </Box>
+                {!!renderSubComponent && row.getIsExpanded() && (
+                  <tr>
+                    {/* 2nd row is a custom 1 cell row */}
+                    <td colSpan={row.getVisibleCells().length}>
+                      {renderSubComponent({ row })}
+                    </td>
+                  </tr>
+                )}
+              </Fragment>
             )
           })}
         </Box>

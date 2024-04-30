@@ -211,7 +211,7 @@ const ExploreTransactions = () => {
   )
 
   return (
-    <Box mt={5}>
+    <Box mt={5} mx={[1, 4]}>
       <Box variant="layout.verticalAlign" mb={5}>
         <TransactionsIcon fontSize={32} />
         <Text ml="2" as="h2" variant="title" sx={{ fontSize: 4 }}>
@@ -224,7 +224,7 @@ const ExploreTransactions = () => {
         data={data}
         pagination={{ pageSize: 10 }}
         columns={columns}
-        sx={{ borderRadius: '0 0 20px 20px', overflow: 'hidden' }}
+        sx={{ borderRadius: '0 0 20px 20px' }}
         compact
       />
     </Box>
