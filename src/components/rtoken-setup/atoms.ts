@@ -304,21 +304,6 @@ export const timeToBlocks = (seconds: number, secondsPerBlock = 12): number => {
   return seconds / secondsPerBlock
 }
 
-export const rTokenDefaultGovernanceValuesAtom = atom((get) => {
-  return {
-    defaultGovernance: true,
-    unpause: '0',
-    votingDelay: '48', // 2 days
-    votingPeriod: '72', // 3 days
-    proposalThresholdAsMicroPercent: '0.01', // 0.01%
-    quorumPercent: '10', // 10%
-    minDelay: '72', // 72 hours -> 86400
-    guardian: '',
-    pauser: '',
-    owner: '',
-  }
-})
-
 export const governanceDefaultValues = {
   defaultGovernance: true,
   unpause: '0',
@@ -340,17 +325,17 @@ export const rTokenDefaultValues = {
   ownerAddress: '',
   reweightable: false,
   // backing params
-  tradingDelay: '7200',
+  tradingDelay: '0',
   batchAuctionLength: '900',
   dutchAuctionLength: '1800',
   backingBuffer: '0.1', // 0.1%
   maxTradeSlippage: '0.5', // 0.5%
-  issuanceThrottleAmount: '250000', // Anticipated redemption minimum amount for throttling
-  issuanceThrottleRate: '5', // 2.5% per hour
-  redemptionThrottleAmount: '500000',
-  redemptionThrottleRate: '7.5',
+  issuanceThrottleAmount: '2000000', // Anticipated redemption minimum amount for throttling
+  issuanceThrottleRate: '10', // 10% per hour
+  redemptionThrottleAmount: '2500000',
+  redemptionThrottleRate: '12.5',
   // other
-  rewardRatio: '0.000000573038343750',
+  rewardRatio: '0.0000011460766875',
   unstakingDelay: '1209600',
   minTrade: '1000',
   maxTrade: '1000000',

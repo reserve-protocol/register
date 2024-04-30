@@ -6,11 +6,26 @@ import { chainIdAtom } from 'state/atoms'
 import { ChainId } from 'utils/chains'
 import { useResetAtom } from 'jotai/utils'
 import { backupCollateralAtom, basketAtom } from 'components/rtoken-setup/atoms'
+import { useFormContext } from 'react-hook-form'
+
+type Defaults = [string, string][]
+
+const mainnetDefaults: Defaults = [
+  ['withdrawalLeak', '5'],
+  ['dutchAuctionLength', '1800'],
+  ['minTrade', '1000'],
+]
+const l2Defaults: Defaults = [
+  ['withdrawalLeak', '1'],
+  ['dutchAuctionLength', '900'],
+  ['minTrade', '100'],
+]
 
 const ChainSelector = () => {
   const [chainId, setChain] = useAtom(chainIdAtom)
   const resetBasket = useResetAtom(basketAtom)
   const resetBackup = useResetAtom(backupCollateralAtom)
+  const { setValue } = useFormContext()
 
   const handleChainChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newChain = +e.target.value
@@ -18,6 +33,14 @@ const ChainSelector = () => {
     if (chainId !== newChain) {
       resetBasket()
       resetBackup()
+
+      const defaults =
+        newChain === ChainId.Mainnet ? mainnetDefaults : l2Defaults
+
+      for (const [key, value] of defaults) {
+        setValue(key, value)
+      }
+
       setChain(newChain)
     }
   }
