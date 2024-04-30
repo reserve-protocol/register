@@ -18,7 +18,6 @@ import Governance from './components/Governance'
 import NavigationSidebar from './components/NavigationSidebar'
 import RTokenSetup from './components/RTokenSetup'
 
-// TODO: Totally broken needs to redirect instead of setting token
 const Deploy = () => {
   const [governance, setGovernance] = useState(false)
   const chainId = useAtomValue(chainIdAtom)

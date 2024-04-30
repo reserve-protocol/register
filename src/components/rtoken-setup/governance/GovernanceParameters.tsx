@@ -4,7 +4,6 @@ import { useFormContext } from 'react-hook-form'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { decimalPattern, numberPattern, parseDuration } from 'utils'
 
-// TODO: Ask users for time and not block count
 const GovernanceParameters = (props: BoxProps) => {
   const { watch } = useFormContext()
   const [votingDelay, votingPeriod, minDelay] = watch([
