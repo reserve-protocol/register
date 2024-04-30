@@ -21,6 +21,12 @@ const protocols = {
     underlying: 'asset',
     collateral: 'aToken',
   },
+  AAVEv3Arbitrum: {
+    key: 'AAVEv3',
+    underlying: 'asset',
+    collateral: 'aToken', // If the underlying is not the yield bearing asset
+    rewardTokens: ['ARB'],
+  },
   COMP: {
     key: 'COMP',
     underlying: 'underlying',
@@ -72,7 +78,6 @@ const wrappedTokenMap = {
   cUSDT: protocols.COMP,
   cUSDP: protocols.COMP,
   cWBTC: protocols.COMP,
-  cETH: protocols.COMP,
   cUSDbCv3: protocols.COMPv3, // base
   cUSDCv3: protocols.COMPv3,
   // Flux tokens are no longer wrapped
@@ -94,6 +99,7 @@ const wrappedTokenMap = {
   cvxMIM3Pool: protocols.CONVEX,
   cvxCrvUSDUSDC: protocols.CONVEX,
   cvxCrvUSDUSDT: protocols.CONVEX,
+  cvxETHPlusETH: protocols.CONVEX,
   sDAI: protocols.SDR,
   aBasUSDbC: protocols.AAVEv3,
   sgUSDC: protocols.STARGATE,
@@ -102,6 +108,8 @@ const wrappedTokenMap = {
   saEthUSDC: protocols.AAVEv3,
   cvxPayPool: protocols.CONVEX,
   saBasUSDC: protocols.AAVEv3,
+  saArbUSDCn: protocols.AAVEv3Arbitrum,
+  saArbUSDT: protocols.AAVEv3Arbitrum,
 }
 
 // Default: run all collateral chains - you can comment which chain you want to run
@@ -121,6 +129,11 @@ const chainsMap = [
     prefix: 'base',
     chain: chains.base,
     collaterals: require('./data/base-collaterals.json'),
+  },
+  {
+    prefix: 'arbitrum',
+    chain: chains.arbitrum,
+    collaterals: require('./data/arbitrum-collaterals.json'),
   },
 ]
 

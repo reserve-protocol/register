@@ -14,7 +14,7 @@ interface Props {
 const DutchAuction = ({ data }: Props) => {
   const [currentPrice, currentPriceRaw, nextPrice] = useAuctionPrices(
     data.id as Address,
-    data.buying as Address
+    data.buyingTokenDecimals
   )
 
   return (

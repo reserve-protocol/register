@@ -63,6 +63,7 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
 export const NETWORKS: Record<string, number> = {
   ethereum: ChainId.Mainnet,
   base: ChainId.Base,
+  arbitrum: ChainId.Arbitrum,
 }
 
 export const CHAIN_TO_NETWORK = Object.entries(NETWORKS).reduce(
@@ -159,8 +160,13 @@ export const formatConstant = (str: string) =>
 export const blockDuration = {
   [ChainId.Mainnet]: 12,
   [ChainId.Base]: 2,
+  [ChainId.Arbitrum]: 1,
 }
-export const supportedChainList = [ChainId.Mainnet, ChainId.Base]
+export const supportedChainList = [
+  ChainId.Mainnet,
+  ChainId.Base,
+  ChainId.Arbitrum,
+]
 
 // Load environment variables.
 export const TENDERLY_ACCESS_TOKEN: string = import.meta.env
@@ -239,7 +245,7 @@ export const BRIDGE_RTOKEN_MAP = Object.entries(
 
 for (const chain of supportedChainList) {
   LISTED_RTOKEN_ADDRESSES[chain] = [
-    ...Object.keys(rtokens[chain]).map((s) => s.toLowerCase()),
+    ...Object.keys(rtokens[chain] || {}).map((s) => s.toLowerCase()),
   ]
 }
 
@@ -299,4 +305,6 @@ export const collateralDisplay: Record<string, string> = {
   steakpyusd: 'Morpho Blue pyUSD',
   bbusdt: 'Morpho Blue USDT',
   steakusdc: 'Morpho Blue USDC',
+  saarbusdcn: 'AAVE USDC V3',
+  saarbusdt: 'AAVE USDT V3',
 }

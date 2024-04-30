@@ -29,6 +29,7 @@ const ZAP_TOKENS: { [x: number]: [Address, number][] } = {
     ['0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb', 18], // DAI
     ['0x4200000000000000000000000000000000000006', 18], // WETH
   ],
+  [ChainId.Arbitrum]: [],
 }
 
 ZAP_TOKENS[ChainId.Hardhat] = ZAP_TOKENS[ChainId.Mainnet]

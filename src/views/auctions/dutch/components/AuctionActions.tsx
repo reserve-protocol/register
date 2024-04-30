@@ -20,10 +20,6 @@ const AuctionActions = ({
   data: DutchTrade
   currentPrice: bigint
 }) => {
-  // TODO: Should get the decimals directly from theGraph instead of using the assetRegistry
-  const buyingDecimals =
-    useAtomValue(rTokenAssetsAtom)?.[isAddress(data.buying) ?? '']?.token
-      .decimals ?? 18
   const chainId = useAtomValue(chainIdAtom)
   const wallet = useAtomValue(walletAtom)
   const [bidded, setBidded] = useState(false)
@@ -93,7 +89,7 @@ const AuctionActions = ({
           <>
             <ExecuteButton
               text={`Bid ${formatCurrency(
-                +formatUnits(currentPrice, buyingDecimals)
+                +formatUnits(currentPrice, data.buyingTokenDecimals)
               )} ${data.buyingTokenSymbol}`}
               ml={3}
               call={hasBalance ? bidCall : undefined}
@@ -107,7 +103,8 @@ const AuctionActions = ({
             <Text variant="legend" sx={{ fontSize: 1 }} ml={2}>
               1 {data.sellingTokenSymbol} ={' '}
               {formatCurrency(
-                Number(formatUnits(currentPrice, buyingDecimals)) / data.amount,
+                Number(formatUnits(currentPrice, data.buyingTokenDecimals)) /
+                  data.amount,
                 5
               )}{' '}
               {data.buyingTokenSymbol}
@@ -116,7 +113,7 @@ const AuctionActions = ({
         )}
       </Box>
       {!bidded && (
-        <AuctionTimeIndicators start={+data.startBlock} end={+data.endBlock} />
+        <AuctionTimeIndicators start={+data.startedAt} end={+data.endAt} />
       )}
     </Grid>
   )

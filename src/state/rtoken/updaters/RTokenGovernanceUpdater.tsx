@@ -39,7 +39,7 @@ const RTokenGovernanceUpdater = () => {
   const setGovernance = useSetAtom(rTokenGovernanceAtom)
   const setTokenManagers = useSetAtom(rTokenManagersAtom)
 
-  const { data, error } = useQuery(rToken?.main ? query : null, {
+  const { data } = useQuery(rToken?.main ? query : null, {
     id: rToken?.address.toLowerCase(),
   })
 
@@ -62,6 +62,7 @@ const RTokenGovernanceUpdater = () => {
           executionDelay,
           votingDelay,
           votingPeriod,
+          version,
         } = data.governance.governanceFrameworks[0]
         setGovernance({
           name,

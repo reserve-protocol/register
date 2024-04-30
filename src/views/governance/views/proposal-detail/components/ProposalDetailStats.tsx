@@ -5,11 +5,14 @@ import { useMemo } from 'react'
 import { Archive, Shield, ThumbsDown, ThumbsUp, XOctagon } from 'react-feather'
 import { blockAtom } from 'state/atoms'
 import { Box, Grid, Progress, Text } from 'theme-ui'
-import { formatCurrency } from 'utils'
+import { formatCurrency, getCurrentTime } from 'utils'
 import { accountVotesAtom, proposalDetailAtom } from '../atom'
+import { isTimeunitGovernance } from 'views/governance/utils'
+import dayjs from 'dayjs'
 
 const ProposalDetailStats = () => {
   const proposal = useAtomValue(proposalDetailAtom)
+  const isTimeunit = isTimeunitGovernance(proposal?.version ?? '1')
   const accountVotes = useAtomValue(accountVotesAtom)
 
   const blockNumber = useAtomValue(blockAtom)
@@ -50,7 +53,8 @@ const ProposalDetailStats = () => {
           </Box>
 
           <Box>
-            {Number(blockNumber) > Number(proposal?.startBlock) ? (
+            {(isTimeunit ? getCurrentTime() : Number(blockNumber)) >
+            Number(proposal?.startBlock) ? (
               <>
                 <IconInfo
                   icon={<Shield size={14} />}
@@ -74,8 +78,14 @@ const ProposalDetailStats = () => {
               <>
                 <IconInfo
                   icon={<Shield size={14} />}
-                  title={t`Snapshot Block`}
-                  text={proposal?.startBlock.toString() ?? '0'}
+                  title={isTimeunit ? t`Snapshot date` : t`Snapshot Block`}
+                  text={
+                    isTimeunit && proposal?.startBlock
+                      ? dayjs(+proposal.startBlock * 1000).format(
+                          'YYYY-M-D HH:mm'
+                        )
+                      : proposal?.startBlock.toString() ?? '0'
+                  }
                 />
               </>
             )}

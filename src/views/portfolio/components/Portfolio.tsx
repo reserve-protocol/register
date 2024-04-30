@@ -1,9 +1,8 @@
 import { Trans } from '@lingui/macro'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
+import ChainLogo from 'components/icons/ChainLogo'
 import PositionIcon from 'components/icons/PositionIcon'
 import TokenLogo from 'components/icons/TokenLogo'
-import Base from 'components/icons/logos/Base'
-import Ethereum from 'components/icons/logos/Ethereum'
 import useRTokenLogo from 'hooks/useRTokenLogo'
 import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
@@ -19,18 +18,11 @@ import { AccountRTokenPosition } from 'state/wallet/updaters/AccountUpdater'
 import { Box, BoxProps, Card, Grid, Text } from 'theme-ui'
 import { formatCurrency, getTokenRoute } from 'utils'
 import { RSR_ADDRESS } from 'utils/addresses'
-import { ChainId } from 'utils/chains'
 import { supportedChainList } from 'utils/constants'
 import { useBalance } from 'wagmi'
 
-export const chainIcons = {
-  [ChainId.Mainnet]: Ethereum,
-  [ChainId.Base]: Base,
-}
-
 const PortfolioToken = ({ position }: { position: AccountRTokenPosition }) => {
   const logo = useRTokenLogo(position.address, position.chain)
-  const Logo = chainIcons[position.chain]
   const navigate = useNavigate()
 
   const handleClick = () => {
@@ -88,7 +80,7 @@ const PortfolioToken = ({ position }: { position: AccountRTokenPosition }) => {
           top: 'calc(50% - 10px)',
         }}
       >
-        <Logo />
+        <ChainLogo chain={position.chain} />
       </Box>
     </Grid>
   )
@@ -202,7 +194,7 @@ const Portfolio = (props: BoxProps) => {
               </Text>
               <Box></Box>
             </Grid>
-            <Box mt={-3} sx={{ maxHeight: 500, overflow: 'auto' }}>
+            <Box mt={-3}>
               {rTokens.map((position) => (
                 <PortfolioToken key={position.address} position={position} />
               ))}

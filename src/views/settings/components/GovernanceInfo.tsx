@@ -4,6 +4,22 @@ import { useAtomValue } from 'jotai'
 import { rTokenGovernanceAtom, secondsPerBlockAtom } from 'state/atoms'
 import { BoxProps, Card, Text, Divider } from 'theme-ui'
 import { formatPercentage, parseDuration, shortenAddress } from 'utils'
+import { isTimeunitGovernance } from 'views/governance/utils'
+
+const getLegend = (
+  isTimepoint: boolean,
+  secondsPerBlock: number,
+  duration?: string
+) => {
+  const multiplier = isTimepoint ? 1 : secondsPerBlock
+  const period = parseDuration((Number(duration) || 0) * multiplier)
+
+  if (isTimepoint) {
+    return period
+  }
+
+  return period + ` (${duration} blocks)`
+}
 
 /**
  * View: Settings > Display RToken governance configuration
@@ -11,9 +27,7 @@ import { formatPercentage, parseDuration, shortenAddress } from 'utils'
 const GovernanceInfo = (props: BoxProps) => {
   const governance = useAtomValue(rTokenGovernanceAtom)
   const secondsPerBlock = useAtomValue(secondsPerBlockAtom)
-
-  const votingPeriod = (Number(governance.votingPeriod) || 0) * secondsPerBlock
-  const snapshotDelay = (Number(governance.votingDelay) || 0) * secondsPerBlock
+  const isTimeunit = isTimeunitGovernance(governance.name)
 
   return (
     <Card p={4} {...props}>
@@ -26,16 +40,20 @@ const GovernanceInfo = (props: BoxProps) => {
         <>
           <InfoItem
             title={t`Snapshot Delay`}
-            subtitle={`${parseDuration(snapshotDelay)} (${
+            subtitle={getLegend(
+              isTimeunit,
+              secondsPerBlock,
               governance.votingDelay
-            } blocks)`}
+            )}
             mb={3}
           />
           <InfoItem
             title={t`Voting Period`}
-            subtitle={`${parseDuration(votingPeriod)} (${
+            subtitle={getLegend(
+              isTimeunit,
+              secondsPerBlock,
               governance.votingPeriod
-            } blocks)`}
+            )}
             mb={3}
           />
           <InfoItem

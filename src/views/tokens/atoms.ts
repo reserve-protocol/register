@@ -39,6 +39,15 @@ export const tokenFilterAtom = atom((get) => {
       by: id,
       direction: desc ? 'desc' : 'asc',
     },
+    [ChainId.Arbitrum]: {
+      search,
+      listed: LISTED_RTOKEN_ADDRESSES[ChainId.Base].map((addr) =>
+        addr.toLowerCase()
+      ),
+      limit,
+      by: id,
+      direction: desc ? 'desc' : 'asc',
+    },
     _chain: chain,
   }
 })
