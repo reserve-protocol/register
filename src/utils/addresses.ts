@@ -49,12 +49,18 @@ export const EUSD_ADDRESS: AddressMap = {
 
 export const RGUSD_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0x78da5799CF427Fee11e9996982F4150eCe7a99A7',
+  [ChainId.Base]: '0x8E5E9DF4F0EA39aE5270e79bbABFCc34203A3470',
   [ChainId.Arbitrum]: '0x96a993f06951b01430523d0d5590192d650ebf3e',
 }
 
 export const ETHPLUS_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xE72B141DF173b999AE7c1aDcbF60Cc9833Ce56a8',
   [ChainId.Arbitrum]: '0x18c14c2d707b2212e17d1579789fc06010cfca23',
+}
+
+export const USD3_ADDRESS: AddressMap = {
+  [ChainId.Mainnet]: '0x0d86883FAf4FfD7aEb116390af37746F45b6f378',
+  [ChainId.Base]: '0xEFb97aaF77993922aC4be4Da8Fbc9A2425322677',
 }
 
 /**
