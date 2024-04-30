@@ -8,6 +8,7 @@ import TokenItem from 'components/token-item'
 import useRTokenLogo from 'hooks/useRTokenLogo'
 import useTokenList, { ListedToken } from 'hooks/useTokenList'
 import { useMemo } from 'react'
+import { ChevronDown, ChevronUp } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import { Box, Spinner, Text } from 'theme-ui'
 import {
@@ -17,6 +18,14 @@ import {
   formatUsdCurrencyCell,
   getTokenRoute,
 } from 'utils'
+
+const renderSubComponent = ({ row }: { row: Row<Person> }) => {
+  return (
+    <pre style={{ fontSize: '10px' }}>
+      <code>{JSON.stringify(row.original, null, 2)}</code>
+    </pre>
+  )
+}
 
 const ExploreTokens = (props: Partial<TableProps>) => {
   const { list, isLoading } = useTokenList()
@@ -80,12 +89,22 @@ const ExploreTokens = (props: Partial<TableProps>) => {
           )
         },
       }),
+      columnHelper.accessor('id', {
+        header: '',
+        cell: ({ row }) => {
+          return row.getIsExpanded() ? (
+            <ChevronUp size={16} />
+          ) : (
+            <ChevronDown size={16} />
+          )
+        },
+      }),
     ],
     []
   )
 
-  const handleClick = (data: any) => {
-    navigate(getTokenRoute(data.id, data.chain))
+  const handleClick = (data: any, row: any) => {
+    row.toggleExpanded()
   }
 
   return (
@@ -104,6 +123,7 @@ const ExploreTokens = (props: Partial<TableProps>) => {
         sortBy={[{ id: 'supply', desc: true }]}
         sx={{ borderRadius: '0 0 20px 20px' }}
         compact
+        renderSubComponent={renderSubComponent}
         {...props}
       />
       {isLoading && (

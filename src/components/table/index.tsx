@@ -6,6 +6,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  Row,
 } from '@tanstack/react-table'
 import React, { Fragment, useCallback, useMemo, useState } from 'react'
 import { ArrowDown, ArrowUp } from 'react-feather'
@@ -22,12 +23,12 @@ export interface TableProps extends BoxProps {
   pagination?: boolean | { pageSize: number }
   onSort?(state: SortingState): void
   defaultPageSize?: number
-  onRowClick?(data: any): void
+  onRowClick?(data: any, row: Row<any>): void
   sortBy?: SortingState
   maxHeight?: string | number
   isLoading?: boolean
   columnVisibility?: (string | string[])[]
-  renderSubComponent?: (props: { row: Row<TData> }) => React.ReactElement
+  renderSubComponent?: (props: { row: Row<any> }) => React.ReactElement
 }
 
 export function Table({
@@ -135,7 +136,9 @@ export function Table({
                   variant="styles.tr"
                   as="tr"
                   onClick={
-                    !!onRowClick ? () => onRowClick(row.original) : undefined
+                    !!onRowClick
+                      ? () => onRowClick(row.original, row)
+                      : undefined
                   }
                   sx={{ cursor: !!onRowClick ? 'pointer' : 'inherit' }}
                 >
