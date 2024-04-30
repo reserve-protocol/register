@@ -75,11 +75,9 @@ export const gasPriceAtom = atom(
 
 export const SUBGRAPH_URL = {
   [ChainId.Mainnet]:
-    // 'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/reserve-mainnet/api',
-    'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/reserve-mainnet/version/v0.0.5/api',
+    'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/reserve-mainnet/api',
   [ChainId.Base]:
     'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/reserve-base/api',
-  // TODO: Change
   [ChainId.Arbitrum]:
     'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/reserve-arbitrum/api',
   [ChainId.Hardhat]:
