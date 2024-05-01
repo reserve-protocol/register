@@ -388,6 +388,15 @@ export const theme: Theme = {
       padding: '6px',
       paddingLeft: '6px',
     },
+    checkbox: {
+      mozAppearance: 'none',
+      webkitAppearance: 'none',
+      outline: 'none',
+      'input:focus': {
+        bg: 'red',
+        backgroundColor: 'red',
+      },
+    },
     select: {
       ...baseInput,
       backgroundColor: 'background',

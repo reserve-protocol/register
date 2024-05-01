@@ -1,36 +1,155 @@
 import { Trans, t } from '@lingui/macro'
-import { createColumnHelper } from '@tanstack/react-table'
+import { Row, createColumnHelper } from '@tanstack/react-table'
 import BasketCubeIcon from 'components/icons/BasketCubeIcon'
 import ChainLogo from 'components/icons/ChainLogo'
-import TransactionsIcon from 'components/icons/TransactionsIcon'
 import { Table, TableProps } from 'components/table'
 import TokenItem from 'components/token-item'
 import useRTokenLogo from 'hooks/useRTokenLogo'
 import useTokenList, { ListedToken } from 'hooks/useTokenList'
-import { useMemo } from 'react'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useMemo, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
-import { useNavigate } from 'react-router-dom'
-import { Box, Spinner, Text } from 'theme-ui'
-import {
-  formatCurrency,
-  formatCurrencyCell,
-  formatPercentage,
-  formatUsdCurrencyCell,
-  getTokenRoute,
-} from 'utils'
+import { Box, Text } from 'theme-ui'
+import { formatCurrency, formatPercentage, formatUsdCurrencyCell } from 'utils'
+import { TARGET_UNITS, supportedChainList } from 'utils/constants'
+import ChainFilter from '../filters/ChainFilter'
+import CirclesIcon from 'components/icons/CirclesIcon'
+import Ethereum from 'components/icons/logos/Ethereum'
+import EarnNavIcon from 'components/icons/EarnNavIcon'
+import { borderRadius } from 'theme'
 
-const renderSubComponent = ({ row }: { row: Row<Person> }) => {
+const filtersAtom = atom<{ chains: string[]; targets: string[] }>({
+  chains: supportedChainList.map((chain) => chain.toString()),
+  targets: [TARGET_UNITS.USD, TARGET_UNITS.ETH],
+})
+
+const renderSubComponent = ({ row }: { row: Row<ListedToken> }) => {
   return (
-    <pre style={{ fontSize: '10px' }}>
-      <code>{JSON.stringify(row.original, null, 2)}</code>
-    </pre>
+    <Box
+      p={4}
+      sx={{ border: '2px solid', borderColor: 'text', borderRadius: 10 }}
+    >
+      <pre style={{ fontSize: '10px' }}>
+        <code>{JSON.stringify(row.original, null, 2)}</code>
+      </pre>
+    </Box>
   )
 }
 
-const ExploreTokens = (props: Partial<TableProps>) => {
+const TargetFilter = () => {
+  const [selected, setSelected] = useState(0)
+  const setFilters = useSetAtom(filtersAtom)
+
+  const options = useMemo(
+    () => [
+      {
+        text: 'All',
+        icon: <CirclesIcon />,
+        filter: [TARGET_UNITS.ETH, TARGET_UNITS.USD],
+      },
+      {
+        text: 'USD',
+        filter: [TARGET_UNITS.USD],
+        icon: <EarnNavIcon />,
+      },
+      {
+        text: 'ETH',
+        icon: <Ethereum />,
+        filter: [TARGET_UNITS.ETH],
+      },
+    ],
+    []
+  )
+
+  const handleSelect = (option: number) => {
+    setSelected(option)
+    setFilters((prev) => ({ ...prev, targets: options[option]?.filter ?? [] }))
+  }
+
+  return (
+    <Box
+      sx={{ borderRadius: borderRadius.inputs, background: 'inputBackground' }}
+      variant="layout.verticalAlign"
+      ml={2}
+      mr={1}
+      p={'2px'}
+    >
+      {options.map(({ text, icon }, index) => (
+        <Box
+          key={text}
+          role="button"
+          sx={{
+            cursor: 'pointer',
+            backgroundColor:
+              index === selected ? 'backgroundNested' : 'transparent',
+            width: ['40px', 'auto'],
+            height: '32px',
+            borderRadius: borderRadius.inner,
+            justifyContent: 'center',
+          }}
+          variant="layout.verticalAlign"
+          py={1}
+          px={2}
+          onClick={() => handleSelect(index)}
+        >
+          {icon}{' '}
+          <Text ml="2" sx={{ display: ['none', 'block'] }}>
+            {text}
+          </Text>
+        </Box>
+      ))}
+    </Box>
+  )
+}
+
+const Filters = () => {
+  const [filters, setFilters] = useAtom(filtersAtom)
+
+  const handleChange = (key: string, selected: string[]) => {
+    setFilters((prev) => ({ ...prev, [key]: selected }))
+  }
+
+  return (
+    <Box
+      ml="auto"
+      variant="layout.verticalAlign"
+      sx={{ alignItems: 'flex-end' }}
+    >
+      <ChainFilter
+        selected={filters.chains}
+        onChange={(selected) => handleChange('chains', selected)}
+        mr={3}
+      />
+      <TargetFilter />
+    </Box>
+  )
+}
+
+const useData = () => {
   const { list, isLoading } = useTokenList()
+  const filters = useAtomValue(filtersAtom)
+
+  return useMemo(() => {
+    let data: ListedToken[] = []
+
+    if (list?.length) {
+      data = list.filter((token) => {
+        return (
+          (!filters.chains.length ||
+            filters.chains.includes(token.chain.toString())) &&
+          (!filters.targets.length ||
+            !!filters.targets.find((t) => token.targetUnits.includes(t)))
+        )
+      })
+    }
+
+    return { list: data, isLoading }
+  }, [list, filters])
+}
+
+const ExploreTokens = (props: Partial<TableProps>) => {
+  const { list, isLoading } = useData()
   const columnHelper = createColumnHelper<ListedToken>()
-  const navigate = useNavigate()
 
   const columns = useMemo(
     () => [
@@ -108,15 +227,17 @@ const ExploreTokens = (props: Partial<TableProps>) => {
   }
 
   return (
-    <Box mt={5} mx={[1, 4]}>
+    <Box my={5} mx={[1, 4]}>
       <Box variant="layout.verticalAlign" mb={5}>
         <BasketCubeIcon fontSize={32} />
         <Text ml="2" as="h2" variant="title" sx={{ fontSize: 4 }}>
           <Trans>Featured RTokens</Trans>
         </Text>
+        <Filters />
       </Box>
       <Table
         data={list}
+        isLoading={isLoading && !list.length}
         columns={columns}
         onRowClick={handleClick}
         sorting
@@ -126,16 +247,6 @@ const ExploreTokens = (props: Partial<TableProps>) => {
         renderSubComponent={renderSubComponent}
         {...props}
       />
-      {isLoading && (
-        <Box sx={{ textAlign: 'center' }} mt={3}>
-          <Spinner size={22} />
-        </Box>
-      )}
-      {!isLoading && !list.length && (
-        <Box sx={{ textAlign: 'center' }} mt={4}>
-          <Text variant="legend">No RTokens listed for this chain</Text>
-        </Box>
-      )}
     </Box>
   )
 }

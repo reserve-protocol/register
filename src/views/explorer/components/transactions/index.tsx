@@ -47,7 +47,7 @@ const explorerTransactionsQuery = gql`
       orderBy: timestamp
       where: { type_not: "TRANSFER" }
       orderDirection: desc
-      first: 500
+      first: 250
     ) {
       id
       type
@@ -225,6 +225,7 @@ const ExploreTransactions = () => {
         pagination={{ pageSize: 10 }}
         columns={columns}
         sx={{ borderRadius: '0 0 20px 20px' }}
+        isLoading={!data.length}
         compact
       />
     </Box>
