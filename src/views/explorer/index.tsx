@@ -44,6 +44,7 @@ const Navigation = () => {
       <NavItem to={ROUTES.EXPLORER_TRANSACTIONS}>Transactions</NavItem>
       <NavItem to={ROUTES.EXPLORER_TOKENS}>Tokens</NavItem>
       <NavItem to={ROUTES.EXPLORER_COLLATERALS}>Collaterals</NavItem>
+      <NavItem to={ROUTES.EXPLORER_GOVERNANCE}>Governance</NavItem>
     </Box>
   )
 }
