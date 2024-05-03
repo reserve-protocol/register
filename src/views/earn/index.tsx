@@ -58,7 +58,7 @@ const Hero = () => (
           }}
         >
           <Trans>
-            Provide liquidity across DeFi & Earn more with your RTokens
+            Provide liquidity across DeFi & earn more with your RTokens
           </Trans>
         </Text>
         <Text as="p" px={[2, 0]} sx={{ fontSize: [2, 3] }} mt={[3, 4]}>
@@ -74,30 +74,31 @@ const Hero = () => (
 const Info = () => {
   return (
     <Box variant="layout.centered" mt={4} mb={7} pb={[0, 2]}>
-      <Box
-        variant="layout.verticalAlign"
-        sx={{
-          gap: 2,
-          borderRadius: '50px',
-          border: '3px solid',
-          borderColor: 'border',
-          width: 'fit-content',
-        }}
-        backgroundColor="cardAlternative"
-        py={2}
-        px={3}
+      <MouseoverTooltip
+        placement="right"
+        text={t`DeFi protocols oftentimes have incentives for liquidity that are paid in their token or a combination of tokens. By providing liquidity for trading or lending or other activities on these protocols, you can earn rewards that are sometimes quite high! Note that there are always risks (smart contract risks, impermanent loss risks, etc), in providing liquidity on these protocols so please make sure you understand things before blindly diving in.`}
       >
-        <Zap strokeWidth={1.5} size={18} color={colors.primary} />
-        <MouseoverTooltip
-          placement="right"
-          text={t`Defi protocols oftentimes have incentives for liquidity that are paid in their token or a combination of tokens. By providing liquidity for trading or lending or other activities on these protocols, you can earn rewards that are sometimes quite high! Note that there are always risks (smart contract risks, impermanent loss risks, etc), in providing liquidity on these protocols so please make sure you understand things before blindly diving in.`}
+        <Box
+          variant="layout.verticalAlign"
+          sx={{
+            gap: 2,
+            borderRadius: '50px',
+            border: '3px solid',
+            borderColor: 'border',
+            width: 'fit-content',
+          }}
+          backgroundColor="cardAlternative"
+          py={2}
+          px={3}
         >
+          <Zap strokeWidth={1.5} size={18} color={colors.primary} />
+
           <Text sx={{ fontWeight: 'bold' }} color="primary">
-            How are APY's so high?
+            How are APYs so high?
           </Text>
-        </MouseoverTooltip>
-        <HelpIcon />
-      </Box>
+          <HelpIcon />
+        </Box>
+      </MouseoverTooltip>
     </Box>
   )
 }
