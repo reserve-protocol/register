@@ -28,6 +28,11 @@ export const OTHER_POOL_TOKENS: Record<
     address: '0x417Ac0e078398C154EdFadD9Ef675d30Be60Af93',
     logo: '',
   },
+  '0x4200000000000000000000000000000000000006': {
+    symbol: 'WETH',
+    address: '0x4200000000000000000000000000000000000006',
+    logo: '',
+  },
   // Mainnet
   '0xf939e0a03fb07f59a73314e73794be0e57ac1b4e': {
     symbol: 'crvUSD',
