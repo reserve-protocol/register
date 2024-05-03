@@ -367,7 +367,6 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   ])
 
   useEffect(() => {
-    let timeoutId = undefined
     if (apiError || (data && data.error)) {
       setError({
         title: 'Failed to find a route',
@@ -414,9 +413,6 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       })
     } else {
       setError(undefined)
-    }
-    return () => {
-      timeoutId !== undefined && clearTimeout(timeoutId)
     }
   }, [
     apiError,
