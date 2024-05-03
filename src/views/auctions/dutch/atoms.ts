@@ -3,8 +3,6 @@ import { Trade } from '../atoms'
 
 export interface DutchTrade extends Trade {
   boughtAmount?: number
-  startBlock: number
-  endBlock: number
   settleTxHash?: string
   isSettled?: boolean
   kind?: number

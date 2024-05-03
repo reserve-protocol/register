@@ -10,7 +10,7 @@ const mainnetTokens = [
     targetUnit: 'ETH',
   },
   {
-    address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' as Address,
+    address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2' as Address,
     symbol: 'WETH',
     name: 'Wrapped Ether',
     decimals: 18,
@@ -105,9 +105,55 @@ const baseTokens = [
   },
 ]
 
+const arbitrumTokens = [
+  {
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' as Address,
+    symbol: 'ETH',
+    name: 'Ether',
+    decimals: 18,
+    targetUnit: 'ETH',
+  },
+  {
+    address: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1' as Address,
+    symbol: 'WETH',
+    name: 'Wrapped Ether',
+    decimals: 18,
+    targetUnit: 'ETH',
+  },
+  {
+    address: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831' as Address,
+    symbol: 'USDC',
+    name: 'USDC',
+    decimals: 6,
+    targetUnit: 'USD',
+  },
+  {
+    address: '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9' as Address,
+    symbol: 'USDT',
+    name: 'Tether USD',
+    decimals: 6,
+    targetUnit: 'USD',
+  },
+  {
+    address: '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9' as Address,
+    symbol: 'DAI',
+    name: 'DAI',
+    decimals: 18,
+    targetUnit: 'USD',
+  },
+  {
+    address: '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f' as Address,
+    symbol: 'WBTC',
+    name: 'WBTC',
+    decimals: 8,
+    targetUnit: 'BTC',
+  },
+]
+
 export const zappableTokens = {
   [ChainId.Mainnet]: mainnetTokens,
   [ChainId.Base]: baseTokens,
+  [ChainId.Arbitrum]: arbitrumTokens,
 }
 
 export const SLIPPAGE_OPTIONS = [100000n, 10000n, 1000n]

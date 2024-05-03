@@ -7,7 +7,6 @@ import atomWithDebounce from 'utils/atoms/atomWithDebounce'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { ChainId } from 'utils/chains'
 import { Address, ContractFunctionConfig, formatEther, formatUnits } from 'viem'
-import { isWrappingAtom } from 'views/issuance/components/wrapping/atoms'
 import { UsePrepareContractWriteConfig, erc20ABI } from 'wagmi'
 import BRIDGE_ASSETS, { BridgeAsset } from './utils/assets'
 import {
@@ -16,20 +15,47 @@ import {
   L2_BRIDGE_ADDRESS,
   L2_L1_MESSAGER_ADDRESS,
 } from './utils/constants'
+import { CHAIN_TAGS, supportedChainList } from 'utils/constants'
 
 const defaultBridgeAsset =
-  new URL(window.location.href.replace('/#/', '/')).searchParams.get('asset') ??
-  'rsr'
+  new URL(window.location.href).searchParams.get('asset') ?? 'rsr'
+const defaultL2 = new URL(window.location.href).searchParams.get('l2') ?? null
 
-const defaultToken =
-  BRIDGE_ASSETS.find(
-    (asset) => asset.L1symbol.toLowerCase() === defaultBridgeAsset.toLowerCase()
-  ) || BRIDGE_ASSETS[1]
+const defaultChain =
+  defaultL2 && supportedChainList.find((chain) => chain === Number(defaultL2))
+    ? Number(defaultL2)
+    : ChainId.Base
+// Default to RSR Base (it will change as soon as they select a network)
+const defaultToken = defaultChain
+  ? BRIDGE_ASSETS[defaultChain].find(
+      (asset) =>
+        asset.L1symbol.toLowerCase() === defaultBridgeAsset.toLowerCase()
+    ) || BRIDGE_ASSETS[ChainId.Base][1]
+  : BRIDGE_ASSETS[ChainId.Base][1]
 
-export const bridgeTokensAtom = atom(BRIDGE_ASSETS)
+export const bridgeL2Atom = atom<number>(defaultChain)
+export const bridgeTokensAtom = atom((get) => {
+  const chain = get(bridgeL2Atom)
+
+  if (!chain) {
+    return BRIDGE_ASSETS[ChainId.Base].slice(0, 2)
+  }
+
+  return BRIDGE_ASSETS[chain]
+})
 export const selectedBridgeToken = atom<BridgeAsset>(defaultToken) // default RSR
 
 export const isBridgeWrappingAtom = atom(true)
+
+export const btnLabelAtom = atom((get) => {
+  const token = get(selectedBridgeToken)
+  const l2 = get(bridgeL2Atom)
+  const isWrapping = get(isBridgeWrappingAtom)
+
+  return `${isWrapping ? 'Deposit' : 'Withdraw'} ${
+    isWrapping ? token.L1symbol : token.L2symbol
+  } to ${isWrapping ? CHAIN_TAGS[l2] : 'Ethereum'}`
+})
 
 export interface BridgeTokenDisplay {
   symbol: string
@@ -55,11 +81,12 @@ function mapAssets(
 export const bridgeTokensSortedAtom = atomWithLoadable(async (get) => {
   const list = get(bridgeTokensAtom)
   const wallet = get(walletAtom)
-  const isWrapping = get(isWrappingAtom)
-  const chain = isWrapping ? ChainId.Mainnet : ChainId.Base
-  const client = publicClient({ chainId: chain })
+  const isWrapping = get(isBridgeWrappingAtom)
+  const l2Chain = get(bridgeL2Atom)
+  const chain = isWrapping ? ChainId.Mainnet : l2Chain
+  const client = chain ? publicClient({ chainId: chain }) : null
 
-  if (wallet) {
+  if (client && wallet) {
     try {
       const contracts: ContractFunctionConfig[] = []
 

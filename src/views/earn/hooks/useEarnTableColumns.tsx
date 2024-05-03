@@ -50,7 +50,7 @@ export const PROJECT_ICONS: Record<string, React.ReactElement> = {
   'yearn-finance': <Yearn fontSize={16} />,
   'convex-finance': <Convex fontSize={16} />,
   'curve-dex': <Curve />,
-  aerodrome: <Aerodrome />,
+  'aerodrome-v1': <Aerodrome />,
   stakedao: <Stakedao fontSize={16} />,
   'uniswap-v3': <Uniswap fontSize={16} />,
   'balancer-v2': <Balancer fontSize={16} />,

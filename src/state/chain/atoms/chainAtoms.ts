@@ -1,6 +1,7 @@
 import rtokens from '@lc-labs/rtokens'
 import { GraphQLClient } from 'graphql-request'
 import { atom } from 'jotai'
+import { getCurrentTime } from 'utils'
 import { ChainId, defaultChain } from 'utils/chains'
 import { blockDuration } from 'utils/constants'
 import { formatEther } from 'viem'
@@ -12,7 +13,11 @@ import { Address } from 'wagmi'
  */
 export const chainIdAtom = atom<number>(defaultChain)
 export const blockAtom = atom<number | undefined>(undefined)
-export const blockTimestampAtom = atom<number>(0)
+export const blockTimestampAtom = atom<number>(getCurrentTime())
+// Acts as an application timer, basically it gets updated every minute which is a good debounce metric
+export const timestampAtom = atom<number>(getCurrentTime())
+export const debouncedBlockAtom = atom<number | undefined>(undefined)
+
 export const walletAtom = atom<Address | null>(null)
 export const walletChainAtom = atom<number | undefined>(undefined)
 export const isWalletInvalidAtom = atom((get) => {
@@ -73,6 +78,8 @@ export const SUBGRAPH_URL = {
     'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/reserve-mainnet/api',
   [ChainId.Base]:
     'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/reserve-base/api',
+  [ChainId.Arbitrum]:
+    'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/reserve-arbitrum/api',
   [ChainId.Hardhat]:
     'https://api.thegraph.com/subgraphs/name/lcamargof/reserve-test',
 }
@@ -83,6 +90,7 @@ export const GRAPH_CLIENTS = {
     import.meta.env.VITE_SUBGRAPH_URL || SUBGRAPH_URL[ChainId.Mainnet]
   ),
   [ChainId.Base]: new GraphQLClient(SUBGRAPH_URL[ChainId.Base]),
+  [ChainId.Arbitrum]: new GraphQLClient(SUBGRAPH_URL[ChainId.Arbitrum]),
   CONTENTFUL: new GraphQLClient(
     `https://graphql.contentful.com/content/v1/spaces/9pqtywannd90/environments/master`,
     {

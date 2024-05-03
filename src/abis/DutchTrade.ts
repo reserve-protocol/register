@@ -6,11 +6,6 @@ export default [
   },
   {
     inputs: [],
-    name: 'InvalidNetwork',
-    type: 'error',
-  },
-  {
-    inputs: [],
     name: 'UIntOutOfBounds',
     type: 'error',
   },
@@ -22,19 +17,6 @@ export default [
         internalType: 'enum TradeKind',
         name: '',
         type: 'uint8',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'ONE_BLOCK',
-    outputs: [
-      {
-        internalType: 'uint48',
-        name: '',
-        type: 'uint48',
       },
     ],
     stateMutability: 'view',
@@ -88,9 +70,9 @@ export default [
   {
     inputs: [
       {
-        internalType: 'uint256',
-        name: 'blockNumber',
-        type: 'uint256',
+        internalType: 'uint48',
+        name: 'timestamp',
+        type: 'uint48',
       },
     ],
     name: 'bidAmount',
@@ -102,6 +84,38 @@ export default [
       },
     ],
     stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'bidType',
+    outputs: [
+      {
+        internalType: 'enum BidType',
+        name: '',
+        type: 'uint8',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'bytes',
+        name: 'data',
+        type: 'bytes',
+      },
+    ],
+    name: 'bidWithCallback',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: 'amountIn',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -151,19 +165,6 @@ export default [
         internalType: 'bool',
         name: '',
         type: 'bool',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'endBlock',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
       },
     ],
     stateMutability: 'view',
@@ -314,12 +315,12 @@ export default [
   },
   {
     inputs: [],
-    name: 'startBlock',
+    name: 'startTime',
     outputs: [
       {
-        internalType: 'uint256',
+        internalType: 'uint48',
         name: '',
-        type: 'uint256',
+        type: 'uint48',
       },
     ],
     stateMutability: 'view',
@@ -349,6 +350,19 @@ export default [
     name: 'transferToOriginAfterTradeComplete',
     outputs: [],
     stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'version',
+    outputs: [
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string',
+      },
+    ],
+    stateMutability: 'pure',
     type: 'function',
   },
   {

@@ -22,6 +22,7 @@ export interface RTokenConfiguration {
   symbol: string
   mandate: string
   params: {
+    reweightable: boolean
     minTradeVolume: bigint
     rTokenMaxTradeVolume: bigint
     dist: RevenueDist
@@ -104,6 +105,7 @@ export const getDeployParameters = (
       symbol: tokenConfig.ticker,
       mandate: tokenConfig.mandate,
       params: {
+        reweightable: tokenConfig.reweightable,
         withdrawalLeak: parsePercent(tokenConfig.withdrawalLeak),
         warmupPeriod: Number(tokenConfig.warmupPeriod),
         dutchAuctionLength: Number(tokenConfig.dutchAuctionLength),

@@ -4,11 +4,12 @@ import GoTo from 'components/button/GoTo'
 import dayjs from 'dayjs'
 import { useAtomValue } from 'jotai'
 import { Box, Card, Divider, Text } from 'theme-ui'
-import { shortenAddress } from 'utils'
+import { shortenAddress, shortenString } from 'utils'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import ProposalDetail from 'views/governance/components/ProposalDetailPreview'
 import { proposalDetailAtom } from '../atom'
 import { chainIdAtom } from 'state/atoms'
+import CopyValue from 'components/button/CopyValue'
 
 const ProposalDetailContent = () => {
   const proposal = useAtomValue(proposalDetailAtom)
@@ -28,8 +29,21 @@ const ProposalDetailContent = () => {
         <Text variant="title" mb={2}>
           {title}
         </Text>
-        <Box variant="layout.verticalAlign" sx={{ fontSize: 1 }}>
+        <Box
+          variant="layout.verticalAlign"
+          sx={{ fontSize: 1, flexWrap: 'wrap' }}
+        >
           <Text variant="legend" mr={1}>
+            Proposal ID:
+          </Text>
+
+          <Text>
+            {proposal?.id ? shortenString(proposal.id) : 'Loading...'}
+          </Text>
+          {!!proposal?.id && (
+            <CopyValue ml="1" text={proposal.id} value={proposal.id} />
+          )}
+          <Text variant="legend" ml="3" mr={1}>
             <Trans>Proposed by</Trans>:
           </Text>
           <Text>

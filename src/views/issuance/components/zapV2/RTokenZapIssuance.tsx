@@ -56,7 +56,6 @@ const RTokenZapIssuance = ({ disableRedeem }: { disableRedeem: boolean }) => {
             <Divider sx={{ flexGrow: 1, borderColor: 'borderSecondary' }} />
           </Box>
           <ZapOutputContainer />
-          ZapRedeemDisabled
         </Box>
         <ZapOperationDetails />
         <ZapSubmit />

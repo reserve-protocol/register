@@ -14,14 +14,16 @@ import { CHAIN_TAGS } from 'utils/constants'
 import { useBalance } from 'wagmi'
 import {
   bridgeAmountAtom,
+  bridgeL2Atom,
   isBridgeWrappingAtom,
   maxBridgeAmountAtom,
   selectedBridgeToken,
 } from '../atoms'
 import BridgeTokenModal from './BridgeTokenModal'
+import BridgeChainSelector from './BridgeChainSelector'
 
 const chainContextAtom = atom((get) =>
-  get(isBridgeWrappingAtom) ? ChainId.Mainnet : ChainId.Base
+  get(isBridgeWrappingAtom) ? ChainId.Mainnet : get(bridgeL2Atom)
 )
 
 const BridgeTokenBalance = () => {
@@ -33,9 +35,9 @@ const BridgeTokenBalance = () => {
   const setMax = useSetAtom(maxBridgeAmountAtom)
 
   const balance = useBalance({
-    address: wallet ?? undefined,
+    address: wallet && chain ? wallet : undefined,
     token: isWrapping ? selected.L1contract : selected.L2contract,
-    chainId: chain,
+    chainId: chain ?? undefined,
   })
 
   useEffect(() => {
@@ -69,16 +71,22 @@ const BridgeTokenBalance = () => {
 }
 
 const BridgeChain = () => {
-  const chain = useAtomValue(chainContextAtom)
+  const isDeposit = useAtomValue(isBridgeWrappingAtom)
 
   return (
-    <Box variant="layout.verticalAlign" mr={3}>
+    <Box variant="layout.verticalAlign">
       <Text mr={2}>
         <Trans>From:</Trans>
       </Text>
 
-      <ChainLogo chain={chain} />
-      <Text ml="2">{CHAIN_TAGS[chain]}</Text>
+      {!isDeposit ? (
+        <BridgeChainSelector />
+      ) : (
+        <>
+          <ChainLogo chain={ChainId.Mainnet} />
+          <Text ml="2">{CHAIN_TAGS[ChainId.Mainnet]}</Text>
+        </>
+      )}
     </Box>
   )
 }

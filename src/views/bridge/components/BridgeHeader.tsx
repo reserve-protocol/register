@@ -1,14 +1,13 @@
 import { Trans, t } from '@lingui/macro'
 import { Button } from 'components'
+import useScrollTo from 'hooks/useScrollTo'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { chainIdAtom, walletChainAtom } from 'state/atoms'
 import { Box, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
-import { bridgeAmountAtom, isBridgeWrappingAtom } from '../atoms'
-import useScrollTo from 'hooks/useScrollTo'
-import { chainIdAtom, walletChainAtom } from 'state/atoms'
 import { useSwitchNetwork } from 'wagmi'
+import { bridgeAmountAtom, bridgeL2Atom, isBridgeWrappingAtom } from '../atoms'
 
 const Tab = ({
   title,
@@ -46,6 +45,7 @@ const BridgeHeader = () => {
   const walletChain = useAtomValue(walletChainAtom)
   const setAmount = useSetAtom(bridgeAmountAtom)
   const [isWrapping, setWrapping] = useAtom(isBridgeWrappingAtom)
+  const bridgeL2 = useAtomValue(bridgeL2Atom)
   const scroll = useScrollTo('bridge-faq')
   const setChain = useSetAtom(chainIdAtom)
 
@@ -56,19 +56,19 @@ const BridgeHeader = () => {
         switchNetwork(ChainId.Mainnet)
       }
 
-      if (!isWrapping && walletChain !== ChainId.Base) {
-        switchNetwork(ChainId.Base)
+      if (!isWrapping && bridgeL2 && walletChain !== bridgeL2) {
+        switchNetwork(bridgeL2)
       }
     }
 
     if (isWrapping) {
       setChain(ChainId.Mainnet)
-    } else {
-      setChain(ChainId.Base)
+    } else if (bridgeL2) {
+      setChain(bridgeL2)
     }
 
     setAmount('')
-  }, [isWrapping])
+  }, [isWrapping, bridgeL2])
 
   return (
     <>

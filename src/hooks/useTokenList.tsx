@@ -97,6 +97,10 @@ const useTokenList = () => {
         tokenIds: LISTED_RTOKEN_ADDRESSES[ChainId.Base],
         fromTime,
       },
+      [ChainId.Arbitrum]: {
+        tokenIds: LISTED_RTOKEN_ADDRESSES[ChainId.Arbitrum] || [],
+        fromTime,
+      },
     },
     { keepPreviousData: true }
   )
@@ -185,13 +189,6 @@ const useTokenList = () => {
               collaterals,
               collateralDistribution: distribution,
               rsrStaked: Number(formatEther(token?.rToken?.rsrStaked ?? '0')),
-            }
-
-            // RSV Data
-            if (token.id === RSV.address.toLowerCase()) {
-              tokenData.transactionCount += RSVOverview.txCount
-              tokenData.cumulativeVolume += RSVOverview.volume
-              tokenData.targetUnits = 'USD'
             }
 
             return tokenData

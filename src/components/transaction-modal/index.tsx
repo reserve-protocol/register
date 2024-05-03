@@ -110,6 +110,16 @@ const TransactionModal = ({
   } = useContractWrite(hasAllowance && !disabled ? call : undefined)
   useWatchTransaction({ hash, label: description })
 
+  const validationMessage = useMemo(() => {
+    if (validationError) {
+      if (validationError.message.indexOf('empty redemption') !== -1) {
+        return 'Current basket not capitalized, please try to redeem with a previous basket.'
+      }
+    }
+
+    return null
+  }, [validationError?.message])
+
   const handleConfirm = () => {
     if (write) {
       onChange(true)
@@ -134,16 +144,6 @@ const TransactionModal = ({
     !validationError &&
     !isIdle &&
     !disabled
-
-  const validationMessage = useMemo(() => {
-    if (validationError) {
-      if (validationError.message.indexOf('empty redemption') !== -1) {
-        return 'Current basket not capitalized, please try to redeem with a previous basket.'
-      }
-    }
-
-    return null
-  }, [validationError?.message])
 
   return (
     <Modal title={title} onClose={onClose} {...props}>

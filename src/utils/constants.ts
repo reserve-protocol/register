@@ -1,5 +1,11 @@
 import { Token, Trader } from 'types'
-import { EUSD_ADDRESS, RSR_ADDRESS } from './addresses'
+import {
+  ETHPLUS_ADDRESS,
+  EUSD_ADDRESS,
+  RGUSD_ADDRESS,
+  RSR_ADDRESS,
+  USD3_ADDRESS,
+} from './addresses'
 import { ChainId } from './chains'
 import rtokens from '@lc-labs/rtokens'
 import RSV from './rsv'
@@ -39,7 +45,7 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'Extra Finance',
     site: 'https://app.extrafi.io/farm',
   },
-  aerodrome: {
+  'aerodrome-v1': {
     name: 'Aerodrome',
     site: 'https://aerodrome.finance/',
   },
@@ -57,6 +63,7 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
 export const NETWORKS: Record<string, number> = {
   ethereum: ChainId.Mainnet,
   base: ChainId.Base,
+  arbitrum: ChainId.Arbitrum,
 }
 
 export const CHAIN_TO_NETWORK = Object.entries(NETWORKS).reduce(
@@ -153,8 +160,13 @@ export const formatConstant = (str: string) =>
 export const blockDuration = {
   [ChainId.Mainnet]: 12,
   [ChainId.Base]: 2,
+  [ChainId.Arbitrum]: 1,
 }
-export const supportedChainList = [ChainId.Mainnet, ChainId.Base]
+export const supportedChainList = [
+  ChainId.Mainnet,
+  ChainId.Base,
+  ChainId.Arbitrum,
+]
 
 // Load environment variables.
 export const TENDERLY_ACCESS_TOKEN: string = import.meta.env
@@ -173,9 +185,11 @@ export const TENDERLY_SHARE_URL = (id: string) =>
   `https://api.tenderly.co/api/v1/account/${TENDERLY_USER}/project/${TENDERLY_PROJECT_SLUG}/simulations/${id}/share`
 export const TENDERLY_SHARING_URL = (id: string) =>
   `https://dashboard.tenderly.co/shared/simulation/${id}`
+
 export const CHAIN_TAGS = {
   [ChainId.Mainnet]: 'Ethereum',
   [ChainId.Base]: 'Base',
+  [ChainId.Arbitrum]: 'Arbitrum One',
 }
 
 export const LISTED_RTOKEN_ADDRESSES: { [x: number]: string[] } = {
@@ -186,7 +200,33 @@ export const BRIDGED_RTOKENS = {
   [ChainId.Mainnet]: {
     [EUSD_ADDRESS[ChainId.Mainnet]]: [
       {
-        address: '0xCfA3Ef56d303AE4fAabA0592388F19d7C3399FB4',
+        address: EUSD_ADDRESS[ChainId.Base],
+        chain: ChainId.Base,
+      },
+      {
+        address: EUSD_ADDRESS[ChainId.Arbitrum],
+        chain: ChainId.Arbitrum,
+      },
+    ],
+    [ETHPLUS_ADDRESS[ChainId.Mainnet]]: [
+      {
+        address: ETHPLUS_ADDRESS[ChainId.Arbitrum],
+        chain: ChainId.Arbitrum,
+      },
+    ],
+    [RGUSD_ADDRESS[ChainId.Mainnet]]: [
+      {
+        address: RGUSD_ADDRESS[ChainId.Base],
+        chain: ChainId.Base,
+      },
+      {
+        address: RGUSD_ADDRESS[ChainId.Arbitrum],
+        chain: ChainId.Arbitrum,
+      },
+    ],
+    [USD3_ADDRESS[ChainId.Mainnet]]: [
+      {
+        address: USD3_ADDRESS[ChainId.Base],
         chain: ChainId.Base,
       },
     ],
@@ -205,7 +245,7 @@ export const BRIDGE_RTOKEN_MAP = Object.entries(
 
 for (const chain of supportedChainList) {
   LISTED_RTOKEN_ADDRESSES[chain] = [
-    ...Object.keys(rtokens[chain]).map((s) => s.toLowerCase()),
+    ...Object.keys(rtokens[chain] || {}).map((s) => s.toLowerCase()),
   ]
 }
 
@@ -265,4 +305,6 @@ export const collateralDisplay: Record<string, string> = {
   steakpyusd: 'Morpho Blue pyUSD',
   bbusdt: 'Morpho Blue USDT',
   steakusdc: 'Morpho Blue USDC',
+  saarbusdcn: 'AAVE USDC V3',
+  saarbusdt: 'AAVE USDT V3',
 }

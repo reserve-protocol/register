@@ -114,6 +114,11 @@ export default [
                 type: 'uint48',
               },
               {
+                internalType: 'bool',
+                name: 'reweightable',
+                type: 'bool',
+              },
+              {
                 internalType: 'uint48',
                 name: 'tradingDelay',
                 type: 'uint48',

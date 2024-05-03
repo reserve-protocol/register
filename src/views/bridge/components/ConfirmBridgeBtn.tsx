@@ -7,18 +7,10 @@ import { useEffect } from 'react'
 import {
   bridgeAmountAtom,
   bridgeTxAtom,
+  btnLabelAtom,
   isBridgeWrappingAtom,
   selectedBridgeToken,
 } from '../atoms'
-
-const btnLabelAtom = atom((get) => {
-  const token = get(selectedBridgeToken)
-  const isWrapping = get(isBridgeWrappingAtom)
-
-  return `${isWrapping ? 'Deposit' : 'Withdraw'} ${
-    isWrapping ? token.L1symbol : token.L2symbol
-  } to ${isWrapping ? 'Base' : 'Ethereum'}`
-})
 
 const ConfirmBridgeBtn = ({ onSuccess }: { onSuccess(): void }) => {
   const bridgeTransaction = useAtomValue(bridgeTxAtom)

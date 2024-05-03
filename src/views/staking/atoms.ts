@@ -1,6 +1,6 @@
 import { gql } from 'graphql-request'
 import { atom } from 'jotai'
-import { parseDuration, safeParseEther } from 'utils'
+import { parseDuration } from 'utils'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import {
   blockTimestampAtom,
@@ -8,7 +8,6 @@ import {
   rTokenAtom,
   rTokenConfigurationAtom,
   rTokenStateAtom,
-  stRsrBalanceAtom,
   walletAtom,
 } from './../../state/atoms'
 
@@ -22,6 +21,7 @@ export const unstakeDelayAtom = atom((get) => {
 export const pendingRSRAtom = atom<
   { availableAt: number; index: bigint; amount: number }[]
 >([])
+
 export const pendingRSRSummaryAtom = atom<{
   index: bigint
   availableIndex: bigint
@@ -30,6 +30,7 @@ export const pendingRSRSummaryAtom = atom<{
   availableAmount: number
 }>((get) => {
   const currentTime = get(blockTimestampAtom)
+
   return get(pendingRSRAtom).reduce(
     (acc, unstake) => {
       acc.availableAt = unstake.availableAt
@@ -171,3 +172,8 @@ export const stRsrTickerAtom = atom((get) => {
 
   return rToken?.stToken?.symbol ?? 'stRSR'
 })
+
+export enum StakeMetricType {
+  Exchange,
+  Staked,
+}

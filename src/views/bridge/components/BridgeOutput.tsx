@@ -3,6 +3,7 @@ import ChainLogo from 'components/icons/ChainLogo'
 import TokenLogo from 'components/icons/TokenLogo'
 import { atom, useAtomValue } from 'jotai'
 import { walletAtom } from 'state/atoms'
+import { borderRadius } from 'theme'
 import { Box, Card, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
@@ -10,17 +11,18 @@ import { CHAIN_TAGS } from 'utils/constants'
 import { useBalance } from 'wagmi'
 import {
   bridgeAmountAtom,
+  bridgeL2Atom,
   isBridgeWrappingAtom,
   selectedBridgeToken,
 } from '../atoms'
-import { borderRadius } from 'theme'
+import BridgeChainSelector from './BridgeChainSelector'
 
 const chainContextAtom = atom((get) =>
-  get(isBridgeWrappingAtom) ? ChainId.Base : ChainId.Mainnet
+  get(isBridgeWrappingAtom) ? get(bridgeL2Atom) : ChainId.Mainnet
 )
 
 const BridgeChain = () => {
-  const chain = useAtomValue(chainContextAtom)
+  const isDeposit = useAtomValue(isBridgeWrappingAtom)
 
   return (
     <Box variant="layout.verticalAlign">
@@ -28,8 +30,14 @@ const BridgeChain = () => {
         <Trans>To:</Trans>
       </Text>
 
-      <ChainLogo chain={chain} />
-      <Text ml="2">{CHAIN_TAGS[chain]}</Text>
+      {isDeposit ? (
+        <BridgeChainSelector />
+      ) : (
+        <>
+          <ChainLogo chain={ChainId.Mainnet} />
+          <Text ml="2">{CHAIN_TAGS[ChainId.Mainnet]}</Text>
+        </>
+      )}
     </Box>
   )
 }
@@ -41,9 +49,9 @@ const BridgeTokenBalance = () => {
   const chain = useAtomValue(chainContextAtom)
 
   const balance = useBalance({
-    address: wallet ?? undefined,
+    address: wallet && chain ? wallet : undefined,
     token: isWrapping ? selected.L2contract : selected.L1contract,
-    chainId: chain,
+    chainId: chain ?? undefined,
   })
 
   return (
@@ -91,31 +99,29 @@ const BridgeOutputToken = () => {
   )
 }
 
-const BridgeOutput = () => {
-  return (
-    <Card
-      p={0}
-      sx={{
-        border: '1px solid',
-        backgroundColor: 'transparent',
-        borderColor: 'border',
-        borderRadius: borderRadius.inputs,
-      }}
+const BridgeOutput = () => (
+  <Card
+    p={0}
+    sx={{
+      border: '1px solid',
+      backgroundColor: 'transparent',
+      borderColor: 'border',
+      borderRadius: borderRadius.inputs,
+    }}
+  >
+    <Box
+      variant="layout.verticalAlign"
+      p={3}
+      sx={{ borderBottom: '1px solid', borderColor: 'border' }}
     >
-      <Box
-        variant="layout.verticalAlign"
-        p={3}
-        sx={{ borderBottom: '1px solid', borderColor: 'border' }}
-      >
-        <BridgeChain />
-        <BridgeTokenBalance />
-      </Box>
-      <Box p={3} variant="layout.verticalAlign">
-        <BridgeOutputAmount />
-        <BridgeOutputToken />
-      </Box>
-    </Card>
-  )
-}
+      <BridgeChain />
+      <BridgeTokenBalance />
+    </Box>
+    <Box p={3} variant="layout.verticalAlign">
+      <BridgeOutputAmount />
+      <BridgeOutputToken />
+    </Box>
+  </Card>
+)
 
 export default BridgeOutput

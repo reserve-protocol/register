@@ -8,12 +8,12 @@ import useDebounce from 'hooks/useDebounce'
 import useHasAllowance from 'hooks/useHasAllowance'
 import { useAtomValue } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
-import { walletAtom } from 'state/atoms'
+import { chainIdAtom, walletAtom } from 'state/atoms'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { CollateralPlugin } from 'types'
 import { formatCurrency, safeParseEther } from 'utils'
 import { BIGINT_MAX } from 'utils/constants'
-import { Address, useBalance } from 'wagmi'
+import { Address, useBalance, useContractRead } from 'wagmi'
 
 interface Props extends BoxProps {
   collateral: CollateralPlugin
@@ -22,6 +22,7 @@ interface Props extends BoxProps {
 
 const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
   const wallet = useAtomValue(walletAtom)
+  const chainId = useAtomValue(chainIdAtom)
   const fromToken = wrapping ? collateral.underlyingToken : collateral.symbol
   const toToken = wrapping ? collateral.symbol : collateral.underlyingToken
   const [amount, setAmount] = useState('')
@@ -34,6 +35,11 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
     watch: true,
   })
   const debouncedAmount = useDebounce(amount, 500)
+
+  const useAssets = useMemo(
+    () => !wrapping && collateral.symbol === 'wcUSDCv3',
+    [wrapping, collateral.symbol]
+  )
 
   const isValid =
     data &&
@@ -70,8 +76,37 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
     }
   }, [isValid, wrapping, debouncedAmount])
 
+  const { data: parsedAssets } = useContractRead({
+    abi: [
+      {
+        inputs: [
+          {
+            internalType: 'uint104',
+            name: 'amount',
+            type: 'uint104',
+          },
+        ],
+        name: 'convertStaticToDynamic',
+        outputs: [
+          {
+            internalType: 'uint256',
+            name: '',
+            type: 'uint256',
+          },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+      },
+    ],
+    address: collateral.erc20,
+    functionName: 'convertStaticToDynamic',
+    args: [safeParseEther(debouncedAmount, data?.decimals)],
+    chainId,
+    enabled: isValid && useAssets,
+  })
+
   const executeCall = useMemo(() => {
-    if (!isValid || !hasAllowance || !wallet) {
+    if (!isValid || !hasAllowance || !wallet || (useAssets && !parsedAssets)) {
       return undefined
     }
 
@@ -97,7 +132,9 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
         type: 'function',
       },
     ] as any
-    const parsedAmount = safeParseEther(debouncedAmount, data.decimals)
+    const parsedAmount = useAssets
+      ? parsedAssets
+      : safeParseEther(debouncedAmount, data.decimals)
     const call = { abi: CollateralWrap, address: collateral.erc20 }
     switch (collateral.protocol) {
       case 'AAVE':
@@ -193,7 +230,14 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
       default:
         return undefined
     }
-  }, [isValid, wrapping, hasAllowance, debouncedAmount])
+  }, [
+    isValid,
+    wrapping,
+    hasAllowance,
+    debouncedAmount,
+    useAssets,
+    parsedAssets,
+  ])
 
   useEffect(() => {
     if (amount) {

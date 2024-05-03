@@ -1,34 +1,16 @@
-import useHasAllowance from 'hooks/useHasAllowance'
 import { useAtomValue } from 'jotai'
-import { useCallback, useState } from 'react'
 import { Box } from 'theme-ui'
-import { bridgeApprovalAtom, isBridgeWrappingAtom } from '../atoms'
-import ApproveBridgeBtn from './ApproveBridgeBtn'
-import ConfirmBridgeBtn from './ConfirmBridgeBtn'
-import WithdrawalInfoModal from './WithdrawalInfoModal'
+import { ChainId } from 'utils/chains'
+import { bridgeL2Atom } from '../atoms'
+import ConfirmArbitrumBridge from './ConfirmArbitrumBridge'
+import ConfirmBaseBridge from './ConfirmBaseBridge'
 
 const ConfirmBridge = () => {
-  const approvalRequired = useAtomValue(bridgeApprovalAtom)
-  const [hasAllowance] = useHasAllowance(
-    approvalRequired ? [approvalRequired] : undefined
-  )
-  const isWrapping = useAtomValue(isBridgeWrappingAtom)
-  const [showModal, setModal] = useState(false)
-
-  const handleSuccess = useCallback(() => {
-    if (!isWrapping) {
-      setModal(true)
-    }
-  }, [isWrapping])
+  const l2 = useAtomValue(bridgeL2Atom)
 
   return (
     <Box p={4}>
-      {showModal && <WithdrawalInfoModal onClose={() => setModal(false)} />}
-      {!hasAllowance ? (
-        <ApproveBridgeBtn />
-      ) : (
-        <ConfirmBridgeBtn onSuccess={handleSuccess} />
-      )}
+      {l2 === ChainId.Base ? <ConfirmBaseBridge /> : <ConfirmArbitrumBridge />}
     </Box>
   )
 }

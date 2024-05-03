@@ -29,10 +29,7 @@ const RTokenAddressItem: FC<RTokenAddressItemProps> = ({
   withChain = false,
 }) => {
   return (
-    <Box
-      variant="layout.verticalAlign"
-      sx={{ gap: 2, justifyContent: 'space-between' }}
-    >
+    <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
       {withChain && <ChainLogo chain={chain} fontSize={18} />}
       <Box variant="layout.centered" sx={{ alignItems: 'start' }}>
         {withChain && (
@@ -47,7 +44,7 @@ const RTokenAddressItem: FC<RTokenAddressItemProps> = ({
           {shortenString(address)}
         </Text>
       </Box>
-      <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+      <Box variant="layout.verticalAlign" sx={{ gap: 1 }} ml="auto">
         <CopyValue color={colors.secondaryText} value={address} size={14} />
         <Link
           href={getExplorerLink(address, chain, ExplorerDataType.TOKEN)}

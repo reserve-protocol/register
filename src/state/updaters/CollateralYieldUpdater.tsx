@@ -50,8 +50,13 @@ const poolsMap: StringMap = {
   '0c8567f8-ba5b-41ad-80de-00a71895eb19': 'wcusdcv3',
   '9d09b0be-f6c2-463a-ad2c-4552b3e12bd9': 'wsgusdbc',
   '7e0661bf-8cf3-45e6-9424-31916d4c7b84': 'sabasusdc',
+  // ----------------
+  // Arbitrum collaterals
+  // ----------------
+  'd9c395b9-00d0-4426-a6b3-572a6dd68e54': 'wcusdcv3',
+  'd9fa8e14-0447-4207-9ae8-7810199dfa1f': 'saarbusdcn',
+  '3a6cc030-738d-4e19-8a40-e63e9c4d5a6f': 'saarbusdt',
 }
-// 'fa4d7ee4-0001-4133-9e8d-cf7d5d194a91': 'fudsc-vault',
 
 const CollateralYieldUpdater = () => {
   const [collateralYield, setCollateralYield] = useAtom(collateralYieldAtom)

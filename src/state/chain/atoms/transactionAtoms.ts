@@ -39,17 +39,21 @@ export const addTransactionAtom = atom(
     if (account && !get(transactionHistoryAtom)[hash]) {
       const chainId = get(chainIdAtom)
 
-      set(transactionHistoryAtom, {
-        ...get(transactionHistoryAtom),
-        [hash]: {
-          hash,
-          label,
-          timestamp: getCurrentTime(),
-          chainId,
-          account,
-          status,
-        },
-      })
+      try {
+        set(transactionHistoryAtom, {
+          ...get(transactionHistoryAtom),
+          [hash]: {
+            hash,
+            label,
+            timestamp: getCurrentTime(),
+            chainId,
+            account,
+            status,
+          },
+        })
+      } catch (e) {
+        console.error('Error adding transaction', e)
+      }
     }
   }
 )
@@ -60,10 +64,14 @@ export const updateTransactionAtom = atom(
     const history = get(transactionHistoryAtom)
 
     if (history[hash]) {
-      set(transactionHistoryAtom, {
-        ...history,
-        [hash]: { ...history[hash], status, block },
-      })
+      try {
+        set(transactionHistoryAtom, {
+          ...history,
+          [hash]: { ...history[hash], status, block },
+        })
+      } catch (e) {
+        console.error('Error updating transaction', e)
+      }
     }
   }
 )

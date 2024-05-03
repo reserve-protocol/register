@@ -46,7 +46,7 @@ const GovernancePrompt = () => {
             </Trans>
           </Text>
           <Button
-            onClick={() => navigate(ROUTES.GOVERNANCE_SETUP)}
+            onClick={() => navigate(`../${ROUTES.GOVERNANCE_SETUP}`)}
             mt={4}
             sx={{ width: '100%' }}
           >

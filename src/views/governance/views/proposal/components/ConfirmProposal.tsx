@@ -6,19 +6,6 @@ import SimulateProposal from './SimulateProposal'
 
 const ConfirmProposal = () => {
   const tx = useProposalTx()
-  // const interfaceMap = useAtomValue(interfaceMapAtom)
-
-  // const navigationSections = useMemo(() => {
-  //   const contractMap: { [x: string]: string } = {}
-
-  //   if (tx?.args[0]) {
-  //     for (const address of tx.args[0]) {
-  //       contractMap[address] = interfaceMap[address]?.label ?? 'Unknown'
-  //     }
-  //   }
-
-  //   return Object.values(contractMap)
-  // }, [tx])
 
   // TODO: Loading state
   if (!tx) {

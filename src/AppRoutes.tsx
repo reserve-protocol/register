@@ -12,9 +12,9 @@ import Home from 'views/home'
 import Issuance from 'views/issuance'
 import Overview from 'views/overview'
 import PortfolioWrapper from 'views/portfolio'
+import Staking from 'views/staking'
 
 // Preloadable components
-const Staking = lazyWithPreload(() => import('./views/staking'))
 const Auctions = lazyWithPreload(() => import('./views/auctions'))
 const Governance = lazyWithPreload(() => import('./views/governance'))
 const GovernanceProposal = lazyWithPreload(
@@ -49,10 +49,7 @@ const AppRoutes = () => (
       <Route index element={<Navigate replace to={ROUTES.OVERVIEW} />} />
       <Route path={ROUTES.OVERVIEW} element={<Overview />} />
       <Route path={ROUTES.ISSUANCE} element={<Issuance />} />
-      <Route
-        path={ROUTES.STAKING}
-        element={<PreloadComponent element={Staking} />}
-      />
+      <Route path={ROUTES.STAKING} element={<Staking />} />
       <Route
         path={ROUTES.AUCTIONS}
         element={<PreloadComponent element={Auctions} />}
