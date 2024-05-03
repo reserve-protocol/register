@@ -4,9 +4,9 @@ import { useAtomValue } from 'jotai'
 import { poolsAtom } from 'state/pools/atoms'
 import { useMemo } from 'react'
 
-const SELECTED_POOLS = [
+const FEATURED_POOLS = [
   '219a3ece-18a6-43e7-8917-e1124498ebe8',
-  '57d5dc30-8ade-4f40-87d2-6065297d0705',
+  '5f83ac83-753a-4382-869f-38c4e1658a36',
   '0112f957-4369-490f-882f-018c0e0fdf9b',
 ]
 
@@ -15,7 +15,7 @@ const FeaturedPools = () => {
 
   const selectedPools = useMemo(() => {
     const handPickedPools = pools
-      .filter(({ id }) => SELECTED_POOLS.includes(id))
+      .filter(({ id }) => FEATURED_POOLS.includes(id))
       .sort((a, b) => b.apy - a.apy)
     return handPickedPools.length === 3
       ? handPickedPools
