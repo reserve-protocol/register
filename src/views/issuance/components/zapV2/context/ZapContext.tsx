@@ -23,8 +23,10 @@ import {
   walletAtom,
 } from 'state/atoms'
 import useSWR from 'swr'
+import { Link, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
+import { REGISTER_BUGS } from 'utils/constants'
 import { Address, formatUnits, parseUnits, zeroAddress } from 'viem'
 import { useFeeData } from 'wagmi'
 import { ZapErrorType } from '../ZapError'
@@ -131,6 +133,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const [selectedToken, setSelectedToken] = useState<ZapToken>()
   const [error, setError] = useState<ZapErrorType>()
   const [retries, setRetries] = useState(0)
+  const [isRetrying, setIsRetrying] = useState(false)
 
   const chainId = useAtomValue(chainIdAtom)
   const account = useAtomValue(walletAtom) || undefined
@@ -292,6 +295,27 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     mutate: refetch,
   } = useSWR<ZapResponse>(endpoint, fetcher, {
     isPaused: () => openSubmitModal,
+    onSuccess(data, _, __) {
+      // if data.error exists, it means the zap failed.
+      if (data.error && retries < 10 && !isRetrying) {
+        setIsRetrying(true)
+        setTimeout(() => {
+          setRetries((r) => r + 1)
+          refetch()
+          setIsRetrying(false)
+        }, 500)
+      } else {
+        setRetries(0)
+        setIsRetrying(false)
+      }
+    },
+    onErrorRetry: (_, __, ___, revalidate, { retryCount }) => {
+      // Only retry up to 10 times.
+      if (retryCount >= 10) return
+
+      // Retry after 5 seconds.
+      setTimeout(() => revalidate({ retryCount }), 500)
+    },
   })
 
   const [amountOut, priceImpact, zapDustUSD, gasCost, spender] = useMemo(() => {
@@ -316,7 +340,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     const inputPriceValue = (tokenIn?.price || 0) * Number(_amountIn) || 1
     const outputPriceValue = (tokenOut?.price || 0) * Number(_amountOut)
     const _priceImpact =
-      !tokenIn?.price || !tokenOut?.price
+      tokenIn?.price && tokenOut?.price
         ? ((inputPriceValue - outputPriceValue) / inputPriceValue) * 100
         : 0
 
@@ -343,18 +367,18 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   ])
 
   useEffect(() => {
-    if (!apiError && data && data.result) {
-      setRetries(0)
-    }
-  }, [apiError, data, setRetries])
-
-  useEffect(() => {
     if (apiError || (data && data.error)) {
       setError({
         title: 'Failed to find a route',
-        message:
-          (apiError?.message || data?.error || 'An unknown error occurred') +
-          '. Please try again. If the problem persists, please contact support.',
+        message: (
+          <Text>
+            {(apiError?.message || data?.error || 'An unknown error occurred') +
+              '. Please try again. If the problem persists, please '}{' '}
+            <Link target="_blank" href={REGISTER_BUGS}>
+              contact support.
+            </Link>
+          </Text>
+        ),
         color: 'danger',
         secondaryColor: 'rgba(255, 0, 0, 0.20)',
         submitButtonTitle: 'Error occurred, try again',
@@ -362,11 +386,6 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       })
 
       setOpenSubmitModal(false)
-
-      if (retries < 3) {
-        refetch()
-        setRetries((r) => r + 1)
-      }
 
       mixpanel.track('Zap Execution Error', {
         Endpoint: endpoint,
@@ -392,6 +411,8 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
           operation === 'mint' ? 'Mint' : 'Redeem'
         } Anyway`,
       })
+    } else {
+      setError(undefined)
     }
   }, [
     apiError,
@@ -402,6 +423,10 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     endpoint,
     refetch,
     retries,
+    setRetries,
+    setOpenSubmitModal,
+    isRetrying,
+    setIsRetrying,
   ])
 
   const _setZapEnabled = useCallback(

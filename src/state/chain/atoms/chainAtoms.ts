@@ -38,8 +38,9 @@ export const rTokenListAtom = atom((get) => {
 })
 
 export const allrTokenListAtom = atom((get) => {
-  const ethereumTokens = rtokens[1]
-  const baseTokens = rtokens[8453]
+  const ethereumTokens = rtokens[ChainId.Mainnet]
+  const baseTokens = rtokens[ChainId.Base]
+  const arbitrumTokens = rtokens[ChainId.Arbitrum]
 
   return Object.fromEntries([
     ...Object.values(ethereumTokens).map((i) => [
@@ -49,6 +50,10 @@ export const allrTokenListAtom = atom((get) => {
     ...Object.values(baseTokens).map((i) => [
       i.address,
       { ...i, chainId: 8453 },
+    ]),
+    ...Object.values(arbitrumTokens).map((i) => [
+      i.address,
+      { ...i, chainId: 42161 },
     ]),
   ]) as Record<string, (typeof ethereumTokens)[string] & { chainId: number }>
 })
