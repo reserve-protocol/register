@@ -1,8 +1,9 @@
+import { ReactNode } from 'react'
 import { Box, Text } from 'theme-ui'
 
 export type ZapErrorType = {
   title: string
-  message: string
+  message: ReactNode
   color: string
   secondaryColor: string
   submitButtonTitle?: string
