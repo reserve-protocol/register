@@ -92,7 +92,7 @@ const FeaturedPoolItem = ({ pool }: { pool?: Pool }) => {
           <Link
             target="_blank"
             variant="layout.verticalAlign"
-            sx={{ cursor: 'pointer' }}
+            sx={{ cursor: 'pointer', textDecoration: 'none' }}
             href={pool.url}
           >
             <Button small sx={{ width: 'max-content' }}>
