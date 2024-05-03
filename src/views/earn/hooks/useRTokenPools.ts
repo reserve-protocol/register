@@ -35,6 +35,7 @@ interface DefillamaPool {
 interface EarnPool {
   llamaId: string
   url: string
+  underlyingTokens: string[]
 }
 
 const listedRTokens = Object.values(rtokens).reduce((acc, curr) => {
@@ -60,6 +61,7 @@ const earnPoolQuery = gql`
       items {
         llamaId
         url
+        underlyingTokens
       }
     }
   }
@@ -74,11 +76,11 @@ const filterPools = (
       (underlyingToken) =>
         !!listedRTokens[underlyingToken?.toLowerCase()] ||
         EXTRA_POOLS_BY_UNDERLYING_TOKEN.includes(underlyingToken?.toLowerCase())
-    );
-    const includedId = ids ? ids.includes(pool.pool) : true;
-    return isUnderlyingTokenValid || includedId;
-  });
-};
+    )
+    const includedId = ids ? ids.includes(pool.pool) : true
+    return isUnderlyingTokenValid || includedId
+  })
+}
 
 const filterByChains = (
   pools: DefillamaPool[],
@@ -95,32 +97,41 @@ const removeByProject = (
 }
 
 const enrichPoolUnderlyingAndId = (
-  pools: DefillamaPool[]
+  pools: DefillamaPool[],
+  earnPools: EarnPool[]
 ): Omit<Pool, 'url'>[] => {
-  return pools.map((pool) => ({
-    ...pool,
-    id: pool.pool,
-    symbol: `${pool.symbol}${pool.poolMeta?.toLowerCase()?.includes("lending") ? ' (Lending Pool)' : ''}`,
-    underlyingTokens: (pool.underlyingTokens || []).map((token: string) => {
-      const address = token?.toLowerCase() ?? ''
+  return pools.map((pool) => {
+    const cmsPool = earnPools.find((item) => item.llamaId === pool.pool)
 
-      if (listedRTokens[address] && listedRTokens[address].symbol !== 'RSR') {
-        return {
-          ...listedRTokens[address],
-          logo: `/svgs/${listedRTokens[address].logo.toLowerCase()}`,
-        }
-      }
+    return {
+      ...pool,
+      id: pool.pool,
+      symbol: `${pool.symbol}${pool.poolMeta?.toLowerCase()?.includes("lending") ? ' (Lending Pool)' : ''}`,
+      underlyingTokens: (
+        cmsPool?.underlyingTokens ||
+        pool.underlyingTokens ||
+        []
+      ).map((token: string) => {
+        const address = token?.toLowerCase() ?? ''
 
-      return (
-        listedRTokens[address] ||
-        OTHER_POOL_TOKENS[address] || {
-          address: token,
-          symbol: 'Unknown',
-          logo: '',
+        if (listedRTokens[address] && listedRTokens[address].symbol !== 'RSR') {
+          return {
+            ...listedRTokens[address],
+            logo: `/svgs/${listedRTokens[address].logo.toLowerCase()}`,
+          }
         }
-      )
-    }),
-  }))
+
+        return (
+          listedRTokens[address] ||
+          OTHER_POOL_TOKENS[address] || {
+            address: token,
+            symbol: 'Unknown',
+            logo: '',
+          }
+        )
+      }),
+    }
+  })
 }
 
 const parsePoolSymbol = (pools: Omit<Pool, 'url'>[]): Omit<Pool, 'url'>[] => {
@@ -147,13 +158,14 @@ const parsePoolSymbol = (pools: Omit<Pool, 'url'>[]): Omit<Pool, 'url'>[] => {
   })
 }
 
-const addPoolURL = (
+const addPoolCMSMetadata = (
   pools: Omit<Pool, 'url'>[],
   earnPools: EarnPool[]
 ): Pool[] => {
   return pools.map((pool) => {
+    const cmsPool = earnPools.find((item) => item.llamaId === pool.id)
     const url =
-      earnPools.find((item) => item.llamaId === pool.id)?.url ||
+      cmsPool?.url ||
       LP_PROJECTS[pool.project]?.site ||
       `https://defillama.com/yields/pool/${pool.id}`
 
@@ -168,12 +180,21 @@ const mapPools = (data: DefillamaPool[], earnPools: EarnPool[]) => {
   const ids = earnPools.map((pool) => pool.llamaId)
   const filteredPools = filterPools(data, ids)
 
-  const filteredPoolsByChains = filterByChains(filteredPools, [mainnet.name, base.name])
-  const filteredPoolsByProject = removeByProject(filteredPoolsByChains, 'reserve')
+  const filteredPoolsByChains = filterByChains(filteredPools, [
+    mainnet.name,
+    base.name,
+  ])
+  const filteredPoolsByProject = removeByProject(
+    filteredPoolsByChains,
+    'reserve'
+  )
 
-  const enrichedPools = enrichPoolUnderlyingAndId(filteredPoolsByProject)
+  const enrichedPools = enrichPoolUnderlyingAndId(
+    filteredPoolsByProject,
+    earnPools
+  )
   const parsedPools = parsePoolSymbol(enrichedPools)
-  const pools = addPoolURL(parsedPools, earnPools)
+  const pools = addPoolCMSMetadata(parsedPools, earnPools)
 
   return pools
 }

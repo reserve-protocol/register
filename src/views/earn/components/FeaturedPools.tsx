@@ -4,12 +4,22 @@ import { useAtomValue } from 'jotai'
 import { poolsAtom } from 'state/pools/atoms'
 import { useMemo } from 'react'
 
+const SELECTED_POOLS = [
+  '219a3ece-18a6-43e7-8917-e1124498ebe8',
+  '57d5dc30-8ade-4f40-87d2-6065297d0705',
+  '0112f957-4369-490f-882f-018c0e0fdf9b',
+]
+
 const FeaturedPools = () => {
   const pools = useAtomValue(poolsAtom)
 
-  const top3Pools = useMemo(() => {
-    const topPools = pools.sort((a, b) => b.apy - a.apy).slice(0, 3)
-    return topPools.length === 3 ? topPools : [undefined, undefined, undefined]
+  const selectedPools = useMemo(() => {
+    const handPickedPools = pools
+      .filter(({ id }) => SELECTED_POOLS.includes(id))
+      .sort((a, b) => b.apy - a.apy)
+    return handPickedPools.length === 3
+      ? handPickedPools
+      : [undefined, undefined, undefined]
   }, [pools])
 
   return (
@@ -27,7 +37,7 @@ const FeaturedPools = () => {
           borderColor: 'contentBackground',
         }}
         mt={[1, 7]}
-        mx={[0, 3]}
+        mx={[0, 4]}
       >
         <Box
           sx={{
@@ -38,7 +48,7 @@ const FeaturedPools = () => {
             gap: 4,
           }}
         >
-          {top3Pools.map((pool, index) => (
+          {selectedPools.map((pool, index) => (
             <FeaturedPoolItem key={`${pool?.id} ${index}`} pool={pool} />
           ))}
         </Box>
