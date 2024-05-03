@@ -316,7 +316,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     const inputPriceValue = (tokenIn?.price || 0) * Number(_amountIn) || 1
     const outputPriceValue = (tokenOut?.price || 0) * Number(_amountOut)
     const _priceImpact =
-      !tokenIn?.price || !tokenOut?.price
+      tokenIn?.price && tokenOut?.price
         ? ((inputPriceValue - outputPriceValue) / inputPriceValue) * 100
         : 0
 
@@ -349,6 +349,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   }, [apiError, data, setRetries])
 
   useEffect(() => {
+    let id = undefined
     if (apiError || (data && data.error)) {
       setError({
         title: 'Failed to find a route',
@@ -363,9 +364,12 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
       setOpenSubmitModal(false)
 
-      if (retries < 3) {
-        refetch()
-        setRetries((r) => r + 1)
+      if (retries < 10) {
+        console.log('Retrying zap... {}', retries)
+        id = setTimeout(() => {
+          refetch()
+          setRetries((r) => r + 1)
+        }, 500)
       }
 
       mixpanel.track('Zap Execution Error', {
@@ -392,6 +396,11 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
           operation === 'mint' ? 'Mint' : 'Redeem'
         } Anyway`,
       })
+    } else {
+      setError(undefined)
+    }
+    return () => {
+      id !== undefined && clearTimeout(id)
     }
   }, [
     apiError,
@@ -402,6 +411,8 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     endpoint,
     refetch,
     retries,
+    setRetries,
+    setOpenSubmitModal,
   ])
 
   const _setZapEnabled = useCallback(
