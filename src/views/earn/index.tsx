@@ -3,11 +3,12 @@ import { Box, Flex, Text, useColorMode } from 'theme-ui'
 import Earn from './components/Earn'
 import RegisterAbout from 'views/home/components/RegisterAbout'
 import mixpanel from 'mixpanel-browser'
-import { Trans } from '@lingui/macro'
+import { Trans, t } from '@lingui/macro'
 import FeaturedPools from './components/FeaturedPools'
 import HelpIcon from 'components/icons/HelpIcon'
 import { Zap } from 'react-feather'
 import { colors } from 'theme'
+import { MouseoverTooltip } from 'components/tooltip'
 
 const HeroBackground = () => {
   const [colorMode] = useColorMode()
@@ -87,9 +88,14 @@ const Info = () => {
         px={3}
       >
         <Zap strokeWidth={1.5} size={18} color={colors.primary} />
-        <Text sx={{ fontWeight: 'bold' }} color="primary">
-          How are APY's so high?
-        </Text>
+        <MouseoverTooltip
+          placement="right"
+          text={t`Defi protocols oftentimes have incentives for liquidity that are paid in their token or a combination of tokens. By providing liquidity for trading or lending or other activities on these protocols, you can earn rewards that are sometimes quite high! Note that there are always risks (smart contract risks, impermanent loss risks, etc), in providing liquidity on these protocols so please make sure you understand things before blindly diving in.`}
+        >
+          <Text sx={{ fontWeight: 'bold' }} color="primary">
+            How are APY's so high?
+          </Text>
+        </MouseoverTooltip>
         <HelpIcon />
       </Box>
     </Box>
