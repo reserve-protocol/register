@@ -58,6 +58,10 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'Concentrator',
     site: 'https://concentrator.aladdin.club/',
   },
+  dyson: {
+    name: 'Dyson',
+    site: 'https://app.dyson.money/',
+  },
 }
 
 // List of supported networks with label
