@@ -123,6 +123,8 @@ export const colors = {
   warning: '#FF8A00',
   modalOverlay: 'rgba(0, 0, 0, 0.2)',
   cardAlternative: '#fff',
+  diva: '#A71EFE',
+  divaBorder: 'rgba(180, 34, 252, 0.16)',
   modes: {
     dark: {
       accentInverted: '#fff',
@@ -161,6 +163,8 @@ export const colors = {
       warning: '#FF7A00',
       modalOverlay: 'rgba(20, 20, 20, 0.6)',
       cardAlternative: '#252421',
+      diva: '#A71EFE',
+      divaBorder: 'rgba(180, 34, 252, 0.16)',
     },
   },
 }
@@ -470,7 +474,7 @@ export const theme: Theme = {
     },
     bordered: {
       ...baseButton,
-      outline: '1px solid',
+      outline: '2px solid',
       borderColor: 'primary',
       color: 'accentInverted',
       backgroundColor: 'transparent',

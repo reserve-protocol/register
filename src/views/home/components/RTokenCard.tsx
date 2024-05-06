@@ -18,6 +18,7 @@ import usePriceETH from '../hooks/usePriceETH'
 import EarnButton from './EarnButton'
 import MobileCollateralInfo from './MobileCollateralInfo'
 import VerticalDivider from './VerticalDivider'
+import DivaButtonAppendix from 'components/diva-points/DivaButtonAppendix'
 
 interface Props extends BoxProps {
   token: ListedToken
@@ -236,17 +237,23 @@ const RTokenCard = ({ token, ...props }: Props) => {
                 sx={{ flexWrap: 'wrap', gap: [2, '12px'] }}
                 mt={[0, 1]}
               >
-                <Button
-                  medium
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleNavigate(ROUTES.ISSUANCE)
-                  }}
+                <DivaButtonAppendix
+                  rTokenSymbol={token.symbol}
+                  borderColor="white"
                 >
-                  {token.tokenApy
-                    ? `Mint ${token.tokenApy.toFixed(1)}% Est. APY`
-                    : 'Mint'}
-                </Button>
+                  <Button
+                    medium
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleNavigate(ROUTES.ISSUANCE)
+                    }}
+                    sx={{ whiteSpace: 'nowrap' }}
+                  >
+                    {token.tokenApy
+                      ? `Mint ${token.tokenApy.toFixed(1)}% Est. APY`
+                      : 'Mint'}
+                  </Button>
+                </DivaButtonAppendix>
                 <Button
                   medium
                   onClick={(e) => {
