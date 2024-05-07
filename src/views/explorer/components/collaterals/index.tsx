@@ -1,5 +1,7 @@
 import { createColumnHelper } from '@tanstack/react-table'
 import CollateralAbi from 'abis/CollateralAbi'
+import { Button } from 'components'
+import BasketCubeIcon from 'components/icons/BasketCubeIcon'
 import ChainLogo from 'components/icons/ChainLogo'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import TokenLogo from 'components/icons/TokenLogo'
@@ -13,10 +15,16 @@ import { Box, Link, Text } from 'theme-ui'
 import { Collateral, CollateralPlugin } from 'types'
 import { formatCurrency, formatPercentage, parseDuration } from 'utils'
 import { atomWithLoadable } from 'utils/atoms/utils'
-import { CHAIN_TAGS, supportedChainList } from 'utils/constants'
+import {
+  CHAIN_TAGS,
+  DISCORD_INVITE,
+  REGISTER_FEEDBACK,
+  supportedChainList,
+} from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import collateralPlugins from 'utils/plugins'
 import { formatUnits } from 'viem'
+import DeployHero from 'views/home/components/DeployHero'
 import { erc20ABI, readContracts } from 'wagmi'
 
 interface Plugin extends CollateralPlugin {
@@ -188,6 +196,8 @@ const PluginList = () => {
     <Table
       sorting
       sortBy={[{ id: 'apy', desc: true }]}
+      sx={{ borderRadius: '0 0 20px 20px' }}
+      compact
       data={data}
       columns={columns}
     />
@@ -198,13 +208,29 @@ const Collaterals = () => {
   return (
     <Box variant="layout.container">
       <CollateralYieldUpdater />
-      <ContentHead
-        pl={[3, 4]}
-        mb={5}
-        title={'Collateral plugins'}
-        subtitle="List of all protocol available collateral plugins"
-      />
+      <Box variant="layout.verticalAlign" sx={{ gap: 2 }} mb={5}>
+        <BasketCubeIcon fontSize={32} />
+        <Text as="h2" variant="title" sx={{ fontSize: 4 }}>
+          Available Collaterals
+        </Text>
+        <Button
+          ml="auto"
+          small
+          variant="bordered"
+          onClick={() => window.open(REGISTER_FEEDBACK, '_blank')}
+        >
+          Request plugin
+        </Button>
+        <Button
+          small
+          variant="bordered"
+          onClick={() => window.open(DISCORD_INVITE, '_blank')}
+        >
+          Discuss on discord
+        </Button>
+      </Box>
       <PluginList />
+      <DeployHero mt={4} />
     </Box>
   )
 }

@@ -321,10 +321,6 @@ export const theme: Theme = {
       borderSpacing: '0 14px',
       display: 'flex',
       flexDirection: 'column',
-      // '&::-webkit-scrollbar': {
-      //   display: 'none',
-      // },
-      // scrollbarWidth: 'none',
 
       p: {
         m: 0,
@@ -391,6 +387,15 @@ export const theme: Theme = {
       ...baseInput,
       padding: '6px',
       paddingLeft: '6px',
+    },
+    checkbox: {
+      mozAppearance: 'none',
+      webkitAppearance: 'none',
+      outline: 'none',
+      'input:focus': {
+        bg: 'red',
+        backgroundColor: 'red',
+      },
     },
     select: {
       ...baseInput,
