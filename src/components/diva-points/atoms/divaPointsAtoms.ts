@@ -1,18 +1,21 @@
 import rtokens from '@lc-labs/rtokens'
 import RToken from 'abis/RToken'
 import { atom } from 'jotai'
-import { Token } from 'types'
+import { walletAtom } from 'state/atoms'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { ChainId } from 'utils/chains'
 import { Address, formatEther } from 'viem'
 import { getContract } from 'wagmi/actions'
 
-export interface RTokenAsset {
-  address: Address
-  token: Token
-  maxTradeVolume: string
-  priceUsd: number
-  version: string
+type UserRewards = {
+  user: string
+  rewards: number
+}
+
+type DivaPointsResponse = {
+  from: string
+  to: string
+  rewards: UserRewards[]
 }
 
 const DIVA_POINTS_PER_ETH_PER_DAY = [
@@ -56,4 +59,17 @@ export const currentDivaPointsRate = atom((get) => {
         bsdETHSupply >= range.fromSupply && bsdETHSupply < range.toSupply
     )?.rate || 2.5
   )
+})
+
+export const userRewardsAtom = atomWithLoadable(async (get) => {
+  const account = get(walletAtom)
+
+  try {
+    const response = await fetch(`https://diva-points.reserve-337.workers.dev/calculate-rewards?user=${account}`);
+    const data = await response.json() as DivaPointsResponse;
+    return data.rewards[0]?.rewards;
+  } catch (e) {
+    console.error('Error loading user diva points', e)
+    return undefined
+  }
 })

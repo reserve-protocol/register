@@ -125,6 +125,7 @@ export const colors = {
   cardAlternative: '#fff',
   diva: '#A71EFE',
   divaBorder: 'rgba(180, 34, 252, 0.16)',
+  divaBackground: 'rgba(167, 30, 254, 0.12)',
   modes: {
     dark: {
       accentInverted: '#fff',
@@ -165,6 +166,7 @@ export const colors = {
       cardAlternative: '#252421',
       diva: '#A71EFE',
       divaBorder: 'rgba(180, 34, 252, 0.16)',
+      divaBackground: 'rgba(167, 30, 254, 0.12)',
     },
   },
 }

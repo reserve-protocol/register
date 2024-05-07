@@ -1,5 +1,6 @@
 import { t } from '@lingui/macro'
 import { createColumnHelper } from '@tanstack/react-table'
+import DivaBadge from 'components/diva-points/DivaBadge'
 import Help from 'components/help'
 import Beefy from 'components/icons/Beefy'
 import ChainLogo from 'components/icons/ChainLogo'
@@ -149,7 +150,12 @@ const useEarnTableColumns = (compact: boolean) => {
             </Box>
           )
         },
-        cell: (data) => `${formatCurrency(data.getValue(), 1)}%`,
+        cell: (data) => (
+          <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+            {`${formatCurrency(data.getValue(), 1)}%`}
+            <DivaBadge poolId={data.row.original.id} />
+          </Box>
+        ),
       }),
       columnHelper.accessor('tvlUsd', {
         header: t`TVL`,
