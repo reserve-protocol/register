@@ -82,6 +82,7 @@ export const STAKE_AAVE_ADDRESS: AddressMap = {
 export const COMP_ADDRESS: AddressMap = {
   [ChainId.Mainnet]: '0xc00e94Cb662C3520282E6f5717214004A7f26888',
   [ChainId.Base]: '0x9e1028F5F1D5eDE59748FFceE5532509976840E0',
+  [ChainId.Arbitrum]: '0x354A6dA3fcde098F8389cad84b0182725c6C91dE',
 }
 
 export const CRV_ADDRESS: AddressMap = {
@@ -94,4 +95,8 @@ export const CVX_ADDRESS: AddressMap = {
 
 export const STG_ADDRESS: AddressMap = {
   [ChainId.Base]: '0xE3B53AF74a4BF62Ae5511055290838050bf764Df',
+}
+
+export const ARB_ADDRESS: AddressMap = {
+  [ChainId.Arbitrum]: '0x912CE59144191C1204E64559FE8253a0e49E6548',
 }
