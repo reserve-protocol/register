@@ -7,7 +7,7 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { ArrowLeft, Download } from 'react-feather'
 import { useNavigate, useParams } from 'react-router-dom'
-import { chainIdAtom, walletAtom } from 'state/atoms'
+import { chainIdAtom, rTokenGovernanceAtom, walletAtom } from 'state/atoms'
 import { Box, Grid, Text } from 'theme-ui'
 import { getCurrentTime } from 'utils'
 import { PROPOSAL_STATES, ROUTES } from 'utils/constants'
@@ -50,19 +50,25 @@ const ProposalSnapshot = ({
   proposal: ProposalDetail | null
 }) => {
   const rToken = useRToken()
+  const governance = useAtomValue(rTokenGovernanceAtom)
 
   const handleSnapshot = () => {
-    if (proposal) {
+    if (proposal && governance.timelock && rToken) {
       const snapshot = {
-        id: proposal.id,
+        proposalId: proposal.id,
         governor: proposal.governor,
         calldatas: proposal.calldatas,
-        addresses: proposal.targets,
+        values: proposal.calldatas.map(() => ({
+          type: 'BigNumber',
+          hex: '0x00',
+        })),
+        targets: proposal.targets,
         description: proposal.description,
-        rToken: rToken?.address,
+        rtoken: rToken.address,
+        timelock: governance.timelock,
       }
 
-      JSONToFile(snapshot, `${rToken?.symbol ?? ''}-${proposal.id}`)
+      JSONToFile(snapshot, `${rToken?.symbol}-${proposal.id}`)
     }
   }
 
