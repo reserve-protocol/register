@@ -23,7 +23,7 @@ export const DIVA_SAFE_POOLS = [
   '57d5dc30-8ade-4f40-87d2-6065297d0705',
   'e01552cf-4d1c-43e1-9aaa-b2a4bae5df9b',
   '5f83ac83-753a-4382-869f-38c4e1658a36',
-  '3878fe42-efcc-4e29-b2b4-09bd1f620d51'
+  '91ec3f5f-587c-4a26-9a98-1593ed9bab26'
 ]
 
 export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
