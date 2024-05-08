@@ -124,10 +124,10 @@ const OverviewActions = () => {
         display: 'flex',
         flexDirection: ['column', 'row'],
         alignItems: 'left',
-        gap: [0, 3],
+        gap: [2, 3],
       }}
     >
-      <DivaButtonAppendix rTokenSymbol={rToken?.symbol}>
+      <DivaButtonAppendix rTokenSymbol={rToken?.symbol} hideLabelOnMobile>
         <Button
           variant="accent"
           onClick={() => navigate(`../${ROUTES.ISSUANCE}`)}

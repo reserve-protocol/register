@@ -7,11 +7,13 @@ import useDivaPoints from './hooks/useDivaPoints'
 type Props = {
   rTokenSymbol?: string
   borderColor?: string
+  hideLabelOnMobile?: boolean
 } & PropsWithChildren<ButtonProps>
 
 const DivaButtonAppendix: FC<Props> = ({
   rTokenSymbol,
   borderColor = 'divaBorder',
+  hideLabelOnMobile = false,
   children,
 }) => {
   const { rewardsRate } = useDivaPoints()
@@ -41,7 +43,9 @@ const DivaButtonAppendix: FC<Props> = ({
         <Text color="diva" sx={{ fontWeight: 'bold' }}>
           {rewardsRate}
         </Text>
-        <Text>Diva/ETH/day</Text>
+        <Text sx={{ display: [hideLabelOnMobile ? 'none' : 'flex', 'flex'] }}>
+          Diva/ETH/day
+        </Text>
       </Box>
     </Box>
   )
