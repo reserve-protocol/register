@@ -6,20 +6,32 @@ import PoolsTable from './PoolsTable'
 import TableFilters from './TableFilters'
 
 const EarnHeader = () => (
-  <Grid columns={[1, '40px 1fr', 'auto 1fr 1fr']} mb={[5, 7]}>
-    <Box variant="layout.verticalAlign" sx={{ display: ['none', 'flex'] }}>
+  <Box
+    sx={{
+      display: 'flex',
+      flexDirection: ['column', 'column', 'row'],
+      justifyContent: ['start', 'start', 'space-between'],
+      gap: [4, 4, 0],
+    }}
+    mb={[5, 7]}
+  >
+    <Box
+      variant="layout.verticalAlign"
+      sx={{ display: ['none', 'flex'], gap: 1 }}
+    >
       <YieldIcon fontSize={60} />
+      <Box>
+        <Text mb={[0, 1]} sx={{ fontSize: [3, 4] }} variant="strong">
+          RToken yield opportunities
+        </Text>
+        <Text variant="legend" sx={{ fontSize: [1, 2] }}>
+          Yield opportunities for RTokens across the DeFi landscape.
+        </Text>
+      </Box>
     </Box>
-    <Box ml={[3, 3, 0]}>
-      <Text mb={[0, 1]} sx={{ fontSize: [3, 4] }} variant="strong">
-        RToken yield opportunities
-      </Text>
-      <Text variant="legend" sx={{ fontSize: [1, 2] }}>
-        Yield opportunities for RTokens across the DeFi landscape.
-      </Text>
-    </Box>
+
     <TableFilters />
-  </Grid>
+  </Box>
 )
 
 const Pools = () => {

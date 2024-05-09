@@ -65,8 +65,6 @@ const FilterOptions = () => {
     <Box
       sx={{ borderRadius: borderRadius.inputs, background: 'inputBackground' }}
       variant="layout.verticalAlign"
-      ml={2}
-      mr={1}
       p={'2px'}
     >
       {options.map(({ text, icon }, index) => (
@@ -131,7 +129,12 @@ const TableFilters = () => {
   return (
     <Box
       variant="layout.verticalAlign"
-      sx={{ flexShrink: 0, minWidth: [200, 680, 'auto'] }}
+      sx={{
+        flexShrink: 0,
+        minWidth: [200, 'auto', 'auto'],
+        flexWrap: 'wrap',
+        gap: 2,
+      }}
       marginLeft={[0, 0, 'auto']}
     >
       <SearchInput
