@@ -36,7 +36,7 @@ const PoolsChainFilter = () => {
   const onChange = (selected: string[]) => setChains(selected)
 
   return (
-    <Box ml={2} sx={{ minWidth: '162px' }}>
+    <Box sx={{ minWidth: '162px' }}>
       <MultiselectDropdrown
         options={options}
         selected={chains}
