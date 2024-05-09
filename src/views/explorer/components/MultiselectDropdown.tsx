@@ -52,7 +52,7 @@ const OptionSelection = ({
       mt={3}
     >
       {options.map((option) => (
-        <Box px={3} py={2} variant="layout.verticalAlign">
+        <Box px={3} py={2} variant="layout.verticalAlign" key={option.value}>
           {option.icon}
           <Text ml="1" mr="3">
             {option.label}
@@ -82,6 +82,7 @@ const MultiselectDropdrown = ({
   options,
   selected,
   onChange,
+  sx,
   ...props
 }: IMultiselectDropdrown) => {
   const [isVisible, setVisible] = useState(false)
@@ -98,6 +99,7 @@ const MultiselectDropdrown = ({
     <Popup
       show={isVisible}
       onDismiss={() => setVisible(false)}
+      placement="bottom"
       content={
         isVisible ? (
           <OptionSelection
@@ -114,13 +116,24 @@ const MultiselectDropdrown = ({
       }}
     >
       <Flex
-        sx={{ alignItems: 'center', cursor: 'pointer' }}
+        sx={{
+          ...sx,
+          alignItems: 'center',
+          cursor: 'pointer',
+          justifyContent: 'space-between',
+          gap: 2,
+        }}
         {...props}
         onClick={() => setVisible(!isVisible)}
       >
-        {children}
-        <Box mr="2" />
-        {isVisible ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+        <Box variant="layout.verticalAlign">{children}</Box>
+        <Box variant="layout.verticalAlign">
+          {isVisible ? (
+            <ChevronUp size={18} color="#808080" />
+          ) : (
+            <ChevronDown size={18} color="#808080" />
+          )}
+        </Box>
       </Flex>
     </Popup>
   )
