@@ -43,6 +43,7 @@ const poolsMap: StringMap = {
   '9c492ad8-ed45-4d8a-a033-0fa44506bf16': 'steakpyusd',
   'd387cc7a-7d48-49f3-a244-9a263fca26c0': 'bbusdt',
   '94f9e0b3-2102-4297-babc-aa608bd8bb77': 'steakusdc',
+  '74346f6f-c7ee-4506-a204-baf48e13decb': 'stkcvxeth+eth-f',
   // ----------------
   // Base collaterals
   // ----------------
