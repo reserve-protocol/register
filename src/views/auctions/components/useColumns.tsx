@@ -18,7 +18,7 @@ const getGnosisAuction = (auctionId: string, chainId: number): string => {
   if (chainId === ChainId.Mainnet) {
     return `https://gnosis-auction.eth.link/#/auction?auctionId=${auctionId}&chainId=1`
   } else {
-    return `https://easyauction.register.app/#/auction?auctionId=${auctionId}&chainId=${chainId}`
+    return `https://easyauction.reserve.org/#/auction?auctionId=${auctionId}&chainId=${chainId}`
   }
 }
 
