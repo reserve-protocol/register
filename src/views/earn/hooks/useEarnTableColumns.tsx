@@ -16,8 +16,10 @@ import Yearn from 'components/icons/logos/Yearn'
 import StackTokenLogo from 'components/token-logo/StackTokenLogo'
 import mixpanel from 'mixpanel-browser'
 import React, { useMemo } from 'react'
+import { ArrowUpRight } from 'react-feather'
 import { Pool } from 'state/pools/atoms'
-import { Box, Text } from 'theme-ui'
+import { colors } from 'theme'
+import { Box, Link, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
 import { CHAIN_TAGS, LP_PROJECTS } from 'utils/constants'
@@ -154,6 +156,20 @@ const useEarnTableColumns = (compact: boolean) => {
       columnHelper.accessor('tvlUsd', {
         header: t`TVL`,
         cell: (data) => `$${formatCurrency(data.getValue(), 0)}`,
+      }),
+      columnHelper.accessor('id', {
+        header: 'Defillama ID',
+        cell: (data) => (
+          <Link
+            target="_blank"
+            href={`https://defillama.com/yields/pool/${data.getValue()}`}
+          >
+            <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+              <Text>{data.getValue()}</Text>
+              <ArrowUpRight color={colors.secondaryText} size={14} />
+            </Box>
+          </Link>
+        ),
       }),
     ]
   }, [compact])
