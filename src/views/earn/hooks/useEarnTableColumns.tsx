@@ -158,7 +158,7 @@ const useEarnTableColumns = (compact: boolean) => {
         cell: (data) => `$${formatCurrency(data.getValue(), 0)}`,
       }),
       columnHelper.accessor('id', {
-        header: 'Defillama ID',
+        header: 'DefiLlama ID',
         cell: (data) => (
           <Link
             target="_blank"
