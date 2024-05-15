@@ -28,15 +28,15 @@ const HeroBackground = () => {
 }
 
 /**
- * Main home screen
+ * Main Compare screen
  */
-const Home = () => (
+const Compare = () => (
   <Box sx={{ position: 'relative' }}>
-    <HeroBackground />
-    <Hero />
+    {/* <HeroBackground /> */}
+    {/* <Hero /> */}
     <CompareTokens />
     <RegisterAbout />
   </Box>
 )
 
-export default Home
+export default Compare

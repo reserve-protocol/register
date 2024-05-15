@@ -12,11 +12,12 @@ import Collaterals from 'views/explorer/components/collaterals'
 import ExploreGovernance from 'views/explorer/components/governance'
 import ExploreTokens from 'views/explorer/components/tokens'
 import ExploreTransactions from 'views/explorer/components/transactions'
-import Home from 'views/home'
+import Compare from 'views/compare'
 import Issuance from 'views/issuance'
 import Overview from 'views/overview'
 import PortfolioWrapper from 'views/portfolio'
 import Staking from 'views/staking'
+import Home from 'views/home'
 
 // Preloadable components
 const Auctions = lazyWithPreload(() => import('./views/auctions'))
@@ -41,6 +42,7 @@ const Deploy = lazy(() => import('./views/deploy'))
 const AppRoutes = () => (
   <Routes>
     <Route path={ROUTES.HOME} element={<Home />} />
+    <Route path={ROUTES.COMPARE} element={<Compare />} />
     <Route path={ROUTES.BRIDGE} element={<LazyComponent element={Bridge} />} />
     <Route path={ROUTES.PORTFOLIO} element={<PortfolioWrapper />} />
     <Route path={ROUTES.EARN} element={<EarnWrapper />} />

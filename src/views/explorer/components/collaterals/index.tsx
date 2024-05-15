@@ -24,7 +24,7 @@ import {
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
 import collateralPlugins from 'utils/plugins'
 import { formatUnits } from 'viem'
-import DeployHero from 'views/home/components/DeployHero'
+import DeployHero from 'views/compare/components/DeployHero'
 import { erc20ABI, readContracts } from 'wagmi'
 
 interface Plugin extends CollateralPlugin {
