@@ -4,7 +4,7 @@ import { useAtom, useAtomValue } from 'jotai'
 import { useEffect, useMemo } from 'react'
 import { rsrPriceAtom } from 'state/atoms'
 import { PROTOCOL_SLUG, supportedChainList } from 'utils/constants'
-import { homeMetricsAtom } from '../atoms'
+import { homeMetricsAtom } from '../../compare/atoms'
 
 type ProtocolMetricsResponse = {
   protocol: {
