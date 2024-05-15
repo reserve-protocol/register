@@ -34,7 +34,6 @@ const Navigation = () => {
     <Box
       variant="layout.verticalAlign"
       sx={{
-        borderTop: '1px solid',
         borderBottom: '1px solid',
         borderColor: 'border',
         gap: 3,

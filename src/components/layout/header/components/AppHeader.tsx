@@ -1,7 +1,5 @@
 import Account from 'components/account'
 import ThemeColorMode from 'components/dark-mode-toggle/ThemeColorMode'
-import { useAtomValue } from 'jotai'
-import { selectedRTokenAtom } from 'state/atoms'
 import { Box, Flex } from 'theme-ui'
 import Brand from './Brand'
 import CoinbaseSubscribe from './CoinbaseSubscribe'
@@ -12,18 +10,12 @@ import RegisterHelp from './RegisterHelp'
  * Application header
  */
 const AppHeader = () => {
-  const isRTokenSelected = !!useAtomValue(selectedRTokenAtom)
-
   return (
     <Box
       sx={{
         width: '100%',
-        ...(isRTokenSelected
-          ? {
-              borderBottom: '1px solid',
-              borderColor: 'border',
-            }
-          : {}),
+        borderBottom: '1px solid',
+        borderColor: 'border',
       }}
     >
       <Flex
