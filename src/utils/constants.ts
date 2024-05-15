@@ -309,7 +309,7 @@ export const collateralDisplay: Record<string, string> = {
   saethpyusd: 'AAVE PYUSD V3',
   sabasusdc: 'AAVE USDC V3',
   sfrxeth: 'Staked Frax ETH',
-  re7weth: 'Morpho Blue ETH',
+  re7weth: 'Morpho Blue Re7 WETH Vault',
   'stkcvxcrvusdusdt-f': ' Convex crvUSD/USDT',
   'stkcvxcrvusdusdc-f': 'Convex crvUSD/USDC',
   steakpyusd: 'Morpho Blue pyUSD',
