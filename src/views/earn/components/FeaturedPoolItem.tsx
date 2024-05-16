@@ -1,11 +1,12 @@
 import { Button } from 'components'
-import StackTokenLogo from 'components/token-logo/StackTokenLogo'
-import { Pool } from 'state/pools/atoms'
-import { Box, Link, Text } from 'theme-ui'
-import { PROJECT_ICONS } from '../hooks/useEarnTableColumns'
 import ChainLogo from 'components/icons/ChainLogo'
+import StackTokenLogo from 'components/token-logo/StackTokenLogo'
+import mixpanel from 'mixpanel-browser'
 import { useMemo } from 'react'
 import Skeleton from 'react-loading-skeleton'
+import { Pool } from 'state/pools/atoms'
+import { Box, Text } from 'theme-ui'
+import { PROJECT_ICONS } from '../hooks/useEarnTableColumns'
 
 const FeaturedPoolItem = ({ pool }: { pool?: Pool }) => {
   const underlyingTokens = useMemo(
@@ -89,16 +90,19 @@ const FeaturedPoolItem = ({ pool }: { pool?: Pool }) => {
           </Text>
         </Box>
         <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
-          <Link
-            target="_blank"
-            variant="layout.verticalAlign"
-            sx={{ cursor: 'pointer', textDecoration: 'none' }}
-            href={pool.url}
+          <Button
+            small
+            sx={{ width: 'max-content' }}
+            onClick={() => {
+              window.open(pool.url, '_blank')
+              mixpanel.track('Clicked Featured Pool', {
+                Pool: pool.symbol,
+                Protocol: pool.project,
+              })
+            }}
           >
-            <Button small sx={{ width: 'max-content' }}>
-              View
-            </Button>
-          </Link>
+            View
+          </Button>
           <ChainLogo chain={pool.chain} fontSize={12} />
         </Box>
       </Box>

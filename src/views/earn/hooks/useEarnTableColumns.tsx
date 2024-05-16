@@ -16,8 +16,10 @@ import Yearn from 'components/icons/logos/Yearn'
 import StackTokenLogo from 'components/token-logo/StackTokenLogo'
 import mixpanel from 'mixpanel-browser'
 import React, { useMemo } from 'react'
+import { ArrowUpRight } from 'react-feather'
 import { Pool } from 'state/pools/atoms'
-import { Box, Text } from 'theme-ui'
+import { colors } from 'theme'
+import { Box, Image, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
 import { CHAIN_TAGS, LP_PROJECTS } from 'utils/constants'
@@ -69,25 +71,58 @@ const useEarnTableColumns = (compact: boolean) => {
         header: t`Pool`,
         cell: (data) => {
           return (
-            <Box
-              variant="layout.verticalAlign"
-              sx={{
-                cursor: 'pointer',
-                color: 'secondaryText',
-                ':hover': { color: 'text' },
-              }}
-              onClick={() => {
-                window.open(data.row.original.url, '_blank')
-                mixpanel.track('Viewed External Earn Link', {
-                  Pool: data.row.original.symbol,
-                  Protocol: data.row.original.project,
-                })
-              }}
-            >
-              <StackTokenLogo tokens={data.row.original.underlyingTokens} />
-              <Text ml="2" sx={{ textDecoration: 'underline' }}>
-                {data.getValue()}
-              </Text>
+            <Box variant="layout.verticalAlign" sx={{ gap: 3 }}>
+              <Box
+                variant="layout.verticalAlign"
+                sx={{
+                  cursor: 'pointer',
+                  color: 'secondaryText',
+                  ':hover': { color: 'text' },
+                }}
+                onClick={() => {
+                  window.open(data.row.original.url, '_blank')
+                  mixpanel.track('Viewed External Earn Link', {
+                    Pool: data.row.original.symbol,
+                    Protocol: data.row.original.project,
+                  })
+                }}
+              >
+                <StackTokenLogo tokens={data.row.original.underlyingTokens} />
+                <Text ml="2" sx={{ textDecoration: 'underline' }}>
+                  {data.getValue()}
+                </Text>
+              </Box>
+              <Box
+                variant="layout.verticalAlign"
+                sx={{
+                  cursor: 'pointer',
+                  border: '1px solid',
+                  borderColor: 'border',
+                  backgroundColor: 'cardAlternative',
+                  borderRadius: '50px',
+                  width: 'fit-content',
+                  gap: 1,
+                  px: 2,
+                  py: 1,
+                  opacity: 0.3,
+                  ':hover': {
+                    opacity: 1,
+                  },
+                }}
+                onClick={() => {
+                  window.open(
+                    `https://defillama.com/yields/pool/${data.row.original.id}`,
+                    '_blank'
+                  )
+                  mixpanel.track('Viewed DefiLlama Link', {
+                    Pool: data.row.original.symbol,
+                    Protocol: data.row.original.project,
+                  })
+                }}
+              >
+                <Image src="/svgs/defillama.svg" height={16} width={16} />
+                <ArrowUpRight color={colors.secondaryText} size={14} />
+              </Box>
             </Box>
           )
         },
