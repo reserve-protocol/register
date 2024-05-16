@@ -63,6 +63,10 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'Dyson',
     site: 'https://app.dyson.money/',
   },
+  "camelot-v3": {
+    name: "Camelot",
+    site: "https://app.camelot.exchange/"
+  },
 }
 
 // List of supported networks with label

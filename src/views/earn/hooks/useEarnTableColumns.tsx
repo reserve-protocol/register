@@ -2,6 +2,7 @@ import { t } from '@lingui/macro'
 import { createColumnHelper } from '@tanstack/react-table'
 import Help from 'components/help'
 import Beefy from 'components/icons/Beefy'
+import Camelot from 'components/icons/Camelot'
 import ChainLogo from 'components/icons/ChainLogo'
 import Concentrator from 'components/icons/Concentrator'
 import Aerodrome from 'components/icons/logos/Aerodrome'
@@ -22,12 +23,7 @@ import { colors } from 'theme'
 import { Box, Image, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
-import { CHAIN_TAGS, LP_PROJECTS } from 'utils/constants'
-
-const chainMap: Record<string, number> = {
-  Ethereum: ChainId.Mainnet,
-  Base: ChainId.Base,
-}
+import { CHAIN_TAGS, LP_PROJECTS, NETWORKS } from 'utils/constants'
 
 export const columnVisibility = [
   '',
@@ -58,6 +54,7 @@ export const PROJECT_ICONS: Record<string, React.ReactElement> = {
   'uniswap-v3': <Uniswap fontSize={16} />,
   'balancer-v2': <Balancer fontSize={16} />,
   'extra-finance': <Extra fontSize={16} />,
+  'camelot-v3': <Camelot />,
   beefy: <Beefy />,
   concentrator: <Concentrator />,
   dyson: <Dyson />,
@@ -143,10 +140,13 @@ const useEarnTableColumns = (compact: boolean) => {
         cell: (data) => {
           return (
             <Box pl="10px" variant="layout.verticalAlign">
-              <ChainLogo fontSize={16} chain={+chainMap[data.getValue()]} />
+              <ChainLogo
+                fontSize={16}
+                chain={NETWORKS[data.getValue().toLowerCase()]}
+              />
               {!compact && (
                 <Text ml="2" sx={{ display: ['block', 'none', 'block'] }}>
-                  {CHAIN_TAGS[+chainMap[data.getValue()]]}
+                  {CHAIN_TAGS[NETWORKS[data.getValue().toLowerCase()]]}
                 </Text>
               )}
             </Box>
