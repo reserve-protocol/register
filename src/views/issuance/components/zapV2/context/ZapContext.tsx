@@ -341,7 +341,10 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     const outputPriceValue = (tokenOut?.price || 0) * Number(_amountOut)
     const _priceImpact =
       tokenIn?.price && tokenOut?.price
-        ? ((inputPriceValue - outputPriceValue) / inputPriceValue) * 100
+        ? ((inputPriceValue -
+            (outputPriceValue + (data.result.dustValue ?? 0))) /
+            inputPriceValue) *
+          100
         : 0
 
     mixpanel.track('zapper:', {
