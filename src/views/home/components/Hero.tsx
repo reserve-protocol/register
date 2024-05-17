@@ -8,8 +8,13 @@ import YieldIcon from 'components/icons/YieldIcon'
 import Skeleton from 'react-loading-skeleton'
 import { Box, Card, Flex, Grid, Link, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
+import {
+  CHAIN_TO_NETWORK,
+  capitalize,
+  supportedChainList,
+} from 'utils/constants'
 import useProtocolMetrics from '../hooks/useProtocolMetrics'
-import { ChainId } from 'utils/chains'
+import HistoricalTVL from './HistoricalTVL'
 
 const ProtocolStats = () => {
   const {
@@ -120,63 +125,57 @@ const ProtocolStats = () => {
   )
 }
 
-const About = () => (
-  <>
-    <Box variant="layout.verticalAlign">
-      <StackedChainLogo
-        chains={[ChainId.Mainnet, ChainId.Base, ChainId.Arbitrum]}
-      />
-      <Text sx={{ fontSize: [2, 3] }}>
-        <Trans>On Ethereum, Base & Arbitrum</Trans>
-      </Text>
-    </Box>
-    <Box sx={{ maxWidth: 900, textAlign: 'center' }} mt={[2, 4]}>
-      <Text
-        variant="title"
-        sx={{
-          fontSize: [5, 7],
-          fontWeight: 'bold',
-          color: 'accentInverted',
-          lineHeight: ['36px', '62px'],
-        }}
-      >
-        <Trans>A new path to better money, already in motion</Trans>
-      </Text>
-      <Text as="p" px={[2, 0]} sx={{ fontSize: [2, 3] }} mt={[3, 4]}>
-        <Trans>
-          Reserve Protocol’s RToken Factory Contracts: A platform for creating
-          currencies backed by an array of ERC20 collateral. Use Register to
-          mint, stake and govern RTokens. Learn more at
-        </Trans>{' '}
-        <Link
-          sx={{ textDecoration: 'underline', color: 'accent' }}
-          href="https://reserve.org/"
-          target="_blank"
-        >
-          reserve.org
-        </Link>
-      </Text>
-    </Box>
-  </>
-)
-
 const Hero = () => (
   <Box sx={{ position: 'relative' }}>
     <Flex
-      mx="auto"
       sx={{
         flexDirection: 'column',
-        alignItems: 'center',
-        position: 'relative',
         maxWidth: '95em',
+        borderRadius: '14px',
+        backgroundColor: 'contentBackground',
       }}
-      pt={[5, 4]}
-      mt={[0, 5]}
-      pb={0}
-      px={[2, 3]}
+      mx="auto"
+      mt={[1, 7]}
     >
-      <About />
-      <ProtocolStats />
+      <Box
+        variant="layout.verticalAlign"
+        p={4}
+        sx={{ borderBottom: '1px solid', borderColor: 'border' }}
+      >
+        <StackedChainLogo chains={supportedChainList} />
+        <Text variant="bold">
+          The <Text color="primary">Reserve Protocol</Text> on
+          {supportedChainList.map(
+            (chainId, index) =>
+              ` ${capitalize(CHAIN_TO_NETWORK[chainId])}${
+                index >= supportedChainList.length - 2
+                  ? index === supportedChainList.length - 1
+                    ? ''
+                    : ' & '
+                  : ','
+              }`
+          )}
+        </Text>
+      </Box>
+      <Flex>
+        <Box
+          p={4}
+          sx={{
+            flexGrow: '12',
+            borderRight: '1px solid',
+            borderColor: 'border',
+          }}
+        >
+          Flex
+        </Box>
+        <Box p={4} sx={{ flexGrow: '10' }}>
+          Box
+        </Box>
+      </Flex>
+      {/* <ProtocolStats /> */}
+      <Box sx={{ height: 400 }}>
+        <HistoricalTVL />
+      </Box>
     </Flex>
   </Box>
 )

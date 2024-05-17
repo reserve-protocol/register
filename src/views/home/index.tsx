@@ -5,7 +5,7 @@ import Hero from './components/Hero'
 const Home = () => {
   return (
     <Box sx={{ position: 'relative' }}>
-      <HeroBackground />
+      {/* <HeroBackground /> */}
       <Hero />
     </Box>
   )
