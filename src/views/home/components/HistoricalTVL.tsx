@@ -1,11 +1,9 @@
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
-import { NETWORKS, capitalize } from 'utils/constants'
-import useHistoricalTVL from '../hooks/useHistoricalTVL'
 import { colors } from 'theme'
 import { Box, Card, Text } from 'theme-ui'
-import { InfoBox } from 'components'
-import { Key } from 'react'
 import { formatCurrency } from 'utils'
+import { NETWORKS, capitalize } from 'utils/constants'
+import useHistoricalTVL from '../hooks/useHistoricalTVL'
 
 const COLORS: Record<string, any> = {
   ethereum: {
@@ -26,38 +24,36 @@ const COLORS: Record<string, any> = {
 }
 
 function CustomTooltip({ payload, label, active }: any) {
-  if (active && payload) {
-    const total = payload?.reduce(
-      (acc: number, item: { value: number }) => acc + item.value,
-      0
-    )
+  if (!active || !payload) return null
 
-    return (
-      <Card
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          border: '2px solid',
-          borderColor: 'border',
-          background: 'cardAlternative',
-        }}
-      >
-        <Text>{new Date(label).toDateString()}</Text>
-        {(payload as any[]).map(
-          (item: { name: string; value: number }, index) => (
-            <Box key={`${item.name}${item.value}${index}`}>
-              <Text>
-                {capitalize(item.name)}: ${formatCurrency(item.value, 0)}
-              </Text>
-            </Box>
-          )
-        )}
-        <Text>Total: ${formatCurrency(total, 0)}</Text>
-      </Card>
-    )
-  }
+  const total = payload?.reduce(
+    (acc: number, item: { value: number }) => acc + item.value,
+    0
+  )
 
-  return null
+  return (
+    <Card
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        border: '2px solid',
+        borderColor: 'border',
+        background: 'cardAlternative',
+      }}
+    >
+      <Text>{new Date(label).toDateString()}</Text>
+      {(payload as any[]).map(
+        (item: { name: string; value: number }, index) => (
+          <Box key={`${item.name}${item.value}${index}`}>
+            <Text>
+              {capitalize(item.name)}: ${formatCurrency(item.value, 0)}
+            </Text>
+          </Box>
+        )
+      )}
+      <Text>Total: ${formatCurrency(total, 0)}</Text>
+    </Card>
+  )
 }
 
 const HistoricalTVL = () => {
