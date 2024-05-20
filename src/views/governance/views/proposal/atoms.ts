@@ -251,6 +251,20 @@ export const parameterContractMapAtom = atom((get) => {
         abi: Governance,
       },
     ],
+    proposalThresholdAsMicroPercent: [
+      {
+        address: governance.governor ?? '',
+        functionName: 'setVotingPeriod' as const, // setVotingDelay(uint48)
+        abi: Governance,
+      },
+    ],
+    quorumPercent: [
+      {
+        address: governance.governor ?? '',
+        functionName: 'setVotingPeriod' as const, // setVotingDelay(uint48)
+        abi: Governance,
+      },
+    ],
     minDelay: [
       {
         address: governance.timelock ?? '',
