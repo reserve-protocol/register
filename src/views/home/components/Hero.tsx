@@ -15,10 +15,16 @@ import {
 import useProtocolMetrics from '../hooks/useProtocolMetrics'
 import HistoricalTVL from './HistoricalTVL'
 import Help from 'components/help'
+import ShieldIcon from 'components/icons/ShieldIcon'
 
 const ProtocolStats = () => {
   const {
-    data: { marketCap, stakeRevenue },
+    data: {
+      marketCap,
+      rsrStakedUSD,
+      rTokenAnnualizedRevenue,
+      rsrStakerAnnualizedRevenue,
+    },
     isLoading,
   } = useProtocolMetrics()
 
@@ -33,20 +39,29 @@ const ProtocolStats = () => {
       tooltip: t`The total value of all RToken in circulation`,
     },
     {
-      icon: <TreeIcon />,
-      value: formatCurrency(marketCap),
+      icon: <ShieldIcon />,
+      value: formatCurrency(rsrStakedUSD, 1, {
+        notation: 'compact',
+        compactDisplay: 'short',
+      }),
       title: t`First Loss RSR Capital`,
       tooltip: t`The total value of all RSR staked in the protocol`,
     },
     {
       icon: <LeafIcon />,
-      value: formatCurrency(stakeRevenue),
+      value: formatCurrency(rTokenAnnualizedRevenue, 1, {
+        notation: 'compact',
+        compactDisplay: 'short',
+      }),
       title: t`Annualized RToken Revenue`,
       tooltip: t`The total value of all RSR staked in the protocol`,
     },
     {
       icon: <LeafIcon />,
-      value: formatCurrency(stakeRevenue),
+      value: formatCurrency(rsrStakerAnnualizedRevenue, 1, {
+        notation: 'compact',
+        compactDisplay: 'short',
+      }),
       title: t`Annualized RSR Staker Revenue`,
       tooltip: t`The total value of all RSR staked in the protocol`,
     },
