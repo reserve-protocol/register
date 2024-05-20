@@ -98,7 +98,7 @@ const useTokenList = () => {
         fromTime,
       },
       [ChainId.Arbitrum]: {
-        tokenIds: LISTED_RTOKEN_ADDRESSES[ChainId.Arbitrum] || [],
+        tokenIds: LISTED_RTOKEN_ADDRESSES[ChainId.Arbitrum],
         fromTime,
       },
     },

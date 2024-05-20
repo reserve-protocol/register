@@ -2,17 +2,19 @@ import { Button } from 'components'
 import Popup from 'components/popup'
 import { useCallback, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
-import { Box, BoxProps, Checkbox, Divider, Flex, Switch, Text } from 'theme-ui'
+import { Box, BoxProps, Divider, Flex, Switch, Text } from 'theme-ui'
 
 export interface SelectOption {
   label: string
   value: string
-  icon: React.ReactNode
+  icon: React.ReactNode | null
 }
 
 export interface IMultiselectDropdrown extends Omit<BoxProps, 'onChange'> {
   options: SelectOption[]
   selected: string[]
+  allOption?: boolean
+  minLimit?: number
   onChange: (selected: string[]) => void
 }
 
@@ -20,6 +22,8 @@ const OptionSelection = ({
   options,
   selected,
   onChange,
+  allOption,
+  minLimit,
 }: IMultiselectDropdrown) => {
   const [values, setValues] = useState(
     options.reduce((acc, v) => {
@@ -41,32 +45,67 @@ const OptionSelection = ({
     onChange(selected)
   }
 
+  const handleAll = () => {
+    setValues(
+      Object.keys(values).reduce((acc, key) => {
+        acc[key] = false
+        return acc
+      }, {} as Record<string, boolean>)
+    )
+  }
+
+  const selectedCount = Object.values(values).filter((v) => v).length
+  const allSelected = !selectedCount
+  const lowerBound = allOption ? 0 : minLimit || 0
+
   return (
     <Box
       sx={{
-        maxHeight: 320,
-        overflow: 'auto',
         backgroundColor: 'background',
         borderRadius: '12px',
       }}
       mt={3}
     >
-      {options.map((option) => (
-        <Box px={3} py={2} variant="layout.verticalAlign" key={option.value}>
-          {option.icon}
-          <Text ml="1" mr="3">
-            {option.label}
-          </Text>
-          <Box ml="auto">
-            <Switch
-              checked={values[option.value]}
-              onChange={() =>
-                setValues({ ...values, [option.value]: !values[option.value] })
-              }
-            />
+      <Box
+        sx={{ maxHeight: 260, overflow: 'auto' }}
+        className="hidden-scrollbar"
+      >
+        {allOption && (
+          <Box px={3} py={2} variant="layout.verticalAlign">
+            <Text mr="3" variant="strong">
+              All options
+            </Text>
+            <Box ml="auto">
+              <Switch
+                disabled={allSelected}
+                checked={allSelected}
+                onChange={handleAll}
+              />
+            </Box>
           </Box>
-        </Box>
-      ))}
+        )}
+        {options.map((option) => (
+          <Box px={3} py={2} variant="layout.verticalAlign" key={option.value}>
+            {option.icon}
+            <Text ml="1" mr="3">
+              {option.label}
+            </Text>
+            <Box ml="auto">
+              <Switch
+                checked={values[option.value]}
+                disabled={values[option.value] && selectedCount <= lowerBound}
+                onChange={() =>
+                  setValues({
+                    ...values,
+                    [option.value]: !values[option.value],
+                  })
+                }
+              />
+            </Box>
+          </Box>
+        ))}
+      </Box>
+
       <Divider mt={2} mb={3} />
       <Box px={3} pb={3}>
         <Button small fullWidth onClick={handleApply}>
@@ -81,6 +120,8 @@ const MultiselectDropdrown = ({
   children,
   options,
   selected,
+  allOption = false,
+  minLimit,
   onChange,
   sx,
   ...props
@@ -106,6 +147,8 @@ const MultiselectDropdrown = ({
             options={options}
             selected={selected}
             onChange={handleChange}
+            allOption={allOption}
+            minLimit={minLimit}
           />
         ) : (
           <Box />
