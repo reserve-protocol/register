@@ -68,21 +68,15 @@ const ProtocolStats = () => {
   ]
 
   return (
-    <Grid
-      columns={['1fr', '1fr 1fr']}
-      gap={[4, 0]}
-      sx={{
-        borderTop: ['none', '1px solid'],
-        borderColor: ['reserveBackground', 'reserveBackground'],
-      }}
-    >
+    <Grid columns={['1fr', '1fr 1fr']} gap={[4, 0]}>
       {statInfo.map(({ title, value, icon, tooltip }, index) => (
         <Box
           key={title}
           variant="layout.verticalAlign"
           sx={{
-            borderRight: ['none', index % 2 === 0 ? '1px solid' : 'none'],
-            borderBottom: ['none', index < 2 ? '1px solid' : 'none'],
+            borderTop: ['none', index < 2 ? '1.5px solid' : 'none'],
+            borderRight: ['none', index % 2 === 0 ? '1.5px solid' : 'none'],
+            borderBottom: ['none', index < 2 ? '1.5px solid' : 'none'],
             borderColor: ['reserveBackground', 'reserveBackground'],
             gap: 3,
             p: 4,
@@ -93,11 +87,7 @@ const ProtocolStats = () => {
             <Text sx={{ color: 'secondaryText' }}>{title}</Text>
             <Box>
               {!isLoading ? (
-                <Text
-                  variant="sectionTitle"
-                  color="accentInverted"
-                  sx={{ fontWeight: '700' }}
-                >
+                <Text variant="sectionTitle" sx={{ fontWeight: '700' }}>
                   ${value}
                 </Text>
               ) : (
@@ -118,7 +108,7 @@ const HeroHeader = () => {
       variant="layout.verticalAlign"
       p={4}
       sx={{
-        borderBottom: '1px solid',
+        borderBottom: '1.5px solid',
         borderColor: 'reserveBackground',
         justifyContent: 'space-between',
       }}
@@ -202,14 +192,13 @@ const Hero = () => (
         flexDirection: 'column',
         borderRadius: '14px',
         backgroundColor: 'reserveBackgroundSecondary',
-        border: '1px solid',
+        border: '1.5px solid',
         borderColor: 'reserveBackground',
       }}
       mx="auto"
-      mt={[1, 7]}
     >
       <HeroHeader />
-      <Box sx={{ position: 'relative', height: 380 }} px={3} pt={2}>
+      <Box sx={{ position: 'relative', height: 420 }} px={3} pt={2}>
         <HeroTVL />
         <HistoricalTVL />
       </Box>
