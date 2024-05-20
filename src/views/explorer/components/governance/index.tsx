@@ -8,6 +8,7 @@ import TokenItem from 'components/token-item'
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
 import { useMultichainQuery } from 'hooks/useQuery'
+import useRTokenLogo from 'hooks/useRTokenLogo'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { publicClient } from 'state/chain'
@@ -28,7 +29,7 @@ import {
   supportedChainList,
 } from 'utils/constants'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import { formatEther } from 'viem'
+import { formatEther, getAddress, isAddress } from 'viem'
 import { getProposalStatus } from 'views/governance/views/proposal-detail/atom'
 
 const explorerProposalsQuery = gql`
@@ -78,6 +79,7 @@ export interface ProposalRecord {
   status: string
   rTokenAddress: string
   rTokenSymbol: string
+  chain: number
 }
 
 const chainBlocksAtom = atomWithLoadable(async () => {
@@ -112,7 +114,7 @@ const useProposals = () => {
               ...entry,
               status,
               chain,
-              rTokenAddress: entry.governance.rToken.id,
+              rTokenAddress: getAddress(entry.governance.rToken.id),
               rTokenSymbol: entry.governance.rToken.token.symbol,
             }
           })
@@ -126,20 +128,19 @@ const useProposals = () => {
 
 const ExploreGovernance = () => {
   const data = useProposals()
-  console.log('data', data)
   const columnHelper = createColumnHelper<ProposalRecord>()
   const columns = useMemo(
     () => [
       columnHelper.accessor('rTokenSymbol', {
         header: t`Token`,
-        cell: (data) => (
-          <Box sx={{ minWidth: 150 }}>
-            <TokenItem
-              symbol={data.getValue()}
-              logo={'/svgs/defaultLogo.svg'}
-            />
-          </Box>
-        ),
+        cell: (data) => {
+          const logo = useRTokenLogo(
+            data.row.original.rTokenAddress,
+            data.row.original.chain
+          )
+
+          return <TokenItem symbol={data.getValue()} logo={logo} />
+        },
       }),
       columnHelper.accessor('description', {
         header: t`Description`,

@@ -18,16 +18,26 @@ const CompareTokens = () => {
     navigate(ROUTES.TOKENS)
   }
 
+  const handleExplore = () => {
+    navigate(ROUTES.EXPLORER)
+  }
+
   return (
     <Box variant="layout.wrapper" px={[2, 4]} pt={[0]}>
       <CompareTokensTitle />
       <Suspense fallback={<CompareSkeleton />}>
         <RTokenList />
       </Suspense>
-      <Flex my={7} sx={{ justifyContent: 'center' }}>
+      <Flex my={7} sx={{ justifyContent: 'center', gap: 3 }}>
         <Button medium variant="transparent" onClick={handleViewAll}>
           <Box variant="layout.verticalAlign">
             <Trans>View All, including unlisted</Trans>
+            <ArrowRight style={{ marginLeft: 16 }} size={18} />
+          </Box>
+        </Button>
+        <Button medium variant="transparent" onClick={handleExplore}>
+          <Box variant="layout.verticalAlign">
+            <Trans>Explore</Trans>
             <ArrowRight style={{ marginLeft: 16 }} size={18} />
           </Box>
         </Button>

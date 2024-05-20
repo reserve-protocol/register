@@ -22,7 +22,7 @@ const ChainFilter = (props: Omit<IMultiselectDropdrown, 'options'>) => {
       <Text variant="legend">
         <Trans>Networks</Trans>
       </Text>
-      <MultiselectDropdrown mt={1} options={options} {...props}>
+      <MultiselectDropdrown mt={1} minLimit={1} options={options} {...props}>
         <StackedChainLogo chains={props.selected.map((v) => Number(v))} />
         <Text variant="legend">{props.selected.length} chains</Text>
       </MultiselectDropdrown>

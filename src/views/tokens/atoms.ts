@@ -48,6 +48,6 @@ export const tokenFilterAtom = atom((get) => {
       by: id,
       direction: desc ? 'desc' : 'asc',
     },
-    _chain: chain,
+    _chain: chain ? [chain] : undefined,
   }
 })
