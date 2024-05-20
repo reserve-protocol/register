@@ -1,21 +1,49 @@
 import { t, Trans } from '@lingui/macro'
 import { FormField } from 'components/field'
+import { useAtomValue } from 'jotai'
+import { useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
+import { secondsPerBlockAtom } from 'state/atoms'
 import { Box, BoxProps, Text } from 'theme-ui'
 import { decimalPattern, numberPattern, parseDuration } from 'utils'
+import { timeToBlocks } from '../atoms'
 
-const GovernanceParameters = (props: BoxProps) => {
+interface IGovernanceParameters extends BoxProps {
+  timebased?: boolean
+}
+
+const GovernanceParameters = ({
+  timebased = true,
+  ...props
+}: IGovernanceParameters) => {
+  const secondsPerBlock = useAtomValue(secondsPerBlockAtom)
   const { watch } = useFormContext()
   const [votingDelay, votingPeriod, minDelay] = watch([
     'votingDelay',
     'votingPeriod',
     'minDelay',
   ])
-  const votingDelayHelper = parseDuration((Number(votingDelay) || 0) * 60 * 60)
-  const votingPeriodHelper = parseDuration(
-    (Number(votingPeriod) || 0) * 60 * 60
-  )
-  const minDelayHelper = parseDuration((Number(minDelay) || 0) * 60 * 60)
+  const [votingDelayHelper, votingPeriodHelper, minDelayHelper] =
+    useMemo(() => {
+      let votingDelayHelper = parseDuration(
+        (Number(votingDelay) || 0) * 60 * 60
+      )
+      let votingPeriodHelper = parseDuration(
+        (Number(votingPeriod) || 0) * 60 * 60
+      )
+      let minDelayHelper = parseDuration((Number(minDelay) || 0) * 60 * 60)
+
+      if (!timebased) {
+        votingDelayHelper = parseDuration(
+          Number(votingDelay) * secondsPerBlock || 0
+        )
+        votingPeriodHelper = parseDuration(
+          Number(votingPeriod) * secondsPerBlock || 0
+        )
+      }
+
+      return [votingDelayHelper, votingPeriodHelper, minDelayHelper]
+    }, [timebased, secondsPerBlock, votingDelay, votingPeriod, minDelay])
 
   return (
     <Box {...props}>
@@ -23,31 +51,35 @@ const GovernanceParameters = (props: BoxProps) => {
         <Trans>Governance parameters</Trans>
       </Text>
       <FormField
-        label={t`Snapshot delay (hours)`}
-        placeholder={t`Input delay in hours`}
+        label={`Snapshot delay ${timebased ? '(hours)' : '(blocks)'}`}
+        placeholder={t`Input delay`}
         helper={votingDelayHelper}
-        help={t`Delay (in number of hiyrs) since the proposal is submitted until voting power is fixed and voting starts. This can be used to enforce a delay after a proposal is published for users to buy tokens, or delegate their votes.`}
+        help={`Delay (in number of ${
+          timebased ? 'hours' : 'blocks'
+        }) since the proposal is submitted until voting power is fixed and voting starts. This can be used to enforce a delay after a proposal is published for users to buy tokens, or delegate their votes.`}
         mb={3}
         name="votingDelay"
         options={{
           required: true,
           pattern: numberPattern,
-          min: 0,
-          max: 168, // 1 week
+          min: 1,
+          max: timebased ? 168 : timeToBlocks(604800, secondsPerBlock), // 1 week
         }}
       />
       <FormField
-        label={t`Voting period (hours)`}
-        placeholder={t`Input voting period in hours`}
+        label={`Voting period ${timebased ? '(hours)' : '(blocks)'}`}
+        placeholder={t`Input voting period`}
         helper={votingPeriodHelper}
-        help={t`Delay (in number of hours) since the proposal starts until voting ends.`}
+        help={t`Delay (in number of ${
+          timebased ? 'hours' : 'blocks'
+        }) since the proposal starts until voting ends.`}
         mb={4}
         name="votingPeriod"
         options={{
           required: true,
           pattern: numberPattern,
-          min: 1,
-          max: 336, // 2 weeks
+          min: timebased ? 1 : 7200,
+          max: timebased ? 336 : timeToBlocks(1209600, secondsPerBlock), // 2 weeks
         }}
       />
       <FormField

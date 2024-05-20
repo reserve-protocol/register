@@ -1,6 +1,10 @@
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
-import { isModuleLegacyAtom, rTokenContractsAtom } from 'state/atoms'
+import {
+  isModuleLegacyAtom,
+  rTokenContractsAtom,
+  rTokenGovernanceAtom,
+} from 'state/atoms'
 import { BackupChanges, CollateralChange } from './hooks/useBackupChanges'
 import { ParameterChange } from './hooks/useParametersChanges'
 import { RevenueSplitChanges } from './hooks/useRevenueSplitChanges'
@@ -16,6 +20,8 @@ import BrokerLegacy from 'abis/BrokerLegacy'
 import BasketHandler from 'abis/BasketHandler'
 import { RegisterAsset } from './hooks/useRegisterAssets'
 import { Address } from 'viem'
+import Governance from 'abis/Governance'
+import Timelock from 'abis/Timelock'
 
 export const proposalTxIdAtom = atom('')
 
@@ -80,9 +86,15 @@ export type ParamName =
   | 'longFreeze'
   | 'batchTradeImplementation'
   | 'dutchTradeImplementation'
+  | 'votingDelay'
+  | 'votingPeriod'
+  | 'minDelay'
+  | 'proposalThresholdAsMicroPercent'
+  | 'quorumPercent'
 
 export const parameterContractMapAtom = atom((get) => {
   const contracts = get(rTokenContractsAtom)
+  const governance = get(rTokenGovernanceAtom)
   const legacy = get(isModuleLegacyAtom)
 
   return {
@@ -223,6 +235,41 @@ export const parameterContractMapAtom = atom((get) => {
         address: contracts?.main.address ?? '',
         functionName: 'setLongFreeze' as const, // setLongFreeze(uint48)
         abi: Main,
+      },
+    ],
+    votingDelay: [
+      {
+        address: governance.governor ?? '',
+        functionName: 'setVotingDelay' as const, // setVotingDelay(uint48)
+        abi: Governance,
+      },
+    ],
+    votingPeriod: [
+      {
+        address: governance.governor ?? '',
+        functionName: 'setVotingPeriod' as const, // setVotingDelay(uint48)
+        abi: Governance,
+      },
+    ],
+    proposalThresholdAsMicroPercent: [
+      {
+        address: governance.governor ?? '',
+        functionName: 'setVotingPeriod' as const, // setVotingDelay(uint48)
+        abi: Governance,
+      },
+    ],
+    quorumPercent: [
+      {
+        address: governance.governor ?? '',
+        functionName: 'setVotingPeriod' as const, // setVotingDelay(uint48)
+        abi: Governance,
+      },
+    ],
+    minDelay: [
+      {
+        address: governance.timelock ?? '',
+        functionName: 'updateDelay' as const, // updateDelay(uint48)
+        abi: Timelock,
       },
     ],
   }

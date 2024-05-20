@@ -1,8 +1,8 @@
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { rTokenConfigurationAtom } from 'state/atoms'
+import { rTokenConfigurationAtom, rTokenGovernanceAtom } from 'state/atoms'
 import {
   isAssistedUpgradeAtom,
   isNewBasketProposedAtom,
@@ -15,14 +15,32 @@ import Proposal from './components/Proposal'
 import Updater from './updater'
 import { Box } from 'theme-ui'
 
+const paramsAtom = atom((get) => {
+  const config = get(rTokenConfigurationAtom)
+  const governance = get(rTokenGovernanceAtom)
+
+  if (!config || !governance.executionDelay) {
+    return null
+  }
+
+  return {
+    ...config,
+    votingDelay: governance.votingDelay,
+    votingPeriod: governance.votingPeriod,
+    minDelay: +governance.executionDelay / 60 / 60,
+    proposalThresholdAsMicroPercent: governance.proposalThreshold,
+    quorumPercent: governance.quorumNumerator,
+  }
+})
+
 const GovernanceProposal = () => {
-  const tokenParameters = useAtomValue(rTokenConfigurationAtom) || {}
+  const tokenParameters = useAtomValue(paramsAtom)
   const isAssistedUpgrade = useAtomValue(isAssistedUpgradeAtom)
   const [isEditing, setEditing] = useAtom(isProposalEditingAtom)
 
   const form = useForm({
     mode: 'onChange',
-    defaultValues: tokenParameters,
+    defaultValues: tokenParameters || {},
   })
   const setBasketProposed = useSetAtom(isNewBasketProposedAtom)
   const setDescription = useSetAtom(proposalDescriptionAtom)
@@ -38,7 +56,7 @@ const GovernanceProposal = () => {
   }, [])
 
   useEffect(() => {
-    if (tokenParameters?.shortFreeze) {
+    if (tokenParameters) {
       form.reset(tokenParameters)
     }
   }, [tokenParameters])
