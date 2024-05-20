@@ -2,6 +2,7 @@ import { Box, Grid } from 'theme-ui'
 import Hero from './components/Hero'
 import About from './components/About'
 import UseCases from './components/UseCases'
+import RegisterAbout from 'views/compare/components/RegisterAbout'
 
 const Home = () => {
   return (
@@ -22,6 +23,7 @@ const Home = () => {
           <UseCases />
         </Box>
       </Grid>
+      <RegisterAbout />
     </Box>
   )
 }
