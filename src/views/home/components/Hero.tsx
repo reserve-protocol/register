@@ -179,9 +179,14 @@ const HeroTVL = () => {
       <Box pb={2}>
         <RootIcon width={48} height={48} />
       </Box>
-      <Text variant="bold" sx={{ fontSize: 6 }}>
-        ${formatCurrency(tvl, 0)}
-      </Text>
+      {!isLoading ? (
+        <Text variant="bold" sx={{ fontSize: 6 }}>
+          ${formatCurrency(tvl, 0)}
+        </Text>
+      ) : (
+        <Skeleton height={52} width={300} style={{ marginBottom: '16px' }} />
+      )}
+
       <Text sx={{ fontSize: 4 }}>TVL in Reserve</Text>
     </Box>
   )
