@@ -1,12 +1,11 @@
-import { Trans, t } from '@lingui/macro'
-import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
+import { t } from '@lingui/macro'
 import LeafIcon from 'components/icons/LeafIcon'
 import RootIcon from 'components/icons/RootIcon'
 import StackedChainLogo from 'components/icons/StackedChainLogo'
 import TreeIcon from 'components/icons/TreeIcon'
-import YieldIcon from 'components/icons/YieldIcon'
+import { ArrowUpRight } from 'react-feather'
 import Skeleton from 'react-loading-skeleton'
-import { Box, Card, Flex, Grid, Link, Text } from 'theme-ui'
+import { Box, Flex, Grid, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import {
   CHAIN_TO_NETWORK,
@@ -15,136 +14,104 @@ import {
 } from 'utils/constants'
 import useProtocolMetrics from '../hooks/useProtocolMetrics'
 import HistoricalTVL from './HistoricalTVL'
+import Help from 'components/help'
 
 const ProtocolStats = () => {
   const {
-    data: { tvl, marketCap, stakeRevenue },
+    data: { marketCap, stakeRevenue },
     isLoading,
   } = useProtocolMetrics()
 
   const statInfo = [
     {
       icon: <TreeIcon />,
-      value: formatCurrency(marketCap),
-      title: t`Cumulative Total RToken Mkcap`,
+      value: formatCurrency(marketCap, 1, {
+        notation: 'compact',
+        compactDisplay: 'short',
+      }),
+      title: t`RToken Market Cap`,
+      tooltip: t`The total value of all RToken in circulation`,
     },
     {
-      icon: <RootIcon />,
-      value: formatCurrency(tvl),
-      title: t`TVL in Reserve`,
+      icon: <TreeIcon />,
+      value: formatCurrency(marketCap),
+      title: t`First Loss RSR Capital`,
+      tooltip: t`The total value of all RSR staked in the protocol`,
     },
     {
       icon: <LeafIcon />,
       value: formatCurrency(stakeRevenue),
-      title: t`Cumulative Staked RSR income`,
+      title: t`Annualized RToken Revenue`,
+      tooltip: t`The total value of all RSR staked in the protocol`,
+    },
+    {
+      icon: <LeafIcon />,
+      value: formatCurrency(stakeRevenue),
+      title: t`Annualized RSR Staker Revenue`,
+      tooltip: t`The total value of all RSR staked in the protocol`,
     },
   ]
 
   return (
-    <Box
-      variant="layout.wrapper"
-      sx={{ width: '100%' }}
-      mt={[4, 5]}
-      pt={[0, 5]}
+    <Grid
+      columns={['1fr', '1fr 1fr']}
+      gap={[4, 0]}
+      sx={{
+        borderTop: ['none', '1px solid'],
+        borderColor: ['reserveBackground', 'reserveBackground'],
+      }}
     >
-      <Link
-        sx={{
-          ':hover': { textDecoration: 'underline' },
-          position: 'relative',
-          display: 'flex',
-          fontSize: 1,
-          justifyContent: 'center',
-          textAlign: 'center',
-          bottom: '-12px',
-        }}
-        href="https://dune.com/reserve-protocol/reserve-protocol-overview"
-        target="_blank"
-      >
+      {statInfo.map(({ title, value, icon, tooltip }, index) => (
         <Box
-          px="2"
-          py="1"
+          key={title}
+          variant="layout.verticalAlign"
           sx={{
-            backgroundColor: 'contentBackground',
-            borderRadius: 8,
-            border: '2px solid',
-            borderColor: 'background',
-            width: 'fit-content',
+            borderRight: ['none', index % 2 === 0 ? '1px solid' : 'none'],
+            borderBottom: ['none', index < 2 ? '1px solid' : 'none'],
+            borderColor: ['reserveBackground', 'reserveBackground'],
+            gap: 3,
+            p: 4,
           }}
         >
-          <Trans>More metrics on Dune</Trans>
-          <ExternalArrowIcon
-            style={{ position: 'relative', top: '3px', marginLeft: '8px' }}
-          />
-        </Box>
-      </Link>
-      <Card
-        mx={[0, 2]}
-        p={6}
-        sx={{
-          backgroundColor: 'contentBackground',
-          flexGrow: 1,
-        }}
-      >
-        <Grid columns={['1fr', '1fr 1fr 1fr']} gap={[4, 0]}>
-          {statInfo.map((info, index) => (
-            <Box key={info.title} sx={{ position: 'relative' }}>
-              <Box sx={{ textAlign: 'center', color: 'accentInverted' }}>
-                {info.icon}
-                <Box my={2}>
-                  {!isLoading ? (
-                    <Text variant="sectionTitle" sx={{ fontWeight: '700' }}>
-                      ${info.value}
-                    </Text>
-                  ) : (
-                    <Skeleton height={32} width={200} />
-                  )}
-                </Box>
-
-                <Text sx={{ color: 'text' }}>{info.title}</Text>
-              </Box>
-              {!!index && (
-                <Box
-                  // mx={3}
-                  sx={{
-                    display: ['none', 'block'],
-                    fontSize: 5,
-                    color: 'accentInverted',
-                    position: 'absolute',
-                    left: '-12px',
-                    top: 'calc(50% - 20px)',
-                  }}
+          {icon}
+          <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+            <Text sx={{ color: 'secondaryText' }}>{title}</Text>
+            <Box>
+              {!isLoading ? (
+                <Text
+                  variant="sectionTitle"
+                  color="accentInverted"
+                  sx={{ fontWeight: '700' }}
                 >
-                  <YieldIcon />
-                </Box>
+                  ${value}
+                </Text>
+              ) : (
+                <Skeleton height={32} width={84} />
               )}
             </Box>
-          ))}
-        </Grid>
-      </Card>
-    </Box>
+          </Box>
+          <Help content={tooltip}></Help>
+        </Box>
+      ))}
+    </Grid>
   )
 }
 
-const Hero = () => (
-  <Box sx={{ position: 'relative' }}>
-    <Flex
+const HeroHeader = () => {
+  return (
+    <Box
+      variant="layout.verticalAlign"
+      p={4}
       sx={{
-        flexDirection: 'column',
-        maxWidth: '95em',
-        borderRadius: '14px',
-        backgroundColor: 'contentBackground',
+        borderBottom: '1px solid',
+        borderColor: 'reserveBackground',
+        justifyContent: 'space-between',
       }}
-      mx="auto"
-      mt={[1, 7]}
     >
-      <Box
-        variant="layout.verticalAlign"
-        p={4}
-        sx={{ borderBottom: '1px solid', borderColor: 'border' }}
-      >
+      <Box variant="layout.verticalAlign">
         <StackedChainLogo chains={supportedChainList} />
-        <Text variant="bold">
-          The <Text color="primary">Reserve Protocol</Text> on
+        <Text>
+          The <Text color="accentInverted">Reserve Protocol</Text> on
           {supportedChainList.map(
             (chainId, index) =>
               ` ${capitalize(CHAIN_TO_NETWORK[chainId])}${
@@ -157,25 +124,81 @@ const Hero = () => (
           )}
         </Text>
       </Box>
-      <Flex>
-        <Box
-          p={4}
-          sx={{
-            flexGrow: '12',
-            borderRight: '1px solid',
-            borderColor: 'border',
-          }}
-        >
-          Flex
-        </Box>
-        <Box p={4} sx={{ flexGrow: '10' }}>
-          Box
-        </Box>
-      </Flex>
-      {/* <ProtocolStats /> */}
-      <Box sx={{ height: 400 }}>
+      <Box
+        variant="layout.verticalAlign"
+        sx={{
+          gap: 1,
+          cursor: 'pointer',
+          ':hover': {
+            filter: 'brightness(1.1)',
+          },
+        }}
+        onClick={() =>
+          window.open(
+            'https://dune.com/reserve-protocol/reserve-protocol-overview',
+            '_blank'
+          )
+        }
+      >
+        <Text variant="bold" color="#999">
+          Full dashboard
+        </Text>
+        <ArrowUpRight color="#999" size={16} />
+      </Box>
+    </Box>
+  )
+}
+
+const HeroTVL = () => {
+  const {
+    data: { tvl },
+    isLoading,
+  } = useProtocolMetrics()
+
+  return (
+    <Box
+      sx={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        color: 'accentInverted',
+        gap: 1,
+      }}
+      px={4}
+      pt={5}
+    >
+      <Box pb={2}>
+        <RootIcon width={48} height={48} />
+      </Box>
+      <Text variant="bold" sx={{ fontSize: 6 }}>
+        ${formatCurrency(tvl, 0)}
+      </Text>
+      <Text sx={{ fontSize: 4 }}>TVL in Reserve</Text>
+    </Box>
+  )
+}
+
+const Hero = () => (
+  <Box sx={{ position: 'relative' }}>
+    <Flex
+      sx={{
+        flexDirection: 'column',
+        borderRadius: '14px',
+        backgroundColor: 'reserveBackgroundSecondary',
+        border: '1px solid',
+        borderColor: 'reserveBackground',
+      }}
+      mx="auto"
+      mt={[1, 7]}
+    >
+      <HeroHeader />
+      <Box sx={{ position: 'relative', height: 380 }} px={3} pt={2}>
+        <HeroTVL />
         <HistoricalTVL />
       </Box>
+      <ProtocolStats />
     </Flex>
   </Box>
 )
