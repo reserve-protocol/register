@@ -86,8 +86,8 @@ const UseCases = () => {
                 borderColor: ['border', 'border'],
                 gap: 3,
                 py: 4,
-                pl: index % 2 === 1 ? 4 : 0,
-                pr: index % 2 === 0 ? 4 : 0,
+                pl: [0, index % 2 === 1 ? 4 : 0],
+                pr: [0, index % 2 === 0 ? 4 : 0],
                 cursor: 'pointer',
               }}
             >

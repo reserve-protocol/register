@@ -111,6 +111,7 @@ const HeroHeader = () => {
         borderBottom: '1.5px solid',
         borderColor: 'reserveBackground',
         justifyContent: 'space-between',
+        gap: 2,
       }}
     >
       <Box variant="layout.verticalAlign">
@@ -137,6 +138,7 @@ const HeroHeader = () => {
           ':hover': {
             filter: 'brightness(1.1)',
           },
+          display: ['none', 'flex'],
         }}
         onClick={() =>
           window.open(
