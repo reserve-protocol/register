@@ -27,7 +27,7 @@ const DivaPointsMint = () => {
         <DivaIcon />
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Text color="diva" sx={{ fontWeight: 'bold' }}>
-            Diva Boost
+            Nektar Boost
           </Text>
           <Text>
             What {formatCurrency(+amountOut, 4)} bsdETH would award you
@@ -36,8 +36,8 @@ const DivaPointsMint = () => {
       </Box>
       <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
         <Text sx={{ fontWeight: 'bold' }}>
-          <Text color="diva">{formatCurrency(points)} Diva </Text>
-          Points per day
+          <Text color="diva">{formatCurrency(points)} Nektar Drops </Text>
+          per day
         </Text>
         <Help
           content={`Earn daily Diva Points based on the bsdETH you mint. Rewards are calculated at the current rate of ${rewardsRate} points per ETH per day and accrue daily.`}
