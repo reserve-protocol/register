@@ -24,7 +24,9 @@ const DivaPointsMint = () => {
       sx={{ gap: 1, justifyContent: 'space-between' }}
     >
       <Box variant="layout.verticalAlign" sx={{ gap: 3 }}>
-        <DivaIcon />
+        <Box sx={{ display: ['none', 'flex'] }}>
+          <DivaIcon />
+        </Box>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Text color="diva" sx={{ fontWeight: 'bold' }}>
             Nektar Boost

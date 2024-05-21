@@ -24,7 +24,9 @@ const DivaBadge = ({ poolId }: Props) => {
       }}
     >
       <DivaIcon />
-      <Text color="diva">Nektar Drops</Text>
+      <Text color="diva" sx={{ whiteSpace: 'nowrap' }}>
+        Nektar Drops
+      </Text>
     </Box>
   )
 }

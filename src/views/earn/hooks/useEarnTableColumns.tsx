@@ -177,7 +177,10 @@ const useEarnTableColumns = (compact: boolean) => {
           )
         },
         cell: (data) => (
-          <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+          <Box
+            variant="layout.verticalAlign"
+            sx={{ gap: 2, minWidth: '156px' }}
+          >
             {`${formatCurrency(data.getValue(), 1)}%`}
             <DivaBadge poolId={data.row.original.id} />
           </Box>
