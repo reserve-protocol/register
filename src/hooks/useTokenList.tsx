@@ -1,4 +1,4 @@
-import rtokens from '@lc-labs/rtokens'
+import rtokens from '@reserve-protocol/rtokens'
 import { RevenueSplit } from 'components/rtoken-setup/atoms'
 import { gql } from 'graphql-request'
 import { atom, useAtom, useAtomValue } from 'jotai'

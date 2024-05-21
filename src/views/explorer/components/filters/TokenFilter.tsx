@@ -1,4 +1,4 @@
-import rtokens from '@lc-labs/rtokens'
+import rtokens from '@reserve-protocol/rtokens'
 import { Trans } from '@lingui/macro'
 import CirclesIcon from 'components/icons/CirclesIcon'
 import TokenLogo from 'components/icons/TokenLogo'

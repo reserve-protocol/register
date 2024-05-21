@@ -1,4 +1,4 @@
-import rtokens from '@lc-labs/rtokens'
+import rtokens from '@reserve-protocol/rtokens'
 import { ChainId } from 'utils/chains'
 
 const useRTokenLogo = (
