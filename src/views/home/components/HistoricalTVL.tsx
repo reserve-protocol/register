@@ -52,7 +52,7 @@ function CustomTooltip({ payload, label, active }: any) {
           gap: 3,
           justifyContent: 'space-between',
           borderBottom: '1px solid',
-          borderColor: 'border',
+          borderColor: 'borderSecondary',
         }}
         p={3}
       >
@@ -91,7 +91,7 @@ function CustomTooltip({ payload, label, active }: any) {
           gap: 2,
           justifyContent: 'space-between',
           borderTop: '1px solid',
-          borderColor: 'border',
+          borderColor: 'borderSecondary',
         }}
         p={3}
       >
