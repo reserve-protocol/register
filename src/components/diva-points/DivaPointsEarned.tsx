@@ -6,10 +6,6 @@ import DivaIcon from 'components/icons/DivaIcon'
 import AsteriskIcon from 'components/icons/AsteriskIcon'
 
 const DivaPointsEarned = () => {
-  const { userRewards } = useDivaPoints()
-
-  if (!userRewards) return null
-
   return (
     <Box
       mt={4}
@@ -19,24 +15,25 @@ const DivaPointsEarned = () => {
       px={2}
       variant="layout.verticalAlign"
       sx={{
-        gap: 1,
+        gap: 2,
         border: '1px solid',
         borderRadius: '8px',
         borderColor: 'border',
         width: 'fit-content',
       }}
     >
-      <AsteriskIcon />
-      <Text mr={1}>Points earned:</Text>
       <DivaIcon />
-      <Text sx={{ fontWeight: 'bold' }}>{userRewards} Diva</Text>
+      <Text mr={1}>Nektar Drops:</Text>
       <Button
         ml={1}
         small
-        disabled
+        variant="muted"
         sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+        onClick={() => {
+          window.open('https://app.fuul.xyz/points/nektar', '_blank')
+        }}
       >
-        Claim <ArrowUpRight size={14} />
+        Check <ArrowUpRight size={14} />
       </Button>
     </Box>
   )

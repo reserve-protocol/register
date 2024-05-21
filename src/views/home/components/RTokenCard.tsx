@@ -240,6 +240,7 @@ const RTokenCard = ({ token, ...props }: Props) => {
                 <DivaButtonAppendix
                   rTokenSymbol={token.symbol}
                   borderColor="white"
+                  hideLabelOnMobile
                 >
                   <Button
                     medium

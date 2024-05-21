@@ -44,7 +44,7 @@ const DivaButtonAppendix: FC<Props> = ({
           {rewardsRate}
         </Text>
         <Text sx={{ display: [hideLabelOnMobile ? 'none' : 'flex', 'flex'] }}>
-          Diva/ETH/day
+          Nektar Drops/ETH/day
         </Text>
       </Box>
     </Box>
