@@ -1,4 +1,4 @@
-import rtokens from '@lc-labs/rtokens'
+import rtokens from '@reserve-protocol/rtokens'
 import { RevenueSplit } from 'components/rtoken-setup/atoms'
 import { gql } from 'graphql-request'
 import { atom, useAtom, useAtomValue } from 'jotai'
@@ -98,7 +98,7 @@ const useTokenList = () => {
         fromTime,
       },
       [ChainId.Arbitrum]: {
-        tokenIds: LISTED_RTOKEN_ADDRESSES[ChainId.Arbitrum] || [],
+        tokenIds: LISTED_RTOKEN_ADDRESSES[ChainId.Arbitrum],
         fromTime,
       },
     },

@@ -33,9 +33,6 @@ const rTokenPegAtom = atom((get) => {
 export const rTokenTargetPriceAtom = atom((get) => {
   const { tokenSupply, basketsNeeded } = get(rTokenStateAtom)
   const peg = get(rTokenPegAtom)
-  // TODO: This should also start null
-  const price = get(rTokenPriceAtom)
-  const ethPrice = get(ethPriceAtom)
   const btcPrice = get(btcPriceAtom)
 
   if (
@@ -44,9 +41,8 @@ export const rTokenTargetPriceAtom = atom((get) => {
     btcPrice &&
     (peg === TARGET_UNITS.ETH || peg === TARGET_UNITS.BTC)
   ) {
-    const pegPrice = TARGET_UNITS.ETH ? ethPrice : btcPrice
-    let supplyInUnit = (tokenSupply / price) * pegPrice
     let priceInUnit = Math.trunc((basketsNeeded / tokenSupply) * 10000) / 10000
+    let supplyInUnit = tokenSupply * priceInUnit
 
     return { price: priceInUnit, supply: supplyInUnit, unit: peg }
   }

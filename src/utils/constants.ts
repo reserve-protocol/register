@@ -7,7 +7,7 @@ import {
   USD3_ADDRESS,
 } from './addresses'
 import { ChainId } from './chains'
-import rtokens from '@lc-labs/rtokens'
+import rtokens from '@reserve-protocol/rtokens'
 import RSV from './rsv'
 
 export const VERSION = '3.0.0'
@@ -17,6 +17,12 @@ export const PROTOCOL_DOCS = 'https://reserve.org/protocol/'
 export const REGISTER_FEEDBACK = 'https://reserve.canny.io/register-app'
 export const REGISTER_BUGS =
   'https://reserve.canny.io/defi-surfaces-bug-reporting'
+
+export const DIVA_SAFE_POOLS = [
+  '57d5dc30-8ade-4f40-87d2-6065297d0705',
+  '5f83ac83-753a-4382-869f-38c4e1658a36',
+  '91ec3f5f-587c-4a26-9a98-1593ed9bab26'
+]
 
 export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
   'curve-dex': {
@@ -62,6 +68,10 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
   dyson: {
     name: 'Dyson',
     site: 'https://app.dyson.money/',
+  },
+  'camelot-v3': {
+    name: 'Camelot',
+    site: 'https://app.camelot.exchange/',
   },
 }
 
@@ -310,7 +320,7 @@ export const collateralDisplay: Record<string, string> = {
   saethpyusd: 'AAVE PYUSD V3',
   sabasusdc: 'AAVE USDC V3',
   sfrxeth: 'Staked Frax ETH',
-  re7weth: 'Morpho Blue ETH',
+  re7weth: 'Morpho Blue Re7 WETH Vault',
   'stkcvxcrvusdusdt-f': ' Convex crvUSD/USDT',
   'stkcvxcrvusdusdc-f': 'Convex crvUSD/USDC',
   steakpyusd: 'Morpho Blue pyUSD',

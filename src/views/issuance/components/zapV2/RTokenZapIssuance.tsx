@@ -6,6 +6,7 @@ import ZapTabs from './ZapTabs'
 import ZapInputContainer from './input/ZapInputContainer'
 import ZapOutputContainer from './output/ZapOutputContainer'
 import ZapSubmit from './submit/ZapSubmit'
+import DivaPointsMint from 'components/diva-points/DivaPointsMint'
 
 const RTokenZapIssuance = ({ disableRedeem }: { disableRedeem: boolean }) => {
   return (
@@ -59,6 +60,7 @@ const RTokenZapIssuance = ({ disableRedeem }: { disableRedeem: boolean }) => {
         </Box>
         <ZapOperationDetails />
         <ZapSubmit />
+        <DivaPointsMint />
       </Box>
     </Box>
   )

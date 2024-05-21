@@ -208,16 +208,16 @@ const ExploreTokens = (props: Partial<TableProps>) => {
           )
         },
       }),
-      columnHelper.accessor('id', {
-        header: '',
-        cell: ({ row }) => {
-          return row.getIsExpanded() ? (
-            <ChevronUp size={16} />
-          ) : (
-            <ChevronDown size={16} />
-          )
-        },
-      }),
+      // columnHelper.accessor('id', {
+      //   header: '',
+      //   cell: ({ row }) => {
+      //     return row.getIsExpanded() ? (
+      //       <ChevronUp size={16} />
+      //     ) : (
+      //       <ChevronDown size={16} />
+      //     )
+      //   },
+      // }),
     ],
     []
   )

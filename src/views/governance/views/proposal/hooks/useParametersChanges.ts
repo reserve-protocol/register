@@ -1,13 +1,32 @@
-import { useAtomValue } from 'jotai'
+import { atom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
-import { rTokenConfigurationAtom } from 'state/atoms'
+import { rTokenConfigurationAtom, rTokenGovernanceAtom } from 'state/atoms'
+import { StringMap } from 'types'
 
 export interface ParameterChange {
   field: string
   current: string
   proposed: string
 }
+
+const currentParamsAtom = atom((get) => {
+  const config = get(rTokenConfigurationAtom)
+  const governance = get(rTokenGovernanceAtom)
+
+  if (!config || !governance.executionDelay) {
+    return {} as StringMap
+  }
+
+  return {
+    ...config,
+    votingDelay: governance.votingDelay,
+    votingPeriod: governance.votingPeriod,
+    minDelay: +governance.executionDelay / 60 / 60,
+    proposalThresholdAsMicroPercent: governance.proposalThreshold,
+    quorumPercent: governance.quorumNumerator,
+  }
+})
 
 /**
  * Listen for form differences with respect of current RToken stored parameters
@@ -18,7 +37,7 @@ const useParametersChanges = (): ParameterChange[] => {
     formState: { isDirty },
   } = useFormContext()
   const formFields = useWatch()
-  const currentParameters = useAtomValue(rTokenConfigurationAtom)
+  const currentParameters = useAtomValue(currentParamsAtom)
 
   return useMemo(() => {
     if (!isDirty || !currentParameters) {

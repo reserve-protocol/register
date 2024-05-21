@@ -55,6 +55,7 @@ import {
   roleChangesAtom,
 } from '../atoms'
 import useUpgradeHelper from './useUpgradeHelper'
+import { isTimeunitGovernance } from 'views/governance/utils'
 
 const paramParse: { [x: string]: (v: string) => bigint | number } = {
   minTradeVolume: parseEther,
@@ -69,6 +70,9 @@ const paramParse: { [x: string]: (v: string) => bigint | number } = {
   shortFreeze: Number,
   longFreeze: Number,
   warmupPeriod: Number,
+  minDelay: (v) => +v * 60 * 60,
+  proposalThresholdAsMicroPercent: (v) => BigInt(+v * 1e6),
+  quorumPercent: Number,
 }
 
 const ROLES: { [x: string]: string } = {
@@ -131,6 +135,7 @@ const useProposalTx = () => {
   const backup = useAtomValue(backupCollateralAtom)
   const revenueSplit = useAtomValue(revenueSplitAtom)
   const governance = useAtomValue(rTokenGovernanceAtom)
+  const isTimeGovernance = isTimeunitGovernance(governance.name)
   const parameterMap = useAtomValue(parameterContractMapAtom)
   const contracts = useAtomValue(rTokenContractsAtom)
   const assets = useAtomValue(registeredAssetsAtom)
@@ -293,10 +298,21 @@ const useProposalTx = () => {
         } else {
           for (const contract of parameterMap[paramChange.field as ParamName]) {
             const { address, ...data } = contract
+            let proposedParam: string | bigint | number
 
-            const proposedParam = paramParse[paramChange.field]
-              ? paramParse[paramChange.field](paramChange.proposed)
-              : paramChange.proposed
+            if (
+              paramChange.field === 'votingDelay' ||
+              paramChange.field === 'votingPeriod'
+            ) {
+              proposedParam = isTimeGovernance
+                ? Number(paramChange.proposed) * 60 * 60
+                : Number(paramChange.proposed)
+            } else {
+              proposedParam = paramParse[paramChange.field]
+                ? paramParse[paramChange.field](paramChange.proposed)
+                : paramChange.proposed
+            }
+
             addresses.push(address)
             calls.push(
               encodeFunctionData({

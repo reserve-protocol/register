@@ -1,4 +1,4 @@
-import rtokens from '@lc-labs/rtokens'
+import rtokens from '@reserve-protocol/rtokens'
 import { GraphQLClient } from 'graphql-request'
 import { atom } from 'jotai'
 import { getCurrentTime } from 'utils'

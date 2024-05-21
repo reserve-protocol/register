@@ -13,7 +13,7 @@ const multichainFetcher = async (
   const [query, variables] = props
   // Filter out chain if _chain exists
   const chains: Set<number> = new Set(
-    variables._chain ? [variables._chain] : supportedChainList
+    variables._chain ? variables._chain : supportedChainList
   )
   const calls: any[] = []
 
