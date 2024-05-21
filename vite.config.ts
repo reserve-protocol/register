@@ -16,7 +16,7 @@ export default defineConfig({
     viteStaticCopy({
       targets: [
         {
-          src: 'node_modules/@lc-labs/rtokens/images/*',
+          src: 'node_modules/@reserve-protocol/rtokens/images/*',
           dest: 'svgs',
         },
       ],

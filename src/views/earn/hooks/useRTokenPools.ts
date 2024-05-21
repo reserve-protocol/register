@@ -1,4 +1,4 @@
-import rtokens from '@lc-labs/rtokens'
+import rtokens from '@reserve-protocol/rtokens'
 import { gql } from 'graphql-request'
 import { useCMSQuery } from 'hooks/useQuery'
 import { useAtom } from 'jotai'

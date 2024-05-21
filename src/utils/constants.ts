@@ -7,7 +7,7 @@ import {
   USD3_ADDRESS,
 } from './addresses'
 import { ChainId } from './chains'
-import rtokens from '@lc-labs/rtokens'
+import rtokens from '@reserve-protocol/rtokens'
 import RSV from './rsv'
 
 export const VERSION = '3.0.0'

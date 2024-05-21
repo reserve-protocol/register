@@ -1,4 +1,4 @@
-import rtokens from '@lc-labs/rtokens'
+import rtokens from '@reserve-protocol/rtokens'
 import {
   ETHPLUS_ADDRESS,
   EUSD_ADDRESS,
