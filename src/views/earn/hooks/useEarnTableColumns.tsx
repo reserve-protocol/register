@@ -23,18 +23,9 @@ import { Pool } from 'state/pools/atoms'
 import { colors } from 'theme'
 import { Box, Image, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { ChainId } from 'utils/chains'
 import { CHAIN_TAGS, LP_PROJECTS, NETWORKS } from 'utils/constants'
 
-export const columnVisibility = [
-  '',
-  '',
-  ['none', 'table-cell'],
-  '',
-  ['none', 'none', 'table-cell'],
-  ['none', 'none', 'table-cell'],
-  ['none', 'table-cell'],
-]
+export const columnVisibility = []
 
 export const compactColumnVisibility = [
   '',

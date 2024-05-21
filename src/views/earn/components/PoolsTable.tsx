@@ -31,7 +31,7 @@ const PoolsTable = ({ data, compact = false, ...props }: Props) => {
         columns={columns}
         data={data}
         columnVisibility={visibility}
-        sx={{ borderRadius: '0 0 20px 20px', overflow: 'hidden' }}
+        sx={{ borderRadius: '0 0 20px 20px', overflow: 'auto' }}
         {...props}
       />
       {!isLoading && !data.length && (
