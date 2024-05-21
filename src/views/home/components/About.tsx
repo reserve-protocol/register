@@ -48,10 +48,10 @@ const About = () => {
         alt="About background"
         sx={{
           objectFit: 'cover',
-          objectPosition: 'start',
+          objectPosition: '-2px -2px',
           width: '100%',
           maxHeight: '320px',
-          borderRadius: '14px',
+          borderRadius: '18px',
           border: '2px solid',
           borderColor: 'reserveBackground',
         }}
