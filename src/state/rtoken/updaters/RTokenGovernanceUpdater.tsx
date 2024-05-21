@@ -62,7 +62,6 @@ const RTokenGovernanceUpdater = () => {
           executionDelay,
           votingDelay,
           votingPeriod,
-          version,
         } = data.governance.governanceFrameworks[0]
         setGovernance({
           name,

@@ -26,7 +26,7 @@ const AuctionItem = ({
         {title}
       </Text>
       <Text>
-        {formatCurrency(amount, 3)} {symbol}
+        {formatCurrency(amount, 5)} {symbol}
       </Text>
     </Box>
     {!!price && !!forSymbol && (

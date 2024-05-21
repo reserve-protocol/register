@@ -88,7 +88,7 @@ const CollateralDetails = ({
       }}
       onClick={() => setExpanded(!expanded)}
     >
-      <Grid columns={['1fr', '2fr 1fr 1fr 1fr']}>
+      <Grid columns={['1fr', '3fr 1fr 1fr 1fr']}>
         <Box variant="layout.verticalAlign">
           <TokenLogo symbol={collateral.symbol} />
           <Text ml={2} variant="accent">
@@ -261,7 +261,7 @@ const CollateralExposure = () => {
     <Card variant="inner" sx={{ height: 'fit-content' }}>
       <Header />
       <Grid
-        columns={'2fr 1fr 1fr 1fr'}
+        columns={'3fr 1fr 1fr 1fr'}
         py="10px"
         px={4}
         sx={{ display: ['none', 'grid'], color: 'secondaryText', fontSize: 1 }}

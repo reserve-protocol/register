@@ -8,13 +8,17 @@ import useSWRImmutable from 'swr/immutable'
 import { StringMap } from 'types'
 import { EUSD_ADDRESS, RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
-import { LP_PROJECTS, RSR } from 'utils/constants'
+import {
+  BRIDGED_RTOKENS,
+  LP_PROJECTS,
+  NETWORKS,
+  RSR,
+  capitalize,
+} from 'utils/constants'
 import {
   EXTRA_POOLS_BY_UNDERLYING_TOKEN,
   OTHER_POOL_TOKENS,
 } from '../utils/constants'
-import { mainnet } from 'wagmi'
-import { base } from 'viem/chains'
 
 // Only map what I care about the response...
 interface DefillamaPool {
@@ -47,6 +51,21 @@ const listedRTokens = Object.values(rtokens).reduce((acc, curr) => {
 
   return { ...acc, ...lowercaseAddresses }
 }, {} as StringMap)
+
+// Include bridged RTokens
+Object.values(BRIDGED_RTOKENS).forEach((bridge) => {
+  Object.entries(bridge).forEach(([key, tokens]) => {
+    const _token = listedRTokens[key.toLowerCase()]
+    if (_token) {
+      tokens.forEach((token) => {
+        listedRTokens[token.address.toLowerCase()] = {
+          ..._token,
+          address: token.address,
+        }
+      })
+    }
+  })
+})
 
 listedRTokens[RSR_ADDRESS[ChainId.Mainnet].toLowerCase()] = RSR
 listedRTokens[RSR_ADDRESS[ChainId.Base].toLowerCase()] = RSR
@@ -91,9 +110,9 @@ const filterByChains = (
 
 const removeByProject = (
   pools: DefillamaPool[],
-  project: string
+  ignoredProjects: string[]
 ): DefillamaPool[] => {
-  return pools.filter((pool) => pool.project !== project)
+  return pools.filter((pool) => !ignoredProjects.includes(pool.project))
 }
 
 const enrichPoolUnderlyingAndId = (
@@ -106,7 +125,11 @@ const enrichPoolUnderlyingAndId = (
     return {
       ...pool,
       id: pool.pool,
-      symbol: `${pool.symbol}${pool.poolMeta?.toLowerCase()?.includes("lending") ? ' (Lending Pool)' : ''}`,
+      symbol: `${pool.symbol}${
+        pool.poolMeta?.toLowerCase()?.includes('lending')
+          ? ' (Lending Pool)'
+          : ''
+      }`,
       underlyingTokens: (
         cmsPool?.underlyingTokens ||
         pool.underlyingTokens ||
@@ -180,14 +203,14 @@ const mapPools = (data: DefillamaPool[], earnPools: EarnPool[]) => {
   const ids = earnPools.map((pool) => pool.llamaId)
   const filteredPools = filterPools(data, ids)
 
-  const filteredPoolsByChains = filterByChains(filteredPools, [
-    mainnet.name,
-    base.name,
-  ])
-  const filteredPoolsByProject = removeByProject(
-    filteredPoolsByChains,
-    'reserve'
+  const filteredPoolsByChains = filterByChains(
+    filteredPools,
+    Object.keys(NETWORKS).map((chain) => capitalize(chain))
   )
+  const filteredPoolsByProject = removeByProject(filteredPoolsByChains, [
+    'reserve',
+    'reserve-protocol',
+  ])
 
   const enrichedPools = enrichPoolUnderlyingAndId(
     filteredPoolsByProject,

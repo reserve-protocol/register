@@ -5,9 +5,13 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import RTokenContainer from 'state/rtoken/RTokenContainer'
 import { Box } from 'theme-ui'
 import { ROUTES } from 'utils/constants'
-import Collaterals from 'views/collaterals'
 import EarnWrapper from 'views/earn'
 
+import Explorer from 'views/explorer'
+import Collaterals from 'views/explorer/components/collaterals'
+import ExploreGovernance from 'views/explorer/components/governance'
+import ExploreTokens from 'views/explorer/components/tokens'
+import ExploreTransactions from 'views/explorer/components/transactions'
 import Home from 'views/home'
 import Issuance from 'views/issuance'
 import Overview from 'views/overview'
@@ -75,7 +79,22 @@ const AppRoutes = () => (
         element={<PreloadComponent element={Settings} />}
       />
     </Route>
-    <Route path={ROUTES.COLLATERALS} element={<Collaterals />} />
+    <Route path={ROUTES.EXPLORER} element={<Explorer />}>
+      <Route
+        index
+        element={<Navigate replace to={ROUTES.EXPLORER_TRANSACTIONS} />}
+      />
+      <Route path={ROUTES.EXPLORER_COLLATERALS} element={<Collaterals />} />
+      <Route path={ROUTES.EXPLORER_TOKENS} element={<ExploreTokens />} />
+      <Route
+        path={ROUTES.EXPLORER_TRANSACTIONS}
+        element={<ExploreTransactions />}
+      />
+      <Route
+        path={ROUTES.EXPLORER_GOVERNANCE}
+        element={<ExploreGovernance />}
+      />
+    </Route>
     <Route path="*" element={<Box>Not found</Box>} />
   </Routes>
 )

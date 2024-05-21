@@ -5,9 +5,9 @@ import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import { useBlockMemo } from 'hooks/utils'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo } from 'react'
-import { ArrowLeft } from 'react-feather'
+import { ArrowLeft, Download } from 'react-feather'
 import { useNavigate, useParams } from 'react-router-dom'
-import { chainIdAtom, walletAtom } from 'state/atoms'
+import { chainIdAtom, rTokenGovernanceAtom, walletAtom } from 'state/atoms'
 import { Box, Grid, Text } from 'theme-ui'
 import { getCurrentTime } from 'utils'
 import { PROPOSAL_STATES, ROUTES } from 'utils/constants'
@@ -16,6 +16,7 @@ import { formatEther } from 'viem'
 import { isTimeunitGovernance } from 'views/governance/utils'
 import { useContractRead } from 'wagmi'
 import {
+  ProposalDetail,
   accountVotesAtom,
   getProposalStateAtom,
   proposalDetailAtom,
@@ -29,6 +30,62 @@ import ProposalQueue from './components/ProposalQueue'
 import ProposalVote from './components/ProposalVote'
 import ProposalVotes from './components/ProposalVotes'
 import useProposalDetail from './useProposalDetail'
+import useRToken from 'hooks/useRToken'
+
+const JSONToFile = (obj: any, filename: string) => {
+  const blob = new Blob([JSON.stringify(obj, null, 2)], {
+    type: 'application/json',
+  })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `${filename}.json`
+  a.click()
+  URL.revokeObjectURL(url)
+}
+
+const ProposalSnapshot = ({
+  proposal,
+}: {
+  proposal: ProposalDetail | null
+}) => {
+  const rToken = useRToken()
+  const governance = useAtomValue(rTokenGovernanceAtom)
+
+  const handleSnapshot = () => {
+    if (proposal && governance.timelock && rToken) {
+      const snapshot = {
+        proposalId: proposal.id,
+        governor: proposal.governor,
+        calldatas: proposal.calldatas,
+        values: proposal.calldatas.map(() => ({
+          type: 'BigNumber',
+          hex: '0x00',
+        })),
+        targets: proposal.targets,
+        description: proposal.description,
+        rtoken: rToken.address,
+        timelock: governance.timelock,
+      }
+
+      JSONToFile(snapshot, `${rToken?.symbol}-${proposal.id}`)
+    }
+  }
+
+  return (
+    <Button
+      small
+      variant="bordered"
+      onClick={handleSnapshot}
+      disabled={!proposal}
+      mr={3}
+      ml="auto"
+    >
+      <Download size={14} />
+      <Text ml={2}>Download snapshot</Text>
+    </Button>
+  )
+}
 
 const GovernanceProposalDetail = () => {
   const { proposalId } = useParams()
@@ -112,6 +169,7 @@ const GovernanceProposalDetail = () => {
           </Box>
         </SmallButton>
         <ProposalAlert />
+        <ProposalSnapshot proposal={proposal} />
         {state === PROPOSAL_STATES.SUCCEEDED && <ProposalQueue />}
         {state === PROPOSAL_STATES.QUEUED && (
           <Box

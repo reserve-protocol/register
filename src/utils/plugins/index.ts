@@ -8,6 +8,7 @@ import arbitrumPlugins from './data/arbitrum.json'
 import mainnetPlugins from './data/mainnet.json'
 import { Address } from 'viem'
 import {
+  ARB_ADDRESS,
   COMP_ADDRESS,
   CRV_ADDRESS,
   CVX_ADDRESS,
@@ -19,7 +20,6 @@ const collateralPlugins: { [chainId: number]: CollateralPlugin[] } = {
   [ChainId.Mainnet]: mainnetPlugins,
   [ChainId.Base]: basePlugins,
   [ChainId.Arbitrum]: arbitrumPlugins,
-  [ChainId.Hardhat]: mainnetPlugins, // Mainnet fork
 }
 
 export const rewardsByProtocol: { [x: Address]: ProtocolKey[] } = {
@@ -29,6 +29,8 @@ export const rewardsByProtocol: { [x: Address]: ProtocolKey[] } = {
   [CVX_ADDRESS[ChainId.Mainnet]]: ['CONVEX'],
   [COMP_ADDRESS[ChainId.Base]]: ['COMP', 'COMPv3'],
   [STG_ADDRESS[ChainId.Base]]: ['STARGATE'],
+  [ARB_ADDRESS[ChainId.Arbitrum]]: ['AAVEv3'],
+  [COMP_ADDRESS[ChainId.Arbitrum]]: ['COMPv3'],
 }
 
 const collateralToProtocol = (acc: StringMap, curr: CollateralPlugin) => {

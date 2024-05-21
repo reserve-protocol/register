@@ -127,7 +127,7 @@ const About = () => (
         chains={[ChainId.Mainnet, ChainId.Base, ChainId.Arbitrum]}
       />
       <Text sx={{ fontSize: [2, 3] }}>
-        <Trans>On Ethereum & Base & Arbitrum</Trans>
+        <Trans>On Ethereum, Base & Arbitrum</Trans>
       </Text>
     </Box>
     <Box sx={{ maxWidth: 900, textAlign: 'center' }} mt={[2, 4]}>

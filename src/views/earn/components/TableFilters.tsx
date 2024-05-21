@@ -10,11 +10,14 @@ import { borderRadius } from 'theme'
 import { Box, Text } from 'theme-ui'
 import { RSR_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
+import { supportedChainList } from 'utils/constants'
 import {
   filterOptionAtom,
+  poolChainsFilterAtom,
   poolFilterAtom,
   poolSearchFilterAtom,
 } from '../atoms'
+import PoolsChainFilter from './PoolsChainFilter'
 
 // Includes Eth+
 const ETH_ADDRESSES = [
@@ -37,7 +40,7 @@ const FilterOptions = () => {
       {
         text: 'Stables',
         filter: { stables: true, tokens: [] },
-        icon: <EarnNavIcon />,
+        icon: <EarnNavIcon style={{ margin: '0 -3px 0 -3px' }} />,
       },
       {
         text: 'ETH',
@@ -62,8 +65,6 @@ const FilterOptions = () => {
     <Box
       sx={{ borderRadius: borderRadius.inputs, background: 'inputBackground' }}
       variant="layout.verticalAlign"
-      ml={2}
-      mr={1}
       p={'2px'}
     >
       {options.map(({ text, icon }, index) => (
@@ -85,7 +86,7 @@ const FilterOptions = () => {
           onClick={() => handleSelect(index)}
         >
           {icon}{' '}
-          <Text ml="2" sx={{ display: ['none', 'block'] }}>
+          <Text ml="6px" sx={{ display: ['none', 'block'] }}>
             {text}
           </Text>
         </Box>
@@ -101,6 +102,10 @@ const setPageSearchAtom = atom(null, (get, set, search: string) => {
     tokens: search ? search.split(',') : [],
   })
   set(poolSearchFilterAtom, '')
+  set(
+    poolChainsFilterAtom,
+    supportedChainList.map((chain) => chain.toString())
+  )
 })
 
 const TableFilters = () => {
@@ -124,7 +129,12 @@ const TableFilters = () => {
   return (
     <Box
       variant="layout.verticalAlign"
-      sx={{ flexShrink: 0, minWidth: [200, 680, 'auto'] }}
+      sx={{
+        flexShrink: 0,
+        minWidth: [200, 'auto', 'auto'],
+        flexWrap: 'wrap',
+        gap: 2,
+      }}
       marginLeft={[0, 0, 'auto']}
     >
       <SearchInput
@@ -135,6 +145,7 @@ const TableFilters = () => {
         sx={{ maxWidth: ['auto', 200, 160], borderRadius: borderRadius.inputs }}
       />
       <FilterOptions />
+      <PoolsChainFilter />
     </Box>
   )
 }
