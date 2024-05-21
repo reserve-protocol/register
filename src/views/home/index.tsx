@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <Box sx={{ position: 'relative' }}>
       <Grid
-        columns={[1, '15fr 13fr']}
+        columns={[1, '15fr 12fr']}
         gap={4}
         sx={{
           flexDirection: 'column',
