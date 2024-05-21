@@ -2,6 +2,14 @@ import MoneyIcon from 'components/icons/MoneyIcon'
 import { ArrowRight, ChevronRight } from 'react-feather'
 import { NavLink } from 'react-router-dom'
 import { Box, Grid, Text } from 'theme-ui'
+import { getTokenRoute } from 'utils'
+import {
+  ETHPLUS_ADDRESS,
+  EUSD_ADDRESS,
+  RGUSD_ADDRESS,
+  USD3_ADDRESS,
+} from 'utils/addresses'
+import { ChainId } from 'utils/chains'
 import { ROUTES } from 'utils/constants'
 
 const UseCases = () => {
@@ -9,30 +17,45 @@ const UseCases = () => {
     {
       title: 'USD Yield',
       description:
-        'Lorem ipsum dolor sit amet, elit sed consectetur adipiscing.',
+        'Diversified blue chip lending exposure + blue chip stables.',
       icon: <MoneyIcon />,
-      link: ROUTES.COMPARE,
+      link: getTokenRoute(
+        USD3_ADDRESS[ChainId.Mainnet],
+        ChainId.Mainnet,
+        ROUTES.OVERVIEW
+      ),
     },
     {
       title: 'ETH Yield',
       description:
-        'Lorem ipsum dolor sit amet, elit sed consectetur adipiscing.',
+        'Diversified bluechip liquid staking protocols with Automated yield compounding & portfolio rebalancing.',
       icon: <MoneyIcon />,
-      link: ROUTES.COMPARE,
+      link: getTokenRoute(
+        ETHPLUS_ADDRESS[ChainId.Mainnet],
+        ChainId.Mainnet,
+        ROUTES.OVERVIEW
+      ),
     },
     {
-      title: 'Indexes',
-      description:
-        'Lorem ipsum dolor sit amet, elit sed consectetur adipiscing.',
+      title: 'USD Stablecoins',
+      description: 'Fully collateralized US-dollar stablecoins.',
       icon: <MoneyIcon />,
-      link: ROUTES.COMPARE,
+      link: getTokenRoute(
+        EUSD_ADDRESS[ChainId.Mainnet],
+        ChainId.Mainnet,
+        ROUTES.OVERVIEW
+      ),
     },
     {
-      title: 'Indexes',
+      title: 'Incentive Games',
       description:
-        'Lorem ipsum dolor sit amet, elit sed consectetur adipiscing.',
+        'Overcollateralized stablecoin that directs its collateral basket revenue toward incentivizing rgUSD liquidity.',
       icon: <MoneyIcon />,
-      link: ROUTES.COMPARE,
+      link: getTokenRoute(
+        RGUSD_ADDRESS[ChainId.Mainnet],
+        ChainId.Mainnet,
+        ROUTES.OVERVIEW
+      ),
     },
   ]
 
@@ -89,6 +112,7 @@ const UseCases = () => {
                 pl: [0, index % 2 === 1 ? 4 : 0],
                 pr: [0, index % 2 === 0 ? 4 : 0],
                 cursor: 'pointer',
+                minHeight: '180px',
               }}
             >
               <Box

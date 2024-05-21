@@ -77,7 +77,7 @@ const ProtocolStats = () => {
             borderTop: ['none', index < 2 ? '1.5px solid' : 'none'],
             borderRight: ['none', index % 2 === 0 ? '1.5px solid' : 'none'],
             borderBottom: ['none', index < 2 ? '1.5px solid' : 'none'],
-            borderColor: ['reserveBackground', 'reserveBackground'],
+            borderColor: ['border', 'border'],
             gap: 3,
             p: 4,
           }}
@@ -109,7 +109,7 @@ const HeroHeader = () => {
       p={4}
       sx={{
         borderBottom: '1.5px solid',
-        borderColor: 'reserveBackground',
+        borderColor: 'border',
         justifyContent: 'space-between',
         gap: 2,
       }}
@@ -198,7 +198,7 @@ const Hero = () => (
       sx={{
         flexDirection: 'column',
         borderRadius: '14px',
-        backgroundColor: 'reserveBackgroundSecondary',
+        backgroundColor: 'reserveBackground',
         border: '1.5px solid',
         borderColor: 'reserveBackground',
       }}
