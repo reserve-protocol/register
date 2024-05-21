@@ -1,7 +1,7 @@
 import MoneyIcon from 'components/icons/MoneyIcon'
 import TokenLogo from 'components/icons/TokenLogo'
 import { ArrowRight, ChevronRight } from 'react-feather'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { Box, Grid, Text } from 'theme-ui'
 import { getTokenRoute } from 'utils'
 import {
@@ -14,6 +14,8 @@ import { ChainId } from 'utils/chains'
 import { ROUTES } from 'utils/constants'
 
 const UseCases = () => {
+  const navigate = useNavigate()
+
   const useCases = [
     {
       title: 'USD Yield',
@@ -70,67 +72,66 @@ const UseCases = () => {
         <Text variant="title" sx={{ fontWeight: 'bold' }}>
           RTokens for your needs
         </Text>
-        <NavLink
-          to={ROUTES.COMPARE}
-          style={{
-            textDecoration: 'none',
-          }}
-        >
-          <Box
-            variant="layout.verticalAlign"
-            sx={{
-              gap: 1,
-              cursor: 'pointer',
-              ':hover': {
-                filter: 'brightness(1.1)',
-              },
+        <Box sx={{ display: ['none', 'flex'] }}>
+          <NavLink
+            to={ROUTES.COMPARE}
+            style={{
+              textDecoration: 'none',
             }}
           >
-            <Text variant="bold" color="#999">
-              All RTokens
-            </Text>
-            <ArrowRight color="#999" size={16} />
-          </Box>
-        </NavLink>
-      </Box>
-      <Grid columns={['1fr', '1fr 1fr']} gap={[4, 0]}>
-        {useCases.map(({ title, description, icon, link }, index) => (
-          <NavLink
-            to={link}
-            key={`${title}-${index}`}
-            style={{ textDecoration: 'none', color: 'inherit' }}
-          >
             <Box
+              variant="layout.verticalAlign"
               sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                borderTop: ['none', index < 2 ? '1.5px solid' : 'none'],
-                borderRight: ['none', index % 2 === 0 ? '1.5px solid' : 'none'],
-                borderBottom: ['none', index < 2 ? '1.5px solid' : 'none'],
-                borderColor: ['border', 'border'],
-                gap: 3,
-                py: 4,
-                pl: [0, index % 2 === 1 ? 4 : 0],
-                pr: [0, index % 2 === 0 ? 4 : 0],
+                gap: 1,
                 cursor: 'pointer',
-                minHeight: '164px',
+                ':hover': {
+                  filter: 'brightness(1.1)',
+                },
               }}
             >
-              <Box
-                variant="layout.verticalAlign"
-                sx={{ gap: 1, justifyContent: 'space-between' }}
-              >
-                <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
-                  {icon}
-                  <Text sx={{ fontWeight: 'bold' }}>{title}</Text>
-                </Box>
-                <ChevronRight color="#999" size={16} />
-              </Box>
-              <Box>
-                <Text sx={{ color: 'secondaryText' }}>{description}</Text>
-              </Box>
+              <Text variant="bold" color="#999">
+                All RTokens
+              </Text>
+              <ArrowRight color="#999" size={16} />
             </Box>
           </NavLink>
+        </Box>
+      </Box>
+      <Grid columns={['1fr', '1fr 1fr']} gap={0}>
+        {useCases.map(({ title, description, icon, link }, index) => (
+          <Box
+            key={`${title}-${index}`}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              borderTop: ['1.5px solid', index < 2 ? '1.5px solid' : 'none'],
+              borderRight: ['none', index % 2 === 0 ? '1.5px solid' : 'none'],
+              borderBottom: ['none', index < 2 ? '1.5px solid' : 'none'],
+              borderColor: ['border', 'border'],
+              gap: [2, 3],
+              py: [4, 4],
+              pl: [3, index % 2 === 1 ? 4 : 0],
+              pr: [3, index % 2 === 0 ? 4 : 0],
+              cursor: 'pointer',
+              minHeight: [0, '164px'],
+              mx: [-3, 0],
+            }}
+            onClick={() => navigate(link)}
+          >
+            <Box
+              variant="layout.verticalAlign"
+              sx={{ gap: 1, justifyContent: 'space-between' }}
+            >
+              <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+                {icon}
+                <Text sx={{ fontWeight: 'bold' }}>{title}</Text>
+              </Box>
+              <ChevronRight color="#999" size={16} />
+            </Box>
+            <Box>
+              <Text sx={{ color: 'secondaryText' }}>{description}</Text>
+            </Box>
+          </Box>
         ))}
       </Grid>
     </Box>
