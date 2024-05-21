@@ -47,8 +47,13 @@ const About = () => {
         src={url}
         alt="About background"
         sx={{
-          objectFit: 'fill',
+          objectFit: 'cover',
+          objectPosition: 'start',
           width: '100%',
+          maxHeight: '320px',
+          borderRadius: '14px',
+          border: '2px solid',
+          borderColor: 'reserveBackground',
         }}
       />
     </Box>

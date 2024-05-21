@@ -113,17 +113,19 @@ const UseCases = () => {
                 pl: [0, index % 2 === 1 ? 4 : 0],
                 pr: [0, index % 2 === 0 ? 4 : 0],
                 cursor: 'pointer',
-                minHeight: '200px',
+                minHeight: '164px',
               }}
             >
               <Box
                 variant="layout.verticalAlign"
                 sx={{ gap: 1, justifyContent: 'space-between' }}
               >
-                {icon}
+                <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+                  {icon}
+                  <Text sx={{ fontWeight: 'bold' }}>{title}</Text>
+                </Box>
                 <ChevronRight color="#999" size={16} />
               </Box>
-              <Text sx={{ fontWeight: 'bold' }}>{title}</Text>
               <Box>
                 <Text sx={{ color: 'secondaryText' }}>{description}</Text>
               </Box>
