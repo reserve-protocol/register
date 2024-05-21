@@ -28,6 +28,16 @@ const DivaButtonAppendix: FC<Props> = ({
         borderColor: borderColor,
         borderRadius: '14px 46px 46px 14px',
         gap: 2,
+        cursor: 'pointer',
+      }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          e.stopPropagation()
+          window.open(
+            'https://medium.com/@nektarnetwork/epoch-1-of-nektar-drops-begins-now-2e2593118e5a',
+            '_blank'
+          )
+        }
       }}
     >
       {children}
@@ -36,6 +46,12 @@ const DivaButtonAppendix: FC<Props> = ({
         pr="12px"
         sx={{
           gap: 1,
+        }}
+        onClick={() => {
+          window.open(
+            'https://medium.com/@nektarnetwork/epoch-1-of-nektar-drops-begins-now-2e2593118e5a',
+            '_blank'
+          )
         }}
       >
         <Plus strokeWidth={1.2} size={16} />
