@@ -12,10 +12,11 @@ const Home = () => {
         gap={4}
         sx={{
           flexDirection: 'column',
-          maxWidth: '95em',
+          maxWidth: '98em',
         }}
-        mt={[1, 7]}
+        mt={[1, 4]}
         mx="auto"
+        px={[0, 4]}
       >
         <Hero />
         <Box>
