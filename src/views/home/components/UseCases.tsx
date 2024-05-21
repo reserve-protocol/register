@@ -29,22 +29,22 @@ const UseCases = () => {
       ),
     },
     {
+      title: 'USD Stablecoins',
+      description: 'Fully collateralized US-dollar stablecoins.',
+      icon: <TokenLogo src="/svgs/eusd.svg" />,
+      link: getTokenRoute(
+        EUSD_ADDRESS[ChainId.Mainnet],
+        ChainId.Mainnet,
+        ROUTES.OVERVIEW
+      ),
+    },
+    {
       title: 'ETH Yield',
       description:
         'Diversified bluechip liquid staking protocols with Automated yield compounding & portfolio rebalancing.',
       icon: <TokenLogo src="/svgs/ethplus.svg" />,
       link: getTokenRoute(
         ETHPLUS_ADDRESS[ChainId.Mainnet],
-        ChainId.Mainnet,
-        ROUTES.OVERVIEW
-      ),
-    },
-    {
-      title: 'USD Stablecoins',
-      description: 'Fully collateralized US-dollar stablecoins.',
-      icon: <TokenLogo src="/svgs/eusd.svg" />,
-      link: getTokenRoute(
-        EUSD_ADDRESS[ChainId.Mainnet],
         ChainId.Mainnet,
         ROUTES.OVERVIEW
       ),
