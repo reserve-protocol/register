@@ -120,7 +120,7 @@ const UseCases = () => {
                 variant="layout.verticalAlign"
                 sx={{ gap: 1, justifyContent: 'space-between' }}
               >
-                <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+                <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
                   {icon}
                   <Text sx={{ fontWeight: 'bold' }}>{title}</Text>
                 </Box>
