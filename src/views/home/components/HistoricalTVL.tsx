@@ -43,6 +43,7 @@ function CustomTooltip({ payload, label, active }: any) {
         background: 'cardAlternative',
         gap: 3,
         p: 0,
+        minWidth: '280px',
       }}
     >
       <Box

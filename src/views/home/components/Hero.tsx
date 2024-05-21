@@ -205,7 +205,7 @@ const Hero = () => (
       mx="auto"
     >
       <HeroHeader />
-      <Box sx={{ position: 'relative', height: 420 }} px={3} pt={2}>
+      <Box sx={{ position: 'relative', height: 440 }} px={3} pt={2}>
         <HeroTVL />
         <HistoricalTVL />
       </Box>

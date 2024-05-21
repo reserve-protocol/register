@@ -1,4 +1,5 @@
 import MoneyIcon from 'components/icons/MoneyIcon'
+import TokenLogo from 'components/icons/TokenLogo'
 import { ArrowRight, ChevronRight } from 'react-feather'
 import { NavLink } from 'react-router-dom'
 import { Box, Grid, Text } from 'theme-ui'
@@ -18,7 +19,7 @@ const UseCases = () => {
       title: 'USD Yield',
       description:
         'Diversified blue chip lending exposure + blue chip stables.',
-      icon: <MoneyIcon />,
+      icon: <TokenLogo src="/svgs/usd3.svg" />,
       link: getTokenRoute(
         USD3_ADDRESS[ChainId.Mainnet],
         ChainId.Mainnet,
@@ -29,7 +30,7 @@ const UseCases = () => {
       title: 'ETH Yield',
       description:
         'Diversified bluechip liquid staking protocols with Automated yield compounding & portfolio rebalancing.',
-      icon: <MoneyIcon />,
+      icon: <TokenLogo src="/svgs/ethplus.svg" />,
       link: getTokenRoute(
         ETHPLUS_ADDRESS[ChainId.Mainnet],
         ChainId.Mainnet,
@@ -39,7 +40,7 @@ const UseCases = () => {
     {
       title: 'USD Stablecoins',
       description: 'Fully collateralized US-dollar stablecoins.',
-      icon: <MoneyIcon />,
+      icon: <TokenLogo src="/svgs/eusd.svg" />,
       link: getTokenRoute(
         EUSD_ADDRESS[ChainId.Mainnet],
         ChainId.Mainnet,
@@ -50,7 +51,7 @@ const UseCases = () => {
       title: 'Incentive Games',
       description:
         'Overcollateralized stablecoin that directs its collateral basket revenue toward incentivizing rgUSD liquidity.',
-      icon: <MoneyIcon />,
+      icon: <TokenLogo src="/svgs/rgusd.svg" />,
       link: getTokenRoute(
         RGUSD_ADDRESS[ChainId.Mainnet],
         ChainId.Mainnet,
@@ -112,7 +113,7 @@ const UseCases = () => {
                 pl: [0, index % 2 === 1 ? 4 : 0],
                 pr: [0, index % 2 === 0 ? 4 : 0],
                 cursor: 'pointer',
-                minHeight: '180px',
+                minHeight: '200px',
               }}
             >
               <Box
@@ -122,10 +123,8 @@ const UseCases = () => {
                 {icon}
                 <ChevronRight color="#999" size={16} />
               </Box>
+              <Text sx={{ fontWeight: 'bold' }}>{title}</Text>
               <Box>
-                <Box>
-                  <Text sx={{ fontWeight: 'bold' }}>{title}</Text>
-                </Box>
                 <Text sx={{ color: 'secondaryText' }}>{description}</Text>
               </Box>
             </Box>
