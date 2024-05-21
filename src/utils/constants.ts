@@ -18,6 +18,12 @@ export const REGISTER_FEEDBACK = 'https://reserve.canny.io/register-app'
 export const REGISTER_BUGS =
   'https://reserve.canny.io/defi-surfaces-bug-reporting'
 
+export const DIVA_SAFE_POOLS = [
+  '57d5dc30-8ade-4f40-87d2-6065297d0705',
+  '5f83ac83-753a-4382-869f-38c4e1658a36',
+  '91ec3f5f-587c-4a26-9a98-1593ed9bab26'
+]
+
 export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
   'curve-dex': {
     name: 'Curve',

@@ -1,5 +1,6 @@
 import { t } from '@lingui/macro'
 import { createColumnHelper } from '@tanstack/react-table'
+import DivaBadge from 'components/diva-points/DivaBadge'
 import Help from 'components/help'
 import Beefy from 'components/icons/Beefy'
 import Camelot from 'components/icons/Camelot'
@@ -22,18 +23,9 @@ import { Pool } from 'state/pools/atoms'
 import { colors } from 'theme'
 import { Box, Image, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
-import { ChainId } from 'utils/chains'
 import { CHAIN_TAGS, LP_PROJECTS, NETWORKS } from 'utils/constants'
 
-export const columnVisibility = [
-  '',
-  '',
-  ['none', 'table-cell'],
-  '',
-  ['none', 'none', 'table-cell'],
-  ['none', 'none', 'table-cell'],
-  ['none', 'table-cell'],
-]
+export const columnVisibility = []
 
 export const compactColumnVisibility = [
   '',
@@ -184,7 +176,15 @@ const useEarnTableColumns = (compact: boolean) => {
             </Box>
           )
         },
-        cell: (data) => `${formatCurrency(data.getValue(), 1)}%`,
+        cell: (data) => (
+          <Box
+            variant="layout.verticalAlign"
+            sx={{ gap: 2, minWidth: '156px' }}
+          >
+            {`${formatCurrency(data.getValue(), 1)}%`}
+            <DivaBadge poolId={data.row.original.id} />
+          </Box>
+        ),
       }),
       columnHelper.accessor('tvlUsd', {
         header: t`TVL`,
