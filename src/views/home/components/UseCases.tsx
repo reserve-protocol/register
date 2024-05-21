@@ -104,16 +104,15 @@ const UseCases = () => {
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              borderTop: ['1.5px solid', index < 2 ? '1.5px solid' : 'none'],
-              borderRight: ['none', index % 2 === 0 ? '1.5px solid' : 'none'],
-              borderBottom: ['none', index < 2 ? '1.5px solid' : 'none'],
+              borderTop: ['1px solid', index < 2 ? '1px solid' : 'none'],
+              borderRight: ['none', index % 2 === 0 ? '1px solid' : 'none'],
+              borderBottom: ['none', index < 2 ? '1px solid' : 'none'],
               borderColor: ['border', 'border'],
               gap: [2, 3],
               py: [4, 4],
               pl: [3, index % 2 === 1 ? 4 : 0],
               pr: [3, index % 2 === 0 ? 4 : 0],
               cursor: 'pointer',
-              minHeight: [0, '164px'],
               mx: [-3, 0],
             }}
             onClick={() => navigate(link)}

@@ -50,7 +50,7 @@ const About = () => {
           objectFit: 'cover',
           objectPosition: '-2px -2px',
           width: '100%',
-          maxHeight: '320px',
+          maxHeight: '350px',
           borderRadius: '18px',
           border: '2px solid',
           borderColor: 'reserveBackground',
