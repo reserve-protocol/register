@@ -92,7 +92,9 @@ const ProtocolStats = () => {
             borderBottom: ['none', index < 2 ? '1px solid' : 'none'],
             borderColor: ['darkBorder', 'darkBorder'],
             gap: [0, 3],
-            p: 4,
+            py: 4,
+            pl: [index === 0 ? 4 : 3, 4],
+            pr: [index === statInfo.length - 1 ? 4 : 3, 4],
             pb: [3, 4],
             minWidth: ['auto', 0],
           }}
@@ -228,9 +230,8 @@ const HeroTVL = () => {
       px={[3, 4]}
       pt={5}
     >
-      <Box pb={2}>
-        <RootIcon width={48} height={48} />
-      </Box>
+      <Text sx={{ fontSize: 4 }}>TVL in Reserve</Text>
+
       {!isLoading ? (
         <Text variant="bold" sx={{ fontSize: [5, 6] }}>
           ${formatCurrency(tvl, 0)}
@@ -238,8 +239,6 @@ const HeroTVL = () => {
       ) : (
         <Skeleton height={52} width={300} style={{ marginBottom: '16px' }} />
       )}
-
-      <Text sx={{ fontSize: 4 }}>TVL in Reserve</Text>
     </Box>
   )
 }
@@ -277,7 +276,7 @@ const Hero = () => (
       sx={{
         flexDirection: 'column',
         borderRadius: [0, '14px'],
-        backgroundColor: 'reserveBackground',
+        backgroundColor: ['none', 'reserveBackground'],
         border: ['none', '1px solid'],
         borderColor: ['darkBorder', 'darkBorder'],
       }}

@@ -30,9 +30,9 @@ const AppHeader = () => {
       >
         <Box
           variant="layout.verticalAlign"
-          sx={{ position: 'absolute', left: ['8px', '24px'] }}
+          sx={{ position: ['relative', 'absolute'], left: ['8px', '24px'] }}
         >
-          <Brand mr={[2, 4]} />
+          <Brand mr={[3, 4]} />
           <ThemeColorMode
             sx={{
               display: ['none', 'flex'],

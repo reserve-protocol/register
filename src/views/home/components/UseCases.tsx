@@ -1,15 +1,9 @@
-import MoneyIcon from 'components/icons/MoneyIcon'
 import TokenLogo from 'components/icons/TokenLogo'
-import { ArrowRight, ChevronRight } from 'react-feather'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { ArrowRight, ArrowUpRight, ChevronRight } from 'react-feather'
+import { useNavigate } from 'react-router-dom'
 import { Box, Grid, Text } from 'theme-ui'
 import { getTokenRoute } from 'utils'
-import {
-  ETHPLUS_ADDRESS,
-  EUSD_ADDRESS,
-  RGUSD_ADDRESS,
-  USD3_ADDRESS,
-} from 'utils/addresses'
+import { ETHPLUS_ADDRESS, RGUSD_ADDRESS, USD3_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import { ROUTES } from 'utils/constants'
 
@@ -21,7 +15,7 @@ const UseCases = () => {
       title: 'USD Yield',
       description:
         'Diversified blue chip lending exposure + blue chip stables.',
-      icon: <TokenLogo src="/svgs/usd3.svg" />,
+      icon: <TokenLogo width={24} src="/svgs/usd3.svg" />,
       link: getTokenRoute(
         USD3_ADDRESS[ChainId.Mainnet],
         ChainId.Mainnet,
@@ -32,14 +26,14 @@ const UseCases = () => {
       title: 'DeFi Yield',
       description:
         'Provide liquidity across DeFi & earn more with your RTokens.',
-      icon: <TokenLogo src="/imgs/beefy.png" />,
+      icon: <TokenLogo width={24} src="/imgs/beefy.png" />,
       link: ROUTES.EARN,
     },
     {
       title: 'ETH Yield',
       description:
         'Diversified bluechip liquid staking protocols with Automated yield compounding & portfolio rebalancing.',
-      icon: <TokenLogo src="/svgs/ethplus.svg" />,
+      icon: <TokenLogo width={24} src="/svgs/ethplus.svg" />,
       link: getTokenRoute(
         ETHPLUS_ADDRESS[ChainId.Mainnet],
         ChainId.Mainnet,
@@ -50,7 +44,7 @@ const UseCases = () => {
       title: 'Incentive Games',
       description:
         'Overcollateralized stablecoin that directs its collateral basket revenue toward incentivizing rgUSD liquidity.',
-      icon: <TokenLogo src="/svgs/rgusd.svg" />,
+      icon: <TokenLogo width={24} src="/svgs/rgusd.svg" />,
       link: getTokenRoute(
         RGUSD_ADDRESS[ChainId.Mainnet],
         ChainId.Mainnet,
@@ -66,9 +60,7 @@ const UseCases = () => {
         sx={{ justifyContent: 'space-between', gap: 2 }}
         py={4}
       >
-        <Text variant="title" sx={{ fontWeight: 'bold' }}>
-          Discover the protocol
-        </Text>
+        <Text variant="sectionTitle">Discover the protocol</Text>
         <Box sx={{ display: ['none', 'flex'] }}>
           <Box
             variant="layout.verticalAlign"
@@ -79,14 +71,12 @@ const UseCases = () => {
                 filter: 'brightness(1.1)',
               },
             }}
-            onClick={() =>
-              window.open('https://reserve.org/protocol/', '_blank')
-            }
+            onClick={() => window.open('https://reserve.org/', '_blank')}
           >
-            <Text variant="bold" color="#999">
+            <Text variant="bold" color="#999" sx={{ fontSize: 3 }}>
               Learn about Reserve
             </Text>
-            <ArrowRight color="#999" size={16} />
+            <ArrowUpRight color="#999" size={20} />
           </Box>
         </Box>
       </Box>
@@ -116,7 +106,7 @@ const UseCases = () => {
             >
               <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
                 {icon}
-                <Text sx={{ fontWeight: 'bold' }}>{title}</Text>
+                <Text sx={{ fontWeight: 'bold', fontSize: 3 }}>{title}</Text>
               </Box>
               <ChevronRight color="#999" size={16} />
             </Box>
