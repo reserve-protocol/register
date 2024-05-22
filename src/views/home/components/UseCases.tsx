@@ -29,14 +29,11 @@ const UseCases = () => {
       ),
     },
     {
-      title: 'USD Stablecoins',
-      description: 'Fully collateralized US-dollar stablecoins.',
-      icon: <TokenLogo src="/svgs/eusd.svg" />,
-      link: getTokenRoute(
-        EUSD_ADDRESS[ChainId.Mainnet],
-        ChainId.Mainnet,
-        ROUTES.OVERVIEW
-      ),
+      title: 'DeFi Yield',
+      description:
+        'Provide liquidity across DeFi & earn more with your RTokens.',
+      icon: <TokenLogo src="/imgs/beefy.png" />,
+      link: ROUTES.EARN,
     },
     {
       title: 'ETH Yield',
@@ -70,7 +67,7 @@ const UseCases = () => {
         py={4}
       >
         <Text variant="title" sx={{ fontWeight: 'bold' }}>
-          RTokens for your needs
+          Discover the protocol
         </Text>
         <Box sx={{ display: ['none', 'flex'] }}>
           <NavLink
@@ -90,7 +87,7 @@ const UseCases = () => {
               }}
             >
               <Text variant="bold" color="#999">
-                All RTokens
+                Learn about Reserve
               </Text>
               <ArrowRight color="#999" size={16} />
             </Box>
