@@ -113,7 +113,6 @@ const HistoricalTVL = () => {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart
-        height={400}
         data={data}
         margin={{
           right: 10,

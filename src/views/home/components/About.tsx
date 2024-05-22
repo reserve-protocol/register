@@ -8,7 +8,7 @@ const About = () => {
       : '/imgs/bg-about-light.png'
 
   return (
-    <Box sx={{ position: 'relative' }}>
+    <Box sx={{ position: 'relative', height: '100%', flexGrow: 1 }}>
       <Image
         src={url}
         alt="About background"
@@ -16,7 +16,9 @@ const About = () => {
           objectFit: ['none', 'cover'],
           objectPosition: ['left 60%', 'left top'],
           width: '100%',
-          maxHeight: '350px',
+          height: '240px',
+          maxHeight: ['200px', '100%'],
+          minHeight: ['50px', '100%'],
           borderRadius: [0, '14px'],
           border: '1.5px solid',
           borderColor:

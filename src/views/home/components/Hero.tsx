@@ -271,30 +271,49 @@ const MobileDuneLink = () => {
 }
 
 const Hero = () => (
-  <Box sx={{ position: 'relative' }}>
+  <Box
+    sx={{
+      position: 'relative',
+      height: '100%',
+      overflow: 'hidden',
+      minHeight: 600,
+    }}
+  >
     <Flex
       sx={{
+        position: 'relative',
         flexDirection: 'column',
         borderRadius: [0, '14px'],
         backgroundColor: ['none', 'reserveBackground'],
         border: ['none', '1px solid'],
         borderColor: ['darkBorder', 'darkBorder'],
+        height: '100%',
+        overflow: 'hidden',
       }}
       mx="auto"
     >
       <Box
         sx={{
+          position: 'relative',
           display: 'flex',
           flexDirection: ['column-reverse', 'column'],
+          height: '100%',
+          overflow: 'hidden',
         }}
       >
         <HeroHeader />
-        <Box sx={{ position: 'relative', height: 440 }} px={[2, 3]} pt={2}>
+        <Box
+          sx={{ position: 'relative', height: '100%', overflow: 'hidden' }}
+          px={[2, 3]}
+          pt={2}
+        >
           <HeroTVL />
           <HistoricalTVL />
         </Box>
       </Box>
-      <ProtocolStats />
+      <Box sx={{ flexGrow: 1 }}>
+        <ProtocolStats />
+      </Box>
       <MobileDuneLink />
     </Flex>
   </Box>
