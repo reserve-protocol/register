@@ -13,11 +13,11 @@ const About = () => {
         src={url}
         alt="About background"
         sx={{
-          objectFit: 'cover',
-          objectPosition: 'left top',
+          objectFit: ['none', 'cover'],
+          objectPosition: ['left 60%', 'left top'],
           width: '100%',
           maxHeight: '350px',
-          borderRadius: '14px',
+          borderRadius: [0, '14px'],
           border: '1.5px solid',
           borderColor:
             colorMode === 'dark' ? 'darkBorder' : 'reserveBackground',

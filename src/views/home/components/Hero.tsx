@@ -276,10 +276,10 @@ const Hero = () => (
     <Flex
       sx={{
         flexDirection: 'column',
-        borderRadius: '14px',
+        borderRadius: [0, '14px'],
         backgroundColor: 'reserveBackground',
-        border: '1px solid',
-        borderColor: 'darkBorder',
+        border: ['none', '1px solid'],
+        borderColor: ['darkBorder', 'darkBorder'],
       }}
       mx="auto"
     >

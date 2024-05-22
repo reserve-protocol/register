@@ -60,7 +60,7 @@ const UseCases = () => {
   ]
 
   return (
-    <Box sx={{ position: 'relative' }} px={3}>
+    <Box sx={{ position: 'relative' }} px={[4, 3]}>
       <Box
         variant="layout.verticalAlign"
         sx={{ justifyContent: 'space-between', gap: 2 }}

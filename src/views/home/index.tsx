@@ -9,12 +9,12 @@ const Home = () => {
     <Box sx={{ position: 'relative' }}>
       <Grid
         columns={[1, '15fr 13fr']}
-        gap={4}
+        gap={[0, 4]}
         sx={{
           flexDirection: 'column',
           maxWidth: '98em',
         }}
-        mt={[1, 4]}
+        mt={[0, 4]}
         mx="auto"
         px={[0, 4]}
       >
