@@ -1,5 +1,4 @@
-import { ArrowUpRight } from 'react-feather'
-import { Box, Image, Text, useColorMode } from 'theme-ui'
+import { Box, Image, useColorMode } from 'theme-ui'
 
 const About = () => {
   const [colorMode] = useColorMode()
@@ -10,50 +9,18 @@ const About = () => {
 
   return (
     <Box sx={{ position: 'relative' }}>
-      {colorMode === 'light' && (
-        <Box
-          variant="layout.verticalAlign"
-          sx={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            justifyContent: 'space-between',
-            width: '100%',
-          }}
-          p={4}
-        >
-          <Image src="/svgs/reserve.svg" alt="Reserve logo" />
-          <Box
-            variant="layout.verticalAlign"
-            sx={{
-              gap: 1,
-              cursor: 'pointer',
-              ':hover': {
-                filter: 'brightness(1.1)',
-              },
-            }}
-            onClick={() =>
-              window.open('https://reserve.org/protocol/', '_blank')
-            }
-          >
-            <Text variant="bold" color="#999">
-              About Reserve
-            </Text>
-            <ArrowUpRight color="#999" size={16} />
-          </Box>
-        </Box>
-      )}
       <Image
         src={url}
         alt="About background"
         sx={{
           objectFit: 'cover',
-          objectPosition: '-2px -2px',
+          objectPosition: 'left top',
           width: '100%',
           maxHeight: '350px',
-          borderRadius: '18px',
-          border: '2px solid',
-          borderColor: 'reserveBackground',
+          borderRadius: '14px',
+          border: '1.5px solid',
+          borderColor:
+            colorMode === 'dark' ? 'darkBorder' : 'reserveBackground',
         }}
       />
     </Box>

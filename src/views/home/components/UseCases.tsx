@@ -70,28 +70,24 @@ const UseCases = () => {
           Discover the protocol
         </Text>
         <Box sx={{ display: ['none', 'flex'] }}>
-          <NavLink
-            to={ROUTES.COMPARE}
-            style={{
-              textDecoration: 'none',
+          <Box
+            variant="layout.verticalAlign"
+            sx={{
+              gap: 1,
+              cursor: 'pointer',
+              ':hover': {
+                filter: 'brightness(1.1)',
+              },
             }}
+            onClick={() =>
+              window.open('https://reserve.org/protocol/', '_blank')
+            }
           >
-            <Box
-              variant="layout.verticalAlign"
-              sx={{
-                gap: 1,
-                cursor: 'pointer',
-                ':hover': {
-                  filter: 'brightness(1.1)',
-                },
-              }}
-            >
-              <Text variant="bold" color="#999">
-                Learn about Reserve
-              </Text>
-              <ArrowRight color="#999" size={16} />
-            </Box>
-          </NavLink>
+            <Text variant="bold" color="#999">
+              Learn about Reserve
+            </Text>
+            <ArrowRight color="#999" size={16} />
+          </Box>
         </Box>
       </Box>
       <Grid columns={['1fr', '1fr 1fr']} gap={0}>
