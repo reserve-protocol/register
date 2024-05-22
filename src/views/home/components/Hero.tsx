@@ -276,7 +276,7 @@ const Hero = () => (
       position: 'relative',
       height: '100%',
       overflow: 'hidden',
-      minHeight: 600,
+      minHeight: 480,
     }}
   >
     <Flex
