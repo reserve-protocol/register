@@ -89,7 +89,7 @@ const ProtocolStats = () => {
             alignItems: ['start', 'center'],
             borderTop: ['none', index < 2 ? '1px solid' : 'none'],
             borderRight: ['none', index % 2 === 0 ? '1px solid' : 'none'],
-            borderBottom: ['none', index < 2 ? '1px solid' : 'none'],
+            borderBottom: ['none', '1px solid'],
             borderColor: ['darkBorder', 'darkBorder'],
             gap: [0, 3],
             py: 4,
@@ -162,9 +162,17 @@ const HeroHeader = () => {
         borderColor: 'darkBorder',
         justifyContent: 'space-between',
         gap: 2,
+        fontSize: [2, 3],
       }}
     >
-      <Box variant="layout.verticalAlign">
+      <Box
+        variant="layout.verticalAlign"
+        sx={{
+          flexDirection: ['row', 'column'],
+          alignItems: ['center', 'flex-start'],
+          gap: [0, 2],
+        }}
+      >
         <StackedChainLogo chains={supportedChainList} />
         <Text>
           <Text sx={{ display: ['none', 'inline'] }}>The </Text>
@@ -193,6 +201,7 @@ const HeroHeader = () => {
             filter: 'brightness(1.1)',
           },
           display: ['none', 'flex'],
+          mt: [0, 'auto'],
         }}
         onClick={() =>
           window.open(
@@ -294,12 +303,14 @@ const Hero = () => (
         sx={{
           position: 'relative',
           display: 'flex',
-          flexDirection: ['column-reverse', 'column'],
+          flexDirection: 'column-reverse',
           height: '100%',
           overflow: 'hidden',
         }}
       >
-        <HeroHeader />
+        <Box sx={{ display: ['block', 'none'] }}>
+          <HeroHeader />
+        </Box>
         <Box
           sx={{ position: 'relative', height: '100%', overflow: 'hidden' }}
           px={[2, 3]}
@@ -311,6 +322,9 @@ const Hero = () => (
       </Box>
       <Box sx={{ flexGrow: 1 }}>
         <ProtocolStats />
+        <Box sx={{ display: ['none', 'block'] }}>
+          <HeroHeader />
+        </Box>
       </Box>
       <MobileDuneLink />
     </Flex>
