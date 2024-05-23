@@ -285,8 +285,6 @@ const Hero = () => (
         flexDirection: 'column',
         borderRadius: [0, '14px'],
         backgroundColor: ['none', 'reserveBackground'],
-        border: ['none', '1px solid'],
-        borderColor: ['darkBorder', 'darkBorder'],
         height: '100%',
         overflow: 'hidden',
       }}
