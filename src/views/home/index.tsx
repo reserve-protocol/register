@@ -10,7 +10,7 @@ const Home = () => {
         display: 'flex',
         position: 'relative',
         height: 'calc(100vh - 76px)',
-        py: [0, 7],
+        py: [0, 4],
         '@media (min-height: 1200px)': {
           height: 'auto',
           py: 7,
@@ -23,7 +23,7 @@ const Home = () => {
         sx={{
           flexDirection: 'column',
           maxWidth: '98em',
-          height: 'calc(100vh - 168px)',
+          height: 'calc(100vh - 120px)',
           maxHeight: '900px',
         }}
         my={[0, 'auto']}
