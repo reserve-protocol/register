@@ -44,11 +44,11 @@ const useHistoricalTVL = (): DailyTVL[] => {
     const tvlPerDay = supportedChainList
       .flatMap((chain) => {
         const metrics = data[chain] as ProtocolMetricsResponse
-        return metrics.dailyStats.map(({ totalValueLockedUSD, timestamp }) => ({
+        return metrics?.dailyStats.map(({ totalValueLockedUSD, timestamp }) => ({
           totalValueLockedUSD,
           chain,
-          day: dayjs(dayjs(timestamp * 1000).format('YYYY-MM-DD')).valueOf(),
-        }))
+          day: dayjs(timestamp * 1000).startOf('day').valueOf(),
+        })) || []
       })
       .reduce((acc, { totalValueLockedUSD, day, chain }) => {
         if (!acc[day]) {
