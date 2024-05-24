@@ -2,6 +2,7 @@ import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
 import { useMultichainQuery } from 'hooks/useQuery'
 import { useMemo } from 'react'
+import { getUTCStartOfDay } from 'utils'
 import { CHAIN_TO_NETWORK, NETWORKS, supportedChainList } from 'utils/constants'
 
 const protocolMetricsQuery = gql`
@@ -47,7 +48,7 @@ const useHistoricalTVL = (): DailyTVL[] => {
         return metrics?.dailyStats.map(({ totalValueLockedUSD, timestamp }) => ({
           totalValueLockedUSD,
           chain,
-          day: dayjs(timestamp * 1000).startOf('day').valueOf(),
+          day: getUTCStartOfDay(timestamp),
         })) || []
       })
       .reduce((acc, { totalValueLockedUSD, day, chain }) => {
