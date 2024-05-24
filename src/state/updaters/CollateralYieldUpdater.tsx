@@ -33,6 +33,7 @@ const poolsMap: StringMap = {
   'eab8d63d-8a8f-48cb-8027-583508831d24': 'mrp-asteth',
   '0f45d730-b279-4629-8e11-ccb5cc3038b4': 'cbeth',
   'c8a24fee-ec00-4f38-86c0-9f6daebc4225': 'sdai',
+  '55de30c3-bf9f-4d4e-9e0b-536a8ef5ab35': 'sfrax',
   'aa70268e-4b52-42bf-a116-608b370f9501': 'saethusdc',
   '01146cce-9140-4e03-9a2e-82c99ccc42f1': 'saethpyusd',
   'd118f505-e75f-4152-bad3-49a2dc7482bf': 'stkcvxpyusdusdc',
