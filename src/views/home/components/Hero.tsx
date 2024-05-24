@@ -1,7 +1,6 @@
 import { t } from '@lingui/macro'
 import Help from 'components/help'
 import LeafIcon from 'components/icons/LeafIcon'
-import RootIcon from 'components/icons/RootIcon'
 import ShieldIcon from 'components/icons/ShieldIcon'
 import StackedChainLogo from 'components/icons/StackedChainLogo'
 import TreeIcon from 'components/icons/TreeIcon'
@@ -76,6 +75,9 @@ const ProtocolStats = () => {
       columns={['1fr 1fr 1fr 1fr', '1fr 1fr']}
       sx={{
         overflowX: 'auto',
+        '::-webkit-scrollbar': {
+          display: 'none',
+        },
         gap: 0,
       }}
     >

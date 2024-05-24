@@ -1,7 +1,8 @@
 import TokenLogo from 'components/icons/TokenLogo'
+import { useMemo } from 'react'
 import { ArrowRight, ArrowUpRight, ChevronRight } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
-import { Box, Grid, Text } from 'theme-ui'
+import { Box, Grid, Text, useThemeUI } from 'theme-ui'
 import { getTokenRoute } from 'utils'
 import { ETHPLUS_ADDRESS, RGUSD_ADDRESS, USD3_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
@@ -9,49 +10,66 @@ import { ROUTES } from 'utils/constants'
 
 const UseCases = () => {
   const navigate = useNavigate()
+  const {
+    theme: { breakpoints },
+  } = useThemeUI()
 
-  const useCases = [
-    {
-      title: 'USD Yield',
-      description:
-        'Diversified blue chip lending exposure + blue chip stables.',
-      icon: <TokenLogo width={24} src="/svgs/usd3.svg" />,
-      link: getTokenRoute(
-        USD3_ADDRESS[ChainId.Mainnet],
-        ChainId.Mainnet,
-        ROUTES.OVERVIEW
-      ),
-    },
-    {
-      title: 'DeFi Yield',
-      description:
-        'Provide liquidity across DeFi & earn more with your RTokens.',
-      icon: <TokenLogo width={24} src="/imgs/beefy.png" />,
-      link: ROUTES.EARN,
-    },
-    {
-      title: 'ETH Yield',
-      description:
-        'Diversified bluechip liquid staking protocols with Automated yield compounding & portfolio rebalancing.',
-      icon: <TokenLogo width={24} src="/svgs/ethplus.svg" />,
-      link: getTokenRoute(
-        ETHPLUS_ADDRESS[ChainId.Mainnet],
-        ChainId.Mainnet,
-        ROUTES.OVERVIEW
-      ),
-    },
-    {
-      title: 'Incentive Games',
-      description:
-        'Overcollateralized stablecoin that directs its collateral basket revenue toward incentivizing rgUSD liquidity.',
-      icon: <TokenLogo width={24} src="/svgs/rgusd.svg" />,
-      link: getTokenRoute(
-        RGUSD_ADDRESS[ChainId.Mainnet],
-        ChainId.Mainnet,
-        ROUTES.OVERVIEW
-      ),
-    },
-  ]
+  const useCases = useMemo(() => {
+    const isMobile =
+      window.innerWidth <= parseFloat(breakpoints?.[0] || '0') * 16
+
+    const cases = [
+      {
+        title: 'USD Yield',
+        description:
+          'Diversified blue chip lending exposure + blue chip stables.',
+        icon: <TokenLogo width={24} src="/svgs/usd3.svg" />,
+        link: getTokenRoute(
+          USD3_ADDRESS[ChainId.Mainnet],
+          ChainId.Mainnet,
+          ROUTES.OVERVIEW
+        ),
+      },
+      {
+        title: 'DeFi Yield',
+        description:
+          'Provide liquidity across DeFi & earn more with your RTokens.',
+        icon: <TokenLogo width={24} src="/imgs/beefy.png" />,
+        link: ROUTES.EARN,
+      },
+      {
+        title: 'ETH Yield',
+        description:
+          'Diversified bluechip liquid staking protocols with automated yield compounding & portfolio rebalancing.',
+        icon: <TokenLogo width={24} src="/svgs/ethplus.svg" />,
+        link: getTokenRoute(
+          ETHPLUS_ADDRESS[ChainId.Mainnet],
+          ChainId.Mainnet,
+          ROUTES.OVERVIEW
+        ),
+      },
+      {
+        title: 'Incentive Games',
+        description:
+          'Overcollateralized stablecoin that directs its collateral basket revenue toward incentivizing rgUSD liquidity.',
+        icon: <TokenLogo width={24} src="/svgs/rgusd.svg" />,
+        link: getTokenRoute(
+          RGUSD_ADDRESS[ChainId.Mainnet],
+          ChainId.Mainnet,
+          ROUTES.OVERVIEW
+        ),
+      },
+    ]
+
+    if (isMobile) {
+      // swap 2nd and 3rd use cases
+      const temp = cases[1]
+      cases[1] = cases[2]
+      cases[2] = temp
+    }
+
+    return cases
+  }, [breakpoints])
 
   return (
     <Box sx={{ position: 'relative' }} px={[4, 3]}>
