@@ -108,10 +108,9 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
   // Transaction
   const { config } = usePrepareSendTransaction(
-    zapResult && zapResult.tx
+    zapResult && zapResult.tx && (hasAllowance || approvalSuccess)
       ? {
           data: zapResult.tx.data as Address,
-          gas: BigInt(zapResult.gas ?? 0),
           to: zapResult.tx.to as Address,
           value: BigInt(zapResult.tx.value),
         }
