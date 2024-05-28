@@ -161,7 +161,7 @@ const HeroHeader = () => {
       pb={4}
       sx={{
         borderBottom: ['1px solid', 'none'],
-        borderColor: ['darkBorder', 'darkBorder'],
+        borderColor: ['border', 'border'],
         justifyContent: 'space-between',
         gap: 2,
         fontSize: [2, 3],
