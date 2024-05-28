@@ -51,7 +51,7 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
   },
   'extra-finance': {
     name: 'Extra Finance',
-    site: 'https://app.extrafi.io/farm',
+    site: 'https://app.extrafi.io/lend',
   },
   'aerodrome-v1': {
     name: 'Aerodrome',
