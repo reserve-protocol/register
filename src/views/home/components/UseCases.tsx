@@ -1,6 +1,9 @@
+import Beefy from 'components/icons/Beefy'
 import TokenLogo from 'components/icons/TokenLogo'
+import Aerodrome from 'components/icons/logos/Aerodrome'
+import Convex from 'components/icons/logos/Convex'
 import { useMemo } from 'react'
-import { ArrowRight, ArrowUpRight, ChevronRight } from 'react-feather'
+import { ArrowUpRight, ChevronRight } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import { Box, Grid, Text, useThemeUI } from 'theme-ui'
 import { getTokenRoute } from 'utils'
@@ -34,7 +37,13 @@ const UseCases = () => {
         title: 'DeFi Yield',
         description:
           'Provide liquidity across DeFi & earn more with your RTokens.',
-        icon: <TokenLogo width={24} src="/imgs/beefy.png" />,
+        icon: (
+          <Box sx={{ position: 'relative', height: 24, width: 24 }} ml={4}>
+            <Convex fontSize={23} style={{ position: 'absolute', left: 1 }} />
+            <Beefy width={24} style={{ position: 'absolute', left: -12 }} />
+            <Aerodrome width={17} style={{ position: 'absolute', left: -24 }} />
+          </Box>
+        ),
         link: ROUTES.EARN,
       },
       {
