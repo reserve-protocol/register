@@ -79,23 +79,22 @@ const UseCases = () => {
         py={4}
       >
         <Text variant="sectionTitle">Discover the protocol</Text>
-        <Box sx={{ display: ['none', 'flex'] }}>
-          <Box
-            variant="layout.verticalAlign"
-            sx={{
-              gap: 1,
-              cursor: 'pointer',
-              ':hover': {
-                filter: 'brightness(1.1)',
-              },
-            }}
-            onClick={() => window.open('https://reserve.org/', '_blank')}
-          >
-            <Text variant="bold" color="#999" sx={{ fontSize: 3 }}>
-              Learn about Reserve
-            </Text>
-            <ArrowUpRight color="#999" size={20} />
-          </Box>
+        <Box
+          variant="layout.verticalAlign"
+          sx={{
+            gap: 1,
+            cursor: 'pointer',
+            ':hover': {
+              filter: 'brightness(1.1)',
+            },
+            display: ['none', 'flex'],
+          }}
+          onClick={() => window.open('https://reserve.org/', '_blank')}
+        >
+          <Text variant="bold" color="#999" sx={{ fontSize: 3 }}>
+            Learn about Reserve
+          </Text>
+          <ArrowUpRight color="#999" size={20} />
         </Box>
       </Box>
       <Grid columns={['1fr', '1fr 1fr']} gap={0}>
@@ -121,9 +120,20 @@ const UseCases = () => {
           >
             <Box
               variant="layout.verticalAlign"
-              sx={{ gap: 1, justifyContent: 'space-between' }}
+              sx={{
+                gap: 1,
+                justifyContent: 'space-between',
+                alignItems: ['start', 'center'],
+              }}
             >
-              <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+              <Box
+                variant="layout.verticalAlign"
+                sx={{
+                  flexDirection: ['column', 'row'],
+                  alignItems: ['start', 'center'],
+                  gap: [3, 2],
+                }}
+              >
                 {icon}
                 <Text sx={{ fontWeight: 'bold', fontSize: 3 }}>{title}</Text>
               </Box>
@@ -135,6 +145,26 @@ const UseCases = () => {
           </Box>
         ))}
       </Grid>
+      <Box
+        variant="layout.verticalAlign"
+        sx={{
+          display: ['flex', 'none'],
+          gap: 1,
+          color: 'accentInverted',
+          justifyContent: 'space-between',
+          borderTop: '1px solid',
+          borderColor: 'border',
+        }}
+        mx={-4}
+        px={4}
+        py={4}
+        onClick={() => window.open('https://reserve.org/', '_blank')}
+      >
+        <Text variant="bold" sx={{ fontSize: 3 }}>
+          Learn about Reserve
+        </Text>
+        <ArrowUpRight size={20} />
+      </Box>
     </Box>
   )
 }
