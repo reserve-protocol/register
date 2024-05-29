@@ -1,11 +1,8 @@
-import Beefy from 'components/icons/Beefy'
 import TokenLogo from 'components/icons/TokenLogo'
-import Aerodrome from 'components/icons/logos/Aerodrome'
-import Convex from 'components/icons/logos/Convex'
 import { useMemo } from 'react'
 import { ArrowUpRight, ChevronRight } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
-import { Box, Grid, Text, useThemeUI } from 'theme-ui'
+import { Box, Grid, Image, Text, useThemeUI } from 'theme-ui'
 import { getTokenRoute } from 'utils'
 import { ETHPLUS_ADDRESS, RGUSD_ADDRESS, USD3_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
@@ -37,13 +34,7 @@ const UseCases = () => {
         title: 'DeFi Yield',
         description:
           'Provide liquidity across DeFi & earn more with your RTokens.',
-        icon: (
-          <Box sx={{ position: 'relative', height: 24, width: 24 }} ml={4}>
-            <Convex fontSize={23} style={{ position: 'absolute', left: 1 }} />
-            <Beefy width={24} style={{ position: 'absolute', left: -12 }} />
-            <Aerodrome width={17} style={{ position: 'absolute', left: -24 }} />
-          </Box>
-        ),
+        icon: <Image width={42} src="/imgs/defi_icons.png" />,
         link: ROUTES.EARN,
       },
       {
@@ -117,7 +108,7 @@ const UseCases = () => {
               borderRight: ['none', index % 2 === 0 ? '1px solid' : 'none'],
               borderBottom: ['none', index < 2 ? '1px solid' : 'none'],
               borderColor: ['border', 'border'],
-              gap: [2, 3],
+              gap: 1,
               pt: 4,
               pb: [4, index < 2 ? 4 : 0],
               pl: [3, index % 2 === 1 ? 4 : 0],
@@ -138,9 +129,9 @@ const UseCases = () => {
               <Box
                 variant="layout.verticalAlign"
                 sx={{
-                  flexDirection: ['column', 'row'],
-                  alignItems: ['start', 'center'],
-                  gap: [3, 2],
+                  flexDirection: 'column',
+                  alignItems: 'start',
+                  gap: 3,
                 }}
               >
                 {icon}
