@@ -69,7 +69,7 @@ const UseCases = () => {
     }
 
     return cases
-  }, [breakpoints])
+  }, [breakpoints, window.innerWidth])
 
   return (
     <Box sx={{ position: 'relative' }} px={[4, 3]}>
