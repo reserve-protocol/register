@@ -1,15 +1,17 @@
 import { CoinbaseIcon } from 'components/icons/logos'
 import { useAtomValue } from 'jotai'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Bell, BellOff } from 'react-feather'
 import { walletAtom } from 'state/atoms'
 import { Box, BoxProps, IconButton } from 'theme-ui'
+import { useAccount } from 'wagmi'
 
 const RESERVE_ADDRESS = '0x5587ecB103EA317F08e1d334b0F2556e6223F45f'
 
 const CoinbaseSubscribe = (props: BoxProps) => {
   const [isSubscribed, setISubscribed] = useState<boolean>(false)
-  const account = useAtomValue(walletAtom)
+  const wallet = useAtomValue(walletAtom)
+  const account = useAccount()
 
   const handleSubscribe = () => {
     if (window.CBWSubscribe?.toggleSubscription) {
@@ -17,10 +19,15 @@ const CoinbaseSubscribe = (props: BoxProps) => {
     }
   }
 
+  const isCoinbaseWallet = useMemo(
+    () => account?.connector?.name === 'Coinbase Wallet',
+    [account?.connector?.name]
+  )
+
   useEffect(() => {
     // Only init when there is an account connected to avoid triggering connection
     if (
-      account &&
+      wallet &&
       window.CBWSubscribe &&
       !window.CBWSubscribe.subscriptionHandler
     ) {
@@ -35,7 +42,9 @@ const CoinbaseSubscribe = (props: BoxProps) => {
         onSubscriptionChange: setISubscribed,
       })
     }
-  }, [window.CBWSubscribe, account])
+  }, [window.CBWSubscribe, wallet])
+
+  if (!wallet || !isCoinbaseWallet) return null
 
   return (
     <Box {...props}>
