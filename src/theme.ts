@@ -398,9 +398,9 @@ export const theme: Theme = {
       mozAppearance: 'none',
       webkitAppearance: 'none',
       outline: 'none',
-      'input:focus': {
-        bg: 'red',
-        backgroundColor: 'red',
+      'input:focus ~ &': {
+        bg: 'transparent',
+        backgroundColor: 'transparent',
       },
     },
     select: {

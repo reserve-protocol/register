@@ -1,16 +1,11 @@
 import { Box } from 'theme-ui'
 import Portfolio from './components/Portfolio'
-import RegisterAbout from 'views/home/components/RegisterAbout'
+import RegisterAbout from 'views/compare/components/RegisterAbout'
 
 const PortfolioWrapper = () => {
   return (
     <>
-      <Box
-        variant="layout.wrapper"
-        px={[1, 4]}
-        py={[1, 8]}
-        sx={{ borderTop: '1px solid', borderColor: 'border' }}
-      >
+      <Box variant="layout.wrapper" px={[1, 4]} py={[1, 8]}>
         <Portfolio />
       </Box>
       <RegisterAbout />

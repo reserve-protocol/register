@@ -17,7 +17,7 @@ const Brand = (props: BoxProps) => {
         cursor: 'pointer',
         alignItems: 'center',
         color: 'accent',
-        display: ['none', 'flex'],
+        display: 'flex',
       }}
     >
       <Box

@@ -1,7 +1,7 @@
 import { atom } from 'jotai'
 import { atomWithReset } from 'jotai/utils'
 import { poolsAtom } from 'state/pools/atoms'
-import { NETWORKS, capitalize, supportedChainList } from 'utils/constants'
+import { NETWORKS, supportedChainList } from 'utils/constants'
 
 export const poolSearchFilterAtom = atom('')
 export const poolChainsFilterAtom = atom(supportedChainList.map((chain) => chain.toString()))

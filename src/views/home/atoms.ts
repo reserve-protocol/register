@@ -5,4 +5,7 @@ export const homeMetricsAtom = atom({
   marketCap: 0,
   stakeRevenue: 0,
   tvl: 0,
+  rsrStakedUSD: 0,
+  rTokenAnnualizedRevenue: 0,
+  rsrStakerAnnualizedRevenue: 0,
 })

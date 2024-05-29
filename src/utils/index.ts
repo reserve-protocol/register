@@ -214,3 +214,8 @@ export const parseDuration = (
 ) => {
   return humanizeDuration(duration * 1000, options)
 }
+
+export const getUTCStartOfDay = (timestamp: number) => {
+  const date = new Date(timestamp * 1000)
+  return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
+}

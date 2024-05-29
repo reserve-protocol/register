@@ -43,7 +43,7 @@ const HeaderMenu = () => {
       {
         label: t`Compare`,
         icon: <BasketCubeIcon fontSize={16} />,
-        to: ROUTES.HOME,
+        to: ROUTES.COMPARE,
       },
       {
         label: t`Earn`,

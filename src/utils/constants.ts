@@ -146,6 +146,7 @@ export const ROUTES = Object.freeze({
   GOVERNANCE_INFO: 'governance-info',
   LIST: 'list',
   HOME: '/',
+  COMPARE: '/compare',
   WALLET: '/wallet',
   TOKENS: '/tokens',
   GOVERNANCE: 'governance',
