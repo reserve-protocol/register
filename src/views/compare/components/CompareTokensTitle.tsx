@@ -7,8 +7,8 @@ const CompareBg = (props: BoxProps) => (
   <Box
     sx={{
       display: ['none', 'none', 'block'],
-      width: '378px',
-      height: '137px',
+      width: '400px',
+      height: '160px',
       top: 0,
       zIndex: -1,
       position: 'absolute',
