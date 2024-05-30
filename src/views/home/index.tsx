@@ -2,12 +2,14 @@ import { Box, Grid } from 'theme-ui'
 import About from './components/About'
 import Hero from './components/Hero'
 import UseCases from './components/UseCases'
+import RegisterAbout from 'views/compare/components/RegisterAbout'
 
 const Home = () => {
   return (
     <Box
       sx={{
         display: 'flex',
+        flexDirection: 'column',
         position: 'relative',
         height: 'calc(100vh - 76px)',
         py: [0, 4],
@@ -43,6 +45,16 @@ const Home = () => {
           <UseCases />
         </Box>
       </Grid>
+      <Box
+        sx={{
+          display: 'none',
+          '@media (min-height: 1200px)': {
+            display: 'block',
+          },
+        }}
+      >
+        <RegisterAbout />
+      </Box>
     </Box>
   )
 }

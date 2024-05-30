@@ -55,7 +55,11 @@ const TokenForm = (props: BoxProps) => {
           },
         }}
       />
-      <Box mt={3} ml={3}>
+      <Box
+        mt={3}
+        ml={3}
+        sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+      >
         <Text variant="bold">Allow RToken basket to change weights</Text>
         <Text mb="2" as="p" sx={{ fontSize: 1 }} variant="legend">
           A re-weightable RToken can have its basket changed in terms of its
@@ -67,7 +71,18 @@ const TokenForm = (props: BoxProps) => {
           should only be used if an RToken must be re-weightable in order to
           accomplish its core goals.
         </Text>
-        <Switch defaultChecked={reweightable} {...register('reweightable')} />
+        <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+          <Box>
+            <Switch
+              defaultChecked={reweightable}
+              // {...register('reweightable')}
+              disabled
+            />
+          </Box>
+          <Text sx={{ fontFamily: 'monospace', color: 'gray', fontSize: 1 }}>
+            Coming soon
+          </Text>
+        </Box>
       </Box>
     </Box>
   )
