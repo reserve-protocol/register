@@ -420,7 +420,7 @@
     "underlyingToken": "PYUSDUSDC"
   },
   {
-    "address": "0xE529B59C1764d6E5a274099Eb660DD9e130A5481",
+    "address": "0x994455ce66fd984e2a0a0aca453e637810a8f032",
     "rewardTokens": [
       "0xc18bF46F178F7e90b9CD8b7A8b00Af026D5ce3D3",
       "0x7ef93b20C10E6662931b32Dd9D4b85861eB2E4b8"
@@ -477,7 +477,7 @@
     "underlyingToken": "ETH+ETH-f"
   },
   {
-    "address": "0x945b0ad788dD6dB3864AB23876C68C1bf000d237",
+    "address": "0xcdc5f5e041b49cad373e94930e2b3be30be70535",
     "rewardTokens": ["0xc18bF46F178F7e90b9CD8b7A8b00Af026D5ce3D3"],
     "protocol": "CURVE",
     "erc20": "0x3D07B9b2Aa60843470e6dAb09a0c3a31DE42E7Ea",
