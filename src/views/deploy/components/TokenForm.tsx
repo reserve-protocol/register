@@ -75,7 +75,7 @@ const TokenForm = (props: BoxProps) => {
           <Box>
             <Switch
               defaultChecked={reweightable}
-              {...register('reweightable')}
+              // {...register('reweightable')}
               disabled
             />
           </Box>
