@@ -1,17 +1,24 @@
 import { t } from '@lingui/macro'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { BoxProps } from 'theme-ui'
-import { spellUpgradeAtom } from '../atoms'
+import { proposedRolesAtom, spellUpgradeAtom } from '../atoms'
 import { ListChangePreview } from './ItemPreview'
 import PreviewBox from './PreviewBox'
+import { spellAddressAtom } from './SpellUpgrade'
 
 const SpellUpgradePreview = (props: BoxProps) => {
   const [spell, setSpell] = useAtom(spellUpgradeAtom)
+  const spellContract = useAtomValue(spellAddressAtom)
+  const setProposedRoles = useSetAtom(proposedRolesAtom)
 
   if (spell === 'none') return null
 
   const handleRevert = () => {
     setSpell('none')
+    setProposedRoles(({ owners, ...rest }) => ({
+      ...rest,
+      owners: [...owners.filter((owner) => owner !== spellContract)],
+    }))
   }
 
   return (

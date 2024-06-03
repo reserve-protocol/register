@@ -5,7 +5,7 @@ import { chainIdAtom } from 'state/atoms'
 import { Box, BoxProps, Card, Divider, Label, Radio, Text } from 'theme-ui'
 import { ChainId } from 'utils/chains'
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink'
-import { spellUpgradeAtom } from '../atoms'
+import { proposedRolesAtom, spellUpgradeAtom } from '../atoms'
 
 const SPELL_CONTRACTS = {
   [ChainId.Mainnet]: '0xb1df3a104d73ff86f9aaab60b491a5c44b090391',
@@ -21,9 +21,18 @@ const SpellUpgrade = (props: BoxProps) => {
   const [spell, setSpell] = useAtom(spellUpgradeAtom)
   const chainId = useAtomValue(chainIdAtom)
   const spellContract = useAtomValue(spellAddressAtom)
+  const setProposedRoles = useSetAtom(proposedRolesAtom)
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSpell(e.target.value as 'none' | 'spell1' | 'spell2')
+    const value = e.target.value as 'none' | 'spell1' | 'spell2'
+    setSpell(value)
+    setProposedRoles(({ owners, ...rest }) => ({
+      ...rest,
+      owners: [
+        ...owners.filter((owner) => owner !== spellContract),
+        ...(value === 'none' ? [] : [spellContract]),
+      ],
+    }))
   }
 
   if (!spellContract) return null
