@@ -81,6 +81,10 @@ msgstr ""
 msgid "15 params"
 msgstr ""
 
+#: src/views/governance/views/proposal/components/SpellUpgrade.tsx:35
+msgid "3.4.0 Upgrade spells"
+msgstr ""
+
 #: src/views/compare/components/RegisterAbout.tsx:31
 msgid "A Brief RToken Introduction"
 msgstr ""
@@ -254,7 +258,7 @@ msgid "Backing & Risk"
 msgstr ""
 
 #: src/views/compare/components/MobileCollateralInfo.tsx:46
-#: src/views/compare/components/RTokenCard.tsx:224
+#: src/views/compare/components/RTokenCard.tsx:232
 msgid "Backing + Overcollaterization:"
 msgstr ""
 
@@ -420,6 +424,18 @@ msgstr ""
 
 #: src/views/staking/components/withdraw/CooldownUnstake.tsx:70
 msgid "Cancel unstake"
+msgstr ""
+
+#: src/views/governance/views/proposal/components/SpellUpgrade.tsx:63
+msgid "Cast Spell 1"
+msgstr ""
+
+#: src/views/governance/views/proposal/components/SpellUpgrade.tsx:72
+msgid "Cast Spell 2"
+msgstr ""
+
+#: src/views/governance/views/proposal/components/SpellUpgradePreview.tsx:21
+msgid "Casting 3.4.0 upgrade spell"
 msgstr ""
 
 #: src/components/layout/token-menu/Caution.tsx:24
@@ -837,7 +853,7 @@ msgstr ""
 msgid "Ensure that the asset(s) you are unregistering do not have pending revenue that can be"
 msgstr ""
 
-#: src/views/compare/components/RTokenCard.tsx:272
+#: src/views/compare/components/RTokenCard.tsx:280
 msgid "Est. APY"
 msgstr ""
 
@@ -1491,6 +1507,10 @@ msgstr ""
 msgid "No, if a withdrawal has already been initiated on the Withdraw page it is not possible to cancel it. Once withdrawn, the process needs to be completed."
 msgstr ""
 
+#: src/views/governance/views/proposal/components/SpellUpgrade.tsx:54
+msgid "None"
+msgstr ""
+
 #: src/views/auctions/auctions-sidebar/RevenueAuctionItem.tsx:22
 msgid "Not available"
 msgstr ""
@@ -1570,7 +1590,7 @@ msgstr ""
 msgid "Pause status"
 msgstr ""
 
-#: src/views/compare/components/RTokenCard.tsx:213
+#: src/views/compare/components/RTokenCard.tsx:221
 msgid "Peg:"
 msgstr ""
 
@@ -2186,6 +2206,14 @@ msgstr ""
 
 #: src/views/issuance/components/about/index.tsx:27
 msgid "Some collateral tokens from protocols like Aave and Convex differ technically from other collateral tokens. To ensure proper handling, they must be wrapped in a contract for effective monitoring. Once wrapped, the collateral remains the same but has a new interface for price and appreciation tracking."
+msgstr ""
+
+#: src/views/governance/views/proposal/components/SpellUpgradePreview.tsx:27
+msgid "Spell 1"
+msgstr ""
+
+#: src/views/governance/views/proposal/components/SpellUpgradePreview.tsx:27
+msgid "Spell 2"
 msgstr ""
 
 #: src/views/deploy/components/TokenForm.tsx:40
