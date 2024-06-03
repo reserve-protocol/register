@@ -68,10 +68,9 @@
     ]
   },
   "devDependencies": {
-    "@guardianui/test": "^1.0.4",
     "@lingui/cli": "^4.2.1",
     "@lingui/vite-plugin": "^4.2.1",
-    "@playwright/test": "^1.38.0",
+    "@playwright/test": "^1.44.1",
     "@react-spring/types": "^9.4.5",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.0.0",
@@ -82,7 +81,7 @@
     "@types/node": "^17.0.23",
     "@types/react": "18.0.0",
     "@types/react-dom": "18.0.0",
-    "@viem/anvil": "^0.0.6",
+    "@viem/anvil": "^0.0.10",
     "@vitejs/plugin-react": "^4.0.1",
     "babel-plugin-macros": "^3.1.0",
     "babel-preset-react-app": "^10.0.1",
