@@ -34,7 +34,7 @@ const DivaButtonAppendix: FC<Props> = ({
         if (e.target === e.currentTarget) {
           e.stopPropagation()
           window.open(
-            'https://medium.com/@nektarnetwork/epoch-1-of-nektar-drops-begins-now-2e2593118e5a',
+            'https://medium.com/@nektarnetwork/announcing-epoch-2-of-nektar-drops-exciting-updates-and-new-opportunities-df5e254a5b05',
             '_blank'
           )
         }
@@ -49,7 +49,7 @@ const DivaButtonAppendix: FC<Props> = ({
         }}
         onClick={() => {
           window.open(
-            'https://medium.com/@nektarnetwork/epoch-1-of-nektar-drops-begins-now-2e2593118e5a',
+            'https://medium.com/@nektarnetwork/announcing-epoch-2-of-nektar-drops-exciting-updates-and-new-opportunities-df5e254a5b05',
             '_blank'
           )
         }}

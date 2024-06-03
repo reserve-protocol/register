@@ -21,7 +21,10 @@ export const REGISTER_BUGS =
 export const DIVA_SAFE_POOLS = [
   '57d5dc30-8ade-4f40-87d2-6065297d0705',
   '5f83ac83-753a-4382-869f-38c4e1658a36',
-  '91ec3f5f-587c-4a26-9a98-1593ed9bab26'
+  '91ec3f5f-587c-4a26-9a98-1593ed9bab26',
+  'e01552cf-4d1c-43e1-9aaa-b2a4bae5df9b',
+  '375c9ebc-8d4c-4d75-a290-a8de7b135142',
+  '0112f957-4369-490f-882f-018c0e0fdf9b',
 ]
 
 export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
