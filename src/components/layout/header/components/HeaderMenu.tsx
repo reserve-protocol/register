@@ -88,14 +88,14 @@ const HeaderMenu = () => {
                 boxShadow: isActive
                   ? '0px 0px 5px 2px rgba(0, 0, 0, 0.05)'
                   : 'none',
-                width: [40, 'auto'],
+                width: [32, 'auto'],
                 ':hover': {
                   backgroundColor: isActive
                     ? 'backgroundNested'
                     : 'inputBorder',
                 },
               }}
-              px={2}
+              px={[1, 2]}
               py={1}
               ml={index ? [1, 1, 1, '4px'] : 0}
             >
