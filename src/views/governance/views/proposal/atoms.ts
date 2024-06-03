@@ -49,6 +49,9 @@ export const parametersChangesAtom = atomWithReset<ParameterChange[]>([])
 export const roleChangesAtom = atomWithReset<RoleChange[]>([])
 
 export const contractUpgradesAtom = atomWithReset<Record<string, Address>>({})
+export const spellUpgradeAtom = atomWithReset<'none' | 'spell1' | 'spell2'>(
+  'none'
+)
 
 export const unregisterAssetsAtom = atomWithReset<string[]>([])
 

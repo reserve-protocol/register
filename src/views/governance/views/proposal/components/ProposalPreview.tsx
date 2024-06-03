@@ -7,6 +7,7 @@ import ProposedRolesPreview from './ProposedRolesPreview'
 import ProposedUnregisterPreview from './ProposedUnregisterPreview'
 import ProposedRegisterPreview from './ProposedRegisterPreview'
 import ContractUpgradesPreview from './ContractUpgradesPreview'
+import SpellUpgradePreview from './SpellUpgradePreview'
 
 const ProposalPreview = (props: BoxProps) => (
   <Box {...props}>
@@ -18,6 +19,7 @@ const ProposalPreview = (props: BoxProps) => (
     <ProposedUnregisterPreview mt={4} />
     <ProposedRegisterPreview mt={4} />
     <ContractUpgradesPreview mt={4} />
+    <SpellUpgradePreview mt={4} />
   </Box>
 )
 
