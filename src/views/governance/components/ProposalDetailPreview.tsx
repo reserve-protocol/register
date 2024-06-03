@@ -4,6 +4,7 @@ import { Box, BoxProps, Card, Spinner, Text } from 'theme-ui'
 import { Hex, decodeFunctionData, getAbiItem, getAddress } from 'viem'
 import { ContractProposal, InterfaceMap, interfaceMapAtom } from '../atoms'
 import ContractProposalDetail from '../views/proposal-detail/components/ContractProposalDetails'
+import { add } from '@dnd-kit/utilities'
 
 interface Props extends BoxProps {
   addresses: string[]
