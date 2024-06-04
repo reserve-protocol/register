@@ -45,11 +45,13 @@ const useHistoricalTVL = (): DailyTVL[] => {
     const tvlPerDay = supportedChainList
       .flatMap((chain) => {
         const metrics = data[chain] as ProtocolMetricsResponse
-        return metrics?.dailyStats.map(({ totalValueLockedUSD, timestamp }) => ({
-          totalValueLockedUSD,
-          chain,
-          day: getUTCStartOfDay(timestamp),
-        })) || []
+        return (
+          metrics?.dailyStats.map(({ totalValueLockedUSD, timestamp }) => ({
+            totalValueLockedUSD,
+            chain,
+            day: getUTCStartOfDay(timestamp),
+          })) || []
+        )
       })
       .reduce((acc, { totalValueLockedUSD, day, chain }) => {
         if (!acc[day]) {
@@ -64,7 +66,22 @@ const useHistoricalTVL = (): DailyTVL[] => {
         }
         return acc
       }, {} as Record<string, DailyTVL>)
-    return Object.values(tvlPerDay).sort((a, b) => a.day - b.day)
+    const sortedTVL = Object.values(tvlPerDay).sort((a, b) => a.day - b.day)
+
+    // if there are zero values for a chain, fill them with the previous non-zero value
+    Object.keys(NETWORKS).forEach((chain) => {
+      let lastNonZeroValue = 0
+      for (let i = 0; i < sortedTVL.length; i++) {
+        const tvl = sortedTVL[i]
+        if (tvl[chain] === 0) {
+          sortedTVL[i][chain] = lastNonZeroValue
+        } else {
+          lastNonZeroValue = tvl[chain]
+        }
+      }
+    })
+
+    return sortedTVL
   }, [data])
 
   return historicalTVL

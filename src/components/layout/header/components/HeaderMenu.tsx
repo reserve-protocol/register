@@ -41,7 +41,7 @@ const HeaderMenu = () => {
   const menuItems = useMemo(
     () => [
       {
-        label: t`Compare`,
+        label: t`Browse RTokens`,
         icon: <BasketCubeIcon fontSize={16} />,
         to: ROUTES.COMPARE,
       },
