@@ -33,17 +33,26 @@ const AppHeader = () => {
           sx={{ position: ['relative', 'absolute'], left: ['8px', '24px'] }}
         >
           <Brand mr={4} />
-          <ThemeColorMode
-            sx={{
-              display: ['none', 'flex'],
-            }}
-          />
         </Box>
         <HeaderMenu />
         <Box
           variant="layout.verticalAlign"
           sx={{ position: 'absolute', right: ['8px', '24px'] }}
         >
+          <ThemeColorMode
+            sx={{
+              display: ['none', 'flex'],
+              px: 2,
+              mr: 1,
+              py: '3px',
+              maxWidth: '32px',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              ':hover': {
+                backgroundColor: 'secondaryBackground',
+              },
+            }}
+          />
           <RegisterHelp />
           <CoinbaseSubscribe
             mr="2"
