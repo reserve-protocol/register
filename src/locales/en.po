@@ -81,7 +81,7 @@ msgstr ""
 msgid "15 params"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/SpellUpgrade.tsx:35
+#: src/views/governance/views/proposal/components/SpellUpgrade.tsx:44
 msgid "3.4.0 Upgrade spells"
 msgstr ""
 
@@ -392,6 +392,7 @@ msgstr ""
 msgid "Broker"
 msgstr ""
 
+#: src/components/layout/header/components/HeaderMenu.tsx:44
 #: src/views/compare/components/CompareTokensTitle.tsx:48
 msgid "Browse RTokens"
 msgstr ""
@@ -426,15 +427,15 @@ msgstr ""
 msgid "Cancel unstake"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/SpellUpgrade.tsx:63
+#: src/views/governance/views/proposal/components/SpellUpgrade.tsx:72
 msgid "Cast Spell 1"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/SpellUpgrade.tsx:72
+#: src/views/governance/views/proposal/components/SpellUpgrade.tsx:81
 msgid "Cast Spell 2"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/SpellUpgradePreview.tsx:21
+#: src/views/governance/views/proposal/components/SpellUpgradePreview.tsx:28
 msgid "Casting 3.4.0 upgrade spell"
 msgstr ""
 
@@ -442,7 +443,7 @@ msgstr ""
 msgid "Caution"
 msgstr ""
 
-#: src/views/earn/hooks/useEarnTableColumns.tsx:131
+#: src/views/earn/hooks/useEarnTableColumns.tsx:133
 #: src/views/overview/components/RTokenTransactions.tsx:133
 msgid "Chain"
 msgstr ""
@@ -519,7 +520,7 @@ msgstr ""
 msgid "Collateral token"
 msgstr ""
 
-#: src/views/overview/components/CollateralPieChartTooltip.tsx:175
+#: src/views/overview/components/CollateralPieChartTooltip.tsx:178
 msgid "Collateral(s)"
 msgstr ""
 
@@ -530,10 +531,6 @@ msgstr ""
 
 #: src/views/bridge/components/BridgeFaq.tsx:70
 msgid "community is available around the clock for general questions, assistance and support!"
-msgstr ""
-
-#: src/components/layout/header/components/HeaderMenu.tsx:44
-msgid "Compare"
 msgstr ""
 
 #: src/views/compare/components/TokenList.tsx:21
@@ -929,7 +926,7 @@ msgid "Final price in:"
 msgstr ""
 
 #: src/views/home/components/Hero.tsx:48
-msgid "First Loss RSR Capital"
+msgid "First-loss RSR Capital"
 msgstr ""
 
 #: src/views/governance/views/proposal-detail/components/VoteModal.tsx:42
@@ -1507,7 +1504,7 @@ msgstr ""
 msgid "No, if a withdrawal has already been initiated on the Withdraw page it is not possible to cancel it. Once withdrawn, the process needs to be completed."
 msgstr ""
 
-#: src/views/governance/views/proposal/components/SpellUpgrade.tsx:54
+#: src/views/governance/views/proposal/components/SpellUpgrade.tsx:63
 msgid "None"
 msgstr ""
 
@@ -1618,7 +1615,7 @@ msgstr ""
 msgid "Platform"
 msgstr ""
 
-#: src/views/overview/components/CollateralPieChartTooltip.tsx:208
+#: src/views/overview/components/CollateralPieChartTooltip.tsx:211
 msgid "Platform exposure"
 msgstr ""
 
@@ -1668,7 +1665,7 @@ msgstr ""
 msgid "Please wait while the simulation executes"
 msgstr ""
 
-#: src/views/earn/hooks/useEarnTableColumns.tsx:60
+#: src/views/earn/hooks/useEarnTableColumns.tsx:62
 msgid "Pool"
 msgstr ""
 
@@ -1709,7 +1706,7 @@ msgstr ""
 msgid "Proceed in wallet"
 msgstr ""
 
-#: src/views/earn/hooks/useEarnTableColumns.tsx:120
+#: src/views/earn/hooks/useEarnTableColumns.tsx:122
 msgid "Project"
 msgstr ""
 
@@ -2208,11 +2205,11 @@ msgstr ""
 msgid "Some collateral tokens from protocols like Aave and Convex differ technically from other collateral tokens. To ensure proper handling, they must be wrapped in a contract for effective monitoring. Once wrapped, the collateral remains the same but has a new interface for price and appreciation tracking."
 msgstr ""
 
-#: src/views/governance/views/proposal/components/SpellUpgradePreview.tsx:27
+#: src/views/governance/views/proposal/components/SpellUpgradePreview.tsx:34
 msgid "Spell 1"
 msgstr ""
 
-#: src/views/governance/views/proposal/components/SpellUpgradePreview.tsx:27
+#: src/views/governance/views/proposal/components/SpellUpgradePreview.tsx:34
 msgid "Spell 2"
 msgstr ""
 
@@ -2252,7 +2249,7 @@ msgstr ""
 msgid "Staked RSR"
 msgstr ""
 
-#: src/views/overview/components/CollateralPieChartTooltip.tsx:225
+#: src/views/overview/components/CollateralPieChartTooltip.tsx:228
 msgid "Staked RSR Overcollateralisation"
 msgstr ""
 
@@ -2497,7 +2494,7 @@ msgstr ""
 msgid "Token Details"
 msgstr ""
 
-#: src/views/overview/components/CollateralPieChartTooltip.tsx:194
+#: src/views/overview/components/CollateralPieChartTooltip.tsx:197
 msgid "Token exposure"
 msgstr ""
 
@@ -2643,7 +2640,7 @@ msgstr ""
 msgid "Tutorial video"
 msgstr ""
 
-#: src/views/earn/hooks/useEarnTableColumns.tsx:190
+#: src/views/earn/hooks/useEarnTableColumns.tsx:192
 msgid "TVL"
 msgstr ""
 
