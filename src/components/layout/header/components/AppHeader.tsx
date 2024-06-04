@@ -5,6 +5,7 @@ import Brand from './Brand'
 import CoinbaseSubscribe from './CoinbaseSubscribe'
 import HeaderMenu from './HeaderMenu'
 import RegisterHelp from './RegisterHelp'
+import Blog from './Blog'
 
 /**
  * Application header
@@ -33,6 +34,7 @@ const AppHeader = () => {
           sx={{ position: ['relative', 'absolute'], left: ['8px', '24px'] }}
         >
           <Brand mr={4} />
+          <Blog />
         </Box>
         <HeaderMenu />
         <Box
