@@ -25,7 +25,7 @@ const Blog = () => {
       <ExternalArrowIcon
         color={colors.secondaryText}
         fontSize={12}
-        style={{ marginTop: 4, marginLeft: -2 }}
+        style={{ marginTop: 3, marginLeft: -2 }}
       />
     </Box>
   )

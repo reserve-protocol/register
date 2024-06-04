@@ -1,8 +1,10 @@
 import { Box, Grid } from 'theme-ui'
-import About from './components/About'
 import Hero from './components/Hero'
 import UseCases from './components/UseCases'
 import RegisterAbout from 'views/compare/components/RegisterAbout'
+import { lazy } from 'react'
+
+const About = lazy(() => import('./components/About'))
 
 const Home = () => {
   return (
