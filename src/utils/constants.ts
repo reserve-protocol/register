@@ -76,6 +76,10 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'Camelot',
     site: 'https://app.camelot.exchange/',
   },
+  'morpho-blue': {
+    name: 'Morpho Blue',
+    site: 'https://app.morpho.org/',
+  },
 }
 
 // List of supported networks with label

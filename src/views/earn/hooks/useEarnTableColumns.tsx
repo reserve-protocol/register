@@ -12,6 +12,7 @@ import Convex from 'components/icons/logos/Convex'
 import Curve from 'components/icons/logos/Curve'
 import Dyson from 'components/icons/logos/Dyson'
 import Extra from 'components/icons/logos/Extra'
+import MorphoBlue from 'components/icons/logos/MorphoBlue'
 import Stakedao from 'components/icons/logos/Stakedao'
 import Uniswap from 'components/icons/logos/Uniswap'
 import Yearn from 'components/icons/logos/Yearn'
@@ -50,6 +51,7 @@ export const PROJECT_ICONS: Record<string, React.ReactElement> = {
   beefy: <Beefy />,
   concentrator: <Concentrator />,
   dyson: <Dyson />,
+  'morpho-blue': <MorphoBlue />,
 }
 
 const useEarnTableColumns = (compact: boolean) => {
