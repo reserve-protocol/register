@@ -393,6 +393,9 @@ msgid "Broker"
 msgstr ""
 
 #: src/components/layout/header/components/HeaderMenu.tsx:44
+msgid "Browse"
+msgstr ""
+
 #: src/views/compare/components/CompareTokensTitle.tsx:48
 msgid "Browse RTokens"
 msgstr ""
