@@ -1,6 +1,7 @@
 {
   "name": "register",
   "version": "1.0.0",
+  "type": "module",
   "dependencies": {
     "@dnd-kit/core": "^6.0.5",
     "@dnd-kit/sortable": "^7.0.1",
@@ -43,13 +44,14 @@
   },
   "scripts": {
     "start": "vite",
+    "start:e2e": "VITE_TESTING=true vite",
     "build": "tsc && vite build",
     "build:e2e": "VITE_TESTING=true tsc && vite build",
     "serve": "vite preview",
     "serve:e2e": "VITE_TESTING=true vite preview",
     "analyze": "vite-bundle-visualizer 'build/static/js/*.js'",
     "test": "vite test",
-    "test:e2e": "npx playwright test --project=chromium",
+    "test:e2e": "playwright test --project=chromium",
     "translations": "lingui extract --clean && lingui compile",
     "forknet": "anvil --fork-url https://eth.llamarpc.com --chain-id 1 --balance 10000000",
     "parse-collaterals": "node scripts/parseCollaterals"

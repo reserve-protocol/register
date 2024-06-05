@@ -23,7 +23,7 @@ export default defineConfig({
   use: {
     userAgent:
       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-    headless: true,
+    headless: false,
     actionTimeout: 0,
     baseURL: 'http://localhost:3000',
     screenshot: 'only-on-failure',
@@ -42,12 +42,12 @@ export default defineConfig({
     },
   ],
   outputDir: 'test-results/',
-  webServer: {
-    command: 'npm run start',
-    timeout: 50_000,
-    url: 'http://127.0.0.1:3000',
-    reuseExistingServer: !process.env.CI,
-    stdout: 'ignore',
-    stderr: 'pipe',
-  },
+  // webServer: {
+  //   command: 'npm run serve:e2e',
+  //   timeout: 50_000,
+  //   url: 'http://127.0.0.1:3000',
+  //   reuseExistingServer: !process.env.CI,
+  //   stdout: 'ignore',
+  //   stderr: 'pipe',
+  // },
 })
