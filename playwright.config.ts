@@ -42,12 +42,4 @@ export default defineConfig({
     },
   ],
   outputDir: 'test-results/',
-  // webServer: {
-  //   command: 'npm run serve:e2e',
-  //   timeout: 50_000,
-  //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
-  //   stdout: 'ignore',
-  //   stderr: 'pipe',
-  // },
 })
