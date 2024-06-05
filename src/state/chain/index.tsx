@@ -13,7 +13,7 @@ import { WagmiConfig, configureChains, createConfig } from 'wagmi'
 import { arbitrum, base, mainnet } from 'wagmi/chains'
 import { infuraProvider } from 'wagmi/providers/infura'
 import AtomUpdater from './updaters/AtomUpdater'
-import { setupConfig } from './utils/mocks'
+import { setupTestConfig } from './utils/mocks'
 
 export const { chains, publicClient } = configureChains(
   [mainnet, base, arbitrum],
@@ -39,13 +39,14 @@ const { connectors } = getDefaultWallets({
   chains,
 })
 
-export const wagmiConfig = import.meta.env.VITE_TESTING
-  ? setupConfig()
-  : createConfig({
-      autoConnect: true,
-      connectors,
-      publicClient,
-    })
+export const wagmiConfig =
+  import.meta.env.VITE_TESTING && window.e2e
+    ? setupTestConfig(window.e2e)
+    : createConfig({
+        autoConnect: true,
+        connectors,
+        publicClient,
+      })
 
 /**
  * Wrapper around web3ReactProvider

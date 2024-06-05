@@ -131,6 +131,7 @@ const Account = () => {
                     <Text
                       sx={{ display: ['none', 'inherit', 'inherit'] }}
                       ml={2}
+                      data-testid="account-display-name"
                     >
                       {account.displayName}
                     </Text>
