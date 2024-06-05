@@ -1,4 +1,5 @@
 import { createAnvil as _createAnvil } from '@viem/anvil'
+import { mainnet } from '@wagmi/core/chains'
 import { config } from 'dotenv'
 import { Chain } from 'viem'
 
@@ -11,8 +12,6 @@ export type Anvil = {
 }
 
 export const createAnvil = async (): Promise<Anvil> => {
-  const { mainnet } = await import('@wagmi/core/chains')
-
   const anvil = _createAnvil({
     blockTime: 1,
     blockBaseFeePerGas: 0,
