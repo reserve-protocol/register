@@ -8,6 +8,7 @@ import {
   isNewBackupProposedAtom,
   proposalDescriptionAtom,
   registerAssetsAtom,
+  spellUpgradeAtom,
   unregisterAssetsAtom,
 } from './../atoms'
 
@@ -56,6 +57,9 @@ import {
 } from '../atoms'
 import useUpgradeHelper from './useUpgradeHelper'
 import { isTimeunitGovernance } from 'views/governance/utils'
+import Spell from 'abis/Spell'
+import useRToken from 'hooks/useRToken'
+import { spellAddressAtom } from '../components/SpellUpgrade'
 
 const paramParse: { [x: string]: (v: string) => bigint | number } = {
   minTradeVolume: parseEther,
@@ -122,6 +126,7 @@ const adjustWeightsIfNeeded = (weights: bigint[], sum?: bigint) => {
 
 // TODO: May want to use a separate memo to calculate the calldatas
 const useProposalTx = () => {
+  const rToken = useRToken()
   const backupChanges = useAtomValue(backupChangesAtom)
   const basketChanges = useAtomValue(basketChangesAtom)
   const revenueChanges = useAtomValue(revenueSplitChangesAtom)
@@ -140,6 +145,8 @@ const useProposalTx = () => {
   const contracts = useAtomValue(rTokenContractsAtom)
   const assets = useAtomValue(registeredAssetsAtom)
   const upgrades = useAtomValue(contractUpgradesAtom)
+  const spell = useAtomValue(spellUpgradeAtom)
+  const spellContract = useAtomValue(spellAddressAtom)
   const rTokenConfig = useAtomValue(rTokenConfigurationAtom)
   const autoRegisterBasketAssets = useAtomValue(autoRegisterBasketAssetsAtom)
   const autoRegisterBackupAssets = useAtomValue(autoRegisterBackupAssetsAtom)
@@ -522,6 +529,20 @@ const useProposalTx = () => {
           )
         }
       }
+
+      /* ########################## 
+      ##       Spell upgrade     ## 
+      ############################# */
+      if (spell !== 'none' && rToken) {
+        addresses.push(spellContract)
+        calls.push(
+          encodeFunctionData({
+            abi: Spell,
+            functionName: spell === 'spell1' ? 'castSpell1' : 'castSpell2',
+            args: [rToken.address],
+          })
+        )
+      }
     } catch (e) {
       console.error('Error generating proposal call', e)
       return undefined
@@ -539,7 +560,7 @@ const useProposalTx = () => {
       ] as [Address[], bigint[], Hex[], string],
       enabled: !!description,
     }
-  }, [contracts, assets, description])
+  }, [contracts, assets, description, rToken])
 }
 
 export default useProposalTx

@@ -127,7 +127,7 @@ const RegisterHelp = () => {
         variant="hover"
         small
         py={1}
-        mr={[1, 2]}
+        mr={[0, 2]}
         onClick={() => setVisible(!isVisible)}
         px={{ borderRadius: borderRadius.inner }}
       >

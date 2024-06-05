@@ -45,7 +45,7 @@ const ProtocolStats = () => {
         compactDisplay: 'short',
       }),
       valueLong: formatCurrency(rsrStakedUSD, 0),
-      title: t`First Loss RSR Capital`,
+      title: t`First-loss RSR Capital`,
       tooltip: t`The total value of all RSR staked in the protocol`,
     },
     {
@@ -179,7 +179,7 @@ const HeroHeader = () => {
         <Text>
           <Text sx={{ display: ['none', 'inline'] }}>The </Text>
           <Text color="accentInverted">
-            Reserve <Text sx={{ display: ['none', 'inline'] }}>Protocol </Text>
+            Reserve <Text sx={{ display: ['none', 'inline'] }}>protocol </Text>
           </Text>
           on
           {supportedChainList.map(

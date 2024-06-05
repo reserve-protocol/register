@@ -1,5 +1,5 @@
-import { Box, Flex, BoxProps } from 'theme-ui'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
+import { BoxProps, Flex } from 'theme-ui'
 
 interface Props extends BoxProps {
   link: any

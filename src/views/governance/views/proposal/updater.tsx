@@ -28,6 +28,7 @@ import {
   registerAssetsAtom,
   revenueSplitChangesAtom,
   roleChangesAtom,
+  spellUpgradeAtom,
   unregisterAssetsAtom,
 } from './atoms'
 import useBackupChanges from './hooks/useBackupChanges'
@@ -107,6 +108,7 @@ export const ChangesUpdater = () => {
   const isNewBackup = useAtomValue(isNewBackupProposedAtom)
   const assetsToUnregister = useAtomValue(unregisterAssetsAtom)
   const hasUpgrades = !!Object.keys(useAtomValue(contractUpgradesAtom)).length
+  const hasSpell = useAtomValue(spellUpgradeAtom) !== 'none'
 
   // Valid listeners
   const isBasketValid = useAtomValue(isBasketValidAtom)
@@ -158,7 +160,8 @@ export const ChangesUpdater = () => {
       !assetsToUnregister.length &&
       !assetsToRegister.length &&
       !isNewBasket &&
-      !hasUpgrades
+      !hasUpgrades &&
+      !hasSpell
     ) {
       setValidState(false)
     } else {
@@ -178,6 +181,7 @@ export const ChangesUpdater = () => {
     assetsToUnregister,
     assetsToRegister,
     hasUpgrades,
+    hasSpell,
     isValid,
   ])
 

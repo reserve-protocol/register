@@ -5,6 +5,7 @@ import Brand from './Brand'
 import CoinbaseSubscribe from './CoinbaseSubscribe'
 import HeaderMenu from './HeaderMenu'
 import RegisterHelp from './RegisterHelp'
+import Blog from './Blog'
 
 /**
  * Application header
@@ -33,17 +34,27 @@ const AppHeader = () => {
           sx={{ position: ['relative', 'absolute'], left: ['8px', '24px'] }}
         >
           <Brand mr={4} />
-          <ThemeColorMode
-            sx={{
-              display: ['none', 'flex'],
-            }}
-          />
+          <Blog />
         </Box>
         <HeaderMenu />
         <Box
           variant="layout.verticalAlign"
           sx={{ position: 'absolute', right: ['8px', '24px'] }}
         >
+          <ThemeColorMode
+            sx={{
+              display: ['none', 'flex'],
+              px: 2,
+              mr: 1,
+              py: '3px',
+              maxWidth: '32px',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              ':hover': {
+                backgroundColor: 'secondaryBackground',
+              },
+            }}
+          />
           <RegisterHelp />
           <CoinbaseSubscribe
             mr="2"

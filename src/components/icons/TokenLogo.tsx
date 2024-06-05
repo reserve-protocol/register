@@ -13,7 +13,7 @@ interface Props extends BoxProps {
   bordered?: boolean
 }
 
-const IMGS = new Set([
+const SVGS = new Set([
   'dai',
   'cdai',
   'rsr',
@@ -72,6 +72,8 @@ const IMGS = new Set([
   'sfrxeth',
 ])
 
+const PNGS = new Set(['steakUSDC'])
+
 // Memoized token image
 const TokenImage = React.memo(
   ({
@@ -114,8 +116,10 @@ const TokenLogo = ({
   if (!imgSrc) {
     if (rToken?.symbol === symbol) {
       imgSrc = rToken?.logo
-    } else if (tokenSymbol && IMGS.has(tokenSymbol.toLowerCase())) {
+    } else if (tokenSymbol && SVGS.has(tokenSymbol.toLowerCase())) {
       imgSrc = `/svgs/${tokenSymbol.toLowerCase()}.svg`
+    } else if (tokenSymbol && PNGS.has(tokenSymbol)) {
+      imgSrc = `/imgs/${tokenSymbol}.png`
     }
   }
 

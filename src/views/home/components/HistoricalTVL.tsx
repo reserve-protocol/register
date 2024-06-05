@@ -56,7 +56,9 @@ function CustomTooltip({ payload, label, active }: any) {
         }}
         p={3}
       >
-        <Text sx={{ fontSize: 1 }}>{new Date(label).toDateString()}</Text>
+        <Text sx={{ fontSize: 1 }}>
+          {new Date(label).toDateString().replace(/^\S+\s/, '')}
+        </Text>
         <Text color="secondaryText" sx={{ fontSize: 1 }}>
           (TVL per network)
         </Text>

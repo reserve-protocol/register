@@ -57,7 +57,7 @@ const CompareTokensTitle = () => {
 
         <CompareBg
           sx={{
-            '-webkit-transform': 'scaleX(-1)',
+            WebkitTransform: 'scaleX(-1)',
             transform: 'scaleX(-1)',
             right: 0,
           }}

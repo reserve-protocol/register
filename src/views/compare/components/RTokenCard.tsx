@@ -190,12 +190,20 @@ const RTokenCard = ({ token, ...props }: Props) => {
                       <Trans>Market cap:</Trans>
                     </Text>
                   </Box>
-                  <Box ml="1" variant="layout.verticalAlign">
+                  <Box
+                    ml="1"
+                    variant="layout.verticalAlign"
+                    sx={{
+                      flexDirection: ['column', 'row'],
+                      alignItems: ['start', 'flex-end'],
+                      gap: 1,
+                    }}
+                  >
                     <Text variant="strong">
                       ${formatCurrency(token.supply, 0)}
                     </Text>
                     {supplyETHTerms && (
-                      <Text ml="1">
+                      <Text>
                         {`(${formatCurrency(supplyETHTerms, 0)} ${
                           token.targetUnits
                         })`}

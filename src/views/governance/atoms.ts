@@ -8,6 +8,7 @@ import Governance from 'abis/Governance'
 import Main from 'abis/Main'
 import RToken from 'abis/RToken'
 import RevenueTrader from 'abis/RevenueTrader'
+import Spell from 'abis/Spell'
 import StRSR from 'abis/StRSR'
 import Timelock from 'abis/Timelock'
 import { atom } from 'jotai'
@@ -18,6 +19,7 @@ import {
 } from 'state/atoms'
 import { ContractKey } from 'state/rtoken/atoms/rTokenContractsAtom'
 import { Abi, getAddress } from 'viem'
+import { spellAddressAtom } from './views/proposal/components/SpellUpgrade'
 
 export interface ProposalCall {
   signature: string
@@ -86,12 +88,16 @@ export const contractDetails: InterfaceMap = {
     interface: RToken,
     label: 'RToken',
   },
+  spell: {
+    interface: Spell,
+    label: 'Upgrade 3.4.0',
+  },
 }
-
 
 export const interfaceMapAtom = atom((get) => {
   const contracts = get(rTokenContractsAtom)
   const governance = get(rTokenGovernanceAtom)
+  const spell = get(spellAddressAtom)
   const rToken = get(rTokenAtom)
 
   if (!contracts) {
@@ -108,6 +114,10 @@ export const interfaceMapAtom = atom((get) => {
   if (governance.timelock && governance.governor) {
     map[getAddress(governance.governor)] = contractDetails.governor
     map[getAddress(governance.timelock)] = contractDetails.timelock
+  }
+
+  if (spell) {
+    map[getAddress(spell)] = contractDetails.spell
   }
 
   if (rToken) {

@@ -403,6 +403,15 @@ export const theme: Theme = {
         backgroundColor: 'transparent',
       },
     },
+    radio: {
+      mozAppearance: 'none',
+      webkitAppearance: 'none',
+      outline: 'none',
+      'input:focus ~ &': {
+        bg: 'transparent',
+        backgroundColor: 'transparent',
+      },
+    },
     select: {
       ...baseInput,
       backgroundColor: 'background',
