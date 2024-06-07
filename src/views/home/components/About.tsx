@@ -19,12 +19,11 @@ const About = () => {
         src="/imgs/bg-about.png"
         alt="About background"
         sx={{
-          objectFit: ['none', 'cover'],
-          objectPosition: ['left 60%', 'left top'],
+          objectFit: 'cover',
           width: '100%',
           height: [200, 160],
-          maxHeight: ['200px', '100%'],
-          minHeight: ['50px', '100%'],
+          maxHeight: '100%',
+          minHeight: '100%',
           opacity: colorMode === 'dark' ? 0.25 : 1,
         }}
       />
