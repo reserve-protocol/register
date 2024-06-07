@@ -248,7 +248,22 @@ const HeroTVL = () => {
           ${formatCurrency(tvl, 0)}
         </Text>
       ) : (
-        <Skeleton height={52} width={300} style={{ marginBottom: '16px' }} />
+        <Box>
+          <Box sx={{ display: ['none', 'flex'] }}>
+            <Skeleton
+              height={52}
+              width={300}
+              style={{ marginBottom: '16px' }}
+            />
+          </Box>
+          <Box sx={{ display: ['flex', 'none'] }}>
+            <Skeleton
+              height={40}
+              width={200}
+              style={{ marginBottom: '16px' }}
+            />
+          </Box>
+        </Box>
       )}
     </Box>
   )

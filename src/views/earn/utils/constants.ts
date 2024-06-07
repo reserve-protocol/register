@@ -33,6 +33,21 @@ export const OTHER_POOL_TOKENS: Record<
     address: '0x4200000000000000000000000000000000000006',
     logo: '',
   },
+  '0xb79dd08ea68a908a97220c76d19a6aa9cbde4376': {
+    symbol: 'USD+',
+    address: '0xb79dd08ea68a908a97220c76d19a6aa9cbde4376',
+    logo: '',
+  },
+  '0xbf1aea8670d2528e08334083616dd9c5f3b087ae': {
+    symbol: 'MAI',
+    address: '0xbf1aea8670d2528e08334083616dd9c5f3b087ae',
+    logo: '',
+  },
+  '0x4621b7a9c75199271f773ebd9a499dbd165c3191': {
+    symbol: 'DOLA',
+    address: '0x4621b7a9c75199271f773ebd9a499dbd165c3191',
+    logo: '',
+  },
   // Mainnet
   '0xf939e0a03fb07f59a73314e73794be0e57ac1b4e': {
     symbol: 'crvUSD',
@@ -52,6 +67,52 @@ export const OTHER_POOL_TOKENS: Record<
   '0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca': {
     symbol: 'USDBC',
     address: '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA',
+    logo: '',
+  },
+  '0x865377367054516e17014ccded1e7d814edc9ce4': {
+    symbol: 'DOLA',
+    address: '0x865377367054516e17014ccded1e7d814edc9ce4',
+    logo: '',
+  },
+  '0x0000000000000000000000000000000000000000': {
+    symbol: 'ETH',
+    address: '0x0000000000000000000000000000000000000000',
+    logo: '',
+  },
+  '0x04c154b66cb340f3ae24111cc767e0184ed00cc6': {
+    symbol: 'pxETH',
+    address: '0x04c154b66cb340f3ae24111cc767e0184ed00cc6',
+    logo: '',
+  },
+  '0x085780639cc2cacd35e474e71f4d000e2405d8f6': {
+    symbol: 'FXUSD',
+    address: '0x085780639cc2cacd35e474e71f4d000e2405d8f6',
+    logo: '',
+  },
+  '0xbc6da0fe9ad5f3b0d58160288917aa56653660e9': {
+    symbol: 'ALUSD',
+    address: '0xbc6da0fe9ad5f3b0d58160288917aa56653660e9',
+    logo: '',
+  },
+  // Arbitrum
+  '0x82af49447d8a07e3bd95bd0d56f35241523fbab1': {
+    symbol: 'WETH',
+    address: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+    logo: '',
+  },
+  '0x498bf2b1e120fed3ad3d42ea2165e9b73f99c1e5': {
+    symbol: 'crvUSD',
+    address: '0x498bf2b1e120fed3ad3d42ea2165e9b73f99c1e5',
+    logo: '',
+  },
+  '0xca5ca9083702c56b481d1eec86f1776fdbd2e594': {
+    symbol: 'RSR',
+    address: '0xca5ca9083702c56b481d1eec86f1776fdbd2e594',
+    logo: '',
+  },
+  '0xaf88d065e77c8cc2239327c5edb3a432268e5831': {
+    symbol: 'USDC',
+    address: '0xaf88d065e77c8cc2239327c5edb3a432268e5831',
     logo: '',
   },
 }
