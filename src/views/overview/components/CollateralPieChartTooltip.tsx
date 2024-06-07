@@ -76,7 +76,7 @@ const CollateralPieChartTooltip: FC<CollateralPieChartTooltipProps> = ({
             +token.collateralDistribution[c.id.toLowerCase()]?.dist * 100 ?? 0,
           logo:
             symbol === 'steakusdc'
-              ? `imgs/steakUSDC.png`
+              ? `imgs/steakusdc.png`
               : `svgs/${symbol}.svg`,
           project: cmsCollateral?.protocol?.name || 'GENERIC',
           projectLogo: cmsCollateral?.protocol?.logo,
