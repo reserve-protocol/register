@@ -19,6 +19,10 @@ export default defineConfig({
           src: 'node_modules/@reserve-protocol/rtokens/images/*',
           dest: 'svgs',
         },
+        {
+          src: '_headers',
+          dest: '',
+        },
       ],
     }),
     {
