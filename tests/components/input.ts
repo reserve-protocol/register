@@ -3,7 +3,7 @@ import { type Page, expect } from '@playwright/test'
 export default function (page: Page) {
   const dataTestId = 'numerical-input'
 
-  const waitForReady = async () => {
+  const isVisible = async () => {
     const numericalInput = page.getByTestId(dataTestId)
     await expect(numericalInput).toBeVisible()
   }
@@ -18,7 +18,7 @@ export default function (page: Page) {
   }
 
   return {
-    waitForReady,
+    isVisible,
     input,
     clearInput,
   }

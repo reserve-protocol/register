@@ -3,12 +3,12 @@ import { type Page, expect } from '@playwright/test'
 export default function (page: Page, component: 'mint' | 'stake') {
   const dataTestId = component === 'mint' ? 'zap-error' : 'stake-error'
 
-  const waitForReady = async () => {
+  const isVisible = async () => {
     const error = page.getByTestId(dataTestId)
     await expect(error).toBeVisible()
   }
 
-  const notPresent = async () => {
+  const isNotVisible = async () => {
     const error = page.getByTestId(dataTestId)
     await expect(error).toBeVisible({ visible: false })
   }
@@ -19,8 +19,8 @@ export default function (page: Page, component: 'mint' | 'stake') {
   }
 
   return {
-    waitForReady,
-    notPresent,
+    isVisible,
+    isNotVisible,
     expectedMessage,
   }
 }
