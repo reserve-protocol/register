@@ -19,8 +19,29 @@ export default defineConfig({
           src: 'node_modules/@reserve-protocol/rtokens/images/*',
           dest: 'svgs',
         },
+        {
+          src: '_headers',
+          dest: '',
+        },
       ],
     }),
+    {
+      name: 'configure-response-headers',
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          res.setHeader('X-Frame-Options', 'SAMEORIGIN')
+          res.setHeader(
+            'Strict-Transport-Security',
+            'max-age=63072000; includeSubDomains; preload'
+          )
+          res.setHeader(
+            'Content-Security-Policy',
+            "object-src 'none'; base-uri 'self'; frame-src 'none'; frame-ancestors 'none';"
+          )
+          next()
+        })
+      },
+    },
   ],
   build: {
     outDir: 'build',
