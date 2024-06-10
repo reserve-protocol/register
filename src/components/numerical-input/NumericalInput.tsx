@@ -26,6 +26,7 @@ const NumericalInput = ({ onChange, ...props }: InputProps) => {
       minLength={1}
       maxLength={79}
       spellCheck="false"
+      data-testid="numerical-input"
       {...props}
     />
   )

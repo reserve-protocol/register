@@ -36,6 +36,7 @@ import {
   SLIPPAGE_OPTIONS,
   zappableTokens,
 } from '../constants'
+import { useParams } from 'react-router-dom'
 
 export type IssuanceOperation = 'mint' | 'redeem'
 
@@ -122,6 +123,7 @@ export const useZap = () => {
 }
 
 export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
+  const { tokenId } = useParams()
   const [zapEnabled, setZapEnabled] = useState(true)
   const [operation, setOperation] = useState<IssuanceOperation>('mint')
   const [openSettings, setOpenSettings] = useState<boolean>(false)
@@ -188,7 +190,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
   const rToken: ZapToken = useMemo(
     () => ({
-      address: rTokenData?.address as Address,
+      address: tokenId as Address,
       symbol: rTokenData?.symbol as string,
       name: rTokenData?.name as string,
       decimals: rTokenData?.decimals as number,

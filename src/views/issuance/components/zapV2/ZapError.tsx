@@ -26,7 +26,11 @@ const ZapError = ({ error }: { error?: ZapErrorType }) => {
         p: 3,
       }}
     >
-      <Text color={error.color} sx={{ fontWeight: 700 }}>
+      <Text
+        color={error.color}
+        sx={{ fontWeight: 700 }}
+        data-testid="zap-error"
+      >
         {error.title}
       </Text>
       <Text sx={{ fontSize: 14 }}>{error.message}</Text>
