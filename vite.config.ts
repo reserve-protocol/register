@@ -34,7 +34,10 @@ export default defineConfig({
             'Strict-Transport-Security',
             'max-age=63072000; includeSubDomains; preload'
           )
-          res.setHeader('Content-Security-Policy', "frame-ancestors 'none';")
+          res.setHeader(
+            'Content-Security-Policy',
+            "object-src 'none'; base-uri 'self'; frame-src 'none'; frame-ancestors 'none';"
+          )
           next()
         })
       },
