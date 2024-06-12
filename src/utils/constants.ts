@@ -80,6 +80,10 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'Morpho Blue',
     site: 'https://app.morpho.org/',
   },
+  merkl: {
+    name: 'Merkl',
+    site: 'https://merkl.angle.money/',
+  },
 }
 
 // List of supported networks with label
