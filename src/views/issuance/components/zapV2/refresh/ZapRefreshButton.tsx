@@ -1,30 +1,54 @@
 import { useState } from 'react'
 import { IconButton } from 'theme-ui'
+import { useZap } from '../context/ZapContext'
 import RefreshIcon from './RefreshIcon'
 
 const RefreshButton = () => {
-  const [refreshCount, setRefreshCount] = useState(0)
+  const {
+    endpoint,
+    zapResult,
+    refreshInterval,
+    refreshQuote,
+    loadingZap,
+    validatingZap,
+  } = useZap()
+  const [refreshCount, setRefreshCount] = useState(1)
+  const isRefreshing = loadingZap || validatingZap
 
   const handleClick = () => {
-    setRefreshCount((prevRefreshCount) => prevRefreshCount + 1)
+    if (endpoint && zapResult && !isRefreshing) {
+      refreshQuote()
+      setRefreshCount((prevRefreshCount) => prevRefreshCount + 1)
+    }
   }
 
   return (
     <IconButton
       sx={{
-        cursor: 'pointer',
+        cursor: endpoint ? 'pointer' : 'not-allowed',
         width: '34px',
         height: '34px',
         border: '1px solid',
         borderColor: 'borderSecondary',
         borderRadius: '6px',
         position: 'relative',
-        ':hover': { backgroundColor: 'border' },
+        opacity: endpoint ? 1 : 0.5,
+        ':hover': {
+          backgroundColor: endpoint ? 'border' : 'transparent',
+        },
       }}
       p={0}
+      disabled={!endpoint}
       onClick={handleClick}
     >
-      <RefreshIcon id={refreshCount} />
+      {endpoint && zapResult && !isRefreshing ? (
+        <RefreshIcon
+          animationDuration={`${refreshInterval}ms`}
+          id={refreshCount}
+        />
+      ) : (
+        <RefreshIcon animationDuration="0" id={0} />
+      )}
     </IconButton>
   )
 }
