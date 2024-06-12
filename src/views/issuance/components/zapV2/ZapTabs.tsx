@@ -3,6 +3,7 @@ import { Minus, Plus } from 'react-feather'
 import { Box } from 'theme-ui'
 import { useZap } from './context/ZapContext'
 import ZapSettings from './settings/ZapSettings'
+import ZapRefreshButton from './refresh/ZapRefreshButton'
 
 const ZapTabs = () => {
   const { operation, setOperation } = useZap()
@@ -23,7 +24,10 @@ const ZapTabs = () => {
         background="border"
         onMenuChange={setOperation}
       />
-      <ZapSettings />
+      <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+        <ZapRefreshButton />
+        <ZapSettings />
+      </Box>
     </Box>
   )
 }
