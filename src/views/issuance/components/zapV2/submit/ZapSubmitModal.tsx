@@ -61,8 +61,15 @@ const ZapOverview = () => {
             }}
           />
           <Button small variant="hover" onClick={() => setCollapsed((c) => !c)}>
-            <Box variant="layout.verticalAlign" sx={{ color: 'secondaryText' }}>
-              <Text mr="2">Show more</Text>
+            <Box
+              variant="layout.verticalAlign"
+              sx={{
+                color: 'secondaryText',
+                minWidth: 92,
+                justifyContent: 'space-between',
+              }}
+            >
+              <Text mr="2">{collapsed ? 'Show more' : 'Show less'}</Text>
               <AsteriskIcon />
             </Box>
           </Button>
