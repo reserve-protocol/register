@@ -36,7 +36,7 @@ export default defineConfig({
           )
           res.setHeader(
             'Content-Security-Policy',
-            "object-src 'none'; base-uri 'self'; frame-src 'none'; frame-ancestors 'none';"
+            "object-src 'none'; base-uri 'self'; frame-ancestors 'none';"
           )
           next()
         })
