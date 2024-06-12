@@ -6,6 +6,7 @@ import rTokenAtom from './rTokenAtom'
 import rTokenBackingDistributionAtom from './rTokenBackingDistributionAtom'
 import rTokenContractsAtom from './rTokenContractsAtom'
 import rTokenRevenueSplitAtom from './rTokenRevenueSplitAtom'
+import { ChainId } from 'utils/chains'
 
 export const rTokenStateAtom = atomWithReset({
   tokenSupply: 0,
@@ -103,7 +104,10 @@ export const rTokenManagersAtom = atom({
 // Yield
 
 // 30 day avg apy taken from https://defillama.com/yields?token=USDT&token=CUSDT&token=USDC&token=CUSDC&token=DAI&token=BUSD&token=USDP&token=WBTC&token=ETH&project=aave-v2&project=compound&chain=Ethereum
-export const collateralYieldAtom = atom<{ [x: string]: number }>({})
+type ChainId = number
+type CollateralYield = Record<string, number>
+export type CollateralYieldByChain = Record<ChainId, CollateralYield>
+export const collateralYieldAtom = atom<CollateralYieldByChain>({})
 
 export const estimatedApyAtom = atom((get) => {
   const rToken = get(rTokenAtom)
@@ -127,7 +131,8 @@ export const estimatedApyAtom = atom((get) => {
 
   for (const collateral of rToken.collaterals) {
     rTokenYield +=
-      (collateralYield[collateral.symbol.toLowerCase()] || 0) *
+      (collateralYield[rToken.chainId]?.[collateral.symbol.toLowerCase()] ||
+        0) *
       (distribution.collateralDistribution[collateral.address]?.share / 100 ||
         0)
   }

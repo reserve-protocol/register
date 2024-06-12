@@ -110,7 +110,9 @@ const PluginItem = ({ data, onCheck, selected, ...props }: PluginItemProps) => {
 
           <Text sx={{ fontSize: 1, display: 'block' }} variant="legend">
             <Trans>Target:</Trans> {data.targetName} | <Trans>Est. APY:</Trans>{' '}
-            {formatPercentage(collateralYields[symbol.toLowerCase()] || 0)}
+            {formatPercentage(
+              collateralYields[chainId]?.[symbol.toLowerCase()] || 0
+            )}
           </Text>
         </Box>
         <Box mx="auto" />
