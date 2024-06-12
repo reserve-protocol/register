@@ -1,26 +1,16 @@
 import { useAtom, useAtomValue } from 'jotai'
-import { rTokenGovernanceAtom, rTokenStateAtom } from 'state/atoms'
+import { useCallback } from 'react'
+import { rTokenAtom, rTokenGovernanceAtom, rTokenStateAtom } from 'state/atoms'
 import {
-  ProposalEvent,
   SimulationConfig,
   StorageEncodingResponse,
   TenderlyPayload,
   TenderlySimulation,
 } from 'types'
-import { useCallback, useState } from 'react'
-import useProposalTx from './useProposalTx'
 import { PublicClient, usePublicClient } from 'wagmi'
 import { getContract } from 'wagmi/actions'
+import useProposalTx from './useProposalTx'
 
-import {
-  keccak256,
-  stringToBytes,
-  encodeAbiParameters,
-  parseAbiParameters,
-  toHex,
-  encodeFunctionData,
-  parseEther,
-} from 'viem'
 import Governance from 'abis/Governance'
 import {
   BLOCK_GAS_LIMIT,
@@ -30,6 +20,15 @@ import {
   TENDERLY_SHARE_URL,
   TENDERLY_SIM_URL,
 } from 'utils/constants'
+import {
+  encodeAbiParameters,
+  encodeFunctionData,
+  keccak256,
+  parseAbiParameters,
+  parseEther,
+  stringToBytes,
+  toHex,
+} from 'viem'
 import { simulationStateAtom } from '../../proposal-detail/atom'
 
 /**
@@ -113,6 +112,7 @@ const simulateNew = async (
   const governor = getContract({
     address: governance.governor!,
     abi: Governance,
+    chainId: client.chain.id,
   })
 
   const timelockAddr = await governor.read.timelock()
@@ -235,10 +235,11 @@ const simulateNew = async (
 }
 
 const useProposalSimulation = () => {
+  const rToken = useAtomValue(rTokenAtom)
   const { stTokenSupply: votingTokenSupply } = useAtomValue(rTokenStateAtom)
   const governance = useAtomValue(rTokenGovernanceAtom)
   const [simState, setSimState] = useAtom(simulationStateAtom)
-  const client = usePublicClient()
+  const client = usePublicClient({ chainId: rToken?.chainId })
   const tx = useProposalTx()
 
   const [targets, values, calldatas, description] = tx?.args!
