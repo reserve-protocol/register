@@ -94,6 +94,11 @@ export const OTHER_POOL_TOKENS: Record<
     address: '0xbc6da0fe9ad5f3b0d58160288917aa56653660e9',
     logo: '',
   },
+  '0x73968b9a57c6e53d41345fd57a6e6ae27d6cdb2f': {
+    symbol: 'SDT',
+    address: '0x73968b9a57c6e53d41345fd57a6e6ae27d6cdb2f',
+    logo: '',
+  },
   // Arbitrum
   '0x82af49447d8a07e3bd95bd0d56f35241523fbab1': {
     symbol: 'WETH',

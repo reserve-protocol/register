@@ -72,6 +72,7 @@ const SVGS = new Set([
   'sfrxeth',
   'usd+',
   'pxeth',
+  'sdt',
 ])
 
 const PNGS = new Set(['steakusdc', 'mai', 'dola', 'fxusd', 'alusd'])
