@@ -5,7 +5,7 @@ import Help from 'components/help'
 import EmptyBoxIcon from 'components/icons/EmptyBoxIcon'
 import { useAtomValue } from 'jotai'
 import { useCallback } from 'react'
-import { collateralYieldAtom } from 'state/atoms'
+import { chainIdAtom, collateralYieldAtom } from 'state/atoms'
 import { Box, BoxProps, Divider, Flex, Text } from 'theme-ui'
 import { formatPercentage, truncateDecimals } from 'utils'
 import { Basket, basketAtom, Collateral } from '../atoms'
@@ -60,9 +60,10 @@ const PrimaryBasket = ({
   readOnly = false,
   ...props
 }: Props) => {
+  const chainId = useAtomValue(chainIdAtom)
   const basket = useAtomValue(basketAtom)
   const units = Object.keys(basket)
-  const collateralYield = useAtomValue(collateralYieldAtom)
+  const collateralYields = useAtomValue(collateralYieldAtom)
 
   const getEstApy = useCallback(() => {
     return Object.keys(basket).reduce((prev, current) => {
@@ -70,13 +71,14 @@ const PrimaryBasket = ({
 
       for (let i = 0; i < currentBasket.collaterals.length; i++) {
         prev +=
-          (collateralYield[currentBasket.collaterals[i].symbol.toLowerCase()] ||
-            0) * (+currentBasket.distribution[i] / 100 || 0)
+          (collateralYields[chainId]?.[
+            currentBasket.collaterals[i].symbol.toLowerCase()
+          ] || 0) * (+currentBasket.distribution[i] / 100 || 0)
       }
 
       return prev
     }, 0)
-  }, [collateralYield, basket])
+  }, [collateralYields, basket, chainId])
 
   return (
     <Box {...props}>

@@ -1,18 +1,16 @@
 import { createColumnHelper } from '@tanstack/react-table'
-import CollateralAbi from 'abis/CollateralAbi'
 import { Button } from 'components'
 import BasketCubeIcon from 'components/icons/BasketCubeIcon'
 import ChainLogo from 'components/icons/ChainLogo'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
 import TokenLogo from 'components/icons/TokenLogo'
-import { ContentHead } from 'components/info-box'
 import { Table } from 'components/table'
-import { atom, useAtomValue } from 'jotai'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { collateralYieldAtom } from 'state/atoms'
 import CollateralYieldUpdater from 'state/updaters/CollateralYieldUpdater'
 import { Box, Link, Text } from 'theme-ui'
-import { Collateral, CollateralPlugin } from 'types'
+import { CollateralPlugin } from 'types'
 import { formatCurrency, formatPercentage, parseDuration } from 'utils'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import {
@@ -39,7 +37,9 @@ const allPluginsAtom = atomWithLoadable(async (get) => {
     collateralPlugins[chainId].map((plugin) => ({
       ...plugin,
       apy:
-        collateralYield[plugin.symbol.toLowerCase().replace('-vault', '')] ?? 0,
+        collateralYield[chainId]?.[
+          plugin.symbol.toLowerCase().replace('-vault', '')
+        ] ?? 0,
       supply: 0,
       chainId,
     }))

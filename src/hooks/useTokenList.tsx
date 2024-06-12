@@ -151,7 +151,8 @@ const useTokenList = () => {
 
             for (const collateral of collaterals) {
               basketApy +=
-                (collateralYield[collateral.symbol.toLowerCase()] || 0) *
+                (collateralYield[chain]?.[collateral.symbol.toLowerCase()] ||
+                  0) *
                 (Number(distribution[collateral.id.toLowerCase()]?.dist) || 0)
             }
 
