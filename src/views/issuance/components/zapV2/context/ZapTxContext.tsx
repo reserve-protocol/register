@@ -113,6 +113,7 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     zapResult && zapResult.tx && (hasAllowance || approvalSuccess)
       ? {
           data: zapResult.tx.data as Address,
+          gas: BigInt(zapResult.gas ?? 0) || undefined,
           to: zapResult.tx.to as Address,
           value: BigInt(zapResult.tx.value),
         }
