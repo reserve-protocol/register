@@ -4,6 +4,7 @@ import { useZap } from '../context/ZapContext'
 import { useZapTx } from '../context/ZapTxContext'
 import ZapApprovalButton from './ZapApprovalButton'
 import ZapConfirmButton from './ZapConfirmButton'
+import ZapRefreshQuote from './ZapRefreshQuote'
 
 const ZapConfirm = () => {
   const { tokenIn } = useZap()
@@ -13,8 +14,12 @@ const ZapConfirm = () => {
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
       {error && <ZapError error={error} />}
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-        {tokenIn.symbol !== 'ETH' && <ZapApprovalButton />}
-        <ZapConfirmButton />
+        <ZapRefreshQuote>
+          <>
+            {tokenIn.symbol !== 'ETH' && <ZapApprovalButton />}
+            <ZapConfirmButton />
+          </>
+        </ZapRefreshQuote>
       </Box>
     </Box>
   )

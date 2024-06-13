@@ -102,7 +102,7 @@ const ZapOverview = () => {
 }
 
 const ZapSubmitModal = () => {
-  const { setOpenSubmitModal, operation } = useZap()
+  const { setOpenSubmitModal, operation, refreshQuote } = useZap()
 
   return (
     <Modal
@@ -124,7 +124,10 @@ const ZapSubmitModal = () => {
           </Text>
           <Button
             variant="circle"
-            onClick={() => setOpenSubmitModal(false)}
+            onClick={() => {
+              setOpenSubmitModal(false)
+              refreshQuote()
+            }}
             sx={{ marginLeft: 'auto', backgroundColor: 'transparent' }}
           >
             <X />

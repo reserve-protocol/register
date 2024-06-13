@@ -11,6 +11,7 @@ const RefreshButton = () => {
     refreshQuote,
     loadingZap,
     validatingZap,
+    openSubmitModal,
   } = useZap()
   const [refreshCount, setRefreshCount] = useState(1)
   const isRefreshing = loadingZap || validatingZap
@@ -41,7 +42,7 @@ const RefreshButton = () => {
       disabled={!endpoint}
       onClick={handleClick}
     >
-      {endpoint && zapResult && !isRefreshing ? (
+      {endpoint && zapResult && !isRefreshing && !openSubmitModal ? (
         <RefreshIcon
           animationDuration={`${refreshInterval}ms`}
           id={refreshCount}

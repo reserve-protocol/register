@@ -301,7 +301,6 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     error: apiError,
     mutate: refetch,
   } = useSWR<ZapResponse>(endpoint, fetcher, {
-    isPaused: () => openSubmitModal,
     onSuccess(data, _, __) {
       // if data.error exists, it means the zap failed.
       if (data.error && retries < 10 && !isRetrying) {
@@ -323,7 +322,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       // Retry after 5 seconds.
       setTimeout(() => revalidate({ retryCount }), 500)
     },
-    refreshInterval: REFRESH_INTERVAL,
+    refreshInterval: openSubmitModal ? 0 : REFRESH_INTERVAL,
   })
 
   const [amountOut, priceImpact, zapDustUSD, gasCost, spender] = useMemo(() => {

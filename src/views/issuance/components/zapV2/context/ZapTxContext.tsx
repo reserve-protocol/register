@@ -29,6 +29,7 @@ type ZapTxContextType = {
   validatingTx: boolean
   sendTransaction?: () => void
   receipt?: TransactionReceipt
+  onGoingConfirmation: boolean
 }
 
 const ZapTxContext = createContext<ZapTxContextType>({
@@ -38,6 +39,7 @@ const ZapTxContext = createContext<ZapTxContextType>({
   approvalSuccess: false,
   loadingTx: false,
   validatingTx: false,
+  onGoingConfirmation: false,
 })
 
 export const useZapTx = () => {
@@ -133,6 +135,15 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         : `Redeem ${tokenIn.symbol}`,
   })
 
+  const onGoingConfirmation = Boolean(
+    (loadingApproval ||
+      approvalSuccess ||
+      loadingTx ||
+      validatingTx ||
+      receipt) &&
+      !error
+  )
+
   useEffect(() => {
     if (!approvalSuccess) return
     if (
@@ -210,6 +221,7 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         validatingTx: Boolean(validatingTx),
         sendTransaction,
         receipt,
+        onGoingConfirmation,
       }}
     >
       {children}
