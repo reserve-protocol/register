@@ -7,6 +7,8 @@ import { rTokenGovernanceAtom, rTokenManagersAtom } from 'state/atoms'
 import { isAddress } from 'utils'
 import { Address } from 'viem'
 
+// Added name order to governanceFrameworks so that "Governor Anastasius"
+// is first element (until we add a timestamp field).
 const query = gql`
   query getRTokenOwner($id: String!) {
     rtoken(id: $id) {
@@ -17,7 +19,7 @@ const query = gql`
     }
     governance(id: $id) {
       guardians
-      governanceFrameworks {
+      governanceFrameworks(orderBy: name, orderDirection: desc) {
         id
         name
         proposalThreshold
