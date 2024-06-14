@@ -6,7 +6,7 @@ import { useZap } from '../context/ZapContext'
 import { useZapTx } from '../context/ZapTxContext'
 
 const ZapApprovalButton = () => {
-  const { tokenIn } = useZap()
+  const { tokenIn, loadingZap, validatingZap } = useZap()
   const {
     hasAllowance,
     loadingApproval,
@@ -50,9 +50,10 @@ const ZapApprovalButton = () => {
   return (
     <LoadingButton
       onClick={approve}
-      loading={loadingApproval}
+      loading={loadingApproval || loadingZap || validatingZap}
       text={`Approve use of ${tokenIn.symbol}`}
       fullWidth
+      loadingText={loadingApproval ? 'Approving...' : 'Finding route...'}
     />
   )
 }

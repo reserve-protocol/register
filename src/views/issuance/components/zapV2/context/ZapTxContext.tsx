@@ -29,6 +29,7 @@ type ZapTxContextType = {
   validatingTx: boolean
   sendTransaction?: () => void
   receipt?: TransactionReceipt
+  onGoingConfirmation: boolean
 }
 
 const ZapTxContext = createContext<ZapTxContextType>({
@@ -38,6 +39,7 @@ const ZapTxContext = createContext<ZapTxContextType>({
   approvalSuccess: false,
   loadingTx: false,
   validatingTx: false,
+  onGoingConfirmation: false,
 })
 
 export const useZapTx = () => {
@@ -111,6 +113,7 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     zapResult && zapResult.tx && (hasAllowance || approvalSuccess)
       ? {
           data: zapResult.tx.data as Address,
+          gas: BigInt(zapResult.gas ?? 0) || undefined,
           to: zapResult.tx.to as Address,
           value: BigInt(zapResult.tx.value),
         }
@@ -132,6 +135,15 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         ? `Mint ${tokenOut.symbol}`
         : `Redeem ${tokenIn.symbol}`,
   })
+
+  const onGoingConfirmation = Boolean(
+    (loadingApproval ||
+      approvalSuccess ||
+      loadingTx ||
+      validatingTx ||
+      receipt) &&
+      !error
+  )
 
   useEffect(() => {
     if (!approvalSuccess) return
@@ -210,6 +222,7 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         validatingTx: Boolean(validatingTx),
         sendTransaction,
         receipt,
+        onGoingConfirmation,
       }}
     >
       {children}
