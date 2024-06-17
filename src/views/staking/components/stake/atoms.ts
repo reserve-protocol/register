@@ -4,6 +4,7 @@ import { atom } from 'jotai'
 import {
   accountDelegateAtom,
   chainIdAtom,
+  geolocationAtom,
   isModuleLegacyAtom,
   rTokenContractsAtom,
   rsrBalanceAtom,
@@ -14,7 +15,32 @@ import { RSR_ADDRESS } from 'utils/addresses'
 import { Address } from 'viem'
 import { rateAtom } from 'views/staking/atoms'
 
+const BLOCKED_COUNTRIES = [
+  'RU', // Russia
+  'VE', // Venezuela
+  'UA', // Ukraine
+  'CU', // Cuba
+  'IR', // Iran
+  'KP', // North Korea
+  'SY', // Syria
+  'US', // United States
+]
+
 export const customDelegateAtom = atom('')
+
+export const isStakingEnabledAtom = atom((get) => {
+  const loc = get(geolocationAtom)
+
+  if (!loc) {
+    return { loading: true, value: false }
+  }
+
+  if (BLOCKED_COUNTRIES.indexOf(loc) !== -1) {
+    return { loading: false, value: false }
+  }
+
+  return { loading: false, value: true }
+})
 
 export const stakeAmountAtom = atom('')
 export const stakeAmountUsdAtom = atom((get) => {
