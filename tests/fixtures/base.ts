@@ -5,11 +5,14 @@ import {
   PublicClient,
   WalletClient,
   createPublicClient,
+  createTestClient,
   createWalletClient,
   http,
+  parseEther,
 } from 'viem'
 import { generatePrivateKey, privateKeyToAccount } from 'viem/accounts'
-import { Anvil, createAnvil } from '../anvil'
+import { Anvil, TokenBalances, createAnvil } from '../anvil'
+import { setERC20Balance } from '../utils/balances'
 
 declare global {
   interface Window {
@@ -26,6 +29,7 @@ type Web3 = {
   publicClient: PublicClient
   walletClient: WalletClient
   fork: Anvil
+  setBalance: (balances: TokenBalances) => Promise<void>
 }
 
 type TestProps = {
@@ -41,7 +45,6 @@ const base = ({ privateKey }: TestParams = defaultTestParams) =>
     bypassCSP: true,
     web3: async ({ page }, use) => {
       const account = privateKeyToAccount(privateKey)
-
       const fork = await createAnvil()
       const chain = fork.chain()
       const rpc = fork.rpc()
@@ -59,7 +62,25 @@ const base = ({ privateKey }: TestParams = defaultTestParams) =>
         window.e2e = _injected
       }, injected)
 
-      await use({ account, publicClient, walletClient, fork })
+      const anvilProvider = createTestClient({
+        mode: 'anvil',
+        chain,
+        transport: http(rpc),
+      })
+
+      const setBalance = async (balances: TokenBalances) => {
+        for (const [address, balance] of Object.entries(balances)) {
+          await setERC20Balance(
+            account.address,
+            address as Address,
+            parseEther(balance),
+            anvilProvider,
+            publicClient
+          )
+        }
+      }
+
+      await use({ account, publicClient, walletClient, fork, setBalance })
 
       await fork.stop()
     },
