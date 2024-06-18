@@ -9,6 +9,7 @@ import {
   createWalletClient,
   http,
   parseEther,
+  toHex,
 } from 'viem'
 import { generatePrivateKey, privateKeyToAccount } from 'viem/accounts'
 import { Anvil, TokenBalances, createAnvil } from '../anvil'
@@ -66,6 +67,12 @@ const base = ({ privateKey }: TestParams = defaultTestParams) =>
         mode: 'anvil',
         chain,
         transport: http(rpc),
+      })
+
+      // Set the balance of the account to 1000 ETH
+      await anvilProvider.request({
+        method: 'anvil_setBalance',
+        params: [account.address, toHex(parseEther('1000'))],
       })
 
       const setBalance = async (balances: TokenBalances) => {

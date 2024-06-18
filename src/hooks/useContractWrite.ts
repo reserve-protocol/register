@@ -18,9 +18,15 @@ const useContractWrite = <
 >(
   call: UsePrepareContractWriteConfig<TAbi, TFunctionName, TChainId> = {} as any
 ) => {
+  const isE2E = import.meta.env.VITE_TESTING && window.e2e
   const isWalletInvalid = useAtomValue(isWalletInvalidAtom)
   const { config, isSuccess, error } = usePrepareContractWrite(
-    !isWalletInvalid ? (call as UsePrepareContractWriteConfig) : undefined
+    !isWalletInvalid
+      ? ({
+          ...call,
+          ...(isE2E ? { gas: 100000n } : {}),
+        } as UsePrepareContractWriteConfig)
+      : undefined
   )
 
   const gas = useGasEstimate(isSuccess ? config.request : null)
@@ -29,7 +35,7 @@ const useContractWrite = <
     ...config,
     request: {
       ...config.request,
-      gas: gas.result ? getSafeGasLimit(gas.result) : undefined,
+      gas: gas.result && !isE2E ? getSafeGasLimit(gas.result) : undefined,
     },
   })
 

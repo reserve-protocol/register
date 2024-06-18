@@ -28,5 +28,5 @@ export function setupTestConfig(e2e: {
     connectors: [new TestConnector({ chains, ...e2e })],
     publicClient,
     storage: createStorage({ storage: noopStorage }),
-  }) as any
+  })
 }

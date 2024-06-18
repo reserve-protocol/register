@@ -88,5 +88,5 @@ test('Manual mint', async ({ page, web3 }) => {
   await approveButton.click()
 
   // wait 30 secs
-  // await page.waitForTimeout(30000)
+  await page.waitForTimeout(30000)
 })

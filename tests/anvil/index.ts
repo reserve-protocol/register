@@ -18,6 +18,7 @@ export const createAnvil = async (): Promise<Anvil> => {
     blockTime: 1,
     blockBaseFeePerGas: 0,
     gasLimit: 20_000_000,
+    gasPrice: 0,
     forkUrl: `https://eth-mainnet.g.alchemy.com/v2/${process.env.E2E_ALCHEMY_KEY}`,
     chainId: mainnet.id,
     // forkBlockNumber: 17086178n,

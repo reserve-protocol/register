@@ -36,7 +36,9 @@ export const useStaticGasEstimate = (
       return amount
     })
 
-    return [total, breakdown]
+    const isE2E = import.meta.env.VITE_TESTING && window.e2e
+
+    return isE2E ? [0, []] : [total, breakdown]
   }, [gasPrice])
 }
 
@@ -76,7 +78,9 @@ export const useGasEstimate = (
     estimateGas()
   }, [client, fee, ethPrice, call])
 
-  return state
+  const isE2E = import.meta.env.VITE_TESTING && window.e2e
+
+  return isE2E ? defaultGas : state
 }
 
 export default useGasEstimate

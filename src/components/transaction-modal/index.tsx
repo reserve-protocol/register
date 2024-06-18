@@ -38,7 +38,8 @@ const Approval = ({
   })
 
   const checkingAllowance = !gas.isLoading && !gas.estimateUsd
-
+  console.log('checkingAllowance', checkingAllowance)
+  console.log('write', Boolean(write))
   return (
     <>
       <Divider sx={{ borderColor: 'darkBorder' }} mx={-4} my={4} />
