@@ -34,6 +34,7 @@ const RefreshButton = () => {
         borderRadius: '6px',
         position: 'relative',
         opacity: endpoint ? 1 : 0.5,
+        color: 'accentInverted',
         ':hover': {
           backgroundColor: endpoint ? 'border' : 'transparent',
         },
