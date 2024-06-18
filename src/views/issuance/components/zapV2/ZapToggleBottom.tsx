@@ -34,6 +34,7 @@ const ZapToggleBottom = ({
         color="text"
         small
         onClick={() => setZapEnabled(false)}
+        data-testid="manual-minting-button"
       >
         Switch to manual minting
       </Button>

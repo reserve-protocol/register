@@ -66,6 +66,7 @@ const TransactionInput = ({
       sx={{ display: 'block', fontSize: compact ? 1 : 2 }}
       ml={'auto'}
       mr={2}
+      data-testid={`${title.toLowerCase()}-max-amount`}
     >
       Max: {formatCurrency(+maxAmount, 5)}
     </Text>
