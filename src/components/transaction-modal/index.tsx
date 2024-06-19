@@ -38,8 +38,7 @@ const Approval = ({
   })
 
   const checkingAllowance = !gas.isLoading && !gas.estimateUsd
-  console.log('checkingAllowance', checkingAllowance)
-  console.log('write', Boolean(write))
+
   return (
     <>
       <Divider sx={{ borderColor: 'darkBorder' }} mx={-4} my={4} />
@@ -171,6 +170,7 @@ const TransactionModal = ({
         fullWidth
         gas={hasAllowance ? gas : undefined}
         mt={3}
+        data-testid={`confirm-${title.split(' ').join('-').toLowerCase()}`}
       />
       {!!validationMessage && (
         <Box sx={{ textAlign: 'center', fontSize: 1 }} mt={3}>

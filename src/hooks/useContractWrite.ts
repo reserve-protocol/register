@@ -24,7 +24,7 @@ const useContractWrite = <
     !isWalletInvalid
       ? ({
           ...call,
-          ...(isE2E ? { gas: 100000n } : {}),
+          ...(isE2E ? { gas: 1000000n } : {}),
         } as UsePrepareContractWriteConfig)
       : undefined
   )
@@ -44,7 +44,8 @@ const useContractWrite = <
       ...contractWrite,
       gas,
       validationError: error,
-      isReady: !!call?.address && !!gas.result && !!contractWrite.write,
+      isReady:
+        !!call?.address && (!!gas.result || isE2E) && !!contractWrite.write,
       hash: !contractWrite.isError ? contractWrite.data?.hash : undefined,
     }),
     [contractWrite]
