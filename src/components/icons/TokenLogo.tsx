@@ -70,9 +70,12 @@ const SVGS = new Set([
   'sabasusdc',
   'saarbusdcn',
   'sfrxeth',
+  'usd+',
+  'pxeth',
+  'sdt',
 ])
 
-const PNGS = new Set(['steakUSDC'])
+const PNGS = new Set(['steakusdc', 'mai', 'dola', 'fxusd', 'alusd'])
 
 // Memoized token image
 const TokenImage = React.memo(
@@ -118,8 +121,8 @@ const TokenLogo = ({
       imgSrc = rToken?.logo
     } else if (tokenSymbol && SVGS.has(tokenSymbol.toLowerCase())) {
       imgSrc = `/svgs/${tokenSymbol.toLowerCase()}.svg`
-    } else if (tokenSymbol && PNGS.has(tokenSymbol)) {
-      imgSrc = `/imgs/${tokenSymbol}.png`
+    } else if (tokenSymbol && PNGS.has(tokenSymbol.toLowerCase())) {
+      imgSrc = `/imgs/${tokenSymbol.toLowerCase()}.png`
     }
   }
 

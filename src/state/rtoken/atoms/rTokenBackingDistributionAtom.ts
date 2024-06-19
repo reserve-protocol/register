@@ -30,27 +30,30 @@ const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
     args: [rToken.address] as [Address],
   }
 
-  const [[erc20s, uoaShares, targets], [backing, overCollateralization], [_, __, targetAmts]] =
-    await readContracts({
-      contracts: [
-        {
-          ...callParams,
-          functionName: 'basketBreakdown',
-          chainId,
-        },
-        {
-          ...callParams,
-          functionName: 'backingOverview',
-          chainId,
-        },
-        {
-          ...callParams,
-          functionName: 'primeBasket',
-          chainId,
-        },
-      ],
-      allowFailure: false,
-    })
+  const [
+    [erc20s, uoaShares, targets],
+    [backing, overCollateralization],
+    [_, __, targetAmts],
+  ] = await readContracts({
+    contracts: [
+      {
+        ...callParams,
+        functionName: 'basketBreakdown',
+        chainId,
+      },
+      {
+        ...callParams,
+        functionName: 'backingOverview',
+        chainId,
+      },
+      {
+        ...callParams,
+        functionName: 'primeBasket',
+        chainId,
+      },
+    ],
+    allowFailure: false,
+  })
 
   return {
     backing: Math.min(100, Math.ceil(Number(formatEther(backing)) * 100)),
@@ -64,7 +67,9 @@ const rTokenBackingDistributionAtom = atomWithLoadable(async (get) => {
           targetUnit: hexToString(targets[index], { size: 32 }),
         },
       }),
-      {} as { [x: Address]: { share: number; targetAmts: string, targetUnit: string } }
+      {} as {
+        [x: Address]: { share: number; targetAmts: string; targetUnit: string }
+      }
     ),
   }
 })
@@ -90,14 +95,14 @@ export const rTokenCollateralDetailedAtom = atom((get) => {
   const distribution = get(
     rTokenBackingDistributionAtom
   )?.collateralDistribution
-  const yields = get(collateralYieldAtom)
+  const collateralYields = get(collateralYieldAtom)
 
   if (
     !rToken ||
     !distribution ||
     supply === undefined ||
     !price ||
-    !Object.keys(yields).length
+    !Object.keys(collateralYields).length
   ) {
     return null
   }
@@ -108,7 +113,9 @@ export const rTokenCollateralDetailedAtom = atom((get) => {
   return rToken.collaterals.map((collateral) => {
     const data: CollateralDetail = {
       ...collateral,
-      yield: yields[collateral.symbol.toLowerCase()] || 0,
+      yield:
+        collateralYields[rToken.chainId]?.[collateral.symbol.toLowerCase()] ||
+        0,
       valueUsd: supplyUsd
         ? (supplyUsd * distribution[collateral.address].share) / 100
         : 0,

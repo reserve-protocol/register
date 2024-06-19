@@ -61,8 +61,15 @@ const ZapOverview = () => {
             }}
           />
           <Button small variant="hover" onClick={() => setCollapsed((c) => !c)}>
-            <Box variant="layout.verticalAlign" sx={{ color: 'secondaryText' }}>
-              <Text mr="2">Show more</Text>
+            <Box
+              variant="layout.verticalAlign"
+              sx={{
+                color: 'secondaryText',
+                minWidth: 92,
+                justifyContent: 'space-between',
+              }}
+            >
+              <Text mr="2">{collapsed ? 'Show more' : 'Show less'}</Text>
               <AsteriskIcon />
             </Box>
           </Button>
@@ -95,7 +102,7 @@ const ZapOverview = () => {
 }
 
 const ZapSubmitModal = () => {
-  const { setOpenSubmitModal, operation } = useZap()
+  const { setOpenSubmitModal, operation, refreshQuote } = useZap()
 
   return (
     <Modal
@@ -117,7 +124,10 @@ const ZapSubmitModal = () => {
           </Text>
           <Button
             variant="circle"
-            onClick={() => setOpenSubmitModal(false)}
+            onClick={() => {
+              setOpenSubmitModal(false)
+              refreshQuote()
+            }}
             sx={{ marginLeft: 'auto', backgroundColor: 'transparent' }}
           >
             <X />

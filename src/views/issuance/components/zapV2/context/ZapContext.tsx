@@ -88,7 +88,12 @@ type ZapContextType = {
   priceImpact?: number
   spender?: Address
   zapResult?: ZapResult
+
+  refreshInterval: number
+  refreshQuote: () => void
 }
+
+const REFRESH_INTERVAL = 12000 // 12 seconds
 
 const ZapContext = createContext<ZapContextType>({
   zapEnabled: true,
@@ -116,6 +121,8 @@ const ZapContext = createContext<ZapContextType>({
   tokenIn: zappableTokens[ChainId.Mainnet][0],
   tokenOut: zappableTokens[ChainId.Mainnet][0],
   resetZap: () => {},
+  refreshInterval: REFRESH_INTERVAL,
+  refreshQuote: () => {},
 })
 
 export const useZap = () => {
@@ -296,7 +303,6 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     error: apiError,
     mutate: refetch,
   } = useSWR<ZapResponse>(endpoint, fetcher, {
-    isPaused: () => openSubmitModal,
     onSuccess(data, _, __) {
       // if data.error exists, it means the zap failed.
       if (data.error && retries < 10 && !isRetrying) {
@@ -318,6 +324,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       // Retry after 5 seconds.
       setTimeout(() => revalidate({ retryCount }), 500)
     },
+    refreshInterval: openSubmitModal ? 0 : REFRESH_INTERVAL,
   })
 
   const [amountOut, priceImpact, zapDustUSD, gasCost, spender] = useMemo(() => {
@@ -483,6 +490,8 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         zapResult: data?.result,
         endpoint,
         resetZap,
+        refreshQuote: refetch,
+        refreshInterval: REFRESH_INTERVAL,
       }}
     >
       {children}

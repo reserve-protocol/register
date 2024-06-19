@@ -1,0 +1,4 @@
+/*
+  X-Frame-Options: SAMEORIGIN
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  Content-Security-Policy: object-src 'none'; base-uri 'self'; frame-ancestors 'none';

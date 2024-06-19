@@ -6,26 +6,18 @@ import { useZapTx } from '../context/ZapTxContext'
 import ZapGasCost from '../overview/ZapGasCost'
 
 const ZapConfirmButton = () => {
-  const { operation, zapResult, validatingZap } = useZap()
+  const { operation, zapResult, validatingZap, loadingZap } = useZap()
   const {
     hasAllowance,
-    loadingApproval,
     approvalSuccess,
     loadingTx,
     validatingTx,
     sendTransaction,
     receipt,
-    error,
+    onGoingConfirmation,
   } = useZapTx()
 
-  if (
-    (loadingApproval ||
-      approvalSuccess ||
-      loadingTx ||
-      validatingTx ||
-      receipt) &&
-    !error
-  ) {
+  if (onGoingConfirmation) {
     return (
       <Box variant="layout.verticalAlign">
         <Box variant="layout.verticalAlign" sx={{ gap: 3 }}>
@@ -64,9 +56,10 @@ const ZapConfirmButton = () => {
       {hasAllowance && (
         <LoadingButton
           onClick={() => sendTransaction?.()}
-          loading={!zapResult}
+          loading={!zapResult || loadingZap || validatingZap}
           text={operation === 'mint' ? 'Confirm Mint' : 'Confirm Redeem'}
           fullWidth
+          loadingText="Finding route..."
         />
       )}
       <ZapGasCost mt={2} />
