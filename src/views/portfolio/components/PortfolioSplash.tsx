@@ -5,12 +5,30 @@ import { useState } from 'react'
 import { Box, Divider, Flex, Image, Text } from 'theme-ui'
 import { isAddress } from 'utils'
 import VaultPlaceholder from '../assets/vault-placeholder.png'
+import { atom, useSetAtom } from 'jotai'
+import { trackedWalletAtom, trackedWalletsAtom } from '../atoms'
+import { useConnectModal } from '@rainbow-me/rainbowkit'
+
+const trackNewWalletAtom = atom(null, (get, set, address: string) => {
+  const trackedWallets = get(trackedWalletsAtom)
+
+  if (!trackedWallets.includes(address)) {
+    set(trackedWalletsAtom, [...trackedWallets, address])
+  }
+
+  set(trackedWalletAtom, address)
+})
 
 const TrackWallet = () => {
   const [value, setValue] = useState('')
   const validAddress = isAddress(value)
+  const trackWallet = useSetAtom(trackNewWalletAtom)
 
-  const handleTrackWallet = () => {}
+  const handleTrackWallet = () => {
+    if (validAddress) {
+      trackWallet(validAddress)
+    }
+  }
 
   return (
     <Box variant="layout.verticalAlign" sx={{ flexWrap: 'wrap', gap: 3 }}>
@@ -20,8 +38,8 @@ const TrackWallet = () => {
       </Text>
       <Box sx={{ flexGrow: '1', position: 'relative', minWidth: 360 }}>
         <Input
-          sx={{ width: '100%' }}
           variant="smallInput"
+          sx={{ width: '100%', paddingRight: '70px', fontSize: 1 }}
           placeholder="Enter wallet address"
           value={value}
           onChange={setValue}
@@ -40,6 +58,8 @@ const TrackWallet = () => {
 }
 
 const PortfolioSplash = () => {
+  const { openConnectModal } = useConnectModal()
+
   return (
     <Flex
       p={4}
@@ -69,7 +89,9 @@ const PortfolioSplash = () => {
               View native and bridged token amounts/values + your staked
               positions.
             </Text>
-            <Button mt="3">Connect wallet</Button>
+            <Button mt="3" variant="accentAction" onClick={openConnectModal}>
+              Connect wallet
+            </Button>
           </Box>
         </Box>
         <Divider my="5" />
