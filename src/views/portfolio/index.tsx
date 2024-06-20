@@ -5,7 +5,7 @@ import RegisterAbout from 'views/compare/components/RegisterAbout'
 const PortfolioWrapper = () => {
   return (
     <>
-      <Box variant="layout.wrapper" px={[1, 4]} py={[1, 8]}>
+      <Box variant="layout.wrapper" px={[1, 4]} pt={[1, 8]}>
         <Portfolio />
       </Box>
       <RegisterAbout />
