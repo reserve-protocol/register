@@ -8,9 +8,19 @@ export const trackedWalletsAtom = atomWithStorage<string[]>(
   []
 )
 export const trackedWalletAtom = atomWithStorage<string>('trackedWallet', '')
+export const allWalletsAtom = atom((get) => {
+  const tracked = get(trackedWalletsAtom)
+  const connected = get(walletAtom)
+
+  if (!connected || tracked.includes(connected)) {
+    return tracked
+  }
+
+  return [...tracked, connected]
+})
 export const currentWalletAtom = atom((get) => {
   const trackedWallet = get(trackedWalletAtom)
   const connectedWallet = get(walletAtom)
 
-  return connectedWallet || isAddress(trackedWallet) ? trackedWallet : null
+  return isAddress(trackedWallet) ? trackedWallet : connectedWallet
 })

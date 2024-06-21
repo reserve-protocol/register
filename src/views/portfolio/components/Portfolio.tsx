@@ -1,7 +1,10 @@
 import { useAtomValue } from 'jotai'
-import { Box } from 'theme-ui'
+import { Box, Flex } from 'theme-ui'
 import { currentWalletAtom } from '../atoms'
 import PortfolioSplash from './PortfolioSplash'
+import WalletSelector from './WalletSelector'
+import HoldingsOverview from './HoldingsOverview'
+import PositionsContainer from './PositionsContainer'
 
 const Portfolio = () => {
   const wallet = useAtomValue(currentWalletAtom)
@@ -10,7 +13,15 @@ const Portfolio = () => {
     return <PortfolioSplash />
   }
 
-  return <Box>portfolio</Box>
+  return (
+    <Box>
+      <Box variant="layout.verticalAlign">
+        <WalletSelector />
+      </Box>
+      <HoldingsOverview />
+      <PositionsContainer />
+    </Box>
+  )
 }
 
 export default Portfolio

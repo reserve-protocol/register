@@ -1,6 +1,7 @@
 import { Box } from 'theme-ui'
 import Portfolio from './components/Portfolio'
 import RegisterAbout from 'views/compare/components/RegisterAbout'
+import PortfolioUpdater from './Updater'
 
 const PortfolioWrapper = () => {
   return (
@@ -9,6 +10,7 @@ const PortfolioWrapper = () => {
         <Portfolio />
       </Box>
       <RegisterAbout />
+      <PortfolioUpdater />
     </>
   )
 }
