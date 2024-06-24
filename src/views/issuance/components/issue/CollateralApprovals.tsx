@@ -84,6 +84,9 @@ const CollateralApproval = ({
               onClick={write}
               disabled={!write}
               small
+              data-testid={
+                write ? `approve-${collateral.symbol?.toLowerCase()}` : ''
+              }
             />
           )}
         </Box>

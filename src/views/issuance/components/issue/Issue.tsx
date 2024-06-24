@@ -96,6 +96,7 @@ const Issue = () => {
           variant={missingCollateral ? 'error' : 'primary'}
           mt={3}
           onClick={handleIssue}
+          data-testid="mint-button"
         >
           {missingCollateral ? (
             <Trans>Missing collateral</Trans>

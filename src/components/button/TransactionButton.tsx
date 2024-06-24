@@ -48,7 +48,12 @@ export const ConnectWalletButton = (props: ButtonProps) => {
   const { openConnectModal } = useConnectModal()
 
   return (
-    <Button {...props} onClick={openConnectModal} variant="accentAction">
+    <Button
+      {...props}
+      onClick={openConnectModal}
+      variant="accentAction"
+      data-testid="connect-wallet-button"
+    >
       <Text>
         <Trans>Connect Wallet</Trans>
       </Text>
@@ -83,6 +88,7 @@ export const TransactionButtonContainer = ({
         onClick={() => {
           switchNetwork(chain || chainId)
         }}
+        data-testid="switch-network-button"
       >
         <Text>Switch to {CHAIN_TAGS[chain || chainId]}</Text>
       </Button>

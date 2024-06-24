@@ -33,6 +33,7 @@ const TransactionHeader = () => {
               mr={4}
               sx={{ cursor: 'pointer' }}
               onClick={openAccountModal}
+              data-testid="account-sidebar"
             >
               <WalletIcon />
               <Text ml={2} mr={2}>

@@ -122,7 +122,10 @@ const Account = () => {
                   chainId={chain.id}
                   currentChain={chainId}
                 >
-                  <Container onClick={() => setVisible(true)}>
+                  <Container
+                    onClick={() => setVisible(true)}
+                    data-testid="account-navbar"
+                  >
                     {!invalidChain ? (
                       <ChainLogo chain={chain.id} />
                     ) : (
@@ -131,6 +134,7 @@ const Account = () => {
                     <Text
                       sx={{ display: ['none', 'inherit', 'inherit'] }}
                       ml={2}
+                      data-testid="account-display-name"
                     >
                       {account.displayName}
                     </Text>

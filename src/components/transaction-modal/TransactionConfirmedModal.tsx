@@ -17,7 +17,11 @@ const TransactionConfirmedModal = ({
   const chainId = useAtomValue(chainIdAtom)
 
   return (
-    <Modal onClose={onClose} style={{ maxWidth: '420px' }}>
+    <Modal
+      onClose={onClose}
+      style={{ maxWidth: '420px' }}
+      data-testid="confirmation-modal"
+    >
       <Flex
         p={4}
         sx={{
