@@ -30,6 +30,7 @@ import {
   toHex,
 } from 'viem'
 import { simulationStateAtom } from '../../proposal-detail/atom'
+import { isTimeunitGovernance } from 'views/governance/utils'
 
 /**
  * @notice Encode state overrides
@@ -100,7 +101,8 @@ const simulateNew = async (
   config: SimulationConfig,
   votingTokenSupply: number,
   governance: any,
-  client: PublicClient
+  client: PublicClient,
+  isTimeUnitGovernance: boolean
 ): Promise<TenderlySimulation> => {
   const { targets, values, calldatas, description } = config
 
@@ -156,14 +158,21 @@ const simulateNew = async (
   const proposalCoreKey = `_proposals[${proposalId.toString()}]`
   const proposalVotesKey = `_proposalVotes[${proposalId.toString()}]`
   governorStateOverrides = {
-    [`${proposalCoreKey}.voteEnd._deadline`]: (
-      BigInt(blockNumberToUse) - 1n
-    ).toString(),
-    [`${proposalCoreKey}.voteStart._deadline`]: (
-      BigInt(blockNumberToUse) - 1n
-    ).toString(),
-    [`${proposalCoreKey}.canceled`]: 'false',
+    ...(isTimeUnitGovernance
+      ? {
+          [`${proposalCoreKey}.voteEnd`]: (simTimestamp - 100n).toString(),
+          [`${proposalCoreKey}.voteStart`]: (simTimestamp - 100n).toString(),
+        }
+      : {
+          [`${proposalCoreKey}.voteEnd._deadline`]: (
+            BigInt(blockNumberToUse) - 1n
+          ).toString(),
+          [`${proposalCoreKey}.voteStart._deadline`]: (
+            BigInt(blockNumberToUse) - 1n
+          ).toString(),
+        }),
     [`${proposalCoreKey}.executed`]: 'false',
+    [`${proposalCoreKey}.canceled`]: 'false',
     [`${proposalVotesKey}.forVotes`]: parseEther(
       votingTokenSupply.toString()
     ).toString(),
@@ -181,6 +190,7 @@ const simulateNew = async (
         value: governorStateOverrides,
       },
     },
+    blockNumber: Number(latestBlock.number),
   }
 
   const storageObj = await sendEncodeRequest(stateOverrides)
@@ -240,6 +250,7 @@ const useProposalSimulation = () => {
   const governance = useAtomValue(rTokenGovernanceAtom)
   const [simState, setSimState] = useAtom(simulationStateAtom)
   const client = usePublicClient({ chainId: rToken?.chainId })
+  const isTimeUnitGovernance = isTimeunitGovernance(governance.name)
   const tx = useProposalTx()
 
   const [targets, values, calldatas, description] = tx?.args!
@@ -258,7 +269,8 @@ const useProposalSimulation = () => {
         config,
         votingTokenSupply,
         governance,
-        client
+        client,
+        isTimeUnitGovernance
       )
       setSimState({ data: result, loading: false, error: null })
     } catch (err: any) {
