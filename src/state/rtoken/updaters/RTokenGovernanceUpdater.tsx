@@ -1,3 +1,4 @@
+import GovernanceAnastasius from 'abis/GovernanceAnastasius'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
@@ -6,6 +7,8 @@ import { useEffect } from 'react'
 import { rTokenGovernanceAtom, rTokenManagersAtom } from 'state/atoms'
 import { isAddress } from 'utils'
 import { Address } from 'viem'
+import { isTimeunitGovernance } from 'views/governance/utils'
+import { useContractReads } from 'wagmi'
 
 // Added name order to governanceFrameworks so that "Governor Anastasius"
 // is first element (until we add a timestamp field).
@@ -45,6 +48,32 @@ const RTokenGovernanceUpdater = () => {
     id: rToken?.address.toLowerCase(),
   })
 
+  const { data: onChainData } = useContractReads({
+    contracts:
+      data?.governance?.governanceFrameworks?.[0]?.id &&
+      rToken?.chainId &&
+      isTimeunitGovernance(data?.governance?.governanceFrameworks?.[0]?.name)
+        ? [
+            {
+              abi: GovernanceAnastasius,
+              chainId: rToken.chainId,
+              address: data.governance.governanceFrameworks[0].id as Address,
+              functionName: 'quorum',
+              args: [BigInt(Math.floor(Date.now() / 1000 - 100))],
+            },
+            {
+              abi: GovernanceAnastasius,
+              chainId: rToken.chainId,
+              address: data.governance.governanceFrameworks[0].id as Address,
+              functionName: 'quorumNumerator',
+              args: [BigInt(Math.floor(Date.now() / 1000 - 100))],
+            },
+          ]
+        : undefined,
+    allowFailure: false,
+    enabled: !!data?.governance?.governanceFrameworks?.[0]?.id,
+  })
+
   useEffect(() => {
     if (data?.rtoken) {
       setTokenManagers(data.rtoken)
@@ -65,6 +94,7 @@ const RTokenGovernanceUpdater = () => {
           votingDelay,
           votingPeriod,
         } = data.governance.governanceFrameworks[0]
+
         setGovernance({
           name,
           proposalThreshold: (+proposalThreshold / 1e6).toString(),
@@ -79,13 +109,13 @@ const RTokenGovernanceUpdater = () => {
             executionDelay === '0'
               ? '259200'
               : executionDelay,
-          quorumNumerator,
-          quorumVotes,
+          quorumNumerator: onChainData?.[1]?.toString() || quorumNumerator,
+          quorumVotes: onChainData?.[0]?.toString() || quorumVotes,
           guardians: data.governance.guardians ?? [],
         })
       }
     }
-  }, [data])
+  }, [data, onChainData])
 
   return null
 }
