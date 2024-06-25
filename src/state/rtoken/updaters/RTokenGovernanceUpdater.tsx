@@ -108,15 +108,14 @@ const RTokenGovernanceUpdater = () => {
         // for Anastasius governance set by the 3.4.0 spell,
         // we need to calculate the on-chain proposal threshold
         // because the ProposalThresholdSet event is not listened by the subgraph
-        const onChainProposalThreshold = onChainData?.[2]
-          ? onChainData[2] * 100n - 99n > 0 && stTokenSupply > 0
+        const onChainProposalThreshold =
+          onChainData?.[2] && stTokenSupply > 0
             ? Number(
                 (onChainData[2] * 100n - 99n) /
                   BigInt(Math.floor(stTokenSupply * 1e6)) /
                   BigInt(1e6)
               )
-            : 0
-          : undefined
+            : undefined
 
         setGovernance({
           name,
