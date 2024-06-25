@@ -54,6 +54,7 @@ const RTokenGovernanceUpdater = () => {
   })
 
   const { data: onChainData } = useContractReads({
+    keepPreviousData: true,
     contracts:
       data?.governance?.governanceFrameworks?.[0]?.id &&
       rToken?.chainId &&
