@@ -2,9 +2,13 @@ import GovernanceAnastasius from 'abis/GovernanceAnastasius'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
 import useRToken from 'hooks/useRToken'
-import { useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useEffect } from 'react'
-import { rTokenGovernanceAtom, rTokenManagersAtom } from 'state/atoms'
+import {
+  rTokenGovernanceAtom,
+  rTokenManagersAtom,
+  rTokenStateAtom,
+} from 'state/atoms'
 import { isAddress } from 'utils'
 import { Address } from 'viem'
 import { isTimeunitGovernance } from 'views/governance/utils'
@@ -23,7 +27,6 @@ const query = gql`
     governance(id: $id) {
       guardians
       governanceFrameworks(orderBy: name, orderDirection: desc) {
-        id
         name
         proposalThreshold
         contractAddress
@@ -41,6 +44,7 @@ const query = gql`
 
 const RTokenGovernanceUpdater = () => {
   const rToken = useRToken()
+  const { stTokenSupply } = useAtomValue(rTokenStateAtom)
   const setGovernance = useSetAtom(rTokenGovernanceAtom)
   const setTokenManagers = useSetAtom(rTokenManagersAtom)
 
@@ -68,6 +72,12 @@ const RTokenGovernanceUpdater = () => {
               functionName: 'quorumNumerator',
               args: [BigInt(Math.floor(Date.now() / 1000 - 100))],
             },
+            {
+              abi: GovernanceAnastasius,
+              chainId: rToken.chainId,
+              address: data.governance.governanceFrameworks[0].id as Address,
+              functionName: 'proposalThreshold',
+            },
           ]
         : undefined,
     allowFailure: false,
@@ -82,7 +92,6 @@ const RTokenGovernanceUpdater = () => {
       if (data.governance?.governanceFrameworks?.length) {
         // TODO: Multiple governances, currently use 1
         const {
-          id,
           name,
           proposalThreshold,
           quorumDenominator,
@@ -95,20 +104,30 @@ const RTokenGovernanceUpdater = () => {
           votingPeriod,
         } = data.governance.governanceFrameworks[0]
 
+        // for Anastasius governance set by the 3.4.0 spell,
+        // we need to calculate the on-chain proposal threshold
+        // because the ProposalThresholdSet event is not listened by the subgraph
+        const onChainProposalThreshold = onChainData?.[2]
+          ? onChainData[2] * 100n - 99n > 0 && stTokenSupply > 0
+            ? Number(
+                (onChainData[2] * 100n - 99n) /
+                  BigInt(Math.floor(stTokenSupply * 1e6)) /
+                  BigInt(1e6)
+              )
+            : 0
+          : undefined
+
         setGovernance({
           name,
-          proposalThreshold: (+proposalThreshold / 1e6).toString(),
+          proposalThreshold: (
+            (onChainProposalThreshold || +proposalThreshold) / 1e6
+          ).toString(),
           timelock: isAddress(timelockAddress) ?? undefined,
           governor: isAddress(contractAddress) as Address,
           votingDelay,
           votingPeriod,
           quorumDenominator,
-          // TODO: Figure out why eUSD governance config is incorrectly recorded in graphql
-          executionDelay:
-            id === '0x7e880d8bd9c9612d6a9759f96acd23df4a4650e6' &&
-            executionDelay === '0'
-              ? '259200'
-              : executionDelay,
+          executionDelay,
           quorumNumerator: onChainData?.[1]?.toString() || quorumNumerator,
           quorumVotes: onChainData?.[0]?.toString() || quorumVotes,
           guardians: data.governance.guardians ?? [],
