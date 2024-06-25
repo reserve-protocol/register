@@ -27,6 +27,7 @@ const query = gql`
     governance(id: $id) {
       guardians
       governanceFrameworks(orderBy: name, orderDirection: desc) {
+        id
         name
         proposalThreshold
         contractAddress
@@ -134,7 +135,7 @@ const RTokenGovernanceUpdater = () => {
         })
       }
     }
-  }, [data, onChainData])
+  }, [data, onChainData, stTokenSupply])
 
   return null
 }
