@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro'
 import { Button } from 'components'
+import DgnETHButtonAppendix from 'components/dgneth/DgnETHButtonAppendix'
 import DivaButtonAppendix from 'components/diva-points/DivaButtonAppendix'
 import Popup from 'components/popup'
 import useRToken from 'hooks/useRToken'
@@ -113,7 +114,7 @@ const OverviewActions = () => {
   const rToken = useRToken()
   const navigate = useNavigate()
   // TODO: Grab this from theGraph?
-  const { holders, stakers } = useAtomValue(estimatedApyAtom)
+  const { holders, stakers, basket } = useAtomValue(estimatedApyAtom)
 
   return (
     <Box
@@ -127,19 +128,21 @@ const OverviewActions = () => {
         gap: [2, 3],
       }}
     >
-      <DivaButtonAppendix rTokenSymbol={rToken?.symbol} hideLabelOnMobile>
-        <Button
-          variant="accent"
-          onClick={() => navigate(`../${ROUTES.ISSUANCE}`)}
-          sx={{ whiteSpace: 'nowrap' }}
-        >
-          <Trans>
-            {!!holders
-              ? `Mint ${formatCurrency(holders, 1)}% Est. APY`
-              : 'Mint'}
-          </Trans>
-        </Button>
-      </DivaButtonAppendix>
+      <DgnETHButtonAppendix rTokenSymbol={rToken?.symbol} basketAPY={basket}>
+        <DivaButtonAppendix rTokenSymbol={rToken?.symbol} hideLabelOnMobile>
+          <Button
+            variant="accent"
+            onClick={() => navigate(`../${ROUTES.ISSUANCE}`)}
+            sx={{ whiteSpace: 'nowrap' }}
+          >
+            <Trans>
+              {!!holders
+                ? `Mint ${formatCurrency(holders, 1)}% Est. APY`
+                : 'Mint'}
+            </Trans>
+          </Button>
+        </DivaButtonAppendix>
+      </DgnETHButtonAppendix>
       <Button
         variant="bordered"
         onClick={() => navigate(`../${ROUTES.STAKING}`)}
