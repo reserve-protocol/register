@@ -49,7 +49,7 @@ const DgnETHButtonAppendix: FC<Props> = ({
       +formatUnits(stakeTokenSupply, 21)
 
     return `${stakeAPY.toFixed(1)}%`
-  }, [basketAPY])
+  }, [basketAPY, supplies])
 
   if (rTokenSymbol !== 'dgnETH') return <>{children}</>
 
