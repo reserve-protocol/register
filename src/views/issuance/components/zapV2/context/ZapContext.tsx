@@ -161,7 +161,8 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
           ...token,
           balance: balances[token.address as Address]?.balance ?? '0',
         }))
-        .filter((token) => operation === 'mint' || token.symbol !== 'ETH'),
+        .filter((token) => operation === 'mint' || token.symbol !== 'ETH')
+        .filter((token) => operation === 'redeem' || token.symbol !== 'USDT'),
     [chainId, balances, operation]
   )
   const tokenPrice = useChainlinkPrice(
