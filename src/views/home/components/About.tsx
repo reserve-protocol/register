@@ -13,6 +13,23 @@ const About = () => {
         border: '1.5px solid',
         borderColor: colorMode === 'dark' ? 'darkBorder' : 'reserveBackground',
         background: colorMode === 'dark' ? 'transparent' : 'white',
+        overflow: 'hidden',
+        '::before': {
+          content: '""',
+          background: 'rgba(255, 255, 255, 0.4)',
+          width: '60%',
+          height: '100%',
+          top: '0%',
+          left: '-125%',
+          transform: 'skew(45deg)',
+          position: 'absolute',
+          animation: 'slideStripe 4.5s linear infinite',
+        },
+        '@keyframes slideStripe': {
+          '0%': { left: '-125%' },
+          '23.08%': { left: '125%' },
+          '100%': { left: '125%' },
+        },
       }}
     >
       <Image
