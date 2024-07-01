@@ -71,7 +71,7 @@ const About = () => {
           <Text variant="sectionTitle" sx={{ fontSize: 18 }}>
             Monetarium, San Francisco
           </Text>
-          <Text>July 19-21, 2024</Text>
+          <Text sx={{ opacity: 0.85 }}>July 19-21, 2024</Text>
         </Box>
         <Box ml="auto">
           <ExternalArrowIcon width={26} height={26} />
