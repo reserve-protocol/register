@@ -10,9 +10,9 @@ const About = () => {
         height: '100%',
         flexGrow: 1,
         borderRadius: [0, '14px'],
-        border: '1.5px solid',
-        borderColor: colorMode === 'dark' ? 'darkBorder' : 'reserveBackground',
-        background: colorMode === 'dark' ? 'transparent' : 'white',
+        border: '0.5px solid',
+        borderColor: 'white',
+        background: colorMode === 'dark' ? 'transparent' : 'primary',
         overflow: 'hidden',
         '::before': {
           content: '""',
@@ -33,15 +33,15 @@ const About = () => {
       }}
     >
       <Image
-        src="/imgs/bg-about.png"
-        alt="About background"
+        src="/imgs/bg-monetarium.png"
+        alt="Monetarium background"
         sx={{
           objectFit: 'cover',
           width: '100%',
           height: [200, 160],
           maxHeight: '100%',
           minHeight: '100%',
-          opacity: colorMode === 'dark' ? 0.25 : 1,
+          opacity: colorMode === 'dark' ? 0.8 : 1,
         }}
       />
     </Box>
