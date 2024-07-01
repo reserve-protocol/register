@@ -1,6 +1,8 @@
 import { FC, PropsWithChildren, memo, useMemo } from 'react'
 import { Plus } from 'react-feather'
+import useSWR from 'swr'
 import { Box, ButtonProps, Text } from 'theme-ui'
+import { ChainId } from 'utils/chains'
 import { formatUnits } from 'viem'
 import { erc20ABI, useContractReads } from 'wagmi'
 
@@ -13,6 +15,8 @@ type Props = {
 
 const TOKEN_ADDRESS = '0x005F893EcD7bF9667195642f7649DA8163e23658'
 const STAKE_TOKEN_ADDRESS = '0x5BDd1fA233843Bfc034891BE8a6769e58F1e1346'
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
 const DgnETHButtonAppendix: FC<Props> = ({
   rTokenSymbol,
@@ -37,19 +41,30 @@ const DgnETHButtonAppendix: FC<Props> = ({
     allowFailure: false,
   })
 
+  const { data: yieldsAPIData } = useSWR(
+    'https://yields.reserve.org/pools',
+    fetcher
+  )
+
+  const _basketAPY = useMemo(() => {
+    const apiBasketAPY =
+      yieldsAPIData?.rtokensBasketAPY?.[ChainId.Mainnet]?.dgnETH
+    return apiBasketAPY || basketAPY
+  }, [yieldsAPIData, basketAPY])
+
   const apy = useMemo(() => {
-    if (!basketAPY || !supplies) return '0%'
+    if (!_basketAPY || !supplies) return '0%'
 
     const [tokenSupply, stakeTokenSupply] = supplies
 
     if (stakeTokenSupply === 0n) return '0%'
 
     const stakeAPY =
-      (basketAPY * +formatUnits(tokenSupply, 18)) /
+      (_basketAPY * +formatUnits(tokenSupply, 18)) /
       +formatUnits(stakeTokenSupply, 21)
 
     return `${stakeAPY.toFixed(1)}%`
-  }, [basketAPY, supplies])
+  }, [_basketAPY, supplies])
 
   if (rTokenSymbol !== 'dgnETH') return <>{children}</>
 
