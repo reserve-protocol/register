@@ -76,6 +76,8 @@ export const currentTradesAtom = atom((get) => get(tradesAtom).current)
 export const endedTradesAtom = atom((get) => get(tradesAtom).ended)
 
 export const selectedAuctionsAtom = atomWithReset<number[]>([])
+// TODO: Maybe merge this into a single list?
+export const selectedUnavailableAuctionsAtom = atomWithReset<number[]>([])
 
 export const auctionSessionAtom = atom(1)
 
