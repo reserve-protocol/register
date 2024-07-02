@@ -38,10 +38,6 @@ const auctionsTxAtom = atom((get): UsePrepareContractWriteConfig => {
   const chainId = get(chainIdAtom)
   const selectedAuctions = get(selectedUnavailableAuctionsAtom)
 
-  if (!selectedAuctions.length) {
-    return undefined
-  }
-
   const traderAuctions = selectedAuctions.reduce((auctions, selectedIndex) => {
     auctions[revenue[selectedIndex].trader] = [
       ...(auctions[revenue[selectedIndex].trader] || []),
