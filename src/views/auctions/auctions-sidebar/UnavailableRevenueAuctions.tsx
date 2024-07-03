@@ -125,7 +125,7 @@ const UnavailableRevenueAuctions = () => {
 
   return (
     <RevenueBoxContainer
-      title={t`Unavailable revenue auctions`}
+      title={t`Small revenue auctions`}
       icon={<AuctionsIcon />}
       subtitle={`${revenueData?.unavailableAuctions.length ?? 0} auctions`}
       btnLabel="Inspect"

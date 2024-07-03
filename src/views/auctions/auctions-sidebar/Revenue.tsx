@@ -103,7 +103,7 @@ const ActionableRevenue = () => {
   return (
     <>
       <RevenueOverviewHeader
-        text={t`Actionable accumulated revenue`}
+        text={t`Above minimum trade volume`}
         amount={availableAmount + emissions}
         help="Run and settle auctions."
         mt={4}
@@ -126,7 +126,7 @@ const UnavailableRevenue = () => {
   return (
     <>
       <RevenueOverviewHeader
-        text={t`Unactionable revenue`}
+        text={t`Below minimum trade volume`}
         amount={unavailableAmount}
         muted
         help="Revenue auctions that are below the minimum trade or unavailable."
