@@ -15,6 +15,7 @@ import { useApproval } from '../hooks/useApproval'
 import { usePrepareSendTransaction, useSendTransaction } from 'wagmi'
 import mixpanel from 'mixpanel-browser'
 import useWatchTransaction from 'hooks/useWatchTransaction'
+import { CHAIN_TAGS } from 'utils/constants'
 
 type ZapTxContextType = {
   error?: ZapErrorType
@@ -76,25 +77,60 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
   const {
     hasAllowance,
-    error: allowanceError,
     isLoading: loadingApproval,
     validatingApproval,
     isSuccess: approvalSuccess,
     approve,
+    receipt: approvalReceipt,
+    approvalSentError,
+    approvalError,
   } = useApproval(chainId, account, allowance)
 
   useEffect(() => {
     if (approvalSuccess) {
-      mixpanel.track('Zap approval success', {
+      mixpanel.track('Zap - Approval succeeded', {
         Operation: operation,
+        RToken: operation === 'mint' ? tokenOut.symbol : tokenIn.symbol,
+        Chain: CHAIN_TAGS[chainId],
+        User: account,
         Endpoint: endpoint,
       })
     }
-  }, [approvalSuccess, operation, endpoint])
+  }, [
+    approvalSuccess,
+    operation,
+    endpoint,
+    chainId,
+    account,
+    tokenIn,
+    tokenOut,
+  ])
+
+  useEffect(() => {
+    if (approvalReceipt?.status === 'reverted' && approvalError) {
+      mixpanel.track('Zap - Approval reverted', {
+        Operation: operation,
+        RToken: operation === 'mint' ? tokenOut.symbol : tokenIn.symbol,
+        Chain: CHAIN_TAGS[chainId],
+        User: account,
+        Endpoint: endpoint,
+        TransactionHash: approvalReceipt.transactionHash,
+        Error: approvalError.message,
+      })
+    }
+  }, [
+    approvalReceipt,
+    operation,
+    endpoint,
+    chainId,
+    account,
+    tokenIn,
+    tokenOut,
+  ])
 
   useEffect(() => {
     if (
-      allowanceError &&
+      approvalSentError &&
       !(loadingApproval || validatingApproval || approvalSuccess)
     ) {
       setError({
@@ -103,10 +139,29 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         color: 'danger',
         secondaryColor: 'rgba(255, 0, 0, 0.20)',
       })
+
+      mixpanel.track('Zap - User Rejected Approval', {
+        Operation: operation,
+        RToken: operation === 'mint' ? tokenOut.symbol : tokenIn.symbol,
+        Chain: CHAIN_TAGS[chainId],
+        User: account,
+        Endpoint: endpoint,
+      })
     } else {
       setError(undefined)
     }
-  }, [allowanceError, approvalSuccess, loadingApproval, validatingApproval])
+  }, [
+    approvalSentError,
+    approvalSuccess,
+    loadingApproval,
+    validatingApproval,
+    operation,
+    endpoint,
+    chainId,
+    account,
+    tokenIn,
+    tokenOut,
+  ])
 
   // Transaction
   const { config } = usePrepareSendTransaction(
@@ -174,8 +229,11 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         color: 'danger',
         secondaryColor: 'rgba(255, 0, 0, 0.20)',
       })
-      mixpanel.track('User Rejected Zap', {
+      mixpanel.track('Zap - User Rejected Zap', {
         Operation: operation,
+        RToken: operation === 'mint' ? tokenOut.symbol : tokenIn.symbol,
+        Chain: CHAIN_TAGS[chainId],
+        User: account,
         Endpoint: endpoint,
       })
     } else {
@@ -189,25 +247,45 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     receipt,
     operation,
     endpoint,
+    chainId,
+    account,
+    tokenIn,
+    tokenOut,
   ])
 
   useEffect(() => {
     if (!receipt) return
     if (receipt.status === 'success') {
-      mixpanel.track('Zap Success', {
+      mixpanel.track('Zap - Transaction succeeded', {
         Operation: operation,
+        RToken: operation === 'mint' ? tokenOut.symbol : tokenIn.symbol,
+        Chain: CHAIN_TAGS[chainId],
+        User: account,
         Endpoint: endpoint,
       })
     } else {
-      mixpanel.track('Zap on-chain transaction reverted', {
+      mixpanel.track('Zap - Transaction reverted', {
         Operation: operation,
+        RToken: operation === 'mint' ? tokenOut.symbol : tokenIn.symbol,
+        Chain: CHAIN_TAGS[chainId],
+        User: account,
         Endpoint: endpoint,
         Error: `Transaction reverted: ${receipt.transactionHash}`,
       })
     }
     setOpenSubmitModal(false)
     resetZap()
-  }, [receipt, operation, endpoint, setOpenSubmitModal, resetZap])
+  }, [
+    receipt,
+    operation,
+    endpoint,
+    setOpenSubmitModal,
+    resetZap,
+    chainId,
+    account,
+    tokenIn,
+    tokenOut,
+  ])
 
   return (
     <ZapTxContext.Provider

@@ -26,7 +26,7 @@ import useSWR from 'swr'
 import { Link, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
-import { REGISTER_BUGS } from 'utils/constants'
+import { CHAIN_TAGS, REGISTER_BUGS } from 'utils/constants'
 import { Address, formatUnits, parseUnits, zeroAddress } from 'viem'
 import { useFeeData } from 'wagmi'
 import { ZapErrorType } from '../ZapError'
@@ -355,11 +355,6 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
           100
         : 0
 
-    mixpanel.track('zapper:', {
-      Operation: operation,
-      Endpoint: endpoint,
-    })
-
     return [
       _amountOut,
       Math.max(0, _priceImpact),
@@ -375,6 +370,32 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     tokenOut?.price,
     gas?.formatted?.gasPrice,
     ethPrice,
+  ])
+
+  useEffect(() => {
+    if (endpoint) {
+      mixpanel.track('Zap - API request', {
+        Operation: operation,
+        RToken: rToken.symbol,
+        Chain: CHAIN_TAGS[chainId],
+        User: account,
+        AmountIn: amountIn,
+        Slippage: slippage,
+        TokenIn: tokenIn.symbol,
+        TokenOut: tokenOut.symbol,
+        Endpoint: endpoint,
+      })
+    }
+  }, [
+    operation,
+    endpoint,
+    rToken,
+    chainId,
+    account,
+    amountIn,
+    slippage,
+    tokenIn,
+    tokenOut,
   ])
 
   useEffect(() => {
@@ -398,10 +419,17 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
       setOpenSubmitModal(false)
 
-      mixpanel.track('Zap Execution Error', {
-        Endpoint: endpoint,
-        Error: apiError?.message || data?.error,
-      })
+      mixpanel.track(
+        `Zap - API ${apiError?.message ? 'Connection' : 'Response'} Error`,
+        {
+          Operation: operation,
+          RToken: rToken.symbol,
+          Chain: CHAIN_TAGS[chainId],
+          User: account,
+          Error: apiError?.message || data?.error,
+          Endpoint: endpoint,
+        }
+      )
     } else if (data?.result && data.result.insufficientFunds) {
       setError({
         title: 'Insufficient funds',
@@ -438,18 +466,48 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     setOpenSubmitModal,
     isRetrying,
     setIsRetrying,
+    rToken,
+    chainId,
+    account,
   ])
 
   const _setZapEnabled = useCallback(
     (value: boolean) => {
       setZapEnabled(value)
-      mixpanel.track('Toggled Zaps', {
-        RToken: rToken?.address.toLowerCase() ?? '',
-        Enabled: value,
+      mixpanel.track(`Zap - Toggle ${value ? 'to zap' : 'to manual'}`, {
+        RToken: rToken.symbol,
+        Chain: CHAIN_TAGS[chainId],
+        User: account,
       })
     },
-    [setZapEnabled, rToken]
+    [setZapEnabled, rToken, chainId, account]
   )
+
+  const refreshQuote = useCallback(() => {
+    refetch()
+    mixpanel.track('Zap - Refresh Quote', {
+      Operation: operation,
+      RToken: rToken.symbol,
+      Chain: CHAIN_TAGS[chainId],
+      User: account,
+      AmountIn: amountIn,
+      Slippage: slippage,
+      TokenIn: tokenIn.symbol,
+      TokenOut: tokenOut.symbol,
+      Endpoint: endpoint,
+    })
+  }, [
+    refetch,
+    operation,
+    rToken,
+    chainId,
+    account,
+    amountIn,
+    slippage,
+    tokenIn,
+    tokenOut,
+    endpoint,
+  ])
 
   return (
     <ZapContext.Provider
@@ -489,7 +547,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         zapResult: data?.result,
         endpoint,
         resetZap,
-        refreshQuote: refetch,
+        refreshQuote,
         refreshInterval: REFRESH_INTERVAL,
       }}
     >
