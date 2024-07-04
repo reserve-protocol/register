@@ -183,7 +183,11 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     error: sendError,
   } = useSendTransaction(config)
 
-  const { data: receipt, isMining: validatingTx } = useWatchTransaction({
+  const {
+    data: receipt,
+    isMining: validatingTx,
+    error: txError,
+  } = useWatchTransaction({
     hash: data?.hash,
     label:
       operation === 'mint'
@@ -270,7 +274,8 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         Chain: CHAIN_TAGS[chainId],
         User: account,
         Endpoint: endpoint,
-        Error: `Transaction reverted: ${receipt.transactionHash}`,
+        TransactionHash: receipt.transactionHash,
+        Error: txError,
       })
     }
     setOpenSubmitModal(false)
