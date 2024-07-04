@@ -11,6 +11,7 @@ import { Hex, TransactionReceipt } from 'viem'
 import { useWaitForTransaction } from 'wagmi'
 import useNotification from './useNotification'
 import mixpanel from 'mixpanel-browser'
+import { CHAIN_TAGS } from 'utils/constants'
 
 interface WatchOptions {
   hash: Hex | undefined
@@ -52,6 +53,12 @@ const useWatchTransaction = ({ hash, label }: WatchOptions): WatchResult => {
         `At block ${Number(data.blockNumber)}`,
         'success'
       )
+      mixpanel.track('Transaction succeeded', {
+        label,
+        chain: CHAIN_TAGS[chainId],
+        hash,
+        blockNumber: Number(data.blockNumber),
+      })
     } else if (status === 'error') {
       updateTransaction([hash, 'error'])
       notify(
@@ -60,8 +67,9 @@ const useWatchTransaction = ({ hash, label }: WatchOptions): WatchResult => {
         'error'
       )
       mixpanel.track('Transaction reverted', {
-        hash,
         label,
+        chain: CHAIN_TAGS[chainId],
+        hash,
         error: error?.message,
       })
     }
