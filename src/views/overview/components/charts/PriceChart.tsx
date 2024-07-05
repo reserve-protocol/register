@@ -80,9 +80,9 @@ const PriceChart = (props: BoxProps) => {
           value =
             timestamp === '1703193935' && rToken?.symbol === 'USDC+' ? 1 : value
           const display =
-            currentPrice === 'USD'
-              ? `$${formatCurrency(+priceUSD)}`
-              : `${formatCurrency(+basketRate, 3)} ETH`
+            rToken?.targetUnits === 'ETH' && currentPrice === 'ETH'
+              ? `${formatCurrency(+basketRate, 4)} ETH`
+              : `$${formatCurrency(+priceUSD)}`
           return {
             value,
             label: dayjs.unix(+timestamp).format('YYYY-M-D HH:mm:ss'),
