@@ -91,7 +91,7 @@ const PriceChart = (props: BoxProps) => {
         }
       ) || []
     )
-  }, [data, currentPrice])
+  }, [data, currentPrice, rToken?.symbol, rToken?.targetUnits])
 
   const priceTitle = useMemo(() => {
     if (rToken?.targetUnits === 'ETH' && currentPrice === 'ETH') {
@@ -121,6 +121,11 @@ const PriceChart = (props: BoxProps) => {
       title={priceTitle}
       data={rows}
       timeRange={TIME_RANGES}
+      domain={
+        rToken?.targetUnits === 'ETH' && currentPrice === 'ETH'
+          ? ['auto', 'auto']
+          : undefined
+      }
       currentRange={current}
       onRangeChange={handleChange}
       moreActions={
