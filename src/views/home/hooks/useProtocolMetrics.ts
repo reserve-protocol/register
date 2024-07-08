@@ -30,7 +30,7 @@ const protocolMetricsQuery = gql`
     financialsDailySnapshots(
       orderBy: timestamp
       orderDirection: desc
-      first: 10
+      first: 30
     ) {
       cumulativeRTokenRevenueUSD
       cumulativeRSRRevenueUSD
@@ -95,8 +95,8 @@ const useProtocolMetrics = () => {
             timeDifference
           const annualizedRSRRevenue = rsrRevenueRate * 365 * 24 * 60 * 60
 
-          rTokenAnnualizedRevenue += annualizedRSRRevenue
-          rsrStakerAnnualizedRevenue += annualizedRTokenRevenue
+          rTokenAnnualizedRevenue += annualizedRTokenRevenue
+          rsrStakerAnnualizedRevenue += annualizedRSRRevenue
         }
 
         if (metrics?.protocol) {
