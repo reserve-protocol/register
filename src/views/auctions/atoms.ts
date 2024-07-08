@@ -333,7 +333,7 @@ export const auctionsOverviewAtom = atomWithLoadable(
           amount: rTokenTradeAmount,
           amountUsd: Number(rTokenTradeAmount) * asset.priceUsd,
           minAmount: formatUnits(
-            rTokenRevenueOverview[4][i],
+            rTokenRevenueOverview[3][i],
             asset.token.decimals
           ),
           trader: contracts.rTokenTrader.address,
@@ -357,8 +357,6 @@ export const auctionsOverviewAtom = atomWithLoadable(
     availableAuctions.sort(sort)
     unavailableAuctions.sort(sort)
     claimableEmissions.sort(sort)
-
-    console.log('unavailable', unavailableAuctions)
 
     return {
       availableAuctions,
