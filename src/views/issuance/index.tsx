@@ -88,17 +88,10 @@ const IssuanceMethods = () => {
 const Issuance = () => {
   useEffect(() => {
     mixpanel.track('page_view', {
-      product: 'issuance',
-      action: 'visit',
+      page: 'rtoken_details',
+      section: 'issuance',
       payload: {},
     })
-    return () => {
-      mixpanel.track('page_view', {
-        product: 'issuance',
-        action: 'leave',
-        payload: {},
-      })
-    }
   }, [])
 
   return (

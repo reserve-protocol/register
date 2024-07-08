@@ -57,6 +57,7 @@ const useWatchTransaction = ({ hash, label }: WatchOptions): WatchResult => {
         product: label,
         action: 'transaction_succeeded',
         payload: {
+          type: label,
           chain: CHAIN_TAGS[chainId],
           hash: hash,
           blocknumber: Number(data.blockNumber),
@@ -73,7 +74,7 @@ const useWatchTransaction = ({ hash, label }: WatchOptions): WatchResult => {
         product: label,
         action: 'transaction_reverted',
         payload: {
-          label: label,
+          type: label,
           chain: CHAIN_TAGS[chainId],
           hash: hash,
           error: error?.message,

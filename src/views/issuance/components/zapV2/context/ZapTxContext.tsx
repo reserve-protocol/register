@@ -89,13 +89,17 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   useEffect(() => {
     if (approvalSuccess) {
       mixpanel.track('transaction', {
+        page: 'rtoken_details',
+        section: 'issuance',
         product: 'zap',
         action: 'approval_succeeded',
         payload: {
           operation: operation,
           rtoken: operation === 'mint' ? tokenOut.symbol : tokenIn.symbol,
           chain: CHAIN_TAGS[chainId],
-          user: account,
+          user: {
+            wallet: account,
+          },
           endpoint: endpoint,
         },
       })
@@ -113,13 +117,17 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   useEffect(() => {
     if (approvalReceipt?.status === 'reverted' && approvalError) {
       mixpanel.track('transaction', {
+        page: 'rtoken_details',
+        section: 'issuance',
         product: 'zap',
         action: 'approval_reverted',
         payload: {
           operation: operation,
           rtoken: operation === 'mint' ? tokenOut.symbol : tokenIn.symbol,
           chain: CHAIN_TAGS[chainId],
-          user: account,
+          user: {
+            wallet: account,
+          },
           endpoint: endpoint,
           transactionhash: approvalReceipt.transactionHash,
           error: approvalError.message,
@@ -149,13 +157,17 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       })
 
       mixpanel.track('user_action', {
+        page: 'rtoken_details',
+        section: 'issuance',
         product: 'zap',
         action: 'rejected_approval',
         payload: {
           operation: operation,
           rtoken: operation === 'mint' ? tokenOut.symbol : tokenIn.symbol,
           chain: CHAIN_TAGS[chainId],
-          user: account,
+          user: {
+            wallet: account,
+          },
           endpoint: endpoint,
         },
       })
@@ -246,13 +258,17 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         secondaryColor: 'rgba(255, 0, 0, 0.20)',
       })
       mixpanel.track('user_action', {
+        page: 'rtoken_details',
+        section: 'issuance',
         product: 'zap',
         action: 'rejected_zap',
         payload: {
           operation: operation,
           rtoken: operation === 'mint' ? tokenOut.symbol : tokenIn.symbol,
           chain: CHAIN_TAGS[chainId],
-          user: account,
+          user: {
+            wallet: account,
+          },
           endpoint: endpoint,
         },
       })
@@ -277,25 +293,33 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     if (!receipt) return
     if (receipt.status === 'success') {
       mixpanel.track('transaction', {
+        page: 'rtoken_details',
+        section: 'issuance',
         product: 'zap',
         action: 'transaction_succeeded',
         payload: {
           operation: operation,
           rtoken: operation === 'mint' ? tokenOut.symbol : tokenIn.symbol,
           chain: CHAIN_TAGS[chainId],
-          user: account,
+          user: {
+            wallet: account,
+          },
           endpoint: endpoint,
         },
       })
     } else {
       mixpanel.track('transaction', {
+        page: 'rtoken_details',
+        section: 'issuance',
         product: 'zap',
         action: 'transaction_reverted',
         payload: {
           operation: operation,
           rtoken: operation === 'mint' ? tokenOut.symbol : tokenIn.symbol,
           chain: CHAIN_TAGS[chainId],
-          user: account,
+          user: {
+            wallet: account,
+          },
           endpoint: endpoint,
           transactionhash: receipt.transactionHash,
           error: txError,
