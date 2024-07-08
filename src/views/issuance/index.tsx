@@ -87,9 +87,17 @@ const IssuanceMethods = () => {
  */
 const Issuance = () => {
   useEffect(() => {
-    mixpanel.track('Visited Issuance page', {})
+    mixpanel.track('page_view', {
+      product: 'issuance',
+      action: 'visit',
+      payload: {},
+    })
     return () => {
-      mixpanel.track('Left Issuance page', {})
+      mixpanel.track('page_view', {
+        product: 'issuance',
+        action: 'leave',
+        payload: {},
+      })
     }
   }, [])
 

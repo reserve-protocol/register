@@ -374,16 +374,20 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
   useEffect(() => {
     if (endpoint) {
-      mixpanel.track('Zap - API request', {
-        Operation: operation,
-        RToken: rToken.symbol,
-        Chain: CHAIN_TAGS[chainId],
-        User: account,
-        AmountIn: amountIn,
-        Slippage: slippage,
-        TokenIn: tokenIn.symbol,
-        TokenOut: tokenOut.symbol,
-        Endpoint: endpoint,
+      mixpanel.track('api_request', {
+        product: 'zap',
+        action: 'request',
+        payload: {
+          operation: operation,
+          rtoken: rToken.symbol,
+          chain: CHAIN_TAGS[chainId],
+          user: account,
+          amountin: amountIn,
+          slippage: slippage,
+          tokenin: tokenIn.symbol,
+          tokenout: tokenOut.symbol,
+          endpoint: endpoint,
+        },
       })
     }
   }, [
@@ -419,17 +423,18 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
       setOpenSubmitModal(false)
 
-      mixpanel.track(
-        `Zap - API ${apiError?.message ? 'Connection' : 'Response'} Error`,
-        {
-          Operation: operation,
-          RToken: rToken.symbol,
-          Chain: CHAIN_TAGS[chainId],
-          User: account,
-          Error: apiError?.message || data?.error,
-          Endpoint: endpoint,
-        }
-      )
+      mixpanel.track('api_error', {
+        product: 'zap',
+        action: apiError?.message ? 'connection_error' : 'response_error',
+        payload: {
+          operation: operation,
+          rtoken: rToken.symbol,
+          chain: CHAIN_TAGS[chainId],
+          user: account,
+          error: apiError?.message || data?.error,
+          endpoint: endpoint,
+        },
+      })
     } else if (data?.result && data.result.insufficientFunds) {
       setError({
         title: 'Insufficient funds',
@@ -474,10 +479,14 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const _setZapEnabled = useCallback(
     (value: boolean) => {
       setZapEnabled(value)
-      mixpanel.track(`Zap - Toggle ${value ? 'to zap' : 'to manual'}`, {
-        RToken: rToken.symbol,
-        Chain: CHAIN_TAGS[chainId],
-        User: account,
+      mixpanel.track('user_action', {
+        product: 'zap',
+        action: value ? 'toggle_to_zap' : 'toggle_to_manual',
+        payload: {
+          rtoken: rToken.symbol,
+          chain: CHAIN_TAGS[chainId],
+          user: account,
+        },
       })
     },
     [setZapEnabled, rToken, chainId, account]
@@ -485,16 +494,20 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
   const refreshQuote = useCallback(() => {
     refetch()
-    mixpanel.track('Zap - Refresh Quote', {
-      Operation: operation,
-      RToken: rToken.symbol,
-      Chain: CHAIN_TAGS[chainId],
-      User: account,
-      AmountIn: amountIn,
-      Slippage: slippage,
-      TokenIn: tokenIn.symbol,
-      TokenOut: tokenOut.symbol,
-      Endpoint: endpoint,
+    mixpanel.track('api_request', {
+      product: 'zap',
+      action: 'refresh_quote',
+      payload: {
+        operation: operation,
+        rtoken: rToken.symbol,
+        chain: CHAIN_TAGS[chainId],
+        user: account,
+        amountin: amountIn,
+        slippage: slippage,
+        tokenin: tokenIn.symbol,
+        tokenout: tokenOut.symbol,
+        endpoint: endpoint,
+      },
     })
   }, [
     refetch,

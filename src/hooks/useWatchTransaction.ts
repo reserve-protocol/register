@@ -53,11 +53,14 @@ const useWatchTransaction = ({ hash, label }: WatchOptions): WatchResult => {
         `At block ${Number(data.blockNumber)}`,
         'success'
       )
-      mixpanel.track('Transaction succeeded', {
-        label,
-        chain: CHAIN_TAGS[chainId],
-        hash,
-        blockNumber: Number(data.blockNumber),
+      mixpanel.track('transaction', {
+        product: label,
+        action: 'transaction_succeeded',
+        payload: {
+          chain: CHAIN_TAGS[chainId],
+          hash: hash,
+          blocknumber: Number(data.blockNumber),
+        },
       })
     } else if (status === 'error') {
       updateTransaction([hash, 'error'])
@@ -66,11 +69,15 @@ const useWatchTransaction = ({ hash, label }: WatchOptions): WatchResult => {
         error?.message ?? 'Unknown error',
         'error'
       )
-      mixpanel.track('Transaction reverted', {
-        label,
-        chain: CHAIN_TAGS[chainId],
-        hash,
-        error: error?.message,
+      mixpanel.track('transaction', {
+        product: label,
+        action: 'transaction_reverted',
+        payload: {
+          label: label,
+          chain: CHAIN_TAGS[chainId],
+          hash: hash,
+          error: error?.message,
+        },
       })
     }
   }, [

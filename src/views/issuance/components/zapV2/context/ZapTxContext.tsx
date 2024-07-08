@@ -88,12 +88,16 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
   useEffect(() => {
     if (approvalSuccess) {
-      mixpanel.track('Zap - Approval succeeded', {
-        Operation: operation,
-        RToken: operation === 'mint' ? tokenOut.symbol : tokenIn.symbol,
-        Chain: CHAIN_TAGS[chainId],
-        User: account,
-        Endpoint: endpoint,
+      mixpanel.track('transaction', {
+        product: 'zap',
+        action: 'approval_succeeded',
+        payload: {
+          operation: operation,
+          rtoken: operation === 'mint' ? tokenOut.symbol : tokenIn.symbol,
+          chain: CHAIN_TAGS[chainId],
+          user: account,
+          endpoint: endpoint,
+        },
       })
     }
   }, [
@@ -108,14 +112,18 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
   useEffect(() => {
     if (approvalReceipt?.status === 'reverted' && approvalError) {
-      mixpanel.track('Zap - Approval reverted', {
-        Operation: operation,
-        RToken: operation === 'mint' ? tokenOut.symbol : tokenIn.symbol,
-        Chain: CHAIN_TAGS[chainId],
-        User: account,
-        Endpoint: endpoint,
-        TransactionHash: approvalReceipt.transactionHash,
-        Error: approvalError.message,
+      mixpanel.track('transaction', {
+        product: 'zap',
+        action: 'approval_reverted',
+        payload: {
+          operation: operation,
+          rtoken: operation === 'mint' ? tokenOut.symbol : tokenIn.symbol,
+          chain: CHAIN_TAGS[chainId],
+          user: account,
+          endpoint: endpoint,
+          transactionhash: approvalReceipt.transactionHash,
+          error: approvalError.message,
+        },
       })
     }
   }, [
@@ -140,12 +148,16 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         secondaryColor: 'rgba(255, 0, 0, 0.20)',
       })
 
-      mixpanel.track('Zap - User Rejected Approval', {
-        Operation: operation,
-        RToken: operation === 'mint' ? tokenOut.symbol : tokenIn.symbol,
-        Chain: CHAIN_TAGS[chainId],
-        User: account,
-        Endpoint: endpoint,
+      mixpanel.track('user_action', {
+        product: 'zap',
+        action: 'rejected_approval',
+        payload: {
+          operation: operation,
+          rtoken: operation === 'mint' ? tokenOut.symbol : tokenIn.symbol,
+          chain: CHAIN_TAGS[chainId],
+          user: account,
+          endpoint: endpoint,
+        },
       })
     } else {
       setError(undefined)
@@ -233,12 +245,16 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         color: 'danger',
         secondaryColor: 'rgba(255, 0, 0, 0.20)',
       })
-      mixpanel.track('Zap - User Rejected Zap', {
-        Operation: operation,
-        RToken: operation === 'mint' ? tokenOut.symbol : tokenIn.symbol,
-        Chain: CHAIN_TAGS[chainId],
-        User: account,
-        Endpoint: endpoint,
+      mixpanel.track('user_action', {
+        product: 'zap',
+        action: 'rejected_zap',
+        payload: {
+          operation: operation,
+          rtoken: operation === 'mint' ? tokenOut.symbol : tokenIn.symbol,
+          chain: CHAIN_TAGS[chainId],
+          user: account,
+          endpoint: endpoint,
+        },
       })
     } else {
       setError(undefined)
@@ -260,22 +276,30 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   useEffect(() => {
     if (!receipt) return
     if (receipt.status === 'success') {
-      mixpanel.track('Zap - Transaction succeeded', {
-        Operation: operation,
-        RToken: operation === 'mint' ? tokenOut.symbol : tokenIn.symbol,
-        Chain: CHAIN_TAGS[chainId],
-        User: account,
-        Endpoint: endpoint,
+      mixpanel.track('transaction', {
+        product: 'zap',
+        action: 'transaction_succeeded',
+        payload: {
+          operation: operation,
+          rtoken: operation === 'mint' ? tokenOut.symbol : tokenIn.symbol,
+          chain: CHAIN_TAGS[chainId],
+          user: account,
+          endpoint: endpoint,
+        },
       })
     } else {
-      mixpanel.track('Zap - Transaction reverted', {
-        Operation: operation,
-        RToken: operation === 'mint' ? tokenOut.symbol : tokenIn.symbol,
-        Chain: CHAIN_TAGS[chainId],
-        User: account,
-        Endpoint: endpoint,
-        TransactionHash: receipt.transactionHash,
-        Error: txError,
+      mixpanel.track('transaction', {
+        product: 'zap',
+        action: 'transaction_reverted',
+        payload: {
+          operation: operation,
+          rtoken: operation === 'mint' ? tokenOut.symbol : tokenIn.symbol,
+          chain: CHAIN_TAGS[chainId],
+          user: account,
+          endpoint: endpoint,
+          transactionhash: receipt.transactionHash,
+          error: txError,
+        },
       })
     }
     setOpenSubmitModal(false)
