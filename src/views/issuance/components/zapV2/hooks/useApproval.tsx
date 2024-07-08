@@ -16,11 +16,7 @@ export const useApproval = (
 ) => {
   const disable = allowance?.symbol === 'ETH'
 
-  const {
-    data,
-    isLoading: validatingAllowance,
-    error: allowanceError,
-  } = useContractRead(
+  const { data, isLoading: validatingAllowance } = useContractRead(
     allowance && account
       ? {
           abi: erc20ABI,
@@ -52,38 +48,46 @@ export const useApproval = (
     data: writeData,
     write: approve,
     isLoading: approving,
-    error: approvalError,
+    error: approvalSentError,
   } = useContractWrite(config)
-  const { status: approvalStatus, isLoading: validatingApproval } =
-    useWaitForTransaction({
-      hash: writeData?.hash,
-      enabled: !disable && !!writeData?.hash,
-    })
+
+  const {
+    data: receipt,
+    status: approvalStatus,
+    isLoading: validatingApproval,
+    error: approvalError,
+  } = useWaitForTransaction({
+    hash: writeData?.hash,
+    enabled: !disable && !!writeData?.hash,
+  })
 
   const isLoading = approving || validatingApproval
   const isSuccess = approvalStatus === 'success'
-  const error = allowanceError || approvalError
 
   return useMemo(() => {
     if (disable) {
       return {
         validatingAllowance: false,
         hasAllowance: true,
-        error: undefined,
         isLoading: false,
         isSuccess: false,
         approve: () => {},
         validatingApproval: false,
+        receipt: undefined,
+        approvalSentError: undefined,
+        approvalError: undefined,
       }
     }
     return {
       validatingAllowance,
       validatingApproval,
       hasAllowance: hasAllowance || isSuccess,
-      error,
       isLoading,
       isSuccess,
       approve,
+      receipt,
+      approvalSentError,
+      approvalError,
     }
   }, [
     disable,
@@ -91,8 +95,10 @@ export const useApproval = (
     validatingApproval,
     hasAllowance,
     isSuccess,
-    error,
     isLoading,
     approve,
+    receipt,
+    approvalError,
+    approvalError,
   ])
 }

@@ -2,12 +2,15 @@ import { Button } from 'components'
 import Help from 'components/help'
 import AsteriskIcon from 'components/icons/AsteriskIcon'
 import { Box, Text } from 'theme-ui'
+import { useZap } from './context/ZapContext'
 
 const ZapToggleBottom = ({
   setZapEnabled,
 }: {
   setZapEnabled: (value: boolean) => void
 }) => {
+  const { operation } = useZap()
+
   return (
     <Box
       variant="layout.verticalAlign"
@@ -35,7 +38,7 @@ const ZapToggleBottom = ({
         small
         onClick={() => setZapEnabled(false)}
       >
-        Switch to manual minting
+        {`Switch to manual ${operation === 'mint' ? 'minting' : 'redemption'}`}
       </Button>
     </Box>
   )

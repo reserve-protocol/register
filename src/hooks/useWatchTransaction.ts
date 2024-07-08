@@ -1,92 +1,102 @@
 import { t } from '@lingui/macro'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { chainIdAtom } from 'state/atoms'
 import {
   addTransactionAtom,
   updateTransactionAtom,
 } from 'state/chain/atoms/transactionAtoms'
-import { Hex, TransactionReceipt } from 'viem'
-import { waitForTransaction } from 'wagmi/actions'
-import useIsMounted from './useIsMounted'
-import useNotification from './useNotification'
-import { chainIdAtom } from 'state/atoms'
 import { ChainId } from 'utils/chains'
+import { Hex, TransactionReceipt } from 'viem'
+import { useWaitForTransaction } from 'wagmi'
+import useNotification from './useNotification'
+import mixpanel from 'mixpanel-browser'
+import { CHAIN_TAGS } from 'utils/constants'
 
 interface WatchOptions {
   hash: Hex | undefined
   label: string
-  success?: string
-  error?: string
 }
 
 interface WatchResult {
   data?: TransactionReceipt
   isMining?: boolean
   status: 'success' | 'error' | 'loading' | 'idle'
+  error?: string
 }
 
 // Watch tx status, send notifications and track history
-const useWatchTransaction = ({ hash, success, error, label }: WatchOptions) => {
+const useWatchTransaction = ({ hash, label }: WatchOptions): WatchResult => {
   const notify = useNotification()
   const addTransaction = useSetAtom(addTransactionAtom)
   const updateTransaction = useSetAtom(updateTransactionAtom)
   const chainId = useAtomValue(chainIdAtom)
-  const isMounted = useIsMounted()
-  const [result, setResult] = useState({
-    status: 'idle',
-  } as WatchResult)
 
-  // Use manual "waitForTransaction" action in order to still listen for transaction on component unmount
-  const waitForTx = async (hash: Hex) => {
-    try {
-      setResult({
-        status: 'loading',
-        isMining: true,
-      })
+  const {
+    data,
+    status,
+    error,
+    isLoading: isMining,
+  } = useWaitForTransaction({
+    hash,
+    confirmations: chainId === ChainId.Mainnet ? 1 : 3,
+  })
 
-      // Give more time for base as blocks are faster
-      const data = await waitForTransaction({
-        hash,
-        confirmations: chainId === ChainId.Mainnet ? 1 : 3,
-      })
-
+  useEffect(() => {
+    if (!hash) return
+    addTransaction([hash, label])
+    if (!data) return
+    if (status === 'success') {
       updateTransaction([hash, 'success', Number(data.blockNumber)])
       notify(
         t`Transaction confirmed`,
-        success ?? `At block ${Number(data.blockNumber)}`,
+        `At block ${Number(data.blockNumber)}`,
         'success'
       )
-
-      if (isMounted) {
-        setResult({
-          data,
-          status: 'success',
-        })
-      }
-    } catch (e: any) {
-      console.error('[TRANSACTION REVERTED]', e)
+      mixpanel.track('transaction', {
+        product: label,
+        action: 'transaction_succeeded',
+        payload: {
+          chain: CHAIN_TAGS[chainId],
+          hash: hash,
+          blocknumber: Number(data.blockNumber),
+        },
+      })
+    } else if (status === 'error') {
+      updateTransaction([hash, 'error'])
       notify(
         t`Transaction reverted`,
-        error ?? e?.message ?? 'Unknown error',
+        error?.message ?? 'Unknown error',
         'error'
       )
-      updateTransaction([hash, 'error'])
-      if (isMounted) {
-        setResult({ status: 'error' })
-      }
+      mixpanel.track('transaction', {
+        product: label,
+        action: 'transaction_reverted',
+        payload: {
+          label: label,
+          chain: CHAIN_TAGS[chainId],
+          hash: hash,
+          error: error?.message,
+        },
+      })
     }
+  }, [
+    hash,
+    label,
+    data,
+    status,
+    error,
+    addTransaction,
+    updateTransaction,
+    notify,
+  ])
+
+  return {
+    data,
+    isMining,
+    status,
+    error: error?.message,
   }
-
-  useEffect(() => {
-    if (hash) {
-      addTransaction([hash, label])
-      waitForTx(hash)
-    } else if (result.status !== 'idle') {
-      setResult({ status: 'idle' })
-    }
-  }, [hash])
-
-  return result
 }
 
 export default useWatchTransaction
