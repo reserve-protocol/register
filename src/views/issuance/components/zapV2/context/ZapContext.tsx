@@ -375,13 +375,17 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   useEffect(() => {
     if (endpoint) {
       mixpanel.track('api_request', {
+        page: 'rtoken_details',
+        section: 'issuance',
         product: 'zap',
         action: 'request',
         payload: {
           operation: operation,
           rtoken: rToken.symbol,
           chain: CHAIN_TAGS[chainId],
-          user: account,
+          user: {
+            wallet: account,
+          },
           amountin: amountIn,
           slippage: slippage,
           tokenin: tokenIn.symbol,
@@ -424,13 +428,17 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
       setOpenSubmitModal(false)
 
       mixpanel.track('api_error', {
+        page: 'rtoken_details',
+        section: 'issuance',
         product: 'zap',
         action: apiError?.message ? 'connection_error' : 'response_error',
         payload: {
           operation: operation,
           rtoken: rToken.symbol,
           chain: CHAIN_TAGS[chainId],
-          user: account,
+          user: {
+            wallet: account,
+          },
           error: apiError?.message || data?.error,
           endpoint: endpoint,
         },
@@ -480,12 +488,16 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     (value: boolean) => {
       setZapEnabled(value)
       mixpanel.track('user_action', {
+        page: 'rtoken_details',
+        section: 'issuance',
         product: 'zap',
         action: value ? 'toggle_to_zap' : 'toggle_to_manual',
         payload: {
           rtoken: rToken.symbol,
           chain: CHAIN_TAGS[chainId],
-          user: account,
+          user: {
+            wallet: account,
+          },
         },
       })
     },
@@ -495,13 +507,17 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const refreshQuote = useCallback(() => {
     refetch()
     mixpanel.track('api_request', {
+      page: 'rtoken_details',
+      section: 'issuance',
       product: 'zap',
       action: 'refresh_quote',
       payload: {
         operation: operation,
         rtoken: rToken.symbol,
         chain: CHAIN_TAGS[chainId],
-        user: account,
+        user: {
+          wallet: account,
+        },
         amountin: amountIn,
         slippage: slippage,
         tokenin: tokenIn.symbol,
