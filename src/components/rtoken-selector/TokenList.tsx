@@ -32,13 +32,20 @@ const TokenList = memo(
 
     const orderedTokens = useMemo(() => {
       if (!tokens && isLoading) return []
+
+      const _tokens = Object.values(tokens).map((token) => ({
+        id: token.address,
+        chain: token.chainId,
+        ...token,
+      }))
       return isLoading
-        ? Object.values(tokens).map((token) => ({
-            id: token.address,
-            chain: token.chainId,
-            ...token,
-          }))
-        : list
+        ? _tokens
+        : [
+            ...list,
+            ..._tokens.filter(
+              (token) => !list.map((rToken) => rToken.id).includes(token.id)
+            ),
+          ]
     }, [tokens, list, isLoading])
 
     return (
