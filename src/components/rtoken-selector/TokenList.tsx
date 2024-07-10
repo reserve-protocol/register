@@ -1,7 +1,8 @@
 import styled from '@emotion/styled'
 import TokenItem from 'components/token-item'
+import useTokenList from 'hooks/useTokenList'
 import { useAtomValue } from 'jotai'
-import { memo } from 'react'
+import { memo, useMemo } from 'react'
 import { Box, Flex } from 'theme-ui'
 import availableTokensAtom from './atoms'
 
@@ -26,7 +27,19 @@ const TokenList = memo(
     onSelect(address: string, chainId: number): void
     onHome(): void
   }) => {
+    const { list, isLoading } = useTokenList()
     const tokens = useAtomValue(availableTokensAtom)
+
+    const orderedTokens = useMemo(() => {
+      if (!tokens && isLoading) return []
+      return isLoading
+        ? Object.values(tokens).map((token) => ({
+            id: token.address,
+            chain: token.chainId,
+            ...token,
+          }))
+        : list
+    }, [tokens, list, isLoading])
 
     return (
       <Box
@@ -41,18 +54,18 @@ const TokenList = memo(
           },
         }}
       >
-        {Object.values(tokens).map(({ address, logo, symbol, chainId }) => (
+        {orderedTokens.map(({ id, logo, symbol, chain }) => (
           <ActionItem
-            key={address}
+            key={id}
             onClick={() => {
-              onSelect(address, chainId as number)
+              onSelect(id, chain as number)
             }}
           >
             <TokenItem
               sx={{ color: 'text' }}
               symbol={symbol}
               logo={logo}
-              chainId={chainId}
+              chainId={chain}
             />
           </ActionItem>
         ))}
