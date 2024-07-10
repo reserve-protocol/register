@@ -9,11 +9,12 @@ import RTokenZapIssuance from './components/zapV2/RTokenZapIssuance'
 import ZapToggle from './components/zapV2/ZapToggle'
 import ZapToggleBottom from './components/zapV2/ZapToggleBottom'
 import { ZapProvider, useZap } from './components/zapV2/context/ZapContext'
-import { useAtomValue } from 'jotai'
-import { rTokenStateAtom } from 'state/atoms'
+import { atom, useAtomValue } from 'jotai'
+import { chainIdAtom, rTokenStateAtom } from 'state/atoms'
 import AlertIcon from 'components/icons/AlertIcon'
 import mixpanel from 'mixpanel-browser'
 import { useEffect } from 'react'
+import { ChainId } from 'utils/chains'
 
 const CollateralizationBanner = (props: BoxProps) => {
   const { isCollaterized } = useAtomValue(rTokenStateAtom)
@@ -40,15 +41,44 @@ const CollateralizationBanner = (props: BoxProps) => {
   )
 }
 
+const MaintenanceBanner = (props: BoxProps) => {
+  return (
+    <Box {...props} variant="layout.borderBox" p="3">
+      <Box variant="layout.verticalAlign">
+        <AlertIcon width={32} height={32} />
+        <Box ml="3">
+          <Text sx={{ fontWeight: 'bold' }} variant="warning">
+            RToken zapper is under maintenance.
+          </Text>
+          <br />
+          <Text mt="1" sx={{ display: 'block' }} variant="warning">
+            This should last for a few hours, manual minting/redemption is
+            available.
+          </Text>
+        </Box>
+      </Box>
+    </Box>
+  )
+}
+
+// TODO: Use CMS for this state? or maybe environment variables, chain specific
+const maintenanceAtom = atom((get) => {
+  const chain = get(chainIdAtom)
+
+  return chain === ChainId.Base
+})
+
 const IssuanceMethods = () => {
   const { zapEnabled, setZapEnabled } = useZap()
   const { isCollaterized } = useAtomValue(rTokenStateAtom)
+  const maintenance = useAtomValue(maintenanceAtom)
 
   return (
     <Grid columns={[1, 1, 1, '2fr 1.5fr']} gap={[1, 4]}>
       {zapEnabled ? (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
           <CollateralizationBanner ml="4" mb="-4" mt="4" />
+          {maintenance && <MaintenanceBanner ml="4" mb="-4" mt="4" />}
           <RTokenZapIssuance disableRedeem={!isCollaterized} />
           <ZapToggleBottom setZapEnabled={setZapEnabled} />
         </Box>
