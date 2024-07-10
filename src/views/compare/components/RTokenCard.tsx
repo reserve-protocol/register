@@ -19,6 +19,7 @@ import EarnButton from './EarnButton'
 import MobileCollateralInfo from './MobileCollateralInfo'
 import VerticalDivider from './VerticalDivider'
 import DivaButtonAppendix from 'components/diva-points/DivaButtonAppendix'
+import DgnETHButtonAppendix from 'components/dgneth/DgnETHButtonAppendix'
 
 interface Props extends BoxProps {
   token: ListedToken
@@ -245,24 +246,31 @@ const RTokenCard = ({ token, ...props }: Props) => {
                 sx={{ flexWrap: 'wrap', gap: [2, '12px'] }}
                 mt={[0, 1]}
               >
-                <DivaButtonAppendix
+                <DgnETHButtonAppendix
                   rTokenSymbol={token.symbol}
+                  basketAPY={token.basketApy}
                   borderColor="white"
                   hideLabelOnMobile
                 >
-                  <Button
-                    medium
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleNavigate(ROUTES.ISSUANCE)
-                    }}
-                    sx={{ whiteSpace: 'nowrap' }}
+                  <DivaButtonAppendix
+                    rTokenSymbol={token.symbol}
+                    borderColor="white"
+                    hideLabelOnMobile
                   >
-                    {token.tokenApy
-                      ? `Mint ${token.tokenApy.toFixed(1)}% Est. APY`
-                      : 'Mint'}
-                  </Button>
-                </DivaButtonAppendix>
+                    <Button
+                      medium
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleNavigate(ROUTES.ISSUANCE)
+                      }}
+                      sx={{ whiteSpace: 'nowrap' }}
+                    >
+                      {token.tokenApy
+                        ? `Mint ${token.tokenApy.toFixed(1)}% Est. APY`
+                        : 'Mint'}
+                    </Button>
+                  </DivaButtonAppendix>
+                </DgnETHButtonAppendix>
                 <Button
                   medium
                   onClick={(e) => {

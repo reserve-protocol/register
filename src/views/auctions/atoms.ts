@@ -76,6 +76,8 @@ export const currentTradesAtom = atom((get) => get(tradesAtom).current)
 export const endedTradesAtom = atom((get) => get(tradesAtom).ended)
 
 export const selectedAuctionsAtom = atomWithReset<number[]>([])
+// TODO: Maybe merge this into a single list?
+export const selectedUnavailableAuctionsAtom = atomWithReset<number[]>([])
 
 export const auctionSessionAtom = atom(1)
 
@@ -331,7 +333,7 @@ export const auctionsOverviewAtom = atomWithLoadable(
           amount: rTokenTradeAmount,
           amountUsd: Number(rTokenTradeAmount) * asset.priceUsd,
           minAmount: formatUnits(
-            rTokenRevenueOverview[4][i],
+            rTokenRevenueOverview[3][i],
             asset.token.decimals
           ),
           trader: contracts.rTokenTrader.address,
@@ -355,8 +357,6 @@ export const auctionsOverviewAtom = atomWithLoadable(
     availableAuctions.sort(sort)
     unavailableAuctions.sort(sort)
     claimableEmissions.sort(sort)
-
-    console.log('unavailable', unavailableAuctions)
 
     return {
       availableAuctions,

@@ -50,6 +50,7 @@ const SVGS = new Set([
   'stkcvx3crv',
   'stkcvxcrv3crypto',
   'stkcvxeusd3crv-f',
+  'stkcvxeth+eth-f',
   'stkcvxmim-3lp3crv-f',
   'sdai',
   'mrp-ausdt',
@@ -64,6 +65,7 @@ const SVGS = new Set([
   'mkusd',
   'eusd',
   'cbeth',
+  're7weth',
   'saethusdc',
   'saethpyusd',
   'pyusd',
@@ -73,6 +75,8 @@ const SVGS = new Set([
   'usd+',
   'pxeth',
   'sdt',
+  'wusdm',
+  'eth+',
 ])
 
 const PNGS = new Set(['steakusdc', 'mai', 'dola', 'fxusd', 'alusd'])

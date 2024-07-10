@@ -39,7 +39,7 @@ const RevenueAuctionItem = ({
       mt={3}
       header={
         <SelectableBox
-          unavailable={!data.canStart}
+          unavailable={!Number(data.amount)}
           onSelect={onSelect}
           unavailableComponent={
             <UnavailablePlaceholder isBelowMinTrade={isBelowMinTrade} />

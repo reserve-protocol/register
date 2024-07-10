@@ -12,6 +12,8 @@ import { ZapProvider, useZap } from './components/zapV2/context/ZapContext'
 import { useAtomValue } from 'jotai'
 import { rTokenStateAtom } from 'state/atoms'
 import AlertIcon from 'components/icons/AlertIcon'
+import mixpanel from 'mixpanel-browser'
+import { useEffect } from 'react'
 
 const CollateralizationBanner = (props: BoxProps) => {
   const { isCollaterized } = useAtomValue(rTokenStateAtom)
@@ -84,6 +86,14 @@ const IssuanceMethods = () => {
  * Mint & Redeem view
  */
 const Issuance = () => {
+  useEffect(() => {
+    mixpanel.track('page_view', {
+      page: 'rtoken_details',
+      section: 'issuance',
+      payload: {},
+    })
+  }, [])
+
   return (
     <ZapProvider>
       <WrapSidebar />

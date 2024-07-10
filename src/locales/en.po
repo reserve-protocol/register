@@ -21,7 +21,7 @@ msgstr ""
 msgid "(in their Github repository)"
 msgstr ""
 
-#: src/views/overview/components/hero/OverviewActions.tsx:136
+#: src/views/overview/components/hero/OverviewActions.tsx:138
 msgid "{0}"
 msgstr ""
 
@@ -37,7 +37,7 @@ msgstr ""
 msgid "{0} of {1}"
 msgstr ""
 
-#: src/views/issuance/components/wrapping/CollateralItem.tsx:283
+#: src/views/issuance/components/wrapping/CollateralItem.tsx:285
 msgid "{fromToken} amount"
 msgstr ""
 
@@ -105,6 +105,10 @@ msgstr ""
 msgid "About"
 msgstr ""
 
+#: src/views/auctions/auctions-sidebar/Revenue.tsx:106
+msgid "Above minimum trade volume"
+msgstr ""
+
 #: src/views/governance/views/proposal-detail/components/VoteModal.tsx:44
 msgid "Abstain"
 msgstr ""
@@ -115,10 +119,6 @@ msgstr ""
 
 #: src/components/transactions/manager/TransactionHeader.tsx:25
 msgid "Account"
-msgstr ""
-
-#: src/views/auctions/auctions-sidebar/Revenue.tsx:106
-msgid "Actionable accumulated revenue"
 msgstr ""
 
 #: src/components/rtoken-setup/basket/CustomCollateral.tsx:139
@@ -137,7 +137,7 @@ msgid "Add to backup basket"
 msgstr ""
 
 #: src/components/rtoken-setup/basket/EmergencyCollateral.tsx:122
-#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:94
+#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:96
 msgid "Add to basket"
 msgstr ""
 
@@ -258,7 +258,7 @@ msgid "Backing & Risk"
 msgstr ""
 
 #: src/views/compare/components/MobileCollateralInfo.tsx:46
-#: src/views/compare/components/RTokenCard.tsx:232
+#: src/views/compare/components/RTokenCard.tsx:233
 msgid "Backing + Overcollaterization:"
 msgstr ""
 
@@ -380,6 +380,10 @@ msgstr ""
 msgid "Begin redemption of {0} {1}"
 msgstr ""
 
+#: src/views/auctions/auctions-sidebar/Revenue.tsx:129
+msgid "Below minimum trade volume"
+msgstr ""
+
 #: src/views/auctions/components/useColumns.tsx:36
 msgid "Bought"
 msgstr ""
@@ -446,7 +450,7 @@ msgstr ""
 msgid "Caution"
 msgstr ""
 
-#: src/views/earn/hooks/useEarnTableColumns.tsx:133
+#: src/views/earn/hooks/useEarnTableColumns.tsx:135
 #: src/views/overview/components/RTokenTransactions.tsx:133
 msgid "Chain"
 msgstr ""
@@ -658,7 +662,7 @@ msgstr ""
 msgid "Define what portion of the revenue goes to the RToken holders versus RSR stakers. It can also be configured to send a portion of the revenue of an RToken to any arbitrary Ethereum address (wallet or smart contract).<0/><1/>"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:73
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:69
 msgid "Delay (in number of {0}) since the proposal starts until voting ends."
 msgstr ""
 
@@ -853,7 +857,7 @@ msgstr ""
 msgid "Ensure that the asset(s) you are unregistering do not have pending revenue that can be"
 msgstr ""
 
-#: src/views/compare/components/RTokenCard.tsx:280
+#: src/views/compare/components/RTokenCard.tsx:288
 msgid "Est. APY"
 msgstr ""
 
@@ -865,7 +869,7 @@ msgstr ""
 msgid "Est. Staking APY"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:118
+#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:120
 msgid "Estimated basket APY"
 msgstr ""
 
@@ -999,7 +1003,7 @@ msgstr ""
 msgid "Governance gets deployed & your RToken is now usable (if unpaused)"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:51
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:47
 msgid "Governance parameters"
 msgstr ""
 
@@ -1077,11 +1081,11 @@ msgstr ""
 msgid "Initial RToken state after deployment"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:55
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:51
 msgid "Input delay"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:87
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:83
 msgid "Input delay in hours"
 msgstr ""
 
@@ -1089,7 +1093,7 @@ msgstr ""
 msgid "Input plugin address (not ERC-20 address)"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:101
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:97
 msgid "Input proposal threshold"
 msgstr ""
 
@@ -1097,7 +1101,7 @@ msgstr ""
 msgid "Input proposal title"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:114
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:110
 msgid "Input quorum percent"
 msgstr ""
 
@@ -1135,7 +1139,7 @@ msgstr ""
 msgid "Input token name or symbol"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:71
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:67
 msgid "Input voting period"
 msgstr ""
 
@@ -1293,7 +1297,7 @@ msgstr ""
 msgid "Mandate is required"
 msgstr ""
 
-#: src/views/compare/components/RTokenCard.tsx:190
+#: src/views/compare/components/RTokenCard.tsx:191
 msgid "Market cap:"
 msgstr ""
 
@@ -1590,7 +1594,7 @@ msgstr ""
 msgid "Pause status"
 msgstr ""
 
-#: src/views/compare/components/RTokenCard.tsx:221
+#: src/views/compare/components/RTokenCard.tsx:222
 msgid "Peg:"
 msgstr ""
 
@@ -1668,7 +1672,7 @@ msgstr ""
 msgid "Please wait while the simulation executes"
 msgstr ""
 
-#: src/views/earn/hooks/useEarnTableColumns.tsx:62
+#: src/views/earn/hooks/useEarnTableColumns.tsx:64
 msgid "Pool"
 msgstr ""
 
@@ -1696,7 +1700,7 @@ msgstr ""
 msgid "Primary basket"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:85
+#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:87
 #: src/views/settings/components/BasketInfo.tsx:20
 msgid "Primary Basket"
 msgstr ""
@@ -1709,7 +1713,7 @@ msgstr ""
 msgid "Proceed in wallet"
 msgstr ""
 
-#: src/views/earn/hooks/useEarnTableColumns.tsx:122
+#: src/views/earn/hooks/useEarnTableColumns.tsx:124
 msgid "Project"
 msgstr ""
 
@@ -1717,7 +1721,7 @@ msgstr ""
 msgid "Proposal description"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:86
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:82
 msgid "Proposal execution delay (hours)"
 msgstr ""
 
@@ -1725,7 +1729,7 @@ msgstr ""
 msgid "Proposal Threshold"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:100
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:96
 msgid "Proposal Threshold (%)"
 msgstr ""
 
@@ -1786,7 +1790,7 @@ msgstr ""
 msgid "Quorum"
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:113
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:109
 msgid "Quorum (%)"
 msgstr ""
 
@@ -2188,6 +2192,10 @@ msgstr ""
 msgid "Simulation unsuccessful ✘"
 msgstr ""
 
+#: src/views/auctions/auctions-sidebar/UnavailableRevenueAuctions.tsx:128
+msgid "Small revenue auctions"
+msgstr ""
+
 #: src/views/governance/views/proposal-detail/components/ProposalDetailStats.tsx:81
 msgid "Snapshot Block"
 msgstr ""
@@ -2362,15 +2370,15 @@ msgstr ""
 msgid "The mandate describes what goals its governors should try to achieve. By briefly explaining the RToken’s purpose and what the RToken is intended to do, it provides common ground for the governors to decide upon priorities and how to weigh tradeoffs."
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:89
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:85
 msgid "The minimum amount of time after a proposal passes before it can be executed."
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:102
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:98
 msgid "The minimum percentage of stRSR ownership on an RToken to be able to create a proposal."
 msgstr ""
 
-#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:115
+#: src/components/rtoken-setup/governance/GovernanceParameters.tsx:111
 msgid "The minimum percentage of stRSR voter participation (either For or Abstain) on a proposal before it can be passed."
 msgstr ""
 
@@ -2536,7 +2544,7 @@ msgstr ""
 msgid "Total % to arbitrary address"
 msgstr ""
 
-#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:126
+#: src/components/rtoken-setup/basket/PrimaryBasket.tsx:128
 msgid "Total initial RToken scale including all targets. If your RToken only has one target unit this will be the same as the basket scale input."
 msgstr ""
 
@@ -2643,7 +2651,7 @@ msgstr ""
 msgid "Tutorial video"
 msgstr ""
 
-#: src/views/earn/hooks/useEarnTableColumns.tsx:192
+#: src/views/earn/hooks/useEarnTableColumns.tsx:194
 msgid "TVL"
 msgstr ""
 
@@ -2686,14 +2694,6 @@ msgstr ""
 #: src/views/explorer/components/transactions/useTransactionColumns.tsx:69
 #: src/views/overview/components/RTokenTransactions.tsx:97
 msgid "Type"
-msgstr ""
-
-#: src/views/auctions/auctions-sidebar/Revenue.tsx:129
-msgid "Unactionable revenue"
-msgstr ""
-
-#: src/views/auctions/auctions-sidebar/UnavailableRevenueAuctions.tsx:14
-msgid "Unavailable revenue auctions"
 msgstr ""
 
 #: src/views/overview/components/backing/PlatformExposure.tsx:64
