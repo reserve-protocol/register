@@ -5,6 +5,7 @@ import PortfolioSplash from './PortfolioSplash'
 import WalletSelector from './WalletSelector'
 import HoldingsOverview from './HoldingsOverview'
 import PositionsContainer from './PositionsContainer'
+import TrackWalletInput from './TrackWalletInput'
 
 const Portfolio = () => {
   const wallet = useAtomValue(currentWalletAtom)
@@ -15,8 +16,16 @@ const Portfolio = () => {
 
   return (
     <Box>
-      <Box variant="layout.verticalAlign">
+      <Box
+        variant="layout.verticalAlign"
+        sx={{ justifyContent: 'space-between', gap: 3 }}
+      >
         <WalletSelector />
+        <TrackWalletInput
+          sx={{
+            maxWidth: 200,
+          }}
+        />
       </Box>
       <HoldingsOverview />
       <PositionsContainer />

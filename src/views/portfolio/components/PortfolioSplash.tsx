@@ -1,58 +1,19 @@
-import { Button, Input } from 'components'
+import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { Button } from 'components'
 import SpectaclesIcon from 'components/icons/SpectaclesIcon'
 import WalletOutlineIcon from 'components/icons/WalletOutlineIcon'
-import { useState } from 'react'
 import { Box, Divider, Flex, Image, Text } from 'theme-ui'
-import { isAddress } from 'utils'
 import VaultPlaceholder from '../assets/vault-placeholder.png'
-import { atom, useSetAtom } from 'jotai'
-import { trackedWalletAtom, trackedWalletsAtom } from '../atoms'
-import { useConnectModal } from '@rainbow-me/rainbowkit'
-
-const trackNewWalletAtom = atom(null, (get, set, address: string) => {
-  const trackedWallets = get(trackedWalletsAtom)
-
-  if (!trackedWallets.includes(address)) {
-    set(trackedWalletsAtom, [...trackedWallets, address])
-  }
-
-  set(trackedWalletAtom, address)
-})
+import TrackWalletInput from './TrackWalletInput'
 
 const TrackWallet = () => {
-  const [value, setValue] = useState('')
-  const validAddress = isAddress(value)
-  const trackWallet = useSetAtom(trackNewWalletAtom)
-
-  const handleTrackWallet = () => {
-    if (validAddress) {
-      trackWallet(validAddress)
-    }
-  }
-
   return (
     <Box variant="layout.verticalAlign" sx={{ flexWrap: 'wrap', gap: 3 }}>
       <WalletOutlineIcon fontSize={20} />
       <Text variant="bold" sx={{ whiteSpace: 'nowrap' }}>
         Track anyone Reserve holdings
       </Text>
-      <Box sx={{ flexGrow: '1', position: 'relative', minWidth: 360 }}>
-        <Input
-          variant="smallInput"
-          sx={{ width: '100%', paddingRight: '70px', fontSize: 1 }}
-          placeholder="Enter wallet address"
-          value={value}
-          onChange={setValue}
-        />
-        <Button
-          sx={{ position: 'absolute', right: '4px', top: '4px' }}
-          small
-          disabled={!validAddress}
-          onClick={handleTrackWallet}
-        >
-          Track
-        </Button>
-      </Box>
+      <TrackWalletInput />
     </Box>
   )
 }

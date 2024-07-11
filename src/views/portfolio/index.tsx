@@ -6,7 +6,7 @@ import PortfolioUpdater from './Updater'
 const PortfolioWrapper = () => {
   return (
     <>
-      <Box variant="layout.wrapper" px={[1, 4]} pt={[1, 8]}>
+      <Box variant="layout.wrapper" px={[1, 4]} pt={[1, 6]}>
         <Portfolio />
       </Box>
       <RegisterAbout />

@@ -168,8 +168,14 @@ const WalletSelector = () => {
       onDismiss={() => setVisible(false)}
       content={<WalletList onSelect={handleSelectWallet} />}
       containerProps={{
-        sx: { border: '2px solid', borderColor: 'darkBorder' },
+        sx: {
+          border: '2px solid',
+          borderColor: 'darkBorder',
+          background: 'background',
+        },
       }}
+      zIndex={1}
+      placement="bottom-end"
     >
       <Box
         variant="layout.verticalAlign"
