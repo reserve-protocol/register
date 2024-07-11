@@ -1,17 +1,18 @@
+import TrackIcon from 'components/icons/TrackIcon'
+import WalletIcon from 'components/icons/WalletIcon'
+import Popup from 'components/popup'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
-import { Box, Flex, Text } from 'theme-ui'
+import { useState } from 'react'
+import { Check, ChevronDown } from 'react-feather'
+import { walletAtom } from 'state/atoms'
+import { Box, Flex, Text, useColorMode } from 'theme-ui'
+import { shortenAddress, stringToColor } from 'utils'
 import {
   currentWalletAtom,
   trackedWalletAtom,
   trackedWalletsAtom,
 } from '../atoms'
-import { walletAtom } from 'state/atoms'
-import { shortenAddress } from 'utils'
-import WalletIcon from 'components/icons/WalletIcon'
-import TrackIcon from 'components/icons/TrackIcon'
-import { Check, ChevronDown } from 'react-feather'
-import { useState } from 'react'
-import Popup from 'components/popup'
+import { colors } from 'theme'
 
 // TODO: Extract total value from data atom
 const walletListAtom = atom((get) => {
@@ -52,23 +53,49 @@ const walletListAtom = atom((get) => {
 })
 
 const WalletList = ({ onSelect }: { onSelect(addr: string): void }) => {
+  const [colorMode] = useColorMode()
+  const isDarkMode = colorMode === 'dark'
   const wallets = useAtomValue(walletListAtom)
 
   return (
-    <Flex sx={{ gap: 2, flexDirection: 'column' }} p={3}>
+    <Flex sx={{ gap: 2, flexDirection: 'column' }} p={2}>
       {wallets.map((wallet) => (
         <Box
           key={wallet.address}
-          sx={{ cursor: !wallet.current ? 'pointer' : 'inherit' }}
-          onClick={() => !wallet.current && onSelect(wallet.address)}
           variant="layout.verticalAlign"
+          sx={{
+            cursor: !wallet.current ? 'pointer' : 'inherit',
+            border: wallet.current ? '1px solid' : 'none',
+            borderColor: 'border',
+            borderRadius: '8px',
+            minWidth: 260,
+            gap: 3,
+          }}
+          onClick={() => !wallet.current && onSelect(wallet.address)}
+          px={3}
+          py={2}
         >
-          {wallet.connected ? <WalletIcon /> : <TrackIcon />}
-          <Box ml="3">
+          <Box
+            sx={{
+              height: '24px',
+              width: '24px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: '6px',
+              backgroundColor: stringToColor(
+                wallet.address.toLowerCase(),
+                isDarkMode ? 0.8 : 0.2
+              ),
+            }}
+          >
+            {wallet.connected ? <WalletIcon /> : <TrackIcon />}
+          </Box>
+          <Box>
             <Text variant="bold">{wallet.shortedAddress}</Text>
             <Text variant="legend">$0.0</Text>
           </Box>
-          <Box ml="5">
+          <Box ml="auto">
             {wallet.current && <Check fontSize={16} strokeWidth={1.5} />}
           </Box>
         </Box>
@@ -78,6 +105,8 @@ const WalletList = ({ onSelect }: { onSelect(addr: string): void }) => {
 }
 
 const WalletSelector = () => {
+  const [colorMode] = useColorMode()
+  const isDarkMode = colorMode === 'dark'
   const [isVisible, setVisible] = useState(false)
   const current = useAtomValue(currentWalletAtom)
   const connected = useAtomValue(walletAtom)
@@ -108,7 +137,22 @@ const WalletSelector = () => {
         onClick={() => setVisible(!isVisible)}
         sx={{ cursor: 'pointer' }}
       >
-        {isConnectedWallet ? <WalletIcon /> : <TrackIcon />}
+        <Box
+          sx={{
+            height: '24px',
+            width: '24px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: '6px',
+            backgroundColor: stringToColor(
+              current.toLowerCase(),
+              isDarkMode ? 0.8 : 0.2
+            ),
+          }}
+        >
+          {isConnectedWallet ? <WalletIcon /> : <TrackIcon />}
+        </Box>
         <Text ml="2" variant="bold">
           {isConnectedWallet ? 'Your portfolio' : shortenAddress(current)}
         </Text>
