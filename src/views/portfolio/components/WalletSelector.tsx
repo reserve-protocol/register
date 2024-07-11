@@ -1,9 +1,9 @@
 import TrackIcon from 'components/icons/TrackIcon'
 import WalletIcon from 'components/icons/WalletIcon'
 import Popup from 'components/popup'
-import { atom, useAtomValue, useSetAtom } from 'jotai'
-import { useState } from 'react'
-import { Check, ChevronDown } from 'react-feather'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useCallback, useEffect, useState } from 'react'
+import { Check, ChevronDown, X } from 'react-feather'
 import { walletAtom } from 'state/atoms'
 import { Box, Flex, Text, useColorMode } from 'theme-ui'
 import { shortenAddress, stringToColor } from 'utils'
@@ -12,7 +12,8 @@ import {
   trackedWalletAtom,
   trackedWalletsAtom,
 } from '../atoms'
-import { colors } from 'theme'
+import { Button } from 'components'
+import { MouseoverTooltip } from 'components/tooltip'
 
 // TODO: Extract total value from data atom
 const walletListAtom = atom((get) => {
@@ -56,6 +57,18 @@ const WalletList = ({ onSelect }: { onSelect(addr: string): void }) => {
   const [colorMode] = useColorMode()
   const isDarkMode = colorMode === 'dark'
   const wallets = useAtomValue(walletListAtom)
+  const [trackedWallets, setTrackedWallets] = useAtom(trackedWalletsAtom)
+  const setTrackedWallet = useSetAtom(trackedWalletAtom)
+
+  const stopTracking = useCallback(
+    (address: string, isSelected: boolean) => {
+      setTrackedWallets((prev) => prev.filter((addr) => addr !== address))
+      if (isSelected) {
+        setTrackedWallet(trackedWallets[0] || '')
+      }
+    },
+    [setTrackedWallets, setTrackedWallet, trackedWallets]
+  )
 
   return (
     <Flex sx={{ gap: 2, flexDirection: 'column' }} p={2}>
@@ -68,7 +81,7 @@ const WalletList = ({ onSelect }: { onSelect(addr: string): void }) => {
             border: wallet.current ? '1px solid' : 'none',
             borderColor: 'border',
             borderRadius: '8px',
-            minWidth: 260,
+            minWidth: 280,
             gap: 3,
           }}
           onClick={() => !wallet.current && onSelect(wallet.address)}
@@ -95,8 +108,28 @@ const WalletList = ({ onSelect }: { onSelect(addr: string): void }) => {
             <Text variant="bold">{wallet.shortedAddress}</Text>
             <Text variant="legend">$0.0</Text>
           </Box>
-          <Box ml="auto">
-            {wallet.current && <Check fontSize={16} strokeWidth={1.5} />}
+          <Box variant="layout.verticalAlign" ml="auto" sx={{ gap: 1 }}>
+            {wallet.current && wallet.connected && (
+              <Check fontSize={14} strokeWidth={1.2} />
+            )}
+            {!wallet.connected && (
+              <MouseoverTooltip text="Stop tracking" placement="right">
+                <Button
+                  variant="circle"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    stopTracking(wallet.address, wallet.current)
+                  }}
+                  sx={{
+                    ml: 1,
+                    width: '24px',
+                    height: '24px',
+                  }}
+                >
+                  <X />
+                </Button>
+              </MouseoverTooltip>
+            )}
           </Box>
         </Box>
       ))}
@@ -111,6 +144,7 @@ const WalletSelector = () => {
   const current = useAtomValue(currentWalletAtom)
   const connected = useAtomValue(walletAtom)
   const setTrackedWallet = useSetAtom(trackedWalletAtom)
+  const trackedWallets = useAtomValue(trackedWalletsAtom)
 
   if (!current) {
     return null
@@ -121,6 +155,12 @@ const WalletSelector = () => {
   const handleSelectWallet = (wallet: string) => {
     setTrackedWallet(wallet)
   }
+
+  useEffect(() => {
+    if (!trackedWallets.length && !isConnectedWallet) {
+      setTrackedWallet('')
+    }
+  }, [trackedWallets, isConnectedWallet, setTrackedWallet])
 
   return (
     <Popup

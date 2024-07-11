@@ -8,7 +8,7 @@ import PositionsContainer from './PositionsContainer'
 
 const Portfolio = () => {
   const wallet = useAtomValue(currentWalletAtom)
-  console.log(wallet)
+
   if (!wallet) {
     return <PortfolioSplash />
   }
