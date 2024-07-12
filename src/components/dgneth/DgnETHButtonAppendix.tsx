@@ -29,11 +29,13 @@ const DgnETHButtonAppendix: FC<Props> = ({
     contracts: [
       {
         abi: erc20ABI,
+        chainId: ChainId.Mainnet,
         address: TOKEN_ADDRESS,
         functionName: 'totalSupply',
       },
       {
         abi: erc20ABI,
+        chainId: ChainId.Mainnet,
         address: STAKE_TOKEN_ADDRESS,
         functionName: 'totalSupply',
       },
