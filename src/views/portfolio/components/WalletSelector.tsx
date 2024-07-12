@@ -1,62 +1,27 @@
+import { Button } from 'components'
 import TrackIcon from 'components/icons/TrackIcon'
 import WalletIcon from 'components/icons/WalletIcon'
 import Popup from 'components/popup'
-import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { MouseoverTooltip } from 'components/tooltip'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useCallback, useEffect, useState } from 'react'
 import { Check, ChevronDown, X } from 'react-feather'
 import { walletAtom } from 'state/atoms'
 import { Box, Flex, Text, useColorMode } from 'theme-ui'
-import { shortenAddress, stringToColor } from 'utils'
+import { formatCurrency, shortenAddress, stringToColor } from 'utils'
 import {
+  allWalletsAccountsAtom,
+  allWalletsAtom,
   currentWalletAtom,
   trackedWalletAtom,
   trackedWalletsAtom,
 } from '../atoms'
-import { Button } from 'components'
-import { MouseoverTooltip } from 'components/tooltip'
-
-// TODO: Extract total value from data atom
-const walletListAtom = atom((get) => {
-  const tracked = get(trackedWalletsAtom)
-  const connected = get(walletAtom)
-  const selected = get(currentWalletAtom)
-  let isConnectedIncluded = false
-  const walletList: {
-    connected: boolean
-    current: boolean
-    address: string
-    shortedAddress: string
-  }[] = tracked.map((addr) => {
-    const isConnected = addr === connected
-
-    if (isConnected) {
-      isConnectedIncluded = true
-    }
-
-    return {
-      address: addr,
-      shortedAddress: shortenAddress(addr),
-      current: addr === selected,
-      connected: isConnected,
-    }
-  })
-
-  if (connected && !isConnectedIncluded) {
-    walletList.unshift({
-      address: connected,
-      shortedAddress: shortenAddress(connected),
-      current: connected === selected,
-      connected: true,
-    })
-  }
-
-  return walletList.sort((a, b) => (a.current ? 1 : 0))
-})
 
 const WalletList = ({ onSelect }: { onSelect(addr: string): void }) => {
   const [colorMode] = useColorMode()
   const isDarkMode = colorMode === 'dark'
-  const wallets = useAtomValue(walletListAtom)
+  const wallets = useAtomValue(allWalletsAtom)
+  const accountsData = useAtomValue(allWalletsAccountsAtom)
   const [trackedWallets, setTrackedWallets] = useAtom(trackedWalletsAtom)
   const setTrackedWallet = useSetAtom(trackedWalletAtom)
 
@@ -106,7 +71,12 @@ const WalletList = ({ onSelect }: { onSelect(addr: string): void }) => {
           </Box>
           <Box>
             <Text variant="bold">{wallet.shortedAddress}</Text>
-            <Text variant="legend">$0.0</Text>
+            <Text variant="legend">
+              $
+              {formatCurrency(
+                accountsData?.[wallet.address.toLowerCase()]?.holdings || 0
+              )}
+            </Text>
           </Box>
           <Box variant="layout.verticalAlign" ml="auto" sx={{ gap: 1 }}>
             {wallet.current && wallet.connected && (

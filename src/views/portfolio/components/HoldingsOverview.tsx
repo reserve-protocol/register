@@ -1,6 +1,9 @@
 import TreeIcon from 'components/icons/TreeIcon'
 import YieldIcon from 'components/icons/YieldIcon'
+import { useAtomValue } from 'jotai'
 import { Box, Flex, Text } from 'theme-ui'
+import { formatCurrency } from 'utils'
+import { allWalletsAccountsAtom, currentWalletAtom } from '../atoms'
 
 const YieldIcons = ({ id }: { id: string }) => (
   <>
@@ -15,6 +18,9 @@ const YieldIcons = ({ id }: { id: string }) => (
 )
 
 const HoldingsOverview = () => {
+  const currentWallet = useAtomValue(currentWalletAtom)
+  const accountsData = useAtomValue(allWalletsAccountsAtom)
+
   return (
     <Box sx={{ position: 'relative' }}>
       <Flex
@@ -24,10 +30,13 @@ const HoldingsOverview = () => {
           <TreeIcon />
         </Box>
         <Text mt="2" sx={{ display: 'block' }}>
-          Total Reserve protocol holdings
+          Total Reserve Protocol holdings
         </Text>
         <Text sx={{ color: 'primary', fontSize: 7 }} variant="bold">
-          $3,387,566.00
+          $
+          {formatCurrency(
+            accountsData[currentWallet?.toLowerCase() ?? '']?.holdings ?? 0
+          )}
         </Text>
       </Flex>
 

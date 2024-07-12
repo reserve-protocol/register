@@ -5,16 +5,16 @@
 import Main from 'abis/Main'
 import StRSRVotes from 'abis/StRSRVotes'
 import { atom } from 'jotai'
-import { AccountPosition, AccountToken } from 'types'
+import { AccountPosition } from 'types'
 import { RSR_ADDRESS } from 'utils/addresses'
 import { atomWithLoadable } from 'utils/atoms/utils'
 import { Address, stringToHex, zeroAddress } from 'viem'
 import { readContracts } from 'wagmi'
+import { readContract } from 'wagmi/actions'
 import { chainIdAtom, walletAtom } from '../chain/atoms/chainAtoms'
 import rTokenAtom from '../rtoken/atoms/rTokenAtom'
 import rTokenContractsAtom from '../rtoken/atoms/rTokenContractsAtom'
-import { readContract } from 'wagmi/actions'
-import { AccountRTokenPosition } from './updaters/AccountUpdater'
+import { AccountRTokenPosition, AccountToken } from './updaters/AccountUpdater'
 
 const defaultBalance = {
   value: 0n,
@@ -61,9 +61,7 @@ export const rsrBalanceAtom = atom((get) => {
 })
 
 // Store account related rtokens
-export const accountRTokensAtom = atom<
-  { address: string; name: string; symbol: string, chainId: number }[]
->([])
+export const accountRTokensAtom = atom<AccountToken[]>([])
 
 // Store current rToken holdings for an account
 export const accountTokensAtom = atom<AccountRTokenPosition[]>([])
@@ -147,5 +145,3 @@ export const accountDelegateAtom = atomWithLoadable(async (get) => {
 
   return delegate !== zeroAddress ? delegate : null
 })
-
-export const isSmartWalletAtom = atom(false)
