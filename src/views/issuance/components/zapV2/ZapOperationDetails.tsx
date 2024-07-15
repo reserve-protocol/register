@@ -3,13 +3,22 @@ import { Box, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { useZap } from './context/ZapContext'
 import ZapRate from './overview/ZapRate'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import ZapDetails from './overview/ZapDetails'
 
+const EXPAND_THRESHOLD = 50_000
+
 const ZapOperationDetails = () => {
   const [collapsed, setCollapsed] = useState(true)
-  const { gasCost } = useZap()
+  const { gasCost, amountIn, tokenIn } = useZap()
+
+  useEffect(() => {
+    const isExpensiveZap = +amountIn * (tokenIn?.price || 0) > EXPAND_THRESHOLD
+    if (isExpensiveZap) {
+      setCollapsed(false)
+    }
+  }, [tokenIn?.price, amountIn, setCollapsed])
 
   return (
     <Box>
