@@ -1,8 +1,9 @@
 import TreeIcon from 'components/icons/TreeIcon'
 import YieldIcon from 'components/icons/YieldIcon'
 import { useAtomValue } from 'jotai'
-import { Box, Flex, Text } from 'theme-ui'
-import { formatCurrency } from 'utils'
+import { useMemo } from 'react'
+import { Box, BoxProps, Flex, Text } from 'theme-ui'
+import { formatCurrency, formatPercentage } from 'utils'
 import { allWalletsAccountsAtom, currentWalletAtom } from '../atoms'
 
 const YieldIcons = ({ id }: { id: string }) => (
@@ -17,9 +18,43 @@ const YieldIcons = ({ id }: { id: string }) => (
   </>
 )
 
+const Chip = ({
+  children,
+  sx,
+  ...props
+}: { children: React.ReactNode } & BoxProps) => (
+  <Box
+    sx={{
+      backgroundColor: 'background',
+      border: '1px solid',
+      borderColor: 'accentInverted',
+      color: 'accentInverted',
+      borderRadius: 50,
+      fontSize: 1,
+      px: '10px',
+      py: '2px',
+      ...sx,
+    }}
+    {...props}
+  >
+    {children}
+  </Box>
+)
+
 const HoldingsOverview = () => {
   const currentWallet = useAtomValue(currentWalletAtom)
   const accountsData = useAtomValue(allWalletsAccountsAtom)
+
+  const [holdings, earnings, earningsPercentage] = useMemo(() => {
+    const data = accountsData[currentWallet?.toLowerCase() ?? '']
+
+    const _holdings = data?.holdings ?? 0
+    const _holdings30dAgo = data?.holdings30dAgo ?? 0
+    const _earnings = _holdings - _holdings30dAgo
+    const _earningsPercentage = (_earnings / (_holdings30dAgo || 1)) * 100
+
+    return [_holdings, _earnings, _earningsPercentage]
+  }, [accountsData, currentWallet])
 
   return (
     <Box sx={{ position: 'relative' }}>
@@ -33,11 +68,19 @@ const HoldingsOverview = () => {
           Total Reserve Protocol holdings
         </Text>
         <Text sx={{ color: 'primary', fontSize: 7 }} variant="bold">
-          $
-          {formatCurrency(
-            accountsData[currentWallet?.toLowerCase() ?? '']?.holdings ?? 0
-          )}
+          ${formatCurrency(holdings)}
         </Text>
+        <Box variant="layout.verticalAlign" sx={{ gap: 0 }}>
+          <Chip sx={{ zIndex: 1 }}>
+            <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+              {formatPercentage(earningsPercentage)}
+              <Text color="text" opacity={0.7}>
+                (last 30d)
+              </Text>
+            </Box>
+          </Chip>
+          <Chip ml={-2}>+${formatCurrency(earnings)}</Chip>
+        </Box>
       </Flex>
 
       <Flex

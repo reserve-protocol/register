@@ -1,16 +1,18 @@
 import { gql } from 'graphql-request'
 import { useMultichainQuery } from 'hooks/useQuery'
 import { useAtomValue } from 'jotai'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { rsrPriceAtom } from 'state/atoms'
 import {
   AccountRTokenPosition,
   AccountToken,
 } from 'state/wallet/updaters/AccountUpdater'
+import { TIME_RANGES } from 'utils/constants'
 import { getAddress } from 'viem'
+import useTimeFrom from './useTimeFrom'
 
 const accountQuery = gql`
-  query getAccountTokens($ids: [String]!) {
+  query getAccountTokens($ids: [String]!, $fromTime: Int!) {
     accounts(where: { id_in: $ids }) {
       id
       rTokens {
@@ -25,6 +27,27 @@ const accountQuery = gql`
             token {
               name
               symbol
+            }
+          }
+          dailySnapshots(
+            first: 1
+            where: { timestamp_gte: $fromTime }
+            orderBy: timestamp
+          ) {
+            timestamp
+            rsrExchangeRate
+            rsrPrice
+          }
+          token {
+            basketRate
+            dailyTokenSnapshot(
+              first: 1
+              where: { timestamp_gte: $fromTime }
+              orderBy: timestamp
+            ) {
+              timestamp
+              priceUSD
+              basketRate
             }
           }
         }
@@ -58,6 +81,19 @@ interface AccountQueryResult {
             symbol: string
           }
         }
+        dailySnapshots: {
+          timestamp: number
+          rsrExchangeRate: string
+          rsrPrice: string
+        }[]
+        token: {
+          basketRate: string
+          dailyTokenSnapshot: {
+            timestamp: number
+            priceUSD: string
+            basketRate: string
+          }[]
+        }
       }
       balance: {
         amount: string
@@ -75,15 +111,42 @@ export interface AccountData {
   tokens: AccountRTokenPosition[]
   accountTokens: AccountToken[]
   holdings: number
+  holdings30dAgo: number
 }
 
 const useAccounts = (addresses: string[]) => {
   const rsrPrice = useAtomValue(rsrPriceAtom)
   const { data, error } = useMultichainQuery(accountQuery, {
     ids: addresses.map((address) => address.toLowerCase()),
+    fromTime: useTimeFrom(TIME_RANGES.MONTH),
   })
 
   const accountDataMap: Record<string, AccountData> = {}
+
+  const getStats30dAgo = useCallback(
+    (rToken: AccountQueryResult['accounts'][0]['rTokens'][0]) => {
+      const rsrExchangeRate = Number(rToken.rToken.rsrExchangeRate)
+      const rsrExchangeRate30d = Number(
+        rToken.rToken.dailySnapshots[0]?.rsrExchangeRate || rsrExchangeRate
+      )
+
+      const basketRate = Number(rToken.rToken.token.basketRate) || 1
+      const basketRate30d = Number(
+        rToken.rToken.token.dailyTokenSnapshot[0]?.basketRate || basketRate
+      )
+      const basketRateChange = basketRate30d / basketRate
+
+      const rTokenPrice30d =
+        Number(rToken.balance.token.lastPriceUSD) * basketRateChange
+
+      const rsrPrice30d = Number(
+        rToken.rToken.dailySnapshots[0]?.rsrPrice || rsrPrice
+      )
+
+      return [rsrExchangeRate30d, rTokenPrice30d, rsrPrice30d]
+    },
+    [rsrPrice]
+  )
 
   useEffect(() => {
     if (data && !error) {
@@ -94,6 +157,7 @@ const useAccounts = (addresses: string[]) => {
           tokens: [],
           accountTokens: [],
           holdings: 0,
+          holdings30dAgo: 0,
         }
       })
 
@@ -124,6 +188,13 @@ const useAccounts = (addresses: string[]) => {
               const stakedUsdAmount = rsrAmount * rsrPrice
               accountData.holdings += balanceUsdAmount + stakedUsdAmount
 
+              const [rsrExchangeRate30d, rTokenPrice30d, rsrPrice30d] =
+                getStats30dAgo(rToken)
+
+              accountData.holdings30dAgo +=
+                balance * rTokenPrice30d +
+                stake * rsrExchangeRate30d * rsrPrice30d
+
               accountData.tokens.push({
                 address: getAddress(rToken.rToken.id),
                 name: rToken.balance.token.name,
@@ -148,7 +219,7 @@ const useAccounts = (addresses: string[]) => {
         accountDataMap[address] = addressMap[address]
       })
     }
-  }, [data, error, addresses, rsrPrice])
+  }, [data, error, addresses, rsrPrice, getStats30dAgo])
 
   return accountDataMap
 }
