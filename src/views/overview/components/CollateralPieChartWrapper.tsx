@@ -123,6 +123,10 @@ const CollateralPieChartWrapper: FC<Props> = ({ token }) => {
                   top: 0,
                   left: 0,
                   gap: 2,
+                  backgroundColor: token.isCollaterized
+                    ? 'none'
+                    : 'borderSecondary',
+                  borderRadius: '6px',
                 }}
               >
                 <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
@@ -134,7 +138,6 @@ const CollateralPieChartWrapper: FC<Props> = ({ token }) => {
                       sx={{
                         fontSize: 14,
                         fontWeight: 700,
-                        color: 'rebalancing',
                       }}
                     >
                       Rebalancing
