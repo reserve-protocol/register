@@ -37,6 +37,7 @@ export interface ListedToken {
   collateralDistribution: Record<string, { dist: string; target: string }>
   rsrStaked: number
   stakeUsd: number
+  isCollaterized: boolean
 }
 
 // TODO: Cache only while the list is short
@@ -191,6 +192,7 @@ const useTokenList = () => {
               collateralDistribution: distribution,
               rsrStaked: Number(formatEther(token?.rToken?.rsrStaked ?? '0')),
               stakeUsd,
+              isCollaterized: false,
             }
 
             return tokenData

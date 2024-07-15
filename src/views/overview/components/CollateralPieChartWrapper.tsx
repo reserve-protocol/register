@@ -122,6 +122,7 @@ const CollateralPieChartWrapper: FC<Props> = ({ token }) => {
                   transition: 'opacity 0.3s ease',
                   top: 0,
                   left: 0,
+                  gap: 2,
                 }}
               >
                 <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
@@ -129,10 +130,24 @@ const CollateralPieChartWrapper: FC<Props> = ({ token }) => {
                   <Text sx={{ fontSize: 14 }}>{t`Backing`}</Text>
                 </Box>
                 <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
-                  <Text sx={{ fontSize: 14, fontWeight: 700 }}>
-                    {token.backing.toFixed(0)}%
-                  </Text>
-                  <ChevronRight color="currentColor" />
+                  {token.isCollaterized ? (
+                    <>
+                      <Text sx={{ fontSize: 14, fontWeight: 700 }}>
+                        {token.backing.toFixed(0)}%
+                      </Text>
+                      <ChevronRight color="currentColor" />
+                    </>
+                  ) : (
+                    <Text
+                      sx={{
+                        fontSize: 14,
+                        fontWeight: 700,
+                        color: 'rebalancing',
+                      }}
+                    >
+                      Rebalancing
+                    </Text>
+                  )}
                 </Box>
               </Box>
             </Box>
@@ -155,6 +170,7 @@ const CollateralPieChartWrapper: FC<Props> = ({ token }) => {
               </Box>
             </Box>
           }
+          isRebalancing={!token.isCollaterized}
         />
       </Box>
     </MouseoverTooltipContent>
