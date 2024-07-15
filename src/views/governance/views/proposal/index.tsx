@@ -1,6 +1,6 @@
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { rTokenConfigurationAtom, rTokenGovernanceAtom } from 'state/atoms'
 import {
@@ -15,6 +15,7 @@ import ConfirmProposal from './components/ConfirmProposal'
 import Proposal from './components/Proposal'
 import Updater from './updater'
 import { Box } from 'theme-ui'
+import { keccak256, stringToBytes } from 'viem'
 
 const paramsAtom = atom((get) => {
   const config = get(rTokenConfigurationAtom)
@@ -39,6 +40,10 @@ const GovernanceProposal = () => {
   const isAssistedUpgrade = useAtomValue(isAssistedUpgradeAtom)
   const [isEditing, setEditing] = useAtom(isProposalEditingAtom)
 
+  // This is a hash of the token parameters to avoid resetting the form more than once
+  const [lastTokenParametersHash, setLastTokenParametersHash] =
+    useState<string>()
+
   const form = useForm({
     mode: 'onChange',
     defaultValues: tokenParameters || {},
@@ -59,7 +64,11 @@ const GovernanceProposal = () => {
   }, [])
 
   useEffect(() => {
-    if (tokenParameters) {
+    const tokenParametersHash = keccak256(
+      stringToBytes(JSON.stringify(tokenParameters))
+    )
+    if (tokenParameters && lastTokenParametersHash !== tokenParametersHash) {
+      setLastTokenParametersHash(tokenParametersHash)
       form.reset(tokenParameters)
     }
   }, [tokenParameters])
