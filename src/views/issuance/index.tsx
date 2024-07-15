@@ -63,9 +63,7 @@ const MaintenanceBanner = (props: BoxProps) => {
 
 // TODO: Use CMS for this state? or maybe environment variables, chain specific
 const maintenanceAtom = atom((get) => {
-  const chain = get(chainIdAtom)
-
-  return chain === ChainId.Base
+  return false
 })
 
 const IssuanceMethods = () => {
