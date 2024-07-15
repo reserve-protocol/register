@@ -127,16 +127,8 @@ const CollateralPieChartWrapper: FC<Props> = ({ token }) => {
               >
                 <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
                   <CircleIcon color="currentColor" />
-                  <Text sx={{ fontSize: 14 }}>{t`Backing`}</Text>
-                </Box>
-                <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
                   {token.isCollaterized ? (
-                    <>
-                      <Text sx={{ fontSize: 14, fontWeight: 700 }}>
-                        {token.backing.toFixed(0)}%
-                      </Text>
-                      <ChevronRight color="currentColor" />
-                    </>
+                    <Text sx={{ fontSize: 14 }}>{t`Backing`}</Text>
                   ) : (
                     <Text
                       sx={{
@@ -148,6 +140,14 @@ const CollateralPieChartWrapper: FC<Props> = ({ token }) => {
                       Rebalancing
                     </Text>
                   )}
+                </Box>
+                <Box variant="layout.verticalAlign" sx={{ gap: 2 }}>
+                  {token.isCollaterized && (
+                    <Text sx={{ fontSize: 14, fontWeight: 700 }}>
+                      {token.backing.toFixed(0)}%
+                    </Text>
+                  )}
+                  <ChevronRight color="currentColor" />
                 </Box>
               </Box>
             </Box>
