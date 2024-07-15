@@ -1,4 +1,4 @@
-import TreeIcon from 'components/icons/TreeIcon'
+import LargeTreeIcon from 'components/icons/LargeTreeIcon'
 import YieldIcon from 'components/icons/YieldIcon'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
@@ -59,14 +59,17 @@ const HoldingsOverview = () => {
   return (
     <Box sx={{ position: 'relative' }}>
       <Flex
-        sx={{ alignItems: 'center', flexDirection: 'column', minHeight: 200 }}
+        sx={{
+          alignItems: 'center',
+          flexDirection: 'column',
+          minHeight: 200,
+          gap: 2,
+        }}
       >
-        <Box mt={-4}>
-          <TreeIcon />
+        <Box mt={-5}>
+          <LargeTreeIcon />
         </Box>
-        <Text mt="2" sx={{ display: 'block' }}>
-          Total Reserve Protocol holdings
-        </Text>
+        <Text sx={{ display: 'block' }}>Total Reserve Protocol holdings</Text>
         <Text sx={{ color: 'primary', fontSize: 7 }} variant="bold">
           ${formatCurrency(holdings)}
         </Text>
