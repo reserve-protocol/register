@@ -1,7 +1,7 @@
 import useRToken from 'hooks/useRToken'
 import { atom, useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { rTokenBackingDistributionAtom } from 'state/atoms'
+import { rTokenBackingDistributionAtom, rTokenStateAtom } from 'state/atoms'
 import { stringToColor } from 'utils'
 import { COLLATERAL_STATUS } from 'utils/constants'
 import CollateralPieChart from '../CollateralPieChart'
@@ -26,6 +26,7 @@ const CollateralsChart = () => {
   const basketDist = useAtomValue(basketDistAtom)
   const distribution = useAtomValue(rTokenBackingDistributionAtom)
   const metadata = useAtomValue(collateralsMetadataAtom)
+  const rTokenState = useAtomValue(rTokenStateAtom)
 
   const pieData = useMemo(() => {
     if (rToken?.address && basketDist && Object.keys(basketDist)) {
@@ -51,6 +52,7 @@ const CollateralsChart = () => {
       logo={rToken?.logo ?? ''}
       staked={distribution?.staked ?? 0}
       showTooltip
+      isRebalancing={!(rTokenState?.isCollaterized ?? true)}
     />
   )
 }

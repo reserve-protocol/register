@@ -2,7 +2,7 @@ import rtokens from '@reserve-protocol/rtokens'
 import { RevenueSplit } from 'components/rtoken-setup/atoms'
 import { gql } from 'graphql-request'
 import { atom, useAtom, useAtomValue } from 'jotai'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { collateralYieldAtom, rsrPriceAtom } from 'state/atoms'
 import { formatDistribution } from 'state/rtoken/atoms/rTokenRevenueSplitAtom'
 import { ChainId } from 'utils/chains'
@@ -14,6 +14,8 @@ import {
 import { formatEther, getAddress } from 'viem'
 import { useMultichainQuery } from './useQuery'
 import useTimeFrom from './useTimeFrom'
+import BasketHandler from 'abis/BasketHandler'
+import { useContractReads } from 'wagmi'
 
 export interface ListedToken {
   id: string
@@ -37,6 +39,7 @@ export interface ListedToken {
   collateralDistribution: Record<string, { dist: string; target: string }>
   rsrStaked: number
   stakeUsd: number
+  isCollaterized: boolean
 }
 
 // TODO: Cache only while the list is short
@@ -67,6 +70,10 @@ const tokenListQuery = gql`
         collaterals {
           id
           symbol
+        }
+        contracts(where: { name: "BASKET_HANDLER" }) {
+          id
+          name
         }
         collateralDistribution
         revenueDistribution {
@@ -104,6 +111,30 @@ const useTokenList = () => {
     },
     { keepPreviousData: true }
   )
+
+  const [calls, rTokenAddresses] = useMemo(() => {
+    const _calls = supportedChainList.flatMap((chain) => {
+      return (
+        data?.[chain]?.tokens?.map((token: any) => ({
+          address: token.rToken.contracts[0].id,
+          abi: BasketHandler,
+          functionName: 'fullyCollateralized',
+          chainId: chain,
+        })) ?? []
+      )
+    })
+    const _rTokenAddresses = supportedChainList.flatMap(
+      (chain) => data?.[chain]?.tokens?.map((token: any) => token.id) ?? []
+    )
+    return [_calls, _rTokenAddresses]
+  }, [data, supportedChainList])
+
+  const { data: collateralized }: { data: boolean[] | undefined } =
+    useContractReads({
+      contracts: calls,
+      allowFailure: false,
+      watch: true,
+    })
 
   useEffect(() => {
     if (data) {
@@ -191,6 +222,8 @@ const useTokenList = () => {
               collateralDistribution: distribution,
               rsrStaked: Number(formatEther(token?.rToken?.rsrStaked ?? '0')),
               stakeUsd,
+              isCollaterized:
+                collateralized?.[rTokenAddresses.indexOf(token.id)] ?? true,
             }
 
             return tokenData
@@ -202,7 +235,7 @@ const useTokenList = () => {
 
       setList(tokens)
     }
-  }, [data, collateralYield, currentRsrPrice])
+  }, [data, collateralYield, currentRsrPrice, collateralized, rTokenAddresses])
 
   return { list, isLoading }
 }

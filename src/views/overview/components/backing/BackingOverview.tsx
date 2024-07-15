@@ -9,6 +9,7 @@ import {
   rTokenAtom,
   rTokenBackingDistributionAtom,
   rTokenPriceAtom,
+  rTokenStateAtom,
 } from 'state/atoms'
 import { Box, Card, Flex, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
@@ -18,6 +19,7 @@ import { rTokenTargetPriceAtom } from 'views/overview/atoms'
 // TODO: TARGET PEG PRICE (ETH+)
 const backingOverviewAtom = atom((get) => {
   const rToken = get(rTokenAtom)
+  const rTokenState = get(rTokenStateAtom)
   const distribution = get(rTokenBackingDistributionAtom)
   const price = get(rTokenPriceAtom)
   const apys = get(estimatedApyAtom)
@@ -30,6 +32,7 @@ const backingOverviewAtom = atom((get) => {
     yield: apys.basket,
     price: price,
     pegData,
+    isCollaterized: rTokenState?.isCollaterized ?? true,
   }
 })
 
@@ -86,9 +89,21 @@ const BackingOverview = ({ current }: { current: string }) => {
         <Text ml="2">
           <Trans>Backing</Trans>
         </Text>
-        <Text ml="auto" variant="strong">
-          {data.backing.toFixed(0)}%
-        </Text>
+        {data.isCollaterized ? (
+          <Text ml="auto" variant="strong">
+            {data.backing.toFixed(0)}%
+          </Text>
+        ) : (
+          <Text
+            ml="auto"
+            sx={{
+              fontWeight: 700,
+              color: 'rebalancing',
+            }}
+          >
+            Rebalancing
+          </Text>
+        )}
       </Box>
       <Box mt="2" variant="layout.verticalAlign">
         <CollaterizationIcon fontSize={16} />

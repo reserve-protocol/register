@@ -72,7 +72,7 @@ const UseCases = () => {
   }, [breakpoints, window.innerWidth])
 
   return (
-    <Box sx={{ position: 'relative' }} px={[4, 3]}>
+    <Box sx={{ position: 'relative' }} px={[4, 3]} pb={[0, 4]}>
       <Box
         variant="layout.verticalAlign"
         sx={{ justifyContent: 'space-between', gap: 2 }}

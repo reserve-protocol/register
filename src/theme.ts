@@ -126,6 +126,7 @@ export const colors = {
   diva: '#A71EFE',
   divaBorder: 'rgba(180, 34, 252, 0.16)',
   divaBackground: 'rgba(167, 30, 254, 0.12)',
+  rebalancing: '#FF8A00',
   modes: {
     dark: {
       accentInverted: '#fff',
@@ -167,6 +168,7 @@ export const colors = {
       diva: '#A71EFE',
       divaBorder: 'rgba(180, 34, 252, 0.16)',
       divaBackground: 'rgba(167, 30, 254, 0.12)',
+      rebalancing: '#FF8A00',
     },
   },
 }
