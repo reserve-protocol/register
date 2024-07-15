@@ -26,7 +26,9 @@ const About = () => {
         alt="Monetarium background"
         sx={{
           objectFit: 'cover',
-          width: '100%',
+          width: '101%',
+          minWidth: '101%',
+          maxWidth: '101%',
           height: [200, 160],
           maxHeight: '100%',
           minHeight: '100%',
