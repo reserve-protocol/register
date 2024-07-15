@@ -82,7 +82,9 @@ const HoldingsOverview = () => {
               </Text>
             </Box>
           </Chip>
-          <Chip ml={-2}>+${formatCurrency(earnings)}</Chip>
+          <Chip ml={-2}>
+            {earnings < 0 ? '-' : '+'}${formatCurrency(Math.abs(earnings))}
+          </Chip>
         </Box>
       </Flex>
 
