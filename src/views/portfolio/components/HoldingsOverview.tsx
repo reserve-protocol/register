@@ -2,21 +2,27 @@ import LargeTreeIcon from 'components/icons/LargeTreeIcon'
 import YieldIcon from 'components/icons/YieldIcon'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { Box, BoxProps, Flex, Text } from 'theme-ui'
+import { Box, BoxProps, Flex, Text, useColorMode } from 'theme-ui'
 import { formatCurrency, formatPercentage } from 'utils'
 import { allWalletsAccountsAtom, currentWalletAtom } from '../atoms'
 
-const YieldIcons = ({ id }: { id: string }) => (
-  <>
-    <YieldIcon key={`1${id}`} fontSize={180} width={50} />,
-    <YieldIcon key={`2${id}`} height={133} width={37} />,
-    <YieldIcon key={`3${id}`} height={99} width={30} />,
-    <YieldIcon key={`4${id}`} height={73} width={24} />,
-    <YieldIcon key={`5${id}`} height={54} width={15} />,
-    <YieldIcon key={`6${id}`} height={40} width={13} />,
-    <YieldIcon key={`7${id}`} height={30} width={8} />,
-  </>
-)
+const YieldIcons = ({ id }: { id: string }) => {
+  const [colorMode] = useColorMode()
+
+  const opacity = useMemo(() => (colorMode === 'dark' ? 0.1 : 1), [colorMode])
+
+  return (
+    <>
+      <YieldIcon key={`1${id}`} fontSize={180} width={50} opacity={opacity} />
+      <YieldIcon key={`2${id}`} height={133} width={37} opacity={opacity} />
+      <YieldIcon key={`3${id}`} height={99} width={30} opacity={opacity} />
+      <YieldIcon key={`4${id}`} height={73} width={24} opacity={opacity} />
+      <YieldIcon key={`5${id}`} height={54} width={15} opacity={opacity} />
+      <YieldIcon key={`6${id}`} height={40} width={13} opacity={opacity} />
+      <YieldIcon key={`7${id}`} height={30} width={8} opacity={opacity} />
+    </>
+  )
+}
 
 const Chip = ({
   children,

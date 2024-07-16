@@ -65,7 +65,7 @@ const WalletList = ({ onSelect }: { onSelect(addr: string): void }) => {
               borderRadius: '6px',
               backgroundColor: stringToColor(
                 wallet.address.toLowerCase(),
-                isDarkMode ? 0.8 : 0.2
+                isDarkMode ? 0.5 : 0.2
               ),
             }}
           >
@@ -172,7 +172,7 @@ const WalletSelector = () => {
             borderRadius: '6px',
             backgroundColor: stringToColor(
               current.toLowerCase(),
-              isDarkMode ? 0.8 : 0.2
+              isDarkMode ? 0.5 : 0.2
             ),
           }}
         >
