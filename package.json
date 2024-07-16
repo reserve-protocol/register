@@ -7,7 +7,7 @@
     "@dnd-kit/utilities": "^3.2.0",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
-    "@reserve-protocol/rtokens": "^1.1.21",
+    "@reserve-protocol/rtokens": "^1.1.22",
     "@lingui/macro": "^4.2.1",
     "@lingui/react": "^4.2.1",
     "@popperjs/core": "^2.11.5",
