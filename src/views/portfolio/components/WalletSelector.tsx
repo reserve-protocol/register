@@ -16,6 +16,8 @@ import {
   trackedWalletAtom,
   trackedWalletsAtom,
 } from '../atoms'
+import CopyValue from 'components/button/CopyValue'
+import { colors } from 'theme'
 
 const WalletList = ({ onSelect }: { onSelect(addr: string): void }) => {
   const [colorMode] = useColorMode()
@@ -70,7 +72,14 @@ const WalletList = ({ onSelect }: { onSelect(addr: string): void }) => {
             {wallet.connected ? <WalletIcon /> : <TrackIcon />}
           </Box>
           <Box>
-            <Text variant="bold">{wallet.shortedAddress}</Text>
+            <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+              <Text variant="bold">{wallet.shortedAddress}</Text>
+              <CopyValue
+                color={colors.secondaryText}
+                value={wallet.address}
+                size={14}
+              />
+            </Box>
             <Text variant="legend">
               $
               {formatCurrency(
