@@ -79,48 +79,6 @@ export const gasPriceAtom = atom(
   (get) => Number(formatEther(get(gasFeeAtom) || 0n)) * get(ethPriceAtom)
 )
 
-const cloudflareFallbackURLs = [
-  'https://one.one.one.one/cdn-cgi/trace',
-  'https://1.0.0.1/cdn-cgi/trace',
-  'https://cloudflare-dns.com/cdn-cgi/trace',
-  'https://cloudflare-eth.com/cdn-cgi/trace',
-  'https://cloudflare-ipfs.com/cdn-cgi/trace',
-  'https://workers.dev/cdn-cgi/trace',
-  'https://pages.dev/cdn-cgi/trace',
-  'https://cloudflare.tv/cdn-cgi/trace',
-]
-
-async function fetchWithFallback(links: string[]) {
-  let response
-  for (let link of links) {
-    try {
-      response = await fetch(link)
-      if (response.ok) return response
-    } catch (e) {}
-  }
-  return response
-}
-
-export const geolocationAtom = atomWithLoadable(async () => {
-  try {
-    let response = await fetchWithFallback(cloudflareFallbackURLs)
-
-    if (!response) {
-      throw new Error('No response')
-    }
-
-    const data = await response.text()
-    let arr = data
-      .trim()
-      .split('\n')
-      .map((e) => e.split('='))
-    return Object.fromEntries(arr).loc as string
-  } catch (e) {
-    console.warn('Failed to get client location')
-    return null
-  }
-})
-
 export const SUBGRAPH_URL = {
   [ChainId.Mainnet]:
     'https://subgraph.satsuma-prod.com/327d6f1d3de6/reserve/reserve-mainnet/api',

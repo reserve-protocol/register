@@ -5,17 +5,16 @@ import { useAtomValue } from 'jotai'
 import mixpanel from 'mixpanel-browser'
 import { useCallback, useState } from 'react'
 import { selectedRTokenAtom } from 'state/atoms'
+import { isRTokenMintOrStakeEnabled } from 'state/geolocation/atoms'
+import DisabledByGeolocationMessage from 'state/geolocation/DisabledByGeolocationMessage'
+import { isValidStakeAmountAtom } from './atoms'
 import StakeModal from './StakeModal'
-import { isStakingEnabledAtom, isValidStakeAmountAtom } from './atoms'
-import { Box, Text } from 'theme-ui'
-import { AlertCircle } from 'react-feather'
-import AlertIcon from 'components/icons/AlertIcon'
 
 const StakeButton = () => {
   const [isOpen, setOpen] = useState(false)
   const isValid = useAtomValue(isValidStakeAmountAtom)
   const rTokenAddress = useAtomValue(selectedRTokenAtom)
-  const isEnabled = useAtomValue(isStakingEnabledAtom)
+  const isEnabled = useAtomValue(isRTokenMintOrStakeEnabled)
 
   const handleOpen = useCallback(() => {
     if (!isEnabled.value) {
@@ -43,18 +42,7 @@ const StakeButton = () => {
           <Trans>Stake RSR</Trans>
         </Button>
       </TransactionButtonContainer>
-      {!isEnabled.value && !isEnabled.loading && (
-        <Box
-          mt="2"
-          variant="layout.verticalAlign"
-          sx={{ justifyContent: 'center' }}
-        >
-          <AlertIcon />
-          <Text ml="2" variant="warning">
-            This feature is not available on your location.
-          </Text>
-        </Box>
-      )}
+      <DisabledByGeolocationMessage mt={2} />
       {isOpen && <StakeModal onClose={handleClose} />}
     </>
   )
