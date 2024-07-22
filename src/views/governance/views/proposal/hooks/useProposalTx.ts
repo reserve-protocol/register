@@ -406,11 +406,9 @@ const useProposalTx = () => {
 
           collaterals.forEach((collateral, index) => {
             primaryBasket.push(collateral.erc20)
-
             weights.push(
-              parseEther(
-                ((Number(distribution[index]) / 100) * Number(scale)).toString()
-              )
+              (parseEther(distribution[index]) * parseEther(scale)) /
+                parseEther('100')
             )
           })
         }
