@@ -20,7 +20,7 @@ const ZapSettings = () => {
         }}
         onClick={() => setOpenSettings(true)}
       >
-        <Settings size={16} />
+        <Settings size={16} strokeWidth={2.2} />
       </IconButton>
     </>
   )

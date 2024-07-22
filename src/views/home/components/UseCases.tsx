@@ -4,7 +4,7 @@ import { ArrowUpRight, ChevronRight } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
 import { Box, Grid, Image, Text, useThemeUI } from 'theme-ui'
 import { getTokenRoute } from 'utils'
-import { ETHPLUS_ADDRESS, RGUSD_ADDRESS, USD3_ADDRESS } from 'utils/addresses'
+import { ETHPLUS_ADDRESS, EUSD_ADDRESS, USD3_ADDRESS } from 'utils/addresses'
 import { ChainId } from 'utils/chains'
 import { ROUTES } from 'utils/constants'
 
@@ -49,12 +49,12 @@ const UseCases = () => {
         ),
       },
       {
-        title: 'Incentive Games',
+        title: 'Censorship Resistant',
         description:
-          'Overcollateralized stablecoin that directs its collateral basket revenue toward incentivizing rgUSD liquidity.',
-        icon: <TokenLogo width={24} src="/svgs/rgusd.svg" />,
+          'An overcollateralized stablecoin diversified across top lending protocols and centralized stablecoin issuers.',
+        icon: <TokenLogo width={24} src="/svgs/eusd.svg" />,
         link: getTokenRoute(
-          RGUSD_ADDRESS[ChainId.Mainnet],
+          EUSD_ADDRESS[ChainId.Mainnet],
           ChainId.Mainnet,
           ROUTES.OVERVIEW
         ),
@@ -72,7 +72,7 @@ const UseCases = () => {
   }, [breakpoints, window.innerWidth])
 
   return (
-    <Box sx={{ position: 'relative' }} px={[4, 3]}>
+    <Box sx={{ position: 'relative' }} px={[4, 3]} pb={[0, 4]}>
       <Box
         variant="layout.verticalAlign"
         sx={{ justifyContent: 'space-between', gap: 2 }}

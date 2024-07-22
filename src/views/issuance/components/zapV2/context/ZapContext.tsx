@@ -26,7 +26,7 @@ import useSWR from 'swr'
 import { Link, Text } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { ChainId } from 'utils/chains'
-import { REGISTER_BUGS } from 'utils/constants'
+import { CHAIN_TAGS, REGISTER_BUGS } from 'utils/constants'
 import { Address, formatUnits, parseUnits, zeroAddress } from 'viem'
 import { useFeeData } from 'wagmi'
 import { ZapErrorType } from '../ZapError'
@@ -161,7 +161,8 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
           ...token,
           balance: balances[token.address as Address]?.balance ?? '0',
         }))
-        .filter((token) => operation === 'mint' || token.symbol !== 'ETH'),
+        .filter((token) => operation === 'mint' || token.symbol !== 'ETH')
+        .filter((token) => operation === 'redeem' || token.symbol !== 'USDT'),
     [chainId, balances, operation]
   )
   const tokenPrice = useChainlinkPrice(
@@ -354,11 +355,6 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
           100
         : 0
 
-    mixpanel.track('zapper:', {
-      Operation: operation,
-      Endpoint: endpoint,
-    })
-
     return [
       _amountOut,
       Math.max(0, _priceImpact),
@@ -374,6 +370,40 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     tokenOut?.price,
     gas?.formatted?.gasPrice,
     ethPrice,
+  ])
+
+  useEffect(() => {
+    if (endpoint) {
+      mixpanel.track('api_request', {
+        page: 'rtoken_details',
+        section: 'issuance',
+        product: 'zap',
+        action: 'request',
+        payload: {
+          operation: operation,
+          rtoken: rToken.symbol,
+          chain: CHAIN_TAGS[chainId],
+          user: {
+            wallet: account,
+          },
+          amountin: amountIn,
+          slippage: slippage,
+          tokenin: tokenIn.symbol,
+          tokenout: tokenOut.symbol,
+          endpoint: endpoint,
+        },
+      })
+    }
+  }, [
+    operation,
+    endpoint,
+    rToken,
+    chainId,
+    account,
+    amountIn,
+    slippage,
+    tokenIn,
+    tokenOut,
   ])
 
   useEffect(() => {
@@ -397,9 +427,21 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
 
       setOpenSubmitModal(false)
 
-      mixpanel.track('Zap Execution Error', {
-        Endpoint: endpoint,
-        Error: apiError?.message || data?.error,
+      mixpanel.track('api_error', {
+        page: 'rtoken_details',
+        section: 'issuance',
+        product: 'zap',
+        action: apiError?.message ? 'connection_error' : 'response_error',
+        payload: {
+          operation: operation,
+          rtoken: rToken.symbol,
+          chain: CHAIN_TAGS[chainId],
+          user: {
+            wallet: account,
+          },
+          error: apiError?.message || data?.error,
+          endpoint: endpoint,
+        },
       })
     } else if (data?.result && data.result.insufficientFunds) {
       setError({
@@ -437,18 +479,64 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     setOpenSubmitModal,
     isRetrying,
     setIsRetrying,
+    rToken,
+    chainId,
+    account,
   ])
 
   const _setZapEnabled = useCallback(
     (value: boolean) => {
       setZapEnabled(value)
-      mixpanel.track('Toggled Zaps', {
-        RToken: rToken?.address.toLowerCase() ?? '',
-        Enabled: value,
+      mixpanel.track('user_action', {
+        page: 'rtoken_details',
+        section: 'issuance',
+        product: 'zap',
+        action: value ? 'toggle_to_zap' : 'toggle_to_manual',
+        payload: {
+          rtoken: rToken.symbol,
+          chain: CHAIN_TAGS[chainId],
+          user: {
+            wallet: account,
+          },
+        },
       })
     },
-    [setZapEnabled, rToken]
+    [setZapEnabled, rToken, chainId, account]
   )
+
+  const refreshQuote = useCallback(() => {
+    refetch()
+    mixpanel.track('api_request', {
+      page: 'rtoken_details',
+      section: 'issuance',
+      product: 'zap',
+      action: 'refresh_quote',
+      payload: {
+        operation: operation,
+        rtoken: rToken.symbol,
+        chain: CHAIN_TAGS[chainId],
+        user: {
+          wallet: account,
+        },
+        amountin: amountIn,
+        slippage: slippage,
+        tokenin: tokenIn.symbol,
+        tokenout: tokenOut.symbol,
+        endpoint: endpoint,
+      },
+    })
+  }, [
+    refetch,
+    operation,
+    rToken,
+    chainId,
+    account,
+    amountIn,
+    slippage,
+    tokenIn,
+    tokenOut,
+    endpoint,
+  ])
 
   return (
     <ZapContext.Provider
@@ -488,7 +576,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         zapResult: data?.result,
         endpoint,
         resetZap,
-        refreshQuote: refetch,
+        refreshQuote,
         refreshInterval: REFRESH_INTERVAL,
       }}
     >

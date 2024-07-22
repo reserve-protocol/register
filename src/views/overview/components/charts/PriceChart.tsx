@@ -1,5 +1,6 @@
 import { t } from '@lingui/macro'
 import AreaChart from 'components/charts/area/AreaChart'
+import TabMenu from 'components/tab-menu'
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
 import useQuery from 'hooks/useQuery'
@@ -8,7 +9,7 @@ import useTimeFrom from 'hooks/useTimeFrom'
 import { useAtomValue } from 'jotai'
 import { useMemo, useState } from 'react'
 import { rTokenPriceAtom } from 'state/atoms'
-import { BoxProps } from 'theme-ui'
+import { Box, BoxProps } from 'theme-ui'
 import { formatCurrency } from 'utils'
 import { TIME_RANGES } from 'utils/constants'
 
@@ -39,10 +40,21 @@ const dailyPriceQuery = gql`
   }
 `
 
+const PRICE_OPTIONS = [
+  {
+    key: 'ETH',
+    label: 'ETH',
+  },
+  {
+    key: 'USD',
+    label: 'USD',
+  },
+]
+
 const PriceChart = (props: BoxProps) => {
   const rToken = useRToken()
   const [current, setCurrent] = useState(TIME_RANGES.MONTH)
-  const [currentPrice, setCurrentPrice] = useState<'ETH' | 'USD'>('USD')
+  const [currentPrice, setCurrentPrice] = useState<'ETH' | 'USD'>('ETH')
   const price = useAtomValue(rTokenPriceAtom)
   const fromTime = useTimeFrom(current)
   const query = current === TIME_RANGES.DAY ? hourlyPriceQuery : dailyPriceQuery
@@ -50,7 +62,6 @@ const PriceChart = (props: BoxProps) => {
     id: rToken?.address.toLowerCase(),
     fromTime,
   })
-
   const rows = useMemo(() => {
     if (!data) return []
     return (
@@ -69,9 +80,9 @@ const PriceChart = (props: BoxProps) => {
           value =
             timestamp === '1703193935' && rToken?.symbol === 'USDC+' ? 1 : value
           const display =
-            currentPrice === 'USD'
-              ? `$${formatCurrency(+priceUSD)}`
-              : `${formatCurrency(+basketRate, 3)} ETH`
+            rToken?.targetUnits === 'ETH' && currentPrice === 'ETH'
+              ? `${formatCurrency(+basketRate, 4)} ETH`
+              : `$${formatCurrency(+priceUSD)}`
           return {
             value,
             label: dayjs.unix(+timestamp).format('YYYY-M-D HH:mm:ss'),
@@ -80,11 +91,25 @@ const PriceChart = (props: BoxProps) => {
         }
       ) || []
     )
-  }, [data, currentPrice])
+  }, [data, currentPrice, rToken?.symbol, rToken?.targetUnits])
 
   const priceTitle = useMemo(() => {
+    if (rToken?.targetUnits === 'ETH' && currentPrice === 'ETH') {
+      const ethPrice =
+        Math.trunc(
+          ((rToken?.basketsNeeded || 0) / (rToken?.supply || 1)) * 10000
+        ) / 10000
+
+      return `${ethPrice} ETH`
+    }
     return `$${formatCurrency(price, 3)}`
-  }, [currentPrice, price])
+  }, [
+    currentPrice,
+    price,
+    rToken?.basketsNeeded,
+    rToken?.supply,
+    rToken?.targetUnits,
+  ])
 
   const handleChange = (range: string) => {
     setCurrent(range)
@@ -96,31 +121,27 @@ const PriceChart = (props: BoxProps) => {
       title={priceTitle}
       data={rows}
       timeRange={TIME_RANGES}
+      domain={
+        rToken?.targetUnits === 'ETH' && currentPrice === 'ETH'
+          ? ['auto', 'auto']
+          : undefined
+      }
       currentRange={current}
       onRangeChange={handleChange}
+      moreActions={
+        rToken?.targetUnits === 'ETH' && (
+          <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+            <TabMenu
+              items={PRICE_OPTIONS}
+              active={currentPrice}
+              onMenuChange={(key) => setCurrentPrice(key as 'ETH' | 'USD')}
+            />
+          </Box>
+        )
+      }
       {...props}
     />
   )
 }
-
-// rToken?.targetUnits === 'ETH' && (
-//   <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
-//     {['ETH', 'USD'].map((price) =>
-//       currentPrice === price ? (
-//         <Badge sx={{ width: '48px', textAlign: 'center' }} key={price}>
-//           {price}
-//         </Badge>
-//       ) : (
-//         <Box
-//           key={price}
-//           sx={{ cursor: 'pointer', width: '48px', textAlign: 'center' }}
-//           // onClick={() => setCurrentPrice(price as 'ETH' | 'USD')}
-//         >
-//           <Text>{price}</Text>
-//         </Box>
-//       )
-//     )}
-//   </Box>
-// )
 
 export default PriceChart

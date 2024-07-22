@@ -35,7 +35,7 @@ const RefreshIcon = ({
         xlinkHref="#arrow-background"
         stroke="currentColor"
         fill="none"
-        opacity="0.5"
+        opacity="0.2"
         strokeWidth="2"
       ></use>
       <g clipPath="url(#arrow-clip)">

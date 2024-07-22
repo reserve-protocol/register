@@ -19,6 +19,7 @@ export type ProtocolKey =
   | 'SDR'
   | 'STARGATE'
   | 'GENERIC'
+  | 'USDM'
 
 export type AddressMap = { [chainId: number]: Address }
 

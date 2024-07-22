@@ -1,6 +1,7 @@
 import TokenLogo from 'components/icons/TokenLogo'
 import React, { FC, ReactNode, useMemo } from 'react'
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
+import { colors } from 'theme'
 import { Box, BoxProps } from 'theme-ui'
 import { formatPercentage } from 'utils'
 
@@ -17,6 +18,7 @@ interface ChartProps extends BoxProps {
   topInformation?: ReactNode
   bottomInformation?: ReactNode
   showTooltip?: boolean
+  isRebalancing?: boolean
 }
 
 // Value % between 0-100
@@ -27,6 +29,23 @@ const getAngles = (value: number) => {
 
 const MIN_VALUE = 0.1
 
+const staticData = [{ value: 100 }]
+
+const REBALANCING_PIES = [
+  {
+    innerRadius: 10,
+    outerRadius: 25,
+  },
+  {
+    innerRadius: 10,
+    outerRadius: 45,
+  },
+  {
+    innerRadius: 10,
+    outerRadius: 65,
+  },
+]
+
 const CollateralChart: FC<ChartProps> = ({
   data,
   logo,
@@ -34,6 +53,7 @@ const CollateralChart: FC<ChartProps> = ({
   topInformation,
   bottomInformation,
   showTooltip = false,
+  isRebalancing = false,
   ...props
 }) => {
   const filteredData = useMemo(
@@ -71,48 +91,82 @@ const CollateralChart: FC<ChartProps> = ({
                 <stop offset="50%" stopColor="#000000" />
                 <stop offset="100%" stopColor="#000000" />
               </linearGradient>
+              <style>
+                {`
+                  @keyframes breathe {
+                    0%, 100% {
+                      transform: scale(0.95);
+                    }
+                    50% {
+                      transform: scale(1);
+                    }
+                  }
+                `}
+              </style>
             </defs>
-            <Pie
-              data={filteredData}
-              dataKey="value"
-              cx="50%"
-              cy="50%"
-              innerRadius={46}
-              outerRadius={60}
-              paddingAngle={2}
-              startAngle={269}
-              endAngle={-91}
-            >
-              {filteredData.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={entry.color}
-                  stroke={'none'}
-                />
-              ))}
-            </Pie>
-            <Pie
-              data={filteredData.map(({ project, value }) => ({
-                name: project,
-                value,
-              }))}
-              dataKey="value"
-              cx="50%"
-              cy="50%"
-              innerRadius={59}
-              outerRadius={65}
-              paddingAngle={2}
-              startAngle={269}
-              endAngle={-91}
-            >
-              {filteredData.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={entry.projectColor}
-                  stroke={'none'}
-                />
-              ))}
-            </Pie>
+            {isRebalancing ? (
+              REBALANCING_PIES.map((pie, index) => (
+                <Pie
+                  key={index}
+                  data={staticData}
+                  dataKey="value"
+                  isAnimationActive={false}
+                  cx="50%"
+                  cy="50%"
+                  {...pie}
+                  style={{
+                    animation: 'breathe 2s infinite',
+                    transformOrigin: 'center',
+                  }}
+                >
+                  <Cell opacity={0.3} stroke="none" fill={colors.rebalancing} />
+                </Pie>
+              ))
+            ) : (
+              <>
+                <Pie
+                  data={filteredData}
+                  dataKey="value"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={46}
+                  outerRadius={60}
+                  paddingAngle={2}
+                  startAngle={269}
+                  endAngle={-91}
+                >
+                  {filteredData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={entry.color}
+                      stroke={'none'}
+                    />
+                  ))}
+                </Pie>
+                <Pie
+                  data={filteredData.map(({ project, value }) => ({
+                    name: project,
+                    value,
+                  }))}
+                  dataKey="value"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={59}
+                  outerRadius={65}
+                  paddingAngle={2}
+                  startAngle={269}
+                  endAngle={-91}
+                >
+                  {filteredData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={entry.projectColor}
+                      stroke={'none'}
+                    />
+                  ))}
+                </Pie>
+              </>
+            )}
             {showTooltip && (
               <Tooltip
                 wrapperStyle={{ zIndex: 10 }}

@@ -78,7 +78,9 @@ const CollateralYieldUpdater = () => {
       const yields: CollateralYieldByChain = {
         [ChainId.Mainnet]: {},
         [ChainId.Base]: {},
-        [ChainId.Arbitrum]: {},
+        [ChainId.Arbitrum]: {
+          wusdm: 5, // TODO: hardcoded
+        },
       }
 
       for (const pool of data.data) {

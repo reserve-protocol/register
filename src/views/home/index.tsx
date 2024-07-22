@@ -20,7 +20,7 @@ const Home = () => {
       }}
     >
       <Grid
-        columns={[1, '15fr 13fr']}
+        columns={[1, '15fr 15fr']}
         gap={[0, 4]}
         sx={{
           flexDirection: 'column',

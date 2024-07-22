@@ -136,6 +136,7 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
       ? parsedAssets
       : safeParseEther(debouncedAmount, data.decimals)
     const call = { abi: CollateralWrap, address: collateral.erc20 }
+
     switch (collateral.protocol) {
       case 'AAVE':
         return {
@@ -193,6 +194,7 @@ const CollateralItem = ({ collateral, wrapping, ...props }: Props) => {
         }
       case 'MORPHO':
       case 'SDR':
+      case 'USDM':
         return {
           ...call,
           functionName: wrapping ? 'deposit' : 'redeem',
