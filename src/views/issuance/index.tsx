@@ -12,6 +12,7 @@ import RTokenZapIssuance from './components/zapV2/RTokenZapIssuance'
 import ZapToggle from './components/zapV2/ZapToggle'
 import ZapToggleBottom from './components/zapV2/ZapToggleBottom'
 import { ZapProvider, useZap } from './components/zapV2/context/ZapContext'
+import DisabledByGeolocationMessage from 'state/geolocation/DisabledByGeolocationMessage'
 
 const CollateralizationBanner = (props: BoxProps) => {
   const { isCollaterized } = useAtomValue(rTokenStateAtom)
@@ -81,6 +82,7 @@ const IssuanceMethods = () => {
         <Box mt={4} ml={4} mr={[4, 4, 4, 0]}>
           <CollateralizationBanner mb="3" />
           <ZapToggle zapEnabled={zapEnabled} setZapEnabled={setZapEnabled} />
+          <DisabledByGeolocationMessage mb={4} />
           <Grid columns={[1, 2]} gap={[1, 4]} mb={[1, 4]}>
             <Issue />
             <Redeem />

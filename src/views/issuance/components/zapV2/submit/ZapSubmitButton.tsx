@@ -3,6 +3,7 @@ import { useZap } from '../context/ZapContext'
 import { LoadingButton } from 'components/button'
 import { TransactionButtonContainer } from 'components/button/TransactionButton'
 import mixpanel from 'mixpanel-browser'
+import DisabledByGeolocationMessage from 'state/geolocation/DisabledByGeolocationMessage'
 
 const ZapSubmitButton = () => {
   const {
@@ -41,17 +42,20 @@ const ZapSubmitButton = () => {
   }, [setOpenSubmitModal, operation, endpoint])
 
   return (
-    <TransactionButtonContainer sx={{ width: '100%' }}>
-      <LoadingButton
-        onClick={onSubmit}
-        loading={loadingZap || validatingZap}
-        text={title}
-        backgroundColor={error?.color || 'primary'}
-        disabled={disabled}
-        loadingText="Finding route..."
-        fullWidth
-      />
-    </TransactionButtonContainer>
+    <>
+      <TransactionButtonContainer sx={{ width: '100%' }}>
+        <LoadingButton
+          onClick={onSubmit}
+          loading={loadingZap || validatingZap}
+          text={title}
+          backgroundColor={error?.color || 'primary'}
+          disabled={disabled}
+          loadingText="Finding route..."
+          fullWidth
+        />
+      </TransactionButtonContainer>
+      {operation === 'mint' && <DisabledByGeolocationMessage />}
+    </>
   )
 }
 
