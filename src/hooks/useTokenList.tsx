@@ -63,7 +63,6 @@ const tokenListQuery = gql`
       cumulativeVolume
       rToken {
         backing
-        backingRSR
         targetUnits
         rsrStaked
         rsrLocked
@@ -188,6 +187,8 @@ const useTokenList = () => {
             }
 
             const stakeUsd =
+              +formatEther(token?.rToken?.rsrStaked ?? '0') * rsrPrice
+            const lockedUsd =
               +formatEther(token?.rToken?.rsrLocked ?? '0') * rsrPrice
             const holdersShare = +(revenueSplit.holders || 0) / 100
             const stakersShare = +(revenueSplit.stakers || 0) / 100
@@ -211,7 +212,7 @@ const useTokenList = () => {
               tokenApy,
               basketApy,
               backing: Number(formatEther(token?.rToken?.backing ?? '1')) * 100,
-              overcollaterization: supply ? (stakeUsd / supply) * 100 : 0,
+              overcollaterization: supply ? (lockedUsd / supply) * 100 : 0,
               stakingApy,
               chain,
               logo: `/svgs/${rtokens[chain][
