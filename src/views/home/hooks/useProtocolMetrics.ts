@@ -1,34 +1,15 @@
 import { gql } from 'graphql-request'
 import { useMultichainQuery } from 'hooks/useQuery'
 import useTokenList from 'hooks/useTokenList'
-import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { rsrPriceAtom } from 'state/atoms'
 import { PROTOCOL_SLUG } from 'utils/constants'
-
-type ProtocolMetricsResponse = {
-  protocol: {
-    totalValueLockedUSD: string
-    totalRTokenUSD: string
-    cumulativeRTokenRevenueUSD: string
-    cumulativeRSRRevenueUSD: string
-    rsrRevenue: string
-    transactionCount: string
-    rsrStaked: string
-    rsrStakedUSD: string
-  }
-}
 
 const protocolMetricsQuery = gql`
   query GetProtocolMetrics($id: String!) {
     protocol(id: $id) {
       totalValueLockedUSD
       totalRTokenUSD
-      cumulativeRTokenRevenueUSD
-      cumulativeRSRRevenueUSD
       rsrRevenue
-      transactionCount
-      rsrStaked
       rsrStakedUSD
     }
   }
@@ -36,7 +17,6 @@ const protocolMetricsQuery = gql`
 
 const DEFAULT_STATS = {
   marketCap: 0,
-  stakeRevenue: 0,
   tvl: 0,
   rsrStakedUSD: 0,
   rTokenAnnualizedRevenue: 0,
@@ -45,7 +25,6 @@ const DEFAULT_STATS = {
 
 const useProtocolMetrics = () => {
   const { list, isLoading: loadingList } = useTokenList()
-  const rsrPrice = useAtomValue(rsrPriceAtom)
   const { data, isLoading } = useMultichainQuery(
     protocolMetricsQuery,
     {
@@ -64,7 +43,6 @@ const useProtocolMetrics = () => {
       .reduce(
         (acc, curr) => ({
           marketCap: acc.marketCap + +curr.totalRTokenUSD,
-          stakeRevenue: acc.stakeRevenue + +curr.cumulativeRSRRevenueUSD,
           tvl: acc.tvl + +curr.totalValueLockedUSD,
           rsrStakedUSD: acc.rsrStakedUSD + +curr.rsrStakedUSD,
         }),
