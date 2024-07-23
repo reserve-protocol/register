@@ -1,6 +1,10 @@
 import { atom } from 'jotai'
 import { atomWithLoadable } from 'utils/atoms/utils'
-import { BLOCKED_COLLATERALS, BLOCKED_COUNTRIES } from '.'
+import {
+  BLOCKED_COLLATERALS,
+  BLOCKED_COLLATERALS_COUNTRIES,
+  BLOCKED_COUNTRIES,
+} from '.'
 import { rTokenCollateralStatusAtom, rTokenStateAtom } from 'state/atoms'
 
 const cloudflareFallbackURLs = [
@@ -55,10 +59,12 @@ export const isRTokenMintEnabled = atom((get) => {
     return { loading: true, value: false }
   }
 
-  if (
-    BLOCKED_COUNTRIES.indexOf(loc) !== -1 &&
+  const blockedCountry = BLOCKED_COUNTRIES.indexOf(loc) !== -1
+  const blockedCollateral =
+    BLOCKED_COLLATERALS_COUNTRIES.indexOf(loc) !== -1 &&
     BLOCKED_COLLATERALS.some((e) => rTokenCollaterals.includes(e.toLowerCase()))
-  ) {
+
+  if (blockedCountry || blockedCollateral) {
     return { loading: false, value: false }
   }
 
