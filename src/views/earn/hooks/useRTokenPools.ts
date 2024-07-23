@@ -40,6 +40,7 @@ interface EarnPool {
   llamaId: string
   url: string
   underlyingTokens: string[]
+  symbol: string
 }
 
 const listedRTokens = Object.values(rtokens).reduce((acc, curr) => {
@@ -81,6 +82,7 @@ const earnPoolQuery = gql`
         llamaId
         url
         underlyingTokens
+        symbol
       }
     }
   }
@@ -192,9 +194,12 @@ const addPoolCMSMetadata = (
       LP_PROJECTS[pool.project]?.site ||
       `https://defillama.com/yields/pool/${pool.id}`
 
+    const symbol = cmsPool?.symbol || pool.symbol
+
     return {
       ...pool,
       url,
+      symbol,
     }
   })
 }
