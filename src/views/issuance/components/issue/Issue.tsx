@@ -22,7 +22,7 @@ import {
 import { usePublicClient } from 'wagmi'
 import ConfirmIssuance from './ConfirmIssuance'
 import IssueInput from './IssueInput'
-import { isRTokenMintOrStakeEnabled } from 'state/geolocation/atoms'
+import { isRTokenMintEnabled } from 'state/geolocation/atoms'
 
 const useMaxIssuable = async () => {
   const rToken = useAtomValue(rTokenAtom)
@@ -69,7 +69,7 @@ const Issue = () => {
   const [issuing, setIssuing] = useState(false)
   const { issuancePaused, frozen } = useAtomValue(rTokenStateAtom)
   const missingCollateral = amount && !isValid
-  const isEnabled = useAtomValue(isRTokenMintOrStakeEnabled)
+  const isEnabled = useAtomValue(isRTokenMintEnabled)
   const rToken = useRToken()
   useMaxIssuable()
 

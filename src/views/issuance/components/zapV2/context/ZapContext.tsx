@@ -36,7 +36,7 @@ import {
   SLIPPAGE_OPTIONS,
   zappableTokens,
 } from '../constants'
-import { isRTokenMintOrStakeEnabled } from 'state/geolocation/atoms'
+import { isRTokenMintEnabled } from 'state/geolocation/atoms'
 
 export type IssuanceOperation = 'mint' | 'redeem'
 
@@ -152,7 +152,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const balances = useAtomValue(balancesAtom)
   const { issuanceAvailable, redemptionAvailable } =
     useAtomValue(rTokenStateAtom)
-  const isEnabled = useAtomValue(isRTokenMintOrStakeEnabled)
+  const isEnabled = useAtomValue(isRTokenMintEnabled)
 
   const { data: gas } = useFeeData()
 
@@ -281,7 +281,8 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         isNaN(Number(amountIn)) ||
         amountIn === '' ||
         Number(amountIn) === 0 ||
-        (operation === 'mint' && (isEnabled.loading || !isEnabled.value))
+        isEnabled.loading ||
+        !isEnabled.value
       ) {
         return null
       }

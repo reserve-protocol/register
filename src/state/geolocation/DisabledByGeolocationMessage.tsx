@@ -1,10 +1,10 @@
 import AlertIcon from 'components/icons/AlertIcon'
 import { useAtomValue } from 'jotai'
-import { isRTokenMintOrStakeEnabled } from 'state/geolocation/atoms'
+import { isRTokenMintEnabled } from 'state/geolocation/atoms'
 import { Box, BoxProps, Text } from 'theme-ui'
 
 const DisabledByGeolocationMessage = ({ sx, ...props }: BoxProps) => {
-  const isEnabled = useAtomValue(isRTokenMintOrStakeEnabled)
+  const isEnabled = useAtomValue(isRTokenMintEnabled)
 
   if (isEnabled.loading || isEnabled.value) {
     return null
@@ -17,9 +17,7 @@ const DisabledByGeolocationMessage = ({ sx, ...props }: BoxProps) => {
       sx={{ ...sx, justifyContent: 'center', gap: 2 }}
     >
       <AlertIcon />
-      <Text variant="warning">
-        This feature is not available on your location.
-      </Text>
+      <Text variant="warning">This feature is not available</Text>
     </Box>
   )
 }

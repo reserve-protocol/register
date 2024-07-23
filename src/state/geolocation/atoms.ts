@@ -45,7 +45,7 @@ export const geolocationAtom = atomWithLoadable(async () => {
   }
 })
 
-export const isRTokenMintOrStakeEnabled = atom((get) => {
+export const isRTokenMintEnabled = atom((get) => {
   const loc = get(geolocationAtom)
   const rTokenCollaterals = Object.keys(
     get(rTokenCollateralStatusAtom) ?? {}

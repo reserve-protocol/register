@@ -54,7 +54,7 @@ const ZapSubmitButton = () => {
           fullWidth
         />
       </TransactionButtonContainer>
-      {operation === 'mint' && <DisabledByGeolocationMessage />}
+      <DisabledByGeolocationMessage />
     </>
   )
 }
