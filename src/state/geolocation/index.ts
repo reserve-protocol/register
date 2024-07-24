@@ -11,14 +11,9 @@ export const BLOCKED_COLLATERALS_COUNTRIES = [
 export const BLOCKED_COUNTRIES = [
   'AL', // Albania (Balkans)
   'BA', // Bosnia and Herzegovina (Balkans)
-  'HR', // Croatia (Balkans)
   'XK', // Kosovo (Balkans)
-  'ME', // Montenegro (Balkans)
   'MK', // North Macedonia (Balkans)
   'RS', // Serbia (Balkans)
-  'BG', // Bulgaria (Balkans)
-  'RO', // Romania (Balkans)
-  'GR', // Greece (Balkans)
   'BY', // Belarus
   'BI', // Burundi
   'CF', // Central African Republic
