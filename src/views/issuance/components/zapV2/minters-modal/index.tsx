@@ -4,6 +4,7 @@ import BankIcon from 'components/icons/BankIcon'
 import { ChevronLeft } from 'react-feather'
 import { Box, Text } from 'theme-ui'
 import SocialMediaInput from './SocialMediaInput'
+import { useZap } from '../context/ZapContext'
 
 const slideOut = keyframes`
   from {
@@ -15,7 +16,10 @@ const slideOut = keyframes`
 `
 
 const MintersModal = () => {
+  const { showEliteProgramModal, setShowEliteProgramModal } = useZap()
   const theme = useTheme()
+
+  if (!showEliteProgramModal) return null
 
   return (
     <Box
@@ -55,6 +59,7 @@ const MintersModal = () => {
             border: '1px solid',
             borderColor: 'darkBorder',
           }}
+          onClick={() => setShowEliteProgramModal(false)}
         >
           <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
             <ChevronLeft

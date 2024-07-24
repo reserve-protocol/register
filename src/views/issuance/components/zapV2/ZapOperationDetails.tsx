@@ -7,18 +7,15 @@ import { useEffect, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import ZapDetails from './overview/ZapDetails'
 
-const EXPAND_THRESHOLD = 50_000
-
 const ZapOperationDetails = () => {
   const [collapsed, setCollapsed] = useState(true)
-  const { gasCost, amountIn, tokenIn } = useZap()
+  const { gasCost, amountIn, tokenIn, isExpensiveZap } = useZap()
 
   useEffect(() => {
-    const isExpensiveZap = +amountIn * (tokenIn?.price || 0) > EXPAND_THRESHOLD
     if (isExpensiveZap) {
       setCollapsed(false)
     }
-  }, [tokenIn?.price, amountIn, setCollapsed])
+  }, [tokenIn?.price, amountIn, setCollapsed, isExpensiveZap])
 
   return (
     <Box>

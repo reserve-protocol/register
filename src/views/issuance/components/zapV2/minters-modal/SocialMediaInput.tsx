@@ -5,9 +5,16 @@ import { Box, BoxProps } from 'theme-ui'
 
 const SocialMediaInput = ({ sx, ...props }: BoxProps) => {
   const [value, setValue] = useState('')
+  const [submitted, setSubmitted] = useState(false)
 
   const handleTrackUsername = () => {
-    console.log('input')
+    console.log(value)
+    setSubmitted(true)
+  }
+
+  const onChange = (newValue: string) => {
+    if (submitted) return
+    setValue(newValue)
   }
 
   return (
@@ -41,7 +48,8 @@ const SocialMediaInput = ({ sx, ...props }: BoxProps) => {
         }}
         placeholder="Telegram username"
         value={value}
-        onChange={setValue}
+        onChange={onChange}
+        disabled={submitted}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
             handleTrackUsername()
@@ -55,7 +63,7 @@ const SocialMediaInput = ({ sx, ...props }: BoxProps) => {
           top: '4px',
         }}
         small
-        disabled={!value}
+        disabled={!value || submitted}
         onClick={handleTrackUsername}
       >
         Count me in

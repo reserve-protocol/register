@@ -91,9 +91,13 @@ type ZapContextType = {
 
   refreshInterval: number
   refreshQuote: () => void
+  isExpensiveZap: boolean
+  showEliteProgramModal: boolean
+  setShowEliteProgramModal: (show: boolean) => void
 }
 
 const REFRESH_INTERVAL = 12000 // 12 seconds
+const EXPENSIVE_ZAP_THRESHOLD = 0.1 // TODO: change back to 50_000
 
 const ZapContext = createContext<ZapContextType>({
   zapEnabled: true,
@@ -123,6 +127,9 @@ const ZapContext = createContext<ZapContextType>({
   resetZap: () => {},
   refreshInterval: REFRESH_INTERVAL,
   refreshQuote: () => {},
+  isExpensiveZap: false,
+  showEliteProgramModal: false,
+  setShowEliteProgramModal: () => {},
 })
 
 export const useZap = () => {
@@ -153,6 +160,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const { issuanceAvailable, redemptionAvailable } =
     useAtomValue(rTokenStateAtom)
   const isEnabled = useAtomValue(isRTokenMintEnabled)
+  const [showEliteProgramModal, setShowEliteProgramModal] = useState(false)
 
   const { data: gas } = useFeeData()
 
@@ -190,7 +198,8 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const resetZap = useCallback(() => {
     setAmountIn('')
     setOpenTokenSelector(false)
-  }, [setAmountIn, setOpenTokenSelector])
+    setShowEliteProgramModal(false)
+  }, [setAmountIn, setOpenTokenSelector, setShowEliteProgramModal])
 
   useEffect(() => {
     resetZap()
@@ -542,6 +551,11 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     endpoint,
   ])
 
+  const isExpensiveZap = useMemo(
+    () => +amountIn * (tokenIn?.price || 0) > EXPENSIVE_ZAP_THRESHOLD,
+    [amountIn, tokenIn?.price]
+  )
+
   return (
     <ZapContext.Provider
       value={{
@@ -582,6 +596,9 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         resetZap,
         refreshQuote,
         refreshInterval: REFRESH_INTERVAL,
+        isExpensiveZap,
+        showEliteProgramModal,
+        setShowEliteProgramModal,
       }}
     >
       {children}

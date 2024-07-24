@@ -61,6 +61,8 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     operation,
     setOpenSubmitModal,
     resetZap,
+    isExpensiveZap,
+    setShowEliteProgramModal,
   } = useZap()
 
   // Approval
@@ -307,6 +309,11 @@ export const ZapTxProvider: FC<PropsWithChildren<any>> = ({ children }) => {
           endpoint: endpoint,
         },
       })
+      // elite program
+      if (operation === 'mint' && isExpensiveZap) {
+        setShowEliteProgramModal(true)
+        return
+      }
     } else {
       mixpanel.track('transaction', {
         page: 'rtoken_details',
