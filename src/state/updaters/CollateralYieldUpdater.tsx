@@ -68,6 +68,27 @@ const poolsMap: Record<number, Record<string, string>> = {
   },
 }
 
+export const symbolMap: Record<string, Record<number, string>> = Object.entries(
+  poolsMap
+)
+  .flatMap(([chainId, pools]) =>
+    Object.entries(pools).map(([poolId, symbol]) => ({
+      chainId,
+      symbol,
+      poolId,
+    }))
+  )
+  .reduce(
+    (acc, { chainId, symbol, poolId }) => ({
+      ...acc,
+      [symbol]: {
+        ...acc[symbol],
+        [chainId]: poolId,
+      },
+    }),
+    {} as Record<string, Record<number, string>>
+  )
+
 const CollateralYieldUpdater = () => {
   const [collateralYield, setCollateralYield] = useAtom(collateralYieldAtom)
   const { data } = useSWRImmutable('https://yields.llama.fi/pools', (...args) =>
