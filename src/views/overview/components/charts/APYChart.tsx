@@ -1,5 +1,6 @@
 import { t } from '@lingui/macro'
 import AreaChart from 'components/charts/area/AreaChart'
+import TabMenu from 'components/tab-menu'
 import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
 import useQuery, { useMultiFetch } from 'hooks/useQuery'
@@ -7,10 +8,10 @@ import useRToken from 'hooks/useRToken'
 import useTimeFrom from 'hooks/useTimeFrom'
 import { useAtomValue } from 'jotai'
 import { useMemo, useState } from 'react'
-import { rsrPriceAtom, rTokenPriceAtom, rTokenStateAtom } from 'state/atoms'
+import { estimatedApyAtom, rsrPriceAtom, rTokenPriceAtom } from 'state/atoms'
 import { symbolMap } from 'state/updaters/CollateralYieldUpdater'
-import { BoxProps } from 'theme-ui'
-import { formatCurrency, formatPercentage, getUTCStartOfDay } from 'utils'
+import { Box, BoxProps } from 'theme-ui'
+import { formatPercentage, getUTCStartOfDay } from 'utils'
 import { ChainId } from 'utils/chains'
 import { TIME_RANGES } from 'utils/constants'
 import { formatEther } from 'viem'
@@ -56,13 +57,33 @@ const supplyQuery = gql`
   }
 `
 
+const APY_OPTIONS = [
+  {
+    key: 'basketAPY',
+    label: 'Basket',
+  },
+  {
+    key: 'rTokenAPY',
+    label: 'Holders',
+  },
+  {
+    key: 'rsrAPY',
+    label: 'Stakers',
+  },
+]
+
+type APYOptions = (typeof APY_OPTIONS)[number]['key']
+
+const today = getUTCStartOfDay(Date.now() / 1000)
+
 const APYChart = (props: BoxProps) => {
   const rToken = useRToken()
-  const rTokenState = useAtomValue(rTokenStateAtom)
   const rsrPrice = useAtomValue(rsrPriceAtom)
   const rTokenPrice = useAtomValue(rTokenPriceAtom)
+  const currentYields = useAtomValue(estimatedApyAtom)
   const [current, setCurrent] = useState(TIME_RANGES.MONTH)
   const fromTime = useTimeFrom(current)
+  const [selectedOption, setSelectedOption] = useState<APYOptions>('basketAPY')
 
   const { data: historicalBaskets } = useQuery(
     rToken ? historicalBasketsQuery : null,
@@ -113,7 +134,14 @@ const APYChart = (props: BoxProps) => {
   )
 
   const rows: any[] = useMemo(() => {
-    if (!historicalAPY || !baskets || !supplies) {
+    if (
+      !historicalAPY ||
+      !baskets ||
+      !supplies ||
+      (currentYields.basket === 0 &&
+        currentYields.holders === 0 &&
+        currentYields.stakers === 0)
+    ) {
       return []
     }
 
@@ -124,8 +152,6 @@ const APYChart = (props: BoxProps) => {
         return acc
       }
     )
-    supplyByDate[getUTCStartOfDay(Date.now() / 1000)] =
-      rTokenState.tokenSupply * rTokenPrice
 
     const stakedRSRByDate = supplies?.rtoken?.snapshots.reduce(
       (acc: any, curr: any) => {
@@ -134,8 +160,6 @@ const APYChart = (props: BoxProps) => {
         return acc
       }
     )
-    stakedRSRByDate[getUTCStartOfDay(Date.now() / 1000)] =
-      rTokenState.stTokenSupply * rTokenState.exchangeRate * rsrPrice
 
     const historicalAPYByDate = historicalAPY
       .flatMap((resultByChain, index) =>
@@ -174,7 +198,6 @@ const APYChart = (props: BoxProps) => {
         ({ basket, values }) =>
           Object.values(values).length === basket.collaterals.length
       )
-
       .map(({ time, basket, values }) => {
         const apy = Object.entries(values).reduce(
           (acc, [symbol, collateralAPY]) =>
@@ -185,7 +208,7 @@ const APYChart = (props: BoxProps) => {
           0
         )
         return {
-          value: apy,
+          basketAPY: apy,
           rTokenAPY: apy * basket.rTokenDist,
           rsrAPY:
             (apy * supplyByDate[time] * basket.rsrDist) / stakedRSRByDate[time],
@@ -194,7 +217,17 @@ const APYChart = (props: BoxProps) => {
           display: `${formatPercentage(apy)}`,
         }
       })
-      .filter((e) => !isNaN(e.rsrAPY))
+      .filter((e) => !isNaN(e.rsrAPY) && e.time !== today)
+
+    historicalBasketAPY.push({
+      basketAPY: currentYields.basket,
+      rTokenAPY: currentYields.holders,
+      rsrAPY: currentYields.stakers,
+      label: dayjs(today).format('YYYY-M-D'),
+      time: today,
+      display: `${formatPercentage(currentYields.basket)}`,
+    })
+
     return historicalBasketAPY
   }, [
     historicalAPY,
@@ -203,23 +236,33 @@ const APYChart = (props: BoxProps) => {
     supplies,
     rsrPrice,
     rTokenPrice,
-    rTokenState,
+    currentYields,
   ])
 
   const filteredRows = useMemo(
-    () => rows.filter((e) => e.time / 1000 >= fromTime),
-    [rows, fromTime]
+    () =>
+      rows
+        .filter((e) => e.time / 1000 >= fromTime)
+        .map((e) => ({
+          value: e[selectedOption],
+          label: e.label,
+          display: e.display,
+        })),
+    [rows, fromTime, selectedOption]
   )
 
   const currentValue = useMemo(
-    () => (rows && rows.length ? rows[rows.length - 1].value : 0),
-    [rows]
+    () =>
+      filteredRows && filteredRows.length
+        ? filteredRows[filteredRows.length - 1].value
+        : 0,
+    [filteredRows]
   )
 
   return (
     <AreaChart
       heading={t`APY`}
-      title={`$${formatCurrency(currentValue)}`}
+      title={`${formatPercentage(currentValue)}`}
       data={filteredRows}
       domain={['auto', 'auto']}
       timeRange={{
@@ -229,6 +272,15 @@ const APYChart = (props: BoxProps) => {
       }}
       currentRange={current}
       onRangeChange={handleChange}
+      moreActions={
+        <Box variant="layout.verticalAlign" sx={{ gap: 1 }}>
+          <TabMenu
+            items={APY_OPTIONS}
+            active={selectedOption}
+            onMenuChange={(key) => setSelectedOption(key as APYOptions)}
+          />
+        </Box>
+      }
       {...props}
     />
   )
