@@ -107,7 +107,7 @@ const APYChart = (props: BoxProps) => {
         return {
           timestamp: hb.timestamp,
           collaterals: hb.collaterals.map((c: any) => ({
-            symbol: c.symbol,
+            symbol: c.symbol.replace('-VAULT', ''),
             distribution: +distribution[c.id]?.dist,
           })),
           rTokenDist: hb.rTokenDist / 10000,
@@ -118,8 +118,11 @@ const APYChart = (props: BoxProps) => {
   )
 
   const allCollaterals = useMemo(
-    () => baskets.flatMap((b: any) => b.collaterals.map((c: any) => c.symbol)),
-    [baskets]
+    () =>
+      baskets
+        .flatMap((b: any) => b.collaterals.map((c: any) => c.symbol))
+        .filter((c: any) => symbolMap[c.toLowerCase()] !== undefined),
+    [baskets, symbolMap]
   )
 
   const { data: historicalAPY } = useMultiFetch(
@@ -183,15 +186,20 @@ const APYChart = (props: BoxProps) => {
         return {
           time: Number(time),
           basket,
-          values: Object.entries(values as Record<string, number>).reduce(
-            (acc, [symbol, value]) => {
-              if (!basket.collaterals.some((c: any) => c.symbol === symbol)) {
-                return acc
-              }
-              return { ...acc, [symbol]: value }
-            },
-            {}
-          ),
+          values: {
+            ...Object.entries(values as Record<string, number>).reduce(
+              (acc, [symbol, value]) => {
+                if (!basket.collaterals.some((c: any) => c.symbol === symbol)) {
+                  return acc
+                }
+                return { ...acc, [symbol]: value }
+              },
+              {}
+            ),
+            ...(basket.collaterals.some((c: any) => c.symbol === 'wUSDM')
+              ? { wUSDM: 5 } // Hardcoded wUSDM APY
+              : {}),
+          },
         }
       })
       .filter(
