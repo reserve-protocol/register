@@ -13,7 +13,7 @@ const Hero = () => (
       sx={{
         alignItems: 'end',
         '@media (min-width: 1152px) and (max-width: 1400px)': {
-          'grid-template-columns': 'repeat(1, 1fr)',
+          gridTemplateColumns: 'repeat(1, 1fr)',
         },
       }}
     >

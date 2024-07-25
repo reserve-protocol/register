@@ -7,9 +7,9 @@ const HistoricalCharts = () => {
   return (
     <>
       <PriceChart />
+      <APYChart mt="5" />
       <SupplyChart mt="5" />
       <StakingChart mt="5" />
-      <APYChart mt="5" />
     </>
   )
 }
