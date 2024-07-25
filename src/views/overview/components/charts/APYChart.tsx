@@ -214,7 +214,6 @@ const APYChart = (props: BoxProps) => {
             (apy * supplyByDate[time] * basket.rsrDist) / stakedRSRByDate[time],
           label: dayjs(time).format('YYYY-M-D'),
           time,
-          display: `${formatPercentage(apy)}`,
         }
       })
       .filter((e) => !isNaN(e.rsrAPY) && e.time !== today)
@@ -225,7 +224,6 @@ const APYChart = (props: BoxProps) => {
       rsrAPY: currentYields.stakers,
       label: dayjs(today).format('YYYY-M-D'),
       time: today,
-      display: `${formatPercentage(currentYields.basket)}`,
     })
 
     return historicalBasketAPY
@@ -246,7 +244,7 @@ const APYChart = (props: BoxProps) => {
         .map((e) => ({
           value: e[selectedOption],
           label: e.label,
-          display: e.display,
+          display: `${formatPercentage(e[selectedOption])}`,
         })),
     [rows, fromTime, selectedOption]
   )
