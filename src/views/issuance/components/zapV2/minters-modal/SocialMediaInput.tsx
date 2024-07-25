@@ -1,16 +1,40 @@
 import { Button, Input } from 'components'
 import TelegramIcon from 'components/icons/TelegramIcon'
-import { useState } from 'react'
+import { useAtomValue } from 'jotai'
+import { useCallback, useState } from 'react'
+import { walletAtom } from 'state/atoms'
 import { Box, BoxProps } from 'theme-ui'
 
+const STORAGE_URL = import.meta.env.VITE_STORAGE_URL || ''
+
 const SocialMediaInput = ({ sx, ...props }: BoxProps) => {
+  const account = useAtomValue(walletAtom)
   const [value, setValue] = useState('')
   const [submitted, setSubmitted] = useState(false)
 
-  const handleTrackUsername = () => {
-    console.log(value)
+  const handleTrackUsername = useCallback(async () => {
+    try {
+      const response = await fetch(STORAGE_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          address: account,
+          telegram: value,
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to submit data')
+      }
+
+      setSubmitted(true)
+    } catch (error) {
+      console.error('Error submitting data:', error)
+    }
     setSubmitted(true)
-  }
+  }, [value, account, setSubmitted])
 
   const onChange = (newValue: string) => {
     if (submitted) return
