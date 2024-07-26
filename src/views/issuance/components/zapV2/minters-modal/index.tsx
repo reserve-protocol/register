@@ -3,8 +3,8 @@ import { Button } from 'components'
 import BankIcon from 'components/icons/BankIcon'
 import { ChevronLeft } from 'react-feather'
 import { Box, Text } from 'theme-ui'
-import SocialMediaInput from './SocialMediaInput'
 import { useZap } from '../context/ZapContext'
+import SocialMediaInput from './SocialMediaInput'
 
 const slideOut = keyframes`
   from {
@@ -19,7 +19,7 @@ const MintersModal = () => {
   const { showEliteProgramModal, setShowEliteProgramModal } = useZap()
   const theme = useTheme()
 
-  if (!showEliteProgramModal) return null
+  // if (!showEliteProgramModal) return null
 
   return (
     <Box
@@ -77,7 +77,7 @@ const MintersModal = () => {
           flexDirection: 'column',
           gap: 3,
           maxWidth: '330px',
-          lineHeight: '18px',
+          lineHeight: '20px',
         }}
       >
         <Text
@@ -90,7 +90,7 @@ const MintersModal = () => {
         >
           Whale hello there 👋
         </Text>
-        <Text sx={{ fontSize: '14px' }}>
+        <Text sx={{ fontSize: '16px' }}>
           Congratulations — You’ve unlocked an invitation to Reserve’s elite
           program for large RToken minters. Opt-in participants enjoy access to
         </Text>
@@ -102,7 +102,8 @@ const MintersModal = () => {
             gap: 1,
             px: 3,
             py: 0,
-            fontSize: '14px',
+            fontSize: '16px',
+            mb: 2,
           }}
         >
           <Text as="li">Support from Reserve Institutional</Text>
