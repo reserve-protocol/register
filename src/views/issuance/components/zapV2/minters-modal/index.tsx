@@ -25,7 +25,7 @@ const MintersModal = () => {
     <Box
       sx={{
         position: 'absolute',
-        display: 'flex',
+        display: ['none', 'flex'],
         flexDirection: 'column',
         justifyContent: 'space-between',
         top: 0,

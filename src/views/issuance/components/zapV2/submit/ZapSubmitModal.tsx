@@ -125,7 +125,10 @@ const ZapSubmitModal = () => {
         borderColor: 'borderFocused',
         minWidth: 440,
         overflow: 'visible',
-        animation: showEliteProgramModal ? `${slide} 0.5s forwards` : 'none',
+        animation: [
+          'none',
+          showEliteProgramModal ? `${slide} 0.5s forwards` : 'none',
+        ],
       }}
     >
       <Box
@@ -136,9 +139,12 @@ const ZapSubmitModal = () => {
           height: '100%',
           backgroundColor: 'backgroundNested',
           borderRadius: '8px',
-          boxShadow: showEliteProgramModal
-            ? '4px 5px 35px 4px rgba(0, 0, 0, 0.10)'
-            : 'none',
+          boxShadow: [
+            'none',
+            showEliteProgramModal
+              ? '4px 5px 35px 4px rgba(0, 0, 0, 0.10)'
+              : 'none',
+          ],
         }}
       >
         <Box variant="layout.verticalAlign" p={4} mb={[3, 0]} pt={4} pb={0}>

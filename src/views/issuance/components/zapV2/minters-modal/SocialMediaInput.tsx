@@ -132,7 +132,7 @@ const SocialMediaInput = ({ sx, ...props }: BoxProps) => {
   const [selected, setSelected] = useState<SocialMediaOption>(
     SOCIAL_MEDIA_OPTIONS[0]
   )
-  const { tokenIn, amountIn } = useZap()
+  const { tokenIn, amountIn, tokenOut } = useZap()
 
   const amount = +amountIn * (tokenIn?.price || 0)
 
@@ -156,7 +156,7 @@ const SocialMediaInput = ({ sx, ...props }: BoxProps) => {
           },
           body: JSON.stringify({
             address: account,
-            amount: amount.toString(),
+            amount: `$${amount} in ${tokenIn.symbol} used to mint ${tokenOut.symbol}`,
             [key]: value,
           }),
         })
@@ -165,7 +165,7 @@ const SocialMediaInput = ({ sx, ...props }: BoxProps) => {
         console.error('Error submitting data:', error)
       }
     },
-    [value, account, setSubmitted, amount]
+    [value, account, setSubmitted, amount, tokenIn, tokenOut]
   )
 
   const onChange = (newValue: string) => {
