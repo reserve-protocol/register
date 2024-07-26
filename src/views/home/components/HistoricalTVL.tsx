@@ -117,6 +117,7 @@ const HistoricalTVL = () => {
       <AreaChart
         data={data}
         margin={{
+          top: 10,
           right: 10,
           left: 10,
         }}

@@ -239,7 +239,7 @@ const HeroTVL = () => {
         gap: 1,
       }}
       px={[3, 4]}
-      pt={5}
+      pt={4}
     >
       <Text sx={{ fontSize: 4 }}>TVL in Reserve</Text>
 
@@ -331,7 +331,7 @@ const Hero = () => (
         <Box
           sx={{ position: 'relative', height: '100%', overflow: 'hidden' }}
           px={[2, 3]}
-          pt={2}
+          pt={[2, 3]}
         >
           <HeroTVL />
           <HistoricalTVL />
