@@ -186,7 +186,7 @@ const APYChart = (props: BoxProps) => {
         if (!acc[curr.time]) {
           acc[curr.time] = {}
         }
-        acc[curr.time][curr.collateral] = curr.apy
+        acc[curr.time][curr.collateral as string] = curr.apy
         return acc
       }, {} as Record<string, Record<string, number>>)
 
