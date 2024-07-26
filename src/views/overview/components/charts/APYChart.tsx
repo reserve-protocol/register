@@ -58,17 +58,17 @@ const supplyQuery = gql`
 `
 
 const APY_OPTIONS = [
-  {
-    key: 'basketAPY',
-    label: 'Basket',
-  },
+  // {
+  //   key: 'basketAPY',
+  //   label: 'Basket',
+  // },
   {
     key: 'rTokenAPY',
-    label: 'Holders',
+    label: 'RToken',
   },
   {
     key: 'rsrAPY',
-    label: 'Stakers',
+    label: 'RSR Stakers',
   },
 ]
 
@@ -83,7 +83,7 @@ const APYChart = (props: BoxProps) => {
   const currentYields = useAtomValue(estimatedApyAtom)
   const [current, setCurrent] = useState(TIME_RANGES.MONTH)
   const fromTime = useTimeFrom(current)
-  const [selectedOption, setSelectedOption] = useState<APYOptions>('basketAPY')
+  const [selectedOption, setSelectedOption] = useState<APYOptions>('rsrAPY')
 
   const { data: historicalBaskets } = useQuery(
     rToken ? historicalBasketsQuery : null,
