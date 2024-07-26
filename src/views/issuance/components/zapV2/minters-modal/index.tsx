@@ -19,7 +19,7 @@ const MintersModal = () => {
   const { showEliteProgramModal, setShowEliteProgramModal } = useZap()
   const theme = useTheme()
 
-  // if (!showEliteProgramModal) return null
+  if (!showEliteProgramModal) return null
 
   return (
     <Box
