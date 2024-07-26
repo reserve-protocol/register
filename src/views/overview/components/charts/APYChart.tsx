@@ -19,7 +19,7 @@ import { formatEther } from 'viem'
 const historicalBasketsQuery = gql`
   query getHistoricalBaskets($id: String!) {
     rtoken(id: $id) {
-      historicalBaskets {
+      historicalBaskets(orderBy: timestamp, orderDirection: desc) {
         timestamp
         collaterals {
           id
