@@ -118,10 +118,13 @@ const APYChart = (props: BoxProps) => {
   )
 
   const allCollaterals = useMemo(
-    () =>
-      baskets
-        .flatMap((b: any) => b.collaterals.map((c: any) => c.symbol))
-        .filter((c: any) => symbolMap[c.toLowerCase()] !== undefined),
+    () => [
+      ...new Set(
+        baskets
+          .flatMap((b: any) => b.collaterals.map((c: any) => c.symbol))
+          .filter((c: any) => symbolMap[c.toLowerCase()] !== undefined)
+      ),
+    ],
     [baskets, symbolMap]
   )
 
