@@ -165,20 +165,27 @@ const APYChart = (props: BoxProps) => {
     )
 
     const historicalAPYByDate = historicalAPY
-      .flatMap((resultByChain, index) =>
-        resultByChain?.data?.map((data: any) => ({
-          apy: data.apy,
-          time: getUTCStartOfDay(new Date(data.timestamp).valueOf() / 1000),
-          collateral: allCollaterals[index],
-        }))
-      )
+      .flatMap((resultByChain, index) => {
+        const apyByChain: any[] = resultByChain?.data || []
+        return apyByChain.map((data: any, j) => {
+          const last30d = apyByChain.slice(Math.max(0, j - 29), j + 1)
+          const apy30d =
+            last30d.reduce((acc: any, curr: any) => acc + curr.apy, 0) /
+            last30d.length
+          return {
+            apy: apy30d,
+            time: getUTCStartOfDay(new Date(data.timestamp).valueOf() / 1000),
+            collateral: allCollaterals[index],
+          }
+        })
+      })
       .reduce((acc, curr) => {
         if (!acc[curr.time]) {
           acc[curr.time] = {}
         }
         acc[curr.time][curr.collateral] = curr.apy
         return acc
-      }, {})
+      }, {} as Record<string, Record<string, number>>)
 
     const historicalBasketAPY = Object.entries(historicalAPYByDate)
       .map(([time, values]) => {
