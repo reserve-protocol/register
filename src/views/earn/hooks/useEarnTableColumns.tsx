@@ -10,7 +10,9 @@ import Aerodrome from 'components/icons/logos/Aerodrome'
 import Balancer from 'components/icons/logos/Balancer'
 import Convex from 'components/icons/logos/Convex'
 import Curve from 'components/icons/logos/Curve'
+import Dinero from 'components/icons/logos/Dinero'
 import Dyson from 'components/icons/logos/Dyson'
+import Ethena from 'components/icons/logos/Ethena'
 import Extra from 'components/icons/logos/Extra'
 import Merkl from 'components/icons/logos/Merkl'
 import MorphoBlue from 'components/icons/logos/MorphoBlue'
@@ -54,6 +56,8 @@ export const PROJECT_ICONS: Record<string, React.ReactElement> = {
   dyson: <Dyson />,
   'morpho-blue': <MorphoBlue />,
   merkl: <Merkl />,
+  ethena: <Ethena />,
+  'dinero-(pirex-eth)': <Dinero />,
 }
 
 const useEarnTableColumns = (compact: boolean) => {

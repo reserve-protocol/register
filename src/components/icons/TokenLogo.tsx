@@ -74,6 +74,8 @@ const SVGS = new Set([
   'sfrxeth',
   'usd+',
   'pxeth',
+  'apxeth',
+  'susde',
   'sdt',
   'wusdm',
   'eth+',

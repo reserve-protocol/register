@@ -13,6 +13,7 @@ const chainIds: Record<string, number> = {
 
 const poolsMap: Record<number, Record<string, string>> = {
   [ChainId.Mainnet]: {
+    'acee1e4d-a73c-4e20-98f7-e87c13d446e4': 'apxeth',
     '405d8dad-5c99-4c91-90d3-82813ade1ff1': 'sadai',
     'a349fea4-d780-4e16-973e-70ca9b606db2': 'sausdc',
     '60d657c9-5f63-4771-a85b-2cf8d507ec00': 'sausdt',
@@ -53,6 +54,7 @@ const poolsMap: Record<number, Record<string, string>> = {
     '043a8330-bc29-4164-aa1c-28de7bf87755': 'bbusdt',
     'a44febf3-34f6-4cd5-8ab1-f246ebe49f9e': 'steakusdc',
     '74346f6f-c7ee-4506-a204-baf48e13decb': 'stkcvxeth+eth-f',
+    '66985a81-9c51-46ca-9977-42b4fe7bc6df': 'susde',
   },
   [ChainId.Base]: {
     'df65c4f4-e33a-481c-bac8-0c2252867c93': 'wcusdbcv3',
