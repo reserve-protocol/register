@@ -13,8 +13,11 @@ const About = () => {
         height: '100%',
         flexGrow: 1,
         borderRadius: [0, '14px'],
-        border: '2px solid',
-        borderColor: colorMode === 'dark' ? 'border' : 'reserveBackground',
+        border: ['1px solid', '1px solid', '2px solid'],
+        borderColor:
+          colorMode === 'dark'
+            ? ['border', 'border', 'border']
+            : ['reserveBackground', 'reserveBackground', 'reserveBackground'],
         background: colorMode === 'dark' ? 'transparent' : 'cardAlternative',
         overflow: 'hidden',
         cursor: 'pointer',
@@ -56,8 +59,11 @@ const About = () => {
           width: '100%',
           position: 'relative',
           gap: '10px',
-          borderTop: '2px solid',
-          borderColor: colorMode === 'dark' ? 'border' : 'reserveBackground',
+          borderTop: ['1px solid', '1px solid', '2px solid'],
+          borderColor:
+            colorMode === 'dark'
+              ? ['border', 'border', 'border']
+              : ['reserveBackground', 'reserveBackground', 'reserveBackground'],
           backgroundColor: 'cardAlternative',
           overflow: 'hidden',
           '::before': {
