@@ -34,7 +34,7 @@ const useProtocolMetrics = () => {
 
   return useMemo(() => {
     if (isLoading || loadingList || !data || !list) {
-      return { data: DEFAULT_STATS, isLoading: isLoading || loadingList }
+      return { data: DEFAULT_STATS, isLoading: true }
     }
 
     const stats = Object.values(data)
@@ -58,7 +58,7 @@ const useProtocolMetrics = () => {
 
     return {
       data: { ...stats, rsrStakerAnnualizedRevenue, rTokenAnnualizedRevenue },
-      isLoading,
+      isLoading: false,
     }
   }, [data, list, isLoading, loadingList])
 }
