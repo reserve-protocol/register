@@ -93,7 +93,7 @@ const About = () => {
             Watch the event recap and get notified about Monetarium 2
           </Text>
         </Box>
-        <Box ml="auto">
+        <Box ml="auto" sx={{ color: 'accentInverted' }}>
           <ExternalArrowIcon width={26} height={26} />
         </Box>
       </Box>
