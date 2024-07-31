@@ -10,6 +10,7 @@ export type ZapPayload = {
   amountIn: string
   slippage: number
   signer: Address
+  trade: boolean
 }
 
 export type ZapResult = {
@@ -56,8 +57,9 @@ const zapper = {
     amountIn,
     slippage,
     signer,
+    trade,
   }: ZapPayload) =>
-    `${BASE_ZAP_API_URL}/?chainId=${chainId}&signer=${signer}&tokenIn=${tokenIn}&amountIn=${amountIn}&tokenOut=${tokenOut}&slippage=${slippage}`,
+    `${BASE_ZAP_API_URL}/?chainId=${chainId}&signer=${signer}&tokenIn=${tokenIn}&amountIn=${amountIn}&tokenOut=${tokenOut}&slippage=${slippage}&trade=${trade}`,
 }
 
 export default zapper

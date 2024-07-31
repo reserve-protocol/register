@@ -63,6 +63,8 @@ type ZapContextType = {
   setOpenSubmitModal: (open: boolean) => void
   collectDust: boolean
   setCollectDust: (collect: boolean) => void
+  onlyMint: boolean
+  setOnlyMint: (onlyMint: boolean) => void
   slippage: bigint
   setSlippage: (slippage: bigint) => void
   amountIn: string
@@ -108,6 +110,8 @@ const ZapContext = createContext<ZapContextType>({
   setOpenSubmitModal: () => {},
   collectDust: true,
   setCollectDust: () => {},
+  onlyMint: false,
+  setOnlyMint: () => {},
   slippage: SLIPPAGE_OPTIONS[0],
   setSlippage: () => {},
   amountIn: '',
@@ -136,6 +140,7 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
   const [openTokenSelector, setOpenTokenSelector] = useState<boolean>(false)
   const [openSubmitModal, setOpenSubmitModal] = useState<boolean>(false)
   const [collectDust, setCollectDust] = useState<boolean>(true)
+  const [onlyMint, setOnlyMint] = useState<boolean>(false)
   const [slippage, setSlippage] = useState<bigint>(SLIPPAGE_OPTIONS[0])
   const [amountIn, _setAmountIn] = useState<string>('')
   const [selectedToken, setSelectedToken] = useState<ZapToken>()
@@ -294,8 +299,9 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         amountIn: parseUnits(amountIn, tokenIn?.decimals).toString(),
         slippage: Number(slippage),
         signer: account as Address,
+        trade: !onlyMint,
       })
-    }, [chainId, account, tokenIn, tokenOut, amountIn, slippage]),
+    }, [chainId, account, tokenIn, tokenOut, amountIn, slippage, onlyMint]),
     500
   )
 
@@ -557,6 +563,8 @@ export const ZapProvider: FC<PropsWithChildren<any>> = ({ children }) => {
         setOpenSubmitModal,
         collectDust,
         setCollectDust,
+        onlyMint,
+        setOnlyMint,
         slippage,
         setSlippage,
         amountIn,
