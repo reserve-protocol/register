@@ -84,6 +84,14 @@ export const LP_PROJECTS: { [x: string]: { name: string; site: string } } = {
     name: 'Merkl',
     site: 'https://merkl.angle.money/',
   },
+  ethena: {
+    name: 'Ethena',
+    site: 'https://ethena.fi/',
+  },
+  'dinero-(pirex-eth)': {
+    name: 'Dinero',
+    site: 'https://dinero.xyz/',
+  },
 }
 
 // List of supported networks with label
@@ -340,4 +348,6 @@ export const collateralDisplay: Record<string, string> = {
   saarbusdcn: 'AAVE USDC V3',
   saarbusdt: 'AAVE USDT V3',
   'stkcvxeth+eth-f': 'Convex ETH+/ETH',
+  apxeth: 'Autocompounding Pirex ETH',
+  susde: 'Ethena Staked USDe',
 }
