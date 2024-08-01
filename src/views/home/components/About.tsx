@@ -1,6 +1,5 @@
-import ClockIcon from 'components/icons/ClockIcon'
 import ExternalArrowIcon from 'components/icons/ExternalArrowIcon'
-import TicketIcon from 'components/icons/TicketIcon'
+import MovieIcon from 'components/icons/MovieIcon'
 import { Box, Image, Text, useColorMode } from 'theme-ui'
 
 const About = () => {
@@ -9,46 +8,64 @@ const About = () => {
   return (
     <Box
       sx={{
-        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
         height: '100%',
         flexGrow: 1,
         borderRadius: [0, '14px'],
-        border: '0.5px solid',
-        borderColor: 'white',
-        background: colorMode === 'dark' ? 'transparent' : 'primary',
+        border: ['1px solid', '1px solid', '2px solid'],
+        borderColor:
+          colorMode === 'dark'
+            ? ['border', 'border', 'border']
+            : ['reserveBackground', 'reserveBackground', 'reserveBackground'],
+        background: colorMode === 'dark' ? 'transparent' : 'cardAlternative',
         overflow: 'hidden',
         cursor: 'pointer',
       }}
       onClick={() => window.open('https://reserve.org/monetarium/', '_blank')}
     >
-      <Image
-        src="/imgs/bg-monetarium.png"
-        alt="Monetarium background"
+      <Box
         sx={{
-          objectFit: 'cover',
-          width: '101%',
-          minWidth: '101%',
-          maxWidth: '101%',
-          height: [200, 160],
-          maxHeight: '100%',
-          minHeight: '100%',
-          opacity: colorMode === 'dark' ? 0.8 : 1,
+          flexGrow: 1,
+          position: 'relative',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'flex-end',
+          overflow: 'hidden',
         }}
-      />
+      >
+        <Image
+          src={
+            colorMode === 'dark'
+              ? '/imgs/bg-dark-recap-monetarium.png'
+              : '/imgs/bg-light-recap-monetarium.png'
+          }
+          alt="Monetarium background"
+          sx={{
+            objectFit: 'fill',
+            width: '100%',
+            height: '100%',
+            objectPosition: 'bottom',
+            opacity: colorMode === 'dark' ? 0.4 : 1,
+          }}
+        />
+      </Box>
+
       <Box
         variant="layout.verticalAlign"
         px={3}
         py="12px"
         sx={{
           width: '100%',
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          gap: 2,
-          color: 'white',
-          borderTop: '1px solid',
-          borderColor: 'white',
-          backgroundColor: 'primary',
+          position: 'relative',
+          gap: '10px',
+          borderTop: ['1px solid', '1px solid', '2px solid'],
+          borderColor:
+            colorMode === 'dark'
+              ? ['border', 'border', 'border']
+              : ['reserveBackground', 'reserveBackground', 'reserveBackground'],
+          backgroundColor: 'cardAlternative',
+          overflow: 'hidden',
           '::before': {
             content: '""',
             background: 'rgba(255, 255, 255, 0.4)',
@@ -67,14 +84,22 @@ const About = () => {
           },
         }}
       >
-        <TicketIcon />
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <Text variant="sectionTitle" sx={{ fontSize: 18 }}>
-            Monetarium, San Francisco
-          </Text>
-          <Text sx={{ opacity: 0.85 }}>July 19-21, 2024</Text>
+        <Box sx={{ color: 'accentInverted' }}>
+          <MovieIcon />
         </Box>
-        <Box ml="auto">
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Text
+            variant="sectionTitle"
+            color="accentInverted"
+            sx={{ fontSize: 18 }}
+          >
+            Monetarium 1 recap
+          </Text>
+          <Text sx={{ opacity: 0.85 }}>
+            Watch the event recap and get notified about Monetarium 2
+          </Text>
+        </Box>
+        <Box ml="auto" sx={{ color: 'accentInverted' }}>
           <ExternalArrowIcon width={26} height={26} />
         </Box>
       </Box>
