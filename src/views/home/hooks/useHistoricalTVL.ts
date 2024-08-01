@@ -13,14 +13,16 @@ const protocolMetricsQuery = gql`
       first: 1000
     ) {
       timestamp
-      totalValueLockedUSD
+      totalRTokenUSD
+      rsrLockedUSD
     }
   }
 `
 type ProtocolMetricsResponse = {
   dailyStats: {
     timestamp: number
-    totalValueLockedUSD: string
+    totalRTokenUSD: string
+    rsrLockedUSD: string
   }[]
 }
 
@@ -46,11 +48,13 @@ const useHistoricalTVL = (): DailyTVL[] => {
       .flatMap((chain) => {
         const metrics = data[chain] as ProtocolMetricsResponse
         return (
-          metrics?.dailyStats.map(({ totalValueLockedUSD, timestamp }) => ({
-            totalValueLockedUSD,
-            chain,
-            day: getUTCStartOfDay(timestamp),
-          })) || []
+          metrics?.dailyStats.map(
+            ({ totalRTokenUSD, rsrLockedUSD, timestamp }) => ({
+              totalValueLockedUSD: +totalRTokenUSD + +rsrLockedUSD,
+              chain,
+              day: getUTCStartOfDay(timestamp),
+            })
+          ) || []
         )
       })
       .reduce((acc, { totalValueLockedUSD, day, chain }) => {

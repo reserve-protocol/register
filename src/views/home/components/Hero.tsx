@@ -20,7 +20,7 @@ const ProtocolStats = () => {
   const {
     data: {
       marketCap,
-      rsrStakedUSD,
+      rsrLockedUSD,
       rTokenAnnualizedRevenue,
       rsrStakerAnnualizedRevenue,
     },
@@ -40,11 +40,11 @@ const ProtocolStats = () => {
     },
     {
       icon: <ShieldIcon />,
-      value: formatCurrency(rsrStakedUSD, 1, {
+      value: formatCurrency(rsrLockedUSD, 1, {
         notation: 'compact',
         compactDisplay: 'short',
       }),
-      valueLong: formatCurrency(rsrStakedUSD, 0),
+      valueLong: formatCurrency(rsrLockedUSD, 0),
       title: t`First-loss RSR Capital`,
       tooltip: t`The total value of all RSR staked in the protocol`,
     },

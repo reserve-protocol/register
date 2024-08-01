@@ -7,10 +7,9 @@ import { PROTOCOL_SLUG } from 'utils/constants'
 const protocolMetricsQuery = gql`
   query GetProtocolMetrics($id: String!) {
     protocol(id: $id) {
-      totalValueLockedUSD
       totalRTokenUSD
       rsrRevenue
-      rsrStakedUSD
+      rsrLockedUSD
     }
   }
 `
@@ -18,7 +17,7 @@ const protocolMetricsQuery = gql`
 const DEFAULT_STATS = {
   marketCap: 0,
   tvl: 0,
-  rsrStakedUSD: 0,
+  rsrLockedUSD: 0,
   rTokenAnnualizedRevenue: 0,
   rsrStakerAnnualizedRevenue: 0,
 }
@@ -35,7 +34,7 @@ const useProtocolMetrics = () => {
 
   return useMemo(() => {
     if (isLoading || loadingList || !data || !list) {
-      return { data: DEFAULT_STATS, isLoading: isLoading || loadingList }
+      return { data: DEFAULT_STATS, isLoading: true }
     }
 
     const stats = Object.values(data)
@@ -43,8 +42,8 @@ const useProtocolMetrics = () => {
       .reduce(
         (acc, curr) => ({
           marketCap: acc.marketCap + +curr.totalRTokenUSD,
-          tvl: acc.tvl + +curr.totalValueLockedUSD,
-          rsrStakedUSD: acc.rsrStakedUSD + +curr.rsrStakedUSD,
+          tvl: acc.tvl + +curr.totalRTokenUSD + +curr.rsrLockedUSD,
+          rsrLockedUSD: acc.rsrLockedUSD + +curr.rsrLockedUSD,
         }),
         DEFAULT_STATS
       )
@@ -59,7 +58,7 @@ const useProtocolMetrics = () => {
 
     return {
       data: { ...stats, rsrStakerAnnualizedRevenue, rTokenAnnualizedRevenue },
-      isLoading,
+      isLoading: false,
     }
   }, [data, list, isLoading, loadingList])
 }
