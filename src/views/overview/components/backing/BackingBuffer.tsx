@@ -21,7 +21,9 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
   height = 40,
   width = '100%',
 }) => {
+  const shouldPercentageBeOnForeground = percentage <= 8
   const shouldTextBeOnForeground = percentage >= 40
+  const hideBackgroundText = percentage >= 70
 
   return (
     <Box
@@ -44,9 +46,10 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
           position: 'relative',
         }}
       >
-        {!shouldTextBeOnForeground && (
+        {!shouldTextBeOnForeground && !shouldPercentageBeOnForeground && (
           <Text
             sx={{
+              display: ['none', 'none', 'block'],
               position: 'absolute',
               top: '50%',
               right: 3,
@@ -63,6 +66,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
       {foregroundText && (
         <Text
           sx={{
+            display: ['none', 'none', 'block'],
             position: 'absolute',
             top: '50%',
             left: shouldTextBeOnForeground
@@ -79,12 +83,12 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
           }}
         >
           {foregroundText}
-          {shouldTextBeOnForeground && (
+          {(shouldTextBeOnForeground || shouldPercentageBeOnForeground) && (
             <>
               <Text sx={{ mx: 2 }}>|</Text>
               <Text
                 sx={{
-                  color: 'white',
+                  color: shouldPercentageBeOnForeground ? 'black' : 'white',
                   fontSize: 1,
                   fontWeight: 'bold',
                 }}
@@ -95,9 +99,10 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
           )}
         </Text>
       )}
-      {backgroundText && (
+      {backgroundText && !hideBackgroundText && (
         <Text
           sx={{
+            display: ['none', 'none', 'block'],
             position: 'absolute',
             top: '50%',
             right: 3,
@@ -109,6 +114,31 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
           {backgroundText}
         </Text>
       )}
+      <Text
+        sx={{
+          display: ['block', 'block', 'none'],
+          position: 'absolute',
+          top: '50%',
+          right: 3,
+          transform: 'translateY(-50%)',
+          fontSize: 1,
+          whiteSpace: 'nowrap',
+          mixBlendMode: 'difference', // here the text could have different background colors (white or black)
+        }}
+      >
+        {foregroundText}
+        <>
+          <Text sx={{ mx: 2 }}>|</Text>
+          <Text
+            sx={{
+              fontSize: 1,
+              fontWeight: 'bold',
+            }}
+          >
+            {`${percentage}%`}
+          </Text>
+        </>
+      </Text>
     </Box>
   )
 }
@@ -128,12 +158,34 @@ const BuckingBuffer = ({ ...props }: BoxProps) => {
         {/* <Text sx={{ fontSize: 3, opacity: 0.2, mt: 1, mx: 2 }}>|</Text> */}
         <Help content="Collateral yield is distributed as revenue when the backing buffer is full." />
       </Box>
+
+      <Box my={4}>
+        <ProgressBar
+          percentage={8.1}
+          foregroundText={
+            <Text>
+              <Text sx={{ display: ['none', 'inline', 'inline'] }}>
+                Current value in buffer:{' '}
+              </Text>
+              <Text sx={{ fontWeight: 'bold' }}>$663,769</Text>
+            </Text>
+          }
+          backgroundText={
+            <Text>
+              100% at current mcap:{' '}
+              <Text sx={{ fontWeight: 'bold' }}>$3,318,848.05</Text>
+            </Text>
+          }
+        />
+      </Box>
       <Box my={4}>
         <ProgressBar
           percentage={20}
           foregroundText={
             <Text>
-              Current value in buffer:{' '}
+              <Text sx={{ display: ['none', 'inline', 'inline'] }}>
+                Current value in buffer:{' '}
+              </Text>
               <Text sx={{ fontWeight: 'bold' }}>$663,769</Text>
             </Text>
           }
@@ -150,7 +202,9 @@ const BuckingBuffer = ({ ...props }: BoxProps) => {
         percentage={50}
         foregroundText={
           <Text>
-            Current value in buffer:{' '}
+            <Text sx={{ display: ['none', 'inline', 'inline'] }}>
+              Current value in buffer:{' '}
+            </Text>
             <Text sx={{ fontWeight: 'bold' }}>$1,659,424.025</Text>
           </Text>
         }
@@ -167,7 +221,9 @@ const BuckingBuffer = ({ ...props }: BoxProps) => {
           percentage={80}
           foregroundText={
             <Text>
-              Current value in buffer:{' '}
+              <Text sx={{ display: ['none', 'inline', 'inline'] }}>
+                Current value in buffer:{' '}
+              </Text>
               <Text sx={{ fontWeight: 'bold' }}>$2,655,078.44</Text>
             </Text>
           }
