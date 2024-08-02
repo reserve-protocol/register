@@ -101,7 +101,7 @@ const RevenueSplitOverview = (props: BoxProps) => {
   const data = useAtomValue(splitDataAtom)
 
   return (
-    <Box px={4} {...props}>
+    <Box px={4} pb={3} {...props}>
       <Box variant="layout.verticalAlign" mb="4" sx={{ fontSize: 4 }}>
         <RevenueSplitIcon />
         <Text ml="2" variant="bold">
@@ -109,9 +109,9 @@ const RevenueSplitOverview = (props: BoxProps) => {
         </Text>
       </Box>
       {!data && <Skeleton height={64} />}
-      <Box variant="layout.verticalAlign" sx={{ flexWrap: 'wrap' }}>
+      <Box variant="layout.verticalAlign" sx={{ flexWrap: 'wrap', gap: 4 }}>
         {data?.map((item, index) => (
-          <RevenueBox key={index} mr="4" mb="3" {...item} />
+          <RevenueBox key={index} {...item} />
         ))}
       </Box>
     </Box>
