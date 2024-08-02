@@ -105,7 +105,7 @@ const RevenueSplitOverview = (props: BoxProps) => {
       <Box variant="layout.verticalAlign" mb="4" sx={{ fontSize: 4 }}>
         <RevenueSplitIcon />
         <Text ml="2" variant="bold">
-          <Trans>Revenue Distribution</Trans>
+          <Trans>Revenue distribution</Trans>
         </Text>
       </Box>
       {!data && <Skeleton height={64} />}
