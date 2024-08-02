@@ -11,6 +11,8 @@ import ZapDetails from '../overview/ZapDetails'
 import ZapConfirm from './ZapConfirm'
 import { ZapTxProvider } from '../context/ZapTxContext'
 import Skeleton from 'react-loading-skeleton'
+import MintersModal from '../minters-modal'
+import { keyframes } from '@emotion/react'
 
 const ZapOverview = () => {
   const [collapsed, setCollapsed] = useState(true)
@@ -101,13 +103,33 @@ const ZapOverview = () => {
   )
 }
 
+const slide = keyframes`
+  from {
+    left: 50%;
+  }
+  to {
+    left: calc(50% - 150px);
+  }
+`
+
 const ZapSubmitModal = () => {
-  const { setOpenSubmitModal, operation, refreshQuote } = useZap()
+  const { setOpenSubmitModal, operation, refreshQuote, showEliteProgramModal } =
+    useZap()
 
   return (
     <Modal
       p={0}
-      sx={{ border: '3px solid', borderColor: 'borderFocused', minWidth: 440 }}
+      sx={{
+        position: 'relative',
+        border: '3px solid',
+        borderColor: 'borderFocused',
+        minWidth: 440,
+        overflow: 'visible',
+        animation: [
+          'none',
+          showEliteProgramModal ? `${slide} 0.5s forwards` : 'none',
+        ],
+      }}
     >
       <Box
         sx={{
@@ -116,6 +138,13 @@ const ZapSubmitModal = () => {
           overflow: 'hidden',
           height: '100%',
           backgroundColor: 'backgroundNested',
+          borderRadius: '8px',
+          boxShadow: [
+            'none',
+            showEliteProgramModal
+              ? '4px 5px 35px 4px rgba(0, 0, 0, 0.10)'
+              : 'none',
+          ],
         }}
       >
         <Box variant="layout.verticalAlign" p={4} mb={[3, 0]} pt={4} pb={0}>
@@ -136,6 +165,7 @@ const ZapSubmitModal = () => {
 
         <ZapOverview />
       </Box>
+      <MintersModal />
     </Modal>
   )
 }
