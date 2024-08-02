@@ -92,7 +92,7 @@ const BuckingBuffer = ({ ...props }: BoxProps) => {
             Collateral yield is distributed as revenue when the backing buffer
             is full
           </Text>
-          <Help content="Collateral yield is distributed as revenue when the backing buffer is full." />
+          <Help content="The backing buffer is extra collateral held to prevent RSR seizure from trading slippage. When the buffer exceeds 100%, any additional appreciation of collateral is recognized as revenue and sold off in auctions." />
         </Box>
       </Box>
 
