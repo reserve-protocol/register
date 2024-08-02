@@ -63,7 +63,7 @@ const rTokenBackupAtom = atomWithLoadable(async (get) => {
     backupBasket[targetUnits[index]] = {
       diversityFactor: Number(max),
       collaterals: erc20s.map((address, i) => ({
-        address: assets[address].address,
+        address: assets[address]?.address || address,
         targetName: targetUnits[index],
         symbol: symbols[i],
         erc20: address,
