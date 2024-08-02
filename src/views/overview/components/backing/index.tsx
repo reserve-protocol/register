@@ -3,9 +3,10 @@ import BasketCubeIcon from 'components/icons/BasketCubeIcon'
 import { atom, useAtomValue } from 'jotai'
 import Skeleton from 'react-loading-skeleton'
 import { rTokenAtom, rTokenBackingDistributionAtom } from 'state/atoms'
-import { Box, Text } from 'theme-ui'
+import { Box, Divider, Text } from 'theme-ui'
 import AssetBreakdown from './AssetBreakdown'
 import RevenueSplitOverview from './RevenueSplitOverview'
+import BuckingBuffer from './BackingBuffer'
 
 // TODO: Localization?
 const pegsAtom = atom((get) => {
@@ -78,7 +79,10 @@ const Backing = () => (
     </Text>
     <BackingResume />
     <AssetBreakdown />
-    <RevenueSplitOverview mt="4" />
+    <Divider my={6} />
+    <BuckingBuffer />
+    <Divider my={6} />
+    <RevenueSplitOverview />
   </Box>
 )
 

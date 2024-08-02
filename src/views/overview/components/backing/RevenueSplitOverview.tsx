@@ -101,7 +101,7 @@ const RevenueSplitOverview = (props: BoxProps) => {
   const data = useAtomValue(splitDataAtom)
 
   return (
-    <Box p="4" pb="0" {...props}>
+    <Box px={4} {...props}>
       <Box variant="layout.verticalAlign" mb="4" sx={{ fontSize: 4 }}>
         <RevenueSplitIcon />
         <Text ml="2" variant="bold">

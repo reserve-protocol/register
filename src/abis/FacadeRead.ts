@@ -194,4 +194,28 @@ export default [
     stateMutability: 'view',
     type: 'function',
   },
+  {
+    inputs: [
+      {
+        internalType: 'contract IRToken',
+        name: 'rToken',
+        type: 'address',
+      },
+    ],
+    name: 'backingBuffer',
+    outputs: [
+      {
+        internalType: 'uint192',
+        name: 'required',
+        type: 'uint192',
+      },
+      {
+        internalType: 'uint192',
+        name: 'actual',
+        type: 'uint192',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
 ] as const
